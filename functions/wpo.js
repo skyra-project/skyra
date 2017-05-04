@@ -1,0 +1,167 @@
+const request = require("request");
+const log = require("./log.js");
+
+const $ = (name) => { throw new Error(`${name} is a required argument.`); };
+
+/* eslint-disable valid-jsdoc, no-underscore-dangle, no-prototype-builtins */
+const friendlyError = {
+  400: "Bad Request",
+  401: "Unauthorized",
+  403: "Forbidden",
+  404: "Not Found",
+  406: "Not Acceptable",
+  410: "Gone",
+  420: "Ratelimited",
+  429: "Too Many Requests",
+  500: "Internal Server Error",
+  502: "Bad Gateway",
+  503: "Service Unavailable",
+  504: "Gateway timeout",
+};
+
+class WatchPoint {
+  constructor(client) {
+    Object.defineProperty(this, "_client", { value: client });
+    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer("oasis:totallyseqcurepasswordthatnobodywillguess").toString("base64")}` });
+  }
+
+  API(method, query, string) {
+    return new Promise((resolve, reject) => {
+      request({
+        headers: { Authorization: this.auth },
+        url: `http://www.watchpointoasis.com/api/currency/${query}`,
+        json: true,
+        method,
+      }, (error, response, body) => {
+        if (response.statusCode !== 200) WatchPoint.errorCatcher(WatchPoint.errorHandler(response.statusCode), string ? `${string}${query}` : null).catch(reject);
+        else if (error) WatchPoint.errorCatcher(error, string ? `${string}${query}` : null).catch(reject);
+        resolve(body);
+      });
+    });
+  }
+
+  /**
+    * Method [GET]
+    * list/{guildId}
+    * Get an array of objects containing data from all users.
+    * @returns {Object}
+    */
+  list(guild = $("Guild"), string) {
+    return new Promise((resolve, reject) => {
+      this.API("get", `list/${guild}`, string)
+        .then(body => this.cachelist(guild, body).then(resolve).catch(reject))
+        .catch(reject);
+    });
+  }
+
+  cachelist(guild, data) {
+    return new Promise((resolve, reject) => {
+      try {
+        if (this._client.cache.wpo.has(guild)) this._client.cache.wpo.delete(guild);
+        this._client.cache.wpo.set(guild, new Map());
+        const guildCache = this._client.cache.wpo.get(guild);
+        data.forEach(profile => guildCache.set(profile.UserId, profile));
+        resolve(this._client.cache.wpo.get(guild.id));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
+
+  /**
+    * Method [POST]
+    * set/{guildId} /{userId} /{balance} /{reason}
+    * Add a new record to the database.
+    * @returns {Object}
+    */
+  set(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
+    return new Promise((resolve, reject) => {
+      const balance = parseInt(bal);
+      if (isNaN(balance)) reject(`${bal} is not a valid Number.`);
+      this.API("post", `set/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  /**
+    * Method [GET]
+    * get/{guildId} /{userId}
+    * Get the data from a user.
+    * @returns {Object}
+    */
+  get(guild = $("Guild"), user = $("User"), string) {
+    return new Promise((resolve, reject) => {
+      this.API("get", `get/${guild}/${user}`, string)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  /**
+    * Method [POST]
+    * use/{guildId} /{userId} /{balance} /{reason}
+    * Fetch if the user has enough balance to buy an item.
+    * Reason is optional.
+    * @returns {Object}
+    */
+  use(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
+    return new Promise((resolve, reject) => {
+      const balance = parseInt(bal);
+      if (isNaN(balance)) reject(`${bal} is not a valid Number.`);
+      this.API("post", `use/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  /**
+    * Method [PUT]
+    * add/{guildId} /{userId} /{balance} /{reason}
+    * Add points to an user.
+    * Reason is optional.
+    * @returns {Object}
+    */
+  add(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
+    return new Promise((resolve, reject) => {
+      const balance = parseInt(bal);
+      if (isNaN(balance)) reject(`${bal} is not a valid Number.`);
+      this.API("put", `add/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  /**
+    * Method [GET]
+    * history/{guildId} /{userId}
+    * Get a list of all modifications.
+    * @returns {Object}
+    */
+  history(guild = $("Guild"), user = $("User"), string) {
+    return new Promise((resolve, reject) => {
+      this.API("get", `history/${guild}/${user}`, string)
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  /* Static error handler functions */
+  static errorCatcher(err, string = null) {
+    return new Promise((resolve, reject) => {
+      if (!string) reject(err);
+      else log(`${string} >> ${err}`, "error");
+    });
+  }
+
+  static errorHandler(err) {
+    return `[${err}] ${friendlyError[err] || ""}`;
+  }
+}
+
+// exports.init = (client) => {
+//   if (!client.hasOwnProperty("cache")) client.cache = {};
+//   client.cache.wpo = new Map();
+//   client.wpo = new WatchPoint(client);
+//   client.wpo.list("256566731684839428");
+// };

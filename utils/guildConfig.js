@@ -11,8 +11,13 @@ module.exports = class GuildConfig {
     this.createdAt = this._configuration.createdAt || null;
     this.roles = this._configuration.roles || {};
     this.channels = this._configuration.channels || {};
-    this.events = this._configuration.events || { sendMessage: {} };
-    this.events.sendMessage = this._configuration.events.sendMessage || {};
+    this.events = this._configuration.events ? {
+      sendMessage: this._configuration.events.sendMessage || {},
+      modLogProtection: this._configuration.events.modLogProtection || false,
+    } : {
+      sendMessage: false,
+      modLogProtection: {},
+    };
     this.mode = this._configuration.mode || 0;
     this.prefix = this._configuration.prefix || "&";
     this.wordFilter = this._configuration.wordFilter || 0;
@@ -22,7 +27,6 @@ module.exports = class GuildConfig {
     this.disabledCommands = this._configuration.disabledCommands || [];
     this.publicRoles = this._configuration.publicRoles || [];
     this.autoroles = this._configuration.autoroles || [];
-    this.modLogProtection = this._configuration.modLogProtection || false;
   }
 
   get exists() {

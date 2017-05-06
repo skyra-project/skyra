@@ -22,6 +22,7 @@ module.exports = class GuildConfig {
     this.disabledCommands = this._configuration.disabledCommands || [];
     this.publicRoles = this._configuration.publicRoles || [];
     this.autoroles = this._configuration.autoroles || [];
+    this.modLogProtection = this._configuration.modLogProtection || false;
   }
 
   get exists() {

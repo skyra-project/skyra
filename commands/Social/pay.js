@@ -1,7 +1,7 @@
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [money, ...search]) => {
   try {
-    const user = await client.search.User(search, msg.guild);
+    const user = await client.search.User(search.join(" "), msg.guild);
 
     if (msg.author.id === user.id) throw "You can't pay yourself.";
     else if (money <= 0) throw "Amount of money should be above 0.";
@@ -22,7 +22,7 @@ exports.run = async (client, msg, [money, ...search]) => {
 
 
 exports.conf = {
-  enabled: false,
+  enabled: true,
   runIn: ["text"],
   aliases: [],
   permLevel: 0,

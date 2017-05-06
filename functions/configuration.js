@@ -32,6 +32,7 @@ class Configuration {
         messageDeleteBulk: false,
         messageUpdate: false,
         roleUpdate: false,
+        modLogProtection: false,
         sendMessage: {
           farewell: false,
           greeting: false,
@@ -188,6 +189,11 @@ class Configuration {
           type: "Number",
           default: 0,
           path: { mode: value },
+        },
+        modLogProtection: {
+          type: "Boolean",
+          default: false,
+          path: { events: { modLogProtection: value } },
         },
       },
       selfmod: {

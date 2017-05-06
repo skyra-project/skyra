@@ -103,7 +103,7 @@ exports.run = async (client, msg, [coins]) => {
 };
 
 exports.conf = {
-  enabled: false,
+  enabled: true,
   runIn: ["text", "dm", "group"],
   aliases: ["slotmachines", "slot"],
   permLevel: 0,

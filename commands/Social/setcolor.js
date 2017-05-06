@@ -6,6 +6,7 @@ exports.run = async (client, msg, [input]) => {
       .setColor(`0x${color.hex.parsed}`)
       .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
       .setDescription(`Colour changed to #${color.hex.parsed}`);
+    client.cacheProfiles.get(msg.author.id).color = color.hex.parsed;
     await msg.sendEmbed(embed);
   } catch (e) {
     msg.error(e);
@@ -13,7 +14,7 @@ exports.run = async (client, msg, [input]) => {
 };
 
 exports.conf = {
-  enabled: false,
+  enabled: true,
   runIn: ["text", "dm", "group"],
   aliases: ["setcolour"],
   permLevel: 0,

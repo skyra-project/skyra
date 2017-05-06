@@ -55,6 +55,12 @@ class Wrappers {
   static httpError(status) {
     return `[${status}] ${Constants.httpResponses(status) || ""}`;
   }
+
+  static copyPaste(msg) {
+    const embed = msg.embeds.length ? msg.client.funcs.embed(msg.embeds[0]) : null;
+    const content = msg.content;
+    return msg.channel.send(content, { embed });
+  }
 }
 
 exports.init = (client) => {

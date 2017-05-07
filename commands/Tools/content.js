@@ -4,10 +4,9 @@ exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) 
     const channel = await client.search.Channel(searchChannel, msg.guild);
     const m = await channel.fetchMessage(searchMessage);
 
-    const attachment = m.attachments.size ? m.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split(".").pop())) : null;
-    if (!attachment && !m.content) throw new Error("This message doesn't have a content nor image.");
+    const attachments = m.attachments.size ? m.attachments.map(att => att.url) : null;
 
-    await msg.sendCode("md", m.content || "Empty message");
+    await msg.sendCode("md", m.content + (attachments ? `\n\n\n================\n**Attachments:**\n${attachments.join("\n")}` : ""));
   } catch (e) {
     msg.error(e);
   }

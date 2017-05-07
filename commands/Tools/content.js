@@ -4,9 +4,9 @@ exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) 
     const channel = await client.search.Channel(searchChannel, msg.guild);
     const m = await channel.fetchMessage(searchMessage);
 
-    const attachments = m.attachments.size ? m.attachments.map(att => att.url) : null;
+    const attachments = m.attachments.size ? m.attachments.map(att => `<${att.url}>`) : null;
 
-    await msg.sendCode("md", m.content + (attachments ? `\n\n\n================\n**Attachments:**\n${attachments.join("\n")}` : ""));
+    await msg.sendCode("md", m.content + (attachments ? `\n\n\n=============\n<Attachments>\n${attachments.join("\n")}` : ""));
   } catch (e) {
     msg.error(e);
   }

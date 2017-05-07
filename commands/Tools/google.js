@@ -22,13 +22,13 @@ exports.run = async (client, msg, [input]) => {
     results = results.filter(r => r.link && r.description);
     results = results.splice(0, 4);
 
-    if (!results.length) throw new Error(client.constants.httpResponses(404));
+    if (!results.length) throw client.constants.httpResponses(404);
     const embed = new client.methods.Embed()
       .setColor(msg.guild.members.get(client.user.id).highestRole.color || 0xdfdfdf)
       .setFooter("Google Search")
       .setDescription(results.map(r => `${decodeURIComponent(r.link)}\n\t${r.description}\n`).join("\n"))
       .setTimestamp();
-    await msg.send(`Search results for \`${input.join(" ")}\``, { embed });
+    await msg.send(`Search results for \`${input}\``, { embed });
   } catch (e) {
     msg.error(e);
   }

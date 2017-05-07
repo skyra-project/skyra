@@ -17,18 +17,30 @@ class Create {
     await RethinkDB.add("users", data);
     this.client.cacheProfiles.set(user, data);
   }
+
+  async CreateMemberScore(member) {
+    const data = { id: member.id, score: 0 };
+    await RethinkDB.append("localScores", member.guild.id, "scores", data);
+    this.client.locals.get(member.guild.id).set(member.id, data);
+  }
 }
 
 exports.init = async (client) => {
   client.Create = Create;
   client.guildCache = new Map();
   client.cacheProfiles = new client.methods.Collection();
-  const [guild, users] = await Promise.all([
+  client.locals = new client.methods.Collection();
+  const [guild, users, locals] = await Promise.all([
     RethinkDB.all("guilds"),
     RethinkDB.all("users"),
+    RethinkDB.all("localScores"),
   ]);
   guild.forEach(guildData => client.guildCache.set(guildData.id, guildData));
   users.forEach(userData => client.cacheProfiles.set(userData.id, userData));
+  locals.forEach((g) => {
+    client.locals.set(g.id, new client.methods.Collection());
+    g.scores.forEach(u => client.locals.get(g.id).set(u.id, u));
+  });
 };
 
 const userProfileData = user => ({

@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const UserProfile = require("./userProfile.js");
 const GuildConfigs = require("./guildConfig.js");
 const Moderation = require("./moderation.js");
+const MemberScore = require("./memberScore.js");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -27,7 +28,7 @@ class Skyra {
   }
 
   get points() {
-    return this.client.localScores.get(this.guild.id).get(this.user.id);
+    return new MemberScore(this);
   }
 
   get color() {

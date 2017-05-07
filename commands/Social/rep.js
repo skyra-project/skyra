@@ -13,8 +13,8 @@ exports.run = async (client, msg, [search]) => {
       if (msg.author.id === user.id) throw "You can't give a reputation point to yourself.";
       else if (user.bot) throw "You can't give reputation points to bots.";
 
+      await user.profile.update({ reputation: user.profile.reputation + 1 });
       await msg.author.profile.update({ timerep: now });
-      await user.profile({ reputation: user.profile.reputation + 1 });
 
       await msg.send(`Dear ${msg.author}, you have just given one reputation point to **${user.username}**`);
     }

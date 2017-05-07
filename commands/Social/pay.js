@@ -9,9 +9,8 @@ exports.run = async (client, msg, [money, ...search]) => {
 
     await msg.Prompt(`Dear ${msg.author}, you're going to pay ${money}₪ to ${user.username}, do you accept?`);
 
-    const Social = new client.Social(client);
-    await Social.add(user, money);
-    await Social.use(msg.author, money);
+    await client.Social.add(user, money);
+    await client.Social.use(msg.author, money);
 
     msg.alert(`Dear ${msg.author}, you have just paid ${money}₪ to **${user.username}**`);
   } catch (e) {

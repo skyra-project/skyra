@@ -71,10 +71,9 @@ exports.run = async (client, msg, [coins]) => {
     const output = slotmachine.showRoll(roll);
     const data = slotmachine.calculateWinnings(coins, roll);
 
-    const Social = new client.Social(client);
     const embed = new client.methods.Embed();
     if (data.win) {
-      const winnings = await Social.win(msg, data.winnings);
+      const winnings = await client.Social.win(msg, data.winnings);
       embed.setColor(0x5C913B)
         .setDescription([
           "**You rolled:**",
@@ -85,7 +84,7 @@ exports.run = async (client, msg, [coins]) => {
           `You won ${winnings}₪!`,
         ].join("\n"));
     } else {
-      await Social.use(msg.author, coins).catch(console.error);
+      await client.Social.use(msg.author, coins).catch(console.error);
       embed.setColor(0xBE1931)
         .setDescription([
           "**You rolled:**",

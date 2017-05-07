@@ -9,8 +9,7 @@ exports.run = async (client, msg) => {
       const remaining = (msg.author.profile.timeDaily + 43200000) - now;
       msg.alert(`Dailies are available in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`);
     } else {
-      const Social = new client.Social(client);
-      const money = await Social.win(msg, 200);
+      const money = await client.Social.win(msg, 200);
       await msg.author.profile.update({ timeDaily: now });
 
       msg.send(`You just got ${money}₪! Come back in the next 12 hours.`);

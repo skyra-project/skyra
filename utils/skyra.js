@@ -65,13 +65,9 @@ class Skyra {
   }
 
   async Prompt(content = $("Prompt Content")) {
-    try {
-      const message = await this.send(content);
-      if (this.channel.permissionsFor(this.guild.member(this.client.user)).hasPermission("ADD_REACTIONS")) await Skyra.awaitReaction(this, message);
-      else await Skyra.awaitMessage(this);
-    } catch (e) {
-      throw e;
-    }
+    const message = await this.send(content);
+    if (this.channel.permissionsFor(this.guild.me).has("ADD_REACTIONS")) await Skyra.awaitReaction(this, message);
+    else await Skyra.awaitMessage(this);
   }
 
   static async awaitReaction(msg, message) {

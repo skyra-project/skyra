@@ -1,4 +1,4 @@
-/* eslint-disable import/no-dynamic-require */
+/* eslint-disable import/no-dynamic-require, no-restricted-syntax, no-prototype-builtins */
 exports.run = async (client, msg) => {
   try {
     const banners = require(`${client.clientBaseDir}assets/banners.json`).wave1;

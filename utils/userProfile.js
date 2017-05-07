@@ -1,13 +1,14 @@
-/* eslint-disable no-underscore-dangle, complexity, no-throw-literal */
+/* eslint-disable no-underscore-dangle, complexity, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
 module.exports = class UserProfile {
   constructor(user) {
     Object.defineProperty(this, "client", { value: user.client });
     Object.defineProperty(this, "user", { value: user });
-    Object.defineProperty(this, "_profile", { value: this.client.cacheProfiles.get(user.id) || {} });
+    Object.defineProperty(this, "_profile", { value: this.client.cacheProfiles.get(user.id) || { exists: false } });
     Object.defineProperty(this, "timeDaily", { value: this._profile.timeDaily || 0 });
     Object.defineProperty(this._profile, "banners", { value: this._profile.banners || {} });
     Object.defineProperty(this, "timerep", { value: this._profile.timerep || 0 });
     Object.defineProperty(this, "lastUpdate", { value: this._profile.time || 0 });
+    Object.defineProperty(this, "exists", { value: this._profile.exists !== false });
     this.id = user.id;
     this.points = this._profile.points || 0;
     this.color = this._profile.color || "ff239d";
@@ -19,10 +20,6 @@ module.exports = class UserProfile {
     this.banners.level = this._profile.banners.level || "1001";
   }
 
-  get exists() {
-    return this.client.cacheProfiles.has(this.id);
-  }
-
   async create() {
     if (this.exists) throw "This UserProfile already exists.";
     new this.client.Create(this.client).CreateUser(this.id).catch((e) => { throw e; });
@@ -30,6 +27,16 @@ module.exports = class UserProfile {
 
   async ensureProfile() {
     if (!this.exists) new this.client.Create(this.client).CreateUser(this.id).catch((e) => { throw e; });
+  }
+
+  async update(doc) {
+    await this.ensureProfile();
+    await this.client.rethink.update("users", this.id, doc);
+    for (const key in doc) {
+      if (doc.hasOwnProperty(key)) {
+        this.client.cacheProfiles.get(this.id)[key] = doc[key];
+      }
+    }
   }
 
   async sync() {

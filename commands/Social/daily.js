@@ -11,8 +11,7 @@ exports.run = async (client, msg) => {
     } else {
       const Social = new client.Social(client);
       const money = await Social.win(msg, 200);
-      await client.rethink.update("users", msg.author.id, { timeDaily: now });
-      client.cacheProfiles.get(msg.author.id).timeDaily = now;
+      await msg.author.profile.update({ timeDaily: now });
 
       msg.send(`You just got ${money}₪! Come back in the next 12 hours.`);
     }

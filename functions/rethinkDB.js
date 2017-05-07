@@ -69,10 +69,11 @@ class RethinkDB {
     return r.table(table).get(id).update(object => ({ [appendArray]: object(appendArray).default([]).append(doc) })).run();
   }
 
-  static async updateArray(table, id, updateArray, index, doc) {
-    return r.table(table).get(id).update({
-      cases: r.row("cases").changeAt(index, r.row("cases").nth(index).merge(doc)),
-    }).run();
+  static async updateArray(table, id, uArray, index, doc) {
+    if (typeof index === "number") {
+      return r.table(table).get(id).update({ [uArray]: r.row(uArray).changeAt(index, r.row(uArray).nth(index).merge(doc)) }).run();
+    }
+    return r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d("id").eq(index), d.merge(doc), d)) }).run();
   }
 
   static replace(table, id, doc) {

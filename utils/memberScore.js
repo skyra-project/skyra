@@ -19,4 +19,10 @@ module.exports = class MemberScore {
   async ensureProfile() {
     if (!this.exists) new this.client.Create(this.client).CreateMemberScore(this);
   }
+
+  async update(score) {
+    await this.ensureProfile();
+    await this.client.rethink.updateArray("localScores", this.guild.id, "scores", this.id, { score });
+    this.client.locals.get(this.guild.id).get(this.id).score = score;
+  }
 };

@@ -1,12 +1,12 @@
 exports.run = async (client, msg, [input]) => {
   try {
     const color = client.ResolverColor.validate(input);
-    await client.rethink.update("users", msg.author.id, { color: color.hex.parsed });
+    await msg.author.profile.update({ color: color.hex.parsed });
+
     const embed = new client.methods.Embed()
       .setColor(`0x${color.hex.parsed}`)
       .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
       .setDescription(`Colour changed to #${color.hex.parsed}`);
-    client.cacheProfiles.get(msg.author.id).color = color.hex.parsed;
     await msg.sendEmbed(embed);
   } catch (e) {
     msg.error(e);

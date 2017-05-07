@@ -5,7 +5,7 @@ exports.run = (client, msg) => {
 
   const configs = msg.guild.configs;
 
-  if (configs.events.modLogProtection && configs.channels.mod && msg.channel.id === configs.channels.mod) {
+  if (msg.embeds.length === 1 && configs.events.modLogProtection && configs.channels.mod && msg.channel.id === configs.channels.mod) {
     client.wrappers.copyPaste(msg);
   }
 };

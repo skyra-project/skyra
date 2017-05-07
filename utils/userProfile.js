@@ -32,9 +32,10 @@ module.exports = class UserProfile {
   async update(doc) {
     await this.ensureProfile();
     await this.client.rethink.update("users", this.id, doc);
+    const profile = this.client.cacheProfiles.get(this.id);
     for (const key in doc) {
       if (doc.hasOwnProperty(key)) {
-        this.client.cacheProfiles.get(this.id)[key] = doc[key];
+        profile[key] = doc[key];
       }
     }
   }

@@ -37,18 +37,12 @@ module.exports = class GuildConfig {
   async update(doc) {
     await this.ensureConfigs();
     await this.client.rethink.update("guilds", this.id, doc);
-    const configs = this.client.guildCache.get(this.id);
-    for (const key in doc) {
-      if (doc.hasOwnProperty(key)) {
-        configs[key] = doc[key];
-      }
-    }
+    await this.sync();
   }
 
   async sync() {
     const data = await this.client.rethink.get("guilds", this.id);
     if (!data) throw "[404] Not found.";
-    if (this.exists) this.client.guildCache.delete(this.id);
     this.client.guildCache.set(this.id, data);
   }
 

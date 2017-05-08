@@ -1,28 +1,15 @@
 const request = require("request");
 const log = require("./log.js");
+const Constants = require("./constants.js");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
 /* eslint-disable valid-jsdoc, no-underscore-dangle, no-prototype-builtins */
-const friendlyError = {
-  400: "Bad Request",
-  401: "Unauthorized",
-  403: "Forbidden",
-  404: "Not Found",
-  406: "Not Acceptable",
-  410: "Gone",
-  420: "Ratelimited",
-  429: "Too Many Requests",
-  500: "Internal Server Error",
-  502: "Bad Gateway",
-  503: "Service Unavailable",
-  504: "Gateway timeout",
-};
-
 class WatchPoint {
   constructor(client) {
     Object.defineProperty(this, "_client", { value: client });
-    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${client.constants.config.wpoUser}:${client.constants.config.wpoPass}`).toString("base64")}` });
+    Object.defineProperty(this, "_constants", { value: new Constants(client) });
+    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._constants.config.wpoUser}:${this._constants.config.wpoPass}`).toString("base64")}` });
   }
 
   API(method, query, string) {
@@ -126,7 +113,7 @@ class WatchPoint {
   }
 
   static errorHandler(err) {
-    return `[${err}] ${friendlyError[err] || ""}`;
+    return `[${err}] ${Constants.httpResponses(err) || ""}`;
   }
 }
 

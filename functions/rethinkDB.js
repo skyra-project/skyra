@@ -49,22 +49,30 @@ class RethinkDB {
     return r.table(table).get(id).update(doc).run();
   }
 
-  static async append(table, id, appendArray, doc) {
+  static append(table, id, appendArray, doc) {
     return r.table(table).get(id).update(object => ({ [appendArray]: object(appendArray).default([]).append(doc) })).run();
   }
 
-  static async updateArray(table, id, uArray, index, doc) {
+  static updateArray(table, id, uArray, index, doc) {
     if (typeof index === "number") {
       return r.table(table).get(id).update({ [uArray]: r.row(uArray).changeAt(index, r.row(uArray).nth(index).merge(doc)) }).run();
     }
     return r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d("id").eq(index), d.merge(doc), d)) }).run();
   }
 
-  static async removeFromArray(table, id, uArray, index) {
+  static removeFromArray(table, id, uArray, index) {
     if (typeof index === "number") {
       return r.table(table).get(id).update({ [uArray]: r.row(uArray).deleteAt(index) }).run();
     }
     return false;
+  }
+
+  static async getFromArray(table, id, uArray, index) {
+    if (typeof index === "number") {
+      return r.table(table).get(id)(uArray).nth(index).run();
+    }
+    const result = await r.table(table).get(id)(uArray).filter(r.row("id").eq(index)).run();
+    return result.length ? result[0] : null;
   }
 
   static replace(table, id, doc) {

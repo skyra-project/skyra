@@ -1,19 +1,19 @@
 const Moderation = require("./moderation.js");
 
-/* eslint-disable no-underscore-dangle, complexity, no-throw-literal */
+/* eslint-disable no-underscore-dangle, complexity, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
 module.exports = class GuildConfig {
   constructor(guild) {
     Object.defineProperty(this, "client", { value: guild.client });
     Object.defineProperty(this, "guild", { value: guild });
-    Object.defineProperty(this, "_configuration", { value: this.client.guildCache.get(guild.id) || { sendMessage: false, modLogProtection: {} } });
+    Object.defineProperty(this, "_configuration", { value: this.client.guildCache.get(guild.id) || { events: { sendMessage: {} }, exists: false } });
     Object.defineProperty(this, "moderation", { value: new Moderation(guild) });
+    Object.defineProperty(this, "exists", { value: this._configuration.exists !== false });
     this.id = guild.id;
     this.createdAt = this._configuration.createdAt || null;
     this.roles = this._configuration.roles || {};
     this.channels = this._configuration.channels || {};
     this.events = this._configuration.events;
     this.events.sendMessage = this._configuration.events.sendMessage || {};
-    this.events.modLogProtection = this._configuration.events.modLogProtection || false;
     this.mode = this._configuration.mode || 0;
     this.prefix = this._configuration.prefix || "&";
     this.wordFilter = this._configuration.wordFilter || 0;
@@ -25,13 +25,24 @@ module.exports = class GuildConfig {
     this.autoroles = this._configuration.autoroles || [];
   }
 
-  get exists() {
-    return this.client.guildCache.has(this.id);
-  }
-
   async create() {
     if (this.exists) throw "This GuildConfig already exists.";
     new this.client.Create(this.client).CreateGuild(this.id);
+  }
+
+  async ensureConfigs() {
+    if (!this.exists) new this.client.Create(this.client).CreateGuild(this.id);
+  }
+
+  async update(doc) {
+    await this.ensureConfigs();
+    await this.client.rethink.update("guilds", this.id, doc);
+    const configs = this.client.guildCache.get(this.id);
+    for (const key in doc) {
+      if (doc.hasOwnProperty(key)) {
+        configs[key] = doc[key];
+      }
+    }
   }
 
   async sync() {

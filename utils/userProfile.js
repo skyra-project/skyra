@@ -22,11 +22,11 @@ module.exports = class UserProfile {
 
   async create() {
     if (this.exists) throw "This UserProfile already exists.";
-    new this.client.Create(this.client).CreateUser(this.id).catch((e) => { throw e; });
+    new this.client.Create(this.client).CreateUser(this.id);
   }
 
   async ensureProfile() {
-    if (!this.exists) new this.client.Create(this.client).CreateUser(this.id).catch((e) => { throw e; });
+    if (!this.exists) new this.client.Create(this.client).CreateUser(this.id);
   }
 
   async update(doc) {

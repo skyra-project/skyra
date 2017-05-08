@@ -22,7 +22,7 @@ const friendlyError = {
 class WatchPoint {
   constructor(client) {
     Object.defineProperty(this, "_client", { value: client });
-    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer("oasis:totallyseqcurepasswordthatnobodywillguess").toString("base64")}` });
+    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${client.constants.config.wpoUser}:${client.constants.config.wpoPass}`).toString("base64")}` });
   }
 
   API(method, query, string) {
@@ -47,25 +47,16 @@ class WatchPoint {
     * @returns {Object}
     */
   list(guild = $("Guild"), string) {
-    return new Promise((resolve, reject) => {
-      this.API("get", `list/${guild}`, string)
-        .then(body => this.cachelist(guild, body).then(resolve).catch(reject))
-        .catch(reject);
-    });
+    return this.API("get", `list/${guild}`, string)
+      .then(body => this.cachelist(guild, body));
   }
 
   cachelist(guild, data) {
-    return new Promise((resolve, reject) => {
-      try {
-        if (this._client.cache.wpo.has(guild)) this._client.cache.wpo.delete(guild);
-        this._client.cache.wpo.set(guild, new Map());
-        const guildCache = this._client.cache.wpo.get(guild);
-        data.forEach(profile => guildCache.set(profile.UserId, profile));
-        resolve(this._client.cache.wpo.get(guild.id));
-      } catch (e) {
-        reject(e);
-      }
-    });
+    if (this._client.cache.wpo.has(guild)) this._client.cache.wpo.delete(guild);
+    this._client.cache.wpo.set(guild, new Map());
+    const guildCache = this._client.cache.wpo.get(guild);
+    data.forEach(profile => guildCache.set(profile.UserId, profile));
+    return this._client.cache.wpo.get(guild.id);
   }
 
   /**
@@ -75,13 +66,9 @@ class WatchPoint {
     * @returns {Object}
     */
   set(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
-    return new Promise((resolve, reject) => {
-      const balance = parseInt(bal);
-      if (isNaN(balance)) reject(`${bal} is not a valid Number.`);
-      this.API("post", `set/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string)
-        .then(resolve)
-        .catch(reject);
-    });
+    const balance = parseInt(bal);
+    if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
+    return this.API("post", `set/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string);
   }
 
   /**
@@ -91,11 +78,7 @@ class WatchPoint {
     * @returns {Object}
     */
   get(guild = $("Guild"), user = $("User"), string) {
-    return new Promise((resolve, reject) => {
-      this.API("get", `get/${guild}/${user}`, string)
-        .then(resolve)
-        .catch(reject);
-    });
+    return this.API("get", `get/${guild}/${user}`, string);
   }
 
   /**
@@ -106,13 +89,9 @@ class WatchPoint {
     * @returns {Object}
     */
   use(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
-    return new Promise((resolve, reject) => {
-      const balance = parseInt(bal);
-      if (isNaN(balance)) reject(`${bal} is not a valid Number.`);
-      this.API("post", `use/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string)
-        .then(resolve)
-        .catch(reject);
-    });
+    const balance = parseInt(bal);
+    if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
+    return this.API("post", `use/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string);
   }
 
   /**
@@ -123,13 +102,9 @@ class WatchPoint {
     * @returns {Object}
     */
   add(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
-    return new Promise((resolve, reject) => {
-      const balance = parseInt(bal);
-      if (isNaN(balance)) reject(`${bal} is not a valid Number.`);
-      this.API("put", `add/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string)
-        .then(resolve)
-        .catch(reject);
-    });
+    const balance = parseInt(bal);
+    if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
+    return this.API("put", `add/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string);
   }
 
   /**
@@ -139,11 +114,7 @@ class WatchPoint {
     * @returns {Object}
     */
   history(guild = $("Guild"), user = $("User"), string) {
-    return new Promise((resolve, reject) => {
-      this.API("get", `history/${guild}/${user}`, string)
-        .then(resolve)
-        .catch(reject);
-    });
+    return this.API("get", `history/${guild}/${user}`, string);
   }
 
   /* Static error handler functions */
@@ -159,9 +130,9 @@ class WatchPoint {
   }
 }
 
-// exports.init = (client) => {
-//   if (!client.hasOwnProperty("cache")) client.cache = {};
-//   client.cache.wpo = new Map();
-//   client.wpo = new WatchPoint(client);
-//   client.wpo.list("256566731684839428");
-// };
+exports.init = (client) => {
+  if (!client.hasOwnProperty("cache")) client.cache = {};
+  client.cache.wpo = new Map();
+  client.wpo = new WatchPoint(client);
+  // client.wpo.list("256566731684839428");
+};

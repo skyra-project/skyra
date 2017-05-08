@@ -28,7 +28,7 @@ class Assets {
     }
 
     const messageEdit2 = denied.length ? `, with exception of ${denied.join(", ")}.` : ". ";
-    await this._client.commands.get("config").run(this._client, msg, ["muted", role.id]);
+    await msg.guild.configs.update({ roles: { muted: role.id } });
     return `Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`;
   }
 }

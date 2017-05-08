@@ -12,7 +12,7 @@ exports.run = async (client, msg) => {
       const money = await client.Social.win(msg, 200);
       await msg.author.profile.update({ timeDaily: now });
 
-      msg.send(`You just got ${money}₪! Come back in the next 12 hours.`);
+      msg.send(`You have just earned ${money}₪! Next dailies are available in 12 hours.`);
     }
   } catch (e) {
     msg.error(e);

@@ -65,7 +65,7 @@ class SlotMachines {
 exports.run = async (client, msg, [coins]) => {
   try {
     const slotmachine = new SlotMachines(msg);
-    slotmachine.checkCurrency();
+    slotmachine.checkCurrency(coins);
 
     const roll = slotmachine.generateRoll();
     const output = slotmachine.showRoll(roll);

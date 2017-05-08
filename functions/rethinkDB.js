@@ -2,22 +2,6 @@ const options = { db: "Skyra" };
 const r = require("rethinkdbdash")(options);
 
 class RethinkDB {
-  constructor(rethinkdbdash) {
-    Object.defineProperty(this, "r", { value: rethinkdbdash });
-    this.hasTable = RethinkDB.hasTable;
-    this.sync = RethinkDB.sync;
-    this.createTable = RethinkDB.createTable;
-    this.deleteTable = RethinkDB.deleteTable;
-
-    this.all = RethinkDB.all;
-    this.get = RethinkDB.get;
-    this.getRandom = RethinkDB.getRandom;
-    this.add = RethinkDB.add;
-    this.update = RethinkDB.update;
-    this.append = RethinkDB.append;
-    this.replace = RethinkDB.replace;
-    this.delete = RethinkDB.delete;
-  }
 
   /* Table methods */
   static hasTable(table) {
@@ -76,6 +60,13 @@ class RethinkDB {
     return r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d("id").eq(index), d.merge(doc), d)) }).run();
   }
 
+  static async removeFromArray(table, id, uArray, index) {
+    if (typeof index === "number") {
+      return r.table(table).get(id).update({ [uArray]: r.row(uArray).deleteAt(index) }).run();
+    }
+    return false;
+  }
+
   static replace(table, id, doc) {
     if (!(doc instanceof Object)) throw new Error("Invalid input");
     return r.table(table).get(id).replace(doc).run();
@@ -84,6 +75,7 @@ class RethinkDB {
   static delete(table, id) {
     return r.table(table).get(id).delete().run();
   }
+
 }
 
 module.exports = RethinkDB;

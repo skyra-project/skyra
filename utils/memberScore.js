@@ -17,7 +17,11 @@ module.exports = class MemberScore {
   }
 
   async ensureProfile() {
-    if (!this.exists) new this.client.Create(this.client).CreateMemberScore(this);
+    if (!this.exists) {
+      const Create = new this.client.Create(this.client);
+      await Create.CreateMemberScore(this);
+      this.client.locals.get(this.guild.id).set(this.id, { id: this.id, score: 0, exists: false });
+    }
   }
 
   async update(score) {

@@ -1,3 +1,5 @@
+const dot = value => `${value ? "  \\🔹" : "  \\🔸"} `;
+
 /* eslint-disable no-throw-literal */
 class Validator {
   constructor(guild) {
@@ -26,21 +28,22 @@ class Validator {
       ` • **Muted:** ${configs.roles.muted ? this.guild.roles.get(configs.roles.muted) || configs.roles.muted : "Not set"}`,
       "",
       "**❯ Events**",
-      ` • **channelCreate:** ${configs.events.channelCreate ? "Enabled" : "Disabled"}`,
-      ` • **guildBanAdd:** ${configs.events.guildBanAdd ? "Enabled" : "Disabled"}`,
-      ` • **guildBanRemove:** ${configs.events.guildBanRemove ? "Enabled" : "Disabled"}`,
-      ` • **commands:** ${configs.events.commands ? "Enabled" : "Disabled"}`,
-      ` • **guildMemberAdd:** ${configs.events.guildMemberAdd ? "Enabled" : "Disabled"}`,
-      ` • **guildMemberRemove:** ${configs.events.guildMemberRemove ? "Enabled" : "Disabled"}`,
-      ` • **guildMemberUpdate:** ${configs.events.guildMemberUpdate ? "Enabled" : "Disabled"}`,
-      ` • **messageDelete:** ${configs.events.messageDelete ? "Enabled" : "Disabled"}`,
-      ` • **messageDeleteBulk:** ${configs.events.messageDeleteBulk ? "Enabled" : "Disabled"}`,
-      ` • **messageUpdate:** ${configs.events.messageUpdate ? "Enabled" : "Disabled"}`,
-      ` • **roleUpdate:** ${configs.events.roleUpdate ? "Enabled" : "Disabled"}`,
+      `${dot(configs.events.channelCreate)}**channelCreate**`,
+      `${dot(configs.events.guildBanAdd)}**guildBanAdd**`,
+      `${dot(configs.events.guildBanRemove)}**guildBanRemove**`,
+      `${dot(configs.events.guildMemberAdd)}**guildMemberAdd**`,
+      `${dot(configs.events.guildMemberRemove)}**guildMemberRemove**`,
+      `${dot(configs.events.guildMemberUpdate)}**guildMemberUpdate**`,
+      `${dot(configs.events.messageDelete)}**messageDelete**`,
+      `${dot(configs.events.messageDeleteBulk)}**messageDeleteBulk**`,
+      `${dot(configs.events.messageUpdate)}**messageUpdate**`,
+      `${dot(configs.events.roleUpdate)}**roleUpdate**`,
+      `${dot(configs.events.commands)}**commands**`,
+      `${dot(configs.events.modLogProtection)}**modLogProtection**`,
       "",
       "**❯ Messages**",
-      ` • **Farewell:** ${configs.events.sendMessage.farewell ? "Enabled" : "Disabled"}`,
-      ` • **Greeting:** ${configs.events.sendMessage.greeting ? "Enabled" : "Disabled"}`,
+      `${dot(configs.events.sendMessage.farewell)}**Farewell**`,
+      `${dot(configs.events.sendMessage.greeting)}**Greeting**`,
       ` • **FarewellMessage:** ${configs.events.sendMessage.farewellMessage || "Not set"}`,
       ` • **GreetingMessage:** ${configs.events.sendMessage.greetingMessage || "Not set"}`,
       "",
@@ -49,8 +52,8 @@ class Validator {
       ` • **Mode:** ${configs.mode || 0}`,
       "",
       "**❯ SelfMOD**",
-      ` • **Invite Links:** ${configs.selfmod.inviteLinks ? "Enabled" : "Disabled"}`,
-      ` • **Ghost Mention:** ${configs.selfmod.ghostmention ? "Enabled" : "Disabled"}`,
+      `${dot(configs.selfmod.inviteLinks)}**Invite Links**`,
+      `${dot(configs.selfmod.ghostmention)}**Ghost Mention**`,
     ].join("\n");
   }
 
@@ -58,22 +61,20 @@ class Validator {
     if (type === "update") {
       const inputType = this.validation[folder][subfolder].type;
       if (!input) throw `You must provide a value type: ${inputType}`;
-      const output = await this.update(folder, subfolder, input, inputType);
-      await this.guildConfig.sync();
+      const output = await this.update(folder, subfolder, input.toLowerCase(), inputType);
       return `Success. Changed value **${subfolder}** to **${output}**`;
     }
 
     const val = this.validation[folder][subfolder];
     const validation = this.validator(val.default)[folder][subfolder];
     await this.client.rethink.update("guilds", this.guild.id, validation.path);
-    await this.guildConfig.sync();
     return `Success. Value **${subfolder}** has been reset to **${val.default}**`;
   }
 
   async update(folder, subfolder, input, inputType) {
     const parsed = await this.parse(inputType, input);
     const validator = this.validator(parsed.id || parsed)[folder][subfolder];
-    await this.client.rethink.update("guilds", this.guild.id, validator.path);
+    await this.guild.configs.update(validator.path);
     return parsed.name || parsed;
   }
 

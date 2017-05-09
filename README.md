@@ -5,6 +5,21 @@ Skyra is a standalone bot created on 24th November 2016, it's designed to avoid 
 system in which includes FailSafe systems and designed to be very reliable. As well as
 its availability is 24/7.
 
+The source code is **PRIVATE**, this repository is meant for documentation, issue tracking
+([Issue Tracker](https://github.com/kyranet/Skyra/issues)), and suggestions.
+
+## Links
+
+### Support me on:
+
+- **[Patreon](https://www.patreon.com/kyranet)**
+- **[Official Server](https://discordapp.com/invite/6gakFR2)**
+
+### Related links:
+
+- **[Discord.js](https://github.com/hydrabolt/discord.js)** (Discord API Library)
+- **[Komada](https://github.com/dirigeants/komada)** (Bot framework)
+
 ## Changelog from 1.6 to 1.7
 
 The time Skyra takes from when Skyra gets a message, until it gets processed and runs the command is
@@ -12,7 +27,7 @@ about 10 times faster now. The startup time is now thrice shorter, cache system 
 
 This version ensures much higher code quality, with a classbased backend, uses
 [Komada](https://github.com/dirigeants/komada) **0.20.0** as framework. This version is a
-complete refactor from **0.19.0** that made all bots greatly faster than before, this
+complete refactor from **0.19.0** that made all bots much faster than before, this
 speedboost is even noticeable in Skyra.
 
 Oh, and Skyra 1.7 has internal ratelimits, if a command has extremely high ratelimit, it's

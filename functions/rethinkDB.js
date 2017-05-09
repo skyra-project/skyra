@@ -3,6 +3,10 @@ const r = require("rethinkdbdash")(options);
 
 class RethinkDB {
 
+  static eval() {
+    return r;
+  }
+
   /* Table methods */
   static hasTable(table) {
     return r.tableList().run().then(data => data.includes(table));

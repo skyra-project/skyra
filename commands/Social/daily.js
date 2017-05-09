@@ -37,5 +37,11 @@ exports.help = {
   description: "Get your daily shekels.",
   usage: "",
   usageDelim: " ",
-  extendedHelp: "",
+  extendedHelp: [
+    "Skyra, where is my money?",
+    "",
+    "I want to play slotmachines...",
+    "",
+    "You can claim dailies twice a day (every 12h), make sure you don't waste it!",
+  ].join("\n"),
 };

@@ -38,8 +38,12 @@ exports.conf = {
 
 exports.help = {
   name: "rep",
-  description: "Pay somebody with your shekels.",
+  description: "Give somebody a reputation point!",
   usage: "<user:str>",
   usageDelim: "",
-  extendedHelp: "",
+  extendedHelp: [
+    "This guy is so helpful... I'll give him a reputation point!",
+    "",
+    "You can give reputation points once per 24h, make sure you choose the right user!",
+  ].join("\n"),
 };

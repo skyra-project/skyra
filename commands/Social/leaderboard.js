@@ -81,8 +81,13 @@ exports.conf = {
 
 exports.help = {
   name: "leaderboard",
-  description: "Check the global top.",
+  description: "Check the leaderboards.",
   usage: "[global|local|money] [index:int]",
   usageDelim: " ",
-  extendedHelp: "",
+  extendedHelp: [
+    "Leaderboards! Will you be the 1#?",
+    "",
+    "By default, when you do \"Skyra, top\", I'll show you the LOCAL leaderboards, however, you can get the top for global (points) and money (being the richest users the first, and global).",
+    "You can also choose the offset using the index parameter. One trick, if you want to see who is in the rank 113, you just do \"Skyra, top local 11\".",
+  ].join("\n"),
 };

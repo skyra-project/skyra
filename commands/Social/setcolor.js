@@ -30,5 +30,12 @@ exports.help = {
   description: "Change your userprofile's colour.",
   usage: "<color:str>",
   usageDelim: "",
-  extendedHelp: "",
+  extendedHelp: [
+    "I don't like the default pink colour!",
+    "",
+    "You can set your color by using:",
+    "  HEX: #dfdfdf",
+    "  RGB: rgb(200, 200, 200)",
+    "  HSL: hsl(350, 100, 100)",
+  ].join("\n"),
 };

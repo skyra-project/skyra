@@ -21,7 +21,7 @@ exports.conf = {
 
 exports.help = {
   name: "balance",
-  description: "Check how many reputation points do you have.",
+  description: "Check your balance!",
   usage: "",
   usageDelim: " ",
   extendedHelp: "",

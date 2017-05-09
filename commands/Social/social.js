@@ -57,8 +57,12 @@ exports.conf = {
 
 exports.help = {
   name: "social",
-  description: "Pay somebody with your shekels.",
+  description: "Manage the local leaderboards.",
   usage: "<delete|add|remove> <user:str> [value:int]",
   usageDelim: " ",
-  extendedHelp: "",
+  extendedHelp: [
+    "This guy has not enough points... Let's increase it!",
+    "",
+    "NOTE! This command only modifies LOCAL points, not global. You can remove a user from the local leaderboards, or add/remove points from him. Also, you can't set a negative number, it'll be limited between 0 and 2^64",
+  ].join("\n"),
 };

@@ -37,5 +37,9 @@ exports.help = {
   description: "Pay somebody with your shekels.",
   usage: "<amount:int> <user:str> [...]",
   usageDelim: " ",
-  extendedHelp: "",
+  extendedHelp: [
+    "Businessmen! Today is payday!",
+    "",
+    "This command will prompt you before you pay somebody, and make sure you have enough money to transfer!",
+  ].join("\n"),
 };

@@ -21,6 +21,7 @@ module.exports = class GuildConfig {
     this.initialRole = this._configuration.initialRole || null;
     this.ignoreChannels = this._configuration.ignoreChannels || [];
     this.disabledCommands = this._configuration.disabledCommands || [];
+    this.disabledCmdChannels = this._configuration.disabledCmdChannels || [];
     this.publicRoles = this._configuration.publicRoles || [];
     this.autoroles = this._configuration.autoroles || [];
   }

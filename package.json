@@ -1,5 +1,5 @@
 {
-  "name": "Skyra",
+  "name": "skyra",
   "version": "1.7.0",
   "description": "Standalone Bot",
   "main": "./skyra.js",

@@ -102,7 +102,13 @@ They are totally backend, but...
 
 ### Inhibitors
 
-I have to add them, still.
+- **disabledCommands**: This inhibitor prevents certain commands to be run in the entire guild.
+- **disabledCmdChannels**: This inhibitors prevents all commands to be run in certain channels.
+- **mode**: `Free`, `Lite` or `Strict`. If it's not set in `free`, you'll prevent a whole subset of commands
+to be run. `Free` allows all commands, `lite` allows moderation and utilities, as well as the social module remains
+enabled, and `strict` only allows moderation and a limited set of utilities.
+- **spam**: If Config/channels/**spam** is set, most 'spammy' commands will be locked to that channel. Please use this
+as a fast and effective solution for **disabledCmdChannels**, unless you want these commands to be fully ignored.
 
 ### Monitors
 

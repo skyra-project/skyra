@@ -172,12 +172,8 @@ const showAlerts = client => new Promise(async (resolve, reject) => {
 });
 
 exports.run = async (client, msg) => {
-  try {
-    const output = await showAlerts(client);
-    msg.channel.sendFile(output.toBuffer(), "warframe.png");
-  } catch (e) {
-    msg.error(e);
-  }
+  const output = await showAlerts(client);
+  await msg.channel.sendFile(output.toBuffer(), "warframe.png");
 };
 
 exports.conf = {
@@ -189,6 +185,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 1,
+  cooldown: 30,
 };
 
 exports.help = {

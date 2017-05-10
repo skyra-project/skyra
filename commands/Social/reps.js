@@ -1,10 +1,6 @@
 exports.run = async (client, msg) => {
-  try {
-    const rep = msg.author.profile.reputation;
-    msg.send(`Dear ${msg.author}, you have a total of ${rep} reputation point${rep ? "s" : ""}`);
-  } catch (e) {
-    msg.error(e);
-  }
+  const rep = msg.author.profile.reputation;
+  await msg.send(`Dear ${msg.author}, you have a total of ${rep} reputation point${rep !== 1 ? "s" : ""}`);
 };
 
 

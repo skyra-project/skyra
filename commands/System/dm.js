@@ -3,13 +3,9 @@ exports.run = async (client, msg, [user, ...content]) => {
   if (!msg.attachments.first()) attachment = null;
   else attachment = msg.attachments.first().url;
 
-  try {
-    await user.send(content.join(" "), { file: attachment });
-    await msg.alert(`Message successfully sent to ${user}`);
-    await msg.nuke(5000);
-  } catch (e) {
-    msg.error(e);
-  }
+  await user.send(content.join(" "), { file: attachment });
+  await msg.alert(`Message successfully sent to ${user}`);
+  await msg.nuke(5000);
 };
 
 exports.conf = {

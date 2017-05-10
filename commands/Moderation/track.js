@@ -34,39 +34,35 @@ exports.write = async (client, filename) => {
 };
 
 exports.run = async (client, msg, [channel = msg.channel]) => {
-  try {
-    channel = await client.search.Channel(channel, this.guild);
+  channel = await client.search.Channel(channel, this.guild);
 
-    if (!channel.tracking) {
-        /* Apply properties to Channel */
-      channel.tracking = true;
-      channel.tracker = msg.author.id;
-      channel.trackertimer = msg.createdTimestamp;
+  if (!channel.tracking) {
+      /* Apply properties to Channel */
+    channel.tracking = true;
+    channel.tracker = msg.author.id;
+    channel.trackertimer = msg.createdTimestamp;
 
-      msg.author.send([
-        `Ok, I'll track ${channel} for you. Use \`&track\` again to stop it.`,
-        "Otherwise, I'll stop tracking after 15 minutes.",
-        "When the tracker stops, I'll send a `.txt` file here.",
-      ].join("\n"));
+    msg.author.send([
+      `Ok, I'll track ${channel} for you. Use \`&track\` again to stop it.`,
+      "Otherwise, I'll stop tracking after 15 minutes.",
+      "When the tracker stops, I'll send a `.txt` file here.",
+    ].join("\n"));
 
-      const filename = `${channel.tracker}-${channel.id}-${channel.trackertimer}.txt`;
-      this.write(client, filename);
+    const filename = `${channel.tracker}-${channel.id}-${channel.trackertimer}.txt`;
+    this.write(client, filename);
 
-      channel.trackInterval = setInterval(async () => {
-        if (new Date().getTime() > channel.trackertimer + 900000) {
-          const sendname = `${msg.author.username}-#${channel.name}.txt`;
-          await this.send(client, msg, channel, sendname, filename);
-        }
-      }, 5000);
-    } else if (msg.author.id === channel.tracker) {
-      const filename = `${channel.tracker}-${channel.id}-${channel.trackertimer}.txt`;
-      const sendname = `${msg.author.username}-#${channel.name}.txt`;
-      await this.send(client, msg, channel, sendname, filename);
-    } else {
-      throw new Error(`I'm sorry, but this channel is being tracked by ${msg.guild.members.get(channel.tracker).user.username}`);
-    }
-  } catch (e) {
-    msg.error(e);
+    channel.trackInterval = setInterval(async () => {
+      if (new Date().getTime() > channel.trackertimer + 900000) {
+        const sendname = `${msg.author.username}-#${channel.name}.txt`;
+        await this.send(client, msg, channel, sendname, filename);
+      }
+    }, 5000);
+  } else if (msg.author.id === channel.tracker) {
+    const filename = `${channel.tracker}-${channel.id}-${channel.trackertimer}.txt`;
+    const sendname = `${msg.author.username}-#${channel.name}.txt`;
+    await this.send(client, msg, channel, sendname, filename);
+  } else {
+    throw new Error(`I'm sorry, but this channel is being tracked by ${msg.guild.members.get(channel.tracker).user.username}`);
   }
 };
 
@@ -77,6 +73,9 @@ exports.conf = {
   permLevel: 3,
   botPerms: [],
   requiredFuncs: [],
+  spam: false,
+  mode: 2,
+  cooldown: 5,
 };
 
 exports.help = {

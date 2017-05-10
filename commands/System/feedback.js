@@ -6,13 +6,9 @@ exports.run = async (client, msg, [feedback]) => {
     .setFooter(`${msg.author.id} | Feedback`)
     .setTimestamp();
 
-  try {
-    await client.channels.get("257561807500214273").sendEmbed(embed);
-    await msg.alert(`Dear ${msg.author}, thanks you for sending us feedback!`);
-    msg.nuke(5000);
-  } catch (e) {
-    msg.error(e);
-  }
+  await client.channels.get("257561807500214273").send({ embed });
+  await msg.alert(`Dear ${msg.author}, thanks you for sending us feedback!`);
+  await msg.nuke(5000);
 };
 
 exports.conf = {
@@ -24,6 +20,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 2,
+  cooldown: 10,
 };
 
 exports.help = {

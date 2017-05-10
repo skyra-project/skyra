@@ -1,9 +1,5 @@
 exports.run = async (client, msg) => {
-  try {
-    msg.send(`Dear ${msg.author}, you have a total of ${msg.author.profile.money}₪`);
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.send(`Dear ${msg.author}, you have a total of ${msg.author.profile.money}₪`);
 };
 
 

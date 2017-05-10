@@ -1,14 +1,10 @@
 exports.run = async (client, msg) => {
-  try {
-    const res = await client.wrappers.requestJSON("http://api.yomomma.info/");
-    const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setDescription(`📢 **Yomomma joke:** *${res.joke}*`);
+  const res = await client.wrappers.requestJSON("http://api.yomomma.info/");
+  const embed = new client.methods.Embed()
+    .setColor(msg.color)
+    .setDescription(`📢 **Yomomma joke:** *${res.joke}*`);
 
-    await msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {
@@ -20,6 +16,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 10,
 };
 
 exports.help = {

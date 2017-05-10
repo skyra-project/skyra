@@ -75,13 +75,9 @@ class Run {
 }
 
 exports.run = async (client, msg, [type, ...search]) => {
-  try {
-    const run = new Run(msg);
-    search = search.length ? search.join(" ") : null;
-    await run.Start(type, search);
-  } catch (e) {
-    msg.error(e);
-  }
+  const run = new Run(msg);
+  search = search.length ? search.join(" ") : null;
+  await run.Start(type, search);
 };
 
 exports.conf = {
@@ -91,6 +87,9 @@ exports.conf = {
   permLevel: 1,
   botPerms: [],
   requiredFuncs: [],
+  spam: false,
+  mode: 2,
+  cooldown: 5,
 };
 
 exports.help = {

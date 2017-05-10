@@ -80,13 +80,9 @@ const showProfile = async (client, user) => {
 };
 
 exports.run = async (client, msg, [search = msg.author]) => {
-  try {
-    const user = await client.search.User(search, msg.guild);
-    const output = await showProfile(client, user);
-    await msg.channel.sendFile(output, "Profile.png");
-  } catch (e) {
-    msg.error(e);
-  }
+  const user = await client.search.User(search, msg.guild);
+  const output = await showProfile(client, user);
+  await msg.channel.sendFile(output, "Profile.png");
 };
 
 exports.conf = {

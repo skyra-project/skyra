@@ -10,15 +10,11 @@ exports.run = async (client, msg) => {
   else client.rkitty += 1;
 
   const randomkitty = `https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[client.rkitty]}.jpg`;
-  try {
-    const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setImage(randomkitty);
+  const embed = new client.methods.Embed()
+    .setColor(msg.color)
+    .setImage(randomkitty);
 
-    await msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {
@@ -30,6 +26,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 30,
 };
 
 exports.help = {

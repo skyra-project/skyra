@@ -25,13 +25,9 @@ const Pray = async (client, user) => {
 };
 
 exports.run = async (client, msg, [search = msg.author]) => {
-  try {
-    const user = await client.search.User(search, msg.guild);
-    const output = await Pray(client, user);
-    await msg.channel.sendFile(output, "f.png");
-  } catch (e) {
-    msg.error(e);
-  }
+  const user = await client.search.User(search, msg.guild);
+  const output = await Pray(client, user);
+  await msg.channel.sendFile(output, "f.png");
 };
 
 exports.conf = {

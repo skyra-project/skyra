@@ -103,4 +103,6 @@ class Moderation {
   }
 }
 
-exports.init = (client) => { client.Moderation = Moderation; };
+exports.init = (client) => {
+  client.Moderation = Moderation;
+};

@@ -1,14 +1,10 @@
 exports.run = async (client, msg) => {
-  try {
-    const res = await client.wrappers.requestJSON("http://catfacts-api.appspot.com/api/facts");
-    const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setDescription(`📢 **Catfact:** *${res.facts[0]}*`);
+  const res = await client.wrappers.requestJSON("http://catfacts-api.appspot.com/api/facts");
+  const embed = new client.methods.Embed()
+    .setColor(msg.color)
+    .setDescription(`📢 **Catfact:** *${res.facts[0]}*`);
 
-    await msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {
@@ -20,6 +16,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 10,
 };
 
 exports.help = {

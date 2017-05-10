@@ -44,7 +44,6 @@ exports.run = async (client, msg, [server, user]) => {
   } finally {
     msg.channel.stopTyping(true);
   }
-  return true;
 };
 
 exports.conf = {
@@ -56,6 +55,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 1,
+  cooldown: 30,
 };
 
 exports.help = {

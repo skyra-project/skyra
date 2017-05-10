@@ -66,13 +66,9 @@ const DeletThis = async (client, msg, user) => {
 };
 
 exports.run = async (client, msg, [search]) => {
-  try {
-    const user = await client.search.User(search, msg.guild);
-    const output = await DeletThis(client, msg, user);
-    await msg.channel.sendFile(output, "DeletThis.png");
-  } catch (e) {
-    msg.error(e);
-  }
+  const user = await client.search.User(search, msg.guild);
+  const output = await DeletThis(client, msg, user);
+  await msg.channel.sendFile(output, "DeletThis.png");
 };
 
 exports.conf = {

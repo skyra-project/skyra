@@ -1,9 +1,6 @@
 exports.run = async (client, msg, [...words]) => {
   /* Check if there are enough words */
-  if (words.length < 2) {
-    client.funcs.throwError(client, "Please write at least 2 options separated with `, `", msg.channel);
-    return;
-  }
+  if (words.length < 2) throw new RangeError("Please write at least 2 options separated with `, `");
 
   /* Filter duplicated words */
   const aword = [];
@@ -14,13 +11,12 @@ exports.run = async (client, msg, [...words]) => {
     else filtered.push(words[i]);
   }
 
-  if (aword.length < 2) {
-    client.throwError.send(`Why would I accept duplicated words? \`${filtered.join("`, `")}\``, msg);
-    return;
-  }
+  if (aword.length < 2) throw new RangeError(`Why would I accept duplicated words? \`${filtered.join("`, `")}\``);
 
-  msg.send([`🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${msg.author}, I choose:`,
-    `${"```"}${aword[Math.floor(Math.random() * aword.length)]}${"```"}`].join("\n"));
+  await msg.send([
+    `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${msg.author}, I choose:`,
+    `${"```"}${aword[Math.floor(Math.random() * aword.length)]}${"```"}`,
+  ].join("\n"));
 };
 
 exports.conf = {
@@ -32,6 +28,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 10,
 };
 
 exports.help = {

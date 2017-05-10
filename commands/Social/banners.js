@@ -1,17 +1,11 @@
 /* eslint-disable import/no-dynamic-require, no-restricted-syntax, no-prototype-builtins */
 exports.run = async (client, msg) => {
-  try {
-    const banners = require(`${client.clientBaseDir}assets/banners.json`).wave1;
-    const list = [];
-    for (const key in banners) {
-      if (banners.hasOwnProperty(key)) {
-        list.push(banners[key].author);
-      }
-    }
-    msg.sendCode(list.join("\n"));
-  } catch (e) {
-    msg.error(e);
+  const banners = require(`${client.clientBaseDir}assets/banners.json`).wave1;
+  const list = [];
+  for (const key in banners) {
+    if (banners.hasOwnProperty(key)) list.push(banners[key].author);
   }
+  await msg.sendCode(list.join("\n"));
 };
 
 

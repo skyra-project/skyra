@@ -10,20 +10,16 @@ const fetchBan = (guild, query) => new Promise(async (resolve, reject) => {
 
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [query, ...reason]) => {
-  try {
-    /* Initialize fetchBan search */
-    const user = await fetchBan(msg.guild, query);
+  /* Initialize fetchBan search */
+  const user = await fetchBan(msg.guild, query);
 
-    user.action = "unban";
-    await msg.guild.unban(user);
-    msg.send(`|\`🔨\`| **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
+  user.action = "unban";
+  await msg.guild.unban(user);
+  msg.send(`|\`🔨\`| **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
 
-    /* Handle Moderation Logs */
-    const moderation = new client.Moderation(msg);
-    await moderation.send(user, "unban", reason);
-  } catch (e) {
-    msg.error(e);
-  }
+  /* Handle Moderation Logs */
+  const moderation = new client.Moderation(msg);
+  await moderation.send(user, "unban", reason);
 };
 
 exports.conf = {
@@ -33,6 +29,9 @@ exports.conf = {
   permLevel: 2,
   botPerms: ["BAN_MEMBERS"],
   requiredFuncs: [],
+  spam: false,
+  mode: 2,
+  cooldown: 5,
 };
 
 exports.help = {

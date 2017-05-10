@@ -37,21 +37,16 @@ exports.handleMessage = async (client, msg, message, channel, document, reason) 
 };
 
 exports.run = async (client, msg, [index, ...reason]) => {
-  try {
-    reason = reason.length ? reason.join(" ") : null;
-    if (!reason) throw "You must set a reason.";
+  reason = reason.length ? reason.join(" ") : null;
+  if (!reason) throw "You must set a reason.";
 
-    const sCase = await this.validate(client, msg, index);
-    const obj = await this.fetchMessage(client, msg, sCase);
-    await this.handleMessage(client, msg, obj.message, obj.channel, sCase, reason);
+  const sCase = await this.validate(client, msg, index);
+  const obj = await this.fetchMessage(client, msg, sCase);
+  await this.handleMessage(client, msg, obj.message, obj.channel, sCase, reason);
 
-    await msg.guild.moderation.updateCase(index, { reason, moderator: msg.author.id });
+  await msg.guild.moderation.updateCase(index, { reason, moderator: msg.author.id });
 
-    msg.alert(`**Success!** New reason: ${reason}`);
-  } catch (e) {
-    console.error(e);
-    msg.error(e);
-  }
+  await msg.alert(`**Success!** New reason: ${reason}`);
 };
 
 exports.conf = {
@@ -63,6 +58,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 2,
+  cooldown: 5,
 };
 
 exports.help = {

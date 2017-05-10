@@ -106,28 +106,24 @@ class Validator {
 
 exports.run = async (client, msg, [type, folder, subfolder, ...input]) => {
   input = input.join(" ");
-  try {
-    const run = new Validator(msg.guild);
-    if (type === "list") {
-      const data = run.list;
-      const embed = new client.methods.Embed()
-        .setColor(msg.color)
-        .setTitle(`Configuration for: ${msg.guild.name}`)
-        .setDescription(data)
-        .setFooter("Skyra Configuration System")
-        .setTimestamp();
+  const run = new Validator(msg.guild);
+  if (type === "list") {
+    const data = run.list;
+    const embed = new client.methods.Embed()
+      .setColor(msg.color)
+      .setTitle(`Configuration for: ${msg.guild.name}`)
+      .setDescription(data)
+      .setFooter("Skyra Configuration System")
+      .setTimestamp();
 
-      msg.sendEmbed(embed);
-    } else {
-      if (!folder) throw "Choose between Channels, Roles, Events, Messages, Master, Selfmod";
-      const validation = client.configValidation.find();
-      const possibilities = Object.keys(validation[folder]);
-      if (!possibilities.includes(subfolder)) throw `Choose between one of the following: ${possibilities.join(", ")}`;
-      const response = await run.handle(type, folder, subfolder, input);
-      msg.alert(response || "Success!", 10000);
-    }
-  } catch (e) {
-    msg.error(e);
+    msg.sendEmbed(embed);
+  } else {
+    if (!folder) throw "Choose between Channels, Roles, Events, Messages, Master, Selfmod";
+    const validation = client.configValidation.find();
+    const possibilities = Object.keys(validation[folder]);
+    if (!possibilities.includes(subfolder)) throw `Choose between one of the following: ${possibilities.join(", ")}`;
+    const response = await run.handle(type, folder, subfolder, input);
+    msg.alert(response || "Success!", 10000);
   }
 };
 
@@ -140,6 +136,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 2,
+  cooldown: 3,
 };
 
 exports.help = {

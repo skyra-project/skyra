@@ -3,22 +3,18 @@ const { XmlEntities } = require("html-entities");
 const { decode } = new XmlEntities();
 
 exports.run = async (client, msg, [input]) => {
-  try {
-    const res = await client.wrappers.requestJSON(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${encodeURIComponent(input)}`);
-    if (!res.tuc) throw new Error(client.constants.httpResponses(404));
+  const res = await client.wrappers.requestJSON(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${encodeURIComponent(input)}`);
+  if (!res.tuc) throw new Error(client.constants.httpResponses(404));
 
-    const final = [];
-    let index = 1;
-    for (let item of Object.entries(res.tuc.find(t => t.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
-      item = decode(item[1].text.replace(/<\/?i>/g, ""));
-      final.push(`**\`${index}\` ❯** ${item.replace(/`/g, "\\`")}`);
-      index++;
-    }
-
-    await msg.send(`Search results for \`${input}\`:\n${final.join("\n")}`);
-  } catch (e) {
-    msg.error(e);
+  const final = [];
+  let index = 1;
+  for (let item of Object.entries(res.tuc.find(t => t.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
+    item = decode(item[1].text.replace(/<\/?i>/g, ""));
+    final.push(`**\`${index}\` ❯** ${item.replace(/`/g, "\\`")}`);
+    index++;
   }
+
+  await msg.send(`Search results for \`${input}\`:\n${final.join("\n")}`);
 };
 
 exports.conf = {

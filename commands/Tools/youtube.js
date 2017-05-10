@@ -1,15 +1,11 @@
 exports.run = async (client, msg, [input, ind = 1]) => {
   const index = ind - 1;
-  try {
-    const cfg = client.constants.config;
-    const res = await client.wrappers.requestJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${cfg.GoogleAPIKey}`);
-    const result = res.items[index];
-    if (!result) throw new Error(client.constants.httpResponses(404));
-    const output = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
-    await msg.send(output);
-  } catch (e) {
-    msg.error(e);
-  }
+  const cfg = client.constants.config;
+  const res = await client.wrappers.requestJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${cfg.GoogleAPIKey}`);
+  const result = res.items[index];
+  if (!result) throw new Error(client.constants.httpResponses(404));
+  const output = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
+  await msg.send(output);
 };
 
 exports.conf = {

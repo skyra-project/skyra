@@ -1,14 +1,10 @@
 exports.run = async (client, msg) => {
-  try {
-    const res = await client.wrappers.requestJSON("https://api.chucknorris.io/jokes/random");
-    const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setDescription(`📢 **Chuck Norris' fact:** *${res.value}*`);
+  const res = await client.wrappers.requestJSON("https://api.chucknorris.io/jokes/random");
+  const embed = new client.methods.Embed()
+    .setColor(msg.color)
+    .setDescription(`📢 **Chuck Norris' fact:** *${res.value}*`);
 
-    await msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {
@@ -20,7 +16,9 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 10,
 };
+
 exports.help = {
   name: "norris",
   description: "Read the ~~most popular~~ funniest phrases from Chuck Norris.",

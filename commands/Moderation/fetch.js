@@ -1,22 +1,18 @@
 exports.run = async (client, msg, [message, limit = 10]) => {
-  try {
-    if (!/^[0-9]{17,18}$/.test(message)) throw new Error("Invalid message ID.");
-    const messages = await msg.channel.fetchMessages({ limit, around: message });
+  if (!/^[0-9]{17,18}$/.test(message)) throw new Error("Invalid message ID.");
+  const messages = await msg.channel.fetchMessages({ limit, around: message });
 
-    const embed = new client.methods.Embed()
-      .setColor(msg.member.highestRole.color || 0xdfdfdf)
-      .setTitle(`Context of ${message}`)
-      .setDescription(messages
-        .array()
-        .reverse()
-        .map(m => `${m.author.username} ❯ ${m.cleanContent || "**`IMAGE/EMBED`**"}`)
-        .join("\n"))
-      .setFooter(client.user.username, client.user.displayAvatarURL);
+  const embed = new client.methods.Embed()
+    .setColor(msg.member.highestRole.color || 0xdfdfdf)
+    .setTitle(`Context of ${message}`)
+    .setDescription(messages
+      .array()
+      .reverse()
+      .map(m => `${m.author.username} ❯ ${m.cleanContent || "**`IMAGE/EMBED`**"}`)
+      .join("\n"))
+    .setFooter(client.user.username, client.user.displayAvatarURL);
 
-    msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {
@@ -28,6 +24,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 2,
+  cooldown: 30,
 };
 
 exports.help = {

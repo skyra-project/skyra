@@ -38,12 +38,8 @@ const dict = {
 
 exports.run = async (client, msg, [params]) => {
   let out = "";
-
-  for (const char of params) { // eslint-disable-line no-restricted-syntax
-    if (dict[char]) out += dict[char];
-  }
-
-  msg.send(out).catch(() => msg.send(`Dear ${msg.author}, no characters could be converted.`));
+  for (const char of params) if (dict[char]) out += dict[char]; // eslint-disable-line no-restricted-syntax
+  await msg.send(out).catch(() => msg.send(`Dear ${msg.author}, no characters could be converted.`));
 };
 
 exports.conf = {
@@ -55,9 +51,9 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 30,
 };
 
-/* eslint-disable no-irregular-whitespace */
 exports.help = {
   name: "uni",
   description: "Generate a large unicode message with the message you have written.",

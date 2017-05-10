@@ -1,17 +1,13 @@
 const googl = require("goo.gl");
 
 exports.run = async (client, msg, [url]) => {
-  try {
-    googl.setKey(client.constants.config.GoogleAPIKey);
-    if (!url.startsWith("https://goo.gl/")) {
-      const shortUrl = await googl.shorten(url);
-      await msg.send({ embed: { description: `**Shortened URL: [${shortUrl}](${shortUrl})**`, color: msg.color } });
-    } else {
-      const longUrl = await googl.expand(url);
-      await msg.send({ embed: { description: `**Expanded URL: [${longUrl}](${longUrl})**`, color: msg.color } });
-    }
-  } catch (e) {
-    msg.error(e);
+  googl.setKey(client.constants.config.GoogleAPIKey);
+  if (!url.startsWith("https://goo.gl/")) {
+    const shortUrl = await googl.shorten(url);
+    await msg.send({ embed: { description: `**Shortened URL: [${shortUrl}](${shortUrl})**`, color: msg.color } });
+  } else {
+    const longUrl = await googl.expand(url);
+    await msg.send({ embed: { description: `**Expanded URL: [${longUrl}](${longUrl})**`, color: msg.color } });
   }
 };
 

@@ -43,13 +43,9 @@ const triggering = async (client, user) => {
 };
 
 exports.run = async (client, msg, [search = msg.member]) => {
-  try {
-    const user = await client.search.User(search, msg.guild);
-    const cv = await triggering(client, user);
-    await msg.channel.sendFile(cv, "triggered.gif");
-  } catch (e) {
-    msg.error(e);
-  }
+  const user = await client.search.User(search, msg.guild);
+  const cv = await triggering(client, user);
+  await msg.channel.sendFile(cv, "triggered.gif");
 };
 
 exports.conf = {

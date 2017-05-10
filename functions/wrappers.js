@@ -31,7 +31,7 @@ class Wrappers {
   static request(options = $("URL")) {
     if (typeof options === "string") options = { url: options };
     return new Promise((resolve, reject) => request(options, (error, response, body) => {
-      if (response.statusCode !== 200) reject(Wrappers.httpError(response.statusCode));
+      if (response && response.statusCode !== 200) reject(Wrappers.httpError(response.statusCode));
       else if (error) reject(error);
       resolve(body);
     }));

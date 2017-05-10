@@ -26,22 +26,18 @@ const currencyList = [
 /* eslint-enable no-multi-spaces */
 
 exports.run = async (client, msg, [money, input, output]) => {
-  try {
-    if (!currencyList.includes(input.toUpperCase())) throw new ReferenceError(`Dear ${msg.author}, ${input.toUpperCase()} isn't a valid currency.`);
-    if (!currencyList.includes(output.toUpperCase())) throw new ReferenceError(`Dear ${msg.author}, ${output.toUpperCase()} isn't a valid currency.`);
-    const url = `http://www.apilayer.net/api/live?access_key=e715ede30dd6c3cee3ef6ca8a6091142&format=1&currencies=${input.toUpperCase()},${output.toUpperCase()}`;
-    const res = await client.wrappers.requestJSON(url);
-    if (!res.success) throw new Error("Something went wrong.");
-    const USDtoINPUT = res.quotes[`USD${input.toUpperCase()}`];
-    const USDtoOUTPUT = res.quotes[`USD${output.toUpperCase()}`];
-    const converted = (USDtoOUTPUT / USDtoINPUT) * money;
-    await msg.send([
-      `Dear ${msg.author}, **${money}** \`${input.toUpperCase()}\` in \`${output.toUpperCase()}\` is:`,
-      `${"```"}${converted.toFixed(4)} ${output.toUpperCase()}${"```"}`,
-    ].join("\n"));
-  } catch (e) {
-    msg.error(e);
-  }
+  if (!currencyList.includes(input.toUpperCase())) throw new ReferenceError(`Dear ${msg.author}, ${input.toUpperCase()} isn't a valid currency.`);
+  if (!currencyList.includes(output.toUpperCase())) throw new ReferenceError(`Dear ${msg.author}, ${output.toUpperCase()} isn't a valid currency.`);
+  const url = `http://www.apilayer.net/api/live?access_key=e715ede30dd6c3cee3ef6ca8a6091142&format=1&currencies=${input.toUpperCase()},${output.toUpperCase()}`;
+  const res = await client.wrappers.requestJSON(url);
+  if (!res.success) throw new Error("Something went wrong.");
+  const USDtoINPUT = res.quotes[`USD${input.toUpperCase()}`];
+  const USDtoOUTPUT = res.quotes[`USD${output.toUpperCase()}`];
+  const converted = (USDtoOUTPUT / USDtoINPUT) * money;
+  await msg.send([
+    `Dear ${msg.author}, **${money}** \`${input.toUpperCase()}\` in \`${output.toUpperCase()}\` is:`,
+    `${"```"}${converted.toFixed(4)} ${output.toUpperCase()}${"```"}`,
+  ].join("\n"));
 };
 
 exports.conf = {

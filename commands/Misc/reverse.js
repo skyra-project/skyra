@@ -1,12 +1,8 @@
 exports.run = async (client, msg, [string]) => {
-  try {
-    await msg.send([
-      `Dear ${msg.author}, the reverse for your string is:`,
-      `${"```"}${string.split("").reverse().join("")}${"```"}`,
-    ].join("\n"));
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.send([
+    `Dear ${msg.author}, the reverse for your string is:`,
+    `${"```"}${string.split("").reverse().join("")}${"```"}`,
+  ].join("\n"));
 };
 
 exports.conf = {
@@ -18,6 +14,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 30,
 };
 
 exports.help = {

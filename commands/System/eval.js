@@ -1,10 +1,10 @@
 /* eslint-disable */
-const fs = require("fs");
+const fs = require("fs-extra-promise");
 const moment = require("moment");
 const util = require("util");
 const now = require("performance-now");
 
-const Console = require("console").Console;
+const { Console } = require("console");
 const output = fs.createWriteStream("./stdout.log");
 const errorOutput = fs.createWriteStream("./stderr.log");
 const logger = new Console(output, errorOutput).log;

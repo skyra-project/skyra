@@ -1,47 +1,38 @@
 const { js_beautify } = require("js-beautify");
 
-function reduceIndentation(string) {
-  return new Promise((resolve) => {
-    let whitespace = string.match(/^(\s+)/);
-    if (!whitespace) resolve(string);
+const reduceIndentation = (string) => {
+  let whitespace = string.match(/^(\s+)/);
+  if (!whitespace) return string;
 
-    whitespace = whitespace[0].replace("\n", "");
-    resolve(string.split("\n").map(line => line.replace(whitespace, "")).join("\n"));
-  });
-}
+  whitespace = whitespace[0].replace("\n", "");
+  return string.split("\n").map(line => line.replace(whitespace, "")).join("\n");
+};
 
-function format(msg) {
-  return new Promise(async (resolve, reject) => {
-    const messages = msg.channel.messages.array().reverse();
-    let code;
-    const codeRegex = /```(?:js|json|javascript)?\n?((?:\n|.)+?)\n?```/ig;
+const format = async (msg) => {
+  const messages = msg.channel.messages.array().reverse();
+  let code;
+  const codeRegex = /```(?:js|json|javascript)?\n?((?:\n|.)+?)\n?```/ig;
 
-    for (let m = 0; m < messages.length; m++) {
-      const message = messages[m];
-      const groups = codeRegex.exec(message.content);
+  for (let m = 0; m < messages.length; m++) {
+    const message = messages[m];
+    const groups = codeRegex.exec(message.content);
 
-      if (groups && groups[1].length) {
-        code = groups[1];
-        break;
-      }
+    if (groups && groups[1].length) {
+      code = groups[1];
+      break;
     }
+  }
+  if (!code) throw new Error("No Javascript codeblock found.");
 
-    if (!code) reject("No Javascript codeblock found.");
-
-    const beautifiedCode = js_beautify(code, { indent_size: 2, brace_style: "collapse", jslint_happy: true });
-    const str = await reduceIndentation(beautifiedCode);
-    resolve(`${"```js"}\n${str}\n${"```"}`);
-  });
-}
+  const beautifiedCode = js_beautify(code, { indent_size: 2, brace_style: "collapse", jslint_happy: true });
+  const str = await reduceIndentation(beautifiedCode);
+  return (`${"```js"}\n${str}\n${"```"}`);
+};
 
 exports.run = async (client, msg) => {
-  try {
-    const message = await msg.send("Searching for code to beautify...");
-    const res = await format(message);
-    await message.edit(res);
-  } catch (e) {
-    msg.send(e);
-  }
+  const message = await msg.send("Searching for code to beautify...");
+  const res = await format(message);
+  await message.edit(res);
 };
 
 exports.conf = {

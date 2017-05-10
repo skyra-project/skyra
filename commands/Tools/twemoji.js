@@ -22,18 +22,14 @@ exports.emoji = (emoji) => {
 };
 
 exports.run = async (client, msg, [emoji]) => {
-  try {
-    if (!/^[^a-zA-Z0-9]{1,4}$/.test(emoji)) throw `${emoji} is not a valid emoji.`;
-    const r = this.emoji(emoji);
+  if (!/^[^a-zA-Z0-9]{1,4}$/.test(emoji)) throw `${emoji} is not a valid emoji.`;
+  const r = this.emoji(emoji);
 
-    const emojiURL = `https://twemoji.maxcdn.com/2/72x72/${r}.png`;
-    const data = await snek.get(emojiURL);
-    const buffer = data.body;
+  const emojiURL = `https://twemoji.maxcdn.com/2/72x72/${r}.png`;
+  const data = await snek.get(emojiURL);
+  const buffer = data.body;
 
-    msg.send(`Emoji: **${r}**`, { files: [{ attachment: buffer }] });
-  } catch (e) {
-    msg.error(e);
-  }
+  msg.send(`Emoji: **${r}**`, { files: [{ attachment: buffer }] });
 };
 
 exports.conf = {

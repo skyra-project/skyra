@@ -25,20 +25,16 @@ exports.handle = (client, msg, action, ID, value) => {
 };
 
 exports.run = async (client, msg, [action, search = msg.author.id, v = null]) => {
-  try {
-    const ID = await this.searchProfile(client, msg, search);
-    if (action === "delete") {
-      throw "This action is not available yet.";
-      // await this.nuke(client, ID);
-      // await msg.alert(`Dear ${msg.author}, you have just nuked the profile from user ID ${ID}`);
-    } else {
-      if (!v) throw "You must specify an amount of money.";
-      const value = this.handle(client, msg, action, ID, v);
-      await this.update(client, msg, ID, value);
-      await msg.alert(`Dear ${msg.author}, you have just ${action === "add" ? "added" : "removed"} ${v} points from user ID: ${ID}`);
-    }
-  } catch (e) {
-    msg.error(e);
+  const ID = await this.searchProfile(client, msg, search);
+  if (action === "delete") {
+    throw "This action is not available yet.";
+    // await this.nuke(client, ID);
+    // await msg.alert(`Dear ${msg.author}, you have just nuked the profile from user ID ${ID}`);
+  } else {
+    if (!v) throw "You must specify an amount of money.";
+    const value = this.handle(client, msg, action, ID, v);
+    await this.update(client, msg, ID, value);
+    await msg.alert(`Dear ${msg.author}, you have just ${action === "add" ? "added" : "removed"} ${v} points from user ID: ${ID}`);
   }
 };
 

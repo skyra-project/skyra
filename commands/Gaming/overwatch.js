@@ -122,22 +122,18 @@ class Overwatch {
 }
 
 exports.run = async (client, msg, [user, platform, server, hero, type = "featured", mode = "quickplay"]) => {
-  try {
-    const overwatch = new Overwatch(client);
-    const resolvedPlayer = await overwatch.resolvePlayer(user, platform, server, hero, mode);
-    const profile = await overwatch.resolveProfile(resolvedPlayer);
-    const data = await overwatch.fetchData(`https://playoverwatch.com/en-us${profile.careerLink}`, type, hero, mode);
-    const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setThumbnail(profile.portrait)
-      .setTitle(`Overwatch Stats: ${resolvedPlayer.battletag.replace("-", "#")} (${mode})`)
-      .setFooter("📊 Statistics")
-      .setDescription([`**❯ ${data.title}**`, "", data.output].join("\n"))
-      .setTimestamp();
-    await msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
-  }
+  const overwatch = new Overwatch(client);
+  const resolvedPlayer = await overwatch.resolvePlayer(user, platform, server, hero, mode);
+  const profile = await overwatch.resolveProfile(resolvedPlayer);
+  const data = await overwatch.fetchData(`https://playoverwatch.com/en-us${profile.careerLink}`, type, hero, mode);
+  const embed = new client.methods.Embed()
+    .setColor(msg.color)
+    .setThumbnail(profile.portrait)
+    .setTitle(`Overwatch Stats: ${resolvedPlayer.battletag.replace("-", "#")} (${mode})`)
+    .setFooter("📊 Statistics")
+    .setDescription([`**❯ ${data.title}**`, "", data.output].join("\n"))
+    .setTimestamp();
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {
@@ -149,7 +145,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 1,
-  cooldown: 5,
+  cooldown: 10,
 };
 
 const heroList = ["reaper", "tracer", "mercy", "hanzo", "torbjorn",

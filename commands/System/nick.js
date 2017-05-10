@@ -1,12 +1,8 @@
 exports.run = async (client, msg, [nick = ""]) => {
   const text = nick.length ? `Nickname changed to **${nick}**` : "Nickname Cleared";
 
-  try {
-    await msg.guild.member(client.user).setNickname(nick);
-    await msg.alert(text);
-  } catch (e) {
-    msg.error(e);
-  }
+  await msg.guild.member(client.user).setNickname(nick);
+  await msg.alert(text);
 };
 
 exports.conf = {

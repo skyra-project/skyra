@@ -27,7 +27,7 @@ exports.run = async (client, msg, [input]) => {
       .setFooter(`XKCD | ${xkcdComic.num}`)
       .setDescription(xkcdComic.alt)
       .setTimestamp();
-    return msg.sendEmbed(embed);
+    await msg.sendEmbed(embed);
     // FOR WHEN I GET AN HOST
     // msg.channel.sendFile(xkcdComic.img, undefined, xkcdComic.alt);
   } catch (e) {
@@ -44,6 +44,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 1,
+  cooldown: 10,
 };
 
 exports.help = {

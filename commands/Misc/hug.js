@@ -46,13 +46,9 @@ const Hug = async (client, msg, user) => {
 };
 
 exports.run = async (client, msg, [search]) => {
-  try {
-    const user = await client.search.User(search, msg.guild);
-    const output = await Hug(client, msg, user);
-    await msg.channel.sendFile(output, "Hug.png");
-  } catch (e) {
-    msg.error(e);
-  }
+  const user = await client.search.User(search, msg.guild);
+  const output = await Hug(client, msg, user);
+  await msg.channel.sendFile(output, "Hug.png");
 };
 
 exports.conf = {

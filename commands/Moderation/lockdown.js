@@ -25,13 +25,9 @@ class LockDown {
 }
 
 exports.run = async (client, msg, [channel = msg.channel, ...time]) => {
-  try {
-    const lockdown = new LockDown(msg, channel);
-    if (msg.channel.lockdown) await lockdown.unlock();
-    else await lockdown.lock(time);
-  } catch (e) {
-    msg.error(e);
-  }
+  const lockdown = new LockDown(msg, channel);
+  if (msg.channel.lockdown) await lockdown.unlock();
+  else await lockdown.lock(time);
 };
 
 exports.conf = {
@@ -43,6 +39,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 2,
+  cooldown: 30,
 };
 
 exports.help = {

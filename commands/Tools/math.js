@@ -3,13 +3,11 @@ const math = require("mathjs");
 
 exports.run = async (client, msg, [exp]) => {
   const start = now();
-  try {
-    const evaled = await math.eval(exp);
-    await msg.send([`⚙ **Calculated** (${(now() - start).toFixed(3)}ms)${"```"}js`,
-      `${client.funcs.clean(client, evaled)}${"```"}`].join("\n"));
-  } catch (e) {
-    msg.error(e);
-  }
+  const evaled = await math.eval(exp);
+  await msg.send([
+    `⚙ **Calculated** (${(now() - start).toFixed(3)}ms)${"```"}js`,
+    `${client.funcs.clean(client, evaled)}${"```"}`,
+  ].join("\n"));
 };
 
 exports.conf = {

@@ -27,35 +27,27 @@ class Settings {
   }
 
   async handle(type, key, value) {
-    try {
-      switch (type) {
-        case "add": {
-          if (!value) throw "You must assign a value to add.";
-          const nValue = await this.parse(key, value);
-          const { path } = validator[key];
-          await this.client.rethink.append("guilds", this.guild.id, path, nValue.id || nValue);
-          return `Successfully added the value ${nValue.name || nValue} to the key ${key}`;
-        }
-        case "remove": {
-          if (!value) throw "You must assign a value to add.";
-          return this;
-        }
-        default:
-          throw `Unknown Type: ${type}`;
+    switch (type) {
+      case "add": {
+        if (!value) throw "You must assign a value to add.";
+        const nValue = await this.parse(key, value);
+        const { path } = validator[key];
+        await this.client.rethink.append("guilds", this.guild.id, path, nValue.id || nValue);
+        return `Successfully added the value ${nValue.name || nValue} to the key ${key}`;
       }
-    } catch (e) {
-      throw e;
+      case "remove": {
+        if (!value) throw "You must assign a value to add.";
+        return this;
+      }
+      default:
+        throw `Unknown Type: ${type}`;
     }
   }
 }
 
 exports.run = async (client, msg, [type, key, value = null]) => {
-  try {
-    const settings = new Settings(msg);
-    await settings.handle(type, key, value);
-  } catch (e) {
-    msg.error(e);
-  }
+  const settings = new Settings(msg);
+  await settings.handle(type, key, value);
 };
 
 exports.conf = {

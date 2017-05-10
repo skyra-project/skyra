@@ -8,7 +8,7 @@ const roll = (rolls, sides) => {
 };
 
 exports.run = async (client, msg, [rl = 1, sd = 6]) => {
-  msg.send(`Dear ${msg.author}, you rolled the **${sd}**-dice **${rl}** times, you got: **${roll(rl, sd)}**`);
+  await msg.send(`Dear ${msg.author}, you rolled the **${sd}**-dice **${rl}** times, you got: **${roll(rl, sd)}**`);
 };
 
 exports.conf = {
@@ -20,6 +20,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 0,
+  cooldown: 10,
 };
 
 exports.help = {

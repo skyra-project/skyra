@@ -63,42 +63,38 @@ class SlotMachines {
 }
 
 exports.run = async (client, msg, [coins]) => {
-  try {
-    const slotmachine = new SlotMachines(msg);
-    slotmachine.checkCurrency(coins);
+  const slotmachine = new SlotMachines(msg);
+  slotmachine.checkCurrency(coins);
 
-    const roll = slotmachine.generateRoll();
-    const output = slotmachine.showRoll(roll);
-    const data = slotmachine.calculateWinnings(coins, roll);
+  const roll = slotmachine.generateRoll();
+  const output = slotmachine.showRoll(roll);
+  const data = slotmachine.calculateWinnings(coins, roll);
 
-    const embed = new client.methods.Embed();
-    if (data.win) {
-      const winnings = await client.Social.win(msg, data.winnings);
-      embed.setColor(0x5C913B)
-        .setDescription([
-          "**You rolled:**",
-          "",
-          output,
-          "",
-          "**Congratulations!**",
-          `You won ${winnings}₪!`,
-        ].join("\n"));
-    } else {
-      await client.Social.use(msg.author, coins).catch(console.error);
-      embed.setColor(0xBE1931)
-        .setDescription([
-          "**You rolled:**",
-          "",
-          output,
-          "",
-          "**Mission failed!**",
-          "We'll get em next time!",
-        ].join("\n"));
-    }
-    await msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
+  const embed = new client.methods.Embed();
+  if (data.win) {
+    const winnings = await client.Social.win(msg, data.winnings);
+    embed.setColor(0x5C913B)
+      .setDescription([
+        "**You rolled:**",
+        "",
+        output,
+        "",
+        "**Congratulations!**",
+        `You won ${winnings}₪!`,
+      ].join("\n"));
+  } else {
+    await client.Social.use(msg.author, coins).catch(console.error);
+    embed.setColor(0xBE1931)
+      .setDescription([
+        "**You rolled:**",
+        "",
+        output,
+        "",
+        "**Mission failed!**",
+        "We'll get em next time!",
+      ].join("\n"));
   }
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {

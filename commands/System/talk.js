@@ -1,23 +1,19 @@
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [channel = msg.channel, ...content]) => {
-  try {
-    /* Attachments */
-    let attachment;
-    if (!msg.attachments.first()) attachment = null;
-    else attachment = msg.attachments.first().url;
+  /* Attachments */
+  let attachment;
+  if (!msg.attachments.first()) attachment = null;
+  else attachment = msg.attachments.first().url;
 
-    /* Content */
-    content = content.length ? content.join(" ") : undefined;
+  /* Content */
+  content = content.length ? content.join(" ") : undefined;
 
-    /* Check if the message is valid */
-    if (!content && !attachment) throw client.constants.httpResponses(403);
+  /* Check if the message is valid */
+  if (!content && !attachment) throw client.constants.httpResponses(403);
 
-    await channel.send(content, { file: attachment });
-    if (channel !== msg.channel) await msg.alert(`Message successfully sent to ${channel}`);
-    await msg.nuke(5000);
-  } catch (e) {
-    msg.error(e);
-  }
+  await channel.send(content, { file: attachment });
+  if (channel !== msg.channel) await msg.alert(`Message successfully sent to ${channel}`);
+  await msg.nuke(5000);
 };
 
 exports.conf = {

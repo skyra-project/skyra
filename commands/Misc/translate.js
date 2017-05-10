@@ -33,15 +33,15 @@ class Translate {
 }
 
 exports.run = async (client, msg, [lang, ...input]) => {
-  try {
-    const translate = new Translate();
-    const options = await translate.getLanguages(lang);
+  const translate = new Translate();
+  const options = await translate.getLanguages(lang);
 
-    const res = await translator(input.join(" "), options);
-    await msg.send([`Dear ${msg.author}, the translation for *${input.join(" ")}* **[${res.from.language.iso.toUpperCase()}]** to **[${options.to.toUpperCase()}]** is:\`\`\``, res.text, "```"].join("\n"));
-  } catch (e) {
-    msg.error(e);
-  }
+  const res = await translator(input.join(" "), options);
+  await msg.send([
+    `Dear ${msg.author}, the translation for *${input.join(" ")}* **[${res.from.language.iso.toUpperCase()}]** to **[${options.to.toUpperCase()}]** is:\`\`\``,
+    res.text,
+    "```",
+  ].join("\n"));
 };
 
 exports.conf = {
@@ -53,6 +53,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 1,
+  cooldown: 15,
 };
 
 exports.help = {

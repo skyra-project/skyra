@@ -3,24 +3,20 @@ const { sep } = require("path");
 
 /* eslint-disable no-useless-escape, no-throw-literal */
 exports.run = async (client, msg, [input]) => {
-  try {
-    const cfg = client.constants.config;
-    const res = await client.wrappers.requestJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${cfg.GoogleAPIKey}`);
-    const result = res.items[0];
-    if (!result) throw client.constants.httpResponses(404);
-    const url = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
-    const dir = `${client.clientBaseDir}downloads${sep}`;
+  const cfg = client.constants.config;
+  const res = await client.wrappers.requestJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${cfg.GoogleAPIKey}`);
+  const result = res.items[0];
+  if (!result) throw client.constants.httpResponses(404);
+  const url = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
+  const dir = `${client.clientBaseDir}downloads${sep}`;
 
-    const info = await client.ytdl.getInfo(url);
-    const filename = `${info.title.replace(/[^a-zA-Z0-9\[\]()\-\. ]/g, "").replace(/[ ]{2}/g, " ")}`;
-    const files = await fs.readdirAsync(dir).catch(() => fs.ensureDirAsync(dir));
-    if (files.includes(`${filename}.mp3`)) throw "This song was already downloaded.";
-    await msg.send(`Downloading \`${filename}\``);
-    await client.ytdl.download(url, "webm", dir, `${filename}.webm`);
-    await msg.send("🗄 | Downloaded.");
-  } catch (e) {
-    msg.error(e);
-  }
+  const info = await client.ytdl.getInfo(url);
+  const filename = `${info.title.replace(/[^a-zA-Z0-9\[\]()\-\. ]/g, "").replace(/[ ]{2}/g, " ")}`;
+  const files = await fs.readdirAsync(dir).catch(() => fs.ensureDirAsync(dir));
+  if (files.includes(`${filename}.mp3`)) throw "This song was already downloaded.";
+  await msg.send(`Downloading \`${filename}\``);
+  await client.ytdl.download(url, "webm", dir, `${filename}.webm`);
+  await msg.send("🗄 | Downloaded.");
 };
 
 exports.conf = {

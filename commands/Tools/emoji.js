@@ -1,14 +1,14 @@
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [emoji]) => {
   try {
-    if (!/^<:\w{1,32}:\d{17,18}>$/.test(emoji)) throw "You must insert a valid emoji";
-    const defractured = /^<:(\w{1,32}):(\d{17,18})>$/.exec(emoji);
+    if (!/^<:\w{2,32}:\d{17,18}>$/.test(emoji)) throw "You must insert a valid emoji";
+    const defractured = /^<:(\w{2,32}):(\d{17,18})>$/.exec(emoji);
     const emojiName = defractured[1];
     const emojiID = defractured[2];
     const emojiURL = `https://cdn.discordapp.com/emojis/${emojiID}.png`;
 
     msg.send([
-      `Emoji **${emojiName}**`,
+      `Emoji: **${emojiName}**`,
       `ID: **${emojiID}**`,
       `Guild: ${client.emojis.has(emojiID) ? this.resolveGuild(client.emojis.get(emojiID).guild) : "Not found."}`,
     ].join("\n"), { files: [{ attachment: emojiURL }] });
@@ -25,7 +25,8 @@ exports.conf = {
   botPerms: [],
   requiredFuncs: [],
   spam: false,
-  mode: 2,
+  mode: 0,
+  cooldown: 15,
 };
 
 exports.help = {

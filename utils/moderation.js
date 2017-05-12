@@ -58,10 +58,36 @@ module.exports = class Moderation {
 
     await this.ensureModule();
     await this.client.rethink.append("moderation", this.id, "cases", object);
+    if (type === "mute") await this.syncMutes();
+    else if (type === "unmute") await this.appealMute(user);
   }
 
   async updateCase(index, doc) {
     return this.client.rethink.updateArray("moderation", this.id, "cases", index, doc);
+  }
+
+  async getMute(user) {
+    return this.getMutes().then(g => g.find(obj => obj.type === "mute" && obj.user === user && obj.appeal !== true) || null);
+  }
+
+  async getMutes() {
+    return this.client.rethink.get("moderation", this.guild.id).then((d) => {
+      if (!d) return [];
+      const cases = d.cases || [];
+      return cases.filter(obj => obj.type === "mute" && obj.appeal !== true);
+    });
+  }
+
+  async syncMutes() {
+    return this.getMutes().then((d) => { this.client.guildCache.get(this.guild.id).mutes = d; });
+  }
+
+  async appealMute(user) {
+    this.getMute(user).then((d) => {
+      if (!d) throw "This mute doesn't seem to exist";
+      return this.updateCase(d.thisCase, { appeal: true })
+        .then(() => this.syncMutes().then(() => true));
+    });
   }
 
   async destroy() {

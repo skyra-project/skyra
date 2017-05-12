@@ -8,6 +8,7 @@ module.exports = class GuildConfig {
     Object.defineProperty(this, "_configuration", { value: this.client.guildCache.get(guild.id) || { events: { sendMessage: {} }, exists: false } });
     Object.defineProperty(this, "moderation", { value: new Moderation(guild) });
     Object.defineProperty(this, "exists", { value: this._configuration.exists !== false });
+    Object.defineProperty(this, "_mutes", { value: this._configuration.mutes || [] });
     this.id = guild.id;
     this.createdAt = this._configuration.createdAt || null;
     this.roles = this._configuration.roles || {};
@@ -24,6 +25,12 @@ module.exports = class GuildConfig {
     this.disabledCmdChannels = this._configuration.disabledCmdChannels || [];
     this.publicRoles = this._configuration.publicRoles || [];
     this.autoroles = this._configuration.autoroles || [];
+  }
+
+  get mutes() {
+    const mutes = new this.client.methods.Collection();
+    this._mutes.map(m => mutes.set(m.user, m));
+    return mutes;
   }
 
   async create() {

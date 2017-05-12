@@ -53,7 +53,7 @@ class GuildMemberAdd {
   handleMute() {
     this.sendLog("mute");
     if (!this.guild.member(this.client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return false;
-    const muteRole = this.config.roles.muted;
+    const muteRole = this.configs.roles.muted;
     if (!muteRole) return false;
     const role = this.guild.roles.get(muteRole);
     if (role) return this.member.addRole(role);
@@ -108,8 +108,7 @@ class GuildMemberAdd {
   }
 
   get Mutes() {
-    if (!this.guild.mutes) return false;
-    return this.guild.mutes.has(this.member.id);
+    return this.guild.configs.mutes.has(this.member.id);
   }
 }
 

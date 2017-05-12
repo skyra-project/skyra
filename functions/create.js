@@ -30,17 +30,28 @@ exports.init = async (client) => {
   client.guildCache = new Map();
   client.cacheProfiles = new client.methods.Collection();
   client.locals = new client.methods.Collection();
-  const [guild, users, locals] = await Promise.all([
+  const [guild, users, locals, moderation] = await Promise.all([
     RethinkDB.all("guilds"),
     RethinkDB.all("users"),
     RethinkDB.all("localScores"),
+    RethinkDB.all("moderation"),
   ]);
-  guild.forEach(guildData => client.guildCache.set(guildData.id, guildData));
+  guild.forEach((guildData) => {
+    const mutes = this.handleMutes(guildData.id, moderation);
+    Object.assign(guildData, { mutes });
+    client.guildCache.set(guildData.id, guildData);
+  });
   users.forEach(userData => client.cacheProfiles.set(userData.id, userData));
   locals.forEach((g) => {
     client.locals.set(g.id, new client.methods.Collection());
     g.scores.forEach(u => client.locals.get(g.id).set(u.id, u));
   });
+};
+
+exports.handleMutes = (gID, moderation) => {
+  const mod = moderation.find(guild => guild.id === gID);
+  if (!mod || !mod.cases) return [];
+  return mod.cases.filter(c => c.type === "mute" && c.appeal !== true) || [];
 };
 
 const userProfileData = user => ({

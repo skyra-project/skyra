@@ -27,7 +27,8 @@ exports.run = async (client, msg, [type, ...input]) => {
         .map(c => `❯ \`${"_".repeat(3 - c.members.size.toString().length)}${c.members.size}\` ❯ **${c.name}** ❯ *${c.id}*`)
         .join("\n");
       embed.setTitle(`List of roles for ${msg.guild} (${msg.guild.id})`);
-      if (roleList.length <= 2040) { embed.setDescription(roleList); } else {
+      if (roleList.length <= 2040) embed.setDescription(roleList);
+      else {
         let init = roleList;
         let i;
         let x;
@@ -41,12 +42,10 @@ exports.run = async (client, msg, [type, ...input]) => {
       break;
     }
     case "invites": {
-      if (!msg.guild.member(client.user).hasPermission("MANAGE_GUILD")) {
-        msg.channel.send("|`❌`| **ERROR**: Not enough permissions.").then(m => m.delete(10000));
-        return;
-      }
+      if (!msg.guild.me.hasPermission("MANAGE_GUILD")) throw new Error("Not enough permissions.");
+
       const invites = await msg.guild.fetchInvites();
-      if (!invites.first()) return msg.channel.send("There's no invite link here.").then(m => m.delete(10000));
+      if (!invites.first()) return msg.alert("There's no invite link here.");
       embed.setTitle("List of invites")
         .setDescription(invites
           .array()
@@ -55,37 +54,30 @@ exports.run = async (client, msg, [type, ...input]) => {
           .join("\n"));
       break;
     }
+    case "warnings":
     case "strikes": {
-      if (!input) throw new Error("You must provide a user.");
-      /* Initialize Search */
-      const user = await client.search.User(input.join(" "), msg.guild);
+      const cases = await msg.guild.moderation.cases.then(d => d.filter(c => c.type === "warn"));
+      if (!input) {
+        embed
+          .setTitle("List of strikes.")
+          .setDescription(`${!cases.length ? "There's no strike." : `There are ${cases.length} strikes. Cases: **${cases
+            .map(c => c.thisCase)
+            .join("**, **")}**`}`);
+      } else {
+        const user = await client.search.User(input, msg.guild);
+        const thisStrikes = cases.filter(c => c.user === user.id);
 
-      if (!user) return msg.channel.send(`User not found: \`${input}\``);
-      const thisStrikes = client.configs.get(msg.guild.id).strikes.filter(u => u.user === user.id);
-      if (thisStrikes.filter(u => u.appealed === 0).size === 0) {
-        return msg.channel.send(`Dear ${msg.author}, this user has **0** strikes${
-        thisStrikes.filter(u => u.appealed === 1).size ?
-          ` and **${thisStrikes.filter(u => u.appealed === 1).size}** warnings appealed.` :
-          ""}`);
+        embed
+          .setTitle(`List of strikes for ${user.tag}`)
+          .setDescription(`${!thisStrikes.length ? `There's no strike for ${user.tag}.` : `There are ${thisStrikes.length} strike(s):\n\n${thisStrikes
+            .map(c => `Case \`${c.thisCase}\`. Moderator: **${client.users.has(c.moderator) ? client.users.get(c.moderator).tag : c.moderator}**\n\`${c.reason}\``)
+            .join("\n\n")}`}`);
       }
-      embed.setTitle(`All strikes for the user ${user.username} (${user.id})`)
-        .setDescription(`${thisStrikes
-          .filter(u => u.appealed === 0)
-          .map(s => client.indents`
-            [ID: **${s.caseID}**] **Striked at**: *${moment.utc(parseInt(s.timestamp)).format("dddd, MMMM Do YYYY, HH:mm:ss")}* (UTC)
-            **Striked by**: *${msg.guild.members.get(s.moderator) ? msg.guild.members.get(s.moderator).user.username : s.moderator}*
-            **Reason**: *${s.reason}*
-          `)
-          .join("\n\u200B\n")}${
-            thisStrikes.filter(u => u.appealed === 1).size ?
-            `\n\u200B\n**${thisStrikes.filter(u => u.appealed === 1).size}** warnings appealed.` :
-            ""
-          }`);
       break;
     }
     case "track": {
       const channels = msg.guild.channels.filter(m => m.tracker);
-      if (channels.size === 0) return msg.channel.send(`Dear ${msg.author}, there aren't any currently trackers`);
+      if (channels.size === 0) return msg.alert(`Dear ${msg.author}, there aren't any currently trackers`);
       embed.setTitle(`List of (${channels.size}) trackers.`)
         .setDescription(channels
           .map(l => `(${moment
@@ -117,6 +109,6 @@ exports.conf = {
 exports.help = {
   name: "list",
   description: "Check all channels from this server.",
-  usage: "<channels|roles|invites|strikes|track> [input:str] [...]",
+  usage: "<channels|roles|invites|warnings|strikes|track> [input:str] [...]",
   usageDelim: " ",
 };

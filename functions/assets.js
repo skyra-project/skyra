@@ -4,8 +4,8 @@ class Assets {
     Object.defineProperty(this, "_client", { value: client });
   }
 
-  async createMuted(msg, message) {
-    if (this._client.configs.get(msg.guild.id).roles.muted) throw new Error("There's already a muted role.");
+  static async createMuted(msg, message) {
+    if (msg.guild.configs.roles.muted) throw new Error("There's already a muted role.");
     const role = await msg.guild.createRole({
       name: "Muted",
       color: "#422c0b",

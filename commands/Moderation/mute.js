@@ -8,11 +8,9 @@ class Mute {
 
   async configuration() {
     const configuration = this.guild.configs;
-    if (!configuration) throw "You caught me while creating the configuration for this server.";
     if (!configuration.roles.muted) {
       const message = await this.msg.Prompt("Do you want to create and configure the Mute role right now?");
-      const assets = new this.client.Assets(this.client);
-      const mute = assets.createMuted(this.msg, message);
+      const mute = this.client.Assets.createMuted(this.msg, message);
       return (mute);
     }
     return (this.guild.roles.get(configuration.roles.muted));
@@ -34,11 +32,10 @@ exports.run = async (client, msg, [search, ...reason]) => {
   const MuteClass = new Mute(msg);
   const mute = await MuteClass.configuration();
 
-  if (client.configs.get(msg.guild.id).mutes.has(user.id)) throw "This user is already muted.";
+  if (msg.guild.configs.mutes.has(user.id)) throw "This user is already muted.";
 
   const roles = member._roles;
-  await member.addRole(mute.id);
-  if (roles.length > 0) await member.removeRoles(roles);
+  await member.edit({ roles: [mute.id] });
   msg.send(`|\`🔨\`| **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
 
   /* Handle Moderation Logs */

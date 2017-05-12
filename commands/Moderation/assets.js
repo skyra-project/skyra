@@ -1,10 +1,10 @@
 exports.run = async (client, msg, [piece]) => {
-  const assets = new client.Assets(client);
+  // const assets = new client.Assets(client);
   const messageSend = await msg.send("`Processing...`");
   try {
     switch (piece.toLowerCase()) {
       case "mute": {
-        const response = await assets.createMuted(msg, messageSend);
+        const response = await client.Assets.createMuted(msg, messageSend);
         await msg.send(response);
         break;
       }

@@ -20,14 +20,13 @@ exports.run = async (client, msg, [search, ...reason]) => {
   const muteRole = msg.guild.roles.get(mute);
   if (!muteRole) throw "You configured a mute role, but you deleted it when I was not ready.";
 
-  const mutedUser = configs.mutes.get(user.id);
+  const mutedUser = await msg.guild.moderation.getMute(user.id);
   if (!mutedUser) throw "This user is not muted.";
 
-  const roles = mutedUser.extraData;
-  await member.removeRole(muteRole.id);
-  if (roles && roles instanceof Array && roles.length > 0) await member.addRoles(roles);
+  const roles = mutedUser.extraData || [];
+
+  await member.edit({ roles });
   msg.send(`|\`🔨\`| **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
-  configs.mutes.delete(user.id);
 
   /* Handle Moderation Logs */
   const moderation = new client.Moderation(msg);

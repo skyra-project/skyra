@@ -25,155 +25,143 @@ const selectFlag = (query) => {
   }
 };
 
-const showAlerts = client => new Promise(async (resolve, reject) => {
-  const res = await client.wrappers.requestJSON("http://content.warframe.com/dynamic/worldState.php");
+const selectFaction = (query) => {
+  switch (query.toLowerCase()) {
+    case "corpus": return [102, 0];
+    case "grineer": return [0, 0];
+    case "infested": return [0, 102];
+    case "sentient": return [102, 102];
+    default: return [204, 204];
+  }
+};
+
+const showAlerts = async (client) => {
+  const [res, bgBuffer, alertBuffer, fcBuffer, flBuffer] = await Promise.all([
+    client.wrappers.requestJSON("http://content.warframe.com/dynamic/worldState.php"),
+    fsp.readFileAsync(`${client.constants.assets}${warframeAssets}warframebanner.png`),
+    fsp.readFileAsync(`${client.constants.assets}${warframeAssets}alertFull.png`),
+    fsp.readFileAsync(`${client.constants.assets}${warframeAssets}factions.png`),
+    fsp.readFileAsync(`${client.constants.assets}${warframeAssets}sprites${sep}flag.png`),
+  ]);
+
   const allAlerts = res.Alerts;
 
-  // GENERATE CANVAS
+  /* Generate Canvas */
   const c = new Canvas(370, 99 + (91 * allAlerts.length));
   const background = new Canvas.Image();
   const alert = new Canvas.Image();
-  const fcorpus = new Canvas.Image();
-  const fgrineer = new Canvas.Image();
-  const finfested = new Canvas.Image();
-  const fsentient = new Canvas.Image();
+  const factions = new Canvas.Image();
   const flags = new Canvas.Image();
   const ctx = c.getContext("2d");
 
-  ctx.antialias = "subpixel";
-  ctx.scale(1, 1);
+  background.src = bgBuffer;
+  alert.src = alertBuffer;
+  factions.src = fcBuffer;
+  flags.src = flBuffer;
 
-  // LOAD FONTS
-  const NunitoSansExtraLight = new Canvas.Font("NunitoSansExtraLight", `${client.clientBaseDir}assets/fonts/NunitoSans-ExtraLight.ttf`); // eslint-disable-line no-unused-vars
-  const FiraSans = new Canvas.Font("FiraSans", `${client.clientBaseDir}assets/fonts/FiraSans-Regular.ttf`); // eslint-disable-line no-unused-vars
-  try {
-    // FONTS
-    ctx.font = "18px FiraSans";
-    ctx.fillStyle = "rgb(23,23,23)";
+  /* Load fonts */
+  const FiraSans = new Canvas.Font("FiraSans", `${client.constants.assets}fonts${sep}FiraSans-Regular.ttf`); // eslint-disable-line no-unused-vars
+  ctx.font = "18px FiraSans";
 
     // DRAW THE BACKGROUND
-    ctx.fillStyle = "rgb(42, 42, 42)";
-    ctx.fillRect(5, 5, 360, 89 + (91 * allAlerts.length));
-    background.src = await fsp.readFileAsync(`${client.constants.assets}${warframeAssets}warframebanner.png`);
-    ctx.drawImage(background, 0, 0, 370, 99);
-    alert.src = await fsp.readFileAsync(`${client.constants.assets}${warframeAssets}alertFull.png`);
+  ctx.fillStyle = "rgb(42, 42, 42)";
+  ctx.fillRect(5, 5, 360, 89 + (91 * allAlerts.length));
+  ctx.drawImage(background, 0, 0, 370, 99);
 
     // DRAW THE ALERTS
-    let axisY = 91;
-
-    // FACTIONS
-    fcorpus.src = await fsp.readFileAsync(`${client.constants.assets}${warframeAssets}factions${sep}Darkcorpus.png`);
-    fgrineer.src = await fsp.readFileAsync(`${client.constants.assets}${warframeAssets}factions${sep}Darkgrineer.png`);
-    finfested.src = await fsp.readFileAsync(`${client.constants.assets}${warframeAssets}factions${sep}Darkinfested.png`);
-    fsentient.src = await fsp.readFileAsync(`${client.constants.assets}${warframeAssets}factions${sep}Darksentient.png`);
-    flags.src = await fsp.readFileAsync(`${client.constants.assets}${warframeAssets}sprites${sep}flag.png`);
+  let axisY = 91;
 
     // LOAD DATABASE
-    await sqlite.open(`${client.constants.assets}database${sep}warframe.sqlite`);
-    const rows = await sqlite.all("SELECT * FROM warframe");
+  await sqlite.open(`${client.constants.assets}database${sep}warframe.sqlite`);
+  const rows = await sqlite.all("SELECT * FROM warframe");
 
     // SHOW ALL ALERTS
-    for (let index = 0; index < allAlerts.length; index++) {
-      const a = allAlerts[index];
-      ctx.fillStyle = "rgb(57, 57, 57)";
-      ctx.font = "bold 18px FiraSans";
-      ctx.textAlign = "left";
+  for (let index = 0; index < allAlerts.length; index++) {
+    const a = allAlerts[index];
+    ctx.fillStyle = "rgb(57, 57, 57)";
+    ctx.font = "bold 18px FiraSans";
+    ctx.textAlign = "left";
       // ctx.fillRect(5, 5 + axisY, 360, 89);
-      ctx.drawImage(alert, 0, axisY, 370, 99);
-      const faction = wf.factions[a.MissionInfo.faction].value.toLowerCase();
-      const allItems = [];
+    ctx.drawImage(alert, 0, axisY, 370, 99);
+    const faction = wf.factions[a.MissionInfo.faction].value.toLowerCase();
+    const allItems = [];
 
       // FACTION
-      ctx.save();
-      ctx.globalAlpha = 0.3;
-      ctx.rect(5, axisY + 5, 360, 60);
-      ctx.clip();
-      switch (faction) {
-        case "corpus":
-          ctx.drawImage(fcorpus, 295, axisY - 25, 103, 104);
-          break;
-        case "grineer":
-          ctx.drawImage(fgrineer, 295, axisY - 25, 103, 104);
-          break;
-        case "infested":
-          ctx.drawImage(finfested, 295, axisY - 25, 103, 104);
-          break;
-        case "sentient":
-          ctx.drawImage(fsentient, 295, axisY - 25, 103, 104);
-          break;
-        default:
-      }
-      ctx.restore();
+    ctx.save();
+    const coordinates = selectFaction(faction);
+    ctx.globalAlpha = 0.3;
+    ctx.rect(5, axisY + 5, 360, 60);
+    ctx.clip();
+    ctx.drawImage(factions, 295, axisY - 25, 102, 102, coordinates[0], coordinates[1], 102, 102);
+    ctx.restore();
 
       // ITEMS
-      const amounts = [];
-      if (a.MissionInfo.missionReward.items) {
-        a.MissionInfo.missionReward.items.map((i) => {
-          const item = i.split("/")
+    const amounts = [];
+    if (a.MissionInfo.missionReward.items) {
+      a.MissionInfo.missionReward.items.map((i) => {
+        const item = i.split("/")
             .pop()
             .split(/(?=[A-Z])/)
             .join(" ")
             .toUpperCase();
-          return searchDB(item, rows) ? allItems.push(searchDB(item, rows)) : allItems.push(item);
-        });
-      }
-      if (a.MissionInfo.missionReward.countedItems) {
-        a.MissionInfo.missionReward.countedItems.map((i) => {
-          const countedItems = i.ItemType.split("/").pop().split(/(?=[A-Z])/).join(" ")
+        return searchDB(item, rows) ? allItems.push(searchDB(item, rows)) : allItems.push(item);
+      });
+    }
+    if (a.MissionInfo.missionReward.countedItems) {
+      a.MissionInfo.missionReward.countedItems.map((i) => {
+        const countedItems = i.ItemType.split("/").pop().split(/(?=[A-Z])/).join(" ")
             .toUpperCase();
-          const thisData = searchDB(countedItems, rows) ? searchDB(countedItems, rows) : countedItems;
-          allItems.push(thisData);
-          return amounts.push(` x${i.ItemCount}`);
-        });
-      }
+        const thisData = searchDB(countedItems, rows) ? searchDB(countedItems, rows) : countedItems;
+        allItems.push(thisData);
+        return amounts.push(` x${i.ItemCount}`);
+      });
+    }
 
       // INFORMATION
-      ctx.fillText(`${wf.solNodes[a.MissionInfo.location].value} ${a.MissionInfo.minEnemyLevel}-${a.MissionInfo.maxEnemyLevel}`, 10, axisY + 24);
-      ctx.textAlign = "right";
-      ctx.font = "italic 14px FiraSans";
-      ctx.fillText(wf.missionTypes[a.MissionInfo.missionType].value, 355, axisY + 72);
-      ctx.textAlign = "left";
-      let axisYitem = axisY + 40;
+    ctx.fillText(`${wf.solNodes[a.MissionInfo.location].value} ${a.MissionInfo.minEnemyLevel}-${a.MissionInfo.maxEnemyLevel}`, 10, axisY + 24);
+    ctx.textAlign = "right";
+    ctx.font = "italic 14px FiraSans";
+    ctx.fillText(wf.missionTypes[a.MissionInfo.missionType].value, 355, axisY + 72);
+    ctx.textAlign = "left";
+    let axisYitem = axisY + 40;
 
       // CREDITS
-      ctx.font = "14px FiraSans";
-      ctx.drawImage(flags, 0, 22, 11, 11, 20, axisYitem - 11, 11, 11);
-      ctx.fillText(a.MissionInfo.missionReward.credits, 37, axisYitem);
-      axisYitem += 14;
+    ctx.font = "14px FiraSans";
+    ctx.drawImage(flags, 0, 22, 11, 11, 20, axisYitem - 11, 11, 11);
+    ctx.fillText(a.MissionInfo.missionReward.credits, 37, axisYitem);
+    axisYitem += 14;
 
       // ITEMS
-      if (allItems[0]) {
-        allItems.forEach((thisItem) => {
+    if (allItems[0]) {
+      allItems.forEach((thisItem) => {
         // FLAGS
-          let offset = 0;
-          let thisAmount = "";
-          if (thisItem.type) {
-            const thisFlag = selectFlag(thisItem.type);
-            offset += thisFlag[2] + 5;
-            ctx.drawImage(flags, thisFlag[0], thisFlag[1], thisFlag[2], thisFlag[3], 20, axisYitem - 11, thisFlag[2], thisFlag[3]);
-            thisAmount = amounts[0] ? amounts[0] : "";
-            const thisType = thisItem.type2 ? ` [${thisItem.type2}] ` : "";
-            ctx.fillText(thisItem.item + thisType + thisAmount, 20 + offset, axisYitem);
-          } else { ctx.fillText(thisItem, 20 + offset, axisYitem); }
-          axisYitem += 14;
-        });
-      }
+        let offset = 0;
+        let thisAmount = "";
+        if (thisItem.type) {
+          const thisFlag = selectFlag(thisItem.type);
+          offset += thisFlag[2] + 5;
+          ctx.drawImage(flags, thisFlag[0], thisFlag[1], thisFlag[2], thisFlag[3], 20, axisYitem - 11, thisFlag[2], thisFlag[3]);
+          thisAmount = amounts[0] ? amounts[0] : "";
+          const thisType = thisItem.type2 ? ` [${thisItem.type2}] ` : "";
+          ctx.fillText(thisItem.item + thisType + thisAmount, 20 + offset, axisYitem);
+        } else { ctx.fillText(thisItem, 20 + offset, axisYitem); }
+        axisYitem += 14;
+      });
+    }
 
       // TIME
-      ctx.font = "bold 14px FiraSans";
-      ctx.textAlign = "center";
-      ctx.fillText(moment.duration(a.Expiry.$date.$numberLong - new Date()).format("H [hours,] m [mins,] s [secs]"), 185, axisY + 91);
-      axisY += 91;
-    }
-    resolve(c);
-  } catch (e) {
-    reject(e);
+    ctx.font = "bold 14px FiraSans";
+    ctx.textAlign = "center";
+    ctx.fillText(moment.duration(a.Expiry.$date.$numberLong - new Date()).format("H [hours,] m [mins,] s [secs]"), 185, axisY + 91);
+    axisY += 91;
   }
-});
+
+  return c.toBuffer();
+};
 
 exports.run = async (client, msg) => {
   const output = await showAlerts(client);
-  await msg.channel.sendFile(output.toBuffer(), "warframe.png");
+  await msg.channel.send({ files: [{ attachment: output, name: "warframe.png" }] });
 };
 
 exports.conf = {

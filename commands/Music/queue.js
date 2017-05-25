@@ -21,7 +21,7 @@ exports.run = async (client, msg) => {
       `**URL**: <${song.url}> (${moment.duration(song.seconds * 1000).format("h[:]mm[:]ss")})`,
       `**REQUESTER**: ${song.requester.tag || song.requester}`,
     ].join("\n")));
-    output.push(`\n**AutoPlay**: <${client.queue[msg.guild.id].next}>`);
+    if (client.queue[msg.guild.id].autoPlay) output.push(`\n**AutoPlay**: <${client.queue[msg.guild.id].next}>`);
     await msg.send(output.join(`\n\\🎵${"―".repeat(10)}\\🎵\n`));
   } catch (e) {
     msg.send(e);

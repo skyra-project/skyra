@@ -13,12 +13,14 @@ const autoPlayer = async (client, queue) => {
   queue.next = client.ytdl.getLink(info.related_videos);
 };
 
-const play = (client, queue, channel) => {
-  const guild = channel.guild;
-  const song = queue.songs[0];
+const play = (client, guild) => {
+  const queue = client.queue[guild.id];
   if (!queue) return;
+  const channel = queue.channel;
+  const song = queue.songs[0];
+
   if (!song) {
-    if (queue.autoPlay) return autoPlayer(client, queue).then(() => play(client, queue, channel));
+    if (queue.autoPlay) return autoPlayer(client, queue).then(() => play(client, guild));
     return channel.send("⏹ Queue is empty").then(() => {
       delete client.queue[guild.id];
       if (guild.me.voiceChannel) guild.me.voiceChannel.leave();
@@ -30,18 +32,17 @@ const play = (client, queue, channel) => {
   const stream = yt(song.url, { audioonly: true }).on("error", err => channel.send(err));
 
   const dispatcher = queue.voiceConnection.playStream(stream, { passes: 5 })
-    .on("end", () => this.skip(client, queue, channel))
-    .on("error", err => channel.send(err).then(() => this.skip(client, queue, channel)));
+    .on("end", () => this.skip(client, queue, guild))
+    .on("error", err => channel.send(err).then(() => this.skip(client, queue, guild)));
 
   song.dispatcher = dispatcher;
-  song.playing = true;
 
   return undefined;
 };
 
-exports.skip = (client, queue, channel) => {
+exports.skip = (client, queue, guild) => {
   queue.songs.shift();
-  play(client, queue, channel);
+  play(client, guild);
 };
 
 exports.run = async (client, msg, [req = null]) => {
@@ -52,7 +53,8 @@ exports.run = async (client, msg, [req = null]) => {
   if (client.queue[msg.guild.id].playing) return msg.send("Already Playing");
   client.queue[msg.guild.id].playing = true;
   client.queue[msg.guild.id].voiceConnection = msg.guild.voiceConnection;
-  play(client, client.queue[msg.guild.id], msg.channel);
+  client.queue[msg.guild.id].channel = msg.channel;
+  play(client, msg.guild);
 };
 
 exports.init = (client) => { if (!("queue" in client)) client.queue = {}; };

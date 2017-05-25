@@ -58,6 +58,6 @@ exports.conf = {
 exports.help = {
   name: "mute",
   description: "Mute the mentioned user.",
-  usage: "<SearchMember:user> [reason:str] [...]",
+  usage: "<SearchMember:str> [reason:str] [...]",
   usageDelim: " ",
 };

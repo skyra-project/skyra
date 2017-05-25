@@ -64,7 +64,7 @@ exports.help = {
   usage: "<expresion:str>",
   usageDelim: "",
   extendedHelp: [
-    "Take a look in http://mathjs.org/docs/index.html#documentation",
+    "Take a look in mathjs.org/docs/index.html#documentation",
     "",
     " ❯ Expresion :: The formula you want to calculate.",
     "",

@@ -14,7 +14,7 @@ exports.run = async (client, msg, [query, ...reason]) => {
   const user = await fetchBan(msg.guild, query);
 
   user.action = "unban";
-  await msg.guild.unban(user);
+  await msg.guild.unban(user, `${reason ? reason.join(" ") : null}`);
   msg.send(`|\`🔨\`| **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
 
   /* Handle Moderation Logs */

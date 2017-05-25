@@ -13,7 +13,7 @@ exports.run = async (client, msg, [search, ...reason]) => {
   }
 
   user.kickFilter = true;
-  await member.kick();
+  await member.kick(reason ? reason.join(" ") : null);
   msg.send(`|\`🔨\`| **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
 
   /* Handle Moderation Logs */

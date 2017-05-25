@@ -9,13 +9,13 @@ const Skyra = new Komada({
   cmdEditing: true,
   cmdLogging: true,
   userFriendlyRegExp: "((?:Hey )?Skyra(?:,|!) +)",
+  dash: cfg.dash,
   clientOptions: {
     disabledEvents: [
       "TYPING_START",
       "RELATIONSHIP_ADD",
       "RELATIONSHIP_REMOVE",
       "CHANNEL_PINS_UPDATE",
-      "VOICE_STATE_UPDATE",
     ],
   },
   permStructure: [

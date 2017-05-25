@@ -13,8 +13,8 @@ exports.run = async (client, msg, [search, days = 1, ...reason]) => {
   }
 
   user.banFilter = true;
-  await msg.guild.ban(user, days);
-  await msg.guild.unban(user);
+  await msg.guild.ban(user, { days, reason: `${reason ? `Softban with reason: ${reason.join(" ")}` : null}` });
+  await msg.guild.unban(user, "Softban.");
 
   /* Handle Moderation Logs */
   const moderation = new client.Moderation(msg);

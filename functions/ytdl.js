@@ -5,6 +5,7 @@ class YoutubeDownloader {
   constructor() {
     this.getInfo = YoutubeDownloader.getInfo;
     this.download = YoutubeDownloader.download;
+    this.getRelated = YoutubeDownloader.getRelated;
   }
 
   static getInfo(url) {
@@ -14,6 +15,19 @@ class YoutubeDownloader {
         else resolve(info);
       });
     });
+  }
+
+  static async getRelated(url) {
+    const output = [];
+    const data = await this.getInfo(url);
+    data.related_videos.forEach((v) => { if (v.id) output.push(`https://youtu.be/${v.id}`); });
+    return output;
+  }
+
+  static getLink(arr) {
+    const output = [];
+    arr.forEach((v) => { if (v.id) output.push(`https://youtu.be/${v.id}`); });
+    return output[0];
   }
 
   static download(url, typeFormat, dir, filename) {

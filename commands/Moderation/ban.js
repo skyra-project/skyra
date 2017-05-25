@@ -1,7 +1,5 @@
 /* eslint-disable no-throw-literal */
-exports.run = async (client, msg, [search, flag = 0, ...reason]) => {
-  flag = +Boolean(flag);
-
+exports.run = async (client, msg, [search, ...reason]) => {
   /* Initialize Search */
   const user = await client.search.User(search, msg.guild, true);
   const member = msg.guild.member(user) || null;
@@ -14,7 +12,7 @@ exports.run = async (client, msg, [search, flag = 0, ...reason]) => {
   }
 
   user.action = "ban";
-  await msg.guild.ban(user, flag);
+  await msg.guild.ban(user, { days: 1, reason: `${reason ? reason.join(" ") : null}` });
   msg.send(`|\`🔨\`| **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
 
   /* Handle Moderation Logs */
@@ -37,6 +35,6 @@ exports.conf = {
 exports.help = {
   name: "ban",
   description: "Ban the mentioned user.",
-  usage: "<SearchMember:string> [d|delete] [reason:str] [...]",
+  usage: "<SearchMember:string> [reason:str] [...]",
   usageDelim: " ",
 };

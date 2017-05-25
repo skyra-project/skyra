@@ -1,17 +1,17 @@
 exports.run = async (client, msg, [...words]) => {
   /* Check if there are enough words */
-  if (words.length < 2) throw new RangeError("Please write at least 2 options separated with `, `");
+  if (words.length < 2) throw new RangeError("Please write at least 2 options separated with ', '.");
 
   /* Filter duplicated words */
   const aword = [];
   const filtered = [];
 
   for (let i = 0; i < words.length; i++) {
-    if (aword.includes(words[i])) aword.push(words[i]);
+    if (!aword.includes(words[i])) aword.push(words[i]);
     else filtered.push(words[i]);
   }
 
-  if (aword.length < 2) throw new RangeError(`Why would I accept duplicated words? \`${filtered.join("`, `")}\``);
+  if (aword.length < 2) throw new RangeError(`Why would I accept duplicated words? '${filtered.join("', '")}'.`);
 
   await msg.send([
     `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${msg.author}, I choose:`,

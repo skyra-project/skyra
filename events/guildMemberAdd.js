@@ -52,20 +52,20 @@ class GuildMemberAdd {
 
   handleMute() {
     this.sendLog("mute");
-    if (!this.guild.member(this.client.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return false;
+    if (!this.guild.me.permissions.has("MANAGE_ROLES_OR_PERMISSIONS")) return false;
     const muteRole = this.configs.roles.muted;
     if (!muteRole) return false;
     const role = this.guild.roles.get(muteRole);
     if (role) return this.member.addRole(role);
-    this.client.rethink.update("guilds", this.guild.id, { roles: { muted: null } });
+    this.configs.update({ roles: { muted: null } });
     return this.sendLog("muteRemove");
   }
 
   async giveInitial() {
     const roleID = this.configs.initialRole;
     const role = this.guild.roles.get(roleID);
-    if (!role) {
-      await this.client.rethink.update("guilds", this.guild.id, { initialRole: null });
+    if (roleID && !role) {
+      await this.configs.update({ initialRole: null });
       await this.sendLog("roleRemove");
       return;
     }
@@ -97,8 +97,10 @@ class GuildMemberAdd {
   sendMessage(channel) {
     const target = this.guild.channels.get(channel);
     if (target) return target.send(this.message);
-    this.client.rethink.update("guilds", this.guild.id, { channels: { default: null } });
-    this.client.rethink.update("guilds", this.guild.id, { events: { sendMessage: { greeting: false } } });
+    this.configs.update({
+      channels: { default: null },
+      events: { sendMessage: { greeting: false } },
+    });
     return this.sendLog("disable");
   }
 

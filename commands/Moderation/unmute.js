@@ -48,6 +48,6 @@ exports.conf = {
 exports.help = {
   name: "unmute",
   description: "Unmute the mentioned user.",
-  usage: "<SearchMember:user> [reason:str] [...]",
+  usage: "<SearchMember:str> [reason:str] [...]",
   usageDelim: " ",
 };

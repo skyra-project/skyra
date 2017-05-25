@@ -3,9 +3,9 @@ exports.run = async (client, msg) => {
   const banners = require(`${client.clientBaseDir}assets/banners.json`).wave1;
   const list = [];
   for (const key in banners) {
-    if (banners.hasOwnProperty(key)) list.push(banners[key].author);
+    if (key in banners) list.push(banners[key].author);
   }
-  await msg.sendCode(list.join("\n"));
+  await msg.send(list.join("\n"), { code: true });
 };
 
 

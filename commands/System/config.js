@@ -61,7 +61,7 @@ class Validator {
     if (type === "update") {
       const inputType = this.validation[folder][subfolder].type;
       if (!input) throw `You must provide a value type: ${inputType}`;
-      const output = await this.update(folder, subfolder, input.toLowerCase(), inputType);
+      const output = await this.update(folder, subfolder, input, inputType);
       return `Success. Changed value **${subfolder}** to **${output}**`;
     }
 
@@ -81,20 +81,20 @@ class Validator {
   async parse(type, input) {
     switch (type) {
       case "Boolean": {
-        if (/^(true|1|\+)$/.test(input)) return true;
-        else if (/^(false|0|-)$/.test(input)) return false;
+        if (/^(true|1|\+)$/.test(input.toLowerCase())) return true;
+        else if (/^(false|0|-)$/.test(input.toLowerCase())) return false;
         throw "Expected Boolean. (true|1|+)/(false|0|-)";
       }
       case "String": {
         return input;
       }
       case "Role": {
-        const role = await this.client.search.Role(input, this.guild);
+        const role = await this.client.search.Role(input.toLowerCase(), this.guild);
         if (role) return role;
         throw "Expected Role.";
       }
       case "TextChannel": {
-        const channel = await this.client.search.Channel(input, this.guild);
+        const channel = await this.client.search.Channel(input.toLowerCase(), this.guild);
         if (channel) return channel;
         throw "Expected Channel.";
       }

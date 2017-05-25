@@ -19,22 +19,24 @@ class LockDown {
     if (this.channel.postable) await message.edit(`The channel ${this.channel} has been locked.`);
     if (time) {
       time = this.client.wrappers.timer(time);
-      this.channel.lockdown = setTimeout(async () => { await this.unlock(); }, time);
+      this.channel.lockdown = setTimeout(() => { this.unlock().then(c => message.edit(c).catch()).catch(e => this.msg.error(e)); }, time);
     }
   }
 }
 
 exports.run = async (client, msg, [channel = msg.channel, ...time]) => {
   const lockdown = new LockDown(msg, channel);
-  if (msg.channel.lockdown) await lockdown.unlock();
-  else await lockdown.lock(time);
+  if (msg.channel.lockdown) {
+    const response = await lockdown.unlock();
+    await msg.alert(response);
+  } else await lockdown.lock(time);
 };
 
 exports.conf = {
   enabled: true,
   runIn: ["text"],
   aliases: ["lock"],
-  permLevel: 3,
+  permLevel: 2,
   botPerms: ["MANAGE_CHANNELS"],
   requiredFuncs: [],
   spam: false,

@@ -13,7 +13,7 @@ const content = [
   "payments. Once I can afford that host, I'll be very happy, and I'll thank you a lot",
   "if you help me.\n\nI'm a 18 years old college student from Spain who enjoys coding",
   "a lot 😛, I have some neat projects coming soon, but Skyra is first priority!",
-  "```If you want to donate, there's the link: https://www.paypal.me/kyranet",
+  "```If you want to donate, there's the link: paypal.me/kyranet",
 ].join(" ");
 
 exports.run = async (client, msg) => {

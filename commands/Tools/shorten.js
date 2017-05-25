@@ -37,7 +37,7 @@ exports.help = {
     " ❯ Link: the URL you want shortened",
     "",
     "Examples:",
-    "&shorten https://www.youtube.com/watch?v=-QB7pw2wCiU",
-    "❯❯ \" Shortened URL: https://goo.gl/ougrBr \"",
+    "&shorten youtube.com/watch?v=-QB7pw2wCiU",
+    "❯❯ \" Shortened URL: goo.gl/ougrBr \"",
   ].join("\n"),
 };

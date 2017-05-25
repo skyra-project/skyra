@@ -68,7 +68,7 @@ class RethinkDB {
     if (typeof index === "number") {
       return r.table(table).get(id).update({ [uArray]: r.row(uArray).deleteAt(index) }).run();
     }
-    return false;
+    return r.table(table).get(id).update({ [uArray]: r.row(uArray).filter(it => it("id").ne(index)) }).run();
   }
 
   static async getFromArray(table, id, uArray, index) {

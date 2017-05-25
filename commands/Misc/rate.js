@@ -3,16 +3,15 @@ const seedrandom = require("seedrandom");
 exports.run = async (client, msg, [rateuser]) => {
   let ratewaifu;
   let rate;
-  let rated = rateuser.toLowerCase();
-  if (/you|yourself/i.test(rated)) {
+  if (/you|yourself/i.test(rateuser)) {
     rate = "100";
     ratewaifu = "I love myself a lot 😊";
     rateuser = "myself";
   } else {
-    if (/^(myself|me)$/i.test(rated)) rateuser = msg.author.username;
-    else rated = rated.replace(/\bmy\b/, "your");
+    if (/^(myself|me)$/i.test(rateuser)) rateuser = msg.author.username;
+    else rateuser = rateuser.replace(/\bmy\b/, "your");
 
-    const rng = 10 - (10 * seedrandom(rated.toLowerCase()).quick("kyra"));
+    const rng = 10 - (10 * seedrandom(rateuser.toLowerCase()).quick("kyra"));
     rate = Math.ceil(rng);
     ratewaifu = client.constants.oneToTen(rate).emoji;
   }

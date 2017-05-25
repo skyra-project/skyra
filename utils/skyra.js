@@ -42,25 +42,20 @@ class Skyra {
     return color || 14671839;
   }
 
-  alert(content = $("Content"), timer = 5000) {
-    if (this.channel.postable) {
-      return this.send(content).then(m => m.nuke(timer));
-    }
-    return null;
+  alert(content = $("Content"), timer = 10000) {
+    if (!this.channel.postable) return null;
+    return this.send(content).then(m => m.nuke(timer));
   }
 
   error(content = "", log = false) {
-    if (log) this._client.emit("error", content);
-    if (this.channel.postable) {
-      return this.send(`|\`❌\`| **ERROR**:\n${"```"}LDIF\n${content}${"```"}`).then(m => m.nuke(10000));
-    }
-    return null;
+    if (log) this.client.emit("error", content);
+    return this.alert(`|\`❌\`| **ERROR**:\n${"```"}js\n${content}${"```"}`);
   }
 
-  nuke(time = 0, edit = 0) {
+  nuke(time = 0) {
     setTimeout(() => {
       const msg = this.channel.messages.get(this.id);
-      if (msg && msg._edits.length === edit) this.delete();
+      if (msg && msg._edits.length === this._edits.length) this.delete();
     }, time);
   }
 
@@ -68,6 +63,7 @@ class Skyra {
     const message = await this.send(content);
     if (this.channel.permissionsFor(this.guild.me).has("ADD_REACTIONS")) await Skyra.awaitReaction(this, message);
     else await Skyra.awaitMessage(this);
+    return true;
   }
 
   static async awaitReaction(msg, message) {

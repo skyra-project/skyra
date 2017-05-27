@@ -30,9 +30,9 @@ const format = async (msg) => {
 };
 
 exports.run = async (client, msg) => {
-  const message = await msg.send("Searching for code to beautify...");
-  const res = await format(message);
-  await message.edit(res);
+  await msg.send("Searching for code to beautify...");
+  const res = await format(msg);
+  await msg.send(res);
 };
 
 exports.conf = {

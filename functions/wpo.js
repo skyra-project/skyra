@@ -1,6 +1,4 @@
 const request = require("request");
-const log = require("./log.js");
-const Constants = require("./constants.js");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -8,8 +6,8 @@ const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 class WatchPoint {
   constructor(client) {
     Object.defineProperty(this, "_client", { value: client });
-    Object.defineProperty(this, "_constants", { value: new Constants(client) });
-    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._constants.config.wpoUser}:${this._constants.config.wpoPass}`).toString("base64")}` });
+    Object.defineProperty(this, "_keys", { value: client.constants.tokens.wpo });
+    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._keys.user}:${this._keys.password}`).toString("base64")}` });
   }
 
   API(method, query, string) {
@@ -20,7 +18,7 @@ class WatchPoint {
         json: true,
         method,
       }, (error, response, body) => {
-        if (response.statusCode !== 200) WatchPoint.errorCatcher(WatchPoint.errorHandler(response.statusCode), string ? `${string}${query}` : null).catch(reject);
+        if (response.statusCode !== 200) WatchPoint.errorCatcher(this._client.constants.httpResponses(response.statusCode), string ? `${string}${query}` : null).catch(reject);
         else if (error) WatchPoint.errorCatcher(error, string ? `${string}${query}` : null).catch(reject);
         resolve(body);
       });
@@ -108,18 +106,14 @@ class WatchPoint {
   static errorCatcher(err, string = null) {
     return new Promise((resolve, reject) => {
       if (!string) reject(err);
-      else log(`${string} >> ${err}`, "error");
+      // else log(`${string} >> ${err}`, "error");
     });
-  }
-
-  static errorHandler(err) {
-    return `[${err}] ${Constants.httpResponses(err) || ""}`;
   }
 }
 
-exports.init = (client) => {
-  if (!client.hasOwnProperty("cache")) client.cache = {};
-  client.cache.wpo = new Map();
-  client.wpo = new WatchPoint(client);
-  // client.wpo.list("256566731684839428");
-};
+// exports.init = (client) => {
+//   if (!client.hasOwnProperty("cache")) client.cache = {};
+//   client.cache.wpo = new Map();
+//   client.wpo = new WatchPoint(client);
+//   // client.wpo.list("256566731684839428");
+// };

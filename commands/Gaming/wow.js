@@ -34,32 +34,32 @@ const genders = {
 };
 
 exports.run = async (client, msg, [server, character, ...realm]) => {
-  const cfg = client.constants.config;
-  const url = `https://${server.toLowerCase()}.api.battle.net/wow/character/${encodeURIComponent(realm)}/${encodeURIComponent(character)}?fields=stats&apikey=${cfg.bliztoken}`;
+  const { blizzard } = client.constants.getConfig.tokens;
+  const url = `https://${server.toLowerCase()}.api.battle.net/wow/character/${encodeURIComponent(realm)}/${encodeURIComponent(character)}?fields=stats&apikey=${blizzard}`;
   try {
     msg.channel.startTyping();
-    const res = await client.wrappers.requestJSON(url);
+    const { data } = await client.fetch.JSON(url);
 
     const embed = new client.methods.Embed()
-      .setTitle(`**World of Warcraft Stats:** *${res.name}*`)
+      .setTitle(`**World of Warcraft Stats:** *${data.name}*`)
       .setColor(0x04AB41)
       .setDescription(client.indents`
-        Level: **${res.level}**
-        ${res.totalHonorableKills ? `**${res.totalHonorableKills}** honorable kills.` : "No honorable kills."}
-        Realm: **${res.realm}**${res.battlegroup !== "" ? `; battlegroup: **${res.battlegroup}**.` : "."}
+        Level: **${data.level}**
+        ${data.totalHonorableKills ? `**${data.totalHonorableKills}** honorable kills.` : "No honorable kills."}
+        Realm: **${data.realm}**${data.battlegroup !== "" ? `; battlegroup: **${data.battlegroup}**.` : "."}
         \u200B
         `)
       .setFooter("📊 Statistics")
       .setThumbnail("https://us.battle.net/forums/static/images/game-logos/game-logo-wow.png")
       .setTimestamp()
-      .addField(`❯ ${res.name} ${genders[res.gender]}`, client.indents`
-        Level: **${res.level}**.
-        Character stats: **${res.stats.health}** health and **${res.stats.armor}** armor.
-        Class: **${classes[res.class]}**.
-        Race: **${races[res.race] ? races[res.race] : res.race}**.
-        Power type: **${res.stats.powerType}**.
+      .addField(`❯ ${data.name} ${genders[data.gender]}`, client.indents`
+        Level: **${data.level}**.
+        Character stats: **${data.stats.health}** health and **${data.stats.armor}** armor.
+        Class: **${classes[data.class]}**.
+        Race: **${races[data.race] ? races[data.race] : data.race}**.
+        Power type: **${data.stats.powerType}**.
 
-        Total achievement points: **${res.achievementPoints}**.
+        Total achievement points: **${data.achievementPoints}**.
         `, true);
 
     await msg.sendEmbed(embed);

@@ -8,15 +8,15 @@ const etype = {
 };
 
 exports.run = async (client, msg, [args]) => {
-  const constants = client.constants;
+  const { constants } = client;
   /* Autentification */
-  const cfg = constants.config;
-  const auth = constants.basicAuth(cfg.aluser, cfg.alpass);
+  const { user, password } = constants.getConfig.tokens.animelist;
+  const Authorization = constants.basicAuth(user, password);
 
   /* URI Query */
-  const requestUrl = `https://myanimelist.net/api/anime/search.xml?q=${encodeURIComponent(args.toLowerCase())}`;
-  const result = await client.wrappers.requestXML({ url: requestUrl, headers: { Authorization: auth } }).catch(() => { throw new Error(client.constants.httpResponses(404)); });
-  const fres = result.anime.entry[0];
+  const url = `https://myanimelist.net/api/anime/search.xml?q=${encodeURIComponent(args.toLowerCase())}`;
+  const { data } = await client.fetch.XML(url, { headers: { Authorization } }).catch(() => { throw new Error(client.constants.httpResponses(404)); });
+  const fres = data.anime.entry[0];
   const context = htmlToText.fromString(fres.synopsis.toString());
   const score = Math.ceil(parseFloat(fres.score));
   const embed = new client.methods.Embed()

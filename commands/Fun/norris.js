@@ -1,8 +1,8 @@
 exports.run = async (client, msg) => {
-  const res = await client.wrappers.requestJSON("https://api.chucknorris.io/jokes/random");
+  const { data } = await client.fetch.JSON("https://api.chucknorris.io/jokes/random");
   const embed = new client.methods.Embed()
     .setColor(msg.color)
-    .setDescription(`📢 **Chuck Norris' fact:** *${res.value}*`);
+    .setDescription(`📢 **Chuck Norris' fact:** *${data.value}*`);
 
   await msg.sendEmbed(embed);
 };

@@ -13,17 +13,17 @@ const inf = {
 };
 /* eslint-disable import/no-dynamic-require */
 exports.run = async (client, msg, [gamemode, information, ...username]) => {
-  const cfg = client.constants.config;
+  const { osu } = client.constants.getConfig.tokens;
 
   gamemode = game[gamemode.toUpperCase()];
   information = inf[information.toUpperCase()];
   username = username[0].split(" ").join("+");
-  const url = `https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${cfg.osutoken}`;
+  const url = `https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${osu}`;
   try {
     msg.channel.startTyping();
-    const res = await client.wrappers.requestJSON(url);
-    if (!res[0]) throw new Error(client.constants.httpResponses(404));
-    const uinfo = res[0];
+    const { data } = await client.fetch.JSON(url);
+    const uinfo = data[0];
+    if (!uinfo) throw new Error(client.constants.httpResponses(404));
     const embed = new client.methods.Embed()
       .setColor(msg.guild.members.get(client.user.id).highestRole.color || 0xdfdfdf);
     switch (information) {

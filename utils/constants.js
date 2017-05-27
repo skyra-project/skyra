@@ -1,4 +1,5 @@
-const { sep } = require("path");
+const { sep, join } = require("path");
+const { STATUS_CODES } = require("http");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -39,61 +40,21 @@ const overwatchHeroes = {
   lucio: "0x02E0000000000079",
   lúcio: "0x02E0000000000079",
   dva: "0x02E000000000007A",
-  "d.va": "0x02E000000000007A",
   mei: "0x02E00000000000DD",
   sombra: "0x02E000000000012E",
   ana: "0x02E000000000013B",
   orisa: "0x02E000000000013E",
 };
 
-const httpResponses = {
-  400: "Bad Request",
-  401: "Unauthorized",
-  403: "Forbidden",
-  404: "Not Found",
-  406: "Not Acceptable",
-  410: "Gone",
-  420: "Ratelimited",
-  429: "Too Many Requests",
-  500: "Internal Server Error",
-  502: "Bad Gateway",
-  503: "Service Unavailable",
-  504: "Gateway timeout",
-};
-
 /* eslint-disable valid-jsdoc, no-underscore-dangle, no-prototype-builtins, global-require, import/no-dynamic-require */
-class Constants {
-  constructor(client) {
-    Object.defineProperty(this, "_client", { value: client });
-    Object.defineProperty(this, "oneToTen", { value: Constants.oneToTen });
-    Object.defineProperty(this, "owHero", { value: Constants.owHero });
-    this.httpResponses = Constants.httpResponses;
-    this.basicAuth = Constants.basicAuth;
-  }
+exports.oneToTen = level => oneToTen[level];
 
-  static oneToTen(level) {
-    return oneToTen[level];
-  }
+exports.owHero = hero => overwatchHeroes[hero] || null;
 
-  static owHero(hero) {
-    return overwatchHeroes[hero] || null;
-  }
+exports.basicAuth = (user = $("User"), pass = $("Password")) => `Basic ${new Buffer(`${user}:${pass}`).toString("base64")}`;
 
-  static basicAuth(user = $("User"), pass = $("Password")) {
-    return `Basic ${new Buffer(`${user}:${pass}`).toString("base64")}`;
-  }
+exports.httpResponses = code => `[${code}] ${STATUS_CODES[code]}`;
 
-  static httpResponses(code) {
-    return httpResponses[code] || null;
-  }
+exports.assets = join(__dirname, "../", "assets") + sep;
 
-  get assets() {
-    return `${this._client.clientBaseDir}assets${sep}`;
-  }
-
-  get config() {
-    return require(`${this._client.clientBaseDir}config.js`);
-  }
-}
-
-module.exports = Constants;
+exports.getConfig = require("../config.js");

@@ -1,7 +1,7 @@
 /* eslint-disable */
 const fs = require("fs-extra-promise");
 const moment = require("moment");
-const util = require("util");
+const { inspect, sep } = require("util");
 const now = require("performance-now");
 
 const { Console } = require("console");
@@ -10,34 +10,47 @@ const errorOutput = fs.createWriteStream("./stderr.log");
 const logger = new Console(output, errorOutput).log;
 /* eslint-enable */
 
+exports.parse = (toEval) => {
+  let input;
+  let type;
+  if (toEval[0] === "async") {
+    input = toEval.slice(1).join(" ");
+    type = true;
+  } else {
+    input = toEval.join(" ");
+    type = false;
+  }
+  return { type, input };
+};
+
 /* eslint-disable no-eval */
-exports.run = async (client, msg, [type = false, ...args]) => {
+exports.run = async (client, msg, [args]) => {
   const send = [];
   const start = now();
-  args = args.join(" ");
+  const { type, input } = this.parse(args.split(" "));
   try {
     // EVAL
-    const input = type ? `(async () => { ${args} })()` : args;
-    const res = await eval(input);
+    const toEval = type ? `(async () => { ${input} })()` : input;
+    const res = await eval(toEval);
     const time = now() - start;
 
     // INSPECT
     let out;
     if (typeof res === "object" && typeof res !== "string") {
-      out = util.inspect(res, { depth: 0 });
+      out = inspect(res, { depth: 0 });
       if (typeof out === "string" && out.length > 1900) out = res.toString();
     } else { out = res; }
 
     // SEND MESSAGE
     send.push(`➡ **Input:** Executed in ${time.toFixed(5)}ms${"```"}js`);
-    send.push(`${args.replace(/```/g, "`\u200b``")}${"```"}`);
+    send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
     send.push("🔍 **Inspect:**```js");
     send.push(`${client.funcs.clean(client, out)}${"```"}`);
   } catch (err) {
     send.push(`➡ **Input:** Executed in ${(now() - start).toFixed(5)}ms${"```"}js`);
-    send.push(`${args.replace(/```/g, "`\u200b``")}${"```"}`);
+    send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
     send.push("❌ **Error:**```js");
-    send.push(`${(err.message || err)}${"```"}`);
+    send.push(`${(err ? err.message || err : "< void >")}${"```"}`);
   } finally {
     msg.send(send.join("\n")).catch(err => msg.error(err));
   }
@@ -57,7 +70,7 @@ exports.conf = {
 exports.help = {
   name: "eval",
   description: "Evaluates arbitrary Javascript. Not for the faint of heart.",
-  usage: "[async] <expression:str> [...]",
-  usageDelim: " ",
+  usage: "<expression:str>",
+  usageDelim: "",
   extendedHelp: "",
 };

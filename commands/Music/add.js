@@ -1,6 +1,14 @@
+const { promisifyAll } = require("tsubaki");
+const { getInfoAsync } = promisifyAll(require("ytdl-core"));
+
 /* eslint-disable no-throw-literal, no-prototype-builtins */
+exports.getLink = (arr) => {
+  const output = arr.find(v => v.id);
+  return `https://youtu.be/${output.id}`;
+};
+
 exports.getYouTube = async (client, msg, url) => {
-  const info = await client.ytdl.getInfo(url).catch((e) => { throw `Something happened with YouTube URL: ${url}\nError: ${e}`; });
+  const info = await getInfoAsync(url).catch((e) => { throw `Something happened with YouTube URL: ${url}\n${e}`; });
   if (parseInt(info.length_seconds) > 600 && msg.member.voiceChannel.members.size >= 4) {
     throw "This song is too long, please add songs that last less than 10 minutes.";
   }
@@ -16,7 +24,7 @@ exports.getYouTube = async (client, msg, url) => {
     loudness: info.loudness,
     seconds: parseInt(info.length_seconds),
   });
-  client.queue[msg.guild.id].next = client.ytdl.getLink(info.related_videos);
+  client.queue[msg.guild.id].next = this.getLink(info.related_videos);
   return info;
 };
 
@@ -24,8 +32,9 @@ exports.findYoutube = async (client, msg, url) => {
   if (url.startsWith("https://www.youtube.com/watch?v=") || url.startsWith("https://youtu.be/")) {
     return this.getYouTube(client, msg, url);
   }
-  const res = await client.wrappers.requestJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${client.constants.config.GoogleAPIKey}`);
-  const video = res.items[0];
+  const { google } = client.constants.getConfig.tokens;
+  const { data } = await client.fetch.JSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`);
+  const video = data.items.find(item => item.id.kind !== "youtube#channel");
   return this.getYouTube(client, msg, `https://youtu.be/${video.id.videoId}`);
 };
 

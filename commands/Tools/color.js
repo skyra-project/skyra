@@ -56,18 +56,18 @@ const showColor = async (client, color, diff) => {
 
 exports.run = async (client, msg, [input, diff = 10]) => {
   const color = client.ResolverColor.validate(input);
-  const hex = color.hex;
-  const hsl = color.hsl;
+  const { hex } = color;
+  const { hsl } = color;
 
   const hsluv = client.ResolverColor.hex2hsluv(hex.r, hex.g, hex.b);
 
   const output = await showColor(client, color.rgb, diff);
-  await msg.channel.sendFile(output, "color.png", [
+  await msg.channel.send([
     `Color: **#${hex.r}${hex.g}${hex.b}**`,
     `RGB: ${color.rgb.parsed}`,
     `HSL: hsl(${hsl.h}, ${hsl.s}, ${hsl.l})`,
     `HSLᵤᵥ: hsluv(${hsluv.h}, ${hsluv.s}, ${hsluv.l})`,
-  ].join("\n"));
+  ].join("\n"), { files: [{ attachment: output, name: "color.png" }] });
 };
 
 exports.conf = {

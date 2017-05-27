@@ -7,8 +7,8 @@ const { inspect } = require("util");
 exports.run = async (client, msg, [url]) => {
   const out = {};
 
-  const data = await snekfetch.get(url);
-  himalaya.parse(data.text)[1]
+  const { text } = await snekfetch.get(url);
+  himalaya.parse(text)[1]
     .children[1]
     .children.filter(obj => obj.tagName === "div")[1]
     .children.find(obj => obj.tagName === "div")

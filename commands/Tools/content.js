@@ -1,5 +1,5 @@
 exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) => {
-  if (!/[0-9]{17,18}/.test(searchMessage)) throw new ReferenceError("Invalid message ID");
+  if (!/[0-9]{17,21}/.test(searchMessage)) throw new ReferenceError("Invalid message ID");
   const channel = await client.search.Channel(searchChannel, msg.guild);
   const m = await channel.fetchMessage(searchMessage);
 

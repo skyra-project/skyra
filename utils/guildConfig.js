@@ -6,25 +6,59 @@ module.exports = class GuildConfig {
     Object.defineProperty(this, "client", { value: guild.client });
     Object.defineProperty(this, "guild", { value: guild });
     Object.defineProperty(this, "_configuration", { value: this.client.guildCache.get(guild.id) || { events: { sendMessage: {} }, exists: false } });
-    Object.defineProperty(this, "moderation", { value: new Moderation(guild) });
     Object.defineProperty(this, "exists", { value: this._configuration.exists !== false });
     Object.defineProperty(this, "_mutes", { value: this._configuration.mutes || [] });
     this.id = guild.id;
     this.createdAt = this._configuration.createdAt || null;
-    this.roles = this._configuration.roles || {};
-    this.channels = this._configuration.channels || {};
-    this.events = this._configuration.events;
     this.events.sendMessage = this._configuration.events.sendMessage || {};
     this.mode = this._configuration.mode || 0;
     this.prefix = this._configuration.prefix || "&";
     this.wordFilter = this._configuration.wordFilter || 0;
-    this.selfmod = this._configuration.selfmod || {};
     this.initialRole = this._configuration.initialRole || null;
-    this.ignoreChannels = this._configuration.ignoreChannels || [];
-    this.disabledCommands = this._configuration.disabledCommands || [];
-    this.disabledCmdChannels = this._configuration.disabledCmdChannels || [];
-    this.publicRoles = this._configuration.publicRoles || [];
-    this.autoroles = this._configuration.autoroles || [];
+  }
+
+  get roles() {
+    return this._configuration.roles || {};
+  }
+
+  get moderation() {
+    return new Moderation(this.guild);
+  }
+
+  get events() {
+    return this._configuration.events || {};
+  }
+
+  get channels() {
+    return this._configuration.channels || {};
+  }
+
+  get messages() {
+    return this.events.sendMessage || {};
+  }
+
+  get selfmod() {
+    return this._configuration.selfmod || {};
+  }
+
+  get disabledCommands() {
+    return this._configuration.disabledCommands || [];
+  }
+
+  get disabledCmdChannels() {
+    return this._configuration.disabledCmdChannels || [];
+  }
+
+  get publicRoles() {
+    return this._configuration.publicRoles || [];
+  }
+
+  get autoroles() {
+    return this._configuration.autoroles || [];
+  }
+
+  get ignoreChannels() {
+    return this._configuration.ignoreChannels || [];
   }
 
   get mutes() {

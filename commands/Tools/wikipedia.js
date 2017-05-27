@@ -1,11 +1,11 @@
 exports.run = async (client, msg, [input]) => {
-  input = encodeURIComponent(input.split(" ").join("_").toLowerCase());
-  const URL = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=${encodeURIComponent(input)}`;
+  input = encodeURIComponent(input.replace(/[ ]/g, "_").toLowerCase());
+  const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=${encodeURIComponent(input)}`;
 
-  const res = await client.wrappers.requestJSON(URL);
-  if (res.query.pageids[0] === "-1") throw new Error(client.constants.httpResponses(404));
+  const { data } = await client.fetch.JSON(url);
+  if (data.query.pageids[0] === "-1") throw new Error(client.constants.httpResponses(404));
 
-  const content = res.query.pages[res.query.pageids[0]];
+  const content = data.query.pages[data.query.pageids[0]];
   const wdef = content.extract.length > 1000 ?
     `${client.funcs.splitText(content.extract, 1000)}... [continue reading](https://en.wikipedia.org/wiki/${encodeURIComponent(input).replace(/\(/g, "%28").replace(/\)/g, "%29")})` :
     content.extract;

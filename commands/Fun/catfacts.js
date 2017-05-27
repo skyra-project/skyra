@@ -1,8 +1,8 @@
 exports.run = async (client, msg) => {
-  const res = await client.wrappers.requestJSON("http://catfacts-api.appspot.com/api/facts");
+  const { data } = await client.fetch.JSON("http://catfacts-api.appspot.com/api/facts?number=1");
   const embed = new client.methods.Embed()
     .setColor(msg.color)
-    .setDescription(`📢 **Catfact:** *${res.facts[0]}*`);
+    .setDescription(`📢 **Catfact:** *${data.facts[0]}*`);
 
   await msg.sendEmbed(embed);
 };

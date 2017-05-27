@@ -1,8 +1,8 @@
 exports.run = async (client, msg) => {
-  const res = await client.wrappers.requestJSON("http://api.yomomma.info/");
+  const { data } = await client.fetch.JSON("http://api.yomomma.info/");
   const embed = new client.methods.Embed()
     .setColor(msg.color)
-    .setDescription(`📢 **Yomomma joke:** *${res.joke}*`);
+    .setDescription(`📢 **Yomomma joke:** *${data.joke}*`);
 
   await msg.sendEmbed(embed);
 };

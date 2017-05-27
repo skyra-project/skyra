@@ -1,8 +1,16 @@
 /* eslint-disable no-throw-literal, consistent-return */
-const yt = require("ytdl-core");
+const { promisifyAll } = require("tsubaki");
+const ytdl = promisifyAll(require("ytdl-core"));
+
+const delayer = () => new Promise(res => setTimeout(() => res(), 300));
+
+const getLink = (arr) => {
+  const output = arr.find(v => v.id);
+  return `https://youtu.be/${output.id}`;
+};
 
 const autoPlayer = async (client, queue) => {
-  const info = await client.ytdl.getInfo(queue.next);
+  const info = await ytdl.getInfoAsync(queue.next);
   queue.songs.push({
     url: queue.next,
     title: info.title,
@@ -10,10 +18,10 @@ const autoPlayer = async (client, queue) => {
     loudness: info.loudness,
     seconds: info.length_seconds,
   });
-  queue.next = client.ytdl.getLink(info.related_videos);
+  queue.next = getLink(info.related_videos);
 };
 
-const play = (client, guild) => {
+const play = async (client, guild) => {
   const queue = client.queue[guild.id];
   if (!queue) return;
   const channel = queue.channel;
@@ -27,9 +35,9 @@ const play = (client, guild) => {
     });
   }
   queue.lastSong = song.url;
-  channel.send(`🎧 Playing: **${song.title}** as requested by: **${song.requester}**`);
-
-  const stream = yt(song.url, { audioonly: true }).on("error", err => channel.send(err));
+  await channel.send(`🎧 Playing: **${song.title}** as requested by: **${song.requester}**`);
+  await delayer();
+  const stream = ytdl(song.url, { audioonly: true }).on("error", err => channel.send(err));
 
   const dispatcher = queue.voiceConnection.playStream(stream, { passes: 5 })
     .on("end", () => this.skip(client, queue, guild))

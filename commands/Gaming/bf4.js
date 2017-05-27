@@ -6,52 +6,52 @@ exports.run = async (client, msg, [platform, name]) => {
   const url = `http://api.bf4stats.com/api/playerInfo?plat=${platform}&name=${encodeURIComponent(name)}&output=json`;
   try {
     msg.channel.startTyping();
-    const res = await client.wrappers.requestJSON(url);
+    const { data } = await client.fetch.JSON(url);
     const embed = new client.methods.Embed()
       .setColor(0x04ABA1)
       .setThumbnail("http://battlefield-clans.com/images/bf4_vertical.png")
-      .setTitle(`Battlefield 4 Stats: ${res.player.name}`)
+      .setTitle(`Battlefield 4 Stats: ${data.player.name}`)
       .setDescription("\u200B")
       .addField("PROFILE", client.indents`
-        Rank: **${res.player.rank.nr}** (${res.player.rank.name}).${!res.player.rank.next ? "" : `
-            Next: **${res.player.rank.next.nr}** (${res.player.rank.next.name}) in **${(res.player.rank.next.needed - res.player.rank.needed) - (res.player.rank.next.curr - res.player.rank.needed)}**xp (**${res.player.rank.next.relProg.toFixed(0)}%**).\n`}
-        Last connection: ${moment.utc(new Date(DateToTime(res.player.lastDay))).format("YYYY/MM/DD")}.
-        Last update: ${moment.utc(res.player.dateUpdate).format("YYYY/MM/DD [at] hh:mm:ss")}.
+        Rank: **${data.player.rank.nr}** (${data.player.rank.name}).${!data.player.rank.next ? "" : `
+            Next: **${data.player.rank.next.nr}** (${data.player.rank.next.name}) in **${(data.player.rank.next.needed - data.player.rank.needed) - (data.player.rank.next.curr - data.player.rank.needed)}**xp (**${data.player.rank.next.relProg.toFixed(0)}%**).\n`}
+        Last connection: ${moment.utc(new Date(DateToTime(data.player.lastDay))).format("YYYY/MM/DD")}.
+        Last update: ${moment.utc(data.player.dateUpdate).format("YYYY/MM/DD [at] hh:mm:ss")}.
 
-        **[Full profile](${res.player.blPlayer})**
+        **[Full profile](${data.player.blPlayer})**
         \u200B
       `)
       .addField("GENERAL STATISTICS", client.indents`
-        Time played: **${moment.duration(res.player.timePlayed * 1000).format("DD [**days,**] hh [**hours,**] mm [**mins,**] ss [**secs]")}.
-        Kills: **${res.stats.kills}**, deaths: **${res.stats.deaths}** and **${res.stats.killAssists}** assistances (**${(res.stats.kills / res.stats.deaths).toFixed(2)}** K/D).
+        Time played: **${moment.duration(data.player.timePlayed * 1000).format("DD [**days,**] hh [**hours,**] mm [**mins,**] ss [**secs]")}.
+        Kills: **${data.stats.kills}**, deaths: **${data.stats.deaths}** and **${data.stats.killAssists}** assistances (**${(data.stats.kills / data.stats.deaths).toFixed(2)}** K/D).
 
-        Headshots: **${res.stats.headshots}**. In which, the longest was **${res.stats.longestHeadshot}**m.
-        Shots fired: **${res.stats.shotsFired}**, in which **${res.stats.shotsHit}** hit (**${((res.stats.shotsHit / res.stats.shotsFired) * 100).toFixed(2)}**% accuracy).
-        Played **${res.stats.numRounds}** rounds, won **${res.stats.numWins}** and lost **${res.stats.numLosses}** (**${(res.stats.numWins / res.stats.numLosses).toFixed(2)}** W/L).
+        Headshots: **${data.stats.headshots}**. In which, the longest was **${data.stats.longestHeadshot}**m.
+        Shots fired: **${data.stats.shotsFired}**, in which **${data.stats.shotsHit}** hit (**${((data.stats.shotsHit / data.stats.shotsFired) * 100).toFixed(2)}**% accuracy).
+        Played **${data.stats.numRounds}** rounds, won **${data.stats.numWins}** and lost **${data.stats.numLosses}** (**${(data.stats.numWins / data.stats.numLosses).toFixed(2)}** W/L).
         \u200B
       `)
       .addField("OTHER", client.indents`
         **ASSAULT**
-          Time: **${moment.duration(res.stats.kits.assault.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
-          Score: **${res.stats.kits.assault.score}**
-          Stars: **${res.stats.kits.assault.stars}**
+          Time: **${moment.duration(data.stats.kits.assault.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
+          Score: **${data.stats.kits.assault.score}**
+          Stars: **${data.stats.kits.assault.stars}**
 
         **ENGINEER**
-          Time: **${moment.duration(res.stats.kits.engineer.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
-          Score: **${res.stats.kits.engineer.score}**
-          Stars: **${res.stats.kits.engineer.stars}**
+          Time: **${moment.duration(data.stats.kits.engineer.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
+          Score: **${data.stats.kits.engineer.score}**
+          Stars: **${data.stats.kits.engineer.stars}**
       `, true)
       .addField("\u200B", client.indents`
         **SUPPORT**
-          Healed **${res.stats.heals}**, revived **${res.stats.revives}**.
-          Time: **${moment.duration(res.stats.kits.support.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
-          Score: **${res.stats.kits.support.score}**
-          Stars: **${res.stats.kits.support.stars}**
+          Healed **${data.stats.heals}**, revived **${data.stats.revives}**.
+          Time: **${moment.duration(data.stats.kits.support.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
+          Score: **${data.stats.kits.support.score}**
+          Stars: **${data.stats.kits.support.stars}**
 
         **RECON**
-          Time: **${moment.duration(res.stats.kits.recon.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
-          Score: **${res.stats.kits.recon.score}**
-          Stars: **${res.stats.kits.recon.stars}**
+          Time: **${moment.duration(data.stats.kits.recon.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
+          Score: **${data.stats.kits.recon.score}**
+          Stars: **${data.stats.kits.recon.stars}**
       `, true)
       .setFooter("📊 Statistics");
     await msg.sendEmbed(embed);

@@ -37,14 +37,14 @@ const selectFaction = (query) => {
 
 const showAlerts = async (client) => {
   const [res, bgBuffer, alertBuffer, fcBuffer, flBuffer] = await Promise.all([
-    client.wrappers.requestJSON("http://content.warframe.com/dynamic/worldState.php"),
+    client.fetch.JSON("http://content.warframe.com/dynamic/worldState.php"),
     fsp.readFileAsync(`${client.constants.assets}${warframeAssets}warframebanner.png`),
     fsp.readFileAsync(`${client.constants.assets}${warframeAssets}alertFull.png`),
     fsp.readFileAsync(`${client.constants.assets}${warframeAssets}factions.png`),
     fsp.readFileAsync(`${client.constants.assets}${warframeAssets}sprites${sep}flag.png`),
   ]);
 
-  const allAlerts = res.Alerts;
+  const allAlerts = res.data.Alerts;
 
   /* Generate Canvas */
   const c = new Canvas(370, 99 + (91 * allAlerts.length));

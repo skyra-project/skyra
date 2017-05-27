@@ -47,7 +47,7 @@ class Overwatch {
   static resolveProfile(player) {
     return new Promise(async (resolve, reject) => {
       const verifier = `https://playoverwatch.com/en-us/search/account-by-name/${encodeURIComponent(player.battletag)}`;
-      const profiles = await this._client.wrappers.requestJSON(verifier).catch(() => reject("please make sure you have written your profile correctly, this is case sensitive."));
+      const profiles = await this._client.fetch.JSON(verifier).then(d => d.data).catch(() => reject("please make sure you have written your profile correctly, this is case sensitive."));
       if (!profiles.length) reject("please make sure you have written your profile correctly, this is case sensitive.");
       const pf = player.platform;
       const sv = player.server;
@@ -72,7 +72,7 @@ class Overwatch {
 
   static fetchData(url, type, hero, mode) {
     return new Promise(async (resolve, reject) => {
-      const html = await this._client.wrappers.request(url).catch(reject);
+      const html = await this._client.fetch.kyraFetch(url).then(d => d.data);
       const $ = cheerio.load(html);
       let ProgressStats;
       if (!hero) { ProgressStats = $(`#${mode}`).children()["2"].children[0].children[2]; } else {
@@ -160,7 +160,8 @@ exports.help = {
   description: "Check stats from somebody in Overwatch.",
   usage: `<BattleTag:string> [pc|psn|xbl] [eu|us|kr] [${heroList.join("|")}] [${selectType.join("|")}] [quickplay|competitive]`,
   usageDelim: " ",
-  extendedHelp: ["Cheers love! The cavalry is here!",
+  extendedHelp: [
+    "Cheers love! The cavalry is here!",
     "",
     "Usage:",
     "&overwatch <BattleTag> [platform] [server] [hero] [type] [gamemode]",

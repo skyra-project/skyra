@@ -3,6 +3,8 @@ const UserProfile = require("./userProfile.js");
 const GuildConfigs = require("./guildConfig.js");
 const Moderation = require("./moderation.js");
 const MemberScore = require("./memberScore.js");
+const Fetch = require("./kyraFetch.js");
+const Constants = require("./constants.js");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -12,9 +14,18 @@ const Guild = Discord.Guild;
 const Message = Discord.Message;
 const GuildMember = Discord.GuildMember;
 const User = Discord.User;
+const Client = Discord.Client;
 
 /* eslint-disable no-underscore-dangle */
 class Skyra {
+  get fetch() { // eslint-disable-line class-methods-use-this
+    return Fetch;
+  }
+
+  get constants() { // eslint-disable-line class-methods-use-this
+    return Constants;
+  }
+
   get configs() {
     return new GuildConfigs(this);
   }
@@ -53,37 +64,51 @@ class Skyra {
   }
 
   nuke(time = 0) {
-    setTimeout(() => {
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
       const msg = this.channel.messages.get(this.id);
       if (msg && msg._edits.length === this._edits.length) this.delete();
     }, time);
   }
 
-  async Prompt(content = $("Prompt Content")) {
-    const message = await this.send(content);
+  async prompt(content, options) {
+    if (!options && typeof content === "object" && !(content instanceof Array)) {
+      options = content;
+      content = "";
+    } else if (!options) {
+      options = {};
+    }
+
+    const message = await this.send(content, options);
     if (this.channel.permissionsFor(this.guild.me).has("ADD_REACTIONS")) await Skyra.awaitReaction(this, message);
     else await Skyra.awaitMessage(this);
     return true;
   }
 
-  static async awaitReaction(msg, message) {
+  static awaitReaction(msg, message) {
     return new Promise(async (resolve, reject) => {
       try {
         await message.react("🇾");
         await message.react("🇳");
-        const reactions = await message.awaitReactions(reaction => reaction.users.has(msg.author.id), { time: 20000, max: 1 });
-        if (reactions.has("🇾")) resolve();
-        else reject();
+        const collector = message.createReactionCollector((reaction, user) => user.id === msg.author.id, { time: 20000, max: 1 });
+        collector.on("collect", (r) => {
+          if (r.emoji.name === "🇾") collector.stop("success");
+          else collector.stop();
+        });
+        collector.on("end", (collected, reason) => {
+          if (reason === "success") resolve();
+          else reject();
+        });
       } catch (e) {
         reject(e);
       }
     });
   }
 
-  static async awaitMessage(msg) {
+  static awaitMessage(msg) {
     return new Promise(async (resolve, reject) => {
       try {
-        const collector = msg.channel.createCollector(m => m.author === msg.author, { time: 20000, max: 1 });
+        const collector = msg.channel.createMessageCollector(m => m.author === msg.author, { time: 20000, max: 1 });
         collector.on("message", (m) => {
           if (m.content.toLowerCase() === "yes") collector.stop("success");
           else collector.stop();
@@ -109,6 +134,7 @@ const applyToClass = (structure, props) => {
 // applyToClass(DMChannel, []);
 // applyToClass(TextChannel, []);
 applyToClass(Guild, ["configs", "moderation"]);
-applyToClass(Message, ["error", "nuke", "color", "Prompt", "alert"]);
+applyToClass(Message, ["error", "nuke", "color", "prompt", "alert"]);
 applyToClass(GuildMember, ["points"]);
 applyToClass(User, ["profile"]);
+applyToClass(Client, ["fetch", "constants"]);

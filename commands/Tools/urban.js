@@ -1,8 +1,8 @@
 exports.run = async (client, msg, [query, ind = 1]) => {
   const index = ind - 1;
   if (index < 0) throw new Error("Invalid index");
-  const body = await client.wrappers.requestJSON(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
-  const result = body.list[index];
+  const { data } = await client.fetch.JSON(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
+  const result = data.list[index];
   if (result === undefined) throw new Error(client.constants.httpResponses(404));
   const wdef = result.definition.length > 1000 ?
     [`${client.funcs.splitText(result.definition, 1000)}...`, `Read the full definition here: ${result.permalink}`].join("\n") :
@@ -12,7 +12,7 @@ exports.run = async (client, msg, [query, ind = 1]) => {
     .setURL(result.permalink)
     .setColor(msg.color)
     .setThumbnail("http://i.imgur.com/CcIZZsa.png")
-    .setDescription([`**Definition:** ${ind} out of ${body.list.length}`,
+    .setDescription([`**Definition:** ${ind} out of ${data.list.length}`,
       `_${wdef}_`, "",
       "**Example:**",
       result.example, "",

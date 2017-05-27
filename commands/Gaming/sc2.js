@@ -13,38 +13,38 @@ const realms = {
 };
 
 exports.run = async (client, msg, [server, name, id]) => {
-  const cfg = client.constants.config;
+  const { blizzard } = client.constants.getConfig.tokens;
 
   server = realmsID[server.toLowerCase()];
-  const url = `https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${cfg.bliztoken}`;
+  const url = `https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${blizzard}`;
   msg.channel.startTyping();
   try {
-    const res = await client.wrappers.requestJSON(url);
-    if (res.code !== 200) throw new Error(client.constants.httpResponses(res.code));
+    const { data } = await client.fetch.JSON(url);
+    if (data.code !== 200) throw new Error(client.constants.httpResponses(data.code));
     const embed = new client.methods.Embed()
-      .setTitle(`StarCraft 2 Stats: ${res.displayName} (${res.id})`)
+      .setTitle(`StarCraft 2 Stats: ${data.displayName} (${data.id})`)
       .setColor(0x0B947F)
       .setDescription("\u200B")
-      .addField(`❯ ${res.displayName}`, client.indents`
-        Season total games: **${res.career.seasonTotalGames}**.
-        Career total games: **${res.career.careerTotalGames}**.
+      .addField(`❯ ${data.displayName}`, client.indents`
+        Season total games: **${data.career.seasonTotalGames}**.
+        Career total games: **${data.career.careerTotalGames}**.
 
-        Clan: **${res.clanName === "" ? "none" : `${res.clanName} (tag: ${res.clanTag})`}**.
-        Realm: **${realms[res.realm]}**
+        Clan: **${data.clanName === "" ? "none" : `${data.clanName} (tag: ${data.clanTag})`}**.
+        Realm: **${realms[data.realm]}**
 
-        Season: **${res.season.seasonId}** (Year **${res.season.seasonYear}**, **${res.season.seasonNumber}**).${res.season.totalGamesThisSeason === 0 ? "" : `\n\u200B    Total games this season: **${res.season.totalGamesThisSeason}**`}
+        Season: **${data.season.seasonId}** (Year **${data.season.seasonYear}**, **${data.season.seasonNumber}**).${data.season.totalGamesThisSeason === 0 ? "" : `\n\u200B    Total games this season: **${data.season.totalGamesThisSeason}**`}
 
-        **[Full profile](http://us.battle.net/sc2/en${res.profilePath})**
+        **[Full profile](http://us.battle.net/sc2/en${data.profilePath})**
         \u200B
         `, true)
       .addField("❯ Career statistics", client.indents`
-        Primary race: **${res.career.primaryRace}**.
-          Zerg wins: **${res.career.zergWins}**.
-          Terran wins: **${res.career.terranWins}**.
-          Protoss wins: **${res.career.protossWins}**.
+        Primary race: **${data.career.primaryRace}**.
+          Zerg wins: **${data.career.zergWins}**.
+          Terran wins: **${data.career.terranWins}**.
+          Protoss wins: **${data.career.protossWins}**.
         \u200B
         `, true)
-      .addField(`Total achievement points: ${res.achievements.points.totalPoints}.`, "\u200B")
+      .addField(`Total achievement points: ${data.achievements.points.totalPoints}.`, "\u200B")
       .setFooter("📊 Statistics")
       .setThumbnail("http://tecnoslave.com/wp-content/uploads/2012/08/Starcraft-II-logo.png")
       .setTimestamp();

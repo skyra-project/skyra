@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [input]) => {
   let number;
   let num;
@@ -6,20 +7,20 @@ exports.run = async (client, msg, [input]) => {
   if (input) {
     if (!isNaN(parseInt(input))) num = input;
     else if (typeof input === "string") query = input;
-    else return msg.send("Invalid input.");
+    else throw "Invalid input.";
   }
 
   try {
-    const xkcdInfo = await client.wrappers.requestJSON("http://xkcd.com/info.0.json");
+    const xkcdInfo = await client.fetch.JSON("http://xkcd.com/info.0.json").then(d => d.data);
     if (num) {
       if (num <= xkcdInfo.num) number = num;
-      else return msg.send(`Dear ${msg.author}, there are only ${xkcdInfo.num} comics.`);
+      else throw `Dear ${msg.author}, there are only ${xkcdInfo.num} comics.`;
     } else if (query) {
-      const searchQuery = await client.wrappers.requestJSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`);
+      const searchQuery = await client.fetch.JSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`).then(d => d.data);
       number = searchQuery.split(" ")[2].replace("\n", "");
     } else { number = Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1; }
 
-    const xkcdComic = await client.wrappers.requestJSON(`http://xkcd.com/${number}/info.0.json`);
+    const xkcdComic = await client.fetch.JSON(`http://xkcd.com/${number}/info.0.json`).then(d => d.data);
 
     const embed = new client.methods.Embed()
       .setColor(msg.color)
@@ -31,7 +32,7 @@ exports.run = async (client, msg, [input]) => {
     // FOR WHEN I GET AN HOST
     // msg.channel.sendFile(xkcdComic.img, undefined, xkcdComic.alt);
   } catch (e) {
-    return msg.send(`Not found: XKCD | ${number}`);
+    await msg.send(`Not found: XKCD | ${number}`);
   }
 };
 

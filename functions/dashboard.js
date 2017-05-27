@@ -212,6 +212,15 @@ exports.init = (client) => {
     });
   });
 
+  app.get("/banners", (req, res) => {
+    res.render(`${templateDir}banners.ejs`, {
+      bot: client,
+      user: req.user,
+      auth: req.isAuthenticated(),
+      md,
+    });
+  });
+
   app.get("/logout", (req, res) => {
     req.logout();
     res.redirect("/");

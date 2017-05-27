@@ -4,10 +4,6 @@ module.exports = class UserProfile {
     Object.defineProperty(this, "client", { value: user.client });
     Object.defineProperty(this, "user", { value: user });
     Object.defineProperty(this, "_profile", { value: this.client.cacheProfiles.get(user.id) || { exists: false } });
-    Object.defineProperty(this, "timeDaily", { value: this._profile.timeDaily || 0 });
-    Object.defineProperty(this._profile, "banners", { value: this._profile.banners || {} });
-    Object.defineProperty(this, "timerep", { value: this._profile.timerep || 0 });
-    Object.defineProperty(this, "lastUpdate", { value: this._profile.time || 0 });
     Object.defineProperty(this, "exists", { value: this._profile.exists !== false });
     this.id = user.id;
     this.points = this._profile.points || 0;
@@ -15,9 +11,30 @@ module.exports = class UserProfile {
     this.money = this._profile.money || 0;
     this.reputation = this._profile.reputation || 0;
     this.quote = this._profile.quote || null;
-    this.banners = {};
-    this.banners.theme = this._profile.banners.theme || "0001";
-    this.banners.level = this._profile.banners.level || "1001";
+  }
+
+  get timeDaily() {
+    return this._profile.timeDaily || 0;
+  }
+
+  get timerep() {
+    return this._profile.timerep || 0;
+  }
+
+  get lastUpdate() {
+    return this._profile.time || 0;
+  }
+
+  get banners() {
+    const banners = this._profile.banners || {};
+    return {
+      theme: banners.theme || "0001",
+      level: banners.level || "1001",
+    };
+  }
+
+  get bannerList() {
+    return this._profile.bannerList || [];
   }
 
   async create() {

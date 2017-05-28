@@ -38,9 +38,8 @@ exports.run = async (client, msg, [lang, ...input]) => {
 
   const res = await translator(input.join(" "), options);
   await msg.send([
-    `Dear ${msg.author}, the translation for *${input.join(" ")}* **[${res.from.language.iso.toUpperCase()}]** to **[${options.to.toUpperCase()}]** is:\`\`\``,
-    res.text,
-    "```",
+    `Dear ${msg.author}, the translation for *${input.join(" ")}* **[${res.from.language.iso.toUpperCase()}]** to **[${options.to.toUpperCase()}]** is:${"```"}`,
+    `${res.text}${"```"}`,
   ].join("\n"));
 };
 

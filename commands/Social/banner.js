@@ -1,4 +1,3 @@
-// const { sep } = require("path");
 /* eslint-disable import/no-dynamic-require, no-restricted-syntax, no-throw-literal */
 exports.run = async (client, msg, [action, value = null]) => {
   try {
@@ -37,13 +36,11 @@ exports.run = async (client, msg, [action, value = null]) => {
         this.prompt(client, msg, selected)
           .then(async () => {
             banners.push(selected.id);
-            await client.Social.use(msg.author, selected.price);
             const user = await client.fetchUser(selected.author);
-            await client.Social.add(user, selected.price * 0.1);
-            await msg.author.profile.update({ bannerList: banners });
+            await msg.author.profile.update({ money: selected.price - msg.author.profile.money, bannerList: banners });
+            await user.profile.add(selected.price * 0.1);
             await msg.send(`Dear ${msg.author}, you have successfully bought the banner "${selected.title}"`);
           })
-          // .catch(err => msg.error(err));
           .catch(() => msg.send(`Dear ${msg.author}, you cancelled your payment.`));
         break;
       }

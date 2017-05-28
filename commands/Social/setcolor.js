@@ -1,11 +1,11 @@
 exports.run = async (client, msg, [input]) => {
-  const color = client.ResolverColor.validate(input);
-  await msg.author.profile.update({ color: color.hex.parsed });
+  const { hex } = client.ResolverColor.validate(input);
+  await msg.author.profile.update({ color: hex.parsed });
 
   const embed = new client.methods.Embed()
-    .setColor(`0x${color.hex.parsed}`)
+    .setColor(`0x${hex.parsed}`)
     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
-    .setDescription(`Colour changed to #${color.hex.parsed}`);
+    .setDescription(`Colour changed to #${hex.parsed}`);
   await msg.sendEmbed(embed);
 };
 
@@ -18,7 +18,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 1,
-  cooldown: 60,
+  cooldown: 30,
 };
 
 exports.help = {

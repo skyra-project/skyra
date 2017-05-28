@@ -1,5 +1,5 @@
 const Canvas = require("canvas");
-const fsp = require("fs-extra-promise");
+const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
 
 const socialAssets = client => `${client.clientBaseDir}assets${sep}images${sep}social${sep}`;
@@ -35,8 +35,8 @@ const showProfile = async (client, user) => {
 
   const theme = profile.banners.theme;
   const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
-    fsp.readFileAsync(`${themes}${theme}.png`),
-    fsp.readFileAsync(`${socialAssets(client)}profile-foreground.png`),
+    readFileAsync(`${themes}${theme}.png`),
+    readFileAsync(`${socialAssets(client)}profile-foreground.png`),
     client.wrappers.canvasAvatar(user.displayAvatarURL),
   ]);
 

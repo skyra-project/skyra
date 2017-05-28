@@ -13,7 +13,6 @@ exports.run = async (client, msg) => {
   const embed = new client.methods.Embed()
     .setColor(msg.color)
     .setImage(randomkitty);
-
   await msg.sendEmbed(embed);
 };
 

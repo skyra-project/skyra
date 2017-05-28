@@ -1,5 +1,5 @@
 const Canvas = require("canvas");
-const fsp = require("fs-extra-promise");
+const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
 
 const Pray = async (client, user) => {
@@ -10,7 +10,10 @@ const Pray = async (client, user) => {
   const ctx = canvas.getContext("2d");
 
   /* Get the buffers from the praised user's profile avatar */
-  const praised = await client.wrappers.canvasAvatar(user.displayAvatarURL);
+  const [bgBuffer, praised] = await Promise.all([
+    readFileAsync(`${client.constants.assets}images${sep}memes${sep}f.png`),
+    client.wrappers.canvasAvatar(user.displayAvatarURL),
+  ]);
 
   /* Draw the buffer */
   imgPraised.onload = () => ctx.drawImage(imgPraised, 349, 87, 109, 109);
@@ -18,7 +21,7 @@ const Pray = async (client, user) => {
 
   /* Foreground */
   foreground.onload = () => ctx.drawImage(foreground, 0, 0, 960, 540);
-  foreground.src = await fsp.readFileAsync(`${client.constants.assets}images${sep}memes${sep}f.png`);
+  foreground.src = bgBuffer;
 
   /* Resolve Canvas buffer */
   return canvas.toBuffer();

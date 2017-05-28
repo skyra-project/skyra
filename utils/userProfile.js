@@ -46,6 +46,16 @@ module.exports = class UserProfile {
     if (!this.exists) new this.client.Create(this.client).CreateUser(this.id);
   }
 
+  async add(money) {
+    await this.update({ money: this.money + money });
+    return money;
+  }
+
+  async use(money) {
+    await this.update({ money: this.money - money });
+    return money;
+  }
+
   async update(doc) {
     await this.ensureProfile();
     await this.client.rethink.update("users", this.id, doc);

@@ -14,7 +14,6 @@ exports.run = async (client, msg) => {
   const embed = new client.methods.Embed()
     .setColor(msg.color)
     .setImage(randomdog);
-
   await msg.sendEmbed(embed);
 };
 

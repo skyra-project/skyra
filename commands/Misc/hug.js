@@ -1,5 +1,5 @@
 const Canvas = require("canvas");
-const fsp = require("fs-extra-promise");
+const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
 
 const Hug = async (client, msg, user) => {
@@ -14,7 +14,7 @@ const Hug = async (client, msg, user) => {
 
   /* Get the buffers from both profile avatars */
   const [bgBuffer, user1Buffer, user2Buffer] = await Promise.all([
-    fsp.readFileAsync(`${client.constants.assets}images${sep}memes${sep}hug.png`),
+    readFileAsync(`${client.constants.assets}images${sep}memes${sep}hug.png`),
     client.wrappers.canvasAvatar(user.displayAvatarURL),
     client.wrappers.canvasAvatar(msg.author.displayAvatarURL),
   ]);

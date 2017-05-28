@@ -1,22 +1,18 @@
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [money, ...search]) => {
-  try {
-    const user = await client.search.User(search.join(" "), msg.guild);
+  const user = await client.search.User(search.join(" "), msg.guild);
 
-    if (msg.author.id === user.id) throw "You can't pay yourself.";
-    else if (money <= 0) throw "Amount of money should be above 0.";
-    else if (msg.author.profile.money < money) throw `You can't pay with money you don't have. Current currency: ${msg.author.profile.money}`;
+  if (msg.author.id === user.id) throw "You can't pay yourself.";
+  else if (money <= 0) throw "Amount of money should be above 0.";
+  else if (msg.author.profile.money < money) throw `You can't pay with money you don't have. Current currency: ${msg.author.profile.money}`;
 
-    await msg.Prompt(`Dear ${msg.author}, you're going to pay ${money}₪ to ${user.username}, do you accept?`);
+  await msg.prompt(`Dear ${msg.author}, you're going to pay ${money}₪ to ${user.username}, do you accept?`)
+    .catch(() => { throw `Dear ${msg.author}, you have just cancelled the transfer.`; });
 
-    await client.Social.add(user, money);
-    await client.Social.use(msg.author, money);
+  await user.profile.add(money);
+  await msg.author.profile.use(money);
 
-    msg.alert(`Dear ${msg.author}, you have just paid ${money}₪ to **${user.username}**`);
-  } catch (e) {
-    if (e) msg.error(e);
-    else msg.alert(`Dear ${msg.author}, you have just cancelled the transfer.`);
-  }
+  msg.alert(`Dear ${msg.author}, you have just paid ${money}₪ to **${user.username}**`);
 };
 
 
@@ -29,7 +25,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 1,
-  cooldown: 60,
+  cooldown: 30,
 };
 
 exports.help = {

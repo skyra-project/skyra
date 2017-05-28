@@ -11,21 +11,20 @@ const inf = {
   BESTPLAYS: 3,
   RECENTPLAYS: 4,
 };
-/* eslint-disable import/no-dynamic-require */
-exports.run = async (client, msg, [gamemode, information, ...username]) => {
-  const { osu } = client.constants.getConfig.tokens;
 
+exports.run = async (client, msg, [gamemode, information, ...username]) => {
   gamemode = game[gamemode.toUpperCase()];
   information = inf[information.toUpperCase()];
   username = username[0].split(" ").join("+");
+
+  const { osu } = client.constants.getConfig.tokens;
   const url = `https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${osu}`;
   try {
     msg.channel.startTyping();
     const { data } = await client.fetch.JSON(url);
     const uinfo = data[0];
     if (!uinfo) throw new Error(client.constants.httpResponses(404));
-    const embed = new client.methods.Embed()
-      .setColor(msg.guild.members.get(client.user.id).highestRole.color || 0xdfdfdf);
+    const embed = new client.methods.Embed().setColor(msg.color);
     switch (information) {
       case 1:
         embed.setTitle(`Osu! User profile for ${uinfo.username} (${uinfo.user_id})`)

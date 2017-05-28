@@ -1,5 +1,5 @@
-const { promisifyAll } = require("tsubaki");
-const { getInfoAsync } = promisifyAll(require("ytdl-core"));
+const { promisify } = require("tsubaki");
+const getInfoAsync = promisify(require("ytdl-core").getInfo);
 
 /* eslint-disable no-throw-literal, no-prototype-builtins */
 exports.getLink = (arr) => {

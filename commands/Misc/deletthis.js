@@ -1,5 +1,5 @@
 const Canvas = require("canvas");
-const fsp = require("fs-extra-promise");
+const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
 
 const DeletThis = async (client, msg, user) => {
@@ -25,7 +25,7 @@ const DeletThis = async (client, msg, user) => {
 
     /* Get the buffers from both profile avatars */
   const [bgBuffer, Hammered, Hammerer] = await Promise.all([
-    fsp.readFileAsync(`${client.constants.assets}images${sep}memes${sep}DeletThis.png`),
+    readFileAsync(`${client.constants.assets}images${sep}memes${sep}DeletThis.png`),
     client.wrappers.canvasAvatar(selectedUser.displayAvatarURL),
     client.wrappers.canvasAvatar(hammerer.displayAvatarURL),
   ]);

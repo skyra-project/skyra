@@ -12,7 +12,7 @@ const Pray = async (client, user) => {
   /* Get the buffers from the praised user's profile avatar */
   const [bgBuffer, praised] = await Promise.all([
     readFileAsync(`${client.constants.assets}images${sep}memes${sep}f.png`),
-    client.wrappers.canvasAvatar(user.displayAvatarURL),
+    client.wrappers.fetchAvatar(user, 256),
   ]);
 
   /* Draw the buffer */

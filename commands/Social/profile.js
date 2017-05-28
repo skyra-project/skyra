@@ -37,7 +37,7 @@ const showProfile = async (client, user) => {
   const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
     readFileAsync(`${themes}${theme}.png`),
     readFileAsync(`${socialAssets(client)}profile-foreground.png`),
-    client.wrappers.canvasAvatar(user.displayAvatarURL),
+    client.wrappers.fetchAvatar(user, 256),
   ]);
 
 

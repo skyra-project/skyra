@@ -12,7 +12,7 @@ const triggering = async (client, user) => {
   const ctx = c.getContext("2d");
 
   const [userBuffer, titleBuffer] = await Promise.all([
-    client.wrappers.canvasAvatar(user.displayAvatarURL),
+    client.wrappers.fetchAvatar(user, 512),
     readFileAsync(`${client.constants.assets}images${sep}memes${sep}triggered.png`),
   ]);
   imgTitle.src = titleBuffer;

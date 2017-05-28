@@ -3,20 +3,19 @@ const seedrandom = require("seedrandom");
 exports.run = async (client, msg, [rateuser]) => {
   let ratewaifu;
   let rate;
-  if (/you|yourself/i.test(rateuser)) {
+  if (/^(you|yourself)$/i.test(rateuser)) {
     rate = "100";
     ratewaifu = "I love myself a lot 😊";
     rateuser = "myself";
   } else {
     if (/^(myself|me)$/i.test(rateuser)) rateuser = msg.author.username;
-    else rateuser = rateuser.replace(/\bmy\b/, "your");
+    else rateuser = rateuser.replace(/\bmy\b/g, "your");
 
-    const rng = 10 - (10 * seedrandom(rateuser.toLowerCase()).quick("kyra"));
-    rate = Math.ceil(rng);
-    ratewaifu = client.constants.oneToTen(rate).emoji;
+    rate = Math.ceil(100 - (100 * seedrandom(rateuser.toLowerCase()).double()));
+    ratewaifu = client.constants.oneToTen(Math.floor(rate / 10)).emoji;
   }
 
-  await msg.send(`**${msg.author.username}**, I'd give **${rateuser}** a **${rate * 10}**/100 ${ratewaifu}`);
+  await msg.send(`**${msg.author.username}**, I'd give **${rateuser}** a **${rate}**/100 ${ratewaifu}`);
 };
 
 exports.conf = {

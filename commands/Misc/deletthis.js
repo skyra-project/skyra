@@ -26,8 +26,8 @@ const DeletThis = async (client, msg, user) => {
     /* Get the buffers from both profile avatars */
   const [bgBuffer, Hammered, Hammerer] = await Promise.all([
     readFileAsync(`${client.constants.assets}images${sep}memes${sep}DeletThis.png`),
-    client.wrappers.canvasAvatar(selectedUser.displayAvatarURL),
-    client.wrappers.canvasAvatar(hammerer.displayAvatarURL),
+    client.wrappers.fetchAvatar(selectedUser, 256),
+    client.wrappers.fetchAvatar(hammerer, 256),
   ]);
 
     /* Background */

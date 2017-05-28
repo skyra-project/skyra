@@ -1,16 +1,14 @@
-function progress(prog) {
-  let l = 0;
-  if (prog.act1) l++;
-  if (prog.act2) l++;
-  if (prog.act3) l++;
-  if (prog.act4) l++;
-  if (prog.act5) l++;
-  return l;
-}
+const progress = (prog) => {
+  if (prog.act5) return 5;
+  if (prog.act4) return 4;
+  if (prog.act3) return 3;
+  if (prog.act2) return 2;
+  if (prog.act1) return 1;
+  return 0;
+};
 
 exports.run = async (client, msg, [server, user]) => {
   const { blizzard } = client.constants.getConfig.tokens;
-
   const url = `https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`;
   try {
     msg.channel.startTyping();
@@ -24,19 +22,18 @@ exports.run = async (client, msg, [server, user]) => {
         Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}
         Progression: Act **${progress(data.progression)}**.
         \u200B
-        `)
+      `)
       .setFooter("📊 Statistics")
       .setThumbnail("https://upload.wikimedia.org/wikipedia/en/8/80/Diablo_III_cover.png")
       .setTimestamp();
     for (let i = 0; i < 4; i++) {
-      if (data.heroes[i]) {
-        embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, client.indents`
-        \u200B  Class: **${data.heroes[i].class}**
-        \u200B  Level: **${data.heroes[i].level}**
-        \u200B  Elite kills: **${data.heroes[i].kills.elites}**
-        \u200B  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}
-        `, true);
-      }
+      if (!data.heroes[i]) break;
+      embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, client.indents`
+      \u200B  Class: **${data.heroes[i].class}**
+      \u200B  Level: **${data.heroes[i].level}**
+      \u200B  Elite kills: **${data.heroes[i].kills.elites}**
+      \u200B  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}
+      `, true);
     }
     await msg.sendEmbed(embed);
   } catch (e) {

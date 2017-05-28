@@ -1,31 +1,35 @@
-/* eslint-disable */
-const fs = require("fs");
+/* eslint-disable no-unused-vars, import/newline-after-import */
+const fs = require("fs-extra-promise");
 const moment = require("moment");
-const util = require("util");
+const { inspect } = require("util");
+const { sep } = require("path");
 const now = require("performance-now");
 
-const Console = require("console").Console;
+const { Console } = require("console");
 const output = fs.createWriteStream("./stdout.log");
 const errorOutput = fs.createWriteStream("./stderr.log");
-const logger = new Console(output, errorOutput).log;
-/* eslint-enable */
+const { log } = new Console(output, errorOutput);
+/* eslint-enable no-unused-vars, import/newline-after-import */
+
+exports.parse = (toEval) => {
+  let input;
+  let type;
+  if (toEval[0] === "async") {
+    input = toEval.slice(1).join(" ");
+    type = true;
+  } else {
+    input = toEval.join(" ");
+    type = false;
+  }
+  return { type, input };
+};
 
 /* eslint-disable no-eval */
-exports.run = async (client, msg, [type, ...args]) => {
-  args = args.join(" ");
-  const start = now();
-  try {
-    // EVAL
-    const input = type ? `(async () => { ${args} })()` : args;
-    await eval(input);
-  } catch (err) {
-    msg.send(client.indents`
-      ➡ **Input:** Executed in ${(now() - start).toFixed(5)}ms${"```"}js
-      ${args.replace(/`/g, "\\`")}${"```"}
-      ❌ **Error:**${"```"}js
-      ${(err.message || err)}${"```"}
-    `);
-  }
+exports.run = async (client, msg, [args]) => {
+  const { type, input } = this.parse(args.split(" "));
+  const toEval = type ? `(async () => { ${input} })()` : input;
+  await eval(toEval);
+  if (msg.channel.permissionsFor(msg.guild.me).has("ADD_REACTIONS")) msg.react("👌🏽").catch(() => msg.alert("Executed!"));
 };
 
 exports.conf = {
@@ -42,7 +46,7 @@ exports.conf = {
 exports.help = {
   name: "ceval",
   description: "Evaluates arbitrary Javascript. Not for the faint of heart.",
-  usage: "[async] <expression:str> [...]",
-  usageDelim: " ",
+  usage: "<expression:str>",
+  usageDelim: "",
   extendedHelp: "",
 };

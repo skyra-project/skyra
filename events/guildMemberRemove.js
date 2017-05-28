@@ -36,14 +36,14 @@ class GuildMemberRemove {
     const configs = this.configs;
     if (configs && configs.events.guildMemberRemove) {
       this.sendLog();
-      const farewellChannel = configs.events.sendMessage.farewell;
+      const farewellChannel = configs.messages.farewell;
       const defaultChannel = configs.channels.default;
       if (farewellChannel && defaultChannel) this.sendMessage(defaultChannel);
     }
   }
 
   get message() {
-    const custom = this.configs.events.sendMessage.farewellMessage;
+    const custom = this.configs.messages.farewellMessage;
     if (custom) {
       return custom
         .replace(/%MEMBER%/g, this.member)

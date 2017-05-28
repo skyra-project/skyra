@@ -11,7 +11,7 @@ exports.run = async (client, msg, [channel = msg.channel, ...content]) => {
   /* Check if the message is valid */
   if (!content && !attachment) throw client.constants.httpResponses(403);
 
-  await channel.send(content, { file: attachment });
+  await channel.send(content, { files: [{ attachment }] });
   if (channel !== msg.channel) await msg.alert(`Message successfully sent to ${channel}`);
   await msg.nuke(5000);
 };

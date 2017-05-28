@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-const DateToTime = str => `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}`;
+const DateToTime = (str = "000000") => `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}`;
 
 exports.run = async (client, msg, [platform, name]) => {
   const url = `http://api.bf4stats.com/api/playerInfo?plat=${platform}&name=${encodeURIComponent(name)}&output=json`;

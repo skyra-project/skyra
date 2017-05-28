@@ -77,14 +77,14 @@ class GuildMemberAdd {
     if (configs.initialRole) this.giveInitial().catch();
     if (configs.events.guildMemberAdd) {
       this.sendLog();
-      const greetingChannel = configs.events.sendMessage.greeting;
+      const greetingChannel = configs.messages.greeting;
       const defaultChannel = configs.channels.default;
       if (greetingChannel && defaultChannel) this.sendMessage(defaultChannel);
     }
   }
 
   get message() {
-    const custom = this.configs.events.sendMessage.greetingMessage;
+    const custom = this.configs.messages.greetingMessage;
     if (custom) {
       return custom
         .replace(/%MEMBER%/g, this.member)

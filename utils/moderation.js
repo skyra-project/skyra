@@ -13,8 +13,8 @@ module.exports = class Moderation {
     return this.client.rethink.get("moderation", this.guild.id) || null;
   }
 
-  async create() {
-    await this.client.rethink.add("moderation", {
+  create() {
+    return this.client.rethink.add("moderation", {
       id: this.id,
       cases: [],
     });

@@ -1,10 +1,7 @@
 const roll = (rolls, sides) => {
-  let Total = 0;
-  for (let i = 0; i < rolls; i++) {
-    const x = Math.floor(Math.random() * (sides + 1));
-    Total += x;
-  }
-  return Total;
+  let total = 0;
+  for (let i = 0; i < rolls; i++) total += Math.floor(Math.random() * (sides + 1));
+  return total;
 };
 
 exports.run = async (client, msg, [rl = 1, sd = 6]) => {

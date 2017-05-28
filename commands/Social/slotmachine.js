@@ -5,15 +5,15 @@ const reels = [
 ];
 const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6]];
 const values = {
-  "💎": 200,
-  "🔱": 150,
-  "💰": 125,
-  "❤": 100,
-  "⭐": 75,
-  "🎲": 60,
-  "🔅": 50,
-  "🎉": 50,
-  "🍒": 50,
+  "💎": 24,
+  "🔱": 20,
+  "💰": 15,
+  "❤": 10,
+  "⭐": 8,
+  "🎲": 7,
+  "🔅": 5,
+  "🎉": 5,
+  "🍒": 5,
 };
 
 /* eslint-disable no-throw-literal */
@@ -24,6 +24,7 @@ class SlotMachines {
     this.profile = msg.author.profile;
     this.generateRoll = SlotMachines.generateRoll;
     this.showRoll = SlotMachines.showRoll;
+    this.calculateWinnings = SlotMachines.calculateWinnings;
   }
 
   static generateRoll() {
@@ -46,14 +47,13 @@ class SlotMachines {
     ].join("\n");
   }
 
-  calculateWinnings(coins, roll) {
+  static calculateWinnings(coins, roll) {
     let winnings = 0;
     combinations.forEach((combo) => {
       if (roll[combo[0]] === roll[combo[1]] && roll[combo[1]] === roll[combo[2]]) winnings += values[roll[combo[0]]];
     });
     if (winnings === 0) return { win: false, winnings: 0 };
-    winnings *= coins / 10;
-    if (this.msg.guild.id === "256566731684839428") winnings *= 1.5;
+    winnings *= coins;
     return { win: true, winnings: Math.round(winnings) };
   }
 
@@ -75,22 +75,18 @@ exports.run = async (client, msg, [coins]) => {
     const winnings = await client.Social.win(msg, data.winnings);
     embed.setColor(0x5C913B)
       .setDescription([
-        "**You rolled:**",
-        "",
+        "**You rolled:**\n",
         output,
-        "",
-        "**Congratulations!**",
+        "\n**Congratulations!**",
         `You won ${winnings}₪!`,
       ].join("\n"));
   } else {
-    await client.Social.use(msg.author, coins).catch(console.error);
+    await msg.author.profile.use(coins);
     embed.setColor(0xBE1931)
       .setDescription([
-        "**You rolled:**",
-        "",
+        "**You rolled:**\n",
         output,
-        "",
-        "**Mission failed!**",
+        "\n**Mission failed!**",
         "We'll get em next time!",
       ].join("\n"));
   }

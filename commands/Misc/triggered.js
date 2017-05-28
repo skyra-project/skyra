@@ -1,6 +1,6 @@
 const Canvas = require("canvas");
 const GIFEncoder = require("gifencoder");
-const fsp = require("fs-extra-promise");
+const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const streamToArray = require("stream-to-array");
 const { sep } = require("path");
 
@@ -13,7 +13,7 @@ const triggering = async (client, user) => {
 
   const [userBuffer, titleBuffer] = await Promise.all([
     client.wrappers.canvasAvatar(user.displayAvatarURL),
-    fsp.readFileAsync(`${client.constants.assets}images${sep}memes${sep}triggered.png`),
+    readFileAsync(`${client.constants.assets}images${sep}memes${sep}triggered.png`),
   ]);
   imgTitle.src = titleBuffer;
   imgTriggered.src = userBuffer;

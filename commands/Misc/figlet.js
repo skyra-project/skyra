@@ -1,10 +1,9 @@
-const figlet = require("figlet");
+const { promisify } = require("tsubaki");
+const figletAsync = promisify(require("figlet"));
 
 exports.run = async (client, msg, [banner]) => {
-  figlet(banner, (err, data) => {
-    if (err) msg.error(err);
-    msg.sendCode("", data).catch(e => msg.error(e));
-  });
+  const data = await figletAsync(banner);
+  await msg.sendCode("", data);
 };
 
 exports.conf = {

@@ -6,10 +6,12 @@ exports.run = async (client, msg, [feedback]) => {
     .setFooter(`${msg.author.id} | Feedback`)
     .setTimestamp();
 
-  await client.channels.get("257561807500214273").send({ embed });
+  await this.channel.send({ embed });
   await msg.alert(`Dear ${msg.author}, thanks you for sending us feedback!`);
   await msg.nuke(5000);
 };
+
+exports.init = (client) => { this.channel = client.channels.get("257561807500214273"); };
 
 exports.conf = {
   enabled: true,

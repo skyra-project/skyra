@@ -3,7 +3,6 @@ exports.run = async (client, msg) => {
     .setColor(msg.color)
     .setTitle("All available tags")
     .setDescription(client.tags.map(s => client.funcs.toTitleCase(s.name)).join(" | "));
-
   await msg.sendEmbed(embed);
 };
 

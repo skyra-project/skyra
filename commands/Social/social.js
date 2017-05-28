@@ -1,6 +1,6 @@
 /* eslint-disable no-throw-literal */
 exports.searchProfile = async (client, msg, search) => {
-  if (/[0-9]{17,18}/.test(search) && client.locals.get(msg.guild.id).has(search)) {
+  if (/[0-9]{17,21}/.test(search) && client.locals.get(msg.guild.id).has(search)) {
     return search;
   }
   const user = await client.search.User(search, msg.guild);

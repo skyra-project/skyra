@@ -1,34 +1,37 @@
-/* eslint-disable no-underscore-dangle, complexity, no-throw-literal */
+const MANAGER_SOCIAL_LOCAL = require("./managerSocialLocal");
+
+/* eslint-disable no-throw-literal */
 module.exports = class MemberScore {
   constructor(member) {
     Object.defineProperty(this, "client", { value: member.client });
     Object.defineProperty(this, "guild", { value: member.guild });
-    Object.defineProperty(this, "localsGuild", { value: this.client.locals.get(this.guild.id) || this.client.locals.set(this.guild.id, new this.client.methods.Collection()) });
-    Object.defineProperty(this, "localsMember", { value: this.localsGuild.get(member.id) || { id: this.id, score: 0, exists: false } });
+    Object.defineProperty(this, "member", { value: member });
     this.id = member.id;
-    this.points = this.localsMember.score || 0;
+  }
+
+  get fetch() {
+    return MANAGER_SOCIAL_LOCAL.fetch(this.member);
+  }
+
+  get score() {
+    return this.fetch.score || 0;
   }
 
   get exists() {
-    return this.localsMember.exists !== false;
+    return this.fetch.exists !== false;
   }
 
   async create() {
     if (this.exists) throw "This MemberScore already exists.";
-    new this.client.Create(this.client).CreateMemberScore(this);
+    return MANAGER_SOCIAL_LOCAL.create(this.member);
   }
 
   async ensureProfile() {
-    if (!this.exists) {
-      const Create = new this.client.Create(this.client);
-      await Create.CreateMemberScore(this);
-      this.client.locals.get(this.guild.id).set(this.id, { id: this.id, score: 0, exists: false });
-    }
+    return !this.exists ? MANAGER_SOCIAL_LOCAL.create(this.member) : false;
   }
 
   async update(score) {
     await this.ensureProfile();
-    await this.client.rethink.updateArray("localScores", this.guild.id, "scores", this.id, { score });
-    this.client.locals.get(this.guild.id).get(this.id).score = score;
+    return MANAGER_SOCIAL_LOCAL.update(this.member, score);
   }
 };

@@ -1,3 +1,4 @@
+const RethinkDB = require("../functions/rethinkDB.js");
 const Moderation = require("./moderation");
 const GuildManager = require("./guildManager");
 
@@ -23,26 +24,28 @@ module.exports = class GuildConfig {
   }
 
   async ensureConfigs() {
-    if (!this.exists) GuildManager.create(this.guild);
+    return !this.exists ? GuildManager.create(this.guild) : false;
   }
 
   async update(doc) {
     await this.ensureConfigs();
     if ("prefix" in doc) GuildManager.refreshPrefix(this.guild);
-    await this.client.rethink.update("guilds", this.id, doc);
+    await RethinkDB.update("guilds", this.id, doc);
     await this.sync();
   }
 
   async sync() {
-    const data = await this.client.rethink.get("guilds", this.id);
+    const data = await RethinkDB.get("guilds", this.id);
     if (!data) throw "[404] Not found.";
     GuildManager.set(this.id, data);
+    return true;
   }
 
   async destroy() {
     if (!this.exists) throw "This GuildConfig does not exist.";
-    await this.client.rethink.delete("guilds", this.id);
+    const output = await RethinkDB.delete("guilds", this.id);
     GuildManager.delete(this.id);
+    return output;
   }
 
   /* Properties */

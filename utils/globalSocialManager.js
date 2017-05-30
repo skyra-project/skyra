@@ -14,7 +14,7 @@ exports.fetchAll = () => data;
 
 /* Methods to create new Configuration Objects */
 exports.create = async (user) => {
-  const object = this.guildData;
+  const object = this.userData;
   object.id = user.id;
   const output = await RethinkDB.add("users", object);
   this.set(user, object);

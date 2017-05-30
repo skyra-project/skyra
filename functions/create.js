@@ -1,23 +1,9 @@
 const RethinkDB = require("./rethinkDB");
 const GuildManager = require("../utils/guildManager");
 const GlobalSocialManager = require("../utils/globalSocialManager");
-
-/* eslint-disable no-use-before-define */
-class Create {
-  constructor(client) {
-    Object.defineProperty(this, "client", { value: client });
-  }
-
-  async CreateMemberScore(member) {
-    const data = { id: member.id, score: 0 };
-    await RethinkDB.append("localScores", member.guild.id, "scores", data);
-    this.client.locals.get(member.guild.id).set(member.id, data);
-  }
-}
+const MANAGER_SOCIAL_LOCAL = require("../utils/managerSocialLocal");
 
 exports.init = async (client) => {
-  client.Create = Create;
-  client.locals = new client.methods.Collection();
   const [guild, users, locals, moderation] = await Promise.all([
     RethinkDB.all("guilds"),
     RethinkDB.all("users"),
@@ -31,8 +17,8 @@ exports.init = async (client) => {
   });
   users.forEach(userData => GlobalSocialManager.set(userData.id, userData));
   locals.forEach((g) => {
-    client.locals.set(g.id, new client.methods.Collection());
-    g.scores.forEach(u => client.locals.get(g.id).set(u.id, u));
+    MANAGER_SOCIAL_LOCAL.set(g.id, new client.methods.Collection());
+    g.scores.forEach(u => MANAGER_SOCIAL_LOCAL.get(g.id).set(u.id, u));
   });
 };
 

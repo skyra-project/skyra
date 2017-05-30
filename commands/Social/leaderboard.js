@@ -1,4 +1,5 @@
 const { fetchAll: fetchGlobal } = require("../../utils/globalSocialManager");
+const { fetchAll: fetchLocal } = require("../../utils/managerSocialLocal");
 
 const titles = {
   global: {
@@ -33,7 +34,7 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
       mapedList = list.map(l => l.id);
       break;
     case "local":
-      list = client.locals.get(msg.guild.id)
+      list = fetchLocal().get(msg.guild.id)
         .sort((a, b) => a.score < b.score ? 1 : -1);
       mapedList = list.map(l => l.id);
   // no default

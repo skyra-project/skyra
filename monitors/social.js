@@ -46,7 +46,7 @@ exports.run = async (client, msg) => {
     await this.ensureFetchMember(msg);
     const add = client.Social.calc(msg);
     await msg.author.profile.update({ points: msg.author.profile.points + add });
-    await msg.member.points.update(msg.member.points.points + add);
+    await msg.member.points.update(msg.member.points.score + add);
 
     await this.handleRoles(client, msg);
   } catch (e) {

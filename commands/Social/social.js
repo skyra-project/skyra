@@ -1,25 +1,27 @@
+const MANAGER_SOCIAL_LOCAL = require("../../utils/managerSocialLocal");
+
 /* eslint-disable no-throw-literal */
 exports.searchProfile = async (client, msg, search) => {
-  if (/[0-9]{17,21}/.test(search) && client.locals.get(msg.guild.id).has(search)) {
+  if (/[0-9]{17,21}/.test(search) && MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
     return search;
   }
   const user = await client.search.User(search, msg.guild);
   if (user.bot) throw "You can't modify bot profiles, since they don't have one.";
-  if (!client.locals.get(msg.guild.id).has(search)) {
+  if (!MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
     const data = { id: user.id, score: 0 };
     await client.rethink.append("localScores", msg.guild.id, "scores", data);
-    client.locals.get(msg.guild.id).set(msg.author.id, data);
+    MANAGER_SOCIAL_LOCAL.insert(msg.author.id, data);
   }
   return user.id;
 };
 
 exports.update = async (client, msg, id, value) => {
   await client.rethink.updateArray("localScores", msg.guild.id, "scores", id, { score: value });
-  client.locals.get(msg.guild.id).get(id).score = value;
+  MANAGER_SOCIAL_LOCAL.get(msg.guild.id).get(id).score = value;
 };
 
 exports.handle = (client, msg, action, ID, value) => {
-  const profile = client.locals.get(msg.guild.id).get(ID);
+  const profile = MANAGER_SOCIAL_LOCAL.get(msg.guild.id).get(ID);
   if (action === "add") return profile.score + value;
   return Math.max(profile.score - value, 0);
 };
@@ -37,7 +39,6 @@ exports.run = async (client, msg, [action, search = msg.author.id, v = null]) =>
     await msg.alert(`Dear ${msg.author}, you have just ${action === "add" ? "added" : "removed"} ${v} points from user ID: ${ID}`);
   }
 };
-
 
 exports.conf = {
   enabled: true,

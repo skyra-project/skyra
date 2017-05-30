@@ -1,10 +1,10 @@
-const GlobalSocialManager = require("./globalSocialManager");
+const MANAGER_SOCIAL_GLOBAL = require("./globalSocialManager");
 
 /* eslint-disable no-underscore-dangle, complexity, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
 module.exports = class UserProfile {
   constructor(user) {
     Object.defineProperty(this, "client", { value: user.client });
-    Object.defineProperty(this, "_profile", { value: GlobalSocialManager.get(user) });
+    Object.defineProperty(this, "_profile", { value: MANAGER_SOCIAL_GLOBAL.get(user) });
     Object.defineProperty(this, "user", { value: user });
     this.id = user.id;
     this.points = this._profile.points || 0;
@@ -47,11 +47,11 @@ module.exports = class UserProfile {
 
   async create() {
     if (this.exists) throw "This UserProfile already exists.";
-    GlobalSocialManager.create(this.user);
+    return MANAGER_SOCIAL_GLOBAL.create(this.user);
   }
 
   async ensureProfile() {
-    if (!this.exists) GlobalSocialManager.create(this.user);
+    return !this.exists ? MANAGER_SOCIAL_GLOBAL.create(this.user) : false;
   }
 
   async add(money) {
@@ -61,26 +61,29 @@ module.exports = class UserProfile {
 
   async use(money) {
     const thisMoney = this.money - money;
-    if (thisMoney < 0) throw "[403::FAILSAFE] You can't get a debt.";
+    if (thisMoney < 0) throw "[403::FAILSAFE] You cannot get a debt.";
     await this.update({ money: thisMoney });
     return money;
   }
 
   async update(doc) {
     await this.ensureProfile();
-    await this.client.rethink.update("users", this.id, doc);
-    GlobalSocialManager.set(this.user, Object.assign(this._profile, doc));
+    const output = await this.client.rethink.update("users", this.id, doc);
+    MANAGER_SOCIAL_GLOBAL.set(this.user, Object.assign(this._profile, doc));
+    return output;
   }
 
   async sync() {
     const data = await this.client.rethink.get("users", this.id);
     if (!data) throw "[404] Not found.";
-    GlobalSocialManager.set(this.id, data);
+    MANAGER_SOCIAL_GLOBAL.set(this.id, data);
+    return data;
   }
 
   async destroy() {
     if (!this.exists) throw "This UserProfile does not exist.";
-    await this.client.rethink.delete("users", this.id);
-    GlobalSocialManager.delete(this.id);
+    const output = await this.client.rethink.delete("users", this.id);
+    MANAGER_SOCIAL_GLOBAL.delete(this.id);
+    return output;
   }
 };

@@ -5,6 +5,7 @@ const Moderation = require("./moderation.js");
 const MemberScore = require("./memberScore.js");
 const Fetch = require("./kyraFetch.js");
 const Constants = require("./constants.js");
+const GlobalSocialManager = require("./globalSocialManager");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -45,8 +46,8 @@ class Skyra {
 
   get color() {
     let color;
-    if (this.client.cacheProfiles && this.client.cacheProfiles.has(this.author.id)) {
-      color = parseInt(`0x${this.client.cacheProfiles.get(this.author.id).color}`);
+    if (GlobalSocialManager.get(this.author.id)) {
+      color = parseInt(`0x${GlobalSocialManager.get(this.author.id).color}`);
     } else if (this.guild) {
       if (!this.member) this.guild.fetchMember(this.author.id);
       else color = this.member.highestRole.color;
@@ -87,41 +88,29 @@ class Skyra {
     return true;
   }
 
-  static awaitReaction(msg, message) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await message.react("🇾");
-        await message.react("🇳");
-        const collector = message.createReactionCollector((reaction, user) => user.id === msg.author.id, { time: 20000, max: 1 });
-        collector.on("collect", (r) => {
-          if (r.emoji.name === "🇾") collector.stop("success");
-          else collector.stop();
-        });
-        collector.on("end", (collected, reason) => {
-          if (reason === "success") resolve();
-          else reject();
-        });
-      } catch (e) {
-        reject(e);
-      }
+  static async awaitReaction(msg, message) {
+    await message.react("🇾");
+    await message.react("🇳");
+    const collector = message.createReactionCollector((reaction, user) => user.id === msg.author.id, { time: 20000, max: 1 });
+    collector.on("collect", (r) => {
+      if (r.emoji.name === "🇾") collector.stop("success");
+      else collector.stop();
+    });
+    collector.on("end", (collected, reason) => {
+      if (reason === "success") Promise.resolve();
+      else Promise.reject();
     });
   }
 
-  static awaitMessage(msg) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const collector = msg.channel.createMessageCollector(m => m.author === msg.author, { time: 20000, max: 1 });
-        collector.on("message", (m) => {
-          if (m.content.toLowerCase() === "yes") collector.stop("success");
-          else collector.stop();
-        });
-        collector.on("end", (collected, reason) => {
-          if (reason === "success") resolve();
-          else reject();
-        });
-      } catch (e) {
-        reject(e);
-      }
+  static async awaitMessage(msg) {
+    const collector = msg.channel.createMessageCollector(m => m.author === msg.author, { time: 20000, max: 1 });
+    collector.on("message", (m) => {
+      if (m.content.toLowerCase() === "yes") collector.stop("success");
+      else collector.stop();
+    });
+    collector.on("end", (collected, reason) => {
+      if (reason === "success") Promise.resolve();
+      else Promise.reject();
     });
   }
 }

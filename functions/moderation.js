@@ -95,8 +95,7 @@ class Moderation {
   async send(member, type, reason, extraData = null) {
     /* Initialize configuration */
     if (!this.guild.configs.exists) {
-      const Create = new this.client.Create(this.client);
-      Create.CreateGuild(this.guild.id);
+      this.guild.configs.create();
     } else {
       await this.justifiedModLog(member, type, reason, extraData);
     }

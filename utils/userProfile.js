@@ -1,16 +1,24 @@
+const GlobalSocialManager = require("./globalSocialManager");
+
 /* eslint-disable no-underscore-dangle, complexity, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
 module.exports = class UserProfile {
   constructor(user) {
     Object.defineProperty(this, "client", { value: user.client });
+    Object.defineProperty(this, "_profile", { value: GlobalSocialManager.get(user) });
     Object.defineProperty(this, "user", { value: user });
-    Object.defineProperty(this, "_profile", { value: this.client.cacheProfiles.get(user.id) || { exists: false } });
-    Object.defineProperty(this, "exists", { value: this._profile.exists !== false });
     this.id = user.id;
     this.points = this._profile.points || 0;
     this.color = this._profile.color || "ff239d";
     this.money = this._profile.money || 0;
     this.reputation = this._profile.reputation || 0;
-    this.quote = this._profile.quote || null;
+  }
+
+  get exists() {
+    return this._profile.exists !== false;
+  }
+
+  get quote() {
+    return this._profile.quote || null;
   }
 
   get timeDaily() {
@@ -39,11 +47,11 @@ module.exports = class UserProfile {
 
   async create() {
     if (this.exists) throw "This UserProfile already exists.";
-    new this.client.Create(this.client).CreateUser(this.id);
+    GlobalSocialManager.create(this.user);
   }
 
   async ensureProfile() {
-    if (!this.exists) new this.client.Create(this.client).CreateUser(this.id);
+    if (!this.exists) GlobalSocialManager.create(this.user);
   }
 
   async add(money) {
@@ -52,31 +60,27 @@ module.exports = class UserProfile {
   }
 
   async use(money) {
-    await this.update({ money: this.money - money });
+    const thisMoney = this.money - money;
+    if (thisMoney < 0) throw "[403::FAILSAFE] You can't get a debt.";
+    await this.update({ money: thisMoney });
     return money;
   }
 
   async update(doc) {
     await this.ensureProfile();
     await this.client.rethink.update("users", this.id, doc);
-    const profile = this.client.cacheProfiles.get(this.id) || {};
-    for (const key in doc) {
-      if (doc.hasOwnProperty(key)) {
-        profile[key] = doc[key];
-      }
-    }
+    GlobalSocialManager.set(this.user, Object.assign(this._profile, doc));
   }
 
   async sync() {
     const data = await this.client.rethink.get("users", this.id);
     if (!data) throw "[404] Not found.";
-    if (this.exists) this.client.cacheProfiles.delete(this.id);
-    this.client.cacheProfiles.set(this.id, data);
+    GlobalSocialManager.set(this.id, data);
   }
 
   async destroy() {
     if (!this.exists) throw "This UserProfile does not exist.";
     await this.client.rethink.delete("users", this.id);
-    this.client.cacheProfiles.delete(this.id);
+    GlobalSocialManager.delete(this.id);
   }
 };

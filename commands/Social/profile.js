@@ -1,6 +1,7 @@
 const Canvas = require("canvas");
 const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
+const { fetchAll: fetchGlobal } = require("../../utils/globalSocialManager");
 
 const socialAssets = client => `${client.clientBaseDir}assets${sep}images${sep}social${sep}`;
 const fontAssets = client => `${client.clientBaseDir}assets${sep}fonts${sep}`;
@@ -21,7 +22,7 @@ const showProfile = async (client, user) => {
   const blue = parseInt(profile.color.substring(4, 6), 16);
 
   /* Global leaderboard */
-  const sortedList = client.cacheProfiles.sort((a, b) => a.points < b.points ? 1 : -1);
+  const sortedList = fetchGlobal().sort((a, b) => a.points < b.points ? 1 : -1);
 
   const c = new Canvas(640, 391);
   const background = new Canvas.Image();
@@ -102,10 +103,12 @@ exports.help = {
   description: "Check your profile.",
   usage: "[user:string]",
   usageDelim: "",
-  extendedHelp: ["Check all information I have from you :)",
+  extendedHelp: [
+    "Check all information I have from you :)",
     "",
     "Usage:",
     "&profile [user]",
     "",
-    " ❯ User: the user you want to display info about."].join("\n"),
+    " ❯ User: the user you want to display info about.",
+  ].join("\n"),
 };

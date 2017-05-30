@@ -1,3 +1,5 @@
+const { fetchAll: fetchGlobal } = require("../../utils/globalSocialManager");
+
 const titles = {
   global: {
     title: "🌐 Global Score Leaderboards",
@@ -19,20 +21,20 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
   let mapedList;
   switch (type.toLowerCase()) {
     case "global":
-      list = client.cacheProfiles
-      .filter(profile => profile.points > 0)
-      .sort((a, b) => a.points < b.points ? 1 : -1);
+      list = fetchGlobal()
+        .filter(profile => profile.points > 0)
+        .sort((a, b) => a.points < b.points ? 1 : -1);
       mapedList = list.map(l => l.id);
       break;
     case "money":
-      list = client.cacheProfiles
-      .filter(profile => profile.money > 0)
-      .sort((a, b) => a.money < b.money ? 1 : -1);
+      list = fetchGlobal()
+        .filter(profile => profile.money > 0)
+        .sort((a, b) => a.money < b.money ? 1 : -1);
       mapedList = list.map(l => l.id);
       break;
     case "local":
       list = client.locals.get(msg.guild.id)
-      .sort((a, b) => a.score < b.score ? 1 : -1);
+        .sort((a, b) => a.score < b.score ? 1 : -1);
       mapedList = list.map(l => l.id);
   // no default
   }

@@ -1,3 +1,5 @@
+const { kyraFetch } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
 const cheerio = require("cheerio");
 
 const getText = (children) => {
@@ -6,7 +8,7 @@ const getText = (children) => {
 };
 
 exports.run = async (client, msg, [input]) => {
-  const { data } = await client.fetch.kyraFetch(`http://google.com/search?client=chrome&rls=en&ie=UTF-8&oe=UTF-8&lr=lang_en&q=${encodeURIComponent(input)}`);
+  const { data } = await kyraFetch(`http://google.com/search?client=chrome&rls=en&ie=UTF-8&oe=UTF-8&lr=lang_en&q=${encodeURIComponent(input)}`);
   const $ = cheerio.load(data);
   let results = [];
   let raw;
@@ -21,7 +23,7 @@ exports.run = async (client, msg, [input]) => {
   results = results.filter(r => r.link && r.description);
   results = results.splice(0, 4);
 
-  if (!results.length) throw client.constants.httpResponses(404);
+  if (!results.length) throw constants.httpResponses(404);
   const embed = new client.methods.Embed()
     .setColor(msg.guild.members.get(client.user.id).highestRole.color || 0xdfdfdf)
     .setFooter("Google Search")

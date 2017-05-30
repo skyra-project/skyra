@@ -1,3 +1,4 @@
+const constants = require("../utils/constants");
 const request = require("request");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
@@ -6,7 +7,7 @@ const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 class WatchPoint {
   constructor(client) {
     Object.defineProperty(this, "_client", { value: client });
-    Object.defineProperty(this, "_keys", { value: client.constants.tokens.wpo });
+    Object.defineProperty(this, "_keys", { value: constants.tokens.wpo });
     Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._keys.user}:${this._keys.password}`).toString("base64")}` });
   }
 
@@ -18,7 +19,7 @@ class WatchPoint {
         json: true,
         method,
       }, (error, response, body) => {
-        if (response.statusCode !== 200) WatchPoint.errorCatcher(this._client.constants.httpResponses(response.statusCode), string ? `${string}${query}` : null).catch(reject);
+        if (response.statusCode !== 200) WatchPoint.errorCatcher(constants.httpResponses(response.statusCode), string ? `${string}${query}` : null).catch(reject);
         else if (error) WatchPoint.errorCatcher(error, string ? `${string}${query}` : null).catch(reject);
         resolve(body);
       });
@@ -110,6 +111,8 @@ class WatchPoint {
     });
   }
 }
+
+module.exports = WatchPoint;
 
 // exports.init = (client) => {
 //   if (!client.hasOwnProperty("cache")) client.cache = {};

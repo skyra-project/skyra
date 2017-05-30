@@ -1,3 +1,6 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
+
 const progress = (prog) => {
   if (prog.act5) return 5;
   if (prog.act4) return 4;
@@ -8,12 +11,12 @@ const progress = (prog) => {
 };
 
 exports.run = async (client, msg, [server, user]) => {
-  const { blizzard } = client.constants.getConfig.tokens;
+  const { blizzard } = constants.getConfig.tokens;
   const url = `https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`;
   try {
     msg.channel.startTyping();
-    const { data } = await client.fetch.JSON(url);
-    if (data.code === "NOTFOUND") throw new Error(client.constants.httpResponses(404));
+    const { data } = await fetchJSON(url);
+    if (data.code === "NOTFOUND") throw new Error(constants.httpResponses(404));
     const embed = new client.methods.Embed()
       .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)
       .setColor(0xEF8400)

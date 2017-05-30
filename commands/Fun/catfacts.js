@@ -1,5 +1,7 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+
 exports.run = async (client, msg) => {
-  const { data } = await client.fetch.JSON("http://catfacts-api.appspot.com/api/facts?number=1");
+  const { data } = await fetchJSON("http://catfacts-api.appspot.com/api/facts?number=1");
   const embed = new client.methods.Embed()
     .setColor(msg.color)
     .setDescription(`📢 **Catfact:** *${data.facts[0]}*`);

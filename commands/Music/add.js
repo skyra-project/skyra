@@ -1,5 +1,7 @@
-const { promisify } = require("tsubaki");
-const getInfoAsync = promisify(require("ytdl-core").getInfo);
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+
+const getInfoAsync = require("util").promisify(require("ytdl-core").getInfo);
+const constants = require("../../utils/constants");
 
 /* eslint-disable no-throw-literal, no-prototype-builtins */
 exports.getLink = (arr) => {
@@ -32,8 +34,8 @@ exports.findYoutube = async (client, msg, url) => {
   if (url.startsWith("https://www.youtube.com/watch?v=") || url.startsWith("https://youtu.be/")) {
     return this.getYouTube(client, msg, url);
   }
-  const { google } = client.constants.getConfig.tokens;
-  const { data } = await client.fetch.JSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`);
+  const { google } = constants.getConfig.tokens;
+  const { data } = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`);
   const video = data.items.find(item => item.id.kind !== "youtube#channel");
   return this.getYouTube(client, msg, `https://youtu.be/${video.id.videoId}`);
 };

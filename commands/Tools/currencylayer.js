@@ -1,3 +1,6 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
+
 /* eslint-disable no-multi-spaces */
 const currencyList = [
   "AED",  "AFN",  "ALL",  "AMD",  "ANG",  "AOA",  "ARS",  "AUD",
@@ -30,9 +33,9 @@ exports.run = async (client, msg, [money, input, output]) => {
   output = output.toUpperCase();
   if (!currencyList.includes(input)) throw new ReferenceError(`${input} isn't a valid currency.`);
   if (!currencyList.includes(output)) throw new ReferenceError(`${output} isn't a valid currency.`);
-  const cfg = client.constants.getConfig;
-  const url = `http://www.apilayer.net/api/live?access_key=${cfg.tokens.currencyLayer}&format=1&currencies=${input},${output}`;
-  const { data } = await client.fetch.JSON(url);
+  const { currencyLayer } = constants.getConfig.tokens;
+  const url = `http://www.apilayer.net/api/live?access_key=${currencyLayer}&format=1&currencies=${input},${output}`;
+  const { data } = await fetchJSON(url);
   if (!data.success) throw new Error("Something went wrong.");
   const USDtoINPUT = data.quotes[`USD${input}`];
   const USDtoOUTPUT = data.quotes[`USD${output}`];

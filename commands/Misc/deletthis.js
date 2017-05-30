@@ -1,5 +1,6 @@
+const readFileAsync = require("util").promisify(require("fs").readFile);
+const constants = require("../../utils/constants");
 const Canvas = require("canvas");
-const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
 
 const DeletThis = async (client, msg, user) => {
@@ -25,7 +26,7 @@ const DeletThis = async (client, msg, user) => {
 
     /* Get the buffers from both profile avatars */
   const [bgBuffer, Hammered, Hammerer] = await Promise.all([
-    readFileAsync(`${client.constants.assets}images${sep}memes${sep}DeletThis.png`),
+    readFileAsync(`${constants.assets}images${sep}memes${sep}DeletThis.png`),
     client.wrappers.fetchAvatar(selectedUser, 256),
     client.wrappers.fetchAvatar(hammerer, 256),
   ]);

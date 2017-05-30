@@ -1,3 +1,5 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [input]) => {
   let number;
@@ -11,16 +13,16 @@ exports.run = async (client, msg, [input]) => {
   }
 
   try {
-    const xkcdInfo = await client.fetch.JSON("http://xkcd.com/info.0.json").then(d => d.data);
+    const xkcdInfo = await fetchJSON("http://xkcd.com/info.0.json").then(d => d.data);
     if (num) {
       if (num <= xkcdInfo.num) number = num;
       else throw `Dear ${msg.author}, there are only ${xkcdInfo.num} comics.`;
     } else if (query) {
-      const searchQuery = await client.fetch.JSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`).then(d => d.data);
+      const searchQuery = await fetchJSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`).then(d => d.data);
       number = searchQuery.split(" ")[2].replace("\n", "");
     } else { number = Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1; }
 
-    const xkcdComic = await client.fetch.JSON(`http://xkcd.com/${number}/info.0.json`).then(d => d.data);
+    const xkcdComic = await fetchJSON(`http://xkcd.com/${number}/info.0.json`).then(d => d.data);
 
     const embed = new client.methods.Embed()
       .setColor(msg.color)

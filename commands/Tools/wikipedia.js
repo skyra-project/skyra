@@ -1,9 +1,12 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
+
 exports.run = async (client, msg, [input]) => {
   input = encodeURIComponent(input.replace(/[ ]/g, "_").toLowerCase());
   const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=${encodeURIComponent(input)}`;
 
-  const { data } = await client.fetch.JSON(url);
-  if (data.query.pageids[0] === "-1") throw new Error(client.constants.httpResponses(404));
+  const { data } = await fetchJSON(url);
+  if (data.query.pageids[0] === "-1") throw new Error(constants.httpResponses(404));
 
   const content = data.query.pages[data.query.pageids[0]];
   const wdef = content.extract.length > 1000 ?

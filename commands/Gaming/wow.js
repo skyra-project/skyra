@@ -1,3 +1,6 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
+
 const classes = {
   0: "None",
   1: "Warrior",
@@ -34,11 +37,11 @@ const genders = {
 };
 
 exports.run = async (client, msg, [server, character, ...realm]) => {
-  const { blizzard } = client.constants.getConfig.tokens;
+  const { blizzard } = constants.getConfig.tokens;
   const url = `https://${server.toLowerCase()}.api.battle.net/wow/character/${encodeURIComponent(realm)}/${encodeURIComponent(character)}?fields=stats&apikey=${blizzard}`;
   try {
     msg.channel.startTyping();
-    const { data } = await client.fetch.JSON(url);
+    const { data } = await fetchJSON(url);
 
     const embed = new client.methods.Embed()
       .setTitle(`**World of Warcraft Stats:** *${data.name}*`)

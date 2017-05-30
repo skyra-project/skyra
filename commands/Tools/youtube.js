@@ -1,9 +1,12 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
+
 exports.run = async (client, msg, [input, ind = 1]) => {
   const index = ind - 1;
-  const { google } = client.constants.getConfig.tokens;
-  const { data } = await client.fetch.JSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`);
+  const { google } = constants.getConfig.tokens;
+  const { data } = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`);
   const result = data.items[index];
-  if (!result) throw new Error(client.constants.httpResponses(404));
+  if (!result) throw new Error(constants.httpResponses(404));
   const output = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
   await msg.send(output);
 };

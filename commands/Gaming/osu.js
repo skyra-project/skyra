@@ -1,3 +1,6 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
+
 const game = {
   STANDARD: 0,
   TAIKO: 1,
@@ -17,13 +20,13 @@ exports.run = async (client, msg, [gamemode, information, ...username]) => {
   information = inf[information.toUpperCase()];
   username = username[0].split(" ").join("+");
 
-  const { osu } = client.constants.getConfig.tokens;
+  const { osu } = constants.getConfig.tokens;
   const url = `https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${osu}`;
   try {
     msg.channel.startTyping();
-    const { data } = await client.fetch.JSON(url);
+    const { data } = await fetchJSON(url);
     const uinfo = data[0];
-    if (!uinfo) throw new Error(client.constants.httpResponses(404));
+    if (!uinfo) throw new Error(constants.httpResponses(404));
     const embed = new client.methods.Embed().setColor(msg.color);
     switch (information) {
       case 1:

@@ -1,5 +1,7 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+
 exports.run = async (client, msg) => {
-  const { data } = await client.fetch.JSON("https://api.chucknorris.io/jokes/random");
+  const { data } = await fetchJSON("https://api.chucknorris.io/jokes/random");
   const embed = new client.methods.Embed()
     .setColor(msg.color)
     .setDescription(`📢 **Chuck Norris' fact:** *${data.value}*`);

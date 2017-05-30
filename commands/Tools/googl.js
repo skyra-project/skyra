@@ -1,7 +1,9 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
 const googl = require("goo.gl");
 
 exports.run = async (client, msg, [url]) => {
-  const { google } = client.constants.getConfig.tokens;
+  const { google } = constants.getConfig.tokens;
 
   googl.setKey(google);
   const embed = new client.methods.Embed().setColor(msg.color).setTimestamp();
@@ -10,7 +12,7 @@ exports.run = async (client, msg, [url]) => {
     embed.setDescription(`**Shortened URL: [${shortUrl}](${shortUrl})**`);
     await msg.sendEmbed(embed);
   } else {
-    const { data } = await client.fetch.JSON(`https://www.googleapis.com/urlshortener/v1/url?key=${google}&shortUrl=${url}`);
+    const { data } = await fetchJSON(`https://www.googleapis.com/urlshortener/v1/url?key=${google}&shortUrl=${url}`);
     embed.setDescription(`**Expanded URL: [${data.longUrl}](${data.longUrl})**`);
     await msg.sendEmbed(embed);
   }

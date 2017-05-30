@@ -1,9 +1,7 @@
-const realmsID = {
-  us: 1,
-  eu: 2,
-  kr: 3,
-  tw: 4,
-};
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const constants = require("../../utils/constants");
+
+const realmsID = { us: 1, eu: 2, kr: 3, tw: 4 };
 
 const realms = {
   1: "North America",
@@ -13,14 +11,14 @@ const realms = {
 };
 
 exports.run = async (client, msg, [server, name, id]) => {
-  const { blizzard } = client.constants.getConfig.tokens;
+  const { blizzard } = constants.getConfig.tokens;
 
   server = realmsID[server.toLowerCase()];
   const url = `https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${blizzard}`;
   msg.channel.startTyping();
   try {
-    const { data } = await client.fetch.JSON(url);
-    if (data.code !== 200) throw new Error(client.constants.httpResponses(data.code));
+    const { data } = await fetchJSON(url);
+    if (data.code !== 200) throw new Error(constants.httpResponses(data.code));
     const embed = new client.methods.Embed()
       .setTitle(`StarCraft 2 Stats: ${data.displayName} (${data.id})`)
       .setColor(0x0B947F)

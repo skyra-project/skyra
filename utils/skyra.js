@@ -1,32 +1,14 @@
-const Discord = require("discord.js");
+const { Guild, Message, GuildMember, User } = require("discord.js");
 const UserProfile = require("./userProfile.js");
 const GuildConfigs = require("./guildConfig.js");
 const Moderation = require("./moderation.js");
 const MemberScore = require("./memberScore.js");
-const Fetch = require("./kyraFetch.js");
-const Constants = require("./constants.js");
 const GlobalSocialManager = require("./globalSocialManager");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
-// const DMChannel = Discord.DMChannel;
-// const TextChannel = Discord.TextChannel;
-const Guild = Discord.Guild;
-const Message = Discord.Message;
-const GuildMember = Discord.GuildMember;
-const User = Discord.User;
-const Client = Discord.Client;
-
 /* eslint-disable no-underscore-dangle */
 class Skyra {
-
-  get fetch() { // eslint-disable-line class-methods-use-this
-    return Fetch;
-  }
-
-  get constants() { // eslint-disable-line class-methods-use-this
-    return Constants;
-  }
 
   get configs() {
     return new GuildConfigs(this);
@@ -128,4 +110,3 @@ applyToClass(Guild, ["configs", "moderation"]);
 applyToClass(Message, ["error", "nuke", "color", "prompt", "alert"]);
 applyToClass(GuildMember, ["points"]);
 applyToClass(User, ["profile"]);
-applyToClass(Client, ["fetch", "constants"]);

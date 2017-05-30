@@ -1,3 +1,5 @@
+const constants = require("../../utils/constants");
+
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [channel = msg.channel, ...content]) => {
   /* Attachments */
@@ -7,7 +9,7 @@ exports.run = async (client, msg, [channel = msg.channel, ...content]) => {
   content = content.length ? content.join(" ") : undefined;
 
   /* Check if the message is valid */
-  if (!content && !attachment) throw client.constants.httpResponses(403);
+  if (!content && !attachment) throw constants.httpResponses(403);
 
   const options = {};
   if (attachment) Object.assign(options, { files: [{ attachment }] });

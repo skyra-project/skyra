@@ -1,4 +1,6 @@
+const { XML: fetchXML } = require("../../utils/kyraFetch");
 const { fromString } = require("html-to-text");
+const constants = require("../../utils/constants");
 
 const etype = {
   TV: "📺 TV",
@@ -8,14 +10,13 @@ const etype = {
 };
 
 exports.run = async (client, msg, [args]) => {
-  const { constants } = client;
   /* Autentification */
   const { user, password } = constants.getConfig.tokens.animelist;
   const Authorization = constants.basicAuth(user, password);
 
   /* URI Query */
   const url = `https://myanimelist.net/api/anime/search.xml?q=${encodeURIComponent(args.toLowerCase())}`;
-  const { data } = await client.fetch.XML(url, { headers: { Authorization } }).catch(() => { throw client.constants.httpResponses(404); });
+  const { data } = await fetchXML(url, { headers: { Authorization } }).catch(() => { throw constants.httpResponses(404); });
   const fres = data.anime.entry[0];
   const context = fromString(fres.synopsis.toString());
   const score = Math.ceil(parseFloat(fres.score));

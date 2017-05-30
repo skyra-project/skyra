@@ -1,3 +1,4 @@
+const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const moment = require("moment");
 
 const DateToTime = (str = "000000") => `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}`;
@@ -6,7 +7,7 @@ exports.run = async (client, msg, [platform, name]) => {
   const url = `http://api.bf4stats.com/api/playerInfo?plat=${platform}&name=${encodeURIComponent(name)}&output=json`;
   try {
     msg.channel.startTyping();
-    const { data } = await client.fetch.JSON(url);
+    const { data } = await fetchJSON(url);
     const embed = new client.methods.Embed()
       .setColor(0x04ABA1)
       .setThumbnail("http://battlefield-clans.com/images/bf4_vertical.png")

@@ -1,7 +1,8 @@
+const { kyraFetch } = require("../../utils/kyraFetch");
 const cheerio = require("cheerio");
 
 exports.run = async (client, msg, [input]) => {
-  const { data } = await client.fetch.kyraFetch(`https://www.google.com/search?tbm=isch&gs_l=img&safe=medium&q=${encodeURIComponent(input)}`);
+  const { data } = await kyraFetch(`https://www.google.com/search?tbm=isch&gs_l=img&safe=medium&q=${encodeURIComponent(input)}`);
   const $ = cheerio.load(data);
   const result = $(".images_table").find("img").first().attr("src");
 

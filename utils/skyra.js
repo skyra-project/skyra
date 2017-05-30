@@ -18,6 +18,7 @@ const Client = Discord.Client;
 
 /* eslint-disable no-underscore-dangle */
 class Skyra {
+
   get fetch() { // eslint-disable-line class-methods-use-this
     return Fetch;
   }
@@ -65,9 +66,10 @@ class Skyra {
 
   nuke(time = 0) {
     if (this.timer) clearTimeout(this.timer);
+    const count = this._edits.length;
     this.timer = setTimeout(() => {
       const msg = this.channel.messages.get(this.id);
-      if (msg && msg._edits.length === this._edits.length) this.delete();
+      if (msg && msg._edits.length === count) this.delete();
     }, time);
   }
 

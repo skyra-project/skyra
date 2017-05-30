@@ -21,7 +21,7 @@ exports.run = async (client, msg, [input]) => {
 
   const info = await ytdl.getInfoAsync(url);
   const filename = `${info.title.replace(/[^a-zA-Z0-9\[\]()\-\. ]/g, "").replace(/[ ]{2}/g, " ")}`;
-  const files = await fs.readdirAsync(dir).catch(() => fs.ensureDirAsync(dir));
+  const files = await fs.readdirAsync(dir).catch(() => fs.mkdirAsync(dir).then(() => []));
   if (files.includes(`${filename}.mp3`)) throw "This song was already downloaded.";
   await msg.send(`Downloading \`${filename}\``);
   await this.download(url, "webm", dir, `${filename}.webm`);

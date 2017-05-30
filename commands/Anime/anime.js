@@ -1,4 +1,4 @@
-const htmlToText = require("html-to-text");
+const { fromString } = require("html-to-text");
 
 const etype = {
   TV: "📺 TV",
@@ -15,9 +15,9 @@ exports.run = async (client, msg, [args]) => {
 
   /* URI Query */
   const url = `https://myanimelist.net/api/anime/search.xml?q=${encodeURIComponent(args.toLowerCase())}`;
-  const { data } = await client.fetch.XML(url, { headers: { Authorization } }).catch(() => { throw new Error(client.constants.httpResponses(404)); });
+  const { data } = await client.fetch.XML(url, { headers: { Authorization } }).catch(() => { throw client.constants.httpResponses(404); });
   const fres = data.anime.entry[0];
-  const context = htmlToText.fromString(fres.synopsis.toString());
+  const context = fromString(fres.synopsis.toString());
   const score = Math.ceil(parseFloat(fres.score));
   const embed = new client.methods.Embed()
     .setColor(constants.oneToTen(score).color)

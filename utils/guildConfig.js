@@ -1,31 +1,34 @@
-const Moderation = require("./moderation.js");
+const Moderation = require("./moderation");
+const GuildManager = require("./guildManager");
 
-/* eslint-disable no-underscore-dangle, complexity, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
+/* eslint-disable no-underscore-dangle, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
 module.exports = class GuildConfig {
   constructor(guild) {
     Object.defineProperty(this, "client", { value: guild.client });
     Object.defineProperty(this, "guild", { value: guild });
-    Object.defineProperty(this, "_configuration", { value: this.client.guildCache.get(guild.id) || { events: {}, exists: false } });
     this.id = guild.id;
-    this.createdAt = this._configuration.createdAt || null;
-    this.prefix = this._configuration.prefix || "&";
   }
 
-  get exists() {
-    return this._configuration.exists !== false;
+  get prefix() {
+    return GuildManager.prefix(this.guild) || "&";
+  }
+
+  get _configuration() {
+    return GuildManager.get(this.id);
   }
 
   async create() {
     if (this.exists) throw "This GuildConfig already exists.";
-    new this.client.Create(this.client).CreateGuild(this.id);
+    GuildManager.create(this.guild);
   }
 
   async ensureConfigs() {
-    if (!this.exists) new this.client.Create(this.client).CreateGuild(this.id);
+    if (!this.exists) GuildManager.create(this.guild);
   }
 
   async update(doc) {
     await this.ensureConfigs();
+    if ("prefix" in doc) GuildManager.refreshPrefix(this.guild);
     await this.client.rethink.update("guilds", this.id, doc);
     await this.sync();
   }
@@ -33,16 +36,24 @@ module.exports = class GuildConfig {
   async sync() {
     const data = await this.client.rethink.get("guilds", this.id);
     if (!data) throw "[404] Not found.";
-    this.client.guildCache.set(this.id, data);
+    GuildManager.set(this.id, data);
   }
 
   async destroy() {
     if (!this.exists) throw "This GuildConfig does not exist.";
     await this.client.rethink.delete("guilds", this.id);
-    this.client.guildCache.delete(this.id);
+    GuildManager.delete(this.id);
   }
 
   /* Properties */
+
+  get createdAt() {
+    return this._configuration.createdAt || null;
+  }
+
+  get exists() {
+    return this._configuration.exists !== false;
+  }
 
   get mode() {
     return this._configuration.mode || 0;

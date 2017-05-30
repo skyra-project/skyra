@@ -16,8 +16,16 @@ const Skyra = new Komada.Client({
       "RELATIONSHIP_ADD",
       "RELATIONSHIP_REMOVE",
       "CHANNEL_PINS_UPDATE",
+      "USER_NOTE_UPDATE",
+      "MESSAGE_REACTION_REMOVE",
+      "MESSAGE_REACTION_REMOVE_ALL",
     ],
+    messageCacheMaxSize: 80,
+    messageCacheLifetime: 60,
+    messageSweepInterval: 120,
   },
+  commandMessageLifetime: 180,
+  commandMessageSweep: 120,
   permStructure: new Komada.PermLevels()
     .addLevel(0, false, () => true)
     .addLevel(1, false, (client, msg) => {

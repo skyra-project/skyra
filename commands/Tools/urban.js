@@ -3,20 +3,22 @@ exports.run = async (client, msg, [query, ind = 1]) => {
   if (index < 0) throw new Error("Invalid index");
   const { data } = await client.fetch.JSON(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
   const result = data.list[index];
-  if (result === undefined) throw new Error(client.constants.httpResponses(404));
-  const wdef = result.definition.length > 1000 ?
-    [`${client.funcs.splitText(result.definition, 1000)}...`, `Read the full definition here: ${result.permalink}`].join("\n") :
+  if (result === undefined) throw client.constants.httpResponses(404);
+  const wdef = result.definition.length > 750 ?
+    `${client.funcs.splitText(result.definition, 750)}...\nRead the full definition here: ${result.permalink}` :
     result.definition;
   const embed = new client.methods.Embed()
     .setTitle(`Word: ${client.funcs.toTitleCase(query)}`)
     .setURL(result.permalink)
     .setColor(msg.color)
     .setThumbnail("http://i.imgur.com/CcIZZsa.png")
-    .setDescription([`**Definition:** ${ind} out of ${data.list.length}`,
-      `_${wdef}_`, "",
-      "**Example:**",
-      result.example, "",
-      `Submitted by ${result.author}`].join("\n"))
+    .setDescription([
+      `**Definition:** ${ind} out of ${data.list.length}`,
+      `_${wdef}_`,
+      "\n**Example:**",
+      result.example,
+      `\n**Submitted by** ${result.author}`,
+    ].join("\n"))
     .addField("\u200B", `\\👍 ${result.thumbs_up}`, true)
     .addField("\u200B", `\\👎 ${result.thumbs_down}`, true)
     .setFooter("© Urban Dictionary");

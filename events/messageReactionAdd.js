@@ -1,12 +1,14 @@
 exports.run = (client, messageReaction, user) => {
-  const message = messageReaction.message;
-  if (user.bot || message.author.id !== client.user.id) return;
-  const reactionCmd = this.reactionCommands[messageReaction.emoji.name];
-  if (!reactionCmd) return;
-  const response = client.commandMessages.find(m => m.response.id === message.id);
-  const msg = response.trigger;
-  if (!response || user.id !== msg.author.id) return;
-  reactionCmd({ client, msg, message });
+  try {
+    const message = messageReaction.message;
+    if (user.bot || message.author.id !== client.user.id) return;
+    const reactionCmd = this.reactionCommands[messageReaction.emoji.name];
+    if (!reactionCmd) return;
+    const response = client.commandMessages.find(m => m.response.id === message.id);
+    if (!response || user.id !== response.trigger.author.id) return;
+    const msg = response.trigger;
+    reactionCmd({ client, msg, message });
+  } catch (e) {} // eslint-disable-line no-empty
 };
 
 exports.reactionCommands = {

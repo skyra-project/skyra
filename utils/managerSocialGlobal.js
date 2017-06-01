@@ -6,6 +6,8 @@ const data = new Collection();
 /* eslint-disable no-underscore-dangle */
 exports.get = user => data.get(user.id || user) || { points: 0, exists: false };
 
+exports.has = user => data.has(user.id || user);
+
 exports.set = (user, object) => data.set(user.id || user, object);
 
 exports.delete = user => data.delete(user.id || user) || null;

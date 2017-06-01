@@ -20,7 +20,7 @@ exports.run = async (client, msg, [server, user]) => {
     const embed = new client.methods.Embed()
       .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)
       .setColor(0xEF8400)
-      .setDescription(client.indents`
+      .setDescription(client.funcs.strip.indents`
         Paragon level: **${data.paragonLevel}**
         Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}
         Progression: Act **${progress(data.progression)}**.
@@ -31,7 +31,7 @@ exports.run = async (client, msg, [server, user]) => {
       .setTimestamp();
     for (let i = 0; i < 4; i++) {
       if (!data.heroes[i]) break;
-      embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, client.indents`
+      embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, client.funcs.strip.indents`
       \u200B  Class: **${data.heroes[i].class}**
       \u200B  Level: **${data.heroes[i].level}**
       \u200B  Elite kills: **${data.heroes[i].kills.elites}**

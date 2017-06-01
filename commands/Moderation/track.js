@@ -1,4 +1,4 @@
-const fsp = require("fs-extra-promise");
+const fsp = require("fs-extra");
 const { sep } = require("path");
 const moment = require("moment");
 
@@ -14,14 +14,14 @@ exports.send = async (client, msg, channel, sendname, filename) => {
   delete channel.trackInterval;
 
   await msg.author.sendFile(file, sendname, `Understood, there's your file for ${channel}.`);
-  await fsp.unlinkAsync(file);
+  await fsp.unlink(file);
 
   return true;
 };
 
 exports.exist = async (client, filename) => {
   const dir = `${client.clientBaseDir}tracks${sep}`;
-  const files = await fsp.readdirAsync(dir).catch(() => fsp.ensureDirAsync(dir));
+  const files = await fsp.readdir(dir).catch(() => fsp.ensureDir(dir));
   if (files.includes(filename)) return true;
   throw new Error("File not found.");
 };
@@ -29,8 +29,8 @@ exports.exist = async (client, filename) => {
 exports.write = async (client, filename) => {
   const dir = `${client.clientBaseDir}tracks${sep}`;
   const file = dir + filename;
-  await fsp.readdirAsync(dir).catch(() => fsp.ensureDirAsync(dir));
-  await fsp.appendFileAsync(file, `[${moment.utc(new Date().getTime()).format("HH:mm:ss")}] Starting...\r\n\r\n`);
+  await fsp.readdir(dir).catch(() => fsp.ensureDir(dir));
+  await fsp.appendFile(file, `[${moment.utc(new Date().getTime()).format("HH:mm:ss")}] Starting...\r\n\r\n`);
 };
 
 exports.run = async (client, msg, [channel = msg.channel]) => {

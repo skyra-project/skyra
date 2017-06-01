@@ -18,8 +18,8 @@ const PingKyra = async (client, msg, user) => {
   /* Get the buffers from both profile avatars */
   const [bgBuffer, pinnerBuffer, KyraBuffer] = await Promise.all([
     readFileAsync(`${constants.assets}images${sep}memes${sep}pingkyra.png`),
-    client.wrappers.canvasAvatar(user.displayAvatarURL),
-    client.wrappers.canvasAvatar(kyra.displayAvatarURL),
+    client.wrappers.fetchAvatar(user, 128),
+    client.wrappers.fetchAvatar(kyra, 128),
   ]);
 
     /* Background */

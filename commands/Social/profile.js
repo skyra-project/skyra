@@ -1,7 +1,7 @@
 const Canvas = require("canvas");
 const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
-const { fetchAll: fetchGlobal } = require("../../utils/globalSocialManager");
+const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 
 const socialAssets = client => `${client.clientBaseDir}assets${sep}images${sep}social${sep}`;
 const fontAssets = client => `${client.clientBaseDir}assets${sep}fonts${sep}`;

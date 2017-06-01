@@ -166,7 +166,7 @@ const channelInfo = async (client, msg, channel) => {
   const embed = new client.methods.Embed()
     .setColor(msg.member.highestRole.color || 0xdfdfdf)
     .setDescription(`Info on **${channel.name}** (ID: ${channel.id})`)
-    .addField("❯ Channel info", client.indents`
+    .addField("❯ Channel info", client.funcs.strip.indents`
       • **Type:** ${channel.type}
       • **Created at:** ${moment.utc(channel.createdAt).format("D/MM/YYYY [at] HH:mm:ss")}
       • **Position:** ${channel.position}

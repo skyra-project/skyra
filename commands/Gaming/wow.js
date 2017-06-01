@@ -46,7 +46,7 @@ exports.run = async (client, msg, [server, character, ...realm]) => {
     const embed = new client.methods.Embed()
       .setTitle(`**World of Warcraft Stats:** *${data.name}*`)
       .setColor(0x04AB41)
-      .setDescription(client.indents`
+      .setDescription(client.funcs.strip.indents`
         Level: **${data.level}**
         ${data.totalHonorableKills ? `**${data.totalHonorableKills}** honorable kills.` : "No honorable kills."}
         Realm: **${data.realm}**${data.battlegroup !== "" ? `; battlegroup: **${data.battlegroup}**.` : "."}
@@ -55,7 +55,7 @@ exports.run = async (client, msg, [server, character, ...realm]) => {
       .setFooter("📊 Statistics")
       .setThumbnail("https://us.battle.net/forums/static/images/game-logos/game-logo-wow.png")
       .setTimestamp()
-      .addField(`❯ ${data.name} ${genders[data.gender]}`, client.indents`
+      .addField(`❯ ${data.name} ${genders[data.gender]}`, client.funcs.strip.indents`
         Level: **${data.level}**.
         Character stats: **${data.stats.health}** health and **${data.stats.armor}** armor.
         Class: **${classes[data.class]}**.

@@ -10,7 +10,7 @@ exports.run = async (client, msg, [type, ...input]) => {
   switch (type.toLowerCase()) {
     case "channels": {
       embed.setTitle(`List of channels for ${msg.guild} (${msg.guild.id})`)
-        .setDescription(msg.guild.channels
+        .splitFields(msg.guild.channels
           .filter(ch => ch.type === "text")
           .array()
           .sort((a, b) => a.position > b.position ? 1 : -1)
@@ -19,26 +19,15 @@ exports.run = async (client, msg, [type, ...input]) => {
       break;
     }
     case "roles": {
-      const roleList = msg.guild.roles
-        .array()
-        .sort((a, b) => a.position > b.position ? 1 : -1)
-        .slice(1)
-        .reverse()
-        .map(c => `❯ \`${"_".repeat(3 - c.members.size.toString().length)}${c.members.size}\` ❯ **${c.name}** ❯ *${c.id}*`)
-        .join("\n");
-      embed.setTitle(`List of roles for ${msg.guild} (${msg.guild.id})`);
-      if (roleList.length <= 2040) embed.setDescription(roleList);
-      else {
-        let init = roleList;
-        let i;
-        let x;
-
-        for (i = 0; i < roleList.length / 1020; i++) {
-          x = init.substring(0, 1020).lastIndexOf("\n");
-          embed.addField("\u200B", init.substring(0, x));
-          init = init.substring(x, init.length);
-        }
-      }
+      embed
+        .setTitle(`List of roles for ${msg.guild} (${msg.guild.id})`)
+        .splitFields(msg.guild.roles
+          .array()
+          .sort((a, b) => a.position > b.position ? 1 : -1)
+          .slice(1)
+          .reverse()
+          .map(c => `❯ \`${"_".repeat(3 - c.members.size.toString().length)}${c.members.size}\` ❯ **${c.name}** ❯ *${c.id}*`)
+          .join("\n"));
       break;
     }
     case "invites": {
@@ -47,7 +36,7 @@ exports.run = async (client, msg, [type, ...input]) => {
       const invites = await msg.guild.fetchInvites();
       if (!invites.first()) return msg.alert("There's no invite link here.");
       embed.setTitle("List of invites")
-        .setDescription(invites
+        .splitFields(invites
           .array()
           .sort((a, b) => a.uses < b.uses ? 1 : -1)
           .map(inv => `🔻 ${inv.channel} ❯ ${inv.inviter}\n      ❯ \`${inv.code}\` Uses: (${inv.uses})`)

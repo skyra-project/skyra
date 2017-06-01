@@ -58,6 +58,6 @@
     "node": "8.0.0"
   },
   "devDependencies": {
-    "eslint": "^3.12.2"
+    "eslint": "^3.19.0"
   }
 }

@@ -13,7 +13,7 @@ exports.run = async (client, msg, [platform, name]) => {
       .setThumbnail("http://battlefield-clans.com/images/bf4_vertical.png")
       .setTitle(`Battlefield 4 Stats: ${data.player.name}`)
       .setDescription("\u200B")
-      .addField("PROFILE", client.indents`
+      .addField("PROFILE", client.funcs.strip.indents`
         Rank: **${data.player.rank.nr}** (${data.player.rank.name}).${!data.player.rank.next ? "" : `
             Next: **${data.player.rank.next.nr}** (${data.player.rank.next.name}) in **${(data.player.rank.next.needed - data.player.rank.needed) - (data.player.rank.next.curr - data.player.rank.needed)}**xp (**${data.player.rank.next.relProg.toFixed(0)}%**).\n`}
         Last connection: ${moment.utc(new Date(DateToTime(data.player.lastDay))).format("YYYY/MM/DD")}.
@@ -22,7 +22,7 @@ exports.run = async (client, msg, [platform, name]) => {
         **[Full profile](${data.player.blPlayer})**
         \u200B
       `)
-      .addField("GENERAL STATISTICS", client.indents`
+      .addField("GENERAL STATISTICS", client.funcs.strip.indents`
         Time played: **${moment.duration(data.player.timePlayed * 1000).format("DD [**days,**] hh [**hours,**] mm [**mins,**] ss [**secs]")}.
         Kills: **${data.stats.kills}**, deaths: **${data.stats.deaths}** and **${data.stats.killAssists}** assistances (**${(data.stats.kills / data.stats.deaths).toFixed(2)}** K/D).
 
@@ -31,7 +31,7 @@ exports.run = async (client, msg, [platform, name]) => {
         Played **${data.stats.numRounds}** rounds, won **${data.stats.numWins}** and lost **${data.stats.numLosses}** (**${(data.stats.numWins / data.stats.numLosses).toFixed(2)}** W/L).
         \u200B
       `)
-      .addField("OTHER", client.indents`
+      .addField("OTHER", client.funcs.strip.indents`
         **ASSAULT**
           Time: **${moment.duration(data.stats.kits.assault.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.
           Score: **${data.stats.kits.assault.score}**
@@ -42,7 +42,7 @@ exports.run = async (client, msg, [platform, name]) => {
           Score: **${data.stats.kits.engineer.score}**
           Stars: **${data.stats.kits.engineer.stars}**
       `, true)
-      .addField("\u200B", client.indents`
+      .addField("\u200B", client.funcs.strip.indents`
         **SUPPORT**
           Healed **${data.stats.heals}**, revived **${data.stats.revives}**.
           Time: **${moment.duration(data.stats.kits.support.time * 1000).format("DD[**d,**] hh[**h,**] mm[**m,**] ss[**s]")}.

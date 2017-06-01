@@ -1,4 +1,4 @@
-const MANAGER_SOCIAL_GLOBAL = require("./globalSocialManager");
+const MANAGER_SOCIAL_GLOBAL = require("./managerSocialGlobal");
 
 /* eslint-disable no-underscore-dangle, complexity, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
 module.exports = class UserProfile {

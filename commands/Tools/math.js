@@ -5,7 +5,7 @@ exports.run = async (client, msg, [exp]) => {
   const start = now();
   const evaled = await math.eval(exp);
   await msg.send([
-    `⚙ **Calculated** (${(now() - start).toFixed(3)}ms)${"```"}js`,
+    `⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${"```"}js`,
     `${client.funcs.clean(client, evaled)}${"```"}`,
   ].join("\n"));
 };

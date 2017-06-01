@@ -23,7 +23,7 @@ exports.run = async (client, msg, [server, name, id]) => {
       .setTitle(`StarCraft 2 Stats: ${data.displayName} (${data.id})`)
       .setColor(0x0B947F)
       .setDescription("\u200B")
-      .addField(`❯ ${data.displayName}`, client.indents`
+      .addField(`❯ ${data.displayName}`, client.funcs.strip.indents`
         Season total games: **${data.career.seasonTotalGames}**.
         Career total games: **${data.career.careerTotalGames}**.
 
@@ -35,7 +35,7 @@ exports.run = async (client, msg, [server, name, id]) => {
         **[Full profile](http://us.battle.net/sc2/en${data.profilePath})**
         \u200B
         `, true)
-      .addField("❯ Career statistics", client.indents`
+      .addField("❯ Career statistics", client.funcs.strip.indents`
         Primary race: **${data.career.primaryRace}**.
           Zerg wins: **${data.career.zergWins}**.
           Terran wins: **${data.career.terranWins}**.

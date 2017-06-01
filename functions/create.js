@@ -1,6 +1,6 @@
 const RethinkDB = require("./rethinkDB");
 const GuildManager = require("../utils/guildManager");
-const GlobalSocialManager = require("../utils/globalSocialManager");
+const MANAGER_SOCIAL_GLOBAL = require("../utils/managerSocialGlobal");
 const MANAGER_SOCIAL_LOCAL = require("../utils/managerSocialLocal");
 
 exports.init = async (client) => {
@@ -15,7 +15,7 @@ exports.init = async (client) => {
     Object.assign(guildData, { mutes });
     GuildManager.set(guildData.id, guildData);
   });
-  users.forEach(userData => GlobalSocialManager.set(userData.id, userData));
+  users.forEach(userData => MANAGER_SOCIAL_GLOBAL.set(userData.id, userData));
   locals.forEach((g) => {
     MANAGER_SOCIAL_LOCAL.set(g.id, new client.methods.Collection());
     g.scores.forEach(u => MANAGER_SOCIAL_LOCAL.get(g.id).set(u.id, u));

@@ -1,10 +1,11 @@
+/* Node.js dependencies */
 const http = require("http");
 const https = require("https");
 const { parse } = require("url");
 const { stringify } = require("querystring");
 
-const { promisifyAll } = require("tsubaki");
-const { parseStringAsync } = promisifyAll(require("xml2js"));
+/* External dependencies */
+const { parseStringAsync } = require("util").promisify(require("xml2js").parseString);
 
 /* eslint-disable no-use-before-define */
 exports.kyraFetch = (url, options = {}) => new Promise((resolve, reject) => {

@@ -1,9 +1,9 @@
-const { Guild, Message, GuildMember, User } = require("discord.js");
+const { Guild, Message, GuildMember, User, RichEmbed } = require("discord.js");
 const UserProfile = require("./userProfile.js");
 const GuildConfigs = require("./guildConfig.js");
 const Moderation = require("./moderation.js");
 const MemberScore = require("./memberScore.js");
-const GlobalSocialManager = require("./globalSocialManager");
+const MANAGER_SOCIAL_GLOBAL = require("./managerSocialGlobal");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -28,13 +28,30 @@ class Skyra {
 
   get color() {
     let color;
-    if (GlobalSocialManager.get(this.author.id)) {
-      color = parseInt(`0x${GlobalSocialManager.get(this.author.id).color}`);
+    if (MANAGER_SOCIAL_GLOBAL.get(this.author.id)) {
+      color = parseInt(`0x${MANAGER_SOCIAL_GLOBAL.get(this.author.id).color}`);
     } else if (this.guild) {
       if (!this.member) this.guild.fetchMember(this.author.id);
       else color = this.member.highestRole.color;
     }
     return color || 14671839;
+  }
+
+  splitFields(content) {
+    if (content instanceof Array) content = content.join("\n");
+    if (content.length <= 2000) this.setDescription(content);
+    else {
+      let init = content;
+      let i;
+      let x;
+
+      for (i = 0; i < content.length / 1020; i++) {
+        x = init.substring(0, 1020).lastIndexOf("\n");
+        this.addField("\u200B", init.substring(0, x));
+        init = init.substring(x, init.length);
+      }
+    }
+    return this;
   }
 
   alert(content = $("Content"), timer = 10000) {
@@ -73,26 +90,26 @@ class Skyra {
   static async awaitReaction(msg, message) {
     await message.react("🇾");
     await message.react("🇳");
-    const collector = message.createReactionCollector((reaction, user) => user.id === msg.author.id, { time: 20000, max: 1 });
-    collector.on("collect", (r) => {
-      if (r.emoji.name === "🇾") collector.stop("success");
-      else collector.stop();
-    });
-    collector.on("end", (collected, reason) => {
-      if (reason === "success") Promise.resolve();
-      else Promise.reject();
-    });
+    const data = await message.awaitReactions(reaction => reaction.users.has(msg.author.id), { time: 20000, max: 1 });
+    if (data.firstKey() === "🇾") return null;
+    throw null;
   }
 
-  static async awaitMessage(msg) {
-    const collector = msg.channel.createMessageCollector(m => m.author === msg.author, { time: 20000, max: 1 });
-    collector.on("message", (m) => {
-      if (m.content.toLowerCase() === "yes") collector.stop("success");
-      else collector.stop();
-    });
-    collector.on("end", (collected, reason) => {
-      if (reason === "success") Promise.resolve();
-      else Promise.reject();
+  static awaitMessage(msg) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const collector = msg.channel.createMessageCollector(m => m.author === msg.author, { time: 20000, max: 1 });
+        collector.on("message", (m) => {
+          if (m.content.toLowerCase() === "yes") collector.stop("success");
+          else collector.stop();
+        });
+        collector.on("end", (collected, reason) => {
+          if (reason === "success") resolve();
+          else reject();
+        });
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 }
@@ -110,3 +127,4 @@ applyToClass(Guild, ["configs", "moderation"]);
 applyToClass(Message, ["error", "nuke", "color", "prompt", "alert"]);
 applyToClass(GuildMember, ["points"]);
 applyToClass(User, ["profile"]);
+applyToClass(RichEmbed, ["splitFields"]);

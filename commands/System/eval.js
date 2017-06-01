@@ -43,12 +43,12 @@ exports.run = async (client, msg, [args]) => {
     } else { out = res; }
 
     // SEND MESSAGE
-    send.push(`➡ **Input:** Executed in ${time.toFixed(5)}ms${"```"}js`);
+    send.push(`➡ **Input:** Executed in ${time.toFixed(5)}μs${"```"}js`);
     send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
     send.push("🔍 **Inspect:**```js");
     send.push(`${client.funcs.clean(client, out)}${"```"}`);
   } catch (err) {
-    send.push(`➡ **Input:** Executed in ${(now() - start).toFixed(5)}ms${"```"}js`);
+    send.push(`➡ **Input:** Executed in ${(now() - start).toFixed(5)}μs${"```"}js`);
     send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
     send.push("❌ **Error:**```js");
     send.push(`${(err ? err.message || err : "< void >")}${"```"}`);

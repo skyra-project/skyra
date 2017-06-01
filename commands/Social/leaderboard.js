@@ -1,4 +1,4 @@
-const { fetchAll: fetchGlobal } = require("../../utils/globalSocialManager");
+const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 const { fetchAll: fetchLocal } = require("../../utils/managerSocialLocal");
 
 const titles = {

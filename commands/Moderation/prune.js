@@ -19,7 +19,7 @@ exports.run = async (client, msg, [limit, ...filter]) => {
       case "links": mFilter = m => m.content.search(/https?:\/\/[^ /.]+\.[^ /.]+/) !== -1;
         break;
       default: {
-        const user = await client.search.User(filter, msg.guild);
+        const user = await client.funcs.search.User(filter, msg.guild);
         mFilter = m => m.author.id === user.id;
       }
     }

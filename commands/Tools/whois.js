@@ -4,7 +4,7 @@ const sortRanks = (a, b) => b.position > a.position;
 
 exports.run = async (client, msg, [search = msg.member]) => {
   /* Initialize Search */
-  const user = await client.search.User(search, msg.guild);
+  const user = await client.funcs.search.User(search, msg.guild);
   const member = msg.guild.member(user) || null;
 
   const embed = new client.methods.Embed();

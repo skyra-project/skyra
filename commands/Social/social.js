@@ -5,7 +5,7 @@ exports.searchProfile = async (client, msg, search) => {
   if (/[0-9]{17,21}/.test(search) && MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
     return search;
   }
-  const user = await client.search.User(search, msg.guild);
+  const user = await client.funcs.search.User(search, msg.guild);
   if (user.bot) throw "You can't modify bot profiles, since they don't have one.";
   if (!MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
     const data = { id: user.id, score: 0 };

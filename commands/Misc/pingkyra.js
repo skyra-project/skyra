@@ -50,7 +50,7 @@ const PingKyra = async (client, msg, user) => {
 };
 
 exports.run = async (client, msg, [search]) => {
-  const user = await client.search.User(search, msg.guild);
+  const user = await client.funcs.search.User(search, msg.guild);
   const output = await PingKyra(client, msg, user);
   await msg.channel.sendFile(output, "pingkyra.png");
 };

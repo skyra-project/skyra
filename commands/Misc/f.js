@@ -29,7 +29,7 @@ const Pray = async (client, user) => {
 };
 
 exports.run = async (client, msg, [search = msg.author]) => {
-  const user = await client.search.User(search, msg.guild);
+  const user = await client.funcs.search.User(search, msg.guild);
   const output = await Pray(client, user);
   await msg.channel.sendFile(output, "f.png");
 };

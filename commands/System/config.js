@@ -89,12 +89,12 @@ class Validator {
         return input;
       }
       case "Role": {
-        const role = await this.client.search.Role(input.toLowerCase(), this.guild);
+        const role = await this.client.funcs.search.Role(input.toLowerCase(), this.guild);
         if (role) return role;
         throw "Expected Role.";
       }
       case "TextChannel": {
-        const channel = await this.client.search.Channel(input.toLowerCase(), this.guild);
+        const channel = await this.client.funcs.search.Channel(input.toLowerCase(), this.guild);
         if (channel) return channel;
         throw "Expected Channel.";
       }

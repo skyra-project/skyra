@@ -1,6 +1,6 @@
 exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) => {
   if (!/[0-9]{17,21}/.test(searchMessage)) throw new ReferenceError("Invalid message ID");
-  const channel = await client.search.Channel(searchChannel, msg.guild);
+  const channel = await client.funcs.search.Channel(searchChannel, msg.guild);
   const m = await channel.fetchMessage(searchMessage);
 
   const attachment = m.attachments.size ? m.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split(".").pop())) : null;

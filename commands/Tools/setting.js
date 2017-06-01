@@ -13,14 +13,14 @@ class Settings {
       case "String": return value;
       case "Role": {
         value = value.toLowerCase();
-        const role = await this.client.search.Role(value, this.guild);
+        const role = await this.client.funcs.search.Role(value, this.guild);
         if (role) return role;
         throw "Expected Role.";
       }
       case "Channel": {
         value = value.toLowerCase();
         if (value === "here") return this.msg.channel;
-        return this.client.search.Channel(value, this.guild);
+        return this.client.funcs.search.Channel(value, this.guild);
       }
       case "Command": {
         value = value.toLowerCase();

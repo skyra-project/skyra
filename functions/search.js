@@ -57,7 +57,7 @@ exports.User = async (query, guild, strict = false) => {
         throw "You must provide an mention, ID, or full Discord tag";
       } else {
         result = guild.members.find(m => m.user.tag === query) ||
-            this.AdvancedUserSearch(query.toLowerCase(), guild).catch(() => { throw `User not found: ${query}`; });
+            this.AdvancedUserSearch(query.toLowerCase(), guild);
         if (result) return result.user;
         throw `User not found: ${query}`;
       }

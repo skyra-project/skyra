@@ -23,7 +23,7 @@ class RoleList {
     const invalidRoles = [];
     await Promise.all(roles.map(r => new Promise(async (resolve) => {
       try {
-        const checkRole = await this._client.search.Role(r, this._guild);
+        const checkRole = await this._client.funcs.search.Role(r, this._guild);
         if (!this._config.publicRoles.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
         else if (this._msg.member.roles.has(checkRole.id)) existentRoles.push(checkRole.name);
         else giveRoles.push(checkRole.id);

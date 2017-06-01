@@ -8,7 +8,7 @@ exports.run = async (client, msg, [search]) => {
     const remaining = (msg.author.profile.timerep + 86400000) - now;
     await msg.alert(`You can give a reputation point in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`, 10000);
   } else {
-    const user = await client.search.User(search, msg.guild);
+    const user = await client.funcs.search.User(search, msg.guild);
     if (msg.author.id === user.id) throw "You can't give a reputation point to yourself.";
     else if (user.bot) throw "You can't give reputation points to bots.";
 

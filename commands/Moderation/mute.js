@@ -19,7 +19,7 @@ class Mute {
 
 exports.run = async (client, msg, [search, ...reason]) => {
   /* Initialize Search */
-  const user = await client.search.User(search, msg.guild, true);
+  const user = await client.funcs.search.User(search, msg.guild, true);
   const member = msg.guild.member(user) || null;
 
   if (member) {

@@ -43,11 +43,11 @@ class Run {
     switch (type) {
       case "role": {
         if (!input) return this.msg.member.highestRole;
-        return this.client.search.Role(input, this.guild);
+        return this.client.funcs.search.Role(input, this.guild);
       }
       case "channel": {
         if (!input) return this.channel;
-        return this.client.search.Channel(input, this.guild);
+        return this.client.funcs.search.Channel(input, this.guild);
       }
       case "guild": {
         let guild;
@@ -64,7 +64,7 @@ class Run {
         let user;
         await this.msg.send("`Fetching data...`");
         if (!input) user = this.msg.author;
-        else user = this.client.search.User(input, this.guild);
+        else user = this.client.funcs.search.User(input, this.guild);
         const member = this.guild.member(user) || null;
         if (!member) throw new Error("User not found.");
         return member;

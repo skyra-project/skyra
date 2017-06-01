@@ -22,7 +22,7 @@ class RoleList {
     const invalidRoles = [];
     for (let i = 0; i < roles.length; i++) {
       const r = roles[i];
-      this._client.search.Role(r, this._msg.guild)
+      this._client.funcs.search.Role(r, this._msg.guild)
         .then((checkRole) => {
           if (!this._config.publicRoles.includes(checkRole.id)) invalidRoles.push(r);
           else if (this._msg.member.roles.has(checkRole.id)) giveRoles.push(checkRole);

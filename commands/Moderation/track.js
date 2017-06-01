@@ -34,7 +34,7 @@ exports.write = async (client, filename) => {
 };
 
 exports.run = async (client, msg, [channel = msg.channel]) => {
-  channel = await client.search.Channel(channel, this.guild);
+  channel = await client.funcs.search.Channel(channel, this.guild);
 
   if (!channel.tracking) {
       /* Apply properties to Channel */

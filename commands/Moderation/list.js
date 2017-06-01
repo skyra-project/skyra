@@ -53,7 +53,7 @@ exports.run = async (client, msg, [type, ...input]) => {
             .map(c => c.thisCase)
             .join("**, **")}**`}`);
       } else {
-        const user = await client.search.User(input, msg.guild);
+        const user = await client.funcs.search.User(input, msg.guild);
         const thisStrikes = cases.filter(c => c.user === user.id);
 
         embed

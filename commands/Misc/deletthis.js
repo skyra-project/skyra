@@ -67,7 +67,7 @@ const DeletThis = async (client, msg, user) => {
 };
 
 exports.run = async (client, msg, [search]) => {
-  const user = await client.search.User(search, msg.guild);
+  const user = await client.funcs.search.User(search, msg.guild);
   const output = await DeletThis(client, msg, user);
   await msg.channel.sendFile(output, "DeletThis.png");
 };

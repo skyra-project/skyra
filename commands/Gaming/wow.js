@@ -1,6 +1,9 @@
 const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 
+/* Autentification */
+const { blizzard } = constants.getConfig.tokens;
+
 const classes = {
   0: "None",
   1: "Warrior",
@@ -37,7 +40,6 @@ const genders = {
 };
 
 exports.run = async (client, msg, [server, character, ...realm]) => {
-  const { blizzard } = constants.getConfig.tokens;
   const url = `https://${server.toLowerCase()}.api.battle.net/wow/character/${encodeURIComponent(realm)}/${encodeURIComponent(character)}?fields=stats&apikey=${blizzard}`;
   try {
     msg.channel.startTyping();
@@ -46,24 +48,24 @@ exports.run = async (client, msg, [server, character, ...realm]) => {
     const embed = new client.methods.Embed()
       .setTitle(`**World of Warcraft Stats:** *${data.name}*`)
       .setColor(0x04AB41)
-      .setDescription(client.funcs.strip.indents`
-        Level: **${data.level}**
-        ${data.totalHonorableKills ? `**${data.totalHonorableKills}** honorable kills.` : "No honorable kills."}
-        Realm: **${data.realm}**${data.battlegroup !== "" ? `; battlegroup: **${data.battlegroup}**.` : "."}
-        \u200B
-        `)
+      .setDescription([
+        `Level: **${data.level}**`,
+        `${data.totalHonorableKills ? `**${data.totalHonorableKills}** honorable kills.` : "No honorable kills."}`,
+        `Realm: **${data.realm}**${data.battlegroup !== "" ? `; battlegroup: **${data.battlegroup}**.` : "."}`,
+        "\u200B",
+      ].join("\n"))
       .setFooter("📊 Statistics")
       .setThumbnail("https://us.battle.net/forums/static/images/game-logos/game-logo-wow.png")
       .setTimestamp()
-      .addField(`❯ ${data.name} ${genders[data.gender]}`, client.funcs.strip.indents`
-        Level: **${data.level}**.
-        Character stats: **${data.stats.health}** health and **${data.stats.armor}** armor.
-        Class: **${classes[data.class]}**.
-        Race: **${races[data.race] ? races[data.race] : data.race}**.
-        Power type: **${data.stats.powerType}**.
-
-        Total achievement points: **${data.achievementPoints}**.
-        `, true);
+      .addField(`❯ ${data.name} ${genders[data.gender]}`, [
+        `Level: **${data.level}**.`,
+        `Character stats: **${data.stats.health}** health and **${data.stats.armor}** armor.`,
+        `Class: **${classes[data.class]}**.`,
+        `Race: **${races[data.race] ? races[data.race] : data.race}**.`,
+        `Power type: **${data.stats.powerType}**.`,
+        "",
+        `Total achievement points: **${data.achievementPoints}**.`,
+      ].join("\n"), true);
 
     await msg.sendEmbed(embed);
   } catch (e) {

@@ -1,5 +1,5 @@
-const readFileAsync = require("util").promisify(require("fs").readFile);
 const constants = require("../../utils/constants");
+const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
 const { sep } = require("path");
 
@@ -12,7 +12,7 @@ const Pray = async (client, user) => {
 
   /* Get the buffers from the praised user's profile avatar */
   const [bgBuffer, praised] = await Promise.all([
-    readFileAsync(`${constants.assets}images${sep}memes${sep}f.png`),
+    readFile(`${constants.assets}images${sep}memes${sep}f.png`),
     client.wrappers.fetchAvatar(user, 256),
   ]);
 

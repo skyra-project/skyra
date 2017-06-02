@@ -2,6 +2,10 @@ const { XML: fetchXML } = require("../../utils/kyraFetch");
 const { fromString } = require("html-to-text");
 const constants = require("../../utils/constants");
 
+/* Autentification */
+const { user, password } = constants.getConfig.tokens.animelist;
+const Authorization = constants.basicAuth(user, password);
+
 const etype = {
   TV: "📺 TV",
   MOVIE: "🎥 Movie",
@@ -10,11 +14,6 @@ const etype = {
 };
 
 exports.run = async (client, msg, [args]) => {
-  /* Autentification */
-  const { user, password } = constants.getConfig.tokens.animelist;
-  const Authorization = constants.basicAuth(user, password);
-
-  /* URI Query */
   const url = `https://myanimelist.net/api/anime/search.xml?q=${encodeURIComponent(args.toLowerCase())}`;
   const { data } = await fetchXML(url, { headers: { Authorization } }).catch(() => { throw constants.httpResponses(404); });
   const fres = data.anime.entry[0];

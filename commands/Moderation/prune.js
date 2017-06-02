@@ -1,28 +1,24 @@
+exports.getFilter = async (client, msg, input) => {
+  switch (input) {
+    case "invite": return m => m.content.search(/(discord\.gg\/.+|discordapp\.com\/invite\/.+)/i) !== -1;
+    case "nopin": return m => !m.pinned;
+    case "bots": return m => m.author.bot;
+    case "you": return m => m.author.id === m.client.user.id;
+    case "me": return m => m.author.id === msg.author.id;
+    case "upload": return m => m.attachments.size !== 0;
+    case "links": return m => m.content.search(/https?:\/\/[^ /.]+\.[^ /.]+/) !== -1;
+    default: {
+      const user = await client.funcs.search.User(input, msg.guild);
+      return m => m.author.id === user.id;
+    }
+  }
+};
+
 exports.run = async (client, msg, [limit, ...filter]) => {
   let mFilter;
   let messages;
   if (filter.length) {
-    filter = filter.join(" ");
-    switch (filter) {
-      case "invite": mFilter = m => m.content.search(/(discord\.gg\/.+|discordapp\.com\/invite\/.+)/i) !== -1;
-        break;
-      case "nopin": mFilter = m => !m.pinned;
-        break;
-      case "bots": mFilter = m => m.author.bot;
-        break;
-      case "you": mFilter = m => m.author.id === m.client.user.id;
-        break;
-      case "me": mFilter = m => m.author.id === msg.author.id;
-        break;
-      case "upload": mFilter = m => m.attachments.size !== 0;
-        break;
-      case "links": mFilter = m => m.content.search(/https?:\/\/[^ /.]+\.[^ /.]+/) !== -1;
-        break;
-      default: {
-        const user = await client.funcs.search.User(filter, msg.guild);
-        mFilter = m => m.author.id === user.id;
-      }
-    }
+    mFilter = await this.getFilter(client, msg, filter.join(" ").toLowerCase());
     messages = await msg.channel.fetchMessages({ limit }).then(msgs => msgs.filter(mFilter));
   } else {
     messages = await msg.channel.fetchMessages({ limit });

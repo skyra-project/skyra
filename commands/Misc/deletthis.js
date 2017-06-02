@@ -1,5 +1,5 @@
-const readFileAsync = require("util").promisify(require("fs").readFile);
 const constants = require("../../utils/constants");
+const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
 const { sep } = require("path");
 
@@ -26,7 +26,7 @@ const DeletThis = async (client, msg, user) => {
 
     /* Get the buffers from both profile avatars */
   const [bgBuffer, Hammered, Hammerer] = await Promise.all([
-    readFileAsync(`${constants.assets}images${sep}memes${sep}DeletThis.png`),
+    readFile(`${constants.assets}images${sep}memes${sep}DeletThis.png`),
     client.wrappers.fetchAvatar(selectedUser, 256),
     client.wrappers.fetchAvatar(hammerer, 256),
   ]);

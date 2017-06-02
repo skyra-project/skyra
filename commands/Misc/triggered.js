@@ -1,6 +1,6 @@
-const readFileAsync = require("util").promisify(require("fs").readFile);
 const constants = require("../../utils/constants");
 const streamToArray = require("stream-to-array");
+const { readFile } = require("fs-nextra");
 const GIFEncoder = require("gifencoder");
 const Canvas = require("canvas");
 const { sep } = require("path");
@@ -14,7 +14,7 @@ const triggering = async (client, user) => {
 
   const [userBuffer, titleBuffer] = await Promise.all([
     client.wrappers.fetchAvatar(user, 512),
-    readFileAsync(`${constants.assets}images${sep}memes${sep}triggered.png`),
+    readFile(`${constants.assets}images${sep}memes${sep}triggered.png`),
   ]);
   imgTitle.src = titleBuffer;
   imgTriggered.src = userBuffer;

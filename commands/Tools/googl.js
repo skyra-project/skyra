@@ -2,9 +2,9 @@ const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 const googl = require("goo.gl");
 
-exports.run = async (client, msg, [url]) => {
-  const { google } = constants.getConfig.tokens;
+const { google } = constants.getConfig.tokens;
 
+exports.run = async (client, msg, [url]) => {
   googl.setKey(google);
   const embed = new client.methods.Embed().setColor(msg.color).setTimestamp();
   if (!url.startsWith("https://goo.gl/")) {

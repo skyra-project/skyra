@@ -1,9 +1,10 @@
 const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 
+const { google } = constants.getConfig.tokens;
+
 exports.run = async (client, msg, [input, ind = 1]) => {
   const index = ind - 1;
-  const { google } = constants.getConfig.tokens;
   const { data } = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`);
   const result = data.items[index];
   if (!result) throw new Error(constants.httpResponses(404));

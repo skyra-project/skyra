@@ -46,26 +46,22 @@ class Overwatch {
     });
   }
 
-  static resolveProfile(player) {
-    return new Promise(async (resolve, reject) => {
-      const verifier = `https://playoverwatch.com/en-us/search/account-by-name/${encodeURIComponent(player.battletag)}`;
-      const profiles = await fetchJSON(verifier).then(d => d.data).catch(() => reject("please make sure you have written your profile correctly, this is case sensitive."));
-      if (!profiles.length) reject("please make sure you have written your profile correctly, this is case sensitive.");
-      const pf = player.platform;
-      const sv = player.server;
-      let careerLinks;
-      if (!pf && !sv) careerLinks = profiles;
-      else if (pf && !sv) careerLinks = profiles.filter(p => p.careerLink.split("/")[2] === pf);
-      else if (!pf && sv) careerLinks = profiles.filter(p => p.careerLink.split("/")[3] === sv);
-      else if (pf && sv) careerLinks = profiles.filter(p => p.careerLink === `/career/${pf}/${sv}/${player.battletag}`);
-      switch (careerLinks.length) {
-        case 0: reject(`this user doesn't have any data for \`${pf ? `Platform: ${pf} ` : ""}\`\`${sv ? `Server: ${sv}` : ""}\`.`);
-          break;
-        case 1: resolve(careerLinks[0]);
-          break;
-        default: resolve(careerLinks.sort((a, b) => b.level - a.level)[0]);
-      }
-    });
+  static async resolveProfile(player) {
+    const verifier = `https://playoverwatch.com/en-us/search/account-by-name/${encodeURIComponent(player.battletag)}`;
+    const profiles = await fetchJSON(verifier).then(d => d.data).catch(() => { throw "Make sure you have written your profile correctly, this is case sensitive."; });
+    if (!profiles.length) throw "Make sure you have written your profile correctly, this is case sensitive.";
+    const pf = player.platform;
+    const sv = player.server;
+    let careerLinks;
+    if (!pf && !sv) careerLinks = profiles;
+    else if (pf && !sv) careerLinks = profiles.filter(p => p.careerLink.split("/")[2] === pf);
+    else if (!pf && sv) careerLinks = profiles.filter(p => p.careerLink.split("/")[3] === sv);
+    else if (pf && sv) careerLinks = profiles.filter(p => p.careerLink === `/career/${pf}/${sv}/${player.battletag}`);
+    switch (careerLinks.length) {
+      case 0: throw `This user doesn't have any data for \`${pf ? `Platform: ${pf} ` : ""}\`\`${sv ? `Server: ${sv}` : ""}\`.`;
+      case 1: return (careerLinks[0]);
+      default: return (careerLinks.sort((a, b) => b.level - a.level)[0]);
+    }
   }
 
   static collect(data, index) {
@@ -77,7 +73,8 @@ class Overwatch {
       const html = await kyraFetch(url).then(d => d.data);
       const $ = cheerio.load(html);
       let ProgressStats;
-      if (!hero) { ProgressStats = $(`#${mode}`).children()["2"].children[0].children[2]; } else {
+      if (!hero) ProgressStats = $(`#${mode}`).children()["2"].children[0].children[2];
+      else {
         const heroID = constants.owHero(hero) || reject("Unexpected error: Hexadecimal Character ID not found.");
         const getHero = $(`#${mode}`).children()["2"].children[0].children.find(c => c.attribs["data-category-id"] === heroID) || null;
         if (!getHero) reject(`this career profile doesn't have any data for ${this._client.funcs.toTitleCase(hero)}`);

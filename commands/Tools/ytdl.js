@@ -6,6 +6,8 @@ const constants = require("../../utils/constants");
 const ytdl = promisifyAll(require("ytdl-core"));
 const fs = promisifyAll(require("fs"));
 
+const { google } = constants.getConfig.tokens;
+
 /* eslint-disable no-useless-escape, no-throw-literal */
 exports.download = (url, typeFormat, dir, filename) => new Promise((resolve, reject) => {
   ytdl(url, { filter(format) { return format.container === typeFormat; } })
@@ -15,7 +17,6 @@ exports.download = (url, typeFormat, dir, filename) => new Promise((resolve, rej
 });
 
 exports.run = async (client, msg, [input]) => {
-  const { google } = constants.getConfig.tokens;
   const { data } = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`);
   const result = data.items[0];
   if (!result) throw constants.httpResponses(404);

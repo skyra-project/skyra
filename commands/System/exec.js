@@ -1,12 +1,13 @@
-const { exec } = require("child_process");
+const { promisify } = require("util");
+const exec = promisify(require("child_process").exec);
 
 exports.run = async (client, msg, [input]) => {
   if (msg.deletable) msg.nuke();
-  exec(input, (error, stdout) => {
-    const output = stdout ? `**\`OUTPUT\`**${"```"}\n${stdout}\n${"```"}` : "";
-    const outerr = error ? `**\`ERROR\`**${"```"}\n${error}\n${"```"}` : "";
-    msg.send([output, outerr].join("\n")).then(m => m.nuke(60000)).catch(e => msg.error(e));
-  });
+  const result = await exec(input).catch((err) => { throw err; });
+
+  const output = result.stdout ? `**\`OUTPUT\`**${"```"}\n${result.stdout}\n${"```"}` : "";
+  const outerr = result.stderr ? `**\`ERROR\`**${"```"}\n${result.stderr}\n${"```"}` : "";
+  msg.send([output, outerr].join("\n"));
 };
 
 exports.conf = {

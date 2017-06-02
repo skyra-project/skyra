@@ -28,12 +28,13 @@ const currencyList = [
 ];
 /* eslint-enable no-multi-spaces */
 
+const { currencyLayer } = constants.getConfig.tokens;
+
 exports.run = async (client, msg, [money, input, output]) => {
   input = input.toUpperCase();
   output = output.toUpperCase();
   if (!currencyList.includes(input)) throw new ReferenceError(`${input} isn't a valid currency.`);
   if (!currencyList.includes(output)) throw new ReferenceError(`${output} isn't a valid currency.`);
-  const { currencyLayer } = constants.getConfig.tokens;
   const url = `http://www.apilayer.net/api/live?access_key=${currencyLayer}&format=1&currencies=${input},${output}`;
   const { data } = await fetchJSON(url);
   if (!data.success) throw new Error("Something went wrong.");

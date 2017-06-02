@@ -2,6 +2,10 @@ const { XML: fetchXML } = require("../../utils/kyraFetch");
 const { fromString } = require("html-to-text");
 const constants = require("../../utils/constants");
 
+/* Autentification */
+const { user, password } = constants.getConfig.tokens.animelist;
+const Authorization = constants.basicAuth(user, password);
+
 const etype = {
   MANGA: "📘 Manga",
   NOVEL: "📕 Novel",
@@ -11,11 +15,6 @@ const etype = {
 };
 
 exports.run = async (client, msg, [args]) => {
-  /* Autentification */
-  const { user, password } = constants.getConfig.tokens.animelist;
-  const Authorization = constants.basicAuth(user, password);
-
-  // URL TO REQUEST
   const url = `https://myanimelist.net/api/manga/search.xml?q=${encodeURIComponent(args.toLowerCase())}`;
   const { data } = await fetchXML(url, { headers: { Authorization } }).catch(() => { throw new Error(constants.httpResponses(404)); });
   const fres = data.manga.entry[0];

@@ -1,6 +1,5 @@
 const himalaya = require("himalaya");
 const snekfetch = require("snekfetch");
-// const fsp = require("fs-extra-promise");
 
 const { inspect } = require("util");
 

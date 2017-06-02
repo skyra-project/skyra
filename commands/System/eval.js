@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars, import/newline-after-import */
-const fs = require("fs-extra-promise");
+const fs = require("fs-nextra");
 const moment = require("moment");
 const { inspect } = require("util");
 const { sep } = require("path");

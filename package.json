@@ -20,7 +20,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "figlet": "^1.2.0",
-    "fs-extra": "^3.0.0",
+    "fs-nextra": "0.0.1",
     "gifencoder": "^1.0.6",
     "goo.gl": "^0.1.4",
     "google-translate": "^1.0.7",
@@ -55,7 +55,7 @@
     "ytdl-core": "^0.14.2"
   },
   "engines": {
-    "node": "8.0.0"
+    "node": ">=8.0.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0"

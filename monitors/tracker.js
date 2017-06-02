@@ -1,4 +1,4 @@
-const fsp = require("fs-extra");
+const fs = require("fs-nextra");
 const { sep } = require("path");
 const moment = require("moment");
 
@@ -18,6 +18,6 @@ exports.run = async (client, msg) => {
   let files;
   if (msg.attachments.first()) files = `\r\nAttachment: ${msg.attachments.map(att => att.url)}`;
   else files = "";
-  fsp.appendFile(file, `${time} ${user} ❯ \r\n${msg.cleanContent.replace(/\u000A/gi, "\r\n")}${files}\r\n\r\n`)
+  fs.appendFile(file, `${time} ${user} ❯ \r\n${msg.cleanContent.replace(/\u000A/gi, "\r\n")}${files}\r\n\r\n`)
     .catch(console.error);
 };

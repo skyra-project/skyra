@@ -1,6 +1,9 @@
 const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 
+/* Autentification */
+const { osu } = constants.getConfig.tokens;
+
 const game = {
   STANDARD: 0,
   TAIKO: 1,
@@ -20,7 +23,6 @@ exports.run = async (client, msg, [gamemode, information, ...username]) => {
   information = inf[information.toUpperCase()];
   username = username[0].split(" ").join("+");
 
-  const { osu } = constants.getConfig.tokens;
   const url = `https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${osu}`;
   try {
     msg.channel.startTyping();

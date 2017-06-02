@@ -39,9 +39,9 @@ exports.run = async (client, msg, [action, value = null]) => {
             const user = await client.fetchUser(selected.author);
             await msg.author.profile.update({ money: selected.price - msg.author.profile.money, bannerList: banners });
             await user.profile.add(selected.price * 0.1);
-            await msg.send(`Dear ${msg.author}, you have successfully bought the banner "${selected.title}"`);
+            await msg.alert(`Dear ${msg.author}, you have successfully bought the banner "${selected.title}"`);
           })
-          .catch(() => msg.send(`Dear ${msg.author}, you cancelled your payment.`));
+          .catch(() => msg.alert(`Dear ${msg.author}, you cancelled your payment.`));
         break;
       }
       default:

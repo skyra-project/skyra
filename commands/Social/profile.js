@@ -1,5 +1,5 @@
+const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
-const readFileAsync = require("tsubaki").promisify(require("fs").readFile);
 const { sep } = require("path");
 const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 
@@ -36,8 +36,8 @@ const showProfile = async (client, user) => {
 
   const theme = profile.banners.theme;
   const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
-    readFileAsync(`${themes}${theme}.png`),
-    readFileAsync(`${socialAssets(client)}profile-foreground.png`),
+    readFile(`${themes}${theme}.png`),
+    readFile(`${socialAssets(client)}profile-foreground.png`),
     client.wrappers.fetchAvatar(user, 256),
   ]);
 

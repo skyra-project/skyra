@@ -1,4 +1,4 @@
-exports.role = async (query, guild) => {
+exports.Role = async (query, guild) => {
   switch (query.constructor.name) {
     case "Role": return query;
     case "String": {
@@ -20,7 +20,7 @@ exports.role = async (query, guild) => {
   }
 };
 
-exports.channel = async (query, guild) => {
+exports.Channel = async (query, guild) => {
   switch (query.constructor.name) {
     case "TextChannel": return query;
     case "String": {

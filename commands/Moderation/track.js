@@ -1,4 +1,4 @@
-const fsp = require("fs-extra");
+const fs = require("fs-nextra");
 const { sep } = require("path");
 const moment = require("moment");
 
@@ -14,14 +14,14 @@ exports.send = async (client, msg, channel, sendname, filename) => {
   delete channel.trackInterval;
 
   await msg.author.sendFile(file, sendname, `Understood, there's your file for ${channel}.`);
-  await fsp.unlink(file);
+  await fs.unlink(file);
 
   return true;
 };
 
 exports.exist = async (client, filename) => {
   const dir = `${client.clientBaseDir}tracks${sep}`;
-  const files = await fsp.readdir(dir).catch(() => fsp.ensureDir(dir));
+  const files = await fs.ensureDir(dir);
   if (files.includes(filename)) return true;
   throw new Error("File not found.");
 };
@@ -29,8 +29,8 @@ exports.exist = async (client, filename) => {
 exports.write = async (client, filename) => {
   const dir = `${client.clientBaseDir}tracks${sep}`;
   const file = dir + filename;
-  await fsp.readdir(dir).catch(() => fsp.ensureDir(dir));
-  await fsp.appendFile(file, `[${moment.utc(new Date().getTime()).format("HH:mm:ss")}] Starting...\r\n\r\n`);
+  await fs.ensureDir(dir);
+  await fs.appendFile(file, `[${moment.utc(new Date().getTime()).format("HH:mm:ss")}] Starting...\r\n\r\n`);
 };
 
 exports.run = async (client, msg, [channel = msg.channel]) => {
@@ -62,7 +62,7 @@ exports.run = async (client, msg, [channel = msg.channel]) => {
     const sendname = `${msg.author.username}-#${channel.name}.txt`;
     await this.send(client, msg, channel, sendname, filename);
   } else {
-    throw new Error(`I'm sorry, but this channel is being tracked by ${msg.guild.members.get(channel.tracker).user.username}`);
+    throw `I'm sorry, but this channel is being tracked by ${msg.guild.members.get(channel.tracker).user.username}`;
   }
 };
 

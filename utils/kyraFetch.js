@@ -5,7 +5,7 @@ const { parse } = require("url");
 const { stringify } = require("querystring");
 
 /* External dependencies */
-const { parseStringAsync } = require("util").promisify(require("xml2js").parseString);
+const parseString = require("util").promisify(require("xml2js").parseString);
 
 /* eslint-disable no-use-before-define */
 exports.kyraFetch = (url, options = {}) => new Promise((resolve, reject) => {
@@ -43,7 +43,7 @@ exports.kyraFetch = (url, options = {}) => new Promise((resolve, reject) => {
       if (request.headers["content-type"] === "application/json") {
         try { data = JSON.parse(data); } catch (e) { reject(`Error while parsing JSON: ${e}`); }
       } else if (request.headers["content-type"] === "text/xml") {
-        data = await parseStringAsync(data).catch(e => reject(`Error while parsing XML: ${e}`));
+        data = await parseString(data).catch(e => reject(`Error while parsing XML: ${e}`));
       }
       Object.assign(request.headers, res);
       resolve({ request, data });

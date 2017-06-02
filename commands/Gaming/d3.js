@@ -1,6 +1,9 @@
 const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 
+/* Autentification */
+const { blizzard } = constants.getConfig.tokens;
+
 const progress = (prog) => {
   if (prog.act5) return 5;
   if (prog.act4) return 4;
@@ -11,7 +14,6 @@ const progress = (prog) => {
 };
 
 exports.run = async (client, msg, [server, user]) => {
-  const { blizzard } = constants.getConfig.tokens;
   const url = `https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`;
   try {
     msg.channel.startTyping();
@@ -20,23 +22,23 @@ exports.run = async (client, msg, [server, user]) => {
     const embed = new client.methods.Embed()
       .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)
       .setColor(0xEF8400)
-      .setDescription(client.funcs.strip.indents`
-        Paragon level: **${data.paragonLevel}**
-        Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}
-        Progression: Act **${progress(data.progression)}**.
-        \u200B
-      `)
+      .setDescription([
+        `Paragon level: **${data.paragonLevel}**`,
+        `Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}`,
+        `Progression: Act **${progress(data.progression)}**.`,
+        "\u200B",
+      ].join("\n"))
       .setFooter("📊 Statistics")
       .setThumbnail("https://upload.wikimedia.org/wikipedia/en/8/80/Diablo_III_cover.png")
       .setTimestamp();
     for (let i = 0; i < 4; i++) {
       if (!data.heroes[i]) break;
-      embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, client.funcs.strip.indents`
-      \u200B  Class: **${data.heroes[i].class}**
-      \u200B  Level: **${data.heroes[i].level}**
-      \u200B  Elite kills: **${data.heroes[i].kills.elites}**
-      \u200B  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}
-      `, true);
+      embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, [
+        `  Class: **${data.heroes[i].class}**`,
+        `  Level: **${data.heroes[i].level}**`,
+        `  Elite kills: **${data.heroes[i].kills.elites}**`,
+        `  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}`,
+      ].join("\n"), true);
     }
     await msg.sendEmbed(embed);
   } catch (e) {

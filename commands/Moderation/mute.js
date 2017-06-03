@@ -1,22 +1,18 @@
-/* eslint-disable no-throw-literal, no-underscore-dangle */
-class Mute {
-  constructor(msg) {
-    Object.defineProperty(this, "msg", { value: msg });
-    Object.defineProperty(this, "guild", { value: msg.guild });
-    Object.defineProperty(this, "client", { value: msg.client });
-  }
+const MODERATION = require("../../utils/managerModeration");
+const ASSETS = require("../../utils/assets");
 
-  async configuration() {
-    const configuration = this.guild.configs;
-    if (!configuration.roles.muted) {
-      const message = await this.msg.Prompt("Do you want to create and configure the Mute role right now?");
-      const mute = this.client.Assets.createMuted(this.msg, message);
-      return (mute);
-    }
-    return (this.guild.roles.get(configuration.roles.muted));
+exports.configuration = async (client, msg) => {
+  const configuration = msg.guild.configs;
+  if (!configuration.roles.muted) {
+    await msg.Prompt("Do you want to create and configure the Mute role right now?")
+      .catch(() => { throw "Mute role creation cancelled."; });
+    await msg.send("`Processing...`");
+    return ASSETS.createMuted(msg);
   }
-}
+  return msg.guild.roles.get(configuration.roles.muted);
+};
 
+/* eslint-disable no-underscore-dangle */
 exports.run = async (client, msg, [search, ...reason]) => {
   /* Initialize Search */
   const user = await client.funcs.search.User(search, msg.guild, true);
@@ -29,18 +25,17 @@ exports.run = async (client, msg, [search, ...reason]) => {
     throw "This user is not in this server";
   }
 
-  const MuteClass = new Mute(msg);
-  const mute = await MuteClass.configuration();
+  return this.configuration(client, msg)
+    .then(async (mute) => {
+      if (msg.guild.configs.mutes.has(user.id)) throw "This user is already muted.";
 
-  if (msg.guild.configs.mutes.has(user.id)) throw "This user is already muted.";
-
-  const roles = member._roles;
-  await member.edit({ roles: [mute.id] });
-  msg.send(`|\`🔨\`| **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
-
-  /* Handle Moderation Logs */
-  const moderation = new client.Moderation(msg);
-  await moderation.send(user, "mute", reason, roles);
+      reason = reason.length ? reason.join(" ") : null;
+      const roles = member._roles;
+      await member.edit({ roles: [mute.id] });
+      msg.send(`|\`🔨\`| **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
+      await MODERATION.send(client, msg, user, "mute", reason, roles);
+    })
+    .catch(e => msg.alert(e));
 };
 
 exports.conf = {

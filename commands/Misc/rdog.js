@@ -11,10 +11,9 @@ exports.run = async (client, msg) => {
   else if (client.rdog === rand.length - 1) client.rdog = 0;
   else client.rdog += 1;
 
-  const randomdog = `https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[client.rdog]}.jpg`;
   const embed = new client.methods.Embed()
     .setColor(msg.color)
-    .setImage(randomdog);
+    .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[client.rdog]}.jpg`);
   await msg.sendEmbed(embed);
 };
 

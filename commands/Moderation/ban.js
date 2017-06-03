@@ -1,8 +1,9 @@
-/* eslint-disable no-throw-literal */
+const MODERATION = require("../../utils/managerModeration");
+
 exports.run = async (client, msg, [search, ...reason]) => {
   /* Initialize Search */
   const user = await client.funcs.search.User(search, msg.guild, true);
-  const member = msg.guild.member(user) || null;
+  const member = await msg.guild.fetchMember(user) || null;
 
   if (user.id === msg.author.id) {
     throw "Ey! Why would you ban yourself?";
@@ -11,13 +12,11 @@ exports.run = async (client, msg, [search, ...reason]) => {
     else if (!member.bannable) throw "The selected member is not bannable.";
   }
 
+  reason = reason.length ? reason.join(" ") : null;
   user.action = "ban";
-  await msg.guild.ban(user, { days: 1, reason: `${reason ? reason.join(" ") : null}` });
-  msg.send(`|\`🔨\`| **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
-
-  /* Handle Moderation Logs */
-  const moderation = new client.Moderation(msg);
-  await moderation.send(user, "ban", reason);
+  await msg.guild.ban(user, { days: 7, reason });
+  await msg.send(`|\`🔨\`| **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
+  await MODERATION.send(client, msg, user, "ban", reason);
 };
 
 exports.conf = {

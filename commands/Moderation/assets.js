@@ -1,20 +1,15 @@
+const ASSETS = require("../../utils/assets");
+
 exports.run = async (client, msg, [piece]) => {
-  // const assets = new client.Assets(client);
-  const messageSend = await msg.send("`Processing...`");
-  try {
-    switch (piece.toLowerCase()) {
-      case "mute": {
-        const response = await client.Assets.createMuted(msg, messageSend);
-        await msg.send(response);
-        break;
-      }
-      // no default
+  await msg.send("`Processing...`");
+  switch (piece.toLowerCase()) {
+    case "mute": {
+      await ASSETS.createMuted(msg);
+      break;
     }
-  } catch (e) {
-    await msg.send(e);
-  } finally {
-    messageSend.nuke(5000);
+    // no default
   }
+  // TODO: Do more assets.
 };
 
 exports.conf = {

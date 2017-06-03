@@ -64,8 +64,8 @@ class Run {
         let user;
         await this.msg.send("`Fetching data...`");
         if (!input) user = this.msg.author;
-        else user = this.client.funcs.search.User(input, this.guild);
-        const member = this.guild.member(user) || null;
+        else user = await this.client.funcs.search.User(input, this.guild);
+        const member = await this.guild.fetchMember(user) || null;
         if (!member) throw new Error("User not found.");
         return member;
       }
@@ -77,7 +77,7 @@ class Run {
 exports.run = async (client, msg, [type, ...search]) => {
   const run = new Run(msg);
   search = search.length ? search.join(" ") : null;
-  await run.Start(type, search);
+  return run.Start(type, search);
 };
 
 exports.conf = {

@@ -24,12 +24,12 @@ exports.run = async (client, msg, [limit, ...filter]) => {
     messages = await msg.channel.fetchMessages({ limit });
   }
   switch (messages.size) {
-    case 0: throw new Error("Messages not found.");
+    case 0: throw "Messages not found.";
     case 1: messages.first().nuke();
       break;
     default: await msg.channel.bulkDelete(messages);
   }
-  await msg.alert(`Dear ${msg.author}, I cleaned up ${messages.size} messages from ${limit}.`);
+  return msg.alert(`Dear ${msg.author}, I cleaned up ${messages.size} messages from ${limit}.`);
 };
 
 exports.conf = {

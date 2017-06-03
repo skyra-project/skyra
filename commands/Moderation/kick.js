@@ -1,8 +1,10 @@
+const MODERATION = require("../../utils/managerModeration");
+
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [search, ...reason]) => {
   /* Initialize Search */
   const user = await client.funcs.search.User(search, msg.guild, true);
-  const member = msg.guild.member(user) || null;
+  const member = await msg.guild.fetchMember(user) || null;
 
   if (member) {
     if (user.id === msg.author.id) throw "Ey! Why would you kick yourself?";
@@ -12,13 +14,11 @@ exports.run = async (client, msg, [search, ...reason]) => {
     throw "This user is not in this server";
   }
 
+  reason = reason.length ? reason.join(" ") : null;
   user.kickFilter = true;
-  await member.kick(reason ? reason.join(" ") : null);
-  msg.send(`|\`🔨\`| **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason.join(" ")}` : ""}`).catch(console.error);
-
-  /* Handle Moderation Logs */
-  const moderation = new client.Moderation(msg);
-  await moderation.send(user, "kick", reason);
+  await member.kick(reason);
+  msg.send(`|\`🔨\`| **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
+  await MODERATION.send(client, msg, user, "kick", reason);
 };
 
 exports.conf = {

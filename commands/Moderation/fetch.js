@@ -1,18 +1,17 @@
 exports.run = async (client, msg, [message, limit = 10]) => {
-  if (!/^[0-9]{17,18}$/.test(message)) throw new Error("Invalid message ID.");
+  if (!/^[0-9]{17,21}$/.test(message)) throw new Error("Invalid message ID.");
   const messages = await msg.channel.fetchMessages({ limit, around: message });
 
   const embed = new client.methods.Embed()
     .setColor(msg.member.highestRole.color || 0xdfdfdf)
     .setTitle(`Context of ${message}`)
-    .setDescription(messages
-      .array()
+    .setDescription(Array.from(messages)
       .reverse()
       .map(m => `${m.author.username} ❯ ${m.cleanContent || "**`IMAGE/EMBED`**"}`)
       .join("\n"))
     .setFooter(client.user.username, client.user.displayAvatarURL);
 
-  await msg.sendEmbed(embed);
+  await msg.send({ embed });
 };
 
 exports.conf = {

@@ -1,43 +1,27 @@
 /* eslint-disable no-throw-literal */
-class EightBall {
-  constructor() {
-    Object.defineProperty(this, "random", { value: EightBall.random });
+const startsWith = (prefix, str) => {
+  for (let i = prefix.length - 1; i >= 0; i--) {
+    if (str[i] === prefix[i]) continue;
+    return false;
   }
+  return true;
+};
 
-  generator(input) {
-    if (!/\?$/.test(input)) throw "This doesn't seem to be a question.";
-    if (/^when/i.test(input)) return this.generate("when");
-    if (/^what/i.test(input)) return this.generate("what");
-    if (/^how much/i.test(input)) return this.generate("howmuch");
-    if (/^how many/i.test(input)) return this.generate("howmany");
-    if (/^why/i.test(input)) return this.generate("why");
-    if (/(do|are).+you.+(lie|lying)/gi.test(input)) return this.generate("doyoulie");
-    return this.generate("thisElse");
-  }
+const random = num => Math.round(Math.random() * num);
 
-  generate(value) {
-    const randomValues = {
-      when: ["Soon™", "Maybe tomorrow.", "Maybe next year...", "Right now.", "In a few months."],
-      what: ["A plane.", "What? Ask again.", "A gift.", "Nothing.", "A ring.", "I don't know, maybe something."],
-      howmuch: ["A lot.", "A bit.", "A few.", "Ask me tomorrow.", "I don't know, ask a physicist.", "Nothing.", `Within ${this.random(10)} and ${this.random(1000)}L.`, `${this.random(10)}e${this.random(1000)}L.`, "2 or 3 liters, I don't remember.", "Infinity.", "1010 liters."],
-      howmany: ["A lot.", "A bit.", "A few.", "Ask me tomorrow.", "I don't know, ask a physicist.", "Nothing.", `Within ${this.random(10)} and ${this.random(1000)}.`, `${this.random(10)}e${this.random(1000)}.`, "2 or 3, I don't remember.", "Infinity", "1010."],
-      why: ["Maybe genetics.", "Because somebody decided it.", "For the glory of satan, of course!", "I don't know, maybe destiny.", "Because I said so.", "I have no idea.", "Harambe did nothing wrong.", "Ask the owner of this server.", "Ask again.", "To get to the other side.", "It says so in the Bible."],
-      doyoulie: ["Nope.", "Nope.", "Maybe.", "Maybe.", "Most likely.", "YES!"],
-      thisElse: ["Most likely.", "Nope.", "YES!", "Maybe."],
-    };
-    const row = randomValues[value];
-    return row[Math.floor(Math.random() * row.length)];
-  }
-
-  static random(num) {
-    return Math.round(Math.random() * num);
-  }
-}
+const randomValues = {
+  when: ["Soon™", "Maybe tomorrow.", "Maybe next year...", "Right now.", "In a few months."],
+  what: ["A plane.", "What? Ask again.", "A gift.", "Nothing.", "A ring.", "I don't know, maybe something."],
+  howmuch: ["A lot.", "A bit.", "A few.", "Ask me tomorrow.", "I don't know, ask a physicist.", "Nothing.", `Within ${random(10)} and ${random(1000)}L.`, `${random(10)}e${random(1000)}L.`, "2 or 3 liters, I don't remember.", "Infinity.", "1010 liters."],
+  howmany: ["A lot.", "A bit.", "A few.", "Ask me tomorrow.", "I don't know, ask a physicist.", "Nothing.", `Within ${random(10)} and ${random(1000)}.`, `${random(10)}e${random(1000)}.`, "2 or 3, I don't remember.", "Infinity", "1010."],
+  why: ["Maybe genetics.", "Because somebody decided it.", "For the glory of satan, of course!", "I don't know, maybe destiny.", "Because I said so.", "I have no idea.", "Harambe did nothing wrong.", "Ask the owner of this server.", "Ask again.", "To get to the other side.", "It says so in the Bible."],
+  doyoulie: ["Nope.", "Nope.", "Maybe.", "Maybe.", "Most likely.", "YES!"],
+  thisElse: ["Most likely.", "Nope.", "YES!", "Maybe."],
+};
 
 exports.run = async (client, msg, [input]) => {
   try {
-    const eBall = new EightBall();
-    const output = eBall.generator(input);
+    const output = this.generator(input);
     await msg.send(`🎱 Question by ${msg.author}: *${input}*\n${"```"}\n${output}${"```"}`);
   } catch (e) {
     msg.send(`Dear ${msg.author}, ${e}`);
@@ -68,4 +52,21 @@ exports.help = {
     "&8ball Why did the chicken cross the road?",
     "❯❯ \" Maybe genetics \" (random)",
   ].join("\n"),
+};
+
+exports.generator = (input) => {
+  input = input.toLowerCase();
+  if (input[input.length - 1] !== "?") throw "This doesn't seem to be a question.";
+  if (startsWith("when", input)) return this.generate("when");
+  if (startsWith("what", input)) return this.generate("what");
+  if (startsWith("how much", input)) return this.generate("howmuch");
+  if (startsWith("how many", input)) return this.generate("howmany");
+  if (startsWith("why", input)) return this.generate("why");
+  if (/(do|are).+you.+(lie|lying)/gi.test(input)) return this.generate("doyoulie");
+  return this.generate("thisElse");
+};
+
+exports.generate = (value) => {
+  const row = randomValues[value];
+  return row[Math.floor(Math.random() * row.length)];
 };

@@ -38,9 +38,8 @@ const triggering = async (client, user) => {
 
   // FINISH
   encoder.finish();
-  const GIFbuffers = await streamToArray(stream).then(Buffer.concat);
 
-  return GIFbuffers;
+  return streamToArray(stream).then(Buffer.concat);
 };
 
 exports.run = async (client, msg, [search = msg.member]) => {

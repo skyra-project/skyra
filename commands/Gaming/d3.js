@@ -14,38 +14,31 @@ const progress = (prog) => {
 };
 
 exports.run = async (client, msg, [server, user]) => {
-  const url = `https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`;
-  try {
-    msg.channel.startTyping();
-    const { data } = await fetchJSON(url);
-    if (data.code === "NOTFOUND") throw new Error(constants.httpResponses(404));
-    const embed = new client.methods.Embed()
-      .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)
-      .setColor(0xEF8400)
-      .setDescription([
-        `Paragon level: **${data.paragonLevel}**`,
-        `Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}`,
-        `Progression: Act **${progress(data.progression)}**.`,
-        "\u200B",
-      ].join("\n"))
-      .setFooter("📊 Statistics")
-      .setThumbnail("https://upload.wikimedia.org/wikipedia/en/8/80/Diablo_III_cover.png")
-      .setTimestamp();
-    for (let i = 0; i < 4; i++) {
-      if (!data.heroes[i]) break;
-      embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, [
-        `  Class: **${data.heroes[i].class}**`,
-        `  Level: **${data.heroes[i].level}**`,
-        `  Elite kills: **${data.heroes[i].kills.elites}**`,
-        `  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}`,
-      ].join("\n"), true);
-    }
-    await msg.sendEmbed(embed);
-  } catch (e) {
-    msg.error(e);
-  } finally {
-    msg.channel.stopTyping(true);
+  await msg.send("`Fetching data...`");
+  const { data } = await fetchJSON(`https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`);
+  if (data.code === "NOTFOUND") throw new Error(constants.httpResponses(404));
+  const embed = new client.methods.Embed()
+    .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)
+    .setColor(0xEF8400)
+    .setDescription([
+      `Paragon level: **${data.paragonLevel}**`,
+      `Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}`,
+      `Progression: Act **${progress(data.progression)}**.`,
+      "\u200B",
+    ].join("\n"))
+    .setFooter("📊 Statistics")
+    .setThumbnail("https://upload.wikimedia.org/wikipedia/en/8/80/Diablo_III_cover.png")
+    .setTimestamp();
+  for (let i = 0; i < 4; i++) {
+    if (!data.heroes[i]) break;
+    embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, [
+      `  Class: **${data.heroes[i].class}**`,
+      `  Level: **${data.heroes[i].level}**`,
+      `  Elite kills: **${data.heroes[i].kills.elites}**`,
+      `  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}`,
+    ].join("\n"), true);
   }
+  await msg.sendEmbed(embed);
 };
 
 exports.conf = {

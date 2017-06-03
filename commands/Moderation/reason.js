@@ -46,7 +46,7 @@ exports.run = async (client, msg, [index, ...reason]) => {
 
   await msg.guild.moderation.updateCase(index, { reason, moderator: msg.author.id });
 
-  await msg.alert(`**Success!** New reason: ${reason}`);
+  return msg.alert(`**Success!** New reason: ${reason}`);
 };
 
 exports.conf = {

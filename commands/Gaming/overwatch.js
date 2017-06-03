@@ -124,6 +124,7 @@ exports.run = async (client, msg, [user, platform, server, hero, type = "feature
   const overwatch = new Overwatch(client);
   const resolvedPlayer = await overwatch.resolvePlayer(user, platform, server, hero, mode);
   const profile = await overwatch.resolveProfile(resolvedPlayer);
+  await msg.send("`Fetching data...`");
   const data = await overwatch.fetchData(`https://playoverwatch.com/en-us${profile.careerLink}`, type, hero, mode);
   const embed = new client.methods.Embed()
     .setColor(msg.color)

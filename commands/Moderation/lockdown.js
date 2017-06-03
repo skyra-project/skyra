@@ -3,7 +3,7 @@ class LockDown {
     Object.defineProperty(this, "msg", { value: msg });
     Object.defineProperty(this, "channel", { value: channel });
     Object.defineProperty(this, "client", { value: msg.client });
-    Object.defineProperty(this, "role", { value: msg.guild.roles.get(msg.guild.id) });
+    Object.defineProperty(this, "role", { value: msg.guild.defaultRole });
   }
 
   async unlock() {

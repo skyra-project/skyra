@@ -47,23 +47,22 @@ exports.run = async (client, msg, [list, ...roles]) => {
   const roleList = new RoleList(msg);
   const conf = msg.guild.configs;
   if (list) {
-    await msg.sendEmbed(roleList.list);
-  } else {
-    if (!roles[0]) throw `Write ( ${conf.prefix}claim list ) to get a list of all roles, or do ( ${conf.prefix}claim <role1, role2, ...> ) to claim them.`;
-    const roleCheck = await roleList.roleCheck(roles);
-
-    const mess = [];
-    if (roleCheck.existentRoles) mess.push(`You already have the following roles: \`${roleCheck.existentRoles.join("`, `")}\``);
-    if (roleCheck.unlistedRoles) mess.push(`The following roles are not public: \`${roleCheck.unlistedRoles.join("`, `")}\``);
-    if (roleCheck.invalidRoles) mess.push(`Roles not found: \`${roleCheck.invalidRoles.join("`, `")}\``);
-    if (roleCheck.giveRoles) {
-      const giveRoles = roleCheck.giveRoles;
-      if (giveRoles.length === 1) await msg.member.addRole(giveRoles[0]);
-      else await msg.member.addRoles(giveRoles);
-      mess.push(`The following roles have been added to your profile: \`${giveRoles.map(r => msg.guild.roles.get(r).name).join("`, `")}\``);
-    }
-    await msg.send(mess.length ? mess.join("\n") : "??");
+    return msg.send({ embed: roleList.list });
   }
+  if (!roles[0]) throw `Write ( ${conf.prefix}claim list ) to get a list of all roles, or do ( ${conf.prefix}claim <role1, role2, ...> ) to claim them.`;
+  const roleCheck = await roleList.roleCheck(roles);
+
+  const mess = [];
+  if (roleCheck.existentRoles) mess.push(`You already have the following roles: \`${roleCheck.existentRoles.join("`, `")}\``);
+  if (roleCheck.unlistedRoles) mess.push(`The following roles are not public: \`${roleCheck.unlistedRoles.join("`, `")}\``);
+  if (roleCheck.invalidRoles) mess.push(`Roles not found: \`${roleCheck.invalidRoles.join("`, `")}\``);
+  if (roleCheck.giveRoles) {
+    const giveRoles = roleCheck.giveRoles;
+    if (giveRoles.length === 1) await msg.member.addRole(giveRoles[0]);
+    else await msg.member.addRoles(giveRoles);
+    mess.push(`The following roles have been added to your profile: \`${giveRoles.map(r => msg.guild.roles.get(r).name).join("`, `")}\``);
+  }
+  return msg.send(mess.length ? mess.join("\n") : "??");
 };
 
 exports.conf = {

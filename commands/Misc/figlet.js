@@ -2,7 +2,7 @@ const figletAsync = require("util").promisify(require("figlet"));
 
 exports.run = async (client, msg, [banner]) => {
   const data = await figletAsync(banner);
-  await msg.sendCode("", data);
+  return msg.send(data, { code: true });
 };
 
 exports.conf = {

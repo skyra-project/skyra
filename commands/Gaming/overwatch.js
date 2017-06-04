@@ -133,7 +133,7 @@ exports.run = async (client, msg, [user, platform, server, hero, type = "feature
     .setFooter("📊 Statistics")
     .setDescription([`**❯ ${data.title}**`, "", data.output].join("\n"))
     .setTimestamp();
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

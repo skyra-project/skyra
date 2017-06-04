@@ -38,7 +38,7 @@ const showProfile = async (client, user) => {
   const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
     readFile(`${themes}${theme}.png`),
     readFile(`${socialAssets(client)}profile-foreground.png`),
-    client.wrappers.fetchAvatar(user, 256),
+    client.funcs.wrappers.fetchAvatar(user, 256),
   ]);
 
 
@@ -83,7 +83,7 @@ const showProfile = async (client, user) => {
 exports.run = async (client, msg, [search = msg.author]) => {
   const user = await client.funcs.search.User(search, msg.guild);
   const output = await showProfile(client, user);
-  await msg.channel.sendFile(output, "Profile.png");
+  return msg.channel.send({ files: [{ attachment: output, name: "Profile.png" }] });
 };
 
 exports.conf = {

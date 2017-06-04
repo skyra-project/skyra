@@ -90,7 +90,7 @@ exports.run = async (client, msg, [coins]) => {
         "We'll get em next time!",
       ].join("\n"));
   }
-  await msg.sendEmbed(embed);
+  return msg.sendEmbed(embed);
 };
 
 exports.conf = {

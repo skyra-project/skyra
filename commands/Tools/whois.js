@@ -45,7 +45,7 @@ exports.run = async (client, msg, [search = msg.member]) => {
       .setTimestamp();
   }
 
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

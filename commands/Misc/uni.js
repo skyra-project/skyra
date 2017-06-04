@@ -39,7 +39,7 @@ const dict = {
 exports.run = async (client, msg, [params]) => {
   let out = "";
   for (const char of params) if (dict[char]) out += dict[char]; // eslint-disable-line no-restricted-syntax
-  await msg.send(out).catch(() => msg.send(`Dear ${msg.author}, no characters could be converted.`));
+  return msg.send(out).catch(() => msg.send(`Dear ${msg.author}, no characters could be converted.`));
 };
 
 exports.conf = {

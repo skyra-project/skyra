@@ -4,7 +4,7 @@ const { sep } = require("path");
 
 const constants = require("../../utils/constants");
 const ytdl = promisifyAll(require("ytdl-core"));
-const fs = promisifyAll(require("fs"));
+const fs = require("fs-nextra");
 
 const { google } = constants.getConfig.tokens;
 
@@ -25,11 +25,11 @@ exports.run = async (client, msg, [input]) => {
 
   const info = await ytdl.getInfoAsync(url);
   const filename = `${info.title.replace(/[^a-zA-Z0-9\[\]()\-\. ]/g, "").replace(/[ ]{2}/g, " ")}`;
-  const files = await fs.readdirAsync(dir).catch(() => fs.mkdirAsync(dir).then(() => []));
+  const files = await fs.readdir(dir).catch(() => fs.mkdir(dir).then(() => []));
   if (files.includes(`${filename}.mp3`)) throw "This song was already downloaded.";
   await msg.send(`Downloading \`${filename}\``);
   await this.download(url, "webm", dir, `${filename}.webm`);
-  await msg.send("🗄 | Downloaded.");
+  return msg.send("🗄 | Downloaded.");
 };
 
 exports.conf = {

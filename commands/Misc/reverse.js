@@ -1,9 +1,4 @@
-exports.run = async (client, msg, [string]) => {
-  await msg.send([
-    `Dear ${msg.author}, the reverse for your string is:${"```"}`,
-    `${string.split("").reverse().join("")}${"```"}`,
-  ].join("\n"));
-};
+exports.run = async (client, msg, [string]) => msg.send(`Dear ${msg.author}, the reverse for your string is:${"```"}${string.split("").reverse().join("")}${"```"}`);
 
 exports.conf = {
   enabled: true,

@@ -41,10 +41,7 @@ exports.run = async (client, msg, [money, input, output]) => {
   const USDtoINPUT = data.quotes[`USD${input}`];
   const USDtoOUTPUT = data.quotes[`USD${output}`];
   const converted = (USDtoOUTPUT / USDtoINPUT) * money;
-  await msg.send([
-    `Dear ${msg.author}, **${money}** \`${input}\` in \`${output}\` is:`,
-    `${"```"}${converted.toFixed(4)} ${output}${"```"}`,
-  ].join("\n"));
+  return msg.send(`Dear ${msg.author}, **${money}** \`${input}\` in \`${output}\` is:${"```"}${converted.toFixed(4)} ${output}${"```"}`);
 };
 
 exports.conf = {

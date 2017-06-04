@@ -67,7 +67,8 @@ exports.run = async (client, msg, [type, ...input]) => {
     case "track": {
       const channels = msg.guild.channels.filter(m => m.tracker);
       if (channels.size === 0) return msg.alert(`Dear ${msg.author}, there aren't any currently trackers`);
-      embed.setTitle(`List of (${channels.size}) trackers.`)
+      embed
+        .setTitle(`List of (${channels.size}) trackers.`)
         .setDescription(channels
           .map(l => `(${moment
             .duration(msg.createdAt - l.trackertimer)
@@ -80,7 +81,7 @@ exports.run = async (client, msg, [type, ...input]) => {
     // no default
   }
 
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

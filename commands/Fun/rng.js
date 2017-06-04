@@ -13,7 +13,7 @@ exports.run = async (client, msg, [...words]) => {
 
   if (aword.length < 2) throw new RangeError(`Why would I accept duplicated words? '${filtered.join("', '")}'.`);
 
-  await msg.send([
+  return msg.send([
     `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${msg.author}, I choose:`,
     `${"```"}${aword[Math.floor(Math.random() * aword.length)]}${"```"}`,
   ].join("\n"));

@@ -45,7 +45,7 @@ exports.run = async (client, msg, [server, name, id]) => {
     .setFooter("📊 Statistics")
     .setThumbnail("http://tecnoslave.com/wp-content/uploads/2012/08/Starcraft-II-logo.png")
     .setTimestamp();
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

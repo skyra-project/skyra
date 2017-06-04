@@ -73,7 +73,7 @@ exports.run = async (client, msg, [type, key, value = null]) => {
   const settings = new Settings(msg);
   await msg.guild.configs.ensureConfigs();
   const response = await settings.handle(type, key, value);
-  await msg.alert(response);
+  return msg.alert(response);
 };
 
 exports.conf = {

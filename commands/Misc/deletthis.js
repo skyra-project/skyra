@@ -27,8 +27,8 @@ const DeletThis = async (client, msg, user) => {
     /* Get the buffers from both profile avatars */
   const [bgBuffer, Hammered, Hammerer] = await Promise.all([
     readFile(`${constants.assets}images${sep}memes${sep}DeletThis.png`),
-    client.wrappers.fetchAvatar(selectedUser, 256),
-    client.wrappers.fetchAvatar(hammerer, 256),
+    client.funcs.wrappers.fetchAvatar(selectedUser, 256),
+    client.funcs.wrappers.fetchAvatar(hammerer, 256),
   ]);
 
     /* Background */
@@ -69,7 +69,7 @@ const DeletThis = async (client, msg, user) => {
 exports.run = async (client, msg, [search]) => {
   const user = await client.funcs.search.User(search, msg.guild);
   const output = await DeletThis(client, msg, user);
-  await msg.channel.sendFile(output, "DeletThis.png");
+  return msg.channel.send({ files: [{ attachment: output, name: "DeletThis.png" }] });
 };
 
 exports.conf = {

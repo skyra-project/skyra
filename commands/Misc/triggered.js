@@ -13,7 +13,7 @@ const triggering = async (client, user) => {
   const ctx = c.getContext("2d");
 
   const [userBuffer, titleBuffer] = await Promise.all([
-    client.wrappers.fetchAvatar(user, 512),
+    client.funcs.wrappers.fetchAvatar(user, 512),
     readFile(`${constants.assets}images${sep}memes${sep}triggered.png`),
   ]);
   imgTitle.src = titleBuffer;
@@ -44,8 +44,8 @@ const triggering = async (client, user) => {
 
 exports.run = async (client, msg, [search = msg.member]) => {
   const user = await client.funcs.search.User(search, msg.guild);
-  const cv = await triggering(client, user);
-  await msg.channel.sendFile(cv, "triggered.gif");
+  const output = await triggering(client, user);
+  return msg.channel.send({ files: [{ attachment: output, name: "triggered.gif" }] });
 };
 
 exports.conf = {

@@ -10,12 +10,11 @@ exports.run = async (client, msg, [url]) => {
   if (!url.startsWith("https://goo.gl/")) {
     const shortUrl = await googl.shorten(url);
     embed.setDescription(`**Shortened URL: [${shortUrl}](${shortUrl})**`);
-    await msg.sendEmbed(embed);
-  } else {
-    const { data } = await fetchJSON(`https://www.googleapis.com/urlshortener/v1/url?key=${google}&shortUrl=${url}`);
-    embed.setDescription(`**Expanded URL: [${data.longUrl}](${data.longUrl})**`);
-    await msg.sendEmbed(embed);
+    return msg.send({ embed });
   }
+  const { data } = await fetchJSON(`https://www.googleapis.com/urlshortener/v1/url?key=${google}&shortUrl=${url}`);
+  embed.setDescription(`**Expanded URL: [${data.longUrl}](${data.longUrl})**`);
+  return msg.send({ embed });
 };
 
 exports.conf = {

@@ -43,22 +43,21 @@ exports.run = async (client, msg, [list, ...roles]) => {
   const roleList = new RoleList(client, msg);
   const conf = msg.guild.configs;
   if (list) {
-    await msg.sendEmbed(roleList.list(conf));
-  } else {
-    if (!roles[0]) throw new Error(`Dear ${msg.author}, write \`${conf.prefix}claim list\` to get a list of all roles, or do \`${conf.prefix}claim <role1, role2, ...>\``);
-    const roleCheck = await roleList.roleCheck(roles);
-
-    const mess = [];
-    if (roleCheck.invalidRoles) mess.push(`You can't have nonexistent roles: \`${roleCheck.invalidRoles.join("`, `")}\``);
-    if (roleCheck.giveRoles) mess.push(`You don't have the following roles: \`${roleCheck.giveRoles.map(r => r.name).join("`, `")}\``);
-    if (roleCheck.removeRoles) {
-      const removeRoles = roleCheck.removeRoles;
-      if (removeRoles.length === 1) await msg.member.removeRole(removeRoles[0]);
-      else await msg.member.removeRoles(removeRoles);
-      mess.push(`The following roles have been added to your profile: \`${removeRoles.map(r => msg.guild.roles.get(r).name).join("`, `")}\``);
-    }
-    await msg.send(mess || "??");
+    return msg.send({ embed: roleList.list(conf) });
   }
+  if (!roles[0]) throw new Error(`Dear ${msg.author}, write \`${conf.prefix}claim list\` to get a list of all roles, or do \`${conf.prefix}claim <role1, role2, ...>\``);
+  const roleCheck = await roleList.roleCheck(roles);
+
+  const mess = [];
+  if (roleCheck.invalidRoles) mess.push(`You can't have nonexistent roles: \`${roleCheck.invalidRoles.join("`, `")}\``);
+  if (roleCheck.giveRoles) mess.push(`You don't have the following roles: \`${roleCheck.giveRoles.map(r => r.name).join("`, `")}\``);
+  if (roleCheck.removeRoles) {
+    const removeRoles = roleCheck.removeRoles;
+    if (removeRoles.length === 1) await msg.member.removeRole(removeRoles[0]);
+    else await msg.member.removeRoles(removeRoles);
+    mess.push(`The following roles have been added to your profile: \`${removeRoles.map(r => msg.guild.roles.get(r).name).join("`, `")}\``);
+  }
+  return msg.send(mess || "??");
 };
 
 exports.conf = {

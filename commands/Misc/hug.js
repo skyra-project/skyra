@@ -16,8 +16,8 @@ const Hug = async (client, msg, user) => {
   /* Get the buffers from both profile avatars */
   const [bgBuffer, user1Buffer, user2Buffer] = await Promise.all([
     readFile(`${constants.assets}images${sep}memes${sep}hug.png`),
-    client.wrappers.fetchAvatar(user, 256),
-    client.wrappers.fetchAvatar(msg.author, 256),
+    client.funcs.wrappers.fetchAvatar(user, 256),
+    client.funcs.wrappers.fetchAvatar(msg.author, 256),
   ]);
 
     /* Background */
@@ -49,7 +49,7 @@ const Hug = async (client, msg, user) => {
 exports.run = async (client, msg, [search]) => {
   const user = await client.funcs.search.User(search, msg.guild);
   const output = await Hug(client, msg, user);
-  await msg.channel.sendFile(output, "Hug.png");
+  return msg.channel.send({ files: [{ attachment: output, name: "Hug.png" }] });
 };
 
 exports.conf = {

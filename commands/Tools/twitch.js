@@ -20,9 +20,9 @@ exports.run = async (client, msg, [twitchName]) => {
       .setAuthor(`${data.display_name} (${data._id})`, "https://i.imgur.com/OQwQ8z0.jpg", data.url)
       .addField("Created On", creationDate, true)
       .addField("Channel Views", data.views, true);
-    await msg.sendEmbed(embed);
+    return msg.send({ embed });
   } catch (e) {
-    msg.send("Unable to find account. Did you spell it correctly?");
+    return msg.send("Unable to find account. Did you spell it correctly?");
   }
 };
 

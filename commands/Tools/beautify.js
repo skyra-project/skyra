@@ -32,7 +32,7 @@ const format = async (msg) => {
 exports.run = async (client, msg) => {
   await msg.send("Searching for code to beautify...");
   const res = await format(msg);
-  await msg.send(res);
+  return msg.send(res);
 };
 
 exports.conf = {

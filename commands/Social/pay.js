@@ -10,9 +10,9 @@ exports.run = async (client, msg, [money, ...search]) => {
     .then(async () => {
       await user.profile.add(money);
       await msg.author.profile.use(money);
-      msg.alert(`Dear ${msg.author}, you have just paid ${money}₪ to **${user.username}**`);
+      return msg.alert(`Dear ${msg.author}, you have just paid ${money}₪ to **${user.username}**`);
     })
-    .catch(() => { msg.alert(`Dear ${msg.author}, you have just cancelled the transfer.`); });
+    .catch(() => msg.alert(`Dear ${msg.author}, you have just cancelled the transfer.`));
 };
 
 

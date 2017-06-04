@@ -31,7 +31,7 @@ exports.run = async (client, msg) => {
     ].join("\n"), true)
     .setTimestamp()
     .setThumbnail(client.user.displayAvatarURL);
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

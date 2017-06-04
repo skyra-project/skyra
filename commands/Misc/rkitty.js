@@ -6,15 +6,16 @@ const rand = [
   "313993", "230590", "100241", "54708", "306710", "32510", "344001",
 ];
 
+let index = Math.ceil(Math.random() * rand.length);
+
 exports.run = async (client, msg) => {
-  if (client.rkitty === undefined) client.rkitty = Math.ceil(Math.random() * rand.length);
-  else if (client.rkitty === rand.length - 1) client.rkitty = 0;
-  else client.rkitty += 1;
+  if (index === rand.length - 1) index = 0;
+  else index += 1;
 
   const embed = new client.methods.Embed()
     .setColor(msg.color)
-    .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[client.rkitty]}.jpg`);
-  await msg.sendEmbed(embed);
+    .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[index]}.jpg`);
+  return msg.send({ embed });
 };
 
 exports.conf = {

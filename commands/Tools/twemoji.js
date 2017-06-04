@@ -28,7 +28,7 @@ exports.run = async (client, msg, [emoji]) => {
   const emojiURL = `https://twemoji.maxcdn.com/2/72x72/${r}.png`;
   const { body } = await snek.get(emojiURL);
 
-  msg.send(`Emoji: **${r}**`, { files: [{ attachment: body }] });
+  return msg.send(`Emoji: **${r}**`, { files: [{ attachment: body, name: r }] });
 };
 
 exports.conf = {

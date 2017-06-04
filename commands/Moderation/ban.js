@@ -15,7 +15,7 @@ exports.run = async (client, msg, [search, ...reason]) => {
   reason = reason.length ? reason.join(" ") : null;
   user.action = "ban";
   await msg.guild.ban(user, { days: 7, reason });
-  await msg.send(`|\`🔨\`| **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
+  msg.send(`|\`🔨\`| **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
   await MODERATION.send(client, msg, user, "ban", reason);
 };
 

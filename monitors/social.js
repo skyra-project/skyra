@@ -50,6 +50,6 @@ exports.run = async (client, msg) => {
 
     await this.handleRoles(client, msg);
   } catch (e) {
-    console.error(e);
+    client.emit("log", e, "error");
   }
 };

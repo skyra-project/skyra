@@ -144,7 +144,7 @@ exports.init = (client) => {
     const guild = client.guilds.get(req.params.id);
     const isManaged = guild.member(req.user.id) ? guild.member(req.user.id).permissions.has("MANAGE_GUILD") : false;
     if (req.user.id === client.config.ownerID) {
-      console.log(`Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
+      client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
     } else if (!isManaged) {
       res.redirect("/");
     }
@@ -162,7 +162,7 @@ exports.init = (client) => {
     const guild = client.guilds.get(req.params.id);
     const isManaged = guild.member(req.user.id) ? guild.member(req.user.id).permissions.has("MANAGE_GUILD") : false;
     if (req.user.id === client.config.ownerID) {
-      console.log(`Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
+      client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
     } else if (!isManaged) {
       res.redirect("/");
     }
@@ -191,7 +191,7 @@ exports.init = (client) => {
     if (typeof this[req.params.cmd] !== "function") return res.status(404);
     const isManaged = guild.member(req.user.id) ? guild.member(req.user.id).permissions.has("MANAGE_GUILD") : false;
     if (req.user.id === client.config.ownerID) {
-      console.log(`Admin bypass for executing command ${req.params.cmd} on server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
+      client.emit("log", `Admin bypass for executing command ${req.params.cmd} on server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
     } else if (!isManaged) {
       return res.status(403).send({ success: false, message: "You do not have permission to execute this command." });
     }
@@ -233,6 +233,6 @@ exports.init = (client) => {
 /* Custom Commands */
 
 exports.leaveGuild = async (guild, options) => {
-  if (options.message) await guild.defaultChannel.send(options.message).catch(console.error);
+  if (options.message) await guild.defaultChannel.send(options.message).catch(e => guild.client.emit("log", e, "error"));
   await guild.leave();
 };

@@ -1,7 +1,7 @@
 exports.run = async (client, msg, [limit]) => {
   let messages = await msg.channel.fetchMessages({ limit });
   messages = messages.filter(m => m.author === client.user);
-  for (const message of messages.values()) message.nuke(); // eslint-disable-line no-restricted-syntax
+  for (const message of messages.values()) message.nuke().catch(e => client.emit("error", e)); // eslint-disable-line no-restricted-syntax
 };
 
 exports.conf = {

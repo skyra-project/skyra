@@ -42,28 +42,28 @@ exports.run = async (client, msg, [channel = msg.channel]) => {
     channel.tracker = msg.author.id;
     channel.trackertimer = msg.createdTimestamp;
 
-    msg.author.send([
-      `Ok, I'll track ${channel} for you. Use \`&track\` again to stop it.`,
-      "Otherwise, I'll stop tracking after 15 minutes.",
-      "When the tracker stops, I'll send a `.txt` file here.",
-    ].join("\n"));
-
     const filename = `${channel.tracker}-${channel.id}-${channel.trackertimer}.txt`;
     this.write(client, filename);
 
     channel.trackInterval = setInterval(async () => {
       if (new Date().getTime() > channel.trackertimer + 900000) {
         const sendname = `${msg.author.username}-#${channel.name}.txt`;
-        await this.send(client, msg, channel, sendname, filename);
+        return this.send(client, msg, channel, sendname, filename);
       }
+      return false;
     }, 5000);
+
+    return msg.author.send([
+      `Ok, I'll track ${channel} for you. Use \`&track\` again to stop it.`,
+      "Otherwise, I'll stop tracking after 15 minutes.",
+      "When the tracker stops, I'll send a `.txt` file here.",
+    ].join("\n"));
   } else if (msg.author.id === channel.tracker) {
     const filename = `${channel.tracker}-${channel.id}-${channel.trackertimer}.txt`;
     const sendname = `${msg.author.username}-#${channel.name}.txt`;
-    await this.send(client, msg, channel, sendname, filename);
-  } else {
-    throw `I'm sorry, but this channel is being tracked by ${msg.guild.members.get(channel.tracker).user.username}`;
+    return this.send(client, msg, channel, sendname, filename);
   }
+  return msg.send(`I'm sorry, but this channel is being tracked by ${msg.guild.members.get(channel.tracker).user.username}`);
 };
 
 exports.conf = {

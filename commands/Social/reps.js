@@ -1,6 +1,6 @@
 exports.run = async (client, msg) => {
   const rep = msg.author.profile.reputation;
-  await msg.send(`Dear ${msg.author}, you have a total of ${rep} reputation point${rep !== 1 ? "s" : ""}`);
+  return msg.send(`Dear ${msg.author}, you have a total of ${rep} reputation point${rep !== 1 ? "s" : ""}`);
 };
 
 

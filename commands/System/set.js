@@ -1,16 +1,14 @@
 exports.run = async (client, msg, [status = null, ...game]) => {
   if (status) {
     await client.user.setStatus(status);
-    await msg.alert(`Status set to: *${status}*`);
-  } else
+    return msg.alert(`Status set to: *${status}*`);
+  }
   if (game.length) {
     await client.user.setGame(game.join(" "));
-    await msg.alert(`Game set to: *${game.join(" ")}*`);
-  } else
-  if (!game.length && !status) {
-    await client.user.setStatus("online");
-    await msg.alert("Status set to: *online*");
+    return msg.alert(`Game set to: *${game.join(" ")}*`);
   }
+  await client.user.setStatus("online");
+  return msg.alert("Status set to: *online*");
 };
 
 exports.conf = {

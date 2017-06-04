@@ -19,14 +19,7 @@ const randomValues = {
   thisElse: ["Most likely.", "Nope.", "YES!", "Maybe."],
 };
 
-exports.run = async (client, msg, [input]) => {
-  try {
-    const output = this.generator(input);
-    await msg.send(`🎱 Question by ${msg.author}: *${input}*\n${"```"}\n${output}${"```"}`);
-  } catch (e) {
-    msg.send(`Dear ${msg.author}, ${e}`);
-  }
-};
+exports.run = async (client, msg, [input]) => msg.send(`🎱 Question by ${msg.author}: *${input}*\n${"```"}\n${this.generator(input)}${"```"}`);
 
 exports.conf = {
   enabled: true,

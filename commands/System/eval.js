@@ -52,9 +52,8 @@ exports.run = async (client, msg, [args]) => {
     send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
     send.push("❌ **Error:**```js");
     send.push(`${(err ? err.message || err : "< void >")}${"```"}`);
-  } finally {
-    msg.send(send.join("\n")).catch(err => msg.error(err));
   }
+  return msg.send(send.join("\n")).catch(err => msg.error(err));
 };
 
 exports.conf = {

@@ -12,30 +12,24 @@ exports.run = async (client, msg, [input]) => {
     else throw "Invalid input.";
   }
 
-  try {
-    const xkcdInfo = await fetchJSON("http://xkcd.com/info.0.json").then(d => d.data);
-    if (num) {
-      if (num <= xkcdInfo.num) number = num;
-      else throw `Dear ${msg.author}, there are only ${xkcdInfo.num} comics.`;
-    } else if (query) {
-      const searchQuery = await fetchJSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`).then(d => d.data);
-      number = searchQuery.split(" ")[2].replace("\n", "");
-    } else { number = Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1; }
+  const xkcdInfo = await fetchJSON("http://xkcd.com/info.0.json").then(d => d.data);
+  if (num) {
+    if (num <= xkcdInfo.num) number = num;
+    else return msg.send(`Dear ${msg.author}, there are only ${xkcdInfo.num} comics.`);
+  } else if (query) {
+    const searchQuery = await fetchJSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`).then(d => d.data);
+    number = searchQuery.split(" ")[2].replace("\n", "");
+  } else { number = Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1; }
 
-    const xkcdComic = await fetchJSON(`http://xkcd.com/${number}/info.0.json`).then(d => d.data);
+  const xkcdComic = await fetchJSON(`http://xkcd.com/${number}/info.0.json`).then(d => d.data);
 
-    const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setImage(xkcdComic.img)
-      .setFooter(`XKCD | ${xkcdComic.num}`)
-      .setDescription(xkcdComic.alt)
-      .setTimestamp();
-    await msg.sendEmbed(embed);
-    // FOR WHEN I GET AN HOST
-    // msg.channel.sendFile(xkcdComic.img, undefined, xkcdComic.alt);
-  } catch (e) {
-    await msg.send(`Not found: XKCD | ${number}`);
-  }
+  const embed = new client.methods.Embed()
+    .setColor(msg.color)
+    .setImage(xkcdComic.img)
+    .setFooter(`XKCD | ${xkcdComic.num}`)
+    .setDescription(xkcdComic.alt)
+    .setTimestamp();
+  return msg.send({ embed });
 };
 
 exports.conf = {

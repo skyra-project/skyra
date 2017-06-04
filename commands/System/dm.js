@@ -3,7 +3,7 @@ exports.run = async (client, msg, [user, ...content]) => {
   if (!msg.attachments.first()) attachment = null;
   else attachment = msg.attachments.first().url;
 
-  await user.send(content.join(" "), { file: attachment });
+  await user.send(content.join(" "), { files: [{ attachment }] });
   await msg.alert(`Message successfully sent to ${user}`);
   await msg.nuke(5000);
 };

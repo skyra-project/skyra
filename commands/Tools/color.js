@@ -18,7 +18,6 @@ const showColor = async (client, color, diff) => {
   const blue = color.b;
 
   /* Load fonts */
-  const NunitoSansExtraLight = new Canvas.Font("NunitoSansExtraLight", `${client.clientBaseDir}assets/fonts/NunitoSans-ExtraLight.ttf`); // eslint-disable-line no-unused-vars
   const FiraSans = new Canvas.Font("FiraSans", `${client.clientBaseDir}assets/fonts/FiraSans-Regular.ttf`); // eslint-disable-line no-unused-vars
 
   let thisLum;
@@ -34,14 +33,14 @@ const showColor = async (client, color, diff) => {
     { R: red - diff, G: green - diff, B: blue, pos: [245, 125] },
     { R: red - (diff * 2), G: green - (diff * 2), B: blue - (diff * 2), pos: [245, 245] },
   ];
-  await Promise.all(colours.map(index => new Promise((res) => {
-    ctx.fillStyle = `rgb(${cL(index.R)}, ${cL(index.G)}, ${cL(index.B)})`;
-    ctx.fillRect(index.pos[0], index.pos[1], 120, 120);
-    thisLum = client.ResolverColor.luminance(cL(index.R), cL(index.G), cL(index.B));
+
+  for (let i = 0; i < colours.size; i++) {
+    ctx.fillStyle = `rgb(${cL(colours[i].R)}, ${cL(colours[i].G)}, ${cL(colours[i].B)})`;
+    ctx.fillRect(colours[i].pos[0], colours[i].pos[1], 120, 120);
+    thisLum = client.ResolverColor.luminance(cL(colours[i].R), cL(colours[i].G), cL(colours[i].B));
     ctx.fillStyle = `rgb(${sCL(thisLum)}, ${sCL(thisLum)}, ${sCL(thisLum)})`;
-    ctx.fillText(client.ResolverColor.hexConcat(cL(index.R), cL(index.G), cL(index.B)), 10 + index.pos[0], 20 + index.pos[1]);
-    res();
-  })));
+    ctx.fillText(client.ResolverColor.hexConcat(cL(colours[i].R), cL(colours[i].G), cL(colours[i].B)), 10 + colours[i].pos[0], 20 + colours[i].pos[1]);
+  }
 
   /* Complementary */
   ctx.fillStyle = `rgb(${255 - red}, ${255 - green}, ${255 - blue})`;
@@ -62,7 +61,7 @@ exports.run = async (client, msg, [input, diff = 10]) => {
   const hsluv = client.ResolverColor.hex2hsluv(hex.r, hex.g, hex.b);
 
   const output = await showColor(client, color.rgb, diff);
-  await msg.channel.send([
+  return msg.channel.send([
     `Color: **#${hex.r}${hex.g}${hex.b}**`,
     `RGB: ${color.rgb.parsed}`,
     `HSL: hsl(${hsl.h}, ${hsl.s}, ${hsl.l})`,

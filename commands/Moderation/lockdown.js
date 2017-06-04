@@ -18,7 +18,7 @@ class LockDown {
     await this.channel.overwritePermissions(this.role, { SEND_MESSAGES: false });
     if (this.channel.postable) await message.edit(`The channel ${this.channel} has been locked.`);
     if (time) {
-      time = this.client.wrappers.timer(time);
+      time = this.client.funcs.wrappers.timer(time);
       this.channel.lockdown = setTimeout(() => { this.unlock().then(c => message.edit(c).catch()).catch(e => this.msg.error(e)); }, time);
     }
   }
@@ -28,8 +28,9 @@ exports.run = async (client, msg, [channel = msg.channel, ...time]) => {
   const lockdown = new LockDown(msg, channel);
   if (msg.channel.lockdown) {
     const response = await lockdown.unlock();
-    await msg.alert(response);
-  } else await lockdown.lock(time);
+    return msg.alert(response);
+  }
+  return lockdown.lock(time);
 };
 
 exports.conf = {

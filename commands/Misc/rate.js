@@ -16,7 +16,7 @@ exports.run = async (client, msg, [rateuser]) => {
     ratewaifu = constants.oneToTen(Math.floor(rate / 10)).emoji;
   }
 
-  await msg.send(`**${msg.author.username}**, I'd give **${rateuser}** a **${rate}**/100 ${ratewaifu}`);
+  return msg.send(`**${msg.author.username}**, I'd give **${rateuser}** a **${rate}**/100 ${ratewaifu}`);
 };
 
 exports.conf = {

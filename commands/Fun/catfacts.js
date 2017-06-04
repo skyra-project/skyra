@@ -5,7 +5,7 @@ exports.run = async (client, msg) => {
   const embed = new client.methods.Embed()
     .setColor(msg.color)
     .setDescription(`📢 **Catfact:** *${data.facts[0]}*`);
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

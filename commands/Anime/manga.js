@@ -35,7 +35,7 @@ exports.run = async (client, msg, [args]) => {
     ].join("\n"))
     .addField("Watch it here:", `**[https://myanimelist.net/manga/${fres.id}](https://myanimelist.net/manga/${fres.id})**\u200B`)
     .setFooter("© MyAnimeList");
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

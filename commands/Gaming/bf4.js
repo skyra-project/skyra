@@ -54,7 +54,7 @@ exports.run = async (client, msg, [platform, name]) => {
       `  Stars: **${stats.kits.recon.stars}**`,
     ].join("\n"), true)
     .setFooter("📊 Statistics");
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

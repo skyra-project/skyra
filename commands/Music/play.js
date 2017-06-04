@@ -59,10 +59,12 @@ exports.run = async (client, msg, [req = null]) => {
   if (!client.queue[msg.guild.id]) return msg.send(`Add some songs to the queue first with ${prefix}add`);
   if (!msg.guild.voiceConnection) return client.commands.get("join").run(client, msg).then(() => this.run(client, msg, [null]));
   if (client.queue[msg.guild.id].playing) return msg.send("Already Playing");
-  client.queue[msg.guild.id].playing = true;
-  client.queue[msg.guild.id].voiceConnection = msg.guild.voiceConnection;
-  client.queue[msg.guild.id].channel = msg.channel;
-  play(client, msg.guild);
+  client.queue[msg.guild.id] = {
+    playing: true,
+    voiceConnection: msg.guild.voiceConnection,
+    channel: msg.channel,
+  };
+  return play(client, msg.guild);
 };
 
 exports.init = (client) => { if (!("queue" in client)) client.queue = {}; };

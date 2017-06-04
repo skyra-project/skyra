@@ -11,7 +11,7 @@ exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) 
     .setDescription(m.content)
     .setImage(attachment ? attachment.url : null)
     .setTimestamp(m.createdAt);
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

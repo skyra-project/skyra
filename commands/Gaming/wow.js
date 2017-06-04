@@ -65,7 +65,7 @@ exports.run = async (client, msg, [server, character, ...realm]) => {
       `Total achievement points: **${data.achievementPoints}**.`,
     ].join("\n"), true);
 
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

@@ -43,7 +43,7 @@ exports.run = async (client, msg, [exp]) => {
 
   const file = Graph(values);
 
-  await msg.send(`Min value is ${min}, max is ${max}`, { files: [{ attachment: file }] });
+  return msg.send(`Min value is ${min}, max is ${max}`, { files: [{ attachment: file }] });
 };
 
 exports.conf = {

@@ -13,7 +13,7 @@ const Pray = async (client, user) => {
   /* Get the buffers from the praised user's profile avatar */
   const [bgBuffer, praised] = await Promise.all([
     readFile(`${constants.assets}images${sep}memes${sep}f.png`),
-    client.wrappers.fetchAvatar(user, 256),
+    client.funcs.wrappers.fetchAvatar(user, 256),
   ]);
 
   /* Draw the buffer */
@@ -31,7 +31,7 @@ const Pray = async (client, user) => {
 exports.run = async (client, msg, [search = msg.author]) => {
   const user = await client.funcs.search.User(search, msg.guild);
   const output = await Pray(client, user);
-  await msg.channel.sendFile(output, "f.png");
+  return msg.channel.send({ files: [{ attachment: output, name: "f.png" }] });
 };
 
 exports.conf = {

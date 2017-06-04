@@ -18,6 +18,7 @@ exports.run = async (client, msg, [search, days = 7, ...reason]) => {
   user.banFilter = true;
   await msg.guild.ban(user, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
   await msg.guild.unban(user, "Softban.");
+  msg.send(`|\`🔨\`| **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
   await MODERATION.send(client, msg, user, "softban", reason);
 };
 

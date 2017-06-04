@@ -19,7 +19,7 @@ exports.run = async (client, msg, [url]) => {
     .map(obj => [obj[1].children[0].content, obj[0].children[0].content])
     .forEach((o) => { out[o[0].replace(/[ -]/g, "")] = o[1]; });
   // await fsp.appendFileAsync(`${client.clientBaseDir}output.js`, inspect(out, { depth: null }));
-  await msg.sendCode("js", inspect(out, { depth: null }));
+  return msg.send(inspect(out, { depth: null }), { code: "js" });
 };
 
 exports.conf = {

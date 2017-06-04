@@ -21,7 +21,7 @@ exports.run = async (client, msg, [input]) => {
     .setDescription(`**Description**:\n${wdef.replace(/[\u000A]{2,}/g, "\u000A")}`)
     .setFooter("© Wikipedia - Creative Commons Attribution-ShareAlike 3.0");
 
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

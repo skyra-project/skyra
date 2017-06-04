@@ -16,7 +16,7 @@ exports.run = async (client, msg, [input]) => {
     index++;
   }
 
-  await msg.send(`Search results for \`${input}\`:\n${final.join("\n")}`);
+  return msg.send(`Search results for \`${input}\`:\n${final.join("\n")}`);
 };
 
 exports.conf = {

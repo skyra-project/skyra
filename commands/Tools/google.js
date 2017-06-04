@@ -29,7 +29,7 @@ exports.run = async (client, msg, [input]) => {
     .setFooter("Google Search")
     .setDescription(results.map(r => `${decodeURIComponent(r.link)}\n\t${r.description}\n`).join("\n"))
     .setTimestamp();
-  await msg.send(`Search results for \`${input}\``, { embed });
+  return msg.send(`Search results for \`${input}\``, { embed });
 };
 
 exports.conf = {

@@ -6,7 +6,7 @@ exports.run = async (client, msg, [avatar]) => {
   }
 
   await client.user.setAvatar(avatar);
-  await msg.alert(`Dear ${msg.author}, I have changed my avatar for you.`);
+  return msg.alert(`Dear ${msg.author}, I have changed my avatar for you.`);
 };
 
 exports.conf = {

@@ -26,7 +26,7 @@ exports.run = async (client, msg, [query, ind = 1]) => {
     .addField("\u200B", `\\👎 ${result.thumbs_down}`, true)
     .setFooter("© Urban Dictionary");
 
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

@@ -6,7 +6,7 @@ exports.run = async (client, msg, [input]) => {
   const $ = cheerio.load(data);
   const result = $(".images_table").find("img").first().attr("src");
 
-  await msg.channel.send(`Search results for \`${input}\``, { files: [{ attachment: result, name: "query.png" }] });
+  return msg.channel.send(`Search results for \`${input}\``, { files: [{ attachment: result, name: "query.png" }] });
 };
 
 exports.conf = {

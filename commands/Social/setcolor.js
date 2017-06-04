@@ -6,7 +6,7 @@ exports.run = async (client, msg, [input]) => {
     .setColor(`0x${hex.parsed}`)
     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
     .setDescription(`Colour changed to #${hex.parsed}`);
-  await msg.sendEmbed(embed);
+  return msg.sendEmbed({ embed });
 };
 
 exports.conf = {

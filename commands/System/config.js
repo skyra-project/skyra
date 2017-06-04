@@ -116,15 +116,14 @@ exports.run = async (client, msg, [type, folder, subfolder, ...input]) => {
       .setFooter("Skyra Configuration System")
       .setTimestamp();
 
-    msg.sendEmbed(embed);
-  } else {
-    if (!folder) throw "Choose between Channels, Roles, Events, Messages, Master, Selfmod";
-    const validation = client.configValidation.find();
-    const possibilities = Object.keys(validation[folder]);
-    if (!possibilities.includes(subfolder)) throw `Choose between one of the following: ${possibilities.join(", ")}`;
-    const response = await run.handle(type, folder, subfolder, input);
-    msg.alert(response || "Success!", 10000);
+    return msg.send({ embed });
   }
+  if (!folder) throw "Choose between Channels, Roles, Events, Messages, Master, Selfmod";
+  const validation = client.configValidation.find();
+  const possibilities = Object.keys(validation[folder]);
+  if (!possibilities.includes(subfolder)) throw `Choose between one of the following: ${possibilities.join(", ")}`;
+  const response = await run.handle(type, folder, subfolder, input);
+  return msg.alert(response || "Success!", 10000);
 };
 
 exports.conf = {

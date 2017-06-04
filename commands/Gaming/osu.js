@@ -105,7 +105,7 @@ exports.run = async (client, msg, [gamemode, information, ...username]) => {
       break;
     // no default
   }
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

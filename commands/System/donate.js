@@ -16,11 +16,9 @@ const content = [
   "```If you want to donate, there's the link: paypal.me/kyranet",
 ].join(" ");
 
-exports.run = async (client, msg) => {
-  msg.author.send(content)
+exports.run = async (client, msg) => msg.author.send(content)
   .then(() => { if (msg.guild) msg.send(`Dear ${msg.author}, I have send you the message in DMs.`); })
   .catch(() => msg.send(content));
-};
 
 exports.conf = {
   enabled: true,

@@ -9,7 +9,7 @@ exports.run = async (client, msg, [input, ind = 1]) => {
   const result = data.items[index];
   if (!result) throw new Error(constants.httpResponses(404));
   const output = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
-  await msg.send(output);
+  return msg.send(output);
 };
 
 exports.conf = {

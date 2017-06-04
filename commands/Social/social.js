@@ -36,7 +36,7 @@ exports.run = async (client, msg, [action, search = msg.author.id, v = null]) =>
     if (!v) throw "You must specify an amount of money.";
     const value = this.handle(client, msg, action, ID, v);
     await this.update(client, msg, ID, value);
-    await msg.alert(`Dear ${msg.author}, you have just ${action === "add" ? "added" : "removed"} ${v} points from user ID: ${ID}`);
+    return msg.alert(`Dear ${msg.author}, you have just ${action === "add" ? "added" : "removed"} ${v} points from user ID: ${ID}`);
   }
 };
 

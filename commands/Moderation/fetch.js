@@ -11,7 +11,7 @@ exports.run = async (client, msg, [message, limit = 10]) => {
       .join("\n"))
     .setFooter(client.user.username, client.user.displayAvatarURL);
 
-  await msg.send({ embed });
+  return msg.send({ embed });
 };
 
 exports.conf = {

@@ -18,8 +18,8 @@ const PingKyra = async (client, msg, user) => {
   /* Get the buffers from both profile avatars */
   const [bgBuffer, pinnerBuffer, KyraBuffer] = await Promise.all([
     readFile(`${constants.assets}images${sep}memes${sep}pingkyra.png`),
-    client.wrappers.fetchAvatar(user, 128),
-    client.wrappers.fetchAvatar(kyra, 128),
+    client.funcs.wrappers.fetchAvatar(user, 128),
+    client.funcs.wrappers.fetchAvatar(kyra, 128),
   ]);
 
     /* Background */
@@ -52,7 +52,7 @@ const PingKyra = async (client, msg, user) => {
 exports.run = async (client, msg, [search]) => {
   const user = await client.funcs.search.User(search, msg.guild);
   const output = await PingKyra(client, msg, user);
-  await msg.channel.sendFile(output, "pingkyra.png");
+  return msg.channel.send({ files: [{ attachment: output, name: "pingkyra.png" }] });
 };
 
 exports.conf = {

@@ -38,7 +38,7 @@ exports.run = async (client, msg, [server, user]) => {
       `  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}`,
     ].join("\n"), true);
   }
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

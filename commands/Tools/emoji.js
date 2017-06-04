@@ -6,7 +6,7 @@ exports.run = async (client, msg, [emoji]) => {
   const emojiID = defractured[2];
   const emojiURL = `https://cdn.discordapp.com/emojis/${emojiID}.png`;
 
-  await msg.send([
+  return msg.send([
     `Emoji: **${emojiName}**`,
     `ID: **${emojiID}**`,
     `Guild: ${client.emojis.has(emojiID) ? this.resolveGuild(client.emojis.get(emojiID).guild) : "Unknown."}`,

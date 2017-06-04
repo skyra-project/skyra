@@ -64,7 +64,7 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
     .setTitle(titles[type].title)
     .setDescription(send.join("\n"))
     .setFooter(titles[type].position + position);
-  await msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

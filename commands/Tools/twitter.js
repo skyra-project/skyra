@@ -17,11 +17,10 @@ exports.run = async (client, msg, [user]) => {
       .setDescription(`${twits[index].title[0].split("pic.twitter.com/")[0]}\n\u200B`)
       .setFooter(moment.utc(Date.parse(twits[index].pubDate[0])).format("dddd, MMMM Do YYYY, HH:mm:ss"));
     if (twits[index].title[0].split("pic.twitter.com/")[1]) embed.setImage(`https://pbs.twimg.com/${twits[index].title[0].split("pic.twitter.com/")[1]}.jpg`);
-    await msg.sendEmbed(embed);
+    return msg.send({ embed });
   } catch (e) {
-    if (e.toString().match("404")) {
-      msg.error("User profile not found. You might have spelled the username wrong or something.", msg);
-    } else { msg.error(e); }
+    if (/404/.test(String(e))) return msg.error("User profile not found. You might have spelled the username wrong or something.");
+    return msg.error(e);
   }
 };
 

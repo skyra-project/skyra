@@ -9,7 +9,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 1,
-  cooldown: 60,
+  cooldown: 10,
 };
 
 exports.help = {

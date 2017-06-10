@@ -31,7 +31,7 @@ exports.run = async (client, msg, [action, value = null]) => {
         .then(async () => {
           banners.push(selected.id);
           const user = await client.fetchUser(selected.author);
-          await msg.author.profile.update({ money: selected.price - msg.author.profile.money, bannerList: banners });
+          await msg.author.profile.update({ money: msg.author.profile.money - selected.price, bannerList: banners });
           await user.profile.add(selected.price * 0.1);
           return msg.alert(`Dear ${msg.author}, you have successfully bought the banner "${selected.title}"`);
         })
@@ -73,7 +73,7 @@ exports.conf = {
 
 exports.help = {
   name: "banner",
-  description: "Check how many reputation points do you have.",
+  description: "Buy, list, or set the banners.",
   usage: "<list|buy|set|buylist> [banner:str]",
   usageDelim: " ",
   extendedHelp: "",

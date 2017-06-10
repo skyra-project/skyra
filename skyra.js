@@ -1,4 +1,4 @@
-const Komada = require("./komada");
+const Komada = require("komada");
 const cfg = require("./config.js");
 require("./utils/skyra.js");
 
@@ -24,7 +24,7 @@ const Skyra = new Komada.Client({
     messageCacheLifetime: 60,
     messageSweepInterval: 120,
   },
-  commandMessageLifetime: 180,
+  commandMessageLifetime: 60,
   commandMessageSweep: 120,
   permStructure: new Komada.PermLevels()
     .addLevel(0, false, () => true)

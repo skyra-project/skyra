@@ -1,13 +1,9 @@
-/* eslint-disable no-throw-literal */
+const managerMusic = require("../../utils/managerMusic");
+
 exports.run = async (client, msg) => {
-  if (!(msg.guild.id in client.queue)) throw "There's no queue.";
-  if (client.queue[msg.guild.id].autoPlay) {
-    client.queue[msg.guild.id].autoPlay = false;
-    await msg.alert(`Dear ${msg.author}, YouTube AutoPlay has been disabled.`);
-  } else {
-    client.queue[msg.guild.id].autoPlay = true;
-    await msg.alert(`Dear ${msg.author}, YouTube AutoPlay has been enabled.`);
-  }
+  if (!managerMusic.has(msg.guild.id)) throw "There's no queue.";
+  if (managerMusic.toggleAutoPlay()) return msg.alert(`Dear ${msg.author}, YouTube AutoPlay has been enabled.`);
+  return msg.alert(`Dear ${msg.author}, YouTube AutoPlay has been disabled.`);
 };
 
 exports.conf = {
@@ -17,11 +13,10 @@ exports.conf = {
   permLevel: 1,
   botPerms: [],
   requiredFuncs: [],
-  requireVC: true,
   spam: false,
   mode: 2,
   cooldown: 10,
-  guilds: ["252480190654054410", "256566731684839428", "267337818202701824", "254360814063058944"],
+  guilds: managerMusic.guilds,
 };
 
 exports.help = {

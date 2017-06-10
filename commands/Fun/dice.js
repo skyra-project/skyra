@@ -4,7 +4,7 @@ const roll = (rolls, sides) => {
   return total;
 };
 
-exports.run = async (client, msg, [rl = 1, sd = 6]) => msg.send(`Dear ${msg.author}, you rolled the **${sd}**-dice **${rl}** times, you got: **${roll(rl, sd)}**`);
+exports.run = (client, msg, [rl = 1, sd = 6]) => msg.send(`Dear ${msg.author}, you rolled the **${sd}**-dice **${rl}** times, you got: **${roll(rl, sd)}**`);
 
 exports.conf = {
   enabled: true,

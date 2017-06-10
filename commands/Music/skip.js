@@ -1,23 +1,13 @@
-const { resNoQueue, resNoSong } = require("./music.json");
-
-/* eslint-disable no-throw-literal */
-exports.requiredVC = async (client, msg) => {
-  const queue = client.queue[msg.guild.id];
-  if (!queue) throw resNoQueue[Math.floor(resNoQueue.length * Math.random())];
-  const song = queue.songs[0];
-  if (!song) throw resNoSong[Math.floor(resNoSong.length * Math.random())];
-  const channel = queue.voiceConnection.channel;
-  if (!channel.members.has(msg.author.id)) throw `Please, join ${channel}`;
-  return song;
-};
+const managerMusic = require("../../utils/managerMusic");
 
 exports.run = async (client, msg) => {
   try {
-    const song = await this.requiredVC(client, msg);
-    await msg.send("⏭ Skipped");
+    managerMusic.requiredVC(client, msg);
+    const song = managerMusic.get(msg.guild.id).songs[0];
     song.dispatcher.end();
+    return msg.send("⏭ Skipped");
   } catch (e) {
-    msg.send(e);
+    return msg.send(e);
   }
 };
 
@@ -28,11 +18,10 @@ exports.conf = {
   permLevel: 0,
   botPerms: [],
   requiredFuncs: [],
-  requireVC: true,
   spam: false,
   mode: 2,
   cooldown: 10,
-  guilds: ["252480190654054410", "256566731684839428", "267337818202701824", "254360814063058944"],
+  guilds: managerMusic.guilds,
 };
 
 exports.help = {

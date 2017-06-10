@@ -1,9 +1,9 @@
 const { JSON: fetchJSON } = require("../../utils/kyraFetch");
+const managerMusic = require("../../utils/managerMusic");
 
 const getInfoAsync = require("util").promisify(require("ytdl-core").getInfo);
 const constants = require("../../utils/constants");
 
-/* eslint-disable no-throw-literal, no-prototype-builtins */
 exports.getLink = (arr) => {
   const output = arr.find(v => v.id);
   return `https://youtu.be/${output.id}`;
@@ -14,19 +14,14 @@ exports.getYouTube = async (client, msg, url) => {
   if (parseInt(info.length_seconds) > 600 && msg.member.voiceChannel.members.size >= 4) {
     throw "This song is too long, please add songs that last less than 10 minutes.";
   }
-  if (!(msg.guild.id in client.queue)) {
-    client.queue[msg.guild.id] = {};
-    client.queue[msg.guild.id].playing = false;
-    client.queue[msg.guild.id].songs = [];
-  }
-  client.queue[msg.guild.id].songs.push({
+  managerMusic.queueAdd(msg.guild.id, {
     url,
     title: info.title,
     requester: msg.author,
     loudness: info.loudness,
     seconds: parseInt(info.length_seconds),
   });
-  client.queue[msg.guild.id].next = this.getLink(info.related_videos);
+  managerMusic.setNext(msg.guild.id, this.getLink(info.related_videos));
   return info;
 };
 
@@ -40,9 +35,17 @@ exports.findYoutube = async (client, msg, url) => {
   return this.getYouTube(client, msg, `https://youtu.be/${video.id.videoId}`);
 };
 
+exports.nuke = (client, msg) => {
+  const { playing, nuke } = managerMusic.get(msg.guild.id);
+  if (playing || nuke) return;
+  managerMusic.autoNuke(msg.guild.id);
+};
+
 exports.run = async (client, msg, [song]) => {
+  managerMusic.requiredVC(client, msg);
   const info = await this.findYoutube(client, msg, song);
-  msg.send(`🎵 Added **${info.title}** to the queue 🎶`);
+  this.nuke(client, msg);
+  return msg.send(`🎵 Added **${info.title}** to the queue 🎶`);
 };
 
 exports.conf = {
@@ -55,7 +58,7 @@ exports.conf = {
   spam: false,
   mode: 2,
   cooldown: 10,
-  guilds: ["252480190654054410", "256566731684839428", "267337818202701824", "254360814063058944"],
+  guilds: managerMusic.guilds,
 };
 
 exports.help = {

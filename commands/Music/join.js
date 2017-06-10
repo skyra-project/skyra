@@ -1,6 +1,7 @@
-const { resNoVoiceChannel } = require("./music.json");
+const managerMusic = require("../../utils/managerMusic");
 
-/* eslint-disable no-throw-literal */
+const { resNoVoiceChannel } = managerMusic.config;
+
 exports.run = async (client, msg) => {
   const voiceChannel = msg.member.voiceChannel;
   if (!voiceChannel || voiceChannel.type !== "voice") await msg.send(resNoVoiceChannel[Math.floor(resNoVoiceChannel.length * Math.random())]);
@@ -20,7 +21,7 @@ exports.conf = {
   spam: false,
   mode: 2,
   cooldown: 10,
-  guilds: ["252480190654054410", "256566731684839428", "267337818202701824", "254360814063058944"],
+  guilds: managerMusic.guilds,
 };
 
 exports.help = {

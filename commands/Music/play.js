@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 const ytdl = require("ytdl-core");
-const getInfoAsync = require("util").promisify(ytdl.getInfo);
+const getInfo = require("util").promisify(ytdl.getInfo);
 const managerMusic = require("../../utils/managerMusic");
 
 const delayer = () => new Promise(res => setTimeout(() => res(), 300));
@@ -11,7 +11,7 @@ const getLink = (arr) => {
 };
 
 const autoPlayer = async (guild, queue) => {
-  const info = await getInfoAsync(queue.next);
+  const info = await getInfo(queue.next);
   managerMusic.queueAdd(guild.id, {
     url: queue.next,
     title: info.title,
@@ -20,12 +20,14 @@ const autoPlayer = async (guild, queue) => {
     seconds: info.length_seconds,
   });
   managerMusic.setNext(guild.id, getLink(info.related_videos));
-  queue.next = getLink(info.related_videos);
 };
 
 const play = async (client, guild) => {
   const queue = managerMusic.get(guild.id);
-  if (!queue) return;
+  if (!queue || queue.channel) {
+    if (guild.me.voiceChannel) guild.me.voiceChannel.leave();
+    return;
+  }
   const channel = queue.channel;
   const song = queue.songs[0];
 

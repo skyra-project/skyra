@@ -19,7 +19,7 @@ exports.setDispatcher = (guild, dispatcher) => { data.get(guild).dispatcher = di
 
 exports.skip = guild => data.get(guild).songs.shift();
 
-exports.autoNuke = guild => setTimeout(() => data.delete(guild), 5 * 60 * 1000);
+exports.autoNuke = (guild) => { data.get(guild).nuke = setTimeout(() => { if (!data.get(guild).playing) data.delete(guild); }, 5 * 60 * 1000); };
 
 exports.destroyNuke = (guild) => {
   clearTimeout(data.get(guild).nuke);

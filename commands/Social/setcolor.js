@@ -1,12 +1,13 @@
 exports.run = async (client, msg, [input]) => {
   const { hex } = client.ResolverColor.validate(input);
-  await msg.author.profile.update({ color: hex.parsed });
+  const color = hex.toString().slice(1);
+  await msg.author.profile.update({ color });
 
   const embed = new client.methods.Embed()
-    .setColor(`0x${hex.parsed}`)
+    .setColor(`0x${color}`)
     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
-    .setDescription(`Colour changed to #${hex.parsed}`);
-  return msg.sendEmbed({ embed });
+    .setDescription(`Colour changed to ${hex.toString()}`);
+  return msg.send({ embed });
 };
 
 exports.conf = {

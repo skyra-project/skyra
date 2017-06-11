@@ -23,49 +23,84 @@ const showColor = async (client, color, diff) => {
   let thisLum;
   ctx.font = "18px FiraSans";
   const colours = [
-    { R: red + (diff * 2), G: green, B: blue, pos: [5, 5] },
-    { R: red + diff, G: green + diff, B: blue, pos: [5, 125] },
-    { R: red, G: green + (diff * 2), B: blue, pos: [5, 245] },
-    { R: red + diff, G: green, B: blue + diff, pos: [125, 5] },
-    { R: red, G: green, B: blue, pos: [125, 125] },
-    { R: red - diff, G: green, B: blue - diff, pos: [125, 245] },
-    { R: red, G: green, B: blue + (diff * 2), pos: [245, 5] },
-    { R: red - diff, G: green - diff, B: blue, pos: [245, 125] },
-    { R: red - (diff * 2), G: green - (diff * 2), B: blue - (diff * 2), pos: [245, 245] },
+    { R: red + (diff * 2),
+      G: green,
+      B: blue,
+      pos: [5, 5] },
+    { R: red + diff,
+      G: green + diff,
+      B: blue,
+      pos: [5, 125] },
+    { R: red,
+      G: green + (diff * 2),
+      B: blue,
+      pos: [5, 245] },
+    { R: red + diff,
+      G: green,
+      B: blue + diff,
+      pos: [125, 5] },
+    { R: red,
+      G: green,
+      B: blue,
+      pos: [125, 125] },
+    { R: red - diff,
+      G: green,
+      B: blue - diff,
+      pos: [125, 245] },
+    { R: red,
+      G: green,
+      B: blue + (diff * 2),
+      pos: [245, 5] },
+    { R: red - diff,
+      G: green - diff,
+      B: blue,
+      pos: [245, 125] },
+    { R: red - (diff * 2),
+      G: green - (diff * 2),
+      B: blue - (diff * 2),
+      pos: [245, 245] },
   ];
 
-  for (let i = 0; i < colours.size; i++) {
-    ctx.fillStyle = `rgb(${cL(colours[i].R)}, ${cL(colours[i].G)}, ${cL(colours[i].B)})`;
-    ctx.fillRect(colours[i].pos[0], colours[i].pos[1], 120, 120);
-    thisLum = client.ResolverColor.luminance(cL(colours[i].R), cL(colours[i].G), cL(colours[i].B));
-    ctx.fillStyle = `rgb(${sCL(thisLum)}, ${sCL(thisLum)}, ${sCL(thisLum)})`;
-    ctx.fillText(client.ResolverColor.hexConcat(cL(colours[i].R), cL(colours[i].G), cL(colours[i].B)), 10 + colours[i].pos[0], 20 + colours[i].pos[1]);
-  }
+  const { luminance, hexConcat } = client.funcs.resolveColor;
+
+  await Promise.all(colours.map(colour => new Promise((resolve) => {
+    const [thisRed, thisGreen, thisBlue] = [cL(colour.R), cL(colour.G), cL(colour.B)];
+    ctx.fillStyle = `rgb(${thisRed}, ${thisGreen}, ${thisBlue})`;
+    ctx.fillRect(colour.pos[0], colour.pos[1], 120, 120);
+    thisLum = sCL(luminance(thisRed, thisGreen, thisBlue));
+    ctx.fillStyle = `rgb(${thisLum}, ${thisLum}, ${thisLum})`;
+    ctx.fillText(
+      hexConcat(cL(colour.R), cL(colour.G), cL(colour.B)),
+      10 + colour.pos[0],
+      20 + colour.pos[1],
+    );
+    resolve();
+  })));
 
   /* Complementary */
   ctx.fillStyle = `rgb(${255 - red}, ${255 - green}, ${255 - blue})`;
   ctx.fillRect(5, 365, 360, 20);
-  thisLum = client.ResolverColor.luminance(255 - red, 255 - green, 255 - blue);
+  thisLum = luminance(255 - red, 255 - green, 255 - blue);
   ctx.font = "16px FiraSans";
   ctx.fillStyle = `rgb(${sCL(thisLum)}, ${sCL(thisLum)}, ${sCL(thisLum)})`;
-  ctx.fillText(client.ResolverColor.hexConcat(255 - red, 255 - green, 255 - blue), 15, 22 + 360);
+  ctx.fillText(
+    hexConcat(255 - red, 255 - green, 255 - blue),
+    15,
+    22 + 360,
+  );
 
   return c.toBuffer();
 };
 
 exports.run = async (client, msg, [input, diff = 10]) => {
-  const color = client.ResolverColor.validate(input);
-  const { hex } = color;
-  const { hsl } = color;
+  const { hex, hsl, hsluv, rgb } = client.funcs.resolveColor.validate(input);
 
-  const hsluv = client.ResolverColor.hex2hsluv(hex.r, hex.g, hex.b);
-
-  const output = await showColor(client, color.rgb, diff);
+  const output = await showColor(client, rgb, diff);
   return msg.channel.send([
-    `Color: **#${hex.r}${hex.g}${hex.b}**`,
-    `RGB: ${color.rgb.parsed}`,
-    `HSL: hsl(${hsl.h}, ${hsl.s}, ${hsl.l})`,
-    `HSLᵤᵥ: hsluv(${hsluv.h}, ${hsluv.s}, ${hsluv.l})`,
+    `Color: **${hex.toString()}**`,
+    `RGB: ${rgb.toString()}`,
+    `HSL: ${hsl.toString()}`,
+    `HSLᵤᵥ: ${hsluv.toString()}`,
   ].join("\n"), { files: [{ attachment: output, name: "color.png" }] });
 };
 

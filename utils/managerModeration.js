@@ -10,6 +10,7 @@ const colour = {
 };
 
 exports.unknown = async (client, guild, user, type) => {
+  if (!guild.configs.exists) guild.configs.create();
   if (user.action === type) {
     delete user.action;
     return;
@@ -24,7 +25,7 @@ exports.unknown = async (client, guild, user, type) => {
 };
 
 exports.send = (client, msg, user, type, reason = null, extraData = null) => {
-  if (msg.guild.configs.exists) msg.guild.configs.create();
+  if (!msg.guild.configs.exists) msg.guild.configs.create();
   else this.justified(client, msg, user, type, reason, extraData).catch(e => client.emit("log", e, "error"));
 };
 
@@ -49,11 +50,11 @@ exports.getChannel = guild => guild.configs.channels.mod ? guild.channels.get(gu
 
 exports.createEmbed = (client, type, moderator, description, thisCase, AUTO) => {
   if (AUTO) moderator = client.user;
-  const embed = new this.client.methods.Embed()
+  const embed = new client.methods.Embed()
     .setColor(colour[type])
-    .setAuthor(moderator.username, moderator.displayAvatarURL)
+    .setAuthor(moderator.username, moderator.displayAvatarURL(128))
     .setDescription(description)
-    .setFooter(`${AUTO ? "AUTO |" : ""}Case ${thisCase}`, client.user.displayAvatarURL)
+    .setFooter(`${AUTO ? "AUTO | " : ""}Case ${thisCase}`, client.user.displayAvatarURL)
     .setTimestamp();
   return embed;
 };

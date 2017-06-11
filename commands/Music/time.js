@@ -4,11 +4,11 @@ const moment = require("moment");
 exports.run = async (client, msg) => {
   try {
     managerMusic.requiredVC(client, msg);
-    const song = managerMusic.get(msg.guild.id).songs[0];
-    await msg.send(`🕰 Time remaining: ${moment.duration((song.seconds * 1000) - song.dispatcher.time).format("h[:]mm[:]ss")}`);
   } catch (e) {
-    msg.send(e);
+    return msg.send(e);
   }
+  const { dispatcher, songs } = managerMusic.get(msg.guild.id);
+  return msg.send(`🕰 Time remaining: ${moment.duration((songs[0].seconds * 1000) - dispatcher.time).format("h[:]mm[:]ss")}`);
 };
 
 exports.conf = {

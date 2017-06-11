@@ -1,23 +1,24 @@
 const managerMusic = require("../../utils/managerMusic");
 
-exports.run = async (client, msg, [vol = null]) => {
+exports.run = async (client, msg, [vol = false]) => {
   try {
-    this.requiredVC(client, msg);
-    const song = managerMusic.get(msg.guild.id).songs[0];
-    if (!vol) return msg.send(`📢 Volume: ${Math.round(song.dispatcher.volume * 50)}%`);
-    else if (/^[+]+$/.test(vol)) {
-      if (Math.round(song.dispatcher.volume * 50) >= 100) return msg.send(`📢 Volume: ${Math.round(song.dispatcher.volume * 50)}%`);
-      song.dispatcher.setVolume(Math.min(((song.dispatcher.volume * 50) + (2 * (vol.split("+").length - 1))) / 50, 2));
-      return msg.send(`${song.dispatcher.volume === 2 ? "📢" : "🔊"} Volume: ${Math.round(song.dispatcher.volume * 50)}%`);
-    } else if (/^[-]+$/.test(vol)) {
-      if (Math.round(song.dispatcher.volume * 50) <= 0) return msg.send(`🔇 Volume: ${Math.round(song.dispatcher.volume * 50)}%`);
-      song.dispatcher.setVolume(Math.max(((song.dispatcher.volume * 50) - (2 * (vol.split("-").length - 1))) / 50, 0));
-      return msg.send(`${song.dispatcher.volume === 0 ? "🔇" : "🔉"} Volume: ${Math.round(song.dispatcher.volume * 50)}%`);
-    }
-    throw "Uhm? This is not how you use the volume command.";
+    managerMusic.requiredVC(client, msg);
   } catch (e) {
     return msg.send(e);
   }
+  const { dispatcher } = managerMusic.get(msg.guild.id);
+  if (!vol) return msg.send(`📢 Volume: ${Math.round(dispatcher.volume * 50)}%`);
+  if (/^[+]+$/.test(vol)) {
+    if (Math.round(dispatcher.volume * 50) >= 100) return msg.send(`📢 Volume: ${Math.round(dispatcher.volume * 50)}%`);
+    dispatcher.setVolume(Math.min(((dispatcher.volume * 50) + (2 * (vol.split("+").length - 1))) / 50, 2));
+    return msg.send(`${dispatcher.volume === 2 ? "📢" : "🔊"} Volume: ${Math.round(dispatcher.volume * 50)}%`);
+  }
+  if (/^[-]+$/.test(vol)) {
+    if (Math.round(dispatcher.volume * 50) <= 0) return msg.send(`🔇 Volume: ${Math.round(dispatcher.volume * 50)}%`);
+    dispatcher.setVolume(Math.max(((dispatcher.volume * 50) - (2 * (vol.split("-").length - 1))) / 50, 0));
+    return msg.send(`${dispatcher.volume === 0 ? "🔇" : "🔉"} Volume: ${Math.round(dispatcher.volume * 50)}%`);
+  }
+  throw "Uhm? This is not how you use the volume command.";
 };
 
 exports.conf = {

@@ -36,6 +36,7 @@ exports.setPlaying = (guild, { voiceConnection, channel }) => {
 
 exports.toggleAutoPlay = (guild) => {
   const queue = data.get(guild);
+  if (!queue) throw "There is no queue.";
   if (queue.autoPlay) {
     queue.autoPlay = false;
     return false;

@@ -3,12 +3,12 @@ const managerMusic = require("../../utils/managerMusic");
 exports.run = async (client, msg) => {
   try {
     managerMusic.requiredVC(client, msg);
-    const song = managerMusic.get(msg.guild.id).songs[0];
-    song.dispatcher.resume();
-    return msg.send("▶ Resumed");
   } catch (e) {
     return msg.send(e);
   }
+  const { dispatcher } = managerMusic.get(msg.guild.id);
+  dispatcher.resume();
+  return msg.send("▶ Resumed");
 };
 
 exports.conf = {

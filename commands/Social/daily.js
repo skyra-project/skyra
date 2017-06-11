@@ -1,4 +1,5 @@
 const moment = require("moment");
+require("moment-duration-format");
 
 /* eslint-disable no-throw-literal */
 exports.run = async (client, msg) => {

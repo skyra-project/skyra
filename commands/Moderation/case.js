@@ -4,12 +4,12 @@ exports.run = async (client, msg, [index]) => {
   const cases = await msg.guild.moderation.cases;
 
   if (!cases[index]) throw "This case doesn't seem to exist.";
+  const thisCase = cases[index];
 
-  const moderator = cases[index].moderator ? await client.fetchUser(cases[index].moderator) : null;
-
-  const user = await client.fetchUser(cases[index].user);
-  const description = MODERATION.generate(client, user, cases[index].type, cases[index].reason, cases[index].thisCase, msg.guild.configs.prefix);
-  const embed = MODERATION.createEmbed(client, cases[index].type, moderator, description, cases[index].thisCase, !!moderator);
+  const moderator = thisCase.moderator ? await client.fetchUser(thisCase.moderator) : null;
+  const user = await client.fetchUser(thisCase.user);
+  const description = MODERATION.generate(client, user, thisCase.type, thisCase.reason, thisCase.thisCase, msg.guild.configs.prefix);
+  const embed = MODERATION.createEmbed(client, thisCase.type, moderator, description, thisCase.thisCase, !moderator);
   return msg.send({ embed });
 };
 

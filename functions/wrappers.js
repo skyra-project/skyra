@@ -4,7 +4,7 @@ const ms = require("ms");
 
 /* eslint-disable no-underscore-dangle */
 exports.fetchAvatar = (user, size = 512) => {
-  const url = user.avatar ? user.avatarURL("png", size) : user.defaultAvatarURL;
+  const url = user.avatar ? user.avatarURL({ format: "png", size }) : user.defaultAvatarURL;
   return snekfetch.get(url).then(data => data.body).catch((e) => { throw new Error(`Could not download the profile avatar: ${e}`); });
 };
 

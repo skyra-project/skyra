@@ -43,7 +43,7 @@ exports.conf = {
   runIn: ["text"],
   aliases: [],
   permLevel: 1,
-  botPerms: ["MANAGE_ROLES_OR_PERMISSIONS"],
+  botPerms: ["MANAGE_ROLES"],
   requiredFuncs: [],
   spam: false,
   mode: 2,

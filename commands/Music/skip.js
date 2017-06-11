@@ -3,12 +3,12 @@ const managerMusic = require("../../utils/managerMusic");
 exports.run = async (client, msg) => {
   try {
     managerMusic.requiredVC(client, msg);
-    const song = managerMusic.get(msg.guild.id).songs[0];
-    song.dispatcher.end();
-    return msg.send("⏭ Skipped");
   } catch (e) {
     return msg.send(e);
   }
+  const { dispatcher } = managerMusic.get(msg.guild.id);
+  dispatcher.end();
+  return msg.send("⏭ Skipped");
 };
 
 exports.conf = {

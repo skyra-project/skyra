@@ -42,7 +42,6 @@ exports.nuke = (client, msg) => {
 };
 
 exports.run = async (client, msg, [song]) => {
-  managerMusic.requiredVC(client, msg);
   const info = await this.findYoutube(client, msg, song);
   this.nuke(client, msg);
   return msg.send(`🎵 Added **${info.title}** to the queue 🎶`);

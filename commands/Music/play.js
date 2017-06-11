@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 const ytdl = require("ytdl-core");
-const getInfoAsync = require("util").promisify(require("ytdl-core").getInfo);
+const getInfoAsync = require("util").promisify(ytdl.getInfo);
 const managerMusic = require("../../utils/managerMusic");
 
 const delayer = () => new Promise(res => setTimeout(() => res(), 300));
@@ -19,7 +19,7 @@ const autoPlayer = async (guild, queue) => {
     loudness: info.loudness,
     seconds: info.length_seconds,
   });
-  managerMusic.setNext(guild.id, this.getLink(info.related_videos));
+  managerMusic.setNext(guild.id, getLink(info.related_videos));
   queue.next = getLink(info.related_videos);
 };
 

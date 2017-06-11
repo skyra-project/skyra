@@ -1,6 +1,5 @@
 const Komada = require("komada");
 const cfg = require("./config.js");
-require("./utils/skyra.js");
 
 const Skyra = new Komada.Client({
   ownerID: cfg.ownerid,

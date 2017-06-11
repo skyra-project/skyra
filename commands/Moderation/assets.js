@@ -17,7 +17,7 @@ exports.conf = {
   runIn: ["text"],
   aliases: [],
   permLevel: 3,
-  botPerms: ["MANAGE_CHANNELS", "MANAGE_ROLES_OR_PERMISSIONS"],
+  botPerms: ["MANAGE_CHANNELS", "MANAGE_ROLES"],
   requiredFuncs: [],
   spam: false,
   mode: 2,

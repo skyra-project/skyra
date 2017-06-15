@@ -18,7 +18,7 @@ exports.run = async (client, msg, [vol = false]) => {
     dispatcher.setVolume(Math.max(((dispatcher.volume * 50) - (2 * (vol.split("-").length - 1))) / 50, 0));
     return msg.send(`${dispatcher.volume === 0 ? "🔇" : "🔉"} Volume: ${Math.round(dispatcher.volume * 50)}%`);
   }
-  throw "Uhm? This is not how you use the volume command.";
+  throw "this is not how you use the volume command...";
 };
 
 exports.conf = {

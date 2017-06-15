@@ -11,31 +11,35 @@ class Run {
     switch (type) {
       case "members": {
         const role = await this.parse("role", input);
-        await roleMembers(this.client, this.msg, role);
-        break;
+        return roleMembers(this.client, this.msg, role);
       }
       case "channel": {
         const channel = await this.parse("channel", input);
-        await channelInfo(this.client, this.msg, channel);
-        break;
+        return channelInfo(this.client, this.msg, channel);
       }
       case "server": {
         const guild = await this.parse("guild", input);
-        await guildInfo(this.client, this.msg, guild);
-        break;
+        return guildInfo(this.client, this.msg, guild);
       }
       case "flow": {
         const channel = await this.parse("channel", input);
-        await channelFlow(this.client, this.msg, channel);
-        break;
+        return channelFlow(this.client, this.msg, channel);
       }
       case "perms":
       case "permissions": {
         const member = await this.parse("member", input);
-        await permissionUser(this.client, this.msg, member);
-        break;
+        return permissionUser(this.client, this.msg, member);
       }
-      default: throw new Error("Invalid type.");
+      case "invite": {
+        if (!this.msg.hasAtleastPermissionLevel(3)) throw "You don't have permissions to run this command.";
+        if (!(/(discord\.gg\/|discordapp\.com\/invite\/).+/.test(input))) throw "You must provide a valid invite link.";
+        const invite = /(discord\.gg\/|discordapp\.com\/invite\/)([^ ]+)/.exec(input);
+        if (!invite) throw "Are you sure you provided a valid code?";
+        const code = invite[2];
+        const resolve = await this.client.fetchInvite(code);
+        return fetchInvite(this.client, this.msg, resolve);
+      }
+      default: throw `${type} does not match any of the possibilities.`;
     }
   }
 
@@ -53,7 +57,7 @@ class Run {
         let guild;
         if (!input) guild = this.guild;
         else guild = this.client.guilds.get(input);
-        if (!guild) throw new Error("Guild not found");
+        if (!guild) throw "Guild not found";
         if ((guild.members.size / guild.memberCount) * 100 < 90) {
           await this.msg.send("`Fetching data...`");
           await guild.fetchMembers();
@@ -66,10 +70,10 @@ class Run {
         if (!input) user = this.msg.author;
         else user = await this.client.funcs.search.User(input, this.guild);
         const member = await this.guild.fetchMember(user) || null;
-        if (!member) throw new Error("User not found.");
+        if (!member) throw "User not found.";
         return member;
       }
-      default: throw new Error("Invalid type.");
+      default: throw `${type} does not match any of the possibilities.`;
     }
   }
 }
@@ -95,9 +99,29 @@ exports.conf = {
 exports.help = {
   name: "util",
   description: "Command Description",
-  usage: "<members|channel|server|flow|permissions|perms> [search:string] [...]",
+  usage: "<members|channel|server|flow|permissions|perms|invite> [search:string] [...]",
   usageDelim: " ",
   extendedHelp: "",
+};
+
+const fetchInvite = (client, msg, invite) => {
+  const embed = new client.methods.Embed()
+    .setColor(msg.color)
+    .setFooter(`Invite created by: ${invite.inviter ? invite.inviter.tag : "Unknown"}`, (invite.inviter || msg.author).displayAvatarURL({ size: 128 }))
+    .setThumbnail(invite.guild.icon ? `https://cdn.discordapp.com/icons/${invite.guild.id}/${invite.guild.icon}.webp` : null)
+    .setTitle(`**${invite.guild.name}** (${invite.guild.id})`)
+    .setDescription([
+      `**${invite.memberCount}** members, **${invite.presenceCount}** users online.`,
+      `**${invite.textChannelCount}** text channels and **${invite.voiceChannelCount}** voice channels.`,
+      `Inviter: ${invite.inviter ? `**${invite.inviter.tag}** (${invite.inviter.id})` : "Unknown"}`,
+      `Channel: **#${invite.channel.name}** (${invite.channel.id})`,
+    ])
+    .addField("Invite", [
+      `Temporary: **${invite.temporary === undefined ? "Unknown." : invite.temporary}**`,
+      `Uses: **${invite.uses === undefined ? "Unknown." : invite.uses}**`,
+      `Max uses: **${invite.maxUses === undefined ? "Unknown." : invite.maxUses}**`,
+    ]);
+  msg.send({ embed });
 };
 
 const PermissionFlags = {
@@ -142,12 +166,12 @@ function toBinary(n, type) {
 }
 
 const roleMembers = async (client, msg, role) => {
-  if (!role.members.size) throw new Error("This role has no members.");
+  if (!role.members.size) throw "this role has no members.";
   const members = role.members.map(member => `\`${member.id}\` ❯ ${member.user.tag}`);
   const list = members.join("\n");
   const embed = new client.methods.Embed()
     .setColor(msg.member.highestRole.color || 0xdfdfdf)
-    .setFooter(client.user.username, client.user.displayAvatarURL)
+    .setFooter(client.user.username, client.user.displayAvatarURL({ size: 128 }))
     .setTitle(`List of members for ${role.name} (${role.id})`);
   if (list.length < 2000) { embed.setDescription(list); } else {
     const splitted = client.methods.splitMessage(list, { char: "\n", maxLength: 1000 });
@@ -231,7 +255,7 @@ const guildInfo = async (client, msg, guild) => {
 };
 
 const channelFlow = async (client, msg, channel) => {
-  if (!channel.readable) client.funcs.throwError(client, "I can't read this channel.", msg.channel);
+  if (!channel.readable) throw `I am sorry, but I need the permission READ_MESSAGES in the channel ${channel}.`;
   const messages = await channel.fetchMessages({ limit: 100 });
   const amount = messages.filter(m => m.createdTimestamp > (msg.createdTimestamp - 60000)).size;
   await msg.send(`Dear ${msg.author}, ${amount} messages have been sent within the last minute.`);

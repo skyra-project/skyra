@@ -1,10 +1,9 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 
 exports.run = async (client, msg, [query, ind = 1]) => {
   const index = ind - 1;
-  if (index < 0) throw new Error("Invalid index");
-  const { data } = await fetchJSON(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
+  if (index < 0) throw "You can't use an index equal or below zero.";
+  const data = await client.funcs.fetch.JSON(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
   const result = data.list[index];
   if (result === undefined) throw constants.httpResponses(404);
   const wdef = result.definition.length > 750 ?

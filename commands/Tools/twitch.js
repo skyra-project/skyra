@@ -1,4 +1,3 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 const moment = require("moment");
 
@@ -7,7 +6,7 @@ const { twitch } = constants.getConfig.tokens;
 /* eslint-disable no-underscore-dangle */
 exports.run = async (client, msg, [twitchName]) => {
   try {
-    const { data } = await fetchJSON(`https://api.twitch.tv/kraken/channels/${twitchName}?client_id=${twitch}`);
+    const data = await client.funcs.fetch.JSON(`https://api.twitch.tv/kraken/channels/${twitchName}?client_id=${twitch}`);
     const creationDate = moment(data.created_at).format("DD-MM-YYYY");
     const embed = new client.methods.Embed()
       .setColor(6570406)

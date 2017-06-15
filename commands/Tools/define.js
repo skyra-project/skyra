@@ -1,12 +1,11 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const { XmlEntities } = require("html-entities");
 const constants = require("../../utils/constants");
 
 const { decode } = new XmlEntities();
 
 exports.run = async (client, msg, [input]) => {
-  const { data } = await fetchJSON(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${encodeURIComponent(input)}`);
-  if (!data.tuc || !data.tuc[0]) throw new Error(constants.httpResponses(404));
+  const data = await client.funcs.fetch.JSON(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${encodeURIComponent(input)}`);
+  if (!data.tuc || !data.tuc[0]) throw constants.httpResponses(404);
 
   const final = [];
   let index = 1;

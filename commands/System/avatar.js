@@ -1,7 +1,6 @@
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [avatar]) => {
   if (!avatar) {
-    if (!msg.attachments.first()) throw "You have to specify an URL or upload an image";
+    if (!msg.attachments.first()) throw "you have to specify an URL or upload an image";
     avatar = msg.attachments.first().url;
   }
 

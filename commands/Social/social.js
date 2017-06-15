@@ -1,12 +1,11 @@
 const MANAGER_SOCIAL_LOCAL = require("../../utils/managerSocialLocal");
 
-/* eslint-disable no-throw-literal */
 exports.searchProfile = async (client, msg, search) => {
   if (/[0-9]{17,21}/.test(search) && MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
     return search;
   }
   const user = await client.funcs.search.User(search, msg.guild);
-  if (user.bot) throw "You can't modify bot profiles, since they don't have one.";
+  if (user.bot) throw "you can't modify bot profiles, since they don't have one.";
   if (!MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
     const data = { id: user.id, score: 0 };
     await client.rethink.append("localScores", msg.guild.id, "scores", data);
@@ -29,11 +28,11 @@ exports.handle = (client, msg, action, ID, value) => {
 exports.run = async (client, msg, [action, search = msg.author.id, v = null]) => {
   const ID = await this.searchProfile(client, msg, search);
   if (action === "delete") {
-    throw "This action is not available yet.";
+    throw "this action is not available yet.";
     // await this.nuke(client, ID);
     // await msg.alert(`Dear ${msg.author}, you have just nuked the profile from user ID ${ID}`);
   } else {
-    if (!v) throw "You must specify an amount of money.";
+    if (!v) throw "you must specify an amount of money.";
     const value = this.handle(client, msg, action, ID, v);
     await this.update(client, msg, ID, value);
     return msg.alert(`Dear ${msg.author}, you have just ${action === "add" ? "added" : "removed"} ${v} points from user ID: ${ID}`);

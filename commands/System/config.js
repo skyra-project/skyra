@@ -83,20 +83,20 @@ class Validator {
       case "Boolean": {
         if (/^(true|1|\+)$/.test(input.toLowerCase())) return true;
         else if (/^(false|0|-)$/.test(input.toLowerCase())) return false;
-        throw "Expected Boolean. (true|1|+)/(false|0|-)";
+        throw "I expect a Boolean. (true|1|+)/(false|0|-)";
       }
       case "String": {
-        return input;
+        return String(input);
       }
       case "Role": {
         const role = await this.client.funcs.search.Role(input.toLowerCase(), this.guild);
         if (role) return role;
-        throw "Expected Role.";
+        throw "I expect a Role.";
       }
       case "TextChannel": {
         const channel = await this.client.funcs.search.Channel(input.toLowerCase(), this.guild);
         if (channel) return channel;
-        throw "Expected Channel.";
+        throw "I expect a Channel.";
       }
       default:
         throw `Unknown Type: ${type}`;

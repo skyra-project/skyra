@@ -9,7 +9,7 @@ exports.getISO = (x) => {
 
 exports.verifyLanguage = (input) => {
   const to = this.getISO(input);
-  if (!to.length) throw `${input} isn't a real language`;
+  if (!to.length) throw `${input} isn't a real language.`;
   return iso.getName(to);
 };
 

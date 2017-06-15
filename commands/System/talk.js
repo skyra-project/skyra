@@ -1,6 +1,5 @@
 const constants = require("../../utils/constants");
 
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [channel = msg.channel, ...content]) => {
   /* Attachments */
   const attachment = msg.attachments.first() ? msg.attachments.first().url : null;

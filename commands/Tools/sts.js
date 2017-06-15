@@ -30,7 +30,7 @@ exports.run = async (client, msg) => {
       "\u200B",
     ].join("\n"), true)
     .setTimestamp()
-    .setThumbnail(client.user.displayAvatarURL(512));
+    .setThumbnail(client.user.displayAvatarURL({ size: 256 }));
   return msg.send({ embed });
 };
 

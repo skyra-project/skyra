@@ -1,4 +1,3 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 
 /* Autentification */
@@ -41,7 +40,7 @@ const genders = {
 
 exports.run = async (client, msg, [server, character, ...realm]) => {
   await msg.send("`Fetching data...`");
-  const { data } = await fetchJSON(`https://${server.toLowerCase()}.api.battle.net/wow/character/${encodeURIComponent(realm)}/${encodeURIComponent(character)}?fields=stats&apikey=${blizzard}`);
+  const data = await client.funcs.fetch.JSON(`https://${server.toLowerCase()}.api.battle.net/wow/character/${encodeURIComponent(realm)}/${encodeURIComponent(character)}?fields=stats&apikey=${blizzard}`);
 
   const embed = new client.methods.Embed()
     .setTitle(`**World of Warcraft Stats:** *${data.name}*`)

@@ -31,19 +31,20 @@ exports.send = (client, msg, user, type, reason = null, extraData = null) => {
 
 exports.justified = async (client, msg, user, type, reason, extraData) => {
   const channel = this.getChannel(msg.guild);
-  if (!channel) return;
+  let thisMessage;
+  if (channel) {
+  /* Parse reason */
+    if (reason instanceof Array) {
+      if (!reason.length) reason = null;
+      else reason = reason.join(" ");
+    }
 
-    /* Parse reason */
-  if (reason instanceof Array) {
-    if (!reason.length) reason = null;
-    else reason = reason.join(" ");
+    const thisCase = await msg.guild.moderation.amountCases;
+    const description = this.generate(client, user, type, reason, thisCase, msg.guild.configs.prefix);
+    const embed = this.createEmbed(client, type, msg.author, description, thisCase, false);
+    thisMessage = await channel.send({ embed });
   }
-
-  const thisCase = await msg.guild.moderation.amountCases;
-  const description = this.generate(client, user, type, reason, thisCase, msg.guild.configs.prefix);
-  const embed = this.createEmbed(client, type, msg.author, description, thisCase, false);
-  const thisMessage = await channel.send({ embed });
-  await msg.guild.moderation.pushCase(type, msg.author.id, reason, user.id, thisMessage.id, extraData);
+  await msg.guild.moderation.pushCase(type, msg.author.id, reason, user.id, thisMessage ? thisMessage.id : null, extraData);
 };
 
 exports.getChannel = guild => guild.configs.channels.mod ? guild.channels.get(guild.configs.channels.mod) : false; // eslint-disable-line no-confusing-arrow
@@ -52,9 +53,9 @@ exports.createEmbed = (client, type, moderator, description, thisCase, AUTO) => 
   if (AUTO) moderator = client.user;
   const embed = new client.methods.Embed()
     .setColor(colour[type])
-    .setAuthor(moderator.username, moderator.displayAvatarURL(128))
+    .setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
     .setDescription(description)
-    .setFooter(`${AUTO ? "AUTO | " : ""}Case ${thisCase}`, client.user.displayAvatarURL)
+    .setFooter(`${AUTO ? "AUTO | " : ""}Case ${thisCase}`, client.user.displayAvatarURL({ size: 128 }))
     .setTimestamp();
   return embed;
 };

@@ -62,7 +62,7 @@ const showProfile = async (client, user) => {
   ctx.fillText(GlobalPosition, 594, 276);
   ctx.fillText(profile.money, 594, 229);
   ctx.fillText(profile.reputation, 594, 181);
-  ctx.fillText(profile.points, 594, 349);
+  ctx.fillText(profile.points, 594, 346);
   ctx.textAlign = "center";
   ctx.font = "40px RobotoBold";
   ctx.fillText(currentLevel, 576, 100);

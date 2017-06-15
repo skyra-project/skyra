@@ -42,14 +42,13 @@ class RoleList {
   }
 }
 
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [list, ...roles]) => {
   const roleList = new RoleList(msg);
   const conf = msg.guild.configs;
   if (list) {
     return msg.send({ embed: roleList.list });
   }
-  if (!roles[0]) throw `Write ( ${conf.prefix}claim list ) to get a list of all roles, or do ( ${conf.prefix}claim <role1, role2, ...> ) to claim them.`;
+  if (!roles[0]) throw `write ( ${conf.prefix}claim list ) to get a list of all roles, or do ( ${conf.prefix}claim <role1, role2, ...> ) to claim them.`;
   const roleCheck = await roleList.roleCheck(roles);
 
   const mess = [];
@@ -80,7 +79,7 @@ exports.conf = {
 exports.help = {
   name: "claim",
   description: "Get a public role.",
-  usage: "[list] [roles:str] [...]",
+  usage: "[--list] [roles:str] [...]",
   usageDelim: ", ",
   extendedHelp: "",
 };

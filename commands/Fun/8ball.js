@@ -1,4 +1,3 @@
-/* eslint-disable no-throw-literal */
 const startsWith = (prefix, str) => {
   for (let i = prefix.length - 1; i >= 0; i--) {
     if (str[i] === prefix[i]) continue;
@@ -49,7 +48,7 @@ exports.help = {
 
 exports.generator = (input) => {
   input = input.toLowerCase();
-  if (input[input.length - 1] !== "?") throw "This doesn't seem to be a question.";
+  if (input[input.length - 1] !== "?") throw "this doesn't seem to be a question.";
   if (startsWith("when", input)) return this.generate("when");
   if (startsWith("what", input)) return this.generate("what");
   if (startsWith("how much", input)) return this.generate("howmuch");

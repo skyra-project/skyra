@@ -18,7 +18,7 @@ const findDepth = (map, prop, subprop, value) => {
 const includes = (property, chunk) => property.includes(chunk);
 
 /* Methods */
-exports.Role = async (query, guild) => {
+exports.Role = (query, guild) => {
   switch (query.constructor.name) {
     case "Role": return query;
     case "String": {
@@ -40,7 +40,7 @@ exports.Role = async (query, guild) => {
   }
 };
 
-exports.Channel = async (query, guild) => {
+exports.Channel = (query, guild) => {
   switch (query.constructor.name) {
     case "TextChannel": return query;
     case "String": {

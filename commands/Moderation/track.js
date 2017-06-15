@@ -23,7 +23,7 @@ exports.exist = async (client, filename) => {
   const dir = `${client.clientBaseDir}tracks${sep}`;
   const files = await fs.ensureDir(dir);
   if (files.includes(filename)) return true;
-  throw new Error("File not found.");
+  throw "File not found.";
 };
 
 exports.write = async (client, filename) => {

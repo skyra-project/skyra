@@ -9,6 +9,7 @@
   "author": "kyra",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^7.0.29",
     "body-parser": "^1.17.2",
     "bufferutil": "^3.0.1",
     "canvas": "^1.6.5",

@@ -1,4 +1,6 @@
-/* eslint-disable no-underscore-dangle, complexity, no-throw-literal */
+const GuildManager = require("./guildManager");
+
+/* eslint-disable no-underscore-dangle, complexity */
 module.exports = class Moderation {
   constructor(guild) {
     Object.defineProperty(this, "client", { value: guild.client });
@@ -9,8 +11,8 @@ module.exports = class Moderation {
     this.lastCase = this.getLastCase();
   }
 
-  get exists() {
-    return this.client.rethink.get("moderation", this.guild.id) || null;
+  exists() {
+    return this.client.rethink.get("moderation", this.guild.id).then(d => !!d);
   }
 
   create() {
@@ -21,7 +23,7 @@ module.exports = class Moderation {
   }
 
   async ensureModule() {
-    if (!this.exists) await this.create();
+    if (!(await this.exists())) await this.create();
   }
 
   async getCases() {
@@ -79,7 +81,7 @@ module.exports = class Moderation {
   }
 
   async syncMutes() {
-    return this.getMutes().then((d) => { this.client.guildCache.get(this.guild.id).mutes = d; });
+    return this.getMutes().then((d) => { GuildManager.get(this.guild.id).mutes = d; });
   }
 
   async appealMute(user) {
@@ -91,7 +93,7 @@ module.exports = class Moderation {
   }
 
   async destroy() {
-    if (!this.exists) throw "This GuildConfig does not exist.";
+    if (!(await this.exists())) throw "This GuildConfig does not exist.";
     await this.client.rethink.delete("moderation", this.id);
   }
 };

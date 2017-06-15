@@ -1,14 +1,13 @@
-const { XML: fetchXML } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 const moment = require("moment");
 
 exports.run = async (client, msg, [user]) => {
   const url = `https://twitrss.me/twitter_user_to_rss/?user=${encodeURIComponent(user)}`;
   try {
-    const { data } = await fetchXML(url);
+    const data = await client.funcs.fetch.XML(url);
     let index = 0;
     const twits = data.rss.channel[0].item;
-    if (!twits || !twits[0]) throw new Error(constants.httpResponses(404));
+    if (!twits || !twits[0]) throw constants.httpResponses(404);
     if (twits[1] && Date.parse(twits[0].pubDate[0]) < Date.parse(twits[1].pubDate[0])) index = 1;
     const embed = new client.methods.Embed()
       .setColor(msg.color)

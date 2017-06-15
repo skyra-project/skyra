@@ -1,17 +1,16 @@
 const MODERATION = require("../../utils/managerModeration");
 
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [search, days = 7, ...reason]) => {
   /* Initialize Search */
   const user = await client.funcs.search.User(search, msg.guild, true);
   const member = await msg.guild.fetchMember(user) || null;
 
   if (member) {
-    if (user.id === msg.author.id) throw "Ey! Why would you ban yourself?";
-    else if (member.highestRole.position >= msg.member.highestRole.position) throw "The selected member has higher or equal role position than you.";
-    else if (!member.kickable) throw "The selected member is not bannable.";
+    if (user.id === msg.author.id) throw "why would you ban yourself?";
+    else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
+    else if (!member.kickable) throw "the selected member is not bannable.";
   } else {
-    throw "This user is not in this server";
+    throw "this user is not in this server";
   }
 
   reason = reason.length ? reason.join(" ") : null;

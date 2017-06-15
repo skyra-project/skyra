@@ -127,9 +127,9 @@ const HSLUV = class HSLUV {
  */
 const HEX = class HEX {
   constructor(r, g, b) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
+    this.r = r.padStart(2, 0);
+    this.g = g.padStart(2, 0);
+    this.b = b.padStart(2, 0);
   }
 
   valid() {

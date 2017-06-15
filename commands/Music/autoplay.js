@@ -1,7 +1,7 @@
 const managerMusic = require("../../utils/managerMusic");
 
 exports.run = async (client, msg) => {
-  if (!managerMusic.has(msg.guild.id)) throw "There's no queue.";
+  if (!managerMusic.has(msg.guild.id)) throw "there's no queue.";
   if (managerMusic.toggleAutoPlay(msg.guild.id)) return msg.alert(`Dear ${msg.author}, YouTube AutoPlay has been enabled.`);
   return msg.alert(`Dear ${msg.author}, YouTube AutoPlay has been disabled.`);
 };

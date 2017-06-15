@@ -23,7 +23,7 @@ class GuildMemberUpdate {
     if (oRoles.length) output.push(`Removed: ${oRoles.map(r => this.guild.roles.get(r).name).sort().join(", ")}`);
     const embed = new Discord.RichEmbed()
       .setColor(0xf6ff00)
-      .setAuthor(`${this.nMember.user.tag} (${this.nMember.user.id})`, this.nMember.user.displayAvatarURL)
+      .setAuthor(`${this.nMember.user.tag} (${this.nMember.user.id})`, this.nMember.user.displayAvatarURL({ size: 128 }))
       .setDescription(output.join("\n"))
       .setFooter("Member Update")
       .setTimestamp();

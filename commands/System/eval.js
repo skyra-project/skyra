@@ -1,15 +1,5 @@
-/* eslint-disable no-unused-vars, import/newline-after-import */
-const fs = require("fs-nextra");
-const moment = require("moment");
 const { inspect } = require("util");
-const { sep } = require("path");
 const now = require("performance-now");
-
-const { Console } = require("console");
-const output = fs.createWriteStream("./stdout.log");
-const errorOutput = fs.createWriteStream("./stderr.log");
-const { log } = new Console(output, errorOutput);
-/* eslint-enable no-unused-vars, import/newline-after-import */
 
 exports.parse = (toEval) => {
   let input;
@@ -38,7 +28,7 @@ exports.run = async (client, msg, [args]) => {
     // INSPECT
     let out;
     if (typeof res === "object" && typeof res !== "string") {
-      out = inspect(res, { depth: 0 });
+      out = inspect(res, { depth: 0, showHidden: true });
       if (typeof out === "string" && out.length > 1900) out = res.toString();
     } else { out = res; }
 

@@ -1,4 +1,4 @@
-exports.run = async (client, msg) => msg.send(`Dear ${msg.author}, you have a total of ${msg.author.profile.money}₪`);
+exports.run = async (client, msg) => msg.send(`Dear ${msg.author}, you have a total of ${msg.author.profile.money}${msg.shiny}`);
 
 exports.conf = {
   enabled: true,

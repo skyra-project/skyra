@@ -1,4 +1,3 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const managerMusic = require("../../utils/managerMusic");
 
 const getInfoAsync = require("util").promisify(require("ytdl-core").getInfo);
@@ -10,9 +9,9 @@ exports.getLink = (arr) => {
 };
 
 exports.getYouTube = async (client, msg, url) => {
-  const info = await getInfoAsync(url).catch((e) => { throw `Something happened with YouTube URL: ${url}\n${e}`; });
+  const info = await getInfoAsync(url).catch((e) => { throw `something happened with YouTube URL: ${url}\n${e}`; });
   if (parseInt(info.length_seconds) > 600 && msg.member.voiceChannel.members.size >= 4) {
-    throw "This song is too long, please add songs that last less than 10 minutes.";
+    throw "this song is too long, please add songs that last less than 10 minutes.";
   }
   managerMusic.queueAdd(msg.guild.id, {
     url,
@@ -30,7 +29,7 @@ exports.findYoutube = async (client, msg, url) => {
     return this.getYouTube(client, msg, url);
   }
   const { google } = constants.getConfig.tokens;
-  const { data } = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`);
+  const data = await client.funcs.fetch.JSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`);
   const video = data.items.find(item => item.id.kind !== "youtube#channel");
   return this.getYouTube(client, msg, `https://youtu.be/${video.id.videoId}`);
 };

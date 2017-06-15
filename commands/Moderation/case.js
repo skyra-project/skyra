@@ -3,7 +3,7 @@ const MODERATION = require("../../utils/managerModeration");
 exports.run = async (client, msg, [index]) => {
   const cases = await msg.guild.moderation.cases;
 
-  if (!cases[index]) throw "This case doesn't seem to exist.";
+  if (!cases[index]) throw "this case does not seem to exist.";
   const thisCase = cases[index];
 
   const moderator = thisCase.moderator ? await client.fetchUser(thisCase.moderator) : null;

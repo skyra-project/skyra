@@ -1,12 +1,6 @@
 const { js_beautify } = require("js-beautify");
 
-const reduceIndentation = (string) => {
-  let whitespace = string.match(/^(\s+)/);
-  if (!whitespace) return string;
-
-  whitespace = whitespace[0].replace("\n", "");
-  return string.split("\n").map(line => line.replace(whitespace, "")).join("\n");
-};
+const reduceIndentation = string => string.test(/^(\s+)/) ? string.replace(/\n/, "") : string; // eslint-disable-line no-confusing-arrow
 
 const format = async (msg) => {
   const messages = msg.channel.messages.array().reverse();
@@ -22,7 +16,7 @@ const format = async (msg) => {
       break;
     }
   }
-  if (!code) throw new Error("No Javascript codeblock found.");
+  if (!code) throw "I couldn't find a Javascript codeblock.";
 
   const beautifiedCode = js_beautify(code, { indent_size: 2, brace_style: "collapse", jslint_happy: true });
   const str = await reduceIndentation(beautifiedCode);

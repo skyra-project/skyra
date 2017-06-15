@@ -1,13 +1,14 @@
-/* eslint-disable import/no-dynamic-require, no-restricted-syntax, no-throw-literal */
+/* eslint-disable import/no-dynamic-require, no-restricted-syntax */
 exports.run = async (client, msg, [action, value = null]) => {
   const { availableBanners } = client;
   const banners = msg.author.profile.bannerList || [];
   switch (action) {
     case "list": return msg.send(banners[0] ? `List of banners:\n${banners.map(b => `\`${b}\` ${availableBanners[b] ? availableBanners[b].title : ""}`).join("\n")}` : "You don't have a banner.");
     case "set": {
-      if (!value) throw "You must specify a banner to set.";
-      else if (!banners[0]) throw "You don't have a banner.";
-      else if (!banners.includes(value)) throw "You don't have this banner.";
+      if (!value) throw "you must specify a banner to set.";
+      if (!banners[0]) throw "you don't have a banner.";
+      banners.push("0001");
+      if (!banners.includes(value)) throw "you don't have this banner.";
       await msg.author.profile.update({ banners: { theme: value } });
       return msg.send(`Dear ${msg.author}, you have successfully set your banner to: ${availableBanners[value] ? availableBanners[value].title : value}`);
     }
@@ -22,11 +23,11 @@ exports.run = async (client, msg, [action, value = null]) => {
       return msg.send(output.join("\n"));
     }
     case "buy": {
-      if (!value) throw "You must specify a banner to buy.";
+      if (!value) return msg.send("You must specify a banner to buy.");
       const selected = availableBanners[value] || null;
-      if (!selected) throw "This banner does not exist.";
-      else if (banners.includes(selected.id)) throw "You already have this banner.";
-      else if (msg.author.profile.money < selected.price) throw `You don't have enough money to buy this banner. You have ${msg.author.profile.money}, the banner costs ${selected.price}`;
+      if (!selected) return msg.send("This banner does not exist.");
+      else if (banners.includes(selected.id)) return msg.send("You already have this banner.");
+      else if (msg.author.profile.money < selected.price) return msg.send(`You don't have enough money to buy this banner. You have ${msg.author.profile.money}${msg.shiny}, the banner costs ${selected.price}${msg.shiny}`);
       return this.prompt(client, msg, selected)
         .then(async () => {
           banners.push(selected.id);
@@ -49,7 +50,7 @@ exports.prompt = async (client, msg, banner) => {
     .setDescription([
       `**Author**: ${user.tag}`,
       `**Title**: ${banner.title} (\`${banner.id}\`)`,
-      `**Price**: ${banner.price}`,
+      `**Price**: ${banner.price}${msg.shiny}`,
     ].join("\n"))
     .setImage(`http://kyradiscord.weebly.com/files/theme/banners/${banner.id}.png`)
     .setTimestamp();

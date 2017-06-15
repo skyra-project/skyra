@@ -1,6 +1,5 @@
 const moment = require("moment");
 
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [search]) => {
   const now = new Date().getTime();
 
@@ -9,8 +8,8 @@ exports.run = async (client, msg, [search]) => {
     return msg.alert(`You can give a reputation point in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`, 10000);
   }
   const user = await client.funcs.search.User(search, msg.guild);
-  if (msg.author.id === user.id) throw "You can't give a reputation point to yourself.";
-  else if (user.bot) throw "You can't give reputation points to bots.";
+  if (msg.author.id === user.id) throw "you can't give a reputation point to yourself.";
+  else if (user.bot) throw "you can't give reputation points to bots.";
 
   await user.profile.update({ reputation: user.profile.reputation + 1 });
   await msg.author.profile.update({ timerep: now });

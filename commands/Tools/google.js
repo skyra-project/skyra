@@ -1,4 +1,3 @@
-const { kyraFetch } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 const cheerio = require("cheerio");
 
@@ -8,7 +7,7 @@ const getText = (children) => {
 };
 
 exports.run = async (client, msg, [input]) => {
-  const { data } = await kyraFetch(`http://google.com/search?client=chrome&rls=en&ie=UTF-8&oe=UTF-8&lr=lang_en&q=${encodeURIComponent(input)}`);
+  const data = await client.funcs.fetch(`http://google.com/search?client=chrome&rls=en&ie=UTF-8&oe=UTF-8&lr=lang_en&q=${encodeURIComponent(input)}`);
   const $ = cheerio.load(data);
   let results = [];
   let raw;

@@ -1,11 +1,10 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const moment = require("moment");
 /* eslint-disable no-confusing-arrow */
 const DateToTime = str => typeof str === "string" ? `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}` : "00-00-00";
 
 exports.run = async (client, msg, [platform, name]) => {
   await msg.send("`Fetching data...`");
-  const { data } = await fetchJSON(`http://api.bf4stats.com/api/playerInfo?plat=${platform}&name=${encodeURIComponent(name)}&output=json`);
+  const data = await client.funcs.fetch.JSON(`http://api.bf4stats.com/api/playerInfo?plat=${platform}&name=${encodeURIComponent(name)}&output=json`);
   const { stats, player } = data;
   const embed = new client.methods.Embed()
     .setColor(0x04ABA1)

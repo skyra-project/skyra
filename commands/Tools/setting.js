@@ -1,4 +1,4 @@
-/* eslint-disable no-throw-literal, complexity, no-use-before-define */
+/* eslint-disable complexity, no-use-before-define */
 class Settings {
   constructor(msg) {
     Object.defineProperty(this, "msg", { value: msg });
@@ -13,9 +13,7 @@ class Settings {
       case "String": return value;
       case "Role": {
         value = value.toLowerCase();
-        const role = await this.client.funcs.search.Role(value, this.guild);
-        if (role) return role;
-        throw "Expected Role.";
+        return this.client.funcs.search.Role(value, this.guild);
       }
       case "Channel": {
         value = value.toLowerCase();
@@ -24,7 +22,7 @@ class Settings {
       }
       case "Command": {
         value = value.toLowerCase();
-        if (["setting"].includes(value)) throw `You can't disable the command ${value}, it's protected.`;
+        if (["setting"].includes(value)) throw `you can't disable the command ${value}, it's protected.`;
         const commands = this.client.commands.filter(cmd => cmd.conf.permLevel < 10);
         if (commands.has(value)) return value;
         const alias = this.client.aliases.get(value);
@@ -32,29 +30,29 @@ class Settings {
           const command = commands.get(alias);
           if (command) return command;
         }
-        throw "Command not found.";
+        throw `${value} is not a command.`;
       }
       default:
-        throw `Unknown Type: ${type}`;
+        throw `unknown Type: ${type}`;
     }
   }
 
   async handle(type, key, value) {
     switch (type) {
       case "add": {
-        if (!value) throw "You must assign a value to add.";
+        if (!value) throw "you must assign a value to add.";
         const nValue = await this.parse(key, value);
         const { path } = validator[key];
-        if (this.guild.configs[path].includes(nValue.id || nValue)) throw `The value ${value} is already set.`;
+        if (this.guild.configs[path].includes(nValue.id || nValue)) throw `the value ${value} is already set.`;
         await this.client.rethink.append("guilds", this.guild.id, path, nValue.id || nValue);
         await this.guild.configs.sync();
         return `Successfully added the value **${nValue.name || nValue}** to the key **${key}**`;
       }
       case "remove": {
-        if (!value) throw "You must assign a value to remove.";
+        if (!value) throw "you must assign a value to remove.";
         const nValue = await this.parse(key, value);
         const { path } = validator[key];
-        if (!this.guild.configs[path].includes(nValue.id || nValue)) throw `The value ${value} does not exist in the configuration.`;
+        if (!this.guild.configs[path].includes(nValue.id || nValue)) throw `the value ${value} does not exist in the configuration.`;
         await this.guild.configs.update({ [path]: this.guild.configs[path].filter(v => v !== (nValue.id || nValue)) });
         return `Successfully removed the value **${nValue.name || nValue}** from the key **${key}**`;
       }
@@ -64,7 +62,7 @@ class Settings {
         return `The key **${path} has been reset.`;
       }
       default:
-        throw `Unknown Type: ${type}`;
+        throw `unknown Type: ${type}`;
     }
   }
 }

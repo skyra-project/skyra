@@ -40,7 +40,7 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
   // no default
   }
   const shortList = list.array().splice(index * 10, 10);
-  if (!shortList[0]) throw new RangeError("I think you went to the end of the world.");
+  if (!shortList[0]) throw "I think you went to the end of the world.";
   const spacer = "\u200B  ".repeat(8);
   let position;
   const send = [];
@@ -76,7 +76,7 @@ exports.conf = {
   requiredFuncs: [],
   spam: true,
   mode: 1,
-  cooldown: 60,
+  cooldown: 15,
 };
 
 exports.help = {

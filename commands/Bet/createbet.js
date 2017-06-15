@@ -12,11 +12,11 @@ class Command {
   }
 
   static parseProperty(type, options, output) {
-    if (("min" in type && "min" in output) || ("max" in type && "max" in output)) throw new ReferenceError("You can't set properties twice.");
+    if (("min" in type && "min" in output) || ("max" in type && "max" in output)) throw "you can't set properties twice.";
     const num = parseInt(options);
-    if (isNaN(num)) throw new ReferenceError(`${options} is not a number.`);
-    else if ("min" in type && "max" in output && num > output.max) throw new ReferenceError(`The max value has been set to ${output.max} and you're trying to set a min value of ${num}, which is not possible.`);
-    else if ("max" in type && "min" in output && num > output.min) throw new ReferenceError(`The min value has been set to ${output.min} and you're trying to set a max value of ${num}, which is not possible.`);
+    if (isNaN(num)) throw `${options} is not a number.`;
+    else if ("min" in type && "max" in output && num > output.max) throw `the max value has been set to ${output.max} and you're trying to set a min value of ${num}, which is not possible.`;
+    else if ("max" in type && "min" in output && num > output.min) throw `the min value has been set to ${output.min} and you're trying to set a max value of ${num}, which is not possible.`;
     return num;
   }
 
@@ -36,9 +36,9 @@ class Command {
   }
 
   static taxes(tax, output) {
-    if ("tax" in output) throw new ReferenceError(`The tax value has been set to ${output.tax}, you can't set the tax twice.`);
+    if ("tax" in output) throw `the tax value has been set to ${output.tax}, you can't set the tax twice.`;
     const num = parseInt(tax);
-    if (isNaN(num)) throw new ReferenceError(`${tax} is not a number.`);
+    if (isNaN(num)) throw `${tax} is not a number.`;
     return { tax: num };
   }
 
@@ -52,7 +52,7 @@ class Command {
       else if (/^=.+/.test(element)) Object.assign(output, Command.parseEq(element.slice(1), output));
       else if (/^teams?$/.test(element)) Object.assign(output, { teams: true });
       else if (/^tax=.+/.test(element)) Object.assign(output, Command.taxes(element.slice(4), output));
-      else throw new ReferenceError("Parsing error: options MUST be separated by '|' and the properties by '=', '>', '<'");
+      else throw "[PARSING] Error: options MUST be separated by '|' and the properties by '=', '>', '<'";
     }
 
     return output;
@@ -74,7 +74,7 @@ class Command {
   async execute(action, options) {
     switch (action) {
       case "create": {
-        if (this.pool) throw "There's a betting pool active.";
+        if (this.pool) throw "there's a betting pool active.";
         const Options = {};
         Options.owner = this.msg.author.id;
         if (options) Object.assign(Options, this.parse(options));

@@ -10,7 +10,6 @@ const fetchBan = (guild, query) => new Promise(async (resolve, reject) => {
   resolve(member);
 });
 
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [query, ...reason]) => {
   /* Initialize fetchBan search */
   const user = await fetchBan(msg.guild, query);

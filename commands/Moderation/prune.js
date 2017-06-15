@@ -24,7 +24,7 @@ exports.run = async (client, msg, [limit, ...filter]) => {
     messages = await msg.channel.fetchMessages({ limit });
   }
   switch (messages.size) {
-    case 0: throw "Messages not found.";
+    case 0: throw "I could not find messages with this filter.";
     case 1: messages.first().nuke();
       break;
     default: await msg.channel.bulkDelete(messages);

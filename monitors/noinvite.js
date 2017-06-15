@@ -7,7 +7,7 @@ exports.run = (client, msg) => {
   const configs = msg.guild.configs;
 
   if (!configs.selfmod.inviteLinks) return;
-  if (!(/(discord\.gg\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content))) return;
+  if (!(/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content))) return;
   if (msg.hasAtleastPermissionLevel(2)) return;
 
   if (msg.deletable) {
@@ -20,7 +20,7 @@ exports.run = (client, msg) => {
 
   const embed = new client.methods.Embed()
     .setColor(0xefae45)
-    .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL)
+    .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
     .setFooter(`#${msg.channel.name} | Invite link`)
     .setTimestamp();
 

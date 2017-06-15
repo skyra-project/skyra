@@ -1,4 +1,3 @@
-const { XML: fetchXML } = require("../../utils/kyraFetch");
 const { fromString } = require("html-to-text");
 const constants = require("../../utils/constants");
 
@@ -15,7 +14,7 @@ const etype = {
 
 exports.run = async (client, msg, [args]) => {
   const url = `https://myanimelist.net/api/anime/search.xml?q=${encodeURIComponent(args.toLowerCase())}`;
-  const { data } = await fetchXML(url, { headers: { Authorization } }).catch(() => { throw constants.httpResponses(404); });
+  const data = await client.funcs.fetch.XML(url, { headers: { Authorization } });
   const fres = data.anime.entry[0];
   const context = fromString(fres.synopsis.toString());
   const score = Math.ceil(parseFloat(fres.score));

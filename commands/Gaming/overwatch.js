@@ -1,4 +1,3 @@
-const { JSON: fetchJSON, kyraFetch } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 const cheerio = require("cheerio");
 
@@ -48,8 +47,8 @@ class Overwatch {
 
   static async resolveProfile(player) {
     const verifier = `https://playoverwatch.com/en-us/search/account-by-name/${encodeURIComponent(player.battletag)}`;
-    const profiles = await fetchJSON(verifier).then(d => d.data).catch(() => { throw "Make sure you have written your profile correctly, this is case sensitive."; });
-    if (!profiles.length) throw "Make sure you have written your profile correctly, this is case sensitive.";
+    const profiles = await this._client.funcs.fetch.JSON(verifier).catch(() => { throw "make sure you have written your profile correctly, this is case sensitive."; });
+    if (!profiles.length) throw "make sure you have written your profile correctly, this is case sensitive.";
     const pf = player.platform;
     const sv = player.server;
     let careerLinks;
@@ -58,7 +57,7 @@ class Overwatch {
     else if (!pf && sv) careerLinks = profiles.filter(p => p.careerLink.split("/")[3] === sv);
     else if (pf && sv) careerLinks = profiles.filter(p => p.careerLink === `/career/${pf}/${sv}/${player.battletag}`);
     switch (careerLinks.length) {
-      case 0: throw `This user doesn't have any data for \`${pf ? `Platform: ${pf} ` : ""}\`\`${sv ? `Server: ${sv}` : ""}\`.`;
+      case 0: throw `this user doesn't have any data for \`${pf ? `Platform: ${pf} ` : ""}\`\`${sv ? `Server: ${sv}` : ""}\`.`;
       case 1: return (careerLinks[0]);
       default: return (careerLinks.sort((a, b) => b.level - a.level)[0]);
     }
@@ -70,7 +69,7 @@ class Overwatch {
 
   static fetchData(url, type, hero, mode) {
     return new Promise(async (resolve, reject) => {
-      const html = await kyraFetch(url).then(d => d.data);
+      const html = await this._client.funcs.fetch(url);
       const $ = cheerio.load(html);
       let ProgressStats;
       if (!hero) ProgressStats = $(`#${mode}`).children()["2"].children[0].children[2];

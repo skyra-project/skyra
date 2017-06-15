@@ -1,16 +1,15 @@
 const MODERATION = require("../../utils/managerModeration");
 
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [search, ...reason]) => {
   /* Initialize Search */
   const user = await client.funcs.search.User(search, msg.guild, true);
   const member = await msg.guild.fetchMember(user) || null;
 
   if (member) {
-    if (user.id === msg.author.id) throw "Ey! Why would you warn yourself?";
-    else if (member.highestRole.position >= msg.member.highestRole.position) throw "The selected member has higher or equal role position than you.";
+    if (user.id === msg.author.id) throw "why would you warn yourself?";
+    else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
   } else {
-    throw "This user is not in this server";
+    throw "this user is not in this server";
   }
 
   reason = reason.length ? reason.join(" ") : null;

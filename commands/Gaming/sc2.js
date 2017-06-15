@@ -1,4 +1,3 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const constants = require("../../utils/constants");
 
 /* Autentification */
@@ -16,8 +15,7 @@ const realms = {
 exports.run = async (client, msg, [server, name, id]) => {
   await msg.send("`Fetching data...`");
   server = realmsID[server.toLowerCase()];
-  const { data } = await fetchJSON(`https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${blizzard}`);
-  if (data.code !== 200) throw new Error(constants.httpResponses(data.code));
+  const data = await client.funcs.fetch.JSON(`https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${blizzard}`);
   const embed = new client.methods.Embed()
     .setTitle(`StarCraft 2 Stats: ${data.displayName} (${data.id})`)
     .setColor(0x0B947F)

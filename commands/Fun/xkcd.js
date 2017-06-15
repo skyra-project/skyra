@@ -1,6 +1,3 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
-
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg, [input]) => {
   let number;
   let num;
@@ -9,19 +6,19 @@ exports.run = async (client, msg, [input]) => {
   if (input) {
     if (!isNaN(parseInt(input))) num = input;
     else if (typeof input === "string") query = input;
-    else throw "Invalid input.";
+    else throw "invalid input.";
   }
 
-  const xkcdInfo = await fetchJSON("http://xkcd.com/info.0.json").then(d => d.data);
+  const xkcdInfo = await client.funcs.fetch.JSON("http://xkcd.com/info.0.json");
   if (num) {
     if (num <= xkcdInfo.num) number = num;
     else return msg.send(`Dear ${msg.author}, there are only ${xkcdInfo.num} comics.`);
   } else if (query) {
-    const searchQuery = await fetchJSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`).then(d => d.data);
+    const searchQuery = await client.funcs.fetch.JSON(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`);
     number = searchQuery.split(" ")[2].replace("\n", "");
   } else { number = Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1; }
 
-  const xkcdComic = await fetchJSON(`http://xkcd.com/${number}/info.0.json`).then(d => d.data);
+  const xkcdComic = await client.funcs.fetch.JSON(`http://xkcd.com/${number}/info.0.json`);
 
   const embed = new client.methods.Embed()
     .setColor(msg.color)

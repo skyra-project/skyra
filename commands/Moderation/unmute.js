@@ -1,29 +1,28 @@
 const MODERATION = require("../../utils/managerModeration");
 
-/* eslint-disable no-throw-literal, complexity */
 exports.run = async (client, msg, [search, ...reason]) => {
   /* Initialize Search */
   const user = await client.funcs.search.User(search, msg.guild, true);
   const member = await msg.guild.fetchMember(user) || null;
 
   if (member) {
-    if (user.id === msg.author.id) throw "Ey! Why would you mute yourself?";
-    else if (member.highestRole.position >= msg.member.highestRole.position) throw "The selected member has higher or equal role position than you.";
+    if (user.id === msg.author.id) throw "you can't unmute yourself...";
+    else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
   } else {
-    throw "This user is not in this server";
+    throw "this user is not in this server";
   }
 
   const configs = msg.guild.configs;
-  if (!configs) throw "You caught me while creating the configuration for this server.";
+  if (!configs) throw "you caught me while creating the configuration for this server.";
 
   const mute = configs.roles.muted;
-  if (!configs.roles.muted) throw "There's no mute role configured.";
+  if (!configs.roles.muted) throw "there's no mute role configured.";
 
   const muteRole = msg.guild.roles.get(mute);
-  if (!muteRole) throw "You configured a mute role, but you deleted it when I was not ready.";
+  if (!muteRole) throw "you configured a mute role, but you deleted it when I was not ready.";
 
   const mutedUser = await msg.guild.moderation.getMute(user.id);
-  if (!mutedUser) throw "This user is not muted.";
+  if (!mutedUser) throw "this user is not muted.";
 
   const roles = mutedUser.extraData || [];
 

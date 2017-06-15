@@ -1,17 +1,16 @@
 const moment = require("moment");
 require("moment-duration-format");
 
-/* eslint-disable no-throw-literal */
 exports.run = async (client, msg) => {
   const now = new Date().getTime();
 
   if (msg.author.profile.timeDaily + 43200000 > now) {
     const remaining = (msg.author.profile.timeDaily + 43200000) - now;
-    return msg.alert(`Dailies are available in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`);
+    return msg.send(`Dailies are available in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`);
   }
   const money = await client.Social.win(msg, 200);
   await msg.author.profile.update({ timeDaily: now });
-  return msg.send(`You have just earned ${money}₪! Next dailies are available in 12 hours.`);
+  return msg.send(`You have just earned ${money}${msg.shiny}! Next dailies are available in 12 hours.`);
 };
 
 

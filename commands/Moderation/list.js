@@ -31,7 +31,7 @@ exports.run = async (client, msg, [type, ...input]) => {
       break;
     }
     case "invites": {
-      if (!msg.guild.me.hasPermission("MANAGE_GUILD")) throw new Error("Not enough permissions.");
+      if (!msg.guild.me.hasPermission("MANAGE_GUILD")) throw "I am sorry, but I need the permission MANAGE_GUILD to show you this.";
 
       const invites = await msg.guild.fetchInvites();
       if (!invites.first()) return msg.alert("There's no invite link here.");
@@ -77,6 +77,21 @@ exports.run = async (client, msg, [type, ...input]) => {
           .join("\n"));
       break;
     }
+    case "gameinvite":
+    case "advertising": {
+      if ((msg.guild.members.size / msg.guild.memberCount) * 100 < 90) {
+        await msg.send("`Fetching data...`");
+        await msg.guild.fetchMembers();
+      }
+      const members = msg.guild.members.filter(member => member.user.presence.game && /(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(member.user.presence.game.name));
+      if (!members.size) return msg.send(`Dear ${msg.author}, nobody has an invite link as playing game.`);
+      embed
+        .setTitle("List of members with an invite link.")
+        .splitFields(members
+          .map(member => `${member.toString()} ${member.displayName} || ${member.user.presence.game.name}`)
+          .join("\n"));
+      break;
+    }
     default:
     // no default
   }
@@ -99,6 +114,6 @@ exports.conf = {
 exports.help = {
   name: "list",
   description: "Check all channels from this server.",
-  usage: "<channels|roles|invites|warnings|strikes|track> [input:str] [...]",
+  usage: "<channels|roles|invites|warnings|strikes|track|gameinvite|advertising> [input:str] [...]",
   usageDelim: " ",
 };

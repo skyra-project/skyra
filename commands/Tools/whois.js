@@ -11,7 +11,7 @@ exports.run = async (client, msg, [search = msg.member]) => {
   if (member) {
     embed.setColor(member.highestRole.color || 0xdfdfdf)
       .setTitle(`${user.bot ? "[BOT] " : ""}${user.tag}`)
-      .setURL(user.displayAvatarURL)
+      .setURL(user.displayAvatarURL({ size: 1024 }))
       .setDescription([
         `${member.nickname ? `aka **${member.nickname}**.\n` : ""}`,
         `With an ID of \`${user.id}\`,`,
@@ -20,7 +20,7 @@ exports.run = async (client, msg, [search = msg.member]) => {
         `\nJoined Discord on ${moment.utc(user.createdAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
         `\nJoined ${msg.guild.name} on ${moment.utc(member.joinedAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
       ].join(" "))
-      .setThumbnail(user.displayAvatarURL)
+      .setThumbnail(user.displayAvatarURL({ size: 256 }))
       .setFooter(`${client.user.username} ${client.version} | ${user.id}`, client.user.displayAvatarURL)
       .setTimestamp();
     if (member.roles.size > 1) {
@@ -34,13 +34,13 @@ exports.run = async (client, msg, [search = msg.member]) => {
   } else {
     embed.setColor(0xdfdfdf)
       .setTitle(`${user.bot ? "[BOT] " : ""}${user.tag}`)
-      .setURL(user.displayAvatarURL)
+      .setURL(user.displayAvatarURL({ size: 1024 }))
       .setDescription([
         `With an ID of \`${user.id}\``,
         "\n",
         `Joined Discord at ${moment.utc(user.createdAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
       ].join(" "), true)
-      .setThumbnail(user.displayAvatarURL)
+      .setThumbnail(user.displayAvatarURL({ size: 256 }))
       .setFooter(`${client.user.username} ${client.version} | ES | ${user.id}`, client.user.displayAvatarURL)
       .setTimestamp();
   }

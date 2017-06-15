@@ -1,4 +1,3 @@
-const { JSON: fetchJSON } = require("../../utils/kyraFetch");
 const { promisifyAll } = require("tsubaki");
 const { sep } = require("path");
 
@@ -8,7 +7,7 @@ const fs = require("fs-nextra");
 
 const { google } = constants.getConfig.tokens;
 
-/* eslint-disable no-useless-escape, no-throw-literal */
+/* eslint-disable no-useless-escape */
 exports.download = (url, typeFormat, dir, filename) => new Promise((resolve, reject) => {
   ytdl(url, { filter(format) { return format.container === typeFormat; } })
     .pipe(fs.createWriteStream(`${dir}${filename}`))
@@ -17,7 +16,7 @@ exports.download = (url, typeFormat, dir, filename) => new Promise((resolve, rej
 });
 
 exports.run = async (client, msg, [input]) => {
-  const { data } = await fetchJSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`);
+  const data = await client.funcs.fetch.JSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`);
   const result = data.items[0];
   if (!result) throw constants.httpResponses(404);
   const url = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
@@ -26,7 +25,7 @@ exports.run = async (client, msg, [input]) => {
   const info = await ytdl.getInfoAsync(url);
   const filename = `${info.title.replace(/[^a-zA-Z0-9\[\]()\-\. ]/g, "").replace(/[ ]{2}/g, " ")}`;
   const files = await fs.readdir(dir).catch(() => fs.mkdir(dir).then(() => []));
-  if (files.includes(`${filename}.mp3`)) throw "This song was already downloaded.";
+  if (files.includes(`${filename}.mp3`)) throw "this song was already downloaded.";
   await msg.send(`Downloading \`${filename}\``);
   await this.download(url, "webm", dir, `${filename}.webm`);
   return msg.send("🗄 | Downloaded.");

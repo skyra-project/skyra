@@ -16,31 +16,31 @@ class GuildMemberAdd {
     switch (alert) {
       case null:
         embed.setColor(0x23ff23)
-          .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL)
+          .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
           .setFooter("User joined")
           .setTimestamp();
         break;
       case "disable":
         embed.setColor(0x8C0074)
-          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL)
+          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
           .setFooter("AUTO | Disabled guildMemberAdd")
           .setTimestamp();
         break;
       case "muteRemove":
         embed.setColor(0x8C0074)
-          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL)
+          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
           .setFooter("AUTO | Removed Roles >> Muted")
           .setTimestamp();
         break;
       case "roleRemove":
         embed.setColor(0x8C0074)
-          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL)
+          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
           .setFooter("AUTO | Removed Role >> InitialRole")
           .setTimestamp();
         break;
       case "mute":
         embed.setColor(0xff1331)
-          .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL)
+          .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
           .setFooter("Muted user joined")
           .setTimestamp();
         break;

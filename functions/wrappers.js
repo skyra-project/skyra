@@ -26,5 +26,5 @@ exports.copyPaste = (msg) => {
 
 exports.init = (client) => {
   client.rethink = RethinkDB;
-  client.version = "1.8";
+  client.version = "1.8.0";
 };

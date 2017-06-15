@@ -16,7 +16,6 @@ const values = {
   "🍒": 5,
 };
 
-/* eslint-disable no-throw-literal */
 class SlotMachines {
   constructor(msg) {
     this.client = msg.client;
@@ -58,7 +57,7 @@ class SlotMachines {
   }
 
   checkCurrency(amount) {
-    if (this.profile.money < amount) throw `You don't have enough shekels to pay your bet! Your current account balance is ${this.profile.money}₪.`;
+    if (this.profile.money < amount) throw `you don't have enough shekels to pay your bet! Your current account balance is ${this.profile.money}${this.msg.shiny}.`;
   }
 }
 
@@ -78,7 +77,7 @@ exports.run = async (client, msg, [coins]) => {
         "**You rolled:**\n",
         output,
         "\n**Congratulations!**",
-        `You won ${winnings}₪!`,
+        `You won ${winnings}${msg.shiny}!`,
       ].join("\n"));
   } else {
     await msg.author.profile.use(coins);
@@ -107,7 +106,7 @@ exports.conf = {
 
 exports.help = {
   name: "slotmachine",
-  description: "I bet 100₪ you ain't winning this round.",
+  description: "I bet 100S you ain't winning this round.",
   usage: "<50|100|200|500|1000>",
   usageDelim: "",
   extendedHelp: [

@@ -1,5 +1,4 @@
 const constants = require("../../utils/constants");
-const seedrandom = require("seedrandom");
 
 exports.run = async (client, msg, [rateuser]) => {
   let ratewaifu;
@@ -12,7 +11,9 @@ exports.run = async (client, msg, [rateuser]) => {
     if (/^(myself|me)$/i.test(rateuser)) rateuser = msg.author.username;
     else rateuser = rateuser.replace(/\bmy\b/g, "your");
 
-    rate = Math.ceil(100 - (100 * seedrandom(rateuser.toLowerCase()).double()));
+    const bg = Buffer.from(rateuser.toLowerCase()).readUIntBE(0, rateuser.length);
+    const rng = (rateuser.length * Math.abs(Math.sin(bg)) * 10);
+    rate = 100 - Math.round((bg * rng) % 100);
     ratewaifu = constants.oneToTen(Math.floor(rate / 10)).emoji;
   }
 

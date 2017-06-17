@@ -1,5 +1,5 @@
 exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) => {
-  if (!/[0-9]{17,21}/.test(searchMessage)) throw "I was expecting a Snowflake.";
+  if (!/[0-9]{17,21}/.test(searchMessage)) throw "I was expecting a Message Snowflake (Message ID).";
   const channel = await client.funcs.search.Channel(searchChannel, msg.guild);
   const m = await channel.fetchMessage(searchMessage);
 

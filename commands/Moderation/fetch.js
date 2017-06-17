@@ -1,5 +1,5 @@
 exports.run = async (client, msg, [message, limit = 10]) => {
-  if (!/^[0-9]{17,21}$/.test(message)) throw "invalid message ID.";
+  if (!/^[0-9]{17,21}$/.test(message)) throw "I was expecting a Message Snowflake (Message ID).";
   const messages = await msg.channel.fetchMessages({ limit, around: message });
 
   const embed = new client.methods.Embed()
@@ -29,6 +29,6 @@ exports.conf = {
 exports.help = {
   name: "fetch",
   description: "Discover the context of a message.",
-  usage: "<message:str{17,18}> [limit:int]",
+  usage: "<message:str{17,21}> [limit:int]",
   usageDelim: " ",
 };

@@ -7,14 +7,15 @@ const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6]];
 const values = {
   "💎": 24,
   "🔱": 20,
-  "💰": 15,
-  "❤": 10,
-  "⭐": 8,
-  "🎲": 7,
-  "🔅": 5,
+  "💰": 16,
+  "❤": 12,
+  "⭐": 10,
+  "🎲": 8,
+  "🔅": 6,
   "🎉": 5,
   "🍒": 5,
 };
+const skin = { "💎": "<:Seven:325348810979016705>", "🔱": "<:Diamond:325348812065603594>", "💰": "<:Horseshoe:325348811679465493>", "❤": "<:Heart:325348812090507264>", "⭐": "<:Bell:325348812010815498>", "🎲": "<:Watermelon:325348812463931392>", "🔅": "<:Lemon:325348811725864971>", "🎉": "<:Bar:325348810958307328>", "🍒": "<:Cherry:325348811608424448>" };
 
 class SlotMachines {
   constructor(msg) {
@@ -39,6 +40,7 @@ class SlotMachines {
   }
 
   static showRoll(roll) {
+    if (this.msg.channel.permissionsFor(this.msg.guild.me).has("USE_EXTERNAL_EMOJIS")) for (let i = 0; i < roll.length; i++) roll[i] = skin[roll[i]];
     return [
       `${roll[0]}ー${roll[1]}ー${roll[2]}`,
       `${roll[3]}ー${roll[4]}ー${roll[5]}`,
@@ -63,6 +65,7 @@ class SlotMachines {
 
 exports.run = async (client, msg, [coins]) => {
   const slotmachine = new SlotMachines(msg);
+  coins = parseInt(coins);
   slotmachine.checkCurrency(coins);
 
   const roll = slotmachine.generateRoll();
@@ -89,7 +92,7 @@ exports.run = async (client, msg, [coins]) => {
         "We'll get em next time!",
       ].join("\n"));
   }
-  return msg.sendEmbed(embed);
+  return msg.send({ embed });
 };
 
 exports.conf = {

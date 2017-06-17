@@ -21,7 +21,7 @@ exports.run = async (client, msg, [search = msg.member]) => {
         `\nJoined ${msg.guild.name} on ${moment.utc(member.joinedAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
       ].join(" "))
       .setThumbnail(user.displayAvatarURL({ size: 256 }))
-      .setFooter(`${client.user.username} ${client.version} | ${user.id}`, client.user.displayAvatarURL)
+      .setFooter(`${client.user.username} ${client.version} | ${user.id}`, client.user.displayAvatarURL({ size: 128 }))
       .setTimestamp();
     if (member.roles.size > 1) {
       embed.addField("❯ Roles:", member.roles
@@ -41,7 +41,7 @@ exports.run = async (client, msg, [search = msg.member]) => {
         `Joined Discord at ${moment.utc(user.createdAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
       ].join(" "), true)
       .setThumbnail(user.displayAvatarURL({ size: 256 }))
-      .setFooter(`${client.user.username} ${client.version} | ES | ${user.id}`, client.user.displayAvatarURL)
+      .setFooter(`${client.user.username} ${client.version} | ES | ${user.id}`, client.user.displayAvatarURL({ size: 128 }))
       .setTimestamp();
   }
 

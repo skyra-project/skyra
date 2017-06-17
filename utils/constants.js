@@ -4,6 +4,7 @@ const { STATUS_CODES } = require("http");
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
 const oneToTen = {
+  0: { emoji: "😪", color: 0x5B1100 },
   1: { emoji: "😪", color: 0x5B1100 },
   2: { emoji: "😫", color: 0xAB1100 },
   3: { emoji: "😔", color: 0xFF2B00 },

@@ -20,7 +20,7 @@ exports.run = async (client, msg, [args]) => {
   const score = Math.ceil(parseFloat(fres.score));
   const embed = new client.methods.Embed()
     .setColor(constants.oneToTen(score).color)
-    .setAuthor(`${fres.title} (${fres.episodes === 0 ? "unknown" : fres.episodes} eps)`, `${fres.image || msg.author.displayAvatarURL}`)
+    .setAuthor(`${fres.title} (${fres.episodes === 0 ? "unknown" : fres.episodes} eps)`, `${fres.image || msg.author.displayAvatarURL({ size: 128 })}`)
     .setDescription([
       `**English title:** ${fres.english}\n`,
       `${context.length > 750 ? `${client.funcs.splitText(context, 750)}... [continue reading](https://myanimelist.net/anime/${fres.id})` : context}`,

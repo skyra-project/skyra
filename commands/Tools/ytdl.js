@@ -1,9 +1,10 @@
-const { promisifyAll } = require("tsubaki");
+const { promisify } = require("util");
 const { sep } = require("path");
-
 const constants = require("../../utils/constants");
-const ytdl = promisifyAll(require("ytdl-core"));
+const ytdl = require("ytdl-core");
 const fs = require("fs-nextra");
+
+const getInfoAsync = promisify(ytdl.getInfo);
 
 const { google } = constants.getConfig.tokens;
 
@@ -22,7 +23,7 @@ exports.run = async (client, msg, [input]) => {
   const url = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
   const dir = `${client.clientBaseDir}downloads${sep}`;
 
-  const info = await ytdl.getInfoAsync(url);
+  const info = await getInfoAsync(url);
   const filename = `${info.title.replace(/[^a-zA-Z0-9\[\]()\-\. ]/g, "").replace(/[ ]{2}/g, " ")}`;
   const files = await fs.readdir(dir).catch(() => fs.mkdir(dir).then(() => []));
   if (files.includes(`${filename}.mp3`)) throw "this song was already downloaded.";

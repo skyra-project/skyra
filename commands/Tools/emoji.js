@@ -39,7 +39,7 @@ exports.run = async (client, msg, [emoji]) => {
   const { body } = await snek.get(emojiURL);
 
   return msg.send([
-    `Emoji: **${emoji}**`,
+    `Emoji: \\${emoji}`,
     "Type: **Twemoji**",
     `ID: **${r}**`,
   ].join("\n"), { files: [{ attachment: body, name: `${r}.png` }] });

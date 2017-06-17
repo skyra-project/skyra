@@ -21,7 +21,7 @@ exports.run = async (client, msg, [args]) => {
   const context = fromString(fres.synopsis.toString());
   const embed = new client.methods.Embed()
     .setColor(constants.oneToTen(score).color)
-    .setAuthor(`${fres.title} (${fres.episodes ? "unknown" : fres.chapters} chapters and ${fres.volumes ? "unknown" : fres.volumes} volumes)`, `${fres.image || msg.author.displayAvatarURL}`)
+    .setAuthor(`${fres.title} (${fres.episodes ? "unknown" : fres.chapters} chapters and ${fres.volumes ? "unknown" : fres.volumes} volumes)`, `${fres.image || msg.author.displayAvatarURL({ size: 128 })}`)
     .setDescription([
       `**English title:** ${fres.english}\n`,
       `${context.length > 750 ? `${client.funcs.splitText(context, 750)}... [continue reading](https://myanimelist.net/manga/${fres.id})` : context}`,

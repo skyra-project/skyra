@@ -1,5 +1,6 @@
 /* SuperFast Search */
 const startsWith = (prefix, str) => {
+  str = str.toLowerCase();
   for (let i = prefix.length - 1; i >= 0; i--) {
     if (str[i] === prefix[i]) continue;
     return false;
@@ -7,15 +8,7 @@ const startsWith = (prefix, str) => {
   return true;
 };
 /* eslint-disable no-restricted-syntax */
-const find = (map, prop, value) => {
-  for (const iteration of map.values()) if (iteration[prop].toLowerCase() === value.toLowerCase()) return iteration;
-  return null;
-};
-const findDepth = (map, prop, subprop, value) => {
-  for (const iteration of map.values()) if (iteration[prop][subprop].toLowerCase() === value.toLowerCase()) return iteration;
-  return null;
-};
-const includes = (property, chunk) => property.includes(chunk);
+const includes = (property, chunk) => property.toLowerCase().includes(chunk);
 
 /* Methods */
 exports.Role = (query, guild) => {
@@ -24,14 +17,14 @@ exports.Role = (query, guild) => {
     case "String": {
       if (/[0-9]{17,21}/.test(query)) {
         const ID = /[0-9]{17,21}/.exec(query)[0];
-        const channel = guild.channels.get(ID);
-        if (channel) return channel;
+        const role = guild.roles.get(ID);
+        if (role) return role;
         throw `Invalid ID: ${query}`;
       } else {
-        query = query.toLowerCase();
-        const result = find(guild.roles, "name", query) ||
-               find(guild.roles, "name", query) ||
-               guild.roles.find(m => includes(m.name.toLowerCase(), query));
+        const lowerCaseQuery = query.toLowerCase();
+        const result = guild.roles.find(r => r.name.toLowerCase() === lowerCaseQuery)
+          || guild.roles.find(r => startsWith(lowerCaseQuery, r.name))
+          || guild.roles.find(r => includes(r.name, lowerCaseQuery));
         if (result) return result;
         throw `Role not found: ${query}`;
       }
@@ -50,10 +43,10 @@ exports.Channel = (query, guild) => {
         if (channel) return channel;
         throw `Invalid ID: ${query}`;
       } else {
-        query = query.toLowerCase();
-        const result = find(guild.channels, "name", query) ||
-               guild.channels.find(m => startsWith(m.name.toLowerCase(), query)) ||
-               guild.channels.find(m => includes(m.name.toLowerCase(), query));
+        const lowerCaseQuery = query.toLowerCase();
+        const result = guild.channels.find(c => c.name.toLowerCase() === lowerCaseQuery)
+          || guild.channels.find(c => startsWith(lowerCaseQuery, c.name))
+          || guild.channels.find(c => includes(c.name, lowerCaseQuery));
         if (result) return result;
         throw `Channel not found: ${query}`;
       }
@@ -62,37 +55,35 @@ exports.Channel = (query, guild) => {
   }
 };
 
+/* eslint-disable no-confusing-arrow */
 exports.User = async (query, guild, strict = false) => {
   switch (query.constructor.name) {
     case "User": return query;
     case "GuildMember": return query.user;
     case "String": {
       let result;
+      const lowerCaseQuery = query.toLowerCase();
       if (/[0-9]{17,21}/.test(query)) {
         const ID = /[0-9]{17,21}/.exec(query)[0];
         return guild.client.fetchUser(ID).catch(() => { throw `User not found: ${query}`; });
       } else if (strict) {
-        if (/.{2,25}#[0-9]{4}/.test(query)) result = findDepth(guild.members, "user", "tag", query);
-        if (result) return result.user;
+        if (/.{2,25}#[0-9]{4}/.test(query)) {
+          result = guild.members.find(m => m.user.tag.toLowerCase() === lowerCaseQuery);
+          if (result) return result.user;
+        }
         throw "You must provide an mention, ID, or full Discord tag";
       } else {
-        result = findDepth(guild.members, "user", "tag", query) ||
-            this.AdvancedUserSearch(query, guild);
+        result = guild.members.find(m => m.user.tag.toLowerCase() === lowerCaseQuery)
+          || guild.members.find(m => m.user.username.toLowerCase() === lowerCaseQuery)
+          || guild.members.find(m => m.nickname ? m.nickname.toLowerCase() === lowerCaseQuery : false)
+          || guild.members.find(m => startsWith(lowerCaseQuery, m.user.username))
+          || guild.members.find(m => m.nickname ? startsWith(lowerCaseQuery, m.nickname) : false)
+          || guild.members.find(m => includes(m.user.username, lowerCaseQuery))
+          || guild.members.find(m => m.nickname ? includes(m.nickname, lowerCaseQuery) : false);
         if (result) return result.user;
         throw `User not found: ${query}`;
       }
     }
     default: throw "Invalid input.";
   }
-};
-
-exports.AdvancedUserSearch = (query, guild) => {
-  const result = findDepth(guild.members, "user", "username", query) ||
-      find(guild.members, "displayName", query) ||
-      guild.members.find(m => startsWith(m.user.username, query.toLowerCase())) ||
-      guild.members.find(m => startsWith(m.displayName, query.toLowerCase())) ||
-      guild.members.find(m => includes(m.user.username, query.toLowerCase())) ||
-      guild.members.find(m => includes(m.displayName, query.toLowerCase()));
-  if (result) return result;
-  throw `User not found: ${query}`;
 };

@@ -4,9 +4,8 @@ exports.run = async (client, msg, [input]) => {
   let query;
 
   if (input) {
-    if (!isNaN(parseInt(input))) num = input;
+    if (!isNaN(parseInt(input))) num = parseInt(input);
     else if (typeof input === "string") query = input;
-    else throw "invalid input.";
   }
 
   const xkcdInfo = await client.funcs.fetch.JSON("http://xkcd.com/info.0.json");

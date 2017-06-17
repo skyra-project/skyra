@@ -1,5 +1,4 @@
 const constants = require("../utils/constants");
-const request = require("request");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -7,22 +6,16 @@ const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 class WatchPoint {
   constructor(client) {
     Object.defineProperty(this, "_client", { value: client });
+    Object.defineProperty(this, "request", { value: client.funcs.fetch });
     Object.defineProperty(this, "_keys", { value: constants.tokens.wpo });
     Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._keys.user}:${this._keys.password}`).toString("base64")}` });
   }
 
-  API(method, query, string) {
-    return new Promise((resolve, reject) => {
-      request({
-        headers: { Authorization: this.auth },
-        url: `http://www.watchpointoasis.com/api/currency/${query}`,
-        json: true,
-        method,
-      }, (error, response, body) => {
-        if (response.statusCode !== 200) WatchPoint.errorCatcher(constants.httpResponses(response.statusCode), string ? `${string}${query}` : null).catch(reject);
-        else if (error) WatchPoint.errorCatcher(error, string ? `${string}${query}` : null).catch(reject);
-        resolve(body);
-      });
+  API(method, query) {
+    return this.request(`http://www.watchpointoasis.com/api/currency/${query}`, {
+      headers: { Authorization: this.auth },
+      json: true,
+      method,
     });
   }
 
@@ -32,8 +25,8 @@ class WatchPoint {
     * Get an array of objects containing data from all users.
     * @returns {Object}
     */
-  list(guild = $("Guild"), string) {
-    return this.API("get", `list/${guild}`, string)
+  list(guild = $("Guild")) {
+    return this.API("GET", `list/${guild}`)
       .then(body => this.cachelist(guild, body));
   }
 
@@ -51,10 +44,10 @@ class WatchPoint {
     * Add a new record to the database.
     * @returns {Object}
     */
-  set(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
+  set(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
     const balance = parseInt(bal);
     if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
-    return this.API("post", `set/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string);
+    return this.API("POST", `set/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
   }
 
   /**
@@ -63,8 +56,8 @@ class WatchPoint {
     * Get the data from a user.
     * @returns {Object}
     */
-  get(guild = $("Guild"), user = $("User"), string) {
-    return this.API("get", `get/${guild}/${user}`, string);
+  get(guild = $("Guild"), user = $("User")) {
+    return this.API("GET", `get/${guild}/${user}`);
   }
 
   /**
@@ -74,10 +67,10 @@ class WatchPoint {
     * Reason is optional.
     * @returns {Object}
     */
-  use(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
+  use(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
     const balance = parseInt(bal);
     if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
-    return this.API("post", `use/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string);
+    return this.API("POST", `use/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
   }
 
   /**
@@ -87,10 +80,10 @@ class WatchPoint {
     * Reason is optional.
     * @returns {Object}
     */
-  add(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "", string) {
+  add(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
     const balance = parseInt(bal);
     if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
-    return this.API("put", `add/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`, string);
+    return this.API("PUT", `add/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
   }
 
   /**
@@ -99,16 +92,8 @@ class WatchPoint {
     * Get a list of all modifications.
     * @returns {Object}
     */
-  history(guild = $("Guild"), user = $("User"), string) {
-    return this.API("get", `history/${guild}/${user}`, string);
-  }
-
-  /* Static error handler functions */
-  static errorCatcher(err, string = null) {
-    return new Promise((resolve, reject) => {
-      if (!string) reject(err);
-      // else log(`${string} >> ${err}`, "error");
-    });
+  history(guild = $("Guild"), user = $("User")) {
+    return this.API("GET", `history/${guild}/${user}`);
   }
 }
 

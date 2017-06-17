@@ -1,18 +1,19 @@
 const constants = require("../../utils/constants");
-const googl = require("goo.gl");
+const snekfetch = require("snekfetch");
 
-const { google } = constants.getConfig.tokens;
+const key = constants.getConfig.tokens.google;
 
 exports.run = async (client, msg, [url]) => {
-  googl.setKey(google);
   const embed = new client.methods.Embed().setColor(msg.color).setTimestamp();
   if (!url.startsWith("https://goo.gl/")) {
-    const shortUrl = await googl.shorten(url);
-    embed.setDescription(`**Shortened URL: [${shortUrl}](${shortUrl})**`);
-    return msg.send({ embed });
+    const { text } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url });
+    const { id } = JSON.parse(text);
+    embed.setDescription(`**Shortened URL: [${id}](${id})**`);
+  } else {
+    const { text } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`);
+    const { longUrl } = JSON.parse(text);
+    embed.setDescription(`**Expanded URL: [${longUrl}](${longUrl})**`);
   }
-  const data = await client.funcs.fetch.JSON(`https://www.googleapis.com/urlshortener/v1/url?key=${google}&shortUrl=${url}`);
-  embed.setDescription(`**Expanded URL: [${data.longUrl}](${data.longUrl})**`);
   return msg.send({ embed });
 };
 

@@ -5,7 +5,7 @@ exports.run = async (client, msg, [type, ...input]) => {
   input = input.length ? input.join(" ") : null;
   const embed = new client.methods.Embed()
     .setColor(msg.color)
-    .setFooter(client.user.username, client.user.displayAvatarURL);
+    .setFooter(client.user.username, client.user.displayAvatarURL({ size: 128 }));
 
   switch (type.toLowerCase()) {
     case "channels": {

@@ -1,6 +1,6 @@
 const { js_beautify } = require("js-beautify");
 
-const reduceIndentation = string => string.test(/^(\s+)/) ? string.replace(/\n/, "") : string; // eslint-disable-line no-confusing-arrow
+const reduceIndentation = string => (string.test(/^(\s+)/) ? string.replace(/\n/, "") : string);
 
 const format = async (msg) => {
   const messages = msg.channel.messages.array().reverse();

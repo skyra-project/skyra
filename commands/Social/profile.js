@@ -1,28 +1,27 @@
 const { readFile } = require("fs-nextra");
+const { join, sep, resolve } = require("path");
 const Canvas = require("canvas");
-const { sep } = require("path");
 const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 
-const socialAssets = client => `${client.clientBaseDir}assets${sep}images${sep}social${sep}`;
-const fontAssets = client => `${client.clientBaseDir}assets${sep}fonts${sep}`;
+const RobotoBold = () => new Canvas.Font("RobotoBold", resolve(join(__dirname, "../../assets/fonts/Roboto-Bold.ttf")));
+const RobotoLight = () => new Canvas.Font("RobotoLight", resolve(join(__dirname, "../../assets/fonts/Roboto-Light.ttf")));
+RobotoBold();
+RobotoLight();
 
-/* eslint-disable no-confusing-arrow, no-unused-vars */
+const profileTemplate = resolve(join(__dirname, "../../assets/images/social/profile-foreground.png"));
+const themes = resolve(join(__dirname, "../../assets/images/social/themes/")) + sep;
+
 const showProfile = async (client, user) => {
-  const profile = user.profile;
-  const themes = `${socialAssets(client)}themes${sep}`;
+  const { points, color, banners, exists, money, reputation } = user.profile;
 
   /* Calculate information from the user */
-  const currentLevel = Math.floor(0.2 * Math.sqrt(profile.points));
+  const currentLevel = Math.floor(0.2 * Math.sqrt(points));
   const previousLevel = Math.floor((currentLevel / 0.2) ** 2);
   const nextLevel = Math.floor(((currentLevel + 1) / 0.2) ** 2);
-  const Prog = Math.round(((profile.points - previousLevel) / (nextLevel - previousLevel)) * 356);
-
-  const red = parseInt(profile.color.substring(0, 2), 16);
-  const green = parseInt(profile.color.substring(2, 4), 16);
-  const blue = parseInt(profile.color.substring(4, 6), 16);
+  const Prog = Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 356);
 
   /* Global leaderboard */
-  const sortedList = fetchGlobal().sort((a, b) => a.points < b.points ? 1 : -1);
+  const sortedList = fetchGlobal().sort((a, b) => (a.points < b.points ? 1 : -1));
 
   const c = new Canvas(640, 391);
   const background = new Canvas.Image();
@@ -30,17 +29,12 @@ const showProfile = async (client, user) => {
   const themeImage = new Canvas.Image();
   const ctx = c.getContext("2d");
 
-  /* Load fonts */
-  const RobotoBold = new Canvas.Font("RobotoBold", `${fontAssets(client)}Roboto-Bold.ttf`);
-  const RobotoLight = new Canvas.Font("RobotoLight", `${fontAssets(client)}Roboto-Light.ttf`);
-
-  const theme = profile.banners.theme;
+  const theme = banners.theme;
   const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
     readFile(`${themes}${theme}.png`),
-    readFile(`${socialAssets(client)}profile-foreground.png`),
+    readFile(profileTemplate),
     client.funcs.wrappers.fetchAvatar(user, 256),
   ]);
-
 
   themeImage.onload = () => ctx.drawImage(themeImage, 10, 9, 188, 373);
   themeImage.src = themeImageSRC;
@@ -48,7 +42,7 @@ const showProfile = async (client, user) => {
   /* Draw the background */
   background.onload = () => ctx.drawImage(background, 0, 0, 640, 391);
   background.src = backgroundSRC;
-  ctx.fillStyle = `rgb(${red} , ${green}, ${blue})`;
+  ctx.fillStyle = `#${color}`;
   ctx.fillRect(235, 356, Prog, 5);
 
   /* Draw the information */
@@ -58,11 +52,11 @@ const showProfile = async (client, user) => {
   ctx.font = "25px RobotoLight";
   ctx.fillText(`#${user.discriminator}`, 227, 105);
   ctx.textAlign = "right";
-  const GlobalPosition = profile.exists ? sortedList.map(l => l.id).indexOf(user.id) + 1 : "unranked";
+  const GlobalPosition = exists ? sortedList.map(l => l.id).indexOf(user.id) + 1 : "unranked";
   ctx.fillText(GlobalPosition, 594, 276);
-  ctx.fillText(profile.money, 594, 229);
-  ctx.fillText(profile.reputation, 594, 181);
-  ctx.fillText(profile.points, 594, 346);
+  ctx.fillText(money, 594, 229);
+  ctx.fillText(reputation, 594, 181);
+  ctx.fillText(points, 594, 346);
   ctx.textAlign = "center";
   ctx.font = "40px RobotoBold";
   ctx.fillText(currentLevel, 576, 100);

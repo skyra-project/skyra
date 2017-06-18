@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 
 const getText = (children) => {
   if (children.children) return getText(children.children);
-  return children.map(c => c.children ? getText(c.children) : c.data).join(""); // eslint-disable-line no-confusing-arrow
+  return children.map(c => (c.children ? getText(c.children) : c.data).join(""));
 };
 
 exports.run = async (client, msg, [input]) => {

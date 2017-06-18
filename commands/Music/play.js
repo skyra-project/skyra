@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const ytdl = require("ytdl-core");
 const getInfo = require("util").promisify(ytdl.getInfo);
 const managerMusic = require("../../utils/managerMusic");
@@ -22,6 +21,7 @@ const autoPlayer = async (guild, queue) => {
   managerMusic.setNext(guild.id, getLink(info.related_videos));
 };
 
+/* eslint-disable consistent-return */
 const play = async (client, guild) => {
   const queue = managerMusic.get(guild.id);
   if (!queue || queue.channel) {

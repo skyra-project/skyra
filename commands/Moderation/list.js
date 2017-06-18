@@ -1,6 +1,5 @@
 const moment = require("moment");
 
-/* eslint-disable consistent-return, no-confusing-arrow, complexity */
 exports.run = async (client, msg, [type, ...input]) => {
   input = input.length ? input.join(" ") : null;
   const embed = new client.methods.Embed()
@@ -13,7 +12,7 @@ exports.run = async (client, msg, [type, ...input]) => {
         .splitFields(msg.guild.channels
           .filter(ch => ch.type === "text")
           .array()
-          .sort((a, b) => a.position > b.position ? 1 : -1)
+          .sort((a, b) => (a.position > b.position ? 1 : -1))
           .map(c => ` ❯ **${c.name}** **\`<#${c.id}>\`**`)
           .join("\n"));
       break;
@@ -23,7 +22,7 @@ exports.run = async (client, msg, [type, ...input]) => {
         .setTitle(`List of roles for ${msg.guild} (${msg.guild.id})`)
         .splitFields(msg.guild.roles
           .array()
-          .sort((a, b) => a.position > b.position ? 1 : -1)
+          .sort((a, b) => (a.position > b.position ? 1 : -1))
           .slice(1)
           .reverse()
           .map(c => `❯ \`${"_".repeat(3 - c.members.size.toString().length)}${c.members.size}\` ❯ **${c.name}** ❯ *${c.id}*`)
@@ -38,7 +37,7 @@ exports.run = async (client, msg, [type, ...input]) => {
       embed.setTitle("List of invites")
         .splitFields(invites
           .array()
-          .sort((a, b) => a.uses < b.uses ? 1 : -1)
+          .sort((a, b) => (a.uses < b.uses ? 1 : -1))
           .map(inv => `🔻 ${inv.channel} ❯ ${inv.inviter}\n      ❯ \`${inv.code}\` Uses: (${inv.uses})`)
           .join("\n"));
       break;

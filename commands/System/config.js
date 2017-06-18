@@ -1,6 +1,5 @@
 const dot = value => `${value ? "  \\🔹" : "  \\🔸"} `;
 
-/* eslint-disable no-throw-literal */
 class Validator {
   constructor(guild) {
     this.guild = guild;

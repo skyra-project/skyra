@@ -1,4 +1,8 @@
+const { join, resolve } = require("path");
 const Canvas = require("canvas");
+
+const FiraSans = () => new Canvas.Font("FiraSans", resolve(join(__dirname, "../../assets/fonts/FiraSans-Regular.ttf")));
+FiraSans();
 
 /* Color limiter */
 const cL = c => Math.max(Math.min(c, 255), 0);
@@ -16,9 +20,6 @@ const showColor = async (client, color, diff) => {
   const red = color.r;
   const green = color.g;
   const blue = color.b;
-
-  /* Load fonts */
-  const FiraSans = new Canvas.Font("FiraSans", `${client.clientBaseDir}assets/fonts/FiraSans-Regular.ttf`); // eslint-disable-line no-unused-vars
 
   let thisLum;
   ctx.font = "18px FiraSans";

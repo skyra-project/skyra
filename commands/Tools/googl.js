@@ -6,12 +6,10 @@ const key = constants.getConfig.tokens.google;
 exports.run = async (client, msg, [url]) => {
   const embed = new client.methods.Embed().setColor(msg.color).setTimestamp();
   if (!url.startsWith("https://goo.gl/")) {
-    const { text } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url });
-    const { id } = JSON.parse(text);
+    const { id } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url }).then(d => JSON.parse(d.text));
     embed.setDescription(`**Shortened URL: [${id}](${id})**`);
   } else {
-    const { text } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`);
-    const { longUrl } = JSON.parse(text);
+    const { longUrl } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`).then(d => JSON.parse(d.text));
     embed.setDescription(`**Expanded URL: [${longUrl}](${longUrl})**`);
   }
   return msg.send({ embed });

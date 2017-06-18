@@ -16,7 +16,6 @@ const titles = {
   },
 };
 
-/* eslint-disable no-confusing-arrow */
 exports.run = async (client, msg, [type = "local", index = 0]) => {
   let list;
   let mapedList;
@@ -24,18 +23,18 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
     case "global":
       list = fetchGlobal()
         .filter(profile => profile.points > 0)
-        .sort((a, b) => a.points < b.points ? 1 : -1);
+        .sort((a, b) => (a.points < b.points ? 1 : -1));
       mapedList = list.map(l => l.id);
       break;
     case "money":
       list = fetchGlobal()
         .filter(profile => profile.money > 0)
-        .sort((a, b) => a.money < b.money ? 1 : -1);
+        .sort((a, b) => (a.money < b.money ? 1 : -1));
       mapedList = list.map(l => l.id);
       break;
     case "local":
       list = fetchLocal().get(msg.guild.id)
-        .sort((a, b) => a.score < b.score ? 1 : -1);
+        .sort((a, b) => (a.score < b.score ? 1 : -1));
       mapedList = list.map(l => l.id);
   // no default
   }

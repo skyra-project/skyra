@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, no-confusing-arrow, no-throw-literal */
+/* eslint-disable no-underscore-dangle */
 class RoleList {
   constructor(msg) {
     Object.defineProperty(this, "_msg", { value: msg });
@@ -9,7 +9,7 @@ class RoleList {
 
   get list() {
     if (!this._config.publicRoles[0]) throw "This server does not have a public role configured.";
-    const theRoles = this._config.publicRoles.map(u => this._guild.roles.get(u) ? this._guild.roles.get(u).name : u);
+    const theRoles = this._config.publicRoles.map(u => (this._guild.roles.has(u) ? this._guild.roles.get(u).name : u));
     return new this._client.methods.Embed()
       .setColor(this._msg.color)
       .setTitle(`Public roles for ${this._guild}`)

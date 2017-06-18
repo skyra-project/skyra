@@ -1,6 +1,6 @@
 const moment = require("moment");
-/* eslint-disable no-confusing-arrow */
-const DateToTime = str => typeof str === "string" ? `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}` : "00-00-00";
+
+const DateToTime = str => (typeof str === "string" ? `${str.substring(0, 4)}-${str.substring(4, 6)}-${str.substring(6, 8)}` : "00-00-00");
 
 exports.run = async (client, msg, [platform, name]) => {
   await msg.send("`Fetching data...`");

@@ -40,11 +40,13 @@ class SlotMachines {
   }
 
   static showRoll(roll) {
-    if (this.msg.channel.permissionsFor(this.msg.guild.me).has("USE_EXTERNAL_EMOJIS")) for (let i = 0; i < roll.length; i++) roll[i] = skin[roll[i]];
+    const array = [];
+    if (this.msg.channel.permissionsFor(this.msg.guild.me).has("USE_EXTERNAL_EMOJIS")) for (let i = 0; i < 9; i++) array[i] = skin[roll[i]];
+    else for (let i = 0; i < 9; i++) array[i] = roll[i];
     return [
-      `${roll[0]}ー${roll[1]}ー${roll[2]}`,
-      `${roll[3]}ー${roll[4]}ー${roll[5]}`,
-      `${roll[6]}ー${roll[7]}ー${roll[8]}`,
+      `${array[0]}ー${array[1]}ー${array[2]}`,
+      `${array[3]}ー${array[4]}ー${array[5]}`,
+      `${array[6]}ー${array[7]}ー${array[8]}`,
     ].join("\n");
   }
 
@@ -59,7 +61,7 @@ class SlotMachines {
   }
 
   checkCurrency(amount) {
-    if (this.profile.money < amount) throw `you don't have enough shekels to pay your bet! Your current account balance is ${this.profile.money}${this.msg.shiny}.`;
+    if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${this.msg.shiny}.`;
   }
 }
 
@@ -69,18 +71,18 @@ exports.run = async (client, msg, [coins]) => {
   slotmachine.checkCurrency(coins);
 
   const roll = slotmachine.generateRoll();
+  const { win, winnings } = slotmachine.calculateWinnings(coins, roll);
   const output = slotmachine.showRoll(roll);
-  const data = slotmachine.calculateWinnings(coins, roll);
 
   const embed = new client.methods.Embed();
-  if (data.win) {
-    const winnings = await client.Social.win(msg, data.winnings);
+  if (win) {
+    const amount = await client.Social.win(msg, winnings).then(() => winnings).catch(e => msg.error(e, true));
     embed.setColor(0x5C913B)
       .setDescription([
         "**You rolled:**\n",
         output,
         "\n**Congratulations!**",
-        `You won ${winnings}${msg.shiny}!`,
+        `You won ${amount}${msg.shiny}!`,
       ].join("\n"));
   } else {
     await msg.author.profile.use(coins);

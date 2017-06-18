@@ -1,4 +1,3 @@
-/* eslint-disable no-throw-literal */
 class Command {
   constructor(client, msg, pool) {
     this.client = client;

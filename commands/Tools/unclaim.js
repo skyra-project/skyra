@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, no-confusing-arrow, no-throw-literal */
+/* eslint-disable no-underscore-dangle */
 class RoleList {
   constructor(msg) {
     Object.defineProperty(this, "_msg", { value: msg });
@@ -9,7 +9,7 @@ class RoleList {
 
   get list() {
     if (!this._config.publicRoles[0]) throw "This server does not have a public role configured.";
-    const theRoles = this._config.publicRoles.map(u => this._guild.roles.get(u) ? this._guild.roles.get(u).name : u);
+    const theRoles = this._config.publicRoles.map(u => (this._guild.roles.has(u) ? this._guild.roles.get(u).name : u));
     return new this._client.methods.Embed()
       .setColor(this._msg.color)
       .setTitle(`Public roles for ${this._guild}`)
@@ -52,13 +52,13 @@ exports.run = async (client, msg, [list, ...roles]) => {
   const { removeRoles, unlistedRoles, nonexistentRoles, invalidRoles } = await roleList.roleCheck(roles);
 
   const mess = [];
-  if (nonexistentRoles) mess.push(`You already have the following roles: \`${nonexistentRoles.join("`, `")}\``);
+  if (nonexistentRoles) mess.push(`You do not have the following roles: \`${nonexistentRoles.join("`, `")}\``);
   if (unlistedRoles) mess.push(`The following roles are not public: \`${unlistedRoles.join("`, `")}\``);
   if (invalidRoles) mess.push(`Roles not found: \`${invalidRoles.join("`, `")}\``);
   if (removeRoles) {
     if (removeRoles.length === 1) await msg.member.removeRole(removeRoles[0]);
     else await msg.member.removeRoles(removeRoles);
-    mess.push(`The following roles have been added to your profile: \`${removeRoles.map(r => msg.guild.roles.get(r).name).join("`, `")}\``);
+    mess.push(`The following roles have been removed from your profile: \`${removeRoles.map(r => msg.guild.roles.get(r).name).join("`, `")}\``);
   }
   return msg.send(mess.length ? mess.join("\n") : "??");
 };

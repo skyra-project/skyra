@@ -2,10 +2,10 @@ const MODERATION = require("../../utils/managerModeration");
 
 const fetchBan = (guild, query) => new Promise(async (resolve, reject) => {
   const users = await guild.fetchBans();
-  const member = users.find(m => m.id === query) ||
-    users.find(m => m.tag === query) ||
-    users.find(m => m.username.toLowerCase() === query) ||
-    users.find(m => m.username.toLowerCase().startsWith(query)) ||
+  const member = users.find(m => m.user.id === query) ||
+    users.find(m => m.user.tag === query) ||
+    users.find(m => m.user.username.toLowerCase() === query) ||
+    users.find(m => m.user.username.toLowerCase().startsWith(query)) ||
     reject("User not found.");
   resolve(member);
 });

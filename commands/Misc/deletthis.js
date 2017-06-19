@@ -1,21 +1,15 @@
-const constants = require("../../utils/constants");
 const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
-const { sep } = require("path");
+const { join, resolve } = require("path");
+
+const template = resolve(join(__dirname, "../../assets/images/memes/DeletThis.png"));
 
 const DeletThis = async (client, msg, user) => {
   let selectedUser;
   let hammerer;
-  if (user === msg.author) {
-    selectedUser = msg.author;
-    hammerer = client.users.get("242043489611808769");
-  } else if (["242043489611808769", "251484593859985411"].includes(user.id)) {
-    selectedUser = msg.author;
-    hammerer = user;
-  } else {
-    selectedUser = user;
-    hammerer = msg.author;
-  }
+  if (user === msg.author) [selectedUser, hammerer] = [msg.author, client.users.get("242043489611808769")];
+  else if (["242043489611808769", "251484593859985411"].includes(user.id)) [selectedUser, hammerer] = [msg.author, user];
+  else [selectedUser, hammerer] = [user, msg.author];
 
   /* Initialize Canvas */
   const c = new Canvas(650, 471);
@@ -26,7 +20,7 @@ const DeletThis = async (client, msg, user) => {
 
     /* Get the buffers from both profile avatars */
   const [bgBuffer, Hammered, Hammerer] = await Promise.all([
-    readFile(`${constants.assets}images${sep}memes${sep}DeletThis.png`),
+    readFile(template),
     client.funcs.wrappers.fetchAvatar(selectedUser, 256),
     client.funcs.wrappers.fetchAvatar(hammerer, 256),
   ]);

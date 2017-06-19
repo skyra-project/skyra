@@ -1,4 +1,3 @@
-const { sep, join } = require("path");
 const { STATUS_CODES } = require("http");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
@@ -55,7 +54,5 @@ exports.owHero = hero => overwatchHeroes[hero] || null;
 exports.basicAuth = (user = $("User"), pass = $("Password")) => `Basic ${new Buffer(`${user}:${pass}`).toString("base64")}`;
 
 exports.httpResponses = code => `[${code}] ${STATUS_CODES[code]}`;
-
-exports.assets = join(__dirname, "../", "assets") + sep;
 
 exports.getConfig = require("../config.js");

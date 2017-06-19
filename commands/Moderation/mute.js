@@ -14,9 +14,8 @@ exports.configuration = async (client, msg) => {
 
 /* eslint-disable no-underscore-dangle */
 exports.run = async (client, msg, [search, ...reason]) => {
-  /* Initialize Search */
   const user = await client.funcs.search.User(search, msg.guild, true);
-  const member = msg.guild.member(user) || null;
+  const member = await msg.guild.fetchMember(user.id).catch(() => null);
 
   if (member) {
     if (user.id === msg.author.id) throw "why would you mute yourself?";

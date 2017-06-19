@@ -1,7 +1,8 @@
-const constants = require("../../utils/constants");
 const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
-const { sep } = require("path");
+const { join, resolve } = require("path");
+
+const template = resolve(join(__dirname, "../../assets/images/memes/cuddle.png"));
 
 const Cuddle = async (client, msg, user) => {
   /* Initialize Canvas */
@@ -15,7 +16,7 @@ const Cuddle = async (client, msg, user) => {
 
   /* Get the buffers from both profile avatars */
   const [bgBuffer, user1Buffer, user2Buffer] = await Promise.all([
-    readFile(`${constants.assets}images${sep}memes${sep}cuddle.png`),
+    readFile(template),
     client.funcs.wrappers.fetchAvatar(msg.author, 256),
     client.funcs.wrappers.fetchAvatar(user, 256),
   ]);

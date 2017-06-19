@@ -11,7 +11,6 @@ const fetchBan = (guild, query) => new Promise(async (resolve, reject) => {
 });
 
 exports.run = async (client, msg, [query, ...reason]) => {
-  /* Initialize fetchBan search */
   const user = await fetchBan(msg.guild, query);
 
   reason = reason.length ? reason.join(" ") : null;

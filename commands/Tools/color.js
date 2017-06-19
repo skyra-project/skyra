@@ -1,8 +1,7 @@
 const { join, resolve } = require("path");
 const Canvas = require("canvas");
 
-const FiraSans = () => new Canvas.Font("FiraSans", resolve(join(__dirname, "../../assets/fonts/FiraSans-Regular.ttf")));
-FiraSans();
+Canvas.registerFont(resolve(join(__dirname, "../../assets/fonts/FiraSans-Regular.ttf")), { family: "FiraSans" });
 
 /* Color limiter */
 const cL = c => Math.max(Math.min(c, 255), 0);
@@ -64,7 +63,7 @@ const showColor = async (client, color, diff) => {
 
   const { luminance, hexConcat } = client.funcs.resolveColor;
 
-  await Promise.all(colours.map(colour => new Promise((resolve) => {
+  await Promise.all(colours.map(colour => new Promise((res) => {
     const [thisRed, thisGreen, thisBlue] = [cL(colour.R), cL(colour.G), cL(colour.B)];
     ctx.fillStyle = `rgb(${thisRed}, ${thisGreen}, ${thisBlue})`;
     ctx.fillRect(colour.pos[0], colour.pos[1], 120, 120);
@@ -75,7 +74,7 @@ const showColor = async (client, color, diff) => {
       10 + colour.pos[0],
       20 + colour.pos[1],
     );
-    resolve();
+    res();
   })));
 
   /* Complementary */

@@ -2,7 +2,7 @@ const MODERATION = require("../../utils/managerModeration");
 
 exports.run = async (client, msg, [search, ...reason]) => {
   const user = await client.funcs.search.User(search, msg.guild, true);
-  const member = await msg.guild.fetchMember(user) || null;
+  const member = await msg.guild.fetchMember(user.id).catch(() => null);
 
   if (user.id === msg.author.id) {
     throw "why would you ban yourself?";

@@ -1,7 +1,6 @@
 const MODERATION = require("../../utils/managerModeration");
 
-exports.run = async (client, msg, [search, ...reason]) => {
-  const user = await client.funcs.search.User(search, msg.guild, true);
+exports.run = async (client, msg, [user, ...reason]) => {
   const member = await msg.guild.fetchMember(user.id).catch(() => null);
 
   if (user.id === msg.author.id) {
@@ -33,6 +32,6 @@ exports.conf = {
 exports.help = {
   name: "ban",
   description: "Ban the mentioned user.",
-  usage: "<SearchMember:string> [reason:str] [...]",
+  usage: "<SearchMember:user> [reason:string] [...]",
   usageDelim: " ",
 };

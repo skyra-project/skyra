@@ -60,7 +60,7 @@ exports.conf = {
 exports.help = {
   name: "emoji",
   description: "Get info from an emoji.",
-  usage: "<emoji:str>",
+  usage: "<emoji:string>",
   usageDelim: "",
   extendedHelp: "",
 };

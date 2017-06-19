@@ -35,6 +35,6 @@ exports.conf = {
 exports.help = {
   name: "unban",
   description: "Unbans an user (you MUST write his name or his ID).",
-  usage: "<user:str> [reason:str] [...]",
+  usage: "<user:string> [reason:string] [...]",
   usageDelim: " ",
 };

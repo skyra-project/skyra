@@ -75,12 +75,9 @@ const Run = class Run {
       }
       case "member": {
         let user;
-        await this.msg.send("`Fetching data...`");
         if (!input) user = this.msg.author;
         else user = await this.client.funcs.search.User(input, this.guild);
-        const member = await this.guild.fetchMember(user) || null;
-        if (!member) throw "User not found.";
-        return member;
+        return this.guild.fetchMember(user.id).catch(() => { throw "User not found."; });
       }
       default: throw `${type} does not match any of the possibilities.`;
     }
@@ -252,9 +249,9 @@ const PermissionUser = class PermissionUser {
   }
 
   run(member) {
-    const perms = member.permissions.serialize();
+    const { permissions } = member;
     const perm = ["\u200B"];
-    for (const key in perms) perm.push(`${perms[key] ? "\\🔹" : "\\🔸"} **${this.client.funcs.toTitleCase(key.replace(/\_/g, " "))}**`); // eslint-disable-line
+    for (let i = 0; i < PermissionFlags.length; i++) perm.push(`${permissions.has(PermissionFlags[i]) ? "\\🔹" : "\\🔸"} ${this.client.funcs.toTitleCase(PermissionFlags[i].replace(/_/g, " "))}`);
 
     const embed = new this.client.methods.Embed()
       .setColor(this.msg.guild.members.get(member.user.id).highestRole.color || 0xdfdfdf)

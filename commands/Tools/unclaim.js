@@ -78,7 +78,7 @@ exports.conf = {
 exports.help = {
   name: "unclaim",
   description: "Remove a public role from your profile.",
-  usage: "[--list] [roles:str] [...]",
+  usage: "[--list] [roles:string] [...]",
   usageDelim: ", ",
   extendedHelp: "",
 };

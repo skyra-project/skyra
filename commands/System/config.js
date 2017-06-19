@@ -140,7 +140,7 @@ exports.conf = {
 exports.help = {
   name: "config",
   description: "",
-  usage: "<update|reset|list> [channels|roles|events|messages|master|selfmod] [key:str] [value:str] [...]",
+  usage: "<update|reset|list> [channels|roles|events|messages|master|selfmod] [key:string] [value:string] [...]",
   usageDelim: " ",
   extendedHelp: "",
 };

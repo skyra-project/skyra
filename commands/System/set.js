@@ -25,7 +25,7 @@ exports.conf = {
 exports.help = {
   name: "set",
   description: "Change bot's status or game.",
-  usage: "[online|idle|invisible|dnd] [game:str] [...]",
+  usage: "[online|idle|invisible|dnd] [game:string] [...]",
   usageDelim: "",
   extendedHelp: "",
 };

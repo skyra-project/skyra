@@ -15,7 +15,7 @@ exports.conf = {
 exports.help = {
   name: "reverse",
   description: "Reverse your phrases",
-  usage: "<text:str>",
+  usage: "<text:string>",
   usageDelim: "",
   extendedHelp: [
     "Usage:",

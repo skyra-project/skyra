@@ -48,6 +48,6 @@ exports.conf = {
 exports.help = {
   name: "lockdown",
   description: "Locks the channel.",
-  usage: "[channel:channel] [time:str]",
+  usage: "[channel:channel] [time:string]",
   usageDelim: " ",
 };

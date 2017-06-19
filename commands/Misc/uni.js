@@ -57,7 +57,7 @@ exports.conf = {
 exports.help = {
   name: "uni",
   description: "Generate a large unicode message with the message you have written.",
-  usage: "<input:str>",
+  usage: "<input:string>",
   usageDelim: "",
   extendedHelp: [
     "Hey! Somebody told me that people like aesthetic phrases, so I made something.",

@@ -1,15 +1,10 @@
 const MODERATION = require("../../utils/managerModeration");
 
-exports.run = async (client, msg, [search, ...reason]) => {
-  const user = await client.funcs.search.User(search, msg.guild, true);
-  const member = await msg.guild.fetchMember(user.id).catch(() => null);
+exports.run = async (client, msg, [user, ...reason]) => {
+  const member = await msg.guild.fetchMember(user.id).catch(() => { throw "this user is not in this server"; });
 
-  if (member) {
-    if (user.id === msg.author.id) throw "you can't unmute yourself...";
-    else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
-  } else {
-    throw "this user is not in this server";
-  }
+  if (user.id === msg.author.id) throw "you can't unmute yourself...";
+  else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
 
   const configs = msg.guild.configs;
   if (!configs) throw "you caught me while creating the configuration for this server.";
@@ -46,6 +41,6 @@ exports.conf = {
 exports.help = {
   name: "unmute",
   description: "Unmute the mentioned user.",
-  usage: "<SearchMember:str> [reason:str] [...]",
+  usage: "<SearchMember:user> [reason:string] [...]",
   usageDelim: " ",
 };

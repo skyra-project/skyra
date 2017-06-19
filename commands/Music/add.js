@@ -62,7 +62,7 @@ exports.conf = {
 exports.help = {
   name: "add",
   description: "Adds a song the the queue.",
-  usage: "<song:str>",
+  usage: "<song:string>",
   usageDelim: "",
   extendedHelp: "",
 };

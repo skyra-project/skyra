@@ -35,7 +35,7 @@ exports.conf = {
 exports.help = {
   name: "rate",
   description: "Let bots have opinions and rate somebody.",
-  usage: "<user:str>",
+  usage: "<user:string>",
   usageDelim: "",
   extendedHelp: [
     "Hey! Do you want to know what I'd rate something?",

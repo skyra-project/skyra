@@ -29,7 +29,7 @@ exports.conf = {
 exports.help = {
   name: "quote",
   description: "Quote another people's message.",
-  usage: "<message:str> [channel:str]",
+  usage: "<message:string> [channel:string]",
   usageDelim: " ",
   extendedHelp: "",
 };

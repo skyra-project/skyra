@@ -43,7 +43,7 @@ exports.conf = {
 exports.help = {
   name: "xkcd",
   description: "Read comics from XKCD",
-  usage: "[number:int|query:str]",
+  usage: "[number:int|query:string]",
   usageDelim: "",
   extendedHelp: [
     "Should I wash the dishes? Or should I throw the dishes throught the window?",

@@ -38,7 +38,7 @@ exports.conf = {
 exports.help = {
   name: "wikipedia",
   description: "Search something throught Wikipedia.",
-  usage: "<query:str>",
+  usage: "<query:string>",
   usageDelim: "",
   extendedHelp: [
     "Wikipedia!",

@@ -37,7 +37,7 @@ exports.conf = {
 exports.help = {
   name: "volume",
   description: "Manage the volume for current song.",
-  usage: "[control:str]",
+  usage: "[control:string]",
   usageDelim: "",
   extendedHelp: [
     "Let's break it down!",

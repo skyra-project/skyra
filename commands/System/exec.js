@@ -24,7 +24,7 @@ exports.conf = {
 exports.help = {
   name: "exec",
   description: "Execute Order 66.",
-  usage: "<expression:str>",
+  usage: "<expression:string>",
   usageDelim: "",
   extendedHelp: "",
 };

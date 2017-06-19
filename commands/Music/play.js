@@ -85,7 +85,7 @@ exports.conf = {
 exports.help = {
   name: "play",
   description: "Plays the queue, or add a song to the queue.",
-  usage: "[song:str]",
+  usage: "[song:string]",
   usageDelim: "",
   extendedHelp: "",
 };

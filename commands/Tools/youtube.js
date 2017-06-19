@@ -26,7 +26,7 @@ exports.conf = {
 exports.help = {
   name: "youtube",
   description: "Search something throught YouTube.",
-  usage: "<query:str> [index:int]",
+  usage: "<query:string> [index:int]",
   usageDelim: " #",
   extendedHelp: [
     "Let's search some videos :p",

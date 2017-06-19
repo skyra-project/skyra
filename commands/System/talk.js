@@ -32,7 +32,7 @@ exports.conf = {
 exports.help = {
   name: "talk",
   description: "Make Skyra talk in another channel.",
-  usage: "[channel:channel] [message:str] [...]",
+  usage: "[channel:channel] [message:string] [...]",
   usageDelim: " ",
   extendedHelp: "",
 };

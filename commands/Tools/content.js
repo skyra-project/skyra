@@ -23,7 +23,7 @@ exports.conf = {
 exports.help = {
   name: "content",
   description: "Get messages' raw content.",
-  usage: "<message:str> [channel:str]",
+  usage: "<message:string> [channel:string]",
   usageDelim: " ",
   extendedHelp: "",
 };

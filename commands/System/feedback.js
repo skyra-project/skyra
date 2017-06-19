@@ -28,7 +28,7 @@ exports.conf = {
 exports.help = {
   name: "feedback",
   description: "Send a feedback to the bot's owner.",
-  usage: "<message:str{8,1900}>",
+  usage: "<message:string{8,1900}>",
   usageDelim: "",
   extendedHelp: "",
 };

@@ -29,6 +29,6 @@ exports.conf = {
 exports.help = {
   name: "fetch",
   description: "Discover the context of a message.",
-  usage: "<message:str{17,21}> [limit:int]",
+  usage: "<message:string{17,21}> [limit:int]",
   usageDelim: " ",
 };

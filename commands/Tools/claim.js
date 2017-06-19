@@ -79,7 +79,7 @@ exports.conf = {
 exports.help = {
   name: "claim",
   description: "Get a public role.",
-  usage: "[--list] [roles:str] [...]",
+  usage: "[--list] [roles:string] [...]",
   usageDelim: ", ",
   extendedHelp: "",
 };

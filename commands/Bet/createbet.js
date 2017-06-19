@@ -118,7 +118,7 @@ exports.conf = {
 exports.help = {
   name: "bet",
   description: "Deposit money in a betting pool.",
-  usage: "<create|remove> [options:str]",
+  usage: "<create|remove> [options:string]",
   usageDelim: " ",
   extendedHelp: "",
 };

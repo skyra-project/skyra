@@ -20,7 +20,7 @@ exports.conf = {
 exports.help = {
   name: "figlet",
   description: "Creates an ASCII banner from the string you supply",
-  usage: "<banner:str>",
+  usage: "<banner:string>",
   usageDelim: "",
   extendedHelp: [
     "Usage",

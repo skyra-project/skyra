@@ -4,7 +4,7 @@ const math = require("mathjs");
 exports.run = async (client, msg, [exp]) => {
   const start = now();
   const evaled = await math.eval(exp);
-  return msg.send(`⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${"```"}js${client.funcs.clean(client, evaled)}${"```"}`);
+  return msg.send(`⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${"```"}js\n${client.funcs.clean(client, evaled)}${"```"}`);
 };
 
 exports.conf = {
@@ -22,7 +22,7 @@ exports.conf = {
 exports.help = {
   name: "math",
   description: "Calculate arbitrary maths.",
-  usage: "<expresion:str>",
+  usage: "<expresion:string>",
   usageDelim: "",
   extendedHelp: [
     "Take a look in mathjs.org/docs/index.html#documentation",

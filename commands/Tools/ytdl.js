@@ -46,7 +46,7 @@ exports.conf = {
 exports.help = {
   name: "ytdl",
   description: "Search something throught YouTube.",
-  usage: "<query:str>",
+  usage: "<query:string>",
   usageDelim: "",
   extendedHelp: [
     "Let's search some videos :p",

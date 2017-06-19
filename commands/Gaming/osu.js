@@ -122,7 +122,7 @@ exports.conf = {
 exports.help = {
   name: "osu",
   description: "Check info from Osu!",
-  usage: "<Standard|Taiko|CtB|Mania> <Signatures|UserProfile|BestPlays|RecentPlays> <Username:str> [...]",
+  usage: "<Standard|Taiko|CtB|Mania> <Signatures|UserProfile|BestPlays|RecentPlays> <Username:string> [...]",
   usageDelim: " ",
   extendedHelp: [
     "Let's click hard! Do you want to check your stats on Osu?",

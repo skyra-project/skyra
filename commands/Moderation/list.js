@@ -113,6 +113,6 @@ exports.conf = {
 exports.help = {
   name: "list",
   description: "Check all channels from this server.",
-  usage: "<channels|roles|invites|warnings|strikes|track|gameinvite|advertising> [input:str] [...]",
+  usage: "<channels|roles|invites|warnings|strikes|track|gameinvite|advertising> [input:string] [...]",
   usageDelim: " ",
 };

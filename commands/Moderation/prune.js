@@ -47,6 +47,6 @@ exports.conf = {
 exports.help = {
   name: "prune",
   description: "Prune 'x' messages.",
-  usage: "<number:int{2,100}> [invite|nopin|bots|you|me|upload|links|user:str] [...]",
+  usage: "<number:int{2,100}> [invite|nopin|bots|you|me|upload|links|user:string] [...]",
   usageDelim: " ",
 };

@@ -1,16 +1,11 @@
 const MODERATION = require("../../utils/managerModeration");
 
-exports.run = async (client, msg, [search, days = 7, ...reason]) => {
-  const user = await client.funcs.search.User(search, msg.guild, true);
-  const member = await msg.guild.fetchMember(user.id).catch(() => null);
+exports.run = async (client, msg, [user, days = 7, ...reason]) => {
+  const member = await msg.guild.fetchMember(user.id).catch(() => { throw "this user is not in this server"; });
 
-  if (member) {
-    if (user.id === msg.author.id) throw "why would you ban yourself?";
-    else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
-    else if (!member.kickable) throw "the selected member is not bannable.";
-  } else {
-    throw "this user is not in this server";
-  }
+  if (user.id === msg.author.id) throw "why would you ban yourself?";
+  else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
+  else if (!member.kickable) throw "the selected member is not bannable.";
 
   reason = reason.length ? reason.join(" ") : null;
   user.banFilter = true;
@@ -35,6 +30,6 @@ exports.conf = {
 exports.help = {
   name: "softban",
   description: "Softban the mentioned user.",
-  usage: "<SearchMember:str> [days:int] [reason:str] [...]",
+  usage: "<SearchMember:user> [days:int] [reason:string] [...]",
   usageDelim: " ",
 };

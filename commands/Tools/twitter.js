@@ -38,7 +38,7 @@ exports.conf = {
 exports.help = {
   name: "twitter",
   description: "Check info from Twitter",
-  usage: "<user:str>",
+  usage: "<user:string>",
   usageDelim: "",
   extendedHelp: "",
 };

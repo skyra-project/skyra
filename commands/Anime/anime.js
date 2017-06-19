@@ -51,7 +51,7 @@ exports.conf = {
 exports.help = {
   name: "anime",
   description: "Search your favourite anime by title with this command.",
-  usage: "<Anime:str>",
+  usage: "<Anime:string>",
   usageDelim: "",
   extendedHelp: [
     "Hey! Do you want to check the info of an Anime?",

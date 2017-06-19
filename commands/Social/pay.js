@@ -30,7 +30,7 @@ exports.conf = {
 exports.help = {
   name: "pay",
   description: "Pay somebody with your shekels.",
-  usage: "<amount:int> <user:str> [...]",
+  usage: "<amount:int> <user:string> [...]",
   usageDelim: " ",
   extendedHelp: [
     "Businessmen! Today is payday!",

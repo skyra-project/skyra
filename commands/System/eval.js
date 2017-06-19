@@ -60,7 +60,7 @@ exports.conf = {
 exports.help = {
   name: "eval",
   description: "Evaluates arbitrary Javascript. Not for the faint of heart.",
-  usage: "<expression:str>",
+  usage: "<expression:string>",
   usageDelim: "",
   extendedHelp: "",
 };

@@ -43,7 +43,7 @@ exports.conf = {
 exports.help = {
   name: "urban",
   description: "Check the definition of a word on UrbanDictionary.",
-  usage: "<query:str> [index:int]",
+  usage: "<query:string> [index:int]",
   usageDelim: " #",
   extendedHelp: [
     "What does \"Hello\" mean?",

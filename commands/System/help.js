@@ -1,4 +1,3 @@
-/* eslint-disable guard-for-in, no-restricted-syntax, no-prototype-builtins */
 exports.run = async (client, msg, [cmd]) => {
   const method = client.user.bot ? "author" : "channel";
   if (cmd) {
@@ -11,13 +10,15 @@ exports.run = async (client, msg, [cmd]) => {
       "Extended Help ::",
       cmd.help.extendedHelp || "No extended help available.",
     ].join("\n");
-    return msg.send(info, { code: "asciidoc" });
+    return msg.sendMessage(info, { code: "asciidoc" });
   }
   const help = this.buildHelp(client, msg);
+  const categories = Object.keys(help);
   const helpMessage = [];
-  for (const key in help) {
-    helpMessage.push(`**${key} Commands**: \`\`\`asciidoc`);
-    for (const key2 in help[key]) helpMessage.push(`= ${key2} =`, `${help[key][key2].join("\n")}\n`);
+  for (let cat = 0; cat < categories.length; cat++) {
+    helpMessage.push(`**${categories[cat]} Commands**: \`\`\`asciidoc`);
+    const subCategories = Object.keys(help[categories[cat]]);
+    for (let subCat = 0; subCat < subCategories.length; subCat++) helpMessage.push(`= ${subCategories[subCat]} =`, `${help[categories[cat]][subCategories[subCat]].join("\n")}\n`);
     helpMessage.push("```\n\u200b");
   }
   return msg[method].send(helpMessage, { split: { char: "\u200b" } })
@@ -37,17 +38,18 @@ exports.conf = {
 exports.help = {
   name: "help",
   description: "Display help for a command.",
-  usage: "[command:str]",
+  usage: "[command:string]",
   usageDelim: "",
 };
 
+/* eslint-disable no-restricted-syntax, no-prototype-builtins */
 exports.buildHelp = (client, msg) => {
   const help = {};
 
   const commandNames = Array.from(client.commands.keys());
   const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
 
-  client.commands.forEach((command) => {
+  for (const command of client.commands.values()) {
     if (this.runCommandInhibitors(client, msg, command)) {
       const cat = command.help.category;
       const subcat = command.help.subCategory;
@@ -55,7 +57,7 @@ exports.buildHelp = (client, msg) => {
       if (!help[cat].hasOwnProperty(subcat)) help[cat][subcat] = [];
       help[cat][subcat].push(`${msg.guild ? msg.guild.configs.prefix : "&"}${command.help.name.padEnd(longest)} :: ${command.help.description}`);
     }
-  });
+  }
 
   return help;
 };

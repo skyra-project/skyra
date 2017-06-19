@@ -52,7 +52,7 @@ exports.conf = {
 exports.help = {
   name: "manga",
   description: "Search your favourite manga by title with this command.",
-  usage: "<query:str>",
+  usage: "<query:string>",
   usageDelim: "",
   extendedHelp: [
     "Hey! Do you want me to display info about a Manga?",

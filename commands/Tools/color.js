@@ -119,7 +119,7 @@ exports.conf = {
 exports.help = {
   name: "color",
   description: "Display some awesome colours.",
-  usage: "<color:str> [separator:int{0,255}]",
+  usage: "<color:string> [separator:int{0,255}]",
   usageDelim: " >",
   extendedHelp: [
     "Hey! Do you want me to display a color?",

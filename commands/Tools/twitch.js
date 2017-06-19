@@ -40,6 +40,6 @@ exports.conf = {
 exports.help = {
   name: "twitch",
   description: "Returns information on a Twitch.tv Account",
-  usage: "<name:str>",
+  usage: "<name:string>",
   usageDelim: "",
 };

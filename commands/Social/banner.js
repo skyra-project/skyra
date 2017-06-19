@@ -75,7 +75,7 @@ exports.conf = {
 exports.help = {
   name: "banner",
   description: "Buy, list, or set the banners.",
-  usage: "<list|buy|set|buylist> [banner:str]",
+  usage: "<list|buy|set|buylist> [banner:string]",
   usageDelim: " ",
   extendedHelp: "",
 };

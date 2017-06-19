@@ -63,6 +63,6 @@ exports.conf = {
 exports.help = {
   name: "reason",
   description: "Add or change a reason for a Modlog.",
-  usage: "<case:int> <reason:str> [...]",
+  usage: "<case:int> <reason:string> [...]",
   usageDelim: " ",
 };

@@ -61,7 +61,7 @@ exports.conf = {
 exports.help = {
   name: "sc2",
   description: "Check your stats on StarCraft2.",
-  usage: "<us|eu|kr|tw> <username:string> <id:str{7,7}>",
+  usage: "<us|eu|kr|tw> <username:string> <id:string{7,7}>",
   usageDelim: " ",
   extendedHelp: [
     "Commander! Do you want to check your stats on StarCraft2?",

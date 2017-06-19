@@ -58,7 +58,7 @@ exports.conf = {
 exports.help = {
   name: "currencylayer",
   description: "Convert currency.",
-  usage: "<money:int> <input:str{3,3}> <output:str{3,3}>",
+  usage: "<money:int> <input:string{3,3}> <output:string{3,3}>",
   usageDelim: " ",
   extendedHelp: [
     "With this command, you can, for example, convert EUR to USD",

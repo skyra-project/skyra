@@ -25,7 +25,7 @@ exports.conf = {
 exports.help = {
   name: "setcolor",
   description: "Change your userprofile's colour.",
-  usage: "<color:str>",
+  usage: "<color:string>",
   usageDelim: "",
   extendedHelp: [
     "I don't like the default pink colour!",

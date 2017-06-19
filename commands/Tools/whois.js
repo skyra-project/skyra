@@ -63,7 +63,7 @@ exports.conf = {
 exports.help = {
   name: "whois",
   description: "Who are you?",
-  usage: "[query:str]",
+  usage: "[query:string]",
   usageDelim: "",
   extendedHelp: [
     "Who are you?",

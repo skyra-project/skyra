@@ -61,7 +61,7 @@ exports.conf = {
 exports.help = {
   name: "graph",
   description: "Calculate arbitrary maths.",
-  usage: "<expresion:str>",
+  usage: "<expresion:string>",
   usageDelim: "",
   extendedHelp: [
     "Take a look in mathjs.org/docs/index.html#documentation",

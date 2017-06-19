@@ -25,7 +25,7 @@ exports.conf = {
 exports.help = {
   name: "dm",
   description: "Make Skyra send a DM to an user.",
-  usage: "<user:user> <message:str> [...]",
+  usage: "<user:user> <message:string> [...]",
   usageDelim: " ",
   extendedHelp: "",
 };

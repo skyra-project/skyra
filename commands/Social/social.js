@@ -54,7 +54,7 @@ exports.conf = {
 exports.help = {
   name: "social",
   description: "Manage the local leaderboards.",
-  usage: "<delete|add|remove> <user:str> [value:int]",
+  usage: "<delete|add|remove> <user:string> [value:int]",
   usageDelim: " ",
   extendedHelp: [
     "This guy has not enough points... Let's increase it!",

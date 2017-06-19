@@ -89,7 +89,7 @@ exports.conf = {
 exports.help = {
   name: "setting",
   description: "Edit the way Skyra works.",
-  usage: "<add|remove|reset> <commands|publicroles|wordfilter|ignorecmdchannel> [value:str]",
+  usage: "<add|remove|reset> <commands|publicroles|wordfilter|ignorecmdchannel> [value:string]",
   usageDelim: " ",
   extendedHelp: [
     "This command is made for some extra stuff that defines how Skyra should work in your server.",

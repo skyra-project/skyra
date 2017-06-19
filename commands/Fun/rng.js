@@ -34,7 +34,7 @@ exports.conf = {
 exports.help = {
   name: "rng",
   description: "Eeny, meeny, miny, moe, catch a tiger by the toe...",
-  usage: "<words:str> [...]",
+  usage: "<words:string> [...]",
   usageDelim: ", ",
   extendedHelp: [
     "Should I wash the dishes? Or should I throw the dishes throught the window?",

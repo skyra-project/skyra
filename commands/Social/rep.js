@@ -32,7 +32,7 @@ exports.conf = {
 exports.help = {
   name: "rep",
   description: "Give somebody a reputation point!",
-  usage: "<user:str>",
+  usage: "<user:string>",
   usageDelim: "",
   extendedHelp: [
     "This guy is so helpful... I'll give him a reputation point!",

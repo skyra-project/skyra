@@ -13,7 +13,7 @@ exports.send = async (client, msg, channel, sendname, filename) => {
   delete channel.trackertimer;
   delete channel.trackInterval;
 
-  await msg.author.sendFile(file, sendname, `Understood, there's your file for ${channel}.`);
+  await msg.author.send(`Understood, there's your file for ${channel}.`, { files: [{ attachment: file, name: sendname }] });
   await fs.unlink(file);
 
   return true;
@@ -21,7 +21,7 @@ exports.send = async (client, msg, channel, sendname, filename) => {
 
 exports.exist = async (client, filename) => {
   const dir = `${client.clientBaseDir}tracks${sep}`;
-  const files = await fs.ensureDir(dir);
+  const files = await fs.readdir(dir) || [];
   if (files.includes(filename)) return true;
   throw "file not found.";
 };

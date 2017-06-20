@@ -1,53 +1,62 @@
-const constants = require("../../utils/constants");
-const cheerio = require("cheerio");
+const snekfetch = require("snekfetch");
 
-const titles = {
-  featured: "Featured stats",
-  playedheroes: "Played Heroes",
-  combat: "Combat stats",
-  assists: "Assists",
-  records: "Records",
-  average: "Average stats",
-  gamestats: "Game stats",
-  awards: "Awards",
+const OVERWATCH = require("../../utils/overwatch.js");
+
+// function progressBar(Prog) {
+//   const X = "———————————————————————————————————".slice(0, Prog).replace(/—/g, "■");
+//   const Y = "———————————————————————————————————".slice(Prog);
+//   return X + Y;
+// }
+
+const emojis = {
+  bronze: { emoji: "<:Bronze:326683073691385856>", text: "(B)" },
+  silver: { emoji: "<:Silver:326683073343127554>", text: "(S)" },
+  gold: { emoji: "<:Gold:326683073955758100>", text: "(G)" },
+  platinum: { emoji: "<:Platinum:326683073288863745>", text: "(P)" },
+  diamond: { emoji: "<:Diamond:326683073959952384>", text: "(D)" },
+  master: { emoji: "<:Master:326683073628471298>", text: "(M)" },
+  grandmaster: { emoji: "<:GrandMaster:326683074157084672>", text: "(GM)" },
 };
 
-function progressBar(Prog) {
-  const X = "———————————————————————————————————".slice(0, Prog).replace(/—/g, "■");
-  const Y = "———————————————————————————————————".slice(Prog);
-  return X + Y;
-}
+const list = data => Object.entries(data).map(([key, value]) => `**${key}**: ${value}`).join("\n");
 
-/* eslint-disable no-underscore-dangle, no-prototype-builtins, complexity */
+/* eslint-disable class-methods-use-this */
 class Overwatch {
-  constructor(client) {
-    Object.defineProperty(this, "_client", { value: client });
-    Object.defineProperty(this, "resolvePlayer", { value: Overwatch.resolvePlayer });
-    Object.defineProperty(this, "resolveProfile", { value: Overwatch.resolveProfile });
-    Object.defineProperty(this, "fetchData", { value: Overwatch.fetchData });
-    Object.defineProperty(this, "collect", { value: Overwatch.collect });
+  constructor(msg, user, platform, server, type, gamemode) {
+    this.msg = msg;
+    this.client = msg.client;
+    this.api = "https://playoverwatch.com/en-us/search/account-by-name/";
+    this.user = user;
+    this.platform = platform ? platform.toLowerCase() : null;
+    this.server = server ? server.toLowerCase() : null;
+    this.type = type.toLowerCase();
+    this.gamemode = gamemode.toLowerCase();
   }
 
-  static resolvePlayer(user, pf, sv, hr, md) {
-    return new Promise((resolve, reject) => {
-      const platform = pf ? pf.toLowerCase() : null;
-      const server = sv ? sv.toLowerCase() : null;
-      const hero = hr ? hr.toLowerCase() : null;
-      const mode = md ? md.toLowerCase() : null;
-      const tag = user.split("#")[1];
-      if (platform === "pc") {
-        if (!tag) reject("you must write your discriminator number.");
-        else if (!/\b\w{4,5}\b/.test(tag)) reject("you must write a valid discriminator number.");
-        else resolve({ battletag: `${user.split("#")[0]}-${tag}`, user: user.split("#")[0], tag, platform, server, hero, mode });
-      } else {
-        resolve({ battletag: user, user, tag: null, platform, server, hero, mode });
+  resolvePlayer() {
+    const tag = this.user.split("#")[1];
+    if (tag || this.platform === "pc") {
+      if (!tag) throw "you must write your discriminator number.";
+      else if (!/\b\w{4,5}\b/.test(tag)) throw "you must write a valid discriminator number.";
+      else {
+        return ({
+          battletag: `${this.user.split("#")[0]}-${tag}`,
+          user: this.user.split("#")[0],
+          tag,
+        });
       }
-    });
+    } else {
+      return ({
+        battletag: this.user,
+        user: this.user,
+        tag: null,
+      });
+    }
   }
 
-  static async resolveProfile(player) {
-    const verifier = `https://playoverwatch.com/en-us/search/account-by-name/${encodeURIComponent(player.battletag)}`;
-    const profiles = await this._client.funcs.fetch.JSON(verifier).catch(() => { throw "make sure you have written your profile correctly, this is case sensitive."; });
+  async resolveProfile(player) {
+    const verifier = `${this.api + encodeURIComponent(player.user)}${player.tag ? `-${player.tag}` : ""}`;
+    const profiles = await snekfetch.get(verifier).then(d => JSON.parse(d.text)).catch(() => { throw "make sure you have written your profile correctly, this is case sensitive."; });
     if (!profiles.length) throw "make sure you have written your profile correctly, this is case sensitive.";
     const pf = player.platform;
     const sv = player.server;
@@ -63,74 +72,78 @@ class Overwatch {
     }
   }
 
-  static collect(data, index) {
-    return data.children[index].children[0].children[0].children[1].children.map(c => `\u200B • ${c.children.map(ch => ch.children[0].data).join(": **")}**`).join("\n");
+  async fetchData(selected) {
+    const path = selected.split("/");
+    path[path.length - 1] = encodeURIComponent(path[path.length - 1]);
+    const data = await this.client.funcs.overwatch.get(`https://playoverwatch.com/en-us${path.join("/")}`);
+    const { overview, url } = data;
+    const statistics = data[this.gamemode];
+    const output = { overview, url };
+    switch (this.type) {
+      case "featured":
+        output.title = "Featured";
+        output.data = `**Competitive rank**: ${overview.competitiveRank.rank ? this.resolveEmoji(overview.competitiveRank.rank) : "Unranked"}\n${list(statistics.highlight)}`;
+        return output;
+      case "playedheroes": return OVERWATCH("playedheroes", data);
+      case "combat":
+        output.title = "Combat";
+        output.data = list(statistics.stats.Combat);
+        return output;
+      case "assists":
+        output.title = "Assists";
+        output.data = list(statistics.stats.Assists);
+        return output;
+      case "records":
+        output.title = "Records";
+        output.data = list(statistics.stats.Best);
+        return output;
+      case "gamestats":
+        output.title = "Featured";
+        output.data = `${list(statistics.stats.Game)}\n${list(statistics.stats.Deaths)}\n\n${list(statistics.stats.Miscellaneous)}`;
+        return output;
+      case "average":
+        output.title = "Average Stats";
+        output.data = list(statistics.stats.Average);
+        return output;
+      case "awards":
+        output.title = "Awards";
+        output.data = list(statistics.stats["Match Awards"]);
+        return output;
+      // no default
+    }
+    return null;
   }
 
-  static fetchData(url, type, hero, mode) {
-    return new Promise(async (resolve, reject) => {
-      const html = await this._client.funcs.fetch(url);
-      const $ = cheerio.load(html);
-      let ProgressStats;
-      if (!hero) ProgressStats = $(`#${mode}`).children()["2"].children[0].children[2];
-      else {
-        const heroID = constants.owHero(hero) || reject("Unexpected error: Hexadecimal Character ID not found.");
-        const getHero = $(`#${mode}`).children()["2"].children[0].children.find(c => c.attribs["data-category-id"] === heroID) || null;
-        if (!getHero) reject(`this career profile doesn't have any data for ${this._client.funcs.toTitleCase(hero)}`);
-        ProgressStats = getHero;
-      }
-
-      let data;
-      switch (type) {
-        case "featured": {
-          const featuredData = $(`#${mode}`).children().first().children()["0"].children[2] || reject("I couldn't fetch any data.");
-          data = featuredData.children.map(c => `\u200B • ${c.children[0].children[1].children.map(child => child.children[0].data).reverse().join(": **")}**`).join("\n");
-          break;
-        }
-        case "playedheroes": {
-          const heroesData = $(`#${mode}`).children()["1"].children[0].children[2] || reject("I couldn't fetch any data.");
-          data = heroesData.children.map(c => `\`${progressBar(parseInt(c.attribs["data-overwatch-progress-percent"] * 35))}\`❯❯ **${c.children[1].children[1].children[0].children[0].data}**`).join("\n");
-          break;
-        }
-        case "combat": {
-          const chunk1 = this.collect(ProgressStats, 0) || reject("I couldn't fetch any data.");
-          const chunk2 = this.collect(ProgressStats, 4) || reject("I couldn't fetch any data.");
-          data = `${chunk1}\n${chunk2}`;
-          break;
-        }
-        case "assists": data = this.collect(ProgressStats, 1) || reject("I couldn't fetch any data.");
-          break;
-        case "records": data = this.collect(ProgressStats, 2) || reject("I couldn't fetch any data.");
-          break;
-        case "average": data = this.collect(ProgressStats, 3) || reject("I couldn't fetch any data.");
-          break;
-        case "gamestats": data = this.collect(ProgressStats, 5) || reject("I couldn't fetch any data.");
-          break;
-        case "awards": {
-          const chunk1 = this.collect(ProgressStats, 6) || reject("I couldn't fetch any data.");
-          const chunk2 = this.collect(ProgressStats, 7) || reject("I couldn't fetch any data.");
-          data = `${chunk1}\n${chunk2}`;
-          break;
-        }
-        // no default
-      }
-      return resolve({ output: data, title: `${titles[type]}${hero ? ` for ${this._client.funcs.toTitleCase(hero)}` : ""}` });
-    });
+  resolveEmoji(rank) {
+    const permission = this.msg.guild ? this.msg.channel.permissionsFor(this.msg.guild.me).has("USE_EXTERNAL_EMOJIS") : true;
+    let role;
+    if (rank < 1500) role = emojis.bronze;
+    else if (rank < 2000) role = emojis.silver;
+    else if (rank < 2500) role = emojis.gold;
+    else if (rank < 3000) role = emojis.platinum;
+    else if (rank < 3500) role = emojis.diamond;
+    else if (rank < 4000) role = emojis.master;
+    else role = emojis.grandmaster;
+    return `${rank} ${permission ? role.emoji : role.text}`;
   }
 }
 
-exports.run = async (client, msg, [user, platform, server, hero, type = "featured", mode = "quickplay"]) => {
-  const overwatch = new Overwatch(client);
-  const resolvedPlayer = await overwatch.resolvePlayer(user, platform, server, hero, mode);
-  const profile = await overwatch.resolveProfile(resolvedPlayer);
-  await msg.send("`Fetching data...`");
-  const data = await overwatch.fetchData(`https://playoverwatch.com/en-us${profile.careerLink}`, type, hero, mode);
+exports.run = async (client, msg, [user, platform, server, type = "featured", mode = "quickplay"]) => {
+  if (mode === "qp") mode = "quickplay";
+  if (mode === "comp") mode = "competitive";
+  const overwatch = new Overwatch(msg, user, platform, server, type, mode);
+  const resolvedPlayer = await overwatch.resolvePlayer();
+  const resolved = await overwatch.resolveProfile(resolvedPlayer);
+  const output = await overwatch.fetchData(resolved.careerLink);
+  if (output instanceof Buffer) return msg.send({ files: [{ attachment: output, name: "overwatch.png" }] });
+  const { overview, title, data, url } = output;
   const embed = new client.methods.Embed()
+    .setURL(url)
     .setColor(msg.color)
-    .setThumbnail(profile.portrait)
-    .setTitle(`Overwatch Stats: ${resolvedPlayer.battletag.replace("-", "#")} (${mode})`)
+    .setThumbnail(overview.profile.avatar)
+    .setTitle(`Overwatch Stats: ${resolved.platformDisplayName} [${mode === "quickplay" ? "QP" : "COMP"}]`)
     .setFooter("📊 Statistics")
-    .setDescription([`**❯ ${data.title}**`, "", data.output].join("\n"))
+    .setDescription(`**❯ ${title}**\n\n${data}`)
     .setTimestamp();
   return msg.send({ embed });
 };
@@ -144,20 +157,15 @@ exports.conf = {
   requiredFuncs: [],
   spam: false,
   mode: 1,
-  cooldown: 10,
+  cooldown: 2,
 };
-
-const heroList = ["reaper", "tracer", "mercy", "hanzo", "torbjorn",
-  "reinhardt", "pharah", "winston", "widowmaker", "bastion", "symmetra",
-  "zenyatta", "genji", "roadhog", "mccree", "junkrat", "zarya", "soldier76",
-  "s76", "lucio", "dva", "mei", "sombra", "ana", "orisa"];
 
 const selectType = ["featured", "playedheroes", "combat", "assists", "records", "gamestats", "average", "awards"];
 
 exports.help = {
   name: "overwatch",
   description: "Check stats from somebody in Overwatch.",
-  usage: `<BattleTag:string> [pc|psn|xbl] [eu|us|kr] [${heroList.join("|")}] [${selectType.join("|")}] [quickplay|competitive]`,
+  usage: `<BattleTag:string> [pc|psn|xbl] [eu|us|kr] [${selectType.join("|")}] [qp|quickplay|comp|competitive]`,
   usageDelim: " ",
   extendedHelp: [
     "Cheers love! The cavalry is here!",
@@ -168,13 +176,11 @@ exports.help = {
     " ❯ BattleTag: write your battletag, in PC, it must have the format: username#0000, console players don't have discriminator number.",
     " ❯ Platform: choose between PC, PSN or XBL.",
     " ❯ Server: choose between EU (Europe), US (America) or KR (Asia).",
-    " ❯ Hero: choose the overwatch hero you want me to display info of.",
     " ❯ Type: choose between \"featured\", \"playedheroes\", \"combat\", \"assists\", \"records\", \"gamestats\", \"average\" and \"awards\".",
     " ❯ Gamemode: choose between competitive and quickplay.",
     "",
     "Notes:",
     " • If you only write your BattleTag, I'll display the profile with the higher rank. I mean, you have two profiles in PC, in EU you have 146 while in US you have 43, then, I'll display info for EU.",
-    " • If hero is not specified, I'll display all heroes.",
     " • If type is not specified, I'll display the game stats.",
     " • If gamemode not specified, I display Quickplay information.",
     "",
@@ -185,8 +191,5 @@ exports.help = {
     "",
     "&overwatch Knight#22123 competitive",
     "❯❯ I'll display the game stats for competitive, in PC (EU)",
-    "",
-    "&overwatch Knight#22123 Tracer combat",
-    "❯❯ I'll display all combat stats for the hero Tracer, in quickplay, PC (EU)",
   ].join("\n"),
 };

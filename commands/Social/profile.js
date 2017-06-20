@@ -3,7 +3,7 @@ const { join, sep, resolve } = require("path");
 const Canvas = require("canvas");
 const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 
-Canvas.registerFont(resolve(join(__dirname, "../../assets/fonts/Roboto-Medium.ttf")), { family: "RobotoMedium" });
+Canvas.registerFont(resolve(join(__dirname, "../../assets/fonts/Roboto-Regular.ttf")), { family: "RobotoRegular" });
 Canvas.registerFont(resolve(join(__dirname, "../../assets/fonts/Roboto-Light.ttf")), { family: "RobotoLight" });
 
 const profileTemplate = resolve(join(__dirname, "../../assets/images/social/profile-foreground.png"));
@@ -44,7 +44,7 @@ const showProfile = async (client, user) => {
   ctx.fillRect(235, 356, Prog, 5);
 
   /* Draw the information */
-  ctx.font = "35px RobotoMedium";
+  ctx.font = "35px RobotoRegular";
   ctx.fillStyle = "rgb(23,23,23)";
   ctx.fillText(user.username, 227, 73);
   ctx.font = "25px RobotoLight";
@@ -56,7 +56,7 @@ const showProfile = async (client, user) => {
   ctx.fillText(reputation, 594, 181);
   ctx.fillText(points, 594, 346);
   ctx.textAlign = "center";
-  ctx.font = "40px RobotoMedium";
+  ctx.font = "40px RobotoRegular";
   ctx.fillText(currentLevel, 576, 100);
 
   /* Draw the avatar */

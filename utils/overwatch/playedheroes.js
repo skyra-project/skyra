@@ -30,44 +30,47 @@ const colours = {
   Orisa: "dc9a00",
 };
 
-const roundRect = (ctx, x, y, width, height, radius = 5) => {
-  radius = { tl: radius, tr: radius, br: radius, bl: radius };
-
-  ctx.beginPath();
-  ctx.moveTo(x + radius.tl, y);
-  ctx.lineTo((x + width) - radius.tr, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-  ctx.lineTo(x + width, (y + height) - radius.br);
-  ctx.quadraticCurveTo(x + width, y + height, (x + width) - radius.br, y + height);
-  ctx.lineTo(x + radius.bl, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, (y + height) - radius.bl);
-  ctx.lineTo(x, y + radius.tl);
-  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-  ctx.closePath();
+const fillRoundRect = (ctx, x, y, width, height, radius = 5) => {
+  if (width > 0 && height > 0) {
+    radius = Math.min(radius, width / 2, height / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    ctx.fill();
+  }
 };
 
-module.exports = async (profile) => {
+module.exports = async (profile, options) => {
   const canvas = new Canvas(400, 420);
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "rgb(64, 82, 117)";
   ctx.fillRect(0, 0, 400, 420);
-  ctx.shadowColor = "rgba(23, 23, 23, 0.3)";
-  const heroes = Object.entries(profile.quickplay.playedHeroes);
+  ctx.fillStyle = "rgb(255, 255, 255)";
+  ctx.font = "36px Overwatch";
+  ctx.fillText("TOP HEROES", 20, 37);
+  ctx.font = "23px Overwatch";
+  ctx.shadowColor = "rgba(51, 51, 51, 0.38)";
+  const heroes = Object.entries(profile[options.gamemode].playedHeroes);
   await Promise.all(heroes.slice(0, 10).map(([hero, { percent, data }], index) => new Promise((res) => {
-    ctx.font = "23px Overwatch";
-    ctx.textAlign = "left";
     const offsetY = (index * 37) + 45;
     ctx.fillStyle = "rgba(24, 34, 62, 0.7)";
-    roundRect(ctx, 10, offsetY, 380, 32, 6);
-    ctx.fill();
+    fillRoundRect(ctx, 10, offsetY, 380, 32, 6);
     ctx.fillStyle = `#${colours[hero]}`;
-    roundRect(ctx, 12, 2 + offsetY, 376 * (percent / 100), 28, 6);
-    ctx.fill();
-    ctx.fillStyle = "rgb(240, 237, 242)";
+    fillRoundRect(ctx, 12, 2 + offsetY, 376 * (percent / 100), 28, 6);
+    ctx.fillStyle = "rgb(255, 255, 255)";
     ctx.save();
     ctx.transform(1, 0, -0.3, 1, 20 + (index * 11), 0);
     ctx.shadowOffsetX = 2;
     ctx.shadowOffsetY = 2;
+    ctx.shadowBlur = 1;
     ctx.fillText(hero.toUpperCase(), 20, 24 + offsetY);
     ctx.textAlign = "right";
     ctx.fillText(data, 380, 25 + offsetY);

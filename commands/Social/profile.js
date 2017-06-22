@@ -1,13 +1,13 @@
 const { readFile } = require("fs-nextra");
-const { join, sep, resolve } = require("path");
+const { join, sep } = require("path");
 const Canvas = require("canvas");
 const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 
-Canvas.registerFont(resolve(join(__dirname, "../../assets/fonts/Roboto-Regular.ttf")), { family: "RobotoRegular" });
-Canvas.registerFont(resolve(join(__dirname, "../../assets/fonts/Roboto-Light.ttf")), { family: "RobotoLight" });
+Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Regular.ttf"), { family: "RobotoRegular" });
+Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { family: "RobotoLight" });
 
-const profileTemplate = resolve(join(__dirname, "../../assets/images/social/profile-foreground.png"));
-const themes = resolve(join(__dirname, "../../assets/images/social/themes/")) + sep;
+const profileTemplate = join(__dirname, "../../assets/images/social/profile-foreground.png");
+const themes = join(__dirname, "../../assets/images/social/themes/") + sep;
 
 const showProfile = async (client, user) => {
   const { points, color, banners, exists, money, reputation } = user.profile;

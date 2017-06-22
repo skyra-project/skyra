@@ -84,7 +84,7 @@ class Overwatch {
         output.title = "Featured";
         output.data = `**Competitive rank**: ${overview.competitiveRank.rank ? this.resolveEmoji(overview.competitiveRank.rank) : "Unranked"}\n${list(statistics.highlight)}`;
         return output;
-      case "playedheroes": return OVERWATCH("playedheroes", data);
+      case "playedheroes": return OVERWATCH("playedheroes", data, { platform: this.platform, server: this.server, gamemode: this.gamemode });
       case "combat":
         output.title = "Combat";
         output.data = list(statistics.stats.Combat);

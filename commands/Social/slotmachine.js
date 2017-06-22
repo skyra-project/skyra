@@ -71,21 +71,26 @@ exports.run = async (client, msg, [coins]) => {
   slotmachine.checkCurrency(coins);
 
   const roll = slotmachine.generateRoll();
-  const { win, winnings } = slotmachine.calculateWinnings(coins, roll);
-  const output = slotmachine.showRoll(roll);
+  const results = slotmachine.calculateWinnings(coins, roll);
 
+  if (results.win) results.winnings = await client.Social.win(msg, results.winnings).catch(e => msg.error(e, true));
+  else msg.author.profile.use(coins).catch(e => msg.error(e, true));
+
+  if (msg.channel.permissionsFor(msg.guild.me).has("ATTACH_FILES")) {
+    const output = await this.canvas(client, roll, results);
+    return msg.channel.send({ files: [{ attachment: output, name: "test.png" }] });
+  }
+  const output = slotmachine.showRoll(roll);
   const embed = new client.methods.Embed();
-  if (win) {
-    const amount = await client.Social.win(msg, winnings).then(() => winnings).catch(e => msg.error(e, true));
+  if (results.win) {
     embed.setColor(0x5C913B)
       .setDescription([
         "**You rolled:**\n",
         output,
         "\n**Congratulations!**",
-        `You won ${amount}${msg.shiny}!`,
+        `You won ${results.winnings}${msg.shiny}!`,
       ].join("\n"));
   } else {
-    await msg.author.profile.use(coins);
     embed.setColor(0xBE1931)
       .setDescription([
         "**You rolled:**\n",
@@ -125,4 +130,81 @@ exports.help = {
     "Examples:",
     "&slotmachine 200",
   ].join("\n"),
+};
+
+const { readFile } = require("fs-nextra");
+const Canvas = require("canvas");
+const { join } = require("path");
+
+Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { family: "RobotoLight" });
+const iconsPath = join(__dirname, "../../assets/images/social/sm-icons.png");
+const shinyPath = join(__dirname, "../../assets/images/social/shiny-icon.png");
+
+const coordinates = [
+    { x: 14, y: 12 },
+    { x: 56, y: 12 },
+    { x: 98, y: 12 },
+    { x: 14, y: 54 },
+    { x: 56, y: 54 },
+    { x: 98, y: 54 },
+    { x: 14, y: 96 },
+    { x: 56, y: 96 },
+    { x: 98, y: 96 },
+];
+
+const iconSize = 38;
+
+const resolveSprite = {
+  "💎": { x: 0, y: 0 },
+  "🔱": { x: iconSize, y: 0 },
+  "💰": { x: iconSize * 2, y: 0 },
+  "❤": { x: 0, y: iconSize },
+  "⭐": { x: iconSize, y: iconSize },
+  "🎲": { x: iconSize * 2, y: iconSize },
+  "🔅": { x: 0, y: iconSize * 2 },
+  "🎉": { x: iconSize, y: iconSize * 2 },
+  "🍒": { x: iconSize * 2, y: iconSize * 2 },
+};
+
+exports.canvas = async (client, roll, { win, winnings }) => {
+  const length = win ? 300 : 150;
+  const canvas = new Canvas(length, 150);
+  const icon = new Canvas.Image();
+  const ctx = canvas.getContext("2d");
+
+  ctx.save();
+  ctx.shadowColor = "rgba(51, 51, 51, 0.38)";
+  ctx.fillStyle = "rgb(255, 255, 255)";
+  ctx.shadowBlur = 5;
+  client.funcs.canvas.fillRoundRect(ctx, 4, 4, length - 8, 142, 5);
+  ctx.restore();
+
+  icon.src = await readFile(iconsPath);
+
+  await Promise.all(roll.map((value, index) => new Promise((res) => {
+    const { x, y } = resolveSprite[value];
+    const coord = coordinates[index];
+    ctx.drawImage(icon, x, y, iconSize, iconSize, coord.x, coord.y, iconSize, iconSize);
+    res();
+  })));
+
+  ctx.save();
+  ctx.fillStyle = win ? "rgb(64, 224, 15)" : "rgb(237, 29, 2)";
+  ctx.shadowColor = win ? "rgba(64, 224, 15, 0.4)" : "rgba(237, 29, 2, 0.4)";
+  ctx.shadowBlur = 4;
+  ctx.fillRect(54, 54, 2, 38);
+  ctx.fillRect(96, 54, 2, 38);
+  ctx.restore();
+
+  if (win) {
+    const shiny = new Canvas.Image();
+    shiny.src = await readFile(shinyPath);
+    ctx.font = "30px RobotoLight";
+    ctx.textAlign = "right";
+    ctx.fillText("You won", 280, 60);
+    ctx.fillText(winnings, 250, 100);
+    ctx.drawImage(shiny, 260, 68, 20, 39);
+  }
+
+  return canvas.toBuffer();
 };

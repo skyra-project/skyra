@@ -8,26 +8,27 @@ exports.conf = {
 
 const cooldowns = new Set();
 
-exports.handleRoles = async (client, msg) => {
+exports.handleRoles = (client, msg) => {
   const autoRoles = msg.guild.configs.autoroles;
-  if (!autoRoles.length) return;
-  else if (!msg.guild.me.permissions.has("MANAGE_ROLES")) return;
+  if (!autoRoles.length || !msg.guild.me.permissions.has("MANAGE_ROLES")) return null;
 
   const giveRoles = [];
   // const invalidRoles = [];
   autoRoles.forEach((roleObject) => {
-    const role = msg.guild.roles.has(roleObject.id);
-    if (role && msg.member.roles.has(role.id) && msg.author.profile.points > roleObject.points) giveRoles.push(role);
+    const role = msg.guild.roles.get(roleObject.id);
+    if (role && msg.member.points.score >= roleObject.points && !msg.member.roles.has(role.id)) giveRoles.push(role);
     // else invalidRoles.push(roleObject);
   });
 
   // if (invalidRoles.length) this.destroy(client, msg, invalidRoles);
-  if (giveRoles.length) await msg.member.addRoles(giveRoles);
+  switch (giveRoles.length) {
+    case 0: return null;
+    case 1: return msg.member.addRole(giveRoles[0]);
+    default: return msg.member.addRoles(giveRoles);
+  }
 };
 
-exports.ensureFetchMember = async (msg) => {
-  if (!msg.member) await msg.guild.fetchMember(msg.author.id);
-};
+exports.ensureFetchMember = msg => (!msg.member ? msg.guild.fetchMember(msg.author.id) : null);
 
 exports.cooldown = (msg) => {
   if (cooldowns.has(msg.author.id)) return true;

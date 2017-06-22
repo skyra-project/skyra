@@ -16,7 +16,7 @@ exports.conf = {
   runIn: ["text"],
   aliases: ["connect"],
   permLevel: 0,
-  botPerms: [],
+  botPerms: ["CONNECT"],
   requiredFuncs: [],
   spam: false,
   mode: 2,

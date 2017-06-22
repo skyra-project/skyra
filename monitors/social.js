@@ -39,7 +39,7 @@ exports.cooldown = (msg) => {
 
 exports.run = async (client, msg) => {
   if (!msg.guild || msg.author.bot) return;
-  if (msg.guild.configs.ignoreChannels.includes(msg.guild.id)) return;
+  if (msg.guild.configs.ignoreChannels.includes(msg.channel.id)) return;
 
   if (this.cooldown(msg)) return;
 

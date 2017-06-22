@@ -12,7 +12,11 @@ exports.set = (guild, object) => data.set(guild.id || guild, object);
 
 exports.insert = (member, object) => this.get(member.guild).set(member.id, object);
 
-exports.delete = guild => data.delete(guild.id || guild);
+exports.delete = async (guild) => {
+  const output = await RethinkDB.delete("localScores", guild.id || guild);
+  data.delete(guild.id || guild);
+  return output;
+};
 
 exports.fetchAll = () => data;
 

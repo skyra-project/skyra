@@ -16,15 +16,15 @@ exports.fetchAll = () => data;
 
 /* Methods to create new Configuration Objects */
 exports.create = async (user) => {
-  const object = this.userData;
-  object.id = user.id;
-  const output = await RethinkDB.add("users", object);
-  this.set(user, object);
-  return output;
+    const object = this.userData;
+    object.id = user.id;
+    const output = await RethinkDB.add("users", object);
+    this.set(user, object);
+    return output;
 };
 
 exports.userData = {
-  points: 0,
-  color: "ff239d",
-  banners: {},
+    points: 0,
+    color: "ff239d",
+    banners: {},
 };

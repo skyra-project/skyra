@@ -4,20 +4,20 @@ const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
 /* eslint-disable valid-jsdoc, no-underscore-dangle, no-prototype-builtins */
 class WatchPoint {
-  constructor(client) {
-    Object.defineProperty(this, "_client", { value: client });
-    Object.defineProperty(this, "request", { value: client.funcs.fetch });
-    Object.defineProperty(this, "_keys", { value: constants.tokens.wpo });
-    Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._keys.user}:${this._keys.password}`).toString("base64")}` });
-  }
+    constructor(client) {
+        Object.defineProperty(this, "_client", { value: client });
+        Object.defineProperty(this, "request", { value: client.funcs.fetch });
+        Object.defineProperty(this, "_keys", { value: constants.tokens.wpo });
+        Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._keys.user}:${this._keys.password}`).toString("base64")}` });
+    }
 
-  API(method, query) {
-    return this.request(`http://www.watchpointoasis.com/api/currency/${query}`, {
-      headers: { Authorization: this.auth },
-      json: true,
-      method,
-    });
-  }
+    API(method, query) {
+        return this.request(`http://www.watchpointoasis.com/api/currency/${query}`, {
+            headers: { Authorization: this.auth },
+            json: true,
+            method,
+        });
+    }
 
   /**
     * Method [GET]
@@ -25,18 +25,18 @@ class WatchPoint {
     * Get an array of objects containing data from all users.
     * @returns {Object}
     */
-  list(guild = $("Guild")) {
-    return this.API("GET", `list/${guild}`)
+    list(guild = $("Guild")) {
+        return this.API("GET", `list/${guild}`)
       .then(body => this.cachelist(guild, body));
-  }
+    }
 
-  cachelist(guild, data) {
-    if (this._client.cache.wpo.has(guild)) this._client.cache.wpo.delete(guild);
-    this._client.cache.wpo.set(guild, new Map());
-    const guildCache = this._client.cache.wpo.get(guild);
-    data.forEach(profile => guildCache.set(profile.UserId, profile));
-    return this._client.cache.wpo.get(guild.id);
-  }
+    cachelist(guild, data) {
+        if (this._client.cache.wpo.has(guild)) this._client.cache.wpo.delete(guild);
+        this._client.cache.wpo.set(guild, new Map());
+        const guildCache = this._client.cache.wpo.get(guild);
+        data.forEach(profile => guildCache.set(profile.UserId, profile));
+        return this._client.cache.wpo.get(guild.id);
+    }
 
   /**
     * Method [POST]
@@ -44,11 +44,11 @@ class WatchPoint {
     * Add a new record to the database.
     * @returns {Object}
     */
-  set(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
-    const balance = parseInt(bal);
-    if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
-    return this.API("POST", `set/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
-  }
+    set(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
+        const balance = parseInt(bal);
+        if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
+        return this.API("POST", `set/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
+    }
 
   /**
     * Method [GET]
@@ -56,9 +56,9 @@ class WatchPoint {
     * Get the data from a user.
     * @returns {Object}
     */
-  get(guild = $("Guild"), user = $("User")) {
-    return this.API("GET", `get/${guild}/${user}`);
-  }
+    get(guild = $("Guild"), user = $("User")) {
+        return this.API("GET", `get/${guild}/${user}`);
+    }
 
   /**
     * Method [POST]
@@ -67,11 +67,11 @@ class WatchPoint {
     * Reason is optional.
     * @returns {Object}
     */
-  use(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
-    const balance = parseInt(bal);
-    if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
-    return this.API("POST", `use/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
-  }
+    use(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
+        const balance = parseInt(bal);
+        if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
+        return this.API("POST", `use/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
+    }
 
   /**
     * Method [PUT]
@@ -80,11 +80,11 @@ class WatchPoint {
     * Reason is optional.
     * @returns {Object}
     */
-  add(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
-    const balance = parseInt(bal);
-    if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
-    return this.API("PUT", `add/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
-  }
+    add(guild = $("Guild"), user = $("User"), bal = $("Balance"), reason = "") {
+        const balance = parseInt(bal);
+        if (isNaN(balance)) throw new TypeError(`${bal} is not a valid Number.`);
+        return this.API("PUT", `add/${guild}/${user}/${balance}/${encodeURIComponent(reason)}`);
+    }
 
   /**
     * Method [GET]
@@ -92,9 +92,9 @@ class WatchPoint {
     * Get a list of all modifications.
     * @returns {Object}
     */
-  history(guild = $("Guild"), user = $("User")) {
-    return this.API("GET", `history/${guild}/${user}`);
-  }
+    history(guild = $("Guild"), user = $("User")) {
+        return this.API("GET", `history/${guild}/${user}`);
+    }
 }
 
 module.exports = WatchPoint;

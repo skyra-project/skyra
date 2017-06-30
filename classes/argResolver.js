@@ -85,14 +85,14 @@ module.exports = class ArgResolver extends Resolver {
             if (min === max) throw `${currentUsage.possibles[possible].name} must be exactly ${min} characters.`;
             throw `${currentUsage.possibles[possible].name} must be between ${min} and ${max} characters.`;
         } else if (min) {
-          if (arg.length >= min) return arg;
-          if (currentUsage.type === "optional" && !repeat) return null;
-          throw `${currentUsage.possibles[possible].name} must be longer than ${min} characters.`;
-      } else if (max) {
-        if (arg.length <= max) return arg;
-        if (currentUsage.type === "optional" && !repeat) return null;
-        throw `${currentUsage.possibles[possible].name} must be shorter than ${max} characters.`;
-    }
+            if (arg.length >= min) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            throw `${currentUsage.possibles[possible].name} must be longer than ${min} characters.`;
+        } else if (max) {
+            if (arg.length <= max) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            throw `${currentUsage.possibles[possible].name} must be shorter than ${max} characters.`;
+        }
         return arg;
     }
 
@@ -107,19 +107,19 @@ module.exports = class ArgResolver extends Resolver {
             if (currentUsage.type === "optional" && !repeat) return null;
             throw `${currentUsage.possibles[possible].name} must be an integer.`;
         } else if (min && max) {
-          if (arg >= min && arg <= max) return arg;
-          if (currentUsage.type === "optional" && !repeat) return null;
-          if (min === max) throw `${currentUsage.possibles[possible].name} must be exactly ${min}\nSo why didn't the dev use a literal?`;
-          throw `${currentUsage.possibles[possible].name} must be between ${min} and ${max}.`;
-      } else if (min) {
-        if (arg >= min) return arg;
-        if (currentUsage.type === "optional" && !repeat) return null;
-        throw `${currentUsage.possibles[possible].name} must be greater than ${min}.`;
-    } else if (max) {
-        if (arg <= max) return arg;
-        if (currentUsage.type === "optional" && !repeat) return null;
-        throw `${currentUsage.possibles[possible].name} must be less than ${max}.`;
-    }
+            if (arg >= min && arg <= max) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            if (min === max) throw `${currentUsage.possibles[possible].name} must be exactly ${min}\nSo why didn't the dev use a literal?`;
+            throw `${currentUsage.possibles[possible].name} must be between ${min} and ${max}.`;
+        } else if (min) {
+            if (arg >= min) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            throw `${currentUsage.possibles[possible].name} must be greater than ${min}.`;
+        } else if (max) {
+            if (arg <= max) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            throw `${currentUsage.possibles[possible].name} must be less than ${max}.`;
+        }
         return arg;
     }
 
@@ -138,19 +138,19 @@ module.exports = class ArgResolver extends Resolver {
             if (currentUsage.type === "optional" && !repeat) return null;
             throw `${currentUsage.possibles[possible].name} must be a valid number.`;
         } else if (min && max) {
-          if (arg >= min && arg <= max) return arg;
-          if (currentUsage.type === "optional" && !repeat) return null;
-          if (min === max) throw `${currentUsage.possibles[possible].name} must be exactly ${min}\nSo why didn't the dev use a literal?`;
-          throw `${currentUsage.possibles[possible].name} must be between ${min} and ${max}.`;
-      } else if (min) {
-        if (arg >= min) return arg;
-        if (currentUsage.type === "optional" && !repeat) return null;
-        throw `${currentUsage.possibles[possible].name} must be greater than ${min}.`;
-    } else if (max) {
-        if (arg <= max) return arg;
-        if (currentUsage.type === "optional" && !repeat) return null;
-        throw `${currentUsage.possibles[possible].name} must be less than ${max}.`;
-    }
+            if (arg >= min && arg <= max) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            if (min === max) throw `${currentUsage.possibles[possible].name} must be exactly ${min}\nSo why didn't the dev use a literal?`;
+            throw `${currentUsage.possibles[possible].name} must be between ${min} and ${max}.`;
+        } else if (min) {
+            if (arg >= min) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            throw `${currentUsage.possibles[possible].name} must be greater than ${min}.`;
+        } else if (max) {
+            if (arg <= max) return arg;
+            if (currentUsage.type === "optional" && !repeat) return null;
+            throw `${currentUsage.possibles[possible].name} must be less than ${max}.`;
+        }
         return arg;
     }
 

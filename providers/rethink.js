@@ -1,7 +1,7 @@
 const config = {
-  moduleName: "rethink",
-  enabled: true,
-  requiredModules: ["rethinkdbdash"],
+    moduleName: "rethink",
+    enabled: true,
+    requiredModules: ["rethinkdbdash"],
 };
 
 const r = require("rethinkdbdash")();

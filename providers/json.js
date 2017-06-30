@@ -5,8 +5,8 @@ let baseDir;
 
 /* eslint-disable no-confusing-arrow */
 exports.init = (client) => {
-  baseDir = resolve(`${client.clientBaseDir}${sep}bwd${sep}conf`);
-  return fs.ensureDir(baseDir).catch(err => client.emit("log", err, "error"));
+    baseDir = resolve(`${client.clientBaseDir}${sep}bwd${sep}conf`);
+    return fs.ensureDir(baseDir).catch(err => client.emit("log", err, "error"));
 };
 
   /* Table methods */
@@ -41,8 +41,8 @@ exports.deleteTable = table => this.hasTable(table)
    * @returns {Promise<Object[]>}
    */
 exports.getAll = (table) => {
-  const dir = baseDir + sep + table + sep;
-  return fs.readdir(dir)
+    const dir = baseDir + sep + table + sep;
+    return fs.readdir(dir)
     .then(files => Promise.all(files.map(file => fs.readJSON(dir + file))));
 };
 
@@ -89,13 +89,13 @@ exports.update = (table, document, data) => this.get(table, document)
 exports.delete = (table, document) => fs.unlink(`${baseDir + sep + table + sep + document}.json`);
 
 exports.conf = {
-  moduleName: "json",
-  enabled: true,
-  requiredModules: [],
+    moduleName: "json",
+    enabled: true,
+    requiredModules: [],
 };
 
 exports.help = {
-  name: "json",
-  type: "providers",
-  description: "Allows you to use JSON functionality throught Komada",
+    name: "json",
+    type: "providers",
+    description: "Allows you to use JSON functionality throught Komada",
 };

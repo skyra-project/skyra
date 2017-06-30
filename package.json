@@ -1,39 +1,54 @@
 {
-  "name": "komada",
-  "version": "0.20.3",
-  "description": "Komada: Croatian for 'pieces', is a modular bot system including reloading modules and easy to use custom commands.",
-  "homepage": "https://github.com/dirigeants/komada#readme",
-  "bugs": {
-    "url": "https://github.com/dirigeants/komada/issues"
-  },
-  "license": "MIT",
-  "author": "Evelyne Lachance",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dirigeants/komada.git"
-  },
+  "name": "skyra",
+  "version": "1.10.0",
+  "description": "Thunderlight Update | Standalone Bot",
+  "main": "./skyra.js",
   "scripts": {
-    "lint": "npm run test -- --fix",
-    "test": "eslint classes commands finalizers functions inhibitors events extendables"
+    "bot": "node skyra.js"
   },
+  "author": "kyra",
+  "license": "MIT",
   "dependencies": {
-    "chalk": "^1.1.3",
-    "discord.js": "hydrabolt/discord.js",
+    "@types/node": "^7.0.31",
+    "body-parser": "^1.17.2",
+    "bufferutil": "^3.0.1",
+    "canvas": "github:automattic/node-canvas",
+    "chalk": "^2.0.1",
+    "cheerio": "^0.22.0",
+    "discord.js": "github:hydrabolt/discord.js",
+    "ejs": "^2.5.6",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "figlet": "^1.2.0",
     "fs-nextra": "^0.1.2",
+    "gifencoder": "^1.0.6",
+    "helmet": "^3.6.1",
+    "himalaya": "^0.2.10",
+    "hsluv": "0.0.1",
+    "html-entities": "^1.2.1",
+    "html-to-text": "^3.3.0",
+    "iso-639-1": "^1.3.0",
+    "js-beautify": "^1.6.14",
+    "libsodium-wrappers": "^0.5.1",
+    "marked": "^0.3.6",
+    "mathjs": "^3.14.1",
     "moment": "^2.18.1",
     "moment-duration-format": "^1.3.0",
-    "performance-now": "^2.1.0"
-  },
-  "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-plugin-import": "^2.2.0"
-  },
-  "peerDependencies": {
-    "dotenv": "^4.0.0"
+    "node-opus": "^0.2.6",
+    "passport": "^0.3.2",
+    "passport-discord": "^0.1.2",
+    "performance-now": "^2.1.0",
+    "randomcolor": "^0.5.3",
+    "rethinkdbdash": "^2.3.29",
+    "stream-to-array": "^2.3.0",
+    "xml2js": "^0.4.17",
+    "ytdl-core": "^0.14.4"
   },
   "engines": {
     "node": ">=8.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.0.0"
   }
 }

@@ -2,40 +2,40 @@ const moment = require("moment");
 require("moment-duration-format");
 
 exports.run = async (client, msg) => {
-  const now = new Date().getTime();
+    const now = new Date().getTime();
 
-  if (msg.author.profile.timeDaily + 43200000 > now) {
-    const remaining = (msg.author.profile.timeDaily + 43200000) - now;
-    return msg.send(`Dailies are available in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`);
-  }
-  const money = await msg.author.profile.win(200, msg.guild);
-  await msg.author.profile.update({ timeDaily: now });
-  return msg.send(`You have just earned ${money}${msg.shiny}! Next dailies are available in 12 hours.`);
+    if (msg.author.profile.timeDaily + 43200000 > now) {
+        const remaining = (msg.author.profile.timeDaily + 43200000) - now;
+        return msg.send(`Dailies are available in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`);
+    }
+    const money = await msg.author.profile.win(200, msg.guild);
+    await msg.author.profile.update({ timeDaily: now });
+    return msg.send(`You have just earned ${money}${msg.shiny}! Next dailies are available in 12 hours.`);
 };
 
 
 exports.conf = {
-  enabled: true,
-  runIn: ["text"],
-  aliases: [],
-  permLevel: 0,
-  botPerms: [],
-  requiredFuncs: [],
-  spam: true,
-  mode: 1,
-  cooldown: 10,
+    enabled: true,
+    runIn: ["text"],
+    aliases: [],
+    permLevel: 0,
+    botPerms: [],
+    requiredFuncs: [],
+    spam: true,
+    mode: 1,
+    cooldown: 10,
 };
 
 exports.help = {
-  name: "daily",
-  description: "Get your daily shekels.",
-  usage: "",
-  usageDelim: " ",
-  extendedHelp: [
-    "Skyra, where is my money?",
-    "",
-    "I want to play slotmachines...",
-    "",
-    "You can claim dailies twice a day (every 12h), make sure you don't waste it!",
-  ].join("\n"),
+    name: "daily",
+    description: "Get your daily shekels.",
+    usage: "",
+    usageDelim: " ",
+    extendedHelp: [
+        "Skyra, where is my money?",
+        "",
+        "I want to play slotmachines...",
+        "",
+        "You can claim dailies twice a day (every 12h), make sure you don't waste it!",
+    ].join("\n"),
 };

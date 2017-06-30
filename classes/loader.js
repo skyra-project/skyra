@@ -33,9 +33,9 @@ module.exports = class Loader {
             this.loadProviders(),
             this.loadExtendables(),
         ]).catch((err) => {
-          console.error(err);
-          process.exit();
-      });
+            console.error(err);
+            process.exit();
+        });
         this.client.emit("log", [
             `Loaded ${funcs} functions.`,
             `Loaded ${commands} commands, with ${aliases} aliases.`,
@@ -330,16 +330,16 @@ module.exports = class Loader {
             files.forEach(file => loadNew.call(this, file, dir));
         } catch (error) {
             if (error.code === "MODULE_NOT_FOUND") {
-              const missingModule = /'([^']+)'/g.exec(error.toString());
-              if (/\/|\\/.test(missingModule)) throw `\`\`\`${error.stack || error}\`\`\``;
-              await this.installNPM(missingModule[1]).catch((err) => {
-                console.error(err);
-                process.exit();
-            });
-              startOver.call(this, files[0]);
-          } else {
-              throw `\`\`\`${error.stack || error}\`\`\``;
-          }
+                const missingModule = /'([^']+)'/g.exec(error.toString());
+                if (/\/|\\/.test(missingModule)) throw `\`\`\`${error.stack || error}\`\`\``;
+                await this.installNPM(missingModule[1]).catch((err) => {
+                    console.error(err);
+                    process.exit();
+                });
+                startOver.call(this, files[0]);
+            } else {
+                throw `\`\`\`${error.stack || error}\`\`\``;
+            }
         }
     }
 

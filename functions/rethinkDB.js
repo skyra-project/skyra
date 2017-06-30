@@ -29,8 +29,8 @@ exports.sync = table => r.table(table).sync().run();
    * @returns {Object}
    */
 exports.createTable = table => this.hasTable(table).then((data) => {
-  if (data) throw new Error("This table already exists.");
-  return r.tableCreate(table).run();
+    if (data) throw new Error("This table already exists.");
+    return r.tableCreate(table).run();
 });
 
   /**
@@ -40,8 +40,8 @@ exports.createTable = table => this.hasTable(table).then((data) => {
    * @returns {Object}
    */
 exports.deleteTable = table => this.hasTable(table).then((data) => {
-  if (!data) throw new Error("This table does not exist.");
-  return r.tableDrop(table).run();
+    if (!data) throw new Error("This table does not exist.");
+    return r.tableDrop(table).run();
 });
 
 /* Document methods */
@@ -79,8 +79,8 @@ exports.getRandom = table => this.all(table).then(data => data[Math.floor(Math.r
    * @returns {Object}
    */
 exports.add = (table, doc) => {
-  if (!(doc instanceof Object)) throw new Error("Invalid input");
-  return r.table(table).insert(doc).run();
+    if (!(doc instanceof Object)) throw new Error("Invalid input");
+    return r.table(table).insert(doc).run();
 };
 
   /**
@@ -92,8 +92,8 @@ exports.add = (table, doc) => {
    * @returns {Object}
    */
 exports.update = (table, id, doc) => {
-  if (!(doc instanceof Object)) throw new Error("Invalid input");
-  return r.table(table).get(id).update(doc).run();
+    if (!(doc instanceof Object)) throw new Error("Invalid input");
+    return r.table(table).get(id).update(doc).run();
 };
 
   /**
@@ -105,8 +105,8 @@ exports.update = (table, id, doc) => {
    * @returns {Object}
    */
 exports.replace = (table, id, doc) => {
-  if (!(doc instanceof Object)) throw new Error("Invalid input");
-  return r.table(table).get(id).replace(doc).run();
+    if (!(doc instanceof Object)) throw new Error("Invalid input");
+    return r.table(table).get(id).replace(doc).run();
 };
 
   /**
@@ -140,10 +140,10 @@ exports.append = (table, id, appendArray, doc) => r.table(table).get(id).update(
    * @returns {Object}
    */
 exports.updateArray = (table, id, uArray, index, doc) => {
-  if (typeof index === "number") {
-    return r.table(table).get(id).update({ [uArray]: r.row(uArray).changeAt(index, r.row(uArray).nth(index).merge(doc)) }).run();
-  }
-  return r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d("id").eq(index), d.merge(doc), d)) }).run();
+    if (typeof index === "number") {
+        return r.table(table).get(id).update({ [uArray]: r.row(uArray).changeAt(index, r.row(uArray).nth(index).merge(doc)) }).run();
+    }
+    return r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d("id").eq(index), d.merge(doc), d)) }).run();
 };
 
   /**
@@ -156,10 +156,10 @@ exports.updateArray = (table, id, uArray, index, doc) => {
    * @returns {Object}
    */
 exports.removeFromArray = (table, id, uArray, index) => {
-  if (typeof index === "number") {
-    return r.table(table).get(id).update({ [uArray]: r.row(uArray).deleteAt(index) }).run();
-  }
-  return r.table(table).get(id).update({ [uArray]: r.row(uArray).filter(it => it("id").ne(index)) }).run();
+    if (typeof index === "number") {
+        return r.table(table).get(id).update({ [uArray]: r.row(uArray).deleteAt(index) }).run();
+    }
+    return r.table(table).get(id).update({ [uArray]: r.row(uArray).filter(it => it("id").ne(index)) }).run();
 };
 
   /**
@@ -172,9 +172,9 @@ exports.removeFromArray = (table, id, uArray, index) => {
    * @returns {Object}
    */
 exports.getFromArray = async (table, id, uArray, index) => {
-  if (typeof index === "number") {
-    return r.table(table).get(id)(uArray).nth(index).run();
-  }
-  const result = await r.table(table).get(id)(uArray).filter(r.row("id").eq(index)).run();
-  return result.length ? result[0] : null;
+    if (typeof index === "number") {
+        return r.table(table).get(id)(uArray).nth(index).run();
+    }
+    const result = await r.table(table).get(id)(uArray).filter(r.row("id").eq(index)).run();
+    return result.length ? result[0] : null;
 };

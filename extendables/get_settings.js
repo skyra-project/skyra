@@ -8,7 +8,7 @@ exports.conf = {
 };
 
 const init = (guild) => {
-    const guildSetting = new GuildConfig(guild);
+    const guildSetting = new GuildSetting(guild);
     GuildManager.set(guild, guildSetting);
     return guildSetting;
 };

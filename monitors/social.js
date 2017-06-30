@@ -37,6 +37,12 @@ exports.cooldown = (msg) => {
   return false;
 };
 
+exports.calc = (guild) => {
+  let random = Math.max(Math.ceil(Math.random() * 8), 4);
+  if (guild) random *= guild.configs.monitorBoost;
+  return Math.round(random);
+};
+
 exports.run = async (client, msg) => {
   if (!msg.guild || msg.author.bot) return;
   if (msg.guild.configs.ignoreChannels.includes(msg.channel.id)) return;
@@ -45,7 +51,7 @@ exports.run = async (client, msg) => {
 
   try {
     await this.ensureFetchMember(msg);
-    const add = client.Social.calc(msg);
+    const add = this.calc(msg.guild);
     await msg.author.profile.update({ points: msg.author.profile.points + add });
     await msg.member.points.update(msg.member.points.score + add);
 

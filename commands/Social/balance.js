@@ -16,6 +16,6 @@ exports.help = {
   name: "balance",
   description: "Check your balance!",
   usage: "",
-  usageDelim: " ",
+  usageDelim: "",
   extendedHelp: "",
 };

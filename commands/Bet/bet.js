@@ -12,7 +12,7 @@ exports.run = async (client, msg, [money]) => {
   else if (msg.author.profile.money < taxed) throw `a tax of ${this.options.tax}% is applied here, you need ${taxed} but you have: ${msg.author.profile.money}${msg.shiny}`;
 
   pool.users.set(msg.author.id, money);
-  await client.Social.use(msg.author, taxed);
+  await msg.author.profile.use(taxed);
 };
 
 exports.init = (client) => {

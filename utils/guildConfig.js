@@ -58,6 +58,14 @@ module.exports = class GuildConfig {
     return this._configuration.exists !== false;
   }
 
+  get boost() {
+    return this._configuration.boost || 1;
+  }
+
+  get monitorBoost() {
+    return this._configuration.monitorBoost || 1;
+  }
+
   get mode() {
     return this._configuration.mode || 0;
   }

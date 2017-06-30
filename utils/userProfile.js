@@ -54,6 +54,12 @@ module.exports = class UserProfile {
     return !this.exists ? MANAGER_SOCIAL_GLOBAL.create(this.user) : false;
   }
 
+  async win(money, guild) {
+    if (guild) money *= guild.configs.boost;
+    await this.add(money);
+    return money;
+  }
+
   async add(money) {
     await this.update({ money: this.money + money });
     return money;

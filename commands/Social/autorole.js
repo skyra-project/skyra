@@ -1,6 +1,6 @@
 exports.parse = (data) => {
   const args = data.split(" ");
-  if (!["list", "add", "remove", "setting"].includes(args[0])) throw "Missing a required option: (list, add, remove, setting)";
+  if (!["list", "add", "remove", "update", "setting"].includes(args[0])) throw "Missing a required option: (list, add, remove, setting)";
   const action = args[0];
   args.shift();
   let amount;
@@ -30,7 +30,8 @@ exports.run = async (client, msg, [data]) => {
       if (!role) throw "this role does not exist.";
       await client.rethink.append("guilds", msg.guild.id, "autoroles", { id: role.id, points: amount });
       await msg.guild.configs.sync();
-      return msg.send(`Added new autorole: ${role.name} (${role.id}). Points required: ${amount}`); }
+      return msg.send(`Added new autorole: ${role.name} (${role.id}). Points required: ${amount}`);
+    }
     case "remove": {
       if (!input[0]) throw "you must type a role.";
       const isSnowflake = /\d{17,21}/.test(input.join(" "));
@@ -48,6 +49,17 @@ exports.run = async (client, msg, [data]) => {
         await msg.guild.configs.sync();
         return msg.send(`Removed the autorole: ${role.name} (${role.id}), which required ${retrieved.points} points.`);
       }
+    }
+    case "update": {
+      if (!amount) throw "you must assign an amount of points for the new autorole.";
+      if (!input[0]) throw "you must type a role.";
+      const role = client.funcs.search.Role(input.join(" "), msg.guild);
+      if (!role) throw "this role does not exist.";
+      const retrieved = msg.guild.configs.autoroles.find(ar => ar.id === role.id);
+      if (!retrieved) throw "this role is not configured as an autorole.";
+      await client.rethink.updateArray("guilds", msg.guild.id, "autoroles", role.id, { points: amount });
+      await msg.guild.configs.sync();
+      return msg.send(`Updated autorole: ${role.name} (${role.id}). Points required: ${amount} (before: ${retrieved.points})`);
     }
     case "setting": return this.settingHandler(client, msg, input);
     default: throw new Error(`unknown action: ${action}`);
@@ -122,6 +134,7 @@ exports.help = {
     "Skyra, autorole list                :: I will show you all the autoroles.",
     "Skyra, autorole add <amount> <role> :: Add a new autorole.",
     "Skyra, autorole remove <role>       :: Remove an autorole from the list.",
+    "Skyra, autorole update <role>       :: Changed the required amount of points for an existing autorole.",
     "",
     "= Reminder =",
     "The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.",

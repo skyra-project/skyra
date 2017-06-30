@@ -73,7 +73,7 @@ exports.run = async (client, msg, [coins]) => {
   const roll = slotmachine.generateRoll();
   const results = slotmachine.calculateWinnings(coins, roll);
 
-  if (results.win) results.winnings = await client.Social.win(msg, results.winnings).catch(e => msg.error(e, true));
+  if (results.win) results.winnings = await msg.author.profile.win(results.winnings, msg.guild).catch(e => msg.error(e, true));
   else msg.author.profile.use(coins).catch(e => msg.error(e, true));
 
   if (msg.channel.permissionsFor(msg.guild.me).has("ATTACH_FILES")) {

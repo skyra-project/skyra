@@ -15,6 +15,7 @@ exports.run = async (client, msg) => {
     const embed = new client.methods.Embed()
         .setColor(msg.color)
         .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[index]}.jpg`);
+
     return msg.send({ embed });
 };
 

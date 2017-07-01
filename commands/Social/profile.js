@@ -1,9 +1,9 @@
-const { fetchAvatar } = require("../../functions/wrappers");
+const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 const { User: fetchUser } = require("../../functions/search");
+const { fetchAvatar } = require("../../functions/wrappers");
 const { readFile } = require("fs-nextra");
 const { join, sep } = require("path");
 const Canvas = require("canvas");
-const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
 
 Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Regular.ttf"), { family: "RobotoRegular" });
 Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { family: "RobotoLight" });

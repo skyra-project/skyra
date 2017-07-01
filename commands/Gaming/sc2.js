@@ -1,5 +1,5 @@
-const snekfetch = require("snekfetch");
 const { getConfig } = require("../../utils/constants");
+const snekfetch = require("snekfetch");
 
 /* Autentification */
 const { blizzard } = getConfig.tokens;
@@ -13,10 +13,12 @@ const realms = {
     4: "South-East Asia",
 };
 
+const fetchURL = (id, server, name) => snekfetch.get(`https://us.api.battle.net/sc2/profile/${id}/${server}/${name}/?locale=en_US&apikey=${blizzard}`).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg, [server, name, id]) => {
     await msg.send("`Fetching data...`");
     server = realmsID[server.toLowerCase()];
-    const data = await snekfetch.get(`https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${blizzard}`).then(d => JSON.parse(d.text));
+    const data = await fetchURL(id, server, encodeURIComponent(name));
     const embed = new client.methods.Embed()
         .setTitle(`StarCraft 2 Stats: ${data.displayName} (${data.id})`)
         .setColor(0x0B947F)
@@ -39,6 +41,7 @@ exports.run = async (client, msg, [server, name, id]) => {
         .setFooter("📊 Statistics")
         .setThumbnail("http://tecnoslave.com/wp-content/uploads/2012/08/Starcraft-II-logo.png")
         .setTimestamp();
+
     return msg.send({ embed });
 };
 

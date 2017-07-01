@@ -1,13 +1,6 @@
-const snekfetch = require("snekfetch");
 const { get: fetchProfile } = require("../../functions/overwatch");
-
 const OVERWATCH = require("../../utils/overwatch.js");
-
-// function progressBar(Prog) {
-//   const X = "———————————————————————————————————".slice(0, Prog).replace(/—/g, "■");
-//   const Y = "———————————————————————————————————".slice(Prog);
-//   return X + Y;
-// }
+const snekfetch = require("snekfetch");
 
 const emojis = {
     bronze: { emoji: "<:Bronze:326683073691385856>", text: "(B)" },
@@ -39,20 +32,17 @@ class Overwatch {
         if (tag || this.platform === "pc") {
             if (!tag) throw "you must write your discriminator number.";
             else if (!/\b\w{4,5}\b/.test(tag)) throw "you must write a valid discriminator number.";
-            else {
-                return ({
-                    battletag: `${this.user.split("#")[0]}-${tag}`,
-                    user: this.user.split("#")[0],
-                    tag,
-                });
-            }
-        } else {
             return ({
-                battletag: this.user,
-                user: this.user,
-                tag: null,
+                battletag: `${this.user.split("#")[0]}-${tag}`,
+                user: this.user.split("#")[0],
+                tag,
             });
         }
+        return ({
+            battletag: this.user,
+            user: this.user,
+            tag: null,
+        });
     }
 
     async resolveProfile(player) {
@@ -110,7 +100,7 @@ class Overwatch {
                 output.title = "Awards";
                 output.data = list(statistics.stats["Match Awards"]);
                 return output;
-      // no default
+            // no default
         }
         return null;
     }
@@ -146,6 +136,7 @@ exports.run = async (client, msg, [user, platform, server, type = "featured", mo
         .setFooter("📊 Statistics")
         .setDescription(`**❯ ${title}**\n\n${data}`)
         .setTimestamp();
+
     return msg.send({ embed });
 };
 

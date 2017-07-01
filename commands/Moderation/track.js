@@ -37,7 +37,7 @@ exports.run = async (client, msg, [channel = msg.channel]) => {
     channel = await fetchChannel(channel, this.guild);
 
     if (!channel.tracking) {
-      /* Apply properties to Channel */
+        /* Apply properties to Channel */
         channel.tracking = true;
         channel.tracker = msg.author.id;
         channel.trackertimer = msg.createdTimestamp;
@@ -53,11 +53,11 @@ exports.run = async (client, msg, [channel = msg.channel]) => {
             return false;
         }, 5000);
 
-        return msg.author.send([
-            `Ok, I'll track ${channel} for you. Use \`&track\` again to stop it.`,
-            "Otherwise, I'll stop tracking after 15 minutes.",
-            "When the tracker stops, I'll send a `.txt` file here.",
-        ].join("\n"));
+        return msg.author.send(
+            `Ok, I'll track ${channel} for you. Use \`&track\` again to stop it.\n` +
+            "Otherwise, I'll stop tracking after 15 minutes.\n" +
+            "When the tracker stops, I'll send a `.txt` file here.\n",
+        );
     } else if (msg.author.id === channel.tracker) {
         const filename = `${channel.tracker}-${channel.id}-${channel.trackertimer}.txt`;
         const sendname = `${msg.author.username}-#${channel.name}.txt`;

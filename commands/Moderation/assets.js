@@ -7,9 +7,9 @@ exports.run = async (client, msg, [piece]) => {
             await ASSETS.createMuted(msg);
             break;
         }
-    // no default
+        // no default
     }
-  // TODO: Do more assets.
+    // TODO: Do more assets.
 };
 
 exports.conf = {

@@ -1,11 +1,10 @@
 const exec = require("util").promisify(require("child_process").exec);
 
 exports.run = async (client, msg, [input]) => {
-    if (msg.deletable) msg.nuke();
     const result = await exec(input);
 
-    const output = result.stdout ? `**\`OUTPUT\`**${"```"}\n${result.stdout}\n${"```"}` : "";
-    const outerr = result.stderr ? `**\`ERROR\`**${"```"}\n${result.stderr}\n${"```"}` : "";
+    const output = result.stdout ? `**\`OUTPUT\`**${"```sh"}\n${result.stdout}\n${"```"}` : "";
+    const outerr = result.stderr ? `**\`ERROR\`**${"```sh"}\n${result.stderr}\n${"```"}` : "";
     return msg.send([output, outerr].join("\n"));
 };
 

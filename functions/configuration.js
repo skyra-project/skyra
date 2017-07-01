@@ -33,18 +33,18 @@ class Configuration {
                 messageUpdate: false,
                 roleUpdate: false,
                 modLogProtection: false,
-                sendMessage: {
-                    farewell: false,
-                    greeting: false,
-                    farewellMessage: null,
-                    greetingMessage: null,
-                },
             },
             prefix: "&",
             mode: 0,
             selfmod: {
                 inviteLinks: false,
                 ghostmention: false,
+            },
+            messages: {
+                farewell: false,
+                greeting: false,
+                farewellMessage: null,
+                greetingMessage: null,
             },
         };
     }
@@ -161,22 +161,22 @@ class Configuration {
                 farewell: {
                     type: "Boolean",
                     default: false,
-                    path: { events: { sendMessage: { farewell: value } } },
+                    path: { messages: { farewell: value } },
                 },
                 greeting: {
                     type: "Boolean",
                     default: false,
-                    path: { events: { sendMessage: { greeting: value } } },
+                    path: { messages: { greeting: value } },
                 },
                 farewellmessage: {
                     type: "String",
                     default: null,
-                    path: { events: { sendMessage: { farewellMessage: value } } },
+                    path: { messages: { farewellMessage: value } },
                 },
                 greetingmessage: {
                     type: "String",
                     default: null,
-                    path: { events: { sendMessage: { greetingMessage: value } } },
+                    path: { messages: { greetingMessage: value } },
                 },
             },
             master: {

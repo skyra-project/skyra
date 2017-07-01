@@ -103,10 +103,6 @@ const GuildSetting = class GuildSetting {
         this.rawMutes.map(m => mutes.set(m.user, m));
         return mutes;
     }
-
-    // get messages() {
-    //     return this.events.sendMessage || {};
-    // }
 };
 
 module.exports = { GuildSetting, defaults };

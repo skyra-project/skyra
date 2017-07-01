@@ -17,7 +17,24 @@ const randomValues = {
     thisElse: ["Most likely.", "Nope.", "YES!", "Maybe."],
 };
 
-exports.run = async (client, msg, [input]) => msg.send(`🎱 Question by ${msg.author}: *${input}*\n${"```"}\n${this.generator(input)}${"```"}`);
+const generate = (value) => {
+    const row = randomValues[value];
+    return row[Math.floor(Math.random() * row.length)];
+};
+
+const generator = (input) => {
+    input = input.toLowerCase();
+    if (input[input.length - 1] !== "?") throw "this doesn't seem to be a question.";
+    if (startsWith("when", input)) return generate("when");
+    if (startsWith("what", input)) return generate("what");
+    if (startsWith("how much", input)) return generate("howmuch");
+    if (startsWith("how many", input)) return generate("howmany");
+    if (startsWith("why", input)) return generate("why");
+    if (/(do|are).+you.+(lie|lying)/gi.test(input)) return generate("doyoulie");
+    return generate("thisElse");
+};
+
+exports.run = async (client, msg, [input]) => msg.send(`🎱 Question by ${msg.author}: *${input}*\n${"```"}\n${generator(input)}${"```"}`);
 
 exports.conf = {
     enabled: true,
@@ -43,21 +60,4 @@ exports.help = {
         "&8ball Why did the chicken cross the road?",
         "❯❯ \" Maybe genetics \" (random)",
     ].join("\n"),
-};
-
-exports.generator = (input) => {
-    input = input.toLowerCase();
-    if (input[input.length - 1] !== "?") throw "this doesn't seem to be a question.";
-    if (startsWith("when", input)) return this.generate("when");
-    if (startsWith("what", input)) return this.generate("what");
-    if (startsWith("how much", input)) return this.generate("howmuch");
-    if (startsWith("how many", input)) return this.generate("howmany");
-    if (startsWith("why", input)) return this.generate("why");
-    if (/(do|are).+you.+(lie|lying)/gi.test(input)) return this.generate("doyoulie");
-    return this.generate("thisElse");
-};
-
-exports.generate = (value) => {
-    const row = randomValues[value];
-    return row[Math.floor(Math.random() * row.length)];
 };

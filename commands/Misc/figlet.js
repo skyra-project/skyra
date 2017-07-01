@@ -1,9 +1,7 @@
 const figletAsync = require("util").promisify(require("figlet"));
 
-exports.run = async (client, msg, [banner]) => {
-    const data = await figletAsync(banner);
-    return msg.send(data, { code: true });
-};
+exports.run = (client, msg, [banner]) => figletAsync(banner)
+    .then(data => msg.send(data, { code: true }));
 
 exports.conf = {
     enabled: true,

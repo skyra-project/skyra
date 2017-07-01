@@ -1,5 +1,5 @@
-const snekfetch = require("snekfetch");
 const { getConfig } = require("../../utils/constants");
+const snekfetch = require("snekfetch");
 
 /* Autentification */
 const { osu, httpResponses } = getConfig.tokens;
@@ -18,15 +18,17 @@ const inf = {
     RECENTPLAYS: 4,
 };
 
+const fetchURL = (gamemode, username) => snekfetch.get(`https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${username}&k=${osu}`).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg, [gamemode, information, ...username]) => {
     gamemode = game[gamemode.toUpperCase()];
     information = inf[information.toUpperCase()];
     username = username[0].split(" ").join("+");
 
     await msg.send("`Fetching data...`");
-    const data = await snekfetch.get(`https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${osu}`).then(d => JSON.parse(d.text));
+    const data = await fetchURL(gamemode, encodeURIComponent(username));
     const uinfo = data[0];
-    if (!uinfo) httpResponses(404);
+    if (!uinfo) throw httpResponses(404);
     const embed = new client.methods.Embed().setColor(msg.color);
     switch (information) {
         case 1:
@@ -101,8 +103,9 @@ exports.run = async (client, msg, [gamemode, information, ...username]) => {
                     `  • Rank: **${(uinfo.rank).toLocaleString()}**`,
                 );
             break;
-    // no default
+        // no default
     }
+
     return msg.send({ embed });
 };
 

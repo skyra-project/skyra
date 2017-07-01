@@ -1,8 +1,8 @@
+const { getConfig, httpResponses } = require("../../utils/constants");
 const snekfetch = require("snekfetch");
-const constants = require("../../utils/constants");
 
 /* Autentification */
-const { blizzard } = constants.getConfig.tokens;
+const { blizzard } = getConfig.tokens;
 
 const progress = (prog) => {
     if (prog.act5) return 5;
@@ -13,31 +13,34 @@ const progress = (prog) => {
     return 0;
 };
 
+const fetchURL = (server, user) => snekfetch.get(`https://${server}.api.battle.net/d3/profile/${user}/?locale=en_US&apikey=${blizzard}`).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg, [server, user]) => {
     await msg.send("`Fetching data...`");
-    const data = await snekfetch.get(`https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`).then(d => JSON.parse(d.text));
-    if (data.code === "NOTFOUND") throw constants.httpResponses(404);
+    const data = await fetchURL(server, encodeURIComponent(user.replace(/#/gi, "-")));
+    if (data.code === "NOTFOUND") throw httpResponses(404);
     const embed = new client.methods.Embed()
-    .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)
-    .setColor(0xEF8400)
-    .setDescription([
-        `Paragon level: **${data.paragonLevel}**`,
-        `Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}`,
-        `Progression: Act **${progress(data.progression)}**.`,
-        "\u200B",
-    ].join("\n"))
-    .setFooter("📊 Statistics")
-    .setThumbnail("https://upload.wikimedia.org/wikipedia/en/8/80/Diablo_III_cover.png")
-    .setTimestamp();
+        .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)
+        .setColor(0xEF8400)
+        .setDescription(
+            `Paragon level: **${data.paragonLevel}**\n` +
+            `Killed: ${data.kills.monsters ? `**${data.kills.monsters}** monsters${data.kills.elites ? ` and **${data.kills.elites}** elites.` : "."}` : "zero."}${data.fallenHeroes === undefined ? `\n${data.fallenHeroes.join(", ")}` : ""}\n` +
+            `Progression: Act **${progress(data.progression)}**.\n`,
+        )
+        .setFooter("📊 Statistics")
+        .setThumbnail("https://upload.wikimedia.org/wikipedia/en/8/80/Diablo_III_cover.png")
+        .setTimestamp();
+
     for (let i = 0; i < 4; i++) {
         if (!data.heroes[i]) break;
-        embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}`, [
-            `  Class: **${data.heroes[i].class}**`,
-            `  Level: **${data.heroes[i].level}**`,
-            `  Elite kills: **${data.heroes[i].kills.elites}**`,
-            `  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}`,
-        ].join("\n"), true);
+        embed.addField(`❯ ${data.heroes[i].name} ${data.heroes[i].gender ? "♀" : "♂"}\n` +
+            `  Class: **${data.heroes[i].class}**\n` +
+            `  Level: **${data.heroes[i].level}**\n` +
+            `  Elite kills: **${data.heroes[i].kills.elites}**\n` +
+            `  ${data.heroes[i].hardcore ? `Hardcore${data.heroes[i].dead ? ", dead." : "."}` : ""}\n`
+        , true);
     }
+
     return msg.send({ embed });
 };
 

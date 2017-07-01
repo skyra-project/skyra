@@ -22,22 +22,23 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
     switch (type.toLowerCase()) {
         case "global":
             list = fetchGlobal()
-        .filter(profile => profile.points > 0)
-        .sort((a, b) => (a.points < b.points ? 1 : -1));
+                .filter(profile => profile.points > 0)
+                .sort((a, b) => (a.points < b.points ? 1 : -1));
             mapedList = list.map(l => l.id);
             break;
         case "money":
             list = fetchGlobal()
-        .filter(profile => profile.money > 0)
-        .sort((a, b) => (a.money < b.money ? 1 : -1));
+                .filter(profile => profile.money > 0)
+                .sort((a, b) => (a.money < b.money ? 1 : -1));
             mapedList = list.map(l => l.id);
             break;
         case "local":
             list = fetchLocal().get(msg.guild.id)
-        .sort((a, b) => (a.score < b.score ? 1 : -1));
+                .sort((a, b) => (a.score < b.score ? 1 : -1));
             mapedList = list.map(l => l.id);
-  // no default
+         // no default
     }
+
     const shortList = list.array().splice(index * 10, 10);
     if (!shortList[0]) throw "I think you went to the end of the world.";
     const spacer = "\u200B  ".repeat(8);
@@ -63,6 +64,7 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
         .setTitle(titles[type].title)
         .setDescription(send.join("\n"))
         .setFooter(titles[type].position + position);
+
     return msg.send({ embed });
 };
 

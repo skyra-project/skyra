@@ -1,5 +1,5 @@
 exports.run = async (client, msg) => {
-    await msg.sendMessage("Rebooting...").catch(err => client.emit("error", err));
+    await msg.send("Rebooting...").catch(err => client.emit("error", err));
     process.exit();
 };
 

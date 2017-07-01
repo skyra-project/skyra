@@ -23,8 +23,6 @@ const Skyra = new Komada.Client({
         messageCacheLifetime: 60,
         messageSweepInterval: 120,
     },
-    commandMessageLifetime: 60,
-    commandMessageSweep: 120,
 });
 
-Skyra.login(cfg.tokens.bot.stable);
+Skyra.login(cfg.tokens.bot.dev);

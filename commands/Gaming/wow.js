@@ -1,5 +1,5 @@
-const snekfetch = require("snekfetch");
 const { getConfig } = require("../../utils/constants");
+const snekfetch = require("snekfetch");
 
 /* Autentification */
 const { blizzard } = getConfig.tokens;
@@ -39,9 +39,11 @@ const genders = {
     2: "♀",
 };
 
+const fetchURL = (server, realm, character) => snekfetch.get(`https://${server}.api.battle.net/wow/character/${realm}/${character}?fields=stats&apikey=${blizzard}`).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg, [server, character, ...realm]) => {
     await msg.send("`Fetching data...`");
-    const data = await snekfetch.get(`https://${server.toLowerCase()}.api.battle.net/wow/character/${encodeURIComponent(realm)}/${encodeURIComponent(character)}?fields=stats&apikey=${blizzard}`).then(d => JSON.parse(d.text));
+    const data = await fetchURL(server.toLowerCase(), encodeURIComponent(realm), encodeURIComponent(character));
 
     const embed = new client.methods.Embed()
     .setTitle(`**World of Warcraft Stats:** *${data.name}*`)

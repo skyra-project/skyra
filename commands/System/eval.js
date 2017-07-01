@@ -21,19 +21,16 @@ exports.run = async (client, msg, [args]) => {
     const start = now();
     const { type, input } = this.parse(args.split(" "));
     try {
-    // EVAL
         const toEval = type ? `(async () => { ${input} })()` : input;
         const res = await eval(toEval);
         const time = now() - start;
 
-    // INSPECT
         let out;
         if (typeof res === "object" && typeof res !== "string") {
             out = inspect(res, { depth: 0, showHidden: true });
             if (typeof out === "string" && out.length > 1900) out = res.toString();
         } else { out = res; }
 
-    // SEND MESSAGE
         send.push(`➡ **Input:** Executed in ${time.toFixed(5)}μs${"```"}js`);
         send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
         send.push("🔍 **Inspect:**```js");
@@ -44,6 +41,7 @@ exports.run = async (client, msg, [args]) => {
         send.push("❌ **Error:**```js");
         send.push(`${(err ? err.message || err : "< void >")}${"```"}`);
     }
+
     return msg.send(send.join("\n")).catch(err => msg.error(err));
 };
 

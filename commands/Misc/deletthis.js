@@ -1,8 +1,8 @@
-const { fetchAvatar } = require("../../functions/wrappers");
 const { User: fetchUser } = require("../../functions/search");
+const { fetchAvatar } = require("../../functions/wrappers");
 const { readFile } = require("fs-nextra");
-const Canvas = require("canvas");
 const { join, resolve } = require("path");
+const Canvas = require("canvas");
 
 const template = resolve(join(__dirname, "../../assets/images/memes/DeletThis.png"));
 
@@ -13,7 +13,7 @@ const DeletThis = async (client, msg, user) => {
     else if (["242043489611808769", "251484593859985411"].includes(user.id)) [selectedUser, hammerer] = [msg.author, user];
     else [selectedUser, hammerer] = [user, msg.author];
 
-  /* Initialize Canvas */
+    /* Initialize Canvas */
     const c = new Canvas(650, 471);
     const background = new Canvas.Image();
     const imgHammered = new Canvas.Image();
@@ -58,7 +58,6 @@ const DeletThis = async (client, msg, user) => {
     imgHammerer.src = Hammerer;
     ctx.restore();
 
-    /* Resolve Canvas buffer */
     return c.toBuffer();
 };
 

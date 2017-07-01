@@ -2,7 +2,7 @@ exports.run = async (client, msg, [cmd]) => {
     const method = client.user.bot ? "author" : "channel";
     if (cmd) {
         cmd = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-        if (!cmd) return msg.sendMessage("❌ | Unknown command, please run the help command with no arguments to get a list of them all.");
+        if (!cmd) return msg.send("❌ | Unknown command, please run the help command with no arguments to get a list of them all.");
         const info = [
             `= ${cmd.help.name} = `,
             cmd.help.description,
@@ -10,7 +10,7 @@ exports.run = async (client, msg, [cmd]) => {
             "Extended Help ::",
             cmd.help.extendedHelp || "No extended help available.",
         ].join("\n");
-        return msg.sendMessage(info, { code: "asciidoc" });
+        return msg.send(info, { code: "asciidoc" });
     }
     const help = this.buildHelp(client, msg);
     const categories = Object.keys(help);
@@ -22,8 +22,8 @@ exports.run = async (client, msg, [cmd]) => {
         helpMessage.push("```\n\u200b");
     }
     return msg[method].send(helpMessage, { split: { char: "\u200b" } })
-    .then(() => { if (msg.channel.type !== "dm" && client.user.bot) msg.sendMessage("📥 | Commands have been sent to your DMs."); })
-    .catch(() => { if (msg.channel.type !== "dm" && client.user.bot) msg.sendMessage("❌ | You have DMs disabled, I couldn't send you the commands in DMs."); });
+    .then(() => { if (msg.channel.type !== "dm" && client.user.bot) msg.send("📥 | Commands have been sent to your DMs."); })
+    .catch(() => { if (msg.channel.type !== "dm" && client.user.bot) msg.send("❌ | You have DMs disabled, I couldn't send you the commands in DMs."); });
 };
 
 exports.conf = {

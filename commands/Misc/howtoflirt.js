@@ -1,13 +1,13 @@
-const { fetchAvatar } = require("../../functions/wrappers");
 const { User: fetchUser } = require("../../functions/search");
+const { fetchAvatar } = require("../../functions/wrappers");
 const { readFile } = require("fs-nextra");
-const Canvas = require("canvas");
 const { join, resolve } = require("path");
+const Canvas = require("canvas");
 
 const template = resolve(join(__dirname, "../../assets/images/memes/howtoflirt.png"));
 
 const How2Flirt = async (client, msg, user) => {
-  /* Initialize Canvas */
+    /* Initialize Canvas */
     const c = new Canvas(500, 500);
     const background = new Canvas.Image();
     const user1 = new Canvas.Image();
@@ -28,7 +28,7 @@ const How2Flirt = async (client, msg, user) => {
       { center: [351, 390], radius: 40 },
     ];
 
-  /* Get the buffers from both profile avatars */
+    /* Get the buffers from both profile avatars */
     const [bgBuffer, user1Buffer, user2Buffer] = await Promise.all([
         readFile(template),
         fetchAvatar(msg.author, 128),
@@ -63,7 +63,6 @@ const How2Flirt = async (client, msg, user) => {
         res();
     })));
 
-    /* Resolve Canvas buffer */
     return c.toBuffer();
 };
 

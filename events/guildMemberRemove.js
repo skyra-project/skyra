@@ -57,7 +57,7 @@ class GuildMemberRemove {
         const target = this.guild.channels.get(channel);
         if (target) return target.send(this.message);
         this.client.rethink.update("guilds", this.guild.id, { channels: { default: null } });
-        this.client.rethink.update("guilds", this.guild.id, { events: { sendMessage: { farewell: false } } });
+        this.client.rethink.update("guilds", this.guild.id, { messages: { farewell: false } });
         return this.sendLog("disable");
     }
 }

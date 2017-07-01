@@ -4,7 +4,7 @@ require("moment-duration-format");
 
 exports.run = async (client, msg) => {
     const duration = moment.duration(client.uptime).format(" D [days], H [hrs], m [mins], s [secs]");
-    return msg.sendCode("asciidoc", [
+    return msg.send([
         "= STATISTICS =",
         "",
         `• Mem Usage  :: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
@@ -14,7 +14,7 @@ exports.run = async (client, msg) => {
         `• Channels   :: ${client.channels.size.toLocaleString()}`,
         "• Komada     :: v0.20.3",
         `• Discord.js :: v${discordVersion}`,
-    ]);
+    ], { code: "asciidoc" });
 };
 
 exports.conf = {

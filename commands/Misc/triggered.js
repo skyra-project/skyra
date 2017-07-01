@@ -1,10 +1,10 @@
+const { User: fetchUser } = require("../../functions/search");
+const { fetchAvatar } = require("../../functions/wrappers");
 const streamToArray = require("stream-to-array");
 const { readFile } = require("fs-nextra");
+const { join, resolve } = require("path");
 const GIFEncoder = require("gifencoder");
 const Canvas = require("canvas");
-const { join, resolve } = require("path");
-const { fetchAvatar } = require("../../functions/wrappers");
-const { User: fetchUser } = require("../../functions/search");
 
 const template = resolve(join(__dirname, "../../assets/images/memes/triggered.png"));
 
@@ -39,7 +39,6 @@ const triggering = async (client, user) => {
         encoder.addFrame(ctx);
     }
 
-  // FINISH
     encoder.finish();
 
     return streamToArray(stream).then(Buffer.concat);

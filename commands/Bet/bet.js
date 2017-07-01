@@ -1,10 +1,10 @@
-exports.options = {
+const options = {
     tax: 20,
 };
 
 exports.run = async (client, msg, [money]) => {
     const pool = client.bettings.get(msg.guild.id);
-    const taxed = money * (this.options.tax / 100);
+    const taxed = money * (options.tax / 100);
 
     if (!pool) throw "there's no betting pool active.";
     else if (money <= 0) throw "amount of money should be above 0.";

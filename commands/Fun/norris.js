@@ -1,10 +1,13 @@
 const snekfetch = require("snekfetch");
 
+const fetchURL = url => snekfetch.get(url).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg) => {
-    const data = await snekfetch.get("https://api.chucknorris.io/jokes/random").then(d => JSON.parse(d.text));
+    const data = await fetchURL("https://api.chucknorris.io/jokes/random");
     const embed = new client.methods.Embed()
         .setColor(msg.color)
         .setDescription(`📢 **Chuck Norris' fact:** *${data.value}*`);
+
     return msg.send({ embed });
 };
 

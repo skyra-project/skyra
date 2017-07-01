@@ -31,6 +31,7 @@ exports.run = async (client, msg, [limit, ...filter]) => {
             break;
         default: await msg.channel.bulkDelete(messages);
     }
+
     return msg.alert(`Dear ${msg.author}, I cleaned up ${messages.size} messages from ${limit}.`);
 };
 

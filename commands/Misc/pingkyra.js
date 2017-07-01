@@ -1,13 +1,13 @@
-const { fetchAvatar } = require("../../functions/wrappers");
 const { User: fetchUser } = require("../../functions/search");
+const { fetchAvatar } = require("../../functions/wrappers");
 const { readFile } = require("fs-nextra");
-const Canvas = require("canvas");
 const { join, resolve } = require("path");
+const Canvas = require("canvas");
 
 const template = resolve(join(__dirname, "../../assets/images/memes/pingkyra.png"));
 
 const PingKyra = async (client, msg, user) => {
-  /* Initialize Canvas */
+    /* Initialize Canvas */
     const kyra = await client.fetchUser("242043489611808769");
 
     if (user.id === kyra.id || user.id === client.user.id) user = msg.author;
@@ -18,7 +18,7 @@ const PingKyra = async (client, msg, user) => {
     const Kyra = new Canvas.Image();
     const ctx = c.getContext("2d");
 
-  /* Get the buffers from both profile avatars */
+    /* Get the buffers from both profile avatars */
     const [bgBuffer, pinnerBuffer, KyraBuffer] = await Promise.all([
         readFile(template),
         fetchAvatar(user, 128),
@@ -48,7 +48,6 @@ const PingKyra = async (client, msg, user) => {
     Kyra.src = KyraBuffer;
     ctx.restore();
 
-    /* Resolve Canvas buffer */
     return c.toBuffer();
 };
 

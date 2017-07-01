@@ -1,5 +1,7 @@
 const snekfetch = require("snekfetch");
 
+const fetchURL = url => snekfetch.get(url).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg, [input]) => {
     let number;
     let num;
@@ -10,16 +12,16 @@ exports.run = async (client, msg, [input]) => {
         else if (typeof input === "string") query = input;
     }
 
-    const xkcdInfo = await snekfetch.get("http://xkcd.com/info.0.json").then(d => JSON.parse(d.text));
+    const xkcdInfo = await fetchURL("http://xkcd.com/info.0.json");
     if (num) {
         if (num <= xkcdInfo.num) number = num;
         else return msg.send(`Dear ${msg.author}, there are only ${xkcdInfo.num} comics.`);
     } else if (query) {
-        const searchQuery = await snekfetch.get(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`).then(d => JSON.parse(d.text));
+        const searchQuery = await fetchURL(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`);
         number = searchQuery.split(" ")[2].replace("\n", "");
     } else { number = Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1; }
 
-    const xkcdComic = await snekfetch.get(`http://xkcd.com/${number}/info.0.json`).then(d => JSON.parse(d.text));
+    const xkcdComic = await fetchURL(`http://xkcd.com/${number}/info.0.json`);
 
     const embed = new client.methods.Embed()
         .setColor(msg.color)
@@ -27,6 +29,7 @@ exports.run = async (client, msg, [input]) => {
         .setFooter(`XKCD | ${xkcdComic.num}`)
         .setDescription(xkcdComic.alt)
         .setTimestamp();
+
     return msg.send({ embed });
 };
 

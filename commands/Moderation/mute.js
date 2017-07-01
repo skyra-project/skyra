@@ -2,14 +2,13 @@ const MODERATION = require("../../utils/managerModeration");
 const ASSETS = require("../../utils/assets");
 
 exports.configuration = async (client, msg) => {
-    const configuration = msg.guild.settings;
-    if (!configuration.roles.muted) {
+    if (!msg.guild.settings.roles.muted) {
         await msg.Prompt("Do you want to create and configure the Mute role right now?")
-      .catch(() => { throw "Mute role creation cancelled."; });
+            .catch(() => { throw "Mute role creation cancelled."; });
         await msg.send("`Processing...`");
         return ASSETS.createMuted(msg);
     }
-    return msg.guild.roles.get(configuration.roles.muted);
+    return msg.guild.roles.get(msg.guild.settings.roles.muted);
 };
 
 /* eslint-disable no-underscore-dangle */
@@ -20,16 +19,16 @@ exports.run = async (client, msg, [user, ...reason]) => {
     else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
 
     return this.configuration(client, msg)
-    .then(async (mute) => {
-        if (msg.guild.settings.mutes.has(user.id)) throw "this user is already muted.";
+        .then(async (mute) => {
+            if (msg.guild.settings.mutes.has(user.id)) throw "this user is already muted.";
 
-        reason = reason.length ? reason.join(" ") : null;
-        const roles = member._roles;
-        await member.edit({ roles: [mute.id] });
-        msg.send(`|\`🔨\`| **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
-        return MODERATION.send(client, msg, user, "mute", reason, roles);
-    })
-    .catch(e => msg.alert(e));
+            reason = reason.length ? reason.join(" ") : null;
+            const roles = member._roles;
+            await member.edit({ roles: [mute.id] });
+            msg.send(`|\`🔨\`| **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
+            return MODERATION.send(client, msg, user, "mute", reason, roles);
+        })
+        .catch(e => msg.alert(e));
 };
 
 exports.conf = {

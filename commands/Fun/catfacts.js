@@ -1,10 +1,13 @@
 const snekfetch = require("snekfetch");
 
+const fetchURL = url => snekfetch.get(url).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg) => {
-    const data = await snekfetch.get("http://catfacts-api.appspot.com/api/facts?number=1").then(d => JSON.parse(d.text));
+    const data = await fetchURL("http://catfacts-api.appspot.com/api/facts?number=1");
     const embed = new client.methods.Embed()
         .setColor(msg.color)
         .setDescription(`📢 **Catfact:** *${data.facts[0]}*`);
+
     return msg.send({ embed });
 };
 

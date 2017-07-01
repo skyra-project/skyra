@@ -9,10 +9,10 @@ exports.run = async (client, msg, [...words]) => {
     }
 
     if (aword.length < 2) throw `why would I accept duplicated words? '${filtered.join("', '")}'.`;
-    return msg.send([
-        `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${msg.author}, I choose:`,
+    return msg.send(
+        `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${msg.author}, I choose:\n` +
         `${"```"}${aword[Math.floor(Math.random() * aword.length)]}${"```"}`,
-    ].join("\n"));
+    );
 };
 
 exports.conf = {

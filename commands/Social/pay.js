@@ -8,12 +8,12 @@ exports.run = async (client, msg, [money, ...search]) => {
     else if (msg.author.profile.money < money) throw `you can't pay with money you don't have. Current currency: ${msg.author.profile.money}${msg.shiny}`;
 
     return msg.prompt(`Dear ${msg.author}, you're going to pay ${money}${msg.shiny} to ${user.username}, do you accept?`)
-    .then(async () => {
-        await user.profile.add(money);
-        await msg.author.profile.use(money);
-        return msg.alert(`Dear ${msg.author}, you have just paid ${money}${msg.shiny} to **${user.username}**`);
-    })
-    .catch(() => msg.alert(`Dear ${msg.author}, you have just cancelled the transfer.`));
+        .then(async () => {
+            await user.profile.add(money);
+            await msg.author.profile.use(money);
+            return msg.alert(`Dear ${msg.author}, you have just paid ${money}${msg.shiny} to **${user.username}**`);
+        })
+        .catch(() => msg.alert(`Dear ${msg.author}, you have just cancelled the transfer.`));
 };
 
 

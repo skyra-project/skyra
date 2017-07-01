@@ -1,10 +1,13 @@
 const snekfetch = require("snekfetch");
 
+const fetchURL = url => snekfetch.get(url).then(d => JSON.parse(d.text));
+
 exports.run = async (client, msg) => {
-    const data = await snekfetch.get("http://api.yomomma.info/").then(d => JSON.parse(d.text));
+    const data = await fetchURL("http://api.yomomma.info/");
     const embed = new client.methods.Embed()
         .setColor(msg.color)
         .setDescription(`📢 **Yomomma joke:** *${data.joke}*`);
+
     return msg.send({ embed });
 };
 

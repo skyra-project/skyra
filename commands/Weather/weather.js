@@ -61,6 +61,8 @@ exports.timePicker = (icon) => {
     return "cloudy";
 };
 
+const { fillRoundRect } = require("../../functions/canvas");
+
 exports.draw = async (client, msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity }) => {
     const canvas = new Canvas(400, 180);
     const cond = new Canvas.Image();
@@ -71,7 +73,7 @@ exports.draw = async (client, msg, { geocodelocation, state, city, condition, ic
     ctx.shadowColor = "rgba(51, 51, 51, 0.38)";
     ctx.fillStyle = this.colors[this.timePicker(icon)];
     ctx.shadowBlur = 5;
-    client.funcs.canvas.fillRoundRect(ctx, 10, 10, 380, 160, 5);
+    fillRoundRect(ctx, 10, 10, 380, 160, 5);
     ctx.restore();
 
     const [theme, fontColor] = ["snow", "sleet", "fog"].includes(icon) ? ["dark", "#444444"] : ["light", "#FFFFFF"];

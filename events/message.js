@@ -1,4 +1,6 @@
 const now = require("performance-now");
+const handleError = require("../functions/handleError");
+const getPrefix = require("../functions/getPrefix");
 
 exports.run = async (client, msg) => {
     if (!client.ready) return;
@@ -28,7 +30,7 @@ exports.handleMessage = (client, msg) => {
 };
 
 exports.parseCommand = async (client, msg, usage = false) => {
-    const prefix = await client.funcs.getPrefix(client, msg);
+    const prefix = await getPrefix(client, msg);
     if (!prefix) return false;
     const prefixLength = this.getLength(client, msg, prefix);
     if (usage) return prefixLength;
@@ -62,9 +64,9 @@ exports.runCommand = (client, msg, start) => {
     .then((params) => {
         msg.cmdMsg.cmd.run(client, msg, params)
         .then(mes => this.runFinalizers(client, msg, mes, start))
-        .catch(error => client.funcs.handleError(client, msg, error));
+        .catch(error => handleError(client, msg, error));
     })
-    .catch(error => client.funcs.handleError(client, msg, error));
+    .catch(error => handleError(client, msg, error));
 };
 
 exports.runInhibitors = (client, msg, command) => {

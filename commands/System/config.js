@@ -1,13 +1,15 @@
+const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
+
 const dot = value => `${value ? "  \\🔹" : "  \\🔸"} `;
 
 class Validator {
     constructor(guild) {
         this.guild = guild;
-        this.guildConfig = guild.configs;
+        this.guildConfig = guild.settings;
         this.client = guild.client;
         this.validator = this.client.configValidation.find;
         this.validation = this.validator();
-        this.config = this.guild.configs || this.client.configValidation.default();
+        this.config = this.guild.settings || this.client.configValidation.default();
     }
 
     get list() {
@@ -73,7 +75,7 @@ class Validator {
     async update(folder, subfolder, input, inputType) {
         const parsed = await this.parse(inputType, input);
         const validator = this.validator(parsed.id || parsed)[folder][subfolder];
-        await this.guild.configs.update(validator.path);
+        await this.guild.settings.update(validator.path);
         return parsed.name || parsed;
     }
 
@@ -88,12 +90,12 @@ class Validator {
                 return String(input);
             }
             case "Role": {
-                const role = await this.client.funcs.search.Role(input.toLowerCase(), this.guild);
+                const role = await fetchRole(input.toLowerCase(), this.guild);
                 if (role) return role;
                 throw "I expect a Role.";
             }
             case "TextChannel": {
-                const channel = await this.client.funcs.search.Channel(input.toLowerCase(), this.guild);
+                const channel = await fetchChannel(input.toLowerCase(), this.guild);
                 if (channel) return channel;
                 throw "I expect a Channel.";
             }

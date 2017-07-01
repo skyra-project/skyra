@@ -13,8 +13,8 @@ exports.run = async (client, msg) => {
     else index += 1;
 
     const embed = new client.methods.Embed()
-    .setColor(msg.color)
-    .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[index]}.jpg`);
+        .setColor(msg.color)
+        .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[index]}.jpg`);
     return msg.send({ embed });
 };
 

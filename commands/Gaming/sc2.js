@@ -1,7 +1,8 @@
-const constants = require("../../utils/constants");
+const snekfetch = require("snekfetch");
+const { getConfig } = require("../../utils/constants");
 
 /* Autentification */
-const { blizzard } = constants.getConfig.tokens;
+const { blizzard } = getConfig.tokens;
 
 const realmsID = { us: 1, eu: 2, kr: 3, tw: 4 };
 
@@ -15,34 +16,29 @@ const realms = {
 exports.run = async (client, msg, [server, name, id]) => {
     await msg.send("`Fetching data...`");
     server = realmsID[server.toLowerCase()];
-    const data = await client.funcs.fetch.JSON(`https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${blizzard}`);
+    const data = await snekfetch.get(`https://us.api.battle.net/sc2/profile/${id}/${server}/${encodeURIComponent(name)}/?locale=en_US&apikey=${blizzard}`).then(d => JSON.parse(d.text));
     const embed = new client.methods.Embed()
-    .setTitle(`StarCraft 2 Stats: ${data.displayName} (${data.id})`)
-    .setColor(0x0B947F)
-    .setDescription("\u200B")
-    .addField(`❯ ${data.displayName}`, [
-        `Season total games: **${data.career.seasonTotalGames}**.`,
-        `Career total games: **${data.career.careerTotalGames}**.`,
-        "",
-        `Clan: **${data.clanName === "" ? "none" : `${data.clanName} (tag: ${data.clanTag})`}**.`,
-        `Realm: **${realms[data.realm]}**`,
-        "",
-        `Season: **${data.season.seasonId}** (Year **${data.season.seasonYear}**, **${data.season.seasonNumber}**).${data.season.totalGamesThisSeason === 0 ? "" : `\n\u200B    Total games this season: **${data.season.totalGamesThisSeason}**`}`,
-        "",
-        `**[Full profile](http://us.battle.net/sc2/en${data.profilePath})**`,
-        "\u200B",
-    ].join("\n"), true)
-    .addField("❯ Career statistics", [
-        `Primary race: **${data.career.primaryRace}**.`,
-        `  Zerg wins: **${data.career.zergWins}**.`,
-        `  Terran wins: **${data.career.terranWins}**.`,
-        `  Protoss wins: **${data.career.protossWins}**.`,
-        "\u200B",
-    ].join("\n"), true)
-    .addField(`Total achievement points: ${data.achievements.points.totalPoints}.`, "\u200B")
-    .setFooter("📊 Statistics")
-    .setThumbnail("http://tecnoslave.com/wp-content/uploads/2012/08/Starcraft-II-logo.png")
-    .setTimestamp();
+        .setTitle(`StarCraft 2 Stats: ${data.displayName} (${data.id})`)
+        .setColor(0x0B947F)
+        .setDescription("\u200B")
+        .addField(`❯ ${data.displayName}`,
+            `Season total games: **${data.career.seasonTotalGames}**.\n` +
+            `Career total games: **${data.career.careerTotalGames}**.\n\n` +
+            `Clan: **${data.clanName === "" ? "none" : `${data.clanName} (tag: ${data.clanTag})`}**\n` +
+            `Realm: **${realms[data.realm]}**\n\n` +
+            `Season: **${data.season.seasonId}** (Year **${data.season.seasonYear}**, **${data.season.seasonNumber}**).${data.season.totalGamesThisSeason === 0 ? "" : `    Total games this season: **${data.season.totalGamesThisSeason}**`}\n\n` +
+            `**[Full profile](http://us.battle.net/sc2/en${data.profilePath})**\n`
+        , true)
+        .addField("❯ Career statistics",
+            `Primary race: **${data.career.primaryRace}**\n` +
+            `  Zerg wins: **${data.career.zergWins}**\n` +
+            `  Terran wins: **${data.career.terranWins}**\n` +
+            `  Protoss wins: **${data.career.protossWins}**\n`
+        , true)
+        .addField(`Total achievement points: ${data.achievements.points.totalPoints}.`, "\u200B")
+        .setFooter("📊 Statistics")
+        .setThumbnail("http://tecnoslave.com/wp-content/uploads/2012/08/Starcraft-II-logo.png")
+        .setTimestamp();
     return msg.send({ embed });
 };
 

@@ -1,3 +1,5 @@
+const { User: fetchUser } = require("../../functions/search");
+
 exports.getFilter = async (client, msg, input) => {
     switch (input) {
         case "invite": return m => m.content.search(/(discord\.gg\/.+|discordapp\.com\/invite\/.+)/i) !== -1;
@@ -8,7 +10,7 @@ exports.getFilter = async (client, msg, input) => {
         case "upload": return m => m.attachments.size !== 0;
         case "links": return m => m.content.search(/https?:\/\/[^ /.]+\.[^ /.]+/) !== -1;
         default: {
-            const user = await client.funcs.search.User(input, msg.guild);
+            const user = await fetchUser(input, msg.guild);
             return m => m.author.id === user.id;
         }
     }

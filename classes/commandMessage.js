@@ -1,3 +1,5 @@
+const newError = require("../functions/newError");
+
 module.exports = class CommandMessage {
 
 /* eslint-disable no-underscore-dangle, no-throw-literal, newline-per-chained-call */
@@ -31,13 +33,13 @@ module.exports = class CommandMessage {
             if (this.cmd.usage.parsedUsage.slice(this.params.length).some(usage => usage.type === "required")) {
                 this.args.splice(this.params.length, 0, undefined);
                 this.args.splice(this.params.length, 1, null);
-                throw this.client.funcs.newError("Missing one or more required arguments after end of input.", 1);
+                throw newError("Missing one or more required arguments after end of input.", 1);
             } else {
                 return this.params;
             }
         } else if (this._currentUsage.type === "required" && this.args[this.params.length] === undefined) {
             this.args.splice(this.params.length, 1, null);
-            throw this.client.funcs.newError(this._currentUsage.possibles.length === 1 ?
+            throw newError(this._currentUsage.possibles.length === 1 ?
         `${this._currentUsage.possibles[0].name} is a required argument.` :
         `Missing a required option: (${this._currentUsage.possibles.map(poss => poss.name).join(", ")})`, 1);
         } else if (this._currentUsage.possibles.length === 1) {
@@ -45,7 +47,7 @@ module.exports = class CommandMessage {
                 return this.client.argResolver[this._currentUsage.possibles[0].type](this.args[this.params.length], this._currentUsage, 0, this._repeat, this.msg)
           .catch((err) => {
               this.args.splice(this.params.length, 1, null);
-              throw this.client.funcs.newError(err, 1);
+              throw newError(err, 1);
           })
           .then((res) => {
               if (res !== null) {
@@ -74,7 +76,7 @@ module.exports = class CommandMessage {
                 return this.validateArgs();
             }
             this.args.splice(this.params.length, 1, null);
-            throw this.client.funcs.newError(`Your option didn't match any of the possibilities: (${this._currentUsage.possibles.map(poss => poss.name).join(", ")})`, 1);
+            throw newError(`Your option didn't match any of the possibilities: (${this._currentUsage.possibles.map(poss => poss.name).join(", ")})`, 1);
         } else if (this.client.argResolver[this._currentUsage.possibles[possible].type]) {
             return this.client.argResolver[this._currentUsage.possibles[possible].type](this.args[this.params.length], this._currentUsage, possible, this._repeat, this.msg)
         .then((res) => {

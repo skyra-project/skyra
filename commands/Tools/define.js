@@ -1,10 +1,11 @@
+const snekfetch = require("snekfetch");
 const { XmlEntities } = require("html-entities");
 const constants = require("../../utils/constants");
 
 const { decode } = new XmlEntities();
 
 exports.run = async (client, msg, [input]) => {
-    const data = await client.funcs.fetch.JSON(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${encodeURIComponent(input)}`);
+    const data = await snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${encodeURIComponent(input)}`).then(d => JSON.parse(d.text));
     if (!data.tuc || !data.tuc[0]) throw constants.httpResponses(404);
 
     const final = [];

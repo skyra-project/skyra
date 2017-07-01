@@ -2,7 +2,7 @@ const MODERATION = require("../../utils/managerModeration");
 const ASSETS = require("../../utils/assets");
 
 exports.configuration = async (client, msg) => {
-    const configuration = msg.guild.configs;
+    const configuration = msg.guild.settings;
     if (!configuration.roles.muted) {
         await msg.Prompt("Do you want to create and configure the Mute role right now?")
       .catch(() => { throw "Mute role creation cancelled."; });
@@ -21,7 +21,7 @@ exports.run = async (client, msg, [user, ...reason]) => {
 
     return this.configuration(client, msg)
     .then(async (mute) => {
-        if (msg.guild.configs.mutes.has(user.id)) throw "this user is already muted.";
+        if (msg.guild.settings.mutes.has(user.id)) throw "this user is already muted.";
 
         reason = reason.length ? reason.join(" ") : null;
         const roles = member._roles;

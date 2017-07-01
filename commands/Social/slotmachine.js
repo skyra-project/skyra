@@ -83,21 +83,19 @@ exports.run = async (client, msg, [coins]) => {
     const output = slotmachine.showRoll(roll);
     const embed = new client.methods.Embed();
     if (results.win) {
-        embed.setColor(0x5C913B)
-      .setDescription([
-          "**You rolled:**\n",
-          output,
-          "\n**Congratulations!**",
-          `You won ${results.winnings}${msg.shiny}!`,
-      ].join("\n"));
+        embed
+            .setColor(0x5C913B)
+            .setDescription(
+                `**You rolled:**\n${output}\n**Congratulations!**` +
+                `You won ${results.winnings}${msg.shiny}!`,
+            );
     } else {
-        embed.setColor(0xBE1931)
-      .setDescription([
-          "**You rolled:**\n",
-          output,
-          "\n**Mission failed!**",
-          "We'll get em next time!",
-      ].join("\n"));
+        embed
+            .setColor(0xBE1931)
+            .setDescription(
+                `**You rolled:**\n${output}\n**Mission failed!**` +
+                "We'll get em next time!",
+            );
     }
     return msg.send({ embed });
 };
@@ -135,6 +133,7 @@ exports.help = {
 const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
 const { join } = require("path");
+const { fillRoundRect } = require("../../functions/canvas");
 
 Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { family: "RobotoLight" });
 const iconsPath = join(__dirname, "../../assets/images/social/sm-icons.png");
@@ -176,7 +175,7 @@ exports.canvas = async (client, roll, { win, winnings }) => {
     ctx.shadowColor = "rgba(51, 51, 51, 0.38)";
     ctx.fillStyle = "rgb(255, 255, 255)";
     ctx.shadowBlur = 5;
-    client.funcs.canvas.fillRoundRect(ctx, 4, 4, length - 8, 142, 5);
+    fillRoundRect(ctx, 4, 4, length - 8, 142, 5);
     ctx.restore();
 
     icon.src = await readFile(iconsPath);

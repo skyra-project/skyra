@@ -1,15 +1,17 @@
+const snekfetch = require("snekfetch");
+
 exports.run = async (client, msg) => {
-    const data = await client.funcs.fetch.JSON("http://api.yomomma.info/");
+    const data = await snekfetch.get("http://api.yomomma.info/").then(d => JSON.parse(d.text));
     const embed = new client.methods.Embed()
-    .setColor(msg.color)
-    .setDescription(`📢 **Yomomma joke:** *${data.joke}*`);
+        .setColor(msg.color)
+        .setDescription(`📢 **Yomomma joke:** *${data.joke}*`);
     return msg.send({ embed });
 };
 
 exports.conf = {
     enabled: true,
     runIn: ["text", "dm", "group"],
-    aliases: ["yomama"],
+    aliases: ["yomama", "yomomma"],
     permLevel: 0,
     botPerms: [],
     requiredFuncs: [],

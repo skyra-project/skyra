@@ -1,7 +1,8 @@
+const snekfetch = require("snekfetch");
 const cheerio = require("cheerio");
 
 exports.run = async (client, msg, [input]) => {
-    const data = await client.funcs.fetch(`https://www.google.com/search?tbm=isch&gs_l=img&safe=medium&q=${encodeURIComponent(input)}`);
+    const data = await snekfetch.get(`https://www.google.com/search?tbm=isch&gs_l=img&safe=medium&q=${encodeURIComponent(input)}`);
     const $ = cheerio.load(data);
     const result = $(".images_table").find("img").first().attr("src");
 

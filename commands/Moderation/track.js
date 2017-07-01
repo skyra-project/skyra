@@ -1,10 +1,10 @@
+const { Channel: fetchChannel } = require("../../functions/search");
 const fs = require("fs-nextra");
-const { sep } = require("path");
+const { resolve } = require("path");
 const moment = require("moment");
 
 exports.send = async (client, msg, channel, sendname, filename) => {
-    const dir = `${client.clientBaseDir}tracks${sep}`;
-    const file = dir + filename;
+    const file = resolve(client.baseDir, "tracks", filename);
     await this.exist(client, filename);
 
     clearInterval(channel.trackInterval);
@@ -20,21 +20,21 @@ exports.send = async (client, msg, channel, sendname, filename) => {
 };
 
 exports.exist = async (client, filename) => {
-    const dir = `${client.clientBaseDir}tracks${sep}`;
+    const dir = resolve(client.baseDir, "tracks");
     const files = await fs.readdir(dir) || [];
     if (files.includes(filename)) return true;
     throw "file not found.";
 };
 
 exports.write = async (client, filename) => {
-    const dir = `${client.clientBaseDir}tracks${sep}`;
+    const dir = resolve(client.baseDir, "tracks");
     const file = dir + filename;
     await fs.ensureDir(dir);
     await fs.appendFile(file, `[${moment.utc(new Date().getTime()).format("HH:mm:ss")}] Starting...\r\n\r\n`);
 };
 
 exports.run = async (client, msg, [channel = msg.channel]) => {
-    channel = await client.funcs.search.Channel(channel, this.guild);
+    channel = await fetchChannel(channel, this.guild);
 
     if (!channel.tracking) {
       /* Apply properties to Channel */

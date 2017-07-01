@@ -1,9 +1,11 @@
+const { Role: fetchRole } = require("../../functions/search");
+
 class RoleList {
     constructor(msg) {
         Object.defineProperty(this, "msg", { value: msg });
         Object.defineProperty(this, "guild", { value: msg.guild });
         Object.defineProperty(this, "client", { value: msg.client });
-        Object.defineProperty(this, "config", { value: msg.guild.configs });
+        Object.defineProperty(this, "config", { value: msg.guild.settings });
     }
 
     get list() {
@@ -22,7 +24,7 @@ class RoleList {
         const invalidRoles = [];
         for (let index = 0; index < roles.length; index++) {
             try {
-                const checkRole = this.client.funcs.search.Role(roles[index], this.guild);
+                const checkRole = fetchRole(roles[index], this.guild);
                 if (!this.config.publicRoles.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
                 else if (this.msg.member.roles.has(checkRole.id)) existentRoles.push(checkRole.name);
                 else giveRoles.push(checkRole);
@@ -46,7 +48,7 @@ class RoleList {
         const invalidRoles = [];
         for (let index = 0; index < roles.length; index++) {
             try {
-                const checkRole = this.client.funcs.search.Role(roles[index], this.guild);
+                const checkRole = fetchRole(roles[index], this.guild);
                 if (!this.config.publicRoles.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
                 else if (!this.msg.member.roles.has(checkRole.id)) nonexistentRoles.push(checkRole.name);
                 else removeRoles.push(checkRole);
@@ -66,7 +68,7 @@ class RoleList {
 
 exports.run = async (client, msg, [action, ...input]) => {
     const roleList = new RoleList(msg);
-    const conf = msg.guild.configs;
+    const conf = msg.guild.settings;
     if (action === "list") return msg.send({ embed: roleList.list });
     if (!input[0]) throw `write ( ${conf.prefix}roles list ) to get a list of all roles, or do ( ${conf.prefix}claim <role1, role2, ...> ) to claim them.`;
     const roles = input.join(" ").split(", ");

@@ -1,9 +1,11 @@
-/* eslint-disable complexity, no-use-before-define */
+const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
+
+/* eslint-disable no-use-before-define */
 class Settings {
     constructor(msg) {
         Object.defineProperty(this, "msg", { value: msg });
         Object.defineProperty(this, "guild", { value: msg.guild });
-        Object.defineProperty(this, "configs", { value: msg.guild.configs });
+        Object.defineProperty(this, "configs", { value: msg.guild.settings });
         Object.defineProperty(this, "client", { value: msg.client });
     }
 
@@ -13,12 +15,12 @@ class Settings {
             case "String": return value;
             case "Role": {
                 value = value.toLowerCase();
-                return this.client.funcs.search.Role(value, this.guild);
+                return fetchRole(value, this.guild);
             }
             case "Channel": {
                 value = value.toLowerCase();
                 if (value === "here") return this.msg.channel;
-                return this.client.funcs.search.Channel(value, this.guild);
+                return fetchChannel(value, this.guild);
             }
             case "Command": {
                 value = value.toLowerCase();
@@ -43,22 +45,22 @@ class Settings {
                 if (!value) throw "you must assign a value to add.";
                 const nValue = await this.parse(key, value);
                 const { path } = validator[key];
-                if (this.guild.configs[path].includes(nValue.id || nValue)) throw `the value ${value} is already set.`;
+                if (this.guild.settings[path].includes(nValue.id || nValue)) throw `the value ${value} is already set.`;
                 await this.client.rethink.append("guilds", this.guild.id, path, nValue.id || nValue);
-                await this.guild.configs.sync();
+                await this.guild.settings.sync();
                 return `Successfully added the value **${nValue.name || nValue}** to the key **${key}**`;
             }
             case "remove": {
                 if (!value) throw "you must assign a value to remove.";
                 const nValue = await this.parse(key, value);
                 const { path } = validator[key];
-                if (!this.guild.configs[path].includes(nValue.id || nValue)) throw `the value ${value} does not exist in the configuration.`;
-                await this.guild.configs.update({ [path]: this.guild.configs[path].filter(v => v !== (nValue.id || nValue)) });
+                if (!this.guild.settings[path].includes(nValue.id || nValue)) throw `the value ${value} does not exist in the configuration.`;
+                await this.guild.settings.update({ [path]: this.guild.settings[path].filter(v => v !== (nValue.id || nValue)) });
                 return `Successfully removed the value **${nValue.name || nValue}** from the key **${key}**`;
             }
             case "reset": {
                 const { path } = validator[key];
-                await this.guild.configs.update({ [path]: [] });
+                await this.guild.settings.update({ [path]: [] });
                 return `The key **${path} has been reset.`;
             }
             default:
@@ -69,7 +71,7 @@ class Settings {
 
 exports.run = async (client, msg, [type, key, value = null]) => {
     const settings = new Settings(msg);
-    await msg.guild.configs.ensureConfigs();
+    await msg.guild.settings.ensureConfigs();
     const response = await settings.handle(type, key, value);
     return msg.alert(response);
 };

@@ -1,6 +1,6 @@
-/* eslint-disable import/no-dynamic-require, no-restricted-syntax */
+const availableBanners = require("../../assets/banners.json");
+
 exports.run = async (client, msg, [action, value = null]) => {
-    const { availableBanners } = client;
     const banners = msg.author.profile.bannerList || [];
     switch (action) {
         case "list": return msg.send(banners[0] ? `List of banners:\n${banners.map(b => `\`${b}\` ${availableBanners[b] ? availableBanners[b].title : ""}`).join("\n")}` : "You don't have a banner.");
@@ -14,11 +14,9 @@ exports.run = async (client, msg, [action, value = null]) => {
         }
         case "buylist": {
             const output = [];
-            for (const obj in availableBanners) {
-                if (obj in availableBanners) {
-                    const element = availableBanners[obj];
-                    output.push(`\`${element.id}\` ${element.title}`);
-                }
+            const entries = Object.values(availableBanners);
+            for (let i = 0; i < entries.length; i++) {
+                output.push(`\`${entries[i].id}\` ${entries[i].title}`);
             }
             return msg.send(output.join("\n"));
         }
@@ -29,14 +27,14 @@ exports.run = async (client, msg, [action, value = null]) => {
             else if (banners.includes(selected.id)) return msg.send("You already have this banner.");
             else if (msg.author.profile.money < selected.price) return msg.send(`You don't have enough money to buy this banner. You have ${msg.author.profile.money}${msg.shiny}, the banner costs ${selected.price}${msg.shiny}`);
             return this.prompt(client, msg, selected)
-        .then(async () => {
-            banners.push(selected.id);
-            const user = await client.fetchUser(selected.author);
-            await msg.author.profile.update({ money: msg.author.profile.money - selected.price, bannerList: banners });
-            await user.profile.add(selected.price * 0.1);
-            return msg.alert(`Dear ${msg.author}, you have successfully bought the banner "${selected.title}"`);
-        })
-        .catch(() => msg.alert(`Dear ${msg.author}, you cancelled your payment.`));
+                .then(async () => {
+                    banners.push(selected.id);
+                    const user = await client.fetchUser(selected.author);
+                    await msg.author.profile.update({ money: msg.author.profile.money - selected.price, bannerList: banners });
+                    await user.profile.add(selected.price * 0.1);
+                    return msg.alert(`Dear ${msg.author}, you have successfully bought the banner "${selected.title}"`);
+                })
+                .catch(() => msg.alert(`Dear ${msg.author}, you cancelled your payment.`));
         }
         default:
             return null;
@@ -46,19 +44,17 @@ exports.run = async (client, msg, [action, value = null]) => {
 exports.prompt = async (client, msg, banner) => {
     const user = await client.fetchUser(banner.author);
     const embed = new client.methods.Embed()
-    .setColor(msg.color)
-    .setDescription([
-        `**Author**: ${user.tag}`,
-        `**Title**: ${banner.title} (\`${banner.id}\`)`,
-        `**Price**: ${banner.price}${msg.shiny}`,
-    ].join("\n"))
-    .setImage(`http://kyradiscord.weebly.com/files/theme/banners/${banner.id}.png`)
-    .setTimestamp();
+        .setColor(msg.color)
+        .setDescription(
+            `**Author**: ${user.tag}\n` +
+            `**Title**: ${banner.title} (\`${banner.id}\`)\n` +
+            `**Price**: ${banner.price}${msg.shiny}`,
+        )
+        .setImage(`http://kyradiscord.weebly.com/files/theme/banners/${banner.id}.png`)
+        .setTimestamp();
 
-    await msg.prompt({ embed });
+    return msg.prompt({ embed });
 };
-
-exports.init = (client) => { client.availableBanners = require(`${client.clientBaseDir}assets/banners.json`); };
 
 exports.conf = {
     enabled: true,

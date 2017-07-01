@@ -1,3 +1,5 @@
+const { timer } = require("../../functions/wrappers");
+
 class LockDown {
     constructor(msg, channel) {
         Object.defineProperty(this, "msg", { value: msg });
@@ -18,7 +20,7 @@ class LockDown {
         await this.channel.overwritePermissions(this.role, { SEND_MESSAGES: false });
         if (this.channel.postable) await message.edit(`The channel ${this.channel} has been locked.`);
         if (time) {
-            time = this.client.funcs.wrappers.timer(time);
+            time = timer(time);
             this.channel.lockdown = setTimeout(() => { this.unlock().then(c => message.edit(c).catch()).catch(e => this.msg.error(e)); }, time);
         }
     }

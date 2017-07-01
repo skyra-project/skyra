@@ -23,7 +23,7 @@ const md = require("marked");
 
 exports.init = (client) => {
     this.client = client;
-    const dataDir = `${client.clientBaseDir}bwd${sep}dashboard${sep}`;
+    const dataDir = `${client.baseDir}bwd${sep}dashboard${sep}`;
     const templateDir = `${dataDir}templates${sep}`;
 
     passport.serializeUser((user, done) => {

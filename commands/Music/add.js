@@ -1,4 +1,5 @@
 const managerMusic = require("../../utils/managerMusic");
+const snekfetch = require("snekfetch");
 
 const getInfoAsync = require("util").promisify(require("ytdl-core").getInfo);
 const constants = require("../../utils/constants");
@@ -29,7 +30,7 @@ exports.findYoutube = async (client, msg, url) => {
         return this.getYouTube(client, msg, url);
     }
     const { google } = constants.getConfig.tokens;
-    const data = await client.funcs.fetch.JSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`);
+    const data = await snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`).then(d => JSON.parse(d.text));
     const video = data.items.find(item => item.id.kind !== "youtube#channel");
     return this.getYouTube(client, msg, `https://youtu.be/${video.id.videoId}`);
 };

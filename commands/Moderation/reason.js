@@ -1,3 +1,5 @@
+const sanitizeEmbed = require("../../functions/embed");
+
 exports.validate = async (client, msg, index) => {
     const cases = await msg.guild.moderation.cases;
     if (!cases) throw "i couldn't find mod-logs here. Please perform a moderation action before doing this.";
@@ -10,7 +12,7 @@ exports.validate = async (client, msg, index) => {
 };
 
 exports.fetchMessage = async (client, msg, document) => {
-    const modLog = msg.guild.configs.channels.mod;
+    const modLog = msg.guild.settings.channels.mod;
     if (!modLog) throw "there is no modlog channel configured.";
     const channel = msg.guild.channels.get(modLog);
     if (!channel) {
@@ -27,7 +29,7 @@ exports.handleMessage = async (client, msg, message, channel, document, reason) 
         const moderation = new client.Moderation(msg);
         return moderation.send(user, "ban", reason);
     }
-    const embed = client.funcs.embed(message.embeds[0]);
+    const embed = sanitizeEmbed(message.embeds[0]);
     embed.author = { name: msg.author.username, icon_url: msg.author.displayAvatarURL({ size: 128 }) };
     const description = embed.description.split("\n");
     description[2] = `❯ **Reason:** ${reason}`;

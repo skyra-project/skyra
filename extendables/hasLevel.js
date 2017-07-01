@@ -1,3 +1,5 @@
+const checkPerms = require("../functions/checkPerms");
+
 exports.conf = {
     type: "method",
     method: "hasLevel",
@@ -6,5 +8,5 @@ exports.conf = {
 
 // eslint-disable-next-line func-names
 exports.extend = function (min) {
-    return !!this.client.funcs.checkPerms(this.client, this, min);
+    return !!checkPerms(this.client, this, min);
 };

@@ -1,10 +1,10 @@
 exports.run = async (client, msg, [feedback]) => {
     const embed = new client.methods.Embed()
-    .setColor(0x06d310)
-    .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
-    .setDescription(feedback)
-    .setFooter(`${msg.author.id} | Feedback`)
-    .setTimestamp();
+        .setColor(0x06d310)
+        .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
+        .setDescription(feedback)
+        .setFooter(`${msg.author.id} | Feedback`)
+        .setTimestamp();
 
     await this.channel.send({ embed });
     await msg.alert(`Dear ${msg.author}, thanks you for sending us feedback!`);

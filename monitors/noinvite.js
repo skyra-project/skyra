@@ -4,7 +4,7 @@ exports.conf = {
 
 exports.run = (client, msg) => {
     if (msg.channel.type !== "text") return;
-    const configs = msg.guild.configs;
+    const configs = msg.guild.settings;
 
     if (!configs.selfmod.inviteLinks) return;
     if (!(/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content))) return;

@@ -5,7 +5,7 @@ let baseDir;
 
 /* eslint-disable no-confusing-arrow */
 exports.init = (client) => {
-    baseDir = resolve(`${client.clientBaseDir}${sep}bwd${sep}conf`);
+    baseDir = resolve(`${client.baseDir}${sep}bwd${sep}conf`);
     return fs.ensureDir(baseDir).catch(err => client.emit("log", err, "error"));
 };
 

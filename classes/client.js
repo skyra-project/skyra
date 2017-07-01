@@ -10,19 +10,19 @@ const PermStructure = new PermLevels()
     .addLevel(0, false, () => true)
     .addLevel(1, false, (client, msg) => {
         if (!msg.guild) return false;
-        if (msg.guild.configs && msg.guild.configs.roles.staff && msg.member.roles.has(msg.guild.configs.roles.staff)) return true;
+        if (msg.guild.settings && msg.guild.settings.roles.staff && msg.member.roles.has(msg.guild.settings.roles.staff)) return true;
         else if (msg.member.hasPermission("MANAGE_MESSAGES")) return true;
         return false;
     })
     .addLevel(2, false, (client, msg) => {
         if (!msg.guild) return false;
-        if (msg.guild.configs && msg.guild.configs.roles.moderator && msg.member.roles.has(msg.guild.configs.roles.moderator)) return true;
+        if (msg.guild.settings && msg.guild.settings.roles.moderator && msg.member.roles.has(msg.guild.settings.roles.moderator)) return true;
         else if (msg.member.hasPermission("BAN_MEMBERS")) return true;
         return false;
     })
     .addLevel(3, false, (client, msg) => {
         if (!msg.guild) return false;
-        if (msg.guild.configs && msg.guild.configs.roles.admin && msg.member.roles.has(msg.guild.configs.roles.admin)) return true;
+        if (msg.guild.settings && msg.guild.settings.roles.admin && msg.member.roles.has(msg.guild.settings.roles.admin)) return true;
         else if (msg.member.hasPermission("ADMINISTRATOR")) return true;
         return false;
     })
@@ -65,6 +65,7 @@ module.exports = class Komada extends Client {
             splitMessage,
         };
         this.application = null;
+        this.version = "1.10.0 TLU";
         this.once("ready", this._ready.bind(this));
     }
 

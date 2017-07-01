@@ -1,11 +1,10 @@
-/* eslint-disable no-restricted-syntax */
+const { copyPaste } = require("../functions/wrappers");
+
 exports.run = (client, msg) => {
-    if (msg.channel.type !== "text") return;
-    else if (msg.author.id !== client.user.id) return;
-
-    const configs = msg.guild.configs;
-
-    if (msg.embeds.length === 1 && configs.events.modLogProtection && configs.channels.mod && msg.channel.id === configs.channels.mod) {
-        client.funcs.wrappers.copyPaste(msg);
-    }
+    if (msg.channel.type === "text"
+        && msg.author.id === client.user.id
+        && msg.embeds.length === 1
+        && msg.guild.settings.channels.mod
+        && msg.guild.settings.events.modLogProtection
+        && msg.channel.id === msg.guild.settings.channels.mod) copyPaste(msg);
 };

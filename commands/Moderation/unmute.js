@@ -6,7 +6,7 @@ exports.run = async (client, msg, [user, ...reason]) => {
     if (user.id === msg.author.id) throw "you can't unmute yourself...";
     else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
 
-    const configs = msg.guild.configs;
+    const configs = msg.guild.settings;
     if (!configs) throw "you caught me while creating the configuration for this server.";
 
     const mute = configs.roles.muted;

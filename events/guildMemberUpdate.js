@@ -6,7 +6,7 @@ class GuildMemberUpdate {
         Object.defineProperty(this, "oMember", { value: oldMember });
         Object.defineProperty(this, "nMember", { value: newMember });
         Object.defineProperty(this, "guild", { value: newMember.guild });
-        Object.defineProperty(this, "configs", { value: newMember.guild.configs });
+        Object.defineProperty(this, "configs", { value: newMember.guild.settings });
         Object.defineProperty(this, "client", { value: newMember.client });
     }
 

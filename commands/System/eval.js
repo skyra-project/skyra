@@ -1,4 +1,5 @@
 const { inspect } = require("util");
+const clean = require("../../functions/clean");
 const now = require("performance-now");
 
 exports.parse = (toEval) => {
@@ -36,7 +37,7 @@ exports.run = async (client, msg, [args]) => {
         send.push(`➡ **Input:** Executed in ${time.toFixed(5)}μs${"```"}js`);
         send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
         send.push("🔍 **Inspect:**```js");
-        send.push(`${client.funcs.clean(client, out)}${"```"}`);
+        send.push(`${clean(client, out)}${"```"}`);
     } catch (err) {
         send.push(`➡ **Input:** Executed in ${(now() - start).toFixed(5)}μs${"```"}js`);
         send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);

@@ -1,4 +1,5 @@
 const constants = require("../utils/constants");
+const fetch = require("./fetch");
 
 const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 
@@ -6,13 +7,12 @@ const $ = (name) => { throw new Error(`${name} is a required argument.`); };
 class WatchPoint {
     constructor(client) {
         Object.defineProperty(this, "_client", { value: client });
-        Object.defineProperty(this, "request", { value: client.funcs.fetch });
         Object.defineProperty(this, "_keys", { value: constants.tokens.wpo });
         Object.defineProperty(this, "auth", { value: `Basic ${new Buffer(`${this._keys.user}:${this._keys.password}`).toString("base64")}` });
     }
 
     API(method, query) {
-        return this.request(`http://www.watchpointoasis.com/api/currency/${query}`, {
+        return fetch(`http://www.watchpointoasis.com/api/currency/${query}`, {
             headers: { Authorization: this.auth },
             json: true,
             method,

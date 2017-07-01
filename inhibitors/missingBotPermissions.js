@@ -1,4 +1,5 @@
 const { Permissions } = require("discord.js");
+const toTitleCase = require("../functions/toTitleCase");
 
 const impliedPermissions = new Permissions([
     "READ_MESSAGES",
@@ -20,6 +21,6 @@ exports.conf = {
 
 exports.run = (client, msg, cmd) => {
     const missing = msg.channel.type === "text" ? msg.channel.permissionsFor(client.user).missing(cmd.conf.botPerms) : impliedPermissions.missing(cmd.conf.botPerms);
-    if (missing.length > 0) return `Insufficient permissions, missing: **${client.funcs.toTitleCase(missing.join(", ").split("_").join(" "))}**`;
+    if (missing.length > 0) return `Insufficient permissions, missing: **${toTitleCase(missing.join(", ").split("_").join(" "))}**`;
     return false;
 };

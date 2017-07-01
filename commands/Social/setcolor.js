@@ -1,12 +1,14 @@
+const { validate: validateColor } = require("../../functions/resolveColor");
+
 exports.run = async (client, msg, [input]) => {
-    const { hex, b10 } = client.funcs.resolveColor.validate(input);
+    const { hex, b10 } = validateColor(input);
     const color = hex.toString().slice(1);
     await msg.author.profile.update({ color });
 
     const embed = new client.methods.Embed()
-    .setColor(b10.value)
-    .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
-    .setDescription(`Colour changed to ${hex.toString()}`);
+        .setColor(b10.value)
+        .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
+        .setDescription(`Colour changed to ${hex.toString()}`);
     return msg.send({ embed });
 };
 

@@ -1,3 +1,5 @@
+const { fetchAvatar } = require("../../functions/wrappers");
+const { User: fetchUser } = require("../../functions/search");
 const { readFile } = require("fs-nextra");
 const { join, sep } = require("path");
 const Canvas = require("canvas");
@@ -31,7 +33,7 @@ const showProfile = async (client, user) => {
     const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
         readFile(`${themes}${theme}.png`),
         readFile(profileTemplate),
-        client.funcs.wrappers.fetchAvatar(user, 256),
+        fetchAvatar(user, 256),
     ]);
 
     themeImage.onload = () => ctx.drawImage(themeImage, 10, 9, 188, 373);
@@ -73,7 +75,7 @@ const showProfile = async (client, user) => {
 };
 
 exports.run = async (client, msg, [search = msg.author]) => {
-    const user = await client.funcs.search.User(search, msg.guild);
+    const user = await fetchUser(search, msg.guild);
     const output = await showProfile(client, user);
     return msg.channel.send({ files: [{ attachment: output, name: "Profile.png" }] });
 };

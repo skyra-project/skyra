@@ -1,3 +1,4 @@
+const { User: fetchUser } = require("../../functions/search");
 const moment = require("moment");
 
 exports.run = async (client, msg, [search]) => {
@@ -7,7 +8,7 @@ exports.run = async (client, msg, [search]) => {
         const remaining = (msg.author.profile.timerep + 86400000) - now;
         return msg.alert(`You can give a reputation point in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`, 10000);
     }
-    const user = await client.funcs.search.User(search, msg.guild);
+    const user = await fetchUser(search, msg.guild);
     if (msg.author.id === user.id) throw "you can't give a reputation point to yourself.";
     else if (user.bot) throw "you can't give reputation points to bots.";
 

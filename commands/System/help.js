@@ -55,7 +55,7 @@ exports.buildHelp = (client, msg) => {
             const subcat = command.help.subCategory;
             if (!help.hasOwnProperty(cat)) help[cat] = {};
             if (!help[cat].hasOwnProperty(subcat)) help[cat][subcat] = [];
-            help[cat][subcat].push(`${msg.guild ? msg.guild.configs.prefix : "&"}${command.help.name.padEnd(longest)} :: ${command.help.description}`);
+            help[cat][subcat].push(`${msg.guildSettings.prefix}${command.help.name.padEnd(longest)} :: ${command.help.description}`);
         }
     }
 

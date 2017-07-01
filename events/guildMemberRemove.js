@@ -4,7 +4,7 @@ class GuildMemberRemove {
     constructor(member) {
         Object.defineProperty(this, "member", { value: member });
         Object.defineProperty(this, "guild", { value: member.guild });
-        Object.defineProperty(this, "configs", { value: member.guild.configs });
+        Object.defineProperty(this, "configs", { value: member.guild.settings });
         Object.defineProperty(this, "client", { value: member.client });
     }
 

@@ -1,3 +1,4 @@
+const snekfetch = require("snekfetch");
 const constants = require("../../utils/constants");
 
 /* Autentification */
@@ -14,7 +15,7 @@ const progress = (prog) => {
 
 exports.run = async (client, msg, [server, user]) => {
     await msg.send("`Fetching data...`");
-    const data = await client.funcs.fetch.JSON(`https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`);
+    const data = await snekfetch.get(`https://${server}.api.battle.net/d3/profile/${encodeURIComponent(user.replace(/#/gi, "-"))}/?locale=en_US&apikey=${blizzard}`).then(d => JSON.parse(d.text));
     if (data.code === "NOTFOUND") throw constants.httpResponses(404);
     const embed = new client.methods.Embed()
     .setTitle(`**Diablo 3 Stats:** *${data.battleTag}*`)

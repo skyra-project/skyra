@@ -8,7 +8,7 @@ exports.run = async (client, msg, [index]) => {
 
     const moderator = thisCase.moderator ? await client.fetchUser(thisCase.moderator) : null;
     const user = await client.fetchUser(thisCase.user);
-    const description = MODERATION.generate(client, user, thisCase.type, thisCase.reason, thisCase.thisCase, msg.guild.configs.prefix);
+    const description = MODERATION.generate(client, user, thisCase.type, thisCase.reason, thisCase.thisCase, msg.guild.settings.prefix);
     const embed = MODERATION.createEmbed(client, thisCase.type, moderator, description, thisCase.thisCase, !moderator);
     return msg.send({ embed });
 };

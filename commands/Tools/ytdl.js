@@ -3,6 +3,7 @@ const { sep } = require("path");
 const constants = require("../../utils/constants");
 const ytdl = require("ytdl-core");
 const fs = require("fs-nextra");
+const snekfetch = require("snekfetch");
 
 const getInfoAsync = promisify(ytdl.getInfo);
 
@@ -17,11 +18,11 @@ exports.download = (url, typeFormat, dir, filename) => new Promise((resolve, rej
 });
 
 exports.run = async (client, msg, [input]) => {
-    const data = await client.funcs.fetch.JSON(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`);
+    const data = await snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${google}`).then(d => JSON.parse(d.text));
     const result = data.items[0];
     if (!result) throw constants.httpResponses(404);
     const url = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
-    const dir = `${client.clientBaseDir}downloads${sep}`;
+    const dir = `${client.baseDir}downloads${sep}`;
 
     const info = await getInfoAsync(url);
     const filename = `${info.title.replace(/[^a-zA-Z0-9\[\]()\-\. ]/g, "").replace(/[ ]{2}/g, " ")}`;

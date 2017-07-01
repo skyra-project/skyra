@@ -1,10 +1,11 @@
+const clean = require("../../functions/clean");
 const now = require("performance-now");
 const math = require("mathjs");
 
 exports.run = async (client, msg, [exp]) => {
     const start = now();
     const evaled = await math.eval(exp);
-    return msg.send(`⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${"```"}js\n${client.funcs.clean(client, evaled)}${"```"}`);
+    return msg.send(`⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${"```"}js\n${clean(client, evaled)}${"```"}`);
 };
 
 exports.conf = {

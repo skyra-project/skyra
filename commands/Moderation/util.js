@@ -1,3 +1,5 @@
+const { Role: fetchRole, Channel: fetchChannel, User: fetchUser } = require("../../functions/search");
+const toTitleCase = require("../../functions/toTitleCase");
 const { Permissions } = require("discord.js");
 const moment = require("moment");
 
@@ -56,11 +58,11 @@ const Run = class Run {
         switch (type) {
             case "role": {
                 if (!input) return this.msg.member.highestRole;
-                return this.client.funcs.search.Role(input, this.guild);
+                return fetchRole(input, this.guild);
             }
             case "channel": {
                 if (!input) return this.channel;
-                return this.client.funcs.search.Channel(input, this.guild);
+                return fetchChannel(input, this.guild);
             }
             case "guild": {
                 let guild;
@@ -76,7 +78,7 @@ const Run = class Run {
             case "member": {
                 let user;
                 if (!input) user = this.msg.author;
-                else user = await this.client.funcs.search.User(input, this.guild);
+                else user = await fetchUser(input, this.guild);
                 return this.guild.fetchMember(user.id).catch(() => { throw "User not found."; });
             }
             default: throw `${type} does not match any of the possibilities.`;
@@ -169,7 +171,7 @@ const ChannelInfo = class ChannelInfo {
 
     static resolve(n, type) {
         const output = [""];
-        for (let i = 0; i < PermissionFlags.length; i++) if (n.has(PermissionFlags[i])) output.push(`\u200B    ${type === "+" ? "\\🔹" : "\\🔸"} ${this.client.funcs.toTitleCase(PermissionFlags[i].replace(/_/g, " "))}`);
+        for (let i = 0; i < PermissionFlags.length; i++) if (n.has(PermissionFlags[i])) output.push(`\u200B    ${type === "+" ? "\\🔹" : "\\🔸"} ${toTitleCase(PermissionFlags[i].replace(/_/g, " "))}`);
         return output.join("\n");
     }
 };
@@ -251,7 +253,7 @@ const PermissionUser = class PermissionUser {
     run(member) {
         const { permissions } = member;
         const perm = ["\u200B"];
-        for (let i = 0; i < PermissionFlags.length; i++) perm.push(`${permissions.has(PermissionFlags[i]) ? "\\🔹" : "\\🔸"} ${this.client.funcs.toTitleCase(PermissionFlags[i].replace(/_/g, " "))}`);
+        for (let i = 0; i < PermissionFlags.length; i++) perm.push(`${permissions.has(PermissionFlags[i]) ? "\\🔹" : "\\🔸"} ${toTitleCase(PermissionFlags[i].replace(/_/g, " "))}`);
 
         const embed = new this.client.methods.Embed()
       .setColor(this.msg.guild.members.get(member.user.id).highestRole.color || 0xdfdfdf)

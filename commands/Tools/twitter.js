@@ -1,20 +1,21 @@
-const constants = require("../../utils/constants");
+const fetch = require("../../functions/fetch");
+const { httpResponses } = require("../../utils/constants");
 const moment = require("moment");
 
 exports.run = async (client, msg, [user]) => {
     const url = `https://twitrss.me/twitter_user_to_rss/?user=${encodeURIComponent(user)}`;
     try {
-        const data = await client.funcs.fetch.XML(url);
+        const data = await fetch.XML(url);
         let index = 0;
         const twits = data.rss.channel[0].item;
-        if (!twits || !twits[0]) throw constants.httpResponses(404);
+        if (!twits || !twits[0]) throw httpResponses(404);
         if (twits[1] && Date.parse(twits[0].pubDate[0]) < Date.parse(twits[1].pubDate[0])) index = 1;
         const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setTitle(`Lastest twit by ${twits[index]["dc:creator"][0].replace("Verified account", "")}`)
-      .setURL(twits[index].link[0] || undefined)
-      .setDescription(`${twits[index].title[0].split("pic.twitter.com/")[0]}\n\u200B`)
-      .setFooter(moment.utc(Date.parse(twits[index].pubDate[0])).format("dddd, MMMM Do YYYY, HH:mm:ss"));
+            .setColor(msg.color)
+            .setTitle(`Lastest twit by ${twits[index]["dc:creator"][0].replace("Verified account", "")}`)
+            .setURL(twits[index].link[0] || undefined)
+            .setDescription(`${twits[index].title[0].split("pic.twitter.com/")[0]}\n\u200B`)
+            .setFooter(moment.utc(Date.parse(twits[index].pubDate[0])).format("dddd, MMMM Do YYYY, HH:mm:ss"));
         if (twits[index].title[0].split("pic.twitter.com/")[1]) embed.setImage(`https://pbs.twimg.com/${twits[index].title[0].split("pic.twitter.com/")[1]}.jpg`);
         return msg.send({ embed });
     } catch (e) {

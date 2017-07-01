@@ -3,6 +3,8 @@ const { readFile } = require("fs-nextra");
 const GIFEncoder = require("gifencoder");
 const Canvas = require("canvas");
 const { join, resolve } = require("path");
+const { fetchAvatar } = require("../../functions/wrappers");
+const { User: fetchUser } = require("../../functions/search");
 
 const template = resolve(join(__dirname, "../../assets/images/memes/triggered.png"));
 
@@ -14,7 +16,7 @@ const triggering = async (client, user) => {
     const ctx = c.getContext("2d");
 
     const [userBuffer, titleBuffer] = await Promise.all([
-        client.funcs.wrappers.fetchAvatar(user, 512),
+        fetchAvatar(user, 512),
         readFile(template),
     ]);
     imgTitle.src = titleBuffer;
@@ -44,7 +46,7 @@ const triggering = async (client, user) => {
 };
 
 exports.run = async (client, msg, [search = msg.member]) => {
-    const user = await client.funcs.search.User(search, msg.guild);
+    const user = await fetchUser(search, msg.guild);
     const output = await triggering(client, user);
     return msg.channel.send({ files: [{ attachment: output, name: "triggered.gif" }] });
 };

@@ -1,5 +1,4 @@
-const { promisify } = require("util");
-const exec = promisify(require("child_process").exec);
+const exec = require("util").promisify(require("child_process").exec);
 
 exports.run = async (client, msg, [input]) => {
     if (msg.deletable) msg.nuke();

@@ -1,3 +1,5 @@
+const { fetchAvatar } = require("../../functions/wrappers");
+const { User: fetchUser } = require("../../functions/search");
 const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
 const { join, resolve } = require("path");
@@ -14,7 +16,7 @@ const Pray = async (client, user) => {
   /* Get the buffers from the praised user's profile avatar */
     const [bgBuffer, praised] = await Promise.all([
         readFile(template),
-        client.funcs.wrappers.fetchAvatar(user, 256),
+        fetchAvatar(user, 256),
     ]);
 
   /* Draw the buffer */
@@ -30,7 +32,7 @@ const Pray = async (client, user) => {
 };
 
 exports.run = async (client, msg, [search = msg.author]) => {
-    const user = await client.funcs.search.User(search, msg.guild);
+    const user = await fetchUser(search, msg.guild);
     const output = await Pray(client, user);
     return msg.channel.send({ files: [{ attachment: output, name: "f.png" }] });
 };

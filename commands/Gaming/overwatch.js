@@ -1,4 +1,5 @@
 const snekfetch = require("snekfetch");
+const { get: fetchProfile } = require("../../functions/overwatch");
 
 const OVERWATCH = require("../../utils/overwatch.js");
 
@@ -75,7 +76,7 @@ class Overwatch {
     async fetchData(selected) {
         const path = selected.split("/");
         path[path.length - 1] = encodeURIComponent(path[path.length - 1]);
-        const data = await this.client.funcs.overwatch.get(`https://playoverwatch.com/en-us${path.join("/")}`);
+        const data = await fetchProfile(`https://playoverwatch.com/en-us${path.join("/")}`);
         const { overview, url } = data;
         const statistics = data[this.gamemode];
         const output = { overview, url };
@@ -138,13 +139,13 @@ exports.run = async (client, msg, [user, platform, server, type = "featured", mo
     if (output instanceof Buffer) return msg.send({ files: [{ attachment: output, name: "overwatch.png" }] });
     const { overview, title, data, url } = output;
     const embed = new client.methods.Embed()
-    .setURL(url)
-    .setColor(msg.color)
-    .setThumbnail(overview.profile.avatar)
-    .setTitle(`Overwatch Stats: ${resolved.platformDisplayName} [${mode === "quickplay" ? "QP" : "COMP"}]`)
-    .setFooter("📊 Statistics")
-    .setDescription(`**❯ ${title}**\n\n${data}`)
-    .setTimestamp();
+        .setURL(url)
+        .setColor(msg.color)
+        .setThumbnail(overview.profile.avatar)
+        .setTitle(`Overwatch Stats: ${resolved.platformDisplayName} [${mode === "quickplay" ? "QP" : "COMP"}]`)
+        .setFooter("📊 Statistics")
+        .setDescription(`**❯ ${title}**\n\n${data}`)
+        .setTimestamp();
     return msg.send({ embed });
 };
 

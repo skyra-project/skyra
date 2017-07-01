@@ -1,4 +1,4 @@
-const RethinkDB = require("./rethinkDB.js");
+const sanitizeEmbed = require("./embed");
 const snekfetch = require("snekfetch");
 const ms = require("ms");
 
@@ -19,12 +19,7 @@ exports.timer = (time) => {
 };
 
 exports.copyPaste = (msg) => {
-    const embed = msg.embeds.length ? msg.client.funcs.embed(msg.embeds[0]) : null;
+    const embed = msg.embeds.length ? sanitizeEmbed(msg.embeds[0]) : null;
     const content = msg.content;
     return msg.channel.send(content, { embed });
-};
-
-exports.init = (client) => {
-    client.rethink = RethinkDB;
-    client.version = "1.8.0";
 };

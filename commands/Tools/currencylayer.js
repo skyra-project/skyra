@@ -1,3 +1,4 @@
+const snekfetch = require("snekfetch");
 const constants = require("../../utils/constants");
 
 /* eslint-disable no-multi-spaces */
@@ -35,7 +36,7 @@ exports.run = async (client, msg, [money, input, output]) => {
     if (!currencyList.includes(input)) throw `${input} isn't a valid currency.`;
     if (!currencyList.includes(output)) throw `${output} isn't a valid currency.`;
     const url = `http://www.apilayer.net/api/live?access_key=${currencyLayer}&format=1&currencies=${input},${output}`;
-    const data = await client.funcs.fetch.JSON(url);
+    const data = await snekfetch.get(url).then(d => JSON.parse(d.text));
     if (!data.success) throw new Error("Something went wrong.");
     const USDtoINPUT = data.quotes[`USD${input}`];
     const USDtoOUTPUT = data.quotes[`USD${output}`];

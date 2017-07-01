@@ -1,4 +1,4 @@
-const constants = require("../../utils/constants");
+const { oneToTen } = require("../../utils/constants");
 
 exports.run = async (client, msg, [rateuser]) => {
     let ratewaifu;
@@ -14,7 +14,7 @@ exports.run = async (client, msg, [rateuser]) => {
         const bg = Buffer.from(rateuser.toLowerCase()).readUIntBE(0, rateuser.length);
         const rng = (rateuser.length * Math.abs(Math.sin(bg)) * 10);
         rate = 100 - Math.round((bg * rng) % 100);
-        ratewaifu = constants.oneToTen(Math.floor(rate / 10)).emoji;
+        ratewaifu = oneToTen(Math.floor(rate / 10)).emoji;
     }
 
     return msg.send(`**${msg.author.username}**, I'd give **${rateuser}** a **${rate}**/100 ${ratewaifu}`);

@@ -55,7 +55,7 @@ module.exports = class UserProfile {
     }
 
     async win(money, guild) {
-        if (guild) money *= guild.configs.boost;
+        if (guild) money *= guild.settings.boost;
         await this.add(money);
         return money;
     }

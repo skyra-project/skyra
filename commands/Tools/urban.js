@@ -1,29 +1,32 @@
-const constants = require("../../utils/constants");
+const snekfetch = require("snekfetch");
+const splitText = require("../../functions/splitText");
+const toTitleCase = require("../../functions/toTitleCase");
+const { httpResponses } = require("../../utils/constants");
 
 exports.run = async (client, msg, [query, ind = 1]) => {
     const index = ind - 1;
     if (index < 0) throw "You can't use an index equal or below zero.";
-    const data = await client.funcs.fetch.JSON(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
+    const data = await snekfetch.get(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`).then(d => JSON.parse(d.text));
     const result = data.list[index];
-    if (result === undefined) throw constants.httpResponses(404);
+    if (result === undefined) throw httpResponses(404);
     const wdef = result.definition.length > 750 ?
-    `${client.funcs.splitText(result.definition, 750)}...\nRead the full definition here: ${result.permalink}` :
+    `${splitText(result.definition, 750)}...\nRead the full definition here: ${result.permalink}` :
     result.definition;
     const embed = new client.methods.Embed()
-    .setTitle(`Word: ${client.funcs.toTitleCase(query)}`)
-    .setURL(result.permalink)
-    .setColor(msg.color)
-    .setThumbnail("http://i.imgur.com/CcIZZsa.png")
-    .setDescription([
-        `**Definition:** ${ind} out of ${data.list.length}`,
-        `_${wdef}_`,
-        "\n**Example:**",
-        result.example,
-        `\n**Submitted by** ${result.author}`,
-    ].join("\n"))
-    .addField("\u200B", `\\👍 ${result.thumbs_up}`, true)
-    .addField("\u200B", `\\👎 ${result.thumbs_down}`, true)
-    .setFooter("© Urban Dictionary");
+        .setTitle(`Word: ${toTitleCase(query)}`)
+        .setURL(result.permalink)
+        .setColor(msg.color)
+        .setThumbnail("http://i.imgur.com/CcIZZsa.png")
+        .setDescription([
+            `**Definition:** ${ind} out of ${data.list.length}`,
+            `_${wdef}_`,
+            "\n**Example:**",
+            result.example,
+            `\n**Submitted by** ${result.author}`,
+        ].join("\n"))
+        .addField("\u200B", `\\👍 ${result.thumbs_up}`, true)
+        .addField("\u200B", `\\👎 ${result.thumbs_down}`, true)
+        .setFooter("© Urban Dictionary");
 
     return msg.send({ embed });
 };

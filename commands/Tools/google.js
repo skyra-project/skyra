@@ -1,3 +1,4 @@
+const snekfetch = require("snekfetch");
 const constants = require("../../utils/constants");
 const cheerio = require("cheerio");
 
@@ -7,7 +8,7 @@ const getText = (children) => {
 };
 
 exports.run = async (client, msg, [input]) => {
-    const data = await client.funcs.fetch(`http://google.com/search?client=chrome&rls=en&ie=UTF-8&oe=UTF-8&lr=lang_en&q=${encodeURIComponent(input)}`);
+    const data = await snekfetch.get(`http://google.com/search?client=chrome&rls=en&ie=UTF-8&oe=UTF-8&lr=lang_en&q=${encodeURIComponent(input)}`);
     const $ = cheerio.load(data);
     let results = [];
     let raw;
@@ -24,10 +25,10 @@ exports.run = async (client, msg, [input]) => {
 
     if (!results.length) throw constants.httpResponses(404);
     const embed = new client.methods.Embed()
-    .setColor(msg.guild.members.get(client.user.id).highestRole.color || 0xdfdfdf)
-    .setFooter("Google Search")
-    .setDescription(results.map(r => `${decodeURIComponent(r.link)}\n\t${r.description}\n`).join("\n"))
-    .setTimestamp();
+        .setColor(msg.guild.members.get(client.user.id).highestRole.color || 0xdfdfdf)
+        .setFooter("Google Search")
+        .setDescription(results.map(r => `${decodeURIComponent(r.link)}\n\t${r.description}\n`).join("\n"))
+        .setTimestamp();
     return msg.send(`Search results for \`${input}\``, { embed });
 };
 

@@ -6,7 +6,7 @@ const options = {
 };
 
 exports.createMuted = async (msg) => {
-    if (msg.guild.configs.roles.muted) throw new Error("There's already a muted role.");
+    if (msg.guild.settings.roles.muted) throw new Error("There's already a muted role.");
     const role = await msg.guild.createRole(options);
     const channels = msg.guild.channels;
     await msg.send(`Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels.size} to ${role}...`);
@@ -20,7 +20,7 @@ exports.createMuted = async (msg) => {
     }
 
     const messageEdit2 = denied.length ? `, with exception of ${denied.join(", ")}.` : ". ";
-    await msg.guild.configs.update({ roles: { muted: role.id } });
+    await msg.guild.settings.update({ roles: { muted: role.id } });
     await msg.send(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
     return true;
 };

@@ -1,3 +1,4 @@
+const { luminance, hexConcat, validate: validateColor } = require("../../functions/resolveColor");
 const { join, resolve } = require("path");
 const Canvas = require("canvas");
 
@@ -61,8 +62,6 @@ const showColor = async (client, color, diff) => {
             pos: [245, 245] },
     ];
 
-    const { luminance, hexConcat } = client.funcs.resolveColor;
-
     await Promise.all(colours.map(colour => new Promise((res) => {
         const [thisRed, thisGreen, thisBlue] = [cL(colour.R), cL(colour.G), cL(colour.B)];
         ctx.fillStyle = `rgb(${thisRed}, ${thisGreen}, ${thisBlue})`;
@@ -93,7 +92,7 @@ const showColor = async (client, color, diff) => {
 };
 
 exports.run = async (client, msg, [input, diff = 10]) => {
-    const { hex, hsl, hsluv, rgb } = client.funcs.resolveColor.validate(input);
+    const { hex, hsl, hsluv, rgb } = validateColor(input);
 
     const output = await showColor(client, rgb, diff);
     return msg.channel.send([

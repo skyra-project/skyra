@@ -59,10 +59,10 @@ exports.run = async (client, msg, [type = "local", index = 0]) => {
         }
     }
     const embed = new client.methods.Embed()
-    .setColor(msg.color)
-    .setTitle(titles[type].title)
-    .setDescription(send.join("\n"))
-    .setFooter(titles[type].position + position);
+        .setColor(msg.color)
+        .setTitle(titles[type].title)
+        .setDescription(send.join("\n"))
+        .setFooter(titles[type].position + position);
     return msg.send({ embed });
 };
 

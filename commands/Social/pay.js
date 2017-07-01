@@ -1,5 +1,7 @@
+const { User: fetchUser } = require("../../functions/search");
+
 exports.run = async (client, msg, [money, ...search]) => {
-    const user = await client.funcs.search.User(search.join(" "), msg.guild);
+    const user = await fetchUser(search.join(" "), msg.guild);
 
     if (msg.author.id === user.id) throw "you can't pay yourself.";
     else if (money <= 0) throw "amount of money should be above 0.";

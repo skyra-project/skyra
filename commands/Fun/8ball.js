@@ -1,7 +1,6 @@
 const startsWith = (prefix, str) => {
     for (let i = prefix.length - 1; i >= 0; i--) {
-        if (str[i] === prefix[i]) continue;
-        return false;
+        if (str[i] !== prefix[i]) return false;
     }
     return true;
 };

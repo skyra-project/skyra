@@ -8,12 +8,12 @@ exports.run = (client, msg, cmd) => {
     if (msg.channel.type !== "text" || !cmd.conf.spam) return false;
     if (msg.author.id === client.config.ownerID) return false;
 
-    const spam = msg.guild.configs.channels.spam;
+    const spam = msg.guild.settings.channels.spam;
     if (!spam) return false;
 
     const spamChannel = msg.guild.channels.get(spam);
     if (!spamChannel) {
-        msg.guild.configs.update({ channels: { spam: null } });
+        msg.guild.settings.update({ channels: { spam: null } });
         return false;
     }
 

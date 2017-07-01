@@ -1,7 +1,8 @@
-const constants = require("../../utils/constants");
+const snekfetch = require("snekfetch");
+const { getConfig } = require("../../utils/constants");
 
 /* Autentification */
-const { osu } = constants.getConfig.tokens;
+const { osu, httpResponses } = getConfig.tokens;
 
 const game = {
     STANDARD: 0,
@@ -23,84 +24,82 @@ exports.run = async (client, msg, [gamemode, information, ...username]) => {
     username = username[0].split(" ").join("+");
 
     await msg.send("`Fetching data...`");
-    const data = await client.funcs.fetch.JSON(`https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${osu}`);
+    const data = await snekfetch.get(`https://osu.ppy.sh/api/get_user?m=${gamemode}&u=${encodeURIComponent(username)}&k=${osu}`).then(d => JSON.parse(d.text));
     const uinfo = data[0];
-    if (!uinfo) constants.httpResponses(404);
+    if (!uinfo) httpResponses(404);
     const embed = new client.methods.Embed().setColor(msg.color);
     switch (information) {
         case 1:
-            embed.setTitle(`Osu! User profile for ${uinfo.username} (${uinfo.user_id})`)
-        .setDescription(client.funcs.strip.indents`
-          [**${uinfo.country}**] Level **${parseInt(uinfo.level)}**
-          Rank: **${client.funcs.addCommas(uinfo.pp_rank)}** (Country rank: **${client.funcs.addCommas(uinfo.pp_country_rank)}**)
-          \u200B
-        `)
-        .addField("❯ Information", client.funcs.strip.indents`
-          \u200B  • Accuracy: **${parseInt(uinfo.accuracy)}**%
-          \u200B  • Play count: **${client.funcs.addCommas(uinfo.playcount)}**
-        `);
+            embed
+                .setTitle(`Osu! User profile for ${uinfo.username} (${uinfo.user_id})`)
+                .setDescription(
+                    `[**${uinfo.country}**] Level **${parseInt(uinfo.level)}**\n` +
+                    `Rank: **${(uinfo.pp_rank).toLocaleString()}** (Country rank: **${(uinfo.pp_country_rank).toLocaleString()}**)`,
+                )
+                .addField("❯ Information",
+                    `  • Accuracy: **${parseInt(uinfo.accuracy)}**%\n` +
+                    `  • Play count: **${(uinfo.playcount).toLocaleString()}**`,
+                );
             break;
         case 2:
-            embed.setTitle(`Osu! User profile for ${uinfo.username} (${uinfo.user_id})`)
-        .setDescription(client.funcs.strip.indents`
-          [**${uinfo.country}**] Level **${parseInt(uinfo.level)}**
-          Rank: **${client.funcs.addCommas(uinfo.pp_rank)}** (Country rank: **${client.funcs.addCommas(uinfo.pp_country_rank)}**)
-          \u200B
-        `)
-        .addField("❯ Scores", client.funcs.strip.indents`
-          \u200B  • Total score: **${client.funcs.addCommas(uinfo.total_score)}**
-          \u200B  • Ranked score: **${client.funcs.addCommas(uinfo.ranked_score)}**
-        `, true)
-        .addField("❯ Beatmaps", client.funcs.strip.indents`
-          \u200B  • Play count: **${client.funcs.addCommas(uinfo.playcount)}**
-          \u200B  • 50s: **${client.funcs.addCommas(uinfo.count50)}**
-          \u200B  • 100s: **${client.funcs.addCommas(uinfo.count100)}**
-          \u200B  • 300s: **${client.funcs.addCommas(uinfo.count300)}**
-        `, true)
-        .addField("❯ Accuracy ranks", client.funcs.strip.indents`
-          \u200B  • Accuracy: **${parseInt(uinfo.accuracy)}**%
-          \u200B  • Perfect accuracy: **${client.funcs.addCommas(uinfo.count_rank_ss)}**
-          \u200B  • Nearly perfect accuracy: **${client.funcs.addCommas(uinfo.count_rank_s)}**
-          \u200B  • Almost perfect accuracy: **${client.funcs.addCommas(uinfo.count_rank_a)}**
-        `);
+            embed
+                .setTitle(`Osu! User profile for ${uinfo.username} (${uinfo.user_id})`)
+                .setDescription(
+                    `[**${uinfo.country}**] Level **${parseInt(uinfo.level)}**\n` +
+                    `Rank: **${(uinfo.pp_rank).toLocaleString()}** (Country rank: **${(uinfo.pp_country_rank).toLocaleString()}**)`,
+                )
+                .addField("❯ Scores",
+                    `  • Total score: **${(uinfo.total_score).toLocaleString()}**\n` +
+                    `  • Ranked score: **${(uinfo.ranked_score).toLocaleString()}**`
+                , true)
+                .addField("❯ Beatmaps",
+                    `  • Play count: **${(uinfo.playcount).toLocaleString()}**\n` +
+                    `  • 50s: **${(uinfo.count50).toLocaleString()}**\n` +
+                    `  • 100s: **${(uinfo.count100).toLocaleString()}**\n` +
+                    `  • 300s: **${(uinfo.count300).toLocaleString()}**`
+                , true)
+                .addField("❯ Accuracy ranks",
+                    `  • Accuracy: **${parseInt(uinfo.accuracy)}**%\n` +
+                    `  • Perfect accuracy: **${(uinfo.count_rank_ss).toLocaleString()}**\n` +
+                    `  • Nearly perfect accuracy: **${(uinfo.count_rank_s).toLocaleString()}**\n` +
+                    `  • Almost perfect accuracy: **${(uinfo.count_rank_a).toLocaleString()}**`,
+                );
             break;
         case 3:
-            embed.setTitle(`Best beatmap by ${uinfo.username} (${uinfo.user_id})`)
-        .setDescription(`ID Beatmap: [**${uinfo.beatmap_id}**] Score: **${client.funcs.addCommas(uinfo.score)}**\n\u200B`)
-        .addField("❯ Counts", client.funcs.strip.indents`
-          \u200B  • 50s: **${client.funcs.addCommas(uinfo.count50)}**
-          \u200B  • 100s: **${client.funcs.addCommas(uinfo.count100)}**
-          \u200B  • 300s: **${client.funcs.addCommas(uinfo.count300)}**
-          \u200B
-          \u200B  • **${client.funcs.addCommas(uinfo.countmiss)}** misses.
-          \u200B  • **${client.funcs.addCommas(uinfo.countkatu)}** katus.
-          \u200B  • **${client.funcs.addCommas(uinfo.countgeki)}** gekis.
-          \u200B  • **${uinfo.perfect ? "Maximum combo of map reached." : "Couldn't reach maximum combo of map."}**
-          \u200B
-        `, true)
-        .addField("❯ Info", client.funcs.strip.indents`
-          \u200B  • Date: **${uinfo.date}**
-          \u200B  • Rank: **${client.funcs.addCommas(uinfo.rank)}**
-        `);
+            embed
+                .setTitle(`Best beatmap by ${uinfo.username} (${uinfo.user_id})`)
+                .setDescription(`ID Beatmap: [**${uinfo.beatmap_id}**] Score: **${(uinfo.score)}**\n\u200B`).toLocaleString()
+                .addField("❯ Counts",
+                    `  • 50s: **${(uinfo.count50).toLocaleString()}**\n` +
+                    `  • 100s: **${(uinfo.count100).toLocaleString()}**\n` +
+                    `  • 300s: **${(uinfo.count300).toLocaleString()}**\n\n` +
+                    `  • **${(uinfo.countmiss).toLocaleString()}** misses.\n` +
+                    `  • **${(uinfo.countkatu).toLocaleString()}** katus.\n` +
+                    `  • **${(uinfo.countgeki).toLocaleString()}** gekis.\n` +
+                    `  • **${uinfo.perfect ? "Maximum combo of map reached." : "Couldn't reach maximum combo of map."}**`
+                , true)
+                .addField("❯ Info",
+                    `  • Date: **${uinfo.date}**\n` +
+                    `  • Rank: **${(uinfo.rank).toLocaleString()}**`,
+                );
             break;
         case 4:
-            embed.setTitle(`Best beatmap by ${uinfo.username} (${uinfo.user_id})`)
-        .setDescription(`ID Beatmap: [**${uinfo.beatmap_id}**] Score: **${client.funcs.addCommas(uinfo.score)}**\n\u200B`)
-        .addField("❯ Counts", client.funcs.strip.indents`
-          \u200B  • 50s: **${client.funcs.addCommas(uinfo.count50)}**
-          \u200B  • 100s: **${client.funcs.addCommas(uinfo.count100)}**
-          \u200B  • 300s: **${client.funcs.addCommas(uinfo.count300)}**
-          \u200B
-          \u200B  • **${client.funcs.addCommas(uinfo.countmiss)}** misses.
-          \u200B  • **${client.funcs.addCommas(uinfo.countkatu)}** katus.
-          \u200B  • **${client.funcs.addCommas(uinfo.countgeki)}** gekis.
-          \u200B  • **${uinfo.perfect ? "Maximum combo of map reached." : "Couldn't reach maximum combo of map."}**
-          \u200B
-        `, true)
-        .addField("❯ Info", client.funcs.strip.indents`
-          \u200B  • Date: **${uinfo.date}**
-          \u200B  • Rank: **${client.funcs.addCommas(uinfo.rank)}**
-        `);
+            embed
+                .setTitle(`Best beatmap by ${uinfo.username} (${uinfo.user_id})`)
+                .setDescription(`ID Beatmap: [**${uinfo.beatmap_id}**] Score: **${(uinfo.score)}**\n\u200B`).toLocaleString()
+                .addField("❯ Counts",
+                    `  • 50s: **${(uinfo.count50).toLocaleString()}**\n` +
+                    `  • 100s: **${(uinfo.count100).toLocaleString()}**\n` +
+                    `  • 300s: **${(uinfo.count300).toLocaleString()}**\n\n` +
+                    `  • **${(uinfo.countmiss).toLocaleString()}** misses.\n` +
+                    `  • **${(uinfo.countkatu).toLocaleString()}** katus.\n` +
+                    `  • **${(uinfo.countgeki).toLocaleString()}** gekis.\n` +
+                    `  • **${uinfo.perfect ? "Maximum combo of map reached." : "Couldn't reach maximum combo of map."}**`
+                , true)
+                .addField("❯ Info",
+                    `  • Date: **${uinfo.date}**\n` +
+                    `  • Rank: **${(uinfo.rank).toLocaleString()}**`,
+                );
             break;
     // no default
     }

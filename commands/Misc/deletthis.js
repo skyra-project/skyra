@@ -1,3 +1,5 @@
+const { fetchAvatar } = require("../../functions/wrappers");
+const { User: fetchUser } = require("../../functions/search");
 const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
 const { join, resolve } = require("path");
@@ -21,8 +23,8 @@ const DeletThis = async (client, msg, user) => {
     /* Get the buffers from both profile avatars */
     const [bgBuffer, Hammered, Hammerer] = await Promise.all([
         readFile(template),
-        client.funcs.wrappers.fetchAvatar(selectedUser, 256),
-        client.funcs.wrappers.fetchAvatar(hammerer, 256),
+        fetchAvatar(selectedUser, 256),
+        fetchAvatar(hammerer, 256),
     ]);
 
     /* Background */
@@ -61,7 +63,7 @@ const DeletThis = async (client, msg, user) => {
 };
 
 exports.run = async (client, msg, [search]) => {
-    const user = await client.funcs.search.User(search, msg.guild);
+    const user = await fetchUser(search, msg.guild);
     const output = await DeletThis(client, msg, user);
     return msg.channel.send({ files: [{ attachment: output, name: "DeletThis.png" }] });
 };

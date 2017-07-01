@@ -4,7 +4,7 @@ class GuildMemberAdd {
     constructor(member) {
         Object.defineProperty(this, "member", { value: member });
         Object.defineProperty(this, "guild", { value: member.guild });
-        Object.defineProperty(this, "configs", { value: member.guild.configs });
+        Object.defineProperty(this, "configs", { value: member.guild.settings });
         Object.defineProperty(this, "client", { value: member.client });
     }
 
@@ -110,7 +110,7 @@ class GuildMemberAdd {
     }
 
     get Mutes() {
-        return this.guild.configs.mutes.has(this.member.id);
+        return this.guild.settings.mutes.has(this.member.id);
     }
 }
 

@@ -10,7 +10,7 @@ exports.run = async (client, msg) => {
     if (!msg.guild || !msg.channel.tracking) return;
     const filename = `${msg.channel.tracker}-${msg.channel.id}-${msg.channel.trackertimer}.txt`;
 
-    const dir = `${client.clientBaseDir}tracks${sep}`;
+    const dir = `${client.baseDir}tracks${sep}`;
     const file = dir + filename;
 
     const time = `[${moment.utc(msg.createdAt).format("HH:mm:ss")}]`;

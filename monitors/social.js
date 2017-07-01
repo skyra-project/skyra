@@ -9,7 +9,7 @@ exports.conf = {
 const cooldowns = new Set();
 
 exports.handleRoles = (client, msg) => {
-    const autoRoles = msg.guild.configs.autoroles;
+    const autoRoles = msg.guild.settings.autoroles;
     if (!autoRoles.length || !msg.guild.me.permissions.has("MANAGE_ROLES")) return null;
 
     const giveRoles = [];
@@ -39,13 +39,13 @@ exports.cooldown = (msg) => {
 
 exports.calc = (guild) => {
     let random = Math.max(Math.ceil(Math.random() * 8), 4);
-    if (guild) random *= guild.configs.monitorBoost;
+    if (guild) random *= guild.settings.monitorBoost;
     return Math.round(random);
 };
 
 exports.run = async (client, msg) => {
     if (!msg.guild || msg.author.bot) return;
-    if (msg.guild.configs.ignoreChannels.includes(msg.channel.id)) return;
+    if (msg.guild.settings.ignoreChannels.includes(msg.channel.id)) return;
 
     if (this.cooldown(msg)) return;
 

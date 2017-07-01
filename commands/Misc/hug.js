@@ -1,3 +1,5 @@
+const { fetchAvatar } = require("../../functions/wrappers");
+const { User: fetchUser } = require("../../functions/search");
 const { readFile } = require("fs-nextra");
 const Canvas = require("canvas");
 const { join, resolve } = require("path");
@@ -17,8 +19,8 @@ const Hug = async (client, msg, user) => {
   /* Get the buffers from both profile avatars */
     const [bgBuffer, user1Buffer, user2Buffer] = await Promise.all([
         readFile(template),
-        client.funcs.wrappers.fetchAvatar(user, 256),
-        client.funcs.wrappers.fetchAvatar(msg.author, 256),
+        fetchAvatar(user, 256),
+        fetchAvatar(msg.author, 256),
     ]);
 
     /* Background */
@@ -48,7 +50,7 @@ const Hug = async (client, msg, user) => {
 };
 
 exports.run = async (client, msg, [search]) => {
-    const user = await client.funcs.search.User(search, msg.guild);
+    const user = await fetchUser(search, msg.guild);
     const output = await Hug(client, msg, user);
     return msg.channel.send({ files: [{ attachment: output, name: "Hug.png" }] });
 };

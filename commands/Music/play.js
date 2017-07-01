@@ -59,7 +59,7 @@ exports.skip = (client, guild) => {
 exports.run = async (client, msg, [req = null]) => {
     if (req) return client.commands.get("add").run(client, msg, [req]);
     const queue = managerMusic.get(msg.guild.id);
-    if (!queue) return msg.send(`Add some songs to the queue first with ${msg.guild.configs.prefix}add`);
+    if (!queue) return msg.send(`Add some songs to the queue first with ${msg.guild.settings.prefix}add`);
     if (!msg.guild.voiceConnection) return client.commands.get("join").run(client, msg).then(() => this.run(client, msg, [null]));
     if (queue.playing) return msg.send("Already Playing");
     managerMusic.setPlaying(msg.guild.id, {

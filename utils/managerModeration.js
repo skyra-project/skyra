@@ -10,7 +10,7 @@ const colour = {
 };
 
 exports.unknown = async (client, guild, user, type) => {
-    if (!guild.configs.exists) guild.configs.create();
+    if (!guild.settings.exists) guild.settings.create();
     if (user.action === type) {
         delete user.action;
         return;
@@ -18,14 +18,14 @@ exports.unknown = async (client, guild, user, type) => {
     const channel = this.getChannel(guild);
     if (!channel) return;
     const thisCase = await guild.moderation.amountCases;
-    const description = this.generate(client, user, type, null, thisCase, guild.configs.prefix);
+    const description = this.generate(client, user, type, null, thisCase, guild.settings.prefix);
     const embed = this.createEmbed(client, type, null, description, thisCase, true);
     const thisMessage = await channel.send({ embed });
     await guild.moderation.pushCase(type, null, null, user.id, thisMessage.id, null);
 };
 
 exports.send = (client, msg, user, type, reason = null, extraData = null) => {
-    if (!msg.guild.configs.exists) msg.guild.configs.create();
+    if (!msg.guild.settings.exists) msg.guild.settings.create();
     else this.justified(client, msg, user, type, reason, extraData).catch(e => client.emit("log", e, "error"));
 };
 
@@ -40,14 +40,14 @@ exports.justified = async (client, msg, user, type, reason, extraData) => {
         }
 
         const thisCase = await msg.guild.moderation.amountCases;
-        const description = this.generate(client, user, type, reason, thisCase, msg.guild.configs.prefix);
+        const description = this.generate(client, user, type, reason, thisCase, msg.guild.settings.prefix);
         const embed = this.createEmbed(client, type, msg.author, description, thisCase, false);
         thisMessage = await channel.send({ embed });
     }
     await msg.guild.moderation.pushCase(type, msg.author.id, reason, user.id, thisMessage ? thisMessage.id : null, extraData);
 };
 
-exports.getChannel = guild => guild.configs.channels.mod ? guild.channels.get(guild.configs.channels.mod) : false; // eslint-disable-line no-confusing-arrow
+exports.getChannel = guild => guild.settings.channels.mod ? guild.channels.get(guild.settings.channels.mod) : false; // eslint-disable-line no-confusing-arrow
 
 exports.createEmbed = (client, type, moderator, description, thisCase, AUTO) => {
     if (AUTO) moderator = client.user;
@@ -60,8 +60,10 @@ exports.createEmbed = (client, type, moderator, description, thisCase, AUTO) => 
     return embed;
 };
 
+const toTitleCase = require("../functions/toTitleCase");
+
 exports.generate = (client, user, type, reason, thisCase, prefix) => [
-    `❯ **Action:** ${client.funcs.toTitleCase(type)}`,
+    `❯ **Action:** ${toTitleCase(type)}`,
     `❯ **User:** ${user.tag} (${user.id})`,
     `❯ **Reason:** ${reason || `Please use \`${prefix}reason ${thisCase} to claim.\``}`,
 ].join("\n");

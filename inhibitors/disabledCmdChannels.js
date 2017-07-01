@@ -6,7 +6,6 @@ exports.conf = {
 
 exports.run = (client, msg, cmd) => {
     if (msg.channel.type !== "text" || cmd.conf.override) return false;
-    if (msg.author.id === client.config.ownerID) return false;
 
-    return msg.guild.configs.disabledCmdChannels.includes(msg.channel.id);
+    return msg.guild.settings.disabledCmdChannels.includes(msg.channel.id);
 };

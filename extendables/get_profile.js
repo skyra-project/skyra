@@ -1,5 +1,5 @@
 const ManagerSocialGlobal = require("../utils/managerSocialGlobal");
-const UserProfile = require("../utils/userProfile");
+const { UserProfile, defaults } = require("../utils/userProfile");
 
 exports.conf = {
     type: "get",
@@ -8,7 +8,7 @@ exports.conf = {
 };
 
 const init = (user) => {
-    const profile = new UserProfile(user);
+    const profile = new UserProfile(user.id, Object.assign(defaults, { id: user.id, exists: false }));
     ManagerSocialGlobal.set(user.id, profile);
     return profile;
 };

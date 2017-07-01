@@ -1,37 +1,42 @@
-const MANAGER_SOCIAL_LOCAL = require("./managerSocialLocal");
+const manager = require("./managerSocialLocal");
+const RethinkDB = require("../providers/rethink");
 
-/* eslint-disable no-throw-literal */
-module.exports = class MemberScore {
-    constructor(member) {
-        Object.defineProperty(this, "client", { value: member.client });
-        Object.defineProperty(this, "guild", { value: member.guild });
-        Object.defineProperty(this, "member", { value: member });
-        this.id = member.id;
-    }
+const defaults = {
+    score: 0,
+};
 
-    get fetch() {
-        return MANAGER_SOCIAL_LOCAL.fetch(this.member);
-    }
 
-    get score() {
-        return this.fetch.score || 0;
-    }
-
-    get exists() {
-        return this.fetch.exists !== false;
+const MemberScore = class MemberScore {
+    constructor(member, guild, data) {
+        Object.defineProperty(this, "raw", { value: data });
+        this.id = member;
+        this.guild = guild;
+        this.score = this.raw.score || 0;
     }
 
     async create() {
         if (this.exists) throw "This MemberScore already exists.";
-        return MANAGER_SOCIAL_LOCAL.create(this.member);
+        this.raw = Object.assign(defaults, { id: this.id, exists: true });
+        await RethinkDB.append("localScores", this.guild, "scores", this.raw);
+        return true;
     }
 
     async ensureProfile() {
-        return !this.exists ? MANAGER_SOCIAL_LOCAL.create(this.member) : false;
+        return !this.exists ? this.create() : false;
     }
 
     async update(score) {
         await this.ensureProfile();
-        return MANAGER_SOCIAL_LOCAL.update(this.member, score);
+        RethinkDB.updateArray("localScores", this.guild, "scores", this.member, { score });
+        this.raw.score = score;
+        return this.raw.score;
+    }
+
+    async destroy() {
+        const output = await RethinkDB.removeFromArrayByID("localScores", this.guild, "scores", this.id);
+        manager.get(this.guild).delete(this.id);
+        return output;
     }
 };
+
+module.exports = { MemberScore, defaults };

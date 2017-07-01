@@ -1,35 +1,21 @@
-const RethinkDB = require("../functions/rethinkDB.js");
+const RethinkDB = require("../providers/rethink");
 const { Collection } = require("discord.js");
 
 const data = new Collection();
 
 /* eslint-disable no-underscore-dangle */
-exports.get = guild => data.get(guild.id || guild) || data.set(guild.id || guild, new Collection());
+exports.get = guild => data.get(guild) || data.set(guild, new Collection());
 
-exports.fetch = member => this.get(member.guild).get(member.id) || { score: 0, exists: false };
+exports.fetch = (guild, member) => this.get(guild).get(member);
 
-exports.set = (guild, object) => data.set(guild.id || guild, object);
+exports.set = (guild, object) => data.set(guild, object);
 
-exports.insert = (member, object) => this.get(member.guild).set(member.id, object);
+exports.insert = (guild, member, object) => this.get(guild).set(member, object);
 
-exports.delete = async (guild) => {
-    const output = await RethinkDB.delete("localScores", guild.id || guild);
-    data.delete(guild.id || guild);
+exports.destroy = async (guild) => {
+    const output = await RethinkDB.delete("localScores", guild);
+    data.delete(guild);
     return output;
 };
 
 exports.fetchAll = () => data;
-
-exports.update = async (member, score) => {
-    const output = await RethinkDB.updateArray("localScores", member.guild.id, "scores", member.id, { score });
-    data.get(member.guild.id).get(member.id).score = score;
-    return output;
-};
-
-/* Methods to create new Configuration Objects */
-exports.create = async (member) => {
-    const object = { id: member.id, score: 0 };
-    const output = await RethinkDB.append("localScores", member.guild.id, "scores", object);
-    this.insert(member, object);
-    return output;
-};

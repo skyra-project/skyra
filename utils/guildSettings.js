@@ -26,12 +26,10 @@ const defaults = {
 };
 
 const GuildSetting = class GuildSetting {
-    constructor(guild) {
-        Object.defineProperty(this, "client", { value: guild.client });
-        Object.defineProperty(this, "guild", { value: guild });
-        Object.defineProperty(this, "raw", { value: GuildManager.get(this.id) });
-        this.id = guild.id;
-        this.prefix = GuildManager.prefix(this.guild) || defaults.prefix;
+    constructor(guild, data) {
+        Object.defineProperty(this, "raw", { value: data });
+        this.id = guild;
+        this.prefix = this.raw.prefix || defaults.prefix;
 
         this.roles = this.raw.roles || defaults.roles;
         this.events = this.raw.events || defaults.events;
@@ -57,33 +55,34 @@ const GuildSetting = class GuildSetting {
     }
 
     async create() {
-        if (this.exists) throw "This GuildConfig already exists.";
-        GuildManager.create(this.guild);
+        if (this.exists) throw "This GuildSetting already exists.";
+        this.raw = Object.assign(defaults, { id: this.id, exists: true });
+        await Rethink.create("guilds", this.raw).catch((err) => { throw err; });
+        return true;
     }
 
-    async ensureConfigs() {
-        return !this.exists ? GuildManager.create(this.guild) : false;
+    ensureConfigs() {
+        return !this.exists ? this.create() : false;
     }
 
     async update(doc) {
         await this.ensureConfigs();
-        if ("prefix" in doc) GuildManager.refreshPrefix(this.guild);
         await Rethink.update("guilds", this.id, doc);
-        await this.sync();
+        return this.sync();
     }
 
     async sync() {
         const data = await Rethink.get("guilds", this.id);
         if (!data) throw "[404] Not found.";
-        GuildManager.set(this.id, data);
+        this.raw = data;
         return true;
     }
 
     async destroy() {
         if (!this.exists) throw "This GuildConfig does not exist.";
-        const output = await Rethink.delete("guilds", this.id);
+        await Rethink.delete("guilds", this.id);
         GuildManager.delete(this.id);
-        return output;
+        return true;
     }
 
     get createdAt() {

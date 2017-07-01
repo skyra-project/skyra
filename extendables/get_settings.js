@@ -1,5 +1,5 @@
 const GuildManager = require("../utils/guildManager");
-const { GuildSetting } = require("../utils/guildSettings");
+const { GuildSetting, defaults } = require("../utils/guildSettings");
 
 exports.conf = {
     type: "get",
@@ -8,7 +8,7 @@ exports.conf = {
 };
 
 const init = (guild) => {
-    const guildSetting = new GuildSetting(guild);
+    const guildSetting = new GuildSetting(guild.id, Object.assign(defaults, { id: guild.id, exists: false }));
     GuildManager.set(guild.id, guildSetting);
     return guildSetting;
 };

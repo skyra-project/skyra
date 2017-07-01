@@ -1,5 +1,5 @@
 const ManagerSocialLocal = require("../utils/managerSocialLocal");
-const MemberScore = require("../utils/memberScore.js");
+const { MemberScore, defaults } = require("../utils/memberScore.js");
 
 exports.conf = {
     type: "get",
@@ -8,7 +8,7 @@ exports.conf = {
 };
 
 const init = (member) => {
-    const profile = new MemberScore(member);
+    const profile = new MemberScore(member.id, Object.assign(defaults, { id: member.id, exists: false }));
     ManagerSocialLocal.get(member.guild.id).set(member.id, profile);
     return profile;
 };

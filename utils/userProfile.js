@@ -1,41 +1,49 @@
-const MANAGER_SOCIAL_GLOBAL = require("./managerSocialGlobal");
+const manager = require("./managerSocialGlobal");
 const Rethink = require("../providers/rethink");
 
-/* eslint-disable no-underscore-dangle, no-restricted-syntax, no-prototype-builtins */
-module.exports = class UserProfile {
-    constructor(user) {
-        Object.defineProperty(this, "client", { value: user.client });
-        Object.defineProperty(this, "_profile", { value: MANAGER_SOCIAL_GLOBAL.get(user) });
-        Object.defineProperty(this, "user", { value: user });
-        this.id = user.id;
-        this.points = this._profile.points || 0;
-        this.color = this._profile.color || "ff239d";
-        this.money = this._profile.money || 0;
-        this.reputation = this._profile.reputation || 0;
+const defaults = {
+    points: 0,
+    color: "ff239d",
+    money: 0,
+    reputation: 0,
+    banners: {
+        theme: "0001",
+        level: "1001",
+    },
+};
+
+const UserProfile = class UserProfile {
+    constructor(user, data) {
+        Object.defineProperty(this, "raw", { value: data });
+        this.id = user;
+        this.points = this.raw.points || defaults.points;
+        this.color = this.raw.color || defaults.color;
+        this.money = this.raw.money || defaults.money;
+        this.reputation = this.raw.reputation || defaults.reputation;
     }
 
     get exists() {
-        return this._profile.exists !== false;
+        return this.raw.exists !== false;
     }
 
     get quote() {
-        return this._profile.quote || null;
+        return this.raw.quote || null;
     }
 
     get timeDaily() {
-        return this._profile.timeDaily || 0;
+        return this.raw.timeDaily || 0;
     }
 
     get timerep() {
-        return this._profile.timerep || 0;
+        return this.raw.timerep || 0;
     }
 
     get lastUpdate() {
-        return this._profile.time || 0;
+        return this.raw.time || 0;
     }
 
     get banners() {
-        const banners = this._profile.banners || {};
+        const banners = this.raw.banners || {};
         return {
             theme: banners.theme || "0001",
             level: banners.level || "1001",
@@ -43,22 +51,23 @@ module.exports = class UserProfile {
     }
 
     get bannerList() {
-        return this._profile.bannerList || [];
+        return this.raw.bannerList || [];
     }
 
     async create() {
-        if (this.exists) throw "This UserProfile already exists.";
-        return MANAGER_SOCIAL_GLOBAL.create(this.user);
+        if (this.exists) throw "This GuildSetting already exists.";
+        this.raw = Object.assign(defaults, { id: this.id, exists: true });
+        await Rethink.create("users", this.raw).catch((err) => { throw err; });
+        return true;
     }
 
-    async ensureProfile() {
-        return !this.exists ? MANAGER_SOCIAL_GLOBAL.create(this.user) : false;
+    ensureProfile() {
+        return !this.exists ? this.create() : false;
     }
 
     async win(money, guild) {
         if (guild) money *= guild.settings.boost;
-        await this.add(money);
-        return money;
+        return this.add(money);
     }
 
     async add(money) {
@@ -67,30 +76,30 @@ module.exports = class UserProfile {
     }
 
     async use(money) {
-        const thisMoney = this.money - money;
-        if (thisMoney < 0) throw "[403::FAILSAFE] You cannot get a debt.";
-        await this.update({ money: thisMoney });
+        if (this.money - money < 0) throw "[403::FAILSAFE] You cannot get a debt.";
+        await this.update({ money: this.money - money });
         return money;
     }
 
     async update(doc) {
         await this.ensureProfile();
-        const output = await Rethink.update("users", this.id, doc);
-        MANAGER_SOCIAL_GLOBAL.set(this.user, Object.assign(this._profile, doc));
-        return output;
+        await Rethink.update("users", this.id, doc);
+        return this.sync();
     }
 
     async sync() {
         const data = await Rethink.get("users", this.id);
         if (!data) throw "[404] Not found.";
-        MANAGER_SOCIAL_GLOBAL.set(this.id, data);
+        this.raw = data;
         return data;
     }
 
     async destroy() {
         if (!this.exists) throw "This UserProfile does not exist.";
         const output = await Rethink.delete("users", this.id);
-        MANAGER_SOCIAL_GLOBAL.delete(this.id);
+        manager.delete(this.id);
         return output;
     }
 };
+
+module.exports = { UserProfile, defaults };

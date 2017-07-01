@@ -1,4 +1,4 @@
-const Rethink = require("../providers/rethink.js");
+const Rethink = require("../providers/rethink");
 const Moderation = require("./moderation");
 const GuildManager = require("./guildManager");
 

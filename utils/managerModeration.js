@@ -33,7 +33,7 @@ exports.justified = async (client, msg, user, type, reason, extraData) => {
     const channel = this.getChannel(msg.guild);
     let thisMessage;
     if (channel) {
-  /* Parse reason */
+        /* Parse reason */
         if (reason instanceof Array) {
             if (!reason.length) reason = null;
             else reason = reason.join(" ");
@@ -52,11 +52,11 @@ exports.getChannel = guild => guild.settings.channels.mod ? guild.channels.get(g
 exports.createEmbed = (client, type, moderator, description, thisCase, AUTO) => {
     if (AUTO) moderator = client.user;
     const embed = new client.methods.Embed()
-    .setColor(colour[type])
-    .setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
-    .setDescription(description)
-    .setFooter(`${AUTO ? "AUTO | " : ""}Case ${thisCase}`, client.user.displayAvatarURL({ size: 128 }))
-    .setTimestamp();
+        .setColor(colour[type])
+        .setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
+        .setDescription(description)
+        .setFooter(`${AUTO ? "AUTO | " : ""}Case ${thisCase}`, client.user.displayAvatarURL({ size: 128 }))
+        .setTimestamp();
     return embed;
 };
 

@@ -46,9 +46,9 @@ class GuildMemberRemove {
         const custom = this.configs.messages.farewellMessage;
         if (custom) {
             return custom
-        .replace(/%MEMBER%/g, this.member)
-        .replace(/%MEMBERNAME%/g, this.member.user.username)
-        .replace(/%GUILD%/g, this.guild);
+                .replace(/%MEMBER%/g, this.member)
+                .replace(/%MEMBERNAME%/g, this.member.user.username)
+                .replace(/%GUILD%/g, this.guild);
         }
         return `Good bye ${this.member}, we will miss you!`;
     }
@@ -56,8 +56,7 @@ class GuildMemberRemove {
     sendMessage(channel) {
         const target = this.guild.channels.get(channel);
         if (target) return target.send(this.message);
-        this.client.rethink.update("guilds", this.guild.id, { channels: { default: null } });
-        this.client.rethink.update("guilds", this.guild.id, { messages: { farewell: false } });
+        this.guild.update({ channels: { default: null }, messages: { farewell: false } });
         return this.sendLog("disable");
     }
 }

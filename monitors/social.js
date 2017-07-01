@@ -1,9 +1,11 @@
+// const Rethink = require("../providers/rethink");
+
 exports.conf = {
     enabled: true,
 };
 
 // exports.destroy = async (client, msg, roles) => {
-//   client.rethink.deleteFromArray("guilds", msg.guild.id, roles);
+//     Rethink.removeFromArrayByID("guilds", msg.guild.id, roles);
 // };
 
 const cooldowns = new Set();

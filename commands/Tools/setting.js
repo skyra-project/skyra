@@ -1,4 +1,5 @@
 const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
+const Rethink = require("../../providers/rethink");
 
 /* eslint-disable no-use-before-define */
 class Settings {
@@ -46,7 +47,7 @@ class Settings {
                 const nValue = await this.parse(key, value);
                 const { path } = validator[key];
                 if (this.guild.settings[path].includes(nValue.id || nValue)) throw `the value ${value} is already set.`;
-                await this.client.rethink.append("guilds", this.guild.id, path, nValue.id || nValue);
+                await Rethink.append("guilds", this.guild.id, path, nValue.id || nValue);
                 await this.guild.settings.sync();
                 return `Successfully added the value **${nValue.name || nValue}** to the key **${key}**`;
             }

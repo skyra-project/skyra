@@ -1,4 +1,5 @@
 const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
+const Rethink = require("../../providers/rethink");
 
 exports.parse = (data) => {
     const args = data.split(" ");
@@ -30,7 +31,7 @@ exports.run = async (client, msg, [data]) => {
             if (!input[0]) throw "you must type a role.";
             const role = fetchRole(input.join(" "), msg.guild);
             if (!role) throw "this role does not exist.";
-            await client.rethink.append("guilds", msg.guild.id, "autoroles", { id: role.id, points: amount });
+            await Rethink.append("guilds", msg.guild.id, "autoroles", { id: role.id, points: amount });
             await msg.guild.settings.sync();
             return msg.send(`Added new autorole: ${role.name} (${role.id}). Points required: ${amount}`);
         }
@@ -47,7 +48,7 @@ exports.run = async (client, msg, [data]) => {
             const retrieved = msg.guild.settings.autoroles.find(ar => ar.id === role.id);
             if (!retrieved) throw "this role is not configured as an autorole.";
             else {
-                await client.rethink.removeFromArray("guilds", msg.guild.id, "autoroles", role.id);
+                await Rethink.removeFromArrayByID("guilds", msg.guild.id, "autoroles", role.id);
                 await msg.guild.settings.sync();
                 return msg.send(`Removed the autorole: ${role.name} (${role.id}), which required ${retrieved.points} points.`);
             }
@@ -59,7 +60,7 @@ exports.run = async (client, msg, [data]) => {
             if (!role) throw "this role does not exist.";
             const retrieved = msg.guild.settings.autoroles.find(ar => ar.id === role.id);
             if (!retrieved) throw "this role is not configured as an autorole.";
-            await client.rethink.updateArray("guilds", msg.guild.id, "autoroles", role.id, { points: amount });
+            await Rethink.updateArrayByID("guilds", msg.guild.id, "autoroles", role.id, { points: amount });
             await msg.guild.settings.sync();
             return msg.send(`Updated autorole: ${role.name} (${role.id}). Points required: ${amount} (before: ${retrieved.points})`);
         }
@@ -99,7 +100,7 @@ exports.settingHandler = async (client, msg, [type, action, ...value]) => {
             const ignoreChannels = msg.guild.settings.ignoreChannels;
             if (action.toLowerCase() === "add") {
                 if (ignoreChannels.includes(channel.id)) throw "this channel is already ignored.";
-                await client.rethink.append("guilds", msg.guild.id, "ignoreChannels", channel.id);
+                await Rethink.append("guilds", msg.guild.id, "ignoreChannels", channel.id);
                 await msg.guild.settings.sync();
                 return msg.send(`✅ Success | Now I won't give points in the channel ${channel.name}.`);
             }

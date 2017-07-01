@@ -1,19 +1,5 @@
 exports.run = async (client, msg, [type, name]) => {
     switch (type) {
-        case "function":
-            if (name === "all") {
-                await client.funcs.loadFunctions();
-                await Promise.all(Object.keys(client.funcs).map((key) => {
-                    if (client.funcs[key].init) return client.funcs[key].init(client);
-                    return true;
-                }));
-                return msg.send("✅ Reloaded all functions.");
-            }
-            await msg.send(`Attempting to reload function ${name}`);
-            return client.funcs.reloadFunction(name)
-                .then(mes => msg.send(`✅ ${mes}`))
-                .catch(err => msg.send(`❌ ${err}`));
-
         case "inhibitor":
             if (name === "all") {
                 await client.funcs.loadCommandInhibitors();
@@ -66,20 +52,6 @@ exports.run = async (client, msg, [type, name]) => {
                 .then(mes => msg.send(`✅ ${mes}`))
                 .catch(err => msg.send(`❌ ${err}`));
 
-        case "provider":
-            if (name === "all") {
-                await client.funcs.loadProviders();
-                await Promise.all(client.providers.map((piece) => {
-                    if (piece.init) return piece.init(client);
-                    return true;
-                }));
-                return msg.send("✅ Reloaded all providers.");
-            }
-            await msg.send(`Attempting to reload provider: ${name}`);
-            return client.funcs.reloadProvider(name)
-                .then(mes => msg.send(`✅ ${mes}`))
-                .catch(err => msg.send(`❌ ${err}`));
-
         case "command":
             if (name === "all") {
                 await client.funcs.loadCommands();
@@ -112,6 +84,6 @@ exports.conf = {
 exports.help = {
     name: "reload",
     description: "Reloads the command file, if it's been updated or modified.",
-    usage: "<function|inhibitor|finalizer|monitor|provider|event|command> <name:str>",
+    usage: "<inhibitor|finalizer|monitor|event|command> <name:str>",
     usageDelim: " ",
 };

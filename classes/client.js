@@ -5,6 +5,7 @@ const CommandMessage = require("./commandMessage");
 const Loader = require("./loader");
 const ArgResolver = require("./argResolver");
 const PermLevels = require("./permLevels");
+const Initialize = require("../functions/initializer");
 
 const PermStructure = new PermLevels()
     .addLevel(0, false, () => true)
@@ -49,7 +50,6 @@ module.exports = class Komada extends Client {
         this.commandInhibitors = new Collection();
         this.commandFinalizers = new Collection();
         this.messageMonitors = new Collection();
-        this.providers = new Collection();
         this.eventHandlers = new Collection();
         this.permStructure = PermStructure;
         this.CommandMessage = CommandMessage;
@@ -85,14 +85,6 @@ module.exports = class Komada extends Client {
     async _ready() {
         this.config.prefixMention = new RegExp(`^<@!?${this.user.id}>`);
         if (this.user.bot) this.application = await super.fetchApplication();
-        await Promise.all(this.providers.map((piece) => {
-            if (piece.init) return piece.init(this);
-            return true;
-        }));
-        await Promise.all(Object.keys(this.funcs).map((key) => {
-            if (this.funcs[key].init) return this.funcs[key].init(this);
-            return true;
-        }));
         await Promise.all(this.commands.map((piece) => {
             if (piece.init) return piece.init(this);
             return true;
@@ -109,9 +101,10 @@ module.exports = class Komada extends Client {
             if (piece.init) return piece.init(this);
             return true;
         }));
+        await Initialize(this);
         this.setInterval(this.sweepCommandMessages.bind(this), this.commandMessageLifetime);
         this.ready = true;
-        this.emit("log", `Successfully initialized. Ready to serve ${this.guilds.size} guilds.`);
+        this.emit("log", `Skyra ThunderLight ready! [ ${this.guilds.size} [G]] [ ${this.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`);
     }
 
     sweepCommandMessages(lifetime = this.commandMessageLifetime) {

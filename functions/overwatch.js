@@ -1,5 +1,6 @@
-const cheerio = require("cheerio");
+const provider = require("../providers/json");
 const snekfetch = require("snekfetch");
+const cheerio = require("cheerio");
 
 exports.fetch = async (url) => {
     const data = { overview: {} };
@@ -19,8 +20,8 @@ exports.fetch = async (url) => {
         level: parseInt(mastheadProgression.children("div.player-level").children("div.u-vertical-center").text()),
         portrait: /.+\((.+)\)/.exec(mastheadProgression.children("div.player-level").attr("style"))[1],
         stars: mastheadProgression.children("div.player-level").has("div.player-rank").length
-        ? /.+\((.+)\)/.exec(mastheadProgression.children("div.player-level").children("div.player-rank").attr("style"))[1]
-        : null,
+            ? /.+\((.+)\)/.exec(mastheadProgression.children("div.player-level").children("div.player-rank").attr("style"))[1]
+            : null,
     };
 
     if (mastheadProgression.has("div.competitive-rank").length > 0) {
@@ -44,11 +45,17 @@ exports.fetch = async (url) => {
         };
     });
 
-    HeroScrapper("quickplay", $("#quickplay > section.hero-comparison-section").children("div").children("div.progress-category").first()
-    .children("div"));
+    HeroScrapper("quickplay", $("#quickplay > section.hero-comparison-section")
+        .children("div")
+        .children("div.progress-category")
+        .first()
+        .children("div"));
 
-    HeroScrapper("competitive", $("#competitive > section.hero-comparison-section").children("div").children("div.progress-category").first()
-    .children("div"));
+    HeroScrapper("competitive", $("#competitive > section.hero-comparison-section")
+        .children("div")
+        .children("div.progress-category")
+        .first()
+        .children("div"));
 
     $("#quickplay > section.highlights-section > div > ul.row > li").each((i, elem) => {
         const thisData = $(elem).children("div.card").children("div.card-content");
@@ -91,14 +98,12 @@ exports.fetch = async (url) => {
 exports.save = (data) => {
     const id = data.url.replace("https://playoverwatch.com/en-us/career/", "").replace(/\//g, "-");
     data.time = Date.now();
-    return this.provider.create("overwatch", id, data);
+    return provider.create("overwatch", id, data);
 };
 
 exports.get = async (url) => {
     const id = url.replace("https://playoverwatch.com/en-us/career/", "").replace(/\//g, "-");
-    const cache = await this.provider.get("overwatch", id);
+    const cache = await provider.get("overwatch", id);
     if (!cache || cache.time + 86400000 < Date.now()) return this.fetch(url);
     return cache;
 };
-
-exports.init = client => (this.provider = client.providers.get("json"));

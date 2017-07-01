@@ -1,19 +1,18 @@
 const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
+const Schema = require("../../functions/schema");
+
+const object = Schema.find();
 
 const dot = value => `${value ? "  \\🔹" : "  \\🔸"} `;
 
 class Validator {
     constructor(guild) {
         this.guild = guild;
-        this.guildConfig = guild.settings;
-        this.client = guild.client;
-        this.validator = this.client.configValidation.find;
-        this.validation = this.validator();
-        this.config = this.guild.settings || this.client.configValidation.default();
+        this.guildSettings = guild.settings;
     }
 
     get list() {
-        const configs = this.config;
+        const configs = this.guildSettings;
         return [
             "**❯ Channels**",
             ` • **Announcement:** ${configs.channels.announcement ? this.guild.channels.get(configs.channels.announcement) || configs.channels.announcement : "Not set"}`,
@@ -60,15 +59,15 @@ class Validator {
 
     async handle(type, folder, subfolder, input) {
         if (type === "update") {
-            const inputType = this.validation[folder][subfolder].type;
+            const inputType = object[folder][subfolder].type;
             if (!input) throw `You must provide a value type: ${inputType}`;
             const output = await this.update(folder, subfolder, input, inputType);
             return `Success. Changed value **${subfolder}** to **${output}**`;
         }
 
-        const val = this.validation[folder][subfolder];
+        const val = object[folder][subfolder];
         const validation = this.validator(val.default)[folder][subfolder];
-        await this.client.rethink.update("guilds", this.guild.id, validation.path);
+        await this.guild.settings.update(validation.path);
         return `Success. Value **${subfolder}** has been reset to **${val.default}**`;
     }
 
@@ -111,17 +110,16 @@ exports.run = async (client, msg, [type, folder, subfolder, ...input]) => {
     if (type === "list") {
         const data = run.list;
         const embed = new client.methods.Embed()
-      .setColor(msg.color)
-      .setTitle(`Configuration for: ${msg.guild.name}`)
-      .setDescription(data)
-      .setFooter("Skyra Configuration System")
-      .setTimestamp();
+            .setColor(msg.color)
+            .setTitle(`Configuration for: ${msg.guild.name}`)
+            .setDescription(data)
+            .setFooter("Skyra Configuration System")
+            .setTimestamp();
 
         return msg.send({ embed });
     }
     if (!folder) throw "Choose between Channels, Roles, Events, Messages, Master, Selfmod";
-    const validation = client.configValidation.find();
-    const possibilities = Object.keys(validation[folder]);
+    const possibilities = Object.keys(object[folder]);
     if (!possibilities.includes(subfolder)) throw `Choose between one of the following: ${possibilities.join(", ")}`;
     const response = await run.handle(type, folder, subfolder, input);
     return msg.alert(response || "Success!", 10000);

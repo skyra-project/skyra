@@ -1,6 +1,6 @@
 const Resolver = require("./Resolver");
 
-/* eslint-disable no-throw-literal, class-methods-use-this */
+/* eslint-disable class-methods-use-this */
 module.exports = class ArgResolver extends Resolver {
 
     message(...args) {

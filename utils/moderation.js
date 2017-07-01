@@ -1,3 +1,4 @@
+const Rethink = require("../providers/rethink");
 const GuildManager = require("./guildManager");
 
 /* eslint-disable no-underscore-dangle, complexity */
@@ -12,11 +13,11 @@ module.exports = class Moderation {
     }
 
     exists() {
-        return this.client.rethink.get("moderation", this.guild.id).then(d => !!d);
+        return Rethink.get("moderation", this.guild.id).then(d => !!d);
     }
 
     create() {
-        return this.client.rethink.add("moderation", {
+        return Rethink.create("moderation", {
             id: this.id,
             cases: [],
         });
@@ -27,7 +28,7 @@ module.exports = class Moderation {
     }
 
     async getCases() {
-        const modCases = await this.client.rethink.get("moderation", this.guild.id);
+        const modCases = await Rethink.get("moderation", this.guild.id);
         if (!modCases) return null;
         return modCases.cases;
     }
@@ -59,13 +60,13 @@ module.exports = class Moderation {
         };
 
         await this.ensureModule();
-        await this.client.rethink.append("moderation", this.id, "cases", object);
+        await Rethink.append("moderation", this.id, "cases", object);
         if (type === "mute") await this.syncMutes();
         else if (type === "unmute") await this.appealMute(user);
     }
 
     async updateCase(index, doc) {
-        return this.client.rethink.updateArray("moderation", this.id, "cases", index, doc);
+        return Rethink.updateArrayByIndex("moderation", this.id, "cases", index, doc);
     }
 
     async getMute(user) {
@@ -73,7 +74,7 @@ module.exports = class Moderation {
     }
 
     async getMutes() {
-        return this.client.rethink.get("moderation", this.guild.id).then((d) => {
+        return Rethink.get("moderation", this.guild.id).then((d) => {
             if (!d) return [];
             const cases = d.cases || [];
             return cases.filter(obj => obj.type === "mute" && obj.appeal !== true);
@@ -94,6 +95,6 @@ module.exports = class Moderation {
 
     async destroy() {
         if (!(await this.exists())) throw "This GuildConfig does not exist.";
-        await this.client.rethink.delete("moderation", this.id);
+        await Rethink.delete("moderation", this.id);
     }
 };

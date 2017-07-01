@@ -1,53 +1,4 @@
-class Configuration {
-    constructor(client) {
-        this.client = client;
-        this.default = Configuration.default;
-        this.find = Configuration.find;
-    }
-
-    static default() {
-        return {
-            channels: {
-                announcement: null,
-                default: null,
-                log: null,
-                mod: null,
-                spam: null,
-            },
-            roles: {
-                admin: null,
-                moderator: null,
-                muted: null,
-                staff: null,
-            },
-            events: {
-                channelCreate: false,
-                guildBanAdd: false,
-                guildBanRemove: false,
-                commands: false,
-                guildMemberAdd: false,
-                guildMemberRemove: false,
-                guildMemberUpdate: false,
-                messageDelete: false,
-                messageDeleteBulk: false,
-                messageUpdate: false,
-                roleUpdate: false,
-                modLogProtection: false,
-            },
-            prefix: "&",
-            mode: 0,
-            selfmod: {
-                inviteLinks: false,
-                ghostmention: false,
-            },
-            messages: {
-                farewell: false,
-                greeting: false,
-                farewellMessage: null,
-                greetingMessage: null,
-            },
-        };
-    }
+module.exports = class Configuration {
 
     static find(value = "") {
         return {
@@ -210,6 +161,4 @@ class Configuration {
             },
         };
     }
-}
-
-exports.init = (client) => { client.configValidation = new Configuration(client); };
+};

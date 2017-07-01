@@ -1,5 +1,6 @@
 const MANAGER_SOCIAL_LOCAL = require("../../utils/managerSocialLocal");
 const { User: fetchUser } = require("../../functions/search");
+const Rethink = require("../../providers/rethink");
 
 exports.searchProfile = async (client, msg, search) => {
     if (/[0-9]{17,21}/.test(search) && MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
@@ -9,14 +10,14 @@ exports.searchProfile = async (client, msg, search) => {
     if (user.bot) throw "you can't modify bot profiles, since they don't have one.";
     if (!MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
         const data = { id: user.id, score: 0 };
-        await client.rethink.append("localScores", msg.guild.id, "scores", data);
+        await Rethink.append("localScores", msg.guild.id, "scores", data);
         MANAGER_SOCIAL_LOCAL.insert(msg.author.id, data);
     }
     return user.id;
 };
 
 exports.update = async (client, msg, id, value) => {
-    await client.rethink.updateArray("localScores", msg.guild.id, "scores", id, { score: value });
+    await Rethink.updateArrayByID("localScores", msg.guild.id, "scores", id, { score: value });
     MANAGER_SOCIAL_LOCAL.get(msg.guild.id).get(id).score = value;
 };
 

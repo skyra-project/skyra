@@ -1,25 +1,18 @@
 // Native Imports
 const url = require("url");
 const { sep } = require("path");
-
 const moment = require("moment");
-
-// Used for Permission Resolving only...
 const { Permissions } = require("discord.js");
-
-// Express Session
 const express = require("express");
-
-const app = express();
 
 // Express Plugins
 const passport = require("passport");
 const session = require("express-session");
 const { Strategy } = require("passport-discord");
 const helmet = require("helmet");
-
-// Used to parse Markdown from things like ExtendedHelp
 const md = require("marked");
+
+const app = express();
 
 exports.init = (client) => {
     this.client = client;
@@ -86,8 +79,7 @@ exports.init = (client) => {
         });
     });
 
-    app.get("/login",
-    (req, res, next) => {
+    app.get("/login", (req, res, next) => {
         if (req.session.backURL) {
             req.session.backURL = req.session.backURL;
         } else if (req.headers.referer) {
@@ -99,8 +91,7 @@ exports.init = (client) => {
             req.session.backURL = "/";
         }
         next();
-    },
-    passport.authenticate("discord"));
+    }, passport.authenticate("discord"));
 
     app.get("/callback", passport.authenticate("discord", {
         failureRedirect: "/autherror",
@@ -185,8 +176,6 @@ exports.init = (client) => {
 
     app.post("/execute/:id/:cmd", checkAuth, async (req, res) => {
         const guild = client.guilds.get(req.params.id);
-    // console.log(guild.name);
-    // console.log(require("util").inspect(guild, {depth: 1}))
         if (!guild) return res.status(404);
         if (typeof this[req.params.cmd] !== "function") return res.status(404);
         const isManaged = guild.member(req.user.id) ? guild.member(req.user.id).permissions.has("MANAGE_GUILD") : false;

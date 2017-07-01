@@ -16,7 +16,7 @@ exports.fetchMessage = async (client, msg, document) => {
     if (!modLog) throw "there is no modlog channel configured.";
     const channel = msg.guild.channels.get(modLog);
     if (!channel) {
-        await client.rethink.update("guilds", msg.guild.id, { channels: { mod: null } });
+        await msg.guild.settings.update({ channels: { mod: null } });
         throw "invalid configuration. Please set a correct modlog channel";
     }
     const message = await channel.fetchMessage(document.message);

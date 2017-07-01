@@ -3,8 +3,7 @@ const cfg = require("./config.js");
 
 const Skyra = new Komada.Client({
     ownerID: cfg.ownerid,
-    clientID: "251484593859985411",
-    prefix: "&",
+    prefix: "s!",
     cmdEditing: true,
     cmdLogging: true,
     userFriendlyRegExp: "((?:Hey )?Skyra(?:,|!) +)",

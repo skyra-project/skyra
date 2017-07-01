@@ -1,6 +1,7 @@
 const MANAGER_SOCIAL_GLOBAL = require("./managerSocialGlobal");
+const Rethink = require("../providers/rethink");
 
-/* eslint-disable no-underscore-dangle, complexity, no-throw-literal, no-restricted-syntax, no-prototype-builtins */
+/* eslint-disable no-underscore-dangle, no-restricted-syntax, no-prototype-builtins */
 module.exports = class UserProfile {
     constructor(user) {
         Object.defineProperty(this, "client", { value: user.client });
@@ -74,13 +75,13 @@ module.exports = class UserProfile {
 
     async update(doc) {
         await this.ensureProfile();
-        const output = await this.client.rethink.update("users", this.id, doc);
+        const output = await Rethink.update("users", this.id, doc);
         MANAGER_SOCIAL_GLOBAL.set(this.user, Object.assign(this._profile, doc));
         return output;
     }
 
     async sync() {
-        const data = await this.client.rethink.get("users", this.id);
+        const data = await Rethink.get("users", this.id);
         if (!data) throw "[404] Not found.";
         MANAGER_SOCIAL_GLOBAL.set(this.id, data);
         return data;
@@ -88,7 +89,7 @@ module.exports = class UserProfile {
 
     async destroy() {
         if (!this.exists) throw "This UserProfile does not exist.";
-        const output = await this.client.rethink.delete("users", this.id);
+        const output = await Rethink.delete("users", this.id);
         MANAGER_SOCIAL_GLOBAL.delete(this.id);
         return output;
     }

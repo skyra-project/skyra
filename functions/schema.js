@@ -107,6 +107,11 @@ module.exports = class Configuration {
                     default: false,
                     path: { events: { roleUpdate: value } },
                 },
+                modlogprotection: {
+                    type: "Boolean",
+                    default: false,
+                    path: { events: { modLogProtection: value } },
+                },
             },
             messages: {
                 farewell: {
@@ -140,11 +145,6 @@ module.exports = class Configuration {
                     type: "Number",
                     default: 0,
                     path: { mode: value },
-                },
-                modLogProtection: {
-                    type: "Boolean",
-                    default: false,
-                    path: { events: { modLogProtection: value } },
                 },
             },
             selfmod: {

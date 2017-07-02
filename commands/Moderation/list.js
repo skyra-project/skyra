@@ -47,7 +47,7 @@ exports.run = async (client, msg, [type, ...input]) => {
         }
         case "warnings":
         case "strikes": {
-            const cases = await msg.guild.moderation.cases.then(d => d.filter(c => c.type === "warn"));
+            const cases = await msg.guild.settings.moderation.getCases().then(d => d.filter(c => c.type === "warn"));
             if (!input) {
                 embed
                     .setTitle("List of strikes.")

@@ -1,3 +1,4 @@
+const { shiny } = require("../../utils/assets");
 const moment = require("moment");
 require("moment-duration-format");
 
@@ -10,7 +11,7 @@ exports.run = async (client, msg) => {
     }
     const money = await msg.author.profile.win(200, msg.guild);
     await msg.author.profile.update({ timeDaily: now });
-    return msg.send(`You have just earned ${money}${msg.shiny}! Next dailies are available in 12 hours.`);
+    return msg.send(`You have just earned ${money}${shiny(msg)}! Next dailies are available in 12 hours.`);
 };
 
 

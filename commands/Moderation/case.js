@@ -1,7 +1,7 @@
 const MODERATION = require("../../utils/managerModeration");
 
 exports.run = async (client, msg, [index]) => {
-    const cases = await msg.guild.moderation.cases;
+    const cases = await msg.guild.settings.moderation.getCases();
 
     if (!cases[index]) throw "this case does not seem to exist.";
     const thisCase = cases[index];

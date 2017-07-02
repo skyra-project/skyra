@@ -16,15 +16,15 @@ class GuildMemberRemove {
         switch (alert) {
             case false:
                 embed.setColor(0xdf5656)
-          .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
-          .setFooter("User left")
-          .setTimestamp();
+                    .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setFooter("User left")
+                    .setTimestamp();
                 break;
             case "disable":
                 embed.setColor(0x8C0074)
-          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
-          .setFooter("AUTO | Disabled guildMemberRemove")
-          .setTimestamp();
+                    .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setFooter("AUTO | Disabled guildMemberRemove")
+                    .setTimestamp();
                 break;
             default:
       // no default

@@ -17,11 +17,11 @@ exports.unknown = async (client, guild, user, type) => {
     }
     const channel = this.getChannel(guild);
     if (!channel) return;
-    const thisCase = await guild.moderation.amountCases;
+    const thisCase = await guild.settings.moderation.getAmountCases();
     const description = this.generate(client, user, type, null, thisCase, guild.settings.prefix);
     const embed = this.createEmbed(client, type, null, description, thisCase, true);
     const thisMessage = await channel.send({ embed });
-    await guild.moderation.pushCase(type, null, null, user.id, thisMessage.id, null);
+    await guild.settings.moderation.pushCase(type, null, null, user, thisMessage.id, null);
 };
 
 exports.send = (client, msg, user, type, reason = null, extraData = null) => {
@@ -39,12 +39,19 @@ exports.justified = async (client, msg, user, type, reason, extraData) => {
             else reason = reason.join(" ");
         }
 
-        const thisCase = await msg.guild.moderation.amountCases;
+        const thisCase = await msg.guild.settings.moderation.getAmountCases();
         const description = this.generate(client, user, type, reason, thisCase, msg.guild.settings.prefix);
         const embed = this.createEmbed(client, type, msg.author, description, thisCase, false);
         thisMessage = await channel.send({ embed });
     }
-    await msg.guild.moderation.pushCase(type, msg.author.id, reason, user.id, thisMessage ? thisMessage.id : null, extraData);
+    await msg.guild.settings.moderation.pushCase(
+        type,
+        msg.author.id,
+        reason,
+        user,
+        thisMessage ? thisMessage.id : null,
+        extraData,
+    );
 };
 
 exports.getChannel = guild => guild.settings.channels.mod ? guild.channels.get(guild.settings.channels.mod) : false; // eslint-disable-line no-confusing-arrow

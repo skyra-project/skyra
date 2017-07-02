@@ -1,4 +1,5 @@
 const availableBanners = require("../../assets/banners.json");
+const { shiny } = require("../../utils/assets");
 
 exports.run = async (client, msg, [action, value = null]) => {
     const banners = msg.author.profile.bannerList || [];
@@ -25,7 +26,7 @@ exports.run = async (client, msg, [action, value = null]) => {
             const selected = availableBanners[value] || null;
             if (!selected) return msg.send("This banner does not exist.");
             else if (banners.includes(selected.id)) return msg.send("You already have this banner.");
-            else if (msg.author.profile.money < selected.price) return msg.send(`You don't have enough money to buy this banner. You have ${msg.author.profile.money}${msg.shiny}, the banner costs ${selected.price}${msg.shiny}`);
+            else if (msg.author.profile.money < selected.price) return msg.send(`You don't have enough money to buy this banner. You have ${msg.author.profile.money}${shiny(msg)}, the banner costs ${selected.price}${shiny(msg)}`);
             return this.prompt(client, msg, selected)
                 .then(async () => {
                     banners.push(selected.id);
@@ -48,7 +49,7 @@ exports.prompt = async (client, msg, banner) => {
         .setDescription(
             `**Author**: ${user.tag}\n` +
             `**Title**: ${banner.title} (\`${banner.id}\`)\n` +
-            `**Price**: ${banner.price}${msg.shiny}`,
+            `**Price**: ${banner.price}${shiny(msg)}`,
         )
         .setImage(`http://kyradiscord.weebly.com/files/theme/banners/${banner.id}.png`)
         .setTimestamp();

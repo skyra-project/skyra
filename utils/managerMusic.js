@@ -1,5 +1,6 @@
 const musicConfig = require("../music.json");
 const { Collection } = require("discord.js");
+const MusicInterface = require("./interfaceMusic");
 
 const data = new Collection();
 
@@ -8,41 +9,10 @@ exports.get = guild => data.get(guild);
 
 exports.has = guild => data.has(guild);
 
-exports.queueAdd = (guild, song) => {
-    if (!this.has(guild)) data.set(guild, { playing: false, songs: [] });
-    data.get(guild).songs.push(song);
-};
-
-exports.setNext = (guild, song) => { data.get(guild).next = song; };
-
-exports.setDispatcher = (guild, dispatcher) => { data.get(guild).dispatcher = dispatcher; };
-
-exports.skip = guild => data.get(guild).songs.shift();
-
-exports.autoNuke = (guild) => { data.get(guild).nuke = setTimeout(() => { if (!data.get(guild).playing) data.delete(guild); }, 5 * 60 * 1000); };
-
-exports.destroyNuke = (guild) => {
-    clearTimeout(data.get(guild).nuke);
-    delete data.get(guild).nuke;
-};
-
-exports.setPlaying = (guild, { voiceConnection, channel }) => {
-    const queue = data.get(guild);
-    queue.playing = true;
-    queue.voiceConnection = voiceConnection;
-    queue.channel = channel;
-    if (queue.nuke) this.destroyNuke(guild);
-};
-
-exports.toggleAutoPlay = (guild) => {
-    const queue = data.get(guild);
-    if (!queue) throw "There is no queue.";
-    if (queue.autoPlay) {
-        queue.autoPlay = false;
-        return false;
-    }
-    queue.autoPlay = true;
-    return true;
+exports.create = (guild) => {
+    const musicInterface = new MusicInterface(guild);
+    data.set(guild.id, musicInterface);
+    return musicInterface;
 };
 
 exports.delete = guild => data.delete(guild);

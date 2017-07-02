@@ -1,3 +1,5 @@
+const { shiny } = require("../../utils/assets");
+
 const options = {
     tax: 20,
 };
@@ -8,8 +10,8 @@ exports.run = async (client, msg, [money]) => {
 
     if (!pool) throw "there's no betting pool active.";
     else if (money <= 0) throw "amount of money should be above 0.";
-    else if (msg.author.profile.money < money) throw `you can't pay with money you don't have. Current currency: ${msg.author.profile.money}${msg.shiny}`;
-    else if (msg.author.profile.money < taxed) throw `a tax of ${this.options.tax}% is applied here, you need ${taxed} but you have: ${msg.author.profile.money}${msg.shiny}`;
+    else if (msg.author.profile.money < money) throw `you can't pay with money you don't have. Current currency: ${msg.author.profile.money}${shiny(msg)}`;
+    else if (msg.author.profile.money < taxed) throw `a tax of ${this.options.tax}% is applied here, you need ${taxed} but you have: ${msg.author.profile.money}${shiny(msg)}`;
 
     pool.users.set(msg.author.id, money);
     await msg.author.profile.use(taxed);

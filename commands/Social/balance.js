@@ -1,4 +1,6 @@
-exports.run = async (client, msg) => msg.send(`Dear ${msg.author}, you have a total of ${msg.author.profile.money}${msg.shiny}`);
+const { shiny } = require("../../utils/assets");
+
+exports.run = async (client, msg) => msg.send(`Dear ${msg.author}, you have a total of ${msg.author.profile.money}${shiny(msg)}`);
 
 exports.conf = {
     enabled: true,

@@ -15,7 +15,7 @@ exports.run = async (client, msg, [user, ...reason]) => {
     const muteRole = msg.guild.roles.get(mute);
     if (!muteRole) throw "you configured a mute role, but you deleted it when I was not ready.";
 
-    const mutedUser = await msg.guild.moderation.getMute(user.id);
+    const mutedUser = await msg.guild.settings.moderation.getMute(user.id);
     if (!mutedUser) throw "this user is not muted.";
 
     const roles = mutedUser.extraData || [];

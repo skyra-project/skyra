@@ -1,19 +1,19 @@
 const Rethink = require("../providers/rethink");
-const GuildManager = require("./guildManager");
 
 /* eslint-disable no-underscore-dangle, complexity */
 module.exports = class Moderation {
-    constructor(guild) {
-        Object.defineProperty(this, "client", { value: guild.client });
-        Object.defineProperty(this, "guild", { value: guild });
-        this.id = guild.id;
-        this.cases = this.getCases();
-        this.amountCases = this.getAmountCases();
-        this.lastCase = this.getLastCase();
+    constructor(guild, mutes) {
+        this.id = guild;
+        this.mutes = new Map();
+        this.parseMutes(mutes);
+    }
+
+    parseMutes(mutes) {
+        for (let i = 0; i < mutes.length; i++) this.mutes.set(mutes[i].user, mutes[i]);
     }
 
     exists() {
-        return Rethink.get("moderation", this.guild.id).then(d => !!d);
+        return Rethink.has("moderation", this.id);
     }
 
     create() {
@@ -24,29 +24,27 @@ module.exports = class Moderation {
     }
 
     async ensureModule() {
-        if (!(await this.exists())) await this.create();
+        return this.exists().then(bool => (bool ? false : this.create()));
     }
 
-    async getCases() {
-        const modCases = await Rethink.get("moderation", this.guild.id);
-        if (!modCases) return null;
-        return modCases.cases;
+    async getCases(id = null) {
+        if (id) {
+            return Rethink.getFromArrayByIndex("moderation", this.id, "cases", id) || null;
+        }
+        return Rethink.get("moderation", this.id).then(doc => (doc ? doc.cases : []));
     }
 
     async getAmountCases() {
-        const data = await this.getCases();
-        if (!data) return 0;
-        return data.length;
+        return this.getCases().then(data => (data || []).length);
     }
 
     async getLastCase() {
-        const index = await this.getAmountCases();
-        if (index === 0) return null;
         const data = await this.getCases();
-        return data[index - 1] || null;
+        return data.length > 0 ? data[data.length - 1] || null : null;
     }
 
     async pushCase(type, moderator = null, reason = null, user, message, extraData = null) {
+        await this.ensureModule();
         const thisCase = await this.getAmountCases();
 
         const object = {
@@ -54,47 +52,45 @@ module.exports = class Moderation {
             thisCase,
             moderator,
             reason,
-            user,
+            user: user.id,
+            name: user.username,
             message,
             extraData,
         };
 
-        await this.ensureModule();
         await Rethink.append("moderation", this.id, "cases", object);
         if (type === "mute") await this.syncMutes();
-        else if (type === "unmute") await this.appealMute(user);
+        else if (type === "unmute") await this.appealMute(user.id);
     }
 
     async updateCase(index, doc) {
         return Rethink.updateArrayByIndex("moderation", this.id, "cases", index, doc);
     }
 
+    async getMutes() {
+        return this.getCases().then(cases => cases.filter(obj => obj.type === "mute" && obj.appeal !== true));
+    }
+
     async getMute(user) {
         return this.getMutes().then(g => g.find(obj => obj.type === "mute" && obj.user === user && obj.appeal !== true) || null);
     }
 
-    async getMutes() {
-        return Rethink.get("moderation", this.guild.id).then((d) => {
-            if (!d) return [];
-            const cases = d.cases || [];
-            return cases.filter(obj => obj.type === "mute" && obj.appeal !== true);
+    async syncMutes() {
+        return this.getMutes().then((array) => {
+            this.mutes = new Map();
+            this.parseMutes(array);
         });
     }
 
-    async syncMutes() {
-        return this.getMutes().then((d) => { GuildManager.get(this.guild.id).mutes = d; });
-    }
-
     async appealMute(user) {
-        this.getMute(user).then((d) => {
+        return this.getMute(user).then((d) => {
             if (!d) throw "This mute doesn't seem to exist";
-            return this.updateCase(d.thisCase, { appeal: true })
-        .then(() => this.syncMutes().then(() => true));
+            return this.updateCase(d.thisCase, { appeal: true }).then(() => this.syncMutes().then(() => true));
         });
     }
 
     async destroy() {
         if (!(await this.exists())) throw "This GuildConfig does not exist.";
-        await Rethink.delete("moderation", this.id);
+        return Rethink.delete("moderation", this.id);
     }
 };

@@ -16,33 +16,33 @@ class GuildMemberAdd {
         switch (alert) {
             case null:
                 embed.setColor(0x23ff23)
-          .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
-          .setFooter("User joined")
-          .setTimestamp();
+                    .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setFooter("User joined")
+                    .setTimestamp();
                 break;
             case "disable":
                 embed.setColor(0x8C0074)
-          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
-          .setFooter("AUTO | Disabled guildMemberAdd")
-          .setTimestamp();
+                    .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setFooter("AUTO | Disabled guildMemberAdd")
+                    .setTimestamp();
                 break;
             case "muteRemove":
                 embed.setColor(0x8C0074)
-          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
-          .setFooter("AUTO | Removed Roles >> Muted")
-          .setTimestamp();
+                    .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setFooter("AUTO | Removed Roles >> Muted")
+                    .setTimestamp();
                 break;
             case "roleRemove":
                 embed.setColor(0x8C0074)
-          .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
-          .setFooter("AUTO | Removed Role >> InitialRole")
-          .setTimestamp();
+                    .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setFooter("AUTO | Removed Role >> InitialRole")
+                    .setTimestamp();
                 break;
             case "mute":
                 embed.setColor(0xff1331)
-          .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
-          .setFooter("Muted user joined")
-          .setTimestamp();
+                    .setAuthor(`${this.member.user.tag} (${this.member.user.id})`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setFooter("Muted user joined")
+                    .setTimestamp();
                 break;
             default:
       // no default
@@ -87,9 +87,9 @@ class GuildMemberAdd {
         const custom = this.configs.messages.greetingMessage;
         if (custom) {
             return custom
-        .replace(/%MEMBER%/g, this.member)
-        .replace(/%MEMBERNAME%/g, this.member.user.username)
-        .replace(/%GUILD%/g, this.guild);
+                .replace(/%MEMBER%/g, this.member)
+                .replace(/%MEMBERNAME%/g, this.member.user.username)
+                .replace(/%GUILD%/g, this.guild);
         }
         return `Welcome ${this.member} to ${this.guild.name}!`;
     }
@@ -105,12 +105,12 @@ class GuildMemberAdd {
     }
 
     manage() {
-        if (this.Mutes) return this.handleMute();
+        if (this.isMuted) return this.handleMute();
         return this.notMuted();
     }
 
-    get Mutes() {
-        return this.guild.settings.mutes.has(this.member.id);
+    get isMuted() {
+        return this.guild.settings.moderation.mutes.has(this.member.id);
     }
 }
 

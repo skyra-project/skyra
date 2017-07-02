@@ -49,7 +49,7 @@ const UserProfile = class UserProfile {
     }
 
     async win(money, guild) {
-        if (guild) money *= guild.settings.boost;
+        if (guild) money *= guild.settings.social.boost;
         return this.add(money);
     }
 

@@ -159,7 +159,7 @@ exports.init = (client) => {
     //     } else if (!isManaged) {
     //         res.redirect("/");
     //     }
-    //     const cases = await guild.moderation.cases;
+    //     const cases = await guild.settings.moderation.getCases();
     //     const proc = await Promise.all(cases.map(async (c) => {
     //         c.user = await client.fetchUser(c.user).then(u => u.tag);
     //         c.moderator = c.moderator ? await client.fetchUser(c.moderator).then(u => u.tag) : null;

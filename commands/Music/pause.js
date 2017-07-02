@@ -6,8 +6,7 @@ exports.run = async (client, msg) => {
     } catch (e) {
         return msg.send(e);
     }
-    const { dispatcher } = managerMusic.get(msg.guild.id);
-    dispatcher.pause();
+    managerMusic.get(msg.guild.id).pause();
     return msg.send("⏸ Paused");
 };
 

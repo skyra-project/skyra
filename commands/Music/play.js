@@ -9,64 +9,61 @@ const getLink = (arr) => {
     return `https://youtu.be/${output.id}`;
 };
 
-const autoPlayer = async (guild, queue) => {
-    const info = await getInfo(queue.next);
-    managerMusic.queueAdd(guild.id, {
-        url: queue.next,
+const autoPlayer = async (musicInterface) => {
+    const info = await getInfo(musicInterface.next);
+    musicInterface.queue.push({
+        url: musicInterface.next,
         title: info.title,
         requester: "YouTube AutoPlay",
         loudness: info.loudness,
         seconds: info.length_seconds,
     });
-    managerMusic.setNext(guild.id, getLink(info.related_videos));
+    musicInterface.next = getLink(info.related_videos);
 };
 
-/* eslint-disable consistent-return */
-const play = async (client, guild) => {
-    const queue = managerMusic.get(guild.id);
-    if (!queue || queue.channel) {
-        if (guild.me.voiceChannel) guild.me.voiceChannel.leave();
-        return;
+const play = async (musicInterface) => {
+    if (!musicInterface.queue || !musicInterface.channel) {
+        return musicInterface.destroy();
     }
-    const channel = queue.channel;
-    const song = queue.songs[0];
+
+    const song = musicInterface.queue[0];
 
     if (!song) {
-        if (queue.autoPlay) return autoPlayer(guild, queue).then(() => play(client, guild));
-        return channel.send("⏹ Queue is empty").then(() => {
-            managerMusic.delete(guild.id);
-            if (guild.me.voiceChannel) guild.me.voiceChannel.leave();
-        });
+        if (musicInterface.autoPlay) return autoPlayer(musicInterface).then(() => play(musicInterface));
+        return musicInterface.channel.send("⏹ Queue is empty").then(() => musicInterface.destroy());
     }
-    await channel.send(`🎧 Playing: **${song.title}** as requested by: **${song.requester}**`);
+    await musicInterface.channel.send(`🎧 Playing: **${song.title}** as requested by: **${song.requester}**`);
     await delayer();
-    const stream = ytdl(song.url, { audioonly: true }).on("error", err => channel.send(err));
 
-    const dispatcher = queue.voiceConnection.playStream(stream, { passes: 5 })
-    .on("end", () => this.skip(client, guild))
-    .on("error", err => channel.send(err).then(() => this.skip(client, guild)));
+    const dispatcher = await musicInterface.play();
+    dispatcher
+        .on("end", () => {
+            musicInterface.skip();
+            play(musicInterface);
+        })
+        .on("error", (err) => {
+            musicInterface.channel.send("Something very weird happened! Sorry for the incovenience :(");
+            musicInterface.client.emit("log", err, "error");
+            musicInterface.skip();
+            play(musicInterface);
+        });
 
-    managerMusic.setDispatcher(guild.id, dispatcher);
-
-    return undefined;
+    return null;
 };
 
-exports.skip = (client, guild) => {
-    managerMusic.skip(guild.id);
-    play(client, guild);
-};
-
-exports.run = async (client, msg, [req = null]) => {
-    if (req) return client.commands.get("add").run(client, msg, [req]);
-    const queue = managerMusic.get(msg.guild.id);
-    if (!queue) return msg.send(`Add some songs to the queue first with ${msg.guild.settings.prefix}add`);
-    if (!msg.guild.voiceConnection) return client.commands.get("join").run(client, msg).then(() => this.run(client, msg, [null]));
-    if (queue.playing) return msg.send("Already Playing");
-    managerMusic.setPlaying(msg.guild.id, {
-        voiceConnection: msg.guild.voiceConnection,
-        channel: msg.channel,
-    });
-    return play(client, msg.guild);
+exports.run = async (client, msg) => {
+    const musicInterface = managerMusic.get(msg.guild.id);
+    if (!musicInterface || musicInterface.queue.length === 0) {
+        return msg.send(`Add some songs to the queue first with ${msg.guildSettings.prefix}add`);
+    }
+    if (!musicInterface.voiceChannel) {
+        return client.commands.get("join").run(client, msg).then(() => this.run(client, msg));
+    }
+    if (musicInterface.playing) {
+        return msg.send("Already Playing");
+    }
+    musicInterface.channel = msg.channel;
+    return play(musicInterface);
 };
 
 exports.conf = {
@@ -85,7 +82,7 @@ exports.conf = {
 exports.help = {
     name: "play",
     description: "Plays the queue, or add a song to the queue.",
-    usage: "[song:string]",
+    usage: "",
     usageDelim: "",
     extendedHelp: "",
 };

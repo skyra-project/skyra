@@ -6,8 +6,7 @@ exports.run = async (client, msg) => {
     } catch (e) {
         return msg.send(e);
     }
-    const { dispatcher } = managerMusic.get(msg.guild.id);
-    dispatcher.resume();
+    managerMusic.get(msg.guild.id).resume();
     return msg.send("▶ Resumed");
 };
 

@@ -85,7 +85,7 @@ class Command {
                 break;
             }
             case "remove": {
-                await this.msg.Prompt(`Dear ${this.msg.author}, are you sure you want to end the betting pool?`);
+                await this.msg.prompt(`Dear ${this.msg.author}, are you sure you want to end the betting pool?`);
                 await this.msg.send("How did the match go? Did somebody **WIN** or it has been a **DRAW**?");
                 await this.prompt();
                 break;

@@ -6,9 +6,8 @@ exports.run = async (client, msg) => {
     } catch (e) {
         return msg.send(e);
     }
-    const { dispatcher } = managerMusic.get(msg.guild.id);
-    await msg.send("⏭ Skipped");
-    dispatcher.end();
+    managerMusic.get(msg.guild.id).skip(true);
+    return msg.send("⏭ Skipped");
 };
 
 exports.conf = {

@@ -3,9 +3,9 @@ const MODERATION = require("../../utils/managerModeration");
 exports.run = async (client, msg, [user, ...reason]) => {
     const member = await msg.guild.fetchMember(user.id).catch(() => null);
 
-    if (user.id === msg.author.id) {
-        throw "why would you ban yourself?";
-    } else if (member) {
+    if (user.id === msg.author.id) throw "why would you ban yourself?";
+    else if (user.id === client.user.id) throw "ew...";
+    else if (member) {
         if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
         else if (!member.bannable) throw "the selected member is not bannable.";
     }

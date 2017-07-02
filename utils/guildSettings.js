@@ -1,5 +1,5 @@
 const Rethink = require("../providers/rethink");
-// const Moderation = require("./moderation");
+const Moderation = require("./moderation");
 const GuildManager = require("./guildManager");
 
 const defaults = {
@@ -54,7 +54,7 @@ const GuildSetting = class GuildSetting {
 
         this.exists = this.raw.exists || true;
 
-        // this.moderation = new Moderation(this.guild);
+        this.moderation = new Moderation(this.id, this.raw.mutes || []);
     }
 
     async create() {
@@ -90,16 +90,6 @@ const GuildSetting = class GuildSetting {
 
     get createdAt() {
         return this.raw.createdAt || null;
-    }
-
-    get rawMutes() {
-        return this.raw.mutes || [];
-    }
-
-    get mutes() {
-        const mutes = new this.client.methods.Collection();
-        this.rawMutes.map(m => mutes.set(m.user, m));
-        return mutes;
     }
 };
 

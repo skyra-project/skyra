@@ -6,14 +6,15 @@ exports.run = async (client, msg) => {
     const voiceConnection = client.voice.connections.get(msg.guild.id);
     const voiceChannel = msg.guild.me.voiceChannel;
 
+    const musicInterface = managerMusic.get(msg.guild.id);
+
     if (voiceChannel) {
-        await voiceChannel.leave();
+        if (musicInterface) await musicInterface.destroy();
         client.voice.connections.delete(msg.guild.id);
-        managerMusic.delete(msg.guild.id);
         return msg.alert(`Successfully disconnected from ${voiceChannel}`);
     } else if (voiceConnection) {
+        if (musicInterface) await musicInterface.destroy();
         client.voice.connections.delete(msg.guild.id);
-        managerMusic.delete(msg.guild.id);
         return msg.alert(`🛠 **DEBUG** | Successfully disconnected from ${voiceConnection.channel}`);
     }
     return msg.send(resNoVoiceChannel[Math.floor(resNoVoiceChannel.length * Math.random())]);

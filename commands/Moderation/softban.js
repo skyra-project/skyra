@@ -4,6 +4,7 @@ exports.run = async (client, msg, [user, days = 7, ...reason]) => {
     const member = await msg.guild.fetchMember(user.id).catch(() => { throw "this user is not in this server"; });
 
     if (user.id === msg.author.id) throw "why would you ban yourself?";
+    else if (user.id === client.user.id) throw "ew...";
     else if (member.highestRole.position >= msg.member.highestRole.position) throw "the selected member has higher or equal role position than you.";
     else if (!member.kickable) throw "the selected member is not bannable.";
 

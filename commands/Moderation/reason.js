@@ -1,7 +1,7 @@
 const sanitizeEmbed = require("../../functions/embed");
 
 exports.validate = async (client, msg, index) => {
-    const cases = await msg.guild.moderation.cases;
+    const cases = await msg.guild.settings.moderation.getCases();
     if (!cases) throw "i couldn't find mod-logs here. Please perform a moderation action before doing this.";
 
     const sCase = cases[index];
@@ -45,7 +45,7 @@ exports.run = async (client, msg, [index, ...reason]) => {
     const obj = await this.fetchMessage(client, msg, sCase);
     await this.handleMessage(client, msg, obj.message, obj.channel, sCase, reason);
 
-    await msg.guild.moderation.updateCase(index, { reason, moderator: msg.author.id });
+    await msg.guild.settings.moderation.updateCase(index, { reason, moderator: msg.author.id });
 
     return msg.alert(`**Success!** New reason: ${reason}`);
 };

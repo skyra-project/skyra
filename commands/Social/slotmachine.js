@@ -1,3 +1,5 @@
+const { shiny } = require("../../utils/assets");
+
 const reels = [
   ["🍒", "💰", "⭐", "🎲", "💎", "❤", "🔱", "🔅", "🎉"],
   ["💎", "🔅", "❤", "🍒", "🎉", "🔱", "🎲", "⭐", "💰"],
@@ -61,7 +63,7 @@ class SlotMachines {
     }
 
     checkCurrency(amount) {
-        if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${this.msg.shiny}.`;
+        if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${this.shiny(msg)}.`;
     }
 }
 
@@ -87,7 +89,7 @@ exports.run = async (client, msg, [coins]) => {
             .setColor(0x5C913B)
             .setDescription(
                 `**You rolled:**\n${output}\n**Congratulations!**` +
-                `You won ${results.winnings}${msg.shiny}!`,
+                `You won ${results.winnings}${shiny(msg)}!`,
             );
     } else {
         embed

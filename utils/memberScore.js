@@ -12,12 +12,13 @@ const MemberScore = class MemberScore {
         this.id = member;
         this.guild = guild;
         this.score = this.raw.score || 0;
+        this.exists = this.raw.exists || true;
     }
 
     async create() {
         if (this.exists) throw "This MemberScore already exists.";
-        this.raw = Object.assign(defaults, { id: this.id, exists: true });
-        await RethinkDB.append("localScores", this.guild, "scores", this.raw);
+        await RethinkDB.append("localScores", this.guild, "scores", Object.assign(defaults, { id: this.id }));
+        this.exists = true;
         return true;
     }
 
@@ -27,9 +28,10 @@ const MemberScore = class MemberScore {
 
     async update(score) {
         await this.ensureProfile();
-        RethinkDB.updateArray("localScores", this.guild, "scores", this.member, { score });
-        this.raw.score = score;
-        return this.raw.score;
+        console.log("localScores", this.guild, "scores", this.id, { score });
+        await RethinkDB.updateArrayByID("localScores", this.guild, "scores", this.id, { score });
+        this.score = score;
+        return this.score;
     }
 
     async destroy() {

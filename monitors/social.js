@@ -41,7 +41,7 @@ exports.cooldown = (msg) => {
 
 exports.calc = (guild) => {
     let random = Math.max(Math.ceil(Math.random() * 8), 4);
-    if (guild) random *= guild.settings.monitorBoost;
+    if (guild) random *= guild.settings.social.monitorBoost;
     return Math.round(random);
 };
 

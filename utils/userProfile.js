@@ -10,8 +10,13 @@ const defaults = {
         theme: "0001",
         level: "1001",
     },
+    bannerList: [],
+    quote: null,
+    timeDaily: 0,
+    timerep: 0,
 };
 
+/* eslint-disable no-restricted-syntax */
 const UserProfile = class UserProfile {
     constructor(user, data) {
         Object.defineProperty(this, "raw", { value: data });
@@ -20,38 +25,16 @@ const UserProfile = class UserProfile {
         this.color = this.raw.color || defaults.color;
         this.money = this.raw.money || defaults.money;
         this.reputation = this.raw.reputation || defaults.reputation;
-    }
-
-    get exists() {
-        return this.raw.exists !== false;
-    }
-
-    get quote() {
-        return this.raw.quote || null;
-    }
-
-    get timeDaily() {
-        return this.raw.timeDaily || 0;
-    }
-
-    get timerep() {
-        return this.raw.timerep || 0;
-    }
-
-    get lastUpdate() {
-        return this.raw.time || 0;
-    }
-
-    get banners() {
-        const banners = this.raw.banners || {};
-        return {
-            theme: banners.theme || "0001",
-            level: banners.level || "1001",
+        this.bannerList = this.raw.bannerList || defaults.bannerList;
+        this.quote = this.raw.quote || defaults.quote;
+        this.banners = {
+            theme: this.raw.banners.theme || defaults.banners.theme,
+            level: this.raw.banners.level || defaults.banners.level,
         };
-    }
-
-    get bannerList() {
-        return this.raw.bannerList || [];
+        this.timeDaily = this.raw.timeDaily || defaults.timeDaily;
+        this.timerep = this.raw.timerep || defaults.timerep;
+        this.lastUpdate = this.raw.time || 0;
+        this.exists = this.raw.exists || true;
     }
 
     async create() {
@@ -83,15 +66,16 @@ const UserProfile = class UserProfile {
 
     async update(doc) {
         await this.ensureProfile();
+        console.log("users", this.id, doc);
         await Rethink.update("users", this.id, doc);
-        return this.sync();
-    }
-
-    async sync() {
-        const data = await Rethink.get("users", this.id);
-        if (!data) throw "[404] Not found.";
-        this.raw = data;
-        return data;
+        for (const key of Object.keys(doc)) {
+            if (doc[key] instanceof Object) {
+                for (const subkey of Object.keys(doc[key])) this[key][subkey] = doc[key][subkey];
+            } else {
+                this[key] = doc[key];
+            }
+        }
+        return this;
     }
 
     async destroy() {

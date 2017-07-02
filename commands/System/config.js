@@ -66,14 +66,14 @@ class Validator {
         }
 
         const val = object[folder][subfolder];
-        const validation = this.validator(val.default)[folder][subfolder];
+        const validation = Schema.find(val.default)[folder][subfolder];
         await this.guild.settings.update(validation.path);
         return `Success. Value **${subfolder}** has been reset to **${val.default}**`;
     }
 
     async update(folder, subfolder, input, inputType) {
         const parsed = await this.parse(inputType, input);
-        const validator = this.validator(parsed.id || parsed)[folder][subfolder];
+        const validator = Schema.find(parsed.id || parsed)[folder][subfolder];
         await this.guild.settings.update(validator.path);
         return parsed.name || parsed;
     }

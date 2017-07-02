@@ -1,5 +1,5 @@
 const Rethink = require("../providers/rethink");
-const Moderation = require("./moderation");
+// const Moderation = require("./moderation");
 const GuildManager = require("./guildManager");
 
 const defaults = {
@@ -25,6 +25,7 @@ const defaults = {
     },
 };
 
+/* eslint-disable no-restricted-syntax */
 const GuildSetting = class GuildSetting {
     constructor(guild, data) {
         Object.defineProperty(this, "raw", { value: data });
@@ -51,7 +52,9 @@ const GuildSetting = class GuildSetting {
             monitorBoost: this.raw.monitorBoost || defaults.social.monitorBoost,
         };
 
-        this.moderation = new Moderation(this.guild);
+        this.exists = this.raw.exists || true;
+
+        // this.moderation = new Moderation(this.guild);
     }
 
     async create() {
@@ -68,14 +71,14 @@ const GuildSetting = class GuildSetting {
     async update(doc) {
         await this.ensureConfigs();
         await Rethink.update("guilds", this.id, doc);
-        return this.sync();
-    }
-
-    async sync() {
-        const data = await Rethink.get("guilds", this.id);
-        if (!data) throw "[404] Not found.";
-        this.raw = data;
-        return true;
+        for (const key of Object.keys(doc)) {
+            if (doc[key] instanceof Object) {
+                for (const subkey of Object.keys(doc[key])) this[key][subkey] = doc[key][subkey];
+            } else {
+                this[key] = doc[key];
+            }
+        }
+        return this;
     }
 
     async destroy() {
@@ -87,10 +90,6 @@ const GuildSetting = class GuildSetting {
 
     get createdAt() {
         return this.raw.createdAt || null;
-    }
-
-    get exists() {
-        return this.raw.exists !== false;
     }
 
     get rawMutes() {

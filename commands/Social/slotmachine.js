@@ -63,7 +63,7 @@ class SlotMachines {
     }
 
     checkCurrency(amount) {
-        if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${this.shiny(msg)}.`;
+        if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${this.shiny(this.msg)}.`;
     }
 }
 
@@ -198,13 +198,13 @@ exports.canvas = async (client, roll, { win, winnings }) => {
     ctx.restore();
 
     if (win) {
-        const shiny = new Canvas.Image();
-        shiny.src = await readFile(shinyPath);
+        const shinyIcon = new Canvas.Image();
+        shinyIcon.src = await readFile(shinyPath);
         ctx.font = "30px RobotoLight";
         ctx.textAlign = "right";
         ctx.fillText("You won", 280, 60);
         ctx.fillText(winnings, 250, 100);
-        ctx.drawImage(shiny, 260, 68, 20, 39);
+        ctx.drawImage(shinyIcon, 260, 68, 20, 39);
     }
 
     return canvas.toBuffer();

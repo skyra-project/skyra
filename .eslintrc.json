@@ -9,7 +9,7 @@
   "extends": "airbnb-base",
   "rules": {
     "no-console": "off",
-    "indent": ["error", 4, { "SwitchCase": 1 }],
+    "indent": ["error", 4, { "SwitchCase": 1, "MemberExpression": 1 }],
     "linebreak-style": "off",
     "quotes": ["warn", "double"],
     "semi": ["warn", "always"],

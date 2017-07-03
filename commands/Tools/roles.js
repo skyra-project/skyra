@@ -12,9 +12,9 @@ class RoleList {
         if (!this.config.publicRoles[0]) throw "This server does not have a public role configured.";
         const theRoles = this.config.publicRoles.map(u => (this.guild.roles.has(u) ? this.guild.roles.get(u).name : u));
         return new this.client.methods.Embed()
-      .setColor(this.msg.color)
-      .setTitle(`Public roles for ${this.guild}`)
-      .setDescription(theRoles.join("\n"));
+            .setColor(this.msg.color)
+            .setTitle(`Public roles for ${this.guild}`)
+            .setDescription(theRoles.join("\n"));
     }
 
     roleAddCheck(roles) {

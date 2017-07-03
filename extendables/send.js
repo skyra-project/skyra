@@ -5,7 +5,7 @@ exports.conf = {
 };
 
 // eslint-disable-next-line func-names
-exports.extend = function (content, options) {
+exports.extend = function (content = "Empty Message", options) {
     const commandMessage = this.client.commandMessages.get(this.id);
     if (commandMessage && (!options || !("files" in options))) return commandMessage.response.edit(content, options);
     return this.channel.send(content, options)

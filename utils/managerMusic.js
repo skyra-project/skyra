@@ -20,11 +20,11 @@ exports.delete = guild => data.delete(guild);
 exports.fetchAll = () => data;
 
 exports.requiredVC = (client, msg) => {
-    const queue = this.get(msg.guild.id);
-    if (!queue) throw musicConfig.resNoQueue[Math.floor(musicConfig.resNoQueue.length * Math.random())];
-    const song = queue.songs[0];
+    const musicInterface = this.get(msg.guild.id);
+    if (!musicInterface) throw musicConfig.resNoQueue[Math.floor(musicConfig.resNoQueue.length * Math.random())];
+    const song = musicInterface.queue[0];
     if (!song) throw musicConfig.resNoSong[Math.floor(musicConfig.resNoSong.length * Math.random())];
-    const channel = queue.voiceConnection.channel;
+    const channel = musicInterface.voiceChannel;
     if (!channel.members.has(msg.author.id)) throw `Please, join ${channel}`;
     return song;
 };

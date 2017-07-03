@@ -1,12 +1,9 @@
 const managerMusic = require("../../utils/managerMusic");
 
 exports.run = async (client, msg, [vol = false]) => {
-    try {
-        managerMusic.requiredVC(client, msg);
-    } catch (e) {
-        return msg.send(e);
-    }
-    const { dispatcher } = managerMusic.get(msg.guild.id);
+    managerMusic.requiredVC(client, msg);
+    const { dispatcher, status } = managerMusic.get(msg.guild.id);
+    if (status !== "playing") throw `I am not playing a song. Current status: \`${status}\``;
     if (!vol) return msg.send(`📢 Volume: ${Math.round(dispatcher.volume * 50)}%`);
     if (/^[+]+$/.test(vol)) {
         if (Math.round(dispatcher.volume * 50) >= 100) return msg.send(`📢 Volume: ${Math.round(dispatcher.volume * 50)}%`);

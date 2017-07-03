@@ -6,12 +6,8 @@ exports.run = async (client, msg) => {
     const voiceChannel = msg.member.voiceChannel;
     if (!voiceChannel) return msg.send(resNoVoiceChannel[Math.floor(resNoVoiceChannel.length * Math.random())]);
 
-    const musicInterface = managerMusic.get(msg.guild.id);
-    if (!musicInterface) {
-        await managerMusic.create(msg.guild).join(voiceChannel);
-    } else {
-        await musicInterface.join(voiceChannel);
-    }
+    const musicInterface = managerMusic.get(msg.guild.id) || managerMusic.create(msg.guild);
+    await musicInterface.join(voiceChannel);
 
     return msg.alert(`Successfully connected to ${voiceChannel}`);
 };

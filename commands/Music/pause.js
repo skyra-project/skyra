@@ -1,11 +1,9 @@
 const managerMusic = require("../../utils/managerMusic");
 
 exports.run = async (client, msg) => {
-    try {
-        managerMusic.requiredVC(client, msg);
-    } catch (e) {
-        return msg.send(e);
-    }
+    managerMusic.requiredVC(client, msg);
+    const musicInterface = managerMusic.get(msg.guild.id);
+    if (musicInterface.status === "paused") throw "I already paused the song.";
     managerMusic.get(msg.guild.id).pause();
     return msg.send("⏸ Paused");
 };

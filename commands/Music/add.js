@@ -17,7 +17,7 @@ exports.getYouTube = async (client, msg, url) => {
     // if (parseInt(info.length_seconds) > 600 && msg.member.voiceChannel.members.size >= 4) {
     //     throw "this song is too long, please add songs that last less than 10 minutes.";
     // }
-    const musicInterface = managerMusic.get(msg.guild.id);
+    const musicInterface = managerMusic.get(msg.guild.id) || managerMusic.create(msg.guild);
     musicInterface.queue.push({
         url,
         title: info.title,
@@ -31,11 +31,13 @@ exports.getYouTube = async (client, msg, url) => {
 
 const { google } = getConfig.tokens;
 
+const fetchURL = url => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${url}&key=${google}`).then(d => JSON.parse(d.text));
+
 exports.findYoutube = async (client, msg, url) => {
     if (url.startsWith("https://www.youtube.com/watch?v=") || url.startsWith("https://youtu.be/")) {
         return this.getYouTube(client, msg, url);
     }
-    const data = await snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(url)}&key=${google}`).then(d => JSON.parse(d.text));
+    const data = await fetchURL(encodeURIComponent(url));
     const video = data.items.find(item => item.id.kind !== "youtube#channel");
     return this.getYouTube(client, msg, `https://youtu.be/${video.id.videoId}`);
 };

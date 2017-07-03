@@ -29,26 +29,29 @@ const play = async (musicInterface) => {
     const song = musicInterface.queue[0];
 
     if (!song) {
-        if (musicInterface.autoPlay) return autoPlayer(musicInterface).then(() => play(musicInterface));
+        if (musicInterface.autoplay) return autoPlayer(musicInterface).then(() => play(musicInterface));
         return musicInterface.channel.send("⏹ Queue is empty").then(() => musicInterface.destroy());
     }
     await musicInterface.channel.send(`🎧 Playing: **${song.title}** as requested by: **${song.requester}**`);
     await delayer();
 
-    const dispatcher = await musicInterface.play();
-    dispatcher
-        .on("end", () => {
-            musicInterface.skip();
-            play(musicInterface);
-        })
-        .on("error", (err) => {
-            musicInterface.channel.send("Something very weird happened! Sorry for the incovenience :(");
-            musicInterface.client.emit("log", err, "error");
-            musicInterface.skip();
-            play(musicInterface);
+    return musicInterface.play()
+        .then(dispatcher => dispatcher
+            .on("end", () => {
+                musicInterface.skip();
+                play(musicInterface);
+            })
+            .on("error", (err) => {
+                musicInterface.channel.send("Something very weird happened! Sorry for the incovenience :(");
+                musicInterface.client.emit("log", err, "error");
+                musicInterface.skip();
+                play(musicInterface);
+            }),
+        )
+        .catch((message) => {
+            musicInterface.channel.send(message);
+            musicInterface.destroy();
         });
-
-    return null;
 };
 
 exports.run = async (client, msg) => {
@@ -59,9 +62,10 @@ exports.run = async (client, msg) => {
     if (!musicInterface.voiceChannel) {
         return client.commands.get("join").run(client, msg).then(() => this.run(client, msg));
     }
-    if (musicInterface.playing) {
+    if (musicInterface.status === "playing") {
         return msg.send("Already Playing");
     }
+    musicInterface.status = "playing";
     musicInterface.channel = msg.channel;
     return play(musicInterface);
 };

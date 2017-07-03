@@ -6,43 +6,40 @@ module.exports = class InterfaceMusic {
         Object.defineProperty(this, "client", { value: guild.client });
         this.guild = guild;
         this.queue = [];
-        this.playing = false;
         this.channel = null;
-        this.voiceChannel = null;
 
         this.dispatcher = null;
-        this.connection = null;
 
         this.autoplay = false;
         this.next = null;
+
+        this.status = "idle";
     }
 
-    async join(voiceChannel) {
-        this.voiceChannel = voiceChannel;
-        await this.voiceChannel.join().then((connection) => { this.connection = connection; });
-        return this;
+    join(voiceChannel) {
+        return voiceChannel.join()
+            .catch((err) => {
+                if (String(err).includes("ECONNRESET")) throw "There was an issue connecting to the voice channel.";
+                this.client.emit("log", err, "error");
+                throw err;
+            });
     }
 
     async leave() {
-        if (!this.voiceChannel) throw "NO_VOICECHANNEL";
-        await this.voiceChannel.leave();
-        this.voiceChannel = null;
+        if (!this.voiceChannel) throw "I am not in a voice channel.";
+        if (this.voiceChannel) this.voiceChannel.leave();
         this.dispatcher = null;
-        this.connection = null;
-        this.playing = false;
+        this.status = "idle";
         return this;
     }
 
     async play() {
-        if (!this.voiceChannel) throw "NO_VOICECHANNEL";
-        else if (!this.connection) throw "NO_CONNECTION";
-        else if (!this.queue[0]) throw "NO_SONG";
-        else if (this.playing === true) throw "ALREADY_PLAYING";
+        if (!this.voiceChannel) throw "I am not in a voice channel.";
+        else if (!this.connection) throw "I could not find a connection.";
+        else if (!this.queue[0]) throw "The queue is empty.";
 
         const stream = ytdl(this.queue[0].url, { audioonly: true })
             .on("error", err => this.client.emit("log", err, "error"));
-
-        if (this.playing === false) this.playing = true;
 
         this.dispatcher = this.connection.playStream(stream, { passes: 5 });
         return this.dispatcher;
@@ -50,17 +47,19 @@ module.exports = class InterfaceMusic {
 
     pause() {
         this.dispatcher.pause();
+        this.status = "paused";
         return this;
     }
 
     resume() {
         this.dispatcher.resume();
+        this.status = "playing";
         return this;
     }
 
     skip(force = false) {
         if (force) this.dispatcher.end();
-        this.queue.shift();
+        else this.queue.shift();
         return this;
     }
 
@@ -70,13 +69,16 @@ module.exports = class InterfaceMusic {
     }
 
     async destroy() {
-        if (this.voiceChannel) await this.voiceChannel.leave();
+        if (this.voiceChannel) this.voiceChannel.leave();
         manager.delete(this.guild.id);
-        this.queue = [];
-        this.playing = false;
-        this.voiceChannel = null;
-        this.dispatcher = null;
-        this.connection = null;
         return null;
+    }
+
+    get voiceChannel() {
+        return this.guild.me.voiceChannel;
+    }
+
+    get connection() {
+        return this.voiceChannel ? this.voiceChannel.connection : null;
     }
 };

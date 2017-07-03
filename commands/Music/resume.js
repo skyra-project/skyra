@@ -1,11 +1,9 @@
 const managerMusic = require("../../utils/managerMusic");
 
 exports.run = async (client, msg) => {
-    try {
-        managerMusic.requiredVC(client, msg);
-    } catch (e) {
-        return msg.send(e);
-    }
+    managerMusic.requiredVC(client, msg);
+    const musicInterface = managerMusic.get(msg.guild.id);
+    if (musicInterface.status === "playing") throw "I am already playing a song.";
     managerMusic.get(msg.guild.id).resume();
     return msg.send("▶ Resumed");
 };

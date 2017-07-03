@@ -17,12 +17,12 @@ const Run = class Run {
     async Start(type, input) {
         switch (type) {
             case "members": {
-                if (!this.msg.hasAtleastPermissionLevel(1)) throw "You require to be at least a Staff Member to run this command.";
+                if (!this.msg.hasLevel(1)) throw "You require to be at least a Staff Member to run this command.";
                 const role = await this.parse("role", input);
                 return new RoleMembers(this.msg).run(role);
             }
             case "channel": {
-                if (!this.msg.hasAtleastPermissionLevel(2)) throw "You require to be at least a Moderator Member to run this command.";
+                if (!this.msg.hasLevel(2)) throw "You require to be at least a Moderator Member to run this command.";
                 const channel = await this.parse("channel", input);
                 return new ChannelInfo(this.msg).run(channel);
             }
@@ -31,18 +31,18 @@ const Run = class Run {
                 return new GuildInfo(this.msg).run(guild);
             }
             case "flow": {
-                if (!this.msg.hasAtleastPermissionLevel(1)) throw "You require to be at least a Staff Member to run this command.";
+                if (!this.msg.hasLevel(1)) throw "You require to be at least a Staff Member to run this command.";
                 const channel = await this.parse("channel", input);
                 return new ChannelFlow(this.msg).run(channel);
             }
             case "perms":
             case "permissions": {
-                if (!this.msg.hasAtleastPermissionLevel(2)) throw "You require to be at least a Moderator Member to run this command.";
+                if (!this.msg.hasLevel(2)) throw "You require to be at least a Moderator Member to run this command.";
                 const member = await this.parse("member", input);
                 return new PermissionUser(this.msg).run(member);
             }
             case "invite": {
-                if (!this.msg.hasAtleastPermissionLevel(3)) throw "You require to be at least an Administrator Member to run this command.";
+                if (!this.msg.hasLevel(3)) throw "You require to be at least an Administrator Member to run this command.";
                 if (!(/(discord\.gg\/|discordapp\.com\/invite\/).+/.test(input))) throw "You must provide a valid invite link.";
                 const invite = /(discord\.gg\/|discordapp\.com\/invite\/)([^ ]+)/.exec(input);
                 if (!invite) throw "Are you sure you provided a valid code?";

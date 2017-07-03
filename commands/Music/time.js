@@ -2,12 +2,9 @@ const managerMusic = require("../../utils/managerMusic");
 const moment = require("moment");
 
 exports.run = async (client, msg) => {
-    try {
-        managerMusic.requiredVC(client, msg);
-    } catch (e) {
-        return msg.send(e);
-    }
-    const { dispatcher, queue } = managerMusic.get(msg.guild.id);
+    managerMusic.requiredVC(client, msg);
+    const { dispatcher, queue, status } = managerMusic.get(msg.guild.id);
+    if (status !== "playing") throw `I am not playing a song. Current status: \`${status}\``;
     return msg.send(`🕰 Time remaining: ${moment.duration((queue[0].seconds * 1000) - dispatcher.time).format("h[:]mm[:]ss")}`);
 };
 

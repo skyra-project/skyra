@@ -1,13 +1,10 @@
 const managerMusic = require("../../utils/managerMusic");
 
 exports.run = async (client, msg) => {
-    try {
-        managerMusic.requiredVC(client, msg);
-    } catch (e) {
-        return msg.send(e);
-    }
+    const response = await msg.send("⏭ Skipped");
+    managerMusic.requiredVC(client, msg);
     managerMusic.get(msg.guild.id).skip(true);
-    return msg.send("⏭ Skipped");
+    return response;
 };
 
 exports.conf = {

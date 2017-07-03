@@ -6,7 +6,7 @@ exports.validate = async (client, msg, index) => {
 
     const sCase = cases[index];
     if (!sCase) throw "this case does not exist.";
-    if (sCase.reason && sCase.moderator !== msg.author.id && !msg.hasAtleastPermissionLevel(3)) throw "for security, only the moderator who performed this action, or an administrator, can edit this case.";
+    if (sCase.reason && sCase.moderator !== msg.author.id && !msg.hasLevel(3)) throw "for security, only the moderator who performed this action, or an administrator, can edit this case.";
 
     return sCase;
 };

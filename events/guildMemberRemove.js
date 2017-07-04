@@ -12,7 +12,7 @@ class GuildMemberRemove {
         const logs = this.configs.channels.log;
         if (!logs) return false;
         const logChannel = this.guild.channels.get(logs);
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         switch (alert) {
             case false:
                 embed.setColor(0xdf5656)

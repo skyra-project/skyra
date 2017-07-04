@@ -14,7 +14,7 @@ exports.run = async (client, msg, [query, ...reason]) => {
 
     reason = reason.length ? reason.join(" ") : null;
     user.action = "unban";
-    await msg.guild.unban(user, reason);
+    await msg.guild.unban(user.id, reason);
     msg.send(`|\`🔨\`| **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
     const moderation = new ModLog(msg.guild)
         .setModerator(msg.author)

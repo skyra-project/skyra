@@ -1,3 +1,7 @@
-const MODERATION = require("../utils/managerModeration");
+const ModLog = require("../utils/createModlog.js");
 
-exports.run = (client, guild, user) => MODERATION.unknown(client, guild, user, "unban").catch(e => client.emit("log", e, "error"));
+exports.run = (client, guild, user) => new ModLog(guild)
+    .setUser(user)
+    .setType("unban")
+    .send()
+    .catch(e => client.emit("log", e, "error"));

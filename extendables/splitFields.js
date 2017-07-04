@@ -1,7 +1,7 @@
 exports.conf = {
     type: "method",
     method: "splitFields",
-    appliesTo: ["RichEmbed"],
+    appliesTo: ["MessageEmbed"],
 };
 
 // eslint-disable-next-line func-names

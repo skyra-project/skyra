@@ -1,3 +1,5 @@
+const ModLog = require("../utils/createModlog.js");
+
 exports.conf = { enabled: true };
 
 const cooldown = new Map();
@@ -22,10 +24,11 @@ class NMS {
 
     timeout(entry) {
         clearTimeout(entry.timeout);
-        entry.timeout = setTimeout(() => this.delete(entry.id), (entry.amount + 3) * 1000);
+        entry.timeout = setTimeout(() => this.delete(entry.id), (entry.amount + 4) * 1000);
     }
 
     delete(user) {
+        clearTimeout(this.get(user).timeout);
         this.cooldown.delete(user);
     }
 }
@@ -35,20 +38,37 @@ exports.run = async (client, msg) => {
         || !msg.guild
         || !msg.member
         || !msg.member.bannable
-        || (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)) return;
+        || (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)) return null;
 
     const settings = msg.guild.settings;
-    if (settings.selfmod.nomentionspam !== true) return;
+    if (settings.selfmod.nomentionspam !== true) return null;
 
     const filteredCollection = msg.mentions.users.filter(entry => entry.id !== msg.author.id);
-    if (filteredCollection.size === 0 || filteredCollection.first().bot) return;
+    if (msg.mentions.everyone === false
+        && msg.mentions.roles.size === 0
+        && (filteredCollection.size === 0 || filteredCollection.first().bot)) return null;
 
     if (!cooldown.has(msg.guild.id)) cooldown.set(msg.guild.id, new NMS());
-    const amount = msg.mentions.users.size + (msg.mentions.roles.size * 2) + (msg.mentions.everyone * 5);
+    const amount = filteredCollection.size + (msg.mentions.roles.size * 2) + (msg.mentions.everyone * 5);
     const newAmount = cooldown.get(msg.guild.id).add(msg.author.id, amount);
-    client.emit("log", `${msg.author.id} got ${amount} points, increasing the amount to ${newAmount}`, "debug");
     if (newAmount >= (settings.selfmod.nmsthreshold || 20)) {
-        client.emit("log", `${msg.author.id} is now bannable.`, "debug");
-        // await msg.guild.ban(msg.author.id, { days: 1, reason: "[NOMENTIONSPAM]" });
+        msg.author.action = "ban";
+        await msg.guild.ban(msg.author.id, { days: 1, reason: "[NOMENTIONSPAM]" }).catch(err => client.emit("log", err, "error"));
+        await msg.send([
+            `The banhammer has landed and now the user ${msg.author.tag} with id ${msg.author.id} is banned for mention spam.`,
+            "Do not worry! I'm here to help you! 😄",
+        ].join("\n"));
+
+        cooldown.get(msg.guild.id).delete(msg.author.id);
+
+        const moderation = new ModLog(msg.guild)
+            .setModerator(client.user)
+            .setUser(msg.author)
+            .setType("ban")
+            .setReason(`[NOMENTIONSPAM] Threshold: ${settings.selfmod.nmsthreshold || 20}. Reached: ${newAmount}`);
+
+        return moderation.send().catch(err => client.emit("log", err, "error"));
     }
+
+    return null;
 };

@@ -1,4 +1,4 @@
-const { Client, Collection, RichEmbed, MessageCollector, escapeMarkdown, splitMessage, Permissions } = require("discord.js");
+const { Client, Collection, MessageEmbed, MessageCollector, escapeMarkdown, splitMessage, Permissions } = require("discord.js");
 const path = require("path");
 const now = require("performance-now");
 const CommandMessage = require("./commandMessage");
@@ -59,7 +59,7 @@ module.exports = class Komada extends Client {
         this.ready = false;
         this.methods = {
             Collection,
-            Embed: RichEmbed,
+            Embed: MessageEmbed,
             MessageCollector,
             escapeMarkdown,
             splitMessage,

@@ -22,6 +22,8 @@ class ModerationLog {
         this.type = null;
         this.reason = null;
         this.extraData = null;
+
+        this.anonymous = false;
     }
 
     async retrieveModLog(id) {
@@ -42,13 +44,18 @@ class ModerationLog {
         return embed;
     }
 
+    setAnonymous(value) {
+        this.anonymous = value;
+        return this;
+    }
+
     setModerator(user) {
         this.moderator = { id: user.id, tag: user.tag, raw: user };
         return this;
     }
 
     setUser(user) {
-        this.user = { id: user.id, tag: user.tag };
+        this.user = { id: user.id, tag: user.tag, raw: user };
         return this;
     }
 
@@ -73,6 +80,10 @@ class ModerationLog {
     }
 
     async send() {
+        if (this.anonymous && this.user.raw.action === this.type) {
+            delete this.user.raw.action;
+            return null;
+        }
         const channel = this.getChannel();
 
         if (channel) {

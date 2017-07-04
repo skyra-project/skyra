@@ -66,7 +66,6 @@ const UserProfile = class UserProfile {
 
     async update(doc) {
         await this.ensureProfile();
-        console.log("users", this.id, doc);
         await Rethink.update("users", this.id, doc);
         for (const key of Object.keys(doc)) {
             if (doc[key] instanceof Object) {

@@ -28,7 +28,6 @@ const MemberScore = class MemberScore {
 
     async update(score) {
         await this.ensureProfile();
-        console.log("localScores", this.guild, "scores", this.id, { score });
         await RethinkDB.updateArrayByID("localScores", this.guild, "scores", this.id, { score });
         this.score = score;
         return this.score;

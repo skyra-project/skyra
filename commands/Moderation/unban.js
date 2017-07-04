@@ -1,7 +1,7 @@
 const ModLog = require("../../utils/createModlog.js");
 
 const fetchBan = (guild, query) => guild.fetchBans().then(users => new Promise((resolve, reject) => {
-    const member = users.find(m => m.user.id === query)
+    const member = users.get(query)
         || users.find(m => m.user.tag === query)
         || users.find(m => m.user.username.toLowerCase() === query)
         || users.find(m => m.user.username.toLowerCase().startsWith(query))
@@ -10,7 +10,7 @@ const fetchBan = (guild, query) => guild.fetchBans().then(users => new Promise((
 }));
 
 exports.run = async (client, msg, [query, ...reason]) => {
-    const user = await fetchBan(msg.guild, query);
+    const { user } = await fetchBan(msg.guild, query);
 
     reason = reason.length ? reason.join(" ") : null;
     user.action = "unban";

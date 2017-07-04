@@ -1,4 +1,4 @@
-const MODERATION = require("../../utils/managerModeration");
+const ModLog = require("../../utils/createModlog.js");
 
 exports.run = async (client, msg, [user, ...reason]) => {
     const member = await msg.guild.fetchMember(user.id).catch(() => { throw "this user is not in this server"; });
@@ -11,7 +11,13 @@ exports.run = async (client, msg, [user, ...reason]) => {
     user.kickFilter = true;
     await member.kick(reason);
     msg.send(`|\`🔨\`| **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
-    await MODERATION.send(client, msg, user, "kick", reason);
+    const moderation = new ModLog(msg.guild)
+        .setModerator(msg.author)
+        .setUser(user)
+        .setType("kick")
+        .setReason(reason);
+
+    return moderation.send();
 };
 
 exports.conf = {

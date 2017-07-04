@@ -1,4 +1,4 @@
-const MODERATION = require("../../utils/managerModeration");
+const ModLog = require("../../utils/createModlog.js");
 
 exports.run = async (client, msg, [user, days = 7, ...reason]) => {
     const member = await msg.guild.fetchMember(user.id).catch(() => { throw "this user is not in this server"; });
@@ -13,7 +13,13 @@ exports.run = async (client, msg, [user, days = 7, ...reason]) => {
     await msg.guild.ban(user, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
     await msg.guild.unban(user, "Softban.");
     msg.send(`|\`🔨\`| **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
-    await MODERATION.send(client, msg, user, "softban", reason);
+    const moderation = new ModLog(msg.guild)
+        .setModerator(msg.author)
+        .setUser(user)
+        .setType("softban")
+        .setReason(reason);
+
+    return moderation.send();
 };
 
 exports.conf = {

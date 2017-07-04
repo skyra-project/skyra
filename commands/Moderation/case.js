@@ -1,16 +1,11 @@
-const MODERATION = require("../../utils/managerModeration");
+const ModLog = require("../../utils/createModlog.js");
 
 exports.run = async (client, msg, [index]) => {
     const cases = await msg.guild.settings.moderation.getCases();
 
     if (!cases[index]) throw "this case does not seem to exist.";
-    const thisCase = cases[index];
-
-    const moderator = thisCase.moderator ? await client.fetchUser(thisCase.moderator) : null;
-    const user = await client.fetchUser(thisCase.user);
-    const description = MODERATION.generate(client, user, thisCase.type, thisCase.reason, thisCase.thisCase, msg.guild.settings.prefix);
-    const embed = MODERATION.createEmbed(client, thisCase.type, moderator, description, thisCase.thisCase, !moderator);
-    return msg.send({ embed });
+    return new ModLog(msg.guild)
+        .retrieveModLog(index).then(embed => msg.send({ embed }));
 };
 
 exports.conf = {

@@ -138,12 +138,14 @@ module.exports = class Configuration {
             master: {
                 prefix: {
                     type: "String",
-                    default: "&",
+                    default: "s!",
                     path: { prefix: value },
                 },
                 mode: {
                     type: "Number",
                     default: 0,
+                    min: 0,
+                    max: 2,
                     path: { mode: value },
                 },
             },
@@ -157,6 +159,16 @@ module.exports = class Configuration {
                     type: "Boolean",
                     default: false,
                     path: { selfmod: { ghostmention: value } },
+                },
+                nomentionspam: {
+                    type: "Boolean",
+                    default: false,
+                    path: { selfmod: { nomentionspam: value } },
+                },
+                nmsthreshold: {
+                    type: "Number",
+                    default: 20,
+                    path: { selfmod: { nmsthreshold: value } },
                 },
             },
         };

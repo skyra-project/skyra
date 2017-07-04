@@ -43,24 +43,11 @@ module.exports = class Moderation {
         return data.length > 0 ? data[data.length - 1] || null : null;
     }
 
-    async pushCase(type, moderator = null, reason = null, user, message, extraData = null) {
+    async pushCase(data) {
         await this.ensureModule();
-        const thisCase = await this.getAmountCases();
-
-        const object = {
-            type,
-            thisCase,
-            moderator,
-            reason,
-            user: user.id,
-            name: user.username,
-            message,
-            extraData,
-        };
-
-        await Rethink.append("moderation", this.id, "cases", object);
-        if (type === "mute") await this.syncMutes();
-        else if (type === "unmute") await this.appealMute(user.id);
+        await Rethink.append("moderation", this.id, "cases", data);
+        if (data.type === "mute") await this.syncMutes();
+        else if (data.type === "unmute") await this.appealMute(data.user.id);
     }
 
     async updateCase(index, doc) {

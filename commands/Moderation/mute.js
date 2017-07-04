@@ -1,4 +1,4 @@
-const MODERATION = require("../../utils/managerModeration");
+const ModLog = require("../../utils/createModlog.js");
 const ASSETS = require("../../utils/assets");
 
 exports.configuration = async (client, msg) => {
@@ -27,7 +27,14 @@ exports.run = async (client, msg, [user, ...reason]) => {
             const roles = member._roles;
             await member.edit({ roles: [mute.id] });
             msg.send(`|\`🔨\`| **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
-            return MODERATION.send(client, msg, user, "mute", reason, roles);
+            const moderation = new ModLog(msg.guild)
+                .setModerator(msg.author)
+                .setUser(user)
+                .setType("mute")
+                .setReason(reason)
+                .setExtraData(roles);
+
+            return moderation.send();
         })
         .catch(e => msg.alert(e));
 };

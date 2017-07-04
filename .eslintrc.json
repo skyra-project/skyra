@@ -21,7 +21,7 @@
     "import/no-unresolved": "off",
     "import/no-dynamic-require": "warn",
     "no-prototype-builtins": "warn",
-    "no-restricted-syntax": "warn",
+    "no-restricted-syntax": ["off", "ForOfStatement"],
     "no-throw-literal": "off",
     "guard-for-in": "warn",
     "consistent-return": ["warn", { "treatUndefinedAsUnspecified": true }],

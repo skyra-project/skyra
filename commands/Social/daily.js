@@ -29,9 +29,9 @@ exports.conf = {
 
 exports.help = {
     name: "daily",
-    description: "Get your daily shekels.",
+    description: "Get your daily shinies.",
     usage: "",
-    usageDelim: " ",
+    usageDelim: "",
     extendedHelp: [
         "Skyra, where is my money?",
         "",

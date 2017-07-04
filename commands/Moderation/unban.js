@@ -1,4 +1,4 @@
-const MODERATION = require("../../utils/managerModeration");
+const ModLog = require("../../utils/createModlog.js");
 
 const fetchBan = (guild, query) => guild.fetchBans().then(users => new Promise((resolve, reject) => {
     const member = users.find(m => m.user.id === query)
@@ -16,7 +16,13 @@ exports.run = async (client, msg, [query, ...reason]) => {
     user.action = "unban";
     await msg.guild.unban(user, reason);
     msg.send(`|\`🔨\`| **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
-    await MODERATION.send(client, msg, user, "unban", reason);
+    const moderation = new ModLog(msg.guild)
+        .setModerator(msg.author)
+        .setUser(user)
+        .setType("unban")
+        .setReason(reason);
+
+    return moderation.send();
 };
 
 exports.conf = {

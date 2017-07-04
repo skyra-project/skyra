@@ -1,4 +1,4 @@
-const MODERATION = require("../../utils/managerModeration");
+const ModLog = require("../../utils/createModlog.js");
 
 exports.run = async (client, msg, [user, ...reason]) => {
     const member = await msg.guild.fetchMember(user.id).catch(() => null);
@@ -14,7 +14,13 @@ exports.run = async (client, msg, [user, ...reason]) => {
     user.action = "ban";
     await msg.guild.ban(user.id, { days: 7, reason });
     msg.send(`|\`🔨\`| **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ""}`).catch(e => client.emit("log", e, "error"));
-    await MODERATION.send(client, msg, user, "ban", reason);
+    const moderation = new ModLog(msg.guild)
+        .setModerator(msg.author)
+        .setUser(user)
+        .setType("ban")
+        .setReason(reason);
+
+    return moderation.send();
 };
 
 exports.conf = {

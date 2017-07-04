@@ -20,7 +20,6 @@ exports.init = async () => {
     this.syncLocals(locals);
 };
 
-/* eslint-disable no-restricted-syntax */
 exports.syncGuilds = (guilds, moderation) => {
     for (const guild of guilds) {
         const mutes = this.handleMutes(guild.id, moderation);

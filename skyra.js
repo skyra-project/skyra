@@ -24,4 +24,4 @@ const Skyra = new Komada({
     },
 });
 
-Skyra.login(cfg.tokens.bot.dev);
+Skyra.login(cfg.tokens.bot.stable);

@@ -1,6 +1,7 @@
-const data = new Map();
+const { Collection } = require("discord.js");
 
-/* eslint-disable no-underscore-dangle */
+const data = new Collection();
+
 exports.get = guild => data.get(guild);
 
 exports.set = (guild, object) => data.set(guild, object);

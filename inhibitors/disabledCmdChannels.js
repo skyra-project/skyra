@@ -5,7 +5,6 @@ exports.conf = {
 };
 
 exports.run = (client, msg, cmd) => {
-    if (msg.channel.type !== "text" || cmd.conf.override) return false;
-
+    if (!msg.guild || cmd.conf.override || msg.hasLevel(2)) return false;
     return msg.guild.settings.disabledCmdChannels.includes(msg.channel.id);
 };

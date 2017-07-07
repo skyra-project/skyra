@@ -37,8 +37,7 @@ class NMS {
 }
 
 exports.run = async (client, msg, settings) => {
-    if (msg.author.bot
-        || !msg.member
+    if (!msg.member
         || !msg.member.bannable
         || (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)
         || settings.selfmod.nomentionspam !== true) return false;

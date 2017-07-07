@@ -14,7 +14,6 @@ const defaults = {
     events: {},
     channels: {},
     messages: {},
-    selfmod: {},
 
     ignoreChannels: [],
     disabledCommands: [],
@@ -27,6 +26,13 @@ const defaults = {
     social: {
         boost: 1,
         monitorBoost: 1,
+    },
+
+    selfmod: {
+        ghostmention: false,
+        inviteLinks: false,
+        nomentionspam: false,
+        nmsthreshold: 20,
     },
 
     filter: {
@@ -45,7 +51,6 @@ const GuildSetting = class GuildSetting {
         this.events = data.events || defaults.events;
         this.channels = data.channels || defaults.channels;
         this.messages = data.messages || defaults.messages;
-        this.selfmod = data.selfmod || defaults.selfmod;
 
         this.ignoreChannels = data.ignoreChannels || defaults.ignoreChannels;
         this.disabledCommands = data.disabledCommands || defaults.disabledCommands;
@@ -58,6 +63,14 @@ const GuildSetting = class GuildSetting {
         this.social = {
             boost: data.boost || defaults.social.boost,
             monitorBoost: data.monitorBoost || defaults.social.monitorBoost,
+        };
+
+        if (!data.selfmod) data.selfmod = defaults.selfmod;
+        this.selfmod = {
+            ghostmention: data.selfmod.ghostmention || defaults.selfmod.ghostmention,
+            inviteLinks: data.selfmod.inviteLinks || defaults.selfmod.inviteLinks,
+            nomentionspam: data.selfmod.nomentionspam || defaults.selfmod.nomentionspam,
+            nmsthreshold: data.selfmod.nmsthreshold || defaults.selfmod.nmsthreshold,
         };
 
         if (!data.filter) data.filter = defaults.filter;

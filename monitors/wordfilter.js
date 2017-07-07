@@ -9,10 +9,7 @@ exports.run = async (client, msg, settings) => {
         || msg.hasLevel(1)
         || !settings.filter.regexp.test(msg.content)) return false;
 
-    if (msg.deletable) {
-        await msg.nuke();
-        await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
-    }
+    if (msg.deletable) await msg.nuke();
 
     const modLogChannel = settings.channels.mod;
     if (!modLogChannel) return true;

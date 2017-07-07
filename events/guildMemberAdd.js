@@ -2,10 +2,10 @@ const Discord = require("discord.js");
 
 class GuildMemberAdd {
     constructor(member) {
-        Object.defineProperty(this, "member", { value: member });
-        Object.defineProperty(this, "guild", { value: member.guild });
-        Object.defineProperty(this, "configs", { value: member.guild.settings });
-        Object.defineProperty(this, "client", { value: member.client });
+        this.member = member;
+        this.guild = member.guild;
+        this.configs = member.guild.settings;
+        this.client = member.client;
     }
 
     sendLog(alert = null) {

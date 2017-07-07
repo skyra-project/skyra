@@ -3,11 +3,10 @@ const Discord = require("discord.js");
 /* eslint-disable no-underscore-dangle */
 class GuildMemberUpdate {
     constructor(oldMember, newMember) {
-        Object.defineProperty(this, "oMember", { value: oldMember });
-        Object.defineProperty(this, "nMember", { value: newMember });
-        Object.defineProperty(this, "guild", { value: newMember.guild });
-        Object.defineProperty(this, "configs", { value: newMember.guild.settings });
-        Object.defineProperty(this, "client", { value: newMember.client });
+        this.oMember = oldMember;
+        this.nMember = newMember;
+        this.guild = newMember.guild;
+        this.configs = newMember.guild.settings;
     }
 
     sendLog(oRoles = [], nRoles = []) {

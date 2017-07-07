@@ -11,7 +11,8 @@ exports.extend = function (time = 0) {
     const count = this.edits.length;
     this.timer = setTimeout(() => {
         const msg = this.channel.messages.get(this.id);
-        if (msg && msg.edits.length === count) this.delete();
+        if (msg && msg.edits.length === count) return this.delete();
+        return null;
     }, time);
     return false;
 };

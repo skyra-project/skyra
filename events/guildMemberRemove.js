@@ -2,10 +2,10 @@ const Discord = require("discord.js");
 
 class GuildMemberRemove {
     constructor(member) {
-        Object.defineProperty(this, "member", { value: member });
-        Object.defineProperty(this, "guild", { value: member.guild });
-        Object.defineProperty(this, "configs", { value: member.guild.settings });
-        Object.defineProperty(this, "client", { value: member.client });
+        this.member = member;
+        this.guild = member.guild;
+        this.configs = member.guild.settings;
+        this.client = member.client;
     }
 
     sendLog(alert = false) {
@@ -22,7 +22,7 @@ class GuildMemberRemove {
                 break;
             case "disable":
                 embed.setColor(0x8C0074)
-                    .setAuthor(`${this.client.user.tag}`, this.member.user.displayAvatarURL({ size: 128 }))
+                    .setAuthor(`${this.client.user.tag}`, this.client.user.displayAvatarURL({ size: 128 }))
                     .setFooter("AUTO | Disabled guildMemberRemove")
                     .setTimestamp();
                 break;

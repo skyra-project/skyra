@@ -25,10 +25,11 @@ exports.requiredVC = (client, msg) => {
     const song = musicInterface.queue[0];
     if (!song) throw musicConfig.resNoSong[Math.floor(musicConfig.resNoSong.length * Math.random())];
     const channel = musicInterface.voiceChannel;
+    if (!channel) throw "You should make me join a voice channel first.";
     if (!channel.members.has(msg.author.id)) throw `Please, join ${channel}`;
     return song;
 };
 
 exports.config = musicConfig;
 
-exports.guilds = ["252480190654054410", "256566731684839428", "267337818202701824", "254360814063058944"];
+exports.guilds = musicConfig.guilds;

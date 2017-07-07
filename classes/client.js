@@ -6,6 +6,7 @@ const Loader = require("./loader");
 const ArgResolver = require("./argResolver");
 const PermLevels = require("./permLevels");
 const Initialize = require("../functions/initializer");
+const Clock = require("../utils/clock");
 
 const PermStructure = new PermLevels()
     .addLevel(0, false, () => true)
@@ -66,6 +67,7 @@ module.exports = class Komada extends Client {
         };
         this.application = null;
         this.version = "1.10.0 TLU";
+        this.clock = new Clock(this);
         this.once("ready", this._ready.bind(this));
     }
 
@@ -102,6 +104,7 @@ module.exports = class Komada extends Client {
             return true;
         }));
         await Initialize(this);
+        await this.clock.init();
         this.setInterval(this.sweepCommandMessages.bind(this), this.commandMessageLifetime);
         this.ready = true;
         this.emit("log", `Skyra ThunderLight ready! [ ${this.guilds.size} [G]] [ ${this.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`);

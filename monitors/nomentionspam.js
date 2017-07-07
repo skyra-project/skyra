@@ -1,6 +1,9 @@
 const ModLog = require("../utils/createModlog.js");
 
-exports.conf = { enabled: true };
+exports.conf = {
+    guildOnly: true,
+    enabled: true,
+};
 
 const cooldown = new Map();
 
@@ -33,20 +36,17 @@ class NMS {
     }
 }
 
-exports.run = async (client, msg) => {
+exports.run = async (client, msg, settings) => {
     if (msg.author.bot
-        || !msg.guild
         || !msg.member
         || !msg.member.bannable
-        || (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)) return null;
-
-    const settings = msg.guild.settings;
-    if (settings.selfmod.nomentionspam !== true) return null;
+        || (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)
+        || settings.selfmod.nomentionspam !== true) return false;
 
     const filteredCollection = msg.mentions.users.filter(entry => entry.id !== msg.author.id);
     if (msg.mentions.everyone === false
         && msg.mentions.roles.size === 0
-        && (filteredCollection.size === 0 || filteredCollection.first().bot)) return null;
+        && (filteredCollection.size === 0 || filteredCollection.first().bot)) return false;
 
     if (!cooldown.has(msg.guild.id)) cooldown.set(msg.guild.id, new NMS());
     const amount = filteredCollection.size + (msg.mentions.roles.size * 2) + (msg.mentions.everyone * 5);
@@ -70,5 +70,5 @@ exports.run = async (client, msg) => {
         return moderation.send().catch(err => client.emit("log", err, "error"));
     }
 
-    return null;
+    return true;
 };

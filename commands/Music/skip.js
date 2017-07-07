@@ -1,32 +1,38 @@
 const managerMusic = require("../../utils/managerMusic");
 
-const shouldSkip = (total, size) => {
+const shouldInhibit = (total, size) => {
     switch (total) {
         case 1:
         case 2:
         case 3:
             return true;
         default:
-            return size >= total * 0.4;
+            return size >= total * 0.4 ? false : `🔸 | Votes: ${size} of ${Math.ceil(total * 0.4)}`;
     }
 };
 
-const handleSkips = (musicInterface) => {
-    if (!musicInterface.queue[0].skips) musicInterface.queue[0].skips = [];
+const handleSkips = (musicInterface, user) => {
+    if (!musicInterface.queue[0].skips) musicInterface.queue[0].skips = new Set();
+    if (musicInterface.queue[0].skips.has(user)) return "You have already voted to skip this song.";
+    musicInterface.queue[0].skips.add(user);
     const members = musicInterface.voiceChannel.members.size - 1;
-    return shouldSkip(members, musicInterface.queue[0].skips.length);
+    return shouldInhibit(members, musicInterface.queue[0].skips.size);
 };
 
 exports.run = async (client, msg, [force]) => {
-    const response = await msg.send("⏭ Skipped");
     managerMusic.requiredVC(client, msg);
     const musicInterface = managerMusic.get(msg.guild.id);
-    if (musicInterface.voiceChannel.members.size > 4) {
-        if (force && !msg.hasLevel(1)) throw "You can't execute this command with the force flag. You must be at least a Staff member.";
-        if (!handleSkips(musicInterface)) return msg.send("There are not enough votes.");
+    if (musicInterface.voiceChannel && musicInterface.voiceChannel.members.size > 4) {
+        if (force) {
+            if (!msg.hasLevel(1)) throw "You can't execute this command with the force flag. You must be at least a Staff member.";
+        } else {
+            const response = handleSkips(musicInterface, msg.author.id);
+            if (response) return msg.send(response);
+        }
     }
-    managerMusic.get(msg.guild.id).skip(true);
-    return response;
+    await msg.send(`⏭ Skipped ${musicInterface.queue[0].title}`);
+    musicInterface.skip(true);
+    return null;
 };
 
 exports.conf = {

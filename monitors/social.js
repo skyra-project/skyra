@@ -1,6 +1,7 @@
 // const Rethink = require("../providers/rethink");
 
 exports.conf = {
+    guildOnly: true,
     enabled: true,
 };
 
@@ -46,10 +47,10 @@ exports.calc = (guild) => {
 };
 
 exports.run = async (client, msg) => {
-    if (!msg.guild || msg.author.bot) return;
-    if (msg.guild.settings.ignoreChannels.includes(msg.channel.id)) return;
-
-    if (this.cooldown(msg)) return;
+    if (!msg.member
+        || msg.author.bot
+        || msg.guild.settings.ignoreChannels.includes(msg.channel.id)
+        || this.cooldown(msg)) return false;
 
     try {
         await this.ensureFetchMember(msg);
@@ -58,7 +59,8 @@ exports.run = async (client, msg) => {
         await msg.member.points.update(msg.member.points.score + add);
 
         await this.handleRoles(client, msg);
+        return true;
     } catch (e) {
-        client.emit("log", e, "error");
+        return client.emit("log", `Failed to add points to ${msg.author.id}: ${e}`, "error");
     }
 };

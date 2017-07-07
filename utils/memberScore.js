@@ -8,11 +8,10 @@ const defaults = {
 
 const MemberScore = class MemberScore {
     constructor(member, guild, data) {
-        Object.defineProperty(this, "raw", { value: data });
         this.id = member;
         this.guild = guild;
-        this.score = this.raw.score || 0;
-        this.exists = this.raw.exists || true;
+        this.score = data.score || 0;
+        this.exists = data.exists !== false;
     }
 
     async create() {

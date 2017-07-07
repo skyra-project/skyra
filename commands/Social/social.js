@@ -11,7 +11,7 @@ exports.searchProfile = async (client, msg, search) => {
     if (!MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
         const data = { id: user.id, score: 0 };
         await Rethink.append("localScores", msg.guild.id, "scores", data);
-        MANAGER_SOCIAL_LOCAL.insert(msg.author.id, data);
+        MANAGER_SOCIAL_LOCAL.insert(msg.guild.id, user.id, data);
     }
     return user.id;
 };

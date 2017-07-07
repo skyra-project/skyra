@@ -12,7 +12,7 @@ exports.timer = (time) => {
     let msTime = 0;
     for (const t of time[Symbol.iterator]()) { // eslint-disable-line no-restricted-syntax
         const parsed = ms(t);
-        if (!parsed) throw new Error("Invalid time input.");
+        if (parsed === undefined) throw new Error("Invalid time input.");
         msTime += parsed;
     }
     return msTime;

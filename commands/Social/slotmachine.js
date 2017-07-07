@@ -63,7 +63,7 @@ class SlotMachines {
     }
 
     checkCurrency(amount) {
-        if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${this.shiny(this.msg)}.`;
+        if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${shiny(this.msg)}.`;
     }
 }
 

@@ -19,28 +19,27 @@ const defaults = {
 /* eslint-disable no-restricted-syntax */
 const UserProfile = class UserProfile {
     constructor(user, data) {
-        Object.defineProperty(this, "raw", { value: data });
         this.id = user;
-        this.points = this.raw.points || defaults.points;
-        this.color = this.raw.color || defaults.color;
-        this.money = this.raw.money || defaults.money;
-        this.reputation = this.raw.reputation || defaults.reputation;
-        this.bannerList = this.raw.bannerList || defaults.bannerList;
-        this.quote = this.raw.quote || defaults.quote;
+        this.points = data.points || defaults.points;
+        this.color = data.color || defaults.color;
+        this.money = data.money || defaults.money;
+        this.reputation = data.reputation || defaults.reputation;
+        this.bannerList = data.bannerList || defaults.bannerList;
+        this.quote = data.quote || defaults.quote;
         this.banners = {
-            theme: this.raw.banners.theme || defaults.banners.theme,
-            level: this.raw.banners.level || defaults.banners.level,
+            theme: data.banners.theme || defaults.banners.theme,
+            level: data.banners.level || defaults.banners.level,
         };
-        this.timeDaily = this.raw.timeDaily || defaults.timeDaily;
-        this.timerep = this.raw.timerep || defaults.timerep;
-        this.lastUpdate = this.raw.time || 0;
-        this.exists = this.raw.exists || true;
+        this.timeDaily = data.timeDaily || defaults.timeDaily;
+        this.timerep = data.timerep || defaults.timerep;
+        this.lastUpdate = data.time || 0;
+        this.exists = data.exists !== false;
     }
 
     async create() {
         if (this.exists) throw "This GuildSetting already exists.";
-        this.raw = Object.assign(defaults, { id: this.id, exists: true });
-        await Rethink.create("users", this.raw).catch((err) => { throw err; });
+        const object = Object.assign(defaults, { id: this.id, exists: true });
+        await Rethink.create("users", object).catch((err) => { throw err; });
         return true;
     }
 

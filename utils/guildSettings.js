@@ -2,6 +2,12 @@ const Rethink = require("../providers/rethink");
 const Moderation = require("./moderation");
 const GuildManager = require("./guildManager");
 
+const superRegExp = (filterArray) => {
+    const filtered = filterArray.reduce((acum, item, index) => acum + (index ? "|" : "") +
+        item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? "\\W*" : ""}`), "");
+    return new RegExp(`\\b(?:${filtered})\\b`, "i");
+};
+
 const defaults = {
     prefix: "s!",
     roles: {},
@@ -17,50 +23,58 @@ const defaults = {
     autoroles: [],
 
     mode: 0,
-    wordFilter: 0,
     initialRole: null,
     social: {
         boost: 1,
         monitorBoost: 1,
+    },
+
+    filter: {
+        level: 0,
+        raw: [],
     },
 };
 
 /* eslint-disable no-restricted-syntax */
 const GuildSetting = class GuildSetting {
     constructor(guild, data) {
-        Object.defineProperty(this, "raw", { value: data });
         this.id = guild;
-        this.prefix = this.raw.prefix || defaults.prefix;
+        this.prefix = data.prefix || defaults.prefix;
 
-        this.roles = this.raw.roles || defaults.roles;
-        this.events = this.raw.events || defaults.events;
-        this.channels = this.raw.channels || defaults.channels;
-        this.messages = this.raw.messages || defaults.messages;
-        this.selfmod = this.raw.selfmod || defaults.selfmod;
+        this.roles = data.roles || defaults.roles;
+        this.events = data.events || defaults.events;
+        this.channels = data.channels || defaults.channels;
+        this.messages = data.messages || defaults.messages;
+        this.selfmod = data.selfmod || defaults.selfmod;
 
-        this.ignoreChannels = this.raw.ignoreChannels || defaults.ignoreChannels;
-        this.disabledCommands = this.raw.disabledCommands || defaults.disabledCommands;
-        this.disabledCmdChannels = this.raw.disabledCmdChannels || defaults.disabledCmdChannels;
-        this.publicRoles = this.raw.publicRoles || defaults.publicRoles;
-        this.autoroles = this.raw.autoroles || defaults.autoroles;
+        this.ignoreChannels = data.ignoreChannels || defaults.ignoreChannels;
+        this.disabledCommands = data.disabledCommands || defaults.disabledCommands;
+        this.disabledCmdChannels = data.disabledCmdChannels || defaults.disabledCmdChannels;
+        this.publicRoles = data.publicRoles || defaults.publicRoles;
+        this.autoroles = data.autoroles || defaults.autoroles;
 
-        this.mode = this.raw.mode || defaults.mode;
-        this.wordFilter = this.raw.wordFilter || defaults.wordFilter;
-        this.initialRole = this.raw.initialRole || defaults.initialRole;
+        this.mode = data.mode || defaults.mode;
+        this.initialRole = data.initialRole || defaults.initialRole;
         this.social = {
-            boost: this.raw.boost || defaults.social.boost,
-            monitorBoost: this.raw.monitorBoost || defaults.social.monitorBoost,
+            boost: data.boost || defaults.social.boost,
+            monitorBoost: data.monitorBoost || defaults.social.monitorBoost,
         };
 
-        this.exists = this.raw.exists || true;
+        this.filter = {
+            level: data.filter.level || defaults.filter.level,
+            raw: data.filter.raw || defaults.filter.raw,
+            regexp: data.filter.raw instanceof Array && data.filter.raw.length ? superRegExp(this.filter.raw) : null,
+        };
 
-        this.moderation = new Moderation(this.id, this.raw.mutes || []);
+        this.exists = data.exists !== false;
+
+        this.moderation = new Moderation(this.id, data.mutes || []);
     }
 
     async create() {
         if (this.exists) throw "This GuildSetting already exists.";
-        this.raw = Object.assign(defaults, { id: this.id, exists: true });
-        await Rethink.create("guilds", this.raw).catch((err) => { throw err; });
+        const data = Object.assign(defaults, { id: this.id, exists: true });
+        await Rethink.create("guilds", data).catch((err) => { throw err; });
         return true;
     }
 
@@ -86,10 +100,6 @@ const GuildSetting = class GuildSetting {
         await Rethink.delete("guilds", this.id);
         GuildManager.delete(this.id);
         return true;
-    }
-
-    get createdAt() {
-        return this.raw.createdAt || null;
     }
 };
 

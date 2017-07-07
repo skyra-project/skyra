@@ -4,22 +4,24 @@ exports.conf = {
 };
 
 exports.run = async (client, msg, settings) => {
-    if (!settings.selfmod.inviteLinks
-        || !(/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content))
-        || msg.hasLevel(1)) return false;
+    if (settings.filter.level === 0
+        || settings.filter.regexp === null
+        || msg.hasLevel(1)
+        || !settings.filter.regexp.test(msg.content)) return false;
 
     if (msg.deletable) {
         await msg.nuke();
         await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
     }
 
-    if (!settings.channels.mod) return null;
+    const modLogChannel = settings.channels.mod;
+    if (!modLogChannel) return true;
 
     const embed = new client.methods.Embed()
         .setColor(0xefae45)
         .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-        .setFooter(`#${msg.channel.name} | Invite link`)
+        .setFooter(`#${msg.channel.name} | Filtered Word ${settings.filter.regexp.exec(msg.content)[0]}`)
         .setTimestamp();
 
-    return msg.guild.channels.get(settings.channels.mod).send({ embed });
+    return msg.guild.channels.get(modLogChannel).send({ embed });
 };

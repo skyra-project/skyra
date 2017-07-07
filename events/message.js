@@ -4,7 +4,7 @@ const getPrefix = require("../functions/getPrefix");
 
 exports.run = async (client, msg) => {
     if (!client.ready) return;
-    await this.runMessageMonitors(client, msg);
+    this.runMessageMonitors(client, msg);
     if (!this.handleMessage(client, msg)) return;
     const res = await this.parseCommand(client, msg);
     if (!res.command) return;
@@ -12,13 +12,12 @@ exports.run = async (client, msg) => {
 };
 
 exports.runMessageMonitors = (client, msg) => {
-    client.messageMonitors.forEach((monit) => {
-        if (monit.conf.enabled) {
-            if (monit.conf.ignoreBots && msg.author.bot) return;
-            if (monit.conf.ignoreSelf && client.user === msg.author) return;
-            monit.run(client, msg);
-        }
-    });
+    const settings = msg.guildSettings;
+    const run = [];
+    for (const monitor of client.messageMonitors.values()) {
+        if (monitor.conf.guildOnly === !!msg.guild) run.push(monitor.run(client, msg, settings));
+    }
+    return Promise.all(run).catch(error => client.emit("log", error, "error"));
 };
 
 exports.handleMessage = (client, msg) => {
@@ -59,15 +58,12 @@ exports.handleCommand = (client, msg, { command, prefix, prefixLength }) => {
     this.runCommand(client, msg, start);
 };
 
-exports.runCommand = (client, msg, start) => {
-    msg.cmdMsg.validateArgs()
-    .then((params) => {
-        msg.cmdMsg.cmd.run(client, msg, params)
+exports.runCommand = (client, msg, start) => msg.cmdMsg.validateArgs()
+    .then(params => msg.cmdMsg.cmd.run(client, msg, params)
         .then(mes => this.runFinalizers(client, msg, mes, start))
-        .catch(error => handleError(client, msg, error));
-    })
+        .catch(error => handleError(client, msg, error)),
+    )
     .catch(error => handleError(client, msg, error));
-};
 
 exports.runInhibitors = (client, msg, command) => {
     let response;

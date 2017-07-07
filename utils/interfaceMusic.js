@@ -58,7 +58,7 @@ module.exports = class InterfaceMusic {
     }
 
     skip(force = false) {
-        if (force) this.dispatcher.end();
+        if (force && this.dispatcher) this.dispatcher.end();
         else this.queue.shift();
         return this;
     }
@@ -69,6 +69,7 @@ module.exports = class InterfaceMusic {
     }
 
     async destroy() {
+        this.prune();
         if (this.voiceChannel) this.voiceChannel.leave();
         manager.delete(this.guild.id);
         return null;

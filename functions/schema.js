@@ -50,6 +50,11 @@ module.exports = class Configuration {
                     default: null,
                     path: { roles: { muted: value } },
                 },
+                initialrole: {
+                    type: "Role",
+                    default: null,
+                    path: { initialRole: value },
+                },
             },
             events: {
                 channelcreate: {
@@ -169,6 +174,15 @@ module.exports = class Configuration {
                     type: "Number",
                     default: 20,
                     path: { selfmod: { nmsthreshold: value } },
+                },
+            },
+            filter: {
+                level: {
+                    type: "Number",
+                    default: 0,
+                    min: 0,
+                    max: 4,
+                    path: { filter: { level: value } },
                 },
             },
         };

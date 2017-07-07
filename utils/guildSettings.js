@@ -60,6 +60,7 @@ const GuildSetting = class GuildSetting {
             monitorBoost: data.monitorBoost || defaults.social.monitorBoost,
         };
 
+        if (!data.filter) data.filter = defaults.filter;
         this.filter = {
             level: data.filter.level || defaults.filter.level,
             raw: data.filter.raw || defaults.filter.raw,

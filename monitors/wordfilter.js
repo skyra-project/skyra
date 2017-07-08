@@ -10,7 +10,11 @@ exports.run = async (client, msg, settings) => {
         || !settings.filter.regexp.test(msg.content)) return false;
 
     if (msg.deletable) await msg.nuke();
+    if ([1, 3].includes(settings.filter.level)) {
+        msg.send(`Pardon, dear ${msg.author}, you said something that is not allowed here.`).catch(err => client.emit("log", err, "error"));
+    }
 
+    if (![2, 3].includes(settings.filter.level)) return true;
     const modLogChannel = settings.channels.mod;
     if (!modLogChannel) return true;
 

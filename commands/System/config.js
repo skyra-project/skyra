@@ -98,6 +98,11 @@ class Validator {
                 if (channel) return channel;
                 throw "I expect a Channel.";
             }
+            case "Number": {
+                const number = parseInt(input);
+                if (isNaN(number)) throw "I expect a Number.";
+                return number;
+            }
             default:
                 throw `Unknown Type: ${type}`;
         }
@@ -140,7 +145,7 @@ exports.conf = {
 exports.help = {
     name: "config",
     description: "",
-    usage: "<update|reset|list> [channels|roles|events|messages|master|selfmod] [key:string] [value:string] [...]",
+    usage: "<update|reset|list> [channels|roles|events|messages|master|selfmod|filter] [key:string] [value:string] [...]",
     usageDelim: " ",
     extendedHelp: "",
 };

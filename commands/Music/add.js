@@ -6,8 +6,9 @@ const playlist = require("util").promisify(google.youtube("v3").playlistItems.li
 const getInfoAsync = require("util").promisify(require("ytdl-core").getInfo);
 const constants = require("../../utils/constants");
 
-exports.getLink = (arr) => {
-    const output = arr.find(v => v.id);
+exports.getLink = (arr, played) => {
+    const output = arr.find(v => v.id && !played.includes(`https://youtu.be/${v.id}`));
+    if (!output) return null;
     return `https://youtu.be/${output.id}`;
 };
 
@@ -16,18 +17,15 @@ exports.getYouTube = async (client, msg, url) => {
         client.emit("log", err, "error");
         throw `something happened with YouTube URL: ${url}\n${"```"}${err}${"```"}`;
     });
-    // if (parseInt(info.length_seconds) > 600 && msg.member.voiceChannel.members.size >= 4) {
-    //     throw "this song is too long, please add songs that last less than 10 minutes.";
-    // }
     const musicInterface = managerMusic.get(msg.guild.id) || managerMusic.create(msg.guild);
     musicInterface.queue.push({
-        url,
+        url: `https://youtu.be/${info.video_id}`,
         title: info.title,
         requester: msg.author,
         loudness: info.loudness,
         seconds: parseInt(info.length_seconds),
     });
-    musicInterface.next = this.getLink(info.related_videos);
+    musicInterface.next = this.getLink(info.related_videos, musicInterface.recentlyPlayed.filter(v => v));
     return info;
 };
 
@@ -36,8 +34,27 @@ const key = constants.getConfig.tokens.google;
 const fetchURL = url => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${url}&key=${key}`).then(d => JSON.parse(d.text));
 
 exports.findYoutube = async (client, msg, url) => {
-    if (url.startsWith("https://www.youtube.com/watch?v=") || url.startsWith("https://youtu.be/")) {
+    if (/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9-_]{11}$/.test(url)) {
         return this.getYouTube(client, msg, url);
+    } else if (url === "playlist") {
+        const userPlaylist = msg.author.profile.playlist;
+        if (userPlaylist.length === 0) throw "you do not have a playlist.";
+        const resolved = await Promise.all(userPlaylist.map(item => getInfoAsync(item).catch(() => false)));
+        const musicInterface = managerMusic.get(msg.guild.id) || managerMusic.create(msg.guild);
+        let amount = 0;
+        for (let i = 0; i < userPlaylist.length; i++) {
+            if (!resolved[i]) continue;
+            amount++;
+            musicInterface.queue.push({
+                url: userPlaylist[i],
+                title: resolved[i].title,
+                requester: msg.author,
+                loudness: resolved[i].loudness,
+                seconds: parseInt(resolved[i].length_seconds),
+            });
+        }
+
+        return { title: `${amount} songs` };
     } else if (/(https?:\/\/)?(www\.)?youtube\.com\/playlist\?list=/.test(url)) {
         const playlistId = url.replace(/(https?:\/\/)?(www\.)?youtube\.com\/playlist\?list=/, "");
         const { items } = await playlist({ playlistId, maxResults: 10, part: "contentDetails,snippet", auth: key }).catch((err) => { throw err; });
@@ -71,7 +88,7 @@ exports.run = async (client, msg, [song]) => {
 exports.conf = {
     enabled: true,
     runIn: ["text"],
-    aliases: ["connect"],
+    aliases: [],
     permLevel: 0,
     botPerms: [],
     requiredFuncs: [],

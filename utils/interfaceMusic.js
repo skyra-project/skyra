@@ -5,6 +5,7 @@ module.exports = class InterfaceMusic {
     constructor(guild) {
         Object.defineProperty(this, "client", { value: guild.client });
         this.guild = guild;
+        this.recentlyPlayed = new Array(10);
         this.queue = [];
         this.channel = null;
 
@@ -38,11 +39,18 @@ module.exports = class InterfaceMusic {
         else if (!this.connection) throw "I could not find a connection.";
         else if (!this.queue[0]) throw "The queue is empty.";
 
+        this.pushPlayed(this.queue[0].url);
+
         const stream = ytdl(this.queue[0].url, { audioonly: true })
             .on("error", err => this.client.emit("log", err, "error"));
 
         this.dispatcher = this.connection.playStream(stream, { passes: 5 });
         return this.dispatcher;
+    }
+
+    pushPlayed(url) {
+        this.recentlyPlayed.push(url);
+        this.recentlyPlayed.shift();
     }
 
     pause() {

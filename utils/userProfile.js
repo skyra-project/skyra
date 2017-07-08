@@ -14,6 +14,8 @@ const defaults = {
     quote: null,
     timeDaily: 0,
     timerep: 0,
+
+    playlist: [],
 };
 
 /* eslint-disable no-restricted-syntax */
@@ -34,6 +36,8 @@ const UserProfile = class UserProfile {
         this.timerep = data.timerep || defaults.timerep;
         this.lastUpdate = data.time || 0;
         this.exists = data.exists !== false;
+
+        this.playlist = data.playlist || defaults.playlist;
     }
 
     async create() {

@@ -62,6 +62,9 @@ exports.run = async (client, msg) => {
     if (!musicInterface.voiceChannel) {
         return client.commands.get("join").run(client, msg).then(() => this.run(client, msg));
     }
+    if (musicInterface.status === "paused") {
+        return client.commands.get("resume").run(client, msg);
+    }
     if (musicInterface.status === "playing") {
         return msg.send("Already Playing");
     }

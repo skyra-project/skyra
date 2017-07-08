@@ -77,7 +77,7 @@ const GuildSetting = class GuildSetting {
         this.filter = {
             level: data.filter.level || defaults.filter.level,
             raw: data.filter.raw || defaults.filter.raw,
-            regexp: data.filter.raw instanceof Array && data.filter.raw.length ? superRegExp(this.filter.raw) : null,
+            regexp: data.filter.raw instanceof Array && data.filter.raw.length ? superRegExp(data.filter.raw) : null,
         };
 
         this.exists = data.exists !== false;
@@ -117,4 +117,4 @@ const GuildSetting = class GuildSetting {
     }
 };
 
-module.exports = { GuildSetting, defaults };
+module.exports = { GuildSetting, defaults, superRegExp };

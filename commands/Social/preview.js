@@ -88,7 +88,7 @@ exports.conf = {
     permLevel: 0,
     botPerms: [],
     requiredFuncs: [],
-    spam: true,
+    spam: false,
     mode: 1,
     cooldown: 30,
     guilds: ["256566731684839428"],

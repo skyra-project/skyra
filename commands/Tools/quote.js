@@ -9,10 +9,10 @@ exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) 
     if (!attachment && !m.content) throw "it is weird, but this message doesn't have a content nor image.";
 
     const embed = new client.methods.Embed()
-    .setAuthor(m.author.tag, m.author.displayAvatarURL({ size: 128 }))
-    .setDescription(m.content)
-    .setImage(attachment ? attachment.url : null)
-    .setTimestamp(m.createdAt);
+        .setAuthor(m.author.tag, m.author.displayAvatarURL({ size: 128 }))
+        .setDescription(m.content)
+        .setImage(attachment ? attachment.url : null)
+        .setTimestamp(m.createdAt);
     return msg.send({ embed });
 };
 

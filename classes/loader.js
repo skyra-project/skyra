@@ -79,15 +79,10 @@ module.exports = class Loader {
     }
 
     loadNewCommand(file, dir) {
-        const cmd = require(join(dir, ...file));
-        cmd.help.fullCategory = file.slice(0, -1);
-        cmd.help.subCategory = cmd.help.fullCategory[1] || "General";
-        cmd.help.category = cmd.help.fullCategory[0] || "General";
-        cmd.cooldown = new Map();
+        const Cmd = require(join(dir, ...file));
+        const cmd = new Cmd(this.client, file);
         this.client.commands.set(cmd.help.name, cmd);
-        cmd.conf.aliases = cmd.conf.aliases || [];
         cmd.conf.aliases.forEach(alias => this.client.aliases.set(alias, cmd.help.name));
-        cmd.usage = new ParsedUsage(this.client, cmd);
         delete require.cache[join(dir, ...file)];
     }
 

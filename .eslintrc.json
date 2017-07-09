@@ -30,7 +30,8 @@
     "no-mixed-operators": ["warn", { "allowSamePrecedence": true }],
     "no-eval": "warn",
     "max-len": "off",
-    "no-underscore-dangle": ["error", { "allow": ["_events"] }],
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
     "global-require": "off",
     "no-nested-ternary": "warn",
     "valid-jsdoc": ["warn", {

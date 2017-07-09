@@ -1,19 +1,14 @@
-exports.run = async (client, msg) => msg.send("Ping?")
-    .then(m => m.edit(`Pong! (Roundtrip took: ${m.createdTimestamp - msg.createdTimestamp}ms. Heartbeat: ${Math.round(client.ping)}ms.)`));
+const Command = require("../../classes/command");
 
-exports.conf = {
-    enabled: true,
-    runIn: ["text", "dm", "group"],
-    aliases: [],
-    permLevel: 0,
-    botPerms: [],
-    requiredFuncs: [],
-    requiredSettings: [],
-};
+module.exports = class Ping extends Command {
 
-exports.help = {
-    name: "ping",
-    description: "Ping/Pong command. I wonder what this does? /sarcasm",
-    usage: "",
-    usageDelim: "",
+    constructor(...args) {
+        super(...args, "ping", { description: "Runs a connection test to Discord." });
+    }
+
+    async run(msg) {
+        const message = await msg.channel.send("Ping?");
+        return message.edit(`Pong! (took: ${message.createdTimestamp - msg.createdTimestamp}ms)`);
+    }
+
 };

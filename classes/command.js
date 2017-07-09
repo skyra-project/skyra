@@ -18,7 +18,7 @@ module.exports = class Command {
             usageDelim,
         };
         this.cooldown = new Map();
-        this.parsedUsage = new ParsedUsage(client, this);
+        this.usage = new ParsedUsage(client, this);
     }
 
     codeBlock(lang, expression) {

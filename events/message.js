@@ -50,7 +50,6 @@ exports.handleCommand = (client, msg, { command, prefix, prefixLength }) => {
     if (!validCommand) return;
     const start = now();
     const response = this.runInhibitors(client, msg, validCommand);
-    console.log(response);
     if (response) {
         if (typeof response === "string") msg.reply(response);
         return;
@@ -71,7 +70,6 @@ exports.runInhibitors = (client, msg, command) => {
     client.commandInhibitors.some((inhibitor) => {
         if (inhibitor.conf.enabled) {
             response = inhibitor.run(client, msg, command);
-            console.log(inhibitor.conf.priority, response);
             if (response) return true;
         }
         return false;

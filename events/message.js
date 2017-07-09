@@ -59,7 +59,7 @@ exports.handleCommand = (client, msg, { command, prefix, prefixLength }) => {
 };
 
 exports.runCommand = (client, msg, start) => msg.cmdMsg.validateArgs()
-    .then(params => msg.cmdMsg.cmd.run(client, msg, params)
+    .then(params => msg.cmdMsg.cmd.run(msg, params)
         .then(mes => this.runFinalizers(client, msg, mes, start))
         .catch(error => handleError(client, msg, error)),
     )

@@ -5,5 +5,5 @@ const dashboard = require("./dashboard");
 module.exports = client => Promise.all([
     clean.init(client),
     create.init(client),
-    dashboard.init(dashboard),
+    dashboard.init(client),
 ]);

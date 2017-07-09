@@ -5,11 +5,11 @@ exports.conf = {
 
 exports.run = async (client, msg, settings) => {
     if (!settings.selfmod.inviteLinks
-        || !(/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content))
+        || !(/(?:discord\.(?:gg|io|me|li)|discordapp\.com\/invite)\/.+/i.test(msg.content))
         || msg.hasLevel(1)) return false;
 
     if (msg.deletable) {
-        await msg.nuke();
+        await msg.delete();
         await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
     }
 

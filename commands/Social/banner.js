@@ -1,10 +1,22 @@
 const availableBanners = require("../../assets/banners.json");
+const listify = require("../../functions/listify");
 const { shiny } = require("../../utils/assets");
 
 exports.run = async (client, msg, [action, value = null]) => {
     const banners = msg.author.profile.bannerList || [];
     switch (action) {
-        case "list": return msg.send(banners[0] ? `List of banners:\n${banners.map(b => `\`${b}\` ${availableBanners[b] ? availableBanners[b].title : ""}`).join("\n")}` : "You don't have a banner.");
+        case "list": {
+            if (banners.length === 0) return msg.send(`Dear ${msg.author}, you don't have a banner, check the buylist and buy one.`);
+            const output = [];
+            for (let i = 0; i < banners.length; i++) {
+                const banner = availableBanners[banners[i]];
+                output[i] = [banner.id, banner.title];
+            }
+            let index = 1;
+            if (!isNaN(parseInt(value))) index = parseInt(value);
+            const list = listify(output, { index, length: 8 });
+            return msg.send(list, { code: "asciidoc" });
+        }
         case "set": {
             if (!value) throw "you must specify a banner to set.";
             if (!banners[0]) throw "you don't have a banner.";
@@ -14,12 +26,10 @@ exports.run = async (client, msg, [action, value = null]) => {
             return msg.send(`Dear ${msg.author}, you have successfully set your banner to: ${availableBanners[value] ? availableBanners[value].title : value}`);
         }
         case "buylist": {
-            const output = [];
-            const entries = Object.values(availableBanners);
-            for (let i = 0; i < entries.length; i++) {
-                output.push(`\`${entries[i].id}\` ${entries[i].title}`);
-            }
-            return msg.send(output.join("\n"));
+            let index = 1;
+            if (!isNaN(parseInt(value))) index = parseInt(value);
+            const list = listify(Object.entries(availableBanners).map(([k, v]) => [k, `${v.title.padEnd(25, " ") + v.price} S`]), { index, length: 8 });
+            return msg.send(list, { code: "asciidoc" });
         }
         case "buy": {
             if (!value) return msg.send("You must specify a banner to buy.");

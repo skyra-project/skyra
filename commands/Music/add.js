@@ -34,7 +34,8 @@ const key = constants.getConfig.tokens.google;
 const fetchURL = url => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${url}&key=${key}`).then(d => JSON.parse(d.text));
 
 exports.findYoutube = async (client, msg, url) => {
-    if (/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9-_]{11}$/.test(url)) {
+    if (/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9-_]{11}.*/.test(url)) {
+        url = `https://youtu.be/${/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9-_]{11}).*/.exec(url)[1]}`;
         return this.getYouTube(client, msg, url);
     } else if (url === "playlist") {
         const userPlaylist = msg.author.profile.playlist;

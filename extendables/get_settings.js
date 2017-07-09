@@ -8,5 +8,6 @@ exports.conf = {
 exports.extend = function () {
     return {
         prefix: "$",
+        disabledCommands: [],
     };
 };

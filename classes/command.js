@@ -2,12 +2,14 @@ const ParsedUsage = require("./parsedUsage");
 
 module.exports = class Command {
 
-    constructor(client, dir, name, { aliases = [], botPerms = [], description, usage = "", usageDelim = undefined }) {
+    constructor(client, dir, name, { permLevel = 0, guildOnly = true, aliases = [], botPerms = [], description, usage = "", usageDelim = undefined }) {
         this.client = client;
         this.dir = dir;
         this.conf = {
             aliases,
             botPerms,
+            guildOnly,
+            permLevel,
         };
         this.help = {
             name,

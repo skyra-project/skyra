@@ -7,8 +7,8 @@ module.exports = class Ping extends Command {
     }
 
     async run(msg) {
-        const message = await msg.channel.send("Ping?");
-        return message.edit(`Pong! (took: ${message.createdTimestamp - msg.createdTimestamp}ms)`);
+        return msg.send("Ping?")
+            .then(m => m.edit(`Pong! (Roundtrip took: ${m.createdTimestamp - msg.createdTimestamp}ms. Heartbeat: ${Math.round(this.client.ping)}ms.)`));
     }
 
 };

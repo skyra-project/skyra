@@ -2,22 +2,23 @@ const ParsedUsage = require("./parsedUsage");
 
 module.exports = class Command {
 
-    constructor(client, dir, name, {
-            aliases = [],
-            guildOnly = false,
-            permLevel = 0,
-            botPerms = [],
-            mode = 0,
-            spam = false,
-            cooldown = 0,
+    constructor(client, file, name, {
+        aliases = [],
+        guildOnly = false,
+        permLevel = 0,
+        botPerms = [],
+        mode = 0,
+        spam = false,
+        cooldown = 0,
 
-            usage = "",
-            usageDelim = undefined,
-            description,
-            extendedHelp = null,
+        guilds = null,
+
+        usage = "",
+        usageDelim = undefined,
+        description,
+        extendedHelp = null,
     }) {
         this.client = client;
-        this.dir = dir;
         this.conf = {
             aliases,
             guildOnly,
@@ -26,6 +27,7 @@ module.exports = class Command {
             mode,
             spam,
             cooldown,
+            guilds,
         };
         this.help = {
             name,
@@ -33,6 +35,9 @@ module.exports = class Command {
             usage,
             usageDelim,
             extendedHelp,
+            fullCategory: file,
+            category: file[0] || "General",
+            subCategory: file[1] || "General",
         };
         this.cooldown = new Map();
         this.usage = new ParsedUsage(client, this);
@@ -61,7 +66,7 @@ module.exports = class Command {
     }
 
     static codeBlock(lang, expression) {
-        return `\`\`\`${lang}\n${expression || "\u200b"}\`\`\``;
+        return `${"```"}${lang}\n${expression.replace(/```/g, "`\u200b``")}${"```"}`;
     }
 
     /**
@@ -79,6 +84,10 @@ module.exports = class Command {
     static joinLines(string) {
         string = string.replace(/^\n/, "");
         return string.split("\n").map(line => (line.length > 0 ? line.trim() : "\n\n")).join(" ");
+    }
+
+    static shiny(msg) {
+        return Command.hasPermission(msg, "USE_EXTERNAL_EMOJIS") ? "<:ShinyYellow:324157128270938113>" : "S";
     }
 
 };

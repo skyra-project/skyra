@@ -140,4 +140,17 @@ module.exports = class Resolver {
         if (res.protocol && res.hostname) return hyperlink;
         return null;
     }
+
+    /**
+     * Resolve an attachment.
+     * @param {string} hyperlink The hyperlink to validate.
+     * @param {Message} msg A message instance.
+     * @returns {Promise<?string>}
+     */
+    async attachment(hyperlink, msg) {
+        let res = null;
+        if (msg.attachments.size > 0) res = msg.attachments.first().url;
+        else res = await this.url(hyperlink);
+        return /(?:jpg|png|gif|webm)$/.test(res) ? res : null;
+    }
 };

@@ -40,8 +40,8 @@ module.exports = class CommandMessage {
         } else if (this._currentUsage.type === "required" && this.args[this.params.length] === undefined) {
             this.args.splice(this.params.length, 1, null);
             throw newError(this._currentUsage.possibles.length === 1 ?
-        `${this._currentUsage.possibles[0].name} is a required argument.` :
-        `Missing a required option: (${this._currentUsage.possibles.map(poss => poss.name).join(", ")})`, 1);
+                `${this._currentUsage.possibles[0].name} is a required argument.` :
+                `Missing a required option: (${this._currentUsage.possibles.map(poss => poss.name).join(", ")})`, 1);
         } else if (this._currentUsage.possibles.length === 1) {
             if (this.client.argResolver[this._currentUsage.possibles[0].type]) {
                 return this.client.argResolver[this._currentUsage.possibles[0].type](this.args[this.params.length], this._currentUsage, 0, this._repeat, this.msg)

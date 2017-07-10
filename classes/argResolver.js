@@ -161,4 +161,11 @@ module.exports = class ArgResolver extends Resolver {
         throw `${currentUsage.possibles[possible].name} must be a valid url.`;
     }
 
+    async attachment(arg, currentUsage, possible, repeat, msg) {
+        const message = await super.attachment(arg, msg);
+        if (message) return message;
+        if (currentUsage.type === "optional" && !repeat) return null;
+        throw `${currentUsage.possibles[possible].name} must be a valid message attachment or url.`;
+    }
+
 };

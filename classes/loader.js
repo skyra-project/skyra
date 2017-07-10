@@ -3,7 +3,6 @@ const { promisify } = require("util");
 const exec = promisify(require("child_process").exec);
 const { sep, resolve, join } = require("path");
 const Discord = require("discord.js");
-const ParsedUsage = require("./parsedUsage");
 
 /* eslint-disable no-throw-literal, import/no-dynamic-require, class-methods-use-this */
 module.exports = class Loader {
@@ -80,7 +79,7 @@ module.exports = class Loader {
 
     loadNewCommand(file, dir) {
         const Cmd = require(join(dir, ...file));
-        const cmd = new Cmd(this.client, file);
+        const cmd = new Cmd(this.client, file.slice(0, -1));
         this.client.commands.set(cmd.help.name, cmd);
         cmd.conf.aliases.forEach(alias => this.client.aliases.set(alias, cmd.help.name));
         delete require.cache[join(dir, ...file)];

@@ -25,6 +25,8 @@ module.exports = class Weather extends Command {
     constructor(...args) {
         super(...args, "weather", {
             botPerms: ["ATTACH_FILES"],
+            mode: 1,
+
             usage: "<city:string>",
             description: "Check the weather status in a location.",
         });

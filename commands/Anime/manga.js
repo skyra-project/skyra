@@ -24,6 +24,7 @@ module.exports = class Manga extends Command {
     constructor(...args) {
         super(...args, "manga", {
             botPerms: ["EMBED_LINKS"],
+
             usage: "<query:string>",
             description: "Search your favourite manga by title with this command.",
             extendedHelp: Command.strip`

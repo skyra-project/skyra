@@ -3,7 +3,11 @@ const Command = require("../../classes/command");
 module.exports = class Ping extends Command {
 
     constructor(...args) {
-        super(...args, "ping", { description: "Runs a connection test to Discord." });
+        super(...args, "ping", {
+            mode: 2,
+
+            description: "Runs a connection test to Discord.",
+        });
     }
 
     async run(msg) {

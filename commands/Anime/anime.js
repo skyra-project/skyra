@@ -23,6 +23,7 @@ module.exports = class Anime extends Command {
     constructor(...args) {
         super(...args, "anime", {
             botPerms: ["EMBED_LINKS"],
+
             usage: "<query:string>",
             description: "Search your favourite anime by title with this command.",
             extendedHelp: Command.strip`

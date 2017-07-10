@@ -1,6 +1,6 @@
 const Command = require("../../classes/command");
-const { inspect } = require("util");
 const clean = require("../../functions/clean");
+const { inspect } = require("util");
 const now = require("performance-now");
 
 /* eslint-disable no-eval */
@@ -9,10 +9,11 @@ module.exports = class Eval extends Command {
     constructor(...args) {
         super(...args, "eval", {
             aliases: ["ev"],
-            botPerms: ["EMBED_LINKS"],
-            usage: "<expression:str>",
-            description: "Evaluates arbitrary Javascript.",
             permLevel: 10,
+            mode: 2,
+
+            usage: "<expression:string>",
+            description: "Evaluates arbitrary Javascript.",
         });
     }
 

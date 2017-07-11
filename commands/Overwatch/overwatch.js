@@ -126,39 +126,38 @@ module.exports = class Overwatch extends Command {
         const path = selected.split("/");
         path[path.length - 1] = encodeURIComponent(path[path.length - 1]);
         const data = await fetchProfile(`https://playoverwatch.com/en-us${path.join("/")}`);
-        const { overview, url } = data;
         const statistics = data[gamemode];
-        const output = { overview, url };
+        const output = { overview: data.overview, url: data.url };
         switch (type) {
-            case "featured":
-                output.title = "Featured";
-                output.data = `**Competitive rank**: ${overview.competitiveRank.rank ? this.resolveEmoji(overview.competitiveRank.rank) : "Unranked"}\n${list(statistics.highlight)}`;
-                return output;
+            case "featured": return Object.assign(output, {
+                title: "Featured",
+                data: `**Competitive rank**: ${data.overview.competitiveRank.rank ? this.resolveEmoji(data.overview.competitiveRank.rank) : "Unranked"}\n${list(statistics.highlight)}`,
+            });
             case "playedheroes": return OVERWATCH("playedheroes", data, { platform, server, gamemode });
-            case "combat":
-                output.title = "Combat";
-                output.data = list(statistics.stats.Combat);
-                return output;
-            case "assists":
-                output.title = "Assists";
-                output.data = list(statistics.stats.Assists);
-                return output;
-            case "records":
-                output.title = "Records";
-                output.data = list(statistics.stats.Best);
-                return output;
-            case "gamestats":
-                output.title = "Featured";
-                output.data = `${list(statistics.stats.Game)}\n${list(statistics.stats.Deaths)}\n\n${list(statistics.stats.Miscellaneous)}`;
-                return output;
-            case "average":
-                output.title = "Average Stats";
-                output.data = list(statistics.stats.Average);
-                return output;
-            case "awards":
-                output.title = "Awards";
-                output.data = list(statistics.stats["Match Awards"]);
-                return output;
+            case "combat": return Object.assign(output, {
+                title: "Combat",
+                data: list(statistics.stats.Combat),
+            });
+            case "assists": return Object.assign(output, {
+                title: "Assists",
+                data: list(statistics.stats.Assists),
+            });
+            case "records": return Object.assign(output, {
+                title: "Records",
+                data: list(statistics.stats.Best),
+            });
+            case "gamestats": return Object.assign(output, {
+                title: "GameStats",
+                data: `${list(statistics.stats.Game)}\n${list(statistics.stats.Deaths)}\n\n${list(statistics.stats.Miscellaneous)}`,
+            });
+            case "average": return Object.assign(output, {
+                title: "Average Stats",
+                data: list(statistics.stats.Average),
+            });
+            case "awards": return Object.assign(output, {
+                title: "Awards",
+                data: list(statistics.stats["Match Awards"]),
+            });
             // no default
         }
         return null;

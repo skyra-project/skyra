@@ -20,6 +20,7 @@ const etype = {
 const getURL = input => `https://myanimelist.net/api/anime/search.xml?q=${input}`;
 
 module.exports = class Anime extends Command {
+
     constructor(...args) {
         super(...args, "anime", {
             botPerms: ["EMBED_LINKS"],
@@ -63,4 +64,5 @@ module.exports = class Anime extends Command {
 
         return msg.send({ embed });
     }
+
 };

@@ -8,6 +8,7 @@ exports.conf = {
 const cooldown = new Map();
 
 class NMS {
+
     constructor() {
         this.cooldown = new Map();
     }
@@ -34,6 +35,7 @@ class NMS {
         clearTimeout(this.get(user).timeout);
         this.cooldown.delete(user);
     }
+
 }
 
 exports.run = async (client, msg, settings) => {

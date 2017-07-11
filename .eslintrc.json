@@ -30,23 +30,30 @@
     "no-mixed-operators": ["warn", { "allowSamePrecedence": true }],
     "no-eval": "warn",
     "max-len": "off",
+    "padded-blocks": ["error", { "classes": "always", "blocks": "never", "switches": "never" }],
+    "callback-return": "error",
+		"handle-callback-err": "error",
+		"no-mixed-requires": "error",
+		"no-new-require": "error",
+		"no-path-concat": "error",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
     "global-require": "off",
     "no-nested-ternary": "warn",
-    "valid-jsdoc": ["warn", {
-      "requireReturn": false,
-      "requireReturnDescription": false,
-      "preferType": {
-        "String": "string",
-        "Number": "number",
-        "Boolean": "boolean",
-        "Symbol": "symbol",
-        "function": "Function",
-        "object": "Object",
-        "date": "Date",
-        "error": "Error"
-      }
-    }]
+		"valid-jsdoc": ["warn", {
+			"requireReturn": false,
+			"requireReturnDescription": false,
+			"preferType": {
+				"String": "string",
+				"Number": "number",
+				"Boolean": "boolean",
+				"Symbol": "symbol",
+				"function": "Function",
+				"object": "Object",
+				"date": "Date",
+				"error": "Error",
+        "void": "Void"
+			}
+		}]
   }
 }

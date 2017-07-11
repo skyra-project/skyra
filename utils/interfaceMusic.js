@@ -2,6 +2,7 @@ const ytdl = require("ytdl-core");
 const manager = require("./managerMusic");
 
 module.exports = class InterfaceMusic {
+
     constructor(guild) {
         Object.defineProperty(this, "client", { value: guild.client });
         this.guild = guild;
@@ -90,4 +91,5 @@ module.exports = class InterfaceMusic {
     get connection() {
         return this.voiceChannel ? this.voiceChannel.connection : null;
     }
+
 };

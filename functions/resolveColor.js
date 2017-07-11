@@ -79,6 +79,7 @@ exports.validate = (input) => {
  * @param {number} l Lightness. (0 - 100)
  */
 const HSLUV = class HSLUV {
+
     constructor(h, s, l) {
         this.h = parseInt(h);
         this.s = parseInt(s);
@@ -117,6 +118,7 @@ const HSLUV = class HSLUV {
     toString() {
         return String(`hsluv(${this.h}, ${this.s}, ${this.l})`);
     }
+
 };
 
 /**
@@ -126,6 +128,7 @@ const HSLUV = class HSLUV {
  * @param {string} b Blue value. ('00' - 'ff')
  */
 const HEX = class HEX {
+
     constructor(r, g, b) {
         this.r = r.padStart(2, 0);
         this.g = g.padStart(2, 0);
@@ -163,6 +166,7 @@ const HEX = class HEX {
     toString() {
         return String(`#${this.r}${this.g}${this.b}`);
     }
+
 };
 
 /**
@@ -172,6 +176,7 @@ const HEX = class HEX {
  * @param {number} b Blue value. (0 - 255)
  */
 const RGB = class RGB {
+
     constructor(r, g, b) {
         this.r = parseInt(r);
         this.g = parseInt(g);
@@ -235,6 +240,7 @@ const RGB = class RGB {
     toString() {
         return String(`rgb(${this.r}, ${this.g}, ${this.b})`);
     }
+
 };
 
 /**
@@ -244,6 +250,7 @@ const RGB = class RGB {
  * @param {number} l Lightness. (0 - 100)
  */
 const HSL = class HSL {
+
     constructor(h, s, l) {
         this.h = parseInt(h);
         this.s = parseInt(s);
@@ -309,6 +316,7 @@ const HSL = class HSL {
     toString() {
         return String(`hsl(${this.h}, ${this.s}, ${this.l})`);
     }
+
 };
 
 /**
@@ -316,6 +324,7 @@ const HSL = class HSL {
  * @param {number} value Base10 (0 - 0xFFFFFF)
  */
 const B10 = class B10 {
+
     constructor(value) {
         this.value = parseInt(value);
     }
@@ -349,6 +358,7 @@ const B10 = class B10 {
     toString() {
         return String(this.value);
     }
+
 };
 
 exports.Resolver = { HSLUV, HEX, RGB, HSL, B10 };

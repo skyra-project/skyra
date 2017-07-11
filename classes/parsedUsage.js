@@ -1,5 +1,6 @@
 /* eslint-disable no-throw-literal, class-methods-use-this */
 module.exports = class ParsedUsage {
+
     constructor(client, command) {
         Object.defineProperty(this, "client", { value: client });
         this.names = [command.help.name, ...command.conf.aliases];

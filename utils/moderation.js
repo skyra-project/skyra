@@ -2,6 +2,7 @@ const Rethink = require("../providers/rethink");
 
 /* eslint-disable no-underscore-dangle, complexity */
 module.exports = class Moderation {
+
     constructor(guild, mutes) {
         this.id = guild;
         this.mutes = new Map();
@@ -80,4 +81,5 @@ module.exports = class Moderation {
         if (!(await this.exists())) throw "This GuildConfig does not exist.";
         return Rethink.delete("moderation", this.id);
     }
+
 };

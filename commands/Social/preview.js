@@ -19,7 +19,6 @@ module.exports = class PreviewProfile extends Command {
             botPerms: ["ATTACH_FILES"],
             guildOnly: true,
             mode: 1,
-            spam: false,
 
             guilds: ["256566731684839428"],
 

@@ -48,6 +48,7 @@ const resolveSprite = {
 /* END */
 
 class SlotMachines {
+
     constructor(msg) {
         this.client = msg.client;
         this.msg = msg;
@@ -82,6 +83,7 @@ class SlotMachines {
     checkCurrency(amount) {
         if (this.profile.money < amount) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${Command.shiny(this.msg)}.`;
     }
+
 }
 
 module.exports = class SlotMachine extends Command {

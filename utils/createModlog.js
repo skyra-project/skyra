@@ -12,6 +12,7 @@ const colour = {
 };
 
 class ModerationLog {
+
     constructor(guild) {
         this.client = guild.client;
 
@@ -139,6 +140,7 @@ class ModerationLog {
     getChannel() {
         return this.guild.settings.channels.mod ? this.guild.channels.get(this.guild.settings.channels.mod) : false;
     }
+
 }
 
 module.exports = ModerationLog;

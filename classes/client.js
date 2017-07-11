@@ -38,6 +38,7 @@ const PermStructure = new PermLevels()
 
 /* eslint-disable no-throw-literal, no-use-before-define, no-restricted-syntax, no-underscore-dangle */
 module.exports = class Komada extends Client {
+
     constructor(config = {}) {
         if (typeof config !== "object") throw new TypeError("Configuration for Komada must be an object.");
         super(config.clientOptions);
@@ -45,7 +46,6 @@ module.exports = class Komada extends Client {
         this.baseDir = path.join(__dirname, "../");
         this.funcs = new Loader(this);
         this.argResolver = new ArgResolver(this);
-        this.helpStructure = new Map();
         this.commands = new Collection();
         this.aliases = new Collection();
         this.commandInhibitors = new Collection();
@@ -128,6 +128,7 @@ module.exports = class Komada extends Client {
         this.emit("debug", `Swept ${messages - this.commandMessages.size} commandMessages older than ${lifetime} seconds.`);
         return messages - this.commandMessages.size;
     }
+
 };
 
 process.on("unhandledRejection", (err) => {

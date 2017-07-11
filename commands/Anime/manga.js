@@ -21,6 +21,7 @@ const etype = {
 const getURL = input => `https://myanimelist.net/api/manga/search.xml?q=${input}`;
 
 module.exports = class Manga extends Command {
+
     constructor(...args) {
         super(...args, "manga", {
             botPerms: ["EMBED_LINKS"],

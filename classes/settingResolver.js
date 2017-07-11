@@ -2,6 +2,7 @@ const Resolver = require("./Resolver");
 
 /* eslint-disable no-throw-literal, class-methods-use-this */
 module.exports = class SettingResolver extends Resolver {
+
     async user(data) {
         const result = await super.user(data);
         if (!result) throw "This key expects a User Object or ID.";
@@ -86,4 +87,5 @@ module.exports = class SettingResolver extends Resolver {
         }
         return null;
     }
+
 };

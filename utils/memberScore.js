@@ -7,6 +7,7 @@ const defaults = {
 
 
 const MemberScore = class MemberScore {
+
     constructor(member, guild, data) {
         this.id = member;
         this.guild = guild;
@@ -37,6 +38,7 @@ const MemberScore = class MemberScore {
         manager.get(this.guild).delete(this.id);
         return output;
     }
+
 };
 
 module.exports = { MemberScore, defaults };

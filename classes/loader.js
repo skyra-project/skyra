@@ -6,6 +6,7 @@ const Discord = require("discord.js");
 
 /* eslint-disable no-throw-literal, import/no-dynamic-require, class-methods-use-this */
 module.exports = class Loader {
+
     constructor(client) {
         Object.defineProperty(this, "client", { value: client });
         const makeDirsObject = dir => ({

@@ -20,6 +20,7 @@ const defaults = {
 
 /* eslint-disable no-restricted-syntax */
 const UserProfile = class UserProfile {
+
     constructor(user, data) {
         this.id = user;
         this.points = data.points || defaults.points;
@@ -86,6 +87,7 @@ const UserProfile = class UserProfile {
         manager.delete(this.id);
         return output;
     }
+
 };
 
 module.exports = { UserProfile, defaults };

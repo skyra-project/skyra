@@ -10,6 +10,7 @@ const regex = {
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Resolver {
+
     constructor(client) {
         Object.defineProperty(this, "client", { value: client });
     }
@@ -153,4 +154,5 @@ module.exports = class Resolver {
         else res = await this.url(hyperlink);
         return /(?:jpg|png|gif|webm)$/.test(res) ? res : null;
     }
+
 };

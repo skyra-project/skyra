@@ -8,7 +8,6 @@ module.exports = class Reminder extends Command {
         super(...args, "remindme", {
             aliases: ["remind", "reminder"],
             mode: 2,
-            spam: false,
 
             usage: "<input:string>",
             description: "Add reminders.",

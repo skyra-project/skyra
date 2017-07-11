@@ -187,4 +187,5 @@ module.exports = class Configuration {
             },
         };
     }
+
 };

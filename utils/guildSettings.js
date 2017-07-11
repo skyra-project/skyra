@@ -43,6 +43,7 @@ const defaults = {
 
 /* eslint-disable no-restricted-syntax */
 const GuildSetting = class GuildSetting {
+
     constructor(guild, data) {
         this.id = guild;
         this.prefix = data.prefix || defaults.prefix;
@@ -115,6 +116,7 @@ const GuildSetting = class GuildSetting {
         GuildManager.delete(this.id);
         return true;
     }
+
 };
 
 module.exports = { GuildSetting, defaults, superRegExp };

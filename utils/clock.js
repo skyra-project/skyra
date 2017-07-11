@@ -9,6 +9,7 @@ const { Snowflake } = require("discord.js");
  */
 
 class Clock {
+
     constructor(client) {
         this.client = client;
         this.tasks = [];
@@ -109,6 +110,7 @@ class Clock {
     sort() {
         this.tasks = this.tasks.sort((x, y) => +(x.timestamp > y.timestamp) || +(x.timestamp === y.timestamp) - 1);
     }
+
 }
 
 module.exports = Clock;

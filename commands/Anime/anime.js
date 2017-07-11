@@ -19,6 +19,7 @@ const etype = {
 
 const getURL = input => `https://myanimelist.net/api/anime/search.xml?q=${input}`;
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Anime extends Command {
 
     constructor(...args) {

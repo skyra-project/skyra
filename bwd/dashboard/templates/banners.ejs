@@ -1,0 +1,22 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth}) %>
+
+<% 
+    const banners = bot.availableBanners;
+    const output = [];
+    for (const obj in banners) {
+        if (obj in banners) {
+            const element = banners[obj];
+            output.push(element);
+        }
+    }
+%>
+
+<div class="main ui text container">
+	<% output.forEach((ban) => { %>
+        <div class="ui divider"></div>
+        <a class="ui tag label" href="<%= `http://kyradiscord.weebly.com/files/theme/banners/${ban.id}.png` %>"><%= ban.id %></a>
+        <a class="ui teal tag label"><%= ban.title %></a>
+	<% }) %>
+</div>
+  
+<% include ./blocks/footer %>

@@ -4,6 +4,7 @@ const { version: discordVersion } = require("discord.js");
 const moment = require("moment");
 require("moment-duration-format");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Status extends Command {
 
     constructor(...args) {

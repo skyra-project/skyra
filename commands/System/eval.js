@@ -3,7 +3,7 @@ const clean = require("../../functions/clean");
 const { inspect } = require("util");
 const now = require("performance-now");
 
-/* eslint-disable no-eval */
+/* eslint-disable no-eval, class-methods-use-this */
 module.exports = class Eval extends Command {
 
     constructor(...args) {

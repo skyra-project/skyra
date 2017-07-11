@@ -2,6 +2,7 @@ const Command = require("../../classes/command");
 
 const { timer } = require("../../functions/wrappers");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Reminder extends Command {
 
     constructor(...args) {

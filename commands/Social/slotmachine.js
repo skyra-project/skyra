@@ -86,6 +86,7 @@ class SlotMachines {
 
 }
 
+/* eslint-disable class-methods-use-this */
 module.exports = class SlotMachine extends Command {
 
     constructor(...args) {

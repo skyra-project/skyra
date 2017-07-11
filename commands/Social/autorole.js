@@ -3,7 +3,7 @@ const Command = require("../../classes/command");
 const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
 const Rethink = require("../../providers/rethink");
 
-
+/* eslint-disable class-methods-use-this */
 module.exports = class AutoRole extends Command {
 
     constructor(...args) {

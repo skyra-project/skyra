@@ -12,6 +12,7 @@ Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { fa
 const profileTemplate = join(__dirname, "../../assets/images/social/level-foreground.png");
 const themes = join(__dirname, "../../assets/images/social/themes/") + sep;
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Level extends Command {
 
     constructor(...args) {

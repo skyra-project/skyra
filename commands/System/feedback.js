@@ -1,5 +1,6 @@
 const Command = require("../../classes/command");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Feedback extends Command {
 
     constructor(...args) {

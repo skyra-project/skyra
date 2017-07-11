@@ -4,6 +4,7 @@ const { User: fetchUser } = require("../../functions/search");
 const moment = require("moment");
 require("moment-duration-format");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Reputation extends Command {
 
     constructor(...args) {

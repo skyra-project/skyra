@@ -1,0 +1,41 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth, modlogs:modlogs}) %>
+
+<div class="main ui text container">
+    <h1 class="ui dividing header">ModLogs Manager<a class="anchor" id="types"></a></h1>
+    <div class="content">
+        <% if (modlogs.length < 1) { %>
+            <div class="ui icon message">
+                <i class="info icon"></i>
+                <div class="content">
+                    <div class="header">
+                    Uhm?
+                    </div>
+                    <p>There is no modlog.</p>
+                </div>
+            </div>
+        <% } else { %>
+            <% modlogs.forEach(c => { %>
+                <div class="ui styled fluid accordion">
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        Case: <%= c.thisCase %>
+                    </div>
+                    <div class="content">
+                        <p>
+                            Type: <b><%= bot.funcs.toTitleCase(c.type) %></b>
+                            <br />Moderator: <b><%= c.moderator || "Unclaimed" %></b>
+                            <br />User: <b><%= c.user %></b>
+                            <br />Reason: <b><%= c.reason %></b>
+                        </p>
+                    </div>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+</div>
+
+<script>
+    $('.ui.accordion').accordion();
+</script>
+
+<% include ./blocks/footer %>

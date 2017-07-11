@@ -17,6 +17,7 @@ const emojis = {
 const list = data => Object.entries(data).map(([key, value]) => `**${key}**: ${value}`).join("\n");
 const doRequest = url => snekfetch.get(url).then(d => JSON.parse(d.text));
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Overwatch extends Command {
 
     constructor(...args) {

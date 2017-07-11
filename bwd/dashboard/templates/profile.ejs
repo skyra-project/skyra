@@ -1,0 +1,74 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth, profile: profile}) %>
+<%
+    const joined = (timestamp) => {
+        const date = new Date(timestamp);
+        return `Joined in ${date.getFullYear()}`
+    }
+%>
+
+<div class="main ui text container">
+    <h1 class="ui dividing header">User Profile<a class="anchor" id="types"></a></h1>
+    <div class="ui grid">
+        <div class="six wide column">
+            <div class="no example">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="<%= user.avatar ? user.avatarURL(1024) : user.defaultAvatarURL %>">
+                    </div>
+                    <div class="content">
+                        <a class="header"><%= user.username %></a>
+                        <div class="meta">
+                        <span class="date"><%= joined(user.createdAt) %></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END OF CARD -->
+        <div class="ten wide column">
+            <div class="ui raised segments">
+                <div class="ui segment">
+                    <div class="statistic" style="font-size: 1.6rem;">
+                        <div class="value">
+                        <i class="star icon"></i> Points
+                        </div>
+                        <div class="label"><%= profile.points %></div>
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="statistic" style="font-size: 1.6rem;">
+                        <div class="value">
+                        <i class="thumbs up icon"></i> Reputation points
+                        </div>
+                        <div class="label"><%= profile.reputation %></div>
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="statistic" style="font-size: 1.6rem;">
+                        <div class="value">
+                        <i class="shekel icon"></i> Shekels
+                        </div>
+                        <div class="label"><%= profile.money %></div>
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="statistic" style="font-size: 1.6rem;">
+                        <div class="value">
+                        <i class="quote left icon"></i> Quote
+                        </div>
+                        <div class="label"><%= profile.quote || "Not set." %></div>
+                    </div>
+                </div>
+                <div class="ui segment" style ="background-color: #<%= profile.color %>">
+                    <div class="statistic" style="font-size: 1.6rem;">
+                        <div class="value">
+                        <i class="wizard icon"></i> Color
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ./blocks/footer %>

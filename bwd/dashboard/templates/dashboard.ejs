@@ -1,0 +1,57 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth}) %>
+
+<div class="main ui text container">
+	<h1 class="ui dividing header">Dashboard</h1>
+	<div class="ui items">
+	<% user.guilds.forEach(guild => { 
+		const permsOnGuild = new perms(guild.permissions);
+		if(!permsOnGuild.has("MANAGE_GUILD")) return;
+	%>
+	  <div class="item">
+			<% if (guild.icon) { %>
+				<img class="ui circular image" width="80" height="80" src="<%= `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` %>">
+			<% } else { %>
+				<canvas id="<%= guild.id %>" width="80" height="80"></canvas>
+				<script>
+					function draw() {
+						const ctx = document.getElementById("<%= guild.id %>").getContext("2d");
+						ctx.fillStyle = "rgb(245, 245, 245)";
+						ctx.beginPath();
+						ctx.arc(40, 40, 40, 0, 2 * Math.PI, false);
+						ctx.fill();
+						ctx.restore();
+						ctx.textAlign = "center";
+						ctx.font = '30px Arial';
+						ctx.fillStyle = "rgb(23, 23, 23)";
+						ctx.fillText("<%= guild.name.split(" ").map(v => v[0]).join("") %>", 40, 51);
+					};
+
+					draw();
+				</script>
+			<% } %>
+	    <div class="middle aligned content" style="padding-left: 18px;">
+	      <a class="header"><%= guild.name %></a>
+		    <div class="extra">
+		    	<% 
+		    	let href, text;
+		    	if(bot.guilds.has(guild.id)) {
+		    		href = "/manage/" + guild.id;
+		    		text = "Manage";
+		    	} else {
+		    		href = `https://discordapp.com/oauth2/authorize?client_id=${bot.config.clientID}&scope=bot`;
+		    		text = "Invite Bot";
+		    	}
+		    	%> 
+		      <a class="ui primary button" href="<%= href %>">
+		        <%= text %>
+		        <i class="right chevron icon"></i>
+		      </a>
+		    </div>
+	    </div>
+	  </div>
+		
+	<% }); %>
+	</div>
+</div>
+
+<% include ./blocks/footer %>

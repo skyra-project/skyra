@@ -2,6 +2,7 @@ const Command = require("../../classes/command");
 
 const { validate: validateColor } = require("../../functions/resolveColor");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class SetColor extends Command {
 
     constructor(...args) {

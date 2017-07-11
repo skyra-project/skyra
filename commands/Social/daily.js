@@ -3,6 +3,7 @@ const Command = require("../../classes/command");
 const moment = require("moment");
 require("moment-duration-format");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Daily extends Command {
 
     constructor(...args) {

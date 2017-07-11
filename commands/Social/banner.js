@@ -3,6 +3,7 @@ const Command = require("../../classes/command");
 const availableBanners = require("../../assets/banners.json");
 const listify = require("../../functions/listify");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Banner extends Command {
 
     constructor(...args) {

@@ -4,6 +4,7 @@ const MANAGER_SOCIAL_LOCAL = require("../../utils/managerSocialLocal");
 const { User: fetchUser } = require("../../functions/search");
 const Rethink = require("../../providers/rethink");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Social extends Command {
 
     constructor(...args) {

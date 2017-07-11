@@ -12,6 +12,7 @@ Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { fa
 
 const profileTemplate = join(__dirname, "../../assets/images/social/profile-foreground.png");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class PreviewProfile extends Command {
 
     constructor(...args) {

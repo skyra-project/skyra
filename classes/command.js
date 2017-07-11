@@ -1,5 +1,6 @@
 const ParsedUsage = require("./parsedUsage");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Command {
 
     constructor(client, file, name, {

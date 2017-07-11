@@ -12,6 +12,7 @@ const content = Command.joinLines`
     Do you want to support this amazing project? Feel free to do so! paypal.me/kyranet
 `;
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Donate extends Command {
 
     constructor(...args) {

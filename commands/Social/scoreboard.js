@@ -10,6 +10,7 @@ const titles = {
     reputation: "🙏 Reputation Scoreboard",
 };
 
+/* eslint-disable class-methods-use-this */
 module.exports = class ScoreBoard extends Command {
 
     constructor(...args) {

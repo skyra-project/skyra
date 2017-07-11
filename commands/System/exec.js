@@ -2,6 +2,7 @@ const Command = require("../../classes/command");
 
 const exec = require("util").promisify(require("child_process").exec);
 
+/* eslint-disable class-methods-use-this */
 module.exports = class ChildProcess extends Command {
 
     constructor(...args) {

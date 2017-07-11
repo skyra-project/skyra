@@ -1,0 +1,438 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth, moment}) %>
+
+<script>
+  $(document)
+    .ready(function() {
+      $('.ui.dropdown').dropdown();
+
+      $('.ui.buttons .dropdown.button').dropdown({
+        action: 'combo'
+      });
+      $('.ui.checkbox').checkbox();
+    });
+</script>
+
+<script>
+	function thingy(str) {
+		const letter = str[str.length - 1];
+		switch(letter) {
+			case "1": return "st";
+			case "2": return "nd";
+			case "3": return "rd";
+			default: return "th";
+		}
+	}
+	function nor(str) {
+		str = str.toString();
+		if (str.length === 1) return `0${str}`;
+		return str;
+	}
+	function Moment(timestamp) {
+		const date = new Date(timestamp);
+		const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+		const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		return `${day[date.getDay()]}, ${month[date.getMonth()]} ${date.getDate()}${thingy(date.getDate())} ${date.getFullYear()}, ${nor(date.getHours())}:${nor(date.getMinutes())}:${nor(date.getSeconds())}`
+	}
+</script>
+
+<% 
+	const perms = guild.me.permissions.serialize();
+	let positivePermCount = 0;
+	for (const perm in perms) { 
+		if(perms[perm]) positivePermCount++;
+	}
+%>
+  
+<form class="">
+<div class="main ui text container">
+	  <h1 class="ui dividing header">Server Manager<a class="anchor" id="types"></a></h1>
+  	<!-- Start Server Card -->
+    <div class="ui grid">
+      <div class="six wide column">
+      	<div class="no example">
+          <div class="ui card">
+            <div class="blurring dimmable image">
+							<% if (guild.icon) { %>
+								<img src="<%= `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=1024` %>">
+							<% } else { %>
+								<canvas id="canvas" width="245" height="245"></canvas>
+								<script>
+									function draw() {
+										const ctx = document.getElementById('canvas').getContext('2d');
+										ctx.textAlign = "center";
+										ctx.font = '80px Arial';
+										ctx.fillText("<%= guild.name.split(" ").map(v => v[0]).join("") %>", 122, 152);
+									};
+
+									draw();
+								</script>
+							<% } %>
+              
+            </div>
+            <div class="content">
+              <div class="header"><%= guild.name %></div>
+              <div class="meta" id="meta">
+								<script>document.getElementById("meta").innerHTML = Moment("<%= guild.createdAt %>");</script>
+              </div>
+	            <div class="description">
+                <a href="#" id="showUsers"><i class="user icon"></i> <%= guild.memberCount %> Members</a> (<%= guild.members.filter(m=>m.user.bot).size %> Bots)<br/>
+                <i class="users icon"></i> <%= guild.roles.size %> Roles<br/>
+                <i class="hashtag icon"></i> <%= guild.channels.filter(c=>c.type=="text").size %> Channels <br/>
+                <a href="#" id="showPerms"><i class="key icon"></i> <%= positivePermCount %> Permissions</a><br/></div>
+            </div>
+            <div class="extra content">
+            	<div class="header">Server Owner</div>
+	            <a class="ui image label">
+							  <img src="<%= guild.owner.user.avatarURL(128) %>">
+							  <%= guild.owner.user.tag %>
+							</a>
+            </div>
+						<button class="ui button basic green" id="configs" type="button">Configs</button>
+						<div class="two ui buttons">
+							<button class="ui button basic green" id="leaveGuild" type="button">Leave</button>
+							<button class="ui button basic red" onclick="location.href='/modlogs/<%= guild.id %>';" type="button">Mod Logs</button>
+						</div>
+          </div>
+        </div>
+      </div>
+      <!-- End Server Card -->
+
+			<div class="ten wide column">
+				<%
+					const serverRoles = guild.roles.map(r=>r.name);
+					const typeOverrides = {
+						staffRole: "RoleConfig",
+						modRole: "RoleConfig",
+						adminRole: "RoleConfig"
+					};
+					
+					const conf = guild.configs;
+				%>
+      	<%# <div class="ui stacked segment">
+      		<h3>Enable Lockdown</h3>
+					<div class="ui checkbox checked">
+		        <input type="checkbox" name="lockdown" tabindex="0" class="hidden">
+		        <label>Limits commands to users above level: 3</label>
+		      </div>
+      	</div> %>
+    		<div class="ui stacked segment">
+    			<% let selectedRole = guild.roles.get(conf.roles.admin);
+    				 if(!selectedRole) selectedRole = {id:""}; %>
+      		<h3>Admin Role</h3>
+					<div class="ui floating search dropdown button">
+					  <input type="hidden" name="adminRole" value="<%= selectedRole.id %>">
+					  <i class="users icon"></i>
+					  <span class="text">Select Role...</span>
+					  <div class="menu transition" tabindex="-1">
+ 					  	<div data-value="none" class="item">None</div>
+				  	<% guild.roles.forEach(role => { %>
+				  		<div data-value="<%= role.id %>" class="item"><%= role.name %></div>
+				  	<% }) %>
+					  </div>
+				  </div>
+				</div>
+    		<div class="ui stacked segment">
+    			<% let modRole = guild.roles.get(conf.roles.moderator);
+    				 if(!modRole) modRole = {id:""}; %>
+      		<h3>Mod Role</h3>
+					<div class="ui floating search dropdown button">
+					  <input type="hidden" name="modRole" value="<%= modRole.id %>">
+					  <i class="users icon"></i>
+					  <span class="text">Select Role...</span>
+					  <div class="menu transition" tabindex="-1">
+					  	<div data-value="none" class="item">None</div>
+				  	<% guild.roles.forEach(role => { %>
+				  		<div data-value="<%= role.id %>" class="item"><%= role.name %></div>
+				  	<% }) %>
+					  </div>
+				  </div>
+				</div>
+				<div class="ui stacked segment">
+    			<% let staffRole = guild.roles.get(conf.roles.staff);
+    				 if(!staffRole) staffRole = {id:""}; %>
+      		<h3>Staff Role</h3>
+					<div class="ui floating search dropdown button">
+					  <input type="hidden" name="staffRole" value="<%= staffRole.id %>">
+					  <i class="users icon"></i>
+					  <span class="text">Select Role...</span>
+					  <div class="menu transition" tabindex="-1">
+					  	<div data-value="none" class="item">None</div>
+				  	<% guild.roles.forEach(role => { %>
+				  		<div data-value="<%= role.id %>" class="item"><%= role.name %></div>
+				  	<% }) %>
+					  </div>
+				  </div>
+				</div>
+    		<div class="ui stacked segment">
+	    			<h3>Server Prefix</h3>
+						<div class="ui left icon input">
+						  <input type="text" name="prefix" value="<%= conf.prefix %>">
+						  <i class="talk icon"></i>
+						</div>
+				</div>
+			</div>
+
+    </div>
+  </div>
+</form>
+
+<div class="ui modal" id="permView">
+  <div class="header">Permissions</div>
+  <div class="content">
+<% for (const perm in perms) { 
+let color = perms[perm] ? "teal" : "red"; %><a class="ui <%= color %> tag label"><%= perm %></a>
+<% } %>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">Close</div>
+  </div>
+</div>
+
+<div class="ui modal" id="userView">
+	<div class="header">Guild Users</div>
+	<div class="content">
+		<div class="ui styled fluid accordion">
+			<% guild.members.sort((a, b) => {
+				if (a.user.bot < b.user.bot) return 1;
+				if (a.user.bot > b.user.bot) return -1;
+				else {
+					if (a.user.username.toLowerCase() > b.user.username.toLowerCase()) return 1;
+					else if (a.user.username.toLowerCase() < b.user.username.toLowerCase()) return -1;
+					return 0;
+				}
+			}).forEach(member => { %>
+				<div class="title"><i class="dropdown icon"></i><%= `${member.user.bot ? "🤖 " : ""}${member.user.tag}` %></div>
+				<div class="content">
+					ID: <b><%= member.id %></b>
+					<br />Username: <b><%= member.user.username %></b>
+					<br />Nickname: <b><%= member.nickname || 'Not set' %></b>
+					<br />Joined at: <b id="<%= member.id %>"></b>
+				</div>
+				<script>
+						document.getElementById("<%= member.id %>").innerHTML = Moment("<%= member.joinedAt %>");
+				</script>
+			<% }); %>
+		</div>
+	</div>
+</div>
+
+<div class="ui modal" id="leavePrompt">
+	<div class="header">Leave Guild: <%= guild.name %></div>
+	<div class="content">
+	<div class="ui form">
+	  <div class="field">
+	    <label>Exit Message (optional)</label>
+	    <textarea id="exitMessage"></textarea>
+	  </div>
+	</div>
+	</div>
+  <div class="actions">
+    <div class="ui black deny button">
+      Stay with me!
+    </div>
+    <div class="ui negative right labeled icon button" id="confirmLeave">
+      We're done here
+      <i class="sign out icon"></i>
+    </div>
+  </div>
+</div>
+
+<%
+	const configs = bot.guilds.get(guild.id).configs;
+%>
+
+<div class="ui small modal" id="configView">
+	<div class="header">Configuration</div>
+	<div class="content">
+		<!-- START CHANNEL LIST -->
+		<h3>Channels</h3>
+		<div class="ui middle aligned animated list">
+			<%
+				[
+					{ title: "Announcement", value: "announcement" },
+					{ title: "Default", value: "default" },
+					{ title: "Log", value: "log" },
+					{ title: "MODLog", value: "mod" },
+					{ title: "Spam", value: "spam" },
+				].forEach((ev) => {
+					const channel = guild.channels.get(configs.channels[ev.value]);
+			%>
+				<div class="item">
+					<i class="columns icon"></i>
+					<div class="content">
+						<a class="header"><%= ev.title %></a>
+						<div class="description"><%= channel ? channel.name : "Not set" %></div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+
+		<!-- START ROLE LIST -->
+		<h3>Roles</h3>
+		<div class="ui middle aligned animated list">
+			<%
+				[
+					{ title: "Admin", value: "admin" },
+					{ title: "Moderator", value: "moderator" },
+					{ title: "Staff", value: "staff" },
+					{ title: "Muted", value: "muted" },
+				].forEach((ev) => {
+					const role = guild.roles.get(configs.roles[ev.value]);
+			%>
+				<div class="item">
+					<i class="columns icon"></i>
+					<div class="content">
+						<a class="header"><%= ev.title %></a>
+						<div class="description"><%= role ? role.name : "Not set" %></div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+
+		<!-- START EVENTS LIST -->
+		<h3>Events</h3>
+		<div class="ui middle aligned animated list">
+			<%
+				[
+					"channelCreate",
+					"guildBanAdd",
+					"guildBanRemove",
+					"guildMemberAdd",
+					"guildMemberRemove",
+					"guildMemberUpdate",
+					"messageDelete",
+					"messageDeleteBulk",
+					"messageUpdate",
+					"roleUpdate",
+					"commands",
+					"modLogProtection"
+				].forEach((ev) => {
+			%>
+				<div class="item">
+					<i class="columns icon"></i>
+					<div class="content">
+						<a class="header"><%= ev %></a>
+						<div class="description">
+							<% if (configs.events[ev]) { %>
+								<div class="ui read-only checkbox toggle %>">
+									<input type="checkbox" checked="">
+									<label>Enabled</label>
+								</div>
+							<% } else { %>
+								<div class="ui read-only checkbox toggle %>">
+									<input type="checkbox">
+									<label>Disabled</label>
+								</div>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+		<!-- END EVENTS LIST -->
+
+		<!-- START MESSAGE LIST -->
+		<h3>Messages</h3>
+		<div class="ui middle aligned animated list">
+			<%
+				[
+					{ title: "Farewell", value: "farewell", type: "bool" },
+					{ title: "Greeting", value: "greeting", type: "bool" },
+					{ title: "FarewellMessage", value: "farewellMessage", type: "string" },
+					{ title: "GreetingMessage", value: "greetingMessage", type: "string" },
+				].forEach((ev) => {
+					const events = configs.events.sendMessage || {};
+			%>
+				<div class="item">
+					<i class="columns icon"></i>
+					<div class="content">
+						<a class="header"><%= ev.title %></a>
+						<div class="description">
+							<% if (ev.type === "bool" && events[ev.value]) { %>
+									<div class="ui read-only checkbox toggle %>">
+										<input type="checkbox" checked="">
+										<label>Enabled</label>
+									</div>
+							<% } else if (ev.type === "bool") { %>
+									<div class="ui read-only checkbox toggle %>">
+										<input type="checkbox">
+										<label>Disabled</label>
+									</div>
+							<% } else { %>	
+									<%= events[ev.value] || "Not set" %>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+
+		<!-- START MASTER LIST -->
+		<h3>Master</h3>
+		<div class="ui middle aligned animated list">
+			<div class="item">
+				<i class="columns icon"></i>
+				<div class="content">
+					<a class="header">Prefix</a>
+					<div class="description"><%= configs.prefix %></div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="columns icon"></i>
+				<div class="content">
+					<a class="header">Mode</a>
+					<div class="description"><%= ["Free", "Lite", "Strict"][configs.mode] %></div>
+				</div>
+			</div>
+		</div>
+		<!-- END MASTER LIST -->
+	</div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#showPerms').click(function() {
+		  $("#permView").modal("show");
+		});
+
+		$('#configs').click(function() {
+		  $("#configView").modal("show");
+		});
+		
+    $('#showUsers').click(function() {
+		  $("#userView").modal("show");
+		});
+
+		$('#leaveGuild').click(function() {
+			$('#leavePrompt').modal("show");
+		});
+
+		$('.ui.accordion').accordion();
+		
+		$('#confirmLeave').click(function() {
+			var options = !!$("#exitMessage").val() ? {"message": $("#exitMessage").val()} : {};
+			postCommand('<%= guild.id %>', "leaveGuild", options);
+		});
+
+    var referrer = document.referrer;
+    console.log(referrer.split("/").slice(-1)[0] );
+    
+    postCommand = function(guildid, command, options = {}) {
+      $.post( "/execute/" + guildid + "/" + command, options)
+        .done(function(response) {
+          if(response.success) {
+          	window.history.back();
+          } else {
+          	alert("Something bad happened: " + response.message)
+          }
+        })
+        .fail(function(e) {
+          alert("Something *really* bad happened: " + JSON.stringify(e) );
+        });
+    }
+
+
+  });
+</script>
+
+<% include ./blocks/footer %>

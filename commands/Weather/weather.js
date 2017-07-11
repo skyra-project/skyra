@@ -20,6 +20,7 @@ const colors = {
     windy: "#33B679",
 };
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Weather extends Command {
 
     constructor(...args) {

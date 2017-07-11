@@ -4,6 +4,7 @@ const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/sear
 
 const SchemaProps = Schema.find();
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Configuration extends Command {
 
     constructor(...args) {

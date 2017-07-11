@@ -1,0 +1,81 @@
+<%- include('blocks/header', {bot:bot, user: user, auth: auth}) %>
+
+<% 
+const help = {};
+
+bot.commands.forEach((command) => {
+	if (command.conf.permLevel !== 10) {
+	  const cat = command.help.category;
+		const subcat = command.help.subCategory;
+		if (!help.hasOwnProperty(cat)) help[cat] = {};
+		if (!help[cat].hasOwnProperty(subcat)) help[cat][subcat] = [];
+		help[cat][subcat].push(command);
+	}
+});
+
+%>
+
+<div class="main ui text container">
+	<% for (const category in help) { %>
+		<h1 class="ui dividing header"><%= category %></h1>
+		<% for (const subcat in help[category]) { %>
+			<h2 class="ui header"><%= subcat %></h2>
+			<div class="ui two column grid">
+			<% for (const command of help[category][subcat]) { %>
+				<div class="column">
+					<div class="ui card piled segment blurring">
+					  <div class="content">
+					  	<% if(command.conf.runIn.includes("text")) { %>
+								<div class="ui icon button right floated" data-tooltip="Available in Server Channels">
+								  <i class="world icon"></i>
+								</div>
+			        <% } %>
+					  	<% if(command.conf.runIn.includes("dm")) { %>
+								<div class="ui icon button right floated" data-tooltip="Available in Direct Messages with bot">
+								  <i class="user icon"></i>
+								</div>
+			        <% } %>
+					  	<% if(command.conf.runIn.includes("group")) { %>
+								<div class="ui icon button right floated" data-tooltip="Available in Group DMs (selfbot only)">
+								  <i class="users icon"></i>
+								</div>
+			        <% } %>
+					    <div class="header"><%= command.help.name %></div>
+			        <div class="meta">
+					      Perm Level: <%= command.conf.permLevel %>
+					    </div>
+					    <div class="description">
+					      <p><% if(command.help.extendedHelp) { %>
+					      	<button class="ui icon button right floated extendedHelp" data-html="<%- md(command.help.extendedHelp).replace(/(\r\n|\r|\n)/g, '<br />')%>" data-variation="very wide"><i class="help icon"></i></button>
+					      	<% } %>
+					      	<%= command.help.description %></p>
+					    </div>
+					   
+					  </div>
+					  <% if(!command.conf.enabled) { %>
+					  <div class="ui dimmer transition visible active">
+					    <div class="content">
+					      <div class="center">
+					        <h2 class="ui icon header inverted">
+					          Disabled
+					        </h2>
+					      </div>
+					    </div>
+					  </div>
+					  <% } %>
+					</div>
+					
+				</div>
+			<% } %>
+			</div>
+		<% } %>
+	<% }	%>
+</div>
+
+<script>
+	$('.button.extendedHelp')
+	  .popup()
+	;
+</script>
+  
+<% include ./blocks/footer %>

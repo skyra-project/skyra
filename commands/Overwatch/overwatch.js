@@ -91,6 +91,7 @@ module.exports = class Overwatch extends Command {
             if (!tag) throw "you must write your discriminator number.";
             else if (!/\b\d{4,5}\b/.test(tag)) throw "you must write a valid discriminator number.";
             return Object.assign(profile, {
+                platform: "pc",
                 battletag: `${username}-${tag}`,
                 user: username,
                 tag,

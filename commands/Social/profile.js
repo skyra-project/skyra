@@ -1,6 +1,4 @@
-const Command = require("../../classes/command");
-
-const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
+const { Command, Managers: { SocialGlobal: { fetchAll: fetchGlobal } } } = require("../../index");
 const { User: fetchUser } = require("../../functions/search");
 const { fetchAvatar } = require("../../functions/wrappers");
 const { readFile } = require("fs-nextra");

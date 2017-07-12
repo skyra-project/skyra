@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-const constants = require("../../utils/constants");
+const { Command, Constants } = require("../../index");
 const { fillRoundRect } = require("../../functions/canvas");
 
 const { join } = require("path");
@@ -8,7 +7,7 @@ const snekfetch = require("snekfetch");
 const Canvas = require("canvas");
 
 /* Autentification */
-const { GOOGLE_MAP_API, WEATHER_API } = constants.getConfig.tokens;
+const { GOOGLE_MAP_API, WEATHER_API } = Constants.getConfig.tokens;
 
 const colors = {
     cloudy: "#88929F",

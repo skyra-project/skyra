@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-
+const { Command } = require("../../index");
 const exec = require("util").promisify(require("child_process").exec);
 
 /* eslint-disable class-methods-use-this */

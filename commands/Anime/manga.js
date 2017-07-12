@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-const { oneToTen, basicAuth, getConfig, httpResponses } = require("../../utils/constants");
+const { Command, Constants: { oneToTen, basicAuth, getConfig, httpResponses }, Discord: { Embed } } = require("../../index");
 const splitText = require("../../functions/splitText");
 const fetch = require("../../functions/fetch");
 const { fromString } = require("html-to-text");
@@ -48,7 +47,7 @@ module.exports = class Manga extends Command {
         const fres = data.manga.entry[0];
         const score = Math.ceil(parseFloat(fres.score));
         const context = fromString(fres.synopsis.toString());
-        const embed = new this.client.methods.Embed()
+        const embed = new Embed()
             .setColor(oneToTen(score).color)
             .setAuthor(`${fres.title} (${fres.episodes ? "unknown" : fres.chapters} chapters and ${fres.volumes ? "unknown" : fres.volumes} volumes)`, `${fres.image || msg.author.displayAvatarURL({ size: 128 })}`)
             .setDescription(

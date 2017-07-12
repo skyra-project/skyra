@@ -1,6 +1,4 @@
-const Command = require("../../classes/command");
-
-const MANAGER_SOCIAL_LOCAL = require("../../utils/managerSocialLocal");
+const { Command, Managers: { SocialLocal } } = require("../../index");
 const { User: fetchUser } = require("../../functions/search");
 const Rethink = require("../../providers/rethink");
 
@@ -53,26 +51,26 @@ module.exports = class Social extends Command {
     }
 
     async searchProfile(msg, search) {
-        if (/[0-9]{17,21}/.test(search) && MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
+        if (/[0-9]{17,21}/.test(search) && SocialLocal.get(msg.guild.id).has(search)) {
             return search;
         }
         const user = await fetchUser(search, msg.guild);
         if (user.bot) throw "you can't modify bot profiles, since they don't have one.";
-        if (!MANAGER_SOCIAL_LOCAL.get(msg.guild.id).has(search)) {
+        if (!SocialLocal.get(msg.guild.id).has(search)) {
             const data = { id: user.id, score: 0 };
             await Rethink.append("localScores", msg.guild.id, "scores", data);
-            MANAGER_SOCIAL_LOCAL.insert(msg.guild.id, user.id, data);
+            SocialLocal.insert(msg.guild.id, user.id, data);
         }
         return user.id;
     }
 
     async update(msg, id, value) {
         await Rethink.updateArrayByID("localScores", msg.guild.id, "scores", id, { score: value });
-        MANAGER_SOCIAL_LOCAL.get(msg.guild.id).get(id).score = value;
+        SocialLocal.get(msg.guild.id).get(id).score = value;
     }
 
     async handle(msg, action, ID, value) {
-        const profile = MANAGER_SOCIAL_LOCAL.get(msg.guild.id).get(ID);
+        const profile = SocialLocal.get(msg.guild.id).get(ID);
         if (action === "add") return profile.score + value;
         return Math.max(profile.score - value, 0);
     }

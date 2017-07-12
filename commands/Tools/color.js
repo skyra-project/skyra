@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-
+const { Command } = require("../../index");
 const { luminance, hexConcat, validate: validateColor } = require("../../functions/resolveColor");
 const { join, resolve } = require("path");
 const Canvas = require("canvas");
@@ -14,6 +13,7 @@ const sCL = (c) => {
     return 255;
 };
 
+/* eslint-disable class-methods-use-this */
 module.exports = class Color extends Command {
 
     constructor(...args) {
@@ -46,19 +46,19 @@ module.exports = class Color extends Command {
         });
     }
 
-    async run(msg, [input, diff = 10]) { // eslint-disable-line class-methods-use-this
+    async run(msg, [input, diff = 10]) {
         const { hex, hsl, hsluv, rgb } = validateColor(input);
 
-        const output = await Color.showColor(rgb, diff);
+        const output = await this.showColor(rgb, diff);
         return msg.channel.send([
-            `Color: **${hex.toString()}**`,
-            `RGB: ${rgb.toString()}`,
-            `HSL: ${hsl.toString()}`,
-            `HSLᵤᵥ: ${hsluv.toString()}`,
+            `Color: **${hex}**`,
+            `RGB: ${rgb}`,
+            `HSL: ${hsl}`,
+            `HSLᵤᵥ: ${hsluv}`,
         ].join("\n"), { files: [{ attachment: output, name: "color.png" }] });
     }
 
-    static async showColor(color, diff) {
+    async showColor(color, diff) {
         const c = new Canvas(370, 390);
         const ctx = c.getContext("2d");
 

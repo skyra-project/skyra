@@ -1,6 +1,5 @@
-const Command = require("../../classes/command");
-
-const { version: discordVersion } = require("discord.js");
+const { Command } = require("../../index");
+const { version } = require("discord.js");
 const moment = require("moment");
 require("moment-duration-format");
 
@@ -26,7 +25,7 @@ module.exports = class Status extends Command {
             `• Users      :: ${this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()}`,
             `• Servers    :: ${this.client.guilds.size.toLocaleString()}`,
             `• Channels   :: ${this.client.channels.size.toLocaleString()}`,
-            `• Discord.js :: v${discordVersion}`,
+            `• Discord.js :: v${version}`,
         ], { code: "asciidoc" });
     }
 

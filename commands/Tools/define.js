@@ -1,52 +1,49 @@
+const { Command, Constants: { httpResponses } } = require("../../index");
+const { decode } = new (require("html-entities").XmlEntities)();
 const snekfetch = require("snekfetch");
-const { XmlEntities } = require("html-entities");
-const constants = require("../../utils/constants");
 
-const { decode } = new XmlEntities();
+const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${input}`).then(d => JSON.parse(d.text));
 
-exports.run = async (client, msg, [input]) => {
-    const data = await snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${encodeURIComponent(input)}`).then(d => JSON.parse(d.text));
-    if (!data.tuc || !data.tuc[0]) throw constants.httpResponses(404);
+/* eslint-disable class-methods-use-this */
+module.exports = class Define extends Command {
 
-    const final = [];
-    let index = 1;
-    for (let item of Object.entries(data.tuc.find(t => t.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
-        item = decode(item[1].text.replace(/<\/?i>/g, ""));
-        final.push(`**\`${index}\` ❯** ${item.replace(/`/g, "\\`")}`);
-        index++;
+    constructor(...args) {
+        super(...args, "define", {
+            mode: 1,
+
+            usage: "<input:string>",
+            description: "Check the definition of a word.",
+            extendedHelp: Command.strip`
+                What does "heel" mean?
+                
+                = Usage =
+                Skyra, define [word]
+                Word :: The word or phrase you want to get the definition from.
+                
+                = Example =
+                • Skyra, define heel
+                    1 ❯ Tilt to one side; "The balloon heeled over"; "the wind made the vessel heel"; "The ship listed to starboard".
+                    2 ❯ To arm with a gaff, as a cock for fighting.
+                    3 ❯ In a carding machine, the part of a flat nearest the cylinder.
+                    4 ❯ Part of shoe.
+                    5 ❯ The part of a shoe's sole which supports the foot's heel.
+            `,
+        });
     }
 
-    return msg.send(`Search results for \`${input}\`:\n${final.join("\n")}`);
-};
+    async run(msg, [input]) {
+        const data = await request(encodeURIComponent(input));
+        if (!data.tuc || !data.tuc[0]) throw httpResponses(404);
 
-exports.conf = {
-    enabled: true,
-    runIn: ["text", "dm", "group"],
-    aliases: [],
-    permLevel: 0,
-    botPerms: [],
-    requiredFuncs: [],
-    spam: false,
-    mode: 1,
-    cooldown: 15,
-};
+        const final = [];
+        let index = 1;
+        for (let item of Object.entries(data.tuc.find(t => t.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
+            item = decode(item[1].text.replace(/<\/?i>/g, ""));
+            final.push(`**\`${index}\` ❯** ${item.replace(/`/g, "\\`")}`);
+            index++;
+        }
 
-exports.help = {
-    name: "define",
-    description: "Check the meaning of a word or a phrase.",
-    usage: "<input:string>",
-    usageDelim: "",
-    extendedHelp: [
-        "What does \"heel\" mean?",
-        "",
-        " ❯ Input :: The word or phrase you want to get the definition from.",
-        "",
-        "Examples:",
-        "&define heel",
-        "❯❯ 1 ❯ tilt to one side; \"The balloon heeled over\"; \"the wind made the vessel heel\"; \"The ship listed to starboard\"",
-        "❯❯ 2 ❯ To arm with a gaff, as a cock for fighting.",
-        "❯❯ 3 ❯ In a carding machine, the part of a flat nearest the cylinder.",
-        "❯❯ 4 ❯ part of shoe",
-        "❯❯ 5 ❯ The part of a shoe's sole which supports the foot's heel.",
-    ].join("\n"),
+        return msg.send(`Search results for \`${input}\`:\n${final.join("\n")}`);
+    }
+
 };

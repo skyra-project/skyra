@@ -8,500 +8,470 @@
  *
  */
 
-;(function ($, window, document, undefined) {
-
-"use strict";
-
-window = (typeof window != 'undefined' && window.Math == Math)
+(function ($, window, document, undefined) {
+    window = (typeof window !== "undefined" && window.Math == Math)
   ? window
-  : (typeof self != 'undefined' && self.Math == Math)
+  : (typeof self !== "undefined" && self.Math == Math)
     ? self
-    : Function('return this')()
+    : Function("return this")()
 ;
 
-$.fn.nag = function(parameters) {
-  var
-    $allModules    = $(this),
-    moduleSelector = $allModules.selector || '',
+    $.fn.nag = function (parameters) {
+        let
+            $allModules = $(this),
+            moduleSelector = $allModules.selector || "",
 
-    time           = new Date().getTime(),
-    performance    = [],
+            time = new Date().getTime(),
+            performance = [],
 
-    query          = arguments[0],
-    methodInvoked  = (typeof query == 'string'),
-    queryArguments = [].slice.call(arguments, 1),
-    returnedValue
-  ;
-  $allModules
-    .each(function() {
-      var
-        settings          = ( $.isPlainObject(parameters) )
+            query = arguments[0],
+            methodInvoked = (typeof query === "string"),
+            queryArguments = [].slice.call(arguments, 1),
+            returnedValue
+            ;
+        $allModules
+            .each(function () {
+                let
+                    settings = ($.isPlainObject(parameters))
           ? $.extend(true, {}, $.fn.nag.settings, parameters)
           : $.extend({}, $.fn.nag.settings),
 
-        className       = settings.className,
-        selector        = settings.selector,
-        error           = settings.error,
-        namespace       = settings.namespace,
+                    className = settings.className,
+                    selector = settings.selector,
+                    error = settings.error,
+                    namespace = settings.namespace,
 
-        eventNamespace  = '.' + namespace,
-        moduleNamespace = namespace + '-module',
+                    eventNamespace = `.${namespace}`,
+                    moduleNamespace = `${namespace}-module`,
 
-        $module         = $(this),
+                    $module = $(this),
 
-        $close          = $module.find(selector.close),
-        $context        = (settings.context)
+                    $close = $module.find(selector.close),
+                    $context = (settings.context)
           ? $(settings.context)
-          : $('body'),
+          : $("body"),
 
-        element         = this,
-        instance        = $module.data(moduleNamespace),
+                    element = this,
+                    instance = $module.data(moduleNamespace),
 
-        moduleOffset,
-        moduleHeight,
+                    moduleOffset,
+                    moduleHeight,
 
-        contextWidth,
-        contextHeight,
-        contextOffset,
+                    contextWidth,
+                    contextHeight,
+                    contextOffset,
 
-        yOffset,
-        yPosition,
+                    yOffset,
+                    yPosition,
 
-        timer,
-        module,
+                    timer,
+                    module,
 
-        requestAnimationFrame = window.requestAnimationFrame
+                    requestAnimationFrame = window.requestAnimationFrame
           || window.mozRequestAnimationFrame
           || window.webkitRequestAnimationFrame
           || window.msRequestAnimationFrame
-          || function(callback) { setTimeout(callback, 0); }
-      ;
-      module = {
+          || function (callback) { setTimeout(callback, 0); }
+                    ;
+                module = {
 
-        initialize: function() {
-          module.verbose('Initializing element');
+                    initialize() {
+                        module.verbose("Initializing element");
 
-          $module
-            .on('click' + eventNamespace, selector.close, module.dismiss)
-            .data(moduleNamespace, module)
+                        $module
+                            .on(`click${eventNamespace}`, selector.close, module.dismiss)
+                            .data(moduleNamespace, module)
           ;
 
-          if(settings.detachable && $module.parent()[0] !== $context[0]) {
-            $module
-              .detach()
-              .prependTo($context)
+                        if (settings.detachable && $module.parent()[0] !== $context[0]) {
+                            $module
+                                .detach()
+                                .prependTo($context)
             ;
-          }
+                        }
 
-          if(settings.displayTime > 0) {
-            setTimeout(module.hide, settings.displayTime);
-          }
-          module.show();
-        },
+                        if (settings.displayTime > 0) {
+                            setTimeout(module.hide, settings.displayTime);
+                        }
+                        module.show();
+                    },
 
-        destroy: function() {
-          module.verbose('Destroying instance');
-          $module
-            .removeData(moduleNamespace)
-            .off(eventNamespace)
+                    destroy() {
+                        module.verbose("Destroying instance");
+                        $module
+                            .removeData(moduleNamespace)
+                            .off(eventNamespace)
           ;
-        },
+                    },
 
-        show: function() {
-          if( module.should.show() && !$module.is(':visible') ) {
-            module.debug('Showing nag', settings.animation.show);
-            if(settings.animation.show == 'fade') {
-              $module
-                .fadeIn(settings.duration, settings.easing)
+                    show() {
+                        if (module.should.show() && !$module.is(":visible")) {
+                            module.debug("Showing nag", settings.animation.show);
+                            if (settings.animation.show == "fade") {
+                                $module
+                                    .fadeIn(settings.duration, settings.easing)
               ;
-            }
-            else {
-              $module
-                .slideDown(settings.duration, settings.easing)
+                            } else {
+                                $module
+                                    .slideDown(settings.duration, settings.easing)
               ;
-            }
-          }
-        },
+                            }
+                        }
+                    },
 
-        hide: function() {
-          module.debug('Showing nag', settings.animation.hide);
-          if(settings.animation.show == 'fade') {
-            $module
-              .fadeIn(settings.duration, settings.easing)
+                    hide() {
+                        module.debug("Showing nag", settings.animation.hide);
+                        if (settings.animation.show == "fade") {
+                            $module
+                                .fadeIn(settings.duration, settings.easing)
             ;
-          }
-          else {
-            $module
-              .slideUp(settings.duration, settings.easing)
+                        } else {
+                            $module
+                                .slideUp(settings.duration, settings.easing)
             ;
-          }
-        },
+                        }
+                    },
 
-        onHide: function() {
-          module.debug('Removing nag', settings.animation.hide);
-          $module.remove();
-          if (settings.onHide) {
-            settings.onHide();
-          }
-        },
+                    onHide() {
+                        module.debug("Removing nag", settings.animation.hide);
+                        $module.remove();
+                        if (settings.onHide) {
+                            settings.onHide();
+                        }
+                    },
 
-        dismiss: function(event) {
-          if(settings.storageMethod) {
-            module.storage.set(settings.key, settings.value);
-          }
-          module.hide();
-          event.stopImmediatePropagation();
-          event.preventDefault();
-        },
+                    dismiss(event) {
+                        if (settings.storageMethod) {
+                            module.storage.set(settings.key, settings.value);
+                        }
+                        module.hide();
+                        event.stopImmediatePropagation();
+                        event.preventDefault();
+                    },
 
-        should: {
-          show: function() {
-            if(settings.persist) {
-              module.debug('Persistent nag is set, can show nag');
-              return true;
-            }
-            if( module.storage.get(settings.key) != settings.value.toString() ) {
-              module.debug('Stored value is not set, can show nag', module.storage.get(settings.key));
-              return true;
-            }
-            module.debug('Stored value is set, cannot show nag', module.storage.get(settings.key));
-            return false;
-          }
-        },
+                    should: {
+                        show() {
+                            if (settings.persist) {
+                                module.debug("Persistent nag is set, can show nag");
+                                return true;
+                            }
+                            if (module.storage.get(settings.key) != settings.value.toString()) {
+                                module.debug("Stored value is not set, can show nag", module.storage.get(settings.key));
+                                return true;
+                            }
+                            module.debug("Stored value is set, cannot show nag", module.storage.get(settings.key));
+                            return false;
+                        },
+                    },
 
-        get: {
-          storageOptions: function() {
-            var
+                    get: {
+                        storageOptions() {
+                            const
               options = {}
             ;
-            if(settings.expires) {
-              options.expires = settings.expires;
-            }
-            if(settings.domain) {
-              options.domain = settings.domain;
-            }
-            if(settings.path) {
-              options.path = settings.path;
-            }
-            return options;
-          }
-        },
+                            if (settings.expires) {
+                                options.expires = settings.expires;
+                            }
+                            if (settings.domain) {
+                                options.domain = settings.domain;
+                            }
+                            if (settings.path) {
+                                options.path = settings.path;
+                            }
+                            return options;
+                        },
+                    },
 
-        clear: function() {
-          module.storage.remove(settings.key);
-        },
+                    clear() {
+                        module.storage.remove(settings.key);
+                    },
 
-        storage: {
-          set: function(key, value) {
-            var
+                    storage: {
+                        set(key, value) {
+                            const
               options = module.get.storageOptions()
             ;
-            if(settings.storageMethod == 'localstorage' && window.localStorage !== undefined) {
-              window.localStorage.setItem(key, value);
-              module.debug('Value stored using local storage', key, value);
-            }
-            else if(settings.storageMethod == 'sessionstorage' && window.sessionStorage !== undefined) {
-              window.sessionStorage.setItem(key, value);
-              module.debug('Value stored using session storage', key, value);
-            }
-            else if($.cookie !== undefined) {
-              $.cookie(key, value, options);
-              module.debug('Value stored using cookie', key, value, options);
-            }
-            else {
-              module.error(error.noCookieStorage);
-              return;
-            }
-          },
-          get: function(key, value) {
-            var
+                            if (settings.storageMethod == "localstorage" && window.localStorage !== undefined) {
+                                window.localStorage.setItem(key, value);
+                                module.debug("Value stored using local storage", key, value);
+                            } else if (settings.storageMethod == "sessionstorage" && window.sessionStorage !== undefined) {
+                                window.sessionStorage.setItem(key, value);
+                                module.debug("Value stored using session storage", key, value);
+                            } else if ($.cookie !== undefined) {
+                                $.cookie(key, value, options);
+                                module.debug("Value stored using cookie", key, value, options);
+                            } else {
+                                module.error(error.noCookieStorage);
+                            }
+                        },
+                        get(key, value) {
+                            let
               storedValue
             ;
-            if(settings.storageMethod == 'localstorage' && window.localStorage !== undefined) {
-              storedValue = window.localStorage.getItem(key);
-            }
-            else if(settings.storageMethod == 'sessionstorage' && window.sessionStorage !== undefined) {
-              storedValue = window.sessionStorage.getItem(key);
-            }
+                            if (settings.storageMethod == "localstorage" && window.localStorage !== undefined) {
+                                storedValue = window.localStorage.getItem(key);
+                            } else if (settings.storageMethod == "sessionstorage" && window.sessionStorage !== undefined) {
+                                storedValue = window.sessionStorage.getItem(key);
+                            }
             // get by cookie
-            else if($.cookie !== undefined) {
-              storedValue = $.cookie(key);
-            }
-            else {
-              module.error(error.noCookieStorage);
-            }
-            if(storedValue == 'undefined' || storedValue == 'null' || storedValue === undefined || storedValue === null) {
-              storedValue = undefined;
-            }
-            return storedValue;
-          },
-          remove: function(key) {
-            var
+                            else if ($.cookie !== undefined) {
+                                storedValue = $.cookie(key);
+                            } else {
+                                module.error(error.noCookieStorage);
+                            }
+                            if (storedValue == "undefined" || storedValue == "null" || storedValue === undefined || storedValue === null) {
+                                storedValue = undefined;
+                            }
+                            return storedValue;
+                        },
+                        remove(key) {
+                            const
               options = module.get.storageOptions()
             ;
-            if(settings.storageMethod == 'localstorage' && window.localStorage !== undefined) {
-              window.localStorage.removeItem(key);
-            }
-            else if(settings.storageMethod == 'sessionstorage' && window.sessionStorage !== undefined) {
-              window.sessionStorage.removeItem(key);
-            }
+                            if (settings.storageMethod == "localstorage" && window.localStorage !== undefined) {
+                                window.localStorage.removeItem(key);
+                            } else if (settings.storageMethod == "sessionstorage" && window.sessionStorage !== undefined) {
+                                window.sessionStorage.removeItem(key);
+                            }
             // store by cookie
-            else if($.cookie !== undefined) {
-              $.removeCookie(key, options);
-            }
-            else {
-              module.error(error.noStorage);
-            }
-          }
-        },
+                            else if ($.cookie !== undefined) {
+                                $.removeCookie(key, options);
+                            } else {
+                                module.error(error.noStorage);
+                            }
+                        },
+                    },
 
-        setting: function(name, value) {
-          module.debug('Changing setting', name, value);
-          if( $.isPlainObject(name) ) {
-            $.extend(true, settings, name);
-          }
-          else if(value !== undefined) {
-            if($.isPlainObject(settings[name])) {
-              $.extend(true, settings[name], value);
-            }
-            else {
-              settings[name] = value;
-            }
-          }
-          else {
-            return settings[name];
-          }
-        },
-        internal: function(name, value) {
-          if( $.isPlainObject(name) ) {
-            $.extend(true, module, name);
-          }
-          else if(value !== undefined) {
-            module[name] = value;
-          }
-          else {
-            return module[name];
-          }
-        },
-        debug: function() {
-          if(!settings.silent && settings.debug) {
-            if(settings.performance) {
-              module.performance.log(arguments);
-            }
-            else {
-              module.debug = Function.prototype.bind.call(console.info, console, settings.name + ':');
-              module.debug.apply(console, arguments);
-            }
-          }
-        },
-        verbose: function() {
-          if(!settings.silent && settings.verbose && settings.debug) {
-            if(settings.performance) {
-              module.performance.log(arguments);
-            }
-            else {
-              module.verbose = Function.prototype.bind.call(console.info, console, settings.name + ':');
-              module.verbose.apply(console, arguments);
-            }
-          }
-        },
-        error: function() {
-          if(!settings.silent) {
-            module.error = Function.prototype.bind.call(console.error, console, settings.name + ':');
-            module.error.apply(console, arguments);
-          }
-        },
-        performance: {
-          log: function(message) {
-            var
-              currentTime,
-              executionTime,
-              previousTime
-            ;
-            if(settings.performance) {
-              currentTime   = new Date().getTime();
-              previousTime  = time || currentTime;
-              executionTime = currentTime - previousTime;
-              time          = currentTime;
-              performance.push({
-                'Name'           : message[0],
-                'Arguments'      : [].slice.call(message, 1) || '',
-                'Element'        : element,
-                'Execution Time' : executionTime
-              });
-            }
-            clearTimeout(module.performance.timer);
-            module.performance.timer = setTimeout(module.performance.display, 500);
-          },
-          display: function() {
-            var
-              title = settings.name + ':',
-              totalTime = 0
-            ;
-            time = false;
-            clearTimeout(module.performance.timer);
-            $.each(performance, function(index, data) {
-              totalTime += data['Execution Time'];
-            });
-            title += ' ' + totalTime + 'ms';
-            if(moduleSelector) {
-              title += ' \'' + moduleSelector + '\'';
-            }
-            if( (console.group !== undefined || console.table !== undefined) && performance.length > 0) {
-              console.groupCollapsed(title);
-              if(console.table) {
-                console.table(performance);
-              }
-              else {
-                $.each(performance, function(index, data) {
-                  console.log(data['Name'] + ': ' + data['Execution Time']+'ms');
-                });
-              }
-              console.groupEnd();
-            }
-            performance = [];
-          }
-        },
-        invoke: function(query, passedArguments, context) {
-          var
-            object = instance,
-            maxDepth,
-            found,
-            response
-          ;
-          passedArguments = passedArguments || queryArguments;
-          context         = element         || context;
-          if(typeof query == 'string' && object !== undefined) {
-            query    = query.split(/[\. ]/);
-            maxDepth = query.length - 1;
-            $.each(query, function(depth, value) {
-              var camelCaseValue = (depth != maxDepth)
+                    setting(name, value) {
+                        module.debug("Changing setting", name, value);
+                        if ($.isPlainObject(name)) {
+                            $.extend(true, settings, name);
+                        } else if (value !== undefined) {
+                            if ($.isPlainObject(settings[name])) {
+                                $.extend(true, settings[name], value);
+                            } else {
+                                settings[name] = value;
+                            }
+                        } else {
+                            return settings[name];
+                        }
+                    },
+                    internal(name, value) {
+                        if ($.isPlainObject(name)) {
+                            $.extend(true, module, name);
+                        } else if (value !== undefined) {
+                            module[name] = value;
+                        } else {
+                            return module[name];
+                        }
+                    },
+                    debug() {
+                        if (!settings.silent && settings.debug) {
+                            if (settings.performance) {
+                                module.performance.log(arguments);
+                            } else {
+                                module.debug = Function.prototype.bind.call(console.info, console, `${settings.name}:`);
+                                module.debug.apply(console, arguments);
+                            }
+                        }
+                    },
+                    verbose() {
+                        if (!settings.silent && settings.verbose && settings.debug) {
+                            if (settings.performance) {
+                                module.performance.log(arguments);
+                            } else {
+                                module.verbose = Function.prototype.bind.call(console.info, console, `${settings.name}:`);
+                                module.verbose.apply(console, arguments);
+                            }
+                        }
+                    },
+                    error() {
+                        if (!settings.silent) {
+                            module.error = Function.prototype.bind.call(console.error, console, `${settings.name}:`);
+                            module.error.apply(console, arguments);
+                        }
+                    },
+                    performance: {
+                        log(message) {
+                            let
+                                currentTime,
+                                executionTime,
+                                previousTime
+                                ;
+                            if (settings.performance) {
+                                currentTime = new Date().getTime();
+                                previousTime = time || currentTime;
+                                executionTime = currentTime - previousTime;
+                                time = currentTime;
+                                performance.push({
+                                    Name: message[0],
+                                    Arguments: [].slice.call(message, 1) || "",
+                                    Element: element,
+                                    "Execution Time": executionTime,
+                                });
+                            }
+                            clearTimeout(module.performance.timer);
+                            module.performance.timer = setTimeout(module.performance.display, 500);
+                        },
+                        display() {
+                            let
+                                title = `${settings.name}:`,
+                                totalTime = 0
+                                ;
+                            time = false;
+                            clearTimeout(module.performance.timer);
+                            $.each(performance, (index, data) => {
+                                totalTime += data["Execution Time"];
+                            });
+                            title += ` ${totalTime}ms`;
+                            if (moduleSelector) {
+                                title += ` '${moduleSelector}'`;
+                            }
+                            if ((console.group !== undefined || console.table !== undefined) && performance.length > 0) {
+                                console.groupCollapsed(title);
+                                if (console.table) {
+                                    console.table(performance);
+                                } else {
+                                    $.each(performance, (index, data) => {
+                                        console.log(`${data.Name}: ${data["Execution Time"]}ms`);
+                                    });
+                                }
+                                console.groupEnd();
+                            }
+                            performance = [];
+                        },
+                    },
+                    invoke(query, passedArguments, context) {
+                        let
+                            object = instance,
+                            maxDepth,
+                            found,
+                            response
+                            ;
+                        passedArguments = passedArguments || queryArguments;
+                        context = element || context;
+                        if (typeof query === "string" && object !== undefined) {
+                            query = query.split(/[\. ]/);
+                            maxDepth = query.length - 1;
+                            $.each(query, (depth, value) => {
+                                const camelCaseValue = (depth != maxDepth)
                 ? value + query[depth + 1].charAt(0).toUpperCase() + query[depth + 1].slice(1)
                 : query
               ;
-              if( $.isPlainObject( object[camelCaseValue] ) && (depth != maxDepth) ) {
-                object = object[camelCaseValue];
-              }
-              else if( object[camelCaseValue] !== undefined ) {
-                found = object[camelCaseValue];
-                return false;
-              }
-              else if( $.isPlainObject( object[value] ) && (depth != maxDepth) ) {
-                object = object[value];
-              }
-              else if( object[value] !== undefined ) {
-                found = object[value];
-                return false;
-              }
-              else {
-                module.error(error.method, query);
-                return false;
-              }
-            });
-          }
-          if ( $.isFunction( found ) ) {
-            response = found.apply(context, passedArguments);
-          }
-          else if(found !== undefined) {
-            response = found;
-          }
-          if($.isArray(returnedValue)) {
-            returnedValue.push(response);
-          }
-          else if(returnedValue !== undefined) {
-            returnedValue = [returnedValue, response];
-          }
-          else if(response !== undefined) {
-            returnedValue = response;
-          }
-          return found;
-        }
-      };
+                                if ($.isPlainObject(object[camelCaseValue]) && (depth != maxDepth)) {
+                                    object = object[camelCaseValue];
+                                } else if (object[camelCaseValue] !== undefined) {
+                                    found = object[camelCaseValue];
+                                    return false;
+                                } else if ($.isPlainObject(object[value]) && (depth != maxDepth)) {
+                                    object = object[value];
+                                } else if (object[value] !== undefined) {
+                                    found = object[value];
+                                    return false;
+                                } else {
+                                    module.error(error.method, query);
+                                    return false;
+                                }
+                            });
+                        }
+                        if ($.isFunction(found)) {
+                            response = found.apply(context, passedArguments);
+                        } else if (found !== undefined) {
+                            response = found;
+                        }
+                        if ($.isArray(returnedValue)) {
+                            returnedValue.push(response);
+                        } else if (returnedValue !== undefined) {
+                            returnedValue = [returnedValue, response];
+                        } else if (response !== undefined) {
+                            returnedValue = response;
+                        }
+                        return found;
+                    },
+                };
 
-      if(methodInvoked) {
-        if(instance === undefined) {
-          module.initialize();
-        }
-        module.invoke(query);
-      }
-      else {
-        if(instance !== undefined) {
-          instance.invoke('destroy');
-        }
-        module.initialize();
-      }
-    })
+                if (methodInvoked) {
+                    if (instance === undefined) {
+                        module.initialize();
+                    }
+                    module.invoke(query);
+                } else {
+                    if (instance !== undefined) {
+                        instance.invoke("destroy");
+                    }
+                    module.initialize();
+                }
+            })
   ;
 
-  return (returnedValue !== undefined)
+        return (returnedValue !== undefined)
     ? returnedValue
     : this
   ;
-};
+    };
 
-$.fn.nag.settings = {
+    $.fn.nag.settings = {
 
-  name        : 'Nag',
+        name: "Nag",
 
-  silent      : false,
-  debug       : false,
-  verbose     : false,
-  performance : true,
+        silent: false,
+        debug: false,
+        verbose: false,
+        performance: true,
 
-  namespace   : 'Nag',
+        namespace: "Nag",
 
   // allows cookie to be overridden
-  persist     : false,
+        persist: false,
 
   // set to zero to require manually dismissal, otherwise hides on its own
-  displayTime : 0,
+        displayTime: 0,
 
-  animation   : {
-    show : 'slide',
-    hide : 'slide'
-  },
+        animation: {
+            show: "slide",
+            hide: "slide",
+        },
 
-  context       : false,
-  detachable    : false,
+        context: false,
+        detachable: false,
 
-  expires       : 30,
-  domain        : false,
-  path          : '/',
+        expires: 30,
+        domain: false,
+        path: "/",
 
   // type of storage to use
-  storageMethod : 'cookie',
+        storageMethod: "cookie",
 
   // value to store in dismissed localstorage/cookie
-  key           : 'nag',
-  value         : 'dismiss',
+        key: "nag",
+        value: "dismiss",
 
-  error: {
-    noCookieStorage : '$.cookie is not included. A storage solution is required.',
-    noStorage       : 'Neither $.cookie or store is defined. A storage solution is required for storing state',
-    method          : 'The method you called is not defined.'
-  },
+        error: {
+            noCookieStorage: "$.cookie is not included. A storage solution is required.",
+            noStorage: "Neither $.cookie or store is defined. A storage solution is required for storing state",
+            method: "The method you called is not defined.",
+        },
 
-  className     : {
-    bottom : 'bottom',
-    fixed  : 'fixed'
-  },
+        className: {
+            bottom: "bottom",
+            fixed: "fixed",
+        },
 
-  selector      : {
-    close : '.close.icon'
-  },
+        selector: {
+            close: ".close.icon",
+        },
 
-  speed         : 500,
-  easing        : 'easeOutQuad',
+        speed: 500,
+        easing: "easeOutQuad",
 
-  onHide: function() {}
+        onHide() {},
 
-};
+    };
 
 // Adds easing
-$.extend( $.easing, {
-  easeOutQuad: function (x, t, b, c, d) {
-    return -c *(t/=d)*(t-2) + b;
-  }
-});
-
-})( jQuery, window, document );
+    $.extend($.easing, {
+        easeOutQuad(x, t, b, c, d) {
+            return -c * (t /= d) * (t - 2) + b;
+        },
+    });
+}(jQuery, window, document));

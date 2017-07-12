@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-
+const { Command } = require("../../index");
 const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
 const Rethink = require("../../providers/rethink");
 

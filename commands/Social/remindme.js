@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-
+const { Command } = require("../../index");
 const { timer } = require("../../functions/wrappers");
 
 /* eslint-disable class-methods-use-this */

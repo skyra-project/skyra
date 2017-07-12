@@ -1,4 +1,4 @@
-const { Client, Collection, MessageEmbed, MessageCollector, escapeMarkdown, splitMessage, Permissions } = require("discord.js");
+const { Client, Collection, Permissions } = require("discord.js");
 const path = require("path");
 const now = require("performance-now");
 const CommandMessage = require("./commandMessage");
@@ -58,13 +58,6 @@ module.exports = class Komada extends Client {
         this.commandMessageLifetime = 60;
         this.commandMessageSweep = 120;
         this.ready = false;
-        this.methods = {
-            Collection,
-            Embed: MessageEmbed,
-            MessageCollector,
-            escapeMarkdown,
-            splitMessage,
-        };
         this.application = null;
         this.version = "1.10.0 TLU";
         // this.clock = new Clock(this);

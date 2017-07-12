@@ -1,4 +1,4 @@
-const Command = require("../../classes/command");
+const { Command } = require("../../index");
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Echo extends Command {

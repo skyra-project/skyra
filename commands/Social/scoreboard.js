@@ -1,7 +1,4 @@
-const Command = require("../../classes/command");
-
-const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
-const { fetchAll: fetchLocal } = require("../../utils/managerSocialLocal");
+const { Command, Managers: { SocialGlobal: { fetchAll: fetchGlobal }, SocialLocal: { fetchAll: fetchLocal } } } = require("../../index");
 
 const titles = {
     global: "🌐 Global Score Scoreboard",

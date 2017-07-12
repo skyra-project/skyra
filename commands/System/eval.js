@@ -1,4 +1,4 @@
-const Command = require("../../classes/command");
+const { Command } = require("../../index");
 const clean = require("../../functions/clean");
 const { inspect } = require("util");
 const now = require("performance-now");

@@ -1,37 +1,32 @@
-const { Channel: fetchChannel } = require("../../functions/search");
+const { Command, Discord: { Embed } } = require("../../index");
 
-exports.run = async (client, msg, [searchMessage, searchChannel = msg.channel]) => {
-    if (!/[0-9]{17,21}/.test(searchMessage)) throw "I was expecting a Message Snowflake (Message ID).";
-    const channel = await fetchChannel(searchChannel, msg.guild);
-    const m = await channel.fetchMessage(searchMessage);
+/* eslint-disable class-methods-use-this */
+module.exports = class Quote extends Command {
 
-    const attachment = m.attachments.size ? m.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split(".").pop())) : null;
-    if (!attachment && !m.content) throw "it is weird, but this message doesn't have a content nor image.";
+    constructor(...args) {
+        super(...args, "quote", {
+            botPerms: ["EMBED_LINKS"],
+            mode: 2,
 
-    const embed = new client.methods.Embed()
-        .setAuthor(m.author.tag, m.author.displayAvatarURL({ size: 128 }))
-        .setDescription(m.content)
-        .setImage(attachment ? attachment.url : null)
-        .setTimestamp(m.createdAt);
-    return msg.send({ embed });
-};
+            usage: "<message:string{17,21}> [channel:channel]",
+            usageDelim: " ",
+            description: "Quote another people's message.",
+        });
+    }
 
-exports.conf = {
-    enabled: true,
-    runIn: ["text"],
-    aliases: [],
-    permLevel: 0,
-    botPerms: [],
-    requiredFuncs: [],
-    spam: false,
-    mode: 2,
-    cooldown: 30,
-};
+    async run(msg, [searchMessage, channel = msg.channel]) {
+        if (!/[0-9]{17,21}/.test(searchMessage)) throw "I was expecting a Message Snowflake (Message ID).";
+        const m = await channel.fetchMessage(searchMessage).catch(Command.handleError);
 
-exports.help = {
-    name: "quote",
-    description: "Quote another people's message.",
-    usage: "<message:string> [channel:string]",
-    usageDelim: " ",
-    extendedHelp: "",
+        const attachment = m.attachments.size ? m.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split(".").pop())) : null;
+        if (!attachment && !m.content) throw "it is weird, but this message doesn't have a content nor image.";
+
+        const embed = new Embed()
+            .setAuthor(m.author.tag, m.author.displayAvatarURL({ size: 128 }))
+            .setDescription(m.content)
+            .setImage(attachment ? attachment.url : null)
+            .setTimestamp(m.createdAt);
+        return msg.send({ embed });
+    }
+
 };

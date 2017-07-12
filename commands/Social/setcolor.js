@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-
+const { Command, Discord: { Embed } } = require("../../index");
 const { validate: validateColor } = require("../../functions/resolveColor");
 
 /* eslint-disable class-methods-use-this */
@@ -35,7 +34,7 @@ module.exports = class SetColor extends Command {
         const color = hex.toString().slice(1);
         await msg.author.profile.update({ color });
 
-        const embed = new this.client.methods.Embed()
+        const embed = new Embed()
             .setColor(b10.value)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(`Colour changed to ${hex.toString()}`);

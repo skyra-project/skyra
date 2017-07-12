@@ -1,5 +1,4 @@
-const Command = require("../../classes/command");
-
+const { Command } = require("../../index");
 const { User: fetchUser } = require("../../functions/search");
 const { fetchAvatar } = require("../../functions/wrappers");
 const { readFile } = require("fs-nextra");

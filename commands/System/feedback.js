@@ -1,10 +1,11 @@
-const Command = require("../../classes/command");
+const { Command, Discord: { Embed } } = require("../../index");
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Feedback extends Command {
 
     constructor(...args) {
         super(...args, "feedback", {
+            botPerms: ["EMBED_LINKS"],
             mode: 2,
 
             usage: "<message:string{8,1900}>",
@@ -15,7 +16,7 @@ module.exports = class Feedback extends Command {
     }
 
     async run(msg, [feedback]) {
-        const embed = new this.client.methods.Embed()
+        const embed = new Embed()
             .setColor(0x06d310)
             .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(feedback)

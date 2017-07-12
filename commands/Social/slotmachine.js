@@ -1,4 +1,4 @@
-const Command = require("../../classes/command");
+const { Command, Discord: { Embed } } = require("../../index");
 
 /* EMBED ASSETS */
 const reels = [
@@ -92,6 +92,7 @@ module.exports = class SlotMachine extends Command {
     constructor(...args) {
         super(...args, "balance", {
             aliases: ["slotmachines", "slot"],
+            botPerms: ["EMBED_LINKS"],
             mode: 1,
             spam: true,
 
@@ -143,7 +144,7 @@ module.exports = class SlotMachine extends Command {
             `${array[6]}ー${array[7]}ー${array[8]}`,
         ].join("\n");
 
-        const embed = new this.client.methods.Embed();
+        const embed = new Embed();
         if (win) {
             embed
                 .setColor(0x5C913B)

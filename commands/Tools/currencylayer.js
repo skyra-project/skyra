@@ -1,7 +1,7 @@
-const Command = require("../../classes/command");
-
+const { Command, Constants } = require("../../index");
 const snekfetch = require("snekfetch");
-const key = require("../../utils/constants").getConfig.tokens.currencyLayer;
+
+const key = Constants.getConfig.tokens.currencyLayer;
 
 /* eslint-disable no-multi-spaces */
 const currencyList = [

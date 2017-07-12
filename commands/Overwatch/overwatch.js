@@ -1,4 +1,4 @@
-const Command = require("../../classes/command");
+const { Command, Discord: { Embed } } = require("../../index");
 
 const { get: fetchProfile } = require("../../functions/overwatch");
 const OVERWATCH = require("../../utils/overwatch.js");
@@ -22,6 +22,7 @@ module.exports = class Overwatch extends Command {
 
     constructor(...args) {
         super(...args, "overwatch", {
+            botPerms: ["EMBED_LINKS"],
             aliases: ["ow"],
             mode: 2,
 
@@ -74,7 +75,7 @@ module.exports = class Overwatch extends Command {
         const output = await this.fetchData(resolved.careerLink, profile);
         if (output instanceof Buffer) return msg.send({ files: [{ attachment: output, name: "overwatch.png" }] });
         const { overview, title, data, url } = output;
-        const embed = new this.client.methods.Embed()
+        const embed = new Embed()
             .setURL(url)
             .setColor(msg.color)
             .setThumbnail(overview.profile.avatar)

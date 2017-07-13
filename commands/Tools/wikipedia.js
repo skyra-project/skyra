@@ -1,53 +1,44 @@
-const { httpResponses } = require("../../utils/constants");
+const { Command, Constants: { httpResponses }, Discord: { Embed } } = require("../../index");
 const splitText = require("../../functions/splitText");
 const snekfetch = require("snekfetch");
 
-exports.run = async (client, msg, [input]) => {
-    input = encodeURIComponent(input.replace(/[ ]/g, "_").toLowerCase());
-    const url = `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=${encodeURIComponent(input)}`;
+const baseURL = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=";
 
-    const data = await snekfetch(url).then(d => JSON.parse(d.text));
-    if (data.query.pageids[0] === "-1") throw httpResponses(404);
+/* eslint-disable class-methods-use-this */
+module.exports = class WikiPedia extends Command {
 
-    const content = data.query.pages[data.query.pageids[0]];
-    const wdef = content.extract.length > 1000 ?
-    `${splitText(content.extract, 1000)}... [continue reading](https://en.wikipedia.org/wiki/${encodeURIComponent(input).replace(/\(/g, "%28").replace(/\)/g, "%29")})` :
-    content.extract;
+    constructor(...args) {
+        super(...args, "wikipedia", {
+            aliases: ["wiki"],
+            botPerms: ["EMBED_LINKS"],
+            mode: 1,
 
-    const embed = new client.methods.Embed()
-        .setTitle(content.title)
-        .setURL(`https://en.wikipedia.org/wiki/${encodeURIComponent(input)}`)
-        .setColor(0x05C9E8)
-        .setThumbnail("https://en.wikipedia.org/static/images/project-logos/enwiki.png")
-        .setDescription(`**Description**:\n${wdef.replace(/[\u000A]{2,}/g, "\u000A")}`)
-        .setFooter("© Wikipedia - Creative Commons Attribution-ShareAlike 3.0");
+            usage: "<query:string>",
+            description: "Search something throught Wikipedia.",
+        });
+    }
 
-    return msg.send({ embed });
-};
+    async run(msg, [input]) {
+        const data = await snekfetch(baseURL + encodeURIComponent(input.replace(/[ ]/g, "_").toLowerCase())).then(d => JSON.parse(d.text));
+        if (data.query.pageids[0] === "-1") throw httpResponses(404);
+        const url = `https://en.wikipedia.org/wiki/${encodeURIComponent(input).replace(/\(/g, "%28").replace(/\)/g, "%29")}`;
+        const content = data.query.pages[data.query.pageids[0]];
+        const definition = this.content(content.extract, url);
 
-exports.conf = {
-    enabled: true,
-    runIn: ["text", "dm", "group"],
-    aliases: ["wiki"],
-    permLevel: 0,
-    botPerms: [],
-    requiredFuncs: ["splitText"],
-    spam: false,
-    mode: 1,
-    cooldown: 15,
-};
+        const embed = new Embed()
+            .setTitle(content.title)
+            .setURL(url)
+            .setColor(0x05C9E8)
+            .setThumbnail("https://en.wikipedia.org/static/images/project-logos/enwiki.png")
+            .setDescription(`**Description**:\n${definition.replace(/\n{2,}/g, "\n").replace(/\s{2,}/g, " ")}`)
+            .setFooter("© Wikipedia - Creative Commons Attribution-ShareAlike 3.0");
 
-exports.help = {
-    name: "wikipedia",
-    description: "Search something throught Wikipedia.",
-    usage: "<query:string>",
-    usageDelim: "",
-    extendedHelp: [
-        "Wikipedia!",
-        "",
-        " ❯ Query: the word or phrase whose description you want to get.",
-        "",
-        "Examples:",
-        "&wiki Artificial Intelligence",
-    ].join("\n"),
+        return msg.send({ embed });
+    }
+
+    content(definition, url) {
+        if (definition.length < 750) return definition;
+        return `${splitText(definition, 750)}... [continue reading](${url})`;
+    }
+
 };

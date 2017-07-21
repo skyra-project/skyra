@@ -51,22 +51,3 @@ module.exports = class Googl extends Command {
     }
 
 };
-
-exports.help = {
-    name: "googl",
-
-
-    usageDelim: "",
-    extendedHelp: [
-        "Hey! Do you want me to shorten a link?",
-        "",
-        "Usage:",
-        "&shorten <Link>",
-        "",
-        " ❯ Link: the URL you want shortened",
-        "",
-        "Examples:",
-        "&shorten youtube.com/watch?v=-QB7pw2wCiU",
-        "❯❯ \" Shortened URL: goo.gl/ougrBr \"",
-    ].join("\n"),
-};

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Commands</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Theme CSS -->
+    <link href="css/skyra.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top" class="index">
+    <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
+
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="index.html#page-top">Skyra</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a href="index.html#about">About</a>
+                    </li>
+                    <li>
+                        <a href="index.html#banners">Banners</a>
+                    </li>
+                    <li>
+                        <a href="commands.html">Commands</a>
+                    </li>
+                    <li>
+                        <a href="statistics.html">Statistics</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+        <div class="container" id="maincontent" tabindex="-1">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-text">
+                        <h1 class="name">Dashboard</h1>
+                        <hr class="star-light">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="settings">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                <nav aria-label="guildPager">
+                    <ul class="pager">
+                        <li id="previousPage" class="previous"><span aria-hidden="true">&larr;</span></li>
+                        <li id="nextPage" class="next"><span aria-hidden="true">&rarr;</span></li>
+                    </ul>
+                </nav>
+                <div id="guildList"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        var arr = [{
+            "id": "331519898255622155",
+            "name": "JackSkullOnFire Discord Server",
+            "icon": "04b7cb59d19934b38e5365281f906002",
+            "users": 21
+        }, {
+            "id": "328580213716025356",
+            "name": "GM bois",
+            "icon": "dd3c6d3fb085f312f44e85efeb5897a4",
+            "users": 7
+        }, {
+            "id": "251941179065761793",
+            "name": "Bot-Playground",
+            "icon": "22fcf509f17c3334fceb4de9f3d73a37",
+            "users": 25
+        }, {
+            "id": "328573477101502484",
+            "name": "공기",
+            "icon": "5f3f99cb829759a60568f671c0568ce1",
+            "users": 45
+        }, {
+            "id": "324246341758746634",
+            "name": "Black Desert Online - Blizzard",
+            "icon": "2941c052ad04537fa56ffd8b67a0807a",
+            "users": 48
+        }, {
+            "id": "214740717694615552",
+            "name": "Pro Genji's New Server",
+            "icon": "459cff303c6382c62448e72e5b04a3cf",
+            "users": 32
+        }, {
+            "id": "274984736064274432",
+            "name": "Namy Channel",
+            "icon": null,
+            "users": 3
+        }, {
+            "id": "315824813933461504",
+            "name": "i require mental help",
+            "icon": "08730a92a42df14072cb33bb1a1b257f",
+            "users": 6
+        }, {
+            "id": "334018325514289164",
+            "name": "Overwatch SWOMP",
+            "icon": "24ba5f30dea716b67a67481e9963b045",
+            "users": 22
+        }, {
+            "id": "323100223964446721",
+            "name": "Bambi's Dank Memery",
+            "icon": "422a22e418e7b9aab0ed2444f30bf35e",
+            "users": 2468
+        }, {
+            "id": "85442963840184320",
+            "name": "Osmium",
+            "icon": "aae3e68fc3c0c8324146ae47a2ebf626",
+            "users": 26
+        }, {
+            "id": "271713167267201025",
+            "name": "DevRant",
+            "icon": "d9855a408666349794138ec89d42853c",
+            "users": 88
+        }, {
+            "id": "287311171646652418",
+            "name": "iwi",
+            "icon": "fc6267191a53ab7138029646652f3f4b",
+            "users": 112
+        }, {
+            "id": "258263239593295873",
+            "name": "Wolves",
+            "icon": "e87b67b25253954f94375f43d8b026fc",
+            "users": 23
+        }, {
+            "id": "284443919645933579",
+            "name": "The Cotton Club",
+            "icon": "edbf199a05e927cd08dcb1153946eb39",
+            "users": 52
+        }];
+        var page = 0;
+        var amount = 5;
+        var pages = Math.ceil(arr.length / amount);
+
+        function pagify() {
+            const previousPage = document.getElementById("previousPage");
+            const previousDisabled = previousPage.classList.contains("disabled");
+
+            if (page === 0 && !previousDisabled) previousPage.classList.add("disabled");
+            else if (previousDisabled) previousPage.classList.remove("disabled");
+
+            const nextPage = document.getElementById("nextPage");
+            const nextDisabled = nextPage.classList.contains("disabled");
+
+            if (page === pages - 1 && !nextDisabled) nextPage.classList.add("disabled");
+            else if (nextDisabled) nextPage.classList.remove("disabled");
+
+            var toDraw = [];
+            $("#guildList").html($.map(arr.slice(page * amount, (page * amount) + amount), (a) => {
+                var image;
+                if (a.icon) image = `<img src="https://cdn.discordapp.com/icons/${a.id}/${a.icon}.png?size=64" class="img-circle small">`;
+                else {
+                    toDraw.push([a.id, a.name]);
+                    image = `<canvas id="${a.id}" width="64px" height="64px"></canvas>`;
+                }
+                var button = `<span style="float:right;" class="label label-info helpButton" ><a href="manage/${a.id}">Manage</a></span>`;
+                var title = `<h4>${a.name}<small> ${a.users} members.</small>${button}</h4><br />`;
+                return `<div class="media roundedWell"><div class="media-left media-middle">${image}</div><div class="media-body">${title}</div><div>`;
+            }));
+            toDraw.forEach(function(obj) {
+                draw(...obj)
+            });
+        }
+        pagify();
+
+        function draw(id, name) {
+            const ctx = document.getElementById(id).getContext("2d");
+            ctx.fillStyle = "rgb(245, 245, 245)";
+            ctx.beginPath();
+            ctx.arc(32, 32, 32, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.restore();
+            ctx.textAlign = "center";
+            ctx.font = "24px Arial";
+            ctx.fillStyle = "rgb(23, 23, 23)";
+            ctx.fillText(name.split(" ").map(v => v[0]).join(" "), 32, 41);
+        };
+
+        $("#nextPage").click(function() {
+            if ($(this).hasClass("disabled")) return;
+            page++;
+            pagify();
+        });
+        $("#previousPage").click(function() {
+            if ($(this).hasClass("disabled")) return;
+            page--;
+            pagify();
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="footer-above">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col col-md-6">
+                        <h3>Links</h3>
+                        <ul class="list-inline">
+                            <li>
+                                <a href="https://github.com/dirigeants/komada" class="btn-social btn-outline"><span class="sr-only">Komada</span><i class="fa fa-fw fa-github"></i></a>
+                            </li>
+                            <li>
+                                <a href="https://www.patreon.com/kyranet" class="btn-social btn-outline"><span class="sr-only">Patreon</span><i class="fa fa-fw fa-dollar"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-col col-md-6">
+                        <h3>About Skyra</h3>
+                        <p>Skyra is a Discord Bot created by kyra#2490</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-below">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; Skyra Project 2017
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="js/skyra.min.js"></script>
+
+</body>
+
+</html>

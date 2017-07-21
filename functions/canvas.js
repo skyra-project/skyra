@@ -15,3 +15,12 @@ exports.fillRoundRect = (ctx, x, y, width, height, radius = 5) => {
         ctx.fill();
     }
 };
+
+exports.roundImage = (ctx, image, x, y, radius) => {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    ctx.clip();
+    image.onload = () => ctx.drawImage(image, x - radius, y - radius, radius * 2, radius * 2);
+    ctx.restore();
+};

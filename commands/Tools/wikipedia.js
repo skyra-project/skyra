@@ -19,9 +19,10 @@ module.exports = class WikiPedia extends Command {
     }
 
     async run(msg, [input]) {
-        const data = await snekfetch(baseURL + encodeURIComponent(input.replace(/[ ]/g, "_").toLowerCase())).then(d => JSON.parse(d.text));
+        input = this.parseURL(input);
+        const data = await snekfetch.get(baseURL + input).then(d => JSON.parse(d.text)).catch(Command.handleError);
         if (data.query.pageids[0] === "-1") throw httpResponses(404);
-        const url = `https://en.wikipedia.org/wiki/${encodeURIComponent(input).replace(/\(/g, "%28").replace(/\)/g, "%29")}`;
+        const url = `https://en.wikipedia.org/wiki/${input}`;
         const content = data.query.pages[data.query.pageids[0]];
         const definition = this.content(content.extract, url);
 
@@ -34,6 +35,16 @@ module.exports = class WikiPedia extends Command {
             .setFooter("© Wikipedia - Creative Commons Attribution-ShareAlike 3.0");
 
         return msg.send({ embed });
+    }
+
+    parseURL(url) {
+        return encodeURIComponent(
+            url
+                .toLowerCase()
+                .replace(/[ ]/g, "_")
+                .replace(/\(/g, "%28")
+                .replace(/\)/g, "%29"),
+        );
     }
 
     content(definition, url) {

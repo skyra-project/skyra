@@ -86,9 +86,9 @@ module.exports = class Dashboard {
         const levelHTML = (level) => {
             switch (level) {
                 case 0: return `<span style="float:right;" class="label label-default">${level}</span>`;
-                case 1: return `<span style="float:right;" class="label label-warning">${level}</span>`;
-                case 2: return `<span style="float:right;" class="label label-warning">${level}</span>`;
-                case 3: return `<span style="float:right;" class="label label-warning">${level}</span>`;
+                case 1:
+                case 2:
+                case 3:
                 case 4: return `<span style="float:right;" class="label label-warning">${level}</span>`;
                 default: return `<span style="float:right;" class="label label-danger">${level}</span>`;
             }

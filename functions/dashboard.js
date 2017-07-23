@@ -1,226 +1,251 @@
-const url = require("url");
-const { sep, resolve } = require("path");
+const toTitleCase = require("../functions/toTitleCase");
+const provider = require("../providers/json");
+const { resolve } = require("path");
 const moment = require("moment");
-const { Permissions } = require("discord.js");
+const { Collection } = require("discord.js");
 const express = require("express");
+const DashboardUser = require("./dashboardUser");
+const availableBanners = require("../assets/banners.json");
 
 // Express Plugins
 const passport = require("passport");
 const session = require("express-session");
 const { Strategy } = require("passport-discord");
 const helmet = require("helmet");
-const md = require("marked");
+const bodyParser = require("body-parser");
+const { renderFile } = require("ejs");
 
-const app = express();
+module.exports = class Dashboard {
 
-exports.init = (client) => {
-    this.client = client;
-    const dataDir = resolve(client.baseDir, "bwd", "dashboard");
-    const templateDir = resolve(dataDir, "templates") + sep;
+    constructor(client) {
+        this.client = client;
+        this.users = new Collection();
+        this.owner = client.config.ownerID;
+        this.routes = resolve(client.baseDir, "views");
+        this.server = express();
+        this.server.use(helmet.noCache());
+        this.server.use(session({
+            secret: "SkyraProjectTM",
+            resave: false,
+            saveUninitialized: false,
+        }));
+        this.server.use("/css", express.static(resolve(this.routes, "blocks", "css")));
+        this.server.use("/img", express.static(resolve(this.routes, "blocks", "img")));
+        this.server.use("/js", express.static(resolve(this.routes, "blocks", "js")));
+        this.server.use("/vendor", express.static(resolve(this.routes, "blocks", "vendor")));
+        this.server.use(passport.initialize());
+        this.server.use(passport.session());
+        this.server.use(bodyParser.json());
+        this.server.use(bodyParser.urlencoded({ extended: true }));
+        this.server.use("html", renderFile);
 
-    passport.serializeUser((user, done) => {
-        done(null, user);
-    });
-    passport.deserializeUser((obj, done) => {
-        done(null, obj);
-    });
-
-    passport.use(new Strategy({
-        clientID: client.user.id,
-        clientSecret: client.config.dash.oauthSecret,
-        callbackURL: client.config.dash.callback,
-        scope: ["identify", "guilds"],
-    }, (accessToken, refreshToken, profile, done) => {
-        process.nextTick(() => done(null, profile));
-    }));
-
-    app.use(session({
-        secret: "k0madai$lif3",
-        resave: false,
-        saveUninitialized: false,
-    }));
-
-    app.engine("html", require("ejs").renderFile);
-    app.set("view engine", "html");
-
-    const bodyParser = require("body-parser");
-    app.use(bodyParser.json()); // to support JSON-encoded bodies
-    app.use(bodyParser.urlencoded({ // to support URL-encoded bodies
-        extended: true,
-    }));
-
-    app.locals.domain = client.config.dash.domain;
-
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.use(helmet());
-
-    app.use("/semantic", express.static(`${dataDir}semantic`));
-    app.use("/res", express.static(`${dataDir}res`));
-
-    function checkAuth(req, res, next) {
-        if (req.isAuthenticated()) return next();
-        req.session.backURL = req.url;
-        return res.redirect("/login");
-    }
-
-    function checkAdmin(req, res, next) {
-        if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
-        req.session.backURL = req.originalURL;
-        return res.redirect("/");
-    }
-
-    app.get("/", (req, res) => {
-        res.render(`${templateDir}index.ejs`, {
-            bot: client,
-            user: req.user,
-            auth: req.isAuthenticated(),
+        passport.serializeUser((id, done) => {
+            done(null, id);
         });
-    });
-
-    app.get("/login", (req, res, next) => {
-        if (req.session.backURL) {
-            req.session.backURL = req.session.backURL;
-        } else if (req.headers.referer) {
-            const parsed = url.parse(req.headers.referer);
-            if (parsed.hostname === app.locals.domain) {
-                req.session.backURL = parsed.path;
-            }
-        } else {
-            req.session.backURL = "/";
-        }
-        next();
-    }, passport.authenticate("discord"));
-
-    app.get("/callback", passport.authenticate("discord", {
-        failureRedirect: "/autherror",
-    }), (req, res) => {
-        if (req.session.backURL) {
-            res.redirect(req.session.backURL);
-            req.session.backURL = null;
-        } else {
-            res.redirect("/");
-        }
-    });
-
-    app.get("/admin", checkAdmin, (req, res) => {
-        res.render(`${templateDir}admin.ejs`, {
-            bot: client,
-            user: req.user,
-            auth: req.isAuthenticated(),
+        passport.deserializeUser((id, done) => {
+            done(null, this.users.get(id));
         });
-    });
-
-    app.get("/dashboard", checkAuth, (req, res) => {
-        res.render(`${templateDir}dashboard.ejs`, {
-            perms: Permissions,
-            bot: client,
-            user: req.user,
-            auth: req.isAuthenticated(),
-        });
-    });
-
-    app.get("/me", checkAuth, (req, res) => {
-        res.render(`${templateDir}profile.ejs`, {
-            perms: Permissions,
-            bot: client,
-            user: client.users.get(req.user.id),
-            auth: req.isAuthenticated(),
-            profile: client.users.get(req.user.id).profile,
-        });
-    });
-
-    app.get("/manage/:id", checkAuth, async (req, res) => {
-        const guild = client.guilds.get(req.params.id);
-        const isManaged = guild.member(req.user.id) ? guild.member(req.user.id).permissions.has("MANAGE_GUILD") : false;
-        if (req.user.id === client.config.ownerID) {
-            client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
-        } else if (!isManaged) {
-            res.redirect("/");
-        }
-        await guild.fetchMembers();
-        res.render(`${templateDir}manage.ejs`, {
-            bot: client,
-            guild,
-            user: req.user,
-            auth: req.isAuthenticated(),
-            moment,
-        });
-    });
-
-    app.get("/modlogs/:id", checkAuth, async (req, res) => {
-        const guild = client.guilds.get(req.params.id);
-        const isManaged = guild.member(req.user.id) ? guild.member(req.user.id).permissions.has("MANAGE_GUILD") : false;
-        if (req.user.id === client.config.ownerID) {
-            client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
-        } else if (!isManaged) {
-            res.redirect("/");
-        }
-        const cases = await guild.settings.moderation.getCases();
-        const proc = await Promise.all(cases.map(async (c) => {
-            c.user = await client.fetchUser(c.user).then(u => u.tag);
-            c.moderator = c.moderator ? await client.fetchUser(c.moderator).then(u => u.tag) : null;
-            return c;
+        passport.use(new Strategy({
+            clientID: client.user.id,
+            clientSecret: client.config.dash.oauthSecret,
+            callbackURL: client.config.dash.callback,
+            scope: ["identify", "guilds"],
+        }, (accessToken, refreshToken, profile, done) => {
+            this.users.set(profile.id, new DashboardUser(this.client, profile));
+            process.nextTick(() => done(null, profile.id));
         }));
 
-        await guild.fetchMembers();
-        res.render(`${templateDir}modlogs.ejs`, {
-            bot: client,
-            guild,
-            user: req.user,
-            auth: req.isAuthenticated(),
-            modlogs: proc,
-        });
-    });
-
-    app.post("/execute/:id/:cmd", checkAuth, async (req, res) => {
-        const guild = client.guilds.get(req.params.id);
-        if (!guild) return res.status(404);
-        if (typeof this[req.params.cmd] !== "function") return res.status(404);
-        const isManaged = guild.member(req.user.id) ? guild.member(req.user.id).permissions.has("MANAGE_GUILD") : false;
-        if (req.user.id === client.config.ownerID) {
-            client.emit("log", `Admin bypass for executing command ${req.params.cmd} on server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
-        } else if (!isManaged) {
-            return res.status(403).send({ success: false, message: "You do not have permission to execute this command." });
+        function checkAuth(req, res, next) {
+            if (req.isAuthenticated()) return next();
+            return res.redirect("/login");
         }
-        try {
-            await this[req.params.cmd](guild, req.body);
-            return res.json({ success: true, message: "Something" });
-        } catch (e) {
-            return res.status(500).send(e);
+
+        function checkAdmin(req, res, next) {
+            if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
+            return res.redirect("/");
         }
-    });
 
-    app.get("/docs", (req, res) => {
-        res.render(`${templateDir}docs.ejs`, {
-            bot: client,
-            user: req.user,
-            auth: req.isAuthenticated(),
-            md,
+        const thisClient = {
+            guilds: client.guilds,
+            invite: client.invite,
+            avatar: client.user.avatarURL(),
+        };
+
+        const entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#39;",
+            "/": "&#x2F;",
+            "`": "&#x60;",
+        };
+
+        const escapeHTML = text => String(text).replace(/[&<>"'`/]/g, s => entityMap[s]);
+        const buildHTML = text => text.replace(/\\n/g, "<br />").replace(/= \w+ =/g, match => `<h5>${match.replace(/=/g, "").trim()}</h5>`);
+        const levelHTML = (level) => {
+            switch (level) {
+                case 0: return `<span style="float:right;" class="label label-default">${level}</span>`;
+                case 1: return `<span style="float:right;" class="label label-warning">${level}</span>`;
+                case 2: return `<span style="float:right;" class="label label-warning">${level}</span>`;
+                case 3: return `<span style="float:right;" class="label label-warning">${level}</span>`;
+                case 4: return `<span style="float:right;" class="label label-warning">${level}</span>`;
+                default: return `<span style="float:right;" class="label label-danger">${level}</span>`;
+            }
+        };
+
+        this.commands = new Collection();
+        for (const command of this.client.commands.values()) {
+            if (command.conf.permLevel === 10) continue;
+            const cat = command.help.category;
+            if (!this.commands.has(cat)) this.commands.set(cat, []);
+            const description = `<h5>Description</h5>${escapeHTML(command.help.description)}<br /><br />`;
+            const html = description + (command.help.extendedHelp ? buildHTML(escapeHTML(command.help.extendedHelp)) : "Not set");
+            this.commands.get(cat).push({ level: levelHTML(command.conf.permLevel), guildOnly: !command.conf.runIn.includes("dm"), name: toTitleCase(command.help.name), description: command.help.description, html });
+        }
+
+        const getUser = (req) => {
+            if (req.isAuthenticated() === false) return { id: null, username: null, avatar: null, auth: false };
+            return Object.assign({ auth: true }, req.user);
+        };
+
+        /* Offline Endpoints */
+        this.server.get("/", (req, res) => {
+            res.render(resolve(this.routes, "index.ejs"), { thisClient, user: getUser(req), banners: this.banners });
         });
-    });
-
-    app.get("/banners", (req, res) => {
-        res.render(`${templateDir}banners.ejs`, {
-            bot: client,
-            user: req.user,
-            auth: req.isAuthenticated(),
-            md,
+        this.server.get("/commands", (req, res) => {
+            res.render(resolve(this.routes, "commands.ejs"), { thisClient, user: getUser(req), commands: this.commands });
         });
-    });
+        this.server.get("/statistics", (req, res) => {
+            res.render(resolve(this.routes, "statistics.ejs"), { thisClient, user: getUser(req), usage: this.client.usage });
+        });
+        this.server.get("/invite", (req, res) => {
+            res.redirect(client.invite);
+        });
 
-    app.get("/logout", (req, res) => {
-        req.logout();
-        res.redirect("/");
-    });
+        /* Discord Endpoints */
+        this.server.get("/login", passport.authenticate("discord"));
+        this.server.get("/callback", passport.authenticate("discord", { failureRedirect: "/" }), (req, res) => {
+            res.redirect("/");
+        });
+        this.server.get("/logout", (req, res) => {
+            req.logout();
+            res.redirect("/");
+        });
 
-    client.site = app.listen(client.config.dash.port);
-};
+        /* Dashboard Related Endpoints */
+        this.server.get("/dashboard", checkAuth, (req, res) => {
+            res.render(resolve(this.routes, "dashboard.ejs"), { thisClient, user: getUser(req), page: "Dashboard", guilds: req.user.managableGuilds });
+        });
+        this.server.get("/admin", checkAdmin, (req, res) => {
+            res.render(resolve(this.routes, "dashboard.ejs"), { thisClient, user: getUser(req), page: "Admin", guilds: thisClient.guilds });
+        });
 
+        /* User Related Endpoints */
+        this.server.get("/me", checkAuth, (req, res) => {
+            res.redirect(`/users/${req.user.id}`);
+        });
+        this.server.get("/users/:id", checkAuth, async (req, res) => {
+            const user = await client.fetchUser(req.params.id);
+            res.render(resolve(this.routes, "profile.ejs"), { thisClient, user: getUser(req), profile: user.profile });
+        });
 
-/* Custom Commands */
+        /* News */
+        this.server.get("/news", async (req, res) => {
+            const news = await provider.getAll("news");
+            res.render(resolve(this.routes, "newslist.ejs"), { thisClient, user: getUser(req), news });
+        });
+        this.server.get("/news/:id", async (req, res) => {
+            const news = await provider.get("news", req.param.id);
+            if (news) return res.redirect(404, "/");
+            return res.render(resolve(this.routes, "new.ejs"), { thisClient, user: getUser(req), news });
+        });
 
-exports.leaveGuild = async (guild, options) => {
-    if (options.message) await guild.defaultChannel.send(options.message).catch(e => guild.client.emit("log", e, "error"));
-    await guild.leave();
+        /* Guild Related Endpoints */
+        this.server.get("/guilds/:id", checkAuth, async (req, res) => {
+            const guild = client.guilds.get(req.params.id);
+            if (!guild) return res.redirect(404, "/");
+            const user = await client.fetchUser(req.user.id);
+            const member = await guild.fetchMember(user.id);
+            const isManaged = member.permissions.has("MANAGE_GUILD");
+            const isOwner = user.id === this.owner;
+            if (!isManaged) {
+                if (!isOwner) return res.redirect(403, "/");
+                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
+            }
+            return res.render(resolve(this.routes, "guild.ejs"), { thisClient, user: getUser(req), moment });
+        });
+        this.server.get("/manage/:id", checkAuth, async (req, res) => {
+            const guild = client.guilds.get(req.params.id);
+            if (!guild) return res.redirect(404, "/").redirect("/");
+            const user = await client.fetchUser(req.user.id);
+            const member = await guild.fetchMember(user.id);
+            const isManaged = member.permissions.has("MANAGE_GUILD");
+            const isOwner = user.id === this.owner;
+            if (!isManaged) {
+                if (!isOwner) return res.redirect(403, "/");
+                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
+            }
+            return res.render(resolve(this.routes, "manage.ejs"), { thisClient, user: getUser(req), moment });
+        });
+        this.server.get("/modlogs/:id", checkAuth, async (req, res) => {
+            const guild = client.guilds.get(req.params.id);
+            if (!guild) return res.redirect(404, "/");
+            const user = await client.fetchUser(req.user.id);
+            const member = await guild.fetchMember(user.id);
+            const isManaged = member.permissions.has("MANAGE_GUILD");
+            const isOwner = user.id === this.owner;
+            if (!isManaged) {
+                if (!isOwner) return res.redirect(403, "/");
+                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
+            }
+            const cases = await guild.settings.moderation.getCases();
+            return res.render(resolve(this.routes, "modlogs.ejs"), { thisClient, user: getUser(req), moment, modlogs: cases });
+        });
+
+        /* Command Endpoints */
+        this.server.post("/manage/:id/leave", checkAdmin, async (req, res) => {
+            const guild = client.guilds.get(req.params.id);
+            if (!guild) return res.redirect(404, "/");
+            const message = req.body;
+            if (message) {
+                const channel = guild.channels.get(guild.settings.channels.default || guild.defaultChannel.id);
+                if (channel.postable) await channel.send(message).catch(e => this.client.emit("log", e, "error"));
+            }
+            return guild.leave()
+                .then(() => res.json({ success: true, message: `Successfully left ${guild.name} (${guild.id})` }))
+                .catch((e) => {
+                    this.client.emit("log", e, "error");
+                    return res.status(500).send(e);
+                });
+        });
+
+        this.server.get("*", (req, res) => {
+            res.send("Uhm?");
+        });
+        this.server.use((req, res) => {
+            res.redirect(404, "/").send("Sorry can't find that!");
+        });
+        this.server.use((err, req, res) => {
+            this.client.emit("log", err, "error");
+            res.status(500).send("Something broke!");
+        });
+
+        this.site = this.server.listen(this.client.config.dash.port);
+    }
+
+    async init() {
+        const users = [];
+        for (const banner of Object.values(availableBanners)) {
+            if (users.includes(banner.author)) continue;
+            users.push(banner.author);
+        }
+        await Promise.all(users.map(u => this.client.fetchUser(u)));
+        this.banners = [];
+        for (const banner of Object.values(availableBanners)) {
+            this.banners.push(Object.assign(banner, { resAuthor: this.client.users.get(banner.author).tag }));
+        }
+        return true;
+    }
+
 };

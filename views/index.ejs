@@ -1,0 +1,126 @@
+<%- include("./blocks/header.ejs", { thisClient, user, page: "Home", banners }); %>
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>About</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-2">
+                    <p>Skyra Project started on 24th November 2016, Skyra is a standalone Discord Bot designed to perform a lot of different tasks, from the most basic ones for entertainment, to advanced moderation and a social module, going throught a reminder
+                        system which uses a scheduler function.</p>
+                </div>
+                <div class="col-lg-4">
+                    <p>Skyra is also a great bot, with 24/7 uptime and a Premium music module, is able to reply to commands with a very low latency, coded in JavaScript, it runs on Node.js, using the Discord.js library it does use the latest features from
+                        ES8 and offers a nice and intuitive command usage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WaveList Grid Section -->
+    <section class="success" id="banners">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Banners</h2>
+                    <hr class="star-light">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#waveOneList" class="portfolio-link" data-toggle="modal" onclick="return pagify();">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="img/portfolio/cabin.png" class="img-responsive" alt="Cabin">
+                    </a>
+                </div>
+                <!-- End of Banner list -->
+            </div>
+        </div>
+    </section>
+
+    <!-- WaveList Modals -->
+    <div class="portfolio-modal modal fade" id="waveOneList" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Wave One</h2>
+                            <hr class="star-primary">
+                            <p>From Watchpoint: Oasis, you can preview all Wave:1 banners:</p>
+                            <nav aria-label="guildPager">
+                                <ul class="pager">
+                                    <li id="previousPage" class="previous" onclick="return removePage();"><span aria-hidden="true">&larr;</span></li>
+                                    <li id="nextPage" class="next" onclick="return addPage();"><span aria-hidden="true">&rarr;</span></li>
+                                </ul>
+                            </nav>
+                            <div id="gallery-wave1" class="gallery"></div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            <script>
+                                const arr = <%- JSON.stringify(banners) %>;
+                                const amount = window.innerWidth > 700 ? 6 : 1;
+                                const pages = Math.ceil(arr.length / amount);
+                                let page = 0;
+
+                                const previousPage = document.getElementById("previousPage");
+                                const nextPage = document.getElementById("nextPage");
+
+                                function pagify() {
+                                    const previousDisabled = previousPage.classList.contains("disabled");
+
+                                    if (page === 0 && !previousDisabled) previousPage.classList.add("disabled");
+                                    else if (previousDisabled) previousPage.classList.remove("disabled");
+
+                                    const nextDisabled = nextPage.classList.contains("disabled");
+
+                                    if (page === pages - 1 && !nextDisabled) nextPage.classList.add("disabled");
+                                    else if (nextDisabled) nextPage.classList.remove("disabled");
+
+                                    document.getElementById("gallery-wave1").innerHTML = arr.slice(page * amount, (page * amount) + amount).map((a) => {
+                                        return `<div class="card card-1"><div class="topImage"><img src="https://kyradiscord.weebly.com/files/theme/banners/${a.id}.png" class="undragImage"></img></div><div class="bottom"><h4>${a.title}<br /><small>${a.id}</small></h4><p>${a.resAuthor}</p><h5>${a.price}S</h5></div></div>`;
+                                    }).join("\n");
+                                }
+
+                                const thisModal = document.getElementById("waveOneList");
+
+                                document.onkeydown = function (key = window.event) {
+                                    if (thisModal.classList.contains("in") === false) return;
+                                    if (key.code === "ArrowRight") return addPage();
+                                    else if (key.code === "ArrowLeft") return removePage();
+                                    return;
+                                }
+
+                                /* Controllers */
+                                function addPage() {
+                                    if (nextPage.classList.contains("disabled")) return;
+                                    page++;
+                                    pagify();
+                                }
+                                function removePage() {
+                                    if (previousPage.classList.contains("disabled")) return;
+                                    page--;
+                                    pagify();
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- include("./blocks/footer.ejs"); %>

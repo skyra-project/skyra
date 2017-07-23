@@ -1,0 +1,106 @@
+<%- include("./blocks/header.ejs", { thisClient, user, page: "Statistics", usage }); %>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <section id="statistics">
+        <div class="container">
+            <hr></hr>
+            <h2>CPU Usage</h2>
+            <div class="graph" id="usage"></div>
+            <h2>RAM Usage</h2>
+            <div class="graph" id="ramUsage"></div>
+        </div>
+    </section>
+
+    <script>
+        const now = new Date();
+        const usage = Highcharts.chart("usage", {
+            chart: {},
+            title: {
+                text: null
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                type: "datetime"
+            },
+            yAxis: {
+                title: {
+                    text: null
+                },
+                allowDecimals: false,
+                min: 0,
+                max: 100,
+            },
+            plotOptions: {
+                series: {
+                    pointStart: now.setHours(now.getHours() - 1),
+                    pointInterval: 60 * 1000
+                }
+            },
+            series: [{
+                name: "CPU Usage",
+                data: <%- JSON.stringify(usage.cpu) %>,
+                color: "#00adff",
+                tooltip: {
+                    pointFormat: "CPU Usage: {point.y}%"
+                },
+            }],
+            navigation: {
+                buttonOptions: {
+                    enabled: false
+                }
+            }
+        });
+
+        const ramUsage = Highcharts.chart("ramUsage", {
+            chart: {},
+            title: {
+                text: null
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                type: "datetime"
+            },
+            yAxis: {
+                title: {
+                    text: null
+                },
+                allowDecimals: false,
+                min: 0
+            },
+            plotOptions: {
+                series: {
+                    pointStart: now.setHours(now.getHours() - 1),
+                    pointInterval: 60 * 1000
+                }
+            },
+            series: [{
+                name: "Node.js RAM Usage",
+                data: <%- JSON.stringify(usage.prc) %>,
+                color: "#aeff42",
+                tooltip: {
+                    pointFormat: "Total RAM: {point.y} MB"
+                },
+            }, {
+                name: "RAM Usage",
+                data: <%- JSON.stringify(usage.ram) %>,
+                color: "#323233",
+                tooltip: {
+                    pointFormat: "RAM: {point.y} MB"
+                },
+            }],
+            navigation: {
+                buttonOptions: {
+                    enabled: false
+                }
+            }
+        });
+    </script>
+
+<%- include("./blocks/footer.ejs"); %>

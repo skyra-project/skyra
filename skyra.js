@@ -1,5 +1,5 @@
 const Komada = require("./classes/client");
-const cfg = require("../config.js");
+const cfg = require("./config.js");
 
 const Skyra = new Komada({
     ownerID: cfg.ownerid,

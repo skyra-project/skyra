@@ -1,2 +1,4 @@
-bwd/dashboard/semantic/
 node_modules/
+assets/
+config.js
+music.json

@@ -1,0 +1,102 @@
+<%- include("./blocks/header.ejs", { thisClient, user, page, guilds }); %>
+
+    <section id="dashboard">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                <nav aria-label="guildPager">
+                    <ul class="pager">
+                        <li id="previousPage" class="previous"><span aria-hidden="true" onclick="return removePage();">&larr;</span></li>
+                        <li id="nextPage" class="next"><span aria-hidden="true" onclick="return addPage();">&rarr;</span></li>
+                    </ul>
+                </nav>
+                <div id="guildList"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        <%
+            const guildList = [];
+            if (page === "Admin") {
+                for (const cls of guilds.values()) guildList.push({ id: cls.id, name: cls.name, icon: cls.icon ? `https://cdn.discordapp.com/icons/${cls.id}/${cls.icon}.png?size=64` : null });
+            } else {
+                for (const cls of guilds.values()) guildList.push({ id: cls.id, name: cls.name, icon: cls.icon, imIn: !!cls.guild });
+            }
+        %>
+        const arr = <%- JSON.stringify(guildList) %>;
+        let page = 0;
+        const amount = 5;
+        const pages = Math.ceil(arr.length / amount);
+
+        const previousPage = document.getElementById("previousPage");
+        const nextPage = document.getElementById("nextPage");
+
+        function pagify() {
+            const previousDisabled = previousPage.classList.contains("disabled");
+
+            if (page === 0 && !previousDisabled) previousPage.classList.add("disabled");
+            else if (previousDisabled) previousPage.classList.remove("disabled");
+
+            const nextDisabled = nextPage.classList.contains("disabled");
+
+            if (page === pages - 1 && !nextDisabled) nextPage.classList.add("disabled");
+            else if (nextDisabled) nextPage.classList.remove("disabled");
+
+            const toDraw = [];
+            const currentPage = arr.slice(page * amount, (page * amount) + amount).map((a) => {
+                let image;
+                if (a.icon) image = `<img src="${a.icon}" class="img-circle small">`;
+                else {
+                    toDraw.push([a.id, a.name]);
+                    image = `<canvas id="${a.id}" width="64px" height="64px"></canvas>`;
+                }
+                <% if (page !== "Admin") { %>
+                    const button = a.imIn
+                        ? `<span style="float:right;" class="label label-info helpButton" ><a href="/guilds/${a.id}">Manage</a></span>`
+                        : "<span style=\"float:right;\" class=\"label label-warning helpButton\" ><a href=\"/invite\">Invite</a></span>";
+                <% } else { %>
+                    const button = `<span style="float:right;" class="label label-info helpButton" ><a href="/guilds/${a.id}">Manage</a></span>`;
+                <% } %>
+                const title = `<h4>${a.name}${button}</h4><br />`;
+                return `<div class="media roundedWell"><div class="media-left media-middle">${image}</div><div class="media-body">${title}</div></div>`;
+            }).join("\n");
+            document.getElementById("guildList").innerHTML = currentPage;
+            toDraw.forEach(function(obj) {
+                draw(...obj)
+            });
+        }
+        pagify();
+
+        function draw(id, name) {
+            const ctx = document.getElementById(id).getContext("2d");
+            ctx.fillStyle = "rgb(245, 245, 245)";
+            ctx.beginPath();
+            ctx.arc(32, 32, 32, 0, 2 * Math.PI, false);
+            ctx.fill();
+            ctx.restore();
+            ctx.textAlign = "center";
+            ctx.font = "24px Arial";
+            ctx.fillStyle = "rgb(23, 23, 23)";
+            ctx.fillText(name.split(" ").map(v => v[0]).join(" "), 32, 41);
+        };
+
+        document.onkeydown = function (key = window.event) {
+            if (key.code === "ArrowRight") return addPage();
+            else if (key.code === "ArrowLeft") return removePage();
+            return false;
+        }
+
+        /* Controllers */
+        function addPage() {
+            if (nextPage.classList.contains("disabled")) return;
+            page++;
+            pagify();
+        }
+        function removePage() {
+            if (previousPage.classList.contains("disabled")) return;
+            page--;
+            pagify();
+        }
+    </script>
+
+<%- include("./blocks/footer.ejs"); %>

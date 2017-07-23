@@ -1,0 +1,33 @@
+<%- include("./blocks/header.ejs", { thisClient, user, page: "Guild" }); %>
+
+    <section id="manage">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="media roundedWell">
+                    <div class="media-left media-middle">
+                        <img src="https://cdn.discordapp.com/icons/256566731684839428/1281686782cce2aa8ea38c9c75a81aa9.webp?size=256" class="img-rounded medium">
+                    </div>
+                    <div class="media-body">
+                        <h3>Watchpoint: Oasis <small>480 members</small></h3>
+                        <h4><span class="glyphicon glyphicon-star"></span>&nbsp;<small> Juvia#7280</small></h4>
+                        <h4><span class="glyphicon glyphicon-comment"></span>&nbsp; Channels<small> 26</small></h4>
+                        <h4><span class="glyphicon glyphicon-headphones"></span>&nbsp; Channels<small> 9</small></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function draw(id, name) {
+            const ctx = document.getElementById(id).getContext("2d");
+            ctx.fillStyle = "rgb(245, 245, 245)";
+            ctx.fill();
+            ctx.textAlign = "center";
+            ctx.font = "24px Arial";
+            ctx.fillStyle = "rgb(23, 23, 23)";
+            ctx.fillText(name.split(" ").map(v => v[0]).join(" "), 32, 41);
+        };
+    </script>
+
+<%- include("./blocks/footer.ejs"); %>

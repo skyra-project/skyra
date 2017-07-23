@@ -76,7 +76,7 @@ module.exports = class Command {
      * @param {string} string The string to resolve.
      * @returns {string}
      */
-    static strip(string) {
+    static strip([string]) {
         string = string.replace(/^\n/, "");
         const length = /^[ ]*/.exec(string)[0].length;
         return length > 0 ? string.split("\n").map(line => line.slice(length)).join("\n") : string;

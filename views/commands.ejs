@@ -1,0 +1,61 @@
+<%- include("./blocks/header.ejs", { thisClient, user, page: "Commands", commands }); %>
+
+    <section id="commands">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                <% for (const [category, list] of commands.entries()) { %>
+                    <div class="panel-group" id="<%= category %>" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="head<%= category %>">
+                                <h4 class="panel-title">
+                                    <a role="button" class="collapseTitle" data-toggle="collapse" data-parent="#<%= category %>" href="#body<%= category %>" aria-expanded="true" aria-controls="body<%= category %>">
+                                        <%= category %>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="body<%= category %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<%= category %>">
+                                <div class="list-group">
+                                    <% for (let i = 0; i < list.length; i++) { %>
+                                    <li class="list-group-item">
+                                        <%= list[i].name %>
+                                        <span style="float:right;" class="label label-info helpButton" data-toggle="modal" data-target="#cmdModal" data-name="<%= list[i].name %>" data-usage="<%= list[i].html %>">?</span>
+                                        <%- list[i].level %>
+                                        <% if (list[i].guildOnly) { %><span style="float:right;" class="label label-primary">Guild Only</span><% } %>
+                                    </li>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="cmdModal" tabindex="-1" role="dialog" aria-labelledby="cmdModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="cmdTitle">Command</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p id="cmdUsage" class="monospace"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('.helpButton').click(function(event) {
+            $("#cmdTitle").text($(this).data("name"));
+            $("#cmdUsage").html($(this).data("usage"));
+        })
+    </script>
+
+<%- include("./blocks/footer.ejs"); %>

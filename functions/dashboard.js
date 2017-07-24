@@ -15,6 +15,12 @@ const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const { renderFile } = require("ejs");
 
+// Social
+const managerSocialGlobal = require("../utils/managerSocialGlobal");
+const managerSocialLocal = require("../utils/managerSocialLocal");
+
+const Guilds = require("./routes/guilds");
+
 module.exports = class Dashboard {
 
     constructor(client) {
@@ -38,6 +44,8 @@ module.exports = class Dashboard {
         this.server.use(bodyParser.json());
         this.server.use(bodyParser.urlencoded({ extended: true }));
         this.server.use("html", renderFile);
+
+        this.server.use("/guilds", new Guilds(client).server);
 
         passport.serializeUser((id, done) => {
             done(null, id);
@@ -64,6 +72,33 @@ module.exports = class Dashboard {
             if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
             return res.redirect("/");
         }
+
+        function postAdmin(req, res, next) {
+            if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
+            return res.status(403).send({ success: false, message: "Missing permissions." });
+        }
+
+        function secret(req, res, next) {
+            if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
+            return res.redirect("/");
+        }
+
+        const throwError = (res, err) => {
+            this.client.emit("log", err, "error");
+            res.status(500).send(err);
+            return null;
+        };
+
+        const memberNotFound = (res, err) => (err.message === "Unknown Member" ? null : throwError(res, err));
+
+        const requiredMember = async (res, guild, user) => {
+            if (user.id === client.config.ownerID) {
+                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id})`);
+                return true;
+            }
+            const member = await guild.fetchMember(user.id).catch(e => memberNotFound(res, e));
+            return member.permissions.has("MANAGE_GUILD");
+        };
 
         const thisClient = {
             guilds: client.guilds,
@@ -123,6 +158,43 @@ module.exports = class Dashboard {
             res.redirect(client.invite);
         });
 
+        /* JSON Endpoints */
+        this.server.get("/statistics/json", (req, res) => {
+            res.json(this.client.usage);
+        });
+        this.server.get("/leaderboard/global", secret, (req, res) => {
+            res.json(Array.from(managerSocialGlobal.fetchAll().values()));
+        });
+        this.server.get("/leaderboard/global/:user", (req, res) => {
+            const user = managerSocialGlobal.get(req.params.user);
+            if (!user) {
+                res.status(404);
+                return res.json({ success: false, message: "User not found" });
+            }
+            return res.json({ success: true, user });
+        });
+        this.server.get("/leaderboard/local/:guild", (req, res) => {
+            const guild = managerSocialLocal.fetchAll().get(req.params.guild);
+            if (!guild) {
+                res.status(404);
+                return res.json({ success: false, message: "Guild not found" });
+            }
+            return res.json({ success: true, data: Array.from(guild.values()) });
+        });
+        this.server.get("/leaderboard/local/:guild/:user", (req, res) => {
+            const guild = managerSocialLocal.fetchAll().get(req.params.guild);
+            if (!guild) {
+                res.status(404);
+                return res.json({ success: false, message: "Guild not found" });
+            }
+            const user = guild.get(req.params.user);
+            if (!user) {
+                res.status(404);
+                return res.json({ success: false, message: "User not found" });
+            }
+            return res.json({ success: true, user });
+        });
+
         /* Discord Endpoints */
         this.server.get("/login", passport.authenticate("discord"));
         this.server.get("/callback", passport.authenticate("discord", { failureRedirect: "/" }), (req, res) => {
@@ -165,46 +237,33 @@ module.exports = class Dashboard {
         this.server.get("/guilds/:id", checkAuth, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
             if (!guild) return res.redirect(404, "/");
-            const user = await client.fetchUser(req.user.id);
-            const member = await guild.fetchMember(user.id);
-            const isManaged = member.permissions.has("MANAGE_GUILD");
-            const isOwner = user.id === this.owner;
-            if (!isManaged) {
-                if (!isOwner) return res.redirect(403, "/");
-                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
-            }
-            return res.render(resolve(this.routes, "guild.ejs"), { thisClient, user: getUser(req), moment });
+            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
+            return res.render(resolve(this.routes, "guild.ejs"), { thisClient, user: getUser(req), settings: guild.settings, guild });
         });
         this.server.get("/manage/:id", checkAuth, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
-            if (!guild) return res.redirect(404, "/").redirect("/");
-            const user = await client.fetchUser(req.user.id);
-            const member = await guild.fetchMember(user.id);
-            const isManaged = member.permissions.has("MANAGE_GUILD");
-            const isOwner = user.id === this.owner;
-            if (!isManaged) {
-                if (!isOwner) return res.redirect(403, "/");
-                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
-            }
-            return res.render(resolve(this.routes, "manage.ejs"), { thisClient, user: getUser(req), moment });
+            if (!guild) return res.status(404).redirect("/");
+            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
+            return res.render(resolve(this.routes, "manage.ejs"), { thisClient, user: getUser(req), moment, settings: guild.settings });
         });
         this.server.get("/modlogs/:id", checkAuth, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
-            if (!guild) return res.redirect(404, "/");
-            const user = await client.fetchUser(req.user.id);
-            const member = await guild.fetchMember(user.id);
-            const isManaged = member.permissions.has("MANAGE_GUILD");
-            const isOwner = user.id === this.owner;
-            if (!isManaged) {
-                if (!isOwner) return res.redirect(403, "/");
-                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id}) from IP ${req.ip}`);
-            }
+            if (!guild) return res.status(404).redirect("/");
+            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
             const cases = await guild.settings.moderation.getCases();
             return res.render(resolve(this.routes, "modlogs.ejs"), { thisClient, user: getUser(req), moment, modlogs: cases });
         });
 
+        // JSON Administrative Endpoints
+        this.server.get("/guilds/:id/settings", checkAuth, async (req, res) => {
+            const guild = client.guilds.get(req.params.id);
+            if (!guild) return res.status(404).redirect("/");
+            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
+            return res.json({ success: true, settings: guild.settings });
+        });
+
         /* Command Endpoints */
-        this.server.post("/manage/:id/leave", checkAdmin, async (req, res) => {
+        this.server.post("/manage/:id/leave", postAdmin, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
             if (!guild) return res.redirect(404, "/");
             const message = req.body;

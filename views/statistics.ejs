@@ -15,7 +15,11 @@
     </section>
 
     <script>
-        const now = new Date();
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        })
         const usage = Highcharts.chart("usage", {
             chart: {},
             title: {
@@ -37,13 +41,13 @@
             },
             plotOptions: {
                 series: {
-                    pointStart: now.setHours(now.getHours() - 1),
-                    pointInterval: 60 * 1000
+                    pointStart: new Date().getTime() - 300000 * 95,
+                    pointInterval: 300000
                 }
             },
             series: [{
                 name: "CPU Usage",
-                data: <%- JSON.stringify(usage.cpu) %>,
+                data: [],
                 color: "#00adff",
                 tooltip: {
                     pointFormat: "CPU Usage: {point.y}%"
@@ -76,20 +80,20 @@
             },
             plotOptions: {
                 series: {
-                    pointStart: now.setHours(now.getHours() - 1),
-                    pointInterval: 60 * 1000
+                    pointStart: new Date().getTime() - 300000 * 95,
+                    pointInterval: 300000
                 }
             },
             series: [{
                 name: "Node.js RAM Usage",
-                data: <%- JSON.stringify(usage.prc) %>,
+                data: [],
                 color: "#aeff42",
                 tooltip: {
                     pointFormat: "Total RAM: {point.y} MB"
                 },
             }, {
                 name: "RAM Usage",
-                data: <%- JSON.stringify(usage.ram) %>,
+                data: [],
                 color: "#323233",
                 tooltip: {
                     pointFormat: "RAM: {point.y} MB"
@@ -100,6 +104,40 @@
                     enabled: false
                 }
             }
+        });
+
+        function requestData() {
+            $.ajax({
+                url: "/statistics/json",
+                success: function(point) {
+                    if (arrayEquals(usage.series[0], point.cpu) === false) usage.series[0].addPoint(point.cpu[95], true, true);
+                    if (arrayEquals(ramUsage.series[0], point.prc) === false) ramUsage.series[0].addPoint(point.prc[95], true, true);
+                    if (arrayEquals(ramUsage.series[1], point.ram) === false) ramUsage.series[1].addPoint(point.ram[95], true, true);
+                    console.log(`[GET] Updating charts. CPU: ${point.cpu[95]} | PRC: ${point.prc[95]} | RAM: ${point.ram[95]}`);
+                    setTimeout(requestData, 60000);
+                },
+                cache: false
+            });
+        }
+
+        function arrayEquals(chart, newA) {
+            if (chart.data.length !== newA.length) return false;
+            for (let i = 0; i < chart.data.length; i++) {
+                if (chart.data[i].y !== newA[i]) return false;
+            }
+            return true;
+        }
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            $.ajax({
+                url: "/statistics/json",
+                success: function(point) {
+                    usage.series[0].setData(point.cpu, true);
+                    ramUsage.series[0].setData(point.prc, true);
+                    ramUsage.series[1].setData(point.ram, true);
+                    setTimeout(requestData, 60000);
+                }
+            });
         });
     </script>
 

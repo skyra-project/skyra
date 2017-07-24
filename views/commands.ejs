@@ -52,10 +52,18 @@
     </div>
 
     <script>
-        $('.helpButton').click(function(event) {
-            $("#cmdTitle").text($(this).data("name"));
-            $("#cmdUsage").html($(this).data("usage"));
-        })
+        const cmdTitle = document.getElementById("cmdTitle");
+        const cmdUsage = document.getElementById("cmdUsage");
+        const helpButton = document.getElementsByClassName("helpButton");
+
+        function showHelp() {
+            cmdTitle.innerText = this.attributes["data-name"].value;
+            cmdUsage.innerHTML = this.attributes["data-usage"].value;
+        }
+
+        Array.from(helpButton).forEach(function(element) {
+            element.addEventListener("click", showHelp);
+        });
     </script>
 
 <%- include("./blocks/footer.ejs"); %>

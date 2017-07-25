@@ -17,11 +17,11 @@ module.exports = class RequireAuth {
         this.gateway = {
             auth: (req, res, next) => {
                 if (req.isAuthenticated()) return next();
-                return res.status(401).send({ success: false, message: "This endpoint requires authentication." });
+                return this.throw(res, ...this.error.AUTH_REQUIRED);
             },
             admin: (req, res, next) => {
                 if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
-                return res.status(403).send({ success: false, message: "Missing permissions." });
+                return this.throw(res, ...this.error.DENIED_ACCESS);
             },
         };
 
@@ -56,6 +56,7 @@ module.exports = class RequireAuth {
             ROLE_NOT_FOUND: [404, "Role not found", "ROLE_NOT_FOUND"],
             CHANNEL_NOT_FOUND: [404, "Channel not found", "CHANNEL_NOT_FOUND"],
             DENIED_ACCESS: [403, "Access denied", "DENIED_ACCESS"],
+            AUTH_REQUIRED: [401, "This endpoint requires authentication", "AUTH_REQUIRED"],
             INVALID_ARGUMENT: (param, type) => [400, `'${param}' must be type: ${type}`, "INVALID_ARGUMENT"],
             UNKNOWN_ENDPOINT: endpoint => [404, `Unknown /${endpoint} endpoint`, "UNKNOWN_ENDPOINT"],
         };

@@ -15,11 +15,7 @@ const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const { renderFile } = require("ejs");
 
-// Social
-const managerSocialGlobal = require("../utils/managerSocialGlobal");
-const managerSocialLocal = require("../utils/managerSocialLocal");
-
-const Guilds = require("./routes/guilds");
+const API = require("./routes/api");
 
 module.exports = class Dashboard {
 
@@ -45,7 +41,11 @@ module.exports = class Dashboard {
         this.server.use(bodyParser.urlencoded({ extended: true }));
         this.server.use("html", renderFile);
 
-        this.server.use("/guilds", new Guilds(client).server);
+        this.api = new API(client);
+
+        this.server.use("/api", this.api.server);
+
+        this.util = this.api.util;
 
         passport.serializeUser((id, done) => {
             done(null, id);
@@ -62,26 +62,6 @@ module.exports = class Dashboard {
             this.users.set(profile.id, new DashboardUser(this.client, profile));
             process.nextTick(() => done(null, profile.id));
         }));
-
-        function checkAuth(req, res, next) {
-            if (req.isAuthenticated()) return next();
-            return res.redirect("/login");
-        }
-
-        function checkAdmin(req, res, next) {
-            if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
-            return res.redirect("/");
-        }
-
-        function postAdmin(req, res, next) {
-            if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
-            return res.status(403).send({ success: false, message: "Missing permissions." });
-        }
-
-        function secret(req, res, next) {
-            if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
-            return res.redirect("/");
-        }
 
         const throwError = (res, err) => {
             this.client.emit("log", err, "error");
@@ -162,38 +142,6 @@ module.exports = class Dashboard {
         this.server.get("/statistics/json", (req, res) => {
             res.json(this.client.usage);
         });
-        this.server.get("/leaderboard/global", secret, (req, res) => {
-            res.json(Array.from(managerSocialGlobal.fetchAll().values()));
-        });
-        this.server.get("/leaderboard/global/:user", (req, res) => {
-            const user = managerSocialGlobal.get(req.params.user);
-            if (!user) {
-                res.status(404);
-                return res.json({ success: false, message: "User not found" });
-            }
-            return res.json({ success: true, user });
-        });
-        this.server.get("/leaderboard/local/:guild", (req, res) => {
-            const guild = managerSocialLocal.fetchAll().get(req.params.guild);
-            if (!guild) {
-                res.status(404);
-                return res.json({ success: false, message: "Guild not found" });
-            }
-            return res.json({ success: true, data: Array.from(guild.values()) });
-        });
-        this.server.get("/leaderboard/local/:guild/:user", (req, res) => {
-            const guild = managerSocialLocal.fetchAll().get(req.params.guild);
-            if (!guild) {
-                res.status(404);
-                return res.json({ success: false, message: "Guild not found" });
-            }
-            const user = guild.get(req.params.user);
-            if (!user) {
-                res.status(404);
-                return res.json({ success: false, message: "User not found" });
-            }
-            return res.json({ success: true, user });
-        });
 
         /* Discord Endpoints */
         this.server.get("/login", passport.authenticate("discord"));
@@ -206,18 +154,18 @@ module.exports = class Dashboard {
         });
 
         /* Dashboard Related Endpoints */
-        this.server.get("/dashboard", checkAuth, (req, res) => {
+        this.server.get("/dashboard", this.util.check.auth, (req, res) => {
             res.render(resolve(this.routes, "dashboard.ejs"), { thisClient, user: getUser(req), page: "Dashboard", guilds: req.user.managableGuilds });
         });
-        this.server.get("/admin", checkAdmin, (req, res) => {
+        this.server.get("/admin", this.util.check.admin, (req, res) => {
             res.render(resolve(this.routes, "dashboard.ejs"), { thisClient, user: getUser(req), page: "Admin", guilds: thisClient.guilds });
         });
 
         /* User Related Endpoints */
-        this.server.get("/me", checkAuth, (req, res) => {
+        this.server.get("/me", this.util.check.auth, (req, res) => {
             res.redirect(`/users/${req.user.id}`);
         });
-        this.server.get("/users/:id", checkAuth, async (req, res) => {
+        this.server.get("/users/:id", this.util.check.auth, async (req, res) => {
             const user = await client.fetchUser(req.params.id);
             res.render(resolve(this.routes, "profile.ejs"), { thisClient, user: getUser(req), profile: user.profile });
         });
@@ -234,19 +182,19 @@ module.exports = class Dashboard {
         });
 
         /* Guild Related Endpoints */
-        this.server.get("/guilds/:id", checkAuth, async (req, res) => {
+        this.server.get("/guilds/:id", this.util.check.auth, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
             if (!guild) return res.redirect(404, "/");
             if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
             return res.render(resolve(this.routes, "guild.ejs"), { thisClient, user: getUser(req), settings: guild.settings, guild });
         });
-        this.server.get("/manage/:id", checkAuth, async (req, res) => {
+        this.server.get("/manage/:id", this.util.check.auth, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
             if (!guild) return res.status(404).redirect("/");
             if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
             return res.render(resolve(this.routes, "manage.ejs"), { thisClient, user: getUser(req), moment, settings: guild.settings });
         });
-        this.server.get("/modlogs/:id", checkAuth, async (req, res) => {
+        this.server.get("/modlogs/:id", this.util.check.auth, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
             if (!guild) return res.status(404).redirect("/");
             if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
@@ -255,7 +203,7 @@ module.exports = class Dashboard {
         });
 
         // JSON Administrative Endpoints
-        this.server.get("/guilds/:id/settings", checkAuth, async (req, res) => {
+        this.server.get("/guilds/:id/settings", this.util.check.auth, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
             if (!guild) return res.status(404).redirect("/");
             if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
@@ -263,7 +211,7 @@ module.exports = class Dashboard {
         });
 
         /* Command Endpoints */
-        this.server.post("/manage/:id/leave", postAdmin, async (req, res) => {
+        this.server.post("/manage/:id/leave", this.util.check.admin, async (req, res) => {
             const guild = client.guilds.get(req.params.id);
             if (!guild) return res.redirect(404, "/");
             const message = req.body;
@@ -283,7 +231,7 @@ module.exports = class Dashboard {
             res.send("Uhm?");
         });
         this.server.use((req, res) => {
-            res.redirect(404, "/").send("Sorry can't find that!");
+            res.status(404).send("Sorry can't find that!");
         });
         this.server.use((err, req, res) => {
             this.client.emit("log", err, "error");

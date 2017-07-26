@@ -193,8 +193,8 @@ module.exports = class Dashboard {
         this.server.get("/news/:id", (req, res) => {
             provider.get("news", req.param.id)
                 .then((news) => {
-                    if (!news) return sendError(req, res, 404, "Announcement not found");
-                    return res.render(resolve(this.routes, "new.ejs"), { thisClient, user: getUser(req), news });
+                    if (!news) sendError(req, res, 404, "Announcement not found");
+                    else res.render(resolve(this.routes, "new.ejs"), { thisClient, user: getUser(req), news });
                 })
                 .catch(err => throwError(req, res, err));
         });
@@ -226,7 +226,7 @@ module.exports = class Dashboard {
                     const channel = guild.channels.get(guild.settings.channels.default || guild.defaultChannel.id);
                     if (channel.postable) await channel.send(message).catch(e => this.client.emit("log", e, "error"));
                 }
-                return guild.leave()
+                guild.leave()
                     .then(() => res.json({ success: true, message: `Successfully left ${guild.name} (${guild.id})` }))
                     .catch(err => throwError(req, res, err));
             }));

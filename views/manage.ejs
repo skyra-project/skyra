@@ -1,4 +1,6 @@
-<%- include("./blocks/header.ejs", { thisClient, user, page: "Manage" }); %>
+<%- include("./blocks/header.ejs", { thisClient, user, page: "Manage", guild, settings }); %>
+
+<% const show = (folder, key) => settings[folder][key] && guild[folder].has(settings[folder][key]) ? guild[folder].get(settings[folder][key]).name : null  %>
 
     <section id="manage">
         <div class="container">
@@ -8,63 +10,46 @@
                     <h4>Channels</h4>
                     <table style="width:100%">
                         <col width="170">
-                        <tr>
-                            <th>
-                                <div style="width:150px;">
-                                    <select name="modlog" class="form-control">
-                                        <option selected disabled>Select a channel</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th>ModLog</th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <div style="width:150px;">
-                                    <select name="log" class="form-control">
-                                        <option selected disabled>Select a channel</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th>Log</th>
-                        </tr>
+                        <% const ST_CHANNELS = ["announcement", "default", "log", "mod", "spam"];
+                            for (const ST_CHANNEL of ST_CHANNELS) {
+                        %>
+                            <tr>
+                                <th>
+                                    <div style="width:150px;">
+                                        <select name="channels.<%= ST_CHANNEL %>" class="form-control">
+                                            <option selected disabled><%= show("channels", ST_CHANNEL) || "Select a channel" %></option>
+                                            <% for (const G_CHANNEL of guild.channels.values()) {
+                                                if (G_CHANNEL.type === "voice") continue; %>
+                                                <option value="<%= G_CHANNEL.id %>"><%= G_CHANNEL.name %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th><%= ST_CHANNEL %></th>
+                            </tr>
+                        <% } %>
                     </table>
                     <hr></hr>
                     <h4>Roles</h4>
                     <table style="width:100%">
                         <col width="170">
-                        <tr>
-                            <th>
-                                <div style="width:150px;">
-                                    <select name="administrator" class="form-control">
-                                        <option selected disabled>Select a role</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th>Administrator</th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <div style="width:150px;">
-                                    <select name="moderator" class="form-control">
-                                        <option selected disabled>Select a role</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th>Moderator</th>
-                        </tr>
+                        <% const ST_ROLES = ["admin", "moderator", "staff", "muted"];
+                            for (const ST_ROLE of ST_ROLES) {
+                        %>
+                            <tr>
+                                <th>
+                                    <div style="width:150px;">
+                                        <select name="channels.<%= ST_ROLE %>" class="form-control">
+                                            <option selected disabled><%= show("roles", ST_ROLE) || "Select a role" %></option>
+                                            <% for (const G_ROLE of guild.roles.values()) { %>
+                                                <option value="<%= G_ROLE.id %>"><%= G_ROLE.name %></option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th><%= ST_ROLE %></th>
+                            </tr>
+                        <% } %>
                     </table>
                     <hr></hr>
                     <h4>Events</h4>

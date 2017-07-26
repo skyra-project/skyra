@@ -1,0 +1,12 @@
+<%- include("./blocks/header.ejs", { thisClient, user, page: null, code, path }); %>
+
+<section id="news" style="background:#222223; width:100vw; height:100vh;">
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="content" style="padding-top:7vw; color:#efefef;">
+                <h1 style="font-size:16vw;"><%= code %></h1>
+                <h2 style="font-size:3vw;"><%= path %></h2>
+            </div>
+        </div>
+    </div>
+</section>

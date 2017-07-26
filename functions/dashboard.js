@@ -41,6 +41,8 @@ module.exports = class Dashboard {
         this.server.use(bodyParser.urlencoded({ extended: true }));
         this.server.use("html", renderFile);
 
+        this.supportGuild = "https://discordapp.com/invite/6gakFR2";
+
         this.api = new API(client);
 
         this.server.use("/api", this.api.server);
@@ -63,27 +65,40 @@ module.exports = class Dashboard {
             process.nextTick(() => done(null, profile.id));
         }));
 
-        const throwError = (res, err) => {
-            this.client.emit("log", err, "error");
-            res.status(500).send(err);
-            return null;
-        };
-
-        const memberNotFound = (res, err) => (err.message === "Unknown Member" ? null : throwError(res, err));
-
-        const requiredMember = async (res, guild, user) => {
-            if (user.id === client.config.ownerID) {
-                this.client.emit("log", `Admin bypass for managing server: ${guild.name} (${guild.id})`);
-                return true;
-            }
-            const member = await guild.fetchMember(user.id).catch(e => memberNotFound(res, e));
-            return member.permissions.has("MANAGE_GUILD");
-        };
-
         const thisClient = {
             guilds: client.guilds,
             invite: client.invite,
             avatar: client.user.avatarURL(),
+        };
+
+        const getUser = (req) => {
+            if (req.isAuthenticated() === false) return { id: null, username: null, avatar: null, auth: false };
+            return Object.assign({ auth: true }, req.user);
+        };
+
+        const sendError = (req, res, code, error) => res.status(code).render(resolve(this.routes, "error.ejs"), { thisClient, user: getUser(req), code, path: error });
+
+        const getGuild = (req, res, callback) => {
+            const guild = this.client.guilds.get(req.params.guild);
+            if (!guild) return sendError(req, res, 404, "Guild Not found");
+            if (!guild.available) return sendError(req, res, 503, "Guild Unavailable");
+
+            return callback(guild);
+        };
+
+        const executeLevel = async (req, res, level, guild, callback) => {
+            if (req.user.id === this.client.config.ownerID);
+            else {
+                const moderator = await guild.fetchMember(req.user.id).catch(() => null);
+                if (!moderator || this.util.hasLevel(guild, moderator, level) !== true) return sendError(req, res, 403, "Access denied");
+            }
+
+            return callback();
+        };
+
+        const throwError = (req, res, err) => {
+            this.client.emit("log", err, "error");
+            return sendError(req, res, 500, err);
         };
 
         const entityMap = {
@@ -119,11 +134,6 @@ module.exports = class Dashboard {
             this.commands.get(cat).push({ level: levelHTML(command.conf.permLevel), guildOnly: !command.conf.runIn.includes("dm"), name: toTitleCase(command.help.name), description: command.help.description, html });
         }
 
-        const getUser = (req) => {
-            if (req.isAuthenticated() === false) return { id: null, username: null, avatar: null, auth: false };
-            return Object.assign({ auth: true }, req.user);
-        };
-
         /* Offline Endpoints */
         this.server.get("/", (req, res) => {
             res.render(resolve(this.routes, "index.ejs"), { thisClient, user: getUser(req), banners: this.banners });
@@ -136,6 +146,9 @@ module.exports = class Dashboard {
         });
         this.server.get("/invite", (req, res) => {
             res.redirect(client.invite);
+        });
+        this.server.get("/join", (req, res) => {
+            res.redirect(this.supportGuild);
         });
 
         /* JSON Endpoints */
@@ -165,78 +178,63 @@ module.exports = class Dashboard {
         this.server.get("/me", this.util.check.auth, (req, res) => {
             res.redirect(`/users/${req.user.id}`);
         });
-        this.server.get("/users/:id", this.util.check.auth, async (req, res) => {
-            const user = await client.fetchUser(req.params.id);
-            res.render(resolve(this.routes, "profile.ejs"), { thisClient, user: getUser(req), profile: user.profile });
+        this.server.get("/users/:id", this.util.check.auth, (req, res) => {
+            client.fetchUser(req.params.id)
+                .then(user => res.render(resolve(this.routes, "profile.ejs"), { thisClient, user: getUser(req), profile: user.profile }))
+                .catch(() => sendError(req, res, 404, "Not found"));
         });
 
         /* News */
-        this.server.get("/news", async (req, res) => {
-            const news = await provider.getAll("news");
-            res.render(resolve(this.routes, "newslist.ejs"), { thisClient, user: getUser(req), news });
+        this.server.get("/news", (req, res) => {
+            provider.getAll("news")
+                .then(news => res.render(resolve(this.routes, "newslist.ejs"), { thisClient, user: getUser(req), news }))
+                .catch(err => throwError(req, res, err));
         });
-        this.server.get("/news/:id", async (req, res) => {
-            const news = await provider.get("news", req.param.id);
-            if (news) return res.redirect(404, "/");
-            return res.render(resolve(this.routes, "new.ejs"), { thisClient, user: getUser(req), news });
+        this.server.get("/news/:id", (req, res) => {
+            provider.get("news", req.param.id)
+                .then((news) => {
+                    if (!news) return sendError(req, res, 404, "Announcement not found");
+                    return res.render(resolve(this.routes, "new.ejs"), { thisClient, user: getUser(req), news });
+                })
+                .catch(err => throwError(req, res, err));
         });
 
         /* Guild Related Endpoints */
-        this.server.get("/guilds/:id", this.util.check.auth, async (req, res) => {
-            const guild = client.guilds.get(req.params.id);
-            if (!guild) return res.redirect(404, "/");
-            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
-            return res.render(resolve(this.routes, "guild.ejs"), { thisClient, user: getUser(req), settings: guild.settings, guild });
+        this.server.get("/guilds/:guild", this.util.check.auth, (req, res) => {
+            getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
+                res.render(resolve(this.routes, "guild.ejs"), { thisClient, user: getUser(req), moment, guild, settings: guild.settings });
+            }));
         });
-        this.server.get("/manage/:id", this.util.check.auth, async (req, res) => {
-            const guild = client.guilds.get(req.params.id);
-            if (!guild) return res.status(404).redirect("/");
-            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
-            return res.render(resolve(this.routes, "manage.ejs"), { thisClient, user: getUser(req), moment, settings: guild.settings });
+        this.server.get("/manage/:guild", this.util.check.auth, (req, res) => {
+            getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
+                res.render(resolve(this.routes, "manage.ejs"), { thisClient, user: getUser(req), moment, guild, settings: guild.settings });
+            }));
         });
-        this.server.get("/modlogs/:id", this.util.check.auth, async (req, res) => {
-            const guild = client.guilds.get(req.params.id);
-            if (!guild) return res.status(404).redirect("/");
-            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
-            const cases = await guild.settings.moderation.getCases();
-            return res.render(resolve(this.routes, "modlogs.ejs"), { thisClient, user: getUser(req), moment, modlogs: cases });
-        });
-
-        // JSON Administrative Endpoints
-        this.server.get("/guilds/:id/settings", this.util.check.auth, async (req, res) => {
-            const guild = client.guilds.get(req.params.id);
-            if (!guild) return res.status(404).redirect("/");
-            if ((await requiredMember(res, guild, req.user)) === false) return res.status(403).send({ success: false, message: "Access denied." });
-            return res.json({ success: true, settings: guild.settings });
+        this.server.get("/modlogs/:guild", this.util.check.auth, (req, res) => {
+            getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
+                guild.settings.moderation.getCases()
+                    .then(cases => res.render(resolve(this.routes, "modlogs.ejs"), { thisClient, user: getUser(req), moment, modlogs: cases }))
+                    .catch(err => throwError(req, res, err));
+            }));
         });
 
         /* Command Endpoints */
-        this.server.post("/manage/:id/leave", this.util.check.admin, async (req, res) => {
-            const guild = client.guilds.get(req.params.id);
-            if (!guild) return res.redirect(404, "/");
-            const message = req.body;
-            if (message) {
-                const channel = guild.channels.get(guild.settings.channels.default || guild.defaultChannel.id);
-                if (channel.postable) await channel.send(message).catch(e => this.client.emit("log", e, "error"));
-            }
-            return guild.leave()
-                .then(() => res.json({ success: true, message: `Successfully left ${guild.name} (${guild.id})` }))
-                .catch((e) => {
-                    this.client.emit("log", e, "error");
-                    return res.status(500).send(e);
-                });
+        this.server.post("/manage/:id/leave", this.util.check.auth, (req, res) => {
+            getGuild(req, res, guild => executeLevel(req, res, 4, guild, async () => {
+                const message = req.body;
+                if (message) {
+                    const channel = guild.channels.get(guild.settings.channels.default || guild.defaultChannel.id);
+                    if (channel.postable) await channel.send(message).catch(e => this.client.emit("log", e, "error"));
+                }
+                return guild.leave()
+                    .then(() => res.json({ success: true, message: `Successfully left ${guild.name} (${guild.id})` }))
+                    .catch(err => throwError(req, res, err));
+            }));
         });
 
-        this.server.get("*", (req, res) => {
-            res.send("Uhm?");
-        });
-        this.server.use((req, res) => {
-            res.status(404).send("Sorry can't find that!");
-        });
-        this.server.use((err, req, res) => {
-            this.client.emit("log", err, "error");
-            res.status(500).send("Something broke!");
-        });
+        this.server.get("/404", (req, res) => sendError(req, res, 404, "Not found"));
+        this.server.get("*", (req, res) => sendError(req, res, 404, `Path not found: ${req.path}`));
+        this.server.use((err, req, res) => throwError(req, res, err));
 
         this.site = this.server.listen(this.client.config.dash.port);
     }

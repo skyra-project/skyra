@@ -32,13 +32,6 @@ module.exports = class RouterLeaderboard {
             });
         };
 
-        const executeLevel = async (req, res, level, guild, callback) => {
-            const moderator = await guild.fetchMember(req.user.id).catch(() => null);
-            if (!moderator || this.util.hasLevel(guild, moderator, level) !== true) return this.util.throw(res, ...this.util.error.DENIED_ACCESS);
-
-            return callback();
-        };
-
         this.server.get("/local/:guild", this.util.gateway.auth, (req, res) => {
             const guild = managerSocialLocal.fetchAll().get(req.params.guild);
             if (!guild) return this.util.throw(res, ...this.util.error.GUILD_NOT_FOUND);
@@ -51,7 +44,7 @@ module.exports = class RouterLeaderboard {
         });
 
         this.server.post("/local/:guild/:member", this.util.gateway.auth, async (req, res) => {
-            memberExists(req, res, (guild, member) => executeLevel(req, res, 2, guild, () => {
+            memberExists(req, res, (guild, member) => this.util.executeLevel(req, res, 2, guild, () => {
                 const data = parseInt(req.body.payload);
                 if (typeof data === "undefined" || isNaN(data)) return this.util.throw(res, ...this.util.error.INVALID_ARGUMENT("payload", "Integer"));
 
@@ -62,7 +55,7 @@ module.exports = class RouterLeaderboard {
         });
 
         this.server.delete("/local/:guild/:member", this.util.gateway.auth, async (req, res) => {
-            memberExists(req, res, (guild, member) => executeLevel(req, res, 2, guild, () => member.destroy()
+            memberExists(req, res, (guild, member) => this.util.executeLevel(req, res, 2, guild, () => member.destroy()
                 .then(() => this.util.sendMessage(res, `Successfully destroyed the data for ${req.params.member}`))
                 .catch(err => this.util.sendError(res, err))));
         });

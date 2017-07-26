@@ -1,11 +1,17 @@
 const router = require("express").Router();
+const schema = require("../schema");
+const SettingResolver = require("../settingResolver");
 
+/* eslint-disable class-methods-use-this */
 module.exports = class RouterGuild {
 
     constructor(client, util) {
         this.client = client;
         this.server = router;
         this.util = util;
+        this.settingResolver = new SettingResolver(client);
+        this.schema = schema.find("");
+        this.getRoot = schema.find;
 
         /* Members */
         this.server.get("/:guild/members", this.util.gateway.auth, (req, res) => {
@@ -43,9 +49,49 @@ module.exports = class RouterGuild {
             });
         });
 
+        /* Settings */
+        this.server.get("/:guild/settings", this.util.gateway.auth, (req, res) => {
+            this.util.getGuild(req, res, guild => this.util.executeLevel(req, res, 3, guild, () => {
+                this.util.sendMessage(res, this.serialize.guildSettings(guild.settings));
+            }));
+        });
+        this.server.put("/:guild/settings", this.util.gateway.auth, (req, res) => {
+            this.util.getGuild(req, res, guild => this.util.executeLevel(req, res, 3, guild, () => this.parseSettings(guild, req.body)
+                .then(body => guild.settings.update(this.merge(body))
+                    .then(() => this.util.sendMessage(res, "Successfully updated."))
+                    .catch(err => this.util.sendError(res, err)),
+                )
+                .catch(err => this.util.throw(res, ...this.util.error.PARSE_ERROR(err)))));
+        });
+
         this.server.get("*", (req, res) => {
             this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT("guilds"));
         });
+    }
+
+    async parseSettings(guild, obj) {
+        const queue = [];
+        for (const key of Object.keys(obj)) {
+            const [cat, subcat] = key.split(".");
+            if (!this.schema[cat]) throw `The key '${cat}' does not exist in the schema.`;
+            else if (!subcat && !this.schema[cat].type) throw `The key '${cat}' requires a property value.`;
+            else if (!subcat) queue.push(this.settingResolver.validate(guild, this.schema[cat], obj[key]).then(v => [cat, null, v]).catch((err) => { throw err; }));
+            else if (!this.schema[cat][subcat]) throw `The key '${subcat}' does not exist as a property of '${cat}' in the schema.`;
+            else queue.push(this.settingResolver.validate(guild, this.schema[cat][subcat], obj[key]).then(v => [cat, subcat, v]).catch((err) => { throw err; }));
+        }
+        return Promise.all(queue);
+    }
+
+    merge(data) {
+        const output = {};
+        for (const [cat, subcat, value] of data) {
+            if (!subcat) output[cat] = value;
+            else {
+                if (!output[cat]) output[cat] = {};
+                output[cat][subcat] = value;
+            }
+        }
+        return output;
     }
 
     serializeList(map, type) {
@@ -94,6 +140,61 @@ module.exports = class RouterGuild {
                     avatar: member.user.avatar,
                 },
                 roles: member._roles,
+            }),
+
+            guildSettings: settings => ({
+                id: settings.id,
+                prefix: settings.prefix,
+                roles: {
+                    admin: settings.roles.admin || null,
+                    moderator: settings.roles.moderator || null,
+                    staff: settings.roles.staff || null,
+                    muted: settings.roles.muted || null,
+                },
+                events: {
+                    channelCreate: settings.events.channelCreate || false,
+                    commands: settings.events.commands || false,
+                    guildBanAdd: settings.events.guildBanAdd || false,
+                    guildBanRemove: settings.events.guildBanRemove || false,
+                    guildMemberAdd: settings.events.guildMemberAdd || false,
+                    guildMemberRemove: settings.events.guildMemberRemove || false,
+                    guildMemberUpdate: settings.events.guildMemberUpdate || false,
+                    messageDelete: settings.events.messageDelete || false,
+                    messageDeleteBulk: settings.events.messageDeleteBulk || false,
+                    messageUpdate: settings.events.messageUpdate || false,
+                    roleUpdate: settings.events.roleUpdate || false,
+                },
+                channels: {
+                    announcement: settings.channels.announcement || null,
+                    default: settings.channels.default || null,
+                    log: settings.channels.log || null,
+                    mod: settings.channels.mod || null,
+                    spam: settings.channels.spam || null,
+                },
+                messages: {
+                    greeting: settings.messages.greeting || false,
+                    farewell: settings.messages.farewell || false,
+                    greetingMessage: settings.messages.greetingMessage || null,
+                    farewellMessage: settings.messages.farewellMessage || null,
+                },
+                selfmod: {
+                    ghostmention: settings.selfmod.ghostmention || false,
+                    inviteLinks: settings.selfmod.inviteLinks || false,
+                    nomentionspam: settings.selfmod.nomentionspam || false,
+                    nmsthreshold: settings.selfmod.nmsthreshold || false,
+                },
+                filter: {
+                    level: settings.filter.level,
+                    raw: settings.filter.raw,
+                    regexp: settings.filter.regexp,
+                },
+                ignoreChannels: settings.ignoreChannels,
+                disabledCommands: settings.disabledCommands,
+                disabledCmdChannels: settings.disabledCmdChannels,
+                publicRoles: settings.publicRoles,
+                autoroles: settings.autoroles,
+                mode: settings.mode,
+                initialRole: settings.initialRole,
             }),
         };
     }

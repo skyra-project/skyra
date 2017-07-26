@@ -1,4 +1,4 @@
-module.exports = class RequireAuth {
+module.exports = class Utils {
 
     constructor(client) {
         this.client = client;
@@ -27,10 +27,20 @@ module.exports = class RequireAuth {
 
         this.getGuild = (req, res, callback) => {
             const guild = this.client.guilds.get(req.params.guild);
-            if (!guild) return this.throw(res, ...this.util.error.GUILD_NOT_FOUND);
-            if (!guild.available) return this.throw(res, ...this.util.error.GUILD_UNAVAILABLE);
+            if (!guild) return this.throw(res, ...this.error.GUILD_NOT_FOUND);
+            if (!guild.available) return this.throw(res, ...this.error.GUILD_UNAVAILABLE);
 
             return callback(guild);
+        };
+
+        this.executeLevel = async (req, res, level, guild, callback) => {
+            if (req.user.id === this.client.config.ownerID);
+            else {
+                const moderator = await guild.fetchMember(req.user.id).catch(() => null);
+                if (!moderator || this.hasLevel(guild, moderator, level) !== true) return this.throw(res, ...this.error.DENIED_ACCESS);
+            }
+
+            return callback();
         };
 
         this.hasLevel = (guild, member, level) => {
@@ -57,6 +67,8 @@ module.exports = class RequireAuth {
             CHANNEL_NOT_FOUND: [404, "Channel not found", "CHANNEL_NOT_FOUND"],
             DENIED_ACCESS: [403, "Access denied", "DENIED_ACCESS"],
             AUTH_REQUIRED: [401, "This endpoint requires authentication", "AUTH_REQUIRED"],
+            PARSE_ERROR: error => [400, `Failed to parse an argument. Error: ${typeof error === "string" ? error : JSON.stringify(error)}`, "PARSE_ERROR"],
+            UNKNOWN_NEWS: news => [404, `The announcement '${news}' does not exist`, "UNKNOWN_NEWS"],
             INVALID_ARGUMENT: (param, type) => [400, `'${param}' must be type: ${type}`, "INVALID_ARGUMENT"],
             UNKNOWN_ENDPOINT: endpoint => [404, `Unknown /${endpoint} endpoint`, "UNKNOWN_ENDPOINT"],
         };

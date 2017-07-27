@@ -137,15 +137,8 @@ a.collapseTitle:hover {
     text-decoration: none;
 }
 
-p.monospace {
-    white-space: pre-wrap;
-    font-family: 'Space Mono', monospace;
+#cmdUsage p {
     font-size: 14px;
-    text-align: left;
-}
-
-p.monospace h5 {
-    text-align: left;
 }
 
 .small {

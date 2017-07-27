@@ -236,7 +236,7 @@ module.exports = class Dashboard {
         };
 
         const escapeHTML = text => String(text).replace(/[&<>"'`/]/g, s => entityMap[s]);
-        const buildHTML = text => text.replace(/\\n/g, "<br />").replace(/= \w+ =/g, match => `<h5>${match.replace(/=/g, "").trim()}</h5>`);
+        const buildHTML = text => text.replace(/\\n/g, "<br />");
         const levelHTML = (level) => {
             switch (level) {
                 case 0: return `<span style="float:right;" class="label label-default">${level}</span>`;
@@ -247,24 +247,38 @@ module.exports = class Dashboard {
                 default: return `<span style="float:right;" class="label label-danger">${level}</span>`;
             }
         };
+
         const createTables = (html) => {
             let isTable = false;
+            let isSpace = false;
             const output = [];
+
+            const toggleSpace = () => {
+                if (isSpace === false) output.push("<br />");
+                isSpace = !isSpace;
+            };
+            const toggleTable = () => {
+                output.push(isTable ? "</tbody></table>" : "<table  class=\"table table-hover\"><tbody>");
+                isTable = !isTable;
+            };
+
             for (const line of html.split("\n")) {
-                if (!/ :: /.test(line)) {
-                    if (isTable === true) {
-                        output.push("</table><p>");
-                        isTable = false;
-                    }
-                    output.push(line);
-                    continue;
+                if (line === "") {
+                    if (isTable === true) toggleTable();
+                    else if (isSpace === true) toggleSpace();
+                } else if (/= \w+ =/.test(line)) {
+                    if (isSpace === false) toggleSpace();
+                    output.push(`<h5 class="text-left">${line.replace(/=/g, "").trim()}</h5>`);
+                } else if (/ :: /.test(line)) {
+                    if (isTable === false) toggleTable();
+                    const [pairOne, pairTwo] = line.split("::");
+                    output.push(`<tr><th>${pairOne.trim()}</th><th>${pairTwo.trim()}</th></tr>`);
+                } else {
+                    if (isTable === true) toggleTable();
+                    else if (isSpace === true) toggleSpace();
+                    if (/^\s*❯❯/.test(line)) output.push(`<blockquote><p>${line.replace(/^\s*❯❯/, "")}</p></blockquote>`);
+                    else output.push(`<p>${line}</p>`);
                 }
-                if (isTable === false) {
-                    output.push("</p><table  class=\"table table-hover\">");
-                    isTable = true;
-                }
-                const [pairOne, pairTwo] = line.split("::");
-                output.push(`<tr><th>${pairOne.trim()}</th><th>${pairTwo.trim()}</th></tr>`);
             }
             return output.join("\n");
         };
@@ -274,7 +288,7 @@ module.exports = class Dashboard {
             if (command.conf.permLevel === 10) continue;
             const cat = command.help.category;
             if (!this.commands.has(cat)) this.commands.set(cat, []);
-            const description = `<h5>Description</h5>${escapeHTML(command.help.description)}<br /><br />`;
+            const description = `<h5 class="text-left">Description</h5><p>${escapeHTML(command.help.description)}</p><br />`;
             const html = description + (command.help.extendedHelp ? createTables(buildHTML(escapeHTML(command.help.extendedHelp))) : "Not set");
             this.commands.get(cat).push({ level: levelHTML(command.conf.permLevel), guildOnly: !command.conf.runIn.includes("dm"), name: toTitleCase(command.help.name), description: command.help.description, html });
         }

@@ -213,7 +213,7 @@ module.exports = class Dashboard {
     }
 
     sendData(req, obj) {
-        return Object.assign({ client: this.dClient, user: this.getUser(req) }, obj);
+        return Object.assign({ Client: this.dClient, user: this.getUser(req) }, obj);
     }
 
     sendError(req, res, code, error) {
@@ -253,14 +253,14 @@ module.exports = class Dashboard {
             for (const line of html.split("\n")) {
                 if (!/ :: /.test(line)) {
                     if (isTable === true) {
-                        output.push("</table>");
+                        output.push("</table><p>");
                         isTable = false;
                     }
                     output.push(line);
                     continue;
                 }
                 if (isTable === false) {
-                    output.push("<table>");
+                    output.push("</p><table  class=\"table table-hover\">");
                     isTable = true;
                 }
                 const [pairOne, pairTwo] = line.split("::");

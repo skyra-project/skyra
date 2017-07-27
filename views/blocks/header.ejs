@@ -78,7 +78,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                 <li><a href="/me">Profile</a></li>
                                 <li><a href="/dashboard">Dashboard</a></li>
-                                <% if (client.owner === user.id) { %>
+                                <% if (Client.owner === user.id) { %>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="/admin">Admin</a></li>
                                 <% } %>

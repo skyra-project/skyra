@@ -1,4 +1,4 @@
-<%- include("./blocks/header.ejs", { client, user, page: "Manage", guild, settings }); %>
+<%- include("./blocks/header.ejs", { Client, user, page: "Manage", guild, settings }); %>
 
 <% const show = (folder, key) => settings[folder][key] && guild[folder].has(settings[folder][key]) ? guild[folder].get(settings[folder][key]).name : null  %>
 

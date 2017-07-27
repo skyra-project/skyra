@@ -10,7 +10,7 @@ module.exports = class Utils {
             },
             admin: (req, res, next) => {
                 if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
-                return res.redirect("/");
+                return this.client.dashboard.sendError(req, res, 404, `Path not found: ${req.path}`);
             },
         };
 

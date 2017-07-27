@@ -1,4 +1,4 @@
-<%- include("./blocks/header.ejs", { thisClient, user, page: "Commands", commands }); %>
+<%- include("./blocks/header.ejs", { Client, user, page: "Commands", commands }); %>
 
     <section id="commands">
         <div class="container">
@@ -41,7 +41,7 @@
                 </div>
                 <div class="modal-body">
                     <div>
-                        <p id="cmdUsage" class="monospace"></p>
+                        <p id="cmdUsage"></p>
                     </div>
                 </div>
                 <div class="modal-footer">

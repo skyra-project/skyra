@@ -65,6 +65,28 @@
                     <li class="<%= page === 'Statistics' ? 'page-scroll' : '' %>">
                         <a href="<%= page === 'Statistics' ? '#page-top' : '/statistics'%>">Statistics</a>
                     </li>
+                    <% if (user.auth === false) { %>
+                        <li>
+                            <a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                        </li>
+                    <% } else { %>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle button-nav" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <%= `${user.username}#${user.discriminator}`; %>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="/me">Profile</a></li>
+                                <li><a href="/dashboard">Dashboard</a></li>
+                                <% if (Client.owner === user.id) { %>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/admin">Admin</a></li>
+                                <% } %>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    <% } %>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

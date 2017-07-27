@@ -340,6 +340,38 @@ header .intro-text .skills {
     border-color: #0CC6F4
 }
 
+.button-nav {
+    float: left;
+    position: relative;
+    display: block;
+    background: none;
+    border: none;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: 700;
+    padding: 15px 15px;
+}
+
+.button-nav:focus,
+.button-nav:hover {
+    color: #0CC6F4
+}
+
+ul.dropdown-menu {
+    background-color: #222223;
+}
+
+ul.dropdown-menu li {
+    margin-top: 5px;
+}
+
+ul.dropdown-menu a,
+ul.dropdown-menu a:active,
+ul.dropdown-menu a:focus,
+ul.dropdown-menu a:hover {
+    background-color: #222223;
+}
+
 @media (min-width:768px) {
     .navbar-custom {
         padding: 25px 0;
@@ -358,6 +390,9 @@ header .intro-text .skills {
     }
     .navbar-custom.affix .navbar-brand {
         font-size: 1.5em
+    }
+    ul.navbar-right div {
+        float: left;
     }
 }
 
@@ -536,8 +571,6 @@ section.success {
     margin: 0;
     font-size: .85em;
     line-height: 1.764705882em;
-    vertical-align: middle;
-    vertical-align: baseline;
     opacity: 0;
     -webkit-transition: top .3s ease, opacity .3s ease;
     -moz-transition: top .3s ease, opacity .3s ease;

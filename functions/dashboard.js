@@ -65,23 +65,10 @@ module.exports = class Dashboard {
             process.nextTick(() => done(null, profile.id));
         }));
 
-        const thisClient = {
-            guilds: client.guilds,
-            invite: client.invite,
-            avatar: client.user.avatarURL(),
-        };
-
-        const getUser = (req) => {
-            if (req.isAuthenticated() === false) return { id: null, username: null, avatar: null, auth: false };
-            return Object.assign({ auth: true }, req.user);
-        };
-
-        const sendError = (req, res, code, error) => res.status(code).render(resolve(this.routes, "error.ejs"), { thisClient, user: getUser(req), code, path: error });
-
         const getGuild = (req, res, callback) => {
             const guild = this.client.guilds.get(req.params.guild);
-            if (!guild) return sendError(req, res, 404, "Guild Not found");
-            if (!guild.available) return sendError(req, res, 503, "Guild Unavailable");
+            if (!guild) return this.sendError(req, res, 404, "Guild Not found");
+            if (!guild.available) return this.sendError(req, res, 503, "Guild Unavailable");
 
             return callback(guild);
         };
@@ -90,7 +77,7 @@ module.exports = class Dashboard {
             if (req.user.id === this.client.config.ownerID);
             else {
                 const moderator = await guild.fetchMember(req.user.id).catch(() => null);
-                if (!moderator || this.util.hasLevel(guild, moderator, level) !== true) return sendError(req, res, 403, "Access denied");
+                if (!moderator || this.util.hasLevel(guild, moderator, level) !== true) return this.sendError(req, res, 403, "Access denied");
             }
 
             return callback();
@@ -98,51 +85,18 @@ module.exports = class Dashboard {
 
         const throwError = (req, res, err) => {
             this.client.emit("log", err, "error");
-            return sendError(req, res, 500, err);
+            return this.sendError(req, res, 500, err);
         };
-
-        const entityMap = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            "\"": "&quot;",
-            "'": "&#39;",
-            "/": "&#x2F;",
-            "`": "&#x60;",
-        };
-
-        const escapeHTML = text => String(text).replace(/[&<>"'`/]/g, s => entityMap[s]);
-        const buildHTML = text => text.replace(/\\n/g, "<br />").replace(/= \w+ =/g, match => `<h5>${match.replace(/=/g, "").trim()}</h5>`);
-        const levelHTML = (level) => {
-            switch (level) {
-                case 0: return `<span style="float:right;" class="label label-default">${level}</span>`;
-                case 1:
-                case 2:
-                case 3:
-                case 4: return `<span style="float:right;" class="label label-warning">${level}</span>`;
-                default: return `<span style="float:right;" class="label label-danger">${level}</span>`;
-            }
-        };
-
-        this.commands = new Collection();
-        for (const command of this.client.commands.values()) {
-            if (command.conf.permLevel === 10) continue;
-            const cat = command.help.category;
-            if (!this.commands.has(cat)) this.commands.set(cat, []);
-            const description = `<h5>Description</h5>${escapeHTML(command.help.description)}<br /><br />`;
-            const html = description + (command.help.extendedHelp ? buildHTML(escapeHTML(command.help.extendedHelp)) : "Not set");
-            this.commands.get(cat).push({ level: levelHTML(command.conf.permLevel), guildOnly: !command.conf.runIn.includes("dm"), name: toTitleCase(command.help.name), description: command.help.description, html });
-        }
 
         /* Offline Endpoints */
         this.server.get("/", (req, res) => {
-            res.render(resolve(this.routes, "index.ejs"), { thisClient, user: getUser(req), banners: this.banners });
+            res.render(this.getFile("index.ejs"), this.sendData(req, { banners: this.banners }));
         });
         this.server.get("/commands", (req, res) => {
-            res.render(resolve(this.routes, "commands.ejs"), { thisClient, user: getUser(req), commands: this.commands });
+            res.render(this.getFile("commands.ejs"), this.sendData(req, { commands: this.commands }));
         });
         this.server.get("/statistics", (req, res) => {
-            res.render(resolve(this.routes, "statistics.ejs"), { thisClient, user: getUser(req), usage: this.client.usage });
+            res.render(this.getFile("statistics.ejs"), this.sendData(req, { usage: this.client.usage }));
         });
         this.server.get("/invite", (req, res) => {
             res.redirect(client.invite);
@@ -168,10 +122,10 @@ module.exports = class Dashboard {
 
         /* Dashboard Related Endpoints */
         this.server.get("/dashboard", this.util.check.auth, (req, res) => {
-            res.render(resolve(this.routes, "dashboard.ejs"), { thisClient, user: getUser(req), page: "Dashboard", guilds: req.user.managableGuilds });
+            res.render(this.getFile("dashboard.ejs"), this.sendData(req, { page: "Dashboard", guilds: req.user.managableGuilds }));
         });
         this.server.get("/admin", this.util.check.admin, (req, res) => {
-            res.render(resolve(this.routes, "dashboard.ejs"), { thisClient, user: getUser(req), page: "Admin", guilds: thisClient.guilds });
+            res.render(this.getFile("dashboard.ejs"), this.sendData(req, { page: "Admin", guilds: this.dClient.guilds }));
         });
 
         /* User Related Endpoints */
@@ -180,21 +134,21 @@ module.exports = class Dashboard {
         });
         this.server.get("/users/:id", this.util.check.auth, (req, res) => {
             client.fetchUser(req.params.id)
-                .then(user => res.render(resolve(this.routes, "profile.ejs"), { thisClient, user: getUser(req), profile: user.profile }))
-                .catch(() => sendError(req, res, 404, "Not found"));
+                .then(user => res.render(this.getFile("profile.ejs"), this.sendData(req, { profile: user.profile })))
+                .catch(() => this.sendError(req, res, 404, "Not found"));
         });
 
         /* News */
         this.server.get("/news", (req, res) => {
             provider.getAll("news")
-                .then(news => res.render(resolve(this.routes, "newslist.ejs"), { thisClient, user: getUser(req), news }))
+                .then(news => res.render(this.getFile("newslist.ejs"), this.sendData(req, { news })))
                 .catch(err => throwError(req, res, err));
         });
         this.server.get("/news/:id", (req, res) => {
             provider.get("news", req.param.id)
                 .then((news) => {
-                    if (!news) sendError(req, res, 404, "Announcement not found");
-                    else res.render(resolve(this.routes, "new.ejs"), { thisClient, user: getUser(req), news });
+                    if (!news) this.sendError(req, res, 404, "Announcement not found");
+                    else res.render(this.getFile("new.ejs"), this.sendData(req, { news }));
                 })
                 .catch(err => throwError(req, res, err));
         });
@@ -202,18 +156,18 @@ module.exports = class Dashboard {
         /* Guild Related Endpoints */
         this.server.get("/guilds/:guild", this.util.check.auth, (req, res) => {
             getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
-                res.render(resolve(this.routes, "guild.ejs"), { thisClient, user: getUser(req), moment, guild, settings: guild.settings });
+                res.render(this.getFile("guild.ejs"), this.sendData(req, { moment, guild, settings: guild.settings }));
             }));
         });
         this.server.get("/manage/:guild", this.util.check.auth, (req, res) => {
             getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
-                res.render(resolve(this.routes, "manage.ejs"), { thisClient, user: getUser(req), moment, guild, settings: guild.settings });
+                res.render(this.getFile("manage.ejs"), this.sendData(req, { moment, guild, settings: guild.settings }));
             }));
         });
         this.server.get("/modlogs/:guild", this.util.check.auth, (req, res) => {
             getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
                 guild.settings.moderation.getCases()
-                    .then(cases => res.render(resolve(this.routes, "modlogs.ejs"), { thisClient, user: getUser(req), moment, modlogs: cases }))
+                    .then(cases => res.render(this.getFile("modlogs.ejs"), this.sendData(req, { moment, modlogs: cases })))
                     .catch(err => throwError(req, res, err));
             }));
         });
@@ -232,14 +186,101 @@ module.exports = class Dashboard {
             }));
         });
 
-        this.server.get("/404", (req, res) => sendError(req, res, 404, "Not found"));
-        this.server.get("*", (req, res) => sendError(req, res, 404, `Path not found: ${req.path}`));
+        this.server.get("/404", (req, res) => this.sendError(req, res, 404, "Not found"));
+        this.server.get("*", (req, res) => this.sendError(req, res, 404, `Path not found: ${req.path}`));
         this.server.use((err, req, res) => throwError(req, res, err));
 
         this.site = this.server.listen(this.client.config.dash.port);
     }
 
-    async init() {
+    get dClient() {
+        return {
+            owner: this.client.config.ownerID,
+            guilds: this.client.guilds,
+            invite: this.client.invite,
+            avatar: this.client.user.avatarURL(),
+        };
+    }
+
+    getUser(req) { // eslint-disable-line class-methods-use-this
+        return req.isAuthenticated() === false
+            ? { id: null, username: null, avatar: null, auth: false }
+            : Object.assign({ auth: true }, req.user);
+    }
+
+    getFile(file) {
+        return resolve(this.routes, file);
+    }
+
+    sendData(req, obj) {
+        return Object.assign({ client: this.dClient, user: this.getUser(req) }, obj);
+    }
+
+    sendError(req, res, code, error) {
+        return res.status(code).render(this.getFile("error.ejs"), this.sendData(req, { code, error }));
+    }
+
+    init() {
+        return Promise.all([this.initBanners(), this.initCommands()]);
+    }
+
+    initCommands() {
+        const entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#39;",
+            "/": "&#x2F;",
+            "`": "&#x60;",
+        };
+
+        const escapeHTML = text => String(text).replace(/[&<>"'`/]/g, s => entityMap[s]);
+        const buildHTML = text => text.replace(/\\n/g, "<br />").replace(/= \w+ =/g, match => `<h5>${match.replace(/=/g, "").trim()}</h5>`);
+        const levelHTML = (level) => {
+            switch (level) {
+                case 0: return `<span style="float:right;" class="label label-default">${level}</span>`;
+                case 1:
+                case 2:
+                case 3:
+                case 4: return `<span style="float:right;" class="label label-warning">${level}</span>`;
+                default: return `<span style="float:right;" class="label label-danger">${level}</span>`;
+            }
+        };
+        const createTables = (html) => {
+            let isTable = false;
+            const output = [];
+            for (const line of html.split("\n")) {
+                if (!/ :: /.test(line)) {
+                    if (isTable === true) {
+                        output.push("</table>");
+                        isTable = false;
+                    }
+                    output.push(line);
+                    continue;
+                }
+                if (isTable === false) {
+                    output.push("<table>");
+                    isTable = true;
+                }
+                const [pairOne, pairTwo] = line.split("::");
+                output.push(`<tr><th>${pairOne.trim()}</th><th>${pairTwo.trim()}</th></tr>`);
+            }
+            return output.join("\n");
+        };
+
+        this.commands = new Collection();
+        for (const command of this.client.commands.values()) {
+            if (command.conf.permLevel === 10) continue;
+            const cat = command.help.category;
+            if (!this.commands.has(cat)) this.commands.set(cat, []);
+            const description = `<h5>Description</h5>${escapeHTML(command.help.description)}<br /><br />`;
+            const html = description + (command.help.extendedHelp ? createTables(buildHTML(escapeHTML(command.help.extendedHelp))) : "Not set");
+            this.commands.get(cat).push({ level: levelHTML(command.conf.permLevel), guildOnly: !command.conf.runIn.includes("dm"), name: toTitleCase(command.help.name), description: command.help.description, html });
+        }
+    }
+
+    async initBanners() {
         const users = [];
         for (const banner of Object.values(availableBanners)) {
             if (users.includes(banner.author)) continue;

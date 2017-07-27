@@ -33,6 +33,18 @@ module.exports = class Utils {
             return callback(guild);
         };
 
+        this.getChannel = (req, res, guild, callback) => {
+            const channel = guild.channels.get(req.params.channel);
+            if (!channel) return this.throw(res, ...this.error.CHANNEL_NOT_FOUND);
+            return callback(channel);
+        };
+
+        this.readChannel = (req, res, channel, callback) => {
+            if (!channel.permissionsFor(channel.guild.me).has("READ_MESSAGES")) return this.throw(res, ...this.error.MISSING_PERMISSION("READ_MESSAGES"));
+            if (!channel.permissionsFor(channel.guild.me).has("READ_MESSAGE_HISTORY")) return this.throw(res, ...this.error.MISSING_PERMISSION("READ_MESSAGE_HISTORY"));
+            return callback();
+        };
+
         this.executeLevel = async (req, res, level, guild, callback) => {
             if (req.user.id === this.client.config.ownerID);
             else {
@@ -71,6 +83,8 @@ module.exports = class Utils {
             UNKNOWN_NEWS: news => [404, `The announcement '${news}' does not exist`, "UNKNOWN_NEWS"],
             INVALID_ARGUMENT: (param, type) => [400, `'${param}' must be type: ${type}`, "INVALID_ARGUMENT"],
             UNKNOWN_ENDPOINT: endpoint => [404, `Unknown /${endpoint} endpoint`, "UNKNOWN_ENDPOINT"],
+            MISSING_PERMISSION: permission => [403, `Missing permission: '${permission}'`, "MISSING_PERMISSION"],
+            ERROR: error => [401, error, "ERROR"],
         };
 
         this.sendError = (res, error) => {

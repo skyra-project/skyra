@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const provider = require("../../providers/json");
+const provider = require("../../../providers/json");
 
 module.exports = class RouterGuild {
 

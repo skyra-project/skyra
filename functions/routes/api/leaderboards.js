@@ -1,8 +1,8 @@
 const router = require("express").Router();
 
 // Social
-const managerSocialGlobal = require("../../utils/managerSocialGlobal");
-const managerSocialLocal = require("../../utils/managerSocialLocal");
+const managerSocialGlobal = require("../../../utils/managerSocialGlobal");
+const managerSocialLocal = require("../../../utils/managerSocialLocal");
 
 module.exports = class RouterLeaderboard {
 

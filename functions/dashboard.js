@@ -1,7 +1,6 @@
 const toTitleCase = require("../functions/toTitleCase");
 const provider = require("../providers/json");
 const { resolve } = require("path");
-const moment = require("moment");
 const { Collection } = require("discord.js");
 const express = require("express");
 const DashboardUser = require("./dashboardUser");
@@ -16,6 +15,9 @@ const bodyParser = require("body-parser");
 const { renderFile } = require("ejs");
 
 const API = require("./routes/api");
+const Util = require("./routes/util");
+
+const UserRoute = require("./routes/user");
 
 module.exports = class Dashboard {
 
@@ -43,11 +45,11 @@ module.exports = class Dashboard {
 
         this.supportGuild = "https://discordapp.com/invite/6gakFR2";
 
-        this.api = new API(client);
+        this.util = new Util(client);
+        this.userRoute = new UserRoute(client, this.util, this);
 
+        this.api = new API(client, this.util);
         this.server.use("/api", this.api.server);
-
-        this.util = this.api.util;
 
         passport.serializeUser((id, done) => {
             done(null, id);
@@ -65,25 +67,7 @@ module.exports = class Dashboard {
             process.nextTick(() => done(null, profile.id));
         }));
 
-        const getGuild = (req, res, callback) => {
-            const guild = this.client.guilds.get(req.params.guild);
-            if (!guild) return this.sendError(req, res, 404, "Guild Not found");
-            if (!guild.available) return this.sendError(req, res, 503, "Guild Unavailable");
-
-            return callback(guild);
-        };
-
-        const executeLevel = async (req, res, level, guild, callback) => {
-            if (req.user.id === this.client.config.ownerID);
-            else {
-                const moderator = await guild.fetchMember(req.user.id).catch(() => null);
-                if (!moderator || this.util.hasLevel(guild, moderator, level) !== true) return this.sendError(req, res, 403, "Access denied");
-            }
-
-            return callback();
-        };
-
-        const throwError = (req, res, err) => {
+        this.throwError = (req, res, err) => {
             this.client.emit("log", err, "error");
             return this.sendError(req, res, 500, err);
         };
@@ -112,8 +96,15 @@ module.exports = class Dashboard {
 
         /* Discord Endpoints */
         this.server.get("/login", passport.authenticate("discord"));
-        this.server.get("/callback", passport.authenticate("discord", { failureRedirect: "/" }), (req, res) => {
-            res.redirect("/");
+        this.server.get("/callback", passport.authenticate("discord", {
+            failureRedirect: "/",
+        }), (req, res) => {
+            if (req.session.backURL) {
+                res.redirect(req.session.backURL);
+                req.session.backURL = null;
+            } else {
+                res.redirect("/");
+            }
         });
         this.server.get("/logout", (req, res) => {
             req.logout();
@@ -142,7 +133,7 @@ module.exports = class Dashboard {
         this.server.get("/news", (req, res) => {
             provider.getAll("news")
                 .then(news => res.render(this.getFile("newslist.ejs"), this.sendData(req, { news })))
-                .catch(err => throwError(req, res, err));
+                .catch(err => this.throwError(req, res, err));
         });
         this.server.get("/news/:id", (req, res) => {
             provider.get("news", req.param.id)
@@ -150,45 +141,12 @@ module.exports = class Dashboard {
                     if (!news) this.sendError(req, res, 404, "Announcement not found");
                     else res.render(this.getFile("new.ejs"), this.sendData(req, { news }));
                 })
-                .catch(err => throwError(req, res, err));
-        });
-
-        /* Guild Related Endpoints */
-        this.server.get("/guilds/:guild", this.util.check.auth, (req, res) => {
-            getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
-                res.render(this.getFile("guild.ejs"), this.sendData(req, { moment, guild, settings: guild.settings }));
-            }));
-        });
-        this.server.get("/manage/:guild", this.util.check.auth, (req, res) => {
-            getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
-                res.render(this.getFile("manage.ejs"), this.sendData(req, { moment, guild, settings: guild.settings }));
-            }));
-        });
-        this.server.get("/modlogs/:guild", this.util.check.auth, (req, res) => {
-            getGuild(req, res, guild => executeLevel(req, res, 3, guild, () => {
-                guild.settings.moderation.getCases()
-                    .then(cases => res.render(this.getFile("modlogs.ejs"), this.sendData(req, { moment, modlogs: cases })))
-                    .catch(err => throwError(req, res, err));
-            }));
-        });
-
-        /* Command Endpoints */
-        this.server.post("/manage/:id/leave", this.util.check.auth, (req, res) => {
-            getGuild(req, res, guild => executeLevel(req, res, 4, guild, async () => {
-                const message = req.body;
-                if (message) {
-                    const channel = guild.channels.get(guild.settings.channels.default || guild.defaultChannel.id);
-                    if (channel.postable) await channel.send(message).catch(e => this.client.emit("log", e, "error"));
-                }
-                guild.leave()
-                    .then(() => res.json({ success: true, message: `Successfully left ${guild.name} (${guild.id})` }))
-                    .catch(err => throwError(req, res, err));
-            }));
+                .catch(err => this.throwError(req, res, err));
         });
 
         this.server.get("/404", (req, res) => this.sendError(req, res, 404, "Not found"));
         this.server.get("*", (req, res) => this.sendError(req, res, 404, `Path not found: ${req.path}`));
-        this.server.use((err, req, res) => throwError(req, res, err));
+        this.server.use((err, req, res) => this.throwError(req, res, err));
 
         this.site = this.server.listen(this.client.config.dash.port);
     }
@@ -280,7 +238,7 @@ module.exports = class Dashboard {
                     else output.push(`<p>${line}</p>`);
                 }
             }
-            return output.join("\n");
+            return output.join("");
         };
 
         this.commands = new Collection();

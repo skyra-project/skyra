@@ -1,0 +1,32 @@
+<%- include("./blocks/header.ejs", { Client, user, page: "Messages", guild, channel }); %>
+
+    <section id="dashboard">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                <div id="data">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const dataContainer = document.getElementById("data");
+
+        function requestData(type, message = "", init = false) {
+            $.ajax({
+                type,
+                url: `/api/guilds/<%= guild.id %>/channels/<%= channel.id %>/messages/${message}`,
+                success: function(msg) {
+                    if (type === "GET") dataContainer.innerHTML = msg.data;
+                    else {
+                        if (type === "DELETE") dataContainer.removeChild(document.getElementById(message));
+                        console.log(msg.data);
+                    }
+                },
+            }).fail(err => alert(err.responseJSON.message));
+        }
+
+        requestData("GET", "", true);
+    </script>
+
+<%- include("./blocks/footer.ejs"); %>

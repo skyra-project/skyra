@@ -1,18 +1,16 @@
 const router = require("express").Router();
 
-const Guilds = require("./guilds");
-const Leaderboards = require("./leaderboards");
-const News = require("./news");
-
-const Util = require("./util");
+const Guilds = require("./api/guilds");
+const Leaderboards = require("./api/leaderboards");
+const News = require("./api/news");
 
 module.exports = class RouterAPI {
 
-    constructor(client) {
+    constructor(client, util) {
         this.client = client;
         this.server = router;
 
-        this.util = new Util(client);
+        this.util = util;
 
         this.server.use("/guilds", new Guilds(client, this.util).server);
         this.server.use("/leaderboards", new Leaderboards(client, this.util).server);

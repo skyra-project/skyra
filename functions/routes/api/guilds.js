@@ -1,6 +1,8 @@
 const router = require("express").Router();
-const schema = require("../schema");
-const SettingResolver = require("../settingResolver");
+const schema = require("../../schema");
+const SettingResolver = require("../../settingResolver");
+
+const moment = require("moment");
 
 /* eslint-disable class-methods-use-this */
 module.exports = class RouterGuild {
@@ -47,6 +49,74 @@ module.exports = class RouterGuild {
                 if (!channel) return this.util.throw(res, ...this.util.error.CHANNEL_NOT_FOUND);
                 return this.util.sendMessage(res, this.serialize.channel(channel));
             });
+        });
+
+        const entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#39;",
+            "/": "&#x2F;",
+            "`": "&#x60;",
+        };
+
+        const buildMessage = (id, image, title, content) => `<div class="media" id="${id}"><div class="media-left"><a href="${image}"><img class="media-object img-circle" src="${image}" height="64px" width="64px"></a></div><div class="media-body">${title}${content}</div></div>`;
+        const buildDelete = message => (message.deletable ? `<span style="float:right;" class="label label-danger helpButton" onclick="requestData('DELETE', '${message.id}');"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></span>` : "");
+        const buildTitle = message => `<h6 class="media-heading text-left">${message.id} | ${moment.utc(message.createdTimestamp).format("D/MM h:mm:ss")} | ${message.author.tag} ${message.author.bot ? "(BOT)" : ""}</h6>${buildDelete(message)}`;
+        const buildContent = content => `<p>${content.replace(/[&<>"'`/]/g, s => entityMap[s])}</p>`;
+        const buildAttachments = attachments => (attachments.size > 0 ? attachments.map(att => `<a href="${att.url}" class="thumbnail"><img src="${att.url}" class="img-rounded img-responsive"></a>`).join("") : "");
+
+        const buildEverything = message => buildMessage(message.id, message.author.displayAvatarURL(), buildTitle(message), [buildContent(message.content), buildAttachments(message.attachments)].join(""));
+
+        this.server.get("/:guild/channels/:channel/messages", this.util.gateway.admin, (req, res) => {
+            this.util.getGuild(req, res, guild => this.util.getChannel(req, res, guild, channel => this.util.readChannel(req, res, channel, () => {
+                const options = { limit: 100 };
+                if (req.query.before) options.before = req.query.before;
+                if (req.query.after) options.before = req.query.after;
+                if (req.query.around) options.before = req.query.around;
+                channel.fetchMessages(options)
+                    .then((messages) => {
+                        const msgs = Array.from(messages.values()).reverse().map(buildEverything).join("\n");
+                        this.util.sendMessage(res, msgs);
+                    })
+                    .catch(err => this.util.sendError(res, err));
+            })));
+        });
+
+        this.server.get("/:guild/channels/:channel/messages/:message", this.util.gateway.admin, (req, res) => {
+            this.util.getGuild(req, res, guild => this.util.getChannel(req, res, guild, channel => this.util.readChannel(req, res, channel, () => {
+                channel.fetchMessage(req.params.message)
+                    .then(message => this.util.sendMessage(res, message))
+                    .catch(err => this.util.sendError(res, err));
+            })));
+        });
+
+        this.server.delete("/:guild/channels/:channel/messages/:message", this.util.gateway.admin, (req, res) => {
+            this.util.getGuild(req, res, guild => this.util.getChannel(req, res, guild, channel => this.util.readChannel(req, res, channel, () => {
+                channel.fetchMessage(req.params.message)
+                    .then((message) => {
+                        if (!message.deletable) return this.util.throw(res, ...this.util.error.MISSING_PERMISSION("MANAGE_MESSAGES"));
+                        return message.delete()
+                            .then(() => this.util.sendMessage(res, `Successfully deleted the message '${message.id}' with content of: '${message.content}'`))
+                            .catch(err => this.util.sendError(res, err));
+                    })
+                    .catch(err => this.util.sendError(res, err));
+            })));
+        });
+
+        this.server.put("/:guild/channels/:channel/messages/:message", this.util.gateway.admin, (req, res) => {
+            this.util.getGuild(req, res, guild => this.util.getChannel(req, res, guild, channel => this.util.readChannel(req, res, channel, () => {
+                if (!req.body.content) return this.util.throw(res, ...this.util.error.ERROR(`Cannot edit the message '${req.params.message}', you didn't provide a content.`));
+                return channel.fetchMessage(req.params.message)
+                    .then((message) => {
+                        if (!message.editable) return this.util.throw(res, ...this.util.error.ERROR(`Cannot edit the message '${req.params.message}', it is not mine.`));
+                        return message.edit()
+                            .then(() => this.util.sendMessage(res, `Successfully deleted the message '${message.id}' with content of: '${message.content}'`))
+                            .catch(err => this.util.sendError(res, err));
+                    })
+                    .catch(err => this.util.sendError(res, err));
+            })));
         });
 
         /* Settings */

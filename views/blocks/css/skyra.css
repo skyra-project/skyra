@@ -137,6 +137,34 @@ a.collapseTitle:hover {
     text-decoration: none;
 }
 
+div.wrapped-list {
+    height: 100vh;
+    overflow-y: scroll;
+    overflow:auto;
+}
+
+body section.inverse {
+    background:#36393E;
+    color: hsla(0, 0%, 100%, .75);
+}
+
+div.mdcp p code {
+    color: inherit;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+div.mdcp pre {
+    padding: 0px;
+    background-color: #272822;
+    color: #f8f8f2;
+    padding: 9.5px;
+}
+
+div.mdcp pre code.hljs {
+    background: #272822;
+    padding: 0px;
+}
+
 #cmdUsage p {
     font-size: 14px;
 }

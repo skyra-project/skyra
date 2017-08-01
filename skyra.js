@@ -18,7 +18,7 @@ const Skyra = new Komada({
             "MESSAGE_REACTION_REMOVE",
             "MESSAGE_REACTION_REMOVE_ALL",
         ],
-        messageCacheMaxSize: 80,
+        messageCacheMaxSize: 100,
         messageCacheLifetime: 60,
         messageSweepInterval: 120,
     },

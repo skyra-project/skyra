@@ -1,6 +1,6 @@
-const musicConfig = require("../music.json");
-const { Collection } = require("discord.js");
-const MusicInterface = require("./interfaceMusic");
+const musicConfig = require('../music.json');
+const { Collection } = require('discord.js');
+const MusicInterface = require('./interfaceMusic');
 
 const data = new Collection();
 
@@ -25,7 +25,7 @@ exports.requiredVC = (client, msg) => {
     const song = musicInterface.queue[0];
     if (!song) throw musicConfig.resNoSong[Math.floor(musicConfig.resNoSong.length * Math.random())];
     const channel = musicInterface.voiceChannel;
-    if (!channel) throw "You should make me join a voice channel first.";
+    if (!channel) throw 'You should make me join a voice channel first.';
     if (!channel.members.has(msg.author.id)) throw `Please, join ${channel}`;
     return song;
 };

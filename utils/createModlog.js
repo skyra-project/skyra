@@ -1,4 +1,4 @@
-const toTitleCase = require("../functions/toTitleCase");
+const toTitleCase = require('../functions/toTitleCase');
 
 const colour = {
     ban: 0xFF0200,
@@ -8,7 +8,7 @@ const colour = {
     mute: 0xFF6E23,
     unmute: 0xFF8343,
     warn: 0xFF8F2A,
-    unwarn: 0xFF9C43,
+    unwarn: 0xFF9C43
 };
 
 class ModerationLog {
@@ -68,7 +68,7 @@ class ModerationLog {
     setReason(reason) {
         if (reason instanceof Array) {
             if (!reason.length) reason = null;
-            else reason = reason.join(" ");
+            else reason = reason.join(' ');
         }
 
         this.reason = reason;
@@ -89,7 +89,7 @@ class ModerationLog {
 
         if (channel) {
             const { embed, numberCase } = await this.getMessage();
-            const message = await channel.send({ embed }).catch(err => this.client.emit("log", err, "error"));
+            const message = await channel.send({ embed }).catch(err => this.client.emit('log', err, 'error'));
 
             return this.guild.settings.moderation.pushCase({
                 moderator: this.moderator ? { id: this.moderator.id, tag: this.moderator.tag } : null,
@@ -98,7 +98,7 @@ class ModerationLog {
                 case: numberCase,
                 reason: this.reason,
                 message: message ? message.id : null,
-                extraData: this.extraData,
+                extraData: this.extraData
             });
         }
 
@@ -124,7 +124,7 @@ class ModerationLog {
             .setColor(colour[this.type])
             .setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
             .setDescription(description)
-            .setFooter(`${AUTO ? "AUTO | " : ""}Case ${numberCase}`, this.client.user.displayAvatarURL({ size: 128 }))
+            .setFooter(`${AUTO ? 'AUTO | ' : ''}Case ${numberCase}`, this.client.user.displayAvatarURL({ size: 128 }))
             .setTimestamp();
         return embed;
     }
@@ -133,8 +133,8 @@ class ModerationLog {
         return [
             `❯ **Action:** ${toTitleCase(this.type)}`,
             `❯ **User:** ${this.user.tag} (${this.user.id})`,
-            `❯ **Reason:** ${this.reason || `Please use \`${this.guild.settings.prefix}reason ${numberCase} to claim.\``}`,
-        ].join("\n");
+            `❯ **Reason:** ${this.reason || `Please use \`${this.guild.settings.prefix}reason ${numberCase} to claim.\``}`
+        ].join('\n');
     }
 
     getChannel() {

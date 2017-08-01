@@ -1,6 +1,6 @@
-const { Command, Constants: { httpResponses } } = require("../../index");
-const { decode } = new (require("html-entities").XmlEntities)();
-const snekfetch = require("snekfetch");
+const { Command, Constants: { httpResponses } } = require('../../index');
+const { decode } = new require('html-entities').XmlEntities();
+const snekfetch = require('snekfetch');
 
 const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${input}`).then(d => JSON.parse(d.text));
 
@@ -8,11 +8,11 @@ const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=e
 module.exports = class Define extends Command {
 
     constructor(...args) {
-        super(...args, "define", {
+        super(...args, 'define', {
             mode: 1,
 
-            usage: "<input:string>",
-            description: "Check the definition of a word.",
+            usage: '<input:string>',
+            description: 'Check the definition of a word.',
             extendedHelp: Command.strip`
                 What does "heel" mean?
                 
@@ -27,7 +27,7 @@ module.exports = class Define extends Command {
                     3 ❯ In a carding machine, the part of a flat nearest the cylinder.
                     4 ❯ Part of shoe.
                     5 ❯ The part of a shoe's sole which supports the foot's heel.
-            `,
+            `
         });
     }
 
@@ -38,12 +38,12 @@ module.exports = class Define extends Command {
         const final = [];
         let index = 1;
         for (let item of Object.entries(data.tuc.find(t => t.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
-            item = decode(item[1].text.replace(/<\/?i>/g, ""));
-            final.push(`**\`${index}\` ❯** ${item.replace(/`/g, "\\`")}`);
+            item = decode(item[1].text.replace(/<\/?i>/g, ''));
+            final.push(`**\`${index}\` ❯** ${item.replace(/`/g, '\\`')}`);
             index++;
         }
 
-        return msg.send(`Search results for \`${input}\`:\n${final.join("\n")}`);
+        return msg.send(`Search results for \`${input}\`:\n${final.join('\n')}`);
     }
 
 };

@@ -1,13 +1,13 @@
-const { Command } = require("../../index");
+const { Command } = require('../../index');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Invite extends Command {
 
     constructor(...args) {
-        super(...args, "invite", {
+        super(...args, 'invite', {
             mode: 2,
 
-            description: "Displays the join server link of the bot.",
+            description: 'Displays the join server link of the bot.'
         });
 
         this.invite = Command.strip`

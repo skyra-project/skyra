@@ -1,6 +1,6 @@
-const regExpEsc = require("./regExpEsc");
+const regExpEsc = require('./regExpEsc');
 
-const friendly = new RegExp("^((?:Hey )?Skyra(?:,|!) +)", "i");
+const friendly = new RegExp('^((?:Hey )?Skyra(?:,|!) +)', 'i');
 const prefixCheck = (prefix, str) => {
     for (let i = prefix.length - 1; i >= 0; i--) {
         if (str[i] === prefix[i]) continue;

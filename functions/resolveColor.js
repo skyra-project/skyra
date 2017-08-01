@@ -1,10 +1,10 @@
-const hsluv = require("hsluv");
-const randomcolor = require("randomcolor");
+const hsluv = require('hsluv');
+const randomcolor = require('randomcolor');
 
 /* eslint-disable no-use-before-define */
 exports.validate = (input) => {
     if (/^(-r|--random)$/.test(input)) {
-        const raw = randomcolor({ luminosity: "bright" }).slice(1);
+        const raw = randomcolor({ luminosity: 'bright' }).slice(1);
         const HEX = new this.Resolver.HEX(raw.substring(0, 2), raw.substring(2, 4), raw.substring(4, 6));
         HEX.valid();
         return {
@@ -12,7 +12,7 @@ exports.validate = (input) => {
             rgb: HEX.rgb,
             hsl: HEX.hsl,
             hsluv: HEX.hsluv,
-            b10: HEX.b10,
+            b10: HEX.b10
         };
     } else if (/^rgba?\(\d{1,3},\s?\d{1,3},\s?\d{1,3}(?:,.+)?\)$/.test(input)) {
         const raw = /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/.exec(input);
@@ -23,7 +23,7 @@ exports.validate = (input) => {
             rgb: RGB,
             hsl: RGB.hsl,
             hsluv: RGB.hsluv,
-            b10: RGB.b10,
+            b10: RGB.b10
         };
     } else if (/^#[0-9a-fA-F]{6}$/.test(input)) {
         const raw = /^#([0-9a-fA-F]{6})$/.exec(input)[1];
@@ -34,7 +34,7 @@ exports.validate = (input) => {
             rgb: HEX.rgb,
             hsl: HEX.hsl,
             hsluv: HEX.hsluv,
-            b10: HEX.b10,
+            b10: HEX.b10
         };
     } else if (/^hsl\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)$/.test(input)) {
         const raw = /^hsl\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$/.exec(input);
@@ -45,7 +45,7 @@ exports.validate = (input) => {
             rgb: HSL.rgb,
             hsl: HSL,
             hsluv: HSL.hsluv,
-            b10: HSL.b10,
+            b10: HSL.b10
         };
     } else if (/^hsluv\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)$/.test(input)) {
         const raw = /^hsluv\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$/.exec(input);
@@ -56,7 +56,7 @@ exports.validate = (input) => {
             rgb: HSLUV.rgb,
             hsl: HSLUV.hsl,
             hsluv: HSLUV,
-            b10: HSLUV.b10,
+            b10: HSLUV.b10
         };
     } else if (/^\d{1,8}$/.test(input)) {
         const B10 = new this.Resolver.B10(input);
@@ -66,10 +66,10 @@ exports.validate = (input) => {
             rgb: B10.rgb,
             hsl: B10.hsl,
             hsluv: B10.hsluv,
-            b10: B10,
+            b10: B10
         };
     }
-    throw new TypeError("Invalid input");
+    throw new TypeError('Invalid input');
 };
 
 /**
@@ -330,7 +330,7 @@ const B10 = class B10 {
     }
 
     valid() {
-        if (this.value < 0 || this.value > 0xFFFFFF) throw "Color must be within the range 0 - 16777215 (0xFFFFFF).";
+        if (this.value < 0 || this.value > 0xFFFFFF) throw 'Color must be within the range 0 - 16777215 (0xFFFFFF).';
         return true;
     }
 
@@ -339,7 +339,7 @@ const B10 = class B10 {
     }
 
     get hex() {
-        const hex = this.value.toString(16).padStart(6, "0");
+        const hex = this.value.toString(16).padStart(6, '0');
         return new HEX(hex.substring(0, 2), hex.substring(2, 4), hex.substring(4, 6));
     }
 
@@ -365,7 +365,7 @@ exports.Resolver = { HSLUV, HEX, RGB, HSL, B10 };
 
 exports.luminance = (r, g, b) => (0.299 * (r ** 2)) + (0.587 * (g ** 2)) + (0.114 * (b ** 2));
 
-exports.hexConcat = (r, g, b) => `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+exports.hexConcat = (r, g, b) => `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 
 exports.fulFill = (value, fill = 0, number = 2) => {
     const length = value.toString().length;

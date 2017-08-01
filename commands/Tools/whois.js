@@ -1,6 +1,6 @@
-const { Command, Discord: { Embed } } = require("../../index");
-const { User: fetchUser } = require("../../functions/search");
-const moment = require("moment");
+const { Command, Discord: { Embed } } = require('../../index');
+const { User: fetchUser } = require('../../functions/search');
+const moment = require('moment');
 
 const sortRanks = (a, b) => b.position > a.position;
 
@@ -8,13 +8,13 @@ const sortRanks = (a, b) => b.position > a.position;
 module.exports = class Whois extends Command {
 
     constructor(...args) {
-        super(...args, "whois", {
-            aliases: ["userinfo"],
-            botPerms: ["EMBED_LINKS"],
+        super(...args, 'whois', {
+            aliases: ['userinfo'],
+            botPerms: ['EMBED_LINKS'],
             mode: 1,
 
-            usage: "[query:string]",
-            description: "Who are you?",
+            usage: '[query:string]',
+            description: 'Who are you?'
         });
     }
 
@@ -30,26 +30,26 @@ module.exports = class Whois extends Command {
     member(member, embed) {
         embed
             .setColor(member.highestRole.color || 0xdfdfdf)
-            .setTitle(`${member.user.bot ? "[BOT] " : ""}${member.user.tag}`)
+            .setTitle(`${member.user.bot ? '[BOT] ' : ''}${member.user.tag}`)
             .setURL(member.user.displayAvatarURL({ size: 1024 }))
             .setDescription([
-                `${member.nickname ? `aka **${member.nickname}**.\n` : ""}`,
+                `${member.nickname ? `aka **${member.nickname}**.\n` : ''}`,
                 `With an ID of \`${member.user.id}\`,`,
-                `this user is **${member.user.presence.status}**${member.user.presence.game ? `, playing: **${member.user.presence.game.name}**` : "."}`,
-                "\n",
-                `\nJoined Discord on ${moment.utc(member.user.createdAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
-                `\nJoined ${member.guild.name} on ${moment.utc(member.joinedAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
-            ].join(" "))
+                `this user is **${member.user.presence.status}**${member.user.presence.game ? `, playing: **${member.user.presence.game.name}**` : '.'}`,
+                '\n',
+                `\nJoined Discord on ${moment.utc(member.user.createdAt).format('D/MM/YYYY [at] HH:mm:ss')}`,
+                `\nJoined ${member.guild.name} on ${moment.utc(member.joinedAt).format('D/MM/YYYY [at] HH:mm:ss')}`
+            ].join(' '))
             .setThumbnail(member.user.displayAvatarURL({ size: 256 }))
             .setFooter(`${this.client.user.username} ${this.client.version} | ${member.user.id}`, this.client.user.displayAvatarURL({ size: 128 }))
             .setTimestamp();
         if (member.roles.size > 1) {
-            embed.addField("❯ Roles:", member.roles
+            embed.addField('❯ Roles:', member.roles
                 .array()
                 .slice(1)
                 .sort(sortRanks)
                 .map(r => r.name)
-                .join(", "),
+                .join(', '),
             );
         }
 
@@ -59,13 +59,13 @@ module.exports = class Whois extends Command {
     user(user, embed) {
         return embed
             .setColor(0xdfdfdf)
-            .setTitle(`${user.bot ? "[BOT] " : ""}${user.tag}`)
+            .setTitle(`${user.bot ? '[BOT] ' : ''}${user.tag}`)
             .setURL(user.displayAvatarURL({ size: 1024 }))
             .setDescription([
                 `With an ID of \`${user.id}\``,
-                "\n",
-                `Joined Discord at ${moment.utc(user.createdAt).format("D/MM/YYYY [at] HH:mm:ss")}`,
-            ].join(" "), true)
+                '\n',
+                `Joined Discord at ${moment.utc(user.createdAt).format('D/MM/YYYY [at] HH:mm:ss')}`
+            ].join(' '), true)
             .setThumbnail(user.displayAvatarURL({ size: 256 }))
             .setFooter(`${this.client.user.username} ${this.client.version} | ES | ${user.id}`, this.client.user.displayAvatarURL({ size: 128 }))
             .setTimestamp();

@@ -1,19 +1,19 @@
-const globalData = require("../utils/managerSocialGlobal");
-const localData = require("../utils/managerSocialLocal");
-const GuildManager = require("../utils/guildManager");
-const Rethink = require("../providers/rethink");
-const { Collection } = require("discord.js");
+const globalData = require('../utils/managerSocialGlobal');
+const localData = require('../utils/managerSocialLocal');
+const GuildManager = require('../utils/guildManager');
+const Rethink = require('../providers/rethink');
+const { Collection } = require('discord.js');
 
-const { UserProfile } = require("../utils/userProfile");
-const { MemberScore } = require("../utils/memberScore");
-const { GuildSetting } = require("../utils/guildSettings");
+const { UserProfile } = require('../utils/userProfile');
+const { MemberScore } = require('../utils/memberScore');
+const { GuildSetting } = require('../utils/guildSettings');
 
 exports.init = async () => {
     const [guild, users, locals, moderation] = await Promise.all([
-        Rethink.getAll("guilds"),
-        Rethink.getAll("users"),
-        Rethink.getAll("localScores"),
-        Rethink.getAll("moderation"),
+        Rethink.getAll('guilds'),
+        Rethink.getAll('users'),
+        Rethink.getAll('localScores'),
+        Rethink.getAll('moderation')
     ]);
     this.syncGuilds(guild, moderation);
     this.syncGlobal(users);
@@ -47,5 +47,5 @@ exports.syncLocals = (locals) => {
 exports.handleMutes = (gID, moderation) => {
     const mod = moderation.find(guild => guild.id === gID);
     if (!mod || !mod.cases) return [];
-    return mod.cases.filter(c => c.type === "mute" && c.appeal !== true) || [];
+    return mod.cases.filter(c => c.type === 'mute' && c.appeal !== true) || [];
 };

@@ -1,18 +1,18 @@
-const { Command } = require("../../index");
-const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
-const Rethink = require("../../providers/rethink");
+const { Command } = require('../../index');
+const { Role: fetchRole, Channel: fetchChannel } = require('../../functions/search');
+const Rethink = require('../../providers/rethink');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Settings extends Command {
 
     constructor(...args) {
-        super(...args, "setting", {
+        super(...args, 'setting', {
             permLevel: 3,
             mode: 2,
 
-            usage: "<add|remove|reset> <commands|publicroles|ignorecmdchannel> [value:string]",
-            usageDelim: " ",
-            description: "Edit the way Skyra works.",
+            usage: '<add|remove|reset> <commands|publicroles|ignorecmdchannel> [value:string]',
+            usageDelim: ' ',
+            description: 'Edit the way Skyra works.',
             extendedHelp: Command.strip`
                 This command is made for some extra stuff that defines how Skyra should work in your server.
                 
@@ -30,7 +30,7 @@ module.exports = class Settings extends Command {
                     For example, adding the role 'Member' will make everyone able to use it by using '&claim Member'.
                 WordFilter       :: This key defines which words you want Skyra to control from all the channels she can read in.
                     For example, adding a swearword will make Skyra control them, and perform the action you configured her for.
-            `,
+            `
         });
     }
 
@@ -41,17 +41,17 @@ module.exports = class Settings extends Command {
     }
 
     async add(msg, key, value) {
-        if (!value) throw "you must assign a value to add.";
+        if (!value) throw 'you must assign a value to add.';
         const nValue = await this.parse(msg, key, value);
         const { path } = this.validator[key];
         if (msg.guild.settings[path].includes(nValue.id || nValue)) throw `the value ${value} is already set.`;
-        await Rethink.append("guilds", msg.guild.id, path, nValue.id || nValue);
+        await Rethink.append('guilds', msg.guild.id, path, nValue.id || nValue);
         await msg.guild.settings.sync();
         return `Successfully added the value **${nValue.name || nValue}** to the key **${key}**`;
     }
 
     async remove(msg, key, value) {
-        if (!value) throw "you must assign a value to remove.";
+        if (!value) throw 'you must assign a value to remove.';
         const nValue = await this.parse(msg, key, value);
         const { path } = this.validator[key];
         if (!msg.guild.settings[path].includes(nValue.id || nValue)) throw `the value ${value} does not exist in the configuration.`;
@@ -72,8 +72,8 @@ module.exports = class Settings extends Command {
     get validator() {
         return {
             commands: {
-                type: "Command",
-                path: "disabledCommands",
+                type: 'Command',
+                path: 'disabledCommands',
                 check: (msg, value) => {
                     value = value.toLowerCase();
                     const cmd = msg.client.commands.get(value) || msg.client.commands.get(msg.client.aliases.get(value));
@@ -81,30 +81,30 @@ module.exports = class Settings extends Command {
                     if (!cmd) throw `${value} is not a command.`;
                     if (cmd && !commands.has(cmd.help.name)) throw `you can't disable the command ${cmd.help.name}, it's protected.`;
                     return cmd;
-                },
+                }
             },
             ignorecmdchannel: {
-                type: "Channel",
-                path: "disabledCmdChannels",
+                type: 'Channel',
+                path: 'disabledCmdChannels',
                 check: (msg, value) => {
                     value = value.toLowerCase();
-                    if (value === "here") return msg.channel;
+                    if (value === 'here') return msg.channel;
                     return fetchChannel(value, msg.guild);
-                },
+                }
             },
             publicroles: {
-                type: "Role",
-                path: "publicRoles",
+                type: 'Role',
+                path: 'publicRoles',
                 check: (msg, value) => {
                     value = value.toLowerCase();
                     return fetchRole(value, msg.guild);
-                },
+                }
             },
             wordfilter: {
-                type: "String",
-                path: "profanity",
-                check: (msg, value) => value,
-            },
+                type: 'String',
+                path: 'profanity',
+                check: (msg, value) => value
+            }
         };
     }
 

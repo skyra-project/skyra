@@ -1,24 +1,24 @@
-const { Command, Managers: { SocialGlobal: { fetchAll: fetchGlobal }, SocialLocal: { fetchAll: fetchLocal } } } = require("../../index");
+const { Command, Managers: { SocialGlobal: { fetchAll: fetchGlobal }, SocialLocal: { fetchAll: fetchLocal } } } = require('../../index');
 
 const titles = {
-    global: "🌐 Global Score Scoreboard",
-    local: "🏡 Local Score Scoreboard",
-    money: "💸 Money Scoreboard",
-    reputation: "🙏 Reputation Scoreboard",
+    global: '🌐 Global Score Scoreboard',
+    local: '🏡 Local Score Scoreboard',
+    money: '💸 Money Scoreboard',
+    reputation: '🙏 Reputation Scoreboard'
 };
 
 /* eslint-disable class-methods-use-this */
 module.exports = class ScoreBoard extends Command {
 
     constructor(...args) {
-        super(...args, "scoreboard", {
-            aliases: ["top", "leaderboard"],
+        super(...args, 'scoreboard', {
+            aliases: ['top', 'leaderboard'],
             mode: 1,
             spam: true,
 
-            usage: "[global|local|money|reputation] [index:int]",
-            usageDelim: " ",
-            description: "Check the leaderboards.",
+            usage: '[global|local|money|reputation] [index:int]',
+            usageDelim: ' ',
+            description: 'Check the leaderboards.',
             extendedHelp: Command.strip`
                 Am I first yet?
 
@@ -30,15 +30,15 @@ module.exports = class ScoreBoard extends Command {
                 = Example =
                 • Skyra, top global 2
                     Show the global leaderboard in the positions 10-20th.
-            `,
+            `
         });
     }
 
-    async run(msg, [type = "local", index = 1]) {
+    async run(msg, [type = 'local', index = 1]) {
         const list = Array.from(this.getList(msg, type));
         const position = list.findIndex(entry => entry[0] === msg.author.id);
         const page = this.generatePage(msg, list, index, position);
-        return msg.send(`${titles[type]}\n${page.join("\n")}`, { code: "asciidoc" });
+        return msg.send(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
     }
 
     generatePage(msg, list, index, position) {
@@ -52,11 +52,11 @@ module.exports = class ScoreBoard extends Command {
         for (let i = 0; i < 10; i++) {
             const entry = list[i + (index * 10)];
             if (!entry) break;
-            currentPage[i] = `• ${String(1 + i + (index * 10)).padStart(indexLength, " ")}: ${this.keyUser(entry[0]).padEnd(25, " ")} :: ${entry[1]}`;
+            currentPage[i] = `• ${String(1 + i + (index * 10)).padStart(indexLength, ' ')}: ${this.keyUser(entry[0]).padEnd(25, ' ')} :: ${entry[1]}`;
         }
 
-        currentPage.push(`Page ${index + 1} / ${pageCount} | ${listSize.toLocaleString()} Total\n\n${currentPage.join("\n")}`);
-        currentPage.push(`Your placing position is: ${position > 0 ? position + 1 : "Unranked"}`);
+        currentPage.push(`Page ${index + 1} / ${pageCount} | ${listSize.toLocaleString()} Total\n\n${currentPage.join('\n')}`);
+        currentPage.push(`Your placing position is: ${position > 0 ? position + 1 : 'Unranked'}`);
 
         return currentPage;
     }
@@ -70,15 +70,15 @@ module.exports = class ScoreBoard extends Command {
 
     getList(msg, type) {
         switch (type) {
-            case "global":
-            case "money":
-            case "reputation":
+            case 'global':
+            case 'money':
+            case 'reputation':
                 return fetchGlobal()
                     .filter(profile => profile[type] > 0)
-                    .sort((a, b) => (a[type] < b[type] ? 1 : -1));
-            case "local":
+                    .sort((a, b) => a[type] < b[type] ? 1 : -1);
+            case 'local':
                 return fetchLocal().get(msg.guild.id)
-                    .sort((a, b) => (a.score < b.score ? 1 : -1));
+                    .sort((a, b) => a.score < b.score ? 1 : -1);
             // no default
         }
         return null;

@@ -1,18 +1,18 @@
-const url = require("url");
-const { Message, User, GuildMember, Role, Guild, Channel } = require("discord.js");
+const url = require('url');
+const { Message, User, GuildMember, Role, Guild, Channel } = require('discord.js');
 
 const regex = {
-    userOrMember: new RegExp("^(?:<@!?)?(\\d{17,21})>?$"),
-    channel: new RegExp("^(?:<#)?(\\d{17,21})>?$"),
-    role: new RegExp("^(?:<@&)?(\\d{17,21})>?$"),
-    snowflake: new RegExp("^(\\d{17,21})$"),
+    userOrMember: new RegExp('^(?:<@!?)?(\\d{17,21})>?$'),
+    channel: new RegExp('^(?:<#)?(\\d{17,21})>?$'),
+    role: new RegExp('^(?:<@&)?(\\d{17,21})>?$'),
+    snowflake: new RegExp('^(\\d{17,21})$')
 };
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Resolver {
 
     constructor(client) {
-        Object.defineProperty(this, "client", { value: client });
+        Object.defineProperty(this, 'client', { value: client });
     }
 
   /**
@@ -34,7 +34,7 @@ module.exports = class Resolver {
     async user(user) {
         if (user instanceof User) return user;
         if (user instanceof GuildMember) return user.user;
-        if (typeof user === "string" && regex.userOrMember.test(user)) return this.client.user.bot ? this.client.fetchUser(regex.userOrMember.exec(user)[1]).catch(() => null) : this.client.users.get(regex.userOrMember.exec(user)[1]);
+        if (typeof user === 'string' && regex.userOrMember.test(user)) return this.client.user.bot ? this.client.fetchUser(regex.userOrMember.exec(user)[1]).catch(() => null) : this.client.users.get(regex.userOrMember.exec(user)[1]);
         return null;
     }
 
@@ -47,7 +47,7 @@ module.exports = class Resolver {
     async member(member, guild) {
         if (member instanceof GuildMember) return member;
         if (member instanceof User) return guild.fetchMember(member);
-        if (typeof member === "string" && regex.userOrMember.test(member)) {
+        if (typeof member === 'string' && regex.userOrMember.test(member)) {
             const user = this.client.user.bot ? await this.client.fetchUser(regex.userOrMember.exec(member)[1]).catch(() => null) : this.client.users.get(regex.userOrMember.exec(member)[1]);
             if (user) return guild.fetchMember(user).catch(() => null);
         }
@@ -61,7 +61,7 @@ module.exports = class Resolver {
    */
     async channel(channel) {
         if (channel instanceof Channel) return channel;
-        if (typeof channel === "string" && regex.channel.test(channel)) return this.client.channels.get(regex.channel.exec(channel)[1]);
+        if (typeof channel === 'string' && regex.channel.test(channel)) return this.client.channels.get(regex.channel.exec(channel)[1]);
         return null;
     }
 
@@ -72,7 +72,7 @@ module.exports = class Resolver {
    */
     async guild(guild) {
         if (guild instanceof Guild) return guild;
-        if (typeof guild === "string" && regex.snowflake.test(guild)) return this.client.guilds.get(guild);
+        if (typeof guild === 'string' && regex.snowflake.test(guild)) return this.client.guilds.get(guild);
         return null;
     }
 
@@ -84,7 +84,7 @@ module.exports = class Resolver {
    */
     async role(role, guild) {
         if (role instanceof Role) return role;
-        if (typeof role === "string" && regex.role.test(role)) return guild.roles.get(regex.role.exec(role)[1]);
+        if (typeof role === 'string' && regex.role.test(role)) return guild.roles.get(regex.role.exec(role)[1]);
         return null;
     }
 
@@ -95,8 +95,8 @@ module.exports = class Resolver {
    */
     async boolean(bool) {
         if (bool instanceof Boolean) return bool;
-        if (["1", "true", "+", "t", "yes", "y"].includes(String(bool).toLowerCase())) return true;
-        if (["0", "false", "-", "f", "no", "n"].includes(String(bool).toLowerCase())) return false;
+        if (['1', 'true', '+', 't', 'yes', 'y'].includes(String(bool).toLowerCase())) return true;
+        if (['0', 'false', '-', 'f', 'no', 'n'].includes(String(bool).toLowerCase())) return false;
         return null;
     }
 

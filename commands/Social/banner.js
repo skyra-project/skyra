@@ -1,20 +1,20 @@
-const { Command, Discord: { Embed } } = require("../../index");
+const { Command, Discord: { Embed } } = require('../../index');
 
-const availableBanners = require("../../assets/banners.json");
-const listify = require("../../functions/listify");
+const availableBanners = require('../../assets/banners.json');
+const listify = require('../../functions/listify');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Banner extends Command {
 
     constructor(...args) {
-        super(...args, "banner", {
-            botPerms: ["EMBED_LINKS"],
+        super(...args, 'banner', {
+            botPerms: ['EMBED_LINKS'],
             mode: 1,
             spam: true,
 
-            usage: "<list|buy|set|buylist> [banner:string]",
-            usageDelim: " ",
-            description: "Buy, list, or set the banners.",
+            usage: '<list|buy|set|buylist> [banner:string]',
+            usageDelim: ' ',
+            description: 'Buy, list, or set the banners.'
         });
     }
 
@@ -33,14 +33,14 @@ module.exports = class Banner extends Command {
         let index = 1;
         if (!isNaN(parseInt(value))) index = parseInt(value);
         const list = listify(output, { index, length: 8 });
-        return msg.send(list, { code: "asciidoc" });
+        return msg.send(list, { code: 'asciidoc' });
     }
 
     async set(msg, value) {
         const banners = msg.author.profile.bannerList || [];
-        if (!value) throw "you must specify a banner to set.";
+        if (!value) throw 'you must specify a banner to set.';
         if (!banners[0]) throw "you don't have a banner.";
-        banners.push("0001");
+        banners.push('0001');
         if (!banners.includes(value)) throw "you don't have this banner.";
         await msg.author.profile.update({ banners: { theme: value } }).catch(Command.handleError);
         return msg.send(`Dear ${msg.author}, you have successfully set your banner to: ${availableBanners[value] ? availableBanners[value].title : value}`);
@@ -49,16 +49,16 @@ module.exports = class Banner extends Command {
     async buylist(msg, value) {
         let index = 1;
         if (!isNaN(parseInt(value))) index = parseInt(value);
-        const list = listify(Object.entries(availableBanners).map(([k, v]) => [k, `${v.title.padEnd(25, " ") + v.price} S`]), { index, length: 8 });
-        return msg.send(list, { code: "asciidoc" });
+        const list = listify(Object.entries(availableBanners).map(([k, v]) => [k, `${v.title.padEnd(25, ' ') + v.price} S`]), { index, length: 8 });
+        return msg.send(list, { code: 'asciidoc' });
     }
 
     async buy(msg, value) {
         const banners = msg.author.profile.bannerList || [];
-        if (!value) return msg.send("You must specify a banner to buy.");
+        if (!value) return msg.send('You must specify a banner to buy.');
         const selected = availableBanners[value] || null;
-        if (!selected) return msg.send("This banner does not exist.");
-        else if (banners.includes(selected.id)) return msg.send("You already have this banner.");
+        if (!selected) return msg.send('This banner does not exist.');
+        else if (banners.includes(selected.id)) return msg.send('You already have this banner.');
         else if (msg.author.profile.money < selected.price) return msg.send(`You don't have enough money to buy this banner. You have ${msg.author.profile.money}${Command.shiny(msg)}, the banner costs ${selected.price}${Command.shiny(msg)}`);
         return this.prompt(msg, selected)
             .then(async () => {

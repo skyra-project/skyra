@@ -1,28 +1,28 @@
-const { Command } = require("../../index");
-const { fetchAvatar } = require("../../functions/wrappers");
-const { roundImage } = require("../../functions/canvas");
-const { readFile } = require("fs-nextra");
-const { join, resolve } = require("path");
-const Canvas = require("canvas");
+const { Command } = require('../../index');
+const { fetchAvatar } = require('../../functions/wrappers');
+const { roundImage } = require('../../functions/canvas');
+const { readFile } = require('fs-nextra');
+const { join, resolve } = require('path');
+const Canvas = require('canvas');
 
-const template = resolve(join(__dirname, "../../assets/images/memes/goodnight.png"));
+const template = resolve(join(__dirname, '../../assets/images/memes/goodnight.png'));
 
 /* eslint-disable class-methods-use-this */
 module.exports = class GoodNight extends Command {
 
     constructor(...args) {
-        super(...args, "goodnight", {
+        super(...args, 'goodnight', {
             guildOnly: true,
             mode: 0,
 
-            usage: "<user:user>",
-            description: "Give somebody a nice Good Night!",
+            usage: '<user:user>',
+            description: 'Give somebody a nice Good Night!'
         });
     }
 
     async run(msg, [user]) {
         const output = await this.cuddle(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: "GoodNight.png" }] });
+        return msg.channel.send({ files: [{ attachment: output, name: 'GoodNight.png' }] });
     }
 
     async goodnight(msg, user) {
@@ -30,7 +30,7 @@ module.exports = class GoodNight extends Command {
         const background = new Canvas.Image();
         const kisser = new Canvas.Image();
         const child = new Canvas.Image();
-        const ctx = c.getContext("2d");
+        const ctx = c.getContext('2d');
 
         if (user.id === msg.author.id) user = this.client.user;
 
@@ -38,7 +38,7 @@ module.exports = class GoodNight extends Command {
         const [bgBuffer, kisserBuffer, childBuffer] = await Promise.all([
             readFile(template),
             fetchAvatar(msg.author, 256),
-            fetchAvatar(user, 256),
+            fetchAvatar(user, 256)
         ]);
         background.src = bgBuffer;
         kisser.src = kisserBuffer;

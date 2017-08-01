@@ -1,8 +1,8 @@
 const options = {
-    name: "Muted",
+    name: 'Muted',
     color: 0x422c0b,
     mentionable: false,
-    hoist: false,
+    hoist: false
 };
 
 exports.createMuted = async (msg) => {
@@ -14,18 +14,18 @@ exports.createMuted = async (msg) => {
     let accepted = 0;
 
     for (const channel of channels.values()) { // eslint-disable-line no-restricted-syntax
-        if (channel.type === "text") channel.overwritePermissions(role, { SEND_MESSAGES: false }).catch(() => denied.push(channel.toString()));
+        if (channel.type === 'text') channel.overwritePermissions(role, { SEND_MESSAGES: false }).catch(() => denied.push(channel.toString()));
         else channel.overwritePermissions(role, { CONNECT: false }).catch(() => denied.push(channel.toString()));
         accepted += 1;
     }
 
-    const messageEdit2 = denied.length ? `, with exception of ${denied.join(", ")}.` : ". ";
+    const messageEdit2 = denied.length ? `, with exception of ${denied.join(', ')}.` : '. ';
     await msg.guild.settings.update({ roles: { muted: role.id } });
     await msg.send(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
     return true;
 };
 
-exports.shiny = msg => (msg.channel.permissionsFor(msg.guild.me).has("USE_EXTERNAL_EMOJIS") ? "<:ShinyYellow:324157128270938113>" : "S");
+exports.shiny = msg => msg.channel.permissionsFor(msg.guild.me).has('USE_EXTERNAL_EMOJIS') ? '<:ShinyYellow:324157128270938113>' : 'S';
 
 exports.color = (msg) => {
     const profile = msg.author.profile;

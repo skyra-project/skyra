@@ -1,15 +1,15 @@
-const { Command, Discord: { Embed } } = require("../../index");
+const { Command, Discord: { Embed } } = require('../../index');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Feedback extends Command {
 
     constructor(...args) {
-        super(...args, "feedback", {
-            botPerms: ["EMBED_LINKS"],
+        super(...args, 'feedback', {
+            botPerms: ['EMBED_LINKS'],
             mode: 2,
 
-            usage: "<message:string{8,1900}>",
-            description: "Send a feedback message to the bot's owner.",
+            usage: '<message:string{8,1900}>',
+            description: "Send a feedback message to the bot's owner."
         });
 
         this.channel = null;
@@ -30,7 +30,7 @@ module.exports = class Feedback extends Command {
     }
 
     init(client) {
-        this.channel = client.channels.get("257561807500214273");
+        this.channel = client.channels.get('257561807500214273');
     }
 
 };

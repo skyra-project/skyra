@@ -1,7 +1,7 @@
-const { resolve, join } = require("path");
-const fs = require("fs-nextra");
+const { resolve, join } = require('path');
+const fs = require('fs-nextra');
 
-const baseDir = join(__dirname, "../bwd/provider/json");
+const baseDir = join(__dirname, '../bwd/provider/json');
 fs.ensureDir(baseDir).catch(console.error);
 
 /* Table methods */
@@ -26,7 +26,7 @@ exports.createTable = table => fs.mkdir(resolve(baseDir, table));
  * @returns {Promise<Void>}
  */
 exports.deleteTable = table => this.hasTable(table)
-    .then(exists => (exists ? fs.emptyDir(resolve(baseDir, table)).then(() => fs.remove(resolve(baseDir, table))) : null));
+    .then(exists => exists ? fs.emptyDir(resolve(baseDir, table)).then(() => fs.remove(resolve(baseDir, table))) : null);
 
 /* Document methods */
 

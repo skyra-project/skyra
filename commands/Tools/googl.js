@@ -1,5 +1,5 @@
-const { Command, Constants, Discord: { Embed } } = require("../../index");
-const snekfetch = require("snekfetch");
+const { Command, Constants, Discord: { Embed } } = require('../../index');
+const snekfetch = require('snekfetch');
 
 const key = Constants.getConfig.tokens.google;
 
@@ -7,13 +7,13 @@ const key = Constants.getConfig.tokens.google;
 module.exports = class Googl extends Command {
 
     constructor(...args) {
-        super(...args, "googl", {
-            aliases: ["shortenurl", "googleshorturl", "shorten"],
-            botPerms: ["EMBED_LINKS"],
+        super(...args, 'googl', {
+            aliases: ['shortenurl', 'googleshorturl', 'shorten'],
+            botPerms: ['EMBED_LINKS'],
             mode: 2,
 
-            usage: "<URL:url>",
-            description: "Short your links with this tool.",
+            usage: '<URL:url>',
+            description: 'Short your links with this tool.',
             extendedHelp: Command.strip`
                 Shorten your urls with Googl!
 
@@ -29,7 +29,7 @@ module.exports = class Googl extends Command {
                     https://goo.gl/un5E
                 • Skyra, googl https://goo.gl/un5E
                     https://github.com/
-            `,
+            `
         });
     }
 

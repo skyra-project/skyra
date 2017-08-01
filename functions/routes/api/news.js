@@ -1,5 +1,5 @@
-const router = require("express").Router();
-const provider = require("../../../providers/json");
+const router = require('express').Router();
+const provider = require('../../../providers/json');
 
 module.exports = class RouterGuild {
 
@@ -8,19 +8,19 @@ module.exports = class RouterGuild {
         this.server = router;
         this.util = util;
 
-        this.server.get("/", (req, res) => {
-            provider.getAll("news")
+        this.server.get('/', (req, res) => {
+            provider.getAll('news')
                 .then(data => this.util.sendMessage(res, data))
                 .catch(err => this.util.sendError(res, err));
         });
-        this.server.get("/:new", (req, res) => {
-            provider.get("news", req.params.new)
-                .then(data => (data ? this.util.sendMessage(res, data) : this.util.throw(res, ...this.util.error.UNKNOWN_NEWS(req.params.new))))
+        this.server.get('/:new', (req, res) => {
+            provider.get('news', req.params.new)
+                .then(data => data ? this.util.sendMessage(res, data) : this.util.throw(res, ...this.util.error.UNKNOWN_NEWS(req.params.new)))
                 .catch(err => this.util.sendError(res, err));
         });
 
-        this.server.get("*", (req, res) => {
-            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT("news"));
+        this.server.get('*', (req, res) => {
+            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('news'));
         });
     }
 

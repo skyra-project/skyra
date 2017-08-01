@@ -6,12 +6,12 @@ module.exports = class Utils {
         this.check = {
             auth: (req, res, next) => {
                 if (req.isAuthenticated()) return next();
-                return res.redirect("/login");
+                return res.redirect('/login');
             },
             admin: (req, res, next) => {
                 if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
                 return this.client.dashboard.sendError(req, res, 404, `Path not found: ${req.path}`);
-            },
+            }
         };
 
         this.gateway = {
@@ -22,7 +22,7 @@ module.exports = class Utils {
             admin: (req, res, next) => {
                 if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
                 return this.throw(res, ...this.error.DENIED_ACCESS);
-            },
+            }
         };
 
         this.getGuild = (req, res, callback) => {
@@ -40,8 +40,8 @@ module.exports = class Utils {
         };
 
         this.readChannel = (req, res, channel, callback) => {
-            if (!channel.permissionsFor(channel.guild.me).has("READ_MESSAGES")) return this.throw(res, ...this.error.MISSING_PERMISSION("READ_MESSAGES"));
-            if (!channel.permissionsFor(channel.guild.me).has("READ_MESSAGE_HISTORY")) return this.throw(res, ...this.error.MISSING_PERMISSION("READ_MESSAGE_HISTORY"));
+            if (!channel.permissionsFor(channel.guild.me).has('READ_MESSAGES')) return this.throw(res, ...this.error.MISSING_PERMISSION('READ_MESSAGES'));
+            if (!channel.permissionsFor(channel.guild.me).has('READ_MESSAGE_HISTORY')) return this.throw(res, ...this.error.MISSING_PERMISSION('READ_MESSAGE_HISTORY'));
             return callback();
         };
 
@@ -71,24 +71,24 @@ module.exports = class Utils {
         };
 
         this.error = {
-            GUILD_NOT_FOUND: [404, "Guild not found", "GUILD_NOT_FOUND"],
-            GUILD_UNAVAILABLE: [503, "Guild not available", "GUILD_UNAVAILABLE"],
-            USER_NOT_FOUND: [404, "User not found", "USER_NOT_FOUND"],
-            MEMBER_NOT_FOUND: [404, "Member not found", "MEMBER_NOT_FOUND"],
-            ROLE_NOT_FOUND: [404, "Role not found", "ROLE_NOT_FOUND"],
-            CHANNEL_NOT_FOUND: [404, "Channel not found", "CHANNEL_NOT_FOUND"],
-            DENIED_ACCESS: [403, "Access denied", "DENIED_ACCESS"],
-            AUTH_REQUIRED: [401, "This endpoint requires authentication", "AUTH_REQUIRED"],
-            PARSE_ERROR: error => [400, `Failed to parse an argument. Error: ${typeof error === "string" ? error : JSON.stringify(error)}`, "PARSE_ERROR"],
-            UNKNOWN_NEWS: news => [404, `The announcement '${news}' does not exist`, "UNKNOWN_NEWS"],
-            INVALID_ARGUMENT: (param, type) => [400, `'${param}' must be type: ${type}`, "INVALID_ARGUMENT"],
-            UNKNOWN_ENDPOINT: endpoint => [404, `Unknown /${endpoint} endpoint`, "UNKNOWN_ENDPOINT"],
-            MISSING_PERMISSION: permission => [403, `Missing permission: '${permission}'`, "MISSING_PERMISSION"],
-            ERROR: error => [401, error, "ERROR"],
+            GUILD_NOT_FOUND: [404, 'Guild not found', 'GUILD_NOT_FOUND'],
+            GUILD_UNAVAILABLE: [503, 'Guild not available', 'GUILD_UNAVAILABLE'],
+            USER_NOT_FOUND: [404, 'User not found', 'USER_NOT_FOUND'],
+            MEMBER_NOT_FOUND: [404, 'Member not found', 'MEMBER_NOT_FOUND'],
+            ROLE_NOT_FOUND: [404, 'Role not found', 'ROLE_NOT_FOUND'],
+            CHANNEL_NOT_FOUND: [404, 'Channel not found', 'CHANNEL_NOT_FOUND'],
+            DENIED_ACCESS: [403, 'Access denied', 'DENIED_ACCESS'],
+            AUTH_REQUIRED: [401, 'This endpoint requires authentication', 'AUTH_REQUIRED'],
+            PARSE_ERROR: error => [400, `Failed to parse an argument. Error: ${typeof error === 'string' ? error : JSON.stringify(error)}`, 'PARSE_ERROR'],
+            UNKNOWN_NEWS: news => [404, `The announcement '${news}' does not exist`, 'UNKNOWN_NEWS'],
+            INVALID_ARGUMENT: (param, type) => [400, `'${param}' must be type: ${type}`, 'INVALID_ARGUMENT'],
+            UNKNOWN_ENDPOINT: endpoint => [404, `Unknown /${endpoint} endpoint`, 'UNKNOWN_ENDPOINT'],
+            MISSING_PERMISSION: permission => [403, `Missing permission: '${permission}'`, 'MISSING_PERMISSION'],
+            ERROR: error => [401, error, 'ERROR']
         };
 
         this.sendError = (res, error) => {
-            this.client.emit("log", error, "error");
+            this.client.emit('log', error, 'error');
             this.throw(res, 500, error);
         };
 
@@ -100,49 +100,49 @@ module.exports = class Utils {
     get permStructure() {
         return [{
             check: () => true,
-            break: false,
+            break: false
         }, {
             check: (guild, settings, member) => {
                 if (settings && settings.roles.staff && member.roles.has(settings.roles.staff)) return true;
-                else if (member.permissions.has("MANAGE_MESSAGES")) return true;
+                else if (member.permissions.has('MANAGE_MESSAGES')) return true;
                 return false;
             },
-            break: false,
+            break: false
         }, {
             check: (guild, settings, member) => {
                 if (settings && settings.roles.moderator && member.roles.has(settings.roles.moderator)) return true;
-                else if (member.permissions.has("BAN_MEMBERS")) return true;
+                else if (member.permissions.has('BAN_MEMBERS')) return true;
                 return false;
             },
-            break: false,
+            break: false
         }, {
             check: (guild, settings, member) => {
                 if (settings && settings.roles.admin && member.roles.has(settings.roles.admin)) return true;
-                else if (member.permissions.has("ADMINISTRATOR")) return true;
+                else if (member.permissions.has('ADMINISTRATOR')) return true;
                 return false;
             },
-            break: false,
+            break: false
         }, {
             check: () => false,
-            break: false,
+            break: false
         }, {
             check: () => false,
-            break: false,
+            break: false
         }, {
             check: () => false,
-            break: false,
+            break: false
         }, {
             check: () => false,
-            break: false,
+            break: false
         }, {
             check: () => false,
-            break: false,
+            break: false
         }, {
             check: (guild, settings, member) => member.id === this.client.config.ownerID,
-            break: true,
+            break: true
         }, {
             check: (guild, settings, member) => member.id === this.client.config.ownerID,
-            break: false,
+            break: false
         }];
     }
 

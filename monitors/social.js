@@ -2,7 +2,7 @@
 
 exports.conf = {
     guildOnly: true,
-    enabled: true,
+    enabled: true
 };
 
 // exports.destroy = async (client, msg, roles) => {
@@ -13,7 +13,7 @@ const cooldowns = new Set();
 
 exports.handleRoles = (client, msg) => {
     const autoRoles = msg.guild.settings.autoroles;
-    if (!autoRoles.length || !msg.guild.me.permissions.has("MANAGE_ROLES")) return null;
+    if (!autoRoles.length || !msg.guild.me.permissions.has('MANAGE_ROLES')) return null;
 
     const giveRoles = [];
   // const invalidRoles = [];
@@ -31,7 +31,7 @@ exports.handleRoles = (client, msg) => {
     }
 };
 
-exports.ensureFetchMember = msg => (!msg.member ? msg.guild.fetchMember(msg.author.id) : null);
+exports.ensureFetchMember = msg => !msg.member ? msg.guild.fetchMember(msg.author.id) : null;
 
 exports.cooldown = (msg) => {
     if (cooldowns.has(msg.author.id)) return true;
@@ -47,10 +47,10 @@ exports.calc = (guild) => {
 };
 
 exports.run = async (client, msg) => {
-    if (!msg.member
-        || msg.author.bot
-        || msg.guild.settings.ignoreChannels.includes(msg.channel.id)
-        || this.cooldown(msg)) return false;
+    if (!msg.member ||
+        msg.author.bot ||
+        msg.guild.settings.ignoreChannels.includes(msg.channel.id) ||
+        this.cooldown(msg)) return false;
 
     try {
         await this.ensureFetchMember(msg);
@@ -61,6 +61,6 @@ exports.run = async (client, msg) => {
         await this.handleRoles(client, msg);
         return true;
     } catch (e) {
-        return client.emit("log", `Failed to add points to ${msg.author.id}: ${e}`, "error");
+        return client.emit('log', `Failed to add points to ${msg.author.id}: ${e}`, 'error');
     }
 };

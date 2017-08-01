@@ -1,29 +1,29 @@
-const { Command } = require("../../index");
-const { fetchAll: fetchGlobal } = require("../../utils/managerSocialGlobal");
-const { fetchAvatar } = require("../../functions/wrappers");
-const { readFile } = require("fs-nextra");
-const { join } = require("path");
-const snekfetch = require("snekfetch");
-const Canvas = require("canvas");
+const { Command } = require('../../index');
+const { fetchAll: fetchGlobal } = require('../../utils/managerSocialGlobal');
+const { fetchAvatar } = require('../../functions/wrappers');
+const { readFile } = require('fs-nextra');
+const { join } = require('path');
+const snekfetch = require('snekfetch');
+const Canvas = require('canvas');
 
-Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Regular.ttf"), { family: "RobotoRegular" });
-Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { family: "RobotoLight" });
+Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), { family: 'RobotoRegular' });
+Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { family: 'RobotoLight' });
 
-const profileTemplate = join(__dirname, "../../assets/images/social/profile-foreground.png");
+const profileTemplate = join(__dirname, '../../assets/images/social/profile-foreground.png');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class PreviewProfile extends Command {
 
     constructor(...args) {
-        super(...args, "preview", {
-            botPerms: ["ATTACH_FILES"],
+        super(...args, 'preview', {
+            botPerms: ['ATTACH_FILES'],
             guildOnly: true,
             mode: 1,
 
-            guilds: ["256566731684839428"],
+            guilds: ['256566731684839428'],
 
-            usage: "[url:url]",
-            description: "Preview a user profile's banner.",
+            usage: '[url:url]',
+            description: "Preview a user profile's banner."
         });
     }
 
@@ -31,9 +31,9 @@ module.exports = class PreviewProfile extends Command {
         let url;
         if (msg.attachments.size > 0) url = msg.attachments.first().url;
         if (input && /\.(webm|png|jpg)$/.test(input)) url = input;
-        if (!url) throw "You must attach an image or a valid image URL.";
+        if (!url) throw 'You must attach an image or a valid image URL.';
         const output = await this.showProfile(msg.author, url);
-        return msg.channel.send({ files: [{ attachment: output, name: "Profile.png" }] });
+        return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
     }
 
     async showProfile(user, url) {
@@ -46,18 +46,18 @@ module.exports = class PreviewProfile extends Command {
         const Prog = Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 356);
 
         /* Global leaderboard */
-        const sortedList = fetchGlobal().sort((a, b) => (a.points < b.points ? 1 : -1));
+        const sortedList = fetchGlobal().sort((a, b) => a.points < b.points ? 1 : -1);
 
         const c = new Canvas(640, 391);
         const background = new Canvas.Image();
         const imgAvatar = new Canvas.Image();
         const themeImage = new Canvas.Image();
-        const ctx = c.getContext("2d");
+        const ctx = c.getContext('2d');
 
         const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
             snekfetch.get(url).then(d => d.body),
             readFile(profileTemplate),
-            fetchAvatar(user, 256),
+            fetchAvatar(user, 256)
         ]);
 
         themeImage.onload = () => ctx.drawImage(themeImage, 10, 9, 188, 373);
@@ -70,19 +70,19 @@ module.exports = class PreviewProfile extends Command {
         ctx.fillRect(235, 356, Prog, 5);
 
         /* Draw the information */
-        ctx.font = "35px RobotoRegular";
-        ctx.fillStyle = "rgb(23,23,23)";
+        ctx.font = '35px RobotoRegular';
+        ctx.fillStyle = 'rgb(23,23,23)';
         ctx.fillText(user.username, 227, 73);
-        ctx.font = "25px RobotoLight";
+        ctx.font = '25px RobotoLight';
         ctx.fillText(`#${user.discriminator}`, 227, 105);
-        ctx.textAlign = "right";
-        const GlobalPosition = exists ? sortedList.map(l => l.id).indexOf(user.id) + 1 : "unranked";
+        ctx.textAlign = 'right';
+        const GlobalPosition = exists ? sortedList.map(l => l.id).indexOf(user.id) + 1 : 'unranked';
         ctx.fillText(GlobalPosition, 594, 276);
         ctx.fillText(money, 594, 229);
         ctx.fillText(reputation, 594, 181);
         ctx.fillText(points, 594, 346);
-        ctx.textAlign = "center";
-        ctx.font = "40px RobotoRegular";
+        ctx.textAlign = 'center';
+        ctx.font = '40px RobotoRegular';
         ctx.fillText(currentLevel, 576, 100);
 
         /* Draw the avatar */

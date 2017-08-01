@@ -1,14 +1,14 @@
-const { User: fetchUser } = require("../../functions/search");
-const { fetchAvatar } = require("../../functions/wrappers");
-const { readFile } = require("fs-nextra");
-const { join, resolve } = require("path");
-const Canvas = require("canvas");
+const { User: fetchUser } = require('../../functions/search');
+const { fetchAvatar } = require('../../functions/wrappers');
+const { readFile } = require('fs-nextra');
+const { join, resolve } = require('path');
+const Canvas = require('canvas');
 
-const template = resolve(join(__dirname, "../../assets/images/memes/pingkyra.png"));
+const template = resolve(join(__dirname, '../../assets/images/memes/pingkyra.png'));
 
 const PingKyra = async (client, msg, user) => {
     /* Initialize Canvas */
-    const kyra = await client.fetchUser("242043489611808769");
+    const kyra = await client.fetchUser('242043489611808769');
 
     if (user.id === kyra.id || user.id === client.user.id) user = msg.author;
 
@@ -16,13 +16,13 @@ const PingKyra = async (client, msg, user) => {
     const background = new Canvas.Image();
     const pinner = new Canvas.Image();
     const Kyra = new Canvas.Image();
-    const ctx = c.getContext("2d");
+    const ctx = c.getContext('2d');
 
     /* Get the buffers from both profile avatars */
     const [bgBuffer, pinnerBuffer, KyraBuffer] = await Promise.all([
         readFile(template),
         fetchAvatar(user, 128),
-        fetchAvatar(kyra, 128),
+        fetchAvatar(kyra, 128)
     ]);
 
     /* Background */
@@ -54,29 +54,29 @@ const PingKyra = async (client, msg, user) => {
 exports.run = async (client, msg, [search]) => {
     const user = await fetchUser(search, msg.guild);
     const output = await PingKyra(client, msg, user);
-    return msg.channel.send({ files: [{ attachment: output, name: "pingkyra.png" }] });
+    return msg.channel.send({ files: [{ attachment: output, name: 'pingkyra.png' }] });
 };
 
 exports.conf = {
     enabled: true,
-    runIn: ["text"],
+    runIn: ['text'],
     aliases: [],
     permLevel: 0,
     botPerms: [],
     requiredFuncs: [],
     spam: false,
     mode: 0,
-    cooldown: 30,
+    cooldown: 30
 };
 
 exports.help = {
-    name: "pingkyra",
-    description: "How you dare pinging me!",
-    usage: "<user:string>",
-    usageDelim: "",
+    name: 'pingkyra',
+    description: 'How you dare pinging me!',
+    usage: '<user:string>',
+    usageDelim: '',
     extendedHelp: [
-        "How. You. Dare. Pinging. Me!",
-        "",
-        "&pingkyra followed by the username concerned that did the shameful act of pinging kyra will show you the consequences.",
-    ].join("\n"),
+        'How. You. Dare. Pinging. Me!',
+        '',
+        '&pingkyra followed by the username concerned that did the shameful act of pinging kyra will show you the consequences.'
+    ].join('\n')
 };

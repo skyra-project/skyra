@@ -1,24 +1,24 @@
-const { Command, Discord: { Embed } } = require("../../index");
+const { Command, Discord: { Embed } } = require('../../index');
 
 /* EMBED ASSETS */
 const reels = [
-  ["🍒", "💰", "⭐", "🎲", "💎", "❤", "🔱", "🔅", "🎉"],
-  ["💎", "🔅", "❤", "🍒", "🎉", "🔱", "🎲", "⭐", "💰"],
-  ["❤", "🎲", "💎", "⭐", "🔱", "🍒", "💰", "🎉", "🔅"],
+  ['🍒', '💰', '⭐', '🎲', '💎', '❤', '🔱', '🔅', '🎉'],
+  ['💎', '🔅', '❤', '🍒', '🎉', '🔱', '🎲', '⭐', '💰'],
+  ['❤', '🎲', '💎', '⭐', '🔱', '🍒', '💰', '🎉', '🔅']
 ];
 const combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6]];
-const values = { "💎": 24, "🔱": 20, "💰": 16, "❤": 12, "⭐": 10, "🎲": 8, "🔅": 6, "🎉": 5, "🍒": 5 };
-const skin = { "💎": "<:Seven:325348810979016705>", "🔱": "<:Diamond:325348812065603594>", "💰": "<:Horseshoe:325348811679465493>", "❤": "<:Heart:325348812090507264>", "⭐": "<:Bell:325348812010815498>", "🎲": "<:Watermelon:325348812463931392>", "🔅": "<:Lemon:325348811725864971>", "🎉": "<:Bar:325348810958307328>", "🍒": "<:Cherry:325348811608424448>" };
+const values = { '💎': 24, '🔱': 20, '💰': 16, '❤': 12, '⭐': 10, '🎲': 8, '🔅': 6, '🎉': 5, '🍒': 5 };
+const skin = { '💎': '<:Seven:325348810979016705>', '🔱': '<:Diamond:325348812065603594>', '💰': '<:Horseshoe:325348811679465493>', '❤': '<:Heart:325348812090507264>', '⭐': '<:Bell:325348812010815498>', '🎲': '<:Watermelon:325348812463931392>', '🔅': '<:Lemon:325348811725864971>', '🎉': '<:Bar:325348810958307328>', '🍒': '<:Cherry:325348811608424448>' };
 
 /* CANVAS ASSETS */
-const { readFile } = require("fs-nextra");
-const Canvas = require("canvas");
-const { join } = require("path");
-const { fillRoundRect } = require("../../functions/canvas");
+const { readFile } = require('fs-nextra');
+const Canvas = require('canvas');
+const { join } = require('path');
+const { fillRoundRect } = require('../../functions/canvas');
 
-Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { family: "RobotoLight" });
-const iconsPath = join(__dirname, "../../assets/images/social/sm-icons.png");
-const shinyPath = join(__dirname, "../../assets/images/social/shiny-icon.png");
+Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { family: 'RobotoLight' });
+const iconsPath = join(__dirname, '../../assets/images/social/sm-icons.png');
+const shinyPath = join(__dirname, '../../assets/images/social/shiny-icon.png');
 
 const coordinates = [
     { x: 14, y: 12 },
@@ -29,21 +29,21 @@ const coordinates = [
     { x: 98, y: 54 },
     { x: 14, y: 96 },
     { x: 56, y: 96 },
-    { x: 98, y: 96 },
+    { x: 98, y: 96 }
 ];
 
 const iconSize = 38;
 
 const resolveSprite = {
-    "💎": { x: 0, y: 0 },
-    "🔱": { x: iconSize, y: 0 },
-    "💰": { x: iconSize * 2, y: 0 },
-    "❤": { x: 0, y: iconSize },
-    "⭐": { x: iconSize, y: iconSize },
-    "🎲": { x: iconSize * 2, y: iconSize },
-    "🔅": { x: 0, y: iconSize * 2 },
-    "🎉": { x: iconSize, y: iconSize * 2 },
-    "🍒": { x: iconSize * 2, y: iconSize * 2 },
+    '💎': { x: 0, y: 0 },
+    '🔱': { x: iconSize, y: 0 },
+    '💰': { x: iconSize * 2, y: 0 },
+    '❤': { x: 0, y: iconSize },
+    '⭐': { x: iconSize, y: iconSize },
+    '🎲': { x: iconSize * 2, y: iconSize },
+    '🔅': { x: 0, y: iconSize * 2 },
+    '🎉': { x: iconSize, y: iconSize * 2 },
+    '🍒': { x: iconSize * 2, y: iconSize * 2 }
 };
 /* END */
 
@@ -90,13 +90,13 @@ class SlotMachines {
 module.exports = class SlotMachine extends Command {
 
     constructor(...args) {
-        super(...args, "balance", {
-            aliases: ["slotmachines", "slot"],
-            botPerms: ["EMBED_LINKS"],
+        super(...args, 'balance', {
+            aliases: ['slotmachines', 'slot'],
+            botPerms: ['EMBED_LINKS'],
             mode: 1,
             spam: true,
 
-            usage: "<50|100|200|500|1000>",
+            usage: '<50|100|200|500|1000>',
             description: "I bet 100S you ain't winning this round.",
             extendedHelp: Command.strip`
                 Slotmachines!
@@ -108,7 +108,7 @@ module.exports = class SlotMachine extends Command {
                 = Reminder =
                     • You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).
                     • Skyra will use a 'skin' for the slotmachine icons if she has permissions to use external emojis. They simulate the icons from a real slotmachine.
-            `,
+            `
         });
     }
 
@@ -124,25 +124,25 @@ module.exports = class SlotMachine extends Command {
         else msg.author.profile.use(coins).catch(Command.handleError);
 
         const options = {};
-        if (msg.channel.permissionsFor(msg.guild.me).has("ATTACH_FILES")) {
+        if (msg.channel.permissionsFor(msg.guild.me).has('ATTACH_FILES')) {
             const output = await this.generateImage(roll, results);
-            options.files = [{ attachment: output, name: "slotmachines.png" }];
+            options.files = [{ attachment: output, name: 'slotmachines.png' }];
         } else {
             options.embed = await this.generateEmbed(msg, roll, results);
         }
 
-        return msg.send("", options);
+        return msg.send('', options);
     }
 
     async generateEmbed(msg, roll, { win, winnings }) {
         const array = [];
-        if (Command.hasPermission(msg, "USE_EXTERNAL_EMOJIS")) for (let i = 0; i < 9; i++) array[i] = skin[roll[i]];
+        if (Command.hasPermission(msg, 'USE_EXTERNAL_EMOJIS')) for (let i = 0; i < 9; i++) array[i] = skin[roll[i]];
         else for (let i = 0; i < 9; i++) array[i] = roll[i];
         const output = [
             `${array[0]}ー${array[1]}ー${array[2]}`,
             `${array[3]}ー${array[4]}ー${array[5]}`,
-            `${array[6]}ー${array[7]}ー${array[8]}`,
-        ].join("\n");
+            `${array[6]}ー${array[7]}ー${array[8]}`
+        ].join('\n');
 
         const embed = new Embed();
         if (win) {
@@ -168,11 +168,11 @@ module.exports = class SlotMachine extends Command {
         const length = win ? 300 : 150;
         const canvas = new Canvas(length, 150);
         const icon = new Canvas.Image();
-        const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext('2d');
 
         ctx.save();
-        ctx.shadowColor = "rgba(51, 51, 51, 0.38)";
-        ctx.fillStyle = "rgb(255, 255, 255)";
+        ctx.shadowColor = 'rgba(51, 51, 51, 0.38)';
+        ctx.fillStyle = 'rgb(255, 255, 255)';
         ctx.shadowBlur = 5;
         fillRoundRect(ctx, 4, 4, length - 8, 142, 5);
         ctx.restore();
@@ -187,8 +187,8 @@ module.exports = class SlotMachine extends Command {
         })));
 
         ctx.save();
-        ctx.fillStyle = win ? "rgb(64, 224, 15)" : "rgb(237, 29, 2)";
-        ctx.shadowColor = win ? "rgba(64, 224, 15, 0.4)" : "rgba(237, 29, 2, 0.4)";
+        ctx.fillStyle = win ? 'rgb(64, 224, 15)' : 'rgb(237, 29, 2)';
+        ctx.shadowColor = win ? 'rgba(64, 224, 15, 0.4)' : 'rgba(237, 29, 2, 0.4)';
         ctx.shadowBlur = 4;
         ctx.fillRect(54, 54, 2, 38);
         ctx.fillRect(96, 54, 2, 38);
@@ -197,9 +197,9 @@ module.exports = class SlotMachine extends Command {
         if (win) {
             const shinyIcon = new Canvas.Image();
             shinyIcon.src = await readFile(shinyPath);
-            ctx.font = "30px RobotoLight";
-            ctx.textAlign = "right";
-            ctx.fillText("You won", 280, 60);
+            ctx.font = '30px RobotoLight';
+            ctx.textAlign = 'right';
+            ctx.fillText('You won', 280, 60);
             ctx.fillText(winnings, 250, 100);
             ctx.drawImage(shinyIcon, 260, 68, 20, 39);
         }

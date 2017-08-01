@@ -1,4 +1,4 @@
-const { Role: fetchRole, Channel: fetchChannel } = require("./search");
+const { Role: fetchRole, Channel: fetchChannel } = require('./search');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class SettingResolver {
@@ -18,33 +18,33 @@ module.exports = class SettingResolver {
 
     async parse(guild, type, input) {
         switch (type) {
-            case "Boolean": {
+            case 'Boolean': {
                 if (/^(true|1|\+)$/.test(input.toLowerCase())) return true;
                 else if (/^(false|0|-)$/.test(input.toLowerCase())) return false;
-                throw "I expect a Boolean. (true|1|+)/(false|0|-)";
+                throw 'I expect a Boolean. (true|1|+)/(false|0|-)';
             }
-            case "String": {
+            case 'String': {
                 return String(input);
             }
-            case "Role": {
+            case 'Role': {
                 const role = await fetchRole(input.toLowerCase(), guild);
                 if (role) return role.id;
-                throw "I expect a Role.";
+                throw 'I expect a Role.';
             }
-            case "TextChannel": {
+            case 'TextChannel': {
                 const channel = await fetchChannel(input.toLowerCase(), guild);
                 if (channel) return channel.id;
-                throw "I expect a Channel.";
+                throw 'I expect a Channel.';
             }
-            case "Float":
-            case "Number": {
+            case 'Float':
+            case 'Number': {
                 const number = parseFloat(input);
-                if (isNaN(number)) throw "I expect a Number.";
+                if (isNaN(number)) throw 'I expect a Number.';
                 return number;
             }
-            case "Integer": {
+            case 'Integer': {
                 const number = parseInt(input);
-                if (isNaN(number)) throw "I expect a Number.";
+                if (isNaN(number)) throw 'I expect a Number.';
                 return number;
             }
             default:

@@ -1,18 +1,18 @@
-const { Command, Constants: { httpResponses }, Discord: { Embed } } = require("../../index");
-const snekfetch = require("snekfetch");
-const cheerio = require("cheerio");
+const { Command, Constants: { httpResponses }, Discord: { Embed } } = require('../../index');
+const snekfetch = require('snekfetch');
+const cheerio = require('cheerio');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Google extends Command {
 
     constructor(...args) {
-        super(...args, "google", {
-            aliases: ["search"],
-            botPerms: ["EMBED_LINKS"],
+        super(...args, 'google', {
+            aliases: ['search'],
+            botPerms: ['EMBED_LINKS'],
             mode: 1,
 
-            usage: "<input:string>",
-            description: "Search stuff through Google.",
+            usage: '<input:string>',
+            description: 'Search stuff through Google.'
         });
     }
 
@@ -22,12 +22,12 @@ module.exports = class Google extends Command {
         let results = [];
         let raw;
 
-        $(".g").each((i) => { results[i] = {}; });
-        $(".g>.r>a").each((i, e) => {
+        $('.g').each((i) => { results[i] = {}; });
+        $('.g>.r>a').each((i, e) => {
             raw = e.attribs.href;
-            results[i].link = raw.substr(7, raw.indexOf("&sa=U") - 7);
+            results[i].link = raw.substr(7, raw.indexOf('&sa=U') - 7);
         });
-        $(".g>.s>.st").each((i, e) => { results[i].description = this.getText(e); });
+        $('.g>.s>.st').each((i, e) => { results[i].description = this.getText(e); });
 
         results = results.filter(r => r.link && r.description);
         results = results.splice(0, 4);
@@ -35,15 +35,15 @@ module.exports = class Google extends Command {
         if (!results.length) throw httpResponses(404);
         const embed = new Embed()
             .setColor(msg.guild.me.highestRole.color || 0xdfdfdf)
-            .setFooter("Google Search")
-            .setDescription(results.map(r => `${decodeURIComponent(r.link)}\n\t${r.description}\n`).join("\n"))
+            .setFooter('Google Search')
+            .setDescription(results.map(r => `${decodeURIComponent(r.link)}\n\t${r.description}\n`).join('\n'))
             .setTimestamp();
         return msg.send(`Search results for \`${input}\``, { embed });
     }
 
     getText(children) {
         if (children.children) return this.getText(children.children);
-        return children.map(c => (c.children ? this.getText(c.children) : c.data).join(""));
+        return children.map(c => (c.children ? this.getText(c.children) : c.data).join(''));
     }
 
 };

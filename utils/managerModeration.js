@@ -6,7 +6,7 @@ const colour = {
     mute: 0xFF6E23,
     unmute: 0xFF8343,
     warn: 0xFF8F2A,
-    unwarn: 0xFF9C43,
+    unwarn: 0xFF9C43
 };
 
 exports.unknown = async (client, guild, user, type) => {
@@ -26,7 +26,7 @@ exports.unknown = async (client, guild, user, type) => {
 
 exports.send = (client, msg, user, type, reason = null, extraData = null) => {
     if (!msg.guild.settings.exists) msg.guild.settings.create();
-    else this.justified(client, msg, user, type, reason, extraData).catch(e => client.emit("log", e, "error"));
+    else this.justified(client, msg, user, type, reason, extraData).catch(e => client.emit('log', e, 'error'));
 };
 
 exports.justified = async (client, msg, user, type, reason, extraData) => {
@@ -36,7 +36,7 @@ exports.justified = async (client, msg, user, type, reason, extraData) => {
         /* Parse reason */
         if (reason instanceof Array) {
             if (!reason.length) reason = null;
-            else reason = reason.join(" ");
+            else reason = reason.join(' ');
         }
 
         const thisCase = await msg.guild.settings.moderation.getAmountCases();
@@ -62,15 +62,15 @@ exports.createEmbed = (client, type, moderator, description, thisCase, AUTO) => 
         .setColor(colour[type])
         .setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
         .setDescription(description)
-        .setFooter(`${AUTO ? "AUTO | " : ""}Case ${thisCase}`, client.user.displayAvatarURL({ size: 128 }))
+        .setFooter(`${AUTO ? 'AUTO | ' : ''}Case ${thisCase}`, client.user.displayAvatarURL({ size: 128 }))
         .setTimestamp();
     return embed;
 };
 
-const toTitleCase = require("../functions/toTitleCase");
+const toTitleCase = require('../functions/toTitleCase');
 
 exports.generate = (client, user, type, reason, thisCase, prefix) => [
     `❯ **Action:** ${toTitleCase(type)}`,
     `❯ **User:** ${user.tag} (${user.id})`,
-    `❯ **Reason:** ${reason || `Please use \`${prefix}reason ${thisCase} to claim.\``}`,
-].join("\n");
+    `❯ **Reason:** ${reason || `Please use \`${prefix}reason ${thisCase} to claim.\``}`
+].join('\n');

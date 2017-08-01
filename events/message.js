@@ -1,6 +1,6 @@
-const now = require("performance-now");
-const handleError = require("../functions/handleError");
-const getPrefix = require("../functions/getPrefix");
+const now = require('performance-now');
+const handleError = require('../functions/handleError');
+const getPrefix = require('../functions/getPrefix');
 
 exports.run = async (client, msg) => {
     if (!client.ready) return;
@@ -17,7 +17,7 @@ exports.runMessageMonitors = (client, msg) => {
     for (const monitor of client.messageMonitors.values()) {
         if (monitor.conf.guildOnly === !!msg.guild) run.push(monitor.run(client, msg, settings));
     }
-    return Promise.all(run).catch(error => client.emit("log", error, "error"));
+    return Promise.all(run).catch(error => client.emit('log', error, 'error'));
 };
 
 exports.handleMessage = (client, msg) => {
@@ -34,9 +34,9 @@ exports.parseCommand = async (client, msg, usage = false) => {
     const prefixLength = this.getLength(client, msg, prefix);
     if (usage) return prefixLength;
     return {
-        command: msg.content.slice(prefixLength).split(" ")[0].toLowerCase(),
+        command: msg.content.slice(prefixLength).split(' ')[0].toLowerCase(),
         prefix,
-        prefixLength,
+        prefixLength
     };
 };
 
@@ -51,7 +51,7 @@ exports.handleCommand = (client, msg, { command, prefix, prefixLength }) => {
     const start = now();
     const response = this.runInhibitors(client, msg, validCommand);
     if (response) {
-        if (typeof response === "string") msg.reply(response);
+        if (typeof response === 'string') msg.reply(response);
         return;
     }
     msg.cmdMsg = new client.CommandMessage(msg, validCommand, prefix, prefixLength);

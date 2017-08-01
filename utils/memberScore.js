@@ -1,9 +1,7 @@
-const manager = require("./managerSocialLocal");
-const RethinkDB = require("../providers/rethink");
+const manager = require('./managerSocialLocal');
+const RethinkDB = require('../providers/rethink');
 
-const defaults = {
-    score: 0,
-};
+const defaults = { score: 0 };
 
 
 const MemberScore = class MemberScore {
@@ -16,8 +14,8 @@ const MemberScore = class MemberScore {
     }
 
     async create() {
-        if (this.exists) throw "This MemberScore already exists.";
-        await RethinkDB.append("localScores", this.guild, "scores", Object.assign(defaults, { id: this.id }));
+        if (this.exists) throw 'This MemberScore already exists.';
+        await RethinkDB.append('localScores', this.guild, 'scores', Object.assign(defaults, { id: this.id }));
         this.exists = true;
         return true;
     }
@@ -28,13 +26,13 @@ const MemberScore = class MemberScore {
 
     async update(score) {
         await this.ensureProfile();
-        await RethinkDB.updateArrayByID("localScores", this.guild, "scores", this.id, { score });
+        await RethinkDB.updateArrayByID('localScores', this.guild, 'scores', this.id, { score });
         this.score = score;
         return this.score;
     }
 
     async destroy() {
-        const output = await RethinkDB.removeFromArrayByID("localScores", this.guild, "scores", this.id);
+        const output = await RethinkDB.removeFromArrayByID('localScores', this.guild, 'scores', this.id);
         manager.get(this.guild).delete(this.id);
         return output;
     }

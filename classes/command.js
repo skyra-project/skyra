@@ -1,4 +1,4 @@
-const ParsedUsage = require("./parsedUsage");
+const ParsedUsage = require('./parsedUsage');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Command {
@@ -14,10 +14,10 @@ module.exports = class Command {
 
         guilds = null,
 
-        usage = "",
+        usage = '',
         usageDelim = undefined,
         description,
-        extendedHelp = null,
+        extendedHelp = null
     }) {
         this.client = client;
         this.conf = {
@@ -28,7 +28,7 @@ module.exports = class Command {
             mode,
             spam,
             cooldown,
-            guilds,
+            guilds
         };
         this.help = {
             name,
@@ -37,8 +37,8 @@ module.exports = class Command {
             usageDelim,
             extendedHelp,
             fullCategory: file,
-            category: file[0] || "General",
-            subCategory: file[1] || "General",
+            category: file[0] || 'General',
+            subCategory: file[1] || 'General'
         };
         this.cooldown = new Map();
         this.usage = new ParsedUsage(client, this);
@@ -54,8 +54,8 @@ module.exports = class Command {
 
     static sendDM(msg, content, options) {
         return msg.author.send(content, options)
-            .then(() => (msg.guild ? msg.send(`Dear ${msg.author}, I have send you the message in DMs.`).catch(Command.handleError) : true))
-            .catch(() => msg.send("I am sorry, I could not send the message in DMs.").catch(Command.handleError));
+            .then(() => msg.guild ? msg.send(`Dear ${msg.author}, I have send you the message in DMs.`).catch(Command.handleError) : true)
+            .catch(() => msg.send('I am sorry, I could not send the message in DMs.').catch(Command.handleError));
     }
 
     static handleError(err) {
@@ -67,7 +67,7 @@ module.exports = class Command {
     }
 
     static codeBlock(lang, expression) {
-        return `${"```"}${lang}\n${expression.replace(/```/g, "`\u200b``")}${"```"}`;
+        return `${'```'}${lang}\n${expression.replace(/```/g, '`\u200b``')}${'```'}`;
     }
 
     /**
@@ -77,18 +77,18 @@ module.exports = class Command {
      * @returns {string}
      */
     static strip([string]) {
-        string = string.replace(/^\n/, "");
+        string = string.replace(/^\n/, '');
         const length = /^[ ]*/.exec(string)[0].length;
-        return length > 0 ? string.split("\n").map(line => line.slice(length)).join("\n") : string;
+        return length > 0 ? string.split('\n').map(line => line.slice(length)).join('\n') : string;
     }
 
     static joinLines(string) {
-        string = string.replace(/^\n/, "");
-        return string.split("\n").map(line => (line.length > 0 ? line.trim() : "\n\n")).join(" ");
+        string = string.replace(/^\n/, '');
+        return string.split('\n').map(line => line.length > 0 ? line.trim() : '\n\n').join(' ');
     }
 
     static shiny(msg) {
-        return Command.hasPermission(msg, "USE_EXTERNAL_EMOJIS") ? "<:ShinyYellow:324157128270938113>" : "S";
+        return Command.hasPermission(msg, 'USE_EXTERNAL_EMOJIS') ? '<:ShinyYellow:324157128270938113>' : 'S';
     }
 
 };

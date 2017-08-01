@@ -1,6 +1,6 @@
-const Rethink = require("../providers/rethink");
-const TaskProcess = require("./taskProcess");
-const { Snowflake } = require("discord.js");
+const Rethink = require('../providers/rethink');
+const TaskProcess = require('./taskProcess');
+const { Snowflake } = require('discord.js');
 
 /**
  * Task scheduler.
@@ -17,7 +17,7 @@ class Clock {
     }
 
     async init() {
-        this.tasks = await Rethink.getAll("tasks");
+        this.tasks = await Rethink.getAll('tasks');
         this.sort();
         this.check();
     }
@@ -27,7 +27,7 @@ class Clock {
         Object.assign(task, { id: snowflake, createdAt: new Date().getTime() });
         if (isNaN(task.timestamp)) throw new Error("The property 'timestamp' of task must exist and be a valid timestamp.");
         if (!task.type) throw new Error("The property 'type' of task must be defined.");
-        await Rethink.create("tasks", task).catch((err) => { throw err; });
+        await Rethink.create('tasks', task).catch((err) => { throw err; });
         this.tasks.push(task);
         this.sort();
         this.check();
@@ -62,13 +62,13 @@ class Clock {
     }
 
     async remove(task, cache = true) {
-        await Rethink.delete("tasks", task).catch((err) => { throw err; });
+        await Rethink.delete('tasks', task).catch((err) => { throw err; });
         if (cache) this.tasks = this.tasks.filter(entry => entry.id !== task);
         return task;
     }
 
     async update(task, doc) {
-        await Rethink.update("tasks", task.id, doc).catch((err) => { throw err; });
+        await Rethink.update('tasks', task.id, doc).catch((err) => { throw err; });
         const index = this.tasks.indexOf(this.tasks.find(t => t.id === task.id));
         for (const key of Object.keys(doc)) {
             if (doc[key] instanceof Object && !(doc[key] instanceof Array)) {

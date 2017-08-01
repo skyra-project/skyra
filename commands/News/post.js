@@ -1,11 +1,11 @@
 /* Core Pieces */
-const provider = require("../../providers/json");
-const { Command } = require("../../index");
+const provider = require('../../providers/json');
+const { Command } = require('../../index');
 
 /* Dependencies */
-const snekfetch = require("snekfetch");
-const marked = require("marked");
-const url = require("url");
+const snekfetch = require('snekfetch');
+const marked = require('marked');
+const url = require('url');
 
 const fetchTW = twit => snekfetch.get(`https://publish.twitter.com/oembed?url=${encodeURIComponent(twit)}`).then(d => JSON.parse(d.text).html);
 
@@ -13,35 +13,35 @@ const fetchTW = twit => snekfetch.get(`https://publish.twitter.com/oembed?url=${
 module.exports = class Post extends Command {
 
     constructor(...args) {
-        super(...args, "post", {
+        super(...args, 'post', {
             permLevel: 10,
             mode: 1,
             spam: true,
 
-            usage: "<post:string>",
-            description: "Post some news.",
+            usage: '<post:string>',
+            description: 'Post some news.'
         });
     }
 
     async run(msg, [title]) {
-        if (await provider.has("news", title)) throw "this page already exists.";
+        if (await provider.has('news', title)) throw 'this page already exists.';
         const text = await this.prompt(msg);
         const parsedURLs = await this.parseURLs(text);
-        const html = marked(parsedURLs).replace(/\n$/, "").replace(/\n+/g, "<br />");
-        await provider.create("news", this.parseTitle(title), { title, html, author: msg.author.tag, date: new Date().getTime() });
+        const html = marked(parsedURLs).replace(/\n$/, '').replace(/\n+/g, '<br />');
+        await provider.create('news', this.parseTitle(title), { title, html, author: msg.author.tag, date: new Date().getTime() });
         return msg.send(`Successfully created the page ${title}`);
     }
 
     async prompt(msg) {
-        const prompt = data => msg.channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, time: 30000, errors: ["time"] })
+        const prompt = data => msg.channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, time: 30000, errors: ['time'] })
             .then(async (collected) => {
-                if (collected.first().content === "stop") return data.join(" ");
+                if (collected.first().content === 'stop') return data.join(' ');
                 data.push(collected.first().content);
                 await msg.channel.send(`[MultiMessage] Part: ${data.length}, received. Type \`stop\` to stop the MultiMessage prompt.`).catch(Command.handleError);
                 return prompt(data);
             })
             .catch(() => {
-                throw "prompt cancelled: I did not receive a message within 30 seconds.";
+                throw 'prompt cancelled: I did not receive a message within 30 seconds.';
             });
         return prompt([]);
     }
@@ -49,8 +49,8 @@ module.exports = class Post extends Command {
     parseURLs(raw) {
         return this.parseTwitter(raw).then(text => text
             .replace(/<@!?[0-9]+>/g, (input) => {
-                const id = input.replace(/<|!|>|@/g, "");
-                if (this.channel.type === "dm" || this.channel.type === "group") {
+                const id = input.replace(/<|!|>|@/g, '');
+                if (this.channel.type === 'dm' || this.channel.type === 'group') {
                     return this.client.users.has(id) ? `@${this.client.users.get(id).username}` : input;
                 }
                 const user = this.client.users.get(id);
@@ -58,13 +58,13 @@ module.exports = class Post extends Command {
                 return input;
             })
             .replace(/<#[0-9]+>/g, (input) => {
-                const channel = this.client.channels.get(input.replace(/<|#|>/g, ""));
+                const channel = this.client.channels.get(input.replace(/<|#|>/g, ''));
                 if (channel) return `#${channel.name}`;
                 return input;
             })
             .replace(/<@&[0-9]+>/g, (input) => {
-                if (this.channel.type === "dm" || this.channel.type === "group") return input;
-                const role = this.guild.roles.get(input.replace(/<|@|>|&/g, ""));
+                if (this.channel.type === 'dm' || this.channel.type === 'group') return input;
+                const role = this.guild.roles.get(input.replace(/<|@|>|&/g, ''));
                 if (role) return `@${role.name}`;
                 return input;
             })
@@ -77,9 +77,9 @@ module.exports = class Post extends Command {
                 if (res.protocol && res.hostname) return `<img src="${match}" class="img-responsive img-rounded"></img>`;
                 return match;
             })
-            .replace(/\n={3,}\n/g, "<hr></hr>")
-            .replace(/[ ]+/g, " ")
-            .replace(/\n+/g, "\n"));
+            .replace(/\n={3,}\n/g, '<hr></hr>')
+            .replace(/[ ]+/g, ' ')
+            .replace(/\n+/g, '\n'));
     }
 
     parseTwitter(text) {
@@ -96,11 +96,11 @@ module.exports = class Post extends Command {
     }
 
     parseTitle(title) {
-        return encodeURIComponent(title).replace(/\(/g, "%28").replace(/\)/g, "%29");
+        return encodeURIComponent(title).replace(/\(/g, '%28').replace(/\)/g, '%29');
     }
 
     init() {
-        return provider.hasTable("news").then(bool => (bool ? true : provider.createTable("news")));
+        return provider.hasTable('news').then(bool => bool ? true : provider.createTable('news'));
     }
 
 };

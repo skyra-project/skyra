@@ -15,8 +15,8 @@ module.exports = (list, { index = 1, length = 25 } = {}) => {
     for (let i = 0; i < 10; i++) {
         const entry = list[i + (index * 10)];
         if (!entry) break;
-        currentPage[i] = `• ${String(1 + i + (index * 10)).padStart(indexLength, " ")}: ${betterIndex(entry[0], length).padEnd(length, " ")} :: ${entry[1]}`;
+        currentPage[i] = `• ${String(1 + i + (index * 10)).padStart(indexLength, ' ')}: ${betterIndex(entry[0], length).padEnd(length, ' ')} :: ${entry[1]}`;
     }
 
-    return `Page ${index + 1} / ${pageCount} | ${listSize.toLocaleString()} Total\n\n${currentPage.join("\n")}`;
+    return `Page ${index + 1} / ${pageCount} | ${listSize.toLocaleString()} Total\n\n${currentPage.join('\n')}`;
 };

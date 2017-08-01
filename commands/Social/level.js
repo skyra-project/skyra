@@ -1,43 +1,43 @@
-const { Command } = require("../../index");
-const { User: fetchUser } = require("../../functions/search");
-const { fetchAvatar } = require("../../functions/wrappers");
-const { readFile } = require("fs-nextra");
-const { join, sep } = require("path");
-const Canvas = require("canvas");
+const { Command } = require('../../index');
+const { User: fetchUser } = require('../../functions/search');
+const { fetchAvatar } = require('../../functions/wrappers');
+const { readFile } = require('fs-nextra');
+const { join, sep } = require('path');
+const Canvas = require('canvas');
 
-Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Regular.ttf"), { family: "RobotoRegular" });
-Canvas.registerFont(join(__dirname, "../../assets/fonts/Roboto-Light.ttf"), { family: "RobotoLight" });
+Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), { family: 'RobotoRegular' });
+Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { family: 'RobotoLight' });
 
-const profileTemplate = join(__dirname, "../../assets/images/social/level-foreground.png");
-const themes = join(__dirname, "../../assets/images/social/themes/") + sep;
+const profileTemplate = join(__dirname, '../../assets/images/social/level-foreground.png');
+const themes = join(__dirname, '../../assets/images/social/themes/') + sep;
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Level extends Command {
 
     constructor(...args) {
-        super(...args, "level", {
-            aliases: ["lvl"],
-            botPerms: ["ATTACH_FILES"],
+        super(...args, 'level', {
+            aliases: ['lvl'],
+            botPerms: ['ATTACH_FILES'],
             guildOnly: true,
             mode: 1,
             spam: true,
 
-            usage: "[user:string]",
-            description: "Check your global level.",
+            usage: '[user:string]',
+            description: 'Check your global level.',
             extendedHelp: Command.strip`
                 How much until I reach next level?
 
                 = Usage =
                 Skyra, level [user]
                 User :: (Optional) The user's profile to show. Defaults to the message's author.
-            `,
+            `
         });
     }
 
     async run(msg, [search = msg.author]) {
         const user = await fetchUser(search, msg.guild);
         const output = await this.showProfile(user);
-        return msg.channel.send({ files: [{ attachment: output, name: "Profile.png" }] });
+        return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
     }
 
     async showProfile(user) {
@@ -53,13 +53,13 @@ module.exports = class Level extends Command {
         const background = new Canvas.Image();
         const imgAvatar = new Canvas.Image();
         const themeImage = new Canvas.Image();
-        const ctx = c.getContext("2d");
+        const ctx = c.getContext('2d');
 
         const theme = banners.level;
         const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
             readFile(`${themes}${theme}.png`),
             readFile(profileTemplate),
-            fetchAvatar(user, 256),
+            fetchAvatar(user, 256)
         ]);
 
         themeImage.onload = () => ctx.drawImage(themeImage, 10, 9, 189, 157);
@@ -72,13 +72,13 @@ module.exports = class Level extends Command {
         ctx.fillRect(341, 88, Prog, 5);
 
         /* Draw the information */
-        ctx.fillStyle = "rgb(23,23,23)";
-        ctx.font = "28px RobotoLight";
-        ctx.textAlign = "right";
+        ctx.fillStyle = 'rgb(23,23,23)';
+        ctx.font = '28px RobotoLight';
+        ctx.textAlign = 'right';
         ctx.fillText(points, 606, 68);
         ctx.fillText(`${nextLevel - points}`, 606, 128);
-        ctx.textAlign = "center";
-        ctx.font = "45px RobotoRegular";
+        ctx.textAlign = 'center';
+        ctx.font = '45px RobotoRegular';
         ctx.fillText(currentLevel, 273, 128);
 
         /* Draw the avatar */

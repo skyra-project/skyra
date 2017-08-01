@@ -1,59 +1,59 @@
-const { Command } = require("../../index");
-const clean = require("../../functions/clean");
-const { inspect } = require("util");
-const now = require("performance-now");
+const { Command } = require('../../index');
+const clean = require('../../functions/clean');
+const { inspect } = require('util');
+const now = require('performance-now');
 
 /* eslint-disable no-eval, class-methods-use-this */
 module.exports = class Eval extends Command {
 
     constructor(...args) {
-        super(...args, "eval", {
-            aliases: ["ev"],
+        super(...args, 'eval', {
+            aliases: ['ev'],
             permLevel: 10,
             mode: 2,
 
-            usage: "<expression:string>",
-            description: "Evaluates arbitrary Javascript.",
+            usage: '<expression:string>',
+            description: 'Evaluates arbitrary Javascript.'
         });
     }
 
     async run(msg, [args]) {
         const send = [];
         const start = now();
-        const { type, input } = this.parse(args.split(" "));
+        const { type, input } = this.parse(args.split(' '));
         try {
             const toEval = type ? `(async () => { ${input} })()` : input;
             const res = await eval(toEval);
             const time = now() - start;
 
             let out;
-            if (typeof res === "object" && typeof res !== "string") {
+            if (typeof res === 'object' && typeof res !== 'string') {
                 out = inspect(res, { depth: 0, showHidden: true });
-                if (typeof out === "string" && out.length > 1900) out = res.toString();
+                if (typeof out === 'string' && out.length > 1900) out = res.toString();
             } else { out = res; }
 
-            send.push(`➡ **Input:** Executed in ${time.toFixed(5)}μs${"```"}js`);
-            send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
-            send.push("🔍 **Inspect:**```js");
-            send.push(`${clean(this.client, out)}${"```"}`);
+            send.push(`➡ **Input:** Executed in ${time.toFixed(5)}μs${'```'}js`);
+            send.push(`${input.replace(/```/g, '`\u200b``')}${'```'}`);
+            send.push('🔍 **Inspect:**```js');
+            send.push(`${clean(this.client, out)}${'```'}`);
         } catch (err) {
-            send.push(`➡ **Input:** Executed in ${(now() - start).toFixed(5)}μs${"```"}js`);
-            send.push(`${input.replace(/```/g, "`\u200b``")}${"```"}`);
-            send.push("❌ **Error:**```js");
-            send.push(`${(err ? err.message || err : "< void >")}${"```"}`);
+            send.push(`➡ **Input:** Executed in ${(now() - start).toFixed(5)}μs${'```'}js`);
+            send.push(`${input.replace(/```/g, '`\u200b``')}${'```'}`);
+            send.push('❌ **Error:**```js');
+            send.push(`${(err ? err.message || err : '< void >')}${'```'}`);
         }
 
-        return msg.send(send.join("\n")).catch(err => msg.error(err));
+        return msg.send(send.join('\n')).catch(err => msg.error(err));
     }
 
     parse(toEval) {
         let input;
         let type;
-        if (toEval[0] === "async") {
-            input = toEval.slice(1).join(" ");
+        if (toEval[0] === 'async') {
+            input = toEval.slice(1).join(' ');
             type = true;
         } else {
-            input = toEval.join(" ");
+            input = toEval.join(' ');
             type = false;
         }
         return { type, input };

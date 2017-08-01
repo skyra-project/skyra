@@ -1,17 +1,17 @@
-const { Command, Discord: { Embed } } = require("../../index");
-const { validate: validateColor } = require("../../functions/resolveColor");
+const { Command, Discord: { Embed } } = require('../../index');
+const { validate: validateColor } = require('../../functions/resolveColor');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class SetColor extends Command {
 
     constructor(...args) {
-        super(...args, "setcolor", {
-            botPerms: ["EMBED_LINKS"],
-            aliases: ["setcolour"],
+        super(...args, 'setcolor', {
+            botPerms: ['EMBED_LINKS'],
+            aliases: ['setcolour'],
             mode: 1,
             spam: true,
 
-            usage: "<color:string>",
+            usage: '<color:string>',
             description: "Change your userprofile's colour.",
             extendedHelp: Command.strip`
                 I dislike the default fuschia colour!
@@ -25,7 +25,7 @@ module.exports = class SetColor extends Command {
                     • RGB :: rgb(200, 200, 200)
                     • HSL :: hsl(350, 100, 100)
                     • B10 :: 14671839
-            `,
+            `
         });
     }
 

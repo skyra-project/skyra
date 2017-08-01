@@ -1,35 +1,35 @@
-const { Command } = require("../../index");
-const { fetchAvatar } = require("../../functions/wrappers");
-const { readFile } = require("fs-nextra");
-const { join, resolve } = require("path");
-const Canvas = require("canvas");
+const { Command } = require('../../index');
+const { fetchAvatar } = require('../../functions/wrappers');
+const { readFile } = require('fs-nextra');
+const { join, resolve } = require('path');
+const Canvas = require('canvas');
 
-const template = resolve(join(__dirname, "../../assets/images/memes/DeletThis.png"));
+const template = resolve(join(__dirname, '../../assets/images/memes/DeletThis.png'));
 
 /* eslint-disable class-methods-use-this */
 module.exports = class DeletThis extends Command {
 
     constructor(...args) {
-        super(...args, "deletthis", {
-            aliases: ["deletethis"],
+        super(...args, 'deletthis', {
+            aliases: ['deletethis'],
             guildOnly: true,
             mode: 0,
 
-            usage: "<user:user>",
-            description: "I'll hammer you anyway.",
+            usage: '<user:user>',
+            description: "I'll hammer you anyway."
         });
     }
 
     async run(msg, [user]) {
         const output = await this.deletthis(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: "DeletThis.png" }] });
+        return msg.channel.send({ files: [{ attachment: output, name: 'DeletThis.png' }] });
     }
 
     async deletthis(msg, user) {
         let selectedUser;
         let hammerer;
-        if (user === msg.author) [selectedUser, hammerer] = [msg.author, this.client.users.get("242043489611808769")];
-        else if (["242043489611808769", "251484593859985411"].includes(user.id)) [selectedUser, hammerer] = [msg.author, user];
+        if (user === msg.author) [selectedUser, hammerer] = [msg.author, this.client.users.get('242043489611808769')];
+        else if (['242043489611808769', '251484593859985411'].includes(user.id)) [selectedUser, hammerer] = [msg.author, user];
         else [selectedUser, hammerer] = [user, msg.author];
 
         /* Initialize Canvas */
@@ -37,13 +37,13 @@ module.exports = class DeletThis extends Command {
         const background = new Canvas.Image();
         const imgHammered = new Canvas.Image();
         const imgHammerer = new Canvas.Image();
-        const ctx = c.getContext("2d");
+        const ctx = c.getContext('2d');
 
         /* Get the buffers from both profile avatars */
         const [bgBuffer, Hammered, Hammerer] = await Promise.all([
             readFile(template),
             fetchAvatar(selectedUser, 256),
-            fetchAvatar(hammerer, 256),
+            fetchAvatar(hammerer, 256)
         ]);
 
         /* Background */

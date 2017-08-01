@@ -1,15 +1,15 @@
-const Rethink = require("../providers/rethink");
-const Moderation = require("./moderation");
-const GuildManager = require("./guildManager");
+const Rethink = require('../providers/rethink');
+const Moderation = require('./moderation');
+const GuildManager = require('./guildManager');
 
 const superRegExp = (filterArray) => {
-    const filtered = filterArray.reduce((acum, item, index) => acum + (index ? "|" : "") +
-        item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? "\\W*" : ""}`), "");
-    return new RegExp(`\\b(?:${filtered})\\b`, "i");
+    const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
+        item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
+    return new RegExp(`\\b(?:${filtered})\\b`, 'i');
 };
 
 const defaults = {
-    prefix: "s!",
+    prefix: 's!',
     roles: {},
     events: {},
     channels: {},
@@ -25,20 +25,20 @@ const defaults = {
     initialRole: null,
     social: {
         boost: 1,
-        monitorBoost: 1,
+        monitorBoost: 1
     },
 
     selfmod: {
         ghostmention: false,
         inviteLinks: false,
         nomentionspam: false,
-        nmsthreshold: 20,
+        nmsthreshold: 20
     },
 
     filter: {
         level: 0,
-        raw: [],
-    },
+        raw: []
+    }
 };
 
 /* eslint-disable no-restricted-syntax */
@@ -63,7 +63,7 @@ const GuildSetting = class GuildSetting {
         this.initialRole = data.initialRole || defaults.initialRole;
         this.social = {
             boost: data.boost || defaults.social.boost,
-            monitorBoost: data.monitorBoost || defaults.social.monitorBoost,
+            monitorBoost: data.monitorBoost || defaults.social.monitorBoost
         };
 
         if (!data.selfmod) data.selfmod = defaults.selfmod;
@@ -71,14 +71,14 @@ const GuildSetting = class GuildSetting {
             ghostmention: data.selfmod.ghostmention || defaults.selfmod.ghostmention,
             inviteLinks: data.selfmod.inviteLinks || defaults.selfmod.inviteLinks,
             nomentionspam: data.selfmod.nomentionspam || defaults.selfmod.nomentionspam,
-            nmsthreshold: data.selfmod.nmsthreshold || defaults.selfmod.nmsthreshold,
+            nmsthreshold: data.selfmod.nmsthreshold || defaults.selfmod.nmsthreshold
         };
 
         if (!data.filter) data.filter = defaults.filter;
         this.filter = {
             level: data.filter.level || defaults.filter.level,
             raw: data.filter.raw || defaults.filter.raw,
-            regexp: data.filter.raw instanceof Array && data.filter.raw.length ? superRegExp(data.filter.raw) : null,
+            regexp: data.filter.raw instanceof Array && data.filter.raw.length ? superRegExp(data.filter.raw) : null
         };
 
         this.exists = data.exists !== false;
@@ -87,9 +87,9 @@ const GuildSetting = class GuildSetting {
     }
 
     async create() {
-        if (this.exists) throw "This GuildSetting already exists.";
+        if (this.exists) throw 'This GuildSetting already exists.';
         const data = Object.assign(defaults, { id: this.id, exists: true });
-        await Rethink.create("guilds", data).catch((err) => { throw err; });
+        await Rethink.create('guilds', data).catch((err) => { throw err; });
         return true;
     }
 
@@ -99,7 +99,7 @@ const GuildSetting = class GuildSetting {
 
     async update(doc) {
         await this.ensureConfigs();
-        await Rethink.update("guilds", this.id, doc);
+        await Rethink.update('guilds', this.id, doc);
         for (const key of Object.keys(doc)) {
             if (doc[key] instanceof Object) {
                 for (const subkey of Object.keys(doc[key])) this[key][subkey] = doc[key][subkey];
@@ -111,8 +111,8 @@ const GuildSetting = class GuildSetting {
     }
 
     async destroy() {
-        if (!this.exists) throw "This GuildConfig does not exist.";
-        await Rethink.delete("guilds", this.id);
+        if (!this.exists) throw 'This GuildConfig does not exist.';
+        await Rethink.delete('guilds', this.id);
         GuildManager.delete(this.id);
         return true;
     }

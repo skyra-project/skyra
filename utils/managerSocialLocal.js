@@ -1,5 +1,5 @@
-const RethinkDB = require("../providers/rethink");
-const { Collection } = require("discord.js");
+const RethinkDB = require('../providers/rethink');
+const { Collection } = require('discord.js');
 
 const data = new Collection();
 
@@ -13,7 +13,7 @@ exports.set = (guild, object) => data.set(guild, object);
 exports.insert = (guild, member, object) => this.get(guild).set(member, object);
 
 exports.destroy = async (guild) => {
-    const output = await RethinkDB.delete("localScores", guild);
+    const output = await RethinkDB.delete('localScores', guild);
     data.delete(guild);
     return output;
 };

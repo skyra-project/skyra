@@ -1,24 +1,24 @@
-const { Command } = require("../../index");
+const { Command } = require('../../index');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Nickname extends Command {
 
     constructor(...args) {
-        super(...args, "nickname", {
-            aliases: ["nick"],
+        super(...args, 'nickname', {
+            aliases: ['nick'],
             guildOnly: true,
             permLevel: 3,
-            botPerms: ["CHANGE_NICKNAME"],
+            botPerms: ['CHANGE_NICKNAME'],
             mode: 2,
 
-            usage: "[nick:string{,32}]",
-            description: "Change Skyra's nickname.",
+            usage: '[nick:string{,32}]',
+            description: "Change Skyra's nickname."
         });
     }
 
-    async run(msg, [nick = ""]) {
+    async run(msg, [nick = '']) {
         await msg.guild.member(this.client.user).setNickname(nick).catch(Command.handleError);
-        return msg.alert(nick.length ? `Nickname changed to **${nick}**` : "Nickname Cleared");
+        return msg.alert(nick.length ? `Nickname changed to **${nick}**` : 'Nickname Cleared');
     }
 
 };

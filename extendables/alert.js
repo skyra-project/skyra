@@ -1,7 +1,7 @@
 exports.conf = {
-    type: "method",
-    method: "alert",
-    appliesTo: ["Message"],
+    type: 'method',
+    method: 'alert',
+    appliesTo: ['Message']
 };
 
 // eslint-disable-next-line func-names

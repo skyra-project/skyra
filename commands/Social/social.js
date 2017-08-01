@@ -1,21 +1,21 @@
-const { Command, Managers: { SocialLocal } } = require("../../index");
-const { User: fetchUser } = require("../../functions/search");
-const Rethink = require("../../providers/rethink");
+const { Command, Managers: { SocialLocal } } = require('../../index');
+const { User: fetchUser } = require('../../functions/search');
+const Rethink = require('../../providers/rethink');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Social extends Command {
 
     constructor(...args) {
-        super(...args, "social", {
-            aliases: ["socialmanage"],
+        super(...args, 'social', {
+            aliases: ['socialmanage'],
             guildOnly: true,
             permLevel: 2,
             mode: 2,
             spam: true,
 
-            usage: "<delete|add|remove> <user:string> [value:int]",
-            usageDelim: " ",
-            description: "Manage the local leaderboards.",
+            usage: '<delete|add|remove> <user:string> [value:int]',
+            usageDelim: ' ',
+            description: 'Manage the local leaderboards.',
             extendedHelp: Command.strip`
                 Oi! This guy should have more points!
 
@@ -32,21 +32,21 @@ module.exports = class Social extends Command {
 
                 = Reminder =
                     • You edit local points, you cannot modify properties like amount of money or anything else that is global.
-            `,
+            `
         });
     }
 
     async run(msg, [action, search = msg.author.id, v = null]) {
         const ID = await this.searchProfile(msg, search);
-        if (action === "delete") {
-            throw "this action is not available yet.";
+        if (action === 'delete') {
+            throw 'this action is not available yet.';
             // await this.nuke(client, ID);
             // await msg.alert(`Dear ${msg.author}, you have just nuked the profile from user ID ${ID}`);
         } else {
-            if (!v) throw "you must specify an amount of money.";
+            if (!v) throw 'you must specify an amount of money.';
             const value = this.handle(msg, action, ID, v);
             await this.update(msg, ID, value);
-            return msg.alert(`Dear ${msg.author}, you have just ${action === "add" ? "added" : "removed"} ${v} points from user ID: ${ID}`);
+            return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'added' : 'removed'} ${v} points from user ID: ${ID}`);
         }
     }
 
@@ -58,20 +58,20 @@ module.exports = class Social extends Command {
         if (user.bot) throw "you can't modify bot profiles, since they don't have one.";
         if (!SocialLocal.get(msg.guild.id).has(search)) {
             const data = { id: user.id, score: 0 };
-            await Rethink.append("localScores", msg.guild.id, "scores", data);
+            await Rethink.append('localScores', msg.guild.id, 'scores', data);
             SocialLocal.insert(msg.guild.id, user.id, data);
         }
         return user.id;
     }
 
     async update(msg, id, value) {
-        await Rethink.updateArrayByID("localScores", msg.guild.id, "scores", id, { score: value });
+        await Rethink.updateArrayByID('localScores', msg.guild.id, 'scores', id, { score: value });
         SocialLocal.get(msg.guild.id).get(id).score = value;
     }
 
     async handle(msg, action, ID, value) {
         const profile = SocialLocal.get(msg.guild.id).get(ID);
-        if (action === "add") return profile.score + value;
+        if (action === 'add') return profile.score + value;
         return Math.max(profile.score - value, 0);
     }
 

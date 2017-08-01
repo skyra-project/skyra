@@ -1,20 +1,20 @@
-const { Command } = require("../../index");
-const { User: fetchUser } = require("../../functions/search");
-const moment = require("moment");
-require("moment-duration-format");
+const { Command } = require('../../index');
+const { User: fetchUser } = require('../../functions/search');
+const moment = require('moment');
+require('moment-duration-format');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Reputation extends Command {
 
     constructor(...args) {
-        super(...args, "reputation", {
-            aliases: ["rep"],
+        super(...args, 'reputation', {
+            aliases: ['rep'],
             guildOnly: true,
             mode: 1,
             spam: true,
 
-            usage: "<user:string>",
-            description: "Give somebody a reputation point.",
+            usage: '<user:string>',
+            description: 'Give somebody a reputation point.',
             extendedHelp: Command.strip`
                 This guy is so helpful... I'll give him a reputation point!
 
@@ -24,7 +24,7 @@ module.exports = class Reputation extends Command {
 
                 = Reminder =
                     • You can give a reputation point once every 24 hours.
-            `,
+            `
         });
     }
 
@@ -33,7 +33,7 @@ module.exports = class Reputation extends Command {
 
         if (msg.author.profile.timerep + 86400000 > now) {
             const remaining = (msg.author.profile.timerep + 86400000) - now;
-            return msg.alert(`You can give a reputation point in ${moment.duration(remaining).format("hh [**hours**,] mm [**mins**,] ss [**secs**]")}.`, 10000);
+            return msg.alert(`You can give a reputation point in ${moment.duration(remaining).format('hh [**hours**,] mm [**mins**,] ss [**secs**]')}.`, 10000);
         }
         const user = await fetchUser(search, msg.guild);
         if (msg.author.id === user.id) throw "you can't give a reputation point to yourself.";

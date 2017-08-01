@@ -1,4 +1,4 @@
-const { Command } = require("../../index");
+const { Command } = require('../../index');
 
 const content = Command.joinLines`
     Skyra Project started on 24th October 2016, if you are reading this, you are
@@ -16,11 +16,11 @@ const content = Command.joinLines`
 module.exports = class Donate extends Command {
 
     constructor(...args) {
-        super(...args, "donate", {
+        super(...args, 'donate', {
             mode: 2,
 
-            description: "Donate for Skyra Project.",
-            extendedHelp: content,
+            description: 'Donate for Skyra Project.',
+            extendedHelp: content
         });
     }
 

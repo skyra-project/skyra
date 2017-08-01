@@ -1,7 +1,7 @@
 exports.conf = {
-    type: "get",
-    method: "usableCommands",
-    appliesTo: ["Message"],
+    type: 'get',
+    method: 'usableCommands',
+    appliesTo: ['Message']
 };
 
 // eslint-disable-next-line func-names

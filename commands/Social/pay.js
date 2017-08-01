@@ -1,17 +1,17 @@
-const { Command } = require("../../index");
+const { Command } = require('../../index');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Pay extends Command {
 
     constructor(...args) {
-        super(...args, "pay", {
+        super(...args, 'pay', {
             guildOnly: true,
             mode: 1,
             spam: true,
 
-            usage: "<amount:int> <user:user>",
-            usageDelim: " ",
-            description: "Pay somebody with your shinies.",
+            usage: '<amount:int> <user:user>',
+            usageDelim: ' ',
+            description: 'Pay somebody with your shinies.',
             extendedHelp: Command.strip`
                 Businessmen! Today is payday!
 
@@ -23,13 +23,13 @@ module.exports = class Pay extends Command {
                 = Example =
                 • Skyra, pay 200 @kyra
                     I will get 200 shinies from your bank and give them to the user.
-            `,
+            `
         });
     }
 
     async run(msg, [money, user]) {
         if (msg.author.id === user.id) throw "you can't pay yourself.";
-        else if (money <= 0) throw "amount of money should be above 0.";
+        else if (money <= 0) throw 'amount of money should be above 0.';
         else if (msg.author.profile.money < money) throw `you can't pay with money you don't have. Current currency: ${msg.author.profile.money}${Command.shiny(msg)}`;
 
         return msg.prompt(`Dear ${msg.author}, you're going to pay ${money}${Command.shiny(msg)} to ${user.username}, do you accept?`)

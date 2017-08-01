@@ -1,5 +1,5 @@
-const { Command, Constants: { httpResponses, getConfig } } = require("../../index");
-const snekfetch = require("snekfetch");
+const { Command, Constants: { httpResponses, getConfig } } = require('../../index');
+const snekfetch = require('snekfetch');
 
 const key = getConfig.tokens.google;
 const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${input}&key=${key}`).then(d => JSON.parse(d.text));
@@ -8,12 +8,12 @@ const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/sea
 module.exports = class YouTube extends Command {
 
     constructor(...args) {
-        super(...args, "youtube", {
+        super(...args, 'youtube', {
             mode: 1,
 
-            usage: "<query:string> [index:int]",
-            usageDelim: " #",
-            description: "Search something throught YouTube.",
+            usage: '<query:string> [index:int]',
+            usageDelim: ' #',
+            description: 'Search something throught YouTube.'
         });
     }
 
@@ -22,7 +22,7 @@ module.exports = class YouTube extends Command {
         const data = await getURL(encodeURIComponent(input));
         const result = data.items[index];
         if (!result) throw httpResponses(404);
-        const output = result.id.kind === "youtube#channel" ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
+        const output = result.id.kind === 'youtube#channel' ? `https://youtube.com/channel/${result.id.channelId}` : `https://youtu.be/${result.id.videoId}`;
         return msg.send(output);
     }
 

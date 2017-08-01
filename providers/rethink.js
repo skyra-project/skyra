@@ -1,4 +1,4 @@
-const r = require("rethinkdbdash")({ db: "Skyra" });
+const r = require('rethinkdbdash')({ db: 'Skyra' });
 
 exports.exec = r;
 
@@ -132,7 +132,7 @@ exports.updateArrayByIndex = (table, id, uArray, index, doc) => r.table(table).g
  * @param {Object} doc the object you want to insert in the table.
  * @returns {Object}
  */
-exports.updateArrayByID = (table, id, uArray, index, doc) => r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d("id").eq(index), d.merge(doc), d)) }).run();
+exports.updateArrayByID = (table, id, uArray, index, doc) => r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d('id').eq(index), d.merge(doc), d)) }).run();
 
 /**
  * Remove an object from an array given the position of the array, entry ID and table.
@@ -152,7 +152,7 @@ exports.removeFromArrayByIndex = (table, id, uArray, index) => r.table(table).ge
  * @param {string} index the ID of the object inside the array.
  * @returns {Object}
  */
-exports.removeFromArrayByID = (table, id, uArray, index) => r.table(table).get(id).update({ [uArray]: r.row(uArray).filter(it => it("id").ne(index)) }).run();
+exports.removeFromArrayByID = (table, id, uArray, index) => r.table(table).get(id).update({ [uArray]: r.row(uArray).filter(it => it('id').ne(index)) }).run();
 
 /**
  * Get an object from an array given the position of the array, entry ID and table.
@@ -172,4 +172,4 @@ exports.getFromArrayByIndex = (table, id, uArray, index) => r.table(table).get(i
  * @param {string} index the ID of the object inside the array.
  * @returns {?Object}
  */
-exports.getFromArrayByID = (table, id, uArray, index) => r.table(table).get(id)(uArray).filter(r.row("id").eq(index)).run().then(res => (res.length ? res[0] : null));
+exports.getFromArrayByID = (table, id, uArray, index) => r.table(table).get(id)(uArray).filter(r.row('id').eq(index)).run().then(res => res.length ? res[0] : null);

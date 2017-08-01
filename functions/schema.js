@@ -1,190 +1,190 @@
 module.exports = class Configuration {
 
-    static find(value = "") {
+    static find(value = '') {
         return {
             channels: {
                 announcement: {
-                    type: "TextChannel",
+                    type: 'TextChannel',
                     default: null,
-                    path: { channels: { announcement: value } },
+                    path: { channels: { announcement: value } }
                 },
                 default: {
-                    type: "TextChannel",
+                    type: 'TextChannel',
                     default: null,
-                    path: { channels: { default: value } },
+                    path: { channels: { default: value } }
                 },
                 log: {
-                    type: "TextChannel",
+                    type: 'TextChannel',
                     default: null,
-                    path: { channels: { log: value } },
+                    path: { channels: { log: value } }
                 },
                 modlog: {
-                    type: "TextChannel",
+                    type: 'TextChannel',
                     default: null,
-                    path: { channels: { mod: value } },
+                    path: { channels: { mod: value } }
                 },
                 spam: {
-                    type: "TextChannel",
+                    type: 'TextChannel',
                     default: null,
-                    path: { channels: { spam: value } },
-                },
+                    path: { channels: { spam: value } }
+                }
             },
             roles: {
                 admin: {
-                    type: "Role",
+                    type: 'Role',
                     default: null,
-                    path: { roles: { admin: value } },
+                    path: { roles: { admin: value } }
                 },
                 moderator: {
-                    type: "Role",
+                    type: 'Role',
                     default: null,
-                    path: { roles: { moderator: value } },
+                    path: { roles: { moderator: value } }
                 },
                 staff: {
-                    type: "Role",
+                    type: 'Role',
                     default: null,
-                    path: { roles: { staff: value } },
+                    path: { roles: { staff: value } }
                 },
                 muted: {
-                    type: "Role",
+                    type: 'Role',
                     default: null,
-                    path: { roles: { muted: value } },
+                    path: { roles: { muted: value } }
                 },
                 initialrole: {
-                    type: "Role",
+                    type: 'Role',
                     default: null,
-                    path: { initialRole: value },
-                },
+                    path: { initialRole: value }
+                }
             },
             events: {
                 channelcreate: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { channelCreate: value } },
+                    path: { events: { channelCreate: value } }
                 },
                 guildbanadd: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { guildBanAdd: value } },
+                    path: { events: { guildBanAdd: value } }
                 },
                 guildbanremove: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { guildBanRemove: value } },
+                    path: { events: { guildBanRemove: value } }
                 },
                 commands: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { commands: value } },
+                    path: { events: { commands: value } }
                 },
                 guildmemberadd: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { guildMemberAdd: value } },
+                    path: { events: { guildMemberAdd: value } }
                 },
                 guildmemberremove: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { guildMemberRemove: value } },
+                    path: { events: { guildMemberRemove: value } }
                 },
                 guildmemberupdate: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { guildMemberUpdate: value } },
+                    path: { events: { guildMemberUpdate: value } }
                 },
                 messagedelete: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { messageDelete: value } },
+                    path: { events: { messageDelete: value } }
                 },
                 messagedeletebulk: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { messageDeleteBulk: value } },
+                    path: { events: { messageDeleteBulk: value } }
                 },
                 messageupdate: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { messageUpdate: value } },
+                    path: { events: { messageUpdate: value } }
                 },
                 roleupdate: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { roleUpdate: value } },
+                    path: { events: { roleUpdate: value } }
                 },
                 modlogprotection: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { events: { modLogProtection: value } },
-                },
+                    path: { events: { modLogProtection: value } }
+                }
             },
             messages: {
                 farewell: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { messages: { farewell: value } },
+                    path: { messages: { farewell: value } }
                 },
                 greeting: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { messages: { greeting: value } },
+                    path: { messages: { greeting: value } }
                 },
                 farewellmessage: {
-                    type: "String",
+                    type: 'String',
                     default: null,
-                    path: { messages: { farewellMessage: value } },
+                    path: { messages: { farewellMessage: value } }
                 },
                 greetingmessage: {
-                    type: "String",
+                    type: 'String',
                     default: null,
-                    path: { messages: { greetingMessage: value } },
-                },
+                    path: { messages: { greetingMessage: value } }
+                }
             },
             master: {
                 prefix: {
-                    type: "String",
-                    default: "s!",
-                    path: { prefix: value },
+                    type: 'String',
+                    default: 's!',
+                    path: { prefix: value }
                 },
                 mode: {
-                    type: "Number",
+                    type: 'Number',
                     default: 0,
                     min: 0,
                     max: 2,
-                    path: { mode: value },
-                },
+                    path: { mode: value }
+                }
             },
             selfmod: {
                 invitelinks: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { selfmod: { inviteLinks: value } },
+                    path: { selfmod: { inviteLinks: value } }
                 },
                 ghostmention: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { selfmod: { ghostmention: value } },
+                    path: { selfmod: { ghostmention: value } }
                 },
                 nomentionspam: {
-                    type: "Boolean",
+                    type: 'Boolean',
                     default: false,
-                    path: { selfmod: { nomentionspam: value } },
+                    path: { selfmod: { nomentionspam: value } }
                 },
                 nmsthreshold: {
-                    type: "Number",
+                    type: 'Number',
                     default: 20,
-                    path: { selfmod: { nmsthreshold: value } },
-                },
+                    path: { selfmod: { nmsthreshold: value } }
+                }
             },
             filter: {
                 level: {
-                    type: "Number",
+                    type: 'Number',
                     default: 0,
                     min: 0,
                     max: 4,
-                    path: { filter: { level: value } },
-                },
-            },
+                    path: { filter: { level: value } }
+                }
+            }
         };
     }
 

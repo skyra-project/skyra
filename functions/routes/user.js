@@ -1,4 +1,4 @@
-const Guilds = require("./user/guilds");
+const Guilds = require('./user/guilds');
 
 module.exports = class RouterUser {
 
@@ -6,7 +6,7 @@ module.exports = class RouterUser {
         this.client = client;
         this.guilds = new Guilds(client, util, dashboard);
 
-        dashboard.server.use("/guilds", this.guilds.server);
+        dashboard.server.use('/guilds', this.guilds.server);
     }
 
 };

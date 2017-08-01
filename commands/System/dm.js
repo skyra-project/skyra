@@ -1,16 +1,16 @@
-const { Command } = require("../../index");
+const { Command } = require('../../index');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class DirectMessage extends Command {
 
     constructor(...args) {
-        super(...args, "dm", {
+        super(...args, 'dm', {
             permLevel: 10,
             mode: 2,
 
-            usage: "<user:user> <message:string> [...]",
-            usageDelim: " ",
-            description: "Send a Direct Message throught Skyra.",
+            usage: '<user:user> <message:string> [...]',
+            usageDelim: ' ',
+            description: 'Send a Direct Message throught Skyra.'
         });
     }
 
@@ -19,7 +19,7 @@ module.exports = class DirectMessage extends Command {
         const options = {};
         if (attachment) options.files = [{ attachment }];
 
-        return user.send(content.join(" "), options)
+        return user.send(content.join(' '), options)
             .then(() => msg.alert(`Message successfully sent to ${user}`))
             .catch(() => msg.alert(`I am sorry, I could not send the message to ${user}`));
     }

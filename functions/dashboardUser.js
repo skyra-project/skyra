@@ -1,5 +1,5 @@
-const { Collection } = require("discord.js");
-const DashboardGuild = require("./dashboardGuild");
+const { Collection } = require('discord.js');
+const DashboardGuild = require('./dashboardGuild');
 
 module.exports = class DashboardUser {
 
@@ -8,10 +8,10 @@ module.exports = class DashboardUser {
         this.id = user.id;
         this.username = user.username;
         this.discriminator = user.discriminator;
-        this.avatar = (user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "webp"}` : null);
+        this.avatar = user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'webp'}` : null;
         this.guilds = new Collection();
         this.constructor.setupGuilds(this, user.guilds);
-        this.managableGuilds = this.guilds.filter(guild => guild.permissions.has("MANAGE_GUILD"));
+        this.managableGuilds = this.guilds.filter(guild => guild.permissions.has('MANAGE_GUILD'));
     }
 
     get user() {

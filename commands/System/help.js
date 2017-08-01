@@ -1,30 +1,30 @@
-const { Command } = require("../../index");
+const { Command } = require('../../index');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Help extends Command {
 
     constructor(...args) {
-        super(...args, "help", {
-            aliases: ["commands"],
+        super(...args, 'help', {
+            aliases: ['commands'],
             mode: 2,
 
-            usage: "[command:string]",
-            description: "Display help for all or a single command.",
+            usage: '[command:string]',
+            description: 'Display help for all or a single command.'
         });
     }
 
     async run(msg, [cmd]) {
-        const method = this.client.user.bot ? "author" : "channel";
+        const method = this.client.user.bot ? 'author' : 'channel';
         if (cmd) {
             cmd = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
-            if (!cmd) return msg.send("❌ | Unknown command, please run the help command with no arguments to get a list of them all.");
+            if (!cmd) return msg.send('❌ | Unknown command, please run the help command with no arguments to get a list of them all.');
             const info = Command.strip`
                 = ${cmd.help.name} =
                 ${cmd.help.description}
                 Usage :: ${cmd.usage.fullUsage(msg)}
-                Extended Help :: ${cmd.help.extendedHelp || "No extended help available."}
+                Extended Help :: ${cmd.help.extendedHelp || 'No extended help available.'}
             `;
-            return msg.send(info, { code: "asciidoc" });
+            return msg.send(info, { code: 'asciidoc' });
         }
         const help = this.buildHelp(this.client, msg);
         const categories = Object.keys(help);
@@ -32,12 +32,12 @@ module.exports = class Help extends Command {
         for (let cat = 0; cat < categories.length; cat++) {
             helpMessage.push(`**${categories[cat]} Commands**: \`\`\`asciidoc`);
             const subCategories = Object.keys(help[categories[cat]]);
-            for (let subCat = 0; subCat < subCategories.length; subCat++) helpMessage.push(`= ${subCategories[subCat]} =`, `${help[categories[cat]][subCategories[subCat]].join("\n")}\n`);
-            helpMessage.push("```\n\u200b");
+            for (let subCat = 0; subCat < subCategories.length; subCat++) helpMessage.push(`= ${subCategories[subCat]} =`, `${help[categories[cat]][subCategories[subCat]].join('\n')}\n`);
+            helpMessage.push('```\n\u200b');
         }
-        return msg[method].send(helpMessage, { split: { char: "\u200b" } })
-            .then(() => { if (msg.channel.type !== "dm") msg.send("📥 | Commands have been sent to your DMs."); })
-            .catch(() => { if (msg.channel.type !== "dm") msg.send("❌ | You have DMs disabled, I couldn't send you the commands in DMs."); });
+        return msg[method].send(helpMessage, { split: { char: '\u200b' } })
+            .then(() => { if (msg.channel.type !== 'dm') msg.send('📥 | Commands have been sent to your DMs.'); })
+            .catch(() => { if (msg.channel.type !== 'dm') msg.send("❌ | You have DMs disabled, I couldn't send you the commands in DMs."); });
     }
 
     /* eslint-disable no-restricted-syntax, no-prototype-builtins */

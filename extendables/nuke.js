@@ -1,7 +1,7 @@
 exports.conf = {
-    type: "method",
-    method: "nuke",
-    appliesTo: ["Message"],
+    type: 'method',
+    method: 'nuke',
+    appliesTo: ['Message']
 };
 
 // eslint-disable-next-line func-names

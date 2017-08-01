@@ -1,10 +1,10 @@
-const { User: fetchUser } = require("../../functions/search");
-const { fetchAvatar } = require("../../functions/wrappers");
-const { readFile } = require("fs-nextra");
-const { join, resolve } = require("path");
-const Canvas = require("canvas");
+const { User: fetchUser } = require('../../functions/search');
+const { fetchAvatar } = require('../../functions/wrappers');
+const { readFile } = require('fs-nextra');
+const { join, resolve } = require('path');
+const Canvas = require('canvas');
 
-const template = resolve(join(__dirname, "../../assets/images/memes/hug.png"));
+const template = resolve(join(__dirname, '../../assets/images/memes/hug.png'));
 
 const Hug = async (client, msg, user) => {
     /* Initialize Canvas */
@@ -12,7 +12,7 @@ const Hug = async (client, msg, user) => {
     const background = new Canvas.Image();
     const user1 = new Canvas.Image();
     const user2 = new Canvas.Image();
-    const ctx = c.getContext("2d");
+    const ctx = c.getContext('2d');
 
     if (user.id === msg.author.id) user = client.user;
 
@@ -20,7 +20,7 @@ const Hug = async (client, msg, user) => {
     const [bgBuffer, user1Buffer, user2Buffer] = await Promise.all([
         readFile(template),
         fetchAvatar(user, 256),
-        fetchAvatar(msg.author, 256),
+        fetchAvatar(msg.author, 256)
     ]);
 
     /* Background */
@@ -51,30 +51,30 @@ const Hug = async (client, msg, user) => {
 exports.run = async (client, msg, [search]) => {
     const user = await fetchUser(search, msg.guild);
     const output = await Hug(client, msg, user);
-    return msg.channel.send({ files: [{ attachment: output, name: "Hug.png" }] });
+    return msg.channel.send({ files: [{ attachment: output, name: 'Hug.png' }] });
 };
 
 exports.conf = {
     enabled: true,
-    runIn: ["text"],
+    runIn: ['text'],
     aliases: [],
     permLevel: 0,
     botPerms: [],
     requiredFuncs: [],
     spam: false,
     mode: 0,
-    cooldown: 30,
+    cooldown: 30
 };
 
 exports.help = {
-    name: "hug",
-    description: "Hugs!",
-    usage: "<user:string>",
-    usageDelim: "",
+    name: 'hug',
+    description: 'Hugs!',
+    usage: '<user:string>',
+    usageDelim: '',
     extendedHelp: [
-        "Hugs!",
-        "",
+        'Hugs!',
+        '',
         "&hug Kyra will create a picture of your profile picture hugging Kyra's profile picture.",
-        "If feeling lonely, hugging yourself will give you a nice surprise!",
-    ].join("\n"),
+        'If feeling lonely, hugging yourself will give you a nice surprise!'
+    ].join('\n')
 };

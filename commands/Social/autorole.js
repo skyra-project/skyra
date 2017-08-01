@@ -1,20 +1,20 @@
-const { Command } = require("../../index");
-const { Role: fetchRole, Channel: fetchChannel } = require("../../functions/search");
-const Rethink = require("../../providers/rethink");
+const { Command } = require('../../index');
+const { Role: fetchRole, Channel: fetchChannel } = require('../../functions/search');
+const Rethink = require('../../providers/rethink');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class AutoRole extends Command {
 
     constructor(...args) {
-        super(...args, "autorole", {
-            aliases: ["autoroles", "levelrole", "lvlrole"],
+        super(...args, 'autorole', {
+            aliases: ['autoroles', 'levelrole', 'lvlrole'],
             guildOnly: true,
             permLevel: 3,
             mode: 2,
 
-            usage: "<input:string>",
-            usageDelim: " ",
-            description: "(ADM) List or configure the autoroles for a guild.",
+            usage: '<input:string>',
+            usageDelim: ' ',
+            description: '(ADM) List or configure the autoroles for a guild.',
             extendedHelp: Command.strip`
                 Autoroles? They are roles that are available for everyone, and automatically given when they reach an amound of (local) points, an administrator must configure them throught a setting command.
 
@@ -42,100 +42,100 @@ module.exports = class AutoRole extends Command {
                 = Examples =
                 • Skyra, autorole add 20000 Trusted Member
                     I'll start auto-assigning the role 'Trusted Member' to anyone who has at least 20.000 points (based on local points).
-            `,
+            `
         });
     }
 
     async run(msg, [data]) {
         const [action, amount, input] = this.parse(data);
         switch (action) {
-            case "list": {
-                if (!msg.guild.settings.autoroles.length) throw "there are no autoroles configured for this guild.";
+            case 'list': {
+                if (!msg.guild.settings.autoroles.length) throw 'there are no autoroles configured for this guild.';
                 return msg.send(msg.guild.settings.autoroles.map((obj) => {
                     const role = msg.guild.roles.get(obj.id);
                     return role ? `${role.name} (${role.id}):: ${obj.points}` : `Unknown role${obj.id}`;
-                }).join("\n"), { code: "asciidoc" });
+                }).join('\n'), { code: 'asciidoc' });
             }
-            case "add": {
-                if (!amount) throw "you must assign an amount of points for the new autorole.";
-                if (!input[0]) throw "you must type a role.";
-                const role = fetchRole(input.join(" "), msg.guild);
-                if (!role) throw "this role does not exist.";
-                await Rethink.append("guilds", msg.guild.id, "autoroles", { id: role.id, points: amount });
+            case 'add': {
+                if (!amount) throw 'you must assign an amount of points for the new autorole.';
+                if (!input[0]) throw 'you must type a role.';
+                const role = fetchRole(input.join(' '), msg.guild);
+                if (!role) throw 'this role does not exist.';
+                await Rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points: amount });
                 await msg.guild.settings.sync();
                 return msg.send(`Added new autorole: ${role.name} (${role.id}). Points required: ${amount}`);
             }
-            case "remove": {
-                if (!input[0]) throw "you must type a role.";
-                const isSnowflake = /\d{17,21}/.test(input.join(" "));
+            case 'remove': {
+                if (!input[0]) throw 'you must type a role.';
+                const isSnowflake = /\d{17,21}/.test(input.join(' '));
                 let role;
                 try {
-                    role = fetchRole(input.join(" "), msg.guild);
+                    role = fetchRole(input.join(' '), msg.guild);
                 } catch (e) {
-                    role = isSnowflake ? { name: "Unknown", id: input.join(" ") } : null;
+                    role = isSnowflake ? { name: 'Unknown', id: input.join(' ') } : null;
                 }
-                if (!role) throw "this role does not exist.";
+                if (!role) throw 'this role does not exist.';
                 const retrieved = msg.guild.settings.autoroles.find(ar => ar.id === role.id);
-                if (!retrieved) throw "this role is not configured as an autorole.";
+                if (!retrieved) throw 'this role is not configured as an autorole.';
                 else {
-                    await Rethink.removeFromArrayByID("guilds", msg.guild.id, "autoroles", role.id);
+                    await Rethink.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', role.id);
                     await msg.guild.settings.sync();
                     return msg.send(`Removed the autorole: ${role.name} (${role.id}), which required ${retrieved.points} points.`);
                 }
             }
-            case "update": {
-                if (!amount) throw "you must assign an amount of points for the new autorole.";
-                if (!input[0]) throw "you must type a role.";
-                const role = fetchRole(input.join(" "), msg.guild);
-                if (!role) throw "this role does not exist.";
+            case 'update': {
+                if (!amount) throw 'you must assign an amount of points for the new autorole.';
+                if (!input[0]) throw 'you must type a role.';
+                const role = fetchRole(input.join(' '), msg.guild);
+                if (!role) throw 'this role does not exist.';
                 const retrieved = msg.guild.settings.autoroles.find(ar => ar.id === role.id);
-                if (!retrieved) throw "this role is not configured as an autorole.";
-                await Rethink.updateArrayByID("guilds", msg.guild.id, "autoroles", role.id, { points: amount });
+                if (!retrieved) throw 'this role is not configured as an autorole.';
+                await Rethink.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points: amount });
                 await msg.guild.settings.sync();
                 return msg.send(`Updated autorole: ${role.name} (${role.id}). Points required: ${amount} (before: ${retrieved.points})`);
             }
-            case "setting": return this.settingHandler(msg, input);
+            case 'setting': return this.settingHandler(msg, input);
             default: throw new Error(`unknown action: ${action}`);
         }
     }
 
     async settingHandler(msg, [type, action, ...value]) {
-        if (!type || !["initialrole", "ignorechannels"].includes(type.toLowerCase())) throw "you must select one of the following settings: `initialRole`|`ignoreChannels`";
+        if (!type || !['initialrole', 'ignorechannels'].includes(type.toLowerCase())) throw 'you must select one of the following settings: `initialRole`|`ignoreChannels`';
         switch (type.toLowerCase()) {
-            case "initialrole": {
-                if (!action || !["get", "set", "remove"].includes(action.toLowerCase())) throw "you must select one of the following actions: `set`|`remove`";
-                if (action.toLowerCase() === "get") {
+            case 'initialrole': {
+                if (!action || !['get', 'set', 'remove'].includes(action.toLowerCase())) throw 'you must select one of the following actions: `set`|`remove`';
+                if (action.toLowerCase() === 'get') {
                     const initialRole = msg.guild.settings.initialRole;
-                    return msg.send(initialRole ? `Current initial role: ${msg.guild.roles.get(initialRole).name}` : "No initial role set.");
-                } else if (action.toLowerCase() === "set") {
-                    if (!value[0]) throw "you must specify a Role.";
-                    const role = fetchRole(value.join(" "), msg.guild);
+                    return msg.send(initialRole ? `Current initial role: ${msg.guild.roles.get(initialRole).name}` : 'No initial role set.');
+                } else if (action.toLowerCase() === 'set') {
+                    if (!value[0]) throw 'you must specify a Role.';
+                    const role = fetchRole(value.join(' '), msg.guild);
                     await msg.guild.settings.update({ initialRole: role.id });
                     return msg.send(`✅ Success | New **initialRole** set to ${role.name}.`);
                 }
                 await msg.guild.settings.update({ initialRole: null });
-                return msg.send("✅ Success | Removed the value for **initialRole**.");
+                return msg.send('✅ Success | Removed the value for **initialRole**.');
             }
-            case "ignorechannels": {
-                if (!action || !["list", "add", "remove"].includes(action.toLowerCase())) throw "you must select one of the following actions: `add`|`remove`";
-                if (action.toLowerCase() === "list") {
-                    if (!msg.guild.settings.ignoreChannels.length) throw "there are no autoroles configured for this guild.";
+            case 'ignorechannels': {
+                if (!action || !['list', 'add', 'remove'].includes(action.toLowerCase())) throw 'you must select one of the following actions: `add`|`remove`';
+                if (action.toLowerCase() === 'list') {
+                    if (!msg.guild.settings.ignoreChannels.length) throw 'there are no autoroles configured for this guild.';
                     return msg.send(msg.guild.settings.ignoreChannels.map((c) => {
                         const channel = msg.guild.channels.get(c);
                         return channel ? `${channel.name} (${channel.id})` : `Unknown channel: ${c}`;
-                    }).join("\n"), { code: true });
+                    }).join('\n'), { code: true });
                 }
-                if (!value[0]) throw "you must specify a Channel.";
-                const channel = fetchChannel(value.join(" "), msg.guild);
+                if (!value[0]) throw 'you must specify a Channel.';
+                const channel = fetchChannel(value.join(' '), msg.guild);
                 const ignoreChannels = msg.guild.settings.ignoreChannels;
-                if (action.toLowerCase() === "add") {
-                    if (ignoreChannels.includes(channel.id)) throw "this channel is already ignored.";
-                    await Rethink.append("guilds", msg.guild.id, "ignoreChannels", channel.id);
+                if (action.toLowerCase() === 'add') {
+                    if (ignoreChannels.includes(channel.id)) throw 'this channel is already ignored.';
+                    await Rethink.append('guilds', msg.guild.id, 'ignoreChannels', channel.id);
                     await msg.guild.settings.sync();
                     return msg.send(`✅ Success | Now I won't give points in the channel ${channel.name}.`);
                 }
-                if (!ignoreChannels.length) throw "this server does not have an ignored channel";
-                if (!ignoreChannels.includes(channel.id)) throw "this channel is not ignored.";
+                if (!ignoreChannels.length) throw 'this server does not have an ignored channel';
+                if (!ignoreChannels.includes(channel.id)) throw 'this channel is not ignored.';
                 await msg.guild.settings.update({ ignoreChannels: ignoreChannels.filter(c => c !== channel.id) });
                 return msg.send(`✅ Success | Now I'll listen the channel ${channel.name}.`);
             }
@@ -144,8 +144,8 @@ module.exports = class AutoRole extends Command {
     }
 
     parse(data) {
-        const args = data.split(" ");
-        if (!["list", "add", "remove", "update", "setting"].includes(args[0])) throw "Missing a required option: (list, add, remove, setting)";
+        const args = data.split(' ');
+        if (!['list', 'add', 'remove', 'update', 'setting'].includes(args[0])) throw 'Missing a required option: (list, add, remove, setting)';
         const action = args[0];
         args.shift();
         let amount;

@@ -19,9 +19,9 @@ module.exports = {
         splitMessage
     },
     Managers: {
-        SocialGlobal: require('./utils/managerSocialGlobal'),
-        SocialLocal: require('./utils/managerSocialLocal'),
-        Guild: require('./utils/guildManager'),
-        Music: require('./utils/managerMusic')
+        SocialGlobal: require('./utils/managers/socialGlobal'),
+        SocialLocal: require('./utils/managers/socialLocal'),
+        Guild: require('./utils/managers/guilds'),
+        Music: require('./utils/managers/music')
     }
 };

@@ -46,10 +46,10 @@ exports.calc = (guild) => {
     return Math.round(random);
 };
 
-exports.run = async (client, msg) => {
+exports.run = async (client, msg, settings) => {
     if (!msg.member ||
         msg.author.bot ||
-        msg.guild.settings.ignoreChannels.includes(msg.channel.id) ||
+        settings.ignoreChannels.includes(msg.channel.id) ||
         this.cooldown(msg)) return false;
 
     try {

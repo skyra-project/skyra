@@ -26,7 +26,7 @@ exports.unknown = async (client, guild, user, type) => {
 
 exports.send = (client, msg, user, type, reason = null, extraData = null) => {
     if (!msg.guild.settings.exists) msg.guild.settings.create();
-    else this.justified(client, msg, user, type, reason, extraData).catch(e => client.emit('log', e, 'error'));
+    else this.justified(client, msg, user, type, reason, extraData).catch(err => client.emit('log', err, 'error'));
 };
 
 exports.justified = async (client, msg, user, type, reason, extraData) => {

@@ -1,8 +1,44 @@
 const Rethink = require('../providers/rethink');
 
+/**
+ * @typedef  {Object} ModModerator
+ * @property {string} id The moderator's ID.
+ * @property {string} tag The moderator's tag.
+ * @memberof ModerationCase
+ */
+
+/**
+ * @typedef  {Object} ModUser
+ * @property {string} id The user's ID.
+ * @property {string} tag The user's tag.
+ * @memberof ModerationCase
+ */
+
+/**
+ * @typedef  {('ban'|'unban'|'softban'|'kick'|'mute'|'unmute'|'warn')} ModType
+ * @memberof ModerationCase
+ */
+
+/**
+ * @typedef  {Object} ModerationCase
+ * @property {ModModerator} moderator The moderator who performed this action.
+ * @property {ModUser}      user      The affected user.
+ * @property {ModType}      type      The type of modlog.
+ * @property {number}       case      The modlog case.
+ * @property {?string}      reason    The reason of why the modlog was performed.
+ * @property {string}       message   The message which contains the modlog sent.
+ * @property {*}            extraData Anything, for example, an array of roles (Mute).
+ * @memberof Moderation
+ */
+
 /* eslint-disable no-underscore-dangle, complexity */
 module.exports = class Moderation {
 
+    /**
+     * Creates an instance of Moderation.
+     * @param {string} guild The Guild's ID
+     * @param {ModerationCase[]} mutes The mute modlogs.
+     */
     constructor(guild, mutes) {
         this.id = guild;
         this.mutes = new Map();
@@ -51,16 +87,17 @@ module.exports = class Moderation {
         else if (data.type === 'unmute') await this.appealMute(data.user.id);
     }
 
-    async updateCase(index, doc) {
+    updateCase(index, doc) {
         return Rethink.updateArrayByIndex('moderation', this.id, 'cases', index, doc);
     }
 
-    async getMutes() {
+    getMutes() {
         return this.getCases().then(cases => cases.filter(obj => obj.type === 'mute' && obj.appeal !== true));
     }
 
-    async getMute(user) {
-        return this.getMutes().then(g => g.find(obj => obj.type === 'mute' && obj.user === user && obj.appeal !== true) || null);
+    getMute(user) {
+        return this.getMutes()
+            .then(doc => doc.find(obj => obj.type === 'mute' && obj.user === user && obj.appeal !== true) || null);
     }
 
     async syncMutes() {
@@ -71,9 +108,9 @@ module.exports = class Moderation {
     }
 
     async appealMute(user) {
-        return this.getMute(user).then((d) => {
-            if (!d) throw "This mute doesn't seem to exist";
-            return this.updateCase(d.thisCase, { appeal: true }).then(() => this.syncMutes().then(() => true));
+        return this.getMute(user).then((doc) => {
+            if (!doc) throw "This mute doesn't seem to exist";
+            return this.updateCase(doc.thisCase, { appeal: true }).then(() => this.syncMutes().then(() => true));
         });
     }
 

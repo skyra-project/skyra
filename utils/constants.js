@@ -1,6 +1,6 @@
 const { STATUS_CODES } = require('http');
 
-const $ = (name) => { throw new Error(`${name} is a required argument.`); };
+const $ = (name) => { throw new Error(`${name} is a required argument.`); }; // eslint-disable-line id-length
 
 const oneToTen = {
     0: { emoji: '😪', color: 0x5B1100 },

@@ -69,7 +69,7 @@ class Clock {
 
     async update(task, doc) {
         await Rethink.update('tasks', task.id, doc).catch((err) => { throw err; });
-        const index = this.tasks.indexOf(this.tasks.find(t => t.id === task.id));
+        const index = this.tasks.indexOf(this.tasks.find(ts => ts.id === task.id));
         for (const key of Object.keys(doc)) {
             if (doc[key] instanceof Object && !(doc[key] instanceof Array)) {
                 for (const subkey of Object.keys(doc[key])) this.tasks[index][key][subkey] = doc[key][subkey];

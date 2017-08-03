@@ -1,3 +1,4 @@
+/* eslint id-length: ["error", { exceptions: ["r"] }] */
 const r = require('rethinkdbdash')({ db: 'Skyra' });
 
 exports.exec = r;
@@ -132,7 +133,7 @@ exports.updateArrayByIndex = (table, id, uArray, index, doc) => r.table(table).g
  * @param {Object} doc the object you want to insert in the table.
  * @returns {Object}
  */
-exports.updateArrayByID = (table, id, uArray, index, doc) => r.table(table).get(id).update({ [uArray]: r.row(uArray).map(d => r.branch(d('id').eq(index), d.merge(doc), d)) }).run();
+exports.updateArrayByID = (table, id, uArray, index, doc) => r.table(table).get(id).update({ [uArray]: r.row(uArray).map(dc => r.branch(dc('id').eq(index), dc.merge(doc), dc)) }).run();
 
 /**
  * Remove an object from an array given the position of the array, entry ID and table.

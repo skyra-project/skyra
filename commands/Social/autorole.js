@@ -1,8 +1,7 @@
 const { Command } = require('../../index');
-const { Role: fetchRole, Channel: fetchChannel } = require('../../functions/search');
 const Rethink = require('../../providers/rethink');
 
-/* eslint-disable class-methods-use-this */
+/* eslint-disable class-methods-use-this, max-len */
 module.exports = class AutoRole extends Command {
 
     constructor(...args) {
@@ -59,7 +58,7 @@ module.exports = class AutoRole extends Command {
             case 'add': {
                 if (!amount) throw 'you must assign an amount of points for the new autorole.';
                 if (!input[0]) throw 'you must type a role.';
-                const role = fetchRole(input.join(' '), msg.guild);
+                const role = await this.client.handler.search.role(input.join(' '), msg);
                 if (!role) throw 'this role does not exist.';
                 await Rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points: amount });
                 await msg.guild.settings.sync();
@@ -67,13 +66,9 @@ module.exports = class AutoRole extends Command {
             }
             case 'remove': {
                 if (!input[0]) throw 'you must type a role.';
-                const isSnowflake = /\d{17,21}/.test(input.join(' '));
-                let role;
-                try {
-                    role = fetchRole(input.join(' '), msg.guild);
-                } catch (e) {
-                    role = isSnowflake ? { name: 'Unknown', id: input.join(' ') } : null;
-                }
+                const isSnowflake = /\d{17,19}/.test(input.join(' '));
+                const role = await this.client.handler.search.role(input.join(' '), msg)
+                    .catch(() => isSnowflake ? { name: 'Unknown', id: input.join(' ') } : null);
                 if (!role) throw 'this role does not exist.';
                 const retrieved = msg.guild.settings.autoroles.find(ar => ar.id === role.id);
                 if (!retrieved) throw 'this role is not configured as an autorole.';
@@ -86,7 +81,7 @@ module.exports = class AutoRole extends Command {
             case 'update': {
                 if (!amount) throw 'you must assign an amount of points for the new autorole.';
                 if (!input[0]) throw 'you must type a role.';
-                const role = fetchRole(input.join(' '), msg.guild);
+                const role = await this.client.handler.search.role(input.join(' '), msg);
                 if (!role) throw 'this role does not exist.';
                 const retrieved = msg.guild.settings.autoroles.find(ar => ar.id === role.id);
                 if (!retrieved) throw 'this role is not configured as an autorole.';
@@ -109,7 +104,7 @@ module.exports = class AutoRole extends Command {
                     return msg.send(initialRole ? `Current initial role: ${msg.guild.roles.get(initialRole).name}` : 'No initial role set.');
                 } else if (action.toLowerCase() === 'set') {
                     if (!value[0]) throw 'you must specify a Role.';
-                    const role = fetchRole(value.join(' '), msg.guild);
+                    const role = await this.client.handler.search.role(value.join(' '), msg);
                     await msg.guild.settings.update({ initialRole: role.id });
                     return msg.send(`✅ Success | New **initialRole** set to ${role.name}.`);
                 }
@@ -120,13 +115,13 @@ module.exports = class AutoRole extends Command {
                 if (!action || !['list', 'add', 'remove'].includes(action.toLowerCase())) throw 'you must select one of the following actions: `add`|`remove`';
                 if (action.toLowerCase() === 'list') {
                     if (!msg.guild.settings.ignoreChannels.length) throw 'there are no autoroles configured for this guild.';
-                    return msg.send(msg.guild.settings.ignoreChannels.map((c) => {
-                        const channel = msg.guild.channels.get(c);
-                        return channel ? `${channel.name} (${channel.id})` : `Unknown channel: ${c}`;
+                    return msg.send(msg.guild.settings.ignoreChannels.map((ch) => {
+                        const channel = msg.guild.channels.get(ch);
+                        return channel ? `${channel.name} (${channel.id})` : `Unknown channel: ${ch}`;
                     }).join('\n'), { code: true });
                 }
                 if (!value[0]) throw 'you must specify a Channel.';
-                const channel = fetchChannel(value.join(' '), msg.guild);
+                const channel = await this.client.handler.search.channel(value.join(' '), msg);
                 const ignoreChannels = msg.guild.settings.ignoreChannels;
                 if (action.toLowerCase() === 'add') {
                     if (ignoreChannels.includes(channel.id)) throw 'this channel is already ignored.';
@@ -136,7 +131,7 @@ module.exports = class AutoRole extends Command {
                 }
                 if (!ignoreChannels.length) throw 'this server does not have an ignored channel';
                 if (!ignoreChannels.includes(channel.id)) throw 'this channel is not ignored.';
-                await msg.guild.settings.update({ ignoreChannels: ignoreChannels.filter(c => c !== channel.id) });
+                await msg.guild.settings.update({ ignoreChannels: ignoreChannels.filter(ch => ch !== channel.id) });
                 return msg.send(`✅ Success | Now I'll listen the channel ${channel.name}.`);
             }
             default: throw new Error(`Unknown type: ${action}`);

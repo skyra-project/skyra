@@ -1,4 +1,3 @@
-const { User: fetchUser } = require('../../functions/search');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');
@@ -6,17 +5,17 @@ const Canvas = require('canvas');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/pingkyra.png'));
 
-const PingKyra = async (client, msg, user) => {
+const pingKyra = async (client, msg, user) => {
     /* Initialize Canvas */
     const kyra = await client.fetchUser('242043489611808769');
 
     if (user.id === kyra.id || user.id === client.user.id) user = msg.author;
 
-    const c = new Canvas(569, 327);
+    const canvas = new Canvas(569, 327);
     const background = new Canvas.Image();
     const pinner = new Canvas.Image();
     const Kyra = new Canvas.Image();
-    const ctx = c.getContext('2d');
+    const ctx = canvas.getContext('2d');
 
     /* Get the buffers from both profile avatars */
     const [bgBuffer, pinnerBuffer, KyraBuffer] = await Promise.all([
@@ -48,12 +47,11 @@ const PingKyra = async (client, msg, user) => {
     Kyra.src = KyraBuffer;
     ctx.restore();
 
-    return c.toBuffer();
+    return canvas.toBuffer();
 };
 
-exports.run = async (client, msg, [search]) => {
-    const user = await fetchUser(search, msg.guild);
-    const output = await PingKyra(client, msg, user);
+exports.run = async (client, msg, [user]) => {
+    const output = await pingKyra(client, msg, user);
     return msg.channel.send({ files: [{ attachment: output, name: 'pingkyra.png' }] });
 };
 
@@ -72,7 +70,7 @@ exports.conf = {
 exports.help = {
     name: 'pingkyra',
     description: 'How you dare pinging me!',
-    usage: '<user:string>',
+    usage: '<user:advuser>',
     usageDelim: '',
     extendedHelp: [
         'How. You. Dare. Pinging. Me!',

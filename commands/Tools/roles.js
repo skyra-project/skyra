@@ -1,5 +1,4 @@
 const { Command, Discord: { Embed } } = require('../../index');
-const { Role: fetchRole } = require('../../functions/search');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Roles extends Command {
@@ -9,7 +8,7 @@ module.exports = class Roles extends Command {
             guildOnly: true,
             mode: 2,
 
-            usage: '<list|claim|unclaim> [roles:string] [...]',
+            usage: '<list|claim|unclaim> [roles:advrole] [...]',
             usageDelim: ' ',
             description: 'List all public roles from a guild, or claim/unclaim them.',
             extendedHelp: Command.strip`
@@ -49,7 +48,7 @@ module.exports = class Roles extends Command {
         if (giveRoles) {
             if (giveRoles.length === 1) await msg.member.addRole(giveRoles[0]).catch(Command.handleError);
             else await msg.member.addRoles(giveRoles).catch(Command.handleError);
-            message.push(`The following roles have been added to your profile: \`${giveRoles.map(r => r.name).join('`, `')}\``);
+            message.push(`The following roles have been added to your profile: \`${giveRoles.map(role => role.name).join('`, `')}\``);
         }
 
         return msg.send(message.join('\n'));
@@ -64,7 +63,7 @@ module.exports = class Roles extends Command {
         if (removeRoles) {
             if (removeRoles.length === 1) await msg.member.removeRole(removeRoles[0]).catch(Command.handleError);
             else await msg.member.removeRoles(removeRoles).catch(Command.handleError);
-            message.push(`The following roles have been removed from your profile: \`${removeRoles.map(r => r.name).join('`, `')}\``);
+            message.push(`The following roles have been removed from your profile: \`${removeRoles.map(role => role.name).join('`, `')}\``);
         }
 
         return msg.send(message.join('\n'));
@@ -77,11 +76,11 @@ module.exports = class Roles extends Command {
         const invalidRoles = [];
         for (let index = 0; index < roles.length; index++) {
             try {
-                const checkRole = fetchRole(roles[index], msg.guild);
+                const checkRole = roles[index];
                 if (!settings.publicRoles.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
                 else if (msg.member.roles.has(checkRole.id)) existentRoles.push(checkRole.name);
                 else giveRoles.push(checkRole);
-            } catch (e) {
+            } catch (err) {
                 invalidRoles.push(roles[index]);
             }
         }
@@ -101,11 +100,11 @@ module.exports = class Roles extends Command {
         const invalidRoles = [];
         for (let index = 0; index < roles.length; index++) {
             try {
-                const checkRole = fetchRole(roles[index], msg.guild);
+                const checkRole = roles[index];
                 if (!settings.publicRoles.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
                 else if (!msg.member.roles.has(checkRole.id)) nonexistentRoles.push(checkRole.name);
                 else removeRoles.push(checkRole);
-            } catch (e) {
+            } catch (err) {
                 invalidRoles.push(roles[index]);
             }
         }
@@ -120,7 +119,7 @@ module.exports = class Roles extends Command {
 
     list(msg, settings) {
         if (settings.publicRoles.length === 0) throw 'this server does not have a public role configured.';
-        const theRoles = settings.publicRoles.map(u => msg.guild.roles.has(u) ? msg.guild.roles.get(u).name : u);
+        const theRoles = settings.publicRoles.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
         const embed = new Embed()
             .setColor(this.msg.color)
             .setTitle(`Public roles for ${this.guild}`)

@@ -1,5 +1,4 @@
 const { Command, Managers: { SocialLocal } } = require('../../index');
-const { User: fetchUser } = require('../../functions/search');
 const Rethink = require('../../providers/rethink');
 
 /* eslint-disable class-methods-use-this */
@@ -13,7 +12,7 @@ module.exports = class Social extends Command {
             mode: 2,
             spam: true,
 
-            usage: '<delete|add|remove> <user:string> [value:int]',
+            usage: '<delete|add|remove> <user:advuser> [value:int]',
             usageDelim: ' ',
             description: 'Manage the local leaderboards.',
             extendedHelp: Command.strip`
@@ -36,17 +35,17 @@ module.exports = class Social extends Command {
         });
     }
 
-    async run(msg, [action, search = msg.author.id, v = null]) {
+    async run(msg, [action, search = msg.author.id, value = null]) {
         const ID = await this.searchProfile(msg, search);
         if (action === 'delete') {
             throw 'this action is not available yet.';
             // await this.nuke(client, ID);
             // await msg.alert(`Dear ${msg.author}, you have just nuked the profile from user ID ${ID}`);
         } else {
-            if (!v) throw 'you must specify an amount of money.';
-            const value = this.handle(msg, action, ID, v);
+            if (!value) throw 'you must specify an amount of money.';
+            const newValue = this.handle(msg, action, ID, value);
             await this.update(msg, ID, value);
-            return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'added' : 'removed'} ${v} points from user ID: ${ID}`);
+            return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'added' : 'removed'} ${newValue} points from user ID: ${ID}`);
         }
     }
 
@@ -54,7 +53,7 @@ module.exports = class Social extends Command {
         if (/[0-9]{17,21}/.test(search) && SocialLocal.get(msg.guild.id).has(search)) {
             return search;
         }
-        const user = await fetchUser(search, msg.guild);
+        const user = await this.client.handler.search.user(search, msg);
         if (user.bot) throw "you can't modify bot profiles, since they don't have one.";
         if (!SocialLocal.get(msg.guild.id).has(search)) {
             const data = { id: user.id, score: 0 };

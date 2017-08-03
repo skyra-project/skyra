@@ -1,5 +1,4 @@
 const { Command } = require('../../index');
-const { Role: fetchRole, Channel: fetchChannel } = require('../../functions/search');
 const Rethink = require('../../providers/rethink');
 
 /* eslint-disable class-methods-use-this */
@@ -55,7 +54,7 @@ module.exports = class Settings extends Command {
         const nValue = await this.parse(msg, key, value);
         const { path } = this.validator[key];
         if (!msg.guild.settings[path].includes(nValue.id || nValue)) throw `the value ${value} does not exist in the configuration.`;
-        await msg.guild.settings.update({ [path]: msg.guild.settings[path].filter(v => v !== (nValue.id || nValue)) });
+        await msg.guild.settings.update({ [path]: msg.guild.settings[path].filter(entry => entry !== (nValue.id || nValue)) });
         return `Successfully removed the value **${nValue.name || nValue}** from the key **${key}**`;
     }
 
@@ -77,7 +76,7 @@ module.exports = class Settings extends Command {
                 check: (msg, value) => {
                     value = value.toLowerCase();
                     const cmd = msg.client.commands.get(value) || msg.client.commands.get(msg.client.aliases.get(value));
-                    const commands = this.commands.filter(c => c.conf.protected === true);
+                    const commands = this.commands.filter(command => command.conf.protected === true);
                     if (!cmd) throw `${value} is not a command.`;
                     if (cmd && !commands.has(cmd.help.name)) throw `you can't disable the command ${cmd.help.name}, it's protected.`;
                     return cmd;
@@ -89,7 +88,7 @@ module.exports = class Settings extends Command {
                 check: (msg, value) => {
                     value = value.toLowerCase();
                     if (value === 'here') return msg.channel;
-                    return fetchChannel(value, msg.guild);
+                    return this.client.handler.search.channel(value, msg);
                 }
             },
             publicroles: {
@@ -97,7 +96,7 @@ module.exports = class Settings extends Command {
                 path: 'publicRoles',
                 check: (msg, value) => {
                     value = value.toLowerCase();
-                    return fetchRole(value, msg.guild);
+                    return this.client.handler.search.role(value, msg);
                 }
             },
             wordfilter: {

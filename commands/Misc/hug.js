@@ -1,4 +1,3 @@
-const { User: fetchUser } = require('../../functions/search');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');
@@ -6,13 +5,13 @@ const Canvas = require('canvas');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/hug.png'));
 
-const Hug = async (client, msg, user) => {
+const hug = async (client, msg, user) => {
     /* Initialize Canvas */
-    const c = new Canvas(660, 403);
+    const canvas = new Canvas(660, 403);
     const background = new Canvas.Image();
     const user1 = new Canvas.Image();
     const user2 = new Canvas.Image();
-    const ctx = c.getContext('2d');
+    const ctx = canvas.getContext('2d');
 
     if (user.id === msg.author.id) user = client.user;
 
@@ -45,12 +44,11 @@ const Hug = async (client, msg, user) => {
     user2.src = user2Buffer;
     ctx.restore();
 
-    return c.toBuffer();
+    return canvas.toBuffer();
 };
 
-exports.run = async (client, msg, [search]) => {
-    const user = await fetchUser(search, msg.guild);
-    const output = await Hug(client, msg, user);
+exports.run = async (client, msg, [user]) => {
+    const output = await hug(client, msg, user);
     return msg.channel.send({ files: [{ attachment: output, name: 'Hug.png' }] });
 };
 
@@ -69,7 +67,7 @@ exports.conf = {
 exports.help = {
     name: 'hug',
     description: 'Hugs!',
-    usage: '<user:string>',
+    usage: '<user:advuser>',
     usageDelim: '',
     extendedHelp: [
         'Hugs!',

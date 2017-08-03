@@ -1,6 +1,5 @@
 const { Command } = require('../../index');
 const Schema = require('../../functions/schema');
-const { Role: fetchRole, Channel: fetchChannel } = require('../../functions/search');
 
 const SchemaProps = Schema.find();
 
@@ -65,13 +64,16 @@ module.exports = class Configuration extends Command {
                 return String(input);
             }
             case 'Role': {
-                const role = await fetchRole(input.toLowerCase(), msg.guild);
+                const role = await this.client.handler.search.role(input, msg);
                 if (role) return role;
                 throw 'I expect a Role.';
             }
             case 'TextChannel': {
-                const channel = await fetchChannel(input.toLowerCase(), msg.guild);
-                if (channel) return channel;
+                const channel = await this.client.handler.search.channel(input, msg);
+                if (channel) {
+                    if (channel.type !== 'text') throw 'This is not a text channel.';
+                    return channel;
+                }
                 throw 'I expect a Channel.';
             }
             case 'Number': {

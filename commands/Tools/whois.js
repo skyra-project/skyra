@@ -1,5 +1,4 @@
 const { Command, Discord: { Embed } } = require('../../index');
-const { User: fetchUser } = require('../../functions/search');
 const moment = require('moment');
 
 const sortRanks = (a, b) => b.position > a.position;
@@ -13,13 +12,12 @@ module.exports = class Whois extends Command {
             botPerms: ['EMBED_LINKS'],
             mode: 1,
 
-            usage: '[query:string]',
+            usage: '[query:advuser]',
             description: 'Who are you?'
         });
     }
 
-    async run(msg, [search = msg.author]) {
-        const user = await fetchUser(search, msg.guild);
+    async run(msg, [user = msg.author]) {
         const member = await msg.guild.fetchMember(user).catch(() => null);
         const embed = new Embed();
         if (member) this.member(member, embed);
@@ -48,7 +46,7 @@ module.exports = class Whois extends Command {
                 .array()
                 .slice(1)
                 .sort(sortRanks)
-                .map(r => r.name)
+                .map(role => role.name)
                 .join(', '),
             );
         }

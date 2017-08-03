@@ -1,4 +1,3 @@
-const { User: fetchUser } = require('../../functions/search');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');
@@ -6,13 +5,13 @@ const Canvas = require('canvas');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/ineedhealing.png'));
 
-const INeedHealing = async (client, msg, user) => {
+const iNeedHealing = async (client, msg, user) => {
     /* Initialize Canvas */
-    const c = new Canvas(333, 500);
+    const canvas = new Canvas(333, 500);
     const background = new Canvas.Image();
     const user1 = new Canvas.Image();
     const user2 = new Canvas.Image();
-    const ctx = c.getContext('2d');
+    const ctx = canvas.getContext('2d');
 
     if (user.id === msg.author.id) user = client.user;
 
@@ -48,12 +47,11 @@ const INeedHealing = async (client, msg, user) => {
     user2.src = user2Buffer;
     ctx.restore();
 
-    return c.toBuffer();
+    return canvas.toBuffer();
 };
 
-exports.run = async (client, msg, [search]) => {
-    const user = await fetchUser(search, msg.guild);
-    const output = await INeedHealing(client, msg, user);
+exports.run = async (client, msg, [user]) => {
+    const output = await iNeedHealing(client, msg, user);
     return msg.channel.send({ files: [{ attachment: output, name: 'INeedHealing.png' }] });
 };
 
@@ -72,7 +70,7 @@ exports.conf = {
 exports.help = {
     name: 'ineedhealing',
     description: 'Give somebody a nice Good Night!',
-    usage: '<user:string>',
+    usage: '<user:advuser>',
     usageDelim: '',
     extendedHelp: ''
 };

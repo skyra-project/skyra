@@ -25,6 +25,13 @@ module.exports = class ArgResolver extends Resolver {
         throw `${currentUsage.possibles[possible].name} must be a mention or valid user id.`;
     }
 
+    async advuser(arg, currentUsage, possible, repeat, msg) {
+        const user = await super.advUser(arg, msg);
+        if (user) return user;
+        if (currentUsage.type === 'optional' && !repeat) return null;
+        throw `${currentUsage.possibles[possible].name} must be a valid mention or a part of the name.`;
+    }
+
     async member(arg, currentUsage, possible, repeat, msg) {
         const member = await super.member(arg, msg.guild);
         if (member) return member;
@@ -32,11 +39,25 @@ module.exports = class ArgResolver extends Resolver {
         throw `${currentUsage.possibles[possible].name} must be a mention or valid user id.`;
     }
 
+    async advmember(arg, currentUsage, possible, repeat, msg) {
+        const member = await super.advMember(arg, msg);
+        if (member) return member;
+        if (currentUsage.type === 'optional' && !repeat) return null;
+        throw `${currentUsage.possibles[possible].name} must be a valid mention or a part of the name.`;
+    }
+
     async channel(arg, currentUsage, possible, repeat) {
         const channel = await super.channel(arg);
         if (channel) return channel;
         if (currentUsage.type === 'optional' && !repeat) return null;
         throw `${currentUsage.possibles[possible].name} must be a channel tag or valid channel id.`;
+    }
+
+    async advchannel(arg, currentUsage, possible, repeat, msg) {
+        const channel = await super.advChannel(arg, msg);
+        if (channel) return channel;
+        if (currentUsage.type === 'optional' && !repeat) return null;
+        throw `${currentUsage.possibles[possible].name} must be a channel tag or a part of the name.`;
     }
 
     async guild(arg, currentUsage, possible, repeat) {
@@ -51,6 +72,13 @@ module.exports = class ArgResolver extends Resolver {
         if (role) return role;
         if (currentUsage.type === 'optional' && !repeat) return null;
         throw `${currentUsage.possibles[possible].name} must be a role mention or role id.`;
+    }
+
+    async advrole(arg, currentUsage, possible, repeat, msg) {
+        const role = await super.advRole(arg, msg);
+        if (role) return role;
+        if (currentUsage.type === 'optional' && !repeat) return null;
+        throw `${currentUsage.possibles[possible].name} must be a role mention or a part of the name.`;
     }
 
     async literal(arg, currentUsage, possible, repeat) {

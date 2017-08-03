@@ -3,6 +3,8 @@ const SocialLocal = require('./managers/socialLocal');
 const Guilds = require('./managers/guilds');
 const Clock = require('./managers/clock');
 
+const AdvancedSearch = require('./interfaces/AdvancedSearch');
+
 const clean = require('../functions/clean');
 const Dashboard = require('../functions/dashboard');
 
@@ -13,6 +15,8 @@ class Handler {
 
         this.guilds = new Guilds();
         this.clock = new Clock(client);
+
+        this.search = new AdvancedSearch(client);
 
         this.dashboard = null;
 

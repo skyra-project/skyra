@@ -1,5 +1,4 @@
 const { Command } = require('../../index');
-const { User: fetchUser } = require('../../functions/search');
 const moment = require('moment');
 require('moment-duration-format');
 
@@ -13,7 +12,7 @@ module.exports = class Reputation extends Command {
             mode: 1,
             spam: true,
 
-            usage: '<user:string>',
+            usage: '<user:advuser>',
             description: 'Give somebody a reputation point.',
             extendedHelp: Command.strip`
                 This guy is so helpful... I'll give him a reputation point!
@@ -28,14 +27,13 @@ module.exports = class Reputation extends Command {
         });
     }
 
-    async run(msg, [search]) {
+    async run(msg, [user]) {
         const now = new Date().getTime();
 
         if (msg.author.profile.timerep + 86400000 > now) {
             const remaining = (msg.author.profile.timerep + 86400000) - now;
             return msg.alert(`You can give a reputation point in ${moment.duration(remaining).format('hh [**hours**,] mm [**mins**,] ss [**secs**]')}.`, 10000);
         }
-        const user = await fetchUser(search, msg.guild);
         if (msg.author.id === user.id) throw "you can't give a reputation point to yourself.";
         else if (user.bot) throw "you can't give reputation points to bots.";
 

@@ -24,15 +24,3 @@ exports.createMuted = async (msg) => {
     await msg.send(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
     return true;
 };
-
-exports.shiny = msg => msg.channel.permissionsFor(msg.guild.me).has('USE_EXTERNAL_EMOJIS') ? '<:ShinyYellow:324157128270938113>' : 'S';
-
-exports.color = (msg) => {
-    const profile = msg.author.profile;
-    if (profile) {
-        return parseInt(`0x${msg.author.profile.color}`);
-    } else if (msg.guild) {
-        if (msg.member) return msg.member.highestRole.color;
-    }
-    return 14671839;
-};

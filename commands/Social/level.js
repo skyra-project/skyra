@@ -1,5 +1,4 @@
 const { Command } = require('../../index');
-const { User: fetchUser } = require('../../functions/search');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, sep } = require('path');
@@ -22,7 +21,7 @@ module.exports = class Level extends Command {
             mode: 1,
             spam: true,
 
-            usage: '[user:string]',
+            usage: '[user:advuser]',
             description: 'Check your global level.',
             extendedHelp: Command.strip`
                 How much until I reach next level?
@@ -34,8 +33,7 @@ module.exports = class Level extends Command {
         });
     }
 
-    async run(msg, [search = msg.author]) {
-        const user = await fetchUser(search, msg.guild);
+    async run(msg, [user = msg.author]) {
         const output = await this.showProfile(user);
         return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
     }
@@ -49,11 +47,11 @@ module.exports = class Level extends Command {
         const nextLevel = Math.floor(((currentLevel + 1) / 0.2) ** 2);
         const Prog = Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265);
 
-        const c = new Canvas(640, 174);
+        const canvas = new Canvas(640, 174);
         const background = new Canvas.Image();
         const imgAvatar = new Canvas.Image();
         const themeImage = new Canvas.Image();
-        const ctx = c.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
         const theme = banners.level;
         const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
@@ -91,7 +89,7 @@ module.exports = class Level extends Command {
         ctx.restore();
 
         /* Resolve Canvas buffer */
-        return c.toBuffer();
+        return canvas.toBuffer();
     }
 
 };

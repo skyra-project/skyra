@@ -1,5 +1,4 @@
 const { Command } = require('../../index');
-const { User: fetchUser, Role: fetchRole } = require('../../functions/search');
 const { timer } = require('../../functions/wrappers');
 
 const timeRegExp = /^(\d{1,3}(s(?:ec(?:ond)?)?|m(?:in(?:ute)?)?|h(?:our)?|d(?:ay)?)s? ?)+/;
@@ -72,13 +71,21 @@ module.exports = class PollManager extends Command {
             const selection = /-users ([^-]+)/.exec(input);
             const map = selection[1].split(/, ?/);
             input = input.replace(selection[0], '');
-            poll.users = await Promise.all(map.map(value => fetchUser(value, msg.guild).then(v => v.id).catch(handleError))).catch(handleError);
+            const fetchUser = this.client.handler.search.user;
+            poll.users = [];
+            for (const user of map) {
+                await fetchUser(user, msg).then(res => poll.users.push(res.id));
+            }
         }
         if (/-roles [^-]+/.test(input)) {
             const selection = /-roles ([^-]+)/.exec(input);
             const map = selection[1].split(/, ?/);
             input = input.replace(selection[0], '');
-            poll.roles = await Promise.all(map.map(value => fetchRole(value, msg.guild).id)).catch(handleError);
+            const fetchRole = this.client.handler.search.role;
+            poll.roles = [];
+            for (const role of map) {
+                await fetchRole(role, msg).then(res => poll.roles.push(res.id));
+            }
         }
         if (/-options [^-]+/.test(input)) {
             const selection = /-options ([^-]+)/.exec(input);
@@ -88,7 +95,7 @@ module.exports = class PollManager extends Command {
             poll.options = ['yes', 'no'];
         }
         poll.votes = {};
-        poll.options.forEach((t) => { poll.votes[t] = 0; });
+        poll.options.forEach((entry) => { poll.votes[entry] = 0; });
         poll.title = input.trim();
 
         const snowflake = await this.clock.create({
@@ -157,7 +164,7 @@ module.exports = class PollManager extends Command {
         if (poll.voted.includes(msg.author.id)) throw 'you already voted this.';
 
         const option = input.join(' ');
-        if (!poll.options.includes(option)) return msg.send(`Dear ${msg.author}, please choose between:\n${poll.options.map(o => `• ${o}`).join('\n')}`);
+        if (!poll.options.includes(option)) return msg.send(`Dear ${msg.author}, please choose between:\n${poll.options.map(opt => `• ${opt}`).join('\n')}`);
         const votes = poll.votes[option] || 0;
         poll.voted.push(msg.author.id);
         await this.clock.update(poll, { voted: poll.voted, votes: { [option]: votes + 1 } }).catch(handleError);

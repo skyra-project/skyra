@@ -1,6 +1,5 @@
 const { Command, Constants: { oneToTen, basicAuth, getConfig, httpResponses }, Discord: { Embed } } = require('../../index');
 const splitText = require('../../functions/splitText');
-const fetch = require('../../functions/fetch');
 const { fromString } = require('html-to-text');
 
 const options = { headers: { Authorization: basicAuth(getConfig.tokens.animelist.user, getConfig.tokens.animelist.password) } };
@@ -12,10 +11,13 @@ const etype = {
     SPECIAL: '🎴 Special'
 };
 
+const parseString = require('util').promisify(require('xml2js').parseString);
+const Snekfetch = require('snekfetch');
+
 const getURL = input => `https://myanimelist.net/api/anime/search.xml?q=${input}`;
 
 /* eslint-disable class-methods-use-this */
-module.exports = class Anime extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, 'anime', {
@@ -38,27 +40,40 @@ module.exports = class Anime extends Command {
 
     async run(msg, [args]) {
         const url = getURL(encodeURIComponent(args.toLowerCase()));
-        const data = await fetch.XML(url, options).catch(() => { throw httpResponses(404); });
-        const fres = data.anime.entry[0];
-        const context = fromString(fres.synopsis.toString());
-        const score = Math.ceil(parseFloat(fres.score));
+        const data = await this.fetch(url);
+        const entry = data.anime.entry[0];
+        const context = fromString(entry.synopsis.toString());
+        const score = Math.ceil(parseFloat(entry.score));
         const embed = new Embed()
             .setColor(oneToTen(score).color)
-            .setAuthor(`${fres.title} (${fres.episodes === 0 ? 'unknown' : fres.episodes} eps)`, `${fres.image || msg.author.displayAvatarURL({ size: 128 })}`)
+            .setAuthor(...this.getAuthor(msg, entry))
             .setDescription(
-                `**English title:** ${fres.english}\n` +
-                `${context.length > 750 ? `${splitText(context, 750)}... [continue reading](https://myanimelist.net/anime/${fres.id})` : context}`,
+                `**English title:** ${entry.english}\n` +
+                `${context.length > 750 ? `${splitText(context, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : context}`,
             )
-            .addField('Type', etype[fres.type.toString().toUpperCase()] || fres.type, true)
-            .addField('Score', `**${fres.score}** / 10 ${oneToTen(score).emoji}`, true)
+            .addField('Type', etype[entry.type.toString().toUpperCase()] || entry.type, true)
+            .addField('Score', `**${entry.score}** / 10 ${oneToTen(score).emoji}`, true)
             .addField('Status',
-                `  ❯  Current status: **${fres.status}**\n` +
-                `    • Started: **${fres.start_date}**\n${fres.end_date === '0000-00-00' ? '' : `    • Finished: **${fres.end_date}**`}`,
+                `  ❯  Current status: **${entry.status}**\n` +
+                `    • Started: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • Finished: **${entry.end_date}**`}`,
             )
-            .addField('Watch it here:', `**[https://myanimelist.net/anime/${fres.id}](https://myanimelist.net/anime/${fres.id})**`)
+            .addField('Watch it here:', `**[https://myanimelist.net/anime/${entry.id}](https://myanimelist.net/anime/${entry.id})**`)
             .setFooter('© MyAnimeList');
 
         return msg.send({ embed });
+    }
+
+    fetch(url) {
+        return new Snekfetch('GET', url, options)
+            .then(data => parseString(data.text))
+            .catch(() => { throw httpResponses(404); });
+    }
+
+    getAuthor(msg, entry) {
+        return [
+            `${entry.title} (${entry.episodes === 0 ? 'unknown' : entry.episodes} episodes)`,
+            entry.image || msg.author.displayAvatarURL({ size: 128 })
+        ];
     }
 
 };

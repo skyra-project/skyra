@@ -1,7 +1,7 @@
 const { Command, Discord: { Embed } } = require('../../index');
 
 const { get: fetchProfile } = require('../../functions/overwatch');
-const OVERWATCH = require('../../utils/overwatch.js');
+const overwatch = require('../../utils/overwatch.js');
 const snekfetch = require('snekfetch');
 
 const emojis = {
@@ -15,7 +15,7 @@ const emojis = {
 };
 
 const list = data => Object.entries(data).map(([key, value]) => `**${key}**: ${value}`).join('\n');
-const doRequest = url => snekfetch.get(url).then(d => JSON.parse(d.text));
+const doRequest = url => snekfetch.get(url).then(data => JSON.parse(data.text));
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Overwatch extends Command {
@@ -114,9 +114,9 @@ module.exports = class Overwatch extends Command {
         const pf = player.platform;
         const sv = player.server;
         let filter = null;
-        if (pf && !sv) filter = p => new RegExp(`/career/${pf}/\\w+/`).test(p.careerLink);
-        else if (!pf && sv) filter = p => new RegExp(`/career/\\w+/${sv}/`).test(p.careerLink);
-        else if (pf && sv) filter = p => new RegExp(`/career/${pf}/${sv}/`).test(p.careerLink);
+        if (pf && !sv) filter = prof => new RegExp(`/career/${pf}/\\w+/`).test(prof.careerLink);
+        else if (!pf && sv) filter = prof => new RegExp(`/career/\\w+/${sv}/`).test(prof.careerLink);
+        else if (pf && sv) filter = prof => new RegExp(`/career/${pf}/${sv}/`).test(prof.careerLink);
         const careerLinks = filter ? profiles.filter(filter) : profiles;
         switch (careerLinks.length) {
             case 0: throw `this user doesn't have any data for \`${pf ? `Platform: ${pf} ` : ''}\`\`${sv ? `Server: ${sv}` : ''}\`.`;
@@ -136,7 +136,7 @@ module.exports = class Overwatch extends Command {
                 title: 'Featured',
                 data: `**Competitive rank**: ${data.overview.competitiveRank.rank ? this.resolveEmoji(data.overview.competitiveRank.rank) : 'Unranked'}\n${list(statistics.highlight)}`
             });
-            case 'playedheroes': return OVERWATCH('playedheroes', data, { platform, server, gamemode });
+            case 'playedheroes': return overwatch('playedheroes', data, { platform, server, gamemode });
             case 'combat': return Object.assign(output, {
                 title: 'Combat',
                 data: list(statistics.stats.Combat)

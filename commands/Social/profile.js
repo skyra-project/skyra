@@ -1,5 +1,4 @@
 const { Command, Managers: { SocialGlobal: { fetchAll: fetchGlobal } } } = require('../../index');
-const { User: fetchUser } = require('../../functions/search');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, sep } = require('path');
@@ -21,7 +20,7 @@ module.exports = class Profile extends Command {
             mode: 1,
             spam: true,
 
-            usage: '[user:string]',
+            usage: '[user:advuser]',
             description: 'Check your user profile.',
             extendedHelp: Command.strip`
                 User profiles!
@@ -33,8 +32,7 @@ module.exports = class Profile extends Command {
         });
     }
 
-    async run(msg, [search = msg.author]) {
-        const user = await fetchUser(search, msg.guild);
+    async run(msg, [user = msg.author]) {
         const output = await this.showProfile(user);
         return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
     }
@@ -51,11 +49,11 @@ module.exports = class Profile extends Command {
         /* Global leaderboard */
         const sortedList = fetchGlobal().sort((a, b) => a.points < b.points ? 1 : -1);
 
-        const c = new Canvas(640, 391);
+        const canvas = new Canvas(640, 391);
         const background = new Canvas.Image();
         const imgAvatar = new Canvas.Image();
         const themeImage = new Canvas.Image();
-        const ctx = c.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
         const theme = banners.theme;
         const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
@@ -80,7 +78,7 @@ module.exports = class Profile extends Command {
         ctx.font = '25px RobotoLight';
         ctx.fillText(`#${user.discriminator}`, 227, 105);
         ctx.textAlign = 'right';
-        const GlobalPosition = exists ? sortedList.map(l => l.id).indexOf(user.id) + 1 : 'unranked';
+        const GlobalPosition = exists ? sortedList.map(entry => entry.id).indexOf(user.id) + 1 : 'unranked';
         ctx.fillText(GlobalPosition, 594, 276);
         ctx.fillText(money, 594, 229);
         ctx.fillText(reputation, 594, 181);
@@ -99,7 +97,7 @@ module.exports = class Profile extends Command {
         ctx.restore();
 
         /* Resolve Canvas buffer */
-        return c.toBuffer();
+        return canvas.toBuffer();
     }
 
 };

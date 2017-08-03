@@ -1,7 +1,7 @@
 const provider = require('../../providers/rethink');
 
 /**
- * Global Settings for Users.
+ * @interface GlobalUser Settings.
  * @class GlobalUser
  */
 class GlobalUser {

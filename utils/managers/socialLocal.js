@@ -33,7 +33,7 @@ class LocalManager extends Collection {
     }
 
     async create() {
-        await provider.create('localScores', { guild: this.guild, scores: [] });
+        await provider.create('localScores', { id: this.guild, scores: [] });
         return this;
     }
 

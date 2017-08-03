@@ -1,4 +1,4 @@
-const { Collection, MessageEmbed, MessageCollector, escapeMarkdown, splitMessage } = require('discord.js');
+const { Collection, MessageEmbed, MessageCollector } = require('discord.js');
 
 module.exports = {
     ArgResolver: require('./classes/argResolver'),
@@ -14,14 +14,12 @@ module.exports = {
     Discord: {
         Collection,
         Embed: MessageEmbed,
-        MessageCollector,
-        escapeMarkdown,
-        splitMessage
+        MessageCollector
     },
     Managers: {
         SocialGlobal: require('./utils/managers/socialGlobal'),
         SocialLocal: require('./utils/managers/socialLocal'),
-        Guild: require('./utils/managers/guilds'),
-        Music: require('./utils/managers/music')
-    }
+        Guild: require('./utils/managers/guilds')
+    },
+    Handler: require('./utils/handler')
 };

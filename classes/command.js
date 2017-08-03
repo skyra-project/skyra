@@ -1,7 +1,29 @@
 const ParsedUsage = require('./parsedUsage');
 
+/**
+ * @typedef  {Object}        CommandOptions
+ * @property {Array<string>} [aliases=[]] Any comand aliases.
+ * @property {boolean}       [guildOnly=false] What channel types the command should run in.
+ * @property {number}        [permLevel=0] The required permission level to use the command.
+ * @property {Array<string>} [botPerms=[]] The required Discord permissions for the bot to use this command.
+ * @property {number}        [mode=0] The mode the command should run in.
+ * @property {boolean}       [spam=false] Whether the command should be considered or not.
+ * @property {number}        [cooldown=0] The amount of time before the user can run the command again in seconds.
+ * @property {string}        [description=''] The help description for the command.
+ * @property {string}        [usage=''] The usage string for the command.
+ * @property {?string}       [usageDelim=undefined] The string to deliminate the command input for usage.
+ * @property {string}        [extendedHelp='No extended help available.'] Extended help strings.
+ * @memberof Command
+ */
+
 /* eslint-disable class-methods-use-this */
-module.exports = class Command {
+class Command {
+
+    /**
+     * @param {Client} client The Client
+     * @param {Array} file The path from the pieces folder to the command file
+     * @param {CommandOptions} [options = {}] Optional Command settings
+     */
 
     constructor(client, file, name, {
         aliases = [],
@@ -18,7 +40,7 @@ module.exports = class Command {
         usageDelim = undefined,
         description,
         extendedHelp = null
-    }) {
+    } = {}) {
         this.client = client;
         this.conf = {
             aliases,
@@ -44,10 +66,22 @@ module.exports = class Command {
         this.usage = new ParsedUsage(client, this);
     }
 
+    /**
+     * The run method to be overwritten in actual commands
+     * @param {CommandMessage} msg The command message mapped on top of the message used to trigger this command
+     * @param {Array<any>} params The fully resolved parameters based on your usage / usageDelim
+     * @abstract
+     * @returns {Promise<Message>} You should return the response message whenever possible
+     */
     run() {
         // Defined in extension Classes
     }
 
+    /**
+     * The init method to be optionaly overwritten in actual commands
+     * @abstract
+     * @returns {Promise<Void>}
+     */
     init() {
         // Optionally defined in extension Classes
     }
@@ -91,4 +125,6 @@ module.exports = class Command {
         return Command.hasPermission(msg, 'USE_EXTERNAL_EMOJIS') ? '<:ShinyYellow:324157128270938113>' : 'S';
     }
 
-};
+}
+
+module.exports = Command;

@@ -7,8 +7,7 @@ const colour = {
     kick: 0xFFE604,
     mute: 0xFF6E23,
     unmute: 0xFF8343,
-    warn: 0xFF8F2A,
-    unwarn: 0xFF9C43
+    warn: 0xFF8F2A
 };
 
 class ModerationLog {
@@ -108,7 +107,7 @@ class ModerationLog {
     async getMessage() {
         const numberCase = await this.guild.settings.moderation.getAmountCases();
         const description = this.getDescription(numberCase);
-        return { embed: this.getEmbed(description, numberCase), description, numberCase };
+        return { embed: this.getEmbed(description, numberCase), numberCase };
     }
 
     getEmbed(description, numberCase) {

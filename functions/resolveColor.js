@@ -2,6 +2,7 @@ const hsluv = require('hsluv');
 const randomcolor = require('randomcolor');
 
 /* eslint-disable no-use-before-define */
+/* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 exports.validate = (input) => {
     if (/^(-r|--random)$/.test(input)) {
         const raw = randomcolor({ luminosity: 'bright' }).slice(1);
@@ -214,7 +215,7 @@ const RGB = class RGB {
         const l = (max + min) / 2;
 
         if (max === min) {
-      /* Achromatic */
+            /* Achromatic */
             h = 0; s = 0;
         } else {
             const d = max - min;
@@ -226,7 +227,7 @@ const RGB = class RGB {
                     break;
                 case b: h = ((r - g) / d) + 4;
                     break;
-        // no default
+                // no default
             }
             h /= 6;
         }
@@ -276,13 +277,13 @@ const HSL = class HSL {
         const h = this.h / 360;
         const s = this.s / 100;
         const l = this.l / 100;
-    /* Parse HSL to RGB */
+        /* Parse HSL to RGB */
         let r;
         let g;
         let b;
 
         if (s === 0) {
-    /* Achromatic */
+            /* Achromatic */
             r = l;
             g = l;
             b = l;

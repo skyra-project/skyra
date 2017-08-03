@@ -5,26 +5,25 @@ const CommandMessage = require('./commandMessage');
 const Loader = require('./loader');
 const ArgResolver = require('./argResolver');
 const PermLevels = require('./permLevels');
-const Initialize = require('../functions/initializer');
-// const Clock = require("../utils/clock");
+const Handler = require('../utils/handler');
 
 const PermStructure = new PermLevels()
     .addLevel(0, false, () => true)
     .addLevel(1, false, (client, msg) => {
         if (!msg.guild) return false;
-        // if (msg.guild.settings && msg.guild.settings.roles.staff && msg.member.roles.has(msg.guild.settings.roles.staff)) return true;
+        if (msg.guild.settings && msg.guild.settings.roles.staff && msg.member.roles.has(msg.guild.settings.roles.staff)) return true;
         else if (msg.member.hasPermission('MANAGE_MESSAGES')) return true;
         return false;
     })
     .addLevel(2, false, (client, msg) => {
         if (!msg.guild) return false;
-        // if (msg.guild.settings && msg.guild.settings.roles.moderator && msg.member.roles.has(msg.guild.settings.roles.moderator)) return true;
+        if (msg.guild.settings && msg.guild.settings.roles.moderator && msg.member.roles.has(msg.guild.settings.roles.moderator)) return true;
         else if (msg.member.hasPermission('BAN_MEMBERS')) return true;
         return false;
     })
     .addLevel(3, false, (client, msg) => {
         if (!msg.guild) return false;
-        // if (msg.guild.settings && msg.guild.settings.roles.admin && msg.member.roles.has(msg.guild.settings.roles.admin)) return true;
+        if (msg.guild.settings && msg.guild.settings.roles.admin && msg.member.roles.has(msg.guild.settings.roles.admin)) return true;
         else if (msg.member.hasPermission('ADMINISTRATOR')) return true;
         return false;
     })
@@ -59,8 +58,8 @@ module.exports = class Komada extends Client {
         this.commandMessageSweep = 120;
         this.ready = false;
         this.application = null;
-        this.version = '1.10.0 TLU';
-        // this.clock = new Clock(this);
+        this.version = '2.0.0 LNU';
+        this.handler = new Handler(this);
         this.once('ready', this._ready.bind(this));
     }
 
@@ -96,11 +95,10 @@ module.exports = class Komada extends Client {
             if (piece.init) return piece.init(this);
             return true;
         }));
-        await Initialize(this);
-        // await this.clock.init();
+        await this.handler.init();
         this.setInterval(this.sweepCommandMessages.bind(this), this.commandMessageLifetime);
         this.ready = true;
-        this.emit('log', `Skyra ThunderLight ready! [ ${this.guilds.size} [G]] [ ${this.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`);
+        this.emit('log', `Skyra LNU ready! [ ${this.guilds.size} [G]] [ ${this.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`);
     }
 
     sweepCommandMessages(lifetime = this.commandMessageLifetime) {

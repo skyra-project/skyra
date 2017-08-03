@@ -25,23 +25,3 @@ const Skyra = new Komada({
 });
 
 Skyra.login(cfg.tokens.bot.dev);
-
-const readline = require('readline');
-
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
-
-/* eslint-disable no-eval */
-rl.on('SIGINT', () => {
-    rl.question('Eval code... ', async (answer) => {
-        try {
-            let out = eval(answer);
-            if (out instanceof Promise) out = await out;
-            console.dir(out, { depth: 0, colors: true });
-        } catch (e) {
-            console.error(e);
-        }
-    });
-});

@@ -36,7 +36,7 @@ exports.fetch = async (url) => {
         };
     }
 
-    const HeroScrapper = (type, thisData) => thisData.each((i, elem) => {
+    const heroScrapper = (type, thisData) => thisData.each((i, elem) => {
         const hero = $(elem).children('div.bar-container').children('div.bar-text').children('div.title');
         const time = $(elem).children('div.bar-container').children('div.bar-text').children('div.description');
         data[type].playedHeroes[hero.text()] = {
@@ -45,13 +45,13 @@ exports.fetch = async (url) => {
         };
     });
 
-    HeroScrapper('quickplay', $('#quickplay > section.hero-comparison-section')
+    heroScrapper('quickplay', $('#quickplay > section.hero-comparison-section')
         .children('div')
         .children('div.progress-category')
         .first()
         .children('div'));
 
-    HeroScrapper('competitive', $('#competitive > section.hero-comparison-section')
+    heroScrapper('competitive', $('#competitive > section.hero-comparison-section')
         .children('div')
         .children('div.progress-category')
         .first()

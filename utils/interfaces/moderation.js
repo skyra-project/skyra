@@ -1,4 +1,4 @@
-const Rethink = require('../providers/rethink');
+const provider = require('../../providers/rethink');
 
 /**
  * @typedef  {Object} ModModerator
@@ -50,11 +50,11 @@ module.exports = class Moderation {
     }
 
     exists() {
-        return Rethink.has('moderation', this.id);
+        return provider.has('moderation', this.id);
     }
 
     create() {
-        return Rethink.create('moderation', {
+        return provider.create('moderation', {
             id: this.id,
             cases: []
         });
@@ -66,9 +66,9 @@ module.exports = class Moderation {
 
     async getCases(id = null) {
         if (id) {
-            return Rethink.getFromArrayByIndex('moderation', this.id, 'cases', id) || null;
+            return provider.getFromArrayByIndex('moderation', this.id, 'cases', id) || null;
         }
-        return Rethink.get('moderation', this.id).then(doc => doc ? doc.cases : []);
+        return provider.get('moderation', this.id).then(doc => doc ? doc.cases : []);
     }
 
     async getAmountCases() {
@@ -80,15 +80,25 @@ module.exports = class Moderation {
         return data.length > 0 ? data[data.length - 1] || null : null;
     }
 
+    /**
+     * Add a new moderation case.
+     * @param {ModerationCase} data A new moderation case.
+     */
     async pushCase(data) {
         await this.ensureModule();
-        await Rethink.append('moderation', this.id, 'cases', data);
+        await provider.append('moderation', this.id, 'cases', data);
         if (data.type === 'mute') await this.syncMutes();
         else if (data.type === 'unmute') await this.appealMute(data.user.id);
     }
 
+    /**
+     * Update a case.
+     * @param {any} index The log's case.
+     * @param {ModerationCase} doc The new moderation case.
+     * @returns {Promise}
+     */
     updateCase(index, doc) {
-        return Rethink.updateArrayByIndex('moderation', this.id, 'cases', index, doc);
+        return provider.updateArrayByIndex('moderation', this.id, 'cases', index, doc);
     }
 
     getMutes() {
@@ -116,7 +126,7 @@ module.exports = class Moderation {
 
     async destroy() {
         if (!await this.exists()) throw 'This GuildConfig does not exist.';
-        return Rethink.delete('moderation', this.id);
+        return provider.delete('moderation', this.id);
     }
 
 };

@@ -1,5 +1,5 @@
 const provider = require('../../providers/rethink');
-const Moderation = require('../moderation');
+const Moderation = require('./moderation');
 
 const superRegExp = (filterArray) => {
     const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
@@ -18,7 +18,6 @@ class GuildSettings {
      * @property {number}   [level=0]     The level the Word Filter system should operate in.
      * @property {string[]} [raw=Array]   The filtered words.
      * @property {RegExp}   [regexp=null] The SuperRegExp made by the array of filtered words.
-     * @memberof Settings
      */
 
     /**
@@ -27,21 +26,18 @@ class GuildSettings {
      * @property {boolean} [inviteLinks=false]   Whether Skyra should block invite links.
      * @property {boolean} [nomentionspam=false] Whether Skyra should enable NoMentionSpam3 systems.
      * @property {number}  [nmsthreshold=20]     The amount of points a user has to reach to get hammered by Skyra.
-     * @memberof Settings
      */
 
     /**
      * @typedef  {Object} SSocial
      * @property {number} [boost=1]        The boost amount for games.
      * @property {number} [monitorBoost=1] The boost amount for the Social Monitor.
-     * @memberof Settings
      */
 
     /**
      * @typedef  {Object} AutoRole
      * @property {string} id     The ID of the role.
      * @property {number} points The amount of points the user needs to be given a role.
-     * @memberof Settings
      */
 
     /**
@@ -50,7 +46,6 @@ class GuildSettings {
      * @property {string}  [farewellMessage=string] The message Skyra should use as farewell message.
      * @property {boolean} [greeting=false]         Whether Skyra should send greeting messages.
      * @property {string}  [greetingMessage=string] The message Skyra should use as greeting message.
-     * @memberof Settings
      */
 
     /**
@@ -60,7 +55,6 @@ class GuildSettings {
      * @property {string} [log=null]          The channel Skyra should use to display the logs.
      * @property {string} [modlog=null]       The channel Skyra should use to display the modlogs.
      * @property {string} [spam=null]         The channel Skyra should lock the spammy commands to.
-     * @memberof Settings
      */
 
     /**
@@ -77,7 +71,6 @@ class GuildSettings {
      * @property {boolean} [roleUpdate=false]        Whether Skyra should log roles updates.
      * @property {boolean} [commands=false]          Whether Skyra should log commands used.
      * @property {boolean} [modLogProtection=false]  Whether Skyra should protect the modlogs.
-     * @memberof Settings
      */
 
     /**
@@ -86,7 +79,6 @@ class GuildSettings {
      * @property {string} [moderator=null] The moderator role which inherits the permission level 2.
      * @property {string} [staff=null]     The staff role which inherits the permission level 1.
      * @property {string} [muted=null]     The muted role which is given when using the mute command.
-     * @memberof Settings
      */
 
     /**
@@ -105,7 +97,6 @@ class GuildSettings {
      * @property {SSocial}    [social={}]                 Private. The amount of points Skyra gives.
      * @property {SSelfMod}   [selfmod={}]                The SelfMod settings.
      * @property {SFilter}    [filter={}]                 The Word Filter settings.
-     * @memberof GuildSettings
      */
 
     /**

@@ -17,7 +17,7 @@ class GuildManager extends Collection {
 
     async create(id) {
         const guildSettings = new GuildSettings(id, {}, []);
-        await provider.create('guilds', guildSettings.toJSON());
+        await provider.create('guilds', { id });
         super.set(id, guildSettings);
         return guildSettings;
     }

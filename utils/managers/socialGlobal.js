@@ -21,7 +21,7 @@ class SocialGlobalManager extends Collection {
 
     async addUser(id) {
         const globalUser = new GlobalUser(id, {});
-        await provider.create('users', globalUser.toJSON());
+        await provider.create('users', { id });
         super.set(id, globalUser);
         return globalUser;
     }

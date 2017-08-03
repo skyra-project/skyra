@@ -191,7 +191,7 @@ module.exports = class Dashboard {
             '`': '&#x60;'
         };
 
-        const escapeHTML = text => String(text).replace(/[&<>"'`/]/g, s => entityMap[s]);
+        const escapeHTML = text => String(text).replace(/[&<>"'`/]/g, str => entityMap[str]);
         const buildHTML = text => text.replace(/\\n/g, '<br />');
         const levelHTML = (level) => {
             switch (level) {
@@ -246,7 +246,13 @@ module.exports = class Dashboard {
             if (!this.commands.has(cat)) this.commands.set(cat, []);
             const description = `<h5 class="text-left">Description</h5><p>${escapeHTML(command.help.description)}</p><br />`;
             const html = description + (command.help.extendedHelp ? createTables(buildHTML(escapeHTML(command.help.extendedHelp))) : 'Not set');
-            this.commands.get(cat).push({ level: levelHTML(command.conf.permLevel), guildOnly: !command.conf.runIn.includes('dm'), name: toTitleCase(command.help.name), description: command.help.description, html });
+            this.commands.get(cat).push({
+                level: levelHTML(command.conf.permLevel),
+                guildOnly: !command.conf.runIn.includes('dm'),
+                name: toTitleCase(command.help.name),
+                description: command.help.description,
+                html
+            });
         }
     }
 
@@ -256,7 +262,7 @@ module.exports = class Dashboard {
             if (users.includes(banner.author)) continue;
             users.push(banner.author);
         }
-        await Promise.all(users.map(u => this.client.fetchUser(u)));
+        await Promise.all(users.map(user => this.client.fetchUser(user)));
         this.banners = [];
         for (const banner of Object.values(availableBanners)) {
             this.banners.push(Object.assign(banner, { resAuthor: this.client.users.get(banner.author).tag }));

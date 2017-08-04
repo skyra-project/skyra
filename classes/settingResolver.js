@@ -65,14 +65,14 @@ module.exports = class SettingResolver extends Resolver {
         return command.help.name;
     }
 
-  /**
-   * Check if the input is valid with min and/or max values.
-   * @static
-   * @param {any} value The value to check.
-   * @param {?number} min Min value.
-   * @param {?number} max Max value.
-   * @returns {?boolean}
-   */
+    /**
+     * Check if the input is valid with min and/or max values.
+     * @static
+     * @param {any} value The value to check.
+     * @param {?number} min Min value.
+     * @param {?number} max Max value.
+     * @returns {?boolean}
+     */
     static async maxOrMin(value, min, max) {
         if (min && max) {
             if (value >= min && value <= max) return true;

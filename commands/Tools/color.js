@@ -89,7 +89,7 @@ module.exports = class Color extends Command {
             thisLum = sCL(luminance(thisRed, thisGreen, thisBlue));
             ctx.fillStyle = `rgb(${thisLum}, ${thisLum}, ${thisLum})`;
             ctx.fillText(
-            hexConcat(cL(colour.R), cL(colour.G), cL(colour.B)),
+                hexConcat(cL(colour.R), cL(colour.G), cL(colour.B)),
                 10 + colour.pos[0],
                 20 + colour.pos[1],
             );

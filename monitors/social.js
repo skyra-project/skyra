@@ -16,14 +16,14 @@ exports.handleRoles = (client, msg) => {
     if (!autoRoles.length || !msg.guild.me.permissions.has('MANAGE_ROLES')) return null;
 
     const giveRoles = [];
-  // const invalidRoles = [];
+    // const invalidRoles = [];
     autoRoles.forEach((roleObject) => {
         const role = msg.guild.roles.get(roleObject.id);
         if (role && msg.member.points.score >= roleObject.points && !msg.member.roles.has(role.id)) giveRoles.push(role);
     // else invalidRoles.push(roleObject);
     });
 
-  // if (invalidRoles.length) this.destroy(client, msg, invalidRoles);
+    // if (invalidRoles.length) this.destroy(client, msg, invalidRoles);
     switch (giveRoles.length) {
         case 0: return null;
         case 1: return msg.member.addRole(giveRoles[0]);

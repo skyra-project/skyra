@@ -587,7 +587,7 @@ section.success {
     border-radius: 0;
     font-size: 1.5em;
     background: 0 0;
-    box-shadow: none!important;
+    box-shadow: none;
     resize: none
 }
 

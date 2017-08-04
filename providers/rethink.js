@@ -57,8 +57,8 @@ exports.get = (table, id) => r.table(table).get(id) || null;
  * @returns {boolean}
  */
 exports.has = (table, id) => this.get(table, id)
-  .then(data => !!data)
-  .catch(() => false);
+    .then(data => !!data)
+    .catch(() => false);
 
 /**
  * Get a random entry from a table.

@@ -1,10 +1,12 @@
 const { Command } = require('../../index');
-const clean = require('../../functions/clean');
 const { inspect } = require('util');
 const now = require('performance-now');
 
+const zws = String.fromCharCode(8203);
+let sensitivePattern;
+
 /* eslint-disable no-eval, class-methods-use-this */
-module.exports = class Eval extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, 'eval', {
@@ -18,32 +20,42 @@ module.exports = class Eval extends Command {
     }
 
     async run(msg, [args]) {
-        const send = [];
-        const start = now();
         const { type, input } = this.parse(args.split(' '));
+        const start = now();
+        const out = await this.eval(type ? `(async () => { ${input} })()` : input);
+        const time = now() - start;
+        if (out.success === false && this.client.debugMode === true) out.output = out.output.stack || out.output.message;
+        if (out.output === undefined || out.output === '') out.output = '<void>';
+        return msg.send([
+            `➡ **Input:** Executed in ${time.toFixed(5)}μs`,
+            out.success ? '🔍 **Inspect:**' : '❌ **Error:**',
+            Command.codeBlock('js', this.clean(out.output))
+        ]).catch(err => msg.error(err));
+    }
+
+    async eval(input) {
         try {
-            const toEval = type ? `(async () => { ${input} })()` : input;
-            const res = await eval(toEval);
-            const time = now() - start;
-
-            let out;
-            if (typeof res === 'object' && typeof res !== 'string') {
-                out = inspect(res, { depth: 0, showHidden: true });
-                if (typeof out === 'string' && out.length > 1900) out = res.toString();
-            } else { out = res; }
-
-            send.push(`➡ **Input:** Executed in ${time.toFixed(5)}μs${'```'}js`);
-            send.push(`${input.replace(/```/g, '`\u200b``')}${'```'}`);
-            send.push('🔍 **Inspect:**```js');
-            send.push(`${clean(this.client, out)}${'```'}`);
+            let res = eval(input);
+            if (res instanceof Promise) res = await res.catch(err => { throw err; });
+            return { success: true, output: res };
         } catch (err) {
-            send.push(`➡ **Input:** Executed in ${(now() - start).toFixed(5)}μs${'```'}js`);
-            send.push(`${input.replace(/```/g, '`\u200b``')}${'```'}`);
-            send.push('❌ **Error:**```js');
-            send.push(`${(err ? err.message || err : '< void >')}${'```'}`);
+            return { success: false, output: err };
+        }
+    }
+
+    clean(text) {
+        let toClean;
+
+        if (typeof text === 'object' && typeof text !== 'string') {
+            toClean = inspect(text, { depth: 0, showHidden: true });
+        } else {
+            toClean = text;
         }
 
-        return msg.send(send.join('\n')).catch(err => msg.error(err));
+        if (typeof toClean === 'string') {
+            return toClean.replace(sensitivePattern, '「ｒｅｄａｃｔｅｄ」').replace(/`/g, `\`${zws}`).replace(/@/g, `@${zws}`);
+        }
+        return toClean;
     }
 
     parse(toEval) {
@@ -57,6 +69,14 @@ module.exports = class Eval extends Command {
             type = false;
         }
         return { type, input };
+    }
+
+    init(client) {
+        const patterns = [];
+        if (client.token) patterns.push(client.token);
+        if (client.user.email) patterns.push(client.user.email);
+        if (client.password) patterns.push(client.password);
+        sensitivePattern = new RegExp(patterns.join('|'), 'gi');
     }
 
 };

@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require('express').Router(); // eslint-disable-line new-cap
 
 const Guilds = require('./api/guilds');
 const Leaderboards = require('./api/leaderboards');
@@ -17,7 +17,7 @@ module.exports = class RouterAPI {
         this.server.use('/news', new News(client, this.util).server);
 
         this.server.get('*', (req, res) => {
-            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('api'));
+            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('api')); // eslint-disable-line new-cap
         });
     }
 

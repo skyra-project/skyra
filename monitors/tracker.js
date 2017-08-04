@@ -20,5 +20,5 @@ exports.run = async (client, msg) => {
     if (msg.attachments.first()) files = `\r\nAttachment: ${msg.attachments.map(att => att.url)}`;
     else files = '';
     return fs.appendFile(file, `${time} ${user} ❯ \r\n${msg.cleanContent.replace(/\u000A/gi, '\r\n')}${files}\r\n\r\n`)
-        .catch(e => client.emit('log', e, 'error'));
+        .catch(err => client.emit('log', err, 'error'));
 };

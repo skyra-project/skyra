@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require('express').Router(); // eslint-disable-line new-cap
 const moment = require('moment');
 
 module.exports = class RouterGuilds {
@@ -51,7 +51,7 @@ module.exports = class RouterGuilds {
                 const message = req.body;
                 if (message) {
                     const channel = guild.channels.get(guild.settings.channels.default || guild.defaultChannel.id);
-                    if (channel.postable) await channel.send(message).catch(e => this.client.emit('log', e, 'error'));
+                    if (channel.postable) await channel.send(message).catch(err => this.client.emit('log', err, 'error'));
                 }
                 guild.leave()
                     .then(() => this.util.sendMessage(res, `Successfully left ${guild.name} (${guild.id})`))
@@ -69,7 +69,7 @@ module.exports = class RouterGuilds {
         });
 
         this.server.get('*', (req, res) => {
-            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('news'));
+            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('news')); // eslint-disable-line new-cap
         });
     }
 

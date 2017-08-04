@@ -26,11 +26,11 @@ module.exports = class Cuddle extends Command {
     }
 
     async cuddle(msg, user) {
-        const c = new Canvas(636, 366);
+        const canvas = new Canvas(636, 366);
         const background = new Canvas.Image();
         const man = new Canvas.Image();
         const woman = new Canvas.Image();
-        const ctx = c.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
         if (user.id === msg.author.id) user = this.client.user;
 
@@ -48,7 +48,7 @@ module.exports = class Cuddle extends Command {
         roundImage(ctx, man, 238, 63, 70);
         roundImage(ctx, woman, 377, 111, 69);
 
-        return c.toBuffer();
+        return canvas.toBuffer();
     }
 
 };

@@ -103,10 +103,9 @@ class GuildSettings {
      * Creates an instance of GuildSettings.
      * @param {string}        id                 The ID of the guild.
      * @param {GuildSettings} [data={}]          The Guild Settings.
-     * @param {Array<{}>}     [moderation=Array] The modlogs.
      * @memberof GuildSettings
      */
-    constructor(id, data = {}, moderation = []) { // eslint-disable-line complexity
+    constructor(id, data = {}) { // eslint-disable-line complexity
         Object.defineProperty(this, 'id', { value: id });
 
         this.prefix = data.prefix || 's!';
@@ -145,7 +144,17 @@ class GuildSettings {
             regexp: null
         };
 
-        this.moderation = new Moderation(this.id, moderation);
+        this.moderation = null;
+    }
+
+    /**
+     * Initialize the Moderation class.
+     * @param {Array<{}>} modlogs The modlogs
+     * @returns {Moderation}
+     */
+    setModeration(modlogs) {
+        this.moderation = new Moderation(this.id, modlogs);
+        return this.moderation;
     }
 
     /**

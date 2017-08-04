@@ -46,7 +46,7 @@ module.exports = class Googl extends Command {
     }
 
     async short(url) {
-        const { longUrl } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`).then(d => JSON.parse(d.text));
+        const { longUrl } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`).then(data => JSON.parse(data.text));
         return `**Expanded URL: [${longUrl}](${longUrl})**`;
     }
 

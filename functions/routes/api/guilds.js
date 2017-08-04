@@ -1,8 +1,8 @@
+/* eslint-disable class-methods-use-this, new-cap */
 const router = require('express').Router();
 const schema = require('../../schema');
 const SettingResolver = require('../../settingResolver');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class RouterGuild {
 
     constructor(client, util) {
@@ -122,9 +122,9 @@ module.exports = class RouterGuild {
             const [cat, subcat] = key.split('.');
             if (!this.schema[cat]) throw `The key '${cat}' does not exist in the schema.`;
             else if (!subcat && !this.schema[cat].type) throw `The key '${cat}' requires a property value.`;
-            else if (!subcat) queue.push(this.settingResolver.validate(guild, this.schema[cat], obj[key]).then(v => [cat, null, v]).catch((err) => { throw err; }));
+            else if (!subcat) queue.push(this.settingResolver.validate(guild, this.schema[cat], obj[key]).then(val => [cat, null, val]).catch((err) => { throw err; }));
             else if (!this.schema[cat][subcat]) throw `The key '${subcat}' does not exist as a property of '${cat}' in the schema.`;
-            else queue.push(this.settingResolver.validate(guild, this.schema[cat][subcat], obj[key]).then(v => [cat, subcat, v]).catch((err) => { throw err; }));
+            else queue.push(this.settingResolver.validate(guild, this.schema[cat][subcat], obj[key]).then(val => [cat, subcat, val]).catch((err) => { throw err; }));
         }
         return Promise.all(queue);
     }
@@ -154,10 +154,10 @@ module.exports = class RouterGuild {
                 id: channel.id,
                 type: channel.type,
                 name: channel.name,
-                permission_overwrites: this.serializeList(channel.permissionOverwrites, 'channelPermissions'),
+                permission_overwrites: this.serializeList(channel.permissionOverwrites, 'channelPermissions'), // eslint-disable-line camelcase
                 topic: channel.topic,
                 position: channel.position,
-                last_message_id: channel.lastMessageID
+                last_message_id: channel.lastMessageID // eslint-disable-line camelcase
             }),
             channelPermissions: perm => ({
                 id: perm.id,
@@ -184,7 +184,7 @@ module.exports = class RouterGuild {
                 roles: member._roles
             }),
 
-            guildSettings: settings => ({
+            guildSettings: settings => ({ // eslint-disable-line complexity
                 id: settings.id,
                 prefix: settings.prefix,
                 roles: {

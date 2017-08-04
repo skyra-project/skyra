@@ -14,17 +14,17 @@ const awaitReaction = async (msg, message) => {
 
 const awaitMessage = msg => new Promise(async (resolve, reject) => {
     try {
-        const collector = msg.channel.createMessageCollector(m => m.author === msg.author, { time: 20000, max: 1 });
-        collector.on('message', (m) => {
-            if (m.content.toLowerCase() === 'yes') collector.stop('success');
+        const collector = msg.channel.createMessageCollector(mes => mes.author === msg.author, { time: 20000, max: 1 });
+        collector.on('message', (mes) => {
+            if (mes.content.toLowerCase() === 'yes') collector.stop('success');
             else collector.stop();
         });
         collector.on('end', (collected, reason) => {
             if (reason === 'success') resolve();
             else reject();
         });
-    } catch (e) {
-        reject(e);
+    } catch (err) {
+        reject(err);
     }
 });
 

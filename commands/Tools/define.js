@@ -1,8 +1,10 @@
 const { Command, Constants: { httpResponses } } = require('../../index');
-const { decode } = new require('html-entities').XmlEntities();
+const XmlEntities = require('html-entities');
+const { decode } = new XmlEntities();
 const snekfetch = require('snekfetch');
 
-const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${input}`).then(d => JSON.parse(d.text));
+const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${input}`)
+    .then(data => JSON.parse(data.text));
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Define extends Command {
@@ -37,7 +39,7 @@ module.exports = class Define extends Command {
 
         const final = [];
         let index = 1;
-        for (let item of Object.entries(data.tuc.find(t => t.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
+        for (let item of Object.entries(data.tuc.find(entry => entry.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
             item = decode(item[1].text.replace(/<\/?i>/g, ''));
             final.push(`**\`${index}\` ❯** ${item.replace(/`/g, '\\`')}`);
             index++;

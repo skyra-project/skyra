@@ -33,7 +33,8 @@ module.exports = class UrbanDictionary extends Command {
     async run(msg, [query, ind = 1]) {
         const index = ind - 1;
         if (index < 0) throw "You can't use an index equal or below zero.";
-        const { list } = await snekfetch.get(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`).then(d => JSON.parse(d.text));
+        const { list } = await snekfetch.get(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`)
+            .then(data => JSON.parse(data.text));
         const result = list[index];
         if (result === undefined) throw httpResponses(404);
         const definition = this.content(result.definition, result.permalink);

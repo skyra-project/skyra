@@ -20,10 +20,10 @@ module.exports = class WikiPedia extends Command {
 
     async run(msg, [input]) {
         input = this.parseURL(input);
-        const data = await snekfetch.get(baseURL + input).then(d => JSON.parse(d.text)).catch(Command.handleError);
-        if (data.query.pageids[0] === '-1') throw httpResponses(404);
+        const text = await snekfetch.get(baseURL + input).then(data => JSON.parse(data.text)).catch(Command.handleError);
+        if (text.query.pageids[0] === '-1') throw httpResponses(404);
         const url = `https://en.wikipedia.org/wiki/${input}`;
-        const content = data.query.pages[data.query.pageids[0]];
+        const content = text.query.pages[text.query.pageids[0]];
         const definition = this.content(content.extract, url);
 
         const embed = new Embed()

@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require('express').Router(); // eslint-disable-line new-cap
 const provider = require('../../../providers/json');
 
 module.exports = class RouterGuild {
@@ -15,12 +15,12 @@ module.exports = class RouterGuild {
         });
         this.server.get('/:new', (req, res) => {
             provider.get('news', req.params.new)
-                .then(data => data ? this.util.sendMessage(res, data) : this.util.throw(res, ...this.util.error.UNKNOWN_NEWS(req.params.new)))
+                .then(data => data ? this.util.sendMessage(res, data) : this.util.throw(res, ...this.util.error.UNKNOWN_NEWS(req.params.new))) // eslint-disable-line new-cap
                 .catch(err => this.util.sendError(res, err));
         });
 
         this.server.get('*', (req, res) => {
-            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('news'));
+            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('news')); // eslint-disable-line new-cap
         });
     }
 

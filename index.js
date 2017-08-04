@@ -21,5 +21,6 @@ module.exports = {
         SocialLocal: require('./utils/managers/socialLocal'),
         Guild: require('./utils/managers/guilds')
     },
-    Handler: require('./utils/handler')
+    Handler: require('./utils/handler'),
+    SkyraError: require('./functions/SkyraError')
 };

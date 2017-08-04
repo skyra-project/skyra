@@ -1,4 +1,5 @@
 const ParsedUsage = require('./parsedUsage');
+const SkyraError = require('../functions/SkyraError');
 
 /**
  * @typedef  {Object}        CommandOptions
@@ -92,8 +93,14 @@ class Command {
             .catch(() => msg.send('I am sorry, I could not send the message in DMs.').catch(Command.handleError));
     }
 
+    /**
+     * Throw errors!
+     * @static
+     * @param {Error} err An error to throw.
+     * @memberof Command
+     */
     static handleError(err) {
-        throw err;
+        throw new SkyraError(err);
     }
 
     static hasPermission(msg, permission) {

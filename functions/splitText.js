@@ -1,5 +1,5 @@
-module.exports = (str, l) => {
-    const x = str.substring(0, l).lastIndexOf(' ');
-    const pos = x === -1 ? l : x;
+module.exports = (str, length) => {
+    const x = str.substring(0, length).lastIndexOf(' ');
+    const pos = x === -1 ? length : x;
     return str.substring(0, pos);
 };

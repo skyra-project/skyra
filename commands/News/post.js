@@ -7,7 +7,8 @@ const snekfetch = require('snekfetch');
 const marked = require('marked');
 const url = require('url');
 
-const fetchTW = twit => snekfetch.get(`https://publish.twitter.com/oembed?url=${encodeURIComponent(twit)}`).then(d => JSON.parse(d.text).html);
+const fetchTW = twit => snekfetch.get(`https://publish.twitter.com/oembed?url=${encodeURIComponent(twit)}`)
+    .then(data => JSON.parse(data.text).html);
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Post extends Command {
@@ -33,7 +34,7 @@ module.exports = class Post extends Command {
     }
 
     async prompt(msg) {
-        const prompt = data => msg.channel.awaitMessages(m => m.author.id === msg.author.id, { max: 1, time: 30000, errors: ['time'] })
+        const prompt = data => msg.channel.awaitMessages(mes => mes.author.id === msg.author.id, { max: 1, time: 30000, errors: ['time'] })
             .then(async (collected) => {
                 if (collected.first().content === 'stop') return data.join(' ');
                 data.push(collected.first().content);

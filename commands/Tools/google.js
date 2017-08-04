@@ -3,6 +3,7 @@ const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
 
 /* eslint-disable class-methods-use-this */
+/* eslint id-length: ["error", { "exceptions": ["e", "i", "$"] }] */
 module.exports = class Google extends Command {
 
     constructor(...args) {
@@ -29,21 +30,21 @@ module.exports = class Google extends Command {
         });
         $('.g>.s>.st').each((i, e) => { results[i].description = this.getText(e); });
 
-        results = results.filter(r => r.link && r.description);
+        results = results.filter(res => res.link && res.description);
         results = results.splice(0, 4);
 
         if (!results.length) throw httpResponses(404);
         const embed = new Embed()
             .setColor(msg.guild.me.highestRole.color || 0xdfdfdf)
             .setFooter('Google Search')
-            .setDescription(results.map(r => `${decodeURIComponent(r.link)}\n\t${r.description}\n`).join('\n'))
+            .setDescription(results.map(res => `${decodeURIComponent(res.link)}\n\t${res.description}\n`).join('\n'))
             .setTimestamp();
         return msg.send(`Search results for \`${input}\``, { embed });
     }
 
     getText(children) {
         if (children.children) return this.getText(children.children);
-        return children.map(c => (c.children ? this.getText(c.children) : c.data).join(''));
+        return children.map(element => (element.children ? this.getText(element.children) : element.data).join(''));
     }
 
 };

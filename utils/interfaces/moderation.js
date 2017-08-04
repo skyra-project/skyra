@@ -39,7 +39,7 @@ module.exports = class Moderation {
      * @param {string} guild The Guild's ID
      * @param {ModerationCase[]} mutes The mute modlogs.
      */
-    constructor(guild, mutes) {
+    constructor(guild, mutes = []) {
         this.id = guild;
         this.mutes = new Map();
         this.parseMutes(mutes);

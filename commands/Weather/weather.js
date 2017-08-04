@@ -33,7 +33,8 @@ module.exports = class Weather extends Command {
     }
 
     query(url) {
-        return snekfetch.get(url).then(d => JSON.parse(d.text));
+        return snekfetch.get(url)
+            .then(data => JSON.parse(data.text));
     }
 
     async run(msg, [query]) {

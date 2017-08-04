@@ -33,11 +33,11 @@ module.exports = class DeletThis extends Command {
         else [selectedUser, hammerer] = [user, msg.author];
 
         /* Initialize Canvas */
-        const c = new Canvas(650, 471);
+        const canvas = new Canvas(650, 471);
         const background = new Canvas.Image();
         const imgHammered = new Canvas.Image();
         const imgHammerer = new Canvas.Image();
-        const ctx = c.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
         /* Get the buffers from both profile avatars */
         const [bgBuffer, Hammered, Hammerer] = await Promise.all([
@@ -77,7 +77,7 @@ module.exports = class DeletThis extends Command {
         imgHammerer.src = Hammerer;
         ctx.restore();
 
-        return c.toBuffer();
+        return canvas.toBuffer();
     }
 
 };

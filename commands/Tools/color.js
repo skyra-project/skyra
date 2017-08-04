@@ -6,12 +6,14 @@ const Canvas = require('canvas');
 Canvas.registerFont(resolve(join(__dirname, '../../assets/fonts/FiraSans-Regular.ttf')), { family: 'FiraSans' });
 
 /* Color limiter */
-const cL = c => Math.max(Math.min(c, 255), 0);
+const cL = colour => Math.max(Math.min(colour, 255), 0);
 
-const sCL = (c) => {
-    if (c > 110) return 0;
+const sCL = (colour) => {
+    if (colour > 110) return 0;
     return 255;
 };
+
+/* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B"] }] */
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Color extends Command {

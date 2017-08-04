@@ -26,11 +26,11 @@ module.exports = class GoodNight extends Command {
     }
 
     async goodnight(msg, user) {
-        const c = new Canvas(500, 322);
+        const canvas = new Canvas(500, 322);
         const background = new Canvas.Image();
         const kisser = new Canvas.Image();
         const child = new Canvas.Image();
-        const ctx = c.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
         if (user.id === msg.author.id) user = this.client.user;
 
@@ -48,7 +48,7 @@ module.exports = class GoodNight extends Command {
         roundImage(ctx, kisser, 300, 98, 73);
         roundImage(ctx, child, 322, 212, 55);
 
-        return c.toBuffer();
+        return canvas.toBuffer();
     }
 
 };

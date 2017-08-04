@@ -35,5 +35,5 @@ exports.run = (client, data, type = 'log') => {
     }
 
     if (type === 'debug') type = 'log';
-    console[type](data.split('\n').map(str => timestamp + str).join('\n'));
+    console[type](data.split('\n').map(str => timestamp + str).join('\n')); // eslint-disable-line no-console
 };

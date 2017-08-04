@@ -59,7 +59,7 @@ module.exports = class Banner extends Command {
         const selected = availableBanners[value] || null;
         if (!selected) return msg.send('This banner does not exist.');
         else if (banners.includes(selected.id)) return msg.send('You already have this banner.');
-        else if (msg.author.profile.money < selected.price) return msg.send(`You don't have enough money to buy this banner. You have ${msg.author.profile.money}${Command.shiny(msg)}, the banner costs ${selected.price}${Command.shiny(msg)}`);
+        else if (msg.author.profile.money < selected.price) return msg.send(`You don't have enough money to buy this banner. You have ${msg.author.profile.money}${Command.shiny(msg)}, the banner costs ${selected.price}${Command.shiny(msg)}`); // eslint-disable-line max-len
         return this.prompt(msg, selected)
             .then(async () => {
                 banners.push(selected.id);

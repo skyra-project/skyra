@@ -38,11 +38,11 @@ module.exports = class HowToFlirt extends Command {
     }
 
     async howtoflirt(msg, user) {
-        const c = new Canvas(500, 500);
+        const canvas = new Canvas(500, 500);
         const background = new Canvas.Image();
         const tony = new Canvas.Image();
         const capitain = new Canvas.Image();
-        const ctx = c.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
         if (user.id === msg.author.id) user = this.client.user;
 
@@ -67,7 +67,7 @@ module.exports = class HowToFlirt extends Command {
             res();
         })));
 
-        return c.toBuffer();
+        return canvas.toBuffer();
     }
 
 };

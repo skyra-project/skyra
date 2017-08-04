@@ -16,16 +16,16 @@ module.exports = class Quote extends Command {
 
     async run(msg, [searchMessage, channel = msg.channel]) {
         if (!/[0-9]{17,21}/.test(searchMessage)) throw 'I was expecting a Message Snowflake (Message ID).';
-        const m = await channel.fetchMessage(searchMessage).catch(Command.handleError);
+        const mes = await channel.fetchMessage(searchMessage).catch(Command.handleError);
 
-        const attachment = m.attachments.size ? m.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split('.').pop())) : null;
-        if (!attachment && !m.content) throw "it is weird, but this message doesn't have a content nor image.";
+        const attachment = mes.attachments.size ? mes.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split('.').pop())) : null;
+        if (!attachment && !mes.content) throw "it is weird, but this message doesn't have a content nor image.";
 
         const embed = new Embed()
-            .setAuthor(m.author.tag, m.author.displayAvatarURL({ size: 128 }))
-            .setDescription(m.content)
+            .setAuthor(mes.author.tag, mes.author.displayAvatarURL({ size: 128 }))
+            .setDescription(mes.content)
             .setImage(attachment ? attachment.url : null)
-            .setTimestamp(m.createdAt);
+            .setTimestamp(mes.createdAt);
         return msg.send({ embed });
     }
 

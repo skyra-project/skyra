@@ -17,7 +17,8 @@ class LocalManager extends Collection {
 
     addMember(member, data) {
         const localMember = new LocalMember(this.guild, member, data);
-        return super.set(localMember.id, localMember);
+        super.set(localMember.id, localMember);
+        return localMember;
     }
 
     async createMember(member) {

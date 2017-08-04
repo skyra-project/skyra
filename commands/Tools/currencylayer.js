@@ -30,7 +30,8 @@ const currencyList = [
 ];
 /* eslint-enable no-multi-spaces */
 
-const request = url => snekfetch.get(url).then(d => JSON.parse(d.text));
+const request = url => snekfetch.get(url)
+    .then(data => JSON.parse(data.text));
 
 module.exports = class CurrencyLayer extends Command {
 

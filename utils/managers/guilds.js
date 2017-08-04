@@ -9,15 +9,17 @@ class GuildManager extends Collection {
         return super.get(id) || this.create(id);
     }
 
-    set(id, object, moderation) {
-        const guildSettings = new GuildSettings(id, object, moderation);
+    set(id, object) {
+        const guildSettings = new GuildSettings(id, object);
         super.set(id, guildSettings);
         return guildSettings;
     }
 
     async create(id) {
-        const guildSettings = new GuildSettings(id, {}, []);
+        const guildSettings = new GuildSettings(id, {});
         await provider.create('guilds', { id });
+        await provider.create('moderation', { id, cases: [] });
+        guildSettings.setModeration([]);
         super.set(id, guildSettings);
         return guildSettings;
     }

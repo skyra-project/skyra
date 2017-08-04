@@ -60,7 +60,7 @@ exports.run = async (client, msg, settings) => {
 
         await this.handleRoles(client, msg);
         return true;
-    } catch (e) {
-        return client.emit('log', `Failed to add points to ${msg.author.id}: ${e}`, 'error');
+    } catch (err) {
+        return client.emit('log', `Failed to add points to ${msg.author.id}: ${err}`, 'error');
     }
 };

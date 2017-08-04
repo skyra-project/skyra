@@ -2,6 +2,7 @@ const { Command } = require('../../index');
 const snekfetch = require('snekfetch');
 
 /* eslint-disable class-methods-use-this, no-bitwise */
+/* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
 module.exports = class Emoji extends Command {
 
     constructor(...args) {

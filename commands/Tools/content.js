@@ -16,10 +16,10 @@ module.exports = class Content extends Command {
 
     async run(msg, [searchMessage, channel = msg.channel]) {
         if (!/[0-9]{17,21}/.test(searchMessage)) throw 'I was expecting a Message Snowflake (Message ID).';
-        const m = await channel.fetchMessage(searchMessage).catch(Command.handleError);
-        const attachments = m.attachments.size > 0 ? m.attachments.map(att => `<${att.url}>`) : null;
+        const mes = await channel.fetchMessage(searchMessage).catch(Command.handleError);
+        const attachments = mes.attachments.size > 0 ? mes.attachments.map(att => `<${att.url}>`) : null;
 
-        return msg.send(m.content + (attachments ? `\n\n\n=============\n<Attachments>\n${attachments.join('\n')}` : ''), { code: 'md' });
+        return msg.send(mes.content + (attachments ? `\n\n\n=============\n<Attachments>\n${attachments.join('\n')}` : ''), { code: 'md' });
     }
 
 };

@@ -2,7 +2,8 @@ const { Command, Constants: { httpResponses, getConfig } } = require('../../inde
 const snekfetch = require('snekfetch');
 
 const key = getConfig.tokens.google;
-const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${input}&key=${key}`).then(d => JSON.parse(d.text));
+const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${input}&key=${key}`)
+    .then(data => JSON.parse(data.text));
 
 /* eslint-disable class-methods-use-this */
 module.exports = class YouTube extends Command {

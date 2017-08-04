@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require('express').Router(); // eslint-disable-line new-cap
 
 // Social
 const managerSocialGlobal = require('../../../utils/managerSocialGlobal');
@@ -16,7 +16,7 @@ module.exports = class RouterLeaderboard {
             this.util.sendMessage(res, this.serializeList(managerSocialGlobal.fetchAll(), 'global'));
         });
         this.server.get('/global/:user', this.util.gateway.auth, async (req, res) => {
-            const user = await this.client.fetchUser(req.params.user).then(u => u.profile).catch(() => managerSocialGlobal.get(req.params.user));
+            const user = await this.client.fetchUser(req.params.user).then(us => us.profile).catch(() => managerSocialGlobal.get(req.params.user));
             if (!user) return this.util.throw(res, ...this.util.error.USER_NOT_FOUND);
 
             return this.util.sendMessage(res, this.serialize.global(user));
@@ -25,7 +25,7 @@ module.exports = class RouterLeaderboard {
         /* Local */
         const memberExists = async (req, res, callback) => {
             this.util.getGuild(req, res, async (guild) => {
-                const member = await guild.fetchMember(req.params.member).then(m => m.points).catch(() => managerSocialLocal.fetch(guild.id, req.params.member));
+                const member = await guild.fetchMember(req.params.member).then(mem => mem.points).catch(() => managerSocialLocal.fetch(guild.id, req.params.member));
                 if (!member) return this.util.throw(res, ...this.util.error.USER_NOT_FOUND);
 
                 return callback(guild, member);
@@ -46,7 +46,7 @@ module.exports = class RouterLeaderboard {
         this.server.post('/local/:guild/:member', this.util.gateway.auth, async (req, res) => {
             memberExists(req, res, (guild, member) => this.util.executeLevel(req, res, 2, guild, () => {
                 const data = parseInt(req.body.payload);
-                if (typeof data === 'undefined' || isNaN(data)) return this.util.throw(res, ...this.util.error.INVALID_ARGUMENT('payload', 'Integer'));
+                if (typeof data === 'undefined' || isNaN(data)) return this.util.throw(res, ...this.util.error.INVALID_ARGUMENT('payload', 'Integer')); // eslint-disable-line new-cap
 
                 return member.update(data)
                     .then(() => this.util.sendMessage(res, `Successfully changed the value 'points' for ${req.params.member} to: ${data}`))
@@ -61,7 +61,7 @@ module.exports = class RouterLeaderboard {
         });
 
         this.server.get('*', (req, res) => {
-            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('leaderboards'));
+            this.util.throw(res, ...this.util.error.UNKNOWN_ENDPOINT('leaderboards')); // eslint-disable-line new-cap
         });
     }
 

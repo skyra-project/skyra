@@ -35,21 +35,21 @@ module.exports = class SettingResolver extends Resolver {
 
     async string(data, guild, { min, max }) {
         const result = await super.string(data);
-        SettingResolver.maxOrMin(result.length, min, max).catch((e) => { throw `The string length must be ${e} characters.`; });
+        SettingResolver.maxOrMin(result.length, min, max).catch((err) => { throw `The string length must be ${err} characters.`; });
         return result;
     }
 
     async integer(data, guild, { min, max }) {
         const result = await super.integer(data);
         if (!result) throw 'This key expects an Integer value.';
-        SettingResolver.maxOrMin(result, min, max).catch((e) => { throw `The integer value must be ${e}.`; });
+        SettingResolver.maxOrMin(result, min, max).catch((err) => { throw `The integer value must be ${err}.`; });
         return result;
     }
 
     async float(data, guild, { min, max }) {
         const result = await super.float(data);
         if (!result) throw 'This key expects a Float value.';
-        SettingResolver.maxOrMin(result, min, max).catch((e) => { throw `The float value must be ${e}.`; });
+        SettingResolver.maxOrMin(result, min, max).catch((err) => { throw `The float value must be ${err}.`; });
         return result;
     }
 

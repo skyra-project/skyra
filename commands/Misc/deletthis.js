@@ -7,25 +7,24 @@ const Canvas = require('canvas');
 const template = resolve(join(__dirname, '../../assets/images/memes/DeletThis.png'));
 
 /* eslint-disable class-methods-use-this */
-module.exports = class DeletThis extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, 'deletthis', {
             aliases: ['deletethis'],
             guildOnly: true,
-            mode: 0,
 
-            usage: '<user:user>',
+            usage: '<user:advuser>',
             description: "I'll hammer you anyway."
         });
     }
 
     async run(msg, [user]) {
-        const output = await this.deletthis(msg, user);
+        const output = await this.generate(msg, user);
         return msg.channel.send({ files: [{ attachment: output, name: 'DeletThis.png' }] });
     }
 
-    async deletthis(msg, user) {
+    async generate(msg, user) {
         let selectedUser;
         let hammerer;
         if (user === msg.author) [selectedUser, hammerer] = [msg.author, this.client.users.get('242043489611808769')];

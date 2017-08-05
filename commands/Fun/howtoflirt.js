@@ -20,24 +20,23 @@ const coord2 = [
 ];
 
 /* eslint-disable class-methods-use-this */
-module.exports = class HowToFlirt extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, 'howtoflirt', {
             guildOnly: true,
-            mode: 0,
 
-            usage: '<user:user>',
+            usage: '<user:advuser>',
             description: "I'll teach you how to flirt."
         });
     }
 
     async run(msg, [user]) {
-        const output = await this.howtoflirt(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: 'GoodNight.png' }] });
+        const output = await this.generate(msg, user);
+        return msg.channel.send({ files: [{ attachment: output, name: 'HowToFlirt.png' }] });
     }
 
-    async howtoflirt(msg, user) {
+    async generate(msg, user) {
         const canvas = new Canvas(500, 500);
         const background = new Canvas.Image();
         const tony = new Canvas.Image();

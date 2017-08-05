@@ -7,25 +7,24 @@ const Canvas = require('canvas');
 const template = resolve(join(__dirname, '../../assets/images/memes/f.png'));
 
 /* eslint-disable class-methods-use-this */
-module.exports = class PrayRespects extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, 'f', {
             aliases: ['pray'],
             guildOnly: true,
-            mode: 0,
 
-            usage: '<user:user>',
+            usage: '<user:advuser>',
             description: 'Press F to pray respects.'
         });
     }
 
     async run(msg, [user]) {
-        const output = await this.pray(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: 'DeletThis.png' }] });
+        const output = await this.generate(msg, user);
+        return msg.channel.send({ files: [{ attachment: output, name: 'F.png' }] });
     }
 
-    async pray(msg, user) {
+    async generate(msg, user) {
         /* Initialize Canvas */
         const canvas = new Canvas(960, 540);
         const foreground = new Canvas.Image();

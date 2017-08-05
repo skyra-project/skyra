@@ -8,24 +8,23 @@ const Canvas = require('canvas');
 const template = resolve(join(__dirname, '../../assets/images/memes/cuddle.png'));
 
 /* eslint-disable class-methods-use-this */
-module.exports = class Cuddle extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, 'cuddle', {
             guildOnly: true,
-            mode: 0,
 
-            usage: '<user:user>',
+            usage: '<user:advuser>',
             description: 'Cuddle somebody!'
         });
     }
 
     async run(msg, [user]) {
-        const output = await this.cuddle(msg, user);
+        const output = await this.generate(msg, user);
         return msg.channel.send({ files: [{ attachment: output, name: 'Cuddle.png' }] });
     }
 
-    async cuddle(msg, user) {
+    async generate(msg, user) {
         const canvas = new Canvas(636, 366);
         const background = new Canvas.Image();
         const man = new Canvas.Image();

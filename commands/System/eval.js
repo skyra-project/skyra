@@ -27,8 +27,7 @@ module.exports = class extends Command {
         if (out.success === false && this.client.debugMode === true) out.output = out.output.stack || out.output.message;
         if (out.output === undefined || out.output === '') out.output = '<void>';
         return msg.send([
-            `➡ **Input:** Executed in ${time.toFixed(5)}μs`,
-            out.success ? '🔍 **Inspect:**' : '❌ **Error:**',
+            `Executed in ${time.toFixed(5)}μs | ${out.success ? '🔍 **Inspect:**' : '❌ **Error:**'}`,
             Command.codeBlock('js', this.clean(out.output))
         ]).catch(err => msg.error(err));
     }
@@ -36,7 +35,7 @@ module.exports = class extends Command {
     async eval(input) {
         try {
             let res = eval(input);
-            if (res instanceof Promise) res = await res.catch(err => { throw err; });
+            if (res instanceof Promise) res = await res.catch((err) => { throw err; });
             return { success: true, output: res };
         } catch (err) {
             return { success: false, output: err };
@@ -51,11 +50,7 @@ module.exports = class extends Command {
         } else {
             toClean = text;
         }
-
-        if (typeof toClean === 'string') {
-            return toClean.replace(sensitivePattern, '「ｒｅｄａｃｔｅｄ」').replace(/`/g, `\`${zws}`).replace(/@/g, `@${zws}`);
-        }
-        return toClean;
+        return toClean.replace(sensitivePattern, '「ｒｅｄａｃｔｅｄ」').replace(/`/g, `\`${zws}`).replace(/@/g, `@${zws}`);
     }
 
     parse(toEval) {

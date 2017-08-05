@@ -1,3 +1,5 @@
+const { Command } = require('../../index');
+
 const rand = [
     '55991', '56020', '236567', '215795', '198588', '239388', '55709',
     '304011', '239386', '137479', '95278', '393154', '61910', '264155',
@@ -6,42 +8,35 @@ const rand = [
     '179920', '96127', '261963', '106499'
 ];
 
-let index = Math.ceil(Math.random() * rand.length);
+/* eslint-disable class-methods-use-this */
+module.exports = class extends Command {
 
-exports.run = async (client, msg) => {
-    if (index === rand.length - 1) index = 0;
-    else index += 1;
+    constructor(...args) {
+        super(...args, 'dog', {
+            aliases: ['doggo'],
+            spam: true,
 
-    const embed = new client.methods.Embed()
-        .setColor(msg.color)
-        .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[index]}.jpg`);
+            description: 'Check this doggo! ❤',
+            extendedHelp: Command.strip`
+                Aww, have you seen this doggo? It's so cute!
 
-    return msg.send({ embed });
-};
+                = Usage =
+                Skyra, dog
+            `
+        });
 
-exports.conf = {
-    enabled: true,
-    runIn: ['text', 'dm', 'group'],
-    aliases: ['doggo'],
-    permLevel: 0,
-    botPerms: [],
-    requiredFuncs: [],
-    spam: true,
-    mode: 0,
-    cooldown: 30
-};
+        this.index = Math.ceil(Math.random() * rand.length);
+    }
 
-exports.help = {
-    name: 'dog',
-    description: 'Check this doggo! ❤',
-    usage: '',
-    usageDelim: '',
-    extendedHelp: [
-        "Aww, have you seen this doggo? It's so cute!",
-        '',
-        'Examples:',
-        '',
-        '&doggo',
-        '❯❯ And I send you a super cute doggo! ❤'
-    ].join('\n')
+    async run(msg) {
+        if (this.index === rand.length - 1) this.index = 0;
+        else this.index += 1;
+
+        const embed = new this.client.methods.Embed()
+            .setColor(msg.color)
+            .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[this.index]}.jpg`);
+
+        return msg.send({ embed });
+    }
+
 };

@@ -6,7 +6,6 @@ const Skyra = new Komada({
     prefix: 's!',
     cmdEditing: true,
     cmdLogging: true,
-    userFriendlyRegExp: '((?:Hey )?Skyra(?:,|!) +)',
     dash: cfg.dash,
     clientOptions: {
         disabledEvents: [

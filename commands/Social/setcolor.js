@@ -1,5 +1,6 @@
-const { Command, Discord: { Embed } } = require('../../index');
+const { Command } = require('../../index');
 const { validate: validateColor } = require('../../functions/resolveColor');
+const { RichEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class SetColor extends Command {
@@ -34,7 +35,7 @@ module.exports = class SetColor extends Command {
         const color = hex.toString().slice(1);
         await msg.author.profile.update({ color });
 
-        const embed = new Embed()
+        const embed = new RichEmbed()
             .setColor(b10.value)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(`Colour changed to ${hex.toString()}`);

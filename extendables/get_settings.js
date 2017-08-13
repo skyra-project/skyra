@@ -1,13 +1,13 @@
-exports.conf = {
-    type: 'get',
-    method: 'settings',
-    appliesTo: ['Guild']
-};
+const { Extendable } = require('../index');
 
-// eslint-disable-next-line func-names
-exports.extend = function () {
-    return {
-        prefix: 's!',
-        disabledCommands: []
-    };
+module.exports = class extends Extendable {
+
+    constructor(...args) {
+        super(...args, ['Guild'], { name: 'settings' });
+    }
+
+    get extend() {
+        return this.client.handler.guilds.get(this.id);
+    }
+
 };

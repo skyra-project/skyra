@@ -1,4 +1,5 @@
 const { Command } = require('../../index');
+const { RichEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 const moment = require('moment');
 
@@ -25,7 +26,7 @@ module.exports = class extends Command {
         const number = await this.getNumber(num, query);
         const comic = await this.fetchURL(`http://xkcd.com/${number}/info.0.json`);
 
-        const embed = new this.client.methods.Embed()
+        const embed = new RichEmbed()
             .setColor(0xD7CCC8)
             .setImage(comic.img)
             .setTitle(comic.title)

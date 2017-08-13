@@ -1,4 +1,5 @@
-const { Command, Discord: { Embed } } = require('../../index');
+const { Command } = require('../../index');
+const { RichEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Feedback extends Command {
@@ -16,7 +17,7 @@ module.exports = class Feedback extends Command {
     }
 
     async run(msg, [feedback]) {
-        const embed = new Embed()
+        const embed = new RichEmbed()
             .setColor(0x06d310)
             .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(feedback)

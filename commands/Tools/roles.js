@@ -1,4 +1,5 @@
-const { Command, Discord: { Embed } } = require('../../index');
+const { Command } = require('../../index');
+const { RichEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Roles extends Command {
@@ -120,7 +121,7 @@ module.exports = class Roles extends Command {
     list(msg, settings) {
         if (settings.publicRoles.length === 0) throw 'this server does not have a public role configured.';
         const theRoles = settings.publicRoles.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
-        const embed = new Embed()
+        const embed = new RichEmbed()
             .setColor(this.msg.color)
             .setTitle(`Public roles for ${this.guild}`)
             .setDescription(theRoles.join('\n'));

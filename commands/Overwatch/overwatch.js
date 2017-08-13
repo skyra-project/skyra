@@ -1,4 +1,5 @@
-const { Command, Discord: { Embed } } = require('../../index');
+const { Command, util } = require('../../index');
+const { RichEmbed } = require('discord.js');
 
 const { get: fetchProfile } = require('../../functions/overwatch');
 const overwatch = require('../../utils/overwatch.js');
@@ -75,7 +76,7 @@ module.exports = class Overwatch extends Command {
         const output = await this.fetchData(resolved.careerLink, profile);
         if (output instanceof Buffer) return msg.send({ files: [{ attachment: output, name: 'overwatch.png' }] });
         const { overview, title, data, url } = output;
-        const embed = new Embed()
+        const embed = new RichEmbed()
             .setURL(url)
             .setColor(msg.color)
             .setThumbnail(overview.profile.avatar)
@@ -167,7 +168,7 @@ module.exports = class Overwatch extends Command {
     }
 
     resolveEmoji(msg, rank) {
-        const permission = msg.guild ? Command.hasPermission(msg, 'USE_EXTERNAL_EMOJIS') : true;
+        const permission = msg.guild ? util.hasPermission(msg, 'USE_EXTERNAL_EMOJIS') : true;
         let role;
         if (rank < 1500) role = emojis.bronze;
         else if (rank < 2000) role = emojis.silver;

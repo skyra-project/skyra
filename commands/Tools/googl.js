@@ -1,4 +1,5 @@
-const { Command, Constants, Discord: { Embed } } = require('../../index');
+const { Command, Constants } = require('../../index');
+const { RichEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
 const key = Constants.getConfig.tokens.google;
@@ -34,7 +35,7 @@ module.exports = class Googl extends Command {
     }
 
     async run(msg, [url]) {
-        const embed = new Embed().setColor(msg.color).setTimestamp();
+        const embed = new RichEmbed().setColor(msg.color).setTimestamp();
         if (/^https:\/\/goo\.gl\/.+/.test(url)) embed.setDescription(await this.short(url));
         else embed.setDescription(await this.long(url));
         return msg.send({ embed });

@@ -29,7 +29,7 @@ module.exports = class Post extends Command {
         const text = await this.prompt(msg);
         const parsedURLs = await this.parseURLs(text);
         const html = marked(parsedURLs).replace(/\n$/, '').replace(/\n+/g, '<br />');
-        await provider.create('news', this.parseTitle(title), { title, html, author: msg.author.tag, date: new Date().getTime() });
+        await provider.create('news', this.parseTitle(title), { title, html, author: msg.author.tag, date: Date.now() });
         return msg.send(`Successfully created the page ${title}`);
     }
 

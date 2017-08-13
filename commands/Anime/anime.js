@@ -1,8 +1,8 @@
-const { Command, Constants: { oneToTen, basicAuth, getConfig, httpResponses }, Discord: { Embed } } = require('../../index');
-const splitText = require('../../functions/splitText');
+const { Command, Constants: { oneToTen, basicAuth, httpResponses }, config } = require('../../index');
 const { fromString } = require('html-to-text');
+const { RichEmbed } = require('discord.js');
 
-const options = { headers: { Authorization: basicAuth(getConfig.tokens.animelist.user, getConfig.tokens.animelist.password) } };
+const options = { headers: { Authorization: basicAuth(config.tokens.animelist.user, config.tokens.animelist.password) } };
 
 const etype = {
     TV: '📺 TV',
@@ -44,20 +44,18 @@ module.exports = class extends Command {
         const entry = data.anime.entry[0];
         const context = fromString(entry.synopsis.toString());
         const score = Math.ceil(parseFloat(entry.score));
-        const embed = new Embed()
+
+        const i18n = msg.language;
+        const [tType, tScore, tStatus, tWatchIt] = i18n.get('COMMAND_ANIME_TITLES');
+
+        const embed = new RichEmbed()
             .setColor(oneToTen(score).color)
-            .setAuthor(...this.getAuthor(msg, entry))
-            .setDescription(
-                `**English title:** ${entry.english}\n` +
-                `${context.length > 750 ? `${splitText(context, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : context}`,
-            )
-            .addField('Type', etype[entry.type.toString().toUpperCase()] || entry.type, true)
-            .addField('Score', `**${entry.score}** / 10 ${oneToTen(score).emoji}`, true)
-            .addField('Status',
-                `  ❯  Current status: **${entry.status}**\n` +
-                `    • Started: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • Finished: **${entry.end_date}**`}`,
-            )
-            .addField('Watch it here:', `**[https://myanimelist.net/anime/${entry.id}](https://myanimelist.net/anime/${entry.id})**`)
+            .setAuthor(...this.getAuthor(msg, entry, i18n))
+            .setDescription(i18n.get('COMMAND_ANIME_DESCRIPTION', entry, context))
+            .addField(tType, etype[entry.type.toString().toUpperCase()] || entry.type, true)
+            .addField(tScore, `**${entry.score}** / 10 ${oneToTen(score).emoji}`, true)
+            .addField(tStatus, i18n.get('COMMAND_ANIME_STATUS', entry))
+            .addField(tWatchIt, `**[https://myanimelist.net/anime/${entry.id}](https://myanimelist.net/anime/${entry.id})**`)
             .setFooter('© MyAnimeList');
 
         return msg.send({ embed });
@@ -69,9 +67,9 @@ module.exports = class extends Command {
             .catch(() => { throw httpResponses(404); });
     }
 
-    getAuthor(msg, entry) {
+    getAuthor(msg, entry, i18n) {
         return [
-            `${entry.title} (${entry.episodes === 0 ? 'unknown' : entry.episodes} episodes)`,
+            i18n.get('COMMAND_ANIME_TITLE', entry),
             entry.image || msg.author.displayAvatarURL({ size: 128 })
         ];
     }

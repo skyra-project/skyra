@@ -1,66 +1,72 @@
-// const Rethink = require("../providers/rethink");
+const provider = require('../providers/rethink');
+const { Monitor } = require('../index');
 
-exports.conf = {
-    guildOnly: true,
-    enabled: true
-};
+module.exports = class extends Monitor {
 
-// exports.destroy = async (client, msg, roles) => {
-//     Rethink.removeFromArrayByID("guilds", msg.guild.id, roles);
-// };
+    constructor(...args) {
+        super(...args, {
+            guildOnly: true,
+            ignoreBots: false
+        });
 
-const cooldowns = new Set();
-
-exports.handleRoles = (client, msg) => {
-    const autoRoles = msg.guild.settings.autoroles;
-    if (!autoRoles.length || !msg.guild.me.permissions.has('MANAGE_ROLES')) return null;
-
-    const giveRoles = [];
-    // const invalidRoles = [];
-    autoRoles.forEach((roleObject) => {
-        const role = msg.guild.roles.get(roleObject.id);
-        if (role && msg.member.points.score >= roleObject.points && !msg.member.roles.has(role.id)) giveRoles.push(role);
-    // else invalidRoles.push(roleObject);
-    });
-
-    // if (invalidRoles.length) this.destroy(client, msg, invalidRoles);
-    switch (giveRoles.length) {
-        case 0: return null;
-        case 1: return msg.member.addRole(giveRoles[0]);
-        default: return msg.member.addRoles(giveRoles);
+        this.cooldowns = new Set();
     }
-};
 
-exports.ensureFetchMember = msg => !msg.member ? msg.guild.fetchMember(msg.author.id) : null;
+    async run(msg, settings) {
+        if (msg.author.bot ||
+            settings.ignoreChannels.includes(msg.channel.id) ||
+            this.cooldown(msg)) return;
 
-exports.cooldown = (msg) => {
-    if (cooldowns.has(msg.author.id)) return true;
-    cooldowns.add(msg.author.id);
-    setTimeout(() => cooldowns.delete(msg.author.id), 60000);
-    return false;
-};
+        let userProfile = msg.author.profile;
+        if (userProfile instanceof Promise) userProfile = await userProfile;
+        let memberPoint = msg.member.points;
+        if (memberPoint instanceof Promise) memberPoint = await memberPoint;
 
-exports.calc = (guild) => {
-    let random = Math.max(Math.ceil(Math.random() * 8), 4);
-    if (guild) random *= guild.settings.social.monitorBoost;
-    return Math.round(random);
-};
+        try {
+            await this.ensureFetchMember(msg);
+            const add = Math.round(((Math.random() * 4) + 4) * settings.social.monitorBoost);
+            await userProfile.update({ points: msg.author.profile.points + add });
+            await memberPoint.update(msg.member.points.score + add);
 
-exports.run = async (client, msg, settings) => {
-    if (!msg.member ||
-        msg.author.bot ||
-        settings.ignoreChannels.includes(msg.channel.id) ||
-        this.cooldown(msg)) return false;
-
-    try {
-        await this.ensureFetchMember(msg);
-        const add = this.calc(msg.guild);
-        await msg.author.profile.update({ points: msg.author.profile.points + add });
-        await msg.member.points.update(msg.member.points.score + add);
-
-        await this.handleRoles(client, msg);
-        return true;
-    } catch (err) {
-        return client.emit('log', `Failed to add points to ${msg.author.id}: ${err}`, 'error');
+            await this.handleRoles(msg, settings, memberPoint);
+        } catch (err) {
+            this.client.emit('log', `Failed to add points to ${msg.author.id}: ${err}`, 'error');
+        }
     }
+
+    cooldown(msg) {
+        if (this.cooldowns.has(msg.author.id)) return true;
+        this.cooldowns.add(msg.author.id);
+        setTimeout(() => this.cooldowns.delete(msg.author.id), 60000);
+        return false;
+    }
+
+    ensureFetchMember(msg) {
+        return !msg.member ? msg.guild.fetchMember(msg.author.id) : null;
+    }
+
+    async handleRoles(msg, settings, memberPoints) {
+        const autoRoles = settings.autoroles;
+        if (autoRoles.length === 0 || msg.guild.me.permissions.has('MANAGE_ROLES') === false) return null;
+
+        const autoRole = this.getLatestRole(autoRoles, memberPoints);
+        if (autoRole === null) return null;
+
+        const role = msg.guild.roles.get(autoRole.id);
+        if (!role) return provider.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', autoRole.id)
+            .then(() => this.handleRoles(msg, settings, memberPoints));
+
+        if (msg.member.roles.has(role.id)) return null;
+
+        return msg.member.addRole(role)
+            .then(() => settings.social.achieve ? msg.send(msg.language.get('SOCIAL_ACHIEVEMENT', role)) : null);
+    }
+
+    getLatestRole(autoRoles, memberPoints) {
+        for (let i = autoRoles.length - 1; i > 0; i--) {
+            if (autoRoles[i].points < memberPoints.score) return autoRoles[i];
+        }
+        return null;
+    }
+
 };

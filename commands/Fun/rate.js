@@ -26,10 +26,12 @@ module.exports = class extends Command {
     async run(msg, [user]) {
         let ratewaifu;
         let rate;
+
+        const i18n = msg.language;
+
         if (/^(you|yourself)$/i.test(user)) {
-            rate = '100';
-            ratewaifu = 'I love myself a lot 😊';
-            user = 'myself';
+            rate = 100;
+            [ratewaifu, user] = i18n.get('COMMAND_RATE_MYSELF');
         } else {
             if (/^(myself|me)$/i.test(user)) user = msg.author.username;
             else user = user.replace(/\bmy\b/g, 'your');
@@ -40,7 +42,7 @@ module.exports = class extends Command {
             ratewaifu = oneToTen(Math.floor(rate / 10)).emoji;
         }
 
-        return msg.send(`**${msg.author.username}**, I'd give **${user}** a **${rate}**/100 ${ratewaifu}`);
+        return msg.send(`**${msg.author.username}**, ${i18n.get('COMMAND_RATE', user, rate, ratewaifu)}`);
     }
 
 };

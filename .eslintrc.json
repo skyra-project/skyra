@@ -23,7 +23,7 @@
 				"object": "Object",
 				"date": "Date",
                 "error": "Error",
-                "void": "Void"
+                "Void": "void"
 			}
 		}],
 

@@ -1,14 +1,16 @@
-exports.conf = {
-    type: 'get',
-    method: 'usableCommands',
-    appliesTo: ['Message']
-};
+const { Extendable } = require('../index');
 
-// eslint-disable-next-line func-names
-exports.extend = function () {
-    this.client.commands.filter(command => !this.client.commandInhibitors.some((inhibitor) => {
-        if (inhibitor.conf.enabled && !inhibitor.conf.spamProtection) return inhibitor.run(this.client, this, command);
-        return false;
-    }));
-};
+module.exports = class extends Extendable {
 
+    constructor(...args) {
+        super(...args, ['Message'], { name: 'usableCommands' });
+    }
+
+    async extend() {
+        return this.client.commands.filter(async command => await !this.client.commandInhibitors.some(async inhibitor => {
+            if (inhibitor.enabled && !inhibitor.spamProtection) return await inhibitor.run(this.client, this, command).catch(() => true);
+            return false;
+        }));
+    }
+
+};

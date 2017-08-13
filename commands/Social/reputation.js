@@ -28,7 +28,7 @@ module.exports = class Reputation extends Command {
     }
 
     async run(msg, [user]) {
-        const now = new Date().getTime();
+        const now = Date.now();
 
         if (msg.author.profile.timerep + 86400000 > now) {
             const remaining = (msg.author.profile.timerep + 86400000) - now;

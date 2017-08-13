@@ -1,0 +1,171 @@
+{
+    "master": {
+        "prefix": {
+            "type": "String",
+            "default": "s!"
+        },
+        "language": {
+            "type": "Language",
+            "default": "en-US"
+        },
+        "mode": {
+            "type": "Integer",
+            "default": 0,
+            "min": 0,
+            "max": 3
+        },
+        "ignoreChannels": {
+            "type": "Channel",
+            "default": [],
+            "array": true
+        }
+    },
+    "disable": {
+        "cmdChannels": {
+            "type": "Channel",
+            "default": [],
+            "array": true
+        },
+        "commands": {
+            "type": "Command",
+            "default": [],
+            "array": true
+        }
+    },
+    "roles": {
+        "admin": {
+            "type": "Role"
+        },
+        "moderator": {
+            "type": "Role"
+        },
+        "staff": {
+            "type": "Role"
+        },
+        "muted": {
+            "type": "Role"
+        },
+        "initial": {
+            "type": "Role"
+        },
+        "public": {
+            "type": "Object",
+            "default": [],
+            "array": true
+        }
+    },
+    "events": {
+        "channelCreate": {
+            "type":"boolean",
+            "default": false
+        },
+        "guildBanAdd": {
+            "type":"boolean",
+            "default": false
+        },
+        "guildBanRemove": {
+            "type":"boolean",
+            "default": false
+        },
+        "guildMemberAdd": {
+            "type":"boolean",
+            "default": false
+        },
+        "guildMemberRemove": {
+            "type":"boolean",
+            "default": false
+        },
+        "guildMemberUpdate": {
+            "type":"boolean",
+            "default": false
+        },
+        "messageDelete": {
+            "type":"boolean",
+            "default": false
+        },
+        "messageBulkDelete": {
+            "type":"boolean",
+            "default": false
+        },
+        "messageUpdate": {
+            "type":"boolean",
+            "default": false
+        },
+        "roleUpdate": {
+            "type":"boolean",
+            "default": false
+        },
+        "commands": {
+            "type":"boolean",
+            "default": false
+        },
+        "modLogProtection": {
+            "type":"boolean",
+            "default": false
+        }
+    },
+    "channels": {
+        "announcement": {
+            "type": "TextChannel"
+        },
+        "default": {
+            "type": "TextChannel"
+        },
+        "log": {
+            "type": "TextChannel"
+        },
+        "modlog": {
+            "type": "TextChannel"
+        },
+        "spam": {
+            "type": "TextChannel"
+        }
+    },
+    "messages": {
+        "farewell": {
+            "type":"boolean",
+            "default": false
+        },
+        "farewellMessage": {
+            "type":"string"
+        },
+        "greeting": {
+            "type":"boolean",
+            "default": false
+        },
+        "greetingMessage": {
+            "type":"string"
+        }
+    },
+    "selfmod": {
+        "ghostmention": {
+            "type": "Boolean",
+            "default": false
+        },
+        "inviteLinks": {
+            "type": "Boolean",
+            "default": false
+        },
+        "nomentionspam": {
+            "type": "Boolean",
+            "default": false
+        },
+        "nmsthreshold": {
+            "type": "Integer",
+            "default": 20
+        }
+    },
+    "filter": {
+        "level": {
+            "type": "Integer",
+            "default": 0,
+            "min": 0,
+            "max": 3
+        },
+        "raw": {
+            "type": "String",
+            "default": [],
+            "array": true
+        }
+    }
+}

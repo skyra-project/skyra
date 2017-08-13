@@ -1,7 +1,13 @@
-exports.run = (client, msg) => {
-    if (msg.author.id === client.config.ownerID) return;
-    if (!msg.cmdMsg.cmd.conf.cooldown || msg.cmdMsg.cmd.conf.cooldown <= 0) return;
+const { Finalizer } = require('../index');
 
-    msg.cmdMsg.cmd.cooldown.set(msg.author.id, Date.now());
-    setTimeout(() => msg.cmdMsg.cmd.cooldown.delete(msg.author.id), msg.cmdMsg.cmd.conf.cooldown * 1000);
+module.exports = class extends Finalizer {
+
+    run(msg) {
+        if (msg.author.id === this.client.config.ownerID) return;
+        if (!msg.cmd.cooldown || msg.cmd.cooldown <= 0) return;
+
+        msg.cmd.cooldowns.set(msg.author.id, Date.now());
+        setTimeout(() => msg.cmd.cooldowns.delete(msg.author.id), msg.cmd.cooldown * 1000);
+    }
+
 };

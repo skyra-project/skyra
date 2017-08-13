@@ -25,7 +25,7 @@ module.exports = class Daily extends Command {
     }
 
     async run(msg) {
-        const now = new Date().getTime();
+        const now = Date.now();
 
         if (msg.author.profile.timeDaily + 43200000 > now) {
             const remaining = (msg.author.profile.timeDaily + 43200000) - now;

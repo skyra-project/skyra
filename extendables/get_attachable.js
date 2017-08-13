@@ -1,11 +1,14 @@
-exports.conf = {
-    type: 'get',
-    method: 'attachable',
-    appliesTo: ['GroupDMChannel', 'DMChannel', 'TextChannel']
-};
+const { Extendable } = require('../index');
 
-// eslint-disable-next-line func-names
-exports.extend = function () {
-    if (!this.guild) return true;
-    return this.postable && this.permissionsFor(this.guild.me).has('ATTACH_FILES');
+module.exports = class extends Extendable {
+
+    constructor(...args) {
+        super(...args, ['GroupDMChannel', 'DMChannel', 'TextChannel'], { name: 'attachable' });
+    }
+
+    get extend() {
+        if (!this.guild) return true;
+        return this.postable && this.permissionsFor(this.guild.me).has('ATTACH_FILES');
+    }
+
 };

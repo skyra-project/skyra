@@ -1,4 +1,5 @@
-const { Command, Discord: { Embed } } = require('../../index');
+const { Command, util } = require('../../index');
+const { RichEmbed } = require('discord.js');
 
 /* EMBED ASSETS */
 const reels = [
@@ -83,7 +84,7 @@ class SlotMachines {
     static calculateWinnings(coins, roll) {
         let winnings = 0;
         combinations.forEach((combo) => {
-            if (roll[combo[0]] === roll[combo[1]] && roll[combo[1]] === roll[combo[2]]) winnings += values[roll[combo[0]]];
+            if (roll[combo[0]] === roll[combo[1]] === roll[combo[2]]) winnings += values[roll[combo[0]]];
         });
         if (winnings === 0) return { win: false, winnings: 0 };
         winnings *= coins;
@@ -146,7 +147,7 @@ module.exports = class SlotMachine extends Command {
 
     async generateEmbed(msg, roll, { win, winnings }) {
         const array = [];
-        if (Command.hasPermission(msg, 'USE_EXTERNAL_EMOJIS')) for (let i = 0; i < 9; i++) array[i] = skin[roll[i]];
+        if (util.hasPermission(msg, 'USE_EXTERNAL_EMOJIS')) for (let i = 0; i < 9; i++) array[i] = skin[roll[i]];
         else for (let i = 0; i < 9; i++) array[i] = roll[i];
         const output = [
             `${array[0]}ー${array[1]}ー${array[2]}`,
@@ -154,7 +155,7 @@ module.exports = class SlotMachine extends Command {
             `${array[6]}ー${array[7]}ー${array[8]}`
         ].join('\n');
 
-        const embed = new Embed();
+        const embed = new RichEmbed();
         if (win) {
             embed
                 .setColor(0x5C913B)

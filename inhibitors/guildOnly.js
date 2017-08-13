@@ -1,12 +1,10 @@
-exports.conf = {
-    enabled: true,
-    spamProtection: false,
-    priority: 8
-};
+const { Inhibitor } = require('../index');
 
-exports.run = (client, msg, cmd) => {
-    if (cmd.conf.guildOnly) {
-        return msg.channel.type !== 'text';
+module.exports = class extends Inhibitor {
+
+    async run(msg, cmd) {
+        if (cmd.conf.guildOnly && msg.channel.type !== 'text') throw msg.language.get('INHIBITOR_GUILDONLY');
+        return;
     }
-    return false;
+
 };

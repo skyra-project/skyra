@@ -1,12 +1,13 @@
-const checkPerms = require('../functions/checkPerms');
+const { Extendable } = require('../index');
 
-exports.conf = {
-    type: 'method',
-    method: 'hasLevel',
-    appliesTo: ['Message']
-};
+module.exports = class extends Extendable {
 
-// eslint-disable-next-line func-names
-exports.extend = function (min) {
-    return !!checkPerms(this.client, this, min);
+    constructor(...args) {
+        super(...args, ['Message']);
+    }
+
+    extend(min) {
+        return this.client.permissionLevels.run(this, min).then(({ permission }) => permission);
+    }
+
 };

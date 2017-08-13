@@ -1,5 +1,5 @@
 const { Command } = require('../../index');
-const { timer } = require('../../functions/wrappers');
+const Timer = require('../../utils/timer');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Reminder extends Command {
@@ -35,16 +35,16 @@ module.exports = class Reminder extends Command {
         const input = /^(.+)\sin\s(.+)$/.exec(raw);
         if (!input) throw 'You must tell me what do you want me to remind you and when.';
 
-        const addtime = timer(input[2].split(' '));
+        const addtime = new Timer(input[2]).Duration;
         if (addtime < 60000) throw 'Your reminder must be at least one minute long';
-        const snowflake = await this.client.clock.create({
+        const id = await this.client.clock.create({
             type: 'reminder',
-            timestamp: addtime + new Date().getTime(),
+            timestamp: addtime + Date.now(),
             user: msg.author.id,
             content: input[1]
         }).catch((err) => { throw err; });
 
-        return msg.send(`Dear ${msg.author}, a reminder with ID \`${snowflake}\` has been created.`);
+        return msg.send(`Dear ${msg.author}, a reminder with ID \`${id}\` has been created.`);
     }
 
 };

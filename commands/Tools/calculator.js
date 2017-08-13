@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const clean = require('../../functions/clean');
+const { Command, util } = require('../../index');
 const now = require('performance-now');
 const math = require('mathjs');
 
@@ -29,7 +28,7 @@ module.exports = class Calculator extends Command {
     async run(msg, [equation]) {
         const start = now();
         const evaled = await math.eval(equation);
-        return msg.send(`⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${'```'}js\n${clean(evaled)}${'```'}`);
+        return msg.send(`⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${'```'}js\n${util.clean(evaled)}${'```'}`);
     }
 
 };

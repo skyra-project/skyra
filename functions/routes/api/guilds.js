@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this, new-cap */
 const router = require('express').Router();
 const schema = require('../../schema');
-const SettingResolver = require('../../settingResolver');
+const SettingResolver = require('../../../lib/parsers/settingResolver');
 
 module.exports = class RouterGuild {
 
@@ -122,9 +122,9 @@ module.exports = class RouterGuild {
             const [cat, subcat] = key.split('.');
             if (!this.schema[cat]) throw `The key '${cat}' does not exist in the schema.`;
             else if (!subcat && !this.schema[cat].type) throw `The key '${cat}' requires a property value.`;
-            else if (!subcat) queue.push(this.settingResolver.validate(guild, this.schema[cat], obj[key]).then(val => [cat, null, val]).catch((err) => { throw err; }));
+            else if (!subcat) queue.push(this.settingResolver[this.schema[cat].type](obj[key], guild, cat).then(val => [cat, null, val]).catch((err) => { throw err; }));
             else if (!this.schema[cat][subcat]) throw `The key '${subcat}' does not exist as a property of '${cat}' in the schema.`;
-            else queue.push(this.settingResolver.validate(guild, this.schema[cat][subcat], obj[key]).then(val => [cat, subcat, val]).catch((err) => { throw err; }));
+            else queue.push(this.settingResolver[this.schema[cat][subcat].type](obj[subcat], guild, subcat).then(val => [cat, subcat, val]).catch((err) => { throw err; }));
         }
         return Promise.all(queue);
     }

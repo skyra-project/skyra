@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, util } = require('../../index');
 
 /* eslint-disable no-eval, class-methods-use-this */
 module.exports = class ClearEval extends Command {
@@ -18,7 +18,7 @@ module.exports = class ClearEval extends Command {
         const { type, input } = this.parse(args.split(' '));
         const toEval = type ? `(async () => { ${input} })()` : input;
         await eval(toEval);
-        if (Command.hasPermission('ADD_REACTIONS')) return msg.react('👌🏽').catch(() => msg.alert('Executed!'));
+        if (util.hasPermission(msg, 'ADD_REACTIONS')) return msg.react('👌🏽').catch(() => msg.alert('Executed!'));
         return null;
     }
 

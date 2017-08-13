@@ -1,6 +1,5 @@
-const Rethink = require('../providers/rethink');
-const TaskProcess = require('./taskProcess');
-const { Snowflake } = require('discord.js');
+const Rethink = require('../../providers/rethink');
+const TaskProcess = require('../taskProcess');
 
 /**
  * Task scheduler.
@@ -11,27 +10,30 @@ const { Snowflake } = require('discord.js');
 class Clock {
 
     constructor(client) {
-        this.client = client;
+        Object.defineProperty(this, 'client', { value: client });
         this.tasks = [];
         this.interval = null;
+
+        this.taskProcess = new TaskProcess(client);
     }
 
     async init() {
         this.tasks = await Rethink.getAll('tasks');
-        this.sort();
-        this.check();
+        this.sort().check();
     }
 
     async create(task) {
-        const snowflake = Snowflake.generate();
-        Object.assign(task, { id: snowflake, createdAt: new Date().getTime() });
-        if (isNaN(task.timestamp)) throw new Error("The property 'timestamp' of task must exist and be a valid timestamp.");
-        if (!task.type) throw new Error("The property 'type' of task must be defined.");
+        if (!task.type) throw new Error('The property \'type\' of task must be defined.');
+        if (isNaN(task.timestamp)) throw new Error('The property \'timestamp\' of task must exist and be a valid timestamp.');
+
+        const date = Date.now();
+        const id = date.toString(36);
+        Object.assign(task, { id, createdAt: date });
+
         await Rethink.create('tasks', task).catch((err) => { throw err; });
         this.tasks.push(task);
-        this.sort();
-        this.check();
-        return snowflake;
+        this.sort().check();
+        return id;
     }
 
     async execute() {
@@ -40,12 +42,15 @@ class Clock {
 
         /* Process active tasks. */
         const tasks = this.tasks;
-        const now = new Date().getTime();
+        const now = Date.now();
         const execute = [];
         for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].timestamp < now) execute[i] = this.process(tasks[i]);
-            else break;
+            if (tasks[i].timestamp > now) break;
+            execute[i] = this.process(tasks[i]);
         }
+
+        if (execute.length === 0) return;
+
         const values = await Promise.all(execute);
 
         /* Remove finalized tasks or the ones which have at least 5 attempts. */
@@ -54,6 +59,9 @@ class Clock {
             if (values[i] === false) continue;
             remove.push(this.remove(values[i].id, false));
         }
+
+        if (remove.length === 0) return;
+
         const removed = await Promise.all(remove);
         this.tasks = tasks.filter(task => !removed.includes(task.id));
 
@@ -71,7 +79,7 @@ class Clock {
         await Rethink.update('tasks', task.id, doc).catch((err) => { throw err; });
         const index = this.tasks.indexOf(this.tasks.find(ts => ts.id === task.id));
         for (const key of Object.keys(doc)) {
-            if (doc[key] instanceof Object && !(doc[key] instanceof Array)) {
+            if (doc[key] instanceof Object && Array.isArray(doc[key]) === false) {
                 for (const subkey of Object.keys(doc[key])) this.tasks[index][key][subkey] = doc[key][subkey];
             } else {
                 this.tasks[index][key] = doc[key];
@@ -81,8 +89,8 @@ class Clock {
     }
 
     process(task) {
-        if (!TaskProcess[task.type]) return task;
-        return TaskProcess[task.type](this.client, task)
+        if (!this.taskProcess[task.type]) return task;
+        return this.taskProcess[task.type](task)
             .then(() => task)
             .catch(() => {
                 const value = isNaN(task.attempt) ? 0 : task.attempt + 1;
@@ -95,7 +103,6 @@ class Clock {
     newInterval(time) {
         if (this.interval) {
             clearInterval(this.interval);
-            this.interval = null;
         }
         this.interval = setInterval(() => this.execute(), time);
     }
@@ -109,6 +116,7 @@ class Clock {
 
     sort() {
         this.tasks = this.tasks.sort((x, y) => +(x.timestamp > y.timestamp) || +(x.timestamp === y.timestamp) - 1);
+        return this;
     }
 
 }

@@ -1,6 +1,5 @@
-const { Command, Constants: { httpResponses }, Discord: { Embed } } = require('../../index');
-const toTitleCase = require('../../functions/toTitleCase');
-const splitText = require('../../functions/splitText');
+const { Command, Constants: { httpResponses }, util } = require('../../index');
+const { RichEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
 /* eslint-disable class-methods-use-this */
@@ -38,8 +37,8 @@ module.exports = class UrbanDictionary extends Command {
         const result = list[index];
         if (result === undefined) throw httpResponses(404);
         const definition = this.content(result.definition, result.permalink);
-        const embed = new Embed()
-            .setTitle(`Word: ${toTitleCase(query)}`)
+        const embed = new RichEmbed()
+            .setTitle(`Word: ${util.toTitleCase(query)}`)
             .setURL(result.permalink)
             .setColor(msg.color)
             .setThumbnail('http://i.imgur.com/CcIZZsa.png')
@@ -57,7 +56,7 @@ module.exports = class UrbanDictionary extends Command {
 
     content(definition, permalink) {
         if (definition.length < 750) return definition;
-        return `${splitText(definition, 750)}...\nRead the full definition here: ${permalink}`;
+        return `${util.splitText(definition, 750)}...\nRead the full definition here: ${permalink}`;
     }
 
 };

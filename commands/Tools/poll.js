@@ -1,7 +1,7 @@
 const { Command } = require('../../index');
-const { timer } = require('../../functions/wrappers');
+const Timer = require('../../utils/timer');
 
-const timeRegExp = /^(\d{1,3}(s(?:ec(?:ond)?)?|m(?:in(?:ute)?)?|h(?:our)?|d(?:ay)?)s? ?)+/;
+const timeRegExp = /^(\d{1,3} (s(?:ec(?:ond)?)?|m(?:in(?:ute)?)?|h(?:our)?|d(?:ay)?)s? ?)+/;
 const handleError = (err) => { throw err; };
 
 /* eslint-disable class-methods-use-this */
@@ -66,7 +66,7 @@ module.exports = class PollManager extends Command {
         const poll = { time: null, users: null, roles: null, options: null };
         const timestamp = timeRegExp.exec(input)[0];
         input = input.replace(timestamp, '');
-        poll.time = timer(timestamp.trim().split(' '));
+        poll.time = new Timer(timestamp.trim());
         if (/-users [^-]+/.test(input)) {
             const selection = /-users ([^-]+)/.exec(input);
             const map = selection[1].split(/, ?/);
@@ -100,7 +100,7 @@ module.exports = class PollManager extends Command {
 
         const snowflake = await this.clock.create({
             type: 'poll',
-            timestamp: poll.time + new Date().getTime(),
+            timestamp: poll.time + Date.now(),
             guild: msg.guild.id,
             title: poll.title,
             roles: poll.roles,

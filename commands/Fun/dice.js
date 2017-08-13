@@ -29,7 +29,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [rl = 1, sd = 6]) {
-        return msg.send(`Dear ${msg.author}, you rolled the **${sd}**-dice **${rl}** times, you got: **${this.roll(rl, sd)}**`);
+        return msg.send(msg.language.get('COMMAND_DICE', sd, rl, this.roll(rl, sd)));
     }
 
     roll(rolls, sides) {

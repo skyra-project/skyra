@@ -1,5 +1,5 @@
-const { Command, Constants: { httpResponses }, Discord: { Embed } } = require('../../index');
-const splitText = require('../../functions/splitText');
+const { Command, Constants: { httpResponses }, util } = require('../../index');
+const { RichEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
 const baseURL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
@@ -26,7 +26,7 @@ module.exports = class WikiPedia extends Command {
         const content = text.query.pages[text.query.pageids[0]];
         const definition = this.content(content.extract, url);
 
-        const embed = new Embed()
+        const embed = new RichEmbed()
             .setTitle(content.title)
             .setURL(url)
             .setColor(0x05C9E8)
@@ -49,7 +49,7 @@ module.exports = class WikiPedia extends Command {
 
     content(definition, url) {
         if (definition.length < 750) return definition;
-        return `${splitText(definition, 750)}... [continue reading](${url})`;
+        return `${util.splitText(definition, 750)}... [continue reading](${url})`;
     }
 
 };

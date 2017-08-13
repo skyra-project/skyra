@@ -1,25 +1,34 @@
-exports.conf = {
-    guildOnly: true,
-    enabled: true
-};
+const { Monitor } = require('../index');
+const { RichEmbed } = require('discord.js');
 
-exports.run = async (client, msg, settings) => {
-    if (!settings.selfmod.inviteLinks ||
-        !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content) ||
-        msg.hasLevel(1)) return false;
+module.exports = class extends Monitor {
 
-    if (msg.deletable) {
-        await msg.nuke();
-        await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
+    constructor(...args) {
+        super(...args, {
+            guildOnly: true,
+            ignoreBots: false
+        });
     }
 
-    if (!settings.channels.mod) return null;
+    async run(msg, settings) {
+        if (!settings.selfmod.inviteLinks ||
+            !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content) ||
+            msg.hasLevel(1)) return false;
 
-    const embed = new client.methods.Embed()
-        .setColor(0xefae45)
-        .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-        .setFooter(`#${msg.channel.name} | Invite link`)
-        .setTimestamp();
+        if (msg.deletable) {
+            await msg.delete();
+            await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
+        }
 
-    return msg.guild.channels.get(settings.channels.mod).send({ embed });
+        if (!settings.channels.mod) return null;
+
+        const embed = new RichEmbed()
+            .setColor(0xefae45)
+            .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
+            .setFooter(`#${msg.channel.name} | Invite link`)
+            .setTimestamp();
+
+        return msg.guild.channels.get(settings.channels.mod).send({ embed });
+    }
+
 };

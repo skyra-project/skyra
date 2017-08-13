@@ -1,13 +1,22 @@
-const toTitleCase = require('../functions/toTitleCase');
+const { RichEmbed } = require('discord.js');
 
 const colour = {
-    ban: 0xFF0200,
-    unban: 0xFF4443,
-    softban: 0xFF1A44,
-    kick: 0xFFE604,
-    mute: 0xFF6E23,
-    unmute: 0xFF8343,
-    warn: 0xFF8F2A
+    ban: { color: 0xD50000, title: 'Ban' },
+    softban: { color: 0xFF1744, title: 'Softban' },
+    kick: { color: 0xF57F17, title: 'Kick' },
+    mute: { color: 0xF9A825, title: 'Mute' },
+    vmute: { color: 0xFBC02D, title: 'Voice Mute' },
+    warn: { color: 0xFFD600, title: 'Warn' },
+
+    tban: { color: 0xC51162, title: 'Temporal Ban' },
+    tmute: { color: 0xF50057, title: 'Temporal Mute' },
+    tvmute: { color: 0xFF4081, title: 'Temporal Voice Mute' },
+
+    unban: { color: 0x304FFE, title: 'Unban' },
+    unmute: { color: 0x448AFF, title: 'Unmute' },
+    unvmute: { color: 0xBBDEFB, title: 'Voice Unmute' },
+
+    prune: { color: 0xB2FF59, title: 'Message Prune' }
 };
 
 class ModerationLog {
@@ -35,7 +44,7 @@ class ModerationLog {
 
         const description = this.getDescription(id);
 
-        const embed = new this.client.methods.Embed()
+        const embed = new RichEmbed()
             .setColor(colour[this.type])
             .setAuthor(this.moderator.tag)
             .setDescription(description)
@@ -65,12 +74,8 @@ class ModerationLog {
     }
 
     setReason(reason) {
-        if (reason instanceof Array) {
-            if (!reason.length) reason = null;
-            else reason = reason.join(' ');
-        }
-
-        this.reason = reason;
+        if (Array.isArray(reason)) reason = reason.join(' ');
+        this.reason = reason.length > 0 ? reason : null;
         return this;
     }
 
@@ -88,7 +93,7 @@ class ModerationLog {
 
         if (channel) {
             const { embed, numberCase } = await this.getMessage();
-            const message = await channel.send({ embed }).catch(err => this.client.emit('log', err, 'error'));
+            channel.send({ embed }).catch(err => this.client.emit('log', err, 'error'));
 
             return this.guild.settings.moderation.pushCase({
                 moderator: this.moderator ? { id: this.moderator.id, tag: this.moderator.tag } : null,
@@ -96,7 +101,6 @@ class ModerationLog {
                 type: this.type,
                 case: numberCase,
                 reason: this.reason,
-                message: message ? message.id : null,
                 extraData: this.extraData
             });
         }
@@ -119,8 +123,8 @@ class ModerationLog {
         } else {
             moderator = this.moderator.raw;
         }
-        const embed = new this.client.methods.Embed()
-            .setColor(colour[this.type])
+        const embed = new RichEmbed()
+            .setColor(colour[this.type].color)
             .setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
             .setDescription(description)
             .setFooter(`${AUTO ? 'AUTO | ' : ''}Case ${numberCase}`, this.client.user.displayAvatarURL({ size: 128 }))
@@ -130,7 +134,7 @@ class ModerationLog {
 
     getDescription(numberCase) {
         return [
-            `❯ **Action:** ${toTitleCase(this.type)}`,
+            `❯ **Action:** ${colour[this.type].title}`,
             `❯ **User:** ${this.user.tag} (${this.user.id})`,
             `❯ **Reason:** ${this.reason || `Please use \`${this.guild.settings.prefix}reason ${numberCase} to claim.\``}`
         ].join('\n');
@@ -138,6 +142,10 @@ class ModerationLog {
 
     getChannel() {
         return this.guild.settings.channels.mod ? this.guild.channels.get(this.guild.settings.channels.mod) : false;
+    }
+
+    static getColor(type) {
+        return colour[type];
     }
 
 }

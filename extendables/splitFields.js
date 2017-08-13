@@ -1,14 +1,13 @@
-exports.conf = {
-    type: 'method',
-    method: 'splitFields',
-    appliesTo: ['MessageEmbed']
-};
+const { Extendable } = require('../index');
 
-// eslint-disable-next-line func-names
-exports.extend = function (content) {
-    if (content instanceof Array) content = content.join('\n');
-    if (content.length <= 2000) this.setDescription(content);
-    else {
+module.exports = class extends Extendable {
+
+    constructor(...args) {
+        super(...args, ['RichEmbed']);
+    }
+
+    extend(content) {
+        if (Array.isArray(content)) content = content.join('\n');
         let init = content;
         let i;
         let x;
@@ -18,6 +17,7 @@ exports.extend = function (content) {
             this.addField('\u200B', init.substring(0, x));
             init = init.substring(x, init.length);
         }
+        return this;
     }
-    return this;
+
 };

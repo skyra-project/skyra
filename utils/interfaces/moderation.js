@@ -68,7 +68,7 @@ module.exports = class Moderation {
         if (id) {
             return provider.getFromArrayByIndex('moderation', this.id, 'cases', id) || null;
         }
-        return provider.get('moderation', this.id).then(doc => doc ? doc.cases : []);
+        return provider.get('moderation', this.id).then(doc => doc ? doc.cases : this.ensureModule().then(() => []));
     }
 
     async getAmountCases() {

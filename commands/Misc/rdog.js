@@ -1,4 +1,5 @@
 const { Command } = require('../../index');
+const { RichEmbed } = require('discord.js');
 
 const rand = [
     '55991', '56020', '236567', '215795', '198588', '239388', '55709',
@@ -32,7 +33,7 @@ module.exports = class extends Command {
         if (this.index === rand.length - 1) this.index = 0;
         else this.index += 1;
 
-        const embed = new this.client.methods.Embed()
+        const embed = new RichEmbed()
             .setColor(msg.color)
             .setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${rand[this.index]}.jpg`);
 

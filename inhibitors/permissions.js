@@ -1,14 +1,11 @@
-const checkPerms = require('../functions/checkPerms');
+const { Inhibitor } = require('../index');
 
-exports.conf = {
-    enabled: true,
-    spamProtection: false,
-    priority: 10
-};
+module.exports = class extends Inhibitor {
 
-exports.run = (client, msg, cmd) => {
-    const res = checkPerms(client, msg, cmd.conf.permLevel);
-    if (res === null) return true;
-    else if (!res) return 'You do not have permission to use this command.';
-    return false;
+    async run(msg, cmd) {
+        const { broke, permission } = await this.client.permissionLevels.run(msg, cmd.permLevel);
+        if (permission) return;
+        throw broke ? msg.language.get('INHIBITOR_PERMISSIONS') : true;
+    }
+
 };

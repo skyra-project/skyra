@@ -1,28 +1,43 @@
-exports.conf = {
-    guildOnly: true,
-    enabled: true
-};
+const { Monitor } = require('../index');
+const { RichEmbed } = require('discord.js');
 
-exports.run = async (client, msg, settings) => {
-    if (settings.filter.level === 0 ||
-        settings.filter.regexp === null ||
-        msg.hasLevel(1) ||
-        !settings.filter.regexp.test(msg.content)) return false;
+module.exports = class extends Monitor {
 
-    if (msg.deletable) await msg.nuke();
-    if ([1, 3].includes(settings.filter.level)) {
-        msg.send(`Pardon, dear ${msg.author}, you said something that is not allowed here.`).catch(err => client.emit('log', err, 'error'));
+    constructor(...args) {
+        super(...args, {
+            guildOnly: true,
+            ignoreBots: false
+        });
     }
 
-    if (![2, 3].includes(settings.filter.level)) return true;
-    const modLogChannel = settings.channels.mod;
-    if (!modLogChannel) return true;
+    async run(msg, settings) {
+        if (settings.filter.level === 0 ||
+            settings.filter.regexp === null ||
+            msg.hasLevel(1) ||
+            !settings.filter.regexp.test(msg.content)) return false;
 
-    const embed = new client.methods.Embed()
-        .setColor(0xefae45)
-        .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-        .setFooter(`#${msg.channel.name} | Filtered Word ${settings.filter.regexp.exec(msg.content)[0]}`)
-        .setTimestamp();
+        if (msg.deletable) await msg.delete()
+            .catch(err => this.client.emit('log', err, 'error'));
+        if (settings.filter.level === 1 || settings.filter.level === 3) {
+            msg.send(`Pardon, dear ${msg.author}, you said something that is not allowed here.`)
+                .catch(err => this.client.emit('log', err, 'error'));
+        }
 
-    return msg.guild.channels.get(modLogChannel).send({ embed });
+        if (settings.filter.level !== 2 && settings.filter.level !== 3) return true;
+
+        const modLogChannelID = settings.channels.mod;
+        if (!modLogChannelID) return true;
+
+        const channel = msg.guild.channels.get(modLogChannelID);
+        if (!channel) return settings.update({ channels: { mod: null } });
+
+        const embed = new RichEmbed()
+            .setColor(0xefae45)
+            .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
+            .setFooter(`#${msg.channel.name} | Filtered Word ${settings.filter.regexp.exec(msg.content)[0]}`)
+            .setTimestamp();
+
+        return channel.send({ embed });
+    }
+
 };

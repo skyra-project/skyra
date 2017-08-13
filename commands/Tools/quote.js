@@ -1,4 +1,5 @@
-const { Command, Discord: { Embed } } = require('../../index');
+const { Command } = require('../../index');
+const { RichEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Quote extends Command {
@@ -21,7 +22,7 @@ module.exports = class Quote extends Command {
         const attachment = mes.attachments.size ? mes.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split('.').pop())) : null;
         if (!attachment && !mes.content) throw "it is weird, but this message doesn't have a content nor image.";
 
-        const embed = new Embed()
+        const embed = new RichEmbed()
             .setAuthor(mes.author.tag, mes.author.displayAvatarURL({ size: 128 }))
             .setDescription(mes.content)
             .setImage(attachment ? attachment.url : null)

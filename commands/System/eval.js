@@ -1,9 +1,6 @@
-const { Command } = require('../../index');
+const { Command, util } = require('../../index');
 const { inspect } = require('util');
 const now = require('performance-now');
-
-const zws = String.fromCharCode(8203);
-let sensitivePattern;
 
 /* eslint-disable no-eval, class-methods-use-this */
 module.exports = class extends Command {
@@ -43,14 +40,10 @@ module.exports = class extends Command {
     }
 
     clean(text) {
-        let toClean;
-
         if (typeof text === 'object' && typeof text !== 'string') {
-            toClean = inspect(text, { depth: 0, showHidden: true });
-        } else {
-            toClean = text;
+            return util.clean(inspect(text, { depth: 0, showHidden: true }));
         }
-        return toClean.replace(sensitivePattern, '「ｒｅｄａｃｔｅｄ」').replace(/`/g, `\`${zws}`).replace(/@/g, `@${zws}`);
+        return util.clean(text);
     }
 
     parse(toEval) {
@@ -64,14 +57,6 @@ module.exports = class extends Command {
             type = false;
         }
         return { type, input };
-    }
-
-    init(client) {
-        const patterns = [];
-        if (client.token) patterns.push(client.token);
-        if (client.user.email) patterns.push(client.user.email);
-        if (client.password) patterns.push(client.password);
-        sensitivePattern = new RegExp(patterns.join('|'), 'gi');
     }
 
 };

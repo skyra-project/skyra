@@ -1,11 +1,14 @@
-exports.conf = {
-    type: 'method',
-    method: 'error',
-    appliesTo: ['Message']
-};
+const { Extendable, util } = require('../index');
 
-// eslint-disable-next-line func-names
-exports.extend = function (content, log = false) {
-    if (log) this.client.emit('error', content);
-    return this.alert(`|\`❌\`| **ERROR**:\n${'```'}js\n${content}${'```'}`);
+module.exports = class extends Extendable {
+
+    constructor(...args) {
+        super(...args, ['Message']);
+    }
+
+    extend(content, log = false) {
+        if (log) this.client.emit('log', content, 'error');
+        return this.alert(`|\`❌\`| **ERROR**:\n${util.codeBlock('js', content)}`);
+    }
+
 };

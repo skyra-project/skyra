@@ -1,10 +1,9 @@
 const { Command, config } = require('../../index');
-const { fillRoundRect } = require('../../functions/canvas');
+const Canvas = require('../../utils/canvas-constructor');
 
 const { join } = require('path');
 const { readFile } = require('fs-nextra');
 const snekfetch = require('snekfetch');
-const Canvas = require('canvas');
 
 /* Autentification */
 const { GOOGLE_MAP_API, WEATHER_API } = config.tokens;
@@ -47,10 +46,17 @@ module.exports = class extends Command {
         const geocodelocation = response.results[0].formatted_address;
         const params = `${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}`;
 
-        const locality = response.results[0].address_components.find(loc => loc.types.includes('locality'));
-        const governing = response.results[0].address_components.find(gov => gov.types.includes('administrative_area_level_1'));
-        const country = response.results[0].address_components.find(cou => cou.types.includes('country'));
-        const continent = response.results[0].address_components.find(con => con.types.includes('continent'));
+        let locality;
+        let governing;
+        let country;
+        let continent;
+
+        for (const component of response.results[0].address_components) {
+            if (!locality && component.types.includes('locality')) locality = component;
+            if (!governing && component.types.includes('administrative_area_level_1')) governing = component;
+            if (!country && component.types.includes('country')) country = component;
+            if (!continent && component.types.includes('continent')) continent = component;
+        }
 
         const city = locality || governing || country || continent || {};
         const localityOrCountry = locality ? country : {};
@@ -68,58 +74,51 @@ module.exports = class extends Command {
     }
 
     async draw(msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity }) {
-        const canvas = new Canvas(400, 180);
-        const cond = new Canvas.Image();
-        const humid = new Canvas.Image();
-        const precip = new Canvas.Image();
-        const ctx = canvas.getContext('2d');
-        ctx.save();
-        ctx.shadowColor = 'rgba(51, 51, 51, 0.38)';
-        ctx.fillStyle = colors[this.timePicker(icon)];
-        ctx.shadowBlur = 5;
-        fillRoundRect(ctx, 10, 10, 380, 160, 5);
-        ctx.restore();
-
         const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
-
-        // City Name
-        ctx.font = '20px Roboto';
-        ctx.fillStyle = fontColor;
-        ctx.fillText(city.long_name ? city.long_name : 'Unknown', 35, 50);
-
-        // Prefecture Name
-        ctx.font = '16px Roboto';
-        ctx.fillStyle = theme === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)';
-        ctx.fillText(state.long_name ? state.long_name : '', 35, 72.5);
-
-        // Temperature
-        ctx.font = "48px 'Roboto Mono'";
-        ctx.fillStyle = fontColor;
-        ctx.fillText(`${temperature}°C`, 35, 140);
-
-        // Condition
-        ctx.font = '16px Roboto';
-        ctx.textAlign = 'right';
-        ctx.fillText(condition, 370, 142);
-
-        // Titles
-        ctx.font = "16px 'Roboto Condensed'";
-        ctx.fillText(`${humidity}%`, 353, 100);
-        ctx.fillText(`${chanceofrain}%`, 353, 121);
-
         const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
             readFile(join(__dirname, '..', '..', 'assets', 'images', 'weather', theme, `${icon}.png`)),
             readFile(join(__dirname, '..', '..', 'assets', 'images', 'weather', theme, 'humidity.png')),
             readFile(join(__dirname, '..', '..', 'assets', 'images', 'weather', theme, 'precip.png'))
         ]);
 
-        cond.src = conditionBuffer;
-        humid.src = humidityBuffer;
-        precip.src = precipicityBuffer;
+        const canvas = new Canvas(400, 180)
+            .save()
+            .setShadowColor('rgba(51,51,51,.38)')
+            .setShadowBlur(5)
+            .setColor(colors[this.timePicker(icon)])
+            .createBeveledClip(10, 10, 380, 160, 5)
+            .addRect(10, 10, 380, 160)
+            .restore()
 
-        ctx.drawImage(cond, 325, 31);
-        ctx.drawImage(humid, 358, 88);
-        ctx.drawImage(precip, 358, 108);
+            // City Name
+            .setTextFont('20px Roboto')
+            .setColor(fontColor)
+            .addText(city.long_name ? city.long_name : 'Unknown', 35, 50)
+
+            // Prefecture Name
+            .setTextFont('16px Roboto')
+            .setColor(theme === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)')
+            .addText(state.long_name ? state.long_name : '', 35, 72.5)
+
+            // Temperature
+            .setTextFont("48px 'Roboto Mono'")
+            .setColor(fontColor)
+            .addText(`${temperature}°C`, 35, 140)
+
+            // Condition
+            .setTextFont('16px Roboto')
+            .setTextAlign('right')
+            .addText(condition, 370, 142)
+
+            // Titles
+            .setTextFont("16px 'Roboto Condensed'")
+            .addText(`${humidity}%`, 353, 100)
+            .addText(`${chanceofrain}%`, 353, 121)
+
+            // Icons
+            .addImage(conditionBuffer, 325, 31, 48, 48)
+            .addImage(humidityBuffer, 358, 88, 13, 13)
+            .addImage(precipicityBuffer, 358, 108, 13, 13);
 
         return msg.channel.send({ files: [{ attachment: canvas.toBuffer(), name: `${geocodelocation}.png` }] });
     }

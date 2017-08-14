@@ -14,11 +14,20 @@ module.exports = class MyLevel extends Command {
     }
 
     async run(msg, args, settings) {
-        let autoRole;
-        const roles = settings.autoroles.length ? settings.autoroles.filter(au => au.points > msg.member.points.score) : [];
-        if (roles.length) autoRole = roles.sort((a, b) => a.points > b.points ? 1 : -1)[0];
-        const nextRole = autoRole ? `\nPoints for next rank: **${autoRole.points - msg.member.points.score}** (at ${autoRole.points} points).` : '';
-        return msg.send(`Dear ${msg.author}, you have a total of **${msg.member.points.score}** points.${nextRole}`);
+        const memberPoints = msg.member.points.score;
+        const nextRole = this.getLatestRole(memberPoints, settings.autoroles);
+        const title = nextRole ? `\n${msg.language.get('COMMAND_SOCIAL_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}` : '';
+        return msg.language.get('COMMAND_SOCIAL_MYLEVEL', memberPoints, title);
+    }
+
+    getLatestRole(points, autoroles) {
+        if (autoroles.length === 0) return null;
+
+        for (let i = 0; i < autoroles.length; i++) {
+            if (autoroles[i].points > points) return autoroles[i];
+        }
+
+        return null;
     }
 
 };

@@ -143,6 +143,10 @@ module.exports = class extends Language {
             COMMAND_USERSELF: 'Why would you do that to yourself?',
             COMMAND_TOSKYRA: 'Eww... I thought you loved me! 💔',
 
+            // SOCIAL
+            COMMAND_SOCIAL_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
+            COMMAND_SOCIAL_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
+
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
             SYSTEM_DM_FAIL: 'I cannot send you a message in DMs, did you block me?',

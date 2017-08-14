@@ -35,6 +35,12 @@ class GuildSettings {
         };
 
         this.moderation = null;
+        this.init();
+    }
+
+    init() {
+        if (this.autoroles.length > 0) this.autoroles = this.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
+        if (this.filter.raw.length > 0) this.updateFilter();
     }
 
     _merge(data, group) {
@@ -74,20 +80,15 @@ class GuildSettings {
 
     toJSON() {
         return {
-            prefix: this.prefix,
+            master: this.master,
+            disable: this.disable,
             roles: this.roles,
             events: this.events,
             channels: this.channels,
             messages: this.messages,
-            ignoreChannels: this.ignoreChannels,
-            disabledCommands: this.disabledCommands,
-            disabledCmdChannels: this.disabledCmdChannels,
-            publicRoles: this.publicRoles,
-            autoroles: this.autoroles,
-            mode: this.mode,
-            initialRole: this.initialRole,
-            social: this.social,
             selfmod: this.selfmod,
+            social: this.social,
+            autoroles: this.autoroles,
             filter: {
                 level: this.filter.level,
                 raw: this.filter.raw

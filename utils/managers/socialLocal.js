@@ -53,6 +53,10 @@ class SocialLocalManager extends Collection {
         });
     }
 
+    sorted(guild) {
+        return this.get(guild).sort((x, y) => +(x.score < y.score) || +(x.score === y.score) - 1);
+    }
+
     getMember(guild, member) {
         const data = this.get(guild);
         if (data instanceof Promise) {

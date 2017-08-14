@@ -7,7 +7,7 @@ const AdvancedSearch = require('./interfaces/AdvancedSearch');
 // const Dashboard = require('../functions/dashboard');
 
 const provider = require('../providers/rethink');
-const { log } = require('./debugLog');
+// const { log } = require('./debugLog');
 
 class Handler {
 
@@ -54,16 +54,16 @@ class Handler {
             ModCache.set(modlog.id, modlog.cases.filter(cs => cs.type === 'mute' && cs.appeal !== true) || []);
         }
         for (const guild of guilds) {
-            if (this.client.guilds.has(guild.id) === false) {
-                log(`LOADER | GUILDSETTINGS | Received data from ${guild.id}, which guild I am not in.`);
-                // await provider.delete('guilds', guild.id)
-                //     .then(() => this.emitError(`Deleted '${guild.id}' from 'guilds'`))
-                //     .catch(err => this.emitError(err));
-                // await provider.delete('moderation', guild.id)
-                //     .then(() => this.emitError(`Deleted '${guild.id}' from 'moderation'`))
-                //     .catch(err => this.emitError(err));
-                continue;
-            }
+            // if (this.client.guilds.has(guild.id) === false) {
+            //     log(`LOADER | GUILDSETTINGS | Received data from ${guild.id}, which guild I am not in.`);
+            //     // await provider.delete('guilds', guild.id)
+            //     //     .then(() => this.emitError(`Deleted '${guild.id}' from 'guilds'`))
+            //     //     .catch(err => this.emitError(err));
+            //     // await provider.delete('moderation', guild.id)
+            //     //     .then(() => this.emitError(`Deleted '${guild.id}' from 'moderation'`))
+            //     //     .catch(err => this.emitError(err));
+            //     continue;
+            // }
             this.guilds.set(guild.id, guild).setModeration(ModCache.get(guild.id) || []);
         }
         for (const guild of this.client.guilds.values()) {
@@ -73,13 +73,13 @@ class Handler {
 
     async syncLocals(locals) {
         for (const guild of locals) {
-            if (this.client.guilds.has(guild.id) === false) {
-                log(`LOADER | LOCALSCORES | Received data from ${guild.id}, which guild I am not in.`);
-                // await provider.delete('localScores', guild.id)
-                //     .then(() => this.emitError(`Deleted '${guild.id}' from 'localScores'`))
-                //     .catch(err => this.emitError(err));
-                continue;
-            }
+            // if (this.client.guilds.has(guild.id) === false) {
+            //     log(`LOADER | LOCALSCORES | Received data from ${guild.id}, which guild I am not in.`);
+            //     // await provider.delete('localScores', guild.id)
+            //     //     .then(() => this.emitError(`Deleted '${guild.id}' from 'localScores'`))
+            //     //     .catch(err => this.emitError(err));
+            //     continue;
+            // }
             const localManager = this.social.local.set(guild.id);
             for (const member of guild.scores) {
                 localManager.addMember(member.id, member);

@@ -1,8 +1,8 @@
-const { Command, Managers: { SocialGlobal: { fetchAll: fetchGlobal }, SocialLocal: { fetchAll: fetchLocal } } } = require('../../index');
+const { Command } = require('../../index');
 
 const titles = {
-    global: '🌐 Global Score Scoreboard',
-    local: '🏡 Local Score Scoreboard',
+    points: '🌐 Global Score Scoreboard',
+    score: '🏡 Local Score Scoreboard',
     money: '💸 Money Scoreboard',
     reputation: '🙏 Reputation Scoreboard'
 };
@@ -35,13 +35,15 @@ module.exports = class ScoreBoard extends Command {
     }
 
     async run(msg, [type = 'local', index = 1]) {
-        const list = Array.from(this.getList(msg, type));
-        const position = list.findIndex(entry => entry[0] === msg.author.id);
-        const page = this.generatePage(msg, list, index, position);
+        if (type === 'global') type = 'points';
+        else if (type === 'local') type = 'score';
+        const list = Array.from(this.getList(msg, type).values());
+        const position = list.findIndex(entry => entry.id === msg.author.id);
+        const page = this.generatePage(msg, list, index, position, type);
         return msg.send(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
     }
 
-    generatePage(msg, list, index, position) {
+    generatePage(msg, list, index, position, type) {
         const listSize = list.length;
         const pageCount = Math.ceil(listSize / 10);
         if (index > pageCount) index = 1;
@@ -52,11 +54,12 @@ module.exports = class ScoreBoard extends Command {
         for (let i = 0; i < 10; i++) {
             const entry = list[i + (index * 10)];
             if (!entry) break;
-            currentPage[i] = `• ${String(1 + i + (index * 10)).padStart(indexLength, ' ')}: ${this.keyUser(entry[0]).padEnd(25, ' ')} :: ${entry[1]}`;
+            currentPage[i] = `• ${String(1 + i + (index * 10)).padStart(indexLength, ' ')}: ${this.keyUser(entry.id).padEnd(25, ' ')} :: ${entry[type]}`;
         }
 
-        currentPage.push(`Page ${index + 1} / ${pageCount} | ${listSize.toLocaleString()} Total\n\n${currentPage.join('\n')}`);
-        currentPage.push(`Your placing position is: ${position > 0 ? position + 1 : 'Unranked'}`);
+        currentPage.push('');
+        currentPage.push(`Page ${index + 1} / ${pageCount} | ${listSize.toLocaleString()} Total`);
+        currentPage.push(`Your placing position is: ${position + 1}`);
 
         return currentPage;
     }
@@ -70,15 +73,12 @@ module.exports = class ScoreBoard extends Command {
 
     getList(msg, type) {
         switch (type) {
-            case 'global':
+            case 'points':
             case 'money':
             case 'reputation':
-                return fetchGlobal()
-                    .filter(profile => profile[type] > 0)
-                    .sort((a, b) => a[type] < b[type] ? 1 : -1);
-            case 'local':
-                return fetchLocal().get(msg.guild.id)
-                    .sort((a, b) => a.score < b.score ? 1 : -1);
+                return this.client.handler.social.global.sorted(type);
+            case 'score':
+                return this.client.handler.social.local.sorted(msg.guild.id);
             // no default
         }
         return null;

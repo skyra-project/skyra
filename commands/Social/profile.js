@@ -1,11 +1,12 @@
-const { Command, Managers: { SocialGlobal: { fetchAll: fetchGlobal } } } = require('../../index');
+const { Command } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, sep } = require('path');
-const Canvas = require('canvas');
+const Canvas = require('../../utils/canvas-constructor');
 
-Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), { family: 'RobotoRegular' });
-Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { family: 'RobotoLight' });
+Canvas
+    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), 'RobotoRegular')
+    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), 'RobotoLight');
 
 const profileTemplate = join(__dirname, '../../assets/images/social/profile-foreground.png');
 const themes = join(__dirname, '../../assets/images/social/themes/') + sep;
@@ -38,7 +39,9 @@ module.exports = class Profile extends Command {
     }
 
     async showProfile(user) {
-        const { points, color, banners, exists, money, reputation } = user.profile;
+        let profile = user.profile;
+        if (profile instanceof Promise) profile = await profile;
+        const { points, color, banners, money, reputation } = profile;
 
         /* Calculate information from the user */
         const currentLevel = Math.floor(0.2 * Math.sqrt(points));
@@ -47,14 +50,8 @@ module.exports = class Profile extends Command {
         const Prog = Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 356);
 
         /* Global leaderboard */
-        const sortedList = fetchGlobal().sort((a, b) => a.points < b.points ? 1 : -1);
-
-        const canvas = new Canvas(640, 391);
-        const background = new Canvas.Image();
-        const imgAvatar = new Canvas.Image();
-        const themeImage = new Canvas.Image();
-        const ctx = canvas.getContext('2d');
-
+        const sortedList = this.client.handler.social.global.sorted();
+        const GlobalPosition = sortedList.keyArray().indexOf(user.id) + 1;
         const theme = banners.theme;
         const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
             readFile(`${themes}${theme}.png`),
@@ -62,42 +59,26 @@ module.exports = class Profile extends Command {
             fetchAvatar(user, 256)
         ]);
 
-        themeImage.onload = () => ctx.drawImage(themeImage, 10, 9, 188, 373);
-        themeImage.src = themeImageSRC;
-
-        /* Draw the background */
-        background.onload = () => ctx.drawImage(background, 0, 0, 640, 391);
-        background.src = backgroundSRC;
-        ctx.fillStyle = `#${color}`;
-        ctx.fillRect(235, 356, Prog, 5);
-
-        /* Draw the information */
-        ctx.font = '35px RobotoRegular';
-        ctx.fillStyle = 'rgb(23,23,23)';
-        ctx.fillText(user.username, 227, 73);
-        ctx.font = '25px RobotoLight';
-        ctx.fillText(`#${user.discriminator}`, 227, 105);
-        ctx.textAlign = 'right';
-        const GlobalPosition = exists ? sortedList.map(entry => entry.id).indexOf(user.id) + 1 : 'unranked';
-        ctx.fillText(GlobalPosition, 594, 276);
-        ctx.fillText(money, 594, 229);
-        ctx.fillText(reputation, 594, 181);
-        ctx.fillText(points, 594, 346);
-        ctx.textAlign = 'center';
-        ctx.font = '40px RobotoRegular';
-        ctx.fillText(currentLevel, 576, 100);
-
-        /* Draw the avatar */
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(103, 102, 70, 0, Math.PI * 2, false);
-        ctx.clip();
-        imgAvatar.onload = () => ctx.drawImage(imgAvatar, 32, 31, 141, 141);
-        imgAvatar.src = imgAvatarSRC;
-        ctx.restore();
-
-        /* Resolve Canvas buffer */
-        return canvas.toBuffer();
+        return new Canvas(640, 391)
+            .addImage(themeImageSRC, 10, 9, 188, 373)
+            .addImage(backgroundSRC, 0, 0, 640, 391)
+            .setColor(`#${color}`)
+            .addRect(235, 356, Prog, 5)
+            .setTextFont('35px RobotoRegular')
+            .setColor('rgb(23,23,23')
+            .addText(user.username, 227, 73)
+            .setTextFont('25px RobotoLight')
+            .addText(`#${user.discriminator}`, 227, 105)
+            .setTextAlign('right')
+            .addText(GlobalPosition, 594, 276)
+            .addText(money, 594, 229)
+            .addText(reputation, 594, 181)
+            .addText(points, 594, 346)
+            .setTextAlign('center')
+            .setTextFont('40px RobotoRegular')
+            .addText(currentLevel, 576, 100)
+            .addImage(imgAvatarSRC, 32, 31, 141, 141, { type: 'round', radius: 70.5 })
+            .toBuffer();
     }
 
 };

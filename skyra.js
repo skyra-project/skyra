@@ -5,7 +5,7 @@ const Skyra = new Komada({
     ownerID: cfg.ownerid,
     prefix: 's!',
     cmdEditing: true,
-    cmdLogging: true,
+    cmdLogging: false,
     dash: cfg.dash,
     clientOptions: {
         disabledEvents: [

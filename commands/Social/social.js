@@ -1,5 +1,4 @@
-const { Command, Managers: { SocialLocal } } = require('../../index');
-const Rethink = require('../../providers/rethink');
+const { Command } = require('../../index');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Social extends Command {
@@ -35,43 +34,25 @@ module.exports = class Social extends Command {
         });
     }
 
-    async run(msg, [action, search = msg.author.id, value = null]) {
-        const ID = await this.searchProfile(msg, search);
+    async run(msg, [action, user = msg.author, value = null]) {
+        const profile = await this.searchProfile(msg, user);
+        if (!profile) throw 'profile not found.';
         if (action === 'delete') {
-            throw 'this action is not available yet.';
-            // await this.nuke(client, ID);
-            // await msg.alert(`Dear ${msg.author}, you have just nuked the profile from user ID ${ID}`);
-        } else {
-            if (!value) throw 'you must specify an amount of money.';
-            const newValue = this.handle(msg, action, ID, value);
-            await this.update(msg, ID, value);
-            return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'added' : 'removed'} ${newValue} points from user ID: ${ID}`);
+            await this.client.handler.social.local.get(msg.guild.id).removeMember(user.id);
+            return msg.alert(`Successfully deleted the profile ${user.tag}, with ${profile.points}`);
         }
+        if (!value) throw 'you must specify an amount of money.';
+        let amount;
+        if (action === 'add') amount = profile.points + value;
+        else amount = Math.max(profile.points - value, 0);
+
+        await profile.update(amount);
+        return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'add' : 'remov'}ed ${amount} points from user ${user.tag}. Before: ${profile.points}; Now: ${amount}`);
     }
 
-    async searchProfile(msg, search) {
-        if (/[0-9]{17,21}/.test(search) && SocialLocal.get(msg.guild.id).has(search)) {
-            return search;
-        }
-        const user = await this.client.handler.search.user(search, msg);
+    async searchProfile(msg, user) {
         if (user.bot) throw "you can't modify bot profiles, since they don't have one.";
-        if (!SocialLocal.get(msg.guild.id).has(search)) {
-            const data = { id: user.id, score: 0 };
-            await Rethink.append('localScores', msg.guild.id, 'scores', data);
-            SocialLocal.insert(msg.guild.id, user.id, data);
-        }
-        return user.id;
-    }
-
-    async update(msg, id, value) {
-        await Rethink.updateArrayByID('localScores', msg.guild.id, 'scores', id, { score: value });
-        SocialLocal.get(msg.guild.id).get(id).score = value;
-    }
-
-    async handle(msg, action, ID, value) {
-        const profile = SocialLocal.get(msg.guild.id).get(ID);
-        if (action === 'add') return profile.score + value;
-        return Math.max(profile.score - value, 0);
+        return this.client.handler.social.local.getMember(msg.guild.id, user.id) || null;
     }
 
 };

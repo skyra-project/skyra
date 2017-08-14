@@ -16,6 +16,10 @@ class SocialGlobalManager extends Collection {
         return globalUser;
     }
 
+    sorted(property = 'points') {
+        return this.sort((x, y) => +(x[property] < y[property]) || +(x[property] === y[property]) - 1);
+    }
+
     all() {
         return this;
     }

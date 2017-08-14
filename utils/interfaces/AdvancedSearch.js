@@ -1,4 +1,4 @@
-const { GuildMember, User, Role, Guild, Channel, Message } = require('discord.js');
+const { GuildMember, User, Role, Channel, Message } = require('discord.js');
 const listify = require('../../functions/listify');
 
 const regex = {

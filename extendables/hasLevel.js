@@ -6,8 +6,8 @@ module.exports = class extends Extendable {
         super(...args, ['Message']);
     }
 
-    extend(min) {
-        return this.client.permissionLevels.run(this, min).then(({ permission }) => permission);
+    extend(min, settings = this.guildSettings) {
+        return this.client.permissionLevels.run(this, min, settings).then(({ permission }) => permission);
     }
 
 };

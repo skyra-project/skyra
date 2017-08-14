@@ -8,7 +8,7 @@ module.exports = class Help extends Command {
             aliases: ['commands'],
             mode: 2,
 
-            usage: '[command:string]',
+            usage: '[command:command]',
             description: 'Display help for all or a single command.'
         });
     }

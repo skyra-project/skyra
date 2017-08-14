@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Reputations extends Command {
 
     constructor(...args) {
-        super(...args, 'reputations', {
+        super(...args, {
             aliases: ['reps'],
             mode: 1,
             spam: true,

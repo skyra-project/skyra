@@ -1,11 +1,11 @@
 const { Command } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Roles extends Command {
 
     constructor(...args) {
-        super(...args, 'roles', {
+        super(...args, {
             guildOnly: true,
             mode: 2,
 
@@ -32,8 +32,7 @@ module.exports = class Roles extends Command {
         });
     }
 
-    async run(msg, [action, ...input]) {
-        const settings = msg.guild.settings;
+    async run(msg, [action, ...input], settings) {
         if (action === 'list') return this.list(msg, settings);
         if (!input[0]) throw 'write `Skyra, roles list` to get a list of all roles, or `Skyra, roles claim <role1, role2, ...>` to claim them.';
         const roles = input.join(' ').split(', ');
@@ -121,7 +120,7 @@ module.exports = class Roles extends Command {
     list(msg, settings) {
         if (settings.publicRoles.length === 0) throw 'this server does not have a public role configured.';
         const theRoles = settings.publicRoles.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(this.msg.color)
             .setTitle(`Public roles for ${this.guild}`)
             .setDescription(theRoles.join('\n'));

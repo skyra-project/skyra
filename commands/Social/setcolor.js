@@ -1,12 +1,12 @@
 const { Command } = require('../../index');
 const { validate: validateColor } = require('../../functions/resolveColor');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class SetColor extends Command {
 
     constructor(...args) {
-        super(...args, 'setcolor', {
+        super(...args, {
             botPerms: ['EMBED_LINKS'],
             aliases: ['setcolour'],
             mode: 1,
@@ -35,7 +35,7 @@ module.exports = class SetColor extends Command {
         const color = hex.toString().slice(1);
         await msg.author.profile.update({ color });
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(b10.value)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(`Colour changed to ${hex.toString()}`);

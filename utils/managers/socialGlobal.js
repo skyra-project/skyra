@@ -2,6 +2,7 @@ const { Collection } = require('discord.js');
 
 const GlobalUser = require('../interfaces/GlobalUser');
 const provider = require('../../providers/rethink');
+const { log } = require('../debugLog');
 
 class SocialGlobalManager extends Collection {
 
@@ -20,6 +21,7 @@ class SocialGlobalManager extends Collection {
     }
 
     async addUser(id) {
+        log(`GLOBALSCORES | Created ${id}`);
         const globalUser = new GlobalUser(id, {});
         await provider.create('users', { id });
         super.set(id, globalUser);
@@ -27,6 +29,7 @@ class SocialGlobalManager extends Collection {
     }
 
     async delete(id) {
+        log(`GLOBALSCORES | Deleted ${id}`);
         await provider.delete('users', id);
         return super.delete(id);
     }

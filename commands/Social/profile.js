@@ -14,7 +14,7 @@ const themes = join(__dirname, '../../assets/images/social/themes/') + sep;
 module.exports = class Profile extends Command {
 
     constructor(...args) {
-        super(...args, 'profile', {
+        super(...args, {
             botPerms: ['ATTACH_FILES'],
             guildOnly: true,
             mode: 1,

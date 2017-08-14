@@ -5,7 +5,7 @@ const Timer = require('../../utils/timer');
 module.exports = class Reminder extends Command {
 
     constructor(...args) {
-        super(...args, 'remindme', {
+        super(...args, {
             aliases: ['remind', 'reminder'],
             mode: 2,
 

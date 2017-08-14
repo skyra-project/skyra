@@ -1,11 +1,11 @@
 const { Command } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'fetch', {
+        super(...args, {
             guildOnly: true,
             permLevel: 1,
             mode: 2,
@@ -26,7 +26,7 @@ module.exports = class extends Command {
             messages.push(`${msgs[i].author.username} ❯ ${msgs[i].cleanContent || '**`IMAGE/EMBED`**'}`);
         }
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(msg.member.highestRole.color || 0xdfdfdf)
             .setTitle(`Context of ${message}`)
             .setDescription(messages)

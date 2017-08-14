@@ -6,7 +6,14 @@ module.exports = class extends Extendable {
         super(...args, ['Message']);
     }
 
-    extend(content, options = {}) {
+    extend(content, options) {
+        if (!options && typeof content === 'object' && !(content instanceof Array)) {
+            options = content;
+            content = '';
+        } else if (!options) {
+            options = {};
+        }
+
         const commandMessage = this.client.commandMessages.get(this.id);
         if (commandMessage && 'files' in options === false) return commandMessage.response.edit(content, options);
         return this.channel.send(content, options)

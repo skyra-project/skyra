@@ -1,11 +1,11 @@
 const { Command } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Feedback extends Command {
 
     constructor(...args) {
-        super(...args, 'feedback', {
+        super(...args, {
             botPerms: ['EMBED_LINKS'],
             mode: 2,
 
@@ -17,7 +17,7 @@ module.exports = class Feedback extends Command {
     }
 
     async run(msg, [feedback]) {
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(0x06d310)
             .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(feedback)
@@ -30,8 +30,8 @@ module.exports = class Feedback extends Command {
         return msg.alert(`Dear ${msg.author}, thanks you for sending us feedback!`);
     }
 
-    init(client) {
-        this.channel = client.channels.get('257561807500214273');
+    init() {
+        this.channel = this.client.channels.get('257561807500214273');
     }
 
 };

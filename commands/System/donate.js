@@ -16,7 +16,7 @@ const content = Command.joinLines`
 module.exports = class Donate extends Command {
 
     constructor(...args) {
-        super(...args, 'donate', {
+        super(...args, {
             mode: 2,
 
             description: 'Donate for Skyra Project.',

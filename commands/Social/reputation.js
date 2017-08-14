@@ -6,7 +6,7 @@ require('moment-duration-format');
 module.exports = class Reputation extends Command {
 
     constructor(...args) {
-        super(...args, 'reputation', {
+        super(...args, {
             aliases: ['rep'],
             guildOnly: true,
             mode: 1,

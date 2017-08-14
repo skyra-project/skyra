@@ -1,11 +1,11 @@
 const { Command } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'list', {
+        super(...args, {
             guildOnly: true,
             permLevel: 2,
             botPerms: ['EMBED_LINKS'],
@@ -17,16 +17,16 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [type, ...input]) {
+    async run(msg, [type, ...input], settings) {
         input = input.length ? input.join(' ') : null;
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(this.msg.member.highestRole.color || 0xdfdfdf)
             .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 128 }))
             .setTimestamp();
 
-        const reply = await this[type](msg, embed, input);
+        const reply = await this[type](msg, embed, input, settings);
 
-        return msg.send(reply instanceof RichEmbed ? { embed: reply } : reply);
+        return msg.send(reply instanceof MessageEmbed ? { embed: reply } : reply);
     }
 
     async channels(msg, embed) {
@@ -77,8 +77,8 @@ module.exports = class extends Command {
             );
     }
 
-    async warnings(msg, embed, input) {
-        const cases = await msg.guild.settings.moderation.getCases().then(cs => cs.filter(rl => rl.type === 'warn'));
+    async warnings(msg, embed, input, settings) {
+        const cases = await settings.moderation.getCases().then(cs => cs.filter(rl => rl.type === 'warn'));
         if (!input) {
             return embed
                 .setTitle(msg.language.get('COMMAND_LIST_STRIKES', false))

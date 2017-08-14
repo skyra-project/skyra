@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Avatar extends Command {
 
     constructor(...args) {
-        super(...args, 'avatar', {
+        super(...args, {
             permLevel: 10,
             mode: 2,
 

@@ -19,7 +19,7 @@ const sCL = (colour) => {
 module.exports = class Color extends Command {
 
     constructor(...args) {
-        super(...args, 'color', {
+        super(...args, {
             aliases: ['colour'],
             mode: 2,
 

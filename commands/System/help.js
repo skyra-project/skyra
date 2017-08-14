@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Help extends Command {
 
     constructor(...args) {
-        super(...args, 'help', {
+        super(...args, {
             aliases: ['commands'],
             mode: 2,
 
@@ -13,20 +13,19 @@ module.exports = class Help extends Command {
         });
     }
 
-    async run(msg, [cmd]) {
+    async run(msg, [cmd], settings) {
         const method = this.client.user.bot ? 'author' : 'channel';
         if (cmd) {
-            cmd = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
-            if (!cmd) return msg.send('❌ | Unknown command, please run the help command with no arguments to get a list of them all.');
-            const info = Command.strip`
-                = ${cmd.help.name} =
-                ${cmd.help.description}
-                Usage :: ${cmd.usage.fullUsage(msg)}
-                Extended Help :: ${cmd.help.extendedHelp || 'No extended help available.'}
-            `;
+            const info = [
+                `= ${cmd.name} = `,
+                cmd.description,
+                `usage :: ${cmd.usage.fullUsage(msg)}`,
+                'Extended Help ::',
+                cmd.extendedHelp
+            ].join('\n');
             return msg.send(info, { code: 'asciidoc' });
         }
-        const help = this.buildHelp(this.client, msg);
+        const help = await this.buildHelp(msg, settings);
         const categories = Object.keys(help);
         const helpMessage = [];
         for (let cat = 0; cat < categories.length; cat++) {
@@ -35,36 +34,33 @@ module.exports = class Help extends Command {
             for (let subCat = 0; subCat < subCategories.length; subCat++) helpMessage.push(`= ${subCategories[subCat]} =`, `${help[categories[cat]][subCategories[subCat]].join('\n')}\n`);
             helpMessage.push('```\n\u200b');
         }
+
         return msg[method].send(helpMessage, { split: { char: '\u200b' } })
-            .then(() => { if (msg.channel.type !== 'dm') msg.send('📥 | Commands have been sent to your DMs.'); })
-            .catch(() => { if (msg.channel.type !== 'dm') msg.send("❌ | You have DMs disabled, I couldn't send you the commands in DMs."); });
+            .then(() => { if (msg.channel.type !== 'dm' && this.client.user.bot) msg.send(msg.language.get('COMMAND_HELP_DM')); })
+            .catch(() => { if (msg.channel.type !== 'dm' && this.client.user.bot) msg.send(msg.language.get('COMMAND_HELP_NODM')); });
     }
 
     /* eslint-disable no-restricted-syntax, no-prototype-builtins */
-    buildHelp(msg) {
+    async buildHelp(msg, settings) {
         const help = {};
 
         const commandNames = Array.from(this.client.commands.keys());
         const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
 
-        for (const command of this.client.commands.values()) {
-            if (this.runCommandInhibitors(this.client, msg, command)) {
-                const cat = command.help.category;
-                const subcat = command.help.subCategory;
-                if (!help.hasOwnProperty(cat)) help[cat] = {};
-                if (!help[cat].hasOwnProperty(subcat)) help[cat][subcat] = [];
-                help[cat][subcat].push(`${msg.guildSettings.prefix}${command.help.name.padEnd(longest)} :: ${command.help.description}`);
-            }
-        }
+        await Promise.all(this.client.commands.map((command) =>
+            this.client.inhibitors.run(msg, command, true, settings)
+                .then(() => {
+                    if (!help.hasOwnProperty(command.category)) help[command.category] = {};
+                    if (!help[command.category].hasOwnProperty(command.subCategory)) help[command.category][command.subCategory] = [];
+                    help[command.category][command.subCategory].push(`${settings.master.prefix}${command.name.padEnd(longest)} :: ${command.description}`);
+                    return;
+                })
+                .catch(() => {
+                    // noop
+                })
+        ));
 
         return help;
-    }
-
-    runCommandInhibitors(msg, command) {
-        return !this.client.commandInhibitors.some((inhibitor) => {
-            if (!inhibitor.conf.spamProtection && inhibitor.conf.enabled) return inhibitor.run(this.client, msg, command);
-            return false;
-        });
     }
 
 };

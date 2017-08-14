@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Ping extends Command {
 
     constructor(...args) {
-        super(...args, 'ping', {
+        super(...args, {
             mode: 2,
 
             description: 'Runs a connection test to Discord.'

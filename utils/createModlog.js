@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 const colour = {
     ban: { color: 0xD50000, title: 'Ban' },
@@ -44,7 +44,7 @@ class ModerationLog {
 
         const description = this.getDescription(id);
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(colour[this.type])
             .setAuthor(this.moderator.tag)
             .setDescription(description)
@@ -123,7 +123,7 @@ class ModerationLog {
         } else {
             moderator = this.moderator.raw;
         }
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(colour[this.type].color)
             .setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
             .setDescription(description)

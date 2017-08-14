@@ -3,7 +3,7 @@ const { Extendable } = require('../index');
 module.exports = class extends Extendable {
 
     constructor(...args) {
-        super(...args, ['RichEmbed']);
+        super(...args, ['MessageEmbed']);
     }
 
     extend(content) {

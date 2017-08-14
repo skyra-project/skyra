@@ -10,7 +10,7 @@ const template = resolve(join(__dirname, '../../assets/images/memes/pingkyra.png
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'pingkyra', {
+        super(...args, {
             guildOnly: true,
 
             usage: '<user:advuser>',

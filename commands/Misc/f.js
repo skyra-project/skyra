@@ -10,7 +10,7 @@ const template = resolve(join(__dirname, '../../assets/images/memes/f.png'));
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'f', {
+        super(...args, {
             aliases: ['pray'],
             guildOnly: true,
 

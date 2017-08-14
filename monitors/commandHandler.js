@@ -35,7 +35,7 @@ module.exports = class extends Monitor {
     }
 
     getPrefix(msg, settings) {
-        const prefix = settings.prefix;
+        const prefix = settings.master.prefix;
         if (this.prefixCheck(prefix, msg.content)) return new RegExp(`^${regExpEsc(prefix)}`);
         if (this.client.config.prefixMention.test(msg.content)) return this.client.config.prefixMention;
         if (friendly.test(msg.content)) return friendly;
@@ -60,10 +60,6 @@ module.exports = class extends Monitor {
     }
 
     handleError(msg, error) {
-        if (!error) return null;
-        if (typeof error === 'string') return msg.alert(`Dear ${msg.author}, ${error}`);
-        if (error.stack && this.client.debugMode && msg.author.id === '242043489611808769') error = error.stack;
-        else error = error.message || error;
         return msg.error(error);
     }
 

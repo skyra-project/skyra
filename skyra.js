@@ -1,4 +1,4 @@
-const Komada = require('./classes/client');
+const Komada = require('./lib/client');
 const cfg = require('./config.js');
 
 const Skyra = new Komada({

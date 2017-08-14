@@ -1,5 +1,5 @@
 const { Command, util } = require('../../../index');
-const { Permissions, RichEmbed, Util, Guild } = require('discord.js');
+const { Permissions, MessageEmbed, Util, Guild } = require('discord.js');
 const moment = require('moment');
 
 const PermissionFlags = Object.keys(Permissions.FLAGS);
@@ -8,7 +8,7 @@ const PermissionFlags = Object.keys(Permissions.FLAGS);
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'util', {
+        super(...args, {
             guildOnly: true,
             permLevel: 0,
             mode: 2,
@@ -32,7 +32,7 @@ module.exports = class extends Command {
             const type = perm.type === 'role' ? this.guild.roles.get(perm.id) : this.guild.members.get(perm.id);
             return `• ${type} (${perm.type}) has the permissions:${perm.allowed.bitfield !== 0 ? this.resolve(perm.allowed, '+') : ''}${perm.denied.bitfield !== 0 ? this.resolve(perm.denied, '-') : ''}`;
         }).join('\n\n');
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(this.msg.member.highestRole.color || 0xdfdfdf)
             .setDescription(`Info on **${channel.name}** (ID: ${channel.id})`)
             .addField('❯ Channel info',
@@ -81,7 +81,7 @@ module.exports = class extends Command {
             if (member.joinedAt > msg.createdTimestamp - 86400000) newbies++;
         }
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(msg.member.highestRole.color || 0xdfdfdf)
             .setDescription(`Info on **${guild.name}** (ID: **${guild.id}**)\n\u200B`)
             .setThumbnail(guild.iconURL() || null)
@@ -136,7 +136,7 @@ module.exports = class extends Command {
             perm.push(`${permissions.has(PermissionFlags[i]) ? '\\🔹' : '\\🔸'} ${util.toTitleCase(PermissionFlags[i].replace(/_/g, ' '))}`);
         }
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(this.msg.guild.members.get(member.user.id).highestRole.color || 0xdfdfdf)
             .setTitle(`Permissions for ${member.user.tag} (${member.user.id})`)
             .setDescription(perm);
@@ -152,7 +152,7 @@ module.exports = class extends Command {
         const code = inviteCode[2];
         const invite = await this.client.fetchInvite(code);
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(this.msg.color)
             .setFooter(`Invite created by: ${invite.inviter ? invite.inviter.tag : 'Unknown'}`, (invite.inviter || this.msg.author).displayAvatarURL({ size: 128 }))
             .setThumbnail(invite.guild.icon ? `https://cdn.discordapp.com/icons/${invite.guild.id}/${invite.guild.icon}.webp` : null)

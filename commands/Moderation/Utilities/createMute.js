@@ -5,7 +5,7 @@ const { createMuted } = require('../../../utils/assets');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'createmute', {
+        super(...args, {
             guildOnly: true,
             permLevel: 4,
             botPerms: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],

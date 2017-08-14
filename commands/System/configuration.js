@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Configuration extends Command {
 
     constructor(...args) {
-        super(...args, 'configuration', {
+        super(...args, {
             aliases: ['conf', 'config'],
             guildOnly: true,
             permLevel: 3,
@@ -16,7 +16,7 @@ module.exports = class Configuration extends Command {
         });
     }
 
-    async run(msg, [type, group, key, ...input]) {
+    async run(msg, [type, group, key, ...input], settings) {
         input = input.length > 0 ? input.join(' ') : 0;
         const Schema = this.client.settingGateway.schema;
 
@@ -24,7 +24,7 @@ module.exports = class Configuration extends Command {
         if (!possibilities.includes(group)) throw `Choose between one of the following: ${possibilities.join(', ')}`;
         if (type !== 'list' && (!key || key in Schema[group] === false)) throw `Choose between one of the following: ${Object.keys(Schema[group])}`;
 
-        return this[type](msg, group, key, input);
+        return this[type](msg, group, key, input, settings);
     }
 
     async set(msg, group, key, input) {
@@ -37,8 +37,8 @@ module.exports = class Configuration extends Command {
         return msg.send(msg.language.get('COMMAND_CONF_UPDATED', `${group}::${key}`, response));
     }
 
-    get(msg, group, key) {
-        return msg.send(msg.language.get('COMMAND_CONF_GET', `${group}::${key}`, this.handle(msg.guild.settings[group][key])));
+    get(msg, group, key, input, settings) {
+        return msg.send(msg.language.get('COMMAND_CONF_GET', `${group}::${key}`, this.handle(settings[group][key])));
     }
 
     reset(msg, group, key) {
@@ -46,14 +46,14 @@ module.exports = class Configuration extends Command {
             .then(response => msg.send(msg.language.get('COMMAND_CONF_RESET', `${group}::${key}`, response)));
     }
 
-    list(msg, group) {
+    list(msg, group, key, input, settings) {
         const schema = this.client.settingGateway.schema[group];
 
         const longest = Object.keys(schema).sort((a, b) => a.length < b.length)[0].length;
         const output = [`= Settings::${group} =`];
 
-        for (const [key, value] of Object.entries(msg.guild.settings[group])) {
-            output.push(`${key.padEnd(longest)} :: ${this.handle(value)}`);
+        for (const [sKey, value] of Object.entries(settings[group])) {
+            output.push(`${sKey.padEnd(longest)} :: ${this.handle(value)}`);
         }
         return msg.send(output.join('\n'), { code: 'asciidoc' });
     }

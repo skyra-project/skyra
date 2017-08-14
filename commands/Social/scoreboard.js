@@ -11,7 +11,7 @@ const titles = {
 module.exports = class ScoreBoard extends Command {
 
     constructor(...args) {
-        super(...args, 'scoreboard', {
+        super(...args, {
             aliases: ['top', 'leaderboard'],
             mode: 1,
             spam: true,

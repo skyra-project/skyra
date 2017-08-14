@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class SetStatus extends Command {
 
     constructor(...args) {
-        super(...args, 'set', {
+        super(...args, {
             permLevel: 10,
             mode: 2,
 

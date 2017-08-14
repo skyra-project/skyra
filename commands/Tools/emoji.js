@@ -6,7 +6,7 @@ const snekfetch = require('snekfetch');
 module.exports = class Emoji extends Command {
 
     constructor(...args) {
-        super(...args, 'emoji', {
+        super(...args, {
             mode: 2,
 
             usage: '<emoji:string>',

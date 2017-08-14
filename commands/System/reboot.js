@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Reboot extends Command {
 
     constructor(...args) {
-        super(...args, 'reboot', {
+        super(...args, {
             aliases: ['restart'],
             permLevel: 10,
             mode: 2,

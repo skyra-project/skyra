@@ -1,5 +1,5 @@
 const { Monitor } = require('../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Monitor {
 
@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 
         if (!settings.channels.mod) return null;
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(0xefae45)
             .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
             .setFooter(`#${msg.channel.name} | Invite link`)

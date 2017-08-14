@@ -5,7 +5,7 @@ const ModLog = require('../../../utils/createModlog.js');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'case', {
+        super(...args, {
             guildOnly: true,
             permLevel: 2,
             botPerms: ['EMBED_LINKS'],
@@ -16,8 +16,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [index]) {
-        const cases = await msg.guild.settings.moderation.getCases();
+    async run(msg, [index], settings) {
+        const cases = await settings.moderation.getCases();
 
         if (!cases[index]) throw 'this case does not seem to exist.';
         return new ModLog(msg.guild)

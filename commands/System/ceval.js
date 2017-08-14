@@ -4,7 +4,7 @@ const { Command, util } = require('../../index');
 module.exports = class ClearEval extends Command {
 
     constructor(...args) {
-        super(...args, 'ceval', {
+        super(...args, {
             aliases: ['cev'],
             permLevel: 10,
             mode: 2,

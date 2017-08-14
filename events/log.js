@@ -31,14 +31,14 @@ module.exports = class extends Event {
                     case 'log':
                         timestamp = clk.bgBlue(timestamp);
                         break;
-					// no default
+                    // no default
                 }
             }
             timestamp += ' ';
         }
 
         if (type === 'debug') type = 'log';
-		// eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
         console[type](data.split('\n').map(str => timestamp + str).join('\n'));
     }
 

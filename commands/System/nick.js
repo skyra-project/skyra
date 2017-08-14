@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Nickname extends Command {
 
     constructor(...args) {
-        super(...args, 'nickname', {
+        super(...args, {
             aliases: ['nick'],
             guildOnly: true,
             permLevel: 3,

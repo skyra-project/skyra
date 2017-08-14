@@ -1,14 +1,14 @@
-const { Command, Constants } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { Command, config } = require('../../index');
+const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
-const key = Constants.getConfig.tokens.google;
+const key = config.tokens.google;
 
 /* eslint-disable class-methods-use-this */
 module.exports = class Googl extends Command {
 
     constructor(...args) {
-        super(...args, 'googl', {
+        super(...args, {
             aliases: ['shortenurl', 'googleshorturl', 'shorten'],
             botPerms: ['EMBED_LINKS'],
             mode: 2,
@@ -35,7 +35,7 @@ module.exports = class Googl extends Command {
     }
 
     async run(msg, [url]) {
-        const embed = new RichEmbed().setColor(msg.color).setTimestamp();
+        const embed = new MessageEmbed().setColor(msg.color).setTimestamp();
         if (/^https:\/\/goo\.gl\/.+/.test(url)) embed.setDescription(await this.short(url));
         else embed.setDescription(await this.long(url));
         return msg.send({ embed });

@@ -8,7 +8,7 @@ const handleError = (err) => { throw err; };
 module.exports = class PollManager extends Command {
 
     constructor(...args) {
-        super(...args, 'poll', {
+        super(...args, {
             guildOnly: true,
             mode: 2,
 

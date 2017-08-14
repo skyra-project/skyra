@@ -6,7 +6,7 @@ const math = require('mathjs');
 module.exports = class Calculator extends Command {
 
     constructor(...args) {
-        super(...args, 'calculator', {
+        super(...args, {
             aliases: ['calculate', 'calc', 'math'],
             mode: 1,
 

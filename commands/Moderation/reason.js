@@ -1,6 +1,6 @@
 const { Command, util } = require('../../index');
 const ModLog = require('../../utils/createModlog.js');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {
 
@@ -47,7 +47,7 @@ module.exports = class extends Command {
             await message.edit({ embed });
         } else {
             const dataColor = ModLog.getColor(log.type);
-            const embed = new RichEmbed()
+            const embed = new MessageEmbed()
                 .setAuthor(log.moderator.tag)
                 .setColor(dataColor.color)
                 .setDescription([

@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Invite extends Command {
 
     constructor(...args) {
-        super(...args, 'invite', {
+        super(...args, {
             mode: 2,
 
             description: 'Displays the join server link of the bot.'

@@ -6,7 +6,7 @@ require('moment-duration-format');
 module.exports = class Daily extends Command {
 
     constructor(...args) {
-        super(...args, 'daily', {
+        super(...args, {
             mode: 1,
             spam: true,
 

@@ -1,5 +1,5 @@
 const { Command } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 const availableBanners = require('../../assets/banners.json');
 const listify = require('../../functions/listify');
@@ -8,7 +8,7 @@ const listify = require('../../functions/listify');
 module.exports = class Banner extends Command {
 
     constructor(...args) {
-        super(...args, 'banner', {
+        super(...args, {
             botPerms: ['EMBED_LINKS'],
             mode: 1,
             spam: true,
@@ -74,7 +74,7 @@ module.exports = class Banner extends Command {
 
     async prompt(msg, banner) {
         const user = await this.client.fetchUser(banner.author).catch(Command.handleError);
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(msg.color)
             .setDescription(
                 `**Author**: ${user.tag}\n` +

@@ -1,5 +1,5 @@
 const { Command, Constants: { httpResponses } } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
 
@@ -8,7 +8,7 @@ const cheerio = require('cheerio');
 module.exports = class Google extends Command {
 
     constructor(...args) {
-        super(...args, 'google', {
+        super(...args, {
             aliases: ['search'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
@@ -35,7 +35,7 @@ module.exports = class Google extends Command {
         results = results.splice(0, 4);
 
         if (!results.length) throw httpResponses(404);
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(msg.guild.me.highestRole.color || 0xdfdfdf)
             .setFooter('Google Search')
             .setDescription(results.map(res => `${decodeURIComponent(res.link)}\n\t${res.description}\n`).join('\n'))

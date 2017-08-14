@@ -14,7 +14,7 @@ module.exports = class extends Monitor {
 
     async run(msg, settings) {
         if (msg.author.bot ||
-            settings.ignoreChannels.includes(msg.channel.id) ||
+            settings.master.ignoreChannels.includes(msg.channel.id) ||
             this.cooldown(msg)) return;
 
         let userProfile = msg.author.profile;

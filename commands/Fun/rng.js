@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'rng', {
+        super(...args, {
             aliases: ['choice'],
             spam: true,
 

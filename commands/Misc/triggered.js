@@ -12,7 +12,7 @@ const template = resolve(join(__dirname, '../../assets/images/memes/triggered.pn
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'triggered', {
+        super(...args, {
             guildOnly: true,
             spam: true,
 

@@ -3,11 +3,11 @@ const { Extendable } = require('../index');
 module.exports = class extends Extendable {
 
     constructor(...args) {
-        super(...args, ['Message'], { name: 'guildSettings' });
+        super(...args, ['User'], { name: 'profile' });
     }
 
     get extend() {
-        return this.guild ? this.guild.settings : this.client.settingGateway.defaults;
+        return this.client.handler.social.global.get(this.id);
     }
 
 };

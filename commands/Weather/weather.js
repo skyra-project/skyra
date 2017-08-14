@@ -1,4 +1,4 @@
-const { Command, Constants } = require('../../index');
+const { Command, config } = require('../../index');
 const { fillRoundRect } = require('../../functions/canvas');
 
 const { join } = require('path');
@@ -7,7 +7,7 @@ const snekfetch = require('snekfetch');
 const Canvas = require('canvas');
 
 /* Autentification */
-const { GOOGLE_MAP_API, WEATHER_API } = Constants.getConfig.tokens;
+const { GOOGLE_MAP_API, WEATHER_API } = config.tokens;
 
 const colors = {
     cloudy: '#88929F',
@@ -23,7 +23,7 @@ const colors = {
 module.exports = class Weather extends Command {
 
     constructor(...args) {
-        super(...args, 'weather', {
+        super(...args, {
             botPerms: ['ATTACH_FILES'],
             mode: 1,
 

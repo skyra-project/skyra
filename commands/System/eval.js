@@ -6,7 +6,7 @@ const now = require('performance-now');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'eval', {
+        super(...args, {
             aliases: ['ev'],
             permLevel: 10,
             mode: 2,
@@ -19,17 +19,17 @@ module.exports = class extends Command {
     async run(msg, [args]) {
         const { type, input } = this.parse(args.split(' '));
         const start = now();
-        const out = await this.eval(type ? `(async () => { ${input} })()` : input);
+        const out = await this.eval(msg, type ? `(async () => { ${input} })()` : input);
         const time = now() - start;
         if (out.success === false && this.client.debugMode === true) out.output = out.output.stack || out.output.message;
         if (out.output === undefined || out.output === '') out.output = '<void>';
         return msg.send([
             `Executed in ${time.toFixed(5)}μs | ${out.success ? '🔍 **Inspect:**' : '❌ **Error:**'}`,
-            Command.codeBlock('js', this.clean(out.output))
+            util.codeBlock('js', this.clean(out.output))
         ]).catch(err => msg.error(err));
     }
 
-    async eval(input) {
+    async eval(msg, input) {
         try {
             let res = eval(input);
             if (res instanceof Promise) res = await res.catch((err) => { throw err; });
@@ -43,7 +43,7 @@ module.exports = class extends Command {
         if (typeof text === 'object' && typeof text !== 'string') {
             return util.clean(inspect(text, { depth: 0, showHidden: true }));
         }
-        return util.clean(text);
+        return util.clean(String(text));
     }
 
     parse(toEval) {

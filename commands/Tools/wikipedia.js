@@ -1,5 +1,5 @@
 const { Command, Constants: { httpResponses }, util } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
 const baseURL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
@@ -8,7 +8,7 @@ const baseURL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&pro
 module.exports = class WikiPedia extends Command {
 
     constructor(...args) {
-        super(...args, 'wikipedia', {
+        super(...args, {
             aliases: ['wiki'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
@@ -26,7 +26,7 @@ module.exports = class WikiPedia extends Command {
         const content = text.query.pages[text.query.pageids[0]];
         const definition = this.content(content.extract, url);
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setTitle(content.title)
             .setURL(url)
             .setColor(0x05C9E8)

@@ -1,5 +1,5 @@
 const { Command, util } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 const { get: fetchProfile } = require('../../functions/overwatch');
 const overwatch = require('../../utils/overwatch.js');
@@ -22,7 +22,7 @@ const doRequest = url => snekfetch.get(url).then(data => JSON.parse(data.text));
 module.exports = class Overwatch extends Command {
 
     constructor(...args) {
-        super(...args, 'overwatch', {
+        super(...args, {
             botPerms: ['EMBED_LINKS'],
             aliases: ['ow'],
             mode: 2,
@@ -76,7 +76,7 @@ module.exports = class Overwatch extends Command {
         const output = await this.fetchData(resolved.careerLink, profile);
         if (output instanceof Buffer) return msg.send({ files: [{ attachment: output, name: 'overwatch.png' }] });
         const { overview, title, data, url } = output;
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setURL(url)
             .setColor(msg.color)
             .setThumbnail(overview.profile.avatar)

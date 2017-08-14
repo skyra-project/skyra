@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'dice', {
+        super(...args, {
             spam: true,
 
             usage: '[rolls:int{1,1024}] [sides:int{4,1024}]',

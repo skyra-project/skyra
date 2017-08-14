@@ -5,7 +5,7 @@ const { oneToTen } = require('../../utils/constants');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'rate', {
+        super(...args, {
             spam: true,
 
             usage: '<user:string>',

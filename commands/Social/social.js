@@ -5,7 +5,7 @@ const Rethink = require('../../providers/rethink');
 module.exports = class Social extends Command {
 
     constructor(...args) {
-        super(...args, 'social', {
+        super(...args, {
             aliases: ['socialmanage'],
             guildOnly: true,
             permLevel: 2,

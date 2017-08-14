@@ -1,7 +1,7 @@
-const { Command, Constants: { httpResponses, getConfig } } = require('../../index');
+const { Command, Constants: { httpResponses }, config } = require('../../index');
 const snekfetch = require('snekfetch');
 
-const key = getConfig.tokens.google;
+const key = config.tokens.google;
 const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${input}&key=${key}`)
     .then(data => JSON.parse(data.text));
 
@@ -9,7 +9,7 @@ const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/sea
 module.exports = class YouTube extends Command {
 
     constructor(...args) {
-        super(...args, 'youtube', {
+        super(...args, {
             mode: 1,
 
             usage: '<query:string> [index:int]',

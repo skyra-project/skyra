@@ -2,6 +2,7 @@ const { Collection } = require('discord.js');
 
 const LocalMember = require('../interfaces/LocalMember');
 const provider = require('../../providers/rethink');
+const { log } = require('../debugLog');
 
 class LocalManager extends Collection {
 
@@ -22,18 +23,21 @@ class LocalManager extends Collection {
     }
 
     async createMember(member) {
+        log(`LOCALSCORES | Created ${member} profile for ${this.guild}`);
         const localMember = new LocalMember(this.guild, member, {});
-        await provider.append('localScores', this.guild, 'scores', member.toJSON())
+        await provider.append('localScores', this.guild, 'scores', localMember.toJSON())
             .then(() => super.set(localMember.id, localMember));
         return localMember;
     }
 
     async removeMember(member) {
+        log(`LOCALSCORES | Removed ${member} from ${this.guild}`);
         await provider.removeFromArrayByID('localScores', this.guild, 'scores', member);
         return super.delete(member);
     }
 
     async create() {
+        log(`LOCALSCORES | Created ${this.guild}`);
         await provider.create('localScores', { id: this.guild, scores: [] });
         return this;
     }
@@ -64,6 +68,7 @@ class SocialLocalManager extends Collection {
     }
 
     async delete(guild) {
+        log(`LOCALSCORES | Deleted ${this.guild}`);
         await provider.delete('localScores', guild);
         return super.delete(guild);
     }

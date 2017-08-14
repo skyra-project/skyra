@@ -7,7 +7,7 @@ const moment = require('moment');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'track', {
+        super(...args, {
             guildOnly: true,
             permLevel: 1,
             mode: 2,

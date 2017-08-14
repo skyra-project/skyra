@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class DirectMessage extends Command {
 
     constructor(...args) {
-        super(...args, 'dm', {
+        super(...args, {
             permLevel: 10,
             mode: 2,
 

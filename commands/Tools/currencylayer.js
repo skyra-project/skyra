@@ -1,7 +1,7 @@
-const { Command, Constants } = require('../../index');
+const { Command, config } = require('../../index');
 const snekfetch = require('snekfetch');
 
-const key = Constants.getConfig.tokens.currencyLayer;
+const key = config.tokens.currencyLayer;
 
 /* eslint-disable no-multi-spaces */
 const currencyList = [
@@ -36,7 +36,7 @@ const request = url => snekfetch.get(url)
 module.exports = class CurrencyLayer extends Command {
 
     constructor(...args) {
-        super(...args, 'currencylayer', {
+        super(...args, {
             aliases: ['currencyl', 'cl'],
             mode: 1,
 

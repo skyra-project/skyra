@@ -7,7 +7,7 @@ module.exports = class extends Extendable {
     }
 
     get extend() {
-        return this.client.languages.get(this.constructor.name === 'Message' ? this.guildSettings.language : this.settings.language);
+        return this.client.languages.get(this.constructor.name === 'Message' ? this.guildSettings.master.language : this.settings.master.language);
     }
 
 };

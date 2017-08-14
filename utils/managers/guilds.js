@@ -2,6 +2,7 @@ const { Collection } = require('discord.js');
 
 const GuildSettings = require('../interfaces/GuildSettings');
 const provider = require('../../providers/rethink');
+const { log } = require('../debugLog');
 
 class GuildManager extends Collection {
 
@@ -16,6 +17,7 @@ class GuildManager extends Collection {
     }
 
     async create(id) {
+        log(`GUILDS | Created ${id}`);
         const guildSettings = new GuildSettings(id, {});
         await provider.create('guilds', { id });
         await provider.create('moderation', { id, cases: [] });
@@ -25,6 +27,7 @@ class GuildManager extends Collection {
     }
 
     async delete(id) {
+        log(`GUILDS | Deleted ${id}`);
         await provider.delete('guilds', id);
         return super.delete(id);
     }

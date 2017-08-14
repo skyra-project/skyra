@@ -10,7 +10,7 @@ const template = resolve(join(__dirname, '../../assets/images/memes/DeletThis.pn
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'deletthis', {
+        super(...args, {
             aliases: ['deletethis'],
             guildOnly: true,
 

@@ -15,7 +15,6 @@ class Fetch {
 
     resolveRole(query, guild) {
         if (query instanceof Role) return guild.roles.has(query.id) ? query : null;
-        if (query instanceof Guild) return guild.defaultRole;
         if (typeof query === 'string' && regex.role.test(query)) return guild.roles.get(regex.role.exec(query)[1]);
         return null;
     }
@@ -35,7 +34,6 @@ class Fetch {
 
     resolveChannel(query, guild) {
         if (query instanceof Channel) return query;
-        if (query instanceof Guild) return query.defaultChannel;
         if (query instanceof Message) return query.channel;
         if (typeof query === 'string' && regex.channel.test(query)) return guild.channels.get(regex.channel.exec(query)[1]);
         return null;
@@ -68,7 +66,7 @@ class Fetch {
     }
 
     async user(query, msg) {
-        const resUser = await this.resolveMember(query, msg.guild);
+        const resUser = await this.resolveUser(query, msg.guild);
         if (resUser) return resUser;
 
         const results = [];
@@ -89,9 +87,11 @@ class Fetch {
     }
 
     async makePrompt(msg, results, parseList, index = 1, alert = 'I have found multiple matches') {
-        await msg.send(`Dear ${msg.author}, ${alert}:${'```asciidoc'}${listify(results.map(parseList), { index })}${'```'}`);
-        const response = await msg.awaitMessages(message => message.author.id === msg.author.id, { time: 30000, errors: ['time'] });
-        const resText = response.content.toLowerCase();
+        await msg.send(`Dear ${msg.author}, ${alert}:${'```asciidoc'}\n${listify(results.map(parseList), { index })}${'```'}`);
+        const response = await msg.channel.awaitMessages(message => message.author.id === msg.author.id, { time: 30000, errors: ['time'], max: 1 });
+        const message = response.first();
+        const resText = message.content.toLowerCase();
+        if (message.deletable) message.delete().catch(() => null);
         if (resText === 'abort') return this.promptAbort(msg);
         if (resText === 'next') {
             let nextIndex = index;
@@ -107,8 +107,7 @@ class Fetch {
         }
         if (isNaN(resText) === false) {
             const number = parseInt(resText);
-            if (results[number + 1]) return results[number + 1];
-            return this.makePrompt(msg, results, parseList, index, 'I cannot find that index from this list, try again.');
+            return results[number - 1] || this.makePrompt(msg, results, parseList, index, 'I cannot find that index from this list, try again.');
         }
         return this.promptAbort(msg);
     }

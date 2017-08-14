@@ -20,7 +20,7 @@ const randomValues = {
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, '8ball', {
+        super(...args, {
             spam: true,
 
             usage: '<Question:string>',

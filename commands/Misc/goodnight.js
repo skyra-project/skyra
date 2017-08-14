@@ -11,7 +11,7 @@ const template = resolve(join(__dirname, '../../assets/images/memes/goodnight.pn
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'goodnight', {
+        super(...args, {
             guildOnly: true,
 
             usage: '<user:advuser>',

@@ -1,12 +1,12 @@
 const { Command, Constants: { httpResponses }, util } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class UrbanDictionary extends Command {
 
     constructor(...args) {
-        super(...args, 'urban', {
+        super(...args, {
             aliases: ['urbandictionary'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
@@ -37,7 +37,7 @@ module.exports = class UrbanDictionary extends Command {
         const result = list[index];
         if (result === undefined) throw httpResponses(404);
         const definition = this.content(result.definition, result.permalink);
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setTitle(`Word: ${util.toTitleCase(query)}`)
             .setURL(result.permalink)
             .setColor(msg.color)

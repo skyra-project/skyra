@@ -14,7 +14,7 @@ const themes = join(__dirname, '../../assets/images/social/themes/') + sep;
 module.exports = class Level extends Command {
 
     constructor(...args) {
-        super(...args, 'level', {
+        super(...args, {
             aliases: ['lvl'],
             botPerms: ['ATTACH_FILES'],
             guildOnly: true,

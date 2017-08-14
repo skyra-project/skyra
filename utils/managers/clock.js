@@ -1,5 +1,6 @@
 const Rethink = require('../../providers/rethink');
 const TaskProcess = require('../taskProcess');
+const { log } = require('../debugLog');
 
 /**
  * Task scheduler.
@@ -70,6 +71,7 @@ class Clock {
     }
 
     async remove(task, cache = true) {
+        log(`CLOCK | Deleting ${task}`);
         await Rethink.delete('tasks', task).catch((err) => { throw err; });
         if (cache) this.tasks = this.tasks.filter(entry => entry.id !== task);
         return task;

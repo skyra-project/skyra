@@ -1,5 +1,5 @@
 const { Command, util } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 /* EMBED ASSETS */
 const reels = [
@@ -101,7 +101,7 @@ class SlotMachines {
 module.exports = class SlotMachine extends Command {
 
     constructor(...args) {
-        super(...args, 'balance', {
+        super(...args, {
             aliases: ['slotmachines', 'slot'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
@@ -155,7 +155,7 @@ module.exports = class SlotMachine extends Command {
             `${array[6]}ー${array[7]}ー${array[8]}`
         ].join('\n');
 
-        const embed = new RichEmbed();
+        const embed = new MessageEmbed();
         if (win) {
             embed
                 .setColor(0x5C913B)

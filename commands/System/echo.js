@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Echo extends Command {
 
     constructor(...args) {
-        super(...args, 'echo', {
+        super(...args, {
             aliases: ['talk'],
             permLevel: 10,
             mode: 2,

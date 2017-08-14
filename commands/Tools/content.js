@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Content extends Command {
 
     constructor(...args) {
-        super(...args, 'content', {
+        super(...args, {
             guildOnly: true,
             mode: 2,
 

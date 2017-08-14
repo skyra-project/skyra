@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Pay extends Command {
 
     constructor(...args) {
-        super(...args, 'pay', {
+        super(...args, {
             guildOnly: true,
             mode: 1,
             spam: true,

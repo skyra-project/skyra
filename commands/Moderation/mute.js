@@ -5,7 +5,7 @@ const Assets = require('../../utils/assets');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'mute', {
+        super(...args, {
             guildOnly: true,
             permLevel: 2,
             botPerms: ['MANAGE_ROLES'],
@@ -17,15 +17,15 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [user, ...reason]) {
+    async run(msg, [user, ...reason], settings) {
         const member = await msg.guild.fetchMember(user.id).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
 
         if (user.id === msg.author.id) throw msg.language.get('COMMAND_USERSELF');
         else if (user.id === this.client.user.id) throw msg.language.get('COMMAND_TOSKYRA');
         else if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
 
-        const mute = await this.configuration(msg);
-        if (msg.guild.settings.moderation.mutes.has(user.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
+        const mute = await this.configuration(msg, settings);
+        if (settings.moderation.mutes.has(user.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
 
         reason = reason.length ? reason.join(' ') : null;
         const roles = member._roles;
@@ -42,14 +42,14 @@ module.exports = class extends Command {
             .send();
     }
 
-    async configuration(msg) {
-        if (!msg.guild.settings.roles.muted) {
+    async configuration(msg, settings) {
+        if (!settings.roles.muted) {
             await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
                 .catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
             await msg.send(msg.language.get('SYSTEM_PROCESSING'));
             return Assets.createMuted(msg);
         }
-        return msg.guild.roles.get(msg.guild.settings.roles.muted);
+        return msg.guild.roles.get(settings.roles.muted);
     }
 
 };

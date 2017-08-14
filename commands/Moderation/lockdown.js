@@ -4,7 +4,7 @@ const Timer = require('../../utils/timer');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'lockdown', {
+        super(...args, {
             aliases: ['lock'],
             guildOnly: true,
             permLevel: 2,

@@ -1,5 +1,5 @@
 const { Command, Constants: { httpResponses } } = require('../../index');
-const XmlEntities = require('html-entities');
+const { XmlEntities } = require('html-entities');
 const { decode } = new XmlEntities();
 const snekfetch = require('snekfetch');
 
@@ -10,7 +10,7 @@ const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=e
 module.exports = class Define extends Command {
 
     constructor(...args) {
-        super(...args, 'define', {
+        super(...args, {
             mode: 1,
 
             usage: '<input:string>',

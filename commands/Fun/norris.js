@@ -1,12 +1,12 @@
 const { Command } = require('../../index');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
 /* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'norris', {
+        super(...args, {
             aliases: ['chucknorris'],
             spam: true,
 
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 
     async run(msg) {
         const data = await this.fetchURL('https://api.chucknorris.io/jokes/random');
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(0x80D8FF)
             .setTitle('Chuck Norris')
             .setURL(data.url)

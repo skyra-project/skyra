@@ -4,7 +4,7 @@ const ModLog = require('../../utils/createModlog.js');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'warn', {
+        super(...args, {
             aliases: ['warning'],
             guildOnly: true,
             permLevel: 1,

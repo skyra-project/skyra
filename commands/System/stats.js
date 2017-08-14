@@ -8,7 +8,7 @@ require('moment-duration-format');
 module.exports = class Status extends Command {
 
     constructor(...args) {
-        super(...args, 'status', {
+        super(...args, {
             aliases: ['stats', 'sts'],
             mode: 2,
 

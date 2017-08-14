@@ -3,7 +3,7 @@ const { Command } = require('../../index');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'filter', {
+        super(...args, {
             guildOnly: true,
             permLevel: 1,
             mode: 2,
@@ -15,9 +15,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [action, ...input]) {
+    async run(msg, [action, ...input], settings) {
         const word = input.length ? input.join(' ') : null;
-        const settings = msg.guild.settings;
         return this[action](msg, word, settings);
     }
 

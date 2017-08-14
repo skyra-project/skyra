@@ -1,6 +1,6 @@
 const { Command, Constants: { oneToTen, basicAuth, httpResponses }, config } = require('../../index');
 const { fromString } = require('html-to-text');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 const options = { headers: { Authorization: basicAuth(config.tokens.animelist.user, config.tokens.animelist.password) } };
 
@@ -20,7 +20,7 @@ const getURL = input => `https://myanimelist.net/api/anime/search.xml?q=${input}
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'anime', {
+        super(...args, {
             botPerms: ['EMBED_LINKS'],
 
             usage: '<query:string>',
@@ -48,7 +48,7 @@ module.exports = class extends Command {
         const i18n = msg.language;
         const [tType, tScore, tStatus, tWatchIt] = i18n.get('COMMAND_ANIME_TITLES');
 
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
             .setColor(oneToTen(score).color)
             .setAuthor(...this.getAuthor(msg, entry, i18n))
             .setDescription(i18n.get('COMMAND_ANIME_DESCRIPTION', entry, context))
@@ -70,7 +70,7 @@ module.exports = class extends Command {
     getAuthor(msg, entry, i18n) {
         return [
             i18n.get('COMMAND_ANIME_TITLE', entry),
-            entry.image || msg.author.displayAvatarURL({ size: 128 })
+            entry.image && entry.image.length > 0 ? entry.image[0] : msg.author.displayAvatarURL({ size: 128 })
         ];
     }
 

@@ -26,6 +26,7 @@ class GuildSettings {
         this._merge(data, 'selfmod');
         this._merge(data, 'filter');
         this.filter.regexp = null;
+        this.autoroles = data.autoroles || [];
 
         if (!data.social) data.social = {};
         this.social = {

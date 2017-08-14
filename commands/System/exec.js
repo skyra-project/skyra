@@ -5,7 +5,7 @@ const exec = require('util').promisify(require('child_process').exec);
 module.exports = class ChildProcess extends Command {
 
     constructor(...args) {
-        super(...args, 'execute', {
+        super(...args, {
             aliases: ['exec'],
             permLevel: 10,
             mode: 2,

@@ -14,7 +14,7 @@ const fetchTW = twit => snekfetch.get(`https://publish.twitter.com/oembed?url=${
 module.exports = class Post extends Command {
 
     constructor(...args) {
-        super(...args, 'post', {
+        super(...args, {
             permLevel: 10,
             mode: 1,
             spam: true,

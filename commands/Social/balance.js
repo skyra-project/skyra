@@ -4,7 +4,7 @@ const { Command } = require('../../index');
 module.exports = class Balance extends Command {
 
     constructor(...args) {
-        super(...args, 'balance', {
+        super(...args, {
             aliases: ['bal', 'credits'],
             mode: 1,
             spam: true,

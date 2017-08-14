@@ -4,7 +4,7 @@ const ModLog = require('../../utils/createModlog.js');
 module.exports = class extends Command {
 
     constructor(...args) {
-        super(...args, 'softban', {
+        super(...args, {
             guildOnly: true,
             permLevel: 2,
             botPerms: ['BAN_MEMBERS'],

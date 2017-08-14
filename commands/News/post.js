@@ -10,14 +10,14 @@ const url = require('url');
 const fetchTW = twit => snekfetch.get(`https://publish.twitter.com/oembed?url=${encodeURIComponent(twit)}`)
     .then(data => JSON.parse(data.text).html);
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Post extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             permLevel: 10,
             mode: 1,
             spam: true,
+            cooldown: 180,
 
             usage: '<post:string>',
             description: 'Post some news.'

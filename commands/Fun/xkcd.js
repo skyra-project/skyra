@@ -3,12 +3,13 @@ const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 const moment = require('moment');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             spam: true,
+
+            cooldown: 10,
 
             description: 'Read comics from XKCD.'
         });

@@ -6,13 +6,14 @@ const Canvas = require('canvas');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/DeletThis.png'));
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['deletethis'],
             guildOnly: true,
+
+            cooldown: 30,
 
             usage: '<user:advuser>',
             description: "I'll hammer you anyway."

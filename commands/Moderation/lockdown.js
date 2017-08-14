@@ -10,6 +10,7 @@ module.exports = class extends Command {
             permLevel: 2,
             botPerms: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
             mode: 2,
+            cooldown: 10,
 
             usage: '[channel:channel] [time:string]',
             usageDelim: ' ',

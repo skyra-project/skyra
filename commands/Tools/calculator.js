@@ -2,13 +2,13 @@ const { Command, util } = require('../../index');
 const now = require('performance-now');
 const math = require('mathjs');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Calculator extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['calculate', 'calc', 'math'],
             mode: 1,
+            cooldown: 10,
 
             usage: '<equation:string>',
             description: 'Calculate arbitrary maths.',

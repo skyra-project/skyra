@@ -2,15 +2,14 @@ const { Command } = require('../../index');
 const Timer = require('../../utils/timer');
 
 const timeRegExp = /^(\d{1,3} (s(?:ec(?:ond)?)?|m(?:in(?:ute)?)?|h(?:our)?|d(?:ay)?)s? ?)+/;
-const handleError = (err) => { throw err; };
 
-/* eslint-disable class-methods-use-this */
-module.exports = class PollManager extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             guildOnly: true,
             mode: 2,
+            cooldown: 15,
 
             usage: '<equation:string>',
             description: 'Calculate arbitrary maths.',
@@ -167,7 +166,7 @@ module.exports = class PollManager extends Command {
         if (!poll.options.includes(option)) return msg.send(`Dear ${msg.author}, please choose between:\n${poll.options.map(opt => `• ${opt}`).join('\n')}`);
         const votes = poll.votes[option] || 0;
         poll.voted.push(msg.author.id);
-        await this.clock.update(poll, { voted: poll.voted, votes: { [option]: votes + 1 } }).catch(handleError);
+        await this.clock.update(poll, { voted: poll.voted, votes: { [option]: votes + 1 } }).catch(Command.handleError);
         return msg.send('Vote registered.');
     }
 

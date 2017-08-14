@@ -19,13 +19,13 @@ const colors = {
     windy: '#33B679'
 };
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Weather extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             botPerms: ['ATTACH_FILES'],
             mode: 1,
+            cooldown: 120,
 
             usage: '<city:string>',
             description: 'Check the weather status in a location.'

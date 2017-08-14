@@ -2,8 +2,7 @@ const { Command } = require('../../index');
 const moment = require('moment');
 require('moment-duration-format');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Reputation extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -11,6 +10,7 @@ module.exports = class Reputation extends Command {
             guildOnly: true,
             mode: 1,
             spam: true,
+            cooldown: 30,
 
             usage: '<user:advuser>',
             description: 'Give somebody a reputation point.',

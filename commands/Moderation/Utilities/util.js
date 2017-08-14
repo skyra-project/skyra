@@ -4,7 +4,6 @@ const moment = require('moment');
 
 const PermissionFlags = Object.keys(Permissions.FLAGS);
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {

@@ -11,8 +11,7 @@ Canvas
 const profileTemplate = join(__dirname, '../../assets/images/social/profile-foreground.png');
 const themes = join(__dirname, '../../assets/images/social/themes/') + sep;
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Profile extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -20,6 +19,7 @@ module.exports = class Profile extends Command {
             guildOnly: true,
             mode: 1,
             spam: true,
+            cooldown: 30,
 
             usage: '[user:advuser]',
             description: 'Check your user profile.',

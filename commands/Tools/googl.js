@@ -4,14 +4,14 @@ const snekfetch = require('snekfetch');
 
 const key = config.tokens.google;
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Googl extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['shortenurl', 'googleshorturl', 'shorten'],
             botPerms: ['EMBED_LINKS'],
             mode: 2,
+            cooldown: 15,
 
             usage: '<URL:url>',
             description: 'Short your links with this tool.',

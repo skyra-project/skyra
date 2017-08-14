@@ -1,13 +1,13 @@
 const { Command } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Feedback extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             botPerms: ['EMBED_LINKS'],
             mode: 2,
+            cooldown: 10,
 
             usage: '<message:string{8,1900}>',
             description: "Send a feedback message to the bot's owner."

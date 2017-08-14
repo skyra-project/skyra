@@ -6,13 +6,14 @@ const Canvas = require('canvas');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/f.png'));
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['pray'],
             guildOnly: true,
+
+            cooldown: 30,
 
             usage: '<user:advuser>',
             description: 'Press F to pray respects.'

@@ -6,12 +6,12 @@ const snekfetch = require('snekfetch');
 const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${input}`)
     .then(data => JSON.parse(data.text));
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Define extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             mode: 1,
+            cooldown: 10,
 
             usage: '<input:string>',
             description: 'Check the definition of a word.',

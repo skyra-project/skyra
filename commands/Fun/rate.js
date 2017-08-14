@@ -1,12 +1,13 @@
 const { Command } = require('../../index');
 const { oneToTen } = require('../../utils/constants');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             spam: true,
+
+            cooldown: 10,
 
             usage: '<user:string>',
             description: 'Let bots have opinions and rate somebody.',

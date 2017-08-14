@@ -19,12 +19,13 @@ const coord2 = [
     [351, 390, 40]
 ];
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             guildOnly: true,
+
+            cooldown: 30,
 
             usage: '<user:advuser>',
             description: "I'll teach you how to flirt."

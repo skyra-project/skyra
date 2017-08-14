@@ -1,7 +1,6 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Configuration extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -9,6 +8,7 @@ module.exports = class Configuration extends Command {
             guildOnly: true,
             permLevel: 3,
             mode: 2,
+            cooldown: 5,
 
             usage: '<set|get|reset|list|remove> <group:string> [key:string] [value:string] [...]',
             usageDelim: ' ',

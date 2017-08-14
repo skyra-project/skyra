@@ -16,12 +16,13 @@ const randomValues = {
     thisElse: ['Most likely.', 'Nope.', 'YES!', 'Maybe.']
 };
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             spam: true,
+
+            cooldown: 10,
 
             usage: '<Question:string>',
             description: 'Skyra will read the Holy Bible to find the correct answer for your question.',

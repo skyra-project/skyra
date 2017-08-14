@@ -1,7 +1,6 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Reboot extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {

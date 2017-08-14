@@ -9,6 +9,7 @@ module.exports = class extends Command {
             permLevel: 2,
             botPerms: ['BAN_MEMBERS'],
             mode: 2,
+            cooldown: 5,
 
             usage: '<SearchMember:user> [days:integer] [reason:string] [...]',
             usageDelim: ' ',

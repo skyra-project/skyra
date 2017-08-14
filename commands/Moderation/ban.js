@@ -10,6 +10,8 @@ module.exports = class extends Command {
             botPerms: ['BAN_MEMBERS'],
             mode: 2,
 
+            cooldown: 5,
+
             usage: '<SearchMember:user> [reason:string] [...]',
             usageDelim: ' ',
             description: 'Ban the mentioned user.'

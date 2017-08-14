@@ -1,6 +1,5 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {

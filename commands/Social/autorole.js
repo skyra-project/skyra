@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 const Rethink = require('../../providers/rethink');
 
-/* eslint-disable class-methods-use-this, max-len */
-module.exports = class AutoRole extends Command {
+/* eslint-disable max-len */
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -10,6 +10,7 @@ module.exports = class AutoRole extends Command {
             guildOnly: true,
             permLevel: 3,
             mode: 2,
+            cooldown: 10,
 
             usage: '<input:string>',
             usageDelim: ' ',

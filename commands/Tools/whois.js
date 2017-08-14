@@ -4,14 +4,14 @@ const moment = require('moment');
 
 const sortRanks = (a, b) => b.position > a.position;
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Whois extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['userinfo'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
+            cooldown: 15,
 
             usage: '[query:advuser]',
             description: 'Who are you?'

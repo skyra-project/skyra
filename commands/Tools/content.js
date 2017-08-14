@@ -1,14 +1,14 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Content extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             guildOnly: true,
             mode: 2,
+            cooldown: 15,
 
-            usage: '<message:string{17,21}> [channel:channel]',
+            usage: '<message:string{17,19}> [channel:channel]',
             usageDelim: ' ',
             description: "Get messages' raw content."
         });

@@ -4,14 +4,14 @@ const { MessageEmbed } = require('discord.js');
 const availableBanners = require('../../assets/banners.json');
 const listify = require('../../functions/listify');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Banner extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             botPerms: ['EMBED_LINKS'],
             mode: 1,
             spam: true,
+            cooldown: 5,
 
             usage: '<list|buy|set|buylist> [banner:string]',
             usageDelim: ' ',

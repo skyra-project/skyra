@@ -10,6 +10,7 @@ module.exports = class extends Command {
             permLevel: 2,
             botPerms: ['MANAGE_ROLES'],
             mode: 2,
+            cooldown: 5,
 
             usage: '<SearchMember:user> [reason:string] [...]',
             usageDelim: ' ',

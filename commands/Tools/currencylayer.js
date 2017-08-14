@@ -33,12 +33,13 @@ const currencyList = [
 const request = url => snekfetch.get(url)
     .then(data => JSON.parse(data.text));
 
-module.exports = class CurrencyLayer extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['currencyl', 'cl'],
             mode: 1,
+            cooldown: 10,
 
             usage: '<money:int> <input:string{3,3}> <output:string{3,3}>',
             usageDelim: ' ',

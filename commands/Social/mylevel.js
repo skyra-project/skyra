@@ -1,13 +1,13 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class MyLevel extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             guildOnly: true,
             mode: 1,
             spam: true,
+            cooldown: 30,
 
             description: 'Check your local level.'
         });

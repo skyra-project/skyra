@@ -10,8 +10,7 @@ Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { fa
 const profileTemplate = join(__dirname, '../../assets/images/social/level-foreground.png');
 const themes = join(__dirname, '../../assets/images/social/themes/') + sep;
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Level extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -20,6 +19,7 @@ module.exports = class Level extends Command {
             guildOnly: true,
             mode: 1,
             spam: true,
+            cooldown: 30,
 
             usage: '[user:advuser]',
             description: 'Check your global level.',

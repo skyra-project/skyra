@@ -1,13 +1,13 @@
 const { Command } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Roles extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             guildOnly: true,
             mode: 2,
+            cooldown: 15,
 
             usage: '<list|claim|unclaim> [roles:advrole] [...]',
             usageDelim: ' ',

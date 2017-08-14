@@ -1,7 +1,6 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Social extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -10,6 +9,7 @@ module.exports = class Social extends Command {
             permLevel: 2,
             mode: 2,
             spam: true,
+            cooldown: 10,
 
             usage: '<delete|add|remove> <user:advuser> [value:int]',
             usageDelim: ' ',

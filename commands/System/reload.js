@@ -6,8 +6,9 @@ module.exports = class extends Command {
         super(...args, {
             aliases: ['r'],
             permLevel: 10,
-            description: "Reloads the klasa piece, if it's been updated or modified.",
-            usage: '<inhibitors|finalizers|monitors|languages|providers|events|commands|extendables|Piece:piece>'
+
+            usage: '<inhibitors|finalizers|monitors|languages|providers|events|commands|extendables|Piece:piece>',
+            description: "Reloads the klasa piece, if it's been updated or modified."
         });
     }
 

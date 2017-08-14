@@ -1,12 +1,11 @@
 const { Command } = require('../../index');
 const exec = require('util').promisify(require('child_process').exec);
 
-/* eslint-disable class-methods-use-this */
-module.exports = class ChildProcess extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            aliases: ['exec'],
+            aliases: ['execute'],
             permLevel: 10,
             mode: 2,
 

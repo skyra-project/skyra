@@ -2,7 +2,6 @@ const { Command, util } = require('../../index');
 const { inspect } = require('util');
 const now = require('performance-now');
 
-/* eslint-disable no-eval, class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {

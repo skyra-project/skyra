@@ -7,14 +7,14 @@ const titles = {
     reputation: '🙏 Reputation Scoreboard'
 };
 
-/* eslint-disable class-methods-use-this */
-module.exports = class ScoreBoard extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['top', 'leaderboard'],
             mode: 1,
             spam: true,
+            cooldown: 30,
 
             usage: '[global|local|money|reputation] [index:int]',
             usageDelim: ' ',

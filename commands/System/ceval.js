@@ -1,7 +1,6 @@
 const { Command, util } = require('../../index');
 
-/* eslint-disable no-eval, class-methods-use-this */
-module.exports = class ClearEval extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {

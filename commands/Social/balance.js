@@ -1,13 +1,13 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Balance extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['bal', 'credits'],
             mode: 1,
             spam: true,
+            cooldown: 30,
 
             description: 'Check your current balance.'
         });

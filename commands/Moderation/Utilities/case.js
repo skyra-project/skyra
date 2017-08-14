@@ -1,7 +1,6 @@
 const { Command } = require('../../../index');
 const ModLog = require('../../../utils/createModlog.js');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
@@ -10,6 +9,7 @@ module.exports = class extends Command {
             permLevel: 2,
             botPerms: ['EMBED_LINKS'],
             mode: 2,
+            cooldown: 5,
 
             usage: '<Case:integer>',
             description: 'Get the information from a case by its index.'

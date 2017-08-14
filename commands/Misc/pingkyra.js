@@ -6,12 +6,13 @@ const Canvas = require('canvas');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/pingkyra.png'));
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             guildOnly: true,
+
+            cooldown: 30,
 
             usage: '<user:advuser>',
             description: 'How you dare pinging me!'

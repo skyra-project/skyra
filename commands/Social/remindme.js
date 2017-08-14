@@ -1,13 +1,13 @@
 const { Command } = require('../../index');
 const Timer = require('../../utils/timer');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Reminder extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['remind', 'reminder'],
             mode: 2,
+            cooldown: 30,
 
             usage: '<input:string>',
             description: 'Add reminders.',

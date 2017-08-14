@@ -18,14 +18,14 @@ const emojis = {
 const list = data => Object.entries(data).map(([key, value]) => `**${key}**: ${value}`).join('\n');
 const doRequest = url => snekfetch.get(url).then(data => JSON.parse(data.text));
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Overwatch extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             botPerms: ['EMBED_LINKS'],
             aliases: ['ow'],
             mode: 2,
+            cooldown: 10,
 
             usage: '<BattleTag:string> [pc|psn|xbl] [eu|us|kr] [featured|playedheroes|combat|assists|records|gamestats|average|awards] [qp|quickplay|comp|competitive]',
             usageDelim: ' ',

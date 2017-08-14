@@ -1,7 +1,6 @@
 const { Command } = require('../../../index');
 const { createMuted } = require('../../../utils/assets');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {

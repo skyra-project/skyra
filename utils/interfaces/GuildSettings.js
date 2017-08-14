@@ -47,8 +47,8 @@ class GuildSettings {
         this[group] = {};
 
         if (group in data === false) data[group] = {};
-        for (const [key, value] of Object.entries(Schema[group])) {
-            this[group][key] = data[group][key] || value.default || null;
+        for (const key of Object.keys(Schema[group])) {
+            this[group][key] = data[group][key] || (Schema[group][key].hasOwnProperty('default') ? Schema[group][key].default : null);
         }
     }
 

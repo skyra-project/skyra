@@ -16,12 +16,13 @@ const Snekfetch = require('snekfetch');
 
 const getURL = input => `https://myanimelist.net/api/anime/search.xml?q=${input}`;
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             botPerms: ['EMBED_LINKS'],
+
+            cooldown: 15,
 
             usage: '<query:string>',
             description: 'Search your favourite anime by title with this command.',

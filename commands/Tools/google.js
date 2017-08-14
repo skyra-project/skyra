@@ -3,15 +3,15 @@ const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
 
-/* eslint-disable class-methods-use-this */
 /* eslint id-length: ["error", { "exceptions": ["e", "i", "$"] }] */
-module.exports = class Google extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['search'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
+            cooldown: 15,
 
             usage: '<input:string>',
             description: 'Search stuff through Google.'

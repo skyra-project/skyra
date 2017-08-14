@@ -4,14 +4,14 @@ const snekfetch = require('snekfetch');
 
 const baseURL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
 
-/* eslint-disable class-methods-use-this */
-module.exports = class WikiPedia extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['wiki'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
+            cooldown: 15,
 
             usage: '<query:string>',
             description: 'Search something throught Wikipedia.'

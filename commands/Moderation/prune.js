@@ -8,6 +8,7 @@ module.exports = class extends Command {
             permLevel: 2,
             botPerms: ['MANAGE_MESSAGES'],
             runIn: ['text'],
+            cooldown: 5,
 
             description: 'Prunes a certain amount of messages w/o filter.',
             usage: '[limit:integer] [link|invite|bots|you|me|upload|user:user]',

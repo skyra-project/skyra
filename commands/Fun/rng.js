@@ -1,12 +1,13 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['choice'],
             spam: true,
+
+            cooldown: 10,
 
             usage: '<words:string> [...]',
             usageDelim: ', ',

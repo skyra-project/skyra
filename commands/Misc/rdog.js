@@ -9,13 +9,14 @@ const rand = [
     '179920', '96127', '261963', '106499'
 ];
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['doggo'],
             spam: true,
+
+            cooldown: 10,
 
             description: 'Check this doggo! ❤',
             extendedHelp: Command.strip`

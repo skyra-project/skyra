@@ -3,7 +3,6 @@ const fs = require('fs-nextra');
 const { resolve } = require('path');
 const moment = require('moment');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {

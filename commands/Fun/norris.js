@@ -2,13 +2,14 @@ const { Command } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['chucknorris'],
             spam: true,
+
+            cooldown: 10,
 
             description: 'Enjoy your time reading Chuck Norris\' jokes.',
             extendedHelp: Command.strip`

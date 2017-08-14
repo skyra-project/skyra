@@ -2,13 +2,13 @@ const { Command } = require('../../index');
 const moment = require('moment');
 require('moment-duration-format');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Daily extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             mode: 1,
             spam: true,
+            cooldown: 30,
 
             description: 'Get your daily shinies.',
             extendedHelp: Command.strip`

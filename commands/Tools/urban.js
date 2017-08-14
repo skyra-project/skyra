@@ -2,14 +2,14 @@ const { Command, Constants: { httpResponses }, util } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class UrbanDictionary extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['urbandictionary'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,
+            cooldown: 15,
 
             usage: '<query:string> [index:int]',
             usageDelim: ' #',

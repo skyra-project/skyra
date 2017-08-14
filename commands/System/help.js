@@ -1,12 +1,12 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Help extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['commands'],
             mode: 2,
+            cooldown: 15,
 
             usage: '[command:command]',
             description: 'Display help for all or a single command.'

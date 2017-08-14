@@ -8,13 +8,14 @@ const Canvas = require('canvas');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/triggered.png'));
 
-/* eslint-disable class-methods-use-this */
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             guildOnly: true,
             spam: true,
+
+            cooldown: 30,
 
             usage: '<user:advuser>',
             description: 'Check this kitty! ❤',

@@ -2,8 +2,7 @@ const { Command } = require('../../index');
 const { validate: validateColor } = require('../../functions/resolveColor');
 const { MessageEmbed } = require('discord.js');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class SetColor extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -11,6 +10,7 @@ module.exports = class SetColor extends Command {
             aliases: ['setcolour'],
             mode: 1,
             spam: true,
+            cooldown: 10,
 
             usage: '<color:string>',
             description: "Change your userprofile's colour.",

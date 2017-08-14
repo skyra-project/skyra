@@ -4,13 +4,13 @@ const { uptime, loadavg } = require('os');
 const moment = require('moment');
 require('moment-duration-format');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Status extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['stats', 'sts'],
             mode: 2,
+            cooldown: 15,
 
             description: 'Provides some details about the bot and stats.'
         });
@@ -23,6 +23,7 @@ module.exports = class Status extends Command {
             `• Servers    :: ${this.client.guilds.size.toLocaleString()}`,
             `• Channels   :: ${this.client.channels.size.toLocaleString()}`,
             `• Discord.js :: v${version}`,
+            `• Node.js    :: ${process.version}`,
             '',
             '= UPTIME =',
             `• Host       :: ${moment.duration(uptime() * 1000).format('d[ days], h[:]mm[:]ss')}`,

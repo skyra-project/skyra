@@ -1,13 +1,13 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Reputations extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['reps'],
             mode: 1,
             spam: true,
+            cooldown: 10,
 
             description: 'Check your amount of reputation points.'
         });

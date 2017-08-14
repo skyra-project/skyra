@@ -9,6 +9,7 @@ module.exports = class extends Command {
             guildOnly: true,
             permLevel: 1,
             mode: 2,
+            cooldown: 5,
 
             usage: '<SearchMember:user> [reason:string] [...]',
             usageDelim: ' ',

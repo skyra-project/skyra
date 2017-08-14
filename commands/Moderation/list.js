@@ -10,6 +10,7 @@ module.exports = class extends Command {
             permLevel: 2,
             botPerms: ['EMBED_LINKS'],
             mode: 2,
+            cooldown: 5,
 
             usage: '<channels|roles|members|invites|warnings|track|advertising> [input:string] [...]',
             usageDelim: ' ',

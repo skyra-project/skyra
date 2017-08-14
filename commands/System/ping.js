@@ -1,11 +1,11 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Ping extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             mode: 2,
+            cooldown: 30,
 
             description: 'Runs a connection test to Discord.'
         });

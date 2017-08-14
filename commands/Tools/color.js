@@ -14,14 +14,13 @@ const sCL = (colour) => {
 };
 
 /* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B"] }] */
-
-/* eslint-disable class-methods-use-this */
-module.exports = class Color extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['colour'],
             mode: 2,
+            cooldown: 15,
 
             usage: '<color:string> [separator:int{0,255}]',
             usageDelim: ' >',

@@ -5,12 +5,12 @@ const key = config.tokens.google;
 const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${input}&key=${key}`)
     .then(data => JSON.parse(data.text));
 
-/* eslint-disable class-methods-use-this */
-module.exports = class YouTube extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             mode: 1,
+            cooldown: 15,
 
             usage: '<query:string> [index:int]',
             usageDelim: ' #',

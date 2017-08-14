@@ -97,8 +97,7 @@ class SlotMachines {
 
 }
 
-/* eslint-disable class-methods-use-this */
-module.exports = class SlotMachine extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -106,6 +105,7 @@ module.exports = class SlotMachine extends Command {
             botPerms: ['EMBED_LINKS'],
             mode: 1,
             spam: true,
+            cooldown: 10,
 
             usage: '<50|100|200|500|1000>',
             description: "I bet 100S you ain't winning this round.",

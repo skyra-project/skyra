@@ -9,6 +9,7 @@ module.exports = class extends Command {
             name: 'reason',
             permLevel: 2,
             guildOnly: true,
+            cooldown: 5,
 
             description: 'Edit the reason field from a case.',
             usage: '<case:integer> <reason:string> [...]',

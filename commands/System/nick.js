@@ -1,7 +1,6 @@
 const { Command } = require('../../index');
 
-/* eslint-disable class-methods-use-this */
-module.exports = class Nickname extends Command {
+module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
@@ -10,6 +9,7 @@ module.exports = class Nickname extends Command {
             permLevel: 3,
             botPerms: ['CHANGE_NICKNAME'],
             mode: 2,
+            cooldown: 30,
 
             usage: '[nick:string{,32}]',
             description: "Change Skyra's nickname."

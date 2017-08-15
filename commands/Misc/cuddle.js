@@ -1,9 +1,8 @@
 const { Command } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
-const { roundImage } = require('../../functions/canvas');
 const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');
-const Canvas = require('canvas');
+const Canvas = require('../../utils/canvas-constructor');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/cuddle.png'));
 
@@ -26,29 +25,20 @@ module.exports = class extends Command {
     }
 
     async generate(msg, user) {
-        const canvas = new Canvas(636, 366);
-        const background = new Canvas.Image();
-        const man = new Canvas.Image();
-        const woman = new Canvas.Image();
-        const ctx = canvas.getContext('2d');
-
         if (user.id === msg.author.id) user = this.client.user;
 
         /* Get the buffers from both profile avatars */
-        const [bgBuffer, manBuffer, womanBuffer] = await Promise.all([
+        const [background, man, woman] = await Promise.all([
             readFile(template),
             fetchAvatar(msg.author, 256),
             fetchAvatar(user, 256)
         ]);
-        background.src = bgBuffer;
-        man.src = manBuffer;
-        woman.src = womanBuffer;
 
-        background.onload = () => ctx.drawImage(background, 0, 0, 636, 366);
-        roundImage(ctx, man, 238, 63, 70);
-        roundImage(ctx, woman, 377, 111, 69);
-
-        return canvas.toBuffer();
+        return new Canvas(636, 366)
+            .addImage(background, 0, 0, 636, 366)
+            .addImage(man, 168, -7, 140, 140, { type: 'Round', radius: 70 })
+            .addImage(woman, 307, 41, 138, 138, { type: 'Round', radius: 69 })
+            .toBuffer();
     }
 
 };

@@ -5,8 +5,8 @@ const { join, sep } = require('path');
 const Canvas = require('../../utils/canvas-constructor');
 
 Canvas
-    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), { family: 'RobotoRegular' })
-    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { family: 'RobotoLight' });
+    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), 'RobotoRegular')
+    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), 'RobotoLight');
 
 const profileTemplate = join(__dirname, '../../assets/images/social/level-foreground.png');
 const themes = join(__dirname, '../../assets/images/social/themes/') + sep;

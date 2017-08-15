@@ -6,7 +6,6 @@ module.exports = class extends Language {
 
     constructor(...args) {
         super(...args);
-        this.moment = { SHORT_DURATION: `hh [**${this.language.TIMES.HOUR.PLURAL}**,] mm [**${this.language.TIMES.MINUTE.PLURAL}**,] ss [**${this.language.TIMES.SECOND.PLURAL}**]` };
         this.language = {
             DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
             DEFAULT_LANGUAGE: 'Default Language',
@@ -201,6 +200,10 @@ module.exports = class extends Language {
                     SHORT: 'sec'
                 }
             }
+        };
+        this.moment = {
+            LONG_DURATION: '',
+            SHORT_DURATION: `hh [**${this.language.TIMES.HOUR.PLURAL}**,] mm [**${this.language.TIMES.MINUTE.PLURAL}**,] ss [**${this.language.TIMES.SECOND.PLURAL}**]`
         };
     }
 

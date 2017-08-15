@@ -1,5 +1,6 @@
 const Canvas = require('canvas');
 
+/* eslint-disable id-length */
 class CanvasConstructor {
 
     constructor(width, height) {
@@ -108,6 +109,24 @@ class CanvasConstructor {
      */
     traslate(x, y) {
         this.context.traslate(x, y);
+        return this;
+    }
+
+    /**
+     * Resets (overrides) the current transformation to the identity matrix and then invokes a transformation described
+     * by the arguments of this method.
+     * @param {number} a Horizontal scaling.
+     * @param {number} b Horizontal skewing.
+     * @param {number} c Vertical skewing.
+     * @param {number} d Vertical scaling.
+     * @param {number} e Horizontal moving.
+     * @param {number} f Vertical moving.
+     * @returns {CanvasConstructor}
+     * @chainable
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
+     */
+    setTransform(a, b, c, d, e, f) {
+        this.context.setTransform(a, b, c, d, e, f);
         return this;
     }
 

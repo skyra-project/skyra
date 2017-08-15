@@ -1,11 +1,10 @@
 const { Command } = require('../../index');
-const moment = require('moment');
-require('moment-duration-format');
 
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            aliases: ['dailies'],
             mode: 1,
             spam: true,
             cooldown: 30,
@@ -26,14 +25,25 @@ module.exports = class extends Command {
 
     async run(msg) {
         const now = Date.now();
+        const profile = msg.author.profile;
+        const time = profile.timeDaily;
 
-        if (msg.author.profile.timeDaily + 43200000 > now) {
-            const remaining = (msg.author.profile.timeDaily + 43200000) - now;
-            return msg.send(`Dailies are available in ${moment.duration(remaining).format('hh [**hours**,] mm [**mins**,] ss [**secs**]')}.`);
+        if (time > now) {
+            const remaining = time - now;
+            if (remaining > 3600000) return msg.send('COMMAND_DAILY_TIME', remaining);
+            return msg.prompt(msg.language.get('COMMAND_DAILY_GRACE', remaining))
+                .then(async () => {
+                    const next = now + 43200000 + remaining;
+                    const money = await profile.win(200, msg.guild);
+                    await profile.update({ timeDaily: next });
+                    return msg.send(msg.language.get('COMMAND_DAILY_GRACE_ACCEPTED', money, Command.shiny(msg), remaining));
+                })
+                .catch(() => msg.language.send('COMMAND_DAILY_GRACE_DENIED'));
         }
-        const money = await msg.author.profile.win(200, msg.guild);
-        await msg.author.profile.update({ timeDaily: now });
-        return msg.send(`You have just earned ${money}${Command.shiny(msg)}! Next dailies are available in 12 hours.`);
+        const next = now + 43200000;
+        const money = await profile.win(200, msg.guild);
+        await profile.update({ timeDaily: next });
+        return msg.send(msg.language.get('COMMAND_DAILY_TIME_SUCCESS', money, Command.shiny(msg)));
     }
 
 };

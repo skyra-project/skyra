@@ -2,10 +2,11 @@ const { Command } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, sep } = require('path');
-const Canvas = require('canvas');
+const Canvas = require('../../utils/canvas-constructor');
 
-Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), { family: 'RobotoRegular' });
-Canvas.registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { family: 'RobotoLight' });
+Canvas
+    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), { family: 'RobotoRegular' })
+    .registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), { family: 'RobotoLight' });
 
 const profileTemplate = join(__dirname, '../../assets/images/social/level-foreground.png');
 const themes = join(__dirname, '../../assets/images/social/themes/') + sep;
@@ -47,12 +48,6 @@ module.exports = class extends Command {
         const nextLevel = Math.floor(((currentLevel + 1) / 0.2) ** 2);
         const Prog = Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265);
 
-        const canvas = new Canvas(640, 174);
-        const background = new Canvas.Image();
-        const imgAvatar = new Canvas.Image();
-        const themeImage = new Canvas.Image();
-        const ctx = canvas.getContext('2d');
-
         const theme = banners.level;
         const [themeImageSRC, backgroundSRC, imgAvatarSRC] = await Promise.all([
             readFile(`${themes}${theme}.png`),
@@ -60,36 +55,30 @@ module.exports = class extends Command {
             fetchAvatar(user, 256)
         ]);
 
-        themeImage.onload = () => ctx.drawImage(themeImage, 10, 9, 189, 157);
-        themeImage.src = themeImageSRC;
+        return new Canvas(640, 174)
+            // Draw the background
+            .addImage(themeImageSRC)
+            .addImage(backgroundSRC)
 
-        /* Draw the background */
-        background.onload = () => ctx.drawImage(background, 0, 0, 640, 174);
-        background.src = backgroundSRC;
-        ctx.fillStyle = `#${color}`;
-        ctx.fillRect(341, 88, Prog, 5);
+            // Draw the progress bar
+            .setColor(`#${color}`)
+            .addRect(341, 88, Prog, 5)
 
-        /* Draw the information */
-        ctx.fillStyle = 'rgb(23,23,23)';
-        ctx.font = '28px RobotoLight';
-        ctx.textAlign = 'right';
-        ctx.fillText(points, 606, 68);
-        ctx.fillText(`${nextLevel - points}`, 606, 128);
-        ctx.textAlign = 'center';
-        ctx.font = '45px RobotoRegular';
-        ctx.fillText(currentLevel, 273, 128);
+            // Draw the information
+            .setColor('rgb(23,23,23)')
+            .setTextFont('28px RobotoLight')
+            .setTextAlign('right')
+            .addText(points, 606, 68)
+            .addText(nextLevel - points, 606, 128)
 
-        /* Draw the avatar */
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(103.5, 87.5, 69.5, 0, Math.PI * 2, false);
-        ctx.clip();
-        imgAvatar.onload = () => ctx.drawImage(imgAvatar, 34, 18, 139, 139);
-        imgAvatar.src = imgAvatarSRC;
-        ctx.restore();
+            // Draw the level
+            .setTextAlign('center')
+            .setTextFont('45px RobotoRegular')
+            .addText(currentLevel, 273, 128)
 
-        /* Resolve Canvas buffer */
-        return canvas.toBuffer();
+            // Draw the avatar
+            .addImage(imgAvatarSRC, 34, 18, 139, 139, { type: 'Round', radius: 69.5 })
+            .toBuffer();
     }
 
 };

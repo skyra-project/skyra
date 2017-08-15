@@ -28,11 +28,12 @@ module.exports = class extends Command {
     }
 
     async run(msg, [money, user]) {
-        if (msg.author.id === user.id) throw "you can't pay yourself.";
-        else if (money <= 0) throw 'amount of money should be above 0.';
-        else if (msg.author.profile.money < money) throw `you can't pay with money you don't have. Current currency: ${msg.author.profile.money}${Command.shiny(msg)}`;
+        if (msg.author.id === user.id) throw msg.language.get('COMMAND_PAY_SELF');
+        else if (money <= 0) throw msg.language.get('RESOLVER_POSITIVE_AMOUNT');
+        else if (msg.author.profile.money < money) throw msg.language.get('COMMAND_SOCIAL_MISSING_MONEY', money, msg.author.profile.money, Command.shiny(msg));
+        else if (user.bot) return msg.send(msg.language.get('COMMAND_SOCIAL_PAY_BOT'));
 
-        return msg.prompt(`Dear ${msg.author}, you're going to pay ${money}${Command.shiny(msg)} to ${user.username}, do you accept?`)
+        return msg.prompt(msg.language.get('COMMAND_PAY_PROMPT', user.username, money, Command.shiny(msg)))
             .then(() => this.acceptPayment(msg, user, money))
             .catch(() => this.denyPayment(msg));
     }
@@ -40,11 +41,11 @@ module.exports = class extends Command {
     async acceptPayment(msg, user, money) {
         await user.profile.add(money).catch(Command.handleError);
         await msg.author.profile.use(money).catch(Command.handleError);
-        return msg.alert(`Dear ${msg.author}, you have just paid ${money}${Command.shiny(msg)} to **${user.username}**`);
+        return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money, Command.shiny(msg)));
     }
 
     async denyPayment(msg) {
-        return msg.alert(`Dear ${msg.author}, you have just cancelled the transfer.`);
+        return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_DENY'));
     }
 
 };

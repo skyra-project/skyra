@@ -1,9 +1,12 @@
 const { Language, util } = require('../index');
+const moment = require('moment');
+require('moment-duration-format');
 
 module.exports = class extends Language {
 
     constructor(...args) {
         super(...args);
+        this.moment = { SHORT_DURATION: `hh [**${this.language.TIMES.HOUR.PLURAL}**,] mm [**${this.language.TIMES.MINUTE.PLURAL}**,] ss [**${this.language.TIMES.SECOND.PLURAL}**]` };
         this.language = {
             DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
             DEFAULT_LANGUAGE: 'Default Language',
@@ -31,6 +34,7 @@ module.exports = class extends Language {
             RESOLVER_MINMAX_BOTH: (name, min, max, suffix) => `${name} must be between ${min} and ${max}${suffix}.`,
             RESOLVER_MINMAX_MIN: (name, min, suffix) => `${name} must be greater than ${min}${suffix}.`,
             RESOLVER_MINMAX_MAX: (name, max, suffix) => `${name} must be less than ${max}${suffix}.`,
+            RESOLVER_POSITIVE_AMOUNT: 'A positive non-zero number is required for this argument.',
             COMMANDMESSAGE_MISSING: 'Missing one or more required arguments after end of input.',
             COMMANDMESSAGE_MISSING_REQUIRED: (name) => `${name} is a required argument.`,
             COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Missing a required option: (${possibles})`,
@@ -146,6 +150,20 @@ module.exports = class extends Language {
             // SOCIAL
             COMMAND_SOCIAL_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
             COMMAND_SOCIAL_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
+            COMMAND_SOCIAL_MISSING_MONEY: (needed, has, icon) => `I am sorry, but you need ${needed}${icon} and you have ${has}${icon}`,
+            COMMAND_DAILY_TIME: time => `Next dailies are available in ${moment.duration(time).format(this.moment.SHORT_DURATION)}`,
+            COMMAND_DAILY_TIME_SUCCESS: (amount, icon) => `Yay! You earned ${amount}${icon}! Next dailies in: 12 hours.`,
+            COMMAND_DAILY_GRACE: remaining => [
+                `Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.`,
+                `Remaining time: ${moment.duration(remaining).format(this.moment.SHORT_DURATION)}`
+            ].join('\n'),
+            COMMAND_DAILY_GRACE_ACCEPTED: (amount, icon, remaining) => `Successfully claimed ${amount}${icon}! Next dailies in: ${moment.duration(remaining).format(this.moment.SHORT_DURATION)}`,
+            COMMAND_DAILY_GRACE_DENIED: 'Got it! Come back soon!',
+            COMMAND_PAY_PROMPT: (user, amount, icon) => `You are about to pay ${user} ${amount}${icon}, are you sure you want to proceed?`,
+            COMMAND_PAY_PROMPT_ACCEPT: (user, amount, icon) => `Payment accepted, ${amount}${icon} has been sent to ${user}'s profile.`,
+            COMMAND_PAY_PROMPT_DENY: 'Payment denied.',
+            COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
+            COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
@@ -159,7 +177,30 @@ module.exports = class extends Language {
             GUILD_BANS_NOT_FOUND: 'Please, write a valid user ID or tag.',
             GUILD_MUTE_NOT_FOUND: 'This user is not muted.',
 
-            USER_NOT_IN_GUILD: 'This user is not in this server.'
+            USER_NOT_IN_GUILD: 'This user is not in this server.',
+
+            TIMES: {
+                DAY: {
+                    PLURAL: 'days',
+                    SING: 'day',
+                    SHORT: 'd'
+                },
+                HOUR: {
+                    PLURAL: 'hours',
+                    SING: 'hour',
+                    SHORT: 'hr'
+                },
+                MINUTE: {
+                    PLURAL: 'minutes',
+                    SING: 'minute',
+                    SHORT: 'min'
+                },
+                SECOND: {
+                    PLURAL: 'seconds',
+                    SING: 'second',
+                    SHORT: 'sec'
+                }
+            }
         };
     }
 

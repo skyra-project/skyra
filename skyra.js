@@ -1,7 +1,7 @@
-const Komada = require('./lib/client');
+const Klasa = require('./lib/client');
 const cfg = require('./config.js');
 
-const Skyra = new Komada({
+const Skyra = new Klasa({
     ownerID: cfg.ownerid,
     prefix: 's!',
     cmdEditing: true,

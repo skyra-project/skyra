@@ -38,7 +38,7 @@ module.exports = class extends Command {
             .addImage(healer, 189, 232, 110, 110, { type: 'round', radius: 55 })
             .restore()
             .addImage(healed, 70, 96, 106, 106, { type: 'round', radius: 53 })
-            .toBuffer();
+            .toBufferAsync();
     }
 
 };

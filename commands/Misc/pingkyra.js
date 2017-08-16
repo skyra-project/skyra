@@ -40,7 +40,7 @@ module.exports = class extends Command {
             .addImage(runner, 118, 27, 52, 52, { type: 'round', radius: 26 })
             .restore()
             .addImage(kyra, 368, 34, 50, 50, { type: 'round', radius: 25 })
-            .toBuffer();
+            .toBufferAsync();
     }
 
     async init() {

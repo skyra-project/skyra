@@ -38,7 +38,7 @@ module.exports = class extends Command {
             .addImage(background, 0, 0, 636, 366)
             .addImage(man, 168, -7, 140, 140, { type: 'Round', radius: 70 })
             .addImage(woman, 307, 41, 138, 138, { type: 'Round', radius: 69 })
-            .toBuffer();
+            .toBufferAsync();
     }
 
 };

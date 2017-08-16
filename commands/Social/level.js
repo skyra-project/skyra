@@ -78,7 +78,7 @@ module.exports = class extends Command {
 
             // Draw the avatar
             .addImage(imgAvatarSRC, 34, 18, 139, 139, { type: 'Round', radius: 69.5 })
-            .toBuffer();
+            .toBufferAsync();
     }
 
 };

@@ -34,7 +34,7 @@ module.exports = class extends Command {
         return new Canvas(960, 540)
             .addImage(praised, 349, 87, 109, 109)
             .addImage(background, 0, 0, 960, 540)
-            .toBuffer();
+            .toBufferAsync();
     }
 
 };

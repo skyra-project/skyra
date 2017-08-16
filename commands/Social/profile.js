@@ -66,7 +66,7 @@ module.exports = class extends Command {
             .addRect(235, 356, Prog, 5)
             .setTextFont('35px RobotoRegular')
             .setColor('rgb(23,23,23')
-            .addText(user.username, 227, 73)
+            .addResponsiveText(user.username, 227, 73, 306)
             .setTextFont('25px RobotoLight')
             .addText(`#${user.discriminator}`, 227, 105)
             .setTextAlign('right')
@@ -78,7 +78,7 @@ module.exports = class extends Command {
             .setTextFont('40px RobotoRegular')
             .addText(currentLevel, 576, 100)
             .addImage(imgAvatarSRC, 32, 31, 141, 141, { type: 'round', radius: 70.5 })
-            .toBuffer();
+            .toBufferAsync();
     }
 
 };

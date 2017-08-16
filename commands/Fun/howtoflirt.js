@@ -67,7 +67,7 @@ module.exports = class extends Command {
             res();
         })));
 
-        return canvas.toBuffer();
+        return canvas.toBufferAsync();
     }
 
 };

@@ -50,7 +50,7 @@ module.exports = class extends Command {
             .rotate(0.46)
             .addImage(Hammered, 495, -77, 154, 154, { type: 'round', radius: 77 })
             .setTransform(1, 0, 0, 1, 0, 0)
-            .toBuffer();
+            .toBufferAsync();
     }
 
 };

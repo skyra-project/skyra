@@ -9,6 +9,12 @@ class CanvasConstructor {
 
         this.width = width;
         this.height = height;
+
+        this.font = {
+            style: '',
+            size: 21.33,
+            font: ''
+        };
     }
 
     /**
@@ -131,6 +137,15 @@ class CanvasConstructor {
     }
 
     /**
+     * Reset the transformation.
+     * @returns {CanvasConstructor}
+     * @chainable
+     */
+    resetTransformation() {
+        return this.setTransform(1, 0, 0, 1, 0, 0);
+    }
+
+    /**
      * Fills the current or given path with the current fill style using the non-zero or even-odd winding rule.
      * @param {any} path A Path2D path to fill.
      * @param {('nonzero'|'evenodd')} fillRule The algorithm by which to determine if a point is inside a path or
@@ -173,6 +188,30 @@ class CanvasConstructor {
     addText(text, x, y, maxWidth) {
         this.context.fillText(text, x, y, maxWidth);
         return this;
+    }
+
+    /**
+     * Add responsive text
+     * @param {string} text     The text to write.
+     * @param {number} x        The position x to start drawing the element.
+     * @param {number} y        The position y to start drawing the element.
+     * @param {number} maxWidth The max length in pixels for the text.
+     * @returns {CanvasConstructor}
+     * @chainable
+     * @example
+     * new Canvas(400, 300)
+     *     .setTextFont('40px Tahoma')
+     *     .addResponsiveText('Hello World', 30, 30, 50)
+     *     .toBuffer();
+     */
+    addResponsiveText(text, x, y, maxWidth) {
+        const { style = '', size, font } = this.font;
+        if (isNaN(size)) throw new TypeError('The parameter size must be a valid number.');
+        const { width } = this.measureText(text);
+        const newLength = maxWidth > width ? maxWidth : (maxWidth / width) * size;
+        return this
+            .setTextFont(`${style}${newLength}px ${font}`)
+            .addText(text, x, y);
     }
 
     /**
@@ -412,6 +451,7 @@ class CanvasConstructor {
      * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font
      */
     setTextFont(font) {
+        this._parseFontString(font);
         this.context.font = font;
         return this;
     }
@@ -706,6 +746,17 @@ class CanvasConstructor {
         return this.canvas.toBuffer(options);
     }
 
+    /**
+     * Render the canvas into a buffer using a Promise.
+     * @returns {Promise<Buffer>}
+     */
+    toBufferAsync() {
+        return new Promise((resolve, reject) => this.canvas.toBuffer((err, res) => {
+            if (err) reject(err);
+            else resolve(res);
+        }));
+    }
+
     static getCanvas() {
         return Canvas;
     }
@@ -719,6 +770,45 @@ class CanvasConstructor {
     static registerFont(path, family) {
         Canvas.registerFont(path, { family });
         return this;
+    }
+
+    /**
+     * Parses the font.
+     * @param {string} string A string.
+     * @returns {void}
+     * @private
+     */
+    _parseFontString(string) {
+        const data = /([^\d]+)?([\d\w]+) (.+)?/.exec(string);
+        if (data === null) return;
+        this.font.style = data[1] || '';
+        this.font.size = this._parseFontSize(data[2]);
+        this.font.font = data[3] || '';
+    }
+
+    /**
+     * Parses the font's size
+     * @param {string} string The string with a number and a unit.
+     * @returns {number}
+     * @private
+     */
+    _parseFontSize(string) {
+        const data = /(\d+)(\w+)/.exec(string);
+        if (data === null) return 21.33;
+        let size = parseFloat(data[1]);
+        const unit = data[2];
+        switch (unit) {
+            case 'pt': size /= 0.75; break;
+            case 'pc': size *= 16; break;
+            case 'in': size *= 96; break;
+            case 'cm': size *= 96.0 / 2.54; break;
+            case 'mm': size *= 96.0 / 25.4; break;
+            case 'em': size /= 0.75; break;
+            case 'rem': size *= 21.33 / 0.75; break;
+            case 'q': size *= 96 / 25.4 / 4; break;
+        }
+
+        return size;
     }
 
 }

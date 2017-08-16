@@ -38,7 +38,7 @@ module.exports = class extends Command {
             .addImage(hugger, 124, 92, 109, 109, { type: 'round', radius: 54 })
             .restore()
             .addImage(hugged, 233, 57, 98, 98, { type: 'round', radius: 49 })
-            .toBuffer();
+            .toBufferAsync();
     }
 
 };

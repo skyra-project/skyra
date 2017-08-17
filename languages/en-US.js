@@ -180,6 +180,7 @@ module.exports = class extends Language {
 
             EVENTS_GUILDMEMBERADD: 'User Joined',
             EVENTS_GUILDMEMBERADD_MUTE: 'Muted User joined',
+            EVENTS_GUILDMEMBERREMOVE: 'User left',
 
             SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',
             SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',

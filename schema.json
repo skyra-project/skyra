@@ -1,20 +1,24 @@
 {
     "master": {
         "prefix": {
+            "description": "The custom prefix for Skyra.",
             "type": "String",
             "default": "s!"
         },
         "language": {
+            "description": "The language in which Skyra will display the messages.",
             "type": "Language",
             "default": "en-US"
         },
         "mode": {
+            "description": "The mode Skyra should operate on.\n0 means Free, which allows the use of any command.\n1 means Lite, which disables a bunch of commands.\n2 means Strict, which limits all the commands for the server to the moderation module and system ones.\nPlease, use this instead of making Skyra ignore a long list of commands.",
             "type": "Integer",
             "default": 0,
             "max": 3,
             "min": 0
         },
         "ignoreChannels": {
+            "description": "The channels you want me to ignore when giving points (Social Module).",
             "type": "Channel",
             "default": [],
             "array": true
@@ -22,11 +26,13 @@
     },
     "disable": {
         "cmdChannels": {
+            "description": "The channels you want me to ignore when executing commands (with exception of the moderation commands), use this instead of removing the SEND MESSAGES permissions in the channel, unless you want to waste more time going to another channel. Skyra ignores all the channels she can send messages on.",
             "type": "Channel",
             "default": [],
             "array": true
         },
         "commands": {
+            "description": "The commands you want me to disable.",
             "type": "Command",
             "default": [],
             "array": true
@@ -34,123 +40,144 @@
     },
     "roles": {
         "admin": {
+            "description": "The Administrator Role, defaults to whoever has the ADMINISTRATOR permission, they get granted a Permission Level 3 and a wide range of commands.",
             "type": "Role"
         },
         "moderator": {
+            "description": "The Moderator Role, defaults to whoever has the BAN MEMBERS permission. They get granted a Permission Level 2 and a selection of moderation commands.",
             "type": "Role"
         },
         "staff": {
+            "description": "The Staff Role. They get granted a Permission Level 1 and some harmless commands that help moderating.",
             "type": "Role"
         },
         "muted": {
+            "description": "The Muted Role. They get all their roles temporary removed even if the user rejoins.",
             "type": "Role"
         },
         "initial": {
+            "description": "The Initial Role. Every new member gets granted this role after joining the server.",
+            "type": "Role"
+        },
+        "subscriber": {
+            "description": "A Subscriber role, you can use this role to do announcements (throughtout the announcement command), Skyra will keep the role unmentionable, and toggle it quickly before sending the announcement.",
             "type": "Role"
         },
         "public": {
+            "description": "The public roles, every role here will be claimable throughout Skyra, make sure she has permissions to give them.",
             "type": "Role",
             "default": [],
             "array": true
         }
     },
     "events": {
-        "channelCreate": {
-            "type":"boolean",
+        "banAdd": {
+            "description": "Posts a modlog when a user gets banned from the server.",
+            "type":"Boolean",
             "default": false
         },
-        "guildBanAdd": {
-            "type":"boolean",
+        "banRemove": {
+            "description": "Posts a modlog when a user gets unbanned from the server.",
+            "type":"Boolean",
             "default": false
         },
-        "guildBanRemove": {
-            "type":"boolean",
+        "memberAdd": {
+            "description": "Posts a log when a user joins the server.",
+            "type":"Boolean",
             "default": false
         },
-        "guildMemberAdd": {
-            "type":"boolean",
+        "memberRemove": {
+            "description": "Posts a log when a user leaves the server.",
+            "type":"Boolean",
             "default": false
         },
-        "guildMemberRemove": {
-            "type":"boolean",
+        "memberNicknameChange": {
+            "description": "Posts a log when a member gets the nickname changed.",
+            "type":"Boolean",
             "default": false
         },
-        "guildMemberUpdate": {
-            "type":"boolean",
+        "memberRolesChange": {
+            "description": "Posts a log when a member gets their roles changed.",
+            "type":"Boolean",
             "default": false
         },
         "messageDelete": {
-            "type":"boolean",
+            "description": "Posts a log when a message gets deleted.",
+            "type":"Boolean",
             "default": false
         },
-        "messageBulkDelete": {
-            "type":"boolean",
+        "messagePrune": {
+            "description": "Posts a log when a prune is executed.",
+            "type":"Boolean",
             "default": false
         },
-        "messageUpdate": {
-            "type":"boolean",
-            "default": false
-        },
-        "roleUpdate": {
-            "type":"boolean",
+        "messageEdit": {
+            "description": "Posts a log when a message gets edited.",
+            "type":"Boolean",
             "default": false
         },
         "commands": {
-            "type":"boolean",
-            "default": false
-        },
-        "modLogProtection": {
-            "type":"boolean",
+            "description": "Post a log when a command gets executed. This event tells who executed it, in which channel, and when.",
+            "type":"Boolean",
             "default": false
         }
     },
     "channels": {
         "announcement": {
+            "description": "The announcement channel Skyra should use to post the messages from 'Skyra, announce'.\nPD: Announcements are made by server administrators, and mentions the subscriber role if configured.",
             "type": "TextChannel"
         },
         "default": {
+            "description": "The channel Skyra will use to send greetings and farewells.",
             "type": "TextChannel"
         },
         "log": {
+            "description": "The channel in which normal logs are sent.",
             "type": "TextChannel"
         },
         "modlog": {
+            "description": "The modlog channel. When a moderator or administrator use a moderation command (ban, unban, softban, kick...), a special kind of log will be posted there. Modlogs contain five fields: 'Moderator', 'Type', 'User', 'Reason' and 'Case', with exception of the anti-invite logs.",
             "type": "TextChannel"
         },
         "spam": {
+            "description": "The spam channel, if set, a set of selected commands (the most spammy/funny ones) will only work there.",
             "type": "TextChannel"
         }
     },
     "messages": {
-        "farewell": {
+        "greeting": {
+            "description": "A custom message for greetings. If not set, Skyra won't send messages to the users who join the server. Templates are:\n• %MEMBER% : Mentions the user.\n• %MEMBERNAME% : Places the user's username.\n• %GUILD% : Places the server's name.",
             "type":"string"
         },
-        "greeting": {
+        "farewell": {
+            "description": "A custom message for farewells. If not set, Skyra won't send messages to the users who leave the server. Templates are:\n• %MEMBER% : Mentions the user.\n• %MEMBERNAME% : Places the user's username.\n• %GUILD% : Places the server's name.",
             "type":"string"
         }
     },
     "selfmod": {
-        "ghostmention": {
-            "type": "Boolean",
-            "default": false
-        },
-        "inviteLinks": {
+        "invitelinks": {
+            "description": "Whether Skyra should or not remove messages which contain an invite link.",
             "type": "Boolean",
             "default": false
         },
         "nomentionspam": {
+            "description": "Whether the NoMentionSpam3 system should be enabled or not. This system adds temporal points to users and ban them in case they reach the threshold.",
             "type": "Boolean",
             "default": false
         },
         "nmsthreshold": {
+            "description": "This key requires the 'nomentionspam' key enabled. The amount of points required to ban a user.\nNote: An everyone/here tag counts as 4 points, role mentions as 2, and each member mentioned, 1.",
             "type": "Integer",
-            "default": 20
+            "default": 20,
+            "min": 10
         },
         "raid": {
+            "description": "",
             "type": "Boolean",
             "default": false
         },
         "raidthreshold": {
+            "description": "",
             "type": "Integer",
             "default": 10,
             "max": 20,
@@ -159,12 +186,14 @@
     },
     "filter": {
         "level": {
+            "description": "",
             "type": "Integer",
             "default": 0,
             "min": 0,
             "max": 3
         },
         "raw": {
+            "description": "",
             "type": "String",
             "default": [],
             "array": true

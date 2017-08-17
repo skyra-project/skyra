@@ -30,8 +30,7 @@ module.exports = class extends Command {
 
     async eval(msg, input) {
         try {
-            let res = eval(input);
-            if (res instanceof Promise) res = await res.catch((err) => { throw err; });
+            const res = await eval(input);
             return { success: true, output: res };
         } catch (err) {
             return { success: false, output: err };

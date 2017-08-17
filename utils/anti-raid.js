@@ -76,6 +76,10 @@ class Manager {
         return this.get(guild.id).add(member);
     }
 
+    static remove(guild, settings, member) {
+        return this.get(guild.id).remove(member);
+    }
+
 }
 
 module.exports = Manager;

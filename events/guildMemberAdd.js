@@ -33,14 +33,14 @@ module.exports = class extends Event {
             if (response && Array.isArray(response)) return this.sendLog('EVENTS_GUILDMEMBERADD_RAID', member, settings, true, response.join('\n'));
         }
         if (settings.roles.initial) await this.handleInitialRole(member, settings).catch(this.handleError);
-        if (settings.events.guildMemberAdd) await this.handleWelcome(member, settings).catch(this.handleError);
+        if (settings.events.memberAdd) await this.handleMessage(member, settings).catch(this.handleError);
 
         return true;
     }
 
-    async handleWelcome(member, settings) {
+    async handleMessage(member, settings) {
         await this.sendLog('EVENTS_GUILDMEMBERADD', member, settings).catch(this.handleError);
-        if (settings.channels.default) await this.handleGreeting(member, settings).catch(this.handleError);
+        if (settings.channels.default && settings.messages.greeting) await this.handleGreeting(member, settings).catch(this.handleError);
     }
 
     async handleGreeting(member, settings) {
@@ -55,14 +55,10 @@ module.exports = class extends Event {
     }
 
     getMessage(member, settings) {
-        const custom = settings.messages.greeting;
-        if (custom) {
-            return custom
-                .replace(/%MEMBER%/g, member)
-                .replace(/%MEMBERNAME%/g, member.user.username)
-                .replace(/%GUILD%/g, member.guild.name);
-        }
-        return `Welcome ${member} to ${member.guild.name}!`;
+        return settings.messages.greeting
+            .replace(/%MEMBER%/g, member)
+            .replace(/%MEMBERNAME%/g, member.user.username)
+            .replace(/%GUILD%/g, member.guild.name);
     }
 
     async handleInitialRole(member, settings) {

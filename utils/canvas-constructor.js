@@ -208,7 +208,7 @@ class CanvasConstructor {
         const { style = '', size, font } = this.font;
         if (isNaN(size)) throw new TypeError('The parameter size must be a valid number.');
         const { width } = this.measureText(text);
-        const newLength = maxWidth > width ? maxWidth : (maxWidth / width) * size;
+        const newLength = maxWidth > width ? size : (maxWidth / width) * size;
         return this
             .setTextFont(`${style}${newLength}px ${font}`)
             .addText(text, x, y);

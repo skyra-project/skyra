@@ -11,8 +11,8 @@
         "mode": {
             "type": "Integer",
             "default": 0,
-            "min": 0,
-            "max": 3
+            "max": 3,
+            "min": 0
         },
         "ignoreChannels": {
             "type": "Channel",
@@ -123,17 +123,9 @@
     },
     "messages": {
         "farewell": {
-            "type":"boolean",
-            "default": false
-        },
-        "farewellMessage": {
             "type":"string"
         },
         "greeting": {
-            "type":"boolean",
-            "default": false
-        },
-        "greetingMessage": {
             "type":"string"
         }
     },
@@ -153,6 +145,16 @@
         "nmsthreshold": {
             "type": "Integer",
             "default": 20
+        },
+        "raid": {
+            "type": "Boolean",
+            "default": false
+        },
+        "raidthreshold": {
+            "type": "Integer",
+            "default": 10,
+            "max": 20,
+            "min": 5
         }
     },
     "filter": {

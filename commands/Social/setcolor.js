@@ -39,6 +39,7 @@ module.exports = class extends Command {
             .setColor(b10.value)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(`Colour changed to ${hex}`);
+
         return msg.send({ embed });
     }
 

@@ -178,6 +178,15 @@ module.exports = class extends Language {
 
             USER_NOT_IN_GUILD: 'This user is not in this server.',
 
+            EVENTS_GUILDMEMBERADD: 'User Joined',
+            EVENTS_GUILDMEMBERADD_MUTE: 'Muted User joined',
+
+            SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',
+            SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
+            SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
+
+            EVENTS_GUILDMEMBERADD_RAID: 'Raid Detected',
+
             TIMES: {
                 DAY: {
                     PLURAL: 'days',

@@ -6,6 +6,8 @@ const Canvas = require('../../utils/canvas-constructor');
 
 Canvas
     .registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), 'RobotoRegular')
+    .registerFont(join(__dirname, '../../assets/fonts/NotoEmoji.ttf'), 'RobotoRegular')
+    .registerFont(join(__dirname, '../../assets/fonts/NotoSans-Regular.ttf'), 'RobotoRegular')
     .registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), 'RobotoLight');
 
 const profileTemplate = join(__dirname, '../../assets/images/social/profile-foreground.png');
@@ -60,7 +62,7 @@ module.exports = class extends Command {
         ]);
 
         return new Canvas(640, 391)
-            .addImage(themeImageSRC, 10, 9, 188, 373)
+            .addImage(themeImageSRC, 9, 9, 188, 373)
             .addImage(backgroundSRC, 0, 0, 640, 391)
             .setColor(`#${color}`)
             .addRect(235, 356, Prog, 5)

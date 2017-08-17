@@ -1,12 +1,11 @@
-const Klasa = require('./lib/client');
-const cfg = require('./config.js');
+const { Client, config } = require('./index');
 
-const Skyra = new Klasa({
-    ownerID: cfg.ownerid,
+const Skyra = new Client({
+    ownerID: config.ownerid,
     prefix: 's!',
     cmdEditing: true,
     cmdLogging: false,
-    dash: cfg.dash,
+    dash: config.dash,
     clientOptions: {
         disabledEvents: [
             'TYPING_START',
@@ -23,4 +22,4 @@ const Skyra = new Klasa({
     }
 });
 
-Skyra.login(cfg.tokens.bot.dev);
+Skyra.login(config.tokens.bot.dev);

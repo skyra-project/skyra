@@ -172,15 +172,15 @@
             "min": 10
         },
         "raid": {
-            "description": "",
+            "description": "Whether the Anti-RAID protection should be enabled or not. This system takes action when a server gets too many new users in a frame of 20 seconds.",
             "type": "Boolean",
             "default": false
         },
         "raidthreshold": {
-            "description": "",
+            "description": "This key requires the 'raid' key enabled. This key specifies the amount of new users in a frame of 20 seconds needed to trigger the Anti-RAID protection.",
             "type": "Integer",
             "default": 10,
-            "max": 20,
+            "max": 50,
             "min": 5
         }
     },

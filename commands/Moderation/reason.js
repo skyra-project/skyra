@@ -27,8 +27,10 @@ module.exports = class extends Command {
             throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');
         }
 
-        const log = await settings.moderation.getCases(selected);
+        const log = await settings.moderation.getCases(selected).catch(() => null);
         if (!log) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
+
+        await settings.moderation.updateCase(selected, { reason });
 
         const messages = await channel.fetchMessages({ limit: 100 });
         const message = messages.find(mes => mes.author.id === this.client.user.id &&

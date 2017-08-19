@@ -60,6 +60,13 @@ class AntiRaid {
         return this.settings.roles.initial;
     }
 
+    prune() {
+        for (const id of this.users.keys()) {
+            clearInterval(this.users.get(id));
+            this.users.delete(id);
+        }
+    }
+
 }
 
 class Manager {

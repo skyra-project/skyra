@@ -5,7 +5,6 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            botPerms: ['EMBED_LINKS'],
             mode: 2,
             cooldown: 10,
 

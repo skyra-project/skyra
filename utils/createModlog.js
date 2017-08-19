@@ -96,8 +96,8 @@ class ModerationLog {
             channel.send({ embed }).catch(err => this.client.emit('log', err, 'error'));
 
             return this.guild.settings.moderation.pushCase({
-                moderator: this.moderator ? { id: this.moderator.id, tag: this.moderator.tag } : null,
-                user: this.user ? { id: this.user.id, tag: this.user.tag } : null,
+                moderator: this.moderator ? this.moderator.id : null,
+                user: this.user ? this.user.id : null,
                 type: this.type,
                 case: numberCase,
                 reason: this.reason,

@@ -24,7 +24,6 @@ module.exports = class extends Command {
         else if (user.id === this.client.user.id) throw msg.language.get('COMMAND_TOSKYRA');
 
         if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
-        else if (!member.bannable) throw msg.language.get('COMMAND_KICK_NOT_KICKABLE');
 
         if (!settings.roles.muted) throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
         const role = msg.guild.roles.get(settings.roles.muted);

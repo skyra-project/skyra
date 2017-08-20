@@ -33,7 +33,7 @@ class TaskProcess {
 
         await user.send(content).catch(() => null);
 
-        return this.client.clock.create({
+        return this.client.handler.clock.create({
             type: 'pollEnd',
             timestamp: 86400000 + Date.now(),
             poll

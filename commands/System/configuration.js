@@ -31,19 +31,19 @@ module.exports = class extends Command {
         const schema = this.client.settingGateway.schema[group][key];
         if (schema.array) {
             await this.client.settingGateway.updateArray(msg.guild, 'add', group, key, input);
-            return msg.send(msg.language.get('COMMAND_CONF_ADDED', input, `${group}::${key}`));
+            return msg.send(msg.language.get('COMMAND_CONF_ADDED', input, `${group}**::**${key} `));
         }
-        const response = await this.client.settingGateway.update(msg.guild, { [key]: { [group]: input } });
-        return msg.send(msg.language.get('COMMAND_CONF_UPDATED', `${group}::${key}`, response));
+        const response = await this.client.settingGateway.update(msg.guild, { [group]: { [key]: input } });
+        return msg.send(msg.language.get('COMMAND_CONF_UPDATED', `${group}**::**${key} `, response[group][key]));
     }
 
     get(msg, group, key, input, settings) {
-        return msg.send(msg.language.get('COMMAND_CONF_GET', `${group}::${key}`, this.handle(settings[group][key])));
+        return msg.send(msg.language.get('COMMAND_CONF_GET', `${group}**::**${key} `, this.handle(settings[group][key])));
     }
 
     reset(msg, group, key) {
         return this.client.settingGateway.reset(msg.guild, group, key)
-            .then(response => msg.send(msg.language.get('COMMAND_CONF_RESET', `${group}::${key}`, response)));
+            .then(response => msg.send(msg.language.get('COMMAND_CONF_RESET', `${group}**::**${key} `, response)));
     }
 
     list(msg, group, key, input, settings) {
@@ -61,7 +61,7 @@ module.exports = class extends Command {
     remove(msg, group, key, input) {
         if (this.client.settingGateway.schema[group][key].array !== true) return msg.send(msg.language.get('COMMAND_CONF_KEY_NOT_ARRAY'));
         return this.client.settingGateway.updateArray(msg.guild, 'remove', group, key, input)
-            .then(() => msg.send(msg.language.get('COMMAND_CONF_REMOVE', input, `${group}::${key}`)))
+            .then(() => msg.send(msg.language.get('COMMAND_CONF_REMOVE', input, `${group}**::**${key} `)))
             .catch(err => msg.send(err));
     }
 

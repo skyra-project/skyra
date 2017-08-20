@@ -210,7 +210,7 @@ module.exports = class RouterGuild {
                     announcement: settings.channels.announcement || null,
                     default: settings.channels.default || null,
                     log: settings.channels.log || null,
-                    mod: settings.channels.mod || null,
+                    mod: settings.channels.modlog || null,
                     spam: settings.channels.spam || null
                 },
                 messages: {

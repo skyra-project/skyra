@@ -20,8 +20,8 @@ module.exports = class extends Command {
     async run(msg, [selected, ...reason], settings) {
         reason = reason.length > 0 ? reason.join(' ') : null;
 
-        if (!settings.channels.mod) throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');
-        const channel = msg.guild.channels.get(settings.channels.mod);
+        if (!settings.channels.modlog) throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');
+        const channel = msg.guild.channels.get(settings.channels.modlog);
         if (!channel) {
             await settings.update({ channels: { mod: null } });
             throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');

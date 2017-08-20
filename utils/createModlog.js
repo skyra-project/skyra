@@ -74,6 +74,7 @@ class ModerationLog {
     }
 
     setReason(reason) {
+        if (reason === null) return this;
         if (Array.isArray(reason)) reason = reason.join(' ');
         this.reason = reason.length > 0 ? reason : null;
         return this;
@@ -90,22 +91,20 @@ class ModerationLog {
             return null;
         }
         const channel = this.getChannel();
+        const { embed, numberCase } = await this.getMessage();
 
-        if (channel) {
-            const { embed, numberCase } = await this.getMessage();
-            channel.send({ embed }).catch(err => this.client.emit('log', err, 'error'));
+        if (channel) channel.send({ embed }).catch(err => this.client.emit('log', err, 'error'));
 
-            return this.guild.settings.moderation.pushCase({
-                moderator: this.moderator ? this.moderator.id : null,
-                user: this.user ? this.user.id : null,
-                type: this.type,
-                case: numberCase,
-                reason: this.reason,
-                extraData: this.extraData
-            });
-        }
+        await this.guild.settings.moderation.pushCase({
+            moderator: this.moderator ? this.moderator.id : null,
+            user: this.user ? this.user.id : null,
+            type: this.type,
+            case: numberCase,
+            reason: this.reason,
+            extraData: this.extraData
+        });
 
-        return false;
+        return true;
     }
 
     async getMessage() {
@@ -136,12 +135,12 @@ class ModerationLog {
         return [
             `❯ **Action:** ${colour[this.type].title}`,
             `❯ **User:** ${this.user.tag} (${this.user.id})`,
-            `❯ **Reason:** ${this.reason || `Please use \`${this.guild.settings.prefix}reason ${numberCase} to claim.\``}`
+            `❯ **Reason:** ${this.reason || `Please use \`${this.guild.settings.master.prefix}reason ${numberCase} to claim.\``}`
         ].join('\n');
     }
 
     getChannel() {
-        return this.guild.settings.channels.mod ? this.guild.channels.get(this.guild.settings.channels.mod) : false;
+        return this.guild.settings.channels.modlog ? this.guild.channels.get(this.guild.settings.channels.modlog) : false;
     }
 
     static getColor(type) {

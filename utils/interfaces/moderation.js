@@ -88,7 +88,7 @@ module.exports = class Moderation {
         await this.ensureModule();
         await provider.append('moderation', this.id, 'cases', data);
         if (data.type === 'mute') await this.syncMutes();
-        else if (data.type === 'unmute') await this.appealMute(data.user.id);
+        else if (data.type === 'unmute') await this.appealMute(data.user);
     }
 
     /**
@@ -120,7 +120,7 @@ module.exports = class Moderation {
     async appealMute(user) {
         return this.getMute(user).then((doc) => {
             if (!doc) throw "This mute doesn't seem to exist";
-            return this.updateCase(doc.thisCase, { appeal: true }).then(() => this.syncMutes().then(() => true));
+            return this.updateCase(doc.case, { appeal: true }).then(() => this.syncMutes().then(() => true));
         });
     }
 

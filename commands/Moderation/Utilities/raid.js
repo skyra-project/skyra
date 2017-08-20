@@ -14,7 +14,7 @@ module.exports = class extends Command {
 
             cooldown: 5,
 
-            usage: '<list|clear>',
+            usage: '<list|clear|cool>',
             description: 'Manage the Anti-RAID system.'
         });
     }
@@ -41,6 +41,11 @@ module.exports = class extends Command {
     clear(msg, data) {
         data.prune();
         return msg.send('Successfully cleared the RAID list.');
+    }
+
+    cool(msg, data) {
+        data.prune().cool();
+        return msg.send('Successfully deactivated the RAID');
     }
 
 };

@@ -37,7 +37,7 @@ module.exports = class extends Command {
 
         const addtime = new Timer(input[2]).Duration;
         if (addtime < 60000) throw 'Your reminder must be at least one minute long';
-        const id = await this.client.clock.create({
+        const id = await this.client.handler.clock.create({
             type: 'reminder',
             timestamp: addtime + Date.now(),
             user: msg.author.id,

@@ -84,7 +84,7 @@ module.exports = class extends Command {
             return embed
                 .setTitle(msg.language.get('COMMAND_LIST_STRIKES', false))
                 .splitFields(`${!cases.length ? "There's no strike." : `There are ${cases.length} strikes. Cases: **${cases
-                    .map(rl => rl.thisCase)
+                    .map(rl => rl.case)
                     .join('**, **')}**`}`
                 );
         }
@@ -94,7 +94,7 @@ module.exports = class extends Command {
         return embed
             .setTitle(msg.language.get('COMMAND_LIST_STRIKES', user.tag))
             .setDescription(`${!thisStrikes.length ? `There's no strike for ${user.tag}.` : `There are ${thisStrikes.length} strike(s):\n\n${thisStrikes
-                .map(ncase => `Case \`${ncase.thisCase}\`. Moderator: **${ncase.moderator.tag}**\n\`${ncase.reason}\``)
+                .map(ncase => `Case \`${ncase.case}\`. Moderator: **${ncase.moderator.tag}**\n\`${ncase.reason}\``)
                 .join('\n\n')}`}`);
     }
 

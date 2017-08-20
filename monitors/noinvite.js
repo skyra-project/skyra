@@ -20,7 +20,7 @@ module.exports = class extends Monitor {
             await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
         }
 
-        if (!settings.channels.mod) return null;
+        if (!settings.channels.modlog) return null;
 
         const embed = new MessageEmbed()
             .setColor(0xefae45)
@@ -28,7 +28,7 @@ module.exports = class extends Monitor {
             .setFooter(`#${msg.channel.name} | Invite link`)
             .setTimestamp();
 
-        return msg.guild.channels.get(settings.channels.mod).send({ embed });
+        return msg.guild.channels.get(settings.channels.modlog).send({ embed });
     }
 
 };

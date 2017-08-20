@@ -32,7 +32,6 @@ module.exports = class extends Command {
         const roles = member._roles;
         await member.edit({ roles: [mute.id] });
 
-        await msg.guild.ban(user.id, { days: 1, reason });
         msg.send(msg.language.get('COMMAND_MUTE_MESSAGE', user, reason)).catch(() => null);
         return new ModLog(msg.guild)
             .setModerator(msg.author)

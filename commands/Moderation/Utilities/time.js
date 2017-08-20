@@ -31,17 +31,17 @@ module.exports = class extends Command {
 
         const type = await this.getActions(msg, doc, user);
 
-        const exists = this.client.clock.tasks.find(task => task.type === type && task.user === doc.user);
+        const exists = this.client.handler.clock.tasks.find(task => task.type === type && task.user === doc.user);
         if (exists) throw `This action is already scheduled and ending in ${duration(exists.timestamp - Date.now())}`;
 
         const length = new Timer(time.join(' ')).Duration;
 
-        await this.client.clock.create({
+        await this.client.handler.clock.create({
             type,
             timestamp: length + Date.now(),
             user: doc.user,
             guild: msg.guild.id,
-            duration
+            duration: length
         }).catch(Command.handleError);
 
         await settings.moderation.updateCase(selected, { timed: true });

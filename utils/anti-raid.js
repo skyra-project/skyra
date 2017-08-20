@@ -7,12 +7,15 @@ class AntiRaid {
         this.settings = settings;
 
         this.users = new Map();
+
+        this.attack = false;
+        this.timeout = null;
     }
 
     add(member) {
         const timer = this.clear(member);
         this.users.set(member.id, timer);
-        if (this.settings.selfmod.raidthreshold >= this.users.size) return this.execute();
+        if (this.settings.selfmod.raidthreshold >= this.users.size || this.attack === true) return this.execute();
         return false;
     }
 
@@ -24,6 +27,7 @@ class AntiRaid {
 
     async execute() {
         if (this.guild.me.permissions.has('KICK_MEMBERS') === false) return false;
+        this.fire();
         const kicked = [];
 
         const min = !!this.defaultRole + 1;
@@ -42,11 +46,27 @@ class AntiRaid {
         return kicked;
     }
 
+    fire() {
+        if (this.attack === false) this.attack = true;
+        if (this.timeout !== null) clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => this.cool(), 20000);
+    }
+
+    cool() {
+        if (this.timeout !== null) {
+            clearTimeout(this.timeout);
+            this.timeout = null;
+        }
+        if (this.attack === true) this.attack = false;
+
+        return this;
+    }
+
     check(id, min) {
         return this.guild.fetchMember(id)
             .then((member) => {
                 if (member.roles.size >= min) return null;
-                if (min === 2 && member.roles.has(this.defaultRole) === false) return null;
+                if (this.defaultRole && member.roles.size === 2 && member.roles.has(this.defaultRole) === false) return null;
                 return member;
             })
             .catch(() => null);
@@ -65,6 +85,8 @@ class AntiRaid {
             clearInterval(this.users.get(id));
             this.users.delete(id);
         }
+
+        return this;
     }
 
 }
@@ -76,15 +98,21 @@ class Manager {
     }
 
     static set(guild, settings) {
-        return cache.set(guild.id, new AntiRaid(guild, settings));
+        const data = new AntiRaid(guild, settings);
+        cache.set(guild.id, data);
+        return data;
     }
 
     static add(guild, settings, member) {
-        return this.get(guild.id).add(member);
+        return this.get(guild, settings).add(member);
     }
 
     static remove(guild, settings, member) {
-        return this.get(guild.id).remove(member);
+        return this.get(guild, settings).remove(member);
+    }
+
+    static nuke(guild) {
+        return cache.delete(guild);
     }
 
 }

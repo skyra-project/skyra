@@ -25,7 +25,7 @@ module.exports = class extends Monitor {
 
         if (settings.filter.level !== 2 && settings.filter.level !== 3) return true;
 
-        const modLogChannelID = settings.channels.mod;
+        const modLogChannelID = settings.channels.modlog;
         if (!modLogChannelID) return true;
 
         const channel = msg.guild.channels.get(modLogChannelID);

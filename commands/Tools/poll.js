@@ -15,14 +15,14 @@ module.exports = class extends Command {
             description: 'Calculate arbitrary maths.',
             extendedHelp: Command.strip`
                 Let's make a poll!
-                
+
                 = Usage =
                 Skyra, list               :: I will show you all active voting polls.
                 Skyra, create             :: Create a new voting poll.
                 Skyra, remove <ID>        :: Delete a voting poll.
                 Skyra, vote <ID> <Option> :: Vote in a voting poll, given ID and option.
                 Skyra, result <ID>        :: Check the results of a voting poll.
-                
+
                 = Options =
                 Timer    :: The duration for the poll. It has the following format: '1d 14h 25m 10s'
                 Title    :: The title for the poll.
@@ -30,11 +30,11 @@ module.exports = class extends Command {
                 *Roles   :: The whitelisted roles.
                 *Options :: The options for the poll. Defaults to 'yes' and 'no'.
                 The options with a '*' are optional.
-                
+
                 = Reminder =
                 When you vote, the option is case sensitive.
                 Options must be separated by commas.
-                
+
                 = Examples =
                 • Skyra, poll create 1d 14h 25m 10s Should I build a house? -roles Admins, Mods -options Yes!, Of course!, No!! -users kyra, 267681855048908801
                     I will create a poll with the following properties:
@@ -192,7 +192,7 @@ module.exports = class extends Command {
     }
 
     get clock() {
-        return this.client.clock;
+        return this.client.handler.clock;
     }
 
 };

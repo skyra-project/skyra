@@ -7,11 +7,16 @@ const Months = {
     long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 };
 
+const isTime = /^\d*(?:\.\d+)?[a-zA-Z]*$/;
+const isNumber = /^\d*(?:\.\d+)?$/;
+const hasType = /[a-zA-Z]*$/;
+
 const fill = number => String(number).length === 1 ? `0${number}` : number;
 
 class Timer {
 
     constructor(text) {
+        this._created = Date.now();
         this.date = Date.now();
         this.duration(text);
     }
@@ -30,9 +35,10 @@ class Timer {
         for (let i = 0; i < times.length; i++) {
             const current = times[i];
 
-            if (/^\d*(?:\.\d+)?$/.test(current) === false) continue;
+            if (isTime.test(current) === false) continue;
             let type = null;
-            if (i + 1 > times.length || /^\d*(?:\.\d+)?$/.test(times[i + 1])) type = 'MILLISECOND';
+            if (isNumber.test(current) === false && hasType.test(current)) type = Timer.parseText(hasType.exec(current)[0]);
+            else if (i + 1 > times.length || isNumber.test(times[i + 1])) type = 'MILLISECOND';
             else type = Timer.parseText(times[++i]);
 
             if (type === null) throw 'Invalid input';
@@ -157,7 +163,7 @@ class Timer {
      * @readonly
      */
     get Duration() {
-        return this.date - Date.now();
+        return this.date - this._created;
     }
 
     /**

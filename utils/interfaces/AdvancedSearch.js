@@ -39,13 +39,14 @@ class Fetch {
         return null;
     }
 
-    channel(query, msg) {
+    channel(query, msg, type = null) {
         const resChannel = this.resolveChannel(query, msg.guild);
         if (resChannel && msg.guild.channels.has(resChannel)) return resChannel;
 
         const results = [];
         const reg = new RegExp(query, 'i');
         for (const channel of msg.guild.channels.values()) {
+            if (type !== null && channel.type !== type) continue;
             if (reg.test(channel.name)) results.push(channel);
         }
 

@@ -5,7 +5,12 @@ const options = {
     hoist: false
 };
 
-const pushRole = (channel, role, permission, array) => channel.overwritePermissions(role, permission).catch(() => array.push(channel.toString()));
+const permission = {
+    text: { SEND_MESSAGES: false },
+    voice: { CONNECT: false }
+};
+
+const pushRole = (channel, role, array) => channel.overwritePermissions(role, permission[channel.type]).catch(() => array.push(channel.toString()));
 
 class Assets {
 
@@ -18,12 +23,11 @@ class Assets {
         let accepted = 0;
 
         for (const channel of channels.values()) { // eslint-disable-line no-restricted-syntax
-            if (channel.type === 'text') await pushRole(channel, role, { SEND_MESSAGES: false }, denied);
-            else await pushRole(channel, role, { CONNECT: false }, denied);
+            await pushRole(channel, role, denied);
             accepted += 1;
         }
 
-        const messageEdit2 = denied.length ? `, with exception of ${denied.join(', ')}.` : '. ';
+        const messageEdit2 = denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ';
         await msg.guild.settings.update({ roles: { muted: role.id } });
         await msg.send(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
         return role;

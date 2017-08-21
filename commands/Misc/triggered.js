@@ -18,7 +18,7 @@ module.exports = class extends Command {
             cooldown: 30,
 
             usage: '<user:advuser>',
-            description: 'Check this kitty! ❤',
+            description: 'I am, TRIGGERED',
             extendedHelp: Command.strip`
                 What? My commands aren't enough userfriendly? (╯°□°）╯︵ ┻━┻
 

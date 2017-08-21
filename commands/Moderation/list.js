@@ -21,7 +21,7 @@ module.exports = class extends Command {
     async run(msg, [type, ...input], settings) {
         input = input.length ? input.join(' ') : null;
         const embed = new MessageEmbed()
-            .setColor(this.msg.member.highestRole.color || 0xdfdfdf)
+            .setColor(msg.member.highestRole.color || 0xdfdfdf)
             .setFooter(this.client.user.username, this.client.user.displayAvatarURL({ size: 128 }))
             .setTimestamp();
 
@@ -35,7 +35,7 @@ module.exports = class extends Command {
             .setTitle(msg.language.get('COMMAND_LIST_CHANNELS', msg.guild.name, msg.guild.id))
             .splitFields(msg.guild.channels
                 .sort((x, y) => +(x.position > y.position) || +(x.position === y.position) - 1)
-                .map(channel => ` ❯ **${channel.name}** **\`${channel.toString()}\`**`)
+                .map(channel => `❯ **${channel.name}** **\`${channel.toString()}\`**`)
                 .join('\n')
             );
     }
@@ -47,7 +47,7 @@ module.exports = class extends Command {
                 .sort((x, y) => +(x.position > y.position) || +(x.position === y.position) - 1)
                 .slice(1)
                 .reverse()
-                .map(role => ` ❯ **\`${String(role.members.size).padStart(3, '_')}\`** ${role.name} (${role.id})`)
+                .map(role => `❯ **\`${String(role.members.size).padStart(3, '_')}\`** ${role.name} (${role.id})`)
                 .join('\n')
             );
     }

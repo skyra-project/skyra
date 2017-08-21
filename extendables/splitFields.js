@@ -12,6 +12,8 @@ module.exports = class extends Extendable {
         let i;
         let x;
 
+        if (content.length < 1020) return this.addField('\u200B', content);
+
         for (i = 0; i < content.length / 1020; i++) {
             x = init.substring(0, 1020).lastIndexOf('\n');
             this.addField('\u200B', init.substring(0, x));

@@ -17,19 +17,21 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [query, ...unbanReson]) {
+    async run(msg, [query, ...unbanReason]) {
         const { user, reason } = await this.fetchBan(msg.guild, query);
 
-        unbanReson = unbanReson.length > 0 ? unbanReson.join(' ') : null;
+        unbanReason = unbanReason.length > 0 ? unbanReason.join(' ') : null;
         user.action = 'unban';
-        await msg.guild.unban(user.id, unbanReson);
-        msg.send(msg.language.get('COMMAND_UNBAN_MESSAGE', user, reason, unbanReson)).catch(() => null);
-        return new ModLog(msg.guild)
+        await msg.guild.unban(user.id, unbanReason);
+
+        const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)
             .setUser(user)
             .setType('unban')
-            .setReason(unbanReson)
+            .setReason(unbanReason)
             .send();
+
+        return msg.send(msg.language.get('COMMAND_UNBAN_MESSAGE', user, reason, unbanReason, modcase));
     }
 
     async fetchBan(guild, query) {

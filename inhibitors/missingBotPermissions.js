@@ -6,7 +6,7 @@ module.exports = class extends Inhibitor {
     constructor(...args) {
         super(...args);
         this.impliedPermissions = new Permissions([
-            'READ_MESSAGES',
+            'VIEW_CHANNEL',
             'SEND_MESSAGES',
             'SEND_TTS_MESSAGES',
             'EMBED_LINKS',

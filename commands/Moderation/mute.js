@@ -28,18 +28,19 @@ module.exports = class extends Command {
         const mute = await this.configuration(msg, settings);
         if (settings.moderation.mutes.has(user.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
 
-        reason = reason.length ? reason.join(' ') : null;
+        reason = Assets.parseReason(reason);
         const roles = member._roles;
         await member.edit({ roles: [mute.id] });
 
-        msg.send(msg.language.get('COMMAND_MUTE_MESSAGE', user, reason)).catch(() => null);
-        return new ModLog(msg.guild)
+        const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)
             .setUser(user)
             .setType('mute')
             .setReason(reason)
             .setExtraData(roles)
             .send();
+
+        return msg.send(msg.language.get('COMMAND_MUTE_MESSAGE', user, reason, modcase));
     }
 
     async configuration(msg, settings) {

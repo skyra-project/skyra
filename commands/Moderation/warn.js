@@ -25,13 +25,15 @@ module.exports = class extends Command {
         else if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
 
         reason = reason.length ? reason.join(' ') : null;
-        msg.send(msg.language.get('COMMAND_WARN_MESSAGE', user, reason)).catch(() => null);
-        return new ModLog(msg.guild)
+
+        const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)
             .setUser(user)
             .setType('warn')
             .setReason(reason)
             .send();
+
+        return msg.send(msg.language.get('COMMAND_WARN_MESSAGE', user, reason, modcase));
     }
 
 };

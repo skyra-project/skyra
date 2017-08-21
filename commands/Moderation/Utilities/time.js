@@ -16,13 +16,13 @@ module.exports = class extends Command {
 
             cooldown: 5,
 
-            usage: '<Case:integer> <timer:string> [...]',
+            usage: '[cancel] <Case:integer> [timer:string] [...]',
             usageDelim: ' ',
             description: 'Sets a timer.'
         });
     }
 
-    async run(msg, [selected, ...time], settings) {
+    async run(msg, [cancel, selected, ...time], settings) {
         const cases = await settings.moderation.getCases();
         const doc = cases[selected];
         if (!doc) throw 'this case does not seem to exist.';
@@ -32,7 +32,12 @@ module.exports = class extends Command {
         const type = await this.getActions(msg, doc, user);
 
         const exists = this.client.handler.clock.tasks.find(task => task.type === type && task.user === doc.user);
-        if (exists) throw `This action is already scheduled and ending in ${duration(exists.timestamp - Date.now())}`;
+        if (cancel) return this.cancel(msg, selected, settings, exists);
+        if (exists) {
+            if (doc.appeal === true) throw 'This action is already appealed.';
+            throw `This action is already scheduled and ending in ${duration(exists.timestamp - Date.now())}`;
+        }
+        if (time.length === 0) throw 'You must specify a time.';
 
         const length = new Timer(time.join(' ')).Duration;
 
@@ -47,6 +52,12 @@ module.exports = class extends Command {
         await settings.moderation.updateCase(selected, { timed: true });
 
         return msg.send(`✅ Successfully scheduled a moderation action type **${ModLog.getColor(type).title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(length)}`);
+    }
+
+    async cancel(msg, selected, settings, task) {
+        if (!task) throw 'This task is not scheduled.';
+        await this.client.handler.clock.remove(task.id);
+        return msg.send(`Successfully aborted the schedule for ${ModLog.getColor(task.type).title}`);
     }
 
     getActions(msg, doc, user) {

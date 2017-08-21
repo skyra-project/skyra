@@ -1,3 +1,8 @@
+const Timer = require('./timer');
+
+const moment = require('moment');
+const duration = time => moment.duration(time).format('h [hours,] m [minutes,] s [seconds]');
+
 const options = {
     name: 'Muted',
     color: 0x422c0b,
@@ -31,6 +36,19 @@ class Assets {
         await msg.guild.settings.update({ roles: { muted: role.id } });
         await msg.send(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
         return role;
+    }
+
+    static parseReason(reason) {
+        if (reason.length === 0) return null;
+        reason = reason.join(' ');
+
+        const array = reason.includes('Time: ') ? reason.split('Time: ') : null;
+        if (array === null) return { reason, time: null };
+
+        const time = new Timer(reason.pop().trim()).Duration;
+        reason = `${reason.join('Time: ')}\n**AUTO**: This action will get reversed in: ${duration(time)}`;
+
+        return { reason, time };
     }
 
 }

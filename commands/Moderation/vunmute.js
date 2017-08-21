@@ -7,13 +7,13 @@ module.exports = class extends Command {
         super(...args, {
             guildOnly: true,
             permLevel: 2,
-            botPerms: ['KICK_MEMBERS'],
+            botPerms: ['MUTE_MEMBERS'],
             mode: 2,
             cooldown: 5,
 
             usage: '<SearchMember:user> [reason:string] [...]',
             usageDelim: ' ',
-            description: 'Kick the mentioned user.'
+            description: 'Voice Unmute the mentioned user.'
         });
     }
 
@@ -22,23 +22,21 @@ module.exports = class extends Command {
 
         if (user.id === msg.author.id) throw msg.language.get('COMMAND_USERSELF');
         else if (user.id === this.client.user.id) throw msg.language.get('COMMAND_TOSKYRA');
-        else if (member) {
-            if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
-            else if (!member.bannable) throw msg.language.get('COMMAND_KICK_NOT_KICKABLE');
-        }
+        else if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
+
+        if (member.serverMute === false) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 
         reason = reason.length ? reason.join(' ') : null;
-        user.action = 'kick';
-        await msg.guild.ban(user.id, { days: 1, reason });
+        await member.setDeaf(false, reason);
 
         const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)
             .setUser(user)
-            .setType('kick')
+            .setType('vunmute')
             .setReason(reason)
             .send();
 
-        return msg.send(msg.language.get('COMMAND_KICK_MESSAGE', user, reason, modcase)).catch(() => null);
+        return msg.send(msg.language.get('COMMAND_UNMUTE_MESSAGE', user, reason, modcase));
     }
 
 };

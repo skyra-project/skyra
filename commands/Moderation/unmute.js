@@ -39,13 +39,15 @@ module.exports = class extends Command {
 
         reason = reason.length ? reason.join(' ') : null;
         await member.edit({ roles });
-        msg.send(msg.language.get('COMMAND_UNMUTE_MESSAGE', user, reason)).catch(() => null);
-        return new ModLog(msg.guild)
+
+        const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)
             .setUser(user)
             .setType('unmute')
             .setReason(reason)
             .send();
+
+        return msg.send(msg.language.get('COMMAND_UNMUTE_MESSAGE', user, reason, modcase));
     }
 
 };

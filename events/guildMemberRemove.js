@@ -20,9 +20,11 @@ module.exports = class extends Event {
         const channel = member.guild.channels.get(settings.channels.log);
         if (!channel) return settings.update({ channels: { log: null } });
 
+        const avatar = (system ? this.client.user : member.user).displayAvatarURL();
+
         const embed = new MessageEmbed()
             .setColor(colours[type])
-            .setAuthor(system ? this.client.user.tag : `${member.user.tag} (${member.id})`)
+            .setAuthor(system ? this.client.user.tag : `${member.user.tag} (${member.id})`, avatar)
             .setFooter(member.guild.language.get(type))
             .setTimestamp();
 

@@ -37,18 +37,27 @@ class ModerationLog {
 
     async retrieveModLog(id) {
         const log = await this.guild.settings.moderation.getCases(id);
-        this.moderator = log.moderator;
-        this.user = log.user;
+        if (log.moderator) await this.client.fetchUser(log.moderator).then(user => this.setModerator(user));
+        if (log.user) await this.client.fetchUser(log.user).then(user => this.setUser(user));
         this.type = log.type;
         this.reason = log.reason;
 
         const description = this.getDescription(id);
 
+        let AUTO = false;
+        let moderator;
+        if (!this.moderator) {
+            AUTO = true;
+            moderator = this.client.user;
+        } else {
+            moderator = this.moderator.raw;
+        }
+
         const embed = new MessageEmbed()
-            .setColor(colour[this.type])
-            .setAuthor(this.moderator.tag)
+            .setColor(colour[this.type].color)
+            .setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
             .setDescription(description)
-            .setFooter(`Case ${id}`)
+            .setFooter(`${AUTO ? 'AUTO | ' : ''}Case ${id}`)
             .setTimestamp();
         return embed;
     }
@@ -85,6 +94,11 @@ class ModerationLog {
         return this;
     }
 
+    /**
+     * Send the modlog
+     * @returns {number}
+     * @memberof ModerationLog
+     */
     async send() {
         if (this.anonymous && this.user.raw.action === this.type) {
             delete this.user.raw.action;
@@ -104,7 +118,7 @@ class ModerationLog {
             extraData: this.extraData
         });
 
-        return true;
+        return numberCase;
     }
 
     async getMessage() {

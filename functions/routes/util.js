@@ -40,7 +40,7 @@ module.exports = class Utils {
         };
 
         this.readChannel = (req, res, channel, callback) => {
-            if (!channel.permissionsFor(channel.guild.me).has('READ_MESSAGES')) return this.throw(res, ...this.error.MISSING_PERMISSION('READ_MESSAGES')); // eslint-disable-line new-cap
+            if (!channel.permissionsFor(channel.guild.me).has('VIEW_CHANNEL')) return this.throw(res, ...this.error.MISSING_PERMISSION('VIEW_CHANNEL')); // eslint-disable-line new-cap
             if (!channel.permissionsFor(channel.guild.me).has('READ_MESSAGE_HISTORY')) return this.throw(res, ...this.error.MISSING_PERMISSION('READ_MESSAGE_HISTORY')); // eslint-disable-line new-cap
             return callback();
         };

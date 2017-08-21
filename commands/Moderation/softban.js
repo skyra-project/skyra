@@ -31,13 +31,15 @@ module.exports = class extends Command {
         user.action = 'softban';
         await msg.guild.ban(user, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
         await msg.guild.unban(user, 'Softban.');
-        msg.send(msg.language.get('COMMAND_SOFTBAN_MESSAGE', user, reason)).catch(() => null);
-        return new ModLog(msg.guild)
+
+        const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)
             .setUser(user)
             .setType('softban')
             .setReason(reason)
             .send();
+
+        return msg.send(msg.language.get('COMMAND_SOFTBAN_MESSAGE', user, reason, modcase));
     }
 
 };

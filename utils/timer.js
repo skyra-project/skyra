@@ -7,9 +7,7 @@ const Months = {
     long: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 };
 
-const isTime = /^\d*(?:\.\d+)?[a-zA-Z]*$/;
 const isNumber = /^\d*(?:\.\d+)?$/;
-const hasType = /[a-zA-Z]*$/;
 
 const fill = number => String(number).length === 1 ? `0${number}` : number;
 
@@ -30,15 +28,14 @@ class Timer {
         if (Array.isArray(text)) text = text.join(' ');
         if (typeof text !== 'string') throw 'Invalid input';
         if (text.length === 0) return;
-        const times = text.split(/,? +/);
+        const times = text.replace(/[a-zA-Z]+/g, match => ` ${match}`).split(/,? +/);
 
         for (let i = 0; i < times.length; i++) {
             const current = times[i];
 
-            if (isTime.test(current) === false) continue;
+            if (isNumber.test(current) === false) continue;
             let type = null;
-            if (isNumber.test(current) === false && hasType.test(current)) type = Timer.parseText(hasType.exec(current)[0]);
-            else if (i + 1 > times.length || isNumber.test(times[i + 1])) type = 'MILLISECOND';
+            if (i + 1 > times.length || isNumber.test(times[i + 1])) type = 'MILLISECOND';
             else type = Timer.parseText(times[++i]);
 
             if (type === null) throw 'Invalid input';

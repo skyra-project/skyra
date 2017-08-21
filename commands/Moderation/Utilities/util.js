@@ -113,7 +113,7 @@ module.exports = class extends Command {
         if (msg.hasLevel(1) !== true) throw 'you require to be at least a Staff Member to run this command.';
         const channel = await this.client.handler.search.channel(input, msg);
 
-        if (!channel.readable) throw `I am sorry, but I need the permission READ_MESSAGES in the channel ${channel}.`;
+        if (!channel.readable) throw `I am sorry, but I need the permission VIEW_CHANNEL in the channel ${channel}.`;
         const messages = await channel.fetchMessages({ limit: 100 });
         const amount = messages.filter(mes => mes.createdTimestamp > this.msg.createdTimestamp - 60000).size;
         return msg.send(`Dear ${msg.author}, ${amount} messages have been sent within the last minute.`);

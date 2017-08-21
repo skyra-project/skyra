@@ -1,4 +1,8 @@
 const { MessageEmbed } = require('discord.js');
+const Timer = require('./timer');
+
+const moment = require('moment');
+const duration = time => moment.duration(time).format('h [hours,] m [minutes,] s [seconds]');
 
 const colour = {
     ban: { color: 0xD50000, title: 'Ban' },
@@ -31,6 +35,8 @@ class ModerationLog {
         this.type = null;
         this.reason = null;
         this.extraData = null;
+
+        this.duration = null;
 
         this.anonymous = false;
     }
@@ -86,6 +92,33 @@ class ModerationLog {
         if (reason === null) return this;
         if (Array.isArray(reason)) reason = reason.join(' ');
         this.reason = reason.length > 0 ? reason : null;
+
+        if (['ban', 'mute', 'vmute'].includes(this.type)) return this.parseReason();
+        return this;
+    }
+
+    parseReason() {
+        if (this.reason === null) return this;
+
+        const array = this.reason.includes('Time: ') ? this.reason.split('Time: ') : null;
+        if (array === null) return this;
+
+        const time = new Timer(array.pop().trim()).Duration;
+        this.setDuration(time);
+        this.reason = `${array.join('Time: ')}\n**AUTO**: This action will get reversed in: ${duration(time)}`;
+
+        switch (this.type) {
+            case 'ban': return this.setType('tban');
+            case 'mute': return this.setType('tmute');
+            case 'vmute': return this.setType('tvmute');
+            // no default
+        }
+
+        return this;
+    }
+
+    setDuration(time) {
+        this.duration = time;
         return this;
     }
 
@@ -109,16 +142,39 @@ class ModerationLog {
 
         if (channel) channel.send({ embed }).catch(err => this.client.emit('log', err, 'error'));
 
-        await this.guild.settings.moderation.pushCase({
+        const modcase = {
             moderator: this.moderator ? this.moderator.id : null,
             user: this.user ? this.user.id : null,
             type: this.type,
             case: numberCase,
             reason: this.reason,
             extraData: this.extraData
-        });
+        };
+
+        if (this.duration !== null) modcase.timed = true;
+
+        await this.guild.settings.moderation.pushCase(modcase);
+
+        if (this.duration !== null) {
+            await this.client.handler.clock.create({
+                type: this.appealType,
+                timestamp: this.duration + Date.now(),
+                user: this.user.id,
+                guild: this.guild.id,
+                duration: this.duration
+            });
+        }
 
         return numberCase;
+    }
+
+    get appealType() {
+        switch (this.type) {
+            case 'tban': return 'unban';
+            case 'tmute': return 'unmute';
+            case 'tvmute': return 'vunmute';
+        }
+        return this.type;
     }
 
     async getMessage() {

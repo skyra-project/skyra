@@ -87,7 +87,7 @@ module.exports = class Moderation {
     async pushCase(data) {
         await this.ensureModule();
         await provider.append('moderation', this.id, 'cases', data);
-        if (data.type === 'mute') await this.syncMutes();
+        if (data.type === 'mute' || data.type === 'tmute') await this.syncMutes();
         else if (data.type === 'unmute') await this.appealMute(data.user);
     }
 
@@ -102,12 +102,12 @@ module.exports = class Moderation {
     }
 
     getMutes() {
-        return this.getCases().then(cases => cases.filter(obj => obj.type === 'mute' && obj.appeal !== true));
+        return this.getCases().then(cases => cases.filter(obj => ['mute', 'tmute'].includes(obj.type) && obj.appeal !== true));
     }
 
     getMute(user) {
         return this.getMutes()
-            .then(doc => doc.find(obj => obj.type === 'mute' && obj.user === user && obj.appeal !== true) || null);
+            .then(doc => doc.find(obj => ['mute', 'tmute'].includes(obj.type) && obj.user === user && obj.appeal !== true) || null);
     }
 
     async syncMutes() {

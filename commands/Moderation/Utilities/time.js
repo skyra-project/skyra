@@ -26,6 +26,7 @@ module.exports = class extends Command {
         const cases = await settings.moderation.getCases();
         const doc = cases[selected];
         if (!doc) throw 'this case does not seem to exist.';
+        if (doc.timed === true) throw 'this case has already been timed.';
 
         const user = await this.client.fetchUser(doc.user);
 
@@ -57,6 +58,7 @@ module.exports = class extends Command {
     async cancel(msg, selected, settings, task) {
         if (!task) throw 'This task is not scheduled.';
         await this.client.handler.clock.remove(task.id);
+        await settings.moderation.updateCase(selected, { timed: false });
         return msg.send(`Successfully aborted the schedule for ${ModLog.getColor(task.type).title}`);
     }
 

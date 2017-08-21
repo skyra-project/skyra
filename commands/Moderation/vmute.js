@@ -1,6 +1,5 @@
 const { Command } = require('../../index');
 const ModLog = require('../../utils/createModlog.js');
-const Assets = require('../../utils/assets');
 
 module.exports = class extends Command {
 
@@ -27,7 +26,7 @@ module.exports = class extends Command {
 
         if (member.serverMute) throw msg.language.get('COMMAND_MUTE_MUTED');
 
-        reason = Assets.parseReason(reason);
+        reason = reason.length ? reason.join(' ') : null;
         await member.setDeaf(true, reason);
 
         const modcase = await new ModLog(msg.guild)

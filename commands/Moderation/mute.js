@@ -28,7 +28,7 @@ module.exports = class extends Command {
         const mute = await this.configuration(msg, settings);
         if (settings.moderation.mutes.has(user.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
 
-        reason = Assets.parseReason(reason);
+        reason = reason.length ? reason.join(' ') : null;
         const roles = member._roles;
         await member.edit({ roles: [mute.id] });
 

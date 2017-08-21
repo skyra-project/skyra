@@ -1,6 +1,5 @@
 const { Command } = require('../../index');
 const ModLog = require('../../utils/createModlog.js');
-const Assets = require('../../utils/assets');
 
 module.exports = class extends Command {
 
@@ -29,7 +28,7 @@ module.exports = class extends Command {
             else if (!member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
         }
 
-        reason = Assets.parseReason(reason);
+        reason = reason.length ? reason.join(' ') : null;
         user.action = 'ban';
         await msg.guild.ban(user.id, { days: 1, reason });
 

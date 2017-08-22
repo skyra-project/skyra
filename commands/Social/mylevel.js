@@ -17,7 +17,7 @@ module.exports = class extends Command {
         const memberPoints = msg.member.points.score;
         const nextRole = this.getLatestRole(memberPoints, settings.autoroles);
         const title = nextRole ? `\n${msg.language.get('COMMAND_SOCIAL_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}` : '';
-        return msg.language.get('COMMAND_SOCIAL_MYLEVEL', memberPoints, title);
+        return msg.send(msg.language.get('COMMAND_SOCIAL_MYLEVEL', memberPoints, title));
     }
 
     getLatestRole(points, autoroles) {

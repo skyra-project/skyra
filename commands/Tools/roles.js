@@ -14,17 +14,17 @@ module.exports = class extends Command {
             description: 'List all public roles from a guild, or claim/unclaim them.',
             extendedHelp: Command.strip`
                 Public roles? They are roles that are available for everyone, an administrator must configure them throught a setting command.
-                
+
                 = Usage =
                 Skyra, roles list                   :: I will show you all available public roles.
                 Skyra, roles claim <role1, role2>   :: Claim one of more public roles.
                 Skyra, roles unclaim <role1, role2> :: Unclaim one of more public roles.
-                
+
                 = Format =
                 When using claim/unclaim, the roles can be individual, or multiple.
                 To claim multiple roles, you must separate them by a comma.
                 You can specify which roles by writting their ID, name, or a section of the name.
-                
+
                 = Examples =
                 Skyra, roles claim Designer, Programmer
                     I will give you both roles, 'Designer' and 'Programmer' (implying they exist and they are available as public roles).
@@ -77,7 +77,7 @@ module.exports = class extends Command {
         for (let index = 0; index < roles.length; index++) {
             try {
                 const checkRole = roles[index];
-                if (!settings.publicRoles.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
+                if (!settings.roles.public.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
                 else if (msg.member.roles.has(checkRole.id)) existentRoles.push(checkRole.name);
                 else giveRoles.push(checkRole);
             } catch (err) {
@@ -101,7 +101,7 @@ module.exports = class extends Command {
         for (let index = 0; index < roles.length; index++) {
             try {
                 const checkRole = roles[index];
-                if (!settings.publicRoles.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
+                if (!settings.roles.publicsettings.roles.public.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
                 else if (!msg.member.roles.has(checkRole.id)) nonexistentRoles.push(checkRole.name);
                 else removeRoles.push(checkRole);
             } catch (err) {
@@ -118,8 +118,8 @@ module.exports = class extends Command {
     }
 
     list(msg, settings) {
-        if (settings.publicRoles.length === 0) throw 'this server does not have a public role configured.';
-        const theRoles = settings.publicRoles.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
+        if (settings.roles.public.length === 0) throw 'this server does not have a public role configured.';
+        const theRoles = settings.roles.public.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
         const embed = new MessageEmbed()
             .setColor(this.msg.color)
             .setTitle(`Public roles for ${this.guild}`)

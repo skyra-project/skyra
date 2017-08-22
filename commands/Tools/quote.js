@@ -17,7 +17,7 @@ module.exports = class extends Command {
 
     async run(msg, [searchMessage, channel = msg.channel]) {
         if (!/[0-9]{17,21}/.test(searchMessage)) throw 'I was expecting a Message Snowflake (Message ID).';
-        const mes = await channel.fetchMessage(searchMessage).catch(Command.handleError);
+        const mes = await channel.fetchMessage(searchMessage).catch(() => { throw 'Message not found.'; });
 
         const attachment = mes.attachments.size ? mes.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split('.').pop())) : null;
         if (!attachment && !mes.content) throw "it is weird, but this message doesn't have a content nor image.";

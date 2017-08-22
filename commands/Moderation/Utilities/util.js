@@ -13,7 +13,7 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 30,
 
-            usage: '<members|channel|server|flow|permissions|perms|invite> [search:string] [...]',
+            usage: '<channel|server|flow|permissions|perms|invite> [search:string] [...]',
             usageDelim: ' ',
             description: 'Use some of the utilities.'
         });

@@ -61,6 +61,7 @@ module.exports = class extends Monitor {
     }
 
     handleError(msg, error) {
+        if (typeof error === 'string') return msg.send(`Dear ${msg.author}, ${error}`);
         return msg.error(error);
     }
 

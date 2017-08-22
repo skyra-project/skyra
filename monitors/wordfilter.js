@@ -13,7 +13,7 @@ module.exports = class extends Monitor {
     async run(msg, settings) {
         if (settings.filter.level === 0 ||
             settings.filter.regexp === null ||
-            msg.hasLevel(1) ||
+            await msg.hasLevel(1) ||
             !settings.filter.regexp.test(msg.content)) return false;
 
         if (msg.deletable) await msg.delete()

@@ -33,15 +33,15 @@ class Fetch {
     }
 
     resolveChannel(query, guild) {
-        if (query instanceof Channel) return query;
-        if (query instanceof Message) return query.channel;
+        if (query instanceof Channel) return guild.channels.has(query.id) ? query : null;
+        if (query instanceof Message) return query.guild.id === guild.id ? query.channel : null;
         if (typeof query === 'string' && regex.channel.test(query)) return guild.channels.get(regex.channel.exec(query)[1]);
         return null;
     }
 
     channel(query, msg, type = null) {
         const resChannel = this.resolveChannel(query, msg.guild);
-        if (resChannel && msg.guild.channels.has(resChannel)) return resChannel;
+        if (resChannel) return resChannel;
 
         const results = [];
         const reg = new RegExp(query, 'i');

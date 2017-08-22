@@ -144,7 +144,7 @@ module.exports = class extends Command {
         if (!input) throw 'you must write up something.';
         const poll = this.clock.tasks.find(entry => entry.guild === msg.guild.id && entry.type === 'poll' && entry.id === input);
         if (!poll) throw 'that poll does not exist.';
-        if (poll.user !== msg.author.id && !msg.hasLevel(2)) throw 'you do not have permissions to remove this poll.';
+        if (poll.user !== msg.author.id && await msg.hasLevel(2) === false) throw 'you do not have permissions to remove this poll.';
         return msg.prompt('Are you sure you want to remove this poll?')
             .then(async () => {
                 await this.clock.remove(poll.id, true);
@@ -176,7 +176,7 @@ module.exports = class extends Command {
         const poll = this.clock.tasks.find(entry => entry.type === 'poll' && entry.guild === msg.guild.id && entry.id === input) ||
             this.clock.tasks.find(entry => entry.type === 'pollEnd' && entry.poll.guild === msg.guild.id && entry.poll.id === input);
         if (!poll) throw 'that poll does not exist.';
-        if (poll.user !== msg.author.id && !msg.hasLevel(2)) throw 'you do not have permissions to check the results from this poll.';
+        if (poll.user !== msg.author.id && await msg.hasLevel(2) === false) throw 'you do not have permissions to check the results from this poll.';
         const data = poll.type === 'poll' ? poll : poll.poll;
         if (data.voted.length === 0) throw 'I am sorry, but nobody voted in this poll.';
         const graph = [];

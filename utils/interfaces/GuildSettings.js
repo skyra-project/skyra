@@ -59,13 +59,20 @@ class GuildSettings {
 
     async update(doc) {
         await provider.update('guilds', this.id, doc);
+        return this.sync(doc);
+    }
+
+    async sync(doc = null) {
+        if (doc === null) doc = await provider.get('guilds', this.id);
+
         for (const [key, value] of Object.entries(doc)) {
-            if (value instanceof Object) {
+            if (Array.isArray(value) === false && value instanceof Object) {
                 for (const [subkey, subvalue] of Object.entries(value)) this[key][subkey] = subvalue;
             } else {
                 this[key] = value;
             }
         }
+
         return this;
     }
 

@@ -8,7 +8,7 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 15,
 
-            usage: '[command:command]',
+            usage: '[command:string]',
             description: 'Display help for all or a single command.'
         });
     }
@@ -16,6 +16,8 @@ module.exports = class extends Command {
     async run(msg, [cmd], settings) {
         const method = this.client.user.bot ? 'author' : 'channel';
         if (cmd) {
+            cmd = this.client.commands.get(cmd);
+            if (!cmd) throw msg.language.get('RESOLVER_INVALID_PIECE', 'command', 'command');
             const info = [
                 `= ${cmd.name} = `,
                 cmd.description,

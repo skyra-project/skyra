@@ -57,8 +57,8 @@ module.exports = class extends Command {
 
         return new Canvas(640, 174)
             // Draw the background
-            .addImage(themeImageSRC)
-            .addImage(backgroundSRC)
+            .addImage(themeImageSRC, 10, 9, 189, 157)
+            .addImage(backgroundSRC, 0, 0, 640, 174)
 
             // Draw the progress bar
             .setColor(`#${color}`)
@@ -78,7 +78,7 @@ module.exports = class extends Command {
 
             // Draw the avatar
             .save()
-            .addImage(imgAvatarSRC, 34, 18, 139, 139, { type: 'Round', radius: 69.5 })
+            .addImage(imgAvatarSRC, 34, 18, 139, 139, { type: 'round', radius: 69.5 })
             .restore()
             .toBufferAsync();
     }

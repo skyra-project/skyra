@@ -13,7 +13,7 @@ module.exports = class extends Monitor {
     async run(msg, settings) {
         if (!settings.selfmod.inviteLinks ||
             !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content) ||
-            msg.hasLevel(1)) return false;
+            await msg.hasLevel(1)) return false;
 
         if (msg.deletable) {
             await msg.delete();

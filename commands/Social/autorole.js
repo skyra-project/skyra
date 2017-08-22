@@ -27,18 +27,6 @@ module.exports = class extends Command {
                 = Reminder =
                 The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.
 
-                = Setting|ignoreChannels Usage =
-                The ignoreChannel list is a list of channels Skyra doesn't listen when giving points.
-                Skyra, autorole setting ignorechannels list <channel>   :: Get a list of all channels from the ignoreChannels list.
-                Skyra, autorole setting ignorechannels add <channel>    :: Add channels to the ignoreChannels list.
-                Skyra, autorole setting ignorechannels remove <channel> :: Remove channels to the ignoreChannels list.
-
-                = Setting|initialRole Usage =
-                The initialRole role is a role that Skyra will assign automatically to all new members.
-                Skyra, autorole setting initialrole get           :: Check what is the current initial role.
-                Skyra, autorole setting initialrole set <role>    :: Set the initial role.
-                Skyra, autorole setting initialrole remove <role> :: Remove the initial role.
-
                 = Examples =
                 • Skyra, autorole add 20000 Trusted Member
                     I'll start auto-assigning the role 'Trusted Member' to anyone who has at least 20.000 points (based on local points).
@@ -63,6 +51,7 @@ module.exports = class extends Command {
                 if (!role) throw 'this role does not exist.';
                 await Rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points: amount });
                 await settings.sync();
+                settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
                 return msg.send(`Added new autorole: ${role.name} (${role.id}). Points required: ${amount}`);
             }
             case 'remove': {
@@ -88,6 +77,7 @@ module.exports = class extends Command {
                 if (!retrieved) throw 'this role is not configured as an autorole.';
                 await Rethink.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points: amount });
                 await settings.sync();
+                settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
                 return msg.send(`Updated autorole: ${role.name} (${role.id}). Points required: ${amount} (before: ${retrieved.points})`);
             }
             case 'setting': return this.settingHandler(msg, input, settings);
@@ -95,53 +85,9 @@ module.exports = class extends Command {
         }
     }
 
-    async settingHandler(msg, [type, action, ...value], settings) {
-        if (!type || !['initialrole', 'ignorechannels'].includes(type.toLowerCase())) throw 'you must select one of the following settings: `initialRole`|`ignoreChannels`';
-        switch (type.toLowerCase()) {
-            case 'initialrole': {
-                if (!action || !['get', 'set', 'remove'].includes(action.toLowerCase())) throw 'you must select one of the following actions: `set`|`remove`';
-                if (action.toLowerCase() === 'get') {
-                    const initialRole = settings.initialRole;
-                    return msg.send(initialRole ? `Current initial role: ${msg.guild.roles.get(initialRole).name}` : 'No initial role set.');
-                } else if (action.toLowerCase() === 'set') {
-                    if (!value[0]) throw 'you must specify a Role.';
-                    const role = await this.client.handler.search.role(value.join(' '), msg);
-                    await settings.update({ initialRole: role.id });
-                    return msg.send(`✅ Success | New **initialRole** set to ${role.name}.`);
-                }
-                await settings.update({ initialRole: null });
-                return msg.send('✅ Success | Removed the value for **initialRole**.');
-            }
-            case 'ignorechannels': {
-                if (!action || !['list', 'add', 'remove'].includes(action.toLowerCase())) throw 'you must select one of the following actions: `add`|`remove`';
-                if (action.toLowerCase() === 'list') {
-                    if (!settings.ignoreChannels.length) throw 'there are no autoroles configured for this guild.';
-                    return msg.send(settings.ignoreChannels.map((ch) => {
-                        const channel = msg.guild.channels.get(ch);
-                        return channel ? `${channel.name} (${channel.id})` : `Unknown channel: ${ch}`;
-                    }).join('\n'), { code: true });
-                }
-                if (!value[0]) throw 'you must specify a Channel.';
-                const channel = await this.client.handler.search.channel(value.join(' '), msg);
-                const ignoreChannels = settings.ignoreChannels;
-                if (action.toLowerCase() === 'add') {
-                    if (ignoreChannels.includes(channel.id)) throw 'this channel is already ignored.';
-                    await Rethink.append('guilds', msg.guild.id, 'ignoreChannels', channel.id);
-                    await settings.sync();
-                    return msg.send(`✅ Success | Now I won't give points in the channel ${channel.name}.`);
-                }
-                if (!ignoreChannels.length) throw 'this server does not have an ignored channel';
-                if (!ignoreChannels.includes(channel.id)) throw 'this channel is not ignored.';
-                await settings.update({ ignoreChannels: ignoreChannels.filter(ch => ch !== channel.id) });
-                return msg.send(`✅ Success | Now I'll listen the channel ${channel.name}.`);
-            }
-            default: throw new Error(`Unknown type: ${action}`);
-        }
-    }
-
     parse(data) {
         const args = data.split(' ');
-        if (!['list', 'add', 'remove', 'update', 'setting'].includes(args[0])) throw 'Missing a required option: (list, add, remove, setting)';
+        if (!['list', 'add', 'remove', 'update'].includes(args[0])) throw 'Missing a required option: (list, add, remove, setting)';
         const action = args[0];
         args.shift();
         let amount;

@@ -32,7 +32,7 @@ module.exports = class extends Command {
             description: 'Check stats from somebody in Overwatch.',
             extendedHelp: Command.strip`
                 Cheers love! The cavalry is here!
-                
+
                 = Usage =
                 Skyra, overwatch [BattleTag] [platform] [server] [hero] [type] [gamemode]
                 BattleTag :: Your BattleTag from Battle.net.
@@ -47,12 +47,12 @@ module.exports = class extends Command {
                     • If 'server' is not specified, I will retrieve the career profile with higher level.
                     • If 'type' is not specified, I will display 'Featured'.
                     • If 'gamemode' is not specified, I will show the data from 'quickplay'.
-                
+
                 Examples:
                 • Skyra, overwatch Knight#22123 pc eu
                 • Skyra, overwatch Knight#22123
                     The two examples above will return the same information, as the battletag has a discriminator number (PC only) and has the highest level in EU.
-                
+
                 • Skyra, overwatch Knight#22123 competitive
                     I will display the featured content for competitive.
             `
@@ -73,7 +73,7 @@ module.exports = class extends Command {
         };
 
         const resolved = await this.resolveProfile(user, profile);
-        const output = await this.fetchData(resolved.careerLink, profile);
+        const output = await this.fetchData(msg, resolved.careerLink, profile);
         if (output instanceof Buffer) return msg.send({ files: [{ attachment: output, name: 'overwatch.png' }] });
         const { overview, title, data, url } = output;
         const embed = new MessageEmbed()
@@ -126,7 +126,7 @@ module.exports = class extends Command {
         }
     }
 
-    async fetchData(selected, { platform, server, type, gamemode }) {
+    async fetchData(msg, selected, { platform, server, type, gamemode }) {
         const path = selected.split('/');
         path[path.length - 1] = encodeURIComponent(path[path.length - 1]);
         const data = await fetchProfile(`https://playoverwatch.com/en-us${path.join('/')}`);
@@ -135,7 +135,7 @@ module.exports = class extends Command {
         switch (type) {
             case 'featured': return Object.assign(output, {
                 title: 'Featured',
-                data: `**Competitive rank**: ${data.overview.competitiveRank.rank ? this.resolveEmoji(data.overview.competitiveRank.rank) : 'Unranked'}\n${list(statistics.highlight)}`
+                data: `**Competitive rank**: ${data.overview.competitiveRank.rank ? this.resolveEmoji(msg, data.overview.competitiveRank.rank) : 'Unranked'}\n${list(statistics.highlight)}`
             });
             case 'playedheroes': return overwatch('playedheroes', data, { platform, server, gamemode });
             case 'combat': return Object.assign(output, {

@@ -32,7 +32,7 @@ module.exports = class extends Event {
     }
 
     async handle(member, settings) {
-        if (settings.selfmod.raid === true) AntiRaid.remove(member.guild, settings, member);
+        if (settings.selfmod.raid === true && AntiRaid.get(member.guild, settings).attack !== true) AntiRaid.remove(member.guild, settings, member);
         if (settings.events.memberRemove) await this.handleMessage(member, settings).catch(err => this.handleError(err));
         return true;
     }

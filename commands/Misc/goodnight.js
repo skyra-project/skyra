@@ -35,9 +35,9 @@ module.exports = class extends Command {
         return new Canvas(500, 322)
             .addImage(background, 0, 0, 636, 366)
             .save()
-            .addImage(kisser, 300, 25, 146, 146, { type: 'round', radius: 73 })
+            .addImage(kisser, 315, 25, 146, 146, { type: 'round', radius: 73 })
             .restore()
-            .addImage(child, 322, 157, 110, 110, { type: 'round', radius: 55 })
+            .addImage(child, 350, 170, 110, 110, { type: 'round', radius: 55 })
             .toBufferAsync();
     }
 

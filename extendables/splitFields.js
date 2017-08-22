@@ -6,7 +6,9 @@ module.exports = class extends Extendable {
         super(...args, ['MessageEmbed']);
     }
 
-    extend(content) {
+    extend(content = null) {
+        if (content === null) return this;
+
         if (Array.isArray(content)) content = content.join('\n');
         let init = content;
         let i;

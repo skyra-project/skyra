@@ -42,7 +42,7 @@ module.exports = class extends Command {
     }
 
     async long(url) {
-        const { id } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url });
+        const { id } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url }).then(data => JSON.parse(data.text));
         return `**Shortened URL: [${id}](${id})**`;
     }
 

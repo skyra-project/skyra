@@ -121,7 +121,7 @@ module.exports = class extends Command {
         if (settings.roles.public.length === 0) throw 'this server does not have a public role configured.';
         const theRoles = settings.roles.public.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
         const embed = new MessageEmbed()
-            .setColor(this.msg.color)
+            .setColor(msg.color)
             .setTitle(`Public roles for ${this.guild}`)
             .setDescription(theRoles.join('\n'));
         return msg.send({ embed });

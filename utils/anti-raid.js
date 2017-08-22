@@ -20,8 +20,10 @@ class AntiRaid {
     }
 
     remove(member) {
-        clearInterval(this.users.get(member.id));
-        this.users.delete(member.id);
+        if (this.users.has(member.id)) {
+            clearInterval(this.users.get(member.id));
+            this.users.delete(member.id);
+        }
         return this;
     }
 
@@ -93,20 +95,46 @@ class AntiRaid {
 
 class Manager {
 
+    /**
+     * @static
+     * @param {Guild} guild Guild
+     * @param {Settings} settings Guild Settings
+     * @returns {AntiRaid}
+     */
     static get(guild, settings) {
         return cache.get(guild.id) || this.set(guild, settings);
     }
 
+    /**
+     * @static
+     * @param {Guild} guild Guild
+     * @param {Settings} settings Guild Settings
+     * @returns {AntiRaid}
+     */
     static set(guild, settings) {
         const data = new AntiRaid(guild, settings);
         cache.set(guild.id, data);
         return data;
     }
 
+    /**
+     * @static
+     * @param {Guild} guild Guild
+     * @param {Settings} settings Guild Settings
+     * @param {GuildMember} member The Member Object
+     * @returns {Promise<(false|any[])>}
+     */
     static add(guild, settings, member) {
         return this.get(guild, settings).add(member);
     }
 
+    /**
+     * @static
+     * @param {Guild} guild Guild
+     * @param {Settings} settings Guild Settings
+     * @param {GuildMember} member The Member Object
+     * @returns {AntiRaid}
+     */
     static remove(guild, settings, member) {
         return this.get(guild, settings).remove(member);
     }

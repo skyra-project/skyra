@@ -22,7 +22,8 @@ module.exports = class extends Command {
 
     async run(msg, [user]) {
         const output = await this.generate(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: 'F.png' }] });
+        return msg.channel.send({ files: [{ attachment: output, name: 'F.png' }] })
+            .then(message => msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS') ? message.react('🇫') : message);
     }
 
     async generate(msg, user) {

@@ -165,6 +165,9 @@ module.exports = class extends Language {
             COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
             COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 
+            COMMAND_SOCIAL_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
+            COMMAND_SOCIAL_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
             SYSTEM_DM_FAIL: 'I cannot send you a message in DMs, did you block me?',

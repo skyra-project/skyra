@@ -29,7 +29,7 @@ module.exports = class extends Command {
         const text = await this.prompt(msg);
         const parsedURLs = await this.parseURLs(text);
         const html = marked(parsedURLs).replace(/\n$/, '').replace(/\n+/g, '<br />');
-        await provider.create('news', this.parseTitle(title), { title, html, author: msg.author.tag, date: Date.now() });
+        await provider.create('news', this.parseTitle(title), { title, html, author: msg.author.id, date: Date.now() });
         return msg.send(`Successfully created the page ${title}`);
     }
 
@@ -49,6 +49,7 @@ module.exports = class extends Command {
 
     parseURLs(raw) {
         return this.parseTwitter(raw).then(text => text
+            .replace(/ /g, '&nbsp;')
             .replace(/<@!?[0-9]+>/g, (input) => {
                 const id = input.replace(/<|!|>|@/g, '');
                 if (this.channel.type === 'dm' || this.channel.type === 'group') {
@@ -69,6 +70,8 @@ module.exports = class extends Command {
                 if (role) return `@${role.name}`;
                 return input;
             })
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
             .replace(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9-_]{11}[^ ]*/g, (match) => {
                 const id = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9-_]{11})/.exec(match)[1];
                 return `<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`;
@@ -79,11 +82,10 @@ module.exports = class extends Command {
                 return match;
             })
             .replace(/\n={3,}\n/g, '<hr></hr>')
-            .replace(/[ ]+/g, ' ')
             .replace(/\n+/g, '\n'));
     }
 
-    parseTwitter(text) {
+    async parseTwitter(text) {
         const urls = [];
         let i = 0;
         let pending = text.replace(/(?:https?:\/\/)?(?:www\.)?(?:twitter\.com\/\w+\/status\/)\d+/g, (match) => {

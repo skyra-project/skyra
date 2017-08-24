@@ -6,7 +6,7 @@ module.exports = class extends Event {
     run(msg) {
         this.deleteResponse(msg);
 
-        if (msg.channel.type !== 'text') return null;
+        if (msg.channel.type !== 'text' || msg.author.id === this.client.user.id) return null;
 
         const settings = msg.guild.settings;
         if (settings.events.messageDelete && settings.channels.log) return this.sendLog(msg, settings)
@@ -36,7 +36,7 @@ module.exports = class extends Event {
         const i18n = msg.guild.language;
 
         const embed = new MessageEmbed()
-            .setColor(0xDCE775)
+            .setColor(0xFFAB40)
             .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL())
             .setDescription(i18n.get('EVENTS_MESSAGE_DELETE_MSG', msg.content))
             .setFooter(i18n.get('EVENTS_MESSAGE_DELETE'))

@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = class extends Finalizer {
 
     run(msg) {
-        if (msg.channel.type !== 'text') return null;
+        if (msg.cmd.permLevel > 3 || msg.channel.type !== 'text') return null;
 
         const settings = msg.guild.settings;
         if (settings.events.commands && settings.channels.log) return this.sendLog(msg, settings);
@@ -19,7 +19,7 @@ module.exports = class extends Finalizer {
         const i18n = msg.guild.language;
 
         const embed = new MessageEmbed()
-            .setColor(0xDCE775)
+            .setColor(0x536DFE)
             .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL())
             .setFooter(i18n.get('EVENTS_COMMAND', msg.cmd.name))
             .setTimestamp();

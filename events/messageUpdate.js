@@ -7,7 +7,7 @@ module.exports = class extends Event {
         if (old.content === msg.content) return null;
         this.client.emit('message', msg);
 
-        if (msg.channel.type !== 'text') return null;
+        if (msg.channel.type !== 'text' || msg.author.id === this.client.user.id) return null;
 
         const settings = msg.guild.settings;
         if (settings.events.messageEdit && settings.channels.log) return this.sendLog(old, msg, settings)

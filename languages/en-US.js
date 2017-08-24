@@ -192,7 +192,7 @@ module.exports = class extends Language {
             EVENTS_MESSAGE_UPDATE: 'Message Edited',
             EVENTS_MESSAGE_UPDATE_MSG: (old, msg) => `Previous: ${old.substring(0, 950)}\nNew: ${msg.substring(0, 950)}`,
             EVENTS_MESSAGE_DELETE: 'Message Deleted',
-            EVENTS_MESSAGE_DELETE_MSG: msg => `Content: ${msg.substring(0, 1900)}`,
+            EVENTS_MESSAGE_DELETE_MSG: msg => msg.substring(0, 1900),
             EVENTS_COMMAND: command => `Command Used: ${command}`,
 
             SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',

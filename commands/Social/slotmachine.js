@@ -14,7 +14,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            aliases: ['slot', 'slotmachines'],
+            aliases: ['slot', 'slots', 'slotmachines'],
             guildOnly: true,
             spam: true,
             cooldown: 10,

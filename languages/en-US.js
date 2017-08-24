@@ -185,12 +185,24 @@ module.exports = class extends Language {
             EVENTS_GUILDMEMBERADD: 'User Joined',
             EVENTS_GUILDMEMBERADD_MUTE: 'Muted User joined',
             EVENTS_GUILDMEMBERREMOVE: 'User left',
+            EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Updated the nickname from **${previous}** to **${current}**`,
+            EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous, current) => `Added a new nickname **${current}**`,
+            EVENTS_GUILDMEMBER_REMOVED_NICKNAME: previous => `Removed the nickname **${previous}**`,
+            EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0 ? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}` : ''}${added.length > 0 ? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
+            EVENTS_MESSAGE_UPDATE: 'Message Edited',
+            EVENTS_MESSAGE_UPDATE_MSG: (old, msg) => `Previous: ${old.substring(0, 950)}\nNew: ${msg.substring(0, 950)}`,
+            EVENTS_MESSAGE_DELETE: 'Message Deleted',
+            EVENTS_MESSAGE_DELETE_MSG: msg => `Content: ${msg.substring(0, 1900)}`,
+            EVENTS_COMMAND: command => `Command Used: ${command}`,
 
             SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',
             SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
             SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
 
             EVENTS_GUILDMEMBERADD_RAID: 'Raid Detected',
+
+            TYPES_MEMBER_ROLE_UPDATE: 'Member Role Update',
+            TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',
 
             TIMES: {
                 DAY: {

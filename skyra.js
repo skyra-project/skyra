@@ -22,4 +22,4 @@ const Skyra = new Client({
     }
 });
 
-Skyra.login(config.tokens.bot.dev);
+Skyra.login(config.tokens.bot.stable);

@@ -33,7 +33,7 @@ module.exports = class extends Event {
         const channel = msg.guild.channels.get(settings.channels.log);
         if (!channel) return settings.update({ channels: { log: null } });
 
-        const i18n = msg.guild.language;
+        const i18n = msg.language;
 
         const embed = new MessageEmbed()
             .setColor(0xFFAB40)

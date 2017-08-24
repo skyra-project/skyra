@@ -75,10 +75,10 @@ module.exports = class extends Command {
         if (msg.guild.me.permissions.has('BAN_MEMBERS') !== true) throw 'I will need the BAN MEMBERS permissions to be able to unban.';
 
         const users = await msg.guild.fetchBans();
-        if (users.size === 0) throw msg.guild.language('GUILD_BANS_EMPTY');
+        if (users.size === 0) throw msg.language('GUILD_BANS_EMPTY');
 
         const member = users.get(user.id) || null;
-        if (member === null) throw msg.guild.language('GUILD_BANS_NOT_FOUND');
+        if (member === null) throw msg.language('GUILD_BANS_NOT_FOUND');
 
         return 'unban';
     }

@@ -168,11 +168,21 @@ module.exports = class extends Language {
             COMMAND_SOCIAL_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
             COMMAND_SOCIAL_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 
+            COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
+            COMMAND_SUBSCRIBE_SUCCESS: (role) => `Successfully granted the role: **${role}**`,
+            COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}***`,
+            COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
+            COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
+
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
             SYSTEM_DM_FAIL: 'I cannot send you a message in DMs, did you block me?',
             SYSTEM_FETCHING: '`Fetching...`',
             SYSTEM_PROCESSING: '`Processing...`',
+            SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
+            SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
+
+            COMMAND_SUCCESS: 'Successfully executed the command.',
 
             GUILD_SETTINGS_CHANNELS_MOD: 'This command requires a modlog channel to work.',
             GUILD_SETTINGS_ROLES_MUTED: 'This command requires a configured role for mutes.',

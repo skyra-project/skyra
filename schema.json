@@ -142,6 +142,10 @@
         "spam": {
             "description": "The spam channel, if set, a set of selected commands (the most spammy/funny ones) will only work there.",
             "type": "TextChannel"
+        },
+        "stream": {
+            "description": "The channel to post when a user starts/stops streaming.",
+            "type": "TextChannel"
         }
     },
     "messages": {

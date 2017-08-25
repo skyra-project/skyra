@@ -19,7 +19,7 @@ class Fetch {
         return null;
     }
 
-    role(query, msg) {
+    async role(query, msg) {
         const resRole = this.resolveRole(query, msg.guild);
         if (resRole) return resRole;
 
@@ -39,7 +39,7 @@ class Fetch {
         return null;
     }
 
-    channel(query, msg, type = null) {
+    async channel(query, msg, type = null) {
         const resChannel = this.resolveChannel(query, msg.guild);
         if (resChannel) return resChannel;
 

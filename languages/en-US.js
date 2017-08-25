@@ -198,6 +198,7 @@ module.exports = class extends Language {
 
             EVENTS_GUILDMEMBERADD: 'User Joined',
             EVENTS_GUILDMEMBERADD_MUTE: 'Muted User joined',
+            EVENTS_GUILDMEMBERADD_RAID: 'Raid Detected',
             EVENTS_GUILDMEMBERREMOVE: 'User left',
             EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Updated the nickname from **${previous}** to **${current}**`,
             EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous, current) => `Added a new nickname **${current}**`,
@@ -208,12 +209,12 @@ module.exports = class extends Language {
             EVENTS_MESSAGE_DELETE: 'Message Deleted',
             EVENTS_MESSAGE_DELETE_MSG: msg => msg.substring(0, 1900),
             EVENTS_COMMAND: command => `Command Used: ${command}`,
+            EVENTS_STREAM_START: member => `The user **${member.user.tag}** is now live! **${member.presence.game.name}**\n${member.presence.game.url}`,
+            EVENTS_STREAM_STOP: member => `The user **${member.user.tag}** is not longer live!`,
 
             SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',
             SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
             SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
-
-            EVENTS_GUILDMEMBERADD_RAID: 'Raid Detected',
 
             TYPES_MEMBER_ROLE_UPDATE: 'Member Role Update',
             TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',

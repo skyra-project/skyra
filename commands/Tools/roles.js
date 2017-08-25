@@ -9,7 +9,7 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 15,
 
-            usage: '<list|claim|unclaim> [roles:advrole] [...]',
+            usage: '<list|claim|unclaim> [roles:string] [...]',
             usageDelim: ' ',
             description: 'List all public roles from a guild, or claim/unclaim them.',
             extendedHelp: Command.strip`
@@ -41,7 +41,7 @@ module.exports = class extends Command {
 
     async claim(msg, settings, roles) {
         const message = [];
-        const { giveRoles, unlistedRoles, existentRoles, invalidRoles } = this.roleAddCheck(msg, settings, roles);
+        const { giveRoles, unlistedRoles, existentRoles, invalidRoles } = await this.roleAddCheck(msg, settings, roles);
         if (existentRoles) message.push(`You already have the following roles: \`${existentRoles.join('`, `')}\``);
         if (unlistedRoles) message.push(`The following roles are not public: \`${unlistedRoles.join('`, `')}\``);
         if (invalidRoles) message.push(`Roles not found: \`${invalidRoles.join('`, `')}\``);
@@ -56,7 +56,7 @@ module.exports = class extends Command {
 
     async unclaim(msg, settings, roles) {
         const message = [];
-        const { removeRoles, unlistedRoles, nonexistentRoles, invalidRoles } = this.roleRemoveCheck(msg, settings, roles);
+        const { removeRoles, unlistedRoles, nonexistentRoles, invalidRoles } = await this.roleRemoveCheck(msg, settings, roles);
         if (nonexistentRoles) message.push(`You do not have the following roles: \`${nonexistentRoles.join('`, `')}\``);
         if (unlistedRoles) message.push(`The following roles are not public: \`${unlistedRoles.join('`, `')}\``);
         if (invalidRoles) message.push(`Roles not found: \`${invalidRoles.join('`, `')}\``);
@@ -69,20 +69,18 @@ module.exports = class extends Command {
         return msg.send(message.join('\n'));
     }
 
-    roleAddCheck(msg, settings, roles) {
+    async roleAddCheck(msg, settings, roles) {
         const giveRoles = [];
         const existentRoles = [];
         const unlistedRoles = [];
         const invalidRoles = [];
-        for (let index = 0; index < roles.length; index++) {
-            try {
-                const checkRole = roles[index];
-                if (!settings.roles.public.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
-                else if (msg.member.roles.has(checkRole.id)) existentRoles.push(checkRole.name);
-                else giveRoles.push(checkRole);
-            } catch (err) {
-                invalidRoles.push(roles[index]);
-            }
+        for (const role of roles) {
+            const res = await this.client.handler.search.role(role, msg).catch(() => null);
+
+            if (res === null) continue;
+            if (!settings.roles.public.includes(res.id)) unlistedRoles.push(res.name);
+            else if (msg.member.roles.has(res.id)) existentRoles.push(res.name);
+            else giveRoles.push(res);
         }
 
         return {
@@ -93,20 +91,18 @@ module.exports = class extends Command {
         };
     }
 
-    roleRemoveCheck(msg, settings, roles) {
+    async roleRemoveCheck(msg, settings, roles) {
         const removeRoles = [];
         const nonexistentRoles = [];
         const unlistedRoles = [];
         const invalidRoles = [];
-        for (let index = 0; index < roles.length; index++) {
-            try {
-                const checkRole = roles[index];
-                if (!settings.roles.publicsettings.roles.public.includes(checkRole.id)) unlistedRoles.push(checkRole.name);
-                else if (!msg.member.roles.has(checkRole.id)) nonexistentRoles.push(checkRole.name);
-                else removeRoles.push(checkRole);
-            } catch (err) {
-                invalidRoles.push(roles[index]);
-            }
+        for (const role of roles) {
+            const res = await this.client.handler.search.role(role, msg).catch(() => null);
+
+            if (res === null) continue;
+            if (!settings.roles.public.includes(res.id)) unlistedRoles.push(res.name);
+            else if (!msg.member.roles.has(res.id)) nonexistentRoles.push(res.name);
+            else removeRoles.push(res);
         }
 
         return {

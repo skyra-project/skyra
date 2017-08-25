@@ -122,7 +122,7 @@ module.exports = class extends Command {
         const theRoles = settings.roles.public.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
         const embed = new MessageEmbed()
             .setColor(msg.color)
-            .setTitle(`Public roles for ${this.guild}`)
+            .setTitle(`Public roles for ${msg.guild}`)
             .setDescription(theRoles.join('\n'));
         return msg.send({ embed });
     }

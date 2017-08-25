@@ -1,4 +1,5 @@
-const { util: { toTitleCase }, Providers: { json: provider } } = require('../index');
+const { toTitleCase } = require('../lib/util/util');
+const provider = require('../providers/json');
 const { resolve } = require('path');
 const { Collection } = require('discord.js');
 const express = require('express');
@@ -23,8 +24,8 @@ module.exports = class Dashboard {
     constructor(client) {
         this.client = client;
         this.users = new Collection();
-        this.owner = client.config.ownerID;
-        this.routes = resolve(client.baseDir, 'views');
+        this.owner = this.client.config.ownerID;
+        this.routes = resolve(this.client.baseDir, 'views');
         this.server = express();
         this.server.use(helmet.noCache());
         this.server.use(session({
@@ -57,9 +58,9 @@ module.exports = class Dashboard {
             done(null, this.users.get(id));
         });
         passport.use(new Strategy({
-            clientID: client.user.id,
-            clientSecret: client.config.dash.oauthSecret,
-            callbackURL: client.config.dash.callback,
+            clientID: this.client.user.id,
+            clientSecret: this.client.config.dash.oauthSecret,
+            callbackURL: this.client.config.dash.callback,
             scope: ['identify', 'guilds']
         }, (accessToken, refreshToken, profile, done) => {
             this.users.set(profile.id, new DashboardUser(this.client, profile));
@@ -82,7 +83,7 @@ module.exports = class Dashboard {
             res.render(this.getFile('statistics.ejs'), this.sendData(req, { usage: this.client.usage }));
         });
         this.server.get('/invite', (req, res) => {
-            res.redirect(client.invite);
+            res.redirect(this.client.invite);
         });
         this.server.get('/join', (req, res) => {
             res.redirect(this.supportGuild);
@@ -121,7 +122,7 @@ module.exports = class Dashboard {
             res.redirect(`/users/${req.user.id}`);
         });
         this.server.get('/users/:id', this.util.check.auth, (req, res) => {
-            client.fetchUser(req.params.id)
+            this.client.fetchUser(req.params.id)
                 .then(user => res.render(this.getFile('profile.ejs'), this.sendData(req, { profile: user.profile })))
                 .catch(() => this.sendError(req, res, 404, 'Not found'));
         });

@@ -4,7 +4,7 @@ const Guilds = require('./managers/guilds');
 const Clock = require('./managers/clock');
 
 const AdvancedSearch = require('./interfaces/AdvancedSearch');
-// const Dashboard = require('../functions/dashboard');
+const Dashboard = require('../functions/dashboard');
 
 const provider = require('../providers/rethink');
 // const { log } = require('./debugLog');
@@ -33,7 +33,7 @@ class Handler {
         if (this.inited) return;
 
         await this.clock.init();
-        // this.dashboard = new Dashboard(this.client);
+        this.dashboard = new Dashboard(this.client);
 
         const [guild, users, locals, modlogs] = await Promise.all([
             provider.getAll('guilds'),

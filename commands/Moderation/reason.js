@@ -1,5 +1,4 @@
-const { Command, util } = require('../../index');
-const ModLog = require('../../utils/createModlog.js');
+const { Command, util, ModLog } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {

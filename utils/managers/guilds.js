@@ -17,7 +17,7 @@ class GuildManager extends Collection {
     }
 
     async create(id) {
-        log(`GUILDS | Created ${id}`);
+        log(`GUILDS       | Created ${id}`);
         const guildSettings = new GuildSettings(id, {});
         await provider.create('guilds', { id });
         await provider.create('moderation', { id, cases: [] });
@@ -27,7 +27,7 @@ class GuildManager extends Collection {
     }
 
     async delete(id) {
-        log(`GUILDS | Deleted ${id}`);
+        log(`GUILDS       | Deleted ${id}`);
         await provider.delete('guilds', id);
         return super.delete(id);
     }

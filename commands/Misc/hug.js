@@ -1,8 +1,7 @@
-const { Command } = require('../../index');
+const { Command, Canvas } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');
-const Canvas = require('../../utils/canvas-constructor');
 
 const template = resolve(join(__dirname, '../../assets/images/memes/hug.png'));
 

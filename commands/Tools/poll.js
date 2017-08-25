@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const Timer = require('../../utils/timer');
+const { Command, Timer } = require('../../index');
 
 const timeRegExp = /^(\d{1,3} (s(?:ec(?:ond)?)?|m(?:in(?:ute)?)?|h(?:our)?|d(?:ay)?)s? ?)+/;
 

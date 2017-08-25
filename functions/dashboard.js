@@ -1,5 +1,4 @@
-const { toTitleCase } = require('../lib/util/util');
-const provider = require('../providers/json');
+const { util: { toTitleCase }, Providers: { json: provider } } = require('../index');
 const { resolve } = require('path');
 const { Collection } = require('discord.js');
 const express = require('express');

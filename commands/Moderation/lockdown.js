@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const Timer = require('../../utils/timer');
+const { Command, Timer } = require('../../index');
 
 module.exports = class extends Command {
 

@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const ModLog = require('../../utils/createModlog.js');
+const { Command, ModLog } = require('../../index');
 
 module.exports = class extends Command {
 

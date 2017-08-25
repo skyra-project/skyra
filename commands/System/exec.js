@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const exec = require('util').promisify(require('child_process').exec);
+const { Command, util: { exec } } = require('../../index');
 
 module.exports = class extends Command {
 

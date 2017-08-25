@@ -1,10 +1,9 @@
-const { Command } = require('../../index');
+const { Command, Canvas } = require('../../index');
 
 const { MessageEmbed } = require('discord.js');
 const { readFile } = require('fs-nextra');
 const { join } = require('path');
 
-const Canvas = require('../../utils/canvas-constructor');
 const icon = new (Canvas.getCanvas()).Image();
 
 const iconsPath = join(__dirname, '../../assets/images/social/sm-icons.png');

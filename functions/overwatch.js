@@ -1,4 +1,4 @@
-const provider = require('../providers/json');
+const { Providers: { json: provider } } = require('../index');
 const snekfetch = require('snekfetch');
 const cheerio = require('cheerio');
 

@@ -23,7 +23,7 @@ class LocalManager extends Collection {
     }
 
     async createMember(member) {
-        log(`LOCALSCORES | Created ${member} profile for ${this.guild}`);
+        log(`LOCALSCORES  | Created ${member} | ${this.guild}`);
         const localMember = new LocalMember(this.guild, member, {});
         await provider.append('localScores', this.guild, 'scores', localMember.toJSON())
             .then(() => super.set(localMember.id, localMember));
@@ -31,13 +31,13 @@ class LocalManager extends Collection {
     }
 
     async removeMember(member) {
-        log(`LOCALSCORES | Removed ${member} from ${this.guild}`);
+        log(`LOCALSCORES  | Removed ${member} | ${this.guild}`);
         await provider.removeFromArrayByID('localScores', this.guild, 'scores', member);
         return super.delete(member);
     }
 
     async create() {
-        log(`LOCALSCORES | Created ${this.guild}`);
+        log(`LOCALSCORES  | Created ${this.guild}`);
         await provider.create('localScores', { id: this.guild, scores: [] });
         return this;
     }

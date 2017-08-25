@@ -1,6 +1,4 @@
-const { Command } = require('../../../index');
-const ModLog = require('../../../utils/createModlog.js');
-const Timer = require('../../../utils/timer');
+const { Command, ModLog, Timer } = require('../../../index');
 
 const moment = require('moment');
 const duration = time => moment.duration(time).format('hh [hours,] mm [minutes,] ss [seconds]');

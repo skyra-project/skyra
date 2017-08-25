@@ -1,6 +1,4 @@
-/* Core Pieces */
-const provider = require('../../providers/json');
-const { Command } = require('../../index');
+const { Command, Providers: { json: provider } } = require('../../index');
 
 /* Dependencies */
 const snekfetch = require('snekfetch');

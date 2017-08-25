@@ -1,5 +1,4 @@
-const { Command } = require('../../../index');
-const AntiRaid = require('../../../utils/anti-raid');
+const { Command, AntiRaid } = require('../../../index');
 
 const { MessageEmbed } = require('discord.js');
 

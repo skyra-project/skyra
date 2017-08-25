@@ -1,5 +1,4 @@
-const { Event } = require('../index');
-const AntiRaid = require('../utils/anti-raid');
+const { Event, AntiRaid } = require('../index');
 const { MessageEmbed } = require('discord.js');
 
 const colours = {

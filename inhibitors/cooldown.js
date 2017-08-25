@@ -17,13 +17,14 @@ module.exports = class extends Inhibitor {
         const remaining = ((cmd.cooldown * 1000) - (Date.now() - instance)) / 1000;
         if (remaining < 0) {
             cmd.cooldowns.delete(msg.author.id);
+            this.cooldowns.delete(msg.author.id);
             return;
         }
 
-        if (this.cooldowns.has(msg.channel.id)) throw true;
+        if (this.cooldowns.has(msg.author.id)) throw true;
 
-        this.cooldowns.add(msg.channel.id);
-        setTimeout(() => this.cooldowns.delete(msg.channel.id), 30000);
+        this.cooldowns.add(msg.author.id);
+        setTimeout(() => this.cooldowns.delete(msg.author.id), Math.min(cmd.cooldown * 1000, 30000));
 
         throw msg.language.get('INHIBITOR_COOLDOWN', Math.ceil(remaining));
     }

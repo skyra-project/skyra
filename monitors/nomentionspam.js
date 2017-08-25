@@ -1,5 +1,4 @@
-const { Monitor } = require('../index');
-const ModLog = require('../utils/createModlog.js');
+const { Monitor, ModLog } = require('../index');
 const cooldown = new Map();
 
 module.exports = class extends Monitor {

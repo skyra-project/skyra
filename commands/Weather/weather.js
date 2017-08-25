@@ -1,5 +1,4 @@
-const { Command, config } = require('../../index');
-const Canvas = require('../../utils/canvas-constructor');
+const { Command, config, Canvas } = require('../../index');
 
 const { join } = require('path');
 const { readFile } = require('fs-nextra');

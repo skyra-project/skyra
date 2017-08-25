@@ -31,14 +31,36 @@ module.exports = {
     Tag: require('./lib/usage/Tag'),
     version: '2.0.0 LNU',
 
+    Providers: {
+        json: require('./providers/json'),
+        rethink: require('./providers/rethink')
+    },
+
     Constants: require('./utils/constants'),
+    Interfaces: {
+        AdvancedSearch: require('./utils/interfaces/AdvancedSearch'),
+        GlobalUser: require('./utils/interfaces/GlobalUser'),
+        LocalMember: require('./utils/interfaces/LocalMember'),
+        GuildSettings: require('./utils/interfaces/GuildSettings'),
+        Moderation: require('./utils/interfaces/moderation')
+    },
     Managers: {
+        Clock: require('./utils/managers/clock'),
         SocialGlobal: require('./utils/managers/socialGlobal'),
         SocialLocal: require('./utils/managers/socialLocal'),
         Guild: require('./utils/managers/guilds')
     },
-    Handler: require('./utils/handler'),
+    announcement: require('./utils/announcement'),
+    AntiRaid: require('./utils/anti-raid'),
+    Assets: require('./utils/assets'),
+    Canvas: require('./utils/canvas-constructor'),
+    ModLog: require('./utils/createModlog'),
     Crypto: require('./utils/crypto'),
+    DebugLog: require('./utils/debugLog'),
+    Handler: require('./utils/handler'),
+    hastebin: require('./utils/hastebin'),
+    overwatch: require('./utils/overwatch'),
+    taskProcess: require('./utils/taskProcess'),
     Timer: require('./utils/timer'),
     SkyraError: require('./functions/SkyraError'),
 

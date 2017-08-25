@@ -1,5 +1,4 @@
-const provider = require('../providers/rethink');
-const { Monitor } = require('../index');
+const { Monitor, Providers: { rethink: provider } } = require('../index');
 
 module.exports = class extends Monitor {
 

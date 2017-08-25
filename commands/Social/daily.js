@@ -38,7 +38,7 @@ module.exports = class extends Command {
                     await profile.update({ timeDaily: next });
                     return msg.send(msg.language.get('COMMAND_DAILY_GRACE_ACCEPTED', money, Command.shiny(msg), remaining));
                 })
-                .catch(() => msg.language.send(msg.language.get('COMMAND_DAILY_GRACE_DENIED')));
+                .catch(() => msg.send(msg.language.get('COMMAND_DAILY_GRACE_DENIED')));
         }
         const next = now + 43200000;
         const money = await profile.win(200, msg.guild);

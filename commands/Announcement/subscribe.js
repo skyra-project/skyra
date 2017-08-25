@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const announcement = require('../../utils/announcement');
+const { Command, announcement } = require('../../index');
 
 module.exports = class extends Command {
 

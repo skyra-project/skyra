@@ -1,8 +1,7 @@
-const { Command } = require('../../index');
+const { Command, Canvas } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, sep } = require('path');
-const Canvas = require('../../utils/canvas-constructor');
 
 Canvas
     .registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), 'RobotoRegular')

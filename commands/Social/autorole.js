@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const Rethink = require('../../providers/rethink');
+const { Command, Providers: { rethink } } = require('../../index');
 
 /* eslint-disable max-len */
 module.exports = class extends Command {
@@ -49,7 +48,7 @@ module.exports = class extends Command {
                 if (!input[0]) throw 'you must type a role.';
                 const role = await this.client.handler.search.role(input.join(' '), msg);
                 if (!role) throw 'this role does not exist.';
-                await Rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points: amount });
+                await rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points: amount });
                 await settings.sync();
                 settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
                 return msg.send(`Added new autorole: ${role.name} (${role.id}). Points required: ${amount}`);
@@ -63,7 +62,7 @@ module.exports = class extends Command {
                 const retrieved = settings.autoroles.find(ar => ar.id === role.id);
                 if (!retrieved) throw 'this role is not configured as an autorole.';
                 else {
-                    await Rethink.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', role.id);
+                    await rethink.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', role.id);
                     await settings.sync();
                     return msg.send(`Removed the autorole: ${role.name} (${role.id}), which required ${retrieved.points} points.`);
                 }
@@ -75,7 +74,7 @@ module.exports = class extends Command {
                 if (!role) throw 'this role does not exist.';
                 const retrieved = settings.autoroles.find(ar => ar.id === role.id);
                 if (!retrieved) throw 'this role is not configured as an autorole.';
-                await Rethink.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points: amount });
+                await rethink.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points: amount });
                 await settings.sync();
                 settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
                 return msg.send(`Updated autorole: ${role.name} (${role.id}). Points required: ${amount} (before: ${retrieved.points})`);

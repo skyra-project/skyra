@@ -1,6 +1,4 @@
-const { Command } = require('../../index');
-const ModLog = require('../../utils/createModlog.js');
-const Assets = require('../../utils/assets');
+const { Command, ModLog, Assets: { createMuted } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -48,7 +46,7 @@ module.exports = class extends Command {
             await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
                 .catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
             await msg.send(msg.language.get('SYSTEM_PROCESSING'));
-            return Assets.createMuted(msg);
+            return createMuted(msg);
         }
         return msg.guild.roles.get(settings.roles.muted);
     }

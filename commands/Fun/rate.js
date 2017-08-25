@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const { oneToTen } = require('../../utils/constants');
+const { Command, Constants: { oneToTen } } = require('../../index');
 
 module.exports = class extends Command {
 

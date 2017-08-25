@@ -74,7 +74,7 @@ module.exports = class RouterGuild {
                 channel.fetchMessage(req.params.message)
                     .then((message) => {
                         if (!message.deletable) return this.util.throw(res, ...this.util.error.MISSING_PERMISSION('MANAGE_MESSAGES'));
-                        return message.delete()
+                        return message.nuke()
                             .then(() => this.util.sendMessage(res, `Successfully deleted the message '${message.id}' with content of: '${message.content}'`))
                             .catch(err => this.util.sendError(res, err));
                     })

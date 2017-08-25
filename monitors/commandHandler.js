@@ -5,7 +5,7 @@ const now = require('performance-now');
 module.exports = class extends Monitor {
 
     run(msg, settings) {
-        if (!msg.channel.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return;
+        if (msg.channel.type === 'text' && msg.channel.permissionsFor(msg.guild.me).has('SEND_MESSAGES') === false) return;
         const { command, prefix, prefixLength } = this.parseCommand(msg, settings);
         if (!command) return;
         const validCommand = this.client.commands.get(command);

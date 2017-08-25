@@ -78,8 +78,7 @@ module.exports = class extends Command {
             .setDescription(`Info on **${guild.name}** (ID: **${guild.id}**)\n\u200B`)
             .setThumbnail(guild.iconURL() || null)
             .addField('❯ Channels', [
-                `• **${guild.channels.filter(ch => ch.type === 'text').size}** Text, **${guild.channels.filter(ch => ch.type === 'voice').size}** Voice\n`,
-                `• Default: **${guild.defaultChannel}**`,
+                `• **${guild.channels.filter(ch => ch.type === 'text').size}** Text, **${guild.channels.filter(ch => ch.type === 'voice').size}** Voice`,
                 `• AFK: ${guild.afkChannelID ? `**<#${guild.afkChannelID}>** after **${guild.afkTimeout / 60}**min` : '**None.**'}`
             ].join('\n'), true)
             .addField('❯ Member', [

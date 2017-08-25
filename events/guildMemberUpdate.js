@@ -11,11 +11,21 @@ const colours = {
 module.exports = class extends Event {
 
     async run(oldMember, newMember) {
-        if (this.client.ready !== true) return null;
-        const settings = newMember.guild.settings;
+        if (this.client.ready !== true || newMember.guild.available !== true) return null;
+        let settings = newMember.guild.settings;
+        if (settings instanceof Promise) settings = await settings;
 
-        if (settings.events.memberNicknameChange && oldMember.nickname !== newMember.nickname) return this.nickname(settings, oldMember, newMember);
-        if (settings.events.memberRolesChange && this._compareRoles(oldMember.roles, newMember.roles) === false) return this.roles(settings, oldMember, newMember);
+        if (settings.events.memberNicknameChange && oldMember.nickname !== newMember.nickname) {
+            return this.nickname(settings, oldMember, newMember);
+        }
+
+        if (settings.events.memberRolesChange && this._compareRoles(oldMember.roles, newMember.roles) === false) {
+            if (newMember.action === 'ROLEADD') {
+                delete newMember.action;
+                return null;
+            }
+            return this.roles(settings, oldMember, newMember);
+        }
 
         return null;
     }

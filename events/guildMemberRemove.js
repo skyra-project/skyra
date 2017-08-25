@@ -10,6 +10,8 @@ const colours = {
 module.exports = class extends Event {
 
     async run(member) {
+        if (this.client.ready !== true || member.guild.available !== true) return null;
+
         let settings = member.guild.settings;
         if (settings instanceof Promise) settings = await settings;
         return this.handle(member, settings).catch(err => this.handleError(err));

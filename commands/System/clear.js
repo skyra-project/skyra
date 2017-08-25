@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
     async run(msg, [limit]) {
         const messages = await msg.channel.fetchMessages({ limit }).then(msgs => msgs.filter(mes => mes.author.id === this.clientID));
-        for (const message of messages.values()) await message.delete().catch(err => this.client.emit('log', err, 'error'));
+        for (const message of messages.values()) await message.nuke().catch(err => this.client.emit('log', err, 'error'));
     }
 
     get clientID() {

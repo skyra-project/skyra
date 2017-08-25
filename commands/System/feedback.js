@@ -23,7 +23,7 @@ module.exports = class extends Command {
             .setFooter(`${msg.author.id} | Feedback`)
             .setTimestamp();
 
-        if (msg.deletable) msg.delete().catch(() => null);
+        if (msg.deletable) msg.nuke().catch(() => null);
 
         await this.channel.send({ embed }).catch(Command.handleError);
         return msg.alert(`Dear ${msg.author}, thanks you for sending us feedback!`);

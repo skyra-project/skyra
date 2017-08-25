@@ -15,7 +15,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [channel = msg.channel, ...content]) {
-        if (msg.deletable) msg.delete().catch(() => null);
+        if (msg.deletable) msg.nuke().catch(() => null);
 
         const attachment = msg.attachments.size > 0 ? msg.attachments.first().url : null;
         content = content.length ? content.join(' ') : '';

@@ -16,7 +16,7 @@ module.exports = class extends Monitor {
             await msg.hasLevel(1) ||
             !settings.filter.regexp.test(msg.content)) return false;
 
-        if (msg.deletable) await msg.delete()
+        if (msg.deletable) await msg.nuke()
             .catch(err => this.client.emit('log', err, 'error'));
         if (settings.filter.level === 1 || settings.filter.level === 3) {
             msg.send(`Pardon, dear ${msg.author}, you said something that is not allowed here.`)

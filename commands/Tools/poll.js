@@ -154,7 +154,7 @@ module.exports = class extends Command {
     }
 
     async vote(msg, raw) {
-        if (msg.deletable) msg.delete().catch(() => null);
+        if (msg.deletable) msg.nuke().catch(() => null);
         const input = raw.length ? raw : null;
         if (!input) throw 'you must write up something.';
         const poll = this.clock.tasks.find(entry => entry.guild === msg.guild.id && entry.type === 'poll' && entry.id === input[0]);

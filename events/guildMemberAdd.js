@@ -14,8 +14,11 @@ const colours = {
 module.exports = class extends Event {
 
     async run(member) {
+        if (this.client.ready !== true || member.guild.available !== true) return null;
+
         let settings = member.guild.settings;
         if (settings instanceof Promise) settings = await settings;
+
         if (settings.roles.muted && settings.moderation.mutes.has(member.id)) return this.handleMute(member, settings)
             .catch(err => this.handleError(err));
         return this.handle(member, settings).catch(err => this.handleError(err));
@@ -81,6 +84,7 @@ module.exports = class extends Event {
             return null;
         }
 
+        member.action = 'ROLEADD';
         return member.addRole(role);
     }
 

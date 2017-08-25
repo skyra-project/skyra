@@ -1,5 +1,10 @@
 const { Extendable } = require('../index');
 
+const exec = (msg) => {
+    msg.action = 'DELETE';
+    return msg.delete();
+};
+
 module.exports = class extends Extendable {
 
     constructor(...args) {
@@ -12,12 +17,12 @@ module.exports = class extends Extendable {
             delete this.timer;
         }
 
-        if (time === 0) return this.delete();
+        if (time === 0) return exec(this);
 
         const count = this.edits.length;
         this.timer = setTimeout(() => {
             const msg = this.channel.messages.get(this.id);
-            if (msg && msg.edits.length === count) return this.delete();
+            if (msg && msg.edits.length === count) return exec(this);
             return null;
         }, time);
 

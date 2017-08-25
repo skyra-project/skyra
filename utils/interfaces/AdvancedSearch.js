@@ -92,7 +92,7 @@ class Fetch {
         const response = await msg.channel.awaitMessages(message => message.author.id === msg.author.id, { time: 30000, errors: ['time'], max: 1 });
         const message = response.first();
         const resText = message.content.toLowerCase();
-        if (message.deletable) message.delete().catch(() => null);
+        if (message.deletable) message.nuke().catch(() => null);
         if (resText === 'abort') return this.promptAbort(msg);
         if (resText === 'next') {
             let nextIndex = index;

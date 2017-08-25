@@ -1,6 +1,6 @@
 const moment = require('moment');
 const chalk = require('chalk');
-const clk = new chalk.constructor({ enabled: true });
+const clk = new chalk.constructor({ level: 1 });
 
 class Debug {
 

@@ -4,6 +4,11 @@ const { MessageEmbed } = require('discord.js');
 module.exports = class extends Event {
 
     run(msg) {
+        if (msg.action === 'DELETE') {
+            delete msg.action;
+            return null;
+        }
+
         this.deleteResponse(msg);
 
         if (msg.channel.type !== 'text' || msg.author.id === this.client.user.id) return null;
@@ -17,7 +22,7 @@ module.exports = class extends Event {
     deleteResponse(msg) {
         for (const [key, value] of this.client.commandMessages) {
             if (key === msg.id) {
-                value.response.delete().catch(() => null);
+                value.response.nuke().catch(() => null);
                 return this.client.commandMessages.delete(key);
             }
 

@@ -16,7 +16,7 @@ module.exports = class extends Monitor {
             await msg.hasLevel(1)) return false;
 
         if (msg.deletable) {
-            await msg.delete();
+            await msg.nuke();
             await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
         }
 

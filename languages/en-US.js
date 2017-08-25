@@ -16,6 +16,7 @@ module.exports = class extends Language {
             SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `The key ${key} is not an Array.`,
             SETTING_GATEWAY_KEY_NOEXT: (key) => `The key ${key} does not exist in the current data schema.`,
             SETTING_GATEWAY_INVALID_TYPE: 'The type parameter must be either add or remove.',
+
             RESOLVER_INVALID_PIECE: (name, piece) => `${name} must be a valid ${piece} name.`,
             RESOLVER_INVALID_MSG: (name) => `${name} must be a valid message id.`,
             RESOLVER_INVALID_USER: (name) => `${name} must be a mention or valid user id.`,
@@ -34,19 +35,22 @@ module.exports = class extends Language {
             RESOLVER_MINMAX_MIN: (name, min, suffix) => `${name} must be greater than ${min}${suffix}.`,
             RESOLVER_MINMAX_MAX: (name, max, suffix) => `${name} must be less than ${max}${suffix}.`,
             RESOLVER_POSITIVE_AMOUNT: 'A positive non-zero number is required for this argument.',
+
             COMMANDMESSAGE_MISSING: 'Missing one or more required arguments after end of input.',
             COMMANDMESSAGE_MISSING_REQUIRED: (name) => `${name} is a required argument.`,
             COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Missing a required option: (${possibles})`,
             COMMANDMESSAGE_NOMATCH: (possibles) => `Your option didn't match any of the possibilities: (${possibles})`,
+
             MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error) => `${tag} | **${error}** | You have **30** seconds to respond to this prompt with a valid argument. Type **"ABORT"** to abort this prompt.`,
             MONITOR_COMMAND_HANDLER_ABORTED: 'Aborted',
             INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${remaining} seconds.`,
+
             INHIBITOR_DISABLED: 'This command is currently disabled',
             INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing}**`,
             INHIBITOR_PERMISSIONS: 'You do not have permission to use this command',
             INHIBITOR_REQUIRED_SETTINGS: (settings) => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length > 1 ? 's' : ''} and cannot run.`,
-            INHIBITOR_RUNIN: (types) => `This command is only available in ${types} channels`,
-            INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
+            INHIBITOR_SPAM: channel => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
+
             COMMAD_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
             COMMAND_TRANSFER_ERROR: '❌ That file has been transfered already or never existed.',
             COMMAND_TRANSFER_SUCCESS: (type, name) => `✅ Successfully transferred ${type}: ${name}`,

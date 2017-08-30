@@ -41,10 +41,23 @@ module.exports = class extends Language {
             COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Missing a required option: (${possibles})`,
             COMMANDMESSAGE_NOMATCH: (possibles) => `Your option didn't match any of the possibilities: (${possibles})`,
 
+            CONST_MONITOR_INVITELINK: 'Invite link',
+            CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
+            CONST_MONITOR_WORDFILTER: 'Filtered Word',
+
+            MONITOR_NOINVITE: user => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
+            MONITOR_WORDFILTER: user => `|\`❌\`| Pardon, dear ${user}, you said something that is not allowed in this server.`,
+            MONITOR_NMS_MESSAGE: (user) => [
+                `The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
+                "Do not worry! I'm here to help you! 😄"
+            ].join('\n'),
+            MONITOR_NMS_MODLOG: (threshold, amount) => `[NOMENTIONSPAM] Threshold: ${threshold}. Reached: ${amount}`,
             MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error) => `${tag} | **${error}** | You have **30** seconds to respond to this prompt with a valid argument. Type **"ABORT"** to abort this prompt.`,
             MONITOR_COMMAND_HANDLER_ABORTED: 'Aborted',
-            INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${remaining} seconds.`,
+            MONITOR_SOCIAL_ACHIEVEMENT: 'Congratulations dear %MEMBER%, you achieved the role %ROLE%',
 
+            INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${remaining} seconds.`,
+            INHIBITOR_GUILDONLY: 'This command is designed to run only in servers.',
             INHIBITOR_DISABLED: 'This command is currently disabled',
             INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing}**`,
             INHIBITOR_PERMISSIONS: 'You do not have permission to use this command',

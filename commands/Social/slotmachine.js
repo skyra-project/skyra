@@ -46,7 +46,7 @@ module.exports = class extends Command {
     async run(msg, [coins]) {
         coins = parseInt(coins);
 
-        if (msg.author.profile.money < coins) throw `you don't have enough shinies to pay your bet! Your current account balance is ${this.profile.money}${Command.shiny(this.msg)}.`;
+        if (msg.author.profile.money < coins) throw `you don't have enough shinies to pay your bet! Your current account balance is ${msg.author.profile.money}${Command.shiny(msg)}.`;
 
         const roll = this.roll();
         const calculated = this.calculate(roll, coins);

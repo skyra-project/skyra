@@ -202,5 +202,18 @@
             "default": [],
             "array": true
         }
+    },
+    "social": {
+        "achieve": {
+            "description": "Whether Skyra should notify levelups or not.",
+            "type": "Boolean",
+            "default": false
+        },
+        "achieveMessage": {
+            "description": "The achievement message. This key requires social::achieve and is defaulted with a multilanguage message.",
+            "type": "String",
+            "min": 0,
+            "max": 500
+        }
     }
 }

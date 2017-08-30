@@ -10,17 +10,15 @@ module.exports = class extends Monitor {
         });
     }
 
-    async run(msg, settings) {
+    async run(msg, settings, i18n) {
         if (settings.filter.level === 0 ||
             settings.filter.regexp === null ||
             await msg.hasLevel(1) ||
             !settings.filter.regexp.test(msg.content)) return false;
 
-        if (msg.deletable) await msg.nuke()
-            .catch(err => this.client.emit('log', err, 'error'));
+        if (msg.deletable) await msg.nuke().catch(() => null);
         if (settings.filter.level === 1 || settings.filter.level === 3) {
-            msg.send(`Pardon, dear ${msg.author}, you said something that is not allowed here.`)
-                .catch(err => this.client.emit('log', err, 'error'));
+            msg.send(i18n.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
         }
 
         if (settings.filter.level !== 2 && settings.filter.level !== 3) return true;
@@ -34,7 +32,7 @@ module.exports = class extends Monitor {
         const embed = new MessageEmbed()
             .setColor(0xefae45)
             .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-            .setFooter(`#${msg.channel.name} | Filtered Word ${settings.filter.regexp.exec(msg.content)[0]}`)
+            .setFooter(`#${msg.channel.name} | ${i18n.get('CONST_MONITOR_WORDFILTER')} ${settings.filter.regexp.exec(msg.content)[0]}`)
             .setTimestamp();
 
         return channel.send({ embed });

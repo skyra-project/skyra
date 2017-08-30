@@ -10,7 +10,7 @@ module.exports = class extends Monitor {
         });
     }
 
-    async run(msg, settings) {
+    async run(msg, settings, i18n) {
         if (!msg.member ||
             !msg.member.bannable ||
             (msg.mentions.users.size === 1 && msg.mentions.users.first().bot) ||
@@ -26,11 +26,8 @@ module.exports = class extends Monitor {
         const newAmount = cooldown.get(msg.guild.id).add(msg.author.id, amount);
         if (newAmount >= (settings.selfmod.nmsthreshold || 20)) {
             msg.author.action = 'ban';
-            await msg.guild.ban(msg.author.id, { days: 1, reason: '[NOMENTIONSPAM]' }).catch(this.handleError);
-            await msg.send([
-                `The banhammer has landed and now the user ${msg.author.tag} with id ${msg.author.id} is banned for mention spam.`,
-                "Do not worry! I'm here to help you! 😄"
-            ].join('\n')).catch(this.handleError);
+            await msg.guild.ban(msg.author.id, { days: 1, reason: i18n.get('CONST_MONITOR_NMS') }).catch(this.handleError);
+            await msg.send(i18n.get('MONITOR_NMS_MESSAGE', msg.author)).catch(this.handleError);
 
             cooldown.get(msg.guild.id).delete(msg.author.id);
 
@@ -38,7 +35,7 @@ module.exports = class extends Monitor {
                 .setModerator(this.client.user)
                 .setUser(msg.author)
                 .setType('ban')
-                .setReason(`[NOMENTIONSPAM] Threshold: ${settings.selfmod.nmsthreshold || 20}. Reached: ${newAmount}`)
+                .setReason(i18n.get('MONITOR_NMS_MODLOG', settings.selfmod.nmsthreshold, newAmount))
                 .send()
                 .catch(this.handleError);
         }

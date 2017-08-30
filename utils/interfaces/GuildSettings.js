@@ -25,14 +25,13 @@ class GuildSettings {
         this._merge(data, 'messages');
         this._merge(data, 'selfmod');
         this._merge(data, 'filter');
+        this._merge(data, 'social');
+
+        this.social.boost = data.social.boost || 1;
+        this.social.monitorBoost = data.social.monitorBoost || 1;
+
         this.filter.regexp = null;
         this.autoroles = data.autoroles || [];
-
-        if (!data.social) data.social = {};
-        this.social = {
-            boost: data.social.boost || 1,
-            monitorBoost: data.social.monitorBoost || 1
-        };
 
         this.moderation = null;
         this.init();

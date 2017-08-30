@@ -12,9 +12,7 @@ const Skyra = new Client({
             'RELATIONSHIP_ADD',
             'RELATIONSHIP_REMOVE',
             'CHANNEL_PINS_UPDATE',
-            'USER_NOTE_UPDATE',
-            'MESSAGE_REACTION_REMOVE',
-            'MESSAGE_REACTION_REMOVE_ALL'
+            'USER_NOTE_UPDATE'
         ],
         messageCacheMaxSize: 100,
         messageCacheLifetime: 60,

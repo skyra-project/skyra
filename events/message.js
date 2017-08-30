@@ -6,7 +6,9 @@ module.exports = class extends Event {
         if (this.client.ready) {
             let settings = msg.guildSettings;
             if (settings instanceof Promise) settings = await settings;
-            this.client.monitors.run(msg, settings);
+
+            const i18n = this.client.languages.get(settings.master.language);
+            this.client.monitors.run(msg, settings, i18n);
         }
     }
 

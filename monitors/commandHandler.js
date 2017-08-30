@@ -4,15 +4,15 @@ const now = require('performance-now');
 
 module.exports = class extends Monitor {
 
-    run(msg, settings) {
+    run(msg, settings, i18n) {
         if (msg.channel.type === 'text' && msg.channel.permissionsFor(msg.guild.me).has('SEND_MESSAGES') === false) return;
         const { command, prefix, prefixLength } = this.parseCommand(msg, settings);
         if (!command) return;
         const validCommand = this.client.commands.get(command);
         if (!validCommand) return;
         const start = now();
-        this.client.inhibitors.run(msg, validCommand, false, settings)
-            .then(() => this.runCommand(this.makeProxy(msg, new CommandMessage(msg, validCommand, prefix, prefixLength)), start, settings))
+        this.client.inhibitors.run(msg, validCommand, false, settings, i18n)
+            .then(() => this.runCommand(this.makeProxy(msg, new CommandMessage(msg, validCommand, prefix, prefixLength)), start, settings, i18n))
             .catch((response) => { if (response) msg.reply(response); });
     }
 
@@ -51,9 +51,9 @@ module.exports = class extends Monitor {
         });
     }
 
-    runCommand(msg, start, settings) {
+    runCommand(msg, start, settings, i18n) {
         msg.validateArgs()
-            .then((params) => msg.cmd.run(msg, params, settings)
+            .then((params) => msg.cmd.run(msg, params, settings, i18n)
                 .then(mes => this.client.finalizers.run(msg, mes, start))
                 .catch(error => this.handleError(msg, error))
             )

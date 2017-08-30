@@ -7,7 +7,7 @@ module.exports = class extends Inhibitor {
         this.cooldowns = new Set();
     }
 
-    async run(msg, cmd, settings) {
+    async run(msg, cmd, settings, i18n) {
         if (msg.author.id === this.client.config.ownerID || cmd.spam !== true || msg.channel.type !== 'text') return;
         if (settings.channels.spam === msg.channel.id) return;
 
@@ -22,7 +22,7 @@ module.exports = class extends Inhibitor {
         this.cooldowns.add(msg.channel.id);
         setTimeout(() => this.cooldowns.delete(msg.channel.id), 30000);
 
-        throw msg.language.get('INHIBITOR_SPAM', channel);
+        throw i18n.get('INHIBITOR_SPAM', channel);
     }
 
 };

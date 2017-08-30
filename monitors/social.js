@@ -11,7 +11,7 @@ module.exports = class extends Monitor {
         this.cooldowns = new Set();
     }
 
-    async run(msg, settings) {
+    async run(msg, settings, i18n) {
         if (msg.author.bot ||
             settings.master.ignoreChannels.includes(msg.channel.id) ||
             this.cooldown(msg)) return;
@@ -27,7 +27,7 @@ module.exports = class extends Monitor {
             await userProfile.update({ points: msg.author.profile.points + add });
             await memberPoint.update(msg.member.points.score + add);
 
-            await this.handleRoles(msg, settings, memberPoint);
+            await this.handleRoles(msg, settings, memberPoint, i18n);
         } catch (err) {
             this.client.emit('log', `Failed to add points to ${msg.author.id}: ${err}`, 'error');
         }
@@ -44,7 +44,7 @@ module.exports = class extends Monitor {
         return !msg.member ? msg.guild.fetchMember(msg.author.id) : null;
     }
 
-    async handleRoles(msg, settings, memberPoints) {
+    async handleRoles(msg, settings, memberPoints, i18n) {
         const autoRoles = settings.autoroles;
         if (autoRoles.length === 0 || msg.guild.me.permissions.has('MANAGE_ROLES') === false) return null;
 
@@ -58,7 +58,15 @@ module.exports = class extends Monitor {
         if (msg.member.roles.has(role.id)) return null;
 
         return msg.member.addRole(role)
-            .then(() => settings.social.achieve ? msg.send(msg.language.get('SOCIAL_ACHIEVEMENT', role)) : null);
+            .then(() => settings.social.achieve ? msg.send(this.getMessage(settings.social.achieveMessage || i18n.get('MONITOR_SOCIAL_ACHIEVEMENT'))) : null);
+    }
+
+    getMessage(member, role, message) {
+        return message
+            .replace(/%ROLE%/g, role.name)
+            .replace(/%MEMBER%/g, member)
+            .replace(/%MEMBERNAME%/g, member.user.username)
+            .replace(/%GUILD%/g, member.guild.name);
     }
 
     getLatestRole(autoRoles, memberPoints) {

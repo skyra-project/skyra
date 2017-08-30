@@ -10,14 +10,14 @@ module.exports = class extends Monitor {
         });
     }
 
-    async run(msg, settings) {
+    async run(msg, settings, i18n) {
         if (!settings.selfmod.invitelinks ||
             !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content) ||
             await msg.hasLevel(1)) return false;
 
         if (msg.deletable) {
             await msg.nuke();
-            await msg.alert(`Dear ${msg.author} |\`❌\`| Invite links aren't allowed here.`);
+            await msg.alert(i18n.get('MONITOR_NOINVITE', msg.author));
         }
 
         if (!settings.channels.modlog) return null;
@@ -25,7 +25,7 @@ module.exports = class extends Monitor {
         const embed = new MessageEmbed()
             .setColor(0xefae45)
             .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-            .setFooter(`#${msg.channel.name} | Invite link`)
+            .setFooter(`#${msg.channel.name} | ${i18n.get('CONST_MONITOR_INVITELINK')}`)
             .setTimestamp();
 
         return msg.guild.channels.get(settings.channels.modlog).send({ embed });

@@ -15,7 +15,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input]) {
+    async run(msg, [input], settings, i18n) {
         let num;
         let query;
 
@@ -24,7 +24,7 @@ module.exports = class extends Command {
             else if (typeof input === 'string') query = input;
         }
 
-        const number = await this.getNumber(num, query);
+        const number = await this.getNumber(num, query, i18n);
         const comic = await this.fetchURL(`http://xkcd.com/${number}/info.0.json`);
 
         const embed = new MessageEmbed()
@@ -44,12 +44,12 @@ module.exports = class extends Command {
         return moment(date.getTime()).format('MMMM, dddd Do YYYY');
     }
 
-    async getNumber(num, query) {
+    async getNumber(num, query, i18n) {
         const xkcdInfo = await this.fetchURL('http://xkcd.com/info.0.json');
 
         if (num) {
             if (num <= xkcdInfo.num) return num;
-            throw Command.handleError(`there are only ${xkcdInfo.num} comics.`);
+            throw i18n.get('COMMAND_XKCD_COMICS', xkcdInfo.num);
         }
 
         if (query) {

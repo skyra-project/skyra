@@ -18,33 +18,33 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [type], settings) {
-        if (settings.selfmod.raid !== true) throw 'The Anti-RAID system is not enabled in this server.';
-        if (msg.guild.me.permissions.has('KICK_MEMBERS') !== true) throw 'As I do not have the KICK MEMBERS permission, I keep the Anti-RAID unactivated.';
+    async run(msg, [type], settings, i18n) {
+        if (settings.selfmod.raid !== true) throw i18n.get('COMMAND_RAID_DISABLED');
+        if (msg.guild.me.permissions.has('KICK_MEMBERS') !== true) throw i18n.get('COMMAND_RAID_MISSING_KICK');
 
         const data = AntiRaid.get(msg.guild, settings);
 
-        return this[type](msg, data, settings);
+        return this[type](msg, data, settings, i18n);
     }
 
-    list(msg, data, settings) {
+    list(msg, data, settings, i18n) {
         const embed = new MessageEmbed()
-            .setTitle('List of users in the RAID queue')
+            .setTitle(i18n.get('COMMAND_RAID_LIST'))
             .setDescription(Array.from(data.users.keys()).map(user => `<@${user}>`))
-            .setFooter(`${data.users.size}/${settings.selfmod.raidthreshold} Users`)
+            .setFooter(`${data.users.size}/${settings.selfmod.raidthreshold} ${i18n.get('CONST_USERS')}`)
             .setTimestamp();
 
         return msg.send({ embed });
     }
 
-    clear(msg, data) {
+    clear(msg, data, settings, i18n) {
         data.prune();
-        return msg.send('Successfully cleared the RAID list.');
+        return msg.send(i18n.get('COMMAND_RAID_CLEAR'));
     }
 
-    cool(msg, data) {
+    cool(msg, data, settings, i18n) {
         data.prune().cool();
-        return msg.send('Successfully deactivated the RAID');
+        return msg.send(i18n.get('COMMAND_RAID_COOL'));
     }
 
 };

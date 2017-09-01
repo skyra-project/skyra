@@ -12,6 +12,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            botPerms: ['ATTACH_FILES'],
             guildOnly: true,
             spam: true,
 
@@ -30,8 +31,8 @@ module.exports = class extends Command {
     }
 
     async run(msg, [user = msg.author]) {
-        const output = await this.generate(user);
-        return msg.channel.send({ files: [{ attachment: output, name: 'triggered.gif' }] });
+        const attachment = await this.generate(user);
+        return msg.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
     }
 
     async generate(user) {

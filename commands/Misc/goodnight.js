@@ -9,6 +9,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            botPerms: ['ATTACH_FILES'],
             guildOnly: true,
 
             cooldown: 30,
@@ -19,12 +20,13 @@ module.exports = class extends Command {
     }
 
     async run(msg, [user]) {
-        if (user.id === msg.author.id) user = this.client.user;
-        const output = await this.generate(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: 'GoodNight.png' }] });
+        const attachment = await this.generate(msg, user);
+        return msg.channel.send({ files: [{ attachment, name: 'goodNight.png' }] });
     }
 
     async generate(msg, user) {
+        if (user.id === msg.author.id) user = this.client.user;
+
         const [background, kisser, child] = await Promise.all([
             readFile(template),
             fetchAvatar(msg.author, 256),

@@ -11,10 +11,10 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
+    async run(msg, args, settings, i18n) {
         const role = announcement(msg);
         await msg.member.addRole(role);
-        return msg.send(msg.language.get('COMMAND_SUBSCRIBE_SUCCESS', role.name));
+        return msg.send(i18n.get('COMMAND_SUBSCRIBE_SUCCESS', role.name));
     }
 
 };

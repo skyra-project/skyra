@@ -25,11 +25,11 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
+    async run(msg, args, settings, i18n) {
         const data = await this.fetchURL('https://api.chucknorris.io/jokes/random');
         const embed = new MessageEmbed()
             .setColor(0x80D8FF)
-            .setTitle('Chuck Norris')
+            .setTitle(i18n.get('COMMAND_NORRIS'))
             .setURL(data.url)
             .setThumbnail(data.icon_url)
             .setDescription(data.value);

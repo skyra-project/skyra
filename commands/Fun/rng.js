@@ -27,16 +27,13 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [...options]) {
-        const words = this.filterWords(options);
-        return msg.send([
-            `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${msg.author}, I choose:\n`,
-            `${'```'}${words[Math.floor(Math.random() * words.length)]}${'```'}`
-        ]);
+    async run(msg, [...options], settings, i18n) {
+        const words = this.filterWords(options, i18n);
+        return msg.send(i18n.get('COMMAND_RNG', msg.author, words[Math.floor(Math.random() * words.length)]));
     }
 
-    filterWords(words) {
-        if (words.length < 2) throw "please write at least 2 options separated with ', '.";
+    filterWords(words, i18n) {
+        if (words.length < 2) throw i18n.get('COMMAND_RNG_MISSING');
 
         const output = [];
         const filtered = [];
@@ -45,7 +42,7 @@ module.exports = class extends Command {
             else filtered.push(words[i]);
         }
 
-        if (output.length < 2) throw `why would I accept duplicated words? '${filtered.join("', '")}'.`;
+        if (output.length < 2) throw i18n.get('COMMAND_RNG_DUP', filtered.join('\', \''));
 
         return output;
     }

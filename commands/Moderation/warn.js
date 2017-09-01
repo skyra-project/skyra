@@ -25,6 +25,9 @@ module.exports = class extends Command {
 
         reason = reason.length ? reason.join(' ') : null;
 
+        if (reason !== null) await user.send(`You have been warned by ${msg.author.tag} in ${msg.guild} for the reason: ${reason}`)
+            .catch(() => null);
+
         const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)
             .setUser(user)

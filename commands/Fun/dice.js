@@ -29,8 +29,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [rl = 1, sd = 6]) {
-        return msg.send(msg.language.get('COMMAND_DICE', sd, rl, this.roll(rl, sd)));
+    async run(msg, [rl = 1, sd = 6], settings, i18n) {
+        return msg.send(i18n.get('COMMAND_DICE', sd, rl, this.roll(rl, sd)));
     }
 
     roll(rolls, sides) {

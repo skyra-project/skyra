@@ -13,9 +13,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [message], settings) {
-        const i18n = msg.language;
-
+    async run(msg, [message], settings, i18n) {
         const announcementID = settings.channels.announcement;
         if (!announcementID) throw i18n.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 

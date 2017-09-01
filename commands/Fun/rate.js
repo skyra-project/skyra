@@ -23,11 +23,9 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [user]) {
+    async run(msg, [user], settings, i18n) {
         let ratewaifu;
         let rate;
-
-        const i18n = msg.language;
 
         if (/^(you|yourself)$/i.test(user)) {
             rate = 100;

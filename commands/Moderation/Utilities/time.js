@@ -20,11 +20,11 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [cancel, selected, ...time], settings) {
+    async run(msg, [cancel, selected, ...time], settings, i18n) {
         const cases = await settings.moderation.getCases();
         const doc = cases[selected];
-        if (!doc) throw 'this case does not seem to exist.';
-        if (doc.timed === true) throw 'this case has already been timed.';
+        if (!doc) throw i18n.get('COMMAND_REASON_NOT_EXISTS');
+        if (doc.timed === true) throw i18n.get('COMMAND_TIME_TIMED');
 
         const user = await this.client.fetchUser(doc.user);
 
@@ -33,8 +33,8 @@ module.exports = class extends Command {
         const exists = this.client.handler.clock.tasks.find(task => task.type === type && task.user === doc.user);
         if (cancel) return this.cancel(msg, selected, settings, exists);
         if (exists) {
-            if (doc.appeal === true) throw 'This action is already appealed.';
-            throw `This action is already scheduled and ending in ${duration(exists.timestamp - Date.now())}`;
+            if (doc.appeal === true) throw i18n.get('MODLOG_APPEALED');
+            throw i18n.get('MODLOG_TIMED', exists.timestamp - Date.now());
         }
         if (time.length === 0) throw 'You must specify a time.';
 

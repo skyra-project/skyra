@@ -15,10 +15,10 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [index], settings) {
+    async run(msg, [index], settings, i18n) {
         const cases = await settings.moderation.getCases();
 
-        if (!cases[index]) throw 'this case does not seem to exist.';
+        if (!cases[index]) throw i18n.get('COMMAND_REASON_NOT_EXISTS');
         return new ModLog(msg.guild)
             .retrieveModLog(index).then(embed => msg.send({ embed }));
     }

@@ -39,14 +39,13 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [args]) {
+    async run(msg, [args], settings, i18n) {
         const url = getURL(encodeURIComponent(args.toLowerCase()));
         const data = await this.fetch(url);
         const entry = data.anime.entry[0];
         const context = fromString(entry.synopsis.toString());
         const score = Math.ceil(parseFloat(entry.score));
 
-        const i18n = msg.language;
         const [tType, tScore, tStatus, tWatchIt] = i18n.get('COMMAND_ANIME_TITLES');
 
         const embed = new MessageEmbed()

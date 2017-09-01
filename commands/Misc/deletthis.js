@@ -9,6 +9,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            botPerms: ['ATTACH_FILES'],
             aliases: ['deletethis'],
             guildOnly: true,
 
@@ -20,8 +21,8 @@ module.exports = class extends Command {
     }
 
     async run(msg, [user]) {
-        const output = await this.generate(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: 'DeletThis.png' }] });
+        const attachment = await this.generate(msg, user);
+        return msg.channel.send({ files: [{ attachment, name: 'deletThis.png' }] });
     }
 
     async generate(msg, user) {

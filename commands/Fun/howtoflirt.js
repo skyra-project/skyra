@@ -32,8 +32,8 @@ module.exports = class extends Command {
     }
 
     async run(msg, [user]) {
-        const output = await this.generate(msg, user);
-        return msg.channel.send({ files: [{ attachment: output, name: 'HowToFlirt.png' }] });
+        const attachment = await this.generate(msg, user);
+        return msg.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
     }
 
     async generate(msg, user) {

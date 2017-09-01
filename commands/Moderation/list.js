@@ -89,13 +89,23 @@ module.exports = class extends Command {
                 );
         }
         const user = await this.client.handler.search.user(input, msg);
-        const thisStrikes = cases.filter(ncase => ncase.user.id === user.id);
+        const thisStrikes = cases.filter(ncase => ncase.user === user.id);
+
+        const output = [];
+
+        if (thisStrikes.length === 0) output.push(`There's no strike for ${user.tag}.`);
+        else {
+            output.push(`There are ${thisStrikes.length} strike(s):\n`);
+
+            for (const ncase of thisStrikes) {
+                const moderator = await this.client.fetchUser(ncase.moderator);
+                output.push(`Case \`${ncase.case}\`. Moderator: **${moderator.tag}**\n\`${ncase.reason || `Not set. Use ${settings.master.prefix}reason ${ncase.case} to claim this case.`}\`\n`);
+            }
+        }
 
         return embed
             .setTitle(msg.language.get('COMMAND_LIST_STRIKES', user.tag))
-            .setDescription(`${!thisStrikes.length ? `There's no strike for ${user.tag}.` : `There are ${thisStrikes.length} strike(s):\n\n${thisStrikes
-                .map(ncase => `Case \`${ncase.case}\`. Moderator: **${ncase.moderator.tag}**\n\`${ncase.reason}\``)
-                .join('\n\n')}`}`);
+            .setDescription(output);
     }
 
     async track(msg, embed) {

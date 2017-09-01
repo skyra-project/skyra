@@ -1,6 +1,34 @@
 const { Language, util } = require('../index');
-const moment = require('moment');
-require('moment-duration-format');
+const Duration = require('../utils/duration');
+
+const TIMES = {
+    DAY: {
+        PLURAL: 'days',
+        SING: 'day',
+        SHORT_PLURAL: 'ds',
+        SHORT_SING: 'd'
+    },
+    HOUR: {
+        PLURAL: 'hours',
+        SING: 'hour',
+        SHORT_PLURAL: 'hrs',
+        SHORT_SING: 'hr'
+    },
+    MINUTE: {
+        PLURAL: 'minutes',
+        SING: 'minute',
+        SHORT_PLURAL: 'mins',
+        SHORT_SING: 'min'
+    },
+    SECOND: {
+        PLURAL: 'seconds',
+        SING: 'second',
+        SHORT_PLURAL: 'secs',
+        SHORT_SING: 'sec'
+    }
+};
+
+const duration = (time, short) => Duration.duration(time, TIMES, short);
 
 module.exports = class extends Language {
 
@@ -115,13 +143,27 @@ module.exports = class extends Language {
             COMMAND_ANIME_TITLES: ['Type', 'Score', 'Status', 'Watch it here:'],
 
             // Commands#fun
+            COMMAND_CATFACT: 'Cat Fact',
             COMMAND_DICE: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
+            COMMAND_NORRIS: 'Chuck Norris',
             COMMAND_RATE: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
             COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
-
+            COMMAND_RNG: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${util.codeBlock('', word)}`,
+            COMMAND_RNG_MISSING: 'Please write at least two options separated by comma.',
+            COMMAND_RNG_DUP: words => `Why would I accept duplicated words? '${words}'.`,
+            COMMAND_XKCD_COMICS: amount => `There are only ${amount} comics.`,
             // Commands#misc
+            // EMPTY
 
             // Commands#moderation
+            // ## Utilities
+            COMMAND_RAID_DISABLED: 'The Anti-RAID system is not enabled in this server.',
+            COMMAND_RAID_MISSING_KICK: 'As I do not have the KICK MEMBERS permission, I keep the Anti-RAID unactivated.',
+            COMMAND_RAID_LIST: 'List of users in the RAID queue',
+            COMMAND_RAID_CLEAR: 'Successfully cleared the RAID list.',
+            COMMAND_RAID_COOL: 'Successfully deactivated the RAID.',
+            COMMAND_TIME_TIMED: 'The selected moderation case has already been timed.',
+
             COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
             COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
             COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
@@ -168,13 +210,13 @@ module.exports = class extends Language {
             COMMAND_SOCIAL_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
             COMMAND_SOCIAL_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
             COMMAND_SOCIAL_MISSING_MONEY: (needed, has, icon) => `I am sorry, but you need ${needed}${icon} and you have ${has}${icon}`,
-            COMMAND_DAILY_TIME: time => `Next dailies are available in ${moment.duration(time).format(this.moment.SHORT_DURATION)}`,
+            COMMAND_DAILY_TIME: time => `Next dailies are available in ${duration(time)}`,
             COMMAND_DAILY_TIME_SUCCESS: (amount, icon) => `Yay! You earned ${amount}${icon}! Next dailies in: 12 hours.`,
             COMMAND_DAILY_GRACE: remaining => [
                 `Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.`,
-                `Remaining time: ${moment.duration(remaining).format(this.moment.SHORT_DURATION)}`
+                `Remaining time: ${duration(remaining, true)}`
             ].join('\n'),
-            COMMAND_DAILY_GRACE_ACCEPTED: (amount, icon, remaining) => `Successfully claimed ${amount}${icon}! Next dailies in: ${moment.duration(remaining).format(this.moment.SHORT_DURATION)}`,
+            COMMAND_DAILY_GRACE_ACCEPTED: (amount, icon, remaining) => `Successfully claimed ${amount}${icon}! Next dailies in: ${duration(remaining, true)}`,
             COMMAND_DAILY_GRACE_DENIED: 'Got it! Come back soon!',
             COMMAND_PAY_PROMPT: (user, amount, icon) => `You are about to pay ${user} ${amount}${icon}, are you sure you want to proceed?`,
             COMMAND_PAY_PROMPT_ACCEPT: (user, amount, icon) => `Payment accepted, ${amount}${icon} has been sent to ${user}'s profile.`,
@@ -190,6 +232,10 @@ module.exports = class extends Language {
             COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}***`,
             COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
             COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
+
+            // Modlogs
+            MODLOG_APPEALED: 'The selected moderation case has already been appealed.',
+            MODLOG_TIMED: time => `This action is already scheduled and ending in ${time}`,
 
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
@@ -232,32 +278,8 @@ module.exports = class extends Language {
             TYPES_MEMBER_ROLE_UPDATE: 'Member Role Update',
             TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',
 
-            TIMES: {
-                DAY: {
-                    PLURAL: 'days',
-                    SING: 'day',
-                    SHORT: 'd'
-                },
-                HOUR: {
-                    PLURAL: 'hours',
-                    SING: 'hour',
-                    SHORT: 'hr'
-                },
-                MINUTE: {
-                    PLURAL: 'minutes',
-                    SING: 'minute',
-                    SHORT: 'min'
-                },
-                SECOND: {
-                    PLURAL: 'seconds',
-                    SING: 'second',
-                    SHORT: 'sec'
-                }
-            }
-        };
-        this.moment = {
-            LONG_DURATION: '',
-            SHORT_DURATION: `hh [**${this.language.TIMES.HOUR.PLURAL}**,] mm [**${this.language.TIMES.MINUTE.PLURAL}**,] ss [**${this.language.TIMES.SECOND.PLURAL}**]`
+            CONST_USER: 'User',
+            CONST_USERS: 'Users'
         };
     }
 

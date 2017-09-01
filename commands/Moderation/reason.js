@@ -49,12 +49,14 @@ module.exports = class extends Command {
             await message.edit({ embed });
         } else {
             const dataColor = ModLog.getColor(log.type);
+            const moderator = await this.client.fetchUser(log.moderator).catch(() => ({ tag: log.moderator }));
+            const user = await this.client.fetchUser(log.user).catch(() => ({ tag: 'Unknown', id: log.user }));
             const embed = new MessageEmbed()
-                .setAuthor(log.moderator.tag)
+                .setAuthor(moderator.tag)
                 .setColor(dataColor.color)
                 .setDescription([
                     `**Type**: ${dataColor.title}`,
-                    `**User**: ${log.user.tag} (${log.user.id})`,
+                    `**User**: ${user.tag} (${user.id})`,
                     `**Reason**: ${reason}`
                 ])
                 .setFooter(`Case ${selected}`)
@@ -64,7 +66,7 @@ module.exports = class extends Command {
 
         const oldReason = log.reason;
 
-        return msg.send(`Successfully updated the log ${selected}.${util.codeBlock('http', [
+        return msg.alert(`Successfully updated the log ${selected}.${util.codeBlock('http', [
             `Old reason : ${oldReason || 'Not set.'}`,
             `New reason : ${reason}`
         ].join('\n'))}`);

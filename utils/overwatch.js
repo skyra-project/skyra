@@ -1,9 +1,11 @@
 const playedHeroes = require('./overwatch/playedheroes.js');
+const owRoles = require('./overwatch/roles.js');
 
 module.exports = (type, data, options) => {
     switch (type) {
         case 'playedheroes': return playedHeroes(data, options);
         case 'getUUID': return overwatchHeroes[data];
+        case 'roles': return owRoles(data, options);
         // no default
     }
 

@@ -241,16 +241,16 @@ module.exports = class Dashboard {
 
         this.commands = new Collection();
         for (const command of this.client.commands.values()) {
-            if (command.conf.permLevel === 10) continue;
-            const cat = command.help.category;
+            if (command.permLevel === 10) continue;
+            const cat = command.category;
             if (!this.commands.has(cat)) this.commands.set(cat, []);
-            const description = `<h5 class="text-left">Description</h5><p>${escapeHTML(command.help.description)}</p><br />`;
-            const html = description + (command.help.extendedHelp ? createTables(buildHTML(escapeHTML(command.help.extendedHelp))) : 'Not set');
+            const description = `<h5 class="text-left">Description</h5><p>${escapeHTML(command.description)}</p><br />`;
+            const html = description + (command.extendedHelp ? createTables(buildHTML(escapeHTML(command.extendedHelp))) : 'Not set');
             this.commands.get(cat).push({
-                level: levelHTML(command.conf.permLevel),
-                guildOnly: !command.conf.runIn.includes('dm'),
-                name: toTitleCase(command.help.name),
-                description: command.help.description,
+                level: levelHTML(command.permLevel),
+                guildOnly: command.guildOnly,
+                name: toTitleCase(command.name),
+                description: command.description,
                 html
             });
         }

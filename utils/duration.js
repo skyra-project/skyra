@@ -6,7 +6,8 @@ const day = hour * 24;
 class Duration {
 
     static parse(duration) {
-        return [Math.floor(duration / day),
+        return [
+            Math.floor(duration / day),
             Math.floor((duration / hour) % 24),
             Math.floor((duration / minute) % 60),
             Math.floor((duration / second) % 60)

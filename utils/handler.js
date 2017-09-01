@@ -39,7 +39,8 @@ class Handler {
             provider.getAll('guilds'),
             provider.getAll('users'),
             provider.getAll('localScores'),
-            provider.getAll('moderation')
+            provider.getAll('moderation'),
+            this.dashboard.init()
         ]);
         await this.syncGuilds(guild, modlogs);
         await this.syncLocals(locals);

@@ -27,19 +27,19 @@ module.exports = class extends Command {
             description: 'Display some awesome colours.',
             extendedHelp: Command.strip`
                 Hey! Do you want me to display a color?
-                
-                = Usage =
+
+                ⚙ | ***Explained usage***
                 Skyra, colour [color] >[separator]
                 Colour    :: Hex code of the color you want displayed
                 Separator :: Defaults to 10, it sets the RGB (from 0 to 255) difference between tones.
-                
+
                 = Supported formats =
                 • HEX    :: #RRGGBB
                 • RGB    :: rgb(RRR, GGG, BBB)
                 • HSL    :: hsl(HHH, SSS, LLL)
                 • HSLUV  :: hsluv(HHH, SSS, LLL)
                 • BASE10 :: 0 - 16777215
-                
+
                 = Examples =
                 • Skyra, colour #ff73c1
                     I display a lot of info from this color.

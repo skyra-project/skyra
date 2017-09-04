@@ -15,12 +15,12 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Businessmen! Today is payday!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, pay [money] [user]
                 Money :: Amount of shinies to pay, you must have the amount you are going to pay.
                 User  :: The targetted user to pay. (Must be mention/id)
 
-                = Example =
+                🔗 | ***Examples***
                 • Skyra, pay 200 @kyra
                     I will get 200 shinies from your bank and give them to the user.
             `

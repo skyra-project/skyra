@@ -1,8 +1,5 @@
 const { Command, ModLog, Timer } = require('../../../index');
 
-const moment = require('moment');
-const duration = time => moment.duration(time).format('hh [hours,] mm [minutes,] ss [seconds]');
-
 module.exports = class extends Command {
 
     constructor(...args) {
@@ -28,15 +25,15 @@ module.exports = class extends Command {
 
         const user = await this.client.fetchUser(doc.user);
 
-        const type = await this.getActions(msg, doc, user);
+        const type = await this.getActions(msg, doc, user).catch(error => { throw i18n.get(error); });
 
         const exists = this.client.handler.clock.tasks.find(task => task.type === type && task.user === doc.user);
-        if (cancel) return this.cancel(msg, selected, settings, exists);
+        if (cancel) return this.cancel(msg, selected, settings, exists, i18n);
         if (exists) {
             if (doc.appeal === true) throw i18n.get('MODLOG_APPEALED');
             throw i18n.get('MODLOG_TIMED', exists.timestamp - Date.now());
         }
-        if (time.length === 0) throw 'You must specify a time.';
+        if (time.length === 0) throw i18n.get('COMMAND_TIME_UNDEFINED_TIME');
 
         const length = new Timer(time.join(' ')).Duration;
 
@@ -50,14 +47,14 @@ module.exports = class extends Command {
 
         await settings.moderation.updateCase(selected, { timed: true });
 
-        return msg.send(`✅ Successfully scheduled a moderation action type **${ModLog.getColor(type).title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(length)}`);
+        return msg.send(i18n.get('COMMAND_TIME_SCHEDULED', ModLog.getColor(type).title, user, length));
     }
 
-    async cancel(msg, selected, settings, task) {
-        if (!task) throw 'This task is not scheduled.';
+    async cancel(msg, selected, settings, task, i18n) {
+        if (!task) throw i18n.get('COMMAND_TIME_NOT_SCHEDULED');
         await this.client.handler.clock.remove(task.id);
         await settings.moderation.updateCase(selected, { timed: false });
-        return msg.send(`Successfully aborted the schedule for ${ModLog.getColor(task.type).title}`);
+        return msg.send(i18n.get('COMMAND_TIME_ABORTED', ModLog.getColor(task.type).title));
     }
 
     getActions(msg, doc, user) {
@@ -65,34 +62,33 @@ module.exports = class extends Command {
             case 'ban': return this.checkBan(msg, doc, user);
             case 'mute': return this.checkMute(msg, doc);
             case 'vmute': return this.checkVMute(msg, doc, user);
-            default: throw 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.';
+            default: throw 'COMMAND_TIME_UNSUPPORTED_TIPE';
         }
     }
 
     async checkBan(msg, doc, user) {
-        if (msg.guild.me.permissions.has('BAN_MEMBERS') !== true) throw 'I will need the BAN MEMBERS permissions to be able to unban.';
+        if (msg.guild.me.permissions.has('BAN_MEMBERS') !== true) throw 'COMMAND_UNBAN_MISSING_PERMISSION';
 
-        const users = await msg.guild.fetchBans();
-        if (users.size === 0) throw msg.language.get('GUILD_BANS_EMPTY');
+        const users = await msg.guild.fetchBans().catch(() => { throw 'SYSTEM_FETCHBANS_FAIL'; });
+        if (users.size === 0) throw 'GUILD_BANS_EMPTY';
 
         const member = users.get(user.id) || null;
-        if (member === null) throw msg.language.get('GUILD_BANS_NOT_FOUND');
+        if (member === null) throw 'GUILD_BANS_NOT_FOUND';
 
         return 'unban';
     }
 
     async checkMute(msg, doc) {
-        if (msg.guild.settings.moderation.mutes.has(doc.user) !== true) throw 'This user is not muted.';
-        if (msg.guild.me.permissions.has('MANAGE_ROLES') !== true) throw 'I will need the MANAGE ROLES permissions to be able to unmute.';
+        if (msg.guild.settings.moderation.mutes.has(doc.user) !== true) throw 'COMMAND_MUTE_USER_NOT_MUTED';
+        if (msg.guild.me.permissions.has('MANAGE_ROLES') !== true) throw 'COMMAND_UNMUTE_MISSING_PERMISSION';
         return 'unmute';
     }
 
     async checkVMute(msg, doc, user) {
-        if (msg.guild.me.permissions.has('MUTE_MEMBERS') !== true) throw 'I will need the MUTE MEMBERS permissions to be able to unmute.';
+        if (msg.guild.me.permissions.has('MUTE_MEMBERS') !== true) throw 'COMMAND_VMUTE_MISSING_PERMISSION';
+        const member = await msg.guild.fetchMember(user).catch(() => { throw 'USER_NOT_IN_GUILD'; });
 
-        const member = await msg.guild.fetchMember(user).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
-
-        if (member.serverMute !== true) throw 'This user is not voice muted.';
+        if (member.serverMute !== true) throw 'COMMAND_VMUTE_USER_NOT_MUTED';
 
         return 'vunmute';
     }

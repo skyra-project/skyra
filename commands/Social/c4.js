@@ -43,7 +43,7 @@ module.exports = class extends Command {
         if (user.bot) throw 'You cannot play with bots.';
         if (this.games.has(msg.channel.id)) throw 'There is a game in progress.';
 
-        const mes = await msg.send(`Dear ${user} you have been challenged by ${msg.author} in a Connect-Four match. Do you accept?`);
+        const mes = await msg.send(`Dear ${user}, you have been challenged by ${msg.author} in a Connect-Four match. Do you accept?`);
         const response = await msg.channel.awaitMessages(message => this._prompt(message, user), this._options)
             .catch(() => { throw 'The user did not reply on time.'; });
 

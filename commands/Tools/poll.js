@@ -15,7 +15,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Let's make a poll!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, list               :: I will show you all active voting polls.
                 Skyra, create             :: Create a new voting poll.
                 Skyra, remove <ID>        :: Delete a voting poll.

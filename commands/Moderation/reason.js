@@ -32,10 +32,13 @@ module.exports = class extends Command {
         await settings.moderation.updateCase(selected, { reason });
 
         const messages = await channel.fetchMessages({ limit: 100 });
+
+        const regCase = new RegExp(`(AUTO | )?Case ${selected}`);
+
         const message = messages.find(mes => mes.author.id === this.client.user.id &&
             mes.embeds.length > 0 &&
             mes.embeds[0].type === 'rich' &&
-            mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${selected}`
+            mes.embeds[0].footer && regCase.test(mes.embeds[0].footer.text)
         );
 
         if (message) {
@@ -46,13 +49,16 @@ module.exports = class extends Command {
                 user,
                 `**Reason**: ${reason}`
             ].join('\n');
+            embed.author = {
+                name: msg.author.tag,
+                iconURL: msg.author.displayAvatarURL({ size: 128 })
+            };
             await message.edit({ embed });
         } else {
             const dataColor = ModLog.getColor(log.type);
-            const moderator = await this.client.fetchUser(log.moderator).catch(() => ({ tag: log.moderator }));
             const user = await this.client.fetchUser(log.user).catch(() => ({ tag: 'Unknown', id: log.user }));
             const embed = new MessageEmbed()
-                .setAuthor(moderator.tag)
+                .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
                 .setColor(dataColor.color)
                 .setDescription([
                     `**Type**: ${dataColor.title}`,

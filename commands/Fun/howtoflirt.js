@@ -27,7 +27,18 @@ module.exports = class extends Command {
             cooldown: 30,
 
             usage: '<user:advuser>',
-            description: "I'll teach you how to flirt."
+            description: 'I will teach you how to flirt.',
+            extend: {
+                EXPLANATION: [
+                    'Let me teach you how to flirt with somebody using the Tony Stark\'s style for Capitain America, and',
+                    'have lots of fun with it!'
+                ].join(' '),
+                ARGUMENTS: '<user>',
+                EXP_USAGE: [
+                    ['user', 'A user to flirt with.']
+                ],
+                EXAMPLES: ['Skyra']
+            }
         });
     }
 

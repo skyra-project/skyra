@@ -16,7 +16,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [limit = 50, filter = null]) {
+    async run(msg, [limit = 50, filter = null], settings, i18n) {
         let messages = await msg.channel.fetchMessages({ limit: 100 });
         if (filter) {
             const user = typeof filter !== 'string' ? filter : null;
@@ -24,8 +24,8 @@ module.exports = class extends Command {
             messages = messages.filter(this.getFilter(msg, type, user));
         }
         messages = messages.array().slice(0, limit);
-        await msg.channel.bulkDelete(messages);
-        return msg.send(`Successfully deleted ${messages.length} messages from ${limit}.`);
+        await msg.channel.bulkDelete(messages, true);
+        return msg.send(i18n.get('COMMAND_PRUNE', messages.length, limit));
     }
 
     getFilter(msg, filter, user) {

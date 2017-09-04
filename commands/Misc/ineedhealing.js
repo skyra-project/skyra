@@ -1,9 +1,8 @@
 const { Command, Canvas } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
-const { join, resolve } = require('path');
+const { join } = require('path');
 
-const template = resolve(join(__dirname, '../../assets/images/memes/ineedhealing.png'));
 
 module.exports = class extends Command {
 
@@ -17,6 +16,8 @@ module.exports = class extends Command {
             usage: '<user:advuser>',
             description: 'I NEED HEALING!'
         });
+
+        this.template = null;
     }
 
     async run(msg, [user]) {
@@ -27,19 +28,22 @@ module.exports = class extends Command {
     async generate(msg, user) {
         if (user.id === msg.author.id) user = this.client.user;
 
-        const [background, healer, healed] = await Promise.all([
-            readFile(template),
+        const [healer, healed] = await Promise.all([
             fetchAvatar(msg.author, 128),
             fetchAvatar(user, 128)
         ]);
 
         return new Canvas(333, 500)
-            .addImage(background, 0, 0, 333, 500)
+            .addImage(this.template, 0, 0, 333, 500)
             .save()
             .addImage(healer, 189, 232, 110, 110, { type: 'round', radius: 55 })
             .restore()
             .addImage(healed, 70, 96, 106, 106, { type: 'round', radius: 53 })
             .toBufferAsync();
+    }
+
+    async init() {
+        this.template = await readFile(join(__dirname, '../../assets/images/memes/ineedhealing.png'));
     }
 
 };

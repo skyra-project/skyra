@@ -16,12 +16,12 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [sr]) {
+    async run(msg, [sr], settings, i18n) {
         const _roles = await getRoles(msg, 'sr');
         const rank = this.getRank(sr);
         const _role = _roles.get(rank);
 
-        if (msg.member.roles.has(_role.id)) return msg.send(`Your rank has been updated to: **${rank}**`);
+        if (msg.member.roles.has(_role.id)) throw i18n.get('HAS_ROLE');
 
         const rmRoles = [];
         for (const rm of _roles.values()) if (rm.id !== _role.id) rmRoles.push(rm.id);
@@ -34,7 +34,7 @@ module.exports = class extends Command {
         }
 
         await msg.member.edit({ roles }, '[OVERWATCH] GameSR Profile Management.');
-        return msg.send(`Your rank has been updated to: **${rank}**`);
+        return msg.send(i18n.get('COMMAND_RANK_UPDATE', rank));
     }
 
     getRank(sr) {

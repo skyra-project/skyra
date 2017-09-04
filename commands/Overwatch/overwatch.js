@@ -33,7 +33,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Cheers love! The cavalry is here!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, overwatch [BattleTag] [platform] [server] [hero] [type] [gamemode]
                 BattleTag :: Your BattleTag from Battle.net.
                 Platform  :: Either 'PC', 'PSN' or 'XBL'.

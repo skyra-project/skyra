@@ -26,7 +26,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 How much until I reach next level?
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, level [user]
                 User :: (Optional) The user's profile to show. Defaults to the message's author.
             `

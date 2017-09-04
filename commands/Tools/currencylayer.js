@@ -47,7 +47,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 With this command, you can, for example, convert EUR to USD.
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, cl [amount] [input] [output]
                 Amount :: Amount of money from the first currency.
                 Input  :: The currency to convert from.

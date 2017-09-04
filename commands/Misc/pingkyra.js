@@ -1,9 +1,7 @@
 const { Command, Canvas } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
-const { join, resolve } = require('path');
-
-const template = resolve(join(__dirname, '../../assets/images/memes/pingkyra.png'));
+const { join } = require('path');
 
 module.exports = class extends Command {
 
@@ -19,6 +17,7 @@ module.exports = class extends Command {
         });
 
         this.kyra = null;
+        this.template = null;
     }
 
     async run(msg, [user]) {
@@ -29,14 +28,13 @@ module.exports = class extends Command {
     async generate(msg, user) {
         if (user.id === this.kyra.id || user.id === this.client.user.id) user = msg.author;
 
-        const [background, runner, kyra] = await Promise.all([
-            readFile(template),
+        const [runner, kyra] = await Promise.all([
             fetchAvatar(user, 128),
             fetchAvatar(this.kyra, 128)
         ]);
 
         return new Canvas(569, 327)
-            .addImage(background, 0, 0, 569, 327)
+            .addImage(this.template, 0, 0, 569, 327)
             .save()
             .addImage(runner, 118, 27, 52, 52, { type: 'round', radius: 26 })
             .restore()
@@ -45,7 +43,10 @@ module.exports = class extends Command {
     }
 
     async init() {
-        this.kyra = await this.client.fetchUser('242043489611808769');
+        [this.kyra, this.template] = await Promise.all([
+            this.client.fetchUser('242043489611808769'),
+            readFile(join(__dirname, '../../assets/images/memes/pingkyra.png'))
+        ]);
     }
 
 };

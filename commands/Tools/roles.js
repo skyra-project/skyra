@@ -15,7 +15,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Public roles? They are roles that are available for everyone, an administrator must configure them throught a setting command.
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, roles list                   :: I will show you all available public roles.
                 Skyra, roles claim <role1, role2>   :: Claim one of more public roles.
                 Skyra, roles unclaim <role1, role2> :: Unclaim one of more public roles.

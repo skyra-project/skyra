@@ -17,7 +17,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [remove = null, type]) {
+    async run(msg, [remove = null, type], settings, i18n) {
         const _roles = await getRoles(msg, 'region');
         const _role = _roles.get(type);
         const hasRole = msg.member.roles.has(_role.id);
@@ -26,12 +26,12 @@ module.exports = class extends Command {
             if (!hasRole) throw 'You do not have this role.';
 
             await msg.member.removeRole(_role.id, '[OVERWATCH] GameRegion Profile Management.');
-            return msg.send(`Your game region (**${_role.name}**) has been removed.`);
+            return msg.send(i18n.get('COMMAND_REGION_REMOVED', _role.name));
         } else {
             if (hasRole) throw 'You already have this role.';
 
             await msg.member.addRole(_role.id, '[OVERWATCH] GameRegion Profile Management.');
-            return msg.send(`Your game region has been updated to: **${_role.name}**`);
+            return msg.send(i18n.get('COMMAND_REGION_UPDATED', _role.name));
         }
     }
 

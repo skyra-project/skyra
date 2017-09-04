@@ -24,18 +24,18 @@ module.exports = class extends Command {
 
             cooldown: 10,
 
-            usage: '<Question:string>',
+            usage: '<question:string>',
             description: 'Skyra will read the Holy Bible to find the correct answer for your question.',
-            extendedHelp: Command.strip`
-                I am wondering about something... why did the chicken cross the road?
-
-                = Usage =
-                Skyra, 8ball <Question>
-                Question :: The Holy Question.
-
-                = Example =
-                Skyra, 8ball Why did the chicken cross the road?
-            `
+            extend: {
+                EXPLANATION: 'This command provides you a random question based on your questions\' type. Be careful, it may be too smart.',
+                ARGUMENTS: '<question>',
+                EXP_USAGE: [
+                    ['question', 'The Holy Question.']
+                ],
+                EXAMPLES: [
+                    'Why did the chicken cross the road?'
+                ]
+            }
         });
     }
 

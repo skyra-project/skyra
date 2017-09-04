@@ -19,12 +19,13 @@ module.exports = class extends Command {
             cooldown: 10,
 
             description: 'Check this kitty! ❤',
-            extendedHelp: Command.strip`
-                Aww, have you seen this kitten? It's so cute!
-
-                = Usage =
-                Skyra, kitty
-            `
+            extend: {
+                EXPLANATION: [
+                    'Do **you** know how cute are kittens? They are so beautiful! This command uses a tiny selection of images',
+                    'From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are',
+                    'some images that, sadly, got deleted and I cannot retrieve them 💔.'
+                ].join(' ')
+            }
         });
 
         this.index = Math.ceil(Math.random() * rand.length);

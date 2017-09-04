@@ -47,7 +47,6 @@ module.exports = class extends Command {
 
     parseURLs(raw) {
         return this.parseTwitter(raw).then(text => text
-            .replace(/ /g, '&nbsp;')
             .replace(/<@!?[0-9]+>/g, (input) => {
                 const id = input.replace(/<|!|>|@/g, '');
                 if (this.channel.type === 'dm' || this.channel.type === 'group') {
@@ -68,8 +67,6 @@ module.exports = class extends Command {
                 if (role) return `@${role.name}`;
                 return input;
             })
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
             .replace(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9-_]{11}[^ ]*/g, (match) => {
                 const id = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9-_]{11})/.exec(match)[1];
                 return `<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`;

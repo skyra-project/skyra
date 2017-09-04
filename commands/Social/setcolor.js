@@ -17,7 +17,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 I dislike the default fuschia colour!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, setcolor [color]
                 Color :: A Colour resolvable
 

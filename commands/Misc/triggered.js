@@ -2,11 +2,9 @@ const { Command } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const streamToArray = require('stream-to-array');
 const { readFile } = require('fs-nextra');
-const { join, resolve } = require('path');
+const { join } = require('path');
 const GIFEncoder = require('gifencoder');
 const Canvas = require('canvas');
-
-const template = resolve(join(__dirname, '../../assets/images/memes/triggered.png'));
 
 module.exports = class extends Command {
 
@@ -23,11 +21,13 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 What? My commands aren't enough userfriendly? (╯°□°）╯︵ ┻━┻
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, triggered [user]
                 User :: The user to be triggered.
             `
         });
+
+        this.template = null;
     }
 
     async run(msg, [user = msg.author]) {
@@ -42,12 +42,8 @@ module.exports = class extends Command {
         const canvas = new Canvas(350, 393);
         const ctx = canvas.getContext('2d');
 
-        const [userBuffer, titleBuffer] = await Promise.all([
-            fetchAvatar(user, 512),
-            readFile(template)
-        ]);
-        imgTitle.src = titleBuffer;
-        imgTriggered.src = userBuffer;
+        imgTitle.src = this.template;
+        imgTriggered.src = await fetchAvatar(user, 512);
 
         const stream = encoder.createReadStream();
         encoder.start();
@@ -69,6 +65,10 @@ module.exports = class extends Command {
         encoder.finish();
 
         return streamToArray(stream).then(Buffer.concat);
+    }
+
+    async init() {
+        this.template = await readFile(join(__dirname, '../../assets/images/memes/triggered.png'));
     }
 
 };

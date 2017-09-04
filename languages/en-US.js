@@ -28,6 +28,38 @@ const TIMES = {
     }
 };
 
+const PERMS = {
+    // General
+    ADMINISTRATOR: 'Administrator',
+    VIEW_AUDIT_LOG: 'View Audit Log',
+    MANAGE_GUILD: 'Manage Server',
+    MANAGE_ROLES: 'Manage Roles',
+    MANAGE_CHANNELS: 'Manage Channels',
+    KICK_MEMBERS: 'Kick Members',
+    BAN_MEMBERS: 'Ban Members',
+    CREATE_INSTANT_INVITE: 'Create Instant Invite',
+    CHANGE_NICKNAME: 'Change Nickname',
+    MANAGE_NICKNAMES: 'Manage Nicknames',
+    MANAGE_EMOJIS: 'Manage Emojis',
+    MANAGE_WEBHOOKS: 'Manage Webhooks',
+    VIEW_CHANNEL: 'Read Messages',
+    SEND_MESSAGES: 'Send Messages',
+    SEND_TTS_MESSAGES: 'Send TTS Messages',
+    MANAGE_MESSAGES: 'Manage Messages',
+    EMBED_LINKS: 'Embed Links',
+    ATTACH_FILES: 'Attach Files',
+    READ_MESSAGE_HISTORY: 'Read Message History',
+    MENTION_EVERYONE: 'Mention Everyone',
+    USE_EXTERNAL_EMOJIS: 'Use External Emojis',
+    ADD_REACTIONS: 'Add Reactions',
+    CONNECT: 'Connect',
+    SPEAK: 'Speak',
+    MUTE_MEMBERS: 'Mute Members',
+    DEAFEN_MEMBERS: 'Deafen Members',
+    MOVE_MEMBERS: 'Move Members',
+    USE_VAD: 'Use Voice Activity'
+};
+
 const duration = (time, short) => Duration.duration(time, TIMES, short);
 
 module.exports = class extends Language {
@@ -75,7 +107,7 @@ module.exports = class extends Language {
 
             MONITOR_NOINVITE: user => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
             MONITOR_WORDFILTER: user => `|\`❌\`| Pardon, dear ${user}, you said something that is not allowed in this server.`,
-            MONITOR_NMS_MESSAGE: (user) => [
+            MONITOR_NMS_MESSAGE: user => [
                 `The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
                 "Do not worry! I'm here to help you! 😄"
             ].join('\n'),
@@ -87,7 +119,7 @@ module.exports = class extends Language {
             INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${remaining} seconds.`,
             INHIBITOR_GUILDONLY: 'This command is designed to run only in servers.',
             INHIBITOR_DISABLED: 'This command is currently disabled',
-            INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing}**`,
+            INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing.map(perm => PERMS[perm] || perm)}**`,
             INHIBITOR_PERMISSIONS: 'You do not have permission to use this command',
             INHIBITOR_REQUIRED_SETTINGS: (settings) => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length > 1 ? 's' : ''} and cannot run.`,
             INHIBITOR_SPAM: channel => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
@@ -163,17 +195,31 @@ module.exports = class extends Language {
             COMMAND_RAID_CLEAR: 'Successfully cleared the RAID list.',
             COMMAND_RAID_COOL: 'Successfully deactivated the RAID.',
             COMMAND_TIME_TIMED: 'The selected moderation case has already been timed.',
+            COMMAND_TIME_UNDEFINED_TIME: 'You must specify a time.',
+            COMMAND_TIME_UNSUPPORTED_TIPE: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
+            COMMAND_TIME_NOT_SCHEDULED: 'This task is not scheduled.',
+            COMMAND_TIME_ABORTED: (title) => `Successfully aborted the schedule for ${title}`,
+            COMMAND_TIME_SCHEDULED: (title, user, time) => `✅ Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(time)}`,
+
+            // ## General
 
             COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
             COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
             COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
             COMMAND_UNBAN_MESSAGE: (user, reason, banReason, log) => `|\`🔨\`| [Case::${log}] **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}${banReason ? `\nReason for Ban:${banReason}` : ''}`,
+            COMMAND_UNBAN_MISSING_PERMISSION: `I will need the ${PERMS.BAN_MEMBERS} permission to be able to unban.`,
             COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
             COMMAND_KICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
             COMMAND_MUTE_MUTED: 'The target user is already muted.',
             COMMAND_MUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+            COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
+            COMMAND_VMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MUTE_MEMBERS} permission to be able to voice unmute.`,
+            COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
             COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+            COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MANAGE_ROLES} permission to be able to unmute.`,
             COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+
+            COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
 
             COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
 
@@ -206,6 +252,16 @@ module.exports = class extends Language {
             COMMAND_USERSELF: 'Why would you do that to yourself?',
             COMMAND_TOSKYRA: 'Eww... I thought you loved me! 💔',
 
+            // OVERWATCH
+            COMMAND_PLATFORM_REMOVED: (role) => `Your game platform (**${role}**) has been removed.`,
+            COMMAND_PLATFORM_UPDATED: (role) => `Your game platform has been updated to: **${role}**`,
+            COMMAND_REGION_REMOVED: (role) => `Your game region (**${role}**) has been removed.`,
+            COMMAND_REGION_UPDATED: (role) => `Your game region has been updated to: **${role}**`,
+            COMMAND_GAMEROLE_UPDATE: (role) => `Your game role has been updated to: **${role}**`,
+            COMMAND_RANK_UPDATE: (rank) => `Your rank has been updated to: **${rank}**`,
+            MISSING_ROLE: 'You do not have this role.',
+            HAS_ROLE: 'You already have this role.',
+
             // SOCIAL
             COMMAND_SOCIAL_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
             COMMAND_SOCIAL_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
@@ -224,6 +280,13 @@ module.exports = class extends Language {
             COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
             COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 
+            COMMAND_PROFILE: {
+                GLOBAL_RANK: 'Global Rank',
+                CREDITS: 'Credits',
+                REPUTATION: 'Reputation',
+                EXPERIENCE: 'Experience',
+                LEVEL: 'Level'
+            },
             COMMAND_SOCIAL_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
             COMMAND_SOCIAL_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 
@@ -244,6 +307,7 @@ module.exports = class extends Language {
             SYSTEM_PROCESSING: '`Processing...`',
             SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
             SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
+            SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the ${PERMS.BAN_MEMBERS} permission?`,
 
             COMMAND_SUCCESS: 'Successfully executed the command.',
 
@@ -262,7 +326,7 @@ module.exports = class extends Language {
             EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Updated the nickname from **${previous}** to **${current}**`,
             EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous, current) => `Added a new nickname **${current}**`,
             EVENTS_GUILDMEMBER_REMOVED_NICKNAME: previous => `Removed the nickname **${previous}**`,
-            EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0 ? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}` : ''}${added.length > 0 ? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
+            EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0 ? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}\n` : ''}${added.length > 0 ? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
             EVENTS_MESSAGE_UPDATE: 'Message Edited',
             EVENTS_MESSAGE_UPDATE_MSG: (old, msg) => `Previous: ${old.substring(0, 950)}\nNew: ${msg.substring(0, 950)}`,
             EVENTS_MESSAGE_DELETE: 'Message Deleted',

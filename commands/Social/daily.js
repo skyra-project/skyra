@@ -13,7 +13,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Shiiiiiny!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, daily
 
                 = Reminder =

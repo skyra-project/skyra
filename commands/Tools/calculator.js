@@ -15,7 +15,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Take a look in mathjs.org/docs/index.html#documentation
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, calculate [equation]
                 Equation :: The math equation to calculate.
 

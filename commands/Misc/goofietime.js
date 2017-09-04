@@ -1,9 +1,7 @@
 const { Command, Canvas } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
-const { join, resolve } = require('path');
-
-const template = resolve(join(__dirname, '../../assets/images/memes/goofy.png'));
+const { join } = require('path');
 
 module.exports = class extends Command {
 
@@ -18,6 +16,8 @@ module.exports = class extends Command {
             usage: '<user:advuser>',
             description: 'It\'s Goofy time!'
         });
+
+        this.template = null;
     }
 
     async run(msg, [user]) {
@@ -26,15 +26,16 @@ module.exports = class extends Command {
     }
 
     async generate(msg, user) {
-        const [background, goofied] = await Promise.all([
-            readFile(template),
-            fetchAvatar(user, 128)
-        ]);
+        const goofied = await fetchAvatar(user, 128);
 
         return new Canvas(356, 435)
-            .addImage(background, 0, 0, 356, 435)
+            .addImage(this.template, 0, 0, 356, 435)
             .addImage(goofied, 199, 52, 92, 92, { type: 'round', radius: 46 })
             .toBufferAsync();
+    }
+
+    async init() {
+        this.template = await readFile(join(__dirname, '../../assets/images/memes/goofy.png'));
     }
 
 };

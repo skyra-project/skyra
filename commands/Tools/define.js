@@ -17,12 +17,12 @@ module.exports = class extends Command {
             description: 'Check the definition of a word.',
             extendedHelp: Command.strip`
                 What does "heel" mean?
-                
-                = Usage =
+
+                ⚙ | ***Explained usage***
                 Skyra, define [word]
                 Word :: The word or phrase you want to get the definition from.
-                
-                = Example =
+
+                🔗 | ***Examples***
                 • Skyra, define heel
                     1 ❯ Tilt to one side; "The balloon heeled over"; "the wind made the vessel heel"; "The ship listed to starboard".
                     2 ❯ To arm with a gaff, as a cock for fighting.

@@ -12,16 +12,13 @@ module.exports = class extends Command {
             cooldown: 10,
 
             description: 'Enjoy your time reading Chuck Norris\' jokes.',
-            extendedHelp: Command.strip`
-                What does Chuck Norris say?
-
-                = Usage =
-                Skyra, chucknorris
-
-                = Example =
-                Skyra, chucknorris
-                    Chuck Norris roundhouse-kicked the acting ability out of Vin Diesel.
-            `
+            extend: {
+                EXPLANATION: [
+                    'Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone?',
+                    'Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io',
+                    'and retrieves a fact (do not assume they\'re false, not in front of him) so you can read it'
+                ].join(' ')
+            }
         });
     }
 

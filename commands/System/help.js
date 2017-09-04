@@ -13,48 +13,44 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [cmd], settings) {
-        const method = this.client.user.bot ? 'author' : 'channel';
+    async run(msg, [cmd = null], settings) {
         if (cmd) {
             cmd = this.client.commands.get(cmd);
             if (!cmd) throw msg.language.get('RESOLVER_INVALID_PIECE', 'command', 'command');
             const info = [
-                `= ${cmd.name} = `,
-                cmd.description,
-                `usage :: ${cmd.usage.fullUsage(msg)}`,
-                'Extended Help ::',
-                cmd.extendedHelp
+                `📃 | ***Help Message*** | __**${cmd.name}**__\n${cmd.description}\n`,
+                `📝 | ***Command Usage***\n\`${cmd.usage.fullUsage(msg)}\`\n`,
+                `🔍 | ***Extended Help***\n${cmd.extendedHelp}`
             ].join('\n');
-            return msg.send(info, { code: 'asciidoc' });
+            return msg.send(info);
         }
         const help = await this.buildHelp(msg, settings);
         const categories = Object.keys(help);
-        const helpMessage = [];
+        const helpMessage = ['📃 | *Help Message*\n'];
         for (let cat = 0; cat < categories.length; cat++) {
-            helpMessage.push(`**${categories[cat]} Commands**: \`\`\`asciidoc`);
+            helpMessage.push(`**${categories[cat]} Commands**\n`);
             const subCategories = Object.keys(help[categories[cat]]);
-            for (let subCat = 0; subCat < subCategories.length; subCat++) helpMessage.push(`= ${subCategories[subCat]} =`, `${help[categories[cat]][subCategories[subCat]].join('\n')}\n`);
-            helpMessage.push('```\n\u200b');
+            for (let subCat = 0; subCat < subCategories.length; subCat++) {
+                if (subCategories[subCat] !== 'General') helpMessage.push(`__**${subCategories[subCat]}**__\n`);
+                helpMessage.push(`${help[categories[cat]][subCategories[subCat]].join('\n')}\n`);
+            }
         }
 
-        return msg[method].send(helpMessage, { split: { char: '\u200b' } })
-            .then(() => { if (msg.channel.type !== 'dm' && this.client.user.bot) msg.send(msg.language.get('COMMAND_HELP_DM')); })
-            .catch(() => { if (msg.channel.type !== 'dm' && this.client.user.bot) msg.send(msg.language.get('COMMAND_HELP_NODM')); });
+        return msg.author.send(helpMessage, { split: { char: '\n' } })
+            .then(() => { if (msg.channel.type !== 'dm') msg.send(msg.language.get('COMMAND_HELP_DM')); })
+            .catch(() => { if (msg.channel.type !== 'dm') msg.send(msg.language.get('COMMAND_HELP_NODM')); });
     }
 
     /* eslint-disable no-restricted-syntax, no-prototype-builtins */
     async buildHelp(msg, settings) {
         const help = {};
 
-        const commandNames = Array.from(this.client.commands.keys());
-        const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-
         await Promise.all(this.client.commands.map((command) =>
             this.client.inhibitors.run(msg, command, true, settings)
                 .then(() => {
                     if (!help.hasOwnProperty(command.category)) help[command.category] = {};
                     if (!help[command.category].hasOwnProperty(command.subCategory)) help[command.category][command.subCategory] = [];
-                    help[command.category][command.subCategory].push(`${settings.master.prefix}${command.name.padEnd(longest)} :: ${command.description}`);
+                    help[command.category][command.subCategory].push(`→ \`${settings.master.prefix}${command.name}\` :: **${command.description}**\n`);
                     return;
                 })
                 .catch(() => {

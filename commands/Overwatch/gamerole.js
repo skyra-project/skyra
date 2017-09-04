@@ -16,11 +16,11 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [type]) {
+    async run(msg, [type], settings, i18n) {
         const _roles = await getRoles(msg, 'gameroles');
         const _role = _roles.get(type);
 
-        if (msg.member.roles.has(_role.id)) throw 'You already have this role.';
+        if (msg.member.roles.has(_role.id)) throw i18n.get('HAS_ROLE');
 
         const rmRoles = [];
         for (const rm of _roles.values()) if (rm.id !== _role.id) rmRoles.push(rm.id);
@@ -33,7 +33,7 @@ module.exports = class extends Command {
         }
 
         await msg.member.edit({ roles }, '[OVERWATCH] GameRole Profile Management.');
-        return msg.send(`Your game role has been updated to: **${_role.name}**`);
+        return msg.send(i18n.get('COMMAND_GAMEROLE_UPDATE', _role.name));
     }
 
 };

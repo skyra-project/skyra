@@ -34,7 +34,7 @@ module.exports = class extends Command {
     }
 
     async fetchBan(guild, query) {
-        const users = await guild.fetchBans();
+        const users = await guild.fetchBans().catch(() => { throw 'SYSTEM_FETCHBANS_FAIL'; });
         if (users.size === 0) throw guild.language.get('GUILD_BANS_EMPTY');
         const member = users.get(query) || users.find(mem => mem.user.tag === query) || null;
         if (member === null) throw guild.language.get('GUILD_BANS_NOT_FOUND');

@@ -18,7 +18,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Shorten your urls with Googl!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, googl [url]
                 URL :: The URL to short or long.
 

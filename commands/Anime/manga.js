@@ -27,16 +27,19 @@ module.exports = class extends Command {
 
             usage: '<query:string>',
             description: 'Search your favourite manga by title with this command.',
-            extendedHelp: Command.strip`
-                Hey! Do you want to check the info of your favourite manga?
-
-                = Usage =
-                Skyra, manga <Query>
-                Query :: The manga's name you are looking for.
-
-                = Example =
-                Skyra, anime Stone Ocean
-            `
+            extend: {
+                EXPLANATION: [
+                    'This command queries MyAnimeList to show data for the manga you request. In a near future, this command',
+                    'will allow you to navigate between the results so you can read the information of the manga.'
+                ].join(' '),
+                ARGUMENTS: '<query>',
+                EXP_USAGE: [
+                    ['query', 'The manga\'s name you are looking for.']
+                ],
+                EXAMPLES: [
+                    'Stone Ocean One piece'
+                ]
+            }
         });
     }
 

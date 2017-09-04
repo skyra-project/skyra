@@ -11,7 +11,13 @@ module.exports = class extends Command {
 
             cooldown: 10,
 
-            description: 'Let me tell you a misterious cat fact.'
+            description: 'Let me tell you a misterious cat fact.',
+            extend: {
+                EXPLANATION: [
+                    'Do you know cats are very curious, right? They certainly have a lot of fun and weird facts. This',
+                    'command queries `catfact.ninja` and retrieves a fact so you can read it.'
+                ].join(' ')
+            }
         });
     }
 

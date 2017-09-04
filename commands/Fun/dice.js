@@ -9,23 +9,24 @@ module.exports = class extends Command {
             cooldown: 5,
 
             usage: '[rolls:int{1,1024}] [sides:int{4,1024}]',
+            usageDelim: ' ',
             description: 'Roll the dice, \'x\' rolls and \'y\' sides.',
-            extendedHelp: Command.strip`
-                The Dice: A misterious Dice for misterious people.
-
-                = Usage =
-                Skyra, dice [rolls] [sides]
-                Rolls :: Defaults to 1, amount of times the dice should roll.
-                Sides :: Defaults to 6, amount of sides the dice should have.
-
-                = Examples =
-                • Skyra, dice 370 24
-                    4412
-                • Skyra, dice 100 6
-                    354
-                • Skyra, dice 6
-                    22
-            `
+            extend: {
+                EXPLANATION: [
+                    'The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice',
+                    'can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once.',
+                    'However, you can change the amount of rolls for the dice, and this command will \'roll\' (get a random',
+                    'number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave',
+                    'a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will',
+                    'return 10 as output.'
+                ].join(' '),
+                ARGUMENTS: '[rolls] [sides]',
+                EXP_USAGE: [
+                    ['rolls', 'Defaults to 1, amount of times the dice should roll.'],
+                    ['sides', 'Defaults to 6, amount of sides the dice should have.']
+                ],
+                EXAMPLES: ['370 24', '100 6', '6']
+            }
         });
     }
 

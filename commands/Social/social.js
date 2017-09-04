@@ -17,7 +17,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Oi! This guy should have more points!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, social [action] [user] [value]
                 Action :: Either 'delete', 'add' or 'remove'.
                 User   :: The targetted user profile to modify.

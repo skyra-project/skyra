@@ -1,4 +1,4 @@
-const { Inhibitor, util } = require('../index');
+const { Inhibitor } = require('../index');
 const { Permissions } = require('discord.js');
 
 module.exports = class extends Inhibitor {
@@ -20,7 +20,7 @@ module.exports = class extends Inhibitor {
 
     async run(msg, cmd, settings, i18n) {
         const missing = msg.channel.type === 'text' ? msg.channel.permissionsFor(msg.guild.me).missing(cmd.botPerms) : this.impliedPermissions.missing(cmd.botPerms);
-        if (missing.length > 0) throw i18n.get('INHIBITOR_MISSING_BOT_PERMS', util.toTitleCase(missing.join(', ').split('_').join(' ')));
+        if (missing.length > 0) throw i18n.get('INHIBITOR_MISSING_BOT_PERMS', missing);
         return;
     }
 

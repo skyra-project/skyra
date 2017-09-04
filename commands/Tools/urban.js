@@ -16,13 +16,13 @@ module.exports = class extends Command {
             description: 'Check the definition of a word on UrbanDictionary.',
             extendedHelp: Command.strip`
                 What does "spam" mean?
-                
-                = Usage =
+
+                ⚙ | ***Explained usage***
                 Skyra, urban [word] #[index]
                 Word :: The word or phrase you want to get the definition from.
                 Index :: Defaults to 1, the page you wish to read.
-                
-                = Example =
+
+                🔗 | ***Examples***
                 • Skyra, urban spam
                     spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam spam
             `

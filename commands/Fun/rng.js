@@ -12,18 +12,21 @@ module.exports = class extends Command {
             usage: '<words:string> [...]',
             usageDelim: ', ',
             description: 'Eeny, meeny, miny, moe, catch a tiger by the toe...',
-            extendedHelp: Command.strip`
-                Should I wash the dishes? Or should I throw the dishes throught the window?
-
-                = Usage =
-                Skyra, rng word1, word2, word3, ...
-
-                = Examples =
-                • Skyra, rng Should Wash the dishes, Throw the dishes throught the window
-                    Throw the dishes throught the window
-                • Skyra, rng Cat, Dog
-                    Cat
-            `
+            extend: {
+                EXPLANATION: [
+                    'I have an existencial doubt... should I wash the dishes or throw them throught the window? The search',
+                    'continues. List me items separated by `\', \'` and I will choose one them. On a side note, I am not',
+                    'responsible of what happens next.'
+                ].join(' '),
+                ARGUMENTS: '<words>',
+                EXP_USAGE: [
+                    ['words', 'A list of words separated by comma and space.']
+                ],
+                EXAMPLES: [
+                    'Should Wash the dishes, Throw the dishes throught the window',
+                    'Cat, Dog'
+                ]
+            }
         });
     }
 

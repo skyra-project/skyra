@@ -17,21 +17,20 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [remove = null, type]) {
+    async run(msg, [remove = null, type], settings, i18n) {
         const _roles = await getRoles(msg, 'platform');
         const _role = _roles.get(type);
         const hasRole = msg.member.roles.has(_role.id);
 
         if (remove !== null) {
-            if (!hasRole) throw 'You do not have this role.';
+            if (!hasRole) throw i18n.get('MISSING_ROLE');
 
             await msg.member.removeRole(_role.id, '[OVERWATCH] GamePlatform Profile Management.');
-            return msg.send(`Your game platform (**${_role.name}**) has been removed.`);
+            return msg.send(i18n.get('COMMAND_PLATFORM_REMOVED', _role.name));
         } else {
-            if (hasRole) throw 'You already have this role.';
-
+            if (hasRole) throw i18n.get('HAS_ROLE');
             await msg.member.addRole(_role.id, '[OVERWATCH] GamePlatform Profile Management.');
-            return msg.send(`Your game platform has been updated to: **${_role.name}**`);
+            return msg.send(i18n.get('COMMAND_PLATFORM_UPDATED', _role.name));
         }
     }
 

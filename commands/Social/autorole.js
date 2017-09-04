@@ -11,13 +11,13 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 10,
 
-            usage: '<input:string>',
+            usage: '<list|add|remove|update> [amount:integer{0,1000000}] <role:string> [...]',
             usageDelim: ' ',
             description: '(ADM) List or configure the autoroles for a guild.',
             extendedHelp: Command.strip`
                 Autoroles? They are roles that are available for everyone, and automatically given when they reach an amound of (local) points, an administrator must configure them throught a setting command.
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, autorole list                :: I will show you all the autoroles.
                 Skyra, autorole add <amount> <role> :: Add a new autorole.
                 Skyra, autorole remove <role>       :: Remove an autorole from the list.
@@ -33,8 +33,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [data], settings) {
-        const [action, amount, input] = this.parse(data);
+    async run(msg, [action, amount = null, ...input], settings) {
         switch (action) {
             case 'list': {
                 if (!settings.autoroles.length) throw 'there are no autoroles configured for this guild.';
@@ -82,21 +81,6 @@ module.exports = class extends Command {
             case 'setting': return this.settingHandler(msg, input, settings);
             default: throw new Error(`unknown action: ${action}`);
         }
-    }
-
-    parse(data) {
-        const args = data.split(' ');
-        if (!['list', 'add', 'remove', 'update'].includes(args[0])) throw 'Missing a required option: (list, add, remove, setting)';
-        const action = args[0];
-        args.shift();
-        let amount;
-        if (/\d{1,7}/.test(args[0])) {
-            amount = parseInt(args[0]);
-            args.shift();
-        }
-        const input = args;
-
-        return [action, amount, input];
     }
 
 };

@@ -10,16 +10,17 @@ module.exports = class extends Command {
 
             usage: '<user:string>',
             description: 'Let bots have opinions and rate somebody.',
-            extendedHelp: Command.strip`
-                Hey! Do you want to know what I'd rate something?
-
-                = Usage =
-                Skyra, rate <User>
-                User :: The user to rate.
-
-                = Example =
-                Skyra, rate Microsoft
-            `
+            extend: {
+                EXPLANATION: [
+                    'Just because I am a bot doesn\'t mean I cannot rate you properly. I can grade you with a random number',
+                    'generator to ease the process. Okay okay, it\'s not fair, but I mean... I can also give you a 💯.'
+                ].join(' '),
+                ARGUMENTS: '<user>',
+                EXP_USAGE: [
+                    ['user', 'A user to rate.']
+                ],
+                EXAMPLES: ['Skyra', 'Microsoft']
+            }
         });
     }
 

@@ -26,7 +26,21 @@ module.exports = class extends Command {
             cooldown: 120,
 
             usage: '<city:string>',
-            description: 'Check the weather status in a location.'
+            description: 'Check the weather status in a location.',
+            extend: {
+                EXPLANATION: [
+                    'This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage',
+                    'support as it is... Google Search. Once this command got the coordinates, it queries DarkSky to retrieve',
+                    'information about the weather. Note: temperature is in **Celsius**'
+                ].join(' '),
+                ARGUMENTS: '<city>',
+                EXP_USAGE: [
+                    ['city', 'The locality, governing, country or continent to check the weather from.']
+                ],
+                EXAMPLES: [
+                    'Antarctica'
+                ]
+            }
         });
     }
 
@@ -80,7 +94,7 @@ module.exports = class extends Command {
             readFile(join(__dirname, '..', '..', 'assets', 'images', 'weather', theme, 'precip.png'))
         ]);
 
-        const canvas = new Canvas(400, 180)
+        const attachment = await new Canvas(400, 180)
             .save()
             .setShadowColor('rgba(51,51,51,.38)')
             .setShadowBlur(5)
@@ -117,9 +131,11 @@ module.exports = class extends Command {
             // Icons
             .addImage(conditionBuffer, 325, 31, 48, 48)
             .addImage(humidityBuffer, 358, 88, 13, 13)
-            .addImage(precipicityBuffer, 358, 108, 13, 13);
+            .addImage(precipicityBuffer, 358, 108, 13, 13)
 
-        return msg.channel.send({ files: [{ attachment: canvas.toBuffer(), name: `${geocodelocation}.png` }] });
+            .toBufferAsync();
+
+        return msg.channel.send({ files: [{ attachment, name: `${geocodelocation}.png` }] });
     }
 
     timePicker(icon) {

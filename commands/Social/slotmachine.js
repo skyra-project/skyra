@@ -23,7 +23,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Slotmachines!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, slotmachine [amount]
                 Amount :: Either 50, 100, 200, 500, or even, 1000 shinies to bet.
 

@@ -22,12 +22,12 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 Am I first yet?
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, top [list] [index]
                 List  :: Either 'global', 'local', 'money' or 'reputation'.
                 Index :: The index/page for the list.
 
-                = Example =
+                🔗 | ***Examples***
                 • Skyra, top global 2
                     Show the global leaderboard in the positions 10-20th.
             `

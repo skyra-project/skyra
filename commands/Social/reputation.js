@@ -17,7 +17,7 @@ module.exports = class extends Command {
             extendedHelp: Command.strip`
                 This guy is so helpful... I'll give him a reputation point!
 
-                = Usage =
+                ⚙ | ***Explained usage***
                 Skyra, rep [user]
                 User :: The user to give a reputation point.
 

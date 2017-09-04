@@ -15,6 +15,8 @@ class OverwatchUtils {
         const { text } = await snekfetch.get(url);
         const $ = cheerio.load(text);
 
+        const mostPlayed = $('#overview-section > div.u-relative > div.masthead-hero-image')['0'].attribs;
+
         const masthead = $('#overview-section > div.u-relative > div.u-max-width-container > div.column > div.masthead');
         const mastheadPlayer = masthead.children('div.masthead-player');
         const mastheadProgression = masthead.children('div.masthead-player-progression');
@@ -22,6 +24,10 @@ class OverwatchUtils {
         data.overview.profile = {
             name: mastheadPlayer.children('h1.header-masthead').text(),
             avatar: mastheadPlayer.children('img.player-portrait').attr('src'),
+            heroes: {
+                quickplay: mostPlayed['data-hero-quickplay'],
+                competitive: mostPlayed['data-hero-competitive']
+            },
             level: parseInt(mastheadProgression.children('div.player-level').children('div.u-vertical-center').text()),
             portrait: /.+\((.+)\)/.exec(mastheadProgression.children('div.player-level').attr('style'))[1],
             stars: mastheadProgression.children('div.player-level').has('div.player-rank').length ?

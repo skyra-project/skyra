@@ -65,6 +65,8 @@ class GuildSettings {
         if (doc === null) doc = await provider.get('guilds', this.id);
 
         for (const [key, value] of Object.entries(doc)) {
+            if (key === 'id') continue;
+
             if (Array.isArray(value) === false && value instanceof Object) {
                 for (const [subkey, subvalue] of Object.entries(value)) this[key][subkey] = subvalue;
             } else {

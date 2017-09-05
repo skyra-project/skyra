@@ -7,11 +7,7 @@ Canvas.registerFont(resolve(join(__dirname, '../../assets/fonts/FiraSans-Regular
 
 /* Color limiter */
 const cL = colour => Math.max(Math.min(colour, 255), 0);
-
-const sCL = (colour) => {
-    if (colour > 110) return 0;
-    return 255;
-};
+const sCL = (colour) => colour >= 128 ? 0 : 255;
 
 /* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B"] }] */
 module.exports = class extends Command {

@@ -339,6 +339,9 @@ module.exports = class extends Language {
             SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
             SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
 
+            // Tags
+            COMMAND_TAGS_ADD_EXISTS: tag => `The tag '${tag}' already exists.`,
+
             TYPES_MEMBER_ROLE_UPDATE: 'Member Role Update',
             TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',
 

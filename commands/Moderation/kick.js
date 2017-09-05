@@ -23,12 +23,12 @@ module.exports = class extends Command {
         else if (user.id === this.client.user.id) throw msg.language.get('COMMAND_TOSKYRA');
         else if (member) {
             if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
-            else if (!member.bannable) throw msg.language.get('COMMAND_KICK_NOT_KICKABLE');
+            else if (!member.kickable) throw msg.language.get('COMMAND_KICK_NOT_KICKABLE');
         }
 
         reason = reason.length ? reason.join(' ') : null;
         user.action = 'kick';
-        await msg.guild.ban(user.id, { days: 1, reason });
+        await member.kick(reason);
 
         const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)

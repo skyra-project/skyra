@@ -39,15 +39,15 @@ module.exports = class extends Command {
         if (!profile) throw 'profile not found.';
         if (action === 'delete') {
             await this.client.handler.social.local.get(msg.guild.id).removeMember(user.id);
-            return msg.alert(`Successfully deleted the profile ${user.tag}, with ${profile.points}`);
+            return msg.alert(`Successfully deleted the profile ${user.tag}, with ${profile.score}`);
         }
         if (!value) throw 'you must specify an amount of money.';
-        let amount;
-        if (action === 'add') amount = profile.points + value;
-        else amount = Math.max(profile.points - value, 0);
 
+        const old = profile.score;
+        const amount = action === 'add' ? old + value : Math.max(old - value, 0);
         await profile.update(amount);
-        return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'add' : 'remov'}ed ${amount} points from user ${user.tag}. Before: ${profile.points}; Now: ${amount}`);
+
+        return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'add' : 'remov'}ed ${value} point${amount !== 1 ? 's' : ''} from user ${user.tag}. Before: ${old}; Now: ${amount}`);
     }
 
     async searchProfile(msg, user) {

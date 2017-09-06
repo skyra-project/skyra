@@ -1,6 +1,7 @@
 const provider = require('../../providers/rethink');
 const Moderation = require('./moderation');
 const Schema = require('../../schema.json');
+const { Collection } = require('discord.js');
 
 const superRegExp = (filterArray) => {
     const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
@@ -34,6 +35,7 @@ class GuildSettings {
         this.autoroles = data.autoroles || [];
 
         this.moderation = null;
+        this.tags = new Collection(data.tags || []);
         this.init();
     }
 

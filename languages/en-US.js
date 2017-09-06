@@ -287,6 +287,11 @@ module.exports = class extends Language {
                 EXPERIENCE: 'Experience',
                 LEVEL: 'Level'
             },
+            COMMAND_LEVEL: {
+                LEVEL: 'Level',
+                EXPERIENCE: 'Experience',
+                NEXT_IN: 'Next level in'
+            },
             COMMAND_SOCIAL_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
             COMMAND_SOCIAL_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 
@@ -295,6 +300,8 @@ module.exports = class extends Language {
             COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}***`,
             COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
             COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
+
+            COMMAND_CONFIGURATION_ABORT: reason => `⚙ | Prompt System Cancelled: ${reason === 'TIME' ? 'Timed out.' : 'Successfully exited.'}`,
 
             // Modlogs
             MODLOG_APPEALED: 'The selected moderation case has already been appealed.',
@@ -330,7 +337,7 @@ module.exports = class extends Language {
             EVENTS_MESSAGE_UPDATE: 'Message Edited',
             EVENTS_MESSAGE_UPDATE_MSG: (old, msg) => `Previous: ${old.substring(0, 950)}\nNew: ${msg.substring(0, 950)}`,
             EVENTS_MESSAGE_DELETE: 'Message Deleted',
-            EVENTS_MESSAGE_DELETE_MSG: msg => msg.substring(0, 1900),
+            EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
             EVENTS_COMMAND: command => `Command Used: ${command}`,
             EVENTS_STREAM_START: member => `The user **${member.user.tag}** is now live! **${member.presence.game.name}**\n${member.presence.game.url}`,
             EVENTS_STREAM_STOP: member => `The user **${member.user.tag}** is not longer live!`,
@@ -340,10 +347,19 @@ module.exports = class extends Language {
             SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
 
             // Tags
+            COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
             COMMAND_TAGS_ADD_EXISTS: tag => `The tag '${tag}' already exists.`,
+            COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
+            COMMAND_TAGS_ADD_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
+            COMMAND_TAGS_REMOVE_NOT_EXISTS: tag => `The tag '${tag}' does not exist.`,
+            COMMAND_TAGS_REMOVE_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
+            COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
+            COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
 
             TYPES_MEMBER_ROLE_UPDATE: 'Member Role Update',
             TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',
+
+            LISTIFY_INVALID_INDEX: 'Invalid index, expected an integer.',
 
             CONST_USER: 'User',
             CONST_USERS: 'Users'

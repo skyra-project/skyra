@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const getRoles = require('../../utils/overwatch/roles');
+const { Command, overwatch: { roles: getRoles } } = require('../../index');
 
 module.exports = class extends Command {
 

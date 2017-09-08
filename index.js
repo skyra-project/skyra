@@ -12,6 +12,11 @@ module.exports = {
     Monitor: require('./lib/structures/Monitor'),
     PermissionLevels: require('./lib/structures/PermissionLevels'),
 
+    console: {
+        Colors: require('./lib/console/Colors'),
+        Console: require('./lib/console/Console')
+    },
+
     CommandStore: require('./lib/structures/CommandStore'),
     EventStore: require('./lib/structures/EventStore'),
     ExtendableStore: require('./lib/structures/ExtendableStore'),
@@ -56,13 +61,17 @@ module.exports = {
     Canvas: require('./utils/canvas-constructor'),
     ModLog: require('./utils/createModlog'),
     Crypto: require('./utils/crypto'),
-    DebugLog: require('./utils/debugLog'),
     Handler: require('./utils/handler'),
     hastebin: require('./utils/hastebin'),
-    overwatch: require('./utils/overwatch'),
     taskProcess: require('./utils/taskProcess'),
     Timer: require('./utils/timer'),
     SkyraError: require('./functions/SkyraError'),
+
+    overwatch: {
+        main: require('./utils/overwatch'),
+        playedHeroes: require('./utils/overwatch/playedheroes'),
+        roles: require('./utils/overwatch/roles')
+    },
 
     config: require('./config')
 };

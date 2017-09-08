@@ -8,7 +8,7 @@ module.exports = class extends Command {
             permLevel: 10,
 
             usage: '<inhibitors|finalizers|monitors|languages|providers|events|commands|extendables|Piece:piece>',
-            description: "Reloads the klasa piece, if it's been updated or modified."
+            description: "Reloads a piece, if it's been updated or modified."
         });
     }
 

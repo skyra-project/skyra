@@ -1,8 +1,7 @@
-const { Command, util } = require('../../index');
+const { Command, util, overwatch: { main: overwatch } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 const { get: fetchProfile } = require('../../functions/overwatch');
-const overwatch = require('../../utils/overwatch.js');
 const snekfetch = require('snekfetch');
 
 const emojis = {

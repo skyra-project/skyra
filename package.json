@@ -12,7 +12,6 @@
     "body-parser": "^1.17.2",
     "bufferutil": "^3.0.2",
     "canvas": "github:Automattic/node-canvas",
-    "chalk": "^2.0.1",
     "cheerio": "^0.22.0",
     "discord.js": "github:hydrabolt/discord.js",
     "ejs": "^2.5.7",

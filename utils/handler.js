@@ -7,14 +7,13 @@ const AdvancedSearch = require('./interfaces/AdvancedSearch');
 const Dashboard = require('../functions/dashboard');
 
 const provider = require('../providers/rethink');
-// const { log } = require('./debugLog');
 
 class Handler {
 
     constructor(client) {
         Object.defineProperty(this, 'client', { value: client });
 
-        this.guilds = new Guilds();
+        this.guilds = new Guilds(client);
         this.clock = new Clock(client);
 
         this.search = new AdvancedSearch(client);
@@ -22,8 +21,8 @@ class Handler {
         this.dashboard = null;
 
         this.social = {
-            global: new SocialGlobal(),
-            local: new SocialLocal()
+            global: new SocialGlobal(client),
+            local: new SocialLocal(client)
         };
 
         this.inited = false;
@@ -32,68 +31,58 @@ class Handler {
     async init() {
         if (this.inited) return;
 
-        await this.clock.init();
         this.dashboard = new Dashboard(this.client);
 
-        const [guild, users, locals, modlogs] = await Promise.all([
-            provider.getAll('guilds'),
-            provider.getAll('users'),
-            provider.getAll('localScores'),
-            provider.getAll('moderation'),
+        await Promise.all([
+            this.syncGuilds(),
+            this.syncLocals(),
+            this.syncGlobal(),
+            this.clock.init(),
             this.dashboard.init()
         ]);
-        await this.syncGuilds(guild, modlogs);
-        await this.syncLocals(locals);
-        this.syncGlobal(users);
 
         this.inited = true;
     }
 
-    async syncGuilds(guilds, modlogs) {
+    async syncGuilds() {
+        const [guilds, modlogs] = await Promise.all([
+            provider.getAll('guilds'),
+            provider.getAll('moderation')
+        ]);
+
         const ModCache = new Map();
-        for (const modlog of modlogs) {
-            ModCache.set(modlog.id, modlog.cases.filter(cs => cs.type === 'mute' && cs.appeal !== true) || []);
+        for (let i = 0; i < modlogs.length; i++) {
+            ModCache.set(modlogs[i].id, modlogs[i].cases.filter(cs => cs.type === 'mute' && cs.appeal !== true) || []);
         }
-        for (const guild of guilds) {
-            // if (this.client.guilds.has(guild.id) === false) {
-            //     log(`LOADER | GUILDSETTINGS | Received data from ${guild.id}, which guild I am not in.`);
-            //     // await provider.delete('guilds', guild.id)
-            //     //     .then(() => this.emitError(`Deleted '${guild.id}' from 'guilds'`))
-            //     //     .catch(err => this.emitError(err));
-            //     // await provider.delete('moderation', guild.id)
-            //     //     .then(() => this.emitError(`Deleted '${guild.id}' from 'moderation'`))
-            //     //     .catch(err => this.emitError(err));
-            //     continue;
-            // }
-            this.guilds.set(guild.id, guild).setModeration(ModCache.get(guild.id) || []);
+        for (let i = 0; i < guilds.length; i++) {
+            if (this.client.guilds.has(guilds[i].id) === false) this.client.emit('log', `LOADER | GUILDSETTINGS | ${guilds[i].id} `, 'warn');
+            this.guilds.set(guilds[i].id, guilds[i]).setModeration(ModCache.get(guilds[i].id) || []);
         }
         for (const guild of this.client.guilds.values()) {
             if (this.guilds.has(guild.id) === false) await this.guilds.create(guild.id);
         }
+
+        return true;
     }
 
-    async syncLocals(locals) {
-        for (const guild of locals) {
-            // if (this.client.guilds.has(guild.id) === false) {
-            //     log(`LOADER | LOCALSCORES | Received data from ${guild.id}, which guild I am not in.`);
-            //     // await provider.delete('localScores', guild.id)
-            //     //     .then(() => this.emitError(`Deleted '${guild.id}' from 'localScores'`))
-            //     //     .catch(err => this.emitError(err));
-            //     continue;
-            // }
+    async syncLocals() {
+        const locals = await provider.getAll('localScores');
+
+        for (let i = 0; i < locals.length; i++) {
+            const guild = locals[i];
             const localManager = this.social.local.set(guild.id);
-            for (const member of guild.scores) {
-                localManager.addMember(member.id, member);
-            }
+
+            for (let j = 0; j < guild.scores.length; j++) localManager.addMember(guild.scores[j].id, guild.scores[j]);
         }
+
+        return true;
     }
 
-    syncGlobal(users) {
-        for (const user of users) this.social.global.set(user.id, user);
-    }
+    async syncGlobal() {
+        const users = await provider.getAll('users');
+        for (let i = 0; i < users.length; i++) this.social.global.set(users[i].id, users[i]);
 
-    emitError(err, type = 'error') {
-        return this.client.emit('log', err, type);
+        return true;
     }
 
 }

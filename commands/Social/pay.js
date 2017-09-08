@@ -39,8 +39,10 @@ module.exports = class extends Command {
     }
 
     async acceptPayment(msg, user, money) {
+        const userProfile = msg.author.profile;
+        if (userProfile.money < money) throw msg.language.get('COMMAND_SOCIAL_MISSING_MONEY', money, userProfile, Command.shiny(msg));
+        await userProfile.use(money).catch(Command.handleError);
         await user.profile.add(money).catch(Command.handleError);
-        await msg.author.profile.use(money).catch(Command.handleError);
         return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money, Command.shiny(msg)));
     }
 

@@ -65,7 +65,9 @@ module.exports = {
     hastebin: require('./utils/hastebin'),
     taskProcess: require('./utils/taskProcess'),
     Timer: require('./utils/timer'),
-    SkyraError: require('./functions/SkyraError'),
+
+    colorResolver: require('./utils/color/index'),
+    colorUtil: require('./utils/color'),
 
     overwatch: {
         main: require('./utils/overwatch'),

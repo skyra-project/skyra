@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const { validate: validateColor } = require('../../functions/resolveColor');
+const { Command, colorUtil } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {
@@ -31,7 +30,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [input]) {
-        const { hex, b10 } = validateColor(input);
+        const { hex, b10 } = colorUtil.parse(input);
         const color = hex.toString().slice(1);
         await msg.author.profile.update({ color });
 

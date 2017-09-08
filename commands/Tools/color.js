@@ -1,5 +1,4 @@
-const { Command } = require('../../index');
-const { luminance, hexConcat, validate: validateColor } = require('../../functions/resolveColor');
+const { Command, colorUtil: { parse, luminance, hexConcat } } = require('../../index');
 const { join, resolve } = require('path');
 const Canvas = require('canvas');
 
@@ -33,7 +32,6 @@ module.exports = class extends Command {
                 • HEX    :: #RRGGBB
                 • RGB    :: rgb(RRR, GGG, BBB)
                 • HSL    :: hsl(HHH, SSS, LLL)
-                • HSLUV  :: hsluv(HHH, SSS, LLL)
                 • BASE10 :: 0 - 16777215
 
                 = Examples =
@@ -44,14 +42,13 @@ module.exports = class extends Command {
     }
 
     async run(msg, [input, diff = 10]) {
-        const { hex, hsl, hsluv, rgb } = validateColor(input);
+        const { hex, hsl, rgb } = parse(input);
 
         const output = await this.showColor(rgb, diff);
         return msg.channel.send([
             `Color: **${hex}**`,
             `RGB: ${rgb}`,
-            `HSL: ${hsl}`,
-            `HSLᵤᵥ: ${hsluv}`
+            `HSL: ${hsl}`
         ].join('\n'), { files: [{ attachment: output, name: 'color.png' }] });
     }
 

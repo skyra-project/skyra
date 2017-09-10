@@ -25,10 +25,14 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [equation]) {
+    run(msg, [equation], settings, i18n) {
         const start = now();
-        const evaled = await math.eval(equation);
-        return msg.send(`⚙ **Calculated** (${(now() - start).toFixed(3)}μs)${'```'}js\n${util.clean(evaled)}${'```'}`);
+        try {
+            const evaled = math.eval(equation);
+            return msg.send(i18n.get('COMMAND_CALC', (now() - start).toFixed(3), util.codeBlock('js', util.clean(evaled))));
+        } catch (error) {
+            return msg.send(i18n.get('COMMAND_CALC_FAILURE', (now() - start).toFixed(3), util.codeBlock('js', error)));
+        }
     }
 
 };

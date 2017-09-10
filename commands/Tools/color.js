@@ -1,14 +1,10 @@
-const { Command, colorUtil: { parse, luminance, hexConcat } } = require('../../index');
-const { join, resolve } = require('path');
-const Canvas = require('canvas');
-
-Canvas.registerFont(resolve(join(__dirname, '../../assets/fonts/FiraSans-Regular.ttf')), { family: 'FiraSans' });
+const { Command, colorUtil: { parse, luminance, hexConcat }, Canvas } = require('../../index');
 
 /* Color limiter */
 const cL = colour => Math.max(Math.min(colour, 255), 0);
 const sCL = (colour) => colour >= 128 ? 0 : 255;
 
-/* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B"] }] */
+/* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B", "x", "y"] }] */
 module.exports = class extends Command {
 
     constructor(...args) {
@@ -53,54 +49,46 @@ module.exports = class extends Command {
     }
 
     async showColor(color, diff) {
-        const c = new Canvas(370, 390);
-        const ctx = c.getContext('2d');
-
         const red = color.r;
         const green = color.g;
         const blue = color.b;
 
-        let thisLum;
-        ctx.font = '18px FiraSans';
-        const colours = [
-            { R: red + (diff * 2), G: green, B: blue, pos: [5, 5] },
-            { R: red + diff, G: green + diff, B: blue, pos: [5, 125] },
-            { R: red, G: green + (diff * 2), B: blue, pos: [5, 245] },
-            { R: red + diff, G: green, B: blue + diff, pos: [125, 5] },
-            { R: red, G: green, B: blue, pos: [125, 125] },
-            { R: red - diff, G: green, B: blue - diff, pos: [125, 245] },
-            { R: red, G: green, B: blue + (diff * 2), pos: [245, 5] },
-            { R: red - diff, G: green - diff, B: blue, pos: [245, 125] },
-            { R: red - (diff * 2), G: green - (diff * 2), B: blue - (diff * 2), pos: [245, 245] }
-        ];
+        const canvas = new Canvas(370, 390)
+            .setTextFont('18px FiraSans');
 
-        await Promise.all(colours.map(colour => new Promise((res) => {
-            const [thisRed, thisGreen, thisBlue] = [cL(colour.R), cL(colour.G), cL(colour.B)];
-            ctx.fillStyle = `rgb(${thisRed}, ${thisGreen}, ${thisBlue})`;
-            ctx.fillRect(colour.pos[0], colour.pos[1], 120, 120);
-            thisLum = sCL(luminance(thisRed, thisGreen, thisBlue));
-            ctx.fillStyle = `rgb(${thisLum}, ${thisLum}, ${thisLum})`;
-            ctx.fillText(
-                hexConcat(cL(colour.R), cL(colour.G), cL(colour.B)),
-                10 + colour.pos[0],
-                20 + colour.pos[1],
-            );
-            res();
-        })));
+        await Promise.all([
+            this.processFrame(canvas.context, 5, 5, cL(red + (diff * 2)), cL(green), cL(blue)),
+            this.processFrame(canvas.context, 5, 125, cL(red + diff), cL(green + diff), cL(blue)),
+            this.processFrame(canvas.context, 5, 245, cL(red), cL(green + (diff * 2)), cL(blue)),
+            this.processFrame(canvas.context, 125, 5, cL(red + diff), cL(green), cL(blue + diff)),
+            this.processFrame(canvas.context, 125, 125, cL(red), cL(green), cL(blue)),
+            this.processFrame(canvas.context, 125, 245, cL(red - diff), cL(green), cL(blue - diff)),
+            this.processFrame(canvas.context, 245, 5, cL(red), cL(green), cL(blue + (diff * 2))),
+            this.processFrame(canvas.context, 245, 125, cL(red - diff), cL(green - diff), cL(blue)),
+            this.processFrame(canvas.context, 245, 245, cL(red - (diff * 2)), cL(green - (diff * 2)), cL(blue - (diff * 2)))
+        ]);
 
         /* Complementary */
-        ctx.fillStyle = `rgb(${255 - red}, ${255 - green}, ${255 - blue})`;
-        ctx.fillRect(5, 365, 360, 20);
-        thisLum = luminance(255 - red, 255 - green, 255 - blue);
-        ctx.font = '16px FiraSans';
-        ctx.fillStyle = `rgb(${sCL(thisLum)}, ${sCL(thisLum)}, ${sCL(thisLum)})`;
-        ctx.fillText(
-            hexConcat(255 - red, 255 - green, 255 - blue),
-            15,
-            22 + 360,
-        );
+        const thisLum = sCL(luminance(255 - red, 255 - green, 255 - blue));
+        return canvas
+            .setColor(`rgb(${255 - red}, ${255 - green}, ${255 - blue})`)
+            .addRect(5, 365, 360, 20)
+            .setTextFont('16px FiraSans')
+            .setColor(`rgb(${thisLum}, ${thisLum}, ${thisLum})`)
+            .addText(hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
+            .toBufferAsync();
+    }
 
-        return c.toBuffer();
+    processFrame(ctx, x, y, red, green, blue) {
+        ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+        ctx.fillRect(x, y, 120, 120);
+        const thisLum = sCL(luminance(red, green, blue));
+        ctx.fillStyle = `rgb(${thisLum}, ${thisLum}, ${thisLum})`;
+        ctx.fillText(
+            hexConcat(red, green, blue),
+            10 + x,
+            20 + y,
+        );
     }
 
 };

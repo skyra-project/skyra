@@ -66,6 +66,7 @@ module.exports = class extends Language {
 
     constructor(...args) {
         super(...args);
+        this.PERMISSIONS = PERMS;
         this.language = {
             DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
             DEFAULT_LANGUAGE: 'Default Language',
@@ -182,10 +183,10 @@ module.exports = class extends Language {
             COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
             COMMAND_RNG: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${util.codeBlock('', word)}`,
             COMMAND_RNG_MISSING: 'Please write at least two options separated by comma.',
-            COMMAND_RNG_DUP: words => `Why would I accept duplicated words? '${words}'.`,
-            COMMAND_XKCD_COMICS: amount => `There are only ${amount} comics.`,
+            COMMAND_RNG_DUP: (words) => `Why would I accept duplicated words? '${words}'.`,
+            COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
             // Commands#misc
-            // EMPTY
+            COMMAND_UNICODE: (string) => `There is your converted message:\n${string}`,
 
             // Commands#moderation
             // ## Utilities
@@ -302,6 +303,9 @@ module.exports = class extends Language {
             COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
 
             COMMAND_CONFIGURATION_ABORT: reason => `⚙ | Prompt System Cancelled: ${reason === 'TIME' ? 'Timed out.' : 'Successfully exited.'}`,
+
+            COMMAND_CALC: (time, output) => `⚙ **Calculated** (${time}μs)${output}`,
+            COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Failed** (${time}μs)${output}`,
 
             // Modlogs
             MODLOG_APPEALED: 'The selected moderation case has already been appealed.',

@@ -28,7 +28,7 @@ module.exports = class extends Command {
         let ratewaifu;
         let rate;
 
-        if (/^(you|yourself)$/i.test(user)) {
+        if (/^(you|yourself|skyra)$/i.test(user)) {
             rate = 100;
             [ratewaifu, user] = i18n.get('COMMAND_RATE_MYSELF');
         } else {

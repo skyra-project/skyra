@@ -75,10 +75,10 @@ module.exports = class extends Command {
         const unlistedRoles = [];
         const invalidRoles = [];
         for (const role of roles) {
-            const res = await this.client.handler.search.role(role, msg).catch(() => null);
+            const res = await this.client.handler.search.role(role, msg);
 
-            if (res === null) continue;
-            if (!settings.roles.public.includes(res.id)) unlistedRoles.push(res.name);
+            if (res === null) invalidRoles.push(role);
+            else if (!settings.roles.public.includes(res.id)) unlistedRoles.push(res.name);
             else if (msg.member.roles.has(res.id)) existentRoles.push(res.name);
             else giveRoles.push(res);
         }
@@ -97,9 +97,9 @@ module.exports = class extends Command {
         const unlistedRoles = [];
         const invalidRoles = [];
         for (const role of roles) {
-            const res = await this.client.handler.search.role(role, msg).catch(() => null);
+            const res = await this.client.handler.search.role(role, msg);
 
-            if (res === null) continue;
+            if (res === null) invalidRoles.push(role);
             if (!settings.roles.public.includes(res.id)) unlistedRoles.push(res.name);
             else if (!msg.member.roles.has(res.id)) nonexistentRoles.push(res.name);
             else removeRoles.push(res);

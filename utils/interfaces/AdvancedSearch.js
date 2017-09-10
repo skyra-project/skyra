@@ -19,6 +19,12 @@ class Fetch {
         return null;
     }
 
+    /**
+     * AdvancedSearch [ROLE]
+     * @param {(Role|string)} query The query.
+     * @param {Message} msg The message.
+     * @returns {Promise<?Role>}
+     */
     async role(query, msg) {
         const resRole = this.resolveRole(query, msg.guild);
         if (resRole) return resRole;
@@ -39,6 +45,13 @@ class Fetch {
         return null;
     }
 
+    /**
+     * AdvancedSearch [CHANNEL]
+     * @param {(Channel|Message|string)} query The query.
+     * @param {Message} msg The message.
+     * @param {('text'|'voice')} type The channel type.
+     * @returns {Promise<?Channel>}
+     */
     async channel(query, msg, type = null) {
         const resChannel = this.resolveChannel(query, msg.guild);
         if (resChannel) return resChannel;
@@ -66,6 +79,12 @@ class Fetch {
         return null;
     }
 
+    /**
+     * AdvancedSearch [USER]
+     * @param {(GuildMember|User|string)} query The query.
+     * @param {Message} msg The message.
+     * @returns {Promise<?User>}
+     */
     async user(query, msg) {
         const resUser = await this.resolveUser(query, msg.guild);
         if (resUser) return resUser;
@@ -83,7 +102,7 @@ class Fetch {
         switch (results.length) {
             case 0: return null;
             case 1: return results[0];
-            default: return this.makePrompt(msg, results, parseList);
+            default: return this.makePrompt(msg, results, parseList).catch(() => null);
         }
     }
 

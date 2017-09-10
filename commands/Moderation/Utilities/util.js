@@ -27,8 +27,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [action, ...parameters]) {
-        return this[action](msg, parameters.length > 0 ? parameters.join(' ') : undefined);
+    async run(msg, [action, ...parameters], settings, i18n) {
+        return this[action](msg, parameters.length > 0 ? parameters.join(' ') : undefined, i18n);
     }
 
     async channel(msg, input = msg.channel) {
@@ -114,16 +114,15 @@ module.exports = class extends Command {
         return this.permissions(...args);
     }
 
-    async permissions(msg, input) {
+    async permissions(msg, input, i18n) {
         if (await msg.hasLevel(2) !== true) throw 'you require to be at least a Moderator Member to run this command.';
         const user = await this.client.handler.search.user(input, msg);
-        const member = await msg.guild.fetchMember(user).catch(() => null);
-        if (!member) throw 'This user is not in this guild.';
+        const member = await msg.guild.fetchMember(user.id).catch(() => { throw i18n.get('USER_NOT_IN_GUILD'); });
 
         const { permissions } = member;
         const perm = ['\u200B'];
         for (let i = 0; i < PermissionFlags.length; i++) {
-            perm.push(`${permissions.has(PermissionFlags[i]) ? '\\🔹' : '\\🔸'} ${util.toTitleCase(PermissionFlags[i].replace(/_/g, ' '))}`);
+            perm.push(`${permissions.has(PermissionFlags[i]) ? '\\🔹' : '\\🔸'} ${i18n.PERMISSIONS[PermissionFlags[i]] || PermissionFlags[i]}`);
         }
 
         const embed = new MessageEmbed()

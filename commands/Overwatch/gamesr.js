@@ -20,7 +20,7 @@ module.exports = class extends Command {
         const rank = this.getRank(sr);
         const _role = _roles.get(rank);
 
-        if (msg.member.roles.has(_role.id)) throw i18n.get('HAS_ROLE');
+        if (msg.member.roles.has(_role.id)) return msg.send(i18n.get('COMMAND_RANK_UPDATE', rank));
 
         const rmRoles = [];
         for (const rm of _roles.values()) if (rm.id !== _role.id) rmRoles.push(rm.id);

@@ -54,6 +54,7 @@ module.exports = class extends Command {
 
     async members(msg, embed, input) {
         const role = await this.client.handler.search.role(input, msg);
+        if (!role) throw 'you must specify a role.';
         if (!role.members.size) throw 'this role has no members.';
 
         return embed
@@ -132,12 +133,12 @@ module.exports = class extends Command {
             await msg.send(msg.language.get('SYSTEM_FETCHING'));
             await msg.guild.fetchMembers();
         }
-        const members = msg.guild.members.filter(member => member.user.presence.game && /(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(member.user.presence.game.name));
+        const members = msg.guild.members.filter(member => member.presence.game && /(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(member.presence.game.name));
         if (!members.size) return msg.language.get('COMMAND_LIST_ADVERTISEMENT_EMPTY');
         return embed
             .setTitle(msg.language.get('COMMAND_LIST_ADVERTISEMENT'))
             .splitFields(members
-                .map(member => `${member.toString()} ${member.displayName} || ${member.user.presence.game.name}`)
+                .map(member => `${member.toString()} ${member.displayName} || ${member.presence.game.name}`)
                 .join('\n')
             );
     }

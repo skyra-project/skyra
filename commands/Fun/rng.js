@@ -10,7 +10,7 @@ module.exports = class extends Command {
             cooldown: 10,
 
             usage: '<words:string> [...]',
-            usageDelim: ', ',
+            usageDelim: ',',
             description: 'Eeny, meeny, miny, moe, catch a tiger by the toe...',
             extend: {
                 EXPLANATION: [
@@ -41,8 +41,10 @@ module.exports = class extends Command {
         const output = [];
         const filtered = [];
         for (let i = 0; i < words.length; i++) {
-            if (!output.includes(words[i])) output.push(words[i]);
-            else filtered.push(words[i]);
+            const word = words[i].trim();
+            if (word === '') continue;
+            if (!output.includes(word)) output.push(word);
+            else filtered.push(word);
         }
 
         if (output.length < 2) throw i18n.get('COMMAND_RNG_DUP', filtered.join('\', \''));

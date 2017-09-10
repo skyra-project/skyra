@@ -12,6 +12,7 @@ const randomValues = {
     howmuch: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', "I don't know, ask a physicist.", 'Nothing.', `Within ${random(10)} and ${random(1000)}L.`, `${random(10)}e${random(1000)}L.`, "2 or 3 liters, I don't remember.", 'Infinity.', '1010 liters.'],
     howmany: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', "I don't know, ask a physicist.", 'Nothing.', `Within ${random(10)} and ${random(1000)}.`, `${random(10)}e${random(1000)}.`, "2 or 3, I don't remember.", 'Infinity', '1010.'],
     why: ['Maybe genetics.', 'Because somebody decided it.', 'For the glory of satan, of course!', "I don't know, maybe destiny.", 'Because I said so.', 'I have no idea.', 'Harambe did nothing wrong.', 'Ask the owner of this server.', 'Ask again.', 'To get to the other side.', 'It says so in the Bible.'],
+    who: ['A human.', 'A robot.', 'An airplane.', 'A bird.', 'A carbon composition.', 'A bunch of zeroes and ones.', 'I have no clue, is it material?', 'That is not logic.'],
     doyoulie: ['Nope.', 'Nope.', 'Maybe.', 'Maybe.', 'Most likely.', 'YES!'],
     thisElse: ['Most likely.', 'Nope.', 'YES!', 'Maybe.']
 };
@@ -56,6 +57,7 @@ module.exports = class extends Command {
         if (startsWith('how much', input)) return this.generate('howmuch');
         if (startsWith('how many', input)) return this.generate('howmany');
         if (startsWith('why', input)) return this.generate('why');
+        if (startsWith('who', input)) return this.generate('who');
         if (/(do|are).+you.+(lie|lying)/gi.test(input)) return this.generate('doyoulie');
         return this.generate('thisElse');
     }

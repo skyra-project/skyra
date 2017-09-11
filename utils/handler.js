@@ -55,7 +55,7 @@ class Handler {
             ModCache.set(modlogs[i].id, modlogs[i].cases.filter(cs => cs.type === 'mute' && cs.appeal !== true) || []);
         }
         for (let i = 0; i < guilds.length; i++) {
-            if (this.client.guilds.has(guilds[i].id) === false) this.client.emit('log', `LOADER | GUILDSETTINGS | ${guilds[i].id} `, 'warn');
+            if (this.client.guilds.has(guilds[i].id) === false) this.client.emit('log', `LOADER | GUILDSETTINGS | ${guilds[i].id} `, 'info');
             this.guilds.set(guilds[i].id, guilds[i]).setModeration(ModCache.get(guilds[i].id) || []);
         }
         for (const guild of this.client.guilds.values()) {

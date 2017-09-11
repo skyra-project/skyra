@@ -21,3 +21,8 @@ const Skyra = new Client({
 });
 
 Skyra.login(config.tokens.bot.stable);
+
+process.on('unhandledRejection', (err) => {
+    if (!err) return;
+    Skyra.console.log(`Uncaught Promise Error: \n${err.stack || err}`, 'wtf');
+});

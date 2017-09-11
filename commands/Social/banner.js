@@ -32,7 +32,7 @@ module.exports = class extends Command {
             output[i] = [banner.id, banner.title];
         }
         let index = 1;
-        if (!isNaN(parseInt(value))) index = parseInt(value);
+        if (!isNaN(value)) index = parseInt(value);
         const list = listify(output, { index, length: 8 });
         return msg.send(list, { code: 'asciidoc' });
     }

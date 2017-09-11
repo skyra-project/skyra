@@ -14,8 +14,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
-        await msg.send('`Processing...`');
+    async run(msg, params, settings, i18n) {
+        await msg.send(i18n.get('SYSTEM_PROCESSING'));
         return createMuted(msg);
     }
 

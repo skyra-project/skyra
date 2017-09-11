@@ -105,7 +105,10 @@ module.exports = class Dashboard {
             }
         });
         this.server.get('/logout', (req, res) => {
-            req.logout();
+            if (req.user) {
+                this.users.delete(req.user.id);
+                req.logout();
+            }
             res.redirect('/');
         });
 
@@ -144,7 +147,6 @@ module.exports = class Dashboard {
 
         this.server.get('/404', (req, res) => this.sendError(req, res, 404, 'Not found'));
         this.server.get('*', (req, res) => this.sendError(req, res, 404, `Path not found: ${req.path}`));
-        this.server.use((err, req, res) => this.throwError(req, res, err));
 
         this.site = this.server.listen(this.client.config.dash.port);
     }

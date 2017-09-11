@@ -1,5 +1,6 @@
 const { Language, util } = require('../index');
 const Duration = require('../utils/duration');
+const moment = require('moment');
 
 const TIMES = {
     DAY: {
@@ -60,6 +61,18 @@ const PERMS = {
     USE_VAD: 'Use Voice Activity'
 };
 
+const random = num => Math.round(Math.random() * num);
+
+const EIGHT_BALL = {
+    WHEN: ['Soon™', 'Maybe tomorrow.', 'Maybe next year...', 'Right now.', 'In a few months.'],
+    WHAT: ['A plane.', 'What? Ask again.', 'A gift.', 'Nothing.', 'A ring.', 'I do not know, maybe something.'],
+    HOWMUCH: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', 'I do not know, ask a physicist.', 'Nothing.', `Within ${random(10)} and ${random(1000)}L.`, `${random(10)}e${random(1000)}L.`, "2 or 3 liters, I don't remember.", 'Infinity.', '1010 liters.'],
+    HOWMANY: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', "I don't know, ask a physicist.", 'Nothing.', `Within ${random(10)} and ${random(1000)}.`, `${random(10)}e${random(1000)}.`, '2 or 3, I do not remember.', 'Infinity', '1010.'],
+    WHY: ['Maybe genetics.', 'Because somebody decided it.', 'For the glory of satan, of course!', 'I do not know, maybe destiny.', 'Because I said so.', 'I have no idea.', 'Harambe did nothing wrong.', 'Ask the owner of this server.', 'Ask again.', 'To get to the other side.', 'It says so in the Bible.'],
+    WHO: ['A human.', 'A robot.', 'An airplane.', 'A bird.', 'A carbon composition.', 'A bunch of zeroes and ones.', 'I have no clue, is it material?', 'That is not logic.'],
+    ELSE: ['Most likely.', 'Nope.', 'YES!', 'Maybe.']
+};
+
 const duration = (time, short) => Duration.duration(time, TIMES, short);
 
 module.exports = class extends Language {
@@ -67,6 +80,16 @@ module.exports = class extends Language {
     constructor(...args) {
         super(...args);
         this.PERMISSIONS = PERMS;
+        this.EIGHT_BALL = EIGHT_BALL;
+
+        this.HUMAN_LEVELS = {
+            0: 'None',
+            1: 'Low',
+            2: 'Medium',
+            3: '(╯°□°）╯︵ ┻━┻',
+            4: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
+        };
+
         this.language = {
             DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
             DEFAULT_LANGUAGE: 'Default Language',
@@ -106,9 +129,9 @@ module.exports = class extends Language {
             CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
             CONST_MONITOR_WORDFILTER: 'Filtered Word',
 
-            MONITOR_NOINVITE: user => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
-            MONITOR_WORDFILTER: user => `|\`❌\`| Pardon, dear ${user}, you said something that is not allowed in this server.`,
-            MONITOR_NMS_MESSAGE: user => [
+            MONITOR_NOINVITE: (user) => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
+            MONITOR_WORDFILTER: (user) => `|\`❌\`| Pardon, dear ${user}, you said something that is not allowed in this server.`,
+            MONITOR_NMS_MESSAGE: (user) => [
                 `The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
                 "Do not worry! I'm here to help you! 😄"
             ].join('\n'),
@@ -123,7 +146,7 @@ module.exports = class extends Language {
             INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing.map(perm => PERMS[perm] || perm)}**`,
             INHIBITOR_PERMISSIONS: 'You do not have permission to use this command',
             INHIBITOR_REQUIRED_SETTINGS: (settings) => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length > 1 ? 's' : ''} and cannot run.`,
-            INHIBITOR_SPAM: channel => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
+            INHIBITOR_SPAM: (channel) => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
 
             COMMAD_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
             COMMAND_TRANSFER_ERROR: '❌ That file has been transfered already or never existed.',
@@ -176,6 +199,16 @@ module.exports = class extends Language {
             COMMAND_ANIME_TITLES: ['Type', 'Score', 'Status', 'Watch it here:'],
 
             // Commands#fun
+            COMMAND_8BALL: (author, input, output) => `🎱 Question by ${author}: *${input}*\n${output}`,
+            COMMAND_8BALL_NOT_QUESTION: 'That does not seem to be a question.',
+            COMMAND_8BALL_QUESTIONS: {
+                WHEN: 'when',
+                WHAT: 'what',
+                HOW_MUCH: 'how much',
+                HOW_MANY: 'how many',
+                WHY: 'why',
+                WHO: 'who'
+            },
             COMMAND_CATFACT: 'Cat Fact',
             COMMAND_DICE: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
             COMMAND_NORRIS: 'Chuck Norris',
@@ -195,6 +228,7 @@ module.exports = class extends Language {
             COMMAND_RAID_LIST: 'List of users in the RAID queue',
             COMMAND_RAID_CLEAR: 'Successfully cleared the RAID list.',
             COMMAND_RAID_COOL: 'Successfully deactivated the RAID.',
+            COMMAND_FLOW: (amount) => `${amount} messages have been sent within the last minute.`,
             COMMAND_TIME_TIMED: 'The selected moderation case has already been timed.',
             COMMAND_TIME_UNDEFINED_TIME: 'You must specify a time.',
             COMMAND_TIME_UNSUPPORTED_TIPE: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
@@ -229,22 +263,19 @@ module.exports = class extends Language {
 
             COMMAND_FILTER_UNDEFINED_WORD: 'You must write what do you want me to filter.',
             COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
-            COMMAND_FILTER_ADDED: word => `| ✅ | Success! Added the word ${word} to the filter.`,
-            COMMAND_FILTER_REMOVED: word => `| ✅ | Success! Removed the word ${word} from the filter.`,
+            COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
+            COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
             COMMAND_FILTER_RESET: '| ✅ | Success! The filter has been reset.',
 
-            COMMAND_LOCKDOWN_OPEN: channel => `The lockdown for the channel ${channel} has been released.`,
-            COMMAND_LOCKDOWN_LOCKING: channel => `Locking the channel ${channel}...`,
-            COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
+            COMMAND_LOCKDOWN_OPEN: (channel) => `The lockdown for the channel ${channel} has been released.`,
+            COMMAND_LOCKDOWN_LOCKING: (channel) => `Locking the channel ${channel}...`,
+            COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
 
             COMMAND_LIST_CHANNELS: (name, id) => `List of channels for ${name} (${id})`,
             COMMAND_LIST_ROLES: (name, id) => `List of roles for ${name} (${id})`,
             COMMAND_LIST_MEMBERS: (name, id) => `List of members for the role ${name} (${id})`,
             COMMAND_LIST_INVITES: (name, id) => `List of invite links for ${name} (${id})`,
-            COMMAND_LIST_STRIKES: name => `List of strikes${name ? `for ${name}` : ''}`,
-            COMMAND_LIST_TRACKERS: amount => `List of (${amount}) trackers.`,
-            COMMAND_LIST_TRACKERS_BY: (channel, user) => `${channel} is being tracked by ${user}`,
-            COMMAND_LIST_TRACKERS_NONE: 'The tracking service is currently idle.',
+            COMMAND_LIST_STRIKES: (name) => `List of strikes${name ? ` for ${name}` : ''}`,
             COMMAND_LIST_ADVERTISEMENT: 'List of members advertising.',
             COMMAND_LIST_ADVERTISEMENT_EMPTY: 'Nobody has an advertising url in its playing game.',
 
@@ -267,13 +298,13 @@ module.exports = class extends Language {
             COMMAND_SOCIAL_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
             COMMAND_SOCIAL_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
             COMMAND_SOCIAL_MISSING_MONEY: (needed, has, icon) => `I am sorry, but you need ${needed}${icon} and you have ${has}${icon}`,
-            COMMAND_DAILY_TIME: time => `Next dailies are available in ${duration(time)}`,
+            COMMAND_DAILY_TIME: (time) => `Next dailies are available in ${duration(time)}`,
             COMMAND_DAILY_TIME_SUCCESS: (amount, icon) => `Yay! You earned ${amount}${icon}! Next dailies in: 12 hours.`,
-            COMMAND_DAILY_GRACE: remaining => [
+            COMMAND_DAILY_GRACE: (remaining) => [
                 `Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.`,
                 `Remaining time: ${duration(remaining, true)}`
             ].join('\n'),
-            COMMAND_DAILY_GRACE_ACCEPTED: (amount, icon, remaining) => `Successfully claimed ${amount}${icon}! Next dailies in: ${duration(remaining, true)}`,
+            COMMAND_DAILY_GRACE_ACCEPTED: (amount, icon, remaining) => `Successfully claimed ${amount}${icon}! Next dailies in: ${duration(remaining)}`,
             COMMAND_DAILY_GRACE_DENIED: 'Got it! Come back soon!',
             COMMAND_PAY_PROMPT: (user, amount, icon) => `You are about to pay ${user} ${amount}${icon}, are you sure you want to proceed?`,
             COMMAND_PAY_PROMPT_ACCEPT: (user, amount, icon) => `Payment accepted, ${amount}${icon} has been sent to ${user}'s profile.`,
@@ -294,7 +325,12 @@ module.exports = class extends Language {
                 NEXT_IN: 'Next level in'
             },
             COMMAND_SOCIAL_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
-            COMMAND_SOCIAL_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+            COMMAND_SOCIAL_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+            COMMAND_SOCIAL_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
+            COMMAND_SOCIAL_REPUTATION_USABLE: 'You can give a reputation point now.',
+            COMMAND_SOCIAL_REPUTATION_SELF: 'You cannot give a reputation point to yourself.',
+            COMMAND_SOCIAL_REPUTATION_BOTS: 'You cannot give a reputation point to bots.',
+            COMMAND_SOCIAL_REPUTATION_GIVE: (user) => `You have given a reputation point to **${user}**!`,
 
             COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
             COMMAND_SUBSCRIBE_SUCCESS: (role) => `Successfully granted the role: **${role}**`,
@@ -302,14 +338,41 @@ module.exports = class extends Language {
             COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
             COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
 
-            COMMAND_CONFIGURATION_ABORT: reason => `⚙ | Prompt System Cancelled: ${reason === 'TIME' ? 'Timed out.' : 'Successfully exited.'}`,
+            COMMAND_CONFIGURATION_ABORT: (reason) => `⚙ | Prompt System Cancelled: ${reason === 'TIME' ? 'Timed out.' : 'Successfully exited.'}`,
 
+            // Tools
             COMMAND_CALC: (time, output) => `⚙ **Calculated** (${time}μs)${output}`,
             COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Failed** (${time}μs)${output}`,
+            COMMAND_SERVERINFO_TITLE: (name, id) => `Statistics for **${name}** (ID: **${id}**)`,
+            COMMAND_SERVERINFO_TITLES: {
+                CHANNELS: 'Channels',
+                MEMBERS: 'Members',
+                OTHER: 'Other',
+                USERS: 'Users'
+            },
+            COMMAND_SERVERINFO_CHANNELS: (text, voice, categories, afkChannel, afkTime) => [
+                `• **${text}** Text, **${voice}** Voice, **${categories}** categories.`,
+                `• AFK: ${afkChannel ? `**<#${afkChannel}>** after **${afkTime / 60}**min` : '**None.**'}`
+            ].join('\n'),
+            COMMAND_SERVERINFO_MEMBERS: (count, owner) => [
+                `• **${count}** members`,
+                `• Owner: **${owner.tag}**`,
+                `  (ID: **${owner.id}**)`
+            ].join('\n'),
+            COMMAND_SERVERINFO_OTHER: (size, region, createdAt, verificationLevel) => [
+                `• Roles: **${size}**`,
+                `• Region: **${region}**`,
+                `• Created at: **${moment.utc(createdAt).format('D/M/YYYY, HH:mm:ss')}** (UTC - DD/MM/YYYY)`,
+                `• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**`
+            ].join('\n'),
+            COMMAND_SERVERINFO_USERS: (online, offline, percentage, newbies) => [
+                `• Online/Offline users: **${online}**/**${offline}** (${percentage}% users online)`,
+                `• **${newbies}** new users within the last 24h.`
+            ].join('\n'),
 
             // Modlogs
             MODLOG_APPEALED: 'The selected moderation case has already been appealed.',
-            MODLOG_TIMED: time => `This action is already scheduled and ending in ${time}`,
+            MODLOG_TIMED: (remaining) => `This action is already scheduled and ending in ${duration(remaining)}`,
 
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
@@ -327,6 +390,7 @@ module.exports = class extends Language {
             GUILD_BANS_EMPTY: 'There are no bans registered in this server.',
             GUILD_BANS_NOT_FOUND: 'Please, write a valid user ID or tag.',
             GUILD_MUTE_NOT_FOUND: 'This user is not muted.',
+            CHANNEL_NOT_READABLE: `I am sorry, but I need the permission **${PERMS.VIEW_CHANNEL}**`,
 
             USER_NOT_IN_GUILD: 'This user is not in this server.',
 
@@ -336,15 +400,15 @@ module.exports = class extends Language {
             EVENTS_GUILDMEMBERREMOVE: 'User left',
             EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Updated the nickname from **${previous}** to **${current}**`,
             EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous, current) => `Added a new nickname **${current}**`,
-            EVENTS_GUILDMEMBER_REMOVED_NICKNAME: previous => `Removed the nickname **${previous}**`,
+            EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous) => `Removed the nickname **${previous}**`,
             EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0 ? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}\n` : ''}${added.length > 0 ? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
             EVENTS_MESSAGE_UPDATE: 'Message Edited',
             EVENTS_MESSAGE_UPDATE_MSG: (old, msg) => `Previous: ${old.substring(0, 950)}\nNew: ${msg.substring(0, 950)}`,
             EVENTS_MESSAGE_DELETE: 'Message Deleted',
             EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
-            EVENTS_COMMAND: command => `Command Used: ${command}`,
-            EVENTS_STREAM_START: member => `The user **${member.user.tag}** is now live! **${member.presence.game.name}**\n${member.presence.game.url}`,
-            EVENTS_STREAM_STOP: member => `The user **${member.user.tag}** is not longer live!`,
+            EVENTS_COMMAND: (command) => `Command Used: ${command}`,
+            EVENTS_STREAM_START: (member) => `The user **${member.user.tag}** is now live! **${member.presence.game.name}**\n${member.presence.game.url}`,
+            EVENTS_STREAM_STOP: (member) => `The user **${member.user.tag}** is not longer live!`,
 
             SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',
             SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
@@ -352,10 +416,10 @@ module.exports = class extends Language {
 
             // Tags
             COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
-            COMMAND_TAGS_ADD_EXISTS: tag => `The tag '${tag}' already exists.`,
+            COMMAND_TAGS_ADD_EXISTS: (tag) => `The tag '${tag}' already exists.`,
             COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
             COMMAND_TAGS_ADD_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
-            COMMAND_TAGS_REMOVE_NOT_EXISTS: tag => `The tag '${tag}' does not exist.`,
+            COMMAND_TAGS_REMOVE_NOT_EXISTS: (tag) => `The tag '${tag}' does not exist.`,
             COMMAND_TAGS_REMOVE_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
             COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
             COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
@@ -366,7 +430,10 @@ module.exports = class extends Language {
             LISTIFY_INVALID_INDEX: 'Invalid index, expected an integer.',
 
             CONST_USER: 'User',
-            CONST_USERS: 'Users'
+            CONST_USERS: 'Users',
+            CONST_CHANNEL: 'Channel',
+            CONST_CHANNELS: 'Channels',
+            CONST_OWNER: 'Owner'
         };
     }
 

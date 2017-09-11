@@ -1,6 +1,5 @@
 const { Command } = require('../../index');
 const { MessageEmbed } = require('discord.js');
-const moment = require('moment');
 
 module.exports = class extends Command {
 
@@ -12,7 +11,7 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 5,
 
-            usage: '<channels|roles|members|invites|warnings|track|advertising> [input:string] [...]',
+            usage: '<channels|roles|members|warnings> [input:string] [...]',
             usageDelim: ' ',
             description: 'Check all channels from this server.'
         });
@@ -65,20 +64,6 @@ module.exports = class extends Command {
             );
     }
 
-    async invites(msg, embed) {
-        if (!msg.guild.me.hasPermission('MANAGE_GUILD')) throw 'I am sorry, but I need the permission MANAGE_GUILD to show you this.';
-
-        const invites = await msg.guild.fetchInvites();
-        if (!invites.first()) return msg.alert("There's no invite link here.");
-        return embed
-            .setTitle(msg.language.get('COMMAND_LIST_INVITES', msg.guild.name, msg.guild.id))
-            .splitFields(invites
-                .sort((x, y) => +(x.uses > y.uses) || +(x.uses === y.uses) - 1)
-                .map(inv => `🔻 ${inv.channel} ❯ ${inv.inviter}\n      ❯ \`${inv.code}\` Uses: (${inv.uses})`)
-                .join('\n')
-            );
-    }
-
     async warnings(msg, embed, input, settings) {
         const cases = await settings.moderation.getCases().then(cs => cs.filter(rl => rl.type === 'warn'));
         if (!input) {
@@ -107,40 +92,6 @@ module.exports = class extends Command {
         return embed
             .setTitle(msg.language.get('COMMAND_LIST_STRIKES', user.tag))
             .setDescription(output);
-    }
-
-    async track(msg, embed) {
-        const i18n = msg.language;
-        const output = [];
-
-        for (const channel of msg.guild.channels.values()) {
-            if (!channel.tracker) continue;
-            output.push([
-                moment.duration(msg.createdAt - channel.trackertimer).format('m [mins], s [secs]'),
-                i18n.get('COMMAND_LIST_TRACKERS_BY', channel, msg.guild.members.get(channel.tracker))
-            ].join('\n'));
-        }
-
-        if (output.length === 0) return i18n.get('COMMAND_LIST_TRACKERS_NONE');
-
-        return embed
-            .setTitle(i18n.get('COMMAND_LIST_TRACKERS', output.length))
-            .splitFields(output.join('\n'));
-    }
-
-    async advertising(msg, embed) {
-        if ((msg.guild.members.size / msg.guild.memberCount) * 100 < 90) {
-            await msg.send(msg.language.get('SYSTEM_FETCHING'));
-            await msg.guild.fetchMembers();
-        }
-        const members = msg.guild.members.filter(member => member.presence.game && /(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(member.presence.game.name));
-        if (!members.size) return msg.language.get('COMMAND_LIST_ADVERTISEMENT_EMPTY');
-        return embed
-            .setTitle(msg.language.get('COMMAND_LIST_ADVERTISEMENT'))
-            .splitFields(members
-                .map(member => `${member.toString()} ${member.displayName} || ${member.presence.game.name}`)
-                .join('\n')
-            );
     }
 
 };

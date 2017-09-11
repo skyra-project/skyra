@@ -39,7 +39,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [user]) {
-        if (user === this.client.user) throw 'You cannot play with me.';
+        if (user.id === this.client.user.id) throw 'You cannot play with me.';
         if (user.bot) throw 'You cannot play with bots.';
         if (this.games.has(msg.channel.id)) throw 'There is a game in progress.';
 
@@ -76,7 +76,8 @@ module.exports = class extends Command {
         const playerID = game.players[player];
 
         const line = await this.collect(message, playerID).catch((err) => {
-            if (err === 'BAD_REACTION') this.awaitGame(message, game, player, assets);
+            if (err === 'TIMEOUT') this.conclude(message, '**The match concluded in a draw due to lack of a response (60 seconds)**');
+            else if (err === 'BAD_REACTION') this.awaitGame(message, game, player, assets);
             else throw err;
         });
 
@@ -93,7 +94,8 @@ module.exports = class extends Command {
         const result = this.pushLine(game, row, player);
         if (result !== false) {
             this.showWinner(game.table, result, player + 1);
-            return this.conclude(message, `**${player === 0 ? 'Blue' : 'Red'}** won!\n${this.displayTable(game.table, assets)}`);
+            const winner = await this.client.fetchUser(game.players[player]);
+            return this.conclude(message, `**${winner.username}** won!\n${this.displayTable(game.table, assets)}`);
         }
         if (this.checkDraw(game) === true) {
             return this.conclude(message, `This match concluded in a **draw**!\n${this.displayTable(game.table, assets)}`);
@@ -118,6 +120,7 @@ module.exports = class extends Command {
                 .on('error', err => reject(err))
                 .on('end', reactions => {
                     const key = reactions.firstKey();
+                    if (!key) reject('TIMEOUT');
                     if (this._emojis.includes(key) === false) reject('BAD_REACTION');
                     return resolve({ key, reaction: reactions.first() });
                 });

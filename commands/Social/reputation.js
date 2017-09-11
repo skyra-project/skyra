@@ -1,6 +1,4 @@
 const { Command } = require('../../index');
-const moment = require('moment');
-require('moment-duration-format');
 
 module.exports = class extends Command {
 
@@ -12,7 +10,7 @@ module.exports = class extends Command {
             spam: true,
             cooldown: 30,
 
-            usage: '<user:advuser>',
+            usage: '[user:string]',
             description: 'Give somebody a reputation point.',
             extendedHelp: Command.strip`
                 This guy is so helpful... I'll give him a reputation point!
@@ -27,19 +25,31 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [user]) {
+    async run(msg, [input = null], settings, i18n) {
         const now = Date.now();
+        const profile = msg.author.profile;
 
-        if (msg.author.profile.timerep + 86400000 > now) {
-            const remaining = (msg.author.profile.timerep + 86400000) - now;
-            return msg.alert(`You can give a reputation point in ${moment.duration(remaining).format('hh [**hours**,] mm [**mins**,] ss [**secs**]')}.`, 10000);
+        if (profile.timerep + 86400000 > now) {
+            const remaining = (profile.timerep + 86400000) - now;
+            return msg.send(i18n.get('COMMAND_SOCIAL_REPUTATION_TIME', remaining));
+        } else if (input === null) {
+            return msg.send(i18n.get('COMMAND_SOCIAL_REPUTATION_USABLE'));
         }
-        if (msg.author.id === user.id) throw "you can't give a reputation point to yourself.";
-        else if (user.bot) throw "you can't give reputation points to bots.";
 
-        await user.profile.update({ reputation: user.profile.reputation + 1 });
-        await msg.author.profile.update({ timerep: now });
-        return msg.send(`Dear ${msg.author}, you have just given one reputation point to **${user.username}**`);
+        return this.giveReputation(msg, profile, input, now, i18n);
+    }
+
+    async giveReputation(msg, profile, input, now, i18n) {
+        const user = await this.client.handler.search.user(input, msg);
+        if (msg.author.id === user.id) throw i18n.get('COMMAND_SOCIAL_REPUTATION_SELF');
+        else if (user.bot) throw i18n.get('COMMAND_SOCIAL_REPUTATION_BOTS');
+
+        let targetProfile = user.profile;
+        if (targetProfile instanceof Promise) targetProfile = await targetProfile;
+
+        await targetProfile.update({ reputation: targetProfile.reputation + 1 });
+        await profile.update({ timerep: now });
+        return msg.send(i18n.get('COMMAND_SOCIAL_REPUTATION_GIVE', user.username));
     }
 
 };

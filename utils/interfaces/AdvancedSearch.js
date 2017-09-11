@@ -1,4 +1,5 @@
 const { GuildMember, User, Role, Channel, Message } = require('discord.js');
+const { regExpEsc } = require('../../lib/util/util');
 const listify = require('../../functions/listify');
 
 const regex = {
@@ -23,14 +24,14 @@ class Fetch {
      * AdvancedSearch [ROLE]
      * @param {(Role|string)} query The query.
      * @param {Message} msg The message.
-     * @returns {Promise<?Role>}
+     * @returns {Promise<Role>}
      */
     async role(query, msg) {
         const resRole = this.resolveRole(query, msg.guild);
         if (resRole) return resRole;
 
         const results = [];
-        const reg = new RegExp(query, 'i');
+        const reg = new RegExp(regExpEsc(query), 'i');
         for (const role of msg.guild.roles.values()) {
             if (reg.test(role.name)) results.push(role);
         }
@@ -50,14 +51,14 @@ class Fetch {
      * @param {(Channel|Message|string)} query The query.
      * @param {Message} msg The message.
      * @param {('text'|'voice')} type The channel type.
-     * @returns {Promise<?Channel>}
+     * @returns {Promise<Channel>}
      */
     async channel(query, msg, type = null) {
         const resChannel = this.resolveChannel(query, msg.guild);
         if (resChannel) return resChannel;
 
         const results = [];
-        const reg = new RegExp(query, 'i');
+        const reg = new RegExp(regExpEsc(query), 'i');
         for (const channel of msg.guild.channels.values()) {
             if (type !== null && channel.type !== type) continue;
             if (reg.test(channel.name)) results.push(channel);
@@ -83,14 +84,14 @@ class Fetch {
      * AdvancedSearch [USER]
      * @param {(GuildMember|User|string)} query The query.
      * @param {Message} msg The message.
-     * @returns {Promise<?User>}
+     * @returns {Promise<User>}
      */
     async user(query, msg) {
         const resUser = await this.resolveUser(query, msg.guild);
         if (resUser) return resUser;
 
         const results = [];
-        const reg = new RegExp(query, 'i');
+        const reg = new RegExp(regExpEsc(query), 'i');
         for (const member of msg.guild.members.values()) {
             if (reg.test(member.user.username)) results.push(member.user);
         }

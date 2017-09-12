@@ -295,6 +295,8 @@ module.exports = class extends Language {
             HAS_ROLE: 'You already have this role.',
 
             // SOCIAL
+            COMMAND_BALANCE: (user, amount, icon) => `The user ${user} has a total of ${amount}${icon}`,
+            COMMAND_BALANCE_SELF: (amount, icon) => `You have a total of ${amount}${icon}`,
             COMMAND_SOCIAL_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
             COMMAND_SOCIAL_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
             COMMAND_SOCIAL_MISSING_MONEY: (needed, has, icon) => `I am sorry, but you need ${needed}${icon} and you have ${has}${icon}`,
@@ -328,6 +330,7 @@ module.exports = class extends Language {
             COMMAND_SOCIAL_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
             COMMAND_SOCIAL_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
             COMMAND_SOCIAL_REPUTATION_USABLE: 'You can give a reputation point now.',
+            COMMAND_SOCIAL_REPUTATION_USER_NOTFOUND: 'You must mention a user to give a reputation point.',
             COMMAND_SOCIAL_REPUTATION_SELF: 'You cannot give a reputation point to yourself.',
             COMMAND_SOCIAL_REPUTATION_BOTS: 'You cannot give a reputation point to bots.',
             COMMAND_SOCIAL_REPUTATION_GIVE: (user) => `You have given a reputation point to **${user}**!`,

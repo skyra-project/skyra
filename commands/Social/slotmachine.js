@@ -34,13 +34,21 @@ module.exports = class extends Command {
         });
 
         this.reels = [
-            [0, 6, 4, 3, 8, 5, 7, 2, 1],
-            [8, 2, 5, 0, 1, 7, 3, 4, 6],
-            [5, 3, 8, 4, 7, 0, 6, 1, 2]
+            [8, 2, 1, 4, 5, 4, 3, 2, 2, 0, 2, 3, 7, 7, 0, 5, 2, 1, 5, 4, 7, 3, 6, 6, 7, 2, 4, 3, 1, 8, 0, 4, 5, 6, 6, 1, 2, 1, 4, 5, 0, 8, 6, 1, 3, 0, 1],
+            [4, 1, 2, 2, 4, 3, 8, 2, 1, 6, 5, 2, 7, 0, 0, 6, 1, 4, 2, 1, 0, 2, 5, 5, 3, 6, 8, 7, 1, 1, 7, 4, 4, 3, 3, 0, 6, 1, 3, 5, 6, 0, 3, 0, 5, 6, 4],
+            [3, 7, 1, 4, 2, 6, 5, 4, 1, 3, 0, 6, 1, 3, 4, 2, 1, 8, 1, 5, 2, 2, 7, 1, 4, 3, 4, 0, 7, 2, 2, 1, 0, 8, 4, 0, 6, 3, 5, 6, 8, 1, 8, 3, 4, 5, 7]
         ];
 
         this.combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6]];
         this.values = [5, 5, 6, 8, 10, 12, 16, 20, 24];
+
+        this.positions = [0, 0, 0];
+    }
+
+    spinReel(reel) {
+        const position = (this.positions[reel] + Math.round((Math.random() * this.reels[reel].length / 2) + 3)) % this.reels[reel].length;
+        this.positions[reel] = position;
+        return position;
     }
 
     async run(msg, [coins]) {
@@ -67,7 +75,7 @@ module.exports = class extends Command {
 
         for (let i = 0; i < 3; i++) {
             const reel = this.reels[i];
-            const random = Math.floor(Math.random() * reel.length);
+            const random = this.spinReel(i);
             roll[i] = random === 0 ? reel[reel.length - 1] : reel[random - 1];
             roll[i + 3] = reel[random];
             roll[i + 6] = random === reel.length - 1 ? reel[0] : reel[random + 1];
@@ -115,7 +123,7 @@ module.exports = class extends Command {
             .setColor(win ? 0x66BB6A : 0xAD1457)
             .setDescription(message);
 
-        return msg.send({ embed });
+        return msg.send(``, { embed });
     }
 
     async render(msg, roll, { win, winnings }) {

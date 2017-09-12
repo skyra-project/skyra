@@ -9,12 +9,23 @@ module.exports = class extends Command {
             spam: true,
             cooldown: 30,
 
+            usage: '[user:string]',
             description: 'Check your current balance.'
         });
     }
 
-    async run(msg) {
-        return msg.send(`Dear ${msg.author}, you have a total of ${msg.author.profile.money}${Command.shiny(msg)}`);
+    async run(msg, [input = null], settings, i18n) {
+        if (input !== null) {
+            const user = await this.client.handler.search.user(input, msg);
+
+            if (msg.author.id !== user.id) {
+                let targetProfile = user.profile;
+                if (targetProfile instanceof Promise) targetProfile = await targetProfile;
+
+                return msg.send(i18n.get('COMMAND_BALANCE', user.username, targetProfile.money, Command.shiny(msg)));
+            }
+        }
+        return msg.send(i18n.get('COMMAND_BALANCE_SELF', msg.author.profile.money, Command.shiny(msg)));
     }
 
 };

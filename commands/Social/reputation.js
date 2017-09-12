@@ -41,6 +41,7 @@ module.exports = class extends Command {
 
     async giveReputation(msg, profile, input, now, i18n) {
         const user = await this.client.handler.search.user(input, msg);
+        if (!user) throw i18n.get('COMMAND_SOCIAL_REPUTATION_USER_NOTFOUND');
         if (msg.author.id === user.id) throw i18n.get('COMMAND_SOCIAL_REPUTATION_SELF');
         else if (user.bot) throw i18n.get('COMMAND_SOCIAL_REPUTATION_BOTS');
 

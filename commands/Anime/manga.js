@@ -50,16 +50,16 @@ module.exports = class extends Command {
         const score = Math.ceil(parseFloat(entry.score));
         const context = fromString(entry.synopsis.toString());
 
-        const [tType, tScore, tStatus, tWatchIt] = i18n.get('COMMAND_ANIME_TITLES');
+        const TITLE = i18n.get('COMMAND_ANIME_TITLES');
 
         const embed = new MessageEmbed()
             .setColor(oneToTen(score).color)
             .setAuthor(...this.getAuthor(msg, entry, i18n))
             .setDescription(i18n.get('COMMAND_MANGA_DESCRIPTION', entry, context))
-            .addField(tType, etype[entry.type.toString().toUpperCase()] || entry.type, true)
-            .addField(tScore, `**${entry.score}** / 10 ${oneToTen(score).emoji}`, true)
-            .addField(tStatus, i18n.get('COMMAND_MANGA_STATUS', entry))
-            .addField(tWatchIt, `**[https://myanimelist.net/manga/${entry.id}](https://myanimelist.net/manga/${entry.id})**`)
+            .addField(TITLE.TYPE, etype[entry.type.toString().toUpperCase()] || entry.type, true)
+            .addField(TITLE.SCORE, `**${entry.score}** / 10 ${oneToTen(score).emoji}`, true)
+            .addField(TITLE.STATUS, i18n.get('COMMAND_MANGA_STATUS', entry))
+            .addField(TITLE.WATCH_IT, `**[https://myanimelist.net/manga/${entry.id}](https://myanimelist.net/manga/${entry.id})**`)
             .setFooter('© MyAnimeList');
 
         return msg.send({ embed });

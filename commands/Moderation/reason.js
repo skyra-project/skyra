@@ -16,18 +16,18 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [selected, ...reason], settings) {
+    async run(msg, [selected, ...reason], settings, i18n) {
         reason = reason.length > 0 ? reason.join(' ') : null;
 
-        if (!settings.channels.modlog) throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');
+        if (!settings.channels.modlog) throw i18n.get('GUILD_SETTINGS_CHANNELS_MOD');
         const channel = msg.guild.channels.get(settings.channels.modlog);
         if (!channel) {
             await settings.update({ channels: { mod: null } });
-            throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');
+            throw i18n.get('GUILD_SETTINGS_CHANNELS_MOD');
         }
 
         const log = await settings.moderation.getCases(selected).catch(() => null);
-        if (!log) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
+        if (!log) throw i18n.get('COMMAND_REASON_NOT_EXISTS');
 
         await settings.moderation.updateCase(selected, { reason });
 
@@ -35,10 +35,10 @@ module.exports = class extends Command {
 
         const regCase = new RegExp(`(AUTO | )?Case ${selected}`);
 
-        const message = messages.find(mes => mes.author.id === this.client.user.id &&
-            mes.embeds.length > 0 &&
-            mes.embeds[0].type === 'rich' &&
-            mes.embeds[0].footer && regCase.test(mes.embeds[0].footer.text)
+        const message = messages.find(mes => mes.author.id === this.client.user.id
+            && mes.embeds.length > 0
+            && mes.embeds[0].type === 'rich'
+            && mes.embeds[0].footer && regCase.test(mes.embeds[0].footer.text)
         );
 
         if (message) {

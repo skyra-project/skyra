@@ -46,7 +46,7 @@ module.exports = class extends Command {
     }
 
     spinReel(reel) {
-        const position = (this.positions[reel] + Math.round((Math.random() * this.reels[reel].length / 2) + 3)) % this.reels[reel].length;
+        const position = (this.positions[reel] + Math.round((Math.random() * this.reels[reel].length) + 3)) % this.reels[reel].length;
         this.positions[reel] = position;
         return position;
     }
@@ -110,9 +110,9 @@ module.exports = class extends Command {
             `${icons[6]}ー${icons[7]}ー${icons[8]}`
         ].join('\n');
 
-        const message = win ?
-            msg.language.get('COMMAND_SOCIAL_SLOTMACHINES_WIN', output, winnings, Command.shiny(msg)) :
-            msg.language.get('COMMAND_SOCIAL_SLOTMACHINES_LOSS', output);
+        const message = win
+            ? msg.language.get('COMMAND_SOCIAL_SLOTMACHINES_WIN', output, winnings, Command.shiny(msg))
+            : msg.language.get('COMMAND_SOCIAL_SLOTMACHINES_LOSS', output);
 
         if (permissions.has('EMBED_LINKS')) return this.sendEmbed(msg, message, win);
         return msg.send(message);

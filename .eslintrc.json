@@ -113,7 +113,7 @@
 		"object-curly-newline": "error",
 		"object-curly-spacing": ["error", "always"],
 		"operator-assignment": "error",
-		"operator-linebreak": ["error", "after"],
+		"operator-linebreak": ["error", "before"],
 		"padded-blocks": ["error", { "classes": "always", "blocks": "never", "switches": "never" }],
 		"quote-props": ["error", "as-needed"],
 		"quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],

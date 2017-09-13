@@ -16,14 +16,13 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [message, limit = 10]) {
-        if (!/^[0-9]{17,21}$/.test(message)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
+    async run(msg, [message, limit = 10], settings, i18n) {
+        if (!/^[0-9]{17,21}$/.test(message)) throw i18n.get('RESOLVER_INVALID_MSG', 'Message');
         const msgs = await msg.channel.fetchMessages({ limit, around: message }).then(messages => Array.from(messages.values()));
         const messages = [];
 
-        for (let i = msgs.length - 1; i > 0; i--) {
+        for (let i = msgs.length - 1; i > 0; i--)
             messages.push(`${msgs[i].author.username} ❯ ${msgs[i].cleanContent || '**`IMAGE/EMBED`**'}`);
-        }
 
         const embed = new MessageEmbed()
             .setColor(msg.member.highestRole.color || 0xdfdfdf)

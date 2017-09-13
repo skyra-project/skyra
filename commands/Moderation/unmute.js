@@ -16,23 +16,23 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [user, ...reason], settings) {
-        const member = await msg.guild.fetchMember(user.id).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
+    async run(msg, [user, ...reason], settings, i18n) {
+        const member = await msg.guild.fetchMember(user.id).catch(() => { throw i18n.get('USER_NOT_IN_GUILD'); });
 
-        if (user.id === msg.author.id) throw msg.language.get('COMMAND_USERSELF');
-        else if (user.id === this.client.user.id) throw msg.language.get('COMMAND_TOSKYRA');
+        if (user.id === msg.author.id) throw i18n.get('COMMAND_USERSELF');
+        else if (user.id === this.client.user.id) throw i18n.get('COMMAND_TOSKYRA');
 
-        if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
+        if (member.highestRole.position >= msg.member.highestRole.position) throw i18n.get('COMMAND_ROLE_HIGHER');
 
-        if (!settings.roles.muted) throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
+        if (!settings.roles.muted) throw i18n.get('GUILD_SETTINGS_ROLES_MUTED');
         const role = msg.guild.roles.get(settings.roles.muted);
         if (!role) {
             await settings.update({ roles: { muted: null } });
-            throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
+            throw i18n.get('GUILD_SETTINGS_ROLES_MUTED');
         }
 
         const mutedUsed = await settings.moderation.getMute(user.id);
-        if (!mutedUsed) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
+        if (!mutedUsed) throw i18n.get('GUILD_MUTE_NOT_FOUND');
 
         const roles = mutedUsed.extraData || [];
 
@@ -46,7 +46,7 @@ module.exports = class extends Command {
             .setReason(reason)
             .send();
 
-        return msg.send(msg.language.get('COMMAND_UNMUTE_MESSAGE', user, reason, modcase));
+        return msg.send(i18n.get('COMMAND_UNMUTE_MESSAGE', user, reason, modcase));
     }
 
 };

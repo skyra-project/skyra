@@ -77,9 +77,9 @@ module.exports = class extends Command {
         const embed = new MessageEmbed()
             .setColor(msg.color)
             .setDescription(
-                `**Author**: ${user.tag}\n` +
-                `**Title**: ${banner.title} (\`${banner.id}\`)\n` +
-                `**Price**: ${banner.price}${Command.shiny(msg)}`,
+                `**Author**: ${user.tag}\n`
+                + `**Title**: ${banner.title} (\`${banner.id}\`)\n`
+                + `**Price**: ${banner.price}${Command.shiny(msg)}`,
             )
             .setImage(`http://kyradiscord.weebly.com/files/theme/banners/${banner.id}.png`)
             .setTimestamp();

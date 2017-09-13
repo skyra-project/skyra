@@ -30,9 +30,9 @@ class OverwatchUtils {
             },
             level: parseInt(mastheadProgression.children('div.player-level').children('div.u-vertical-center').text()),
             portrait: /.+\((.+)\)/.exec(mastheadProgression.children('div.player-level').attr('style'))[1],
-            stars: mastheadProgression.children('div.player-level').has('div.player-rank').length ?
-                /.+\((.+)\)/.exec(mastheadProgression.children('div.player-level').children('div.player-rank').attr('style'))[1] :
-                null
+            stars: mastheadProgression.children('div.player-level').has('div.player-rank').length
+                ? /.+\((.+)\)/.exec(mastheadProgression.children('div.player-level').children('div.player-rank').attr('style'))[1]
+                : null
         };
 
         if (mastheadProgression.has('div.competitive-rank').length > 0) {

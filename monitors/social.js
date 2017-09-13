@@ -12,9 +12,9 @@ module.exports = class extends Monitor {
     }
 
     async run(msg, settings, i18n) {
-        if (msg.author.bot ||
-            settings.master.ignoreChannels.includes(msg.channel.id) ||
-            this.cooldown(msg)) return;
+        if (msg.author.bot
+            || settings.master.ignoreChannels.includes(msg.channel.id)
+            || this.cooldown(msg)) return;
 
         let userProfile = msg.author.profile;
         if (userProfile instanceof Promise) userProfile = await userProfile;

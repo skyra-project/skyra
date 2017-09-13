@@ -16,7 +16,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [query, ...unbanReason]) {
+    async run(msg, [query, ...unbanReason], settings, i18n) {
         const { user, reason } = await this.fetchBan(msg.guild, query);
 
         unbanReason = unbanReason.length > 0 ? unbanReason.join(' ') : null;
@@ -30,7 +30,7 @@ module.exports = class extends Command {
             .setReason(unbanReason)
             .send();
 
-        return msg.send(msg.language.get('COMMAND_UNBAN_MESSAGE', user, reason, unbanReason, modcase));
+        return msg.send(i18n.get('COMMAND_UNBAN_MESSAGE', user, reason, unbanReason, modcase));
     }
 
     async fetchBan(guild, query) {

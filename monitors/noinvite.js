@@ -11,9 +11,9 @@ module.exports = class extends Monitor {
     }
 
     async run(msg, settings, i18n) {
-        if (!settings.selfmod.invitelinks ||
-            !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content) ||
-            await msg.hasLevel(1)) return false;
+        if (!settings.selfmod.invitelinks
+            || !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content)
+            || await msg.hasLevel(1)) return false;
 
         if (msg.deletable) {
             await msg.nuke();

@@ -17,22 +17,22 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [channel = msg.channel, ...time]) {
-        return this[channel.lockdown ? 'unlock' : 'lock'](msg, channel, time.length > 0 ? time.join(' ') : null);
+    async run(msg, [channel = msg.channel, ...time], settings, i18n) {
+        return this[channel.lockdown ? 'unlock' : 'lock'](msg, channel, time.length > 0 ? time.join(' ') : null, i18n);
     }
 
-    async unlock(msg, channel) {
+    async unlock(msg, channel, time, i18n) {
         const role = msg.guild.roles.find('name', '@everyone');
         await channel.overwritePermissions(role, { SEND_MESSAGES: true });
         delete channel.lockdown;
-        return msg.send(msg.language.get('COMMAND_LOCKDOWN_OPEN', channel));
+        return msg.send(i18n.get('COMMAND_LOCKDOWN_OPEN', channel));
     }
 
-    async lock(msg, channel, time) {
+    async lock(msg, channel, time, i18n) {
         const role = msg.guild.roles.find('name', '@everyone');
-        const message = await msg.send(msg.language.get('COMMAND_LOCKDOWN_LOCKING', channel));
+        const message = await msg.send(i18n.get('COMMAND_LOCKDOWN_LOCKING', channel));
         await channel.overwritePermissions(role, { SEND_MESSAGES: false });
-        if (msg.channel.postable) await msg.send(msg.language.get('COMMAND_LOCKDOWN_LOCK', channel));
+        if (msg.channel.postable) await msg.send(i18n.get('COMMAND_LOCKDOWN_LOCK', channel));
         channel.lockdown = time ? setTimeout(() => this.unlock(message, channel), new Timer(time).Duration) : true;
     }
 

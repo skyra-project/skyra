@@ -206,9 +206,9 @@ module.exports = class extends Command {
             ddy++;
         }
 
-        return this.checkRow(horizontal, player) ||
-            this.checkRow(diagonalup, player) ||
-            this.checkRow(diagonaldw, player);
+        return this.checkRow(horizontal, player)
+            || this.checkRow(diagonalup, player)
+            || this.checkRow(diagonaldw, player);
     }
 
     checkDraw(game) {

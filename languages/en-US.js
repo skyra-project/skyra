@@ -196,7 +196,12 @@ module.exports = class extends Language {
                 `  ❯  Current status: **${entry.status}**`,
                 `    • Started: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • Finished: **${entry.end_date}**`}`
             ],
-            COMMAND_ANIME_TITLES: ['Type', 'Score', 'Status', 'Watch it here:'],
+            COMMAND_ANIME_TITLES: {
+                TYPE: 'Type',
+                SCORE: 'Score',
+                STATUS: 'Status',
+                WATCH_IT: 'Watch it here:'
+            },
 
             // Commands#fun
             COMMAND_8BALL: (author, input, output) => `🎱 Question by ${author}: *${input}*\n${output}`,
@@ -223,6 +228,7 @@ module.exports = class extends Language {
 
             // Commands#moderation
             // ## Utilities
+            COMMAND_PERMISSIONS: (username, id) => `Permissions for ${username} (${id})`,
             COMMAND_RAID_DISABLED: 'The Anti-RAID system is not enabled in this server.',
             COMMAND_RAID_MISSING_KICK: 'As I do not have the KICK MEMBERS permission, I keep the Anti-RAID unactivated.',
             COMMAND_RAID_LIST: 'List of users in the RAID queue',
@@ -253,6 +259,7 @@ module.exports = class extends Language {
             COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
             COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MANAGE_ROLES} permission to be able to unmute.`,
             COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+            COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
 
             COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
 
@@ -275,9 +282,15 @@ module.exports = class extends Language {
             COMMAND_LIST_ROLES: (name, id) => `List of roles for ${name} (${id})`,
             COMMAND_LIST_MEMBERS: (name, id) => `List of members for the role ${name} (${id})`,
             COMMAND_LIST_INVITES: (name, id) => `List of invite links for ${name} (${id})`,
-            COMMAND_LIST_STRIKES: (name) => `List of strikes${name ? ` for ${name}` : ''}`,
+            COMMAND_LIST_STRIKES: (name) => `List of warnings${name ? ` for ${name}` : ''}`,
+            COMMAND_LIST_STRIKES_EMPTY: 'The list of warnings is empty.',
+            COMMAND_LIST_STRIKES_ALL: (count, list) => `There are ${count} strikes. Cases: \`${list}\``,
+            COMMAND_LIST_STRIKES_EMPTY_FOR: (user) => `There is no warning for the user ${user}`,
+            COMMAND_LIST_STRIKES_ENUM: (count) => `There are ${count} strike${count === 1 ? '' : 's'}`,
+            COMMAND_LIST_STRIKES_CASE: (number, moderator, reason) => `Case \`${number}\`. Moderator: **${moderator}**\n\`${reason}\``,
             COMMAND_LIST_ADVERTISEMENT: 'List of members advertising.',
             COMMAND_LIST_ADVERTISEMENT_EMPTY: 'Nobody has an advertising url in its playing game.',
+            COMMAND_LIST_ROLE_EMPTY: 'This role has no members.',
 
             /* Utils */
             COMMAND_ROLE_HIGHER: 'The selected member has higher or equal role position than you.',
@@ -376,6 +389,7 @@ module.exports = class extends Language {
             // Modlogs
             MODLOG_APPEALED: 'The selected moderation case has already been appealed.',
             MODLOG_TIMED: (remaining) => `This action is already scheduled and ending in ${duration(remaining)}`,
+            MODLOG_PENDING_REASON: (prefix, number) => `Use ${prefix}reason ${number} to claim this case.`,
 
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
@@ -431,6 +445,8 @@ module.exports = class extends Language {
             TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',
 
             LISTIFY_INVALID_INDEX: 'Invalid index, expected an integer.',
+            REQUIRE_USER: 'You must input a valid username, tag, or mention.',
+            REQUIRE_ROLE: 'You must input a valid role name or mention',
 
             CONST_USER: 'User',
             CONST_USERS: 'Users',

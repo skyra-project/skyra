@@ -161,9 +161,9 @@ module.exports = class Dashboard {
     }
 
     getUser(req) { // eslint-disable-line class-methods-use-this
-        return req.isAuthenticated() === false ?
-            { id: null, username: null, avatar: null, auth: false } :
-            Object.assign({ auth: true }, req.user);
+        return req.isAuthenticated() === false
+            ? { id: null, username: null, avatar: null, auth: false }
+            : Object.assign({ auth: true }, req.user);
     }
 
     getFile(file) {

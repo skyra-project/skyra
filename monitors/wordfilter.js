@@ -11,10 +11,10 @@ module.exports = class extends Monitor {
     }
 
     async run(msg, settings, i18n) {
-        if (settings.filter.level === 0 ||
-            settings.filter.regexp === null ||
-            await msg.hasLevel(1) ||
-            !settings.filter.regexp.test(msg.content)) return false;
+        if (settings.filter.level === 0
+            || settings.filter.regexp === null
+            || await msg.hasLevel(1)
+            || !settings.filter.regexp.test(msg.content)) return false;
 
         if (msg.deletable) await msg.nuke().catch(() => null);
         if (settings.filter.level === 1 || settings.filter.level === 3) {

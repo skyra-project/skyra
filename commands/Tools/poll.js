@@ -172,8 +172,8 @@ module.exports = class extends Command {
     async result(msg, raw) {
         const input = raw.length ? raw.join(' ') : null;
         if (!input) throw 'you must write up something.';
-        const poll = this.clock.tasks.find(entry => entry.type === 'poll' && entry.guild === msg.guild.id && entry.id === input) ||
-            this.clock.tasks.find(entry => entry.type === 'pollEnd' && entry.poll.guild === msg.guild.id && entry.poll.id === input);
+        const poll = this.clock.tasks.find(entry => entry.type === 'poll' && entry.guild === msg.guild.id && entry.id === input)
+            || this.clock.tasks.find(entry => entry.type === 'pollEnd' && entry.poll.guild === msg.guild.id && entry.poll.id === input);
         if (!poll) throw 'that poll does not exist.';
         if (poll.user !== msg.author.id && await msg.hasLevel(2) === false) throw 'you do not have permissions to check the results from this poll.';
         const data = poll.type === 'poll' ? poll : poll.poll;

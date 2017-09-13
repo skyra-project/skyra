@@ -16,15 +16,15 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [user, ...reason], settings) {
-        const member = await msg.guild.fetchMember(user.id).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
+    async run(msg, [user, ...reason], settings, i18n) {
+        const member = await msg.guild.fetchMember(user.id).catch(() => { throw i18n.get('USER_NOT_IN_GUILD'); });
 
-        if (user.id === msg.author.id) throw msg.language.get('COMMAND_USERSELF');
-        else if (user.id === this.client.user.id) throw msg.language.get('COMMAND_TOSKYRA');
-        else if (member.highestRole.position >= msg.member.highestRole.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
+        if (user.id === msg.author.id) throw i18n.get('COMMAND_USERSELF');
+        else if (user.id === this.client.user.id) throw i18n.get('COMMAND_TOSKYRA');
+        else if (member.highestRole.position >= msg.member.highestRole.position) throw i18n.get('COMMAND_ROLE_HIGHER');
 
-        const mute = await this.configuration(msg, settings);
-        if (settings.moderation.mutes.has(user.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
+        const mute = await this.configuration(msg, settings, i18n);
+        if (settings.moderation.mutes.has(user.id)) throw i18n.get('COMMAND_MUTE_MUTED');
 
         reason = reason.length ? reason.join(' ') : null;
         const roles = member._roles;
@@ -38,14 +38,14 @@ module.exports = class extends Command {
             .setExtraData(roles)
             .send();
 
-        return msg.send(msg.language.get('COMMAND_MUTE_MESSAGE', user, reason, modcase));
+        return msg.send(i18n.get('COMMAND_MUTE_MESSAGE', user, reason, modcase));
     }
 
-    async configuration(msg, settings) {
+    async configuration(msg, settings, i18n) {
         if (!settings.roles.muted) {
-            await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
-                .catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
-            await msg.send(msg.language.get('SYSTEM_PROCESSING'));
+            await msg.prompt(i18n.get('COMMAND_MUTE_CONFIGURE'))
+                .catch(() => { throw i18n.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
+            await msg.send(i18n.get('SYSTEM_PROCESSING'));
             return createMuted(msg);
         }
         return msg.guild.roles.get(settings.roles.muted);

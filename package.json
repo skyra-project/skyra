@@ -9,7 +9,7 @@
   "author": "kyra",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.18.1",
     "bufferutil": "^3.0.2",
     "canvas": "github:Automattic/node-canvas",
     "cheerio": "^0.22.0",
@@ -39,7 +39,7 @@
     "ytdl-core": "^0.17.1"
   },
   "engines": {
-    "node": ">=8.3.0"
+    "node": ">=8.4.0"
   },
   "devDependencies": {
     "eslint": "^4.0.0"

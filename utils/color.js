@@ -6,10 +6,10 @@ class Color {
 
     static parse(input) {
         if (/^(-r|--random)$/.test(input)) return Color._generateRandom();
-        const output = Color._HEX(input) ||
-            Color._B10(input) ||
-            Color._RGB(input) ||
-            Color._HSL(input);
+        const output = Color._HEX(input)
+            || Color._B10(input)
+            || Color._RGB(input)
+            || Color._HSL(input);
 
         if (output !== false) return output;
         throw 'Invalid input';

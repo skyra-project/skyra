@@ -11,15 +11,15 @@ module.exports = class extends Monitor {
     }
 
     async run(msg, settings, i18n) {
-        if (!msg.member ||
-            !msg.member.bannable ||
-            (msg.mentions.users.size === 1 && msg.mentions.users.first().bot) ||
-            settings.selfmod.nomentionspam !== true) return false;
+        if (!msg.member
+            || !msg.member.bannable
+            || (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)
+            || settings.selfmod.nomentionspam !== true) return false;
 
         const filteredCollection = msg.mentions.users.filter(entry => entry.id !== msg.author.id);
-        if (msg.mentions.everyone === false &&
-            msg.mentions.roles.size === 0 &&
-            (filteredCollection.size === 0 || filteredCollection.first().bot)) return false;
+        if (msg.mentions.everyone === false
+            && msg.mentions.roles.size === 0
+            && (filteredCollection.size === 0 || filteredCollection.first().bot)) return false;
 
         if (!cooldown.has(msg.guild.id)) cooldown.set(msg.guild.id, new NMS());
         const amount = filteredCollection.size + (msg.mentions.roles.size * 2) + (msg.mentions.everyone * 5);
@@ -56,8 +56,8 @@ class NMS {
     }
 
     get(user) {
-        return this.cooldown.get(user) ||
-            (this.cooldown.set(user, { id: user, amount: 0, timeout: null }) && { id: user, amount: 0, timeout: null });
+        return this.cooldown.get(user)
+            || (this.cooldown.set(user, { id: user, amount: 0, timeout: null }) && { id: user, amount: 0, timeout: null });
     }
 
     add(user, amount) {

@@ -22,12 +22,12 @@ module.exports = class extends Command {
         const hasRole = msg.member.roles.has(_role.id);
 
         if (remove !== null) {
-            if (!hasRole) throw 'You do not have this role.';
+            if (!hasRole) throw i18n.get('MISSING_ROLE');
 
             await msg.member.removeRole(_role.id, '[OVERWATCH] GameRegion Profile Management.');
             return msg.send(i18n.get('COMMAND_REGION_REMOVED', _role.name));
         } else {
-            if (hasRole) throw 'You already have this role.';
+            if (hasRole) throw i18n.get('HAS_ROLE');
 
             await msg.member.addRole(_role.id, '[OVERWATCH] GameRegion Profile Management.');
             return msg.send(i18n.get('COMMAND_REGION_UPDATED', _role.name));

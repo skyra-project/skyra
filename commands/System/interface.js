@@ -17,7 +17,7 @@ module.exports = class extends Command {
         this._promptOptions = { time: 30000, max: 1, errors: ['time'] };
     }
 
-    async run(msg, params, settings, i18n) {
+    run(msg, params, settings, i18n) {
         return this.await([], msg, i18n).catch(err => {
             if (Array.isArray(err)) throw i18n.get(...err);
             throw err;
@@ -25,9 +25,9 @@ module.exports = class extends Command {
     }
 
     async await(location, msg, i18n) {
-        const message = location.length === 0 ?
-            `Choose one of the following groups: \`${this.folders.join('`, `')}\`\n\nOr write **abort**/**exit** to __exit__ the system.` :
-            `Choose one of the following keys: \`${Object.keys(this.schema[location[0]]).join('`, `')}\` \n\nOr write **abort**/**exit** to __exit__ the system, **previous**/**back** to go one folder back (to the main menu).`;
+        const message = location.length === 0
+            ? `Choose one of the following groups: \`${this.folders.join('`, `')}\`\n\nOr write **abort**/**exit** to __exit__ the system.`
+            : `Choose one of the following keys: \`${Object.keys(this.schema[location[0]]).join('`, `')}\` \n\nOr write **abort**/**exit** to __exit__ the system, **previous**/**back** to go one folder back (to the main menu).`;
         const reply = await this.getMessage(msg, message);
         if (/^(abort|exit)$/.test(reply)) return this.abort();
         if (/^(prev(ious)?|back)$/.test(reply)) return this.back(location, msg, i18n);

@@ -11,7 +11,7 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 10,
 
-            usage: '<list|add|remove|update> [amount:integer{0,1000000}] <role:string> [...]',
+            usage: '<list|add|remove|update> [points:integer{0,1000000}] <role:string> [...]',
             usageDelim: ' ',
             description: '(ADM) List or configure the autoroles for a guild.',
             extendedHelp: Command.strip`
@@ -33,54 +33,67 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [action, amount = null, ...input], settings) {
-        switch (action) {
-            case 'list': {
-                if (!settings.autoroles.length) throw 'there are no autoroles configured for this guild.';
-                return msg.send(settings.autoroles.map((obj) => {
-                    const role = msg.guild.roles.get(obj.id);
-                    return role ? `${role.name} (${role.id}):: ${obj.points}` : `Unknown role${obj.id}`;
-                }).join('\n'), { code: 'asciidoc' });
-            }
-            case 'add': {
-                if (!amount) throw 'you must assign an amount of points for the new autorole.';
-                if (!input[0]) throw 'you must type a role.';
-                const role = await this.client.handler.search.role(input.join(' '), msg);
-                if (!role) throw 'this role does not exist.';
-                await rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points: amount });
-                await settings.sync();
-                settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
-                return msg.send(`Added new autorole: ${role.name} (${role.id}). Points required: ${amount}`);
-            }
-            case 'remove': {
-                if (!input[0]) throw 'you must type a role.';
-                const isSnowflake = /\d{17,19}/.test(input.join(' '));
-                const role = await this.client.handler.search.role(input.join(' '), msg)
-                    .catch(() => isSnowflake ? { name: 'Unknown', id: input.join(' ') } : null);
-                if (!role) throw 'this role does not exist.';
-                const retrieved = settings.autoroles.find(ar => ar.id === role.id);
-                if (!retrieved) throw 'this role is not configured as an autorole.';
-                else {
-                    await rethink.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', role.id);
-                    await settings.sync();
-                    return msg.send(`Removed the autorole: ${role.name} (${role.id}), which required ${retrieved.points} points.`);
-                }
-            }
-            case 'update': {
-                if (!amount) throw 'you must assign an amount of points for the new autorole.';
-                if (!input[0]) throw 'you must type a role.';
-                const role = await this.client.handler.search.role(input.join(' '), msg);
-                if (!role) throw 'this role does not exist.';
-                const retrieved = settings.autoroles.find(ar => ar.id === role.id);
-                if (!retrieved) throw 'this role is not configured as an autorole.';
-                await rethink.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points: amount });
-                await settings.sync();
-                settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
-                return msg.send(`Updated autorole: ${role.name} (${role.id}). Points required: ${amount} (before: ${retrieved.points})`);
-            }
-            case 'setting': return this.settingHandler(msg, input, settings);
-            default: throw new Error(`unknown action: ${action}`);
-        }
+    async run(msg, [action, points = null, ...input], settings, i18n) {
+        input = input.length > 0 ? input.join(' ') : null;
+        return this[action](msg, points, input, settings, i18n);
+    }
+
+    list(msg, points, input, settings, i18n) {
+        if (settings.autoroles.length === 0) throw i18n.get('COMMAND_AUTOROLE_LIST_EMPTY');
+        return msg.send(settings.autoroles.map((obj) => {
+            const role = msg.guild.roles.get(obj.id);
+            return role ? `${role.name} (${role.id}):: ${obj.points}` : i18n.get('COMMAND_AUTOROLE_UNKNOWN_ROLE', obj.id);
+        }).join('\n'), { code: 'asciidoc' });
+    }
+
+    async add(msg, points, input, settings, i18n) {
+        if (points === null) throw i18n.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
+        if (input === null) throw i18n.get('REQUIRE_ROLE');
+
+        const role = await this.client.handler.search.role(input, msg);
+        if (!role) throw i18n.get('REQUIRE_ROLE');
+
+        await rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points });
+        await settings.sync();
+
+        settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
+        return msg.send(i18n.get('COMMAND_AUTOROLE_ADD', role, points));
+    }
+
+    async remove(msg, points, input, settings, i18n) {
+        if (input === null) throw i18n.get('REQUIRE_ROLE');
+
+        const role = await this.client.handler.search.role(input, msg)
+            .then(output => output || /^(?:<@&)?(\d{17,19})>?$/.test(input)
+                ? { name: 'Unknown', id: input }
+                : null);
+
+        if (role === null) throw i18n.get('REQUIRE_ROLE');
+        const retrieved = settings.autoroles.find(ar => ar.id === role.id);
+
+        if (!retrieved) throw i18n.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
+
+        await rethink.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', role.id);
+        await settings.sync();
+
+        return msg.send(i18n.get('COMMAND_AUTOROLE_REMOVE', role, retrieved.points));
+    }
+
+    async update(msg, points, input, settings, i18n) {
+        if (points === null) throw i18n.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
+        if (input === null) throw i18n.get('REQUIRE_ROLE');
+
+        const role = await this.client.handler.search.role(input, msg);
+        if (role === null) throw i18n.get('REQUIRE_ROLE');
+
+        const retrieved = settings.autoroles.find(ar => ar.id === role.id);
+        if (!retrieved) throw i18n.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
+
+        await rethink.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points });
+        await settings.sync();
+
+        settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
+        return msg.send(i18n.get('COMMAND_AUTOROLE_UPDATE', role, points, retrieved.points));
     }
 
 };

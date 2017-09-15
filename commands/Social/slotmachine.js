@@ -51,15 +51,17 @@ module.exports = class extends Command {
         return position;
     }
 
-    async run(msg, [coins]) {
+    async run(msg, [coins], settings, i18n) {
         coins = parseInt(coins);
+        const userProfile = msg.author.profile;
 
-        if (msg.author.profile.money < coins) throw `you don't have enough shinies to pay your bet! Your current account balance is ${msg.author.profile.money}${Command.shiny(msg)}.`;
+        if (userProfile.money < coins)
+            throw i18n.get('COMMAND_SLOTMACHINES_MONEY', userProfile.money, Command.shiny(msg));
 
         const roll = this.roll();
         const calculated = this.calculate(roll, coins);
         await this.process(msg, coins, calculated);
-        return this.display(msg, roll, calculated);
+        return this.display(msg, roll, calculated, i18n);
     }
 
     process(msg, coins, { win, winnings }) {
@@ -96,7 +98,7 @@ module.exports = class extends Command {
         return { win: true, winnings };
     }
 
-    display(msg, roll, { win, winnings }) {
+    display(msg, roll, { win, winnings }, i18n) {
         const permissions = msg.channel.permissionsFor(msg.guild.me);
         if (permissions.has('ATTACH_FILES')) return this.render(msg, roll, { win, winnings });
         const use = permissions.has('USE_EXTERNAL_EMOJIS') ? assets.emoji : assets.vanilla;
@@ -111,8 +113,8 @@ module.exports = class extends Command {
         ].join('\n');
 
         const message = win
-            ? msg.language.get('COMMAND_SOCIAL_SLOTMACHINES_WIN', output, winnings, Command.shiny(msg))
-            : msg.language.get('COMMAND_SOCIAL_SLOTMACHINES_LOSS', output);
+            ? i18n.get('COMMAND_SLOTMACHINES_WIN', output, winnings, Command.shiny(msg))
+            : i18n.get('COMMAND_SLOTMACHINES_LOSS', output);
 
         if (permissions.has('EMBED_LINKS')) return this.sendEmbed(msg, message, win);
         return msg.send(message);

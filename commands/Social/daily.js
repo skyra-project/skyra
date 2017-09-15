@@ -23,27 +23,29 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
+    async run(msg, params, settings, i18n) {
         const now = Date.now();
         const profile = msg.author.profile;
         const time = profile.timeDaily;
 
         if (time > now) {
             const remaining = time - now;
-            if (remaining > 3600000) return msg.send(msg.language.get('COMMAND_DAILY_TIME', remaining));
-            return msg.prompt(msg.language.get('COMMAND_DAILY_GRACE', remaining))
+            if (remaining > 3600000)
+                return msg.send(i18n.get('COMMAND_DAILY_TIME', remaining));
+
+            return msg.prompt(i18n.get('COMMAND_DAILY_GRACE', remaining))
                 .then(async () => {
                     const next = now + 43200000 + remaining;
                     const money = await profile.win(200, msg.guild);
                     await profile.update({ timeDaily: next });
-                    return msg.send(msg.language.get('COMMAND_DAILY_GRACE_ACCEPTED', money, Command.shiny(msg), 43200000 + remaining));
+                    return msg.send(i18n.get('COMMAND_DAILY_GRACE_ACCEPTED', money, Command.shiny(msg), 43200000 + remaining));
                 })
-                .catch(() => msg.send(msg.language.get('COMMAND_DAILY_GRACE_DENIED')));
+                .catch(() => msg.send(i18n.get('COMMAND_DAILY_GRACE_DENIED')));
         }
         const next = now + 43200000;
         const money = await profile.win(200, msg.guild);
         await profile.update({ timeDaily: next });
-        return msg.send(msg.language.get('COMMAND_DAILY_TIME_SUCCESS', money, Command.shiny(msg)));
+        return msg.send(i18n.get('COMMAND_DAILY_TIME_SUCCESS', money, Command.shiny(msg)));
     }
 
 };

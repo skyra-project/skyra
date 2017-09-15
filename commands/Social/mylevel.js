@@ -13,11 +13,11 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, args, settings) {
+    async run(msg, args, settings, i18n) {
         const memberPoints = msg.member.points.score;
         const nextRole = this.getLatestRole(memberPoints, settings.autoroles);
-        const title = nextRole ? `\n${msg.language.get('COMMAND_SOCIAL_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}` : '';
-        return msg.send(msg.language.get('COMMAND_SOCIAL_MYLEVEL', memberPoints, title));
+        const title = nextRole ? `\n${i18n.get('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}` : '';
+        return msg.send(i18n.get('COMMAND_MYLEVEL', memberPoints, title));
     }
 
     getLatestRole(points, autoroles) {

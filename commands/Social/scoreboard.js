@@ -34,16 +34,16 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [type = 'local', index = 1]) {
+    async run(msg, [type = 'local', index = 1], settings, i18n) {
         if (type === 'global') type = 'points';
         else if (type === 'local') type = 'score';
         const list = Array.from(this.getList(msg, type).values());
         const position = list.findIndex(entry => entry.id === msg.author.id);
-        const page = this.generatePage(msg, list, index, position, type);
+        const page = this.generatePage(msg, list, index, position, type, i18n);
         return msg.send(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
     }
 
-    generatePage(msg, list, index, position, type) {
+    generatePage(msg, list, index, position, type, i18n) {
         const listSize = list.length;
         const pageCount = Math.ceil(listSize / 10);
         if (index > pageCount) index = 1;
@@ -58,8 +58,8 @@ module.exports = class extends Command {
         }
 
         currentPage.push('');
-        currentPage.push(`Page ${index + 1} / ${pageCount} | ${listSize.toLocaleString()} Total`);
-        currentPage.push(`Your placing position is: ${position + 1}`);
+        currentPage.push(i18n.get('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
+        currentPage.push(i18n.get('COMMAND_SCOREBOARD_POSITION', position + 1));
 
         return currentPage;
     }

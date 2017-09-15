@@ -15,18 +15,29 @@ module.exports = class extends Command {
     }
 
     async run(msg, [channel = msg.channel, ...content]) {
-        if (msg.deletable) msg.nuke().catch(() => null);
+        if (msg.deletable)
+            msg.nuke()
+                .catch(() => null);
 
-        const attachment = msg.attachments.size > 0 ? msg.attachments.first().url : null;
-        content = content.length ? content.join(' ') : '';
+        const attachment = msg.attachments.size > 0
+            ? msg.attachments.first().url
+            : null;
 
-        if (content.length === 0 && !attachment) throw 'I have no content nor attachment to send, please write something.';
+        content = content.length
+            ? content.join(' ')
+            : '';
+
+        if (content.length === 0 && !attachment)
+            throw 'I have no content nor attachment to send, please write something.';
 
         const options = {};
-        if (attachment) options.files = [{ attachment }];
+        if (attachment !== null)
+            options.files = [{ attachment }];
 
         return channel.send(content, options)
-            .then(() => channel !== msg.channel ? msg.alert(`Message successfully sent to ${channel}`) : true)
+            .then(() => channel !== msg.channel
+                ? msg.alert(`Message successfully sent to ${channel}`)
+                : true)
             .catch(Command.handleError);
     }
 

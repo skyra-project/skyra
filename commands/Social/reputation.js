@@ -31,9 +31,9 @@ module.exports = class extends Command {
 
         if (profile.timerep + 86400000 > now) {
             const remaining = (profile.timerep + 86400000) - now;
-            return msg.send(i18n.get('COMMAND_SOCIAL_REPUTATION_TIME', remaining));
+            return msg.send(i18n.get('COMMAND_REPUTATION_TIME', remaining));
         } else if (input === null) {
-            return msg.send(i18n.get('COMMAND_SOCIAL_REPUTATION_USABLE'));
+            return msg.send(i18n.get('COMMAND_REPUTATION_USABLE'));
         }
 
         return this.giveReputation(msg, profile, input, now, i18n);
@@ -41,16 +41,16 @@ module.exports = class extends Command {
 
     async giveReputation(msg, profile, input, now, i18n) {
         const user = await this.client.handler.search.user(input, msg);
-        if (!user) throw i18n.get('COMMAND_SOCIAL_REPUTATION_USER_NOTFOUND');
-        if (msg.author.id === user.id) throw i18n.get('COMMAND_SOCIAL_REPUTATION_SELF');
-        else if (user.bot) throw i18n.get('COMMAND_SOCIAL_REPUTATION_BOTS');
+        if (!user) throw i18n.get('COMMAND_REPUTATION_USER_NOTFOUND');
+        if (msg.author.id === user.id) throw i18n.get('COMMAND_REPUTATION_SELF');
+        else if (user.bot) throw i18n.get('COMMAND_REPUTATION_BOTS');
 
         let targetProfile = user.profile;
         if (targetProfile instanceof Promise) targetProfile = await targetProfile;
 
         await targetProfile.update({ reputation: targetProfile.reputation + 1 });
         await profile.update({ timerep: now });
-        return msg.send(i18n.get('COMMAND_SOCIAL_REPUTATION_GIVE', user.username));
+        return msg.send(i18n.get('COMMAND_REPUTATION_GIVE', user.username));
     }
 
 };

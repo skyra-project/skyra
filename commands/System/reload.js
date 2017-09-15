@@ -12,10 +12,13 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [piece]) {
-        if (typeof piece === 'string') return this.client[piece].loadAll().then(() => msg.send(msg.language.get('COMMAND_RELOAD_ALL', piece)));
+    async run(msg, [piece], settings, i18n) {
+        if (typeof piece === 'string')
+            return this.client[piece].loadAll()
+                .then(() => msg.send(i18n.get('COMMAND_RELOAD_ALL', piece)));
+
         return piece.reload()
-            .then(itm => msg.send(msg.language.get('COMMAND_RELOAD', itm.type, itm.name)))
+            .then(itm => msg.send(i18n.get('COMMAND_RELOAD', itm.type, itm.name)))
             .catch(err => {
                 this.client[`${piece.type}s`].set(piece);
                 msg.error(err);

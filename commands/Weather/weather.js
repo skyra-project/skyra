@@ -49,12 +49,14 @@ module.exports = class extends Command {
             .then(data => JSON.parse(data.text));
     }
 
-    async run(msg, [query]) {
+    async run(msg, [query], settings, i18n) {
         const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
         const response = await this.query(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${GOOGLE_MAP_API}`);
 
-        if (response.status !== 'OK') throw this.handleNotOK(msg, response.status);
-        if (response.results.length === 0) throw 'your request returned no results.';
+        if (response.status !== 'OK')
+            throw i18n.get(this.handleNotOK(msg, response.status));
+        if (response.results.length === 0)
+            throw i18n.get('COMMAND_WEATHER_ERROR_ZERO_RESULTS');
 
         const geocodelocation = response.results[0].formatted_address;
         const params = `${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}`;
@@ -139,21 +141,49 @@ module.exports = class extends Command {
     }
 
     timePicker(icon) {
-        if (icon === 'clear-day' || icon === 'partly-cloudy-day') return 'day';
-        else if (icon === 'clear-night' || icon === 'partly-cloudy-night') return 'night';
-        else if (icon === 'rain') return 'rain';
-        else if (icon === 'thunderstorm') return 'thunderstorm';
-        else if (icon === 'snow' || icon === 'sleet' || icon === 'fog') return 'snow';
-        else if (icon === 'wind' || icon === 'tornado') return 'windy';
-        return 'cloudy';
+        switch (icon) {
+            case 'clear-day':
+            case 'partly-cloudy-day':
+                return 'day';
+
+            case 'clear-night':
+            case 'partly-cloudy-night':
+                return 'night';
+
+            case 'rain':
+                return 'rain';
+
+            case 'thunderstorm':
+                return 'thunderstorm';
+
+            case 'snow':
+            case 'sleet':
+            case 'fog':
+                return 'snow';
+
+            case 'wind':
+            case 'tornado':
+                return 'windy';
+
+            default:
+                return 'cloudy';
+        }
     }
 
     handleNotOK(status) {
-        if (status === 'ZERO_RESULTS') return 'your request returned no results.';
-        else if (status === 'REQUEST_DENIED') return 'Geocode API Request was denied.';
-        else if (status === 'INVALID_REQUEST') return 'Invalid Request,';
-        else if (status === 'OVER_QUERY_LIMIT') return 'Query Limit Exceeded. Try again tomorrow.';
-        return 'Unknown.';
+        switch (status) {
+            case 'ZERO_RESULTS':
+                return 'COMMAND_WEATHER_ERROR_ZERO_RESULTS';
+            case 'REQUEST_DENIED':
+                return 'COMMAND_WEATHER_ERROR_REQUEST_DENIED';
+            case 'INVALID_REQUEST':
+                return 'COMMAND_WEATHER_ERROR_INVALID_REQUEST';
+            case 'OVER_QUERY_LIMIT':
+                return 'COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT';
+            default:
+                this.client.emit('log', `Weather::handleNotOK | Unknown Error: ${status}`);
+                return 'COMMAND_WEATHER_ERROR_UNKNOWN';
+        }
     }
 
 };

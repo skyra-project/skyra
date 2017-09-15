@@ -25,8 +25,7 @@ module.exports = class extends Command {
             return msg.send([
                 `Emoji: **${emojiName}**`,
                 'Type: **Custom**',
-                `ID: **${emojiID}**`,
-                `Guild: ${this.client.emojis.has(emojiID) ? this.resolveGuild(this.client.emojis.get(emojiID).guild) : 'Unknown.'}`
+                `ID: **${emojiID}**`
             ].join('\n'), { files: [{ attachment: emojiURL }] });
         }
         if (!/^[^a-zA-Z0-9]{1,4}$/.test(emoji)) throw `${emoji} is not a valid emoji.`;

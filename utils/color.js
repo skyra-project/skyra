@@ -1,11 +1,22 @@
 const randomcolor = require('randomcolor');
 const Resolver = require('./color/index');
 
+const REGEXP = {
+    RANDOM: /^(-r|--random)$/,
+    RGB: /^rgba?\(\d{1,3},\s?\d{1,3},\s?\d{1,3}(?:,.+)?\)$/,
+    RGB_EXEC: /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/,
+    HEX: /^#[0-9a-fA-F]{6}$/,
+    HEX_EXEC: /^#([0-9a-fA-F]{6})$/,
+    HSL: /^hsl\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)$/,
+    HSL_EXEC: /^hsl\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$/,
+    B10: /^\d{1,8}$/
+};
+
 /* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 class Color {
 
     static parse(input) {
-        if (/^(-r|--random)$/.test(input)) return Color._generateRandom();
+        if (REGEXP.RANDOM.test(input)) return Color._generateRandom();
         const output = Color._HEX(input)
             || Color._B10(input)
             || Color._RGB(input)
@@ -27,8 +38,8 @@ class Color {
     }
 
     static _RGB(input) {
-        if (!/^rgba?\(\d{1,3},\s?\d{1,3},\s?\d{1,3}(?:,.+)?\)$/.test(input)) return false;
-        const raw = /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/.exec(input);
+        if (REGEXP.RGB.test(input) === false) return false;
+        const raw = REGEXP.RGB_EXEC.exec(input);
         const RGB = new Resolver.RGB(parseInt(raw[1]), parseInt(raw[2]), parseInt(raw[3]));
         return {
             hex: RGB.hex,
@@ -39,8 +50,8 @@ class Color {
     }
 
     static _HEX(input) {
-        if (!/^#[0-9a-fA-F]{6}$/.test(input)) return false;
-        const raw = /^#([0-9a-fA-F]{6})$/.exec(input)[1];
+        if (REGEXP.HEX.test(input) === false) return false;
+        const raw = REGEXP.HEX_EXEC.exec(input)[1];
         const HEX = new Resolver.HEX(raw.substring(0, 2), raw.substring(2, 4), raw.substring(4, 6));
         return {
             hex: HEX,
@@ -51,8 +62,8 @@ class Color {
     }
 
     static _HSL(input) {
-        if (!/^hsl\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)$/.test(input)) return false;
-        const raw = /^hsl\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$/.exec(input);
+        if (REGEXP.HSL.test(input) === false) return false;
+        const raw = REGEXP.HSL_EXEC.exec(input);
         const HSL = new Resolver.HSL(parseInt(raw[1]), parseInt(raw[2]), parseInt(raw[3]));
         return {
             hex: HSL.hex,
@@ -63,7 +74,7 @@ class Color {
     }
 
     static _B10(input) {
-        if (!/^\d{1,8}$/.test(input)) return false;
+        if (REGEXP.B10.test(input) === false) return false;
         const B10 = new Resolver.B10(input);
         return {
             hex: B10.hex,

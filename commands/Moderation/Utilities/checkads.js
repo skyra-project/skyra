@@ -29,10 +29,11 @@ module.exports = class extends Command {
                 members.push(`${member} ${member.displayName} || ${member.presence.game.name}`);
         }
 
-        if (members.length === 0) return msg.language.get('COMMAND_LIST_ADVERTISEMENT_EMPTY');
+        if (members.length === 0)
+            return i18n.get('COMMAND_LIST_ADVERTISEMENT_EMPTY');
 
         const embed = new MessageEmbed()
-            .setTitle(msg.language.get('COMMAND_LIST_ADVERTISEMENT'))
+            .setTitle(i18n.get('COMMAND_LIST_ADVERTISEMENT'))
             .splitFields(members.join('\n'));
 
         return msg.send({ embed });

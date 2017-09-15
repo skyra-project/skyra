@@ -1,4 +1,4 @@
-const { Command, config } = require('../../index');
+const { Command, config, util } = require('../../index');
 const snekfetch = require('snekfetch');
 
 const key = config.tokens.currencyLayer;
@@ -62,15 +62,22 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [money, input, output]) { // eslint-disable-line class-methods-use-this
+    async run(msg, [money, input, output], settings, i18n) {
         input = input.toUpperCase();
         output = output.toUpperCase();
-        if (!currencyList.includes(input)) throw `${input} isn't a valid currency.`;
-        if (!currencyList.includes(output)) throw `${output} isn't a valid currency.`;
+
+        if (currencyList.includes(input) === false)
+            throw i18n.get('COMMAND_CURRENCYLAYER_INPUT', input);
+        if (currencyList.includes(output) === false)
+            throw i18n.get('COMMAND_CURRENCYLAYER_INPUT', output);
+
         const data = await request(`http://www.apilayer.net/api/live?access_key=${key}&format=1&currencies=${input},${output}`);
-        if (!data.success) throw new Error('Something went wrong.');
+        if (!data.success)
+            throw i18n.get('COMMAND_CURRENCYLAYER_ERROR');
+
         const converted = (data.quotes[`USD${output}`] / data.quotes[`USD${input}`]) * money;
-        return msg.send(`Dear ${msg.author}, **${money}** \`${input}\` in \`${output}\` is:${'```'}${converted.toFixed(4)} ${output}${'```'}`);
+
+        return msg.send(i18n.get('COMMAND_CURRENCYLAYER', money, input, output, util.codeBlock('', `${converted.toFixed(4)} ${output}`)));
     }
 
 };

@@ -15,7 +15,7 @@ module.exports = class extends Extendable {
         if (typeof error === 'string') return this.alert(`Dear ${this.author}, ${content}`);
 
         if (isException(content)) {
-            this.client.emit('log', `ERROR: /${this.guild.id}/${this.channel.id}/${this.id}/${this.cmd ? `CMD:${this.cmd.name}` : ''} (${this.author.id}) | ${content.constructor.name}`, 'warn');
+            this.client.emit('log', `ERROR: /${this.guild ? this.guild.id : 'DM'}/${this.channel.id}/${this.id}/${this.cmd ? `CMD:${this.cmd.name}` : ''} (${this.author.id}) | ${content.constructor.name}`, 'warn');
             this.client.emit('log', content, 'wtf');
             if (this.author.id === '242043489611808769') content = content.stack || content.message;
             else content = 'What a Terrible Failure! I am very sorry!';

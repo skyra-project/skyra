@@ -9,9 +9,8 @@ module.exports = class extends Command {
             guildOnly: true,
             mode: 1,
             spam: true,
-            cooldown: 30,
 
-            usage: '<user:advMember>',
+            usage: '<user:advuser>',
             description: '(BETA) Play Connect-Four with your friends.'
         });
 
@@ -38,56 +37,78 @@ module.exports = class extends Command {
         this.games = new Set();
     }
 
-    async run(msg, [user]) {
-        if (user.id === this.client.user.id) throw 'You cannot play with me.';
-        if (user.bot) throw 'You cannot play with bots.';
-        if (this.games.has(msg.channel.id)) throw 'There is a game in progress.';
+    async run(msg, [user], settings, i18n) {
+        if (user.id === this.client.user.id) throw i18n.get('COMMAND_C4_SKYRA');
+        if (user.bot) throw i18n.get('COMMAND_C4_BOT');
+        if (this.games.has(msg.channel.id)) throw i18n.get('COMMAND_C4_PROGRESS');
 
-        const mes = await msg.send(`Dear ${user}, you have been challenged by ${msg.author} in a Connect-Four match. Do you accept?`);
+        const mes = await msg.send(i18n.get('COMMAND_C4_PROMPT', msg.author, user));
         const response = await msg.channel.awaitMessages(message => this._prompt(message, user), this._options)
-            .catch(() => { throw 'The user did not reply on time.'; });
+            .catch(() => { throw i18n.get('COMMAND_C4_PROMPT_TIMEOUT'); });
 
-        if (/ye(s|ah?)?/i.test(response.first().content) === false) throw 'The user did not accept the match.';
+        if (/ye(s|ah?)?/i.test(response.first().content) === false)
+            throw i18n.get('COMMAND_C4_PROMPT_DENY');
+
         this.games.add(msg.channel.id);
         await mes.nuke();
 
         const assets = this._assets[msg.channel.permissionsFor(msg.guild.me).has('USE_EXTERNAL_EMOJIS') ? 'emoji' : 'native'];
-        const game = this.createGame([msg.author.id, user.id]);
+        const game = this.createGame([msg.author, user]);
         const player = Math.round(Math.random());
 
-        const message = await msg.channel.send('Loading...');
+        const message = await this.createMessage(msg, i18n);
+
+        await this.edit(message, i18n.get('COMMAND_C4_START', player === 0 ? msg.author.tag : user.tag, this.displayTable(game.table, assets)));
+
+        return this.awaitGame(message, game, player, assets, i18n).catch((err) => {
+            this.client.emit('log', err, 'error');
+            return this.conclude(message, i18n.get('SYSTEM_ERROR'));
+        });
+    }
+
+    async createMessage(msg, i18n) {
+        const message = await msg.channel.send(i18n.get('SYSTEM_LOADING'));
         for (const emoji of this._emojis) await message.react(emoji);
 
-        await this.edit(message, `Let's play! Turn for: **${player === 0 ? 'Blue' : 'Red'}**.\n${this.displayTable(game.table, assets)}`);
-
-        return this.awaitGame(message, game, player, assets).catch((err) => {
-            this.client.emit('log', err, 'error');
-            this.conclude(message, 'Something happened!');
-        });
+        return message;
     }
 
     async conclude(message, content) {
         this.games.delete(message.channel.id);
-        await message.clearReactions();
+
+        await message.clearReactions().catch(error => {
+            if (error.code !== 10008) throw error;
+            return null;
+        });
+
         return this.edit(message, content);
     }
 
-    async awaitGame(message, game, player, assets) {
-        const playerID = game.players[player];
+    async awaitGame(message, game, player, assets, i18n) {
+        const playerUser = game.players[player];
 
-        const line = await this.collect(message, playerID).catch((err) => {
-            if (err === 'TIMEOUT') this.conclude(message, '**The match concluded in a draw due to lack of a response (60 seconds)**');
-            else if (err === 'BAD_REACTION') this.awaitGame(message, game, player, assets);
-            else throw err;
+        const line = await this.collect(message, playerUser.id).catch((err) => {
+            if (err === 'TIMEOUT')
+                return this.conclude(message, i18n.get('COMMAND_C4_GAME_TIMEOUT'))
+                    .then(() => null);
+
+            if (err === 'BAD_REACTION')
+                return this.awaitGame(message, game, player, assets, i18n)
+                    .then(() => null);
+
+            throw err;
         });
 
         if (!line) return null;
 
-        if (this._emojis.includes(line.key) === false) return this.awaitGame(message, game, player, assets);
+        if (this._emojis.includes(line.key) === false)
+            return this.awaitGame(message, game, player, assets);
 
         const row = this._emojis.indexOf(line.key);
         if (game.full[row]) {
-            await message.channel.send('This column is full.').then(mes => mes.nuke(5000));
+            await message.channel.send(i18n.get('COMMAND_C4_GAME_COLUMN_FULL'))
+                .then(mes => mes.nuke(5000).catch(() => null));
+
             return this.awaitGame(message, game, player, assets);
         }
 
@@ -95,29 +116,27 @@ module.exports = class extends Command {
         if (result !== false) {
             this.showWinner(game.table, result, player + 1);
             const winner = await this.client.fetchUser(game.players[player]);
-            return this.conclude(message, `**${winner.username}** won!\n${this.displayTable(game.table, assets)}`);
+            return this.conclude(message, i18n.get('COMMAND_C4_GAME_WIN', winner.username, this.displayTable(game.table, assets)));
         }
-        if (this.checkDraw(game) === true) {
-            return this.conclude(message, `This match concluded in a **draw**!\n${this.displayTable(game.table, assets)}`);
-        }
+
+        if (this.checkDraw(game) === true)
+            return this.conclude(message, i18n.get('COMMAND_C4_GAME_DRAW', this.displayTable(game.table, assets)));
 
         player = this.switchPlayer(player);
 
-        await line.reaction.remove(playerID);
-        await this.edit(message, `Turn for: **${player === 0 ? 'Blue' : 'Red'}**.\n${this.displayTable(game.table, assets)}`);
+        await line.reaction.remove(playerUser.id);
+        await this.edit(message, i18n.get('COMMAND_C4_GAME_NEXT', game.players[player].tag), this.displayTable(game.table, assets));
         return this.awaitGame(message, game, player, assets);
     }
 
     showWinner(table, row, player) {
-        for (let i = 0; i < row.length; i++) {
+        for (let i = 0; i < row.length; i++)
             table[row[i][0]][row[i][1]] = `win${player}`;
-        }
     }
 
     collect(message, player) {
         return new Promise((resolve, reject) => {
             message.createReactionCollector((reaction, user) => user.id === player, { time: 60000, errors: ['time'], max: 1 })
-                .on('error', err => reject(err))
                 .on('end', reactions => {
                     const key = reactions.firstKey();
                     if (!key) reject('TIMEOUT');
@@ -212,9 +231,9 @@ module.exports = class extends Command {
     }
 
     checkDraw(game) {
-        for (let i = 0; i < game.full.length; i++) {
+        for (let i = 0; i < game.full.length; i++)
             if (game.full[i] === false) return false;
-        }
+
         return true;
     }
 
@@ -232,7 +251,11 @@ module.exports = class extends Command {
     }
 
     edit(message, content) {
-        return this.client.api.channels[message.channel.id].messages[message.id].patch({ data: { content } });
+        return this.client.api.channels[message.channel.id].messages[message.id].patch({ data: { content } })
+            .catch((error) => {
+                if (error.code !== 10008) throw error;
+                return message.channel.send(content).then(mes => { message.id = mes.id; });
+            });
     }
 
 };

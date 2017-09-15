@@ -37,15 +37,11 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input, diff = 10]) {
+    async run(msg, [input, diff = 10], settings, i18n) {
         const { hex, hsl, rgb } = parse(input);
 
-        const output = await this.showColor(rgb, diff);
-        return msg.channel.send([
-            `Color: **${hex}**`,
-            `RGB: ${rgb}`,
-            `HSL: ${hsl}`
-        ].join('\n'), { files: [{ attachment: output, name: 'color.png' }] });
+        const attachment = await this.showColor(rgb, diff);
+        return msg.channel.send(i18n.get('COMMAND_COLOR', hex, rgb, hsl), { files: [{ attachment, name: 'color.png' }] });
     }
 
     async showColor(color, diff) {

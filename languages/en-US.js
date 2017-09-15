@@ -148,35 +148,6 @@ module.exports = class extends Language {
             INHIBITOR_REQUIRED_SETTINGS: (settings) => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length > 1 ? 's' : ''} and cannot run.`,
             INHIBITOR_SPAM: (channel) => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
 
-            COMMAD_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
-            COMMAND_TRANSFER_ERROR: '❌ That file has been transfered already or never existed.',
-            COMMAND_TRANSFER_SUCCESS: (type, name) => `✅ Successfully transferred ${type}: ${name}`,
-            COMMAND_TRANSFER_FAILED: (type, name) => `Transfer of ${type}: ${name} to Client has failed. Please check your Console.`,
-            COMMAND_RELOAD: (type, name) => `✅ Reloaded ${type}: ${name}`,
-            COMMAND_RELOAD_ALL: (type) => `✅ Reloaded all ${type}.`,
-            COMMAND_REBOOT: 'Rebooting...',
-            COMMAND_PING: 'Ping?',
-            COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
-            COMMAND_INVITE_SELFBOT: 'Why would you need an invite link for a selfbot...',
-            COMMAND_INVITE: (client) => [
-                `To add Skyra to your discord guild: <${client.invite}>`,
-                'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
-            ],
-            COMMAND_HELP_DM: '📥 | Commands have been sent to your DMs.',
-            COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
-            COMMAND_ENABLE: (type, name) => `+ Successfully enabled ${type}: ${name}`,
-            COMMAND_DISABLE: (type, name) => `+ Successfully disabled ${type}: ${name}`,
-            COMMAND_DISABLE_WARN: 'You probably don\'t want to disable that, since you wouldn\'t be able to run any command to enable it again',
-            COMMAND_CONF_NOKEY: 'You must provide a key',
-            COMMAND_CONF_NOVALUE: 'You must provide a value',
-            COMMAND_CONF_ADDED: (value, key) => `Successfully added the value \`${value}\` to the key: **${key}**`,
-            COMMAND_CONF_UPDATED: (key, response) => `Successfully updated the key **${key}**: \`${response}\``,
-            COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
-            COMMAND_CONF_REMOVE: (value, key) => `Successfully removed the value \`${value}\` from the key: **${key}**`,
-            COMMAND_CONF_GET_NOEXT: (key) => `The key **${key}** does not seem to exist.`,
-            COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
-            COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
-
             // Commands#anime
             COMMAND_ANIME_DESCRIPTION: (entry, context) => [
                 `**English title:** ${entry.english}`,
@@ -308,11 +279,46 @@ module.exports = class extends Language {
             HAS_ROLE: 'You already have this role.',
 
             // SOCIAL
+            COMMAND_AUTOROLE_POINTS_REQUIRED: 'You must input a valid amount of points.',
+            COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: 'This role is not configured as an autorole. Use the add type instead.',
+            COMMAND_AUTOROLE_UPDATE: (role, points, before) => `Updated autorole: ${role.name} (${role.id}). Points required: ${points} (before: ${before})`,
+            COMMAND_AUTOROLE_REMOVE: (role, before) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
+            COMMAND_AUTOROLE_ADD: (role, points) => `Added new autorole: ${role.name} (${role.id}). Points required: ${points}`,
+            COMMAND_AUTOROLE_LIST_EMPTY: 'There is no role configured as an autorole in this server.',
+            COMMAND_AUTOROLE_UNKNOWN_ROLE: (role) => `Unknown role: ${role}`,
+
             COMMAND_BALANCE: (user, amount, icon) => `The user ${user} has a total of ${amount}${icon}`,
             COMMAND_BALANCE_SELF: (amount, icon) => `You have a total of ${amount}${icon}`,
-            COMMAND_SOCIAL_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
-            COMMAND_SOCIAL_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
-            COMMAND_SOCIAL_MISSING_MONEY: (needed, has, icon) => `I am sorry, but you need ${needed}${icon} and you have ${has}${icon}`,
+
+            COMMAND_BANNER_LIST_EMPTY: (prefix) => `You do not have an available banner. Check \`${prefix}banner buylist\` for a list of banners you can buy.`,
+            COMMAND_BANNER_SET_INPUT_NULL: 'You must specify a banner id to set.',
+            COMMAND_BANNER_SET_NOT_BOUGHT: 'You do not have this banner.',
+            COMMAND_BANNER_SET: (banner) => `|\`✅\`| **Success**. You have set your banner to: __${banner}__`,
+            COMMAND_BANNER_BUY_INPUT_NULL: 'You must specify a banner id to buy.',
+            COMMAND_BANNER_BUY_NOT_EXISTS: (prefix) => `This banner id does not exist. Please check \`${prefix}banner buylist\` for a list of banners you can buy.`,
+            COMMAND_BANNER_BUY_BOUGHT: (prefix, banner) => `You already have this banner, you may want to use \`${prefix}banner set ${banner}\` to make it visible in your profile.`,
+            COMMAND_BANNER_BUY_MONEY: (money, cost, icon) => `You do not have enough money to buy this banner. You have ${money}${icon}, the banner costs ${cost}${icon}`,
+            COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
+            COMMAND_BANNER_BUY_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
+            COMMAND_BANNER_PROMPT: {
+                AUTHOR: 'Author',
+                TITLE: 'Title',
+                PRICE: 'Price'
+            },
+
+            COMMAND_C4_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
+            COMMAND_C4_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
+            COMMAND_C4_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
+            COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four math. Reply with **yes** to accept!`,
+            COMMAND_C4_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
+            COMMAND_C4_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
+            COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
+            COMMAND_C4_GAME_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+            COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another.',
+            COMMAND_C4_GAME_WIN: (user, table) => `**${user}** won!\n${table}`,
+            COMMAND_C4_GAME_DRAW: (table) => `This match concluded in a **draw**!\n${table}`,
+            COMMAND_C4_GAME_NEXT: (player, table) => `Turn for: **${player}**.\n${table}`,
+
             COMMAND_DAILY_TIME: (time) => `Next dailies are available in ${duration(time)}`,
             COMMAND_DAILY_TIME_SUCCESS: (amount, icon) => `Yay! You earned ${amount}${icon}! Next dailies in: 12 hours.`,
             COMMAND_DAILY_GRACE: (remaining) => [
@@ -321,6 +327,17 @@ module.exports = class extends Language {
             ].join('\n'),
             COMMAND_DAILY_GRACE_ACCEPTED: (amount, icon, remaining) => `Successfully claimed ${amount}${icon}! Next dailies in: ${duration(remaining)}`,
             COMMAND_DAILY_GRACE_DENIED: 'Got it! Come back soon!',
+
+            COMMAND_LEVEL: {
+                LEVEL: 'Level',
+                EXPERIENCE: 'Experience',
+                NEXT_IN: 'Next level in'
+            },
+
+            COMMAND_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
+            COMMAND_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
+
+            COMMAND_PAY_MISSING_MONEY: (needed, has, icon) => `I am sorry, but you need ${needed}${icon} and you have ${has}${icon}`,
             COMMAND_PAY_PROMPT: (user, amount, icon) => `You are about to pay ${user} ${amount}${icon}, are you sure you want to proceed?`,
             COMMAND_PAY_PROMPT_ACCEPT: (user, amount, icon) => `Payment accepted, ${amount}${icon} has been sent to ${user}'s profile.`,
             COMMAND_PAY_PROMPT_DENY: 'Payment denied.',
@@ -334,19 +351,33 @@ module.exports = class extends Language {
                 EXPERIENCE: 'Experience',
                 LEVEL: 'Level'
             },
-            COMMAND_LEVEL: {
-                LEVEL: 'Level',
-                EXPERIENCE: 'Experience',
-                NEXT_IN: 'Next level in'
-            },
-            COMMAND_SOCIAL_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
-            COMMAND_SOCIAL_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
-            COMMAND_SOCIAL_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
-            COMMAND_SOCIAL_REPUTATION_USABLE: 'You can give a reputation point now.',
-            COMMAND_SOCIAL_REPUTATION_USER_NOTFOUND: 'You must mention a user to give a reputation point.',
-            COMMAND_SOCIAL_REPUTATION_SELF: 'You cannot give a reputation point to yourself.',
-            COMMAND_SOCIAL_REPUTATION_BOTS: 'You cannot give a reputation point to bots.',
-            COMMAND_SOCIAL_REPUTATION_GIVE: (user) => `You have given a reputation point to **${user}**!`,
+
+            COMMAND_REMINDME_INPUT: 'You must tell me what do you want me to remind you and when.',
+            COMMAND_REMINDME_TIME: 'Your reminder must be at least one minute long.',
+            COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
+
+            COMMAND_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
+            COMMAND_REPUTATION_USABLE: 'You can give a reputation point now.',
+            COMMAND_REPUTATION_USER_NOTFOUND: 'You must mention a user to give a reputation point.',
+            COMMAND_REPUTATION_SELF: 'You cannot give a reputation point to yourself.',
+            COMMAND_REPUTATION_BOTS: 'You cannot give a reputation point to bots.',
+            COMMAND_REPUTATION_GIVE: (user) => `You have given a reputation point to **${user}**!`,
+
+            COMMAND_REPUTATIONS: (points) => `You have a total of ${points} reputation points.`,
+
+            COMMAND_SCOREBOARD_POSITION: (position) => `Your placing position is: ${position}`,
+
+            COMMAND_SETCOLOR: (color) => `Color changed to ${color}`,
+
+            COMMAND_SLOTMACHINES_MONEY: (money, icon) => `|\`❌\`| I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${icon}`,
+            COMMAND_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
+            COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+
+            COMMAND_SOCIAL_PROFILE_NOTFOUND: '|`❌`| I am sorry, but this user profile does not exist.',
+            COMMAND_SOCIAL_PROFILE_BOT: '|`❌`| I am sorry, but Bots do not have a __Member Profile__.',
+            COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points}`,
+            COMMAND_SOCIAL_POINTS: '|`❌`| May you specify the amount of points you want to add or remove?',
+            COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) => `You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${amount === 1 ? 'point' : 'points'} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
 
             COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
             COMMAND_SUBSCRIBE_SUCCESS: (role) => `Successfully granted the role: **${role}**`,
@@ -354,11 +385,74 @@ module.exports = class extends Language {
             COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
             COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
 
-            COMMAND_CONFIGURATION_ABORT: (reason) => `⚙ | Prompt System Cancelled: ${reason === 'TIME' ? 'Timed out.' : 'Successfully exited.'}`,
+            COMMAND_CONFIGURATION_ABORT: (reason) => `|\`⚙\`| Prompt System Cancelled: ${reason === 'TIME' ? 'Timed out.' : 'Successfully exited.'}`,
+
+            // System
+            COMMAND_FEEDBACK: '|`✅`| Thanks for your feedback ❤! You will get a response in DMs as soon as possible.',
+
+            COMMAND_RELOAD: (type, name) => `✅ Reloaded ${type}: ${name}`,
+            COMMAND_RELOAD_ALL: (type) => `✅ Reloaded all ${type}.`,
+            COMMAND_REBOOT: 'Rebooting...',
+            COMMAND_PING: 'Ping?',
+            COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
+            COMMAND_INVITE: (url) => [
+                `To add Skyra to your discord guild: <${url}>`,
+                'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
+            ],
+            COMMAND_HELP_DM: '📥 | Commands have been sent to your DMs.',
+            COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
+            COMMAND_CONF_ADDED: (value, key) => `Successfully added the value \`${value}\` to the key: **${key}**`,
+            COMMAND_CONF_UPDATED: (key, response) => `Successfully updated the key **${key}**: \`${response}\``,
+            COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
+            COMMAND_CONF_REMOVE: (value, key) => `Successfully removed the value \`${value}\` from the key: **${key}**`,
+            COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
+            COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
+            COMMAND_STATS: (STATS, UPTIME, USAGE) => [
+                '= STATISTICS =',
+                `• Users      :: ${STATS.USERS}`,
+                `• Servers    :: ${STATS.GUILDS}`,
+                `• Channels   :: ${STATS.CHANNELS}`,
+                `• Discord.js :: ${STATS.VERSION}`,
+                `• Node.js    :: ${STATS.NODE_JS}`,
+                '',
+                '= UPTIME =',
+                `• Host       :: ${UPTIME.HOST}`,
+                `• Total      :: ${UPTIME.TOTAL}`,
+                `• Client     :: ${UPTIME.CLIENT}`,
+                '',
+                '= HOST USAGE =',
+                `• CPU Load   :: ${USAGE.CPU_LOAD}`,
+                `• RAM +Node  :: ${USAGE.RAM_TOTAL}`,
+                `• RAM Usage  :: ${USAGE.RAM_USED}`
+            ].join('\n'),
+
+            // Tags
+            COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
+            COMMAND_TAGS_ADD_EXISTS: (tag) => `The tag '${tag}' already exists.`,
+            COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
+            COMMAND_TAGS_ADD_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
+            COMMAND_TAGS_REMOVE_NOT_EXISTS: (tag) => `The tag '${tag}' does not exist.`,
+            COMMAND_TAGS_REMOVE_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
+            COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
+            COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
 
             // Tools
-            COMMAND_CALC: (time, output) => `⚙ **Calculated** (${time}μs)${output}`,
+            COMMAND_CALC: (time, output) => `|\`⚙\`| **Calculated** (${time}μs)${output}`,
             COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Failed** (${time}μs)${output}`,
+
+            COMMAND_COLOR: (hex, rgb, hsl) => [
+                `HEX: **${hex}**`,
+                `RGB: **${rgb}**`,
+                `HSL: **${hsl}**`
+            ].join('\n'),
+
+            COMMAND_CURRENCYLAYER_INPUT: (input) => `|\`❌\`| ${input} is either not a valid currency or is not accepted by the API.`,
+            COMMAND_CURRENCYLAYER_ERROR: '|`❌`| **Error** I am sorry, but the API returned a bad response.',
+            COMMAND_CURRENCYLAYER: (money, input, output, converted) => `**${money}** from \`${input}\` to \`${output}\` equals to:${converted}`,
+
+            COMMAND_DEFINE_NOTFOUND: '|`❌`| I could not find a definition for this word.',
+            COMMAND_DEFINE: (input, output) => `Search results for \`${input}\`:\n${output}`,
+
             COMMAND_SERVERINFO_TITLE: (name, id) => `Statistics for **${name}** (ID: **${id}**)`,
             COMMAND_SERVERINFO_TITLES: {
                 CHANNELS: 'Channels',
@@ -386,6 +480,13 @@ module.exports = class extends Language {
                 `• **${newbies}** new users within the last 24h.`
             ].join('\n'),
 
+            // Weather
+            COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
+            COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
+            COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
+            COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit Exceeded. Try again tomorrow.',
+            COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
+
             // Modlogs
             MODLOG_APPEALED: 'The selected moderation case has already been appealed.',
             MODLOG_TIMED: (remaining) => `This action is already scheduled and ending in ${duration(remaining)}`,
@@ -399,6 +500,10 @@ module.exports = class extends Language {
             SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
             SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
             SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the ${PERMS.BAN_MEMBERS} permission?`,
+            SYSTEM_LOADING: '`Loading... please wait.`',
+            SYSTEM_ERROR: '|`❌`| Something happened!',
+
+            LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
             COMMAND_SUCCESS: 'Successfully executed the command.',
 
@@ -430,16 +535,6 @@ module.exports = class extends Language {
             SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',
             SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
             SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
-
-            // Tags
-            COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
-            COMMAND_TAGS_ADD_EXISTS: (tag) => `The tag '${tag}' already exists.`,
-            COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
-            COMMAND_TAGS_ADD_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
-            COMMAND_TAGS_REMOVE_NOT_EXISTS: (tag) => `The tag '${tag}' does not exist.`,
-            COMMAND_TAGS_REMOVE_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
-            COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
-            COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
 
             TYPES_MEMBER_ROLE_UPDATE: 'Member Role Update',
             TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',

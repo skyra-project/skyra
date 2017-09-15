@@ -13,10 +13,10 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [cmd = null], settings) {
+    async run(msg, [cmd = null], settings, i18n) {
         if (cmd) {
             cmd = this.client.commands.get(cmd);
-            if (!cmd) throw msg.language.get('RESOLVER_INVALID_PIECE', 'command', 'command');
+            if (!cmd) throw i18n.get('RESOLVER_INVALID_PIECE', 'command', 'command');
             const info = [
                 `📃 | ***Help Message*** | __**${cmd.name}**__\n${cmd.description}\n`,
                 `📝 | ***Command Usage***\n\`${cmd.usage.fullUsage(msg)}\`\n`,
@@ -37,8 +37,8 @@ module.exports = class extends Command {
         }
 
         return msg.author.send(helpMessage, { split: { char: '\n' } })
-            .then(() => { if (msg.channel.type !== 'dm') msg.send(msg.language.get('COMMAND_HELP_DM')); })
-            .catch(() => { if (msg.channel.type !== 'dm') msg.send(msg.language.get('COMMAND_HELP_NODM')); });
+            .then(() => { if (msg.channel.type !== 'dm') msg.send(i18n.get('COMMAND_HELP_DM')); })
+            .catch(() => { if (msg.channel.type !== 'dm') msg.send(i18n.get('COMMAND_HELP_NODM')); });
     }
 
     /* eslint-disable no-restricted-syntax, no-prototype-builtins */

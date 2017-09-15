@@ -23,7 +23,7 @@ module.exports = class extends Command {
     async add(msg, word, settings, i18n) {
         if (word === null) throw i18n.get('COMMAND_FILTER_UNDEFINED_WORD');
         if (settings.filter.raw.includes(word)) throw i18n.get('COMMAND_FILTER_FILTERED', true);
-        settings.filter.raw = settings.filter.raw.push(word);
+        settings.filter.raw.push(word);
         settings.updateFilter();
         await settings.update({ filter: { raw: settings.filter.raw } });
         return msg.send(i18n.get('COMMAND_FILTER_ADDED', word));

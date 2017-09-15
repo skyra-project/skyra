@@ -30,12 +30,16 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [raw]) {
+    async run(msg, [raw], settings, i18n) {
         const input = /^(.+)\sin\s(.+)$/.exec(raw);
-        if (!input) throw 'You must tell me what do you want me to remind you and when.';
+        if (input === null)
+            throw i18n.get('COMMAND_REMINDME_INPUT');
 
         const addtime = new Timer(input[2]).Duration;
-        if (addtime < 60000) throw 'Your reminder must be at least one minute long';
+
+        if (addtime < 60000)
+            throw i18n.get('COMMAND_REMINDME_TIME');
+
         const id = await this.client.handler.clock.create({
             type: 'reminder',
             timestamp: addtime + Date.now(),
@@ -43,7 +47,7 @@ module.exports = class extends Command {
             content: input[1]
         }).catch((err) => { throw err; });
 
-        return msg.send(`Dear ${msg.author}, a reminder with ID \`${id}\` has been created.`);
+        return msg.send(i18n.get('COMMAND_REMINDME_CREATE', id));
     }
 
 };

@@ -12,8 +12,9 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
-        await msg.send('Rebooting...').catch(() => null);
+    async run(msg, params, settings, i18n) {
+        await msg.send(i18n.get('COMMAND_REBOOT'))
+            .catch(() => null);
         process.exit();
     }
 

@@ -54,7 +54,8 @@ module.exports = class extends Command {
             fetchAvatar(user, 256)
         ]);
 
-        const TITLE = i18n.language.COMMAND_LEVEL;
+        const TITLE = i18n.language.COMMAND_LEVEL
+            || this.client.languages.get('en-US').language.COMMAND_LEVEL;
 
         return new Canvas(640, 174)
             // Draw the background

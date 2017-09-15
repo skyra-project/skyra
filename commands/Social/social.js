@@ -34,24 +34,25 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [action, user = msg.author, value = null]) {
-        const profile = await this.searchProfile(msg, user);
-        if (!profile) throw 'profile not found.';
+    async run(msg, [action, user = msg.author, value = null], settings, i18n) {
+        const profile = await this.searchProfile(msg, user, i18n);
+        if (!profile) throw i18n.get('COMMAND_SOCIAL_PROFILE_NOTFOUND');
         if (action === 'delete') {
             await this.client.handler.social.local.get(msg.guild.id).removeMember(user.id);
-            return msg.alert(`Successfully deleted the profile ${user.tag}, with ${profile.score}`);
+            return msg.send(i18n.get('COMMAND_SOCIAL_PROFILE_DELETE', user.tag, profile.score));
         }
-        if (!value) throw 'you must specify an amount of money.';
+        if (value === null)
+            throw i18n.get('COMMAND_SOCIAL_POINTS');
 
         const old = profile.score;
         const amount = action === 'add' ? old + value : Math.max(old - value, 0);
         await profile.update(amount);
 
-        return msg.alert(`Dear ${msg.author}, you have just ${action === 'add' ? 'add' : 'remov'}ed ${value} point${amount !== 1 ? 's' : ''} from user ${user.tag}. Before: ${old}; Now: ${amount}`);
+        return msg.send(i18n.get('COMMAND_SOCIAL_UPDATE', action, value, user.tag, old, amount));
     }
 
-    async searchProfile(msg, user) {
-        if (user.bot) throw "you can't modify bot profiles, since they don't have one.";
+    async searchProfile(msg, user, i18n) {
+        if (user.bot) throw i18n.get('COMMAND_SOCIAL_PROFILE_BOT');
         return this.client.handler.social.local.getMember(msg.guild.id, user.id) || null;
     }
 

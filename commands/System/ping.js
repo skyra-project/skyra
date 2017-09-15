@@ -11,9 +11,9 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
-        return msg.send('Ping?')
-            .then(mes => mes.edit(`Pong! (Roundtrip took: ${mes.createdTimestamp - msg.createdTimestamp}ms. Heartbeat: ${Math.round(this.client.ping)}ms.)`));
+    async run(msg, params, settings, i18n) {
+        const message = await msg.send(i18n.get('COMMAND_PING'));
+        return message.edit(i18n.get('COMMAND_PINGPONG', message.createdTimestamp - msg.createdTimestamp, Math.round(this.client.ping)));
     }
 
 };

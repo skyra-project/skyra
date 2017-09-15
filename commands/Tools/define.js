@@ -1,4 +1,4 @@
-const { Command, Constants: { httpResponses } } = require('../../index');
+const { Command } = require('../../index');
 const { XmlEntities } = require('html-entities');
 const { decode } = new XmlEntities();
 const snekfetch = require('snekfetch');
@@ -33,19 +33,20 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input]) {
+    async run(msg, [input], settings, i18n) {
         const data = await request(encodeURIComponent(input));
-        if (!data.tuc || !data.tuc[0]) throw httpResponses(404);
+        if (!data.tuc || !data.tuc[0])
+            throw i18n.get('COMMAND_DEFINE_NOTFOUND');
 
         const final = [];
         let index = 1;
-        for (let item of Object.entries(data.tuc.find(entry => entry.meanings).meanings.slice(0, 5))) { // eslint-disable-line no-restricted-syntax
-            item = decode(item[1].text.replace(/<\/?i>/g, ''));
+        for (let item of Object.entries(data.tuc.find(entry => entry.meanings).meanings.slice(0, 5))) {
+            item = decode(item[1].text.replace(/<\/?i>/g, '').replace(/\[\/?i\]/g, ''));
             final.push(`**\`${index}\` ❯** ${item.replace(/`/g, '\\`')}`);
             index++;
         }
 
-        return msg.send(`Search results for \`${input}\`:\n${final.join('\n')}`);
+        return msg.send(i18n.get('COMMAND_DEFINE', input, final.join('\n')));
     }
 
 };

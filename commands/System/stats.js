@@ -16,25 +16,34 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
-        return msg.send([
-            '= STATISTICS =',
-            `• Users      :: ${this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()}`,
-            `• Servers    :: ${this.client.guilds.size.toLocaleString()}`,
-            `• Channels   :: ${this.client.channels.size.toLocaleString()}`,
-            `• Discord.js :: v${version}`,
-            `• Node.js    :: ${process.version}`,
-            '',
-            '= UPTIME =',
-            `• Host       :: ${moment.duration(uptime() * 1000).format('d[ days], h[:]mm[:]ss')}`,
-            `• Total      :: ${moment.duration(process.uptime() * 1000).format('d[ days], h[:]mm[:]ss')}`,
-            `• Client     :: ${moment.duration(this.client.uptime).format('d[ days], h[:]mm[:]ss')}`,
-            '',
-            '= HOST USAGE =',
-            `• CPU Load   :: ${Math.round(loadavg()[0] * 10000) / 100}%`,
-            `• RAM +Node  :: ${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,
-            `• RAM Usage  :: ${Math.round(100 * (process.memoryUsage().heapUsed / 1048576)) / 100}MB`
-        ], { code: 'asciidoc' });
+    async run(msg, params, settings, i18n) {
+        return msg.send(i18n.get('COMMAND_STATS', this.STATS, this.UPTIME, this.USAGE), { code: 'asciidoc' });
+    }
+
+    get STATS() {
+        return {
+            USERS: this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
+            GUILDS: this.client.guilds.size.toLocaleString(),
+            CHANNELS: this.client.channels.size.toLocaleString(),
+            VERSION: `v${version}`,
+            NODE_JS: process.version
+        };
+    }
+
+    get UPTIME() {
+        return {
+            HOST: moment.duration(uptime() * 1000).format('d[ days], h[:]mm[:]ss'),
+            TOTAL: moment.duration(process.uptime() * 1000).format('d[ days], h[:]mm[:]ss'),
+            CLIENT: moment.duration(this.client.uptime).format('d[ days], h[:]mm[:]ss')
+        };
+    }
+
+    get USAGE() {
+        return {
+            CPU_LOAD: `${Math.round(loadavg()[0] * 10000) / 100}%`,
+            RAM_TOTAL: `${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,
+            RAM_USED: `${Math.round(100 * (process.memoryUsage().heapUsed / 1048576)) / 100}MB`
+        };
     }
 
 };

@@ -29,7 +29,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input]) {
+    async run(msg, [input], settings, i18n) {
         const { hex, b10 } = colorUtil.parse(input);
         const color = hex.toString().slice(1);
         await msg.author.profile.update({ color });
@@ -37,7 +37,7 @@ module.exports = class extends Command {
         const embed = new MessageEmbed()
             .setColor(b10.value)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
-            .setDescription(`Colour changed to ${hex}`);
+            .setDescription(i18n.get('COMMAND_SETCOLOR', hex));
 
         return msg.send({ embed });
     }

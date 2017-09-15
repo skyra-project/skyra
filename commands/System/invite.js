@@ -11,8 +11,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg) {
-        return msg.send(msg.language.get('COMMAND_INVITE', this.client));
+    async run(msg, params, settings, i18n) {
+        return msg.send(i18n.get('COMMAND_INVITE', this.client.invite));
     }
 
 };

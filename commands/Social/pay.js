@@ -27,27 +27,36 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [money, user]) {
-        if (msg.author.id === user.id) throw msg.language.get('COMMAND_PAY_SELF');
-        else if (money <= 0) throw msg.language.get('RESOLVER_POSITIVE_AMOUNT');
-        else if (msg.author.profile.money < money) throw msg.language.get('COMMAND_SOCIAL_MISSING_MONEY', money, msg.author.profile.money, Command.shiny(msg));
-        else if (user.bot) return msg.send(msg.language.get('COMMAND_SOCIAL_PAY_BOT'));
+    async run(msg, [money, user], settings, i18n) {
+        if (msg.author.id === user.id)
+            throw i18n.get('COMMAND_PAY_SELF');
 
-        return msg.prompt(msg.language.get('COMMAND_PAY_PROMPT', user.username, money, Command.shiny(msg)))
-            .then(() => this.acceptPayment(msg, user, money))
-            .catch(() => this.denyPayment(msg));
+        if (money <= 0)
+            throw i18n.get('RESOLVER_POSITIVE_AMOUNT');
+
+        if (msg.author.profile.money < money)
+            throw i18n.get('COMMAND_PAY_MISSING_MONEY', money, msg.author.profile.money, Command.shiny(msg));
+
+        if (user.bot)
+            return msg.send(i18n.get('COMMAND_SOCIAL_PAY_BOT'));
+
+        return msg.prompt(i18n.get('COMMAND_PAY_PROMPT', user.username, money, Command.shiny(msg)))
+            .then(() => this.acceptPayment(msg, user, money, i18n))
+            .catch(() => this.denyPayment(msg, i18n));
     }
 
-    async acceptPayment(msg, user, money) {
+    async acceptPayment(msg, user, money, i18n) {
         const userProfile = msg.author.profile;
-        if (userProfile.money < money) throw msg.language.get('COMMAND_SOCIAL_MISSING_MONEY', money, userProfile, Command.shiny(msg));
+        if (userProfile.money < money)
+            throw i18n.get('COMMAND_PAY_MISSING_MONEY', money, userProfile, Command.shiny(msg));
+
         await userProfile.use(money).catch(Command.handleError);
         await user.profile.add(money).catch(Command.handleError);
-        return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money, Command.shiny(msg)));
+        return msg.alert(i18n.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money, Command.shiny(msg)));
     }
 
-    async denyPayment(msg) {
-        return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_DENY'));
+    async denyPayment(msg, i18n) {
+        return msg.alert(i18n.get('COMMAND_PAY_PROMPT_DENY'));
     }
 
 };

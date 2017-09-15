@@ -32,38 +32,38 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [action, ...input], settings) {
-        if (action === 'list') return this.list(msg, settings);
+    async run(msg, [action, ...input], settings, i18n) {
+        if (action === 'list') return this.list(msg, settings, i18n);
         if (!input[0]) throw 'write `Skyra, roles list` to get a list of all roles, or `Skyra, roles claim <role1, role2, ...>` to claim them.';
         const roles = input.join(' ').split(', ');
-        return this[action](msg, settings, roles);
+        return this[action](msg, settings, roles, i18n);
     }
 
-    async claim(msg, settings, roles) {
+    async claim(msg, settings, roles, i18n) {
         const message = [];
         const { giveRoles, unlistedRoles, existentRoles, invalidRoles } = await this.roleAddCheck(msg, settings, roles);
-        if (existentRoles) message.push(`You already have the following roles: \`${existentRoles.join('`, `')}\``);
-        if (unlistedRoles) message.push(`The following roles are not public: \`${unlistedRoles.join('`, `')}\``);
-        if (invalidRoles) message.push(`Roles not found: \`${invalidRoles.join('`, `')}\``);
+        if (existentRoles) message.push(i18n.get('COMMAND_ROLES_CLAIM_EXISTENT', existentRoles.join('`, `')));
+        if (unlistedRoles) message.push(i18n.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
+        if (invalidRoles) message.push(i18n.get('COMMAND_ROLES_NOT_FOUND', invalidRoles.join('`, `')));
         if (giveRoles) {
             if (giveRoles.length === 1) await msg.member.addRole(giveRoles[0]).catch(Command.handleError);
             else await msg.member.addRoles(giveRoles).catch(Command.handleError);
-            message.push(`The following roles have been added to your profile: \`${giveRoles.map(role => role.name).join('`, `')}\``);
+            message.push(i18n.get('COMMAND_ROLES_CLAIM_GIVEN', giveRoles.map(role => role.name).join('`, `')));
         }
 
         return msg.send(message.join('\n'));
     }
 
-    async unclaim(msg, settings, roles) {
+    async unclaim(msg, settings, roles, i18n) {
         const message = [];
         const { removeRoles, unlistedRoles, nonexistentRoles, invalidRoles } = await this.roleRemoveCheck(msg, settings, roles);
-        if (nonexistentRoles) message.push(`You do not have the following roles: \`${nonexistentRoles.join('`, `')}\``);
-        if (unlistedRoles) message.push(`The following roles are not public: \`${unlistedRoles.join('`, `')}\``);
-        if (invalidRoles) message.push(`Roles not found: \`${invalidRoles.join('`, `')}\``);
+        if (nonexistentRoles) message.push(i18n.get('COMMAND_ROLES_UNCLAIM_UNEXISTENT', nonexistentRoles.join('`, `')));
+        if (unlistedRoles) message.push(i18n.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
+        if (invalidRoles) message.push(i18n.get('COMMAND_ROLES_NOT_FOUND', invalidRoles.join('`, `')));
         if (removeRoles) {
             if (removeRoles.length === 1) await msg.member.removeRole(removeRoles[0]).catch(Command.handleError);
             else await msg.member.removeRoles(removeRoles).catch(Command.handleError);
-            message.push(`The following roles have been removed from your profile: \`${removeRoles.map(role => role.name).join('`, `')}\``);
+            message.push(i18n.get('COMMAND_ROLES_UNCLAIM_REMOVED', removeRoles.map(role => role.name).join('`, `')));
         }
 
         return msg.send(message.join('\n'));
@@ -113,12 +113,15 @@ module.exports = class extends Command {
         };
     }
 
-    list(msg, settings) {
-        if (settings.roles.public.length === 0) throw 'this server does not have a public role configured.';
+    list(msg, settings, i18n) {
+        if (settings.roles.public.length === 0)
+            throw i18n.get('COMMAND_ROLES_LIST_EMPTY');
+
         const theRoles = settings.roles.public.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
+
         const embed = new MessageEmbed()
             .setColor(msg.color)
-            .setTitle(`Public roles for ${msg.guild}`)
+            .setTitle(i18n.get('COMMAND_ROLES_LIST_TITLE', msg.guild))
             .setDescription(theRoles.join('\n'));
         return msg.send({ embed });
     }

@@ -1,4 +1,4 @@
-const { Command, Constants: { httpResponses }, util } = require('../../index');
+const { Command, util } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 
@@ -18,21 +18,28 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input]) {
+    async run(msg, [input], settings, i18n) {
         input = this.parseURL(input);
-        const text = await snekfetch.get(baseURL + input).then(data => JSON.parse(data.text)).catch(Command.handleError);
-        if (text.query.pageids[0] === '-1') throw httpResponses(404);
+        const text = await snekfetch.get(baseURL + input)
+            .then(data => JSON.parse(data.text))
+            .catch(Command.handleError);
+
+        if (text.query.pageids[0] === '-1')
+            throw i18n.get('COMMAND_WIKIPEDIA_NOTFOUND');
+
         const url = `https://en.wikipedia.org/wiki/${input}`;
         const content = text.query.pages[text.query.pageids[0]];
-        const definition = this.content(content.extract, url);
+        const definition = this.content(content.extract, url, i18n);
 
         const embed = new MessageEmbed()
             .setTitle(content.title)
             .setURL(url)
             .setColor(0x05C9E8)
             .setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
-            .setDescription(`**Description**:\n${definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' ')}`)
-            .setFooter('© Wikipedia - Creative Commons Attribution-ShareAlike 3.0');
+            .setDescription(definition
+                .replace(/\n{2,}/g, '\n')
+                .replace(/\s{2,}/g, ' '))
+            .setFooter('© Wikipedia');
 
         return msg.send({ embed });
     }
@@ -47,9 +54,9 @@ module.exports = class extends Command {
         );
     }
 
-    content(definition, url) {
+    content(definition, url, i18n) {
         if (definition.length < 750) return definition;
-        return `${util.splitText(definition, 750)}... [continue reading](${url})`;
+        return i18n.get('SYSTEM_TEXT_TRUNCATED', util.splitText(definition, 750), url);
     }
 
 };

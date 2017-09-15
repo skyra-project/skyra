@@ -93,35 +93,39 @@ module.exports = class extends Language {
         this.language = {
             DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
             DEFAULT_LANGUAGE: 'Default Language',
-            SETTING_GATEWAY_EXPECTS_GUILD: 'The parameter <Guild> expects either a Guild or a Guild Object.',
-            SETTING_GATEWAY_VALUE_FOR_KEY_NOEXT: (data, key) => `The value ${data} for the key ${key} does not exist.`,
-            SETTING_GATEWAY_VALUE_FOR_KEY_ALREXT: (data, key) => `The value ${data} for the key ${key} already exists.`,
-            SETTING_GATEWAY_SPECIFY_VALUE: 'You must specify the value to add or filter.',
-            SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `The key ${key} is not an Array.`,
-            SETTING_GATEWAY_KEY_NOEXT: (key) => `The key ${key} does not exist in the current data schema.`,
-            SETTING_GATEWAY_INVALID_TYPE: 'The type parameter must be either add or remove.',
 
-            RESOLVER_INVALID_PIECE: (name, piece) => `${name} must be a valid ${piece} name.`,
-            RESOLVER_INVALID_MSG: (name) => `${name} must be a valid message id.`,
-            RESOLVER_INVALID_USER: (name) => `${name} must be a mention or valid user id.`,
-            RESOLVER_INVALID_MEMBER: (name) => `${name} must be a mention or valid user id.`,
-            RESOLVER_INVALID_CHANNEL: (name) => `${name} must be a channel tag or valid channel id.`,
-            RESOLVER_INVALID_GUILD: (name) => `${name} must be a valid guild id.`,
-            RESOLVER_INVALID_ROLE: (name) => `${name} must be a role mention or role id.`,
-            RESOLVER_INVALID_LITERAL: (name) => `Your option did not match the only possibility: ${name}`,
-            RESOLVER_INVALID_BOOL: (name) => `${name} must be true or false.`,
-            RESOLVER_INVALID_INT: (name) => `${name} must be an integer.`,
-            RESOLVER_INVALID_FLOAT: (name) => `${name} must be a valid number.`,
-            RESOLVER_INVALID_URL: (name) => `${name} must be a valid url.`,
+            SETTING_GATEWAY_FOLDER_NOTEXISTS: (folder) => `The key '${folder}' does not exist in the current schema.`,
+            SETTING_GATEWAY_KEY_NOTEXISTS: (folder, key) => `The key \`${folder}\`::\`${key}\` does not exist in the current schema.`,
+            SETTING_GATEWAY_ADD_OR_REMOVE: 'The type parameter must be either \'add\' or \'remove\'.',
+            SETTING_GATEWAY_NOT_ARRAY: (folder, key) => `The key \`${folder}\`::\`${key}\` does not accept multiple values.`,
+            SETTING_GATEWAY_REQUIRE_VALUE: 'You must specify the value to add or remove.',
+            SETTING_GATEWAY_ARRAY_ADD_EXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\`::\`${key}\` already exists.`,
+            SETTING_GATEWAY_ARRAY_REMOVE_NOTEXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\`::\`${key}\` does not exist.`,
+
+            RESOLVER_INVALID_PIECE: (name, piece) => `'${name}' must be a valid ${piece} name.`,
+            RESOLVER_INVALID_MSG: (name) => `'${name}' must be a valid message id.`,
+            RESOLVER_INVALID_USER: (name) => `'${name}' must be a mention or valid user id.`,
+            RESOLVER_INVALID_MEMBER: (name) => `'${name}' must be a mention or valid user id.`,
+            RESOLVER_INVALID_CHANNEL: (name) => `'${name}' must be a channel tag or valid channel id.`,
+            RESOLVER_INVALID_TEXTCHANNEL: (name) => `'${name}' must be a text channel tag or valid text channel id.`,
+            RESOLVER_INVALID_VOICECHANNEL: (name) => `'${name}' must be a voice channel tag or valid voice channel id.`,
+            RESOLVER_INVALID_GUILD: (name) => `'${name}' must be a valid guild id.`,
+            RESOLVER_INVALID_ROLE: (name) => `'${name}' must be a role mention or role id.`,
+            RESOLVER_INVALID_LITERAL: (name) => `Your option did not match the only possibility: '${name}'`,
+            RESOLVER_INVALID_BOOL: (name) => `'${name}' must be true or false.`,
+            RESOLVER_INVALID_INT: (name) => `'${name}' must be an integer.`,
+            RESOLVER_INVALID_FLOAT: (name) => `'${name}' must be a valid number.`,
+            RESOLVER_INVALID_URL: (name) => `'${name}' must be a valid url.`,
+            RESOLVER_INVALID_ATTACHMENT: (name) => `'${name}' must be a valid message attachment or url.`,
             RESOLVER_STRING_SUFFIX: ' characters',
-            RESOLVER_MINMAX_EXACTLY: (name, min, suffix) => `${name} must be exactly ${min}${suffix}.`,
-            RESOLVER_MINMAX_BOTH: (name, min, max, suffix) => `${name} must be between ${min} and ${max}${suffix}.`,
-            RESOLVER_MINMAX_MIN: (name, min, suffix) => `${name} must be greater than ${min}${suffix}.`,
-            RESOLVER_MINMAX_MAX: (name, max, suffix) => `${name} must be less than ${max}${suffix}.`,
+            RESOLVER_MINMAX_EXACTLY: (name, min, suffix) => `'${name}' must be exactly ${min}${suffix}.`,
+            RESOLVER_MINMAX_BOTH: (name, min, max, suffix) => `'${name}' must be between ${min} and ${max}${suffix}.`,
+            RESOLVER_MINMAX_MIN: (name, min, suffix) => `'${name}' must be greater than ${min}${suffix}.`,
+            RESOLVER_MINMAX_MAX: (name, max, suffix) => `'${name}' must be less than ${max}${suffix}.`,
             RESOLVER_POSITIVE_AMOUNT: 'A positive non-zero number is required for this argument.',
 
             COMMANDMESSAGE_MISSING: 'Missing one or more required arguments after end of input.',
-            COMMANDMESSAGE_MISSING_REQUIRED: (name) => `${name} is a required argument.`,
+            COMMANDMESSAGE_MISSING_REQUIRED: (name) => `'${name}' is a required argument.`,
             COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Missing a required option: (${possibles})`,
             COMMANDMESSAGE_NOMATCH: (possibles) => `Your option didn't match any of the possibilities: (${possibles})`,
 
@@ -129,6 +133,7 @@ module.exports = class extends Language {
             CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
             CONST_MONITOR_WORDFILTER: 'Filtered Word',
 
+            // Monitors
             MONITOR_NOINVITE: (user) => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
             MONITOR_WORDFILTER: (user) => `|\`❌\`| Pardon, dear ${user}, you said something that is not allowed in this server.`,
             MONITOR_NMS_MESSAGE: (user) => [
@@ -140,12 +145,12 @@ module.exports = class extends Language {
             MONITOR_COMMAND_HANDLER_ABORTED: 'Aborted',
             MONITOR_SOCIAL_ACHIEVEMENT: 'Congratulations dear %MEMBER%, you achieved the role %ROLE%',
 
+            // Inhibitors
             INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${remaining} seconds.`,
             INHIBITOR_GUILDONLY: 'This command is designed to run only in servers.',
             INHIBITOR_DISABLED: 'This command is currently disabled',
             INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing.map(perm => PERMS[perm] || perm)}**`,
             INHIBITOR_PERMISSIONS: 'You do not have permission to use this command',
-            INHIBITOR_REQUIRED_SETTINGS: (settings) => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length > 1 ? 's' : ''} and cannot run.`,
             INHIBITOR_SPAM: (channel) => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
 
             // Commands#anime
@@ -194,6 +199,7 @@ module.exports = class extends Language {
             COMMAND_RNG_MISSING: 'Please write at least two options separated by comma.',
             COMMAND_RNG_DUP: (words) => `Why would I accept duplicated words? '${words}'.`,
             COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
+
             // Commands#misc
             COMMAND_UNICODE: (string) => `There is your converted message:\n${string}`,
 
@@ -214,7 +220,6 @@ module.exports = class extends Language {
             COMMAND_TIME_SCHEDULED: (title, user, time) => `✅ Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(time)}`,
 
             // ## General
-
             COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
             COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
             COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
@@ -263,12 +268,11 @@ module.exports = class extends Language {
             COMMAND_LIST_ADVERTISEMENT_EMPTY: 'Nobody has an advertising url in its playing game.',
             COMMAND_LIST_ROLE_EMPTY: 'This role has no members.',
 
-            /* Utils */
             COMMAND_ROLE_HIGHER: 'The selected member has higher or equal role position than you.',
             COMMAND_USERSELF: 'Why would you do that to yourself?',
             COMMAND_TOSKYRA: 'Eww... I thought you loved me! 💔',
 
-            // OVERWATCH
+            // Commands#overwatch
             COMMAND_PLATFORM_REMOVED: (role) => `Your game platform (**${role}**) has been removed.`,
             COMMAND_PLATFORM_UPDATED: (role) => `Your game platform has been updated to: **${role}**`,
             COMMAND_REGION_REMOVED: (role) => `Your game region (**${role}**) has been removed.`,
@@ -278,7 +282,7 @@ module.exports = class extends Language {
             MISSING_ROLE: 'You do not have this role.',
             HAS_ROLE: 'You already have this role.',
 
-            // SOCIAL
+            // Commands#social
             COMMAND_AUTOROLE_POINTS_REQUIRED: 'You must input a valid amount of points.',
             COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: 'This role is not configured as an autorole. Use the add type instead.',
             COMMAND_AUTOROLE_UPDATE: (role, points, before) => `Updated autorole: ${role.name} (${role.id}). Points required: ${points} (before: ${before})`,
@@ -369,14 +373,14 @@ module.exports = class extends Language {
 
             COMMAND_SETCOLOR: (color) => `Color changed to ${color}`,
 
-            COMMAND_SLOTMACHINES_MONEY: (money, icon) => `|\`❌\`| I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${icon}`,
+            COMMAND_SLOTMACHINES_MONEY: (money, icon) => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${icon}`,
             COMMAND_SLOTMACHINES_WIN: (roll, winnings, icon) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${icon}!`,
             COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 
-            COMMAND_SOCIAL_PROFILE_NOTFOUND: '|`❌`| I am sorry, but this user profile does not exist.',
-            COMMAND_SOCIAL_PROFILE_BOT: '|`❌`| I am sorry, but Bots do not have a __Member Profile__.',
+            COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
+            COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
             COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points}`,
-            COMMAND_SOCIAL_POINTS: '|`❌`| May you specify the amount of points you want to add or remove?',
+            COMMAND_SOCIAL_POINTS: 'May you specify the amount of points you want to add or remove?',
             COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) => `You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${amount === 1 ? 'point' : 'points'} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
 
             COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
@@ -387,7 +391,7 @@ module.exports = class extends Language {
 
             COMMAND_CONFIGURATION_ABORT: (reason) => `|\`⚙\`| Prompt System Cancelled: ${reason === 'TIME' ? 'Timed out.' : 'Successfully exited.'}`,
 
-            // System
+            // Commands#system
             COMMAND_FEEDBACK: '|`✅`| Thanks for your feedback ❤! You will get a response in DMs as soon as possible.',
 
             COMMAND_RELOAD: (type, name) => `✅ Reloaded ${type}: ${name}`,
@@ -401,12 +405,14 @@ module.exports = class extends Language {
             ],
             COMMAND_HELP_DM: '📥 | Commands have been sent to your DMs.',
             COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
-            COMMAND_CONF_ADDED: (value, key) => `Successfully added the value \`${value}\` to the key: **${key}**`,
-            COMMAND_CONF_UPDATED: (key, response) => `Successfully updated the key **${key}**: \`${response}\``,
+
+            COMMAND_CONF_SELECTKEY: (keys) => `Please, choose between one of the following keys: ${keys}`,
+            COMMAND_CONF_ADDED: (folder, key, value) => `Successfully added the value \`${value}\` to the key: \`${folder}\`::\`${key}\``,
+            COMMAND_CONF_UPDATED: (folder, key, response) => `Successfully updated the key \`${folder}\`::\`${key}\`: \`${response}\``,
             COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
-            COMMAND_CONF_REMOVE: (value, key) => `Successfully removed the value \`${value}\` from the key: **${key}**`,
-            COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
-            COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
+            COMMAND_CONF_REMOVE: (folder, key, value) => `Successfully removed the value \`${value}\` from the key: \`${folder}\`::\`${key}\``,
+            COMMAND_CONF_GET: (folder, key, value) => `The value for the key \`${folder}\`::\`${key}\` is: \`${value}\``,
+            COMMAND_CONF_RESET: (folder, key, response) => `The key \`${folder}\`::\`${key}\` has been reset to: \`${response}\``,
             COMMAND_STATS: (STATS, UPTIME, USAGE) => [
                 '= STATISTICS =',
                 `• Users      :: ${STATS.USERS}`,
@@ -426,7 +432,7 @@ module.exports = class extends Language {
                 `• RAM Usage  :: ${USAGE.RAM_USED}`
             ].join('\n'),
 
-            // Tags
+            // Commands#tags
             COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
             COMMAND_TAGS_ADD_EXISTS: (tag) => `The tag '${tag}' already exists.`,
             COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
@@ -436,7 +442,7 @@ module.exports = class extends Language {
             COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
             COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
 
-            // Tools
+            // Commands#tools
             COMMAND_CALC: (time, output) => `|\`⚙\`| **Calculated** (${time}μs)${output}`,
             COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Failed** (${time}μs)${output}`,
 
@@ -446,12 +452,38 @@ module.exports = class extends Language {
                 `HSL: **${hsl}**`
             ].join('\n'),
 
-            COMMAND_CURRENCYLAYER_INPUT: (input) => `|\`❌\`| ${input} is either not a valid currency or is not accepted by the API.`,
-            COMMAND_CURRENCYLAYER_ERROR: '|`❌`| **Error** I am sorry, but the API returned a bad response.',
+            COMMAND_CURRENCYLAYER_INPUT: (input) => `${input} is either not a valid currency or is not accepted by the API.`,
+            COMMAND_CURRENCYLAYER_ERROR: 'I am sorry, but the API returned a bad response.',
             COMMAND_CURRENCYLAYER: (money, input, output, converted) => `**${money}** from \`${input}\` to \`${output}\` equals to:${converted}`,
 
-            COMMAND_DEFINE_NOTFOUND: '|`❌`| I could not find a definition for this word.',
+            COMMAND_DEFINE_NOTFOUND: 'I could not find a definition for this word.',
             COMMAND_DEFINE: (input, output) => `Search results for \`${input}\`:\n${output}`,
+
+            COMMAND_EMOJI_CUSTOM: (emoji, id) => [
+                `→ \`Emoji\` :: **${emoji}**`,
+                '→ `Type` :: **Custom**',
+                `→ \`ID\` :: **${id}**`
+            ].join('\n'),
+            COMMAND_EMOJI_TWEMOJI: (emoji, id) => [
+                `→ \`Emoji\` :: \\${emoji}`,
+                '→ `Type` :: **Twemoji**',
+                `→ \`ID\` :: **${id}**`
+            ].join('\n'),
+            COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' is not a valid emoji.`,
+
+            COMMAND_GOOGL_LONG: (url) => `**Shortened URL: [${url}](${url})**`,
+            COMMAND_GOOGL_SHORT: (url) => `**Expanded URL: [${url}](${url})**`,
+
+            COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
+
+            COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',
+            COMMAND_ROLES_LIST_TITLE: (guild) => `List of Public Roles for ${guild}`,
+            COMMAND_ROLES_CLAIM_EXISTENT: (roles) => `You already have the following roles: \`${roles}\``,
+            COMMAND_ROLES_CLAIM_GIVEN: (roles) => `The following roles have been added to your profile: \`${roles}\``,
+            COMMAND_ROLES_UNCLAIM_UNEXISTENT: (roles) => `You do not have the following roles: \`${roles}\``,
+            COMMAND_ROLES_UNCLAIM_REMOVED: (roles) => `The following roles have been removed from your profile: \`${roles}\``,
+            COMMAND_ROLES_NOT_PUBLIC: (roles) => `The following roles are not public: \`${roles}\``,
+            COMMAND_ROLES_NOT_FOUND: (roles) => `Roles not found: \`${roles}\``,
 
             COMMAND_SERVERINFO_TITLE: (name, id) => `Statistics for **${name}** (ID: **${id}**)`,
             COMMAND_SERVERINFO_TITLES: {
@@ -480,7 +512,36 @@ module.exports = class extends Language {
                 `• **${newbies}** new users within the last 24h.`
             ].join('\n'),
 
-            // Weather
+            COMMAND_URBAN_NOTFOUND: 'I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?',
+            COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',
+            SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continue reading](${url})`,
+            COMMAND_URBAN_DESCRIPTION: (index, pages, definition, example, author) => [
+                `→ \`Definition\` :: ${index}/${pages}\n_${definition}`,
+                `→ \`Example\` :: ${example}`,
+                `→ \`Author\` :: ${author}`
+            ].join('\n\n'),
+
+            COMMAND_WHOIS_MEMBER: (member) => [
+                `${member.nickname ? `aka **${member.nickname}**.\n` : ''}`,
+                `With an ID of \`${member.user.id}\`,`,
+                `this user is **${member.user.presence.status}**${member.user.presence.game ? `, playing: **${member.user.presence.game.name}**` : '.'}`,
+                '\n',
+                `\nJoined Discord on ${moment.utc(member.user.createdAt).format('D/MM/YYYY [at] HH:mm:ss')}`,
+                `\nJoined ${member.guild.name} on ${moment.utc(member.joinedAt).format('D/MM/YYYY [at] HH:mm:ss')}`
+            ].join(' '),
+            COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
+            COMMAND_WHOIS_USER: (user) => [
+                `With an ID of \`${user.id}\``,
+                '\n',
+                `Joined Discord at ${moment.utc(user.createdAt).format('D/MM/YYYY [at] HH:mm:ss')}`
+            ].join(' '),
+
+            COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
+
+            COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
+            COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number. Because I am unable to find something at this index.',
+
+            // Commands#weather
             COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
             COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
             COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
@@ -501,7 +562,8 @@ module.exports = class extends Language {
             SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
             SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the ${PERMS.BAN_MEMBERS} permission?`,
             SYSTEM_LOADING: '`Loading... please wait.`',
-            SYSTEM_ERROR: '|`❌`| Something happened!',
+            SYSTEM_ERROR: 'Something happened!',
+            SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
 
             LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
@@ -543,11 +605,10 @@ module.exports = class extends Language {
             REQUIRE_USER: 'You must input a valid username, tag, or mention.',
             REQUIRE_ROLE: 'You must input a valid role name or mention',
 
-            CONST_USER: 'User',
-            CONST_USERS: 'Users',
-            CONST_CHANNEL: 'Channel',
-            CONST_CHANNELS: 'Channels',
-            CONST_OWNER: 'Owner'
+            ERROR_WTF: 'What a Terrible Failure! I am very sorry!',
+            ERROR_STRING: (mention, message) => `Dear ${mention}, ${message}`,
+
+            CONST_USERS: 'Users'
         };
     }
 

@@ -15,30 +15,24 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [emoji]) {
+    async run(msg, [emoji], settings, i18n) {
         if (/^<:\w{2,32}:\d{17,21}>$/.test(emoji)) {
             const defractured = /^<:(\w{2,32}):(\d{17,21})>$/.exec(emoji);
             const emojiName = defractured[1];
             const emojiID = defractured[2];
             const emojiURL = `https://cdn.discordapp.com/emojis/${emojiID}.png`;
 
-            return msg.send([
-                `Emoji: **${emojiName}**`,
-                'Type: **Custom**',
-                `ID: **${emojiID}**`
-            ].join('\n'), { files: [{ attachment: emojiURL }] });
+            return msg.send(i18n.get('COMMAND_EMOJI_CUSTOM', emojiName, emojiID), { files: [{ attachment: emojiURL }] });
         }
-        if (!/^[^a-zA-Z0-9]{1,4}$/.test(emoji)) throw `${emoji} is not a valid emoji.`;
+        if (/^[^a-zA-Z0-9]{1,4}$/.test(emoji) === false)
+            throw i18n.get('COMMAND_EMOJI_INVALID', emoji);
+
         const r = this.emoji(emoji);
 
         const emojiURL = `https://twemoji.maxcdn.com/2/72x72/${r}.png`;
         const { body } = await snekfetch.get(emojiURL);
 
-        return msg.send([
-            `Emoji: \\${emoji}`,
-            'Type: **Twemoji**',
-            `ID: **${r}**`
-        ].join('\n'), { files: [{ attachment: body, name: `${r}.png` }] });
+        return msg.send(i18n.get('COMMAND_EMOJI_TWEMOJI', emoji, r), { files: [{ attachment: body, name: `${r}.png` }] });
     }
 
     emoji(emoji) {
@@ -52,8 +46,10 @@ module.exports = class extends Command {
             if (p) {
                 r.push((0x10000 + ((p - 0xD800) << 10) + (c - 0xDC00)).toString(16));
                 p = 0;
-            } else if (c >= 0xD800 && c <= 0xDBFF) p = c;
-            else r.push(c.toString(16));
+            } else if (c >= 0xD800 && c <= 0xDBFF)
+                p = c;
+            else
+                r.push(c.toString(16));
         }
         return r.join('-');
     }

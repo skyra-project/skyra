@@ -34,21 +34,26 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [url]) {
-        const embed = new MessageEmbed().setColor(msg.color).setTimestamp();
-        if (/^https:\/\/goo\.gl\/.+/.test(url)) embed.setDescription(await this.short(url));
-        else embed.setDescription(await this.long(url));
+    async run(msg, [url], settings, i18n) {
+        const embed = new MessageEmbed()
+            .setTimestamp();
+
+        if (/^https:\/\/goo\.gl\/.+/.test(url))
+            embed.setDescription(await this.short(url, i18n));
+        else
+            embed.setDescription(await this.long(url, i18n));
+
         return msg.send({ embed });
     }
 
-    async long(url) {
+    async long(url, i18n) {
         const { id } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url }).then(data => JSON.parse(data.text));
-        return `**Shortened URL: [${id}](${id})**`;
+        return i18n.get('COMMAND_GOOGL_LONG', id);
     }
 
-    async short(url) {
+    async short(url, i18n) {
         const { longUrl } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`).then(data => JSON.parse(data.text));
-        return `**Expanded URL: [${longUrl}](${longUrl})**`;
+        return i18n.get('COMMAND_GOOGL_SHORT', longUrl);
     }
 
 };

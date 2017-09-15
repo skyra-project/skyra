@@ -102,21 +102,20 @@ module.exports = class extends Command {
         if (!line) return null;
 
         if (this._emojis.includes(line.key) === false)
-            return this.awaitGame(message, game, player, assets);
+            return this.awaitGame(message, game, player, assets, i18n);
 
         const row = this._emojis.indexOf(line.key);
         if (game.full[row]) {
             await message.channel.send(i18n.get('COMMAND_C4_GAME_COLUMN_FULL'))
                 .then(mes => mes.nuke(5000).catch(() => null));
 
-            return this.awaitGame(message, game, player, assets);
+            return this.awaitGame(message, game, player, assets, i18n);
         }
 
         const result = this.pushLine(game, row, player);
         if (result !== false) {
             this.showWinner(game.table, result, player + 1);
-            const winner = await this.client.fetchUser(game.players[player]);
-            return this.conclude(message, i18n.get('COMMAND_C4_GAME_WIN', winner.username, this.displayTable(game.table, assets)));
+            return this.conclude(message, i18n.get('COMMAND_C4_GAME_WIN', game.players[player].tag, this.displayTable(game.table, assets)));
         }
 
         if (this.checkDraw(game) === true)
@@ -125,8 +124,8 @@ module.exports = class extends Command {
         player = this.switchPlayer(player);
 
         await line.reaction.remove(playerUser.id);
-        await this.edit(message, i18n.get('COMMAND_C4_GAME_NEXT', game.players[player].tag), this.displayTable(game.table, assets));
-        return this.awaitGame(message, game, player, assets);
+        await this.edit(message, i18n.get('COMMAND_C4_GAME_NEXT', game.players[player].tag, this.displayTable(game.table, assets)));
+        return this.awaitGame(message, game, player, assets, i18n);
     }
 
     showWinner(table, row, player) {

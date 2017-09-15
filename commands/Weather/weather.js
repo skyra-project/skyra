@@ -98,11 +98,11 @@ module.exports = class extends Command {
 
         const attachment = await new Canvas(400, 180)
             .save()
-            .setShadowColor('rgba(51,51,51,.38)')
-            .setShadowBlur(5)
+            .setShadowColor('rgba(0,0,0,.7)')
+            .setShadowBlur(7)
             .setColor(colors[this.timePicker(icon)])
-            .createBeveledClip(10, 10, 380, 160, 5)
-            .addRect(10, 10, 380, 160)
+            .createBevelPath(10, 10, 380, 160, 5)
+            .fill()
             .restore()
 
             // City Name

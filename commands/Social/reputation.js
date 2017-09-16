@@ -32,21 +32,28 @@ module.exports = class extends Command {
         if (profile.timerep + 86400000 > now) {
             const remaining = (profile.timerep + 86400000) - now;
             return msg.send(i18n.get('COMMAND_REPUTATION_TIME', remaining));
-        } else if (input === null) {
-            return msg.send(i18n.get('COMMAND_REPUTATION_USABLE'));
         }
+
+        if (input === null)
+            return msg.send(i18n.get('COMMAND_REPUTATION_USABLE'));
+
 
         return this.giveReputation(msg, profile, input, now, i18n);
     }
 
     async giveReputation(msg, profile, input, now, i18n) {
         const user = await this.client.handler.search.user(input, msg);
-        if (!user) throw i18n.get('COMMAND_REPUTATION_USER_NOTFOUND');
-        if (msg.author.id === user.id) throw i18n.get('COMMAND_REPUTATION_SELF');
-        else if (user.bot) throw i18n.get('COMMAND_REPUTATION_BOTS');
+
+        if (!user)
+            throw i18n.get('COMMAND_REPUTATION_USER_NOTFOUND');
+        if (msg.author.id === user.id)
+            throw i18n.get('COMMAND_REPUTATION_SELF');
+        if (user.bot)
+            throw i18n.get('COMMAND_REPUTATION_BOTS');
 
         let targetProfile = user.profile;
-        if (targetProfile instanceof Promise) targetProfile = await targetProfile;
+        if (targetProfile instanceof Promise)
+            targetProfile = await targetProfile;
 
         await targetProfile.update({ reputation: targetProfile.reputation + 1 });
         await profile.update({ timerep: now });

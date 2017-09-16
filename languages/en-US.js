@@ -257,7 +257,6 @@ module.exports = class extends Language {
             COMMAND_LIST_CHANNELS: (name, id) => `List of channels for ${name} (${id})`,
             COMMAND_LIST_ROLES: (name, id) => `List of roles for ${name} (${id})`,
             COMMAND_LIST_MEMBERS: (name, id) => `List of members for the role ${name} (${id})`,
-            COMMAND_LIST_INVITES: (name, id) => `List of invite links for ${name} (${id})`,
             COMMAND_LIST_STRIKES: (name) => `List of warnings${name ? ` for ${name}` : ''}`,
             COMMAND_LIST_STRIKES_EMPTY: 'The list of warnings is empty.',
             COMMAND_LIST_STRIKES_ALL: (count, list) => `There are ${count} strikes. Cases: \`${list}\``,
@@ -313,7 +312,7 @@ module.exports = class extends Language {
             COMMAND_C4_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
             COMMAND_C4_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
             COMMAND_C4_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
-            COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four math. Reply with **yes** to accept!`,
+            COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
             COMMAND_C4_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
             COMMAND_C4_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
             COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
@@ -379,7 +378,7 @@ module.exports = class extends Language {
 
             COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
             COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
-            COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points}`,
+            COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
             COMMAND_SOCIAL_POINTS: 'May you specify the amount of points you want to add or remove?',
             COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) => `You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${amount === 1 ? 'point' : 'points'} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
 

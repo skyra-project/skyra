@@ -183,6 +183,7 @@ module.exports = class extends Language {
             COMMAND_8BALL: (author, input, output) => `🎱 Question by ${author}: *${input}*\n${output}`,
             COMMAND_8BALL_NOT_QUESTION: 'That does not seem to be a question.',
             COMMAND_8BALL_QUESTIONS: {
+                QUESTION: '?',
                 WHEN: 'when',
                 WHAT: 'what',
                 HOW_MUCH: 'how much',

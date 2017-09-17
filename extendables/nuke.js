@@ -1,8 +1,12 @@
-const { Extendable } = require('../index');
+const { Extendable, util } = require('../index');
 
 const exec = (msg) => {
     msg.action = 'DELETE';
-    return msg.delete();
+    return msg.delete()
+        .catch((error) => {
+            if (error.code === 10008) return msg;
+            throw error;
+        });
 };
 
 module.exports = class extends Extendable {
@@ -11,22 +15,15 @@ module.exports = class extends Extendable {
         super(...args, ['Message']);
     }
 
-    extend(time = 0) {
-        if (this.timer) {
-            clearTimeout(this.timer);
-            delete this.timer;
-        }
-
+    async extend(time = 0) {
         if (time === 0) return exec(this);
 
         const count = this.edits.length;
-        this.timer = setTimeout(() => {
+        return util.sleep(time).then(() => {
             const msg = this.channel.messages.get(this.id);
             if (msg && msg.edits.length === count) return exec(this);
             return null;
-        }, time);
-
-        return false;
+        });
     }
 
 };

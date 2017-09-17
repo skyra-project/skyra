@@ -38,17 +38,27 @@ module.exports = class extends Command {
     }
 
     generator(input, i18n) {
-        input = input.toLowerCase();
-        if (input[input.length - 1] !== '?') throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
-
         const prefixes = i18n.language.COMMAND_8BALL_QUESTIONS || this.client.languages.get('en-US').language.COMMAND_8BALL_QUESTIONS;
-        if (startsWith(prefixes.WHEN, input)) return this.generate('WHEN', i18n);
-        if (startsWith(prefixes.WHAT, input)) return this.generate('WHAT', i18n);
-        if (startsWith(prefixes.HOW_MUCH, input)) return this.generate('HOWMUCH', i18n);
-        if (startsWith(prefixes.HOW_MANY, input)) return this.generate('HOWMANY', i18n);
-        if (startsWith(prefixes.WHY, input)) return this.generate('WHY', i18n);
-        if (startsWith(prefixes.WHO, input)) return this.generate('WHO', i18n);
+
+        input = input.toLowerCase();
+        if (this.checkQuestion(prefixes.QUESTION || '?', input) === false)
+            throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
+
+        if (this.check(prefixes.WHEN, input)) return this.generate('WHEN', i18n);
+        if (this.check(prefixes.WHAT, input)) return this.generate('WHAT', i18n);
+        if (this.check(prefixes.HOW_MUCH, input)) return this.generate('HOWMUCH', i18n);
+        if (this.check(prefixes.HOW_MANY, input)) return this.generate('HOWMANY', i18n);
+        if (this.check(prefixes.WHY, input)) return this.generate('WHY', i18n);
+        if (this.check(prefixes.WHO, input)) return this.generate('WHO', i18n);
         return this.generate('ELSE', i18n);
+    }
+
+    check(prefix, input) {
+        return prefix instanceof RegExp ? prefix.test(input) : startsWith(prefix, input);
+    }
+
+    checkQuestion(question, input) {
+        return question instanceof RegExp ? question.test(input) : input.endsWith(question);
     }
 
 };

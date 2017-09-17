@@ -146,6 +146,10 @@
         "stream": {
             "description": "The channel to post when a user starts/stops streaming.",
             "type": "TextChannel"
+        },
+        "starboard": {
+            "description": "The starboard channel!",
+            "type": "TextChannel"
         }
     },
     "messages": {

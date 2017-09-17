@@ -12,20 +12,19 @@ module.exports = class extends Monitor {
     }
 
     async run(msg, settings, i18n) {
-        if (msg.author.bot
+        if (msg.channel.type !== 'text'
+            || msg.author.bot
             || settings.master.ignoreChannels.includes(msg.channel.id)
             || this.cooldown(msg)) return;
 
-        let userProfile = msg.author.profile;
-        if (userProfile instanceof Promise) userProfile = await userProfile;
-        let memberPoint = msg.member.points;
-        if (memberPoint instanceof Promise) memberPoint = await memberPoint;
+        const userProfile = await msg.author.profile;
+        const memberPoint = msg.member ? await msg.member.points : null;
 
         try {
             await this.ensureFetchMember(msg);
             const add = Math.round(((Math.random() * 4) + 4) * settings.social.monitorBoost);
             await userProfile.update({ points: msg.author.profile.points + add });
-            await memberPoint.update(msg.member.points.score + add);
+            if (memberPoint) await memberPoint.update(msg.member.points.score + add);
 
             await this.handleRoles(msg, settings, memberPoint, i18n);
         } catch (err) {

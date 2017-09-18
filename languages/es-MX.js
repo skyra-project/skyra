@@ -91,7 +91,7 @@ module.exports = class extends Language {
         };
 
         this.language = {
-            DEFAULT: (key) => `${key} no ha sido traducido para es-ES todavía.`,
+            DEFAULT: (key) => `${key} no ha sido traducido para es-MX todavía.`,
             DEFAULT_LANGUAGE: 'Lenguaje Predeterminado',
 
             SETTING_GATEWAY_FOLDER_NOTEXISTS: (folder) => `La clave '${folder}' no existe en el esquema de configuración actual.`,
@@ -156,7 +156,7 @@ module.exports = class extends Language {
             // Commands#anime
             COMMAND_ANIME_DESCRIPTION: (entry, context) => [
                 `**Título Inglés:** ${entry.english}`,
-                `${context.length > 750 ? `${util.splitText(context, 750)}... [continúa leyendo](https://myanimelist.net/anime/${entry.id})` : context}`
+                `${context.length > 750 ? `${util.splitText(context, 750)}... [continuar leyendo](https://myanimelist.net/anime/${entry.id})` : context}`
             ],
             COMMAND_ANIME_TITLE: (entry) => `${entry.title} (${entry.episodes === 0 ? 'desconocido' : entry.episodes} episodios)`,
             COMMAND_ANIME_STATUS: (entry) => [
@@ -165,7 +165,7 @@ module.exports = class extends Language {
             ],
             COMMAND_MANGA_DESCRIPTION: (entry, context) => [
                 `**Título Inglés:** ${entry.english}`,
-                `${context.length > 750 ? `${util.splitText(context, 750)}... [continúa leyendo](https://myanimelist.net/anime/${entry.id})` : context}`
+                `${context.length > 750 ? `${util.splitText(context, 750)}... [continuar leyendo](https://myanimelist.net/anime/${entry.id})` : context}`
             ],
             COMMAND_MANGA_TITLE: (entry) => `${entry.title} (${entry.chapters ? 'desconocido' : entry.chapters} capítulos${entry.volumes ? '' : ` y ${entry.volumes} volúmenes`})`,
             COMMAND_MANGA_STATUS: (entry) => [
@@ -196,7 +196,7 @@ module.exports = class extends Language {
             COMMAND_NORRIS: 'Chuck Norris',
             COMMAND_RATE: (user, rate, emoji) => `Uhm, le daría a **${user}** un **${rate}**/100 ${emoji}`,
             COMMAND_RATE_MYSELF: ['Me amo un montón a mí misma 😊', 'a mí misma'],
-            COMMAND_RNG: (user, word) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito, a la era verdadera...?* ${user}, Elijo:${util.codeBlock('', word)}`,
+            COMMAND_RNG: (user, word) => `🕺 *De tin marín de dos pingüé, Cúcara mácara títere fue,Yo no fui, fue Teté, Pégale pégale que ese merito fué* ${user}, Elijo:${util.codeBlock('', word)}`,
             COMMAND_RNG_MISSING: 'Por favor, introduce al menos dos opciones separadas por una coma.',
             COMMAND_RNG_DUP: (words) => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
             COMMAND_XKCD_COMICS: (amount) => `Sólo hay ${amount} comics.`,
@@ -209,15 +209,15 @@ module.exports = class extends Language {
             COMMAND_PERMISSIONS: (username, id) => `Lista de Permisos para ${username} (${id})`,
             COMMAND_RAID_DISABLED: 'El sistema Anti-RAID no está activado en este servidor.',
             COMMAND_RAID_MISSING_KICK: `Como no tengo el permiso ${PERMS.KICK_MEMBERS}, he mantenido el sistema Anti-RAID desactivado.`,
-            COMMAND_RAID_LIST: 'Lista de usuarios en la Lista RAID.',
-            COMMAND_RAID_CLEAR: '¡Éxito! La Lista RAID ha sido limpiada.',
-            COMMAND_RAID_COOL: '¡Éxito! El Sistema RAID ha sido desactivado.',
+            COMMAND_RAID_LIST: 'Lista de usuarios en la Lista RAID',
+            COMMAND_RAID_CLEAR: 'Vaciada la Lista RAID con éxito.',
+            COMMAND_RAID_COOL: 'Desactivado el sistema RAID con éxito.',
             COMMAND_FLOW: (amount) => `Una cantidad de ${amount} mensajes fueron enviados durante el último minuto.`,
             COMMAND_TIME_TIMED: 'El caso de moderación seleccionado ya ha sido temporizado.',
             COMMAND_TIME_UNDEFINED_TIME: 'Debes especificar un tiempo.',
             COMMAND_TIME_UNSUPPORTED_TIPE: 'El tipo de acción por el caso de moderación seleccionado no es reversible, por lo tanto, esta acción no está soportada.',
             COMMAND_TIME_NOT_SCHEDULED: 'Esta tarea no está temporizada.',
-            COMMAND_TIME_ABORTED: (title) => `¡Éxito! Abortada la tarea ${title}.`,
+            COMMAND_TIME_ABORTED: (title) => `Abortada la tarea ${title} con éxito.`,
             COMMAND_TIME_SCHEDULED: (title, user, time) => `✅ Temporizada una acción de tipo **${title}** para el usuario ${user.tag} (${user.id}) con una duración de ${duration(time)}`,
 
             // ## General
@@ -225,20 +225,20 @@ module.exports = class extends Language {
             COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANEADO**: ${user.tag} (${user.id})${reason ? `\nMotivo: ${reason}` : ''}`,
             COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **EXPULSADO**: ${user.tag} (${user.id})${reason ? `\nMotivo: ${reason}` : ''}`,
             COMMAND_UNBAN_MESSAGE: (user, reason, banReason, log) => `|\`🔨\`| [Case::${log}] **DESBANEADO**: ${user.tag} (${user.id})${reason ? `\nMotivo: ${reason}` : ''}${banReason ? `\nMotivo por el baneo previo: ${banReason}` : ''}`,
-            COMMAND_UNBAN_MISSING_PERMISSION: `Necesitaré el permiso ${PERMS.BAN_MEMBERS} para poder ser capaz de des-banearlo.`,
+            COMMAND_UNBAN_MISSING_PERMISSION: `Necesitaré el permiso ${PERMS.BAN_MEMBERS} para poder des-banearlo.`,
             COMMAND_KICK_NOT_KICKABLE: 'El objetivo no puede ser echado por mí.',
             COMMAND_KICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **ECHADO**: ${user.tag} (${user.id})${reason ? `\nMotivo: ${reason}` : ''}`,
             COMMAND_MUTE_MUTED: 'El objetivo ya está silenciado.',
             COMMAND_MUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SILENCIADO**: ${user.tag} (${user.id})${reason ? `\nMotivo: ${reason}` : ''}`,
             COMMAND_MUTE_USER_NOT_MUTED: 'El objetivo no está silenciado.',
-            COMMAND_VMUTE_MISSING_PERMISSION: `Necesitaré el permiso ${PERMS.MUTE_MEMBERS} para poder ser capaz de des-silenciarlo.`,
+            COMMAND_VMUTE_MISSING_PERMISSION: `Necesitaré el permiso ${PERMS.MUTE_MEMBERS} para poder des-silenciarlo.`,
             COMMAND_VMUTE_USER_NOT_MUTED: 'El objetivo no está silenciado en los canales de voz.',
             COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **DES-SILENCIADO**: ${user.tag} (${user.id})${reason ? `\nMotivo: ${reason}` : ''}`,
-            COMMAND_UNMUTE_MISSING_PERMISSION: `Necesitaré el permiso ${PERMS.MANAGE_ROLES} para poder ser capaz de des-silenciarlo en los canales de voz.`,
+            COMMAND_UNMUTE_MISSING_PERMISSION: `Necesitaré el permiso ${PERMS.MANAGE_ROLES} para poder des-silenciarlo en los canales de voz.`,
             COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **ALERTADO**: ${user.tag} (${user.id})${reason ? `\nMotivo: ${reason}` : ''}`,
             COMMAND_WARN_DM: (moderator, guild, reason) => `Has sido alertado por ${moderator} en el servidor ${guild} por el siguiente motivo: ${reason}`,
 
-            COMMAND_PRUNE: (amount, total) => `¡Éxito! Borrados ${amount} mensajes de ${total}.`,
+            COMMAND_PRUNE: (amount, total) => `Borrados ${amount} mensajes de ${total} con éxito.`,
 
             COMMAND_REASON_NOT_EXISTS: 'El caso de moderación seleccionado no parece existir.',
 
@@ -247,9 +247,9 @@ module.exports = class extends Language {
 
             COMMAND_FILTER_UNDEFINED_WORD: 'Debes escribir la palabra que deseas filtrar.',
             COMMAND_FILTER_FILTERED: (filtered) => `Esta palabra ${filtered ? 'ya estaba' : 'no está'} filtrada.`,
-            COMMAND_FILTER_ADDED: (word) => `✅ | ¡Éxito! Añadido la palabra ${word} al filtro.`,
-            COMMAND_FILTER_REMOVED: (word) => `✅ | ¡Éxito! Removido la palabra ${word} del filtro.`,
-            COMMAND_FILTER_RESET: '✅ | ¡Éxito! El filtro ha sido reiniciado.',
+            COMMAND_FILTER_ADDED: (word) => `✅ | ¡Operación Exitosa! Se ha añadido la palabra ${word} al filtro.`,
+            COMMAND_FILTER_REMOVED: (word) => `✅ | ¡Operación Exitosa! Se ha removido la palabra ${word} del filtro.`,
+            COMMAND_FILTER_RESET: '✅ | ¡Operación Exitosa! El filtro ha sido reiniciado.',
 
             COMMAND_LOCKDOWN_OPEN: (channel) => `El bloqueo del canal ${channel} ha sido removido.`,
             COMMAND_LOCKDOWN_LOCKING: (channel) => `Bloqueando el canal ${channel}...`,
@@ -269,7 +269,7 @@ module.exports = class extends Language {
             COMMAND_LIST_ROLE_EMPTY: 'Este rol no tiene miembros.',
 
             COMMAND_ROLE_HIGHER: 'El miembro del servidor seleccionado tiene igual o mayor posición de rol que usted.',
-            COMMAND_USERSELF: '¿Por qué harías eso a tí mismo?',
+            COMMAND_USERSELF: '¿Por qué te harías eso a tí mismo?',
             COMMAND_TOSKYRA: 'Eww... ¡Pensaba que me amabas! 💔',
 
             // Commands#overwatch
@@ -294,13 +294,13 @@ module.exports = class extends Language {
             COMMAND_BALANCE: (user, amount, icon) => `El usuario ${user} tiene un total de ${amount}${icon}`,
             COMMAND_BALANCE_SELF: (amount, icon) => `Usted tiene un total de ${amount}${icon}`,
 
-            COMMAND_BANNER_LIST_EMPTY: (prefix) => `Usted no tiene un banner. Utiliza el comando \`${prefix}banner buylist\` para obtener una lista de los banners que usted puede comprar.`,
+            COMMAND_BANNER_LIST_EMPTY: (prefix) => `Usted no tiene un banner. Utiliza el comando \`${prefix}banner buylist\` para obtener una lista de los banners que puede comprar.`,
             COMMAND_BANNER_SET_INPUT_NULL: 'Debes especificar un identificador de banner para colocar.',
             COMMAND_BANNER_SET_NOT_BOUGHT: 'Usted no tiene este banner.',
             COMMAND_BANNER_SET: (banner) => `|\`✅\`| **Éxito**. Has cambiado tu banner a: __${banner}__`,
             COMMAND_BANNER_BUY_INPUT_NULL: 'Debes especificar un identificador de banner para comprar.',
-            COMMAND_BANNER_BUY_NOT_EXISTS: (prefix) => `Este identificador de banner no existe. Por favor, usa el comando \`${prefix}banner buylist\` para obtener una lista de los banners que usted puede comprar.`,
-            COMMAND_BANNER_BUY_BOUGHT: (prefix, banner) => `Usted ya tiene este banner, quizá usted quiera usar el comando \`${prefix}banner set ${banner}\` para hacerlo visible en su perfil.`,
+            COMMAND_BANNER_BUY_NOT_EXISTS: (prefix) => `Este identificador de banner no existe. Por favor, usa el comando \`${prefix}banner buylist\` para obtener una lista de los banners que puedes comprar.`,
+            COMMAND_BANNER_BUY_BOUGHT: (prefix, banner) => `Usted ya tiene este banner, quizá usted quiera usar el comando \`${prefix}banner set ${banner}\` para hacerlo visible en tu perfil.`,
             COMMAND_BANNER_BUY_MONEY: (money, cost, icon) => `Usted no tiene dinero suficiente para comprar este banner, tienes ${money}${icon}, y el banner cuesta ${cost}${icon}`,
             COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Éxito**. Has comprado el banner: __${banner}__`,
             COMMAND_BANNER_BUY_PAYMENT_CANCELLED: '|`❌`| El pago ha sido cancelado.',
@@ -312,10 +312,10 @@ module.exports = class extends Language {
 
             COMMAND_C4_SKYRA: 'Lo siento, sé que quieres jugar conmigo, pero si lo hago, ¡no seré capaz de ayudar a las otras personas! 💔',
             COMMAND_C4_BOT: 'Lo siento, pero no creo que ellos quieran parar de trabajar en lo que estén haciendo y ponerse a jugar con humanos.',
-            COMMAND_C4_PROGRESS: 'Lo siento, pero hay una partida en progreso, ¡prueba de nuevo cuando termine!',
+            COMMAND_C4_PROGRESS: 'Lo siento, pero hay un juego en progreso en este canal, ¡intenta de nuevo cuando el juego termine!',
             COMMAND_C4_PROMPT: (challenger, challengee) => `Querido ${challengee}, ${challenger} le propone una partida de Conecta-Cuatro. Por favor, ¡responda con **yes** para aceptar!`,
             COMMAND_C4_PROMPT_TIMEOUT: 'Lo siento, pero el usuario no ha respondido a tiempo.',
-            COMMAND_C4_PROMPT_DENY: 'Lo siento, pero el objetivo no quiere jugar.',
+            COMMAND_C4_PROMPT_DENY: 'Lo siento, pero el objetivo se ha rehusado a jugar.',
             COMMAND_C4_START: (player, table) => `¡A jugar! Turno para: **${player}**.\n${table}`,
             COMMAND_C4_GAME_TIMEOUT: '**La partida ha finalizado en un empate debido a la falta de respuesta (60 segundos)**',
             COMMAND_C4_GAME_COLUMN_FULL: 'Esta columna está llena. Por favor, intente en otra.',
@@ -342,11 +342,11 @@ module.exports = class extends Language {
             COMMAND_MYLEVEL_NEXT: (remaining, next) => `\nPuntos para el siguiente rango: **${remaining}** (con ${next} puntos).`,
 
             COMMAND_PAY_MISSING_MONEY: (needed, has, icon) => `Lo siento, pero necesitas al menos ${needed}${icon} y usted tiene ${has}${icon}`,
-            COMMAND_PAY_PROMPT: (user, amount, icon) => `Estás a punto de pagar al usuario ${user} una cantidad de ${amount}${icon}, ¿quieres proceder con el pago?`,
-            COMMAND_PAY_PROMPT_ACCEPT: (user, amount, icon) => `Pago aceptado, una cantidad de ${amount}${icon} ha sido transferido al perfil de ${user}.`,
+            COMMAND_PAY_PROMPT: (user, amount, icon) => `Estás a punto de pagar al usuario ${user} la cantidad de ${amount}${icon}, ¿quieres proceder con el pago?`,
+            COMMAND_PAY_PROMPT_ACCEPT: (user, amount, icon) => `Pago aceptado, la cantidad de ${amount}${icon} ha sido transferida al perfil de ${user}.`,
             COMMAND_PAY_PROMPT_DENY: 'Pago denegado.',
             COMMAND_PAY_SELF: 'Si pusiera impuestos, usted perdería dinero, por lo tanto, no intente pagarse a sí mismo.',
-            COMMAND_SOCIAL_PAY_BOT: 'Oh, perdón, pero el dinero es un sinsentido para los robots. Estoy muy segura los humanos lo desearían mucho mas.',
+            COMMAND_SOCIAL_PAY_BOT: 'Oh, perdón, pero el dinero no tiene sentido para los robots. Estoy segura de que a los humanos les gustará mucho mas.',
 
             COMMAND_PROFILE: {
                 GLOBAL_RANK: 'Rango Global',
@@ -392,7 +392,7 @@ module.exports = class extends Language {
             COMMAND_CONFIGURATION_ABORT: (reason) => `|\`⚙\`| Sistema de Configuración Cancelada: ${reason === 'TIME' ? 'Falta de respuesta.' : 'Desconectado con éxito.'}`,
 
             // Commands#system
-            COMMAND_FEEDBACK: '|`✅`| ¡Gracias por su mensaje ❤! Recibirás un mensaje en la bandeja de mensajes privados tan pronto como sea posible.',
+            COMMAND_FEEDBACK: '|`✅`| ¡Gracias por su mensaje ❤! Recibirá una respuesta en la bandeja de mensajes privados tan pronto como sea posible.',
 
             COMMAND_RELOAD: (type, name) => `✅ Recargado la pieza de tipo ${type}: ${name}`,
             COMMAND_RELOAD_ALL: (type) => `✅ Recaargado todas las piezas de tipo ${type}.`,
@@ -407,10 +407,10 @@ module.exports = class extends Language {
             COMMAND_HELP_NODM: '❌ | Parece que tienes tus mensajes privados desactivados, no pude enviarte la lista de comandos.',
 
             COMMAND_CONF_SELECTKEY: (keys) => `Por favor, elije uno de las siguientes claves: ${keys}`,
-            COMMAND_CONF_ADDED: (folder, key, value) => `¡Éxito! Añadido el valor \`${value}\` a la clave: \`${folder}\` :: \`${key}\`.`,
-            COMMAND_CONF_UPDATED: (folder, key, response) => `¡Éxito! Actualizado el valor para la clave \`${folder}\` :: \`${key}\`: \`${response}\`.`,
+            COMMAND_CONF_ADDED: (folder, key, value) => `Añadido con éxito el valor \`${value}\` a la clave: \`${folder}\` :: \`${key}\`.`,
+            COMMAND_CONF_UPDATED: (folder, key, response) => `Actualizado con éxito el valor para la clave \`${folder}\` :: \`${key}\`: \`${response}\`.`,
             COMMAND_CONF_KEY_NOT_ARRAY: 'Esta clave no acepta múltiples valores. Usa la acción de tipo \'reset\'.',
-            COMMAND_CONF_REMOVE: (folder, key, value) => `¡Éxito! Removido el valor \`${value}\` de la clave: \`${folder}\` :: \`${key}\`.`,
+            COMMAND_CONF_REMOVE: (folder, key, value) => `Removido con éxito el valor \`${value}\` de la clave: \`${folder}\` :: \`${key}\`.`,
             COMMAND_CONF_GET: (folder, key, value) => `El valor para la clave \`${folder}\` :: \`${key}\` es: \`${value}\`.`,
             COMMAND_CONF_RESET: (folder, key, response) => `El valor para la clave \`${folder}\` :: \`${key}\` ha sido reiniciado a: \`${response}\`.`,
             COMMAND_STATS: (STATS, UPTIME, USAGE) => [
@@ -474,7 +474,7 @@ module.exports = class extends Language {
             COMMAND_GOOGL_LONG: (url) => `**Enlace acortado: [${url}](${url})**`,
             COMMAND_GOOGL_SHORT: (url) => `**Enlace expandido: [${url}](${url})**`,
 
-            COMMAND_QUOTE_MESSAGE: 'Es muy raro... pero dicho mensaje no tiene un contenido ni una imagen.',
+            COMMAND_QUOTE_MESSAGE: 'Es muy raro... pero dicho mensaje no tiene un contenido ni una imagen valida.',
 
             COMMAND_ROLES_LIST_EMPTY: 'Este servidor no tiene un rol en la lista de roles públicos.',
             COMMAND_ROLES_LIST_TITLE: (guild) => `Lista de roles públicos para el servidor ${guild}`,
@@ -536,9 +536,9 @@ module.exports = class extends Language {
                 `Se unió a Discord en el día ${moment.utc(user.createdAt).format('D/MM/YYYY [a las] HH:mm:ss')}`
             ].join(' '),
 
-            COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con lo que buscas a través de Wikipedia.',
+            COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 
-            COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con lo que buscas a través de YoUTube.',
+            COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YoUTube.',
             COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',
 
             // Commands#weather
@@ -554,7 +554,7 @@ module.exports = class extends Language {
             MODLOG_PENDING_REASON: (prefix, number) => `Usa ${prefix}reason ${number} para reclamar este caso.`,
 
             // System only
-            SYSTEM_DM_SENT: 'Te he enviado el mensaje en tu bandeja de mensajes privados.',
+            SYSTEM_DM_SENT: 'Te he enviado la información a través de un mensaje directo.',
             SYSTEM_DM_FAIL: 'No te he podido enviar el mensaje en mensaje directo... ¿me has bloqueado?',
             SYSTEM_FETCHING: '`Buscando...`',
             SYSTEM_PROCESSING: '`Procesando...`',
@@ -569,14 +569,14 @@ module.exports = class extends Language {
 
             COMMAND_SUCCESS: 'Ejecutado con éxito éste comando.',
 
-            GUILD_SETTINGS_CHANNELS_MOD: 'Este comando requiere un canal de registro moderativo para funcionar correctamente.',
+            GUILD_SETTINGS_CHANNELS_MOD: 'Este comando requiere un canal de registro de supervisión para funcionar correctamente.',
             GUILD_SETTINGS_ROLES_MUTED: 'Este comando require un rol configurado para los muteos.',
             GUILD_BANS_EMPTY: 'No hay baneos registrados en este servidor.',
             GUILD_BANS_NOT_FOUND: 'Por favor, escribe una ID o etiqueta válido de usuario.',
             GUILD_MUTE_NOT_FOUND: 'Este usuario no está silenciado.',
             CHANNEL_NOT_READABLE: `Lo siento, pero requiero el permiso **${PERMS.VIEW_CHANNEL}**`,
 
-            USER_NOT_IN_GUILD: 'Este usuario no está en este servidor.',
+            USER_NOT_IN_GUILD: 'Este usuario no está en el servidor.',
 
             EVENTS_GUILDMEMBERADD: 'Nuevo Usuario',
             EVENTS_GUILDMEMBERADD_MUTE: 'Usuario Muteado se ha unido',
@@ -591,11 +591,11 @@ module.exports = class extends Language {
             EVENTS_MESSAGE_DELETE: 'Mensaje Borrado',
             EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
             EVENTS_COMMAND: (command) => `Comando usado: ${command}`,
-            EVENTS_STREAM_START: (member) => `¡El usuario **${member.user.tag}** está ahora en directo! **${member.presence.game.name}**\n${member.presence.game.url}`,
-            EVENTS_STREAM_STOP: (member) => `El usuario **${member.user.tag}** ha terminado su directo.`,
+            EVENTS_STREAM_START: (member) => `¡El usuario **${member.user.tag}** está transmitiendo en directo! **${member.presence.game.name}**\n${member.presence.game.url}`,
+            EVENTS_STREAM_STOP: (member) => `¡El usuario **${member.user.tag}** ha terminado su transmisión en directo!`,
             EVENTS_STARBOARD_SELF: (user) => `Querido ${user}, no puedes marcar con una estrella tus propios mensajes.`,
             EVENTS_STARBOARD_BOT: (user) => `Querido ${user}, no puedes marcar con una estrella los mensajes enviados por bots.`,
-            EVENTS_STARBOARD_EMPTY: (user) => `Querido ${user}, no puedes marcar con una estrella mensajes que no tienen contenido.`,
+            EVENTS_STARBOARD_EMPTY: (user) => `Querido ${user}, no puedes marcar con una estrella los mensajes que están vacíos.`,
 
             SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reiniciado el valor de la clave `Channels` :: `default`.',
             SETTINGS_DELETE_ROLES_INITIAL: 'Reiniciado el valor de la clave `Roles` :: `initial`.',
@@ -608,7 +608,7 @@ module.exports = class extends Language {
             REQUIRE_USER: 'Debes escribir el nombre, tag, o mencionar a un usuario.',
             REQUIRE_ROLE: 'Debes escribir un nombre de rol válido o una mención.',
 
-            ERROR_WTF: '¡Vaya terrible error! ¡Lo siento mucho!',
+            ERROR_WTF: '¡Se ha producido un error fatal! ¡Lo siento mucho!',
             ERROR_STRING: (mention, message) => `Querido ${mention}, ${message}`,
 
             CONST_USERS: 'Usuarios'

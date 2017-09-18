@@ -30,7 +30,6 @@ const TIMES = {
 };
 
 const PERMS = {
-    // General
     ADMINISTRATOR: 'Administrator',
     VIEW_AUDIT_LOG: 'View Audit Log',
     MANAGE_GUILD: 'Manage Server',
@@ -95,12 +94,12 @@ module.exports = class extends Language {
             DEFAULT_LANGUAGE: 'Default Language',
 
             SETTING_GATEWAY_FOLDER_NOTEXISTS: (folder) => `The key '${folder}' does not exist in the current schema.`,
-            SETTING_GATEWAY_KEY_NOTEXISTS: (folder, key) => `The key \`${folder}\`::\`${key}\` does not exist in the current schema.`,
+            SETTING_GATEWAY_KEY_NOTEXISTS: (folder, key) => `The key \`${folder}\` :: \`${key}\` does not exist in the current schema.`,
             SETTING_GATEWAY_ADD_OR_REMOVE: 'The type parameter must be either \'add\' or \'remove\'.',
-            SETTING_GATEWAY_NOT_ARRAY: (folder, key) => `The key \`${folder}\`::\`${key}\` does not accept multiple values.`,
+            SETTING_GATEWAY_NOT_ARRAY: (folder, key) => `The key \`${folder}\` :: \`${key}\` does not accept multiple values.`,
             SETTING_GATEWAY_REQUIRE_VALUE: 'You must specify the value to add or remove.',
-            SETTING_GATEWAY_ARRAY_ADD_EXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\`::\`${key}\` already exists.`,
-            SETTING_GATEWAY_ARRAY_REMOVE_NOTEXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\`::\`${key}\` does not exist.`,
+            SETTING_GATEWAY_ARRAY_ADD_EXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\` :: \`${key}\` already exists.`,
+            SETTING_GATEWAY_ARRAY_REMOVE_NOTEXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\` :: \`${key}\` does not exist.`,
 
             RESOLVER_INVALID_PIECE: (name, piece) => `'${name}' must be a valid ${piece} name.`,
             RESOLVER_INVALID_MSG: (name) => `'${name}' must be a valid message id.`,
@@ -407,12 +406,12 @@ module.exports = class extends Language {
             COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
 
             COMMAND_CONF_SELECTKEY: (keys) => `Please, choose between one of the following keys: ${keys}`,
-            COMMAND_CONF_ADDED: (folder, key, value) => `Successfully added the value \`${value}\` to the key: \`${folder}\`::\`${key}\``,
-            COMMAND_CONF_UPDATED: (folder, key, response) => `Successfully updated the key \`${folder}\`::\`${key}\`: \`${response}\``,
+            COMMAND_CONF_ADDED: (folder, key, value) => `Successfully added the value \`${value}\` to the key: \`${folder}\` :: \`${key}\``,
+            COMMAND_CONF_UPDATED: (folder, key, response) => `Successfully updated the key \`${folder}\` :: \`${key}\`: \`${response}\``,
             COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
-            COMMAND_CONF_REMOVE: (folder, key, value) => `Successfully removed the value \`${value}\` from the key: \`${folder}\`::\`${key}\``,
-            COMMAND_CONF_GET: (folder, key, value) => `The value for the key \`${folder}\`::\`${key}\` is: \`${value}\``,
-            COMMAND_CONF_RESET: (folder, key, response) => `The key \`${folder}\`::\`${key}\` has been reset to: \`${response}\``,
+            COMMAND_CONF_REMOVE: (folder, key, value) => `Successfully removed the value \`${value}\` from the key: \`${folder}\` :: \`${key}\``,
+            COMMAND_CONF_GET: (folder, key, value) => `The value for the key \`${folder}\` :: \`${key}\` is: \`${value}\``,
+            COMMAND_CONF_RESET: (folder, key, response) => `The key \`${folder}\` :: \`${key}\` has been reset to: \`${response}\``,
             COMMAND_STATS: (STATS, UPTIME, USAGE) => [
                 '= STATISTICS =',
                 `• Users      :: ${STATS.USERS}`,

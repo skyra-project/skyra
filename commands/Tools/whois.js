@@ -7,6 +7,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            guildOnly: true,
             aliases: ['userinfo'],
             botPerms: ['EMBED_LINKS'],
             mode: 1,

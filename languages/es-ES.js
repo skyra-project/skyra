@@ -312,6 +312,7 @@ module.exports = class extends Language {
 
             COMMAND_C4_SKYRA: 'Lo siento, sé que quieres jugar conmigo, pero si lo hago, ¡no seré capaz de ayudar a las otras personas! 💔',
             COMMAND_C4_BOT: 'Lo siento, pero no creo que ellos quieran parar de trabajar en lo que estén haciendo y ponerse a jugar con humanos.',
+            COMMAND_C4_SELF: 'Debes estar demasiado triste para jugar contigo mismo. Prueba de nuevo, pero con otro usuario.',
             COMMAND_C4_PROGRESS: 'Lo siento, pero hay una partida en progreso, ¡prueba de nuevo cuando termine!',
             COMMAND_C4_PROMPT: (challenger, challengee) => `Querido ${challengee}, ${challenger} le propone una partida de Conecta-Cuatro. Por favor, ¡responda con **yes** para aceptar!`,
             COMMAND_C4_PROMPT_TIMEOUT: 'Lo siento, pero el usuario no ha respondido a tiempo.',

@@ -40,6 +40,7 @@ module.exports = class extends Command {
     async run(msg, [user], settings, i18n) {
         if (user.id === this.client.user.id) throw i18n.get('COMMAND_C4_SKYRA');
         if (user.bot) throw i18n.get('COMMAND_C4_BOT');
+        if (user.id === msg.author.id) throw i18n.get('COMMAND_C4_SELF');
         if (this.games.has(msg.channel.id)) throw i18n.get('COMMAND_C4_PROGRESS');
 
         const mes = await msg.send(i18n.get('COMMAND_C4_PROMPT', msg.author, user));

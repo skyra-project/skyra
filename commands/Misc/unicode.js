@@ -9,12 +9,20 @@ module.exports = class extends Command {
 
             cooldown: 10,
 
-            usage: '<string:string>',
+            usage: '<phrase:string>',
             description: 'Unicode characters!',
             extend: {
                 EXPLANATION: [
-                    ''
-                ].join(' ')
+                    'Well, what can I tell you? This command turns your messages into unicode monospaced characters. That',
+                    'is, what humans call \'Ａ　Ｅ　Ｓ　Ｔ　Ｈ　Ｅ　Ｔ　Ｉ　Ｃ\'. I wonder what it means...'
+                ].join(' '),
+                ARGUMENTS: '[string]',
+                EXP_USAGE: [
+                    ['phrase', 'The phrase to convert.']
+                ],
+                EXAMPLES: [
+                    'A E S T H E T I C'
+                ]
             }
         });
     }

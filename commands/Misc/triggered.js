@@ -16,15 +16,18 @@ module.exports = class extends Command {
 
             cooldown: 30,
 
-            usage: '<user:advuser>',
+            usage: '[user:advuser]',
             description: 'I am, TRIGGERED',
-            extendedHelp: Command.strip`
-                What? My commands aren't enough userfriendly? (╯°□°）╯︵ ┻━┻
-
-                ⚙ | ***Explained usage***
-                Skyra, triggered [user]
-                User :: The user to be triggered.
-            `
+            extend: {
+                EXPLANATION: 'What? My commands are not enough userfriendly? (╯°□°）╯︵ ┻━┻',
+                ARGUMENTS: '[user]',
+                EXP_USAGE: [
+                    ['user', 'The user to be triggered.']
+                ],
+                EXAMPLES: [
+                    'Your waifu is not real'
+                ]
+            }
         });
 
         this.template = null;

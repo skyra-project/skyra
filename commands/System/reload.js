@@ -1,4 +1,5 @@
 const { Command } = require('../../index');
+const now = require('performance-now');
 
 module.exports = class extends Command {
 
@@ -13,9 +14,12 @@ module.exports = class extends Command {
     }
 
     async run(msg, [piece], settings, i18n) {
-        if (typeof piece === 'string')
-            return this.client[piece].loadAll()
-                .then(() => msg.send(i18n.get('COMMAND_RELOAD_ALL', piece)));
+        if (typeof piece === 'string') {
+            const start = now();
+            await this.client[piece].loadAll();
+            await this.client[piece].init();
+            return msg.send(`${i18n.get('COMMAND_RELOAD_ALL', piece)} (Took: ${(now() - start).toFixed(2)}ms.)`);
+        }
 
         return piece.reload()
             .then(itm => msg.send(i18n.get('COMMAND_RELOAD', itm.type, itm.name)))

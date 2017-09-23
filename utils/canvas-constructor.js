@@ -118,8 +118,17 @@ class CanvasConstructor {
         return this;
     }
 
-    clip() {
-        this.context.clip();
+    /**
+     * Turns the path currently being built into the current clipping path.
+     * @param {any} path A Path2D path to fill.
+     * @param {('nonzero'|'evenodd')} fillRule The algorithm by which to determine if a point is inside a path or
+     * outside a path.
+     * @returns {CanvasConstructor}
+     * @chainable
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
+     */
+    clip(path, fillRule) {
+        this.context.clip(fillRule);
         return this;
     }
 
@@ -557,7 +566,7 @@ class CanvasConstructor {
 
     /**
      * Set a color for the canvas' context.
-     * @param {string} color A canvas' color resolvable.
+     * @param {string|CanvasGradient} color A canvas' color resolvable.
      * @returns {CanvasConstructor}
      * @chainable
      * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/fillStyle
@@ -647,13 +656,34 @@ class CanvasConstructor {
      * @param {number} y0 The y axis of the coordinate of the start point.
      * @param {number} x1 The x axis of the coordinate of the end point.
      * @param {number} y1 The y axis of the coordinate of the end point.
+     * @param {GradientStep[]} [steps=[]] The steps.
+     * @returns {CanvasGradient}
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient
+     */
+    createLinearGradient(x0, y0, x1, y1, steps = []) {
+        const gradient = this.context.createLinearGradient(x0, y0, x1, y1);
+        for (let i = 0; i < steps.length; i++)
+            gradient.addColorStop(steps[i].position, steps[i].color);
+
+        return gradient;
+    }
+
+    /**
+     * Creates a gradient along the line given by the coordinates represented by the parameters.
+     * The coordinates are global, the second point does not rely on the position of the first and vice versa. This
+     * method is chainable and calls setColor after creating the gradient.
+     * @param {number} x0 The x axis of the coordinate of the start point.
+     * @param {number} y0 The y axis of the coordinate of the start point.
+     * @param {number} x1 The x axis of the coordinate of the end point.
+     * @param {number} y1 The y axis of the coordinate of the end point.
+     * @param {GradientStep[]} steps The steps.
      * @returns {CanvasConstructor}
      * @chainable
      * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createLinearGradient
      */
-    createLinearGradient(x0, y0, x1, y1) {
-        this.context.createLinearGradient(x0, y0, x1, y1);
-        return this;
+    printLinearGradient(x0, y0, x1, y1, steps) {
+        const gradient = this.createLinearGradient(x0, y0, x1, y1, steps);
+        return this.setColor(gradient);
     }
 
     /**
@@ -664,13 +694,35 @@ class CanvasConstructor {
      * @param {number} x1 The x axis of the coordinate of the end circle.
      * @param {number} y1 The y axis of the coordinate of the end circle.
      * @param {number} r1 The radius of the end circle.
+     * @param {GradientStep[]} [steps=[]] The steps.
+     * @returns {CanvasGradient}
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient
+     */
+    createRadialGradient(x0, y0, r0, x1, y1, r1, steps = []) {
+        const gradient = this.context.createRadialGradient(x0, y0, r0, x1, y1, r1);
+        for (let i = 0; i < steps.length; i++)
+            gradient.addColorStop(steps[i].position, steps[i].color);
+
+        return gradient;
+    }
+
+    /**
+     * Creates a radial gradient given by the coordinates of the two circles represented by the parameters. This
+     * method is chainable and calls setColor after creating the gradient.
+     * @param {number} x0 The x axis of the coordinate of the start circle.
+     * @param {number} y0 The y axis of the coordinate of the start circle.
+     * @param {number} r0 The radius of the start circle.
+     * @param {number} x1 The x axis of the coordinate of the end circle.
+     * @param {number} y1 The y axis of the coordinate of the end circle.
+     * @param {number} r1 The radius of the end circle.
+     * @param {GradientStep[]} steps The steps.
      * @returns {CanvasConstructor}
      * @chainable
      * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient
      */
-    createRadialGradient(x0, y0, r0, x1, y1, r1) {
-        this.context.createRadialGradient(x0, y0, r0, x1, y1, r1);
-        return this;
+    printRadialGradient(x0, y0, r0, x1, y1, r1, steps) {
+        const gradient = this.createRadialGradient(x0, y0, r0, x1, y1, r1, steps);
+        return this.setColor(gradient);
     }
 
     /**
@@ -1045,6 +1097,17 @@ class CanvasConstructor {
         Canvas.registerFont(path, { family });
         return this;
     }
+
+    /**
+     * @typedef {object} GradientStep
+     * @property {number} position Position of the step.
+     * @property {string} color A colour resolvable.
+     */
+
+    /**
+     * @typedef {object} CanvasGradient
+     * @property {Function} addColorStop Position of the step.
+     */
 
 }
 

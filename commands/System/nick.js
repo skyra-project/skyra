@@ -17,8 +17,8 @@ module.exports = class extends Command {
     }
 
     async run(msg, [nick = '']) {
-        await msg.guild.member(this.client.user).setNickname(nick).catch(Command.handleError);
-        return msg.alert(nick.length ? `Nickname changed to **${nick}**` : 'Nickname Cleared');
+        await msg.guild.me.setNickname(nick).catch(Command.handleError);
+        return msg.alert(nick.length > 0 ? `Nickname changed to **${nick}**` : 'Nickname Cleared');
     }
 
 };

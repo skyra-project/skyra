@@ -14,7 +14,13 @@ module.exports = class extends Command {
             cooldown: 30,
 
             usage: '<user:advuser>',
-            description: 'Press F to pray respects.'
+            description: 'Press F to pray respects.',
+            extend: {
+                EXPLANATION: [
+                    'This command generates an image... to pay respects reacting with 🇫. This command also makes Skyra',
+                    'react the image if she has permissions to react messages.'
+                ].join(' ')
+            }
         });
 
         this.template = null;

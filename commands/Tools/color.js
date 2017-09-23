@@ -16,24 +16,27 @@ module.exports = class extends Command {
             usage: '<color:string> [separator:int{0,255}]',
             usageDelim: ' >',
             description: 'Display some awesome colours.',
-            extendedHelp: Command.strip`
-                Hey! Do you want me to display a color?
-
-                ⚙ | ***Explained usage***
-                Skyra, colour [color] >[separator]
-                Colour    :: Hex code of the color you want displayed
-                Separator :: Defaults to 10, it sets the RGB (from 0 to 255) difference between tones.
-
-                = Supported formats =
-                • HEX    :: #RRGGBB
-                • RGB    :: rgb(RRR, GGG, BBB)
-                • HSL    :: hsl(HHH, SSS, LLL)
-                • BASE10 :: 0 - 16777215
-
-                = Examples =
-                • Skyra, colour #ff73c1
-                    I display a lot of info from this color.
-            `
+            extend: {
+                EXPLANATION: [
+                    'Hey! Do you want me to display a color?'
+                ].join(' '),
+                ARGUMENTS: '<color> >[separator]',
+                EXP_USAGE: [
+                    ['color', 'The colour value you want to be displayed.'],
+                    ['separator', 'Defaults to 10, it sets the RGB (from 0 to 255) difference between tones.']
+                ],
+                FORMATS: [
+                    ['HEX', '#RRGGBB'],
+                    ['RGB', 'rgb(RRR, GGG, BBB)'],
+                    ['HSL', 'hsl(HHH, SSS, LLL)'],
+                    ['BASE10', '0 - 16777215']
+                ],
+                EXAMPLES: [
+                    '#ff73c1',
+                    'rgb(255, 115, 193) >35',
+                    'hsl(327, 100, 73)'
+                ]
+            }
         });
     }
 

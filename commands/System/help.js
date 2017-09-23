@@ -17,6 +17,8 @@ module.exports = class extends Command {
         if (cmd) {
             cmd = this.client.commands.get(cmd);
             if (!cmd) throw i18n.get('RESOLVER_INVALID_PIECE', 'command', 'command');
+            const hasPermission = await msg.hasLevel(cmd.permLevel);
+            if (hasPermission === false) throw i18n.get('INHIBITOR_PERMISSIONS');
             const info = [
                 `📃 | ***Help Message*** | __**${cmd.name}**__\n${cmd.description}\n`,
                 `📝 | ***Command Usage***\n\`${cmd.usage.fullUsage(msg)}\`\n`,

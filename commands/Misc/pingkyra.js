@@ -13,7 +13,14 @@ module.exports = class extends Command {
             cooldown: 30,
 
             usage: '<user:advuser>',
-            description: 'How you dare pinging me!'
+            description: 'How dare you pinging me!',
+            extend: {
+                EXPLANATION: [
+                    'There are a few things that annoy kyra, one of them are **Windows 10\'s notifications**! Which also',
+                    'includes mentions from Discord, hence why this command exists.'
+                ].join(' '),
+                REMINDER: 'If you mentioned kyra, you must self-execute this command against you.'
+            }
         });
 
         this.kyra = null;

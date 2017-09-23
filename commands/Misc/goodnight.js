@@ -13,7 +13,11 @@ module.exports = class extends Command {
             cooldown: 30,
 
             usage: '<user:advuser>',
-            description: 'Give somebody a nice Good Night!'
+            description: 'Give somebody a nice Good Night!',
+            EXPLANATION: [
+                'This command generates an image. and it is perfect, it shows a mother giving a goodnight kiss to her',
+                'child in the bed.'
+            ].join(' ')
         });
 
         this.template = null;

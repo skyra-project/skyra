@@ -32,11 +32,19 @@ class Fetch {
 
         const results = [];
         const reg = new RegExp(regExpEsc(query), 'i');
-        for (const role of msg.guild.roles.values()) {
+        for (const role of msg.guild.roles.values())
             if (reg.test(role.name)) results.push(role);
+
+        let querySearch;
+        if (results.length > 0) {
+            const regWord = new RegExp(`\\b${regExpEsc(query)}\\b`, 'i');
+            const filtered = results.filter(role => regWord.test(role.name));
+            querySearch = filtered.length > 0 ? filtered : results;
+        } else {
+            querySearch = results;
         }
 
-        return this.handleResults(msg, results, res => [res.id, res.name]);
+        return this.handleResults(msg, querySearch, res => [res.id, res.name]);
     }
 
     resolveChannel(query, guild) {
@@ -64,7 +72,16 @@ class Fetch {
             if (reg.test(channel.name)) results.push(channel);
         }
 
-        return this.handleResults(msg, results, res => [res.id, res.name]);
+        let querySearch;
+        if (results.length > 0) {
+            const regWord = new RegExp(`\\b${regExpEsc(query)}\\b`, 'i');
+            const filtered = results.filter(channel => regWord.test(channel.name));
+            querySearch = filtered.length > 0 ? filtered : results;
+        } else {
+            querySearch = results;
+        }
+
+        return this.handleResults(msg, querySearch, res => [res.id, res.name]);
     }
 
     resolveUser(query, guild) {
@@ -92,11 +109,19 @@ class Fetch {
 
         const results = [];
         const reg = new RegExp(regExpEsc(query), 'i');
-        for (const member of msg.guild.members.values()) {
+        for (const member of msg.guild.members.values())
             if (reg.test(member.user.username)) results.push(member.user);
+
+        let querySearch;
+        if (results.length > 0) {
+            const regWord = new RegExp(`\\b${regExpEsc(query)}\\b`, 'i');
+            const filtered = results.filter(user => regWord.test(user.username));
+            querySearch = filtered.length > 0 ? filtered : results;
+        } else {
+            querySearch = results;
         }
 
-        return this.handleResults(msg, results, res => [res.id, res.tag]);
+        return this.handleResults(msg, querySearch, res => [res.id, res.tag]);
     }
 
     handleResults(msg, results, parseList) {

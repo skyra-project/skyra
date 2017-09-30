@@ -47,13 +47,13 @@ module.exports = class extends Command {
     }
 
     async long(url, i18n) {
-        const { id } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url }).then(data => JSON.parse(data.text));
-        return i18n.get('COMMAND_GOOGL_LONG', id);
+        const { body } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url });
+        return i18n.get('COMMAND_GOOGL_LONG', body.id);
     }
 
     async short(url, i18n) {
-        const { longUrl } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`).then(data => JSON.parse(data.text));
-        return i18n.get('COMMAND_GOOGL_SHORT', longUrl);
+        const { body } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`);
+        return i18n.get('COMMAND_GOOGL_SHORT', body.longUrl);
     }
 
 };

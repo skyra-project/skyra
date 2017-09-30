@@ -1,6 +1,9 @@
 module.exports = {
     Client: require('./lib/client'),
     util: require('./lib/util/util'),
+    RichDisplay: require('./lib/util/RichDisplay'),
+    RichMenu: require('./lib/util/RichMenu'),
+    ReactionHandler: require('./lib/util/ReactionHandler'),
 
     Command: require('./lib/structures/Command'),
     CommandMessage: require('./lib/structures/CommandMessage'),

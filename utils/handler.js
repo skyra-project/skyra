@@ -4,6 +4,7 @@ const Guilds = require('./managers/guilds');
 const Clock = require('./managers/clock');
 
 const AdvancedSearch = require('./interfaces/AdvancedSearch');
+const PromptSystem = require('./interfaces/PromptSystem');
 const Dashboard = require('../functions/dashboard');
 
 const provider = require('../providers/rethink');
@@ -17,6 +18,7 @@ class Handler {
         this.clock = new Clock(client);
 
         this.search = new AdvancedSearch(client);
+        this.prompt = new PromptSystem(client);
 
         this.dashboard = null;
 

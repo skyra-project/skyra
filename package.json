@@ -9,19 +9,19 @@
   "author": "kyra",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.1",
+    "body-parser": "^1.18.2",
     "bufferutil": "^3.0.2",
     "canvas": "github:Automattic/node-canvas",
     "cheerio": "^0.22.0",
     "discord.js": "github:hydrabolt/discord.js",
     "ejs": "^2.5.7",
     "erlpack": "github:hammerandchisel/erlpack",
-    "express": "^4.15.4",
-    "express-session": "^1.15.5",
+    "express": "^4.16.1",
+    "express-session": "^1.15.6",
     "figlet": "^1.2.0",
-    "fs-nextra": "^0.2.1",
+    "fs-nextra": "^0.3.0",
     "gifencoder": "^1.1.0",
-    "helmet": "^3.8.1",
+    "helmet": "^3.8.2",
     "html-entities": "^1.2.1",
     "html-to-text": "^3.3.0",
     "libsodium-wrappers": "^0.5.4",
@@ -33,15 +33,16 @@
     "passport-discord": "^0.1.2",
     "performance-now": "^2.1.0",
     "randomcolor": "^0.5.3",
+    "redis-nextra": "^0.1.0",
     "rethinkdbdash": "^2.3.31",
     "stream-to-array": "^2.3.0",
     "xml2js": "^0.4.19",
     "ytdl-core": "^0.17.1"
   },
   "engines": {
-    "node": ">=8.4.0"
+    "node": ">=8.5.0"
   },
   "devDependencies": {
-    "eslint": "^4.0.0"
+    "eslint": "^4.8.0"
   }
 }

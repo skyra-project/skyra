@@ -601,6 +601,21 @@ module.exports = class extends Language {
             SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
             SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
 
+            PROMPT_CANCEL: 'The prompt has been cancelled.',
+            PROMPT_ARGUMENT: 'The parameter',
+            PROMPT_MESSAGE: 'Write a valid numeric ID for a message. Keep in mind you will need the Developer Mode, and the message must belong to this channel.',
+            PROMPT_USER: 'Mention a user, write the ID, or a part of the username.',
+            PROMPT_MEMBER: 'Mention a member from this server, write the ID, or a part of the username.',
+            PROMPT_CHANNEL: 'Mention a channel, write its ID, or a part of its name.',
+            PROMPT_GUILD: 'Write a valid numeric ID for a server. Keep in mind you will need the Developer Mode, and I must be in it.',
+            PROMPT_ROLE: 'Mention a role, write its ID, or a part of its name.',
+            PROMPT_BOOLEAN: 'Respond to this message with either `yes` or `no`.',
+            PROMPT_STRING: 'Respond to this message with something, please.',
+            PROMPT_INTEGER: 'Respond to this message with an integer.',
+            PROMPT_NUMBER: 'Respond to this message with a number.',
+            PROMPT_URL: 'Respond to this message with a valid URL.',
+            PROMPT_ATTACHMENT: 'Attach a file to this channel or provide a valid attachment url.',
+
             TYPES_MEMBER_ROLE_UPDATE: 'Member Role Update',
             TYPES_MEMBER_NICKNAME_UPDATE: 'Member Nickname Update',
 

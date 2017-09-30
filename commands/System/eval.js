@@ -20,8 +20,8 @@ module.exports = class extends Command {
         const start = now();
         const out = await this.eval(msg, type ? `(async () => { ${input} })()` : input);
         const time = now() - start;
-        if (out.success === false && this.client.debugMode === true) out.output = out.output.stack || out.output.message;
-        if (typeof out.output === 'undefined' || out.output === '') out.output = '<void>';
+        if (out.success === false && out.output.message) out.output = out.output.message;
+        else if (out.output === '') out.output = '<void>';
         return msg.send([
             `Executed in ${time.toFixed(5)}μs | ${out.success ? '🔍 **Inspect:**' : '❌ **Error:**'}`,
             util.codeBlock('js', this.clean(out.output))

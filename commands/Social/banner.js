@@ -51,7 +51,7 @@ module.exports = class extends Command {
 
     async buylist(msg, value) {
         let index = 1;
-        if (isNaN(value) === false) index = parseInt(value);
+        if (value && isNaN(value) === false) index = parseInt(value);
         const list = listify(Object.entries(availableBanners).map(([k, v]) => [k, `${v.title.padEnd(25, ' ') + v.price} S`]), { index, length: 8 });
         return msg.send(list, { code: 'asciidoc' });
     }

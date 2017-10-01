@@ -53,16 +53,15 @@ class Handler {
         ]);
 
         const ModCache = new Map();
-        for (let i = 0; i < modlogs.length; i++) {
+        for (let i = 0; i < modlogs.length; i++)
             ModCache.set(modlogs[i].id, modlogs[i].cases.filter(cs => cs.type === 'mute' && cs.appeal !== true) || []);
-        }
+
         for (let i = 0; i < guilds.length; i++) {
-            if (this.client.guilds.has(guilds[i].id) === false) this.client.emit('log', `LOADER | GUILDSETTINGS | ${guilds[i].id} `, 'info');
+            if (this.client.config.dev === false && this.client.guilds.has(guilds[i].id) === false) this.client.emit('log', `LOADER | GUILDSETTINGS | ${guilds[i].id} `, 'info');
             this.guilds.set(guilds[i].id, guilds[i]).setModeration(ModCache.get(guilds[i].id) || []);
         }
-        for (const guild of this.client.guilds.values()) {
+        for (const guild of this.client.guilds.values())
             if (this.guilds.has(guild.id) === false) await this.guilds.create(guild.id);
-        }
 
         return true;
     }

@@ -43,8 +43,8 @@ class ModerationLog {
 
     async retrieveModLog(id) {
         const log = await this.guild.settings.moderation.getCases(id);
-        if (log.moderator) await this.client.fetchUser(log.moderator).then(user => this.setModerator(user));
-        if (log.user) await this.client.fetchUser(log.user).then(user => this.setUser(user));
+        if (log.moderator) await this.client.users.fetch(log.moderator).then(user => this.setModerator(user));
+        if (log.user) await this.client.users.fetch(log.user).then(user => this.setUser(user));
         this.type = log.type;
         this.reason = log.reason;
 

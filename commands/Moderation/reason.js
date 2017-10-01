@@ -31,7 +31,7 @@ module.exports = class extends Command {
 
         await settings.moderation.updateCase(selected, { reason });
 
-        const messages = await channel.fetchMessages({ limit: 100 });
+        const messages = await channel.messages.fetchs({ limit: 100 });
 
         const regCase = new RegExp(`(AUTO | )?Case ${selected}`);
 
@@ -56,7 +56,7 @@ module.exports = class extends Command {
             await message.edit({ embed });
         } else {
             const dataColor = ModLog.getColor(log.type);
-            const user = await this.client.fetchUser(log.user).catch(() => ({ tag: 'Unknown', id: log.user }));
+            const user = await this.client.users.fetch(log.user).catch(() => ({ tag: 'Unknown', id: log.user }));
             const embed = new MessageEmbed()
                 .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
                 .setColor(dataColor.color)

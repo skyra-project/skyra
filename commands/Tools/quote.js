@@ -19,7 +19,7 @@ module.exports = class extends Command {
         if (/[0-9]{17,21}/.test(searchMessage) === false)
             throw i18n.get('RESOLVER_INVALID_MSG', 'Message');
 
-        const mes = await channel.fetchMessage(searchMessage)
+        const mes = await channel.messages.fetch(searchMessage)
             .catch(() => { throw i18n.get('SYSTEM_MESSAGE_NOT_FOUND'); });
 
         const attachment = mes.attachments.size

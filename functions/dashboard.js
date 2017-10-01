@@ -125,7 +125,7 @@ module.exports = class Dashboard {
             res.redirect(`/users/${req.user.id}`);
         });
         this.server.get('/users/:id', this.util.check.auth, (req, res) => {
-            this.client.fetchUser(req.params.id)
+            this.client.users.fetch(req.params.id)
                 .then(user => res.render(this.getFile('profile.ejs'), this.sendData(req, { profile: user.profile })))
                 .catch(() => this.sendError(req, res, 404, 'Not found'));
         });
@@ -148,7 +148,7 @@ module.exports = class Dashboard {
         this.server.get('/404', (req, res) => this.sendError(req, res, 404, 'Not found'));
         this.server.get('*', (req, res) => this.sendError(req, res, 404, `Path not found: ${req.path}`));
 
-        this.site = this.server.listen(this.client.config.dash.port);
+        this.site = this.server.listen(this.client.dev ? 3000 : this.client.config.dash.port);
     }
 
     get dClient() {
@@ -264,7 +264,7 @@ module.exports = class Dashboard {
             if (users.includes(banner.author)) continue;
             users.push(banner.author);
         }
-        await Promise.all(users.map(user => this.client.fetchUser(user)));
+        await Promise.all(users.map(user => this.client.users.fetch(user)));
         this.banners = [];
         for (const banner of Object.values(availableBanners)) {
             this.banners.push(Object.assign(banner, { resAuthor: this.client.users.get(banner.author).tag }));

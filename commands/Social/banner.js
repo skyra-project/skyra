@@ -76,7 +76,7 @@ module.exports = class extends Command {
         return this.prompt(msg, selected, i18n)
             .then(async () => {
                 banners.push(selected.id);
-                const user = await this.client.fetchUser(selected.author).catch(Command.handleError);
+                const user = await this.client.users.fetch(selected.author).catch(Command.handleError);
                 await msg.author.profile.update({ money: msg.author.profile.money - selected.price, bannerList: banners }).catch(Command.handleError);
                 await user.profile.add(selected.price * 0.1).catch(Command.handleError);
                 return msg.send(i18n.get('COMMAND_BANNER_BUY', selected.title));
@@ -85,7 +85,7 @@ module.exports = class extends Command {
     }
 
     async prompt(msg, banner, i18n) {
-        const user = await this.client.fetchUser(banner.author).catch(Command.handleError);
+        const user = await this.client.users.fetch(banner.author).catch(Command.handleError);
         const TITLES = i18n.COMMAND_BANNER_PROMPT || this.client.languages.get('en-US').language.COMMAND_BANNER_PROMPT;
 
         const embed = new MessageEmbed()

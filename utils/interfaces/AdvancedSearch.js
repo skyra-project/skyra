@@ -88,7 +88,7 @@ class Fetch {
         if (query instanceof GuildMember) return query.user;
         if (query instanceof User) return query;
         if (typeof query === 'string') {
-            if (regex.userOrMember.test(query)) return this.client.fetchUser(regex.userOrMember.exec(query)[1]).catch(() => null);
+            if (regex.userOrMember.test(query)) return this.client.users.fetch(regex.userOrMember.exec(query)[1]).catch(() => null);
             if (/\w{1,32}#\d{4}/.test(query)) {
                 const res = guild.members.find(member => member.user.tag === query);
                 return res ? res.user : null;

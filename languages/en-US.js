@@ -524,7 +524,7 @@ module.exports = class extends Language {
             COMMAND_WHOIS_MEMBER: (member) => [
                 `${member.nickname ? `aka **${member.nickname}**.\n` : ''}`,
                 `With an ID of \`${member.user.id}\`,`,
-                `this user is **${member.user.presence.status}**${member.user.presence.game ? `, playing: **${member.user.presence.game.name}**` : '.'}`,
+                `this user is **${member.user.presence.status}**${member.user.presence.activity ? `, playing: **${member.user.presence.activity.name}**` : '.'}`,
                 '\n',
                 `\nJoined Discord on ${moment.utc(member.user.createdAt).format('D/MM/YYYY [at] HH:mm:ss')}`,
                 `\nJoined ${member.guild.name} on ${moment.utc(member.joinedAt).format('D/MM/YYYY [at] HH:mm:ss')}`
@@ -591,7 +591,7 @@ module.exports = class extends Language {
             EVENTS_MESSAGE_DELETE: 'Message Deleted',
             EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
             EVENTS_COMMAND: (command) => `Command Used: ${command}`,
-            EVENTS_STREAM_START: (member) => `The user **${member.user.tag}** is now live! **${member.presence.game.name}**\n${member.presence.game.url}`,
+            EVENTS_STREAM_START: (member) => `The user **${member.user.tag}** is now live! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
             EVENTS_STREAM_STOP: (member) => `The user **${member.user.tag}** is not longer live!`,
             EVENTS_STARBOARD_SELF: (user) => `Dear ${user}, you cannot star your own messages.`,
             EVENTS_STARBOARD_BOT: (user) => `Dear ${user}, you cannot star bot messages.`,

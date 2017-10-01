@@ -19,7 +19,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [user = msg.author], settings, i18n) {
-        const member = await msg.guild.fetchMember(user)
+        const member = await msg.guild.members.fetch(user)
             .catch(() => null);
 
         const embed = new MessageEmbed();

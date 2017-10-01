@@ -18,7 +18,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [user, ...reason], settings, i18n) {
-        const member = await msg.guild.fetchMember(user.id).catch(() => null);
+        const member = await msg.guild.members.fetch(user.id).catch(() => null);
 
         if (user.id === msg.author.id) throw i18n.get('COMMAND_USERSELF');
         else if (user.id === this.client.user.id) throw i18n.get('COMMAND_TOSKYRA');

@@ -18,7 +18,7 @@ module.exports = class extends Command {
         const channel = input ? await this.client.handler.search.channel(input, msg) : msg.channel;
 
         if (!channel.readable) throw i18n.get('CHANNEL_NOT_READABLE');
-        const messages = await channel.fetchMessages({ limit: 100 });
+        const messages = await channel.messages.fetchs({ limit: 100 });
         const amount = messages.filter(mes => mes.createdTimestamp > msg.createdTimestamp - 60000).size;
         return msg.send(i18n.get('COMMAND_FLOW', amount));
     }

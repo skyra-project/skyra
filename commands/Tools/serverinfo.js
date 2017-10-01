@@ -17,7 +17,7 @@ module.exports = class extends Command {
     async run(msg, params, settings, i18n) {
         if ((msg.guild.members.size / msg.guild.memberCount) * 100 < 90) {
             await msg.send(i18n.get('SYSTEM_FETCHING'));
-            await msg.guild.fetchMembers();
+            await msg.guild.members.fetch();
         }
 
         let offline = 0;

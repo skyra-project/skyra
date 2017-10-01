@@ -48,7 +48,7 @@ module.exports = class Utils {
         this.executeLevel = async (req, res, level, guild, callback) => {
             if (req.user.id === this.client.config.ownerID);
             else {
-                const moderator = await guild.fetchMember(req.user.id).catch(() => null);
+                const moderator = await guild.members.fetch(req.user.id).catch(() => null);
                 if (!moderator || this.hasLevel(guild, moderator, level) !== true) return this.throw(res, ...this.error.DENIED_ACCESS);
             }
 

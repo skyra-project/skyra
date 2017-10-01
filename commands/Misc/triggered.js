@@ -42,7 +42,7 @@ module.exports = class extends Command {
         const imgTitle = new Canvas.Image();
         const imgTriggered = new Canvas.Image();
         const encoder = new GIFEncoder(350, 393);
-        const canvas = new Canvas(350, 393);
+        const canvas = Canvas.createCanvas(350, 393);
         const ctx = canvas.getContext('2d');
 
         imgTitle.src = this.template;

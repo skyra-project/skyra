@@ -40,7 +40,7 @@ module.exports = class extends Monitor {
     }
 
     ensureFetchMember(msg) {
-        return !msg.member ? msg.guild.fetchMember(msg.author.id) : null;
+        return !msg.member ? msg.guild.members.fetch(msg.author.id) : null;
     }
 
     async handleRoles(msg, settings, memberPoints, i18n) {

@@ -21,12 +21,12 @@ module.exports = class RouterGuild {
 
         /* Members */
         this.server.get('/:guild/members', this.util.gateway.auth, (req, res) => {
-            req.guild.fetchMembers()
+            req.guild.members.fetch()
                 .then(() => this.util.sendMessage(res, this.serializeList(req.guild.members, 'member')))
                 .catch(err => this.util.sendError(res, err));
         });
         this.server.get('/:guild/members/:member', this.util.gateway.auth, (req, res) => {
-            req.guild.fetchMember(req.params.member)
+            req.guild.members.fetch(req.params.member)
                 .then(member => this.util.sendMessage(res, this.serialize.member(member)))
                 .catch(() => this.util.throw(res, ...this.util.error.MEMBER_NOT_FOUND));
         });

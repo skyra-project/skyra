@@ -18,7 +18,7 @@ module.exports = class extends Command {
 
     async run(msg, [message, limit = 10], settings, i18n) {
         if (!/^[0-9]{17,21}$/.test(message)) throw i18n.get('RESOLVER_INVALID_MSG', 'Message');
-        const msgs = await msg.channel.fetchMessages({ limit, around: message }).then(messages => Array.from(messages.values()));
+        const msgs = await msg.channel.messages.fetchs({ limit, around: message }).then(messages => Array.from(messages.values()));
         const messages = [];
 
         for (let i = msgs.length - 1; i > 0; i--)

@@ -6,6 +6,7 @@ const Skyra = new Client({
     cmdEditing: true,
     cmdLogging: false,
     dash: config.dash,
+    dev: false,
     clientOptions: {
         disabledEvents: [
             'TYPING_START',
@@ -20,7 +21,7 @@ const Skyra = new Client({
     }
 });
 
-Skyra.login(config.tokens.bot.stable);
+Skyra.login(Skyra.config.dev ? config.tokens.bot.dev : config.tokens.bot.stable);
 
 process.on('unhandledRejection', (err) => {
     if (!err) return;

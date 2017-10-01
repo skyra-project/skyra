@@ -86,7 +86,7 @@ module.exports = class extends Command {
             output.push(`${i18n.get('COMMAND_LIST_STRIKES_ENUM', thisStrikes.length)}:\n`);
 
             for (const ncase of thisStrikes) {
-                const moderator = await this.client.fetchUser(ncase.moderator);
+                const moderator = await this.client.users.fetch(ncase.moderator);
                 output.push(i18n.get('COMMAND_LIST_STRIKES_CASE', ncase.case, moderator.tag, ncase.reason || i18n.get('MODLOG_PENDING_REASON', settings.master.prefix, ncase.case)));
             }
         }

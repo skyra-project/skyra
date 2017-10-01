@@ -12,7 +12,7 @@ module.exports = class RouterLeaderboard {
             this.util.sendMessage(res, this.serializeList(this.client.handler.social.global, 'global'));
         });
         this.server.get('/global/:user', this.util.gateway.auth, async (req, res) => {
-            const user = await this.client.fetchUser(req.params.user)
+            const user = await this.client.users.fetch(req.params.user)
                 .then(us => us.profile)
                 .catch(() => null);
 
@@ -32,7 +32,7 @@ module.exports = class RouterLeaderboard {
         });
 
         this.server.param('member', async (req, res, next, id) => {
-            const guildMember = req.guild.fetchMember(id).catch(() => { this.util.throw(res, ...this.util.error.USER_NOT_FOUND); });
+            const guildMember = req.guild.members.fetch(id).catch(() => { this.util.throw(res, ...this.util.error.USER_NOT_FOUND); });
             if (!guildMember) return null;
 
             let member = this.client.handler.social.local.getMember(req.guild.id, guildMember.id);

@@ -21,7 +21,7 @@ module.exports = class extends Command {
         const user = typeof input === 'string' ? await this.client.handler.search.user(input, msg) : msg.author;
 
         if (!user) throw i18n.get('REQUIRE_USER');
-        const member = await msg.guild.fetchMember(user.id).catch(() => { throw i18n.get('USER_NOT_IN_GUILD'); });
+        const member = await msg.guild.members.fetch(user.id).catch(() => { throw i18n.get('USER_NOT_IN_GUILD'); });
 
         const { permissions } = member;
         const perm = ['\u200B'];

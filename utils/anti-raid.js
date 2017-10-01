@@ -65,7 +65,7 @@ class AntiRaid {
     }
 
     check(id, min) {
-        return this.guild.fetchMember(id)
+        return this.guild.members.fetch(id)
             .then((member) => {
                 if (member.roles.size >= min) return null;
                 if (this.defaultRole && member.roles.size === 2 && member.roles.has(this.defaultRole) === false) return null;

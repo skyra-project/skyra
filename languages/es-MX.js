@@ -525,7 +525,7 @@ module.exports = class extends Language {
             COMMAND_WHOIS_MEMBER: (member) => [
                 `${member.nickname ? `aka **${member.nickname}**.\n` : ''}`,
                 `Con una ID de usuario \`${member.user.id}\`,`,
-                `este usuario tiene un estado de **${member.user.presence.status}**${member.user.presence.game ? `, jugando: **${member.user.presence.game.name}**` : '.'}`,
+                `este usuario tiene un estado de **${member.user.presence.status}**${member.user.presence.activity ? `, jugando: **${member.user.presence.activity.name}**` : '.'}`,
                 '\n',
                 `\nSe unió a Discord en el día ${moment.utc(member.user.createdAt).format('D/MM/YYYY [a las] HH:mm:ss')}`,
                 `\nSe unió al servidor ${member.guild.name} en el día ${moment.utc(member.joinedAt).format('D/MM/YYYY [a las] HH:mm:ss')}`
@@ -592,7 +592,7 @@ module.exports = class extends Language {
             EVENTS_MESSAGE_DELETE: 'Mensaje Borrado',
             EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
             EVENTS_COMMAND: (command) => `Comando usado: ${command}`,
-            EVENTS_STREAM_START: (member) => `¡El usuario **${member.user.tag}** está transmitiendo en directo! **${member.presence.game.name}**\n${member.presence.game.url}`,
+            EVENTS_STREAM_START: (member) => `¡El usuario **${member.user.tag}** está transmitiendo en directo! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
             EVENTS_STREAM_STOP: (member) => `¡El usuario **${member.user.tag}** ha terminado su transmisión en directo!`,
             EVENTS_STARBOARD_SELF: (user) => `Querido ${user}, no puedes marcar con una estrella tus propios mensajes.`,
             EVENTS_STARBOARD_BOT: (user) => `Querido ${user}, no puedes marcar con una estrella los mensajes enviados por bots.`,

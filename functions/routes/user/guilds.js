@@ -11,7 +11,7 @@ module.exports = class RouterGuilds {
         const executeLevel = async (req, res, level, guild, callback) => {
             if (req.user.id === this.client.config.ownerID);
             else {
-                const moderator = await guild.fetchMember(req.user.id).catch(() => null);
+                const moderator = await guild.members.fetch(req.user.id).catch(() => null);
                 if (!moderator || this.util.hasLevel(guild, moderator, level) !== true) return dashboard.sendError(req, res, 403, 'Access denied');
             }
 

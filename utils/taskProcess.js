@@ -11,13 +11,13 @@ class TaskProcess {
     }
 
     async reminder(doc) {
-        const user = await this.client.fetchUser(doc.user).catch((err) => { throw err; });
+        const user = await this.client.users.fetch(doc.user).catch((err) => { throw err; });
         const message = `⏲ Hey! You asked me on ${date(doc.createdAt)} to remind you:\n*${doc.content}*`;
         return user.send(message).catch((err) => { throw err; });
     }
 
     async poll(poll) {
-        const user = await this.client.fetchUser(poll.user).catch((err) => { throw err; });
+        const user = await this.client.users.fetch(poll.user).catch((err) => { throw err; });
         let content;
         if (poll.voted.length > 0) {
             const graph = [];
@@ -45,7 +45,7 @@ class TaskProcess {
         if (!guild) return null;
         if (guild.me.permissions.has('BAN_MEMBERS') !== true) return null;
 
-        const user = await this.client.fetchUser(doc.user).catch((err) => { throw err; });
+        const user = await this.client.users.fetch(doc.user).catch((err) => { throw err; });
 
         user.action = 'unban';
         await guild.unban(user, `[AUTO] Ban released after ${duration(doc.duration)}`);
@@ -63,8 +63,8 @@ class TaskProcess {
         if (!guild) return null;
         if (guild.me.permissions.has('MANAGE_ROLES') !== true) return null;
 
-        const user = await this.client.fetchUser(doc.user).catch((err) => { throw err; });
-        const member = await guild.fetchMember(user).catch(() => null);
+        const user = await this.client.users.fetch(doc.user).catch((err) => { throw err; });
+        const member = await guild.members.fetch(user).catch(() => null);
 
         if (!member) return null;
 
@@ -90,8 +90,8 @@ class TaskProcess {
         if (!guild) return null;
         if (guild.me.permissions.has('MUTE_MEMBERS') !== true) return null;
 
-        const user = await this.client.fetchUser(doc.user).catch((err) => { throw err; });
-        const member = await guild.fetchMember(user).catch(() => null);
+        const user = await this.client.users.fetch(doc.user).catch((err) => { throw err; });
+        const member = await guild.members.fetch(user).catch(() => null);
 
         if (!member || member.serverMute !== true) return null;
 

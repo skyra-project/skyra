@@ -23,7 +23,7 @@ module.exports = class extends Command {
         if (!doc) throw i18n.get('COMMAND_REASON_NOT_EXISTS');
         if (doc.timed === true) throw i18n.get('COMMAND_TIME_TIMED');
 
-        const user = await this.client.fetchUser(doc.user);
+        const user = await this.client.users.fetch(doc.user);
 
         const type = await this.getActions(msg, doc, user).catch(error => { throw i18n.get(error); });
 
@@ -86,7 +86,7 @@ module.exports = class extends Command {
 
     async checkVMute(msg, doc, user) {
         if (msg.guild.me.permissions.has('MUTE_MEMBERS') !== true) throw 'COMMAND_VMUTE_MISSING_PERMISSION';
-        const member = await msg.guild.fetchMember(user).catch(() => { throw 'USER_NOT_IN_GUILD'; });
+        const member = await msg.guild.members.fetch(user).catch(() => { throw 'USER_NOT_IN_GUILD'; });
 
         if (member.serverMute !== true) throw 'COMMAND_VMUTE_USER_NOT_MUTED';
 

@@ -51,7 +51,7 @@ module.exports = class extends Command {
 
     async init() {
         [this.kyra, this.template] = await Promise.all([
-            this.client.fetchUser('242043489611808769'),
+            this.client.users.fetch('242043489611808769'),
             readFile(join(__dirname, '../../assets/images/memes/pingkyra.png'))
         ]);
     }

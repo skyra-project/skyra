@@ -5,8 +5,8 @@ module.exports = class extends Event {
     async run(oldMember, newMember) {
         if (this.client.ready !== true || newMember.guild.available !== true) return null;
 
-        const wasStreaming = oldMember.presence.game !== null && oldMember.presence.game.type === 'STREAMING';
-        const isStreaming = newMember.presence.game !== null && newMember.presence.game.type === 'STREAMING';
+        const wasStreaming = oldMember.presence.activity !== null && oldMember.presence.activity.type === 'STREAMING';
+        const isStreaming = newMember.presence.activity !== null && newMember.presence.activity.type === 'STREAMING';
 
         let action;
         if (wasStreaming && isStreaming === false) action = 'STOP';

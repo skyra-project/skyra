@@ -14,7 +14,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [limit]) {
-        const messages = await msg.channel.messages.fetchs({ limit })
+        const messages = await msg.channel.messages.fetch({ limit })
             .then(msgs => msgs.filter(mes => mes.author.id === this.client.user.id));
 
         for (const message of messages.values())

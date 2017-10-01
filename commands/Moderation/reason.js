@@ -31,7 +31,7 @@ module.exports = class extends Command {
 
         await settings.moderation.updateCase(selected, { reason });
 
-        const messages = await channel.messages.fetchs({ limit: 100 });
+        const messages = await channel.messages.fetch({ limit: 100 });
 
         const regCase = new RegExp(`(AUTO | )?Case ${selected}`);
 

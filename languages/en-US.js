@@ -93,14 +93,6 @@ module.exports = class extends Language {
             DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
             DEFAULT_LANGUAGE: 'Default Language',
 
-            SETTING_GATEWAY_FOLDER_NOTEXISTS: (folder) => `The key '${folder}' does not exist in the current schema.`,
-            SETTING_GATEWAY_KEY_NOTEXISTS: (folder, key) => `The key \`${folder}\` :: \`${key}\` does not exist in the current schema.`,
-            SETTING_GATEWAY_ADD_OR_REMOVE: 'The type parameter must be either \'add\' or \'remove\'.',
-            SETTING_GATEWAY_NOT_ARRAY: (folder, key) => `The key \`${folder}\` :: \`${key}\` does not accept multiple values.`,
-            SETTING_GATEWAY_REQUIRE_VALUE: 'You must specify the value to add or remove.',
-            SETTING_GATEWAY_ARRAY_ADD_EXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\` :: \`${key}\` already exists.`,
-            SETTING_GATEWAY_ARRAY_REMOVE_NOTEXISTS: (folder, key, data) => `The value ${data} for the key \`${folder}\` :: \`${key}\` does not exist.`,
-
             RESOLVER_INVALID_PIECE: (name, piece) => `'${name}' must be a valid ${piece} name.`,
             RESOLVER_INVALID_MSG: (name) => `'${name}' must be a valid message id.`,
             RESOLVER_INVALID_USER: (name) => `'${name}' must be a mention or valid user id.`,
@@ -412,13 +404,14 @@ module.exports = class extends Language {
             COMMAND_HELP_DM: '📥 | Commands have been sent to your DMs.',
             COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
 
+            COMMAND_CONF_LIST_TITLE: '= Server Settings =',
             COMMAND_CONF_SELECTKEY: (keys) => `Please, choose between one of the following keys: ${keys}`,
-            COMMAND_CONF_ADDED: (folder, key, value) => `Successfully added the value \`${value}\` to the key: \`${folder}\` :: \`${key}\``,
-            COMMAND_CONF_UPDATED: (folder, key, response) => `Successfully updated the key \`${folder}\` :: \`${key}\`: \`${response}\``,
-            COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
-            COMMAND_CONF_REMOVE: (folder, key, value) => `Successfully removed the value \`${value}\` from the key: \`${folder}\` :: \`${key}\``,
-            COMMAND_CONF_GET: (folder, key, value) => `The value for the key \`${folder}\` :: \`${key}\` is: \`${value}\``,
-            COMMAND_CONF_RESET: (folder, key, response) => `The key \`${folder}\` :: \`${key}\` has been reset to: \`${response}\``,
+            COMMAND_CONF_ADDED: (key, value) => `Successfully added the value \`${value}\` to the key: \`${key}\``,
+            COMMAND_CONF_UPDATED: (key, response) => `Successfully updated the key \`${key}\`: \`${response}\``,
+            COMMAND_CONF_KEY_NOT_ARRAY: 'This key cannot store multiple values. Use the action \'reset\' instead.',
+            COMMAND_CONF_REMOVE: (key, value) => `Successfully removed the value \`${value}\` from the key: \`${key}\``,
+            COMMAND_CONF_GET: (key, value) => `The value for the key \`${key}\` is: \`${value}\``,
+            COMMAND_CONF_RESET: (key, response) => `The key \`${key}\` has been reset to: \`${response}\``,
             COMMAND_STATS: (STATS, UPTIME, USAGE) => [
                 '= STATISTICS =',
                 `• Users      :: ${STATS.USERS}`,
@@ -602,9 +595,9 @@ module.exports = class extends Language {
             EVENTS_STARBOARD_BOT: (user) => `Dear ${user}, you cannot star bot messages.`,
             EVENTS_STARBOARD_EMPTY: (user) => `Dear ${user}, you cannot star empty messages.`,
 
-            SETTINGS_DELETE_CHANNELS_DEFAULT: 'Removed Settings Channels::default',
-            SETTINGS_DELETE_ROLES_INITIAL: 'Removed Setting Roles::initial',
-            SETTINGS_DELETE_ROLES_MUTE: 'Removed Setting Roles::mute',
+            SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reseated the value for `channels.default`',
+            SETTINGS_DELETE_ROLES_INITIAL: 'Reseated the value for `roles.initial`',
+            SETTINGS_DELETE_ROLES_MUTE: 'Reseated the value for `roles.muted`',
 
             PROMPT_CANCEL: 'The prompt has been cancelled.',
             PROMPT_ARGUMENT: 'The parameter',

@@ -31,7 +31,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [query, ind = 1], settings, i18n) {
-        const index = --ind;
+        const index = ind - 1;
         if (index < 0)
             throw i18n.get('RESOLVER_POSITIVE_AMOUNT');
 

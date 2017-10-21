@@ -76,6 +76,7 @@ module.exports = class extends Command {
         const unlistedRoles = [];
         const invalidRoles = [];
         for (const role of roles) {
+            if (role.length === 0) continue;
             const res = await this.client.handler.search.role(role, msg);
 
             if (res === null) invalidRoles.push(role);
@@ -98,6 +99,7 @@ module.exports = class extends Command {
         const unlistedRoles = [];
         const invalidRoles = [];
         for (const role of roles) {
+            if (role.length === 0) continue;
             const res = await this.client.handler.search.role(role, msg);
 
             if (res === null) invalidRoles.push(role);

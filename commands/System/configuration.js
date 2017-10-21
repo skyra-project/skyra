@@ -44,14 +44,14 @@ module.exports = class extends Command {
     }
 
     // Implement i18n
-    async list(msg, settings, key) {
+    async list(msg, settings, key, _value, i18n) {
         const { path, route } = this.client.settings.guilds.getPath(key, { avoidUnconfigurable: true, piece: false });
         let object = settings;
         if (route.length >= 1) {
             for (let i = 0; i < route.length; i++) object = object[route[i]];
         }
         const message = path.getList(msg, object);
-        return msg.send(`= Server Settings =\n${message}`, { code: 'asciidoc' });
+        return msg.send(`${i18n.get('COMMAND_CONF_LIST_TITLE')}\n${message}`, { code: 'asciidoc' });
     }
 
     handle(value) {

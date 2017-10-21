@@ -1,6 +1,5 @@
 const provider = require('../../providers/rethink');
 const Moderation = require('./moderation');
-const Schema = require('../../schema.json');
 const { Collection } = require('discord.js');
 
 const superRegExp = (filterArray) => {
@@ -15,19 +14,13 @@ const superRegExp = (filterArray) => {
  */
 class GuildSettings {
 
-    constructor(id, data = {}) {
+    constructor(client, id, data = {}) {
+        Object.defineProperty(this, 'client', { value: client });
         Object.defineProperty(this, 'id', { value: id });
 
-        this._merge(data, 'master');
-        this._merge(data, 'disable');
-        this._merge(data, 'roles');
-        this._merge(data, 'events');
-        this._merge(data, 'channels');
-        this._merge(data, 'messages');
-        this._merge(data, 'twitch');
-        this._merge(data, 'selfmod');
-        this._merge(data, 'filter');
-        this._merge(data, 'social');
+        const schema = this.client.settings.guilds.schema;
+        for (let i = 0; i < schema._keys.length; i++)
+            this._merge(data, schema._keys[i], schema[schema._keys[i]]);
 
         this.social.boost = data.social.boost || 1;
         this.social.monitorBoost = data.social.monitorBoost || 1;
@@ -45,13 +38,12 @@ class GuildSettings {
         if (this.filter.raw.length > 0) this.updateFilter();
     }
 
-    _merge(data, group) {
+    _merge(data, group, folder) {
         this[group] = {};
 
-        if (group in data === false) data[group] = {};
-        for (const key of Object.keys(Schema[group])) {
-            this[group][key] = data[group][key] || (Schema[group][key].hasOwnProperty('default') ? Schema[group][key].default : null);
-        }
+        if (typeof data[group] === 'undefined') data[group] = {};
+        for (let i = 0; i < folder._keys.length; i++)
+            this[group][folder._keys[i]] = typeof data[group][folder._keys[i]] !== 'undefined' ? data[group][folder._keys[i]] : folder[folder._keys[i]].default;
     }
 
     setModeration(modlogs) {

@@ -38,12 +38,15 @@ module.exports = class extends Command {
         if (!data.tuc || !data.tuc[0])
             throw i18n.get('COMMAND_DEFINE_NOTFOUND');
 
+        const entry = data.tuc.find(obj => obj.meanings);
+        if (!entry)
+            throw i18n.get('COMMAND_DEFINE_NOTFOUND');
+
         const final = [];
-        let index = 1;
-        for (let item of Object.entries(data.tuc.find(entry => entry.meanings).meanings.slice(0, 5))) {
-            item = decode(item[1].text.replace(/<\/?i>/g, '').replace(/\[\/?i\]/g, ''));
-            final.push(`**\`${index}\` ❯** ${item.replace(/`/g, '\\`')}`);
-            index++;
+        const limit = Math.min(5, entry.meanings.length);
+        for (let i = 0; i < limit; i++) {
+            const item = decode(entry.meanings[i].text.replace(/<\/?i>/g, '').replace(/\[\/?i\]/g, ''));
+            final.push(`**\`${i + 1}\` ❯** ${item.replace(/`/g, '\\`')}`);
         }
 
         return msg.send(i18n.get('COMMAND_DEFINE', input, final.join('\n')));

@@ -8,8 +8,11 @@ module.exports = class extends Inhibitor {
     }
 
     async run(msg, cmd, settings, i18n) {
-        if (msg.author.id === this.client.config.ownerID || cmd.spam !== true || msg.channel.type !== 'text') return;
-        if (settings.channels.spam === msg.channel.id) return;
+        if (msg.author.id === this.client.config.ownerID
+            || cmd.spam !== true
+            || msg.channel.type !== 'text'
+            || settings.channels.spam === msg.channel.id
+            || await msg.hasLevel(2)) return;
 
         if (this.cooldowns.has(msg.channel.id)) throw true;
 

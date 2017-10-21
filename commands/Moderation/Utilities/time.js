@@ -6,7 +6,6 @@ module.exports = class extends Command {
         super(...args, {
             guildOnly: true,
             permLevel: 2,
-            botPerms: [],
             mode: 2,
 
             cooldown: 5,

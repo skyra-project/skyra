@@ -20,7 +20,12 @@ module.exports = class extends Monitor {
             await msg.alert(i18n.get('MONITOR_NOINVITE', msg.author));
         }
 
-        if (!settings.channels.modlog) return null;
+        if (!settings.channels.modlog)
+            return null;
+
+        const channel = msg.guild.channels.get(settings.channels.modlog);
+        if (!channel)
+            return settings.update({ channels: { modlog: null } }).then(() => null);
 
         const embed = new MessageEmbed()
             .setColor(0xefae45)
@@ -28,7 +33,7 @@ module.exports = class extends Monitor {
             .setFooter(`#${msg.channel.name} | ${i18n.get('CONST_MONITOR_INVITELINK')}`)
             .setTimestamp();
 
-        return msg.guild.channels.get(settings.channels.modlog).send({ embed });
+        return channel.send({ embed });
     }
 
 };

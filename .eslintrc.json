@@ -97,7 +97,7 @@
 		"max-len": "off",
 		"max-nested-callbacks": "off",
 		"max-statements-per-line": ["error", { "max": 2 }],
-		"new-cap": "error",
+		"new-cap": "off",
 		"newline-per-chained-call": ["error", { "ignoreChainWithDepth": 6 }],
 		"no-array-constructor": "error",
 		"no-bitwise": "warn",

@@ -14,7 +14,7 @@ module.exports = class extends Event {
         if (msg.channel.type !== 'text' || msg.author.id === this.client.user.id) return null;
 
         const settings = msg.guild.settings;
-        if (settings.events.messageDelete && settings.channels.log) return this.sendLog(msg, settings)
+        if (settings.events.messageDelete && settings.channels.messagelogs) return this.sendLog(msg, settings)
             .catch(err => this.handleError(err));
         return null;
     }
@@ -35,8 +35,8 @@ module.exports = class extends Event {
     }
 
     async sendLog(msg, settings) {
-        const channel = msg.guild.channels.get(settings.channels.log);
-        if (!channel) return settings.update({ channels: { log: null } });
+        const channel = msg.guild.channels.get(settings.channels.messagelogs);
+        if (!channel) return settings.update({ channels: { messagelogs: null } });
 
         const i18n = msg.language;
 
@@ -44,7 +44,7 @@ module.exports = class extends Event {
             .setColor(0xFFAB40)
             .setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL())
             .setDescription(i18n.get('EVENTS_MESSAGE_DELETE_MSG', msg.content))
-            .setFooter(i18n.get('EVENTS_MESSAGE_DELETE'))
+            .setFooter(`${i18n.get('EVENTS_MESSAGE_DELETE')} | ${msg.channel.name}`)
             .setTimestamp();
 
         return channel.send({ embed });

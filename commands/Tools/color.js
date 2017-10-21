@@ -10,6 +10,7 @@ module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             aliases: ['colour'],
+            botPerms: ['ATTACH_FILES'],
             mode: 2,
             cooldown: 15,
 

@@ -10,8 +10,8 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 15,
 
-            usage: '<equation:string>',
-            description: 'Calculate arbitrary maths.',
+            usage: '<create|list|remove|vote|result> [parameters:string] [...]',
+            description: 'Create a poll.',
             extendedHelp: Command.strip`
                 Let's make a poll!
 

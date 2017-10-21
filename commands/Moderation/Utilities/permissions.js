@@ -8,6 +8,7 @@ module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             guildOnly: true,
+            botPerms: ['EMBED_LINKS'],
             permLevel: 2,
             mode: 2,
             cooldown: 30,

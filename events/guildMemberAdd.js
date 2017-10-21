@@ -15,8 +15,7 @@ module.exports = class extends Event {
     async run(member) {
         if (this.client.ready !== true || member.guild.available !== true) return null;
 
-        let settings = member.guild.settings;
-        if (settings instanceof Promise) settings = await settings;
+        const settings = await member.guild.settings;
 
         if (settings.roles.muted && settings.moderation.mutes.has(member.id)) return this.handleMute(member, settings)
             .catch(err => this.handleError(err));
@@ -24,9 +23,11 @@ module.exports = class extends Event {
     }
 
     async sendLog(type, member, settings, system = false, extra = null) {
-        if (!settings.channels.log) return false;
+        if (!settings.channels.log)
+            return false;
         const channel = member.guild.channels.get(settings.channels.log);
-        if (!channel) return settings.update({ channels: { log: null } });
+        if (!channel)
+            return settings.update({ channels: { log: null } });
 
         const avatar = (system ? this.client.user : member.user).displayAvatarURL();
 
@@ -36,7 +37,8 @@ module.exports = class extends Event {
             .setFooter(member.guild.language.get(type))
             .setTimestamp();
 
-        if (extra && typeof extra === 'string') embed.setDescription(extra);
+        if (extra && typeof extra === 'string')
+            embed.setDescription(extra);
 
         return channel.send({ embed });
     }
@@ -44,17 +46,22 @@ module.exports = class extends Event {
     async handle(member, settings) {
         if (settings.selfmod.raid === true && member.guild.me.permissions.has('KICK_MEMBERS')) {
             const response = await AntiRaid.add(member.guild, settings, member);
-            if (response && Array.isArray(response)) return this.sendLog('EVENTS_GUILDMEMBERADD_RAID', member, settings, true, response.join('\n'));
+            if (response && Array.isArray(response))
+                return this.sendLog('EVENTS_GUILDMEMBERADD_RAID', member, settings, true, response.join('\n'));
         }
-        if (settings.roles.initial) await this.handleInitialRole(member, settings).catch(err => this.handleError(err));
-        if (settings.events.memberAdd) await this.handleMessage(member, settings).catch(err => this.handleError(err));
+        if (settings.roles.initial)
+            await this.handleInitialRole(member, settings).catch(err => this.handleError(err));
+        if (settings.events.memberAdd)
+            await this.handleMessage(member, settings).catch(err => this.handleError(err));
 
         return true;
     }
 
     async handleMessage(member, settings) {
-        await this.sendLog('EVENTS_GUILDMEMBERADD', member, settings).catch(err => this.handleError(err));
-        if (settings.channels.default && settings.messages.greeting) await this.handleGreeting(member, settings).catch(err => this.handleError(err));
+        await this.sendLog('EVENTS_GUILDMEMBERADD', member, settings)
+            .catch(err => this.handleError(err));
+        if (settings.channels.default && settings.messages.greeting)
+            await this.handleGreeting(member, settings).catch(err => this.handleError(err));
     }
 
     async handleGreeting(member, settings) {
@@ -64,6 +71,7 @@ module.exports = class extends Event {
             await this.sendLog('SETTINGS_DELETE_CHANNELS_DEFAULT', member, settings, true);
             return null;
         }
+        if (channel.postable === false) return false;
 
         return channel.send(this.getMessage(member, settings));
     }
@@ -72,6 +80,7 @@ module.exports = class extends Event {
         return settings.messages.greeting
             .replace(/%MEMBER%/g, member)
             .replace(/%MEMBERNAME%/g, member.user.username)
+            .replace(/%MEMBERTAG%/g, member.user.tag)
             .replace(/%GUILD%/g, member.guild.name);
     }
 
@@ -89,7 +98,9 @@ module.exports = class extends Event {
 
     async handleMute(member, settings) {
         await this.sendLog('EVENTS_GUILDMEMBERADD_MUTE', member, settings).catch(() => null);
-        if (member.guild.me.permissions.has('MANAGE_ROLES') === false) return null;
+        if (member.guild.me.permissions.has('MANAGE_ROLES') === false)
+            return null;
+
         const role = member.guild.roles.get(settings.roles.muted);
         if (!role) {
             await settings.update({ roles: { muted: null } });

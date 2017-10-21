@@ -7,7 +7,7 @@ module.exports = class extends Extendable {
     }
 
     get extend() {
-        return this.guild ? this.guild.settings : this.client.settingGateway.defaults;
+        return this.guild ? this.guild.settings : this.client.settings.guilds.schema.defaults;
     }
 
 };

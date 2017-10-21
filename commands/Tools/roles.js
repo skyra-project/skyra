@@ -6,8 +6,9 @@ module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             guildOnly: true,
+            botPerms: ['MANAGE_ROLES'],
             mode: 2,
-            cooldown: 15,
+            cooldown: 5,
 
             usage: '<list|claim|unclaim> [roles:string] [...]',
             usageDelim: ' ',
@@ -35,7 +36,7 @@ module.exports = class extends Command {
     async run(msg, [action, ...input], settings, i18n) {
         if (action === 'list') return this.list(msg, settings, i18n);
         if (!input[0]) throw 'write `Skyra, roles list` to get a list of all roles, or `Skyra, roles claim <role1, role2, ...>` to claim them.';
-        const roles = input.join(' ').split(', ');
+        const roles = input.join(' ').split(/, */).map(entry => entry.trimRight());
         return this[action](msg, settings, roles, i18n);
     }
 
@@ -100,7 +101,7 @@ module.exports = class extends Command {
             const res = await this.client.handler.search.role(role, msg);
 
             if (res === null) invalidRoles.push(role);
-            if (!settings.roles.public.includes(res.id)) unlistedRoles.push(res.name);
+            else if (!settings.roles.public.includes(res.id)) unlistedRoles.push(res.name);
             else if (!msg.member.roles.has(res.id)) nonexistentRoles.push(res.name);
             else removeRoles.push(res);
         }

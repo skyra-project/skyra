@@ -15,6 +15,7 @@ module.exports = class extends Command {
     async run(msg, params, settings, i18n) {
         await msg.send(i18n.get('COMMAND_REBOOT'))
             .catch(() => null);
+
         process.exit();
     }
 

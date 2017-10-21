@@ -10,7 +10,7 @@ module.exports = class Utils {
             },
             admin: (req, res, next) => {
                 if (req.isAuthenticated() && req.user.id === client.config.ownerID) return next();
-                return this.client.dashboard.sendError(req, res, 404, `Path not found: ${req.path}`);
+                return this.client.handler.dashboard.sendError(req, res, 404, `Path not found: ${req.path}`);
             }
         };
 
@@ -79,6 +79,7 @@ module.exports = class Utils {
             CHANNEL_NOT_FOUND: [404, 'Channel not found', 'CHANNEL_NOT_FOUND'],
             DENIED_ACCESS: [403, 'Access denied', 'DENIED_ACCESS'],
             AUTH_REQUIRED: [401, 'This endpoint requires authentication', 'AUTH_REQUIRED'],
+            AUTH_FAILED: [401, 'Invalid authentication key', 'AUTH_FAILED'],
             PARSE_ERROR: error => [400, `Failed to parse an argument. Error: ${typeof error === 'string' ? error : JSON.stringify(error)}`, 'PARSE_ERROR'],
             UNKNOWN_NEWS: news => [404, `The announcement '${news}' does not exist`, 'UNKNOWN_NEWS'],
             INVALID_ARGUMENT: (param, type) => [400, `'${param}' must be type: ${type}`, 'INVALID_ARGUMENT'],

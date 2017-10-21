@@ -12,9 +12,9 @@ const colour = {
     vmute: { color: 0xFBC02D, title: 'Voice Mute' },
     warn: { color: 0xFFD600, title: 'Warn' },
 
-    tban: { color: 0xC51162, title: 'Temporal Ban' },
-    tmute: { color: 0xF50057, title: 'Temporal Mute' },
-    tvmute: { color: 0xFF4081, title: 'Temporal Voice Mute' },
+    tban: { color: 0xC51162, title: 'Temporary Ban' },
+    tmute: { color: 0xF50057, title: 'Temporary Mute' },
+    tvmute: { color: 0xFF4081, title: 'Temporary Voice Mute' },
 
     unban: { color: 0x304FFE, title: 'Unban' },
     unmute: { color: 0x448AFF, title: 'Unmute' },

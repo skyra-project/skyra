@@ -4,8 +4,6 @@ const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');
 const Canvas = require('canvas');
 
-const template = resolve(join(__dirname, '../../assets/images/memes/howtoflirt.png'));
-
 const coord1 = [
     { center: [211, 53], radius: 18 },
     { center: [136, 237], radius: 53 },
@@ -23,6 +21,7 @@ module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             guildOnly: true,
+            botPerms: ['ATTACH_FILES'],
 
             cooldown: 30,
 
@@ -40,6 +39,8 @@ module.exports = class extends Command {
                 EXAMPLES: ['Skyra']
             }
         });
+
+        this.template = null;
     }
 
     async run(msg, [user]) {
@@ -49,7 +50,7 @@ module.exports = class extends Command {
 
     async generate(msg, user) {
         /* Initialize Canvas */
-        const canvas = new Canvas(500, 500);
+        const canvas = Canvas.createCanvas(500, 500);
         const background = new Canvas.Image();
         const user1 = new Canvas.Image();
         const user2 = new Canvas.Image();
@@ -58,15 +59,14 @@ module.exports = class extends Command {
         if (user.id === msg.author.id) user = this.client.user;
 
         /* Get the buffers from both profile avatars */
-        const [bgBuffer, user1Buffer, user2Buffer] = await Promise.all([
-            readFile(template),
+        const [user1Buffer, user2Buffer] = await Promise.all([
             fetchAvatar(msg.author, 128),
             fetchAvatar(user, 128)
         ]);
 
         /* Background */
         background.onload = () => ctx.drawImage(background, 0, 0, 500, 500);
-        background.src = bgBuffer;
+        background.src = this.template;
         user1.src = user1Buffer;
         user2.src = user2Buffer;
 
@@ -93,6 +93,10 @@ module.exports = class extends Command {
         })));
 
         return canvas.toBuffer();
+    }
+
+    async init() {
+        this.template = await readFile(resolve(join(__dirname, '../../assets/images/memes/howtoflirt.png')));
     }
 
 };

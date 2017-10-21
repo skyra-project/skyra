@@ -6,6 +6,7 @@ module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             aliases: ['autoroles', 'levelrole', 'lvlrole'],
+            botPerms: ['MANAGE_ROLES'],
             guildOnly: true,
             permLevel: 3,
             mode: 2,

@@ -70,7 +70,7 @@ class Clock {
     }
 
     async remove(task, cache = true) {
-        this.client.emit('log', `CLOCK       | Deleting ${task}`, 'verbose');
+        this.client.emit('log', `CLOCK        | Deleting ${task}`, 'verbose');
         await Rethink.delete('tasks', task).catch((err) => { throw err; });
         if (cache) this.tasks = this.tasks.filter(entry => entry.id !== task);
         return task;

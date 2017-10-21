@@ -21,7 +21,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            botPerms: ['EMBED_LINKS'],
+            botPerms: ['EMBED_LINKS', 'ATTACH_FILES'],
             aliases: ['ow'],
             mode: 2,
             cooldown: 10,

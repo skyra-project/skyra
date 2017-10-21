@@ -139,12 +139,12 @@
             "description": "The modlog channel. When a moderator or administrator use a moderation command (ban, unban, softban, kick...), a special kind of log will be posted there. Modlogs contain five fields: 'Moderator', 'Type', 'User', 'Reason' and 'Case', with exception of the anti-invite logs.",
             "type": "TextChannel"
         },
-        "spam": {
-            "description": "The spam channel, if set, a set of selected commands (the most spammy/funny ones) will only work there.",
+        "messagelogs": {
+            "description": "The message logs channel. This is the channel where Skyra will post the logs related to messages (message delete or edit).",
             "type": "TextChannel"
         },
-        "stream": {
-            "description": "The channel to post when a user starts/stops streaming.",
+        "spam": {
+            "description": "The spam channel, if set, a set of selected commands (the most spammy/funny ones) will only work there.",
             "type": "TextChannel"
         },
         "starboard": {
@@ -155,11 +155,43 @@
     "messages": {
         "greeting": {
             "description": "A custom message for greetings. If not set, Skyra won't send messages to the users who join the server. Templates are:\n• %MEMBER% : Mentions the user.\n• %MEMBERNAME% : Places the user's username.\n• %GUILD% : Places the server's name.",
-            "type":"string"
+            "type": "string"
         },
         "farewell": {
             "description": "A custom message for farewells. If not set, Skyra won't send messages to the users who leave the server. Templates are:\n• %MEMBER% : Mentions the user.\n• %MEMBERNAME% : Places the user's username.\n• %GUILD% : Places the server's name.",
-            "type":"string"
+            "type": "string"
+        },
+        "warnings": {
+            "description": "Whether Skyra should or not send a message after sending a warning.",
+            "type": "Boolean",
+            "default": false
+        }
+    },
+    "twitch": {
+        "channel": {
+            "description": "The channel to post when a user starts/stops streaming.",
+            "type": "TextChannel"
+        },
+        "messagestart": {
+            "description": "A custom message for Twitch messages when the user starts streaming. Requires channels::stream enabled.",
+            "type": "string"
+        },
+        "messagestop": {
+            "description": "A custom message for Twitch messages when the user stops streaming. Requires channels::stream enabled.",
+            "type": "string"
+        },
+        "list": {
+            "description": "The whitelist or blacklist containing the twitch profiles to post the information from.",
+            "type": "string",
+            "default": [],
+            "array": true
+        },
+        "mode": {
+            "description": "The mode the twitch module should operate at.\n0 - To disable the twitch module.\n1 - To enable all links,\n2 - To enable a blacklist which will post any link but the ones in the list.\n3 - To enable a whitelist which will post only the links that are in the list.",
+            "type": "Integer",
+            "default": 0,
+            "min": 0,
+            "max": 3
         }
     },
     "selfmod": {

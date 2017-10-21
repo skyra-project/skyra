@@ -22,6 +22,7 @@ class Handler {
 
         this.dashboard = null;
 
+        // [IG] Integrated Gateway (v3)
         this.social = {
             global: new SocialGlobal(client),
             local: new SocialLocal(client)

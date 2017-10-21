@@ -11,6 +11,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            guildOnly: true,
             aliases: ['top', 'leaderboard'],
             mode: 1,
             spam: true,

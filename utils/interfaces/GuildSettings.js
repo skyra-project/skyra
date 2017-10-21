@@ -24,6 +24,7 @@ class GuildSettings {
         this._merge(data, 'events');
         this._merge(data, 'channels');
         this._merge(data, 'messages');
+        this._merge(data, 'twitch');
         this._merge(data, 'selfmod');
         this._merge(data, 'filter');
         this._merge(data, 'social');

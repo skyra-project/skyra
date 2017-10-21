@@ -10,7 +10,7 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 5,
 
-            usage: '<SearchMember:user> [reason:string] [...]',
+            usage: '<SearchMember:string> [reason:string] [...]',
             usageDelim: ' ',
             description: 'Unbans an user (you MUST write his full Discord Tag or his ID).'
         });

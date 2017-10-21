@@ -11,10 +11,10 @@ module.exports = class extends Monitor {
     }
 
     async run(msg, settings, i18n) {
-        if (!msg.member
-            || !msg.member.bannable
-            || (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)
-            || settings.selfmod.nomentionspam !== true) return false;
+        if (!(settings.selfmod.nomentionspam === true
+            && msg.member
+            && msg.member.bannable
+            && !(msg.mentions.users.size === 1 && msg.mentions.users.first().bot))) return false;
 
         const filteredCollection = msg.mentions.users.filter(entry => entry.id !== msg.author.id);
         if (msg.mentions.everyone === false

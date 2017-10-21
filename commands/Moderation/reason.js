@@ -7,6 +7,7 @@ module.exports = class extends Command {
         super(...args, {
             name: 'reason',
             permLevel: 2,
+            botPerms: ['EMBED_LINKS'],
             guildOnly: true,
             cooldown: 5,
 

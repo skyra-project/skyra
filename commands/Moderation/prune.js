@@ -4,6 +4,7 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            guildOnly: true,
             name: 'prune',
             permLevel: 2,
             botPerms: ['MANAGE_MESSAGES'],

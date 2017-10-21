@@ -5,7 +5,8 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            aliases: ['doggo'],
+            aliases: ['doggo', 'puppy'],
+            botPerms: ['EMBED_LINKS'],
             spam: true,
 
             cooldown: 10,

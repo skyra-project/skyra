@@ -10,6 +10,10 @@ module.exports = class extends Extendable {
         if (content === null) return this;
 
         if (Array.isArray(content)) content = content.join('\n');
+        if (content.length < 2048 && typeof this.description === 'undefined') {
+            this.description = content;
+            return this;
+        }
         let init = content;
         let i;
         let x;

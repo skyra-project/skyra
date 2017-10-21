@@ -10,7 +10,7 @@ const permission = {
     voice: { CONNECT: false }
 };
 
-const pushRole = (channel, role, array) => channel.overwritePermissions(role, permission[channel.type]).catch(() => array.push(channel.toString()));
+const pushRole = (channel, role, array) => channel.type !== 'category' ? channel.overwritePermissions(role, permission[channel.type]).catch(() => array.push(channel.toString())) : null;
 
 class Assets {
 

@@ -11,8 +11,7 @@ module.exports = class extends Event {
     async run(member) {
         if (this.client.ready !== true || member.guild.available !== true) return null;
 
-        let settings = member.guild.settings;
-        if (settings instanceof Promise) settings = await settings;
+        const settings = await member.guild.settings;
         return this.handle(member, settings).catch(err => this.handleError(err));
     }
 
@@ -33,14 +32,22 @@ module.exports = class extends Event {
     }
 
     async handle(member, settings) {
-        if (settings.selfmod.raid === true && AntiRaid.get(member.guild, settings).attack !== true) AntiRaid.remove(member.guild, settings, member);
-        if (settings.events.memberRemove) await this.handleMessage(member, settings).catch(err => this.handleError(err));
+        if (settings.selfmod.raid === true && AntiRaid.get(member.guild, settings).attack !== true)
+            AntiRaid.remove(member.guild, settings, member);
+        if (settings.events.memberRemove)
+            await this.handleMessage(member, settings)
+                .catch(err => this.handleError(err));
+
         return true;
     }
 
     async handleMessage(member, settings) {
-        await this.sendLog('EVENTS_GUILDMEMBERREMOVE', member, settings).catch(err => this.handleError(err));
-        if (settings.channels.default && settings.messages.farewell) await this.handleFarewell(member, settings).catch(err => this.handleError(err));
+        await this.sendLog('EVENTS_GUILDMEMBERREMOVE', member, settings)
+            .catch(err => this.handleError(err));
+
+        if (settings.channels.default && settings.messages.farewell)
+            await this.handleFarewell(member, settings)
+                .catch(err => this.handleError(err));
     }
 
     async handleFarewell(member, settings) {
@@ -58,6 +65,7 @@ module.exports = class extends Event {
         return settings.messages.farewell
             .replace(/%MEMBER%/g, member)
             .replace(/%MEMBERNAME%/g, member.user.username)
+            .replace(/%MEMBERTAG%/g, member.user.tag)
             .replace(/%GUILD%/g, member.guild.name);
     }
 

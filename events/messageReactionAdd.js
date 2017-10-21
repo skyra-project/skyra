@@ -21,7 +21,7 @@ module.exports = class extends Event {
             return null;
 
         const starboard = msg.guild.channels.get(settings.channels.starboard);
-        if (!starboard)
+        if (!starboard || starboard.postable === false)
             return settings.update({ channels: { starboard: null } })
                 .catch(error => this.client.emit('log', error, 'wtf'));
 
@@ -43,7 +43,7 @@ module.exports = class extends Event {
             return null;
 
         const amount = star.users.add(user.id).size;
-        const embed = star.embed.setFooter(`⭐ ${amount} | ${msg.id}`);
+        const embed = star.embed.setFooter(`⭐ ${amount} | #${msg.channel.name} | ${msg.id}`);
 
         if (star.message) {
             return star.message.edit({ embed: star.embed })
@@ -62,8 +62,7 @@ module.exports = class extends Event {
     createStar(msg) {
         const embed = new MessageEmbed()
             .setColor(15844367)
-            .setAuthor(msg.author.tag)
-            .setThumbnail(msg.author.displayAvatarURL())
+            .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
             .setDescription(msg.content)
             .setTimestamp();
 
@@ -77,7 +76,8 @@ module.exports = class extends Event {
             message: null
         });
 
-        setTimeout(() => this.cache.delete(`${msg.channel.id}-${msg.id}`), this.client.options.messageCacheLifetime * 1000);
+        setTimeout(() => this.cache.delete(`${msg.channel.id}-${msg.id}`),
+            (this.client.options.messageCacheLifetime * 1000) + (this.client.options.messageSweepInterval * 1000));
 
         return this.cache.get(`${msg.channel.id}-${msg.id}`);
     }

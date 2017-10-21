@@ -25,8 +25,9 @@ module.exports = class extends Command {
 
         reason = reason.length ? reason.join(' ') : null;
 
-        if (reason !== null) await user.send(i18n.get('COMMAND_WARN_DM', msg.author.tag, msg.guild, reason))
-            .catch(() => null);
+        if (settings.messages.warnings === true && reason !== null)
+            await user.send(i18n.get('COMMAND_WARN_DM', msg.author.tag, msg.guild, reason))
+                .catch(() => null);
 
         const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)

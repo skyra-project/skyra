@@ -58,7 +58,7 @@ module.exports = class RouterGuild {
             });
         });
         this.server.put('/:guild/settings', this.util.gateway.auth, (req, res) => {
-            this.util.executeLevel(req, res, 3, req.guild, () => this.client.settingGateway.update(req.guild, req.body)
+            this.util.executeLevel(req, res, 3, req.guild, () => this.client.settings.guilds.updateMany(req.guild, req.body)
                 .then(body => req.guild.settings.update(this.merge(body))
                     .then(() => this.util.sendMessage(res, 'Successfully updated.'))
                     .catch(err => this.util.sendError(res, err)),

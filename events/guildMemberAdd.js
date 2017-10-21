@@ -61,7 +61,10 @@ module.exports = class extends Event {
         await this.sendLog('EVENTS_GUILDMEMBERADD', member, settings)
             .catch(err => this.handleError(err));
         if (settings.channels.default && settings.messages.greeting)
-            await this.handleGreeting(member, settings).catch(err => this.handleError(err));
+            await Promise.all([
+                this.handleGreeting(member, settings).catch(err => this.handleError(err)),
+                this.handleDMMessage(member, settings).catch(err => this.handleError(err))
+            ]);
     }
 
     async handleGreeting(member, settings) {
@@ -74,6 +77,12 @@ module.exports = class extends Event {
         if (channel.postable === false) return false;
 
         return channel.send(this.getMessage(member, settings));
+    }
+
+    handleDMMessage(member, settings) {
+        if (settings.messages['join-dm'] !== null)
+            return member.send(settings.messages['join-dm']).catch(() => null);
+        return Promise.resolve();
     }
 
     getMessage(member, settings) {

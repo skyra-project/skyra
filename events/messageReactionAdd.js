@@ -17,7 +17,9 @@ module.exports = class extends Event {
         const msg = reaction.message;
         const settings = await msg.guild.settings;
 
-        if (settings.channels.starboard === null)
+        if (settings.channels.starboard === null
+            || reaction.count < settings.starboard.minimum
+            || reaction.message.channel.id === settings.channels.starboard)
             return null;
 
         const starboard = msg.guild.channels.get(settings.channels.starboard);
@@ -43,14 +45,13 @@ module.exports = class extends Event {
             return null;
 
         const amount = star.users.add(user.id).size;
-        const embed = star.embed.setFooter(`⭐ ${amount} | #${msg.channel.name} | ${msg.id}`);
 
         if (star.message) {
-            return star.message.edit({ embed: star.embed })
+            return star.message.edit(`${this.getStarIcon(amount)} **${amount}**`, { embed: star.embed })
                 .catch(error => this.client.emit('log', error, 'wtf'));
         }
 
-        return starboard.send({ embed })
+        return starboard.send(`${this.getStarIcon(amount)} **${amount}**`, { embed: star.embed })
             .then(message => { star.message = message; })
             .catch(error => this.client.emit('log', error, 'wtf'));
     }
@@ -59,11 +60,18 @@ module.exports = class extends Event {
         return this.cache.get(`${msg.channel.id}-${msg.id}`) || this.createStar(msg);
     }
 
+    getStarIcon(amount) {
+        if (amount < 5) return '⭐';
+        if (amount < 10) return '🌟';
+        return '💫';
+    }
+
     createStar(msg) {
         const embed = new MessageEmbed()
             .setColor(15844367)
             .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
             .setDescription(msg.content)
+            .setFooter(`#${msg.channel.name} | ${msg.id}`)
             .setTimestamp();
 
         const file = this.getFile(msg);

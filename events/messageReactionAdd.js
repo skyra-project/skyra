@@ -17,14 +17,13 @@ module.exports = class extends Event {
         const msg = reaction.message;
         const settings = await msg.guild.settings;
 
-        if (settings.channels.starboard === null
-            || reaction.count < settings.starboard.minimum
-            || reaction.message.channel.id === settings.channels.starboard)
+        if (settings.starboard.channel === null
+            || reaction.message.channel.id === settings.starboard.channel)
             return null;
 
-        const starboard = msg.guild.channels.get(settings.channels.starboard);
+        const starboard = msg.guild.channels.get(settings.starboard.channel);
         if (!starboard || starboard.postable === false)
-            return settings.update({ channels: { starboard: null } })
+            return settings.update({ starboard: { channel: null } })
                 .catch(error => this.client.emit('log', error, 'wtf'));
 
         const i18n = this.client.languages.get(settings.master.language);
@@ -50,6 +49,9 @@ module.exports = class extends Event {
             return star.message.edit(`${this.getStarIcon(amount)} **${amount}**`, { embed: star.embed })
                 .catch(error => this.client.emit('log', error, 'wtf'));
         }
+
+        if (amount < settings.starboard.minimum)
+            return null;
 
         return starboard.send(`${this.getStarIcon(amount)} **${amount}**`, { embed: star.embed })
             .then(message => { star.message = message; })

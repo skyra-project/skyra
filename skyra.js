@@ -6,7 +6,7 @@ const Skyra = new Client({
     cmdEditing: true,
     cmdLogging: false,
     dash: config.dash,
-    dev: true,
+    dev: false,
     clientOptions: {
         disabledEvents: [
             'TYPING_START',

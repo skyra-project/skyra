@@ -8,7 +8,7 @@ module.exports = class extends Command {
             aliases: ['conf', 'config'],
             permLevel: 3,
             description: 'Define per-server configuration.',
-            usage: '<set|get|reset|list|remove> [key:string] [value:string]',
+            usage: '<set|get|reset|list|remove> [key:string] [value:string] [...]',
             usageDelim: ' '
         });
     }
@@ -16,17 +16,18 @@ module.exports = class extends Command {
     async run(msg, [action, key = '', ...value], settings, i18n) {
         if (['set', 'reset', 'remove'].includes(action) && key === '') throw i18n.get('COMMAND_CONF_NOKEY');
         if (['set', 'remove'].includes(action) && value.length === 0) throw i18n.get('COMMAND_CONF_NOVALUE');
+        value = value.length > 0 ? value.join(' ') : null;
         return this[action](msg, settings, key, value, i18n);
     }
 
     async set(msg, settings, key, valueToSet, i18n) {
-        const { path, value } = await this.client.settings.guilds.updateOne(msg.guild, key, valueToSet.join(' '), true);
+        const { path, value } = await this.client.settings.guilds.updateOne(msg.guild, key, valueToSet, true);
         if (path.array) return msg.send(i18n.get('COMMAND_CONF_ADDED', path.toString(value), path.path));
         return msg.send(i18n.get('COMMAND_CONF_UPDATED', path.path, path.toString(value)));
     }
 
     async remove(msg, settings, key, valueToRemove, i18n) {
-        const { path, value } = await this.client.settings.guilds.updateArray(msg.guild, 'remove', key, valueToRemove.join(' '), true);
+        const { path, value } = await this.client.settings.guilds.updateArray(msg.guild, 'remove', key, valueToRemove, true);
         return msg.send(i18n.get('COMMAND_CONF_REMOVE', path.toString(value), path.path));
     }
 

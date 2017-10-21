@@ -76,17 +76,17 @@ module.exports = class extends Event {
         }
         if (channel.postable === false) return false;
 
-        return channel.send(this.getMessage(member, settings));
+        return channel.send(this.getMessage(settings.messages.greeting, member));
     }
 
     handleDMMessage(member, settings) {
         if (settings.messages['join-dm'] !== null)
-            return member.send(settings.messages['join-dm']).catch(() => null);
+            return member.send(this.getMessage(settings.messages['join-dm'], member)).catch(() => null);
         return Promise.resolve();
     }
 
-    getMessage(member, settings) {
-        return settings.messages.greeting
+    getMessage(string, member) {
+        return string
             .replace(/%MEMBER%/g, member)
             .replace(/%MEMBERNAME%/g, member.user.username)
             .replace(/%MEMBERTAG%/g, member.user.tag)

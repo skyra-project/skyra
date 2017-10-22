@@ -116,7 +116,7 @@ module.exports = class extends Command {
             .setShadowColor('rgba(0,0,0,.7)')
             .setShadowBlur(7)
             .setColor('#ffffff')
-            .createBevelPath(10, 10, 620, 371, 8)
+            .createBeveledPath(10, 10, 620, 371, 8)
             .fill()
             .createBeveledClip(10, 10, 620, 371, 5)
             .clearPixels(10, 10, 186, 371)

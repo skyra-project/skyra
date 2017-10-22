@@ -101,7 +101,7 @@ module.exports = class extends Command {
             .setShadowColor('rgba(0,0,0,.7)')
             .setShadowBlur(7)
             .setColor(colors[this.timePicker(icon)])
-            .createBevelPath(10, 10, 380, 160, 5)
+            .createBeveledPath(10, 10, 380, 160, 5)
             .fill()
             .restore()
 

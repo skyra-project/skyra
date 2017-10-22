@@ -5,7 +5,6 @@ const { Collection } = require('discord.js');
 const express = require('express');
 const DashboardUser = require('./dashboardUser');
 const availableBanners = require('../assets/banners.json');
-const { config } = require('../index');
 
 // Express Plugins
 const passport = require('passport');
@@ -158,7 +157,7 @@ module.exports = class Dashboard {
 
         /* Private */
         const auth = (req, res, next) => {
-            if (!req.query.auth || req.query.auth !== config.dash.secretAuth)
+            if (!req.query.auth || req.query.auth !== this.client.config.dash.secretAuth)
                 return this.client.handler.dashboard.sendError(req, res, 404, `Path not found: ${req.path}`);
 
             return next();
@@ -179,7 +178,7 @@ module.exports = class Dashboard {
                     return res.end(undefined, 'binary');
                 }
             }
-            return res.render(this.getFile('ytdl.ejs'), this.sendData(req, { page: 'YTDL', token: config.dash.secretAuth }));
+            return res.render(this.getFile('ytdl.ejs'), this.sendData(req, { page: 'YTDL', token: this.client.config.dash.secretAuth }));
         });
 
         this.server.get('/404', (req, res) => this.sendError(req, res, 404, 'Not found'));

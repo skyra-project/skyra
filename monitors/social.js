@@ -57,7 +57,7 @@ module.exports = class extends Monitor {
         if (msg.member.roles.has(role.id)) return null;
 
         return msg.member.addRole(role)
-            .then(() => settings.social.achieve ? msg.send(this.getMessage(settings.social.achieveMessage || i18n.get('MONITOR_SOCIAL_ACHIEVEMENT'))) : null);
+            .then(() => settings.social.achieve ? msg.send(this.getMessage(msg.member, role, settings.social.achieveMessage || i18n.get('MONITOR_SOCIAL_ACHIEVEMENT'))) : null);
     }
 
     getMessage(member, role, message) {

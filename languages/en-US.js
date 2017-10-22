@@ -184,6 +184,8 @@ module.exports = class extends Language {
             },
             COMMAND_CATFACT: 'Cat Fact',
             COMMAND_DICE: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
+            // https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
+            COMMAND_ESCAPEROPE: (user) => `**${user}** used **Escape Rope**`,
             COMMAND_LOVE_LESS45: 'Try again next time...',
             COMMAND_LOVE_LESS75: 'Good enough!',
             COMMAND_LOVE_LESS100: 'Good match!',

@@ -46,14 +46,14 @@ module.exports = class extends Event {
         const amount = star.users.add(user.id).size;
 
         if (star.message) {
-            return star.message.edit(`${this.getStarIcon(amount)} **${amount}**`, { embed: star.embed })
+            return star.message.edit(`${this.getStarIcon(amount)} **${amount}** ${msg.channel} ID: ${msg.id}`, { embed: star.embed })
                 .catch(error => this.client.emit('log', error, 'wtf'));
         }
 
         if (amount < settings.starboard.minimum)
             return null;
 
-        return starboard.send(`${this.getStarIcon(amount)} **${amount}**`, { embed: star.embed })
+        return starboard.send(`${this.getStarIcon(amount)} **${amount}** ${msg.channel} ID: ${msg.id}`, { embed: star.embed })
             .then(message => { star.message = message; })
             .catch(error => this.client.emit('log', error, 'wtf'));
     }

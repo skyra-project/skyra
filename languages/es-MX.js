@@ -185,6 +185,8 @@ module.exports = class extends Language {
             },
             COMMAND_CATFACT: 'Hecho Gatuno',
             COMMAND_DICE: (sides, rolls, result) => `has lanzado el dado de **${sides}** lados **${rolls}** veces, obtienes: **${result}**`,
+            // https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
+            COMMAND_ESCAPEROPE: (user) => `**${user}** usó **Cuerda Huida**`,
             COMMAND_LOVE_LESS45: 'Prueba de nuevo más tarde...',
             COMMAND_LOVE_LESS75: '¡Bastante bien!',
             COMMAND_LOVE_LESS100: '¡Buena pareja!',

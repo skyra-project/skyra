@@ -44,6 +44,8 @@ module.exports = class Dashboard {
         this.server.use('html', renderFile);
 
         this.supportGuild = 'https://discordapp.com/invite/6gakFR2';
+        this.donateUrl = 'https://www.patreon.com/kyranet';
+        this.translateUrl = 'https://github.com/kyranet/Skyra/blob/master/LANGUAGES.md';
 
         this.util = new Util(client);
         this.userRoute = new UserRoute(client, this.util, this);
@@ -87,6 +89,12 @@ module.exports = class Dashboard {
         });
         this.server.get('/join', (req, res) => {
             res.redirect(this.supportGuild);
+        });
+        this.server.get('/donate', (req, res) => {
+            res.redirect(this.donateUrl);
+        });
+        this.server.get('/translate', (req, res) => {
+            res.redirect(this.translateUrl);
         });
 
         /* JSON Endpoints */

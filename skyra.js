@@ -16,8 +16,8 @@ const Skyra = new Client({
             'USER_NOTE_UPDATE'
         ],
         messageCacheMaxSize: 100,
-        messageCacheLifetime: 120,
-        messageSweepInterval: 120
+        messageCacheLifetime: 300,
+        messageSweepInterval: 150
     }
 });
 

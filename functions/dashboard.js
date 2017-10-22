@@ -5,6 +5,7 @@ const { Collection } = require('discord.js');
 const express = require('express');
 const DashboardUser = require('./dashboardUser');
 const availableBanners = require('../assets/banners.json');
+const { config } = require('../index');
 
 // Express Plugins
 const passport = require('passport');
@@ -16,6 +17,8 @@ const { renderFile } = require('ejs');
 
 const API = require('./routes/api');
 const Util = require('./routes/util');
+
+const ytdl = require('../ytdl/main');
 
 const UserRoute = require('./routes/user');
 
@@ -151,6 +154,32 @@ module.exports = class Dashboard {
                     else res.render(this.getFile('new.ejs'), this.sendData(req, { news }));
                 })
                 .catch(err => this.throwError(req, res, err));
+        });
+
+        /* Private */
+        const auth = (req, res, next) => {
+            if (!req.query.auth || req.query.auth !== config.dash.secretAuth)
+                return this.client.handler.dashboard.sendError(req, res, 404, `Path not found: ${req.path}`);
+
+            return next();
+        };
+        this.server.get('/ytdl', auth, async (req, res) => {
+            if (req.query.url) {
+                /**
+                 * @type {{ filebuffer: Buffer, filename: string }}
+                 */
+                const { filebuffer, filename } = await ytdl(req.query.url).catch(() => ({ filebuffer: null, filename: null }));
+                if (filebuffer !== null) {
+                    res.writeHead(200, {
+                        'Content-Type': 'audio/mpeg',
+                        'Content-disposition': `attachment;filename=${filename}`,
+                        'Content-Length': filebuffer.length
+                    });
+                    res.write(filebuffer, 'binary');
+                    return res.end(undefined, 'binary');
+                }
+            }
+            return res.render(this.getFile('ytdl.ejs'), this.sendData(req, { page: 'YTDL', token: config.dash.secretAuth }));
         });
 
         this.server.get('/404', (req, res) => this.sendError(req, res, 404, 'Not found'));

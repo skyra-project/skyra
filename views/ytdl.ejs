@@ -1,0 +1,32 @@
+<%- include("./blocks/header.ejs", { Client, page: null, token }); %>
+
+<section id="news" style="background:#222223; width:100vw; height:100vh;">
+    <div class="container">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="content" style="padding-top:7vw; color:#efefef;">
+                <h1 style="font-size:16vw;">ytdl</h1>
+                <form class="youtube" onsubmit="getURL(); return false;">
+                    <div class="form-group">
+                        <label for="GET-url">URL:</label>
+                        <input type="text" class="form-control" id="GET-url" name="youtube-url">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script language="javascript">
+    var regexp = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/\S*(?:(?:\/e(?:mbed)?)?\/|watch\/?\?(?:\S*?&?v=))|youtu\.be\/)([\w-]{11})(?:[^\w-]|$)/;
+
+    function getURL() {
+        requestData($('.youtube').serializeArray()[0].value);
+    }
+    function requestData(url) {
+        var id = regexp.exec(url);
+        if (id === null) return alert('Enlace inválido');
+        window.location.href = `/ytdl?auth=<%= token %>&url=${id[1]}`;
+    }
+</script>

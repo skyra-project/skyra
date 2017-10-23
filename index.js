@@ -37,7 +37,7 @@ module.exports = {
     ParsedUsage: require('./lib/usage/ParsedUsage'),
     Possible: require('./lib/usage/Possible'),
     Tag: require('./lib/usage/Tag'),
-    version: '2.0.0 LNU',
+    version: '2.1.0 SSU',
 
     Providers: {
         json: require('./providers/json'),

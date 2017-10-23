@@ -7,7 +7,7 @@ module.exports = class extends Command {
             aliases: ['bal', 'credits'],
             mode: 1,
             spam: true,
-            cooldown: 30,
+            cooldown: 10,
 
             usage: '[user:string]',
             description: 'Check your current balance.'
@@ -18,10 +18,8 @@ module.exports = class extends Command {
         if (input !== null) {
             const user = await this.client.handler.search.user(input, msg);
 
-            if (msg.author.id !== user.id) {
-                let targetProfile = user.profile;
-                if (targetProfile instanceof Promise) targetProfile = await targetProfile;
-
+            if (user !== null && msg.author.id !== user.id) {
+                const targetProfile = await user.profile;
                 return msg.send(i18n.get('COMMAND_BALANCE', user.username, targetProfile.money, Command.shiny(msg)));
             }
         }

@@ -5,8 +5,8 @@ const REGEXP = {
     RANDOM: /^(-r|--random)$/,
     RGB: /^rgba?\(\d{1,3},\s?\d{1,3},\s?\d{1,3}(?:,.+)?\)$/,
     RGB_EXEC: /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/,
-    HEX: /^#[0-9a-fA-F]{6}$/,
-    HEX_EXEC: /^#([0-9a-fA-F]{6})$/,
+    HEX: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/,
+    HEX_EXEC: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/,
     HSL: /^hsl\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)$/,
     HSL_EXEC: /^hsl\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$/,
     B10: /^\d{1,8}$/
@@ -51,7 +51,8 @@ class Color {
 
     static _HEX(input) {
         if (REGEXP.HEX.test(input) === false) return false;
-        const raw = REGEXP.HEX_EXEC.exec(input)[1];
+        let raw = REGEXP.HEX_EXEC.exec(input)[1];
+        if (raw.length === 3) raw = raw.split('').map(char => char + char).join('');
         const HEX = new Resolver.HEX(raw.substring(0, 2), raw.substring(2, 4), raw.substring(4, 6));
         return {
             hex: HEX,

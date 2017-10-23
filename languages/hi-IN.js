@@ -182,6 +182,8 @@ module.exports = class extends Language {
             },
             COMMAND_CATFACT: 'बिल्ली तथ्य',
             COMMAND_DICE: (sides, rolls, result) => `आपने **${sides}** - पासा **${rolls}** बार लुढ़का, आपको मिला: **${result}**`,
+            // https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
+            COMMAND_ESCAPEROPE: (user) => `**${user}** ने **एस्केप रोप** का इस्तेमा किया`,
             COMMAND_LOVE_LESS45: 'अगली बार फिर कोशिश करें ...',
             COMMAND_LOVE_LESS75: 'काफी है!',
             COMMAND_LOVE_LESS100: 'अच्छा जोड़!',

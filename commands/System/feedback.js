@@ -16,7 +16,7 @@ module.exports = class extends Command {
     }
 
     async run(msg, [feedback], settings, i18n) {
-        const embed = new MessageEmbed()
+		const embed = new MessageEmbed()
             .setColor(0x06d310)
             .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
             .setDescription(feedback)

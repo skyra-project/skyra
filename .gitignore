@@ -1,4 +1,5 @@
 node_modules/
 assets/
+.vs/
 config.js
 music.json

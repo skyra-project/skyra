@@ -44,8 +44,7 @@ module.exports = class extends Command {
         return msg.send(i18n.get('COMMAND_CONF_RESET', path.path, path.toString(value)));
     }
 
-    // Implement i18n
-    async list(msg, settings, key, _value, i18n) {
+    list(msg, settings, key, _value, i18n) {
         const { path, route } = this.client.settings.guilds.getPath(key, { avoidUnconfigurable: true, piece: false });
         let object = settings;
         if (route.length >= 1) {

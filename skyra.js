@@ -4,7 +4,6 @@ const Skyra = new Client({
     ownerID: config.ownerid,
     prefix: 's!',
     cmdEditing: true,
-    cmdLogging: false,
     dash: config.dash,
     dev: false,
     clientOptions: {

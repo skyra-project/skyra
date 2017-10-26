@@ -1,5 +1,4 @@
-const { Command, util } = require('../../index');
-const now = require('performance-now');
+const { Command, util, StopWatch } = require('../../index');
 const fsn = require('fs-nextra');
 
 module.exports = class extends Command {
@@ -16,19 +15,19 @@ module.exports = class extends Command {
     }
 
     async run(msg, [args]) {
-        const start = now();
+        const start = new StopWatch(5);
         const { input } = this.parse(args);
         await fsn.outputFileAtomic('/bwd/cs/eval.cs', input);
         const error = await this.compile(start);
         if (error !== null) return msg.send(error);
         const { success, result } = await this.execute();
-        return msg.send(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${(now() - start).toFixed(5)}μs${util.codeBlock('cs', result)}`);
+        return msg.send(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${start.stop()}${util.codeBlock('cs', result)}`);
     }
 
     compile(start) {
         return util.exec('mcs /bwd/cs/eval.cs')
             .then(() => null)
-            .catch(error => `Failed to compile (${(now() - start).toFixed(5)}μs). ${util.codeBlock('cs', error
+            .catch(error => `Failed to compile (${start.stop()}). ${util.codeBlock('cs', error
                 .toString()
                 .replace('Error: Command failed: mcs /bwd/cs/eval.cs\n', '')
                 .replace(/\/bwd\/cs\/eval.cs/g, 'Failed at: '))}`);

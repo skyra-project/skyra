@@ -1,5 +1,4 @@
-const { Command, util } = require('../../index');
-const now = require('performance-now');
+const { Command, util, StopWatch } = require('../../index');
 const fsn = require('fs-nextra');
 
 module.exports = class extends Command {
@@ -16,19 +15,19 @@ module.exports = class extends Command {
     }
 
     async run(msg, [args]) {
-        const start = now();
+        const start = new StopWatch(5);
         const { input } = this.parse(args);
         await fsn.outputFileAtomic('/bwd/cpp/eval.cpp', input);
         const error = await this.compile(start);
         if (error !== null) return msg.send(error);
         const { success, result } = await this.execute();
-        return msg.send(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${(now() - start).toFixed(5)}μs${util.codeBlock('cpp', result)}`);
+        return msg.send(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${start.stop()}${util.codeBlock('cpp', result)}`);
     }
 
     compile(start) {
         return util.exec('g++ /bwd/cpp/eval.cpp -o /bwd/cpp/eval.out')
             .then(() => null)
-            .catch(error => `Failed to compile (${(now() - start).toFixed(5)}μs). ${util.codeBlock('cpp', error)}`);
+            .catch(error => `Failed to compile (${start.stop()}). ${util.codeBlock('cpp', error)}`);
     }
 
     execute() {

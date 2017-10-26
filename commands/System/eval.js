@@ -1,6 +1,5 @@
-const { Command, util } = require('../../index');
+const { Command, util, StopWatch } = require('../../index');
 const { inspect } = require('util');
-const now = require('performance-now');
 
 module.exports = class extends Command {
 
@@ -17,13 +16,13 @@ module.exports = class extends Command {
 
     async run(msg, [args]) {
         const { type, input } = this.parse(args.split(' '));
-        const start = now();
+        const start = new StopWatch(5);
         const out = await this.eval(msg, type ? `(async () => { ${input} })()` : input);
-        const time = now() - start;
+        start.stop();
         if (out.success === false && out.output.message) out.output = out.output.message;
         else if (out.output === '') out.output = '<void>';
         return msg.send([
-            `Executed in ${time.toFixed(5)}μs | ${out.success ? '🔍 **Inspect:**' : '❌ **Error:**'}`,
+            `Executed in ${start} | ${out.success ? '🔍 **Inspect:**' : '❌ **Error:**'}`,
             util.codeBlock('js', this.clean(out.output))
         ]).catch(err => msg.error(err));
     }

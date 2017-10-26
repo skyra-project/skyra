@@ -1,9 +1,5 @@
 module.exports = {
     Client: require('./lib/client'),
-    util: require('./lib/util/util'),
-    RichDisplay: require('./lib/util/RichDisplay'),
-    RichMenu: require('./lib/util/RichMenu'),
-    ReactionHandler: require('./lib/util/ReactionHandler'),
 
     Command: require('./lib/structures/Command'),
     CommandMessage: require('./lib/structures/CommandMessage'),
@@ -19,6 +15,12 @@ module.exports = {
         Colors: require('./lib/console/Colors'),
         Console: require('./lib/console/Console')
     },
+
+    util: require('./lib/util/util'),
+    ReactionHandler: require('./lib/util/ReactionHandler'),
+    RichDisplay: require('./lib/util/RichDisplay'),
+    RichMenu: require('./lib/util/RichMenu'),
+    StopWatch: require('./lib/util/Stopwatch'),
 
     CommandStore: require('./lib/structures/CommandStore'),
     EventStore: require('./lib/structures/EventStore'),

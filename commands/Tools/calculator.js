@@ -1,5 +1,4 @@
-const { Command, util } = require('../../index');
-const now = require('performance-now');
+const { Command, util, StopWatch } = require('../../index');
 const math = require('mathjs');
 
 module.exports = class extends Command {
@@ -31,12 +30,14 @@ module.exports = class extends Command {
     }
 
     run(msg, [equation], settings, i18n) {
-        const start = now();
+        const start = new StopWatch(3);
         try {
             const evaled = math.eval(equation);
-            return msg.send(i18n.get('COMMAND_CALC', (now() - start).toFixed(3), util.codeBlock('js', util.clean(evaled))));
+            start.stop();
+            return msg.send(i18n.get('COMMAND_CALC', start.friendlyDuration, util.codeBlock('js', util.clean(evaled))));
         } catch (error) {
-            return msg.send(i18n.get('COMMAND_CALC_FAILURE', (now() - start).toFixed(3), util.codeBlock('js', error)));
+            start.stop();
+            return msg.send(i18n.get('COMMAND_CALC_FAILURE', start.friendlyDuration, util.codeBlock('js', error)));
         }
     }
 

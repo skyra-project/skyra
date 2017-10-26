@@ -1,6 +1,5 @@
 const { Monitor, CommandMessage, util: { regExpEsc } } = require('../index');
 const friendly = new RegExp('^((?:Hey )?Skyra(?:,|!) +)', 'i');
-const now = require('performance-now');
 
 module.exports = class extends Monitor {
 
@@ -13,9 +12,8 @@ module.exports = class extends Monitor {
         if (!command) return;
         const validCommand = this.client.commands.get(command);
         if (!validCommand) return;
-        const start = now();
         this.client.inhibitors.run(msg, validCommand, false, settings, i18n)
-            .then(() => this.runCommand(this.makeProxy(msg, new CommandMessage(msg, validCommand, prefix, prefixLength)), start, settings, i18n))
+            .then(() => this.runCommand(this.makeProxy(msg, new CommandMessage(msg, validCommand, prefix, prefixLength)), settings, i18n))
             .catch((response) => { if (response) msg.reply(response); });
     }
 
@@ -54,10 +52,10 @@ module.exports = class extends Monitor {
         });
     }
 
-    runCommand(msg, start, settings, i18n) {
+    runCommand(msg, settings, i18n) {
         msg.validateArgs()
             .then((params) => msg.cmd.run(msg, params, settings, i18n)
-                .then(mes => this.client.finalizers.run(msg, mes, start))
+                .then(mes => this.client.finalizers.run(msg, mes))
                 .catch(error => this.handleError(msg, error))
             )
             .catch((error) => this.handleError(msg, error));

@@ -19,10 +19,10 @@ class Duration {
 
         const method = short ? this._addShortUnit : this._addUnit;
 
-        return method(td, assets.DAY)
+        return (method(td, assets.DAY)
             + method(th, assets.HOUR)
             + method(tm, assets.MINUTE)
-            + method(ts, assets.SECOND);
+            + method(ts, assets.SECOND)).trim();
     }
 
     static _addUnit(unit, time) {

@@ -90,7 +90,7 @@ class Clock {
     }
 
     process(task) {
-        if (!this.taskProcess[task.type]) return task;
+        if (typeof this.taskProcess[task.type] === 'undefined') return Promise.resolve(task);
         return this.taskProcess[task.type](task)
             .then(() => task)
             .catch(() => {

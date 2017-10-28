@@ -357,8 +357,16 @@ module.exports = class extends Language {
             },
 
             COMMAND_REMINDME_INPUT: 'You must tell me what do you want me to remind you and when.',
+            COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',
             COMMAND_REMINDME_TIME: 'Your reminder must be at least one minute long.',
             COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
+            COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
+            COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type either \'delete\' or \'remove\' followed by the ID.',
+            COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.timestamp - Date.now())}** has been successfully deleted.`,
+            COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
+            COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
+            COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
+            COMMAND_REMINDME_NOTFOUND: 'I cannot find something here. The reminder either never existed or it ended.',
 
             COMMAND_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
             COMMAND_REPUTATION_USABLE: 'You can give a reputation point now.',
@@ -553,6 +561,28 @@ module.exports = class extends Language {
             MODLOG_APPEALED: 'The selected moderation case has already been appealed.',
             MODLOG_TIMED: (remaining) => `This action is already scheduled and ending in ${duration(remaining)}`,
             MODLOG_PENDING_REASON: (prefix, number) => `Use ${prefix}reason ${number} to claim this case.`,
+
+            // Giveaways
+            GIVEAWAY_TIME: 'A giveaway must last at least 1 minute.',
+            GIVEAWAY_ENDS_AT: 'Ends at:',
+            GIVEAWAY_DURATION: (time) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
+            GIVEAWAY_TITLE: '🎉 **GIVEAWAY** 🎉',
+            GIVEAWAY_START_DIRECT_MESSAGE: (title, id) => [
+                `Hello! I will keep you updated! Once your giveaway (**${title}** | ID \`${id}\`) finishes, I will send you the winner here followed with a list of other 10 possible winners.`,
+                `The ability to cancel or stop giveaways is a feature coming soon!`
+            ].join('\n'),
+            GIVEAWAY_LASTCHANCE: (time) => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
+            GIVEAWAY_LASTCHANCE_TITLE: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
+            GIVEAWAY_ENDED: (winner) => `Winner: ${winner} (${winner.id})`,
+            GIVEAWAY_ENDED_AT: 'Ended at:',
+            GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
+            GIVEAWAY_ENDED_MESSAGE: (mention, title) => `Congratulations ${mention}! You won the giveaway **${title}**`,
+            GIVEAWAY_ENDED_DIRECT_MESSAGE: (title, id, winner, amount, list) => [
+                `Hello! The giveaway you started (**${title}** | ID \`${id}\`) just finished! Winner is ${winner.tag} (${winner.id})`,
+                `However, I have also calculated another ${amount} possible winners:${list}`
+            ].join('\n'),
+            GIVEAWAY_ENDED_DIRECT_MESSAGE_ONLY_WINNER: (title, id, winner) => `Hello! The giveaway you started (**${title}** | ID \`${id}\`) just finished! Winner is ${winner.tag} (${winner.id})`,
+            GIVEAWAY_ENDED_DIRECT_MESSAGE_NO_WINNER: (title, id) => `Hello! The giveaway you started (**${title}** | ID \`${id}\`) just finished! But there's no winner!`,
 
             // System only
             SYSTEM_DM_SENT: 'I have sent you the message in DMs.',

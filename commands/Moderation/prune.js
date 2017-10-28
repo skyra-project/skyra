@@ -13,7 +13,30 @@ module.exports = class extends Command {
 
             description: 'Prunes a certain amount of messages w/o filter.',
             usage: '[limit:integer] [link|invite|bots|you|me|upload|user:user]',
-            usageDelim: ' '
+            usageDelim: ' ',
+            extend: {
+                EXPLANATION: [
+                    'This command deletes the given amount of messages given a filter within the last 100 messages sent',
+                    'in the channel the command got run.'
+                ].join(' '),
+                ARGUMENTS: '[messages] [filter]',
+                EXP_USAGE: [
+                    ['Messages', 'The amount of messages to prune.'],
+                    ['Filter', 'The filter to apply.'],
+                    ['(Filter) Link', 'Filters messages that have links on the content.'],
+                    ['(Filter) Invite', 'Filters messages that have invite links on the content.'],
+                    ['(Filter) Bots', 'Filters messages sent by bots.'],
+                    ['(Filter) You', 'Filters messages sent by Skyra.'],
+                    ['(Filter) Me', 'Filters your messages.'],
+                    ['(Filter) Upload', 'Filters messages that have attachments.'],
+                    ['(Filter) User', 'Filters messages sent by the specified user.']
+                ],
+                EXAMPLES: [
+                    '50 me',
+                    '75 @kyra',
+                    '20 bots'
+                ]
+            }
         });
     }
 

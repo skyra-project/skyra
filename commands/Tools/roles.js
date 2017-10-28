@@ -42,6 +42,9 @@ module.exports = class extends Command {
 
     async claim(msg, settings, roles, i18n) {
         const message = [];
+        if (settings.roles.initial && settings.roles.removeInitial && msg.member.roles.has(settings.roles.initial))
+            await msg.member.removeRole(settings.roles.initial);
+
         const { giveRoles, unlistedRoles, existentRoles, invalidRoles } = await this.roleAddCheck(msg, settings, roles);
         if (existentRoles) message.push(i18n.get('COMMAND_ROLES_CLAIM_EXISTENT', existentRoles.join('`, `')));
         if (unlistedRoles) message.push(i18n.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));

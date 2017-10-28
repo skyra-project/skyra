@@ -33,7 +33,7 @@ module.exports = class extends Command {
     }
 
     async run(msg) {
-        if (this.index === this.rand.length - 1) this.index = 0;
+        if (this.index >= this.rand.length - 1) this.index = 0;
         else this.index++;
 
         const embed = new MessageEmbed()

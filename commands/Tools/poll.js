@@ -11,6 +11,7 @@ module.exports = class extends Command {
             cooldown: 15,
 
             usage: '<create|list|remove|vote|result> [parameters:string] [...]',
+            usageDelim: ' ',
             description: 'Create a poll.',
             extendedHelp: Command.strip`
                 Let's make a poll!

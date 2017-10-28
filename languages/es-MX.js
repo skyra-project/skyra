@@ -358,8 +358,16 @@ module.exports = class extends Language {
             },
 
             COMMAND_REMINDME_INPUT: 'Dime qué quieres que te recuerde y cuándo.',
+            COMMAND_REMINDME_INPUT_PROMPT: '¿Cuánto debería durar su recordatorio?',
             COMMAND_REMINDME_TIME: 'Tu recordatorio debe durar al menos un minuto.',
             COMMAND_REMINDME_CREATE: (id) => `Un recordatorio con la identificación \`${id}\` ha sido creado.`,
+            COMMAND_REMINDME_DELETE_PARAMS: ['borrar', 'remover'],
+            COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'Para borrar un recordatorio previamente creado, debes escribir o \'borrar\' o \'remover\' seguido de su ID.',
+            COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.timestamp - Date.now())}** has been successfully deleted.`,
+            COMMAND_REMINDME_LIST_PARAMS: ['lista', 'mostrar', 'todos'],
+            COMMAND_REMINDME_LIST_EMPTY: 'No tienes un recordatorio activo.',
+            COMMAND_REMINDME_INVALID_ID: 'Lo siento, pero la ID provista no parece ser válida.',
+            COMMAND_REMINDME_NOTFOUND: 'No encuentro nada aquí. El recordatorio nunca existió o acabó.',
 
             COMMAND_REPUTATION_TIME: (remaining) => `Puedes dar un punto de reputación en ${duration(remaining)}`,
             COMMAND_REPUTATION_USABLE: 'Puedes dar un punto de reputación ahora.',
@@ -554,6 +562,28 @@ module.exports = class extends Language {
             MODLOG_APPEALED: 'El caso de moderación seleccionado ya ha sido invalidado.',
             MODLOG_TIMED: (remaining) => `Esta acción ya ha sido programada, y termina en ${duration(remaining)}`,
             MODLOG_PENDING_REASON: (prefix, number) => `Usa ${prefix}reason ${number} para reclamar este caso.`,
+
+            // Giveaways
+            GIVEAWAY_TIME: 'El sorteo debe durar al menos 1 minuto.',
+            GIVEAWAY_ENDS_AT: 'Termina a las:',
+            GIVEAWAY_DURATION: (time) => `Este sorteo finaliza en **${duration(time)}**! Reacciona a este mensaje con 🎉 para participar.`,
+            GIVEAWAY_TITLE: '🎉 **SORTEO** 🎉',
+            GIVEAWAY_START_DIRECT_MESSAGE: (title, id) => [
+                `¡Hola! ¡Te mantendré actualizado! Una vez que su sorteo (**${title}** | ID \`${id}\`) termine, le mandaré por aquí el ganador, seguido por una lista de otros 10 posibles gandores.`,
+                `¡La habilidad de cancelar o parar sorteos es una característica a punto de llegar!`
+            ].join('\n'),
+            GIVEAWAY_LASTCHANCE: (time) => `**ÚLTIMA OPORTUNIDAD**! Tiempo restante: **${duration(time)}**. Reacciona a este mensaje con 🎉 para participar.`,
+            GIVEAWAY_LASTCHANCE_TITLE: '🎉 **ÚLTIMA OPORTUNIDAD PARA OBTENER EL SORTEO** 🎉',
+            GIVEAWAY_ENDED: (winner) => `Ganador: ${winner} (${winner.id})`,
+            GIVEAWAY_ENDED_AT: 'Terminó a las:',
+            GIVEAWAY_ENDED_TITLE: '🎉 **SORTEO FINALIZADO** 🎉',
+            GIVEAWAY_ENDED_MESSAGE: (mention, title) => `¡Felicidades ${mention}! Has ganado el sorteo **${title}**`,
+            GIVEAWAY_ENDED_DIRECT_MESSAGE: (title, id, winner, amount, list) => [
+                `¡Hola! El sorteo que empezaste (**${title}** | ID \`${id}\`), ¡acaba de terminar! El ganador es: ${winner.tag} (${winner.id})`,
+                `Sin embargo, he seleccionado otros ${amount} posible ganadores:${list}`
+            ].join('\n'),
+            GIVEAWAY_ENDED_DIRECT_MESSAGE_ONLY_WINNER: (title, id, winner) => `¡Hola! El sorteo que empezaste (**${title}** | ID \`${id}\`), ¡acaba de terminar! El ganador es: ${winner.tag} (${winner.id})`,
+            GIVEAWAY_ENDED_DIRECT_MESSAGE_NO_WINNER: (title, id) => `¡Hola! El sorteo que empezaste (**${title}** | ID \`${id}\`), ¡acaba de terminar! ¡Pero no hay ganador!`,
 
             // System only
             SYSTEM_DM_SENT: 'Te he enviado la información a través de un mensaje directo.',

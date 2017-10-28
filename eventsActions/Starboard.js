@@ -23,12 +23,14 @@ module.exports = class Starboard {
     async run(data) {
         if (this.client.ready !== true
             || data.channel.type !== 'text'
+            || data.channel.nsfw === true
             || data.emoji.name !== '⭐'
-            || data.channel.postable === false) return null;
+            || data.channel.readable === false) return null;
 
         const settings = await data.channel.guild.settings;
 
         if (settings.starboard.channel === null
+            || (settings.starboard.ignoreChannels.length > 0 && settings.starboard.ignoreChannels.includes(data.channel.id))
             || data.channel.id === settings.starboard.channel)
             return null;
 
@@ -41,13 +43,13 @@ module.exports = class Starboard {
         const msg = await this.fetchMessage(data, settings, starboard);
 
         if (msg.author.id === data.user.id)
-            return data.channel.send(i18n.get('EVENTS_STARBOARD_SELF', data.user))
+            return data.channel.postable === false ? null : data.channel.send(i18n.get('EVENTS_STARBOARD_SELF', data.user))
                 .then(message => message.nuke(10000));
         if (data.user.bot)
-            return data.channel.send(i18n.get('EVENTS_STARBOARD_BOT', data.user))
+            return data.channel.postable === false ? null : data.channel.send(i18n.get('EVENTS_STARBOARD_BOT', data.user))
                 .then(message => message.nuke(10000));
         if (msg.content === '' && msg.attachments.size === 0)
-            return data.channel.send(i18n.get('EVENTS_STARBOARD_EMPTY', data.user))
+            return data.channel.postable === false ? null : data.channel.send(i18n.get('EVENTS_STARBOARD_EMPTY', data.user))
                 .then(message => message.nuke(10000));
 
         const star = this.getStar(msg);

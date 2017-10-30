@@ -18,7 +18,7 @@ const colour = {
 
     unban: { color: 0x304FFE, title: 'Unban' },
     unmute: { color: 0x448AFF, title: 'Unmute' },
-    unvmute: { color: 0xBBDEFB, title: 'Voice Unmute' },
+    vunmute: { color: 0xBBDEFB, title: 'Voice Unmute' },
 
     prune: { color: 0xB2FF59, title: 'Message Prune' }
 };

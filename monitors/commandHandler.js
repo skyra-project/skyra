@@ -1,13 +1,21 @@
 const { Monitor, CommandMessage, util: { regExpEsc } } = require('../index');
+const Trigger = require('../eventsActions/Trigger');
 const friendly = new RegExp('^((?:Hey )?Skyra(?:,|!) +)', 'i');
 
 module.exports = class extends Monitor {
+
+    constructor(...args) {
+        super(...args);
+        this.triggers = new Trigger(this.client);
+    }
 
     run(msg, settings, i18n) {
         if (msg.channel.type === 'text') {
             const permissions = msg.channel.permissionsFor(msg.guild.me);
             if (permissions && permissions.has('SEND_MESSAGES') === false) return;
+            this.triggers.run(msg, settings.trigger);
         }
+
         const { command, prefix, prefixLength } = this.parseCommand(msg, settings);
         if (!command) return;
         const validCommand = this.client.commands.get(command);

@@ -32,11 +32,11 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input = null], settings, i18n) {
+    async run(msg, [input], settings, i18n) {
         let num;
         let query;
 
-        if (input) {
+        if (typeof input !== 'undefined') {
             if (isNaN(input) === false) num = parseInt(input);
             else if (typeof input === 'string') query = input;
         }

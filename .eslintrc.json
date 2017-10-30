@@ -93,7 +93,7 @@
 				"switch": { "after": true }
 			}
 		}],
-		"max-depth": "error",
+		"max-depth": ["error", 6],
 		"max-len": "off",
 		"max-nested-callbacks": "off",
 		"max-statements-per-line": ["error", { "max": 2 }],

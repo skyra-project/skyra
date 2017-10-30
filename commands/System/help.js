@@ -13,8 +13,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [cmd = null], settings, i18n) {
-        if (cmd) {
+    async run(msg, [cmd], settings, i18n) {
+        if (typeof cmd !== 'undefined') {
             cmd = this.client.commands.get(cmd);
             if (!cmd) throw i18n.get('RESOLVER_INVALID_PIECE', 'command', 'command');
             const hasPermission = await msg.hasLevel(cmd.permLevel);

@@ -34,11 +34,11 @@ class Timer {
             const current = times[i];
 
             if (isNumber.test(current) === false) continue;
-            let type = null;
+            let type;
             if (i + 1 > times.length || isNumber.test(times[i + 1])) type = 'MILLISECOND';
             else type = Timer.parseText(times[++i]);
 
-            if (type === null) throw 'Invalid input';
+            if (typeof type === 'undefined') throw 'Invalid input';
 
             this.date += this.getTime(current, type);
         }

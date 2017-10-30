@@ -16,12 +16,12 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [remove = null, type], settings, i18n) {
+    async run(msg, [remove, type], settings, i18n) {
         const _roles = await getRoles(msg, 'platform');
         const _role = _roles.get(type);
         const hasRole = msg.member.roles.has(_role.id);
 
-        if (remove !== null) {
+        if (typeof remove !== 'undefined') {
             if (!hasRole) throw i18n.get('MISSING_ROLE');
 
             await msg.member.removeRole(_role.id, '[OVERWATCH] GamePlatform Profile Management.');

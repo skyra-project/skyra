@@ -8,11 +8,9 @@ const execAsync = util.promisify(require('child_process').exec);
 const getInfoAsync = util.promisify(ytdl.getInfo);
 
 module.exports = async (id) => {
-    const url = id !== null ? `https://youtu.be/${id}` : null;
-    if (url === null)
-        return null;
+    if (typeof id !== 'string') return null;
 
-    const result = await getInfoAsync(url).catch(() => { throw undefined; });
+    const result = await getInfoAsync(`https://youtu.be/${id}`).catch(() => { throw undefined; });
     return parseResult(result, result.formats.find(form => form.type === 'audio/mp4; codecs="mp4a.40.2"'));
 };
 

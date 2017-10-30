@@ -26,7 +26,7 @@ module.exports = class extends Command {
         if (member.serverMute) throw i18n.get('COMMAND_MUTE_MUTED');
 
         reason = reason.length ? reason.join(' ') : null;
-        await member.setDeaf(true, reason);
+        await member.setMute(true, reason);
 
         const modcase = await new ModLog(msg.guild)
             .setModerator(msg.author)

@@ -34,14 +34,14 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [action, user = msg.author, value = null], settings, i18n) {
+    async run(msg, [action, user = msg.author, value], settings, i18n) {
         const profile = await this.searchProfile(msg, user, i18n);
         if (!profile) throw i18n.get('COMMAND_SOCIAL_PROFILE_NOTFOUND');
         if (action === 'delete') {
             await this.client.handler.social.local.get(msg.guild.id).removeMember(user.id);
             return msg.send(i18n.get('COMMAND_SOCIAL_PROFILE_DELETE', user.tag, profile.score));
         }
-        if (value === null)
+        if (typeof value === 'undefined')
             throw i18n.get('COMMAND_SOCIAL_POINTS');
 
         const old = profile.score;

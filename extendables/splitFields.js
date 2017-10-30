@@ -6,8 +6,8 @@ module.exports = class extends Extendable {
         super(...args, ['MessageEmbed']);
     }
 
-    extend(content = null) {
-        if (content === null) return this;
+    extend(content) {
+        if (typeof content === 'undefined') return this;
 
         if (Array.isArray(content)) content = content.join('\n');
         if (content.length < 2048 && typeof this.description === 'undefined') {

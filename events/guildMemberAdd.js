@@ -22,7 +22,7 @@ module.exports = class extends Event {
         return this.handle(member, settings).catch(err => this.handleError(err));
     }
 
-    async sendLog(type, member, settings, system = false, extra = null) {
+    async sendLog(type, member, settings, system = false, extra) {
         if (!settings.channels.log)
             return false;
         const channel = member.guild.channels.get(settings.channels.log);
@@ -37,7 +37,7 @@ module.exports = class extends Event {
             .setFooter(member.guild.language.get(type))
             .setTimestamp();
 
-        if (extra && typeof extra === 'string')
+        if (typeof extra === 'string')
             embed.setDescription(extra);
 
         return channel.send({ embed });
@@ -80,7 +80,7 @@ module.exports = class extends Event {
     }
 
     handleDMMessage(member, settings) {
-        if (settings.messages['join-dm'] !== null)
+        if (typeof settings.messages['join-dm'] === 'string')
             return member.send(this.getMessage(settings.messages['join-dm'], member)).catch(() => null);
         return Promise.resolve();
     }

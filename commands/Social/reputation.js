@@ -25,7 +25,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input = null], settings, i18n) {
+    async run(msg, [input], settings, i18n) {
         const now = Date.now();
         const profile = msg.author.profile;
 
@@ -34,7 +34,7 @@ module.exports = class extends Command {
             return msg.send(i18n.get('COMMAND_REPUTATION_TIME', remaining));
         }
 
-        if (input === null)
+        if (typeof input === 'undefined')
             return msg.send(i18n.get('COMMAND_REPUTATION_USABLE'));
 
 

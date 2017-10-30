@@ -61,14 +61,14 @@ class Fetch {
      * @param {('text'|'voice')} type The channel type.
      * @returns {Promise<Channel>}
      */
-    async channel(query, msg, type = null) {
+    async channel(query, msg, type) {
         const resChannel = this.resolveChannel(query, msg.guild);
         if (resChannel) return resChannel;
 
         const results = [];
         const reg = new RegExp(regExpEsc(query), 'i');
         for (const channel of msg.guild.channels.values()) {
-            if (type !== null && channel.type !== type) continue;
+            if (typeof type !== 'undefined' && channel.type !== type) continue;
             if (reg.test(channel.name)) results.push(channel);
         }
 

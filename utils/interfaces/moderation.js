@@ -60,18 +60,18 @@ module.exports = class Moderation {
         });
     }
 
-    async ensureModule() {
+    ensureModule() {
         return this.exists().then(bool => bool ? false : this.create());
     }
 
-    async getCases(id = null) {
-        if (id) {
-            return provider.getFromArrayByIndex('moderation', this.id, 'cases', id) || null;
-        }
+    getCases(id) {
+        if (typeof id === 'string')
+            return provider.getFromArrayByIndex('moderation', this.id, 'cases', id);
+
         return provider.get('moderation', this.id).then(doc => doc ? doc.cases : this.ensureModule().then(() => []));
     }
 
-    async getAmountCases() {
+    getAmountCases() {
         return this.getCases().then(data => (data || []).length);
     }
 
@@ -110,14 +110,14 @@ module.exports = class Moderation {
             .then(doc => doc.find(obj => ['mute', 'tmute'].includes(obj.type) && obj.user === user && obj.appeal !== true) || null);
     }
 
-    async syncMutes() {
+    syncMutes() {
         return this.getMutes().then((array) => {
             this.mutes = new Map();
             this.parseMutes(array);
         });
     }
 
-    async appealMute(user) {
+    appealMute(user) {
         return this.getMute(user).then((doc) => {
             if (!doc) throw "This mute doesn't seem to exist";
             return this.updateCase(doc.case, { appeal: true }).then(() => this.syncMutes().then(() => true));

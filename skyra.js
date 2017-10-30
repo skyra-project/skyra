@@ -1,4 +1,4 @@
-const { Client, config } = require('./index');
+const { Client, config } = module.exports = require('./index');
 
 const Skyra = new Client({
     ownerID: config.ownerid,

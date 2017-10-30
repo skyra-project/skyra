@@ -14,8 +14,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input = null], settings, i18n) {
-        const channel = input ? await this.client.handler.search.channel(input, msg) : msg.channel;
+    async run(msg, [input], settings, i18n) {
+        const channel = typeof input !== 'undefined' ? await this.client.handler.search.channel(input, msg) : msg.channel;
 
         if (!channel.readable) throw i18n.get('CHANNEL_NOT_READABLE');
         const messages = await channel.messages.fetch({ limit: 100 });

@@ -32,14 +32,14 @@ module.exports = class extends Command {
         return this.get(msg, tag, tags, i18n);
     }
 
-    async get(msg, tag, tags, i18n) {
-        if (tag === null) throw i18n.get('COMMAND_TAGS_NAME_REQUIRED');
-        if (tags.has(tag) === false) throw i18n.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag);
+    get(msg, tag, tags, i18n) {
+        if (tag === null) return Promise.reject(i18n.get('COMMAND_TAGS_NAME_REQUIRED'));
+        if (tags.has(tag) === false) return Promise.reject(i18n.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag));
         return msg.send(tags.get(tag));
     }
 
-    async list(msg, index, tags, i18n) {
-        if (tags.size === 0) throw i18n.get('COMMAND_TAGS_LIST_EMPTY');
+    list(msg, index, tags, i18n) {
+        if (tags.size === 0) return Promise.reject(i18n.get('COMMAND_TAGS_LIST_EMPTY'));
         return msg.send(listify(tags, { index, length: 15 }), { code: 'asciidoc' });
     }
 

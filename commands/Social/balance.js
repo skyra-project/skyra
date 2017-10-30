@@ -14,8 +14,8 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [input = null], settings, i18n) {
-        if (input !== null) {
+    async run(msg, [input], settings, i18n) {
+        if (typeof input !== 'undefined') {
             const user = await this.client.handler.search.user(input, msg);
 
             if (user !== null && msg.author.id !== user.id) {

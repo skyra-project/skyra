@@ -414,6 +414,8 @@ module.exports = class extends Language {
             COMMAND_HELP_DM: '📥 | Commands have been sent to your DMs.',
             COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
 
+            COMMAND_CONF_NOKEY: 'You must provide a key',
+            COMMAND_CONF_NOVALUE: 'You must provide a value',
             COMMAND_CONF_LIST_TITLE: '= Server Settings =',
             COMMAND_CONF_SELECTKEY: (keys) => `Please, choose between one of the following keys: ${keys}`,
             COMMAND_CONF_ADDED: (key, value) => `Successfully added the value \`${value}\` to the key: \`${key}\``,

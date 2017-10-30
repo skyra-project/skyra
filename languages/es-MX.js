@@ -415,6 +415,8 @@ module.exports = class extends Language {
             COMMAND_HELP_DM: '📥 | La lista de comandos ha sido enviado a tus mensajes privados.',
             COMMAND_HELP_NODM: '❌ | Parece que tienes tus mensajes privados desactivados, no pude enviarte la lista de comandos.',
 
+            COMMAND_CONF_NOKEY: 'Debes proveer una clave.',
+            COMMAND_CONF_NOVALUE: 'Debes proveer un valor para la clave.',
             COMMAND_CONF_LIST_TITLE: '= Configuración del Servidor =',
             COMMAND_CONF_SELECTKEY: (keys) => `Por favor, elije uno de las siguientes claves: ${keys}`,
             COMMAND_CONF_ADDED: (key, value) => `¡Éxito! Añadido el valor \`${value}\` a la clave: \`${key}\`.`,

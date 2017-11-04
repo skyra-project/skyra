@@ -40,15 +40,13 @@ module.exports = class extends Command {
 			.setThumbnail(member.user.displayAvatarURL({ size: 256 }))
 			.setFooter(`${this.client.user.username} ${this.client.version} | ${member.user.id}`, this.client.user.displayAvatarURL({ size: 128 }))
 			.setTimestamp();
-		if (member.roles.size > 1) {
+		if (member.roles.size > 1)
 			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), member.roles
 				.array()
 				.slice(1)
 				.sort(sortRanks)
 				.map(role => role.name)
-				.join(', '),
-			);
-		}
+				.join(', '));
 
 		return embed;
 	}

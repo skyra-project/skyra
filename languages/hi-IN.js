@@ -146,21 +146,21 @@ module.exports = class extends Language {
 			COMMAND_ANIME_DESCRIPTION: (entry, context) => [
 				`**अंग्रेजी शीर्षक:** ${entry.english}`,
 				`${context.length > 750 ? `${util.splitText(context, 750)}... [पढ़ना जारी रखें](https://myanimelist.net/anime/${entry.id})` : context}`
-			],
+			].join('\n'),
 			COMMAND_ANIME_TITLE: (entry) => `${entry.title} (${entry.episodes === 0 ? 'अज्ञात' : entry.episodes} एपिसोड)`,
 			COMMAND_ANIME_STATUS: (entry) => [
 				`❯  वर्तमान स्थिति: **${entry.status}**`,
 				`• शुरू कर दिया है: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • समाप्त: **${entry.end_date}**`}`
-			],
+			].join('\n'),
 			COMMAND_MANGA_DESCRIPTION: (entry, context) => [
 				`**अंग्रेजी शीर्षक:** ${entry.english}`,
 				`${context.length > 750 ? `${util.splitText(context, 750)}... [पढ़ना जारी रखें](https://myanimelist.net/anime/${entry.id})` : context}`
-			],
+			].join('\n'),
 			COMMAND_MANGA_TITLE: (entry) => `${entry.title} (${entry.chapters ? 'अज्ञात' : entry.chapters} अध्याय और ${entry.volumes ? 'अज्ञात' : entry.volumes} संस्करण)`,
 			COMMAND_MANGA_STATUS: (entry) => [
 				`❯  वर्तमान स्थिति: **${entry.status}**`,
 				`• शुरू कर दिया है: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • समाप्त: **${entry.end_date}**`}`
-			],
+			].join('\n'),
 			COMMAND_ANIME_TITLES: {
 				TYPE: 'टाइप',
 				SCORE: 'स्कोर',
@@ -400,7 +400,7 @@ module.exports = class extends Language {
 			COMMAND_INVITE: (url) => [
 				`<${url}> स्काईरा को अपने डिस्कॉर्ड गिल्ड से जोड़ने के लिए`,
 				'कुछ अनुमतियों को अनचेक करने से डरो मत, स्काईरा आपको बता देगी कि क्या आप अनुमतियों के बिना कमांड चलाने की कोशिश कर रहे हैं।'
-			],
+			].join('\n'),
 			COMMAND_HELP_DM: '📥 | आदेश आपके डीएम में भेज दिए गए हैं।',
 			COMMAND_HELP_NODM: '❌ | आपके डीएम डिसेबल्ड है, मैं आपको डीएम में आदेश नहीं भेज सकती',
 
@@ -442,8 +442,8 @@ module.exports = class extends Language {
 			COMMAND_TAGS_LIST_EMPTY: 'इस सर्वर के लिए टैग सूची खाली है।',
 
 			// Commands#tools
-			COMMAND_CALC: (time, output) => `|\`⚙\`| **हिसाब लगाया हुआ** (${time}μs)${output}`,
-			COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **असफल** (${time}μs)${output}`,
+			COMMAND_CALC: (time, output) => `|\`⚙\`| **हिसाब लगाया हुआ** (${time})${output}`,
+			COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **असफल** (${time})${output}`,
 
 			COMMAND_COLOR: (hex, rgb, hsl) => [
 				`HEX: **${hex}**`,

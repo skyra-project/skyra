@@ -1,5 +1,20 @@
 const { Command, util, StopWatch } = require('../../index');
 const math = require('mathjs');
+const limitedEval = math.eval;
+
+function createError() {
+	throw new Error('Function import is disabled');
+}
+
+math.import({
+	import: createError,
+	createUnit: createError,
+	eval: createError,
+	parse: createError,
+	simplify: createError,
+	derivative: createError,
+	help: createError
+}, { override: true });
 
 module.exports = class extends Command {
 
@@ -32,7 +47,7 @@ module.exports = class extends Command {
 	run(msg, [equation], settings, i18n) {
 		const start = new StopWatch(3);
 		try {
-			const evaled = math.eval(equation);
+			const evaled = limitedEval(equation);
 			start.stop();
 			return msg.send(i18n.get('COMMAND_CALC', start.friendlyDuration, util.codeBlock('js', util.clean(evaled))));
 		} catch (error) {

@@ -148,21 +148,21 @@ module.exports = class extends Language {
 			COMMAND_ANIME_DESCRIPTION: (entry, context) => [
 				`**English title:** ${entry.english}`,
 				`${context.length > 750 ? `${util.splitText(context, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : context}`
-			],
+			].join('\n'),
 			COMMAND_ANIME_TITLE: (entry) => `${entry.title} (${entry.episodes === 0 ? 'unknown' : entry.episodes} episodes)`,
 			COMMAND_ANIME_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.status}**`,
 				`    • Started: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • Finished: **${entry.end_date}**`}`
-			],
+			].join('\n'),
 			COMMAND_MANGA_DESCRIPTION: (entry, context) => [
 				`**English title:** ${entry.english}`,
 				`${context.length > 750 ? `${util.splitText(context, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : context}`
-			],
+			].join('\n'),
 			COMMAND_MANGA_TITLE: (entry) => `${entry.title} (${entry.chapters ? 'unknown' : entry.chapters} chapters and ${entry.volumes ? 'unknown' : entry.volumes} volumes)`,
 			COMMAND_MANGA_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.status}**`,
 				`    • Started: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • Finished: **${entry.end_date}**`}`
-			],
+			].join('\n'),
 			COMMAND_ANIME_TITLES: {
 				TYPE: 'Type',
 				SCORE: 'Score',
@@ -410,7 +410,7 @@ module.exports = class extends Language {
 			COMMAND_INVITE: (url) => [
 				`To add Skyra to your discord guild: <${url}>`,
 				'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
-			],
+			].join('\n'),
 			COMMAND_HELP_DM: '📥 | Commands have been sent to your DMs.',
 			COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
 
@@ -454,8 +454,8 @@ module.exports = class extends Language {
 			COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
 
 			// Commands#tools
-			COMMAND_CALC: (time, output) => `|\`⚙\`| **Calculated** (${time}μs)${output}`,
-			COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Failed** (${time}μs)${output}`,
+			COMMAND_CALC: (time, output) => `|\`⚙\`| **Calculated** (${time})${output}`,
+			COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Failed** (${time})${output}`,
 
 			COMMAND_COLOR: (hex, rgb, hsl) => [
 				`HEX: **${hex}**`,

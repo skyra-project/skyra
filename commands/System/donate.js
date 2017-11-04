@@ -9,7 +9,7 @@ const content = Command.joinLines`
     you can enjoy her functions longer. I will be very thankful if you help me, really,
     I have been working on a lot of things, but she is my beautiful baby, take care of her ❤
 
-    Do you want to support this amazing project? Feel free to do so! patreon.com/kyranet
+    Do you want to support this amazing project? Feel free to do so! https://www.patreon.com/kyranet
 `;
 
 module.exports = class extends Command {

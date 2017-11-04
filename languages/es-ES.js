@@ -149,21 +149,21 @@ module.exports = class extends Language {
 			COMMAND_ANIME_DESCRIPTION: (entry, context) => [
 				`**Título Inglés:** ${entry.english}`,
 				`${context.length > 750 ? `${util.splitText(context, 750)}... [continúa leyendo](https://myanimelist.net/anime/${entry.id})` : context}`
-			],
+			].join('\n'),
 			COMMAND_ANIME_TITLE: (entry) => `${entry.title} (${entry.episodes === 0 ? 'desconocido' : entry.episodes} episodios)`,
 			COMMAND_ANIME_STATUS: (entry) => [
 				`  ❯  Estado actual: **${entry.status}**`,
 				`    • Empezó en: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • Terminó en: **${entry.end_date}**`}`
-			],
+			].join('\n'),
 			COMMAND_MANGA_DESCRIPTION: (entry, context) => [
 				`**Título Inglés:** ${entry.english}`,
 				`${context.length > 750 ? `${util.splitText(context, 750)}... [continúa leyendo](https://myanimelist.net/anime/${entry.id})` : context}`
-			],
+			].join('\n'),
 			COMMAND_MANGA_TITLE: (entry) => `${entry.title} (${entry.chapters ? 'desconocido' : entry.chapters} capítulos${entry.volumes ? '' : ` y ${entry.volumes} volúmenes`})`,
 			COMMAND_MANGA_STATUS: (entry) => [
 				`  ❯  Estado actual: **${entry.status}**`,
 				`    • Empezó en: **${entry.start_date}**\n${entry.end_date === '0000-00-00' ? '' : `    • Terminó en: **${entry.end_date}**`}`
-			],
+			].join('\n'),
 			COMMAND_ANIME_TITLES: {
 				TYPE: 'Tipo',
 				SCORE: 'Puntuación',
@@ -411,7 +411,7 @@ module.exports = class extends Language {
 			COMMAND_INVITE: (url) => [
 				`Para añadir Skyra a tu servidor: <${url}>`,
 				'No tengas miedo de remover algunos permisos, Skyra te hará saber si estás intentando ejecutar un comando sin los permisos requeridos.'
-			],
+			].join('\n'),
 			COMMAND_HELP_DM: '📥 | La lista de comandos ha sido enviado a tus mensajes privados.',
 			COMMAND_HELP_NODM: '❌ | Parece que tienes tus mensajes privados desactivados, no pude enviarte la lista de comandos.',
 
@@ -455,8 +455,8 @@ module.exports = class extends Language {
 			COMMAND_TAGS_LIST_EMPTY: 'La lista de etiquetas para este servidor está vacía.',
 
 			// Commands#tools
-			COMMAND_CALC: (time, output) => `|\`⚙\`| **Calculado** (${time}μs)${output}`,
-			COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Fallido** (${time}μs)${output}`,
+			COMMAND_CALC: (time, output) => `|\`⚙\`| **Calculado** (${time})${output}`,
+			COMMAND_CALC_FAILURE: (time, output) => `|\`❌\`| **Fallido** (${time})${output}`,
 
 			COMMAND_COLOR: (hex, rgb, hsl) => [
 				`HEX: **${hex}**`,

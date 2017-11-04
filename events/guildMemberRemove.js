@@ -2,75 +2,75 @@ const { Event, AntiRaid } = require('../index');
 const { MessageEmbed } = require('discord.js');
 
 const colours = {
-    EVENTS_GUILDMEMBERREMOVE: 0xF9A825,
-    SETTINGS_DELETE_CHANNELS_DEFAULT: 0x7E57C2
+	EVENTS_GUILDMEMBERREMOVE: 0xF9A825,
+	SETTINGS_DELETE_CHANNELS_DEFAULT: 0x7E57C2
 };
 
 module.exports = class extends Event {
 
-    async run(member) {
-        if (this.client.ready !== true || member.guild.available !== true) return null;
+	async run(member) {
+		if (this.client.ready !== true || member.guild.available !== true) return null;
 
-        const settings = await member.guild.settings;
-        return this.handle(member, settings).catch(err => this.handleError(err));
-    }
+		const settings = await member.guild.settings;
+		return this.handle(member, settings).catch(err => this.handleError(err));
+	}
 
-    async sendLog(type, member, settings, system = false) {
-        if (!settings.channels.log) return false;
-        const channel = member.guild.channels.get(settings.channels.log);
-        if (!channel) return settings.update({ channels: { log: null } });
+	async sendLog(type, member, settings, system = false) {
+		if (!settings.channels.log) return false;
+		const channel = member.guild.channels.get(settings.channels.log);
+		if (!channel) return settings.update({ channels: { log: null } });
 
-        const avatar = (system ? this.client.user : member.user).displayAvatarURL();
+		const avatar = (system ? this.client.user : member.user).displayAvatarURL();
 
-        const embed = new MessageEmbed()
-            .setColor(colours[type])
-            .setAuthor(system ? this.client.user.tag : `${member.user.tag} (${member.id})`, avatar)
-            .setFooter(member.guild.language.get(type))
-            .setTimestamp();
+		const embed = new MessageEmbed()
+			.setColor(colours[type])
+			.setAuthor(system ? this.client.user.tag : `${member.user.tag} (${member.id})`, avatar)
+			.setFooter(member.guild.language.get(type))
+			.setTimestamp();
 
-        return channel.send({ embed });
-    }
+		return channel.send({ embed });
+	}
 
-    async handle(member, settings) {
-        if (settings.selfmod.raid === true && AntiRaid.get(member.guild, settings).attack !== true)
-            AntiRaid.remove(member.guild, settings, member);
-        if (settings.events.memberRemove)
-            await this.handleMessage(member, settings)
-                .catch(err => this.handleError(err));
+	async handle(member, settings) {
+		if (settings.selfmod.raid === true && AntiRaid.get(member.guild, settings).attack !== true)
+			AntiRaid.remove(member.guild, settings, member);
+		if (settings.events.memberRemove)
+			await this.handleMessage(member, settings)
+				.catch(err => this.handleError(err));
 
-        return true;
-    }
+		return true;
+	}
 
-    async handleMessage(member, settings) {
-        await this.sendLog('EVENTS_GUILDMEMBERREMOVE', member, settings)
-            .catch(err => this.handleError(err));
+	async handleMessage(member, settings) {
+		await this.sendLog('EVENTS_GUILDMEMBERREMOVE', member, settings)
+			.catch(err => this.handleError(err));
 
-        if (settings.channels.default && settings.messages.farewell)
-            await this.handleFarewell(member, settings)
-                .catch(err => this.handleError(err));
-    }
+		if (settings.channels.default && settings.messages.farewell)
+			await this.handleFarewell(member, settings)
+				.catch(err => this.handleError(err));
+	}
 
-    async handleFarewell(member, settings) {
-        const channel = member.guild.channels.get(settings.channels.default);
-        if (!channel) {
-            await settings.update({ channels: { default: null } });
-            await this.sendLog('SETTINGS_DELETE_CHANNELS_DEFAULT', member, settings, true);
-            return null;
-        }
+	async handleFarewell(member, settings) {
+		const channel = member.guild.channels.get(settings.channels.default);
+		if (!channel) {
+			await settings.update({ channels: { default: null } });
+			await this.sendLog('SETTINGS_DELETE_CHANNELS_DEFAULT', member, settings, true);
+			return null;
+		}
 
-        return channel.send(this.getMessage(member, settings));
-    }
+		return channel.send(this.getMessage(member, settings));
+	}
 
-    getMessage(member, settings) {
-        return settings.messages.farewell
-            .replace(/%MEMBER%/g, member)
-            .replace(/%MEMBERNAME%/g, member.user.username)
-            .replace(/%MEMBERTAG%/g, member.user.tag)
-            .replace(/%GUILD%/g, member.guild.name);
-    }
+	getMessage(member, settings) {
+		return settings.messages.farewell
+			.replace(/%MEMBER%/g, member)
+			.replace(/%MEMBERNAME%/g, member.user.username)
+			.replace(/%MEMBERTAG%/g, member.user.tag)
+			.replace(/%GUILD%/g, member.guild.name);
+	}
 
-    handleError(err) {
-        return this.client.emit('log', err, 'error');
-    }
+	handleError(err) {
+		return this.client.emit('log', err, 'error');
+	}
 
 };

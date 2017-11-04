@@ -1,28 +1,28 @@
 const { Client, config } = module.exports = require('./index');
 
 const Skyra = new Client({
-    ownerID: config.ownerid,
-    prefix: 's!',
-    cmdEditing: true,
-    dash: config.dash,
-    dev: false,
-    clientOptions: {
-        disabledEvents: [
-            'TYPING_START',
-            'RELATIONSHIP_ADD',
-            'RELATIONSHIP_REMOVE',
-            'CHANNEL_PINS_UPDATE',
-            'USER_NOTE_UPDATE'
-        ],
-        messageCacheMaxSize: 100,
-        messageCacheLifetime: 300,
-        messageSweepInterval: 150
-    }
+	ownerID: config.ownerid,
+	prefix: 's!',
+	cmdEditing: true,
+	dash: config.dash,
+	dev: false,
+	clientOptions: {
+		disabledEvents: [
+			'TYPING_START',
+			'RELATIONSHIP_ADD',
+			'RELATIONSHIP_REMOVE',
+			'CHANNEL_PINS_UPDATE',
+			'USER_NOTE_UPDATE'
+		],
+		messageCacheMaxSize: 100,
+		messageCacheLifetime: 300,
+		messageSweepInterval: 150
+	}
 });
 
 Skyra.login(Skyra.config.dev ? config.tokens.bot.dev : config.tokens.bot.stable);
 
 process.on('unhandledRejection', (err) => {
-    if (!err) return;
-    Skyra.console.log(`Uncaught Promise Error: \n${err.stack || err}`, 'wtf');
+	if (!err) return;
+	Skyra.console.log(`Uncaught Promise Error: \n${err.stack || err}`, 'wtf');
 });

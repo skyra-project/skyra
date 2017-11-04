@@ -14,17 +14,17 @@ const content = Command.joinLines`
 
 module.exports = class extends Command {
 
-    constructor(...args) {
-        super(...args, {
-            mode: 2,
+	constructor(...args) {
+		super(...args, {
+			mode: 2,
 
-            description: 'Donate for Skyra Project.',
-            extendedHelp: content
-        });
-    }
+			description: 'Donate for Skyra Project.',
+			extendedHelp: content
+		});
+	}
 
-    async run(msg) {
-        return Command.sendDM(msg, content);
-    }
+	async run(msg) {
+		return Command.sendDM(msg, content);
+	}
 
 };

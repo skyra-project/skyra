@@ -26,7 +26,7 @@ exports.createTable = table => fs.mkdir(resolve(baseDir, table));
  * @returns {Promise<void>}
  */
 exports.deleteTable = table => this.hasTable(table)
-    .then(exists => exists ? fs.emptyDir(resolve(baseDir, table)).then(() => fs.remove(resolve(baseDir, table))) : null);
+	.then(exists => exists ? fs.emptyDir(resolve(baseDir, table)).then(() => fs.remove(resolve(baseDir, table))) : null);
 
 /* Document methods */
 
@@ -36,7 +36,7 @@ exports.deleteTable = table => this.hasTable(table)
  * @returns {Promise<Object[]>}
  */
 exports.getAll = table => fs.readdir(resolve(baseDir, table))
-    .then(files => Promise.all(files.map(file => fs.readJSON(resolve(baseDir, table, file)))));
+	.then(files => Promise.all(files.map(file => fs.readJSON(resolve(baseDir, table, file)))));
 
 /**
  * Get a document from a directory.
@@ -80,7 +80,7 @@ exports.insert = (...args) => this.create(...args);
  * @returns {Promise<void>}
  */
 exports.update = (table, document, data) => this.get(table, document)
-    .then(current => fs.outputJSONAtomic(resolve(baseDir, table, `${document}.json`), Object.assign(current, data)));
+	.then(current => fs.outputJSONAtomic(resolve(baseDir, table, `${document}.json`), Object.assign(current, data)));
 
 /**
  * Replace all the data from a document.

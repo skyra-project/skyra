@@ -5,46 +5,46 @@ const key = config.tokens.currencyLayer;
 
 /* eslint-disable no-multi-spaces */
 const currencyList = [
-    'AED',  'AFN',  'ALL',  'AMD',  'ANG',  'AOA',  'ARS',  'AUD',
-    'AWG',  'AZN',  'BAM',  'BBD',  'BDT',  'BGN',  'BHD',  'BIF',
-    'BMD',  'BND',  'BOB',  'BRL',  'BSD',  'BTC',  'BTN',  'BWP',
-    'BYN',  'BYR',  'BZD',  'CAD',  'CDF',  'CHF',  'CLF',  'CLP',
-    'CNY',  'COP',  'CRC',  'CUC',  'CUP',  'CVE',  'CZK',  'DJF',
-    'DKK',  'DOP',  'DZD',  'EEK',  'EGP',  'ERN',  'ETB',  'EUR',
-    'FJD',  'FKP',  'GBP',  'GEL',  'GGP',  'GHS',  'GIP',  'GMD',
-    'GNF',  'GTQ',  'GYD',  'HKD',  'HNL',  'HRK',  'HTG',  'HUF',
-    'IDR',  'ILS',  'IMP',  'INR',  'IQD',  'IRR',  'ISK',  'JEP',
-    'JMD',  'JOD',  'JPY',  'KES',  'KGS',  'KHR',  'KMF',  'KPW',
-    'KRW',  'KWD',  'KYD',  'KZT',  'LAK',  'LBP',  'LKR',  'LRD',
-    'LSL',  'LTL',  'LVL',  'LYD',  'MAD',  'MDL',  'MGA',  'MKD',
-    'MMK',  'MNT',  'MOP',  'MRO',  'MUR',  'MVR',  'MWK',  'MXN',
-    'MYR',  'MZN',  'NAD',  'NGN',  'NIO',  'NOK',  'NPR',  'NZD',
-    'OMR',  'PAB',  'PEN',  'PGK',  'PHP',  'PKR',  'PLN',  'PYG',
-    'QAR',  'RON',  'RSD',  'RUB',  'RWF',  'SAR',  'SBD',  'SCR',
-    'SDG',  'SEK',  'SGD',  'SHP',  'SLL',  'SOS',  'SRD',  'STD',
-    'SVC',  'SYP',  'SZL',  'THB',  'TJS',  'TMT',  'TND',  'TOP',
-    'TRY',  'TTD',  'TWD',  'TZS',  'UAH',  'UGX',  'USD',  'UYU',
-    'UZS',  'VEF',  'VND',  'VUV',  'WST',  'XAF',  'XAG',  'XAU',
-    'XCD',  'XDR',  'XOF',  'XPF',  'YER',  'ZAR',  'ZMK',  'ZMW',
-    'ZML'
+	'AED',  'AFN',  'ALL',  'AMD',  'ANG',  'AOA',  'ARS',  'AUD',
+	'AWG',  'AZN',  'BAM',  'BBD',  'BDT',  'BGN',  'BHD',  'BIF',
+	'BMD',  'BND',  'BOB',  'BRL',  'BSD',  'BTC',  'BTN',  'BWP',
+	'BYN',  'BYR',  'BZD',  'CAD',  'CDF',  'CHF',  'CLF',  'CLP',
+	'CNY',  'COP',  'CRC',  'CUC',  'CUP',  'CVE',  'CZK',  'DJF',
+	'DKK',  'DOP',  'DZD',  'EEK',  'EGP',  'ERN',  'ETB',  'EUR',
+	'FJD',  'FKP',  'GBP',  'GEL',  'GGP',  'GHS',  'GIP',  'GMD',
+	'GNF',  'GTQ',  'GYD',  'HKD',  'HNL',  'HRK',  'HTG',  'HUF',
+	'IDR',  'ILS',  'IMP',  'INR',  'IQD',  'IRR',  'ISK',  'JEP',
+	'JMD',  'JOD',  'JPY',  'KES',  'KGS',  'KHR',  'KMF',  'KPW',
+	'KRW',  'KWD',  'KYD',  'KZT',  'LAK',  'LBP',  'LKR',  'LRD',
+	'LSL',  'LTL',  'LVL',  'LYD',  'MAD',  'MDL',  'MGA',  'MKD',
+	'MMK',  'MNT',  'MOP',  'MRO',  'MUR',  'MVR',  'MWK',  'MXN',
+	'MYR',  'MZN',  'NAD',  'NGN',  'NIO',  'NOK',  'NPR',  'NZD',
+	'OMR',  'PAB',  'PEN',  'PGK',  'PHP',  'PKR',  'PLN',  'PYG',
+	'QAR',  'RON',  'RSD',  'RUB',  'RWF',  'SAR',  'SBD',  'SCR',
+	'SDG',  'SEK',  'SGD',  'SHP',  'SLL',  'SOS',  'SRD',  'STD',
+	'SVC',  'SYP',  'SZL',  'THB',  'TJS',  'TMT',  'TND',  'TOP',
+	'TRY',  'TTD',  'TWD',  'TZS',  'UAH',  'UGX',  'USD',  'UYU',
+	'UZS',  'VEF',  'VND',  'VUV',  'WST',  'XAF',  'XAG',  'XAU',
+	'XCD',  'XDR',  'XOF',  'XPF',  'YER',  'ZAR',  'ZMK',  'ZMW',
+	'ZML'
 ];
 /* eslint-enable no-multi-spaces */
 
 const request = url => snekfetch.get(url)
-    .then(data => JSON.parse(data.text));
+	.then(data => JSON.parse(data.text));
 
 module.exports = class extends Command {
 
-    constructor(...args) {
-        super(...args, {
-            aliases: ['currencyl', 'cl'],
-            mode: 1,
-            cooldown: 10,
+	constructor(...args) {
+		super(...args, {
+			aliases: ['currencyl', 'cl'],
+			mode: 1,
+			cooldown: 10,
 
-            usage: '<money:int> <input:string{3,3}> <output:string{3,3}>',
-            usageDelim: ' ',
-            description: 'Convert currency.',
-            extendedHelp: Command.strip`
+			usage: '<money:int> <input:string{3,3}> <output:string{3,3}>',
+			usageDelim: ' ',
+			description: 'Convert currency.',
+			extendedHelp: Command.strip`
                 With this command, you can, for example, convert EUR to USD.
 
                 ⚙ | ***Explained usage***
@@ -59,25 +59,25 @@ module.exports = class extends Command {
                 • Skyra, cl 100 USD EUR
                     93.6704 EUR
             `
-        });
-    }
+		});
+	}
 
-    async run(msg, [money, input, output], settings, i18n) {
-        input = input.toUpperCase();
-        output = output.toUpperCase();
+	async run(msg, [money, input, output], settings, i18n) {
+		input = input.toUpperCase();
+		output = output.toUpperCase();
 
-        if (currencyList.includes(input) === false)
-            throw i18n.get('COMMAND_CURRENCYLAYER_INPUT', input);
-        if (currencyList.includes(output) === false)
-            throw i18n.get('COMMAND_CURRENCYLAYER_INPUT', output);
+		if (currencyList.includes(input) === false)
+			throw i18n.get('COMMAND_CURRENCYLAYER_INPUT', input);
+		if (currencyList.includes(output) === false)
+			throw i18n.get('COMMAND_CURRENCYLAYER_INPUT', output);
 
-        const data = await request(`http://www.apilayer.net/api/live?access_key=${key}&format=1&currencies=${input},${output}`);
-        if (!data.success)
-            throw i18n.get('COMMAND_CURRENCYLAYER_ERROR');
+		const data = await request(`http://www.apilayer.net/api/live?access_key=${key}&format=1&currencies=${input},${output}`);
+		if (!data.success)
+			throw i18n.get('COMMAND_CURRENCYLAYER_ERROR');
 
-        const converted = (data.quotes[`USD${output}`] / data.quotes[`USD${input}`]) * money;
+		const converted = (data.quotes[`USD${output}`] / data.quotes[`USD${input}`]) * money;
 
-        return msg.send(i18n.get('COMMAND_CURRENCYLAYER', money, input, output, util.codeBlock('', `${converted.toFixed(4)} ${output}`)));
-    }
+		return msg.send(i18n.get('COMMAND_CURRENCYLAYER', money, input, output, util.codeBlock('', `${converted.toFixed(4)} ${output}`)));
+	}
 
 };

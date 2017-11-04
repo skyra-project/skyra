@@ -11,81 +11,81 @@ const provider = require('../providers/rethink');
 
 class Handler {
 
-    constructor(client) {
-        Object.defineProperty(this, 'client', { value: client });
+	constructor(client) {
+		Object.defineProperty(this, 'client', { value: client });
 
-        this.guilds = new Guilds(client);
-        this.clock = new Clock(client);
+		this.guilds = new Guilds(client);
+		this.clock = new Clock(client);
 
-        this.search = new AdvancedSearch(client);
-        this.prompt = new PromptSystem(client);
+		this.search = new AdvancedSearch(client);
+		this.prompt = new PromptSystem(client);
 
-        this.dashboard = null;
+		this.dashboard = null;
 
-        // [IG] Integrated Gateway (v3)
-        this.social = {
-            global: new SocialGlobal(client),
-            local: new SocialLocal(client)
-        };
+		// [IG] Integrated Gateway (v3)
+		this.social = {
+			global: new SocialGlobal(client),
+			local: new SocialLocal(client)
+		};
 
-        this.inited = false;
-    }
+		this.inited = false;
+	}
 
-    async init() {
-        if (this.inited) return;
+	async init() {
+		if (this.inited) return;
 
-        this.dashboard = new Dashboard(this.client);
+		this.dashboard = new Dashboard(this.client);
 
-        await Promise.all([
-            this.syncGuilds(),
-            this.syncLocals(),
-            this.syncGlobal(),
-            this.clock.init(),
-            this.dashboard.init()
-        ]);
+		await Promise.all([
+			this.syncGuilds(),
+			this.syncLocals(),
+			this.syncGlobal(),
+			this.clock.init(),
+			this.dashboard.init()
+		]);
 
-        this.inited = true;
-    }
+		this.inited = true;
+	}
 
-    async syncGuilds() {
-        const [guilds, modlogs] = await Promise.all([
-            provider.getAll('guilds'),
-            provider.getAll('moderation')
-        ]);
+	async syncGuilds() {
+		const [guilds, modlogs] = await Promise.all([
+			provider.getAll('guilds'),
+			provider.getAll('moderation')
+		]);
 
-        const ModCache = new Map();
-        for (let i = 0; i < modlogs.length; i++)
-            ModCache.set(modlogs[i].id, modlogs[i].cases.filter(cs => cs.type === 'mute' && cs.appeal !== true) || []);
+		const ModCache = new Map();
+		for (let i = 0; i < modlogs.length; i++)
+			ModCache.set(modlogs[i].id, modlogs[i].cases.filter(cs => cs.type === 'mute' && cs.appeal !== true) || []);
 
-        for (let i = 0; i < guilds.length; i++) {
-            if (this.client.config.dev === false && this.client.guilds.has(guilds[i].id) === false) this.client.emit('log', `LOADER | GUILDSETTINGS | ${guilds[i].id} `, 'info');
-            this.guilds.set(guilds[i].id, guilds[i]).setModeration(ModCache.get(guilds[i].id) || []);
-        }
-        for (const guild of this.client.guilds.values())
-            if (this.guilds.has(guild.id) === false) await this.guilds.create(guild.id);
+		for (let i = 0; i < guilds.length; i++) {
+			if (this.client.config.dev === false && this.client.guilds.has(guilds[i].id) === false) this.client.emit('log', `LOADER | GUILDSETTINGS | ${guilds[i].id} `, 'info');
+			this.guilds.set(guilds[i].id, guilds[i]).setModeration(ModCache.get(guilds[i].id) || []);
+		}
+		for (const guild of this.client.guilds.values())
+			if (this.guilds.has(guild.id) === false) await this.guilds.create(guild.id);
 
-        return true;
-    }
+		return true;
+	}
 
-    async syncLocals() {
-        const locals = await provider.getAll('localScores');
+	async syncLocals() {
+		const locals = await provider.getAll('localScores');
 
-        for (let i = 0; i < locals.length; i++) {
-            const guild = locals[i];
-            const localManager = this.social.local.set(guild.id);
+		for (let i = 0; i < locals.length; i++) {
+			const guild = locals[i];
+			const localManager = this.social.local.set(guild.id);
 
-            for (let j = 0; j < guild.scores.length; j++) localManager.addMember(guild.scores[j].id, guild.scores[j]);
-        }
+			for (let j = 0; j < guild.scores.length; j++) localManager.addMember(guild.scores[j].id, guild.scores[j]);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    async syncGlobal() {
-        const users = await provider.getAll('users');
-        for (let i = 0; i < users.length; i++) this.social.global.set(users[i].id, users[i]);
+	async syncGlobal() {
+		const users = await provider.getAll('users');
+		for (let i = 0; i < users.length; i++) this.social.global.set(users[i].id, users[i]);
 
-        return true;
-    }
+		return true;
+	}
 
 }
 

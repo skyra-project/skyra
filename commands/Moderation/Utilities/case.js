@@ -2,25 +2,25 @@ const { Command, ModLog } = require('../../../index');
 
 module.exports = class extends Command {
 
-    constructor(...args) {
-        super(...args, {
-            guildOnly: true,
-            permLevel: 2,
-            botPerms: ['EMBED_LINKS'],
-            mode: 2,
-            cooldown: 5,
+	constructor(...args) {
+		super(...args, {
+			guildOnly: true,
+			permLevel: 2,
+			botPerms: ['EMBED_LINKS'],
+			mode: 2,
+			cooldown: 5,
 
-            usage: '<Case:integer>',
-            description: 'Get the information from a case by its index.'
-        });
-    }
+			usage: '<Case:integer>',
+			description: 'Get the information from a case by its index.'
+		});
+	}
 
-    async run(msg, [index], settings, i18n) {
-        const cases = await settings.moderation.getCases();
+	async run(msg, [index], settings, i18n) {
+		const cases = await settings.moderation.getCases();
 
-        if (!cases[index]) throw i18n.get('COMMAND_REASON_NOT_EXISTS');
-        return new ModLog(msg.guild)
-            .retrieveModLog(index).then(embed => msg.send({ embed }));
-    }
+		if (!cases[index]) throw i18n.get('COMMAND_REASON_NOT_EXISTS');
+		return new ModLog(msg.guild)
+			.retrieveModLog(index).then(embed => msg.send({ embed }));
+	}
 
 };

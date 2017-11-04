@@ -31,7 +31,7 @@ module.exports = class extends Command {
         }
 
         if (members.length === 0)
-            return i18n.get('COMMAND_LIST_ADVERTISEMENT_EMPTY');
+            return msg.send(i18n.get('COMMAND_LIST_ADVERTISEMENT_EMPTY'));
 
         const embed = new MessageEmbed()
             .setTitle(i18n.get('COMMAND_LIST_ADVERTISEMENT'))

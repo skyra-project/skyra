@@ -524,6 +524,18 @@ module.exports = class extends Language {
                 `• **${newbies}** nuevos usuarios en las últimas 24 horas.`
             ].join('\n'),
 
+            COMMAND_ROLEINFO_TITLES: { PERMISSIONS: 'Permisos' },
+            COMMAND_ROLEINFO_DESCRIPTION: (role) => [
+                `ID: **${role.id}**`,
+                `Nombre: **${role.name}**`,
+                `Color: **${role.hexColor}**`,
+                `Separado: **${role.hoist ? 'Sí' : 'No'}**`,
+                `Posición: **${role.rawPosition}**`,
+                `Mencionable: **${role.mentionable ? 'Sí' : 'No'}**`,
+                `Cantidad de miembros: **${role.members.size}**`
+            ].join('\n'),
+            COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Sin permisos.',
+
             COMMAND_URBAN_NOTFOUND: 'Lo siento, pero la palabra por la cual estás buscando, no parece estar defininida en UrbanDictionary. ¿Prueba con otra palabra?',
             COMMAND_URBAN_INDEX_NOTFOUND: 'Ehm, quizá usted quiera probar con un índice de página menor.',
             SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [sigue leyendo](${url})`,

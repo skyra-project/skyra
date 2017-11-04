@@ -10,7 +10,7 @@ module.exports = class extends Command {
             mode: 2,
             cooldown: 5,
 
-            usage: '<list|claim|unclaim> [roles:string] [...]',
+            usage: '[list|claim|unclaim] [roles:string] [...]',
             usageDelim: ' ',
             description: 'List all public roles from a guild, or claim/unclaim them.',
             extendedHelp: Command.strip`
@@ -33,7 +33,7 @@ module.exports = class extends Command {
         });
     }
 
-    async run(msg, [action, ...input], settings, i18n) {
+    async run(msg, [action = 'list', ...input], settings, i18n) {
         if (action === 'list') return this.list(msg, settings, i18n);
         if (!input[0]) throw 'write `Skyra, roles list` to get a list of all roles, or `Skyra, roles claim <role1, role2, ...>` to claim them.';
         const roles = input.join(' ').split(/, */).map(entry => entry.trimRight());

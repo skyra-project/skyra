@@ -14,6 +14,12 @@ module.exports = class extends Command {
         });
     }
 
+    /**
+     * Run the command.
+     * @param {external:Message} msg The message which executed this command.
+     * @param {string[]} args The C# code to write, compile, and execute.
+     * @returns {Promise<external:Message>}
+     */
     async run(msg, [args]) {
         const start = new StopWatch(5);
         const { input } = this.parse(args);
@@ -24,6 +30,11 @@ module.exports = class extends Command {
         return msg.send(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${start.stop()}${util.codeBlock('cs', result)}`);
     }
 
+    /**
+     * Compile the C# code.
+     * @param {StopWatch} start The stopwatch instance to measure compiler time.
+     * @returns {Promise<void>}
+     */
     compile(start) {
         return util.exec('mcs /bwd/cs/eval.cs')
             .then(() => null)
@@ -33,16 +44,24 @@ module.exports = class extends Command {
                 .replace(/\/bwd\/cs\/eval.cs/g, 'Failed at: '))}`);
     }
 
+    /**
+     * Execute the C# code, taking output as console's output.
+     * @returns {Promise<{ success: boolean, result: string }>}
+     */
     execute() {
-        return util.exec('/bwd/cs/eval.exe')
-            .then(result => ({ success: true, result: result.stdout }))
-            .catch(error => ({ success: false, result: error }));
+        return Promise.race([
+            util.exec('/bwd/cs/eval.exe')
+                .then(result => ({ success: true, result: result.stdout }))
+                .catch(error => ({ success: false, result: error })),
+            util.sleep(10000)
+                .then(() => ({ success: false, result: 'TimeException: Execution took more than 10000ms (Timeout Reached).' }))
+        ]);
     }
 
     /**
-     * Blep
+     * Wrap the code for execution.
      * @param {string} code The code to process
-     * @returns {{ type: ('raw'|'function'|'async'), input: string }}
+     * @returns {{ type: ('raw'|'function'), input: string }}
      */
     parse(code) {
         const params = code.split('\n');
@@ -50,7 +69,6 @@ module.exports = class extends Command {
             case '--raw': return { type: 'raw', input: params.slice(1).join('\n') };
             case '--fn':
             case '--function': return { type: 'function', input: TEMPLATES.function(params.slice(1).join('\n')) };
-            // case '--async': return { type: 'async', input: TEMPLATES.async(params.slice(1).join('\n')) };
             default: {
                 const type = /async/.test(params) ? 'async' : 'function';
                 return { type, input: TEMPLATES[type](code) };

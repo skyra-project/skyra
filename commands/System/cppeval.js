@@ -31,9 +31,13 @@ module.exports = class extends Command {
     }
 
     execute() {
-        return util.exec('/bwd/cpp/eval.out')
-            .then(result => ({ success: true, result: result.stdout }))
-            .catch(error => ({ success: false, result: error }));
+        return Promise.race([
+            util.exec('/bwd/cpp/eval.out')
+                .then(result => ({ success: true, result: result.stdout }))
+                .catch(error => ({ success: false, result: error })),
+            util.sleep(10000)
+                .then(() => ({ success: false, result: 'TimeException: Execution took more than 10000ms (Timeout Reached).' }))
+        ]);
     }
 
     /**

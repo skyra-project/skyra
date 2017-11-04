@@ -133,10 +133,17 @@ class ModerationLog {
      * @memberof ModerationLog
      */
     async send() {
-        if (this.anonymous && this.user.raw.action === this.type) {
-            delete this.user.raw.action;
-            return null;
+        if (this.anonymous) {
+            if (this.user.raw.action === 'softban') {
+                if (this.type === 'unban') delete this.user.raw.action;
+                if (this.type !== 'softban') return null;
+            } else
+            if (this.user.raw.action === this.type) {
+                delete this.user.raw.action;
+                return null;
+            }
         }
+
         const channel = this.getChannel();
         const { embed, numberCase } = await this.getMessage();
 

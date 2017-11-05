@@ -1,5 +1,5 @@
 const provider = require('../providers/json');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 const cheerio = require('cheerio');
 
 class OverwatchUtils {
@@ -12,7 +12,7 @@ class OverwatchUtils {
 			url
 		};
 
-		const { text } = await snekfetch.get(url);
+		const { text } = await snekie.get(url);
 		const $ = cheerio.load(text);
 
 		const mostPlayed = $('#overview-section > div.u-relative > div.masthead-hero-image')['0'].attribs;

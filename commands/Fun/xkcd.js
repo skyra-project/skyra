@@ -1,6 +1,6 @@
 const { structures: { Command } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 const moment = require('moment');
 
 module.exports = class extends Command {
@@ -70,7 +70,7 @@ module.exports = class extends Command {
 		}
 
 		if (query) {
-			const { text } = await snekfetch.get(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`);
+			const { text } = await snekie.get(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`);
 			const comics = text.split(' ').slice(2);
 			const random = Math.floor(Math.random() * (comics.length / 2));
 			return comics[random * 2].replace(/\n/g, '');
@@ -80,7 +80,7 @@ module.exports = class extends Command {
 	}
 
 	fetchURL(url) {
-		return snekfetch.get(url)
+		return snekie.get(url)
 			.then(data => JSON.parse(data.text));
 	}
 

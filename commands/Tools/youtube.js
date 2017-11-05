@@ -1,8 +1,8 @@
 const { structures: { Command }, config } = require('../../index');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 const key = config.tokens.google;
-const getURL = input => snekfetch.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${input}&key=${key}`)
+const getURL = input => snekie.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${input}&key=${key}`)
 	.then(data => JSON.parse(data.text));
 
 module.exports = class extends Command {

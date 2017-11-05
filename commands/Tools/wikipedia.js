@@ -1,6 +1,6 @@
 const { structures: { Command }, util: { util } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 const baseURL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
 
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 
 	async run(msg, [input], settings, i18n) {
 		input = this.parseURL(input);
-		const text = await snekfetch.get(baseURL + input)
+		const text = await snekie.get(baseURL + input)
 			.then(data => JSON.parse(data.text))
 			.catch(Command.handleError);
 

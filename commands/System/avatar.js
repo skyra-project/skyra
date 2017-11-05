@@ -1,4 +1,5 @@
 const { structures: { Command } } = require('../../index');
+const snekie = require('snekfetch');
 
 module.exports = class extends Command {
 
@@ -12,8 +13,9 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [avatar]) {
-		await this.client.user.setAvatar(avatar)
+	async run(msg, [url]) {
+		const result = await snekie.get(url);
+		await this.client.user.setAvatar(result.body)
 			.catch(Command.handleError);
 
 		return msg.send(`Dear ${msg.author}, I have changed my avatar for you.`);

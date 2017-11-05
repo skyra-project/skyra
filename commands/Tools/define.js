@@ -1,9 +1,9 @@
 const { structures: { Command } } = require('../../index');
 const { XmlEntities } = require('html-entities');
 const { decode } = new XmlEntities();
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
-const request = input => snekfetch.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${input}`)
+const request = input => snekie.get(`https://glosbe.com/gapi/translate?from=en&dest=en&format=json&phrase=${input}`)
 	.then(data => JSON.parse(data.text));
 
 module.exports = class extends Command {

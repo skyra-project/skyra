@@ -1,5 +1,5 @@
 const { structures: { Command } } = require('../../index');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 /* eslint-disable no-bitwise */
 /* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 		const r = this.emoji(emoji);
 
 		const emojiURL = `https://twemoji.maxcdn.com/2/72x72/${r}.png`;
-		const { body } = await snekfetch.get(emojiURL);
+		const { body } = await snekie.get(emojiURL);
 
 		return msg.send(i18n.get('COMMAND_EMOJI_TWEMOJI', emoji, r), { files: [{ attachment: body, name: `${r}.png` }] });
 	}

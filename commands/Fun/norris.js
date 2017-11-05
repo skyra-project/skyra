@@ -1,6 +1,6 @@
 const { structures: { Command } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 module.exports = class extends Command {
 
@@ -36,7 +36,7 @@ module.exports = class extends Command {
 	}
 
 	fetchURL(url) {
-		return snekfetch.get(url)
+		return snekie.get(url)
 			.then(data => JSON.parse(data.text))
 			.catch(Command.handleError);
 	}

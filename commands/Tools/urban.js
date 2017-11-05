@@ -1,6 +1,6 @@
 const { structures: { Command }, util: { util } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 const ZWS = '\u200B';
 
 module.exports = class extends Command {
@@ -35,7 +35,7 @@ module.exports = class extends Command {
 		if (index < 0)
 			throw i18n.get('RESOLVER_POSITIVE_AMOUNT');
 
-		const { list } = await snekfetch.get(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`)
+		const { list } = await snekie.get(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`)
 			.then(data => JSON.parse(data.text));
 
 		const result = list[index];

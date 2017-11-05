@@ -12,7 +12,7 @@ const etype = {
 };
 
 const parseString = require('util').promisify(require('xml2js').parseString);
-const Snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 const getURL = input => `https://myanimelist.net/api/anime/search.xml?q=${input}`;
 
@@ -65,7 +65,7 @@ module.exports = class extends Command {
 	}
 
 	fetch(url) {
-		return new Snekfetch('GET', url, options)
+		return snekie.get(url, options)
 			.then(data => parseString(data.text))
 			.catch(() => { throw constants.httpResponses(404); });
 	}

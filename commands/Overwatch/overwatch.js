@@ -2,7 +2,7 @@ const { structures: { Command }, util: { util }, management: { overwatch } } = r
 const { MessageEmbed } = require('discord.js');
 
 const { get: fetchProfile } = require('../../functions/overwatch');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 const emojis = {
 	bronze: { emoji: '<:Bronze:326683073691385856>', text: '(B)' },
@@ -15,7 +15,7 @@ const emojis = {
 };
 
 const list = data => Object.entries(data).map(([key, value]) => `**${key}**: ${value}`).join('\n');
-const doRequest = url => snekfetch.get(url).then(data => JSON.parse(data.text));
+const doRequest = url => snekie.get(url).then(data => JSON.parse(data.text));
 
 module.exports = class extends Command {
 

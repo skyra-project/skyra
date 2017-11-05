@@ -2,7 +2,7 @@ const { structures: { Command }, config, util: { CanvasConstructor } } = require
 
 const { join } = require('path');
 const { readFile } = require('fs-nextra');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 /* Autentification */
 const { GOOGLE_MAP_API, WEATHER_API } = config.tokens;
@@ -45,7 +45,7 @@ module.exports = class extends Command {
 	}
 
 	query(url) {
-		return snekfetch.get(url)
+		return snekie.get(url)
 			.then(data => JSON.parse(data.text));
 	}
 

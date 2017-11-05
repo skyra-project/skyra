@@ -3,7 +3,7 @@ const { structures: { Command }, config } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 const parseString = require('util').promisify(require('xml2js').parseString);
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 const getURL = input => `https://api.wolframalpha.com/v2/query?input=${input}&appid=${config.tokens.wolfram}`;
 
@@ -32,7 +32,7 @@ module.exports = class extends Command {
 
     async run(msg, [args], settings, i18n) {
         const url = getURL(encodeURIComponent(args.toLowerCase()));
-        const data = await snekfetch.get(url).then(result => parseString(result.text));
+        const data = await snekie.get(url).then(result => parseString(result.text));
     }
 
     parseString(string) {

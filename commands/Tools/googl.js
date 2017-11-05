@@ -1,6 +1,6 @@
 const { structures: { Command }, config } = require('../../index');
 const { MessageEmbed } = require('discord.js');
-const snekfetch = require('snekfetch');
+const snekie = require('snekfetch');
 
 const key = config.tokens.google;
 
@@ -47,12 +47,12 @@ module.exports = class extends Command {
 	}
 
 	async long(url, i18n) {
-		const { body } = await snekfetch.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url });
+		const { body } = await snekie.post(`https://www.googleapis.com/urlshortener/v1/url?key=${key}`).send({ longUrl: url });
 		return i18n.get('COMMAND_GOOGL_LONG', body.id);
 	}
 
 	async short(url, i18n) {
-		const { body } = await snekfetch.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`);
+		const { body } = await snekie.get(`https://www.googleapis.com/urlshortener/v1/url?key=${key}&shortUrl=${url}`);
 		return i18n.get('COMMAND_GOOGL_SHORT', body.longUrl);
 	}
 

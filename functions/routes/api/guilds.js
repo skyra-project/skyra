@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this, new-cap */
 const router = require('express').Router();
-const schema = require('../../../schema.json');
 
 module.exports = class RouterGuild {
 
@@ -8,7 +7,6 @@ module.exports = class RouterGuild {
 		this.client = client;
 		this.server = router;
 		this.util = util;
-		this.schema = schema;
 
 		this.server.param('guild', (req, res, next, id) => {
 			const guild = this.client.guilds.get(id);

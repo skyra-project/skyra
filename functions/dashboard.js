@@ -17,7 +17,7 @@ const { renderFile } = require('ejs');
 const API = require('./routes/api');
 const Util = require('./routes/util');
 
-const ytdl = require('../ytdl/main');
+const ytdl = require('../lib/ytdl');
 
 const UserRoute = require('./routes/user');
 

@@ -1,4 +1,4 @@
-const { Inhibitor } = require('../index');
+const { structures: { Inhibitor } } = require('../index');
 const { Permissions } = require('discord.js');
 
 module.exports = class extends Inhibitor {

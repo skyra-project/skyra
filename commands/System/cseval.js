@@ -1,4 +1,4 @@
-const { Command, util, StopWatch } = require('../../index');
+const { structures: { Command }, util: { util, Stopwatch } } = require('../../index');
 const fsn = require('fs-nextra');
 
 module.exports = class extends Command {
@@ -21,7 +21,7 @@ module.exports = class extends Command {
      * @returns {Promise<external:Message>}
      */
 	async run(msg, [args]) {
-		const start = new StopWatch(5);
+		const start = new Stopwatch(5);
 		const { input } = this.parse(args);
 		await fsn.outputFileAtomic('/bwd/cs/eval.cs', input);
 		const error = await this.compile(start);

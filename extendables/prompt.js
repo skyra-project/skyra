@@ -1,4 +1,4 @@
-const { Extendable } = require('../index');
+const { structures: { Extendable } } = require('../index');
 
 const awaitReaction = async (msg, message) => {
 	await message.react('🇾');

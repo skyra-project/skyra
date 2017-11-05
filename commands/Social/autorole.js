@@ -1,4 +1,5 @@
-const { Command, Providers: { rethink } } = require('../../index');
+const { structures: { Command } } = require('../../index');
+const RethinkDB = require('../../providers/rethink');
 
 /* eslint-disable max-len */
 module.exports = class extends Command {
@@ -54,7 +55,7 @@ module.exports = class extends Command {
 		const role = await this.client.handler.search.role(input, msg);
 		if (!role) throw i18n.get('REQUIRE_ROLE');
 
-		await rethink.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points });
+		await RethinkDB.append('guilds', msg.guild.id, 'autoroles', { id: role.id, points });
 		await settings.sync();
 
 		settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);
@@ -74,7 +75,7 @@ module.exports = class extends Command {
 
 		if (!retrieved) throw i18n.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
 
-		await rethink.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', role.id);
+		await RethinkDB.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', role.id);
 		await settings.sync();
 
 		return msg.send(i18n.get('COMMAND_AUTOROLE_REMOVE', role, retrieved.points));
@@ -90,7 +91,7 @@ module.exports = class extends Command {
 		const retrieved = settings.autoroles.find(ar => ar.id === role.id);
 		if (!retrieved) throw i18n.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
 
-		await rethink.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points });
+		await RethinkDB.updateArrayByID('guilds', msg.guild.id, 'autoroles', role.id, { points });
 		await settings.sync();
 
 		settings.autoroles.sort((x, y) => +(x.points > y.points) || +(x.points === y.points) - 1);

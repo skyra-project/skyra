@@ -1,4 +1,4 @@
-const { Command, Timer, util } = require('../../index');
+const { structures: { Command }, util: { Timer, util } } = require('../../index');
 const listify = require('../../functions/listify');
 
 module.exports = class extends Command {

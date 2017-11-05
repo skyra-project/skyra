@@ -1,4 +1,4 @@
-const { Command, Timer } = require('../../index');
+const { structures: { Command }, util: { Timer } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -17,7 +17,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [channel = msg.channel, ...time], settings, i18n) {
+	run(msg, [channel = msg.channel, ...time], settings, i18n) {
 		return this[channel.lockdown ? 'unlock' : 'lock'](msg, channel, time.length > 0 ? time.join(' ') : null, i18n);
 	}
 

@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const { version } = require('discord.js');
 const { uptime, loadavg } = require('os');
 const moment = require('moment');

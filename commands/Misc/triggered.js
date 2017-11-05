@@ -1,8 +1,8 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const streamToArray = require('stream-to-array');
-const { readFile } = require('fs-nextra');
-const { join } = require('path');
+const fsn = require('fs-nextra');
+const path = require('path');
 const GIFEncoder = require('gifencoder');
 const Canvas = require('canvas');
 
@@ -71,7 +71,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		this.template = await readFile(join(__dirname, '../../assets/images/memes/triggered.png'));
+		this.template = await fsn.readFile(path.join(__dirname, '../../assets/images/memes/triggered.png'));
 	}
 
 };

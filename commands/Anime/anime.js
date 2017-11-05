@@ -1,8 +1,8 @@
-const { Command, Constants: { oneToTen, basicAuth, httpResponses }, config } = require('../../index');
+const { structures: { Command }, util: { constants }, config } = require('../../index');
 const { fromString } = require('html-to-text');
 const { MessageEmbed } = require('discord.js');
 
-const options = { headers: { Authorization: basicAuth(config.tokens.animelist.user, config.tokens.animelist.password) } };
+const options = { headers: { Authorization: constants.basicAuth(config.tokens.animelist.user, config.tokens.animelist.password) } };
 
 const etype = {
 	TV: '📺 TV',
@@ -52,11 +52,11 @@ module.exports = class extends Command {
 		const TITLE = i18n.get('COMMAND_ANIME_TITLES');
 
 		const embed = new MessageEmbed()
-			.setColor(oneToTen(score).color)
+			.setColor(constants.oneToTen(score).color)
 			.setAuthor(...this.getAuthor(msg, entry, i18n))
 			.setDescription(i18n.get('COMMAND_ANIME_DESCRIPTION', entry, context))
 			.addField(TITLE.TYPE, etype[entry.type.toString().toUpperCase()] || entry.type, true)
-			.addField(TITLE.SCORE, `**${entry.score}** / 10 ${oneToTen(score).emoji}`, true)
+			.addField(TITLE.SCORE, `**${entry.score}** / 10 ${constants.oneToTen(score).emoji}`, true)
 			.addField(TITLE.STATUS, i18n.get('COMMAND_ANIME_STATUS', entry))
 			.addField(TITLE.WATCH_IT, `**[https://myanimelist.net/anime/${entry.id}](https://myanimelist.net/anime/${entry.id})**`)
 			.setFooter('© MyAnimeList');
@@ -67,7 +67,7 @@ module.exports = class extends Command {
 	fetch(url) {
 		return new Snekfetch('GET', url, options)
 			.then(data => parseString(data.text))
-			.catch(() => { throw httpResponses(404); });
+			.catch(() => { throw constants.httpResponses(404); });
 	}
 
 	getAuthor(msg, entry, i18n) {

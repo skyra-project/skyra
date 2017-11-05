@@ -1,4 +1,4 @@
-const { Command, util } = require('../../index');
+const { structures: { Command }, util: { util } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 const snekfetch = require('snekfetch');
 const ZWS = '\u200B';

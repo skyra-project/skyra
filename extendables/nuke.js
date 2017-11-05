@@ -1,4 +1,4 @@
-const { Extendable, util } = require('../index');
+const { structures: { Extendable }, util: { util } } = require('../index');
 
 const exec = (msg) => {
 	msg.action = 'DELETE';

@@ -1,4 +1,4 @@
-const { Command, config } = require('../../index');
+const { structures: { Command }, config } = require('../../index');
 const snekfetch = require('snekfetch');
 
 const key = config.tokens.google;

@@ -1,4 +1,4 @@
-const { Command, util, StopWatch } = require('../../index');
+const { structures: { Command }, util: { util, Stopwatch } } = require('../../index');
 const { inspect } = require('util');
 
 module.exports = class extends Command {
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 
 	async run(msg, [args]) {
 		const { type, input } = this.parse(args.split(' '));
-		const start = new StopWatch(5);
+		const start = new Stopwatch(5);
 		const out = await this.eval(msg, type ? `(async () => { ${input} })()` : input);
 		start.stop();
 		if (out.success === false && out.output.message) out.output = out.output.message;

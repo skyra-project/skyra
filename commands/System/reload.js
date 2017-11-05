@@ -1,4 +1,4 @@
-const { Command, StopWatch } = require('../../index');
+const { structures: { Command }, util: { Stopwatch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 
 	async run(msg, [piece], settings, i18n) {
 		if (typeof piece === 'string') {
-			const start = new StopWatch();
+			const start = new Stopwatch();
 			await this.client[piece].loadAll();
 			await this.client[piece].init();
 			return msg.send(`${i18n.get('COMMAND_RELOAD_ALL', piece)} (Took: ${start.stop()}.)`);

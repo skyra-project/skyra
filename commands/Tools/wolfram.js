@@ -1,5 +1,5 @@
 /* eslint-disable */
-const { Command, config } = require('../../index');
+const { structures: { Command }, config } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 const parseString = require('util').promisify(require('xml2js').parseString);

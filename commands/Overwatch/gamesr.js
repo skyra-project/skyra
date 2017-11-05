@@ -1,4 +1,4 @@
-const { Command, overwatch: { roles: getRoles } } = require('../../index');
+const { structures: { Command }, management: { overwatch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [sr], settings, i18n) {
-		const _roles = await getRoles(msg, 'sr');
+		const _roles = await overwatch.assets.roles(msg, 'sr');
 		const rank = this.getRank(sr);
 		const _role = _roles.get(rank);
 

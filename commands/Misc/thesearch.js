@@ -1,9 +1,9 @@
-const { Command, Canvas } = require('../../index');
-const { readFile } = require('fs-nextra');
-const { join } = require('path');
+const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
+const fsn = require('fs-nextra');
+const path = require('path');
 
-Canvas
-	.registerFont(join(__dirname, '../../assets/fonts/Family-Friends.ttf'), 'FamilyFriends');
+CanvasConstructor
+	.registerFont(path.join(__dirname, '../../assets/fonts/Family-Friends.ttf'), 'FamilyFriends');
 
 module.exports = class extends Command {
 
@@ -37,7 +37,7 @@ module.exports = class extends Command {
 	}
 
 	generate(text) {
-		return new Canvas(700, 612)
+		return new CanvasConstructor(700, 612)
 			.addImage(this.template, 0, 0, 700, 612)
 			.setTextAlign('center')
 			.setTextFont('19px FamilyFriends')
@@ -48,7 +48,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		this.template = await readFile(join(__dirname, '../../assets/images/memes/TheSearch.png'));
+		this.template = await fsn.readFile(path.join(__dirname, '../../assets/images/memes/TheSearch.png'));
 	}
 
 };

@@ -1,4 +1,4 @@
-const { Command, ModLog } = require('../../index');
+const { structures: { Command }, management: { ModerationLog } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -29,7 +29,7 @@ module.exports = class extends Command {
 			await user.send(i18n.get('COMMAND_WARN_DM', msg.author.tag, msg.guild, reason))
 				.catch(() => null);
 
-		const modcase = await new ModLog(msg.guild)
+		const modcase = await new ModerationLog(msg.guild)
 			.setModerator(msg.author)
 			.setUser(user)
 			.setType('warn')

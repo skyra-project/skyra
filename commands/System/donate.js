@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 
 const content = Command.joinLines`
     Skyra Project started on 24th October 2016, if you are reading this, you are

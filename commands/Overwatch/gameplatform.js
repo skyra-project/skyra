@@ -1,4 +1,4 @@
-const { Command, overwatch: { roles: getRoles } } = require('../../index');
+const { structures: { Command }, management: { overwatch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [remove, type], settings, i18n) {
-		const _roles = await getRoles(msg, 'platform');
+		const _roles = await overwatch.assets.roles(msg, 'platform');
 		const _role = _roles.get(type);
 		const hasRole = msg.member.roles.has(_role.id);
 

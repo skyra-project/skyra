@@ -1,4 +1,4 @@
-const { Command, ModLog, Timer } = require('../../../index');
+const { structures: { Command }, management: { ModerationLog }, util: { Timer } } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -46,14 +46,14 @@ module.exports = class extends Command {
 
 		await settings.moderation.updateCase(selected, { timed: true });
 
-		return msg.send(i18n.get('COMMAND_TIME_SCHEDULED', ModLog.getColor(type).title, user, length));
+		return msg.send(i18n.get('COMMAND_TIME_SCHEDULED', ModerationLog.getColor(type).title, user, length));
 	}
 
 	async cancel(msg, selected, settings, task, i18n) {
 		if (!task) throw i18n.get('COMMAND_TIME_NOT_SCHEDULED');
 		await this.client.handler.clock.remove(task.id);
 		await settings.moderation.updateCase(selected, { timed: false });
-		return msg.send(i18n.get('COMMAND_TIME_ABORTED', ModLog.getColor(task.type).title));
+		return msg.send(i18n.get('COMMAND_TIME_ABORTED', ModerationLog.getColor(task.type).title));
 	}
 
 	getActions(msg, doc, user) {

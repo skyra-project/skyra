@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');

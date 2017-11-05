@@ -1,7 +1,7 @@
-const { Command, Canvas } = require('../../index');
+const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
-const { readFile } = require('fs-nextra');
-const { join } = require('path');
+const fsn = require('fs-nextra');
+const path = require('path');
 
 module.exports = class extends Command {
 
@@ -47,7 +47,7 @@ module.exports = class extends Command {
 		]);
 
 		/* Initialize Canvas */
-		return new Canvas(650, 471)
+		return new CanvasConstructor(650, 471)
 			.addImage(this.template, 0, 0, 650, 471)
 			.rotate(0.4)
 			.save()
@@ -61,7 +61,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		this.template = await readFile(join(__dirname, '../../assets/images/memes/DeletThis.png'));
+		this.template = await fsn.readFile(path.join(__dirname, '../../assets/images/memes/DeletThis.png'));
 	}
 
 };

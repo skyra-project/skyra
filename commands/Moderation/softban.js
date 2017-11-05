@@ -1,4 +1,4 @@
-const { Command, ModLog } = require('../../index');
+const { structures: { Command }, management: { ModerationLog } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		await msg.guild.ban(user, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
 		await msg.guild.unban(user, 'Softban.');
 
-		const modcase = await new ModLog(msg.guild)
+		const modcase = await new ModerationLog(msg.guild)
 			.setModerator(msg.author)
 			.setUser(user)
 			.setType('softban')

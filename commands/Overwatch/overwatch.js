@@ -1,4 +1,4 @@
-const { Command, util, overwatch: { main: overwatch } } = require('../../index');
+const { structures: { Command }, util: { util }, management: { overwatch } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 const { get: fetchProfile } = require('../../functions/overwatch');
@@ -136,7 +136,7 @@ module.exports = class extends Command {
 				title: 'Featured',
 				data: `**Competitive rank**: ${data.overview.competitiveRank.rank ? this.resolveEmoji(msg, data.overview.competitiveRank.rank) : 'Unranked'}\n${list(statistics.highlight)}`
 			});
-			case 'playedheroes': return overwatch('playedheroes', data, { platform, server, gamemode });
+			case 'playedheroes': return overwatch.manager('playedheroes', data, { platform, server, gamemode });
 			case 'combat': return Object.assign(output, {
 				title: 'Combat',
 				data: list(statistics.stats.Combat)

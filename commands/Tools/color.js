@@ -1,4 +1,4 @@
-const { Command, colorUtil: { parse, luminance, hexConcat }, Canvas } = require('../../index');
+const { structures: { Command }, util: { Color: { parse, luminance, hexConcat }, CanvasConstructor } } = require('../../index');
 
 /* Color limiter */
 const cL = colour => Math.max(Math.min(colour, 255), 0);
@@ -53,7 +53,7 @@ module.exports = class extends Command {
 		const green = color.g;
 		const blue = color.b;
 
-		const canvas = new Canvas(370, 390)
+		const canvas = new CanvasConstructor(370, 390)
 			.setTextFont('18px FiraSans');
 
 		await Promise.all([

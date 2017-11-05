@@ -1,7 +1,7 @@
-const { Command, Canvas } = require('../../index');
+const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
-const { readFile } = require('fs-nextra');
-const { join } = require('path');
+const fsn = require('fs-nextra');
+const path = require('path');
 
 module.exports = class extends Command {
 
@@ -40,7 +40,7 @@ module.exports = class extends Command {
 			fetchAvatar(this.kyra, 128)
 		]);
 
-		return new Canvas(569, 327)
+		return new CanvasConstructor(569, 327)
 			.addImage(this.template, 0, 0, 569, 327)
 			.save()
 			.addImage(runner, 118, 27, 52, 52, { type: 'round', radius: 26 })
@@ -52,7 +52,7 @@ module.exports = class extends Command {
 	async init() {
 		[this.kyra, this.template] = await Promise.all([
 			this.client.users.fetch('242043489611808769'),
-			readFile(join(__dirname, '../../assets/images/memes/pingkyra.png'))
+			fsn.readFile(path.join(__dirname, '../../assets/images/memes/pingkyra.png'))
 		]);
 	}
 

@@ -1,4 +1,4 @@
-const { Command } = require('../../../index');
+const { structures: { Command } } = require('../../../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {

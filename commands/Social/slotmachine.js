@@ -1,10 +1,10 @@
-const { Command, Canvas } = require('../../index');
+const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
 
 const { MessageEmbed } = require('discord.js');
 const { readFile } = require('fs-nextra');
 const { join } = require('path');
 
-const icon = new (Canvas.getCanvas()).Image();
+const icon = new (CanvasConstructor.getCanvas()).Image();
 
 const iconsPath = join(__dirname, '../../assets/images/social/sm-icons.png');
 const shinyPath = join(__dirname, '../../assets/images/social/shiny-icon.png');
@@ -132,7 +132,7 @@ module.exports = class extends Command {
 		const length = win ? 300 : 150;
 		icon.src = await readFile(iconsPath);
 
-		const canvas = new Canvas(length, 150)
+		const canvas = new CanvasConstructor(length, 150)
 			.save()
 			.setShadowColor('rgba(51, 51, 51, 0.38)')
 			.setShadowBlur(5)

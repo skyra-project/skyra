@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const { XmlEntities } = require('html-entities');
 const { decode } = new XmlEntities();
 const snekfetch = require('snekfetch');

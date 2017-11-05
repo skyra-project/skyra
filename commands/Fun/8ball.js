@@ -1,4 +1,4 @@
-const { Command, util } = require('../../index');
+const { structures: { Command }, util: { util } } = require('../../index');
 
 const startsWith = (prefix, str) => {
 	for (let i = prefix.length - 1; i >= 0; i--) if (str[i] !== prefix[i]) return false;

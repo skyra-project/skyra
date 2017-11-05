@@ -1,4 +1,4 @@
-const { Command, config, Canvas } = require('../../index');
+const { structures: { Command }, config, util: { CanvasConstructor } } = require('../../index');
 
 const { join } = require('path');
 const { readFile } = require('fs-nextra');
@@ -96,7 +96,7 @@ module.exports = class extends Command {
 			readFile(join(__dirname, '..', '..', 'assets', 'images', 'weather', theme, 'precip.png'))
 		]);
 
-		const attachment = await new Canvas(400, 180)
+		const attachment = await new CanvasConstructor(400, 180)
 			.save()
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)

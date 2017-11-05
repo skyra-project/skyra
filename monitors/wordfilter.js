@@ -1,4 +1,4 @@
-const { Monitor } = require('../index');
+const { structures: { Monitor } } = require('../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Monitor {
@@ -12,9 +12,9 @@ module.exports = class extends Monitor {
 
 	async run(msg, settings, i18n) {
 		if (settings.filter.level === 0
-												|| settings.filter.regexp === null
-												|| await msg.hasLevel(1)
-												|| !settings.filter.regexp.test(msg.content)) return false;
+			|| settings.filter.regexp === null
+			|| await msg.hasLevel(1)
+			|| !settings.filter.regexp.test(msg.content)) return false;
 
 		if (msg.deletable) await msg.nuke().catch(() => null);
 		if (settings.filter.level === 1 || settings.filter.level === 3) {

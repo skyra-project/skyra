@@ -25,7 +25,7 @@ exports.createTable = table => fs.mkdir(resolve(baseDir, table));
  * @param {string} table The directory's name to delete.
  * @returns {Promise<void>}
  */
-exports.deleteTable = table => this.hasTable(table)
+exports.deleteTable = table => exports.hasTable(table)
 	.then(exists => exists ? fs.emptyDir(resolve(baseDir, table)).then(() => fs.remove(resolve(baseDir, table))) : null);
 
 /* Document methods */
@@ -59,7 +59,7 @@ exports.has = (table, document) => fs.pathExists(resolve(baseDir, table, `${docu
  * @param {string} table The name of the directory.
  * @returns {Promise<Object>}
  */
-exports.getRandom = table => this.getAll(table).then(data => data[Math.floor(Math.random() * data.length)]);
+exports.getRandom = table => exports.getAll(table).then(data => data[Math.floor(Math.random() * data.length)]);
 
 /**
  * Insert a new document into a directory.
@@ -68,9 +68,9 @@ exports.getRandom = table => this.getAll(table).then(data => data[Math.floor(Mat
  * @param {Object} data The object with all properties you want to insert into the document.
  * @returns {Promise<void>}
  */
-exports.create = (table, document, data) => fs.outputJSONAtomic(resolve(baseDir, table, `${document}.json`), Object.assign(data, { id: document }));
-exports.set = (...args) => this.create(...args);
-exports.insert = (...args) => this.create(...args);
+exports.set
+	= exports.insert
+	= exports.create = (table, document, data) => fs.outputJSONAtomic(resolve(baseDir, table, `${document}.json`), Object.assign(data, { id: document }));
 
 /**
  * Update a document from a directory.
@@ -79,7 +79,7 @@ exports.insert = (...args) => this.create(...args);
  * @param {Object} data The object with all the properties you want to update.
  * @returns {Promise<void>}
  */
-exports.update = (table, document, data) => this.get(table, document)
+exports.update = (table, document, data) => exports.get(table, document)
 	.then(current => fs.outputJSONAtomic(resolve(baseDir, table, `${document}.json`), Object.assign(current, data)));
 
 /**

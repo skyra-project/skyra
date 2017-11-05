@@ -56,7 +56,7 @@ exports.get = (table, id) => r.table(table).get(id) || null;
  * @param {string|number} id the entry's ID.
  * @returns {boolean}
  */
-exports.has = (table, id) => this.get(table, id)
+exports.has = (table, id) => exports.get(table, id)
 	.then(data => !!data)
 	.catch(() => false);
 
@@ -65,7 +65,7 @@ exports.has = (table, id) => this.get(table, id)
  * @param {string} table the name of the table.
  * @returns {Object}
  */
-exports.getRandom = table => this.all(table).then(data => data[Math.floor(Math.random() * data.length)]);
+exports.getRandom = table => exports.all(table).then(data => data[Math.floor(Math.random() * data.length)]);
 
 /**
  * Insert a new document into a table.
@@ -73,9 +73,9 @@ exports.getRandom = table => this.all(table).then(data => data[Math.floor(Math.r
  * @param {Object} doc the object you want to insert in the table.
  * @returns {Object}
  */
-exports.create = (table, doc) => r.table(table).insert(doc).run();
-exports.set = (...args) => this.create(...args);
-exports.insert = (...args) => this.create(...args);
+exports.set
+	= exports.insert
+	= exports.create = (table, doc) => r.table(table).insert(doc).run();
 
 /**
  * Update a document from a table given its ID.

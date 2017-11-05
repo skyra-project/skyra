@@ -1,4 +1,4 @@
-const { Monitor, CommandMessage, util: { regExpEsc } } = require('../index');
+const { structures: { Monitor, CommandMessage }, util: { util: { regExpEsc } } } = require('../index');
 const Trigger = require('../eventsActions/Trigger');
 const friendly = new RegExp('^((?:Hey )?Skyra(?:,|!) +)', 'i');
 

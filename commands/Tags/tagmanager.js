@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const provider = require('../../providers/rethink');
 
 module.exports = class extends Command {

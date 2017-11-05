@@ -1,4 +1,4 @@
-const { Extendable, util } = require('../index');
+const { structures: { Extendable }, util: { util } } = require('../index');
 
 const isException = (error) => error && error.constructor ? error.constructor.name.endsWith('Error') : false;
 

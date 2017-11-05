@@ -1,4 +1,4 @@
-const { Event, AntiRaid } = require('../index');
+const { structures: { Event }, management: { AntiRaid } } = require('../index');
 const { MessageEmbed } = require('discord.js');
 
 const colours = {

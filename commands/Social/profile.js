@@ -1,9 +1,9 @@
-const { Command, Canvas } = require('../../index');
+const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, sep } = require('path');
 
-Canvas
+CanvasConstructor
 	.registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), 'RobotoRegular')
 	.registerFont(join(__dirname, '../../assets/fonts/NotoEmoji.ttf'), 'RobotoRegular')
 	.registerFont(join(__dirname, '../../assets/fonts/NotoSans-Regular.ttf'), 'RobotoRegular')
@@ -63,7 +63,7 @@ module.exports = class extends Command {
 
 		const TITLE = i18n.language.COMMAND_PROFILE;
 
-		const canvas = new Canvas(profile.badgeSet.length > 0 ? 700 : 640, 391);
+		const canvas = new CanvasConstructor(profile.badgeSet.length > 0 ? 700 : 640, 391);
 
 		if (profile.badgeSet.length > 0) {
 			const badges = await Promise.all(profile.badgeSet.map(name =>
@@ -128,7 +128,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		this.profile = await new Canvas(640, 391)
+		this.profile = await new CanvasConstructor(640, 391)
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)
@@ -143,7 +143,7 @@ module.exports = class extends Command {
 			.addRect(226, 355, 366, 7)
 			.toBufferAsync();
 
-		this.panel = await new Canvas(100, 391)
+		this.panel = await new CanvasConstructor(100, 391)
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)

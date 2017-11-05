@@ -1,4 +1,5 @@
-const { Monitor, Providers: { rethink: provider } } = require('../index');
+const { structures: { Monitor } } = require('../index');
+const RethinkDB = require('../providers/rethink');
 
 module.exports = class extends Monitor {
 
@@ -13,9 +14,9 @@ module.exports = class extends Monitor {
 
 	async run(msg, settings, i18n) {
 		if (msg.channel.type !== 'text'
-												|| msg.author.bot
-												|| settings.master.ignoreChannels.includes(msg.channel.id)
-												|| this.cooldown(msg)) return;
+			|| msg.author.bot
+			|| settings.master.ignoreChannels.includes(msg.channel.id)
+			|| this.cooldown(msg)) return;
 
 		const userProfile = await msg.author.profile;
 		const memberPoint = msg.member ? await msg.member.points : null;
@@ -51,7 +52,7 @@ module.exports = class extends Monitor {
 		if (autoRole === null) return null;
 
 		const role = msg.guild.roles.get(autoRole.id);
-		if (!role) return provider.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', autoRole.id)
+		if (!role) return RethinkDB.removeFromArrayByID('guilds', msg.guild.id, 'autoroles', autoRole.id)
 			.then(() => this.handleRoles(msg, settings, memberPoints));
 
 		if (msg.member.roles.has(role.id)) return null;

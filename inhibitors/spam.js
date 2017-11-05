@@ -1,4 +1,4 @@
-const { Inhibitor } = require('../index');
+const { structures: { Inhibitor } } = require('../index');
 
 module.exports = class extends Inhibitor {
 

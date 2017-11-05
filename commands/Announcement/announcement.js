@@ -1,4 +1,4 @@
-const { Command, announcement } = require('../../index');
+const { structures: { Command }, management } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -41,10 +41,14 @@ module.exports = class extends Command {
 
 		if (channel.postable === false) throw i18n.get('SYSTEM_CHANNEL_NOT_POSTABLE');
 
-		const role = announcement(msg);
-		await role.edit({ mentionable: true });
-		await channel.send(`${i18n.get('COMMAND_ANNOUNCEMENT', role)}\n${message}`);
-		await role.edit({ mentionable: false });
+		const role = management.announcement(msg);
+		await role.edit({ mentionable: true })
+			.catch(Command.handleError);
+		await channel.send(`${i18n.get('COMMAND_ANNOUNCEMENT', role)}\n${message}`)
+			.catch(Command.handleError);
+		await role.edit({ mentionable: false })
+			.catch(Command.handleError);
+
 		return msg.send(i18n.get('COMMAND_SUCCESS'));
 	}
 

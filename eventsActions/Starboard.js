@@ -22,16 +22,16 @@ module.exports = class Starboard {
     */
 	async run(data) {
 		if (this.client.ready !== true
-												|| data.channel.type !== 'text'
-												|| data.channel.nsfw === true
-												|| data.emoji.name !== '⭐'
-												|| data.channel.readable === false) return null;
+			|| data.channel.type !== 'text'
+			|| data.channel.nsfw === true
+			|| data.emoji.name !== '⭐'
+			|| data.channel.readable === false) return null;
 
 		const settings = await data.channel.guild.settings;
 
 		if (settings.starboard.channel === null
-												|| (settings.starboard.ignoreChannels.length > 0 && settings.starboard.ignoreChannels.includes(data.channel.id))
-												|| data.channel.id === settings.starboard.channel)
+			|| (settings.starboard.ignoreChannels.length > 0 && settings.starboard.ignoreChannels.includes(data.channel.id))
+			|| data.channel.id === settings.starboard.channel)
 			return null;
 
 		const starboard = data.channel.guild.channels.get(settings.starboard.channel);

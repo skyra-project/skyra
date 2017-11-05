@@ -1,4 +1,4 @@
-const { Command, RichDisplay } = require('../../index');
+const { structures: { Command }, util: { RichDisplay } } = require('../../index');
 const { MessageEmbed, Collection } = require('discord.js');
 const availableBanners = require('../../assets/banners.json');
 

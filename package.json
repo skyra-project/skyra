@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "bufferutil": "^3.0.2",
+    "bufferutil": "^3.0.3",
     "canvas": "github:Automattic/node-canvas",
     "cheerio": "^0.22.0",
     "diff": "^3.4.0",
@@ -30,7 +30,7 @@
     "moment": "^2.19.1",
     "moment-duration-format": "^1.3.0",
     "passport": "^0.4.0",
-    "passport-discord": "^0.1.2",
+    "passport-discord": "^0.1.3",
     "randomcolor": "^0.5.3",
     "redis-nextra": "^0.1.0",
     "rethinkdbdash": "^2.3.31",
@@ -39,9 +39,9 @@
     "ytdl-core": "^0.18.1"
   },
   "engines": {
-    "node": ">=8.7.0"
+    "node": ">=8.9.0"
   },
   "devDependencies": {
-    "eslint": "^4.9.0"
+    "eslint": "^4.10.0"
   }
 }

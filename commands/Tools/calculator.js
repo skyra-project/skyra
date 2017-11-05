@@ -1,4 +1,4 @@
-const { Command, util, StopWatch } = require('../../index');
+const { structures: { Command }, util: { util, Stopwatch } } = require('../../index');
 const math = require('mathjs');
 const limitedEval = math.eval;
 
@@ -45,7 +45,7 @@ module.exports = class extends Command {
 	}
 
 	run(msg, [equation], settings, i18n) {
-		const start = new StopWatch(3);
+		const start = new Stopwatch(3);
 		try {
 			const evaled = limitedEval(equation);
 			start.stop();

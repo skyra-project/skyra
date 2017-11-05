@@ -1,4 +1,4 @@
-const { Extendable } = require('../index');
+const { structures: { Extendable } } = require('../index');
 
 module.exports = class extends Extendable {
 

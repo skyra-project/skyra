@@ -1,4 +1,4 @@
-const { Finalizer } = require('../index');
+const { structures: { Finalizer } } = require('../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Finalizer {

@@ -1,4 +1,4 @@
-const { Command, ModLog } = require('../../index');
+const { structures: { Command }, management: { ModerationLog } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		user.action = 'ban';
 		await msg.guild.ban(user.id, { days: 1, reason });
 
-		const modcase = await new ModLog(msg.guild)
+		const modcase = await new ModerationLog(msg.guild)
 			.setModerator(msg.author)
 			.setUser(user)
 			.setType('ban')

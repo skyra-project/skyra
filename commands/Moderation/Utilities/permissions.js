@@ -1,4 +1,4 @@
-const { Command } = require('../../../index');
+const { structures: { Command } } = require('../../../index');
 const { Permissions, MessageEmbed } = require('discord.js');
 
 const PermissionFlags = Object.keys(Permissions.FLAGS);

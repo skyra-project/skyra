@@ -1,4 +1,4 @@
-const { Event } = require('../index');
+const { structures: { Event } } = require('../index');
 const MessageReactionAdd = require('../eventsRaw/messageReactionAdd');
 
 module.exports = class extends Event {

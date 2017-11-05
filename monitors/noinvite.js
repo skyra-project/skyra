@@ -1,4 +1,4 @@
-const { Monitor } = require('../index');
+const { structures: { Monitor } } = require('../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Monitor {

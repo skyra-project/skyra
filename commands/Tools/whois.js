@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 const sortRanks = (x, y) => +(x.position > y.position) || +(x.position === y.position) - 1;

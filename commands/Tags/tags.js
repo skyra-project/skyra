@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const listify = require('../../functions/listify');
 
 module.exports = class extends Command {

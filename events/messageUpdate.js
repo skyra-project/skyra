@@ -1,4 +1,4 @@
-const { Event } = require('../index');
+const { structures: { Event } } = require('../index');
 const { MessageEmbed, Util } = require('discord.js');
 const { diffWords } = require('diff');
 

@@ -1,4 +1,4 @@
-const { Language, util } = require('../index');
+const { structures: { Language }, util: { util } } = require('../index');
 const Duration = require('../utils/duration');
 const moment = require('moment');
 

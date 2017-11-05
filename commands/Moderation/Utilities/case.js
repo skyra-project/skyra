@@ -1,4 +1,4 @@
-const { Command, ModLog } = require('../../../index');
+const { structures: { Command }, management: { ModerationLog } } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -19,7 +19,7 @@ module.exports = class extends Command {
 		const cases = await settings.moderation.getCases();
 
 		if (!cases[index]) throw i18n.get('COMMAND_REASON_NOT_EXISTS');
-		return new ModLog(msg.guild)
+		return new ModerationLog(msg.guild)
 			.retrieveModLog(index).then(embed => msg.send({ embed }));
 	}
 

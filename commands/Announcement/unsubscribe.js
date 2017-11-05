@@ -1,4 +1,4 @@
-const { Command, announcement } = require('../../index');
+const { structures: { Command }, management } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -21,8 +21,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, args, settings, i18n) {
-		const role = announcement(msg);
-		await msg.member.removeRole(role);
+		const role = management.announcement(msg);
+		await msg.member.removeRole(role).catch(Command.handleError);
 		return msg.send(i18n.get('COMMAND_UNSUBSCRIBE_SUCCESS', role.name));
 	}
 

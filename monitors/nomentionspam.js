@@ -1,4 +1,4 @@
-const { Monitor, ModLog } = require('../index');
+const { structures: { Monitor }, management: { ModerationLog } } = require('../index');
 const cooldown = new Map();
 
 module.exports = class extends Monitor {
@@ -12,14 +12,14 @@ module.exports = class extends Monitor {
 
 	async run(msg, settings, i18n) {
 		if (!(settings.selfmod.nomentionspam === true
-												&& msg.member
-												&& msg.member.bannable
-												&& !(msg.mentions.users.size === 1 && msg.mentions.users.first().bot))) return false;
+			&& msg.member
+			&& msg.member.bannable
+			&& !(msg.mentions.users.size === 1 && msg.mentions.users.first().bot))) return false;
 
 		const filteredCollection = msg.mentions.users.filter(entry => entry.id !== msg.author.id);
 		if (msg.mentions.everyone === false
-												&& msg.mentions.roles.size === 0
-												&& (filteredCollection.size === 0 || filteredCollection.first().bot)) return false;
+			&& msg.mentions.roles.size === 0
+			&& (filteredCollection.size === 0 || filteredCollection.first().bot)) return false;
 
 		if (!cooldown.has(msg.guild.id)) cooldown.set(msg.guild.id, new NMS());
 		const amount = filteredCollection.size + (msg.mentions.roles.size * 2) + (msg.mentions.everyone * 5);
@@ -31,7 +31,7 @@ module.exports = class extends Monitor {
 
 			cooldown.get(msg.guild.id).delete(msg.author.id);
 
-			return new ModLog(msg.guild)
+			return new ModerationLog(msg.guild)
 				.setModerator(this.client.user)
 				.setUser(msg.author)
 				.setType('ban')
@@ -57,7 +57,7 @@ class NMS {
 
 	get(user) {
 		return this.cooldown.get(user)
-												|| (this.cooldown.set(user, { id: user, amount: 0, timeout: null }) && { id: user, amount: 0, timeout: null });
+			|| (this.cooldown.set(user, { id: user, amount: 0, timeout: null }) && { id: user, amount: 0, timeout: null });
 	}
 
 	add(user, amount) {

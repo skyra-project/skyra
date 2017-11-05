@@ -1,7 +1,7 @@
-const { Command, Canvas } = require('../../index');
+const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
-const { readFile } = require('fs-nextra');
-const { join } = require('path');
+const fsn = require('fs-nextra');
+const path = require('path');
 
 
 module.exports = class extends Command {
@@ -33,7 +33,7 @@ module.exports = class extends Command {
 			fetchAvatar(user, 128)
 		]);
 
-		return new Canvas(333, 500)
+		return new CanvasConstructor(333, 500)
 			.addImage(this.template, 0, 0, 333, 500)
 			.save()
 			.addImage(healer, 189, 232, 110, 110, { type: 'round', radius: 55 })
@@ -43,7 +43,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		this.template = await readFile(join(__dirname, '../../assets/images/memes/ineedhealing.png'));
+		this.template = await fsn.readFile(path.join(__dirname, '../../assets/images/memes/ineedhealing.png'));
 	}
 
 };

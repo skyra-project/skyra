@@ -1,4 +1,4 @@
-const { Command, colorUtil } = require('../../index');
+const { structures: { Command }, util: { Color } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [input], settings, i18n) {
-		const { hex, b10 } = colorUtil.parse(input);
+		const { hex, b10 } = Color.parse(input);
 		const color = hex.toString().slice(1);
 		await msg.author.profile.update({ color });
 

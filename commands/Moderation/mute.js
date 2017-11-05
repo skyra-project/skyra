@@ -1,4 +1,4 @@
-const { Command, ModLog, Assets: { createMuted } } = require('../../index');
+const { structures: { Command }, management: { ModerationLog, assets: { createMuted } } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 		const roles = member._roles;
 		await member.edit({ roles: [mute.id] });
 
-		const modcase = await new ModLog(msg.guild)
+		const modcase = await new ModerationLog(msg.guild)
 			.setModerator(msg.author)
 			.setUser(user)
 			.setType('mute')

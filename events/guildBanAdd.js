@@ -1,4 +1,4 @@
-const { Event, ModLog } = require('../index');
+const { structures: { Event }, management: { ModerationLog } } = require('../index');
 
 module.exports = class extends Event {
 
@@ -8,7 +8,7 @@ module.exports = class extends Event {
 		if (settings instanceof Promise) settings = await settings;
 
 		if (guild.settings.events.banAdd !== true) return null;
-		return new ModLog(guild)
+		return new ModerationLog(guild)
 			.setAnonymous(true)
 			.setUser(user)
 			.setType('ban')

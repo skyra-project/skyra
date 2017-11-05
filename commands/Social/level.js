@@ -1,9 +1,9 @@
-const { Command, Canvas } = require('../../index');
+const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
 const { fetchAvatar } = require('../../functions/wrappers');
 const { readFile } = require('fs-nextra');
 const { join, sep } = require('path');
 
-Canvas
+CanvasConstructor
 	.registerFont(join(__dirname, '../../assets/fonts/Roboto-Regular.ttf'), 'RobotoRegular')
 	.registerFont(join(__dirname, '../../assets/fonts/Roboto-Light.ttf'), 'RobotoLight');
 
@@ -55,42 +55,42 @@ module.exports = class extends Command {
 		]);
 
 		const TITLE = i18n.language.COMMAND_LEVEL
-												|| this.client.languages.get('en-US').language.COMMAND_LEVEL;
+			|| this.client.languages.get('en-US').language.COMMAND_LEVEL;
 
-		return new Canvas(640, 174)
-		// Draw the background
+		return new CanvasConstructor(640, 174)
+			// Draw the background
 			.save()
 			.createBeveledClip(10, 10, 620, 154, 8)
 			.addImage(themeImageSRC, 9, 9, 189, 157)
 			.restore()
 			.addImage(this.template, 0, 0, 640, 174)
 
-		// Set styles
+			// Set styles
 			.setColor('rgb(23,23,23)')
 			.setTextFont('28px RobotoLight')
 
-		// Statistics Titles
+			// Statistics Titles
 			.addText(TITLE.EXPERIENCE, 340, 73)
 			.addText(TITLE.NEXT_IN, 340, 131)
 
-		// Draw the progress bar
+			// Draw the progress bar
 			.setColor(`#${color}`)
 			.addRect(341, 88, Prog, 5)
 
-		// Draw the information
+			// Draw the information
 			.setColor('rgb(23,23,23)')
 			.setTextAlign('right')
 			.addText(points, 606, 73)
 			.addText(nextLevel - points, 606, 131)
 
-		// Draw the level
+			// Draw the level
 			.setTextAlign('center')
 			.setTextFont('35px RobotoLight')
 			.addText(TITLE.LEVEL, 268, 73)
 			.setTextFont('45px RobotoRegular')
 			.addText(currentLevel, 273, 128)
 
-		// Draw the avatar
+			// Draw the avatar
 			.save()
 			.addImage(imgAvatarSRC, 32, 16, 142, 142, { type: 'round', radius: 71 })
 			.restore()
@@ -98,7 +98,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		this.template = await new Canvas(640, 174)
+		this.template = await new CanvasConstructor(640, 174)
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)

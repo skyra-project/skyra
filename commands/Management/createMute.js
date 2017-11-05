@@ -1,4 +1,4 @@
-const { Command, Assets: { createMuted } } = require('../../index');
+const { structures: { Command }, management: { assets } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 
 	async run(msg, params, settings, i18n) {
 		await msg.send(i18n.get('SYSTEM_PROCESSING'));
-		return createMuted(msg);
+		return assets.createMuted(msg);
 	}
 
 };

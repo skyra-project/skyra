@@ -1,4 +1,4 @@
-const { Command, util, ModLog } = require('../../index');
+const { structures: { Command }, management: { ModerationLog }, util: { util } } = require('../../index');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {
@@ -37,9 +37,9 @@ module.exports = class extends Command {
 		const regCase = new RegExp(`(AUTO | )?Case ${selected}`);
 
 		const message = messages.find(mes => mes.author.id === this.client.user.id
-												&& mes.embeds.length > 0
-												&& mes.embeds[0].type === 'rich'
-												&& mes.embeds[0].footer && regCase.test(mes.embeds[0].footer.text)
+			&& mes.embeds.length > 0
+			&& mes.embeds[0].type === 'rich'
+			&& mes.embeds[0].footer && regCase.test(mes.embeds[0].footer.text)
 		);
 
 		if (message) {
@@ -56,7 +56,7 @@ module.exports = class extends Command {
 			};
 			await message.edit({ embed });
 		} else {
-			const dataColor = ModLog.getColor(log.type);
+			const dataColor = ModerationLog.getColor(log.type);
 			const user = await this.client.users.fetch(log.user).catch(() => ({ tag: 'Unknown', id: log.user }));
 			const embed = new MessageEmbed()
 				.setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))

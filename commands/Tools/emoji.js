@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { structures: { Command } } = require('../../index');
 const snekfetch = require('snekfetch');
 
 /* eslint-disable no-bitwise */

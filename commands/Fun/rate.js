@@ -1,4 +1,4 @@
-const { Command, Constants: { oneToTen } } = require('../../index');
+const { structures: { Command }, util: { constants } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 			const bg = Buffer.from(user.toLowerCase()).readUIntBE(0, user.length);
 			const rng = user.length * Math.abs(Math.sin(bg)) * 10;
 			rate = 100 - Math.round((bg * rng) % 100);
-			ratewaifu = oneToTen(Math.floor(rate / 10)).emoji;
+			ratewaifu = constants.oneToTen(Math.floor(rate / 10)).emoji;
 		}
 
 		return msg.send(`**${msg.author.username}**, ${i18n.get('COMMAND_RATE', user, rate, ratewaifu)}`);

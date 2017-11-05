@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			mode: 1,
 			cooldown: 15,
 
-			usage: '<query:string> [index:int{0,20}]',
+			usage: '<query:string> [index:integer{0,20}]',
 			usageDelim: ' #',
 			description: 'Search something throught YouTube.'
 		});

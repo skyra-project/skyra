@@ -14,7 +14,7 @@ module.exports = class extends Command {
 			mode: 2,
 			cooldown: 15,
 
-			usage: '<color:string> [separator:int{0,255}]',
+			usage: '<color:string> [separator:integer{0,255}]',
 			usageDelim: ' >',
 			description: 'Display some awesome colours.',
 			extend: {

@@ -8,7 +8,7 @@ module.exports = class extends Command {
 
 			cooldown: 5,
 
-			usage: '[rolls:int{1,1024}] [sides:int{4,1024}]',
+			usage: '[rolls:integer{1,1024}] [sides:integer{4,1024}]',
 			usageDelim: ' ',
 			description: 'Roll the dice, \'x\' rolls and \'y\' sides.',
 			extend: {

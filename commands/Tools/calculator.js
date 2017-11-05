@@ -6,15 +6,19 @@ function createError() {
 	throw new Error('Function import is disabled');
 }
 
-math.import({
-	import: createError,
-	createUnit: createError,
-	eval: createError,
-	parse: createError,
-	simplify: createError,
-	derivative: createError,
-	help: createError
-}, { override: true });
+let inited = false;
+if (inited === false) {
+	math.import({
+		import: createError,
+		createUnit: createError,
+		eval: createError,
+		parse: createError,
+		simplify: createError,
+		derivative: createError,
+		help: createError
+	}, { override: true });
+	inited = true;
+}
 
 module.exports = class extends Command {
 

@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			mode: 1,
 			cooldown: 15,
 
-			usage: '<query:string> [index:int{0,10}]',
+			usage: '<query:string> [index:integer{0,10}]',
 			usageDelim: ' #',
 			description: 'Check the definition of a word on UrbanDictionary.',
 			extendedHelp: Command.strip`

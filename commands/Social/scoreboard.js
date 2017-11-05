@@ -17,7 +17,7 @@ module.exports = class extends Command {
 			spam: true,
 			cooldown: 30,
 
-			usage: '[global|local|money|reputation] [index:int]',
+			usage: '[global|local|money|reputation] [index:integer]',
 			usageDelim: ' ',
 			description: 'Check the leaderboards.',
 			extendedHelp: Command.strip`

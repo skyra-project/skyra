@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			spam: true,
 			cooldown: 10,
 
-			usage: '<amount:int> <user:user>',
+			usage: '<amount:integer> <user:user>',
 			usageDelim: ' ',
 			description: 'Pay somebody with your shinies.',
 			extendedHelp: Command.strip`

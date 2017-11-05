@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			spam: true,
 			cooldown: 10,
 
-			usage: '<delete|add|remove> <user:advuser> [value:int]',
+			usage: '<delete|add|remove> <user:advuser> [value:integer]',
 			usageDelim: ' ',
 			description: 'Manage the local leaderboards.',
 			extendedHelp: Command.strip`

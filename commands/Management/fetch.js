@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			mode: 2,
 			cooldown: 30,
 
-			usage: '<message:string{17,21}> [limit:int]',
+			usage: '<message:string{17,21}> [limit:integer]',
 			usageDelim: ' ',
 			description: 'Discover the context of a message.'
 		});

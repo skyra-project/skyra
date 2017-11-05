@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			permLevel: 10,
 			mode: 2,
 
-			usage: '<limit:int>',
+			usage: '<limit:integer>',
 			description: 'Clear some messages from me.'
 		});
 	}

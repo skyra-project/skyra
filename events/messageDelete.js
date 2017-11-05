@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Event {
 
-	run(msg) {
+	async run(msg) {
 		if (msg.action === 'DELETE') {
 			delete msg.action;
 			return null;
@@ -13,7 +13,7 @@ module.exports = class extends Event {
 
 		if (msg.channel.type !== 'text' || msg.author.id === this.client.user.id) return null;
 
-		const settings = msg.guild.settings;
+		const settings = await msg.guild.settings;
 		if (settings.events.messageDelete && settings.channels.messagelogs) return this.sendLog(msg, settings)
 			.catch(err => this.handleError(err));
 		return null;

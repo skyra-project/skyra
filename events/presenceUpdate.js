@@ -25,9 +25,9 @@ module.exports = class extends Event {
 		const settings = await newMember.guild.settings;
 
 		if (settings.twitch.channel === null
-												|| settings.twitch.mode === 0
-												|| (action === 'STOP' && settings.twitch.messagestop === null)
-												|| (action === 'START' && settings.twitch.messagestart === null))
+			|| settings.twitch.mode === 0
+			|| (action === 'STOP' && settings.twitch.messagestop === null)
+			|| (action === 'START' && settings.twitch.messagestart === null))
 			return null;
 
 		switch (settings.twitch.mode) {

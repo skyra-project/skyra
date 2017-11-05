@@ -1,9 +1,27 @@
 const { MessageEmbed } = require('discord.js');
 
-module.exports = class Starboard {
+class Starboard {
 
+	/**
+	 * @typedef  {Object} StarObject
+	 * @property {external:Message} msg
+	 * @property {MessageEmbed} embed
+	 * @property {Set<string>} users
+	 * @property {external:Message} message
+	 */
+
+	/**
+	 * @param {Skyra} client The Discord Client
+	 */
 	constructor(client) {
+		/**
+		 * @type {Skyra}
+		 */
 		this.client = client;
+
+		/**
+		 * @type {Map<string, StarObject>}
+		 */
 		this.cache = new Map();
 	}
 
@@ -59,10 +77,10 @@ module.exports = class Starboard {
 
 		const amount = star.users.add(data.user.id).size;
 
-		if (star.message) {
+		if (star.message)
 			return star.message.edit(`${this.getStarIcon(amount)} **${amount}** ${data.channel} ID: ${msg.id}`, { embed: star.embed })
 				.catch(error => this.client.emit('log', error, 'wtf'));
-		}
+
 
 		if (amount < settings.starboard.minimum)
 			return null;
@@ -149,4 +167,6 @@ module.exports = class Starboard {
 		return /\.(jpg|jpeg|png|gif)$/.test(attachment.url) ? attachment.url : null;
 	}
 
-};
+}
+
+module.exports = Starboard;

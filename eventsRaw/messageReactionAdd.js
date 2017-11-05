@@ -2,11 +2,6 @@ const Starboard = require('../eventsActions/Starboard');
 
 class MessageReactionAdd {
 
-	constructor(client) {
-		this.client = client;
-		this.starboard = new Starboard(this.client);
-	}
-
 	/**
      * @typedef  {Object} MessageReactionAddDataEmoji
      * @property {string} name
@@ -28,6 +23,11 @@ class MessageReactionAdd {
      * @property {number} op
      * @property {MessageReactionAddData} d
      */
+
+	constructor(client) {
+		this.client = client;
+		this.starboard = new Starboard(this.client);
+	}
 
 	/**
      * Parse the data, then run.

@@ -12,8 +12,7 @@ module.exports = class extends Event {
 
 	async run(oldMember, newMember) {
 		if (this.client.ready !== true || newMember.guild.available !== true) return null;
-		let settings = newMember.guild.settings;
-		if (settings instanceof Promise) settings = await settings;
+		const settings = await newMember.guild.settings;
 
 		if (settings.events.memberNicknameChange && oldMember.nickname !== newMember.nickname) {
 			return this.nickname(settings, oldMember, newMember);

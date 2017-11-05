@@ -1,8 +1,4 @@
-module.exports = class Trigger {
-
-	constructor(client) {
-		this.client = client;
-	}
+class Trigger {
 
 	/**
      * @typedef  {Object} StringOperation
@@ -19,6 +15,13 @@ module.exports = class Trigger {
      */
 
 	/**
+	 * @param {Skyra} client The Discord client
+	 */
+	constructor(client) {
+		this.client = client;
+	}
+
+	/**
      * Execute the Trigger module.
      * @param {external:Message} msg The message.
      * @param {StringOperation[]} triggers The message triggers.
@@ -27,17 +30,16 @@ module.exports = class Trigger {
 	runMonitors(msg, triggers) {
 		if (triggers.length === 0) return false;
 		for (let i = 0; i < triggers.length; i++) {
-			if (msg.content.indexOf(triggers[i].input) !== -1) {
-				switch (triggers[i].action) {
-					case 'react':
-						if (msg.channel.permissionsFor(this.client.user).has('ADD_REACTIONS'))
-							msg.react(triggers[i].data).catch(() => null);
-						return true;
-					case 'reply':
-						if (msg.channel.postable)
-							msg.channel.send(triggers[i].data).catch(() => null);
-						return true;
-				}
+			if (msg.content.indexOf(triggers[i].input) === -1) continue;
+			switch (triggers[i].action) {
+				case 'react':
+					if (msg.channel.permissionsFor(this.client.user).has('ADD_REACTIONS'))
+						msg.react(triggers[i].data).catch(() => null);
+					return true;
+				case 'reply':
+					if (msg.channel.postable)
+						msg.channel.send(triggers[i].data).catch(() => null);
+					return true;
 			}
 		}
 
@@ -59,4 +61,6 @@ module.exports = class Trigger {
 		return alias.output.split(' ')[0];
 	}
 
-};
+}
+
+module.exports = Trigger;

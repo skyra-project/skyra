@@ -1,4 +1,4 @@
-const { Command, Assets: { createMuted } } = require('../../../index');
+const { Command, Assets: { createMuted } } = require('../../index');
 
 module.exports = class extends Command {
 

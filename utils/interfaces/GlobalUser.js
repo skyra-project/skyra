@@ -16,14 +16,16 @@ class GlobalUser {
 
 	/**
      * @typedef  {Object} GlobalUserSettings
-     * @property {Number}   points     Amount of points the user has.
+     * @property {number}   points     Amount of points the user has.
      * @property {string}   color      The HEX colour code.
-     * @property {Number}   money      The amount of money the user has.
-     * @property {Number}   reputation The amount of reputation points the user has.
+     * @property {number}   money      The amount of money the user has.
+     * @property {number}   reputation The amount of reputation points the user has.
      * @property {Banners}  banners    The banners that are shown publicly.
+	 * @property {string[]} badgeSet   All the badges the user displays in the profile.
+	 * @property {string[]} badgeList  All the badges the user has got or bought.
      * @property {string[]} bannerList All the banners the user has bought.
-     * @property {Number}   timeDaily  The last time the user claimed dailies.
-     * @property {Number}   timerep    The last time the user gave a reputation point.
+     * @property {number}   timeDaily  The last time the user claimed dailies.
+     * @property {number}   timerep    The last time the user gave a reputation point.
      *
      * @memberof GlobalUser
      */
@@ -36,20 +38,23 @@ class GlobalUser {
 	constructor(id, data = {}) {
 		Object.defineProperty(this, 'id', { value: id });
 
-		this.points = data.points || 0;
-		this.color = data.color || 'ff239d';
-		this.money = data.money || 0;
-		this.reputation = data.reputation || 0;
+		this.points = typeof data.points !== 'number' ? 0 : data.points;
+		this.color = typeof data.color !== 'string' ? 'ff239d' : data.color;
+		this.money = typeof data.money !== 'number' ? 0 : data.money;
+		this.reputation = typeof data.reputation !== 'number' ? 0 : data.reputation;
 
-		if (!data.banners) data.banners = {};
+		if (typeof data.banners === 'undefined') data.banners = {};
 		this.banners = {
-			theme: data.banners.theme || '0001',
-			level: data.banners.level || '1001'
+			theme: typeof data.banners.theme !== 'string' ? '0001' : data.banners.theme,
+			level: typeof data.banners.level !== 'string' ? '1001' : data.banners.level
 		};
 
-		this.bannerList = data.bannerList || [];
-		this.timeDaily = data.timeDaily || 0;
-		this.timerep = data.timerep || 0;
+		this.badgeSet = typeof data.badgeSet === 'undefined' ? [] : data.badgeSet;
+		this.badgeList = typeof data.badgeList === 'undefined' ? [] : data.badgeList;
+
+		this.bannerList = typeof data.bannerList === 'undefined' ? [] : data.bannerList;
+		this.timeDaily = typeof data.timeDaily !== 'number' ? 0 : data.timeDaily;
+		this.timerep = typeof data.timerep !== 'number' ? 0 : data.timerep;
 	}
 
 	/**
@@ -64,6 +69,8 @@ class GlobalUser {
 			money: this.money,
 			reputation: this.reputation,
 			banners: this.banners,
+			badgeSet: this.badgeSet,
+			badgeList: this.badgeList,
 			bannerList: this.bannerList,
 			timeDaily: this.timeDaily,
 			timerep: this.timerep

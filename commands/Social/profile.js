@@ -33,6 +33,7 @@ module.exports = class extends Command {
 		});
 
 		this.profile = null;
+		this.panel = null;
 	}
 
 	async run(msg, [user = msg.author], settings, i18n) {
@@ -62,35 +63,50 @@ module.exports = class extends Command {
 
 		const TITLE = i18n.language.COMMAND_PROFILE;
 
-		return new Canvas(640, 391)
-		// Images
+		const canvas = new Canvas(profile.badgeSet.length > 0 ? 700 : 640, 391);
+
+		if (profile.badgeSet.length > 0) {
+			const badges = await Promise.all(profile.badgeSet.map(name =>
+				readFile(join(this.client.baseDir, 'assets', 'images', 'social', 'badges', `${name}.png`))
+			));
+
+			canvas.addImage(this.panel, 600, 0, 100, 391);
+			let position = 20;
+			for (let i = 0; i < badges.length; i++) {
+				canvas.addImage(badges[i], 635, position, 50, 50);
+				position += 74;
+			}
+		}
+
+		canvas
+			// Images
 			.save()
 			.createBeveledClip(10, 10, 620, 371, 8)
 			.addImage(themeImageSRC, 9, 9, 188, 373)
 			.restore()
 			.addImage(this.profile, 0, 0, 640, 391)
 
-		// Progress bar
+			// Progress bar
 			.setColor(`#${color}`)
 			.addRect(227, 356, Prog, 5)
 
-		// Name title
+			// Name title
 			.setTextFont('35px RobotoRegular')
 			.setColor('rgb(23,23,23')
 			.addResponsiveText(user.username, 227, 73, 306)
 			.setTextFont('25px RobotoLight')
 			.addText(`#${user.discriminator}`, 227, 105)
 
-		// Statistics Titles
+			// Statistics Titles
 			.addText(TITLE.GLOBAL_RANK, 227, 276)
 			.addText(TITLE.CREDITS, 227, 229)
 			.addText(TITLE.REPUTATION, 227, 181)
 
-		// Experience
+			// Experience
 			.setTextFont('20px RobotoLight')
 			.addText(TITLE.EXPERIENCE, 227, 346)
 
-		// Statistics Values
+			// Statistics Values
 			.setTextAlign('right')
 			.setTextFont('25px RobotoLight')
 			.addText(GlobalPosition, 594, 276)
@@ -98,16 +114,17 @@ module.exports = class extends Command {
 			.addText(reputation, 594, 181)
 			.addText(points, 594, 346)
 
-		// Level
+			// Level
 			.setTextAlign('center')
 			.setTextFont('30px RobotoLight')
 			.addText(TITLE.LEVEL, 576, 58)
 			.setTextFont('40px RobotoRegular')
 			.addText(currentLevel, 576, 100)
 
-		// Avatar
-			.addImage(imgAvatarSRC, 32, 32, 142, 142, { type: 'round', radius: 71 })
-			.toBufferAsync();
+			// Avatar
+			.addImage(imgAvatarSRC, 32, 32, 142, 142, { type: 'round', radius: 71 });
+
+		return canvas.toBufferAsync();
 	}
 
 	async init() {
@@ -115,7 +132,7 @@ module.exports = class extends Command {
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)
-			.setColor('#ffffff')
+			.setColor('#FFFFFF')
 			.createBeveledPath(10, 10, 620, 371, 8)
 			.fill()
 			.createBeveledClip(10, 10, 620, 371, 5)
@@ -124,6 +141,15 @@ module.exports = class extends Command {
 			.resetShadows()
 			.setColor(`#f2f2f2`)
 			.addRect(226, 355, 366, 7)
+			.toBufferAsync();
+
+		this.panel = await new Canvas(100, 391)
+			.setAntialiasing('subpixel')
+			.setShadowColor('rgba(0,0,0,.7)')
+			.setShadowBlur(7)
+			.setColor('#F2F2F2')
+			.createBeveledPath(10, 10, 80, 371, 8)
+			.fill()
 			.toBufferAsync();
 	}
 

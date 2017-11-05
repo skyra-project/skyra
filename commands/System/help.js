@@ -30,10 +30,10 @@ module.exports = class extends Command {
 		const categories = Object.keys(help);
 		const helpMessage = ['📃 | *Help Message*\n'];
 		for (let cat = 0; cat < categories.length; cat++) {
-			helpMessage.push(`**${categories[cat]} Commands**\n`);
+			helpMessage.push(`***${categories[cat]} Commands***\n`);
 			const subCategories = Object.keys(help[categories[cat]]);
 			for (let subCat = 0; subCat < subCategories.length; subCat++) {
-				if (subCategories[subCat] !== 'General') helpMessage.push(`__**${subCategories[subCat]}**__\n`);
+				if (subCategories[subCat] !== 'General') helpMessage.push(`***${categories[cat]}/${subCategories[subCat]} Commands***\n`);
 				helpMessage.push(`${help[categories[cat]][subCategories[subCat]].join('\n')}\n`);
 			}
 		}
@@ -43,16 +43,15 @@ module.exports = class extends Command {
 			.catch(() => { if (msg.channel.type !== 'dm') msg.send(i18n.get('COMMAND_HELP_NODM')); });
 	}
 
-	/* eslint-disable no-restricted-syntax, no-prototype-builtins */
 	async buildHelp(msg, settings) {
 		const help = {};
 
 		await Promise.all(this.client.commands.map((command) =>
 			this.client.inhibitors.run(msg, command, true, settings)
 				.then(() => {
-					if (!help.hasOwnProperty(command.category)) help[command.category] = {};
-					if (!help[command.category].hasOwnProperty(command.subCategory)) help[command.category][command.subCategory] = [];
-					help[command.category][command.subCategory].push(`→ \`${settings.master.prefix}${command.name}\` :: **${command.description}**\n`);
+					if (typeof help[command.category] === 'undefined') help[command.category] = {};
+					if (typeof help[command.category][command.subCategory] === 'undefined') help[command.category][command.subCategory] = [];
+					help[command.category][command.subCategory].push(`• __**${settings.master.prefix}${command.name}**__ → ${command.description}`);
 					return;
 				})
 				.catch(() => {

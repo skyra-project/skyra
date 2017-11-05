@@ -1,4 +1,4 @@
-const { structures: { Command }, management: { ModerationLog, assets: { createMuted } } } = require('../../index');
+const { structures: { Command }, management: { ModerationLog, moderationCheck, assets: { createMuted } } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -18,10 +18,7 @@ module.exports = class extends Command {
 
 	async run(msg, [user, ...reason], settings, i18n) {
 		const member = await msg.guild.members.fetch(user.id).catch(() => { throw i18n.get('USER_NOT_IN_GUILD'); });
-
-		if (user.id === msg.author.id) throw i18n.get('COMMAND_USERSELF');
-		else if (user.id === this.client.user.id) throw i18n.get('COMMAND_TOSKYRA');
-		else if (member.highestRole.position >= msg.member.highestRole.position) throw i18n.get('COMMAND_ROLE_HIGHER');
+		moderationCheck(this.client, msg, msg.member, member, i18n);
 
 		const mute = await this.configuration(msg, settings, i18n);
 		if (settings.moderation.mutes.has(user.id)) throw i18n.get('COMMAND_MUTE_MUTED');
@@ -42,13 +39,17 @@ module.exports = class extends Command {
 	}
 
 	async configuration(msg, settings, i18n) {
-		if (!settings.roles.muted) {
-			await msg.prompt(i18n.get('COMMAND_MUTE_CONFIGURE'))
-				.catch(() => { throw i18n.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
-			await msg.send(i18n.get('SYSTEM_PROCESSING'));
-			return createMuted(msg);
-		}
-		return msg.guild.roles.get(settings.roles.muted);
+		if (!settings.roles.muted) return this.askMuted(msg, i18n);
+		const role = msg.guild.roles.get(settings.roles.muted);
+		if (!role) return this.askMuted(msg, i18n);
+		return role;
+	}
+
+	async askMuted(msg, i18n) {
+		await msg.prompt(i18n.get('COMMAND_MUTE_CONFIGURE'))
+			.catch(() => { throw i18n.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
+		await msg.send(i18n.get('SYSTEM_PROCESSING'));
+		return createMuted(msg);
 	}
 
 };

@@ -267,6 +267,7 @@ module.exports = class extends Language {
 			COMMAND_LIST_ROLE_EMPTY: 'This role has no members.',
 
 			COMMAND_ROLE_HIGHER: 'The selected member has higher or equal role position than you.',
+			COMMAND_ROLE_HIGHER_SKYRA: 'The selected member has higher or equal role position than me.',
 			COMMAND_USERSELF: 'Why would you do that to yourself?',
 			COMMAND_TOSKYRA: 'Eww... I thought you loved me! 💔',
 

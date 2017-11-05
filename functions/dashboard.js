@@ -30,11 +30,7 @@ module.exports = class Dashboard {
 		this.routes = resolve(this.client.baseDir, 'views');
 		this.server = express();
 		this.server.use(helmet.noCache());
-		this.server.use(session({
-			secret: 'SkyraProjectTM',
-			resave: false,
-			saveUninitialized: false
-		}));
+		this.server.use(session(this.client.config.dash.session));
 		this.server.use('/css', express.static(resolve(this.routes, 'blocks', 'css')));
 		this.server.use('/img', express.static(resolve(this.routes, 'blocks', 'img')));
 		this.server.use('/js', express.static(resolve(this.routes, 'blocks', 'js')));
@@ -48,6 +44,7 @@ module.exports = class Dashboard {
 		this.supportGuild = 'https://discordapp.com/invite/6gakFR2';
 		this.donateUrl = 'https://www.patreon.com/kyranet';
 		this.translateUrl = 'https://github.com/kyranet/Skyra/blob/master/LANGUAGES.md';
+		this.trelloUrl = 'https://trello.com/b/PcO6zNh2';
 
 		this.util = new Util(client);
 		this.userRoute = new UserRoute(client, this.util, this);
@@ -97,6 +94,9 @@ module.exports = class Dashboard {
 		});
 		this.server.get('/translate', (req, res) => {
 			res.redirect(this.translateUrl);
+		});
+		this.server.get('/trello', (req, res) => {
+			res.redirect(this.trelloUrl);
 		});
 
 		/* JSON Endpoints */
@@ -156,13 +156,13 @@ module.exports = class Dashboard {
 		});
 
 		/* Private */
-		const auth = (req, res, next) => {
+		const privateAuth = (req, res, next) => {
 			if (!req.query.auth || req.query.auth !== this.client.config.dash.secretAuth)
 				return this.client.handler.dashboard.sendError(req, res, 404, `Path not found: ${req.path}`);
 
 			return next();
 		};
-		this.server.get('/ytdl', auth, async (req, res) => {
+		this.server.get('/ytdl', privateAuth, async (req, res) => {
 			if (req.query.url) {
 				/**
                  * @type {{ filebuffer: Buffer, filename: string }}

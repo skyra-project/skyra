@@ -1,4 +1,4 @@
-const { structures: { Command }, management: { ModerationLog } } = require('../../index');
+const { structures: { Command }, management: { ModerationLog, moderationCheck } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -18,10 +18,7 @@ module.exports = class extends Command {
 
 	async run(msg, [user, ...reason], settings, i18n) {
 		const member = await msg.guild.members.fetch(user.id).catch(() => { throw i18n.get('USER_NOT_IN_GUILD'); });
-
-		if (user.id === msg.author.id) throw i18n.get('COMMAND_USERSELF');
-		else if (user.id === this.client.user.id) throw i18n.get('COMMAND_TOSKYRA');
-		else if (member.highestRole.position >= msg.member.highestRole.position) throw i18n.get('COMMAND_ROLE_HIGHER');
+		moderationCheck(this.client, msg, msg.member, member, i18n);
 
 		if (member.serverMute === false) throw i18n.get('GUILD_MUTE_NOT_FOUND');
 

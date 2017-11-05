@@ -66,7 +66,7 @@ module.exports = class extends Command {
 
 		if (profile.badgeSet.length > 0) {
 			const badges = await Promise.all(profile.badgeSet.map(name =>
-				readFile(join(this.client.baseDir, 'assets', 'images', 'social', 'badges', `${name}.png`))
+				fsn.readFile(join(this.client.baseDir, 'assets', 'images', 'social', 'badges', `${name}.png`))
 			));
 
 			canvas.addImage(this.panel, 600, 0, 100, 391);

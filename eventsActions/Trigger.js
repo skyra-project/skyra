@@ -21,30 +21,42 @@ module.exports = class Trigger {
 	/**
      * Execute the Trigger module.
      * @param {external:Message} msg The message.
-     * @param {{ alias: AliasObject[], includes: StringOperation[] }} triggers The message triggers.
-     * @returns {any}
+     * @param {StringOperation[]} triggers The message triggers.
+     * @returns {boolean}
      */
-	run(msg, triggers) {
-		// Start with aliases
-		if (triggers.alias.length > 0) for (let i = 0; i < triggers.alias.length; i++)
-			if (msg.content.indexOf(`${triggers.alias[i].input} `) === 0) {
-				msg.content = msg.content.replace(triggers.alias[i].input, triggers.alias[i].output);
-				return true;
-			}
-
-		if (triggers.includes.length > 0) for (let i = 0; i < triggers.includes.length; i++)
-			if (msg.content.indexOf(triggers.includes[i].input) !== -1)
-				switch (triggers.includes[i].action) {
+	runMonitors(msg, triggers) {
+		if (triggers.length === 0) return false;
+		for (let i = 0; i < triggers.length; i++) {
+			if (msg.content.indexOf(triggers[i].input) !== -1) {
+				switch (triggers[i].action) {
 					case 'react':
 						if (msg.channel.permissionsFor(this.client.user).has('ADD_REACTIONS'))
-							msg.react(triggers.includes[i].data).catch(() => null);
+							msg.react(triggers[i].data).catch(() => null);
 						return true;
 					case 'reply':
-						msg.channel.send(triggers.includes[i].data).catch(() => null);
+						if (msg.channel.postable)
+							msg.channel.send(triggers[i].data).catch(() => null);
 						return true;
 				}
+			}
+		}
 
 		return false;
+	}
+
+	/**
+	 * Parse aliases.
+	 * @param {external:Message} msg The message.
+	 * @param {string} command The name of the command/alias.
+	 * @param {AliasObject[]} aliases The configured aliases.
+	 * @returns {string}
+	 */
+	runAlias(msg, command, aliases) {
+		if (aliases.length === 0) return command;
+		const alias = aliases.find(entry => entry.input === command);
+		if (!alias) return command;
+		msg.content.replace(command, alias.output);
+		return alias.output.split(' ')[0];
 	}
 
 };

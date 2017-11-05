@@ -13,7 +13,8 @@ module.exports = class extends Monitor {
 		if (msg.channel.type === 'text') {
 			const permissions = msg.channel.permissionsFor(msg.guild.me);
 			if (permissions && permissions.has('SEND_MESSAGES') === false) return;
-			this.triggers.run(msg, settings.trigger);
+			const shouldStop = this.triggers.runMonitors(msg, settings.trigger.includes);
+			if (shouldStop) return;
 		}
 
 		const { command, prefix, prefixLength } = this.parseCommand(msg, settings);
@@ -29,18 +30,17 @@ module.exports = class extends Monitor {
 		const prefix = this.getPrefix(msg, settings);
 		if (!prefix) return { command: false };
 		const prefixLength = prefix.exec(msg.content)[0].length;
+		const command = msg.content.slice(prefixLength).trim().split(' ')[0].toLowerCase();
 		return {
-			command: msg.content.slice(prefixLength).trim().split(' ')[0].toLowerCase(),
+			command: this.triggers.runAlias(msg, command, settings.trigger.alias),
 			prefix,
 			prefixLength
 		};
 	}
 
 	prefixCheck(prefix, str) {
-		for (let i = prefix.length - 1; i >= 0; i--) {
-			if (str[i] === prefix[i]) continue;
-			return false;
-		}
+		for (let i = prefix.length - 1; i >= 0; i--)
+			if (str[i] !== prefix[i]) return false;
 		return true;
 	}
 

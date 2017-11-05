@@ -55,7 +55,7 @@ module.exports = class Trigger {
 		if (aliases.length === 0) return command;
 		const alias = aliases.find(entry => entry.input === command);
 		if (!alias) return command;
-		msg.content.replace(command, alias.output);
+		msg.content = msg.content.replace(command, alias.output);
 		return alias.output.split(' ')[0];
 	}
 

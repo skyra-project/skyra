@@ -1,6 +1,5 @@
-const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
-const { fetchAvatar } = require('../../functions/wrappers');
-const { readFile } = require('fs-nextra');
+const { structures: { Command }, util: { CanvasConstructor, util } } = require('../../index');
+const fsn = require('fs-nextra');
 const { join, sep } = require('path');
 
 CanvasConstructor
@@ -50,8 +49,8 @@ module.exports = class extends Command {
 
 		const theme = banners.level;
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			readFile(`${themes}${theme}.png`),
-			fetchAvatar(user, 256)
+			fsn.readFile(`${themes}${theme}.png`),
+			util.fetchAvatar(user, 256)
 		]);
 
 		const TITLE = i18n.language.COMMAND_LEVEL

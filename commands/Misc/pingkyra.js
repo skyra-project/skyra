@@ -1,5 +1,4 @@
-const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
-const { fetchAvatar } = require('../../functions/wrappers');
+const { structures: { Command }, util: { CanvasConstructor, util } } = require('../../index');
 const fsn = require('fs-nextra');
 const path = require('path');
 
@@ -36,8 +35,8 @@ module.exports = class extends Command {
 		if (user.id === this.kyra.id || user.id === this.client.user.id) user = msg.author;
 
 		const [runner, kyra] = await Promise.all([
-			fetchAvatar(user, 128),
-			fetchAvatar(this.kyra, 128)
+			util.fetchAvatar(user, 128),
+			util.fetchAvatar(this.kyra, 128)
 		]);
 
 		return new CanvasConstructor(569, 327)

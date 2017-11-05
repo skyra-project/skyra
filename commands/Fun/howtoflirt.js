@@ -1,5 +1,4 @@
-const { structures: { Command } } = require('../../index');
-const { fetchAvatar } = require('../../functions/wrappers');
+const { structures: { Command }, util: { util } } = require('../../index');
 const { readFile } = require('fs-nextra');
 const { join, resolve } = require('path');
 const Canvas = require('canvas');
@@ -60,8 +59,8 @@ module.exports = class extends Command {
 
 		/* Get the buffers from both profile avatars */
 		const [user1Buffer, user2Buffer] = await Promise.all([
-			fetchAvatar(msg.author, 128),
-			fetchAvatar(user, 128)
+			util.fetchAvatar(msg.author, 128),
+			util.fetchAvatar(user, 128)
 		]);
 
 		/* Background */

@@ -1,5 +1,4 @@
-const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
-const { fetchAvatar } = require('../../functions/wrappers');
+const { structures: { Command }, util: { CanvasConstructor, util } } = require('../../index');
 const fsn = require('fs-nextra');
 const path = require('path');
 
@@ -26,7 +25,7 @@ module.exports = class extends Command {
 	}
 
 	async generate(msg, user) {
-		const goofied = await fetchAvatar(user, 128);
+		const goofied = await util.fetchAvatar(user, 128);
 
 		return new CanvasConstructor(356, 435)
 			.addImage(this.template, 0, 0, 356, 435)

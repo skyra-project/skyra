@@ -1,5 +1,4 @@
-const { structures: { Command }, util: { CanvasConstructor } } = require('../../index');
-const { fetchAvatar } = require('../../functions/wrappers');
+const { structures: { Command }, util: { CanvasConstructor, util } } = require('../../index');
 const fsn = require('fs-nextra');
 const path = require('path');
 
@@ -42,8 +41,8 @@ module.exports = class extends Command {
 		else [selectedUser, hammerer] = [user, msg.author];
 
 		const [Hammered, Hammerer] = await Promise.all([
-			fetchAvatar(selectedUser, 256),
-			fetchAvatar(hammerer, 256)
+			util.fetchAvatar(selectedUser, 256),
+			util.fetchAvatar(hammerer, 256)
 		]);
 
 		/* Initialize Canvas */

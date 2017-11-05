@@ -1,5 +1,4 @@
-const { structures: { Command } } = require('../../index');
-const { fetchAvatar } = require('../../functions/wrappers');
+const { structures: { Command }, util: { util } } = require('../../index');
 const streamToArray = require('stream-to-array');
 const fsn = require('fs-nextra');
 const path = require('path');
@@ -46,7 +45,7 @@ module.exports = class extends Command {
 		const ctx = canvas.getContext('2d');
 
 		imgTitle.src = this.template;
-		imgTriggered.src = await fetchAvatar(user, 512);
+		imgTriggered.src = await util.fetchAvatar(user, 512);
 
 		const stream = encoder.createReadStream();
 		encoder.start();

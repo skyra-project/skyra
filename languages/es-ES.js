@@ -486,6 +486,8 @@ module.exports = class extends Language {
 			COMMAND_GOOGL_LONG: (url) => `**Enlace acortado: [${url}](${url})**`,
 			COMMAND_GOOGL_SHORT: (url) => `**Enlace expandido: [${url}](${url})**`,
 
+			COMMAND_PRICE_CURRENCY: (from, to, amount) => `El precio actual de ${from} en ${to} es: ${amount} `,
+			COMMAND_PRICE_CURRENCY_NOT_FOUND: 'Algo falló. Por favor, revisa que escribió bien las dos monedas para la conversión.',
 			COMMAND_QUOTE_MESSAGE: 'Es muy raro... pero dicho mensaje no tiene un contenido ni una imagen.',
 
 			COMMAND_ROLES_LIST_EMPTY: 'Este servidor no tiene un rol en la lista de roles públicos.',
@@ -535,6 +537,9 @@ module.exports = class extends Language {
 				`Cantidad de miembros: **${role.members.size}**`
 			].join('\n'),
 			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Sin permisos.',
+
+			COMMAND_DUCKDUCKGO_NOTFOUND: 'Lo siento, pero la API de DuckDuckGo devolvió una respuesta en blanco. Prueba con otras palabras.',
+			COMMAND_DUCKDUCKGO_LOOKALSO: 'Relacionado a éste tema:',
 
 			COMMAND_URBAN_NOTFOUND: 'Lo siento, pero la palabra por la cual estás buscando, no parece estar defininida en UrbanDictionary. ¿Prueba con otra palabra?',
 			COMMAND_URBAN_INDEX_NOTFOUND: 'Ehm, quizá usted quiera probar con un índice de página menor.',

@@ -485,6 +485,8 @@ module.exports = class extends Language {
 			COMMAND_GOOGL_LONG: (url) => `**Shortened URL: [${url}](${url})**`,
 			COMMAND_GOOGL_SHORT: (url) => `**Expanded URL: [${url}](${url})**`,
 
+			COMMAND_PRICE_CURRENCY: (from, to, amount) => `Current ${from} price is ${amount} ${to}`,
+			COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
 			COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
 
 			COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',
@@ -534,6 +536,9 @@ module.exports = class extends Language {
 				`Amount of members: **${role.members.size}**`
 			].join('\n'),
 			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+
+			COMMAND_DUCKDUCKGO_NOTFOUND: 'I am sorry, but DuckDuckGo API returned a blank response. Try with another keywords.',
+			COMMAND_DUCKDUCKGO_LOOKALSO: 'Related to this topic:',
 
 			COMMAND_URBAN_NOTFOUND: 'I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?',
 			COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',

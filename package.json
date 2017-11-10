@@ -1,6 +1,6 @@
 {
   "name": "skyra",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "description": "Last Night Update | Standalone Bot",
   "main": "./skyra.js",
   "scripts": {
@@ -34,7 +34,6 @@
     "randomcolor": "^0.5.3",
     "redis-nextra": "^0.1.0",
     "rethinkdbdash": "^2.3.31",
-    "stream-to-array": "^2.3.0",
     "xml2js": "^0.4.19",
     "ytdl-core": "^0.18.1"
   },

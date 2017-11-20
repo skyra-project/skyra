@@ -12,15 +12,19 @@ module.exports = class extends Extendable {
 		if (!content) return null;
 		if (log) this.client.emit('log', content, 'error');
 
-		if (typeof error === 'string') return this.alert(this.language.get('ERROR_STRING', this.author, content));
+		if (typeof error === 'string')
+			return this.alert(this.language.get('ERROR_STRING', this.author, content));
 
 		if (isException(content)) {
-			this.client.emit('log', `ERROR: /${this.guild ? this.guild.id : 'DM'}/${this.channel.id}/${this.id}/${this.cmd ? `CMD:${this.cmd.name}` : ''} (${this.author.id}) | ${content.constructor.name}`, 'warn');
+			this.client.emit('log', `${content.code ? `[${content.code}] ` : ''}ERROR: /${this.guild ? this.guild.id : 'DM'}/${this.channel.id}/${this.id}/${this.cmd ? `CMD:${this.cmd.name}` : ''} (${this.author.id}) | ${content.constructor.name}`, 'warn');
 			this.client.emit('log', content, 'wtf');
-			if (this.author.id === '242043489611808769') content = content.stack || content.message;
-			else content = this.language.get('ERROR_WTF');
-		} else if (content.stack && this.author.id === '242043489611808769') content = content.stack;
-		else content = content.message || content;
+			content = this.author.id === '242043489611808769'
+				? content.stack || content.message
+				: this.language.get('ERROR_WTF');
+		} else
+			content = content.stack && this.author.id === '242043489611808769'
+				? content.stack
+				: content.message || content;
 
 		return this.alert(`|\`❌\`| **ERROR**:\n${util.codeBlock('js', content)}`);
 	}

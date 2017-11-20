@@ -6,6 +6,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['tag'],
+			guildOnly: true,
 			mode: 2,
 
 			usage: '[list|tag:string] [index:integer]',

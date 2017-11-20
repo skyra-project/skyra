@@ -5,6 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['dailies'],
+			guildOnly: true,
 			mode: 1,
 			spam: true,
 			cooldown: 30,

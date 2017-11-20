@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, params, settings, i18n) {
+	run(msg, params, settings, i18n) {
 		return msg.send(i18n.get('COMMAND_REPUTATIONS', msg.author.profile.reputation));
 	}
 

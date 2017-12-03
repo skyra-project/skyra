@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		const out = await this.eval(msg, type ? `(async () => { ${input} })()` : input);
 		start.stop();
 		if (out.success === false && out.output.message) out.output = out.output.message;
-		else if (out.output === '') out.output = '<void>';
+		else if (out.output === '') out.output = '\u200B';
 		return msg.send([
 			`Executed in ${start} | ${out.success ? '🔍 **Inspect:**' : '❌ **Error:**'}`,
 			util.codeBlock('js', this.clean(out.output))
@@ -37,23 +37,16 @@ module.exports = class extends Command {
 	}
 
 	clean(text) {
-		if (typeof text === 'object' && typeof text !== 'string') {
-			return util.clean(inspect(text, { depth: 0, showHidden: true }));
-		}
+		if (typeof text === 'object')
+			return util.clean(inspect(text, { depth: 0, showHidden: true, maxArrayLength: 25 }));
+
 		return util.clean(String(text));
 	}
 
 	parse(toEval) {
-		let input;
-		let type;
-		if (toEval[0] === 'async') {
-			input = toEval.slice(1).join(' ');
-			type = true;
-		} else {
-			input = toEval.join(' ');
-			type = false;
-		}
-		return { type, input };
+		if (toEval[0] === 'async')
+			return { type: true, input: toEval.slice(1).join(' ') };
+		return { type: false, input: toEval.join(' ') };
 	}
 
 };

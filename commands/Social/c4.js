@@ -78,11 +78,12 @@ module.exports = class extends Command {
 		this.games.delete(message.channel.id);
 
 		await message.clearReactions().catch(error => {
-			if (error.code !== 10008) throw error;
+			if (error.code !== 10008) return Command.handleError(error);
 			return null;
 		});
 
-		return this.edit(message, content);
+		return this.edit(message, content)
+			.catch(Command.handleError);
 	}
 
 	async awaitGame(message, game, player, assets, i18n) {
@@ -97,7 +98,7 @@ module.exports = class extends Command {
 				return this.awaitGame(message, game, player, assets, i18n)
 					.then(() => null);
 
-			throw err;
+			return Command.handleError(err);
 		});
 
 		if (!line) return null;
@@ -124,8 +125,10 @@ module.exports = class extends Command {
 
 		player = this.switchPlayer(player);
 
-		await line.reaction.remove(playerUser.id);
-		await this.edit(message, i18n.get('COMMAND_C4_GAME_NEXT', game.players[player].tag, this.displayTable(game.table, assets)));
+		await line.reaction.remove(playerUser.id)
+			.catch(Command.handleError);
+		await this.edit(message, i18n.get('COMMAND_C4_GAME_NEXT', game.players[player].tag, this.displayTable(game.table, assets)))
+			.catch(Command.handleError);
 		return this.awaitGame(message, game, player, assets, i18n);
 	}
 
@@ -226,8 +229,8 @@ module.exports = class extends Command {
 		}
 
 		return this.checkRow(horizontal, player)
-												|| this.checkRow(diagonalup, player)
-												|| this.checkRow(diagonaldw, player);
+			|| this.checkRow(diagonalup, player)
+			|| this.checkRow(diagonaldw, player);
 	}
 
 	checkDraw(game) {

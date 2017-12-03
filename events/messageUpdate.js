@@ -1,6 +1,6 @@
 const { structures: { Event } } = require('../index');
 const { MessageEmbed, Util } = require('discord.js');
-const { diffWords } = require('diff');
+const { diffWordsWithSpace } = require('diff');
 
 module.exports = class extends Event {
 
@@ -24,7 +24,7 @@ module.exports = class extends Event {
 		if (!channel)
 			return settings.update({ channels: { messagelogs: null } });
 
-		const result = diffWords(Util.escapeMarkdown(old.content), Util.escapeMarkdown(msg.content));
+		const result = diffWordsWithSpace(Util.escapeMarkdown(old.content), Util.escapeMarkdown(msg.content));
 		let text = '';
 		for (let i = 0; i < result.length; i++) {
 			if (result[i].added === true) text += `**${result[i].value}**`;

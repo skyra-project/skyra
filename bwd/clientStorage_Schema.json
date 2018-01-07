@@ -1,0 +1,20 @@
+{
+	"userBlacklist": {
+		"type": "user",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true,
+		"sql": "TEXT NOT NULL DEFAULT '[]'"
+	},
+	"guildBlacklist": {
+		"type": "guild",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": true,
+		"sql": "TEXT NOT NULL DEFAULT '[]'"
+	}
+}

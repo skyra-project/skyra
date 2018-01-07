@@ -1,0 +1,101 @@
+{
+	"points": {
+		"type": "integer",
+		"default": 0,
+		"min": 0,
+		"max": 2147483647,
+		"array": false,
+		"configurable": false,
+		"sql": "INTEGER NOT NULL DEFAULT 0"
+	},
+	"color": {
+		"type": "string",
+		"default": "ff239d",
+		"min": 6,
+		"max": 6,
+		"array": false,
+		"configurable": false,
+		"sql": "VARCHAR(6) NOT NULL DEFAULT 'ff239d'"
+	},
+	"money": {
+		"type": "integer",
+		"default": 0,
+		"min": 0,
+		"max": 2147483647,
+		"array": false,
+		"configurable": false,
+		"sql": "INTEGER NOT NULL DEFAULT 0"
+	},
+	"reputation": {
+		"type": "integer",
+		"default": 0,
+		"min": 0,
+		"max": 32767,
+		"array": false,
+		"configurable": false,
+		"sql": "SMALLINT NOT NULL DEFAULT 0"
+	},
+	"themeProfile": {
+		"type": "string",
+		"default": "0001",
+		"min": 4,
+		"max": 7,
+		"array": false,
+		"configurable": false,
+		"sql": "VARCHAR(7) NOT NULL DEFAULT '0001'"
+	},
+	"themeLevel": {
+		"type": "string",
+		"default": "1001",
+		"min": 4,
+		"max": 7,
+		"array": false,
+		"configurable": false,
+		"sql": "VARCHAR(7) NOT NULL DEFAULT '0001'"
+	},
+	"badgeSet": {
+		"type": "string",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": false,
+		"sql": "TEXT NOT NULL DEFAULT '[]'"
+	},
+	"badgeList": {
+		"type": "string",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": false,
+		"sql": "TEXT NOT NULL DEFAULT '[]'"
+	},
+	"bannerList": {
+		"type": "string",
+		"default": [],
+		"min": null,
+		"max": null,
+		"array": true,
+		"configurable": false,
+		"sql": "TEXT NOT NULL DEFAULT '[]'"
+	},
+	"timeDaily": {
+		"type": "integer",
+		"default": 0,
+		"min": 0,
+		"max": 2147483647,
+		"array": false,
+		"configurable": false,
+		"sql": "BIGINT NOT NULL DEFAULT 0"
+	},
+	"timeReputation": {
+		"type": "integer",
+		"default": 0,
+		"min": 0,
+		"max": 2147483647,
+		"array": false,
+		"configurable": false,
+		"sql": "BIGINT NOT NULL DEFAULT 0"
+	}
+}

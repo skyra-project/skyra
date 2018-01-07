@@ -1,45 +1,23 @@
 {
   "name": "skyra",
-  "version": "2.1.1",
-  "description": "Last Night Update | Standalone Bot",
-  "main": "./skyra.js",
+  "version": "3.0.0",
+  "description": "Standalone Discord Bot built on Klasa",
+  "main": "skyra.js",
   "scripts": {
-    "bot": "node skyra.js"
+    "test": "eslint ./"
   },
-  "author": "kyra",
-  "license": "MIT",
+  "keywords": [
+    "discord.js",
+    "klasa",
+    "bot",
+    "standalone"
+  ],
+  "author": "kyranet",
+  "license": "UNLICENSED",
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "bufferutil": "^3.0.3",
-    "canvas": "github:automattic/node-canvas",
-    "cheerio": "^0.22.0",
-    "diff": "^3.4.0",
     "discord.js": "github:hydrabolt/discord.js",
-    "ejs": "^2.5.7",
-    "erlpack": "github:hammerandchisel/erlpack",
-    "express": "^4.16.2",
-    "express-session": "^1.15.6",
-    "fs-nextra": "^0.3.2",
-    "gifencoder": "^1.1.0",
-    "helmet": "^3.9.0",
-    "html-entities": "^1.2.1",
-    "html-to-text": "^3.3.0",
-    "libsodium-wrappers": "^0.7.2",
-    "mathjs": "^3.16.5",
-    "moment": "^2.19.1",
-    "moment-duration-format": "^1.3.0",
-    "passport": "^0.4.0",
-    "passport-discord": "^0.1.3",
-    "randomcolor": "^0.5.3",
-    "redis-nextra": "^0.1.0",
-    "rethinkdbdash": "^2.3.31",
-    "xml2js": "^0.4.19",
-    "ytdl-core": "^0.18.1"
-  },
-  "engines": {
-    "node": ">=8.9.0"
-  },
-  "devDependencies": {
-    "eslint": "^4.10.0"
+    "klasa": "github:dirigeants/klasa#gateway-options-enhancement",
+    "pg": "^7.4.0",
+    "rethinkdbdash": "^2.3.31"
   }
 }

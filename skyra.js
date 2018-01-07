@@ -1,28 +1,25 @@
-const { Client, config } = module.exports = require('./index');
+const { Skyra, config } = require('./lib');
 
-const Skyra = new Client({
-	ownerID: config.ownerid,
-	prefix: 's!',
+new Skyra({
 	cmdEditing: true,
-	dash: config.dash,
-	dev: false,
-	clientOptions: {
-		disabledEvents: [
-			'TYPING_START',
-			'RELATIONSHIP_ADD',
-			'RELATIONSHIP_REMOVE',
-			'CHANNEL_PINS_UPDATE',
-			'USER_NOTE_UPDATE'
-		],
-		messageCacheMaxSize: 100,
-		messageCacheLifetime: 300,
-		messageSweepInterval: 150
-	}
-});
-
-Skyra.login(Skyra.config.dev ? config.tokens.bot.dev : config.tokens.bot.stable);
-
-process.on('unhandledRejection', (err) => {
-	if (!err) return;
-	Skyra.console.log(`Uncaught Promise Error: \n${err.stack || err}`, 'wtf');
-});
+	cmdLogging: false,
+	cmdPrompt: true,
+	console: { useColor: true },
+	gateways: {
+		clientStorage: { provider: 'json', nice: false },
+		guilds: { provider: 'rethinkdb' },
+		users: { provider: 'postgresql' }
+	},
+	ownerID: '242043489611808769',
+	pieceDefaults: { commands: { deletable: true } },
+	prefix: 's!',
+	providers: {
+		default: 'json',
+		rethinkdb: config.database.rethinkdb,
+		postgresql: config.database.postgresql
+	},
+	quotedStringSupport: true,
+	readyMessage: (client) =>
+		`Skyra ${config.version} ready! [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+	typing: false
+}).login(config.tokens.bot.stable);

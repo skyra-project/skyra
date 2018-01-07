@@ -172,7 +172,7 @@
 			}
 		],
 		"no-array-constructor": "error",
-		"no-bitwise": "warn",
+		"no-bitwise": ["warn", { "allow": ["|"] }],
 		"no-inline-comments": "error",
 		"no-lonely-if": "error",
 		"no-mixed-operators": "error",

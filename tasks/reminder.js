@@ -1,5 +1,4 @@
-const { Task } = require('../index');
-const { Timestamp } = require('klasa');
+const { Task, Timestamp } = require('klasa');
 
 module.exports = class extends Task {
 

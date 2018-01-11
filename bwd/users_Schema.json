@@ -51,7 +51,7 @@
 		"max": 7,
 		"array": false,
 		"configurable": false,
-		"sql": "VARCHAR(7) NOT NULL DEFAULT '0001'"
+		"sql": "VARCHAR(7) NOT NULL DEFAULT '1001'"
 	},
 	"badgeSet": {
 		"type": "string",

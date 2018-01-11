@@ -16,6 +16,34 @@ module.exports = class PostgreSQL extends Provider {
 		this.db = new Pool(this.client.options.providers.postgresql);
 		this.db.on('error', err => this.client.emit('error', err));
 		await this.db.connect();
+		await this._createTables();
+	}
+
+	async _createTables() {
+		await this.run(`
+			CREATE TABLE IF NOT EXISTS "localScores" (
+				"id" VARCHAR(19) NOT NULL,
+				"guild" VARCHAR(19) NOT NULL,
+				"count" INTEGER NOT NULL DEFAULT 0,
+				PRIMARY KEY (id, guild)
+			);
+		`);
+		await this.run(`
+			CREATE TABLE IF NOT EXISTS "users" (
+				"id" VARCHAR(19) NOT NULL PRIMARY KEY,
+				"points" INTEGER NOT NULL DEFAULT 0,
+				"color" VARCHAR(6) NOT NULL DEFAULT 'ff239d',
+				"money" INTEGER NOT NULL DEFAULT 0,
+				"reputation" SMALLINT NOT NULL DEFAULT 0,
+				"themeProfile" VARCHAR(7) NOT NULL DEFAULT '0001',
+				"themeLevel" VARCHAR(7) NOT NULL DEFAULT '1001',
+				"badgeSet" TEXT NOT NULL DEFAULT '[]',
+				"badgeList" TEXT NOT NULL DEFAULT '[]',
+				"bannerList" TEXT NOT NULL DEFAULT '[]',
+				"timeDaily" BIGINT NOT NULL DEFAULT 0,
+				"timeReputation" BIGINT NOT NULL DEFAULT 0
+			);
+		`);
 	}
 
 	shutdown() {

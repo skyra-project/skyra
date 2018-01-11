@@ -1,5 +1,5 @@
 const { Extendable, Configuration } = require('klasa');
-const { GuildConfiguration, UserConfiguration } = require('../lib/structures');
+const { GuildConfiguration, UserConfiguration } = require('../index');
 
 module.exports = class extends Extendable {
 

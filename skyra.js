@@ -1,4 +1,4 @@
-const { Skyra, config } = require('./lib');
+const { Skyra, config } = require('./index');
 
 new Skyra({
 	cmdEditing: true,

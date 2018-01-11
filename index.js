@@ -7,8 +7,6 @@ module.exports = {
 	// Structures
 	GuildConfiguration: require('./lib/structures/GuildConfiguration'),
 	UserConfiguration: require('./lib/structures/UserConfiguration'),
-	Task: require('./lib/structures/Task'),
-	TaskStore: require('./lib/structures/TaskStore'),
 
 	// Util
 	Clock: require('./lib/util/Clock'),

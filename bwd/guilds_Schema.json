@@ -1,25 +1,43 @@
 {
 	"type": "Folder",
+	"prefix": {
+		"type": "string",
+		"array": false,
+		"default": "s!",
+		"min": null,
+		"max": null,
+		"configurable": true,
+		"sql": "VARCHAR(10) NOT NULL DEFAULT 's!'"
+	},
+	"language": {
+		"type": "language",
+		"array": false,
+		"default": "en-US",
+		"min": null,
+		"max": null,
+		"configurable": true,
+		"sql": "VARCHAR(5) NOT NULL DEFAULT 'en-US'"
+	},
+	"disabledCommands": {
+		"type": "command",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": true,
+		"sql": "TEXT NOT NULL DEFAULT '[]'"
+	},
+	"disabledChannels": {
+		"type": "channel",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": true,
+		"sql": "TEXT NOT NULL DEFAULT '[]'"
+	},
 	"master": {
 		"type": "Folder",
-		"prefix": {
-			"type": "string",
-			"array": false,
-			"default": "s!",
-			"min": null,
-			"max": null,
-			"configurable": true,
-			"sql": "VARCHAR(10) NOT NULL DEFAULT 's!'"
-		},
-		"language": {
-			"type": "language",
-			"array": false,
-			"default": "en-US",
-			"min": null,
-			"max": null,
-			"configurable": true,
-			"sql": "VARCHAR(5) NOT NULL DEFAULT 'en-US'"
-		},
 		"mode": {
 			"type": "integer",
 			"array": false,
@@ -31,27 +49,6 @@
 		},
 		"ignoreChannels": {
 			"type": "channel",
-			"array": true,
-			"default": [],
-			"min": null,
-			"max": null,
-			"configurable": true,
-			"sql": "TEXT NOT NULL DEFAULT '[]'"
-		}
-	},
-	"disable": {
-		"type": "Folder",
-		"cmdChannels": {
-			"type": "channel",
-			"array": true,
-			"default": [],
-			"min": null,
-			"max": null,
-			"configurable": true,
-			"sql": "TEXT NOT NULL DEFAULT '[]'"
-		},
-		"commands": {
-			"type": "command",
 			"array": true,
 			"default": [],
 			"min": null,

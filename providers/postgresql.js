@@ -260,7 +260,7 @@ module.exports = class PostgreSQL extends Provider {
 		if (typeof key === 'string') return this.run(`ALTER TABLE "${sanitizeKeyName(table)}" ADD COLUMN "${sanitizeKeyName(key)}" ${datatype};`);
 		if (typeof datatype === 'undefined' && Array.isArray(key)) {
 			return this.run(`ALTER TABLE "${sanitizeKeyName(table)}" ${key.map(([column, type]) =>
-				`ADD COLUMN ${sanitizeKeyName(column)} ${type}`).join(', ')};`);
+				`ADD COLUMN "${sanitizeKeyName(column)}" ${type}`).join(', ')};`);
 		}
 		throw new TypeError('Invalid usage of PostgreSQL#addColumn. Expected a string and string or string[][] and undefined.');
 	}
@@ -296,7 +296,7 @@ module.exports = class PostgreSQL extends Provider {
 	run(...sql) {
 		return this.db.query(...sql)
 			.then(result => result)
-			.catch(error => { throw error; });
+			.catch(error => { throw `Failed query ${sql[0]}\n${error.stack || error}`; });
 	}
 
 	/**

@@ -20,6 +20,6 @@ new Skyra({
 	},
 	quotedStringSupport: true,
 	readyMessage: (client) =>
-		`Skyra ${config.version} ready! [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	typing: false
-}).login(config.tokens.bot.stable);
+}).login(config.tokens.bot.dev);

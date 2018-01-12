@@ -1,4 +1,4 @@
-const { Skyra, config } = require('./index');
+const { Skyra, config } = module.exports = require('./index');
 
 new Skyra({
 	cmdEditing: true,
@@ -13,6 +13,8 @@ new Skyra({
 	ownerID: '242043489611808769',
 	pieceDefaults: { commands: { deletable: true } },
 	prefix: 's!',
+	// Uncheck for release
+	// regexPrefix: /^(hey )?skyra(,|!)/i,
 	providers: {
 		default: 'json',
 		rethinkdb: config.database.rethinkdb,

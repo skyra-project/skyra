@@ -17,6 +17,7 @@ module.exports = {
 	Duration: require('./lib/util/Duration'),
 	LanguageHelp: require('./lib/util/LanguageHelp'),
 	Leaderboard: require('./lib/util/Leaderboard'),
+	parseHTML: require('./lib/util/parseHTML'),
 	PreciseTimeout: require('./lib/util/PreciseTimeout'),
 	TimeParser: require('./lib/util/TimeParser'),
 	util: require('./lib/util/util'),

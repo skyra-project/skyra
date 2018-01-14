@@ -1,5 +1,5 @@
 const { Language } = require('klasa');
-const { LanguageHelp, util } = require('../index');
+const { LanguageHelp, Duration, util } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -69,10 +69,37 @@ const PERMS = {
 	USE_VAD: 'Use Voice Activity'
 };
 
+const random = num => Math.round(Math.random() * num);
+
+const EIGHT_BALL = {
+	WHEN: ['Soon™', 'Maybe tomorrow.', 'Maybe next year...', 'Right now.', 'In a few months.'],
+	WHAT: ['A plane.', 'What? Ask again.', 'A gift.', 'Nothing.', 'A ring.', 'I do not know, maybe something.'],
+	HOWMUCH: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', 'I do not know, ask a physicist.', 'Nothing.', `Within ${random(10)} and ${random(1000)}L.`, `${random(10)}e${random(1000)}L.`, "2 or 3 liters, I don't remember.", 'Infinity.', '1010 liters.'],
+	HOWMANY: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', "I don't know, ask a physicist.", 'Nothing.', `Within ${random(10)} and ${random(1000)}.`, `${random(10)}e${random(1000)}.`, '2 or 3, I do not remember.', 'Infinity', '1010.'],
+	WHY: ['Maybe genetics.', 'Because somebody decided it.', 'For the glory of satan, of course!', 'I do not know, maybe destiny.', 'Because I said so.', 'I have no idea.', 'Harambe did nothing wrong.', 'Ask the owner of this server.', 'Ask again.', 'To get to the other side.', 'It says so in the Bible.'],
+	WHO: ['A human.', 'A robot.', 'An airplane.', 'A bird.', 'A carbon composition.', 'A bunch of zeroes and ones.', 'I have no clue, is it material?', 'That is not logical.'],
+	ELSE: ['Most likely.', 'Nope.', 'YES!', 'Maybe.']
+};
+
+function duration(time) {
+	return Duration.duration(time, TIMES);
+}
+
 module.exports = class extends Language {
 
 	constructor(...args) {
 		super(...args);
+
+		this.PERMISSIONS = PERMS;
+		this.EIGHT_BALL = EIGHT_BALL;
+
+		this.HUMAN_LEVELS = {
+			0: 'None',
+			1: 'Low',
+			2: 'Medium',
+			3: '(╯°□°）╯︵ ┻━┻',
+			4: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
+		};
 
 		this.language = {
 			/**
@@ -131,10 +158,10 @@ module.exports = class extends Language {
 			INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
 			COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',
 			COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
-				usersAdded.length ? `**Users Added**\n${util.codeBlock('', usersAdded.join(', '))}` : '',
-				usersRemoved.length ? `**Users Removed**\n${util.codeBlock('', usersRemoved.join(', '))}` : '',
-				guildsAdded.length ? `**Guilds Added**\n${util.codeBlock('', guildsAdded.join(', '))}` : '',
-				guildsRemoved.length ? `**Guilds Removed**\n${util.codeBlock('', guildsRemoved.join(', '))}` : ''
+				usersAdded.length ? `**Users Added**\n${this.client.methods.util.codeBlock('', usersAdded.join(', '))}` : '',
+				usersRemoved.length ? `**Users Removed**\n${this.client.methods.util.codeBlock('', usersRemoved.join(', '))}` : '',
+				guildsAdded.length ? `**Guilds Added**\n${this.client.methods.util.codeBlock('', guildsAdded.join(', '))}` : '',
+				guildsRemoved.length ? `**Guilds Removed**\n${this.client.methods.util.codeBlock('', guildsRemoved.join(', '))}` : ''
 			].filter(val => val !== '').join('\n'),
 			COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
 			COMMAND_EVAL_EXTENDEDHELP: [
@@ -168,7 +195,7 @@ module.exports = class extends Language {
 			COMMAND_INVITE: (client) => [
 				`To add ${client.user.username} to your discord guild:`,
 				client.invite,
-				util.codeBlock('', [
+				this.client.methods.util.codeBlock('', [
 					'The above link is generated requesting the minimum permissions required to use every command currently.',
 					'I know not all permissions are right for every server, so don\'t be afraid to uncheck any of the boxes.',
 					'If you try to use a command that requires more permissions than the bot is granted, it will let you know.'
@@ -709,8 +736,8 @@ module.exports = class extends Language {
 				SPECIAL: '🎴 Special'
 			},
 			COMMAND_ANIME_QUERY_FAIL: 'I am sorry, but the API returned a bad answer. Are you sure you wrote the name correctly?',
-			COMMAND_ANIME_MULTIPLE_CHOICE: (amount) => `There are ${amount} results. Please choose a number between 1 and ${amount}.`,
 			COMMAND_ANIME_INVALID_CHOICE: `That's an invalid choice. Please try again but with a different choice.`,
+			COMMAND_ANIME_NO_CHOICE: 'Well, the time ended, try again later when you decide it!',
 			COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 				`**English title:** ${entry.english}`,
 				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : synopsis
@@ -740,7 +767,52 @@ module.exports = class extends Language {
 				MANHWA: '🇰🇷 Manhwa',
 				'ONE-SHOT': '☄ One Shot',
 				SPECIAL: '🎴 Special'
-			}
+			},
+
+			/**
+			 * ##############
+			 * FUN COMMANDS
+			 */
+
+			COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Question by ${author}: *${question}*\n${response}`,
+			COMMAND_8BALL_NOT_QUESTION: 'That does not seem to be a question...',
+			COMMAND_8BALL_QUESTIONS: {
+				QUESTION: '?',
+				WHEN: 'when',
+				WHAT: 'what',
+				HOW_MUCH: 'how much',
+				HOW_MANY: 'how many',
+				WHY: 'why',
+				WHO: 'who'
+			},
+			COMMAND_CATFACT_TITLE: 'Cat Fact',
+			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${this.client.methods.util.codeBlock('', word)}`,
+			COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',
+			COMMAND_CHOICE_DUPLICATES: (words) => `Why would I accept duplicated words? '${words}'.`,
+			COMMAND_DICE_OUTPUT: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
+			// https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
+			COMMAND_ESCAPEROPE_OUTPUT: (user) => `**${user}** used **Escape Rope**`,
+			COMMAND_LOVE_LESS45: 'Try again next time...',
+			COMMAND_LOVE_LESS75: 'Good enough!',
+			COMMAND_LOVE_LESS100: 'Good match!',
+			COMMAND_LOVE_100: 'Perfect match!',
+			COMMAND_LOVE_ITSELF: 'You are a special creature and you should love yourself more than anyone <3',
+			COMMAND_LOVE_RESULT: 'Result',
+			COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
+			COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
+			COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
+			COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
+
+			/**
+			 * #################################
+			 * #             UTILS             #
+			 * #################################
+			 */
+
+			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} results. Please choose a number between 1 and ${amount}, or write **abort** to abort the prompt.\n${list}`,
+			PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Invalid input. Attempt **${attempt}** out of **${maxAttempts}**\n${list}`,
+			PROMPTLIST_ABORT: 'abort',
+			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.'
 		};
 	}
 

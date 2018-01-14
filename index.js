@@ -19,6 +19,7 @@ module.exports = {
 	Leaderboard: require('./lib/util/Leaderboard'),
 	parseHTML: require('./lib/util/parseHTML'),
 	PreciseTimeout: require('./lib/util/PreciseTimeout'),
+	PromptList: require('./lib/util/PromptList'),
 	TimeParser: require('./lib/util/TimeParser'),
 	util: require('./lib/util/util'),
 

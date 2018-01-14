@@ -15,6 +15,8 @@
   "author": "kyranet",
   "license": "UNLICENSED",
   "dependencies": {
+    "canvas": "github:Automattic/node-canvas",
+    "canvas-constructor": "github:kyranet/canvasConstructor",
     "discord.js": "github:hydrabolt/discord.js",
     "fs-nextra": "^0.3.2",
     "klasa": "github:dirigeants/klasa#Configuration-initStatus",

@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const data = this.hits[Math.ceil(Math.random() * this.hits.length)];
-		return msg.send(`${data.tags}\n${data.pageURL}`);
+		return msg.sendMessage(`${data.tags}\n${data.pageURL}`);
 	}
 
 	async init() {

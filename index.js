@@ -1,4 +1,6 @@
 module.exports = {
+	rootFolder: __dirname,
+
 	// SkyraClient
 	Skyra: require('./lib/Skyra'),
 	config: require('./config'),

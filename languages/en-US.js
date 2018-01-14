@@ -81,7 +81,7 @@ const EIGHT_BALL = {
 	ELSE: ['Most likely.', 'Nope.', 'YES!', 'Maybe.']
 };
 
-function duration(time) {
+function duration(time) { // eslint-disable-line no-unused-vars
 	return Duration.duration(time, TIMES);
 }
 
@@ -770,6 +770,11 @@ module.exports = class extends Language {
 			},
 
 			/**
+			 * #####################
+			 * ANNOUNCEMENT COMMANDS
+			 */
+
+			/**
 			 * ##############
 			 * FUN COMMANDS
 			 */
@@ -802,6 +807,58 @@ module.exports = class extends Language {
 			COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
 			COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
 			COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
+
+			/**
+			 * ###################
+			 * MANAGEMENT COMMANDS
+			 */
+
+			/**
+			 * #############
+			 * MISC COMMANDS
+			 */
+
+			COMMAND_VAPORWAVE_OUTPUT: (string) => `There is your converted message:\n${string}`,
+
+			/**
+			 * #############################
+			 * MODERATION/UTILITIES COMMANDS
+			 */
+
+			/**
+			 * ###################
+			 * MODERATION COMMANDS
+			 */
+
+			/**
+			 * ##################
+			 * OVERWATCH COMMANDS
+			 */
+
+			/**
+			 * ###############
+			 * SOCIAL COMMANDS
+			 */
+
+			/**
+			 * ###############
+			 * SYSTEM COMMANDS
+			 */
+
+			/**
+			 * #############
+			 * TAGS COMMANDS
+			 */
+
+			/**
+			 * ##############
+			 * TOOLS COMMANDS
+			 */
+
+			/**
+			 * ################
+			 * WEATHER COMMANDS
+			 */
 
 			/**
 			 * #################################

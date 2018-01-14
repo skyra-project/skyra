@@ -19,7 +19,7 @@ module.exports = class extends Command {
 			.setTitle(msg.language.get('COMMAND_CATFACT_TITLE'))
 			.setDescription(fact);
 
-		return msg.send({ embed });
+		return msg.sendEmbed(embed);
 	}
 
 };

@@ -14,7 +14,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [rl = 1, sd = 6]) {
-		return msg.send(msg.language.get('COMMAND_DICE_OUTPUT', sd, rl, this.roll(rl, sd)));
+		return msg.sendMessage(msg.language.get('COMMAND_DICE_OUTPUT', sd, rl, this.roll(rl, sd)));
 	}
 
 	roll(rolls, sides) {

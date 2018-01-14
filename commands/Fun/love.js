@@ -41,7 +41,7 @@ module.exports = class extends Command {
 				`**${msg.language.get('COMMAND_LOVE_RESULT')}**: ${result}`
 			].join('\n'));
 
-		return msg.send({ embed });
+		return msg.sendEmbed(embed);
 	}
 
 };

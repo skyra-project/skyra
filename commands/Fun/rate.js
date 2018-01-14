@@ -30,7 +30,7 @@ module.exports = class extends Command {
 			ratewaifu = util.oneToTen(Math.floor(rate / 10)).emoji;
 		}
 
-		return msg.send(`**${msg.author.username}**, ${msg.language.get('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`);
+		return msg.sendMessage(`**${msg.author.username}**, ${msg.language.get('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`);
 	}
 
 };

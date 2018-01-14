@@ -22,7 +22,7 @@ module.exports = class extends Command {
 			.setThumbnail(data.icon_url)
 			.setDescription(data.value);
 
-		return msg.send({ embed });
+		return msg.sendEmbed(embed);
 	}
 
 };

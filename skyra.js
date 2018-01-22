@@ -4,14 +4,17 @@ new Skyra({
 	cmdEditing: true,
 	cmdLogging: false,
 	cmdPrompt: true,
-	console: { useColor: true },
+	console: config.console,
 	gateways: {
 		clientStorage: { provider: 'json', nice: false },
 		guilds: { provider: 'rethinkdb' },
 		users: { provider: 'postgresql' }
 	},
 	ownerID: '242043489611808769',
-	pieceDefaults: { commands: { deletable: true } },
+	pieceDefaults: {
+		commands: { deletable: true },
+		monitors: { ignoreOthers: false }
+	},
 	prefix: 's!',
 	// Uncheck for release
 	// regexPrefix: /^(hey )?skyra(,|!)/i,

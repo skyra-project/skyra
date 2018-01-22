@@ -118,6 +118,7 @@ module.exports = class extends Language {
 			SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `The key ${key} is not an Array.`,
 			SETTING_GATEWAY_KEY_NOEXT: (key) => `The key ${key} does not exist in the current data schema.`,
 			SETTING_GATEWAY_INVALID_TYPE: 'The type parameter must be either add or remove.',
+			RESOLVER_INVALID_CUSTOM: (name, type) => `${name} must be a valid ${type}.`,
 			RESOLVER_INVALID_PIECE: (name, piece) => `${name} must be a valid ${piece} name.`,
 			RESOLVER_INVALID_MSG: (name) => `${name} must be a valid message id.`,
 			RESOLVER_INVALID_USER: (name) => `${name} must be a mention or valid user id.`,
@@ -163,20 +164,6 @@ module.exports = class extends Language {
 				guildsAdded.length ? `**Guilds Added**\n${this.client.methods.util.codeBlock('', guildsAdded.join(', '))}` : '',
 				guildsRemoved.length ? `**Guilds Removed**\n${this.client.methods.util.codeBlock('', guildsRemoved.join(', '))}` : ''
 			].filter(val => val !== '').join('\n'),
-			COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
-			COMMAND_EVAL_EXTENDEDHELP: [
-				'The eval command evaluates code as-in, any error thrown from it will be handled.',
-				'It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.',
-				'The --silent flag will make it output nothing.',
-				'The --depth flag accepts a number, for example, --depth=2, to customize util.inspect\'s depth.',
-				'The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword',
-				'The --showHidden flag will enable the showHidden option in util.inspect.',
-				'If the output is too large, it\'ll send the output as a file, or in the console if the bot does not have the ATTACH_FILES permission.'
-			].join('\n'),
-			COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
-			COMMAND_EVAL_OUTPUT: (time, output, type) => `**Output**:${output}\n**Type**:${type}\n${time}`,
-			COMMAND_EVAL_SENDFILE: (time, type) => `Output was too long... sent the result as a file.\n**Type**:${type}\n${time}`,
-			COMMAND_EVAL_SENDCONSOLE: (time, type) => `Output was too long... sent the result to console.\n**Type**:${type}\n${time}`,
 			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
 			COMMAND_TRANSFER_ERROR: '❌ That file has been transfered already or never existed.',
@@ -259,6 +246,7 @@ module.exports = class extends Language {
 				this.client.options.shardCount ? `• Shard      :: ${((msg.guild ? msg.guild.shardID : msg.channel.shardID) || this.client.options.shardId) + 1} / ${this.client.options.shardCount}` : ''
 			],
 			COMMAND_STATS_DESCRIPTION: 'Provides some details about the bot and stats.',
+			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 
 			/**
 			 * ################################
@@ -666,6 +654,20 @@ module.exports = class extends Language {
 			 * SYSTEM COMMANDS
 			 */
 
+			COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
+			COMMAND_EVAL_EXTENDEDHELP: builder.display('eval', {
+				extendedHelp: `The eval command evaluates code as-in, any error thrown from it will be handled.
+				It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.
+				The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.
+				The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.
+				The --delete flag makes the command delete the message that executed the message after evaluation.
+				The --silent flag will make it output nothing.
+				The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.
+				The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword
+				The --showHidden flag will enable the showHidden option in util.inspect.
+				If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ATTACH_FILES permission.`
+			}),
+
 			/**
 			 * #############
 			 * TAGS COMMANDS
@@ -845,6 +847,13 @@ module.exports = class extends Language {
 			 * SYSTEM COMMANDS
 			 */
 
+			COMMAND_EVAL_TIMEOUT: (seconds) => `TIMEOUT: Took longer than ${seconds} seconds.`,
+			COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
+			COMMAND_EVAL_OUTPUT: (time, output, type) => `**Output**:${output}\n**Type**:${type}\n${time}`,
+			COMMAND_EVAL_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.\n**Type**:${type}\n${time}`,
+			COMMAND_EVAL_OUTPUT_FILE: (time, type) => `Sent the result as a file.\n**Type**:${type}\n${time}`,
+			COMMAND_EVAL_OUTPUT_HASTEBIN: (time, url, type) => `Sent the result to hastebin: ${url}\n**Type**:${type}\n${time}\n`,
+
 			/**
 			 * #############
 			 * TAGS COMMANDS
@@ -869,7 +878,10 @@ module.exports = class extends Language {
 			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} results. Please choose a number between 1 and ${amount}, or write **abort** to abort the prompt.\n${list}`,
 			PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Invalid input. Attempt **${attempt}** out of **${maxAttempts}**\n${list}`,
 			PROMPTLIST_ABORT: 'abort',
-			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.'
+			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.',
+
+			EVENTS_ERROR_WTF: 'What a Terrible Failure! I am very sorry!',
+			EVENTS_ERROR_STRING: (mention, message) => `Dear ${mention}, ${message}`
 		};
 	}
 

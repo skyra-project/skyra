@@ -17,9 +17,9 @@
   "dependencies": {
     "canvas": "github:Automattic/node-canvas",
     "canvas-constructor": "github:kyranet/canvasConstructor",
-    "discord.js": "github:hydrabolt/discord.js",
+    "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.3.2",
-    "klasa": "github:dirigeants/klasa#Configuration-initStatus",
+    "klasa": "github:dirigeants/klasa",
     "pg": "^7.4.0",
     "rethinkdbdash": "^2.3.31",
     "snekfetch": "^3.6.1",

@@ -25,6 +25,9 @@ module.exports = {
 	TimeParser: require('./lib/util/TimeParser'),
 	util: require('./lib/util/util'),
 
+	// Overwatch
+	overwatch: require('./lib/util/overwatch/index'),
+
 	// Moderation
 	AntiRaid: require('./lib/util/AntiRaid'),
 	GuildSecurity: require('./lib/util/GuildSecurity'),

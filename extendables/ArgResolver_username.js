@@ -17,8 +17,8 @@ module.exports = class extends Extendable {
 		super(...args, ['ArgResolver'], { name: 'username', klasa: true });
 	}
 
-	async extend(arg, currentUsage, possible, repeat, msg) {
-		if (!msg.guild) return this.user(arg, currentUsage, possible, repeat, msg);
+	async extend(arg, possible, msg) {
+		if (!msg.guild) return this.user(arg, possible, msg);
 		const resUser = await resolveUser(arg, msg.guild);
 		if (resUser) return resUser;
 
@@ -38,9 +38,7 @@ module.exports = class extends Extendable {
 		}
 
 		switch (querySearch.length) {
-			case 0:
-				if (currentUsage.type === 'optional' && !repeat) return null;
-				throw `${currentUsage.possibles[possible].name} Must be a valid name, id or user mention`;
+			case 0: throw `${possible.name} Must be a valid name, id or user mention`;
 			case 1: return querySearch[0];
 			default: return PromptList.run(msg, querySearch.slice(0, 10).map(user => user.username))
 				.then(number => querySearch[number]);

@@ -15,6 +15,13 @@ module.exports = {
 	MemberConfiguration: require('./lib/structures/MemberConfiguration'),
 	UserConfiguration: require('./lib/structures/UserConfiguration'),
 
+	// Custom API store and piece
+	API: require('./lib/structures/API'),
+	APIStore: require('./lib/structures/APIStore'),
+
+	// IPC
+	IPC: require('./lib/ipc/Controller'),
+
 	// Util
 	Duration: require('./lib/util/Duration'),
 	LanguageHelp: require('./lib/util/LanguageHelp'),
@@ -23,6 +30,7 @@ module.exports = {
 	PreciseTimeout: require('./lib/util/PreciseTimeout'),
 	PromptList: require('./lib/util/PromptList'),
 	TimeParser: require('./lib/util/TimeParser'),
+	toJSON: require('./lib/util/ToJSON'),
 	util: require('./lib/util/util'),
 
 	// Overwatch

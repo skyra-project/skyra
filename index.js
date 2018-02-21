@@ -1,5 +1,10 @@
+const klasa = require('klasa');
+
 module.exports = {
 	rootFolder: __dirname,
+
+	// Export everything from Klasa
+	...klasa,
 
 	// SkyraClient
 	Skyra: require('./lib/Skyra'),
@@ -14,6 +19,8 @@ module.exports = {
 	GuildConfiguration: require('./lib/structures/GuildConfiguration'),
 	MemberConfiguration: require('./lib/structures/MemberConfiguration'),
 	UserConfiguration: require('./lib/structures/UserConfiguration'),
+
+	ModerationCommand: require('./lib/structures/ModerationCommand'),
 
 	// Custom API store and piece
 	API: require('./lib/structures/API'),
@@ -41,5 +48,7 @@ module.exports = {
 	GuildSecurity: require('./lib/util/GuildSecurity'),
 	Moderation: require('./lib/util/Moderation'),
 	ModerationLog: require('./lib/util/ModerationLog'),
-	NoMentionSpam: require('./lib/util/NoMentionSpam')
+	NoMentionSpam: require('./lib/util/NoMentionSpam'),
+
+	klasaUtil: klasa.util
 };

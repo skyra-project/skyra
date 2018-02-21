@@ -1,6 +1,6 @@
 const { Skyra, config } = module.exports = require('./index');
 
-new Skyra({
+const client = new Skyra({
 	cmdEditing: true,
 	cmdLogging: false,
 	cmdPrompt: true,
@@ -24,7 +24,21 @@ new Skyra({
 		postgresql: config.database.postgresql
 	},
 	quotedStringSupport: true,
-	readyMessage: (client) =>
-		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+	readyMessage: (_client) =>
+		`Skyra ${config.version} ready! [${_client.user.tag}] [ ${_client.guilds.size} [G]] [ ${_client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	typing: false
-}).login(config.tokens.bot.dev);
+});
+
+client.login(config.tokens.bot.dev).catch((error) =>
+	client.console.log(`Login Error:\n${error && error.stack ? error.stack : error}`, 'wtf'));
+
+// Remove the default one from Klasa
+process.removeListener('unhandledRejection', process.listeners('unhandledRejection')[1]);
+process.on('unhandledRejection', (error) => {
+	if (!error) return;
+	client.console.wtf(`Uncaught Promise Error:\n${error && error.stack ? error.stack : error}`);
+});
+process.on('uncaughtException', (error) => {
+	if (!error) return;
+	client.console.wtf(`Uncaught Exception Error:\n${error && error.stack ? error.stack : error}`);
+});

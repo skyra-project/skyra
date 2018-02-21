@@ -13,7 +13,10 @@ module.exports = class extends Extendable {
 			options = undefined;
 		}
 
-		return this.sendMessage(content, options).then(msg => msg.nuke(typeof timer === 'number' ? timer : 10000));
+		return this.sendMessage(content, options).then(msg => {
+			msg.nuke(typeof timer === 'number' ? timer : 10000);
+			return msg;
+		});
 	}
 
 };

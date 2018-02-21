@@ -1,4 +1,4 @@
-const { Language } = require('klasa');
+const { Language, version } = require('klasa');
 const { LanguageHelp, Duration, util } = require('../index');
 
 const builder = new LanguageHelp()
@@ -213,8 +213,6 @@ module.exports = class extends Language {
 			COMMAND_HELP_NO_EXTENDED: 'No extended help available.',
 			COMMAND_HELP_DM: '📥 | The list of commands you have access to has been sent to your DMs.',
 			COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
-			COMMAND_HELP_USAGE: (usage) => `usage :: ${usage}`,
-			COMMAND_HELP_EXTENDED: 'Extended Help ::',
 			COMMAND_ENABLE: (type, name) => `+ Successfully enabled ${type}: ${name}`,
 			COMMAND_ENABLE_DESCRIPTION: 'Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.',
 			COMMAND_DISABLE: (type, name) => `+ Successfully disabled ${type}: ${name}`,
@@ -232,20 +230,6 @@ module.exports = class extends Language {
 			COMMAND_CONF_SERVER: (key, list) => `**Server Configuration${key}**\n${list}`,
 			COMMAND_CONF_USER_DESCRIPTION: 'Define per-user configuration.',
 			COMMAND_CONF_USER: (key, list) => `**User Configuration${key}**\n${list}`,
-			COMMAND_STATS: (memUsage, uptime, users, servers, channels, klasaVersion, discordVersion, processVersion, msg) => [
-				'= STATISTICS =',
-				'',
-				`• Mem Usage  :: ${memUsage} MB`,
-				`• Uptime     :: ${uptime}`,
-				`• Users      :: ${users}`,
-				`• Servers    :: ${servers}`,
-				`• Channels   :: ${channels}`,
-				`• Klasa      :: v${klasaVersion}`,
-				`• Discord.js :: v${discordVersion}`,
-				`• Node.js    :: ${processVersion}`,
-				this.client.options.shardCount ? `• Shard      :: ${((msg.guild ? msg.guild.shardID : msg.channel.shardID) || this.client.options.shardId) + 1} / ${this.client.options.shardCount}` : ''
-			],
-			COMMAND_STATS_DESCRIPTION: 'Provides some details about the bot and stats.',
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 
 			/**
@@ -491,6 +475,20 @@ module.exports = class extends Language {
 			}),
 
 			/**
+			 * ###################
+			 * MANAGEMENT COMMANDS
+			 */
+			COMMAND_NICK_DESCRIPTION: `Change Skyra's nickname for this guild.`,
+			COMMAND_NICK_EXTENDED: builder.display('nick', {
+				extendedHelp: `This command allows you to change Skyra's nickname easily for the guild.`,
+				reminder: `This command requires the ${PERMS.CHANGE_NICKNAME} permission. Make sure Skyra has it.`,
+				explainedUsage: [
+					['nick', `The new nickname. If you don't put any, it'll reset it instead.`]
+				],
+				examples: ['SkyNET', 'Assistant', '']
+			}),
+
+			/**
 			 * #############
 			 * MISC COMMANDS
 			 */
@@ -654,18 +652,93 @@ module.exports = class extends Language {
 			 * SYSTEM COMMANDS
 			 */
 
+			COMMAND_CPPEVAL_DESCRIPTION: 'Evaluates arbitrary C++. Reserved for bot owner.',
+			COMMAND_CPPEVAL_EXTENDED: builder.display('c++eval', {
+				extendedHelp: `The C++eval command evaluates command as-in, and wraps it into a main method. No namespaces are exported.
+					The --raw flag disables the code wrap, making it accept raw input.`,
+				examples: [
+					'std::cout << 2 + 2 - 1;'
+				]
+			}),
+			COMMAND_CSEVAL_DESCRIPTION: 'Evaluates arbitrary C#. Reserved for bot owner.',
+			COMMAND_CSEVAL_EXTENDED: builder.display('c#eval', {
+				extendedHelp: `The C#eval command evaluates command as-in, and wraps it into a main method.
+					The --raw flag disables the code wrap, making it accept raw input.
+					Exported namespaces are:
+						- System
+						- System.Collections
+						- System.Collections.Generic
+						- System.Linq
+						- System.Reflection`,
+				// Please do not translate the namespaces
+				examples: [
+					'return new[] { 2, 2 }.Sum() - 1;',
+					'return 2 + 2 - 1;'
+				]
+			}),
+			COMMAND_DM_DESCRIPTION: 'Sends a Direct Message. Reserved for bot owner for replying purposes.',
+			COMMAND_DM_EXTENDED: builder.display('dm', {
+				extendedHelp: `The DM command is reserved for bot owner, and it's only used for very certain purposes, such as replying feedback
+					messages sent by users.`
+			}),
 			COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
-			COMMAND_EVAL_EXTENDEDHELP: builder.display('eval', {
+			COMMAND_EVAL_EXTENDED: builder.display('eval', {
 				extendedHelp: `The eval command evaluates code as-in, any error thrown from it will be handled.
-				It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.
-				The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.
-				The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.
-				The --delete flag makes the command delete the message that executed the message after evaluation.
-				The --silent flag will make it output nothing.
-				The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.
-				The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword
-				The --showHidden flag will enable the showHidden option in util.inspect.
-				If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ATTACH_FILES permission.`
+					It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.
+					The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.
+					The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.
+					The --delete flag makes the command delete the message that executed the message after evaluation.
+					The --silent flag will make it output nothing.
+					The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.
+					The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword
+					The --showHidden flag will enable the showHidden option in util.inspect.
+					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${PERMS.ATTACH_FILES} permission.`,
+				examples: [
+					'msg.author.username;',
+					'1 + 1;'
+				]
+			}, true),
+			COMMAND_EXEC_DESCRIPTION: 'Execute Order 66.',
+			COMMAND_EXEC_EXTENDED: builder.display('exec', {
+				extendedHelp: `You better not know about this.`
+			}),
+			COMMAND_PYEVAL_DESCRIPTION: 'Evaluates arbitrary Python code. Reserved for bot owner.',
+			COMMAND_PYEVAL_EXTENDED: builder.display('pyeval', {
+				extendedHelp: `The pyeval command evaluates command as-in. No namespaces are exported.
+					The --py3 flag changes the eval mode from python 2.7 to python 3.6.`,
+				examples: [
+					'print(2 + 2 - 1)'
+				]
+			}),
+			COMMAND_SETAVATAR_DESCRIPTION: `Set Skyra's avatar.`,
+			COMMAND_SETAVATAR_EXTENDED: builder.display('setAvatar', {
+				extendedHelp: `This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel.`
+			}),
+			COMMAND_DONATE_DESCRIPTION: 'Get information about how to donate to keep Skyra alive longer.',
+			COMMAND_DONATE_EXTENDED: builder.display('donate', {
+				extendedHelp: `
+					Skyra Project started on 24th October 2016, if you are reading this, you are
+					using the version 3.0.0 (Royal Update), which is the twelfth rewrite. I have
+					improved a lot every single function from Skyra, and now, she is extremely fast.
+
+					However, not everything is free, I need your help to keep Skyra alive in a VPS so
+					you can enjoy her functions longer. I will be very thankful if you help me, really,
+					I have been working on a lot of things, but she is my beautiful baby, take care of her ❤
+
+					Do you want to support this amazing project? Feel free to do so! https://www.patreon.com/kyranet`
+			}),
+			COMMAND_ECHO_DESCRIPTION: 'Make Skyra send a message to this (or another) channel.',
+			COMMAND_ECHO_EXTENDED: builder.display('echo', {
+				extendedHelp: `This should be very obvious...`
+			}),
+			COMMAND_FEEDBACK_DESCRIPTION: `Send a feedback message to the bot's owner.`,
+			COMMAND_FEEDBACK_EXTENDED: builder.display('feedback', {
+				extendedHelp: `This command sends a message to a feedback channel where the bot's owner can read. You'll be replied
+					as soon as an update comes.`
+			}),
+			COMMAND_STATS_DESCRIPTION: 'Provides some details about the bot and stats.',
+			COMMAND_STATS_EXTENDED: builder.display('exec', {
+				extendedHelp: `This should be very obvious...`
 			}),
 
 			/**
@@ -777,6 +850,15 @@ module.exports = class extends Language {
 			 */
 
 			/**
+			 * ################
+			 * GENERAL COMMANDS
+			 */
+
+			COMMAND_HELP_TITLE: (name, description) => `📃 | ***Help Message*** | __**${name}**__\n${description}\n`,
+			COMMAND_HELP_USAGE: (usage) => `📝 | ***Command Usage***\n\`${usage}\`\n`,
+			COMMAND_HELP_EXTENDED: (extendedHelp) => `🔍 | ***Extended Help***\n${extendedHelp}`,
+
+			/**
 			 * ##############
 			 * FUN COMMANDS
 			 */
@@ -814,6 +896,9 @@ module.exports = class extends Language {
 			 * ###################
 			 * MANAGEMENT COMMANDS
 			 */
+
+			COMMAND_NICK_SET: (nickname) => `Changed the nickname to **${nickname}**.`,
+			COMMAND_NICK_CLEARED: 'Nickname cleared.',
 
 			/**
 			 * #############
@@ -854,6 +939,26 @@ module.exports = class extends Language {
 			COMMAND_EVAL_OUTPUT_FILE: (time, type) => `Sent the result as a file.\n**Type**:${type}\n${time}`,
 			COMMAND_EVAL_OUTPUT_HASTEBIN: (time, url, type) => `Sent the result to hastebin: ${url}\n**Type**:${type}\n${time}\n`,
 
+			COMMAND_STATS: (STATS, UPTIME, USAGE) => [
+				'= STATISTICS =',
+				`• Users      :: ${STATS.USERS}`,
+				`• Guilds     :: ${STATS.GUILDS}`,
+				`• Channels   :: ${STATS.CHANNELS}`,
+				`• Discord.js :: ${STATS.VERSION}`,
+				`• Node.js    :: ${STATS.NODE_JS}`,
+				`• Klasa      :: ${version}`,
+				'',
+				'= UPTIME =',
+				`• Host       :: ${UPTIME.HOST}`,
+				`• Total      :: ${UPTIME.TOTAL}`,
+				`• Client     :: ${UPTIME.CLIENT}`,
+				'',
+				'= HOST USAGE =',
+				`• CPU Load   :: ${USAGE.CPU_LOAD}`,
+				`• RAM +Node  :: ${USAGE.RAM_TOTAL}`,
+				`• RAM Usage  :: ${USAGE.RAM_USED}`
+			],
+
 			/**
 			 * #############
 			 * TAGS COMMANDS
@@ -880,6 +985,8 @@ module.exports = class extends Language {
 			PROMPTLIST_ABORT: 'abort',
 			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.',
 
+			COMMAND_DM_SENT: 'Sent the message via DMs!',
+			COMMAND_DM_NOT_SENT: 'Sent the message via DMs!',
 			EVENTS_ERROR_WTF: 'What a Terrible Failure! I am very sorry!',
 			EVENTS_ERROR_STRING: (mention, message) => `Dear ${mention}, ${message}`
 		};

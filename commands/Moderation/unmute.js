@@ -1,0 +1,42 @@
+const { ModerationCommand, Moderation } = require('../../index');
+
+module.exports = class extends ModerationCommand {
+
+	constructor(...args) {
+		super(...args, {
+			botPerms: ['MANAGE_ROLES'],
+			description: 'Unmute the mentioned user.',
+			modType: ModerationCommand.types.UN_MUTE,
+			permLevel: 5,
+			requiredMember: true,
+			runIn: ['text'],
+			usage: '<SearchMember:user> [reason:string] [...]',
+			usageDelim: ' '
+		});
+	}
+
+	async run(msg, [target, ...reason]) {
+		if (!msg.guild.configs.roles.muted) throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
+		if (!msg.guild.roles.has(msg.guild.configs.roles.muted)) {
+			await msg.guild.configs.reset('roles.muted');
+			throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
+		}
+
+		const member = await this.checkModeratable(msg, target);
+		const [mutedUsed] = await this.client.moderation.getCases({
+			[Moderation.schemaKeys.GUILD]: msg.guild.id,
+			[Moderation.schemaKeys.USER]: target.id,
+			[Moderation.schemaKeys.TYPE]: Moderation.typeKeys.MUTE,
+			[Moderation.schemaKeys.APPEAL]: false
+		});
+		if (!mutedUsed) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
+
+		const roles = mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || [];
+
+		await member.edit({ roles });
+		const modlog = await this.sendModlog(msg, target, reason.length ? reason.join(' ') : null);
+
+		return msg.sendMessage(msg.language.get('COMMAND_UNMUTE_MESSAGE', target, modlog.reason, modlog.caseNumber));
+	}
+
+};

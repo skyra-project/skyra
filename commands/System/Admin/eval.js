@@ -7,14 +7,12 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['ev'],
-			permLevel: 10,
-			guarded: true,
 			description: (msg) => msg.language.get('COMMAND_EVAL_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_EVAL_EXTENDEDHELP'),
+			extendedHelp: (msg) => msg.language.get('COMMAND_EVAL_EXTENDED'),
+			guarded: true,
+			permLevel: 10,
 			usage: '<expression:str>'
 		});
-
-		this.sendAsPrompt = this.definePrompt('<output:string>', '');
 	}
 
 	async run(msg, [code]) {

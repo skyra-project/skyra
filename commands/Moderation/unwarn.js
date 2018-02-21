@@ -1,4 +1,4 @@
-const { ModerationCommand } = require('../../index');
+const { ModerationCommand, Moderation } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
@@ -10,19 +10,23 @@ module.exports = class extends ModerationCommand {
 			permLevel: 5,
 			requiredMember: true,
 			runIn: ['text'],
-			usage: '<SearchMember:user> [reason:string] [...]',
+			usage: '<case:number> [reason:string] [...]',
 			usageDelim: ' '
 		});
 	}
 
-	async run(msg, [target, ...reason]) {
-		const member = await this.checkModeratable(msg, target);
-		if (member && !member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
+	async run(msg, [caseID, ...reason]) {
+		const [warn] = await this.client.moderation.getCases({
+			[Moderation.schemaKeys.GUILD]: msg.guild.id,
+			[Moderation.schemaKeys.TYPE]: Moderation.typeKeys.WARN,
+			[Moderation.schemaKeys.CASE]: caseID,
+			[Moderation.schemaKeys.APPEAL]: false
+		});
+		if (!warn) throw 'This warn does not exist.';
+		const user = await this.client.users.fetch(warn[Moderation.schemaKeys.USER]);
+		const modlog = await this.sendModlog(msg, user, reason);
 
-		await msg.guild.ban(target.id, { days: 1, reason: reason.join(' ') });
-		const modlog = await this.sendModlog(msg, target, reason);
-
-		return msg.sendMessage(msg.language.get('COMMAND_BAN_MESSAGE', target, modlog.reason, modlog.caseNumber));
+		return msg.sendMessage(msg.language.get('COMMAND_BAN_MESSAGE', user, modlog.reason, modlog.caseNumber));
 	}
 
 };

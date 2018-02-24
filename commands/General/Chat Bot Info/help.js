@@ -39,7 +39,7 @@ module.exports = class extends Command {
 	async buildHelp(msg) {
 		const help = {};
 
-		const commandNames = Array.from(this.client.commands.keys());
+		const commandNames = [...this.client.commands.keys()];
 		const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
 
 		await Promise.all(this.client.commands.map((command) =>

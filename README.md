@@ -14,12 +14,12 @@ There are over 10 rewrites (at the date of writting this, 12), with an active de
 
 **Skyra links**
 
-[Invite Skyra to your guild](https://skyradiscord.com/invite)
-[Permalink to join this guild](https://skyradiscord.com/join)
-[Donate me in Patreon](https://www.patreon.com/kyranet)
-[Contribute in the translation](https://skyradiscord.com/translate)
+- [Skyra Invite Link](https://skyradiscord.com/invite)
+- [Skyra's Lounge](https://skyradiscord.com/join)
+- [Patreon](https://www.patreon.com/kyranet)
+- [Translation](https://skyradiscord.com/translate)
 
 **Framework links**
 
-[Klasa's website](https://klasa.js.org)
-[Permalink to join Klasa's guild](https://discord.gg/FpEFSyY)
+- [Klasa's Website](https://klasa.js.org)
+- [Klasa's Guild](https://discord.gg/FpEFSyY)

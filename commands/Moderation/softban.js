@@ -20,8 +20,8 @@ module.exports = class extends ModerationCommand {
 		if (member && !member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
 
 		reason = reason.length ? reason.join(' ') : null;
-		await msg.guild.ban(target.id, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
-		await msg.guild.unban(target.id, 'Softban.');
+		await msg.guild.members.ban(target.id, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
+		await msg.guild.members.unban(target.id, 'Softban.');
 		const modlog = await this.sendModlog(msg, target, reason);
 
 		return msg.sendMessage(msg.language.get('COMMAND_SOFTBAN_MESSAGE', target, modlog.reason, modlog.caseNumber));

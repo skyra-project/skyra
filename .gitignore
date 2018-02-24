@@ -2,3 +2,4 @@ node_modules/
 /assets/
 .vs/
 config.js
+package-lock.json

@@ -18,6 +18,7 @@ const client = new Skyra({
 	prefix: 's!',
 	// Uncheck for release
 	// regexPrefix: /^(hey )?skyra(,|!)/i,
+	regexPrefix: /^(hey )?eva(,|!)/i,
 	providers: {
 		default: 'json',
 		rethinkdb: config.database.rethinkdb,
@@ -31,14 +32,3 @@ const client = new Skyra({
 
 client.login(config.tokens.bot.dev).catch((error) =>
 	client.console.log(`Login Error:\n${error && error.stack ? error.stack : error}`, 'wtf'));
-
-// Remove the default one from Klasa
-process.removeListener('unhandledRejection', process.listeners('unhandledRejection')[1]);
-process.on('unhandledRejection', (error) => {
-	if (!error) return;
-	client.console.wtf(`Uncaught Promise Error:\n${error && error.stack ? error.stack : error}`);
-});
-process.on('uncaughtException', (error) => {
-	if (!error) return;
-	client.console.wtf(`Uncaught Exception Error:\n${error && error.stack ? error.stack : error}`);
-});

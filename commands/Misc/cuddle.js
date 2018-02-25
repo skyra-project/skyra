@@ -9,6 +9,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			botPerms: ['ATTACH_FILES'],
+			bucket: 2,
 			cooldown: 30,
 			description: (msg) => msg.language.get('COMMAND_CUDDLE_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_CUDDLE_EXTENDED'),

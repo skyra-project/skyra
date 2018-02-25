@@ -8,19 +8,20 @@ const client = new Skyra({
 	gateways: {
 		clientStorage: { provider: 'json', nice: false },
 		guilds: { provider: 'rethinkdb' },
-		users: { provider: 'postgresql' }
+		users: { provider: 'rethinkdb' }
 	},
 	ownerID: '242043489611808769',
 	pieceDefaults: {
 		commands: { deletable: true },
-		monitors: { ignoreOthers: false }
+		monitors: { ignoreOthers: false },
+		ipcPieces: { enabled: true }
 	},
 	prefix: 's!',
 	// Uncheck for release
 	// regexPrefix: /^(hey )?skyra(,|!)/i,
 	regexPrefix: /^(hey )?eva(,|!)/i,
 	providers: {
-		default: 'json',
+		default: 'rethinkdb',
 		rethinkdb: config.database.rethinkdb,
 		postgresql: config.database.postgresql
 	},

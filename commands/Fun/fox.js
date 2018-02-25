@@ -5,6 +5,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			bucket: 2,
 			enabled: false,
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_FOX_DESCRIPTION'),

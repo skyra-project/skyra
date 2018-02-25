@@ -4,6 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			bucket: 2,
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_8BALL_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_8BALL_EXTENDED'),

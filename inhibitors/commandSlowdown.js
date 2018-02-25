@@ -27,7 +27,7 @@ module.exports = class extends Inhibitor {
 	getEntry(id) {
 		const entry = this.slowmode.get(id);
 		if (entry) clearTimeout(entry);
-		this.slowmode.set(id, setTimeout(this.slowmode.delete, this.slowmodeTime, id));
+		this.slowmode.set(id, setTimeout(() => this.slowmode.delete(id), this.slowmodeTime));
 		if (entry) throw true;
 	}
 

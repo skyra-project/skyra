@@ -7,6 +7,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['stats', 'sts'],
+			bucket: 2,
 			cooldown: 15,
 			description: (msg) => msg.language.get('COMMAND_STATS_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_STATS_EXTENDED')

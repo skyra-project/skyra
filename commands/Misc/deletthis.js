@@ -10,6 +10,7 @@ module.exports = class extends Command {
 		super(...args, {
 			aliases: ['deletethis'],
 			botPerms: ['ATTACH_FILES'],
+			bucket: 2,
 			cooldown: 30,
 			description: (msg) => msg.language.get('COMMAND_DELETTHIS_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_DELETTHIS_EXTENDED'),

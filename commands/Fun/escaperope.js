@@ -4,6 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			bucket: 2,
 			cooldown: 60,
 			description: (msg) => msg.language.get('COMMAND_ESCAPEROPE_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_ESCAPEROPE_EXTENDED')

@@ -4,7 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			cooldown: 10,
+			bucket: 2,
+			cooldown: 20,
 			description: (msg) => msg.language.get('COMMAND_FEEDBACK_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_FEEDBACK_EXTENDED'),
 			guarded: true,

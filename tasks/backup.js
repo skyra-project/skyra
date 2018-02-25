@@ -12,8 +12,8 @@ module.exports = class extends Task {
 	async run() {
 		await Promise.all([
 			this.backup('json', 'clientStorage'),
-			this.backup('postgresql', 'localScores'),
-			this.backup('postgresql', 'users'),
+			this.backup('rethinkdb', 'localScores'),
+			this.backup('rethinkdb', 'users'),
 			this.backup('rethinkdb', 'guilds')
 		]);
 	}

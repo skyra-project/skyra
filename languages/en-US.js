@@ -927,6 +927,8 @@ module.exports = class extends Language {
 			 * SOCIAL COMMANDS
 			 */
 
+			COMMAND_SCOREBOARD_POSITION: (position) => `Your placing position is: ${position}`,
+
 			/**
 			 * ###############
 			 * SYSTEM COMMANDS
@@ -979,6 +981,8 @@ module.exports = class extends Language {
 			 * #             UTILS             #
 			 * #################################
 			 */
+
+			LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
 			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} results. Please choose a number between 1 and ${amount}, or write **abort** to abort the prompt.\n${list}`,
 			PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Invalid input. Attempt **${attempt}** out of **${maxAttempts}**\n${list}`,

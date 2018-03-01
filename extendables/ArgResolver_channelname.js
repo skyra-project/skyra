@@ -10,7 +10,11 @@ function resolveChannel(query, guild) {
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['ArgResolver'], { name: 'channelname', klasa: true });
+		super(...args, {
+			appliesTo: ['ArgResolver'],
+			klasa: true,
+			name: 'channelname'
+		});
 	}
 
 	async extend(arg, possible, msg) {

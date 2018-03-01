@@ -3,7 +3,10 @@ const { Extendable, util: { sleep } } = require('klasa');
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['Message'], { name: 'nuke' });
+		super(...args, {
+			appliesTo: ['Message'],
+			name: 'nuke'
+		});
 	}
 
 	async extend(time = 0) {

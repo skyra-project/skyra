@@ -10,7 +10,11 @@ function resolveRole(query, guild) {
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['ArgResolver'], { name: 'rolename', klasa: true });
+		super(...args, {
+			appliesTo: ['ArgResolver'],
+			klasa: true,
+			name: 'rolename'
+		});
 	}
 
 	async extend(arg, possible, msg) {

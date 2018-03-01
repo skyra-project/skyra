@@ -5,7 +5,11 @@ const snekfetch = require('snekfetch');
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['Command'], { klasa: true });
+		super(...args, {
+			appliesTo: ['Command'],
+			klasa: true,
+			name: 'fetchURL'
+		});
 	}
 
 	async extend(url, options, type) {
@@ -14,7 +18,7 @@ module.exports = class extends Extendable {
 			options = undefined;
 		}
 		const result = await snekfetch.get(url, options)
-			.catch(this.constructor.handleError);
+			.catch(this.handleError);
 
 		switch (type) {
 			case 'json': return JSON.parse(result.text);

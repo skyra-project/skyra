@@ -4,7 +4,11 @@ const { GuildConfiguration, UserConfiguration } = require('../index');
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['Gateway'], { klasa: true });
+		super(...args, {
+			appliesTo: ['Gateway'],
+			klasa: true,
+			name: 'Configuration'
+		});
 	}
 
 	get extend() {

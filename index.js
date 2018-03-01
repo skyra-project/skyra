@@ -25,6 +25,8 @@ module.exports = {
 	// Custom API store and piece
 	API: require('./lib/structures/API'),
 	APIStore: require('./lib/structures/APIStore'),
+	RawEvent: require('./lib/structures/RawEvent'),
+	RawEventStore: require('./lib/structures/RawEventStore'),
 
 	// IPC
 	IPC: require('./lib/ipc/Controller'),

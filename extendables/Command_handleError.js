@@ -4,7 +4,11 @@ const { DiscordAPIError } = require('discord.js');
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['Command'], { klasa: true });
+		super(...args, {
+			appliesTo: ['Command'],
+			klasa: true,
+			name: 'handleError'
+		});
 	}
 
 	extend(error) {

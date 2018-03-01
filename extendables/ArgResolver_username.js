@@ -14,7 +14,11 @@ function resolveUser(query, guild) {
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['ArgResolver'], { name: 'username', klasa: true });
+		super(...args, {
+			appliesTo: ['ArgResolver'],
+			klasa: true,
+			name: 'username'
+		});
 	}
 
 	async extend(arg, possible, msg) {

@@ -231,6 +231,10 @@ module.exports = class extends Language {
 			COMMAND_CONF_USER_DESCRIPTION: 'Define per-user configuration.',
 			COMMAND_CONF_USER: (key, list) => `**User Configuration${key}**\n${list}`,
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
+			COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
+			COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
+			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${util.codeBlock('js', error)}`,
+			COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 			/**
 			 * ################################

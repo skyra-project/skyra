@@ -3,7 +3,10 @@ const { Extendable } = require('klasa');
 module.exports = class extends Extendable {
 
 	constructor(...args) {
-		super(...args, ['Message'], { name: 'alert' });
+		super(...args, {
+			appliesTo: ['Message'],
+			name: 'alert'
+		});
 	}
 
 	extend(content, options, timer) {

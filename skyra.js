@@ -17,21 +17,7 @@ const client = new Skyra({
 	cmdLogging: false,
 	cmdPrompt: true,
 	console: config.console,
-	gateways: {
-		clientStorage: { provider: 'json', nice: false },
-		guilds: { provider: 'rethinkdb' },
-		users: { provider: 'rethinkdb' }
-	},
-	ownerID: '242043489611808769',
-	pieceDefaults: {
-		commands: { deletable: true },
-		monitors: { ignoreOthers: false },
-		ipcPieces: { enabled: true },
-		rawEvents: { enabled: true }
-	},
-	consoleEvents: {
-		verbose: true
-	},
+	consoleEvents: { verbose: true },
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
 		'GUILD_MEMBER_REMOVE',
@@ -43,10 +29,18 @@ const client = new Skyra({
 		'VOICE_SERVER_UPDATE',
 		'VOICE_STATE_UPDATE'
 	],
+	gateways: { clientStorage: { provider: 'json' } },
+	messageCacheLifetime: 300,
+	messageCacheMaxSize: 50,
+	messageSweepInterval: 120,
+	ownerID: '242043489611808769',
+	pieceDefaults: {
+		commands: { deletable: true },
+		ipcPieces: { enabled: true },
+		monitors: { ignoreOthers: false },
+		rawEvents: { enabled: true }
+	},
 	prefix: 's!',
-	// Uncheck for release
-	// regexPrefix: /^^(hey )?(eva|skyra)(,|!)/i,
-	regexPrefix: /^(hey )?eva(,|!)/i,
 	providers: {
 		default: 'rethinkdb',
 		rethinkdb: config.database.rethinkdb
@@ -54,6 +48,9 @@ const client = new Skyra({
 	quotedStringSupport: true,
 	readyMessage: (_client) =>
 		`Skyra ${config.version} ready! [${_client.user.tag}] [ ${_client.guilds.size} [G]] [ ${_client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+	// regexPrefix: /^(hey )?(eva|skyra)(,|!)/i,
+	// Uncheck for release
+	regexPrefix: /^(hey )?eva(,|!)/i,
 	typing: false
 });
 

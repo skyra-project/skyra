@@ -11,13 +11,13 @@ module.exports = class extends Task {
 
 	async run(doc) {
 		// Get the guild and check for permissions
-		const guild = this.client.guilds.get(doc.guild);
+		const guild = this.client.guilds.get(doc[Moderation.schemaKeys.GUILD]);
 		if (!guild || !guild.me.permissions.has('MUTE_MEMBERS')) return;
 
 		// Fetch the user to unban
-		const user = await this.client.users.fetch(doc.user);
+		const user = await this.client.users.fetch(doc[Moderation.schemaKeys.USER]);
 		const member = await guild.members.fetch(user).catch(() => null);
-		const reason = `Mute released after ${this.timestamp.display(doc.duration)}`;
+		const reason = `Mute released after ${this.client.languages.default.duration(doc[Moderation.schemaKeys.DURATION])}`;
 
 		if (!member)
 			if (member.serverMute) await member.setDeaf(false, `[AUTO] ${reason}`);

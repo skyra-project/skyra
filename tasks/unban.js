@@ -11,13 +11,12 @@ module.exports = class extends Task {
 
 	async run(doc) {
 		// Get the guild and check for permissions
-		const guild = this.client.guilds.get(doc.guild);
+		const guild = this.client.guilds.get(doc[Moderation.schemaKeys.GUILD]);
 		if (!guild || !guild.me.permissions.has('BAN_MEMBERS')) return;
 
 		// Fetch the user to unban
-		const user = await this.client.users.fetch(doc.user);
-		const reason = `Ban released after ${this.timestamp.display(doc.duration)}`;
-		user.action = 'unban';
+		const user = await this.client.users.fetch(doc[Moderation.schemaKeys.USER]);
+		const reason = `Ban released after ${this.client.languages.default.duration(doc[Moderation.schemaKeys.DURATION])}`;
 
 		// Unban the user and send the modlog
 		const banLog = await this._fetchBanLog(guild, user);

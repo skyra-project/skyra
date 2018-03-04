@@ -1,5 +1,5 @@
 const { Task, Timestamp } = require('klasa');
-const { outputJSONAtomic, readJSON, remove } = require('fs-nextra');
+const { outputJSONAtomic, readJSON, remove, exists } = require('fs-nextra');
 const { join } = require('path');
 
 module.exports = class extends Task {
@@ -38,7 +38,7 @@ module.exports = class extends Task {
 		// Update the timestamp to latest
 		data.lastUpdated = Date.now();
 		data.backups.push(paths);
-		if (data.backups.length > 10) {
+		if (data.backups.length > 4) {
 			const oldPaths = data.backups.splice(0, 1);
 			await Promise.all(oldPaths.map(path => remove(path)));
 		}
@@ -80,6 +80,13 @@ module.exports = class extends Task {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === this.name)) {
 			await this.client.schedule.create(this.name, '0 0 * * mon,thu');
+		}
+		const fileExists = await exists(this.fileManager);
+		if (!fileExists) {
+			await outputJSONAtomic(this.fileManager, {
+				backups: [],
+				lastUpdated: null
+			});
 		}
 	}
 

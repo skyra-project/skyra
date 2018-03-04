@@ -27,8 +27,7 @@ const client = new Skyra({
 		'RELATIONSHIP_REMOVE',
 		'TYPING_START',
 		'USER_NOTE_UPDATE',
-		'VOICE_SERVER_UPDATE',
-		'VOICE_STATE_UPDATE'
+		'VOICE_SERVER_UPDATE'
 	],
 	gateways: { clientStorage: { provider: 'json' } },
 	messageCacheLifetime: 300,

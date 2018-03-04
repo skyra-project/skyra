@@ -1,5 +1,5 @@
 const { Task, Timestamp } = require('klasa');
-const { outputJSONAtomic, readJSON } = require('fs-nextra');
+const { outputJSONAtomic, readJSON, remove } = require('fs-nextra');
 const { join } = require('path');
 
 module.exports = class extends Task {
@@ -9,13 +9,41 @@ module.exports = class extends Task {
 		this.timestamp = new Timestamp('YYYY-MM-DD');
 	}
 
+	get dirManager() {
+		return join(this.client.clientBaseDir, 'bwd', 'backups');
+	}
+
+	get fileManager() {
+		return join(this.dirManager, 'backups.json');
+	}
+
 	async run() {
-		await Promise.all([
+		this.disable();
+		const paths = await Promise.all([
 			this.backup('json', 'clientStorage'),
 			this.backup('rethinkdb', 'localScores'),
 			this.backup('rethinkdb', 'users'),
-			this.backup('rethinkdb', 'guilds')
+			this.backup('rethinkdb', 'guilds'),
+			this.backup('rethinkdb', 'moderation'),
+			this.backup('rethinkdb', 'starboard')
 		]);
+		await this.writeFile(paths);
+		this.enable();
+	}
+
+	// Remove old backups to save space
+	async writeFile(paths) {
+		const data = await readJSON(this.fileManager);
+
+		// Update the timestamp to latest
+		data.lastUpdated = Date.now();
+		data.backups.push(paths);
+		if (data.backups.length > 10) {
+			const oldPaths = data.backups.splice(0, 1);
+			await Promise.all(oldPaths.map(path => remove(path)));
+		}
+
+		await outputJSONAtomic(this.fileManager, data);
 	}
 
 	/**
@@ -23,11 +51,13 @@ module.exports = class extends Task {
 	 * @since 3.0.0
 	 * @param {string} providerName The name of the provider
 	 * @param {string} table The name of the table
-	 * @returns {Promise<void>}
+	 * @returns {Promise<string>}
 	 */
 	async backup(providerName, table) {
 		const data = await this.client.providers.get(providerName).getAll(table);
-		return outputJSONAtomic(join(this.client.clientBaseDir, `${this.timestamp.display()}-${table}.json`), data);
+		const path = join(this.dirManager, `${this.timestamp.display()}-${table}.json`);
+		await outputJSONAtomic(path, data);
+		return path;
 	}
 
 	/**
@@ -39,18 +69,18 @@ module.exports = class extends Task {
 	 * @returns {Promise<Array<*>>}
 	 */
 	async upload(providerName, table, time) {
-		const data = await readJSON(join(this.client.clientBaseDir, `${time}-${table}.json`));
+		const data = await readJSON(join(this.dirManager, `${time}-${table}.json`));
 		const provider = this.client.providers.get(providerName);
 		return Promise.all(data.map(value => provider.create(table, value.id, value)));
 	}
 
-	/**
-	 * Init the crono. Execute this only once
-	 * @since 3.0.0
-	 * @returns {Promise<*>}
-	 */
-	_initCron() {
-		return this.client.schedule.create('backup', '0 0 * * mon');
+	// If this task is not being run, let's create the
+	// ScheduledTask and make it run every 10 minutes.
+	async init() {
+		const { tasks } = this.client.schedule;
+		if (!tasks.some(task => task.taskName === this.name)) {
+			await this.client.schedule.create(this.name, '0 0 * * mon,thu');
+		}
 	}
 
 };

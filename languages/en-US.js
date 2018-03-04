@@ -692,6 +692,10 @@ module.exports = class extends Language {
 			 * SYSTEM COMMANDS
 			 */
 
+			COMMAND_BACKUP_DESCRIPTION: 'Performs a backup of the database.',
+			COMMAND_BACKUP_EXTENDED: builder.display('backup', {
+				extendedHelp: `The backup command force-starts the backup task which runs twice a week.`
+			}),
 			COMMAND_CPPEVAL_DESCRIPTION: 'Evaluates arbitrary C++. Reserved for bot owner.',
 			COMMAND_CPPEVAL_EXTENDED: builder.display('c++eval', {
 				extendedHelp: `The C++eval command evaluates command as-in, and wraps it into a main method. No namespaces are exported.

@@ -17,7 +17,7 @@ module.exports = class extends ModerationCommand {
 
 	async run(msg, [target, ...reason]) {
 		const member = await this.checkModeratable(msg, target);
-		if (!member.voiceChannel) throw 'This member is not in a voice channel.';
+		if (!member.voiceChannel) throw msg.language.get('GUILD_MEMBER_NOT_VOICECHANNEL');
 		reason = reason.length ? reason.join(' ') : null;
 
 		await this.kickVoiceChannel(msg, member, reason);

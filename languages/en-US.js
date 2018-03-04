@@ -101,6 +101,8 @@ module.exports = class extends Language {
 			4: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
 		};
 
+		this.duration = duration;
+
 		this.language = {
 			/**
 			 * ################################
@@ -631,6 +633,7 @@ module.exports = class extends Language {
 			 * #############################
 			 * MODERATION/UTILITIES COMMANDS
 			 */
+
 			COMMAND_CASE_DESCRIPTION: 'Get the information from a case given its index.',
 			COMMAND_CASE_EXTENDED: builder.display('case', {
 				extendedHelp: ``
@@ -640,6 +643,39 @@ module.exports = class extends Language {
 			 * ###################
 			 * MODERATION COMMANDS
 			 */
+
+			COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
+			COMMAND_KICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
+			COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
+			COMMAND_LOCKDOWN_LOCKING: (channel) => `Locking the channel ${channel}...`,
+			COMMAND_LOCKDOWN_OPEN: (channel) => `The lockdown for the channel ${channel} has been released.`,
+			COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',
+			COMMAND_MUTE_CONFIGURE: 'Do you want me to create and configure the Mute role now?',
+			COMMAND_MUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_MUTE_MUTED: 'The target user is already muted.',
+			COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
+			COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
+			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
+			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_UNBAN_MESSAGE: (user, reason, banReason, log) => `|\`🔨\`| [Case::${log}] **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}${banReason ? `\nReason for Ban:${banReason}` : ''}`,
+			COMMAND_UNBAN_MISSING_PERMISSION: `I will need the ${PERMS.BAN_MEMBERS} permission to be able to unban.`,
+			COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MANAGE_ROLES} permission to be able to unmute.`,
+			COMMAND_UNWARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **APPEALED WARN**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_VMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MUTE_MEMBERS} permission to be able to voice unmute.`,
+			COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
+			COMMAND_VOICEKICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **VOICE KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
+			COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+
+			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what do you want me to filter.',
+			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
+			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
+			COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
+			COMMAND_FILTER_RESET: '| ✅ | Success! The filter has been reset.',
+
 
 			/**
 			 * ##################
@@ -985,6 +1021,13 @@ module.exports = class extends Language {
 			 * #             UTILS             #
 			 * #################################
 			 */
+
+			GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.modlog #modlogs`.',
+			GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
+			GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
+			GUILD_WARN_NOT_FOUND: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
+			GUILD_MEMBER_NOT_VOICECHANNEL: 'I cannot execute this action in a member that is not connected to a voice channel.',
+			SYSTEM_FETCHBANS_FAIL: 'I failed to fetch bans to retrieve some data needed.',
 
 			LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 

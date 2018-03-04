@@ -23,13 +23,13 @@ module.exports = class extends ModerationCommand {
 		}
 
 		const member = await this.checkModeratable(msg, target);
-		const [mutedUsed] = await this.client.moderation.getCases({
-			[Moderation.schemaKeys.GUILD]: msg.guild.id,
+		const [mutedUsed] = await this.client.moderation.getCases(msg.guild.id, {
 			[Moderation.schemaKeys.USER]: target.id,
 			[Moderation.schemaKeys.TYPE]: Moderation.typeKeys.MUTE,
 			[Moderation.schemaKeys.APPEAL]: false
 		});
 		if (!mutedUsed) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
+		await msg.guild.configs.update('mutes', member.id, msg.guild, { action: 'remove' });
 
 		const roles = mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || [];
 

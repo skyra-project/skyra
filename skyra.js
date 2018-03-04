@@ -18,6 +18,7 @@ const client = new Skyra({
 	cmdPrompt: true,
 	console: config.console,
 	consoleEvents: { verbose: true },
+	clock: { interval: 5000 },
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
 		'GUILD_MEMBER_REMOVE',

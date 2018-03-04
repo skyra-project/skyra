@@ -16,17 +16,16 @@ module.exports = class extends ModerationCommand {
 	}
 
 	async run(msg, [caseID, ...reason]) {
-		const [warn] = await this.client.moderation.getCases({
-			[Moderation.schemaKeys.GUILD]: msg.guild.id,
+		const [warn] = await this.client.moderation.getCases(msg.guild.id, {
 			[Moderation.schemaKeys.TYPE]: Moderation.typeKeys.WARN,
 			[Moderation.schemaKeys.CASE]: caseID,
 			[Moderation.schemaKeys.APPEAL]: false
 		});
-		if (!warn) throw 'This warn does not exist.';
+		if (!warn) throw msg.language.get('GUILD_WARN_NOT_FOUND');
 		const user = await this.client.users.fetch(warn[Moderation.schemaKeys.USER]);
 		const modlog = await this.sendModlog(msg, user, reason);
 
-		return msg.sendMessage(msg.language.get('COMMAND_BAN_MESSAGE', user, modlog.reason, modlog.caseNumber));
+		return msg.sendMessage(msg.language.get('COMMAND_UNWARN_MESSAGE', user, modlog.reason, modlog.caseNumber));
 	}
 
 };

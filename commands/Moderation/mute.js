@@ -27,6 +27,7 @@ module.exports = class extends ModerationCommand {
 
 		await member.edit({ roles: [mute.id] });
 		const modlog = await this.sendModlog(msg, target, reason, roles);
+		await msg.guild.configs.update('mutes', member.id, msg.guild, { action: 'add' });
 
 		return msg.sendMessage(msg.language.get('COMMAND_MUTE_MESSAGE', target, modlog.reason, modlog.caseNumber));
 	}

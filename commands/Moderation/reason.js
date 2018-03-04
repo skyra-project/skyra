@@ -27,10 +27,9 @@ module.exports = class extends Command {
 		}
 
 		// Get all cases
-		const [log] = await this.client.moderation.getCases({
-			[Moderation.schemaKeys.GUILD]: msg.guild,
+		const [log] = await this.client.moderation.getCases(msg.guild, {
 			[Moderation.schemaKeys.CASE]: selected
-		}).catch(() => null);
+		}).catch(() => [null]);
 		if (!log) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 
 		// Update the moderation case

@@ -55,4 +55,4 @@ const client = new Skyra({
 });
 
 client.login(config.tokens.bot.dev).catch((error) =>
-	client.console.log(`Login Error:\n${(error && error.stack) || error}`, 'wtf'));
+	client.console.wtf(`Login Error:\n${(error && error.stack) || error}`));

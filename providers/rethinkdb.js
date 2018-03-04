@@ -10,7 +10,7 @@ module.exports = class extends Provider {
 
 	async init() {
 		// Init all databases
-		await databaseInit.init();
+		await databaseInit.init(this.db);
 	}
 
 	/* Table methods */

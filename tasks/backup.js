@@ -77,10 +77,6 @@ module.exports = class extends Task {
 	// If this task is not being run, let's create the
 	// ScheduledTask and make it run every 10 minutes.
 	async init() {
-		const { tasks } = this.client.schedule;
-		if (!tasks.some(task => task.taskName === this.name)) {
-			await this.client.schedule.create(this.name, '0 0 * * mon,thu');
-		}
 		const fileExists = await exists(this.fileManager);
 		if (!fileExists) {
 			await outputJSONAtomic(this.fileManager, {

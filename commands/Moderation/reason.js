@@ -33,8 +33,7 @@ module.exports = class extends Command {
 		if (!log) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 
 		// Update the moderation case
-		await this.client.moderation.updateCase({
-			[Moderation.schemaKeys.GUILD]: msg.guild,
+		await this.client.moderation.updateCase(msg.guild, {
 			[Moderation.schemaKeys.CASE]: selected,
 			[Moderation.schemaKeys.REASON]: reason
 		});

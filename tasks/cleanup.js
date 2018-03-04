@@ -28,13 +28,4 @@ module.exports = class extends Task {
 		this.client.emit('verbose', 'Cleared presences, members and emojis.');
 	}
 
-	// If this task is not being run, let's create the
-	// ScheduledTask and make it run every 10 minutes.
-	async init() {
-		const { tasks } = this.client.schedule;
-		if (!tasks.some(task => task.taskName === this.name)) {
-			await this.client.schedule.create(this.name, '*/10 * * * *');
-		}
-	}
-
 };

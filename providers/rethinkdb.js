@@ -1,4 +1,4 @@
-const { Provider } = require('klasa');
+const { Provider, databaseInit } = require('../index');
 const rethink = require('rethinkdbdash');
 
 module.exports = class extends Provider {
@@ -6,6 +6,11 @@ module.exports = class extends Provider {
 	constructor(...args) {
 		super(...args);
 		this.db = rethink(this.client.options.providers.rethinkdb);
+	}
+
+	async init() {
+		// Init all databases
+		await databaseInit.init();
 	}
 
 	/* Table methods */

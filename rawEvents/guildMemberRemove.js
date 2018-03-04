@@ -1,5 +1,11 @@
 const { RawEvent } = require('../index');
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
+const MATCHES = {
+	MEMBER: '%MEMBER%',
+	MEMBERNAME: '%MEMBERNAME%',
+	MEMBERTAG: '%MEMBERTAG%',
+	GUILD: '%GUILD%'
+};
 
 module.exports = class extends RawEvent {
 
@@ -11,6 +17,7 @@ module.exports = class extends RawEvent {
 
 	async run({ guild, user }) {
 		if (!guild.available) return;
+		if (guild.members.has(user.id)) guild.members.delete(user.id);
 		if (guild.security.hasRAID(user.id)) guild.security.raid.delete(user.id);
 		if (guild.configs.events.memberRemove) {
 			this._handleLog(guild, user).catch(error => this.client.emit('error', error));
@@ -44,10 +51,10 @@ module.exports = class extends RawEvent {
 	_handleFarewell(guild, user) {
 		return guild.configs.messages.farewell.replace(REGEXP, match => {
 			switch (match) {
-				case '%MEMBER%': return `<@${user.id}>`;
-				case '%MEMBERNAME%': return user.username;
-				case '%MEMBERTAG%': return user.tag;
-				case '%GUILD%': return guild.name;
+				case MATCHES.MEMBER: return `<@${user.id}>`;
+				case MATCHES.MEMBERNAME: return user.username;
+				case MATCHES.MEMBERTAG: return user.tag;
+				case MATCHES.GUILD: return guild.name;
 				default: return match;
 			}
 		});

@@ -21,7 +21,6 @@
     "fs-nextra": "^0.3.2",
     "klasa": "github:dirigeants/klasa",
     "node-ipc": "^9.1.1",
-    "pg": "^7.4.0",
     "rethinkdbdash": "^2.3.31",
     "snekfetch": "^3.6.1",
     "xml2js": "^0.4.19"

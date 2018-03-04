@@ -40,7 +40,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [limit = 50, filter]) {
-		let messages = await msg.channel.messages.fetch({ limit: 100 });
+		let messages = await msg.channel.messages.fetch({ limit: 100, before: msg.id });
 		if (typeof filter !== 'undefined') {
 			const user = typeof filter !== 'string' ? filter : null;
 			const type = typeof filter === 'string' ? filter : 'user';

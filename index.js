@@ -19,6 +19,8 @@ module.exports = {
 	GuildConfiguration: require('./lib/structures/GuildConfiguration'),
 	MemberConfiguration: require('./lib/structures/MemberConfiguration'),
 	UserConfiguration: require('./lib/structures/UserConfiguration'),
+	Starboard: require('./lib/structures/Starboard'),
+	StarboardMessage: require('./lib/structures/StarboardMessage'),
 
 	ModerationCommand: require('./lib/structures/ModerationCommand'),
 
@@ -40,6 +42,7 @@ module.exports = {
 	PromptList: require('./lib/util/PromptList'),
 	TimeParser: require('./lib/util/TimeParser'),
 	toJSON: require('./lib/util/ToJSON'),
+	databaseInit: require('./lib/util/databaseInit'),
 	util: require('./lib/util/util'),
 
 	// Overwatch

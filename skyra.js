@@ -35,10 +35,13 @@ const client = new Skyra({
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
 		'GUILD_MEMBER_REMOVE',
+		'PRESENCE_UPDATE',
 		'RELATIONSHIP_ADD',
 		'RELATIONSHIP_REMOVE',
 		'TYPING_START',
-		'USER_NOTE_UPDATE'
+		'USER_NOTE_UPDATE',
+		'VOICE_SERVER_UPDATE',
+		'VOICE_STATE_UPDATE'
 	],
 	prefix: 's!',
 	// Uncheck for release
@@ -46,8 +49,7 @@ const client = new Skyra({
 	regexPrefix: /^(hey )?eva(,|!)/i,
 	providers: {
 		default: 'rethinkdb',
-		rethinkdb: config.database.rethinkdb,
-		postgresql: config.database.postgresql
+		rethinkdb: config.database.rethinkdb
 	},
 	quotedStringSupport: true,
 	readyMessage: (_client) =>

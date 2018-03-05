@@ -1048,8 +1048,14 @@ module.exports = class extends Language {
 			 * #################################
 			 */
 
-			SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
-			SYSTEM_DM_FAIL: 'I cannot send you a message in DMs, did you block me?',
+			COMMAND_DM_NOT_SENT: 'I cannot send you a message in DMs, did you block me?',
+			COMMAND_DM_SENT: 'I have sent you the message in DMs.',
+			COMMAND_ROLE_HIGHER_SKYRA: 'The selected member has higher or equal role position than me.',
+			COMMAND_ROLE_HIGHER: 'The selected member has higher or equal role position than you.',
+			COMMAND_SUCCESS: 'Successfully executed the command.',
+			COMMAND_TOSKYRA: 'Eww... I thought you loved me! 💔',
+			COMMAND_USERSELF: 'Why would you do that to yourself?',
+
 			SYSTEM_FETCHING: '`Fetching...`',
 			SYSTEM_PROCESSING: '`Processing...`',
 			SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
@@ -1060,8 +1066,6 @@ module.exports = class extends Language {
 			SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
 
 			LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
-
-			COMMAND_SUCCESS: 'Successfully executed the command.',
 
 			GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.modlog #modlogs`.',
 			GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
@@ -1079,7 +1083,9 @@ module.exports = class extends Language {
 			EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Updated the nickname from **${previous}** to **${current}**`,
 			EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous, current) => `Added a new nickname **${current}**`,
 			EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous) => `Removed the nickname **${previous}**`,
-			EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0 ? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}\n` : ''}${added.length > 0 ? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
+			EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0
+				? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}\n` : ''}${added.length > 0
+				? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
 			EVENTS_MESSAGE_UPDATE: 'Message Edited',
 			EVENTS_MESSAGE_DELETE: 'Message Deleted',
 			EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
@@ -1102,8 +1108,6 @@ module.exports = class extends Language {
 			PROMPTLIST_ABORT: 'abort',
 			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.',
 
-			COMMAND_DM_SENT: 'Sent the message via DMs!',
-			COMMAND_DM_NOT_SENT: 'Sent the message via DMs!',
 			EVENTS_ERROR_WTF: 'What a Terrible Failure! I am very sorry!',
 			EVENTS_ERROR_STRING: (mention, message) => `Dear ${mention}, ${message}`
 		};

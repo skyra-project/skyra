@@ -47,9 +47,9 @@ const client = new Skyra({
 	quotedStringSupport: true,
 	readyMessage: (_client) =>
 		`Skyra ${config.version} ready! [${_client.user.tag}] [ ${_client.guilds.size} [G]] [ ${_client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
-	// regexPrefix: /^(hey )?(eva|skyra)(,|!)/i,
 	// Uncheck for release
-	regexPrefix: /^(hey )?eva(,|!)/i,
+	regexPrefix: /^(hey )?(eva|skyra)(,|!)/i,
+	// regexPrefix: /^(hey )?eva(,|!)/i,
 	schedule: { interval: 5000 },
 	typing: false
 });

@@ -7,7 +7,12 @@ module.exports = class extends Command {
 			aliases: ['commands'],
 			guarded: true,
 			description: (msg) => msg.language.get('COMMAND_HELP_DESCRIPTION'),
-			usage: '[Command:cmd]'
+			usage: '(Command:cmd)'
+		});
+
+		this.createCustomResolver('cmd', (arg, possible, msg) => {
+			if (!arg || arg === '') return undefined;
+			return this.client.argResolver.cmd(arg, possible, msg);
 		});
 	}
 

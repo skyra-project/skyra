@@ -18,7 +18,6 @@ const client = new Skyra({
 	cmdPrompt: true,
 	console: config.console,
 	consoleEvents: { verbose: true },
-	clock: { interval: 5000 },
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
 		'GUILD_MEMBER_REMOVE',
@@ -51,6 +50,7 @@ const client = new Skyra({
 	// regexPrefix: /^(hey )?(eva|skyra)(,|!)/i,
 	// Uncheck for release
 	regexPrefix: /^(hey )?eva(,|!)/i,
+	schedule: { interval: 5000 },
 	typing: false
 });
 

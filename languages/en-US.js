@@ -956,6 +956,20 @@ module.exports = class extends Language {
 			 * MODERATION/UTILITIES COMMANDS
 			 */
 
+			COMMAND_PERMISSIONS: (username, id) => `Permissions for ${username} (${id})`,
+			COMMAND_RAID_DISABLED: 'The Anti-RAID system is not enabled in this server.',
+			COMMAND_RAID_MISSING_KICK: 'As I do not have the KICK MEMBERS permission, I keep the Anti-RAID unactivated.',
+			COMMAND_RAID_LIST: 'List of users in the RAID queue',
+			COMMAND_RAID_CLEAR: 'Successfully cleared the RAID list.',
+			COMMAND_RAID_COOL: 'Successfully deactivated the RAID.',
+			COMMAND_FLOW: (amount) => `${amount} messages have been sent within the last minute.`,
+			COMMAND_TIME_TIMED: 'The selected moderation case has already been timed.',
+			COMMAND_TIME_UNDEFINED_TIME: 'You must specify a time.',
+			COMMAND_TIME_UNSUPPORTED_TIPE: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
+			COMMAND_TIME_NOT_SCHEDULED: 'This task is not scheduled.',
+			COMMAND_TIME_ABORTED: (title) => `Successfully aborted the schedule for ${title}`,
+			COMMAND_TIME_SCHEDULED: (title, user, time) => `✅ Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(time)}`,
+
 			/**
 			 * ###################
 			 * MODERATION COMMANDS
@@ -1022,18 +1036,66 @@ module.exports = class extends Language {
 
 			/**
 			 * #################################
+			 * #           INHIBITORS          #
+			 * #################################
+			 */
+
+			INHIBITOR_SPAM: (channel) => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
+
+			/**
+			 * #################################
 			 * #             UTILS             #
 			 * #################################
 			 */
 
+			SYSTEM_DM_SENT: 'I have sent you the message in DMs.',
+			SYSTEM_DM_FAIL: 'I cannot send you a message in DMs, did you block me?',
+			SYSTEM_FETCHING: '`Fetching...`',
+			SYSTEM_PROCESSING: '`Processing...`',
+			SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
+			SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
+			SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the ${PERMS.BAN_MEMBERS} permission?`,
+			SYSTEM_LOADING: '`Loading... please wait.`',
+			SYSTEM_ERROR: 'Something happened!',
+			SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
+
+			LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
+
+			COMMAND_SUCCESS: 'Successfully executed the command.',
+
 			GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.modlog #modlogs`.',
 			GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
 			GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
+			GUILD_BANS_EMPTY: 'There are no bans registered in this server.',
+			GUILD_BANS_NOT_FOUND: 'Please, write a valid user ID or tag.',
+			CHANNEL_NOT_READABLE: `I am sorry, but I need the permission **${PERMS.VIEW_CHANNEL}**`,
+
+			USER_NOT_IN_GUILD: 'This user is not in this server.',
+
+			EVENTS_GUILDMEMBERADD: 'User Joined',
+			EVENTS_GUILDMEMBERADD_MUTE: 'Muted User joined',
+			EVENTS_GUILDMEMBERADD_RAID: 'Raid Detected',
+			EVENTS_GUILDMEMBERREMOVE: 'User left',
+			EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Updated the nickname from **${previous}** to **${current}**`,
+			EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous, current) => `Added a new nickname **${current}**`,
+			EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous) => `Removed the nickname **${previous}**`,
+			EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0 ? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}\n` : ''}${added.length > 0 ? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
+			EVENTS_MESSAGE_UPDATE: 'Message Edited',
+			EVENTS_MESSAGE_DELETE: 'Message Deleted',
+			EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
+			EVENTS_COMMAND: (command) => `Command Used: ${command}`,
+			EVENTS_STREAM_START: (member) => `The user **${member.user.tag}** is now live! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
+			EVENTS_STREAM_STOP: (member) => `The user **${member.user.tag}** is not longer live!`,
+			EVENTS_STARBOARD_SELF: (user) => `Dear ${user}, you cannot star your own messages.`,
+			EVENTS_STARBOARD_BOT: (user) => `Dear ${user}, you cannot star bot messages.`,
+			EVENTS_STARBOARD_EMPTY: (user) => `Dear ${user}, you cannot star empty messages.`,
+
+			SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reseated the value for `channels.default`',
+			SETTINGS_DELETE_ROLES_INITIAL: 'Reseated the value for `roles.initial`',
+			SETTINGS_DELETE_ROLES_MUTE: 'Reseated the value for `roles.muted`',
+
 			GUILD_WARN_NOT_FOUND: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
 			GUILD_MEMBER_NOT_VOICECHANNEL: 'I cannot execute this action in a member that is not connected to a voice channel.',
-			SYSTEM_FETCHBANS_FAIL: 'I failed to fetch bans to retrieve some data needed.',
-
-			LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
 			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} results. Please choose a number between 1 and ${amount}, or write **abort** to abort the prompt.\n${list}`,
 			PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Invalid input. Attempt **${attempt}** out of **${maxAttempts}**\n${list}`,

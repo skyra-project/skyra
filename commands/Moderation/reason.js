@@ -33,10 +33,7 @@ module.exports = class extends Command {
 		if (!log) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 
 		// Update the moderation case
-		await this.client.moderation.updateCase(msg.guild, {
-			[Moderation.schemaKeys.CASE]: selected,
-			[Moderation.schemaKeys.REASON]: reason
-		});
+		await this.client.moderation.r.table('moderation').get(log.id).update({ [Moderation.schemaKeys.REASON]: reason });
 
 		// Fetch the message to edit it
 		const messages = await channel.messages.fetch({ limit: 100 });

@@ -8,7 +8,7 @@ module.exports = class extends Event {
 		const piece = this.client.rawEvents.get(data.t);
 		if (piece) {
 			const processed = await piece.process(data.d);
-			if (processed) piece.run().catch(error => this.client.emit('error', error));
+			if (processed) piece.run(processed).catch(error => this.client.emit('error', (error && error.stack) || error));
 		} else {
 			this.client.emit('error', `The raw event ${data.t} does not exist.`);
 		}

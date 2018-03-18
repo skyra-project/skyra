@@ -1,5 +1,4 @@
-const { Command } = require('klasa');
-const { setToArray } = require.main.exports.util;
+const { Command, util: { setToArray } } = require('../../index');
 
 module.exports = class extends Command {
 

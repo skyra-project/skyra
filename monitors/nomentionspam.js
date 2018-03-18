@@ -23,7 +23,7 @@ module.exports = class extends Monitor {
 		const amount = msg.guild.security.nms.add(msg.author.id, count);
 		if (amount >= msg.guild.configs.selfmod.nmsthreshold) {
 			await msg.guild.members.ban(msg.author.id, { days: 0, reason: msg.language.get('CONST_MONITOR_NMS') }).catch(this.handleError);
-			await msg.send(msg.language.get('MONITOR_NMS_MESSAGE', msg.author)).catch(this.handleError);
+			await msg.sendMessage(msg.language.get('MONITOR_NMS_MESSAGE', msg.author)).catch(this.handleError);
 			msg.guild.security.nms.delete(msg.author.id);
 
 			return new ModerationLog(msg.guild)

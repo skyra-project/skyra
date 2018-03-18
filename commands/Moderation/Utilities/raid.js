@@ -28,17 +28,17 @@ module.exports = class extends Command {
 			.setFooter(`${raid.size}/${msg.guild.configs.selfmod.raidthreshold} ${msg.language.get('CONST_USERS')}`)
 			.setTimestamp();
 
-		return msg.send({ embed });
+		return msg.sendMessage({ embed });
 	}
 
 	clear(msg) {
 		msg.guild.security.raid.clear();
-		return msg.send(msg.language.get('COMMAND_RAID_CLEAR'));
+		return msg.sendMessage(msg.language.get('COMMAND_RAID_CLEAR'));
 	}
 
 	cool(msg) {
 		msg.guild.security.raid.stop();
-		return msg.send(msg.language.get('COMMAND_RAID_COOL'));
+		return msg.sendMessage(msg.language.get('COMMAND_RAID_COOL'));
 	}
 
 };

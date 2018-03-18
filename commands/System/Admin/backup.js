@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		// Disable this command so it cannot
 		// run twice during a backup
 		this.disable();
-		const message = await msg.send('Initializing backup... Please hold on.');
+		const message = await msg.sendMessage('Initializing backup... Please hold on.');
 		const task = this.client.tasks.get('backup');
 
 		// Do NOT run the task if it's disabled

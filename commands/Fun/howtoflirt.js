@@ -1,7 +1,6 @@
-const { Command } = require('klasa');
-const { fetchAvatar } = require.main.exports.util;
+const { Command, util: { fetchAvatar } } = require('../../index');
 const { readFile } = require('fs-nextra');
-const { join, resolve } = require('path');
+const { join } = require('path');
 const Canvas = require('canvas');
 
 module.exports = class extends Command {
@@ -73,7 +72,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		this.template = await readFile(resolve(join(__dirname, '../../assets/images/memes/howtoflirt.png')));
+		this.template = await readFile(join(__dirname, '../../assets/images/memes/howtoflirt.png'));
 	}
 
 };

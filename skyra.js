@@ -1,6 +1,15 @@
 const { Skyra, config } = module.exports = require('./index');
-const { FLAGS } = require('discord.js').Permissions;
+const { Permissions: { FLAGS } } = require('discord.js');
 
+// Canvas setup
+const { join } = require('path');
+require('canvas-constructor').Canvas
+	.registerFont(join(__dirname, 'assets', 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(__dirname, 'assets', 'fonts', 'NotoEmoji.ttf'), 'RobotoRegular')
+	.registerFont(join(__dirname, 'assets', 'fonts', 'NotoSans-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(__dirname, 'assets', 'fonts', 'Roboto-Light.ttf'), 'RobotoLight');
+
+// Skyra setup
 Skyra.defaultPermissionLevels
 	.add(4, (client, msg) => Boolean(msg.member) && (msg.guild.configs.roles.staff
 		? msg.member.roles.has(msg.guild.configs.roles.staff)
@@ -12,7 +21,7 @@ Skyra.defaultPermissionLevels
 		? msg.member.roles.has(msg.guild.configs.roles.admin)
 		: msg.member.permissions.has(FLAGS.MANAGE_GUILD)), { fetch: true });
 
-const client = new Skyra({
+const skyra = new Skyra({
 	cmdEditing: true,
 	cmdLogging: false,
 	cmdPrompt: true,
@@ -45,14 +54,13 @@ const client = new Skyra({
 		rethinkdb: config.database.rethinkdb
 	},
 	quotedStringSupport: true,
-	readyMessage: (_client) =>
-		`Skyra ${config.version} ready! [${_client.user.tag}] [ ${_client.guilds.size} [G]] [ ${_client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
-	// Uncheck for release
+	readyMessage: (client) =>
+		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	regexPrefix: /^(hey )?(eva|skyra)(,|!)/i,
 	// regexPrefix: /^(hey )?eva(,|!)/i,
 	schedule: { interval: 5000 },
 	typing: false
 });
 
-client.login(config.tokens.bot.dev).catch((error) =>
-	client.console.wtf(`Login Error:\n${(error && error.stack) || error}`));
+skyra.login(config.tokens.bot.dev).catch((error) =>
+	skyra.console.wtf(`Login Error:\n${(error && error.stack) || error}`));

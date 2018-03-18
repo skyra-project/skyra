@@ -19,7 +19,7 @@ module.exports = class extends Command {
 			minimum = msg.createdTimestamp - 60000,
 			amount = messages.reduce((prev, curr) => curr.createdTimestamp > minimum ? prev + 1 : prev, 0);
 
-		return msg.send(msg.language.get('COMMAND_FLOW', amount));
+		return msg.sendMessage(msg.language.get('COMMAND_FLOW', amount));
 	}
 
 };

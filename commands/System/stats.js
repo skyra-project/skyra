@@ -1,4 +1,4 @@
-const { Command, Timestamp } = require('klasa');
+const { Command, Duration } = require('klasa');
 const { version } = require('discord.js');
 const { uptime, loadavg } = require('os');
 
@@ -31,9 +31,9 @@ module.exports = class extends Command {
 	get UPTIME() {
 		const now = Date.now();
 		return {
-			HOST: Timestamp.toNow(now - (uptime() * 1000), false),
-			TOTAL: Timestamp.toNow(now - (process.uptime() * 1000), false),
-			CLIENT: Timestamp.toNow(now - this.client.uptime, false)
+			HOST: Duration.toNow(now - (uptime() * 1000), false),
+			TOTAL: Duration.toNow(now - (process.uptime() * 1000), false),
+			CLIENT: Duration.toNow(now - this.client.uptime, false)
 		};
 	}
 

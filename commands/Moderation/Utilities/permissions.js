@@ -31,7 +31,7 @@ module.exports = class extends Command {
 			.setTitle(msg.language.get('COMMAND_PERMISSIONS', user.tag, user.id))
 			.setDescription(list.join('\n'));
 
-		return msg.send({ embed });
+		return msg.sendMessage({ embed });
 	}
 
 };

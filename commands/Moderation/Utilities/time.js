@@ -48,7 +48,7 @@ module.exports = class extends Command {
 			[Moderation.schemaKeys.TIMED]: false
 		});
 
-		return msg.send(msg.language.get('COMMAND_TIME_SCHEDULED', ModerationLog.TYPES[type].title, user, duration));
+		return msg.sendMessage(msg.language.get('COMMAND_TIME_SCHEDULED', ModerationLog.TYPES[type].title, user, duration));
 	}
 
 	async cancel(msg, caseID, task) {
@@ -58,7 +58,7 @@ module.exports = class extends Command {
 			[Moderation.schemaKeys.CASE]: caseID,
 			[Moderation.schemaKeys.TIMED]: false
 		});
-		return msg.send(msg.language.get('COMMAND_TIME_ABORTED', ModerationLog.getColor(task.type).title));
+		return msg.sendMessage(msg.language.get('COMMAND_TIME_ABORTED', ModerationLog.getColor(task.type).title));
 	}
 
 	getActions(msg, modlog, user) {

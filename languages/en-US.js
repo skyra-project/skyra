@@ -1,5 +1,5 @@
 const { Language, version } = require('klasa');
-const { LanguageHelp, Duration, util } = require('../index');
+const { LanguageHelp, Duration, util, klasaUtil, constants: { EMOJIS: { SHINY } } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -161,10 +161,10 @@ module.exports = class extends Language {
 			INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
 			COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',
 			COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
-				usersAdded.length ? `**Users Added**\n${this.client.methods.util.codeBlock('', usersAdded.join(', '))}` : '',
-				usersRemoved.length ? `**Users Removed**\n${this.client.methods.util.codeBlock('', usersRemoved.join(', '))}` : '',
-				guildsAdded.length ? `**Guilds Added**\n${this.client.methods.util.codeBlock('', guildsAdded.join(', '))}` : '',
-				guildsRemoved.length ? `**Guilds Removed**\n${this.client.methods.util.codeBlock('', guildsRemoved.join(', '))}` : ''
+				usersAdded.length ? `**Users Added**\n${this.client.methods.klasaUtil.codeBlock('', usersAdded.join(', '))}` : '',
+				usersRemoved.length ? `**Users Removed**\n${this.client.methods.klasaUtil.codeBlock('', usersRemoved.join(', '))}` : '',
+				guildsAdded.length ? `**Guilds Added**\n${this.client.methods.klasaUtil.codeBlock('', guildsAdded.join(', '))}` : '',
+				guildsRemoved.length ? `**Guilds Removed**\n${this.client.methods.klasaUtil.codeBlock('', guildsRemoved.join(', '))}` : ''
 			].filter(val => val !== '').join('\n'),
 			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
@@ -184,7 +184,7 @@ module.exports = class extends Language {
 			COMMAND_INVITE: (client) => [
 				`To add ${client.user.username} to your discord guild:`,
 				client.invite,
-				this.client.methods.util.codeBlock('', [
+				this.client.methods.klasaUtil.codeBlock('', [
 					'The above link is generated requesting the minimum permissions required to use every command currently.',
 					'I know not all permissions are right for every server, so don\'t be afraid to uncheck any of the boxes.',
 					'If you try to use a command that requires more permissions than the bot is granted, it will let you know.'
@@ -235,7 +235,7 @@ module.exports = class extends Language {
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 			COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
 			COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
-			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${util.codeBlock('js', error)}`,
+			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${klasaUtil.codeBlock('js', error)}`,
 			COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 			/**
@@ -644,38 +644,91 @@ module.exports = class extends Language {
 			 * MODERATION COMMANDS
 			 */
 
-			COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
-			COMMAND_KICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
-			COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
-			COMMAND_LOCKDOWN_LOCKING: (channel) => `Locking the channel ${channel}...`,
-			COMMAND_LOCKDOWN_OPEN: (channel) => `The lockdown for the channel ${channel} has been released.`,
-			COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',
-			COMMAND_MUTE_CONFIGURE: 'Do you want me to create and configure the Mute role now?',
-			COMMAND_MUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_MUTE_MUTED: 'The target user is already muted.',
-			COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
-			COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
-			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
-			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_UNBAN_MESSAGE: (user, reason, banReason, log) => `|\`🔨\`| [Case::${log}] **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}${banReason ? `\nReason for Ban:${banReason}` : ''}`,
-			COMMAND_UNBAN_MISSING_PERMISSION: `I will need the ${PERMS.BAN_MEMBERS} permission to be able to unban.`,
-			COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MANAGE_ROLES} permission to be able to unmute.`,
-			COMMAND_UNWARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **APPEALED WARN**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_VMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MUTE_MEMBERS} permission to be able to voice unmute.`,
-			COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
-			COMMAND_VOICEKICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **VOICE KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
-			COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-
-			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what do you want me to filter.',
-			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
-			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
-			COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
-			COMMAND_FILTER_RESET: '| ✅ | Success! The filter has been reset.',
-
+			COMMAND_BALANCE_DESCRIPTION: 'Check your current balance.',
+			COMMAND_BALANCE_EXTENDED: builder.display('balance', {
+				extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
+			}),
+			COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}.`,
+			COMMAND_DAILY_EXTENDED: builder.display('daily', {
+				extendedHelp: `Shiiiiny!`,
+				reminder: [
+					'Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.',
+					'You can claim dailies once every 12 hours.'
+				].join('\n')
+			}),
+			COMMAND_LEADERBOARD_DESCRIPTION: 'Check the leaderboards.',
+			COMMAND_LEADERBOARD_EXTENDED: builder.display('leaderboard', {
+				extendedHelp: `The leaderboard command shows a list of users sorted by their local or global amount of points,
+					by default, when using no arguments, it will show the local leaderboard. The leaderboards refresh after 10
+					minutes.`,
+				reminder: '"Local" leaderboards refer to the guild\'s top list. "Global" refers to all scores from all guilds.'
+			}),
+			COMMAND_LEVEL_DESCRIPTION: 'Check your global level.',
+			COMMAND_LEVEL_EXTENDED: builder.display('level', {
+				extendedHelp: `How much until I reach next level?`,
+				explainedUsage: [
+					['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
+				]
+			}),
+			COMMAND_PAY_DESCRIPTION: `Pay somebody with your ${SHINY}.`,
+			COMMAND_PAY_EXTENDED: builder.display('pay', {
+				extendedHelp: `Businessmen! Today is payday!`,
+				explainedUsage: [
+					['money', `Amount of ${SHINY} to pay, you must have the amount you are going to pay.`],
+					['user', 'The targetted user to pay. (Must be mention/id)']
+				],
+				examples: [
+					'Skyra, pay 200 @kyra'
+				]
+			}),
+			COMMAND_PROFILE_DESCRIPTION: 'Check your user profile.',
+			COMMAND_PROFILE_EXTENDED: builder.display('profile', {
+				extendedHelp: `This command sends a card image with some of your user profile such as your global rank, experience...
+					Additionally, you are able to customize your colours with the 'setColor' command.`,
+				explainedUsage: [
+					['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
+				]
+			}),
+			COMMAND_REMINDME_DESCRIPTION: 'Manage your reminders.',
+			COMMAND_REMINDME_EXTENDED: builder.display('remindme', {
+				extendedHelp: `This command allows you to set, delete and list reminders.`,
+				explainedUsage: [
+					['title', 'What you want me to remind you.'],
+					['time', 'The time the reminder should last. If not provided, Skyra will ask for it in a prompt.']
+				],
+				examples: [
+					'Skyra, remind me in 6h to fix this command.',
+					'Skyra, reminder list',
+					'Skyra, reminder delete jedbcuywb'
+				]
+			}),
+			COMMAND_REPUTATION_DESCRIPTION: 'Give somebody a reputation point.',
+			COMMAND_REPUTATION_EXTENDED: builder.display('reputation', {
+				extendedHelp: `This guy is so helpful... I'll give him a reputation point!`,
+				explainedUsage: [
+					['user', 'The user to give a reputation point.']
+				],
+				reminder: 'You can give a reputation point once every 24 hours.'
+			}),
+			COMMAND_REPUTATIONS_DESCRIPTION: 'Check your amount of reputation points.',
+			COMMAND_REPUTATIONS_EXTENDED: builder.display('reputations', {
+				extendedHelp: `This command tells you the amount of reputation points. They are points you achieve from other users
+					when they use the reputation command.`,
+				reminder: 'You can give users a reputation point with the \'reputation\' command every 24 hours.'
+			}),
+			COMMAND_SETCOLOR_DESCRIPTION: 'Change your user profile\'s color.',
+			COMMAND_SETCOLOR_EXTENDED: builder.display('setColor', {
+				extendedHelp: `The balance command retrieves your amount of ${SHINY}.`,
+				explainedUsage: [
+					['color', 'A color resolvable.']
+				],
+				possibleFormats: [
+					'HEX :: #dfdfdf',
+					'RGB :: rgb(200, 200, 200)',
+					'HSL :: hsl(350, 100, 100)',
+					'B10 :: 14671839'
+				]
+			}),
 
 			/**
 			 * ##################
@@ -919,7 +972,7 @@ module.exports = class extends Language {
 				WHO: 'who'
 			},
 			COMMAND_CATFACT_TITLE: 'Cat Fact',
-			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${this.client.methods.util.codeBlock('', word)}`,
+			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${this.client.methods.klasaUtil.codeBlock('', word)}`,
 			COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',
 			COMMAND_CHOICE_DUPLICATES: (words) => `Why would I accept duplicated words? '${words}'.`,
 			COMMAND_DICE_OUTPUT: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
@@ -975,6 +1028,37 @@ module.exports = class extends Language {
 			 * MODERATION COMMANDS
 			 */
 
+			COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
+			COMMAND_KICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
+			COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
+			COMMAND_LOCKDOWN_LOCKING: (channel) => `Locking the channel ${channel}...`,
+			COMMAND_LOCKDOWN_OPEN: (channel) => `The lockdown for the channel ${channel} has been released.`,
+			COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',
+			COMMAND_MUTE_CONFIGURE: 'Do you want me to create and configure the Mute role now?',
+			COMMAND_MUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_MUTE_MUTED: 'The target user is already muted.',
+			COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
+			COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
+			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
+			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_UNBAN_MESSAGE: (user, reason, banReason, log) => `|\`🔨\`| [Case::${log}] **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}${banReason ? `\nReason for Ban:${banReason}` : ''}`,
+			COMMAND_UNBAN_MISSING_PERMISSION: `I will need the ${PERMS.BAN_MEMBERS} permission to be able to unban.`,
+			COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MANAGE_ROLES} permission to be able to unmute.`,
+			COMMAND_UNWARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **APPEALED WARN**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_VMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MUTE_MEMBERS} permission to be able to voice unmute.`,
+			COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
+			COMMAND_VOICEKICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **VOICE KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
+			COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what do you want me to filter.',
+			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
+			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
+			COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
+			COMMAND_FILTER_RESET: '| ✅ | Success! The filter has been reset.',
+
 			/**
 			 * ##################
 			 * OVERWATCH COMMANDS
@@ -985,7 +1069,102 @@ module.exports = class extends Language {
 			 * SOCIAL COMMANDS
 			 */
 
+			COMMAND_AUTOROLE_POINTS_REQUIRED: 'You must input a valid amount of points.',
+			COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: 'This role is not configured as an autorole. Use the add type instead.',
+			COMMAND_AUTOROLE_UPDATE: (role, points, before) => `Updated autorole: ${role.name} (${role.id}). Points required: ${points} (before: ${before})`,
+			COMMAND_AUTOROLE_REMOVE: (role, before) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
+			COMMAND_AUTOROLE_ADD: (role, points) => `Added new autorole: ${role.name} (${role.id}). Points required: ${points}`,
+			COMMAND_AUTOROLE_LIST_EMPTY: 'There is no role configured as an autorole in this server.',
+			COMMAND_AUTOROLE_UNKNOWN_ROLE: (role) => `Unknown role: ${role}`,
+
+			COMMAND_BALANCE: (user, amount) => `The user ${user} has a total of ${amount}${SHINY}`,
+			COMMAND_BALANCE_SELF: (amount) => `You have a total of ${amount}${SHINY}`,
+
+			COMMAND_BANNER_LIST_EMPTY: (prefix) => `You do not have an available banner. Check \`${prefix}banner buylist\` for a list of banners you can buy.`,
+			COMMAND_BANNER_SET_INPUT_NULL: 'You must specify a banner id to set.',
+			COMMAND_BANNER_SET_NOT_BOUGHT: 'You do not have this banner.',
+			COMMAND_BANNER_SET: (banner) => `|\`✅\`| **Success**. You have set your banner to: __${banner}__`,
+			COMMAND_BANNER_BUY_INPUT_NULL: 'You must specify a banner id to buy.',
+			COMMAND_BANNER_BUY_NOT_EXISTS: (prefix) => `This banner id does not exist. Please check \`${prefix}banner buylist\` for a list of banners you can buy.`,
+			COMMAND_BANNER_BUY_BOUGHT: (prefix, banner) => `You already have this banner, you may want to use \`${prefix}banner set ${banner}\` to make it visible in your profile.`,
+			COMMAND_BANNER_BUY_MONEY: (money, cost) => `You do not have enough money to buy this banner. You have ${money}${SHINY}, the banner costs ${cost}${SHINY}`,
+			COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
+			COMMAND_BANNER_BUY_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
+			COMMAND_BANNER_PROMPT: {
+				AUTHOR: 'Author',
+				TITLE: 'Title',
+				PRICE: 'Price'
+			},
+			COMMAND_C4_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
+			COMMAND_C4_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
+			COMMAND_C4_SELF: 'You must be so sad to play against yourself. Try again with another user.',
+			COMMAND_C4_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
+			COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
+			COMMAND_C4_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
+			COMMAND_C4_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
+			COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
+			COMMAND_C4_GAME_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+			COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another.',
+			COMMAND_C4_GAME_WIN: (user, table) => `**${user}** won!\n${table}`,
+			COMMAND_C4_GAME_DRAW: (table) => `This match concluded in a **draw**!\n${table}`,
+			COMMAND_C4_GAME_NEXT: (player, table) => `Turn for: **${player}**.\n${table}`,
+			COMMAND_DAILY_TIME: (time) => `Next dailies are available in ${duration(time)}`,
+			COMMAND_DAILY_TIME_SUCCESS: (amount) => `Yay! You earned ${amount}${SHINY}! Next dailies in: 12 hours.`,
+			COMMAND_DAILY_GRACE: (remaining) => [
+				`Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.`,
+				`Remaining time: ${duration(remaining, true)}`
+			].join('\n'),
+			COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) => `Successfully claimed ${amount}${SHINY}! Next dailies in: ${duration(remaining)}`,
+			COMMAND_DAILY_GRACE_DENIED: 'Got it! Come back soon!',
+			COMMAND_LEVEL: {
+				LEVEL: 'Level',
+				EXPERIENCE: 'Experience',
+				NEXT_IN: 'Next level in'
+			},
+			COMMAND_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
+			COMMAND_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
+			COMMAND_PAY_MISSING_MONEY: (needed, has) => `I am sorry, but you need ${needed}${SHINY} and you have ${has}${SHINY}`,
+			COMMAND_PAY_PROMPT: (user, amount) => `You are about to pay ${user} ${amount}${SHINY}, are you sure you want to proceed?`,
+			COMMAND_PAY_PROMPT_ACCEPT: (user, amount) => `Payment accepted, ${amount}${SHINY} has been sent to ${user}'s profile.`,
+			COMMAND_PAY_PROMPT_DENY: 'Payment denied.',
+			COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
+			COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
+			COMMAND_PROFILE: {
+				GLOBAL_RANK: 'Global Rank',
+				CREDITS: 'Credits',
+				REPUTATION: 'Reputation',
+				EXPERIENCE: 'Experience',
+				LEVEL: 'Level'
+			},
+			COMMAND_REMINDME_INPUT: 'You must tell me what do you want me to remind you and when.',
+			COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',
+			COMMAND_REMINDME_TIME: 'Your reminder must be at least one minute long.',
+			COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
+			COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
+			COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type either \'delete\' or \'remove\' followed by the ID.',
+			COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.timestamp - Date.now())}** has been successfully deleted.`,
+			COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
+			COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
+			COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
+			COMMAND_REMINDME_NOTFOUND: 'I cannot find something here. The reminder either never existed or it ended.',
+
+			COMMAND_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
+			COMMAND_REPUTATION_USABLE: 'You can give a reputation point now.',
+			COMMAND_REPUTATION_USER_NOTFOUND: 'You must mention a user to give a reputation point.',
+			COMMAND_REPUTATION_SELF: 'You cannot give a reputation point to yourself.',
+			COMMAND_REPUTATION_BOTS: 'You cannot give a reputation point to bots.',
+			COMMAND_REPUTATION_GIVE: (user) => `You have given a reputation point to **${user}**!`,
+			COMMAND_REPUTATIONS: (points) => `You have a total of ${points} reputation points.`,
 			COMMAND_SCOREBOARD_POSITION: (position) => `Your placing position is: ${position}`,
+			COMMAND_SETCOLOR: (color) => `Color changed to ${color}`,
+			COMMAND_SLOTMACHINES_MONEY: (money) => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
+			COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
+			COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+			COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
+			COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
+			COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
+			COMMAND_SOCIAL_POINTS: 'May you specify the amount of points you want to add or remove?',
+			COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) => `You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${amount === 1 ? 'point' : 'points'} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
 
 			/**
 			 * ###############

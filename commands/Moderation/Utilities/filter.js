@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		if (msg.guild.configs.filter.raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', true);
 		await msg.guild.configs.update('filter.raw', word, { action: 'add' });
 		msg.guild.configs.updateFilter();
-		return msg.send(msg.language.get('COMMAND_FILTER_ADDED', word));
+		return msg.sendMessage(msg.language.get('COMMAND_FILTER_ADDED', word));
 	}
 
 	async remove(msg, [word]) {
@@ -31,13 +31,13 @@ module.exports = class extends Command {
 		if (msg.guild.configs.filter.raw.length === 1) return this.reset(msg);
 		await msg.guild.configs.update('filter.raw', word, { action: 'remove' });
 		msg.guild.configs.updateFilter();
-		return msg.send(msg.language.get('COMMAND_FILTER_REMOVED', word));
+		return msg.sendMessage(msg.language.get('COMMAND_FILTER_REMOVED', word));
 	}
 
 	async reset(msg) {
 		await msg.guild.configs.reset('filter.raw');
 		msg.guild.configs.filter.regexp = null;
-		return msg.send(msg.language.get('COMMAND_FILTER_RESET'));
+		return msg.sendMessage(msg.language.get('COMMAND_FILTER_RESET'));
 	}
 
 };

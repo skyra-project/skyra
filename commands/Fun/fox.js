@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('../../index');
 // const URL = `https://pixabay.com/api/?q=fox&safesearch=true&per_page=200&image_type=photo&category=animals&key=${require.main.exports.config.tokens.pixabay}`;
 
 module.exports = class extends Command {

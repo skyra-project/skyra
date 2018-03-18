@@ -34,6 +34,7 @@ module.exports = {
 	IPC: require('./lib/ipc/Controller'),
 
 	// Util
+	Color: require('./lib/util/Color'),
 	Duration: require('./lib/util/Duration'),
 	LanguageHelp: require('./lib/util/LanguageHelp'),
 	Leaderboard: require('./lib/util/Leaderboard'),
@@ -43,6 +44,7 @@ module.exports = {
 	TimeParser: require('./lib/util/TimeParser'),
 	toJSON: require('./lib/util/ToJSON'),
 	databaseInit: require('./lib/util/databaseInit'),
+	constants: require('./lib/util/constants'),
 	util: require('./lib/util/util'),
 
 	// Overwatch

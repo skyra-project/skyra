@@ -1,5 +1,4 @@
-const { Command } = require('klasa');
-const { util: { fetchAvatar }, rootFolder } = require.main.exports;
+const { Command, util: { fetchAvatar }, rootFolder } = require('../../index');
 const { readFile } = require('fs-nextra');
 const { join } = require('path');
 const { Canvas } = require('canvas-constructor');

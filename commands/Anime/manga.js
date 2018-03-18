@@ -1,5 +1,5 @@
 const { Command } = require('klasa');
-const { PromptList, util, config } = require.main.exports;
+const { PromptList, util, config } = require('../../index');
 
 const options = { headers: {
 	Authorization: util.basicAuth(config.tokens.animelist.user,

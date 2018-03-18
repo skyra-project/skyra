@@ -12,7 +12,8 @@ module.exports = class extends Command {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,
-			description: 'Check the leaderboards.',
+			description: msg => msg.language.get('COMMAND_LEADERBOARD_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_LEADERBOARD_EXTENDED'),
 			runIn: ['text'],
 			usage: '[global|local] [index:integer]',
 			usageDelim: ' '
@@ -25,7 +26,7 @@ module.exports = class extends Command {
 			? this.client.leaderboard.getMembers(msg.guild.id)
 			: this.client.leaderboard.getUsers());
 
-		const { position } = list.get(msg.author.id) || { position: list.size };
+		const { position } = list.get(msg.author.id) || { position: list.size + 1 };
 		const page = await this.generatePage(msg, list, index - 1, position);
 		return msg.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}

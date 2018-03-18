@@ -9,6 +9,7 @@ const THRESHOLD = 1000 * 60 * 30,
 	EPOCH = 1420070400000,
 	EMPTY = '0000100000000000000000';
 
+// The header with the console colours
 const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
 
 /**
@@ -20,7 +21,7 @@ module.exports = class MemorySweeper extends Task {
 
 	async run() {
 		const OLD_SNOWFLAKE = binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
-		let presences = 0, guildMembers = 0, emojis = 0, lastMessage = 0, users = 0;
+		let presences = 0, guildMembers = 0, emojis = 0, lastMessages = 0, users = 0;
 
 		// Per-Guild sweeper
 		for (const guild of this.client.guilds.values()) {
@@ -32,6 +33,7 @@ module.exports = class MemorySweeper extends Task {
 			const { me } = guild;
 			for (const [id, member] of guild.members) {
 				if (member === me) continue;
+				if (member.voiceChannelID) continue;
 				if (member.lastMessageID && member.lastMessageID < OLD_SNOWFLAKE) continue;
 				guildMembers++;
 				guild.members.delete(id);
@@ -45,19 +47,17 @@ module.exports = class MemorySweeper extends Task {
 		// Per-Channel sweeper
 		for (const channel of this.client.channels.values()) {
 			if (channel.lastMessageID) {
-				channel.lastMessage = null;
 				channel.lastMessageID = null;
-				lastMessage++;
+				lastMessages++;
 			}
 		}
 
 		// Per-User sweeper
 		for (const user of this.client.users.values()) {
 			if (user.lastMessageID && user.lastMessageID < OLD_SNOWFLAKE) continue;
-			user.lastMessage = null;
 			user.lastMessageID = null;
 			this.client.users.delete(user.id);
-			lastMessage++;
+			lastMessages++;
 			users++;
 		}
 
@@ -68,7 +68,7 @@ module.exports = class MemorySweeper extends Task {
 				this.setColor(guildMembers)} [GuildMember]s | ${
 				this.setColor(users)} [User]s | ${
 				this.setColor(emojis)} [Emoji]s | ${
-				this.setColor(lastMessage)} [Last Message]s.`);
+				this.setColor(lastMessages)} [Last Message]s.`);
 	}
 
 	/**
@@ -81,7 +81,7 @@ module.exports = class MemorySweeper extends Task {
 	 * @returns {number}
 	 */
 	setColor(number) {
-		const text = String(number).padStart(4, ' ');
+		const text = String(number).padStart(5, ' ');
 		// Light Red color
 		if (number > 1000) return `\u001B[39m\u001B[91m${text}\u001B[39m\u001B[90m`;
 		// Light Yellow color

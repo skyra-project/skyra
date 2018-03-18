@@ -1,4 +1,4 @@
-const { Command, Timestamp } = require('klasa');
+const { Command, Timestamp } = require('../../index');
 
 module.exports = class extends Command {
 

@@ -8,18 +8,12 @@ module.exports = class extends Event {
 		else if (msg.guild.configs.trigger.alias.length) this.handleCommand(msg, command);
 	}
 
-	get commandTag() {
-		return this.client.commands.get('tag');
-	}
-
 	get commandHandler() {
 		return this.client.monitors.get('commandHandler');
 	}
 
-	async handleTag(msg, command) {
-		return (cmd => cmd
-			? cmd.run(msg, [command, undefined]).catch(error => this.client.emit('commandError', msg, cmd, [command, undefined], error))
-			: undefined)(this.commandTag);
+	handleTag(msg, command) {
+		return msg.sendMessage(msg.guild.configs.tags.get(command));
 	}
 
 	async handleCommand(msg, command) {

@@ -60,9 +60,12 @@ module.exports = class extends RawEvent {
 		});
 	}
 
-	process(data) {
+	async process(data) {
 		const guild = this.client.guilds.get(data.guild_id);
-		const user = this.client.users.add(data.user);
+		if (!guild) return null;
+
+		const user = this.client.users.fetch(data.user).catch(() => null);
+		if (!user) return null;
 		return { guild, user };
 	}
 

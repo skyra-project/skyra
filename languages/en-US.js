@@ -286,7 +286,7 @@ module.exports = class extends Language {
 			}),
 			COMMAND_SUBSCRIBE_DESCRIPTION: `Subscribe to this server's announcements.`,
 			COMMAND_SUBSCRIBE_EXTENDED: builder.display('subscribe', {
-				extendedHelp: `'This command serves the purpose of **giving** you the subscriber role, which must be configured by the
+				extendedHelp: `This command serves the purpose of **giving** you the subscriber role, which must be configured by the
 					server's administrators. When a moderator or administrator use the **announcement** command, you
 					will be mentioned. This feature is meant to replace everyone/here tags and mention only the interested
 					users.`
@@ -303,6 +303,7 @@ module.exports = class extends Language {
 			 * ############
 			 * FUN COMMANDS
 			 */
+
 			COMMAND_8BALL_DESCRIPTION: 'Skyra will read the Holy Bible to find the correct answer for your question.',
 			COMMAND_8BALL_EXTENDED: builder.display('8ball', {
 				extendedHelp: `This command provides you a random question based on your questions' type. Be careful, it may be too smart.`,
@@ -644,6 +645,16 @@ module.exports = class extends Language {
 			 * MODERATION COMMANDS
 			 */
 
+			/**
+			 * ##################
+			 * OVERWATCH COMMANDS
+			 */
+
+			/**
+			 * ###############
+			 * SOCIAL COMMANDS
+			 */
+
 			COMMAND_BALANCE_DESCRIPTION: 'Check your current balance.',
 			COMMAND_BALANCE_EXTENDED: builder.display('balance', {
 				extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
@@ -729,16 +740,6 @@ module.exports = class extends Language {
 					'B10 :: 14671839'
 				]
 			}),
-
-			/**
-			 * ##################
-			 * OVERWATCH COMMANDS
-			 */
-
-			/**
-			 * ###############
-			 * SOCIAL COMMANDS
-			 */
 
 			/**
 			 * ###############
@@ -945,6 +946,12 @@ module.exports = class extends Language {
 			 * #####################
 			 * ANNOUNCEMENT COMMANDS
 			 */
+
+			COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
+			COMMAND_SUBSCRIBE_SUCCESS: (role) => `Successfully granted the role: **${role}**`,
+			COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}***`,
+			COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
+			COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
 
 			/**
 			 * ################
@@ -1203,6 +1210,15 @@ module.exports = class extends Language {
 			 * #############
 			 * TAGS COMMANDS
 			 */
+
+			COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
+			COMMAND_TAGS_ADD_EXISTS: (tag) => `The tag '${tag}' already exists.`,
+			COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
+			COMMAND_TAGS_ADD_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
+			COMMAND_TAGS_REMOVE_NOT_EXISTS: (tag) => `The tag '${tag}' does not exist.`,
+			COMMAND_TAGS_REMOVE_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
+			COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
+			COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
 
 			/**
 			 * ##############

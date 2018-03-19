@@ -1,5 +1,5 @@
 const { Language, version } = require('klasa');
-const { LanguageHelp, Duration, util, klasaUtil, constants: { EMOJIS: { SHINY } } } = require('../index');
+const { LanguageHelp, FriendlyDuration, util, klasaUtil, constants: { EMOJIS: { SHINY } } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -82,7 +82,7 @@ const EIGHT_BALL = {
 };
 
 function duration(time) { // eslint-disable-line no-unused-vars
-	return Duration.duration(time, TIMES);
+	return FriendlyDuration.duration(time, TIMES);
 }
 
 module.exports = class extends Language {
@@ -1139,6 +1139,7 @@ module.exports = class extends Language {
 			COMMAND_REMINDME_INPUT: 'You must tell me what do you want me to remind you and when.',
 			COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',
 			COMMAND_REMINDME_TIME: 'Your reminder must be at least one minute long.',
+			COMMAND_REMINDME_SHORT_TIME: 'You did not give me a duration of at least one minute long. Cancelling prompt.',
 			COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
 			COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
 			COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type either \'delete\' or \'remove\' followed by the ID.',

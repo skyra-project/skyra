@@ -1,4 +1,4 @@
-const { Command, Moderation, ModerationLog, TimeParser } = require('../../../index');
+const { Command, Moderation, ModerationLog, Duration } = require('../../../index');
 const { Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends Command {
@@ -32,13 +32,13 @@ module.exports = class extends Command {
 		}
 		if (!time.length) throw msg.language.get('COMMAND_TIME_UNDEFINED_TIME');
 
-		const { duration } = new TimeParser(time.join(' '));
-		await this.client.schedule.create(type, duration + Date.now(), {
+		const { offset } = new Duration(time.join(' '));
+		await this.client.schedule.create(type, offset + Date.now(), {
 			catchUp: true,
 			data: {
 				[Moderation.schemaKeys.USER]: msg.author.id,
 				[Moderation.schemaKeys.GUILD]: msg.guild.id,
-				[Moderation.schemaKeys.DURATION]: duration,
+				[Moderation.schemaKeys.DURATION]: offset,
 				[Moderation.schemaKeys.CASE]: caseID
 			}
 		});
@@ -48,7 +48,7 @@ module.exports = class extends Command {
 			[Moderation.schemaKeys.TIMED]: false
 		});
 
-		return msg.sendMessage(msg.language.get('COMMAND_TIME_SCHEDULED', ModerationLog.TYPES[type].title, user, duration));
+		return msg.sendMessage(msg.language.get('COMMAND_TIME_SCHEDULED', ModerationLog.TYPES[type].title, user, offset));
 	}
 
 	async cancel(msg, caseID, task) {

@@ -1,4 +1,4 @@
-const { Command, PromptList, Timestamp, TimeParser } = require('../../index');
+const { Command, PromptList, Timestamp, Duration } = require('../../index');
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 const REMINDER_TYPE = 'reminder';
 
@@ -66,7 +66,7 @@ module.exports = class extends Command {
 
 		if (/^in\s/.test(string)) {
 			const indexOfTitle = string.lastIndexOf(' to ');
-			parsed.time = new TimeParser(string.slice(3, indexOfTitle > -1 ? indexOfTitle : undefined)).duration;
+			parsed.time = new Duration(string.slice(3, indexOfTitle > -1 ? indexOfTitle : undefined)).offset;
 			if (parsed.time < 60000)
 				parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
 
@@ -78,7 +78,7 @@ module.exports = class extends Command {
 			if (indexOfTime === -1)
 				parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
 			else {
-				parsed.time = new TimeParser(string.slice(indexOfTime + 4)).duration;
+				parsed.time = new Duration(string.slice(indexOfTime + 4)).offset;
 				if (parsed.time < 60000)
 					parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
 			}
@@ -94,7 +94,7 @@ module.exports = class extends Command {
 		do {
 			const messages = await msg.channel.awaitMessages((message) => message.author === msg.author, { time: 30000, max: 1 });
 			if (!messages.size) throw null;
-			time = new TimeParser(messages.first()).duration;
+			time = new Duration(messages.first().content).offset;
 			attempts++;
 		} while (time < 60000 && attempts < 5);
 

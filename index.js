@@ -35,13 +35,12 @@ module.exports = {
 
 	// Util
 	Color: require('./lib/util/Color'),
-	Duration: require('./lib/util/Duration'),
+	FriendlyDuration: require('./lib/util/FriendlyDuration'),
 	LanguageHelp: require('./lib/util/LanguageHelp'),
 	Leaderboard: require('./lib/util/Leaderboard'),
 	parseHTML: require('./lib/util/parseHTML'),
 	PreciseTimeout: require('./lib/util/PreciseTimeout'),
 	PromptList: require('./lib/util/PromptList'),
-	TimeParser: require('./lib/util/TimeParser'),
 	toJSON: require('./lib/util/ToJSON'),
 	databaseInit: require('./lib/util/databaseInit'),
 	constants: require('./lib/util/constants'),

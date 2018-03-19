@@ -404,7 +404,7 @@ module.exports = class extends Language {
 			COMMAND_CREATEMUTE_EXTENDED: builder.display('createmute', {
 				extendedHelp: `This command prepares the mute system by creating a role called 'muted', and configuring it to
 					the guild configuration. This command also modifies all channels (where possible) permissions and disables
-					the permission ${PERMS.SEND_MESSAGES} in text channels and ${PERMS.CONNECT} in voice channels for said role.`
+					the permission **${PERMS.SEND_MESSAGES}** in text channels and **${PERMS.CONNECT}** in voice channels for said role.`
 			}),
 			COMMAND_FETCH_DESCRIPTION: 'Read the context of a message.',
 			COMMAND_FETCH_EXTENDED: builder.display('fetch', {
@@ -485,10 +485,11 @@ module.exports = class extends Language {
 			 * ###################
 			 * MANAGEMENT COMMANDS
 			 */
+
 			COMMAND_NICK_DESCRIPTION: `Change Skyra's nickname for this guild.`,
 			COMMAND_NICK_EXTENDED: builder.display('nick', {
 				extendedHelp: `This command allows you to change Skyra's nickname easily for the guild.`,
-				reminder: `This command requires the ${PERMS.CHANGE_NICKNAME} permission. Make sure Skyra has it.`,
+				reminder: `This command requires the **${PERMS.CHANGE_NICKNAME}** permission. Make sure Skyra has it.`,
 				explainedUsage: [
 					['nick', `The new nickname. If you don't put any, it'll reset it instead.`]
 				],
@@ -496,9 +497,77 @@ module.exports = class extends Language {
 			}),
 
 			/**
+			 * #################################
+			 * MANAGEMENT/CONFIGURATION COMMANDS
+			 */
+
+			COMMAND_SETIGNORECHANNELS_DESCRIPTION: 'Set a channel to the ignore channel list.',
+			COMMAND_SETIGNORECHANNELS_EXTENDED: builder.display('setIgnoreChannels', {
+				extendedHelp: `This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators
+					can use Skyra's commands. Unlike removing the **${PERMS.SEND_MESSAGES}** permission, Skyra is still able to send (and therefore
+					execute commands) messages, which allows moderators to use moderation commands in the channel. Use this if you want to ban
+					any command usage from the bot in a specific channel.`,
+				explainedUsage: [
+					['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']
+				],
+				reminder: 'You cannot set the same channel twice, instead, Skyra will remove it.',
+				examples: ['#general', 'here']
+			}),
+			COMMAND_SETMEMBERLOGS_DESCRIPTION: 'Set the member logs channel.',
+			COMMAND_SETMEMBERLOGS_EXTENDED: builder.display('setMemberLogs', {
+				extendedHelp: `This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: "Member Join" and
+					"Member Leave". If a muted user joins, it will send a special "Muted Member Join" event. All messages are in embeds so you will need to enable
+					the permission **${PERMS.EMBED_LINKS}** for Skyra. You also need to individually set the "events" you want to listen: "events.memberAdd" and
+					"events.memberRemove". For roles, you would enable "events.memberNicknameChange" and/or "events.memberRolesChange" via the "config" command.`,
+				explainedUsage: [
+					['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']
+				],
+				examples: ['#member-logs', 'here']
+			}),
+			COMMAND_SETMESSAGELOGS_DESCRIPTION: 'Set the message logs channel.',
+			COMMAND_SETMESSAGELOGS_EXTENDED: builder.display('setMessageLogs', {
+				extendedHelp: `This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: "Message Delete",
+					"Message Edit", and "Message Prune". All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra. You
+					also need to individually set the "events" you want to listen: "events.messageDelete", "events.messageEdit", and "events.messagePrune" via the
+					"config" command.`,
+				explainedUsage: [
+					['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']
+				],
+				reminder: `Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the
+					permission **${PERMS.VIEW_AUDIT_LOG}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.`,
+				examples: ['#message-logs', 'here']
+			}),
+			COMMAND_SETMODLOGS_DESCRIPTION: 'Set the mod logs channel.',
+			COMMAND_SETMODLOGS_EXTENDED: builder.display('setModLogs', {
+				extendedHelp: `This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with
+					"claimable" reasons and moderators. This channel is not a must and you can always retrieve specific modlogs with the "case" command. All
+					messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra. For auto-detection, you need to individually
+					set the "events" you want to listen: "events.banAdd", "events.banRemove" via the "config" command.`,
+				explainedUsage: [
+					['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']
+				],
+				reminder: `Due to Discord limitations, the auto-detection does not detect kicks. You need to use the "kick" command if you want to document them as
+					a formal moderation log case.`,
+				examples: ['#mod-logs', 'here']
+			}),
+			COMMAND_SETPREFIX_DESCRIPTION: 'Set Skyra\'s prefix.',
+			COMMAND_SETPREFIX_EXTENDED: builder.display('setPrefix', {
+				extendedHelp: `This command helps you setting up Skyra's prefix. A prefix is an affix that is added in front of the word, in this case, the message.
+					It allows bots to distinguish between a regular message and a command. By nature, the prefix between should be different to avoid conflicts. If
+					you forget Skyra's prefix, simply mention her with nothing else and she will tell you the current prefix. Alternatively, you can take advantage
+					of Skyra's NLP (Natural Language Processing) and prefix the commands with her name and a comma. For example, "Skyra, ping".`,
+				explainedUsage: [
+					['prefix', `The prefix to set. Default one in Skyra is "${this.client.options.prefix}".`]
+				],
+				reminder: `Your prefix should only contain characters everyone can write and type.`,
+				examples: ['&', '=']
+			}),
+
+			/**
 			 * #############
 			 * MISC COMMANDS
 			 */
+
 			COMMAND_CUDDLE_DESCRIPTION: 'Cuddle somebody!',
 			COMMAND_CUDDLE_EXTENDED: builder.display('cuddle', {
 				extendedHelp: `Do you know something that I envy from humans? The warm feeling when somebody cuddles you. It's so cute ❤! I can
@@ -790,7 +859,7 @@ module.exports = class extends Language {
 					The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.
 					The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword
 					The --showHidden flag will enable the showHidden option in util.inspect.
-					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${PERMS.ATTACH_FILES} permission.`,
+					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the **${PERMS.ATTACH_FILES}** permission.`,
 				examples: [
 					'msg.author.username;',
 					'1 + 1;'
@@ -1005,6 +1074,20 @@ module.exports = class extends Language {
 			COMMAND_NICK_CLEARED: 'Nickname cleared.',
 
 			/**
+			 * #################################
+			 * MANAGEMENT/CONFIGURATION COMMANDS
+			 */
+
+			CONFIGURATION_TEXTCHANNEL_REQUIRED: 'The selected channel is not a valid text channel, try again with another.',
+			CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',
+			COMMAND_SETIGNORECHANNELS_SET: (channel) => `Ignoring all command input from ${channel} now.`,
+			COMMAND_SETIGNORECHANNELS_REMOVED: (channel) => `Listening all command input from ${channel} now.`,
+			COMMAND_SETMEMBERLOGS_SET: (channel) => `Successfully set the member logs channel to ${channel}.`,
+			COMMAND_SETMESSAGELOGS_SET: (channel) => `Successfully set the message logs channel to ${channel}.`,
+			COMMAND_SETMODLOGS_SET: (channel) => `Successfully set the mod logs channel to ${channel}.`,
+			COMMAND_SETPREFIX_SET: (prefix) => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
+
+			/**
 			 * #############
 			 * MISC COMMANDS
 			 */
@@ -1051,11 +1134,11 @@ module.exports = class extends Language {
 			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
 			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_UNBAN_MESSAGE: (user, reason, banReason, log) => `|\`🔨\`| [Case::${log}] **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}${banReason ? `\nReason for Ban:${banReason}` : ''}`,
-			COMMAND_UNBAN_MISSING_PERMISSION: `I will need the ${PERMS.BAN_MEMBERS} permission to be able to unban.`,
+			COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
 			COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MANAGE_ROLES} permission to be able to unmute.`,
+			COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
 			COMMAND_UNWARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **APPEALED WARN**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_VMUTE_MISSING_PERMISSION: `I will need the ${PERMS.MUTE_MEMBERS} permission to be able to voice unmute.`,
+			COMMAND_VMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MUTE_MEMBERS}** permission to be able to voice unmute.`,
 			COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
 			COMMAND_VOICEKICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **VOICE KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
@@ -1256,7 +1339,7 @@ module.exports = class extends Language {
 			SYSTEM_PROCESSING: '`Processing...`',
 			SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
 			SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
-			SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the ${PERMS.BAN_MEMBERS} permission?`,
+			SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the **${PERMS.BAN_MEMBERS}** permission?`,
 			SYSTEM_LOADING: '`Loading... please wait.`',
 			SYSTEM_ERROR: 'Something happened!',
 			SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',

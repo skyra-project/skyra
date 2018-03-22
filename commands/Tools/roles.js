@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, RichDisplay } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -9,108 +9,75 @@ module.exports = class extends Command {
 			description: msg => msg.language.get('COMMAND_ROLES_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_ROLES_EXTENDED'),
 			runIn: ['text'],
-			usage: '[list|claim|unclaim] [roles:string] [...]',
-			usageDelim: ' '
+			usage: '[roles:rolename] [...]',
+			usageDelim: ','
 		});
 	}
 
-	async run(msg, [action = 'list', ...input]) {
-		if (action === 'list') return this.list(msg);
-		if (!input[0]) throw 'write `Skyra, roles list` to get a list of all roles, or `Skyra, roles claim <role1, role2, ...>` to claim them.';
-		const roles = input.join(' ').split(/, */).map(entry => entry.trimRight());
-		return this[action](msg, roles);
-	}
+	async run(msg, roles) {
+		const publicRoles = msg.guild.configs.roles.public;
+		if (!publicRoles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
-	async claim(msg, roles) {
-		const message = [];
-		if (msg.guild.configs.roles.initial && msg.guild.configs.roles.removeInitial && msg.member.roles.has(msg.guild.configs.roles.initial))
-			await msg.member.removeRole(msg.guild.configs.roles.initial);
+		if (!roles.length) return this.list(msg, publicRoles);
+		const memberRoles = new Set(msg.member.roles.keys());
+		const filterRoles = new Set(roles);
+		const unlistedRoles = [], unmanageable = [], addedRoles = [], removedRoles = [];
+		const { position } = msg.guild.me.roles.highest;
 
-		const { giveRoles, unlistedRoles, existentRoles, invalidRoles } = await this.roleAddCheck(msg, roles);
-		if (existentRoles) message.push(msg.language.get('COMMAND_ROLES_CLAIM_EXISTENT', existentRoles.join('`, `')));
-		if (unlistedRoles) message.push(msg.language.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
-		if (invalidRoles) message.push(msg.language.get('COMMAND_ROLES_NOT_FOUND', invalidRoles.join('`, `')));
-		if (giveRoles) {
-			if (giveRoles.length === 1) await msg.member.addRole(giveRoles[0]).catch(Command.handleError);
-			else await msg.member.addRoles(giveRoles).catch(Command.handleError);
-			message.push(msg.language.get('COMMAND_ROLES_CLAIM_GIVEN', giveRoles.map(role => role.name).join('`, `')));
+		for (const role of filterRoles) {
+			if (!publicRoles.includes(role.id)) {
+				unlistedRoles.push(role.name);
+			} else if (position <= role.position) {
+				unmanageable.push(role.name);
+			} else if (memberRoles.has(role.id)) {
+				memberRoles.delete(role.id);
+				removedRoles.push(role.name);
+			} else {
+				memberRoles.add(role.id);
+				addedRoles.push(role.name);
+			}
 		}
 
-		return msg.sendMessage(message.join('\n'));
+		// Apply the roles
+		if (removedRoles.length || addedRoles.length) await msg.member.roles.set([...memberRoles], msg.language.get('COMMAND_ROLES_AUDITLOG'));
+
+		const output = [];
+		if (unlistedRoles.length) output.push(msg.language.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
+		if (unmanageable.length) output.push(msg.language.get('COMMAND_ROLES_NOT_MANAGEABLE', unmanageable.join('`, `')));
+		if (removedRoles.length) output.push(msg.language.get('COMMAND_ROLES_REMOVED', removedRoles.join('`, `')));
+		if (addedRoles.length) output.push(msg.language.get('COMMAND_ROLES_ADDED', addedRoles.join('`, `')));
+		return msg.sendMessage(output.join('\n'));
 	}
 
-	async unclaim(msg, roles) {
-		const message = [];
-		const { removeRoles, unlistedRoles, nonexistentRoles, invalidRoles } = await this.roleRemoveCheck(msg, roles);
-		if (nonexistentRoles) message.push(msg.language.get('COMMAND_ROLES_UNCLAIM_UNEXISTENT', nonexistentRoles.join('`, `')));
-		if (unlistedRoles) message.push(msg.language.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
-		if (invalidRoles) message.push(msg.language.get('COMMAND_ROLES_NOT_FOUND', invalidRoles.join('`, `')));
-		if (removeRoles) {
-			if (removeRoles.length === 1) await msg.member.removeRole(removeRoles[0]).catch(Command.handleError);
-			else await msg.member.removeRoles(removeRoles).catch(Command.handleError);
-			message.push(msg.language.get('COMMAND_ROLES_UNCLAIM_REMOVED', removeRoles.map(role => role.name).join('`, `')));
+	async list(msg, publicRoles) {
+		const remove = [], roles = [];
+		for (const roleID of publicRoles) {
+			const role = msg.guild.roles.get(roleID);
+			if (role) roles.push(role.name);
+			else remove.push(roleID);
 		}
 
-		return msg.sendMessage(message.join('\n'));
-	}
-
-	async roleAddCheck(msg, roles) {
-		const giveRoles = [];
-		const existentRoles = [];
-		const unlistedRoles = [];
-		const invalidRoles = [];
-		for (const role of roles) {
-			if (role.length === 0) continue;
-			const res = await this.client.handler.search.role(role, msg);
-
-			if (res === null) invalidRoles.push(role);
-			else if (!msg.guild.configs.roles.public.includes(res.id)) unlistedRoles.push(res.name);
-			else if (msg.member.roles.has(res.id)) existentRoles.push(res.name);
-			else giveRoles.push(res);
+		// Automatic role deletion
+		if (remove.length) {
+			const allRoles = new Set(publicRoles);
+			for (const role of remove) allRoles.delete(role);
+			await msg.guild.configs.update({ roles: { public: [...allRoles] } });
 		}
 
-		return {
-			giveRoles: giveRoles.length ? giveRoles : null,
-			unlistedRoles: unlistedRoles.length ? unlistedRoles : null,
-			existentRoles: existentRoles.length ? existentRoles : null,
-			invalidRoles: invalidRoles.length ? invalidRoles : null
-		};
-	}
+		// There's the possibility all roles could be inexistent, therefore the system
+		// would filter and remove them all, causing this to be empty.
+		if (!roles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
-	async roleRemoveCheck(msg, roles) {
-		const removeRoles = [];
-		const nonexistentRoles = [];
-		const unlistedRoles = [];
-		const invalidRoles = [];
-		for (const role of roles) {
-			if (role.length === 0) continue;
-			const res = await this.client.handler.search.role(role, msg);
+		const display = new RichDisplay(new this.client.methods.Embed()
+			.setColor(msg.member.roles)
+			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
+			.setTitle(msg.language.get('COMMAND_ROLES_LIST_TITLE'))
+		);
 
-			if (res === null) invalidRoles.push(role);
-			else if (!msg.guild.configs.roles.public.includes(res.id)) unlistedRoles.push(res.name);
-			else if (!msg.member.roles.has(res.id)) nonexistentRoles.push(res.name);
-			else removeRoles.push(res);
-		}
+		const pages = Math.ceil(roles.length / 10);
+		for (let i = 0; i < pages; i++) display.addPage(template => template.setDescription(roles.slice(i * 10, 10)));
 
-		return {
-			removeRoles: removeRoles.length ? removeRoles : null,
-			unlistedRoles: unlistedRoles.length ? unlistedRoles : null,
-			nonexistentRoles: nonexistentRoles.length ? nonexistentRoles : null,
-			invalidRoles: invalidRoles.length ? invalidRoles : null
-		};
-	}
-
-	list(msg) {
-		if (msg.guild.configs.roles.public.length === 0)
-			throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
-
-		const theRoles = msg.guild.configs.roles.public.map(entry => msg.guild.roles.has(entry) ? msg.guild.roles.get(entry).name : entry);
-
-		const embed = new this.client.methods.Embed()
-			.setColor(msg.color)
-			.setTitle(msg.language.get('COMMAND_ROLES_LIST_TITLE', msg.guild))
-			.setDescription(theRoles.join('\n'));
-		return msg.sendMessage({ embed });
+		return display.run(await msg.sendMessage(msg.language.get('SYSTEM_PROCESSING')), { filter: (reaction, user) => user === msg.author });
 	}
 
 };

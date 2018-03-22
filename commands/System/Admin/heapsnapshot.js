@@ -15,7 +15,7 @@ module.exports = class extends Command {
 	async run(msg) {
 		if (msg.deletable) msg.nuke().catch(error => this.client.emit('wtf', error));
 		const filename = await writeSnapshot(`./${Date.now()}.heapsnapshot`);
-		return this.client.emit('log', `Created new heapdump : ${filename}`);
+		this.client.emit('log', `Created new heapdump : ${filename}`);
 	}
 
 };

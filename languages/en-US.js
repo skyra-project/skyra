@@ -992,16 +992,14 @@ module.exports = class extends Language {
 				extendedHelp: `Public roles? They are roles that are available for everyone, an administrator must configure
 					them throught a configuration command.`,
 				explainedUsage: [
-					['List', 'Shows a list of all available public roles.'],
-					['Claim', 'Claim one of more public roles.'],
-					['Unclaim', 'Unclaim one of more public roles.']
+					['Roles', 'The list of roles to claim and unclaim. Leave this empty to get a list of roles']
 				],
 				reminder: [
 					'When using claim/unclaim, the roles can be individual, or multiple.',
 					'To claim multiple roles, you must separate them by a comma.',
 					'You can specify which roles by writting their ID, name, or a section of the name.'
 				].join('\n'),
-				examples: ['list', 'claim Designer, Programmer', 'unclaim Designer']
+				examples: ['', 'Designer, Programmer', 'Designer']
 			}),
 			COMMAND_SEARCH_DESCRIPTION: 'Search things from the Internet with DuckDuckGo.',
 			COMMAND_SEARCH_EXTENDED: builder.display('search', {}),
@@ -1468,13 +1466,12 @@ module.exports = class extends Language {
 			COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
 			COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
 			COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',
-			COMMAND_ROLES_LIST_TITLE: (guild) => `List of Public Roles for ${guild}`,
-			COMMAND_ROLES_CLAIM_EXISTENT: (roles) => `You already have the following roles: \`${roles}\``,
-			COMMAND_ROLES_CLAIM_GIVEN: (roles) => `The following roles have been added to your profile: \`${roles}\``,
-			COMMAND_ROLES_UNCLAIM_UNEXISTENT: (roles) => `You do not have the following roles: \`${roles}\``,
-			COMMAND_ROLES_UNCLAIM_REMOVED: (roles) => `The following roles have been removed from your profile: \`${roles}\``,
+			COMMAND_ROLES_LIST_TITLE: 'List of public roles',
+			COMMAND_ROLES_ADDED: (roles) => `The following roles have been added to your profile: \`${roles}\``,
+			COMMAND_ROLES_REMOVED: (roles) => `The following roles have been removed from your profile: \`${roles}\``,
 			COMMAND_ROLES_NOT_PUBLIC: (roles) => `The following roles are not public: \`${roles}\``,
-			COMMAND_ROLES_NOT_FOUND: (roles) => `Roles not found: \`${roles}\``,
+			COMMAND_ROLES_NOT_MANAGEABLE: (roles) => `The following roles cannot be given by me due to their hierarchy role position: \`${roles}\``,
+			COMMAND_ROLES_AUDITLOG: 'Authorized: Public Role Management | \'Roles\' Command.',
 			COMMAND_DUCKDUCKGO_NOTFOUND: 'I am sorry, but DuckDuckGo API returned a blank response. Try with another keywords.',
 			COMMAND_DUCKDUCKGO_LOOKALSO: 'Related to this topic:',
 
@@ -1581,7 +1578,7 @@ module.exports = class extends Language {
 			GUILD_WARN_NOT_FOUND: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
 			GUILD_MEMBER_NOT_VOICECHANNEL: 'I cannot execute this action in a member that is not connected to a voice channel.',
 
-			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} results. Please choose a number between 1 and ${amount}, or write **abort** to abort the prompt.\n${list}`,
+			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} ${amount === 1 ? 'result' : 'results'}. Please choose a number between 1 and ${amount}, or write **abort** to abort the prompt.\n${list}`,
 			PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Invalid input. Attempt **${attempt}** out of **${maxAttempts}**\n${list}`,
 			PROMPTLIST_ABORT: 'abort',
 			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.',

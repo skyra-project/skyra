@@ -3,3 +3,4 @@ node_modules/
 .vs/
 config.js
 package-lock.json
+*.heapsnapshot

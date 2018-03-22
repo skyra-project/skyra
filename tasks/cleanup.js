@@ -56,7 +56,9 @@ module.exports = class MemorySweeper extends Task {
 		for (const user of this.client.users.values()) {
 			if (user.lastMessageID && user.lastMessageID < OLD_SNOWFLAKE) continue;
 			user.lastMessageID = null;
+			user.lastMessageChannelID = null;
 			this.client.users.delete(user.id);
+			this.client.gateways.users.cache.delete(user.id);
 			lastMessages++;
 			users++;
 		}

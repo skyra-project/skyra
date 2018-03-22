@@ -22,7 +22,6 @@ module.exports = class extends Extendable {
 };
 
 function nuke(msg) {
-	msg.action = 'DELETE';
 	return msg.delete().catch((error) => {
 		if (error.code === 10008) return msg;
 		throw error;

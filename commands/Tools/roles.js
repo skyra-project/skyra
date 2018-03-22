@@ -4,6 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			// Disabled until Klasa fixes the Usage error
+			enabled: false,
 			botPerms: ['MANAGE_ROLES'],
 			cooldown: 5,
 			description: msg => msg.language.get('COMMAND_ROLES_DESCRIPTION'),
@@ -15,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, roles) {
-		const publicRoles = msg.guild.configs.roles.public;
+		const { public: publicRoles, removeInitial, initial } = msg.guild.configs.roles.public;
 		if (!publicRoles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
 		if (!roles.length) return this.list(msg, publicRoles);
@@ -36,6 +38,13 @@ module.exports = class extends Command {
 				memberRoles.add(role.id);
 				addedRoles.push(role.name);
 			}
+		}
+
+		// If the guild requests to remove the initial role upon claiming, remove the initial role
+		if (initial && removeInitial && addedRoles.length) {
+			// If the role was deleted, remove it from the configs
+			if (!msg.guild.roles.has(initial)) msg.guild.configs.reset('roles.initial').catch(error => this.client.emit('wtf', error));
+			else if (msg.member.roles.has(initial)) removedRoles.add(initial);
 		}
 
 		// Apply the roles

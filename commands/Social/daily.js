@@ -7,11 +7,9 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['dailies'],
-			bucket: 2,
 			cooldown: 30,
 			description: msg => msg.language.get('COMMAND_DAILY_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_DAILY_EXTENDED'),
-			runIn: ['text']
+			extendedHelp: msg => msg.language.get('COMMAND_DAILY_EXTENDED')
 		});
 		this.spam = true;
 	}
@@ -45,7 +43,7 @@ module.exports = class extends Command {
 			if (msg.guild.configs._syncStatus) await msg.guild.configs._syncStatus;
 			money *= msg.guild.configs.social.boost;
 		}
-		await msg.author.configs.update(['money', 'timeDaily'], [msg.author.configs + money, nextTime]);
+		await msg.author.configs.update(['money', 'timeDaily'], [msg.author.configs.money + money, nextTime]);
 		return money;
 	}
 

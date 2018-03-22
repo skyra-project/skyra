@@ -10,6 +10,18 @@ module.exports = class extends Command {
 			usage: '[rolls:integer{1,1024}] [sides:integer{4,1024}]',
 			usageDelim: ' '
 		});
+
+		this.createCustomResolver('rolls', (arg, possible, msg) => {
+			if (!arg || arg === '') return undefined;
+			const number = Number(arg);
+			if (isNaN(number) || number < 1 || number > 1024) throw msg.language.get('COMMAND_DICE_ROLLS_ERROR');
+			return number | 0;
+		}).createCustomResolver('sides', (arg, possible, msg) => {
+			if (!arg || arg === '') return undefined;
+			const number = Number(arg);
+			if (isNaN(number) || number < 4 || number > 1024) throw msg.language.get('COMMAND_DICE_SIDES_ERROR');
+			return number | 0;
+		});
 		this.spam = true;
 	}
 

@@ -25,7 +25,7 @@ module.exports = class extends Command {
 	}
 
 	async remove(msg, [word]) {
-		if (word) throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
+		if (!word) throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
 		word = word.toLowerCase();
 		if (!msg.guild.configs.filter.raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', false);
 		if (msg.guild.configs.filter.raw.length === 1) return this.reset(msg);

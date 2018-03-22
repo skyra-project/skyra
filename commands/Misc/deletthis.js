@@ -43,10 +43,10 @@ module.exports = class extends Command {
 			.addImage(this.template, 0, 0, 650, 471)
 			.rotate(0.4)
 			.addImage(Hammerer, 297, -77, 154, 154, { type: 'round', radius: 77, restore: true })
-			.setTransform(1, 0, 0, 1, 0, 0)
+			.resetTransformation()
 			.rotate(0.46)
 			.addImage(Hammered, 495, -77, 154, 154, { type: 'round', radius: 77 })
-			.setTransform(1, 0, 0, 1, 0, 0)
+			.resetTransformation()
 			.toBufferAsync();
 	}
 

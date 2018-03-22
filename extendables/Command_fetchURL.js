@@ -12,7 +12,7 @@ module.exports = class extends Extendable {
 		});
 	}
 
-	async extend(url, options, type) {
+	async extend(url, options, type = 'text') {
 		if (typeof options === 'string' && typeof type === 'undefined') {
 			type = options;
 			options = undefined;

@@ -81,7 +81,7 @@ module.exports = class extends Command {
 
 	async checkMute(msg, modlog) {
 		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw 'COMMAND_UNMUTE_MISSING_PERMISSION';
-		if (!msg.guild.settings.mutes.includes(modlog.user)) throw 'COMMAND_MUTE_USER_NOT_MUTED';
+		if (!msg.guild.configs.mutes.includes(modlog.user)) throw 'COMMAND_MUTE_USER_NOT_MUTED';
 		return Moderation.typeKeys.UN_MUTE;
 	}
 

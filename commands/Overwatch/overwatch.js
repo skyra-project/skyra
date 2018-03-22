@@ -5,6 +5,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			enabled: false,
 			runIn: ['text', 'dm', 'group'],
 			cooldown: 10,
 			aliases: ['ow'],

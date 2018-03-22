@@ -16,7 +16,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [code]) {
-		const flagTime = 'wait' in msg.flags ? Number(msg.flags.wait) : 10000;
+		const flagTime = 'wait' in msg.flags ? Number(msg.flags.wait) : 30000;
 		const { success, result, time, type } = await this.timedEval(msg, code, flagTime);
 
 		if (msg.flags.silent) {

@@ -1,7 +1,8 @@
 const { Command } = require('../../../index');
 const { Permissions } = require('discord.js');
+const { FLAGS } = Permissions;
 
-const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS);
+const PERMISSION_FLAGS = Object.keys(FLAGS);
 
 module.exports = class extends Command {
 
@@ -23,8 +24,12 @@ module.exports = class extends Command {
 
 		const { permissions } = member;
 		const list = ['\u200B'];
-		for (let i = 0; i < PERMISSION_FLAGS.length; i++)
-			list.push(`${permissions.has(PERMISSION_FLAGS[i]) ? '🔹' : '🔸'} ${msg.language.PERMISSIONS[PERMISSION_FLAGS[i]] || PERMISSION_FLAGS[i]}`);
+		if (permissions.has(FLAGS.ADMINISTRATOR)) {
+			list.push(msg.language.get('COMMAND_PERMISSIONS_ALL'));
+		} else {
+			for (let i = 0; i < PERMISSION_FLAGS.length; i++)
+				list.push(`${permissions.has(PERMISSION_FLAGS[i]) ? '🔹' : '🔸'} ${msg.language.PERMISSIONS[PERMISSION_FLAGS[i]] || PERMISSION_FLAGS[i]}`);
+		}
 
 		const embed = new this.client.methods.Embed()
 			.setColor(msg.member.displayColor || 0xdfdfdf)

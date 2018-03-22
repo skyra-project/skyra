@@ -33,7 +33,7 @@ module.exports = class extends Command {
 		await role.edit({ mentionable: false })
 			.catch(Command.handleError);
 
-		return msg.send(msg.language.get('COMMAND_SUCCESS'));
+		return msg.sendMessage(msg.language.get('COMMAND_SUCCESS'));
 	}
 
 };

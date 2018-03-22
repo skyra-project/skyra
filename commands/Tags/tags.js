@@ -4,8 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: msg => msg.language.get('COMMAND_TAGS_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_TAGS_EXTENDED'),
+			description: msg => msg.language.get('COMMANDS_TAGS_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMANDS_TAGS_EXTENDED'),
 			cooldown: 5,
 			runIn: ['text'],
 			usage: '[list|tag:string]'
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 
 	get(msg, tags, name) {
 		if (!tags.has(name)) return Promise.reject(msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', name));
-		return msg.send(tags.get(name));
+		return msg.sendMessage(tags.get(name));
 	}
 
 	async list(msg, tags) {

@@ -42,6 +42,7 @@ module.exports = class extends Command {
 	}
 
 	async getIndex(msg, entries) {
+		if (entries.length === 1) return entries[0];
 		const _choice = await PromptList.run(msg, entries.slice(0, 10).map((entry) =>
 			`(${entry.score[0]}) ${entry.title[0]}`));
 		const entry = entries[_choice];

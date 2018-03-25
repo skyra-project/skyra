@@ -229,6 +229,7 @@ module.exports = class extends Language {
 			COMMAND_CONF_GET_NOEXT: (key) => `The key **${key}** does not seem to exist.`,
 			COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
 			COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
+			COMMAND_CONF_NOCHANGE: (key) => `The value for **${key}** was already that value.`,
 			COMMAND_CONF_SERVER_DESCRIPTION: 'Define per-server configuration.',
 			COMMAND_CONF_SERVER: (key, list) => `**Server Configuration${key}**\n${list}`,
 			COMMAND_CONF_USER_DESCRIPTION: 'Define per-user configuration.',
@@ -1531,6 +1532,7 @@ module.exports = class extends Language {
 			COMMAND_USERSELF: 'Why would you do that to yourself?',
 
 			SYSTEM_FETCHING: '`Fetching...`',
+			SYSTEM_FETCHING_USERS: 'Some users are playing hide-and-seek, please wait a moment until I find them all...',
 			SYSTEM_PROCESSING: '`Processing...`',
 			SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
 			SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',

@@ -10,9 +10,7 @@ const MATCHES = {
 module.exports = class extends RawEvent {
 
 	constructor(...args) {
-		super(...args, {
-			name: 'GUILD_MEMBER_REMOVE'
-		});
+		super(...args, { name: 'GUILD_MEMBER_REMOVE' });
 	}
 
 	async run({ guild, user }) {
@@ -64,7 +62,7 @@ module.exports = class extends RawEvent {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild) return null;
 
-		const user = this.client.users.fetch(data.user).catch(() => null);
+		const user = await this.client.users.fetch(data.user).catch(() => null);
 		if (!user) return null;
 		return { guild, user };
 	}

@@ -77,7 +77,7 @@ module.exports = class extends Command {
 
 	async remove(msg, [id]) {
 		if (!id) throw msg.language.get('COMMAND_POLL_MISSING_ID');
-		const found = this.client.schedule.tasks.find(task => task.id === id);
+		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll' || found.data.guild !== msg.guild.id) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
 		if (!(msg.author.id === found.data.author || await msg.hasAtLeastPermissionLevel(7))) throw msg.language.get('COMMAND_POLL_NOTMANAGEABLE');
 		await found.delete();
@@ -87,7 +87,7 @@ module.exports = class extends Command {
 	async vote(msg, [id, option]) {
 		if (!id) throw msg.language.get('COMMAND_POLL_MISSING_ID');
 		if (msg.deletable) msg.delete().catch(error => this.client.emit('wtf', error));
-		const found = this.client.schedule.tasks.find(task => task.id === id);
+		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll' || found.data.guild !== msg.guild.id) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
 		if (found.data.voted.includes(msg.author.id)) throw msg.language.get('COMMAND_POLL_ALREADY_VOTED');
 		if (option) option = option.toLowerCase();
@@ -100,7 +100,7 @@ module.exports = class extends Command {
 
 	async result(msg, [id]) {
 		if (!id) throw msg.language.get('COMMAND_POLL_MISSING_ID');
-		const poll = this.client.schedule.tasks.find(task => task.id === id);
+		const poll = this.client.schedule.get(id);
 		if (!(poll && (poll.taskName === 'poll' || poll.taskName === 'pollEnd') && poll.data.guild === msg.guild.id)) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
 		if (!(msg.author.id === poll.data.author || await msg.hasAtLeastPermissionLevel(7))) throw msg.language.get('COMMAND_POLL_NOTMANAGEABLE');
 

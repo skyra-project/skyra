@@ -14,7 +14,7 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const role = announcementCheck(msg);
-		await msg.member.removeRole(role);
+		await msg.member.roles.remove(role);
 		return msg.sendMessage(msg.language.get('COMMAND_UNSUBSCRIBE_SUCCESS', role.name));
 	}
 

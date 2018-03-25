@@ -4,9 +4,7 @@ const EMOJI_WHITELIST = new Set(['⭐']);
 module.exports = class extends RawEvent {
 
 	constructor(...args) {
-		super(...args, {
-			name: 'MESSAGE_REACTION_ADD'
-		});
+		super(...args, { name: 'MESSAGE_REACTION_ADD' });
 	}
 
 	async run({ message, reaction, user }) { // eslint-disable-line

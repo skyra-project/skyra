@@ -50,13 +50,13 @@ module.exports = class extends Command {
 		const localityOrCountry = locality ? country : {};
 		const state = locality && governing ? governing : localityOrCountry;
 
-		const res = await this.query(`https://api.darksky.net/forecast/${WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`);
+		const { currently } = await this.fetchURL(`https://api.darksky.net/forecast/${WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
 
-		const condition = res.currently.summary;
-		const icon = res.currently.icon;
-		const chanceofrain = Math.round((res.currently.precipProbability * 100) / 5) * 5;
-		const temperature = Math.round(res.currently.temperature);
-		const humidity = Math.round(res.currently.humidity * 100);
+		const condition = currently.summary;
+		const icon = currently.icon;
+		const chanceofrain = Math.round((currently.precipProbability * 100) / 5) * 5;
+		const temperature = Math.round(currently.temperature);
+		const humidity = Math.round(currently.humidity * 100);
 
 		return this.draw(msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity });
 	}

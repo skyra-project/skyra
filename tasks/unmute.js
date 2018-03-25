@@ -1,13 +1,6 @@
-const { ModerationLog, Moderation } = require('../index');
-const { Task, Timestamp } = require('klasa');
+const { Task, ModerationLog, Moderation } = require('../index');
 
 module.exports = class extends Task {
-
-	constructor(...args) {
-		super(...args);
-
-		this.timestamp = new Timestamp('hh:mm:ss');
-	}
 
 	async run(doc) {
 		// Get the guild and check for permissions

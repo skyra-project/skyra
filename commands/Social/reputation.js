@@ -20,7 +20,9 @@ module.exports = class extends Command {
 		const now = Date.now();
 		const profile = msg.author.configs;
 
-		if (this.busy.has(msg.author.id) || profile.timerep + DAY > now) return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_TIME', profile.timeReputation + DAY - now));
+		if (this.busy.has(msg.author.id) || profile.timeReputation + DAY > now) {
+			return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_TIME', profile.timeReputation + DAY - now));
+		}
 
 		if (!user) return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_USABLE'));
 		if (user.bot) throw msg.language.get('COMMAND_REPUTATION_BOTS');
@@ -30,7 +32,7 @@ module.exports = class extends Command {
 		try {
 			if (user.configs._syncStatus) await user.configs._syncStatus;
 			await user.configs.update('reputation', user.configs.reputation + 1);
-			await msg.author.configs.update('timerep', now);
+			await msg.author.configs.update('timeReputation', now);
 		} catch (err) {
 			this.busy.delete(msg.author.id);
 			throw err;

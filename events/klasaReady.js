@@ -3,6 +3,9 @@ const { Event } = require('klasa');
 module.exports = class extends Event {
 
 	async run() {
+		// Fill the dictionary name for faster user fetching
+		for (const user of this.client.users.values()) this.client.dictionaryName.set(user.id, user.username);
+
 		// this.client.user.setActivity('Skyra, help', { type: 'LISTENING' })
 		await this.client.user.setActivity('Skyra, help', { type: 'LISTENING' })
 			.catch(err => this.client.emit('error', err));

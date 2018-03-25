@@ -34,7 +34,7 @@ module.exports = class MemorySweeper extends Task {
 			for (const [id, member] of guild.members) {
 				if (member === me) continue;
 				if (member.voiceChannelID) continue;
-				if (member.lastMessageID && member.lastMessageID < OLD_SNOWFLAKE) continue;
+				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
 				guildMembers++;
 				guild.members.delete(id);
 			}
@@ -54,12 +54,9 @@ module.exports = class MemorySweeper extends Task {
 
 		// Per-User sweeper
 		for (const user of this.client.users.values()) {
-			if (user.lastMessageID && user.lastMessageID < OLD_SNOWFLAKE) continue;
-			user.lastMessageID = null;
-			user.lastMessageChannelID = null;
+			if (user.lastMessageID && user.lastMessageID > OLD_SNOWFLAKE) continue;
 			this.client.users.delete(user.id);
 			this.client.gateways.users.cache.delete(user.id);
-			lastMessages++;
 			users++;
 		}
 

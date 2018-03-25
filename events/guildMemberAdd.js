@@ -34,7 +34,7 @@ module.exports = class extends Event {
 		if (guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
 			const role = guild.roles.get(guild.configs.roles.muted);
 			if (!role) guild.configs.reset('roles.muted').catch(error => this.client.emit('error', error));
-			else member.addRole(role).catch(error => this.client.emit('error', error));
+			else member.roles.add(role).catch(error => this.client.emit('error', error));
 		}
 	}
 
@@ -45,7 +45,7 @@ module.exports = class extends Event {
 		if (guild.configs.roles.initial) {
 			const role = guild.roles.get(guild.configs.roles.initial);
 			if (!role) guild.configs.reset('roles.initial');
-			else member.addRole(role);
+			else member.roles.add(role);
 		}
 		if (guild.configs.messages['join-dm']) {
 			member.user.send(this._handleGreeting(guild.configs.messages['join-dm'], guild, member.user)).catch(() => null);

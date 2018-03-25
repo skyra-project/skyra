@@ -33,12 +33,21 @@ module.exports = class extends Command {
 
 	async generatePage(msg, list, index, position) {
 		if (index > list.size / 10) index = 0;
-		const page = [], listSize = list.size, pageCount = Math.ceil(listSize / 10),
+		const retrievedPage = [], promises = [],
+			page = [], listSize = list.size, pageCount = Math.ceil(listSize / 10),
 			indexLength = ((index * 10) + 10).toString().length, positionOffset = index * 10;
 		for (const [id, value] of list) {
 			if (positionOffset > value.position) continue;
 			if (positionOffset + 10 < value.position) break;
-			if (!value.name) value.name = await this.client.users.fetch(id).then(user => user.username).catch(() => id);
+			retrievedPage.push(value);
+			if (!value.name) promises.push(this.client.fetchUsername(id).then(username => { value.name = username; }));
+		}
+
+		if (promises.length) {
+			await msg.send(msg.language.get('SYSTEM_FETCHING_USERS'));
+			await Promise.all(promises);
+		}
+		for (const value of retrievedPage) {
 			page.push(`• ${value.position.toString().padStart(indexLength, ' ')}: ${this.keyUser(value.name).padEnd(25, ' ')} :: ${value.points}`);
 		}
 

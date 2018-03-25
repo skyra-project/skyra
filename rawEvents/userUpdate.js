@@ -6,10 +6,6 @@ module.exports = class extends RawEvent {
 		super(...args, { name: 'USER_UPDATE' });
 	}
 
-	async run(user) {
-		this.client.dictionaryName.set(user.id, user.username);
-	}
-
 	// 	{ id: '80351110224678912',
 	// 	  username: 'Nelly',
 	// 	  discriminator: '1337',
@@ -18,7 +14,7 @@ module.exports = class extends RawEvent {
 	// 	  email: 'nelly@discordapp.com' }
 
 	process(user) {
-		return this.client.users.add(user);
+		this.client.dictionaryName.set(user.id, user.username);
 	}
 
 };

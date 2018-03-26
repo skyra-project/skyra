@@ -49,6 +49,7 @@ module.exports = {
 	// Games
 	ConnectFour: require('./lib/util/Games/ConnectFour'),
 	ConnectFourManager: require('./lib/util/Games/ConnectFourManager'),
+	Slotmachine: require('./lib/util/Games/Slotmachine'),
 
 	// Overwatch
 	overwatch: require('./lib/util/overwatch/index'),

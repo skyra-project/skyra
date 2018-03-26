@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			description: msg => msg.language.get('COMMAND_WHOIS_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_WHOIS_EXTENDED'),
 			runIn: ['text'],
-			usage: '[query:advuser]'
+			usage: '[query:username]'
 		});
 	}
 

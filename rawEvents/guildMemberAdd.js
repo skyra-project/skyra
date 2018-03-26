@@ -1,4 +1,4 @@
-const { Event } = require('../index');
+const { RawEvent } = require('../index');
 const { Permissions: { FLAGS } } = require('discord.js');
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
@@ -13,20 +13,28 @@ const COLORS = {
 	MUTE: { color: 0xFDD835, title: 'Muted Member Join' }
 };
 
-module.exports = class extends Event {
+module.exports = class extends RawEvent {
 
-	run(member) {
-		if (!member.guild.available) return;
+	constructor(...args) {
+		super(...args, { name: 'GUILD_MEMBER_ADD' });
+	}
 
-		const { guild } = member;
-		if (guild.security.hasRAID(member.id)) guild.security.raid.delete(member.id);
+	async run({ guild, member }) {
+		if (!guild.available) return;
+
 		if (guild.configs.roles.muted && guild.configs.mutes.includes(member.id)) {
 			this._handleMute(guild, member);
-		} else if (guild.configs.events.memberRemove) {
+		} else if (guild.configs.events.memberAdd) {
 			this._handleJoin(guild, member);
 			this._handleLog(guild, member, COLORS.JOIN);
 			this._handleMessage(guild, member);
 		}
+	}
+
+	async process(data) {
+		const guild = this.client.guilds.get(data.guild_id);
+		if (!guild || !guild.available) return null;
+		return { guild, member: guild.members.add(data) };
 	}
 
 	async _handleMute(guild, member) {

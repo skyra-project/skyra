@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		const remaining = time - now;
 
 		// It's been less than 11 hours, tell the remaining time
-		if (remaining < GRACE_PERIOD) return msg.sendMessage(msg.language.get('COMMAND_DAILY_TIME', remaining));
+		if (remaining > GRACE_PERIOD) return msg.sendMessage(msg.language.get('COMMAND_DAILY_TIME', remaining));
 
 		// It's been 11-12 hours, ask for the user if they want to claim the grace period
 		const accepted = await msg.ask(msg.language.get('COMMAND_DAILY_GRACE', remaining));

@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			cooldown: 30,
 			description: (msg) => msg.language.get('COMMAND_NICK_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_NICK_EXTENDED'),
-			permLevel: 7,
+			permLevel: 6,
 			runIn: ['text'],
 			usage: '[nick:string{,32}]'
 		});

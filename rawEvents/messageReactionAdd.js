@@ -25,7 +25,7 @@ module.exports = class extends RawEvent {
 
 		// The ConnectFour does not need more data than this
 		if (CONNECT_FOUR_WHITELIST.has(data.emoji.name)) {
-			this._handleConnectFour(channel, data.emoji.name, data.user_id);
+			this._handleConnectFour(channel, data.message_id, data.emoji.name, data.user_id);
 			return false;
 		}
 
@@ -47,9 +47,9 @@ module.exports = class extends RawEvent {
 		return { message, reaction, user };
 	}
 
-	_handleConnectFour(channel, emoji, userID) {
+	_handleConnectFour(channel, messageID, emoji, userID) {
 		const game = this.client.connectFour.matches.get(channel.id);
-		if (game) game.send(emoji, userID);
+		if (game && game.message && game.message.id === messageID) game.send(emoji, userID);
 	}
 
 };

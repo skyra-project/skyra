@@ -15,7 +15,7 @@ module.exports = class extends Command {
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_WARNINGS_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_WARNINGS_EXTENDED'),
-			permLevel: 7,
+			permLevel: 6,
 			runIn: ['text'],
 			usage: '[user:username]'
 		});
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 		const display = new RichDisplay(new this.client.methods.Embed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
-			.setTitle(`There are ${warnings.length} strikes.`));
+			.setTitle(msg.language.get('COMMAND_WARNINGS_AMOUNT', warnings.length)));
 
 		const pages = Math.ceil(warnings.length / 10);
 

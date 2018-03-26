@@ -46,6 +46,10 @@ module.exports = {
 	constants: require('./lib/util/constants'),
 	util: require('./lib/util/util'),
 
+	// Games
+	ConnectFour: require('./lib/util/Games/ConnectFour'),
+	ConnectFourManager: require('./lib/util/Games/ConnectFourManager'),
+
 	// Overwatch
 	overwatch: require('./lib/util/overwatch/index'),
 

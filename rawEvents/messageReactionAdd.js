@@ -1,5 +1,6 @@
-const { RawEvent } = require('../index');
-const EMOJI_WHITELIST = new Set(['⭐']);
+const { RawEvent, constants: { CONNECT_FOUR } } = require('../index');
+const EMOJI_WHITELIST = new Set(['⭐', ...CONNECT_FOUR.REACTIONS]);
+const CONNECT_FOUR_WHITELIST = new Set(CONNECT_FOUR.REACTIONS);
 
 module.exports = class extends RawEvent {
 
@@ -8,13 +9,7 @@ module.exports = class extends RawEvent {
 	}
 
 	async run({ message, reaction, user }) { // eslint-disable-line
-		// if (!guild.available) return;
-		// if (guild.members.has(user.id)) guild.members.delete(user.id);
-		// if (guild.security.hasRAID(user.id)) guild.security.raid.delete(user.id);
-		// if (guild.configs.events.memberRemove) {
-		// 	this._handleLog(guild, user).catch(error => this.client.emit('error', error));
-		// 	this._handleMessage(guild, user).catch(error => this.client.emit('error', error));
-		// }
+		// Unfinished
 	}
 
 	// 	{ user_id: 'id',
@@ -27,6 +22,12 @@ module.exports = class extends RawEvent {
 		// Verify channel
 		const channel = this.client.channels.get(data.channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
+
+		// The ConnectFour does not need more data than this
+		if (CONNECT_FOUR_WHITELIST.has(data.emoji.name)) {
+			this._handleConnectFour(channel, data.emoji.name, data.user_id);
+			return false;
+		}
 
 		// Verify user
 		const user = await this.client.users.fetch(data.user_id);
@@ -44,6 +45,11 @@ module.exports = class extends RawEvent {
 		reaction._add(user);
 
 		return { message, reaction, user };
+	}
+
+	_handleConnectFour(channel, emoji, userID) {
+		const game = this.client.connectFour.matches.get(channel.id);
+		if (game) game.send(emoji, userID);
 	}
 
 };

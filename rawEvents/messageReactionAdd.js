@@ -6,6 +6,7 @@ module.exports = class extends RawEvent {
 
 	constructor(...args) {
 		super(...args, { name: 'MESSAGE_REACTION_ADD' });
+		this.TEMP_CACHE = new Map();
 	}
 
 	async run({ message, reaction, user }) { // eslint-disable-line
@@ -29,22 +30,38 @@ module.exports = class extends RawEvent {
 			return false;
 		}
 
-		// Verify user
-		const user = await this.client.users.fetch(data.user_id);
+		if (data.emoji.name === '⭐') {
+			this._handleStarboard(channel, data.message_id, data.user_id);
+			return false;
+		}
 
-		// Verify message
-		const message = await channel.messages.fetch(data.message_id);
-		if (!message || !data.emoji) return false;
+		return false;
 
-		// Verify reaction
-		const reaction = message.reactions.add({
-			emoji: data.emoji,
-			count: 0,
-			me: user.id === this.client.user.id
-		});
-		reaction._add(user);
+		// // Verify user
+		// const user = await this.client.users.fetch(data.user_id);
 
-		return { message, reaction, user };
+		// // Verify message
+		// const message = await channel.messages.fetch(data.message_id);
+		// if (!message || !data.emoji) return false;
+
+		// // Verify reaction
+		// const reaction = message.reactions.add({
+		// 	emoji: data.emoji,
+		// 	count: 0,
+		// 	me: user.id === this.client.user.id
+		// });
+		// reaction._add(user);
+
+		// return { message, reaction, user };
+	}
+
+	async _handleStarboard(channel, messageID, userID) {
+		const starboardConfigs = channel.guild.configs.starboard;
+		if (!starboardConfigs.channel || starboardConfigs.ignoreChannels.includes(channel.id)) return;
+		const { starboard } = channel.guild;
+		const sMessage = await starboard.fetch(channel, messageID);
+		if (sMessage.message.author.id === userID) return;
+		await sMessage.setStars(sMessage.message.reactions.get('⭐').count);
 	}
 
 	_handleConnectFour(channel, messageID, emoji, userID) {

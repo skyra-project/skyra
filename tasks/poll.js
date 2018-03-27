@@ -7,7 +7,7 @@ module.exports = class extends Task {
 		const guild = this.client.guilds.get(doc.guild);
 		if (!guild) return;
 
-		const user = await this.client.users.fetch(doc.user).catch(this._catchErrorUser);
+		const user = await this.client.users.fetch(doc.author).catch(this._catchErrorUser);
 		if (!user) return;
 
 		let content;

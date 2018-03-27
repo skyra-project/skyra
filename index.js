@@ -19,7 +19,7 @@ module.exports = {
 	GuildConfiguration: require('./lib/structures/GuildConfiguration'),
 	MemberConfiguration: require('./lib/structures/MemberConfiguration'),
 	UserConfiguration: require('./lib/structures/UserConfiguration'),
-	Starboard: require('./lib/structures/Starboard'),
+	StarboardManager: require('./lib/structures/StarboardManager'),
 	StarboardMessage: require('./lib/structures/StarboardMessage'),
 
 	ModerationCommand: require('./lib/structures/ModerationCommand'),

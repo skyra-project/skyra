@@ -60,8 +60,7 @@ module.exports = class extends RawEvent {
 		if (!starboardConfigs.channel || starboardConfigs.ignoreChannels.includes(channel.id)) return;
 		const { starboard } = channel.guild;
 		const sMessage = await starboard.fetch(channel, messageID);
-		if (sMessage.message.author.id === userID) return;
-		await sMessage.setStars(sMessage.message.reactions.get('⭐').count);
+		await sMessage.add(userID);
 	}
 
 	_handleConnectFour(channel, messageID, emoji, userID) {

@@ -6,12 +6,13 @@ module.exports = class extends ModerationCommand {
 		super(...args, {
 			avoidAnonymous: true,
 			botPerms: ['BAN_MEMBERS'],
-			description: 'Softbans the mentioned user.',
+			description: msg => msg.language.get('COMMAND_SOFTBAN_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_SOFTBAN_EXTENDED'),
 			modType: ModerationCommand.types.SOFT_BAN,
 			permLevel: 5,
 			requiredMember: false,
 			runIn: ['text'],
-			usage: '<SearchMember:user> [days:integer] [reason:string] [...]',
+			usage: '<SearchMember:user> [days:integer{1,7}] [reason:string] [...]',
 			usageDelim: ' '
 		});
 	}

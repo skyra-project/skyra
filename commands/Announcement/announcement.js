@@ -10,7 +10,7 @@ module.exports = class extends Command {
 			cooldown: 30,
 			description: msg => msg.language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
-			permLevel: 2,
+			permLevel: 4,
 			runIn: ['text'],
 			usage: '<announcement:string>'
 		});

@@ -6,7 +6,8 @@ module.exports = class extends ModerationCommand {
 		super(...args, {
 			avoidAnonymous: true,
 			botPerms: ['BAN_MEMBERS'],
-			description: 'Unbans an user (you MUST write his full Discord Tag or his ID).',
+			description: msg => msg.language.get('COMMAND_UNBAN_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_UNBAN_EXTENDED'),
 			modType: ModerationCommand.types.UN_BAN,
 			permLevel: 5,
 			requiredMember: false,

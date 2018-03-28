@@ -5,7 +5,8 @@ module.exports = class extends ModerationCommand {
 	constructor(...args) {
 		super(...args, {
 			botPerms: ['KICK_MEMBERS'],
-			description: 'Kick the mentioned user.',
+			description: msg => msg.language.get('COMMAND_KICK_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_KICK_EXTENDED'),
 			modType: ModerationCommand.types.KICK,
 			permLevel: 5,
 			requiredMember: true,

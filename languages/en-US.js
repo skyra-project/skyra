@@ -702,8 +702,21 @@ module.exports = class extends Language {
 			}),
 
 			/**
-				 * #############################
-				 * MODERATION/UTILITIES COMMANDS
+			 * ##############################
+			 * MODERATION/MANAGEMENT COMMANDS
+			 */
+
+			COMMAND_WARNINGS_DESCRIPTION: 'List all warnings from this guild or from a user.',
+			COMMAND_WARNINGS_EXTENDED: builder.display('warnings', {
+				extendedHelp: `This command shows either all warnings filed in this guild, or all warnings filed in this guild
+					for a specific user. This command uses a reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}**
+					to execute correctly.`,
+				examples: ['', '@Pete']
+			}),
+
+			/**
+			 * #############################
+			 * MODERATION/UTILITIES COMMANDS
 			 */
 
 			COMMAND_CASE_DESCRIPTION: 'Get the information from a case given its index.',
@@ -715,6 +728,115 @@ module.exports = class extends Language {
 			 * ###################
 			 * MODERATION COMMANDS
 			 */
+
+			COMMAND_BAN_DESCRIPTION: 'Hit somebody with the ban hammer.',
+			COMMAND_BAN_EXTENDED: builder.display('ban', {
+				extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
+					can be banned by me. No, the guild's owner cannot be banned. This action can be optionally timed to create
+					a temporary ban.`,
+				examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.']
+			}),
+			COMMAND_KICK_DESCRIPTION: 'Hit somebody with the 👢.',
+			COMMAND_KICK_EXTENDED: builder.display('kick', {
+				extendedHelp: `This command requires **${PERMS.KICK_MEMBERS}**, and only members with lower role hierarchy position
+					can be kicked by me. No, the guild's owner cannot be kicked.`,
+				examples: ['@Pete', '@Pete Spamming general chat.']
+			}),
+			COMMAND_LOCKDOWN_DESCRIPTION: 'Close the gates for this channel!',
+			COMMAND_LOCKDOWN_EXTENDED: builder.display('lockdown', {
+				extendedHelp: `This command requires **${PERMS.MANAGE_CHANNELS}** in order to be able to manage the permissions for
+					a channel. This command removes the permission **${PERMS.SEND_MESSAGES}** to the \`@everyone\` role so nobody but
+					the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can
+					send messages. Optionally, you can pass time as second argument.`,
+				examples: ['', '#general', '#general 5m']
+			}),
+			COMMAND_MUTE_DESCRIPTION: 'Mute a user in all text and voice channels.',
+			COMMAND_MUTE_EXTENDED: builder.display('mute', {
+				extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be muted. This action can be optionally timed to create
+					a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.
+					The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+				examples: ['@Pete', '@Pete Spamming all channels', '@Pete Spamming all channels, for 24 hours.']
+			}),
+			COMMAND_PRUNE_DESCRIPTION: 'Prunes a certain amount of messages w/o filter.',
+			COMMAND_PRUNE_EXTENDED: builder.display('prune', {
+				extendedHelp: `This command deletes the given amount of messages given a filter within the last 100 messages sent
+					in the channel the command has been run.`,
+				explainedUsage: [
+					['Messages', 'The amount of messages to prune.'],
+					['Filter', 'The filter to apply.'],
+					['(Filter) Link', 'Filters messages that have links on the content.'],
+					['(Filter) Invite', 'Filters messages that have invite links on the content.'],
+					['(Filter) Bots', 'Filters messages sent by bots.'],
+					['(Filter) You', 'Filters messages sent by Skyra.'],
+					['(Filter) Me', 'Filters your messages.'],
+					['(Filter) Upload', 'Filters messages that have attachments.'],
+					['(Filter) User', 'Filters messages sent by the specified user.']
+				],
+				examples: ['50 me', '75 @kyra', '20 bots'],
+				reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
+			}),
+			COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',
+			COMMAND_REASON_EXTENDED: builder.display('reason', {
+				extendedHelp: `This command allows moderation log case management, it allows moderators to update the reason.`,
+				examples: ['420 Spamming all channels']
+			}),
+			COMMAND_SOFTBAN_DESCRIPTION: 'Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.',
+			COMMAND_SOFTBAN_EXTENDED: builder.display('softban', {
+				extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
+					can be banned by me. No, the guild's owner cannot be banned. The ban feature from Discord has a feature that
+					allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being
+					a number between 0 (no days) and 7. The user gets unbanned right after the ban, so it is like a kick, but
+					that can prune many many messages.`,
+				examples: ['@Pete', '@Pete Spamming all channels', '@Pete 7 All messages sent in 7 are gone now, YEE HAH!']
+			}),
+			COMMAND_UNBAN_DESCRIPTION: 'Unban somebody from this guild.',
+			COMMAND_UNBAN_EXTENDED: builder.display('unban', {
+				extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
+					cleans them up, and allows the pass to this guild's gates.`,
+				examples: ['@Pete', '@Pete Turns out he was not the one who spammed all channels ¯\\_(ツ)_/¯']
+			}),
+			COMMAND_UNMUTE_DESCRIPTION: 'Remove the scotch tape from a user.',
+			COMMAND_UNMUTE_EXTENDED: builder.display('unmute', {
+				extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the muted people's list,
+					and gives the old roles back if the user had them.`,
+				examples: ['@Pete', '@Pete (Insert random joke here).']
+			}),
+			COMMAND_UNWARN_DESCRIPTION: 'Appeal a warning moderation log case.',
+			COMMAND_UNWARN_EXTENDED: builder.display('unwarn', {
+				extendedHelp: `This command appeals a warning, it requires no permissions, you only give me the moderation log
+					case to appeal and the reason.`,
+				examples: ['0 Whoops, wrong dude.', '42 Turns out this was the definition of life.']
+			}),
+			COMMAND_VMUTE_DESCRIPTION: 'Throw somebody\'s microphone out the window.',
+			COMMAND_VMUTE_EXTENDED: builder.display('vmute', {
+				extendedHelp: `This command requires **${PERMS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
+					can be silenced by me. No, the guild's owner cannot be silenced. This action can be optionally timed to create
+					a temporary voice mute.`,
+				examples: ['@Pete', '@Pete Singing too loud', '@Pete Literally sang hear rape, for 24 hours.']
+			}),
+			COMMAND_VOICEKICK_DESCRIPTION: 'Hit somebody with the 👢 for singing so bad and loud.',
+			COMMAND_VOICEKICK_EXTENDED: builder.display('voicekick', {
+				extendedHelp: `This command requires the permissions **${PERMS.MANAGE_CHANNELS}** to create a temporary (hidden)
+					voice channel, and **${PERMS.MOVE_MEMBERS}** to move the user to the temporary channel. After this, the channel
+					is quickly deleted, making the user leave the voice channel. For scared moderators, this command has almost no
+					impact in the average user, as the channel is created in a way only me and the selected user can see and join,
+					then quickly deleted.`,
+				examples: ['@Pete', '@Pete Spamming all channels']
+			}),
+			COMMAND_VUNMUTE_DESCRIPTION: `Get somebody's microphone back so they can talk.`,
+			COMMAND_VUNMUTE_EXTENDED: builder.display('vunmute', {
+				extendedHelp: `This command requires **${PERMS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
+					can be un-silenced by me. No, the guild's owner cannot be un-silenced.`,
+				examples: ['@Pete', '@Pete Appealed his times signing hear rape.']
+			}),
+			COMMAND_WARN_DESCRIPTION: 'File a warning to somebody.',
+			COMMAND_WARN_EXTENDED: builder.display('warn', {
+				extendedHelp: `This command files a warning to a user. This kind of warning is meant to be **formal warnings**, as
+					they will be shown in the 'warnings' command. It is a good practise to do an informal warning before using this
+					command.`,
+				examples: ['@Pete Attempted to mention everyone.']
+			}),
 
 			/**
 			 * ##################
@@ -729,6 +851,13 @@ module.exports = class extends Language {
 			COMMAND_BALANCE_DESCRIPTION: 'Check your current balance.',
 			COMMAND_BALANCE_EXTENDED: builder.display('balance', {
 				extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
+			}),
+			COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
+			COMMAND_C4_EXTENDED: builder.display('c4', {
+				extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
+					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
+					game in which the players first choose a color and then take turns dropping colored discs from the top into a
+					seven-column, ~~six~~ five-row vertically suspended grid.`
 			}),
 			COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}.`,
 			COMMAND_DAILY_EXTENDED: builder.display('daily', {
@@ -795,7 +924,7 @@ module.exports = class extends Language {
 			COMMAND_REPUTATIONS_DESCRIPTION: 'Check your amount of reputation points.',
 			COMMAND_REPUTATIONS_EXTENDED: builder.display('reputations', {
 				extendedHelp: `This command tells you the amount of reputation points. They are points you achieve from other users
-				when they use the reputation command.`,
+					when they use the reputation command.`,
 				reminder: 'You can give users a reputation point with the \'reputation\' command every 24 hours.'
 			}),
 			COMMAND_SETCOLOR_DESCRIPTION: 'Change your user profile\'s color.',
@@ -810,6 +939,17 @@ module.exports = class extends Language {
 					['HSL', 'hsl(350, 100, 100)'],
 					['B10', '14671839']
 				]
+			}),
+			COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
+			COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
+				extendedHelp: `A slot machine (American English), known variously as a fruit machine (British English), puggy
+					(Scottish English),[1] the slots (Canadian and American English), poker machine/pokies (Australian English and
+					New Zealand English), or simply slot (American English), is a casino gambling machine with three or more
+					reels which spin when a button is pushed.`,
+				explainedUsage: [
+					['Amount', 'Either 50, 100, 200, 500, or even, 1000 shinies to bet.']
+				],
+				reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
 			}),
 
 			/**
@@ -1255,6 +1395,8 @@ module.exports = class extends Language {
 			COMMAND_MUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_MUTE_MUTED: 'The target user is already muted.',
 			COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
+			COMMAND_MUTE_UNCONFIGURED: 'This guild does not have a **Muted** role. Aborting command execution.',
+			COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the permissions **${PERMS.MANAGE_ROLES}** to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
 			COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
 			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
 			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,

@@ -1,11 +1,18 @@
 const { ModerationCommand, util: { createMuteRole } } = require('../../index');
+const { Permissions } = require('discord.js');
+
+const PERMISSIONS = Permissions.resolve([
+	Permissions.FLAGS.MANAGE_ROLES,
+	Permissions.FLAGS.MANAGE_CHANNELS
+]);
 
 module.exports = class extends ModerationCommand {
 
 	constructor(...args) {
 		super(...args, {
 			botPerms: ['MANAGE_ROLES'],
-			description: 'Mute the mentioned user.',
+			description: msg => msg.language.get('COMMAND_MUTE_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_MUTE_EXTENDED'),
 			modType: ModerationCommand.types.MUTE,
 			permLevel: 5,
 			requiredMember: true,
@@ -19,6 +26,7 @@ module.exports = class extends ModerationCommand {
 		const member = await this.checkModeratable(msg, target);
 
 		const mute = await this._getMuteRole(msg);
+		if (!mute) throw msg.language.get('COMMAND_MUTE_UNCONFIGURED');
 		if (msg.guild.configs.mutes.includes(member.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
 
 		// Parse the reason and get the roles
@@ -40,6 +48,7 @@ module.exports = class extends ModerationCommand {
 	}
 
 	async _askMuteRoleCreation(msg) {
+		if (msg.channel.permissionsFor(msg.guild.me).missing(PERMISSIONS).length) return null;
 		await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
 			.catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
 		await msg.sendMessage(msg.language.get('SYSTEM_PROCESSING'));

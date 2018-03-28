@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			botPerms: ['EMBED_LINKS'],
 			cooldown: 5,
 			description: 'Get the information from a case by its index.',
-			permLevel: 2,
+			permLevel: 5,
 			runIn: ['text'],
 			usage: '<Case:integer>'
 		});

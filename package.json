@@ -15,14 +15,16 @@
   "author": "kyranet",
   "license": "UNLICENSED",
   "dependencies": {
-    "canvas": "github:Automattic/node-canvas",
+    "canvas": "github:Automattic/node-canvas#92b192447e9b9ae98da0f801e4e34afdd1dc1ef8",
     "canvas-constructor": "github:kyranet/canvasConstructor",
+    "diff": "^3.5.0",
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.3.2",
-    "klasa": "github:dirigeants/klasa",
+    "heapdump": "^0.3.9",
+    "klasa": "github:dirigeants/klasa#kyraTissues",
     "node-ipc": "^9.1.1",
     "rethinkdbdash": "^2.3.31",
-    "snekfetch": "^3.6.4",
+    "snekfetch": "^3.6.1",
     "xml2js": "^0.4.19"
   }
 }

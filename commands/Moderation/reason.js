@@ -4,13 +4,13 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			name: 'reason',
-			permLevel: 2,
 			botPerms: ['EMBED_LINKS'],
-			runIn: ['text'],
 			cooldown: 5,
-
-			description: 'Edit the reason field from a case.',
+			description: msg => msg.language.get('COMMAND_REASON_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_REASON_EXTENDED'),
+			name: 'reason',
+			permLevel: 5,
+			runIn: ['text'],
 			usage: '<case:integer> <reason:string> [...]',
 			usageDelim: ' '
 		});

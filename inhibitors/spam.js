@@ -18,7 +18,7 @@ module.exports = class extends Inhibitor {
 			|| msg.guild
 			|| msg.guild.configs.channels.spam === null
 			|| msg.guild.configs.channels.spam === msg.channel.id
-			|| await msg.hasAtLeastPermissionLevel(2)) return;
+			|| await msg.hasAtLeastPermissionLevel(5)) return;
 
 		if (this.cooldowns.has(msg.channel.id)) throw true;
 

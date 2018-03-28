@@ -1,5 +1,5 @@
 const { Command, constants: { TIME } } = require('../../index');
-const GRACE_PERIOD = TIME.HOUR * 11;
+const GRACE_PERIOD = TIME.HOUR;
 const DAILY_PERIOD = TIME.HOUR * 12;
 
 module.exports = class extends Command {
@@ -24,7 +24,7 @@ module.exports = class extends Command {
 
 		const remaining = time - now;
 
-		// It's been less than 11 hours, tell the remaining time
+		// If it's not under the grace period (1 hour), tell them the time
 		if (remaining > GRACE_PERIOD) return msg.sendMessage(msg.language.get('COMMAND_DAILY_TIME', remaining));
 
 		// It's been 11-12 hours, ask for the user if they want to claim the grace period

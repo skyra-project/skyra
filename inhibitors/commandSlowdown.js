@@ -17,7 +17,7 @@ module.exports = class extends Inhibitor {
 		 * @since 3.0.0
 		 * @type {number}
 		 */
-		this.slowmodeTime = this.client.options.slowmodeTime || 500;
+		this.slowmodeTime = this.client.options.slowmodeTime || 750;
 	}
 
 	async run(msg) {

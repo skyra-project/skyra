@@ -9,8 +9,8 @@ module.exports = class extends Command {
 			aliases: ['connectfour', 'connect-four'],
 			botPerms: ['USE_EXTERNAL_EMOJIS'],
 			cooldown: 0,
-			description: msg => msg.language.get('COMMAND_BALANCE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_BALANCE_EXTENDED'),
+			description: msg => msg.language.get('COMMAND_C4_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_C4_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:username>'
 		});
@@ -28,16 +28,14 @@ module.exports = class extends Command {
 		const prompt = await msg.sendMessage(msg.language.get('COMMAND_C4_PROMPT', msg.author, user));
 		const response = await msg.channel.awaitMessages(message => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
 			.then(messages => messages.first())
-			.catch(() => { prompt.edit(msg.language.get('COMMAND_C4_PROMPT_TIMEOUT')); });
+			.catch(() => false);
 
-		if (response) {
-			if (/ye(s|ah?)?/i.test(response.content)) {
-				await createGame(true).run(prompt);
-			} else {
-				createGame(false);
-				await prompt.edit(msg.language.get('COMMAND_C4_PROMPT_DENY'));
-				prompt.nuke(10000);
-			}
+		if (response && /ye(s|ah?)?/i.test(response.content)) {
+			await createGame(true).run(prompt);
+		} else {
+			createGame(false);
+			await prompt.edit(msg.language.get(response ? 'COMMAND_C4_PROMPT_DENY' : 'COMMAND_C4_PROMPT_TIMEOUT'));
+			prompt.nuke(10000);
 		}
 
 		this.client.connectFour.delete(msg.channel.id);

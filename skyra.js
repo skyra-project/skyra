@@ -62,5 +62,5 @@ const skyra = new Skyra({
 	typing: false
 });
 
-skyra.login(config.tokens.bot.dev).catch((error) =>
+skyra.login(config.tokens.bot.stable).catch((error) =>
 	skyra.console.wtf(`Login Error:\n${(error && error.stack) || error}`));

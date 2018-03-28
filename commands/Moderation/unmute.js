@@ -5,7 +5,8 @@ module.exports = class extends ModerationCommand {
 	constructor(...args) {
 		super(...args, {
 			botPerms: ['MANAGE_ROLES'],
-			description: 'Unmute the mentioned user.',
+			description: msg => msg.language.get('COMMAND_UNMUTE_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_UNMUTE_EXTENDED'),
 			modType: ModerationCommand.types.UN_MUTE,
 			permLevel: 5,
 			requiredMember: true,

@@ -4,8 +4,8 @@ module.exports = class extends ModerationCommand {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['BAN_MEMBERS'],
-			description: 'Ban the mentioned user.',
+			description: msg => msg.language.get('COMMAND_UNWARN_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_UNWARN_EXTENDED'),
 			modType: ModerationCommand.types.UN_WARN,
 			permLevel: 5,
 			requiredMember: true,

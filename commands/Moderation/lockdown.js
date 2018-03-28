@@ -1,4 +1,4 @@
-const { Command, Duration } = require('../../index');
+const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -7,16 +7,17 @@ module.exports = class extends Command {
 			aliases: ['lock', 'unlock'],
 			botPerms: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			cooldown: 5,
-			description: 'Lock/unlock the selected channel.',
+			description: msg => msg.language.get('COMMAND_LOCKDOWN_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_LOCKDOWN_EXTENDED'),
 			permLevel: 5,
 			runIn: ['text'],
-			usage: '[channel:channel] [time:string] [...]',
+			usage: '[channel:channel] [time:time]',
 			usageDelim: ' '
 		});
 	}
 
-	run(msg, [channel = msg.channel, ...time]) {
-		return this[msg.guild.security.hasLockdown(msg.channel.id) ? 'unlock' : 'lock'](msg, channel, time.length > 0 ? time.join(' ') : null);
+	run(msg, [channel = msg.channel, time]) {
+		return this[msg.guild.security.hasLockdown(msg.channel.id) ? 'unlock' : 'lock'](msg, channel, time);
 	}
 
 	async unlock(msg, channel) {
@@ -30,7 +31,7 @@ module.exports = class extends Command {
 		await channel.overwritePermissions(msg.guild.roles.get(msg.guild.id), { SEND_MESSAGES: false });
 		if (msg.channel.postable) await msg.sendMessage(msg.language.get('COMMAND_LOCKDOWN_LOCK', channel));
 		msg.guild.security.lockdowns.set(channel.id, time
-			? setTimeout(() => this.unlock(message, channel), new Duration(time).offset)
+			? setTimeout(() => this.unlock(message, channel), time.getTime() - Date.now())
 			: null);
 	}
 

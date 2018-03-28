@@ -26,6 +26,7 @@ module.exports = class extends Command {
 		const { position } = msg.guild.me.roles.highest;
 
 		for (const role of filterRoles) {
+			if (!role) continue;
 			if (!publicRoles.includes(role.id)) {
 				unlistedRoles.push(role.name);
 			} else if (position <= role.position) {

@@ -894,6 +894,13 @@ module.exports = class extends Language {
 					['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
 				]
 			}),
+			COMMAND_MYLEVEL_DESCRIPTION: 'Check your local level.',
+			COMMAND_MYLEVEL_EXTENDED: builder.display('mylevel', {
+				extendedHelp: `How much until next auto role? How many points do I have in this guild?`,
+				explainedUsage: [
+					['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
+				]
+			}),
 			COMMAND_PAY_DESCRIPTION: `Pay somebody with your ${SHINY}.`,
 			COMMAND_PAY_EXTENDED: builder.display('pay', {
 				extendedHelp: `Businessmen! Today is payday!`,
@@ -1493,8 +1500,8 @@ module.exports = class extends Language {
 				EXPERIENCE: 'Experience',
 				NEXT_IN: 'Next level in'
 			},
-			COMMAND_MYLEVEL: (points, next) => `You have a total of ${points} points.${next}`,
-			COMMAND_MYLEVEL_NEXT: (remaining, next) => `\nPoints for next rank: **${remaining}** (at ${next} points).`,
+			COMMAND_MYLEVEL: (points, next, user) => `${user ? `The user ${user} has` : 'You have'} a total of ${points} points.${next}`,
+			COMMAND_MYLEVEL_NEXT: (remaining, next) => `Points for next rank: **${remaining}** (at ${next} points).`,
 			COMMAND_PAY_MISSING_MONEY: (needed, has) => `I am sorry, but you need ${needed}${SHINY} and you have ${has}${SHINY}`,
 			COMMAND_PAY_PROMPT: (user, amount) => `You are about to pay ${user} ${amount}${SHINY}, are you sure you want to proceed?`,
 			COMMAND_PAY_PROMPT_ACCEPT: (user, amount) => `Payment accepted, ${amount}${SHINY} has been sent to ${user}'s profile.`,

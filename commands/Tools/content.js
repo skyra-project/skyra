@@ -1,4 +1,4 @@
-const { Command, Resolver } = require('../../index');
+const { Command, Resolver, util: { getContent } } = require('../../index');
 const SNOWFLAKE_REGEXP = Resolver.regex.snowflake;
 
 module.exports = class extends Command {
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 			? `\n\n\n=============\n${message.attachments.map(att => `📁 <${att.url}>`).join('\n')}`
 			: '';
 
-		return msg.sendMessage(message.content + attachments, { code: 'md' });
+		return msg.sendMessage(getContent(message) + attachments, { code: 'md' });
 	}
 
 };

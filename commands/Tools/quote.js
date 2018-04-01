@@ -1,4 +1,5 @@
-const { Command } = require('../../index');
+const { Command, Resolver, util: { getContent, getImage } } = require('../../index');
+const SNOWFLAKE_REGEXP = Resolver.regex.snowflake;
 
 module.exports = class extends Command {
 
@@ -8,29 +9,24 @@ module.exports = class extends Command {
 			cooldown: 10,
 			description: msg => msg.language.get('COMMAND_QUOTE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_QUOTE_EXTENDED'),
-			usage: '[channel:channel] <message:string{17,21}>',
+			usage: '[channel:channel] (message:message)',
 			usageDelim: ' '
+		});
+
+		this.createCustomResolver('message', async (arg, possible, msg, [channel = msg.channel]) => {
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
+			const message = await channel.messages.fetch(arg).catch(() => null);
+			if (message) return message;
+			throw msg.language.get('SYSTEM_MESSAGE_NOT_FOUND');
 		});
 	}
 
-	async run(msg, [channel = msg.channel, searchMessage]) {
-		if (/[0-9]{17,21}/.test(searchMessage) === false)
-			throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
-
-		const mes = await channel.messages.fetch(searchMessage)
-			.catch(() => { throw msg.language.get('SYSTEM_MESSAGE_NOT_FOUND'); });
-
-		const attachment = mes.attachments.size
-			? mes.attachments.find(att => /jpg|png|webp|gif/.test(att.url.split('.').pop()))
-			: null;
-
-		if (attachment === null && mes.content === '') throw msg.language.get('COMMAND_QUOTE_MESSAGE');
-
+	async run(msg, [, message]) {
 		const embed = new this.client.methods.Embed()
-			.setAuthor(mes.author.tag, mes.author.displayAvatarURL({ size: 128 }))
-			.setDescription(mes.content)
-			.setImage(attachment ? attachment.url : null)
-			.setTimestamp(mes.createdAt);
+			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128 }))
+			.setDescription(getContent(message))
+			.setImage(getImage(message))
+			.setTimestamp(message.createdAt);
 
 		return msg.sendMessage({ embed });
 	}

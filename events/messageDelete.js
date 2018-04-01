@@ -1,4 +1,4 @@
-const { Event } = require('klasa');
+const { Event, util: { getContent, getImage } } = require('../index');
 
 module.exports = class extends Event {
 
@@ -12,13 +12,14 @@ module.exports = class extends Event {
 		if (!channel) {
 			await guild.configs.reset('channels.messagelogs');
 		} else {
-			const { author, content, language } = message;
+			const { author, language } = message;
 
 			const embed = new this.client.methods.Embed()
 				.setColor(0xFFAB40)
 				.setAuthor(`${author.tag} (${author.id})`, author.displayAvatarURL())
-				.setDescription(language.get('EVENTS_MESSAGE_DELETE_MSG', content))
-				.setFooter(`${language.get('EVENTS_MESSAGE_DELETE')} | ${message.channel.name}`)
+				.setDescription(language.get('EVENTS_MESSAGE_DELETE_MSG', getContent(message) || ''))
+				.setFooter(`${language.get('EVENTS_MESSAGE_DELETE')} • ${message.channel.name}`)
+				.setImage(getImage(message))
 				.setTimestamp();
 
 			await channel.send({ embed });

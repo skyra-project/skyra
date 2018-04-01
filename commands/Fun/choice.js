@@ -1,4 +1,4 @@
-const { Command, util: { setToArray } } = require('../../index');
+const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -33,8 +33,8 @@ module.exports = class extends Command {
 			else filtered.add(word);
 		}
 
-		if (output.size >= 2) return setToArray(output);
-		throw i18n.get('COMMAND_CHOICE_DUPLICATES', setToArray(filtered).join('\', \''));
+		if (output.size >= 2) return [...output];
+		throw i18n.get('COMMAND_CHOICE_DUPLICATES', [...filtered].join('\', \''));
 	}
 
 };

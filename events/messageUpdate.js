@@ -1,4 +1,4 @@
-const { Event } = require('klasa');
+const { Event } = require('../index');
 const { diffWordsWithSpace } = require('diff');
 const { Util: { escapeMarkdown } } = require('discord.js');
 
@@ -17,9 +17,9 @@ module.exports = class extends Event {
 		if (!channel) {
 			await guild.configs.reset('channels.messagelogs');
 		} else {
-			const { author, content, language } = message;
+			const { author, language } = message;
 
-			const result = diffWordsWithSpace(escapeMarkdown(old.content), escapeMarkdown(content));
+			const result = diffWordsWithSpace(escapeMarkdown(old.content), escapeMarkdown(message.content));
 			let text = '';
 			for (let i = 0; i < result.length; i++) {
 				if (result[i].added === true) text += `**${result[i].value}**`;

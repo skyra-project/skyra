@@ -15,7 +15,7 @@ module.exports = class extends Command {
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_WARNINGS_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_WARNINGS_EXTENDED'),
-			permLevel: 6,
+			permLevel: 5,
 			runIn: ['text'],
 			usage: '[user:username]'
 		});

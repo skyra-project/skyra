@@ -1,6 +1,6 @@
 const { Command } = require('../../index');
 
-const sortRanks = (x, y) => +(x.position > y.position) || +(x.position === y.position) - 1;
+const sortRanks = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
 module.exports = class extends Command {
 
@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user = msg.author]) {
-		const member = await msg.guild.members.fetch(user).catch(() => null);
+		const member = await msg.guild.members.fetch(user.id).catch(() => null);
 
 		const embed = new this.client.methods.Embed();
 		if (member) this.member(member, embed, msg.language);
@@ -28,20 +28,21 @@ module.exports = class extends Command {
 
 	member(member, embed, i18n) {
 		embed
-			.setColor(member.highestRole.color || 0xdfdfdf)
+			.setColor(member.displayColor || 0xdfdfdf)
 			.setTitle(`${member.user.bot ? '🤖 ' : ''}${member.user.tag}`)
 			.setURL(member.user.displayAvatarURL({ size: 1024 }))
 			.setDescription(i18n.get('COMMAND_WHOIS_MEMBER', member))
 			.setThumbnail(member.user.displayAvatarURL({ size: 256 }))
 			.setFooter(`${this.client.user.username} ${this.client.version} | ${member.user.id}`, this.client.user.displayAvatarURL({ size: 128 }))
 			.setTimestamp();
-		if (member.roles.size > 1)
-			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), member.roles
-				.array()
+
+		if (member.roles.size > 1) {
+			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...member.roles.values()]
 				.slice(1)
 				.sort(sortRanks)
 				.map(role => role.name)
 				.join(', '));
+		}
 
 		return embed;
 	}
@@ -49,7 +50,7 @@ module.exports = class extends Command {
 	user(user, embed, i18n) {
 		return embed
 			.setColor(0xdfdfdf)
-			.setTitle(`${user.bot ? '🤖' : ''}${user.tag}`)
+			.setTitle(`${user.bot ? '🤖 ' : ''}${user.tag}`)
 			.setURL(user.displayAvatarURL({ size: 1024 }))
 			.setDescription(i18n.get('COMMAND_WHOIS_USER', user))
 			.setThumbnail(user.displayAvatarURL({ size: 256 }))

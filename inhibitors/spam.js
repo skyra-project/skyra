@@ -15,8 +15,7 @@ module.exports = class extends Inhibitor {
 
 	async run(msg, cmd) {
 		if (!cmd.spam
-			|| msg.guild
-			|| msg.guild.configs.channels.spam === null
+			|| !msg.guild
 			|| msg.guild.configs.channels.spam === msg.channel.id
 			|| await msg.hasAtLeastPermissionLevel(5)) return;
 

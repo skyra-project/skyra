@@ -89,6 +89,10 @@ detect-libc@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
 
+diff@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
+
 "discord.js@github:discordjs/discord.js":
   version "12.0.0-dev"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/d041cb2460a294b026e73750647647168ce7359a"
@@ -198,9 +202,9 @@ js-queue@2.0.0:
   dependencies:
     easy-stack "^1.0.0"
 
-"klasa@github:dirigeants/klasa":
+klasa@dirigeants/klasa#SGv2.1.1:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/6964946ddf8d9945ddc0ec5b9505609ea10c5e5c"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/1b03ea17f9d9745d0fe322e31a55b5d64f98ed1c"
   dependencies:
     fs-nextra "^0.3.2"
 

@@ -21,7 +21,7 @@
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.3.2",
     "heapdump": "^0.3.9",
-    "klasa": "github:dirigeants/klasa#kyraTissues",
+    "klasa": "dirigeants/klasa#SGv2.1.1",
     "node-ipc": "^9.1.1",
     "rethinkdbdash": "^2.3.31",
     "snekfetch": "^3.6.1",

@@ -4,3 +4,4 @@ node_modules/
 config.js
 package-lock.json
 *.heapsnapshot
+yarn-error.log

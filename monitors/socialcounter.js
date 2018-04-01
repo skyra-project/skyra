@@ -1,4 +1,5 @@
 const { Monitor } = require('../index');
+const { Permissions: { FLAGS: { MANAGE_ROLES } } } = require('discord.js');
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 
 module.exports = class extends Monitor {
@@ -46,7 +47,7 @@ module.exports = class extends Monitor {
 
 	async handleRoles(msg, memberPoints) {
 		const autoRoles = msg.guild.configs.roles.auto;
-		if (!autoRoles.length || !msg.guild.me.permissions.has('MANAGE_ROLES')) return null;
+		if (!autoRoles.length || !msg.guild.me.permissions.has(MANAGE_ROLES)) return null;
 
 		const autoRole = this.getLatestRole(autoRoles, memberPoints);
 		if (!autoRole) return null;

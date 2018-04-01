@@ -1,4 +1,4 @@
-const { Command, Stopwatch, util } = require('klasa');
+const { Command, Stopwatch, Type, util } = require('klasa');
 const { inspect } = require('util');
 const { post } = require('snekfetch');
 
@@ -90,14 +90,14 @@ module.exports = class extends Command {
 		const stopwatch = new Stopwatch();
 		let success, syncTime, asyncTime, result;
 		let thenable = false;
-		let type = '';
+		let type;
 		try {
 			if (msg.flags.async) code = `(async () => { ${code} })();`;
 			result = eval(code);
 			syncTime = stopwatch.friendlyDuration;
+			type = new Type(result);
 			if (this.client.methods.util.isThenable(result)) {
 				thenable = true;
-				type += this.client.methods.util.getTypeName(result);
 				stopwatch.restart();
 				result = await result;
 				asyncTime = stopwatch.friendlyDuration;
@@ -106,12 +106,12 @@ module.exports = class extends Command {
 		} catch (error) {
 			if (!syncTime) syncTime = stopwatch.friendlyDuration;
 			if (thenable && !asyncTime) asyncTime = stopwatch.friendlyDuration;
+			if (!type) type = new Type(result);
 			result = error;
 			success = false;
 		}
 
 		stopwatch.stop();
-		type += thenable ? `<${this.client.methods.util.getDeepTypeName(result)}>` : this.client.methods.util.getDeepTypeName(result);
 		if (success && typeof result !== 'string') {
 			result = inspect(result, {
 				depth: msg.flags.depth ? parseInt(msg.flags.depth) || 0 : 0,

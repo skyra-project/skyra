@@ -1,4 +1,4 @@
-const { Command, Moderation, ModerationLog } = require('../../index');
+const { Command, Moderation: { schemaKeys }, util: { parseModlog } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -27,13 +27,16 @@ module.exports = class extends Command {
 		}
 
 		// Get all cases
-		const [log] = await this.client.moderation.getCases(msg.guild, {
-			[Moderation.schemaKeys.CASE]: selected
-		}).catch(() => [null]);
-		if (!log) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
+		const modlog = await this.client.moderation.getCase(msg.guild.id, selected);
+		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 
 		// Update the moderation case
-		await this.client.moderation.r.table('moderation').get(log.id).update({ [Moderation.schemaKeys.REASON]: reason });
+		const newModLog = {
+			...modlog,
+			[schemaKeys.REASON]: reason,
+			[schemaKeys.MODERATOR]: msg.author.id
+		};
+		await this.client.moderation.updateCase(msg.guild, newModLog);
 
 		// Fetch the message to edit it
 		const messages = await channel.messages.fetch({ limit: 100 });
@@ -43,37 +46,14 @@ module.exports = class extends Command {
 			&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${selected}`
 		);
 
-		if (message) {
-			const embed = message.embeds[0];
-			const [type, user] = embed.description.split('\n');
-			embed.description = [
-				type,
-				user,
-				`**Reason**: ${reason}`
-			].join('\n');
-			embed.author = {
-				name: msg.author.tag,
-				iconURL: msg.author.displayAvatarURL({ size: 128 })
-			};
-			await message.edit({ embed });
-		} else {
-			const dataColor = ModerationLog.TYPES[log.type];
-			const user = await this.client.users.fetch(log.user).catch(() => ({ tag: 'Unknown', id: log.user }));
-			const embed = new this.client.methods.Embed()
-				.setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
-				.setColor(dataColor.color)
-				.setDescription([
-					`**Type**: ${dataColor.title}`,
-					`**User**: ${user.tag} (${user.id})`,
-					`**Reason**: ${reason}`
-				].join('\n'))
-				.setFooter(`Case ${selected}`)
-				.setTimestamp();
-			await channel.send({ embed });
-		}
+		// Change the moderator to the author
+		const parsedModLog = await parseModlog(this.client, msg.guild, newModLog);
+
+		if (message) await message.edit({ embed: parsedModLog.embed });
+		else await channel.send({ embed: parsedModLog.embed });
 
 		return msg.alert(`Successfully updated the log ${selected}.${this.client.methods.util.codeBlock('http', [
-			`Old reason : ${log.reason || 'Not set.'}`,
+			`Old reason : ${modlog.reason || 'Not set.'}`,
 			`New reason : ${reason}`
 		].join('\n'))}`);
 	}

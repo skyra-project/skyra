@@ -67,22 +67,18 @@ module.exports = class extends Command {
 		if (/^in\s/.test(string)) {
 			const indexOfTitle = string.lastIndexOf(' to ');
 			parsed.time = new Duration(string.slice(3, indexOfTitle > -1 ? indexOfTitle : undefined)).offset;
-			if (parsed.time < 60000)
-				parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
-
 			parsed.title = indexOfTitle > -1 ? string.slice(indexOfTitle + 4) : 'Something, you did not tell me what to remind you.';
 		} else {
 			const indexOfTime = string.lastIndexOf(' in ');
 			parsed.title = string.slice(/^to\s/.test(string) ? 3 : 0, indexOfTime > -1 ? indexOfTime : undefined);
 
-			if (indexOfTime === -1)
-				parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
-			else {
+			if (indexOfTime !== -1) {
 				parsed.time = new Duration(string.slice(indexOfTime + 4)).offset;
-				if (parsed.time < 60000)
-					parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
 			}
 		}
+
+		if (!parsed.time || parsed.time < 60000)
+			parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
 
 		return parsed;
 	}
@@ -98,7 +94,7 @@ module.exports = class extends Command {
 			attempts++;
 		} while (time < 60000 && attempts < 5);
 
-		if (time < 60000) throw msg.language.get('COMMAND_REMINDME_SHORT_TIME');
+		if (!time || time < 60000) throw msg.language.get('COMMAND_REMINDME_SHORT_TIME');
 		return time;
 	}
 

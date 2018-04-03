@@ -4,7 +4,6 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			aliases: ['lvl'],
 			bucket: 2,
 			cooldown: 15,
 			description: msg => msg.language.get('COMMAND_MYLEVEL_DESCRIPTION'),

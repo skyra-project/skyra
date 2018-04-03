@@ -12,6 +12,14 @@ module.exports = class extends Event {
 
 		await this.initCleanupTask();
 		await this.initBackupTask();
+		await this.initPostStatsTask();
+	}
+
+	async initPostStatsTask() {
+		const { tasks } = this.client.schedule;
+		if (!tasks.some(task => task.taskName === 'poststats')) {
+			await this.client.schedule.create('poststats', '*/15 * * * *');
+		}
 	}
 
 	// If this task is not being run, let's create the

@@ -1687,6 +1687,12 @@ module.exports = class extends Language {
 			 * WEATHER COMMANDS
 			 */
 
+			COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
+			COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
+			COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
+			COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit Exceeded. Try again tomorrow.',
+			COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
+
 			/**
 			 * #################################
 			 * #            MONITORS           #
@@ -1774,6 +1780,8 @@ module.exports = class extends Language {
 			SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reseated the value for `channels.default`',
 			SETTINGS_DELETE_ROLES_INITIAL: 'Reseated the value for `roles.initial`',
 			SETTINGS_DELETE_ROLES_MUTE: 'Reseated the value for `roles.muted`',
+
+			MODLOG_TIMED: 'This moderation log is not timed.',
 
 			GUILD_WARN_NOT_FOUND: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
 			GUILD_MEMBER_NOT_VOICECHANNEL: 'I cannot execute this action in a member that is not connected to a voice channel.',

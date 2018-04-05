@@ -115,6 +115,7 @@
 			"error",
 			{
 				"exceptions": [
+					"_",
 					"r",
 					"i",
 					"j",

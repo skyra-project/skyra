@@ -12,8 +12,7 @@ module.exports = class extends Task {
 		const member = await guild.members.fetch(user).catch(() => null);
 		const reason = `Mute released after ${this.client.languages.default.duration(doc[Moderation.schemaKeys.DURATION])}`;
 
-		if (!member)
-			if (member.serverMute) await member.setDeaf(false, `[AUTO] ${reason}`);
+		if (member && member.serverMute) await member.setDeaf(false, `[AUTO] ${reason}`);
 
 		// Send the modlog
 		await new ModerationLog(guild)

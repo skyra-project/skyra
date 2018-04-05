@@ -6,7 +6,7 @@ module.exports = class extends Task {
 
 	constructor(...args) {
 		super(...args);
-		this.timestamp = new Timestamp('YYYY-MM-DD');
+		this.timestamp = new Timestamp('YYYY-MM-DD x');
 	}
 
 	get dirManager() {
@@ -39,7 +39,7 @@ module.exports = class extends Task {
 		data.lastUpdated = Date.now();
 		data.backups.push(paths);
 		if (data.backups.length > 4) {
-			const oldPaths = data.backups.splice(0, 1);
+			const [oldPaths] = data.backups.splice(0, 1);
 			await Promise.all(oldPaths.map(path => remove(path)));
 		}
 

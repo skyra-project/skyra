@@ -13,6 +13,14 @@ module.exports = class extends Event {
 		await this.initCleanupTask();
 		await this.initBackupTask();
 		await this.initPostStatsTask();
+		await this.initGiveawayRecurrentTask();
+	}
+
+	async initGiveawayRecurrentTask() {
+		const { tasks } = this.client.schedule;
+		if (!tasks.some(task => task.taskName === 'giveawayRecurrent')) {
+			await this.client.schedule.create('giveawayRecurrent', '*/10 * * * *');
+		}
 	}
 
 	async initPostStatsTask() {

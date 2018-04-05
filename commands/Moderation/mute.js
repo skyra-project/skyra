@@ -48,7 +48,8 @@ module.exports = class extends ModerationCommand {
 	}
 
 	async _askMuteRoleCreation(msg) {
-		if (msg.channel.permissionsFor(msg.guild.me).missing(PERMISSIONS).length) return null;
+		if (!await msg.hasAtLeastPermissionLevel(6)) throw msg.language.get('COMMAND_MUTE_LOWLEVEL');
+		if (!msg.channel.permissionsFor(msg.guild.me).has(PERMISSIONS)) return null;
 		await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
 			.catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
 		await msg.sendMessage(msg.language.get('SYSTEM_PROCESSING'));

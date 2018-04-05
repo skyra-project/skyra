@@ -1,5 +1,7 @@
 # Skyra
 
+[![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
+
 This repository holds Skyra's private source code. Extracting code from this repository without permission is forbidden.
 
 ## Story

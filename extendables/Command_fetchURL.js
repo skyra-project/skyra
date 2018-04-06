@@ -12,13 +12,13 @@ module.exports = class extends Extendable {
 		});
 	}
 
-	async extend(url, options, type = 'text') {
+	async extend(url, options, type) {
 		if (typeof options === 'string' && typeof type === 'undefined') {
 			type = options;
 			options = undefined;
 		}
-		const result = await snekfetch.get(url, options)
-			.catch(this.handleError);
+		if (typeof type === 'undefined') type = 'text';
+		const result = await snekfetch.get(url, options);
 
 		switch (type) {
 			case 'json': return JSON.parse(result.text);

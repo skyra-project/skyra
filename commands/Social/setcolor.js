@@ -19,14 +19,12 @@ module.exports = class extends Command {
 	async run(msg, [input]) {
 		const { hex, b10 } = Color.parse(input);
 		const color = hex.toString().slice(1);
-		await msg.author.configs.update({ color });
 
-		const embed = new MessageEmbed()
+		await msg.author.configs.update({ color });
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)
 			.setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
-			.setDescription(msg.language.get('COMMAND_SETCOLOR', hex));
-
-		return msg.sendMessage({ embed });
+			.setDescription(msg.language.get('COMMAND_SETCOLOR', hex)));
 	}
 
 };

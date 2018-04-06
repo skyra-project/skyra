@@ -4,7 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			aliases: ['rng'],
+			aliases: ['choise', 'pick'],
 			bucket: 2,
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_CHOICE_DESCRIPTION'),

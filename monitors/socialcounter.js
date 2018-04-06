@@ -60,7 +60,7 @@ module.exports = class extends Monitor {
 		if (msg.member.roles.has(role.id)) return null;
 
 		return msg.member.roles.add(role)
-			.then(() => msg.guild.configs.social.achieve
+			.then(() => msg.guild.configs.social.achieve && msg.channel.postable
 				? msg.sendMessage(this.getMessage(msg.member, role, msg.guild.configs.social.achieveMessage || msg.language.get('MONITOR_SOCIAL_ACHIEVEMENT')))
 				: null);
 	}

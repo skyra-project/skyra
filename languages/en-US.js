@@ -879,6 +879,18 @@ module.exports = class extends Language {
 					['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
 				]
 			}),
+			COMMAND_DIVORCE_DESCRIPTION: 'Break up with your couple!',
+			COMMAND_DIVORCE_EXTENDED: builder.display('divorce', {
+				extendedHelp: `Sniff... This command is used to break up with your couple, hopefully in this virtual world, you are
+					allowed to marry the user again.`
+			}),
+			COMMAND_MARRY_DESCRIPTION: 'Marry somebody!',
+			COMMAND_MARRY_EXTENDED: builder.display('marry', {
+				extendedHelp: `Marry with your waifu!`,
+				explainedUsage: [
+					['user', 'The user to marry with']
+				]
+			}),
 			COMMAND_MYLEVEL_DESCRIPTION: 'Check your local level.',
 			COMMAND_MYLEVEL_EXTENDED: builder.display('mylevel', {
 				extendedHelp: `How much until next auto role? How many points do I have in this guild?`,
@@ -1508,6 +1520,18 @@ module.exports = class extends Language {
 				EXPERIENCE: 'Experience',
 				NEXT_IN: 'Next level in'
 			},
+			COMMAND_DIVORCE_NOTTAKEN: 'Who would you divorce with? You are not even taken!',
+			COMMAND_DIVORCE_PROMPT: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',
+			COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you continue with your couple!',
+			COMMAND_DIVORCE_DM: user => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
+			COMMAND_DIVORCE_SUCCESS: user => `Successful divorce 💔... You are not longer married with ${user}!`,
+			COMMAND_MARRY_SELF: 'No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔',
+			COMMAND_MARRY_AUTHOR_TAKEN: 'I am sorry, but you are already married...',
+			COMMAND_MARRY_TAKEN: 'I am very sorry, but this user is taken!',
+			COMMAND_MARRY_PETITION: (author, user) => `Fresh pair of eyes! ${author} is proposing ${user}! 💞 Reply with **yes** to accept!`,
+			COMMAND_MARRY_NOREPLY: 'The user did not reply on time... Maybe it was such a hard decision?',
+			COMMAND_MARRY_DENIED: 'Ooh. The user rejected your petition! 💔',
+			COMMAND_MARRY_ACCEPTED: (author, user) => `Congratulations dear ${author}! You're now officially married with ${user}! ❤`,
 			COMMAND_MYLEVEL: (points, next, user) => `${user ? `The user ${user} has` : 'You have'} a total of ${points} points.${next}`,
 			COMMAND_MYLEVEL_NEXT: (remaining, next) => `Points for next rank: **${remaining}** (at ${next} points).`,
 			COMMAND_PAY_MISSING_MONEY: (needed, has) => `I am sorry, but you need ${needed}${SHINY} and you have ${has}${SHINY}`,

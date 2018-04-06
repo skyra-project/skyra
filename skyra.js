@@ -48,6 +48,7 @@ const skyra = new Skyra({
 		rawEvents: { enabled: true }
 	},
 	prefix: 's!',
+	presence: { activity: { name: 'Skyra, help', type: 'LISTENING' } },
 	providers: {
 		default: 'rethinkdb',
 		rethinkdb: config.database.rethinkdb

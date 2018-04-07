@@ -62,5 +62,12 @@ const skyra = new Skyra({
 	typing: false
 });
 
-skyra.login(config.tokens.bot.stable).catch((error) =>
-	skyra.console.wtf(`Login Error:\n${(error && error.stack) || error}`));
+skyra.login(config.tokens.bot.stable)
+	.then(() => {
+		// Fill the dictionary name for faster user fetching
+		for (const user of skyra.users.values()) skyra.dictionaryName.set(user.id, user.username);
+
+		// Sweep all the shit
+		skyra.tasks.get('cleanup').run();
+	})
+	.catch((error) => skyra.console.wtf(`Login Error:\n${(error && error.stack) || error}`));

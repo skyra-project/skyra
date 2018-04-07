@@ -38,7 +38,10 @@ module.exports = class extends Task {
 
 		const users = await reaction.users.fetch();
 		users.delete(this.client.user.id);
-		if (users.size === 0) return;
+		if (users.size === 0) {
+			await this._endNoWinner({ id, title }, message, author, language, embed);
+			return;
+		}
 
 		const amount = Math.min(users.size, 11);
 		const winners = users.random(amount);
@@ -51,12 +54,21 @@ module.exports = class extends Task {
 		await message.edit(language.get('GIVEAWAY_ENDED_TITLE'), { embed });
 		await channel.send(language.get('GIVEAWAY_ENDED_MESSAGE', winner, title));
 
-		await author.send(language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE', title, id, winner, amount - 1, winners.length > 1
-			? `${this.client.methods.util.codeBlock('asciidoc', winners
-				.slice(1)
-				.map(user => `${user.id.padEnd(18, ' ')} :: ${user.tag}`)
-				.join('\n'))}`
-			: ''));
+		const content = winners.size === 1
+			? language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE_ONLY_WINNER', title, id, winner)
+			: language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE', title, id, winner, amount - 1, this.client.methods.util.codeBlock('asciidoc',
+				winners.slice(1).map(user => `${user.id.padEnd(18, ' ')} :: ${user.tag}`).join('\n')));
+
+		await author.send(content);
+	}
+
+	async _endNoWinner({ id, title }, message, author, language, embed) {
+		embed.setColor(0xFF7749)
+			.setDescription(language.get('GIVEWAWY_ENDED_NO_WINNER'))
+			.setFooter(language.get('GIVEAWAY_ENDED_AT'));
+
+		await message.edit(language.get('GIVEAWAY_ENDED_TITLE'), { embed });
+		await author.send(language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE_NO_WINNER', title, id));
 	}
 
 	async _finalCountdown(embed, message, ends, language) {

@@ -676,6 +676,11 @@ module.exports = class extends Language {
 				],
 				examples: ['kyra']
 			}),
+			COMMAND_UPVOTE_DESCRIPTION: 'Get a link to upvote Skyra in **Discord Bot List**',
+			COMMAND_UPVOTE_EXTENDED: builder.display('upvote', {
+				extendedHelp: `Discord Bot List is a website where you can find amazing bots for your website. If you really love me,
+					you can help me a lot by upvoting me every 24 hours, so more users will be able to find me!`
+			}),
 			COMMAND_VAPORWAVE_DESCRIPTION: 'Vapowave characters!',
 			COMMAND_VAPORWAVE_EXTENDED: builder.display('vaporwave', {
 				extendedHelp: `Well, what can I tell you? This command turns your messages into unicode monospaced characters. That
@@ -832,6 +837,19 @@ module.exports = class extends Language {
 			 * ###############
 			 * SOCIAL COMMANDS
 			 */
+
+			COMMAND_BANNER_DESCRIPTION: 'Configure the banner for your profile.',
+			COMMAND_BANNER_EXTENDED: builder.display('banner', {
+				extendedHelp: `Banners are vertical in Skyra, they decorate your profile card.`,
+				explainedUsage: [
+					['list', '(Default) Lists all available banners.'],
+					['reset', 'Set your displayed banner to default.'],
+					['buy <bannerID>', 'Buy a banner, must be an ID.'],
+					['set <bannerID>', 'Set your displayed banner, must be an ID.']
+				],
+				examples: ['list', 'buy 0w1p06', 'set 0w1p06', 'reset']
+			}),
+
 			COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild.',
 			COMMAND_AUTOROLE_EXTENDED: builder.display('autorole', {
 				extendedHelp: `Autoroles? They are roles that are available for everyone, and automatically given when they reach an
@@ -888,8 +906,9 @@ module.exports = class extends Language {
 			COMMAND_MARRY_EXTENDED: builder.display('marry', {
 				extendedHelp: `Marry with your waifu!`,
 				explainedUsage: [
-					['user', 'The user to marry with']
-				]
+					['user', '(Optional) The user to marry with. If not given, the command will tell you who are you married with.']
+				],
+				examples: ['', '@love']
 			}),
 			COMMAND_MYLEVEL_DESCRIPTION: 'Check your local level.',
 			COMMAND_MYLEVEL_EXTENDED: builder.display('mylevel', {
@@ -1394,6 +1413,7 @@ module.exports = class extends Language {
 			 * MISC COMMANDS
 			 */
 
+			COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://discordbots.org/bot/266624760782258186>**! Some perks for upvoters are coming very soon!',
 			COMMAND_VAPORWAVE_OUTPUT: (string) => `Here is your converted message:\n${string}`,
 
 			/**
@@ -1475,25 +1495,20 @@ module.exports = class extends Language {
 			COMMAND_AUTOROLE_ADD: (role, points) => `Added new autorole: ${role.name} (${role.id}). Points required: ${points}`,
 			COMMAND_AUTOROLE_LIST_EMPTY: 'There is no role configured as an autorole in this server.',
 			COMMAND_AUTOROLE_UNKNOWN_ROLE: (role) => `Unknown role: ${role}`,
-
 			COMMAND_BALANCE: (user, amount) => `The user ${user} has a total of ${amount}${SHINY}`,
 			COMMAND_BALANCE_SELF: (amount) => `You have a total of ${amount}${SHINY}`,
-
-			COMMAND_BANNER_LIST_EMPTY: (prefix) => `You do not have an available banner. Check \`${prefix}banner buylist\` for a list of banners you can buy.`,
-			COMMAND_BANNER_SET_INPUT_NULL: 'You must specify a banner id to set.',
-			COMMAND_BANNER_SET_NOT_BOUGHT: 'You do not have this banner.',
+			COMMAND_BANNER_MISSING: 'You must specify a banner id to buy.',
+			COMMAND_BANNER_NOTEXISTS: (prefix) => `This banner id does not exist. Please check \`${prefix}banner list\` for a list of banners you can buy.`,
+			COMMAND_BANNER_USERLIST_EMPTY: (prefix) => `You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,
+			COMMAND_BANNER_RESET_DEFAULT: 'You are already using the default banner.',
+			COMMAND_BANNER_RESET: 'Your banner has been reset to the default.',
+			COMMAND_BANNER_SET_NOT_BOUGHT: 'You did not buy this banner yet.',
 			COMMAND_BANNER_SET: (banner) => `|\`✅\`| **Success**. You have set your banner to: __${banner}__`,
-			COMMAND_BANNER_BUY_INPUT_NULL: 'You must specify a banner id to buy.',
-			COMMAND_BANNER_BUY_NOT_EXISTS: (prefix) => `This banner id does not exist. Please check \`${prefix}banner buylist\` for a list of banners you can buy.`,
-			COMMAND_BANNER_BUY_BOUGHT: (prefix, banner) => `You already have this banner, you may want to use \`${prefix}banner set ${banner}\` to make it visible in your profile.`,
-			COMMAND_BANNER_BUY_MONEY: (money, cost) => `You do not have enough money to buy this banner. You have ${money}${SHINY}, the banner costs ${cost}${SHINY}`,
+			COMMAND_BANNER_BOUGHT: (prefix, banner) => `You already have this banner, you may want to use \`${prefix}banner set ${banner}\` to make it visible in your profile.`,
+			COMMAND_BANNER_MONEY: (money, cost) => `You do not have enough money to buy this banner. You have ${money}${SHINY}, the banner costs ${cost}${SHINY}`,
+			COMMAND_BANNER_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
 			COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
-			COMMAND_BANNER_BUY_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
-			COMMAND_BANNER_PROMPT: {
-				AUTHOR: 'Author',
-				TITLE: 'Title',
-				PRICE: 'Price'
-			},
+			COMMAND_BANNER_PROMPT: 'Choose an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
 			COMMAND_C4_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
 			COMMAND_C4_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
 			COMMAND_C4_SELF: 'You must be so sad to play against yourself. Try again with another user.',
@@ -1525,6 +1540,10 @@ module.exports = class extends Language {
 			COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you continue with your couple!',
 			COMMAND_DIVORCE_DM: user => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
 			COMMAND_DIVORCE_SUCCESS: user => `Successful divorce 💔... You are not longer married with ${user}!`,
+			COMMAND_MARRY_WITH: user => `Dear, how could you forget it... You are currently married with ${user}!`,
+			COMMAND_MARRY_NOTTAKEN: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing somebody?',
+			COMMAND_MARRY_SKYRA: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
+			COMMAND_MARRY_BOTS: 'Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!',
 			COMMAND_MARRY_SELF: 'No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔',
 			COMMAND_MARRY_AUTHOR_TAKEN: 'I am sorry, but you are already married...',
 			COMMAND_MARRY_TAKEN: 'I am very sorry, but this user is taken!',

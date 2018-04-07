@@ -30,9 +30,10 @@ module.exports = class extends Monitor {
 		try {
 			const add = Math.round(((Math.random() * 4) + 4) * msg.guild.configs.social.monitorBoost);
 			await msg.author.configs.update('points', msg.author.configs.points + add);
-			if (memberPoints) await memberPoints.update(memberPoints.count + add);
-
-			await this.handleRoles(msg, memberPoints);
+			if (memberPoints) {
+				await memberPoints.update(memberPoints.count + add);
+				await this.handleRoles(msg, memberPoints.count);
+			}
 		} catch (err) {
 			this.client.emit('log', `Failed to add points to ${msg.author.id}: ${(err && err.stack) || err}`, 'error');
 		}
@@ -61,7 +62,7 @@ module.exports = class extends Monitor {
 
 		return msg.member.roles.add(role)
 			.then(() => msg.guild.configs.social.achieve && msg.channel.postable
-				? msg.sendMessage(this.getMessage(msg.member, role, msg.guild.configs.social.achieveMessage || msg.language.get('MONITOR_SOCIAL_ACHIEVEMENT')))
+				? msg.channel.send(this.getMessage(msg.member, role, msg.guild.configs.social.achieveMessage || msg.language.get('MONITOR_SOCIAL_ACHIEVEMENT')))
 				: null);
 	}
 
@@ -78,11 +79,13 @@ module.exports = class extends Monitor {
 		});
 	}
 
-	getLatestRole(autoRoles, memberPoints) {
-		for (let i = autoRoles.length - 1; i > 0; i--) {
-			if (autoRoles[i].points < memberPoints.score) return autoRoles[i];
+	getLatestRole(autoRoles, points) {
+		let latest = null;
+		for (const role of autoRoles) {
+			if (role.points > points) break;
+			latest = role;
 		}
-		return null;
+		return latest;
 	}
 
 };

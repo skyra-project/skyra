@@ -20,8 +20,6 @@ module.exports = class extends RawEvent {
 	}
 
 	async run({ guild, member }) {
-		if (!guild.available) return;
-
 		if (guild.configs.roles.muted && guild.configs.mutes.includes(member.id)) {
 			this._handleMute(guild, member);
 		} else if (guild.configs.events.memberAdd) {

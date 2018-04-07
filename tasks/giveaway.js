@@ -66,10 +66,10 @@ module.exports = class extends Task {
 		await sleep(10000);
 		embed.setDescription(language.get('GIVEAWAY_LASTCHANCE', 10000));
 		message.edit(LASTCHANCE_TITLE, { embed });
-		await sleep(4000);
+		await sleep(6000);
 
 		let offset = 0;
-		for (const remaining of [5000, 4000, 3000, 2000, 1000]) {
+		for (const remaining of [3000, 2000, 1000]) {
 			await sleep(1000 - offset);
 
 			// Send the message and substract the latency

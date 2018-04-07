@@ -14,7 +14,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		await msg.send(msg.language.get('SYSTEM_PROCESSING'));
+		await msg.sendMessage(msg.language.get('SYSTEM_PROCESSING'));
 		return createMuteRole(msg);
 	}
 

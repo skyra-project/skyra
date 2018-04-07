@@ -44,7 +44,7 @@ module.exports = class extends Command {
 		}
 
 		if (promises.length) {
-			await msg.send(msg.language.get('SYSTEM_FETCHING_USERS'));
+			await msg.sendMessage(msg.language.get('SYSTEM_FETCHING_USERS'));
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {

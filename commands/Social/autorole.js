@@ -46,7 +46,7 @@ module.exports = class extends Command {
 		}
 
 		await msg.guild.configs.update('roles.auto', [...autoRoles, { id: role.id, points }].sort(SORT));
-		return msg.send(msg.language.get('COMMAND_AUTOROLE_ADD', role, points));
+		return msg.sendMessage(msg.language.get('COMMAND_AUTOROLE_ADD', role, points));
 	}
 
 	async remove(msg, [, role]) {
@@ -60,7 +60,7 @@ module.exports = class extends Command {
 		const deleteEntry = autoRoles.find(entry => entry.id === role.id);
 		await msg.guild.configs.update('roles.auto', deleteEntry, { action: 'delete' });
 
-		return msg.send(msg.language.get('COMMAND_AUTOROLE_REMOVE', role, deleteEntry.points));
+		return msg.sendMessage(msg.language.get('COMMAND_AUTOROLE_REMOVE', role, deleteEntry.points));
 	}
 
 	async update(msg, [points, role]) {
@@ -75,7 +75,7 @@ module.exports = class extends Command {
 		const autoRole = autoRoles.find(entry => entry.id === role.id);
 		autoRole.points = points;
 		await msg.guild.configs.update('roles.auto', [...autoRoles].sort(SORT));
-		return msg.send(msg.language.get('COMMAND_AUTOROLE_UPDATE', role, points, autoRole));
+		return msg.sendMessage(msg.language.get('COMMAND_AUTOROLE_UPDATE', role, points, autoRole));
 	}
 
 };

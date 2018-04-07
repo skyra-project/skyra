@@ -14,7 +14,6 @@ module.exports = class extends RawEvent {
 	}
 
 	async run({ guild, user }) {
-		if (!guild.available) return;
 		if (guild.members.has(user.id)) guild.members.delete(user.id);
 		if (guild.security.hasRAID(user.id)) guild.security.raid.delete(user.id);
 		if (guild.configs.events.memberRemove) {
@@ -60,7 +59,7 @@ module.exports = class extends RawEvent {
 
 	async process(data) {
 		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild) return null;
+		if (!guild || !guild.available) return null;
 
 		return { guild, user: this.client.users.add(data.user) };
 	}

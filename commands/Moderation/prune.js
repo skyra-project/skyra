@@ -4,7 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['MANAGE_MESSAGES'],
+			botPerms: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			cooldown: 5,
 			description: msg => msg.language.get('COMMAND_PRUNE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_PRUNE_EXTENDED'),

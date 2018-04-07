@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 
 		if (msg.deletable) await msg.nuke().catch(() => null);
 		if (configs.filter.level === 1 || configs.filter.level === 3) {
-			msg.send(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
+			msg.sendMessage(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
 		}
 
 		if (configs.filter.level !== 2 && configs.filter.level !== 3) return true;

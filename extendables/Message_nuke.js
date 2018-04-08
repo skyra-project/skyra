@@ -1,4 +1,4 @@
-const { Extendable, util: { sleep } } = require('klasa');
+const { Extendable, klasaUtil: { sleep } } = require('../index');
 
 module.exports = class extends Extendable {
 
@@ -24,6 +24,7 @@ module.exports = class extends Extendable {
 function nuke(msg) {
 	return msg.delete().catch((error) => {
 		if (error.code === 10008) return msg;
+		Error.captureStackTrace(error);
 		throw error;
 	});
 }

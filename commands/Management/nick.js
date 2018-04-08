@@ -16,7 +16,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [nick = '']) {
-		await msg.guild.me.setNickname(nick).catch(Command.handleError);
+		await msg.guild.me.setNickname(nick);
 		return msg.alert(msg.language.get(...nick.length > 0 ? ['COMMAND_NICK_SET', nick] : ['COMMAND_NICK_CLEARED']));
 	}
 

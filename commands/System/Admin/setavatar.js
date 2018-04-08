@@ -26,9 +26,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [avatar]) {
-		await this.client.user.setAvatar(avatar)
-			.catch(Command.handleError);
-
+		await this.client.user.setAvatar(avatar);
 		return msg.sendMessage(`Dear ${msg.author}, I have changed my avatar for you.`);
 	}
 

@@ -26,12 +26,9 @@ module.exports = class extends Command {
 		if (channel.postable === false) throw msg.language.get('SYSTEM_CHANNEL_NOT_POSTABLE');
 
 		const role = announcementCheck(msg);
-		await role.edit({ mentionable: true })
-			.catch(Command.handleError);
-		await channel.send(`${msg.language.get('COMMAND_ANNOUNCEMENT', role)}\n${message}`)
-			.catch(Command.handleError);
-		await role.edit({ mentionable: false })
-			.catch(Command.handleError);
+		await role.edit({ mentionable: true });
+		await channel.send(`${msg.language.get('COMMAND_ANNOUNCEMENT', role)}\n${message}`);
+		await role.edit({ mentionable: false });
 
 		return msg.sendMessage(msg.language.get('COMMAND_SUCCESS'));
 	}

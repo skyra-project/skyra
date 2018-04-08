@@ -25,9 +25,7 @@ module.exports = class extends Command {
 
 		if (msg.deletable) msg.nuke().catch(() => null);
 
-		await this.channel.send({ embed })
-			.catch(Command.handleError);
-
+		await this.channel.send({ embed });
 		return msg.alert(msg.language.get('COMMAND_FEEDBACK'));
 	}
 

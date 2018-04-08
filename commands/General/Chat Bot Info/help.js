@@ -29,7 +29,7 @@ module.exports = class extends Command {
 		const categories = Object.keys(help);
 		const helpMessage = ['📃 | *Help Message*\n'];
 		for (const category of categories) {
-			helpMessage.push(`***${category} Commands***\n`);
+			// helpMessage.push(`***${category} Commands***\n`);
 			const subCategories = Object.keys(help[category]);
 			for (const subCategory of subCategories) {
 				helpMessage.push(`***${category}/${subCategory} Commands***\n`);

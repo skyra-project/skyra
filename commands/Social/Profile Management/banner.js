@@ -64,8 +64,7 @@ module.exports = class extends Command {
 		const banners = new Set(msg.author.configs.bannerList);
 		if (banners.has(banner.id)) throw msg.language.get('COMMAND_BANNER_BOUGHT', msg.guild.configs.prefix, banner.id);
 
-		const money = msg.author.configs.money;
-		if (money < banner.price) throw msg.language.get('COMMAND_BANNER_MONEY', money, banner.price);
+		if (msg.author.configs.money < banner.price) throw msg.language.get('COMMAND_BANNER_MONEY', msg.author.configs.money, banner.price);
 
 		const accepted = await this.prompt(msg, banner);
 		if (!accepted) throw msg.language.get('COMMAND_BANNER_PAYMENT_CANCELLED');
@@ -76,8 +75,8 @@ module.exports = class extends Command {
 		if (user.configs._syncStatus) await user.configs._syncStatus;
 
 		await Promise.all([
-			await msg.author.configs.update(['money', 'bannerList'], [money - banner.price, [...banners]]),
-			await user.configs.update('money', user.money + (banner.price * 0.1))
+			msg.author.configs.update(['money', 'bannerList'], [msg.author.configs.money - banner.price, [...banners]]),
+			user.configs.update(['money'], [user.configs.money + (banner.price * 0.1)])
 		]);
 
 		return msg.sendMessage(msg.language.get('COMMAND_BANNER_BUY', banner.title));

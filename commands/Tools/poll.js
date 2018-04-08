@@ -86,7 +86,7 @@ module.exports = class extends Command {
 
 	async vote(msg, [id, option]) {
 		if (!id) throw msg.language.get('COMMAND_POLL_MISSING_ID');
-		if (msg.deletable) msg.delete().catch(error => this.client.emit('wtf', error));
+		if (msg.deletable) msg.nuke().catch(error => this.client.emit('wtf', error));
 		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll' || found.data.guild !== msg.guild.id) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
 		if (found.data.voted.includes(msg.author.id)) throw msg.language.get('COMMAND_POLL_ALREADY_VOTED');

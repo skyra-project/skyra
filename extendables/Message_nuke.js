@@ -22,9 +22,11 @@ module.exports = class extends Extendable {
 };
 
 function nuke(msg) {
-	return msg.delete().catch((error) => {
+	try {
+		return msg.delete();
+	} catch (error) {
 		if (error.code === 10008) return msg;
 		Error.captureStackTrace(error);
 		throw error;
-	});
+	}
 }

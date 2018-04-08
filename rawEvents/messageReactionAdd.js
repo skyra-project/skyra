@@ -1,4 +1,5 @@
 const { RawEvent, constants: { CONNECT_FOUR } } = require('../index');
+const { DiscordAPIError } = require('discord.js');
 const EMOJI_WHITELIST = new Set(['⭐', ...CONNECT_FOUR.REACTIONS]);
 const CONNECT_FOUR_WHITELIST = new Set(CONNECT_FOUR.REACTIONS);
 
@@ -56,11 +57,16 @@ module.exports = class extends RawEvent {
 	}
 
 	async _handleStarboard(channel, messageID, userID) {
-		const starboardConfigs = channel.guild.configs.starboard;
-		if (!starboardConfigs.channel || starboardConfigs.ignoreChannels.includes(channel.id)) return;
-		const { starboard } = channel.guild;
-		const sMessage = await starboard.fetch(channel, messageID);
-		await sMessage.add(userID);
+		try {
+			const starboardConfigs = channel.guild.configs.starboard;
+			if (!starboardConfigs.channel || starboardConfigs.ignoreChannels.includes(channel.id)) return;
+			const { starboard } = channel.guild;
+			const sMessage = await starboard.fetch(channel, messageID);
+			await sMessage.add(userID);
+		} catch (error) {
+			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
+			this.client.emit('error', error);
+		}
 	}
 
 	_handleConnectFour(channel, messageID, emoji, userID) {

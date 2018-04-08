@@ -3,7 +3,7 @@ const { Event, util: { getContent, getImage } } = require('../index');
 module.exports = class extends Event {
 
 	async run(message) {
-		if (message.command && message.command.deletable) for (const msg of message.responses) msg.delete();
+		if (message.command && message.command.deletable) for (const msg of message.responses) msg.nuke();
 		if (!message.guild || message.author === this.client.user) return;
 
 		const { guild } = message;

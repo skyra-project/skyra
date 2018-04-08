@@ -15,7 +15,7 @@ module.exports = class extends Event {
 				.catch(this._handleMessageError);
 		} else if (error instanceof Error) {
 			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
-			this._sendErrorChannel(command, error);
+			this._sendErrorChannel(msg, command, error);
 			this.client.emit('warn', `${this._getWarnError(msg, command, error)} (${msg.author.id}) | ${error.constructor.name}`);
 			this.client.emit('wtf', `[COMMAND] ${join(command.dir, ...command.file)}\n${error.stack || error}`);
 			msg.alert(msg.author === this.client.owner ? this.client.methods.util.codeBlock('js', error.stack) : msg.language.get('EVENTS_ERROR_WTF'))
@@ -27,15 +27,22 @@ module.exports = class extends Event {
 		this.logChannel = this.client.guilds.get('254360814063058944').channels.get('432495057552277504');
 	}
 
-	_sendErrorChannel(command, error) {
+	_sendErrorChannel(msg, command, error) {
 		if (!this.logChannel) return;
 		const isDiscordAPIError = error instanceof DiscordAPIError;
-		const header = this.client.methods.util.codeBlock('js',
-			`[COMMAND]${join(command.dir, ...command.file)}${(isDiscordAPIError ? `Path: ${error.path}\n` : '')}${this._getWarnError}`);
-		const content = this.client.methods.util.codeBlock('js',
-			error.stack || error);
-		this.logChannel.send(header + content)
-			.catch(() => null);
+		this.logChannel.send(this.client.methods.util.codeBlock('asciidoc', (isDiscordAPIError ? [
+			`Command   :: ${join(command.dir, ...command.file)}`,
+			`Path      :: ${error.path}`,
+			`Code      :: ${error.code}`,
+			`Location  :: ${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`,
+			`Arguments :: ${msg.args.length ? `[${msg.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
+			`Error     :: ${error.stack || error}`
+		] : [
+			`Command   :: ${join(command.dir, ...command.file)}`,
+			`Location  :: ${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`,
+			`Arguments :: ${msg.args.length ? `[${msg.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
+			`Error     :: ${error.stack || error}`
+		]).join('\n'))).catch(() => null);
 	}
 
 	_handleMessageError(sendError) {

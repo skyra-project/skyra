@@ -24,7 +24,8 @@ module.exports = class extends Command {
 
 		contents = contents.join(' ');
 		currentTags.set(tag, contents);
-		await msg.guild.configs.update({ _tags: [...currentTags] });
+		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
+		if (errors.length) throw errors[0];
 		return msg.sendMessage(msg.language.get('COMMAND_TAGS_ADD_ADDED',
 			tag.replace(REGEXP_DOT, REGEXP_ESC),
 			contents.replace(REGEXP_DOT, REGEXP_ESC)));
@@ -40,7 +41,8 @@ module.exports = class extends Command {
 
 		contents = contents.join(' ');
 		currentTags.set(tag, contents);
-		await msg.guild.configs.update({ _tags: [...currentTags] });
+		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
+		if (errors.length) throw errors[0];
 		return msg.sendMessage(msg.language.get('COMMAND_TAGS_EDITED',
 			tag.replace(REGEXP_DOT, REGEXP_ESC),
 			contents.replace(REGEXP_DOT, REGEXP_ESC),
@@ -53,7 +55,8 @@ module.exports = class extends Command {
 		const currentTags = msg.guild.configs.tags;
 		if (!currentTags.has(tag)) throw msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag.replace(REGEXP_DOT, REGEXP_ESC));
 		currentTags.delete(tag);
-		await msg.guild.configs.update({ _tags: [...currentTags] });
+		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
+		if (errors.length) throw errors[0];
 		return msg.sendMessage(msg.language.get('COMMAND_TAGS_REMOVE_REMOVED',
 			tag.replace(REGEXP_DOT, REGEXP_ESC)));
 	}

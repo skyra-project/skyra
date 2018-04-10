@@ -14,7 +14,6 @@ module.exports = class extends Event {
 			msg.alert(msg.language.get('EVENTS_ERROR_STRING', msg.author, error))
 				.catch(this._handleMessageError);
 		} else if (error instanceof Error) {
-			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
 			this._sendErrorChannel(msg, command, error);
 			this.client.emit('warn', `${this._getWarnError(msg, command, error)} (${msg.author.id}) | ${error.constructor.name}`);
 			this.client.emit('wtf', `[COMMAND] ${join(command.dir, ...command.file)}\n${error.stack || error}`);

@@ -7,7 +7,7 @@ module.exports = class extends Inhibitor {
 			&& msg.guild
 			&& msg.guild.configs.disabledChannels.length > 0
 			&& msg.guild.configs.disabledChannels.includes(msg.channel.id)
-			&& !await msg.hasAtLeastPermissionLevel(6))
+			&& !await msg.hasAtLeastPermissionLevel(5))
 			throw true;
 	}
 

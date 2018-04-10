@@ -49,7 +49,8 @@ module.exports = class extends Command {
 		// Change the moderator to the author
 		const parsedModLog = await parseModlog(this.client, msg.guild, newModLog);
 
-		await (message ? message.edit : channel.send)({ embed: parsedModLog.embed });
+		if (message) await message.edit({ embed: parsedModLog.embed });
+		else channel.send({ embed: parsedModLog.embed });
 
 		return msg.alert(`Successfully updated the log ${selected}.${this.client.methods.util.codeBlock('http', [
 			`Old reason : ${modlog.reason || 'Not set.'}`,

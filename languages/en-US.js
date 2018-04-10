@@ -460,6 +460,20 @@ module.exports = class extends Language {
 				],
 				examples: ['SkyNET', 'Assistant', '']
 			}),
+			COMMAND_TRIGGERS_DESCRIPTION: `Set custom triggers for your guild.`,
+			COMMAND_TRIGGERS_EXTENDED: builder.display('triggers', {
+				extendedHelp: `This command allows administrators to go further with the personalization of Skyra in the guild. A trigger is
+					a piece that can active other functions. For example, the aliases are triggers that get executed when the command does not
+					exist in bot, triggering the unknown command event. When this happens, the alias system executes and tries to find an entry
+					that matches with the input.`,
+				reminder: `This command requires the **${PERMS.ADD_REACTIONS}** permission so it can test reactions. Make sure Skyra has it.`,
+				explainedUsage: [
+					['list', `List all current triggers.`],
+					['add <type> <input> <output>', 'Add a new trigger given a type, input and output.'],
+					['remove <type> <input>', 'Remove a trigger given the type and input.']
+				],
+				examples: ['', 'list', 'add reaction "good night" 🌛', 'remove reaction "good night"']
+			}),
 
 			/**
 			 * #################################
@@ -1221,6 +1235,93 @@ module.exports = class extends Language {
 			}),
 
 			/**
+			 * #############
+			 * WEEB COMMANDS
+			 */
+
+			COMMAND_WCRY_DESCRIPTION: 'Cry to somebody with a weeb picture!',
+			COMMAND_WCRY_EXTENDED: builder.display('wcry', {
+				extendedHelp: `Cry with a random weeb image!`,
+				explainedUsage: [
+					['user', 'The user to cry to.']
+				],
+				examples: ['@Skyra']
+			}),
+			COMMAND_WCUDDLE_DESCRIPTION: 'Cuddle somebody with a weeb picture!',
+			COMMAND_WCUDDLE_EXTENDED: builder.display('wcuddle', {
+				extendedHelp: `Unlike the original cuddle command, this one displays random weeb images, enjoy!`,
+				explainedUsage: [
+					['user', 'The user to cuddle with.']
+				],
+				examples: ['@Skyra']
+			}),
+			COMMAND_WHUG_DESCRIPTION: 'Hug somebody with a weeb picture!',
+			COMMAND_WHUG_EXTENDED: builder.display('whug', {
+				extendedHelp: `Unlike the original hug command, this one displays random weeb images, enjoy!`,
+				explainedUsage: [
+					['user', 'The user to give the hug.']
+				],
+				examples: ['@Skyra']
+			}),
+			COMMAND_WKISS_DESCRIPTION: 'Kiss somebody with a weeb picture!',
+			COMMAND_WKISS_EXTENDED: builder.display('wkiss', {
+				extendedHelp: `Kiss somebody with a random weeb image!`,
+				explainedUsage: [
+					['user', 'The user to give the kiss.']
+				],
+				examples: ['@Skyra']
+			}),
+			COMMAND_WNOM_DESCRIPTION: 'Nom nom with a 🍞!',
+			COMMAND_WNOM_EXTENDED: builder.display('wnom', {
+				extendedHelp: `Nom nom nom! Wha~... I'm busy eating!`
+			}),
+			COMMAND_WNYAN_DESCRIPTION: 'Human kittens!',
+			COMMAND_WNYAN_EXTENDED: builder.display('wnyan', {
+				extendedHelp: `Unlike the original kitten command, this one displays random weeb images, the difference is that
+					they're weebs... and humans, enjoy!`
+			}),
+			COMMAND_WPAT_DESCRIPTION: 'Pats somebody\'s head!',
+			COMMAND_WPAT_EXTENDED: builder.display('wpat', {
+				extendedHelp: `Pat somebody's head with a random weeb image!`,
+				explainedUsage: [
+					['user', 'The user to pat with.']
+				],
+				examples: ['@Skyra']
+			}),
+			COMMAND_WPOUT_DESCRIPTION: 'I feel somebody... mad',
+			COMMAND_WPOUT_EXTENDED: builder.display('wpout', {
+				extendedHelp: `Show your expression with a random weeb image!`
+			}),
+			COMMAND_WSLAP_DESCRIPTION: 'Slap somebody with a weeb picture!',
+			COMMAND_WSLAP_EXTENDED: builder.display('wslap', {
+				extendedHelp: `Unlike the original slap command, this one displays random weeb images, enjoy!`,
+				explainedUsage: [
+					['user', 'The user to slap.']
+				],
+				examples: ['@Pete']
+			}),
+			COMMAND_WSMUG_DESCRIPTION: 'Smug',
+			COMMAND_WSMUG_EXTENDED: builder.display('wsmug', {
+				extendedHelp: `Just an anime smug face!`
+			}),
+			COMMAND_WSTARE_DESCRIPTION: '*Stares*',
+			COMMAND_WSTARE_EXTENDED: builder.display('wstare', {
+				extendedHelp: `*Still stares at you*`,
+				explainedUsage: [
+					['user', 'The user to stare at.']
+				],
+				examples: ['@Pete']
+			}),
+			COMMAND_WTICKLE_DESCRIPTION: 'Give tickles to somebody with a weeb picture!',
+			COMMAND_WTICKLE_EXTENDED: builder.display('wtickle', {
+				extendedHelp: `Tickle somebody!`,
+				explainedUsage: [
+					['user', 'The user to tickle.']
+				],
+				examples: ['@Skyra']
+			}),
+
+			/**
 			 * #################################
 			 * #       COMMAND RESPONSES       #
 			 * #################################
@@ -1361,6 +1462,15 @@ module.exports = class extends Language {
 
 			COMMAND_NICK_SET: (nickname) => `Changed the nickname to **${nickname}**.`,
 			COMMAND_NICK_CLEARED: 'Nickname cleared.',
+			COMMAND_TRIGGERS_NOTYPE: 'You need to insert a trigger type (**alias**|**reaction**)',
+			COMMAND_TRIGGERS_NOOUTPUT: 'You need to insert the trigger output.',
+			COMMAND_TRIGGERS_INVALIDREACTION: 'This reaction does not seem valid for me, either it is not valid unicode or I do not have access to it.',
+			COMMAND_TRIGGERS_INVALIDALIAS: 'There is no command like this.',
+			COMMAND_TRIGGERS_REMOVE_NOTTAKEN: 'There is no trigger with this input.',
+			COMMAND_TRIGGERS_REMOVE: 'Successfully removed this trigger.',
+			COMMAND_TRIGGERS_ADD_TAKEN: 'There is already a trigger with this input.',
+			COMMAND_TRIGGERS_ADD: 'Successfully added the trigger.',
+			COMMAND_TRIGGERS_LIST_EMPTY: 'The trigger list for this guild is empty.',
 			COMMAND_SERVERINFO_TITLES: {
 				CHANNELS: 'Channels',
 				MEMBERS: 'Members',
@@ -1414,7 +1524,7 @@ module.exports = class extends Language {
 			 * MISC COMMANDS
 			 */
 
-			COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://discordbots.org/bot/266624760782258186>**! Some perks for upvoters are coming very soon!',
+			COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://discordbots.org/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 			COMMAND_VAPORWAVE_OUTPUT: (string) => `Here is your converted message:\n${string}`,
 
 			/**
@@ -1744,6 +1854,24 @@ module.exports = class extends Language {
 			COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
 			COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit Exceeded. Try again tomorrow.',
 			COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
+
+			/**
+			 * #############
+			 * WEEB COMMANDS
+			 */
+
+			COMMAND_WCRY: user => `Dear ${user}, did you make him cry? 💔`,
+			COMMAND_WCUDDLE: user => `Here is a cuddle for you, ${user} 💞`,
+			COMMAND_WHUG: user => `Here is a nice hug for you, ${user} ❤`,
+			COMMAND_WKISS: user => `Here is a kiss for you, ${user} 💜`,
+			COMMAND_WNOM: `Nom, nom, nom! 😊`,
+			COMMAND_WNYAN: `Nya! 🐱`,
+			COMMAND_WPAT: user => `Gently pats ${user}'s head ❤`,
+			COMMAND_WPOUT: `Uh?`,
+			COMMAND_WSLAP: user => `Slapping ${user}!`,
+			COMMAND_WSMUG: `There's a smug face!`,
+			COMMAND_WSTARE: user => `Dear ${user}, somebody is staring at you 👀`,
+			COMMAND_WTICKLE: user => `Tickles for you, ${user}!`,
 
 			/**
 			 * #################################

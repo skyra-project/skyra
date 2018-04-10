@@ -179,7 +179,7 @@
 		],
 		"no-array-constructor": "error",
 		"no-bitwise": ["warn", { "allow": ["|"] }],
-		"no-inline-comments": "error",
+		"no-inline-comments": "off",
 		"no-lonely-if": "error",
 		"no-mixed-operators": "error",
 		"no-multiple-empty-lines": [

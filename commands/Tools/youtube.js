@@ -5,6 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 15,
+			aliases: ['yt'],
 			description: msg => msg.language.get('COMMAND_YOUTUBE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_YOUTUBE_EXTENDED'),
 			usage: '<query:string> [index:integer{0,20}]',

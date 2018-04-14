@@ -29,7 +29,6 @@ const skyra = new Skyra({
 	consoleEvents: { verbose: true },
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
-		'PRESENCE_UPDATE',
 		'RELATIONSHIP_ADD',
 		'RELATIONSHIP_REMOVE',
 		'TYPING_START',

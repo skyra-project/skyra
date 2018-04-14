@@ -30,14 +30,14 @@ module.exports = class extends Command {
 		let users = null, roles = null, options = null;
 
 		if ('users' in msg.flags && msg.flags.users !== 'users') {
-			users = this._resolveUsers(msg.flags.users.split(' ').map(user => user.trim()));
+			users = this._resolveUsers(msg.flags.users.split(',').map(user => user.trim()));
 		} else if (!('no-prompt' in msg.flags)) {
 			const wants = await msg.ask(msg.language.get('COMMAND_POLL_WANT_USERS'));
 			if (wants) users = await this.userPrompt.createPrompt(msg).run(msg.language.get('COMMAND_POLL_FIRSTUSER')).catch(() => null);
 		}
 
 		if ('roles' in msg.flags && msg.flags.roles !== 'roles') {
-			roles = this._resolveRoles(msg.flags.roles.split(' ').map(role => role.trim()));
+			roles = this._resolveRoles(msg.flags.roles.split(',').map(role => role.trim()));
 		} else if (!('no-prompt' in msg.flags)) {
 			const wants = await msg.ask(msg.language.get('COMMAND_POLL_WANT_ROLES'));
 			if (wants) roles = await this.rolePrompt.createPrompt(msg).run(msg.language.get('COMMAND_POLL_FIRSTROLE')).catch(() => null);

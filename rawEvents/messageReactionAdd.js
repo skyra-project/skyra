@@ -1,6 +1,5 @@
 const { RawEvent, constants: { CONNECT_FOUR } } = require('../index');
 const { DiscordAPIError } = require('discord.js');
-const EMOJI_WHITELIST = new Set(['⭐', ...CONNECT_FOUR.REACTIONS]);
 const CONNECT_FOUR_WHITELIST = new Set(CONNECT_FOUR.REACTIONS);
 
 module.exports = class extends RawEvent {
@@ -20,10 +19,13 @@ module.exports = class extends RawEvent {
 	// 	  channel_id: 'id' }
 
 	async process(data) {
-		if (!EMOJI_WHITELIST.has(data.emoji.name)) return false;
 		// Verify channel
 		const channel = this.client.channels.get(data.channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
+
+		if (channel.id === channel.guild.configs.channels.roles) {
+			this._handleRoleChannel(channel.guild, data.emoji, data.user_id);
+		}
 
 		// The ConnectFour does not need more data than this
 		if (CONNECT_FOUR_WHITELIST.has(data.emoji.name)) {
@@ -54,6 +56,23 @@ module.exports = class extends RawEvent {
 		// reaction._add(user);
 
 		// return { message, reaction, user };
+	}
+
+	async _handleRoleChannel(guild, emoji, userID, messageID) {
+		const { messageReaction } = guild.configs.roles;
+		if (messageReaction && messageReaction !== messageID) return;
+
+		const roleEntry = guild.configs.roles.reactions.find(entry => entry.emoji === emoji.name);
+		if (!roleEntry) return;
+
+		try {
+			const member = await guild.members.fetch(userID);
+			if (member.roles.has(roleEntry.role)) return;
+			await member.roles.add(roleEntry.role);
+		} catch (error) {
+			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
+			this.client.emit('error', error);
+		}
 	}
 
 	async _handleStarboard(channel, messageID, userID) {

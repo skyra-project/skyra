@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			cooldown: 5,
 			description: (msg) => msg.language.get('COMMAND_DICE_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_DICE_EXTENDED'),
-			usage: '[rolls:integer{1,1024}] [sides:integer{4,1024}]',
+			usage: '(rolls:rolls) (sides:sides)',
 			usageDelim: ' '
 		});
 
@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [rl = 1, sd = 6]) {
+	run(msg, [rl = 1, sd = 6]) {
 		return msg.sendMessage(msg.language.get('COMMAND_DICE_OUTPUT', sd, rl, this.roll(rl, sd)));
 	}
 

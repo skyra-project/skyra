@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			extendedHelp: msg => msg.language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
 			permLevel: 4,
 			runIn: ['text'],
-			usage: '<announcement:string>'
+			usage: '<announcement:string{,1900}>'
 		});
 	}
 
@@ -26,11 +26,33 @@ module.exports = class extends Command {
 		if (channel.postable === false) throw msg.language.get('SYSTEM_CHANNEL_NOT_POSTABLE');
 
 		const role = announcementCheck(msg);
-		await role.edit({ mentionable: true });
-		await channel.send(`${msg.language.get('COMMAND_ANNOUNCEMENT', role)}\n${message}`);
-		await role.edit({ mentionable: false });
+		const content = `${msg.language.get('COMMAND_ANNOUNCEMENT', role)}\n${message}`;
 
-		return msg.sendMessage(msg.language.get('COMMAND_SUCCESS'));
+		if (await this.ask(msg, content)) {
+			await this.send(msg, channel, role, content);
+			return msg.sendMessage(msg.language.get('COMMAND_ANNOUNCEMENT_SUCCESS'));
+		}
+
+		return msg.sendMessage(msg.language.get('COMMAND_ANNOUNCEMENT_CANCELLED'));
+	}
+
+	ask(msg, content) {
+		try {
+			return msg.ask(msg.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
+				embed: new this.client.methods.Embed()
+					.setColor(msg.member.displayColor || 0xDFDFDF)
+					.setDescription(content)
+					.setTimestamp()
+			});
+		} catch (_) {
+			return false;
+		}
+	}
+
+	async send(msg, channel, role, content) {
+		await role.edit({ mentionable: true });
+		await channel.send(content);
+		await role.edit({ mentionable: false });
 	}
 
 };

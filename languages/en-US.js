@@ -1181,7 +1181,21 @@ module.exports = class extends Language {
 				examples: ['https://github.com/', 'https://goo.gl/un5E']
 			}),
 			COMMAND_POLL_DESCRIPTION: 'Manage polls.',
-			COMMAND_POLL_EXTENDED: builder.display('poll', {}),
+			COMMAND_POLL_EXTENDED: builder.display('poll', {
+				extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
+					votes (users can't vote twice nor two different options). You can customize the available options for the
+					user and it features role and user whitelist. At the end of the poll, Skyra will DM you the results with a
+					chart, make sure to have your DMs opened! After the vote concludes (they require time), you can retrieve the
+					results for 24 hours before it gets unaccesible.`,
+				examples: [
+					'create Should I create the #anime channel? --options="yes,no,definitely"',
+					'list',
+					'vote jfutdsxsb yes',
+					'result jfutdsxsb',
+					'remove jfutdsxsb'
+				],
+				reminder: 'Skyra will prompt you for user and role whitelist, you can omit it by including `--no-prompt` in your message or specify them with `--users="id1,id2..." and --roles="id1,id2..."`. If you want something simpler, use the `spoll` command.'
+			}),
 			COMMAND_PRICE_DESCRIPTION: 'Convert the currency with this tool.',
 			COMMAND_PRICE_EXTENDED: builder.display('price', {}),
 			COMMAND_QUOTE_DESCRIPTION: 'Quote another people\'s message.',
@@ -1202,6 +1216,13 @@ module.exports = class extends Language {
 			}),
 			COMMAND_SEARCH_DESCRIPTION: 'Search things from the Internet with DuckDuckGo.',
 			COMMAND_SEARCH_EXTENDED: builder.display('search', {}),
+			COMMAND_SPOLL_DESCRIPTION: 'Simplified reaction-based poll.',
+			COMMAND_SPOLL_EXTENDED: builder.display('spoll', {
+				extendedHelp: `spoll stands for "simplified poll". You may want to use this command if you don't want to deal the
+					complexity of the other command. Simplified Polls do not track the users who vote nor it filters, it merely reacts
+					to your message with three emojis and let the users vote.`,
+				examples: ['Should I implement the #anime channel?']
+			}),
 			COMMAND_URBAN_DESCRIPTION: 'Check the definition of a word on UrbanDictionary.',
 			COMMAND_URBAN_EXTENDED: builder.display('urban', {
 				extendedHelp: `What does "spam" mean?`,
@@ -1382,6 +1403,9 @@ module.exports = class extends Language {
 			COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}***`,
 			COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
 			COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
+			COMMAND_ANNOUNCEMENT_SUCCESS: 'Successfully posted a new announcement.',
+			COMMAND_ANNOUNCEMENT_CANCELLED: 'Cancelled the message.',
+			COMMAND_ANNOUNCEMENT_PROMPT: 'This will be the message sent in the announcement channel. Are you OK with this?',
 
 			/**
 			 * ################

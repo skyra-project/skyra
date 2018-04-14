@@ -4,6 +4,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			aliases: ['suggest'],
 			bucket: 2,
 			cooldown: 20,
 			description: (msg) => msg.language.get('COMMAND_FEEDBACK_DESCRIPTION'),

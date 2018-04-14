@@ -82,7 +82,7 @@ module.exports = class extends Provider {
 	 * @returns {Promise<Object>}
 	 */
 	get(table, id) {
-		if (!this._executedSweep && table === 'users') return Promise.resolve(null);
+		if (!this.client._executedSweep && table === 'users') return Promise.resolve(null);
 		return this.db.table(table).get(id).then(resolvePromise);
 	}
 

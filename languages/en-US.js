@@ -480,6 +480,19 @@ module.exports = class extends Language {
 			 * MANAGEMENT/CONFIGURATION COMMANDS
 			 */
 
+			COMMAND_MANAGEROLEREACTION_DESCRIPTION: 'Manage the role reactions.',
+			COMMAND_MANAGEROLEREACTION_EXTENDED: builder.display('manageRoleReaction', {
+				extendedHelp: `This command manages the role reaction module, it requires a **role channel** set up and the permissions **${PERMS.ADD_REACTIONS}**
+					and **${PERMS.READ_MESSAGE_HISTORY}** to be able to validate and operate correctly.`,
+				explainedUsage: [
+					['show', 'Show all the currently configured role reactions.'],
+					['add <role> <emoji>', 'Add a new role reaction with the role ID or name, and a valid emoji.'],
+					['remove <emoji>', 'Remove a role reaction by its configured emoji.'],
+					['reset', 'Reset all the current role reactions.']
+				],
+				reminder: 'You cannot set the same emoji twice, and Skyra may remove role reactions automatically if she loses permissions or they are removed.',
+				examples: ['show', 'add Baited 🎵', 'add "Looking for Group" 🎮', 'remove 🎮', 'reset']
+			}),
 			COMMAND_SETIGNORECHANNELS_DESCRIPTION: 'Set a channel to the ignore channel list.',
 			COMMAND_SETIGNORECHANNELS_EXTENDED: builder.display('setIgnoreChannels', {
 				extendedHelp: `This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators
@@ -540,6 +553,27 @@ module.exports = class extends Language {
 				],
 				reminder: `Your prefix should only contain characters everyone can write and type.`,
 				examples: ['&', '=']
+			}),
+			COMMAND_SETROLECHANNEL_DESCRIPTION: 'Set the role channel for role reactions.',
+			COMMAND_SETROLECHANNEL_EXTENDED: builder.display('setRoleChannel', {
+				extendedHelp: `This command sets up the role channel to lock the reactions to, it is a requirement to set up before setting up the **role message**,
+					and if none is given, the role reactions module will not run.`,
+				explainedUsage: [
+					['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']
+				],
+				reminder: 'You cannot set the same channel twice, instead, Skyra will remove it.',
+				examples: ['#roles', 'here']
+			}),
+			COMMAND_SETROLEMESSAGE_DESCRIPTION: 'Set the role message for role reactions.',
+			COMMAND_SETROLEMESSAGE_EXTENDED: builder.display('setRoleMessage', {
+				extendedHelp: `This command sets up the role message to lock the reactions to, it requires a **role channel** to be set up first, and if none is given,
+					Skyra will listen to any reaction in the channel. Additionally, Skyra requires **${PERMS.READ_MESSAGE_HISTORY}** in order to fetch the message for
+					validation.`,
+				explainedUsage: [
+					['message', 'An ID, they are 17-18 characters long and numeric.']
+				],
+				reminder: 'You must execute this command in the role channel.',
+				examples: ['434096799847022598']
 			}),
 
 			/**
@@ -1534,6 +1568,17 @@ module.exports = class extends Language {
 			 * MANAGEMENT/CONFIGURATION COMMANDS
 			 */
 
+			COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION: 'You must input a valid reaction that can be used by me.',
+			COMMAND_MANAGEROLEREACTION_LIST_EMPTY: 'This guild has no role reaction set up.',
+			COMMAND_MANAGEROLEREACTION_EXISTS: 'There is already a role reaction set up with the specified role or emoji.',
+			COMMAND_MANAGEROLEREACTION_ADD: 'Successfully added the role reaction.',
+			COMMAND_MANAGEROLEREACTION_REMOVE_NOTEXISTS: 'I do not find an entry with this reaction. Are you sure you have typed it correctly?',
+			COMMAND_MANAGEROLEREACTION_REMOVE: 'Successfully removed the role reaction.',
+			COMMAND_MANAGEROLEREACTION_RESET: 'Successfully removed all role reactions.',
+			COMMAND_SETMESSAGEROLE_CHANNELNOTSET: 'In order to configure the message role, you must configure the channel first.',
+			COMMAND_SETMESSAGEROLE_WRONGCHANNEL: (channel) => `In order to reduce confusion, I would suggest you to move to ${channel}`,
+			COMMAND_SETMESSAGEROLE_SET: 'Successfully set the message role.',
+			COMMAND_SETROLECHANNEL_SET: (channel) => `Successfully set the role channel to ${channel}.`,
 			CONFIGURATION_TEXTCHANNEL_REQUIRED: 'The selected channel is not a valid text channel, try again with another.',
 			CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',
 			COMMAND_SETIGNORECHANNELS_SET: (channel) => `Ignoring all command input from ${channel} now.`,

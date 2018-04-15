@@ -5,10 +5,11 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
+			botPerms: ['READ_MESSAGE_HISTORY'],
 			bucket: 2,
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_SETMESSAGEROLE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_SETMESSAGEROLE_EXTENDED'),
+			description: (msg) => msg.language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
+			extendedHelp: (msg) => msg.language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
 			permLevel: 6,
 			runIn: ['text'],
 			usage: '(message:message)'
@@ -24,7 +25,7 @@ module.exports = class extends Command {
 				await msg.guild.configs.reset('channels.roles');
 				throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 			}
-			if (!rolesChannel !== msg.channel.id) throw msg.language.get('COMMAND_SETMESSAGEROLE_WRONGCHANNEL');
+			if (rolesChannel !== msg.channel.id) throw msg.language.get('COMMAND_SETMESSAGEROLE_WRONGCHANNEL', `<#${rolesChannel}>`);
 			if (msg.guild.configs.roles.messageReaction === arg) throw msg.language.get('CONFIGURATION_EQUALS');
 
 			const message = await msg.channel.messages.fetch(arg).catch(() => null);

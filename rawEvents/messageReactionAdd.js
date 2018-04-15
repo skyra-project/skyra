@@ -24,7 +24,7 @@ module.exports = class extends RawEvent {
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
 
 		if (channel.id === channel.guild.configs.channels.roles) {
-			this._handleRoleChannel(channel.guild, data.emoji, data.user_id);
+			this._handleRoleChannel(channel.guild, data.emoji, data.user_id, data.message_id);
 		}
 
 		// The ConnectFour does not need more data than this
@@ -60,7 +60,7 @@ module.exports = class extends RawEvent {
 
 	async _handleRoleChannel(guild, emoji, userID, messageID) {
 		const { messageReaction } = guild.configs.roles;
-		if (messageReaction && messageReaction !== messageID) return;
+		if (!messageReaction || messageReaction !== messageID) return;
 
 		const roleEntry = guild.configs.roles.reactions.find(entry => entry.emoji === emoji.name);
 		if (!roleEntry) return;

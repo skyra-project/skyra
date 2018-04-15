@@ -19,6 +19,7 @@ module.exports = class extends Command {
 	async run(msg, [user]) {
 		const now = Date.now();
 		const profile = msg.author.configs;
+		if (profile._syncStatus) await profile._syncStatus;
 
 		if (this.busy.has(msg.author.id) || profile.timeReputation + DAY > now) {
 			return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_TIME', profile.timeReputation + DAY - now));

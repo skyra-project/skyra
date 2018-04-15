@@ -29,10 +29,12 @@ const skyra = new Skyra({
 	consoleEvents: { verbose: true },
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
+		'PRESENCE_UPDATE',
 		'RELATIONSHIP_ADD',
 		'RELATIONSHIP_REMOVE',
 		'TYPING_START',
 		'USER_NOTE_UPDATE',
+		'USER_UPDATE',
 		'VOICE_SERVER_UPDATE'
 	],
 	gateways: { clientStorage: { provider: 'json' } },

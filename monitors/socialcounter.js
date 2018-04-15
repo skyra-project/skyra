@@ -35,7 +35,7 @@ module.exports = class extends Monitor {
 				await this.handleRoles(msg, memberPoints.count);
 			}
 		} catch (err) {
-			this.client.emit('log', `Failed to add points to ${msg.author.id}: ${(err && err.stack) || err}`, 'error');
+			this.client.emit('error', `Failed to add points to ${msg.author.id}: ${(err && err.stack) || err}`);
 		}
 	}
 
@@ -54,9 +54,11 @@ module.exports = class extends Monitor {
 		if (!autoRole) return null;
 
 		const role = msg.guild.roles.get(autoRole.id);
-		if (!role) return msg.guild.configs.update('roles.auto', autoRole, { action: 'delete' })
-			.then(() => this.handleRoles(msg, memberPoints))
-			.catch(error => this.client.emit('error', error));
+		if (!role || role.position > msg.guild.me.roles.highest.position) {
+			return msg.guild.configs.update('roles.auto', autoRole, { action: 'delete' })
+				.then(() => this.handleRoles(msg, memberPoints))
+				.catch(error => this.client.emit('error', error));
+		}
 
 		if (msg.member.roles.has(role.id)) return null;
 

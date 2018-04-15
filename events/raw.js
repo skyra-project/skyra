@@ -1,5 +1,5 @@
 const { Event } = require('klasa');
-const EVENTS = new Set(['GUILD_MEMBER_REMOVE', 'MESSAGE_REACTION_ADD', 'GUILD_MEMBER_ADD', 'USER_UPDATE']);
+const EVENTS = new Set(['GUILD_MEMBER_REMOVE', 'MESSAGE_REACTION_ADD', 'GUILD_MEMBER_ADD', 'USER_UPDATE', 'PRESENCE_UPDATE']);
 
 module.exports = class extends Event {
 

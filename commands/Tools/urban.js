@@ -6,7 +6,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			aliases: ['urbandictionary'],
+			aliases: ['ud', 'urbandictionary'],
 			botPerms: ['EMBED_LINKS'],
 			cooldown: 15,
 			description: msg => msg.language.get('COMMAND_URBAN_DESCRIPTION'),

@@ -182,29 +182,7 @@ module.exports = class extends Language {
 			COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
 			COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
 			COMMAND_INVITE_SELFBOT: 'Why would you need an invite link for a selfbot...',
-			COMMAND_INVITE: (client) => [
-				`To add Skyra to your discord guild: <${client.invite}>`,
-				'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
-			].join('\n'),
 			COMMAND_INVITE_DESCRIPTION: 'Displays the join server link of the bot.',
-			COMMAND_INFO: [
-				"Klasa is a 'plug-and-play' framework built on top of the Discord.js library.",
-				'Most of the code is modularized, which allows developers to edit Klasa to suit their needs.',
-				'',
-				'Some features of Klasa include:',
-				'• Fast Loading times with ES7 Support (Async/Await)',
-				'• Per-server configuration, that can be extended with your own code',
-				'• Customizable Command system with automated usage parsing and easy to use reloading and downloading modules',
-				'• "Monitors" which can watch messages and act on them, like a normal message event (Swear Filters, Spam Protection, etc)',
-				'• "Inhibitors" which can prevent commands from running based on a set of parameters (Permissions, Blacklists, etc)',
-				'• "Providers" which allow you to connect with an outside database of your choosing.',
-				'• "Finalizers" which run on messages after a successful command.',
-				'• "Extendables", code that acts passively. They add properties or methods to existing Discord.js classes.',
-				'• "Languages", which allow you to localize your bot.',
-				'',
-				'We hope to be a 100% customizable framework that can cater to all audiences. We do frequent updates and bugfixes when available.',
-				"If you're interested in us, check us out at https://klasa.js.org"
-			],
 			COMMAND_INFO_DESCRIPTION: 'Provides some information about this bot.',
 			COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
 			COMMAND_HELP_NO_EXTENDED: 'No extended help available.',
@@ -244,6 +222,7 @@ module.exports = class extends Language {
 			 * ##############
 			 * ANIME COMMANDS
 			 */
+
 			COMMAND_ANIME_DESCRIPTION: 'Search your favourite anime by title with this command.',
 			COMMAND_ANIME_EXTENDED: builder.display('anime', {
 				extendedHelp: `This command queries MyAnimeList to show data for the anime you request. In a near future, this command
@@ -267,6 +246,7 @@ module.exports = class extends Language {
 			 * #####################
 			 * ANNOUNCEMENT COMMANDS
 			 */
+
 			COMMAND_ANNOUNCEMENT_DESCRIPTION: 'Send new announcements, mentioning the announcement role.',
 			COMMAND_ANNOUNCEMENT_EXTENDED: builder.display('announcement', {
 				extendedHelp: `This command requires an announcement channel (**channels.announcement** in the configuration command)
@@ -296,9 +276,9 @@ module.exports = class extends Language {
 			}),
 
 			/**
-				 * ############
-				 * FUN COMMANDS
-				 */
+			 * ############
+			 * FUN COMMANDS
+			 */
 
 			COMMAND_8BALL_DESCRIPTION: 'Skyra will read the Holy Bible to find the correct answer for your question.',
 			COMMAND_8BALL_EXTENDED: builder.display('8ball', {
@@ -396,6 +376,7 @@ module.exports = class extends Language {
 			 * ###################
 			 * MANAGEMENT COMMANDS
 			 */
+
 			COMMAND_CREATEMUTE_DESCRIPTION: 'Prepare the mute system.',
 			COMMAND_CREATEMUTE_EXTENDED: builder.display('createMute', {
 				extendedHelp: `This command prepares the mute system by creating a role called 'muted', and configuring it to
@@ -999,17 +980,14 @@ module.exports = class extends Language {
 			}),
 			COMMAND_REPUTATION_DESCRIPTION: 'Give somebody a reputation point.',
 			COMMAND_REPUTATION_EXTENDED: builder.display('reputation', {
-				extendedHelp: `This guy is so helpful... I'll give him a reputation point!`,
+				extendedHelp: `This guy is so helpful... I'll give him a reputation point! Additionally, you can check how many
+					reputation points a user has by writing 'check' before the mention.`,
 				explainedUsage: [
+					['check', '(Optional) Whether you want to check somebody (or yours) amount of reputation.'],
 					['user', 'The user to give a reputation point.']
 				],
-				reminder: 'You can give a reputation point once every 24 hours.'
-			}),
-			COMMAND_REPUTATIONS_DESCRIPTION: 'Check your amount of reputation points.',
-			COMMAND_REPUTATIONS_EXTENDED: builder.display('reputations', {
-				extendedHelp: `This command tells you the amount of reputation points. They are points you achieve from other users
-					when they use the reputation command.`,
-				reminder: 'You can give users a reputation point with the \'reputation\' command every 24 hours.'
+				reminder: 'You can give a reputation point once every 24 hours.',
+				examples: ['check @kyra', 'check', '@kyra', 'check "User With Spaces"', '"User With Spaces"']
 			}),
 			COMMAND_SETCOLOR_DESCRIPTION: 'Change your user profile\'s color.',
 			COMMAND_SETCOLOR_EXTENDED: builder.display('setColor', {
@@ -1446,6 +1424,25 @@ module.exports = class extends Language {
 			 * GENERAL COMMANDS
 			 */
 
+			COMMAND_INVITE: (client) => [
+				`To add Skyra to your discord guild: <${client.invite}>`,
+				'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
+			].join('\n'),
+			COMMAND_INFO: [
+				'Skyra 3.0.0 (codename **Royal**) is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.',
+				"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",
+				'',
+				'Skyra features:',
+				'• Advanced Moderation with temporary actions included',
+				'• Announcement management',
+				'• Fully configurable',
+				'• Message logs, member logs, and mod logs',
+				'• Multilingual',
+				'• Profiles and levels, with leaderboards and social management',
+				'• Role management',
+				'• Weeb commands (+10)!',
+				'And more!'
+			].join('\n'),
 			COMMAND_HELP_TITLE: (name, description) => `📃 | ***Help Message*** | __**${name}**__\n${description}\n`,
 			COMMAND_HELP_USAGE: (usage) => `📝 | ***Command Usage***\n\`${usage}\`\n`,
 			COMMAND_HELP_EXTENDED: (extendedHelp) => `🔍 | ***Extended Help***\n${extendedHelp}`,

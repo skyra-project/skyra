@@ -23,6 +23,7 @@ module.exports = {
 	StarboardMessage: require('./lib/structures/StarboardMessage'),
 
 	ModerationCommand: require('./lib/structures/ModerationCommand'),
+	WeebCommand: require('./lib/structures/WeebCommand'),
 
 	// Custom API store and piece
 	API: require('./lib/structures/API'),

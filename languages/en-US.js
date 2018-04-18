@@ -1308,8 +1308,8 @@ module.exports = class extends Language {
 			COMMAND_WNOM_EXTENDED: builder.display('wnom', {
 				extendedHelp: `Nom nom nom! Wha~... I'm busy eating!`
 			}),
-			COMMAND_WNYAN_DESCRIPTION: 'Human kittens!',
-			COMMAND_WNYAN_EXTENDED: builder.display('wnyan', {
+			COMMAND_WNEKO_DESCRIPTION: 'Human kittens!',
+			COMMAND_WNEKO_EXTENDED: builder.display('wneko', {
 				extendedHelp: `Unlike the original kitten command, this one displays random weeb images, the difference is that
 					they're weebs... and humans, enjoy!`
 			}),
@@ -1720,6 +1720,7 @@ module.exports = class extends Language {
 			COMMAND_MARRY_WITH: user => `Dear, how could you forget it... You are currently married with ${user}!`,
 			COMMAND_MARRY_NOTTAKEN: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing somebody?',
 			COMMAND_MARRY_SKYRA: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
+			COMMAND_MARRY_SNEYRA: 'In your dreams. She is my sister, I am not letting somebody harm her!',
 			COMMAND_MARRY_BOTS: 'Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!',
 			COMMAND_MARRY_SELF: 'No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔',
 			COMMAND_MARRY_AUTHOR_TAKEN: 'I am sorry, but you are already married...',
@@ -1933,7 +1934,7 @@ module.exports = class extends Language {
 			COMMAND_WHUG: user => `Here is a nice hug for you, ${user} ❤`,
 			COMMAND_WKISS: user => `Here is a kiss for you, ${user} 💜`,
 			COMMAND_WNOM: `Nom, nom, nom! 😊`,
-			COMMAND_WNYAN: `Nya! 🐱`,
+			COMMAND_WNEKO: `Nya! 🐱`,
 			COMMAND_WPAT: user => `Gently pats ${user}'s head ❤`,
 			COMMAND_WPOUT: `Uh?`,
 			COMMAND_WSLAP: user => `Slapping ${user}!`,

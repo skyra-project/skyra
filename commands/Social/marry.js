@@ -1,5 +1,7 @@
 const { Command } = require('klasa');
+
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes)$/i;
+const SNEYRA_ID = '338249781594030090';
 
 module.exports = class extends Command {
 
@@ -30,8 +32,9 @@ module.exports = class extends Command {
 
 	async _marry(msg, user) {
 		if (user.id === this.client.user.id) return msg.sendMessage(msg.language.get('COMMAND_MARRY_SKYRA'));
+		if (user.id === SNEYRA_ID) return msg.sendMessage(msg.language.get('COMMAND_MARRY_SNEYRA'));
+		if (user.id === msg.author.id) return msg.sendMessage(msg.language.get('COMMAND_MARRY_SELF'));
 		if (user.bot) return msg.sendMessage(msg.language.get('COMMAND_MARRY_BOTS'));
-		if (msg.author.id === user.id) return msg.sendMessage(msg.language.get('COMMAND_MARRY_SELF'));
 
 		// Configuration is already sync by the monitors.
 		if (msg.author.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_AUTHOR_TAKEN'));

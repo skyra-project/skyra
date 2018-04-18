@@ -1272,6 +1272,10 @@ module.exports = class extends Language {
 			 * WEEB COMMANDS
 			 */
 
+			COMMAND_WBLUSH_DESCRIPTION: 'Blush with a weeb picture!',
+			COMMAND_WBLUSH_EXTENDED: builder.display('wblush', {
+				extendedHelp: `Blush with a random weeb image!`
+			}),
 			COMMAND_WCRY_DESCRIPTION: 'Cry to somebody with a weeb picture!',
 			COMMAND_WCRY_EXTENDED: builder.display('wcry', {
 				extendedHelp: `Cry with a random weeb image!`,
@@ -1288,6 +1292,10 @@ module.exports = class extends Language {
 				],
 				examples: ['@Skyra']
 			}),
+			COMMAND_WDANCE_DESCRIPTION: 'Dance with a weeb picture!',
+			COMMAND_WDANCE_EXTENDED: builder.display('wdance', {
+				extendedHelp: `Dance with a random weeb image!`
+			}),
 			COMMAND_WHUG_DESCRIPTION: 'Hug somebody with a weeb picture!',
 			COMMAND_WHUG_EXTENDED: builder.display('whug', {
 				extendedHelp: `Unlike the original hug command, this one displays random weeb images, enjoy!`,
@@ -1301,6 +1309,14 @@ module.exports = class extends Language {
 				extendedHelp: `Kiss somebody with a random weeb image!`,
 				explainedUsage: [
 					['user', 'The user to give the kiss.']
+				],
+				examples: ['@Skyra']
+			}),
+			COMMAND_WLICK_DESCRIPTION: 'Lick somebody with a weeb picture!',
+			COMMAND_WLICK_EXTENDED: builder.display('wlick', {
+				extendedHelp: `Lick somebody with a random weeb image!`,
+				explainedUsage: [
+					['user', 'The user to lick.']
 				],
 				examples: ['@Skyra']
 			}),
@@ -1929,10 +1945,13 @@ module.exports = class extends Language {
 			 * WEEB COMMANDS
 			 */
 
-			COMMAND_WCRY: user => `Dear ${user}, did you make him cry? 💔`,
+			COMMAND_WBLUSH: 'You made them blush! 😊',
+			COMMAND_WCRY: user => `Dear ${user}, did you make them cry? 💔`,
 			COMMAND_WCUDDLE: user => `Here is a cuddle for you, ${user} 💞`,
+			COMMAND_WDANCE: 'Dancing! 💃',
 			COMMAND_WHUG: user => `Here is a nice hug for you, ${user} ❤`,
 			COMMAND_WKISS: user => `Here is a kiss for you, ${user} 💜`,
+			COMMAND_WLICK: user => `Licking ${user} 👅`,
 			COMMAND_WNOM: `Nom, nom, nom! 😊`,
 			COMMAND_WNEKO: `Nya! 🐱`,
 			COMMAND_WPAT: user => `Gently pats ${user}'s head ❤`,

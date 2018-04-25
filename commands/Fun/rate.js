@@ -24,10 +24,8 @@ module.exports = class extends Command {
 			if (/^(myself|me)$/i.test(user)) user = msg.author.username;
 			else user = user.replace(/\bmy\b/g, 'your');
 
-			const bg = Buffer.from(user.toLowerCase()).readUIntBE(0, user.length);
-			const rng = user.length * Math.abs(Math.sin(bg)) * 10;
-			rate = 100 - Math.round((bg * rng) % 100);
-			ratewaifu = util.oneToTen(Math.floor(rate / 10)).emoji;
+			const rng = Math.round(Math.random() * 100);
+			[ratewaifu, rate] = [util.oneToTen((rng / 10) | 0).emoji, rng];
 		}
 
 		return msg.sendMessage(`**${msg.author.username}**, ${msg.language.get('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`);

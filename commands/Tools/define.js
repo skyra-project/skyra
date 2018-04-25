@@ -20,8 +20,7 @@ module.exports = class extends Command {
 			throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
 
 		const entry = data.tuc.find(obj => obj.meanings);
-		if (!entry)
-			throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
+		if (!entry) throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
 
 		const final = [];
 		const limit = Math.min(5, entry.meanings.length);

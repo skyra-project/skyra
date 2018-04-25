@@ -26,18 +26,21 @@ module.exports = class extends Command {
 
 	async run(msg, [check, user]) {
 		const now = Date.now();
-		const profile = (user || msg.author).configs;
-		if (profile._syncStatus) await profile._syncStatus;
+		const userProfile = msg.author.configs;
+		const targetProfile = (user && user.configs) || null;
+
+		if (userProfile._syncStatus) await userProfile._syncStatus;
 
 		if (check) {
 			if (user.bot) throw msg.language.get('COMMAND_REPUTATION_BOTS');
+			if (targetProfile && targetProfile._syncStatus) await targetProfile._syncStatus;
 			return msg.sendMessage(msg.author === user
-				? msg.language.get('COMMAND_REPUTATIONS_SELF', profile.reputation)
-				: msg.language.get('COMMAND_REPUTATIONS', user.username, profile.reputation));
+				? msg.language.get('COMMAND_REPUTATIONS_SELF', userProfile.reputation)
+				: msg.language.get('COMMAND_REPUTATIONS', user.username, targetProfile.reputation));
 		}
 
-		if (this.busy.has(msg.author.id) || profile.timeReputation + DAY > now) {
-			return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_TIME', profile.timeReputation + DAY - now));
+		if (this.busy.has(msg.author.id) || userProfile.timeReputation + DAY > now) {
+			return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_TIME', userProfile.timeReputation + DAY - now));
 		}
 
 		if (!user) return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_USABLE'));
@@ -46,8 +49,9 @@ module.exports = class extends Command {
 		this.busy.add(msg.author.id);
 
 		try {
-			await profile.update('reputation', profile.reputation + 1);
-			await profile.update('timeReputation', now);
+			if (targetProfile && targetProfile._syncStatus) await targetProfile._syncStatus;
+			await targetProfile.update('reputation', targetProfile.reputation + 1);
+			await userProfile.update('timeReputation', now);
 		} catch (err) {
 			this.busy.delete(msg.author.id);
 			throw err;

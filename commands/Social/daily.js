@@ -16,6 +16,7 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const now = Date.now();
+		if (msg.author.configs._syncStatus) await msg.author.configs._syncStatus;
 		const time = msg.author.configs.timeDaily;
 
 		// It's been 12 hours, grant dailies

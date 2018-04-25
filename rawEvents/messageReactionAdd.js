@@ -71,7 +71,7 @@ module.exports = class extends RawEvent {
 			await member.roles.add(roleEntry.role);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
-			this.client.emit('error', error);
+			this.client.emit('apiError', error);
 		}
 	}
 
@@ -79,12 +79,18 @@ module.exports = class extends RawEvent {
 		try {
 			const starboardConfigs = channel.guild.configs.starboard;
 			if (!starboardConfigs.channel || starboardConfigs.ignoreChannels.includes(channel.id)) return;
+
+			// Safeguard
+			const starboardChannel = channel.guild.channels.get(starboardConfigs.channel);
+			if (!starboardChannel || !starboardChannel.postable) await channel.guild.configs.reset('starboard.channel');
+
+			// Process the starboard
 			const { starboard } = channel.guild;
 			const sMessage = await starboard.fetch(channel, messageID);
 			await sMessage.add(userID);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
-			this.client.emit('error', error);
+			this.client.emit('apiError', error);
 		}
 	}
 

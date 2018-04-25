@@ -18,29 +18,22 @@ module.exports = class extends Command {
 
 	async run(msg, [emoji]) {
 		if (REG_EMOJI.test(emoji)) {
-			const defractured = /^<a?:(\w{2,32}):(\d{17,21})>$/.exec(emoji);
-			const emojiName = defractured[1];
-			const emojiID = defractured[2];
-			const emojiURL = `https://cdn.discordapp.com/emojis/${emojiID}.png`;
-
-			return msg.sendMessage(msg.language.get('COMMAND_EMOJI_CUSTOM', emojiName, emojiID), { files: [{ attachment: emojiURL }] });
+			const [, animated, emojiName, emojiID] = /^<(a)?:(\w{2,32}):(\d{17,21})>$/.exec(emoji);
+			return msg.sendMessage(msg.language.get('COMMAND_EMOJI_CUSTOM', emojiName, emojiID), {
+				files: [{ attachment: `https://cdn.discordapp.com/emojis/${emojiID}.${animated ? 'gif' : 'png'}` }]
+			});
 		}
-		if (!REG_TWEMOJI.test(emoji))
-			throw msg.language.get('COMMAND_EMOJI_INVALID', emoji);
 
+		if (!REG_TWEMOJI.test(emoji)) throw msg.language.get('COMMAND_EMOJI_INVALID', emoji);
 		const r = this.emoji(emoji);
-
-		const emojiURL = `https://twemoji.maxcdn.com/2/72x72/${r}.png`;
-		const { body } = await get(emojiURL);
+		const { body } = await get(`https://twemoji.maxcdn.com/2/72x72/${r}.png`);
 
 		return msg.sendMessage(msg.language.get('COMMAND_EMOJI_TWEMOJI', emoji, r), { files: [{ attachment: body, name: `${r}.png` }] });
 	}
 
 	emoji(emoji) {
 		const r = [];
-		let c = 0;
-		let p = 0;
-		let i = 0;
+		let c = 0, p = 0, i = 0;
 
 		while (i < emoji.length) {
 			c = emoji.charCodeAt(i++);

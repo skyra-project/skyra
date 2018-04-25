@@ -2,40 +2,40 @@ const { Language, version, Timestamp } = require('klasa');
 const { LanguageHelp, FriendlyDuration, util, klasaUtil, constants: { EMOJIS: { SHINY } } } = require('../index');
 
 const builder = new LanguageHelp()
-	.setExplainedUsage('⚙ | ***Explained usage***')
-	.setPossibleFormats('🔢 | ***Possible formats***')
-	.setExamples('🔗 | ***Examples***')
-	.setReminder('⏰ | ***Reminder***');
+	.setExplainedUsage('⚙ | ***Uso Explicado***')
+	.setPossibleFormats('🔢 | ***Formatos Posibles***')
+	.setExamples('🔗 | ***Ejemplos***')
+	.setReminder('⏰ | ***Recordatorio***');
 const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
 
 const TIMES = {
 	YEAR: {
-		1: 'year',
-		DEFAULT: 'years'
+		1: 'año',
+		DEFAULT: 'años'
 	},
 	MONTH: {
-		1: 'month',
-		DEFAULT: 'months'
+		1: 'mes',
+		DEFAULT: 'meses'
 	},
 	WEEK: {
-		1: 'week',
-		DEFAULT: 'weeks'
+		1: 'semana',
+		DEFAULT: 'semanas'
 	},
 	DAY: {
-		1: 'day',
-		DEFAULT: 'days'
+		1: 'día',
+		DEFAULT: 'días'
 	},
 	HOUR: {
-		1: 'hour',
-		DEFAULT: 'hours'
+		1: 'hora',
+		DEFAULT: 'horas'
 	},
 	MINUTE: {
-		1: 'minute',
-		DEFAULT: 'minutes'
+		1: 'minuto',
+		DEFAULT: 'minutos'
 	},
 	SECOND: {
-		1: 'second',
-		DEFAULT: 'seconds'
+		1: 'segundo',
+		DEFAULT: 'segundos'
 	}
 };
 
@@ -897,12 +897,11 @@ module.exports = class extends Language {
 			COMMAND_BALANCE_EXTENDED: builder.display('balance', {
 				extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
 			}),
-			COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
+			COMMAND_C4_DESCRIPTION: 'Juega al Conecta Cuatro con alguien.',
 			COMMAND_C4_EXTENDED: builder.display('c4', {
-				extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
-					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
-					game in which the players first choose a color and then take turns dropping colored discs from the top into a
-					seven-column, ~~six~~ five-row vertically suspended grid.`
+				extendedHelp: `Este juego se juega mejor en el ordenador. Este juego, también conocido como "Cuatro en Raya", es un juego de
+					conexiones en la que dos jugadores tienen unas fichas de un determinado color y hacen turnos soltando discos de color en
+					la parte superior de un panel de siete columnas, con ~~seis~~ cinco filas.`
 			}),
 			COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}.`,
 			COMMAND_DAILY_EXTENDED: builder.display('daily', {
@@ -1383,42 +1382,42 @@ module.exports = class extends Language {
 
 			COMMAND_ANIME_TYPES: {
 				TV: '📺 TV',
-				MOVIE: '🎥 Movie',
-				OVA: '📼 Original Video Animation',
-				SPECIAL: '🎴 Special'
+				MOVIE: '🎥 Película',
+				OVA: '📼 Animación de Vídeo Original',
+				SPECIAL: '🎴 Especial'
 			},
-			COMMAND_ANIME_QUERY_FAIL: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
-			COMMAND_ANIME_INVALID_CHOICE: `That's an invalid choice! Please try with another option.`,
-			COMMAND_ANIME_NO_CHOICE: 'You got me waiting... try again when you are decided!',
+			COMMAND_ANIME_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
+			COMMAND_ANIME_INVALID_CHOICE: `¡Esa opción no es válida! Selecciona otra opción, por favor.`,
+			COMMAND_ANIME_NO_CHOICE: 'Me dejaste esperando... ¡prueba de nuevo cuando te hayas decidido!',
 			COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-				`**English title:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : synopsis
+				`**Título inglés:** ${entry.english}`,
+				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continúa leyendo](https://myanimelist.net/anime/${entry.id})` : synopsis
 			],
 			COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
-				`  ❯  Current status: **${entry.status}**`,
-				`    • Started: **${entry.start_date}**\n${entry.end_date[0] === '0000-00-00' ? '' : `    • Finished: **${entry.end_date[0]}**`}`
+				`  ❯  Estado actual: **${entry.status}**`,
+				`    • Empezó: **${entry.start_date}**\n${entry.end_date[0] === '0000-00-00' ? '' : `    • Terminó: **${entry.end_date[0]}**`}`
 			],
 			COMMAND_ANIME_TITLES: {
-				TYPE: 'Type',
-				SCORE: 'Score',
-				STATUS: 'Status',
-				WATCH_IT: 'Watch it here:',
-				READ_IT: 'Read it here:'
+				TYPE: 'Tipo',
+				SCORE: 'Puntuación',
+				STATUS: 'Estado',
+				WATCH_IT: 'Míralo Aquí:',
+				READ_IT: 'Léelo Aquí:'
 			},
 			COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-				`**English title:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/manga/${entry.id})` : synopsis
+				`**Título inglés:** ${entry.english}`,
+				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continúa leyendo](https://myanimelist.net/manga/${entry.id})` : synopsis
 			],
 			COMMAND_MANGA_OUTPUT_STATUS: (entry) => [
-				`  ❯  Current status: **${entry.status}**`,
-				`    • Started: **${entry.start_date}**\n${entry.end_date[0] === '0000-00-00' ? '' : `    • Finished: **${entry.end_date[0]}**`}`
+				`  ❯  Estado actual: **${entry.status}**`,
+				`    • Empezó: **${entry.start_date}**\n${entry.end_date[0] === '0000-00-00' ? '' : `    • Terminó: **${entry.end_date[0]}**`}`
 			],
 			COMMAND_MANGA_TITLES: {
 				MANGA: '📘 Manga',
-				NOVEL: '📕 Novel',
+				NOVEL: '📕 Novela',
 				MANHWA: '🇰🇷 Manhwa',
-				'ONE-SHOT': '☄ One Shot',
-				SPECIAL: '🎴 Special'
+				'ONE-SHOT': '☄ Cameo',
+				SPECIAL: '🎴 Especial'
 			},
 
 			/**
@@ -1426,14 +1425,14 @@ module.exports = class extends Language {
 			 * ANNOUNCEMENT COMMANDS
 			 */
 
-			COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
-			COMMAND_SUBSCRIBE_SUCCESS: (role) => `Successfully granted the role: **${role}**`,
-			COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}***`,
-			COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
-			COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
-			COMMAND_ANNOUNCEMENT_SUCCESS: 'Successfully posted a new announcement.',
-			COMMAND_ANNOUNCEMENT_CANCELLED: 'Cancelled the message.',
-			COMMAND_ANNOUNCEMENT_PROMPT: 'This will be the message sent in the announcement channel. Are you OK with this?',
+			COMMAND_SUBSCRIBE_NO_ROLE: 'Este servidor no configuró el rol para los anuncios.',
+			COMMAND_SUBSCRIBE_SUCCESS: (role) => `Concedido con éxito el rol: **${role}**`,
+			COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Removido con éxito el rol: **${role}***`,
+			COMMAND_SUBSCRIBE_NO_CHANNEL: 'Este servidor no tiene un canal de anuncios configurado.',
+			COMMAND_ANNOUNCEMENT: (role) => `**Nuevo anuncio para** ${role}:`,
+			COMMAND_ANNOUNCEMENT_SUCCESS: 'Se ha publicado un nuevo anuncio con éxito.',
+			COMMAND_ANNOUNCEMENT_CANCELLED: 'Se ha cancelado el anuncio con éxito.',
+			COMMAND_ANNOUNCEMENT_PROMPT: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
 
 			/**
 			 * ################
@@ -1441,71 +1440,71 @@ module.exports = class extends Language {
 			 */
 
 			COMMAND_INVITE: (client) => [
-				`To add Skyra to your discord guild: <${client.invite}>`,
-				'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
+				`Añade Skyra a tu servidor con el siguiente enlace: <${client.invite}>`,
+				'No tengas miedo de quitar algunos permisos, te avisaré cuando intentes usar un comando que los necesite.'
 			].join('\n'),
 			COMMAND_INFO: [
-				'Skyra 3.0.0 (codename **Royal**) is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.',
-				"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",
+				'Skyra 3.0.0 (código **Royal**) es un Bot multitarea para Discord diseñado para hacerse cargo de la mayoría de las tareas con un rendimiento increíble y una actividad constante de las 24 horas al día.',
+				'Ella está escrita sobre Klasa, un framework "plug-and-play" que utiliza la librería Discord.js.',
 				'',
-				'Skyra features:',
-				'• Advanced Moderation with temporary actions included',
-				'• Announcement management',
-				'• Fully configurable',
-				'• Message logs, member logs, and mod logs',
-				'• Multilingual',
-				'• Profiles and levels, with leaderboards and social management',
-				'• Role management',
-				'• Weeb commands (+10)!',
+				'Skyra tiene:',
+				'• Moderación avanzada con temporización de acciones',
+				'• Administración de anuncios',
+				'• Completamente configurable',
+				'• Logs de mensajes, miembros, y de moderación',
+				'• Multilenguaje',
+				'• Perfiles y niveles, con marcadores y administración social',
+				'• Administración de roles',
+				'• Comandos "Weeb" (¡+10!)',
 				'And more!'
 			].join('\n'),
-			COMMAND_HELP_TITLE: (name, description) => `📃 | ***Help Message*** | __**${name}**__\n${description}\n`,
-			COMMAND_HELP_USAGE: (usage) => `📝 | ***Command Usage***\n\`${usage}\`\n`,
-			COMMAND_HELP_EXTENDED: (extendedHelp) => `🔍 | ***Extended Help***\n${extendedHelp}`,
+			COMMAND_HELP_TITLE: (name, description) => `📃 | ***Mensaje de Ayuda*** | __**${name}**__\n${description}\n`,
+			COMMAND_HELP_USAGE: (usage) => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
+			COMMAND_HELP_EXTENDED: (extendedHelp) => `🔍 | ***Ayuda Extendida***\n${extendedHelp}`,
 
 			/**
 			 * ##############
 			 * FUN COMMANDS
 			 */
 
-			COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Question by ${author}: *${question}*\n${response}`,
-			COMMAND_8BALL_NOT_QUESTION: 'That does not seem to be a question...',
+			COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Pregunta por ${author}: *${question}*\n${response}`,
+			COMMAND_8BALL_NOT_QUESTION: 'Eso no parece ser una pregunta...',
 			COMMAND_8BALL_QUESTIONS: {
 				QUESTION: '?',
-				WHEN: 'when',
-				WHAT: 'what',
-				HOW_MUCH: 'how much',
-				HOW_MANY: 'how many',
-				WHY: 'why',
-				WHO: 'who'
+				WHEN: /^¿?cu[áa]ndo/i,
+				WHAT: /^¿?qu[ée]/i,
+				HOW_MUCH: /^¿?cu[áa]nto/i,
+				HOW_MANY: /^¿?cu[áa]nto/i,
+				WHY: /^¿?por qu[ée]/i,
+				WHO: /^¿?qui[ée]n/i
 			},
-			COMMAND_CATFACT_TITLE: 'Cat Fact',
-			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${klasaUtil.codeBlock('', word)}`,
-			COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',
-			COMMAND_CHOICE_DUPLICATES: (words) => `Why would I accept duplicated words? '${words}'.`,
-			COMMAND_DICE_OUTPUT: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
-			COMMAND_DICE_ROLLS_ERROR: 'Amount of rolls must be a number between 1 and 1024.',
-			COMMAND_DICE_SIDES_ERROR: 'Amount of sides must be a number between 4 and 1024.',
+			COMMAND_CATFACT_TITLE: 'Hecho Gatuno',
+			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${klasaUtil.codeBlock('', word)}`,
+			COMMAND_CHOICE_MISSING: 'Por favor, escribe al menos dos opciones separadas con coma.',
+			COMMAND_CHOICE_DUPLICATES: (words) => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
+			COMMAND_DICE_OUTPUT: (sides, rolls, result) => `has lanzado el dado de **${sides}** lados **${rolls}** veces, obtienes: **${result}**`,
+			COMMAND_DICE_ROLLS_ERROR: 'La cantidad de lanzamientos debe ser un número entre 1 y 1024.',
+			COMMAND_DICE_SIDES_ERROR: 'La cantidad de lados debe ser un número entre 4 y 1024.',
 			// https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
-			COMMAND_ESCAPEROPE_OUTPUT: (user) => `**${user}** used **Escape Rope**`,
-			COMMAND_LOVE_LESS45: 'Try again next time...',
-			COMMAND_LOVE_LESS75: 'Good enough!',
-			COMMAND_LOVE_LESS100: 'Good match!',
-			COMMAND_LOVE_100: 'Perfect match!',
-			COMMAND_LOVE_ITSELF: 'You are a special creature and you should love yourself more than anyone <3',
-			COMMAND_LOVE_RESULT: 'Result',
+			COMMAND_ESCAPEROPE_OUTPUT: (user) => `**${user}** usó **Cuerda Huída**`,
+			COMMAND_LOVE_LESS45: 'Prueba de nuevo la próxima vez...',
+			COMMAND_LOVE_LESS75: '¡Bastante bien!',
+			COMMAND_LOVE_LESS100: '¡Haríais una gran pareja!',
+			COMMAND_LOVE_100: '¡Emparejamiento perfecto!',
+			COMMAND_LOVE_ITSELF: 'Eres una criatura muy especial y deberías amarte a tí mismo más que a los demás <3',
+			COMMAND_LOVE_RESULT: 'Resultado',
 			COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
-			COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
-			COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
-			COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
+			COMMAND_RATE_OUTPUT: (user, rate, emoji) => `Uhm... le daría a **${user}** un **${rate}**/100 ${emoji}`,
+			COMMAND_RATE_MYSELF: ['me quiero a mí misma mucho 😊', 'yo'],
+			COMMAND_XKCD_COMICS: (amount) => `Hay ${amount} comics.`,
 
 			/**
 			 * #################
 			 * GIVEAWAY COMMANDS
 			 */
 
-			GIVEAWAY_TIME: 'A giveaway must last at least 1 minute.',
-			GIVEAWAY_ENDS_AT: 'Ends at:',
+			GIVEAWAY_TIME: 'El sorteo debe durar al menos 1 minuto.',
+			GIVEAWAY_ENDS_AT: 'Termina en:',
 			GIVEAWAY_DURATION: (time) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
 			GIVEAWAY_TITLE: '🎉 **GIVEAWAY** 🎉',
 			GIVEAWAY_START_DIRECT_MESSAGE: (title, id) => [
@@ -1702,31 +1701,31 @@ module.exports = class extends Language {
 			COMMAND_BANNER_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
 			COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
 			COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
-			COMMAND_C4_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
-			COMMAND_C4_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
-			COMMAND_C4_SELF: 'You must be so sad to play against yourself. Try again with another user.',
-			COMMAND_C4_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
-			COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
-			COMMAND_C4_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
-			COMMAND_C4_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
-			COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
-			COMMAND_C4_GAME_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
-			COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
-			COMMAND_C4_GAME_WIN: (user, turn, table) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!\n${table}`,
-			COMMAND_C4_GAME_DRAW: (table) => `This match concluded in a **draw**!\n${table}`,
-			COMMAND_C4_GAME_NEXT: (player, turn, table) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).\n${table}`,
-			COMMAND_DAILY_TIME: (time) => `Next dailies are available in ${duration(time)}`,
-			COMMAND_DAILY_TIME_SUCCESS: (amount) => `Yay! You earned ${amount}${SHINY}! Next dailies in: 12 hours.`,
+			COMMAND_C4_SKYRA: 'Lo siento, sé que quieres jugar conmigo, pero si lo hago, ¡no podré ayudar a los demás! 💔',
+			COMMAND_C4_BOT: 'Lo siento, pero no creo que esos robots sean suficientemente inteligentes para jugar a este juego.',
+			COMMAND_C4_SELF: '¡Eh! ¡Hay unos cuantos usuarios por ahí con los que jugar! Prueba de nuevo con otra persona.',
+			COMMAND_C4_PROGRESS: 'Lo siento, pero ahora mismo hay un juego en progreso en este canal, ¡prueba de nuevo cuando terminen!',
+			COMMAND_C4_PROMPT: (challenger, challengee) => `Querido ${challengee}, has sido retado por ${challenger} a una partida de Conecta Cuatro. ¡Responde con **yes** para aceptar!`,
+			COMMAND_C4_PROMPT_TIMEOUT: 'Lo siento, pero el usuario no ha respondido a tiempo...',
+			COMMAND_C4_PROMPT_DENY: 'Lo siento, pero han rechazado su partida...',
+			COMMAND_C4_START: (player, table) => `¡A jugar! Turno para: **${player}**.\n${table}`,
+			COMMAND_C4_GAME_TIMEOUT: '**La partida ha concluido en empate debido a la falta de respuesta (60 segundos)**',
+			COMMAND_C4_GAME_COLUMN_FULL: '¡Esta columna está llena! ¡Prueba otra! ',
+			COMMAND_C4_GAME_WIN: (user, turn, table) => `¡${user} (${turn === 0 ? 'azul' : 'rojo'}) ganó!\n${table}`,
+			COMMAND_C4_GAME_DRAW: (table) => `¡Esta partida ha concluido en **empate!\n${table}`,
+			COMMAND_C4_GAME_NEXT: (player, turn, table) => `Turno para: ${player} (${turn === 0 ? 'azul' : 'rojo'}).\n${table}`,
+			COMMAND_DAILY_TIME: (time) => `El siguiente pago está disponible en: ${duration(time)}`,
+			COMMAND_DAILY_TIME_SUCCESS: (amount) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
 			COMMAND_DAILY_GRACE: (remaining) => [
-				`Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.`,
-				`Remaining time: ${duration(remaining, true)}`
+				`¿Te gustaría recibir el pago temprano? El tiempo restante será añadido al periodo normal de espera, de 12 horas.`,
+				`Tiempo restante: ${duration(remaining, true)}`
 			].join('\n'),
-			COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) => `Successfully claimed ${amount}${SHINY}! Next dailies in: ${duration(remaining)}`,
-			COMMAND_DAILY_GRACE_DENIED: 'Got it! Come back soon!',
+			COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) => `¡Dinero dinero! ¡Has recibido ${amount}${SHINY}! Siguiente pago en: ${duration(remaining)}`,
+			COMMAND_DAILY_GRACE_DENIED: '¡De acuerdo! ¡Vuelve pronto!',
 			COMMAND_LEVEL: {
-				LEVEL: 'Level',
-				EXPERIENCE: 'Experience',
-				NEXT_IN: 'Next level in'
+				LEVEL: 'Nivel',
+				EXPERIENCE: 'Experiencia',
+				NEXT_IN: 'Siguiente nivel en'
 			},
 			COMMAND_DIVORCE_NOTTAKEN: 'Who would you divorce with? You are not even taken!',
 			COMMAND_DIVORCE_PROMPT: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',

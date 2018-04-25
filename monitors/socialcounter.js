@@ -57,7 +57,7 @@ module.exports = class extends Monitor {
 		if (!role || role.position > msg.guild.me.roles.highest.position) {
 			return msg.guild.configs.update('roles.auto', autoRole, { action: 'delete' })
 				.then(() => this.handleRoles(msg, memberPoints))
-				.catch(error => this.client.emit('error', error));
+				.catch(error => this.client.emit('apiError', error));
 		}
 
 		if (msg.member.roles.has(role.id)) return null;

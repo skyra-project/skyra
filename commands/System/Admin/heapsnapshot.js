@@ -13,7 +13,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		if (msg.deletable) msg.nuke().catch(error => this.client.emit('wtf', error));
+		if (msg.deletable) msg.nuke().catch(error => this.client.emit('apiError', error));
 		const filename = await writeSnapshot(`./${Date.now()}.heapsnapshot`);
 		this.client.emit('log', `Created new heapdump : ${filename}`);
 	}

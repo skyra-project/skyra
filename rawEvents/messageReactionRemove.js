@@ -38,7 +38,7 @@ module.exports = class extends RawEvent {
 			await member.roles.remove(roleEntry.role);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
-			this.client.emit('error', error);
+			this.client.emit('apiError', error);
 		}
 	}
 

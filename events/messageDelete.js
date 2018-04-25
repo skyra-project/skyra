@@ -9,7 +9,7 @@ module.exports = class extends Event {
 		const { guild } = message;
 		if (!guild.configs.events.messageDelete || !guild.configs.channels.messagelogs) return;
 		const channel = guild.channels.get(guild.configs.channels.messagelogs);
-		if (!channel) {
+		if (!channel || !channel.postable) {
 			await guild.configs.reset('channels.messagelogs');
 		} else {
 			const { author, language } = message;
@@ -22,7 +22,11 @@ module.exports = class extends Event {
 				.setImage(getImage(message))
 				.setTimestamp();
 
-			await channel.send({ embed });
+			try {
+				await channel.send({ embed });
+			} catch (error) {
+				this.client.emit('error', `Failed to send MessageDelete log for guild ${channel.guild} in channel ${channel.name}`);
+			}
 		}
 	}
 

@@ -36,11 +36,11 @@ module.exports = class extends RawEvent {
 	}
 
 	async _handleMute(guild, member) {
-		this._handleLog(guild, member, COLORS.MUTE).catch(error => this.client.emit('error', error));
+		this._handleLog(guild, member, COLORS.MUTE).catch(error => this.client.emit('apiError', error));
 		if (guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
 			const role = guild.roles.get(guild.configs.roles.muted);
-			if (!role) guild.configs.reset('roles.muted').catch(error => this.client.emit('error', error));
-			else member.roles.add(role).catch(error => this.client.emit('error', error));
+			if (!role) guild.configs.reset('roles.muted').catch(error => this.client.emit('apiError', error));
+			else member.roles.add(role).catch(error => this.client.emit('apiError', error));
 		}
 	}
 
@@ -50,8 +50,8 @@ module.exports = class extends RawEvent {
 		}
 		if (guild.configs.roles.initial) {
 			const role = guild.roles.get(guild.configs.roles.initial);
-			if (!role) guild.configs.reset('roles.initial');
-			else member.roles.add(role);
+			if (!role || role.position >= guild.me.roles.highest.position) guild.configs.reset('roles.initial');
+			else member.roles.add(role).catch(error => this.client.emit('apiError', error));
 		}
 		if (guild.configs.messages['join-dm']) {
 			member.user.send(this._handleGreeting(guild.configs.messages['join-dm'], guild, member.user)).catch(() => null);
@@ -61,19 +61,19 @@ module.exports = class extends RawEvent {
 	async _handleLog(guild, member, asset) {
 		if (guild.configs.channels.log) {
 			const channel = guild.channels.get(guild.configs.channels.log);
-			if (!channel) await guild.configs.reset('channels.log');
-			else await channel.send(new this.client.methods.Embed()
+			if (channel && channel.postable) await channel.send(new this.client.methods.Embed()
 				.setColor(asset.color)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
 				.setFooter(asset.title)
 				.setTimestamp());
+			else await guild.configs.reset('channels.log');
 		}
 	}
 
 	async _handleMessage(guild, member) {
 		if (guild.configs.channels.default && guild.configs.messages.greeting) {
 			const channel = guild.channels.get(guild.configs.channels.default);
-			if (channel) channel.send(this._handleGreeting(guild.configs.messages.greeting, guild, member.user));
+			if (channel && channel.postable) channel.send(this._handleGreeting(guild.configs.messages.greeting, guild, member.user));
 			else guild.configs.reset('channels.default');
 		}
 	}

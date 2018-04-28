@@ -24,7 +24,7 @@ module.exports = class extends Command {
 			return null;
 		}
 
-		const footer = this.client.methods.util.codeBlock('ts', type);
+		const footer = util.codeBlock('ts', type);
 		const sendAs = msg.flags.output || msg.flags['output-to'] || (msg.flags.log ? 'log' : null);
 		return this.handleMessage(msg, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer });
 	}
@@ -57,7 +57,7 @@ module.exports = class extends Command {
 					return this.handleMessage(msg, options, { success, result, time, footer });
 				}
 				return msg.sendMessage(msg.language.get(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
-					time, this.client.methods.util.codeBlock('js', result), footer));
+					time, util.codeBlock('js', result), footer));
 			}
 		}
 	}
@@ -92,11 +92,11 @@ module.exports = class extends Command {
 		let thenable = false;
 		let type;
 		try {
-			if (msg.flags.async) code = `(async () => { ${code} })();`;
+			if (msg.flags.async) code = `(async () => {\n${code}\n})();`;
 			result = eval(code);
 			syncTime = stopwatch.friendlyDuration;
 			type = new Type(result);
-			if (this.client.methods.util.isThenable(result)) {
+			if (util.isThenable(result)) {
 				thenable = true;
 				stopwatch.restart();
 				result = await result;
@@ -118,7 +118,7 @@ module.exports = class extends Command {
 				showHidden: Boolean(msg.flags.showHidden)
 			});
 		}
-		return { success, type, time: this.formatTime(syncTime, asyncTime), result: this.client.methods.util.clean(result) };
+		return { success, type, time: this.formatTime(syncTime, asyncTime), result: util.clean(result) };
 	}
 
 	formatTime(syncTime, asyncTime) {

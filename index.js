@@ -31,9 +31,6 @@ module.exports = {
 	RawEvent: require('./lib/structures/RawEvent'),
 	RawEventStore: require('./lib/structures/RawEventStore'),
 
-	// IPC
-	IPC: require('./lib/ipc/Controller'),
-
 	// Util
 	Color: require('./lib/util/Color'),
 	FriendlyDuration: require('./lib/util/FriendlyDuration'),

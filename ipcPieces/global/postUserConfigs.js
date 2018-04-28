@@ -6,11 +6,11 @@ module.exports = class extends API {
 		const user = await this.client.users.fetch(userID).catch(() => null);
 		if (!user) return null;
 		if (user.configs._syncStatus) await user.configs._syncStatus;
-		const oldAmount = user[type];
+		const oldAmount = user.configs[type];
 		const newAmount = this.getNewAmount(action, oldAmount, amount);
 
 		await user.configs.update(type, newAmount);
-		return newAmount;
+		return { response: newAmount };
 	}
 
 	getNewAmount(action, oldAmount, amount) {

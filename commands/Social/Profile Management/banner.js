@@ -88,7 +88,7 @@ module.exports = class extends Command {
 
 	_userList(msg) {
 		const banners = new Set(msg.author.configs.bannerList);
-		if (!banners.size) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
+		if (!banners.size) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY', msg.guild.configs.prefix);
 
 		const display = new RichDisplay(new this.client.methods.Embed().setColor(0xFFAB40));
 		for (const id of banners) {

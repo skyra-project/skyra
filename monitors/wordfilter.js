@@ -12,7 +12,7 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		if (!msg.guild) return false;
+		if (!msg.guild || msg.author.id === this.client.user.id) return false;
 
 		const configs = msg.guild.configs;
 		if (configs.filter.level === 0

@@ -1,4 +1,4 @@
-const { Command, util } = require('../../index');
+const { Command, util } = require('../../../index');
 const { MessageEmbed } = require('discord.js');
 const ZWS = '\u200B';
 

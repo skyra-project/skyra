@@ -3,7 +3,8 @@ const { Canvas } = require('canvas-constructor');
 const { join } = require('path');
 const { readFile } = require('fs-nextra');
 
-const THEMES_FOLDER = join(rootFolder, 'assets', 'images', 'social', 'themes');
+// Skyra's CDN assets folder
+const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
 const BADGES_FOLDER = join(rootFolder, 'assets', 'images', 'social', 'badges');
 
 module.exports = class extends Command {

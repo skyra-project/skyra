@@ -1,7 +1,7 @@
 const { Command, RichDisplay, constants: { TIME: { MINUTE }, EMOJIS: { SHINY } } } = require('../../../index');
 
 const PROMPT_TIME = MINUTE * 5;
-const CDN_URL = 'https://kyradiscord.weebly.com/files/theme/banners/';
+const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
 
 module.exports = class extends Command {
 

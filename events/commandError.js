@@ -1,5 +1,4 @@
-const { Event } = require('../index');
-const { DiscordAPIError } = require('discord.js');
+const { Event, DiscordAPIError, klasaUtil: { codeBlock } } = require('../index');
 const { join } = require('path');
 
 module.exports = class extends Event {
@@ -17,7 +16,7 @@ module.exports = class extends Event {
 			this._sendErrorChannel(msg, command, error);
 			this.client.emit('warn', `${this._getWarnError(msg, command, error)} (${msg.author.id}) | ${error.constructor.name}`);
 			this.client.emit('wtf', `[COMMAND] ${join(command.dir, ...command.file)}\n${error.stack || error}`);
-			msg.alert(msg.author === this.client.owner ? this.client.methods.util.codeBlock('js', error.stack) : msg.language.get('EVENTS_ERROR_WTF'))
+			msg.alert(msg.author === this.client.owner ? codeBlock('js', error.stack) : msg.language.get('EVENTS_ERROR_WTF'))
 				.catch(this._handleMessageError);
 		}
 	}
@@ -29,7 +28,7 @@ module.exports = class extends Event {
 	_sendErrorChannel(msg, command, error) {
 		if (!this.logChannel) return;
 		const isDiscordAPIError = error instanceof DiscordAPIError;
-		this.logChannel.send(this.client.methods.util.codeBlock('asciidoc', (isDiscordAPIError ? [
+		this.logChannel.send(codeBlock('asciidoc', (isDiscordAPIError ? [
 			`Command   :: ${join(command.dir, ...command.file)}`,
 			`Path      :: ${error.path}`,
 			`Code      :: ${error.code}`,

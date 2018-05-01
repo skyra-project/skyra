@@ -1,4 +1,4 @@
-const { Command, Moderation: { schemaKeys }, util: { parseModlog } } = require('../../index');
+const { Command, Moderation: { schemaKeys }, util: { parseModlog }, klasaUtil: { codeBlock } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -52,7 +52,7 @@ module.exports = class extends Command {
 		if (message) await message.edit({ embed: parsedModLog.embed });
 		else channel.send({ embed: parsedModLog.embed });
 
-		return msg.alert(`Successfully updated the log ${selected}.${this.client.methods.util.codeBlock('http', [
+		return msg.alert(`Successfully updated the log ${selected}.${codeBlock('http', [
 			`Old reason : ${modlog.reason || 'Not set.'}`,
 			`New reason : ${reason}`
 		].join('\n'))}`);

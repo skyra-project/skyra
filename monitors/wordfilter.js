@@ -1,4 +1,4 @@
-const { Monitor } = require('../index');
+const { Monitor, MessageEmbed } = require('../index');
 
 module.exports = class extends Monitor {
 
@@ -33,13 +33,11 @@ module.exports = class extends Monitor {
 		const channel = msg.guild.channels.get(modLogChannelID);
 		if (!channel) return configs.reset('channel.modlog');
 
-		const embed = new this.client.methods.Embed()
+		return channel.send(new MessageEmbed()
 			.setColor(0xefae45)
 			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')} ${configs.filter.regexp.exec(msg.content)[0]}`)
-			.setTimestamp();
-
-		return channel.send({ embed });
+			.setTimestamp());
 	}
 
 };

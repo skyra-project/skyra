@@ -1,4 +1,4 @@
-const { Command, RichDisplay, constants: { TIME: { MINUTE }, EMOJIS: { SHINY } } } = require('../../../index');
+const { Command, RichDisplay, constants: { TIME: { MINUTE }, EMOJIS: { SHINY } }, Collection, MessageEmbed } = require('../../../index');
 
 const PROMPT_TIME = MINUTE * 5;
 const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
@@ -27,7 +27,7 @@ module.exports = class extends Command {
 		});
 
 		this.banners = new Map();
-		this.collectors = new this.client.methods.Collection();
+		this.collectors = new Collection();
 		this.display = null;
 		this.listPrompt = this.definePrompt('<all|user>');
 	}
@@ -90,7 +90,7 @@ module.exports = class extends Command {
 		const banners = new Set(msg.author.configs.bannerList);
 		if (!banners.size) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY', msg.guild.configs.prefix);
 
-		const display = new RichDisplay(new this.client.methods.Embed().setColor(0xFFAB40));
+		const display = new RichDisplay(new MessageEmbed().setColor(0xFFAB40));
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) display.addPage(template => template
@@ -122,7 +122,7 @@ module.exports = class extends Command {
 
 	async prompt(msg, banner) {
 		const username = await this.client.fetchUsername(banner.author);
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setDescription([
 				`**Author**: ${username}`,
@@ -137,7 +137,7 @@ module.exports = class extends Command {
 
 	async init() {
 		const table = await this.client.providers.default.getAll('banners');
-		const display = new RichDisplay(new this.client.methods.Embed().setColor(0xFFAB40));
+		const display = new RichDisplay(new MessageEmbed().setColor(0xFFAB40));
 		for (const list of table) {
 			for (const banner of list.banners) {
 				this.banners.set(banner.id, {

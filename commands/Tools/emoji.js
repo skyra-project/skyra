@@ -1,7 +1,7 @@
 const { Command } = require('../../index');
 const { get } = require('snekfetch');
 
-const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,4}$/;
+const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
 
 /* eslint-disable no-bitwise */
 /* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
@@ -26,7 +26,8 @@ module.exports = class extends Command {
 
 		if (!REG_TWEMOJI.test(emoji)) throw msg.language.get('COMMAND_EMOJI_INVALID', emoji);
 		const r = this.emoji(emoji);
-		const { body } = await get(`https://twemoji.maxcdn.com/2/72x72/${r}.png`);
+		const { body } = await get(`https://twemoji.maxcdn.com/2/72x72/${r}.png`)
+			.catch(() => { throw msg.language.get('COMMAND_EMOJI_INVALID', emoji); });
 
 		return msg.sendMessage(msg.language.get('COMMAND_EMOJI_TWEMOJI', emoji, r), { files: [{ attachment: body, name: `${r}.png` }] });
 	}

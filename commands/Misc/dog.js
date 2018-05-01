@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -27,7 +27,7 @@ module.exports = class extends Command {
 		if (this.index >= this.rand.length - 1) this.index = 0;
 		else this.index++;
 
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(msg.color)
 			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.rand[this.index]}.jpg`);
 

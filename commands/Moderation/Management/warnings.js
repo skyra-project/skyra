@@ -1,4 +1,4 @@
-const { Command, Moderation: { schemaKeys, typeKeys }, RichDisplay } = require('../../../index');
+const { Command, Moderation: { schemaKeys, typeKeys }, RichDisplay, MessageEmbed } = require('../../../index');
 
 const WARNING_FILTER = {
 	[schemaKeys.TYPE]: typeKeys.WARN,
@@ -27,7 +27,7 @@ module.exports = class extends Command {
 			? { [schemaKeys.USER]: target.id, ...WARNING_FILTER } : WARNING_FILTER);
 		if (!warnings.length) throw msg.language.get('COMMAND_WARNINGS_EMPTY');
 
-		const display = new RichDisplay(new this.client.methods.Embed()
+		const display = new RichDisplay(new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
 			.setTitle(msg.language.get('COMMAND_WARNINGS_AMOUNT', warnings.length)));

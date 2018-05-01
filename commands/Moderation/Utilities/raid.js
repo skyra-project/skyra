@@ -1,4 +1,4 @@
-const { Command } = require('../../../index');
+const { Command, MessageEmbed } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 
 	list(msg) {
 		const { raid } = msg.guild.security;
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setTitle(msg.language.get('COMMAND_RAID_LIST'))
 			.setDescription([...raid.keys()].map(user => `<@${user}>`))
 			.setFooter(`${raid.size}/${msg.guild.configs.selfmod.raidthreshold} ${msg.language.get('CONST_USERS')}`)

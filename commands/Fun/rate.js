@@ -1,4 +1,4 @@
-const { Command, util } = require('../../index');
+const { Command, util, discordUtil: { escapeMarkdown } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -14,6 +14,9 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user]) {
+		// Escape all markdown
+		user = escapeMarkdown(user);
+
 		let ratewaifu;
 		let rate;
 
@@ -28,7 +31,7 @@ module.exports = class extends Command {
 			[ratewaifu, rate] = [util.oneToTen((rng / 10) | 0).emoji, rng];
 		}
 
-		return msg.sendMessage(`**${msg.author.username}**, ${msg.language.get('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`);
+		return msg.sendMessage(`**${msg.author.username}**, ${msg.language.get('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, { disableEveryone: true });
 	}
 
 };

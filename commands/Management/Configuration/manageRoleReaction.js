@@ -1,4 +1,4 @@
-const { Command } = require('../../../index');
+const { Command, klasaUtil: { codeBlock } } = require('../../../index');
 
 const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
 
@@ -32,7 +32,7 @@ module.exports = class extends Command {
 			}
 		}).createCustomResolver('rolename', (arg, possible, msg, [action = 'show']) => {
 			if (action !== 'add') return undefined;
-			return this.client.argResolver.rolename(arg, possible, msg);
+			return this.client.arguments.get('rolename').run(arg, possible, msg);
 		});
 	}
 
@@ -48,7 +48,7 @@ module.exports = class extends Command {
 		}
 		if (oldLength !== list.size) msg.guild.configs.update('roles.reactions', [...list]);
 		if (!lines.length) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
-		return msg.sendMessage(this.client.methods.util.codeBlock('asciicode', lines.join('\n')));
+		return msg.sendMessage(codeBlock('asciicode', lines.join('\n')));
 	}
 
 	async add(msg, [role, reaction]) {

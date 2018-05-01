@@ -1,4 +1,4 @@
-const { RawEvent } = require('../index');
+const { RawEvent, MessageEmbed } = require('../index');
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
 	MEMBER: '%MEMBER%',
@@ -25,7 +25,7 @@ module.exports = class extends RawEvent {
 	async _handleLog(guild, user) {
 		if (guild.configs.channels.log) {
 			const channel = guild.channels.get(guild.configs.channels.log);
-			if (channel && channel.postable) await channel.send(new this.client.methods.Embed()
+			if (channel && channel.postable) await channel.send(new MessageEmbed()
 				.setColor(0xF9A825)
 				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL())
 				.setFooter('Member left')

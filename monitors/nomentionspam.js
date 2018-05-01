@@ -14,7 +14,7 @@ module.exports = class extends Monitor {
 			|| !msg.member
 			|| !msg.member.bannable
 			|| (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)
-			|| await msg.hasAtLeastPermissionLevel(2)) return false;
+			|| await msg.hasAtLeastPermissionLevel(5)) return false;
 
 		const count = (msg.member.everyone ? 5 : 0) + (msg.mentions.roles.size * 2) + (msg.mentions.users.size
 			? this.filterUsers(msg.author.id, msg.mentions.users) : 0);

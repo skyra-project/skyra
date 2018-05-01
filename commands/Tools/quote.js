@@ -1,4 +1,4 @@
-const { Command, Resolver, util: { getContent, getImage } } = require('../../index');
+const { Command, Resolver, util: { getContent, getImage }, MessageEmbed } = require('../../index');
 const SNOWFLAKE_REGEXP = Resolver.regex.snowflake;
 
 module.exports = class extends Command {
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [, message]) {
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128 }))
 			.setDescription(getContent(message))
 			.setImage(getImage(message))

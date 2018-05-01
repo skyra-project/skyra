@@ -1,5 +1,4 @@
-const { Command } = require('klasa');
-const { PromptList, util, config } = require('../../index');
+const { Command, PromptList, util, config, MessageEmbed } = require('../../index');
 
 const options = { headers: {
 	Authorization: util.basicAuth(config.tokens.animelist.user,
@@ -28,7 +27,7 @@ module.exports = class extends Command {
 		const titles = msg.language.language.COMMAND_ANIME_TITLES;
 		const url = `https://myanimelist.net/anime/${entry.id[0]}`;
 
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(score.color)
 			.setAuthor(entry.title[0], entry.image && entry.image[0], url)
 			.setDescription(msg.language.get('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))

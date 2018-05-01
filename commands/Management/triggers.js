@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, klasaUtil: { codeBlock } } = require('../../index');
 
 const REG_TYPE = /alias|reaction/i;
 const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
@@ -89,7 +89,7 @@ module.exports = class extends Command {
 		for (const react of trigger.includes)
 			output.push(`Reaction :: ${react.input} -> ${react.output}`);
 		if (!output.length) throw msg.language.get('COMMAND_TRIGGERS_LIST_EMPTY');
-		return msg.sendMessage(this.client.methods.util.codeBlock('asciidoc', output.join('\n')));
+		return msg.sendMessage(codeBlock('asciidoc', output.join('\n')));
 	}
 
 	_format(type, input, output) {

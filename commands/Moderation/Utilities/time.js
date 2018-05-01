@@ -34,7 +34,7 @@ module.exports = class extends Command {
 		await this.client.schedule.create(type, offset + Date.now(), {
 			catchUp: true,
 			data: {
-				[schemaKeys.USER]: msg.author.id,
+				[schemaKeys.USER]: user.id,
 				[schemaKeys.GUILD]: msg.guild.id,
 				[schemaKeys.DURATION]: offset,
 				[schemaKeys.CASE]: caseID

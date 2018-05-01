@@ -1,5 +1,4 @@
-const { Command } = require('../../../index');
-const { Permissions: { FLAGS } } = require('discord.js');
+const { Command, MessageEmbed, Permissions: { FLAGS } } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -17,7 +16,7 @@ module.exports = class extends Command {
 
 	run(msg, [role = msg.member.roles.highest]) {
 		const i18n = msg.language, permissions = role.permissions, { COMMAND_ROLEINFO_TITLES } = i18n.language;
-		return msg.sendEmbed(new this.client.methods.Embed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(role.color || 0xDFDFDF)
 			.setTitle(`${role.name} [${role.id}]`)
 			.setDescription(i18n.get('COMMAND_ROLEINFO', role))

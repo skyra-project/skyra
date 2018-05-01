@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -23,7 +23,7 @@ module.exports = class extends Command {
 		let message;
 		try {
 			message = await msg.channel.send(msg.language.get('GIVEAWAY_TITLE'), {
-				embed: new this.client.methods.Embed()
+				embed: new MessageEmbed()
 					.setColor(0x49C6F7)
 					.setTitle(title)
 					.setDescription(msg.language.get('GIVEAWAY_DURATION', offset))

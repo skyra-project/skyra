@@ -1,5 +1,4 @@
-const { Command } = require('klasa');
-const { OverwatchProfileStore, OverwatchAPI } = require('../../index').overwatch;
+const { Command, MessageEmbed, overwatch: { OverwatchProfileStore, OverwatchAPI }, klasaUtil: { toTitleCase } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -66,7 +65,7 @@ module.exports = class extends Command {
 	_getAchievements(msg, overwatchProfile, gametype = 'general') {
 		const { achievements } = overwatchProfile.profile;
 		const data = achievements[gametype];
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setTitle(overwatchProfile.name, overwatchProfile.profileURL(overwatchProfile.bestProfile.platform))
 			.setDescription(Object.keys(data).map(key => this._resolveBoolean(data, key)));
 		return msg.sendEmbed(embed);
@@ -115,7 +114,7 @@ module.exports = class extends Command {
 
 	_resolveBoolean(object, property) {
 		return `${object[property] ? '<:greenTick:405073335907647489>' : '<:redCross:405073349664833537>'} ${
-			this.client.methods.util.toTitleCase(property.replace(/_/g, ' '))}`;
+			toTitleCase(property.replace(/_/g, ' '))}`;
 	}
 
 };

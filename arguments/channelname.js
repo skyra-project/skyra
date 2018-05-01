@@ -1,4 +1,4 @@
-const { Extendable, util: { regExpEsc } } = require('klasa');
+const { Argument, util: { regExpEsc } } = require('klasa');
 const { PromptList } = require('../index');
 const CHANNEL_REGEXP = new RegExp('^(?:<#)?(\\d{17,21})>?$');
 
@@ -7,17 +7,13 @@ function resolveChannel(query, guild) {
 	return null;
 }
 
-module.exports = class extends Extendable {
+module.exports = class extends Argument {
 
-	constructor(...args) {
-		super(...args, {
-			appliesTo: ['ArgResolver'],
-			klasa: true,
-			name: 'channelname'
-		});
+	get channel() {
+		return this.store.get('channel');
 	}
 
-	async extend(arg, possible, msg) {
+	async run(arg, possible, msg) {
 		if (!msg.guild) return this.channel(arg, possible, msg);
 		const resChannel = resolveChannel(arg, msg.guild);
 		if (resChannel) return resChannel;

@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, MessageEmbed } = require('../../index');
 
 const sortRanks = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
@@ -19,7 +19,7 @@ module.exports = class extends Command {
 	async run(msg, [user = msg.author]) {
 		const member = await msg.guild.members.fetch(user.id).catch(() => null);
 
-		const embed = new this.client.methods.Embed();
+		const embed = new MessageEmbed();
 		if (member) this.member(member, embed, msg.language);
 		else this.user(user, embed, msg.language);
 

@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [feedback]) {
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(0x06d310)
 			.setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
 			.setDescription(feedback)

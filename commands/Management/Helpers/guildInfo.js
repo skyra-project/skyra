@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command, MessageEmbed } = require('../../../index');
 
 const SORT = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		const i18n = msg.language, { COMMAND_SERVERINFO_TITLES } = i18n.language, roles = [...msg.guild.roles.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(msg.guild.ownerID);
-		return msg.sendEmbed(new this.client.methods.Embed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(msg.member.displayColor || msg.guild.me.displayColor || 0xDFDFDF)
 			.setThumbnail(msg.guild.iconURL())
 			.setTitle(`${msg.guild.name} [${msg.guild.id}]`)

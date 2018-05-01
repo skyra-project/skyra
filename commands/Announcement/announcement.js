@@ -1,4 +1,4 @@
-const { Command, util: { announcementCheck } } = require('../../index');
+const { Command, util: { announcementCheck }, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -39,7 +39,7 @@ module.exports = class extends Command {
 	ask(msg, content) {
 		try {
 			return msg.ask(msg.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
-				embed: new this.client.methods.Embed()
+				embed: new MessageEmbed()
 					.setColor(msg.member.displayColor || 0xDFDFDF)
 					.setDescription(content)
 					.setTimestamp()

@@ -1,5 +1,4 @@
-const { RawEvent } = require('../index');
-const { Permissions: { FLAGS } } = require('discord.js');
+const { RawEvent, MessageEmbed, Permissions: { FLAGS } } = require('../index');
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
 	MEMBER: '%MEMBER%',
@@ -61,7 +60,7 @@ module.exports = class extends RawEvent {
 	async _handleLog(guild, member, asset) {
 		if (guild.configs.channels.log) {
 			const channel = guild.channels.get(guild.configs.channels.log);
-			if (channel && channel.postable) await channel.send(new this.client.methods.Embed()
+			if (channel && channel.postable) await channel.send(new MessageEmbed()
 				.setColor(asset.color)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
 				.setFooter(asset.title)

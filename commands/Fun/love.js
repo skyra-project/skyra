@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 				? msg.language.get('COMMAND_LOVE_ITSELF')
 				: msg.language.get('COMMAND_LOVE_100');
 
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(msg.member.colorRole ? msg.member.colorRole.color : 0xE840CF)
 			.setAuthor('❤ Love Meter ❤', msg.author.displayAvatarURL())
 			.setThumbnail('https://twemoji.maxcdn.com/2/72x72/1f49e.png')

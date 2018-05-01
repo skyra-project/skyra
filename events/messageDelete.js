@@ -1,4 +1,4 @@
-const { Event, util: { getContent, getImage } } = require('../index');
+const { Event, util: { getContent, getImage }, MessageEmbed } = require('../index');
 
 module.exports = class extends Event {
 
@@ -14,7 +14,7 @@ module.exports = class extends Event {
 		} else {
 			const { author, language } = message;
 
-			const embed = new this.client.methods.Embed()
+			const embed = new MessageEmbed()
 				.setColor(0xFFAB40)
 				.setAuthor(`${author.tag} (${author.id})`, author.displayAvatarURL())
 				.setDescription(language.get('EVENTS_MESSAGE_DELETE_MSG', getContent(message) || ''))

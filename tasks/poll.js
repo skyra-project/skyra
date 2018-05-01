@@ -1,4 +1,4 @@
-const { Task, constants: { TIME } } = require('../index');
+const { Task, constants: { TIME }, klasaUtil: { codeBlock } } = require('../index');
 const TASK_EOL = TIME.DAY * 2;
 
 module.exports = class extends Task {
@@ -20,7 +20,7 @@ module.exports = class extends Task {
 				graph.push(`${opt.padEnd(maxLengthNames, ' ')} : [${'#'.repeat((percentage / 100) * 25).padEnd(25, ' ')}] (${percentage}%)`);
 			}
 			content = `Hey! Your poll __${title}__ with ID \`${id}\` just finished, check the results!${
-				this.client.methods.util.codeBlock('http', [`Entry ID: '${id}' (${title})`, ...graph].join('\n'))}`;
+				codeBlock('http', [`Entry ID: '${id}' (${title})`, ...graph].join('\n'))}`;
 		} else {
 			content = `Hey! Your poll __${title}__ with ID \`${id}\` just finished, but nobody voted :(`;
 		}

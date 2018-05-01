@@ -1,4 +1,4 @@
-const { Extendable, util: { regExpEsc } } = require('klasa');
+const { Argument, util: { regExpEsc } } = require('klasa');
 const { PromptList } = require('../index');
 const USER_REGEXP = new RegExp('^(?:<@!?)?(\\d{17,21})>?$');
 
@@ -11,17 +11,13 @@ function resolveUser(query, guild) {
 	return null;
 }
 
-module.exports = class extends Extendable {
+module.exports = class extends Argument {
 
-	constructor(...args) {
-		super(...args, {
-			appliesTo: ['ArgResolver'],
-			klasa: true,
-			name: 'username'
-		});
+	get user() {
+		return this.store.get('user');
 	}
 
-	async extend(arg, possible, msg) {
+	async run(arg, possible, msg) {
 		if (!msg.guild) return this.user(arg, possible, msg);
 		const resUser = await resolveUser(arg, msg.guild);
 		if (resUser) return resUser;

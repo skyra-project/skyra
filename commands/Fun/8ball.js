@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, klasaUtil: { codeBlock } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
 	async run(msg, [input]) {
 		return msg.sendMessage(msg.language.get('COMMAND_8BALL_OUTPUT', msg.author, input,
-			this.client.methods.util.codeBlock('', this.generator(input.toLowerCase(), msg.language))));
+			codeBlock('', this.generator(input.toLowerCase(), msg.language))));
 	}
 
 	generator(input, i18n) {

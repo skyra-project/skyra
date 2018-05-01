@@ -1,4 +1,4 @@
-const { Command, util } = require('../../index');
+const { Command, util, MessageEmbed } = require('../../index');
 
 const API_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
 
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		const content = text.query.pages[text.query.pageids[0]];
 		const definition = this.content(content.extract, url, msg.language);
 
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setTitle(content.title)
 			.setURL(url)
 			.setColor(0x05C9E8)

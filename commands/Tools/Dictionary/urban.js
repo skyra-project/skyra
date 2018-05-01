@@ -1,5 +1,4 @@
-const { Command, util } = require('../../../index');
-const { MessageEmbed } = require('discord.js');
+const { Command, util, MessageEmbed, klasaUtil: { toTitleCase } } = require('../../../index');
 const ZWS = '\u200B';
 
 module.exports = class extends Command {
@@ -31,7 +30,7 @@ module.exports = class extends Command {
 
 		const definition = this.content(result.definition, result.permalink, msg.language);
 		const embed = new MessageEmbed()
-			.setTitle(`Word: ${this.client.methods.util.toTitleCase(query)}`)
+			.setTitle(`Word: ${toTitleCase(query)}`)
 			.setURL(result.permalink)
 			.setColor(msg.color)
 			.setThumbnail('http://i.imgur.com/CcIZZsa.png')

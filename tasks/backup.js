@@ -1,5 +1,5 @@
 const { Task, Timestamp } = require('klasa');
-const { outputJSONAtomic, readJSON, remove, exists } = require('fs-nextra');
+const { outputJSONAtomic, readJSON, remove, pathExists } = require('fs-nextra');
 const { join } = require('path');
 
 module.exports = class extends Task {
@@ -77,7 +77,7 @@ module.exports = class extends Task {
 	// If this task is not being run, let's create the
 	// ScheduledTask and make it run every 10 minutes.
 	async init() {
-		const fileExists = await exists(this.fileManager);
+		const fileExists = await pathExists(this.fileManager);
 		if (!fileExists) {
 			await outputJSONAtomic(this.fileManager, {
 				backups: [],

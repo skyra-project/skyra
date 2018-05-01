@@ -1,4 +1,4 @@
-const { Command, config: { tokens: { google: KEY } } } = require('../../index');
+const { Command, config: { tokens: { google: KEY } }, MessageEmbed } = require('../../index');
 const { post, get } = require('snekfetch');
 
 const REG_GOOGL = /^https:\/\/goo\.gl\/.+/;
@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [url]) {
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setDescription(await (REG_GOOGL.test(url) ? this.short(url, msg.language) : this.long(url, msg.language)))
 			.setTimestamp();
 		return msg.sendMessage({ embed });

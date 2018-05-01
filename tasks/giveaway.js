@@ -1,4 +1,4 @@
-const { Task, klasaUtil: { sleep } } = require('../index');
+const { Task, klasaUtil: { sleep }, MessageEmbed, klasaUtil: { codeBlock } } = require('../index');
 
 module.exports = class extends Task {
 
@@ -27,7 +27,7 @@ module.exports = class extends Task {
 	async _countdown({ id, title, timestamp }, author, guild, channel, message, reaction) {
 		const { language } = guild;
 		const ends = new Date(timestamp + 20000);
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(0xE64700)
 			.setTitle(title)
 			.setDescription(language.get('GIVEAWAY_LASTCHANCE', 20000))
@@ -56,7 +56,7 @@ module.exports = class extends Task {
 
 		const content = winners.size === 1
 			? language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE_ONLY_WINNER', title, id, winner)
-			: language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE', title, id, winner, amount - 1, this.client.methods.util.codeBlock('asciidoc',
+			: language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE', title, id, winner, amount - 1, codeBlock('asciidoc',
 				winners.slice(1).map(user => `${user.id.padEnd(18, ' ')} :: ${user.tag}`).join('\n')));
 
 		await author.send(content);

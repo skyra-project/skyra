@@ -1,4 +1,4 @@
-const { Command, Color } = require('../../index');
+const { Command, Color, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -19,7 +19,7 @@ module.exports = class extends Command {
 		const { hex, b10 } = Color.parse(input);
 
 		await msg.author.configs.update('color', hex.toString().slice(1));
-		return msg.sendEmbed(new this.client.methods.Embed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)
 			.setAuthor(msg.author.tag, msg.author.displayAvatarURL({ size: 128 }))
 			.setDescription(msg.language.get('COMMAND_SETCOLOR', hex)));

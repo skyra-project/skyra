@@ -1,7 +1,11 @@
 const klasa = require('klasa');
+const discord = require('discord.js');
 
 module.exports = {
 	rootFolder: __dirname,
+
+	// Export everything from Discord.js
+	...discord,
 
 	// Export everything from Klasa
 	...klasa,
@@ -59,5 +63,6 @@ module.exports = {
 	ModerationLog: require('./lib/util/ModerationLog'),
 	NoMentionSpam: require('./lib/util/NoMentionSpam'),
 
-	klasaUtil: klasa.util
+	klasaUtil: klasa.util,
+	discordUtil: discord.Util
 };

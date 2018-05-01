@@ -1,4 +1,4 @@
-const { Command, Timestamp } = require('../../index');
+const { Command, Timestamp, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		const comicNumber = await this.getNumber(query, msg.language);
 		const comic = await this.fetchURL(`https://xkcd.com/${comicNumber}/info.0.json`, 'json');
 
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(0xD7CCC8)
 			.setImage(comic.img)
 			.setTitle(comic.title)

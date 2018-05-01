@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -19,7 +19,7 @@ module.exports = class extends Command {
 		if (body.Heading.length === 0)
 			throw msg.language.get('COMMAND_DUCKDUCKGO_NOTFOUND');
 
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setAuthor(body.Heading, this.client.user.displayAvatarURL({ size: 64 }))
 			.setURL(body.AbstractURL)
 			.setThumbnail(body.Image)

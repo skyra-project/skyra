@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const { fact } = await this.fetchURL('https://catfact.ninja/fact', 'json');
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(0xFFE0B2)
 			.setTitle(msg.language.get('COMMAND_CATFACT_TITLE'))
 			.setDescription(fact);

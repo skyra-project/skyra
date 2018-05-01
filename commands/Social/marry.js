@@ -16,7 +16,7 @@ module.exports = class extends Command {
 
 		this.createCustomResolver('username', async (arg, possible, msg) => {
 			if (!arg) return undefined;
-			return this.client.argResolver.username(arg, possible, msg);
+			return this.client.arguments.get('username').run(arg, possible, msg);
 		});
 	}
 

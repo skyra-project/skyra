@@ -1,7 +1,4 @@
-const { Command } = require('../../../index');
-const { Permissions } = require('discord.js');
-const { FLAGS } = Permissions;
-
+const { Command, MessageEmbed, Permissions: { FLAGS } } = require('../../../index');
 const PERMISSION_FLAGS = Object.keys(FLAGS);
 
 module.exports = class extends Command {
@@ -31,7 +28,7 @@ module.exports = class extends Command {
 				list.push(`${permissions.has(PERMISSION_FLAGS[i]) ? '🔹' : '🔸'} ${msg.language.PERMISSIONS[PERMISSION_FLAGS[i]] || PERMISSION_FLAGS[i]}`);
 		}
 
-		const embed = new this.client.methods.Embed()
+		const embed = new MessageEmbed()
 			.setColor(msg.member.displayColor || 0xdfdfdf)
 			.setTitle(msg.language.get('COMMAND_PERMISSIONS', user.tag, user.id))
 			.setDescription(list.join('\n'));

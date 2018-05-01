@@ -1860,7 +1860,7 @@ module.exports = class extends Language {
 				`→ \`ID\` :: **${id}**`
 			].join('\n'),
 			COMMAND_EMOJI_TWEMOJI: (emoji, id) => [
-				`→ \`Emoji\` :: \\${emoji}`,
+				`→ \`Emoji\` :: \`${emoji}\``,
 				'→ `Type` :: **Twemoji**',
 				`→ \`ID\` :: **${id}**`
 			].join('\n'),

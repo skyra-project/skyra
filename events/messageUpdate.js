@@ -1,6 +1,5 @@
-const { Event } = require('../index');
+const { Event, Util: { escapeMarkdown }, MessageEmbed } = require('../index');
 const { diffWordsWithSpace } = require('diff');
-const { Util: { escapeMarkdown } } = require('discord.js');
 
 module.exports = class extends Event {
 
@@ -27,7 +26,7 @@ module.exports = class extends Event {
 				else text += result[i].value;
 			}
 
-			const embed = new this.client.methods.Embed()
+			const embed = new MessageEmbed()
 				.setColor(0xDCE775)
 				.setAuthor(`${author.tag} (${author.id})`, author.displayAvatarURL())
 				.splitFields(text)

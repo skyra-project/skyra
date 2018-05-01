@@ -1,4 +1,4 @@
-const { Task } = require('../index');
+const { Task, MessageEmbed } = require('../index');
 
 module.exports = class extends Task {
 
@@ -42,7 +42,7 @@ module.exports = class extends Task {
 		const { language } = guild;
 		return {
 			content: language.get('GIVEAWAY_TITLE'),
-			embed: new this.client.methods.Embed()
+			embed: new MessageEmbed()
 				.setColor(0x49C6F7)
 				.setTitle(title)
 				.setDescription(language.get('GIVEAWAY_DURATION', timestamp - Date.now()))

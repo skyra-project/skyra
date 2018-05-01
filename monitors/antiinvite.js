@@ -1,4 +1,4 @@
-const { Monitor } = require('../index');
+const { Monitor, MessageEmbed } = require('../index');
 
 module.exports = class extends Monitor {
 
@@ -13,7 +13,7 @@ module.exports = class extends Monitor {
 		if (!msg.guild
 			|| !msg.guild.configs.selfmod.invitelinks
 			|| !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content)
-			|| await msg.hasAtLeastPermissionLevel(1)) return false;
+			|| await msg.hasAtLeastPermissionLevel(5)) return false;
 
 		if (msg.deletable) {
 			await msg.nuke();
@@ -27,7 +27,7 @@ module.exports = class extends Monitor {
 		if (!channel)
 			return msg.guild.configs.update('channels.modlog').then(() => null);
 
-		return channel.send(new this.client.methods.Embed()
+		return channel.send(new MessageEmbed()
 			.setColor(0xefae45)
 			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_INVITELINK')}`)

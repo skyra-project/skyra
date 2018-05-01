@@ -17,7 +17,7 @@ module.exports = class extends Command {
 
 		this.createCustomResolver('username', (arg, possible, msg, [check]) => {
 			if (!arg) return check ? msg.author : undefined;
-			return this.client.argResolver.username(arg, possible, msg);
+			return this.client.arguments.get('username').run(arg, possible, msg);
 		});
 
 		this.spam = true;

@@ -33,7 +33,7 @@
     "ipc-link": "0.0.1",
     "klasa": "github:dirigeants/klasa",
     "rethinkdbdash": "^2.3.31",
-    "snekfetch": "^4.0.0",
+    "snekfetch": "^3.6.4",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {

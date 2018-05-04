@@ -1,9 +1,9 @@
-const { Command, util: { fetchAvatar }, assetsFolder } = require('../../index');
+const { Command, util: { fetchAvatar } } = require('../../index');
 const { Canvas } = require('canvas-constructor');
 const { join } = require('path');
 const { readFile } = require('fs-nextra');
 
-const THEMES_FOLDER = join(assetsFolder, 'images', 'social', 'themes');
+const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
 
 module.exports = class extends Command {
 

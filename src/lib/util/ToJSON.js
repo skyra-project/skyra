@@ -1,5 +1,5 @@
 const { User, GuildMember, Role, Channel, Guild } = require('discord.js');
-const { clientID } = require('../../config');
+const { clientID } = require('../../../config');
 
 module.exports = class ToJSON {
 

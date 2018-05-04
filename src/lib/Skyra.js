@@ -26,7 +26,7 @@ module.exports = class Skyra extends Client {
 		 * @since 2.0.0
 		 * @type {string}
 		 */
-		this.version = require('../config').version;
+		this.version = require('../../config').version;
 
 		/**
 		 * The loaded Leaderboard singleton instance

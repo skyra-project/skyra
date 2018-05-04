@@ -1,7 +1,7 @@
 const { Command } = require('klasa');
 const { get } = require('snekfetch');
 const { MessageEmbed } = require('discord.js');
-const { tokens: { WEEB_SH } } = require('../../config');
+const { tokens: { WEEB_SH } } = require('../../../config');
 
 const API = 'https://api-v2.weeb.sh';
 const DEFAULTS = [

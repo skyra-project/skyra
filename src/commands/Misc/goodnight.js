@@ -25,7 +25,7 @@ module.exports = class extends Command {
 	}
 
 	async generate(msg, user) {
-		if (user.id === msg.author.id) ({ user }) = this.client;
+		if (user.id === msg.author.id) ({ user } = this.client);
 
 		const [kisser, child] = await Promise.all([
 			fetchAvatar(msg.author, 256),

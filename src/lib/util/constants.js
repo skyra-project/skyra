@@ -1,4 +1,4 @@
-const { API } = require('../../config');
+const { API } = require('../../../config');
 
 module.exports = {
 

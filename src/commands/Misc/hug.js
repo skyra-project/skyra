@@ -25,7 +25,7 @@ module.exports = class extends Command {
 	}
 
 	async generate(msg, user) {
-		if (user.id === msg.author.id) ({ user }) = this.client;
+		if (user.id === msg.author.id) ({ user } = this.client);
 
 		const [hugged, hugger] = await Promise.all([
 			fetchAvatar(user, 256),

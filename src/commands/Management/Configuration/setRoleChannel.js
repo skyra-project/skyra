@@ -15,7 +15,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [channel]) {
-		if (channel === 'here') ({ channel }) = msg;
+		if (channel === 'here') ({ channel } = msg);
 		else if (channel.type !== 'text') throw msg.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 		if (msg.guild.configs.channels.roles === channel.id) throw msg.language.get('CONFIGURATION_EQUALS');
 		await msg.guild.configs.update(['channels.roles', 'roles.messageReaction'], [channel, null]);

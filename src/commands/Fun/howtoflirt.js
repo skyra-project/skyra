@@ -32,7 +32,7 @@ module.exports = class extends Command {
 		const user2 = new Canvas.Image();
 		const ctx = canvas.getContext('2d');
 
-		if (user.id === msg.author.id) ({ user }) = this.client;
+		if (user.id === msg.author.id) ({ user } = this.client);
 
 		/* Get the buffers from both profile avatars */
 		const [user1Buffer, user2Buffer] = await Promise.all([

@@ -15,7 +15,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [channel]) {
-		if (channel === 'here') ({ channel }) = msg;
+		if (channel === 'here') ({ channel } = msg);
 		else if (channel.type !== 'text') throw msg.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 		const oldLength = msg.guild.configs.master.ignoreChannels.length;
 		await msg.guild.configs.update('master.ignoreChannels', channel);

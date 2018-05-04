@@ -1,7 +1,5 @@
 node_modules/
-/assets/
 .vs/
 config.js
-package-lock.json
 *.heapsnapshot
-yarn-error.log
+*.log

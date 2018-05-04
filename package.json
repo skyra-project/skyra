@@ -1,10 +1,18 @@
 {
   "name": "skyra",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Standalone Discord Bot built on Klasa",
-  "main": "skyra.js",
+  "main": "src/skyra.js",
   "scripts": {
-    "test": "eslint ./"
+    "pm2:logs": "pm2 logs Skyra --lines=200",
+    "pm2:restart": "pm2 restart Skyra",
+    "pm2:start": "pm2 start src/skyra.js --name=\"Skyra\"",
+    "pm2:start-harmony": "pm2 start src/skyra.js --node-args=\"--harmony\" --name=\"Skyra\"",
+    "pm2:delete": "pm2 delete Skyra",
+    "pm2:stop": "pm2 stop Skyra",
+    "test": "eslint src",
+    "lint": "eslint --fix src",
+    "update": "npm i dirigeants/klasa discordjs/discord.js"
   },
   "keywords": [
     "discord.js",
@@ -25,11 +33,12 @@
     "ipc-link": "0.0.1",
     "klasa": "github:dirigeants/klasa",
     "rethinkdbdash": "^2.3.31",
-    "snekfetch": "^3.6.4",
+    "snekfetch": "^4.0.0",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
-    "eslint": "^4.19.1"
+    "eslint": "^4.19.1",
+    "eslint-config-klasa": "github:dirigeants/klasa-lint"
   },
   "repository": {
     "type": "git",

@@ -304,6 +304,14 @@ module.exports = class extends Language {
 				extendedHelp: `Do you know cats are very curious, right? They certainly have a lot of fun and weird facts.
 				This command queries catfact.ninja and retrieves a fact so you can read it.`
 			}),
+			COMMAND_CHANGEMYMIND_DESCRIPTION: 'Skyra is the best, change my mind.',
+			COMMAND_CHANGEMYMIND_EXTENDED: builder.display('changeMyMind', {
+				extendedHelp: `I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.`,
+				explainedUsage: [
+					['text', 'The phrase you want.']
+				],
+				examples: ['Skyra is the best bot in this server']
+			}),
 			COMMAND_DICE_DESCRIPTION: `Roll the dice, 'x' rolls and 'y' sides.`,
 			COMMAND_DICE_EXTENDED: builder.display('dice', {
 				extendedHelp: `The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice

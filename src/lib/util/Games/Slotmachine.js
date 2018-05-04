@@ -35,8 +35,8 @@ const { readFile } = require('fs-nextra');
 const { join } = require('path');
 const icon = new (Canvas.getCanvas()).Image();
 
-const iconsPath = join(__dirname, '../../../assets/images/social/sm-icons.png');
-const shinyPath = join(__dirname, '../../../assets/images/social/shiny-icon.png');
+const iconsPath = join(__dirname, '../../../../assets/images/social/sm-icons.png');
+const shinyPath = join(__dirname, '../../../../assets/images/social/shiny-icon.png');
 
 const POSITIONS = [0, 0, 0];
 

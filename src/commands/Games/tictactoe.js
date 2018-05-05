@@ -39,7 +39,12 @@ module.exports = class extends Command {
 			return prompt.nuke(10000);
 		}
 
-		await this.game(prompt, [msg.author, user].sort(() => Math.random() - 0.5));
+		try {
+			await this.game(prompt, [msg.author, user].sort(() => Math.random() - 0.5));
+		} catch (_) {
+			await prompt.edit(msg.language.get('UNEXPECTED_ISSUE'));
+		}
+
 		this.channels.delete(msg.channel.id);
 		return prompt;
 	}

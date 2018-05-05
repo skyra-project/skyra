@@ -2063,6 +2063,8 @@ module.exports = class extends Language {
 			POWEREDBY_WEEBSH: 'Powered by weeb.sh',
 			PREFIX_REMINDER: (prefix) => `The prefix in this guild is set to: \`${prefix}\``,
 
+			UNEXPECTED_ISSUE: 'An unexpected error popped up! Safely aborting this command...',
+
 			COMMAND_DM_NOT_SENT: 'I cannot send you a message in DMs, did you block me?',
 			COMMAND_DM_SENT: 'I have sent you the message in DMs.',
 			COMMAND_ROLE_HIGHER_SKYRA: 'The selected member has higher or equal role position than me.',

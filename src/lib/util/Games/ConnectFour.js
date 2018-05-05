@@ -139,7 +139,7 @@ module.exports = class ConnectFour {
 					if (this.manageMessages) await this.message.reactions.removeAll().catch(err => this.client.emit('apiError', err));
 					break;
 				} else if (error === RESPONSES.TIMEOUT) {
-					await this.message.edit(this.language.get('COMMAND_C4_GAME_TIMEOUT'));
+					await this.message.edit(this.language.get('COMMAND_GAMES_TIMEOUT'));
 					break;
 				} else if (error && error.code === 10008) {
 					this.manager.delete(this.message.channel.id);

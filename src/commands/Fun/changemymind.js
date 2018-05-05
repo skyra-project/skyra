@@ -37,7 +37,7 @@ module.exports = class extends Command {
 			// Add text
 			.setColor('rgb(23,23,23)')
 			.setTextFont('42px RobotoRegular')
-			.createRectPath(144, 345, 336, 133)
+			.createRectClip(144, 345, 336, 133)
 			.addMultilineText(text, 141, 375, 340, 48)
 
 			// Render

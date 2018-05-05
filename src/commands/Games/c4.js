@@ -17,10 +17,10 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [user]) {
-		if (user.id === this.client.user.id) throw msg.language.get('COMMAND_C4_SKYRA');
-		if (user.bot) throw msg.language.get('COMMAND_C4_BOT');
-		if (user.id === msg.author.id) throw msg.language.get('COMMAND_C4_SELF');
-		if (this.client.connectFour.has(msg.channel.id)) throw msg.language.get('COMMAND_C4_PROGRESS');
+		if (user.id === this.client.user.id) throw msg.language.get('COMMAND_GAMES_SKYRA');
+		if (user.bot) throw msg.language.get('COMMAND_GAMES_BOT');
+		if (user.id === msg.author.id) throw msg.language.get('COMMAND_GAMES_SELF');
+		if (this.client.connectFour.has(msg.channel.id)) throw msg.language.get('COMMAND_GAMES_PROGRESS');
 
 		// ConnectFourManager#alloc returns a function that when getting true, it creates the game. Otherwise it de-alloc.
 		const createGame = this.client.connectFour.alloc(msg.channel.id, msg.author, user);
@@ -34,7 +34,7 @@ module.exports = class extends Command {
 			await createGame(true).run(prompt);
 		} else {
 			createGame(false);
-			await prompt.edit(msg.language.get(response ? 'COMMAND_C4_PROMPT_DENY' : 'COMMAND_C4_PROMPT_TIMEOUT'));
+			await prompt.edit(msg.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
 			prompt.nuke(10000);
 		}
 

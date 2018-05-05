@@ -4,6 +4,7 @@
 		"operator-linebreak": ["error", "before", { "overrides": { "+": "after" } }],
 		"curly": ["error", "multi-or-nest", "consistent"],
 		"id-length": "off",
-		"no-bitwise": ["error", { "int32Hint": true }]
+		"no-bitwise": ["error", { "int32Hint": true }],
+		"no-cond-assign": "off"
 	}
 }

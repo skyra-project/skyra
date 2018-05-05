@@ -220,6 +220,38 @@ module.exports = class extends Language {
 			 */
 
 			/**
+			 * ################
+			 * ANIMALS COMMANDS
+			 */
+
+			COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a misterious cat fact.',
+			COMMAND_CATFACT_EXTENDED: builder.display('catfact', {
+				extendedHelp: `Do you know cats are very curious, right? They certainly have a lot of fun and weird facts.
+				This command queries catfact.ninja and retrieves a fact so you can read it.`
+			}),
+			COMMAND_DOG_DESCRIPTION: 'Cute doggos! ❤',
+			COMMAND_DOG_EXTENDED: builder.display('dog', {
+				extendedHelp: `Do **you** know how cute are dogs? They are so beautiful! This command uses a tiny selection of images
+					From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
+					some images that, sadly, got deleted and I cannot retrieve them 💔.`
+			}),
+			COMMAND_FOX_DESCRIPTION: 'Let me show you an image of a fox!',
+			COMMAND_FOX_EXTENDED: builder.display('fox', {
+				extendedHelp: `This command provides you a random image from PixaBay, always showing 'fox' results. However,
+				it may not be exactly accurate and show you other kinds of foxes.`
+			}),
+			COMMAND_KITTY_DESCRIPTION: 'KITTENS!',
+			COMMAND_KITTY_EXTENDED: builder.display('kitty', {
+				extendedHelp: `Do **you** know how cute are kittens? They are so beautiful! This command uses a tiny selection of images
+				From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
+				some images that, sadly, got deleted and I cannot retrieve them 💔.`
+			}),
+			COMMAND_SHIBE_DESCRIPTION: 'Cute shibes!',
+			COMMAND_SHIBE_EXTENDED: builder.display('shibe', {
+				extendedHelp: `Everyone loves shibes, I shall love them aswell! They're so adorable ❤.`
+			}),
+
+			/**
 			 * ##############
 			 * ANIME COMMANDS
 			 */
@@ -299,11 +331,6 @@ module.exports = class extends Language {
 				],
 				examples: ['Should Wash the dishes, Throw the dishes throught the window', 'Cat, Dog']
 			}),
-			COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a misterious cat fact.',
-			COMMAND_CATFACT_EXTENDED: builder.display('catfact', {
-				extendedHelp: `Do you know cats are very curious, right? They certainly have a lot of fun and weird facts.
-				This command queries catfact.ninja and retrieves a fact so you can read it.`
-			}),
 			COMMAND_CHANGEMYMIND_DESCRIPTION: 'Skyra is the best, change my mind.',
 			COMMAND_CHANGEMYMIND_EXTENDED: builder.display('changeMyMind', {
 				extendedHelp: `I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.`,
@@ -330,11 +357,6 @@ module.exports = class extends Language {
 			COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokemon.',
 			COMMAND_ESCAPEROPE_EXTENDED: builder.display('escaperope', {
 				extendedHelp: '**Skyra** used **Escape Rope**.'
-			}),
-			COMMAND_FOX_DESCRIPTION: 'Let me show you an image of a fox!',
-			COMMAND_FOX_EXTENDED: builder.display('fox', {
-				extendedHelp: `This command provides you a random image from PixaBay, always showing 'fox' results. However,
-				it may not be exactly accurate and show you other kinds of foxes.`
 			}),
 			COMMAND_HOWTOFLIRT_DESCRIPTION: 'Captain America, you do not know how to flirt.',
 			COMMAND_HOWTOFLIRT_EXTENDED: builder.display('howtoflirt', {
@@ -379,6 +401,25 @@ module.exports = class extends Language {
 					['query', 'Either the number of the comic, or a title to search for.']
 				],
 				examples: ['1091', 'Curiosity']
+			}),
+
+			/**
+			 * ##############
+			 * GAMES COMMANDS
+			 */
+
+			COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
+			COMMAND_C4_EXTENDED: builder.display('c4', {
+				extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
+					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
+					game in which the players first choose a color and then take turns dropping colored discs from the top into a
+					seven-column, ~~six~~ five-row vertically suspended grid.`
+			}),
+			COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
+			COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
+				extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two
+				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
+				their marks in a horizontal, vertical, or diagonal row wins the game.`
 			}),
 
 			/**
@@ -630,12 +671,6 @@ module.exports = class extends Language {
 				],
 				examples: ['John Doe']
 			}),
-			COMMAND_DOG_DESCRIPTION: 'Cute doggos! ❤',
-			COMMAND_DOG_EXTENDED: builder.display('dog', {
-				extendedHelp: `Do **you** know how cute are dogs? They are so beautiful! This command uses a tiny selection of images
-					From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
-					some images that, sadly, got deleted and I cannot retrieve them 💔.`
-			}),
 			COMMAND_F_DESCRIPTION: 'Press F to pay respects.',
 			COMMAND_F_EXTENDED: builder.display('f', {
 				extendedHelp: `This command generates an image... to pay respects reacting with 🇫. This command also makes Skyra
@@ -680,12 +715,6 @@ module.exports = class extends Language {
 					['healer', 'The healer you need to heal you.']
 				],
 				examples: ['Mercy']
-			}),
-			COMMAND_KITTY_DESCRIPTION: 'KITTENS!',
-			COMMAND_KITTY_EXTENDED: builder.display('kitty', {
-				extendedHelp: `Do **you** know how cute are kittens? They are so beautiful! This command uses a tiny selection of images
-				From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
-				some images that, sadly, got deleted and I cannot retrieve them 💔.`
 			}),
 			COMMAND_PINGKYRA_DESCRIPTION: 'How dare you pinging me!?',
 			COMMAND_PINGKYRA_EXTENDED: builder.display('pingkyra', {
@@ -924,13 +953,6 @@ module.exports = class extends Language {
 			COMMAND_BALANCE_DESCRIPTION: 'Check your current balance.',
 			COMMAND_BALANCE_EXTENDED: builder.display('balance', {
 				extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
-			}),
-			COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
-			COMMAND_C4_EXTENDED: builder.display('c4', {
-				extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
-					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
-					game in which the players first choose a color and then take turns dropping colored discs from the top into a
-					seven-column, ~~six~~ five-row vertically suspended grid.`
 			}),
 			COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}.`,
 			COMMAND_DAILY_EXTENDED: builder.display('daily', {
@@ -1528,6 +1550,29 @@ module.exports = class extends Language {
 			COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
 
 			/**
+			 * ##############
+			 * GAMES COMMANDS
+			 */
+
+			COMMAND_GAMES_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
+			COMMAND_GAMES_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
+			COMMAND_GAMES_SELF: 'You must be so sad to play against yourself. Try again with another user.',
+			COMMAND_GAMES_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
+			COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
+			COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
+			COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+			COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
+			COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
+			COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
+			COMMAND_C4_GAME_WIN: (user, turn, table) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!\n${table}`,
+			COMMAND_C4_GAME_DRAW: (table) => `This match concluded in a **draw**!\n${table}`,
+			COMMAND_C4_GAME_NEXT: (player, turn, table) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).\n${table}`,
+			COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
+			COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
+			COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
+			COMMAND_TICTACTOE_DRAW: (board) => `This match concluded in a **draw**!\n${board}`,
+
+			/**
 			 * #################
 			 * GIVEAWAY COMMANDS
 			 */
@@ -1737,19 +1782,6 @@ module.exports = class extends Language {
 			COMMAND_BANNER_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
 			COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
 			COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
-			COMMAND_C4_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
-			COMMAND_C4_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
-			COMMAND_C4_SELF: 'You must be so sad to play against yourself. Try again with another user.',
-			COMMAND_C4_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
-			COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
-			COMMAND_C4_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
-			COMMAND_C4_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
-			COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
-			COMMAND_C4_GAME_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
-			COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
-			COMMAND_C4_GAME_WIN: (user, turn, table) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!\n${table}`,
-			COMMAND_C4_GAME_DRAW: (table) => `This match concluded in a **draw**!\n${table}`,
-			COMMAND_C4_GAME_NEXT: (player, turn, table) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).\n${table}`,
 			COMMAND_DAILY_TIME: (time) => `Next dailies are available in ${duration(time)}`,
 			COMMAND_DAILY_TIME_SUCCESS: (amount) => `Yay! You earned ${amount}${SHINY}! Next dailies in: 12 hours.`,
 			COMMAND_DAILY_GRACE: (remaining) => [

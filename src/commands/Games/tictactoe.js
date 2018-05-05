@@ -65,29 +65,36 @@ module.exports = class extends Command {
 	}
 
 	_game(msg, players, board) {
-		let timeout, turn = 0, chosen, winner, player;
+		let timeout, turn = 0, chosen, winner, player, blocked = true;
 		return new Promise((resolve, reject) => {
 			// Make the collectors
-			const collector = msg.createReactionCollector((reaction, user) => user.id === player.id
+			const collector = msg.createReactionCollector((reaction, user) => !blocked
+				&& user.id === player.id
 				&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
 				&& board[chosen] === 0);
 
-			const makeRound = () => {
+			const makeRound = async () => {
 				if (timeout) clearTimeout(timeout);
 				player = players[turn % 2];
-				msg.edit(msg.language.get('COMMAND_TICTACTOE_TURN', PLAYER[turn % 2], player.username, this.render(board))).catch(error => {
+
+				try {
+					await msg.edit(msg.language.get('COMMAND_TICTACTOE_TURN', PLAYER[turn % 2], player.username, this.render(board)));
+					timeout = setTimeout(() => {
+						collector.stop();
+						reject(msg.language.get('COMMAND_GAMES_TIMEOUT'));
+					}, 60000);
+					blocked = false;
+				} catch (error) {
 					collector.stop();
 					reject(error);
-				});
-				timeout = setTimeout(() => {
-					collector.stop();
-					reject(msg.language.get('COMMAND_GAMES_TIMEOUT'));
-				}, 60000);
+				}
 			};
 
 			makeRound();
 
 			collector.on('collect', () => {
+				blocked = true;
+
 				// Clear the timeout
 				clearTimeout(timeout);
 

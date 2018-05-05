@@ -795,6 +795,26 @@ module.exports = class extends Language {
 			 * MODERATION/UTILITIES COMMANDS
 			 */
 
+			COMMAND_ARCHIVE_DESCRIPTION: '[BETA] Temporarily save all messages from the current channel.',
+			COMMAND_ARCHIVE_EXTENDED: builder.display('archive', {
+				extendedHelp: `The archive command fetches multiple messages from a channel with an optional filter. How does
+					this command work? First, I fetch all the messages, apply the filter, and then it's when the magic happens,
+					I make a "message gist", to respect End-User Data policies, all of this is encrypted and the gist requires
+					a key to unlock so you can read the contents. You unlock and read the contents from the website.`,
+				explainedUsage: [
+					['Messages', 'The amount of messages to archive.'],
+					['Filter', 'The filter to apply.'],
+					['(Filter) Link', 'Filters messages that have links on the content.'],
+					['(Filter) Invite', 'Filters messages that have invite links on the content.'],
+					['(Filter) Bots', 'Filters messages sent by bots.'],
+					['(Filter) You', 'Filters messages sent by Skyra.'],
+					['(Filter) Me', 'Filters your messages.'],
+					['(Filter) Upload', 'Filters messages that have attachments.'],
+					['(Filter) User', 'Filters messages sent by the specified user.']
+				],
+				examples: ['50 me', '75 @kyra', '20 bots'],
+				reminder: 'Message gists last 30 days, after that, they are deleted, you also need the encryption key.'
+			}),
 			COMMAND_CASE_DESCRIPTION: 'Get the information from a case given its index.',
 			COMMAND_CASE_EXTENDED: builder.display('case', {
 				extendedHelp: ``

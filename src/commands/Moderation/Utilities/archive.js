@@ -1,14 +1,15 @@
-const { Command, MessageEmbed, ModerationLog: { TYPES: { prune: { title, color } } } } = require('../../index');
+const { Command, MessageEmbed } = require('../../index');
 const URL = 'https://skyradiscord.com/#/gist';
 
 module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
-			cooldown: 5,
-			description: msg => msg.language.get('COMMAND_PRUNE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_PRUNE_EXTENDED'),
+			botPerms: ['READ_MESSAGE_HISTORY'],
+			bucket: 2,
+			cooldown: 20,
+			description: msg => msg.language.get('COMMAND_ARCHIVE_DESCRIPTION'),
+			extendedHelp: msg => msg.language.get('COMMAND_ARCHIVE_EXTENDED'),
 			permLevel: 5,
 			runIn: ['text'],
 			usage: '[limit:integer] [link|invite|bots|you|me|upload|user:user]',
@@ -24,19 +25,6 @@ module.exports = class extends Command {
 			messages = messages.filter(this.getFilter(msg, type, user));
 		}
 		messages = messages.array().slice(0, limit);
-		this.sendLog(msg, filter, messages).catch(error => this.client.emit('apiError', error));
-		await msg.channel.bulkDelete(messages, true);
-		return msg.sendMessage(msg.language.get('COMMAND_PRUNE', messages.length, limit));
-	}
-
-	async sendLog(msg, filter, messages) {
-		const { channels, events } = msg.guild.configs;
-		if (!channels.modlog || !events.messagePrune) return;
-		const channel = msg.guild.channels.get(channels.modlog);
-		if (!channel || !channel.postable) {
-			await msg.guild.configs.reset('channels.modlog');
-			return;
-		}
 
 		const formatted = [];
 		for (const m of messages) {
@@ -50,15 +38,10 @@ module.exports = class extends Command {
 		}
 
 		const { filename, key } = await this.client.ipc.send('dashboard', { route: 'cryptoSave', type: 'MESSAGE_GIST', text: formatted });
-		await channel.send(new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-			.setDescription([
-				`❯ **Type**: ${title}`,
-				`❯ **URL**: [${key}](${URL}?id=${filename}&key=${key})`,
-				`❯ **Filter**: ${filter || 'all'}`,
-				`❯ **Amount**: ${messages.length}`
-			].join('\n'))
-			.setColor(color));
+			.setDescription(`[BETA] Successfully archived ${formatted.length} messages: [${key}](${URL}?id=${filename}&key=${key})`)
+			.setColor(msg.member.displayColor));
 	}
 
 	getFilter(msg, filter, user) {

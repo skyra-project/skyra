@@ -1,4 +1,4 @@
-const { Command, MessageEmbed } = require('../../index');
+const { Command, MessageEmbed } = require('../../../index');
 const URL = 'https://skyradiscord.com/#/gist';
 
 module.exports = class extends Command {
@@ -30,18 +30,33 @@ module.exports = class extends Command {
 		for (const m of messages) {
 			formatted.push({
 				id: m.id,
-				authorID: m.author.id,
-				attachments: m.attachments.map(a => ({ url: a.url, height: a.height, width: a.width })),
+				author: m.author.tag,
+				attachments: m.attachments.map(this._resizeImage),
+				embeds: m.embeds.filter(embed => embed.type === 'image').map(embed => this._resizeImage(embed.thumbnail)),
 				createdTimestamp: m.createdTimestamp,
 				cleanContent: m.cleanContent
 			});
 		}
 
-		const { filename, key } = await this.client.ipc.send('dashboard', { route: 'cryptoSave', type: 'MESSAGE_GIST', text: formatted });
+		const { filename, key } = await this.client.ipc.send('dashboard', { route: 'cryptoSave', type: 'MESSAGE_GIST', text: formatted.reverse() });
 		return msg.sendEmbed(new MessageEmbed()
 			.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
 			.setDescription(`[BETA] Successfully archived ${formatted.length} messages: [${key}](${URL}?id=${filename}&key=${key})`)
 			.setColor(msg.member.displayColor));
+	}
+
+	_resizeImage(image) {
+		let { height, width } = image;
+		if (Math.max(400, height, width) > 400) {
+			let factor = 1;
+			if (height > width) factor = 400 / height;
+			else factor = 400 / width;
+
+			height *= factor;
+			width *= factor;
+		}
+
+		return { url: image.url, height, width };
 	}
 
 	getFilter(msg, filter, user) {

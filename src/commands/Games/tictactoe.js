@@ -3,7 +3,6 @@ const { Command, Permissions: { FLAGS } } = require('../../index');
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
 const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
-const REACTION_OPTIONS = { time: 60000, errors: ['time'], max: 1 };
 
 module.exports = class extends Command {
 
@@ -42,7 +41,7 @@ module.exports = class extends Command {
 		try {
 			await this.game(prompt, [msg.author, user].sort(() => Math.random() - 0.5));
 		} catch (_) {
-			await prompt.edit(msg.language.get('UNEXPECTED_ISSUE'));
+			await prompt.edit(msg.language.get('UNEXPECTED_ISSUE')).catch(error => this.client.emit('apiError', error));
 		}
 
 		this.channels.delete(msg.channel.id);
@@ -52,42 +51,74 @@ module.exports = class extends Command {
 	async game(msg, players) {
 		// Add all reactions
 		for (const emoji of EMOJIS) await msg.react(emoji);
-
 		const board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-		let turn = Math.round(Math.random()), winner;
 
-		do {
-			const user = players[turn % 2];
-			await msg.edit(msg.language.get('COMMAND_TICTACTOE_TURN', PLAYER[turn % 2], user.username, this.render(board)));
-			try {
-				let chosen;
-				await msg.awaitReactions((reaction, rUser) => user === rUser
-					&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
-					&& board[chosen] === 0, REACTION_OPTIONS);
+		try {
+			const winner = await this._game(msg, players, board);
+			return msg.edit(winner
+				? msg.language.get('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
+				: msg.language.get('COMMAND_TICTACTOE_DRAW', this.render(board)));
+		} catch (message) {
+			if (typeof message === 'string') return msg.edit(message);
+			throw message;
+		}
+	}
 
+	_game(msg, players, board) {
+		let timeout, turn = 0, chosen, winner, player;
+		return new Promise((resolve, reject) => {
+			// Make the collectors
+			const collector = msg.createReactionCollector((reaction, user) => user.id === player.id
+				&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
+				&& board[chosen] === 0);
+
+			const makeRound = () => {
+				if (timeout) clearTimeout(timeout);
+				player = players[turn % 2];
+				msg.edit(msg.language.get('COMMAND_TICTACTOE_TURN', PLAYER[turn % 2], player.username, this.render(board))).catch(error => {
+					collector.stop();
+					reject(error);
+				});
+				timeout = setTimeout(() => {
+					collector.stop();
+					reject(msg.language.get('COMMAND_GAMES_TIMEOUT'));
+				}, 60000);
+			};
+
+			makeRound();
+
+			collector.on('collect', () => {
+				// Clear the timeout
+				clearTimeout(timeout);
+
+				// Set the piece
 				board[chosen] = (turn % 2) + 1;
-				if (winner = this.checkBoard(board)) break;
-			} catch (_) {
-				return msg.edit(msg.language.get('COMMAND_GAMES_TIMEOUT'));
-			}
-		} while (++turn < 9);
 
-		return msg.edit(turn !== 9
-			? msg.language.get('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
-			: msg.language.get('COMMAND_TICTACTOE_DRAW', this.render(board)));
+				// If there is a winner, resolve with it
+				if (winner = this.checkBoard(board)) {
+					collector.stop();
+					resolve(winner);
+				} else if (++turn < 9) {
+					makeRound();
+				} else {
+					collector.stop();
+					resolve();
+				}
+			});
+		});
 	}
 
 	checkBoard(board) {
 		for (let i = 0; i < 3; i++) {
 			const n = i * 3;
-			if (board[n] === 0) continue;
+			if (board[i] === 0) continue;
 			// Check rows, then columns
-			if (board[n] === board[n + 1] && board[n + 1] === board[n + 2]) return board[n];
-			if (board[n] === board[n + 4] && board[n + 4] === board[n + 6]) return board[n];
+			if (board[i] === board[n + 1] && board[n + 1] === board[n + 2]) return board[i];
+			if (board[i] === board[i + 3] && board[i + 3] === board[i + 6]) return board[i];
 		}
 		// check diagonals
-		if (board[0] !== 0 && board[0] === board[5] && board[5] === board[8]) return board[0];
-		if (board[2] !== 0 && board[2] === board[5] && board[5] === board[6]) return board[2];
+		if (board[0] !== 0 && board[0] === board[4] && board[4] === board[8]) return board[0];
+		if (board[2] !== 0 && board[2] === board[4] && board[4] === board[6]) return board[2];
 
 		// no winner
 		return undefined;

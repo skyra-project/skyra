@@ -5,11 +5,11 @@ module.exports = class extends ModerationCommand {
 	constructor(...args) {
 		super(...args, {
 			avoidAnonymous: true,
-			botPerms: ['BAN_MEMBERS'],
+			requiredPermissions: ['BAN_MEMBERS'],
 			description: msg => msg.language.get('COMMAND_UNBAN_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_UNBAN_EXTENDED'),
 			modType: ModerationCommand.types.UN_BAN,
-			permLevel: 5,
+			permissionLevel: 5,
 			requiredMember: false,
 			runIn: ['text'],
 			usage: '<SearchMember:string> [reason:string] [...]',

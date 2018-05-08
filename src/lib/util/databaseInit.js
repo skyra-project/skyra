@@ -36,14 +36,25 @@ module.exports = class DatabaseInit {
 	}
 
 	static async initModeration(r) {
-		const TABLENAME = 'moderation', INDEXNAME = 'guild_case';
+		const TABLENAME = 'moderation', INDEXNAME_CASE = 'guild_case', INDEXNAME_USER = 'guild_user';
 
-		await r.branch(r.tableList().contains(TABLENAME), null,
-			r.tableCreate(TABLENAME));
-		await r.branch(r.table(TABLENAME).indexList().contains(INDEXNAME), null,
-			r.table(TABLENAME).indexCreate(INDEXNAME, [r.row(Moderation.schemaKeys.GUILD), r.row(Moderation.schemaKeys.CASE)]));
-		await r.branch(r.table(TABLENAME).indexStatus(INDEXNAME).nth(0)('ready'), null,
-			r.table(TABLENAME).indexWait(INDEXNAME));
+		await r.branch(r.tableList().contains(TABLENAME), null, r.tableCreate(TABLENAME));
+
+		// Create tables
+		await Promise.all([
+			r.branch(r.table(TABLENAME).indexList().contains(INDEXNAME_CASE), null,
+				r.table(TABLENAME).indexCreate(INDEXNAME_CASE, [r.row(Moderation.schemaKeys.GUILD), r.row(Moderation.schemaKeys.CASE)])),
+			r.branch(r.table(TABLENAME).indexList().contains(INDEXNAME_USER), null,
+				r.table(TABLENAME).indexCreate(INDEXNAME_USER, [r.row(Moderation.schemaKeys.GUILD), r.row(Moderation.schemaKeys.USER)]))
+		]);
+
+		// Create indexes
+		await Promise.all([
+			r.branch(r.table(TABLENAME).indexStatus(INDEXNAME_CASE).nth(0)('ready'), null,
+				r.table(TABLENAME).indexWait(INDEXNAME_CASE)),
+			r.branch(r.table(TABLENAME).indexStatus(INDEXNAME_USER).nth(0)('ready'), null,
+				r.table(TABLENAME).indexWait(INDEXNAME_USER))
+		]);
 	}
 
 };

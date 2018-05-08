@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_SETMODLOGS_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_SETMODLOGS_EXTENDED'),
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '<here|channel:channel>'
 		});

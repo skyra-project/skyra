@@ -4,6 +4,7 @@ const parseHTML = require('./parseHTML');
 const { STATUS_CODES } = require('http');
 const { get } = require('snekfetch');
 const { DiscordAPIError } = require('discord.js');
+const { util } = require('klasa');
 
 /**
  * @typedef  {Object} UtilOneToTenEntry
@@ -229,7 +230,7 @@ class Util {
 		}
 
 		const messageEdit2 = denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ';
-		await msg.client.methods.util.sleep(1500);
+		await util.sleep(1500);
 		await msg.guild.configs.update('roles.muted', role.id, msg.guild);
 		await msg.sendMessage(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
 		return role;

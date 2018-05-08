@@ -4,11 +4,11 @@ module.exports = class extends ModerationCommand {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['MANAGE_ROLES'],
+			requiredPermissions: ['MANAGE_ROLES'],
 			description: msg => msg.language.get('COMMAND_UNMUTE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_UNMUTE_EXTENDED'),
 			modType: ModerationCommand.types.UN_MUTE,
-			permLevel: 5,
+			permissionLevel: 5,
 			requiredMember: true,
 			runIn: ['text'],
 			usage: '<SearchMember:user> [reason:string] [...]',

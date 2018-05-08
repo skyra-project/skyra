@@ -8,7 +8,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['cmm'],
-			botPerms: ['ATTACH_FILES'],
+			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_CHANGEMYMIND_DESCRIPTION'),

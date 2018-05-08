@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_SETPREFIX_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_SETPREFIX_EXTENDED'),
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '<prefix:string{1,10}>'
 		});

@@ -7,9 +7,9 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['ATTACH_FILES'],
+			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
-			permLevel: 10,
+			permissionLevel: 10,
 			cooldown: 30,
 			description: (msg) => msg.language.get('COMMAND_PINGKYRA_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_PINGKYRA_EXTENDED'),

@@ -4,10 +4,10 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['EMBED_LINKS'],
+			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 5,
 			description: 'Get the information from a case by its index.',
-			permLevel: 5,
+			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '<Case:integer>'
 		});

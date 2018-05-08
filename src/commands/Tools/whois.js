@@ -7,7 +7,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['userinfo'],
-			botPerms: ['EMBED_LINKS'],
+			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
 			description: msg => msg.language.get('COMMAND_WHOIS_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_WHOIS_EXTENDED'),

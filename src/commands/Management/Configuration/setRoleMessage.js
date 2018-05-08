@@ -5,12 +5,12 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['READ_MESSAGE_HISTORY'],
+			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			bucket: 2,
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '(message:message)'
 		});

@@ -8,7 +8,7 @@ module.exports = class extends ModerationCommand {
 			description: msg => msg.language.get('COMMAND_WARN_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_WARN_EXTENDED'),
 			modType: ModerationCommand.types.WARN,
-			permLevel: 5,
+			permissionLevel: 5,
 			requiredMember: true,
 			runIn: ['text'],
 			usage: '<SearchMember:user> [reason:string] [...]',

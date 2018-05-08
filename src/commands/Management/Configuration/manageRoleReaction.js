@@ -6,12 +6,12 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['READ_MESSAGE_HISTORY', 'ADD_REACTIONS'],
+			requiredPermissions: ['READ_MESSAGE_HISTORY', 'ADD_REACTIONS'],
 			bucket: 2,
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_MANAGEROLEREACTION_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_MANAGEROLEREACTION_EXTENDED'),
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '<show|add|remove|reset> (role:rolename) (emoji:emoji)',
 			usageDelim: ' ',

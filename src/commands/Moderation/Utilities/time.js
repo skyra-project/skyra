@@ -7,7 +7,7 @@ module.exports = class extends Command {
 		super(...args, {
 			cooldown: 5,
 			description: 'Sets a timer.',
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '[cancel] <Case:integer> [timer:string] [...]',
 			usageDelim: ' '

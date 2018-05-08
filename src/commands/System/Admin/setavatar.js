@@ -10,7 +10,7 @@ module.exports = class extends Command {
 			description: (msg) => msg.language.get('COMMAND_SETAVATAR_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_SETAVATAR_EXTENDED'),
 			guarded: true,
-			permLevel: 10,
+			permissionLevel: 10,
 			usage: '(attachment:attachment)'
 		});
 

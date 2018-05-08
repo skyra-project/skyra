@@ -22,8 +22,8 @@ Skyra.defaultPermissionLevels
 		: msg.member.permissions.has(FLAGS.MANAGE_GUILD)), { fetch: true });
 
 const skyra = new Skyra({
-	cmdEditing: true,
-	cmdLogging: false,
+	commandEditing: true,
+	commandLogging: false,
 	cmdPrompt: true,
 	console: config.console,
 	consoleEvents: { verbose: true },

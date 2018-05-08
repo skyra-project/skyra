@@ -7,11 +7,11 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['ADD_REACTIONS'],
+			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 5,
 			description: (msg) => msg.language.get('COMMAND_TRIGGERS_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_TRIGGERS_EXTENDED'),
-			permLevel: 6,
+			permissionLevel: 6,
 			quotedStringSupport: true,
 			runIn: ['text'],
 			usage: '[list|add|remove] (type:type) (input:input) (output:output)',
@@ -39,7 +39,7 @@ module.exports = class extends Command {
 				}
 			} else if (type === 'alias') {
 				const command = this.client.commands.get(arg);
-				if (command && command.permLevel < 10) return arg;
+				if (command && command.permissionLevel < 10) return arg;
 				throw msg.language.get('COMMAND_TRIGGERS_INVALIDALIAS');
 			} else {
 				return null;

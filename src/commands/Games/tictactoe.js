@@ -9,7 +9,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['ttt'],
-			botPerms: [FLAGS.ADD_REACTIONS],
+			requiredPermissions: [FLAGS.ADD_REACTIONS],
 			cooldown: 10,
 			description: msg => msg.language.get('COMMAND_TICTACTOE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_TICTACTOE_EXTENDED'),

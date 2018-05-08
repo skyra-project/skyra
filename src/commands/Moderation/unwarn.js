@@ -7,7 +7,7 @@ module.exports = class extends ModerationCommand {
 			description: msg => msg.language.get('COMMAND_UNWARN_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_UNWARN_EXTENDED'),
 			modType: ModerationCommand.types.UN_WARN,
-			permLevel: 5,
+			permissionLevel: 5,
 			requiredMember: true,
 			runIn: ['text'],
 			usage: '<case:number> [reason:string] [...]',

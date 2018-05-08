@@ -4,10 +4,10 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['EMBED_LINKS'],
+			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 5,
 			description: 'Manage the Anti-RAID system.',
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '<list|clear|cool>'
 		});

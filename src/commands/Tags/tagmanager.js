@@ -7,7 +7,7 @@ module.exports = class extends Command {
 		super(...args, {
 			description: msg => msg.language.get('COMMAND_TAGMANAGER_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_TAGMANAGER_EXTENDED'),
-			permLevel: 4,
+			permissionLevel: 4,
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<add|edit|remove> <tag:string> [contents:string] [...]',

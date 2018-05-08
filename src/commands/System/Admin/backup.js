@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			description: (msg) => msg.language.get('COMMAND_BACKUP_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_BACKUP_EXTENDED'),
 			guarded: true,
-			permLevel: 10
+			permissionLevel: 10
 		});
 	}
 

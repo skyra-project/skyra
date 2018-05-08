@@ -74,7 +74,7 @@ class PromptList {
 	 */
 	static async _run(msg, list, { maxAttempts = 5, listMode = false } = {}) {
 		const possibles = list.length;
-		list = msg.client.methods.util.codeBlock('asciidoc', list.join('\n'));
+		list = util.codeBlock('asciidoc', list.join('\n'));
 		await msg.sendMessage(msg.language.get(listMode ? 'PROMPTLIST_LIST' : 'PROMPTLIST_MULTIPLE_CHOICE', list, possibles));
 		const abortString = msg.language.get('PROMPTLIST_ABORT').toLowerCase();
 		const promptFilter = (message) => message.author === msg.author

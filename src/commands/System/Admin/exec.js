@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			description: (msg) => msg.language.get('COMMAND_EXEC_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_EXEC_EXTENDED'),
 			guarded: true,
-			permLevel: 10,
+			permissionLevel: 10,
 			usage: '<expression:string>'
 		});
 	}

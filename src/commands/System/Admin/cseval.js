@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			description: (msg) => msg.language.get('COMMAND_CSEVAL_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_CSEVAL_EXTENDED'),
 			guarded: true,
-			permLevel: 10,
+			permissionLevel: 10,
 			usage: '<cscode:string>'
 		});
 	}

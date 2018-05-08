@@ -6,7 +6,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			permLevel: 10,
+			permissionLevel: 10,
 			guarded: true,
 			description: 'Creates a heapdump for finding memory leaks.'
 		});

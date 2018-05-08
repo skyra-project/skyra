@@ -5,7 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['setcolour'],
-			botPerms: ['EMBED_LINKS'],
+			requiredPermissions: ['EMBED_LINKS'],
 			bucket: 2,
 			cooldown: 10,
 			description: msg => msg.language.get('COMMAND_SETCOLOR_DESCRIPTION'),

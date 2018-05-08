@@ -5,7 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['simplepoll'],
-			botPerms: ['ADD_REACTIONS'],
+			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 5,
 			description: msg => msg.language.get('COMMAND_SPOLL_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_SPOLL_EXTENDED'),

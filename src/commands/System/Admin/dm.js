@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			description: (msg) => msg.language.get('COMMAND_DM_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_DM_EXTENDED'),
 			guarded: true,
-			permLevel: 10,
+			permissionLevel: 10,
 			usage: '<user:user> <message:string> [...]',
 			usageDelim: ','
 		});

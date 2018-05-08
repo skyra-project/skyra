@@ -5,11 +5,11 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['EMBED_LINKS'],
+			requiredPermissions: ['EMBED_LINKS'],
 			bucket: 2,
 			cooldown: 10,
 			description: 'Check the permission for a member, or yours.',
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '[member:username]'
 		});

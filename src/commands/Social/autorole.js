@@ -7,11 +7,11 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['autoroles', 'levelrole', 'lvlrole'],
-			botPerms: ['MANAGE_ROLES'],
+			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 10,
 			description: msg => msg.language.get('COMMAND_AUTOROLE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_AUTOROLE_EXTENDED'),
-			permLevel: 6,
+			permissionLevel: 6,
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<list|add|remove|update> [points:integer{0,1000000}] [role:rolename]',

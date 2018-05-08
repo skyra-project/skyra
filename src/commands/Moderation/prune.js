@@ -5,11 +5,11 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
+			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			cooldown: 5,
 			description: msg => msg.language.get('COMMAND_PRUNE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_PRUNE_EXTENDED'),
-			permLevel: 5,
+			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '[limit:integer] [link|invite|bots|you|me|upload|user:user]',
 			usageDelim: ' '

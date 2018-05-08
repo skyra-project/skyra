@@ -10,12 +10,12 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
+			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			bucket: 2,
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_WARNINGS_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_WARNINGS_EXTENDED'),
-			permLevel: 5,
+			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '[user:username]'
 		});

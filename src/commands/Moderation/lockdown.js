@@ -5,11 +5,11 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['lock', 'unlock'],
-			botPerms: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
+			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			cooldown: 5,
 			description: msg => msg.language.get('COMMAND_LOCKDOWN_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_LOCKDOWN_EXTENDED'),
-			permLevel: 5,
+			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '[channel:channel] [time:time]',
 			usageDelim: ' '

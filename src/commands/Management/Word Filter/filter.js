@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			cooldown: 5,
 			description: (msg) => msg.language.get('COMMAND_FILTER_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_FILTER_EXTENDED'),
-			permLevel: 5,
+			permissionLevel: 5,
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<add|remove|reset|show> [word:string]',

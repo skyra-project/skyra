@@ -7,7 +7,7 @@ module.exports = class extends Command {
 			bucket: 2,
 			cooldown: 15,
 			description: 'Check the messages/minute from a channel.',
-			permLevel: 4,
+			permissionLevel: 4,
 			runIn: ['text'],
 			usage: '[channel:channelname]'
 		});

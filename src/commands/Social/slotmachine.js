@@ -5,7 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['slot', 'slots', 'slotmachines'],
-			botPerms: ['USE_EXTERNAL_EMOJIS'],
+			requiredPermissions: ['USE_EXTERNAL_EMOJIS'],
 			cooldown: 10,
 			bucket: 2,
 			description: msg => msg.language.get('COMMAND_SLOTMACHINE_DESCRIPTION'),

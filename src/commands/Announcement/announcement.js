@@ -5,12 +5,12 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['announce'],
-			botPerms: ['MANAGE_ROLES'],
+			requiredPermissions: ['MANAGE_ROLES'],
 			bucket: 6,
 			cooldown: 30,
 			description: msg => msg.language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
-			permLevel: 4,
+			permissionLevel: 4,
 			runIn: ['text'],
 			usage: '<announcement:string{,1900}>'
 		});

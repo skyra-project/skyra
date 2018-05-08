@@ -4,11 +4,11 @@ module.exports = class extends ModerationCommand {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['KICK_MEMBERS'],
+			requiredPermissions: ['KICK_MEMBERS'],
 			description: msg => msg.language.get('COMMAND_KICK_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_KICK_EXTENDED'),
 			modType: ModerationCommand.types.KICK,
-			permLevel: 5,
+			permissionLevel: 5,
 			requiredMember: true,
 			runIn: ['text'],
 			usage: '<SearchMember:user> [reason:string] [...]',

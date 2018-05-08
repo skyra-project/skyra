@@ -4,12 +4,12 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			botPerms: ['EMBED_LINKS'],
+			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 5,
 			description: msg => msg.language.get('COMMAND_REASON_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_REASON_EXTENDED'),
 			name: 'reason',
-			permLevel: 5,
+			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '<case:integer> <reason:string> [...]',
 			usageDelim: ' '

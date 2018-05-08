@@ -11,7 +11,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['colour'],
-			botPerms: ['ATTACH_FILES'],
+			requiredPermissions: ['ATTACH_FILES'],
 			cooldown: 15,
 			description: msg => msg.language.get('COMMAND_COLOR_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_COLOR_EXTENDED'),

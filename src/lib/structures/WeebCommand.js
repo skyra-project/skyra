@@ -5,7 +5,7 @@ const { tokens: { WEEB_SH } } = require('../../../config');
 
 const API = 'https://api-v2.weeb.sh';
 const DEFAULTS = [
-	['botPerms', ['EMBED_LINKS']],
+	['requiredPermissions', ['EMBED_LINKS']],
 	['bucket', 2],
 	['cooldown', 30],
 	['runIn', ['text']]

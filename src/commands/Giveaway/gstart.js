@@ -5,7 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['giveaway'],
-			botPerms: ['EMBED_LINKS', 'ADD_REACTIONS'],
+			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
 			description: msg => msg.language.get('COMMAND_GIVEAWAY_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_GIVEAWAY_EXTENDED'),
 			usage: '<time:time> <title:string> [...]',

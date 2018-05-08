@@ -12,7 +12,7 @@ module.exports = class extends API {
 			extendedHelp: typeof cmd.extendedHelp === 'function' ? cmd.extendedHelp(language) : cmd.extendedHelp,
 			guildOnly: !cmd.runIn.includes('dm'),
 			name: cmd.name,
-			permLevel: cmd.permLevel,
+			permissionLevel: cmd.permissionLevel,
 			usage: cmd.usageString
 		}));
 	}

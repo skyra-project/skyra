@@ -8,7 +8,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['banners'],
-			botPerms: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
+			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
 			bucket: 2,
 			cooldown: 10,
 			description: msg => msg.language.get('COMMAND_BANNER_DESCRIPTION'),

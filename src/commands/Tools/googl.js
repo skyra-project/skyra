@@ -8,7 +8,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['shortenurl', 'googleshorturl', 'shorten'],
-			botPerms: ['EMBED_LINKS'],
+			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
 			description: msg => msg.language.get('COMMAND_GOOGL_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_GOOGL_EXTENDED'),

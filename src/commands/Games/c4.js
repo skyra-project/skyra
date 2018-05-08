@@ -7,7 +7,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['connect-four'],
-			botPerms: ['USE_EXTERNAL_EMOJIS'],
+			requiredPermissions: ['USE_EXTERNAL_EMOJIS'],
 			cooldown: 0,
 			description: msg => msg.language.get('COMMAND_C4_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_C4_EXTENDED'),

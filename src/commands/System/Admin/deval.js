@@ -20,10 +20,10 @@ module.exports = class extends Command {
 		const stopwatch = new Stopwatch();
 		try {
 			({ result } = await this.client.ipc.send('dashboard', { route: 'eval', code }));
-			time = stopwatch.friendlyDuration;
+			time = stopwatch.toString();
 			success = true;
 		} catch (error) {
-			time = stopwatch.friendlyDuration;
+			time = stopwatch.toString();
 			result = error.error || error;
 			success = false;
 		}

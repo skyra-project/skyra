@@ -106,14 +106,14 @@ module.exports = class extends Command {
 		} catch (error) {
 			if (!syncTime) syncTime = stopwatch.toString();
 			if (thenable && !asyncTime) asyncTime = stopwatch.toString();
-			if (!type) type = new Type(result);
+			if (!type) type = new Type(error);
 			result = error;
 			success = false;
 		}
 
 		stopwatch.stop();
-		if (success && typeof result !== 'string') {
-			result = inspect(result, {
+		if (typeof result !== 'string') {
+			result = result instanceof Error ? result.stack : inspect(result, {
 				depth: msg.flags.depth ? parseInt(msg.flags.depth) || 0 : 0,
 				showHidden: Boolean(msg.flags.showHidden)
 			});

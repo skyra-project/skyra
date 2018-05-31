@@ -220,6 +220,38 @@ module.exports = class extends Language {
 			 */
 
 			/**
+			 * ################
+			 * ANIMALS COMMANDS
+			 */
+
+			COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a misterious cat fact.',
+			COMMAND_CATFACT_EXTENDED: builder.display('catfact', {
+				extendedHelp: `Do you know cats are very curious, right? They certainly have a lot of fun and weird facts.
+				This command queries catfact.ninja and retrieves a fact so you can read it.`
+			}),
+			COMMAND_DOG_DESCRIPTION: 'Cute doggos! ❤',
+			COMMAND_DOG_EXTENDED: builder.display('dog', {
+				extendedHelp: `Do **you** know how cute are dogs? They are so beautiful! This command uses a tiny selection of images
+					From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
+					some images that, sadly, got deleted and I cannot retrieve them 💔.`
+			}),
+			COMMAND_FOX_DESCRIPTION: 'Let me show you an image of a fox!',
+			COMMAND_FOX_EXTENDED: builder.display('fox', {
+				extendedHelp: `This command provides you a random image from PixaBay, always showing 'fox' results. However,
+				it may not be exactly accurate and show you other kinds of foxes.`
+			}),
+			COMMAND_KITTY_DESCRIPTION: 'KITTENS!',
+			COMMAND_KITTY_EXTENDED: builder.display('kitty', {
+				extendedHelp: `Do **you** know how cute are kittens? They are so beautiful! This command uses a tiny selection of images
+				From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
+				some images that, sadly, got deleted and I cannot retrieve them 💔.`
+			}),
+			COMMAND_SHIBE_DESCRIPTION: 'Cute shibes!',
+			COMMAND_SHIBE_EXTENDED: builder.display('shibe', {
+				extendedHelp: `Everyone loves shibes, I shall love them aswell! They're so adorable ❤.`
+			}),
+
+			/**
 			 * ##############
 			 * ANIME COMMANDS
 			 */
@@ -299,10 +331,13 @@ module.exports = class extends Language {
 				],
 				examples: ['Should Wash the dishes, Throw the dishes throught the window', 'Cat, Dog']
 			}),
-			COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a misterious cat fact.',
-			COMMAND_CATFACT_EXTENDED: builder.display('catfact', {
-				extendedHelp: `Do you know cats are very curious, right? They certainly have a lot of fun and weird facts.
-				This command queries catfact.ninja and retrieves a fact so you can read it.`
+			COMMAND_CHANGEMYMIND_DESCRIPTION: 'Skyra is the best, change my mind.',
+			COMMAND_CHANGEMYMIND_EXTENDED: builder.display('changeMyMind', {
+				extendedHelp: `I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.`,
+				explainedUsage: [
+					['text', 'The phrase you want.']
+				],
+				examples: ['Skyra is the best bot in this server']
 			}),
 			COMMAND_DICE_DESCRIPTION: `Roll the dice, 'x' rolls and 'y' sides.`,
 			COMMAND_DICE_EXTENDED: builder.display('dice', {
@@ -322,11 +357,6 @@ module.exports = class extends Language {
 			COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokemon.',
 			COMMAND_ESCAPEROPE_EXTENDED: builder.display('escaperope', {
 				extendedHelp: '**Skyra** used **Escape Rope**.'
-			}),
-			COMMAND_FOX_DESCRIPTION: 'Let me show you an image of a fox!',
-			COMMAND_FOX_EXTENDED: builder.display('fox', {
-				extendedHelp: `This command provides you a random image from PixaBay, always showing 'fox' results. However,
-				it may not be exactly accurate and show you other kinds of foxes.`
 			}),
 			COMMAND_HOWTOFLIRT_DESCRIPTION: 'Captain America, you do not know how to flirt.',
 			COMMAND_HOWTOFLIRT_EXTENDED: builder.display('howtoflirt', {
@@ -371,6 +401,25 @@ module.exports = class extends Language {
 					['query', 'Either the number of the comic, or a title to search for.']
 				],
 				examples: ['1091', 'Curiosity']
+			}),
+
+			/**
+			 * ##############
+			 * GAMES COMMANDS
+			 */
+
+			COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
+			COMMAND_C4_EXTENDED: builder.display('c4', {
+				extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
+					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
+					game in which the players first choose a color and then take turns dropping colored discs from the top into a
+					seven-column, ~~six~~ five-row vertically suspended grid.`
+			}),
+			COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
+			COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
+				extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two
+				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
+				their marks in a horizontal, vertical, or diagonal row wins the game.`
 			}),
 
 			/**
@@ -581,6 +630,25 @@ module.exports = class extends Language {
 			}),
 
 			/**
+			 * ###############################
+			 * MANAGEMENT/WORD FILTER COMMANDS
+			 */
+
+			COMMAND_FILTER_DESCRIPTION: 'Manage this guild\'s word blacklist.',
+			COMMAND_FILTER_EXTENDED: builder.display('filter', {
+				extendedHelp: `The filter command manages the word blacklist for this server and must have a filter mode set up, check \`Skyra, help setFilterMode\`.
+					Skyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters
+					duplicated characters for enhanced filtering.`
+			}),
+			COMMAND_SETFILTERMODE_DESCRIPTION: 'Manage this guild\'s word blacklist mode.',
+			COMMAND_SETFILTERMODE_EXTENDED: builder.display('setFilterMode', {
+				extendedHelp: `The setFilterMode command manages the mode of the word blacklist, in Skyra, there are three modes: **Disabled** (the default value)
+					which as its name suggests, it disables the word filter; **DeleteOnly**, which deletes the message; **LogOnly**, which does not delete the message
+					but instead sends a modlog; and **All**, which enables both message deletion and logging.`,
+				reminder: 'Both **LogOnly** and **All** modes require the key `channels.modlogs` to be set up.'
+			}),
+
+			/**
 			 * #############
 			 * MISC COMMANDS
 			 */
@@ -602,12 +670,6 @@ module.exports = class extends Language {
 					['user', 'The user that should start deleting his post.']
 				],
 				examples: ['John Doe']
-			}),
-			COMMAND_DOG_DESCRIPTION: 'Cute doggos! ❤',
-			COMMAND_DOG_EXTENDED: builder.display('dog', {
-				extendedHelp: `Do **you** know how cute are dogs? They are so beautiful! This command uses a tiny selection of images
-					From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
-					some images that, sadly, got deleted and I cannot retrieve them 💔.`
 			}),
 			COMMAND_F_DESCRIPTION: 'Press F to pay respects.',
 			COMMAND_F_EXTENDED: builder.display('f', {
@@ -653,12 +715,6 @@ module.exports = class extends Language {
 					['healer', 'The healer you need to heal you.']
 				],
 				examples: ['Mercy']
-			}),
-			COMMAND_KITTY_DESCRIPTION: 'KITTENS!',
-			COMMAND_KITTY_EXTENDED: builder.display('kitty', {
-				extendedHelp: `Do **you** know how cute are kittens? They are so beautiful! This command uses a tiny selection of images
-				From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
-				some images that, sadly, got deleted and I cannot retrieve them 💔.`
 			}),
 			COMMAND_PINGKYRA_DESCRIPTION: 'How dare you pinging me!?',
 			COMMAND_PINGKYRA_EXTENDED: builder.display('pingkyra', {
@@ -739,6 +795,26 @@ module.exports = class extends Language {
 			 * MODERATION/UTILITIES COMMANDS
 			 */
 
+			COMMAND_ARCHIVE_DESCRIPTION: '[BETA] Temporarily save all messages from the current channel.',
+			COMMAND_ARCHIVE_EXTENDED: builder.display('archive', {
+				extendedHelp: `The archive command fetches multiple messages from a channel with an optional filter. How does
+					this command work? First, I fetch all the messages, apply the filter, and then it's when the magic happens,
+					I make a "message gist", to respect End-User Data policies, all of this is encrypted and the gist requires
+					a key to unlock so you can read the contents. You unlock and read the contents from the website.`,
+				explainedUsage: [
+					['Messages', 'The amount of messages to archive.'],
+					['Filter', 'The filter to apply.'],
+					['(Filter) Link', 'Filters messages that have links on the content.'],
+					['(Filter) Invite', 'Filters messages that have invite links on the content.'],
+					['(Filter) Bots', 'Filters messages sent by bots.'],
+					['(Filter) You', 'Filters messages sent by Skyra.'],
+					['(Filter) Me', 'Filters your messages.'],
+					['(Filter) Upload', 'Filters messages that have attachments.'],
+					['(Filter) User', 'Filters messages sent by the specified user.']
+				],
+				examples: ['50 me', '75 @kyra', '20 bots'],
+				reminder: 'Message gists last 30 days, after that, they are deleted, you also need the encryption key.'
+			}),
 			COMMAND_CASE_DESCRIPTION: 'Get the information from a case given its index.',
 			COMMAND_CASE_EXTENDED: builder.display('case', {
 				extendedHelp: ``
@@ -897,12 +973,6 @@ module.exports = class extends Language {
 			COMMAND_BALANCE_DESCRIPTION: 'Check your current balance.',
 			COMMAND_BALANCE_EXTENDED: builder.display('balance', {
 				extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
-			}),
-			COMMAND_C4_DESCRIPTION: 'Juega al Conecta Cuatro con alguien.',
-			COMMAND_C4_EXTENDED: builder.display('c4', {
-				extendedHelp: `Este juego se juega mejor en el ordenador. Este juego, también conocido como "Cuatro en Raya", es un juego de
-					conexiones en la que dos jugadores tienen unas fichas de un determinado color y hacen turnos soltando discos de color en
-					la parte superior de un panel de siete columnas, con ~~seis~~ cinco filas.`
 			}),
 			COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}.`,
 			COMMAND_DAILY_EXTENDED: builder.display('daily', {
@@ -1500,6 +1570,29 @@ module.exports = class extends Language {
 			COMMAND_XKCD_COMICS: (amount) => `Hay ${amount} comics.`,
 
 			/**
+			 * ##############
+			 * GAMES COMMANDS
+			 */
+
+			COMMAND_GAMES_SKYRA: 'I am sorry, I know you want to play with me, but if I do, I will not be able to help other people! 💔',
+			COMMAND_GAMES_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
+			COMMAND_GAMES_SELF: 'You must be so sad to play against yourself. Try again with another user.',
+			COMMAND_GAMES_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
+			COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
+			COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
+			COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+			COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
+			COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
+			COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
+			COMMAND_C4_GAME_WIN: (user, turn, table) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!\n${table}`,
+			COMMAND_C4_GAME_DRAW: (table) => `This match concluded in a **draw**!\n${table}`,
+			COMMAND_C4_GAME_NEXT: (player, turn, table) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).\n${table}`,
+			COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
+			COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
+			COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
+			COMMAND_TICTACTOE_DRAW: (board) => `This match concluded in a **draw**!\n${board}`,
+
+			/**
 			 * #################
 			 * GIVEAWAY COMMANDS
 			 */
@@ -1575,6 +1668,18 @@ module.exports = class extends Language {
 			].join('\n'),
 			COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
 			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what do you want me to filter.',
+			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
+			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
+			COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
+			COMMAND_FILTER_RESET: '| ✅ | Success! The filter has been reset.',
+			COMMAND_FILTER_SHOW_EMPTY: 'The list of filtered words is empty!',
+			COMMAND_FILTER_SHOW: (words) => `There is the list of all filtered words: ${words}`,
+			COMMAND_SETFILTERMODE_EQUALS: 'The word filter mode did not change, it was already set up with that mode.',
+			COMMAND_SETFILTERMODE_DISABLED: 'The word filter is now disabled. No messages will be deleted nor logged.',
+			COMMAND_SETFILTERMODE_DELETEONLY: 'The word filter is now in **DeleteOnly** mode. Messages will be deleted but not logged.',
+			COMMAND_SETFILTERMODE_LOGONLY: 'The word filter is now in **LogOnly** mode. Messages will not be deleted but logged to your modlogs channel.',
+			COMMAND_SETFILTERMODE_ALL: 'The word filter is now in **All** mode. Messages will be both deleted and logged to your modlogs channel.',
 
 			/**
 			 * #################################
@@ -1670,11 +1775,6 @@ module.exports = class extends Language {
 			COMMAND_VOICEKICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **VOICE KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
 			COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what do you want me to filter.',
-			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
-			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
-			COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
-			COMMAND_FILTER_RESET: '| ✅ | Success! The filter has been reset.',
 
 			/**
 			 * ###############
@@ -1702,19 +1802,6 @@ module.exports = class extends Language {
 			COMMAND_BANNER_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
 			COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
 			COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
-			COMMAND_C4_SKYRA: 'Lo siento, sé que quieres jugar conmigo, pero si lo hago, ¡no podré ayudar a los demás! 💔',
-			COMMAND_C4_BOT: 'Lo siento, pero no creo que esos robots sean suficientemente inteligentes para jugar a este juego.',
-			COMMAND_C4_SELF: '¡Eh! ¡Hay unos cuantos usuarios por ahí con los que jugar! Prueba de nuevo con otra persona.',
-			COMMAND_C4_PROGRESS: 'Lo siento, pero ahora mismo hay un juego en progreso en este canal, ¡prueba de nuevo cuando terminen!',
-			COMMAND_C4_PROMPT: (challenger, challengee) => `Querido ${challengee}, has sido retado por ${challenger} a una partida de Conecta Cuatro. ¡Responde con **yes** para aceptar!`,
-			COMMAND_C4_PROMPT_TIMEOUT: 'Lo siento, pero el usuario no ha respondido a tiempo...',
-			COMMAND_C4_PROMPT_DENY: 'Lo siento, pero han rechazado su partida...',
-			COMMAND_C4_START: (player, table) => `¡A jugar! Turno para: **${player}**.\n${table}`,
-			COMMAND_C4_GAME_TIMEOUT: '**La partida ha concluido en empate debido a la falta de respuesta (60 segundos)**',
-			COMMAND_C4_GAME_COLUMN_FULL: '¡Esta columna está llena! ¡Prueba otra! ',
-			COMMAND_C4_GAME_WIN: (user, turn, table) => `¡${user} (${turn === 0 ? 'azul' : 'rojo'}) ganó!\n${table}`,
-			COMMAND_C4_GAME_DRAW: (table) => `¡Esta partida ha concluido en **empate!\n${table}`,
-			COMMAND_C4_GAME_NEXT: (player, turn, table) => `Turno para: ${player} (${turn === 0 ? 'azul' : 'rojo'}).\n${table}`,
 			COMMAND_DAILY_TIME: (time) => `El siguiente pago está disponible en: ${duration(time)}`,
 			COMMAND_DAILY_TIME_SUCCESS: (amount) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
 			COMMAND_DAILY_GRACE: (remaining) => [
@@ -1860,7 +1947,7 @@ module.exports = class extends Language {
 				`→ \`ID\` :: **${id}**`
 			].join('\n'),
 			COMMAND_EMOJI_TWEMOJI: (emoji, id) => [
-				`→ \`Emoji\` :: \\${emoji}`,
+				`→ \`Emoji\` :: \`${emoji}\``,
 				'→ `Type` :: **Twemoji**',
 				`→ \`ID\` :: **${id}**`
 			].join('\n'),
@@ -1995,6 +2082,8 @@ module.exports = class extends Language {
 
 			POWEREDBY_WEEBSH: 'Powered by weeb.sh',
 			PREFIX_REMINDER: (prefix) => `The prefix in this guild is set to: \`${prefix}\``,
+
+			UNEXPECTED_ISSUE: 'An unexpected error popped up! Safely aborting this command...',
 
 			COMMAND_DM_NOT_SENT: 'I cannot send you a message in DMs, did you block me?',
 			COMMAND_DM_SENT: 'I have sent you the message in DMs.',

@@ -263,7 +263,7 @@ class StarboardMessage {
 		if (this._syncStatus) await this._syncStatus;
 
 		const { stars } = this;
-		if (this.disabled || stars < this.manager.minimum) return false;
+		if (this.disabled || stars <= this.manager.minimum) return false;
 		const content = `${this.emoji} **${stars}** ${this.channel} ID: ${this.message.id}`;
 		if (this.starMessage) {
 			try {
@@ -366,7 +366,7 @@ class StarboardMessage {
 
 				const channel = this.manager.starboardChannel;
 				if (data.starMessageID) this.starMessage = await channel.messages.fetch(data.starMessageID).catch(() => null);
-				if (!this.disabled && !this.starMessage && this.stars < this.manager.minimum) {
+				if (!this.disabled && !this.starMessage && this.stars >= this.manager.minimum) {
 					const content = `${this.emoji} **${this.stars}** ${this.channel} ID: ${this.message.id}`;
 					this.starMessage = await channel.send(content, this.embed);
 					this.provider.db.table(TABLENAME).get(this.UUID).update({ starMessageID: this.starMessage.id });

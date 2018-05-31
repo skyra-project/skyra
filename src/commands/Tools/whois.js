@@ -37,11 +37,9 @@ module.exports = class extends Command {
 			.setTimestamp();
 
 		if (member.roles.size > 1) {
-			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...member.roles.values()]
-				.slice(1)
-				.sort(sortRanks)
-				.map(role => role.name)
-				.join(', '));
+			const roles = member.roles.sort(sortRanks);
+			roles.delete(member.guild.defaultRole.id);
+			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
 		}
 
 		return embed;

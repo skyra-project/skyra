@@ -15,7 +15,7 @@ module.exports = class extends Monitor {
 			|| await msg.hasAtLeastPermissionLevel(5)) return false;
 
 		const count = (msg.member.everyone ? 5 : 0) + (msg.mentions.roles.size * 2) + (msg.mentions.users.size
-			? this.filterUsers(msg.author.id, msg.mentions.users) : 0);
+			? this.filterUsers(msg.author.id, msg.mentions.users).size : 0);
 		if (!count) return false;
 
 		const amount = msg.guild.security.nms.add(msg.author.id, count);

@@ -157,13 +157,29 @@ class Util {
 	 * @since 2.0.0
      * @param {string} str    The text to split.
      * @param {number} length The length of the desired string.
+	 * @param {string} [char=' '] The character to split with
      * @returns {string}
      * @static
      */
-	static splitText(str, length) {
-		const x = str.substring(0, length).lastIndexOf(' ');
+	static splitText(str, length, char = ' ') {
+		const x = str.substring(0, length).lastIndexOf(char);
 		const pos = x === -1 ? length : x;
 		return str.substring(0, pos);
+	}
+
+	/**
+	 * Split a text by its latest space character in a range from the character 0 to the selected one.
+	 * @since 3.0.1
+	 * @param {string} str The text to split.
+	 * @param {number} length The length of the desired string.
+	 * @returns {string}
+	 * @static
+	 */
+	static cutText(str, length) {
+		if (str.length < length) return str;
+		const cut = Util.splitText(str, length - 3);
+		if (cut.length < length - 3) return `${cut}...`;
+		return `${cut.slice(0, length - 3)}...`;
 	}
 
 	/**

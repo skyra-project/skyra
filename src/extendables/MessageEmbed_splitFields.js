@@ -18,11 +18,13 @@ module.exports = class extends Extendable {
 		let i;
 		let x;
 
-		for (i = 0; i < content.length / 1020; i++) {
-			if (init.length < 1020) return this.addField('\u200B', init);
-			x = init.substring(0, 1020).lastIndexOf('\n');
-			this.addField('\u200B', init.substring(0, x));
-			init = init.substring(x, init.length);
+		for (i = 0; i < content.length / 1024; i++) {
+			if (init.length < 1024) return this.addField('\u200B', init);
+			x = init.slice(0, 1024).lastIndexOf('\n');
+			if (x === -1) x = 1024;
+
+			this.addField('\u200B', init.slice(0, x));
+			init = init.slice(x, init.length);
 		}
 		return this;
 	}

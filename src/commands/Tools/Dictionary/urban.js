@@ -35,7 +35,7 @@ module.exports = class extends Command {
 			.setURL(result.permalink)
 			.setColor(msg.color)
 			.setThumbnail('http://i.imgur.com/CcIZZsa.png')
-			.setDescription(msg.language.get('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
+			.splitFields(msg.language.get('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
 			.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
 			.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)
 			.setFooter('© Urban Dictionary');
@@ -45,7 +45,7 @@ module.exports = class extends Command {
 
 	content(definition, permalink, i18n) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', util.splitText(definition, 750), permalink);
+		return i18n.get('SYSTEM_TEXT_TRUNCATED', util.cutText(definition, 750), permalink);
 	}
 
 };

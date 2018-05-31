@@ -51,7 +51,7 @@ module.exports = class extends Command {
 
 	content(definition, url, i18n) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', util.splitText(definition, 750), url);
+		return i18n.get('SYSTEM_TEXT_TRUNCATED', util.cutText(definition, 750), url);
 	}
 
 };

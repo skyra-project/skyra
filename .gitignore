@@ -1,5 +1,6 @@
 node_modules/
 .vs/
+src/bwd/provider/
 config.js
 *.heapsnapshot
 *.log

@@ -6,6 +6,7 @@ module.exports = class extends Command {
 		super(...args, {
 			bucket: 2,
 			cooldown: 10,
+			requiredPermissions: ['EMBED_LINKS'],
 			description: (msg) => msg.language.get('COMMAND_LOVE_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_LOVE_EXTENDED'),
 			runIn: ['text'],

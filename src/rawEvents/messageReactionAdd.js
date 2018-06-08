@@ -82,7 +82,10 @@ module.exports = class extends RawEvent {
 
 			// Safeguard
 			const starboardChannel = channel.guild.channels.get(starboardConfigs.channel);
-			if (!starboardChannel || !starboardChannel.postable) await channel.guild.configs.reset('starboard.channel');
+			if (!starboardChannel || !starboardChannel.postable) {
+				await channel.guild.configs.reset('starboard.channel');
+				return;
+			}
 
 			// Process the starboard
 			const { starboard } = channel.guild;

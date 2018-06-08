@@ -19,6 +19,7 @@ module.exports = class extends RawEvent {
 	}
 
 	async run({ guild, member }) {
+		this._handleStickyRoles(guild, member);
 		if (guild.configs.roles.muted && guild.configs.mutes.includes(member.id)) {
 			this._handleMute(guild, member);
 		} else if (guild.configs.events.memberAdd) {
@@ -32,6 +33,19 @@ module.exports = class extends RawEvent {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return null;
 		return { guild, member: guild.members.add(data) };
+	}
+
+	async _handleStickyRoles(guild, member) {
+		if (member.configs._syncStatus) await member.configs._syncStatus;
+		if (!member.configs.stickyRoles.length) return;
+		const roles = [];
+		for (const role of member.configs.stickyRoles)
+			if (guild.roles.has(role)) roles.push(role);
+
+		if (member.configs.stickyRoles.length !== roles.length)
+			await member.configs.editStickyRoles(roles);
+
+		await member.roles.add(roles);
 	}
 
 	async _handleMute(guild, member) {

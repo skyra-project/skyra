@@ -1568,6 +1568,7 @@ module.exports = class extends Language {
 			COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
 			COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
 			COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
+			COMMAND_XKCD_NOTFOUND: 'I have searched far and wide, but I got no luck finding this comic, try again later or try another!',
 
 			/**
 			 * ##############
@@ -1687,6 +1688,7 @@ module.exports = class extends Language {
 			 */
 
 			COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION: 'You must input a valid reaction that can be used by me.',
+			COMMAND_MANAGEROLEREACTION_REQUIRED_ROLE: 'You must input the name of the role you want me to add.',
 			COMMAND_MANAGEROLEREACTION_LIST_EMPTY: 'This guild has no role reaction set up.',
 			COMMAND_MANAGEROLEREACTION_EXISTS: 'There is already a role reaction set up with the specified role or emoji.',
 			COMMAND_MANAGEROLEREACTION_ADD: 'Successfully added the role reaction.',

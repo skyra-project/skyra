@@ -18,7 +18,8 @@ module.exports = class extends Command {
 			? /^\d+$/.test(input) ? Number(input) : input : null;
 
 		const comicNumber = await this.getNumber(query, msg.language);
-		const comic = await this.fetchURL(`https://xkcd.com/${comicNumber}/info.0.json`, 'json');
+		const comic = await this.fetchURL(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
+			.catch(() => { throw msg.language.get('COMMAND_XKCD_NOTFOUND'); });
 
 		const embed = new MessageEmbed()
 			.setColor(0xD7CCC8)

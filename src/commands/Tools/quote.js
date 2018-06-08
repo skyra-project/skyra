@@ -14,6 +14,7 @@ module.exports = class extends Command {
 		});
 
 		this.createCustomResolver('message', async (arg, possible, msg, [channel = msg.channel]) => {
+			if (channel.type !== 'text') throw msg.language.get('RESOLVER_INVALID_CHANNEL', 'Channel');
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 			const message = await channel.messages.fetch(arg).catch(() => null);
 			if (message) return message;

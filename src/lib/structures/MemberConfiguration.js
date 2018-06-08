@@ -54,6 +54,13 @@ class MemberConfiguration {
 		this.count = 0;
 
 		/**
+		 * The sticky roles
+		 * @since 3.0.0
+		 * @type {string[]}
+		 */
+		this.stickyRoles = [];
+
+		/**
 		 * The UUID for this entry.
 		 * @since 3.0.0
 		 * @type {boolean}
@@ -115,6 +122,26 @@ class MemberConfiguration {
 		return this;
 	}
 
+	async editStickyRoles(stickyRoles) {
+		if (this._syncStatus) throw new Error(`[${this}] MemberConfiguration#update cannot execute due to out-of-sync entry.`);
+		if (Array.isArray(stickyRoles)) {
+			if (stickyRoles.every((value, index) => this.stickyRoles[index] === value)) return this;
+		} else if (this.stickyRoles.includes(stickyRoles)) {
+			return this;
+		} else {
+			stickyRoles = this.stickyRoles.concat(stickyRoles);
+		}
+
+		await (this.UUID
+			? this.client.providers.default.db.table('localScores').get(this.UUID).update({ stickyRoles })
+			: this.client.providers.default.db.table('localScores').insert({ guildID: this.guildID, userID: this.userID, count: 0, stickyRoles })
+				.then(result => { [this.UUID] = result.generated_keys; }));
+
+		this.stickyRoles = stickyRoles;
+
+		return this;
+	}
+
 	/**
 	 * Deletes the member instance from the database
 	 * @since 3.0.0
@@ -158,6 +185,7 @@ class MemberConfiguration {
 		if (data) {
 			this.UUID = data.id;
 			this.count = data.count;
+			if (Array.isArray(data.stickyRoles)) this.stickyRoles = data.stickyRoles;
 		}
 
 		this._syncStatus = null;

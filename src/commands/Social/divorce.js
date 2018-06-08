@@ -5,6 +5,7 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			runIn: ['text'],
+			requiredPermissions: ['ADD_REACTIONS'],
 			description: msg => msg.language.get('COMMAND_DIVORCE_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_DIVORCE_EXTENDED')
 		});

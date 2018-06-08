@@ -27,7 +27,6 @@ module.exports = class extends Argument {
 		for (const member of msg.guild.members.values())
 			if (reg.test(member.user.username)) results.push(member.user);
 
-
 		let querySearch;
 		if (results.length > 0) {
 			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');

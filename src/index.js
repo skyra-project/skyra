@@ -58,9 +58,6 @@ module.exports = {
 	ConnectFourManager: require('./lib/util/Games/ConnectFourManager'),
 	Slotmachine: require('./lib/util/Games/Slotmachine'),
 
-	// Overwatch
-	overwatch: require('./lib/util/overwatch/index'),
-
 	// Moderation
 	AntiRaid: require('./lib/util/AntiRaid'),
 	GuildSecurity: require('./lib/util/GuildSecurity'),

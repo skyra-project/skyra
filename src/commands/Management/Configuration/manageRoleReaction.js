@@ -32,6 +32,7 @@ module.exports = class extends Command {
 			}
 		}).createCustomResolver('rolename', (arg, possible, msg, [action = 'show']) => {
 			if (action !== 'add') return undefined;
+			if (!arg) throw msg.language.get('COMMAND_MANAGEROLEREACTION_REQUIRED_ROLE');
 			return this.client.arguments.get('rolename').run(arg, possible, msg);
 		});
 	}

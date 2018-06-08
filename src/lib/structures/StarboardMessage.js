@@ -218,9 +218,12 @@ class StarboardMessage {
 	 * @param {string} userID The user's ID to add
 	 * @returns {Promise<boolean>}
 	 */
-	async add(userID) {
-		if (this.message.author.id !== userID && !this.users.has(userID) && this.users.add(userID)) return this.setStars();
-		return false;
+	add(userID) {
+		if (this.message.author.id !== userID && !this.users.has(userID)) {
+			this.users.add(userID);
+			return this.setStars();
+		}
+		return Promise.resolve(false);
 	}
 
 	/**
@@ -229,9 +232,12 @@ class StarboardMessage {
 	 * @param {string} userID The user's ID to remove
 	 * @returns {Promise<boolean>}
 	 */
-	async remove(userID) {
-		if (this.message.author.id !== userID && this.users.delete(userID)) return this.setStars();
-		return false;
+	remove(userID) {
+		if (this.message.author.id !== userID) {
+			this.users.delete(userID);
+			return this.setStars();
+		}
+		return Promise.resolve(false);
 	}
 
 	/**
@@ -263,24 +269,19 @@ class StarboardMessage {
 		if (this._syncStatus) await this._syncStatus;
 
 		const { stars } = this;
-		if (this.disabled || stars <= this.manager.minimum) return false;
+		if (this.disabled || stars < this.manager.minimum) return false;
 		const content = `${this.emoji} **${stars}** ${this.channel} ID: ${this.message.id}`;
 		if (this.starMessage) {
 			try {
 				await this.starMessage.edit(content, { embed: this.embed });
 			} catch (error) {
-				if (typeof this.starMessage.edit !== 'function') {
-					this.client.emit('warn', 'StarboardMessage#message.edit is not a function');
-					this.client.emit('wtf', this.starMessage);
-				} else {
-					this.client.emit('warn', '[StarboardMessage] At updateMessage');
-					this.client.emit('apiError', error);
-					this.destroy();
-				}
+				this.client.emit('warn', '[StarboardMessage] At updateMessage');
+				this.client.emit('apiError', error);
+				if (error.code === '10008') this.destroy();
 			}
 		} else {
 			this.starMessage = await this.manager.starboardChannel.send(content, { embed: this.embed });
-			this.provider.db.table(TABLENAME).get(this.UUID).update({ starMessageID: this.starMessage.id });
+			await this._updateDatabase({ starMessageID: this.starMessage.id });
 		}
 		this._lastUpdated = Date.now();
 
@@ -295,16 +296,9 @@ class StarboardMessage {
 	 */
 	async setStars() {
 		if (this.disabled) return false;
-		if (this._syncStatus) await this._syncStatus;
+		this._lastUpdated = Date.now();
 
-		const r = this.provider.db;
-
-		if (!this.UUID) {
-			const result = await r.table(TABLENAME).insert(this.toJSON());
-			[this.UUID] = result.generated_keys;
-		} else {
-			await r.table(TABLENAME).get(this.UUID).update({ stars: this.stars });
-		}
+		await this._updateDatabase({ stars: this.stars });
 		await this.updateMessage();
 
 		return true;
@@ -315,7 +309,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 */
 	destroy() {
-		this.manager.delete(`${this.channel.id}-${this.channel.id}`);
+		this.manager.delete(`${this.channel.id}-${this.message.id}`);
 		this.dispose();
 	}
 
@@ -347,6 +341,14 @@ class StarboardMessage {
 		return `StarboardMessage(${this.channel.id}-${this.message.id}, ${this.stars})`;
 	}
 
+	async _updateDatabase(object) {
+		if (this._syncStatus) await this._syncStatus;
+		if (!this.UUID)
+			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...object })).generated_keys;
+		else
+			await this.provider.db.table(TABLENAME).get(this.UUID).update(object);
+	}
+
 	/**
 	 * Sync the StarboardMessage instance with the database
 	 * @since 3.0.0
@@ -357,8 +359,12 @@ class StarboardMessage {
 		await this.fetchStars();
 
 		if (this.stars) {
-			const [data] = await this.provider.db.table(TABLENAME).getAll([this.channel.id, this.message.id], TABLEINDEX)
-				.limit(1).catch(() => [null]);
+			const data = await this.provider.db
+				.table(TABLENAME)
+				.getAll([this.channel.id, this.message.id], TABLEINDEX)
+				.limit(1)
+				.nth(0)
+				.default(null);
 
 			if (data) {
 				this.UUID = data.id;

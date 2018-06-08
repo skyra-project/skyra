@@ -98,7 +98,7 @@ class MemberConfiguration {
 	 * @returns {Promise<this>}
 	 */
 	sync() {
-		if (!this.client._executedSweep) return this;
+		if (!this.client._skyraReady) return this;
 		if (!this._syncStatus) this._syncStatus = this._sync();
 		return this._syncStatus;
 	}

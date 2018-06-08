@@ -43,38 +43,6 @@ module.exports = class Skyra extends Client {
 		this.moderation = new Moderation(this);
 
 		/**
-		 * The UsageStatus object containing Skyra's metrics in the last 12 hours,
-		 * with an update every 5 minutes
-		 * @since 2.0.0
-		 * @type {SkyraUsageStatus}
-		 */
-		this.usageStatus = Object.seal({
-			/**
-			 * The CPU usage in the last 12 hours for each 5 minutes
-			 * @type {number[]}
-			 */
-			cpu: new Array(96).fill(0),
-
-			/**
-			 * The RAM usage in the heap total in the last 12 hours for each 5 minutes
-			 * @type {number[]}
-			 */
-			prc: new Array(96).fill(0),
-
-			/**
-			 * The RAM usage in the heap used in the last 12 hours for each 5 minutes
-			 * @type {number[]}
-			 */
-			ram: new Array(96).fill(0),
-
-			/**
-			 * The amount of times any command got executed in the last 12 hours for each 5 minutes
-			 * @type {number[]}
-			 */
-			cmd: new Array(96).fill(0)
-		});
-
-		/**
 		 * The API handler
 		 * @since 3.0.0
 		 * @type {APIStore}
@@ -114,48 +82,61 @@ module.exports = class Skyra extends Client {
 		this.dictionaryName = new Map();
 
 		/**
-		 * The ConnectFour manager
-		 * @since 3.0.0
-		 * @type {ConnectFourManager}
+		 * The UsageStatus object containing Skyra's metrics in the last 12 hours,
+		 * with an update every 5 minutes
+		 * @since 2.0.0
+		 * @type {SkyraUsageStatus}
 		 */
-		this.connectFour = new ConnectFourManager(this);
+		this.usageStatus = Object.seal({
+			/**
+			 * The CPU usage in the last 12 hours for each 5 minutes
+			 * @type {number[]}
+			 */
+			cpu: new Array(96).fill(0),
 
-		/**
-		 * @type {NodeJS.Timer}
-		 * @since 3.0.0
-		 * @private
-		 */
-		this._updateStatsInterval = setInterval(this.updateStats.bind(this), 300000);
+			/**
+			 * The RAM usage in the heap total in the last 12 hours for each 5 minutes
+			 * @type {number[]}
+			 */
+			prc: new Array(96).fill(0),
 
-		/**
-		 * @type {boolean}
-		 * @since 3.0.0
-		 * @private
-		 */
-		this._executedSweep = false;
-	}
+			/**
+			 * The RAM usage in the heap used in the last 12 hours for each 5 minutes
+			 * @type {number[]}
+			 */
+			ram: new Array(96).fill(0),
 
-	async login(token) {
-		const result = await super.login(token);
+			/**
+			 * The amount of times any command got executed in the last 12 hours for each 5 minutes
+			 * @type {number[]}
+			 */
+			cmd: new Array(96).fill(0)
+		});
 
-		// Fill the dictionary name for faster user fetching
-		for (const user of this.users.values()) this.dictionaryName.set(user.id, user.username);
+		Object.defineProperties(this, {
+			/**
+			 * The ConnectFour manager
+			 * @name Skyra#connectFour
+			 * @since 3.0.0
+			 * @type {ConnectFourManager}
+			 */
+			connectFour: { value: new ConnectFourManager(this) },
+			/**
+			 * @type {NodeJS.Timer}
+			 * @name Skyra#_updateStatsInterval
+			 * @since 3.0.0
+			 * @private
+			 */
+			_updateStatsInterval: { value: this.setInterval(this.updateStats.bind(this), 300000) },
 
-		// Sweep
-		this.tasks.get('cleanup').run();
-
-		this._executedSweep = true;
-
-		// Sync any configuration instance
-		for (const guild of this.guilds.values()) {
-			for (const member of guild.members.values())
-				member.configs.sync();
-		}
-
-		for (const user of this.users.values())
-			user.configs.sync();
-
-		return result;
+			/**
+			 * @type {boolean}
+			 * @name Skyra#_skyraReady
+			 * @since 3.1.0
+			 * @private
+			 */
+			_skyraReady: { value: false, writable: true }
+		});
 	}
 
 	/**
@@ -177,14 +158,16 @@ module.exports = class Skyra extends Client {
 	 * @since 2.1.0
 	 */
 	updateStats() {
+		const { heapTotal, heapUsed } = process.memoryUsage();
+
 		this.usageStatus.cpu.shift();
 		this.usageStatus.cpu.push(((loadavg()[0] * 10000) | 0) / 100);
 
 		this.usageStatus.prc.shift();
-		this.usageStatus.prc.push(((100 * (process.memoryUsage().heapTotal / 1048576)) | 0) / 100);
+		this.usageStatus.prc.push(((100 * (heapTotal / 1048576)) | 0) / 100);
 
 		this.usageStatus.ram.shift();
-		this.usageStatus.ram.push(((100 * (process.memoryUsage().heapUsed / 1048576)) | 0) / 100);
+		this.usageStatus.ram.push(((100 * (heapUsed / 1048576)) | 0) / 100);
 
 		this.usageStatus.cmd.shift();
 		this.usageStatus.cmd.push(0);
@@ -195,9 +178,6 @@ module.exports = class Skyra extends Client {
 	 * @since 3.0.0
 	 */
 	dispose() {
-		// Clear the interval that updates the stats
-		clearInterval(this._updateStatsInterval);
-
 		// Clear the leaderboards and their timers
 		this.leaderboard.dispose();
 		this.dictionaryName.clear();

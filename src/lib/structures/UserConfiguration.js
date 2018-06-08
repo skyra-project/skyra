@@ -28,8 +28,7 @@ class UserConfiguration extends Configuration {
 			this.client.emit('wtf', error);
 			throw error;
 		}
-		this.money -= money;
-		return this.update('money', this.money).then(() => this.money);
+		return this.update('money', this.money - money).then(() => this.money);
 	}
 
 }

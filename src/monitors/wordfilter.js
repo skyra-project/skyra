@@ -14,6 +14,7 @@ module.exports = class extends Monitor {
 	async run(msg) {
 		const { configs } = msg.guild;
 		if (await msg.hasAtLeastPermissionLevel(5)
+			|| !configs.filter.regexp
 			|| !configs.filter.regexp.test(msg.content)) return false;
 
 		if (msg.deletable) await msg.nuke().catch(() => null);

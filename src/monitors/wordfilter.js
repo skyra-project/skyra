@@ -1,4 +1,4 @@
-const { Monitor, MessageEmbed } = require('../index');
+const { Monitor, MessageEmbed, klasaUtil: { codeBlock } } = require('../index');
 
 module.exports = class extends Monitor {
 
@@ -15,11 +15,11 @@ module.exports = class extends Monitor {
 		if (await msg.hasAtLeastPermissionLevel(5)) return false;
 
 		const { filter, channels } = msg.guild.configs;
-		const filtered = msg.content.replace(filter.regexp, match => '\\*'.repeat(match.length));
+		const filtered = msg.content.replace(filter.regexp, match => '*'.repeat(match.length));
 		if (filtered === msg.content) return false;
 
 		if (msg.deletable) {
-			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', filtered)).catch(() => null);
+			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', filtered))).catch(() => null);
 			msg.nuke().catch(() => null);
 		}
 		if (msg.channel.postable && (filter.level === 1 || filter.level === 3))

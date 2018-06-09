@@ -3,10 +3,6 @@ const { Event } = require('klasa');
 module.exports = class extends Event {
 
 	async run() {
-		// this.client.user.setActivity('Skyra, help', { type: 'LISTENING' })
-		await this.client.user.setActivity('Skyra, help', { type: 'LISTENING' })
-			.catch(err => this.client.emit('error', err));
-
 		await this.initCleanupTask();
 		await this.initBackupTask();
 		await this.initPostStatsTask();

@@ -15,7 +15,7 @@ module.exports = class extends Monitor {
 		if (await msg.hasAtLeastPermissionLevel(5)) return false;
 
 		const { filter, channels } = msg.guild.configs;
-		const filtered = msg.content.replace(filter.regexp, match => '*'.repeat(match.length));
+		const filtered = msg.content.replace(filter.regexp, match => '\\*'.repeat(match.length));
 		if (filtered === msg.content) return false;
 
 		if (msg.deletable) {

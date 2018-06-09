@@ -1,4 +1,5 @@
-const { Command, util: { exec, codeBlock } } = require('klasa');
+const { Command, klasaUtil: { exec, codeBlock }, MessageAttachment } = require('../../../index');
+const { post } = require('snekfetch');
 
 module.exports = class extends Command {
 
@@ -18,8 +19,14 @@ module.exports = class extends Command {
 			.catch(error => ({ stdout: null, stderr: error }));
 		const output = result.stdout ? `**\`OUTPUT\`**${codeBlock('prolog', result.stdout)}` : '';
 		const outerr = result.stderr ? `**\`ERROR\`**${codeBlock('prolog', result.stderr)}` : '';
+		const joined = [output, outerr].join('\n');
 
-		return msg.sendMessage([output, outerr].join('\n'));
+		return msg.sendMessage(joined.length > 2000 ? await this.getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined);
+	}
+
+	async getHaste(result) {
+		const { body } = await post('https://hastebin.com/documents').send(result);
+		return `https://hastebin.com/${body.key}.js`;
 	}
 
 };

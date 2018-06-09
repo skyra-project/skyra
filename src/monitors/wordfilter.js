@@ -12,27 +12,32 @@ module.exports = class extends Monitor {
 	}
 
 	async run(msg) {
-		const { configs } = msg.guild;
-		if (await msg.hasAtLeastPermissionLevel(5)
-			|| !configs.filter.regexp
-			|| !configs.filter.regexp.test(msg.content)) return false;
+		if (await msg.hasAtLeastPermissionLevel(5)) return false;
 
-		if (msg.deletable) await msg.nuke().catch(() => null);
-		if (configs.filter.level === 1 || configs.filter.level === 3)
-			msg.sendMessage(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
+		const { filter, channels } = msg.guild.configs;
+		const filtered = msg.content.replace(filter.regexp, match => '*'.repeat(match.length));
+		if (filtered === msg.content) return false;
 
-		if (configs.filter.level !== 2 && configs.filter.level !== 3) return true;
+		if (msg.deletable) {
+			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', filtered)).catch(() => null);
+			msg.nuke().catch(() => null);
+		}
+		if (msg.channel.postable && (filter.level === 1 || filter.level === 3))
+			msg.alert(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
 
-		const modLogChannelID = configs.channels.modlog;
+		if (filter.level !== 2 && filter.level !== 3) return true;
+
+		const modLogChannelID = channels.modlog;
 		if (!modLogChannelID) return true;
 
 		const channel = msg.guild.channels.get(modLogChannelID);
-		if (!channel) return configs.reset('channel.modlog');
+		if (!channel) return msg.guild.configs.reset('channel.modlog');
 
 		return channel.send(new MessageEmbed()
+			.setDescription(filtered)
 			.setColor(0xefae45)
 			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')} ${configs.filter.regexp.exec(msg.content)[0]}`)
+			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')}`)
 			.setTimestamp());
 	}
 
@@ -42,6 +47,5 @@ module.exports = class extends Monitor {
 		const { selfmod, filter } = msg.guild.configs;
 		return filter.level !== 0 && filter.regexp !== null && !selfmod.ignoreChannels.includes(msg.channel.id);
 	}
-
 
 };

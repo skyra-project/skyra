@@ -32,7 +32,7 @@ class GuildConfiguration extends Configuration {
 	static superRegExp(filterArray) {
 		const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
 			item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
-		return new RegExp(`\\b(?:${filtered})\\b`, 'i');
+		return new RegExp(`\\b(?:${filtered})\\b`, 'gi');
 	}
 
 }

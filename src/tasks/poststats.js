@@ -3,7 +3,9 @@ const request = require('snekfetch');
 
 module.exports = class extends Task {
 
-	async run() {
+	run() {
+		if (this.client.options.dev) return;
+
 		/* eslint-disable camelcase */
 		if (config.tokens.discordBotOrg) {
 			request

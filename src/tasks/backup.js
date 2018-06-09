@@ -19,14 +19,9 @@ module.exports = class extends Task {
 
 	async run() {
 		this.disable();
-		const paths = await Promise.all([
-			this.backup('json', 'clientStorage'),
-			this.backup('rethinkdb', 'localScores'),
-			this.backup('rethinkdb', 'users'),
-			this.backup('rethinkdb', 'guilds'),
-			this.backup('rethinkdb', 'moderation'),
-			this.backup('rethinkdb', 'starboard')
-		]);
+		const r = this.client.providers.default.db;
+		const tables = await r.tableList().run();
+		const paths = await Promise.all(tables.map(table => r.table(table).getAll().run().then(entries => this.backup(table, entries))));
 		await this.writeFile(paths);
 		this.enable();
 	}
@@ -49,14 +44,13 @@ module.exports = class extends Task {
 	/**
 	 * Do a backup
 	 * @since 3.0.0
-	 * @param {string} providerName The name of the provider
 	 * @param {string} table The name of the table
+	 * @param {Object<string, *>[]} entries The entries
 	 * @returns {Promise<string>}
 	 */
-	async backup(providerName, table) {
-		const data = await this.client.providers.get(providerName).getAll(table);
+	async backup(table, entries) {
 		const path = join(this.dirManager, `${this.timestamp.display()}-${table}.json`);
-		await outputJSONAtomic(path, data);
+		await outputJSONAtomic(path, entries);
 		return path;
 	}
 

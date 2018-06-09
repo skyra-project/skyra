@@ -172,6 +172,12 @@ class MemberConfiguration {
 		return `MemberConfiguration(${this.guildID}::${this.userID})`;
 	}
 
+	_patch(data) {
+		if (typeof data.id !== 'undefined') this.UUID = data.id;
+		if (typeof data.count === 'number') this.count = data.count;
+		if (Array.isArray(data.stickyRoles)) this.stickyRoles = data.stickyRoles;
+	}
+
 	/**
 	 * Internal sync method
 	 * @since 3.0.0

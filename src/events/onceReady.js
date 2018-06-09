@@ -13,9 +13,11 @@ module.exports = class extends Event {
 		if (this.client.user.bot) await this.client.fetchApplication();
 		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.user.bot ? this.client.application.owner.id : this.client.user.id;
 
-		this._prepareSkyra();
 		this.client.configs = this.client.gateways.clientStorage.get(this.client.user.id, true);
-		await this.client.gateways.sync(true);
+		await Promise.all([
+			this._prepareSkyra(),
+			this.client.gateways.sync(true)
+		]);
 
 		// Automatic Prefix editing detection.
 		const { prefix } = this.client.options;
@@ -44,19 +46,25 @@ module.exports = class extends Event {
 		this.client.emit('klasaReady');
 	}
 
-	_prepareSkyra() {
+	async _prepareSkyra() {
 		// Fill the dictionary name for faster user fetching
-		for (const user of this.users.values()) this.dictionaryName.set(user.id, user.username);
+		for (const user of this.client.users.values()) this.client.dictionaryName.set(user.id, user.username);
 
 		// Sweep
-		this.tasks.get('cleanup').run();
-		this.client._skyraReady = true;
+		this.client.tasks.get('cleanup').run();
 
 		// Sync any configuration instance
-		for (const guild of this.guilds.values()) {
+		const table = this.client.providers.default.db.table('localScores');
+		const queue = [];
+
+		const { guilds, user: { id: clientID } } = this.client;
+		for (const guild of guilds.values()) {
 			for (const member of guild.members.values())
-				member.configs.sync();
+				if (member.id !== clientID) queue.push([guild.id, member.id]);
 		}
+		this.client._skyraReady = true;
+		const entries = await table.getAll(...queue, { index: 'guild_user' }).run();
+		for (const entry of entries) guilds.get(entry.guildID).members.get(entry.userID).configs._patch(entry);
 	}
 
 };

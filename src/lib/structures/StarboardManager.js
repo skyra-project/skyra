@@ -89,15 +89,17 @@ module.exports = class StarboardManager extends Collection {
 	 * @since 3.0.0
 	 * @param {TextChannel} channel The text channel the message was sent
 	 * @param {string} messageID The message id
+	 * @param {string} userID The user id
 	 * @returns {Promise<?StarboardMessage>}
 	 */
-	async fetch(channel, messageID) {
+	async fetch(channel, messageID, userID) {
 		const entry = super.get(`${channel.id}-${messageID}`);
 		if (entry) return entry;
 		const message = await channel.messages.fetch(messageID).catch(() => null);
 		if (message) {
 			const starboardMessage = new StarboardMessage(this, message);
 			await starboardMessage.sync();
+			if (starboardMessage.users.size) starboardMessage.users.delete(userID);
 			super.set(`${channel.id}-${messageID}`, starboardMessage);
 			return starboardMessage;
 		}

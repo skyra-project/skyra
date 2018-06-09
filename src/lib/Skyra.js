@@ -56,9 +56,6 @@ module.exports = class Skyra extends Client {
 		 */
 		this.rawEvents = new RawEventStore(this);
 
-		// Update the stats
-		this.updateStats();
-
 		// Register the API handler
 		this.registerStore(this.ipcPieces)
 			.registerStore(this.rawEvents);
@@ -112,6 +109,9 @@ module.exports = class Skyra extends Client {
 			 */
 			cmd: new Array(96).fill(0)
 		});
+
+		// Update the stats
+		this.updateStats();
 
 		Object.defineProperties(this, {
 			/**

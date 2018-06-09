@@ -9,6 +9,9 @@ require('canvas-constructor').Canvas
 	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight')
 	.registerFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
 
+// eslint-disable-next-line no-process-env
+const DEV = process.env.DEV === 'true';
+
 // Skyra setup
 Skyra.defaultPermissionLevels
 	.add(4, (client, msg) => Boolean(msg.member) && (msg.guild.configs.roles.staff
@@ -27,6 +30,7 @@ const skyra = new Skyra({
 	cmdPrompt: true,
 	console: config.console,
 	consoleEvents: { verbose: true },
+	dev: DEV,
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
 		'PRESENCE_UPDATE',
@@ -48,8 +52,8 @@ const skyra = new Skyra({
 		monitors: { ignoreOthers: false },
 		rawEvents: { enabled: true }
 	},
-	prefix: 's!',
-	presence: { activity: { name: 'Skyra, help', type: 'LISTENING' } },
+	prefix: DEV ? 'sd!' : 's!',
+	presence: DEV ? null : { activity: { name: 'Skyra, help', type: 'LISTENING' } },
 	providers: {
 		default: 'rethinkdb',
 		rethinkdb: config.database.rethinkdb
@@ -57,11 +61,10 @@ const skyra = new Skyra({
 	quotedStringSupport: true,
 	readyMessage: (client) =>
 		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
-	regexPrefix: /^(hey )?(eva|skyra)(,|!)/i,
-	// regexPrefix: /^(hey )?eva(,|!)/i,
+	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)(,|!)/i,
 	schedule: { interval: 5000 },
 	typing: false
 });
 
-skyra.login(config.tokens.bot.stable)
+skyra.login(DEV ? config.tokens.bot.dev : config.tokens.bot.stable)
 	.catch((error) => skyra.console.wtf(`Login Error:\n${(error && error.stack) || error}`));

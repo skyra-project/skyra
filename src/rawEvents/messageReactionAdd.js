@@ -89,7 +89,7 @@ module.exports = class extends RawEvent {
 
 			// Process the starboard
 			const { starboard } = channel.guild;
-			const sMessage = await starboard.fetch(channel, messageID);
+			const sMessage = await starboard.fetch(channel, messageID, userID);
 			await sMessage.add(userID);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);

@@ -219,11 +219,9 @@ class StarboardMessage {
 	 * @returns {Promise<boolean>}
 	 */
 	add(userID) {
-		if (this.message.author.id !== userID && !this.users.has(userID)) {
-			this.users.add(userID);
-			return this.setStars();
-		}
-		return Promise.resolve(false);
+		if (this.message.author.id === userID || this.users.has(userID)) return Promise.resolve(false);
+		this.users.add(userID);
+		return this.setStars();
 	}
 
 	/**
@@ -269,7 +267,7 @@ class StarboardMessage {
 		if (this._syncStatus) await this._syncStatus;
 
 		const { stars } = this;
-		if (this.disabled || stars < this.manager.minimum) return false;
+		if (this.disabled || this.manager.minimum > stars) return false;
 		const content = `${this.emoji} **${stars}** ${this.channel} ID: ${this.message.id}`;
 		if (this.starMessage) {
 			try {

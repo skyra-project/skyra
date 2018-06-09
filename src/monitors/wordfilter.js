@@ -34,7 +34,7 @@ module.exports = class extends Monitor {
 		if (!channel) return msg.guild.configs.reset('channel.modlog');
 
 		return channel.send(new MessageEmbed()
-			.setDescription(filtered.replace(/\*/g, '\\*'))
+			.splitFields(cutText(filtered.replace(/\*/g, '\\*'), 4000))
 			.setColor(0xefae45)
 			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')}`)

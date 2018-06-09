@@ -1159,7 +1159,7 @@ module.exports = class extends Language {
 			COMMAND_DONATE_EXTENDED: builder.display('donate', {
 				extendedHelp: `
 				Skyra Project started on 24th October 2016, if you are reading this, you are
-				using the version 3.0.0 (Royal Update), which is the twelfth rewrite. I have
+				using the version 3.1.0 (Royal Update), which is the twelfth rewrite. I have
 				improved a lot every single function from Skyra, and now, she is extremely fast.
 
 				However, not everything is free, I need your help to keep Skyra alive in a VPS so
@@ -1515,7 +1515,7 @@ module.exports = class extends Language {
 				'No tengas miedo de quitar algunos permisos, te avisaré cuando intentes usar un comando que los necesite.'
 			].join('\n'),
 			COMMAND_INFO: [
-				'Skyra 3.0.0 (código **Royal**) es un Bot multitarea para Discord diseñado para hacerse cargo de la mayoría de las tareas con un rendimiento increíble y una actividad constante de las 24 horas al día.',
+				'Skyra 3.1.0 (código **Royal**) es un Bot multitarea para Discord diseñado para hacerse cargo de la mayoría de las tareas con un rendimiento increíble y una actividad constante de las 24 horas al día.',
 				'Ella está escrita sobre Klasa, un framework "plug-and-play" que utiliza la librería Discord.js.',
 				'',
 				'Skyra tiene:',

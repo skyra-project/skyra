@@ -887,7 +887,7 @@ module.exports = class extends Language {
 			COMMAND_DONATE_EXTENDED: builder.display('donate', {
 				extendedHelp: `
 				Skyra Project started on 24th October 2016, if you are reading this, you are
-				using the version 3.0.0 (Royal Update), which is the twelfth rewrite. I have
+				using the version 3.1.0 (Royal Update), which is the twelfth rewrite. I have
 				improved a lot every single function from Skyra, and now, she is extremely fast.
 
 				However, not everything is free, I need your help to keep Skyra alive in a VPS so

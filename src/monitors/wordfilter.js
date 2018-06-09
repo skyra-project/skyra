@@ -1,4 +1,4 @@
-const { Monitor, MessageEmbed, klasaUtil: { codeBlock } } = require('../index');
+const { Monitor, MessageEmbed, klasaUtil: { codeBlock }, util: { cutText } } = require('../index');
 
 module.exports = class extends Monitor {
 
@@ -19,7 +19,7 @@ module.exports = class extends Monitor {
 		if (filtered === msg.content) return false;
 
 		if (msg.deletable) {
-			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', filtered))).catch(() => null);
+			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', cutText(filtered, 1900)))).catch(() => null);
 			msg.nuke().catch(() => null);
 		}
 		if (msg.channel.postable && (filter.level === 1 || filter.level === 3))
@@ -34,7 +34,7 @@ module.exports = class extends Monitor {
 		if (!channel) return msg.guild.configs.reset('channel.modlog');
 
 		return channel.send(new MessageEmbed()
-			.setDescription(filtered)
+			.setDescription(filtered.replace(/\*/g, '\\*'))
 			.setColor(0xefae45)
 			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')}`)

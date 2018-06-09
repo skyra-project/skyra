@@ -244,15 +244,14 @@ class StarboardMessage {
 	 * @returns {Promise<number>}
 	 */
 	async fetchStars() {
-		const reaction = this.message.reactions.get('⭐');
-		if (!reaction) {
+		const users = await this._fetchUsers();
+		if (!users.length) {
 			this.destroy();
 			return 0;
 		}
 
-		const users = await reaction.users.fetch();
 		this.users.clear();
-		for (const userID of users.keys()) this.users.add(userID);
+		for (const user of users) this.users.add(user.id);
 		this.users.delete(this.message.author.id);
 		return this.users.size;
 	}
@@ -380,6 +379,19 @@ class StarboardMessage {
 
 		this._syncStatus = null;
 		return this;
+	}
+
+	/**
+	 * Fetch the users
+	 * @since 3.0.0
+	 * @returns {Promise<Object<string, *>[]>}
+	 * @private
+	 */
+	_fetchUsers() {
+		return this.client.api.channels[this.channel.id].messages[this.message.id]
+			.reactions['%E2%AD%90']
+			.get({ query: { limit: 100 } })
+			.catch(() => []);
 	}
 
 }

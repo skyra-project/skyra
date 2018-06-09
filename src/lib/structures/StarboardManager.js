@@ -40,7 +40,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @returns {this}
 	 */
 	set(key, value) {
-		if (super.size >= 25) {
+		if (this.size >= 25) {
 			const entry = this.find(sMes => sMes.stars < this.minimum) || this.reduce((acc, sMes) => acc._lastUpdated > sMes._lastUpdated ? sMes : acc, Date.now());
 			if (entry) entry.destroy();
 		}
@@ -98,9 +98,9 @@ module.exports = class StarboardManager extends Collection {
 		const message = await channel.messages.fetch(messageID).catch(() => null);
 		if (message) {
 			const starboardMessage = new StarboardMessage(this, message);
+			super.set(`${channel.id}-${messageID}`, starboardMessage);
 			await starboardMessage.sync();
 			if (starboardMessage.users.size) starboardMessage.users.delete(userID);
-			super.set(`${channel.id}-${messageID}`, starboardMessage);
 			return starboardMessage;
 		}
 		return null;

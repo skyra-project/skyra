@@ -33,7 +33,7 @@ module.exports = class extends ModerationCommand {
 		reason = reason.length ? reason.join(' ') : null;
 		const roles = this._getRoles(member);
 
-		await member.edit({ roles: [mute.id] });
+		await member.edit({ roles: member.roles.filter(role => role.managed).map(role => role.id).concat(mute.id) });
 		const modlog = await this.sendModlog(msg, target, reason, roles);
 		await msg.guild.configs.update('mutes', member.id, msg.guild, { action: 'add' });
 

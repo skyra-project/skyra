@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
 	async run(msg, [input, ind = 1]) {
 		const index = --ind;
-		const data = await this.fetchURL(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${KEY}`, 'json');
+		const data = await this.fetchURL(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${KEY}&safeSearch=moderate`, 'json');
 		const result = data.items[index];
 
 		if (!result) {
@@ -24,9 +24,16 @@ module.exports = class extends Command {
 				: 'COMMAND_YOUTUBE_INDEX_NOTFOUND');
 		}
 
-		const output = result.id.kind === 'youtube#channel'
-			? `https://youtube.com/channel/${result.id.channelId}`
-			: `https://youtu.be/${result.id.videoId}`;
+		let output;
+		switch (result.id.kind) {
+			case 'youtube#channel': output = `https://youtube.com/channel/${result.id.channelId}`; break;
+			case 'youtube#playlist': output = `https://www.youtube.com/playlist?list=${result.id.playlistId}`; break;
+			case 'youtube#video': output = `https://youtu.be/${result.id.videoId}`; break;
+			default: {
+				this.client.emit('wtf', `YouTube [${input}] [${ind}] -> Returned incompatible kind '${result.id.kind}'.`);
+				throw 'I found an incompatible kind of result...';
+			}
+		}
 
 		return msg.sendMessage(output);
 	}

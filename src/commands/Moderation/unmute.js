@@ -32,7 +32,7 @@ module.exports = class extends ModerationCommand {
 		if (!mutedUsed) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 		await msg.guild.configs.update('mutes', member.id, msg.guild, { action: 'remove' });
 
-		const roles = mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || [];
+		const roles = (mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || []).concat(member.roles.filter(role => role.managed).map(role => role.id));
 
 		await member.edit({ roles });
 		const modlog = await this.sendModlog(msg, target, reason.length ? reason.join(' ') : null);

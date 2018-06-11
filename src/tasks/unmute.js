@@ -18,8 +18,7 @@ module.exports = class extends Task {
 
 		// If the member is found, update the roles
 		if (member) {
-			const roles = Array.isArray(lastMutedCase[schemaKeys.EXTRA_DATA])
-				? lastMutedCase[schemaKeys.EXTRA_DATA] : null;
+			const roles = (lastMutedCase[schemaKeys.EXTRA_DATA] || []).concat(member.roles.filter(role => role.managed).map(role => role.id));
 			if (roles) await member.edit({ roles }).catch(() => null);
 		}
 

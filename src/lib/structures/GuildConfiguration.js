@@ -20,6 +20,10 @@ class GuildConfiguration extends Configuration {
 
 		this.tags.clear();
 		if (this._tags.length) for (const [name, content] of this._tags) this.tags.set(name, content);
+		this.updateFilter();
+	}
+
+	updateFilter() {
 		this.filter.regexp = this.filter.raw.length ? GuildConfiguration.superRegExp(this.filter.raw) : null;
 	}
 

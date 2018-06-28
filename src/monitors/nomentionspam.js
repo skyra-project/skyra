@@ -29,6 +29,7 @@ module.exports = class extends Monitor {
 				.setUser(msg.author)
 				.setType(Moderation.typeKeys.BAN)
 				.setReason(msg.language.get('MONITOR_NMS_MODLOG', msg.guild.configs.selfmod.nmsthreshold, amount))
+				.avoidAnonymous()
 				.send();
 		}
 
@@ -40,10 +41,6 @@ module.exports = class extends Monitor {
 		const clone = collection.clone();
 		clone.delete(userID);
 		return clone;
-	}
-
-	handleError(err) {
-		this.client.emit('log', err, 'error');
 	}
 
 };

@@ -58,7 +58,7 @@ module.exports = class extends Command {
 		}
 
 		this.busy.delete(msg.author.id);
-		return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_GIVE', user.username));
+		return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_GIVE', user));
 	}
 
 };

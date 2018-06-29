@@ -1125,7 +1125,6 @@ module.exports = class extends Language {
 			COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
 			COMMAND_EVAL_EXTENDED: builder.display('eval', {
 				extendedHelp: `The eval command evaluates code as-in, any error thrown from it will be handled.
-					The eval command evaluates code as-in, any error thrown from it will be handled.
 					It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.
 					The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.
 					The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.

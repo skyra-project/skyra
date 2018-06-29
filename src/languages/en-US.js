@@ -170,7 +170,7 @@ module.exports = class extends Language {
 			].filter(val => val !== '').join('\n'),
 			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
-			COMMAND_TRANSFER_ERROR: '❌ That file has been transfered already or never existed.',
+			COMMAND_TRANSFER_ERROR: '❌ That file has been transferred already or never existed.',
 			COMMAND_TRANSFER_SUCCESS: (type, name) => `✅ Successfully transferred ${type}: ${name}`,
 			COMMAND_TRANSFER_FAILED: (type, name) => `Transfer of ${type}: ${name} to Client has failed. Please check your Console.`,
 			COMMAND_TRANSFER_DESCRIPTION: 'Transfers a core piece to its respective folder',
@@ -224,7 +224,7 @@ module.exports = class extends Language {
 			 * ANIMALS COMMANDS
 			 */
 
-			COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a misterious cat fact.',
+			COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a mysterious cat fact.',
 			COMMAND_CATFACT_EXTENDED: builder.display('catfact', {
 				extendedHelp: `Do you know cats are very curious, right? They certainly have a lot of fun and weird facts.
 				This command queries catfact.ninja and retrieves a fact so you can read it.`
@@ -323,13 +323,13 @@ module.exports = class extends Language {
 			}),
 			COMMAND_CHOICE_DESCRIPTION: 'Eeny, meeny, miny, moe, catch a tiger by the toe...',
 			COMMAND_CHOICE_EXTENDED: builder.display('choice', {
-				extendedHelp: `I have an existencial doubt... should I wash the dishes or throw them throught the window? The search
+				extendedHelp: `I have an existencial doubt... should I wash the dishes or throw them through the window? The search
 					continues. List me items separated by comma and I will choose one them. On a side note, I am not
 					responsible of what happens next.`,
 				explainedUsage: [
 					['words', 'A list of words separated by comma.']
 				],
-				examples: ['Should Wash the dishes, Throw the dishes throught the window', 'Cat, Dog']
+				examples: ['Should Wash the dishes, Throw the dishes out the window', 'Cat, Dog']
 			}),
 			COMMAND_CHANGEMYMIND_DESCRIPTION: 'Skyra is the best, change my mind.',
 			COMMAND_CHANGEMYMIND_EXTENDED: builder.display('changeMyMind', {
@@ -716,7 +716,7 @@ module.exports = class extends Language {
 				],
 				examples: ['Mercy']
 			}),
-			COMMAND_PINGKYRA_DESCRIPTION: 'How dare you pinging me!?',
+			COMMAND_PINGKYRA_DESCRIPTION: 'How dare you ping me!?',
 			COMMAND_PINGKYRA_EXTENDED: builder.display('pingkyra', {
 				extendedHelp: `There are a few things that annoy kyra, one of them are **Windows 10's notifications**! Which also
 				includes mentions from Discord, hence why this command exists.`,
@@ -959,7 +959,7 @@ module.exports = class extends Language {
 			COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild.',
 			COMMAND_AUTOROLE_EXTENDED: builder.display('autorole', {
 				extendedHelp: `Autoroles? They are roles that are available for everyone, and automatically given when they reach an
-					amount of (local) points, an administrator must configure them throught a setting command.`,
+					amount of (local) points, an administrator must configure them through a setting command.`,
 				explainedUsage: [
 					['list', 'Lists all the current autoroles.'],
 					['add <amount> <role>', 'Add a new autorole.'],
@@ -991,7 +991,7 @@ module.exports = class extends Language {
 			}),
 			COMMAND_LEVEL_DESCRIPTION: 'Check your global level.',
 			COMMAND_LEVEL_EXTENDED: builder.display('level', {
-				extendedHelp: `How much until next level?`,
+				extendedHelp: `How much until the next level?`,
 				explainedUsage: [
 					['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
 				]
@@ -1003,7 +1003,7 @@ module.exports = class extends Language {
 			}),
 			COMMAND_MARRY_DESCRIPTION: 'Marry somebody!',
 			COMMAND_MARRY_EXTENDED: builder.display('marry', {
-				extendedHelp: `Marry with your waifu!`,
+				extendedHelp: `Marry your waifu!`,
 				explainedUsage: [
 					['user', '(Optional) The user to marry with. If not given, the command will tell you who are you married with.']
 				],
@@ -1021,7 +1021,7 @@ module.exports = class extends Language {
 				extendedHelp: `Businessmen! Today is payday!`,
 				explainedUsage: [
 					['money', `Amount of ${SHINY} to pay, you must have the amount you are going to pay.`],
-					['user', 'The targetted user to pay. (Must be mention/id)']
+					['user', 'The targeted user to pay. (Must be mention/id)']
 				],
 				examples: [
 					'200 @kyra'
@@ -1125,6 +1125,7 @@ module.exports = class extends Language {
 			COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
 			COMMAND_EVAL_EXTENDED: builder.display('eval', {
 				extendedHelp: `The eval command evaluates code as-in, any error thrown from it will be handled.
+					The eval command evaluates code as-in, any error thrown from it will be handled.
 					It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.
 					The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.
 					The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.
@@ -1133,7 +1134,10 @@ module.exports = class extends Language {
 					The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.
 					The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword
 					The --showHidden flag will enable the showHidden option in util.inspect.
-					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the **${PERMS.ATTACH_FILES}** permission.`,
+					The --lang and --language flags allow different syntax highlight for the output.
+					The --json flag converts the output to json
+					The --no-timeout flag disables the timeout
+					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${PERMS.ATTACH_FILES} permission.`,
 				examples: [
 					'msg.author.username;',
 					'1 + 1;'
@@ -1159,7 +1163,7 @@ module.exports = class extends Language {
 			COMMAND_DONATE_EXTENDED: builder.display('donate', {
 				extendedHelp: `
 				Skyra Project started on 24th October 2016, if you are reading this, you are
-				using the version 3.1.0 (Royal Update), which is the twelfth rewrite. I have
+				using the version 3.0.0 (Royal Update), which is the twelfth rewrite. I have
 				improved a lot every single function from Skyra, and now, she is extremely fast.
 
 				However, not everything is free, I need your help to keep Skyra alive in a VPS so
@@ -1252,9 +1256,9 @@ module.exports = class extends Language {
 				],
 				examples: ['heel']
 			}),
-			COMMAND_EMOJI_DESCRIPTION: 'Get info from an emoji.',
+			COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 			COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
-			COMMAND_GOOGL_DESCRIPTION: 'Short your links with this tool.',
+			COMMAND_GOOGL_DESCRIPTION: 'Shorten your links with this tool.',
 			COMMAND_GOOGL_EXTENDED: builder.display('googl', {
 				extendedHelp: `Shorten your urls with Googl!`,
 				explainedUsage: [
@@ -1280,12 +1284,12 @@ module.exports = class extends Language {
 			}),
 			COMMAND_PRICE_DESCRIPTION: 'Convert the currency with this tool.',
 			COMMAND_PRICE_EXTENDED: builder.display('price', {}),
-			COMMAND_QUOTE_DESCRIPTION: 'Quote another people\'s message.',
+			COMMAND_QUOTE_DESCRIPTION: 'Quote another person\'s message.',
 			COMMAND_QUOTE_EXTENDED: builder.display('quote', {}),
 			COMMAND_ROLES_DESCRIPTION: 'List all public roles from a guild, or claim/unclaim them.',
 			COMMAND_ROLES_EXTENDED: builder.display('roles', {
 				extendedHelp: `Public roles? They are roles that are available for everyone, an administrator must configure
-					them throught a configuration command.`,
+					them with a configuration command.`,
 				explainedUsage: [
 					['Roles', 'The list of roles to claim and unclaim. Leave this empty to get a list of roles']
 				],
@@ -1316,9 +1320,9 @@ module.exports = class extends Language {
 			}),
 			COMMAND_WHOIS_DESCRIPTION: 'Who are you?',
 			COMMAND_WHOIS_EXTENDED: builder.display('whois', {}),
-			COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something throught Wikipedia.',
+			COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something through Wikipedia.',
 			COMMAND_WIKIPEDIA_EXTENDED: builder.display('wikipedia', {}),
-			COMMAND_YOUTUBE_DESCRIPTION: 'Search something throught YouTube.',
+			COMMAND_YOUTUBE_DESCRIPTION: 'Search something through YouTube.',
 			COMMAND_YOUTUBE_EXTENDED: builder.display('youtube', {}),
 
 			/**
@@ -1378,7 +1382,7 @@ module.exports = class extends Language {
 			COMMAND_WKISS_EXTENDED: builder.display('wkiss', {
 				extendedHelp: `Kiss somebody with a random weeb image!`,
 				explainedUsage: [
-					['user', 'The user to give the kiss.']
+					['user', 'The user to give the kiss to.']
 				],
 				examples: ['@Skyra']
 			}),
@@ -1515,7 +1519,7 @@ module.exports = class extends Language {
 				'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
 			].join('\n'),
 			COMMAND_INFO: [
-				'Skyra 3.1.0 (codename **Royal**) is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.',
+				'Skyra 3.0.0 (codename **Royal**) is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.',
 				"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",
 				'',
 				'Skyra features:',
@@ -1669,7 +1673,7 @@ module.exports = class extends Language {
 			].join('\n'),
 			COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
 			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
-			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what do you want me to filter.',
+			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
 			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
 			COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
@@ -1732,7 +1736,7 @@ module.exports = class extends Language {
 			COMMAND_PERMISSIONS: (username, id) => `Permissions for ${username} (${id})`,
 			COMMAND_PERMISSIONS_ALL: 'All Permissions',
 			COMMAND_RAID_DISABLED: 'The Anti-RAID system is not enabled in this server.',
-			COMMAND_RAID_MISSING_KICK: 'As I do not have the KICK MEMBERS permission, I keep the Anti-RAID unactivated.',
+			COMMAND_RAID_MISSING_KICK: `As I do not have the **${PERMS.KICK_MEMBERS}** permission, I will keep the Anti-RAID unactivated.`,
 			COMMAND_RAID_LIST: 'List of users in the RAID queue',
 			COMMAND_RAID_CLEAR: 'Successfully cleared the RAID list.',
 			COMMAND_RAID_COOL: 'Successfully deactivated the RAID.',
@@ -1763,7 +1767,7 @@ module.exports = class extends Language {
 			COMMAND_MUTE_MUTED: 'The target user is already muted.',
 			COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
 			COMMAND_MUTE_UNCONFIGURED: 'This guild does not have a **Muted** role. Aborting command execution.',
-			COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the permissions **${PERMS.MANAGE_ROLES}** to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
+			COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
 			COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
 			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
 			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
@@ -1819,7 +1823,7 @@ module.exports = class extends Language {
 			},
 			COMMAND_DIVORCE_NOTTAKEN: 'Who would you divorce with? You are not even taken!',
 			COMMAND_DIVORCE_PROMPT: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',
-			COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you continue with your couple!',
+			COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you will continue with your couple!',
 			COMMAND_DIVORCE_DM: user => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
 			COMMAND_DIVORCE_SUCCESS: user => `Successful divorce 💔... You are not longer married with ${user}!`,
 			COMMAND_MARRY_WITH: user => `Dear, how could you forget it... You are currently married with ${user}!`,
@@ -1990,7 +1994,7 @@ module.exports = class extends Language {
 			COMMAND_ROLES_NOT_PUBLIC: (roles) => `The following roles are not public: \`${roles}\``,
 			COMMAND_ROLES_NOT_MANAGEABLE: (roles) => `The following roles cannot be given by me due to their hierarchy role position: \`${roles}\``,
 			COMMAND_ROLES_AUDITLOG: 'Authorized: Public Role Management | \'Roles\' Command.',
-			COMMAND_DUCKDUCKGO_NOTFOUND: 'I am sorry, but DuckDuckGo API returned a blank response. Try with another keywords.',
+			COMMAND_DUCKDUCKGO_NOTFOUND: 'I am sorry, but DuckDuckGo API returned a blank response. Try again with different keywords.',
 			COMMAND_DUCKDUCKGO_LOOKALSO: 'Related to this topic:',
 
 			COMMAND_URBAN_NOTFOUND: 'I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?',
@@ -2016,7 +2020,7 @@ module.exports = class extends Language {
 			].join('\n'),
 			COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
 			COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
-			COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number. Because I am unable to find something at this index.',
+			COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',
 
 			/**
 			 * ################
@@ -2026,7 +2030,7 @@ module.exports = class extends Language {
 			COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
 			COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
 			COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
-			COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit Exceeded. Try again tomorrow.',
+			COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
 			COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
 
 			/**

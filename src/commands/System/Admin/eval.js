@@ -1,6 +1,6 @@
 const { Command, Stopwatch, Type, util } = require('klasa');
 const { inspect } = require('util');
-const { post } = require('snekfetch');
+const fetch = require('node-fetch');
 
 module.exports = class extends Command {
 
@@ -13,10 +13,13 @@ module.exports = class extends Command {
 			permissionLevel: 10,
 			usage: '<expression:str>'
 		});
+
+		this.timeout = 30000;
 	}
 
 	async run(msg, [code]) {
-		const flagTime = 'wait' in msg.flags ? Number(msg.flags.wait) : 30000;
+		const flagTime = 'no-timeout' in msg.flags ? 'wait' in msg.flags ? Number(msg.flags.wait) : this.timeout : Infinity;
+		const language = msg.flags.lang || msg.flags.language || msg.flags.json ? 'json' : 'js';
 		const { success, result, time, type } = await this.timedEval(msg, code, flagTime);
 
 		if (msg.flags.silent) {
@@ -26,15 +29,15 @@ module.exports = class extends Command {
 
 		const footer = util.codeBlock('ts', type);
 		const sendAs = msg.flags.output || msg.flags['output-to'] || (msg.flags.log ? 'log' : null);
-		return this.handleMessage(msg, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer });
+		return this.handleMessage(msg, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer, language });
 	}
 
-	async handleMessage(msg, options, { success, result, time, footer }) {
+	async handleMessage(msg, options, { success, result, time, footer, language }) {
 		switch (options.sendAs) {
 			case 'file': {
 				if (msg.channel.attachable) return msg.channel.sendFile(Buffer.from(result), 'output.txt', msg.language.get('COMMAND_EVAL_OUTPUT_FILE', time, footer));
 				await this.getTypeOutput(msg, options);
-				return this.handleMessage(msg, options, { success, result, time, footer });
+				return this.handleMessage(msg, options, { success, result, time, footer, language });
 			}
 			case 'haste':
 			case 'hastebin': {
@@ -42,7 +45,7 @@ module.exports = class extends Command {
 				if (options.url) return msg.sendMessage(msg.language.get('COMMAND_EVAL_OUTPUT_HASTEBIN', time, options.url, footer));
 				options.hastebinUnavailable = true;
 				await this.getTypeOutput(msg, options);
-				return this.handleMessage(msg, options, { success, result, time, footer });
+				return this.handleMessage(msg, options, { success, result, time, footer, language });
 			}
 			case 'console':
 			case 'log': {
@@ -54,10 +57,10 @@ module.exports = class extends Command {
 			default: {
 				if (result.length > 2000) {
 					await this.getTypeOutput(msg, options);
-					return this.handleMessage(msg, options, { success, result, time, footer });
+					return this.handleMessage(msg, options, { success, result, time, footer, language });
 				}
 				return msg.sendMessage(msg.language.get(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
-					time, util.codeBlock('js', result), footer));
+					time, util.codeBlock(language, result), footer));
 			}
 		}
 	}
@@ -74,6 +77,7 @@ module.exports = class extends Command {
 	}
 
 	timedEval(msg, code, flagTime) {
+		if (flagTime === Infinity || flagTime === 0) return this.eval(msg, code);
 		return Promise.race([
 			util.sleep(flagTime).then(() => ({
 				success: false,
@@ -113,7 +117,7 @@ module.exports = class extends Command {
 
 		stopwatch.stop();
 		if (typeof result !== 'string') {
-			result = result instanceof Error ? result.stack : inspect(result, {
+			result = result instanceof Error ? result.stack : msg.flags.json ? JSON.stringify(result, null, 4) : inspect(result, {
 				depth: msg.flags.depth ? parseInt(msg.flags.depth) || 0 : 0,
 				showHidden: Boolean(msg.flags.showHidden)
 			});
@@ -125,9 +129,11 @@ module.exports = class extends Command {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
 
-	async getHaste(result) {
-		const { body } = await post('https://hastebin.com/documents').send(result);
-		return `https://hastebin.com/${body.key}.js`;
+	async getHaste(evalResult, language) {
+		const key = await fetch('https://hastebin.com/documents', { method: 'POST', body: evalResult })
+			.then(response => response.json())
+			.then(body => body.key);
+		return `https://hastebin.com/${key}.${language}`;
 	}
 
 };

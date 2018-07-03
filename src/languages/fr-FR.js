@@ -1615,7 +1615,9 @@ module.exports = class extends Language {
 			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.',
 
 			EVENTS_ERROR_WTF: 'Quelle erreur terrible! Je suis vraiment désolée!',
-			ERROR_STRING: (mention, message) => `Cher ${mention}, ${message}`
+			ERROR_STRING: (mention, message) => `Cher ${mention}, ${message}`,
+
+			CONST_USERS: 'Users'
 		};
 	}
 

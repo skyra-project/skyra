@@ -21,7 +21,7 @@ module.exports = class extends Task {
 		this.disable();
 		const r = this.client.providers.default.db;
 		const tables = await r.tableList().run();
-		const paths = await Promise.all(tables.map(table => r.table(table).getAll().run().then(entries => this.backup(table, entries))));
+		const paths = await Promise.all(tables.map(table => r.table(table).run().then(entries => this.backup(table, entries))));
 		await this.writeFile(paths);
 		this.enable();
 	}

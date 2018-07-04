@@ -28,8 +28,8 @@ module.exports = class extends Task {
 				.post(`https://botsfordiscord.com/api/v1/bots/${this.client.user.id}`)
 				.set('Authorization', config.tokens.botsForDiscord)
 				.send({ server_count: this.client.guilds.size })
-				.then(() => this.client.emit('verbose', `POST [bots.discord.pw]: ${this.client.guilds.size}`))
-				.catch(err => this.client.emit('error', `ERROR [bots.discord.pw]:\nError: ${(err && err.stack) || err}`));
+				.then(() => this.client.emit('verbose', `POST [botsfordiscord.com]: ${this.client.guilds.size}`))
+				.catch(err => this.client.emit('error', `ERROR [botsfordiscord.com]:\nError: ${(err && err.stack) || err}`));
 		}
 		// if (config.tokens.serverHound) request
 		// 	.post('https://bots.discordlist.net/api')

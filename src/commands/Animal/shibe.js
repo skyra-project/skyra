@@ -1,4 +1,4 @@
-const { Command, MessageEmbed } = require('../../index');
+const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const [url] = await this.fetchURL('http://shibe.online/api/shibes?count=1', 'json');
+		const [url] = await fetch('http://shibe.online/api/shibes?count=1', 'json');
 		return msg.sendEmbed(new MessageEmbed()
 			.setColor(0xFFE0B2)
 			.setImage(url));

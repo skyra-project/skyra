@@ -1,11 +1,6 @@
-const { Command, PromptList, util, config, MessageEmbed } = require('../../index');
+const { Command, PromptList, config, MessageEmbed, util: { fetch, parseHTML, oneToTen, basicAuth } } = require('../../index');
 
-const options = {
-	headers: {
-		Authorization: util.basicAuth(config.tokens.animelist.user,
-			config.tokens.animelist.password)
-	}
-};
+const options = { headers: { Authorization: basicAuth(config.tokens.animelist.user, config.tokens.animelist.password) } };
 
 module.exports = class extends Command {
 
@@ -20,12 +15,12 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [mangaName]) {
-		const data = await this.fetchURL(`https://myanimelist.net/api/manga/search.xml?q=${encodeURIComponent(mangaName)}`, options, 'xml')
+		const data = await fetch(`https://myanimelist.net/api/manga/search.xml?q=${encodeURIComponent(mangaName)}`, options, 'xml')
 			.catch(() => { throw msg.language.get('COMMAND_ANIME_QUERY_FAIL'); });
 		const entry = await this.getIndex(msg, data.manga.entry)
 			.catch(error => { throw error || msg.language.get('COMMAND_ANIME_NO_CHOICE'); });
-		const synopsis = util.parseHTML(entry.synopsis[0]).replace(/\[\/?i\]/, '*').replace(/\n+/g, '\n\n');
-		const score = util.oneToTen(Math.ceil(Number(entry.score[0])));
+		const synopsis = parseHTML(entry.synopsis[0]).replace(/\[\/?i\]/, '*').replace(/\n+/g, '\n\n');
+		const score = oneToTen(Math.ceil(Number(entry.score[0])));
 		const titles = msg.language.language.COMMAND_ANIME_TITLES;
 		const url = `https://myanimelist.net/manga/${entry.id[0]}`;
 

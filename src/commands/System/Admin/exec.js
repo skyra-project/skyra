@@ -1,5 +1,4 @@
-const { Command, klasaUtil: { exec, codeBlock }, MessageAttachment } = require('../../../index');
-const { post } = require('snekfetch');
+const { Command, klasaUtil: { exec, codeBlock }, MessageAttachment, util: { fetch } } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -25,7 +24,7 @@ module.exports = class extends Command {
 	}
 
 	async getHaste(result) {
-		const { body } = await post('https://hastebin.com/documents').send(result);
+		const body = await fetch('https://hastebin.com/documents', { method: 'JSON', body: result });
 		return `https://hastebin.com/${body.key}.js`;
 	}
 

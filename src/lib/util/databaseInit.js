@@ -8,9 +8,17 @@ module.exports = class DatabaseInit {
 		await Promise.all([
 			DatabaseInit.initStarboard(r),
 			DatabaseInit.initLocalScores(r),
-			DatabaseInit.initModeration(r)
+			DatabaseInit.initModeration(r),
+			DatabaseInit.initBanners(r)
 		]);
 		init = true;
+	}
+
+	static async initBanners(r) {
+		const TABLENAME = 'banners';
+
+		await r.branch(r.tableList().contains(TABLENAME), null,
+			r.tableCreate(TABLENAME));
 	}
 
 	static async initStarboard(r) {

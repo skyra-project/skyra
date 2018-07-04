@@ -1,4 +1,4 @@
-const { Command, config: { tokens: { GOOGLE_MAP_API, WEATHER_API } }, assetsFolder } = require('../../index');
+const { Command, config: { tokens: { GOOGLE_MAP_API, WEATHER_API } }, assetsFolder, util: { fetch } } = require('../../index');
 const { Canvas } = require('canvas-constructor');
 const { join } = require('path');
 const { readFile } = require('fs-nextra');
@@ -28,7 +28,7 @@ module.exports = class extends Command {
 
 	async run(msg, [query]) {
 		const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
-		const response = await this.fetchURL(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${GOOGLE_MAP_API}`, 'json');
+		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${GOOGLE_MAP_API}`, 'json');
 
 		if (response.status !== 'OK')
 			throw msg.language.get(this.handleNotOK(msg, response.status));
@@ -50,7 +50,7 @@ module.exports = class extends Command {
 		const localityOrCountry = locality ? country : {};
 		const state = locality && governing ? governing : localityOrCountry;
 
-		const { currently } = await this.fetchURL(`https://api.darksky.net/forecast/${WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
+		const { currently } = await fetch(`https://api.darksky.net/forecast/${WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
 
 		const { icon } = currently;
 		const condition = currently.summary;

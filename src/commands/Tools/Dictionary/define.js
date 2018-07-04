@@ -1,4 +1,4 @@
-const { Command, config: { tokens: { oxford: { API_ID, API_KEY } } } } = require('../../../index');
+const { Command, config: { tokens: { oxford: { API_ID, API_KEY } } }, util: { fetch } } = require('../../../index');
 
 const options = { headers: { Accept: 'application/json', app_id: API_ID, app_key: API_KEY } }; // eslint-disable-line camelcase
 const URL = 'https://od-api.oxforddictionaries.com/api/v1/entries/en/';
@@ -73,7 +73,7 @@ module.exports = class extends Command {
 		}
 
 		try {
-			const fetched = await this.fetchURL(URL + query, options, 'json');
+			const fetched = await fetch(URL + query, options, 'json');
 			const lexicalEntries = fetched.results[0].lexicalEntries.slice(0, 5).map(this._resolveData);
 			await this.r.table(TABLENAME).insert({ id: query, valid: true, lexicalEntries });
 			return lexicalEntries;

@@ -1,5 +1,4 @@
-const { Command, config: { tokens: { google: KEY } }, MessageEmbed } = require('../../index');
-const { post, get } = require('snekfetch');
+const { Command, config: { tokens: { google: KEY } }, MessageEmbed, util: { fetch } } = require('../../index');
 
 const REG_GOOGL = /^https:\/\/goo\.gl\/.+/;
 
@@ -24,12 +23,12 @@ module.exports = class extends Command {
 	}
 
 	async long(url, i18n) {
-		const { body } = await post(`https://www.googleapis.com/urlshortener/v1/url?key=${KEY}`).send({ longUrl: url });
+		const body = await fetch(`https://www.googleapis.com/urlshortener/v1/url?key=${KEY}`, { method: 'POST', body: { longUrl: url } }, 'json');
 		return i18n.get('COMMAND_GOOGL_LONG', body.id);
 	}
 
 	async short(url, i18n) {
-		const { body } = await get(`https://www.googleapis.com/urlshortener/v1/url?key=${KEY}&shortUrl=${url}`);
+		const body = await fetch(`https://www.googleapis.com/urlshortener/v1/url?key=${KEY}&shortUrl=${url}`, 'json');
 		return i18n.get('COMMAND_GOOGL_SHORT', body.longUrl);
 	}
 

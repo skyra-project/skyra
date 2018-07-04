@@ -1,6 +1,4 @@
-const { Command } = require('klasa');
-const { get } = require('snekfetch');
-const { parse } = require('url');
+const { Command, util: { fetch } } = require('../../../index');
 const attachmentFilter = /\.(?:webp|png|jpg|gif)$/i;
 
 module.exports = class extends Command {
@@ -17,10 +15,10 @@ module.exports = class extends Command {
 		this.createCustomResolver('attachment', async (arg, possible, msg) => {
 			if (msg.attachments.size) {
 				const file = msg.attachments.find(attachment => attachmentFilter.test(attachment.url));
-				if (file) return get(file.url).then(result => result.body);
+				if (file) return fetch(file.url, 'buffer');
 			}
-			const url = (res => res && res.protocol && res.hostname && res.href)(attachmentFilter.test(arg) && parse(arg));
-			if (url) return get(url).then(result => result.body);
+			const url = (res => res && res.protocol && attachmentFilter.test(res.pathname) && res.hostname && res.href)(new URL(arg));
+			if (url) return fetch(url, 'buffer');
 			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
 		});
 	}

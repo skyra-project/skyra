@@ -1,9 +1,8 @@
 const { Command } = require('klasa');
-const { get } = require('snekfetch');
 const { MessageEmbed } = require('discord.js');
-const { tokens: { WEEB_SH } } = require('../../../config');
+const { tokens: { WEEB_SH }, version } = require('../../../config');
+const { fetch } = require('../util/util');
 
-const API = 'https://api-v2.weeb.sh';
 const DEFAULTS = [
 	['requiredPermissions', ['EMBED_LINKS']],
 	['bucket', 2],
@@ -40,15 +39,21 @@ class WeebCommand extends Command {
 		 * @type {boolean}
 		 */
 		this.requiresUser = Boolean(this.usage.parsedUsage.length);
+
+		this.url = new URL('https://api-v2.weeb.sh/images/random');
+		this.url.search = new URLSearchParams([
+			['type', this.queryType],
+			['nsfw', false]
+		]);
 	}
 
 	async run(msg, params) {
-		const { url } = await get(`${API}/images/random`)
-			.set('Authorization', `Wolke ${WEEB_SH}`)
-			.set('User-Agent', 'Skyra/3.0.0')
-			.query('type', this.queryType)
-			.query('nsfw', false)
-			.then(result => JSON.parse(result.text));
+		const { url } = await fetch(this.url, {
+			headers: {
+				Authorization: `Wolke ${WEEB_SH}`,
+				'User-Agent': `Skyra/${version}`
+			}
+		}, 'json');
 
 		return msg.sendMessage(this.requiresUser
 			? msg.language.get(this.responseName, params[0].username)

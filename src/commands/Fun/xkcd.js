@@ -1,4 +1,4 @@
-const { Command, Timestamp, MessageEmbed } = require('../../index');
+const { Command, Timestamp, MessageEmbed, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -18,7 +18,7 @@ module.exports = class extends Command {
 			? /^\d+$/.test(input) ? Number(input) : input : null;
 
 		const comicNumber = await this.getNumber(query, msg.language);
-		const comic = await this.fetchURL(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
+		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
 			.catch(() => { throw msg.language.get('COMMAND_XKCD_NOTFOUND'); });
 
 		const embed = new MessageEmbed()
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 	}
 
 	async getNumber(query, i18n) {
-		const xkcdInfo = await this.fetchURL('http://xkcd.com/info.0.json', 'json');
+		const xkcdInfo = await fetch('http://xkcd.com/info.0.json', 'json');
 
 		if (typeof query === 'number') {
 			if (query <= xkcdInfo.num) return query;
@@ -46,7 +46,7 @@ module.exports = class extends Command {
 		}
 
 		if (query) {
-			const text = await this.fetchURL(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`, 'text');
+			const text = await fetch(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`, 'text');
 			const comics = text.split(' ').slice(2);
 			const random = Math.floor(Math.random() * (comics.length / 2));
 			return parseInt(comics[random * 2].replace(/\n/g, ''));

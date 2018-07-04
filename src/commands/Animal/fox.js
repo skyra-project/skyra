@@ -1,5 +1,13 @@
-const { Command } = require('../../index');
-const URL = `https://pixabay.com/api/?q=fox&safesearch=true&per_page=200&image_type=photo&category=animals&key=${require.main.exports.config.tokens.pixabay}`;
+const { Command, util: { fetch } } = require('../../index');
+const url = new URL('https://pixabay.com/api/');
+url.search = new URLSearchParams([
+	['q', 'fox'],
+	['safesearch', true],
+	['per_page', 200],
+	['image_type', 'photo'],
+	['category', 'animals'],
+	['key', require.main.exports.config.tokens.pixabay]
+]);
 
 module.exports = class extends Command {
 
@@ -20,7 +28,7 @@ module.exports = class extends Command {
 	}
 
 	async init() {
-		const data = await this.fetchURL(URL, 'json');
+		const data = await fetch(url, 'json');
 		const { hits } = data;
 		for (let i = 0; i < hits.length; i++) {
 			if (hits[i].type === 'photo')

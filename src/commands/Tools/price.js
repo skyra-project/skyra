@@ -1,4 +1,4 @@
-const { Command } = require('../../index');
+const { Command, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		from = from.toUpperCase();
 		to = to.toUpperCase();
 
-		const body = await this.fetchURL(`https://min-api.cryptocompare.com/data/price?fsym=${from}&tsyms=${to}`, 'json');
+		const body = await fetch(`https://min-api.cryptocompare.com/data/price?fsym=${from}&tsyms=${to}`, 'json');
 
 		if (body.Response === 'Error') throw msg.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		return msg.sendMessage(msg.language.get('COMMAND_PRICE_CURRENCY', from, to, amount * body[to]));

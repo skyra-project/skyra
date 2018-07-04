@@ -1,4 +1,4 @@
-const { Command, util, MessageEmbed, klasaUtil: { toTitleCase } } = require('../../../index');
+const { Command, MessageEmbed, klasaUtil: { toTitleCase }, util: { fetch, cutText } } = require('../../../index');
 const ZWS = '\u200B';
 
 module.exports = class extends Command {
@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		if (index < 0)
 			throw msg.language.get('RESOLVER_POSITIVE_AMOUNT');
 
-		const { list } = await this.fetchURL(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json');
+		const { list } = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json');
 
 		const result = list[index];
 		if (typeof result === 'undefined') {
@@ -46,7 +46,7 @@ module.exports = class extends Command {
 
 	content(definition, permalink, i18n) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', util.cutText(definition, 750), permalink);
+		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
 
 };

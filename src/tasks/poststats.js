@@ -1,5 +1,4 @@
-const { Task, config } = require('../index');
-const request = require('snekfetch');
+const { Task, config, util: { fetch } } = require('../index');
 
 module.exports = class extends Task {
 
@@ -8,26 +7,29 @@ module.exports = class extends Task {
 
 		/* eslint-disable camelcase */
 		if (config.tokens.discordBotOrg) {
-			request
-				.post(`https://discordbots.org/api/bots/${this.client.user.id}/stats`)
-				.set('Authorization', config.tokens.discordBotOrg)
-				.send({ server_count: this.client.guilds.size })
+			fetch(`https://discordbots.org/api/bots/${this.client.user.id}/stats`, {
+				headers: { Authorization: config.tokens.discordBotOrg },
+				body: { server_count: this.client.guilds.size },
+				method: 'POST'
+			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [discordbots.org]: ${this.client.guilds.size}`))
 				.catch(err => this.client.emit('error', `ERROR [discordbots.org]:\nError: ${(err && err.stack) || err}`));
 		}
 		if (config.tokens.discordBots) {
-			request
-				.post(`https://bots.discord.pw/api/bots/${this.client.user.id}/stats`)
-				.set('Authorization', config.tokens.discordBots)
-				.send({ server_count: this.client.guilds.size })
+			fetch(`https://bots.discord.pw/api/bots/${this.client.user.id}/stats`, {
+				headers: { Authorization: config.tokens.discordBots },
+				body: { server_count: this.client.guilds.size },
+				method: 'POST'
+			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [bots.discord.pw]: ${this.client.guilds.size}`))
 				.catch(err => this.client.emit('error', `ERROR [bots.discord.pw]:\nError: ${(err && err.stack) || err}`));
 		}
 		if (config.tokens.botsForDiscord) {
-			request
-				.post(`https://botsfordiscord.com/api/v1/bots/${this.client.user.id}`)
-				.set('Authorization', config.tokens.botsForDiscord)
-				.send({ server_count: this.client.guilds.size })
+			fetch(`https://botsfordiscord.com/api/v1/bots/${this.client.user.id}`, {
+				headers: { Authorization: config.tokens.botsForDiscord },
+				body: { server_count: this.client.guilds.size },
+				method: 'POST'
+			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [botsfordiscord.com]: ${this.client.guilds.size}`))
 				.catch(err => this.client.emit('error', `ERROR [botsfordiscord.com]:\nError: ${(err && err.stack) || err}`));
 		}

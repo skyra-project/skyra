@@ -1,4 +1,4 @@
-const { Command, util, MessageEmbed } = require('../../index');
+const { Command, util: { fetch, cutText }, MessageEmbed } = require('../../index');
 
 const API_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
 
@@ -17,7 +17,7 @@ module.exports = class extends Command {
 
 	async run(msg, [input]) {
 		input = this.parseURL(input);
-		const text = await this.fetchURL(API_URL + input, 'json');
+		const text = await fetch(API_URL + input, 'json');
 
 		if (text.query.pageids[0] === '-1')
 			throw msg.language.get('COMMAND_WIKIPEDIA_NOTFOUND');
@@ -51,7 +51,7 @@ module.exports = class extends Command {
 
 	content(definition, url, i18n) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', util.cutText(definition, 750), url);
+		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
 	}
 
 };

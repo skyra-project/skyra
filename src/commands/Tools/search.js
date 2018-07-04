@@ -1,4 +1,4 @@
-const { Command, MessageEmbed } = require('../../index');
+const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [query]) {
-		const body = await this.fetchURL(`http://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, 'json');
+		const body = await fetch(`http://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, 'json');
 
 		if (body.Heading.length === 0)
 			throw msg.language.get('COMMAND_DUCKDUCKGO_NOTFOUND');

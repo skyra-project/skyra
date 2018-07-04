@@ -1,4 +1,4 @@
-const { Command, config: { tokens: { google: KEY } } } = require('../../index');
+const { Command, config: { tokens: { google: KEY } }, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
 	async run(msg, [input, ind = 1]) {
 		const index = --ind;
-		const data = await this.fetchURL(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${KEY}&safeSearch=strict`, 'json');
+		const data = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${KEY}&safeSearch=strict`, 'json');
 		const result = data.items[index];
 
 		if (!result) {

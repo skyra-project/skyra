@@ -1,4 +1,4 @@
-const { Command, MessageEmbed } = require('../../index');
+const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		const data = await this.fetchURL('https://api.chucknorris.io/jokes/random', 'json');
+		const data = await fetch('https://api.chucknorris.io/jokes/random', 'json');
 		const embed = new MessageEmbed()
 			.setColor(0x80D8FF)
 			.setTitle(msg.language.get('COMMAND_NORRIS_OUTPUT'))

@@ -2,7 +2,7 @@ const ModerationLog = require('./ModerationLog');
 const { schemaKeys } = require('./Moderation');
 const parseHTML = require('./parseHTML');
 const { STATUS_CODES } = require('http');
-const { get } = require('snekfetch');
+const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
 const { util } = require('klasa');
 
@@ -191,7 +191,39 @@ class Util {
 	 */
 	static fetchAvatar(user, size = 512) {
 		const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
-		return get(url).then(data => data.body).catch((err) => { throw `Could not download the profile avatar: ${err}`; });
+		return Util.fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
+	}
+
+	/**
+	 * Fetch a URL and parse its output.
+	 * @since 3.1.0
+	 * @param {URL|string} url The url to fetch
+	 * @param {Object<string, *>} [options] The options to pass, overloads to type if type is string
+	 * @param {string} [type] The type of expected output
+	 * @returns {Promise<*>}
+	 */
+	static async fetch(url, options, type) {
+		if (typeof options === 'undefined') {
+			options = {};
+			type = 'json';
+		} else if (typeof options === 'string') {
+			type = options;
+			options = {};
+		} else if (typeof type === 'undefined') {
+			type = 'json';
+		}
+
+		const result = await fetch(url, options);
+		if (!result.ok) throw result.statusText;
+
+		switch (type) {
+			case 'result': return result;
+			case 'buffer': return result.buffer();
+			case 'json': return result.json();
+			case 'text': return result.text();
+			case 'xml': return result.text().then(text => Util.xml2js(text));
+			default: throw new Error(`Unknown type ${type}`);
+		}
 	}
 
 	/**

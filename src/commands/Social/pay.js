@@ -21,7 +21,7 @@ module.exports = class extends Command {
 
 		if (money <= 0) throw msg.language.get('RESOLVER_POSITIVE_AMOUNT');
 
-		if (msg.author.configs._syncStatus) await msg.author.configs._syncStatus;
+		await msg.author.configs.waitSync();
 		if (msg.author.configs.money < money) throw msg.language.get('COMMAND_PAY_MISSING_MONEY', money, msg.author.configs.money);
 
 		const accepted = await msg.ask(msg.language.get('COMMAND_PAY_PROMPT', user.username, money));
@@ -29,7 +29,7 @@ module.exports = class extends Command {
 	}
 
 	async acceptPayment(msg, user, money) {
-		if (user.configs._syncStatus) await user.configs._syncStatus;
+		await user.configs.waitSync();
 		await msg.author.configs.use(money);
 		await user.configs.add(money);
 		return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));

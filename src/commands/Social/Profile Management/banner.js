@@ -72,7 +72,7 @@ module.exports = class extends Command {
 		banners.add(banner.id);
 
 		const user = await this.client.users.fetch(banner.author);
-		if (user.configs._syncStatus) await user.configs._syncStatus;
+		await user.configs.waitSync();
 
 		await Promise.all([
 			msg.author.configs.update(['money', 'bannerList'], [msg.author.configs.money - banner.price, [...banners]]),

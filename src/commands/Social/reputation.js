@@ -29,11 +29,11 @@ module.exports = class extends Command {
 		const userProfile = msg.author.configs;
 		const targetProfile = (user && user.configs) || null;
 
-		if (userProfile._syncStatus) await userProfile._syncStatus;
+		await userProfile.waitSync();
 
 		if (check) {
 			if (user.bot) throw msg.language.get('COMMAND_REPUTATION_BOTS');
-			if (targetProfile && targetProfile._syncStatus) await targetProfile._syncStatus;
+			if (targetProfile) await targetProfile.waitSync();
 			return msg.sendMessage(msg.author === user
 				? msg.language.get('COMMAND_REPUTATIONS_SELF', userProfile.reputation)
 				: msg.language.get('COMMAND_REPUTATIONS', user.username, targetProfile.reputation));
@@ -49,7 +49,7 @@ module.exports = class extends Command {
 		this.busy.add(msg.author.id);
 
 		try {
-			if (targetProfile && targetProfile._syncStatus) await targetProfile._syncStatus;
+			if (targetProfile) await targetProfile.waitSync();
 			await targetProfile.update('reputation', targetProfile.reputation + 1);
 			await userProfile.update('timeReputation', now);
 		} catch (err) {

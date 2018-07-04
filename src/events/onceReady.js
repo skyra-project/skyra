@@ -16,7 +16,7 @@ module.exports = class extends Event {
 		this.client.configs = this.client.gateways.clientStorage.get(this.client.user.id, true);
 		await Promise.all([
 			this._prepareSkyra(),
-			this.client.gateways.sync(true)
+			this.client.gateways.sync()
 		]);
 
 		// Automatic Prefix editing detection.

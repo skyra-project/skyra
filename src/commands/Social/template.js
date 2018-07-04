@@ -45,7 +45,7 @@ module.exports = class extends Command {
 	}
 
 	async showProfile(msg, file) {
-		if (msg.author.configs._syncStatus) await msg.author.configs._syncStatus;
+		await msg.author.configs.waitSync();
 		const { points, color, money, reputation, level } = msg.author.configs;
 
 		/* Calculate information from the user */

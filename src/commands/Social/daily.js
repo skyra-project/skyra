@@ -16,7 +16,7 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const now = Date.now();
-		if (msg.author.configs._syncStatus) await msg.author.configs._syncStatus;
+		await msg.author.configs.waitSync();
 		const time = msg.author.configs.timeDaily;
 
 		// It's been 12 hours, grant dailies
@@ -43,7 +43,7 @@ module.exports = class extends Command {
 	async claimDaily(msg, nextTime) {
 		let money = 200;
 		if (msg.guild) {
-			if (msg.guild.configs._syncStatus) await msg.guild.configs._syncStatus;
+			await msg.guild.configs.waitSync();
 			money *= msg.guild.configs.social.boost;
 		}
 		await msg.author.configs.update(['money', 'timeDaily'], [msg.author.configs.money + money, nextTime]);

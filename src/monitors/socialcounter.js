@@ -24,7 +24,7 @@ module.exports = class extends Monitor {
 		const memberPoints = msg.member && msg.member.configs;
 
 		// Ensure the user and member configs are up-to-date
-		if (msg.author.configs._syncStatus) await msg.author.configs._syncStatus;
+		await msg.author.configs.waitSync();
 		if (memberPoints && memberPoints._syncStatus) await memberPoints._syncStatus;
 
 		try {

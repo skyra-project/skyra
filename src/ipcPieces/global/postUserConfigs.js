@@ -5,7 +5,7 @@ module.exports = class extends API {
 	async run({ userID, type, action, amount }) {
 		const user = await this.client.users.fetch(userID).catch(() => null);
 		if (!user) return null;
-		if (user.configs._syncStatus) await user.configs._syncStatus;
+		await user.configs.waitSync();
 		const oldAmount = user.configs[type];
 		const newAmount = this.getNewAmount(action, oldAmount, amount);
 

@@ -29,7 +29,7 @@ module.exports = class extends Command {
 	}
 
 	async showProfile(msg, user) {
-		if (user.configs._syncStatus) await user.configs._syncStatus;
+		await user.configs.waitSync();
 		const { points, color, themeLevel, level } = user.configs;
 
 		/* Calculate information from the user */

@@ -40,7 +40,7 @@ module.exports = class extends Command {
 		if (msg.author.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_AUTHOR_TAKEN'));
 
 		// Check if the target user is already married.
-		if (user.configs._syncStatus) await user.configs._syncStatus;
+		await user.configs.waitSync();
 		if (user.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_TAKEN'));
 
 		// Get a message from the user.

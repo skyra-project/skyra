@@ -41,7 +41,7 @@ module.exports = class extends Command {
 			}
 			case 'haste':
 			case 'hastebin': {
-				if (!options.url) options.url = await this.getHaste(result).catch(() => null);
+				if (!options.url) options.url = await this.getHaste(result, language).catch(() => null);
 				if (options.url) return msg.sendMessage(msg.language.get('COMMAND_EVAL_OUTPUT_HASTEBIN', time, options.url, footer));
 				options.hastebinUnavailable = true;
 				await this.getTypeOutput(msg, options);

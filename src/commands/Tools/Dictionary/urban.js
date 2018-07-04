@@ -11,7 +11,8 @@ module.exports = class extends Command {
 			description: msg => msg.language.get('COMMAND_URBAN_DESCRIPTION'),
 			extendedHelp: msg => msg.language.get('COMMAND_URBAN_EXTENDED'),
 			usage: '<query:string> [page:integer{0,10}]',
-			usageDelim: ' #'
+			usageDelim: '#',
+			nsfw: true
 		});
 	}
 

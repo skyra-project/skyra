@@ -12,12 +12,12 @@
     "pm2:start-harmony": "pm2 start src/skyra.js --node-args=\"--harmony\" --name=\"Skyra\"",
     "pm2:start-harmony-dev": "pm2 start src/skyra.js --node-args=\"--harmony\" --name=\"Skyra\" --env=\"{ \"DEV\": \"true\" }\"",
     "pm2:stop": "pm2 stop Skyra",
-    "dev": "DEV=true node src/skyra.js",
+    "dev:unix": "DEV=true node src/skyra.js",
     "dev:windows": "$env:DEV=\"true\"; node src/skyra.js",
     "test": "eslint src",
     "lint": "eslint --fix src",
-    "update": "yarn install dirigeants/klasa discordjs/discord.js",
-    "install": "yarn install --production"
+    "deps:update": "yarn install dirigeants/klasa discordjs/discord.js",
+    "deps:install": "yarn install --production"
   },
   "keywords": [
     "discord.js",

@@ -1,65 +1,103 @@
-const { Command, klasaUtil: util } = require('../../../index');
+const { Command, RichDisplay, util } = require('klasa');
+const { MessageEmbed, Permissions } = require('discord.js');
+
+const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
+const time = 1000 * 60 * 3;
 
 module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			aliases: ['commands'],
+			aliases: ['commands', 'cmd', 'cmds'],
 			guarded: true,
-			description: (msg) => msg.language.get('COMMAND_HELP_DESCRIPTION'),
-			usage: '(Command:cmd)'
+			description: (message) => message.language.get('COMMAND_HELP_DESCRIPTION'),
+			usage: '(Command:command)'
 		});
 
-		this.createCustomResolver('cmd', (arg, possible, msg) => {
+		this.createCustomResolver('command', (arg, possible, message) => {
 			if (!arg || arg === '') return undefined;
-			return this.client.arguments.get('cmd').run(arg, possible, msg);
+			return this.client.arguments.get('command').run(arg, possible, message);
 		});
+
+		// Cache the handlers
+		this.handlers = new Map();
 	}
 
-	async run(msg, [cmd]) {
-		if (cmd) {
-			const info = [
-				msg.language.get('COMMAND_HELP_TITLE', cmd.name, util.isFunction(cmd.description) ? cmd.description(msg) : cmd.description),
-				msg.language.get('COMMAND_HELP_USAGE', cmd.usage.fullUsage(msg)),
-				msg.language.get('COMMAND_HELP_EXTENDED', util.isFunction(cmd.extendedHelp) ? cmd.extendedHelp(msg) : cmd.extendedHelp)
-			].join('\n');
-			return msg.sendMessage(info);
-		}
-		const help = await this.buildHelp(msg);
-		const categories = Object.keys(help);
-		const helpMessage = ['📃 | *Help Message*\n'];
-		for (const category of categories) {
-			// helpMessage.push(`***${category} Commands***\n`);
-			const subCategories = Object.keys(help[category]);
-			for (const subCategory of subCategories) {
-				helpMessage.push(`***${category}/${subCategory} Commands***\n`);
-				helpMessage.push(`${help[category][subCategory].join('\n')}\n`);
-			}
+	async run(message, [command]) {
+		if (command) {
+			return message.sendMessage([
+				message.language.get('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message) : command.description),
+				message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
+				message.language.get('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message) : command.extendedHelp)
+			].join('\n'));
 		}
 
-		return msg.author.send(helpMessage, { split: { char: '\n' } })
-			.then(() => { if (msg.channel.type !== 'dm' && this.client.user.bot) msg.sendMessage(msg.language.get('COMMAND_HELP_DM')); })
-			.catch(() => { if (msg.channel.type !== 'dm' && this.client.user.bot) msg.sendMessage(msg.language.get('COMMAND_HELP_NODM')); });
+		if (!message.flags.all && message.guild && message.channel.permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY)) {
+			// Finish the previous handler
+			const previousHandler = this.handlers.get(message.author.id);
+			if (previousHandler) previousHandler.stop();
+
+			const handler = await (await this.buildDisplay(message)).run(await message.send('Loading Commands...'), {
+				filter: (reaction, user) => user.id === message.author.id,
+				time
+			});
+			handler.on('end', () => this.handlers.delete(message.author.id));
+			this.handlers.set(message.author.id, handler);
+			return handler;
+		}
+
+		const method = this.client.user.bot ? 'author' : 'channel';
+		return message[method].send(await this.buildHelp(message), { split: { char: '\n' } })
+			.then(() => { if (message.channel.type !== 'dm' && this.client.user.bot) message.sendMessage(message.language.get('COMMAND_HELP_DM')); })
+			.catch(() => { if (message.channel.type !== 'dm' && this.client.user.bot) message.sendMessage(message.language.get('COMMAND_HELP_NODM')); });
 	}
 
-	async buildHelp(msg) {
-		const help = {};
-		const { prefix } = msg.guildConfigs;
+	async buildHelp(message) {
+		const commands = await this._fetchCommands(message);
+		const { prefix } = message.guildConfigs;
 
-		await Promise.all(this.client.commands.map((command) =>
-			this.client.inhibitors.run(msg, command, true)
-				.then(() => {
-					if (!help.hasOwnProperty(command.category)) help[command.category] = {};
-					if (!help[command.category].hasOwnProperty(command.subCategory)) help[command.category][command.subCategory] = [];
-					const description = typeof command.description === 'function' ? command.description(msg) : command.description;
-					help[command.category][command.subCategory].push(`• __**${prefix}${command.name}**__ → ${description}`);
-				})
-				.catch(() => {
-					// noop
-				})
+		const helpMessage = [];
+		for (const [category, list] of commands)
+			helpMessage.push(`**${category} Commands**:\n`, list.map(this.formatCommand.bind(this, message, prefix, false)).join('\n'), '');
+
+		return helpMessage.join('\n');
+	}
+
+	async buildDisplay(message) {
+		const commands = await this._fetchCommands(message);
+		const { prefix } = message.guildConfigs;
+		const display = new RichDisplay();
+		const color = message.member.displayColor;
+		for (const [category, list] of commands) {
+			display.addPage(new MessageEmbed()
+				.setTitle(`${category} Commands`)
+				.setColor(color)
+				.setDescription(list.map(this.formatCommand.bind(this, message, prefix, true)).join('\n'))
+			);
+		}
+
+		return display;
+	}
+
+	formatCommand(message, prefix, richDisplay, command) {
+		const description = typeof command.description === 'function' ? command.description(message) : command.description;
+		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
+	}
+
+	async _fetchCommands(message) {
+		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
+		const commands = new Map();
+		await Promise.all(this.client.commands.map((command) => run(command, true)
+			.then(() => {
+				const category = commands.get(command.category);
+				if (category) category.push(command);
+				else commands.set(command.category, [command]);
+			}).catch(() => {
+				// noop
+			})
 		));
 
-		return help;
+		return commands;
 	}
 
 };

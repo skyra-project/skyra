@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 	async run(msg, [code]) {
 		const flagTime = 'no-timeout' in msg.flags ? 'wait' in msg.flags ? Number(msg.flags.wait) : this.timeout : Infinity;
-		const language = msg.flags.lang || msg.flags.language || msg.flags.json ? 'json' : 'js';
+		const language = msg.flags.lang || msg.flags.language || (msg.flags.json ? 'json' : 'js');
 		const { success, result, time, type } = await this.timedEval(msg, code, flagTime);
 
 		if (msg.flags.silent) {

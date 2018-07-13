@@ -14,17 +14,16 @@ module.exports = class extends Extendable {
 			this.description = content;
 			return this;
 		}
-		let init = content;
-		let i;
-		let x;
 
-		for (i = 0; i < content.length / 1024; i++) {
-			if (init.length < 1024) return this.addField('\u200B', init);
-			x = init.slice(0, 1024).lastIndexOf('\n');
+		let x;
+		while (content.length) {
+			if (content.length < 1024) return this.addField('\u200B', content);
+
+			x = content.slice(0, 1024).lastIndexOf('\n');
 			if (x === -1) x = 1024;
 
-			this.addField('\u200B', init.slice(0, x));
-			init = init.slice(x, init.length);
+			this.addField('\u200B', content.slice(0, x));
+			content = content.slice(x + 1);
 		}
 		return this;
 	}

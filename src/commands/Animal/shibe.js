@@ -4,8 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			aliases: ['kittenfact'],
 			cooldown: 10,
+			requiredPermissions: ['EMBED_LINKS'],
 			description: (msg) => msg.language.get('COMMAND_SHIBE_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_SHIBE_EXTENDED')
 		});

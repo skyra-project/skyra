@@ -25,9 +25,11 @@ module.exports = class extends Command {
 	async run(msg, [, message]) {
 		const embed = new MessageEmbed()
 			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128 }))
-			.setDescription(getContent(message))
 			.setImage(getImage(message))
 			.setTimestamp(message.createdAt);
+
+		const content = getContent(message);
+		if (content) embed.setDescription(content);
 
 		return msg.sendMessage({ embed });
 	}

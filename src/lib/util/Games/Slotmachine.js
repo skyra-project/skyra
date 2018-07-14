@@ -44,7 +44,7 @@ class Slotmachine {
 		this.amount = amount;
 	}
 
-	async init() {
+	static async init() {
 		const { join } = require('path');
 		const [icon, shiny] = await Promise.all([
 			loadImage(join(__dirname, '../../../../assets/images/social/sm-icons.png')),

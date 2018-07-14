@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
 const { util } = require('klasa');
 const { Image } = require('canvas');
-const { readFile } = require('canvas-constructor');
+const { readFile } = require('fs-nextra');
 
 /**
  * @typedef  {Object} UtilOneToTenEntry

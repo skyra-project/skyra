@@ -53,6 +53,8 @@ module.exports = class extends Event {
 		// Sweep
 		this.client.tasks.get('cleanup').run();
 
+		const promise = require('../lib/util/Games/Slotmachine').init();
+
 		// Sync any configuration instance
 		const table = this.client.providers.default.db.table('localScores');
 		const queue = [];
@@ -65,6 +67,8 @@ module.exports = class extends Event {
 		this.client._skyraReady = true;
 		const entries = await table.getAll(...queue, { index: 'guild_user' }).run();
 		for (const entry of entries) guilds.get(entry.guildID).members.get(entry.userID).configs._patch(entry);
+
+		await promise;
 	}
 
 };

@@ -20,14 +20,17 @@ const { readFile } = require('fs-nextra');
  */
 class Util {
 
+	/**
+	 * Load an image for Canvas
+	 * @since 3.0.0
+	 * @param {string} path The path to fix
+	 * @returns {Image}
+	 */
 	static async loadImage(path) {
 		const buffer = await readFile(path);
 		const image = new Image();
 		image.src = buffer;
-		return new Promise((resolve, reject) => {
-			image.onload = resolve.bind(null, image);
-			image.onerror = reject;
-		});
+		return image;
 	}
 
 	// Check operations

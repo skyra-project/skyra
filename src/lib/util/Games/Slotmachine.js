@@ -31,12 +31,17 @@ const COORDINATES = [
 	{ x: 98, y: 96 }
 ];
 
-const { readFile } = require('fs-nextra');
+const { readFileSync } = require('fs');
 const { join } = require('path');
-const icon = new (Canvas.getCanvas()).Image();
 
 const iconsPath = join(__dirname, '../../../../assets/images/social/sm-icons.png');
 const shinyPath = join(__dirname, '../../../../assets/images/social/shiny-icon.png');
+
+const icon = new (Canvas.getCanvas()).Image();
+icon.src = readFileSync(iconsPath);
+
+const shiny = new (Canvas.getCanvas()).Image();
+shiny.src = readFileSync(shinyPath);
 
 const POSITIONS = [0, 0, 0];
 
@@ -68,7 +73,6 @@ module.exports = class Slotmachine {
 	async render(rolls) {
 		const win = this.winnings > 0;
 		const length = win ? 300 : 150;
-		icon.src = await readFile(iconsPath);
 
 		const canvas = new Canvas(length, 150)
 			.save()
@@ -94,13 +98,12 @@ module.exports = class Slotmachine {
 		})));
 
 		if (win) {
-			const shinyIcon = await readFile(shinyPath);
 			canvas
 				.setTextFont('30px RobotoLight')
 				.setTextAlign('right')
 				.addText('You won', 280, 60)
 				.addText(this.winnings, 250, 100)
-				.addImage(shinyIcon, 260, 68, 20, 39);
+				.addImage(shiny, 260, 68, 20, 39);
 		}
 
 		return canvas.toBufferAsync();

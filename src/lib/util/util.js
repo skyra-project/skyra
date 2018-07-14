@@ -5,6 +5,8 @@ const { STATUS_CODES } = require('http');
 const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
 const { util } = require('klasa');
+const { Image } = require('canvas');
+const { readFile } = require('canvas-constructor');
 
 /**
  * @typedef  {Object} UtilOneToTenEntry
@@ -17,6 +19,16 @@ const { util } = require('klasa');
  * @version 2.0.0
  */
 class Util {
+
+	static async loadImage(path) {
+		const buffer = await readFile(path);
+		const image = new Image();
+		image.src = buffer;
+		return new Promise((resolve, reject) => {
+			image.onload = resolve.bind(null, image);
+			image.onerror = reject;
+		});
+	}
 
 	// Check operations
 

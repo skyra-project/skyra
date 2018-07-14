@@ -1,4 +1,5 @@
 const { Canvas } = require('canvas-constructor');
+const { loadImage } = require('../util');
 const REELS = [
 	[8, 2, 1, 4, 5, 4, 3, 2, 2, 0, 2, 3, 7, 7, 0, 5, 2, 1, 5, 4, 7, 3, 6, 6, 7, 2, 4, 3, 1, 8, 0, 4, 5, 6, 6, 1, 2, 1, 4, 5, 0, 8, 6, 1, 3, 0, 1],
 	[4, 1, 2, 2, 4, 3, 8, 2, 1, 6, 5, 2, 7, 0, 0, 6, 1, 4, 2, 1, 0, 2, 5, 5, 3, 6, 8, 7, 1, 1, 7, 4, 4, 3, 3, 0, 6, 1, 3, 5, 6, 0, 3, 0, 5, 6, 4],
@@ -31,24 +32,26 @@ const COORDINATES = [
 	{ x: 98, y: 96 }
 ];
 
-const { readFileSync } = require('fs');
-const { join } = require('path');
-
-const icon = new (Canvas.getCanvas()).Image();
-icon.src = readFileSync(join(__dirname, '../../../../assets/images/social/sm-icons.png'));
-
-const shiny = new (Canvas.getCanvas()).Image();
-shiny.src = readFileSync(join(__dirname, '../../../../assets/images/social/shiny-icon.png'));
 
 const POSITIONS = [0, 0, 0];
 
-module.exports = class Slotmachine {
+class Slotmachine {
 
 	constructor(msg, amount) {
 		this.player = msg.author;
 		this.boost = msg.guildConfigs.social.boost;
 		this.winnings = 0;
 		this.amount = amount;
+	}
+
+	async init() {
+		const { join } = require('path');
+		const [icon, shiny] = await Promise.all([
+			loadImage(join(__dirname, '../../../../assets/images/social/sm-icons.png')),
+			loadImage(join(__dirname, '../../../../assets/images/social/shiny-icon.png'))
+		]);
+		Slotmachine.images.ICON = icon;
+		Slotmachine.images.SHINY = shiny;
 	}
 
 	async run() {
@@ -90,7 +93,7 @@ module.exports = class Slotmachine {
 		await Promise.all(rolls.map((value, index) => new Promise((res) => {
 			const { x, y } = ASSETS[value];
 			const coord = COORDINATES[index];
-			canvas.context.drawImage(icon, x, y, ICON_SIZE, ICON_SIZE, coord.x, coord.y, ICON_SIZE, ICON_SIZE);
+			canvas.context.drawImage(Slotmachine.images.ICON, x, y, ICON_SIZE, ICON_SIZE, coord.x, coord.y, ICON_SIZE, ICON_SIZE);
 			res();
 		})));
 
@@ -100,7 +103,7 @@ module.exports = class Slotmachine {
 				.setTextAlign('right')
 				.addText('You won', 280, 60)
 				.addText(this.winnings, 250, 100)
-				.addImage(shiny, 260, 68, 20, 39);
+				.addImage(Slotmachine.images.SHINY, 260, 68, 20, 39);
 		}
 
 		return canvas.toBufferAsync();
@@ -135,4 +138,11 @@ module.exports = class Slotmachine {
 		return position;
 	}
 
-};
+}
+
+Slotmachine.images = Object.seal({
+	ICON: null,
+	SHINY: null
+});
+
+module.exports = Slotmachine;

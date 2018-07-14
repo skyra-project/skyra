@@ -34,14 +34,11 @@ const COORDINATES = [
 const { readFileSync } = require('fs');
 const { join } = require('path');
 
-const iconsPath = join(__dirname, '../../../../assets/images/social/sm-icons.png');
-const shinyPath = join(__dirname, '../../../../assets/images/social/shiny-icon.png');
-
 const icon = new (Canvas.getCanvas()).Image();
-icon.src = readFileSync(iconsPath);
+icon.src = readFileSync(join(__dirname, '../../../../assets/images/social/sm-icons.png'));
 
 const shiny = new (Canvas.getCanvas()).Image();
-shiny.src = readFileSync(shinyPath);
+shiny.src = readFileSync(join(__dirname, '../../../../assets/images/social/shiny-icon.png'));
 
 const POSITIONS = [0, 0, 0];
 

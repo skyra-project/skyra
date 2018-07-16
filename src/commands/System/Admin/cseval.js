@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		const error = await this.compile(start);
 		if (error !== null) return msg.sendMessage(error);
 		const { success, result } = await this.execute();
-		return msg.sendMessage(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${start.stop()}${util.codeBlock('cs', result)}`);
+		return msg.sendMessage(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${start.stop()}${util.codeBlock('cs', result || 'Success! No output.')}`);
 	}
 
 	/**
@@ -74,10 +74,6 @@ class Program
         else if (input != null)
         {
             Console.WriteLine(input.ToString());
-        }
-        else
-        {
-            Console.WriteLine("Success! No output.");
         }
     }
 

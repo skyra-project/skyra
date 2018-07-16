@@ -30,11 +30,11 @@ module.exports = class extends Command {
      * @returns {Promise<?string>}
      */
 	compile(start) {
-		return util.exec('mcs /bwd/cs/eval.cs', { timeout: 30000 })
+		return util.exec('csc /bwd/cs/eval.cs', { timeout: 30000 })
 			.then(() => null)
 			.catch(error => `Failed to compile (${start.stop()}). ${util.codeBlock('cs', error
 				.toString()
-				.replace('Error: Command failed: mcs /bwd/cs/eval.cs\n', '')
+				.replace('Error: Command failed: csc /bwd/cs/eval.cs\n', '')
 				.replace(/\/bwd\/cs\/eval.cs/g, 'Failed at: '))}`);
 	}
 
@@ -43,7 +43,7 @@ module.exports = class extends Command {
      * @returns {Promise<{ success: boolean, result: string }>}
      */
 	execute() {
-		return util.exec('/bwd/cs/eval.exe', { timeout: 30000 })
+		return util.exec('mono /bwd/cs/eval.exe', { timeout: 30000 })
 			.then(result => ({ success: true, result: result.stdout }))
 			.catch(error => ({ success: false, result: error }));
 	}

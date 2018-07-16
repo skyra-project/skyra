@@ -32,8 +32,7 @@ module.exports = class extends Command {
 	compile(start) {
 		return util.exec('csc /bwd/cs/eval.cs', { timeout: 30000 })
 			.then(() => null)
-			.catch(error => `Failed to compile (${start.stop()}). ${util.codeBlock('cs', error
-				.toString()
+			.catch(error => `Failed to compile (${start.stop()}). ${util.codeBlock('cs', `${error.stdout}\n${error.stderr}`
 				.replace('Error: Command failed: csc /bwd/cs/eval.cs\n', '')
 				.replace(/\/bwd\/cs\/eval.cs/g, 'Failed at: '))}`);
 	}
@@ -44,8 +43,8 @@ module.exports = class extends Command {
      */
 	execute() {
 		return util.exec('mono /bwd/cs/eval.exe', { timeout: 30000 })
-			.then(result => ({ success: true, result: result.stdout }))
-			.catch(error => ({ success: false, result: error }));
+			.then(result => ({ success: true, result: `${result.stdout}\n${result.stderr}` }))
+			.catch(error => ({ success: false, result: `${error.stdout}\n${error.stderr}` }));
 	}
 
 	parse(msg, input) {

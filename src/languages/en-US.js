@@ -258,7 +258,7 @@ module.exports = class extends Language {
 
 			COMMAND_ANIME_DESCRIPTION: 'Search your favourite anime by title with this command.',
 			COMMAND_ANIME_EXTENDED: builder.display('anime', {
-				extendedHelp: `This command queries MyAnimeList to show data for the anime you request. In a near future, this command
+				extendedHelp: `This command queries Kitsu.io to show data for the anime you request. In a near future, this command
 				will allow you to navigate between the results so you can read the information of the anime.`,
 				explainedUsage: [
 					['query', `The anime's name you are looking for.`]
@@ -267,7 +267,7 @@ module.exports = class extends Language {
 			}),
 			COMMAND_MANGA_DESCRIPTION: 'Search your favourite manga by title with this command.',
 			COMMAND_MANGA_EXTENDED: builder.display('manga', {
-				extendedHelp: `This command queries MyAnimeList to show data for the manga you request. In a near future, this command',
+				extendedHelp: `This command queries Kitsu.io to show data for the manga you request. In a near future, this command',
 				'will allow you to navigate between the results so you can read the information of the manga.`,
 				explainedUsage: [
 					['query', `The manga's name you are looking for.`]

@@ -1464,8 +1464,9 @@ module.exports = class extends Language {
 			COMMAND_ANIME_INVALID_CHOICE: `That's an invalid choice! Please try with another option.`,
 			COMMAND_ANIME_NO_CHOICE: 'You got me waiting... try again when you are decided!',
 			COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-				`**English title:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : synopsis
+				`**English title:** ${entry.attributes.titles.en || entry.atributes.titles.en_us || 'None'}`,
+				`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
+				synopsis
 			],
 			COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.attributes.status}**`,
@@ -1479,7 +1480,7 @@ module.exports = class extends Language {
 				READ_IT: 'Read it here:'
 			},
 			COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-				`**English title:** ${entry.attributes.titles.en || 'None'}`,
+				`**English title:** ${entry.attributes.titles.en || entry.atributes.titles.en_us || 'None'}`,
 				`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
 				synopsis
 			],

@@ -44,11 +44,15 @@ module.exports = class extends Command {
 		if (entries.length === 1) return entries[0];
 		const _choice = await PromptList.run(msg, entries.slice(0, 10).map((entry) => {
 			if (entry.attributes.averageRating === null) entry.attributes.averageRating = this.extractAverage(entry);
-			return `(${entry.attributes.averageRating}) ${entry.attributes.titles.en || entry.attributes.titles.en_jp || entry.attributes.titles.ja_jp}`;
+			return `(${entry.attributes.averageRating}) ${this.extractTitle(entry.attributes.titles)}`;
 		}));
 		const entry = entries[_choice];
 		if (!entry) throw msg.language.get('COMMAND_ANIME_INVALID_CHOICE');
 		return entry;
+	}
+
+	extractTitle(titles) {
+		return Object.values(titles).find(Boolean);
 	}
 
 	extractAverage(entry) {

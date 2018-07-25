@@ -5,7 +5,7 @@ const Leaderboard = require('./util/Leaderboard');
 const Moderation = require('./util/Moderation');
 const APIStore = require('./structures/APIStore');
 const RawEventStore = require('./structures/RawEventStore');
-const { Server } = require('ipc-link');
+const { Node } = require('veza');
 const ConnectFourManager = require('./util/Games/ConnectFourManager');
 
 module.exports = class Skyra extends Client {
@@ -61,15 +61,14 @@ module.exports = class Skyra extends Client {
 			.registerStore(this.rawEvents);
 
 		// Create the IPC controller singleton
-		this.ipc = new Server('skyra-dashboard', { retry: 1500, silent: true })
-			.on('message', (message) => this.emit('apiMessage', message))
-			.on('error', (error) => this.emit('error', error))
-			.on('connect', () => this.emit('verbose', 'IPC Channel Connected'))
-			.on('disconnect', () => this.emit('warn', 'IPC Channel Disconnected'))
-			.on('destroy', () => this.emit('warn', 'IPC Channel Destroyed'))
-			.on('socket.disconnected', (socket, destroyedSocketID) => this.emit('verbose', `The Socket ${destroyedSocketID} has disconnected!`))
-			.once('start', () => console.log(`[IPC] Successfully started`))
-			.start();
+		this.ipc = new Node('skyra-bot')
+			.on('connect', name => this.emit('verbose', `[IPC] Connected to ${name}`))
+			.on('disconnect', name => this.emit('warn', `[IPC] Disconnected from ${name}`))
+			.on('destroy', name => this.emit('warn', `[IPC] Destroyed connection with Node ${name}`))
+			.on('error', this.emit.bind(this, 'error'))
+			.on('message', this.emit.bind(this, 'apiMessage'));
+
+		this.ipc.connectTo('skyra-dashboard', 8800);
 
 		/**
 		 * A cached dictionary of usernames for optimization with memory sweeping

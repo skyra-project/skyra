@@ -24,10 +24,10 @@ module.exports = class extends Command {
 
 		const synopsis = cutText(entry.attributes.synopsis, 750);
 		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10));
-		const animeURL = `https://kitsu.io/anime/${entry.attributes.slug}`;
+		const animeURL = `https://kitsu.io/manga/${entry.attributes.slug}`;
 		const titles = msg.language.language.COMMAND_ANIME_TITLES;
-		const type = entry.attributes.showType;
-		const title = entry.attributes.titles.en || entry.attributes.titles.ja_jp;
+		const type = entry.attributes.mangaType;
+		const title = entry.attributes.titles.en || entry.attributes.titles.en_jp || entry.attributes.titles.ja_jp;
 
 		return msg.sendMessage(new MessageEmbed()
 			.setColor(score.color)
@@ -43,7 +43,7 @@ module.exports = class extends Command {
 	async getIndex(msg, entries) {
 		if (entries.length === 1) return entries[0];
 		const _choice = await PromptList.run(msg, entries.slice(0, 10).map((entry) =>
-			`(${entry.attributes.averageRating}) ${entry.attributes.titles.en || entry.attributes.titles.ja_jp}`));
+			`(${entry.attributes.averageRating}) ${entry.attributes.titles.en || entry.attributes.titles.en_jp || entry.attributes.titles.ja_jp}`));
 		const entry = entries[_choice];
 		if (!entry) throw msg.language.get('COMMAND_ANIME_INVALID_CHOICE');
 		return entry;

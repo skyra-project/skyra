@@ -93,7 +93,7 @@ class PromptList {
 			}
 		} while (response && attempts++ < maxAttempts);
 
-		if (attempts >= maxAttempts) throw null;
+		if (!response || attempts >= maxAttempts) throw null;
 		return (number | 0) - 1;
 	}
 

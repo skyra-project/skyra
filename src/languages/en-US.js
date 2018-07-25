@@ -2112,6 +2112,10 @@ module.exports = class extends Language {
 			SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
 			SYSTEM_NOTENOUGH_PARAMETERS: `I am sorry, but you did not provide enough parameters...`,
 
+			RESOLVER_INVALID_CHANNELNAME: (name) => `${name} must be a valid channel name, id, or tag.`,
+			RESOLVER_INVALID_ROLENAME: (name) => `${name} must be a valid role name, id, or mention.`,
+			RESOLVER_INVALID_USERNAME: (name) => `${name} must be a valid user name, id, or mention.`,
+
 			LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
 			GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.modlog #modlogs`.',

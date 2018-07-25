@@ -18,7 +18,7 @@ module.exports = class extends Command {
 			.catch(error => ({ stdout: null, stderr: error }));
 		const output = result.stdout ? `**\`OUTPUT\`**${codeBlock('prolog', result.stdout)}` : '';
 		const outerr = result.stderr ? `**\`ERROR\`**${codeBlock('prolog', result.stderr)}` : '';
-		const joined = [output, outerr].join('\n');
+		const joined = [output, outerr].join('\n') || 'No output';
 
 		return msg.sendMessage(joined.length > 2000 ? await this.getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined);
 	}

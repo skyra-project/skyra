@@ -32,10 +32,11 @@ module.exports = class extends Argument {
 		}
 
 		switch (querySearch.length) {
-			case 0: throw `${possible.name} Must be a valid name, id or role mention`;
+			case 0: throw msg.language.get('RESOLVER_INVALID_ROLENAME');
 			case 1: return querySearch[0];
 			default: return PromptList.run(msg, querySearch.slice(0, 10).map(role => role.name))
-				.then(number => querySearch[number]);
+				.then(number => querySearch[number])
+				.catch(() => { throw msg.language.get('RESOLVER_INVALID_ROLENAME'); });
 		}
 	}
 

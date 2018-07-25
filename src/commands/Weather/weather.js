@@ -48,7 +48,7 @@ module.exports = class extends Command {
 
 		const city = locality || governing || country || continent || {};
 		const localityOrCountry = locality ? country : {};
-		const state = locality && governing ? governing : localityOrCountry;
+		const state = locality && governing ? governing : localityOrCountry || {};
 
 		const { currently } = await fetch(`https://api.darksky.net/forecast/${WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
 

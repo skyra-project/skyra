@@ -1,6 +1,4 @@
-const { Command, PromptList, config, MessageEmbed, util: { fetch, parseHTML, oneToTen, basicAuth } } = require('../../index');
-
-const options = { headers: { Authorization: basicAuth(config.tokens.animelist.user, config.tokens.animelist.password) } };
+const { Command, PromptList, MessageEmbed, util: { fetch, oneToTen, cutText } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -15,32 +13,36 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [animeName]) {
-		const data = await fetch(`https://myanimelist.net/api/anime/search.xml?q=${encodeURIComponent(animeName)}`, options, 'xml')
-			.catch(() => { throw msg.language.get('COMMAND_ANIME_QUERY_FAIL'); });
-		const entry = await this.getIndex(msg, data.anime.entry)
-			.catch(error => { throw error || msg.language.get('COMMAND_ANIME_NO_CHOICE'); });
-		const synopsis = parseHTML(entry.synopsis[0]).replace(/\[\/?i\]/, '*').replace(/\n+/g, '\n\n');
-		const score = oneToTen(Math.ceil(Number(entry.score[0])));
-		const titles = msg.language.language.COMMAND_ANIME_TITLES;
-		const url = `https://myanimelist.net/anime/${entry.id[0]}`;
+		const url = new URL('https://kitsu.io/api/edge/anime');
+		url.search = new URLSearchParams([['filter[text]', animeName]]);
 
-		const embed = new MessageEmbed()
+		const body = await fetch(url, 'json')
+			.catch(() => { throw msg.language.get('COMMAND_ANIME_QUERY_FAIL'); });
+
+		const entry = await this.getIndex(msg, body.data)
+			.catch(error => { throw error || msg.language.get('COMMAND_ANIME_NO_CHOICE'); });
+
+		const synopsis = cutText(entry.attributes.synopsis, 750);
+		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating)));
+		const animeURL = `https://kitsu.io/anime/${entry.attributes.slug}`;
+		const titles = msg.language.language.COMMAND_ANIME_TITLES;
+		const type = entry.attributes.showType;
+
+		return msg.sendMessage(new MessageEmbed()
 			.setColor(score.color)
-			.setAuthor(entry.title[0], entry.image && entry.image[0], url)
+			.setAuthor(entry.attributes.title, entry.attributes.posterImage.tiny, animeURL)
 			.setDescription(msg.language.get('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
-			.addField(titles.TYPE, msg.language.get('COMMAND_ANIME_TYPES')[entry.type[0].toUpperCase()] || entry.type[0], true)
+			.addField(titles.TYPE, msg.language.get('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
 			.addField(titles.SCORE, `**${entry.score}** / 10 ${score.emoji}`, true)
 			.addField(titles.STATUS, msg.language.get('COMMAND_ANIME_OUTPUT_STATUS', entry))
-			.addField(titles.WATCH_IT, `**[${entry.title[0]}](${url})**`)
-			.setFooter('© MyAnimeList');
-
-		return msg.sendMessage({ embed });
+			.addField(titles.WATCH_IT, `**[${entry.attributes.titles.en || entry.attributes.titles.ja_jp}](${url})**`)
+			.setFooter('© kitsu.io'));
 	}
 
 	async getIndex(msg, entries) {
 		if (entries.length === 1) return entries[0];
 		const _choice = await PromptList.run(msg, entries.slice(0, 10).map((entry) =>
-			`(${entry.score[0]}) ${entry.title[0]}`));
+			`(${entry.attributes.averageRating}) ${entry.attributes.titles.en || entry.attributes.titles.ja_jp}`));
 		const entry = entries[_choice];
 		if (!entry) throw msg.language.get('COMMAND_ANIME_INVALID_CHOICE');
 		return entry;

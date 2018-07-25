@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		}
 
 		const definition = this.content(result.definition, result.permalink, msg.language);
-		const embed = new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setTitle(`Word: ${toTitleCase(query)}`)
 			.setURL(result.permalink)
 			.setColor(msg.color)
@@ -39,9 +39,7 @@ module.exports = class extends Command {
 			.splitFields(msg.language.get('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
 			.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
 			.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)
-			.setFooter('© Urban Dictionary');
-
-		return msg.sendMessage({ embed });
+			.setFooter('© Urban Dictionary'));
 	}
 
 	content(definition, permalink, i18n) {

@@ -1469,7 +1469,7 @@ module.exports = class extends Language {
 			],
 			COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.status}**`,
-				`    • Started: **${entry.start_date}**\n${entry.end_date[0] === '0000-00-00' ? '' : `    • Finished: **${entry.end_date[0]}**`}`
+				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? '' : `    • Finished: **${entry.attributes.endDate}**`}`
 			],
 			COMMAND_ANIME_TITLES: {
 				TYPE: 'Type',
@@ -1479,12 +1479,13 @@ module.exports = class extends Language {
 				READ_IT: 'Read it here:'
 			},
 			COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-				`**English title:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/manga/${entry.id})` : synopsis
+				`**English title:** ${entry.attributes.titles.en || 'None'}`,
+				`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
+				synopsis
 			],
 			COMMAND_MANGA_OUTPUT_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.status}**`,
-				`    • Started: **${entry.start_date}**\n${entry.end_date[0] === '0000-00-00' ? '' : `    • Finished: **${entry.end_date[0]}**`}`
+				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? '' : `    • Finished: **${entry.attributes.endDate}**`}`
 			],
 			COMMAND_MANGA_TITLES: {
 				MANGA: '📘 Manga',

@@ -1469,7 +1469,7 @@ module.exports = class extends Language {
 			],
 			COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.attributes.status}**`,
-				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? '' : `    • Finished: **${entry.attributes.endDate}**`}`
+				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Finished: **${entry.attributes.endDate}**` : ''}`
 			],
 			COMMAND_ANIME_TITLES: {
 				TYPE: 'Type',
@@ -1485,7 +1485,7 @@ module.exports = class extends Language {
 			],
 			COMMAND_MANGA_OUTPUT_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.attributes.status}**`,
-				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? '' : `    • Finished: **${entry.attributes.endDate}**`}`
+				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Finished: **${entry.attributes.endDate}**` : ''}`
 			],
 			COMMAND_MANGA_TITLES: {
 				MANGA: '📘 Manga',

@@ -23,7 +23,7 @@ module.exports = class extends Command {
 			.catch(error => { throw error || msg.language.get('COMMAND_ANIME_NO_CHOICE'); });
 
 		const synopsis = cutText(entry.attributes.synopsis, 750);
-		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating)));
+		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10));
 		const animeURL = `https://kitsu.io/anime/${entry.attributes.slug}`;
 		const titles = msg.language.language.COMMAND_ANIME_TITLES;
 		const type = entry.attributes.showType;
@@ -34,7 +34,7 @@ module.exports = class extends Command {
 			.setAuthor(title, entry.attributes.posterImage.tiny, animeURL)
 			.setDescription(msg.language.get('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
 			.addField(titles.TYPE, msg.language.get('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
-			.addField(titles.SCORE, `**${entry.attributes.averageRating}** / 10 ${score.emoji}`, true)
+			.addField(titles.SCORE, `**${entry.attributes.averageRating}** / 100 ${score.emoji}`, true)
 			.addField(titles.STATUS, msg.language.get('COMMAND_ANIME_OUTPUT_STATUS', entry))
 			.addField(titles.WATCH_IT, `**[${title}](${animeURL})**`)
 			.setFooter('© kitsu.io'));

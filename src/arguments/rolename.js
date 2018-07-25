@@ -23,7 +23,7 @@ module.exports = class extends Argument {
 		for (const role of msg.guild.roles.values()) if (reg.test(role.name)) results.push(role);
 
 		let querySearch;
-		if (results.length > 0) {
+		if (results.length > 1) {
 			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');
 			const filtered = results.filter(role => regWord.test(role.name));
 			querySearch = filtered.length > 0 ? filtered : results;

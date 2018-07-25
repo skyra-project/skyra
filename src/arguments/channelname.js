@@ -25,7 +25,7 @@ module.exports = class extends Argument {
 
 
 		let querySearch;
-		if (results.length > 0) {
+		if (results.length > 1) {
 			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');
 			const filtered = results.filter(channel => regWord.test(channel.name));
 			querySearch = filtered.length > 0 ? filtered : results;

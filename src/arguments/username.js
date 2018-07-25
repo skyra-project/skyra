@@ -28,7 +28,7 @@ module.exports = class extends Argument {
 			if (reg.test(member.user.username)) results.push(member.user);
 
 		let querySearch;
-		if (results.length > 0) {
+		if (results.length > 1) {
 			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');
 			const filtered = results.filter(user => regWord.test(user.username));
 			querySearch = filtered.length > 0 ? filtered : results;

@@ -1468,7 +1468,7 @@ module.exports = class extends Language {
 				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : synopsis
 			],
 			COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
-				`  ❯  Current status: **${entry.status}**`,
+				`  ❯  Current status: **${entry.attributes.status}**`,
 				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? '' : `    • Finished: **${entry.attributes.endDate}**`}`
 			],
 			COMMAND_ANIME_TITLES: {
@@ -1484,7 +1484,7 @@ module.exports = class extends Language {
 				synopsis
 			],
 			COMMAND_MANGA_OUTPUT_STATUS: (entry) => [
-				`  ❯  Current status: **${entry.status}**`,
+				`  ❯  Current status: **${entry.attributes.status}**`,
 				`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? '' : `    • Finished: **${entry.attributes.endDate}**`}`
 			],
 			COMMAND_MANGA_TITLES: {

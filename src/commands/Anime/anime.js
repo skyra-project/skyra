@@ -27,15 +27,16 @@ module.exports = class extends Command {
 		const animeURL = `https://kitsu.io/anime/${entry.attributes.slug}`;
 		const titles = msg.language.language.COMMAND_ANIME_TITLES;
 		const type = entry.attributes.showType;
+		const title = entry.attributes.titles.en || entry.attributes.titles.ja_jp;
 
 		return msg.sendMessage(new MessageEmbed()
 			.setColor(score.color)
-			.setAuthor(entry.attributes.title, entry.attributes.posterImage.tiny, animeURL)
+			.setAuthor(title, entry.attributes.posterImage.tiny, animeURL)
 			.setDescription(msg.language.get('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
 			.addField(titles.TYPE, msg.language.get('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
-			.addField(titles.SCORE, `**${entry.score}** / 10 ${score.emoji}`, true)
+			.addField(titles.SCORE, `**${entry.attributes.averageRating}** / 10 ${score.emoji}`, true)
 			.addField(titles.STATUS, msg.language.get('COMMAND_ANIME_OUTPUT_STATUS', entry))
-			.addField(titles.WATCH_IT, `**[${entry.attributes.titles.en || entry.attributes.titles.ja_jp}](${url})**`)
+			.addField(titles.WATCH_IT, `**[${title}](${animeURL})**`)
 			.setFooter('© kitsu.io'));
 	}
 

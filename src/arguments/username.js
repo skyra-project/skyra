@@ -37,11 +37,11 @@ module.exports = class extends Argument {
 		}
 
 		switch (querySearch.length) {
-			case 0: throw msg.language.get('RESOLVER_INVALID_USERNAME');
+			case 0: throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 			case 1: return querySearch[0];
 			default: return PromptList.run(msg, querySearch.slice(0, 10).map(user => user.username))
 				.then(number => querySearch[number])
-				.catch(() => { throw msg.language.get('RESOLVER_INVALID_USERNAME'); });
+				.catch(() => { throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name); });
 		}
 	}
 

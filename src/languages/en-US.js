@@ -1464,7 +1464,7 @@ module.exports = class extends Language {
 			COMMAND_ANIME_INVALID_CHOICE: `That's an invalid choice! Please try with another option.`,
 			COMMAND_ANIME_NO_CHOICE: 'You got me waiting... try again when you are decided!',
 			COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-				`**English title:** ${entry.attributes.titles.en || entry.atributes.titles.en_us || 'None'}`,
+				`**English title:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'None'}`,
 				`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
 				synopsis
 			],
@@ -1480,7 +1480,7 @@ module.exports = class extends Language {
 				READ_IT: 'Read it here:'
 			},
 			COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-				`**English title:** ${entry.attributes.titles.en || entry.atributes.titles.en_us || 'None'}`,
+				`**English title:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'None'}`,
 				`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
 				synopsis
 			],

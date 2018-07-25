@@ -290,7 +290,7 @@ diff@^3.5.0:
     form-data "^2.3.2"
     node-fetch "^2.1.2"
     pako "^1.0.0"
-    prism-media "^0.3.0"
+    prism-media hydrabolt/prism-media
     tweetnacl "^1.0.0"
     ws "^4.0.0"
 
@@ -643,7 +643,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
 
 "klasa@github:dirigeants/klasa":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/dbd1375e4dd235788281605f65b115f948e36ee6"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/e06c1daa9a5f0b3c7fd316f7cb9b3fd430d5f082"
   dependencies:
     fs-nextra "^0.3.2"
 
@@ -862,9 +862,9 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
 
-prism-media@^0.3.0:
+prism-media@hydrabolt/prism-media:
   version "0.3.1"
-  resolved "https://registry.yarnpkg.com/prism-media/-/prism-media-0.3.1.tgz#5331522d1194b544c65db4a66ea3854e6916a258"
+  resolved "https://codeload.github.com/hydrabolt/prism-media/tar.gz/ead016c69b1f341898cb264746c355b982502c62"
 
 process-nextick-args@~2.0.0:
   version "2.0.0"

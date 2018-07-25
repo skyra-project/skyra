@@ -16,7 +16,10 @@ module.exports = class extends Command {
 		from = from.toUpperCase();
 		to = to.toUpperCase();
 
-		const body = await fetch(`https://min-api.cryptocompare.com/data/price?fsym=${from}&tsyms=${to}`, 'json');
+		const url = new URL('https://min-api.cryptocompare.com/data/price');
+		url.search = new URLSearchParams([['fsym', from], ['tsyms', to]]);
+
+		const body = await fetch(url, 'json');
 
 		if (body.Response === 'Error') throw msg.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		return msg.sendMessage(msg.language.get('COMMAND_PRICE_CURRENCY', from, to, amount * body[to]));

@@ -14,7 +14,7 @@
     "pm2:stop": "pm2 stop Skyra",
     "dev:unix": "DEV=true node src/skyra.js",
     "dev:windows": "$env:DEV=\"true\"; node src/skyra.js",
-    "test": "eslint src",
+    "test": "eslint src && tslint src/index.d.ts",
     "lint": "eslint --fix src",
     "deps:update": "yarn install dirigeants/klasa discordjs/discord.js",
     "deps:install": "yarn install --production"
@@ -38,11 +38,13 @@
     "klasa": "github:dirigeants/klasa",
     "node-fetch": "^2.2.0",
     "rethinkdbdash": "^2.3.31",
-    "veza": "^0.2.1"
+    "veza": "^0.2.2"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-klasa": "github:dirigeants/klasa-lint"
+    "eslint": "^5.2.0",
+    "eslint-config-klasa": "github:dirigeants/klasa-lint",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2"
   },
   "repository": {
     "type": "git",

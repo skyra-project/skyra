@@ -15,6 +15,7 @@ class Leaderboard {
 	 * @typedef  {Object} LeaderboardUser
 	 * @property {number} points
 	 * @property {number} position
+	 * @property {string} [name]
 	 * @memberof Leaderboard
 	 */
 
@@ -106,7 +107,7 @@ class Leaderboard {
 	/**
 	 * Get the leaderboard for the selected guild
 	 * @since 3.0.0
-	 * @param {(string|Guild)} guild A guild id or instance
+	 * @param {(string)} guild A guild id or instance
 	 * @returns {Promise<Collection<string, LeaderboardUser>>}
 	 */
 	async getMembers(guild) {
@@ -129,7 +130,7 @@ class Leaderboard {
 	/**
 	 * Sync the leaderboard for the selected guild
 	 * @since 3.0.0
-	 * @param {(stringGuild)} guild A guild id or instance
+	 * @param {string} guild A guild id or instance
 	 */
 	async syncMembers(guild) {
 		if (!guild) throw new Error('The parameter \'guild\' must be specified.');

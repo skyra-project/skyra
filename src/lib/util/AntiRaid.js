@@ -42,7 +42,7 @@ class AntiRaid extends Map {
 	/**
 	 * Get the default role ID, if configured
 	 * @since 3.0.0
-	 * @returns {string}
+	 * @type {Object}
 	 * @private
 	 */
 	get guildConfigs() {
@@ -134,7 +134,7 @@ class AntiRaid extends Map {
 	/**
 	 * Kicks a member
 	 * @since 3.0.0
-	 * @param {GuildMember} [member] The member to kick, if given
+	 * @param {GuildMember} member The member to kick
 	 * @returns {GuildMember}
 	 */
 	async kick(member) {

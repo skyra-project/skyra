@@ -38,7 +38,8 @@ module.exports = class ConnectFourManager {
 		const match = this.matches.get(channel);
 		if (match) {
 			this.matches.delete(channel);
-			return match.dispose();
+			match.dispose();
+			return true;
 		}
 		return false;
 	}

@@ -32,7 +32,7 @@ class PreciseTimeout {
 
 		/**
 		 * @since 3.0.0
-		 * @type {?Timeout}
+		 * @type {?NodeJS.Timer}
 		 * @private
 		 */
 		this.timeout = null;

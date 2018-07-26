@@ -137,7 +137,7 @@ class ModerationLog {
 			`❯ **Type**: ${ModerationLog.TYPES[this.accurateType].title}`,
 			`❯ **User:** ${this.user.tag} (${this.user.id})`,
 			`❯ **Reason:** ${this.reason || `Please use \`${this.guild.configs.prefix}reason ${this.caseNumber} to claim.\``}`,
-			`❯ **Appeal In**: ${this.client.languages.default.duration(this.duration)}`
+			`❯ **Expires In**: ${this.client.languages.default.duration(this.duration)}`
 		] : [
 			`❯ **Type**: ${ModerationLog.TYPES[this.accurateType].title}`,
 			`❯ **User:** ${this.user.tag} (${this.user.id})`,

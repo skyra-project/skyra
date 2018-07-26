@@ -50,7 +50,7 @@ class LanguageHelp {
 
 		// Reminder
 		if (reminder)
-			output.push(this.reminder, LanguageHelp.resolveMultilineString(reminder));
+			output.push(this.reminder, LanguageHelp.resolveMultilineString(reminder, multiline));
 
 		return output.join('\n');
 	}

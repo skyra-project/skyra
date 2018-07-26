@@ -45,11 +45,10 @@ module.exports = {
 	FriendlyDuration: require('./lib/util/FriendlyDuration'),
 	LanguageHelp: require('./lib/util/LanguageHelp'),
 	Leaderboard: require('./lib/util/Leaderboard'),
-	parseHTML: require('./lib/util/parseHTML'),
 	PreciseTimeout: require('./lib/util/PreciseTimeout'),
 	PromptList: require('./lib/util/PromptList'),
 	toJSON: require('./lib/util/ToJSON'),
-	databaseInit: require('./lib/util/databaseInit'),
+	DatabaseInit: require('./lib/util/DatabaseInit'),
 	constants: require('./lib/util/constants'),
 	util: require('./lib/util/util'),
 

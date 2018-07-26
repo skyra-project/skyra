@@ -65,7 +65,7 @@ class Moderation {
 	 * @since 3.0.0
 	 * @param {string} guildID The Guild ID that manages the case
 	 * @param {number} caseID The case ID
-	 * @returns {Promise<Object>}
+	 * @returns {Promise<ModerationCaseData>}
 	 */
 	getCase(guildID, caseID) {
 		return this.r.table(TABLENAME).getAll([guildID, caseID], { index: 'guild_case' })
@@ -79,7 +79,7 @@ class Moderation {
 	 * Update a case
 	 * @since 3.0.0
 	 * @param {KlasaGuild} guild The Guild that manages this instance
-	 * @param {ModerationCaseData} [data={}] The case data to update
+	 * @param {ModerationCaseData} data The case data to update
 	 * @returns {Promise<boolean>}
 	 */
 	async updateCase(guild, data) {
@@ -151,7 +151,7 @@ class Moderation {
 	 * @since 3.0.0
 	 * @param {KlasaGuild} guild The Guild that manages this instance
 	 * @param {string} type The case options
-	 * @returns {Promise<boolean>}
+	 * @returns {Promise<number>}
 	 */
 	async getAmountCases(guild, type) {
 		if (guild && typeof guild !== 'string') guild = this._checkGuild(guild);

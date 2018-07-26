@@ -1,6 +1,5 @@
 const ModerationLog = require('./ModerationLog');
 const { schemaKeys } = require('./Moderation');
-const parseHTML = require('./parseHTML');
 const { STATUS_CODES } = require('http');
 const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
@@ -158,16 +157,6 @@ class Util {
 	}
 
 	/**
-	 * Replace the residual HTML tags from the code.
-	 * @since 3.0.0
-	 * @param {string} text The text to parse
-	 * @returns {string}
-	 */
-	static parseHTML(text) {
-		return parseHTML(text);
-	}
-
-	/**
      * Split a string by its latest space character in a range from the character 0 to the selected one.
 	 * @since 2.0.0
      * @param {string} str    The text to split.
@@ -236,7 +225,6 @@ class Util {
 			case 'buffer': return result.buffer();
 			case 'json': return result.json();
 			case 'text': return result.text();
-			case 'xml': return result.text().then(text => Util.xml2js(text));
 			default: throw new Error(`Unknown type ${type}`);
 		}
 	}
@@ -315,8 +303,6 @@ class Util {
 	}
 
 }
-
-Util.xml2js = require('util').promisify(require('xml2js').parseString);
 
 Util.MUTE_ROLE_PERMISSIONS = Object.freeze({
 	text: { SEND_MESSAGES: false, ADD_REACTIONS: false },

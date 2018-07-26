@@ -43,6 +43,7 @@ module.exports = class ToJSON {
 			region: data.region,
 			verificationLevel: data.verificationLevel,
 			verified: data.verified,
+			roles: data.roles.map(ToJSON.role),
 			createdTimestamp: data.createdTimestamp
 		};
 	}

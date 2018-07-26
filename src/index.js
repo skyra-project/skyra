@@ -66,5 +66,11 @@ module.exports = {
 	NoMentionSpam: require('./lib/util/NoMentionSpam'),
 
 	klasaUtil: klasa.util,
-	discordUtil: discord.Util
+	discordUtil: discord.Util,
+
+	versions: {
+		get skyra() { return module.exports.version; },
+		klasa: klasa.version,
+		discord: discord.version
+	}
 };

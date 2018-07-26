@@ -288,7 +288,6 @@ class StarboardMessage {
 	/**
 	 * Set the amount of stars for this instance
 	 * @since 3.0.0
-	 * @param {number} stars The new amount of stars
 	 * @returns {Promise<boolean>}
 	 */
 	async setStars() {

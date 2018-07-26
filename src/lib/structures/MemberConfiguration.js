@@ -72,7 +72,7 @@ class MemberConfiguration {
 		/**
 		 * The promise sync status, if syncing.
 		 * @since 3.0.0
-		 * @type {boolean}
+		 * @type {?Promise<this>}
 		 * @name MemberConfiguration#_syncStatus
 		 * @private
 		 */
@@ -160,7 +160,7 @@ class MemberConfiguration {
 	 * @returns {MemberConfigurationJSON}
 	 */
 	toJSON() {
-		return { count: this.count };
+		return { count: this.count, stickyRoles: this.stickyRoles.slice() };
 	}
 
 	/**

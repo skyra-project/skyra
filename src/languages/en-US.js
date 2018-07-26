@@ -1,6 +1,5 @@
 /* eslint object-curly-newline: "off", max-len: "off" */
-const { Language, version, Timestamp } = require('klasa');
-const { LanguageHelp, FriendlyDuration, util, klasaUtil, constants: { EMOJIS: { SHINY } } } = require('../index');
+const { Language, LanguageHelp, Timestamp, FriendlyDuration, util, klasaUtil, constants: { EMOJIS: { SHINY } }, versions: { skyra, klasa } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -1162,7 +1161,7 @@ module.exports = class extends Language {
 			COMMAND_DONATE_EXTENDED: builder.display('donate', {
 				extendedHelp: `
 				Skyra Project started on 24th October 2016, if you are reading this, you are
-				using the version 3.0.0 (Royal Update), which is the twelfth rewrite. I have
+				using the version ${skyra}, which is the twelfth rewrite. I have
 				improved a lot every single function from Skyra, and now, she is extremely fast.
 
 				However, not everything is free, I need your help to keep Skyra alive in a VPS so
@@ -1520,7 +1519,7 @@ module.exports = class extends Language {
 				'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
 			].join('\n'),
 			COMMAND_INFO: [
-				'Skyra 3.0.0 (codename **Royal**) is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.',
+				`Skyra ${skyra} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,
 				"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",
 				'',
 				'Skyra features:',
@@ -1908,7 +1907,7 @@ module.exports = class extends Language {
 				`• Channels   :: ${STATS.CHANNELS}`,
 				`• Discord.js :: ${STATS.VERSION}`,
 				`• Node.js    :: ${STATS.NODE_JS}`,
-				`• Klasa      :: ${version}`,
+				`• Klasa      :: ${klasa}`,
 				'',
 				'= UPTIME =',
 				`• Host       :: ${UPTIME.HOST}`,

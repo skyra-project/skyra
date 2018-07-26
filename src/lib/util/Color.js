@@ -45,11 +45,6 @@ class Color {
 		return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 	}
 
-	static fulFill(value, fill = 0, number = 2) {
-		const { length } = value.toString();
-		return `${fill.toString().repeat(number - length)}${value}`;
-	}
-
 	static _generateRandom() {
 		const HEX = new Resolver.HEX(
 			Color.generateBetween(255, 200).toString(16),

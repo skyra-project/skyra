@@ -34,9 +34,9 @@ module.exports = class extends Argument {
 
 		switch (results.length) {
 			case 0: throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
-			case 1: return msg.guild.members.fetch(results[0][0]);
+			case 1: return this.client.users.fetch(results[0][0]);
 			default: return PromptList.run(msg, results.map(result => result[1]))
-				.then((number) => msg.guild.members.fetch(results[number][0]))
+				.then((number) => this.client.users.fetch(results[number][0]))
 				.catch(() => { throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name); });
 		}
 	}

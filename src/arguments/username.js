@@ -1,9 +1,10 @@
-const { Argument, PromptList, klasaUtil: { regExpEsc } } = require('../index');
+const { Argument, PromptList, klasaUtil: { regExpEsc }, levenshtein } = require('../index');
 const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
+const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 function resolveUser(query, guild) {
 	if (USER_REGEXP.test(query)) return guild.client.users.fetch(USER_REGEXP.exec(query)[1]).catch(() => null);
-	if (/^\w{1,32}#\d{4}$/.test(query)) {
+	if (USER_TAG.test(query)) {
 		const res = guild.members.find(member => member.user.tag === query);
 		return res ? res.user : null;
 	}
@@ -23,23 +24,19 @@ module.exports = class extends Argument {
 
 		const results = [];
 		const reg = new RegExp(regExpEsc(arg), 'i');
-		for (const member of msg.guild.members.values())
-			if (reg.test(member.user.username)) results.push(member.user);
-
-		let querySearch;
-		if (results.length > 1) {
-			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');
-			const filtered = results.filter(user => regWord.test(user.username));
-			querySearch = filtered.length > 0 ? filtered : results;
-		} else {
-			querySearch = results;
+		for (const [id, nickname] of msg.guild.nameDictionary.entries()) {
+			if (typeof nickname !== 'string') continue;
+			if (reg.test(nickname) || levenshtein(arg, nickname) !== -1) {
+				results.push([id, nickname]);
+				if (results.length === 10) break;
+			}
 		}
 
-		switch (querySearch.length) {
+		switch (results.length) {
 			case 0: throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
-			case 1: return querySearch[0];
-			default: return PromptList.run(msg, querySearch.slice(0, 10).map(user => user.username))
-				.then(number => querySearch[number])
+			case 1: return results[0];
+			default: return PromptList.run(msg, results.map(result => result[1]))
+				.then((number) => msg.guild.members.fetch(results[number]))
 				.catch(() => { throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name); });
 		}
 	}

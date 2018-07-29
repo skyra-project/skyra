@@ -123,11 +123,9 @@ module.exports = class extends Command {
 	}
 
 	async prompt(msg, banner) {
-		const username = await this.client.fetchUsername(banner.author);
 		const embed = new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setDescription([
-				`**Author**: ${username}`,
 				`**Title**: ${banner.title} (\`${banner.id}\`)`,
 				`**Price**: ${banner.price}${SHINY}`
 			].join('\n'))

@@ -48,7 +48,10 @@ module.exports = class extends Event {
 
 	async _prepareSkyra() {
 		// Fill the dictionary name for faster user fetching
-		for (const user of this.client.users.values()) this.client.dictionaryName.set(user.id, user.username);
+		for (const guild of this.client.guilds.values()) {
+			for (const member of guild.members.values())
+				guild.nameDictionary.set(member.id, member.displayName);
+		}
 
 		// Sweep
 		this.client.tasks.get('cleanup').run();

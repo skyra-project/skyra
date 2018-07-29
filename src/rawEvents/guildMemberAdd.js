@@ -19,6 +19,7 @@ module.exports = class extends RawEvent {
 	}
 
 	async run({ guild, member }) {
+		guild.nameDictionary.delete(member.id, member.displayName);
 		const stickyRoles = guild.configs.stickyRoles.find(stickyRole => stickyRole.id === member.id);
 		if (stickyRoles) {
 			// Handle the case the user is muted

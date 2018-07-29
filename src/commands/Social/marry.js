@@ -26,8 +26,8 @@ module.exports = class extends Command {
 
 	async _display(msg) {
 		if (!msg.author.configs.marry) return msg.sendLocale('COMMAND_MARRY_NOTTAKEN');
-		const username = await this.client.fetchUsername(msg.author.configs.marry);
-		return msg.sendLocale('COMMAND_MARRY_WITH', [username]);
+		const username = await msg.guild.fetchName(msg.author.configs.marry);
+		return msg.sendLocale('COMMAND_MARRY_WITH', [username || `<@${msg.author.configs.marry}>`]);
 	}
 
 	async _marry(msg, user) {

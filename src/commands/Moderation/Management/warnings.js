@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		const users = new Map();
 		for (const warning of warnings) {
 			const id = warning[schemaKeys.MODERATOR];
-			if (!users.has(id)) users.set(id, await this.client.fetchUsername(id));
+			if (!users.has(id)) users.set(id, await msg.guild.fetchName(id) || id);
 		}
 
 		// Set up the formatter

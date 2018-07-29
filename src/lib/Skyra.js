@@ -71,13 +71,6 @@ module.exports = class Skyra extends Client {
 		this.ipc.connectTo('skyra-dashboard', 8800);
 
 		/**
-		 * A cached dictionary of usernames for optimization with memory sweeping
-		 * @since 3.0.0
-		 * @type {Map<string, string>}
-		 */
-		this.dictionaryName = new Map();
-
-		/**
 		 * The UsageStatus object containing Skyra's metrics in the last 12 hours,
 		 * with an update every 5 minutes
 		 * @since 2.0.0
@@ -139,20 +132,6 @@ module.exports = class Skyra extends Client {
 	}
 
 	/**
-	 * Fetch a username
-	 * @since 3.0.0
-	 * @param {string} userID The user ID to fetch
-	 * @returns {Promise<string>}
-	 */
-	async fetchUsername(userID) {
-		const entry = this.dictionaryName.get(userID);
-		if (entry) return entry;
-		const user = await this.users.fetch(userID);
-		this.dictionaryName.set(userID, user.username);
-		return user.username;
-	}
-
-	/**
 	 * Update the stats
 	 * @since 2.1.0
 	 */
@@ -179,12 +158,12 @@ module.exports = class Skyra extends Client {
 	dispose() {
 		// Clear the leaderboards and their timers
 		this.leaderboard.dispose();
-		this.dictionaryName.clear();
 
 		// Clear all the timeouts and caches for all Guild#security
 		for (const guild of this.guilds.values()) {
 			guild.security.dispose();
 			guild.starboard.dispose();
+			guild.nameDictionary.clear();
 		}
 	}
 

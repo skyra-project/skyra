@@ -33,6 +33,7 @@ const skyra = new Skyra({
 	dev: DEV,
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
+		'GUILD_MEMBER_UPDATE',
 		'PRESENCE_UPDATE',
 		'RELATIONSHIP_ADD',
 		'RELATIONSHIP_REMOVE',

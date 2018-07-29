@@ -53,7 +53,6 @@ export class Skyra extends KlasaClient {
 	public ipcPieces: APIStore;
 	public rawEvents: RawEventStore;
 	public ipc: Node;
-	public dictionaryName: Map<Snowflake, string>;
 	public usageStatus: {
 		cpu: Array<number>;
 		prc: Array<number>;
@@ -64,7 +63,6 @@ export class Skyra extends KlasaClient {
 	private _updateStatsInterval: NodeJS.Timer;
 	private _skyraReady: boolean;
 
-	public fetchUserName(id: Snowflake): Promise<string>;
 	public updateStats(): void;
 	public dispose(): void;
 }
@@ -82,6 +80,8 @@ export class SkyraGuild extends KlasaGuild {
 	public configs: GuildConfiguration;
 	public security: GuildSecurity;
 	public starboard: StarboardManager;
+	public readonly nameDictionary: Collection<Snowflake, string>;
+	public fetchName(id: Snowflake): Promise<string>;
 }
 
 export class SkyraGuildMember extends GuildMember {

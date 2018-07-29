@@ -415,7 +415,7 @@
 		"ignoreChannels": {
 			"type": "textchannel",
 			"array": true,
-			"default": null,
+			"default": [],
 			"min": null,
 			"max": null,
 			"configurable": true

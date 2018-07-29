@@ -52,6 +52,8 @@ module.exports = {
 	constants: require('./lib/util/constants'),
 	util: require('./lib/util/util'),
 
+	levenshtein: require('./lib/util/External/levenshtein'),
+
 	// Games
 	ConnectFour: require('./lib/util/Games/ConnectFour'),
 	ConnectFourManager: require('./lib/util/Games/ConnectFourManager'),

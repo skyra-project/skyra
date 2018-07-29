@@ -450,6 +450,8 @@ export class Util {
 	private static _createMuteRolePush(channel: Channel, role: Role, array: Array<Snowflake>): Promise<any>;
 }
 
+export function levenshtein(a: string, b: string, full?: boolean): number;
+
 export class ConnectFour {
 	public constructor(challenger: KlasaUser, challengee: KlasaUser);
 	public client: Skyra;

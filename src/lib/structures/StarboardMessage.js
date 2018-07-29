@@ -155,6 +155,7 @@ class StarboardMessage {
 		}
 		if (!this.message) return null;
 		return new MessageEmbed()
+			.setURL(this.message.url)
 			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL())
 			.setColor(this.color)
 			.setDescription(this.message.content)

@@ -5,9 +5,14 @@ module.exports = class extends Inhibitor {
 	async run(msg, cmd) {
 		if (cmd.enabled
 			&& msg.guild
-			&& msg.guild.configs.disabledChannels.includes(msg.channel.id)
+			&& (msg.guild.configs.disabledChannels.includes(msg.channel.id) || this.isChannelInhibited(msg, cmd))
 			&& !await msg.hasAtLeastPermissionLevel(5))
 			throw true;
+	}
+
+	isChannelInhibited(msg, cmd) {
+		const entry = msg.guild.configs.disabledCommandsChannels[msg.channel.id];
+		return entry ? entry.includes(cmd.name) : false;
 	}
 
 };

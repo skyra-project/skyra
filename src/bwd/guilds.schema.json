@@ -91,6 +91,14 @@
 		"max": null,
 		"configurable": true
 	},
+	"disabledCommandsChannels": {
+		"type": "any",
+		"array": false,
+		"default": {},
+		"min": null,
+		"max": null,
+		"configurable": false
+	},
 	"events": {
 		"type": "Folder",
 		"banAdd": {

@@ -103,6 +103,7 @@ export class GuildConfiguration extends Configuration {
 	};
 	disabledChannels: Array<Snowflake>;
 	disabledCommands: Array<string>;
+	disabledCommandsChannels: { [k: Snowflake]: Array<string> };
 	events: {
 		banAdd: boolean;
 		banRemove: boolean;

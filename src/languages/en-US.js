@@ -510,6 +510,19 @@ module.exports = class extends Language {
 			 * MANAGEMENT/CONFIGURATION COMMANDS
 			 */
 
+			COMMAND_MANAGECOMMANDCHANNEL_DESCRIPTION: 'Manage per-channel command blacklist.',
+			COMMAND_MANAGECOMMANDCHANNEL_EXTENDED: builder.display('manageCommandChannel', {
+				extendedHelp: `This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want
+					to be used in certain channels (to disable a command globally, use the \`disabledCommands\` configuration key to disable in all channels.`,
+				explainedUsage: [
+					['show [channel]', 'Show the command blacklist for the selected channel'],
+					['add [channel] <command>', 'Add a command to the specified channel\'s command blacklist.'],
+					['remove [channel] <command>', 'Remove a command to the specified channel\'s command blacklist.'],
+					['reset [channel]', 'Clear the command blacklist for the specified channel.']
+				],
+				reminder: 'The channel argument is optional, but it uses fuzzy search when possible.',
+				examples: ['show', 'add #general profile', 'remove #general profile', 'reset #general']
+			}),
 			COMMAND_MANAGEROLEREACTION_DESCRIPTION: 'Manage the role reactions.',
 			COMMAND_MANAGEROLEREACTION_EXTENDED: builder.display('manageRoleReaction', {
 				extendedHelp: `This command manages the role reaction module, it requires a **role channel** set up and the permissions **${PERMS.ADD_REACTIONS}**
@@ -1701,6 +1714,16 @@ module.exports = class extends Language {
 			 * MANAGEMENT/CONFIGURATION COMMANDS
 			 */
 
+			COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL: 'You must input a valid text channel, people cannot use commands in a voice or a category channel!',
+			COMMAND_MANAGECOMMANDCHANNEL_REQUIRED_COMMAND: 'You must specify what command do you want to add or remove from the channel\'s filter.',
+			COMMAND_MANAGECOMMANDCHANNEL_SHOW: (channel, commands) => `List of disabled commands in ${channel}: ${commands}`,
+			COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY: 'The list of disabled commands for the specified channel is empty!',
+			COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET: 'The command you are trying to disable is already disabled!',
+			COMMAND_MANAGECOMMANDCHANNEL_ADD: (channel, command) => `Successfully disabled the command ${command} for the channel ${channel}!`,
+			COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET: (channel) => `The command you are trying to enable was not disabled for ${channel}.`,
+			COMMAND_MANAGECOMMANDCHANNEL_REMOVE: (channel, command) => `Successfully enabled the command ${command} for the channel ${channel}!`,
+			COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY: 'This channel had no disabled command, so I decided to do nothing.',
+			COMMAND_MANAGECOMMANDCHANNEL_RESET: (channel) => `Successfully enabled all disabled commands in ${channel}, enjoy!`,
 			COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION: 'You must input a valid reaction that can be used by me.',
 			COMMAND_MANAGEROLEREACTION_REQUIRED_ROLE: 'You must input the name of the role you want me to add.',
 			COMMAND_MANAGEROLEREACTION_LIST_EMPTY: 'This guild has no role reaction set up.',

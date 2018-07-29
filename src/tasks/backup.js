@@ -10,7 +10,7 @@ module.exports = class extends Task {
 	}
 
 	get dirManager() {
-		return join(this.client.clientBaseDir, 'bwd', 'backups');
+		return join(this.client.userBaseDirectory, 'bwd', 'backups');
 	}
 
 	get fileManager() {

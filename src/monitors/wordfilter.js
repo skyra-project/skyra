@@ -1,47 +1,38 @@
-const { Monitor, MessageEmbed, klasaUtil: { codeBlock }, discordUtil: { escapeMarkdown }, util: { cutText } } = require('../index');
+const { Monitor, MessageEmbed, klasaUtil: { codeBlock }, discordUtil: { escapeMarkdown }, util: { cutText }, constants: { MESSAGE_LOGS } } = require('../index');
 const { diffWordsWithSpace } = require('diff');
+
+const DELETE_FLAG = 0b01, LOG_FLAG = 0b10;
 
 module.exports = class extends Monitor {
 
-	constructor(...args) {
-		super(...args, {
-			ignoreBots: false,
-			ignoreOthers: false,
-			ignoreSelf: true,
-			ignoreWebhooks: true
-		});
-	}
-
 	async run(msg) {
-		if (await msg.hasAtLeastPermissionLevel(5)) return false;
+		if (await msg.hasAtLeastPermissionLevel(5)) return;
 
-		const { filter, channels } = msg.guild.configs;
+		const { filter } = msg.guild.configs;
 		const filtered = msg.content.replace(filter.regexp, match => '*'.repeat(match.length));
-		if (filtered === msg.content) return false;
+		if (filtered === msg.content) return;
 
-		if (msg.deletable) {
-			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', cutText(filtered, 1900)))).catch(() => null);
-			msg.nuke().catch(() => null);
+		// eslint-disable-next-line no-bitwise
+		if (filter.level & DELETE_FLAG) {
+			if (msg.deletable) {
+				if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', cutText(filtered, 1900)))).catch(() => null);
+				msg.nuke().catch(() => null);
+			}
+			if (msg.channel.postable)
+				msg.alert(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
 		}
-		if (msg.channel.postable && (filter.level === 1 || filter.level === 3))
-			msg.alert(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
 
-		if (filter.level !== 2 && filter.level !== 3) return true;
-
-		const modLogChannelID = channels.modlog;
-		if (!modLogChannelID) return true;
-
-		const channel = msg.guild.channels.get(modLogChannelID);
-		if (!channel) return msg.guild.configs.reset('channel.modlog');
-
-		return channel.send(new MessageEmbed()
-			.splitFields(cutText(diffWordsWithSpace(msg.content, filter)
-				.map(result => result.removed ? `__${escapeMarkdown(result.value)}__` : escapeMarkdown(result.value))
-				.join(''), 4000))
-			.setColor(0xefae45)
-			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')}`)
-			.setTimestamp());
+		// eslint-disable-next-line no-bitwise
+		if (filter.level & LOG_FLAG) {
+			this.client.emit('guildMessageLog', MESSAGE_LOGS.kModeration, msg.guild, () => new MessageEmbed()
+				.splitFields(cutText(diffWordsWithSpace(msg.content, filter)
+					.map(result => result.removed ? `__${escapeMarkdown(result.value)}__` : escapeMarkdown(result.value))
+					.join(''), 4000))
+				.setColor(0xefae45)
+				.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
+				.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')}`)
+				.setTimestamp());
+		}
 	}
 
 	shouldRun(msg) {

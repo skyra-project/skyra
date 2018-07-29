@@ -2097,9 +2097,12 @@ module.exports = class extends Language {
 			CONST_MONITOR_INVITELINK: 'Invite link',
 			CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
 			CONST_MONITOR_WORDFILTER: 'Filtered Word',
+			CONST_MONITOR_CAPSFILTER: 'Too Many UpperCases',
 			MONITOR_NOINVITE: (user) => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
 			MONITOR_WORDFILTER_DM: (filtered) => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,
+			MONITOR_CAPSFILTER_DM: (message) => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,
 			MONITOR_WORDFILTER: (user) => `|\`❌\`| Pardon, dear ${user}, you said something that is not allowed in this server.`,
+			MONITOR_CAPSFILTER: (user) => `|\`❌\`| EEEOOO ${user}! PLEASE DO NOT SHOUT IN THIS PLACE! YOU HAVE HIT THE CAPS LIMIT!`,
 			MONITOR_NMS_MESSAGE: (user) => [
 				`The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
 				"Do not worry! I'm here to help you! 😄"

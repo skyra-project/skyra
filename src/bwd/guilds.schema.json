@@ -400,6 +400,22 @@
 			"min": 5,
 			"max": 50,
 			"configurable": true
+		},
+		"capsfilter": {
+			"type": "integer",
+			"array": false,
+			"default": 0,
+			"min": 0,
+			"max": 3,
+			"configurable": true
+		},
+		"capsthreshold": {
+			"type": "integer",
+			"array": false,
+			"default": 50,
+			"min": 0,
+			"max": 100,
+			"configurable": true
 		}
 	},
 	"social": {

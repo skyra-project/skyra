@@ -52,6 +52,8 @@ module.exports = {
 	constants: require('./lib/util/constants'),
 	util: require('./lib/util/util'),
 
+	// Util/External
+	rUnicodeEmoji: require('./lib/util/External/rUnicodeEmoji'),
 	levenshtein: require('./lib/util/External/levenshtein'),
 
 	// Games

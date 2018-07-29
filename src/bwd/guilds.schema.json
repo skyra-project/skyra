@@ -439,6 +439,14 @@
 	},
 	"starboard": {
 		"type": "Folder",
+		"emoji": {
+			"type": "string",
+			"array": false,
+			"default": "⭐",
+			"min": null,
+			"max": null,
+			"configurable": false
+		},
 		"channel": {
 			"type": "textchannel",
 			"array": false,

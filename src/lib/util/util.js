@@ -7,6 +7,10 @@ const { util } = require('klasa');
 const { Image } = require('canvas');
 const { readFile } = require('fs-nextra');
 
+const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
+const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
+const REGEX_UNICODE_EMOJI = require('./External/rUnicodeEmoji');
+
 /**
  * @typedef  {Object} UtilOneToTenEntry
  * @property {string} emoji
@@ -143,6 +147,19 @@ class Util {
 	}
 
 	// Misc utils
+
+	/**
+	 * Resolve an emoji
+	 * @since 3.2.0
+	 * @param {string} emoji The emoji to resolve
+	 * @returns {string}
+	 */
+	static resolveEmoji(emoji) {
+		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
+		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
+		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
+		return null;
+	}
 
 	/**
 	 * Get an one-to-ten entry

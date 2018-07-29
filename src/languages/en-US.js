@@ -605,6 +605,16 @@ module.exports = class extends Language {
 				reminder: 'You must execute this command in the role channel.',
 				examples: ['434096799847022598']
 			}),
+			COMMAND_SETSTARBOARDEMOJI_DESCRIPTION: 'Set the emoji reaction for starboard.',
+			COMMAND_SETSTARBOARDEMOJI_EXTENDED: builder.display('setStarboardEmoji', {
+				extendedHelp: `This command sets up the starboard emoji for the starboard, which is, by default, ⭐. Once this is changed, Skyra will ignore any star and
+					will count users who reacted to said emoji.`,
+				explainedUsage: [
+					['emoji', 'The emoji to set.']
+				],
+				reminder: 'Use this wisely, not everyone expects the starboard to listen to a custom emoji.',
+				examples: ['⭐']
+			}),
 
 			/**
 			 * ###########################
@@ -1702,6 +1712,7 @@ module.exports = class extends Language {
 			COMMAND_SETMESSAGEROLE_CHANNELNOTSET: 'In order to configure the message role, you must configure the channel first.',
 			COMMAND_SETMESSAGEROLE_WRONGCHANNEL: (channel) => `In order to reduce confusion, I would suggest you to move to ${channel}`,
 			COMMAND_SETMESSAGEROLE_SET: 'Successfully set the message role.',
+			COMMAND_SETSTARBOARDEMOJI_SET: (emoji) => `Successfully set a new emoji for the next star messages: ${emoji}`,
 			COMMAND_SETROLECHANNEL_SET: (channel) => `Successfully set the role channel to ${channel}.`,
 			CONFIGURATION_TEXTCHANNEL_REQUIRED: 'The selected channel is not a valid text channel, try again with another.',
 			CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',

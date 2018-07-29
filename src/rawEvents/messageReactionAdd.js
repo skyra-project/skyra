@@ -33,7 +33,7 @@ module.exports = class extends RawEvent {
 			return false;
 		}
 
-		if (data.emoji.name === '⭐' && channel.guild.configs.starboard.channel !== channel.id) {
+		if (data.emoji.name === channel.guild.configs.starboard.emoji && channel.guild.configs.starboard.channel !== channel.id) {
 			this._handleStarboard(channel, data.message_id, data.user_id);
 			return false;
 		}

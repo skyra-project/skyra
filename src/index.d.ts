@@ -431,6 +431,7 @@ export class Util {
 	public static fetchModlog(guild: SkyraGuild, caseID: number): Promise<ModerationLog | null>;
 	public static parseModlog(client: Skyra, guild: SkyraGuild, modlog: ModerationCaseData): Promise<ModerationLog>;
 	public static deIdiotify(error: DiscordAPIError): never;
+	public static resolveEmoji(emoji: string): string | null;
 	public static oneToTen(level: number): UtilOneToTenEntry;
 	public static basicAuth(user: string, password: string): string;
 	public static httpResponses(code: number): string;
@@ -450,6 +451,7 @@ export class Util {
 	private static _createMuteRolePush(channel: Channel, role: Role, array: Array<Snowflake>): Promise<any>;
 }
 
+export const rUnicodeEmoji: RegExp;
 export function levenshtein(a: string, b: string, full?: boolean): number;
 
 export class ConnectFour {

@@ -1,4 +1,5 @@
-const { Monitor, MessageEmbed, klasaUtil: { codeBlock }, util: { cutText } } = require('../index');
+const { Monitor, MessageEmbed, klasaUtil: { codeBlock }, discordUtil: { escapeMarkdown }, util: { cutText } } = require('../index');
+const { diffWordsWithSpace } = require('diff');
 
 module.exports = class extends Monitor {
 
@@ -34,7 +35,9 @@ module.exports = class extends Monitor {
 		if (!channel) return msg.guild.configs.reset('channel.modlog');
 
 		return channel.send(new MessageEmbed()
-			.splitFields(cutText(filtered.replace(/\*/g, '\\*'), 4000))
+			.splitFields(cutText(diffWordsWithSpace(msg.content, filter)
+				.map(result => result.removed ? `__${escapeMarkdown(result.value)}__` : escapeMarkdown(result.value))
+				.join(''), 4000))
 			.setColor(0xefae45)
 			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')}`)

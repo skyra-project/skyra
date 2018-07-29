@@ -67,7 +67,8 @@ module.exports = class extends Command {
 			users ? users.map(user => user.username) : null,
 			options,
 			data.timestamp - Date.now(),
-			task.id), { code: 'http' });
+			task.id
+		), { code: 'http' });
 	}
 
 	list(msg) {

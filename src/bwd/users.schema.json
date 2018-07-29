@@ -1,1 +1,107 @@
-{"type":"Folder","badgeList":{"type":"string","array":true,"default":[],"min":null,"max":null,"sql":"TEXT NOT NULL DEFAULT '[]'","configurable":false},"badgeSet":{"type":"string","array":true,"default":[],"min":null,"max":null,"sql":"TEXT NOT NULL DEFAULT '[]'","configurable":false},"bannerList":{"type":"string","array":true,"default":[],"min":null,"max":null,"sql":"TEXT NOT NULL DEFAULT '[]'","configurable":false},"bias":{"type":"float","array":false,"default":0,"min":0,"max":5,"sql":"INTEGER DEFAULT 0","configurable":false},"color":{"type":"string","array":false,"default":"ff239d","min":6,"max":6,"sql":"VARCHAR(6) NOT NULL DEFAULT 'ff239d'","configurable":false},"marry":{"type":"user","array":false,"default":null,"min":null,"max":null,"sql":"TEXT","configurable":false},"money":{"type":"float","array":false,"default":0,"min":0,"max":2147483647,"sql":"INTEGER NOT NULL DEFAULT 0","configurable":false},"points":{"type":"float","array":false,"default":0,"min":0,"max":2147483647,"sql":"INTEGER NOT NULL DEFAULT 0","configurable":false},"reputation":{"type":"integer","array":false,"default":0,"min":0,"max":32767,"sql":"SMALLINT NOT NULL DEFAULT 0","configurable":false},"themeLevel":{"type":"string","array":false,"default":"1001","min":4,"max":7,"sql":"VARCHAR(7) NOT NULL DEFAULT '1001'","configurable":false},"themeProfile":{"type":"string","array":false,"default":"0001","min":4,"max":7,"sql":"VARCHAR(7) NOT NULL DEFAULT '0001'","configurable":false},"timeDaily":{"type":"integer","array":false,"default":0,"min":0,"max":null,"sql":"BIGINT NOT NULL DEFAULT 0","configurable":false},"timeReputation":{"type":"integer","array":false,"default":0,"min":0,"max":null,"sql":"BIGINT NOT NULL DEFAULT 0","configurable":false}}
+{
+	"type": "Folder",
+	"badgeList": {
+		"type": "string",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": false
+	},
+	"badgeSet": {
+		"type": "string",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": false
+	},
+	"bannerList": {
+		"type": "string",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": false
+	},
+	"bias": {
+		"type": "float",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": 5,
+		"configurable": false
+	},
+	"color": {
+		"type": "string",
+		"array": false,
+		"default": "ff239d",
+		"min": 6,
+		"max": 6,
+		"configurable": false
+	},
+	"marry": {
+		"type": "user",
+		"array": false,
+		"default": null,
+		"min": null,
+		"max": null,
+		"configurable": false
+	},
+	"money": {
+		"type": "float",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": 2147483647,
+		"configurable": false
+	},
+	"points": {
+		"type": "float",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": 2147483647,
+		"configurable": false
+	},
+	"reputation": {
+		"type": "integer",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": 32767,
+		"configurable": false
+	},
+	"themeLevel": {
+		"type": "string",
+		"array": false,
+		"default": "1001",
+		"min": 4,
+		"max": 7,
+		"configurable": false
+	},
+	"themeProfile": {
+		"type": "string",
+		"array": false,
+		"default": "0001",
+		"min": 4,
+		"max": 7,
+		"configurable": false
+	},
+	"timeDaily": {
+		"type": "integer",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": null,
+		"configurable": false
+	},
+	"timeReputation": {
+		"type": "integer",
+		"array": false,
+		"default": 0,
+		"min": 0,
+		"max": null,
+		"configurable": false
+	}
+}

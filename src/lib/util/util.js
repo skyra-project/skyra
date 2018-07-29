@@ -51,6 +51,27 @@ class Util {
 		return role;
 	}
 
+	static async removeMute(guild, id) {
+		const { configs } = guild;
+
+		const stickyRolesIndex = configs.stickyRoles.findIndex(stickyRole => stickyRole.id === id);
+		if (stickyRolesIndex === -1) return false;
+
+		const stickyRoles = configs.stickyRoles[stickyRolesIndex];
+
+		const index = stickyRoles.roles.indexOf(configs.roles.muted);
+		if (index === -1) return false;
+
+		stickyRoles.roles.splice(index, 1);
+		await configs.update('stickyRoles', ...stickyRoles.roles.length
+			// If there's at least one remaining role, update the entry
+			? [{ id: id, roles: stickyRoles.roles }, { arrayPosition: stickyRolesIndex }]
+			// Otherwise, giving the instance itself will trigger auto-remove
+			: [stickyRoles, { action: 'remove' }]);
+
+		return true;
+	}
+
 	/**
 	 * Check if a member is moderatable
 	 * @since 3.0.0

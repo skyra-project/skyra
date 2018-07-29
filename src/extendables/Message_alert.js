@@ -10,7 +10,7 @@ module.exports = class extends Extendable {
 	}
 
 	extend(content, options, timer) {
-		if (!this.channel.postable) return null;
+		if (!this.channel.postable) return Promise.resolve(null);
 		if (typeof options === 'number' && typeof timer === 'undefined') {
 			timer = options;
 			options = undefined;

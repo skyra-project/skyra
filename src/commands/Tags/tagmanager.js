@@ -1,5 +1,4 @@
 const { Command } = require('../../index');
-const REGEXP_DOT = /\*/g, REGEXP_ESC = '\\*';
 
 module.exports = class extends Command {
 
@@ -26,9 +25,7 @@ module.exports = class extends Command {
 		currentTags.set(tag, contents);
 		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_TAGS_ADD_ADDED',
-			tag.replace(REGEXP_DOT, REGEXP_ESC),
-			contents.replace(REGEXP_DOT, REGEXP_ESC)));
+		return msg.sendMessage(msg.language.get('COMMAND_TAGS_ADD_ADDED', tag, contents));
 	}
 
 	async edit(msg, [tag, ...contents]) {
@@ -43,22 +40,18 @@ module.exports = class extends Command {
 		currentTags.set(tag, contents);
 		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_TAGS_EDITED',
-			tag.replace(REGEXP_DOT, REGEXP_ESC),
-			contents.replace(REGEXP_DOT, REGEXP_ESC),
-			oldTag.replace(REGEXP_DOT, REGEXP_ESC)));
+		return msg.sendMessage(msg.language.get('COMMAND_TAGS_EDITED', tag, contents, oldTag));
 	}
 
 	async remove(msg, [tag]) {
 		tag = tag.toLowerCase();
 
 		const currentTags = msg.guild.configs.tags;
-		if (!currentTags.has(tag)) throw msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag.replace(REGEXP_DOT, REGEXP_ESC));
+		if (!currentTags.has(tag)) throw msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag);
 		currentTags.delete(tag);
 		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_TAGS_REMOVE_REMOVED',
-			tag.replace(REGEXP_DOT, REGEXP_ESC)));
+		return msg.sendMessage(msg.language.get('COMMAND_TAGS_REMOVE_REMOVED', tag));
 	}
 
 };

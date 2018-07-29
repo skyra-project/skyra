@@ -43,7 +43,7 @@ module.exports = class extends Event {
 	async initBackupTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'backup'))
-			await this.client.schedule.create('backup', '0 0 * * mon,thu');
+			await this.client.schedule.create('backup', '0 0 * * *');
 	}
 
 };

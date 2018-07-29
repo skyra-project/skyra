@@ -112,7 +112,10 @@ module.exports = class extends Command {
 
 	async checkMute(msg, modlog) {
 		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw 'COMMAND_UNMUTE_MISSING_PERMISSION';
-		if (!msg.guild.configs.mutes.includes(modlog[schemaKeys.USER])) throw 'COMMAND_MUTE_USER_NOT_MUTED';
+
+		const id = modlog[schemaKeys.USER];
+		const stickyRoles = msg.guild.configs.stickyRoles.find(stickyRole => stickyRole.id === id);
+		if (!stickyRoles || !stickyRoles.includes(msg.guild.configs.roles.muted)) throw 'COMMAND_MUTE_USER_NOT_MUTED';
 		return typeKeys.UN_MUTE;
 	}
 

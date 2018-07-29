@@ -15,14 +15,12 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const data = await fetch('https://api.chucknorris.io/jokes/random', 'json');
-		const embed = new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(0x80D8FF)
 			.setTitle(msg.language.get('COMMAND_NORRIS_OUTPUT'))
 			.setURL(data.url)
 			.setThumbnail(data.icon_url)
-			.setDescription(data.value);
-
-		return msg.sendEmbed(embed);
+			.setDescription(data.value));
 	}
 
 };

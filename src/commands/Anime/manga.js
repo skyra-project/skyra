@@ -8,7 +8,7 @@ module.exports = class extends Command {
 			cooldown: 10,
 			description: (msg) => msg.language.get('COMMAND_MANGA_DESCRIPTION'),
 			extendedHelp: (msg) => msg.language.get('COMMAND_MANGA_EXTENDED'),
-			usage: '<animeName:string>'
+			usage: '<mangaName:string>'
 		});
 	}
 
@@ -29,7 +29,7 @@ module.exports = class extends Command {
 		const type = entry.attributes.mangaType;
 		const title = entry.attributes.titles.en || entry.attributes.titles.en_jp || entry.attributes.titles.ja_jp;
 
-		return msg.sendMessage(new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(score.color)
 			.setAuthor(title, entry.attributes.posterImage.tiny, mangaURL)
 			.setDescription(msg.language.get('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))

@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		const content = text.query.pages[text.query.pageids[0]];
 		const definition = this.content(content.extract, url, msg.language);
 
-		const embed = new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setTitle(content.title)
 			.setURL(url)
 			.setColor(0x05C9E8)
@@ -34,9 +34,7 @@ module.exports = class extends Command {
 			.setDescription(definition
 				.replace(/\n{2,}/g, '\n')
 				.replace(/\s{2,}/g, ' '))
-			.setFooter('© Wikipedia');
-
-		return msg.sendMessage({ embed });
+			.setFooter('© Wikipedia'));
 	}
 
 	parseURL(url) {

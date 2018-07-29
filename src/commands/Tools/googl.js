@@ -1,6 +1,8 @@
 const { Command, config: { tokens: { google: KEY } }, MessageEmbed, util: { fetch } } = require('../../index');
 
 const REG_GOOGL = /^https:\/\/goo\.gl\/.+/;
+const LONG_URL = new URL('https://www.googleapis.com/urlshortener/v1/url');
+LONG_URL.searchParams.set('key', KEY);
 
 module.exports = class extends Command {
 
@@ -22,13 +24,16 @@ module.exports = class extends Command {
 		return msg.sendMessage({ embed });
 	}
 
-	async long(url, i18n) {
-		const body = await fetch(`https://www.googleapis.com/urlshortener/v1/url?key=${KEY}`, { method: 'POST', body: { longUrl: url } }, 'json');
+	async long(longUrl, i18n) {
+		const body = await fetch(LONG_URL, { method: 'POST', body: { longUrl: longUrl } }, 'json');
 		return i18n.get('COMMAND_GOOGL_LONG', body.id);
 	}
 
-	async short(url, i18n) {
-		const body = await fetch(`https://www.googleapis.com/urlshortener/v1/url?key=${KEY}&shortUrl=${url}`, 'json');
+	async short(shortUrl, i18n) {
+		const url = new URL('https://www.googleapis.com/urlshortener/v1/url');
+		url.search = new URLSearchParams([['key', KEY], ['shortUrl', shortUrl]]);
+
+		const body = await fetch(url, 'json');
 		return i18n.get('COMMAND_GOOGL_SHORT', body.longUrl);
 	}
 

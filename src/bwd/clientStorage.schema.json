@@ -1,1 +1,27 @@
-{"type":"Folder","guildBlacklist":{"type":"guild","array":true,"default":[],"min":null,"max":null,"sql":"TEXT NOT NULL DEFAULT '[]'","configurable":true},"schedules":{"type":"any","array":true,"default":[],"min":null,"max":null,"sql":"TEXT","configurable":false},"userBlacklist":{"type":"user","array":true,"default":[],"min":null,"max":null,"sql":"TEXT NOT NULL DEFAULT '[]'","configurable":true}}
+{
+	"type": "Folder",
+	"guildBlacklist": {
+		"type": "guild",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": true
+	},
+	"schedules": {
+		"type": "any",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": false
+	},
+	"userBlacklist": {
+		"type": "user",
+		"array": true,
+		"default": [],
+		"min": null,
+		"max": null,
+		"configurable": true
+	}
+}

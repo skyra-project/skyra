@@ -41,7 +41,7 @@ module.exports = class extends Command {
 				filter: (reaction, user) => user.id === message.author.id,
 				time
 			});
-			handler.on('end', () => this.handlers.delete(message.author.id));
+			handler.once('end', () => this.handlers.delete(message.author.id));
 			this.handlers.set(message.author.id, handler);
 			return handler;
 		}

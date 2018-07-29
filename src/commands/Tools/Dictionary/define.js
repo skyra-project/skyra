@@ -92,10 +92,4 @@ module.exports = class extends Command {
 		};
 	}
 
-	async init() {
-		const { r } = this;
-		await r.branch(r.tableList().contains(TABLENAME), null,
-			r.tableCreate(TABLENAME));
-	}
-
 };

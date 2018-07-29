@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		const content = getContent(message);
 		if (content) embed.setDescription(content);
 
-		return msg.sendMessage({ embed });
+		return msg.sendEmbed(embed);
 	}
 
 };

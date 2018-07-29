@@ -1,4 +1,4 @@
-const { ModerationCommand, Moderation } = require('../../index');
+const { ModerationCommand, Moderation, util: { removeMute } } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
@@ -30,7 +30,7 @@ module.exports = class extends ModerationCommand {
 			[Moderation.schemaKeys.APPEAL]: false
 		});
 		if (!mutedUsed) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
-		await msg.guild.configs.update('mutes', member.id, msg.guild, { action: 'remove' });
+		await removeMute(member.guild, member.id);
 
 		const roles = (mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || []).concat(member.roles.filter(role => role.managed).map(role => role.id));
 

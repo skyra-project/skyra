@@ -19,10 +19,21 @@ module.exports = class extends RawEvent {
 	}
 
 	async run({ guild, member }) {
-		this._handleStickyRoles(guild, member);
-		if (guild.configs.roles.muted && guild.configs.mutes.includes(member.id)) {
-			this._handleMute(guild, member);
-		} else if (guild.configs.events.memberAdd) {
+		const stickyRoles = guild.configs.stickyRoles.find(stickyRole => stickyRole.id === member.id);
+		if (stickyRoles) {
+			// Handle the case the user is muted
+			const mute = guild.configs.roles.muted;
+			if (mute && stickyRoles.roles.includes(mute)) {
+				this._handleMute(guild, member);
+				return;
+			}
+
+			// Otherwise, grant sticky roles
+			this._handleStickyRoles(guild, member, stickyRoles);
+		}
+
+		// If not muted and memberAdd is configured, handle everything
+		if (guild.configs.events.memberAdd) {
 			this._handleJoin(guild, member);
 			this._handleLog(guild, member, COLORS.JOIN);
 			this._handleMessage(guild, member);
@@ -35,15 +46,13 @@ module.exports = class extends RawEvent {
 		return { guild, member: guild.members.add(data) };
 	}
 
-	async _handleStickyRoles(guild, member) {
-		if (member.configs._syncStatus) await member.configs._syncStatus;
-		if (!member.configs.stickyRoles.length) return;
+	async _handleStickyRoles(guild, member, stickyRoles) {
 		const roles = [];
-		for (const role of member.configs.stickyRoles)
+		for (const role of stickyRoles.roles)
 			if (guild.roles.has(role)) roles.push(role);
 
-		if (member.configs.stickyRoles.length !== roles.length)
-			await member.configs.editStickyRoles(roles);
+		if (stickyRoles.roles.length !== roles.length)
+			guild.configs.update('stickyRoles', { id: member.id, roles }, { arrayPosition: guild.configs.stickyRoles.indexOf(stickyRoles) });
 
 		await member.roles.add(roles);
 	}

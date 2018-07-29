@@ -21,16 +21,14 @@ module.exports = class extends Command {
 		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
 			.catch(() => { throw msg.language.get('COMMAND_XKCD_NOTFOUND'); });
 
-		const embed = new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(0xD7CCC8)
 			.setImage(comic.img)
 			.setTitle(comic.title)
 			.setURL(comic.link)
 			.setFooter(`XKCD | ${comic.num} | ${this.getTime(comic.year, comic.month, comic.day)}`)
 			.setDescription(comic.alt)
-			.setTimestamp();
-
-		return msg.sendEmbed(embed);
+			.setTimestamp());
 	}
 
 	getTime(year, month, day) {
@@ -46,7 +44,7 @@ module.exports = class extends Command {
 		}
 
 		if (query) {
-			const text = await fetch(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${query}`, 'text');
+			const text = await fetch(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${encodeURIComponent(query)}`, 'text');
 			const comics = text.split(' ').slice(2);
 			const random = Math.floor(Math.random() * (comics.length / 2));
 			return parseInt(comics[random * 2].replace(/\n/g, ''));

@@ -15,12 +15,10 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		const { fact } = await fetch('https://catfact.ninja/fact', 'json');
-		const embed = new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(0xFFE0B2)
 			.setTitle(msg.language.get('COMMAND_CATFACT_TITLE'))
-			.setDescription(fact);
-
-		return msg.sendEmbed(embed);
+			.setDescription(fact));
 	}
 
 };

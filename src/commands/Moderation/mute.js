@@ -27,7 +27,9 @@ module.exports = class extends ModerationCommand {
 
 		const mute = await this._getMuteRole(msg);
 		if (!mute) throw msg.language.get('COMMAND_MUTE_UNCONFIGURED');
-		if (msg.guild.configs.mutes.includes(member.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
+		const stickyRolesIndex = msg.guild.configs.stickyRoles.findIndex(stickyRole => stickyRole.id === member.id);
+		const stickyRoles = stickyRolesIndex !== -1 ? msg.guild.configs.stickyRoles[stickyRolesIndex] : { id: member.id, roles: [] };
+		if (stickyRoles.roles.includes(mute.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
 
 		// Parse the reason and get the roles
 		reason = reason.length ? reason.join(' ') : null;
@@ -35,7 +37,8 @@ module.exports = class extends ModerationCommand {
 
 		await member.edit({ roles: member.roles.filter(role => role.managed).map(role => role.id).concat(mute.id) });
 		const modlog = await this.sendModlog(msg, target, reason, roles);
-		await msg.guild.configs.update('mutes', member.id, msg.guild, { action: 'add' });
+		const entry = { id: member.id, roles: stickyRoles.roles.concat(mute.id) };
+		await msg.guild.configs.update('stickyRoles', entry, stickyRolesIndex !== -1 ? { arrayPosition: stickyRolesIndex } : { action: 'add' });
 
 		return msg.sendMessage(msg.language.get('COMMAND_MUTE_MESSAGE', target, modlog.reason, modlog.caseNumber));
 	}

@@ -1,4 +1,4 @@
-const { Provider, Type, util: { mergeDefault, isObject, makeObject, chunk } } = require('klasa');
+const { Provider, Type, klasaUtil: { mergeDefault, isObject, makeObject, chunk }, DatabaseInit } = require('../index');
 const rethink = require('rethinkdbdash');
 
 module.exports = class extends Provider {
@@ -9,6 +9,11 @@ module.exports = class extends Provider {
 			db: 'test',
 			silent: false
 		}, this.client.options.providers.rethinkdb));
+	}
+
+	// Initialises all tables and indexes
+	async init() {
+		await DatabaseInit.init(this.db);
 	}
 
 	get exec() {

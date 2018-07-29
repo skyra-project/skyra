@@ -28,6 +28,13 @@ module.exports = {
 			FULL_GAME: 1,
 			TIMEOUT: 2
 		})
+	}),
+
+	MESSAGE_LOGS: Object.freeze({
+		kMessage: Symbol('kMessage'),
+		kNSFWMessage: Symbol('kNSFWMessage'),
+		kModeration: Symbol('kModeration'),
+		kMember: Symbol('kMember')
 	})
 
 };

@@ -15,8 +15,7 @@ module.exports = class extends Extendable {
 		const count = this.edits.length;
 		await sleep(time);
 
-		const msg = this.channel.messages.get(this.id);
-		return msg && msg.edits.length === count ? nuke(this) : this;
+		return this.deleted && this.edits.length === count ? nuke(this) : this;
 	}
 
 };

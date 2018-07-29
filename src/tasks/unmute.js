@@ -1,4 +1,4 @@
-const { Task, ModerationLog, Moderation: { schemaKeys, typeKeys } } = require('../index');
+const { Task, ModerationLog, Moderation: { schemaKeys, typeKeys }, util: { removeMute } } = require('../index');
 
 module.exports = class extends Task {
 
@@ -14,7 +14,7 @@ module.exports = class extends Task {
 		// Fetch the user, then the member
 		const user = await this.client.users.fetch(doc[schemaKeys.USER]);
 		const member = await guild.members.fetch(user).catch(() => null);
-		await guild.configs.update('mutes', user.id, guild, { action: 'remove' });
+		await removeMute(guild, user.id);
 
 		// If the member is found, update the roles
 		if (member) {

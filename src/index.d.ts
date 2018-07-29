@@ -13,7 +13,8 @@ import {
 	Provider,
 	Store,
 	Timestamp,
-	util as KlasaUtil
+	util as KlasaUtil,
+	CommandStore
 } from 'klasa';
 import {
 	Channel,
@@ -21,10 +22,14 @@ import {
 	DiscordAPIError,
 	GuildMember,
 	MessageEmbed,
+	MessageOptions,
 	RoleData,
 	Snowflake,
+	TextChannel,
 	Util as DiscordUtil,
-	TextChannel
+	Role,
+	GuildEditData,
+	GuildMemberEditData
 } from 'discord.js';
 import {
 	Node,
@@ -64,14 +69,24 @@ export class Skyra extends KlasaClient {
 	public dispose(): void;
 }
 
+declare class SkyraMessage extends KlasaMessage {
+	public guildConfigs: GuildConfiguration;
+	public guild: SkyraGuild | null;
+	public alert(content: string | Array<string>, timer?: number): SkyraMessage;
+	public alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
+	public ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;
+	public nuke(time?: number): this;
+}
+
 export class SkyraGuild extends KlasaGuild {
+	public configs: GuildConfiguration;
 	public security: GuildSecurity;
 	public starboard: StarboardManager;
 }
 
 export class SkyraGuildMember extends GuildMember {
-	public guild: SkyraGuild;
 	public configs: MemberConfiguration;
+	public guild: SkyraGuild;
 }
 
 export class GuildConfiguration extends Configuration {
@@ -112,7 +127,7 @@ export class GuildConfiguration extends Configuration {
 		'join-dm': string | null;
 		warnings: boolean;
 	};
-	mutes: Array<Snowflake>;
+	stickyRoles: Array<{ id: Snowflake, roles: Array<Snowflake> }>;
 	prefix: string;
 	roles: {
 		admin: Snowflake | null;
@@ -122,7 +137,7 @@ export class GuildConfiguration extends Configuration {
 		moderator: Snowflake | null;
 		muted: Snowflake | null;
 		public: Array<Snowflake>;
-		reactions: Aarray<{ emoji: string, role: Snowflake }>;
+		reactions: Array<{ emoji: string, role: Snowflake }>;
 		removeInitial: boolean;
 		staff: Snowflake | null;
 		subscriber: Snowflake | null;
@@ -170,17 +185,15 @@ export class MemberConfiguration {
 	public readonly userID: string;
 	public readonly member: SkyraGuildMember;
 	public count: number;
-	public stickyRoles: Array<string>;
 	private UUID: string;
 	private _syncStatus: Promise<this> | null;
 
 	public sync(): Promise<this>;
 	public update(amount: number): Promise<this>;
-	public editStickyRoles(stickyRoles: Array<string> | string): Promise<this>;
 	public destroy(): Promise<void>;
-	public toJSON(): { count: number, stickyRoles: Array<string> };
+	public toJSON(): { count: number, guild: GuildEditData, member: GuildMemberEditData };
 	public toString(): string;
-	private _patch(data: { count?: number, stickyRoles?: Array<string> }): void;
+	private _patch(data: { count?: number }): void;
 	private _sync(): Promise<this>;
 	private resolveData(entries: Array<ObjectLiteral>): ObjectLiteral;
 }
@@ -219,10 +232,10 @@ export class StarboardManager extends Collection<Snowflake, StarboardMessage> {
 }
 
 export class StarboardMessage {
-	public constructor(manager: StarboardManager, message: KlasaMessage);
+	public constructor(manager: StarboardManager, message: SkyraMessage);
 	public manager: StarboardManager;
 	public channel: KlasaTextChannel;
-	public message: KlasaMessage;
+	public message: SkyraMessage;
 	public disabled: boolean;
 	public users: Set<Snowflake>;
 	public readonly client: Skyra;
@@ -231,7 +244,7 @@ export class StarboardMessage {
 	public readonly color: number;
 	public readonly embed: MessageEmbed;
 	public readonly stars: number;
-	private starMessage: KlasaMessage | null;
+	private starMessage: SkyraMessage | null;
 	private UUID: string | null;
 	private _syncStatus: Promise<this> | null;
 	private _lastUpdated: number;
@@ -261,9 +274,9 @@ export class ModerationCommand extends Command {
 	public modType: string;
 	public requiredMember: boolean;
 
-	public checkModeratable(msg: KlasaMessage, target: KlasaUser): Promise<SkyraGuildMember>;
-	public fetchTargetMember(msg: KlasaMessage, id: Snowflake, throwError: boolean): Promise<SkyraGuildMember | null>;
-	public sendModlog(msg: KlasaMessage, target: KlasaUser, reason: Array<string> | string, extraData?: any): Promise<ModerationLog>;
+	public checkModeratable(msg: SkyraMessage, target: KlasaUser): Promise<SkyraGuildMember>;
+	public fetchTargetMember(msg: SkyraMessage, id: Snowflake, throwError: boolean): Promise<SkyraGuildMember | null>;
+	public sendModlog(msg: SkyraMessage, target: KlasaUser, reason: Array<string> | string, extraData?: any): Promise<ModerationLog>;
 	public static types: ModerationTypeKeys;
 }
 
@@ -273,7 +286,7 @@ export class WeebCommand extends Command {
 	public responseName: string;
 	public requiresUser: boolean;
 	public url: URL;
-	public run(msg: KlasaMessage, params: Array<KlasaUser>): Promise<KlasaMessage>;
+	public run(msg: SkyraMessage, params: Array<KlasaUser>): Promise<SkyraMessage>;
 }
 
 export abstract class API extends Piece { }
@@ -364,9 +377,9 @@ export class PreciseTimeout {
 export class PromptList {
 	public constructor(entries: PromptListResolvable);
 	public entries: Array<string>;
-	public run(msg: KlasaMessage, options?: PromptListOptions): Promise<number>;
-	public static run(msg: KlasaMessage, entries: PromptListResolvable, options?: PromptListOptions, resolved?: boolean): Promise<number>;
-	private static _run(msg: KlasaMessage, list: Array<string>, options: PromptListOptions): Promise<number>;
+	public run(msg: SkyraMessage, options?: PromptListOptions): Promise<number>;
+	public static run(msg: SkyraMessage, entries: PromptListResolvable, options?: PromptListOptions, resolved?: boolean): Promise<number>;
+	private static _run(msg: SkyraMessage, list: Array<string>, options: PromptListOptions): Promise<number>;
 	private static _resolveData(data: PromptListResolvable): Array<string>;
 }
 
@@ -412,8 +425,9 @@ export class Util {
 	}>;
 	public static IMAGE_EXTENSION: RegExp;
 	public static loadImage(path: string): Image;
-	public static announcementCheck(msg: KlasaMessage): Role;
-	public static moderationCheck(msg: KlasaMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void;
+	public static announcementCheck(msg: SkyraMessage): Role;
+	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
+	public static moderationCheck(msg: SkyraMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void;
 	public static fetchModlog(guild: SkyraGuild, caseID: number): Promise<ModerationLog | null>;
 	public static parseModlog(client: Skyra, guild: SkyraGuild, modlog: ModerationCaseData): Promise<ModerationLog>;
 	public static deIdiotify(error: DiscordAPIError): never;
@@ -430,9 +444,9 @@ export class Util {
 	public static fetch(url: URL | string, type?: 'text'): Promise<string>;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: 'text'): Promise<string>;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: string): Promise<any>;
-	public static getContent(message: KlasaMessage): string | null;
-	public static getImage(message: KlasaMessage): string | null;
-	public static createMuteRole(msg: KlasaMessage): Promise<Role>;
+	public static getContent(message: SkyraMessage): string | null;
+	public static getImage(message: SkyraMessage): string | null;
+	public static createMuteRole(msg: SkyraMessage): Promise<Role>;
 	private static _createMuteRolePush(channel: Channel, role: Role, array: Array<Snowflake>): Promise<any>;
 }
 
@@ -441,7 +455,7 @@ export class ConnectFour {
 	public client: Skyra;
 	public challenger: KlasaUser;
 	public challengee: KlasaUser;
-	public message: KlasaMessage | null;
+	public message: SkyraMessage | null;
 	public language: Language;
 	public turn: 0 | 1;
 	public table: Array<[number, number, number, number, number]>;
@@ -451,7 +465,7 @@ export class ConnectFour {
 	public readonly manager: ConnectFourManager;
 	public readonly manageMessages: boolean;
 
-	public run(message: KlasaMessage): Promise<void>;
+	public run(message: SkyraMessage): Promise<void>;
 	public dispose(): void;
 	private showWinner(row: ConnectFourWinningRow): void;
 	private getRow(): Promise<ConnectFourWinningRow | null>;
@@ -480,7 +494,7 @@ export class ConnectFourManager {
 }
 
 export class Slotmachine {
-	public constructor(msg: KlasaMessage, amount: number);
+	public constructor(msg: SkyraMessage, amount: number);
 	public player: KlasaUser;
 	public boost: number;
 	public winnnings: number;
@@ -508,6 +522,7 @@ export class AntiRaid extends Map<Snowflake, NodeJS.Timer> {
 
 	public add(member: SkyraGuildMember | Snowflake): this;
 	public delete(member: SkyraGuildMember | Snowflake): this;
+	public delete(member: Snowflake): boolean;
 	public execute(): Promise<Array<SkyraGuildMember>>;
 	public stop(): void;
 	public clear(): void;
@@ -596,6 +611,7 @@ export class NoMentionSpam extends Map<Snowflake, NoMentionSpamEntry> {
 	public get(userID: Snowflake, create?: boolean): NoMentionSpamEntry | null;
 	public add(userID: Snowflake, amount: number): number;
 	public delete(userID: Snowflake): void;
+	public delete(key: Snowflake): boolean;
 	public clear(): void;
 	private _timeout(entry: NoMentionSpamEntry): void;
 }
@@ -628,30 +644,32 @@ type ModerationErrors = Readonly<{
 	CASE_TYPE_NOT_APPEAL: 'CASE_TYPE_NOT_APPEAL';
 }>;
 
-interface ModerationLogJSON implements ModerationSchemaKeys {
-	[ModerationSchemaKeys.GUILD]: Snowflake;
-	[ModerationSchemaKeys.MODERATOR]: Snowflake | null;
-	[ModerationSchemaKeys.USER]: Snowflake | null;
-	[ModerationSchemaKeys.TYPE]: ModerationTypesEnum;
-	[ModerationSchemaKeys.REASON]: string | null;
-	[ModerationSchemaKeys.CASE]: number | null;
-	[ModerationSchemaKeys.TIMED]: boolean;
-	[ModerationSchemaKeys.DURATION]: number | null;
-	[ModerationSchemaKeys.EXTRA_DATA]: any;
-	[ModerationSchemaKeys.APPEAL]: boolean;
-}
-
 interface ModerationSchemaKeys {
-	readonly GUILD: 'guildID';
-	readonly MODERATOR: 'moderatorID';
-	readonly USER: 'userID';
-	readonly TYPE: 'type';
-	readonly REASON: 'reason';
+	readonly APPEAL: 'appeal';
 	readonly CASE: 'caseID';
 	readonly DURATION: 'duration';
-	readonly TIMED: 'timed';
-	readonly APPEAL: 'appeal';
 	readonly EXTRA_DATA: 'extraData';
+	readonly GUILD: 'guildID';
+	readonly MODERATOR: 'moderatorID';
+	readonly REASON: 'reason';
+	readonly TIMED: 'timed';
+	readonly TYPE: 'type';
+	readonly USER: 'userID';
+}
+
+declare const ModerationSchemaKeysConstant: ModerationSchemaKeys;
+
+interface ModerationLogJSON {
+	[ModerationSchemaKeysConstant.APPEAL]: boolean;
+	[ModerationSchemaKeysConstant.CASE]: number | null;
+	[ModerationSchemaKeysConstant.DURATION]: number | null;
+	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
+	[ModerationSchemaKeysConstant.GUILD]: Snowflake;
+	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
+	[ModerationSchemaKeysConstant.REASON]: string | null;
+	[ModerationSchemaKeysConstant.TIMED]: boolean;
+	[ModerationSchemaKeysConstant.TYPE]: ModerationTypesEnum;
+	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
 }
 
 type ModerationTypeKeys = Readonly<{
@@ -724,6 +742,12 @@ type SkyraConstants = Readonly<{
 			FULL_GAME: 1;
 			TIMEOUT: 2;
 		}>;
+	}>;
+	MESSAGE_LOGS: Readonly<{
+		kMessage: symbol;
+		kNSFWMessage: symbol;
+		kModeration: symbol;
+		kMember: symbol;
 	}>;
 }>;
 
@@ -857,7 +881,7 @@ type DurationFormatAssetsUnit = {
 	DEFAULT: string;
 };
 
-class B10 {
+declare class B10 {
 	public constructor(value: number);
 	public value: number;
 	public readonly hex: HEX;
@@ -868,7 +892,7 @@ class B10 {
 	public toString(): string;
 }
 
-class HEX {
+declare class HEX {
 	public constructor(r: string, g: string, b: string);
 	public r: string;
 	public g: string;
@@ -881,7 +905,7 @@ class HEX {
 	public toString(): string;
 }
 
-class HSL {
+declare class HSL {
 	public constructor(h: number, s: number, l: number);
 	public h: number;
 	public s: number;
@@ -895,7 +919,7 @@ class HSL {
 	public static hue2rgb(p: number, q: number, t: number): number;
 }
 
-class RGB {
+declare class RGB {
 	public constructor(r: number, g: number, b: number);
 	public r: number;
 	public g: number;
@@ -910,7 +934,7 @@ class RGB {
 
 type ColorOutput = {
 	readonly hex: HEX;
-	readonly rgb: RBG;
+	readonly rgb: RGB;
 	readonly hsl: HSL;
 	readonly b10: B10;
 };

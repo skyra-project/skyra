@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
 	async run(msg, [user = msg.author]) {
 		if (!user.avatar) throw msg.language.get('COMMAND_AVATAR_NONE');
-		return msg.sendMessage(new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setAuthor(user.tag, user.avatarURL({ size: 64 }))
 			.setColor(msg.member.displayColor || 0xdfdfdf)
 			.setImage(user.avatarURL({ size: 2048 })));

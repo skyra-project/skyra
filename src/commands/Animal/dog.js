@@ -27,11 +27,9 @@ module.exports = class extends Command {
 		if (this.index >= this.rand.length - 1) this.index = 0;
 		else this.index++;
 
-		const embed = new MessageEmbed()
+		return msg.sendEmbed(new MessageEmbed()
 			.setColor(msg.color)
-			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.rand[this.index]}.jpg`);
-
-		return msg.sendEmbed(embed);
+			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.rand[this.index]}.jpg`));
 	}
 
 };

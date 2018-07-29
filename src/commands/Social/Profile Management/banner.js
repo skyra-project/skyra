@@ -114,7 +114,7 @@ module.exports = class extends Command {
 			time: PROMPT_TIME
 		});
 		this.collectors.set(collectorID, collector);
-		collector.on('end', () => this.collectors.delete(collectorID));
+		collector.once('end', () => this.collectors.delete(collectorID));
 	}
 
 	async _list(msg) {

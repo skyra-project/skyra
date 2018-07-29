@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		const prefixes = i18n.language.COMMAND_8BALL_QUESTIONS
 			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS;
 
-		if (this.checkQuestion(prefixes.QUESTION || '?', input) === false)
+		if (!this.checkQuestion(prefixes.QUESTION || '?', input))
 			throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
 
 		if (this.check(prefixes.HOW_MANY, input)) return this.generate(QuestionTypes.HowMany, i18n);

@@ -9,16 +9,10 @@ const { Collection } = require('discord.js');
  */
 class GuildConfiguration extends Configuration {
 
-	constructor(manager, data) {
-		super(manager, data);
-
-		this.tags = new Collection('_tags' in data ? data._tags : undefined);
-	}
-
 	_patch(...args) {
 		super._patch(...args);
 
-		this.tags.clear();
+		this.tags = new Collection();
 		if (this._tags.length) for (const [name, content] of this._tags) this.tags.set(name, content);
 		this.updateFilter();
 	}

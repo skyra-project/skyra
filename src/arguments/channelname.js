@@ -1,4 +1,4 @@
-const { Argument, PromptList, klasaUtil: { regExpEsc } } = require('../index');
+const { Argument, PromptList, klasaUtil: { regExpEsc }, levenshtein } = require('../index');
 const CHANNEL_REGEXP = /^(?:<#)?(\d{17,19})>?$/;
 
 function resolveChannel(query, guild) {
@@ -17,26 +17,24 @@ module.exports = class extends Argument {
 		const resChannel = resolveChannel(arg, msg.guild);
 		if (resChannel) return resChannel;
 
+		const lowerCaseArg = arg.toLowerCase();
 		const results = [];
-		const reg = new RegExp(regExpEsc(arg), 'i');
-		for (const channel of msg.guild.channels.values())
-			if (reg.test(channel.name)) results.push(channel);
+		const reg = new RegExp(regExpEsc(lowerCaseArg));
 
-
-		let querySearch;
-		if (results.length > 1) {
-			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');
-			const filtered = results.filter(channel => regWord.test(channel.name));
-			querySearch = filtered.length > 0 ? filtered : results;
-		} else {
-			querySearch = results;
+		let lowerCaseName;
+		for (const channel of msg.guild.channels.values()) {
+			lowerCaseName = channel.name.toLowerCase();
+			if (reg.test(lowerCaseName) || (levenshtein(lowerCaseArg, lowerCaseName, false) !== -1)) {
+				results.push(channel);
+				if (results.length === 10) break;
+			}
 		}
 
-		switch (querySearch.length) {
+		switch (results.length) {
 			case 0: throw msg.language.get('RESOLVER_INVALID_CHANNELNAME', possible.name);
-			case 1: return querySearch[0];
-			default: return PromptList.run(msg, querySearch.slice(0, 10).map(channel => channel.name))
-				.then(number => querySearch[number])
+			case 1: return results[0];
+			default: return PromptList.run(msg, results.map(channel => channel.name))
+				.then(number => results[number])
 				.catch(() => { throw msg.language.get('RESOLVER_INVALID_CHANNELNAME', possible.name); });
 		}
 	}

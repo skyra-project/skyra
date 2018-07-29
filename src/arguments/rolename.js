@@ -1,4 +1,4 @@
-const { Argument, PromptList, klasaUtil: { regExpEsc } } = require('../index');
+const { Argument, PromptList, klasaUtil: { regExpEsc }, levenshtein } = require('../index');
 const ROLE_REGEXP = /^(?:<@&)?(\d{17,19})>?$/;
 
 function resolveRole(query, guild) {
@@ -17,24 +17,24 @@ module.exports = class extends Argument {
 		const resRole = resolveRole(arg, msg.guild);
 		if (resRole) return resRole;
 
+		const lowerCaseArg = arg.toLowerCase();
 		const results = [];
-		const reg = new RegExp(regExpEsc(arg), 'i');
-		for (const role of msg.guild.roles.values()) if (reg.test(role.name)) results.push(role);
+		const reg = new RegExp(regExpEsc(lowerCaseArg));
 
-		let querySearch;
-		if (results.length > 1) {
-			const regWord = new RegExp(`\\b${regExpEsc(arg)}\\b`, 'i');
-			const filtered = results.filter(role => regWord.test(role.name));
-			querySearch = filtered.length > 0 ? filtered : results;
-		} else {
-			querySearch = results;
+		let lowerCaseName;
+		for (const role of msg.guild.roles.values()) {
+			lowerCaseName = role.name.toLowerCase();
+			if (reg.test(lowerCaseName) || (levenshtein(lowerCaseArg, lowerCaseName, false) !== -1)) {
+				results.push(role);
+				if (results.length === 10) break;
+			}
 		}
 
-		switch (querySearch.length) {
+		switch (results.length) {
 			case 0: throw msg.language.get('RESOLVER_INVALID_ROLENAME', possible.name);
-			case 1: return querySearch[0];
-			default: return PromptList.run(msg, querySearch.slice(0, 10).map(role => role.name))
-				.then(number => querySearch[number])
+			case 1: return results[0];
+			default: return PromptList.run(msg, results.map(role => role.name))
+				.then((number) => results[number])
 				.catch(() => { throw msg.language.get('RESOLVER_INVALID_ROLENAME', possible.name); });
 		}
 	}

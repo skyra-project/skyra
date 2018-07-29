@@ -30,7 +30,7 @@ module.exports = class extends Argument {
 		for (const [id, nickname] of msg.guild.nameDictionary.entries()) {
 			if (typeof nickname !== 'string') continue;
 			lowerCaseNick = nickname.toLowerCase();
-			if (reg.test(lowerCaseNick) || (levenshtein(arg, lowerCaseNick, false) !== -1)) {
+			if (reg.test(lowerCaseNick) || (levenshtein(lowerCaseArg, lowerCaseNick, false) !== -1)) {
 				results.push([id, nickname]);
 				if (results.length === 10) break;
 			}

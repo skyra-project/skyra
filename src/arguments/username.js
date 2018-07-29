@@ -26,7 +26,7 @@ module.exports = class extends Argument {
 		const reg = new RegExp(regExpEsc(arg), 'i');
 		for (const [id, nickname] of msg.guild.nameDictionary.entries()) {
 			if (typeof nickname !== 'string') continue;
-			if (reg.test(nickname) || levenshtein(arg, nickname, false) !== -1) {
+			if (reg.test(nickname) || (levenshtein(arg, nickname, false) !== -1)) {
 				results.push([id, nickname]);
 				if (results.length === 10) break;
 			}

@@ -23,13 +23,13 @@ module.exports = class extends Command {
 	async unlock(msg, channel) {
 		await channel.updateOverwrite(msg.guild.roles.get(msg.guild.id), { SEND_MESSAGES: true });
 		msg.guild.security.lockdowns.delete(channel.id);
-		return msg.sendMessage(msg.language.get('COMMAND_LOCKDOWN_OPEN', channel));
+		return msg.sendLocale('COMMAND_LOCKDOWN_OPEN', [channel]);
 	}
 
 	async lock(msg, channel, time) {
-		const message = await msg.sendMessage(msg.language.get('COMMAND_LOCKDOWN_LOCKING', channel));
+		const message = await msg.sendLocale('COMMAND_LOCKDOWN_LOCKING', [channel]);
 		await channel.updateOverwrite(msg.guild.roles.get(msg.guild.id), { SEND_MESSAGES: false });
-		if (msg.channel.postable) await msg.sendMessage(msg.language.get('COMMAND_LOCKDOWN_LOCK', channel));
+		if (msg.channel.postable) await msg.sendLocale('COMMAND_LOCKDOWN_LOCK', [channel]);
 		msg.guild.security.lockdowns.set(channel.id, time
 			? setTimeout(() => this.unlock(message, channel), time.getTime() - Date.now())
 			: null);

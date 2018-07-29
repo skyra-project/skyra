@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		// ConnectFourManager#alloc returns a function that when getting true, it creates the game. Otherwise it de-alloc.
 		const createGame = this.client.connectFour.alloc(msg.channel.id, msg.author, user);
 
-		const prompt = await msg.sendMessage(msg.language.get('COMMAND_C4_PROMPT', msg.author, user));
+		const prompt = await msg.sendLocale('COMMAND_C4_PROMPT', [msg.author, user]);
 		const response = await msg.channel.awaitMessages(message => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
 			.then(messages => messages.first())
 			.catch(() => false);

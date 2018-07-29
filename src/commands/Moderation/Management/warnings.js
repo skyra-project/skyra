@@ -51,7 +51,7 @@ module.exports = class extends Command {
 				.map(format)));
 		}
 
-		return display.run(await msg.sendMessage(msg.language.get('SYSTEM_PROCESSING')), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
+		return display.run(await msg.sendLocale('SYSTEM_PROCESSING'), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
 	}
 
 	displayWarning(users, warning) {

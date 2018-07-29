@@ -1,5 +1,4 @@
 const { Event, DiscordAPIError, klasaUtil: { codeBlock } } = require('../index');
-const { join } = require('path');
 
 module.exports = class extends Event {
 
@@ -23,7 +22,7 @@ module.exports = class extends Event {
 
 
 			// Emit where the error was emitted
-			this.client.emit('wtf', `[COMMAND] ${join(command.dir, ...command.file)}\n${error.stack || error}`);
+			this.client.emit('wtf', `[COMMAND] ${command.path}\n${error.stack || error}`);
 			msg.alert(msg.author === this.client.owner ? codeBlock('js', error.stack) : msg.language.get('EVENTS_ERROR_WTF'))
 				.catch(this._handleMessageError);
 		}
@@ -37,14 +36,14 @@ module.exports = class extends Event {
 		if (!this.logChannel) return;
 		const isDiscordAPIError = error instanceof DiscordAPIError;
 		this.logChannel.send(codeBlock('asciidoc', (isDiscordAPIError ? [
-			`Command   :: ${join(command.dir, ...command.file)}`,
+			`Command   :: ${command.path}`,
 			`Path      :: ${error.path}`,
 			`Code      :: ${error.code}`,
 			`Location  :: ${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`,
 			`Arguments :: ${msg.args.length ? `[${msg.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
 			`Error     :: ${error.stack || error}`
 		] : [
-			`Command   :: ${join(command.dir, ...command.file)}`,
+			`Command   :: ${command.path}`,
 			`Location  :: ${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`,
 			`Arguments :: ${msg.args.length ? `[${msg.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
 			`Error     :: ${error.stack || error}`

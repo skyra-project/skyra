@@ -33,12 +33,12 @@ module.exports = class extends Command {
 
 	clear(msg) {
 		msg.guild.security.raid.clear();
-		return msg.sendMessage(msg.language.get('COMMAND_RAID_CLEAR'));
+		return msg.sendLocale('COMMAND_RAID_CLEAR');
 	}
 
 	cool(msg) {
 		msg.guild.security.raid.stop();
-		return msg.sendMessage(msg.language.get('COMMAND_RAID_COOL'));
+		return msg.sendLocale('COMMAND_RAID_COOL');
 	}
 
 };

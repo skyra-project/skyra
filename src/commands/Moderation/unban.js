@@ -24,7 +24,7 @@ module.exports = class extends ModerationCommand {
 		const modlog = await this.sendModlog(msg, user, reason);
 		await msg.guild.members.unban(user, reason);
 
-		return msg.sendMessage(msg.language.get('COMMAND_UNBAN_MESSAGE', user, modlog.reason, modlog.caseNumber, banReason));
+		return msg.sendLocale('COMMAND_UNBAN_MESSAGE', [user, modlog.reason, modlog.caseNumber, banReason]);
 	}
 
 	async fetchBan(guild, query) {

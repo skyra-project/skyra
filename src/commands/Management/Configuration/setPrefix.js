@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	async run(msg, [prefix]) {
 		if (msg.guild.configs.prefix === prefix) throw msg.language.get('CONFIGURATION_EQUALS');
 		await msg.guild.configs.update('prefix', prefix);
-		return msg.sendMessage(msg.language.get('COMMAND_SETPREFIX_SET', prefix));
+		return msg.sendLocale('COMMAND_SETPREFIX_SET', [prefix]);
 	}
 
 };

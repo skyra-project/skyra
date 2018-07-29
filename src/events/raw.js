@@ -1,5 +1,4 @@
 const { Event } = require('klasa');
-const { join } = require('path');
 const EVENTS = new Set([
 	'GUILD_MEMBER_ADD',
 	'GUILD_MEMBER_REMOVE',
@@ -22,7 +21,7 @@ module.exports = class extends Event {
 			const processed = await piece.process(data);
 			if (processed) await piece.run(processed);
 		} catch (error) {
-			this.client.emit('wtf', `[RAWEVENT] ${join(piece.dir, ...piece.file)}\n${error
+			this.client.emit('wtf', `[RAWEVENT] ${piece.path}\n${error
 				? error.stack ? error.stack : error : 'Unknown error'}`);
 		}
 	}

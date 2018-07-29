@@ -28,7 +28,7 @@ module.exports = class extends Command {
 			? `\n${msg.language.get('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}`
 			: '';
 
-		return msg.sendMessage(msg.language.get('COMMAND_MYLEVEL', memberPoints, title, user.id === msg.author.id ? null : user.username));
+		return msg.sendLocale('COMMAND_MYLEVEL', [memberPoints, title, user.id === msg.author.id ? null : user.username]);
 	}
 
 	getLatestRole(points, autoroles) {

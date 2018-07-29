@@ -27,7 +27,7 @@ module.exports = class extends Command {
 		if (this.channels.has(msg.channel.id)) throw msg.language.get('COMMAND_GAMES_PROGRESS');
 		this.channels.add(msg.channel.id);
 
-		const prompt = await msg.sendMessage(msg.language.get('COMMAND_TICTACTOE_PROMPT', msg.author, user));
+		const prompt = await msg.sendLocale('COMMAND_TICTACTOE_PROMPT', [msg.author, user]);
 		const response = await msg.channel.awaitMessages(message => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
 			.then(messages => messages.first())
 			.catch(() => false);

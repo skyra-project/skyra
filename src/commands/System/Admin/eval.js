@@ -42,7 +42,7 @@ module.exports = class extends Command {
 			case 'haste':
 			case 'hastebin': {
 				if (!options.url) options.url = await this.getHaste(result, language).catch(() => null);
-				if (options.url) return msg.sendMessage(msg.language.get('COMMAND_EVAL_OUTPUT_HASTEBIN', time, options.url, footer));
+				if (options.url) return msg.sendLocale('COMMAND_EVAL_OUTPUT_HASTEBIN', [time, options.url, footer]);
 				options.hastebinUnavailable = true;
 				await this.getTypeOutput(msg, options);
 				return this.handleMessage(msg, options, { success, result, time, footer, language });
@@ -50,7 +50,7 @@ module.exports = class extends Command {
 			case 'console':
 			case 'log': {
 				this.client.emit('log', result);
-				return msg.sendMessage(msg.language.get('COMMAND_EVAL_OUTPUT_CONSOLE', time, footer));
+				return msg.sendLocale('COMMAND_EVAL_OUTPUT_CONSOLE', [time, footer]);
 			}
 			case 'none':
 				return null;

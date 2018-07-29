@@ -16,7 +16,7 @@ module.exports = class extends Command {
 	async run(msg, [string]) {
 		let output = '';
 		for (let i = 0; i < string.length; i++) output += string[i] === ' ' ? '　' : String.fromCharCode(string.charCodeAt(i) + 0xFEE0);
-		return msg.sendMessage(msg.language.get('COMMAND_VAPORWAVE_OUTPUT', output));
+		return msg.sendLocale('COMMAND_VAPORWAVE_OUTPUT', [output]);
 	}
 
 };

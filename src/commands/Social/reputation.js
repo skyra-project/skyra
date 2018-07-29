@@ -40,10 +40,10 @@ module.exports = class extends Command {
 		}
 
 		if (this.busy.has(msg.author.id) || userProfile.timeReputation + DAY > now)
-			return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_TIME', userProfile.timeReputation + DAY - now));
+			return msg.sendLocale('COMMAND_REPUTATION_TIME', [userProfile.timeReputation + DAY - now]);
 
 
-		if (!user) return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_USABLE'));
+		if (!user) return msg.sendLocale('COMMAND_REPUTATION_USABLE');
 		if (user.bot) throw msg.language.get('COMMAND_REPUTATION_BOTS');
 		if (user === msg.author) throw msg.language.get('COMMAND_REPUTATION_SELF');
 		this.busy.add(msg.author.id);
@@ -58,7 +58,7 @@ module.exports = class extends Command {
 		}
 
 		this.busy.delete(msg.author.id);
-		return msg.sendMessage(msg.language.get('COMMAND_REPUTATION_GIVE', user));
+		return msg.sendLocale('COMMAND_REPUTATION_GIVE', [user]);
 	}
 
 };

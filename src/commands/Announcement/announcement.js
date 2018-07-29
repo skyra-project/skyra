@@ -30,10 +30,10 @@ module.exports = class extends Command {
 
 		if (await this.ask(msg, content)) {
 			await this.send(msg, channel, role, content);
-			return msg.sendMessage(msg.language.get('COMMAND_ANNOUNCEMENT_SUCCESS'));
+			return msg.sendLocale('COMMAND_ANNOUNCEMENT_SUCCESS');
 		}
 
-		return msg.sendMessage(msg.language.get('COMMAND_ANNOUNCEMENT_CANCELLED'));
+		return msg.sendLocale('COMMAND_ANNOUNCEMENT_CANCELLED');
 	}
 
 	ask(msg, content) {

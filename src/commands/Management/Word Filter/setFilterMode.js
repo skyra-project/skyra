@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		if (msg.guild.configs.filter.level === number) throw msg.language.get('COMMAND_SETFILTERMODE_EQUALS');
 		await msg.guild.configs.update('filter.level', number);
 
-		return msg.sendMessage(msg.language.get(language));
+		return msg.sendLocale(language);
 	}
 
 };

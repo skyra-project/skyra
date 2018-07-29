@@ -68,7 +68,7 @@ module.exports = class extends Command {
 		const { errors } = await msg.guild.configs.update(this._getListName(type), clone);
 		if (errors.length) throw errors[0];
 
-		return msg.sendMessage(msg.language.get('COMMAND_TRIGGERS_REMOVE'));
+		return msg.sendLocale('COMMAND_TRIGGERS_REMOVE');
 	}
 
 	async add(msg, type, input, output) {
@@ -78,7 +78,7 @@ module.exports = class extends Command {
 		const { errors } = await msg.guild.configs.update(this._getListName(type), [...list, this._format(type, input, output)]);
 		if (errors.length) throw errors[0];
 
-		return msg.sendMessage(msg.language.get('COMMAND_TRIGGERS_ADD'));
+		return msg.sendLocale('COMMAND_TRIGGERS_ADD');
 	}
 
 	list(msg) {

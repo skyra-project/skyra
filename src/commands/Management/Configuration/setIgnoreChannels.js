@@ -20,9 +20,9 @@ module.exports = class extends Command {
 		const oldLength = msg.guild.configs.master.ignoreChannels.length;
 		await msg.guild.configs.update('master.ignoreChannels', channel);
 		const newLength = msg.guild.configs.master.ignoreChannels.length;
-		return msg.sendMessage(msg.language.get(oldLength < newLength
+		return msg.sendLocale(oldLength < newLength
 			? 'COMMAND_SETIGNORECHANNELS_SET'
-			: 'COMMAND_SETIGNORECHANNELS_REMOVED', channel));
+			: 'COMMAND_SETIGNORECHANNELS_REMOVED', [channel]);
 	}
 
 };

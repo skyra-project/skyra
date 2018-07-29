@@ -11,7 +11,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		await msg.sendMessage(msg.language.get('COMMAND_REBOOT')).catch(err => this.client.emit('apiError', err));
+		await msg.sendLocale('COMMAND_REBOOT').catch(err => this.client.emit('apiError', err));
 		await this.client.dispose();
 		process.exit();
 	}

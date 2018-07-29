@@ -50,7 +50,7 @@ module.exports = class extends Command {
 		await this.client.moderation.updateCase(msg.guild, newModLog);
 		await this.updateModlog(msg, newModLog);
 
-		return msg.sendMessage(msg.language.get('COMMAND_TIME_SCHEDULED', ModerationLog.TYPES[type].title, user, offset));
+		return msg.sendLocale('COMMAND_TIME_SCHEDULED', [ModerationLog.TYPES[type].title, user, offset]);
 	}
 
 	async cancel(msg, modlog, task) {
@@ -66,7 +66,7 @@ module.exports = class extends Command {
 		await this.client.moderation.updateCase(msg.guild, newModLog);
 		await this.updateModlog(msg, newModLog);
 
-		return msg.sendMessage(msg.language.get('COMMAND_TIME_ABORTED', ModerationLog.TYPES[modlog[schemaKeys.TYPE]].title));
+		return msg.sendLocale('COMMAND_TIME_ABORTED', [ModerationLog.TYPES[modlog[schemaKeys.TYPE]].title]);
 	}
 
 	async updateModlog(msg, modcase) {

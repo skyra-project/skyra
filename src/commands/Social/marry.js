@@ -25,42 +25,42 @@ module.exports = class extends Command {
 	}
 
 	async _display(msg) {
-		if (!msg.author.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_NOTTAKEN'));
+		if (!msg.author.configs.marry) return msg.sendLocale('COMMAND_MARRY_NOTTAKEN');
 		const username = await this.client.fetchUsername(msg.author.configs.marry);
-		return msg.sendMessage(msg.language.get('COMMAND_MARRY_WITH', username));
+		return msg.sendLocale('COMMAND_MARRY_WITH', [username]);
 	}
 
 	async _marry(msg, user) {
-		if (user.id === this.client.user.id) return msg.sendMessage(msg.language.get('COMMAND_MARRY_SKYRA'));
-		if (user.id === SNEYRA_ID) return msg.sendMessage(msg.language.get('COMMAND_MARRY_SNEYRA'));
-		if (user.id === msg.author.id) return msg.sendMessage(msg.language.get('COMMAND_MARRY_SELF'));
-		if (user.bot) return msg.sendMessage(msg.language.get('COMMAND_MARRY_BOTS'));
+		if (user.id === this.client.user.id) return msg.sendLocale('COMMAND_MARRY_SKYRA');
+		if (user.id === SNEYRA_ID) return msg.sendLocale('COMMAND_MARRY_SNEYRA');
+		if (user.id === msg.author.id) return msg.sendLocale('COMMAND_MARRY_SELF');
+		if (user.bot) return msg.sendLocale('COMMAND_MARRY_BOTS');
 
 		// Configuration is already sync by the monitors.
-		if (msg.author.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_AUTHOR_TAKEN'));
+		if (msg.author.configs.marry) return msg.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
 
 		// Check if the target user is already married.
 		await user.configs.waitSync();
-		if (user.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_TAKEN'));
+		if (user.configs.marry) return msg.sendLocale('COMMAND_MARRY_TAKEN');
 
 		// Get a message from the user.
-		await msg.sendMessage(msg.language.get('COMMAND_MARRY_PETITION', msg.author, user));
+		await msg.sendLocale('COMMAND_MARRY_PETITION', [msg.author, user]);
 		const messages = await msg.channel.awaitMessages(message => message.author.id === user.id, { time: 60000, max: 1 });
-		if (!messages.size) return msg.sendMessage(msg.language.get('COMMAND_MARRY_NOREPLY'));
+		if (!messages.size) return msg.sendLocale('COMMAND_MARRY_NOREPLY');
 
 		const message = messages.first();
-		if (!REGEXP_ACCEPT.test(message.content)) return msg.sendMessage(msg.language.get('COMMAND_MARRY_DENIED'));
+		if (!REGEXP_ACCEPT.test(message.content)) return msg.sendLocale('COMMAND_MARRY_DENIED');
 
 		// The user may have tried to marry somebody else while the prompt was running.
-		if (user.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_TAKEN'));
-		if (msg.author.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_MARRY_AUTHOR_TAKEN'));
+		if (user.configs.marry) return msg.sendLocale('COMMAND_MARRY_TAKEN');
+		if (msg.author.configs.marry) return msg.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
 
 		await Promise.all([
 			msg.author.configs.update('marry', user),
 			user.configs.update('marry', msg.author)
 		]);
 
-		return msg.sendMessage(msg.language.get('COMMAND_MARRY_ACCEPTED', msg.author, user));
+		return msg.sendLocale('COMMAND_MARRY_ACCEPTED', [msg.author, user]);
 	}
 
 };

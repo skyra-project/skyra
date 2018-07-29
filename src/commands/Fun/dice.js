@@ -26,7 +26,7 @@ module.exports = class extends Command {
 	}
 
 	run(msg, [rl = 1, sd = 6]) {
-		return msg.sendMessage(msg.language.get('COMMAND_DICE_OUTPUT', sd, rl, this.roll(rl, sd)));
+		return msg.sendLocale('COMMAND_DICE_OUTPUT', [sd, rl, this.roll(rl, sd)]);
 	}
 
 	roll(rolls, sides) {

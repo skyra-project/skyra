@@ -19,8 +19,8 @@ module.exports = class extends Command {
 
 		await user.configs.waitSync();
 		return msg.author === user
-			? msg.sendMessage(msg.language.get('COMMAND_BALANCE_SELF', user.configs.money))
-			: msg.sendMessage(msg.language.get('COMMAND_BALANCE', user.username, user.configs.money));
+			? msg.sendLocale('COMMAND_BALANCE_SELF', [user.configs.money])
+			: msg.sendLocale('COMMAND_BALANCE', [user.username, user.configs.money]);
 	}
 
 };

@@ -36,7 +36,7 @@ module.exports = class extends Command {
 
 	async run(msg, [message]) {
 		await msg.guild.configs.update('roles.messageReaction', message.id);
-		return msg.sendMessage(msg.language.get('COMMAND_SETMESSAGEROLE_SET'));
+		return msg.sendLocale('COMMAND_SETMESSAGEROLE_SET');
 	}
 
 };

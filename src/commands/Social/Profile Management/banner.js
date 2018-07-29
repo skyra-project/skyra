@@ -48,7 +48,7 @@ module.exports = class extends Command {
 		if (msg.author.configs.themeProfile === '0001') throw msg.language.get('COMMAND_BANNER_RESET_DEFAULT');
 
 		await msg.author.configs.update('themeProfile', '0001');
-		return msg.sendMessage(msg.language.get('COMMAND_BANNER_RESET'));
+		return msg.sendLocale('COMMAND_BANNER_RESET');
 	}
 
 	async set(msg, banner) {
@@ -57,7 +57,7 @@ module.exports = class extends Command {
 		if (!banners.includes(banner.id)) throw msg.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
 
 		await msg.author.configs.update('themeProfile', banner.id);
-		return msg.sendMessage(msg.language.get('COMMAND_BANNER_SET', banner.title));
+		return msg.sendLocale('COMMAND_BANNER_SET', [banner.title]);
 	}
 
 	async buy(msg, banner) {
@@ -79,7 +79,7 @@ module.exports = class extends Command {
 			user.configs.update(['money'], [user.configs.money + (banner.price * 0.1)])
 		]);
 
-		return msg.sendMessage(msg.language.get('COMMAND_BANNER_BUY', banner.title));
+		return msg.sendLocale('COMMAND_BANNER_BUY', [banner.title]);
 	}
 
 	_buyList(msg) {

@@ -40,7 +40,7 @@ module.exports = class extends ModerationCommand {
 		const entry = { id: member.id, roles: stickyRoles.roles.concat(mute.id) };
 		await msg.guild.configs.update('stickyRoles', entry, stickyRolesIndex !== -1 ? { arrayPosition: stickyRolesIndex } : { action: 'add' });
 
-		return msg.sendMessage(msg.language.get('COMMAND_MUTE_MESSAGE', target, modlog.reason, modlog.caseNumber));
+		return msg.sendLocale('COMMAND_MUTE_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
 	}
 
 	async _getMuteRole(msg) {
@@ -55,7 +55,7 @@ module.exports = class extends ModerationCommand {
 		if (!msg.channel.permissionsFor(msg.guild.me).has(PERMISSIONS)) return null;
 		await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
 			.catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
-		await msg.sendMessage(msg.language.get('SYSTEM_PROCESSING'));
+		await msg.sendLocale('SYSTEM_PROCESSING');
 		return createMuteRole(msg);
 	}
 

@@ -26,7 +26,7 @@ module.exports = class extends ModerationCommand {
 		const user = await this.client.users.fetch(warn[schemaKeys.USER]);
 		const modlog = await this.sendModlog(msg, user, reason);
 
-		return msg.sendMessage(msg.language.get('COMMAND_UNWARN_MESSAGE', user, modlog.reason, modlog.caseNumber));
+		return msg.sendLocale('COMMAND_UNWARN_MESSAGE', [user, modlog.reason, modlog.caseNumber]);
 	}
 
 };

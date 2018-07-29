@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		messages = messages.array().slice(0, limit);
 		this.sendLog(msg, filter, messages).catch(error => this.client.emit('apiError', error));
 		await msg.channel.bulkDelete(messages, true);
-		return msg.sendMessage(msg.language.get('COMMAND_PRUNE', messages.length, limit));
+		return msg.sendLocale('COMMAND_PRUNE', [messages.length, limit]);
 	}
 
 	async sendLog(msg, filter, messages) {

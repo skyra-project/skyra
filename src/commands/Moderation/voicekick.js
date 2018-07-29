@@ -24,7 +24,7 @@ module.exports = class extends ModerationCommand {
 		await this.kickVoiceChannel(msg, member, reason);
 		const modlog = await this.sendModlog(msg, target, reason);
 
-		return msg.sendMessage(msg.language.get('COMMAND_VOICEKICK_MESSAGE', target, modlog.reason, modlog.caseNumber));
+		return msg.sendLocale('COMMAND_VOICEKICK_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
 	}
 
 	async kickVoiceChannel(msg, member, reason) {

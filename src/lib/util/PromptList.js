@@ -81,7 +81,7 @@ class PromptList {
 			&& (message.content.toLowerCase() === abortString || !isNaN(Number(message.content)));
 		let response, number, attempts = 0;
 		do {
-			if (attempts !== 0) await msg.sendMessage(msg.language.get('PROMPTLIST_ATTEMPT_FAILED', list, attempts, maxAttempts));
+			if (attempts !== 0) await msg.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [list, attempts, maxAttempts]);
 			response = await msg.channel.awaitMessages(promptFilter, promptOptions)
 				.then(responses => responses.size ? responses.first() : null);
 

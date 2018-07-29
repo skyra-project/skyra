@@ -17,8 +17,8 @@ module.exports = class extends Command {
 
 	async run(msg, options) {
 		const words = this.filterWords(options, msg.language);
-		return msg.sendMessage(msg.language.get('COMMAND_CHOICE_OUTPUT',
-			msg.author, words[Math.floor(Math.random() * words.length)]));
+		return msg.sendLocale('COMMAND_CHOICE_OUTPUT',
+			[msg.author, words[Math.floor(Math.random() * words.length)]]);
 	}
 
 	filterWords(words, i18n) {

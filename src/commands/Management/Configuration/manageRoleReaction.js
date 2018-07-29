@@ -57,7 +57,7 @@ module.exports = class extends Command {
 		const { errors } = await msg.guild.configs.update('roles.reactions', [...msg.guild.configs.roles.reactions, { emoji: reaction, role: role.id }]);
 		if (errors.length) throw errors[0];
 		await this._reactMessage(msg.guild.configs.channels.roles, msg.guild.configs.roles.messageReaction, reaction);
-		return msg.sendMessage(msg.language.get('COMMAND_MANAGEROLEREACTION_ADD'));
+		return msg.sendLocale('COMMAND_MANAGEROLEREACTION_ADD');
 	}
 
 	async remove(msg, [, reaction]) {
@@ -67,14 +67,14 @@ module.exports = class extends Command {
 		if (!entry) throw msg.language.get('COMMAND_MANAGEROLEREACTION_REMOVE_NOTEXISTS');
 		const { errors } = await msg.guild.configs.update('roles.reactions', entry, { action: 'remove' });
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_MANAGEROLEREACTION_REMOVE'));
+		return msg.sendLocale('COMMAND_MANAGEROLEREACTION_REMOVE');
 	}
 
 	async reset(msg) {
 		if (!msg.guild.configs.roles.reactions.length) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		const { errors } = await msg.guild.configs.reset('roles.reactions');
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_MANAGEROLEREACTION_RESET'));
+		return msg.sendLocale('COMMAND_MANAGEROLEREACTION_RESET');
 	}
 
 	_reactMessage(channelID, messageID, reaction) {

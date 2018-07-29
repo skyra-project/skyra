@@ -24,7 +24,7 @@ module.exports = class extends ModerationCommand {
 		await member.setMute(true, reason);
 		const modlog = await this.sendModlog(msg, target, reason);
 
-		return msg.sendMessage(msg.language.get('COMMAND_MUTE_MESSAGE', target, modlog.reason, modlog.caseNumber));
+		return msg.sendLocale('COMMAND_MUTE_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
 	}
 
 };

@@ -26,7 +26,7 @@ module.exports = class extends ModerationCommand {
 		await msg.guild.members.ban(target.id, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
 		await msg.guild.members.unban(target.id, 'Softban.');
 
-		return msg.sendMessage(msg.language.get('COMMAND_SOFTBAN_MESSAGE', target, modlog.reason, modlog.caseNumber));
+		return msg.sendLocale('COMMAND_SOFTBAN_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
 	}
 
 };

@@ -30,12 +30,12 @@ module.exports = class extends Command {
 			}
 		});
 
-		return msg.sendMessage(msg.language.get('COMMAND_REMINDME_CREATE', task.id));
+		return msg.sendLocale('COMMAND_REMINDME_CREATE', [task.id]);
 	}
 
 	async list(msg) {
 		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === msg.author.id);
-		if (!tasks.length) return msg.sendMessage(msg.language.get('COMMAND_REMINDME_LIST_EMPTY'));
+		if (!tasks.length) return msg.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
 		await new PromptList(tasks.map(task => [
 			task.id,
 			`${timestamp.display(task.time)} - ${task.data.content.length > 40 ? `${task.data.content.slice(0, 40)}...` : task.data.content}`
@@ -55,7 +55,7 @@ module.exports = class extends Command {
 		}
 		if (!selectedTask) throw msg.language.get('COMMAND_REMINDME_NOTFOUND');
 		await selectedTask.delete();
-		return msg.sendMessage(msg.language.get('COMMAND_REMINDME_DELETE', selectedTask));
+		return msg.sendLocale('COMMAND_REMINDME_DELETE', [selectedTask]);
 	}
 
 	async parseInput(msg, string) {

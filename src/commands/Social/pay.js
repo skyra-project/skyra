@@ -17,7 +17,7 @@ module.exports = class extends Command {
 
 	async run(msg, [money, user]) {
 		if (msg.author === user) throw msg.language.get('COMMAND_PAY_SELF');
-		if (user.bot) return msg.sendMessage(msg.language.get('COMMAND_SOCIAL_PAY_BOT'));
+		if (user.bot) return msg.sendLocale('COMMAND_SOCIAL_PAY_BOT');
 
 		if (money <= 0) throw msg.language.get('RESOLVER_POSITIVE_AMOUNT');
 

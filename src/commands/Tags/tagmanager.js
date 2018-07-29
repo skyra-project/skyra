@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		currentTags.set(tag, contents);
 		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_TAGS_ADD_ADDED', tag, contents));
+		return msg.sendLocale('COMMAND_TAGS_ADD_ADDED', [tag, contents]);
 	}
 
 	async edit(msg, [tag, ...contents]) {
@@ -40,7 +40,7 @@ module.exports = class extends Command {
 		currentTags.set(tag, contents);
 		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_TAGS_EDITED', tag, contents, oldTag));
+		return msg.sendLocale('COMMAND_TAGS_EDITED', [tag, contents, oldTag]);
 	}
 
 	async remove(msg, [tag]) {
@@ -51,7 +51,7 @@ module.exports = class extends Command {
 		currentTags.delete(tag);
 		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
-		return msg.sendMessage(msg.language.get('COMMAND_TAGS_REMOVE_REMOVED', tag));
+		return msg.sendLocale('COMMAND_TAGS_REMOVE_REMOVED', [tag]);
 	}
 
 };

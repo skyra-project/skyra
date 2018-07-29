@@ -15,7 +15,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		return msg.sendMessage(msg.language.get('COMMAND_STATS', this.STATS, this.UPTIME, this.USAGE), { code: 'asciidoc' });
+		return msg.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
 	}
 
 	get STATS() {

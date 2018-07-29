@@ -11,7 +11,7 @@ module.exports = class extends Command {
 	}
 
 	run(msg) {
-		return msg.sendMessage(msg.language.get('COMMAND_UPVOTE_MESSAGE'));
+		return msg.sendLocale('COMMAND_UPVOTE_MESSAGE');
 	}
 
 };

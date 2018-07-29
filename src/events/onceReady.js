@@ -10,10 +10,10 @@ module.exports = class extends Event {
 	}
 
 	async run() {
-		if (this.client.user.bot) await this.client.fetchApplication();
-		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.user.bot ? this.client.application.owner.id : this.client.user.id;
+		await this.client.fetchApplication();
+		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.application.owner.id;
 
-		this.client.configs = this.client.gateways.clientStorage.get(this.client.user.id, true);
+		this.client.settings = this.client.gateways.clientStorage.get(this.client.user.id, true);
 		await Promise.all([
 			this._prepareSkyra(),
 			this.client.gateways.sync()

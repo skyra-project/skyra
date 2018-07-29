@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		const body = await fetch(url, 'json');
 
 		if (body.Response === 'Error') throw msg.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
-		return msg.sendMessage(msg.language.get('COMMAND_PRICE_CURRENCY', from, to, amount * body[to]));
+		return msg.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * body[to]]);
 	}
 
 };

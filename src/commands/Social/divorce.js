@@ -12,11 +12,11 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		if (!msg.author.configs.marry) return msg.sendMessage(msg.language.get('COMMAND_DIVORCE_NOTTAKEN'));
+		if (!msg.author.configs.marry) return msg.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 		// Ask the user if they're sure
 		const accept = await msg.ask(msg.language.get('COMMAND_DIVORCE_PROMPT'));
-		if (!accept) return msg.sendMessage(msg.language.get('COMMAND_DIVORCE_CANCEL'));
+		if (!accept) return msg.sendLocale('COMMAND_DIVORCE_CANCEL');
 
 		// Fetch the user and sync the configuration
 		const user = await this.client.users.fetch(msg.author.configs.marry);
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		// Tell the user about the divorce
 		user.send(msg.language.get('COMMAND_DIVORCE_DM', msg.author.username)).catch(() => null);
 
-		return msg.sendMessage(msg.language.get('COMMAND_DIVORCE_SUCCESS', user));
+		return msg.sendLocale('COMMAND_DIVORCE_SUCCESS', user);
 	}
 
 };

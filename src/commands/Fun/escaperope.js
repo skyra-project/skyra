@@ -13,7 +13,7 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		if (msg.deletable) msg.nuke().catch(() => null);
-		return msg.sendMessage(msg.language.get('COMMAND_ESCAPEROPE_OUTPUT', msg.author));
+		return msg.sendLocale('COMMAND_ESCAPEROPE_OUTPUT', [msg.author]);
 	}
 
 };

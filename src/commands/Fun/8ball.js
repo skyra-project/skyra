@@ -14,8 +14,9 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [input]) {
-		return msg.sendMessage(msg.language.get('COMMAND_8BALL_OUTPUT', msg.author, input,
-			codeBlock('', this.generator(input.toLowerCase(), msg.language))), { disableEveryone: true });
+		return msg.sendLocale('COMMAND_8BALL_OUTPUT',
+			[msg.author, input, codeBlock('', this.generator(input.toLowerCase(), msg.language))],
+			{ disableEveryone: true });
 	}
 
 	generator(input, i18n) {

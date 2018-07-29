@@ -82,7 +82,7 @@ module.exports = class extends Command {
 		if (!found || found.taskName !== 'poll' || found.data.guild !== msg.guild.id) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
 		if (!(msg.author.id === found.data.author || await msg.hasAtLeastPermissionLevel(7))) throw msg.language.get('COMMAND_POLL_NOTMANAGEABLE');
 		await found.delete();
-		return msg.sendMessage(msg.language.get('COMMAND_POLL_REMOVE'));
+		return msg.sendLocale('COMMAND_POLL_REMOVE');
 	}
 
 	async vote(msg, [id, option]) {
@@ -106,7 +106,7 @@ module.exports = class extends Command {
 		if (!(msg.author.id === poll.data.author || await msg.hasAtLeastPermissionLevel(7))) throw msg.language.get('COMMAND_POLL_NOTMANAGEABLE');
 
 		const { title, options, votes, voted } = poll.data;
-		if (!voted.length) return msg.sendMessage(msg.language.get('COMMAND_POLL_EMPTY_VOTES'));
+		if (!voted.length) return msg.sendLocale('COMMAND_POLL_EMPTY_VOTES');
 
 		const maxLengthNames = options.reduce((acc, opt) => opt.length > acc ? opt.length : acc, 0);
 		const graph = [];

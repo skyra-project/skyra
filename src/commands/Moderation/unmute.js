@@ -37,7 +37,7 @@ module.exports = class extends ModerationCommand {
 		await member.edit({ roles });
 		const modlog = await this.sendModlog(msg, target, reason.length ? reason.join(' ') : null);
 
-		return msg.sendMessage(msg.language.get('COMMAND_UNMUTE_MESSAGE', target, modlog.reason, modlog.caseNumber));
+		return msg.sendLocale('COMMAND_UNMUTE_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
 	}
 
 };

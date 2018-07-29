@@ -7,7 +7,7 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			aliases: ['goof', 'goofy', 'daddy'],
+			aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
@@ -27,11 +27,15 @@ module.exports = class extends Command {
 	}
 
 	async generate(msg, user) {
-		const goofied = await fetchAvatar(user, 128);
+		const [goofied, goofy] = await Promise.all([
+			fetchAvatar(user, 128),
+			fetchAvatar(msg.author, 128)
+		]);
 
 		return new Canvas(356, 435)
 			.addImage(this.template, 0, 0, 356, 435)
-			.addImage(goofied, 199, 52, 92, 92, { type: 'round', radius: 46 })
+			.addImage(goofy, 199, 52, 92, 92, { type: 'round', radius: 46, restore: true })
+			.addImage(goofied, 95, 296, 50, 50, { type: 'round', radius: 25, restore: true })
 			.toBufferAsync();
 	}
 

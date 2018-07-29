@@ -41,14 +41,12 @@ function levenshtein(a, b, full = true) {
 
 	let offset = 0;
 
-	while (offset < la && (a.charCodeAt(offset) === b.charCodeAt(offset)))
-		offset++;
+	while (offset < la && (a.charCodeAt(offset) === b.charCodeAt(offset))) offset++;
 
 	la -= offset;
 	lb -= offset;
 
-	if (la === 0 || lb < 3)
-		return lb;
+	if (la === 0 || lb < 3) return lb;
 
 	return full ? fullLevenshtein(a, b, la, lb, offset) : -1;
 }

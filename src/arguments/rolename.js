@@ -1,6 +1,5 @@
-const { Argument, util: { regExpEsc } } = require('klasa');
-const { PromptList } = require('../index');
-const ROLE_REGEXP = new RegExp('^(?:<@&)?(\\d{17,21})>?$');
+const { Argument, PromptList, klasaUtil: { regExpEsc } } = require('../index');
+const ROLE_REGEXP = /^(?:<@&)?(\d{17,19})>?$/;
 
 function resolveRole(query, guild) {
 	if (ROLE_REGEXP.test(query)) return guild.roles.get(ROLE_REGEXP.exec(query)[1]);

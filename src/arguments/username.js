@@ -1,6 +1,5 @@
-const { Argument, util: { regExpEsc } } = require('klasa');
-const { PromptList } = require('../index');
-const USER_REGEXP = new RegExp('^(?:<@!?)?(\\d{17,21})>?$');
+const { Argument, PromptList, klasaUtil: { regExpEsc } } = require('../index');
+const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
 
 function resolveUser(query, guild) {
 	if (USER_REGEXP.test(query)) return guild.client.users.fetch(USER_REGEXP.exec(query)[1]).catch(() => null);

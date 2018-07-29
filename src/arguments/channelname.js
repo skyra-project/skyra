@@ -1,6 +1,5 @@
-const { Argument, util: { regExpEsc } } = require('klasa');
-const { PromptList } = require('../index');
-const CHANNEL_REGEXP = new RegExp('^(?:<#)?(\\d{17,21})>?$');
+const { Argument, PromptList, klasaUtil: { regExpEsc } } = require('../index');
+const CHANNEL_REGEXP = /^(?:<#)?(\d{17,19})>?$/;
 
 function resolveChannel(query, guild) {
 	if (CHANNEL_REGEXP.test(query)) return guild.channels.get(CHANNEL_REGEXP.exec(query)[1]);

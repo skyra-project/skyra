@@ -22,11 +22,15 @@ module.exports = class extends Argument {
 		const resUser = await resolveUser(arg, msg.guild);
 		if (resUser) return resUser;
 
+		const lowerCaseArg = arg.toLowerCase();
 		const results = [];
-		const reg = new RegExp(regExpEsc(arg), 'i');
+		const reg = new RegExp(regExpEsc(lowerCaseArg));
+
+		let lowerCaseNick;
 		for (const [id, nickname] of msg.guild.nameDictionary.entries()) {
 			if (typeof nickname !== 'string') continue;
-			if (reg.test(nickname) || (levenshtein(arg, nickname, false) !== -1)) {
+			lowerCaseNick = nickname.toLowerCase();
+			if (reg.test(lowerCaseNick) || (levenshtein(arg, lowerCaseNick, false) !== -1)) {
 				results.push([id, nickname]);
 				if (results.length === 10) break;
 			}

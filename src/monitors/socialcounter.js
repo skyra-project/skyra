@@ -17,7 +17,7 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild
-			|| msg.guild.configs.master.ignoreChannels.includes(msg.channel.id)
+			|| msg.guild.configs.social.ignoreChannels.includes(msg.channel.id)
 			|| this.cooldown(msg)) return;
 
 		if (!msg.member) await msg.guild.members.fetch(msg.author.id).catch(() => null);

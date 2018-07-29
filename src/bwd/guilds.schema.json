@@ -412,6 +412,14 @@
 			"max": 500,
 			"configurable": true
 		},
+		"ignoreChannels": {
+			"type": "textchannel",
+			"array": true,
+			"default": null,
+			"min": null,
+			"max": null,
+			"configurable": true
+		},
 		"boost": {
 			"type": "float",
 			"array": false,

@@ -56,7 +56,7 @@ module.exports = class extends Monitor {
 		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
 
 		const { selfmod } = msg.guild.configs;
-		return selfmod.capsfilter && !selfmod.ignoreChannels.includes(msg.channel.id);
+		return msg.content.length > selfmod.capsminimum && selfmod.capsfilter && !selfmod.ignoreChannels.includes(msg.channel.id);
 	}
 
 };

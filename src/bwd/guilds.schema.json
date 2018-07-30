@@ -407,7 +407,7 @@
 			"default": 0,
 			"min": 0,
 			"max": 7,
-			"configurable": true
+			"configurable": false
 		},
 		"capsthreshold": {
 			"type": "integer",
@@ -415,6 +415,14 @@
 			"default": 50,
 			"min": 0,
 			"max": 100,
+			"configurable": true
+		},
+		"capsminimum": {
+			"type": "integer",
+			"array": false,
+			"default": 10,
+			"min": 0,
+			"max": 2000,
 			"configurable": true
 		}
 	},

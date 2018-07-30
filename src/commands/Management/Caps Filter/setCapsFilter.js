@@ -16,7 +16,8 @@ module.exports = class extends Command {
 			extendedHelp: (msg) => msg.language.get('COMMAND_SETCAPSFILTER_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
-			usage: '<delete|log|alert> [enable|disable]'
+			usage: '<delete|log|alert> [enable|disable]',
+			usageDelim: ' '
 		});
 	}
 

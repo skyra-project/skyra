@@ -182,7 +182,6 @@ module.exports = class extends Language {
 			COMMAND_PING: 'Ping?',
 			COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
 			COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
-			COMMAND_INVITE_SELFBOT: 'Why would you need an invite link for a selfbot...',
 			COMMAND_INVITE_DESCRIPTION: 'Displays the join server link of the bot.',
 			COMMAND_INFO_DESCRIPTION: 'Provides some information about this bot.',
 			COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
@@ -1551,9 +1550,9 @@ module.exports = class extends Language {
 			 * GENERAL COMMANDS
 			 */
 
-			COMMAND_INVITE: (client) => [
-				`To add Skyra to your discord guild: <${client.invite}>`,
-				'Don\'t be afraid to uncheck some permissions, Skyra will let you know if you\'re trying to run a command without permissions.'
+			COMMAND_INVITE: () => [
+				`To add me to your discord guild: <${this.client.invite}>`,
+				'Don\'t be afraid to uncheck some permissions, I will let you know if you\'re trying to run a command without permissions.'
 			].join('\n'),
 			COMMAND_INFO: [
 				`Skyra ${skyra} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,

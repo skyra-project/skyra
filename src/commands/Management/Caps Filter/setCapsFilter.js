@@ -16,18 +16,22 @@ module.exports = class extends Command {
 			extendedHelp: (msg) => msg.language.get('COMMAND_SETCAPSFILTER_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
-			usage: '<delete|log|alert> [enable|disable]',
+			usage: '<delete|log|alert|show:default> [enable|disable]',
 			usageDelim: ' '
 		});
 	}
 
 	async run(msg, [type, mode = 'enable']) {
+		const { capsfilter } = msg.guild.configs.selfmod;
+		if (type === 'show')
+			return msg.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [capsfilter & VALUES.alert, capsfilter & VALUES.log, capsfilter & VALUES.delete], { code: 'md' });
+
 		const { value, key } = VALUES[type];
 		const enable = mode === 'enable';
 		const changed = enable
-			? msg.guild.configs.selfmod.capsfilter | value
-			: msg.guild.configs.selfmod.capsfilter & ~value;
-		if (msg.guild.configs.selfmod.capsfilter === changed) throw msg.language.get('COMMAND_SETCAPSFILTER_EQUALS');
+			? capsfilter | value
+			: capsfilter & ~value;
+		if (capsfilter === changed) throw msg.language.get('COMMAND_SETCAPSFILTER_EQUALS');
 		await msg.guild.configs.update('selfmod.capsfilter', changed);
 
 		return msg.sendLocale(key, [enable]);

@@ -1721,6 +1721,12 @@ module.exports = class extends Language {
 			COMMAND_SETFILTERMODE_DELETEONLY: 'The word filter is now in **DeleteOnly** mode. Messages will be deleted but not logged.',
 			COMMAND_SETFILTERMODE_LOGONLY: 'The word filter is now in **LogOnly** mode. Messages will not be deleted but logged to your modlogs channel.',
 			COMMAND_SETFILTERMODE_ALL: 'The word filter is now in **All** mode. Messages will be both deleted and logged to your modlogs channel.',
+			COMMAND_SETCAPSFILTER_SHOW: (falert, flog, fdelete) => [
+				`= Caps Filter Flags =`,
+				`Alert  :: ${falert ? 'Enabled' : 'Disabled'}`,
+				`Log    :: ${flog ? 'Enabled' : 'Disabled'}`,
+				`Delete :: ${fdelete ? 'Enabled' : 'Disabled'}`
+			].join('\n'),
 			COMMAND_SETCAPSFILTER_EQUALS: 'The caps filter flags did not change, it was already set up with that mode.',
 			COMMAND_SETCAPSFILTER_ALERT: (enabled) => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
 			COMMAND_SETCAPSFILTER_LOG: (enabled) => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,

@@ -1,0 +1,61 @@
++++ 3.0.0 Royal
+
+@@ Security @@
+
++ Fixed performance issues
++ Fixed memory issues
++ Fixed multiple bugs with the RAID system
++ Improved scalability (pending to implement antispam)
+
+@@ Social @@
+
++ Fixed all commands, now they work as expected
++ Added an empty slot for profile badges
++ Added RichDisplay to banners, so you can preview them
++ Fixed autoroles not working
+- Removed 'top money' and 'top reputation'
+
+@@ Tags @@
+
++ Added the hability to run them without the tags command
++ Fixed the tagmanager command
+
+@@ Stability @@
+
++ Fixed many bugs
++ Added CommandSlowmode of 0.5 seconds to avoid many unexpected behaviour and overload
++ Improved scheduled tasks
+
+@@ Moderation @@
+
++ Improved NLP for temporary moderation actions
++ Increased amount of m. actions from 13 to 15
++     voicekick
++     unwarn
+
+@@ CPU/RAM @@
+
++ Reduced RAM usage by +1000% (255mb -> 25mb)
++ Increased performance in command parsing by ~430
++ Increased performance in the 'top' command by a factor of 60k
+
+@@ Logs @@
+
++ Fixed memberRemove and memberAdd events not always sending logs due to uncached users
++ Fixed performance issue when RAID was activated
+- Removed twitch functionality (may be temporary)
+
+@@ Games @@
+
++ Fixed ConnectFour ending when the library was uncaching the message (now it's active until it finishes)
++ Added slot for a tic-tac-toe game
++ Rewrited slotmachines and added bias system to increase posibilities to win for unlucky players
+
+@@ Misc @@
+
++ Added shindeiru command
++ Implemented flag arguments
+
+@@ Ratelimits @@
+
++ Decreased ratelimits on almost all commands, now with "buckets", that apply ratelimits after 'x' uses

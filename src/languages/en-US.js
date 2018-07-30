@@ -1853,6 +1853,7 @@ module.exports = class extends Language {
 			COMMAND_AUTOROLE_UNKNOWN_ROLE: (role) => `Unknown role: ${role}`,
 			COMMAND_BALANCE: (user, amount) => `The user ${user} has a total of ${amount}${SHINY}`,
 			COMMAND_BALANCE_SELF: (amount) => `You have a total of ${amount}${SHINY}`,
+			COMMAND_BALANCE_BOTS: `I think they have 5 gears as much, bots don't have ${SHINY}`,
 			COMMAND_BANNER_MISSING: 'You must specify a banner id to buy.',
 			COMMAND_BANNER_NOTEXISTS: (prefix) => `This banner id does not exist. Please check \`${prefix}banner list\` for a list of banners you can buy.`,
 			COMMAND_BANNER_USERLIST_EMPTY: (prefix) => `You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,

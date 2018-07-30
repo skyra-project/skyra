@@ -26,9 +26,9 @@ module.exports = class extends Command {
 	async run(message, [command]) {
 		if (command) {
 			return message.sendMessage([
-				message.language.get('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message) : command.description),
+				message.language.get('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
 				message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
-				message.language.get('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message) : command.extendedHelp)
+				message.language.get('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
 			].join('\n'));
 		}
 
@@ -79,7 +79,7 @@ module.exports = class extends Command {
 	}
 
 	formatCommand(message, prefix, richDisplay, command) {
-		const description = typeof command.description === 'function' ? command.description(message) : command.description;
+		const description = typeof command.description === 'function' ? command.description(message.language) : command.description;
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 

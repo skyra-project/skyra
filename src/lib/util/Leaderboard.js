@@ -143,7 +143,25 @@ class Leaderboard {
 		// It's not deleting the entry as the previous run will resolve
 
 		// Get the sorted data from the db
-		await this._syncMembers(guild);
+		const promise = new Promise(async (resolve) => {
+			const r = this.client.providers.default.db;
+			// orderBy with index on getAll doesn't work: https://github.com/rethinkdb/rethinkdb/issues/2670
+			const data = await r.table('localScores').getAll(guild, { index: 'guildID' }).orderBy(r.desc('count')).limit(LIMITS.MEMBERS);
+
+			// Clear the leaderboards for said guild
+			if (!this.guilds.has(guild)) this.guilds.set(guild, new Collection());
+			else this.guilds.get(guild).clear();
+
+			// Get the store and initialize the position number, then save all entries
+			const store = this.guilds.get(guild);
+			for (let i = 0; i < data.length; i++) store.set(data[i].userID, { name: null, points: data[i].count, position: i + 1 });
+
+			this._tempPromises.guilds.delete(guild);
+			resolve();
+		});
+
+		this._tempPromises.guilds.set(guild, promise);
+		await promise;
 
 		// Set the timeout for the refresh
 		const timeout = new PreciseTimeout(MINUTE * 10);
@@ -161,10 +179,21 @@ class Leaderboard {
 	 * @since 3.0.0
 	 */
 	async syncUsers() {
+		await (this._tempPromises.users = new Promise(async (resolve) => {
+			// Get the sorted data from the db
+			const r = this.client.providers.default.db;
+			const data = await r.table('users').orderBy({ index: r.desc('points') }).limit(LIMITS.GLOBAL);
+
+			// Get the store and initialize the position number, then save all entries
+			this.users.clear();
+			for (let i = 0; i < data.length; i++) this.users.set(data[i].id, { name: null, points: data[i].points, position: i + 1 });
+
+			this._tempPromises.users = null;
+			resolve();
+		}));
+
 		// If it's still on timeout, reset it
 		this.clearUsers();
-
-		await this._syncUsers();
 
 		// Set the timeout for the refresh
 		this.timeouts.users = new PreciseTimeout(MINUTE * 15);
@@ -199,56 +228,6 @@ class Leaderboard {
 	clearUsers() {
 		if (this.timeouts.users)
 			this.timeouts.users.stop();
-	}
-
-	/**
-	 * Sync the members and caches the sync status
-	 * @since 3.0.0
-	 * @param {string} guild The SkyraGuild ID to sync
-	 * @returns {Promise<void>}
-	 * @private
-	 */
-	_syncMembers(guild) {
-		const promise = new Promise(async (resolve) => {
-			const r = this.client.providers.default.db;
-			const data = await r.table('localScores').filter({ guildID: guild }).orderBy(r.desc('count')).limit(LIMITS.MEMBERS);
-
-			// Clear the leaderboards for said guild
-			if (!this.guilds.has(guild)) this.guilds.set(guild, new Collection());
-			else this.guilds.get(guild).clear();
-
-			// Get the store and initialize the position number, then save all entries
-			const store = this.guilds.get(guild);
-			for (let i = 0; i < data.length; i++) store.set(data[i].userID, { name: null, points: data[i].count, position: i + 1 });
-
-			resolve();
-		}).then(() => { this._tempPromises.guilds.delete(guild); });
-
-		this._tempPromises.guilds.set(guild, promise);
-		return promise;
-	}
-
-	/**
-	 * Sync the users and caches the sync status
-	 * @since 3.0.0
-	 * @returns {Promise<void>}
-	 * @private
-	 */
-	_syncUsers() {
-		const promise = new Promise(async (resolve) => {
-			// Get the sorted data from the db
-			const r = this.client.providers.default.db;
-			const data = await r.table('users').orderBy(r.desc('points')).limit(LIMITS.GLOBAL);
-
-			// Get the store and initialize the position number, then save all entries
-			this.users.clear();
-			for (let i = 0; i < data.length; i++) this.users.set(data[i].id, { name: null, points: data[i].points, position: i + 1 });
-
-			resolve();
-		}).then(() => { this._tempPromises.users = null; });
-
-		this._tempPromises.users = promise;
-		return promise;
 	}
 
 }

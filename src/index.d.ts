@@ -361,8 +361,6 @@ export class Leaderboard {
 	public dispose(): void;
 	public clearGuilds(): void;
 	public clearUsers(): void;
-	private _syncMembers(guild: Snowflake): Promise<void>;
-	private _syncUsers(): Promise<void>;
 }
 
 export class PreciseTimeout {

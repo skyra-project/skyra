@@ -173,8 +173,9 @@ module.exports = class extends Language {
 			COMMAND_TRANSFER_SUCCESS: (type, name) => `✅ Successfully transferred ${type}: ${name}`,
 			COMMAND_TRANSFER_FAILED: (type, name) => `Transfer of ${type}: ${name} to Client has failed. Please check your Console.`,
 			COMMAND_TRANSFER_DESCRIPTION: 'Transfers a core piece to its respective folder',
-			COMMAND_RELOAD: (type, name) => `✅ Reloaded ${type}: ${name}`,
-			COMMAND_RELOAD_ALL: (type) => `✅ Reloaded all ${type}.`,
+			COMMAND_RELOAD: (type, name, time) => `✅ Reloaded ${type}: ${name}. (Took: ${time})`,
+			COMMAND_RELOAD_ALL: (type, time) => `✅ Reloaded all ${type}. (Took: ${time})`,
+			COMMAND_RELOAD_EVERYTHING: (time) => `✅ Reloaded everything. (Took: ${time})`,
 			COMMAND_RELOAD_DESCRIPTION: 'Reloads a klasa piece, or all pieces of a klasa store.',
 			COMMAND_REBOOT: 'Rebooting...',
 			COMMAND_REBOOT_DESCRIPTION: 'Reboots the bot.',
@@ -1722,7 +1723,7 @@ module.exports = class extends Language {
 			COMMAND_SETFILTERMODE_LOGONLY: 'The word filter is now in **LogOnly** mode. Messages will not be deleted but logged to your modlogs channel.',
 			COMMAND_SETFILTERMODE_ALL: 'The word filter is now in **All** mode. Messages will be both deleted and logged to your modlogs channel.',
 			COMMAND_SETCAPSFILTER_SHOW: (falert, flog, fdelete) => [
-				`= Caps Filter Flags =`,
+				`= Caps Filter Flags =`, '',
 				`Alert  :: ${falert ? 'Enabled' : 'Disabled'}`,
 				`Log    :: ${flog ? 'Enabled' : 'Disabled'}`,
 				`Delete :: ${fdelete ? 'Enabled' : 'Disabled'}`

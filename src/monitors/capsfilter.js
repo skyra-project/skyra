@@ -14,7 +14,8 @@ const OFFSET = 0b100000;
  * lower case to upper case (upper case characters are unaffected).
  */
 
-const DELETE_FLAG = 0b01, LOG_FLAG = 0b10;
+// eslint-disable-next-line no-bitwise
+const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
 
 module.exports = class extends Monitor {
 
@@ -31,14 +32,14 @@ module.exports = class extends Monitor {
 		if ((count / length) * 100 < selfmod.capsthreshold) return;
 
 		// eslint-disable-next-line no-bitwise
-		if (selfmod.capsfilter & DELETE_FLAG) {
-			if (msg.deletable) {
-				if (length > 25) msg.author.send(msg.language.get('MONITOR_CAPSFILTER_DM', codeBlock('md', cutText(msg.content, 1900)))).catch(() => null);
-				msg.nuke().catch(() => null);
-			}
-			if (msg.channel.postable)
-				msg.alert(msg.language.get('MONITOR_CAPSFILTER', msg.author)).catch(() => null);
+		if ((selfmod.capsfilter & DELETE_FLAG) && msg.deletable) {
+			if (length > 25) msg.author.send(msg.language.get('MONITOR_CAPSFILTER_DM', codeBlock('md', cutText(msg.content, 1900)))).catch(() => null);
+			msg.nuke().catch(() => null);
 		}
+
+		// eslint-disable-next-line no-bitwise
+		if ((selfmod.capsfilter & ALERT_FLAG) && msg.channel.postable)
+			msg.alert(msg.language.get('MONITOR_CAPSFILTER', msg.author)).catch(() => null);
 
 		// eslint-disable-next-line no-bitwise
 		if (selfmod.capsfilter & LOG_FLAG) {

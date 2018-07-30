@@ -653,6 +653,19 @@ module.exports = class extends Language {
 
 			/**
 			 * ###############################
+			 * MANAGEMENT/CAPS FILTER COMMANDS
+			 */
+
+			COMMAND_SETCAPSFILTER_DESCRIPTION: 'Manage this guild\'s flags for the caps filter.',
+			COMMAND_SETCAPSFILTER_EXTENDED: builder.display('setCapsFilter', {
+				extendedHelp: `There are three flags in the caps filter, each enable or disable a function:
+					- **Alert**: Whether or not the user should get a notification in the channel after reaching the threshold.
+					- **Log**: Whether or not the caps filter should log to the moderation log channel when it triggers.
+					- **Delete**: Whether or not the caps filter should delete the message.`
+			}, true),
+
+			/**
+			 * ###############################
 			 * MANAGEMENT/WORD FILTER COMMANDS
 			 */
 
@@ -1708,6 +1721,10 @@ module.exports = class extends Language {
 			COMMAND_SETFILTERMODE_DELETEONLY: 'The word filter is now in **DeleteOnly** mode. Messages will be deleted but not logged.',
 			COMMAND_SETFILTERMODE_LOGONLY: 'The word filter is now in **LogOnly** mode. Messages will not be deleted but logged to your modlogs channel.',
 			COMMAND_SETFILTERMODE_ALL: 'The word filter is now in **All** mode. Messages will be both deleted and logged to your modlogs channel.',
+			COMMAND_SETCAPSFILTER_EQUALS: 'The caps filter flags did not change, it was already set up with that mode.',
+			COMMAND_SETCAPSFILTER_ALERT: (enabled) => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+			COMMAND_SETCAPSFILTER_LOG: (enabled) => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+			COMMAND_SETCAPSFILTER_DELETE: (enabled) => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
 
 			/**
 			 * #################################

@@ -40,7 +40,7 @@ module.exports = class extends Command {
 			if (positionOffset > value.position) continue;
 			if (positionOffset + 10 < value.position) break;
 			retrievedPage.push(value);
-			if (!value.name) promises.push(this.client.fetchName(id).then(username => { value.name = username || `Unknown Member: ${id}`; }));
+			if (!value.name) promises.push(msg.guild.fetchName(id).then(username => { value.name = username || `Unknown Member: ${id}`; }));
 		}
 
 		if (promises.length) {

@@ -15,7 +15,7 @@ module.exports = class extends Extendable {
 		const count = this.edits.length;
 		await sleep(time);
 
-		return this.deleted && this.edits.length === count ? nuke(this) : this;
+		return !this.deleted && this.edits.length === count ? nuke(this) : this;
 	}
 
 };

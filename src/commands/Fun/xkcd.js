@@ -5,8 +5,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_XKCD_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_XKCD_EXTENDED'),
+			description: (language) => language.get('COMMAND_XKCD_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_XKCD_EXTENDED'),
 			usage: '[query:string]'
 		});
 		this.timestamp = new Timestamp('MMMM, dddd dd YYYY');

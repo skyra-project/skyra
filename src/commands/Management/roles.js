@@ -7,8 +7,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 5,
-			description: msg => msg.language.get('COMMAND_ROLES_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_ROLES_EXTENDED'),
+			description: (language) => language.get('COMMAND_ROLES_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_ROLES_EXTENDED'),
 			runIn: ['text'],
 			usage: '[roles:rolename] [...]',
 			usageDelim: ','

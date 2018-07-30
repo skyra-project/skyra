@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['simplepoll'],
 			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 5,
-			description: msg => msg.language.get('COMMAND_SPOLL_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_SPOLL_EXTENDED'),
+			description: (language) => language.get('COMMAND_SPOLL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SPOLL_EXTENDED'),
 			usage: '<title:string>'
 		});
 	}

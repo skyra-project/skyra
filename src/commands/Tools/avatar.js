@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_AVATAR_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_AVATAR_EXTENDED'),
+			description: (language) => language.get('COMMAND_AVATAR_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_AVATAR_EXTENDED'),
 			runIn: ['text'],
 			usage: '[user:username]'
 		});

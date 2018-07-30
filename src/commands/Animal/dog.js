@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['doggo', 'puppy'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_DOG_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_DOG_EXTENDED')
+			description: (language) => language.get('COMMAND_DOG_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_DOG_EXTENDED')
 		});
 
 		this.rand = [

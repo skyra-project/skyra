@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			bucket: 2,
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_MYLEVEL_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_MYLEVEL_EXTENDED'),
+			description: (language) => language.get('COMMAND_MYLEVEL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_MYLEVEL_EXTENDED'),
 			runIn: ['text'],
 			usage: '[user:username]'
 		});

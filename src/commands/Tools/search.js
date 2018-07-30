@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_SEARCH_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_SEARCH_EXTENDED'),
+			description: (language) => language.get('COMMAND_SEARCH_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SEARCH_EXTENDED'),
 			usage: '<query:string>',
 			usageDelim: ' '
 		});

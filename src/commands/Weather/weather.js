@@ -20,8 +20,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 120,
-			description: msg => msg.language.get('COMMAND_WEATHER_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_WEATHER_EXTENDED'),
+			description: (language) => language.get('COMMAND_WEATHER_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_WEATHER_EXTENDED'),
 			usage: '<city:string>'
 		});
 	}

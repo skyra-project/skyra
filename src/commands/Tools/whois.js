@@ -9,8 +9,8 @@ module.exports = class extends Command {
 			aliases: ['userinfo'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_WHOIS_EXTENDED'),
+			description: (language) => language.get('COMMAND_WHOIS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_WHOIS_EXTENDED'),
 			runIn: ['text'],
 			usage: '[query:username]'
 		});

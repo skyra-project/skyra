@@ -11,8 +11,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
 			bucket: 2,
 			cooldown: 10,
-			description: msg => msg.language.get('COMMAND_BANNER_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_BANNER_EXTENDED'),
+			description: (language) => language.get('COMMAND_BANNER_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_BANNER_EXTENDED'),
 			runIn: ['text'],
 			usage: '[list|buy|reset|set] (banner:banner)',
 			usageDelim: ' '

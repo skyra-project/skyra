@@ -11,8 +11,8 @@ module.exports = class extends Command {
 			aliases: ['ttt'],
 			requiredPermissions: [FLAGS.ADD_REACTIONS],
 			cooldown: 10,
-			description: msg => msg.language.get('COMMAND_TICTACTOE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_TICTACTOE_EXTENDED'),
+			description: (language) => language.get('COMMAND_TICTACTOE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_TICTACTOE_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

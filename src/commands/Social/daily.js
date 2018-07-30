@@ -8,8 +8,8 @@ module.exports = class extends Command {
 		super(...args, {
 			aliases: ['dailies'],
 			cooldown: 30,
-			description: msg => msg.language.get('COMMAND_DAILY_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_DAILY_EXTENDED')
+			description: (language) => language.get('COMMAND_DAILY_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_DAILY_EXTENDED')
 		});
 		this.spam = true;
 	}

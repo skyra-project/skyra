@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['MANAGE_ROLES'],
 			bucket: 2,
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_MANAGEROLEREACTION_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_MANAGEROLEREACTION_EXTENDED'),
+			description: (language) => language.get('COMMAND_MANAGEROLEREACTION_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_MANAGEROLEREACTION_EXTENDED'),
 			// permissionLevel: 6,
 			// TODO: FIX LAZYNESS
 			permissionLevel: 10,

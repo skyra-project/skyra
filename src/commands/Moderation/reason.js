@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 5,
-			description: msg => msg.language.get('COMMAND_REASON_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_REASON_EXTENDED'),
+			description: (language) => language.get('COMMAND_REASON_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_REASON_EXTENDED'),
 			name: 'reason',
 			permissionLevel: 5,
 			runIn: ['text'],

@@ -4,8 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: (msg) => msg.language.get('COMMAND_DONATE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_DONATE_EXTENDED'),
+			description: (language) => language.get('COMMAND_DONATE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_DONATE_EXTENDED'),
 			guarded: true
 		});
 	}

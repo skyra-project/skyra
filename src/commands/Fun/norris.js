@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['chucknorris'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_NORRIS_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_NORRIS_EXTENDED')
+			description: (language) => language.get('COMMAND_NORRIS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_NORRIS_EXTENDED')
 		});
 		this.spam = true;
 	}

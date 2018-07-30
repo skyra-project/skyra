@@ -5,8 +5,8 @@ module.exports = class extends ModerationCommand {
 	constructor(...args) {
 		super(...args, {
 			requiredPermissions: ['MANAGE_ROLES'],
-			description: msg => msg.language.get('COMMAND_UNMUTE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_UNMUTE_EXTENDED'),
+			description: (language) => language.get('COMMAND_UNMUTE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_UNMUTE_EXTENDED'),
 			modType: ModerationCommand.types.UN_MUTE,
 			permissionLevel: 5,
 			requiredMember: true,

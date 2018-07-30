@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['bal', 'credits'],
 			bucket: 2,
 			cooldown: 10,
-			description: msg => msg.language.get('COMMAND_BALANCE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_BALANCE_EXTENDED'),
+			description: (language) => language.get('COMMAND_BALANCE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_BALANCE_EXTENDED'),
 			usage: '[user:username]'
 		});
 		this.spam = true;

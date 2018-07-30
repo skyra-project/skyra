@@ -9,8 +9,8 @@ module.exports = class extends Command {
 			aliases: ['connect-four'],
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS'],
 			cooldown: 0,
-			description: msg => msg.language.get('COMMAND_C4_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_C4_EXTENDED'),
+			description: (language) => language.get('COMMAND_C4_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_C4_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

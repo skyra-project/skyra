@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			bucket: 2,
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_SETMESSAGELOGS_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_SETMESSAGELOGS_EXTENDED'),
+			description: (language) => language.get('COMMAND_SETMESSAGELOGS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SETMESSAGELOGS_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '<here|channel:channel>'

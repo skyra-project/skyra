@@ -5,8 +5,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['execute'],
-			description: (msg) => msg.language.get('COMMAND_EXEC_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_EXEC_EXTENDED'),
+			description: (language) => language.get('COMMAND_EXEC_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_EXEC_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<expression:string>'

@@ -9,8 +9,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 5,
-			description: (msg) => msg.language.get('COMMAND_TRIGGERS_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_TRIGGERS_EXTENDED'),
+			description: (language) => language.get('COMMAND_TRIGGERS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_TRIGGERS_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
 			runIn: ['text'],

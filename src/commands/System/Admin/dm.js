@@ -4,8 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: (msg) => msg.language.get('COMMAND_DM_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_DM_EXTENDED'),
+			description: (language) => language.get('COMMAND_DM_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_DM_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<user:user> <message:string> [...]',

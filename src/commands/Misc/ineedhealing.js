@@ -10,8 +10,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
-			description: (msg) => msg.language.get('COMMAND_INEEDHEALING_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_INEEDHEALING_EXTENDED'),
+			description: (language) => language.get('COMMAND_INEEDHEALING_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_INEEDHEALING_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

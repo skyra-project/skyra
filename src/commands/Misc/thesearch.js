@@ -10,8 +10,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
-			description: (msg) => msg.language.get('COMMAND_THESEARCH_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_THESEARCH_EXTENDED'),
+			description: (language) => language.get('COMMAND_THESEARCH_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_THESEARCH_EXTENDED'),
 			runIn: ['text'],
 			usage: '<text:string>'
 		});

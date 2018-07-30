@@ -7,8 +7,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			cooldown: 5,
-			description: msg => msg.language.get('COMMAND_PRUNE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_PRUNE_EXTENDED'),
+			description: (language) => language.get('COMMAND_PRUNE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_PRUNE_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '[limit:integer] [link|invite|bots|you|me|upload|user:user]',

@@ -6,8 +6,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['cppev', 'c++eval', 'c++ev'],
-			description: (msg) => msg.language.get('COMMAND_CPPEVAL_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_CPPEVAL_EXTENDED'),
+			description: (language) => language.get('COMMAND_CPPEVAL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CPPEVAL_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<cppcode:string>'

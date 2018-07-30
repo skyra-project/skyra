@@ -4,8 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: msg => msg.language.get('COMMANDS_TAGS_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMANDS_TAGS_EXTENDED'),
+			description: (language) => language.get('COMMANDS_TAGS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMANDS_TAGS_EXTENDED'),
 			cooldown: 5,
 			runIn: ['text'],
 			usage: '[list|tag:string]'

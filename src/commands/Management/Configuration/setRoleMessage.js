@@ -8,8 +8,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			bucket: 2,
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
+			description: (language) => language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '(message:message)'

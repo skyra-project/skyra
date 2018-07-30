@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
-			description: msg => msg.language.get('COMMAND_ROLEINFO_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_ROLEINFO_EXTENDED'),
+			description: (language) => language.get('COMMAND_ROLEINFO_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_ROLEINFO_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '[role:rolename]'

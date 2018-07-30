@@ -8,8 +8,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_POLL_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_POLL_EXTENDED'),
+			description: (language) => language.get('COMMAND_POLL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_POLL_EXTENDED'),
 			runIn: ['text'],
 			usage: '<create|list|remove|vote|result> [parameters:string] [...]',
 			usageDelim: ' ',

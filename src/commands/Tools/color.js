@@ -13,8 +13,8 @@ module.exports = class extends Command {
 			aliases: ['colour'],
 			requiredPermissions: ['ATTACH_FILES'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_COLOR_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_COLOR_EXTENDED'),
+			description: (language) => language.get('COMMAND_COLOR_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_COLOR_EXTENDED'),
 			usage: '<color:string> [separator:integer{0,255}]',
 			usageDelim: ' >'
 		});

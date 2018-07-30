@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			runIn: ['text'],
 			requiredPermissions: ['ADD_REACTIONS'],
-			description: msg => msg.language.get('COMMAND_DIVORCE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_DIVORCE_EXTENDED')
+			description: (language) => language.get('COMMAND_DIVORCE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_DIVORCE_EXTENDED')
 		});
 	}
 

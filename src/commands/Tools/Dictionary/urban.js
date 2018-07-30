@@ -8,8 +8,8 @@ module.exports = class extends Command {
 			aliases: ['ud', 'urbandictionary'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_URBAN_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_URBAN_EXTENDED'),
+			description: (language) => language.get('COMMAND_URBAN_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_URBAN_EXTENDED'),
 			usage: '<query:string> [page:integer{0,10}]',
 			usageDelim: '#',
 			nsfw: true

@@ -5,8 +5,8 @@ module.exports = class extends ModerationCommand {
 	constructor(...args) {
 		super(...args, {
 			requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
-			description: msg => msg.language.get('COMMAND_VOICEKICK_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_VOICEKICK_EXTENDED'),
+			description: (language) => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_VOICEKICK_EXTENDED'),
 			modType: ModerationCommand.types.VOICE_KICK,
 			permissionLevel: 5,
 			requiredMember: true,

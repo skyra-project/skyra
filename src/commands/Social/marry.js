@@ -9,8 +9,8 @@ module.exports = class extends Command {
 		super(...args, {
 			runIn: ['text'],
 			cooldown: 30,
-			description: msg => msg.language.get('COMMAND_MARRY_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_MARRY_EXTENDED'),
+			description: (language) => language.get('COMMAND_MARRY_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_MARRY_EXTENDED'),
 			usage: '(user:username)'
 		});
 

@@ -9,8 +9,8 @@ module.exports = class extends Command {
 			aliases: ['wiki'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_WIKIPEDIA_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_WIKIPEDIA_EXTENDED'),
+			description: (language) => language.get('COMMAND_WIKIPEDIA_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_WIKIPEDIA_EXTENDED'),
 			usage: '<query:string>'
 		});
 	}

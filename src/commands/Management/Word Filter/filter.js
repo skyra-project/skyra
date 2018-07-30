@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			bucket: 2,
 			cooldown: 5,
-			description: (msg) => msg.language.get('COMMAND_FILTER_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_FILTER_EXTENDED'),
+			description: (language) => language.get('COMMAND_FILTER_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_FILTER_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
 			subcommands: true,

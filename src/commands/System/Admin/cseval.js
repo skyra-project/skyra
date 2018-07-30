@@ -6,8 +6,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['c#eval', 'csev', 'c#ev'],
-			description: (msg) => msg.language.get('COMMAND_CSEVAL_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_CSEVAL_EXTENDED'),
+			description: (language) => language.get('COMMAND_CSEVAL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CSEVAL_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<cscode:string>'

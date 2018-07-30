@@ -5,8 +5,8 @@ module.exports = class extends ModerationCommand {
 	constructor(...args) {
 		super(...args, {
 			requiredPermissions: ['MUTE_MEMBERS'],
-			description: msg => msg.language.get('COMMAND_VMUTE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_VMUTE_EXTENDED'),
+			description: (language) => language.get('COMMAND_VMUTE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_VMUTE_EXTENDED'),
 			modType: ModerationCommand.types.VOICE_MUTE,
 			permissionLevel: 5,
 			requiredMember: true,

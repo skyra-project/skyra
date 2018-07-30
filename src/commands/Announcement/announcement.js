@@ -8,8 +8,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['MANAGE_ROLES'],
 			bucket: 6,
 			cooldown: 30,
-			description: msg => msg.language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
+			description: (language) => language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
 			permissionLevel: 4,
 			runIn: ['text'],
 			usage: '<announcement:string{,1900}>'

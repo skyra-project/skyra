@@ -4,8 +4,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: (msg) => msg.language.get('COMMAND_BACKUP_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_BACKUP_EXTENDED'),
+			description: (language) => language.get('COMMAND_BACKUP_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_BACKUP_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10
 		});

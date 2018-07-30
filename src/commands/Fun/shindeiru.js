@@ -10,8 +10,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_SHINDEIRU_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_SHINDEIRU_EXTENDED'),
+			description: (language) => language.get('COMMAND_SHINDEIRU_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SHINDEIRU_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

@@ -8,8 +8,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['ATTACH_FILES'],
 			cooldown: 10,
 			bucket: 2,
-			description: msg => msg.language.get('COMMAND_SLOTMACHINE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_SLOTMACHINE_EXTENDED'),
+			description: (language) => language.get('COMMAND_SLOTMACHINE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SLOTMACHINE_EXTENDED'),
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000>'
 		});

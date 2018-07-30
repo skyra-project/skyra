@@ -10,8 +10,8 @@ module.exports = class extends Command {
 		super(...args, {
 			cooldown: 20,
 			bucket: 2,
-			description: msg => msg.language.get('COMMAND_DEFINE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_DEFINE_EXTENDED'),
+			description: (language) => language.get('COMMAND_DEFINE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_DEFINE_EXTENDED'),
 			usage: '<input:string>'
 		});
 	}

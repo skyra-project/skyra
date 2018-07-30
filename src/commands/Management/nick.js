@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['nickname'],
 			requiredPermissions: ['CHANGE_NICKNAME'],
 			cooldown: 30,
-			description: (msg) => msg.language.get('COMMAND_NICK_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_NICK_EXTENDED'),
+			description: (language) => language.get('COMMAND_NICK_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_NICK_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '[nick:string{,32}]'

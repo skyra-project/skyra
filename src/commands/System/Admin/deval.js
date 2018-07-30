@@ -5,8 +5,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['d-ev', 'dashboard-eval'],
-			description: (msg) => msg.language.get('COMMAND_EVAL_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_EVAL_EXTENDED'),
+			description: (language) => language.get('COMMAND_EVAL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_EVAL_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<expression:str>'

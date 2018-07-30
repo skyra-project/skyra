@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			bucket: 2,
 			cooldown: 10,
 			requiredPermissions: ['EMBED_LINKS'],
-			description: (msg) => msg.language.get('COMMAND_LOVE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_LOVE_EXTENDED'),
+			description: (language) => language.get('COMMAND_LOVE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_LOVE_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

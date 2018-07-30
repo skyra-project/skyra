@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			cooldown: 150,
-			description: (msg) => msg.language.get('COMMAND_CREATEMUTE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_CREATEMUTE_EXTENDED'),
+			description: (language) => language.get('COMMAND_CREATEMUTE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CREATEMUTE_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text']
 		});

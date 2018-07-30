@@ -5,8 +5,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_PRICE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_PRICE_EXTENDED'),
+			description: (language) => language.get('COMMAND_PRICE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_PRICE_EXTENDED'),
 			usage: '<from:string> <to:string> [amount:integer]',
 			usageDelim: ' '
 		});

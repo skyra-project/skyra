@@ -5,8 +5,8 @@ module.exports = class extends ModerationCommand {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['warning'],
-			description: msg => msg.language.get('COMMAND_WARN_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_WARN_EXTENDED'),
+			description: (language) => language.get('COMMAND_WARN_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_WARN_EXTENDED'),
 			modType: ModerationCommand.types.WARN,
 			permissionLevel: 5,
 			requiredMember: true,

@@ -11,8 +11,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_CHANGEMYMIND_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_CHANGEMYMIND_EXTENDED'),
+			description: (language) => language.get('COMMAND_CHANGEMYMIND_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CHANGEMYMIND_EXTENDED'),
 			runIn: ['text'],
 			usage: '<text:string{1,50}>'
 		});

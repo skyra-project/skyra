@@ -9,8 +9,8 @@ module.exports = class extends Command {
 			aliases: ['serverinfo'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_GUILDINFO_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_GUILDINFO_EXTENDED'),
+			description: (language) => language.get('COMMAND_GUILDINFO_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_GUILDINFO_EXTENDED'),
 			runIn: ['text']
 		});
 	}

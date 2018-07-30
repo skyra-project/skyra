@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['suggest'],
 			bucket: 2,
 			cooldown: 20,
-			description: (msg) => msg.language.get('COMMAND_FEEDBACK_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_FEEDBACK_EXTENDED'),
+			description: (language) => language.get('COMMAND_FEEDBACK_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_FEEDBACK_EXTENDED'),
 			guarded: true,
 			usage: '<message:string{8,1900}>'
 		});

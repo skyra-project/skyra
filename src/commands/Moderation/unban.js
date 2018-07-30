@@ -6,8 +6,8 @@ module.exports = class extends ModerationCommand {
 		super(...args, {
 			avoidAnonymous: true,
 			requiredPermissions: ['BAN_MEMBERS'],
-			description: msg => msg.language.get('COMMAND_UNBAN_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_UNBAN_EXTENDED'),
+			description: (language) => language.get('COMMAND_UNBAN_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_UNBAN_EXTENDED'),
 			modType: ModerationCommand.types.UN_BAN,
 			permissionLevel: 5,
 			requiredMember: false,

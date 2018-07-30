@@ -11,8 +11,8 @@ module.exports = class extends Command {
 			bucket: 2,
 			permissionLevel: 10,
 			cooldown: 30,
-			description: (msg) => msg.language.get('COMMAND_PINGKYRA_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_PINGKYRA_EXTENDED'),
+			description: (language) => language.get('COMMAND_PINGKYRA_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_PINGKYRA_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

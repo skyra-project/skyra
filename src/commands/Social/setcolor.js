@@ -8,8 +8,8 @@ module.exports = class extends Command {
 			requiredPermissions: ['EMBED_LINKS'],
 			bucket: 2,
 			cooldown: 10,
-			description: msg => msg.language.get('COMMAND_SETCOLOR_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_SETCOLOR_EXTENDED'),
+			description: (language) => language.get('COMMAND_SETCOLOR_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SETCOLOR_EXTENDED'),
 			usage: '<color:string>'
 		});
 		this.spam = true;

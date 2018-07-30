@@ -10,8 +10,8 @@ module.exports = class extends Command {
 		super(...args, {
 			cooldown: 10,
 			requiredPermissions: ['ATTACH_FILES'],
-			description: msg => msg.language.get('COMMAND_EMOJI_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_EMOJI_EXTENDED'),
+			description: (language) => language.get('COMMAND_EMOJI_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_EMOJI_EXTENDED'),
 			usage: '<emoji:string>'
 		});
 	}

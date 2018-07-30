@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['choise', 'pick'],
 			bucket: 2,
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_CHOICE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_CHOICE_EXTENDED'),
+			description: (language) => language.get('COMMAND_CHOICE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CHOICE_EXTENDED'),
 			usage: '<words:string> [...]',
 			usageDelim: ','
 		});

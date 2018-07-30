@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_UNSUBSCRIBE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_UNSUBSCRIBE_EXTENDED'),
+			description: (language) => language.get('COMMAND_UNSUBSCRIBE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_UNSUBSCRIBE_EXTENDED'),
 			runIn: ['text']
 		});
 	}

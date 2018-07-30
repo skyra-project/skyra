@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_MANGA_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_MANGA_EXTENDED'),
+			description: (language) => language.get('COMMAND_MANGA_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_MANGA_EXTENDED'),
 			usage: '<mangaName:string>'
 		});
 	}

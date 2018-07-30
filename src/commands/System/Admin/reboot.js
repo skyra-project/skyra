@@ -6,7 +6,7 @@ module.exports = class extends Command {
 		super(...args, {
 			permissionLevel: 10,
 			guarded: true,
-			description: (msg) => msg.language.get('COMMAND_REBOOT_DESCRIPTION')
+			description: (language) => language.get('COMMAND_REBOOT_DESCRIPTION')
 		});
 	}
 

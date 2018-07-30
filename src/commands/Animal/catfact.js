@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			aliases: ['kittenfact'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
-			description: (msg) => msg.language.get('COMMAND_CATFACT_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_CATFACT_EXTENDED')
+			description: (language) => language.get('COMMAND_CATFACT_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CATFACT_EXTENDED')
 		});
 		this.spam = true;
 	}

@@ -5,8 +5,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['updoot'],
-			description: msg => msg.language.get('COMMAND_UPVOTE_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_UPVOTE_EXTENDED')
+			description: (language) => language.get('COMMAND_UPVOTE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_UPVOTE_EXTENDED')
 		});
 	}
 

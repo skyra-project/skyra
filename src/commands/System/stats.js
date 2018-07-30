@@ -9,8 +9,8 @@ module.exports = class extends Command {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
 			cooldown: 15,
-			description: (msg) => msg.language.get('COMMAND_STATS_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_STATS_EXTENDED')
+			description: (language) => language.get('COMMAND_STATS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_STATS_EXTENDED')
 		});
 	}
 

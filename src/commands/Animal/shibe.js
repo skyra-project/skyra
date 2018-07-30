@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			cooldown: 10,
 			requiredPermissions: ['EMBED_LINKS'],
-			description: (msg) => msg.language.get('COMMAND_SHIBE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_SHIBE_EXTENDED')
+			description: (language) => language.get('COMMAND_SHIBE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SHIBE_EXTENDED')
 		});
 		this.spam = true;
 	}

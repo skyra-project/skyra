@@ -5,8 +5,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['talk'],
-			description: (msg) => msg.language.get('COMMAND_ECHO_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_ECHO_EXTENDED'),
+			description: (language) => language.get('COMMAND_ECHO_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_ECHO_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '[channel:channel] [message:string] [...]',

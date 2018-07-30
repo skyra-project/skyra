@@ -7,8 +7,8 @@ module.exports = class extends Command {
 		super(...args, {
 			aliases: ['source', 'msg-source', 'message-source'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_CONTENT_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_CONTENT_EXTENDED'),
+			description: (language) => language.get('COMMAND_CONTENT_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CONTENT_EXTENDED'),
 			runIn: ['text'],
 			usage: '[channel:channel] (message:message)',
 			usageDelim: ' '

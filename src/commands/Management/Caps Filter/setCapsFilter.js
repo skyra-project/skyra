@@ -12,8 +12,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 5,
-			description: (msg) => msg.language.get('COMMAND_SETCAPSFILTER_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_SETCAPSFILTER_EXTENDED'),
+			description: (language) => language.get('COMMAND_SETCAPSFILTER_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SETCAPSFILTER_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '<delete|log|alert|show:default> [enable|disable]',

@@ -11,8 +11,8 @@ module.exports = class extends Command {
 			aliases: ['shortenurl', 'googleshorturl', 'shorten'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
-			description: msg => msg.language.get('COMMAND_GOOGL_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_GOOGL_EXTENDED'),
+			description: (language) => language.get('COMMAND_GOOGL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_GOOGL_EXTENDED'),
 			usage: '<URL:url>'
 		});
 	}

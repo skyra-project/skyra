@@ -6,8 +6,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['pythoneval'],
-			description: (msg) => msg.language.get('COMMAND_PYEVAL_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_PYEVAL_EXTENDED'),
+			description: (language) => language.get('COMMAND_PYEVAL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_PYEVAL_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<pycode:string>'

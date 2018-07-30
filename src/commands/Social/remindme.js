@@ -9,8 +9,8 @@ module.exports = class extends Command {
 			aliases: ['remind', 'reminder'],
 			bucket: 2,
 			cooldown: 30,
-			description: msg => msg.language.get('COMMAND_REMINDME_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_REMINDME_EXTENDED'),
+			description: (language) => language.get('COMMAND_REMINDME_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_REMINDME_EXTENDED'),
 			mode: 2,
 			usage: '[list|delete|me] [input:string] [...]',
 			usageDelim: ' '

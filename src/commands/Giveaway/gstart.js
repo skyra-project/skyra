@@ -7,8 +7,8 @@ module.exports = class extends Command {
 			runIn: ['text'],
 			aliases: ['giveaway'],
 			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
-			description: msg => msg.language.get('COMMAND_GIVEAWAY_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_GIVEAWAY_EXTENDED'),
+			description: (language) => language.get('COMMAND_GIVEAWAY_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_GIVEAWAY_EXTENDED'),
 			usage: '<time:time> <title:string> [...]',
 			usageDelim: ' '
 		});

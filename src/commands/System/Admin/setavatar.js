@@ -5,8 +5,8 @@ module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: (msg) => msg.language.get('COMMAND_SETAVATAR_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_SETAVATAR_EXTENDED'),
+			description: (language) => language.get('COMMAND_SETAVATAR_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SETAVATAR_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '(attachment:attachment)'

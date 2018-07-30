@@ -5,8 +5,8 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			cooldown: 5,
-			description: (msg) => msg.language.get('COMMAND_VAPORWAVE_DESCRIPTION'),
-			extendedHelp: (msg) => msg.language.get('COMMAND_VAPORWAVE_EXTENDED'),
+			description: (language) => language.get('COMMAND_VAPORWAVE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_VAPORWAVE_EXTENDED'),
 			usage: '<phrase:string>'
 		});
 

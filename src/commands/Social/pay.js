@@ -6,8 +6,8 @@ module.exports = class extends Command {
 		super(...args, {
 			bucket: 2,
 			cooldown: 10,
-			description: msg => msg.language.get('COMMAND_PAY_DESCRIPTION'),
-			extendedHelp: msg => msg.language.get('COMMAND_PAY_EXTENDED'),
+			description: (language) => language.get('COMMAND_PAY_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_PAY_EXTENDED'),
 			runIn: ['text'],
 			usage: '<amount:integer> <user:user>',
 			usageDelim: ' '

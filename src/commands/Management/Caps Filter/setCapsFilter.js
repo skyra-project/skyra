@@ -24,7 +24,7 @@ module.exports = class extends Command {
 	async run(msg, [type, mode = 'enable']) {
 		const { capsfilter } = msg.guild.configs.selfmod;
 		if (type === 'show')
-			return msg.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [capsfilter & VALUES.alert, capsfilter & VALUES.log, capsfilter & VALUES.delete], { code: 'md' });
+			return msg.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [capsfilter & VALUES.alert.value, capsfilter & VALUES.log.value, capsfilter & VALUES.delete.value], { code: 'md' });
 
 		const { value, key } = VALUES[type];
 		const enable = mode === 'enable';

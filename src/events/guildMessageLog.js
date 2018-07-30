@@ -6,7 +6,7 @@ module.exports = class extends Event {
 	async run(type, guild, makeMessage) {
 		const key = TYPES[type];
 		if (!key) {
-			this.client.emit('warn', `[EVENT] GuildMessageLog: Unknown type ${type}`);
+			this.client.emit('warn', `[EVENT] GuildMessageLog: Unknown type ${type.toString()}`);
 			return;
 		}
 
@@ -22,7 +22,7 @@ module.exports = class extends Event {
 		try {
 			await channel.send(makeMessage());
 		} catch (error) {
-			this.client.emit('error', `Failed to send ${type} log for guild ${guild} in channel ${channel.name}`);
+			this.client.emit('error', `Failed to send ${type.toString()} log for guild ${guild} in channel ${channel.name}`);
 		}
 	}
 

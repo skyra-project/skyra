@@ -48,13 +48,14 @@ class NoMentionSpam extends Map {
 	 * Delete an entry from the cache and clears the timeout if exists
 	 * @since 2.1.0
 	 * @param {string} userID The user id to delete
+	 * @returns {boolean}
 	 */
 	delete(userID) {
 		const entry = super.get(userID);
-		if (!entry) return;
+		if (!entry) return false;
 
 		clearTimeout(entry.timeout);
-		super.delete(userID);
+		return super.delete(userID);
 	}
 
 	/**

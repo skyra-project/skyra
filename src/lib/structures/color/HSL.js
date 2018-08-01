@@ -8,9 +8,9 @@ module.exports = class HSL {
      * @param {number} l Lightness. (0 - 100)
      */
 	constructor(h, s, l) {
-		this.h = parseInt(h);
-		this.s = parseInt(s);
-		this.l = parseInt(l);
+		this.h = Number(h);
+		this.s = Number(s);
+		this.l = Number(l);
 
 		this.valid();
 	}

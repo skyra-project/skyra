@@ -8,8 +8,8 @@ const RH_TIMELIMIT = 30000;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			bucket: 2,
 			cooldown: 10,

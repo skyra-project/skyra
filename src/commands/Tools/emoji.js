@@ -6,8 +6,8 @@ const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11
 /* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			cooldown: 10,
 			requiredPermissions: ['ATTACH_FILES'],
 			description: (language) => language.get('COMMAND_EMOJI_DESCRIPTION'),

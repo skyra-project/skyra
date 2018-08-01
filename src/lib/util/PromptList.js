@@ -41,7 +41,7 @@ class PromptList {
 	 * @returns {Promise<number>}
 	 */
 	run(msg, options) {
-		return PromptList._run(msg, this.entries, options, true);
+		return PromptList._run(msg, this.entries, options);
 	}
 
 	/**
@@ -123,7 +123,7 @@ class PromptList {
 			}
 		} else if (data instanceof Set) {
 			maxLength = Math.min(10, data.size);
-			for (const entry of data || Symbol.iterator in data) {
+			for (const entry of data) {
 				if (i >= maxLength) return output;
 				else output[i++] = `${i.toString().padStart(2, ' ')} :: ${entry}`;
 			}

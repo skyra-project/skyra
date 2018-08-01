@@ -4,14 +4,13 @@ const REMINDER_TYPE = 'reminder';
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['remind', 'reminder'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_REMINDME_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_REMINDME_EXTENDED'),
-			mode: 2,
 			usage: '[list|delete|me] [input:string] [...]',
 			usageDelim: ' '
 		});

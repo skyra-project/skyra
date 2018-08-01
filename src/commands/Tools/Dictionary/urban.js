@@ -3,8 +3,8 @@ const ZWS = '\u200B';
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,

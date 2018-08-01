@@ -11,10 +11,8 @@ module.exports = Structures.extend('Guild', Guild => {
 	 */
 	class SkyraGuild extends Guild {
 
-		/**
-		 * @param {...*} args Normal D.JS Guild args
-		 */
 		constructor(...args) {
+			// @ts-ignore
 			super(...args);
 
 			/**
@@ -31,20 +29,22 @@ module.exports = Structures.extend('Guild', Guild => {
 			 */
 			this.starboard = new StarboardManager(this);
 
+			Object.defineProperty(this, 'nameDictionary', { writable: true });
+
 			/**
 			 * The name dictionary for this guild
 			 * @since 3.2.0
 			 * @name SkyraGuild#nameDictionary
-			 * @type {Collection<string, string>}
+			 * @type {Collection<string, string | Symbol>}
 			 */
-			Object.defineProperty(this, 'nameDictionary', { value: new Collection() });
+			this.nameDictionary = new Collection();
 		}
 
 		/**
 		 * Fetch an user's username by its id
 		 * @since 3.2.0
 		 * @param {string} id The ID to fetch
-		 * @returns {Promise<string>}
+		 * @returns {Promise<?string>}
 		 */
 		async fetchName(id) {
 			const result = this.nameDictionary.get(id) || await this.members.fetch(id).then(({ displayName }) => {
@@ -54,6 +54,7 @@ module.exports = Structures.extend('Guild', Guild => {
 				this.nameDictionary.set(id, kUnknownMember);
 				return kUnknownMember;
 			});
+			// @ts-ignore
 			return result === kUnknownMember ? null : result;
 		}
 

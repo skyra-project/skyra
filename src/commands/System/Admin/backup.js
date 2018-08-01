@@ -2,8 +2,8 @@ const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_BACKUP_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_BACKUP_EXTENDED'),
 			guarded: true,
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 
 		// Do NOT run the task if it's disabled
 		if (task.enabled) {
-			await task.run();
+			await task.run({});
 			await message.edit('Successfully backed up all data.');
 		}
 		this.enable();

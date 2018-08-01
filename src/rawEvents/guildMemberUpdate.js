@@ -2,8 +2,8 @@ const { RawEvent } = require('../index');
 
 module.exports = class extends RawEvent {
 
-	constructor(...args) {
-		super(...args, { name: 'GUILD_MEMBER_UPDATE' });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { name: 'GUILD_MEMBER_UPDATE' });
 	}
 
 	process(data) {

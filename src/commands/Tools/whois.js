@@ -4,8 +4,8 @@ const sortRanks = (x, y) => +(y.position > x.position) || +(x.position === y.pos
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['userinfo'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,

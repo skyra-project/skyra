@@ -1,4 +1,4 @@
-const { API, toJSON } = require('../../index');
+const { API, ToJSON } = require('../../index');
 
 module.exports = class extends API {
 
@@ -6,7 +6,7 @@ module.exports = class extends API {
 		const guild = this.client.guilds.get(guildID);
 		if (guild) {
 			const channel = guild.channels.get(channelID);
-			if (channel) return toJSON.channel(channel);
+			if (channel) return ToJSON.channel(channel);
 		}
 		return null;
 	}

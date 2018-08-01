@@ -7,8 +7,8 @@ const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['lvl'],
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,

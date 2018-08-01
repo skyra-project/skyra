@@ -1,10 +1,11 @@
+// @ts-nocheck
 const { Extendable, Configuration } = require('klasa');
 const { GuildConfiguration, UserConfiguration } = require('../index');
 
 module.exports = class extends Extendable {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			appliesTo: ['Gateway'],
 			klasa: true,
 			name: 'Configuration'

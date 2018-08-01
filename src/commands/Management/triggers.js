@@ -5,8 +5,8 @@ const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_TRIGGERS_DESCRIPTION'),

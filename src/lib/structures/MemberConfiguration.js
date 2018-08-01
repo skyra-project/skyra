@@ -11,40 +11,47 @@ class MemberConfiguration {
 	/**
 	 * @typedef  {Object} MemberConfigurationJSON
 	 * @property {number} count
+	 * @property {string} guild
+	 * @property {string} member
 	 */
 
 	/**
 	 * Create a new instance of MemberConfiguration given a GuildMember instance
 	 * @since 3.0.0
-	 * @param {GuildMember} member A GuildMember instance
+	 * @param {SkyraGuildMember} member A GuildMember instance
 	 */
 	constructor(member) {
+		Object.defineProperties(this, {
+			client: { writable: true },
+			guildID: { writable: true },
+			userID: { writable: true },
+			UUID: { writable: true },
+			_syncStatus: { writable: true }
+		});
+
 		/**
 		 * The client this MemberConfiguration was created with.
 		 * @since 3.0.0
-		 * @type {KlasaClient}
-		 * @name MemberConfiguration#client
+		 * @type {Skyra}
 		 * @readonly
 		 */
-		Object.defineProperty(this, 'client', { value: member.client });
+		this.client = member.client;
 
 		/**
 		 * The guild id where the member belongs to.
 		 * @since 3.0.0
 		 * @type {string}
-		 * @name MemberConfiguration#guildID
 		 * @readonly
 		 */
-		Object.defineProperty(this, 'guildID', { value: member.guild.id });
+		this.guildID = member.guild.id;
 
 		/**
 		 * The member id.
 		 * @since 3.0.0
 		 * @type {string}
-		 * @name MemberConfiguration#userID
 		 * @readonly
 		 */
-		Object.defineProperty(this, 'userID', { value: member.id });
+		this.userID = member.id;
 
 		/**
 		 * The amount of points
@@ -57,19 +64,17 @@ class MemberConfiguration {
 		 * The UUID for this entry.
 		 * @since 3.0.0
 		 * @type {boolean}
-		 * @name MemberConfiguration#UUID
 		 * @private
 		 */
-		Object.defineProperty(this, 'UUID', { value: null, writable: true });
+		this.UUID = null;
 
 		/**
 		 * The promise sync status, if syncing.
 		 * @since 3.0.0
 		 * @type {?Promise<this>}
-		 * @name MemberConfiguration#_syncStatus
 		 * @private
 		 */
-		Object.defineProperty(this, '_syncStatus', { value: null, writable: true });
+		this._syncStatus = null;
 
 		// Sync the configs
 		this.sync();
@@ -91,7 +96,7 @@ class MemberConfiguration {
 	 * @returns {Promise<this>}
 	 */
 	sync() {
-		if (!this.client._skyraReady) return this;
+		if (!this.client._skyraReady) return Promise.resolve(this);
 		if (!this._syncStatus) this._syncStatus = this._sync();
 		return this._syncStatus;
 	}
@@ -160,7 +165,7 @@ class MemberConfiguration {
 	/**
 	 * Internal sync method
 	 * @since 3.0.0
-	 * @returns {this}
+	 * @returns {Promise<this>}
 	 * @private
 	 */
 	async _sync() {

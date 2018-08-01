@@ -1,9 +1,9 @@
-const { API, toJSON } = require('../../index');
+const { API, ToJSON } = require('../../index');
 
 module.exports = class extends API {
 
 	run({ guildID }) {
-		return (guild => guild ? toJSON.guild(guild) : null)(this.client.guilds.get(guildID));
+		return (guild => guild ? ToJSON.guild(guild) : null)(this.client.guilds.get(guildID));
 	}
 
 };

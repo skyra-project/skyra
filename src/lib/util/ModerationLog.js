@@ -18,14 +18,16 @@ class ModerationLog {
 
 	/**
 	 * @typedef  {Object} ModerationJSON
-	 * @property {KlasaUser} [moderator]
-	 * @property {KlasaUser} [user]
-	 * @property {ModerationTypesEnum} [type]
-	 * @property {string} [reason]
-	 * @property {number} [case]
+	 * @property {boolean} [appeal]
+	 * @property {number} case
 	 * @property {number} [duration]
-	 * @property {boolean} timed
 	 * @property {*} [extraData]
+	 * @property {string} guild
+	 * @property {KlasaUser} moderator
+	 * @property {string} [reason]
+	 * @property {boolean} timed
+	 * @property {ModerationTypesEnum} [type]
+	 * @property {KlasaUser} [user]
 	 * @memberof ModerationLog
 	 */
 
@@ -167,7 +169,6 @@ class ModerationLog {
 
 	/**
 	 * Get the opposite/appeal type
-	 * @param {ModerationTypesEnum} type The type to evaluate
 	 * @returns {('unban'|'unmute'|'vunmute')}
 	 */
 	get appealType() {
@@ -341,16 +342,16 @@ class ModerationLog {
 	 */
 	toJSON() {
 		return {
-			[schemaKeys.GUILD]: this.guild.id,
-			[schemaKeys.MODERATOR]: this.moderator ? this.moderator.id : null,
-			[schemaKeys.USER]: this.user ? this.user.id : null,
-			[schemaKeys.TYPE]: this.type,
-			[schemaKeys.REASON]: this.reason,
+			[schemaKeys.APPEAL]: this.appeal,
 			[schemaKeys.CASE]: this.caseNumber,
-			[schemaKeys.TIMED]: Boolean(this.duration),
 			[schemaKeys.DURATION]: this.duration,
 			[schemaKeys.EXTRA_DATA]: this.extraData,
-			[schemaKeys.APPEAL]: this.appeal
+			[schemaKeys.GUILD]: this.guild.id,
+			[schemaKeys.MODERATOR]: this.moderator ? this.moderator.id : null,
+			[schemaKeys.REASON]: this.reason,
+			[schemaKeys.TIMED]: Boolean(this.duration),
+			[schemaKeys.TYPE]: this.type,
+			[schemaKeys.USER]: this.user ? this.user.id : null
 		};
 	}
 

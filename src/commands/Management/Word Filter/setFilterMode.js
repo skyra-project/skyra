@@ -9,8 +9,8 @@ const TYPES = {
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_SETFILTERMODE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SETFILTERMODE_EXTENDED'),

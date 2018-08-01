@@ -3,8 +3,8 @@ const SNOWFLAKE_REGEXP = Resolver.regex.snowflake;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['source', 'msg-source', 'message-source'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_CONTENT_DESCRIPTION'),

@@ -2,8 +2,8 @@ const { Command, config: { tokens: { google: KEY } }, util: { fetch } } = requir
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			cooldown: 15,
 			aliases: ['yt'],
 			description: (language) => language.get('COMMAND_YOUTUBE_DESCRIPTION'),

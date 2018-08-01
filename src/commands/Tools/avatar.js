@@ -2,8 +2,8 @@ const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_AVATAR_DESCRIPTION'),

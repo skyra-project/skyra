@@ -2,7 +2,7 @@ const { Task, Timestamp } = require('klasa');
 
 module.exports = class extends Task {
 
-	constructor(...args) {
+	constructor(client, store, file, directory) {
 		super(...args);
 
 		this.timestamp = new Timestamp('MMMM d, hh:mm:ss');

@@ -5,7 +5,7 @@ module.exports = class B10 {
      * @param {number} value Base10 (0 - 0xFFFFFF)
      */
 	constructor(value) {
-		this.value = parseInt(value);
+		this.value = Number(value);
 
 		this.valid();
 	}

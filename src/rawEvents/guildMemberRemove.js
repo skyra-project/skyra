@@ -9,8 +9,8 @@ const MATCHES = {
 
 module.exports = class extends RawEvent {
 
-	constructor(...args) {
-		super(...args, { name: 'GUILD_MEMBER_REMOVE' });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { name: 'GUILD_MEMBER_REMOVE' });
 	}
 
 	async run({ guild, user }) {

@@ -2,8 +2,8 @@ const { ModerationCommand, Moderation: { schemaKeys, typeKeys } } = require('../
 
 module.exports = class extends ModerationCommand {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_UNWARN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_UNWARN_EXTENDED'),
 			modType: ModerationCommand.types.UN_WARN,

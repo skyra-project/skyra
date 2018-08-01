@@ -8,8 +8,8 @@ const sCL = (colour) => colour >= 128 ? 0 : 255;
 /* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B", "x", "y"] }] */
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['colour'],
 			requiredPermissions: ['ATTACH_FILES'],
 			cooldown: 15,

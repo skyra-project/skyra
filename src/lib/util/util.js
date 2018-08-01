@@ -3,9 +3,10 @@ const { schemaKeys } = require('./Moderation');
 const { STATUS_CODES } = require('http');
 const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
-const { util } = require('klasa');
+const { util, Type } = require('klasa');
 const { Image } = require('canvas');
 const { readFile } = require('fs-nextra');
+const { Readable } = require('stream');
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -22,6 +23,34 @@ const REGEX_UNICODE_EMOJI = require('./External/rUnicodeEmoji');
  * @version 2.0.0
  */
 class Util {
+
+	/**
+	 * Read a stream and resolve to a buffer
+	 * @since 3.2.0
+	 * @param {Readable} stream The readable stream to read
+	 * @returns {Promise<Buffer>}
+	 */
+	static streamToBuffer(stream) {
+		if (!(stream instanceof Readable)) throw new TypeError(`Expected stream to be a Readable stream, got: ${new Type(stream)}`);
+
+		return new Promise((res, rej) => {
+			const array = [];
+
+			function onData(data) {
+				array.push(data);
+			}
+
+			function finish(error) {
+				stream.removeAllListeners();
+				return error ? rej(error) : res(Buffer.concat(array));
+			}
+
+			stream.on('data', onData);
+			stream.on('end', finish);
+			stream.on('error', finish);
+			stream.on('close', finish);
+		});
+	}
 
 	/**
 	 * Load an image for Canvas

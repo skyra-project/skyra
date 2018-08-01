@@ -2,8 +2,8 @@ const { Monitor, ModerationLog, Moderation } = require('../index');
 
 module.exports = class extends Monitor {
 
-	constructor(...args) {
-		super(...args, { ignoreBots: false });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { ignoreBots: false });
 	}
 
 	async run(msg) {

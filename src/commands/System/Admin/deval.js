@@ -2,8 +2,8 @@ const { Command, Stopwatch, util } = require('klasa');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['d-ev', 'dashboard-eval'],
 			description: (language) => language.get('COMMAND_EVAL_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_EVAL_EXTENDED'),

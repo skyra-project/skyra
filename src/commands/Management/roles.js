@@ -3,8 +3,8 @@ const RH_TIMELIMIT = TIME.MINUTE * 5;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_ROLES_DESCRIPTION'),

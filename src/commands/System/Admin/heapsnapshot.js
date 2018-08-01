@@ -30,8 +30,8 @@ const writeSnapshot = require('util')
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			permissionLevel: 10,
 			guarded: true,
 			description: 'Creates a heapdump for finding memory leaks.',
@@ -43,7 +43,7 @@ module.exports = class extends Command {
 				'Finally, open the profile and you will be given a table of all objects in your process, have fun!\n\nP.S:',
 				'heapsnapshot files are as big as the amount of RAM you use, in big bots, the snapshots can freeze the bot',
 				'much longer and the files can be much heavier.'
-			]
+			].join(' ')
 		});
 	}
 

@@ -1,4 +1,4 @@
-const { Event } = require('klasa');
+const { Event } = require('../index');
 const EVENTS = new Set([
 	'GUILD_MEMBER_ADD',
 	'GUILD_MEMBER_REMOVE',

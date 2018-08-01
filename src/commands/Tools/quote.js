@@ -3,8 +3,8 @@ const SNOWFLAKE_REGEXP = Resolver.regex.snowflake;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_QUOTE_DESCRIPTION'),

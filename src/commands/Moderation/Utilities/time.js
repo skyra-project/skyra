@@ -3,8 +3,8 @@ const { Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			cooldown: 5,
 			description: 'Sets a timer.',
 			permissionLevel: 6,
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		if (cancel) return this.cancel(msg, modlog, task);
 		if (task) {
 			if (modlog[schemaKeys.APPEAL]) throw msg.language.get('MODLOG_APPEALED');
-			throw msg.language.get('MODLOG_TIMED', task.timestamp - Date.now());
+			throw msg.language.get('MODLOG_TIMED', task.data.timestamp - Date.now());
 		}
 		if (!time.length) throw msg.language.get('COMMAND_TIME_UNDEFINED_TIME');
 

@@ -2,8 +2,8 @@ const { Event, util } = require('klasa');
 
 module.exports = class extends Event {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			once: true,
 			event: 'ready'
 		});
@@ -54,7 +54,7 @@ module.exports = class extends Event {
 		}
 
 		// Sweep
-		this.client.tasks.get('cleanup').run();
+		this.client.tasks.get('cleanup').run({});
 
 		const promise = require('../lib/util/Games/Slotmachine').init();
 

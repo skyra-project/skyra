@@ -2,8 +2,8 @@ const { Command, util: { announcementCheck } } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_SUBSCRIBE_DESCRIPTION'),

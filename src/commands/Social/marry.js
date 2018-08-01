@@ -5,8 +5,8 @@ const SNEYRA_ID = '338249781594030090';
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			runIn: ['text'],
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_MARRY_DESCRIPTION'),

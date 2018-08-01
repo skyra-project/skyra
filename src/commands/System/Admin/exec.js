@@ -2,8 +2,8 @@ const { Command, klasaUtil: { exec, codeBlock }, MessageAttachment, util: { fetc
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['execute'],
 			description: (language) => language.get('COMMAND_EXEC_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_EXEC_EXTENDED'),

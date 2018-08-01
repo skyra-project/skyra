@@ -1,9 +1,10 @@
+// @ts-nocheck
 const { Extendable } = require('klasa');
 
 module.exports = class extends Extendable {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			appliesTo: ['Message'],
 			name: 'alert'
 		});

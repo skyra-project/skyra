@@ -4,8 +4,8 @@ const DAILY_PERIOD = TIME.HOUR * 12;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['dailies'],
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_DAILY_DESCRIPTION'),

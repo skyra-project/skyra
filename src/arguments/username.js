@@ -18,7 +18,7 @@ module.exports = class extends Argument {
 	}
 
 	async run(arg, possible, msg) {
-		if (!msg.guild) return this.user(arg, possible, msg);
+		if (!msg.guild) return this.user.run(arg, possible, msg);
 		const resUser = await resolveUser(arg, msg.guild);
 		if (resUser) return resUser;
 

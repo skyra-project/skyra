@@ -2,8 +2,8 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['lock', 'unlock'],
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			cooldown: 5,

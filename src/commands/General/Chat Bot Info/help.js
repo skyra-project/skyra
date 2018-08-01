@@ -1,13 +1,12 @@
-const { Command, RichDisplay, util } = require('klasa');
-const { MessageEmbed, Permissions } = require('discord.js');
+const { Command, RichDisplay, klasaUtil: { isFunction }, MessageEmbed, Permissions } = require('../../../index');
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 const time = 1000 * 60 * 3;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['commands', 'cmd', 'cmds'],
 			guarded: true,
 			description: (language) => language.get('COMMAND_HELP_DESCRIPTION'),
@@ -26,9 +25,9 @@ module.exports = class extends Command {
 	async run(message, [command]) {
 		if (command) {
 			return message.sendMessage([
-				message.language.get('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
+				message.language.get('COMMAND_HELP_TITLE', command.name, isFunction(command.description) ? command.description(message.language) : command.description),
 				message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
-				message.language.get('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
+				message.language.get('COMMAND_HELP_EXTENDED', isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
 			].join('\n'));
 		}
 

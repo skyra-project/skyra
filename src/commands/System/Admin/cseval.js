@@ -3,8 +3,8 @@ const fsn = require('fs-nextra');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['c#eval', 'csev', 'c#ev'],
 			description: (language) => language.get('COMMAND_CSEVAL_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_CSEVAL_EXTENDED'),
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 
 	/**
      * Compile the C# code.
-     * @param {StopWatch} start The stopwatch instance to measure compiler time.
+     * @param {Stopwatch} start The stopwatch instance to measure compiler time.
      * @returns {Promise<?string>}
      */
 	compile(start) {

@@ -8,8 +8,8 @@ const PERMISSIONS = Permissions.resolve([
 
 module.exports = class extends ModerationCommand {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			description: (language) => language.get('COMMAND_MUTE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_MUTE_EXTENDED'),
@@ -22,7 +22,7 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	async run(msg, [target, ...reason]) {
+	async run(msg, [target, ...raw]) {
 		const member = await this.checkModeratable(msg, target);
 
 		const mute = await this._getMuteRole(msg);
@@ -32,7 +32,7 @@ module.exports = class extends ModerationCommand {
 		if (stickyRoles.roles.includes(mute.id)) throw msg.language.get('COMMAND_MUTE_MUTED');
 
 		// Parse the reason and get the roles
-		reason = reason.length ? reason.join(' ') : null;
+		const reason = raw.length ? raw.join(' ') : null;
 		const roles = this._getRoles(member);
 
 		await member.edit({ roles: member.roles.filter(role => role.managed).map(role => role.id).concat(mute.id) });

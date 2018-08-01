@@ -97,7 +97,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 
 module.exports = class extends Language {
 
-	constructor(...args) {
+	constructor(client, store, file, directory) {
 		super(...args);
 
 		this.PERMISSIONS = PERMS;

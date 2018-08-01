@@ -2,8 +2,8 @@ const { Inhibitor } = require('../index');
 
 module.exports = class extends Inhibitor {
 
-	constructor(...args) {
-		super(...args, { spamProtection: true });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { spamProtection: true });
 
 		/**
 		 * The spam slowmode map

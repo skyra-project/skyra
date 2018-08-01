@@ -78,7 +78,7 @@ class FriendlyDuration {
 	 * Parse the duration
 	 * @since 3.0.0
 	 * @param {number} duration The duration in milliseconds to parse
-	 * @returns {number[]}
+	 * @returns {Object}
 	 * @private
 	 */
 	static _parse(duration) {

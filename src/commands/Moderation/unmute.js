@@ -2,8 +2,8 @@ const { ModerationCommand, Moderation, util: { removeMute } } = require('../../i
 
 module.exports = class extends ModerationCommand {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			description: (language) => language.get('COMMAND_UNMUTE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_UNMUTE_EXTENDED'),

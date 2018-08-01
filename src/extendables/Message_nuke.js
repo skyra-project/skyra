@@ -1,9 +1,10 @@
+// @ts-nocheck
 const { Extendable, klasaUtil: { sleep } } = require('../index');
 
 module.exports = class extends Extendable {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			appliesTo: ['Message'],
 			name: 'nuke'
 		});

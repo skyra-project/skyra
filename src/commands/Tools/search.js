@@ -2,8 +2,8 @@ const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_SEARCH_DESCRIPTION'),

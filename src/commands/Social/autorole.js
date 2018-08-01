@@ -4,8 +4,8 @@ const SORT = (x, y) => +(x.points > y.points) || +(x.points === y.points) - 1;
 /* eslint-disable max-len */
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['autoroles', 'levelrole', 'lvlrole'],
 			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 10,

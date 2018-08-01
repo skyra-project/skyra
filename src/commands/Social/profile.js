@@ -9,8 +9,8 @@ const BADGES_FOLDER = join('/var', 'www', 'assets', 'img', 'badges');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,

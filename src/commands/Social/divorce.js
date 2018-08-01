@@ -2,8 +2,8 @@ const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			runIn: ['text'],
 			requiredPermissions: ['ADD_REACTIONS'],
 			description: (language) => language.get('COMMAND_DIVORCE_DESCRIPTION'),

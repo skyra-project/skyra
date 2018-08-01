@@ -106,29 +106,31 @@ module.exports = class Skyra extends Client {
 		this.updateStats();
 
 		Object.defineProperties(this, {
-			/**
-			 * The ConnectFour manager
-			 * @name Skyra#connectFour
-			 * @since 3.0.0
-			 * @type {ConnectFourManager}
-			 */
-			connectFour: { value: new ConnectFourManager(this) },
-			/**
-			 * @type {NodeJS.Timer}
-			 * @name Skyra#_updateStatsInterval
-			 * @since 3.0.0
-			 * @private
-			 */
-			_updateStatsInterval: { value: this.setInterval(this.updateStats.bind(this), 300000) },
-
-			/**
-			 * @type {boolean}
-			 * @name Skyra#_skyraReady
-			 * @since 3.1.0
-			 * @private
-			 */
-			_skyraReady: { value: false, writable: true }
+			connectFour: { writable: true },
+			_updateStatsInterval: { writable: true },
+			_skyraReady: { writable: true }
 		});
+
+		/**
+		 * The ConnectFour manager
+		 * @since 3.0.0
+		 * @type {ConnectFourManager}
+		 */
+		this.connectFour = new ConnectFourManager(this);
+
+		/**
+		 * @type {NodeJS.Timer}
+		 * @since 3.0.0
+		 * @private
+		 */
+		this._updateStatsInterval = this.setInterval(this.updateStats.bind(this), 300000);
+
+		/**
+		 * @type {boolean}
+		 * @since 3.1.0
+		 * @private
+		 */
+		this._skyraReady = false;
 	}
 
 	/**

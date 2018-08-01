@@ -2,8 +2,8 @@ const { ModerationCommand } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['KICK_MEMBERS'],
 			description: (language) => language.get('COMMAND_KICK_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_KICK_EXTENDED'),
@@ -16,11 +16,11 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	async run(msg, [target, ...reason]) {
+	async run(msg, [target, ...raw]) {
 		const member = await this.checkModeratable(msg, target);
 		if (!member.kickable) throw msg.language.get('COMMAND_KICK_NOT_KICKABLE');
-		reason = reason.length ? reason.join(' ') : null;
 
+		const reason = raw.length ? raw.join(' ') : null;
 		await member.kick(reason);
 		const modlog = await this.sendModlog(msg, target, reason);
 

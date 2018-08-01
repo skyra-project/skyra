@@ -1,9 +1,10 @@
+// @ts-nocheck
 const { Extendable } = require('../index');
 
 module.exports = class extends Extendable {
 
-	constructor(...args) {
-		super(...args, { appliesTo: ['MessageEmbed'], name: 'splitFields' });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { appliesTo: ['MessageEmbed'], name: 'splitFields' });
 	}
 
 	extend(content) {

@@ -12,13 +12,13 @@ module.exports = class extends Event {
 	async initGiveawayRecurrentTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'giveawayRecurrent'))
-			await this.client.schedule.create('giveawayRecurrent', '*/10 * * * *');
+			await this.client.schedule.create('giveawayRecurrent', '*/10 * * * *', {});
 	}
 
 	async initPostStatsTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'poststats'))
-			await this.client.schedule.create('poststats', '*/15 * * * *');
+			await this.client.schedule.create('poststats', '*/15 * * * *', {});
 	}
 
 	// If this task is not being run, let's create the
@@ -26,7 +26,7 @@ module.exports = class extends Event {
 	async initCleanupTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'cleanup'))
-			await this.client.schedule.create('cleanup', '*/10 * * * *');
+			await this.client.schedule.create('cleanup', '*/10 * * * *', {});
 	}
 
 	// If this task is not being run, let's create the
@@ -35,7 +35,7 @@ module.exports = class extends Event {
 	async initDBSweepTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'databaseSweep'))
-			await this.client.schedule.create('databaseSweep', '1 0 * * mon,thu');
+			await this.client.schedule.create('databaseSweep', '1 0 * * mon,thu', {});
 	}
 
 	// If this task is not being run, let's create the
@@ -43,7 +43,7 @@ module.exports = class extends Event {
 	async initBackupTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'backup'))
-			await this.client.schedule.create('backup', '0 0 * * *');
+			await this.client.schedule.create('backup', '0 0 * * *', {});
 	}
 
 };

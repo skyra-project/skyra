@@ -4,8 +4,8 @@ const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['connect-four'],
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS'],
 			cooldown: 0,
@@ -39,6 +39,8 @@ module.exports = class extends Command {
 		}
 
 		this.client.connectFour.delete(msg.channel.id);
+
+		return null;
 	}
 
 };

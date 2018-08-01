@@ -7,8 +7,8 @@ const titles = {
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,

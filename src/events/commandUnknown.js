@@ -22,18 +22,20 @@ module.exports = class extends Event {
 			: undefined)(msg.guild.configs.trigger.alias.find(entry => entry.input === command));
 		if (!alias) return;
 
+		// @ts-ignore
 		const { regex: prefix, length: prefixLength } = this.commandHandler.getPrefix(msg);
 
 		const timer = new Stopwatch();
 		msg._registerCommand({ command: alias, prefix, prefixLength });
 
 		try {
-			await this.client.inhibitors.run(msg, alias);
+			await this.client.inhibitors.run(msg, alias, false);
 		} catch (response) {
 			this.client.emit('commandInhibited', msg, alias, response);
 			return;
 		}
 
+		// @ts-ignore
 		this.commandHandler.runCommand(msg, timer);
 	}
 

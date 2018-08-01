@@ -4,8 +4,8 @@ const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['READ_MESSAGE_HISTORY', 'ADD_REACTIONS'],
 			bucket: 2,
 			cooldown: 10,
@@ -78,6 +78,7 @@ module.exports = class extends Command {
 	}
 
 	_reactMessage(channelID, messageID, reaction) {
+		// @ts-ignore
 		return this.client.api.channels[channelID].messages[messageID].reactions[this.client.emojis.resolveIdentifier(reaction)]['@me'].put();
 	}
 

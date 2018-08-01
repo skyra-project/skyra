@@ -3,7 +3,7 @@ const discord = require('discord.js');
 const { join } = require('path');
 
 // Load all dependencies
-Object.keys(require('../package.json').dependencies).forEach(mod => require(mod));
+Object.keys(JSON.parse(require('fs').readFileSync('../package.json', 'utf8')).dependencies).forEach(mod => require(mod));
 
 module.exports = {
 	rootFolder: __dirname,
@@ -47,7 +47,7 @@ module.exports = {
 	Leaderboard: require('./lib/util/Leaderboard'),
 	PreciseTimeout: require('./lib/util/PreciseTimeout'),
 	PromptList: require('./lib/util/PromptList'),
-	toJSON: require('./lib/util/ToJSON'),
+	ToJSON: require('./lib/util/ToJSON'),
 	DatabaseInit: require('./lib/util/DatabaseInit'),
 	constants: require('./lib/util/constants'),
 	util: require('./lib/util/util'),

@@ -6,8 +6,8 @@ LONG_URL.searchParams.set('key', KEY);
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['shortenurl', 'googleshorturl', 'shorten'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
@@ -31,7 +31,8 @@ module.exports = class extends Command {
 
 	async short(shortUrl, i18n) {
 		const url = new URL('https://www.googleapis.com/urlshortener/v1/url');
-		url.search = new URLSearchParams([['key', KEY], ['shortUrl', shortUrl]]);
+		url.searchParams.append('key', KEY);
+		url.searchParams.append('shortURL', shortUrl);
 
 		const body = await fetch(url, 'json');
 		return i18n.get('COMMAND_GOOGL_SHORT', body.longUrl);

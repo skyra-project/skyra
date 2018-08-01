@@ -4,8 +4,8 @@ const API_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&pro
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['wiki'],
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,

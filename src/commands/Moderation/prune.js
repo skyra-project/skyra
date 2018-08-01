@@ -3,8 +3,8 @@ const URL = 'https://skyradiscord.com/#/gist';
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_PRUNE_DESCRIPTION'),

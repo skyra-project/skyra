@@ -41,10 +41,8 @@ class WeebCommand extends Command {
 		this.requiresUser = Boolean(this.usage.parsedUsage.length);
 
 		this.url = new URL('https://api-v2.weeb.sh/images/random');
-		this.url.search = new URLSearchParams([
-			['type', this.queryType],
-			['nsfw', false]
-		]);
+		this.url.searchParams.append('type', this.queryType);
+		this.url.searchParams.append('nsfw', 'false');
 	}
 
 	async run(msg, params) {

@@ -2,8 +2,8 @@ const { ModerationCommand } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['MUTE_MEMBERS'],
 			description: (language) => language.get('COMMAND_VMUTE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_VMUTE_EXTENDED'),

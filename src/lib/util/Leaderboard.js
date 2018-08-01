@@ -1,4 +1,4 @@
-const { Collection, Guild } = require('discord.js');
+const { Collection } = require('discord.js');
 const LIMITS = {
 	GLOBAL: 25000,
 	MEMBERS: 5000
@@ -133,8 +133,6 @@ class Leaderboard {
 	 * @param {string} guild A guild id or instance
 	 */
 	async syncMembers(guild) {
-		if (!guild) throw new Error('The parameter \'guild\' must be specified.');
-		if (guild instanceof Guild) guild = guild.id;
 		if (typeof guild !== 'string') throw new TypeError(`Expected the parameter 'guild' to be an instance of Guild or a string. Got: ${typeof guild}`);
 
 		// If it's still on timeout, reset it

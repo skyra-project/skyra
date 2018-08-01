@@ -3,8 +3,8 @@ const fsn = require('fs-nextra');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['cppev', 'c++eval', 'c++ev'],
 			description: (language) => language.get('COMMAND_CPPEVAL_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_CPPEVAL_EXTENDED'),

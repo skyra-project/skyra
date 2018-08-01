@@ -2,8 +2,8 @@ const { Command, Slotmachine } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['slot', 'slots', 'slotmachines'],
 			requiredPermissions: ['ATTACH_FILES'],
 			cooldown: 10,
@@ -19,7 +19,6 @@ module.exports = class extends Command {
 		const coins = Number(text);
 		if (msg.author.configs.money < coins)
 			throw msg.language.get('COMMAND_SLOTMACHINES_MONEY', msg.author.configs.money);
-
 
 		const attachment = await new Slotmachine(msg, coins).run();
 		return msg.channel.send({ files: [{ attachment, name: 'Slotmachine.png' }] });

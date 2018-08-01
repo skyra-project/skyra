@@ -5,8 +5,8 @@ const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['banners'],
 			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
 			bucket: 2,

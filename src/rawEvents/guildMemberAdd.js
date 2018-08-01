@@ -14,8 +14,8 @@ const COLORS = {
 
 module.exports = class extends RawEvent {
 
-	constructor(...args) {
-		super(...args, { name: 'GUILD_MEMBER_ADD' });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { name: 'GUILD_MEMBER_ADD' });
 	}
 
 	async run({ guild, member }) {

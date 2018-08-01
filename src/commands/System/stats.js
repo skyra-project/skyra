@@ -4,8 +4,8 @@ const { uptime, loadavg } = require('os');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
 			cooldown: 15,

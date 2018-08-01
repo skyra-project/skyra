@@ -2,8 +2,8 @@ const { Command, Moderation: { schemaKeys }, util: { parseModlog }, klasaUtil: {
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_REASON_DESCRIPTION'),

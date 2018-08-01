@@ -6,8 +6,8 @@ const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['ttt'],
 			requiredPermissions: [FLAGS.ADD_REACTIONS],
 			cooldown: 10,

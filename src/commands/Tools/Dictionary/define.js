@@ -6,8 +6,8 @@ const TABLENAME = 'oxford';
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			cooldown: 20,
 			bucket: 2,
 			description: (language) => language.get('COMMAND_DEFINE_DESCRIPTION'),

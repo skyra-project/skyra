@@ -8,9 +8,9 @@ module.exports = class RGB {
      * @param {number} b Blue value. (0 - 255)
      */
 	constructor(r, g, b) {
-		this.r = parseInt(r);
-		this.g = parseInt(g);
-		this.b = parseInt(b);
+		this.r = Number(r);
+		this.g = Number(g);
+		this.b = Number(b);
 
 		this.valid();
 	}

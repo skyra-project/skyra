@@ -2,8 +2,8 @@ const { RawEvent } = require('../index');
 
 module.exports = class extends RawEvent {
 
-	constructor(...args) {
-		super(...args, { name: 'PRESENCE_UPDATE' });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { name: 'PRESENCE_UPDATE' });
 	}
 
 	process(data) {

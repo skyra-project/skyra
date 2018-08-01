@@ -4,8 +4,8 @@ const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 
 module.exports = class extends Monitor {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			ignoreBots: true,
 			ignoreEdits: true,
 			ignoreWebhooks: true,

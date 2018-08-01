@@ -2,8 +2,8 @@ const { Event, DiscordAPIError, klasaUtil: { codeBlock } } = require('../index')
 
 module.exports = class extends Event {
 
-	constructor(...args) {
-		super(...args);
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory);
 		this.logChannel = null;
 	}
 
@@ -28,13 +28,14 @@ module.exports = class extends Event {
 		}
 	}
 
-	init() {
+	async init() {
 		this.logChannel = this.client.guilds.get('254360814063058944').channels.get('432495057552277504');
 	}
 
 	_sendErrorChannel(msg, command, error) {
 		if (!this.logChannel) return;
 		const isDiscordAPIError = error instanceof DiscordAPIError;
+		// @ts-ignore
 		this.logChannel.send(codeBlock('asciidoc', (isDiscordAPIError ? [
 			`Command   :: ${command.path}`,
 			`Path      :: ${error.path}`,

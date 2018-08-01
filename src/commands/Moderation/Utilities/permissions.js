@@ -3,8 +3,8 @@ const PERMISSION_FLAGS = Object.keys(FLAGS);
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			bucket: 2,
 			cooldown: 10,

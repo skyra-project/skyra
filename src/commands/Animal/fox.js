@@ -1,18 +1,16 @@
 const { Command, util: { fetch } } = require('../../index');
 const url = new URL('https://pixabay.com/api/');
-url.search = new URLSearchParams([
-	['q', 'fox'],
-	['safesearch', true],
-	['per_page', 200],
-	['image_type', 'photo'],
-	['category', 'animals'],
-	['key', require.main.exports.config.tokens.pixabay]
-]);
+url.searchParams.append('q', 'fox');
+url.searchParams.append('safesearch', 'true');
+url.searchParams.append('per_page', '200');
+url.searchParams.append('image_type', 'photo');
+url.searchParams.append('category', 'animals');
+url.searchParams.append('key', require.main.exports.config.tokens.pixabay);
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_FOX_DESCRIPTION'),

@@ -1,4 +1,4 @@
-const { Finalizer } = require('klasa');
+const { Finalizer } = require('../index');
 
 module.exports = class extends Finalizer {
 

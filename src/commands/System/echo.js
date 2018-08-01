@@ -2,8 +2,8 @@ const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['talk'],
 			description: (language) => language.get('COMMAND_ECHO_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_ECHO_EXTENDED'),

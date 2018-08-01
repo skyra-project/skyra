@@ -3,8 +3,8 @@ const attachmentFilter = /\.(?:webp|png|jpg|gif)$/i;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_SETAVATAR_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SETAVATAR_EXTENDED'),
 			guarded: true,
@@ -14,8 +14,8 @@ module.exports = class extends Command {
 
 		this.createCustomResolver('attachment', async (arg, possible, msg) => {
 			if (msg.attachments.size) {
-				const file = msg.attachments.find(attachment => attachmentFilter.test(attachment.url));
-				if (file) return fetch(file.url, 'buffer');
+				const attachment = msg.attachments.find(att => attachmentFilter.test(att.url));
+				if (attachment) return fetch(attachment.url, 'buffer');
 			}
 			const url = (res => res && res.protocol && attachmentFilter.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');

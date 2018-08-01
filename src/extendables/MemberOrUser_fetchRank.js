@@ -1,10 +1,11 @@
+// @ts-nocheck
 const { Extendable } = require('klasa');
 const { GuildMember } = require('discord.js');
 
 module.exports = class extends Extendable {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			name: 'fetchRank',
 			appliesTo: ['GuildMember', 'User']
 		});

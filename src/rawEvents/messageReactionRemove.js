@@ -3,8 +3,8 @@ const { DiscordAPIError } = require('discord.js');
 
 module.exports = class extends RawEvent {
 
-	constructor(...args) {
-		super(...args, { name: 'MESSAGE_REACTION_REMOVE' });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { name: 'MESSAGE_REACTION_REMOVE' });
 		this.TEMP_CACHE = new Map();
 	}
 

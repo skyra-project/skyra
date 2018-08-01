@@ -3,8 +3,8 @@ const SNOWFLAKE_REGEXP = Resolver.regex.snowflake;
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			bucket: 2,
 			cooldown: 10,

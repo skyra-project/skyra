@@ -2,8 +2,8 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_MYLEVEL_DESCRIPTION'),

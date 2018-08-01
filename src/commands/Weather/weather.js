@@ -15,8 +15,8 @@ const COLORS = {
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 120,
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${GOOGLE_MAP_API}`, 'json');
 
 		if (response.status !== 'OK')
-			throw msg.language.get(this.handleNotOK(msg, response.status));
+			throw msg.language.get(this.handleNotOK(response.status));
 		if (response.results.length === 0)
 			throw msg.language.get('COMMAND_WEATHER_ERROR_ZERO_RESULTS');
 

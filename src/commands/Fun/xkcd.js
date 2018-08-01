@@ -2,8 +2,8 @@ const { Command, Timestamp, MessageEmbed, util: { fetch } } = require('../../ind
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_XKCD_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_XKCD_EXTENDED'),

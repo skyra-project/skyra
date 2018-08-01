@@ -2,8 +2,8 @@ const { Command, util: { announcementCheck }, MessageEmbed } = require('../../in
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['announce'],
 			requiredPermissions: ['MANAGE_ROLES'],
 			bucket: 6,

@@ -1,3 +1,4 @@
+// @ts-nocheck
 const { Extendable } = require('klasa');
 const { Permissions: { FLAGS } } = require('discord.js');
 const OPTIONS = { time: 20000, max: 1 };
@@ -6,8 +7,8 @@ const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
 module.exports = class extends Extendable {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			appliesTo: ['Message'],
 			name: 'ask'
 		});

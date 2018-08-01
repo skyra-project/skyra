@@ -2,8 +2,8 @@ const { ModerationCommand } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			avoidAnonymous: true,
 			requiredPermissions: ['BAN_MEMBERS'],
 			description: (language) => language.get('COMMAND_BAN_DESCRIPTION'),

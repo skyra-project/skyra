@@ -13,7 +13,7 @@ module.exports = class extends Argument {
 	}
 
 	async run(arg, possible, msg) {
-		if (!msg.guild) return this.channel(arg, possible, msg);
+		if (!msg.guild) return this.channel.run(arg, possible, msg);
 		const resChannel = resolveChannel(arg, msg.guild);
 		if (resChannel) return resChannel;
 

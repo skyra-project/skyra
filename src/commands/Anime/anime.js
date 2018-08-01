@@ -2,8 +2,8 @@ const { Command, PromptList, MessageEmbed, util: { fetch, oneToTen, cutText } } 
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_ANIME_DESCRIPTION'),
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 
 	async run(msg, [animeName]) {
 		const url = new URL('https://kitsu.io/api/edge/anime');
-		url.search = new URLSearchParams([['filter[text]', animeName]]);
+		url.searchParams.append('filter[text]', animeName);
 
 		const body = await fetch(url, 'json')
 			.catch(() => { throw msg.language.get('COMMAND_ANIME_QUERY_FAIL'); });

@@ -32,7 +32,7 @@
     "canvas-constructor": "1.0.1",
     "diff": "^3.5.0",
     "discord.js": "github:discordjs/discord.js",
-    "fs-nextra": "^0.3.5",
+    "fs-nextra": "^0.3.6",
     "gifencoder": "^1.1.0",
     "heapdump": "^0.3.9",
     "klasa": "github:dirigeants/klasa",
@@ -44,7 +44,7 @@
     "eslint": "^5.2.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
     "tslint": "^5.11.0",
-    "typescript": "^2.9.2"
+    "typescript": "^3.0.1"
   },
   "repository": {
     "type": "git",

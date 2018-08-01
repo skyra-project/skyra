@@ -3,8 +3,8 @@ const fsn = require('fs-nextra');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			aliases: ['pythoneval'],
 			description: (language) => language.get('COMMAND_PYEVAL_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_PYEVAL_EXTENDED'),

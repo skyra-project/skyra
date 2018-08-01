@@ -4,8 +4,8 @@ const CONNECT_FOUR_WHITELIST = new Set(CONNECT_FOUR.REACTIONS);
 
 module.exports = class extends RawEvent {
 
-	constructor(...args) {
-		super(...args, { name: 'MESSAGE_REACTION_ADD' });
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, { name: 'MESSAGE_REACTION_ADD' });
 		this.TEMP_CACHE = new Map();
 	}
 

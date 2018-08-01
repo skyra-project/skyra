@@ -8,8 +8,8 @@ const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
@@ -21,8 +21,8 @@ module.exports = class extends Command {
 
 		this.createCustomResolver('attachment', async (arg, possible, msg) => {
 			if (msg.attachments.size) {
-				const file = msg.attachments.find(attachment => attachmentFilter.test(attachment.url));
-				if (file) return fetch(file.url, 'buffer');
+				const attachment = msg.attachments.find(att => attachmentFilter.test(att.url));
+				if (attachment) return fetch(attachment.url, 'buffer');
 			}
 			const url = (res => res && res.protocol && attachmentFilter.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');

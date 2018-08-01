@@ -2,8 +2,8 @@ const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			permissionLevel: 10,
 			guarded: true,
 			description: (language) => language.get('COMMAND_REBOOT_DESCRIPTION')

@@ -5,6 +5,7 @@
 		"curly": ["error", "multi-or-nest", "consistent"],
 		"id-length": "off",
 		"no-bitwise": ["error", { "int32Hint": true }],
-		"no-cond-assign": "off"
+		"no-cond-assign": "off",
+		"spaced-comment": ["error", "always", { "exceptions": ["@"] }]
 	}
 }

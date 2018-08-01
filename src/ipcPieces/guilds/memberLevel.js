@@ -1,4 +1,4 @@
-const { API, config: { OWNER_ID } } = require('../../index');
+const { API, config: { ownerID } } = require('../../index');
 const { Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends API {
@@ -36,5 +36,5 @@ LEVELS[5] = (guild, member) => guild.configs.roles.moderator ? member.roles.has(
 LEVELS[6] = (guild, member) => guild.configs.roles.admin ? member.roles.has(guild.configs.roles.admin) : member.permissions.has(FLAGS.MANAGE_GUILD);
 LEVELS[7] = (guild, member) => member.id === guild.ownerID;
 LEVELS[8] = EMPTY;
-LEVELS[9] = (__, member) => member.id === OWNER_ID;
-LEVELS[10] = (__, member) => member.id === OWNER_ID;
+LEVELS[9] = (__, member) => member.id === ownerID;
+LEVELS[10] = (__, member) => member.id === ownerID;

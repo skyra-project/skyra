@@ -1,4 +1,4 @@
-const { Command, Stopwatch, util } = require('klasa');
+const { Command, Stopwatch, klasaUtil: { codeBlock } } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 		const stopwatch = new Stopwatch();
 		try {
-			({ result } = await this.client.ipc.sendTo('dashboard', { route: 'eval', code }));
+			({ result } = await this.client.ipc.sendTo('skyra-dashboard', { route: 'eval', code }));
 			time = stopwatch.toString();
 			success = true;
 		} catch (error) {
@@ -28,7 +28,7 @@ module.exports = class extends Command {
 			success = false;
 		}
 
-		return msg.send(`⏱ ${time} | **${success ? 'Output' : 'Error'}**${util.codeBlock('js', result)}`);
+		return msg.send(`⏱ ${time} | **${success ? 'Output' : 'Error'}**${codeBlock('js', result)}`);
 	}
 
 };

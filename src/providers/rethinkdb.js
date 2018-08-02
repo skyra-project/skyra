@@ -4,7 +4,7 @@ const rethink = require('rethinkdbdash');
 module.exports = class extends Provider {
 
 	constructor(client, store, file, directory) {
-		super(...args);
+		super(client, store, file, directory);
 		this.db = rethink(mergeDefault({
 			db: 'test',
 			silent: false

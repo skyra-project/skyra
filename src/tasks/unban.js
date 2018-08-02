@@ -13,7 +13,7 @@ module.exports = class extends Task {
 
 		// Unban the user and send the modlog
 		const banLog = await this._fetchBanLog(guild, user);
-		if (banLog) await guild.unban(user, `[AUTO] ${reason}`);
+		if (banLog) await guild.members.unban(user, `[AUTO] ${reason}`);
 		await new ModerationLog(guild)
 			.setModerator(this.client.user)
 			.setUser(user)

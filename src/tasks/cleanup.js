@@ -23,8 +23,7 @@
  * SOFTWARE.
  */
 
-const { Task } = require('../index');
-const { util: { binaryToID } } = require('discord.js');
+const { Task, discordUtil: { binaryToID } } = require('../index');
 
 // THRESHOLD equals to 30 minutes in milliseconds:
 //     - 1000 milliseconds = 1 second
@@ -102,7 +101,7 @@ module.exports = class MemorySweeper extends Task {
 	 * < 100  : Green colour
 	 * @since 3.0.0
 	 * @param {number} number The number to colourise
-	 * @returns {number}
+	 * @returns {string}
 	 */
 	setColor(number) {
 		const text = String(number).padStart(5, ' ');

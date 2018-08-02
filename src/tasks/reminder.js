@@ -3,7 +3,7 @@ const { Task, Timestamp } = require('klasa');
 module.exports = class extends Task {
 
 	constructor(client, store, file, directory) {
-		super(...args);
+		super(client, store, file, directory);
 
 		this.timestamp = new Timestamp('MMMM d, hh:mm:ss');
 	}
@@ -11,8 +11,10 @@ module.exports = class extends Task {
 	async run(doc) {
 		// Fetch the user to send the message to
 		const user = await this.client.users.fetch(doc.user).catch(this._catchErrorUser);
-		await user.send(`⏲ Hey! You asked me on ${this.timestamp.displayUTC()} to remind you:\n*${doc.content}*`)
-			.catch(this._catchErrorMessage);
+		if (user) {
+			await user.send(`⏲ Hey! You asked me on ${this.timestamp.displayUTC()} to remind you:\n*${doc.content}*`)
+				.catch(this._catchErrorMessage);
+		}
 	}
 
 	_catchErrorUser(error) {

@@ -1,5 +1,5 @@
 /* eslint object-curly-newline: "off", max-len: "off" */
-const { Language, LanguageHelp, Timestamp, FriendlyDuration, util, klasaUtil, constants: { EMOJIS: { SHINY } }, versions: { skyra, klasa } } = require('../index');
+const { Language, LanguageHelp, Timestamp, FriendlyDuration, klasaUtil: { toTitleCase, codeBlock }, constants: { EMOJIS: { SHINY } }, versions: { skyra, klasa } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -89,7 +89,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 module.exports = class extends Language {
 
 	constructor(client, store, file, directory) {
-		super(...args);
+		super(client, store, file, directory);
 
 		this.PERMISSIONS = PERMS;
 		this.EIGHT_BALL = EIGHT_BALL;
@@ -162,10 +162,10 @@ module.exports = class extends Language {
 			INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
 			COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',
 			COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
-				usersAdded.length ? `**Users Added**\n${klasaUtil.codeBlock('', usersAdded.join(', '))}` : '',
-				usersRemoved.length ? `**Users Removed**\n${klasaUtil.codeBlock('', usersRemoved.join(', '))}` : '',
-				guildsAdded.length ? `**Guilds Added**\n${klasaUtil.codeBlock('', guildsAdded.join(', '))}` : '',
-				guildsRemoved.length ? `**Guilds Removed**\n${klasaUtil.codeBlock('', guildsRemoved.join(', '))}` : ''
+				usersAdded.length ? `**Users Added**\n${codeBlock('', usersAdded.join(', '))}` : '',
+				usersRemoved.length ? `**Users Removed**\n${codeBlock('', usersRemoved.join(', '))}` : '',
+				guildsAdded.length ? `**Guilds Added**\n${codeBlock('', guildsAdded.join(', '))}` : '',
+				guildsRemoved.length ? `**Guilds Removed**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
 			].filter(val => val !== '').join('\n'),
 			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
@@ -195,7 +195,7 @@ module.exports = class extends Language {
 			COMMAND_DISABLE_WARN: 'You probably don\'t want to disable that, since you wouldn\'t be able to run any command to enable it again',
 			COMMAND_CONF_NOKEY: 'You must provide a key',
 			COMMAND_CONF_NOVALUE: 'You must provide a value',
-			COMMAND_CONF_GUARDED: (name) => `${util.toTitleCase(name)} may not be disabled.`,
+			COMMAND_CONF_GUARDED: (name) => `${toTitleCase(name)} may not be disabled.`,
 			COMMAND_CONF_UPDATED: (key, response) => `Successfully updated the key **${key}**: \`${response}\``,
 			COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
 			COMMAND_CONF_GET_NOEXT: (key) => `The key **${key}** does not seem to exist.`,
@@ -209,7 +209,7 @@ module.exports = class extends Language {
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 			COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
 			COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
-			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${klasaUtil.codeBlock('js', error)}`,
+			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 			COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 			/**
@@ -1590,7 +1590,7 @@ module.exports = class extends Language {
 				WHO: 'who'
 			},
 			COMMAND_CATFACT_TITLE: 'Cat Fact',
-			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${klasaUtil.codeBlock('', word)}`,
+			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${codeBlock('', word)}`,
 			COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',
 			COMMAND_CHOICE_DUPLICATES: (words) => `Why would I accept duplicated words? '${words}'.`,
 			COMMAND_DICE_OUTPUT: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
@@ -1870,7 +1870,7 @@ module.exports = class extends Language {
 			COMMAND_DAILY_TIME_SUCCESS: (amount) => `Yay! You earned ${amount}${SHINY}! Next dailies in: 12 hours.`,
 			COMMAND_DAILY_GRACE: (remaining) => [
 				`Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.`,
-				`Remaining time: ${duration(remaining, true)}`
+				`Remaining time: ${duration(remaining)}`
 			].join('\n'),
 			COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) => `Successfully claimed ${amount}${SHINY}! Next dailies in: ${duration(remaining)}`,
 			COMMAND_DAILY_GRACE_DENIED: 'Got it! Come back soon!',

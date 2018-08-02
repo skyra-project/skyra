@@ -1,6 +1,6 @@
 /* eslint object-curly-newline: "off", max-len: "off" */
 const { Language, version, Timestamp } = require('klasa');
-const { LanguageHelp, FriendlyDuration, util, klasaUtil, constants: { EMOJIS: { SHINY } } } = require('../index');
+const { LanguageHelp, FriendlyDuration, klasaUtil: { codeBlock, toTitleCase }, constants: { EMOJIS: { SHINY } } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Uso Explicado***')
@@ -90,7 +90,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 module.exports = class extends Language {
 
 	constructor(client, store, file, directory) {
-		super(...args);
+		super(client, store, file, directory);
 
 		this.PERMISSIONS = PERMS;
 		this.EIGHT_BALL = EIGHT_BALL;
@@ -163,10 +163,10 @@ module.exports = class extends Language {
 			INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
 			COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',
 			COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
-				usersAdded.length ? `**Users Added**\n${klasaUtil.codeBlock('', usersAdded.join(', '))}` : '',
-				usersRemoved.length ? `**Users Removed**\n${klasaUtil.codeBlock('', usersRemoved.join(', '))}` : '',
-				guildsAdded.length ? `**Guilds Added**\n${klasaUtil.codeBlock('', guildsAdded.join(', '))}` : '',
-				guildsRemoved.length ? `**Guilds Removed**\n${klasaUtil.codeBlock('', guildsRemoved.join(', '))}` : ''
+				usersAdded.length ? `**Users Added**\n${codeBlock('', usersAdded.join(', '))}` : '',
+				usersRemoved.length ? `**Users Removed**\n${codeBlock('', usersRemoved.join(', '))}` : '',
+				guildsAdded.length ? `**Guilds Added**\n${codeBlock('', guildsAdded.join(', '))}` : '',
+				guildsRemoved.length ? `**Guilds Removed**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
 			].filter(val => val !== '').join('\n'),
 			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
@@ -196,7 +196,7 @@ module.exports = class extends Language {
 			COMMAND_DISABLE_WARN: 'You probably don\'t want to disable that, since you wouldn\'t be able to run any command to enable it again',
 			COMMAND_CONF_NOKEY: 'You must provide a key',
 			COMMAND_CONF_NOVALUE: 'You must provide a value',
-			COMMAND_CONF_GUARDED: (name) => `${util.toTitleCase(name)} may not be disabled.`,
+			COMMAND_CONF_GUARDED: (name) => `${toTitleCase(name)} may not be disabled.`,
 			COMMAND_CONF_UPDATED: (key, response) => `Successfully updated the key **${key}**: \`${response}\``,
 			COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
 			COMMAND_CONF_GET_NOEXT: (key) => `The key **${key}** does not seem to exist.`,
@@ -210,7 +210,7 @@ module.exports = class extends Language {
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 			COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
 			COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
-			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${klasaUtil.codeBlock('js', error)}`,
+			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 			COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 			/**
@@ -1462,7 +1462,7 @@ module.exports = class extends Language {
 			COMMAND_ANIME_NO_CHOICE: 'Me dejaste esperando... ¡prueba de nuevo cuando te hayas decidido!',
 			COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 				`**Título inglés:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continúa leyendo](https://myanimelist.net/anime/${entry.id})` : synopsis
+				synopsis
 			],
 			COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
 				`  ❯  Estado actual: **${entry.status}**`,
@@ -1477,7 +1477,7 @@ module.exports = class extends Language {
 			},
 			COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 				`**Título inglés:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continúa leyendo](https://myanimelist.net/manga/${entry.id})` : synopsis
+				synopsis
 			],
 			COMMAND_MANGA_OUTPUT_STATUS: (entry) => [
 				`  ❯  Estado actual: **${entry.status}**`,
@@ -1510,8 +1510,8 @@ module.exports = class extends Language {
 			 * GENERAL COMMANDS
 			 */
 
-			COMMAND_INVITE: (client) => [
-				`Añade Skyra a tu servidor con el siguiente enlace: <${client.invite}>`,
+			COMMAND_INVITE: () => [
+				`Añade Skyra a tu servidor con el siguiente enlace: <${this.client.invite}>`,
 				'No tengas miedo de quitar algunos permisos, te avisaré cuando intentes usar un comando que los necesite.'
 			].join('\n'),
 			COMMAND_INFO: [
@@ -1550,7 +1550,7 @@ module.exports = class extends Language {
 				WHO: /^¿?qui[ée]n/i
 			},
 			COMMAND_CATFACT_TITLE: 'Hecho Gatuno',
-			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${klasaUtil.codeBlock('', word)}`,
+			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${codeBlock('', word)}`,
 			COMMAND_CHOICE_MISSING: 'Por favor, escribe al menos dos opciones separadas con coma.',
 			COMMAND_CHOICE_DUPLICATES: (words) => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
 			COMMAND_DICE_OUTPUT: (sides, rolls, result) => `has lanzado el dado de **${sides}** lados **${rolls}** veces, obtienes: **${result}**`,
@@ -1806,7 +1806,7 @@ module.exports = class extends Language {
 			COMMAND_DAILY_TIME_SUCCESS: (amount) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
 			COMMAND_DAILY_GRACE: (remaining) => [
 				`¿Te gustaría recibir el pago temprano? El tiempo restante será añadido al periodo normal de espera, de 12 horas.`,
-				`Tiempo restante: ${duration(remaining, true)}`
+				`Tiempo restante: ${duration(remaining)}`
 			].join('\n'),
 			COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) => `¡Dinero dinero! ¡Has recibido ${amount}${SHINY}! Siguiente pago en: ${duration(remaining)}`,
 			COMMAND_DAILY_GRACE_DENIED: '¡De acuerdo! ¡Vuelve pronto!',

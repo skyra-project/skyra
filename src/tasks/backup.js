@@ -5,7 +5,7 @@ const { join } = require('path');
 module.exports = class extends Task {
 
 	constructor(client, store, file, directory) {
-		super(...args);
+		super(client, store, file, directory);
 		this.timestamp = new Timestamp('YYYY-MM-DD x');
 	}
 

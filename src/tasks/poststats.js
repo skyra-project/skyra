@@ -2,7 +2,7 @@ const { Task, config, util: { fetch } } = require('../index');
 
 module.exports = class extends Task {
 
-	run() {
+	async run() {
 		if (this.client.options.dev) return;
 
 		const body = `{"server_count":${this.client.guilds.size}}`;

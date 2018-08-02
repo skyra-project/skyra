@@ -8,7 +8,7 @@
  */
 
 const { Language, version, Timestamp } = require('klasa');
-const { LanguageHelp, FriendlyDuration, util, klasaUtil, constants: { EMOJIS: { SHINY } } } = require('../index');
+const { LanguageHelp, FriendlyDuration, klasaUtil: { codeBlock, toTitleCase }, constants: { EMOJIS: { SHINY } } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -98,7 +98,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 module.exports = class extends Language {
 
 	constructor(client, store, file, directory) {
-		super(...args);
+		super(client, store, file, directory);
 
 		this.PERMISSIONS = PERMS;
 		this.EIGHT_BALL = EIGHT_BALL;
@@ -171,18 +171,18 @@ module.exports = class extends Language {
 			INHIBITOR_RUNIN_NONE: (name) => `La commande ${name} n'est pas configurée pour s'exécuter dans un salon.`,
 			COMMAND_BLACKLIST_DESCRIPTION: 'Ajoute ou retire des utilisateurs et des guildes sur la liste noire du bot.',
 			COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
-				usersAdded.length ? `**Utilisateurs Ajoutés**\n${klasaUtil.codeBlock('', usersAdded.join(', '))}` : '',
-				usersRemoved.length ? `**Utilisateurs Retirés**\n${klasaUtil.codeBlock('', usersRemoved.join(', '))}` : '',
-				guildsAdded.length ? `**Guildes Ajoutées**\n${klasaUtil.codeBlock('', guildsAdded.join(', '))}` : '',
-				guildsRemoved.length ? `**Guildes Retirées**\n${klasaUtil.codeBlock('', guildsRemoved.join(', '))}` : ''
+				usersAdded.length ? `**Utilisateurs Ajoutés**\n${codeBlock('', usersAdded.join(', '))}` : '',
+				usersRemoved.length ? `**Utilisateurs Retirés**\n${codeBlock('', usersRemoved.join(', '))}` : '',
+				guildsAdded.length ? `**Guildes Ajoutées**\n${codeBlock('', guildsAdded.join(', '))}` : '',
+				guildsRemoved.length ? `**Guildes Retirées**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
 			].filter(val => val !== '').join('\n'),
-			COMMAND_UNLOAD: (type, name) => `✅ ${util.toTitleCase(this.piece(type))} déchargé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
+			COMMAND_UNLOAD: (type, name) => `✅ ${toTitleCase(this.piece(type))} déchargé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Décharge le composant.',
 			COMMAND_TRANSFER_ERROR: '❌ Ce fichier a déjà été transféré ou n\'a jamais existé.',
-			COMMAND_TRANSFER_SUCCESS: (type, name) => `✅ ${util.toTitleCase(this.piece(type))} transféré${this.isFeminine(type) ? 'e' : ''} avec succès : ${name}`,
+			COMMAND_TRANSFER_SUCCESS: (type, name) => `✅ ${toTitleCase(this.piece(type))} transféré${this.isFeminine(type) ? 'e' : ''} avec succès : ${name}`,
 			COMMAND_TRANSFER_FAILED: (type, name) => `Le transfert de ${this.piece(type)} : ${name} au Client a échoué. Veuillez vérifier votre Console.`,
 			COMMAND_TRANSFER_DESCRIPTION: 'Transfert un composant du noyau dans son dossier respectif',
-			COMMAND_RELOAD: (type, name) => `✅ ${util.toTitleCase(this.piece(type))} rechargé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
+			COMMAND_RELOAD: (type, name) => `✅ ${toTitleCase(this.piece(type))} rechargé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
 			COMMAND_RELOAD_ALL: (type) => `✅ Tou${this.isFeminine(type) ? 'te' : ''}s les ${this.piece(type)} ont été rechargé${this.isFeminine(type) ? 'e' : ''}s.`,
 			COMMAND_RELOAD_DESCRIPTION: 'Recharge un composant, ou tous les composants d\'un cache.',
 			COMMAND_REBOOT: 'Redémarrage...',
@@ -217,12 +217,12 @@ module.exports = class extends Language {
 			COMMAND_HELP_DM: '📥 | Les commandes ont été envoyées dans vos MPs.',
 			COMMAND_HELP_NODM: '❌ | Vous avez désactivé vos MPs, je ne peux pas vous envoyer les commandes.',
 			COMMAND_HELP_COMMAND_NOT_FOUND: '❌ | Commande inconnue, veuillez exécuter la commande help sans argument pour avoir toute la liste.',
-			COMMAND_ENABLE: (type, name) => `+ ${util.toTitleCase(this.piece(type))} activé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
+			COMMAND_ENABLE: (type, name) => `+ ${toTitleCase(this.piece(type))} activé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
 			COMMAND_ENABLE_DESCRIPTION: 'Réactive ou active temporairement un(e) commande/inhibiteur/moniteur/finaliseur/événement. L\'état par défaut sera rétabli au redémarrage.',
-			COMMAND_DISABLE: (type, name) => `+ ${util.toTitleCase(this.piece(type))} désactivé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
+			COMMAND_DISABLE: (type, name) => `+ ${toTitleCase(this.piece(type))} désactivé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
 			COMMAND_DISABLE_DESCRIPTION: 'Redésactive ou désactive temporairement un(e) commande/inhibiteur/moniteur/finaliseur/événement. L\'état par défaut sera rétabli au redémarrage.',
 			COMMAND_DISABLE_WARN: 'Vous ne voulez probablement pas désactiver cela, car vous ne serez plus capable d\'exécuter une commande pour le réactiver',
-			COMMAND_CONF_GUARDED: (name) => `${util.toTitleCase(name)} ne peut pas être désactivé.`,
+			COMMAND_CONF_GUARDED: (name) => `${toTitleCase(name)} ne peut pas être désactivé.`,
 			COMMAND_CONF_ADDED: (value, key) => `La valeur \`${value}\` a été ajoutée avec succès à la clef : **${key}**`,
 			COMMAND_CONF_UPDATED: (key, response) => `La clef **${key}** a été mise à jour avec succès : \`${response}\``,
 			COMMAND_CONF_KEY_NOT_ARRAY: 'Cette clef n\'est pas une matrice. Utilisez plutôt l\'action \'reset\'.',
@@ -235,9 +235,9 @@ module.exports = class extends Language {
 			COMMAND_CONF_USER_DESCRIPTION: 'Établit une configuration par utilisateur.',
 			COMMAND_CONF_USER: (key, list) => `**Configuration Utilisateur${key}**\n${list}`,
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
-			COMMAND_LOAD: (time, type, name) => `✅ ${util.toTitleCase(this.piece(type))} chargé${this.isFeminine(type) ? 'e' : ''} avec succès : ${name}. (Temps: ${time})`,
+			COMMAND_LOAD: (time, type, name) => `✅ ${toTitleCase(this.piece(type))} chargé${this.isFeminine(type) ? 'e' : ''} avec succès : ${name}. (Temps: ${time})`,
 			COMMAND_LOAD_FAIL: 'Le fichier n\'existe pas, ou une erreur s\'est produite lors du chargement. Veuillez vérifier votre console.',
-			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Échec lors du chargement de ${this.piece(type)}: ${name}. Raison : ${util.codeBlock('js', error)}`,
+			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Échec lors du chargement de ${this.piece(type)}: ${name}. Raison : ${codeBlock('js', error)}`,
 			COMMAND_LOAD_DESCRIPTION: 'Charge un composant de votre bot.',
 
 			/**
@@ -1059,7 +1059,7 @@ module.exports = class extends Language {
 			COMMAND_ANIME_NO_CHOICE: 'Well, the time ended, try again later when you decide it!',
 			COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 				`**English title:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/anime/${entry.id})` : synopsis
+				synopsis
 			],
 			COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.status}**`,
@@ -1074,7 +1074,7 @@ module.exports = class extends Language {
 			},
 			COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 				`**English title:** ${entry.english}`,
-				synopsis.length > 750 ? `${util.splitText(synopsis, 750)}... [continue reading](https://myanimelist.net/manga/${entry.id})` : synopsis
+				synopsis
 			],
 			COMMAND_MANGA_OUTPUT_STATUS: (entry) => [
 				`  ❯  Current status: **${entry.status}**`,
@@ -1125,7 +1125,7 @@ module.exports = class extends Language {
 				WHO: 'who'
 			},
 			COMMAND_CATFACT_TITLE: 'Cat Fact',
-			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${klasaUtil.codeBlock('', word)}`,
+			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${codeBlock('', word)}`,
 			COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',
 			COMMAND_CHOICE_DUPLICATES: (words) => `Why would I accept duplicated words? '${words}'.`,
 			COMMAND_DICE_OUTPUT: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
@@ -1327,7 +1327,7 @@ module.exports = class extends Language {
 			COMMAND_DAILY_TIME_SUCCESS: (amount) => `Yay! Tu empoches ${amount}${SHINY}! Prochains crédits dans: 12 heures.`,
 			COMMAND_DAILY_GRACE: (remaining) => [
 				`Veux-tu réclamer tes crédits maintenant? Le temps restant va être ajouté à l'attente normale de 12h.`,
-				`Temps restant : ${duration(remaining, true)}`
+				`Temps restant : ${duration(remaining)}`
 			].join('\n'),
 			COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) => `Tu viens de récupérer ${amount}${SHINY}! Prochains crédits dans: ${duration(remaining)}`,
 			COMMAND_DAILY_GRACE_DENIED: 'Ok! Reviens bientôt!',

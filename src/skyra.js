@@ -63,6 +63,7 @@ const skyra = new Skyra({
 	readyMessage: (client) =>
 		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)(,|!)/i,
+	restTimeOffset: 0,
 	schedule: { interval: 5000 },
 	typing: false
 });

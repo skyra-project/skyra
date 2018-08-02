@@ -67,7 +67,7 @@ module.exports = class extends Command {
 			.setColor('rgb(23,23,23)')
 			.setTextAlign('right')
 			.addText(points, 606, 73)
-			.addText(nextLevel - points, 606, 131)
+			.addText((nextLevel - points).toString(), 606, 131)
 
 			// Draw the level
 			.setTextAlign('center')

@@ -1,7 +1,18 @@
+# Ignore a blackhole and the folder for development
 node_modules/
 .vs/
+
+# Ignore bwd folders
 src/bwd/provider/
 src/bwd/backups/
+
+# Ignore the config file (contains sensitive information such as tokens)
 config.js
+
+# Ignore heapsnapshot and log files
 *.heapsnapshot
 *.log
+
+# Ignore package locks
+yarn.lock
+package-lock.json

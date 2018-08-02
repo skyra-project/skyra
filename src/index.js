@@ -62,11 +62,11 @@ module.exports = {
 	Slotmachine: require('./lib/util/Games/Slotmachine'),
 
 	// Moderation
-	AntiRaid: require('./lib/util/AntiRaid'),
+	AntiRaid: require('./lib/util/Security/AntiRaid'),
 	GuildSecurity: require('./lib/util/GuildSecurity'),
 	Moderation: require('./lib/util/Moderation'),
 	ModerationLog: require('./lib/util/ModerationLog'),
-	NoMentionSpam: require('./lib/util/NoMentionSpam'),
+	NoMentionSpam: require('./lib/util/Security/NoMentionSpam'),
 
 	klasaUtil: klasa.util,
 	discordUtil: discord.Util,

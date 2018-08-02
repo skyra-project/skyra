@@ -81,7 +81,7 @@ class GuildSecurity {
 	 * @returns {boolean}
 	 */
 	hasLockdown(channel) {
-		return this._lockdowns && this._lockdowns.has(channel);
+		return this._lockdowns ? this._lockdowns.has(channel) : false;
 	}
 
 	/**
@@ -91,7 +91,7 @@ class GuildSecurity {
 	 * @returns {boolean}
 	 */
 	hasRAID(user) {
-		return this._raid && this._raid.has(user);
+		return this._raid ? this._raid.has(user) : false;
 	}
 
 	/**
@@ -138,5 +138,5 @@ class GuildSecurity {
 
 module.exports = GuildSecurity;
 
-const AntiRaid = require('./AntiRaid');
-const NoMentionSpam = require('./NoMentionSpam');
+const AntiRaid = require('./Security/AntiRaid');
+const NoMentionSpam = require('./Security/NoMentionSpam');

@@ -135,7 +135,7 @@ class AntiRaid extends Map {
 	 * Kicks a member
 	 * @since 3.0.0
 	 * @param {GuildMember} member The member to kick
-	 * @returns {GuildMember}
+	 * @returns {Promise<GuildMember>}
 	 */
 	async kick(member) {
 		await member.kick(`[ANTI-RAID] Threshold: ${this.guildConfigs.selfmod.raidthreshold}`);

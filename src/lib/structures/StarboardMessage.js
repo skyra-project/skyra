@@ -389,7 +389,7 @@ class StarboardMessage {
 	 */
 	_fetchUsers() {
 		return this.client.api.channels[this.channel.id].messages[this.message.id]
-			.reactions[this.guild.configs.starboard.emoji]
+			.reactions[this.channel.guild.configs.starboard.emoji]
 			.get({ query: { limit: 100 } })
 			.catch(() => []);
 	}

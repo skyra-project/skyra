@@ -12,6 +12,7 @@
 + Fixed XKCD command when looking for titles
 + Fixed `s!googl` when shortening unescaped urls
 + Fixed `s!price` when using unescaped letters
++ Fixed `s!c4` not checking for ADD_REACTIONS permission
 
 @@ Social @@
 
@@ -32,6 +33,7 @@
 @@ Events @@
 
 + Added centralized event manager for all logs
++ The MessageUpdate events now links the message's url
 
 @@ Configs @@
 

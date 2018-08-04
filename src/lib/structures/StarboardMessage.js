@@ -87,7 +87,7 @@ class StarboardMessage {
 		/**
 		 * The sync status for this StarboardMessage instance
 		 * @since 3.0.0
-		 * @type {?Promise<void>}
+		 * @type {?Promise<this>}
 		 * @private
 		 */
 		this._syncStatus = null;
@@ -176,7 +176,7 @@ class StarboardMessage {
 	/**
 	 * Sync this StarboardMessage instance with the database
 	 * @since 3.0.0
-	 * @returns {Promise<void>}
+	 * @returns {Promise<this>}
 	 */
 	sync() {
 		if (!this._syncStatus) this._syncStatus = this._sync();

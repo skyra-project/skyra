@@ -1,4 +1,4 @@
-const { RawEvent, constants: { CONNECT_FOUR } } = require('../index');
+const { RawEvent, constants: { CONNECT_FOUR }, util: { resolveEmoji } } = require('../index');
 const { DiscordAPIError } = require('discord.js');
 const CONNECT_FOUR_WHITELIST = new Set(CONNECT_FOUR.REACTIONS);
 
@@ -33,7 +33,7 @@ module.exports = class extends RawEvent {
 			return false;
 		}
 
-		if (data.emoji.name === channel.guild.configs.starboard.emoji && channel.guild.configs.starboard.channel !== channel.id) {
+		if (channel.guild.configs.starboard.channel !== channel.id && resolveEmoji(data.emoji.name) === channel.guild.configs.starboard.emoji) {
 			this._handleStarboard(channel, data.message_id, data.user_id);
 			return false;
 		}

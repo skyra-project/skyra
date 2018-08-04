@@ -15,7 +15,7 @@ module.exports = class extends Event {
 
 		this.client.emit('guildMessageLog', message.channel.nsfw ? MESSAGE_LOGS.kNSFWMessage : MESSAGE_LOGS.kMessage, guild, () => new MessageEmbed()
 			.setColor(0xDCE775)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL())
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL(), message.url)
 			.splitFields(diffWordsWithSpace(escapeMarkdown(old.content), escapeMarkdown(message.content))
 				.map(result => result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value)
 				.join(' '))

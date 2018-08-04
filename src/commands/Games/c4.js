@@ -7,7 +7,7 @@ module.exports = class extends Command {
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['connect-four'],
-			requiredPermissions: ['USE_EXTERNAL_EMOJIS'],
+			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS'],
 			cooldown: 0,
 			description: (language) => language.get('COMMAND_C4_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_C4_EXTENDED'),

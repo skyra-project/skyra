@@ -255,7 +255,7 @@
 	"prefix": {
 		"type": "string",
 		"array": false,
-		"default": "sd!",
+		"default": "s!",
 		"min": null,
 		"max": null,
 		"configurable": true

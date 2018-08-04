@@ -474,7 +474,7 @@
 		"emoji": {
 			"type": "string",
 			"array": false,
-			"default": "⭐",
+			"default": "%E2%AD%90",
 			"min": null,
 			"max": null,
 			"configurable": false

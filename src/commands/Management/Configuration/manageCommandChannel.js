@@ -38,7 +38,7 @@ module.exports = class extends Command {
 
 	async add(msg, [channel, command]) {
 		const disabledCommands = msg.guild.configs.disabledCommandsChannels[channel.id] || [];
-		if (disabledCommands.include(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
+		if (disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
 		await msg.guild.configs.update('disabledCommandsChannels', {
 			...msg.guild.configs.disabledCommandsChannels,
 			[channel.id]: disabledCommands.concat(command.name)
@@ -48,7 +48,7 @@ module.exports = class extends Command {
 
 	async remove(msg, [channel, command]) {
 		const disabledCommands = msg.guild.configs.disabledCommandsChannels[channel.id] || [];
-		if (!disabledCommands.include(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', channel);
+		if (!disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', channel);
 		await msg.guild.configs.update('disabledCommandsChannels', getRemovedObject(msg.guild.configs.disabledCommandsChannels, channel, command));
 		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel, command.name]);
 	}

@@ -10,7 +10,7 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_MANAGECOMMANDCHANNEL_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
-			usage: '<show|add|remove|reset> [channel:channel] (command:command)',
+			usage: '<show|add|remove|reset> (channel:channel) (command:command)',
 			usageDelim: ' ',
 			subcommands: true
 		});

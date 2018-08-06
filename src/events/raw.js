@@ -1,12 +1,5 @@
 const { Event } = require('../index');
-const EVENTS = new Set([
-	'GUILD_MEMBER_ADD',
-	'GUILD_MEMBER_REMOVE',
-	'MESSAGE_REACTION_ADD',
-	'MESSAGE_REACTION_REMOVE',
-	'PRESENCE_UPDATE',
-	'USER_UPDATE'
-]);
+const EVENTS = new Set();
 
 module.exports = class extends Event {
 
@@ -24,6 +17,11 @@ module.exports = class extends Event {
 			this.client.emit('wtf', `[RAWEVENT] ${piece.path}\n${error
 				? error.stack ? error.stack : error : 'Unknown error'}`);
 		}
+	}
+
+	async init() {
+		EVENTS.clear();
+		for (const key of this.client.rawEvents.keys()) EVENTS.add(key);
 	}
 
 };

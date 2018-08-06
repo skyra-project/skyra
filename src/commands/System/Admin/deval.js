@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 		const stopwatch = new Stopwatch();
 		try {
-			({ result } = await this.client.ipc.sendTo('skyra-dashboard', { route: 'eval', code }));
+			({ message: result } = await this.client.ipc.sendTo('skyra-dashboard', { route: 'eval', payload: code }));
 			time = stopwatch.toString();
 			success = true;
 		} catch (error) {

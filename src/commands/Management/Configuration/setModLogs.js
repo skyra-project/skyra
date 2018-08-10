@@ -17,8 +17,8 @@ module.exports = class extends Command {
 	async run(msg, [channel]) {
 		if (channel === 'here') ({ channel } = msg);
 		else if (channel.type !== 'text') throw msg.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
-		if (msg.guild.configs.channels.modlog === channel.id) throw msg.language.get('CONFIGURATION_EQUALS');
-		await msg.guild.configs.update('channels.modlog', channel);
+		if (msg.guild.settings.channels.modlog === channel.id) throw msg.language.get('CONFIGURATION_EQUALS');
+		await msg.guild.settings.update('channels.modlog', channel);
 		return msg.sendLocale('COMMAND_SETMODLOGS_SET', [channel]);
 	}
 

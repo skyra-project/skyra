@@ -157,7 +157,7 @@ module.exports = class extends Language {
 			INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing}**`,
 			INHIBITOR_NSFW: 'You may not use NSFW commands in this channel.',
 			INHIBITOR_PERMISSIONS: 'You do not have permission to use this command',
-			INHIBITOR_REQUIRED_CONFIGS: (configs) => `The guild is missing the **${configs.join(', ')}** guild setting${configs.length !== 1 ? 's' : ''} and thus the command cannot run.`,
+			INHIBITOR_REQUIRED_SETTINGS: (settings) => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length !== 1 ? 's' : ''} and thus the command cannot run.`,
 			INHIBITOR_RUNIN: (types) => `This command is only available in ${types} channels`,
 			INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
 			COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',
@@ -202,10 +202,10 @@ module.exports = class extends Language {
 			COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
 			COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
 			COMMAND_CONF_NOCHANGE: (key) => `The value for **${key}** was already that value.`,
-			COMMAND_CONF_SERVER_DESCRIPTION: 'Define per-server configuration.',
-			COMMAND_CONF_SERVER: (key, list) => `**Server Configuration${key}**\n${list}`,
-			COMMAND_CONF_USER_DESCRIPTION: 'Define per-user configuration.',
-			COMMAND_CONF_USER: (key, list) => `**User Configuration${key}**\n${list}`,
+			COMMAND_CONF_SERVER_DESCRIPTION: 'Define per-server settings.',
+			COMMAND_CONF_SERVER: (key, list) => `**Server Setting ${key}**\n${list}`,
+			COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
+			COMMAND_CONF_USER: (key, list) => `**User Setting ${key}**\n${list}`,
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 			COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
 			COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
@@ -429,7 +429,7 @@ module.exports = class extends Language {
 			COMMAND_CREATEMUTE_DESCRIPTION: 'Prepare the mute system.',
 			COMMAND_CREATEMUTE_EXTENDED: builder.display('createMute', {
 				extendedHelp: `This command prepares the mute system by creating a role called 'muted', and configuring it to
-					the guild configuration. This command also modifies all channels (where possible) permissions and disables
+					the guild settings. This command also modifies all channels (where possible) permissions and disables
 					the permission **${PERMS.SEND_MESSAGES}** in text channels and **${PERMS.CONNECT}** in voice channels for said role.`
 			}),
 			COMMAND_GIVEAWAY_DESCRIPTION: 'Start a new giveaway.',
@@ -513,7 +513,7 @@ module.exports = class extends Language {
 			COMMAND_MANAGECOMMANDCHANNEL_DESCRIPTION: 'Manage per-channel command blacklist.',
 			COMMAND_MANAGECOMMANDCHANNEL_EXTENDED: builder.display('manageCommandChannel', {
 				extendedHelp: `This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want
-					to be used in certain channels (to disable a command globally, use the \`disabledCommands\` configuration key to disable in all channels.`,
+					to be used in certain channels (to disable a command globally, use the \`disabledCommands\` settings key to disable in all channels.`,
 				explainedUsage: [
 					['show [channel]', 'Show the command blacklist for the selected channel'],
 					['add [channel] <command>', 'Add a command to the specified channel\'s command blacklist.'],

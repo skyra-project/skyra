@@ -43,8 +43,8 @@ module.exports = class extends Command {
 	}
 
 	async showProfile(msg, file) {
-		await msg.author.configs.waitSync();
-		const { points, color, money, reputation, level } = msg.author.configs;
+		await msg.author.settings.waitSync();
+		const { points, color, money, reputation, level } = msg.author.settings;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -56,9 +56,9 @@ module.exports = class extends Command {
 		const imgAvatarSRC = await fetchAvatar(msg.author, 256);
 
 		const TITLE = msg.language.fetch('COMMAND_PROFILE');
-		const canvas = new Canvas(msg.author.configs.badgeSet.length ? 700 : 640, 391);
-		if (msg.author.configs.badgeSet.length) {
-			const badges = await Promise.all(msg.author.configs.badgeSet.map(name =>
+		const canvas = new Canvas(msg.author.settings.badgeSet.length ? 700 : 640, 391);
+		if (msg.author.settings.badgeSet.length) {
+			const badges = await Promise.all(msg.author.settings.badgeSet.map(name =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))
 			));
 

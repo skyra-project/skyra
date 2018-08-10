@@ -17,9 +17,9 @@ module.exports = class extends ModerationCommand {
 	}
 
 	async run(msg, [target, ...reason]) {
-		if (!msg.guild.configs.roles.muted) throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
-		if (!msg.guild.roles.has(msg.guild.configs.roles.muted)) {
-			await msg.guild.configs.reset('roles.muted');
+		if (!msg.guild.settings.roles.muted) throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
+		if (!msg.guild.roles.has(msg.guild.settings.roles.muted)) {
+			await msg.guild.settings.reset('roles.muted');
 			throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
 		}
 

@@ -2,7 +2,7 @@
 import {
 	Command,
 	CommandOptions,
-	Configuration,
+	Settings,
 	KlasaClient,
 	KlasaConsoleColorObjects,
 	KlasaGuild,
@@ -56,7 +56,7 @@ export {
 	PermissionLevels,
 	Schedule,
 	ScheduledTask,
-	Configuration,
+	Settings,
 	Gateway,
 	GatewayDriver,
 	GatewayStorage,
@@ -195,7 +195,7 @@ export class Skyra extends KlasaClient {
 	public dispose(): void;
 }
 
-export class MemberConfiguration {
+export class MemberSettings {
 	public constructor(member: SkyraGuildMember);
 	public readonly client: Skyra;
 	public readonly guildID: string;
@@ -525,7 +525,7 @@ export class AntiRaid extends Map<Snowflake, NodeJS.Timer> {
 	public guild: SkyraGuild;
 	public attack: boolean;
 	private _timeout: NodeJS.Timer;
-	private readonly guildConfigs: GuildConfiguration;
+	private readonly guildSettings: GuildSettings;
 
 	public add(member: SkyraGuildMember | Snowflake): this;
 	public delete(member: SkyraGuildMember | Snowflake): this;
@@ -1043,7 +1043,7 @@ declare class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMembe
 }
 
 declare class SkyraMessage extends KlasaMessage {
-	public guildConfigs: GuildConfiguration;
+	public guildSettings: GuildSettings;
 	public guild: SkyraGuild | null;
 	public alert(content: string | Array<string>, timer?: number): SkyraMessage;
 	public alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
@@ -1054,7 +1054,7 @@ declare class SkyraMessage extends KlasaMessage {
 export class SkyraGuild extends KlasaGuild {
 	public client: Skyra;
 	public members: SkyraGuildMemberStore;
-	public configs: GuildConfiguration;
+	public settings: GuildSettings;
 	public security: GuildSecurity;
 	public starboard: StarboardManager;
 	public readonly nameDictionary: Collection<Snowflake, string>;
@@ -1063,15 +1063,15 @@ export class SkyraGuild extends KlasaGuild {
 
 export class SkyraUser extends KlasaUser {
 	public client: Skyra;
-	public configs: UserConfiguration;
+	public settings: UserSettings;
 }
 
 export class SkyraGuildMember extends GuildMember {
-	public configs: MemberConfiguration;
+	public settings: MemberSettings;
 	public guild: SkyraGuild;
 }
 
-export class GuildConfiguration extends Configuration {
+export class GuildSettings extends Settings {
 	// START OF GUILD SCHEMA
 	_tags: Array<[string, string]>;
 	channels: {
@@ -1161,7 +1161,7 @@ export class GuildConfiguration extends Configuration {
 	public static superRegExp(filterArray: Array<string>): RegExp;
 }
 
-export class UserConfiguration extends Configuration {
+export class UserSettings extends Settings {
 	// START OF USER SCHEMA
 	public badgeList: Array<string>;
 	public badgeSet: Array<string>;

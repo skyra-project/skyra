@@ -26,8 +26,8 @@ module.exports = class extends Command {
 
 	async run(msg, [check, user]) {
 		const now = Date.now();
-		const userProfile = msg.author.configs;
-		const targetProfile = (user && user.configs) || null;
+		const userProfile = msg.author.settings;
+		const targetProfile = (user && user.settings) || null;
 
 		await userProfile.waitSync();
 

@@ -13,7 +13,7 @@ module.exports = class extends Event {
 		await this.client.fetchApplication();
 		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.application.owner.id;
 
-		this.client.configs = this.client.gateways.clientStorage.get(this.client.user.id, true);
+		this.client.settings = this.client.gateways.clientStorage.get(this.client.user.id, true);
 		await Promise.all([
 			this._prepareSkyra(),
 			this.client.gateways.sync()
@@ -58,7 +58,7 @@ module.exports = class extends Event {
 
 		const promise = require('../lib/util/Games/Slotmachine').init();
 
-		// Sync any configuration instance
+		// Sync any settings instance
 		const table = this.client.providers.default.db.table('localScores');
 		const queue = [];
 
@@ -69,7 +69,7 @@ module.exports = class extends Event {
 		}
 		this.client._skyraReady = true;
 		const entries = await table.getAll(...queue, { index: 'guild_user' }).run();
-		for (const entry of entries) guilds.get(entry.guildID).members.get(entry.userID).configs._patch(entry);
+		for (const entry of entries) guilds.get(entry.guildID).members.get(entry.userID).settings._patch(entry);
 
 		await promise;
 	}

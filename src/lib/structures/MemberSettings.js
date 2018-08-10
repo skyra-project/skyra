@@ -2,21 +2,21 @@ const { util } = require('klasa');
 const SORT = (x, y) => +(y.count > x.count) || +(x.count === y.count) - 1;
 
 /**
- * The MemberConfiguration class that manages per-member configs
+ * The MemberSettings class that manages per-member settings
  * @since 1.6.0
  * @version 5.0.0
  */
-class MemberConfiguration {
+class MemberSettings {
 
 	/**
-	 * @typedef  {Object} MemberConfigurationJSON
+	 * @typedef  {Object} MemberSettingsJSON
 	 * @property {number} count
 	 * @property {string} guild
 	 * @property {string} member
 	 */
 
 	/**
-	 * Create a new instance of MemberConfiguration given a GuildMember instance
+	 * Create a new instance of MemberSettings given a GuildMember instance
 	 * @since 3.0.0
 	 * @param {SkyraGuildMember} member A GuildMember instance
 	 */
@@ -30,7 +30,7 @@ class MemberConfiguration {
 		});
 
 		/**
-		 * The client this MemberConfiguration was created with.
+		 * The client this MemberSettings was created with.
 		 * @since 3.0.0
 		 * @type {Skyra}
 		 * @readonly
@@ -76,14 +76,14 @@ class MemberConfiguration {
 		 */
 		this._syncStatus = null;
 
-		// Sync the configs
+		// Sync the settings
 		this.sync();
 	}
 
 	/**
 	 * Get the member
 	 * @since 3.0.0
-	 * @returns {GuildMember}
+	 * @returns {SkyraGuildMember}
 	 * @readonly
 	 */
 	get member() {
@@ -91,7 +91,7 @@ class MemberConfiguration {
 	}
 
 	/**
-	 * Synchronize the MemberConfiguration instance with the database
+	 * Synchronize the MemberSettings instance with the database
 	 * @since 3.0.0
 	 * @returns {Promise<this>}
 	 */
@@ -108,9 +108,9 @@ class MemberConfiguration {
 	 * @returns {Promise<this>}
 	 */
 	async update(amount) {
-		if (this._syncStatus) throw new Error(`[${this}] MemberConfiguration#update cannot execute due to out-of-sync entry.`);
-		if (!util.isNumber(amount)) throw new TypeError(`[${this}] MemberConfiguration#update expects a number.`);
-		if (amount < 0) throw new TypeError(`[${this}] MemberConfiguration#update expects a positive number.`);
+		if (this._syncStatus) throw new Error(`[${this}] MemberSettings#update cannot execute due to out-of-sync entry.`);
+		if (!util.isNumber(amount)) throw new TypeError(`[${this}] MemberSettings#update expects a number.`);
+		if (amount < 0) throw new TypeError(`[${this}] MemberSettings#update expects a positive number.`);
 		await (this.UUID
 			? this.client.providers.default.db.table('localScores').get(this.UUID).update({ count: amount | 0 })
 			: this.client.providers.default.db.table('localScores').insert({ guildID: this.guildID, userID: this.userID, count: amount | 0 })
@@ -133,9 +133,9 @@ class MemberConfiguration {
 	}
 
 	/**
-	 * toJSON() override for MemberConfiguration
+	 * toJSON() override for MemberSettings
 	 * @since 3.0.0
-	 * @returns {MemberConfigurationJSON}
+	 * @returns {MemberSettingsJSON}
 	 */
 	toJSON() {
 		const guild = this.client.guilds.get(this.guildID);
@@ -149,12 +149,12 @@ class MemberConfiguration {
 	}
 
 	/**
-	 * toString() override for MemberConfiguration
+	 * toString() override for MemberSettings
 	 * @since 3.0.0
 	 * @returns {string}
 	 */
 	toString() {
-		return `MemberConfiguration(${this.guildID}::${this.userID})`;
+		return `MemberSettings(${this.guildID}::${this.userID})`;
 	}
 
 	_patch(data) {
@@ -196,4 +196,4 @@ class MemberConfiguration {
 
 }
 
-module.exports = MemberConfiguration;
+module.exports = MemberSettings;

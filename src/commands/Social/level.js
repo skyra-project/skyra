@@ -29,8 +29,8 @@ module.exports = class extends Command {
 	}
 
 	async showProfile(msg, user) {
-		await user.configs.waitSync();
-		const { points, color, themeLevel, level } = user.configs;
+		await user.settings.waitSync();
+		const { points, color, themeLevel, level } = user.settings;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);

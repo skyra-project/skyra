@@ -18,15 +18,15 @@ module.exports = class extends Command {
 		this.createCustomResolver('message', async (arg, possible, msg) => {
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 
-			const rolesChannel = msg.guild.configs.channels.roles;
+			const rolesChannel = msg.guild.settings.channels.roles;
 			if (!rolesChannel) throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 
 			if (!msg.guild.channels.has(rolesChannel)) {
-				await msg.guild.configs.reset('channels.roles');
+				await msg.guild.settings.reset('channels.roles');
 				throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 			}
 			if (rolesChannel !== msg.channel.id) throw msg.language.get('COMMAND_SETMESSAGEROLE_WRONGCHANNEL', `<#${rolesChannel}>`);
-			if (msg.guild.configs.roles.messageReaction === arg) throw msg.language.get('CONFIGURATION_EQUALS');
+			if (msg.guild.settings.roles.messageReaction === arg) throw msg.language.get('CONFIGURATION_EQUALS');
 
 			const message = await msg.channel.messages.fetch(arg).catch(() => null);
 			if (message) return message;
@@ -35,7 +35,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [message]) {
-		await msg.guild.configs.update('roles.messageReaction', message.id);
+		await msg.guild.settings.update('roles.messageReaction', message.id);
 		return msg.sendLocale('COMMAND_SETMESSAGEROLE_SET');
 	}
 

@@ -18,7 +18,7 @@ module.exports = class extends RawEvent {
 		const channel = this.client.channels.get(channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
 
-		if (channel.id === channel.guild.configs.channels.roles)
+		if (channel.id === channel.guild.settings.channels.roles)
 			this._handleRoleChannel(channel.guild, emoji, user_id, message_id);
 
 
@@ -26,10 +26,10 @@ module.exports = class extends RawEvent {
 	}
 
 	async _handleRoleChannel(guild, emoji, userID, messageID) {
-		const { messageReaction } = guild.configs.roles;
+		const { messageReaction } = guild.settings.roles;
 		if (!messageReaction || messageReaction !== messageID) return;
 
-		const roleEntry = guild.configs.roles.reactions.find(entry => entry.emoji === emoji.name);
+		const roleEntry = guild.settings.roles.reactions.find(entry => entry.emoji === emoji.name);
 		if (!roleEntry) return;
 
 		try {

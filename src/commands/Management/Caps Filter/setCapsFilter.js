@@ -22,7 +22,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [type, mode = 'enable']) {
-		const { capsfilter } = msg.guild.configs.selfmod;
+		const { capsfilter } = msg.guild.settings.selfmod;
 		if (type === 'show') {
 			return msg.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [
 				capsfilter & VALUES.alert.value,
@@ -37,7 +37,7 @@ module.exports = class extends Command {
 			? capsfilter | value
 			: capsfilter & ~value;
 		if (capsfilter === changed) throw msg.language.get('COMMAND_SETCAPSFILTER_EQUALS');
-		await msg.guild.configs.update('selfmod.capsfilter', changed);
+		await msg.guild.settings.update('selfmod.capsfilter', changed);
 
 		return msg.sendLocale(key, [enable]);
 	}

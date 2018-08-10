@@ -20,7 +20,7 @@ module.exports = class extends ModerationCommand {
 		const member = await this.checkModeratable(msg, target);
 		reason = reason.length ? reason.join(' ') : null;
 
-		if (msg.guild.configs.messages.warnings && reason) {
+		if (msg.guild.settings.messages.warnings && reason) {
 			await member.user.send(msg.language.get('COMMAND_WARN_DM', msg.author.tag, msg.guild, reason))
 				.catch(() => null);
 		}

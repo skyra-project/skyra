@@ -8,7 +8,7 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild
-			|| !msg.guild.configs.selfmod.nomentionspam
+			|| !msg.guild.settings.selfmod.nomentionspam
 			|| !msg.member
 			|| !msg.member.bannable
 			|| (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)
@@ -19,7 +19,7 @@ module.exports = class extends Monitor {
 		if (!count) return false;
 
 		const amount = msg.guild.security.nms.add(msg.author.id, count);
-		if (amount >= msg.guild.configs.selfmod.nmsthreshold) {
+		if (amount >= msg.guild.settings.selfmod.nmsthreshold) {
 			await msg.guild.members.ban(msg.author.id, { days: 0, reason: msg.language.get('CONST_MONITOR_NMS') }).catch(error => this.client.emit('apiError', error));
 			await msg.sendLocale('MONITOR_NMS_MESSAGE', [msg.author]).catch(error => this.client.emit('apiError', error));
 			msg.guild.security.nms.delete(msg.author.id);
@@ -28,7 +28,7 @@ module.exports = class extends Monitor {
 				.setModerator(this.client.user)
 				.setUser(msg.author)
 				.setType(Moderation.typeKeys.BAN)
-				.setReason(msg.language.get('MONITOR_NMS_MODLOG', msg.guild.configs.selfmod.nmsthreshold, amount))
+				.setReason(msg.language.get('MONITOR_NMS_MODLOG', msg.guild.settings.selfmod.nmsthreshold, amount))
 				.avoidAnonymous()
 				.send();
 		}

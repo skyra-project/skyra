@@ -17,10 +17,10 @@ module.exports = class extends Command {
 	async run(msg, [user = msg.author]) {
 		if (user.bot) throw msg.language.get('COMMAND_BALANCE_BOTS');
 
-		await user.configs.waitSync();
+		await user.settings.waitSync();
 		return msg.author === user
-			? msg.sendLocale('COMMAND_BALANCE_SELF', [user.configs.money])
-			: msg.sendLocale('COMMAND_BALANCE', [user.username, user.configs.money]);
+			? msg.sendLocale('COMMAND_BALANCE_SELF', [user.settings.money])
+			: msg.sendLocale('COMMAND_BALANCE', [user.username, user.settings.money]);
 	}
 
 };

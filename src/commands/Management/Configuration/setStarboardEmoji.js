@@ -21,8 +21,8 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [emoji]) {
-		if (msg.guild.configs.starboard.emoji === emoji) throw msg.language.get('CONFIGURATION_EQUALS');
-		await msg.guild.configs.update('starboard.emoji', emoji);
+		if (msg.guild.settings.starboard.emoji === emoji) throw msg.language.get('CONFIGURATION_EQUALS');
+		await msg.guild.settings.update('starboard.emoji', emoji);
 		return msg.sendLocale('COMMAND_SETSTARBOARDEMOJI_SET', [emoji.includes(':') ? `<${emoji}>` : emoji]);
 	}
 

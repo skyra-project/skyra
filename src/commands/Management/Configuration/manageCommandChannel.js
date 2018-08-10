@@ -31,33 +31,33 @@ module.exports = class extends Command {
 	}
 
 	async show(msg, [channel]) {
-		const disabledCommands = msg.guild.configs.disabledCommandsChannels[channel.id];
+		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id];
 		if (disabledCommands && disabledCommands.length) return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_SHOW', [channel, `\`${disabledCommands.join('` | `')}\``]);
 		throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY');
 	}
 
 	async add(msg, [channel, command]) {
-		const disabledCommands = msg.guild.configs.disabledCommandsChannels[channel.id] || [];
+		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id] || [];
 		if (disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
-		await msg.guild.configs.update('disabledCommandsChannels', {
-			...msg.guild.configs.disabledCommandsChannels,
+		await msg.guild.settings.update('disabledCommandsChannels', {
+			...msg.guild.settings.disabledCommandsChannels,
 			[channel.id]: disabledCommands.concat(command.name)
 		});
 		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [channel, command.name]);
 	}
 
 	async remove(msg, [channel, command]) {
-		const disabledCommands = msg.guild.configs.disabledCommandsChannels[channel.id] || [];
+		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id] || [];
 		if (!disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', channel);
-		await msg.guild.configs.update('disabledCommandsChannels', getRemovedObject(msg.guild.configs.disabledCommandsChannels, channel, command));
+		await msg.guild.settings.update('disabledCommandsChannels', getRemovedObject(msg.guild.settings.disabledCommandsChannels, channel, command));
 		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel, command.name]);
 	}
 
 	async reset(msg, [channel]) {
-		const disabledCommands = msg.guild.configs.disabledCommandsChannels[channel.id];
+		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id];
 		if (!disabledCommands) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY');
-		delete msg.guild.configs.disabledCommandsChannels[channel.id];
-		await msg.guild.configs.update('disabledCommandsChannels', { ...msg.guild.configs.disabledCommandsChannels });
+		delete msg.guild.settings.disabledCommandsChannels[channel.id];
+		await msg.guild.settings.update('disabledCommandsChannels', { ...msg.guild.settings.disabledCommandsChannels });
 		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_RESET', [channel]);
 	}
 

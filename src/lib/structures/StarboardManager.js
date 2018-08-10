@@ -53,7 +53,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @type {TextChannel}
 	 */
 	get starboardChannel() {
-		const channelID = this.guild.configs.starboard.channel;
+		const channelID = this.guild.settings.starboard.channel;
 		return (channelID && this.guild.channels.get(channelID)) || null;
 	}
 
@@ -63,7 +63,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @type {number}
 	 */
 	get minimum() {
-		return this.guild.configs.starboard.minimum;
+		return this.guild.settings.starboard.minimum;
 	}
 
 	/**

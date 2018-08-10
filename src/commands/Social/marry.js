@@ -25,9 +25,9 @@ module.exports = class extends Command {
 	}
 
 	async _display(msg) {
-		if (!msg.author.configs.marry) return msg.sendLocale('COMMAND_MARRY_NOTTAKEN');
-		const username = await msg.guild.fetchName(msg.author.configs.marry);
-		return msg.sendLocale('COMMAND_MARRY_WITH', [username || `<@${msg.author.configs.marry}>`]);
+		if (!msg.author.settings.marry) return msg.sendLocale('COMMAND_MARRY_NOTTAKEN');
+		const username = await msg.guild.fetchName(msg.author.settings.marry);
+		return msg.sendLocale('COMMAND_MARRY_WITH', [username || `<@${msg.author.settings.marry}>`]);
 	}
 
 	async _marry(msg, user) {
@@ -36,12 +36,12 @@ module.exports = class extends Command {
 		if (user.id === msg.author.id) return msg.sendLocale('COMMAND_MARRY_SELF');
 		if (user.bot) return msg.sendLocale('COMMAND_MARRY_BOTS');
 
-		// Configuration is already sync by the monitors.
-		if (msg.author.configs.marry) return msg.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
+		// settings is already sync by the monitors.
+		if (msg.author.settings.marry) return msg.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
 
 		// Check if the target user is already married.
-		await user.configs.waitSync();
-		if (user.configs.marry) return msg.sendLocale('COMMAND_MARRY_TAKEN');
+		await user.settings.waitSync();
+		if (user.settings.marry) return msg.sendLocale('COMMAND_MARRY_TAKEN');
 
 		// Get a message from the user.
 		await msg.sendLocale('COMMAND_MARRY_PETITION', [msg.author, user]);
@@ -52,12 +52,12 @@ module.exports = class extends Command {
 		if (!REGEXP_ACCEPT.test(message.content)) return msg.sendLocale('COMMAND_MARRY_DENIED');
 
 		// The user may have tried to marry somebody else while the prompt was running.
-		if (user.configs.marry) return msg.sendLocale('COMMAND_MARRY_TAKEN');
-		if (msg.author.configs.marry) return msg.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
+		if (user.settings.marry) return msg.sendLocale('COMMAND_MARRY_TAKEN');
+		if (msg.author.settings.marry) return msg.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
 
 		await Promise.all([
-			msg.author.configs.update('marry', user),
-			user.configs.update('marry', msg.author)
+			msg.author.settings.update('marry', user),
+			user.settings.update('marry', msg.author)
 		]);
 
 		return msg.sendLocale('COMMAND_MARRY_ACCEPTED', [msg.author, user]);

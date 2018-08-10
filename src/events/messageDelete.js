@@ -7,7 +7,7 @@ module.exports = class extends Event {
 		if (!message.guild || message.author.id === this.client.user.id) return;
 
 		const { guild } = message;
-		if (!guild.configs.events.messageDelete) return;
+		if (!guild.settings.events.messageDelete) return;
 
 		this.client.emit('guildMessageLog', message.channel.nsfw ? MESSAGE_LOGS.kNSFWMessage : MESSAGE_LOGS.kMessage, guild, () => new MessageEmbed()
 			.setColor(0xFFAB40)

@@ -17,13 +17,13 @@ module.exports = class extends Command {
 	async add(msg, [tag, ...contents]) {
 		tag = tag.toLowerCase();
 
-		const currentTags = msg.guild.configs.tags;
+		const currentTags = msg.guild.settings.tags;
 		if (currentTags.has(tag)) throw msg.language.get('COMMAND_TAGS_ADD_EXISTS', tag);
 		if (!contents.length) throw msg.language.get('COMMAND_TAGS_CONTENT_REQUIRED');
 
 		contents = contents.join(' ');
 		currentTags.set(tag, contents);
-		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
+		const { errors } = await msg.guild.settings.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_TAGS_ADD_ADDED', [tag, contents]);
 	}
@@ -31,14 +31,14 @@ module.exports = class extends Command {
 	async edit(msg, [tag, ...contents]) {
 		tag = tag.toLowerCase();
 
-		const currentTags = msg.guild.configs.tags;
+		const currentTags = msg.guild.settings.tags;
 		const oldTag = currentTags.get(tag);
 		if (!oldTag) throw msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag);
 		if (!contents.length) throw msg.language.get('COMMAND_TAGS_CONTENT_REQUIRED');
 
 		contents = contents.join(' ');
 		currentTags.set(tag, contents);
-		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
+		const { errors } = await msg.guild.settings.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_TAGS_EDITED', [tag, contents, oldTag]);
 	}
@@ -46,10 +46,10 @@ module.exports = class extends Command {
 	async remove(msg, [tag]) {
 		tag = tag.toLowerCase();
 
-		const currentTags = msg.guild.configs.tags;
+		const currentTags = msg.guild.settings.tags;
 		if (!currentTags.has(tag)) throw msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag);
 		currentTags.delete(tag);
-		const { errors } = await msg.guild.configs.update('_tags', [...currentTags]);
+		const { errors } = await msg.guild.settings.update('_tags', [...currentTags]);
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_TAGS_REMOVE_REMOVED', [tag]);
 	}

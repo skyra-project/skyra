@@ -45,8 +45,8 @@ class AntiRaid extends Map {
 	 * @type {Object}
 	 * @private
 	 */
-	get guildConfigs() {
-		return this.guild.configs;
+	get guildSettings() {
+		return this.guild.settings;
 	}
 
 	/**
@@ -138,7 +138,7 @@ class AntiRaid extends Map {
 	 * @returns {Promise<GuildMember>}
 	 */
 	async kick(member) {
-		await member.kick(`[ANTI-RAID] Threshold: ${this.guildConfigs.selfmod.raidthreshold}`);
+		await member.kick(`[ANTI-RAID] Threshold: ${this.guildSettings.selfmod.raidthreshold}`);
 		this.delete(member.id);
 		return member;
 	}
@@ -150,7 +150,7 @@ class AntiRaid extends Map {
 	 * @returns {Promise<GuildMember[]>}
 	 */
 	async prune(kick = true) {
-		const initialRole = this.guildConfigs.roles.initial;
+		const initialRole = this.guildSettings.roles.initial;
 		const minRolesAmount = initialRole ? 2 : 1;
 		const kickedUsers = [];
 

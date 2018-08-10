@@ -17,19 +17,19 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild
-			|| msg.guild.configs.social.ignoreChannels.includes(msg.channel.id)
+			|| msg.guild.settings.social.ignoreChannels.includes(msg.channel.id)
 			|| this.cooldown(msg)) return;
 
 		if (!msg.member) await msg.guild.members.fetch(msg.author.id).catch(() => null);
-		const memberPoints = msg.member && msg.member.configs;
+		const memberPoints = msg.member && msg.member.settings;
 
-		// Ensure the user and member configs are up-to-date
-		await msg.author.configs.waitSync();
+		// Ensure the user and member settings are up-to-date
+		await msg.author.settings.waitSync();
 		if (memberPoints && memberPoints._syncStatus) await memberPoints._syncStatus;
 
 		try {
-			const add = Math.round(((Math.random() * 4) + 4) * msg.guild.configs.social.monitorBoost);
-			await msg.author.configs.update('points', msg.author.configs.points + add);
+			const add = Math.round(((Math.random() * 4) + 4) * msg.guild.settings.social.monitorBoost);
+			await msg.author.settings.update('points', msg.author.settings.points + add);
 			if (memberPoints) {
 				await memberPoints.update(memberPoints.count + add);
 				await this.handleRoles(msg, memberPoints.count);
@@ -47,7 +47,7 @@ module.exports = class extends Monitor {
 	}
 
 	async handleRoles(msg, memberPoints) {
-		const autoRoles = msg.guild.configs.roles.auto;
+		const autoRoles = msg.guild.settings.roles.auto;
 		if (!autoRoles.length || !msg.guild.me.permissions.has(MANAGE_ROLES)) return null;
 
 		const autoRole = this.getLatestRole(autoRoles, memberPoints);
@@ -55,7 +55,7 @@ module.exports = class extends Monitor {
 
 		const role = msg.guild.roles.get(autoRole.id);
 		if (!role || role.position > msg.guild.me.roles.highest.position) {
-			return msg.guild.configs.update('roles.auto', autoRole, { action: 'delete' })
+			return msg.guild.settings.update('roles.auto', autoRole, { action: 'delete' })
 				.then(() => this.handleRoles(msg, memberPoints))
 				.catch(error => this.client.emit('apiError', error));
 		}
@@ -63,8 +63,8 @@ module.exports = class extends Monitor {
 		if (msg.member.roles.has(role.id)) return null;
 
 		return msg.member.roles.add(role)
-			.then(() => msg.guild.configs.social.achieve && msg.channel.postable
-				? msg.channel.send(this.getMessage(msg.member, role, msg.guild.configs.social.achieveMessage || msg.language.get('MONITOR_SOCIAL_ACHIEVEMENT')))
+			.then(() => msg.guild.settings.social.achieve && msg.channel.postable
+				? msg.channel.send(this.getMessage(msg.member, role, msg.guild.settings.social.achieveMessage || msg.language.get('MONITOR_SOCIAL_ACHIEVEMENT')))
 				: null);
 	}
 
@@ -75,7 +75,7 @@ module.exports = class extends Monitor {
 				case '%MEMBER%': return member;
 				case '%MEMBERNAME%': return member.user.username;
 				case '%GUILD%': return member.guild.name;
-				case '%POINTS%': return member.configs.count;
+				case '%POINTS%': return member.settings.count;
 				default: return match;
 			}
 		});

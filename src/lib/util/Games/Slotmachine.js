@@ -39,7 +39,7 @@ class Slotmachine {
 
 	constructor(msg, amount) {
 		this.player = msg.author;
-		this.boost = msg.guildConfigs.social.boost;
+		this.boost = msg.guildSettings.social.boost;
 		this.winnings = 0;
 		this.amount = amount;
 	}
@@ -55,8 +55,8 @@ class Slotmachine {
 	}
 
 	async run() {
-		const { configs } = this.player;
-		const attempts = 1 + Math.floor(configs.bias * 2);
+		const { settings } = this.player;
+		const attempts = 1 + Math.floor(settings.bias * 2);
 		let rolls, attempt = attempts;
 		do {
 			rolls = this.roll();
@@ -64,9 +64,9 @@ class Slotmachine {
 			attempt--;
 		} while (!this.winnings && attempt);
 
-		const amount = this.winnings !== 0 ? configs.money + (this.winnings * this.boost) : configs.money - this.amount;
+		const amount = this.winnings !== 0 ? settings.money + (this.winnings * this.boost) : settings.money - this.amount;
 		if (amount < 0) throw 'You cannot have negative money.';
-		await configs.update(['money', 'bias'], [amount, this.winnings === 0 ? Math.min(configs.bias + 0.1, 5) : 0]);
+		await settings.update(['money', 'bias'], [amount, this.winnings === 0 ? Math.min(settings.bias + 0.1, 5) : 0]);
 		return this.render(rolls);
 	}
 

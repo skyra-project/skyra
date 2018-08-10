@@ -10,12 +10,12 @@ module.exports = class extends Event {
 			return;
 		}
 
-		const id = guild.configs.get(key);
+		const id = guild.settings.get(key);
 		if (!id) return;
 
 		const channel = guild.channels.get(id);
 		if (!channel) {
-			await guild.configs.reset(key);
+			await guild.settings.reset(key);
 			return;
 		}
 

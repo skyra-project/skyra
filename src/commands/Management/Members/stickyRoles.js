@@ -38,7 +38,7 @@ module.exports = class extends Command {
 	/* eslint-enable */
 
 	async show(msg, [user]) {
-		let all = msg.guild.configs.stickyRoles;
+		let all = msg.guild.settings.stickyRoles;
 		if (user) all = [all.find(stickyRole => stickyRole.id === user.id)];
 
 		if (!all.length) throw msg.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
@@ -54,7 +54,7 @@ module.exports = class extends Command {
 		}));
 
 		if (!output.length) {
-			await msg.guild.configs.update('stickyRoles', msg.guild.configs.stickyRoles.filter(stickyRole => all.includes(stickyRole)));
+			await msg.guild.settings.update('stickyRoles', msg.guild.settings.stickyRoles.filter(stickyRole => all.includes(stickyRole)));
 			throw msg.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
 		}
 

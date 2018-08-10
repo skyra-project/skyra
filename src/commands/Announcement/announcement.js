@@ -17,7 +17,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [message]) {
-		const announcementID = msg.guild.configs.channels.announcement;
+		const announcementID = msg.guild.settings.channels.announcement;
 		if (!announcementID) throw msg.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
 		const channel = msg.guild.channels.get(announcementID);

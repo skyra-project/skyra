@@ -38,7 +38,7 @@ module.exports = class extends Command {
 	}
 
 	async show(msg) {
-		const list = new Set(msg.guild.configs.roles.reactions);
+		const list = new Set(msg.guild.settings.roles.reactions);
 		const oldLength = list.size;
 		if (!list.size) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		const lines = [];
@@ -47,32 +47,32 @@ module.exports = class extends Command {
 			if (!role) list.delete(entry);
 			else lines.push(`${role.name.padEnd(25, ' ')} :: ${entry.emoji}`);
 		}
-		if (oldLength !== list.size) msg.guild.configs.update('roles.reactions', [...list]);
+		if (oldLength !== list.size) msg.guild.settings.update('roles.reactions', [...list]);
 		if (!lines.length) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		return msg.sendMessage(codeBlock('asciicode', lines.join('\n')));
 	}
 
 	async add(msg, [role, reaction]) {
 		if (this._checkRoleReaction(msg, reaction, role.id)) throw msg.language.get('COMMAND_MANAGEROLEREACTION_EXISTS');
-		const { errors } = await msg.guild.configs.update('roles.reactions', [...msg.guild.configs.roles.reactions, { emoji: reaction, role: role.id }]);
+		const { errors } = await msg.guild.settings.update('roles.reactions', [...msg.guild.settings.roles.reactions, { emoji: reaction, role: role.id }]);
 		if (errors.length) throw errors[0];
-		await this._reactMessage(msg.guild.configs.channels.roles, msg.guild.configs.roles.messageReaction, reaction);
+		await this._reactMessage(msg.guild.settings.channels.roles, msg.guild.settings.roles.messageReaction, reaction);
 		return msg.sendLocale('COMMAND_MANAGEROLEREACTION_ADD');
 	}
 
 	async remove(msg, [, reaction]) {
-		const list = msg.guild.configs.roles.reactions;
+		const list = msg.guild.settings.roles.reactions;
 		if (!list.length) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		const entry = list.find(en => en.emoji === reaction);
 		if (!entry) throw msg.language.get('COMMAND_MANAGEROLEREACTION_REMOVE_NOTEXISTS');
-		const { errors } = await msg.guild.configs.update('roles.reactions', entry, { action: 'remove' });
+		const { errors } = await msg.guild.settings.update('roles.reactions', entry, { action: 'remove' });
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_MANAGEROLEREACTION_REMOVE');
 	}
 
 	async reset(msg) {
-		if (!msg.guild.configs.roles.reactions.length) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
-		const { errors } = await msg.guild.configs.reset('roles.reactions');
+		if (!msg.guild.settings.roles.reactions.length) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
+		const { errors } = await msg.guild.settings.reset('roles.reactions');
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_MANAGEROLEREACTION_RESET');
 	}
@@ -83,7 +83,7 @@ module.exports = class extends Command {
 	}
 
 	_checkRoleReaction(msg, reaction, role) {
-		const list = msg.guild.configs.roles.reactions;
+		const list = msg.guild.settings.roles.reactions;
 		if (list.length) for (const entry of list) if (entry.emoji === reaction || entry.role === role) return true;
 		return false;
 	}

@@ -14,7 +14,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [type]) {
-		if (!msg.guild.configs.selfmod.raid) throw msg.language.get('COMMAND_RAID_DISABLED');
+		if (!msg.guild.settings.selfmod.raid) throw msg.language.get('COMMAND_RAID_DISABLED');
 		if (!msg.guild.me.permissions.has('KICK_MEMBERS')) throw msg.language.get('COMMAND_RAID_MISSING_KICK');
 
 		return this[type](msg);
@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		const embed = new MessageEmbed()
 			.setTitle(msg.language.get('COMMAND_RAID_LIST'))
 			.setDescription([...raid.keys()].map(user => `<@${user}>`))
-			.setFooter(`${raid.size}/${msg.guild.configs.selfmod.raidthreshold} ${msg.language.get('CONST_USERS')}`)
+			.setFooter(`${raid.size}/${msg.guild.settings.selfmod.raidthreshold} ${msg.language.get('CONST_USERS')}`)
 			.setTimestamp();
 
 		return msg.sendMessage({ embed });

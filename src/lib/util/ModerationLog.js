@@ -138,12 +138,12 @@ class ModerationLog {
 		return (this.duration ? [
 			`❯ **Type**: ${ModerationLog.TYPES[this.accurateType].title}`,
 			`❯ **User:** ${this.user.tag} (${this.user.id})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${this.guild.configs.prefix}reason ${this.caseNumber} to claim.\``}`,
+			`❯ **Reason:** ${this.reason || `Please use \`${this.guild.settings.prefix}reason ${this.caseNumber} to claim.\``}`,
 			`❯ **Expires In**: ${this.client.languages.default.duration(this.duration)}`
 		] : [
 			`❯ **Type**: ${ModerationLog.TYPES[this.accurateType].title}`,
 			`❯ **User:** ${this.user.tag} (${this.user.id})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${this.guild.configs.prefix}reason ${this.caseNumber} to claim.\``}`
+			`❯ **Reason:** ${this.reason || `Please use \`${this.guild.settings.prefix}reason ${this.caseNumber} to claim.\``}`
 		]).join('\n');
 	}
 
@@ -164,7 +164,7 @@ class ModerationLog {
 	 * @returns {?TextChannel}
 	 */
 	get channel() {
-		return this.guild.configs.channels.modlog ? this.guild.channels.get(this.guild.configs.channels.modlog) : null;
+		return this.guild.settings.channels.modlog ? this.guild.channels.get(this.guild.settings.channels.modlog) : null;
 	}
 
 	/**
@@ -285,15 +285,15 @@ class ModerationLog {
 		switch (this.type) {
 			case typeKeys.BAN:
 				// If this case is a ban but the automattic logger for bans is deactivated, no need to deactivate it.
-				if (!this.guild.configs.events.banAdd) return this;
+				if (!this.guild.settings.events.banAdd) return this;
 				break;
 			case typeKeys.UN_BAN:
 				// If this case is an unban but the automattic logger for unbans is deactivated, no need to deactivate it.
-				if (!this.guild.configs.events.banRemove) return this;
+				if (!this.guild.settings.events.banRemove) return this;
 				break;
 			case typeKeys.SOFT_BAN:
 				// If this case is a softban but the automattic logger for bans and unbans are deactivated, no need to deactivate it.
-				if (!this.guild.configs.events.banAdd && !this.guild.configs.events.banRemove) return this;
+				if (!this.guild.settings.events.banAdd && !this.guild.settings.events.banRemove) return this;
 				break;
 			default:
 				return this;

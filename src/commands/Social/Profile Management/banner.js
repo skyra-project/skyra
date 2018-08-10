@@ -43,28 +43,28 @@ module.exports = class extends Command {
 	}
 
 	async reset(msg) {
-		const banners = msg.author.configs.bannerList;
+		const banners = msg.author.settings.bannerList;
 		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
-		if (msg.author.configs.themeProfile === '0001') throw msg.language.get('COMMAND_BANNER_RESET_DEFAULT');
+		if (msg.author.settings.themeProfile === '0001') throw msg.language.get('COMMAND_BANNER_RESET_DEFAULT');
 
-		await msg.author.configs.update('themeProfile', '0001');
+		await msg.author.settings.update('themeProfile', '0001');
 		return msg.sendLocale('COMMAND_BANNER_RESET');
 	}
 
 	async set(msg, banner) {
-		const banners = msg.author.configs.bannerList;
+		const banners = msg.author.settings.bannerList;
 		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
 		if (!banners.includes(banner.id)) throw msg.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
 
-		await msg.author.configs.update('themeProfile', banner.id);
+		await msg.author.settings.update('themeProfile', banner.id);
 		return msg.sendLocale('COMMAND_BANNER_SET', [banner.title]);
 	}
 
 	async buy(msg, banner) {
-		const banners = new Set(msg.author.configs.bannerList);
-		if (banners.has(banner.id)) throw msg.language.get('COMMAND_BANNER_BOUGHT', msg.guild.configs.prefix, banner.id);
+		const banners = new Set(msg.author.settings.bannerList);
+		if (banners.has(banner.id)) throw msg.language.get('COMMAND_BANNER_BOUGHT', msg.guild.settings.prefix, banner.id);
 
-		if (msg.author.configs.money < banner.price) throw msg.language.get('COMMAND_BANNER_MONEY', msg.author.configs.money, banner.price);
+		if (msg.author.settings.money < banner.price) throw msg.language.get('COMMAND_BANNER_MONEY', msg.author.settings.money, banner.price);
 
 		const accepted = await this.prompt(msg, banner);
 		if (!accepted) throw msg.language.get('COMMAND_BANNER_PAYMENT_CANCELLED');
@@ -72,11 +72,11 @@ module.exports = class extends Command {
 		banners.add(banner.id);
 
 		const user = await this.client.users.fetch(banner.author);
-		await user.configs.waitSync();
+		await user.settings.waitSync();
 
 		await Promise.all([
-			msg.author.configs.update(['money', 'bannerList'], [msg.author.configs.money - banner.price, [...banners]]),
-			user.configs.update(['money'], [user.configs.money + (banner.price * 0.1)])
+			msg.author.settings.update(['money', 'bannerList'], [msg.author.settings.money - banner.price, [...banners]]),
+			user.settings.update(['money'], [user.settings.money + (banner.price * 0.1)])
 		]);
 
 		return msg.sendLocale('COMMAND_BANNER_BUY', [banner.title]);
@@ -87,8 +87,8 @@ module.exports = class extends Command {
 	}
 
 	_userList(msg) {
-		const banners = new Set(msg.author.configs.bannerList);
-		if (!banners.size) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY', msg.guild.configs.prefix);
+		const banners = new Set(msg.author.settings.bannerList);
+		if (!banners.size) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY', msg.guild.settings.prefix);
 
 		const display = new RichDisplay(new MessageEmbed().setColor(0xFFAB40));
 		for (const id of banners) {

@@ -4,7 +4,7 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		const content = msg.content.toLowerCase();
-		const trigger = msg.guild.configs.trigger.includes.find(trg => content.includes(trg.input));
+		const trigger = msg.guild.settings.trigger.includes.find(trg => content.includes(trg.input));
 		if (trigger && trigger.action === 'react') {
 			if (msg.reactable) {
 				await msg.react(trigger.output)
@@ -19,7 +19,7 @@ module.exports = class extends Monitor {
 			&& msg.guild
 			&& msg.author.bot === false
 			&& msg.author.id !== this.client.user.id
-			&& msg.guild.configs.trigger.includes.length;
+			&& msg.guild.settings.trigger.includes.length;
 	}
 
 };

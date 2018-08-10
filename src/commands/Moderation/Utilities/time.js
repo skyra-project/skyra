@@ -70,11 +70,11 @@ module.exports = class extends Command {
 	}
 
 	async updateModlog(msg, modcase) {
-		const { modlog } = msg.guild.configs.channels;
+		const { modlog } = msg.guild.settings.channels;
 		if (!modlog) return null;
 		const channel = msg.guild.channels.get(modlog);
 		if (!channel) {
-			msg.guild.configs.reset('channels.modlog');
+			msg.guild.settings.reset('channels.modlog');
 			return null;
 		}
 
@@ -114,8 +114,8 @@ module.exports = class extends Command {
 		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw 'COMMAND_UNMUTE_MISSING_PERMISSION';
 
 		const id = modlog[schemaKeys.USER];
-		const stickyRoles = msg.guild.configs.stickyRoles.find(stickyRole => stickyRole.id === id);
-		if (!stickyRoles || !stickyRoles.includes(msg.guild.configs.roles.muted)) throw 'COMMAND_MUTE_USER_NOT_MUTED';
+		const stickyRoles = msg.guild.settings.stickyRoles.find(stickyRole => stickyRole.id === id);
+		if (!stickyRoles || !stickyRoles.includes(msg.guild.settings.roles.muted)) throw 'COMMAND_MUTE_USER_NOT_MUTED';
 		return typeKeys.UN_MUTE;
 	}
 

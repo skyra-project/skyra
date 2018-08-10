@@ -20,10 +20,10 @@ module.exports = class extends Command {
 			throw msg.language.get('USER_NOT_IN_GUILD');
 		});
 
-		if (member.configs._syncStatus) await member.configs._syncStatus;
+		if (member.settings._syncStatus) await member.settings._syncStatus;
 
-		const memberPoints = member.configs.count;
-		const nextRole = this.getLatestRole(memberPoints, msg.guild.configs.roles.auto);
+		const memberPoints = member.settings.count;
+		const nextRole = this.getLatestRole(memberPoints, msg.guild.settings.roles.auto);
 		const title = nextRole
 			? `\n${msg.language.get('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}`
 			: '';

@@ -4,8 +4,8 @@ module.exports = class extends Event {
 
 	async run(msg, command) {
 		if (!msg.guild) return;
-		if (msg.guild.configs.tags.has(command)) this.handleTag(msg, command);
-		else if (msg.guild.configs.trigger.alias.length) this.handleCommand(msg, command);
+		if (msg.guild.settings.tags.has(command)) this.handleTag(msg, command);
+		else if (msg.guild.settings.trigger.alias.length) this.handleCommand(msg, command);
 	}
 
 	get commandHandler() {
@@ -13,13 +13,13 @@ module.exports = class extends Event {
 	}
 
 	handleTag(msg, command) {
-		return msg.sendMessage(msg.guild.configs.tags.get(command));
+		return msg.sendMessage(msg.guild.settings.tags.get(command));
 	}
 
 	async handleCommand(msg, command) {
 		const alias = (entry => entry
 			? this.client.commands.get(entry.output)
-			: undefined)(msg.guild.configs.trigger.alias.find(entry => entry.input === command));
+			: undefined)(msg.guild.settings.trigger.alias.find(entry => entry.input === command));
 		if (!alias) return;
 
 		// @ts-ignore

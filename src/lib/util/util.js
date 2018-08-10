@@ -74,7 +74,7 @@ class Util {
 	 * @returns {Role}
 	 */
 	static announcementCheck(msg) {
-		const announcementID = msg.guild.configs.roles.subscriber;
+		const announcementID = msg.guild.settings.roles.subscriber;
 		if (!announcementID) throw msg.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
 		const role = msg.guild.roles.get(announcementID);
@@ -85,18 +85,18 @@ class Util {
 	}
 
 	static async removeMute(guild, id) {
-		const { configs } = guild;
+		const { settings } = guild;
 
-		const stickyRolesIndex = configs.stickyRoles.findIndex(stickyRole => stickyRole.id === id);
+		const stickyRolesIndex = settings.stickyRoles.findIndex(stickyRole => stickyRole.id === id);
 		if (stickyRolesIndex === -1) return false;
 
-		const stickyRoles = configs.stickyRoles[stickyRolesIndex];
+		const stickyRoles = settings.stickyRoles[stickyRolesIndex];
 
-		const index = stickyRoles.roles.indexOf(configs.roles.muted);
+		const index = stickyRoles.roles.indexOf(settings.roles.muted);
 		if (index === -1) return false;
 
 		stickyRoles.roles.splice(index, 1);
-		await configs.update('stickyRoles', ...stickyRoles.roles.length
+		await settings.update('stickyRoles', ...stickyRoles.roles.length
 			// If there's at least one remaining role, update the entry
 			? [{ id: id, roles: stickyRoles.roles }, { arrayPosition: stickyRolesIndex }]
 			// Otherwise, giving the instance itself will trigger auto-remove
@@ -334,8 +334,8 @@ class Util {
 	 * @returns {Role}
 	 */
 	static async createMuteRole(msg) {
-		if (msg.guild.configs.roles.muted
-			&& msg.guild.roles.has(msg.guild.configs.roles.muted)) throw new Error("There's already a muted role.");
+		if (msg.guild.settings.roles.muted
+			&& msg.guild.roles.has(msg.guild.settings.roles.muted)) throw new Error("There's already a muted role.");
 		const role = await msg.guild.roles.create(Util.MUTE_ROLE_OPTIONS);
 		const { channels } = msg.guild;
 		await msg.sendMessage(`Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels.size} to ${role}...`);
@@ -349,7 +349,7 @@ class Util {
 
 		const messageEdit2 = denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ';
 		await util.sleep(1500);
-		await msg.guild.configs.update('roles.muted', role.id, msg.guild);
+		await msg.guild.settings.update('roles.muted', role.id, msg.guild);
 		await msg.sendMessage(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
 		return role;
 	}

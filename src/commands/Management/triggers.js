@@ -65,7 +65,7 @@ module.exports = class extends Command {
 		const clone = [...list];
 		clone.splice(index, 1);
 
-		const { errors } = await msg.guild.configs.update(this._getListName(type), clone);
+		const { errors } = await msg.guild.settings.update(this._getListName(type), clone);
 		if (errors.length) throw errors[0];
 
 		return msg.sendLocale('COMMAND_TRIGGERS_REMOVE');
@@ -75,14 +75,14 @@ module.exports = class extends Command {
 		const list = this._getList(msg, type);
 		if (list.some(entry => entry.input === input)) throw msg.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
 
-		const { errors } = await msg.guild.configs.update(this._getListName(type), [...list, this._format(type, input, output)]);
+		const { errors } = await msg.guild.settings.update(this._getListName(type), [...list, this._format(type, input, output)]);
 		if (errors.length) throw errors[0];
 
 		return msg.sendLocale('COMMAND_TRIGGERS_ADD');
 	}
 
 	list(msg) {
-		const { trigger } = msg.guild.configs;
+		const { trigger } = msg.guild.settings;
 		const output = [];
 		for (const alias of trigger.alias)
 			output.push(`Alias    :: ${alias.input} -> ${alias.output}`);
@@ -110,9 +110,9 @@ module.exports = class extends Command {
 
 	_getList(msg, type) {
 		switch (type) {
-			case 'alias': return msg.guild.configs.trigger.alias;
+			case 'alias': return msg.guild.settings.trigger.alias;
 			case 'reaction':
-			default: return msg.guild.configs.trigger.includes;
+			default: return msg.guild.settings.trigger.includes;
 		}
 	}
 

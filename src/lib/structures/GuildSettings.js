@@ -1,24 +1,24 @@
-const { Configuration } = require('klasa');
+const { Settings } = require('klasa');
 const { Collection } = require('discord.js');
 
 /**
- * The GuildConfiguration class that manages per-guild configs
+ * The GuildSettings class that manages per-guild settings
  * @since 1.6.0
  * @version 7.1.0
- * @extends {Configuration}
+ * @extends {Settings}
  */
-class GuildConfiguration extends Configuration {
+class GuildSettings extends Settings {
 
 	_patch(...args) {
 		super._patch(...args);
 
 		this.tags = new Collection();
-		if (this._tags.length) for (const [name, content] of this._tags) this.tags.set(name, content);
+		for (const [name, content] of this._tags) this.tags.set(name, content);
 		this.updateFilter();
 	}
 
 	updateFilter() {
-		this.filter.regexp = this.filter.raw.length ? GuildConfiguration.superRegExp(this.filter.raw) : null;
+		this.filter.regexp = this.filter.raw.length ? GuildSettings.superRegExp(this.filter.raw) : null;
 	}
 
 	/**
@@ -35,4 +35,4 @@ class GuildConfiguration extends Configuration {
 
 }
 
-module.exports = GuildConfiguration;
+module.exports = GuildSettings;

@@ -16,7 +16,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, roles) {
-		const { public: publicRoles, removeInitial, initial } = msg.guild.configs.roles;
+		const { public: publicRoles, removeInitial, initial } = msg.guild.settings.roles;
 		if (!publicRoles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
 		if (!roles.length) return this.list(msg, publicRoles);
@@ -42,8 +42,8 @@ module.exports = class extends Command {
 
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (initial && removeInitial && addedRoles.length) {
-			// If the role was deleted, remove it from the configs
-			if (!msg.guild.roles.has(initial)) msg.guild.configs.reset('roles.initial').catch(error => this.client.emit('wtf', error));
+			// If the role was deleted, remove it from the settings
+			if (!msg.guild.roles.has(initial)) msg.guild.settings.reset('roles.initial').catch(error => this.client.emit('wtf', error));
 			else if (msg.member.roles.has(initial)) memberRoles.delete(initial);
 		}
 
@@ -70,7 +70,7 @@ module.exports = class extends Command {
 		if (remove.length) {
 			const allRoles = new Set(publicRoles);
 			for (const role of remove) allRoles.delete(role);
-			await msg.guild.configs.update({ roles: { public: [...allRoles] } });
+			await msg.guild.settings.update({ roles: { public: [...allRoles] } });
 		}
 
 		// There's the possibility all roles could be inexistent, therefore the system

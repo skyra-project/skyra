@@ -30,8 +30,8 @@ module.exports = class extends Command {
 	}
 
 	async showProfile(msg, user) {
-		await user.configs.waitSync();
-		const { points, color, themeProfile, money, reputation, level } = user.configs;
+		await user.settings.waitSync();
+		const { points, color, themeProfile, money, reputation, level } = user.settings;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -46,9 +46,9 @@ module.exports = class extends Command {
 		]);
 
 		const TITLE = msg.language.fetch('COMMAND_PROFILE');
-		const canvas = new Canvas(user.configs.badgeSet.length ? 700 : 640, 391);
-		if (user.configs.badgeSet.length) {
-			const badges = await Promise.all(user.configs.badgeSet.map(name =>
+		const canvas = new Canvas(user.settings.badgeSet.length ? 700 : 640, 391);
+		if (user.settings.badgeSet.length) {
+			const badges = await Promise.all(user.settings.badgeSet.map(name =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))
 			));
 

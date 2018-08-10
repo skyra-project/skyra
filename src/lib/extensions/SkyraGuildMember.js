@@ -1,5 +1,5 @@
 const { Structures } = require('discord.js');
-const MemberConfiguration = require('../structures/MemberConfiguration');
+const MemberSettings = require('../structures/MemberSettings');
 
 module.exports = Structures.extend('GuildMember', GuildMember => {
 	/**
@@ -16,11 +16,11 @@ module.exports = Structures.extend('GuildMember', GuildMember => {
 			super(...args);
 
 			/**
-			 * The member level configs for this context
+			 * The member level settings for this context
 			 * @since 3.0.0
-			 * @type {MemberConfiguration}
+			 * @type {MemberSettings}
 			 */
-			this.configs = new MemberConfiguration(this);
+			this.settings = new MemberSettings(this);
 		}
 
 	}

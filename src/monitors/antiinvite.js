@@ -4,7 +4,7 @@ module.exports = class extends Monitor {
 
 	async run(msg) {
 		if (!msg.guild
-			|| !msg.guild.configs.selfmod.invitelinks
+			|| !msg.guild.settings.selfmod.invitelinks
 			|| !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content)
 			|| await msg.hasAtLeastPermissionLevel(5)) return false;
 
@@ -13,12 +13,12 @@ module.exports = class extends Monitor {
 			await msg.alert(msg.language.get('MONITOR_NOINVITE', msg.author));
 		}
 
-		if (!msg.guild.configs.channels.modlog)
+		if (!msg.guild.settings.channels.modlog)
 			return null;
 
-		const channel = msg.guild.channels.get(msg.guild.configs.channels.modlog);
+		const channel = msg.guild.channels.get(msg.guild.settings.channels.modlog);
 		if (!channel)
-			return msg.guild.configs.update('channels.modlog').then(() => null);
+			return msg.guild.settings.update('channels.modlog').then(() => null);
 
 		return channel.send(new MessageEmbed()
 			.setColor(0xefae45)
@@ -30,7 +30,7 @@ module.exports = class extends Monitor {
 	shouldRun(msg) {
 		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
 
-		const { invitelinks, ignoreChannels } = msg.guild.configs.selfmod;
+		const { invitelinks, ignoreChannels } = msg.guild.settings.selfmod;
 		return invitelinks && !ignoreChannels.includes(msg.channel.id);
 	}
 

@@ -14,14 +14,14 @@ const DEV = process.env.DEV === 'true';
 
 // Skyra setup
 Skyra.defaultPermissionLevels
-	.add(4, (client, msg) => Boolean(msg.member) && (msg.guild.configs.roles.staff
-		? msg.member.roles.has(msg.guild.configs.roles.staff)
+	.add(4, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.staff
+		? msg.member.roles.has(msg.guild.settings.roles.staff)
 		: msg.member.permissions.has(FLAGS.MANAGE_MESSAGES)), { fetch: true })
-	.add(5, (client, msg) => Boolean(msg.member) && (msg.guild.configs.roles.moderator
-		? msg.member.roles.has(msg.guild.configs.roles.moderator)
+	.add(5, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.moderator
+		? msg.member.roles.has(msg.guild.settings.roles.moderator)
 		: msg.member.permissions.has(FLAGS.BAN_MEMBERS)), { fetch: true })
-	.add(6, (client, msg) => Boolean(msg.member) && (msg.guild.configs.roles.admin
-		? msg.member.roles.has(msg.guild.configs.roles.admin)
+	.add(6, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.admin
+		? msg.member.roles.has(msg.guild.settings.roles.admin)
 		: msg.member.permissions.has(FLAGS.MANAGE_GUILD)), { fetch: true });
 
 const skyra = new Skyra({

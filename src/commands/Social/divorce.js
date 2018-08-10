@@ -12,20 +12,20 @@ module.exports = class extends Command {
 	}
 
 	async run(msg) {
-		if (!msg.author.configs.marry) return msg.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
+		if (!msg.author.settings.marry) return msg.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 		// Ask the user if they're sure
 		const accept = await msg.ask(msg.language.get('COMMAND_DIVORCE_PROMPT'));
 		if (!accept) return msg.sendLocale('COMMAND_DIVORCE_CANCEL');
 
-		// Fetch the user and sync the configuration
-		const user = await this.client.users.fetch(msg.author.configs.marry);
-		await user.configs.waitSync();
+		// Fetch the user and sync the settings
+		const user = await this.client.users.fetch(msg.author.settings.marry);
+		await user.settings.waitSync();
 
 		// Reset the values for both entries
 		await Promise.all([
-			msg.author.configs.reset('marry'),
-			user.configs.reset('marry')
+			msg.author.settings.reset('marry'),
+			user.settings.reset('marry')
 		]);
 
 		// Tell the user about the divorce

@@ -20,10 +20,10 @@ module.exports = class extends RawEvent {
 
 	async run({ guild, member }) {
 		guild.nameDictionary.delete(member.id, member.displayName);
-		const stickyRoles = guild.configs.stickyRoles.find(stickyRole => stickyRole.id === member.id);
+		const stickyRoles = guild.settings.stickyRoles.find(stickyRole => stickyRole.id === member.id);
 		if (stickyRoles) {
 			// Handle the case the user is muted
-			const mute = guild.configs.roles.muted;
+			const mute = guild.settings.roles.muted;
 			if (mute && stickyRoles.roles.includes(mute)) {
 				this._handleMute(guild, member);
 				return;
@@ -34,7 +34,7 @@ module.exports = class extends RawEvent {
 		}
 
 		// If not muted and memberAdd is configured, handle everything
-		if (guild.configs.events.memberAdd) {
+		if (guild.settings.events.memberAdd) {
 			this._handleJoin(guild, member);
 			this._handleLog(guild, member, COLORS.JOIN);
 			this._handleMessage(guild, member);
@@ -53,7 +53,7 @@ module.exports = class extends RawEvent {
 			if (guild.roles.has(role)) roles.push(role);
 
 		if (stickyRoles.roles.length !== roles.length)
-			guild.configs.update('stickyRoles', { id: member.id, roles }, { arrayPosition: guild.configs.stickyRoles.indexOf(stickyRoles) });
+			guild.settings.update('stickyRoles', { id: member.id, roles }, { arrayPosition: guild.settings.stickyRoles.indexOf(stickyRoles) });
 
 		await member.roles.add(roles);
 	}
@@ -61,49 +61,49 @@ module.exports = class extends RawEvent {
 	async _handleMute(guild, member) {
 		this._handleLog(guild, member, COLORS.MUTE).catch(error => this.client.emit('apiError', error));
 		if (guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
-			const role = guild.roles.get(guild.configs.roles.muted);
-			if (!role) guild.configs.reset('roles.muted').catch(error => this.client.emit('apiError', error));
+			const role = guild.roles.get(guild.settings.roles.muted);
+			if (!role) guild.settings.reset('roles.muted').catch(error => this.client.emit('apiError', error));
 			else member.roles.add(role).catch(error => this.client.emit('apiError', error));
 		}
 	}
 
 	async _handleJoin(guild, member) {
-		if (guild.configs.selfmod.raid && guild.me.permissions.has(FLAGS.KICK_MEMBERS))
+		if (guild.settings.selfmod.raid && guild.me.permissions.has(FLAGS.KICK_MEMBERS))
 			if (await this._handleRAID(guild, member)) return;
 
-		if (guild.configs.roles.initial) {
-			const role = guild.roles.get(guild.configs.roles.initial);
-			if (!role || role.position >= guild.me.roles.highest.position) guild.configs.reset('roles.initial');
+		if (guild.settings.roles.initial) {
+			const role = guild.roles.get(guild.settings.roles.initial);
+			if (!role || role.position >= guild.me.roles.highest.position) guild.settings.reset('roles.initial');
 			else member.roles.add(role).catch(error => this.client.emit('apiError', error));
 		}
-		if (guild.configs.messages['join-dm'])
-			member.user.send(this._handleGreeting(guild.configs.messages['join-dm'], guild, member.user)).catch(() => null);
+		if (guild.settings.messages['join-dm'])
+			member.user.send(this._handleGreeting(guild.settings.messages['join-dm'], guild, member.user)).catch(() => null);
 	}
 
 	async _handleLog(guild, member, asset) {
-		if (guild.configs.channels.log) {
-			const channel = guild.channels.get(guild.configs.channels.log);
+		if (guild.settings.channels.log) {
+			const channel = guild.channels.get(guild.settings.channels.log);
 			if (channel && channel.postable) {
 				await channel.send(new MessageEmbed()
 					.setColor(asset.color)
 					.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
 					.setFooter(asset.title)
 					.setTimestamp());
-			} else { await guild.configs.reset('channels.log'); }
+			} else { await guild.settings.reset('channels.log'); }
 		}
 	}
 
 	async _handleMessage(guild, member) {
-		if (guild.configs.channels.default && guild.configs.messages.greeting) {
-			const channel = guild.channels.get(guild.configs.channels.default);
-			if (channel && channel.postable) channel.send(this._handleGreeting(guild.configs.messages.greeting, guild, member.user));
-			else guild.configs.reset('channels.default');
+		if (guild.settings.channels.default && guild.settings.messages.greeting) {
+			const channel = guild.channels.get(guild.settings.channels.default);
+			if (channel && channel.postable) channel.send(this._handleGreeting(guild.settings.messages.greeting, guild, member.user));
+			else guild.settings.reset('channels.default');
 		}
 	}
 
 	async _handleRAID(guild, member) {
 		const raidManager = guild.security.raid;
-		if (raidManager.has(member.id) || raidManager.add(member.id).size < guild.configs.selfmod.raidthreshold)
+		if (raidManager.has(member.id) || raidManager.add(member.id).size < guild.settings.selfmod.raidthreshold)
 			return false;
 
 		await raidManager.execute();

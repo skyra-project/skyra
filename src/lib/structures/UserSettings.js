@@ -1,19 +1,19 @@
-const { Configuration } = require('klasa');
+const { Settings } = require('klasa');
 
 /**
- * The UserConfiguration class that manages per-user configs
+ * The UserSettings class that manages per-user settings
  * @since 1.6.0
  * @version 6.0.0
- * @extends {Configuration}
+ * @extends {Settings}
  */
-class UserConfiguration extends Configuration {
+class UserSettings extends Settings {
 
 	get level() {
 		return Math.floor(0.2 * Math.sqrt(this.points));
 	}
 
 	win(money, guild) {
-		if (guild) money *= guild.configs.social.boost;
+		if (guild) money *= guild.settings.social.boost;
 		return this.add(money);
 	}
 
@@ -33,4 +33,4 @@ class UserConfiguration extends Configuration {
 
 }
 
-module.exports = UserConfiguration;
+module.exports = UserSettings;

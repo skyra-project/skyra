@@ -8,7 +8,7 @@ module.exports = class extends Monitor {
 	async run(msg) {
 		if (await msg.hasAtLeastPermissionLevel(5)) return;
 
-		const { filter } = msg.guild.configs;
+		const { filter } = msg.guild.settings;
 		const filtered = msg.content.replace(filter.regexp, match => '*'.repeat(match.length));
 		if (filtered === msg.content) return;
 
@@ -38,7 +38,7 @@ module.exports = class extends Monitor {
 	shouldRun(msg) {
 		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
 
-		const { selfmod, filter } = msg.guild.configs;
+		const { selfmod, filter } = msg.guild.settings;
 		return filter.level !== 0 && filter.regexp !== null && !selfmod.ignoreChannels.includes(msg.channel.id);
 	}
 

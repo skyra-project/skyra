@@ -17,8 +17,8 @@ module.exports = class extends Command {
 
 	async run(msg, [text]) {
 		const coins = Number(text);
-		if (msg.author.configs.money < coins)
-			throw msg.language.get('COMMAND_SLOTMACHINES_MONEY', msg.author.configs.money);
+		if (msg.author.settings.money < coins)
+			throw msg.language.get('COMMAND_SLOTMACHINES_MONEY', msg.author.settings.money);
 
 		const attachment = await new Slotmachine(msg, coins).run();
 		return msg.channel.send({ files: [{ attachment, name: 'Slotmachine.png' }] });

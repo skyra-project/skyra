@@ -16,14 +16,14 @@ module.exports = class extends Inhibitor {
 	async run(msg, cmd) {
 		if (!cmd.spam
 			|| !msg.guild
-			|| msg.guild.configs.channels.spam === msg.channel.id
+			|| msg.guild.settings.channels.spam === msg.channel.id
 			|| await msg.hasAtLeastPermissionLevel(5)) return;
 
 		if (this.cooldowns.has(msg.channel.id)) throw true;
 
-		const channel = msg.guild.channels.get(msg.guild.configs.channels.spam);
+		const channel = msg.guild.channels.get(msg.guild.settings.channels.spam);
 		if (!channel) {
-			await msg.guild.configs.reset('channels.spam');
+			await msg.guild.settings.reset('channels.spam');
 			return;
 		}
 

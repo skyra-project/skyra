@@ -1,6 +1,6 @@
 // @ts-nocheck
-const { Extendable, Configuration } = require('klasa');
-const { GuildConfiguration, UserConfiguration } = require('../index');
+const { Extendable, Settings } = require('klasa');
+const { GuildSettings, UserSettings } = require('../index');
 
 module.exports = class extends Extendable {
 
@@ -8,15 +8,15 @@ module.exports = class extends Extendable {
 		super(client, store, file, directory, {
 			appliesTo: ['Gateway'],
 			klasa: true,
-			name: 'Configuration'
+			name: 'Settings'
 		});
 	}
 
 	get extend() {
 		switch (this.type) {
-			case 'users': return UserConfiguration;
-			case 'guilds': return GuildConfiguration;
-			default: return Configuration;
+			case 'users': return UserSettings;
+			case 'guilds': return GuildSettings;
+			default: return Settings;
 		}
 	}
 

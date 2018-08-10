@@ -13,7 +13,7 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [name = 'list']) {
-		const { tags } = msg.guild.configs;
+		const { tags } = msg.guild.settings;
 		if (name === 'list') return this.list(msg, tags);
 		return this.get(msg, tags, name);
 	}

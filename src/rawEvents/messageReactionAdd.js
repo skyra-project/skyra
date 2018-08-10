@@ -23,7 +23,7 @@ module.exports = class extends RawEvent {
 		const channel = this.client.channels.get(data.channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
 
-		if (channel.id === channel.guild.configs.channels.roles)
+		if (channel.id === channel.guild.settings.channels.roles)
 			this._handleRoleChannel(channel.guild, data.emoji, data.user_id, data.message_id);
 
 
@@ -33,7 +33,7 @@ module.exports = class extends RawEvent {
 			return false;
 		}
 
-		if (channel.guild.configs.starboard.channel !== channel.id && resolveEmoji(data.emoji.name) === channel.guild.configs.starboard.emoji) {
+		if (channel.guild.settings.starboard.channel !== channel.id && resolveEmoji(data.emoji.name) === channel.guild.settings.starboard.emoji) {
 			this._handleStarboard(channel, data.message_id, data.user_id);
 			return false;
 		}
@@ -59,10 +59,10 @@ module.exports = class extends RawEvent {
 	}
 
 	async _handleRoleChannel(guild, emoji, userID, messageID) {
-		const { messageReaction } = guild.configs.roles;
+		const { messageReaction } = guild.settings.roles;
 		if (!messageReaction || messageReaction !== messageID) return;
 
-		const roleEntry = guild.configs.roles.reactions.find(entry => entry.emoji === emoji.name);
+		const roleEntry = guild.settings.roles.reactions.find(entry => entry.emoji === emoji.name);
 		if (!roleEntry) return;
 
 		try {
@@ -77,13 +77,13 @@ module.exports = class extends RawEvent {
 
 	async _handleStarboard(channel, messageID, userID) {
 		try {
-			const starboardConfigs = channel.guild.configs.starboard;
-			if (!starboardConfigs.channel || starboardConfigs.ignoreChannels.includes(channel.id)) return;
+			const starboardSettings = channel.guild.settings.starboard;
+			if (!starboardSettings.channel || starboardSettings.ignoreChannels.includes(channel.id)) return;
 
 			// Safeguard
-			const starboardChannel = channel.guild.channels.get(starboardConfigs.channel);
+			const starboardChannel = channel.guild.channels.get(starboardSettings.channel);
 			if (!starboardChannel || !starboardChannel.postable) {
-				await channel.guild.configs.reset('starboard.channel');
+				await channel.guild.settings.reset('starboard.channel');
 				return;
 			}
 

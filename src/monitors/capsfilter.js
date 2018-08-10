@@ -22,7 +22,7 @@ module.exports = class extends Monitor {
 	async run(msg) {
 		if (await msg.hasAtLeastPermissionLevel(5)) return;
 
-		const { selfmod } = msg.guild.configs;
+		const { selfmod } = msg.guild.settings;
 		const { length } = msg.content;
 		let count = 0, i = 0;
 
@@ -55,7 +55,7 @@ module.exports = class extends Monitor {
 	shouldRun(msg) {
 		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
 
-		const { selfmod } = msg.guild.configs;
+		const { selfmod } = msg.guild.settings;
 		return msg.content.length > selfmod.capsminimum && selfmod.capsfilter && !selfmod.ignoreChannels.includes(msg.channel.id);
 	}
 

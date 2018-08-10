@@ -25,9 +25,9 @@ module.exports = {
 	SkyraGuildMember: require('./lib/extensions/SkyraGuildMember'),
 
 	// Structures
-	GuildConfiguration: require('./lib/structures/GuildConfiguration'),
-	MemberConfiguration: require('./lib/structures/MemberConfiguration'),
-	UserConfiguration: require('./lib/structures/UserConfiguration'),
+	GuildSettings: require('./lib/structures/GuildSettings'),
+	MemberSettings: require('./lib/structures/MemberSettings'),
+	UserSettings: require('./lib/structures/UserSettings'),
 	StarboardManager: require('./lib/structures/StarboardManager'),
 	StarboardMessage: require('./lib/structures/StarboardMessage'),
 

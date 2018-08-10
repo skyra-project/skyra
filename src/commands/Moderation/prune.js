@@ -24,42 +24,8 @@ module.exports = class extends Command {
 			messages = messages.filter(this.getFilter(msg, type, user));
 		}
 		messages = messages.array().slice(0, limit);
-		this.sendLog(msg, filter, messages).catch(error => this.client.emit('apiError', error));
 		await msg.channel.bulkDelete(messages, true);
 		return msg.sendLocale('COMMAND_PRUNE', [messages.length, limit]);
-	}
-
-	async sendLog(msg, filter, messages) {
-		const { channels, events } = msg.guild.configs;
-		if (!channels.modlog || !events.messagePrune) return;
-		const channel = msg.guild.channels.get(channels.modlog);
-		if (!channel || !channel.postable) {
-			await msg.guild.configs.reset('channels.modlog');
-			return;
-		}
-
-		const formatted = [];
-		for (const m of messages) {
-			formatted.push({
-				id: m.id,
-				author: m.author.tag,
-				attachments: m.attachments.map(this._resizeImage),
-				embeds: m.embeds.filter(embed => embed.type === 'image').map(embed => this._resizeImage(embed.thumbnail)),
-				createdTimestamp: m.createdTimestamp,
-				cleanContent: m.cleanContent
-			});
-		}
-
-		const { filename, key } = await this.client.ipc.send('dashboard', { route: 'cryptoSave', type: 'MESSAGE_GIST', text: formatted.reverse() });
-		await channel.send(new MessageEmbed()
-			.setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-			.setDescription([
-				`❯ **Type**: ${title}`,
-				`❯ **URL**: [${key}](${URL}?id=${filename}&key=${key})`,
-				`❯ **Filter**: ${filter || 'all'}`,
-				`❯ **Amount**: ${messages.length}`
-			].join('\n'))
-			.setColor(color));
 	}
 
 	_resizeImage(image) {

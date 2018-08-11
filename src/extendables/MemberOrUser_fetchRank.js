@@ -1,6 +1,5 @@
 // @ts-nocheck
-const { Extendable } = require('klasa');
-const { GuildMember } = require('discord.js');
+const { Extendable, GuildMember } = require('../index');
 
 module.exports = class extends Extendable {
 

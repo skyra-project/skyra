@@ -17,7 +17,15 @@ import {
 	util as KlasaUtil,
 	CommandStore,
 	Possible,
-	Event
+	Event,
+	KlasaClientOptions,
+	Extendable,
+	Finalizer,
+	Inhibitor,
+	Monitor,
+	Task,
+	PermissionLevels,
+	PermissionLevelOptions
 } from 'klasa';
 import {
 	Channel,
@@ -39,7 +47,8 @@ import {
 	GuildMemberStore,
 	GuildPruneMembersOptions,
 	FetchMemberOptions,
-	BanOptions
+	BanOptions,
+	ClientUser
 } from 'discord.js';
 import { Node, NodeMessage } from 'veza';
 import { Image } from 'canvas-constructor';
@@ -70,20 +79,13 @@ export {
 	ArgumentStore,
 	CommandStore,
 	EventStore,
-	Extendable,
 	ExtendableStore,
-	Finalizer,
 	FinalizerStore,
-	Inhibitor,
 	InhibitorStore,
-	Language,
 	LanguageStore,
-	Monitor,
 	MonitorStore,
-	Provider,
 	ProviderStore,
 	SQLProvider,
-	Task,
 	TaskStore,
 	CommandPrompt,
 	CommandUsage,
@@ -136,7 +138,6 @@ export {
 	CategoryChannel,
 	Channel,
 	ClientApplication,
-	ClientUser,
 	Collector,
 	DMChannel,
 	Emoji,
@@ -172,8 +173,11 @@ export const assetsFolder: string;
 export const config: SkyraConfiguration;
 
 export class Skyra extends KlasaClient {
+	public constructor(options?: SkyraClientOptions);
+	public options: SkyraClientOptions;
 	public users: SkyraUserStore;
 	public guilds: SkyraGuildStore;
+	public user: SkyraClientUser;
 
 	public version: string;
 	public leaderboard: Leaderboard;
@@ -193,6 +197,8 @@ export class Skyra extends KlasaClient {
 
 	public updateStats(): void;
 	public dispose(): void;
+
+	public static defaultPermissionLevels: SkyraPermissionLevels;
 }
 
 export class MemberSettings {
@@ -221,7 +227,7 @@ export class StarboardManager extends Collection<Snowflake, StarboardMessage> {
 	public guild: SkyraGuild;
 	public readonly starboardChannel: KlasaTextChannel;
 	public readonly minimum: number;
-	public readonly provider: Provider;
+	public readonly provider: SkyraProvider;
 
 	public dispose(): void;
 	public fetch(channel: KlasaTextChannel, messageID: Snowflake, userID: Snowflake): Promise<StarboardMessage | null>;
@@ -235,7 +241,7 @@ export class StarboardMessage {
 	public disabled: boolean;
 	public users: Set<Snowflake>;
 	public readonly client: Skyra;
-	public readonly provider: Provider;
+	public readonly provider: SkyraProvider;
 	public readonly emoji: '⭐' | '🌟' | '💫' | '✨';
 	public readonly color: number;
 	public readonly embed: MessageEmbed;
@@ -463,7 +469,7 @@ export class ConnectFour {
 	public challenger: SkyraUser;
 	public challengee: SkyraUser;
 	public message: SkyraMessage | null;
-	public language: Language;
+	public language: SkyraLanguage;
 	public turn: 0 | 1;
 	public table: Array<[number, number, number, number, number]>;
 	public winner: SkyraUser | null;
@@ -578,8 +584,8 @@ export class ModerationLog {
 	public constructor(guild: SkyraGuild);
 	public client: Skyra;
 	public guild: SkyraGuild;
-	public moderator: SkyraUser | null;
-	public user: SkyraUser | null;
+	public moderator: SkyraClientUser | SkyraUser | null;
+	public user: SkyraClientUser | SkyraUser | null;
 	public type: ModerationTypesEnum | null;
 	public reason: string | null;
 	public duration: number | null;
@@ -593,8 +599,8 @@ export class ModerationLog {
 	public readonly appeal: boolean;
 
 	public setCaseNumber(value: number): this;
-	public setModerator(value: SkyraUser): this;
-	public setUser(value: SkyraUser): this;
+	public setModerator(value: SkyraClientUser | SkyraUser): this;
+	public setUser(value: SkyraClientUser | SkyraUser): this;
 	public setType(value: ModerationTypesEnum): this;
 	public setReason(value: Array<string> | string): this;
 	public setDuration(value: string | number): this;
@@ -684,6 +690,11 @@ declare class RGB {
 }
 
 //#region types
+
+type SkyraClientOptions = {
+	dev?: boolean;
+	slowmodeTime?: number;
+} & KlasaClientOptions;
 
 type ModerationLogCacheEntry = {
 	type: ModerationTypesEnum;
@@ -1006,6 +1017,12 @@ type ObjectLiteral<T = any> = {
 //#endregion types
 //#region klasa
 
+declare class SkyraPermissionLevels extends PermissionLevels {
+	public add(level: number, check: (client: Skyra, message: SkyraMessage) => boolean, options?: PermissionLevelOptions): this;
+}
+
+export { SkyraPermPermissionLevels as PermissionLevels };
+
 declare class SkyraCommand extends Command {
 	public client: Skyra;
 	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage) => any): this;
@@ -1019,8 +1036,57 @@ declare class SkyraEvent extends Event {
 
 export { SkyraEvent as Event };
 
+declare class SkyraExtendable extends Extendable {
+	public client: Skyra;
+}
+
+export { SkyraExtendable as Extendable };
+
+declare class SkyraFinalizer extends Finalizer {
+	public client: Skyra;
+}
+
+export { SkyraFinalizer as Finalizer };
+
+declare class SkyraInhibitor extends Inhibitor {
+	public client: Skyra;
+}
+
+export { SkyraInhibitor as Inhibitor };
+
+declare class SkyraLanguage extends Language {
+	public client: Skyra;
+}
+
+export { SkyraLanguage as Language };
+
+declare class SkyraMonitor extends Monitor {
+	public client: Skyra;
+}
+
+export { SkyraMonitor as Monitor };
+
+declare class SkyraProvider extends Provider {
+	public client: Skyra;
+}
+
+export { SkyraProvider as Provider };
+
+declare class SkyraTask extends Task {
+	public client: Skyra;
+}
+
+export { SkyraTask as Task };
+
 //#endregion klasa
 //#region discord.js
+
+declare class SkyraClientUser extends ClientUser {
+	public client: Skyra;
+	public settings: UserSettings;
+}
+
+export { SkyraClientUser as ClientUser };
 
 declare class SkyraMessageEmbed extends MessageEmbed {
 	public splitFields(input: string | string[]): this;

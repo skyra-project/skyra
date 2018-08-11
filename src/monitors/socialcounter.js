@@ -1,5 +1,4 @@
-const { Monitor } = require('../index');
-const { Permissions: { FLAGS: { MANAGE_ROLES } } } = require('discord.js');
+const { Monitor, Permissions: { FLAGS: { MANAGE_ROLES } } } = require('../index');
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 
 module.exports = class extends Monitor {

@@ -1,6 +1,5 @@
 // @ts-nocheck
-const { Extendable } = require('klasa');
-const { Permissions: { FLAGS } } = require('discord.js');
+const { Extendable, Permissions: { FLAGS } } = require('../index');
 const OPTIONS = { time: 20000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;

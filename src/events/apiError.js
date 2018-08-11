@@ -1,5 +1,4 @@
-const { Event } = require('../index');
-const { DiscordAPIError } = require('discord.js');
+const { Event, DiscordAPIError } = require('../index');
 
 module.exports = class extends Event {
 

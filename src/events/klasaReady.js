@@ -1,4 +1,4 @@
-const { Event } = require('klasa');
+const { Event } = require('../index');
 
 module.exports = class extends Event {
 

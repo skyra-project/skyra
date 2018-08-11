@@ -27,7 +27,6 @@ Skyra.defaultPermissionLevels
 const skyra = new Skyra({
 	commandEditing: true,
 	commandLogging: false,
-	cmdPrompt: true,
 	console: config.console,
 	consoleEvents: { verbose: true },
 	dev: DEV,
@@ -48,7 +47,7 @@ const skyra = new Skyra({
 	messageSweepInterval: 120,
 	ownerID: '242043489611808769',
 	pieceDefaults: {
-		commands: { deletable: true },
+		commands: { deletable: true, promptLimit: 5, promptTime: 60, quotedStringSupport: true },
 		ipcPieces: { enabled: true },
 		monitors: { ignoreOthers: false },
 		rawEvents: { enabled: true }
@@ -59,7 +58,6 @@ const skyra = new Skyra({
 		default: 'rethinkdb',
 		rethinkdb: config.database.rethinkdb
 	},
-	quotedStringSupport: true,
 	readyMessage: (client) =>
 		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)(,|!)/i,

@@ -1,6 +1,5 @@
 // @ts-nocheck
-const { Extendable, Settings } = require('klasa');
-const { GuildSettings, UserSettings } = require('../index');
+const { Extendable, Settings, GuildSettings, UserSettings } = require('../index');
 
 module.exports = class extends Extendable {
 

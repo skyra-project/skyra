@@ -1,4 +1,4 @@
-const { Inhibitor } = require('klasa');
+const { Inhibitor } = require('../index');
 
 module.exports = class extends Inhibitor {
 

@@ -1,5 +1,5 @@
 // @ts-nocheck
-const { Extendable } = require('klasa');
+const { Extendable } = require('../index');
 
 module.exports = class extends Extendable {
 

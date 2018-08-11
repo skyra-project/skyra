@@ -1,4 +1,4 @@
-const { Event, Stopwatch } = require('klasa');
+const { Event, Stopwatch } = require('../index');
 
 module.exports = class extends Event {
 

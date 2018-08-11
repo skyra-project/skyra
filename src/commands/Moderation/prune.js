@@ -1,5 +1,4 @@
-const { Command, MessageEmbed, ModerationLog: { TYPES: { prune: { title, color } } } } = require('../../index');
-const URL = 'https://skyradiscord.com/#/gist';
+const { Command } = require('../../index');
 
 module.exports = class extends Command {
 

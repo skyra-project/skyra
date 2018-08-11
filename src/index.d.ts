@@ -16,7 +16,8 @@ import {
 	Timestamp,
 	util as KlasaUtil,
 	CommandStore,
-	Possible
+	Possible,
+	Event
 } from 'klasa';
 import {
 	Channel,
@@ -68,7 +69,6 @@ export {
 	Argument,
 	ArgumentStore,
 	CommandStore,
-	Event,
 	EventStore,
 	Extendable,
 	ExtendableStore,
@@ -1008,10 +1008,16 @@ type ObjectLiteral<T = any> = {
 
 declare class SkyraCommand extends Command {
 	public client: Skyra;
-	createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage) => any): this;
+	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage) => any): this;
 }
 
 export { SkyraCommand as Command };
+
+declare class SkyraEvent extends Event {
+	public client: Skyra;
+}
+
+export { SkyraEvent as Event };
 
 //#endregion klasa
 //#region discord.js

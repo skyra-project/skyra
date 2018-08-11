@@ -1,4 +1,4 @@
-const { RawEvent, MessageEmbed, Permissions: { FLAGS } } = require('../index');
+const { RawEvent, MessageEmbed, Permissions: { FLAGS }, constants: { MESSAGE_LOGS } } = require('../index');
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
 	MEMBER: '%MEMBER%',
@@ -26,6 +26,7 @@ module.exports = class extends RawEvent {
 			const mute = guild.settings.roles.muted;
 			if (mute && stickyRoles.roles.includes(mute)) {
 				this._handleMute(guild, member);
+				this._handleLog(guild, member, COLORS.MUTE);
 				return;
 			}
 
@@ -59,7 +60,6 @@ module.exports = class extends RawEvent {
 	}
 
 	async _handleMute(guild, member) {
-		this._handleLog(guild, member, COLORS.MUTE).catch(error => this.client.emit('apiError', error));
 		if (guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
 			const role = guild.roles.get(guild.settings.roles.muted);
 			if (!role) guild.settings.reset('roles.muted').catch(error => this.client.emit('apiError', error));
@@ -80,17 +80,12 @@ module.exports = class extends RawEvent {
 			member.user.send(this._handleGreeting(guild.settings.messages['join-dm'], guild, member.user)).catch(() => null);
 	}
 
-	async _handleLog(guild, member, asset) {
-		if (guild.settings.channels.log) {
-			const channel = guild.channels.get(guild.settings.channels.log);
-			if (channel && channel.postable) {
-				await channel.send(new MessageEmbed()
-					.setColor(asset.color)
-					.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
-					.setFooter(asset.title)
-					.setTimestamp());
-			} else { await guild.settings.reset('channels.log'); }
-		}
+	_handleLog(guild, member, asset) {
+		this.client.emit('guildMessageLog', MESSAGE_LOGS.kMember, guild, () => new MessageEmbed()
+			.setColor(asset.color)
+			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
+			.setFooter(asset.title)
+			.setTimestamp());
 	}
 
 	async _handleMessage(guild, member) {

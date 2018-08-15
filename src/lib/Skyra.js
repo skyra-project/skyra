@@ -163,8 +163,11 @@ module.exports = class Skyra extends Client {
 
 		// Clear all the timeouts and caches for all Guild#security
 		for (const guild of this.guilds.values()) {
+			// @ts-ignore
 			guild.security.dispose();
+			// @ts-ignore
 			guild.starboard.dispose();
+			// @ts-ignore
 			guild.nameDictionary.clear();
 		}
 	}

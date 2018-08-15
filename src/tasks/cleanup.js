@@ -39,7 +39,6 @@ const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
 /**
  * @since 3.0.0
  * @version 2.0.0
- * @extends {Task}
  */
 module.exports = class MemorySweeper extends Task {
 
@@ -56,8 +55,9 @@ module.exports = class MemorySweeper extends Task {
 			// Clear members that haven't send a message in the last 30 minutes
 			const { me } = guild;
 			for (const [id, member] of guild.members) {
+				// @ts-ignore
 				if (member === me) continue;
-				if (member.voiceChannelID) continue;
+				if (member.voice.channelID) continue;
 				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
 				guildMembers++;
 				guild.members.delete(id);

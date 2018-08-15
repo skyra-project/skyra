@@ -49,7 +49,7 @@ module.exports = class ConnectFour {
 		/**
 		 * The current turn
 		 * @since 3.0.0
-		 * @type {(0 | 1)}
+		 * @type {number}
 		 */
 		this.turn = Math.round(Math.random());
 

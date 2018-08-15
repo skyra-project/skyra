@@ -34,6 +34,9 @@ function levenshtein(a, b, full = true) {
 
 	let la = a.length, lb = b.length;
 
+	// add-on, try to not match if distance is over 2
+	if (!full && (lb - la) > 2) return -1;
+
 	while (la > 0 && (a.charCodeAt(la - 1) === b.charCodeAt(lb - 1))) {
 		la--;
 		lb--;

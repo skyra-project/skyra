@@ -66,7 +66,7 @@ class Slotmachine {
 
 		const amount = this.winnings !== 0 ? settings.money + (this.winnings * this.boost) : settings.money - this.amount;
 		if (amount < 0) throw 'You cannot have negative money.';
-		await settings.update(['money', 'bias'], [amount, this.winnings === 0 ? Math.min(settings.bias + 0.1, 5) : 0]);
+		await settings.update([['money', amount], ['bias', this.winnings === 0 ? Math.min(settings.bias + 0.1, 5) : 0]]);
 		return this.render(rolls);
 	}
 

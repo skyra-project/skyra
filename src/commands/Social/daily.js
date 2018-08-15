@@ -47,7 +47,7 @@ module.exports = class extends Command {
 			await msg.guild.settings.waitSync();
 			money *= msg.guild.settings.social.boost;
 		}
-		await msg.author.settings.update(['money', 'timeDaily'], [msg.author.settings.money + money, nextTime]);
+		await msg.author.settings.update([['money', msg.author.settings.money + money], ['timeDaily', nextTime]]);
 		return money;
 	}
 

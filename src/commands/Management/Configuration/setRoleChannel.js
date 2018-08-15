@@ -18,7 +18,7 @@ module.exports = class extends Command {
 		if (channel === 'here') ({ channel } = msg);
 		else if (channel.type !== 'text') throw msg.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 		if (msg.guild.settings.channels.roles === channel.id) throw msg.language.get('CONFIGURATION_EQUALS');
-		await msg.guild.settings.update(['channels.roles', 'roles.messageReaction'], [channel, null]);
+		await msg.guild.settings.update([['channels.roles', channel], ['roles.messageReaction', null]]);
 		return msg.sendLocale('COMMAND_SETROLECHANNEL_SET', [channel]);
 	}
 

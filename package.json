@@ -32,16 +32,16 @@
     "canvas-constructor": "1.0.1",
     "diff": "^3.5.0",
     "discord.js": "github:discordjs/discord.js",
-    "fs-nextra": "^0.3.6",
+    "fs-nextra": "^0.3.7",
     "gifencoder": "^1.1.0",
     "heapdump": "^0.3.9",
     "klasa": "github:dirigeants/klasa",
     "node-fetch": "^2.2.0",
     "rethinkdbdash": "^2.3.31",
-    "veza": "^0.2.2"
+    "veza": "^0.2.3"
   },
   "devDependencies": {
-    "eslint": "^5.2.0",
+    "eslint": "^5.3.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1"

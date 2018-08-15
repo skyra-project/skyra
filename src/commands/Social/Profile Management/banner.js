@@ -75,8 +75,8 @@ module.exports = class extends Command {
 		await user.settings.waitSync();
 
 		await Promise.all([
-			msg.author.settings.update(['money', 'bannerList'], [msg.author.settings.money - banner.price, [...banners]]),
-			user.settings.update(['money'], [user.settings.money + (banner.price * 0.1)])
+			msg.author.settings.update([['money', msg.author.settings.money - banner.price], ['bannerList', [...banners]]]),
+			user.settings.update('money', user.settings.money + (banner.price * 0.1))
 		]);
 
 		return msg.sendLocale('COMMAND_BANNER_BUY', [banner.title]);

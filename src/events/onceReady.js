@@ -14,23 +14,12 @@ module.exports = class extends Event {
 		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.application.owner.id;
 
 		this.client.settings = this.client.gateways.clientStorage.get(this.client.user.id, true);
+		// Added for consistency with other datastores, Client#clients does not exist
+		this.client.gateways.clientStorage.cache.set(this.client.user.id, this.client);
 		await Promise.all([
 			this._prepareSkyra(),
 			this.client.gateways.sync()
 		]);
-
-		// Automatic Prefix editing detection.
-		const { prefix } = this.client.options;
-		if (typeof prefix === 'string' && this.client.options.prefix !== this.client.gateways.guilds.schema.prefix.default)
-			await this.client.gateways.guilds.schema.prefix.edit({ default: prefix });
-
-		if (this.client.gateways.guilds.schema.has('disabledCommands')) {
-			const languageStore = this.client.languages;
-			const commandStore = this.client.commands;
-			this.client.gateways.guilds.schema.disabledCommands.setValidator(function (command, guild) { // eslint-disable-line
-				if ((cmd => cmd && cmd.guarded)(commandStore.get(command))) throw (guild ? guild.language : languageStore.default).get('COMMAND_CONF_GUARDED', command);
-			});
-		}
 
 		// Init all the pieces
 		await Promise.all(this.client.pieceStores.filter(store => !['providers', 'extendables'].includes(store.name)).map(store => store.init()));

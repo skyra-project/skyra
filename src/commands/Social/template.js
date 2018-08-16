@@ -43,7 +43,7 @@ module.exports = class extends Command {
 	}
 
 	async showProfile(msg, file) {
-		await msg.author.settings.waitSync();
+		await msg.author.settings.sync();
 		const { points, color, money, reputation, level } = msg.author.settings;
 
 		/* Calculate information from the user */

@@ -20,7 +20,7 @@ module.exports = class extends Command {
 
 		// Fetch the user and sync the settings
 		const user = await this.client.users.fetch(msg.author.settings.marry);
-		await user.settings.waitSync();
+		await user.settings.sync();
 
 		// Reset the values for both entries
 		await Promise.all([

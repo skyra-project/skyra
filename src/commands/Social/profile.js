@@ -30,7 +30,7 @@ module.exports = class extends Command {
 	}
 
 	async showProfile(msg, user) {
-		await user.settings.waitSync();
+		await user.settings.sync();
 		const { points, color, themeProfile, money, reputation, level } = user.settings;
 
 		/* Calculate information from the user */

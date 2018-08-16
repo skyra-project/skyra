@@ -13,6 +13,7 @@ module.exports = class extends Argument {
 	}
 
 	async run(arg, possible, msg) {
+		if (!arg) throw msg.language.get('RESOLVER_INVALID_CHANNELNAME', possible.name);
 		if (!msg.guild) return this.channel.run(arg, possible, msg);
 		const resChannel = resolveChannel(arg, msg.guild);
 		if (resChannel) return resChannel;

@@ -13,6 +13,7 @@ module.exports = class extends Argument {
 	}
 
 	async run(arg, possible, msg) {
+		if (!arg) throw msg.language.get('RESOLVER_INVALID_ROLENAME', possible.name);
 		if (!msg.guild) return this.role.run(arg, possible, msg);
 		const resRole = resolveRole(arg, msg.guild);
 		if (resRole) return resRole;

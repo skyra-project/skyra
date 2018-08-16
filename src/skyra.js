@@ -54,7 +54,7 @@ Skyra.defaultGuildSchema
 	.add('stickyRoles', 'any', { array: true })
 	.add('roles', folder => folder
 		.add('admin', 'Role')
-		.add('auto', 'any')
+		.add('auto', 'any', { array: true })
 		.add('initial', 'Role')
 		.add('messageReaction', 'String', { min: 17, max: 18 })
 		.add('moderator', 'Role')

@@ -1,5 +1,5 @@
-const { Command, Resolver } = require('../../../index');
-const SNOWFLAKE_REGEXP = Resolver.regex.snowflake;
+const { Command, SchemaType } = require('../../../index');
+const SNOWFLAKE_REGEXP = SchemaType.regex.snowflake;
 
 module.exports = class extends Command {
 

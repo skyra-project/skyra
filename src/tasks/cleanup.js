@@ -59,8 +59,8 @@ module.exports = class MemorySweeper extends Task {
 				if (member === me) continue;
 				if (member.voice.channelID) continue;
 				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
-				guildMembers++;
 				guild.members.delete(id);
+				guildMembers++;
 			}
 
 			// Clear emojis
@@ -70,7 +70,7 @@ module.exports = class MemorySweeper extends Task {
 
 		// Per-Channel sweeper
 		for (const channel of this.client.channels.values()) {
-			if (channel.lastMessageID) {
+			if (channel.type === 'text' && channel.lastMessageID) {
 				channel.lastMessageID = null;
 				lastMessages++;
 			}
@@ -80,7 +80,6 @@ module.exports = class MemorySweeper extends Task {
 		for (const user of this.client.users.values()) {
 			if (user.lastMessageID && user.lastMessageID > OLD_SNOWFLAKE) continue;
 			this.client.users.delete(user.id);
-			this.client.gateways.users.cache.delete(user.id);
 			users++;
 		}
 

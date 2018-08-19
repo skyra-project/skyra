@@ -1,5 +1,4 @@
-const { RawEvent } = require('../index');
-const { DiscordAPIError } = require('discord.js');
+const { RawEvent, util: { resolveEmoji } } = require('../index');
 
 module.exports = class extends RawEvent {
 
@@ -29,7 +28,8 @@ module.exports = class extends RawEvent {
 		const { messageReaction } = guild.settings.roles;
 		if (!messageReaction || messageReaction !== messageID) return;
 
-		const roleEntry = guild.settings.roles.reactions.find(entry => entry.emoji === emoji.name);
+		const parsed = resolveEmoji(emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}` : emoji.name);
+		const roleEntry = guild.settings.roles.reactions.find(entry => entry.emoji === parsed);
 		if (!roleEntry) return;
 
 		try {
@@ -37,7 +37,6 @@ module.exports = class extends RawEvent {
 			if (!member.roles.has(roleEntry.role)) return;
 			await member.roles.remove(roleEntry.role);
 		} catch (error) {
-			if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
 			this.client.emit('apiError', error);
 		}
 	}

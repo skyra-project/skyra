@@ -1,6 +1,4 @@
-const { Command, klasaUtil: { codeBlock } } = require('../../../index');
-
-const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
+const { Command, klasaUtil: { codeBlock }, util: { resolveEmoji } } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -24,7 +22,7 @@ module.exports = class extends Command {
 			if (!arg) throw msg.language.get('COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION');
 
 			try {
-				if (REG_REAC.test(arg)) [, arg] = REG_REAC.exec(arg);
+				arg = resolveEmoji(arg);
 				await msg.react(arg);
 				return arg;
 			} catch (_) {

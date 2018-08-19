@@ -127,7 +127,7 @@ const skyra = new Skyra({
 	messageSweepInterval: 120,
 	ownerID: '242043489611808769',
 	pieceDefaults: {
-		commands: { deletable: true, promptLimit: 5, promptTime: 60, quotedStringSupport: true },
+		commands: { deletable: true, promptLimit: 5, promptTime: 60000, quotedStringSupport: true },
 		ipcPieces: { enabled: true },
 		monitors: { ignoreOthers: false },
 		rawEvents: { enabled: true }

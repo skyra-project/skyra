@@ -17,7 +17,7 @@ module.exports = class extends Command {
 			if (!msg.guild.settings.roles.public.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 			if (!arg) return [];
 
-			const search = new FuzzySearch(msg.guild.roles, (role) => role.name, (role) => msg.guild.settings.roles.public.includes(role.name));
+			const search = new FuzzySearch(msg.guild.roles, (role) => role.name, (role) => msg.guild.settings.roles.public.includes(role.id));
 			const roles = arg.split(',').map(role => role.trim());
 			const output = [];
 			for (const role of roles) {

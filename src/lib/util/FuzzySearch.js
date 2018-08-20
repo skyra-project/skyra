@@ -17,7 +17,7 @@ class FuzzySearch {
 		this.access = access;
 	}
 
-	async run(msg, query) {
+	run(msg, query) {
 		const lowcquery = query.toLowerCase();
 		const apResults = [];
 		const exResults = [];
@@ -43,7 +43,10 @@ class FuzzySearch {
 			if (apResults.length === 10) break;
 		}
 
-		const results = exResults.length ? exResults : apResults;
+		return this.select(msg, exResults.length ? exResults : apResults);
+	}
+
+	async select(msg, results) {
 		switch (results.length) {
 			case 0: return null;
 			case 1: return results[0];

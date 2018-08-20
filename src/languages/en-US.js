@@ -2221,6 +2221,10 @@ module.exports = class extends Language {
 			PROMPTLIST_ABORT: 'abort',
 			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.',
 
+			FUZZYSEARCH_MATCHES: (matches, codeblock) => `I found multiple matches! **Please select a number within 0 and ${matches}**:\n${codeblock}\nWrite **ABORT** if you want to exit the prompt.`,
+			FUZZYSEARCH_INVALID_NUMBER: 'I expected you to give me a (single digit) number, got a potato.',
+			FUZZYSEARCH_INVALID_INDEX: 'That number was out of range, aborting prompt.',
+
 			EVENTS_ERROR_WTF: 'What a Terrible Failure! I am very sorry!',
 			EVENTS_ERROR_STRING: (mention, message) => `Dear ${mention}, ${message}`,
 

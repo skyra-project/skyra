@@ -43,6 +43,7 @@ module.exports = {
 	// Util
 	Color: require('./lib/util/Color'),
 	FriendlyDuration: require('./lib/util/FriendlyDuration'),
+	FuzzySearch: require('./lib/util/FuzzySearch'),
 	LanguageHelp: require('./lib/util/LanguageHelp'),
 	Leaderboard: require('./lib/util/Leaderboard'),
 	PreciseTimeout: require('./lib/util/PreciseTimeout'),

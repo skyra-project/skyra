@@ -340,8 +340,15 @@ export class FriendlyDuration {
 	private static _parseUnit(time: number, unit: string): number;
 }
 
+export class FuzzySearch<K, V> {
+	constructor(collection: Collection<K, V>, access: (entry: V) => string, filter?: (entry: V) => boolean);
+	public filter: (entry: V) => boolean;
+	public access: (entry: V) => string;
+	public run(msg: SkyraMessage, query: string): V;
+}
+
 export class LanguageHelp {
-	public constructor();
+	constructor();
 	public explainedUsage: string | null;
 	public possibleFormats: string | null;
 	public examples: string | null;

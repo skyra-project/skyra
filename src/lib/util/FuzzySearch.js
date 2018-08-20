@@ -21,7 +21,6 @@ class FuzzySearch {
 		const lowcquery = query.toLowerCase();
 		const apResults = [];
 		const exResults = [];
-		const regExpSrc = new RegExp(regExpEsc(lowcquery));
 
 		let lowerCaseName, distance = 2;
 		for (const entry of this.collection.values()) {
@@ -30,7 +29,7 @@ class FuzzySearch {
 			if (lowerCaseName === lowcquery) {
 				apResults.push(entry);
 				exResults.push(entry);
-			} else if (regExpSrc.test(lowerCaseName) || ((distance = levenshtein(lowcquery, lowerCaseName, false)) !== -1)) {
+			} else if (lowerCaseName.includes(lowcquery) || ((distance = levenshtein(lowcquery, lowerCaseName, false)) !== -1)) {
 				apResults.push(entry);
 				if (distance <= 1) {
 					exResults.push(entry);

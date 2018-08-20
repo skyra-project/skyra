@@ -21,12 +21,11 @@ module.exports = class extends Extendable {
 
 };
 
-function nuke(msg) {
+async function nuke(msg) {
 	try {
-		return msg.delete();
+		return await msg.delete();
 	} catch (error) {
 		if (error.code === 10008) return msg;
-		Error.captureStackTrace(error);
 		throw error;
 	}
 }

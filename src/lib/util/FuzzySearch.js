@@ -36,6 +36,8 @@ class FuzzySearch {
 					exResults.push(entry);
 					distance = 2;
 				}
+			} else {
+				continue;
 			}
 
 			if (apResults.length === 10) break;

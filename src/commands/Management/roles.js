@@ -28,7 +28,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, roles) {
+	async run(msg, [roles]) {
 		const { public: publicRoles, removeInitial, initial } = msg.guild.settings.roles;
 		if (!publicRoles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 

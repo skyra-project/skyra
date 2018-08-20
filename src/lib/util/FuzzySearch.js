@@ -23,16 +23,18 @@ class FuzzySearch {
 		const exResults = [];
 
 		let lowerCaseName, distance = 2;
-		for (const entry of this.collection.values()) {
+		for (const [id, entry] of this.collection.entries()) {
 			if (!this.filter(entry)) continue;
 			lowerCaseName = this.access(entry).toLowerCase();
 			if (lowerCaseName === lowcquery) {
-				apResults.push(entry);
-				exResults.push(entry);
+				const resolved = [id, entry];
+				apResults.push(resolved);
+				exResults.push(resolved);
 			} else if (lowerCaseName.includes(lowcquery) || ((distance = levenshtein(lowcquery, lowerCaseName, false)) !== -1)) {
-				apResults.push(entry);
+				const resolved = [id, entry];
+				apResults.push(resolved);
 				if (distance <= 1) {
-					exResults.push(entry);
+					exResults.push(resolved);
 					distance = 2;
 				}
 			} else {
@@ -52,7 +54,7 @@ class FuzzySearch {
 			// Two or more
 			default: {
 				const number = await msg.prompt(msg.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
-					codeBlock('http', results.map((result, i) => `${i} : ${this.access(result)} [${result.id}]`).join('\n'))));
+					codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
 				if (number.toLowerCase() === 'abort') return null;
 				const parsed = Number(number);
 				if (!Number.isSafeInteger(parsed)) throw msg.language.get('FUZZYSEARCH_INVALID_NUMBER');

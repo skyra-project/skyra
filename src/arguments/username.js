@@ -15,7 +15,7 @@ module.exports = class extends Argument {
 		if (resUser) return resUser;
 
 		const result = await new FuzzySearch(msg.guild.nameDictionary, (entry) => entry, filter).run(msg, arg);
-		if (result) return this.client.users.fetch(msg.guild.nameDictionary.findKey(name => name === result));
+		if (result) return this.client.users.fetch(result[0]);
 		throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 

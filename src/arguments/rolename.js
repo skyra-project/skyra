@@ -14,7 +14,7 @@ module.exports = class extends Argument {
 		if (resRole) return resRole;
 
 		const result = await new FuzzySearch(msg.guild.roles, (entry) => entry.name, filter).run(msg, arg);
-		if (result) return result;
+		if (result) return result[1];
 		throw msg.language.get('RESOLVER_INVALID_ROLENAME', possible.name);
 	}
 

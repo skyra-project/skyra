@@ -53,7 +53,7 @@ class FuzzySearch {
 			case 1: return results[0];
 			// Two or more
 			default: {
-				const number = await msg.prompt(msg.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
+				const { content: number } = await msg.prompt(msg.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
 					codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
 				if (number.toLowerCase() === 'abort') return null;
 				const parsed = Number(number);

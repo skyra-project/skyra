@@ -1,4 +1,4 @@
-const { Command, RichDisplay, constants: { TIME }, MessageEmbed } = require('../../index');
+const { Command, RichDisplay, constants: { TIME }, MessageEmbed, FuzzySearch } = require('../../index');
 const RH_TIMELIMIT = TIME.MINUTE * 5;
 
 module.exports = class extends Command {
@@ -10,8 +10,21 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_ROLES_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_ROLES_EXTENDED'),
 			runIn: ['text'],
-			usage: '[roles:rolename] [...]',
-			usageDelim: ','
+			usage: '(roles:rolenames)'
+		});
+
+		this.createCustomResolver('rolenames', async (arg, possible, msg) => {
+			if (!msg.guild.settings.roles.public.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
+			if (!arg) return [];
+
+			const search = new FuzzySearch(msg.guild.roles, (role) => role.name, (role) => msg.guild.settings.roles.public.includes(role.name));
+			const roles = arg.split(',').map(role => role.trim());
+			const output = [];
+			for (const role of roles) {
+				const result = await search.run(msg, role);
+				if (result) output.push(result[1]);
+			}
+			return output.length ? [...new Set(output)] : output;
 		});
 	}
 

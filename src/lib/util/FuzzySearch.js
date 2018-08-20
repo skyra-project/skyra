@@ -1,4 +1,4 @@
-const { util: { regExpEsc, codeBlock } } = require('klasa');
+const { util: { codeBlock } } = require('klasa');
 const levenshtein = require('./External/levenshtein');
 
 class FuzzySearch {

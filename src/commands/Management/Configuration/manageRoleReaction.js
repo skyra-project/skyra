@@ -45,7 +45,7 @@ module.exports = class extends Command {
 			if (!role) list.delete(entry);
 			else lines.push(`${role.name.padEnd(25, ' ')} :: ${entry.emoji}`);
 		}
-		if (oldLength !== list.size) msg.guild.settings.update('roles.reactions', [...list]);
+		if (oldLength !== list.size) msg.guild.settings.update('roles.reactions', [...list], { action: 'overwrite' });
 		if (!lines.length) throw msg.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		return msg.sendMessage(codeBlock('asciicode', lines.join('\n')));
 	}

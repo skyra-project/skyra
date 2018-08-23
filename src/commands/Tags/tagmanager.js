@@ -23,7 +23,7 @@ module.exports = class extends Command {
 
 		contents = contents.join(' ');
 		currentTags.set(tag, contents);
-		const { errors } = await msg.guild.settings.update('_tags', [...currentTags]);
+		const { errors } = await msg.guild.settings.update('_tags', [...currentTags], { action: 'overwrite' });
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_TAGS_ADD_ADDED', [tag, contents]);
 	}
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 
 		contents = contents.join(' ');
 		currentTags.set(tag, contents);
-		const { errors } = await msg.guild.settings.update('_tags', [...currentTags]);
+		const { errors } = await msg.guild.settings.update('_tags', [...currentTags], { action: 'overwrite' });
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_TAGS_EDITED', [tag, contents, oldTag]);
 	}
@@ -49,7 +49,7 @@ module.exports = class extends Command {
 		const currentTags = msg.guild.settings.tags;
 		if (!currentTags.has(tag)) throw msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag);
 		currentTags.delete(tag);
-		const { errors } = await msg.guild.settings.update('_tags', [...currentTags]);
+		const { errors } = await msg.guild.settings.update('_tags', [...currentTags], { action: 'overwrite' });
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_TAGS_REMOVE_REMOVED', [tag]);
 	}

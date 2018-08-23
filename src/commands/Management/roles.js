@@ -83,7 +83,7 @@ module.exports = class extends Command {
 		if (remove.length) {
 			const allRoles = new Set(publicRoles);
 			for (const role of remove) allRoles.delete(role);
-			await msg.guild.settings.update('roles.public', [...allRoles], { force: true });
+			await msg.guild.settings.update('roles.public', [...allRoles], { action: 'overwrite', force: true });
 		}
 
 		// There's the possibility all roles could be inexistent, therefore the system

@@ -25,7 +25,7 @@ module.exports = class extends Command {
 			.setColor(0xD7CCC8)
 			.setImage(comic.img)
 			.setTitle(comic.title)
-			.setURL(comic.link)
+			.setURL(`https://xkcd.com/${comicNumber}/`)
 			.setFooter(`XKCD | ${comic.num} | ${this.getTime(comic.year, comic.month, comic.day)}`)
 			.setDescription(comic.alt)
 			.setTimestamp());

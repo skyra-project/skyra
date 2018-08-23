@@ -46,12 +46,17 @@ module.exports = class extends Command {
 
 	getFilter(msg, filter, user) {
 		switch (filter) {
+			case 'links':
 			case 'link': return mes => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
+			case 'invites':
 			case 'invite': return mes => /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/.+/.test(mes.content);
-			case 'bots': return mes => mes.author.bot;
+			case 'bots':
+			case 'bot': return mes => mes.author.bot;
 			case 'you': return mes => mes.author.id === this.client.user.id;
 			case 'me': return mes => mes.author.id === msg.author.id;
+			case 'uploads':
 			case 'upload': return mes => mes.attachments.size > 0;
+			case 'humans':
 			case 'human':
 			case 'user': return mes => mes.author.id === user.id;
 			default: return () => true;

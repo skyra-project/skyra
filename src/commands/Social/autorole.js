@@ -44,7 +44,7 @@ module.exports = class extends Command {
 		if (autoRoles.length && autoRoles.some(entry => entry.id === role.id))
 			throw msg.language.get('COMMAND_AUTOROLE_UPDATE_CONFIGURED');
 
-		await msg.guild.settings.update('roles.auto', [...autoRoles, { id: role.id, points }].sort(SORT), { action: 'override' });
+		await msg.guild.settings.update('roles.auto', [...autoRoles, { id: role.id, points }].sort(SORT), { action: 'overwrite' });
 		return msg.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
 	}
 
@@ -71,7 +71,7 @@ module.exports = class extends Command {
 
 		const autoRole = autoRoles.find(entry => entry.id === role.id);
 		autoRole.points = points;
-		await msg.guild.settings.update('roles.auto', [...autoRoles].sort(SORT), { action: 'override' });
+		await msg.guild.settings.update('roles.auto', [...autoRoles].sort(SORT), { action: 'overwrite' });
 		return msg.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole]);
 	}
 

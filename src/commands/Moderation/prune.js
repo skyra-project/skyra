@@ -22,9 +22,9 @@ module.exports = class extends Command {
 			const type = typeof filter === 'string' ? filter : 'user';
 			messages = messages.filter(this.getFilter(msg, type, user));
 		}
-		messages = messages.array().slice(0, limit);
-		await msg.channel.bulkDelete(messages, true);
-		return msg.sendLocale('COMMAND_PRUNE', [messages.length, limit]);
+		messages = [...messages.keys()].slice(0, limit);
+		const pruned = await msg.channel.bulkDelete(messages, true);
+		return msg.sendLocale('COMMAND_PRUNE', [pruned.length, limit]);
 	}
 
 	_resizeImage(image) {
@@ -49,6 +49,7 @@ module.exports = class extends Command {
 			case 'you': return mes => mes.author.id === this.client.user.id;
 			case 'me': return mes => mes.author.id === msg.author.id;
 			case 'upload': return mes => mes.attachments.size > 0;
+			case 'human':
 			case 'user': return mes => mes.author.id === user.id;
 			default: return () => true;
 		}

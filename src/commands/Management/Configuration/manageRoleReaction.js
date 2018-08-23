@@ -54,7 +54,8 @@ module.exports = class extends Command {
 		if (this._checkRoleReaction(msg, reaction, role.id)) throw msg.language.get('COMMAND_MANAGEROLEREACTION_EXISTS');
 		const { errors } = await msg.guild.settings.update('roles.reactions', { emoji: reaction, role: role.id }, { action: 'add' });
 		if (errors.length) throw errors[0];
-		await this._reactMessage(msg.guild.settings.channels.roles, msg.guild.settings.roles.messageReaction, reaction);
+		if (msg.guild.settings.roles.messageReaction)
+			await this._reactMessage(msg.guild.settings.channels.roles, msg.guild.settings.roles.messageReaction, reaction);
 		return msg.sendLocale('COMMAND_MANAGEROLEREACTION_ADD');
 	}
 

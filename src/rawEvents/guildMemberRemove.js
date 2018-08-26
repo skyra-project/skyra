@@ -16,7 +16,7 @@ module.exports = class extends RawEvent {
 	async run({ guild, user }) {
 		if (guild.nameDictionary.has(user.id)) guild.nameDictionary.delete(user.id);
 		if (guild.members.has(user.id)) guild.members.delete(user.id);
-		if (guild.security.hasRAID(user.id)) guild.security.raid.delete(user.id);
+		if (guild.security.raid.has(user.id)) guild.security.raid.delete(user.id);
 		if (guild.settings.events.memberRemove) {
 			this._handleLog(guild, user).catch(error => this.client.emit('apiError', error));
 			this._handleMessage(guild, user).catch(error => this.client.emit('apiError', error));

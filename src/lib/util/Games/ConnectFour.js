@@ -164,6 +164,7 @@ module.exports = class ConnectFour {
 	showWinner(row) {
 		this.winner = this.turn === 0 ? this.challenger : this.challengee;
 		const VALUE = this.turn === 0 ? 'WINNER_1' : 'WINNER_2';
+		// @ts-ignore
 		for (const { x, y } of row) this.table[x][y] = VALUE;
 		if (this.manageMessages) this.message.reactions.removeAll().catch(error => this.client.emit('apiError', error));
 	}
@@ -257,6 +258,7 @@ module.exports = class ConnectFour {
 			MAX_X = Math.min(6, posX + 3),
 			MAX_Y = Math.min(4, posY + 3);
 
+		// @ts-ignore
 		const verticals = this._checkVerticals(posX, MIN_Y, MAX_Y, PLAYER);
 		if (verticals) return verticals;
 

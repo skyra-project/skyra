@@ -262,6 +262,7 @@ class Util {
 	 */
 	static fetchAvatar(user, size = 512) {
 		const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
+		// @ts-ignore
 		return Util.fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
 	}
 
@@ -284,6 +285,7 @@ class Util {
 			type = 'json';
 		}
 
+		// @ts-ignore
 		const result = await fetch(url, options);
 		if (!result.ok) throw result.statusText;
 

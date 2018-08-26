@@ -7,6 +7,7 @@ const APIStore = require('./structures/APIStore');
 const RawEventStore = require('./structures/RawEventStore');
 const { Node } = require('veza');
 const ConnectFourManager = require('./util/Games/ConnectFourManager');
+const RatelimitManager = require('./util/Ratelimits/RatelimitManager');
 
 module.exports = class Skyra extends Client {
 
@@ -107,6 +108,7 @@ module.exports = class Skyra extends Client {
 
 		Object.defineProperties(this, {
 			connectFour: { writable: true },
+			ratelimitManager: { writable: true },
 			_updateStatsInterval: { writable: true },
 			_skyraReady: { writable: true }
 		});
@@ -117,6 +119,13 @@ module.exports = class Skyra extends Client {
 		 * @type {ConnectFourManager}
 		 */
 		this.connectFour = new ConnectFourManager(this);
+
+		/**
+		 * The RatelimitManager instance
+		 * @since 3.3.0
+		 * @type {RatelimitManager}
+		 */
+		this.ratelimitManager = new RatelimitManager(this);
 
 		/**
 		 * @type {NodeJS.Timer}

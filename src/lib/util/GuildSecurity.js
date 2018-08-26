@@ -23,7 +23,7 @@ class GuildSecurity {
 		 * @type {AntiRaid}
 		 * @private
 		 */
-		Object.defineProperty(this, '_raid', { value: null, writable: true });
+		this.raid = new AntiRaid(this.guild);
 
 		/**
 		 * The NoMentionSpam instance managed by this guild, if exists
@@ -31,67 +31,14 @@ class GuildSecurity {
 		 * @type {NoMentionSpam}
 		 * @private
 		 */
-		Object.defineProperty(this, '_nms', { value: null, writable: true });
+		this.nms = new NoMentionSpam();
 
 		/**
 		 * The lockdowns map
 		 * @since 3.0.0
 		 * @type {Map<string, NodeJS.Timer>}
 		 */
-		Object.defineProperty(this, '_lockdowns', { value: null, writable: true });
-	}
-
-	/**
-	 * The AntiRaid instance managed by this guild
-	 * @since 3.0.0
-	 * @returns {AntiRaid}
-	 * @readonly
-	 */
-	get raid() {
-		if (!this._raid) this._raid = new AntiRaid(this.guild);
-		return this._raid;
-	}
-
-	/**
-	 * The NoMentionSpam instance managed by this guild
-	 * @since 3.0.0
-	 * @returns {NoMentionSpam}
-	 * @readonly
-	 */
-	get nms() {
-		if (!this._nms) this._nms = new NoMentionSpam();
-		return this._nms;
-	}
-
-	/**
-	 * The NoMentionSpam instance managed by this guild
-	 * @since 3.0.0
-	 * @returns {Map<string, NodeJS.Timer>}
-	 * @readonly
-	 */
-	get lockdowns() {
-		if (!this._lockdowns) this._lockdowns = new Map();
-		return this._lockdowns;
-	}
-
-	/**
-	 * Check if a channel is under lockdown
-	 * @since 3.0.0
-	 * @param {string} channel The channel to check for
-	 * @returns {boolean}
-	 */
-	hasLockdown(channel) {
-		return this._lockdowns ? this._lockdowns.has(channel) : false;
-	}
-
-	/**
-	 * Check if a user is in the RAID queue
-	 * @since 3.0.0
-	 * @param {string} user The user ID to check for
-	 * @returns {boolean}
-	 */
-	hasRAID(user) {
-		return this._raid ? this._raid.has(user) : false;
+		this.lockdowns = new Map();
 	}
 
 	/**
@@ -109,9 +56,7 @@ class GuildSecurity {
 	 * @since 3.0.0
 	 */
 	clearRaid() {
-		if (!this._raid) return;
-		this._raid.clear();
-		this._raid = null;
+		this.raid.clear();
 	}
 
 	/**
@@ -119,9 +64,7 @@ class GuildSecurity {
 	 * @since 3.0.0
 	 */
 	clearNMS() {
-		if (!this._nms) return;
-		this._nms.clear();
-		this._nms = null;
+		this.nms.clear();
 	}
 
 	/**
@@ -129,9 +72,10 @@ class GuildSecurity {
 	 * @since 3.0.0
 	 */
 	clearLockdowns() {
-		if (!this._lockdowns) return;
-		for (const timer of this._lockdowns.values()) clearTimeout(timer);
-		this._lockdowns.clear();
+		// Clear all timeouts
+		const prefix = `lockdown-${this.guild.id}`;
+		for (const key of this.guild.client.ratelimitManager.keys())
+			if (key.startsWith(prefix)) this.guild.client.ratelimitManager.delete(key);
 	}
 
 }

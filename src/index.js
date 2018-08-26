@@ -62,6 +62,9 @@ module.exports = {
 	ConnectFourManager: require('./lib/util/Games/ConnectFourManager'),
 	Slotmachine: require('./lib/util/Games/Slotmachine'),
 
+	// Ratelimits
+	RatelimitManager: require('./lib/util/Ratelimits/RatelimitManager'),
+
 	// Moderation
 	AntiRaid: require('./lib/util/Security/AntiRaid'),
 	GuildSecurity: require('./lib/util/GuildSecurity'),

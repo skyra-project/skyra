@@ -3,10 +3,9 @@ const { GuildMember } = require('discord.js');
 /**
  * The AntiRaid class that manages the raiding protection for guilds
  * @since 2.1.0
- * @extends {Map<string, NodeJS.Timer>}
- * @version 2.0.0
+ * @version 3.0.0
  */
-class AntiRaid extends Map {
+class AntiRaid {
 
 	/**
 	 * Create a new AntiRaid instance
@@ -14,8 +13,6 @@ class AntiRaid extends Map {
 	 * @param {KlasaGuild} guild The Guild instance that manages this instance
 	 */
 	constructor(guild) {
-		super();
-
 		/**
 		 * The Guild instance that manages this instance
 		 * @since 2.1.0
@@ -29,14 +26,6 @@ class AntiRaid extends Map {
 		 * @type {boolean}
 		 */
 		this.attack = false;
-
-		/**
-		 * The timeout that counts the RAID
-		 * @since 2.1.0
-		 * @type {NodeJS.Timer}
-		 * @private
-		 */
-		this._timeout = null;
 	}
 
 	/**
@@ -50,6 +39,17 @@ class AntiRaid extends Map {
 	}
 
 	/**
+	 * Check if a member is in the raid list
+	 * @since 3.3.0
+	 * @param {(GuildMember|string)} member The member to check
+	 * @returns {this}
+	 */
+	has(member) {
+		const userID = member instanceof GuildMember ? member.id : member;
+		return this.guild.client.ratelimitManager.has(`raid-${this.guild.id}-${userID}`);
+	}
+
+	/**
 	 * Add a member to the cache
 	 * @since 2.1.0
 	 * @param {(GuildMember|string)} member The member to add
@@ -57,8 +57,8 @@ class AntiRaid extends Map {
 	 */
 	add(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
-		const timer = setTimeout(() => this.delete(userID), 20000);
-		return super.set(userID, timer);
+		this.guild.client.ratelimitManager.set(`raid-${this.guild.id}-${userID}`, Date.now() + 20000, () => this.delete(userID));
+		return this;
 	}
 
 	/**
@@ -69,11 +69,7 @@ class AntiRaid extends Map {
 	 */
 	delete(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
-		const entry = super.get(userID);
-		if (entry) {
-			clearTimeout(entry);
-			super.delete(userID);
-		}
+		this.guild.client.ratelimitManager.delete(`raid-${this.guild.id}-${userID}`);
 		return this;
 	}
 
@@ -96,7 +92,7 @@ class AntiRaid extends Map {
 		const kickedMembers = await this.prune();
 
 		// Create the timeout for stopping the AntiRAID mode
-		this._timeout = setTimeout(() => this.stop(), 20000);
+		this.guild.client.ratelimitManager.set(`raid-${this.guild.id}`, Date.now() + 20000, () => this.stop(), true);
 
 		// Return the kicked members
 		return kickedMembers;
@@ -120,15 +116,17 @@ class AntiRaid extends Map {
 	 * @returns {void}
 	 */
 	clear() {
-		// Clear all timeouts q
-		for (const timer of this.values())
-			clearTimeout(timer);
+		// Clear all timeouts
+		for (const key of this.keys()) this.guild.client.ratelimitManager.delete(key);
 
 		// Clear the attack mode and timeout
 		this.stop();
+	}
 
-		// Clear all entries
-		return super.clear();
+	*keys() {
+		const prefix = `raid-${this.guild.id}`;
+		for (const key of this.guild.client.ratelimitManager.keys())
+			if (key.startsWith(prefix)) yield key;
 	}
 
 	/**
@@ -154,7 +152,7 @@ class AntiRaid extends Map {
 		const minRolesAmount = initialRole ? 2 : 1;
 		const kickedUsers = [];
 
-		for (const memberID of super.keys()) {
+		for (const memberID of this.keys()) {
 			/**
 			 * @type {GuildMember}
 			 */
@@ -170,7 +168,7 @@ class AntiRaid extends Map {
 				|| !member.kickable
 				|| member.roles.size > minRolesAmount
 				|| (initialRole && member.roles.size === minRolesAmount && !member.roles.has(initialRole)))
-				super.delete(member.id);
+				this.delete(member.id);
 
 			if (kick) {
 				await this.kick(member)

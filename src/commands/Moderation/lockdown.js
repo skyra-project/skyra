@@ -17,7 +17,8 @@ module.exports = class extends Command {
 	}
 
 	run(msg, [channel = msg.channel, time]) {
-		return this[msg.guild.security.hasLockdown(msg.channel.id) ? 'unlock' : 'lock'](msg, channel, time);
+		// @ts-ignore
+		return this[msg.guild.security.lockdowns.has(msg.channel.id) ? 'unlock' : 'lock'](msg, channel, time);
 	}
 
 	async unlock(msg, channel) {
@@ -31,7 +32,7 @@ module.exports = class extends Command {
 		await channel.updateOverwrite(msg.guild.roles.get(msg.guild.id), { SEND_MESSAGES: false });
 		if (msg.channel.postable) await msg.sendLocale('COMMAND_LOCKDOWN_LOCK', [channel]);
 		msg.guild.security.lockdowns.set(channel.id, time
-			? setTimeout(() => this.unlock(message, channel), time.getTime() - Date.now())
+			? this.client.ratelimitManager.set(`lockdown-${msg.guild.id}-${channel.id}`, time.getTime(), () => this.unlock(message, channel))
 			: null);
 	}
 

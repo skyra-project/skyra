@@ -10,8 +10,6 @@ module.exports = class extends Monitor {
 			ignoreWebhooks: true,
 			ignoreSelf: true
 		});
-
-		this.cooldowns = new Set();
 	}
 
 	async run(msg) {
@@ -39,10 +37,7 @@ module.exports = class extends Monitor {
 	}
 
 	cooldown(msg) {
-		if (this.cooldowns.has(msg.author.id)) return true;
-		this.cooldowns.add(msg.author.id);
-		setTimeout(() => this.cooldowns.delete(msg.author.id), 60000);
-		return false;
+		return !this.client.ratelimitManager.set(`social-${msg.author.id}`, Date.now() + 60000, () => null);
 	}
 
 	async handleRoles(msg, memberPoints) {

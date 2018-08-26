@@ -131,6 +131,7 @@ module.exports = class extends Command {
 	}
 
 	async getHaste(evalResult, language) {
+		// @ts-ignore
 		const key = await fetch('https://hastebin.com/documents', { method: 'POST', body: evalResult })
 			.then(response => response.json())
 			.then(body => body.key);

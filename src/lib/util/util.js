@@ -3,7 +3,7 @@ const { schemaKeys } = require('./Moderation');
 const { STATUS_CODES } = require('http');
 const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
-const { util, Type } = require('klasa');
+const { Type } = require('klasa');
 const { Image } = require('canvas');
 const { readFile } = require('fs-nextra');
 const { Readable } = require('stream');
@@ -335,10 +335,12 @@ class Util {
 	 */
 	static async createMuteRole(msg) {
 		if (msg.guild.settings.roles.muted
-			&& msg.guild.roles.has(msg.guild.settings.roles.muted)) throw new Error("There's already a muted role.");
+			&& msg.guild.roles.has(msg.guild.settings.roles.muted)) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
+
+		if (msg.guild.roles.size === 250) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
 		const role = await msg.guild.roles.create(Util.MUTE_ROLE_OPTIONS);
 		const { channels } = msg.guild;
-		await msg.sendMessage(`Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels.size} to ${role}...`);
+		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
 		const denied = [];
 		let accepted = 0;
 
@@ -347,10 +349,9 @@ class Util {
 			accepted++;
 		}
 
-		const messageEdit2 = denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ';
-		await util.sleep(1500);
+		const messageEdit2 = msg.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
 		await msg.guild.settings.update('roles.muted', role.id, msg.guild);
-		await msg.sendMessage(`Permissions applied for ${accepted} channels${messageEdit2}Dear ${msg.author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`);
+		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, msg.author, role]);
 		return role;
 	}
 

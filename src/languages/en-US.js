@@ -2172,6 +2172,11 @@ module.exports = class extends Language {
 			SYSTEM_ERROR: 'Something happened!',
 			SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
 			SYSTEM_NOTENOUGH_PARAMETERS: `I am sorry, but you did not provide enough parameters...`,
+			SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: '**Aborting mute role creation**: There is already one that exists.',
+			SYSTEM_GUILD_MUTECREATE_TOOMANYROLES: '**Aborting mute role creation**: There are 250 roles in this guild, you need to delete one role.',
+			SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels} to ${role}...`,
+			SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied) => denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ',
+			SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permissions applied for ${accepted} channels${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
 
 			RESOLVER_INVALID_CHANNELNAME: (name) => `${name} must be a valid channel name, id, or tag.`,
 			RESOLVER_INVALID_ROLENAME: (name) => `${name} must be a valid role name, id, or mention.`,

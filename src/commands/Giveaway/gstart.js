@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
 			description: (language) => language.get('COMMAND_GIVEAWAY_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_GIVEAWAY_EXTENDED'),
-			usage: '<time:time> <title:string> [...]',
+			usage: '<time:time> <title:string{1,256}> [...]',
 			usageDelim: ' '
 		});
 	}
@@ -17,7 +17,8 @@ module.exports = class extends Command {
 	async run(msg, [time, ...rawTitle]) {
 		const offset = time.getTime() - Date.now();
 
-		if (offset < 60000) throw msg.language.get('GIVEAWAY_TIME');
+		// A little margin of error
+		if (offset < 59900) throw msg.language.get('GIVEAWAY_TIME');
 		const title = rawTitle.length > 0 ? rawTitle.join(' ') : null;
 		const date = new Date(offset + Date.now() - 20000);
 

@@ -52,6 +52,7 @@ module.exports = class extends Command {
 				this.client.emit('log', result);
 				return msg.sendLocale('COMMAND_EVAL_OUTPUT_CONSOLE', [time, footer]);
 			}
+			case 'abort':
 			case 'none':
 				return null;
 			default: {
@@ -66,14 +67,14 @@ module.exports = class extends Command {
 	}
 
 	async getTypeOutput(msg, options) {
-		const _options = ['log'];
+		const _options = ['none', 'abort', 'log'];
 		if (msg.channel.attachable) _options.push('file');
 		if (!options.hastebinUnavailable) _options.push('hastebin');
 		let _choice;
 		do
 			_choice = await msg.prompt(`Choose one of the following options: ${_options.join(', ')}`).catch(() => ({ content: 'none' }));
-		while (!['file', 'haste', 'hastebin', 'console', 'log', 'default', 'none', null].includes(_choice.content));
-		options.sendAs = _choice.content;
+		while (!['file', 'haste', 'hastebin', 'console', 'log', 'default', 'none', 'abort', null].includes(_choice.content));
+		options.sendAs = _choice.content.toLowerCase();
 	}
 
 	timedEval(msg, code, flagTime) {

@@ -14,7 +14,7 @@ module.exports = class extends Command {
 			usage: '<expression:str>'
 		});
 
-		this.timeout = 30000;
+		this.timeout = 60000;
 	}
 
 	async run(msg, [code]) {

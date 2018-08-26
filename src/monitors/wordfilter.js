@@ -25,7 +25,7 @@ module.exports = class extends Monitor {
 		// eslint-disable-next-line no-bitwise
 		if (filter.level & LOG_FLAG) {
 			this.client.emit('guildMessageLog', MESSAGE_LOGS.kModeration, msg.guild, () => new MessageEmbed()
-				.splitFields(cutText(diffWordsWithSpace(msg.content, filter)
+				.splitFields(cutText(diffWordsWithSpace(msg.content, filtered)
 					.map(result => result.removed ? `__${escapeMarkdown(result.value)}__` : escapeMarkdown(result.value))
 					.join(''), 4000))
 				.setColor(0xefae45)

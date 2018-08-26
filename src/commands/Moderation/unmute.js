@@ -32,10 +32,23 @@ module.exports = class extends ModerationCommand {
 		if (!mutedUsed) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 
+		// Cache and concatenate with the current roles
 		const { position } = msg.guild.me.roles.highest;
-		const roles = (mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || [])
-			.concat(member.roles.filter(role => role.position < position && !role.managed).map(role => role.id));
+		const roles = [...new Set((mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || [])
+			// Map by Role instances
+			.map(id => msg.guild.roles.get(id))
+			// Concatenate with the member's roles
+			.concat(...member.roles.values()))]
+			// Filter removed and unmanageable roles
+			.filter(role => role && role.position < position && !role.managed)
+			// Map by id
+			.map(role => role.id);
 
+		// Remove the muted role
+		const muteIndex = roles.indexOf(msg.guild.settings.roles.muted);
+		if (muteIndex !== -1) roles.splice(muteIndex, 1);
+
+		// Edit roles
 		await member.edit({ roles });
 		const modlog = await this.sendModlog(msg, target, reason.length ? reason.join(' ') : null);
 

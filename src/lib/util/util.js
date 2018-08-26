@@ -98,7 +98,7 @@ class Util {
 		stickyRoles.roles.splice(index, 1);
 		await settings.update('stickyRoles', ...stickyRoles.roles.length
 			// If there's at least one remaining role, update the entry
-			? [{ id: id, roles: stickyRoles.roles }, { arrayPosition: stickyRolesIndex }]
+			? [{ id, roles: stickyRoles.roles }, { arrayPosition: stickyRolesIndex }]
 			// Otherwise, giving the instance itself will trigger auto-remove
 			: [stickyRoles, { action: 'remove' }]);
 

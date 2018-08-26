@@ -6,7 +6,6 @@ module.exports = class extends RawEvent {
 
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory, { name: 'MESSAGE_REACTION_ADD' });
-		this.TEMP_CACHE = new Map();
 	}
 
 	async run({ message, reaction, user }) { // eslint-disable-line

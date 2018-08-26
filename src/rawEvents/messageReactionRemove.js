@@ -4,7 +4,6 @@ module.exports = class extends RawEvent {
 
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory, { name: 'MESSAGE_REACTION_REMOVE' });
-		this.TEMP_CACHE = new Map();
 	}
 
 	// 	{ user_id: 'id',

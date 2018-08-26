@@ -32,7 +32,7 @@ module.exports = class extends Command {
 		await channel.updateOverwrite(msg.guild.roles.get(msg.guild.id), { SEND_MESSAGES: false });
 		if (msg.channel.postable) await msg.sendLocale('COMMAND_LOCKDOWN_LOCK', [channel]);
 		msg.guild.security.lockdowns.set(channel.id, time
-			? this.client.ratelimitManager.set(`lockdown-${msg.guild.id}-${channel.id}`, time.getTime(), () => this.unlock(message, channel))
+			? this.client.timeoutManager.set(`lockdown-${msg.guild.id}-${channel.id}`, time.getTime(), () => this.unlock(message, channel))
 			: null);
 	}
 

@@ -192,7 +192,7 @@ export class Skyra extends KlasaClient {
 		ram: Array<number>;
 		cmd: Array<number>;
 	};
-	public readonly ratelimitManager: RatelimitManager;
+	public readonly timeoutManager: TimeoutManager;
 	public readonly connectFour: ConnectFourManager;
 	private _updateStatsInterval: NodeJS.Timer;
 	private _skyraReady: boolean;
@@ -536,7 +536,7 @@ export class Slotmachine {
 	public static init(): Promise<void>;
 }
 
-export class RatelimitManager {
+export class TimeoutManager {
 	constructor(client: Skyra);
 	public client: Skyra;
 	private cache: Array<RatelimitEntry>;

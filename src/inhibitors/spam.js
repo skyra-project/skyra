@@ -18,7 +18,7 @@ module.exports = class extends Inhibitor {
 			return;
 		}
 
-		if (!this.client.ratelimitManager.set(`cooldown-${msg.channel.id}`, Date.now() + 30000, () => null))
+		if (!this.client.timeoutManager.set(`cooldown-${msg.channel.id}`, Date.now() + 30000, () => null))
 			throw msg.language.get('INHIBITOR_SPAM', channel);
 	}
 

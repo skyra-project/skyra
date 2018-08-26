@@ -74,8 +74,8 @@ class GuildSecurity {
 	clearLockdowns() {
 		// Clear all timeouts
 		const prefix = `lockdown-${this.guild.id}`;
-		for (const key of this.guild.client.ratelimitManager.keys())
-			if (key.startsWith(prefix)) this.guild.client.ratelimitManager.delete(key);
+		for (const key of this.guild.client.timeoutManager.keys())
+			if (key.startsWith(prefix)) this.guild.client.timeoutManager.delete(key);
 	}
 
 }

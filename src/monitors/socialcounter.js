@@ -37,7 +37,7 @@ module.exports = class extends Monitor {
 	}
 
 	cooldown(msg) {
-		return !this.client.ratelimitManager.set(`social-${msg.author.id}`, Date.now() + 60000, () => null);
+		return !this.client.timeoutManager.set(`social-${msg.author.id}`, Date.now() + 60000, () => null);
 	}
 
 	async handleRoles(msg, memberPoints) {

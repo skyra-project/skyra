@@ -18,8 +18,8 @@ module.exports = class extends Inhibitor {
 	}
 
 	getEntry(id) {
-		const had = this.client.ratelimitManager.has(id);
-		this.client.ratelimitManager.set(id, Date.now() + this.slowmodeTime, () => null, true);
+		const had = this.client.timeoutManager.has(id);
+		this.client.timeoutManager.set(id, Date.now() + this.slowmodeTime, () => null, true);
 		if (had) throw true;
 	}
 

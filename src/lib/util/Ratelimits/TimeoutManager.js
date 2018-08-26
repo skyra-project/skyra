@@ -1,4 +1,4 @@
-class RatelimitManager {
+class TimeoutManager {
 
 	/**
 	 * @typedef {Object} RatelimitEntry
@@ -8,7 +8,7 @@ class RatelimitManager {
 	 */
 
 	/**
-	 * Construct the RatelimitManager instance
+	 * Construct the TimeoutManager instance
 	 * @since 3.3.0
 	 * @version 1.0.0
 	 * @param {Skyra} client The client instance that manages the ratelimits
@@ -112,4 +112,4 @@ class RatelimitManager {
 
 }
 
-module.exports = RatelimitManager;
+module.exports = TimeoutManager;

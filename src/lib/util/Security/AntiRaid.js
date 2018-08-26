@@ -46,7 +46,7 @@ class AntiRaid {
 	 */
 	has(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
-		return this.guild.client.ratelimitManager.has(`raid-${this.guild.id}-${userID}`);
+		return this.guild.client.timeoutManager.has(`raid-${this.guild.id}-${userID}`);
 	}
 
 	/**
@@ -57,7 +57,7 @@ class AntiRaid {
 	 */
 	add(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
-		this.guild.client.ratelimitManager.set(`raid-${this.guild.id}-${userID}`, Date.now() + 20000, () => this.delete(userID));
+		this.guild.client.timeoutManager.set(`raid-${this.guild.id}-${userID}`, Date.now() + 20000, () => this.delete(userID));
 		return this;
 	}
 
@@ -69,7 +69,7 @@ class AntiRaid {
 	 */
 	delete(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
-		this.guild.client.ratelimitManager.delete(`raid-${this.guild.id}-${userID}`);
+		this.guild.client.timeoutManager.delete(`raid-${this.guild.id}-${userID}`);
 		return this;
 	}
 
@@ -92,7 +92,7 @@ class AntiRaid {
 		const kickedMembers = await this.prune();
 
 		// Create the timeout for stopping the AntiRAID mode
-		this.guild.client.ratelimitManager.set(`raid-${this.guild.id}`, Date.now() + 20000, () => this.stop(), true);
+		this.guild.client.timeoutManager.set(`raid-${this.guild.id}`, Date.now() + 20000, () => this.stop(), true);
 
 		// Return the kicked members
 		return kickedMembers;
@@ -117,7 +117,7 @@ class AntiRaid {
 	 */
 	clear() {
 		// Clear all timeouts
-		for (const key of this.keys()) this.guild.client.ratelimitManager.delete(key);
+		for (const key of this.keys()) this.guild.client.timeoutManager.delete(key);
 
 		// Clear the attack mode and timeout
 		this.stop();
@@ -125,7 +125,7 @@ class AntiRaid {
 
 	*keys() {
 		const prefix = `raid-${this.guild.id}`;
-		for (const key of this.guild.client.ratelimitManager.keys())
+		for (const key of this.guild.client.timeoutManager.keys())
 			if (key.startsWith(prefix)) yield key;
 	}
 

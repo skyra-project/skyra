@@ -63,7 +63,7 @@ module.exports = {
 	Slotmachine: require('./lib/util/Games/Slotmachine'),
 
 	// Ratelimits
-	RatelimitManager: require('./lib/util/Ratelimits/RatelimitManager'),
+	TimeoutManager: require('./lib/util/Ratelimits/TimeoutManager'),
 
 	// Moderation
 	AntiRaid: require('./lib/util/Security/AntiRaid'),

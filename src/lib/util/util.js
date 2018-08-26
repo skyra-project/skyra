@@ -401,6 +401,6 @@ Util.ONE_TO_TEN = Object.freeze({
 	10: { emoji: '😍', color: 0x51D4EF }
 });
 
-Util.IMAGE_EXTENSION = /(\.bmp|\.jpg|\.jpeg|\.png|\.gif|\.webp)$/i;
+Util.IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
 
 module.exports = Util;

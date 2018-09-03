@@ -192,6 +192,7 @@ export class Skyra extends KlasaClient {
 		ram: Array<number>;
 		cmd: Array<number>;
 	};
+	public readonly timeoutManager: TimeoutManager;
 	public readonly connectFour: ConnectFourManager;
 	private _updateStatsInterval: NodeJS.Timer;
 	private _skyraReady: boolean;
@@ -459,6 +460,7 @@ class Util {
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: 'buffer'): Promise<Buffer>;
 	public static fetch(url: URL | string, type?: 'text'): Promise<string>;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: 'text'): Promise<string>;
+	public static fetch(url: URL | string, type?: string): Promise<any>;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: string): Promise<any>;
 	public static getContent(message: SkyraMessage): string | null;
 	public static getImage(message: SkyraMessage): string | null;
@@ -534,13 +536,30 @@ export class Slotmachine {
 	public static init(): Promise<void>;
 }
 
-export class AntiRaid extends Map<Snowflake, NodeJS.Timer> {
+export class TimeoutManager {
+	constructor(client: Skyra);
+	public client: Skyra;
+	private cache: Array<RatelimitEntry>;
+	private _interval: NodeJS.Timer | null;
+	public next(): RatelimitEntry;
+	public set(id: string, time: number, callback: () => void, rerun?: boolean): boolean;
+	public get(id: string): RatelimitEntry;
+	public has(id: string): boolean;
+	public delete(id): boolean;
+	public dispose(): void;
+	public keys(): Iterator<string>;
+	public values(): Iterator<RatelimitEntry>;
+	public [Symbol.iterator](): Iterator<RatelimitEntry>;
+	private _run(): void;
+}
+
+export class AntiRaid {
 	public constructor(guild: SkyraGuild);
 	public guild: SkyraGuild;
 	public attack: boolean;
-	private _timeout: NodeJS.Timer;
 	private readonly guildSettings: GuildSettings;
 
+	public has(member: SkyraGuildMember | Snowflake): this;
 	public add(member: SkyraGuildMember | Snowflake): this;
 	public delete(member: SkyraGuildMember | Snowflake): this;
 	public delete(member: Snowflake): boolean;
@@ -557,12 +576,7 @@ export class GuildSecurity {
 	public readonly raid: AntiRaid;
 	public readonly nms: NoMentionSpam;
 	public readonly lockdowns: Map<Snowflake, NodeJS.Timer>;
-	private _raid: AntiRaid | null;
-	private _nms: NoMentionSpam | null;
-	private _lockdowns: Map<Snowflake, NodeJS.Timer> | null;
 
-	public hasLockdown(channel: Snowflake): boolean;
-	public hasRAID(user: Snowflake): boolean;
 	public dispose(): void;
 	public clearRaid(): void;
 	public clearNMS(): void;
@@ -790,6 +804,12 @@ type ConnectFourWinningRow = Array<{
 type UtilOneToTenEntry = {
 	emoji: string;
 	color: number;
+};
+
+type RatelimitEntry = {
+	id: string;
+	time: number;
+	callback: () => void;
 };
 
 type SkyraConstants = Readonly<{

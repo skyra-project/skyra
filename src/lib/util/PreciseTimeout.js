@@ -49,7 +49,8 @@ class PreciseTimeout {
 		while (!this.stopped && Date.now() < this.endsAt) {
 			await new Promise(resolve => {
 				this.resolve = resolve;
-				this.timeout = setTimeout(() => this.resolve(), Date.now() - this.endsAt);
+				// Hardcoded extra 10ms to not perform a doom
+				this.timeout = setTimeout(() => this.resolve(), Date.now() - this.endsAt + 10);
 			});
 		}
 

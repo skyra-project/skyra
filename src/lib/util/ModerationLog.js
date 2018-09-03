@@ -468,6 +468,7 @@ ModerationLog.cache = new Map();
  * @static
  * @memberof ModerationLog
  */
+// @ts-ignore
 ModerationLog.TYPES = Object.freeze({
 	[typeKeys.BAN]: { color: 0xD50000, title: 'Ban' },
 	[typeKeys.KICK]: { color: 0xF57F17, title: 'Kick' },

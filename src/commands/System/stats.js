@@ -39,7 +39,7 @@ module.exports = class extends Command {
 
 	get USAGE() {
 		return {
-			CPU_LOAD: `${Math.round(loadavg()[0] * 10000) / 100}%`,
+			CPU_LOAD: `${Math.round(loadavg()[0] * 100) / 100}%`,
 			RAM_TOTAL: `${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,
 			RAM_USED: `${Math.round(100 * (process.memoryUsage().heapUsed / 1048576)) / 100}MB`
 		};

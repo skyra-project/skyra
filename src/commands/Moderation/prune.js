@@ -25,8 +25,8 @@ module.exports = class extends Command {
 		messages = [...messages.keys()].slice(0, limit);
 
 		const pruned = messages.length ? (await msg.channel.bulkDelete(messages, true)).size : 0;
-		if (pruned) return msg.sendLocale('COMMAND_PRUNE', [pruned, limit]);
-		throw msg.language.get('COMMAND_PRUNE_NOTENOUGH');
+		if (pruned === 0) throw msg.language.get('COMMAND_PRUNE_NOTENOUGH');
+		return msg.sendLocale('COMMAND_PRUNE', [pruned, limit]);
 	}
 
 	_resizeImage(image) {

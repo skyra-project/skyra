@@ -24,7 +24,11 @@ module.exports = class extends Command {
 		}
 		messages = [...messages.keys()].slice(0, limit);
 
-		const pruned = messages.length ? (await msg.channel.bulkDelete(messages, true)).size : 0;
+		let pruned = 0;
+		if (messages.length) {
+			const prunedMessages = await msg.channel.bulkDelete(messages, true);
+			pruned += prunedMessages.size;
+		}
 		return msg.sendLocale('COMMAND_PRUNE', [pruned, limit]);
 	}
 

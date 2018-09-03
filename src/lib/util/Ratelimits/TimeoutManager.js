@@ -41,10 +41,16 @@ class TimeoutManager {
 	_run() {
 		const now = Date.now();
 		let i = 0;
-		while (i < this._cache.length && this._cache[i].time > now) i++;
+		while (i < this._cache.length && now > this._cache[i].time) i++;
 		if (i === 0) return;
 
-		for (const entry of this._cache.splice(0, i)) entry.callback();
+		for (const entry of this._cache.splice(0, i)) {
+			try {
+				entry.callback();
+			} catch (error) {
+				this.client.emit('wtf', error);
+			}
+		}
 		if (!this._cache.length) {
 			this.client.clearInterval(this._interval);
 			this._interval = null;

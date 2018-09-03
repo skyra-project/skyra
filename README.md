@@ -1,4 +1,4 @@
-# Skyra 3.2.0
+# Skyra 3.3.0
 
 [![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 

@@ -1825,8 +1825,9 @@ module.exports = class extends Language {
 			COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
 			COMMAND_MUTE_UNCONFIGURED: 'This guild does not have a **Muted** role. Aborting command execution.',
 			COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
-			COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} messages from ${total}.`,
-			COMMAND_PRUNE_NOTENOUGH: 'No message has been deleted, either no message match the filter or they are over 14 days old.',
+			COMMAND_PRUNE: (amount, total) => amount
+				? `Successfully deleted ${amount} messages from ${total}.`
+				: 'No message has been deleted, either no message match the filter or they are over 14 days old.',
 			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
 			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_UNBAN_MESSAGE: (user, reason, log, banReason) => `|\`🔨\`| [Case::${log}] **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}${banReason ? `\nReason for Ban: ${banReason}` : ''}`,

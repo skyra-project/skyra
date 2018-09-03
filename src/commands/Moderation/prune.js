@@ -22,14 +22,11 @@ module.exports = class extends Command {
 			const type = typeof filter === 'string' ? filter : 'user';
 			messages = messages.filter(this.getFilter(msg, type, user));
 		}
-		messages = [...messages.keys()].slice(0, limit);
+		const now = Date.now();
+		messages = [...messages.filter(message => now - message.createdTimestamp < 1209600000).keys()].slice(0, limit);
 
-		let pruned = 0;
-		if (messages.length) {
-			const prunedMessages = await msg.channel.bulkDelete(messages, true);
-			pruned += prunedMessages.size;
-		}
-		return msg.sendLocale('COMMAND_PRUNE', [pruned, limit]);
+		if (messages.length) await msg.channel.bulkDelete(messages);
+		return msg.sendLocale('COMMAND_PRUNE', [messages.length, limit]);
 	}
 
 	_resizeImage(image) {

@@ -114,10 +114,7 @@ const skyra = new Skyra({
 		'CHANNEL_PINS_UPDATE',
 		'GUILD_MEMBER_UPDATE',
 		'PRESENCE_UPDATE',
-		'RELATIONSHIP_ADD',
-		'RELATIONSHIP_REMOVE',
 		'TYPING_START',
-		'USER_NOTE_UPDATE',
 		'USER_UPDATE',
 		'VOICE_SERVER_UPDATE'
 	],
@@ -136,7 +133,7 @@ const skyra = new Skyra({
 	presence: { activity: { name: DEV ? 'sd!help' : 'Skyra, help', type: 'LISTENING' } },
 	providers: {
 		default: 'rethinkdb',
-		rethinkdb: config.database.rethinkdb
+		rethinkdb: DEV ? config.database.rethinkdb.development : config.database.rethinkdb.production
 	},
 	readyMessage: (client) =>
 		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,

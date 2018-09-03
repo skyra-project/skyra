@@ -1012,7 +1012,10 @@ type SkyraConfiguration = {
 	ownerID: string;
 	version: string;
 	database: {
-		rethinkdb: ObjectLiteral;
+		rethinkdb: {
+			production: ObjectLiteral;
+			development: ObjectLiteral;
+		};
 		[k: string]: ObjectLiteral;
 	};
 	api: {

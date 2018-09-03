@@ -555,19 +555,20 @@ export class TimeoutManager {
 
 export class AntiRaid {
 	public constructor(guild: SkyraGuild);
-	public guild: SkyraGuild;
 	public attack: boolean;
+	public guild: SkyraGuild;
 	private readonly guildSettings: GuildSettings;
 
-	public has(member: SkyraGuildMember | Snowflake): this;
 	public add(member: SkyraGuildMember | Snowflake): this;
-	public delete(member: SkyraGuildMember | Snowflake): this;
-	public delete(member: Snowflake): boolean;
-	public execute(): Promise<Array<SkyraGuildMember>>;
-	public stop(): void;
 	public clear(): void;
+	public delete(member: SkyraGuildMember | Snowflake): this;
+	public execute(): Promise<Array<SkyraGuildMember>>;
+	public has(member: SkyraGuildMember | Snowflake): this;
+	public keys(): Iterator<string>;
 	public kick(member: SkyraGuildMember): SkyraGuildMember;
+	public members(): Iterator<Snowflake>;
 	public prune(kick?: boolean): Promise<Array<SkyraGuildMember>>;
+	public stop(): void;
 }
 
 export class GuildSecurity {

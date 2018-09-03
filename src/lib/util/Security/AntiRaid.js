@@ -124,9 +124,16 @@ class AntiRaid {
 	}
 
 	*keys() {
-		const prefix = `raid-${this.guild.id}`;
+		const prefix = `raid-${this.guild.id}-`;
 		for (const key of this.guild.client.timeoutManager.keys())
 			if (key.startsWith(prefix)) yield key;
+	}
+
+	*members() {
+		const prefix = `raid-${this.guild.id}-`;
+		const { length } = prefix;
+		for (const key of this.guild.client.timeoutManager.keys())
+			if (key.startsWith(prefix)) yield key.slice(length);
 	}
 
 	/**
@@ -152,7 +159,7 @@ class AntiRaid {
 		const minRolesAmount = initialRole ? 2 : 1;
 		const kickedUsers = [];
 
-		for (const memberID of this.keys()) {
+		for (const memberID of this.members()) {
 			/**
 			 * @type {GuildMember}
 			 */

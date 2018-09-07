@@ -18,7 +18,7 @@ class APIStore extends Store {
 	/**
 	 * Constructs our APIStore for use in Klasa
 	 * @since 3.0.0
-	 * @param {KlasaClient} client The Klasa Client
+	 * @param {Skyra} client The Klasa Client
 	 */
 	constructor(client) {
 		super(client, 'ipcPieces', API);

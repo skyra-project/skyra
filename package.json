@@ -38,13 +38,14 @@
     "klasa": "github:dirigeants/klasa",
     "node-fetch": "^2.2.0",
     "rethinkdbdash": "^2.3.31",
-    "veza": "^0.2.3"
+    "veza": "github:kyranet/veza"
   },
   "devDependencies": {
-    "eslint": "^5.4.0",
+    "@types/node": "^10.9.4",
+    "eslint": "^5.5.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
     "tslint": "^5.11.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.3"
   },
   "repository": {
     "type": "git",

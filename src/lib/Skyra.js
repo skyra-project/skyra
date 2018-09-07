@@ -63,10 +63,11 @@ module.exports = class Skyra extends Client {
 
 		// Create the IPC controller singleton
 		this.ipc = new Node('skyra-bot')
-			.on('connect', name => this.emit('verbose', `[IPC] Connected to ${name}`))
-			.on('disconnect', name => this.emit('warn', `[IPC] Disconnected from ${name}`))
-			.on('destroy', name => this.emit('warn', `[IPC] Destroyed connection with Node ${name}`))
-			.on('error', this.emit.bind(this, 'error'))
+			.on('client.connect', (client) => this.emit('verbose', `[IPC] Client Connected: ${client.name}`))
+			.on('client.disconnect', (client) => this.emit('warn', `[IPC] Client Disconnected: ${client.name}`))
+			.on('client.destroy', (client) => this.emit('warn', `[IPC] Client Destroyed: ${client.name}`))
+			.on('client.ready', (client) => this.emit('verbose', `[IPC] Client Ready: Named ${client.name}`))
+			.on('error', (error, client) => this.emit('error', `[IPC] Error from ${client.name}: ${error}`))
 			.on('message', this.emit.bind(this, 'apiMessage'));
 
 		this.ipc.connectTo('skyra-dashboard', 8800);

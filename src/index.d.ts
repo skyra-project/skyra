@@ -29,27 +29,30 @@ import {
 	util as KlasaUtil,
 } from 'klasa';
 import {
+	BanOptions,
+	Base64Resolvable,
+	BufferResolvable,
 	Channel,
+	ClientUser,
 	Collection,
+	DataStore,
 	DiscordAPIError,
+	FetchMemberOptions,
+	GuildEditData,
 	GuildMember,
+	GuildMemberEditData,
+	GuildMemberResolvable,
+	GuildMemberStore,
+	GuildPruneMembersOptions,
+	GuildResolvable,
 	MessageEmbed,
 	MessageOptions,
+	Role,
 	RoleData,
 	Snowflake,
 	TextChannel,
-	Util as DiscordUtil,
-	Role,
-	GuildEditData,
-	GuildMemberEditData,
-	DataStore,
 	UserResolvable,
-	GuildResolvable,
-	GuildMemberStore,
-	GuildPruneMembersOptions,
-	FetchMemberOptions,
-	BanOptions,
-	ClientUser
+	Util as DiscordUtil
 } from 'discord.js';
 import { Node, NodeMessage } from 'veza';
 import { Image } from 'canvas-constructor';
@@ -57,115 +60,113 @@ import { Readable } from 'stream';
 //#endregion imports
 //#region exports
 export {
-	Client,
-	KlasaClient,
-	KlasaGuild,
-	KlasaMessage,
-	KlasaUser,
-	PermissionLevels,
-	Schedule,
-	ScheduledTask,
-	Settings,
-	Gateway,
-	GatewayDriver,
-	GatewayStorage,
-	Schema,
-	SchemaFolder,
-	SchemaPiece,
-	SchemaTypes,
-	SchemaType,
-	Piece,
-	Store,
 	Argument,
 	ArgumentStore,
+	Client,
+	Colors,
+	CommandPrompt,
 	CommandStore,
+	CommandUsage,
+	Cron,
+	Duration,
 	EventStore,
 	ExtendableStore,
 	FinalizerStore,
+	Gateway,
+	GatewayDriver,
+	GatewayStorage,
 	InhibitorStore,
+	KlasaClient,
+	KlasaConsole,
+	KlasaGuild,
+	KlasaMessage,
+	KlasaUser,
 	LanguageStore,
 	MonitorStore,
-	ProviderStore,
-	SQLProvider,
-	TaskStore,
-	CommandPrompt,
-	CommandUsage,
-	Usage,
+	Piece,
 	Possible,
-	Tag,
-	TextPrompt,
-	Colors,
-	KlasaConsole,
-	Cron,
-	Duration,
+	ProviderStore,
 	QueryBuilder,
 	ReactionHandler,
 	RichDisplay,
 	RichMenu,
+	Schedule,
+	ScheduledTask,
+	Schema,
+	SchemaFolder,
+	SchemaPiece,
+	SchemaType,
+	SchemaTypes,
+	Settings,
+	SQLProvider,
 	Stopwatch,
+	Store,
+	Tag,
+	TaskStore,
+	TextPrompt,
 	Timestamp,
-	Type
+	Type,
+	Usage
 } from 'klasa';
 export {
+	Activity,
+	Base,
 	BaseClient,
-	Shard,
-	ShardClientUtil,
-	ShardingManager,
-	WebhookClient,
+	CategoryChannel,
+	Channel,
+	ChannelStore,
+	ClientApplication,
 	Collection,
+	Collector,
 	DataResolver,
 	DataStore,
 	DiscordAPIError,
-	Permissions,
-	Snowflake,
-	SnowflakeUtil,
-	Structures,
-	version,
-	ChannelStore,
-	ClientPresenceStore,
-	GuildChannelStore,
-	GuildEmojiStore,
-	GuildEmojiRoleStore,
-	GuildMemberStore,
-	GuildMemberRoleStore,
-	GuildStore,
-	ReactionUserStore,
-	MessageStore,
-	PresenceStore,
-	RoleStore,
-	UserStore,
-	Base,
-	Activity,
-	CategoryChannel,
-	Channel,
-	ClientApplication,
-	Collector,
 	DMChannel,
 	Emoji,
 	GroupDMChannel,
 	Guild,
 	GuildAuditLogs,
 	GuildChannel,
+	GuildChannelStore,
 	GuildEmoji,
+	GuildEmojiRoleStore,
+	GuildEmojiStore,
 	GuildMember,
+	GuildMemberRoleStore,
+	GuildMemberStore,
+	GuildStore,
 	Invite,
 	Message,
 	MessageAttachment,
 	MessageCollector,
 	MessageMentions,
 	MessageReaction,
+	MessageStore,
 	PermissionOverwrites,
+	Permissions,
 	Presence,
+	PresenceStore,
 	ReactionCollector,
 	ReactionEmoji,
+	ReactionUserStore,
 	RichPresenceAssets,
 	Role,
+	RoleStore,
+	Shard,
+	ShardClientUtil,
+	ShardingManager,
+	Snowflake,
+	SnowflakeUtil,
+	Structures,
 	TextChannel,
 	User,
 	UserConnection,
+	UserStore,
+	version,
 	VoiceChannel,
 	VoiceRegion,
-	Webhook
+	Webhook,
+	WebhookClient
 } from 'discord.js';
 //#endregion exports
 
@@ -416,7 +417,7 @@ export class DatabaseInit {
 
 export const constants: SkyraConstants;
 
-class Util {
+declare class Util {
 	public static MUTE_ROLE_PERMISSIONS: Readonly<{
 		text: { SEND_MESSAGES: boolean, ADD_REACTIONS: boolean };
 		voice: { CONNECT: false };
@@ -545,7 +546,7 @@ export class TimeoutManager {
 	public set(id: string, time: number, callback: () => void, rerun?: boolean): boolean;
 	public get(id: string): RatelimitEntry;
 	public has(id: string): boolean;
-	public delete(id): boolean;
+	public delete(id: string): boolean;
 	public dispose(): void;
 	public keys(): Iterator<string>;
 	public values(): Iterator<RatelimitEntry>;
@@ -645,6 +646,7 @@ export class ModerationLog {
 
 export class NoMentionSpam extends Map<Snowflake, NoMentionSpamEntry> {
 	public get(userID: Snowflake, create?: boolean): NoMentionSpamEntry | null;
+	public get(key: Snowflake): NoMentionSpamEntry;
 	public add(userID: Snowflake, amount: number): number;
 	public delete(userID: Snowflake): void;
 	public delete(key: Snowflake): boolean;
@@ -1053,58 +1055,58 @@ declare class SkyraPermissionLevels extends PermissionLevels {
 	public add(level: number, check: (client: Skyra, message: SkyraMessage) => boolean, options?: PermissionLevelOptions): this;
 }
 
-export { SkyraPermPermissionLevels as PermissionLevels };
+export { SkyraPermissionLevels as PermissionLevels };
 
-declare class SkyraCommand extends Command {
+declare abstract class SkyraCommand extends Command {
 	public client: Skyra;
-	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage) => any): this;
+	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage, params: string[]) => any): this;
 }
 
 export { SkyraCommand as Command };
 
-declare class SkyraEvent extends Event {
+declare abstract class SkyraEvent extends Event {
 	public client: Skyra;
 }
 
 export { SkyraEvent as Event };
 
-declare class SkyraExtendable extends Extendable {
+declare abstract class SkyraExtendable extends Extendable {
 	public client: Skyra;
 }
 
 export { SkyraExtendable as Extendable };
 
-declare class SkyraFinalizer extends Finalizer {
+declare abstract class SkyraFinalizer extends Finalizer {
 	public client: Skyra;
 }
 
 export { SkyraFinalizer as Finalizer };
 
-declare class SkyraInhibitor extends Inhibitor {
+declare abstract class SkyraInhibitor extends Inhibitor {
 	public client: Skyra;
 }
 
 export { SkyraInhibitor as Inhibitor };
 
-declare class SkyraLanguage extends Language {
+declare abstract class SkyraLanguage extends Language {
 	public client: Skyra;
 }
 
 export { SkyraLanguage as Language };
 
-declare class SkyraMonitor extends Monitor {
+declare abstract class SkyraMonitor extends Monitor {
 	public client: Skyra;
 }
 
 export { SkyraMonitor as Monitor };
 
-declare class SkyraProvider extends Provider {
+declare abstract class SkyraProvider extends Provider {
 	public client: Skyra;
 }
 
 export { SkyraProvider as Provider };
 
-declare class SkyraTask extends Task {
+declare abstract class SkyraTask extends Task {
 	public client: Skyra;
 }
 
@@ -1138,7 +1140,7 @@ declare class SkyraGuildStore extends DataStore<Snowflake, SkyraGuild, typeof Sk
 
 declare class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMember, typeof SkyraGuildMember, GuildMemberResolvable> {
 	constructor(guild: SkyraGuild, iterable?: Iterable<any>);
-	public ban(user: UserResolvable, options?: BanOptions): Promise<SkyraGuildMember | User | Snowflake>;
+	public ban(user: UserResolvable, options?: BanOptions): Promise<SkyraGuildMember | SkyraUser | Snowflake>;
 	public fetch(options: UserResolvable | FetchMemberOptions): Promise<SkyraGuildMember>;
 	public fetch(): Promise<SkyraGuildMemberStore>;
 	public fetch(options: FetchMemberOptions): Promise<Collection<Snowflake, SkyraGuildMember>>;
@@ -1148,7 +1150,7 @@ declare class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMembe
 
 declare class SkyraMessage extends KlasaMessage {
 	public guildSettings: GuildSettings;
-	public guild: SkyraGuild | null;
+	public guild: SkyraGuild;
 	public alert(content: string | Array<string>, timer?: number): SkyraMessage;
 	public alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
 	public ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;

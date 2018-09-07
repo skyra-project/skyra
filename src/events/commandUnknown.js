@@ -13,7 +13,9 @@ module.exports = class extends Event {
 	}
 
 	handleTag(msg, command) {
-		return msg.sendMessage(msg.guild.settings.tags.get(command));
+		return msg.guild.settings.disabledChannels.includes(msg.channel.id)
+			? msg.sendMessage(msg.guild.settings.tags.get(command))
+			: null;
 	}
 
 	async handleCommand(msg, command) {

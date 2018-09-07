@@ -22,10 +22,12 @@ class FuzzySearch {
 		const apResults = [];
 		const exResults = [];
 
-		let lowerCaseName, distance = 2;
+		let lowerCaseName, current, distance = 2;
 		for (const [id, entry] of this.collection.entries()) {
 			if (!this.filter(entry)) continue;
-			lowerCaseName = this.access(entry).toLowerCase();
+			current = this.access(entry);
+			if (typeof current !== 'string') continue;
+			lowerCaseName = current.toLowerCase();
 			if (lowerCaseName === lowcquery) {
 				const resolved = [id, entry];
 				apResults.push(resolved);

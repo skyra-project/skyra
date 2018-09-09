@@ -35,7 +35,7 @@ module.exports = class extends Task {
 		}
 		if (config.tokens.discordBotList) {
 			fetch(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`, {
-				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.discordBotList },
+				headers: { 'Content-Type': 'application/json', Authorization: `Bot ${config.tokens.discordBotList}` },
 				method: 'POST',
 				body: `{"server_count":${this.client.guilds.size},"users":${this.client.guilds.reduce((a, b) => a + b.memberCount, 0)}}`
 			}, 'result')

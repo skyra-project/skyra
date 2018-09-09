@@ -37,7 +37,7 @@ module.exports = class extends Task {
 			fetch(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`, {
 				headers: { 'Content-Type': 'application/json', Authorization: `Bot ${config.tokens.discordBotList}` },
 				method: 'POST',
-				body: `{"server_count":${this.client.guilds.size},"users":${this.client.guilds.reduce((a, b) => a + b.memberCount, 0)}}`
+				body: `{"guilds":${this.client.guilds.size},"users":${this.client.guilds.reduce((a, b) => a + b.memberCount, 0)}}`
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [discordbotlist.com]: ${this.client.guilds.size}`))
 				.catch(err => this.client.emit('error', `ERROR [discordbotlist.com]:\nError: ${(err && err.stack) || err}`));

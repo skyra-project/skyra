@@ -3,19 +3,15 @@ const { Event, Stopwatch } = require('../index');
 module.exports = class extends Event {
 
 	async run(msg, command) {
-		if (!msg.guild) return;
-		if (msg.guild.settings.tags.has(command)) this.handleTag(msg, command);
+		if (!msg.guild || msg.guild.settings.disabledChannels.includes(msg.channel.id)) return;
+
+		const tag = msg.guild.settings.tags.get(command);
+		if (tag) msg.sendMessage(tag);
 		else if (msg.guild.settings.trigger.alias.length) this.handleCommand(msg, command);
 	}
 
 	get commandHandler() {
 		return this.client.monitors.get('commandHandler');
-	}
-
-	handleTag(msg, command) {
-		return msg.guild.settings.disabledChannels.includes(msg.channel.id)
-			? msg.sendMessage(msg.guild.settings.tags.get(command))
-			: null;
 	}
 
 	async handleCommand(msg, command) {

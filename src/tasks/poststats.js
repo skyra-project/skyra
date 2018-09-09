@@ -33,6 +33,15 @@ module.exports = class extends Task {
 				.then(() => this.client.emit('verbose', `POST [botsfordiscord.com]: ${this.client.guilds.size}`))
 				.catch(err => this.client.emit('error', `ERROR [botsfordiscord.com]:\nError: ${(err && err.stack) || err}`));
 		}
+		if (config.tokens.discordBotList) {
+			fetch(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`, {
+				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.discordBotList },
+				method: 'POST',
+				body: `{"server_count":${this.client.guilds.size},"users":${this.client.guilds.reduce((a, b) => a + b.memberCount, 0)}}`
+			}, 'result')
+				.then(() => this.client.emit('verbose', `POST [discordbotlist.com]: ${this.client.guilds.size}`))
+				.catch(err => this.client.emit('error', `ERROR [discordbotlist.com]:\nError: ${(err && err.stack) || err}`));
+		}
 		// if (config.tokens.serverHound) request
 		// 	.post('https://bots.discordlist.net/api')
 		// 	.set('content-type', 'application/x-www-form-urlencoded')

@@ -1,7 +1,7 @@
-const { Command, SchemaType } = require('../../index');
+const { Command, Serializer } = require('../../index');
 
-const REG_USERS = SchemaType.regex.userOrMember, REG_TAG = /[^#]{2,32}#\d{4,4}/;
-const REG_ROLES = SchemaType.regex.role;
+const REG_USERS = Serializer.regex.userOrMember, REG_TAG = /[^#]{2,32}#\d{4,4}/;
+const REG_ROLES = Serializer.regex.role;
 
 module.exports = class extends Command {
 

@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		// Tell the user about the divorce
 		user.send(msg.language.get('COMMAND_DIVORCE_DM', msg.author.username)).catch(() => null);
 
-		return msg.sendLocale('COMMAND_DIVORCE_SUCCESS', user);
+		return msg.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
 	}
 
 };

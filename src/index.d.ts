@@ -160,7 +160,6 @@ export {
 	Structures,
 	TextChannel,
 	User,
-	UserConnection,
 	UserStore,
 	version,
 	VoiceChannel,

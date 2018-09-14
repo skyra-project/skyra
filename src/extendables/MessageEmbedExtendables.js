@@ -1,16 +1,13 @@
 // @ts-nocheck
-const { Extendable } = require('../index');
+const { Extendable, MessageEmbed } = require('../index');
 
 module.exports = class extends Extendable {
 
 	constructor(client, store, file, directory) {
-		super(client, store, file, directory, {
-			appliesTo: ['MessageEmbed'],
-			name: 'splitFields'
-		});
+		super(client, store, file, directory, { appliesTo: [MessageEmbed] });
 	}
 
-	extend(content) {
+	splitFields(content) {
 		if (typeof content === 'undefined') return this;
 
 		if (Array.isArray(content)) content = content.join('\n');

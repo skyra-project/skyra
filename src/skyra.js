@@ -141,6 +141,8 @@ const skyra = new Skyra({
 	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)(,|!)/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },
+	slowmode: 750,
+	slowmodeAggressive: true,
 	typing: false
 });
 

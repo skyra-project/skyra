@@ -717,7 +717,6 @@ declare class RGB {
 
 type SkyraClientOptions = {
 	dev?: boolean;
-	slowmodeTime?: number;
 } & KlasaClientOptions;
 
 type ModerationLogCacheEntry = {

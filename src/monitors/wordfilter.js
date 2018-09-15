@@ -26,7 +26,7 @@ module.exports = class extends Monitor {
 		if (filter.level & LOG_FLAG) {
 			this.client.emit('guildMessageLog', MESSAGE_LOGS.kModeration, msg.guild, () => new MessageEmbed()
 				.splitFields(cutText(diffWordsWithSpace(msg.content, filtered)
-					.map(result => result.removed ? `__${escapeMarkdown(result.value)}__` : escapeMarkdown(result.value))
+					.map(result => result.removed ? `__${escapeMarkdown(result.value)}__` : result.added ? escapeMarkdown(result.value) : '')
 					.join(''), 4000))
 				.setColor(0xefae45)
 				.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))

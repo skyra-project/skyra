@@ -59,8 +59,7 @@ const TEMPLATES = {
 int main()
 {
     ${code}
-
-    return 0;
+    ${/return/.test(code) ? '' : 'return 0;'}
 }
     `
 };

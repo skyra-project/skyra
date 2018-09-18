@@ -5,7 +5,7 @@ const BWD_FOLDER = require('path').join(rootFolder, 'bwd', 'cpp');
 const S_LOCATION = require('path').join(BWD_FOLDER, 'eval.cpp');
 const E_LOCATION = require('path').join(BWD_FOLDER, 'eval.out');
 const GCC_COMMAND = `g++ ${S_LOCATION} -o ${E_LOCATION}`;
-const MONO_COMMAND = `${E_LOCATION}`;
+const EXEC_COMMAND = E_LOCATION;
 const EXEC_OPTIONS = { timeout: 30000, cwd: BWD_FOLDER };
 const REPLACER = new RegExp(regExpEsc(S_LOCATION), 'g');
 
@@ -40,7 +40,7 @@ module.exports = class extends Command {
 	}
 
 	execute() {
-		return exec(MONO_COMMAND, EXEC_OPTIONS)
+		return exec(EXEC_COMMAND, EXEC_OPTIONS)
 			.then(result => ({ success: true, result: `${result.stdout}\n${result.stderr}` }))
 			.catch(error => ({ success: false, result: `${error.stdout}\n${error.stderr}` }));
 	}

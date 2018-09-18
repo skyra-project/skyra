@@ -36,7 +36,7 @@ module.exports = class extends Command {
 		return exec(GCC_COMMAND, EXEC_OPTIONS)
 			.then(() => null)
 			.catch(error => `Failed to compile (${start.stop()}). ${codeBlock('cs', `${error.stdout}\n${error.stderr}`
-				.replace(REPLACER, 'Failed at: '))}`);
+				.replace(REPLACER, 'Failed at'))}`);
 	}
 
 	execute() {

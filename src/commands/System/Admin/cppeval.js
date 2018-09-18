@@ -58,8 +58,8 @@ const TEMPLATES = {
 
 int main()
 {
-    ${code}
-    ${/return/.test(code) ? '' : 'return 0;'}
+    ${code.replace(/return (.+)/, 'std::cout << $1')}
+    return 0;
 }
     `
 };

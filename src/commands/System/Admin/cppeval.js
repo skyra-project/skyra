@@ -55,6 +55,9 @@ module.exports = class extends Command {
 const TEMPLATES = {
 	function: (code) => `
 #include <iostream>
+using std::string;
+using std::cout;
+using std::cin;
 
 int main()
 {

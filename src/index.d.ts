@@ -601,6 +601,22 @@ export class ModerationManager extends Collection<string, ModerationManagerEntry
 	public appeal(data: ModerationManagerAppealData): Promise<ModerationManagerEntry>;
 }
 
+export class ModerationManagerEntry {
+	public readonly appealed: boolean;
+	public readonly cacheExpired: boolean;
+	public case: number;
+	public duration: number | null;
+	public extraData: object | null;
+	public guild: string;
+	public id: string;
+	public moderator: Snowflake | null;
+	public readonly name: string;
+	public reason: string | null;
+	public readonly temporary: boolean;
+	public type: number;
+	public user: Snowflake | null;
+}
+
 export class Moderation {
 	public constructor(client: Skyra);
 	public client: Skyra;
@@ -815,16 +831,6 @@ type ModerationCaseData = {
 };
 
 type ModerationManagerTypeResolvable = ModerationTypesEnum | number;
-
-interface ModerationManagerEntry {
-	id: string;
-	[ModerationSchemaKeysConstant.DURATION]: number | null;
-	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
-	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
-	[ModerationSchemaKeysConstant.REASON]: string | null;
-	[ModerationSchemaKeysConstant.TYPE]: ModerationManagerTypeResolvable;
-	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
-}
 
 interface ModerationManagerUpdateData {
 	id?: string;

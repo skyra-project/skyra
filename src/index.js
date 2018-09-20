@@ -69,6 +69,7 @@ module.exports = {
 	AntiRaid: require('./lib/util/Security/AntiRaid'),
 	GuildSecurity: require('./lib/util/GuildSecurity'),
 	ModerationManager: require('./lib/structures/ModerationManager'),
+	ModerationManagerEntry: require('./lib/structures/ModerationManagerEntry'),
 	Moderation: require('./lib/util/Moderation'),
 	ModerationLog: require('./lib/util/ModerationLog'),
 	NoMentionSpam: require('./lib/util/Security/NoMentionSpam'),

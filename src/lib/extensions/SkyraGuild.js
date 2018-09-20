@@ -1,6 +1,7 @@
 const { Structures, Collection } = require('discord.js');
 const GuildSecurity = require('../util/GuildSecurity');
 const StarboardManager = require('../structures/StarboardManager');
+const ModerationManager = require('../structures/ModerationManager');
 
 const kUnknownMember = Symbol('UnknownMember');
 
@@ -28,6 +29,13 @@ module.exports = Structures.extend('Guild', Guild => {
 			 * @type {StarboardManager}
 			 */
 			this.starboard = new StarboardManager(this);
+
+			/**
+			 * The ModerationManager instance in charge of managing moderation
+			 * @since 3.4.0
+			 * @type {ModerationManager}
+			 */
+			this.moderation = new ModerationManager(this);
 
 			Object.defineProperty(this, 'nameDictionary', { writable: true });
 

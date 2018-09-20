@@ -584,6 +584,23 @@ export class GuildSecurity {
 	public clearLockdowns(): void;
 }
 
+export class ModerationManager extends Collection<string, ModerationManagerEntry> {
+	public constructor(guild: SkyraGuild);
+	public guild: SkyraGuild;
+	private _count: number | null;
+	private _timer: NodeJS.Timer | null;
+	private readonly pool: object;
+	private readonly table: object;
+	public fetch(caseID: number): Promise<ModerationManagerEntry>;
+	public fetch(userID: Snowflake): Promise<Array<ModerationManagerEntry>>;
+	public fetch(caseIDs: Array<number>): Promise<Array<ModerationManagerEntry>>;
+	public fetch(): Promise<this>;
+	public count(): Promise<number>;
+	public update(data: ModerationManagerUpdateData): Promise<void>;
+	public insert(data: ModerationManagerInsertData): Promise<ModerationManagerEntry>;
+	public appeal(data: ModerationManagerAppealData): Promise<ModerationManagerEntry>;
+}
+
 export class Moderation {
 	public constructor(client: Skyra);
 	public client: Skyra;
@@ -796,6 +813,43 @@ type ModerationCaseData = {
 	appeal?: boolean;
 	extraData?: any;
 };
+
+type ModerationManagerTypeResolvable = ModerationTypesEnum | number;
+
+interface ModerationManagerEntry {
+	id: string;
+	[ModerationSchemaKeysConstant.DURATION]: number | null;
+	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
+	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
+	[ModerationSchemaKeysConstant.REASON]: string | null;
+	[ModerationSchemaKeysConstant.TYPE]: ModerationManagerTypeResolvable;
+	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
+}
+
+interface ModerationManagerUpdateData {
+	id?: string;
+	[ModerationSchemaKeysConstant.DURATION]: number | null;
+	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
+	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
+	[ModerationSchemaKeysConstant.REASON]: string | null;
+	[ModerationSchemaKeysConstant.TYPE]: ModerationManagerTypeResolvable;
+	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
+}
+
+interface ModerationManagerInsertData {
+	[ModerationSchemaKeysConstant.DURATION]: number | null;
+	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
+	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
+	[ModerationSchemaKeysConstant.REASON]: string | null;
+	[ModerationSchemaKeysConstant.TYPE]: ModerationManagerTypeResolvable;
+	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
+}
+
+interface ModerationManagerAppealData {
+	id?: string;
+	[ModerationSchemaKeysConstant.CASE]?: number;
+	[ModerationSchemaKeysConstant.USER]?: Snowflake;
+}
 
 type ConnectFourWinningRow = Array<{
 	x: number;
@@ -1159,6 +1213,7 @@ export class SkyraGuild extends KlasaGuild {
 	public client: Skyra;
 	public members: SkyraGuildMemberStore;
 	public settings: GuildSettings;
+	public moderation: ModerationManager;
 	public security: GuildSecurity;
 	public starboard: StarboardManager;
 	public readonly nameDictionary: Collection<Snowflake, string>;

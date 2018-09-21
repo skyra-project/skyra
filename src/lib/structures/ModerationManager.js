@@ -64,16 +64,8 @@ class ModerationManager extends Collection {
 		await this.table.get(data.id).update(data).run();
 	}
 
-	async insert(data) {
-		const entry = {
-			id: undefined,
-			...data,
-			[SCHEMA_KEYS.GUILD]: this.guild.id,
-			[SCHEMA_KEYS.CASE]: await this.count()
-		};
-
-		[entry.id] = (await this.table.insert(entry).run()).generated_keys;
-		return this._cache(entry, 'insert');
+	insert(data) {
+		return this._cache(data, 'insert');
 	}
 
 	async appeal(data) {

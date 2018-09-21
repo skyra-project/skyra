@@ -99,7 +99,8 @@ module.exports = {
 			MODERATOR  : 'moderatorID',
 			REASON     : 'reason',
 			TYPE       : 'type',
-			USER       : 'userID'
+			USER       : 'userID',
+			CREATED_AT : 'createdAt'
 		}),
 		ACTIONS : Object.freeze({
 			TEMPORARY : ACTION_TEMPORARY,

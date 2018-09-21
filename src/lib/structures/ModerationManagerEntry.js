@@ -12,7 +12,6 @@ class ModerationManagerEntry {
 		this.case = SCHEMA_KEYS.CASE in data ? data[SCHEMA_KEYS.CASE] : null;
 		this.duration = SCHEMA_KEYS.DURATION in data ? data[SCHEMA_KEYS.DURATION] : null;
 		this.extraData = SCHEMA_KEYS.EXTRA_DATA in data ? data[SCHEMA_KEYS.EXTRA_DATA] : null;
-		this.guild = SCHEMA_KEYS.GUILD in data ? data[SCHEMA_KEYS.GUILD] : null;
 		this.moderator = SCHEMA_KEYS.MODERATOR in data ? data[SCHEMA_KEYS.MODERATOR] : null;
 		this.reason = SCHEMA_KEYS.REASON in data ? data[SCHEMA_KEYS.REASON] : null;
 		this.type = SCHEMA_KEYS.TYPE in data ? data[SCHEMA_KEYS.TYPE] : null;
@@ -80,11 +79,6 @@ class ModerationManagerEntry {
 		return this;
 	}
 
-	setGuild(value) {
-		this.guild = value;
-		return this;
-	}
-
 	setModerator(value) {
 		this.moderator = value;
 		return this;
@@ -141,7 +135,7 @@ class ModerationManagerEntry {
 				catchUp: true,
 				data: {
 					[SCHEMA_KEYS.USER]: this.user,
-					[SCHEMA_KEYS.GUILD]: this.guild,
+					[SCHEMA_KEYS.GUILD]: this.manager.guild.id,
 					[SCHEMA_KEYS.DURATION]: this.duration,
 					[SCHEMA_KEYS.CASE]: this.case
 				}
@@ -157,7 +151,7 @@ class ModerationManagerEntry {
 			[SCHEMA_KEYS.CASE]: this.case,
 			[SCHEMA_KEYS.DURATION]: this.duration,
 			[SCHEMA_KEYS.EXTRA_DATA]: this.extraData,
-			[SCHEMA_KEYS.GUILD]: this.guild,
+			[SCHEMA_KEYS.GUILD]: this.manager.guild.id,
 			[SCHEMA_KEYS.MODERATOR]: this.moderator,
 			[SCHEMA_KEYS.REASON]: this.reason,
 			[SCHEMA_KEYS.TYPE]: this.type,

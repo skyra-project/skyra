@@ -1,5 +1,6 @@
 const { MODERATION: { TYPE_ASSETS, TYPE_KEYS, SCHEMA_KEYS, ACTIONS } } = require('../util/constants');
 const { constants: { TIME }, Duration, Timestamp } = require('klasa');
+const { MessageEmbed } = require('discord.js');
 const kTimeout = Symbol('ModerationManagerTimeout');
 
 const TEMPORARY_TYPES = [TYPE_KEYS.BAN, TYPE_KEYS.MUTE, TYPE_KEYS.VOICE_MUTE];
@@ -62,6 +63,33 @@ class ModerationManagerEntry {
 		return true;
 	}
 
+	async prepareEmbed() {
+		if (!this.user) throw new Error('A user has not been set.');
+		const [user, moderator] = await Promise.all([
+			typeof this.user === 'string' ? await this.manager.guild.client.users.fetch(this.user) : this.user,
+			typeof this.moderator === 'string' ? await this.manager.guild.client.users.fetch(this.moderator) : this.moderator || this.manager.guild.client.user
+		]);
+
+		const assets = TYPE_ASSETS[this.type];
+		const description = (this.duration ? [
+			`❯ **Type**: ${assets.title}`,
+			`❯ **User:** ${user.tag} (${user.id})`,
+			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.prefix}reason ${this.case} to claim.\``}`,
+			`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
+		] : [
+			`❯ **Type**: ${assets.title}`,
+			`❯ **User:** ${user.tag} (${user.id})`,
+			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.prefix}reason ${this.case} to claim.\``}`
+		]).join('\n');
+
+		return new MessageEmbed()
+			.setColor(assets.color)
+			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
+			.setDescription(description)
+			.setFooter(`Case ${this.case}`, this.manager.guild.client.user.displayAvatarURL({ size: 128 }))
+			.setTimestamp(new Date(this.createdAt || Date.now()));
+	}
+
 	setCase(value) {
 		this.case = value;
 		return this;
@@ -118,7 +146,7 @@ class ModerationManagerEntry {
 
 	async create() {
 		// If the entry was created, there is no point on re-sending
-		if (this.createdAt) return null;
+		if (!this.user || this.createdAt) return null;
 		this.createdAt = Date.now();
 
 		// If the entry should not send, abort creation
@@ -128,18 +156,24 @@ class ModerationManagerEntry {
 		[this.id] = (await this.manager.table.insert(this.toJSON()).run()).generated_keys;
 		this.manager.insert(this);
 
+		const channel = (this.manager.guild.settings.channels.modlog && this.manager.guild.channels.get(this.manager.guild.settings.channels.modlog)) || null;
+		if (channel) {
+			const messageEmbed = await this.prepareEmbed();
+			channel.send(messageEmbed).catch(error => this.manager.guild.client.emit('error', error));
+		}
+
 		// eslint-disable-next-line no-bitwise
 		if (this.duration && (this.type | ACTIONS.APPEALED) in TYPE_ASSETS) {
 			// eslint-disable-next-line no-bitwise
-			await this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ACTIONS.APPEALED].title.replace(/ /g, ''), this.duration + Date.now(), {
+			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ACTIONS.APPEALED].title.replace(/ /g, ''), this.duration + Date.now(), {
 				catchUp: true,
 				data: {
-					[SCHEMA_KEYS.USER]: this.user,
+					[SCHEMA_KEYS.USER]: typeof this.user === 'string' ? this.user : this.user.id,
 					[SCHEMA_KEYS.GUILD]: this.manager.guild.id,
 					[SCHEMA_KEYS.DURATION]: this.duration,
 					[SCHEMA_KEYS.CASE]: this.case
 				}
-			});
+			}).catch(error => this.manager.guild.client.emit('error', error));
 		}
 
 		return this;
@@ -152,10 +186,10 @@ class ModerationManagerEntry {
 			[SCHEMA_KEYS.DURATION]: this.duration,
 			[SCHEMA_KEYS.EXTRA_DATA]: this.extraData,
 			[SCHEMA_KEYS.GUILD]: this.manager.guild.id,
-			[SCHEMA_KEYS.MODERATOR]: this.moderator,
+			[SCHEMA_KEYS.MODERATOR]: this.moderator ? typeof this.moderator === 'string' ? this.moderator : this.moderator.id : null,
 			[SCHEMA_KEYS.REASON]: this.reason,
 			[SCHEMA_KEYS.TYPE]: this.type,
-			[SCHEMA_KEYS.USER]: this.user,
+			[SCHEMA_KEYS.USER]: this.user ? typeof this.user === 'string' ? this.user : this.user.id : null,
 			[SCHEMA_KEYS.CREATED_AT]: this.createdAt
 		};
 	}

@@ -20,7 +20,7 @@ module.exports = class extends ModerationCommand {
 		const user = await this.client.users.fetch(modlog.user);
 		const unwarnLog = await this.handle(msg, user, null, reason, modlog);
 
-		return msg.sendLocale('COMMAND_UNWARN_MESSAGE', [user, unwarnLog.reason, unwarnLog.case]);
+		return msg.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
 	}
 
 	async handle(msg, user, member, reason, modlog) {

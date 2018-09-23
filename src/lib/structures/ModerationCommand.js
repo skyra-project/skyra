@@ -4,11 +4,11 @@ const { MODERATION: { TYPE_KEYS } } = require('../util/constants');
 class ModerationCommand extends Command {
 
 	constructor(client, store, file, core, { modType, requiredMember = false, ...options }) {
-		super(client, store, file, core, mergeDefault(options, {
+		super(client, store, file, core, mergeDefault({
 			runIn: ['text'],
 			usage: '<users:...user{1,5}> [reason:...string]',
 			usageDelim: ' '
-		}));
+		}, options));
 
 		if (typeof modType === 'undefined') this.client.emit('error', `[COMMAND] ${this} does not have a type.`);
 

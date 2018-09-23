@@ -11,22 +11,31 @@ module.exports = class extends ModerationCommand {
 			permissionLevel: 5,
 			requiredMember: true,
 			runIn: ['text'],
-			usage: '<SearchMember:user> [reason:string] [...]',
+			usage: '<users:...user{,5}> [reason:...string]',
 			usageDelim: ' '
 		});
 	}
 
-	async run(msg, [target, ...reason]) {
-		const member = await this.checkModeratable(msg, target);
-		reason = reason.length ? reason.join(' ') : null;
+	async run(msg, [targets, reason]) {
+		const warned = [], errors = [];
+		const handle = this._handleMember.bind(this, msg, Boolean(msg.guild.settings.messages.warnings && reason), reason, warned, errors);
+		await Promise.all(targets.map(handle));
+		return msg.sendMessage(reason && warned.length
+			? warned.concat(msg.language.get('MODERATION_REASON_OF', reason), errors)
+			: warned.concat(errors));
+	}
 
-		if (msg.guild.settings.messages.warnings && reason) {
-			await member.user.send(msg.language.get('COMMAND_WARN_DM', msg.author.tag, msg.guild, reason))
-				.catch(() => null);
+	async _handleMember(msg, shouldDM, reason, warned, errors, target) {
+		try {
+			const member = await this.checkModeratable(msg, target);
+			if (shouldDM) member.user.send(msg.language.get('COMMAND_WARN_DM', msg.author.tag, msg.guild, reason)).catch(() => null);
+			const modlog = await this.sendModlog(msg, target, reason);
+			warned.push(msg.language.get('COMMAND_WARN_MESSAGE', member.user, modlog.case));
+		} catch (error) {
+			errors.push(msg.language.get('COMMAND_WARN_FAILED', target, error));
 		}
 
-		const modlog = await this.sendModlog(msg, target, reason);
-		return msg.sendLocale('COMMAND_WARN_MESSAGE', [target, modlog.reason, modlog.case]);
+		return { warned, errors };
 	}
 
 };

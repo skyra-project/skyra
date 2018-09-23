@@ -1839,7 +1839,9 @@ module.exports = class extends Language {
 			COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
 			COMMAND_VOICEKICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **VOICE KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
-			COMMAND_WARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
+			COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
+			COMMAND_WARN_FAILED: (user, error) => `|\`❌\`| **FAILED**: ${user.tag} (${user.id}): ${error}`,
+			MODERATION_REASON_OF: (reason) => `Reason: ${reason}`,
 
 			/**
 			 * ###############

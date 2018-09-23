@@ -80,8 +80,12 @@ class ModerationManagerEntry {
 			[SCHEMA_KEYS.TYPE]: this.type
 		};
 
-		// eslint-disable-next-line no-bitwise
-		if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined') flattened[SCHEMA_KEYS.TYPE] |= ACTIONS.TEMPORARY;
+		if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined') {
+			// eslint-disable-next-line no-bitwise
+			if (flattened[SCHEMA_KEYS.DURATION]) flattened[SCHEMA_KEYS.TYPE] |= ACTIONS.TEMPORARY;
+			// eslint-disable-next-line no-bitwise
+			else flattened[SCHEMA_KEYS.TYPE] &= ~ACTIONS.TEMPORARY;
+		}
 
 		if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined'
 			|| typeof flattened[SCHEMA_KEYS.MODERATOR] !== 'undefined'

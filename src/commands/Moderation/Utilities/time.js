@@ -86,7 +86,7 @@ module.exports = class extends Command {
 	getActions(msg, modlog, user) {
 		switch (modlog.type) {
 			case TYPE_KEYS.BAN: return this.checkBan(msg, modlog, user);
-			case TYPE_KEYS.MUTE: return this.checkMute(msg, modlog);
+			case TYPE_KEYS.MUTE: return this.checkMute(msg, modlog, user);
 			case TYPE_KEYS.VOICE_MUTE: return this.checkVMute(msg, modlog, user);
 			default: throw 'COMMAND_TIME_UNSUPPORTED_TIPE';
 		}

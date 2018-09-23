@@ -27,12 +27,12 @@ class ModerationManagerEntry {
 
 	get appealed() {
 		// eslint-disable-next-line no-bitwise
-		return Boolean(this.type | ACTIONS.APPEALED);
+		return Boolean(this.type & ACTIONS.APPEALED);
 	}
 
 	get temporary() {
 		// eslint-disable-next-line no-bitwise
-		return Boolean(this.type | ACTIONS.TEMPORARY);
+		return Boolean(this.type & ACTIONS.TEMPORARY);
 	}
 
 	get cacheExpired() {

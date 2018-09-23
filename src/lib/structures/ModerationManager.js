@@ -21,6 +21,10 @@ class ModerationManager extends Collection {
 		return this.guild.client.providers.default.db.table(TABLENAME);
 	}
 
+	get new() {
+		return new ModerationManagerEntry(this, {});
+	}
+
 	async fetch(id) {
 		// Case number
 		if (typeof id === 'number') {

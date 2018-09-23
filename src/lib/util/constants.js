@@ -13,7 +13,7 @@ const WARN       = 0b0111;
 const ACTION_APPEALED = 1 << 4,
 	ACTION_TEMPORARY  = 1 << 5;
 
-const TYPE_KEYS = {
+const TYPE_KEYS = Object.freeze({
 	BAN                  : BAN,
 	KICK                 : KICK,
 	MUTE                 : MUTE,
@@ -29,25 +29,25 @@ const TYPE_KEYS = {
 	TEMPORARY_BAN        : BAN        | ACTION_TEMPORARY,
 	TEMPORARY_MUTE       : MUTE       | ACTION_TEMPORARY,
 	TEMPORARY_VOICE_MUTE : VOICE_MUTE | ACTION_TEMPORARY
-};
+});
 
-const TYPE_ASSETS = {
-	[TYPE_KEYS.BAN]                  : { color : 0xD50000, title : 'Ban' },
-	[TYPE_KEYS.KICK]                 : { color : 0xF57F17, title : 'Kick' },
-	[TYPE_KEYS.MUTE]                 : { color : 0xF9A825, title : 'Mute' },
-	[TYPE_KEYS.PRUNE]                : { color : 0xB2FF59, title : 'Message Prune' },
-	[TYPE_KEYS.SOFT_BAN]             : { color : 0xFF1744, title : 'Softban' },
-	[TYPE_KEYS.VOICE_KICK]           : { color : 0xFFBB2D, title : 'Voice Kick' },
-	[TYPE_KEYS.VOICE_MUTE]           : { color : 0xFBC02D, title : 'Voice Mute' },
-	[TYPE_KEYS.WARN]                 : { color : 0xFFD600, title : 'Warn' },
-	[TYPE_KEYS.UN_BAN]               : { color : 0x304FFE, title : 'Unban' },
-	[TYPE_KEYS.UN_MUTE]              : { color : 0x448AFF, title : 'Unmute' },
-	[TYPE_KEYS.UN_VOICE_MUTE]        : { color : 0xBBDEFB, title : 'Voice Unmute' },
-	[TYPE_KEYS.UN_WARN]              : { color : 0xFFF494, title : 'Unwarn' },
-	[TYPE_KEYS.TEMPORARY_BAN]        : { color : 0xC51162, title : 'Temporary Ban' },
-	[TYPE_KEYS.TEMPORARY_MUTE]       : { color : 0xF50057, title : 'Temporary Mute' },
-	[TYPE_KEYS.TEMPORARY_VOICE_MUTE] : { color : 0xFF4081, title : 'Temporary Voice Mute' }
-};
+const TYPE_ASSETS = Object.freeze({
+	[TYPE_KEYS.BAN]                  : Object.freeze({ color : 0xD50000, title : 'Ban' }),
+	[TYPE_KEYS.KICK]                 : Object.freeze({ color : 0xF57F17, title : 'Kick' }),
+	[TYPE_KEYS.MUTE]                 : Object.freeze({ color : 0xF9A825, title : 'Mute' }),
+	[TYPE_KEYS.PRUNE]                : Object.freeze({ color : 0xB2FF59, title : 'Message Prune' }),
+	[TYPE_KEYS.SOFT_BAN]             : Object.freeze({ color : 0xFF1744, title : 'Softban' }),
+	[TYPE_KEYS.VOICE_KICK]           : Object.freeze({ color : 0xFFBB2D, title : 'Voice Kick' }),
+	[TYPE_KEYS.VOICE_MUTE]           : Object.freeze({ color : 0xFBC02D, title : 'Voice Mute' }),
+	[TYPE_KEYS.WARN]                 : Object.freeze({ color : 0xFFD600, title : 'Warn' }),
+	[TYPE_KEYS.UN_BAN]               : Object.freeze({ color : 0x304FFE, title : 'Unban' }),
+	[TYPE_KEYS.UN_MUTE]              : Object.freeze({ color : 0x448AFF, title : 'Unmute' }),
+	[TYPE_KEYS.UN_VOICE_MUTE]        : Object.freeze({ color : 0xBBDEFB, title : 'Voice Unmute' }),
+	[TYPE_KEYS.UN_WARN]              : Object.freeze({ color : 0xFFF494, title : 'Unwarn' }),
+	[TYPE_KEYS.TEMPORARY_BAN]        : Object.freeze({ color : 0xC51162, title : 'Temporary Ban' }),
+	[TYPE_KEYS.TEMPORARY_MUTE]       : Object.freeze({ color : 0xF50057, title : 'Temporary Mute' }),
+	[TYPE_KEYS.TEMPORARY_VOICE_MUTE] : Object.freeze({ color : 0xFF4081, title : 'Temporary Voice Mute' })
+});
 
 module.exports = {
 
@@ -89,8 +89,8 @@ module.exports = {
 	}),
 
 	MODERATION : Object.freeze({
-		TYPE_KEYS   : Object.freeze(TYPE_KEYS),
-		TYPE_ASSETS : Object.freeze(TYPE_ASSETS),
+		TYPE_KEYS   : TYPE_KEYS,
+		TYPE_ASSETS : TYPE_ASSETS,
 		SCHEMA_KEYS : Object.freeze({
 			CASE       : 'caseID',
 			DURATION   : 'duration',

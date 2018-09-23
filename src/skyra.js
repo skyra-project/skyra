@@ -91,7 +91,7 @@ Skyra.defaultGuildSchema
 		.add('includes', 'any', { array: true, configurable: false }));
 
 // eslint-disable-next-line no-process-env
-const DEV = process.env.DEV === 'true';
+const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 
 // Skyra setup
 Skyra.defaultPermissionLevels

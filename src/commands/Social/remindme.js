@@ -1,4 +1,4 @@
-const { Command, PromptList, Timestamp, Duration } = require('../../index');
+const { Command, PromptList, Timestamp, Duration, constants: { TIME: { YEAR } }, klasaUtil: { isNumber } } = require('../../index');
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 const REMINDER_TYPE = 'reminder';
 
@@ -11,16 +11,16 @@ module.exports = class extends Command {
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_REMINDME_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_REMINDME_EXTENDED'),
-			usage: '[list|delete|me] [input:string] [...]',
+			usage: '[list|delete|me] [input:...string]',
 			usageDelim: ' '
 		});
 	}
 
-	async run(msg, [action, ...data]) {
-		if (!data.length || action === 'list') return this.list(msg);
+	async run(msg, [action, data]) {
+		if (!data || action === 'list') return this.list(msg);
 		if (action === 'delete') return this.delete(msg, data);
 
-		const { time, title } = await this.parseInput(msg, data.join(' '));
+		const { time, title } = await this.parseInput(msg, data);
 		const task = await this.client.schedule.create(REMINDER_TYPE, Date.now() + time, {
 			catchUp: true,
 			data: {
@@ -75,7 +75,7 @@ module.exports = class extends Command {
 				parsed.time = new Duration(string.slice(indexOfTime + 4)).offset;
 		}
 
-		if (!parsed.time || parsed.time < 60000)
+		if (!isNumber(parsed.time) || parsed.time < 59500 || parsed.time > (YEAR * 5))
 			parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
 
 		return parsed;

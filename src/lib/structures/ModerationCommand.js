@@ -6,7 +6,7 @@ class ModerationCommand extends Command {
 	constructor(client, store, file, core, { modType, requiredMember = false, ...options }) {
 		super(client, store, file, core, mergeDefault({
 			runIn: ['text'],
-			usage: '<users:...user{1,5}> [reason:...string]',
+			usage: '<users:...user{,10}> [reason:...string]',
 			usageDelim: ' '
 		}, options));
 

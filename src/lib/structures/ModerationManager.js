@@ -91,7 +91,9 @@ class ModerationManager extends Collection {
 
 	_cache(entries, type = 'none') {
 		const isArray = Array.isArray(entries);
-		entries = isArray ? entries.map(entry => new ModerationManagerEntry(entry)) : new ModerationManagerEntry(entries);
+		entries = isArray
+			? entries.map(entry => entry instanceof ModerationManagerEntry ? entry : new ModerationManagerEntry(this, entry))
+			: entries instanceof ModerationManagerEntry ? entries : new ModerationManagerEntry(this, entries);
 
 		for (const entry of isArray ? entries : [entries])
 			super.set(entry.case, entry);
@@ -103,8 +105,7 @@ class ModerationManager extends Collection {
 
 		if (!this._timer) {
 			this._timer = setInterval(() => {
-				const now = Date.now();
-				super.sweep(value => value.cacheExpired < now);
+				super.sweep(value => value.cacheExpired);
 				if (!super.size) this._timer = null;
 			}, 1000);
 		}

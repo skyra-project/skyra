@@ -181,7 +181,6 @@ class ModerationManagerEntry {
 
 	toJSON() {
 		return {
-			id: this.id,
 			[SCHEMA_KEYS.CASE]: this.case,
 			[SCHEMA_KEYS.DURATION]: this.duration,
 			[SCHEMA_KEYS.EXTRA_DATA]: this.extraData,

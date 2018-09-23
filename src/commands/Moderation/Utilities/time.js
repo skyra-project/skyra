@@ -41,7 +41,7 @@ module.exports = class extends Command {
 			}
 		});
 
-		await modlog.update({
+		await modlog.edit({
 			[SCHEMA_KEYS.DURATION]: offset,
 			[SCHEMA_KEYS.MODERATOR]: msg.author.id
 		});
@@ -54,7 +54,7 @@ module.exports = class extends Command {
 		if (!task) throw msg.language.get('COMMAND_TIME_NOT_SCHEDULED');
 		await task.delete();
 
-		await modlog.update({
+		await modlog.edit({
 			[SCHEMA_KEYS.DURATION]: null,
 			[SCHEMA_KEYS.MODERATOR]: msg.author.id
 		});

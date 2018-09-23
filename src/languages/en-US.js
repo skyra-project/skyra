@@ -2214,7 +2214,7 @@ module.exports = class extends Language {
 			SETTINGS_DELETE_ROLES_INITIAL: 'Reseated the value for `roles.initial`',
 			SETTINGS_DELETE_ROLES_MUTE: 'Reseated the value for `roles.muted`',
 
-			MODLOG_TIMED: 'This moderation log is not timed.',
+			MODLOG_TIMED: (remaining) => `This moderation log is already timed. Expires in ${duration(remaining)}`,
 
 			GUILD_WARN_NOT_FOUND: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
 			GUILD_MEMBER_NOT_VOICECHANNEL: 'I cannot execute this action in a member that is not connected to a voice channel.',

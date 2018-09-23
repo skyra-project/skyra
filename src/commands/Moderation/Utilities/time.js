@@ -21,13 +21,11 @@ module.exports = class extends Command {
 
 		const user = await this.client.users.fetch(modlog.user);
 		const type = await this.getActions(msg, modlog, user);
-		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[SCHEMA_KEYS.CASE] === modlog[SCHEMA_KEYS.CASE]);
+		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[SCHEMA_KEYS.CASE] === modlog.case);
 
 		if (cancel) return this.cancel(msg, modlog, task);
-		if (task) {
-			if (modlog.appealed) throw msg.language.get('MODLOG_APPEALED');
-			throw msg.language.get('MODLOG_TIMED', task.data.timestamp - Date.now());
-		}
+		if (modlog.appealed) throw msg.language.get('MODLOG_APPEALED');
+		if (task) throw msg.language.get('MODLOG_TIMED', task.data.timestamp - Date.now());
 		if (!time.length) throw msg.language.get('COMMAND_TIME_UNDEFINED_TIME');
 
 		const { offset } = new Duration(time.join(' '));

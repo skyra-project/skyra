@@ -1915,7 +1915,7 @@ module.exports = class extends Language {
 			COMMAND_REMINDME_SHORT_TIME: 'You did not give me a duration of at least one minute long. Cancelling prompt.',
 			COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
 			COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
-			COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type either \'delete\' or \'remove\' followed by the ID.',
+			COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
 			COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
 			COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 			COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',

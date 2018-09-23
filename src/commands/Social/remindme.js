@@ -44,7 +44,7 @@ module.exports = class extends Command {
 	}
 
 	async delete(msg, data) {
-		if (data.length !== 1) throw msg.language.get('COMMAND_REMINDME_DELETE_INVALID_PARAMETERS');
+		if (!data) throw msg.language.get('COMMAND_REMINDME_DELETE_INVALID_PARAMETERS');
 		const [id] = data;
 		let selectedTask = null;
 		for (const task of this.client.schedule.tasks) {

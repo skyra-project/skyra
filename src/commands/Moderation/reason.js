@@ -23,6 +23,8 @@ module.exports = class extends Command {
 		const modlog = await msg.guild.moderation.fetch(selected);
 		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 
+		const oldReason = modlog.reason;
+
 		// Update the moderation case
 		await modlog.edit({ [SCHEMA_KEYS.REASON]: reason });
 
@@ -45,8 +47,8 @@ module.exports = class extends Command {
 		}
 
 		return msg.alert(`Successfully updated the log ${selected}.${codeBlock('http', [
-			`Old reason : ${modlog.reason || 'Not set.'}`,
-			`New reason : ${reason}`
+			`Old reason : ${oldReason || 'Not set.'}`,
+			`New reason : ${modlog.reason}`
 		].join('\n'))}`);
 	}
 

@@ -94,6 +94,8 @@ class ModerationManagerEntry {
 			await this.manager.table.get(this.id).update(flattened).run();
 			if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined') this.duration = flattened[SCHEMA_KEYS.DURATION];
 			if (typeof flattened[SCHEMA_KEYS.MODERATOR] !== 'undefined') this.moderator = flattened[SCHEMA_KEYS.MODERATOR];
+			if (typeof flattened[SCHEMA_KEYS.REASON] !== 'undefined') this.reason = flattened[SCHEMA_KEYS.REASON];
+			if (typeof flattened[SCHEMA_KEYS.EXTRA_DATA] !== 'undefined') this.extraData = flattened[SCHEMA_KEYS.EXTRA_DATA];
 			this.type = flattened[SCHEMA_KEYS.TYPE];
 		}
 

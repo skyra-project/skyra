@@ -105,7 +105,7 @@ module.exports = class extends Command {
 		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw msg.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
 
 		const stickyRoles = msg.guild.settings.stickyRoles.find(stickyRole => stickyRole.id === user.id);
-		if (!stickyRoles || !stickyRoles.includes(msg.guild.settings.roles.muted)) throw msg.language.get('COMMAND_MUTE_USER_NOT_MUTED');
+		if (!stickyRoles || !stickyRoles.roles.includes(msg.guild.settings.roles.muted)) throw msg.language.get('COMMAND_MUTE_USER_NOT_MUTED');
 		return 'unmute';
 	}
 

@@ -25,6 +25,7 @@ module.exports = class extends ModerationCommand {
 		if (!role) {
 			if (!await msg.hasAtLeastPermissionLevel(6)) throw msg.language.get('COMMAND_MUTE_LOWLEVEL');
 			if (!msg.channel.permissionsFor(msg.guild.me).has(PERMISSIONS)) throw msg.language.get('COMMAND_MUTECREATE_MISSING_PERMISSION');
+			if (msg.guild.roles.size >= 250) throw msg.language.get('COMMAND_MUTE_CONFIGURE_TOOMANY_ROLES');
 			await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
 				.catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
 			await msg.sendLocale('SYSTEM_PROCESSING');

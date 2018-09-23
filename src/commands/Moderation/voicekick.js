@@ -9,33 +9,27 @@ module.exports = class extends ModerationCommand {
 			extendedHelp: (language) => language.get('COMMAND_VOICEKICK_EXTENDED'),
 			modType: ModerationCommand.types.VOICE_KICK,
 			permissionLevel: 5,
-			requiredMember: true,
-			runIn: ['text'],
-			usage: '<SearchMember:user> [reason:string] [...]',
-			usageDelim: ' '
+			requiredMember: true
 		});
 	}
 
-	async run(msg, [target, ...reason]) {
-		const member = await this.checkModeratable(msg, target);
-		if (!member.voice.channelID) throw msg.language.get('GUILD_MEMBER_NOT_VOICECHANNEL');
-		reason = reason.length ? reason.join(' ') : null;
-
-		await this.kickVoiceChannel(msg, member, reason);
-		const modlog = await this.sendModlog(msg, target, reason);
-
-		return msg.sendLocale('COMMAND_VOICEKICK_MESSAGE', [target, modlog.reason, modlog.case]);
-	}
-
-	async kickVoiceChannel(msg, member, reason) {
-		const channel = await msg.guild.channels.create('temp', {
-			overwrites: [{ id: msg.guild.id, deny: 0x00000400 }, { id: member.id, allow: 0x00000400 }],
+	prehandle(msg, users, reason) {
+		return msg.guild.channels.create('temp', {
+			overwrites: [{ id: msg.guild.id, deny: 0x00000400 }, ...users.map(user => ({ id: user.id, allow: 0x00000400 }))],
 			reason,
 			type: 'voice',
 			userLimit: 1
 		});
-		await member.setVoiceChannel(channel);
-		await channel.delete('Temporal Voice Channel Deletion');
+	}
+
+	async handle(msg, user, member, reason, voiceChannel) {
+		if (!member.voice.channelID) throw msg.language.get('GUILD_MEMBER_NOT_VOICECHANNEL');
+		await member.setVoiceChannel(voiceChannel);
+		return this.sendModlog(msg, user, reason);
+	}
+
+	posthandle(msg, users, reason, voiceChannel) {
+		return voiceChannel.delete('Temporal Voice Channel Deletion');
 	}
 
 };

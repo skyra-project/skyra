@@ -16,15 +16,14 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	async run(msg, [target, ...reason]) {
-		if (!msg.guild.settings.roles.muted) throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
-		if (!msg.guild.roles.has(msg.guild.settings.roles.muted)) {
-			await msg.guild.settings.reset('roles.muted');
-			throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
-		}
+	async inhibit(msg) {
+		const id = msg.guild.settings.roles.muted;
+		if (id && msg.guild.roles.has(id)) return false;
+		throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
+	}
 
-		const member = await this.checkModeratable(msg, target);
-		const modlog = (await msg.guild.moderation.fetch(target.id)).filter(log => log.type === ModerationCommand.types.MUTE).last();
+	async handle(msg, user, member, reason) {
+		const modlog = (await msg.guild.moderation.fetch(user.id)).filter(log => log.type === ModerationCommand.types.MUTE).last();
 		if (!modlog) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 
@@ -46,9 +45,7 @@ module.exports = class extends ModerationCommand {
 
 		// Edit roles
 		await member.edit({ roles });
-		const unmuteLog = await this.sendModlog(msg, target, reason.length ? reason.join(' ') : null);
-
-		return msg.sendLocale('COMMAND_UNMUTE_MESSAGE', [target, unmuteLog.reason, unmuteLog.case]);
+		return this.sendModlog(msg, user, reason);
 	}
 
 };

@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	inhibit(msg) {
+	async inhibit(msg) {
 		return !msg.guild || msg.guild.id !== '256566731684839428';
 	}
 

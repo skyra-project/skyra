@@ -1,5 +1,5 @@
 /* eslint object-curly-newline: "off", max-len: "off" */
-const { Language, LanguageHelp, Timestamp, FriendlyDuration, klasaUtil: { toTitleCase, codeBlock }, constants: { EMOJIS: { SHINY } }, versions: { skyra, klasa } } = require('../index');
+const { Language, LanguageHelp, Timestamp, FriendlyDuration, klasaUtil: { toTitleCase, codeBlock }, constants: { EMOJIS: { SHINY, GREENTICK, REDCROSS } }, versions: { skyra, klasa } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -1810,9 +1810,7 @@ module.exports = class extends Language {
 			 * MODERATION COMMANDS
 			 */
 
-			COMMAND_BAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **BANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
-			COMMAND_KICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 			COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
 			COMMAND_LOCKDOWN_LOCKING: (channel) => `Locking the channel ${channel}...`,
@@ -1820,7 +1818,6 @@ module.exports = class extends Language {
 			COMMAND_MUTE_LOWLEVEL: 'I am sorry, there is no Mute role configured. Please ask an Administrator or the Guild Owner to set it up.',
 			COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',
 			COMMAND_MUTE_CONFIGURE: 'Do you want me to create and configure the Mute role now?',
-			COMMAND_MUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **MUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_MUTE_MUTED: 'The target user is already muted.',
 			COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
 			COMMAND_MUTE_UNCONFIGURED: 'This guild does not have a **Muted** role. Aborting command execution.',
@@ -1829,19 +1826,15 @@ module.exports = class extends Language {
 				? `Successfully deleted ${amount} messages from ${total}.`
 				: 'No message has been deleted, either no message match the filter or they are over 14 days old.',
 			COMMAND_REASON_NOT_EXISTS: 'The selected modlog does not seem to exist.',
-			COMMAND_SOFTBAN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **SOFTBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
-			COMMAND_UNBAN_MESSAGE: (user, reason, log, banReason) => `|\`🔨\`| [Case::${log}] **UNBANNED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}${banReason ? `\nReason for Ban: ${banReason}` : ''}`,
 			COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
-			COMMAND_UNMUTE_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **UNMUTED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
 			COMMAND_UNWARN_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **APPEALED WARN**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_VMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MUTE_MEMBERS}** permission to be able to voice unmute.`,
 			COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
-			COMMAND_VOICEKICK_MESSAGE: (user, reason, log) => `|\`🔨\`| [Case::${log}] **VOICE KICKED**: ${user.tag} (${user.id})${reason ? `\nReason: ${reason}` : ''}`,
 			COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
 			COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
-			COMMAND_WARN_FAILED: (user, error) => `|\`❌\`| **FAILED**: ${user.tag} (${user.id}): ${error}`,
-			MODERATION_REASON_OF: (reason) => `Reason: ${reason}`,
+			COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases === 1 ? 'case' : 'cases'} ${range} | ${users}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
+			COMMAND_MODERATION_FAILED: (users) => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
 
 			/**
 			 * ###############

@@ -9,22 +9,14 @@ module.exports = class extends ModerationCommand {
 			extendedHelp: (language) => language.get('COMMAND_VUNMUTE_EXTENDED'),
 			modType: ModerationCommand.types.UN_VOICE_MUTE,
 			permissionLevel: 5,
-			requiredMember: true,
-			runIn: ['text'],
-			usage: '<SearchMember:user> [reason:string] [...]',
-			usageDelim: ' '
+			requiredMember: true
 		});
 	}
 
-	async run(msg, [target, ...reason]) {
-		const member = await this.checkModeratable(msg, target);
+	async handle(msg, user, member, reason) {
 		if (!member.voice.serverMute) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
-
-		reason = reason.length ? reason.join(' ') : null;
 		await member.setDeaf(false, reason);
-		const modlog = await this.sendModlog(msg, target, reason);
-
-		return msg.sendLocale('COMMAND_UNMUTE_MESSAGE', [target, modlog.reason, modlog.case]);
+		return this.sendModlog(msg, user, reason);
 	}
 
 };

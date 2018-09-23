@@ -4,29 +4,24 @@ module.exports = class extends ModerationCommand {
 
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
-			avoidAnonymous: true,
 			requiredPermissions: ['BAN_MEMBERS'],
 			description: (language) => language.get('COMMAND_SOFTBAN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SOFTBAN_EXTENDED'),
 			modType: ModerationCommand.types.SOFT_BAN,
 			permissionLevel: 5,
-			requiredMember: false,
-			runIn: ['text'],
-			usage: '<SearchMember:user> [days:integer{1,7}] [reason:string] [...]',
-			usageDelim: ' '
+			requiredMember: false
 		});
 	}
 
-	async run(msg, [target, days = 1, ...reason]) {
-		const member = await this.checkModeratable(msg, target);
+	async handle(msg, user, member, reason) {
 		if (member && !member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
+		await msg.guild.members.ban(user.id, {
+			days: 'days' in msg.flags ? Math.min(7, Math.max(0, Number(msg.flags.days))) : 0,
+			reason: `${reason ? `Softban with reason: ${reason}` : null}`
+		});
+		await msg.guild.members.unban(user.id, 'Softban.');
 
-		reason = reason.length ? reason.join(' ') : null;
-		const modlog = await this.sendModlog(msg, target, reason);
-		await msg.guild.members.ban(target.id, { days, reason: `${reason ? `Softban with reason: ${reason}` : null}` });
-		await msg.guild.members.unban(target.id, 'Softban.');
-
-		return msg.sendLocale('COMMAND_SOFTBAN_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
+		return this.sendModlog(msg, user, reason);
 	}
 
 };

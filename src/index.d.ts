@@ -271,15 +271,17 @@ export class StarboardMessage {
 	public static COLORS: Array<number>;
 }
 
-export class ModerationCommand extends SkyraCommand {
+export abstract class ModerationCommand extends SkyraCommand {
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], core: boolean, options?: ModerationCommandOptions);
-	public avoidAnonymous: boolean;
-	public modType: string;
+	public modType: ModerationTypesEnum;
 	public requiredMember: boolean;
 
-	public checkModeratable(msg: SkyraMessage, target: SkyraUser): Promise<SkyraGuildMember>;
-	public fetchTargetMember(msg: SkyraMessage, id: Snowflake, throwError: boolean): Promise<SkyraGuildMember | null>;
-	public sendModlog(msg: SkyraMessage, target: SkyraUser, reason: Array<string> | string, extraData?: any): Promise<ModerationManagerEntry>;
+	public run(msg: SkyraMessage, args: [Array<SkyraGuildMember>, string]): Promise<SkyraMessage>;
+	protected prehandle(msg: SkyraMessage, users: Array<SkyraUser>, reason: string | null): Promise<any>;
+	protected abstract handle(msg: SkyraMessage, user: SkyraUser, member: SkyraGuildMember | null, reason: string | null): Promise<ModerationManagerEntry>;
+	protected posthandle(msg: SkyraMessage, users: Array<SkyraUser>, reason: string | null, prehandled: any): Promise<any>;
+	protected checkModeratable(msg: SkyraMessage, target: SkyraUser): Promise<SkyraGuildMember>;
+	protected sendModlog(msg: SkyraMessage, target: SkyraUser, reason: Array<string> | string, extraData?: any): Promise<ModerationManagerEntry>;
 	public static types: ModerationTypeKeys;
 }
 
@@ -831,6 +833,8 @@ type SkyraConstants = Readonly<{
 	}>;
 	EMOJIS: Readonly<{
 		SHINY: string;
+		GREENTICK: string;
+		REDCROSS: string;
 	}>;
 	CONNECT_FOUR: Readonly<{
 		EMOJIS: Readonly<{
@@ -1035,7 +1039,6 @@ type WeebCommandOptions = {
 } & CommandOptions;
 
 type ModerationCommandOptions = {
-	avoidAnonymous?: boolean;
 	modType: ModerationTypesEnum;
 	requiredMember?: boolean;
 } & CommandOptions;
@@ -1092,6 +1095,7 @@ export { SkyraPermissionLevels as PermissionLevels };
 declare abstract class SkyraCommand extends Command {
 	public client: Skyra;
 	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage, params: string[]) => any): this;
+	public inhibit(msg: SkyraMessage): Promise<boolean>;
 }
 
 export { SkyraCommand as Command };

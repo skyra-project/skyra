@@ -9,10 +9,7 @@ module.exports = class extends Command {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_LOCKDOWN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_LOCKDOWN_EXTENDED'),
-			permissionLevel: 5,
-			runIn: ['text'],
-			usage: '[channel:channel] [time:time]',
-			usageDelim: ' '
+			permissionLevel: 5
 		});
 	}
 

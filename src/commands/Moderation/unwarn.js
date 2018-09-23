@@ -9,22 +9,24 @@ module.exports = class extends ModerationCommand {
 			modType: ModerationCommand.types.UN_WARN,
 			permissionLevel: 5,
 			requiredMember: true,
-			runIn: ['text'],
-			usage: '<case:number> [reason:string] [...]',
-			usageDelim: ' '
+			usage: '<case:number> [reason:...string]'
 		});
 	}
 
-	async run(msg, [caseID, ...reason]) {
+	async run(msg, [caseID, reason]) {
 		const modlog = await msg.guild.moderation.fetch(caseID);
 		if (!modlog || modlog.type !== TYPE_KEYS.WARN) throw msg.language.get('GUILD_WARN_NOT_FOUND');
 
-		// Appeal the modlog and send a log to the moderation log channel
-		await modlog.appeal();
 		const user = await this.client.users.fetch(modlog.user);
-		const unwarnLog = await this.sendModlog(msg, user, reason);
+		const unwarnLog = await this.handle(msg, user, null, reason, modlog);
 
 		return msg.sendLocale('COMMAND_UNWARN_MESSAGE', [user, unwarnLog.reason, unwarnLog.case]);
+	}
+
+	async handle(msg, user, member, reason, modlog) {
+		// Appeal the modlog and send a log to the moderation log channel
+		await modlog.appeal();
+		return this.sendModlog(msg, user, reason);
 	}
 
 };

@@ -9,22 +9,14 @@ module.exports = class extends ModerationCommand {
 			extendedHelp: (language) => language.get('COMMAND_KICK_EXTENDED'),
 			modType: ModerationCommand.types.KICK,
 			permissionLevel: 5,
-			requiredMember: true,
-			runIn: ['text'],
-			usage: '<SearchMember:user> [reason:string] [...]',
-			usageDelim: ' '
+			requiredMember: true
 		});
 	}
 
-	async run(msg, [target, ...raw]) {
-		const member = await this.checkModeratable(msg, target);
+	async handle(msg, user, member, reason) {
 		if (!member.kickable) throw msg.language.get('COMMAND_KICK_NOT_KICKABLE');
-
-		const reason = raw.length ? raw.join(' ') : null;
 		await member.kick(reason);
-		const modlog = await this.sendModlog(msg, target, reason);
-
-		return msg.sendLocale('COMMAND_KICK_MESSAGE', [target, modlog.reason, modlog.case]);
+		return this.sendModlog(msg, user, reason);
 	}
 
 };

@@ -119,7 +119,6 @@ const skyra = new Skyra({
 		'USER_UPDATE',
 		'VOICE_SERVER_UPDATE'
 	],
-	gateways: { clientStorage: { provider: 'json' } },
 	messageCacheLifetime: 300,
 	messageCacheMaxSize: 50,
 	messageSweepInterval: 120,

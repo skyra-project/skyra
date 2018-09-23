@@ -61,7 +61,11 @@ module.exports = {
 		YEAR        : 1000 * 60 * 60 * 24 * 365
 	}),
 
-	EMOJIS : Object.freeze({ SHINY : '<:ShinyYellow:324157128270938113>' }),
+	EMOJIS : Object.freeze({
+		SHINY     : '<:ShinyYellow:324157128270938113>',
+		GREENTICK : '<:greenTick:405073335907647489>',
+		REDCROSS  : '<:redCross:405073349664833537>'
+	}),
 
 	CONNECT_FOUR : Object.freeze({
 		EMOJIS : Object.freeze({

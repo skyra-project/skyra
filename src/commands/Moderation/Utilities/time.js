@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		if (!cancel && modlog.temporary) throw msg.language.get('COMMAND_TIME_TIMED');
 
 		const user = await this.client.users.fetch(modlog.user);
-		const type = await this.getActions(msg, modlog, user).catch(error => { throw msg.language.get(error); });
+		const type = await this.getActions(msg, modlog, user);
 		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[SCHEMA_KEYS.CASE] === modlog[SCHEMA_KEYS.CASE]);
 
 		if (cancel) return this.cancel(msg, modlog, task);
@@ -93,26 +93,26 @@ module.exports = class extends Command {
 	}
 
 	async checkBan(msg, modlog, user) {
-		if (!msg.guild.me.permissions.has(FLAGS.BAN_MEMBERS)) throw 'COMMAND_UNBAN_MISSING_PERMISSION';
-		const users = await msg.guild.fetchBans().catch(() => { throw 'SYSTEM_FETCHBANS_FAIL'; });
-		if (!users.size) throw 'GUILD_BANS_EMPTY';
+		if (!msg.guild.me.permissions.has(FLAGS.BAN_MEMBERS)) throw msg.language.get('COMMAND_UNBAN_MISSING_PERMISSION');
+		const users = await msg.guild.fetchBans().catch(() => { throw msg.language.get('SYSTEM_FETCHBANS_FAIL'); });
+		if (!users.size) throw msg.language.get('GUILD_BANS_EMPTY');
 		const member = users.get(user.id);
-		if (!member) throw 'GUILD_BANS_NOT_FOUND';
+		if (!member) throw msg.language.get('GUILD_BANS_NOT_FOUND');
 		return 'unban';
 	}
 
 	async checkMute(msg, modlog, user) {
-		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw 'COMMAND_UNMUTE_MISSING_PERMISSION';
+		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw msg.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
 
 		const stickyRoles = msg.guild.settings.stickyRoles.find(stickyRole => stickyRole.id === user.id);
-		if (!stickyRoles || !stickyRoles.includes(msg.guild.settings.roles.muted)) throw 'COMMAND_MUTE_USER_NOT_MUTED';
+		if (!stickyRoles || !stickyRoles.includes(msg.guild.settings.roles.muted)) throw msg.language.get('COMMAND_MUTE_USER_NOT_MUTED');
 		return 'unmute';
 	}
 
 	async checkVMute(msg, modlog, user) {
-		if (!msg.guild.me.permissions.has(FLAGS.MUTE_MEMBERS)) throw 'COMMAND_VMUTE_MISSING_PERMISSION';
-		const member = await msg.guild.members.fetch(user).catch(() => { throw 'USER_NOT_IN_GUILD'; });
-		if (!member.serverMute) throw 'COMMAND_VMUTE_USER_NOT_MUTED';
+		if (!msg.guild.me.permissions.has(FLAGS.MUTE_MEMBERS)) throw msg.language.get('COMMAND_VMUTE_MISSING_PERMISSION');
+		const member = await msg.guild.members.fetch(user).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
+		if (!member.serverMute) throw msg.language.get('COMMAND_VMUTE_USER_NOT_MUTED');
 		return 'unvmute';
 	}
 

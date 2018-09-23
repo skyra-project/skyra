@@ -11,18 +11,20 @@ module.exports = class extends Command {
 			name: 'reason',
 			permissionLevel: 5,
 			runIn: ['text'],
-			usage: '<case:integer> <reason:string> [...]',
+			usage: '<case:integer> <reason:...string>',
 			usageDelim: ' '
 		});
 	}
 
-	async run(msg, [selected, ...reason]) {
+	async run(msg, [selected, reason]) {
+		if (!reason) reason = null;
+
 		// Get all cases
 		const modlog = await msg.guild.moderation.fetch(selected);
 		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 
 		// Update the moderation case
-		await modlog.edit({ [SCHEMA_KEYS.REASON]: reason.length > 0 ? reason.join(' ') : null });
+		await modlog.edit({ [SCHEMA_KEYS.REASON]: reason });
 
 		const channelID = msg.guild.settings.channels.modlog;
 		if (channelID) {

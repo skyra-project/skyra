@@ -90,6 +90,8 @@ class ModerationManager extends Collection {
 	}
 
 	_cache(entries, type = 'none') {
+		if (!entries) return entries;
+
 		const isArray = Array.isArray(entries);
 		entries = isArray
 			? entries.map(entry => entry instanceof ModerationManagerEntry ? entry : new ModerationManagerEntry(this, entry))

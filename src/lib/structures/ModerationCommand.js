@@ -45,7 +45,7 @@ class ModerationCommand extends Command {
 		if (processed.length) {
 			const sorted = processed.sort((a, b) => a.log.case - b.log.case);
 			const cases = sorted.map(({ log }) => log.case);
-			const users = sorted.map(({ target }) => `\`${target.tag}\``).join(', ');
+			const users = sorted.map(({ target }) => `\`${target.tag}\``);
 			const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 			output.push(msg.language.get('COMMAND_MODERATION_OUTPUT', cases, range, users, reason));
 		}

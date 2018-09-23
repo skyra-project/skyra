@@ -15,10 +15,7 @@ module.exports = class extends ModerationCommand {
 
 	async handle(msg, user, member, reason) {
 		if (member && !member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
-		await msg.guild.members.ban(user.id, {
-			days: (msg.flags.day && Number(msg.flags.day)) || 0,
-			reason: reason.join(' ')
-		});
+		await msg.guild.members.ban(user.id, { days: (msg.flags.day && Number(msg.flags.day)) || 0, reason });
 
 		return this.sendModlog(msg, user, reason);
 	}

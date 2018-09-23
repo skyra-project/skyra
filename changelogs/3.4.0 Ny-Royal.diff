@@ -1,0 +1,28 @@
++++ 3.4.0 Ny-Royal
+
+@@ Commands @@
+
++ ban, kick, mute, softban, unban, unmute, vmute, voicekick, vunmute, and warn, have been tweaked to be able to target multiple users.
++ Refactored all moderation commands
+
+@@ i18n @@
+
+- Removed many, many, lines for moderation
+
+@@ Inhibitors @@
+
++ More precise slowmode inhibitor
+
+@@ Backends @@
+
++ The moderation manager has been rewritten from scratch
+
+@@ Coming Soon @@
+
++ `s!reason 19..22`, editing multiple moderation logs' cases using a range
++ `s!reason latest`, to edit the last moderation log's case
++ Also coming soon... Skyra 4.0.0
+
+@@ Credits @@
+
+I want to thank King - Vlad#8339 for his collaboration testing the new features, this would have taken longer without his help

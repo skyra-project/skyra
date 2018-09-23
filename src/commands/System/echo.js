@@ -28,6 +28,8 @@ module.exports = class extends Command {
 
 		await channel.send(mesContent, options);
 		if (channel !== msg.channel) await msg.alert(`Message successfully sent to ${channel}`);
+
+		return msg;
 	}
 
 };

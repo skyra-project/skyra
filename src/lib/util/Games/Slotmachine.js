@@ -102,7 +102,7 @@ class Slotmachine {
 				.setTextFont('30px RobotoLight')
 				.setTextAlign('right')
 				.addText('You won', 280, 60)
-				.addText(this.winnings, 250, 100)
+				.addText(this.winnings.toString(), 250, 100)
 				.addImage(Slotmachine.images.SHINY, 260, 68, 20, 39);
 		}
 

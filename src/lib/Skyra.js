@@ -70,7 +70,7 @@ module.exports = class Skyra extends Client {
 			.on('error', (error, client) => this.emit('error', `[IPC] Error from ${client.name}: ${error}`))
 			.on('message', this.emit.bind(this, 'apiMessage'));
 
-		this.ipc.connectTo('skyra-dashboard', 8800);
+		if (!options.dev) this.ipc.connectTo('skyra-dashboard', 8800);
 
 		/**
 		 * The UsageStatus object containing Skyra's metrics in the last 12 hours,

@@ -1783,7 +1783,7 @@ module.exports = class extends Language {
 			 */
 
 			COMMAND_WARNINGS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-			COMMAND_WARNINGS_AMOUNT: (amount) => `There are ${amount === 1 ? 'warning' : 'warnings'}.`,
+			COMMAND_WARNINGS_AMOUNT: (amount) => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
 
 			/**
 			 * #############################

@@ -1,4 +1,4 @@
-const { ModerationCommand, Moderation, util: { removeMute } } = require('../../index');
+const { ModerationCommand, util: { removeMute } } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
@@ -24,17 +24,13 @@ module.exports = class extends ModerationCommand {
 		}
 
 		const member = await this.checkModeratable(msg, target);
-		const [mutedUsed] = await this.client.moderation.getCases(msg.guild.id, {
-			[Moderation.schemaKeys.USER]: target.id,
-			[Moderation.schemaKeys.TYPE]: Moderation.typeKeys.MUTE,
-			[Moderation.schemaKeys.APPEAL]: false
-		});
-		if (!mutedUsed) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
+		const modlog = (await msg.guild.moderation.fetch(target.id)).filter(log => log.type === ModerationCommand.types.MUTE).last();
+		if (!modlog) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 
 		// Cache and concatenate with the current roles
 		const { position } = msg.guild.me.roles.highest;
-		const roles = [...new Set((mutedUsed[Moderation.schemaKeys.EXTRA_DATA] || [])
+		const roles = [...new Set((modlog.extraData || [])
 			// Map by Role instances
 			.map(id => msg.guild.roles.get(id))
 			// Concatenate with the member's roles
@@ -50,9 +46,9 @@ module.exports = class extends ModerationCommand {
 
 		// Edit roles
 		await member.edit({ roles });
-		const modlog = await this.sendModlog(msg, target, reason.length ? reason.join(' ') : null);
+		const unmuteLog = await this.sendModlog(msg, target, reason.length ? reason.join(' ') : null);
 
-		return msg.sendLocale('COMMAND_UNMUTE_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
+		return msg.sendLocale('COMMAND_UNMUTE_MESSAGE', [target, unmuteLog.reason, unmuteLog.case]);
 	}
 
 };

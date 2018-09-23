@@ -1,4 +1,4 @@
-const { ModerationCommand, Moderation: { schemaKeys, typeKeys } } = require('../../index');
+const { ModerationCommand, constants: { MODERATION: { TYPE_KEYS } } } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
@@ -16,17 +16,15 @@ module.exports = class extends ModerationCommand {
 	}
 
 	async run(msg, [caseID, ...reason]) {
-		const [warn] = await this.client.moderation.getCases(msg.guild.id, {
-			[schemaKeys.TYPE]: typeKeys.WARN,
-			[schemaKeys.CASE]: caseID,
-			[schemaKeys.APPEAL]: false
-		});
-		if (!warn) throw msg.language.get('GUILD_WARN_NOT_FOUND');
-		await this.client.moderation.updateCase(msg.guild.id, { ...warn, [schemaKeys.APPEAL]: true });
-		const user = await this.client.users.fetch(warn[schemaKeys.USER]);
-		const modlog = await this.sendModlog(msg, user, reason);
+		const modlog = await msg.guild.moderation.fetch(caseID);
+		if (!modlog || modlog.type !== TYPE_KEYS.WARN) throw msg.language.get('GUILD_WARN_NOT_FOUND');
 
-		return msg.sendLocale('COMMAND_UNWARN_MESSAGE', [user, modlog.reason, modlog.caseNumber]);
+		// Appeal the modlog and send a log to the moderation log channel
+		await modlog.appeal();
+		const user = await this.client.users.fetch(modlog.user);
+		const unwarnLog = await this.sendModlog(msg, user, reason);
+
+		return msg.sendLocale('COMMAND_UNWARN_MESSAGE', [user, unwarnLog.reason, unwarnLog.case]);
 	}
 
 };

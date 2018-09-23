@@ -2,7 +2,6 @@ const { Client } = require('klasa');
 const { loadavg } = require('os');
 
 const Leaderboard = require('./util/Leaderboard');
-const Moderation = require('./util/Moderation');
 const APIStore = require('./structures/APIStore');
 const RawEventStore = require('./structures/RawEventStore');
 const { Node } = require('veza');
@@ -35,13 +34,6 @@ module.exports = class Skyra extends Client {
 		 * @type {Leaderboard}
 		 */
 		this.leaderboard = new Leaderboard(this);
-
-		/**
-		 * The loaded Moderation singleton instance
-		 * @since 3.0.0
-		 * @type {Moderation}
-		 */
-		this.moderation = new Moderation(this);
 
 		/**
 		 * The API handler

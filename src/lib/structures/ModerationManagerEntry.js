@@ -1,4 +1,4 @@
-const { MODERATION: { TYPE_ASSETS, TYPE_KEYS, SCHEMA_KEYS, ACTIONS } } = require('../util/constants');
+const { MODERATION: { TYPE_ASSETS, TYPE_KEYS, SCHEMA_KEYS, ACTIONS, ERRORS }, TIME: { YEAR } } = require('../util/constants');
 const { constants: { TIME }, Duration, Timestamp } = require('klasa');
 const { MessageEmbed } = require('discord.js');
 const kTimeout = Symbol('ModerationManagerTimeout');
@@ -63,6 +63,52 @@ class ModerationManagerEntry {
 		return true;
 	}
 
+	async edit({ [SCHEMA_KEYS.DURATION]: duration, [SCHEMA_KEYS.MODERATOR]: moderator, [SCHEMA_KEYS.REASON]: reason, [SCHEMA_KEYS.EXTRA_DATA]: extraData } = {}) {
+		const flattened = {
+			[SCHEMA_KEYS.DURATION]: typeof duration !== 'undefined' && TEMPORARY_TYPES.includes(this.type) && (duration === null || duration < YEAR)
+				? duration
+				: undefined,
+			[SCHEMA_KEYS.MODERATOR]: typeof moderator !== 'undefined'
+				? typeof moderator === 'string' ? moderator : moderator.id
+				: undefined,
+			[SCHEMA_KEYS.REASON]: typeof reason !== 'undefined'
+				? reason || null
+				: undefined,
+			[SCHEMA_KEYS.EXTRA_DATA]: typeof extraData !== 'undefined'
+				? extraData
+				: undefined,
+			[SCHEMA_KEYS.TYPE]: this.type
+		};
+
+		// eslint-disable-next-line no-bitwise
+		if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined') flattened[SCHEMA_KEYS.TYPE] |= ACTIONS.TEMPORARY;
+
+		if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined'
+			|| typeof flattened[SCHEMA_KEYS.MODERATOR] !== 'undefined'
+			|| typeof flattened[SCHEMA_KEYS.REASON] !== 'undefined'
+			|| typeof flattened[SCHEMA_KEYS.EXTRA_DATA] !== 'undefined') {
+			await this.manager.table.get(this.id).update(flattened).run();
+			if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined') this.duration = flattened[SCHEMA_KEYS.DURATION];
+			if (typeof flattened[SCHEMA_KEYS.MODERATOR] !== 'undefined') this.moderator = flattened[SCHEMA_KEYS.MODERATOR];
+			this.type = flattened[SCHEMA_KEYS.TYPE];
+		}
+
+		return this;
+	}
+
+	async appeal() {
+		if (this.appealed) return this;
+
+		// eslint-disable-next-line no-bitwise
+		const type = this.type | ACTIONS.APPEALED;
+		if (!(type in TYPE_ASSETS)) throw ERRORS.CASE_TYPE_NOT_APPEAL;
+
+		await this.manager.table.get(this.id).update({ [SCHEMA_KEYS.TYPE]: type }).run();
+		this.type = type;
+
+		return this;
+	}
+
 	async prepareEmbed() {
 		if (!this.user) throw new Error('A user has not been set.');
 		const [user, moderator] = await Promise.all([
@@ -96,9 +142,12 @@ class ModerationManagerEntry {
 	}
 
 	setDuration(value) {
+		if (!TEMPORARY_TYPES.includes(this.type)) return this;
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
-		if (!this.duration || this.duration > TIME.DAY * 365) this.duration = null;
+		if (!this.duration || this.duration > YEAR) this.duration = null;
+		// eslint-disable-next-line no-bitwise
+		if (this.duration) this.type |= ACTIONS.TEMPORARY;
 		return this;
 	}
 
@@ -165,7 +214,7 @@ class ModerationManagerEntry {
 		// eslint-disable-next-line no-bitwise
 		if (this.duration && (this.type | ACTIONS.APPEALED) in TYPE_ASSETS) {
 			// eslint-disable-next-line no-bitwise
-			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ACTIONS.APPEALED].title.replace(/ /g, ''), this.duration + Date.now(), {
+			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ACTIONS.APPEALED].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
 				catchUp: true,
 				data: {
 					[SCHEMA_KEYS.USER]: typeof this.user === 'string' ? this.user : this.user.id,

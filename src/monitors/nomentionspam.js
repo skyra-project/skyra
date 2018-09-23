@@ -1,4 +1,4 @@
-const { Monitor, ModerationLog, Moderation } = require('../index');
+const { Monitor, constants: { MODERATION: { TYPE_KEYS } } } = require('../index');
 
 module.exports = class extends Monitor {
 
@@ -24,13 +24,12 @@ module.exports = class extends Monitor {
 			await msg.sendLocale('MONITOR_NMS_MESSAGE', [msg.author]).catch(error => this.client.emit('apiError', error));
 			msg.guild.security.nms.delete(msg.author.id);
 
-			return new ModerationLog(msg.guild)
+			return msg.guild.moderation.new
 				.setModerator(this.client.user)
 				.setUser(msg.author)
-				.setType(Moderation.typeKeys.BAN)
+				.setType(TYPE_KEYS.BAN)
 				.setReason(msg.language.get('MONITOR_NMS_MODLOG', msg.guild.settings.selfmod.nmsthreshold, amount))
-				.avoidAnonymous()
-				.send();
+				.create();
 		}
 
 		return true;

@@ -1,4 +1,4 @@
-const { Command, Moderation: { schemaKeys }, util: { parseModlog }, klasaUtil: { codeBlock } } = require('../../index');
+const { Command, constants: { MODERATION: { SCHEMA_KEYS } }, klasaUtil: { codeBlock } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -17,40 +17,30 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [selected, ...reason]) {
-		reason = reason.length > 0 ? reason.join(' ') : null;
-
-		if (!msg.guild.settings.channels.modlog) throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');
-		const channel = msg.guild.channels.get(msg.guild.settings.channels.modlog);
-		if (!channel) {
-			await msg.guild.settings.reset('channels.mod');
-			throw msg.language.get('GUILD_SETTINGS_CHANNELS_MOD');
-		}
-
 		// Get all cases
-		const modlog = await this.client.moderation.getCase(msg.guild.id, selected);
+		const modlog = await msg.guild.moderation.fetch(selected);
 		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 
 		// Update the moderation case
-		const newModLog = {
-			...modlog,
-			[schemaKeys.REASON]: reason,
-			[schemaKeys.MODERATOR]: msg.author.id
-		};
-		await this.client.moderation.updateCase(msg.guild, newModLog);
+		await modlog.edit({ [SCHEMA_KEYS.REASON]: reason.length > 0 ? reason.join(' ') : null });
 
-		// Fetch the message to edit it
-		const messages = await channel.messages.fetch({ limit: 100 });
-		const message = messages.find(mes => mes.author.id === this.client.user.id
-			&& mes.embeds.length > 0
-			&& mes.embeds[0].type === 'rich'
-			&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${selected}`
-		);
+		const channelID = msg.guild.settings.channels.modlog;
+		if (channelID) {
+			const channel = msg.guild.channels.get(msg.guild.settings.channels.modlog);
+			if (channel) {
+				// Fetch the message to edit it
+				const messages = await channel.messages.fetch({ limit: 100 });
+				const message = messages.find(mes => mes.author.id === this.client.user.id
+					&& mes.embeds.length > 0
+					&& mes.embeds[0].type === 'rich'
+					&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${selected}`
+				);
 
-		// Change the moderator to the author
-		const parsedModLog = await parseModlog(this.client, msg.guild, newModLog);
-
-		if (message) await message.edit({ embed: parsedModLog.embed });
-		else channel.send({ embed: parsedModLog.embed });
+				await (message ? message.edit(await modlog.prepareEmbed()) : channel.send(await modlog.prepareEmbed()));
+			} else {
+				await msg.guild.settings.reset('channels.mod');
+			}
+		}
 
 		return msg.alert(`Successfully updated the log ${selected}.${codeBlock('http', [
 			`Old reason : ${modlog.reason || 'Not set.'}`,

@@ -40,7 +40,7 @@ module.exports = class extends ModerationCommand {
 		const entry = { id: member.id, roles: stickyRoles.roles.concat(mute.id) };
 		await msg.guild.settings.update('stickyRoles', entry, stickyRolesIndex !== -1 ? { arrayPosition: stickyRolesIndex } : { action: 'add' });
 
-		return msg.sendLocale('COMMAND_MUTE_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
+		return msg.sendLocale('COMMAND_MUTE_MESSAGE', [target, modlog.reason, modlog.case]);
 	}
 
 	async _getMuteRole(msg) {

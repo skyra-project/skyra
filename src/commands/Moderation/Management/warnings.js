@@ -1,9 +1,5 @@
-const { Command, Moderation: { schemaKeys, typeKeys }, RichDisplay, MessageEmbed } = require('../../../index');
+const { Command, constants: { MODERATION: { TYPE_KEYS } }, RichDisplay, MessageEmbed, klasaUtil: { chunk } } = require('../../../index');
 
-const WARNING_FILTER = {
-	[schemaKeys.TYPE]: typeKeys.WARN,
-	[schemaKeys.APPEAL]: false
-};
 const RH_TIMELIMIT = 30000;
 
 module.exports = class extends Command {
@@ -22,40 +18,33 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [target]) {
-		/** @type {Array<Object<string, *>>} */
-		const warnings = await this.client.moderation.getCases(msg.guild.id, target
-			? { [schemaKeys.USER]: target.id, ...WARNING_FILTER } : WARNING_FILTER);
-		if (!warnings.length) throw msg.language.get('COMMAND_WARNINGS_EMPTY');
+		const warnings = (await msg.guild.moderation.fetch(target ? target.id : undefined)).filter(log => log.type === TYPE_KEYS.WARN);
+		if (!warnings.size) throw msg.language.get('COMMAND_WARNINGS_EMPTY');
 
 		const display = new RichDisplay(new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
-			.setTitle(msg.language.get('COMMAND_WARNINGS_AMOUNT', warnings.length)));
+			.setTitle(msg.language.get('COMMAND_WARNINGS_AMOUNT', warnings.size)));
 
-		const pages = Math.ceil(warnings.length / 10);
 
 		// Fetch usernames
 		const users = new Map();
-		for (const warning of warnings) {
-			const id = warning[schemaKeys.MODERATOR];
+		for (const warning of warnings.values()) {
+			const id = warning.moderator;
 			if (!users.has(id)) users.set(id, await msg.guild.fetchName(id) || id);
 		}
 
 		// Set up the formatter
 		const format = this.displayWarning.bind(this, users);
 
-		// Run the MessageEmbed
-		for (let i = 0; i < pages; i++) {
-			display.addPage(template => template.setDescription(warnings
-				.slice(i * 10, (i * 10) + 10)
-				.map(format)));
-		}
+		for (const page of chunk([...warnings.values()], 10))
+			display.addPage(template => template.setDescription(page.map(format)));
 
 		return display.run(await msg.sendLocale('SYSTEM_PROCESSING'), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
 	}
 
 	displayWarning(users, warning) {
-		return `Case \`${warning[schemaKeys.CASE]}\`. Moderator: **${users.get(warning[schemaKeys.MODERATOR])}**.\n${warning[schemaKeys.REASON]}`;
+		return `Case \`${warning.case}\`. Moderator: **${users.get(warning.moderator)}**.\n${warning.reason || 'None'}`;
 	}
 
 };

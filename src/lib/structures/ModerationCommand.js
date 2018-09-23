@@ -1,13 +1,12 @@
 const { Command } = require('klasa');
-const ModerationLog = require('../util/ModerationLog');
-const Moderation = require('../util/Moderation');
+const { MODERATION: { TYPE_KEYS } } = require('../util/constants');
 
 class ModerationCommand extends Command {
 
 	constructor(client, store, file, core, { avoidAnonymous = false, modType, requiredMember = false, ...options }) {
 		super(client, store, file, core, options);
 
-		if (!modType) this.client.emit('error', `[COMMAND] ${this} does not have a type.`);
+		if (typeof modType === 'undefined') this.client.emit('error', `[COMMAND] ${this} does not have a type.`);
 
 		/**
 		 * Whether this command should deactivate anonymous logs.
@@ -19,7 +18,7 @@ class ModerationCommand extends Command {
 		/**
 		 * The type for this command.
 		 * @since 3.0.0
-		 * @type {string}
+		 * @type {number}
 		 */
 		this.modType = modType;
 
@@ -56,20 +55,19 @@ class ModerationCommand extends Command {
 
 	sendModlog(msg, target, reason, extraData) {
 		if (Array.isArray(reason)) reason = reason.join(' ');
-		this.client.moderation._temp.set(target.id, this.modType);
-		const modlog = new ModerationLog(msg.guild)
-			.setModerator(msg.author)
-			.setUser(target)
+		const modlog = msg.guild.moderation.new
+			.setModerator(msg.author.id)
+			.setUser(target.id)
 			.setType(this.modType)
 			.setReason(reason);
 
 		if (this.avoidAnonymous) modlog.avoidAnonymous();
 		if (extraData) modlog.setExtraData(extraData);
-		return modlog.send();
+		return modlog.create();
 	}
 
 }
 
-ModerationCommand.types = Moderation.typeKeys;
+ModerationCommand.types = TYPE_KEYS;
 
 module.exports = ModerationCommand;

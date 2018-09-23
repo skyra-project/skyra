@@ -56,7 +56,9 @@ module.exports = {
 		SECOND      : 1000,
 		MINUTE      : 1000 * 60,
 		HOUR        : 1000 * 60 * 60,
-		DAY         : 1000 * 60 * 60 * 24
+		DAY         : 1000 * 60 * 60 * 24,
+		WEEK        : 1000 * 60 * 60 * 24 * 7,
+		YEAR        : 1000 * 60 * 60 * 24 * 365
 	}),
 
 	EMOJIS : Object.freeze({ SHINY : '<:ShinyYellow:324157128270938113>' }),

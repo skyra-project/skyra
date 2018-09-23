@@ -38,7 +38,7 @@ class ModerationManager extends Collection {
 		// User id
 		if (typeof id === 'string') {
 			return this._count === super.size
-				? super.filter(entry => entry[SCHEMA_KEYS.USER] === id)
+				? super.filter(entry => entry.user === id)
 				: this._cache(await this.table.getAll([this.guild.id, id], { index: 'guild_user' })
 					.orderBy(this.pool.asc(SCHEMA_KEYS.CASE))
 					.run());
@@ -110,7 +110,11 @@ class ModerationManager extends Collection {
 			}, 1000);
 		}
 
-		return entries;
+		return isArray ? new Collection(entries.map(entry => [entry.case, entry])) : entries;
+	}
+
+	static get [Symbol.species]() {
+		return Collection;
 	}
 
 }

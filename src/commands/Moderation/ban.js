@@ -27,7 +27,7 @@ module.exports = class extends ModerationCommand {
 			reason: reason.join(' ')
 		});
 
-		return msg.sendLocale('COMMAND_BAN_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
+		return msg.sendLocale('COMMAND_BAN_MESSAGE', [target, modlog.reason, modlog.case]);
 	}
 
 };

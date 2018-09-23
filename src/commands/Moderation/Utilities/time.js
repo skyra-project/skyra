@@ -1,4 +1,4 @@
-const { Command, Moderation: { schemaKeys, typeKeys }, ModerationLog, Duration, util: { parseModlog } } = require('../../../index');
+const { Command, Duration, constants: { MODERATION: { SCHEMA_KEYS, TYPE_KEYS } } } = require('../../../index');
 const { Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends Command {
@@ -15,17 +15,17 @@ module.exports = class extends Command {
 	}
 
 	async run(msg, [cancel, caseID, ...time]) {
-		const modlog = await this.client.moderation.getCase(msg.guild.id, caseID);
+		const modlog = await msg.guild.moderation.fetch(caseID);
 		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
-		if (!cancel && modlog[schemaKeys.TIMED]) throw msg.language.get('COMMAND_TIME_TIMED');
+		if (!cancel && modlog.temporary) throw msg.language.get('COMMAND_TIME_TIMED');
 
-		const user = await this.client.users.fetch(modlog[schemaKeys.USER]);
+		const user = await this.client.users.fetch(modlog.user);
 		const type = await this.getActions(msg, modlog, user).catch(error => { throw msg.language.get(error); });
-		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[schemaKeys.CASE] === modlog[schemaKeys.CASE]);
+		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[SCHEMA_KEYS.CASE] === modlog[SCHEMA_KEYS.CASE]);
 
 		if (cancel) return this.cancel(msg, modlog, task);
 		if (task) {
-			if (modlog[schemaKeys.APPEAL]) throw msg.language.get('MODLOG_APPEALED');
+			if (modlog.appealed) throw msg.language.get('MODLOG_APPEALED');
 			throw msg.language.get('MODLOG_TIMED', task.data.timestamp - Date.now());
 		}
 		if (!time.length) throw msg.language.get('COMMAND_TIME_UNDEFINED_TIME');
@@ -34,39 +34,33 @@ module.exports = class extends Command {
 		await this.client.schedule.create(type, offset + Date.now(), {
 			catchUp: true,
 			data: {
-				[schemaKeys.USER]: user.id,
-				[schemaKeys.GUILD]: msg.guild.id,
-				[schemaKeys.DURATION]: offset,
-				[schemaKeys.CASE]: caseID
+				[SCHEMA_KEYS.USER]: user.id,
+				[SCHEMA_KEYS.GUILD]: msg.guild.id,
+				[SCHEMA_KEYS.DURATION]: offset,
+				[SCHEMA_KEYS.CASE]: caseID
 			}
 		});
 
-		const newModLog = {
-			...modlog,
-			[schemaKeys.DURATION]: offset,
-			[schemaKeys.MODERATOR]: msg.author.id,
-			[schemaKeys.TIMED]: true
-		};
-		await this.client.moderation.updateCase(msg.guild, newModLog);
-		await this.updateModlog(msg, newModLog);
+		await modlog.update({
+			[SCHEMA_KEYS.DURATION]: offset,
+			[SCHEMA_KEYS.MODERATOR]: msg.author.id
+		});
+		await this.updateModlog(msg, modlog);
 
-		return msg.sendLocale('COMMAND_TIME_SCHEDULED', [ModerationLog.TYPES[type].title, user, offset]);
+		return msg.sendLocale('COMMAND_TIME_SCHEDULED', [modlog.name, user, offset]);
 	}
 
 	async cancel(msg, modlog, task) {
 		if (!task) throw msg.language.get('COMMAND_TIME_NOT_SCHEDULED');
 		await task.delete();
 
-		const newModLog = {
-			...modlog,
-			[schemaKeys.DURATION]: null,
-			[schemaKeys.MODERATOR]: msg.author.id,
-			[schemaKeys.TIMED]: false
-		};
-		await this.client.moderation.updateCase(msg.guild, newModLog);
-		await this.updateModlog(msg, newModLog);
+		await modlog.update({
+			[SCHEMA_KEYS.DURATION]: null,
+			[SCHEMA_KEYS.MODERATOR]: msg.author.id
+		});
+		await this.updateModlog(msg, modlog);
 
-		return msg.sendLocale('COMMAND_TIME_ABORTED', [ModerationLog.TYPES[modlog[schemaKeys.TYPE]].title]);
+		return msg.sendLocale('COMMAND_TIME_ABORTED', [modlog.name]);
 	}
 
 	async updateModlog(msg, modcase) {
@@ -83,20 +77,17 @@ module.exports = class extends Command {
 		const message = messages.find(mes => mes.author.id === this.client.user.id
 			&& mes.embeds.length > 0
 			&& mes.embeds[0].type === 'rich'
-			&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${modcase[schemaKeys.CASE]}`
+			&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${modcase.case}`
 		);
-
-		const parsedModLog = await parseModlog(this.client, msg.guild, modcase);
-
-		if (message) return message.edit({ embed: parsedModLog.embed });
-		return channel.send({ embed: parsedModLog.embed });
+		const embed = await modcase.prepareEmbed();
+		return message ? message.edit(embed) : channel.send(embed);
 	}
 
 	getActions(msg, modlog, user) {
-		switch (modlog[schemaKeys.TYPE]) {
-			case typeKeys.BAN: return this.checkBan(msg, modlog, user);
-			case typeKeys.MUTE: return this.checkMute(msg, modlog);
-			case typeKeys.VOICE_MUTE: return this.checkVMute(msg, modlog, user);
+		switch (modlog.type) {
+			case TYPE_KEYS.BAN: return this.checkBan(msg, modlog, user);
+			case TYPE_KEYS.MUTE: return this.checkMute(msg, modlog);
+			case TYPE_KEYS.VOICE_MUTE: return this.checkVMute(msg, modlog, user);
 			default: throw 'COMMAND_TIME_UNSUPPORTED_TIPE';
 		}
 	}
@@ -107,23 +98,22 @@ module.exports = class extends Command {
 		if (!users.size) throw 'GUILD_BANS_EMPTY';
 		const member = users.get(user.id);
 		if (!member) throw 'GUILD_BANS_NOT_FOUND';
-		return typeKeys.UN_BAN;
+		return 'unban';
 	}
 
-	async checkMute(msg, modlog) {
+	async checkMute(msg, modlog, user) {
 		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw 'COMMAND_UNMUTE_MISSING_PERMISSION';
 
-		const id = modlog[schemaKeys.USER];
-		const stickyRoles = msg.guild.settings.stickyRoles.find(stickyRole => stickyRole.id === id);
+		const stickyRoles = msg.guild.settings.stickyRoles.find(stickyRole => stickyRole.id === user.id);
 		if (!stickyRoles || !stickyRoles.includes(msg.guild.settings.roles.muted)) throw 'COMMAND_MUTE_USER_NOT_MUTED';
-		return typeKeys.UN_MUTE;
+		return 'unmute';
 	}
 
 	async checkVMute(msg, modlog, user) {
 		if (!msg.guild.me.permissions.has(FLAGS.MUTE_MEMBERS)) throw 'COMMAND_VMUTE_MISSING_PERMISSION';
 		const member = await msg.guild.members.fetch(user).catch(() => { throw 'USER_NOT_IN_GUILD'; });
 		if (!member.serverMute) throw 'COMMAND_VMUTE_USER_NOT_MUTED';
-		return typeKeys.UN_VOICE_MUTE;
+		return 'unvmute';
 	}
 
 };

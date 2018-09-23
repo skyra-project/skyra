@@ -182,7 +182,6 @@ export class Skyra extends KlasaClient {
 
 	public version: string;
 	public leaderboard: Leaderboard;
-	public moderation: Moderation;
 	public ipcPieces: APIStore;
 	public rawEvents: RawEventStore;
 	public ipc: Node;
@@ -280,7 +279,7 @@ export class ModerationCommand extends SkyraCommand {
 
 	public checkModeratable(msg: SkyraMessage, target: SkyraUser): Promise<SkyraGuildMember>;
 	public fetchTargetMember(msg: SkyraMessage, id: Snowflake, throwError: boolean): Promise<SkyraGuildMember | null>;
-	public sendModlog(msg: SkyraMessage, target: SkyraUser, reason: Array<string> | string, extraData?: any): Promise<ModerationLog>;
+	public sendModlog(msg: SkyraMessage, target: SkyraUser, reason: Array<string> | string, extraData?: any): Promise<ModerationManagerEntry>;
 	public static types: ModerationTypeKeys;
 }
 
@@ -444,8 +443,6 @@ declare class Util {
 	public static announcementCheck(msg: SkyraMessage): Role;
 	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
 	public static moderationCheck(msg: SkyraMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void;
-	public static fetchModlog(guild: SkyraGuild, caseID: number): Promise<ModerationLog | null>;
-	public static parseModlog(client: Skyra, guild: SkyraGuild, modlog: ModerationCaseData): Promise<ModerationLog>;
 	public static deIdiotify(error: DiscordAPIError): never;
 	public static resolveEmoji(emoji: string): string | null;
 	public static oneToTen(level: number): UtilOneToTenEntry;
@@ -589,6 +586,7 @@ export class ModerationManager extends Collection<string, ModerationManagerEntry
 	public guild: SkyraGuild;
 	private _count: number | null;
 	private _timer: NodeJS.Timer | null;
+	public new: ModerationManagerEntry;
 	private readonly pool: object;
 	private readonly table: object;
 	public fetch(caseID: number): Promise<ModerationManagerEntry>;
@@ -602,78 +600,36 @@ export class ModerationManager extends Collection<string, ModerationManagerEntry
 }
 
 export class ModerationManagerEntry {
-	public readonly appealed: boolean;
-	public readonly cacheExpired: boolean;
 	public case: number;
 	public duration: number | null;
-	public extraData: object | null;
+	public extraData: Array<any> | null;
 	public guild: string;
 	public id: string;
 	public moderator: Snowflake | null;
+	public readonly appealed: boolean;
+	public readonly cacheExpired: boolean;
+	public readonly cacheRemaining: number;
 	public readonly name: string;
-	public reason: string | null;
 	public readonly temporary: boolean;
+	public reason: string | null;
 	public type: number;
 	public user: Snowflake | null;
-}
-
-export class Moderation {
-	public constructor(client: Skyra);
-	public client: Skyra;
-	public _temp: Map<Snowflake, string>;
-	public readonly r: any;
-	public addCase(guild: SkyraGuild, data: ModerationCaseData): Promise<boolean>;
-	public getCase(guildID: Snowflake, caseID: number): Promise<ModerationCaseData>;
-	public updateCase(guild: SkyraGuild, data: ModerationCaseData): Promise<boolean>;
-	public appealCase(guild: SkyraGuild, data?: ModerationCaseData): Promise<ModerationCaseData>;
-	public getCases(guild: SkyraGuild, data?: ModerationCaseData): Promise<Array<ModerationCaseData>>;
-	public getLastCase(guild: SkyraGuild, data?: ModerationCaseData): Promise<ModerationCaseData>;
-	public getAmountCases(guild: SkyraGuild, type: string): Promise<number>;
-	private _checkGuild(guild: SkyraGuild | Snowflake): Snowflake;
-
-	public static typeKeys: ModerationTypeKeys;
-	public static schemaKeys: ModerationSchemaKeys;
-	public static errors: ModerationErrors;
-}
-
-export class ModerationLog {
-	public constructor(guild: SkyraGuild);
-	public client: Skyra;
-	public guild: SkyraGuild;
-	public moderator: SkyraClientUser | SkyraUser | null;
-	public user: SkyraClientUser | SkyraUser | null;
-	public type: ModerationTypesEnum | null;
-	public reason: string | null;
-	public duration: number | null;
-	public caseNumber: number | null;
-	public extraData: any;
-	public readonly embed: MessageEmbed;
-	public readonly description: string;
-	public readonly accurateType: ModerationTypesEnum;
-	public readonly channel: TextChannel | null;
-	public readonly appealType: 'unban' | 'unmute' | 'vunmute' | null;
-	public readonly appeal: boolean;
-
-	public setCaseNumber(value: number): this;
-	public setModerator(value: SkyraClientUser | SkyraUser): this;
-	public setUser(value: SkyraClientUser | SkyraUser): this;
-	public setType(value: ModerationTypesEnum): this;
-	public setReason(value: Array<string> | string): this;
-	public setDuration(value: string | number): this;
-	public setExtraData(value: any): this;
-	public avoidAnonymous(): this;
-	public send(): Promise<this>;
+	private shouldSend: boolean;
+	public appeal(): Promise<this>;
+	public create(): Promise<this | null>;
+	public edit(options: ModerationManagerUpdateData): Promise<this>;
+	public prepareEmbed(): Promise<SkyraMessageEmbed>;
+	public setCase(value: number): this;
+	public setDuration(value: number | string): this;
+	public setExtraData(value: object | string): this;
+	public setModerator(value: SkyraUser | SkyraGuildMember | Snowflake): this;
+	public setReason(value: string | Array<string>): this;
+	public setType(value: ModerationTypesEnum | string): this;
+	public setUser(value: SkyraUser | SkyraGuildMember | Snowflake): this;
 	public toJSON(): ModerationLogJSON;
 	public toString(): string;
-	private _fetchCaseNumber(): Promise<this>;
-	private _shouldSend(data: ModerationLogCacheEntry): boolean;
-	private _parseReason(): this;
-
-	public static TYPES: Readonly<{ [k in ModerationTypesEnum]: { color: number, title: string } }>;
-	public static timestamp: Timestamp;
-	public static regexParse: RegExp;
-	private static cache: Map<SkyraUser, ModerationLogCacheEntry>;
-	private static create(guild: SkyraGuild, log: ModerationLogJSON): ModerationLog;
+	private static regexParse: RegExp;
+	private static timestamp: Timestamp;
 }
 
 export class NoMentionSpam extends Map<Snowflake, NoMentionSpamEntry> {
@@ -752,12 +708,55 @@ type SkyraClientOptions = {
 	dev?: boolean;
 } & KlasaClientOptions;
 
-type ModerationLogCacheEntry = {
-	type: ModerationTypesEnum;
-	timeout: NodeJS.Timer;
-};
+type ModerationTypesEnum =
+	// BAN
+	0b0000 |
+	// KICK
+	0b0001 |
+	// MUTE
+	0b0010 |
+	// PRUNE
+	0b0011 |
+	// SOFT_BAN
+	0b0100 |
+	// VOICE_KICK
+	0b0101 |
+	// VOICE_MUTE
+	0b0110 |
+	// WARN
+	0b0111 |
+	// BAN & APPEALED
+	0b010000 |
+	// MUTE & APPEALED
+	0b010010 |
+	// VOICE_MUTE & APPEALED
+	0b010101 |
+	// WARN & APPEALED
+	0b010111 |
+	// BAN & TEMPORARY
+	0b100000 |
+	// MUTE & TEMPORARY
+	0b100010 |
+	// VOICE_MUTE & TEMPORARY
+	0b100110;
 
-type ModerationTypesEnum = 'ban' | 'kick' | 'mute' | 'prune' | 'softban' | 'tban' | 'tmute' | 'tvmute' | 'unban' | 'unmute' | 'unwarn' | 'unvmute' | 'vkick' | 'vmute' | 'warn';
+type ModerationTypeKeys = {
+	BAN: 0b0000;
+	KICK: 0b0001;
+	MUTE: 0b0010;
+	PRUNE: 0b0011;
+	SOFT_BAN: 0b0100;
+	VOICE_KICK: 0b0101;
+	VOICE_MUTE: 0b0110;
+	WARN: 0b0111;
+	UN_BAN: 0b010000;
+	UN_MUTE: 0b010010;
+	UN_VOICE_MUTE: 0b010101;
+	UN_WARN: 0b010111;
+	TEMPORARY_BAN: 0b100000;
+	TEMPORARY_MUTE: 0b100010;
+	TEMPORARY_VOICE_MUTE: 0b100110;
+};
 
 type NoMentionSpamEntry = {
 	id: Snowflake;
@@ -765,91 +764,38 @@ type NoMentionSpamEntry = {
 	timeout: NodeJS.Timer;
 };
 
-type ModerationErrors = Readonly<{
-	CASE_NOT_EXISTS: 'CASE_NOT_EXISTS';
-	CASE_APPEALED: 'CASE_APPEALED';
-	CASE_TYPE_NOT_APPEAL: 'CASE_TYPE_NOT_APPEAL';
-}>;
-
-interface ModerationSchemaKeys {
-	readonly APPEAL: 'appeal';
-	readonly CASE: 'caseID';
-	readonly DURATION: 'duration';
-	readonly EXTRA_DATA: 'extraData';
-	readonly GUILD: 'guildID';
-	readonly MODERATOR: 'moderatorID';
-	readonly REASON: 'reason';
-	readonly TIMED: 'timed';
-	readonly TYPE: 'type';
-	readonly USER: 'userID';
-}
-
-declare const ModerationSchemaKeysConstant: ModerationSchemaKeys;
+declare const ModerationSchemaKeysConstant: ModerationLogCacheEntryJSON;
 
 interface ModerationLogJSON {
-	[ModerationSchemaKeysConstant.APPEAL]: boolean;
 	[ModerationSchemaKeysConstant.CASE]: number | null;
 	[ModerationSchemaKeysConstant.DURATION]: number | null;
 	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
 	[ModerationSchemaKeysConstant.GUILD]: Snowflake;
 	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
 	[ModerationSchemaKeysConstant.REASON]: string | null;
-	[ModerationSchemaKeysConstant.TIMED]: boolean;
 	[ModerationSchemaKeysConstant.TYPE]: ModerationTypesEnum;
 	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
+	[ModerationSchemaKeysConstant.CREATED_AT]: number;
 }
-
-type ModerationTypeKeys = Readonly<{
-	BAN: 'ban';
-	SOFT_BAN: 'softban';
-	KICK: 'kick';
-	VOICE_KICK: 'vkick';
-	MUTE: 'mute';
-	VOICE_MUTE: 'vmute';
-	WARN: 'warn';
-	PRUNE: 'prune';
-	TEMPORARY_BAN: 'tban';
-	TEMPORARY_MUTE: 'tmute';
-	TEMPORARY_VOICE_MUTE: 'tvmute';
-	UN_BAN: 'unban';
-	UN_MUTE: 'unmute';
-	UN_VOICE_MUTE: 'unvmute';
-	UN_WARN: 'unwarn';
-}>;
-
-type ModerationCaseData = {
-	guildID: Snowflake;
-	moderatorID?: Snowflake;
-	userID: Snowflake;
-	type: ModerationTypesEnum;
-	reason?: string;
-	caseID: number;
-	duration?: number;
-	timed?: boolean;
-	appeal?: boolean;
-	extraData?: any;
-};
 
 type ModerationManagerTypeResolvable = ModerationTypesEnum | number;
 
-interface ModerationManagerUpdateData {
+type ModerationManagerUpdateData = {
 	id?: string;
-	[ModerationSchemaKeysConstant.DURATION]: number | null;
-	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
-	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
-	[ModerationSchemaKeysConstant.REASON]: string | null;
-	[ModerationSchemaKeysConstant.TYPE]: ModerationManagerTypeResolvable;
-	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
-}
+	[ModerationSchemaKeysConstant.DURATION]?: number | null;
+	[ModerationSchemaKeysConstant.EXTRA_DATA]?: any;
+	[ModerationSchemaKeysConstant.MODERATOR]?: Snowflake | null;
+	[ModerationSchemaKeysConstant.REASON]?: string | null;
+};
 
-interface ModerationManagerInsertData {
+type ModerationManagerInsertData = {
 	[ModerationSchemaKeysConstant.DURATION]: number | null;
 	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
 	[ModerationSchemaKeysConstant.MODERATOR]: Snowflake | null;
 	[ModerationSchemaKeysConstant.REASON]: string | null;
 	[ModerationSchemaKeysConstant.TYPE]: ModerationManagerTypeResolvable;
 	[ModerationSchemaKeysConstant.USER]: Snowflake | null;
-}
+};
 
 interface ModerationManagerAppealData {
 	id?: string;
@@ -880,6 +826,8 @@ type SkyraConstants = Readonly<{
 		MINUTE: number;
 		HOUR: number;
 		DAY: number;
+		WEEK: number;
+		YEAR: number;
 	}>;
 	EMOJIS: Readonly<{
 		SHINY: string;
@@ -909,7 +857,33 @@ type SkyraConstants = Readonly<{
 		kModeration: symbol;
 		kMember: symbol;
 	}>;
+	MODERATION: Readonly<{
+		TYPE_KEYS: Readonly<ModerationTypeKeys>;
+		TYPE_ASSETS: Readonly<Record<ModerationTypesEnum, Readonly<{ color: number, title: string }>>>;
+		SCHEMA_KEYS: Readonly<ModerationLogCacheEntryJSON>;
+		ACTIONS: Readonly<{
+			TEMPORARY: number;
+			APPEALED: number;
+		}>;
+		ERRORS: Readonly<{
+			CASE_APPEALED: string;
+			CASE_NOT_EXISTS: string;
+			CASE_TYPE_NOT_APPEAL: string;
+		}>;
+	}>;
 }>;
+
+type ModerationLogCacheEntryJSON = {
+	CASE: 'caseID';
+	DURATION: 'duration';
+	EXTRA_DATA: 'extraData';
+	GUILD: 'guildID';
+	MODERATOR: 'moderatorID';
+	REASON: 'reason';
+	TYPE: 'type';
+	USER: 'userID';
+	CREATED_AT: 'createdAt';
+};
 
 type ToJSONChannel = {
 	id: Snowflake;
@@ -1062,7 +1036,7 @@ type WeebCommandOptions = {
 
 type ModerationCommandOptions = {
 	avoidAnonymous?: boolean;
-	modType: string;
+	modType: ModerationTypesEnum;
 	requiredMember?: boolean;
 } & CommandOptions;
 

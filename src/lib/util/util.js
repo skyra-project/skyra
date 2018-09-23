@@ -1,5 +1,3 @@
-const ModerationLog = require('./ModerationLog');
-const { schemaKeys } = require('./Moderation');
 const { STATUS_CODES } = require('http');
 const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
@@ -119,47 +117,6 @@ class Util {
 		const { position } = target.roles.highest;
 		if (position >= msg.guild.me.roles.highest.position) throw msg.language.get('COMMAND_ROLE_HIGHER_SKYRA');
 		if (position >= moderator.roles.highest.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
-	}
-
-	// Moderation
-
-	/**
-	 * Fetch a modlog with all its properties
-	 * @since 3.0.0
-	 * @param {KlasaGuild} guild The Guild instance that manages the modlog
-	 * @param {number} caseID The case ID
-	 * @returns {Promise<ModerationLog>}
-	 */
-	static async fetchModlog(guild, caseID) {
-		const { client } = guild;
-		const modlog = await client.moderation.getCase(guild.id, caseID);
-		if (modlog) return Util.parseModlog(client, guild, modlog);
-		return null;
-	}
-	/**
-	 * Parse a modlog with all its properties
-	 * @since 3.0.0
-	 * @param {KlasaClient} client The Client that manages this process
-	 * @param {KlasaGuild} guild The Guild instance that manages the modlog
-	 * @param {Object} modlog The modlog object
-	 * @returns {Promise<ModerationLog>}
-	 */
-	static async parseModlog(client, guild, modlog) {
-		const [moderator, user] = await Promise.all([
-			client.users.fetch(modlog[schemaKeys.MODERATOR]).catch(() => null),
-			client.users.fetch(modlog[schemaKeys.USER]).catch(() => null)
-		]);
-		const log = new ModerationLog(guild)
-			.setType(modlog[schemaKeys.TYPE])
-			.setCaseNumber(modlog[schemaKeys.CASE])
-			.setModerator(moderator)
-			.setUser(user)
-			.setReason(modlog[schemaKeys.REASON]);
-
-		if (modlog[schemaKeys.DURATION]) log.setDuration(modlog[schemaKeys.DURATION]);
-		if (modlog[schemaKeys.EXTRA_DATA]) log.setExtraData(modlog[schemaKeys.EXTRA_DATA]);
-
-		return log;
 	}
 
 	// Error handler

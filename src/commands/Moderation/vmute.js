@@ -18,13 +18,13 @@ module.exports = class extends ModerationCommand {
 
 	async run(msg, [target, ...reason]) {
 		const member = await this.checkModeratable(msg, target);
-		if (member.serverMute) throw msg.language.get('COMMAND_MUTE_MUTED');
+		if (member.voice.serverMute) throw msg.language.get('COMMAND_MUTE_MUTED');
 
 		reason = reason.length ? reason.join(' ') : null;
 		await member.setMute(true, reason);
-		const modlog = await this.sendModlog(msg, target, reason);
+		const vmuteLog = await this.sendModlog(msg, target, reason);
 
-		return msg.sendLocale('COMMAND_MUTE_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
+		return msg.sendLocale('COMMAND_MUTE_MESSAGE', [target, vmuteLog.reason, vmuteLog.case]);
 	}
 
 };

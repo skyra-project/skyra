@@ -1,4 +1,4 @@
-const Moderation = require('./Moderation');
+const { MODERATION: { SCHEMA_KEYS } } = require('./constants');
 let init = false;
 
 module.exports = class DatabaseInit {
@@ -59,8 +59,8 @@ module.exports = class DatabaseInit {
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
 			['guildID', undefined],
-			['guild_case', [r.row(Moderation.schemaKeys.GUILD), r.row(Moderation.schemaKeys.CASE)]],
-			['guild_user', [r.row(Moderation.schemaKeys.GUILD), r.row(Moderation.schemaKeys.USER)]]
+			['guild_case', [r.row(SCHEMA_KEYS.GUILD), r.row(SCHEMA_KEYS.CASE)]],
+			['guild_user', [r.row(SCHEMA_KEYS.GUILD), r.row(SCHEMA_KEYS.USER)]]
 		]);
 	}
 

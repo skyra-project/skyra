@@ -24,7 +24,7 @@ module.exports = class extends ModerationCommand {
 		await member.kick(reason);
 		const modlog = await this.sendModlog(msg, target, reason);
 
-		return msg.sendLocale('COMMAND_KICK_MESSAGE', [target, modlog.reason, modlog.caseNumber]);
+		return msg.sendLocale('COMMAND_KICK_MESSAGE', [target, modlog.reason, modlog.case]);
 	}
 
 };

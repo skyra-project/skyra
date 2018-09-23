@@ -15,7 +15,7 @@ module.exports = class extends ModerationCommand {
 
 	async handle(msg, user, member, reason) {
 		if (!member.voice.serverMute) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
-		await member.setDeaf(false, reason);
+		await member.setMute(false, reason);
 		return this.sendModlog(msg, user, reason);
 	}
 

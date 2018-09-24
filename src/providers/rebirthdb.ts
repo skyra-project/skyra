@@ -5,7 +5,7 @@ const { mergeDefault, chunk } = util;
 export default class extends Provider {
 
 	public db: R = r;
-	public pool: MasterPool = null;
+	public pool: MasterPool | null = null;
 
 	public create(table: string, id: string, value: { [k: string]: any } = {}): Promise<WriteResult> {
 		return this.db.table(table).insert({ ...this.parseUpdateInput(value), id }).run();
@@ -23,7 +23,7 @@ export default class extends Provider {
 		return this.db.tableDrop(table).run();
 	}
 
-	public get<T extends object>(table, id): Promise<T> {
+	public get<T extends object>(table: string, id: string): Promise<T> {
 		return this.db.table(table).get(id).run();
 	}
 
@@ -31,8 +31,8 @@ export default class extends Provider {
 
 	public async getAll<T extends object>(table: string, entries: Array<string> = []): Promise<Array<T>> {
 		if (entries.length) {
-			const chunks = chunk(entries, 50000);
-			const output = [];
+			const chunks: Array<Array<string>> = chunk(entries, 50000);
+			const output: Array<T> = [];
 			// @ts-ignore
 			for (const myChunk of chunks) output.push(...await this.db.table(table).getAll(...myChunk).run());
 			return output;
@@ -42,8 +42,8 @@ export default class extends Provider {
 
 	public async getKeys(table: string, entries: Array<string> = []): Promise<Array<string>> {
 		if (entries.length) {
-			const chunks = chunk(entries, 50000);
-			const output = [];
+			const chunks: Array<Array<string>> = chunk(entries, 50000);
+			const output: Array<string> = [];
 			// @ts-ignore
 			for (const myChunk of chunks) output.push(...await this.db.table(table).getAll(...myChunk)('id').run());
 			return output;
@@ -69,11 +69,12 @@ export default class extends Provider {
 		this.pool = await r.connectPool(mergeDefault({
 			db: 'test',
 			silent: false
+			// @ts-ignore
 		}, this.client.options.providers.rebirthdb));
 	}
 
 	public async ping(): Promise<number> {
-		const now = Date.now();
+		const now: number = Date.now();
 		return (await this.db.now().run()).getTime() - now;
 	}
 

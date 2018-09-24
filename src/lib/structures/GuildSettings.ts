@@ -8,17 +8,18 @@ import { Settings } from 'klasa';
  */
 // @ts-ignore
 export default class GuildSettings extends Settings {
-	public filter: { raw: Array<string>; regexp: RegExp | null };
-	public tags: Collection<string, string>;
-	private _tags: Array<[string, string]>;
+	public filter: { raw: Array<string>; regexp: RegExp | null } = {raw: [], regexp: null};
+	public tags: Collection<string, string> = new Collection();
+	private _tags: Array<[string, string]> = [];
 
-	public updateFilter() {
+	public updateFilter(): void {
 		this.filter.regexp = this.filter.raw.length ? GuildSettings.superRegExp(this.filter.raw) : null;
 	}
 
-	private _patch(...args) {
+	// @ts-ignore
+	private _patch(data: { [k: string]: any }, instance?: object, schema?: SchemaFolder): void {
 		// @ts-ignore
-		super._patch(...args);
+		super._patch(data, instance, schema);
 
 		this.tags = new Collection();
 		for (const [name, content] of this._tags) this.tags.set(name, content);
@@ -30,8 +31,8 @@ export default class GuildSettings extends Settings {
 	 * @since 2.0.0
 	 */
 	private static superRegExp(filterArray: Array<string>): RegExp {
-		const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
-			item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
+		const filtered: string = filterArray.reduce((acum: string, item: string, index: number) => acum + (index ? '|' : '') +
+			item.replace(/\w(?=(\w)?)/g, (letter: string, nextWord: string) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
 		return new RegExp(`\\b(?:${filtered})\\b`, 'gi');
 	}
 

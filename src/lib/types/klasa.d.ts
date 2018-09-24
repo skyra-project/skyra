@@ -1,7 +1,8 @@
 import Skyra from '../Skyra';
 import {
 	SkyraGuildMember,
-	SkyraGuildMemberStore
+	SkyraGuildMemberStore,
+	MessageEmbed
 } from './discord.js';
 import {
 	Command,
@@ -27,9 +28,11 @@ import {
 	GuildEditData,
 	GuildMemberEditData,
 	MessageOptions,
-	Snowflake
+	Snowflake,
+	StringResolvable
 } from 'discord.js';
 import rebirthdb from '../../providers/rebirthdb';
+import ModerationManager from '../structures/ModerationManager';
 
 declare class SkyraPermissionLevels extends PermissionLevels {
 	// @ts-ignore
@@ -110,6 +113,13 @@ export class SkyraMessage extends KlasaMessage {
 	public alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
 	public ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;
 	public nuke(time?: number): this;
+
+	public sendLocale(key: string, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	public sendLocale(key: string, localeArgs?: Array<any>, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	public sendMessage(content?: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	public sendEmbed(embed: MessageEmbed, content?: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	public sendCode(language: string, content: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	public send(content?: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
 }
 
 export class SkyraGuild extends KlasaGuild {

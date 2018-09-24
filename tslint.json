@@ -1,12 +1,26 @@
 {
 	"rules": {
-		"member-access": true,
-		"member-ordering": {
-			"options": {
-				"alphabetize": true,
-				"order": "instance-sandwich"
-			}
-		},
+		"member-access": [true, "check-accessor", "check-constructor"],
+		"member-ordering": [true, {
+			"order": [
+				"constructor",
+				"public-instance-field",
+				"protected-instance-field",
+				"private-instance-field",
+
+				"public-instance-method",
+				"protected-instance-method",
+				"private-instance-method",
+
+				"public-static-field",
+				"protected-static-field",
+				"private-static-field",
+
+				"public-static-method",
+				"protected-static-method",
+				"private-static-method"
+			]
+		}],
 		"array-type": false,
 		"arrow-return-shorthand": true,
 		"class-name": true,
@@ -54,6 +68,7 @@
 		"no-trailing-whitespace": true,
 		"no-unnecessary-callback-wrapper": true,
 		"no-unnecessary-initializer": true,
+		"no-unused-variable": [true, {"ignore-pattern": "^_"}],
 		"no-unsafe-finally": true,
 		"no-use-before-declare": true,
 		"no-var-keyword": true,
@@ -73,7 +88,7 @@
 		"prefer-readonly": true,
 		"prefer-template": true,
 		"prefer-while": true,
-		"quotemark": false,
+		"quotemark": [true, "single", "avoid-escape"],
 		"return-undefined": false,
 		"semicolon": true,
 		"space-before-function-paren": [true, "never"],
@@ -82,10 +97,43 @@
 		"switch-final-break": true,
 		"triple-equals": true,
 		"type-literal-delimiter": true,
-		"typedef": true,
 		"unified-signatures": true,
 		"use-isnan": true,
 		"variable-name": [true, "allow-leading-underscore", "ban-keywords"],
-		"whitespace": true
+		"whitespace": [
+			true,
+			"check-branch",
+			"check-decl",
+			"check-operator",
+			"check-module",
+			"check-separator",
+			"check-type",
+			"check-typecast"
+		],
+		"typedef": [
+			true,
+			"parameter",
+			"call-signature",
+			"member-variable-declaration",
+			"property-declaration",
+			"variable-declaration"
+		],
+		"typedef-whitespace": [
+			true,
+			{
+				"call-signature": "nospace",
+				"index-signature": "nospace",
+				"parameter": "nospace",
+				"property-declaration": "nospace",
+				"variable-declaration": "nospace"
+			},
+			{
+				"call-signature": "onespace",
+				"index-signature": "onespace",
+				"parameter": "onespace",
+				"property-declaration": "onespace",
+				"variable-declaration": "onespace"
+			}
+		]
 	}
 }

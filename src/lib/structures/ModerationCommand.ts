@@ -3,7 +3,8 @@ import Skyra from '../Skyra';
 import { SkyraGuildMember } from '../types/discord.js';
 import { SkyraMessage, SkyraUser } from '../types/klasa';
 import { ModerationTypes } from '../types/skyra';
-import { MODERATION } from '../util/constants';
+import { ConstantsModerationTypeKeys, MODERATION } from '../util/constants';
+import ModerationManagerEntry from './ModerationManagerEntry';
 const { mergeDefault } = util;
 const { TYPE_KEYS } = MODERATION;
 
@@ -14,7 +15,18 @@ type ModerationCommandOptions = {
 
 export default abstract class ModerationCommand extends Command {
 
-	public static types = TYPE_KEYS;
+	public constructor(client: Skyra, store: CommandStore, file: Array<string>, directory: string, options: ModerationCommandOptions) {
+		super(client, store, file, directory, mergeDefault({
+			requiredMember: false,
+			runIn: ['text'],
+			usage: '<users:...user{,10}> [reason:...string]',
+			usageDelim: ' '
+		}, options));
+
+		this.modType = options.modType;
+		// @ts-ignore
+		this.requiredMember = options.requiredMember;
+	}
 
 	/**
 	 * The type for this command.
@@ -27,31 +39,19 @@ export default abstract class ModerationCommand extends Command {
 	 */
 	protected requiredMember: boolean;
 
-	public constructor(client: Skyra, store: CommandStore, file: Array<string>, directory: string, options?: ModerationCommandOptions) {
-		super(client, store, file, directory, mergeDefault({
-			requiredMember: false,
-			runIn: ['text'],
-			usage: '<users:...user{,10}> [reason:...string]',
-			usageDelim: ' '
-		}, options));
-
-		this.modType = options.modType;
-		this.requiredMember = options.requiredMember;
-	}
-
-	public async checkModeratable(msg: SkyraMessage, target: SkyraUser) {
+	public async checkModeratable(msg: SkyraMessage, target: SkyraUser): Promise<SkyraGuildMember | null> {
 		if (target.id === msg.author.id)
 			throw msg.language.get('COMMAND_USERSELF');
 
 		if (target.id === this.client.user.id)
 			throw msg.language.get('COMMAND_TOSKYRA');
 
-		const member = await msg.guild.members.fetch(target.id).catch(() => {
+		const member: SkyraGuildMember | null = await msg.guild.members.fetch(target.id).catch(() => {
 			if (this.requiredMember) throw msg.language.get('USER_NOT_IN_GUILD');
 			return null;
 		});
 		if (member) {
-			const targetHighestRolePosition = member.roles.highest.position;
+			const targetHighestRolePosition: number = member.roles.highest.position;
 			if (targetHighestRolePosition >= msg.guild.me.roles.highest.position) throw msg.language.get('COMMAND_ROLE_HIGHER_SKYRA');
 			if (targetHighestRolePosition >= msg.member.roles.highest.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
 		}
@@ -59,21 +59,22 @@ export default abstract class ModerationCommand extends Command {
 		return member;
 	}
 
-	// eslint-disable-next-line no-unused-vars
-	public abstract async handle(msg: SkyraMessage, target: SkyraUser, member: SkyraGuildMember, reason: string, prehandled: any);
+	public abstract async handle(msg: SkyraMessage, target: SkyraUser, member: SkyraGuildMember | null, reason: string | null, prehandled: any): Promise<ModerationManagerEntry>;
 
-	// eslint-disable-next-line no-unused-vars
-	public async posthandle(msg: SkyraMessage, targets: Array<SkyraUser>, reason: string, prehandled: any) { return null; }
+	public abstract async posthandle(msg: SkyraMessage, targets: Array<SkyraUser>, reason: string | null, prehandled: any): Promise<any>;
 
-	// eslint-disable-next-line no-unused-vars
-	public async prehandle(msg: SkyraMessage, targets: Array<SkyraUser>, reason: string) { return null; }
+	public abstract async prehandle(msg: SkyraMessage, targets: Array<SkyraUser>, reason: string | null): Promise<any>;
 
-	public async run(msg: SkyraMessage, [targets, reason]: [Array<SkyraUser>, string]) {
+	public async run(msg: SkyraMessage, [targets, reason]: [Array<SkyraUser>, string | null]): Promise<SkyraMessage | Array<SkyraMessage>> {
 		if (!reason) reason = null;
 
-		const prehandled = await this.prehandle(msg, targets, reason);
-		const promises = [];
-		const processed = [], errored = [];
+		type ModerationCommandProcessed = { log: ModerationManagerEntry; target: SkyraUser };
+		type ModerationCommandErrored = { error: Error; target: SkyraUser };
+
+		const prehandled: any = await this.prehandle(msg, targets, reason);
+		const promises: Array<Promise<any>> = [];
+		const processed: Array<ModerationCommandProcessed> = [];
+		const errored: Array < ModerationCommandErrored > = [];
 		for (const target of new Set(targets)) {
 			promises.push(this.checkModeratable(msg, target)
 				.then((member) => this.handle(msg, target, member, reason, prehandled))
@@ -82,17 +83,18 @@ export default abstract class ModerationCommand extends Command {
 		}
 
 		await Promise.all(promises);
-		const output = [];
+		const output: Array<string> = [];
 		if (processed.length) {
-			const sorted = processed.sort((a, b) => a.log.case - b.log.case);
-			const cases = sorted.map(({ log }) => log.case);
-			const users = sorted.map(({ target }) => `\`${target.tag}\``);
-			const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
+			const sorted: Array<ModerationCommandProcessed> = processed.sort(
+				(a: ModerationCommandProcessed, b: ModerationCommandProcessed) => <number> a.log.case - <number> b.log.case);
+			const cases: Array<number> = sorted.map(({ log }) => <number> log.case);
+			const users: Array<string> = sorted.map(({ target }) => `\`${target.tag}\``);
+			const range: string = cases.length === 1 ? cases[0].toString() : `${cases[0]}..${cases[cases.length - 1]}`;
 			output.push(msg.language.get('COMMAND_MODERATION_OUTPUT', cases, range, users, reason));
 		}
 
 		if (errored.length) {
-			const users = errored.map(({ error, target }) => `- ${target.tag} → ${error}`);
+			const users: Array<string> = errored.map(({ error, target }) => `- ${target.tag} → ${error}`);
 			output.push(msg.language.get('COMMAND_MODERATION_FAILED', users));
 		}
 
@@ -105,9 +107,9 @@ export default abstract class ModerationCommand extends Command {
 		return msg.sendMessage(output.join('\n'));
 	}
 
-	public sendModlog(msg, target, reason, extraData) {
+	public sendModlog(msg: SkyraMessage, target: SkyraUser, reason: string | null, extraData: any): Promise<ModerationManagerEntry | null> {
 		if (Array.isArray(reason)) reason = reason.join(' ');
-		const modlog = msg.guild.moderation.new
+		const modlog: ModerationManagerEntry = msg.guild.moderation.new
 			.setModerator(msg.author.id)
 			.setUser(target.id)
 			.setType(this.modType)
@@ -116,6 +118,8 @@ export default abstract class ModerationCommand extends Command {
 		if (extraData) modlog.setExtraData(extraData);
 		return modlog.create();
 	}
+
+	public static types: ConstantsModerationTypeKeys = TYPE_KEYS;
 
 }
 

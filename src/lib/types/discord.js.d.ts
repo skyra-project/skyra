@@ -36,7 +36,7 @@ export class SkyraClientUser extends ClientUser {
 
 export { SkyraClientUser as ClientUser };
 
-export class SkyraMessageEmbed extends MessageEmbed {
+declare class SkyraMessageEmbed extends MessageEmbed {
 	public splitFields(input: string | string[]): this;
 }
 
@@ -63,6 +63,7 @@ export class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMember
 }
 
 export class SkyraGuildMember extends GuildMember {
+	public client: Skyra;
 	public settings: MemberSettings;
 	public guild: SkyraGuild;
 }

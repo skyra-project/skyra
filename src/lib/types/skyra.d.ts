@@ -1,3 +1,6 @@
+import { Snowflake } from "discord.js";
+import { SkyraUser } from "./klasa";
+
 export type APIResponse = {
 	success: boolean;
 	response: any;
@@ -36,3 +39,36 @@ export type ModerationTypes =
 	0b100010 |
 	// VOICE_MUTE & TEMPORARY
 	0b100110;
+
+export type ModerationLogKeys = {
+	CASE: 'caseID';
+	DURATION: 'duration';
+	EXTRA_DATA: 'extraData';
+	GUILD: 'guildID';
+	MODERATOR: 'moderatorID';
+	REASON: 'reason';
+	TYPE: 'type';
+	USER: 'userID';
+	CREATED_AT: 'createdAt';
+};
+
+export type ModerationLogData = {
+	id?: string;
+	caseID: number;
+	duration: number | null;
+	extraData: any;
+	guildID: Snowflake;
+	moderatorID: Snowflake | null;
+	reason: string | null;
+	type: ModerationTypes;
+	userID: Snowflake;
+	createdAt: number | null;
+};
+
+export type ModerationLogEditData = {
+	id?: string;
+	duration?: number | null;
+	extraData?: any;
+	moderatorID?: SkyraUser | Snowflake | null;
+	reason?: string | null;
+}

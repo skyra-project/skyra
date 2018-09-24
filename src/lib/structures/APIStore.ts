@@ -5,11 +5,11 @@ import { APIResponse } from '../types/skyra';
 import API from './API';
 const { isObject, mergeDefault } = util;
 
-const NOT_FOUND = { success: false, response: null, type: 'NO_MATCH', code: 404 };
+const NOT_FOUND: APIResponse = { success: false, response: null, type: 'NO_MATCH', code: 404 };
 
 export default class APIStore extends Store<string, API, typeof API> {
 
-	constructor(client: Skyra) {
+	public constructor(client: Skyra) {
 		super(client, 'ipcPieces', API);
 	}
 
@@ -19,7 +19,7 @@ export default class APIStore extends Store<string, API, typeof API> {
 	 * @param message The data to process
 	 */
 	public run(message: NodeMessage): Promise<APIResponse> {
-		const piece = this.get(message.data.route);
+		const piece: API = this.get(message.data.route);
 		return piece ? this.runPiece(piece, message) : Promise.resolve(NOT_FOUND);
 	}
 
@@ -31,7 +31,7 @@ export default class APIStore extends Store<string, API, typeof API> {
 	 */
 	private async runPiece(piece: API, message: NodeMessage): Promise<APIResponse> {
 		try {
-			const result = await piece.run(message.data);
+			const result: APIResponse | null = await piece.run(message.data);
 			if (result === null) return NOT_FOUND;
 			if (!isObject(result)) return { success: true, response: result, type: 'SUCCESS', code: 200 };
 

@@ -1,17 +1,23 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "esnext",
-		"noImplicitAny": true,
-		"strictNullChecks": true,
-		"noEmit": true,
-		"experimentalDecorators": true,
-		"forceConsistentCasingInFileNames": true,
-		"checkJs": true,
-		"moduleResolution": "node",
-		"strict": true
+        "target": "es2018",
+        "lib": ["es2018"],
+        "sourceMap": true,
+        "declaration": true,
+        "removeComments": false,
+        "experimentalDecorators": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
 	},
-	"files": [
-		"src/index.d.ts"
+	"exclude": [
+		"node_modules",
+		"bin",
+		"examples",
+		"scripts"
 	]
 }

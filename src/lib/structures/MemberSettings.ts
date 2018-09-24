@@ -1,14 +1,17 @@
 import { Snowflake } from 'discord.js';
 import { util } from 'klasa';
+import { RTable } from 'rethinkdb-ts';
 import Skyra from '../Skyra.js';
 import { enumerable } from '../types/Decorators.js';
 import { SkyraGuildMember } from '../types/discord.js';
-const SORT = (x, y) => +(y.count > x.count) || +(x.count === y.count) - 1;
+import { SkyraGuild } from '../types/klasa.js';
+
+const SORT: (x: MemberSettingsData, y: MemberSettingsData) => number = (x: MemberSettingsData, y: MemberSettingsData): number => +(y.count > x.count) || +(x.count === y.count) - 1;
 
 type MemberSettingsJSON = {
 	count: number;
-	guild: Snowflake;
-	member: Snowflake;
+	guild: Snowflake | null;
+	member: Snowflake | null;
 };
 
 /**
@@ -22,8 +25,22 @@ export default class MemberSettings {
 	 * Get the member
 	 * @since 3.0.0
 	 */
-	public get member(): SkyraGuildMember {
-		return this.client.guilds.get(this.guildID).members.get(this.userID);
+	public get member(): SkyraGuildMember | null {
+		const guild: SkyraGuild | undefined = this.client.guilds.get(this.guildID);
+		return (guild && guild.members.get(this.userID)) || null;
+	}
+
+	/**
+	 * Create a new instance of MemberSettings given a GuildMember instance
+	 * @since 3.0.0
+	 */
+	public constructor(member: SkyraGuildMember) {
+		this.client = member.client;
+		this.userID = member.id;
+		this.guildID = member.guild.id;
+
+		// Sync the settings
+		this.sync();
 	}
 
 	/**
@@ -37,14 +54,14 @@ export default class MemberSettings {
 	 * The amount of points
 	 * @since 3.0.0
 	 */
-	public count: number;
+	public count: number = 0;
 
 	/**
 	 * The promise sync status, if syncing.
 	 * @since 3.0.0
 	 */
 	@enumerable(false)
-	private _syncStatus: Promise<this> | null;
+	private _syncStatus: Promise<this> | null = null;
 
 	/**
 	 * The guild id where the member belongs to.
@@ -65,21 +82,7 @@ export default class MemberSettings {
 	 * @since 3.0.0
 	 */
 	@enumerable(false)
-	private UUID: string;
-
-	/**
-	 * Create a new instance of MemberSettings given a GuildMember instance
-	 * @since 3.0.0
-	 */
-	public constructor(member: SkyraGuildMember) {
-		this.userID = member.id;
-		this.count = 0;
-		this.UUID = null;
-		this._syncStatus = null;
-
-		// Sync the settings
-		this.sync();
-	}
+	private UUID: string | null = null;
 
 	/**
 	 * Deletes the member instance from the database
@@ -101,7 +104,8 @@ export default class MemberSettings {
 		if (!this.client._skyraReady) return Promise.resolve(this);
 		if (!this._syncStatus) {
 			this._syncStatus = (async() => {
-				const data = this._resolveData(await this.client.providers.default.db.table('localScores').getAll([this.guildID, this.userID], { index: 'guild_user' }).run()
+				const data: MemberSettingsData | null = this._resolveData(await this.client.providers.default.db.table('localScores')
+					.getAll([this.guildID, this.userID], { index: 'guild_user' }).run()
 					.catch(() => []));
 
 				if (data) {
@@ -121,8 +125,8 @@ export default class MemberSettings {
 	 * @since 3.0.0
 	 */
 	public toJSON(): MemberSettingsJSON {
-		const guild = this.client.guilds.get(this.guildID);
-		const member = guild ? guild.members.get(this.userID) : null;
+		const guild: SkyraGuild | undefined = this.client.guilds.get(this.guildID);
+		const member: SkyraGuildMember | undefined = guild && guild.members.get(this.userID);
 
 		return {
 			count: this.count,
@@ -150,23 +154,23 @@ export default class MemberSettings {
 		await (this.UUID
 			? this.client.providers.default.db.table('localScores').get(this.UUID).update({ count: amount | 0 }).run()
 			: this.client.providers.default.db.table('localScores').insert({ guildID: this.guildID, userID: this.userID, count: amount | 0 }).run()
-				.then((result) => { [this.UUID] = result.generated_keys; }));
+				.then((result) => { if (result.generated_keys) [this.UUID] = result.generated_keys; }));
 		this.count = amount | 0;
 
 		return this;
 	}
 
-	private _patch(data) {
+	public _patch(data: MemberSettingsData): void {
 		if (typeof data.id !== 'undefined') this.UUID = data.id;
 		if (typeof data.count === 'number') this.count = data.count;
 	}
 
-	private _resolveData(entries) {
+	private _resolveData(entries: Array<MemberSettingsData>): MemberSettingsData | null {
 		if (!entries.length) return null;
 		if (entries.length === 1) return entries[0];
-		const sorted = entries.sort(SORT);
+		const sorted: Array<MemberSettingsData> = entries.sort(SORT);
 		const [highest] = sorted.splice(0, 1);
-		const table = this.client.providers.default.db.table('localScores');
+		const table: RTable = this.client.providers.default.db.table('localScores');
 		for (const entry of sorted) {
 			this.client.emit('verbose', `[CORRUPTION] [localScores - ${entry.guildID}:${entry.userID}] (${entry.id}) ${entry.count} < ${highest.count}.`);
 			table.get(entry.id).delete().run();
@@ -175,5 +179,12 @@ export default class MemberSettings {
 	}
 
 }
+
+type MemberSettingsData = {
+	guildID: Snowflake;
+	userID: Snowflake;
+	id: string;
+	count: number;
+};
 
 module.exports = MemberSettings;

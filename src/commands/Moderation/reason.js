@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			name: 'reason',
 			permissionLevel: 5,
 			runIn: ['text'],
-			usage: '<case:integer> <reason:...string>',
+			usage: '<latest|case:integer> <reason:...string>',
 			usageDelim: ' '
 		});
 	}
@@ -20,6 +20,7 @@ module.exports = class extends Command {
 		if (!reason) reason = null;
 
 		// Get all cases
+		if (selected === 'latest') selected = await msg.guild.moderation.count();
 		const modlog = await msg.guild.moderation.fetch(selected);
 		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 

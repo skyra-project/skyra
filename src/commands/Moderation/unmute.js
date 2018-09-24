@@ -9,10 +9,7 @@ module.exports = class extends ModerationCommand {
 			extendedHelp: (language) => language.get('COMMAND_UNMUTE_EXTENDED'),
 			modType: ModerationCommand.types.UN_MUTE,
 			permissionLevel: 5,
-			requiredMember: true,
-			runIn: ['text'],
-			usage: '<SearchMember:user> [reason:string] [...]',
-			usageDelim: ' '
+			requiredMember: true
 		});
 	}
 

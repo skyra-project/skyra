@@ -41,9 +41,7 @@
     "veza": "^0.3.1"
   },
   "devDependencies": {
-    "@types/node": "^10.9.4",
-    "eslint": "^5.5.0",
-    "eslint-config-klasa": "github:dirigeants/klasa-lint",
+    "@types/node": "^10.11.0",
     "tslint": "^5.11.0",
     "typescript": "^3.0.3"
   },

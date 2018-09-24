@@ -1,44 +1,77 @@
-const { STATUS_CODES } = require('http');
-const fetch = require('node-fetch');
-const { DiscordAPIError } = require('discord.js');
-const { Type } = require('klasa');
-const { Image } = require('canvas');
-const { readFile } = require('fs-nextra');
-const { Readable } = require('stream');
+// @ts-ignore
+import * as canvas from 'canvas';
+import { Constructable, ImageSize, MessageAttachment, MessageEmbed, PermissionOverwriteOption, Role, RoleData, Snowflake } from 'discord.js';
+import { readFile } from 'fs-nextra';
+import { STATUS_CODES } from 'http';
+import { KlasaGuildChannel, Type } from 'klasa';
+import fetch, { RequestInit, Response } from 'node-fetch';
+import { Readable } from 'stream';
+import { URL } from 'url';
+import { SkyraGuildMember } from '../types/discord.js';
+import { SkyraGuild, SkyraMessage, SkyraUser } from '../types/klasa';
 
-const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
-const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
-const REGEX_UNICODE_EMOJI = require('./External/rUnicodeEmoji');
+const REGEX_FCUSTOM_EMOJI: RegExp = /<a?:\w{2,32}:\d{17,18}>/;
+const REGEX_PCUSTOM_EMOJI: RegExp = /a?:\w{2,32}:\d{17,18}/;
+import REGEX_UNICODE_EMOJI from './External/rUnicodeEmoji';
+const { Image }: { Image: CanvasImageConstructor } = canvas;
 
-/**
- * @typedef  {Object} UtilOneToTenEntry
- * @property {string} emoji
- * @property {number} color
- */
+type CanvasImageConstructor = Constructable<CanvasImage>;
+type CanvasImage = { src: Buffer };
 
 /**
  * The static Util class
  * @version 2.0.0
  */
-class Util {
+export default class Util {
+
+	private static ONE_TO_TEN: Readonly<Record<UtilOneToTenKey, UtilOneToTenValue>> = Object.freeze({
+		0: { emoji: '😪', color: 0x5B1100 },
+		1: { emoji: '😪', color: 0x5B1100 },
+		2: { emoji: '😫', color: 0xAB1100 },
+		3: { emoji: '😔', color: 0xFF2B00 },
+		4: { emoji: '😒', color: 0xFF6100 },
+		5: { emoji: '😌', color: 0xFF9C00 },
+		6: { emoji: '😕', color: 0xB4BF00 },
+		7: { emoji: '😬', color: 0x84FC00 },
+		8: { emoji: '🙂', color: 0x5BF700 },
+		9: { emoji: '😃', color: 0x24F700 },
+		10: { emoji: '😍', color: 0x51D4EF }
+	});
+
+	private static MUTE_ROLE_PERMISSIONS: Readonly<{ text: PermissionOverwriteOption; voice: PermissionOverwriteOption }> = Object.freeze({
+		text: { SEND_MESSAGES: false, ADD_REACTIONS: false },
+		voice: { CONNECT: false }
+	});
+
+	private static MUTE_ROLE_OPTIONS: Readonly<{ data: RoleData; reason: string }> = Object.freeze({
+		data: {
+			color: 0x422C0B,
+			hoist: false,
+			mentionable: false,
+			name: 'Muted',
+			permissions: []
+		},
+		reason: '[SETUP] Authorized to create a \'Muted\' role.'
+	});
+
+	private static IMAGE_EXTENSION: RegExp = /\.(bmp|jpe?g|png|gif|webp)$/i;
 
 	/**
 	 * Read a stream and resolve to a buffer
 	 * @since 3.2.0
-	 * @param {Readable} stream The readable stream to read
-	 * @returns {Promise<Buffer>}
+	 * @param stream The readable stream to read
 	 */
-	public static streamToBuffer(stream) {
+	public static streamToBuffer(stream: Readable): Promise<Buffer> {
 		if (!(stream instanceof Readable)) throw new TypeError(`Expected stream to be a Readable stream, got: ${new Type(stream)}`);
 
 		return new Promise((res, rej) => {
-			const array = [];
+			const array: Array<Buffer> = [];
 
-			function onData(data) {
+			function onData(data: Buffer): void {
 				array.push(data);
 			}
 
-			function finish(error) {
+			function finish(error?: Error): void {
 				stream.removeAllListeners();
 				return error ? rej(error) : res(Buffer.concat(array));
 			}
@@ -53,12 +86,11 @@ class Util {
 	/**
 	 * Load an image for Canvas
 	 * @since 3.0.0
-	 * @param {string} path The path to fix
-	 * @returns {Image}
+	 * @param path The path to fix
 	 */
-	public static async loadImage(path) {
-		const buffer = await readFile(path);
-		const image = new Image();
+	public static async loadImage(path: string): Promise<CanvasImage> {
+		const buffer: Buffer = await readFile(path);
+		const image: CanvasImage = new Image();
 		image.src = buffer;
 		return image;
 	}
@@ -68,37 +100,38 @@ class Util {
 	/**
 	 * Check if the announcement is correctly set up
 	 * @since 3.0.0
-	 * @param {KlasaMessage} msg The message instance to check with
-	 * @returns {Role}
+	 * @param msg The message instance to check with
 	 */
-	public static announcementCheck(msg) {
-		const announcementID = msg.guild.settings.roles.subscriber;
+	public static announcementCheck(msg: SkyraMessage): Role {
+		const announcementID: string | null = msg.guild.settings.roles.subscriber;
 		if (!announcementID) throw msg.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
-		const role = msg.guild.roles.get(announcementID);
+		const role: Role | undefined = msg.guild.roles.get(announcementID);
 		if (!role) throw msg.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
 		if (role.position >= msg.guild.me.roles.highest.position) throw msg.language.get('SYSTEM_HIGHEST_ROLE');
 		return role;
 	}
 
-	public static async removeMute(guild, id) {
+	public static async removeMute(guild: SkyraGuild, id: Snowflake): Promise<boolean> {
 		const { settings } = guild;
 
-		const stickyRolesIndex = settings.stickyRoles.findIndex((stickyRole) => stickyRole.id === id);
+		if (!settings.roles.muted) return false;
+
+		const stickyRolesIndex: number = settings.stickyRoles.findIndex((stickyRole) => stickyRole.id === id);
 		if (stickyRolesIndex === -1) return false;
 
-		const stickyRoles = settings.stickyRoles[stickyRolesIndex];
+		const stickyRoles: { id: Snowflake; roles: Snowflake[] } = settings.stickyRoles[stickyRolesIndex];
 
-		const index = stickyRoles.roles.indexOf(settings.roles.muted);
+		const index: number = stickyRoles.roles.indexOf(settings.roles.muted);
 		if (index === -1) return false;
 
 		stickyRoles.roles.splice(index, 1);
-		await settings.update('stickyRoles', ...stickyRoles.roles.length
-			// If there's at least one remaining role, update the entry
-			? [{ id, roles: stickyRoles.roles }, { arrayPosition: stickyRolesIndex }]
-			// Otherwise, giving the instance itself will trigger auto-remove
-			: [stickyRoles, { action: 'remove' }]);
+
+		const { errors } = await (stickyRoles.roles.length
+			? settings.update('stickyRoles', { id, roles: stickyRoles.roles }, { arrayPosition: stickyRolesIndex })
+			: settings.update('stickyRoles', stickyRoles, { action: 'remove' }));
+		if (errors.length) guild.client.emit('wtf', errors);
 
 		return true;
 	}
@@ -106,11 +139,11 @@ class Util {
 	/**
 	 * Check if a member is moderatable
 	 * @since 3.0.0
-	 * @param {KlasaMessage} msg The message instance to check with
-	 * @param {GuildMember} moderator The moderator that triggered this check
-	 * @param {GuildMember} target The member to check against
+	 * @param msg The message instance to check with
+	 * @param moderator The moderator that triggered this check
+	 * @param target The member to check against
 	 */
-	public static moderationCheck(msg, moderator, target) {
+	public static moderationCheck(msg: SkyraMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void {
 		if (target === msg.guild.me) throw msg.language.get('COMMAND_TOSKYRA');
 		if (target === moderator) throw msg.language.get('COMMAND_USERSELF');
 		if (target === msg.guild.owner) throw msg.language.get('COMMAND_ROLE_HIGHER_SKYRA');
@@ -119,28 +152,14 @@ class Util {
 		if (position >= moderator.roles.highest.position) throw msg.language.get('COMMAND_ROLE_HIGHER');
 	}
 
-	// Error handler
-
-	/**
-	 * De-idiotify Discord.js Errors.
-	 * @since 3.0.0
-	 * @param {DiscordAPIError} error The error to de-idiotify
-	 * @throws {DiscordAPIError}
-	 */
-	public static deIdiotify(error) {
-		if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
-		throw error;
-	}
-
 	// Misc utils
 
 	/**
 	 * Resolve an emoji
 	 * @since 3.2.0
-	 * @param {string} emoji The emoji to resolve
-	 * @returns {string}
+	 * @param emoji The emoji to resolve
 	 */
-	public static resolveEmoji(emoji) {
+	public static resolveEmoji(emoji: string): string | null {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
 		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
@@ -150,62 +169,55 @@ class Util {
 	/**
 	 * Get an one-to-ten entry
 	 * @since 3.0.0
-	 * @param {number} level The number to check against
-	 * @returns {UtilOneToTenEntry}
+	 * @param level The number to check against
 	 */
-	public static oneToTen(level) {
+	public static oneToTen(level: number): UtilOneToTenValue {
 		if (level < 0) level = 0;
 		else if (level > 10) level = 10;
-		return Util.ONE_TO_TEN[level | 0];
+		return Util.ONE_TO_TEN[<UtilOneToTenKey> (level | 0)];
 	}
 
 	/**
 	 * Wrap a basic auth
 	 * @since 3.0.0
-	 * @param {string} user The username
-	 * @param {string} pass The password
-	 * @returns {string}
+	 * @param user The username
+	 * @param pass The password
 	 */
-	public static basicAuth(user, pass) {
+	public static basicAuth(user: string, pass: string): string {
 		return `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
 	}
 
 	/**
 	 * Get a formatted status code
 	 * @since 3.0.0
-	 * @param {number} code The status code to check against
-	 * @returns {string}
+	 * @param code The status code to check against
 	 */
-	public static httpResponses(code) {
+	public static httpResponses(code: number): string {
 		return `[${code}] ${STATUS_CODES[code]}`;
 	}
 
 	/**
-     * Split a string by its latest space character in a range from the character 0 to the selected one.
+	 * Split a string by its latest space character in a range from the character 0 to the selected one.
 	 * @since 2.0.0
-     * @param {string} str    The text to split.
-     * @param {number} length The length of the desired string.
-	 * @param {string} [char=' '] The character to split with
-     * @returns {string}
-     * @static
-     */
-	public static splitText(str, length, char = ' ') {
-		const x = str.substring(0, length).lastIndexOf(char);
-		const pos = x === -1 ? length : x;
+	 * @param str The text to split.
+	 * @param length The length of the desired string.
+	 * @param char The character to split with
+	 */
+	public static splitText(str: string, length: number, char: string = ' '): string {
+		const x: number = str.substring(0, length).lastIndexOf(char);
+		const pos: number = x === -1 ? length : x;
 		return str.substring(0, pos);
 	}
 
 	/**
 	 * Split a text by its latest space character in a range from the character 0 to the selected one.
 	 * @since 3.0.1
-	 * @param {string} str The text to split.
-	 * @param {number} length The length of the desired string.
-	 * @returns {string}
-	 * @static
+	 * @param str The text to split.
+	 * @param length The length of the desired string.
 	 */
-	public static cutText(str, length) {
+	public static cutText(str: string, length: number): string {
 		if (str.length < length) return str;
-		const cut = Util.splitText(str, length - 3);
+		const cut: string = Util.splitText(str, length - 3);
 		if (cut.length < length - 3) return `${cut}...`;
 		return `${cut.slice(0, length - 3)}...`;
 	}
@@ -213,25 +225,30 @@ class Util {
 	/**
 	 * Fetch a user's avatar.
 	 * @since 2.0.0
-	 * @param {User} user The user.
-	 * @param {(64|128|256|512|1024|2048)} size The size of the avatar to download.
-	 * @returns {Promise<Buffer>}
+	 * @param user The user.
+	 * @param size The size of the avatar to download.
 	 */
-	public static fetchAvatar(user, size = 512) {
-		const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
-		// @ts-ignore
+	public static fetchAvatar(user: SkyraUser, size: ImageSize = 512): Promise<Buffer> {
+		const url: string = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
 		return Util.fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
 	}
 
 	/**
 	 * Fetch a URL and parse its output.
 	 * @since 3.1.0
-	 * @param {URL|string} url The url to fetch
-	 * @param {Object<string, *>} [options] The options to pass, overloads to type if type is string
-	 * @param {string} [type] The type of expected output
-	 * @returns {Promise<*>}
+	 * @param url The url to fetch
+	 * @param options The options to pass, overloads to type if type is string
+	 * @param type The type of expected output
 	 */
-	public static async fetch(url, options, type) {
+	// @ts-ignore
+	public static async fetch<T extends object>(url: URL | string, type?: 'json'): Promise<T>;
+	public static async fetch<T extends object>(url: URL | string, options?: RequestInit, type?: 'json'): Promise<T>;
+	public static async fetch(url: URL | string, type?: 'buffer'): Promise<Buffer>;
+	public static async fetch(url: URL | string, options?: RequestInit, type?: 'buffer'): Promise<Buffer>;
+	public static async fetch(url: URL | string, type?: 'text'): Promise<string>;
+	public static async fetch(url: URL | string, options?: RequestInit, type?: 'text'): Promise<string>;
+	public static async fetch(url: URL | string, type?: string): Promise<any>;
+	public static async fetch<T extends object>(url: URL | string, options?: RequestInit, type?: 'result' | 'json' | 'buffer' | 'text'): Promise<T | Response | Buffer | string> {
 		if (typeof options === 'undefined') {
 			options = {};
 			type = 'json';
@@ -243,7 +260,7 @@ class Util {
 		}
 
 		// @ts-ignore
-		const result = await fetch(url, options);
+		const result: Response = await fetch(url, options);
 		if (!result.ok) throw result.statusText;
 
 		switch (type) {
@@ -258,10 +275,9 @@ class Util {
 	/**
 	 * Get the content from a message.
 	 * @since 3.0.0
-	 * @param {KlasaMessage} message The Message to get the content from
-	 * @returns {?string}
+	 * @param message The Message to get the content from
 	 */
-	public static getContent(message) {
+	public static getContent(message: SkyraMessage): string | null {
 		if (message.content) return message.content;
 		return (message.embeds.length && message.embeds[0].description) || null;
 	}
@@ -269,16 +285,15 @@ class Util {
 	/**
 	 * Get the first image from a message.
 	 * @since 3.0.0
-	 * @param {KlasaMessage} message The Message to get the image from
-	 * @returns {?string}
+	 * @param message The Message to get the image from
 	 */
-	public static getImage(message) {
+	public static getImage(message: SkyraMessage): string | null {
 		if (message.attachments.size) {
-			const attachment = message.attachments.find((att) => Util.IMAGE_EXTENSION.test(att.url));
+			const attachment: MessageAttachment | undefined = message.attachments.find((att) => Util.IMAGE_EXTENSION.test(att.url));
 			if (attachment) return attachment.url;
 		}
 		if (message.embeds.length) {
-			const embed = message.embeds.find((emb) => emb.type === 'image');
+			const embed: MessageEmbed | undefined = message.embeds.find((emb) => emb.type === 'image');
 			if (embed) return embed.url;
 		}
 		return null;
@@ -289,26 +304,26 @@ class Util {
 	/**
 	 * Create the mute role
 	 * @since 3.0.0
-	 * @param {KlasaMessage} msg The message instance to use as context
-	 * @returns {Role}
+	 * @param msg The message instance to use as context
 	 */
-	public static async createMuteRole(msg) {
+	public static async createMuteRole(msg: SkyraMessage): Promise<Role> {
 		if (msg.guild.settings.roles.muted
 			&& msg.guild.roles.has(msg.guild.settings.roles.muted)) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
 
 		if (msg.guild.roles.size === 250) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
-		const role = await msg.guild.roles.create(Util.MUTE_ROLE_OPTIONS);
+
+		const role: Role = await msg.guild.roles.create(Util.MUTE_ROLE_OPTIONS);
 		const { channels } = msg.guild;
 		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
-		const denied = [];
-		let accepted = 0;
+		const denied: string[] = [];
+		let accepted: number = 0;
 
 		for (const channel of channels.values()) { // eslint-disable-line no-restricted-syntax
-			await Util._createMuteRolePush(channel, role, denied);
+			await Util._createMuteRolePush(<KlasaGuildChannel> channel, role, denied);
 			accepted++;
 		}
 
-		const messageEdit2 = msg.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
+		const messageEdit2: string = msg.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
 		await msg.guild.settings.update('roles.muted', role.id, msg.guild);
 		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, msg.author, role]);
 		return role;
@@ -317,50 +332,23 @@ class Util {
 	/**
 	 * Push the permissions for the muted role into a channel
 	 * @since 3.0.0
-	 * @param {Channel} channel The channel to modify
-	 * @param {Role} role The role to update
-	 * @param {string[]} array The array to push in case it did fail
-	 * @returns {Promise<*>}
-	 * @private
+	 * @param channel The channel to modify
+	 * @param role The role to update
+	 * @param array The array to push in case it did fail
 	 */
-	public static async _createMuteRolePush(channel, role, array) {
-		if (channel.type === 'category') return null;
-		return channel.updateOverwrite(role, Util.MUTE_ROLE_PERMISSIONS[channel.type])
-			.catch(() => array.push(String(channel)));
+	private static async _createMuteRolePush(channel: KlasaGuildChannel, role: Role, array: string[]): Promise<void> {
+		if (channel.type === 'category') return;
+		try {
+			await channel.updateOverwrite(role, Util.MUTE_ROLE_PERMISSIONS[<'text' | 'voice'> channel.type]);
+		} catch {
+			array.push(channel.toString());
+		}
 	}
 
 }
 
-Util.MUTE_ROLE_PERMISSIONS = Object.freeze({
-	text: { SEND_MESSAGES: false, ADD_REACTIONS: false },
-	voice: { CONNECT: false }
-});
-
-Util.MUTE_ROLE_OPTIONS = Object.freeze({
-	reason: '[SETUP] Authorized to create a \'Muted\' role.',
-	data: {
-		name: 'Muted',
-		color: 0x422c0b,
-		hoist: false,
-		permissions: [],
-		mentionable: false
-	}
-});
-
-Util.ONE_TO_TEN = Object.freeze({
-	0: { emoji: '😪', color: 0x5B1100 },
-	1: { emoji: '😪', color: 0x5B1100 },
-	2: { emoji: '😫', color: 0xAB1100 },
-	3: { emoji: '😔', color: 0xFF2B00 },
-	4: { emoji: '😒', color: 0xFF6100 },
-	5: { emoji: '😌', color: 0xFF9C00 },
-	6: { emoji: '😕', color: 0xB4BF00 },
-	7: { emoji: '😬', color: 0x84FC00 },
-	8: { emoji: '🙂', color: 0x5BF700 },
-	9: { emoji: '😃', color: 0x24F700 },
-	10: { emoji: '😍', color: 0x51D4EF }
-});
-
-Util.IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
-
-module.exports = Util;
+type UtilOneToTenKey = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+type UtilOneToTenValue = {
+	emoji: string;
+	color: number;
+};

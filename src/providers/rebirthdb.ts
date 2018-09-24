@@ -1,4 +1,4 @@
-import { Provider, util } from 'klasa';
+import { KlasaProvidersOptions, Provider, util } from 'klasa';
 import { MasterPool, r, R, TableChangeResult, WriteResult } from 'rethinkdb-ts';
 const { mergeDefault, chunk } = util;
 
@@ -69,8 +69,7 @@ export default class extends Provider {
 		this.pool = await r.connectPool(mergeDefault({
 			db: 'test',
 			silent: false
-			// @ts-ignore
-		}, this.client.options.providers.rebirthdb));
+		}, (<KlasaProvidersOptions> this.client.options.providers).rebirthdb));
 	}
 
 	public async ping(): Promise<number> {

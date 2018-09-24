@@ -23,16 +23,15 @@
  */
 
 /**
- * @param {string} a The first string to compare
- * @param {string} b The second string to compare
- * @param {boolean} [full=true] Whether it should continue after distance 2 or continue
- * @returns {number}
+ * @param a The first string to compare
+ * @param b The second string to compare
+ * @param full=true Whether it should continue after distance 2 or continue
  */
-function levenshtein(a, b, full = true) {
+export default function levenshtein(a: string, b: string, full: boolean = true): number {
 	if (a === b) return 0;
 	if (a.length > b.length) [a, b] = [b, a];
 
-	let la = a.length, lb = b.length;
+	let la: number = a.length, lb: number = b.length;
 
 	// add-on, try to not match if distance is over 2
 	if (!full && (lb - la) > 2) return -1;
@@ -42,7 +41,7 @@ function levenshtein(a, b, full = true) {
 		lb--;
 	}
 
-	let offset = 0;
+	let offset: number = 0;
 
 	while (offset < la && (a.charCodeAt(offset) === b.charCodeAt(offset))) offset++;
 
@@ -54,7 +53,7 @@ function levenshtein(a, b, full = true) {
 	return full ? fullLevenshtein(a, b, la, lb, offset) : -1;
 }
 
-function min(d0, d1, d2, bx, ay) {
+function min(d0: number, d1: number, d2: number, bx: number, ay: number): number {
 	return d0 < d1 || d2 < d1
 		? d0 > d2
 			? d2 + 1
@@ -64,12 +63,12 @@ function min(d0, d1, d2, bx, ay) {
 			: d1 + 1;
 }
 
-function fullLevenshtein(a, b, la, lb, offset) {
-	let x = 0, y = 0;
-	let d0, d1, d2, d3, dd, dy, ay;
-	let bx0, bx1, bx2, bx3;
+function fullLevenshtein(a: string, b: string, la: number, lb: number, offset: number): number {
+	let x: number = 0, y: number = 0;
+	let d0: number, d1: number, d2: number, d3: number, dd: number, dy: number, ay: number;
+	let bx0: number, bx1: number, bx2: number, bx3: number;
 
-	const vector = [];
+	const vector: number[] = [];
 
 	while (y < la)
 		vector.push(y + 1, a.charCodeAt(offset + y++));
@@ -109,7 +108,6 @@ function fullLevenshtein(a, b, la, lb, offset) {
 		}
 	}
 
-	return dd;
+	// @ts-ignore
+	return <number> dd;
 }
-
-module.exports = levenshtein;

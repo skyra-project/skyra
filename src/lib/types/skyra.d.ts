@@ -1,5 +1,11 @@
 import { Snowflake } from 'discord.js';
 import { SkyraUser } from './klasa';
+import { KlasaConsoleConfig, KlasaClientOptions } from 'klasa';
+import { RPoolConnectionOptions } from 'rethinkdb-ts';
+
+export type SkyraClientOptions = {
+	dev?: boolean;
+} & KlasaClientOptions;
 
 export type APIResponse = {
 	success: boolean;
@@ -72,3 +78,63 @@ export type ModerationLogEditData = {
 	moderatorID?: SkyraUser | Snowflake | null;
 	reason?: string | null;
 };
+
+//#region config.ts
+export type ConfigurationDatabase = {
+	rebirthdb: {
+		development: RPoolConnectionOptions;
+		production: RPoolConnectionOptions;
+	};
+};
+
+export type ConfigurationConsole = KlasaConsoleConfig;
+
+export type ConfigurationTokens = {
+	BLIZZARD: string;
+	BOT: {
+		DEV: string;
+		STABLE: string;
+	};
+	BOT_LISTS: {
+		DISCORDBOTLIST: string;
+		DISCORDBOTORG: string;
+		DISCORDBOTS: string;
+		SERVERHOUND: string;
+	};
+	CURRENCYLAYER: string;
+	GOOGLE: string;
+	GOOGLE_MAP_API: string;
+	MASHAPE: string;
+	OSU: string;
+	OXFORD: {
+		API_ID: string;
+		API_KEY: string;
+	};
+	PIXABAY: string;
+	TWITCH: {
+		CLIENT_ID: string;
+		SECRET: string;
+	};
+	WEATHER_API: string;
+	WEEB_SH: string;
+	WOLFRAM: string;
+	WPO: {
+		password: string;
+		user: string;
+	};
+};
+
+export type ConfigurationDash = {
+	callback: string;
+	domain: string;
+	oauthSecret: string;
+	port: string;
+	privateAuth: string;
+	secretAuth: string;
+	session: {
+		resave: boolean;
+		saveUninitialized: boolean;
+		secret: string;
+	};
+};
+//#endregion config.ts

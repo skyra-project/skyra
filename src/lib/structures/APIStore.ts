@@ -7,9 +7,10 @@ const { isObject, mergeDefault } = util;
 
 const NOT_FOUND: APIResponse = { success: false, response: null, type: 'NO_MATCH', code: 404 };
 
-export default class APIStore extends Store<string, API, typeof API> {
+export default class APIStore extends Store<string, API> {
 
 	public constructor(client: Skyra) {
+		// @ts-ignore
 		super(client, 'ipcPieces', API);
 	}
 

@@ -1,18 +1,9 @@
-const { Piece } = require('klasa');
+import { Piece } from 'klasa';
 
-class RawEvent extends Piece {
+export default abstract class RawEvent extends Piece {
 
-	public async run() {
-		// Defined in extension Classes
-	}
-
-	public async init() {
-		// Optionally defined in extension Classes
-	}
-
-	public process() {
-		// Defined in extension Classes
-	}
+	public abstract async run<T>(processed: T): Promise<void>;
+	public abstract async process<T>(): Promise<T>;
 
 }
 

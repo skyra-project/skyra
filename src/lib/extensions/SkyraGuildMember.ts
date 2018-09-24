@@ -1,29 +1,8 @@
-const { Structures } = require('discord.js');
-const MemberSettings = require('../structures/MemberSettings');
+import { Structures } from 'discord.js';
+import MemberSettings from '../structures/MemberSettings';
 
-module.exports = Structures.extend('GuildMember', (GuildMember) => {
-	/**
-	 * Skyra's Extended GuildMember
-	 * @extends {GuildMember}
-	 */
-	class SkyraGuildMember extends GuildMember {
+module.exports = Structures.extend('GuildMember', (GuildMember) => class SkyraGuildMember extends GuildMember {
 
-		/**
-		 * @param {...*} args Normal D.JS GuildMember args
-		 */
-		public constructor(...args) {
-			// @ts-ignore
-			super(...args);
+	public settings: MemberSettings = new MemberSettings(this);
 
-			/**
-			 * The member level settings for this context
-			 * @since 3.0.0
-			 * @type {MemberSettings}
-			 */
-			this.settings = new MemberSettings(this);
-		}
-
-	}
-
-	return SkyraGuildMember;
 });

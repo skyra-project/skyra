@@ -12,7 +12,8 @@ import { enumerable } from './types/Decorators';
 import { SkyraGuildStore } from './types/discord.js';
 import { ProviderStore } from './types/klasa';
 
-import { version } from '../../config';
+import { VERSION } from '../../config';
+import { SkyraClientOptions } from './types/skyra';
 
 type SkyraUsageStatus = {
 	/**
@@ -34,74 +35,11 @@ type SkyraUsageStatus = {
 };
 
 export default class Skyra extends Client {
-	/**
-	 * Whether Skyra is ready or not
-	 * @since 3.1.0
-	 */
-	@enumerable(false)
-	public _skyraReady: boolean;
-	/**
-	 * The stats interval timer
-	 * @since 3.0.0
-	 */
-	@enumerable(false)
-	public _updateStatsInterval: NodeJS.Timer;
 
-	/**
-	 * The ConnectFour manager
-	 * @since 3.0.0
-	 */
-	@enumerable(false)
-	public connectFour: ConnectFourManager;
-
-//#region Overrides
-	public guilds: SkyraGuildStore;
-//#endregion Overrides
-
-	/**
-	 * The IPC Node manager for this Client
-	 * @since 3.0.0
-	 */
-	public ipc: Node;
-	/**
-	 * The API handler
-	 * @since 3.0.0
-	 */
-	public ipcPieces: APIStore;
-	/**
-	 * The loaded Leaderboard singleton instance
-	 * @since 3.0.0
-	 */
-	public leaderboard: Leaderboard;
-	public providers: ProviderStore;
-	/**
-	 * The Raw Event store
-	 * @since 3.0.0
-	 */
-	public rawEvents: RawEventStore;
-	/**
-	 * The TimeoutManager instance
-	 * @since 3.3.0
-	 */
-	@enumerable(false)
-	public timeoutManager: TimeoutManager;
-	/**
-	 * The UsageStatus object containing Skyra's metrics in the last 12 hours,
-	 * with an update every 5 minutes
-	 * @since 2.0.0
-	 */
-	public usageStatus: Readonly<SkyraUsageStatus>;
-
-	/**
-	 * The version of Skyra
-	 * @since 2.0.0
-	 */
-	public version: string;
-
-	public constructor(options) {
+	public constructor(options: SkyraClientOptions) {
 		super(options);
 
-		this.version = version;
+		this.version = VERSION;
 		this.leaderboard = new Leaderboard(this);
 		this.ipcPieces = new APIStore(this);
 		this.rawEvents = new RawEventStore(this);
@@ -136,12 +74,75 @@ export default class Skyra extends Client {
 		// Update the stats
 		this.updateStats();
 	}
+	/**
+	 * Whether Skyra is ready or not
+	 * @since 3.1.0
+	 */
+	@enumerable(false)
+	public _skyraReady: boolean;
+	/**
+	 * The stats interval timer
+	 * @since 3.0.0
+	 */
+	@enumerable(false)
+	public _updateStatsInterval: NodeJS.Timer;
+
+	/**
+	 * The ConnectFour manager
+	 * @since 3.0.0
+	 */
+	@enumerable(false)
+	public connectFour: ConnectFourManager;
+
+//#region Overrides
+	public guilds: SkyraGuildStore;
+	public providers: ProviderStore;
+//#endregion Overrides
+
+	/**
+	 * The IPC Node manager for this Client
+	 * @since 3.0.0
+	 */
+	public ipc: Node;
+	/**
+	 * The API handler
+	 * @since 3.0.0
+	 */
+	public ipcPieces: APIStore;
+	/**
+	 * The loaded Leaderboard singleton instance
+	 * @since 3.0.0
+	 */
+	public leaderboard: Leaderboard;
+	/**
+	 * The Raw Event store
+	 * @since 3.0.0
+	 */
+	public rawEvents: RawEventStore;
+	/**
+	 * The TimeoutManager instance
+	 * @since 3.3.0
+	 */
+	@enumerable(false)
+	public timeoutManager: TimeoutManager;
+	/**
+	 * The UsageStatus object containing Skyra's metrics in the last 12 hours,
+	 * with an update every 5 minutes
+	 * @since 2.0.0
+	 */
+	public usageStatus: Readonly<SkyraUsageStatus>;
+
+	/**
+	 * The version of Skyra
+	 * @since 2.0.0
+	 */
+	public version: string;
 
 	/**
 	 * Override for Client#destroy to clear intervals and cache
 	 * @since 3.0.0
 	 */
-	public dispose() {
+	public dispose(): void {
 		// Clear the leaderboards and their timers
 		this.leaderboard.dispose();
 
@@ -157,7 +158,7 @@ export default class Skyra extends Client {
 	 * Update the stats
 	 * @since 2.1.0
 	 */
-	private updateStats() {
+	private updateStats(): void {
 		const { heapTotal, heapUsed } = process.memoryUsage();
 
 		this.usageStatus.cpu.shift();

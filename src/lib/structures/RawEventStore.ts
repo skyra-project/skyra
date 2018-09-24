@@ -1,17 +1,12 @@
-const { Store } = require('klasa');
-const RawEvent = require('./RawEvent');
+import { Store } from 'klasa';
+import Skyra from '../Skyra';
+import RawEvent from './RawEvent';
 
-class RawEventStore extends Store {
+export default class RawEventStore extends Store<string, RawEvent> {
 
-	/**
-	 * Constructs our APIStore for use in Klasa
-	 * @since 3.0.0
-	 * @param {KlasaClient} client The Klasa Client
-	 */
-	public constructor(client) {
+	public constructor(client: Skyra) {
+		// @ts-ignore
 		super(client, 'rawEvents', RawEvent);
 	}
 
 }
-
-module.exports = RawEventStore;

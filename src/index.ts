@@ -1,13 +1,128 @@
-const klasa = require('klasa');
-const discord = require('discord.js');
-const { join } = require('path');
+export {
+	Argument,
+	ArgumentStore,
+	Client,
+	Colors,
+	CommandPrompt,
+	CommandStore,
+	CommandUsage,
+	Cron,
+	Duration,
+	EventStore,
+	ExtendableStore,
+	FinalizerStore,
+	Gateway,
+	GatewayDriver,
+	GatewayStorage,
+	InhibitorStore,
+	KlasaClient,
+	KlasaConsole,
+	KlasaGuild,
+	KlasaMessage,
+	KlasaUser,
+	LanguageStore,
+	MonitorStore,
+	Piece,
+	Possible,
+	ProviderStore,
+	QueryBuilder,
+	ReactionHandler,
+	RichDisplay,
+	RichMenu,
+	Schedule,
+	ScheduledTask,
+	Schema,
+	SchemaFolder,
+	SchemaPiece,
+	Settings,
+	Serializer,
+	SerializerStore,
+	SQLProvider,
+	Stopwatch,
+	Store,
+	Tag,
+	TaskStore,
+	TextPrompt,
+	Timestamp,
+	Type,
+	Usage
+} from 'klasa';
+export {
+	Activity,
+	Base,
+	BaseClient,
+	CategoryChannel,
+	Channel,
+	ChannelStore,
+	ClientApplication,
+	Collection,
+	Collector,
+	DataResolver,
+	DataStore,
+	DiscordAPIError,
+	DMChannel,
+	Emoji,
+	GroupDMChannel,
+	Guild,
+	GuildAuditLogs,
+	GuildChannel,
+	GuildChannelStore,
+	GuildEmoji,
+	GuildEmojiRoleStore,
+	GuildEmojiStore,
+	GuildMember,
+	GuildMemberRoleStore,
+	GuildMemberStore,
+	GuildStore,
+	Invite,
+	Message,
+	MessageAttachment,
+	MessageCollector,
+	MessageMentions,
+	MessageReaction,
+	MessageStore,
+	PermissionOverwrites,
+	Permissions,
+	Presence,
+	PresenceStore,
+	ReactionCollector,
+	ReactionEmoji,
+	ReactionUserStore,
+	RichPresenceAssets,
+	Role,
+	RoleStore,
+	Shard,
+	ShardClientUtil,
+	ShardingManager,
+	Snowflake,
+	SnowflakeUtil,
+	Structures,
+	TextChannel,
+	User,
+	UserStore,
+	VoiceChannel,
+	VoiceRegion,
+	Webhook,
+	WebhookClient
+} from 'discord.js';
 
-// Load all dependencies
-Object.keys(JSON.parse(require('fs').readFileSync('./package.json', 'utf8')).dependencies).forEach(require);
+import { join } from 'path';
+import { VERSION } from '../config';
+
+export const root: string = join(__dirname);
+export const assets: string = join(__dirname, '..', 'assets');
+export const version: string = VERSION;
+
+// SkyraClient
+export { default as Skyra } from './lib/Skyra';
+
+// Extensions
+export { default as SkyraGuild } from './lib/extensions/SkyraGuild';
+export { default as SkyraGuildMember } from './lib/extensions/SkyraGuildMember';
 
 module.exports = {
-	rootFolder: __dirname,
 	assetsFolder: join(__dirname, '..', 'assets'),
+	rootFolder: __dirname,
 
 	// Export everything from Discord.js
 	...discord,

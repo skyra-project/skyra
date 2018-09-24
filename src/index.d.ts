@@ -59,114 +59,7 @@ import { Readable } from 'stream';
 import { Node, NodeMessage } from 'veza';
 //#endregion imports
 //#region exports
-export {
-	Argument,
-	ArgumentStore,
-	Client,
-	Colors,
-	CommandPrompt,
-	CommandStore,
-	CommandUsage,
-	Cron,
-	Duration,
-	EventStore,
-	ExtendableStore,
-	FinalizerStore,
-	Gateway,
-	GatewayDriver,
-	GatewayStorage,
-	InhibitorStore,
-	KlasaClient,
-	KlasaConsole,
-	KlasaGuild,
-	KlasaMessage,
-	KlasaUser,
-	LanguageStore,
-	MonitorStore,
-	Piece,
-	Possible,
-	ProviderStore,
-	QueryBuilder,
-	ReactionHandler,
-	RichDisplay,
-	RichMenu,
-	Schedule,
-	ScheduledTask,
-	Schema,
-	SchemaFolder,
-	SchemaPiece,
-	Settings,
-	Serializer,
-	SerializerStore,
-	SQLProvider,
-	Stopwatch,
-	Store,
-	Tag,
-	TaskStore,
-	TextPrompt,
-	Timestamp,
-	Type,
-	Usage
-} from 'klasa';
-export {
-	Activity,
-	Base,
-	BaseClient,
-	CategoryChannel,
-	Channel,
-	ChannelStore,
-	ClientApplication,
-	Collection,
-	Collector,
-	DataResolver,
-	DataStore,
-	DiscordAPIError,
-	DMChannel,
-	Emoji,
-	GroupDMChannel,
-	Guild,
-	GuildAuditLogs,
-	GuildChannel,
-	GuildChannelStore,
-	GuildEmoji,
-	GuildEmojiRoleStore,
-	GuildEmojiStore,
-	GuildMember,
-	GuildMemberRoleStore,
-	GuildMemberStore,
-	GuildStore,
-	Invite,
-	Message,
-	MessageAttachment,
-	MessageCollector,
-	MessageMentions,
-	MessageReaction,
-	MessageStore,
-	PermissionOverwrites,
-	Permissions,
-	Presence,
-	PresenceStore,
-	ReactionCollector,
-	ReactionEmoji,
-	ReactionUserStore,
-	RichPresenceAssets,
-	Role,
-	RoleStore,
-	Shard,
-	ShardClientUtil,
-	ShardingManager,
-	Snowflake,
-	SnowflakeUtil,
-	Structures,
-	TextChannel,
-	User,
-	UserStore,
-	version,
-	VoiceChannel,
-	VoiceRegion,
-	Webhook,
-	WebhookClient
-} from 'discord.js';
+
 //#endregion exports
 
 export const rootFolder: string;
@@ -686,9 +579,7 @@ declare class RGB {
 
 //#region types
 
-type SkyraClientOptions = {
-	dev?: boolean;
-} & KlasaClientOptions;
+
 
 type ModerationTypesEnum =
 	// BAN
@@ -1044,19 +935,7 @@ type SkyraConfiguration = {
 		colors: ObjectLiteral<KlasaConsoleColorObjects>;
 	};
 	tokens: ObjectLiteral;
-	dash: {
-		session: {
-			secret: string;
-			resave: boolean;
-			saveUnitialized: boolean;
-		};
-		oauthSecret: string;
-		callback: string;
-		port: string;
-		domain: string;
-		privateAuth: string;
-		secretAuth: string;
-	};
+	dash:
 };
 
 type ObjectLiteral<T = any> = {

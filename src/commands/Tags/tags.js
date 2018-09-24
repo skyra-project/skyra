@@ -1,4 +1,4 @@
-const { Command, PromptList } = require('../../index');
+const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -12,10 +12,9 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [name = 'list']) {
+	run(msg, [name = 'list']) {
 		const { tags } = msg.guild.settings;
-		if (name === 'list') return this.list(msg, tags);
-		return this.get(msg, tags, name);
+		return name === 'list' ? this.list(msg, tags) : this.get(msg, tags, name);
 	}
 
 	get(msg, tags, name) {
@@ -23,13 +22,10 @@ module.exports = class extends Command {
 		return msg.sendMessage(tags.get(name));
 	}
 
-	async list(msg, tags) {
+	list(msg, tags) {
 		if (tags.size === 0) return Promise.reject(msg.language.get('COMMAND_TAGS_LIST_EMPTY'));
-		await new PromptList(tags.map((tag, name) => [
-			name,
-			tag.length > 40 ? `${tag.slice(0, 40)}...` : tag
-		])).run(msg).catch(() => null);
-		return msg;
+		const { prefix } = msg.guild.settings;
+		return msg.sendLocale('COMMAND_TAGS_LIST', [[...tags.keys()].map(tag => `\`${prefix}${tag}\``)]);
 	}
 
 };

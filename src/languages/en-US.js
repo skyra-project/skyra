@@ -1990,6 +1990,7 @@ module.exports = class extends Language {
 			COMMAND_TAGS_REMOVE_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
 			COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
 			COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
+			COMMAND_TAGS_LIST: (tags) => `There ${tags.length === 1 ? 'is' : 'are'} ${tags.length} tags: ${tags.join(', ')}`,
 
 			/**
 			 * ##############

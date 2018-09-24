@@ -9,26 +9,25 @@ module.exports = class extends Command {
 			permissionLevel: 4,
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|edit|remove> <tag:string> [contents:string] [...]',
+			usage: '<add|edit|remove> <tag:string> [contents:...string]',
 			usageDelim: ' '
 		});
 	}
 
-	async add(msg, [tag, ...contents]) {
+	async add(msg, [tag, contents]) {
 		tag = tag.toLowerCase();
 
 		const currentTags = msg.guild.settings.tags;
 		if (currentTags.has(tag)) throw msg.language.get('COMMAND_TAGS_ADD_EXISTS', tag);
 		if (!contents.length) throw msg.language.get('COMMAND_TAGS_CONTENT_REQUIRED');
 
-		contents = contents.join(' ');
 		currentTags.set(tag, contents);
 		const { errors } = await msg.guild.settings.update('_tags', [...currentTags], { action: 'overwrite' });
 		if (errors.length) throw errors[0];
 		return msg.sendLocale('COMMAND_TAGS_ADD_ADDED', [tag, contents]);
 	}
 
-	async edit(msg, [tag, ...contents]) {
+	async edit(msg, [tag, contents]) {
 		tag = tag.toLowerCase();
 
 		const currentTags = msg.guild.settings.tags;
@@ -36,7 +35,6 @@ module.exports = class extends Command {
 		if (!oldTag) throw msg.language.get('COMMAND_TAGS_REMOVE_NOT_EXISTS', tag);
 		if (!contents.length) throw msg.language.get('COMMAND_TAGS_CONTENT_REQUIRED');
 
-		contents = contents.join(' ');
 		currentTags.set(tag, contents);
 		const { errors } = await msg.guild.settings.update('_tags', [...currentTags], { action: 'overwrite' });
 		if (errors.length) throw errors[0];

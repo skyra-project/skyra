@@ -1,7 +1,7 @@
 const { Structures } = require('discord.js');
 const MemberSettings = require('../structures/MemberSettings');
 
-module.exports = Structures.extend('GuildMember', GuildMember => {
+module.exports = Structures.extend('GuildMember', (GuildMember) => {
 	/**
 	 * Skyra's Extended GuildMember
 	 * @extends {GuildMember}
@@ -11,7 +11,7 @@ module.exports = Structures.extend('GuildMember', GuildMember => {
 		/**
 		 * @param {...*} args Normal D.JS GuildMember args
 		 */
-		constructor(...args) {
+		public constructor(...args) {
 			// @ts-ignore
 			super(...args);
 

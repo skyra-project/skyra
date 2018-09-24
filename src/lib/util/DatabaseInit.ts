@@ -3,7 +3,7 @@ let init = false;
 
 module.exports = class DatabaseInit {
 
-	static async init(r) {
+	public static async init(r) {
 		if (init) return;
 		await Promise.all([
 			DatabaseInit.initOxford(r),
@@ -16,19 +16,19 @@ module.exports = class DatabaseInit {
 		init = true;
 	}
 
-	static async initOxford(r) {
+	public static async initOxford(r) {
 		const TABLENAME = 'oxford';
 
 		await DatabaseInit.ensureTable(r, TABLENAME);
 	}
 
-	static async initBanners(r) {
+	public static async initBanners(r) {
 		const TABLENAME = 'banners';
 
 		await DatabaseInit.ensureTable(r, TABLENAME);
 	}
 
-	static async initStarboard(r) {
+	public static async initStarboard(r) {
 		const TABLENAME = 'starboard';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
@@ -36,7 +36,7 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
-	static async initGlobalScores(r) {
+	public static async initGlobalScores(r) {
 		const TABLENAME = 'users';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
@@ -44,7 +44,7 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
-	static async initLocalScores(r) {
+	public static async initLocalScores(r) {
 		const TABLENAME = 'localScores';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
@@ -54,7 +54,7 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
-	static async initModeration(r) {
+	public static async initModeration(r) {
 		const TABLENAME = 'moderation';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
@@ -64,11 +64,11 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
-	static async ensureTable(r, table) {
+	public static async ensureTable(r, table) {
 		await r.branch(r.tableList().contains(table), null, r.tableCreate(table));
 	}
 
-	static async ensureTableAndIndex(r, table, indexes) {
+	public static async ensureTableAndIndex(r, table, indexes) {
 		await DatabaseInit.ensureTable(r, table);
 		await Promise.all(indexes.map(([index, indexValue]) =>
 			r.branch(r.table(table).indexList().contains(index), null, r.table(table).indexCreate(index, indexValue)).then(() =>

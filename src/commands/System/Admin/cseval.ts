@@ -11,7 +11,7 @@ const REPLACER = new RegExp(regExpEsc(S_LOCATION), 'g');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['c#eval', 'csev', 'c#ev'],
 			description: (language) => language.get('COMMAND_CSEVAL_DESCRIPTION'),
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [args]) {
+	public async run(msg, [args]) {
 		const start = new Stopwatch(5);
 		const { input } = this.parse(msg, args);
 		await fsn.outputFileAtomic(S_LOCATION, input);
@@ -37,10 +37,10 @@ module.exports = class extends Command {
      * @param {Stopwatch} start The stopwatch instance to measure compiler time.
      * @returns {Promise<?string>}
      */
-	compile(start) {
+	public compile(start) {
 		return exec(CSC_COMMAND, EXEC_OPTIONS)
 			.then(() => null)
-			.catch(error => `Failed to compile (${start.stop()}). ${codeBlock('cs', `${error.stdout}\n${error.stderr}`
+			.catch((error) => `Failed to compile (${start.stop()}). ${codeBlock('cs', `${error.stdout}\n${error.stderr}`
 				.replace(REPLACER, 'Failed at: '))}`);
 	}
 
@@ -48,13 +48,13 @@ module.exports = class extends Command {
      * Execute the C# code, taking output as console's output.
      * @returns {Promise<{ success: boolean, result: string }>}
      */
-	execute() {
+	public execute() {
 		return exec(MONO_COMMAND, EXEC_OPTIONS)
-			.then(result => ({ success: true, result: `${result.stdout}\n${result.stderr}` }))
-			.catch(error => ({ success: false, result: `${error.stdout}\n${error.stderr}` }));
+			.then((result) => ({ success: true, result: `${result.stdout}\n${result.stderr}` }))
+			.catch((error) => ({ success: false, result: `${error.stdout}\n${error.stderr}` }));
 	}
 
-	parse(msg, input) {
+	public parse(msg, input) {
 		if ('raw' in msg.flags) return { type: 'raw', input };
 		return { type: 'function', input: TEMPLATES.function(input) };
 	}

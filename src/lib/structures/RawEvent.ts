@@ -2,15 +2,15 @@ const { Piece } = require('klasa');
 
 class RawEvent extends Piece {
 
-	async run() {
+	public async run() {
 		// Defined in extension Classes
 	}
 
-	async init() {
+	public async init() {
 		// Optionally defined in extension Classes
 	}
 
-	process() {
+	public process() {
 		// Defined in extension Classes
 	}
 

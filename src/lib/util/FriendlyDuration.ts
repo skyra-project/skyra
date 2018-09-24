@@ -34,7 +34,7 @@ class FriendlyDuration {
 	 * @param {string} language The language to display
 	 * @returns {string}
 	 */
-	static formatDate(date, language) {
+	public static formatDate(date, language) {
 		let dateFormat = FriendlyDuration._dateFormats.get(language);
 		if (!dateFormat) {
 			if (Intl.DateTimeFormat.supportedLocalesOf(language).length === 0) language = 'en-US';
@@ -51,7 +51,7 @@ class FriendlyDuration {
 	 * @param {DurationFormatAssetsTime} assets The language assets
 	 * @returns {string}
 	 */
-	static duration(duration, assets) {
+	public static duration(duration, assets) {
 		const result = FriendlyDuration._parse(duration);
 		const output = [];
 
@@ -69,7 +69,7 @@ class FriendlyDuration {
 	 * @returns {string}
 	 * @private
 	 */
-	static _addUnit(time, unit) {
+	public static _addUnit(time, unit) {
 		if (time in unit) return `${time} ${unit[time]}`;
 		return `${time} ${unit.DEFAULT}`;
 	}
@@ -81,7 +81,7 @@ class FriendlyDuration {
 	 * @returns {Object}
 	 * @private
 	 */
-	static _parse(duration) {
+	public static _parse(duration) {
 		const output = {};
 		for (const unit of UNIT_TYPES) {
 			const amount = FriendlyDuration._parseUnit(duration, unit);
@@ -102,7 +102,7 @@ class FriendlyDuration {
 	 * @returns {number}
 	 * @private
 	 */
-	static _parseUnit(time, unit) {
+	public static _parseUnit(time, unit) {
 		// NOTE: The |0 converts any number into a 32-bit integer,
 		// trimming the decimals at an incredibly speed as it does
 		// data conversion and is significantly faster than Math.floor.

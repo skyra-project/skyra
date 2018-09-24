@@ -2,7 +2,7 @@ const { Command } = require('../../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 5,
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async add(msg, [word]) {
+	public async add(msg, [word]) {
 		if (!word) throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
 		word = word.toLowerCase();
 		if (msg.guild.settings.filter.raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', true);
@@ -25,7 +25,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_FILTER_ADDED', [word]);
 	}
 
-	async remove(msg, [word]) {
+	public async remove(msg, [word]) {
 		if (!word) throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
 		word = word.toLowerCase();
 		if (!msg.guild.settings.filter.raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', false);
@@ -35,13 +35,13 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_FILTER_REMOVED', [word]);
 	}
 
-	async reset(msg) {
+	public async reset(msg) {
 		await msg.guild.settings.reset('filter.raw');
 		msg.guild.settings.filter.regexp = null;
 		return msg.sendLocale('COMMAND_FILTER_RESET');
 	}
 
-	show(msg) {
+	public show(msg) {
 		const { raw } = msg.guild.settings.filter;
 		return msg.sendMessage(!raw.length
 			? msg.language.get('COMMAND_FILTER_SHOW_EMPTY')

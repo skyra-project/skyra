@@ -30,7 +30,7 @@ const writeSnapshot = require('util')
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			permissionLevel: 10,
 			guarded: true,
@@ -47,7 +47,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		await msg.sendMessage('Capturing HEAP Snapshot. This may take a while...');
 
 		// Capture the snapshot (this freezes the entire VM)

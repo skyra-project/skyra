@@ -2,7 +2,7 @@ const { Event, util: { getContent, getImage }, MessageEmbed, constants: { MESSAG
 
 module.exports = class extends Event {
 
-	async run(message) {
+	public async run(message) {
 		if (message.command && message.command.deletable) for (const msg of message.responses) msg.nuke();
 		if (!message.guild || message.author.id === this.client.user.id) return;
 

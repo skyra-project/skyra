@@ -7,7 +7,7 @@ const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['lvl'],
 			requiredPermissions: ['ATTACH_FILES'],
@@ -23,12 +23,12 @@ module.exports = class extends Command {
 		this.template = null;
 	}
 
-	async run(msg, [user = msg.author]) {
+	public async run(msg, [user = msg.author]) {
 		const output = await this.showProfile(msg, user);
 		return msg.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
 	}
 
-	async showProfile(msg, user) {
+	public async showProfile(msg, user) {
 		await user.settings.sync();
 		const { points, color, themeLevel, level } = user.settings;
 
@@ -83,7 +83,7 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-	async init() {
+	public async init() {
 		this.template = await new Canvas(640, 174)
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')

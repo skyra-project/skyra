@@ -3,7 +3,7 @@ const fsn = require('fs-nextra');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['pythoneval'],
 			description: (language) => language.get('COMMAND_PYEVAL_DESCRIPTION'),
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [input]) {
+	public async run(msg, [input]) {
 		const start = new Stopwatch(5);
 		await fsn.outputFileAtomic('/bwd/python/eval.py', input);
 		const { success, result } = await this.execute('py3' in msg.flags ? 'python3' : 'python');
@@ -26,10 +26,10 @@ module.exports = class extends Command {
 	 * @param {('python'|'python3')} command The code to execute
      * @returns {Promise<{ success: boolean, result: string }>}
      */
-	execute(command) {
+	public execute(command) {
 		return util.exec(`${command} /bwd/python/eval.py`, { timeout: 30000 })
-			.then(result => ({ success: true, result: result.stdout }))
-			.catch(error => ({ success: false, result: error }));
+			.then((result) => ({ success: true, result: result.stdout }))
+			.catch((error) => ({ success: false, result: error }));
 	}
 
 };

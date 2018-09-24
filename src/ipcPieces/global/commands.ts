@@ -2,10 +2,10 @@ const { API } = require('../../index');
 
 module.exports = class extends API {
 
-	run({ category = null, lang = 'en-US' }) {
+	public run({ category = null, lang = 'en-US' }) {
 		const language = this.client.languages.get(lang) || this.client.languages.default;
-		const commands = category ? this.client.commands.filter(cmd => cmd.category === category) : this.client.commands;
-		return commands.map(cmd => ({
+		const commands = category ? this.client.commands.filter((cmd) => cmd.category === category) : this.client.commands;
+		return commands.map((cmd) => ({
 			bucket: cmd.bucket,
 			cooldown: cmd.cooldown,
 			description: typeof cmd.description === 'function' ? cmd.description(language) : cmd.description,

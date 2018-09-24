@@ -1,5 +1,5 @@
-import { Snowflake } from "discord.js";
-import { SkyraUser } from "./klasa";
+import { Snowflake } from 'discord.js';
+import { SkyraUser } from './klasa';
 
 export type APIResponse = {
 	success: boolean;
@@ -71,4 +71,4 @@ export type ModerationLogEditData = {
 	extraData?: any;
 	moderatorID?: SkyraUser | Snowflake | null;
 	reason?: string | null;
-}
+};

@@ -2,7 +2,7 @@ const { Task, constants: { MODERATION: { SCHEMA_KEYS, TYPE_KEYS } }, util: { rem
 
 module.exports = class extends Task {
 
-	async run(doc) {
+	public async run(doc) {
 		// Get the guild
 		const guild = this.client.guilds.get(doc[SCHEMA_KEYS.GUILD]);
 
@@ -26,7 +26,7 @@ module.exports = class extends Task {
 		if (member) {
 			const { position } = guild.me.roles.highest;
 			const roles = (modlog[SCHEMA_KEYS.EXTRA_DATA] || [])
-				.concat(member.roles.filter(role => role.position < position && !role.managed).map(role => role.id));
+				.concat(member.roles.filter((role) => role.position < position && !role.managed).map((role) => role.id));
 			await member.edit({ roles }).catch(() => null);
 		}
 

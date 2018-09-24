@@ -5,7 +5,7 @@ const time = 1000 * 60 * 3;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['commands', 'cmd', 'cmds'],
 			guarded: true,
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		this.handlers = new Map();
 	}
 
-	async run(message, [command]) {
+	public async run(message, [command]) {
 		if (command) {
 			return message.sendMessage([
 				message.language.get('COMMAND_HELP_TITLE', command.name, isFunction(command.description) ? command.description(message.language) : command.description),
@@ -50,7 +50,7 @@ module.exports = class extends Command {
 			.catch(() => { if (message.channel.type !== 'dm') message.sendLocale('COMMAND_HELP_NODM'); });
 	}
 
-	async buildHelp(message) {
+	public async buildHelp(message) {
 		const commands = await this._fetchCommands(message);
 		const { prefix } = message.guildSettings;
 
@@ -61,7 +61,7 @@ module.exports = class extends Command {
 		return helpMessage.join('\n');
 	}
 
-	async buildDisplay(message) {
+	public async buildDisplay(message) {
 		const commands = await this._fetchCommands(message);
 		const { prefix } = message.guildSettings;
 		const display = new RichDisplay();
@@ -77,12 +77,12 @@ module.exports = class extends Command {
 		return display;
 	}
 
-	formatCommand(message, prefix, richDisplay, command) {
+	public formatCommand(message, prefix, richDisplay, command) {
 		const description = typeof command.description === 'function' ? command.description(message.language) : command.description;
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 
-	async _fetchCommands(message) {
+	public async _fetchCommands(message) {
 		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
 		const commands = new Map();
 		await Promise.all(this.client.commands.map((command) => run(command, true)

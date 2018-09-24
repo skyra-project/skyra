@@ -4,7 +4,7 @@ const API_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&pro
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['wiki'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [input]) {
+	public async run(msg, [input]) {
 		input = this.parseURL(input);
 		const text = await fetch(API_URL + input, 'json');
 
@@ -37,7 +37,7 @@ module.exports = class extends Command {
 			.setFooter('© Wikipedia'));
 	}
 
-	parseURL(url) {
+	public parseURL(url) {
 		return encodeURIComponent(
 			url
 				.toLowerCase()
@@ -47,7 +47,7 @@ module.exports = class extends Command {
 		);
 	}
 
-	content(definition, url, i18n) {
+	public content(definition, url, i18n) {
 		if (definition.length < 750) return definition;
 		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
 	}

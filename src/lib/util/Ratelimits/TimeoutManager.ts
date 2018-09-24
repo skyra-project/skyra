@@ -13,7 +13,7 @@ class TimeoutManager {
 	 * @version 1.0.0
 	 * @param {Skyra} client The client instance that manages the ratelimits
 	 */
-	constructor(client) {
+	public constructor(client) {
 		/**
 		 * The Client that manages this instance
 		 * @since 3.3.0
@@ -38,7 +38,7 @@ class TimeoutManager {
 		this._interval = null;
 	}
 
-	_run() {
+	public _run() {
 		const now = Date.now();
 		let i = 0;
 		while (i < this._cache.length && now > this._cache[i].time) i++;
@@ -57,18 +57,18 @@ class TimeoutManager {
 		}
 	}
 
-	next() {
+	public next() {
 		return this._cache.length ? this._cache[0] : null;
 	}
 
-	set(id, time, cb, rerun = false) {
-		const valueIndex = this._cache.findIndex(entry => entry.id === id);
+	public set(id, time, cb, rerun = false) {
+		const valueIndex = this._cache.findIndex((entry) => entry.id === id);
 		if (valueIndex !== -1) {
 			if (!rerun) return false;
 			this._cache.splice(valueIndex, 1);
 		}
 
-		const index = this._cache.findIndex(entry => entry.time > time);
+		const index = this._cache.findIndex((entry) => entry.time > time);
 		if (index === -1) this._cache.push({ id, time, callback: cb });
 		else this._cache.splice(index, 0, { id, time, callback: cb });
 
@@ -76,23 +76,23 @@ class TimeoutManager {
 		return true;
 	}
 
-	get(id) {
-		return this._cache.find(entry => entry.id === id) || null;
+	public get(id) {
+		return this._cache.find((entry) => entry.id === id) || null;
 	}
 
-	has(id) {
-		return this._cache.some(entry => entry.id === id);
+	public has(id) {
+		return this._cache.some((entry) => entry.id === id);
 	}
 
-	delete(id) {
-		const index = this._cache.findIndex(entry => entry.id === id);
+	public delete(id) {
+		const index = this._cache.findIndex((entry) => entry.id === id);
 		if (index === -1) return false;
 
 		this._cache.splice(index, 1);
 		return true;
 	}
 
-	dispose() {
+	public dispose() {
 		if (this._interval) {
 			this.client.clearInterval(this._interval);
 			this._interval = null;
@@ -104,15 +104,15 @@ class TimeoutManager {
 		}
 	}
 
-	*keys() {
+	public *keys() {
 		for (const entry of this._cache) yield entry.id;
 	}
 
-	*values() {
+	public *values() {
 		yield* this._cache;
 	}
 
-	*[Symbol.iterator]() {
+	public *[Symbol.iterator]() {
 		yield* this._cache;
 	}
 

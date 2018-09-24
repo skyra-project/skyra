@@ -1,33 +1,33 @@
 class LanguageHelp {
 
-	constructor() {
+	public constructor() {
 		this.explainedUsage = null;
 		this.possibleFormats = null;
 		this.examples = null;
 		this.reminder = null;
 	}
 
-	setExplainedUsage(text) {
+	public setExplainedUsage(text) {
 		this.explainedUsage = text;
 		return this;
 	}
 
-	setPossibleFormats(text) {
+	public setPossibleFormats(text) {
 		this.possibleFormats = text;
 		return this;
 	}
 
-	setExamples(text) {
+	public setExamples(text) {
 		this.examples = text;
 		return this;
 	}
 
-	setReminder(text) {
+	public setReminder(text) {
 		this.reminder = text;
 		return this;
 	}
 
-	display(name, { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder }, multiline = false) {
+	public display(name, { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder }, multiline = false) {
 		const output = [];
 
 		// Extended help
@@ -44,7 +44,7 @@ class LanguageHelp {
 
 		// Examples
 		if (examples.length)
-			output.push(this.examples, ...examples.map(example => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
+			output.push(this.examples, ...examples.map((example) => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
 		else
 			output.push(this.examples, `→ Skyra, ${name}`, '');
 
@@ -55,10 +55,10 @@ class LanguageHelp {
 		return output.join('\n');
 	}
 
-	static resolveMultilineString(string, multiline) {
+	public static resolveMultilineString(string, multiline) {
 		return Array.isArray(string)
 			? LanguageHelp.resolveMultilineString(string.join(multiline ? '\n' : ' '), multiline)
-			: string.split('\n').map(line => line.trim()).join(multiline ? '\n' : ' ');
+			: string.split('\n').map((line) => line.trim()).join(multiline ? '\n' : ' ');
 	}
 
 }

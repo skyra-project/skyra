@@ -12,7 +12,7 @@ class AntiRaid {
 	 * @since 2.1.0
 	 * @param {KlasaGuild} guild The Guild instance that manages this instance
 	 */
-	constructor(guild) {
+	public constructor(guild) {
 		/**
 		 * The Guild instance that manages this instance
 		 * @since 2.1.0
@@ -34,7 +34,7 @@ class AntiRaid {
 	 * @type {Object}
 	 * @private
 	 */
-	get guildSettings() {
+	public get guildSettings() {
 		return this.guild.settings;
 	}
 
@@ -44,7 +44,7 @@ class AntiRaid {
 	 * @param {(GuildMember|string)} member The member to check
 	 * @returns {this}
 	 */
-	has(member) {
+	public has(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
 		return this.guild.client.timeoutManager.has(`raid-${this.guild.id}-${userID}`);
 	}
@@ -55,7 +55,7 @@ class AntiRaid {
 	 * @param {(GuildMember|string)} member The member to add
 	 * @returns {this}
 	 */
-	add(member) {
+	public add(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
 		this.guild.client.timeoutManager.set(`raid-${this.guild.id}-${userID}`, Date.now() + 20000, () => this.delete(userID));
 		return this;
@@ -67,7 +67,7 @@ class AntiRaid {
 	 * @param {(GuildMember|string)} member The member to delete
 	 * @returns {this}
 	 */
-	delete(member) {
+	public delete(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
 		this.guild.client.timeoutManager.delete(`raid-${this.guild.id}-${userID}`);
 		return this;
@@ -78,7 +78,7 @@ class AntiRaid {
 	 * @since 2.1.0
 	 * @returns {Promise<GuildMember[]>}
 	 */
-	async execute() {
+	public async execute() {
 		if (!this.guild.me.permissions.has('KICK_MEMBERS')) return null;
 
 		// Stop the previous attack mode and reset to
@@ -102,7 +102,7 @@ class AntiRaid {
 	 * Stop the attack mode
 	 * @since 3.0.0
 	 */
-	stop() {
+	public stop() {
 		if (this._timeout) {
 			clearTimeout(this._timeout);
 			this._timeout = null;
@@ -115,7 +115,7 @@ class AntiRaid {
 	 * @since 3.0.0
 	 * @returns {void}
 	 */
-	clear() {
+	public clear() {
 		// Clear all timeouts
 		for (const key of this.keys()) this.guild.client.timeoutManager.delete(key);
 
@@ -123,13 +123,13 @@ class AntiRaid {
 		this.stop();
 	}
 
-	*keys() {
+	public *keys() {
 		const prefix = `raid-${this.guild.id}-`;
 		for (const key of this.guild.client.timeoutManager.keys())
 			if (key.startsWith(prefix)) yield key;
 	}
 
-	*members() {
+	public *members() {
 		const prefix = `raid-${this.guild.id}-`;
 		const { length } = prefix;
 		for (const key of this.guild.client.timeoutManager.keys())
@@ -142,7 +142,7 @@ class AntiRaid {
 	 * @param {GuildMember} member The member to kick
 	 * @returns {Promise<GuildMember>}
 	 */
-	async kick(member) {
+	public async kick(member) {
 		await member.kick(`[ANTI-RAID] Threshold: ${this.guildSettings.selfmod.raidthreshold}`);
 		this.delete(member.id);
 		return member;
@@ -154,7 +154,7 @@ class AntiRaid {
 	 * @param {boolean} [kick=true] Whether the filter should kick the filtered members
 	 * @returns {Promise<GuildMember[]>}
 	 */
-	async prune(kick = true) {
+	public async prune(kick = true) {
 		const initialRole = this.guildSettings.roles.initial;
 		const minRolesAmount = initialRole ? 2 : 1;
 		const kickedUsers = [];

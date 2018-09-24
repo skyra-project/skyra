@@ -1,10 +1,3 @@
-import Skyra from '../Skyra';
-import {
-	MemberSettings,
-	SkyraGuild,
-	SkyraUser,
-	UserSettings
-} from './klasa';
 import {
 	BanOptions,
 	Base64Resolvable,
@@ -28,6 +21,13 @@ import {
 	KlasaUser,
 	Settings
 } from 'klasa';
+import Skyra from '../Skyra';
+import {
+	MemberSettings,
+	SkyraGuild,
+	SkyraUser,
+	UserSettings
+} from './klasa';
 
 export class SkyraClientUser extends ClientUser {
 	public client: Skyra;
@@ -43,17 +43,17 @@ declare class SkyraMessageEmbed extends MessageEmbed {
 export { SkyraMessageEmbed as MessageEmbed };
 
 export class SkyraUserStore extends DataStore<Snowflake, SkyraUser, typeof SkyraUser, UserResolvable> {
-	constructor(client: Skyra, iterable?: Iterable<any>);
+	public constructor(client: Skyra, iterable?: Iterable<any>);
 	public fetch(id: Snowflake, cache?: boolean): Promise<SkyraUser>;
 }
 
 export class SkyraGuildStore extends DataStore<Snowflake, SkyraGuild, typeof SkyraGuild, GuildResolvable> {
-	constructor(client: Skyra, iterable?: Iterable<any>);
+	public constructor(client: Skyra, iterable?: Iterable<any>);
 	public create(name: string, options?: { region?: string, icon?: BufferResolvable | Base64Resolvable }): Promise<SkyraGuild>;
 }
 
 export class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMember, typeof SkyraGuildMember, GuildMemberResolvable> {
-	constructor(guild: SkyraGuild, iterable?: Iterable<any>);
+	public constructor(guild: SkyraGuild, iterable?: Iterable<any>);
 	public ban(user: UserResolvable, options?: BanOptions): Promise<SkyraGuildMember | SkyraUser | Snowflake>;
 	public fetch(options: UserResolvable | FetchMemberOptions): Promise<SkyraGuildMember>;
 	public fetch(): Promise<SkyraGuildMemberStore>;

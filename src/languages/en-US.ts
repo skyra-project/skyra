@@ -70,7 +70,7 @@ const PERMS = {
 	USE_VAD: 'Use Voice Activity'
 };
 
-const random = num => Math.round(Math.random() * num);
+const random = (num) => Math.round(Math.random() * num);
 
 const EIGHT_BALL = {
 	WHEN: ['Soon™', 'Maybe tomorrow.', 'Maybe next year...', 'Right now.', 'In a few months.'],
@@ -88,7 +88,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 
 module.exports = class extends Language {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory);
 
 		this.PERMISSIONS = PERMS;
@@ -168,7 +168,7 @@ module.exports = class extends Language {
 				usersRemoved.length ? `**Users Removed**\n${codeBlock('', usersRemoved.join(', '))}` : '',
 				guildsAdded.length ? `**Guilds Added**\n${codeBlock('', guildsAdded.join(', '))}` : '',
 				guildsRemoved.length ? `**Guilds Removed**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
-			].filter(val => val !== '').join('\n'),
+			].filter((val) => val !== '').join('\n'),
 			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
 			COMMAND_TRANSFER_ERROR: '❌ That file has been transferred already or never existed.',
@@ -807,7 +807,7 @@ module.exports = class extends Language {
 			COMMAND_VAPORWAVE_DESCRIPTION: 'Vapowave characters!',
 			COMMAND_VAPORWAVE_EXTENDED: builder.display('vaporwave', {
 				extendedHelp: `Well, what can I tell you? This command turns your messages into unicode monospaced characters. That
-					is, what humans call 'Ａ　Ｅ　Ｓ　Ｔ　Ｈ　Ｅ　Ｔ　Ｉ　Ｃ'. I wonder what it means...`, // eslint-disable-line no-irregular-whitespace
+					is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...`, // eslint-disable-line no-irregular-whitespace
 				explainedUsage: [
 					['phrase', 'The phrase to convert']
 				],
@@ -1710,7 +1710,7 @@ module.exports = class extends Language {
 				`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`
 			].join('\n'),
 			COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
-			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map((key) => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
 			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
 			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
@@ -1881,9 +1881,9 @@ module.exports = class extends Language {
 			COMMAND_DIVORCE_NOTTAKEN: 'Who would you divorce? You are not even taken!',
 			COMMAND_DIVORCE_PROMPT: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',
 			COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you will continue with your partner!',
-			COMMAND_DIVORCE_DM: user => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
-			COMMAND_DIVORCE_SUCCESS: user => `Successful divorce 💔... You are no longer married to ${user}!`,
-			COMMAND_MARRY_WITH: user => `Dear, how could you forget it... You are currently married to ${user}!`,
+			COMMAND_DIVORCE_DM: (user) => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
+			COMMAND_DIVORCE_SUCCESS: (user) => `Successful divorce 💔... You are no longer married to ${user}!`,
+			COMMAND_MARRY_WITH: (user) => `Dear, how could you forget it... You are currently married to ${user}!`,
 			COMMAND_MARRY_NOTTAKEN: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?',
 			COMMAND_MARRY_SKYRA: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
 			COMMAND_MARRY_SNEYRA: 'In your dreams. She is my sister, I am not letting somebody harm her!',
@@ -1917,7 +1917,7 @@ module.exports = class extends Language {
 			COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
 			COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
 			COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
-			COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
+			COMMAND_REMINDME_DELETE: (task) => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
 			COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 			COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 			COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
@@ -2099,20 +2099,20 @@ module.exports = class extends Language {
 			 */
 
 			COMMAND_WBLUSH: 'You made them blush! 😊',
-			COMMAND_WCRY: user => `Dear ${user}, did you make them cry? 💔`,
-			COMMAND_WCUDDLE: user => `Here is a cuddle for you, ${user} 💞`,
+			COMMAND_WCRY: (user) => `Dear ${user}, did you make them cry? 💔`,
+			COMMAND_WCUDDLE: (user) => `Here is a cuddle for you, ${user} 💞`,
 			COMMAND_WDANCE: 'Dancing! 💃',
-			COMMAND_WHUG: user => `Here is a nice hug for you, ${user} ❤`,
-			COMMAND_WKISS: user => `Here is a kiss for you, ${user} 💜`,
-			COMMAND_WLICK: user => `Licking ${user} 👅`,
+			COMMAND_WHUG: (user) => `Here is a nice hug for you, ${user} ❤`,
+			COMMAND_WKISS: (user) => `Here is a kiss for you, ${user} 💜`,
+			COMMAND_WLICK: (user) => `Licking ${user} 👅`,
 			COMMAND_WNOM: `Nom, nom, nom! 😊`,
 			COMMAND_WNEKO: `Nya! 🐱`,
-			COMMAND_WPAT: user => `Gently pats ${user}'s head ❤`,
+			COMMAND_WPAT: (user) => `Gently pats ${user}'s head ❤`,
 			COMMAND_WPOUT: `Uh?`,
-			COMMAND_WSLAP: user => `Slapping ${user}!`,
+			COMMAND_WSLAP: (user) => `Slapping ${user}!`,
 			COMMAND_WSMUG: `There's a smug face!`,
-			COMMAND_WSTARE: user => `Dear ${user}, somebody is staring at you 👀`,
-			COMMAND_WTICKLE: user => `Tickles for you, ${user}!`,
+			COMMAND_WSTARE: (user) => `Dear ${user}, somebody is staring at you 👀`,
+			COMMAND_WTICKLE: (user) => `Tickles for you, ${user}!`,
 
 			/**
 			 * #################################
@@ -2239,6 +2239,6 @@ module.exports = class extends Language {
 		};
 	}
 
-	async init() { } // eslint-disable-line no-empty-function
+	public async init() { } // eslint-disable-line no-empty-function
 
 };

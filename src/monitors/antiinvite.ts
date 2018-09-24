@@ -2,7 +2,7 @@ const { Monitor, MessageEmbed } = require('../index');
 
 module.exports = class extends Monitor {
 
-	async run(msg) {
+	public async run(msg) {
 		if (!msg.guild
 			|| !msg.guild.settings.selfmod.invitelinks
 			|| !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content)
@@ -27,7 +27,7 @@ module.exports = class extends Monitor {
 			.setTimestamp());
 	}
 
-	shouldRun(msg) {
+	public shouldRun(msg) {
 		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
 
 		const { invitelinks, ignoreChannels } = msg.guild.settings.selfmod;

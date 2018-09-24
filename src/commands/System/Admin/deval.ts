@@ -2,7 +2,7 @@ const { Command, Stopwatch, klasaUtil: { codeBlock } } = require('../../../index
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['d-ev', 'dashboard-eval'],
 			description: (language) => language.get('COMMAND_EVAL_DESCRIPTION'),
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [code]) {
+	public async run(msg, [code]) {
 		if (msg.flags.async) code = `(async () => {\n${code}\n})();`;
 		let result, success, time;
 

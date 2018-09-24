@@ -3,7 +3,7 @@ const levenshtein = require('./External/levenshtein');
 
 class FuzzySearch {
 
-	constructor(collection, access, filter = () => true) {
+	public constructor(collection, access, filter = () => true) {
 		this.collection = collection;
 
 		/**
@@ -17,7 +17,7 @@ class FuzzySearch {
 		this.access = access;
 	}
 
-	run(msg, query) {
+	public run(msg, query) {
 		const lowcquery = query.toLowerCase();
 		const apResults = [];
 		const exResults = [];
@@ -49,7 +49,7 @@ class FuzzySearch {
 		return this.select(msg, exResults.length ? exResults : apResults);
 	}
 
-	async select(msg, results) {
+	public async select(msg, results) {
 		switch (results.length) {
 			case 0: return null;
 			case 1: return results[0];

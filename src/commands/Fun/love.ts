@@ -2,7 +2,7 @@ const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [user]) {
+	public async run(msg, [user]) {
 		const isSelf = msg.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);

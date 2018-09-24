@@ -2,11 +2,11 @@ const { Monitor, constants: { MODERATION: { TYPE_KEYS } } } = require('../index'
 
 module.exports = class extends Monitor {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, { ignoreBots: false });
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		if (!msg.guild
 			|| !msg.guild.settings.selfmod.nomentionspam
 			|| !msg.member
@@ -20,8 +20,8 @@ module.exports = class extends Monitor {
 
 		const amount = msg.guild.security.nms.add(msg.author.id, count);
 		if (amount >= msg.guild.settings.selfmod.nmsthreshold) {
-			await msg.guild.members.ban(msg.author.id, { days: 0, reason: msg.language.get('CONST_MONITOR_NMS') }).catch(error => this.client.emit('apiError', error));
-			await msg.sendLocale('MONITOR_NMS_MESSAGE', [msg.author]).catch(error => this.client.emit('apiError', error));
+			await msg.guild.members.ban(msg.author.id, { days: 0, reason: msg.language.get('CONST_MONITOR_NMS') }).catch((error) => this.client.emit('apiError', error));
+			await msg.sendLocale('MONITOR_NMS_MESSAGE', [msg.author]).catch((error) => this.client.emit('apiError', error));
 			msg.guild.security.nms.delete(msg.author.id);
 
 			return msg.guild.moderation.new
@@ -35,7 +35,7 @@ module.exports = class extends Monitor {
 		return true;
 	}
 
-	filterUsers(userID, collection) {
+	public filterUsers(userID, collection) {
 		if (!collection.has(userID)) return collection;
 		const clone = collection.clone();
 		clone.delete(userID);

@@ -2,7 +2,7 @@ const { Command, util, discordUtil: { escapeMarkdown } } = require('../../index'
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [user]) {
+	public async run(msg, [user]) {
 		// Escape all markdown
 		user = escapeMarkdown(user);
 

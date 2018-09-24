@@ -2,8 +2,7 @@ const { Event, constants: { MESSAGE_LOGS }, DiscordAPIError } = require('../inde
 
 module.exports = class extends Event {
 
-
-	async run(type, guild, makeMessage) {
+	public async run(type, guild, makeMessage) {
 		const key = TYPES[type];
 		if (!key) {
 			this.client.emit('warn', `[EVENT] GuildMessageLog: Unknown type ${type.toString()}`);

@@ -25,7 +25,7 @@ class PromptList {
 	 * @since 3.0.0
 	 * @param {PromptListResolvable} entries The entries to resolve.
 	 */
-	constructor(entries) {
+	public constructor(entries) {
 		/**
 		 * @since 3.0.0
 		 * @type {string[]}
@@ -40,7 +40,7 @@ class PromptList {
 	 * @param {PromptListOptions} [options] The options
 	 * @returns {Promise<number>}
 	 */
-	run(msg, options) {
+	public run(msg, options) {
 		return PromptList._run(msg, this.entries, options);
 	}
 
@@ -53,10 +53,10 @@ class PromptList {
 	 * @param {boolean} [resolved=false] Whether the entries are resolved or not
 	 * @returns {Promise<number>}
 	 */
-	static async run(msg, entries, options, resolved = false) {
+	public static async run(msg, entries, options, resolved = false) {
 		const number = await PromptList._run(msg, resolved ? entries : PromptList._resolveData(entries), options);
 		if (msg._responses.length) {
-			await Promise.all(msg.responses.map(response => response.nuke().catch(noop)));
+			await Promise.all(msg.responses.map((response) => response.nuke().catch(noop)));
 			msg._responses = [];
 		}
 
@@ -72,7 +72,7 @@ class PromptList {
 	 * @returns {Promise<number>}
 	 * @private
 	 */
-	static async _run(msg, list, { maxAttempts = 5, listMode = false } = {}) {
+	public static async _run(msg, list, { maxAttempts = 5, listMode = false } = {}) {
 		const possibles = list.length;
 		list = util.codeBlock('asciidoc', list.join('\n'));
 		await msg.sendMessage(msg.language.get(listMode ? 'PROMPTLIST_LIST' : 'PROMPTLIST_MULTIPLE_CHOICE', list, possibles));
@@ -83,7 +83,7 @@ class PromptList {
 		do {
 			if (attempts !== 0) await msg.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [list, attempts, maxAttempts]);
 			response = await msg.channel.awaitMessages(promptFilter, promptOptions)
-				.then(responses => responses.size ? responses.first() : null);
+				.then((responses) => responses.size ? responses.first() : null);
 
 			if (response) {
 				if (response.deletable) response.nuke().catch(noop);
@@ -103,7 +103,7 @@ class PromptList {
 	 * @returns {string[]}
 	 * @private
 	 */
-	static _resolveData(data) {
+	public static _resolveData(data) {
 		const output = [];
 		let maxLength, i = 0;
 

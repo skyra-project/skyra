@@ -1,9 +1,11 @@
-import Skyra from '../Skyra';
 import {
-	SkyraGuildMember,
-	SkyraGuildMemberStore,
-	MessageEmbed
-} from './discord.js';
+	Collection,
+	GuildEditData,
+	GuildMemberEditData,
+	MessageOptions,
+	Snowflake,
+	StringResolvable
+} from 'discord.js';
 import {
 	Command,
 	Event,
@@ -23,16 +25,14 @@ import {
 	Settings,
 	Task
 } from 'klasa';
-import {
-	Collection,
-	GuildEditData,
-	GuildMemberEditData,
-	MessageOptions,
-	Snowflake,
-	StringResolvable
-} from 'discord.js';
 import rebirthdb from '../../providers/rebirthdb';
+import Skyra from '../Skyra';
 import ModerationManager from '../structures/ModerationManager';
+import {
+	MessageEmbed,
+	SkyraGuildMember,
+	SkyraGuildMemberStore
+} from './discord.js';
 
 declare class SkyraPermissionLevels extends PermissionLevels {
 	// @ts-ignore
@@ -140,8 +140,8 @@ export class SkyraUser extends KlasaUser {
 
 export class GuildSettings extends Settings {
 	// START OF GUILD SCHEMA
-	_tags: Array<[string, string]>;
-	channels: {
+	public _tags: Array<[string, string]>;
+	public channels: {
 		announcement: Snowflake | null;
 		default: Snowflake | null;
 		log: Snowflake | null;
@@ -150,10 +150,10 @@ export class GuildSettings extends Settings {
 		roles: Snowflake | null;
 		spam: Snowflake | null;
 	};
-	disabledChannels: Array<Snowflake>;
-	disabledCommands: Array<string>;
-	disabledCommandsChannels: { [k: string]: Array<string> };
-	events: {
+	public disabledChannels: Array<Snowflake>;
+	public disabledCommands: Array<string>;
+	public disabledCommandsChannels: { [k: string]: Array<string> };
+	public events: {
 		banAdd: boolean;
 		banRemove: boolean;
 		commands: boolean;
@@ -165,21 +165,21 @@ export class GuildSettings extends Settings {
 		messageEdit: boolean;
 		messagePrune: boolean;
 	};
-	filter: {
+	public filter: {
 		level: number;
 		raw: Array<string>;
 		regexp: RegExp | null;
 	};
-	language: string;
-	messages: {
+	public language: string;
+	public messages: {
 		farewell: string | null;
 		greeting: string | null;
 		'join-dm': string | null;
 		warnings: boolean;
 	};
-	stickyRoles: Array<{ id: Snowflake, roles: Array<Snowflake> }>;
-	prefix: string;
-	roles: {
+	public stickyRoles: Array<{ id: Snowflake, roles: Array<Snowflake> }>;
+	public prefix: string;
+	public roles: {
 		admin: Snowflake | null;
 		auto: Array<{ id: Snowflake, points: number }>;
 		initial: Snowflake | null;
@@ -192,7 +192,7 @@ export class GuildSettings extends Settings {
 		staff: Snowflake | null;
 		subscriber: Snowflake | null;
 	};
-	selfmod: {
+	public selfmod: {
 		ignoreChannels: Array<Snowflake>;
 		invitelinks: boolean;
 		nmsthreshold: number;
@@ -200,22 +200,22 @@ export class GuildSettings extends Settings {
 		raid: boolean;
 		raidthreshold: number;
 	};
-	social: {
+	public social: {
 		achieve: boolean;
 		achieveMessage: string | null;
 		boost: number;
 		monitorBoost: number;
 	};
-	starboard: {
+	public starboard: {
 		channel: Snowflake | null;
 		ignoreChannels: Array<Snowflake>;
 		minimum: number;
 	};
-	trigger: {
+	public trigger: {
 		alias: Array<{ input: string, output: string }>;
 		includes: Array<{ action: 'react', input: string, output: string }>;
 	};
-	twitch: {
+	public twitch: {
 		channel: Snowflake | null;
 		list: Array<string>;
 		messagestart: string | null;

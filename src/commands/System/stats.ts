@@ -4,7 +4,7 @@ const { uptime, loadavg } = require('os');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
@@ -14,11 +14,11 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		return msg.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
 	}
 
-	get STATS() {
+	public get STATS() {
 		return {
 			USERS: this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
 			GUILDS: this.client.guilds.size.toLocaleString(),
@@ -28,7 +28,7 @@ module.exports = class extends Command {
 		};
 	}
 
-	get UPTIME() {
+	public get UPTIME() {
 		const now = Date.now();
 		return {
 			HOST: Duration.toNow(now - (uptime() * 1000), false),
@@ -37,7 +37,7 @@ module.exports = class extends Command {
 		};
 	}
 
-	get USAGE() {
+	public get USAGE() {
 		return {
 			CPU_LOAD: `${Math.round(loadavg()[0] * 100) / 100}%`,
 			RAM_TOTAL: `${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,

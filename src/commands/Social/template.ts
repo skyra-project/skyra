@@ -8,7 +8,7 @@ const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -19,12 +19,12 @@ module.exports = class extends Command {
 			usage: '<attachment:attachment>'
 		});
 
-		this.createCustomResolver('attachment', async (arg, possible, msg) => {
+		this.createCustomResolver('attachment', async(arg, possible, msg) => {
 			if (msg.attachments.size) {
-				const attachment = msg.attachments.find(att => attachmentFilter.test(att.url));
+				const attachment = msg.attachments.find((att) => attachmentFilter.test(att.url));
 				if (attachment) return fetch(attachment.url, 'buffer');
 			}
-			const url = (res => res && res.protocol && attachmentFilter.test(res.pathname) && res.hostname && res.href)(new URL(arg));
+			const url = ((res) => res && res.protocol && attachmentFilter.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');
 			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
 		});
@@ -33,16 +33,16 @@ module.exports = class extends Command {
 		this.panel = null;
 	}
 
-	async run(msg, [file]) {
+	public async run(msg, [file]) {
 		const output = await this.showProfile(msg, file);
 		return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	async inhibit(msg) {
+	public async inhibit(msg) {
 		return !msg.guild || msg.guild.id !== '256566731684839428';
 	}
 
-	async showProfile(msg, file) {
+	public async showProfile(msg, file) {
 		await msg.author.settings.sync();
 		const { points, color, money, reputation, level } = msg.author.settings;
 
@@ -58,7 +58,7 @@ module.exports = class extends Command {
 		const TITLE = msg.language.fetch('COMMAND_PROFILE');
 		const canvas = new Canvas(msg.author.settings.badgeSet.length ? 700 : 640, 391);
 		if (msg.author.settings.badgeSet.length) {
-			const badges = await Promise.all(msg.author.settings.badgeSet.map(name =>
+			const badges = await Promise.all(msg.author.settings.badgeSet.map((name) =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))
 			));
 
@@ -118,7 +118,7 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-	async init() {
+	public async init() {
 		this.profile = await new Canvas(640, 391)
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')

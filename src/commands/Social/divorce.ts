@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			runIn: ['text'],
 			requiredPermissions: ['ADD_REACTIONS'],
@@ -11,7 +11,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		if (!msg.author.settings.marry) return msg.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 		// Ask the user if they're sure

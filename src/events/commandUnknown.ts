@@ -2,7 +2,7 @@ const { Event, Stopwatch } = require('../index');
 
 module.exports = class extends Event {
 
-	async run(msg, command) {
+	public async run(msg, command) {
 		if (!msg.guild || msg.guild.settings.disabledChannels.includes(msg.channel.id)) return;
 
 		const tag = msg.guild.settings.tags.get(command);
@@ -10,14 +10,14 @@ module.exports = class extends Event {
 		else if (msg.guild.settings.trigger.alias.length) this.handleCommand(msg, command);
 	}
 
-	get commandHandler() {
+	public get commandHandler() {
 		return this.client.monitors.get('commandHandler');
 	}
 
-	async handleCommand(msg, command) {
-		const alias = (entry => entry
+	public async handleCommand(msg, command) {
+		const alias = ((entry) => entry
 			? this.client.commands.get(entry.output)
-			: undefined)(msg.guild.settings.trigger.alias.find(entry => entry.input === command));
+			: undefined)(msg.guild.settings.trigger.alias.find((entry) => entry.input === command));
 		if (!alias) return;
 
 		// @ts-ignore

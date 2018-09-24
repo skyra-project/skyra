@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['bal', 'credits'],
 			bucket: 2,
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [user = msg.author]) {
+	public async run(msg, [user = msg.author]) {
 		if (user.bot) throw msg.language.get('COMMAND_BALANCE_BOTS');
 
 		await user.settings.sync();

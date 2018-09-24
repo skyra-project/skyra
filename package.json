@@ -14,8 +14,8 @@
     "pm2:stop": "pm2 stop Skyra",
     "dev:unix": "DEV=true node src/skyra.js",
     "dev:windows": "$env:DEV=\"true\"; node src/skyra.js",
-    "test": "tslint src",
-    "lint": "tslint --fix src",
+    "test": "tslint src/**/*.ts",
+    "lint": "tslint --fix src/**/*.ts",
     "deps:update": "yarn install dirigeants/klasa discordjs/discord.js",
     "deps:install": "yarn install --production"
   },

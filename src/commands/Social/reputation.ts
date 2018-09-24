@@ -2,7 +2,7 @@ const { Command, constants: { TIME: { DAY } } } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['rep'],
 			bucket: 2,
@@ -24,7 +24,7 @@ module.exports = class extends Command {
 		this.busy = new Set();
 	}
 
-	async run(msg, [check, user]) {
+	public async run(msg, [check, user]) {
 		const now = Date.now();
 		const userProfile = msg.author.settings;
 		const targetProfile = (user && user.settings) || null;
@@ -41,7 +41,6 @@ module.exports = class extends Command {
 
 		if (this.busy.has(msg.author.id) || userProfile.timeReputation + DAY > now)
 			return msg.sendLocale('COMMAND_REPUTATION_TIME', [userProfile.timeReputation + DAY - now]);
-
 
 		if (!user) return msg.sendLocale('COMMAND_REPUTATION_USABLE');
 		if (user.bot) throw msg.language.get('COMMAND_REPUTATION_BOTS');

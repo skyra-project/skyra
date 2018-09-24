@@ -4,7 +4,7 @@ const sortRanks = (x, y) => +(y.position > x.position) || +(x.position === y.pos
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['userinfo'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [user = msg.author]) {
+	public async run(msg, [user = msg.author]) {
 		const member = await msg.guild.members.fetch(user.id).catch(() => null);
 
 		const embed = new MessageEmbed();
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		return msg.sendMessage({ embed });
 	}
 
-	member(member, embed, i18n) {
+	public member(member, embed, i18n) {
 		embed
 			.setColor(member.displayColor || 0xdfdfdf)
 			.setTitle(`${member.user.bot ? '🤖 ' : ''}${member.user.tag}`)
@@ -39,13 +39,13 @@ module.exports = class extends Command {
 		if (member.roles.size > 1) {
 			const roles = member.roles.sort(sortRanks);
 			roles.delete(member.guild.defaultRole.id);
-			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
+			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map((role) => role.name).join(', '));
 		}
 
 		return embed;
 	}
 
-	user(user, embed, i18n) {
+	public user(user, embed, i18n) {
 		return embed
 			.setColor(0xdfdfdf)
 			.setTitle(`${user.bot ? '🤖 ' : ''}${user.tag}`)

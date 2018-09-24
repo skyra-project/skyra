@@ -5,7 +5,7 @@ const REG_ROLES = Serializer.regex.role;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_POLL_DESCRIPTION'),
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		this.timePrompt = this.definePrompt('<time:time>');
 	}
 
-	async create(msg, raw) {
+	public async create(msg, raw) {
 		if (!raw.length) throw msg.language.get('COMMAND_POLL_MISSING_TITLE');
 		const [time] = await this.timePrompt.createPrompt(msg).run(msg.language.get('COMMAND_POLL_TIME'));
 		const title = raw.join(' ');
@@ -30,53 +30,52 @@ module.exports = class extends Command {
 		let users = null, roles = null, options = null;
 
 		if ('users' in msg.flags && msg.flags.users !== 'users') {
-			users = this._resolveUsers(msg.flags.users.split(',').map(user => user.trim()));
+			users = this._resolveUsers(msg.flags.users.split(',').map((user) => user.trim()));
 		} else if (!('no-prompt' in msg.flags)) {
 			const wants = await msg.ask(msg.language.get('COMMAND_POLL_WANT_USERS'));
 			if (wants) users = await this.userPrompt.createPrompt(msg).run(msg.language.get('COMMAND_POLL_FIRSTUSER')).catch(() => null);
 		}
 
 		if ('roles' in msg.flags && msg.flags.roles !== 'roles') {
-			roles = this._resolveRoles(msg.flags.roles.split(',').map(role => role.trim()));
+			roles = this._resolveRoles(msg.flags.roles.split(',').map((role) => role.trim()));
 		} else if (!('no-prompt' in msg.flags)) {
 			const wants = await msg.ask(msg.language.get('COMMAND_POLL_WANT_ROLES'));
 			if (wants) roles = await this.rolePrompt.createPrompt(msg).run(msg.language.get('COMMAND_POLL_FIRSTROLE')).catch(() => null);
 		}
 
 		if ('options' in msg.flags && msg.flags.options !== 'options')
-			options = msg.flags.options.split(',').map(option => option.trim().toLowerCase());
+			options = msg.flags.options.split(',').map((option) => option.trim().toLowerCase());
 		else
 			options = ['yes', 'no'];
-
 
 		const data = {
 			guild: msg.guild.id,
 			options,
-			roles: roles ? roles.map(role => role.id) : null,
+			roles: roles ? roles.map((role) => role.id) : null,
 			timestamp: time.getTime(),
 			title,
 			author: msg.author.id,
-			users: users ? users.map(user => user.id) : null,
-			votes: options.reduce((acc, cur) => Object.assign(acc, { [cur]: 0 }), {}),
+			users: users ? users.map((user) => user.id) : null,
+			votes: options.reduce((acc, cur) => ({...acc,  [cur]: 0}), {}),
 			voted: []
 		};
 		const task = await this.client.schedule.create('poll', time, { catchUp: true, data });
 
 		return msg.sendMessage(msg.language.get('COMMAND_POLL_CREATE', title,
-			roles ? roles.map(role => role.name) : null,
-			users ? users.map(user => user.username) : null,
+			roles ? roles.map((role) => role.name) : null,
+			users ? users.map((user) => user.username) : null,
 			options,
 			data.timestamp - Date.now(),
 			task.id
 		), { code: 'http' });
 	}
 
-	list(msg) {
-		const polls = this.client.schedule.tasks.filter(task => task.taskName === 'poll' && this._accepts(msg, task.data));
-		return msg.sendMessage(polls.length ? polls.map(entry => `ID: \`${entry.id}\` *${entry.data.title}*`) : msg.language.get('COMMAND_POLL_LIST_EMPTY'));
+	public list(msg) {
+		const polls = this.client.schedule.tasks.filter((task) => task.taskName === 'poll' && this._accepts(msg, task.data));
+		return msg.sendMessage(polls.length ? polls.map((entry) => `ID: \`${entry.id}\` *${entry.data.title}*`) : msg.language.get('COMMAND_POLL_LIST_EMPTY'));
 	}
 
-	async remove(msg, [id]) {
+	public async remove(msg, [id]) {
 		if (!id) throw msg.language.get('COMMAND_POLL_MISSING_ID');
 		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll' || found.data.guild !== msg.guild.id) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
@@ -85,21 +84,21 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_POLL_REMOVE');
 	}
 
-	async vote(msg, [id, option]) {
+	public async vote(msg, [id, option]) {
 		if (!id) throw msg.language.get('COMMAND_POLL_MISSING_ID');
-		if (msg.deletable) msg.nuke().catch(error => this.client.emit('apiError', error));
+		if (msg.deletable) msg.nuke().catch((error) => this.client.emit('apiError', error));
 		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll' || found.data.guild !== msg.guild.id) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
 		if (found.data.voted.includes(msg.author.id)) throw msg.language.get('COMMAND_POLL_ALREADY_VOTED');
 		if (option) option = option.toLowerCase();
-		if (!option || !found.data.options.includes(option)) throw msg.language.get('COMMAND_POLL_INVALID_OPTION', found.data.options.map(opt => `\`${opt}\``).join(', '));
+		if (!option || !found.data.options.includes(option)) throw msg.language.get('COMMAND_POLL_INVALID_OPTION', found.data.options.map((opt) => `\`${opt}\``).join(', '));
 		found.data.votes[option]++;
 		found.data.voted.push(msg.author.id);
 		await found.update({ data: found.data });
-		return msg.channel.send(msg.language.get('COMMAND_POLL_VOTE')).then(message => message.nuke(10000));
+		return msg.channel.send(msg.language.get('COMMAND_POLL_VOTE')).then((message) => message.nuke(10000));
 	}
 
-	async result(msg, [id]) {
+	public async result(msg, [id]) {
 		if (!id) throw msg.language.get('COMMAND_POLL_MISSING_ID');
 		const poll = this.client.schedule.get(id);
 		if (!(poll && (poll.taskName === 'poll' || poll.taskName === 'pollEnd') && poll.data.guild === msg.guild.id)) throw msg.language.get('COMMAND_POLL_NOTEXISTS');
@@ -117,7 +116,7 @@ module.exports = class extends Command {
 		return msg.sendMessage([`Entry ID: '${poll.id}' (${title})`, ...graph].join('\n'), { code: 'http' });
 	}
 
-	async _resolveRoles(msg, roles) {
+	public async _resolveRoles(msg, roles) {
 		const output = [];
 		for (const role of roles) {
 			let resolved;
@@ -130,7 +129,7 @@ module.exports = class extends Command {
 		return output;
 	}
 
-	async _resolveUsers(msg, users) {
+	public async _resolveUsers(msg, users) {
 		const output = [];
 		for (const user of users) {
 			let resolved;
@@ -144,8 +143,8 @@ module.exports = class extends Command {
 		return output;
 	}
 
-	_accepts(msg, { users, roles }) {
-		return (users && users.includes(msg.author.id)) || (roles && roles.some(role => msg.member.roles.has(role))) || !!users;
+	public _accepts(msg, { users, roles }) {
+		return (users && users.includes(msg.author.id)) || (roles && roles.some((role) => msg.member.roles.has(role))) || !!users;
 	}
 
 };

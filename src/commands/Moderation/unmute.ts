@@ -2,7 +2,7 @@ const { ModerationCommand, util: { removeMute } } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			description: (language) => language.get('COMMAND_UNMUTE_DESCRIPTION'),
@@ -13,14 +13,14 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	async inhibit(msg) {
+	public async inhibit(msg) {
 		const id = msg.guild.settings.roles.muted;
 		if (id && msg.guild.roles.has(id)) return false;
 		throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
 	}
 
-	async handle(msg, user, member, reason) {
-		const modlog = (await msg.guild.moderation.fetch(user.id)).filter(log => log.type === ModerationCommand.types.MUTE).last();
+	public async handle(msg, user, member, reason) {
+		const modlog = (await msg.guild.moderation.fetch(user.id)).filter((log) => log.type === ModerationCommand.types.MUTE).last();
 		if (!modlog) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 
@@ -28,13 +28,13 @@ module.exports = class extends ModerationCommand {
 		const { position } = msg.guild.me.roles.highest;
 		const roles = [...new Set((modlog.extraData || [])
 			// Map by Role instances
-			.map(id => msg.guild.roles.get(id))
+			.map((id) => msg.guild.roles.get(id))
 			// Concatenate with the member's roles
 			.concat(...member.roles.values()))]
 			// Filter removed and unmanageable roles
-			.filter(role => role && role.position < position && !role.managed)
+			.filter((role) => role && role.position < position && !role.managed)
 			// Map by id
-			.map(role => role.id);
+			.map((role) => role.id);
 
 		// Remove the muted role
 		const muteIndex = roles.indexOf(msg.guild.settings.roles.muted);

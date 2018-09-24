@@ -11,7 +11,7 @@ const REPLACER = new RegExp(regExpEsc(S_LOCATION), 'g');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['cppev', 'c++eval', 'c++ev'],
 			description: (language) => language.get('COMMAND_CPPEVAL_DESCRIPTION'),
@@ -22,7 +22,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [args]) {
+	public async run(msg, [args]) {
 		const start = new Stopwatch(5);
 		const { input } = this.parse(msg, args);
 		await fsn.outputFileAtomic(S_LOCATION, input);
@@ -32,20 +32,20 @@ module.exports = class extends Command {
 		return msg.sendMessage(`${success ? '⚙ **Compiled and executed:**' : '❌ **Error:**'} Took ${start.stop()}${codeBlock('cs', result || 'Success! No output.')}`);
 	}
 
-	compile(start) {
+	public compile(start) {
 		return exec(GCC_COMMAND, EXEC_OPTIONS)
 			.then(() => null)
-			.catch(error => `Failed to compile (${start.stop()}). ${codeBlock('cs', `${error.stdout}\n${error.stderr}`
+			.catch((error) => `Failed to compile (${start.stop()}). ${codeBlock('cs', `${error.stdout}\n${error.stderr}`
 				.replace(REPLACER, 'Failed at'))}`);
 	}
 
-	execute() {
+	public execute() {
 		return exec(EXEC_COMMAND, EXEC_OPTIONS)
-			.then(result => ({ success: true, result: `${result.stdout}\n${result.stderr}` }))
-			.catch(error => ({ success: false, result: `${error.stdout}\n${error.stderr}` }));
+			.then((result) => ({ success: true, result: `${result.stdout}\n${result.stderr}` }))
+			.catch((error) => ({ success: false, result: `${error.stdout}\n${error.stderr}` }));
 	}
 
-	parse(msg, input) {
+	public parse(msg, input) {
 		if ('raw' in msg.flags) return { type: 'raw', input };
 		return { type: 'function', input: TEMPLATES.function(input) };
 	}

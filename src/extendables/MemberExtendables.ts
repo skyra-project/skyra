@@ -3,11 +3,11 @@ const { Extendable, GuildMember } = require('../index');
 
 module.exports = class extends Extendable {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, { appliesTo: [GuildMember] });
 	}
 
-	async fetchRank() {
+	public async fetchRank() {
 		const list = await this.client.leaderboard.getMembers(this.guild.id);
 
 		const rank = list.get(this.id);

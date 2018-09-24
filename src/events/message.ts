@@ -2,7 +2,7 @@ const { Event } = require('../index');
 
 module.exports = class extends Event {
 
-	async run(msg) {
+	public async run(msg) {
 		if (msg.system || msg.webhookID) return;
 
 		if (this.client.ready) {

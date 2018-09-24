@@ -2,7 +2,7 @@ const { Command } = require('../../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [channel]) {
+	public async run(msg, [channel]) {
 		if (channel === 'here') ({ channel } = msg);
 		else if (channel.type !== 'text') throw msg.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 		if (msg.guild.settings.channels.log === channel.id) throw msg.language.get('CONFIGURATION_EQUALS');

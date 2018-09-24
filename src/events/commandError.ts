@@ -2,12 +2,12 @@ const { Event, DiscordAPIError, klasaUtil: { codeBlock } } = require('../index')
 
 module.exports = class extends Event {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory);
 		this.logChannel = null;
 	}
 
-	run(msg, command, params, error) {
+	public run(msg, command, params, error) {
 		if (typeof error === 'string') {
 			msg.alert(msg.language.get('EVENTS_ERROR_STRING', msg.author, error))
 				.catch(this._handleMessageError);
@@ -20,7 +20,6 @@ module.exports = class extends Event {
 			else
 				this.client.emit('warn', `${this._getWarnError(msg, command, error)} (${msg.author.id}) | ${error.constructor.name}`);
 
-
 			// Emit where the error was emitted
 			this.client.emit('wtf', `[COMMAND] ${command.path}\n${error.stack || error}`);
 			msg.alert(msg.author === this.client.owner ? codeBlock('js', error.stack) : msg.language.get('EVENTS_ERROR_WTF'))
@@ -28,11 +27,11 @@ module.exports = class extends Event {
 		}
 	}
 
-	async init() {
+	public async init() {
 		this.logChannel = this.client.guilds.get('254360814063058944').channels.get('432495057552277504');
 	}
 
-	_sendErrorChannel(msg, command, error) {
+	public _sendErrorChannel(msg, command, error) {
 		if (!this.logChannel) return;
 		const isDiscordAPIError = error instanceof DiscordAPIError;
 		// @ts-ignore
@@ -51,12 +50,12 @@ module.exports = class extends Event {
 		]).join('\n'))).catch(() => null);
 	}
 
-	_handleMessageError(sendError) {
+	public _handleMessageError(sendError) {
 		Error.captureStackTrace(sendError);
 		this.client.emit('wtf', sendError);
 	}
 
-	_getWarnError(msg, command, error) {
+	public _getWarnError(msg, command, error) {
 		return `${error.code ? `[${error.code}] ` : ''}ERROR: /${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`;
 	}
 

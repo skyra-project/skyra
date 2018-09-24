@@ -4,7 +4,7 @@ const SORT = (x, y) => +(y.position > x.position) || +(x.position === y.position
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['serverinfo'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		let tChannels = 0, vChannels = 0, cChannels = 0;
 		for (const channel of msg.guild.channels.values()) {
 			if (channel.type === 'text') tChannels++;
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 			.setColor(msg.member.displayColor || msg.guild.me.displayColor || 0xDFDFDF)
 			.setThumbnail(msg.guild.iconURL())
 			.setTitle(`${msg.guild.name} [${msg.guild.id}]`)
-			.splitFields(i18n.get('COMMAND_SERVERINFO_ROLES', !roles.length ? i18n.get('COMMAND_SERVERINFO_NOROLES') : roles.map(role => role.name).join(', ')))
+			.splitFields(i18n.get('COMMAND_SERVERINFO_ROLES', !roles.length ? i18n.get('COMMAND_SERVERINFO_NOROLES') : roles.map((role) => role.name).join(', ')))
 			.addField(COMMAND_SERVERINFO_TITLES.CHANNELS, i18n.get('COMMAND_SERVERINFO_CHANNELS',
 				tChannels, vChannels, cChannels, msg.guild.afkChannelID, msg.guild.afkTimeout), true)
 			.addField(COMMAND_SERVERINFO_TITLES.MEMBERS, i18n.get('COMMAND_SERVERINFO_MEMBERS',

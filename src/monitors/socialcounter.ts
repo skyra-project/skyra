@@ -3,7 +3,7 @@ const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 
 module.exports = class extends Monitor {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			ignoreBots: true,
 			ignoreEdits: true,
@@ -12,7 +12,7 @@ module.exports = class extends Monitor {
 		});
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		if (!msg.guild
 			|| msg.guild.settings.social.ignoreChannels.includes(msg.channel.id)
 			|| this.cooldown(msg)) return;
@@ -36,11 +36,11 @@ module.exports = class extends Monitor {
 		}
 	}
 
-	cooldown(msg) {
+	public cooldown(msg) {
 		return !this.client.timeoutManager.set(`social-${msg.author.id}`, Date.now() + 60000, () => null);
 	}
 
-	async handleRoles(msg, memberPoints) {
+	public async handleRoles(msg, memberPoints) {
 		const autoRoles = msg.guild.settings.roles.auto;
 		if (!autoRoles.length || !msg.guild.me.permissions.has(MANAGE_ROLES)) return null;
 
@@ -51,7 +51,7 @@ module.exports = class extends Monitor {
 		if (!role || role.position > msg.guild.me.roles.highest.position) {
 			return msg.guild.settings.update('roles.auto', autoRole, { action: 'delete' })
 				.then(() => this.handleRoles(msg, memberPoints))
-				.catch(error => this.client.emit('apiError', error));
+				.catch((error) => this.client.emit('apiError', error));
 		}
 
 		if (msg.member.roles.has(role.id)) return null;
@@ -62,7 +62,7 @@ module.exports = class extends Monitor {
 				: null);
 	}
 
-	getMessage(member, role, message) {
+	public getMessage(member, role, message) {
 		return message.replace(MESSAGE_REGEXP, (match) => {
 			switch (match) {
 				case '%ROLE%': return role.name;
@@ -75,7 +75,7 @@ module.exports = class extends Monitor {
 		});
 	}
 
-	getLatestRole(autoRoles, points) {
+	public getLatestRole(autoRoles, points) {
 		let latest = null;
 		for (const role of autoRoles) {
 			if (role.points > points) break;

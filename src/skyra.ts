@@ -26,7 +26,7 @@ Skyra.defaultUserSchema
 
 Skyra.defaultGuildSchema
 	.add('_tags', 'any', { array: true, configurable: false })
-	.add('channels', folder => folder
+	.add('channels', (folder) => folder
 		.add('announcement', 'TextChannel')
 		.add('default', 'TextChannel')
 		.add('log', 'TextChannel')
@@ -37,23 +37,23 @@ Skyra.defaultGuildSchema
 		.add('spam', 'TextChannel'))
 	.add('disabledChannels', 'TextChannel', { array: true })
 	.add('disabledCommandsChannels', 'any', { default: {}, configurable: false })
-	.add('events', folder => folder
+	.add('events', (folder) => folder
 		.add('banAdd', 'Boolean', { default: false })
 		.add('banRemove', 'Boolean', { default: false })
 		.add('memberAdd', 'Boolean', { default: false })
 		.add('memberRemove', 'Boolean', { default: false })
 		.add('messageDelete', 'Boolean', { default: false })
 		.add('messageEdit', 'Boolean', { default: false }))
-	.add('filter', folder => folder
+	.add('filter', (folder) => folder
 		.add('level', 'Integer', { default: 0, min: 0, max: 3, configurable: false })
 		.add('raw', 'String', { array: true, configurable: false }))
-	.add('messages', folder => folder
+	.add('messages', (folder) => folder
 		.add('farewell', 'String', { max: 2000 })
 		.add('greeting', 'String', { max: 2000 })
 		.add('join-dm', 'String', { max: 1500 })
 		.add('warnings', 'Boolean', { default: false }))
 	.add('stickyRoles', 'any', { array: true })
-	.add('roles', folder => folder
+	.add('roles', (folder) => folder
 		.add('admin', 'Role')
 		.add('auto', 'any', { array: true })
 		.add('initial', 'Role')
@@ -65,7 +65,7 @@ Skyra.defaultGuildSchema
 		.add('removeInitial', 'Boolean')
 		.add('staff', 'Role')
 		.add('subscriber', 'Role'))
-	.add('selfmod', folder => folder
+	.add('selfmod', (folder) => folder
 		.add('capsfilter', 'Integer', { default: 0, min: 0, max: 7, configurable: false })
 		.add('capsminimum', 'Integer', { default: 10, min: 0, max: 2000 })
 		.add('capsthreshold', 'Integer', { default: 50, min: 0, max: 100 })
@@ -75,18 +75,18 @@ Skyra.defaultGuildSchema
 		.add('nomentionspam', 'Boolean')
 		.add('raid', 'Boolean')
 		.add('raidthreshold', 'Integer', { default: 10, min: 2, max: 50 }))
-	.add('social', folder => folder
+	.add('social', (folder) => folder
 		.add('achieve', 'Boolean', { default: false })
 		.add('achieveMessage', 'String')
 		.add('boost', 'Float', { default: 1, configurable: false })
 		.add('ignoreChannels', 'TextChannel', { array: true })
 		.add('monitorBoost', 'Float', { default: 1, configurable: false }))
-	.add('starboard', folder => folder
+	.add('starboard', (folder) => folder
 		.add('channel', 'TextChannel')
 		.add('emoji', 'String', { default: '%E2%AD%90', configurable: false })
 		.add('ignoreChannels', 'TextChannel', { array: true })
 		.add('minimum', 'Integer', { default: 1, min: 1, max: 20 }))
-	.add('trigger', folder => folder
+	.add('trigger', (folder) => folder
 		.add('alias', 'any', { array: true, configurable: false })
 		.add('includes', 'any', { array: true, configurable: false }));
 

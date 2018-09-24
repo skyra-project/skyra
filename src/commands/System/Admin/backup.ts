@@ -2,7 +2,7 @@ const { Command } = require('klasa');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_BACKUP_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_BACKUP_EXTENDED'),
@@ -11,7 +11,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		// Disable this command so it cannot
 		// run twice during a backup
 		this.disable();

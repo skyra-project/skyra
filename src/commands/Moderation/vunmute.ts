@@ -2,7 +2,7 @@ const { ModerationCommand } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MUTE_MEMBERS'],
 			description: (language) => language.get('COMMAND_VUNMUTE_DESCRIPTION'),
@@ -13,7 +13,7 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	async handle(msg, user, member, reason) {
+	public async handle(msg, user, member, reason) {
 		if (!member.voice.serverMute) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 		await member.setMute(false, reason);
 		return this.sendModlog(msg, user, reason);

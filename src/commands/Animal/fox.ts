@@ -9,7 +9,7 @@ url.searchParams.append('key', require.main.exports.config.tokens.pixabay);
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -20,12 +20,12 @@ module.exports = class extends Command {
 		this.hits = [];
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		const data = this.hits[Math.ceil(Math.random() * this.hits.length)];
 		return msg.sendMessage(`${data.tags}\n${data.pageURL}`);
 	}
 
-	async init() {
+	public async init() {
 		const data = await fetch(url, 'json');
 		const { hits } = data;
 		for (let i = 0; i < hits.length; i++) {

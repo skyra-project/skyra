@@ -5,14 +5,14 @@ const ModerationManager = require('../structures/ModerationManager');
 
 const kUnknownMember = Symbol('UnknownMember');
 
-module.exports = Structures.extend('Guild', Guild => {
+module.exports = Structures.extend('Guild', (Guild) => {
 	/**
 	 * Skyra's Extended Guild
 	 * @extends {Guild}
 	 */
 	class SkyraGuild extends Guild {
 
-		constructor(...args) {
+		public constructor(...args) {
 			// @ts-ignore
 			super(...args);
 
@@ -54,7 +54,7 @@ module.exports = Structures.extend('Guild', Guild => {
 		 * @param {string} id The ID to fetch
 		 * @returns {Promise<?string>}
 		 */
-		async fetchName(id) {
+		public async fetchName(id) {
 			const result = this.nameDictionary.get(id) || await this.members.fetch(id).then(({ displayName }) => {
 				this.nameDictionary.set(id, displayName);
 				return displayName;

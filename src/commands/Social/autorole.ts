@@ -4,7 +4,7 @@ const SORT = (x, y) => +(x.points > y.points) || +(x.points === y.points) - 1;
 /* eslint-disable max-len */
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['autoroles', 'levelrole', 'lvlrole'],
 			requiredPermissions: ['MANAGE_ROLES'],
@@ -19,7 +19,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async list(msg) {
+	public async list(msg) {
 		const autoRoles = msg.guild.settings.roles.auto;
 		if (!autoRoles.length) throw msg.language.get('COMMAND_AUTOROLE_LIST_EMPTY');
 
@@ -36,40 +36,40 @@ module.exports = class extends Command {
 		return msg.sendMessage(output.join('\n'), { code: 'http' });
 	}
 
-	async add(msg, [points, role]) {
+	public async add(msg, [points, role]) {
 		if (typeof points === 'undefined') throw msg.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
 		if (typeof role === 'undefined') throw msg.language.get('REQUIRE_ROLE');
 
 		const autoRoles = msg.guild.settings.roles.auto;
-		if (autoRoles.length && autoRoles.some(entry => entry.id === role.id))
+		if (autoRoles.length && autoRoles.some((entry) => entry.id === role.id))
 			throw msg.language.get('COMMAND_AUTOROLE_UPDATE_CONFIGURED');
 
 		await msg.guild.settings.update('roles.auto', [...autoRoles, { id: role.id, points }].sort(SORT), { action: 'overwrite' });
 		return msg.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
 	}
 
-	async remove(msg, [, role]) {
+	public async remove(msg, [, role]) {
 		if (typeof role === 'undefined') throw msg.language.get('REQUIRE_ROLE');
 
 		const autoRoles = msg.guild.settings.roles.auto;
-		if (!autoRoles.length || !autoRoles.some(entry => entry.id === role.id))
+		if (!autoRoles.length || !autoRoles.some((entry) => entry.id === role.id))
 			throw msg.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
 
-		const deleteEntry = autoRoles.find(entry => entry.id === role.id);
+		const deleteEntry = autoRoles.find((entry) => entry.id === role.id);
 		await msg.guild.settings.update('roles.auto', deleteEntry, { action: 'delete' });
 
 		return msg.sendLocale('COMMAND_AUTOROLE_REMOVE', [role, deleteEntry.points]);
 	}
 
-	async update(msg, [points, role]) {
+	public async update(msg, [points, role]) {
 		if (typeof points === 'undefined') throw msg.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
 		if (typeof roles === 'undefined') throw msg.language.get('REQUIRE_ROLE');
 
 		const autoRoles = msg.guild.settings.roles.auto;
-		if (!autoRoles.length || !autoRoles.some(entry => entry.id === role.id))
+		if (!autoRoles.length || !autoRoles.some((entry) => entry.id === role.id))
 			throw msg.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
 
-		const autoRole = autoRoles.find(entry => entry.id === role.id);
+		const autoRole = autoRoles.find((entry) => entry.id === role.id);
 		autoRole.points = points;
 		await msg.guild.settings.update('roles.auto', [...autoRoles].sort(SORT), { action: 'overwrite' });
 		return msg.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole]);

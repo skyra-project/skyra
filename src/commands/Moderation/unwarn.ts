@@ -2,7 +2,7 @@ const { ModerationCommand, constants: { MODERATION: { TYPE_KEYS } } } = require(
 
 module.exports = class extends ModerationCommand {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_UNWARN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_UNWARN_EXTENDED'),
@@ -13,7 +13,7 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	async run(msg, [caseID, reason]) {
+	public async run(msg, [caseID, reason]) {
 		const modlog = await msg.guild.moderation.fetch(caseID);
 		if (!modlog || modlog.type !== TYPE_KEYS.WARN) throw msg.language.get('GUILD_WARN_NOT_FOUND');
 
@@ -23,7 +23,7 @@ module.exports = class extends ModerationCommand {
 		return msg.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
 	}
 
-	async handle(msg, user, member, reason, modlog) {
+	public async handle(msg, user, member, reason, modlog) {
 		// Appeal the modlog and send a log to the moderation log channel
 		await modlog.appeal();
 		return this.sendModlog(msg, user, reason);

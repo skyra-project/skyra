@@ -3,40 +3,40 @@ const { Extendable, KlasaMessage, Permissions: { FLAGS }, klasaUtil: { sleep } }
 
 module.exports = class extends Extendable {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, { appliesTo: [KlasaMessage] });
 	}
 
-	async prompt(text, time = 30000) {
+	public async prompt(text, time = 30000) {
 		const message = await this.channel.send(text);
-		const responses = await this.channel.awaitMessages(msg => msg.author === this.author, { time, max: 1 });
+		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
 		message.nuke();
 		if (responses.size === 0) throw this.language.get('MESSAGE_PROMPT_TIMEOUT');
 		return responses.first();
 	}
 
-	async ask(content, options) {
+	public async ask(content, options) {
 		const message = await this.send(content, options);
 		return !this.guild || this.channel.permissionsFor(this.guild.me).has(FLAGS.ADD_REACTIONS)
 			? awaitReaction(this, message)
 			: awaitMessage(this);
 	}
 
-	alert(content, options, timer) {
+	public alert(content, options, timer) {
 		if (!this.channel.postable) return Promise.resolve(null);
 		if (typeof options === 'number' && typeof timer === 'undefined') {
 			timer = options;
 			options = undefined;
 		}
 
-		return this.sendMessage(content, options).then(msg => {
+		return this.sendMessage(content, options).then((msg) => {
 			msg.nuke(typeof timer === 'number' ? timer : 10000)
 				.catch((error) => this.client.emit('error', error));
 			return msg;
 		});
 	}
 
-	nuke(time = 0) {
+	public nuke(time = 0) {
 		if (time === 0) return nuke(this);
 
 		const count = this.edits.length;
@@ -57,13 +57,13 @@ async function awaitReaction(msg, message) {
 
 	// Remove all reactions if the user has permissions to do so
 	if (msg.guild && msg.channel.permissionsFor(msg.guild.me).has(FLAGS.MANAGE_MESSAGES))
-		message.reactions.removeAll().catch(error => message.client.emit('wtf', error));
+		message.reactions.removeAll().catch((error) => message.client.emit('wtf', error));
 
 	return reactions.size && reactions.firstKey() === REACTIONS.YES;
 }
 
 async function awaitMessage(msg) {
-	const messages = await msg.channel.awaitMessages(mes => mes.author === msg.author, OPTIONS);
+	const messages = await msg.channel.awaitMessages((mes) => mes.author === msg.author, OPTIONS);
 	return messages.size && REG_ACCEPT.test(messages.first().content);
 }
 

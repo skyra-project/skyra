@@ -13,7 +13,7 @@ const hasKey = Object.prototype.hasOwnProperty;
 
 class WeebCommand extends Command {
 
-	constructor(client, store, file, core, { queryType, responseName, ...options }) {
+	public constructor(client, store, file, core, { queryType, responseName, ...options }) {
 		// Assign all redundant variables
 		for (const [key, value] of DEFAULTS) if (!hasKey.call(options, key)) options[key] = value;
 
@@ -45,7 +45,7 @@ class WeebCommand extends Command {
 		this.url.searchParams.append('nsfw', 'false');
 	}
 
-	async run(msg, params) {
+	public async run(msg, params) {
 		const { url } = await fetch(this.url, {
 			headers: {
 				Authorization: `Wolke ${WEEB_SH}`,

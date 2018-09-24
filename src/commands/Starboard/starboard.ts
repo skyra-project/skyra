@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			runIn: ['text'],
 			cooldown: 0,

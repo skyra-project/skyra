@@ -3,7 +3,7 @@ const ZWS = '\u200B';
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [query, ind = 1]) {
+	public async run(msg, [query, ind = 1]) {
 		const index = ind - 1;
 		if (index < 0)
 			throw msg.language.get('RESOLVER_POSITIVE_AMOUNT');
@@ -42,7 +42,7 @@ module.exports = class extends Command {
 			.setFooter('© Urban Dictionary'));
 	}
 
-	content(definition, permalink, i18n) {
+	public content(definition, permalink, i18n) {
 		if (definition.length < 750) return definition;
 		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}

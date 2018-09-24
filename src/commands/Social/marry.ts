@@ -5,7 +5,7 @@ const SNEYRA_ID = '338249781594030090';
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			runIn: ['text'],
 			cooldown: 30,
@@ -14,23 +14,23 @@ module.exports = class extends Command {
 			usage: '(user:username)'
 		});
 
-		this.createCustomResolver('username', async (arg, possible, msg) => {
+		this.createCustomResolver('username', async(arg, possible, msg) => {
 			if (!arg) return undefined;
 			return this.client.arguments.get('username').run(arg, possible, msg);
 		});
 	}
 
-	run(msg, [user]) {
+	public run(msg, [user]) {
 		return user ? this._marry(msg, user) : this._display(msg);
 	}
 
-	async _display(msg) {
+	public async _display(msg) {
 		if (!msg.author.settings.marry) return msg.sendLocale('COMMAND_MARRY_NOTTAKEN');
 		const username = await msg.guild.fetchName(msg.author.settings.marry);
 		return msg.sendLocale('COMMAND_MARRY_WITH', [username || `<@${msg.author.settings.marry}>`]);
 	}
 
-	async _marry(msg, user) {
+	public async _marry(msg, user) {
 		if (user.id === this.client.user.id) return msg.sendLocale('COMMAND_MARRY_SKYRA');
 		if (user.id === SNEYRA_ID) return msg.sendLocale('COMMAND_MARRY_SNEYRA');
 		if (user.id === msg.author.id) return msg.sendLocale('COMMAND_MARRY_SELF');
@@ -45,7 +45,7 @@ module.exports = class extends Command {
 
 		// Get a message from the user.
 		await msg.sendLocale('COMMAND_MARRY_PETITION', [msg.author, user]);
-		const messages = await msg.channel.awaitMessages(message => message.author.id === user.id, { time: 60000, max: 1 });
+		const messages = await msg.channel.awaitMessages((message) => message.author.id === user.id, { time: 60000, max: 1 });
 		if (!messages.size) return msg.sendLocale('COMMAND_MARRY_NOREPLY');
 
 		const message = messages.first();

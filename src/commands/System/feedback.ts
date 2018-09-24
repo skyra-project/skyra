@@ -2,7 +2,7 @@ const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['suggest'],
 			bucket: 2,
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		this.channel = null;
 	}
 
-	async run(msg, [feedback]) {
+	public async run(msg, [feedback]) {
 		const embed = new MessageEmbed()
 			.setColor(0x06d310)
 			.setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 		return msg.alert(msg.language.get('COMMAND_FEEDBACK'));
 	}
 
-	init() {
+	public init() {
 		this.channel = this.client.channels.get('257561807500214273');
 	}
 

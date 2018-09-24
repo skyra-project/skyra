@@ -2,7 +2,7 @@ const { API, ToJSON } = require('../../index');
 
 module.exports = class extends API {
 
-	run({ guildID, memberID }) {
+	public run({ guildID, memberID }) {
 		const guild = this.client.guilds.get(guildID);
 		if (guild) {
 			const member = guild.members.get(memberID);

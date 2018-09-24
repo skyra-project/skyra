@@ -2,7 +2,7 @@ const { API } = require('../../index');
 
 module.exports = class extends API {
 
-	async run({ userID, type, action, amount }) {
+	public async run({ userID, type, action, amount }) {
 		const user = await this.client.users.fetch(userID).catch(() => null);
 		if (!user) return null;
 		await user.settings.sync();
@@ -13,7 +13,7 @@ module.exports = class extends API {
 		return { response: newAmount };
 	}
 
-	getNewAmount(action, oldAmount, amount) {
+	public getNewAmount(action, oldAmount, amount) {
 		switch (action) {
 			case 'set': return amount;
 			case 'add': return oldAmount + amount;
@@ -24,7 +24,7 @@ module.exports = class extends API {
 						data: {
 							current: oldAmount,
 							tried: amount,
-							action: action
+							action
 						},
 						code: 403,
 						type: 'PROFILE_REMOVE_VALUE'

@@ -9,7 +9,7 @@ const TYPES = {
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_SETFILTERMODE_DESCRIPTION'),
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [type]) {
+	public async run(msg, [type]) {
 		const { number, language } = TYPES[type];
 		if (msg.guild.settings.filter.level === number) throw msg.language.get('COMMAND_SETFILTERMODE_EQUALS');
 		await msg.guild.settings.update('filter.level', number);

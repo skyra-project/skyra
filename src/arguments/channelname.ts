@@ -3,11 +3,11 @@ const CHANNEL_REGEXP = /^(?:<#)?(\d{17,19})>?$/;
 
 module.exports = class extends Argument {
 
-	get channel() {
+	public get channel() {
 		return this.store.get('channel');
 	}
 
-	async run(arg, possible, msg, filter) {
+	public async run(arg, possible, msg, filter) {
 		if (!arg) throw msg.language.get('RESOLVER_INVALID_CHANNELNAME', possible.name);
 		if (!msg.guild) return this.channel.run(arg, possible, msg);
 		const resChannel = this.resolveChannel(arg, msg.guild);
@@ -18,7 +18,7 @@ module.exports = class extends Argument {
 		throw msg.language.get('RESOLVER_INVALID_CHANNELNAME', possible.name);
 	}
 
-	resolveChannel(query, guild) {
+	public resolveChannel(query, guild) {
 		if (CHANNEL_REGEXP.test(query)) return guild.channels.get(CHANNEL_REGEXP.exec(query)[1]);
 		return null;
 	}

@@ -2,7 +2,7 @@ const { Task, config, util: { fetch } } = require('../index');
 
 module.exports = class extends Task {
 
-	async run() {
+	public async run() {
 		if (this.client.options.dev) return;
 
 		const guilds = this.client.guilds.size;
@@ -15,7 +15,7 @@ module.exports = class extends Task {
 				body
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [discordbots.org]: ${guilds}`))
-				.catch(err => this.client.emit('error', `ERROR [discordbots.org]:\nError: ${(err && err.stack) || err}`));
+				.catch((err) => this.client.emit('error', `ERROR [discordbots.org]:\nError: ${(err && err.stack) || err}`));
 		}
 		if (config.tokens.discordBots) {
 			fetch(`https://bots.discord.pw/api/bots/${this.client.user.id}/stats`, {
@@ -24,7 +24,7 @@ module.exports = class extends Task {
 				body
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [bots.discord.pw]: ${guilds}`))
-				.catch(err => this.client.emit('error', `ERROR [bots.discord.pw]:\nError: ${(err && err.stack) || err}`));
+				.catch((err) => this.client.emit('error', `ERROR [bots.discord.pw]:\nError: ${(err && err.stack) || err}`));
 		}
 		if (config.tokens.botsForDiscord) {
 			fetch(`https://botsfordiscord.com/api/v1/bots/${this.client.user.id}`, {
@@ -33,7 +33,7 @@ module.exports = class extends Task {
 				body
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [botsfordiscord.com]: ${guilds}`))
-				.catch(err => this.client.emit('error', `ERROR [botsfordiscord.com]:\nError: ${(err && err.stack) || err}`));
+				.catch((err) => this.client.emit('error', `ERROR [botsfordiscord.com]:\nError: ${(err && err.stack) || err}`));
 		}
 		if (config.tokens.discordBotList) {
 			fetch(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`, {
@@ -42,7 +42,7 @@ module.exports = class extends Task {
 				body: `{"guilds":${guilds},"users":${users}}`
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [discordbotlist.com]: ${guilds} | ${users}`))
-				.catch(err => this.client.emit('error', `ERROR [discordbotlist.com]:\nError: ${(err && err.stack) || err}`));
+				.catch((err) => this.client.emit('error', `ERROR [discordbotlist.com]:\nError: ${(err && err.stack) || err}`));
 		}
 		// if (config.tokens.serverHound) request
 		// 	.post('https://bots.discordlist.net/api')

@@ -2,7 +2,7 @@ const { Task, klasaUtil: { sleep }, MessageEmbed, klasaUtil: { codeBlock } } = r
 
 module.exports = class extends Task {
 
-	async run(data) {
+	public async run(data) {
 		try {
 			const guild = this.client.guilds.get(data.guildID);
 			if (!guild) return;
@@ -24,7 +24,7 @@ module.exports = class extends Task {
 		}
 	}
 
-	async _countdown({ id, title, timestamp }, author, guild, channel, message, reaction) {
+	public async _countdown({ id, title, timestamp }, author, guild, channel, message, reaction) {
 		const { language } = guild;
 		const ends = new Date(timestamp + 20000);
 		const embed = new MessageEmbed()
@@ -57,12 +57,12 @@ module.exports = class extends Task {
 		const content = winners.size === 1
 			? language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE_ONLY_WINNER', title, id, winner)
 			: language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE', title, id, winner, amount - 1, codeBlock('asciidoc',
-				winners.slice(1).map(user => `${user.id.padEnd(18, ' ')} :: ${user.tag}`).join('\n')));
+				winners.slice(1).map((user) => `${user.id.padEnd(18, ' ')} :: ${user.tag}`).join('\n')));
 
 		await author.send(content);
 	}
 
-	async _endNoWinner({ id, title }, message, author, language, embed) {
+	public async _endNoWinner({ id, title }, message, author, language, embed) {
 		embed.setColor(0xFF7749)
 			.setDescription(language.get('GIVEWAWY_ENDED_NO_WINNER'))
 			.setFooter(language.get('GIVEAWAY_ENDED_AT'));
@@ -71,7 +71,7 @@ module.exports = class extends Task {
 		await author.send(language.get('GIVEAWAY_ENDED_DIRECT_MESSAGE_NO_WINNER', title, id));
 	}
 
-	async _finalCountdown(embed, message, ends, language) {
+	public async _finalCountdown(embed, message, ends, language) {
 		const LASTCHANCE_TITLE = language.get('GIVEAWAY_LASTCHANCE_TITLE');
 
 		message.edit(LASTCHANCE_TITLE, { embed });

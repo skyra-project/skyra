@@ -15,7 +15,7 @@ const COLORS = {
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [query]) {
+	public async run(msg, [query]) {
 		const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
 		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${GOOGLE_MAP_API}`, 'json');
 
@@ -61,7 +61,7 @@ module.exports = class extends Command {
 		return this.draw(msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity });
 	}
 
-	async draw(msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity }) {
+	public async draw(msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity }) {
 		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
 		const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
 			readFile(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
@@ -113,7 +113,7 @@ module.exports = class extends Command {
 		return msg.channel.send({ files: [{ attachment, name: `${geocodelocation}.png` }] });
 	}
 
-	timePicker(icon) {
+	public timePicker(icon) {
 		switch (icon) {
 			case 'clear-day':
 			case 'partly-cloudy-day':
@@ -143,7 +143,7 @@ module.exports = class extends Command {
 		}
 	}
 
-	handleNotOK(status) {
+	public handleNotOK(status) {
 		switch (status) {
 			case 'ZERO_RESULTS':
 				return 'COMMAND_WEATHER_ERROR_ZERO_RESULTS';

@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['nickname'],
 			requiredPermissions: ['CHANGE_NICKNAME'],
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [nick = '']) {
+	public async run(msg, [nick = '']) {
 		await msg.guild.me.setNickname(nick);
 		return msg.alert(msg.language.get(...nick.length > 0 ? ['COMMAND_NICK_SET', nick] : ['COMMAND_NICK_CLEARED']));
 	}

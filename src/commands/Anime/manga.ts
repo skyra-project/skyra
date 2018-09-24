@@ -2,7 +2,7 @@ const { Command, PromptList, MessageEmbed, util: { fetch, oneToTen, cutText } } 
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
@@ -12,7 +12,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [mangaName]) {
+	public async run(msg, [mangaName]) {
 		const url = new URL('https://kitsu.io/api/edge/manga');
 		url.searchParams.append('filter[text]', mangaName);
 
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 			.catch(() => { throw msg.language.get('COMMAND_ANIME_QUERY_FAIL'); });
 
 		const entry = await this.getIndex(msg, body.data)
-			.catch(error => { throw error || msg.language.get('COMMAND_ANIME_NO_CHOICE'); });
+			.catch((error) => { throw error || msg.language.get('COMMAND_ANIME_NO_CHOICE'); });
 
 		const synopsis = cutText(entry.attributes.synopsis, 750);
 		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10));
@@ -40,7 +40,7 @@ module.exports = class extends Command {
 			.setFooter('© kitsu.io'));
 	}
 
-	async getIndex(msg, entries) {
+	public async getIndex(msg, entries) {
 		if (entries.length === 1) return entries[0];
 		const _choice = await PromptList.run(msg, entries.slice(0, 10).map((entry) => {
 			if (entry.attributes.averageRating === null) entry.attributes.averageRating = this.extractAverage(entry);
@@ -51,11 +51,11 @@ module.exports = class extends Command {
 		return entry;
 	}
 
-	extractTitle(titles) {
+	public extractTitle(titles) {
 		return Object.values(titles).find(Boolean);
 	}
 
-	extractAverage(entry) {
+	public extractAverage(entry) {
 		let total = 0, max = 0;
 		for (const array of Object.entries(entry.attributes.ratingFrequencies)) {
 			const [key, value] = array.map(Number);

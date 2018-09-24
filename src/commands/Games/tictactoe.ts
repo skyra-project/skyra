@@ -6,7 +6,7 @@ const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['ttt'],
 			requiredPermissions: [FLAGS.ADD_REACTIONS],
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		this.channels = new Set();
 	}
 
-	async run(msg, [user]) {
+	public async run(msg, [user]) {
 		if (user.id === this.client.user.id) throw msg.language.get('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw msg.language.get('COMMAND_GAMES_BOT');
 		if (user.id === msg.author.id) throw msg.language.get('COMMAND_GAMES_SELF');
@@ -28,8 +28,8 @@ module.exports = class extends Command {
 		this.channels.add(msg.channel.id);
 
 		const prompt = await msg.sendLocale('COMMAND_TICTACTOE_PROMPT', [msg.author, user]);
-		const response = await msg.channel.awaitMessages(message => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
-			.then(messages => messages.first())
+		const response = await msg.channel.awaitMessages((message) => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
+			.then((messages) => messages.first())
 			.catch(() => false);
 
 		if (!response || !/ye(s|ah?)?/i.test(response.content)) {
@@ -41,14 +41,14 @@ module.exports = class extends Command {
 		try {
 			await this.game(prompt, [msg.author, user].sort(() => Math.random() - 0.5));
 		} catch (_) {
-			await prompt.edit(msg.language.get('UNEXPECTED_ISSUE')).catch(error => this.client.emit('apiError', error));
+			await prompt.edit(msg.language.get('UNEXPECTED_ISSUE')).catch((error) => this.client.emit('apiError', error));
 		}
 
 		this.channels.delete(msg.channel.id);
 		return prompt;
 	}
 
-	async game(msg, players) {
+	public async game(msg, players) {
 		// Add all reactions
 		for (const emoji of EMOJIS) await msg.react(emoji);
 		const board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -64,7 +64,7 @@ module.exports = class extends Command {
 		}
 	}
 
-	_game(msg, players, board) {
+	public _game(msg, players, board) {
 		let timeout, turn = 0, chosen, winner, player, blocked = true;
 		return new Promise((resolve, reject) => {
 			// Make the collectors
@@ -73,7 +73,7 @@ module.exports = class extends Command {
 				&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
 				&& board[chosen] === 0);
 
-			const makeRound = async () => {
+			const makeRound = async() => {
 				if (timeout) clearTimeout(timeout);
 				player = players[turn % 2];
 
@@ -115,7 +115,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	checkBoard(board) {
+	public checkBoard(board) {
 		for (let i = 0; i < 3; i++) {
 			const n = i * 3;
 			if (board[i] === 0) continue;
@@ -131,7 +131,7 @@ module.exports = class extends Command {
 		return undefined;
 	}
 
-	render(board) {
+	public render(board) {
 		let output = '', i = 0;
 		while (i < board.length) {
 			for (const value of board.slice(i, i + 3)) {

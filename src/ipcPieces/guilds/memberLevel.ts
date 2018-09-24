@@ -3,7 +3,7 @@ const { Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends API {
 
-	run({ guildID, memberID, level }) {
+	public run({ guildID, memberID, level }) {
 		const guild = this.client.guilds.get(guildID);
 		if (guild) {
 			const member = guild.members.get(memberID);
@@ -13,7 +13,7 @@ module.exports = class extends API {
 		return null;
 	}
 
-	hasLevel(guild, member, level) {
+	public hasLevel(guild, member, level) {
 		for (let i = level; i < LEVELS.length; i++) {
 			const entry = LEVELS[i];
 			if (entry === EMPTY) continue;

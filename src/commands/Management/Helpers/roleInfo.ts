@@ -2,7 +2,7 @@ const { Command, MessageEmbed, Permissions: { FLAGS } } = require('../../../inde
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	run(msg, [role = msg.member.roles.highest]) {
+	public run(msg, [role = msg.member.roles.highest]) {
 		const i18n = msg.language, { permissions } = role, { COMMAND_ROLEINFO_TITLES } = i18n.language;
 		return msg.sendEmbed(new MessageEmbed()
 			.setColor(role.color || 0xDFDFDF)

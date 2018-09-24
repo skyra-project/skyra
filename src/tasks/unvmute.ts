@@ -2,7 +2,7 @@ const { Task, constants: { MODERATION: { TYPE_KEYS, SCHEMA_KEYS } }, Permissions
 
 module.exports = class extends Task {
 
-	async run(doc) {
+	public async run(doc) {
 		// Get the guild and check for permissions
 		const guild = this.client.guilds.get(doc[SCHEMA_KEYS.GUILD]);
 		if (!guild || !guild.me.permissions.has(FLAGS.MUTE_MEMBERS)) return;

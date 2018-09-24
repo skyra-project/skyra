@@ -5,7 +5,7 @@ const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 5,
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 			if (action === 'list') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			return arg.toLowerCase();
-		}).createCustomResolver('output', async (arg, possible, msg, [action = 'list', type]) => {
+		}).createCustomResolver('output', async(arg, possible, msg, [action = 'list', type]) => {
 			if (action === 'list' || action === 'remove') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			if (type === 'reaction') {
@@ -47,7 +47,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [action = 'list', type, input, output]) {
+	public async run(msg, [action = 'list', type, input, output]) {
 		switch (action) {
 			case 'list': return this.list(msg);
 			case 'add': return this.add(msg, type, input, output);
@@ -56,9 +56,9 @@ module.exports = class extends Command {
 		}
 	}
 
-	async remove(msg, type, input) {
+	public async remove(msg, type, input) {
 		const list = this._getList(msg, type);
-		const index = list.findIndex(entry => entry.input === input);
+		const index = list.findIndex((entry) => entry.input === input);
 		if (index === -1) throw msg.language.get('COMMAND_TRIGGERS_REMOVE_NOTTAKEN');
 
 		// Create a shallow clone and remove the item
@@ -71,9 +71,9 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TRIGGERS_REMOVE');
 	}
 
-	async add(msg, type, input, output) {
+	public async add(msg, type, input, output) {
 		const list = this._getList(msg, type);
-		if (list.some(entry => entry.input === input)) throw msg.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
+		if (list.some((entry) => entry.input === input)) throw msg.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
 
 		const { errors } = await msg.guild.settings.update(this._getListName(type), [...list, this._format(type, input, output)], { action: 'overwrite' });
 		if (errors.length) throw errors[0];
@@ -81,7 +81,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TRIGGERS_ADD');
 	}
 
-	list(msg) {
+	public list(msg) {
 		const { trigger } = msg.guild.settings;
 		const output = [];
 		for (const alias of trigger.alias)
@@ -92,7 +92,7 @@ module.exports = class extends Command {
 		return msg.sendMessage(codeBlock('asciidoc', output.join('\n')));
 	}
 
-	_format(type, input, output) {
+	public _format(type, input, output) {
 		switch (type) {
 			case 'alias': return { input, output };
 			case 'reaction': return { action: 'react', input, output };
@@ -100,7 +100,7 @@ module.exports = class extends Command {
 		}
 	}
 
-	_getListName(type) {
+	public _getListName(type) {
 		switch (type) {
 			case 'alias': return 'trigger.alias';
 			case 'reaction':
@@ -108,7 +108,7 @@ module.exports = class extends Command {
 		}
 	}
 
-	_getList(msg, type) {
+	public _getList(msg, type) {
 		switch (type) {
 			case 'alias': return msg.guild.settings.trigger.alias;
 			case 'reaction':

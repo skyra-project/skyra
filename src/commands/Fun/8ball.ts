@@ -2,7 +2,7 @@ const { Command, klasaUtil: { codeBlock } } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -13,13 +13,13 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [input]) {
+	public async run(msg, [input]) {
 		return msg.sendLocale('COMMAND_8BALL_OUTPUT',
 			[msg.author, input, codeBlock('', this.generator(input.toLowerCase(), msg.language))],
 			{ disableEveryone: true });
 	}
 
-	generator(input, i18n) {
+	public generator(input, i18n) {
 		const prefixes = i18n.language.COMMAND_8BALL_QUESTIONS
 			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS;
 
@@ -35,16 +35,16 @@ module.exports = class extends Command {
 		return this.generate(QuestionTypes.Else, i18n);
 	}
 
-	generate(type, i18n) {
+	public generate(type, i18n) {
 		const row = i18n.EIGHT_BALL[type];
 		return row[Math.floor(Math.random() * row.length)];
 	}
 
-	checkQuestion(question, input) {
+	public checkQuestion(question, input) {
 		return question instanceof RegExp ? question.test(input) : input.endsWith(question);
 	}
 
-	check(prefix, input) {
+	public check(prefix, input) {
 		return prefix instanceof RegExp ? prefix.test(input) : input.startsWith(prefix);
 	}
 

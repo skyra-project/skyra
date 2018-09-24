@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [money, user]) {
+	public async run(msg, [money, user]) {
 		if (msg.author === user) throw msg.language.get('COMMAND_PAY_SELF');
 		if (user.bot) return msg.sendLocale('COMMAND_SOCIAL_PAY_BOT');
 
@@ -28,14 +28,14 @@ module.exports = class extends Command {
 		return accepted ? this.acceptPayment(msg, user, money) : this.denyPayment(msg);
 	}
 
-	async acceptPayment(msg, user, money) {
+	public async acceptPayment(msg, user, money) {
 		await user.settings.sync();
 		await msg.author.settings.use(money);
 		await user.settings.add(money);
 		return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}
 
-	denyPayment(msg) {
+	public denyPayment(msg) {
 		return msg.alert(msg.language.get('COMMAND_PAY_PROMPT_DENY'));
 	}
 

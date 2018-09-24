@@ -3,7 +3,7 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['source', 'msg-source', 'message-source'],
 			cooldown: 15,
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('message', async (arg, possible, msg, [channel = msg.channel]) => {
+		this.createCustomResolver('message', async(arg, possible, msg, [channel = msg.channel]) => {
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 			const message = await channel.messages.fetch(arg).catch(() => null);
 			if (message) return message;
@@ -22,9 +22,9 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [, message]) {
+	public async run(msg, [, message]) {
 		const attachments = message.attachments.size
-			? `\n\n\n=============\n${message.attachments.map(att => `📁 <${att.url}>`).join('\n')}`
+			? `\n\n\n=============\n${message.attachments.map((att) => `📁 <${att.url}>`).join('\n')}`
 			: '';
 
 		return msg.sendMessage(getContent(message) + attachments, { code: 'md' });

@@ -2,7 +2,7 @@ const { Task, MessageEmbed } = require('../index');
 
 module.exports = class extends Task {
 
-	async run() {
+	public async run() {
 		const { guilds } = this.client;
 		for (const task of this.client.schedule.tasks) {
 			if (task.taskName !== 'giveaway') continue;
@@ -25,7 +25,7 @@ module.exports = class extends Task {
 		}
 	}
 
-	async editMessage(task, channelID, messageID, { content, embed }) {
+	public async editMessage(task, channelID, messageID, { content, embed }) {
 		try {
 			await this.client.api.channels[channelID].messages[messageID].patch({
 				data: {
@@ -38,7 +38,7 @@ module.exports = class extends Task {
 		}
 	}
 
-	createMessage(guild, title, timestamp) {
+	public createMessage(guild, title, timestamp) {
 		const { language } = guild;
 		return {
 			content: language.get('GIVEAWAY_TITLE'),

@@ -2,7 +2,7 @@ const { Command } = require('../../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [channel = msg.channel]) {
+	public async run(msg, [channel = msg.channel]) {
 		if (!channel.readable) throw msg.language.get('CHANNEL_NOT_READABLE');
 		const messages = await channel.messages.fetch({ limit: 100, before: msg.id }),
 			minimum = msg.createdTimestamp - 60000,

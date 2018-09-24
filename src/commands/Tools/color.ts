@@ -2,13 +2,13 @@ const { Command, Color: { parse, luminance, hexConcat } } = require('../../index
 const { Canvas } = require('canvas-constructor');
 
 /* Color limiter */
-const cL = colour => Math.max(Math.min(colour, 255), 0);
+const cL = (colour) => Math.max(Math.min(colour, 255), 0);
 const sCL = (colour) => colour >= 128 ? 0 : 255;
 
 /* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B", "x", "y"] }] */
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['colour'],
 			requiredPermissions: ['ATTACH_FILES'],
@@ -20,14 +20,14 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [input, diff = 10]) {
+	public async run(msg, [input, diff = 10]) {
 		const { hex, hsl, rgb } = parse(input);
 
 		const attachment = await this.showColor(rgb, diff);
 		return msg.channel.send(msg.language.get('COMMAND_COLOR', hex, rgb, hsl), { files: [{ attachment, name: 'color.png' }] });
 	}
 
-	async showColor(color, diff) {
+	public async showColor(color, diff) {
 		const red = color.r;
 		const green = color.g;
 		const blue = color.b;
@@ -58,7 +58,7 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-	processFrame(ctx, x, y, red, green, blue) {
+	public processFrame(ctx, x, y, red, green, blue) {
 		ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
 		ctx.fillRect(x, y, 120, 120);
 		const thisLum = sCL(luminance(red, green, blue));

@@ -32,7 +32,7 @@ class StarboardMessage {
 	 * @param {StarboardManager} manager The StarboardManager instance that manages this instance
 	 * @param {KlasaMessage} message The starred Message instance
 	 */
-	constructor(manager, message) {
+	public constructor(manager, message) {
 		/**
 		 * The StarboardManager instance that manages this instance
 		 * @since 3.0.0
@@ -106,7 +106,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @type {KlasaClient}
 	 */
-	get client() {
+	public get client() {
 		return this.manager.client;
 	}
 
@@ -115,7 +115,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @type {Provider}
 	 */
-	get provider() {
+	public get provider() {
 		return this.manager.provider;
 	}
 
@@ -124,7 +124,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @type {string}
 	 */
-	get emoji() {
+	public get emoji() {
 		const { stars } = this;
 		if (stars < 5) return '⭐';
 		if (stars < 10) return '🌟';
@@ -137,7 +137,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @type {number}
 	 */
-	get color() {
+	public get color() {
 		const { stars } = this;
 		if (stars <= MAXCOLORS) return COLORS[stars];
 		return LASTCOLOR;
@@ -148,7 +148,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @type {MessageEmbed}
 	 */
-	get embed() {
+	public get embed() {
 		if (this.starMessage && this.starMessage.embeds) {
 			return this.starMessage.embeds[0]
 				.setColor(this.color);
@@ -169,7 +169,7 @@ class StarboardMessage {
 	 * @type {number}
 	 * @private
 	 */
-	get stars() {
+	public get stars() {
 		return this.users.size;
 	}
 
@@ -178,7 +178,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @returns {Promise<this>}
 	 */
-	sync() {
+	public sync() {
 		if (!this._syncStatus) this._syncStatus = this._sync();
 		return this._syncStatus;
 	}
@@ -188,7 +188,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @returns {Promise<boolean>}
 	 */
-	async disable() {
+	public async disable() {
 		if (this.disabled) return false;
 		await this.provider.db.table(TABLENAME).get(this.UUID).update({ disabled: true });
 		this.disabled = true;
@@ -200,7 +200,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @returns {Promise<boolean>}
 	 */
-	async enable() {
+	public async enable() {
 		if (!this.disabled) return false;
 		await this.provider.db.table(TABLENAME).get(this.UUID).update({ disabled: false });
 		this.disabled = false;
@@ -219,7 +219,7 @@ class StarboardMessage {
 	 * @param {string} userID The user's ID to add
 	 * @returns {Promise<boolean>}
 	 */
-	add(userID) {
+	public add(userID) {
 		if (this.message.author.id === userID || this.users.has(userID)) return Promise.resolve(false);
 		this.users.add(userID);
 		return this.setStars();
@@ -231,7 +231,7 @@ class StarboardMessage {
 	 * @param {string} userID The user's ID to remove
 	 * @returns {Promise<boolean>}
 	 */
-	remove(userID) {
+	public remove(userID) {
 		if (this.message.author.id !== userID) {
 			this.users.delete(userID);
 			return this.setStars();
@@ -244,7 +244,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @returns {Promise<number>}
 	 */
-	async fetchStars() {
+	public async fetchStars() {
 		const users = await this._fetchUsers();
 		if (!users.length) {
 			this.destroy();
@@ -262,7 +262,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @returns {Promise<boolean>}
 	 */
-	async updateMessage() {
+	public async updateMessage() {
 		// Don't update if it's not fully sync
 		if (this._syncStatus) await this._syncStatus;
 
@@ -291,7 +291,7 @@ class StarboardMessage {
 	 * @since 3.0.0
 	 * @returns {Promise<boolean>}
 	 */
-	async setStars() {
+	public async setStars() {
 		if (this.disabled) return false;
 		this._lastUpdated = Date.now();
 
@@ -305,7 +305,7 @@ class StarboardMessage {
 	 * Destroy this instance
 	 * @since 3.0.0
 	 */
-	destroy() {
+	public destroy() {
 		this.manager.delete(`${this.channel.id}-${this.message.id}`);
 		this.dispose();
 	}
@@ -314,7 +314,7 @@ class StarboardMessage {
 	 * Dispose this instance to free space
 	 * @since 3.0.0
 	 */
-	dispose() {
+	public dispose() {
 		this.manager = null;
 		this.channel = null;
 		this.message = null;
@@ -324,7 +324,7 @@ class StarboardMessage {
 		this.users.clear();
 	}
 
-	toJSON() {
+	public toJSON() {
 		return {
 			channelID: this.channel.id,
 			disabled: this.disabled,
@@ -334,11 +334,11 @@ class StarboardMessage {
 		};
 	}
 
-	toString() {
+	public toString() {
 		return `StarboardMessage(${this.channel.id}-${this.message.id}, ${this.stars})`;
 	}
 
-	async _updateDatabase(object) {
+	public async _updateDatabase(object) {
 		if (this._syncStatus) await this._syncStatus;
 		if (!this.UUID)
 			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...object })).generated_keys;
@@ -352,7 +352,7 @@ class StarboardMessage {
 	 * @returns {Promise<this>}
 	 * @private
 	 */
-	async _sync() {
+	public async _sync() {
 		await this.fetchStars();
 
 		if (this.stars) {
@@ -387,7 +387,7 @@ class StarboardMessage {
 	 * @returns {Promise<Object<string, *>[]>}
 	 * @private
 	 */
-	_fetchUsers() {
+	public _fetchUsers() {
 		return this.client.api.channels[this.channel.id].messages[this.message.id]
 			.reactions[this.channel.guild.settings.starboard.emoji]
 			.get({ query: { limit: 100 } })

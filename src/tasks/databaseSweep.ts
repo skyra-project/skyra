@@ -2,7 +2,7 @@ const { Task } = require('klasa');
 
 module.exports = class extends Task {
 
-	async run() {
+	public async run() {
 		this.disable();
 		const r = this.client.providers.default.db;
 		const [users, members] = await Promise.all([
@@ -13,7 +13,7 @@ module.exports = class extends Task {
 		this.enable();
 	}
 
-	async sweepUserProfiles(r) {
+	public async sweepUserProfiles(r) {
 		return (await r.table('users').filter(
 			r.row('points').le(25)
 				.and(r.row.hasFields(['color', 'reputation', 'money', 'bannerList']).not())
@@ -21,7 +21,7 @@ module.exports = class extends Task {
 		).delete()).deleted;
 	}
 
-	async sweepMemberProfiles(r) {
+	public async sweepMemberProfiles(r) {
 		return (await r.table('localScores').filter(
 			r.row('count').le(25)
 		).delete()).deleted;

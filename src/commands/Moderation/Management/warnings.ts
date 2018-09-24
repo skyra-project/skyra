@@ -4,7 +4,7 @@ const RH_TIMELIMIT = 30000;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			bucket: 2,
@@ -17,15 +17,14 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [target]) {
-		const warnings = (await msg.guild.moderation.fetch(target ? target.id : undefined)).filter(log => log.type === TYPE_KEYS.WARN);
+	public async run(msg, [target]) {
+		const warnings = (await msg.guild.moderation.fetch(target ? target.id : undefined)).filter((log) => log.type === TYPE_KEYS.WARN);
 		if (!warnings.size) throw msg.language.get('COMMAND_WARNINGS_EMPTY');
 
 		const display = new RichDisplay(new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
 			.setTitle(msg.language.get('COMMAND_WARNINGS_AMOUNT', warnings.size)));
-
 
 		// Fetch usernames
 		const users = new Map();
@@ -38,12 +37,12 @@ module.exports = class extends Command {
 		const format = this.displayWarning.bind(this, users);
 
 		for (const page of chunk([...warnings.values()], 10))
-			display.addPage(template => template.setDescription(page.map(format)));
+			display.addPage((template) => template.setDescription(page.map(format)));
 
 		return display.run(await msg.sendLocale('SYSTEM_PROCESSING'), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
 	}
 
-	displayWarning(users, warning) {
+	public displayWarning(users, warning) {
 		return `Case \`${warning.case}\`. Moderator: **${users.get(warning.moderator)}**.\n${warning.reason || 'None'}`;
 	}
 

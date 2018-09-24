@@ -79,7 +79,7 @@ const PERMS = {
 	USE_VAD: 'Utiliser La Détection De Voix'
 };
 
-const random = num => Math.round(Math.random() * num);
+const random = (num) => Math.round(Math.random() * num);
 
 const EIGHT_BALL = {
 	WHEN: ['Soon™', 'Maybe tomorrow.', 'Maybe next year...', 'Right now.', 'In a few months.'],
@@ -97,7 +97,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 
 module.exports = class extends Language {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory);
 
 		this.PERMISSIONS = PERMS;
@@ -175,7 +175,7 @@ module.exports = class extends Language {
 				usersRemoved.length ? `**Utilisateurs Retirés**\n${codeBlock('', usersRemoved.join(', '))}` : '',
 				guildsAdded.length ? `**Guildes Ajoutées**\n${codeBlock('', guildsAdded.join(', '))}` : '',
 				guildsRemoved.length ? `**Guildes Retirées**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
-			].filter(val => val !== '').join('\n'),
+			].filter((val) => val !== '').join('\n'),
 			COMMAND_UNLOAD: (type, name) => `✅ ${toTitleCase(this.piece(type))} déchargé${this.isFeminine(type) ? 'e' : ''} : ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Décharge le composant.',
 			COMMAND_TRANSFER_ERROR: '❌ Ce fichier a déjà été transféré ou n\'a jamais existé.',
@@ -694,7 +694,7 @@ module.exports = class extends Language {
 			COMMAND_VAPORWAVE_DESCRIPTION: 'Vapowave characters!',
 			COMMAND_VAPORWAVE_EXTENDED: builder.display('vaporwave', {
 				extendedHelp: `Well, what can I tell you? This command turns your messages into unicode monospaced characters. That
-					is, what humans call 'Ａ　Ｅ　Ｓ　Ｔ　Ｈ　Ｅ　Ｔ　Ｉ　Ｃ'. I wonder what it means...`, // eslint-disable-line no-irregular-whitespace
+					is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...`, // eslint-disable-line no-irregular-whitespace
 				explainedUsage: [
 					['phrase', 'The phrase to convert']
 				],
@@ -1187,7 +1187,7 @@ module.exports = class extends Language {
 				`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`,
 				`Amount of members: **${role.members.size}**`
 			].join('\n'),
-			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map((key) => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
 
 			/**
 			 * #################################
@@ -1357,7 +1357,7 @@ module.exports = class extends Language {
 			COMMAND_REMINDME_SHORT_TIME: 'You did not give me a duration of at least one minute long. Cancelling prompt.',
 			COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
 			COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type either \'delete\' or \'remove\' followed by the ID.',
-			COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.timestamp - Date.now())}** has been successfully deleted.`,
+			COMMAND_REMINDME_DELETE: (task) => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.timestamp - Date.now())}** has been successfully deleted.`,
 			COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 			COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 			COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
@@ -1572,7 +1572,6 @@ module.exports = class extends Language {
 
 			LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
-
 			GUILD_SETTINGS_CHANNELS_MOD: 'Cette commande requiert un salon modlog pour fonctionner.',
 			GUILD_SETTINGS_ROLES_MUTED: 'Cette commande requiert un rôle configuré pour les personnes en sourdine.',
 			GUILD_BANS_EMPTY: 'Il n\'y a pas de bannissements enregistrés dans ce serveur.',
@@ -1620,12 +1619,12 @@ module.exports = class extends Language {
 		};
 	}
 
-	isFeminine(type) {
+	public isFeminine(type) {
 		type = type.toString();
 		return ['command', 'commands'].indexOf(type) !== -1;
 	}
 
-	piece(type) {
+	public piece(type) {
 		type = type.toString();
 		const plural = type.slice(-1) === 's';
 		const tp = {
@@ -1643,6 +1642,6 @@ module.exports = class extends Language {
 			: type;
 	}
 
-	async init() { } // eslint-disable-line no-empty-function
+	public async init() { } // eslint-disable-line no-empty-function
 
 };

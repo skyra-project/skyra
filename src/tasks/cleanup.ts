@@ -42,7 +42,7 @@ const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
  */
 module.exports = class MemorySweeper extends Task {
 
-	async run() {
+	public async run() {
 		const OLD_SNOWFLAKE = binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
 		let presences = 0, guildMembers = 0, emojis = 0, lastMessages = 0, users = 0;
 
@@ -102,7 +102,7 @@ module.exports = class MemorySweeper extends Task {
 	 * @param {number} number The number to colourise
 	 * @returns {string}
 	 */
-	setColor(number) {
+	public setColor(number) {
 		const text = String(number).padStart(5, ' ');
 		// Light Red color
 		if (number > 1000) return `\u001B[39m\u001B[91m${text}\u001B[39m\u001B[90m`;

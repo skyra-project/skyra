@@ -2,7 +2,7 @@ const { Command, config: { tokens: { google: KEY } }, util: { fetch } } = requir
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 15,
 			aliases: ['yt'],
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [input, ind = 1]) {
+	public async run(msg, [input, ind = 1]) {
 		const index = --ind;
 		const data = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${KEY}&safeSearch=strict`, 'json');
 		const result = data.items[index];

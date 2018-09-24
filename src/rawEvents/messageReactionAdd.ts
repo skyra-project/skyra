@@ -4,11 +4,11 @@ const CONNECT_FOUR_WHITELIST = new Set(CONNECT_FOUR.REACTIONS);
 
 module.exports = class extends RawEvent {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, { name: 'MESSAGE_REACTION_ADD' });
 	}
 
-	async run({ message, reaction, user }) { // eslint-disable-line
+	public async run({ message, reaction, user }) { // eslint-disable-line
 		// Unfinished
 	}
 
@@ -17,7 +17,7 @@ module.exports = class extends RawEvent {
 	// 	  emoji: { name: '😄', id: null, animated: false },
 	// 	  channel_id: 'id' }
 
-	async process(data) {
+	public async process(data) {
 		// Verify channel
 		const channel = this.client.channels.get(data.channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
@@ -56,12 +56,12 @@ module.exports = class extends RawEvent {
 		// return { message, reaction, user };
 	}
 
-	async _handleRoleChannel(guild, emoji, userID, messageID) {
+	public async _handleRoleChannel(guild, emoji, userID, messageID) {
 		const { messageReaction } = guild.settings.roles;
 		if (!messageReaction || messageReaction !== messageID) return;
 
 		const parsed = resolveEmoji(emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}` : emoji.name);
-		const roleEntry = guild.settings.roles.reactions.find(entry => entry.emoji === parsed);
+		const roleEntry = guild.settings.roles.reactions.find((entry) => entry.emoji === parsed);
 		if (!roleEntry) return;
 
 		try {
@@ -74,7 +74,7 @@ module.exports = class extends RawEvent {
 		}
 	}
 
-	async _handleStarboard(channel, messageID, userID) {
+	public async _handleStarboard(channel, messageID, userID) {
 		try {
 			const starboardSettings = channel.guild.settings.starboard;
 			if (!starboardSettings.channel || starboardSettings.ignoreChannels.includes(channel.id)) return;
@@ -96,7 +96,7 @@ module.exports = class extends RawEvent {
 		}
 	}
 
-	_handleConnectFour(channel, messageID, emoji, userID) {
+	public _handleConnectFour(channel, messageID, emoji, userID) {
 		const game = this.client.connectFour.matches.get(channel.id);
 		if (game && game.message && game.message.id === messageID) game.send(emoji, userID);
 	}

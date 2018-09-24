@@ -2,7 +2,7 @@ const { API } = require('../index');
 
 module.exports = class extends API {
 
-	run() {
+	public run() {
 		return this.client.usageStatus;
 	}
 

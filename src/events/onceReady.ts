@@ -2,14 +2,14 @@ const { Event, klasaUtil } = require('../index');
 
 module.exports = class extends Event {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			once: true,
 			event: 'ready'
 		});
 	}
 
-	async run() {
+	public async run() {
 		await this.client.fetchApplication();
 		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.application.owner.id;
 
@@ -22,7 +22,7 @@ module.exports = class extends Event {
 		]);
 
 		// Init all the pieces
-		await Promise.all(this.client.pieceStores.filter(store => !['providers', 'extendables'].includes(store.name)).map(store => store.init()));
+		await Promise.all(this.client.pieceStores.filter((store) => !['providers', 'extendables'].includes(store.name)).map((store) => store.init()));
 		klasaUtil.initClean(this.client);
 		this.client.ready = true;
 
@@ -35,7 +35,7 @@ module.exports = class extends Event {
 		this.client.emit('klasaReady');
 	}
 
-	async _prepareSkyra() {
+	public async _prepareSkyra() {
 		// Fill the dictionary name for faster user fetching
 		for (const guild of this.client.guilds.values()) {
 			for (const member of guild.members.values())

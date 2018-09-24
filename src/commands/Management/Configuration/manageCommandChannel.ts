@@ -2,7 +2,7 @@ const { Command } = require('../../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -15,12 +15,12 @@ module.exports = class extends Command {
 			subcommands: true
 		});
 
-		this.createCustomResolver('channel', async (arg, possible, msg) => {
+		this.createCustomResolver('channel', async(arg, possible, msg) => {
 			if (!arg) return msg.channel;
 			const channel = await this.client.arguments.get('channelname').run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
 			throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL');
-		}).createCustomResolver('command', async (arg, possible, msg, [type]) => {
+		}).createCustomResolver('command', async(arg, possible, msg, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (arg) {
 				const command = await this.client.arguments.get('command').run(arg, possible, msg);
@@ -30,13 +30,13 @@ module.exports = class extends Command {
 		});
 	}
 
-	async show(msg, [channel]) {
+	public async show(msg, [channel]) {
 		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id];
 		if (disabledCommands && disabledCommands.length) return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_SHOW', [channel, `\`${disabledCommands.join('` | `')}\``]);
 		throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY');
 	}
 
-	async add(msg, [channel, command]) {
+	public async add(msg, [channel, command]) {
 		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id] || [];
 		if (disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
 		await msg.guild.settings.update('disabledCommandsChannels', {
@@ -46,14 +46,14 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [channel, command.name]);
 	}
 
-	async remove(msg, [channel, command]) {
+	public async remove(msg, [channel, command]) {
 		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id] || [];
 		if (!disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', channel);
 		await msg.guild.settings.update('disabledCommandsChannels', getRemovedObject(msg.guild.settings.disabledCommandsChannels, channel, command));
 		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel, command.name]);
 	}
 
-	async reset(msg, [channel]) {
+	public async reset(msg, [channel]) {
 		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id];
 		if (!disabledCommands) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY');
 		delete msg.guild.settings.disabledCommandsChannels[channel.id];

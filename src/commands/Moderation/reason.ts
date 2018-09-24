@@ -2,7 +2,7 @@ const { Command, constants: { MODERATION: { SCHEMA_KEYS } }, klasaUtil: { codeBl
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 5,
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [selected, reason]) {
+	public async run(msg, [selected, reason]) {
 		if (!reason) reason = null;
 
 		// Get all cases
@@ -35,7 +35,7 @@ module.exports = class extends Command {
 			if (channel) {
 				// Fetch the message to edit it
 				const messages = await channel.messages.fetch({ limit: 100 });
-				const message = messages.find(mes => mes.author.id === this.client.user.id
+				const message = messages.find((mes) => mes.author.id === this.client.user.id
 					&& mes.embeds.length > 0
 					&& mes.embeds[0].type === 'rich'
 					&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${selected}`

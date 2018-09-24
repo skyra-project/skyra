@@ -10,7 +10,7 @@ class PreciseTimeout {
 	 * @since 3.0.0
 	 * @param {number} time The time in milliseconds to run
 	 */
-	constructor(time) {
+	public constructor(time) {
 		/**
 		 * @since 3.0.0
 		 * @type {number}
@@ -43,11 +43,11 @@ class PreciseTimeout {
 	 * @since 3.0.0
 	 * @returns {Promise<boolean>}
 	 */
-	async run() {
+	public async run() {
 		if (this.stopped) return false;
 
 		while (!this.stopped && Date.now() < this.endsAt) {
-			await new Promise(resolve => {
+			await new Promise((resolve) => {
 				this.resolve = resolve;
 				// Hardcoded extra 10ms to not perform a doom
 				this.timeout = setTimeout(() => this.resolve(), Date.now() - this.endsAt + 10);
@@ -63,7 +63,7 @@ class PreciseTimeout {
 	 * @since 3.0.0
 	 * @returns {boolean}
 	 */
-	stop() {
+	public stop() {
 		if (this.stopped) return false;
 
 		this.stopped = true;

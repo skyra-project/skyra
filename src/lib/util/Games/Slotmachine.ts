@@ -32,19 +32,18 @@ const COORDINATES = [
 	{ x: 98, y: 96 }
 ];
 
-
 const POSITIONS = [0, 0, 0];
 
 class Slotmachine {
 
-	constructor(msg, amount) {
+	public constructor(msg, amount) {
 		this.player = msg.author;
 		this.boost = msg.guildSettings.social.boost;
 		this.winnings = 0;
 		this.amount = amount;
 	}
 
-	static async init() {
+	public static async init() {
 		const { join } = require('path');
 		const [icon, shiny] = await Promise.all([
 			loadImage(join(__dirname, '../../../../assets/images/social/sm-icons.png')),
@@ -54,7 +53,7 @@ class Slotmachine {
 		Slotmachine.images.SHINY = shiny;
 	}
 
-	async run() {
+	public async run() {
 		const { settings } = this.player;
 		const attempts = 1 + Math.floor(settings.bias * 2);
 		let rolls, attempt = attempts;
@@ -70,7 +69,7 @@ class Slotmachine {
 		return this.render(rolls);
 	}
 
-	async render(rolls) {
+	public async render(rolls) {
 		const win = this.winnings > 0;
 		const length = win ? 300 : 150;
 
@@ -109,14 +108,14 @@ class Slotmachine {
 		return canvas.toBufferAsync();
 	}
 
-	calculate(roll) {
+	public calculate(roll) {
 		for (const [COMB1, COMB2, COMB3] of COMBINATIONS) {
 			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3])
 				this.winnings += this.amount * VALUES[roll[COMB1]];
 		}
 	}
 
-	roll() {
+	public roll() {
 		const roll = [];
 		for (let i = 0; i < 3; i++) {
 			const reel = REELS[i];
@@ -131,7 +130,7 @@ class Slotmachine {
 		return roll;
 	}
 
-	_spinReel(reel) {
+	public _spinReel(reel) {
 		const REEL_LENGTH = REELS[reel].length;
 		const position = (POSITIONS[reel] + Math.round((Math.random() * REEL_LENGTH) + 3)) % REEL_LENGTH;
 		POSITIONS[reel] = position;

@@ -3,7 +3,7 @@ const RH_TIMELIMIT = TIME.MINUTE * 5;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 5,
@@ -13,12 +13,12 @@ module.exports = class extends Command {
 			usage: '(roles:rolenames)'
 		});
 
-		this.createCustomResolver('rolenames', async (arg, possible, msg) => {
+		this.createCustomResolver('rolenames', async(arg, possible, msg) => {
 			if (!msg.guild.settings.roles.public.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 			if (!arg) return [];
 
 			const search = new FuzzySearch(msg.guild.roles, (role) => role.name, (role) => msg.guild.settings.roles.public.includes(role.id));
-			const roles = arg.split(',').map(role => role.trim()).filter(role => role.length);
+			const roles = arg.split(',').map((role) => role.trim()).filter((role) => role.length);
 			const output = [];
 			for (const role of roles) {
 				const result = await search.run(msg, role);
@@ -28,7 +28,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [roles]) {
+	public async run(msg, [roles]) {
 		const { public: publicRoles, removeInitial, initial } = msg.guild.settings.roles;
 		if (!publicRoles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
@@ -56,7 +56,7 @@ module.exports = class extends Command {
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (initial && removeInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!msg.guild.roles.has(initial)) msg.guild.settings.reset('roles.initial').catch(error => this.client.emit('wtf', error));
+			if (!msg.guild.roles.has(initial)) msg.guild.settings.reset('roles.initial').catch((error) => this.client.emit('wtf', error));
 			else if (msg.member.roles.has(initial)) memberRoles.delete(initial);
 		}
 
@@ -71,7 +71,7 @@ module.exports = class extends Command {
 		return msg.sendMessage(output.join('\n'));
 	}
 
-	async list(msg, publicRoles) {
+	public async list(msg, publicRoles) {
 		const remove = [], roles = [];
 		for (const roleID of publicRoles) {
 			const role = msg.guild.roles.get(roleID);
@@ -97,7 +97,7 @@ module.exports = class extends Command {
 		);
 
 		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPage(template => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
+		for (let i = 0; i < pages; i++) display.addPage((template) => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
 
 		return display.run(await msg.channel.send(msg.language.get('SYSTEM_PROCESSING')), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
 	}

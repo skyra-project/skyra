@@ -3,7 +3,7 @@ const { Permissions: { FLAGS } } = require('discord.js');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: 'Sets a timer.',
@@ -14,14 +14,14 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [cancel, caseID, ...time]) {
+	public async run(msg, [cancel, caseID, ...time]) {
 		const modlog = await msg.guild.moderation.fetch(caseID);
 		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 		if (!cancel && modlog.temporary) throw msg.language.get('COMMAND_TIME_TIMED');
 
 		const user = await this.client.users.fetch(modlog.user);
 		const type = await this.getActions(msg, modlog, user);
-		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[SCHEMA_KEYS.CASE] === modlog.case);
+		const task = this.client.schedule.tasks.find((_task) => _task.data && _task.data[SCHEMA_KEYS.CASE] === modlog.case);
 
 		if (cancel) return this.cancel(msg, modlog, task);
 		if (modlog.appealed) throw msg.language.get('MODLOG_APPEALED');
@@ -48,7 +48,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TIME_SCHEDULED', [modlog.name, user, offset]);
 	}
 
-	async cancel(msg, modlog, task) {
+	public async cancel(msg, modlog, task) {
 		if (!task) throw msg.language.get('COMMAND_TIME_NOT_SCHEDULED');
 		await task.delete();
 
@@ -61,7 +61,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TIME_ABORTED', [modlog.name]);
 	}
 
-	async updateModlog(msg, modcase) {
+	public async updateModlog(msg, modcase) {
 		const { modlog } = msg.guild.settings.channels;
 		if (!modlog) return null;
 		const channel = msg.guild.channels.get(modlog);
@@ -72,7 +72,7 @@ module.exports = class extends Command {
 
 		// Fetch the message to edit it
 		const messages = await channel.messages.fetch({ limit: 100 });
-		const message = messages.find(mes => mes.author.id === this.client.user.id
+		const message = messages.find((mes) => mes.author.id === this.client.user.id
 			&& mes.embeds.length > 0
 			&& mes.embeds[0].type === 'rich'
 			&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${modcase.case}`
@@ -81,7 +81,7 @@ module.exports = class extends Command {
 		return message ? message.edit(embed) : channel.send(embed);
 	}
 
-	getActions(msg, modlog, user) {
+	public getActions(msg, modlog, user) {
 		switch (modlog.type) {
 			case TYPE_KEYS.TEMPORARY_BAN:
 			case TYPE_KEYS.BAN: return this.checkBan(msg, modlog, user);
@@ -93,7 +93,7 @@ module.exports = class extends Command {
 		}
 	}
 
-	async checkBan(msg, modlog, user) {
+	public async checkBan(msg, modlog, user) {
 		if (!msg.guild.me.permissions.has(FLAGS.BAN_MEMBERS)) throw msg.language.get('COMMAND_UNBAN_MISSING_PERMISSION');
 		const users = await msg.guild.fetchBans().catch(() => { throw msg.language.get('SYSTEM_FETCHBANS_FAIL'); });
 		if (!users.size) throw msg.language.get('GUILD_BANS_EMPTY');
@@ -102,15 +102,15 @@ module.exports = class extends Command {
 		return 'unban';
 	}
 
-	async checkMute(msg, modlog, user) {
+	public async checkMute(msg, modlog, user) {
 		if (!msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES)) throw msg.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
 
-		const stickyRoles = msg.guild.settings.stickyRoles.find(stickyRole => stickyRole.id === user.id);
+		const stickyRoles = msg.guild.settings.stickyRoles.find((stickyRole) => stickyRole.id === user.id);
 		if (!stickyRoles || !stickyRoles.roles.includes(msg.guild.settings.roles.muted)) throw msg.language.get('COMMAND_MUTE_USER_NOT_MUTED');
 		return 'unmute';
 	}
 
-	async checkVMute(msg, modlog, user) {
+	public async checkVMute(msg, modlog, user) {
 		if (!msg.guild.me.permissions.has(FLAGS.MUTE_MEMBERS)) throw msg.language.get('COMMAND_VMUTE_MISSING_PERMISSION');
 		const member = await msg.guild.members.fetch(user).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
 		if (!member.serverMute) throw msg.language.get('COMMAND_VMUTE_USER_NOT_MUTED');

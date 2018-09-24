@@ -7,7 +7,7 @@ const titles = {
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [type = 'local', index = 1]) {
+	public async run(msg, [type = 'local', index = 1]) {
 		const list = await (type === 'local'
 			? this.client.leaderboard.getMembers(msg.guild.id)
 			: this.client.leaderboard.getUsers());
@@ -31,7 +31,7 @@ module.exports = class extends Command {
 		return msg.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
 
-	async generatePage(msg, list, index, position) {
+	public async generatePage(msg, list, index, position) {
 		if (index > list.size / 10) index = 0;
 		const retrievedPage = [], promises = [],
 			page = [], listSize = list.size, pageCount = Math.ceil(listSize / 10),
@@ -40,7 +40,7 @@ module.exports = class extends Command {
 			if (positionOffset > value.position) continue;
 			if (positionOffset + 10 < value.position) break;
 			retrievedPage.push(value);
-			if (!value.name) promises.push(msg.guild.fetchName(id).then(username => { value.name = username || `Unknown: ${id}`; }));
+			if (!value.name) promises.push(msg.guild.fetchName(id).then((username) => { value.name = username || `Unknown: ${id}`; }));
 		}
 
 		if (promises.length) {
@@ -50,7 +50,6 @@ module.exports = class extends Command {
 		for (const value of retrievedPage)
 			page.push(`• ${value.position.toString().padStart(indexLength, ' ')}: ${this.keyUser(value.name).padEnd(25, ' ')} :: ${value.points}`);
 
-
 		page.push('');
 		page.push(msg.language.get('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
 		page.push(msg.language.get('COMMAND_SCOREBOARD_POSITION', position));
@@ -58,7 +57,7 @@ module.exports = class extends Command {
 		return page;
 	}
 
-	keyUser(str) {
+	public keyUser(str) {
 		const user = this.client.users.get(str);
 		if (user) str = user.username;
 		if (str.length < 25) return str;

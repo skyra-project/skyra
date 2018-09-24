@@ -4,7 +4,7 @@ const DAILY_PERIOD = TIME.HOUR * 12;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['dailies'],
 			cooldown: 30,
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		const now = Date.now();
 		await msg.author.settings.sync();
 		const time = msg.author.settings.timeDaily;
@@ -41,7 +41,7 @@ module.exports = class extends Command {
 		]);
 	}
 
-	async claimDaily(msg, nextTime) {
+	public async claimDaily(msg, nextTime) {
 		let money = 200;
 		if (msg.guild) {
 			await msg.guild.settings.sync();

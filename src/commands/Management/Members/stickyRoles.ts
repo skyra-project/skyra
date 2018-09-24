@@ -2,7 +2,7 @@ const { Command } = require('../../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			bucket: 2,
@@ -30,21 +30,21 @@ module.exports = class extends Command {
 	}
 
 	/* eslint-disable */
-	reset(msg, [user, role]) { }
+	public reset(msg, [user, role]) { }
 
-	remove(msg, [user, role]) { }
+	public remove(msg, [user, role]) { }
 
-	add(msg, [user, role]) { }
+	public add(msg, [user, role]) { }
 	/* eslint-enable */
 
-	async show(msg, [user]) {
+	public async show(msg, [user]) {
 		let all = msg.guild.settings.stickyRoles;
-		if (user) all = [all.find(stickyRole => stickyRole.id === user.id)];
+		if (user) all = [all.find((stickyRole) => stickyRole.id === user.id)];
 
 		if (!all.length) throw msg.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
 
 		const output = [];
-		await Promise.all(all.map(async (stickyRole) => {
+		await Promise.all(all.map(async(stickyRole) => {
 			const roles = [];
 			for (const role of stickyRole.roles) {
 				const resolved = msg.guild.roles.get(role);
@@ -54,7 +54,7 @@ module.exports = class extends Command {
 		}));
 
 		if (!output.length) {
-			await msg.guild.settings.update('stickyRoles', msg.guild.settings.stickyRoles.filter(stickyRole => all.includes(stickyRole)));
+			await msg.guild.settings.update('stickyRoles', msg.guild.settings.stickyRoles.filter((stickyRole) => all.includes(stickyRole)));
 			throw msg.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
 		}
 

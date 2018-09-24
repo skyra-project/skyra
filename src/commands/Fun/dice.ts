@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_DICE_DESCRIPTION'),
@@ -25,11 +25,11 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	run(msg, [rl = 1, sd = 6]) {
+	public run(msg, [rl = 1, sd = 6]) {
 		return msg.sendLocale('COMMAND_DICE_OUTPUT', [sd, rl, this.roll(rl, sd)]);
 	}
 
-	roll(rolls, sides) {
+	public roll(rolls, sides) {
 		let total = 0;
 		for (let i = 0; i < rolls; i++) total += Math.floor(Math.random() * (sides + 1));
 		return total;

@@ -9,7 +9,7 @@ const VALUES = {
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_SETCAPSFILTER_DESCRIPTION'),
@@ -21,7 +21,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [type, mode = 'enable']) {
+	public async run(msg, [type, mode = 'enable']) {
 		const { capsfilter } = msg.guild.settings.selfmod;
 		if (type === 'show') {
 			return msg.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [

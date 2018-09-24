@@ -2,7 +2,7 @@ const { Event } = require('../index');
 
 module.exports = class extends Event {
 
-	run() {
+	public run() {
 		this.client.console.warn('Reconnecting...');
 	}
 

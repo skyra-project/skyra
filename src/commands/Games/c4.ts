@@ -4,7 +4,7 @@ const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['connect-four'],
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS'],
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [user]) {
+	public async run(msg, [user]) {
 		if (user.id === this.client.user.id) throw msg.language.get('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw msg.language.get('COMMAND_GAMES_BOT');
 		if (user.id === msg.author.id) throw msg.language.get('COMMAND_GAMES_SELF');
@@ -26,8 +26,8 @@ module.exports = class extends Command {
 		const createGame = this.client.connectFour.alloc(msg.channel.id, msg.author, user);
 
 		const prompt = await msg.sendLocale('COMMAND_C4_PROMPT', [msg.author, user]);
-		const response = await msg.channel.awaitMessages(message => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
-			.then(messages => messages.first())
+		const response = await msg.channel.awaitMessages((message) => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
+			.then((messages) => messages.first())
 			.catch(() => false);
 
 		if (response && /ye(s|ah?)?/i.test(response.content)) {

@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 60,
@@ -11,7 +11,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		if (msg.deletable) msg.nuke().catch(() => null);
 		return msg.sendLocale('COMMAND_ESCAPEROPE_OUTPUT', [msg.author]);
 	}

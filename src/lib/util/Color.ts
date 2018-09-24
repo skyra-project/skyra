@@ -14,7 +14,7 @@ const REGEXP = {
 /* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 class Color {
 
-	static parse(input) {
+	public static parse(input) {
 		if (REGEXP.RANDOM.test(input)) return Color._generateRandom();
 		const output = Color._HEX(input)
 			|| Color._B10(input)
@@ -25,7 +25,7 @@ class Color {
 		throw `${input} is not a supported type.`;
 	}
 
-	static generateHexadecimal() {
+	public static generateHexadecimal() {
 		return [
 			Color.generateBetween(255, 200).toString(16),
 			Color.generateBetween(255, 200).toString(16),
@@ -33,19 +33,19 @@ class Color {
 		].join('');
 	}
 
-	static generateBetween(max, min) {
+	public static generateBetween(max, min) {
 		return Math.floor(Math.random() * (max - min)) + 1 + min;
 	}
 
-	static luminance(r, g, b) {
+	public static luminance(r, g, b) {
 		return (0.299 * (r ** 2)) + (0.587 * (g ** 2)) + (0.114 * (b ** 2));
 	}
 
-	static hexConcat(r, g, b) {
+	public static hexConcat(r, g, b) {
 		return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 	}
 
-	static _generateRandom() {
+	public static _generateRandom() {
 		const HEX = new Resolver.HEX(
 			Color.generateBetween(255, 200).toString(16),
 			Color.generateBetween(255, 200).toString(16),
@@ -60,10 +60,10 @@ class Color {
 		};
 	}
 
-	static _HEX(input) {
+	public static _HEX(input) {
 		if (!REGEXP.HEX.test(input)) return false;
 		let raw = REGEXP.HEX_EXEC.exec(input)[1];
-		if (raw.length === 3) raw = raw.split('').map(char => char + char).join('');
+		if (raw.length === 3) raw = raw.split('').map((char) => char + char).join('');
 		const HEX = new Resolver.HEX(raw.substring(0, 2), raw.substring(2, 4), raw.substring(4, 6));
 
 		return {
@@ -74,7 +74,7 @@ class Color {
 		};
 	}
 
-	static _RGB(input) {
+	public static _RGB(input) {
 		if (!REGEXP.RGB.test(input)) return false;
 		const raw = REGEXP.RGB_EXEC.exec(input);
 		const RGB = new Resolver.RGB(parseInt(raw[1]), parseInt(raw[2]), parseInt(raw[3]));
@@ -87,7 +87,7 @@ class Color {
 		};
 	}
 
-	static _HSL(input) {
+	public static _HSL(input) {
 		if (!REGEXP.HSL.test(input)) return false;
 		const raw = REGEXP.HSL_EXEC.exec(input);
 		const HSL = new Resolver.HSL(parseInt(raw[1]), parseInt(raw[2]), parseInt(raw[3]));
@@ -100,7 +100,7 @@ class Color {
 		};
 	}
 
-	static _B10(input) {
+	public static _B10(input) {
 		if (!REGEXP.B10.test(input)) return false;
 		const B10 = new Resolver.B10(input);
 

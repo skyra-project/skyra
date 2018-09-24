@@ -6,7 +6,7 @@ const TABLENAME = 'oxford';
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 20,
 			bucket: 2,
@@ -16,11 +16,11 @@ module.exports = class extends Command {
 		});
 	}
 
-	get r() {
+	public get r() {
 		return this.client.providers.default.db;
 	}
 
-	async run(msg, [input]) {
+	public async run(msg, [input]) {
 		const lexicalEntries = await this.fetch(msg, encodeURIComponent(input.toLowerCase()));
 
 		const output = [];
@@ -30,19 +30,19 @@ module.exports = class extends Command {
 		return msg.sendMessage(output.join('\n\n'));
 	}
 
-	resolveEntry(output, { pronounciations, lexicalCategory, text, entries }) {
+	public resolveEntry(output, { pronounciations, lexicalCategory, text, entries }) {
 		output.push([
 			`\`${output.length + 1}\` [\`${lexicalCategory}\`] **${text}** ${this.resolvePronounciations(pronounciations)}`,
 			this.format(entries)
 		].join('\n'));
 	}
 
-	resolvePronounciations(pronounciations) {
+	public resolvePronounciations(pronounciations) {
 		if (!pronounciations.length) return '';
-		return pronounciations.map(pronounciation => `\`/${pronounciation.spelling}/\` (${pronounciation.notation})`).join(' ');
+		return pronounciations.map((pronounciation) => `\`/${pronounciation.spelling}/\` (${pronounciation.notation})`).join(' ');
 	}
 
-	format(entries) {
+	public format(entries) {
 		const output = [];
 
 		let i = 0;
@@ -65,7 +65,7 @@ module.exports = class extends Command {
 		return output.join('\n');
 	}
 
-	async fetch(msg, query) {
+	public async fetch(msg, query) {
 		const data = await this.r.table(TABLENAME).get(query);
 		if (data) {
 			if (!data.valid) throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
@@ -83,11 +83,11 @@ module.exports = class extends Command {
 		}
 	}
 
-	_resolveData({ pronunciations, lexicalCategory, text, entries }) {
+	public _resolveData({ pronunciations, lexicalCategory, text, entries }) {
 		return {
-			entries: entries.map(entry => entry.senses.map(sense => sense.definitions.join('\n'))),
+			entries: entries.map((entry) => entry.senses.map((sense) => sense.definitions.join('\n'))),
 			lexicalCategory,
-			pronounciations: pronunciations.map(pronounciation => ({ spelling: pronounciation.phoneticSpelling, notation: pronounciation.phoneticNotation })),
+			pronounciations: pronunciations.map((pronounciation) => ({ spelling: pronounciation.phoneticSpelling, notation: pronounciation.phoneticNotation })),
 			text
 		};
 	}

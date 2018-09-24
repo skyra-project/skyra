@@ -2,7 +2,7 @@ const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [query]) {
+	public async run(msg, [query]) {
 		const body = await fetch(`http://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, 'json');
 
 		if (body.Heading.length === 0)

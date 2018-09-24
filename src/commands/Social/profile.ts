@@ -9,7 +9,7 @@ const BADGES_FOLDER = join('/var', 'www', 'assets', 'img', 'badges');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -24,12 +24,12 @@ module.exports = class extends Command {
 		this.panel = null;
 	}
 
-	async run(msg, [user = msg.author]) {
+	public async run(msg, [user = msg.author]) {
 		const output = await this.showProfile(msg, user);
 		return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	async showProfile(msg, user) {
+	public async showProfile(msg, user) {
 		await user.settings.sync();
 		const { points, color, themeProfile, money, reputation, level } = user.settings;
 
@@ -48,7 +48,7 @@ module.exports = class extends Command {
 		const TITLE = msg.language.fetch('COMMAND_PROFILE');
 		const canvas = new Canvas(user.settings.badgeSet.length ? 700 : 640, 391);
 		if (user.settings.badgeSet.length) {
-			const badges = await Promise.all(user.settings.badgeSet.map(name =>
+			const badges = await Promise.all(user.settings.badgeSet.map((name) =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))
 			));
 
@@ -108,7 +108,7 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-	async init() {
+	public async init() {
 		this.profile = await new Canvas(640, 391)
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')

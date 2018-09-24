@@ -6,7 +6,7 @@ const Canvas = require('canvas');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -21,12 +21,12 @@ module.exports = class extends Command {
 		this.template = null;
 	}
 
-	async run(msg, [user = msg.author]) {
+	public async run(msg, [user = msg.author]) {
 		const attachment = await this.generate(user);
 		return msg.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
 	}
 
-	async generate(user) {
+	public async generate(user) {
 		const imgTitle = new Canvas.Image();
 		const imgTriggered = new Canvas.Image();
 		const encoder = new GIFEncoder(350, 393);
@@ -58,7 +58,7 @@ module.exports = class extends Command {
 		return streamToBuffer(stream);
 	}
 
-	async init() {
+	public async init() {
 		this.template = await readFile(join(assetsFolder, './images/memes/triggered.png'));
 	}
 

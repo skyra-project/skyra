@@ -2,7 +2,7 @@ const { Task, Permissions: { FLAGS }, constants: { MODERATION: { TYPE_KEYS, SCHE
 
 module.exports = class extends Task {
 
-	async run(doc) {
+	public async run(doc) {
 		// Get the guild and check for permissions
 		const guild = this.client.guilds.get(doc[SCHEMA_KEYS.GUILD]);
 		if (!guild || !guild.me.permissions.has(FLAGS.BAN_MEMBERS)) return;
@@ -22,7 +22,7 @@ module.exports = class extends Task {
 			.create();
 	}
 
-	async _fetchBanLog(guild, userID) {
+	public async _fetchBanLog(guild, userID) {
 		const users = await guild.fetchBans();
 		return users.get(userID) || null;
 	}

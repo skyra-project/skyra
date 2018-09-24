@@ -2,7 +2,7 @@ const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['kitten', 'cat'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -23,7 +23,7 @@ module.exports = class extends Command {
 		this.index = Math.ceil(Math.random() * this.rand.length);
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		if (this.index > this.rand.length - 1) this.index = 0;
 		else this.index += 1;
 

@@ -3,7 +3,7 @@ const PERMISSION_FLAGS = Object.keys(FLAGS);
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			bucket: 2,
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [user = msg.author]) {
+	public async run(msg, [user = msg.author]) {
 		if (!user) throw msg.language.get('REQUIRE_USER');
 		const member = await msg.guild.members.fetch(user.id).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
 

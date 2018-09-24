@@ -2,7 +2,7 @@ const { ModerationCommand } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
 			description: (language) => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
@@ -13,22 +13,22 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	prehandle(msg, users, reason) {
+	public prehandle(msg, users, reason) {
 		return msg.guild.channels.create('temp', {
-			overwrites: [{ id: msg.guild.id, deny: 0x00000400 }, ...users.map(user => ({ id: user.id, allow: 0x00000400 }))],
+			overwrites: [{ id: msg.guild.id, deny: 0x00000400 }, ...users.map((user) => ({ id: user.id, allow: 0x00000400 }))],
 			reason,
 			type: 'voice',
 			userLimit: 1
 		});
 	}
 
-	async handle(msg, user, member, reason, voiceChannel) {
+	public async handle(msg, user, member, reason, voiceChannel) {
 		if (!member.voice.channelID) throw msg.language.get('GUILD_MEMBER_NOT_VOICECHANNEL');
 		await member.setVoiceChannel(voiceChannel);
 		return this.sendModlog(msg, user, reason);
 	}
 
-	posthandle(msg, users, reason, voiceChannel) {
+	public posthandle(msg, users, reason, voiceChannel) {
 		return voiceChannel.delete('Temporal Voice Channel Deletion');
 	}
 

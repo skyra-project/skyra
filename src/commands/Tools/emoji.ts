@@ -6,7 +6,7 @@ const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11
 /* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 10,
 			requiredPermissions: ['ATTACH_FILES'],
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [emoji]) {
+	public async run(msg, [emoji]) {
 		if (REG_EMOJI.test(emoji)) {
 			const [, animated, emojiName, emojiID] = /^<(a)?:(\w{2,32}):(\d{17,21})>$/.exec(emoji);
 			return msg.sendLocale('COMMAND_EMOJI_CUSTOM', [emojiName, emojiID], { files: [{ attachment: `https://cdn.discordapp.com/emojis/${emojiID}.${animated ? 'gif' : 'png'}` }] });
@@ -30,7 +30,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_EMOJI_TWEMOJI', [emoji, r], { files: [{ attachment: buffer, name: `${r}.png` }] });
 	}
 
-	emoji(emoji) {
+	public emoji(emoji) {
 		const r = [];
 		let c = 0, p = 0, i = 0;
 

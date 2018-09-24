@@ -9,7 +9,7 @@ class GuildSecurity {
 	 * @since 3.0.0
 	 * @param {SkyraGuild} guild The guild that manages this instance
 	 */
-	constructor(guild) {
+	public constructor(guild) {
 		/**
 		 * The SkyraGuild instance which manages this instance
 		 * @since 3.0.0
@@ -45,7 +45,7 @@ class GuildSecurity {
 	 * Destroy all managers
 	 * @since 3.0.0
 	 */
-	dispose() {
+	public dispose() {
 		this.clearNMS();
 		this.clearRaid();
 		this.clearLockdowns();
@@ -55,7 +55,7 @@ class GuildSecurity {
 	 * Destroy the Raid instance
 	 * @since 3.0.0
 	 */
-	clearRaid() {
+	public clearRaid() {
 		this.raid.clear();
 	}
 
@@ -63,7 +63,7 @@ class GuildSecurity {
 	 * Destroy the NoMentionSpam instance
 	 * @since 3.0.0
 	 */
-	clearNMS() {
+	public clearNMS() {
 		this.nms.clear();
 	}
 
@@ -71,7 +71,7 @@ class GuildSecurity {
 	 * Destroy all lockdowns
 	 * @since 3.0.0
 	 */
-	clearLockdowns() {
+	public clearLockdowns() {
 		// Clear all timeouts
 		const prefix = `lockdown-${this.guild.id}`;
 		for (const key of this.guild.client.timeoutManager.keys())

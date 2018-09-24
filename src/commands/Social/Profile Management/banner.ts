@@ -5,7 +5,7 @@ const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['banners'],
 			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
@@ -32,7 +32,7 @@ module.exports = class extends Command {
 		this.listPrompt = this.definePrompt('<all|user>');
 	}
 
-	run(msg, [type = 'list', banner]) {
+	public run(msg, [type = 'list', banner]) {
 		switch (type) {
 			case 'list': return this._list(msg);
 			case 'reset': return this.reset(msg);
@@ -42,7 +42,7 @@ module.exports = class extends Command {
 		}
 	}
 
-	async reset(msg) {
+	public async reset(msg) {
 		const banners = msg.author.settings.bannerList;
 		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
 		if (msg.author.settings.themeProfile === '0001') throw msg.language.get('COMMAND_BANNER_RESET_DEFAULT');
@@ -51,7 +51,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_BANNER_RESET');
 	}
 
-	async set(msg, banner) {
+	public async set(msg, banner) {
 		const banners = msg.author.settings.bannerList;
 		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
 		if (!banners.includes(banner.id)) throw msg.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
@@ -60,7 +60,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_BANNER_SET', [banner.title]);
 	}
 
-	async buy(msg, banner) {
+	public async buy(msg, banner) {
 		const banners = new Set(msg.author.settings.bannerList);
 		if (banners.has(banner.id)) throw msg.language.get('COMMAND_BANNER_BOUGHT', msg.guild.settings.prefix, banner.id);
 
@@ -82,11 +82,11 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_BANNER_BUY', [banner.title]);
 	}
 
-	_buyList(msg) {
+	public _buyList(msg) {
 		return this._runDisplay(msg, this.display);
 	}
 
-	_userList(msg) {
+	public _userList(msg) {
 		const banners = new Set(msg.author.settings.bannerList);
 		if (!banners.size) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY', msg.guild.settings.prefix);
 
@@ -94,7 +94,7 @@ module.exports = class extends Command {
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
-				display.addPage(template => template
+				display.addPage((template) => template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
 					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${SHINY}`));
@@ -104,7 +104,7 @@ module.exports = class extends Command {
 		return this._runDisplay(msg, display);
 	}
 
-	async _runDisplay(msg, display) {
+	public async _runDisplay(msg, display) {
 		const collectorID = msg.author.id;
 		const existing = this.collectors.get(collectorID);
 		if (existing) existing.stop();
@@ -117,12 +117,12 @@ module.exports = class extends Command {
 		collector.once('end', () => this.collectors.delete(collectorID));
 	}
 
-	async _list(msg) {
+	public async _list(msg) {
 		const [response] = await this.listPrompt.createPrompt(msg).run(msg.language.get('COMMAND_BANNER_PROMPT'));
 		return response === 'all' ? this._buyList(msg) : this._userList(msg);
 	}
 
-	async prompt(msg, banner) {
+	public async prompt(msg, banner) {
 		const embed = new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setDescription([
@@ -135,7 +135,7 @@ module.exports = class extends Command {
 		return msg.ask({ embed });
 	}
 
-	async init() {
+	public async init() {
 		const table = await this.client.providers.default.getAll('banners');
 		const display = new RichDisplay(new MessageEmbed().setColor(0xFFAB40));
 		for (const list of table) {
@@ -149,7 +149,7 @@ module.exports = class extends Command {
 					title: banner.title
 				});
 
-				display.addPage(template => template
+				display.addPage((template) => template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
 					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${SHINY}`));

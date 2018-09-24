@@ -1,4 +1,31 @@
 //#region imports
+import { Image } from 'canvas-constructor';
+import {
+	BanOptions,
+	Base64Resolvable,
+	BufferResolvable,
+	Channel,
+	ClientUser,
+	Collection,
+	DataStore,
+	DiscordAPIError,
+	FetchMemberOptions,
+	GuildEditData,
+	GuildMember,
+	GuildMemberEditData,
+	GuildMemberResolvable,
+	GuildMemberStore,
+	GuildPruneMembersOptions,
+	GuildResolvable,
+	MessageEmbed,
+	MessageOptions,
+	Role,
+	RoleData,
+	Snowflake,
+	TextChannel,
+	UserResolvable,
+	Util as DiscordUtil
+} from 'discord.js';
 import {
 	Command,
 	CommandOptions,
@@ -28,35 +55,8 @@ import {
 	Timestamp,
 	util as KlasaUtil,
 } from 'klasa';
-import {
-	BanOptions,
-	Base64Resolvable,
-	BufferResolvable,
-	Channel,
-	ClientUser,
-	Collection,
-	DataStore,
-	DiscordAPIError,
-	FetchMemberOptions,
-	GuildEditData,
-	GuildMember,
-	GuildMemberEditData,
-	GuildMemberResolvable,
-	GuildMemberStore,
-	GuildPruneMembersOptions,
-	GuildResolvable,
-	MessageEmbed,
-	MessageOptions,
-	Role,
-	RoleData,
-	Snowflake,
-	TextChannel,
-	UserResolvable,
-	Util as DiscordUtil
-} from 'discord.js';
-import { Node, NodeMessage } from 'veza';
-import { Image } from 'canvas-constructor';
 import { Readable } from 'stream';
+import { Node, NodeMessage } from 'veza';
 //#endregion imports
 //#region exports
 export {
@@ -323,14 +323,14 @@ export class FriendlyDuration {
 }
 
 export class FuzzySearch<K, V> {
-	constructor(collection: Collection<K, V>, access: (entry: V) => string, filter?: (entry: V) => boolean);
+	public constructor(collection: Collection<K, V>, access: (entry: V) => string, filter?: (entry: V) => boolean);
 	public filter: (entry: V) => boolean;
 	public access: (entry: V) => string;
 	public run(msg: SkyraMessage, query: string): V;
 }
 
 export class LanguageHelp {
-	constructor();
+	public constructor();
 	public explainedUsage: string | null;
 	public possibleFormats: string | null;
 	public examples: string | null;
@@ -516,7 +516,7 @@ export class Slotmachine {
 }
 
 export class TimeoutManager {
-	constructor(client: Skyra);
+	public constructor(client: Skyra);
 	public client: Skyra;
 	private cache: Array<RatelimitEntry>;
 	private _interval: NodeJS.Timer | null;
@@ -798,7 +798,7 @@ type UtilOneToTenEntry = {
 type RatelimitEntry = {
 	id: string;
 	time: number;
-	callback: () => void;
+	callback(): void;
 };
 
 type SkyraConstants = Readonly<{

@@ -8,21 +8,21 @@ const { Settings } = require('klasa');
  */
 class UserSettings extends Settings {
 
-	get level() {
+	public get level() {
 		return Math.floor(0.2 * Math.sqrt(this.points));
 	}
 
-	win(money, guild) {
+	public win(money, guild) {
 		if (guild) money *= guild.settings.social.boost;
 		return this.add(money);
 	}
 
-	add(money) {
+	public add(money) {
 		this.money += money;
 		return this.update('money', this.money).then(() => this.money);
 	}
 
-	use(money) {
+	public use(money) {
 		if (this.money < money) {
 			const error = new Error(`[FAILSAFE] ${this} | Cannot get a debt.`);
 			this.client.emit('wtf', error);

@@ -14,7 +14,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @since 3.0.0
 	 * @param {KlasaGuild} guild The Guild that manages this StarboardManager
 	 */
-	constructor(guild) {
+	public constructor(guild) {
 		super();
 
 		/**
@@ -39,9 +39,9 @@ module.exports = class StarboardManager extends Collection {
 	 * @param {StarboardMessage} value The StarboardMessage to add
 	 * @returns {this}
 	 */
-	set(key, value) {
+	public set(key, value) {
 		if (this.size >= 25) {
-			const entry = this.find(sMes => sMes.stars < this.minimum) || this.reduce((acc, sMes) => acc._lastUpdated > sMes._lastUpdated ? sMes : acc, Date.now());
+			const entry = this.find((sMes) => sMes.stars < this.minimum) || this.reduce((acc, sMes) => acc._lastUpdated > sMes._lastUpdated ? sMes : acc, Date.now());
 			if (entry) entry.destroy();
 		}
 		return super.set(key, value);
@@ -52,7 +52,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @since 3.0.0
 	 * @type {TextChannel}
 	 */
-	get starboardChannel() {
+	public get starboardChannel() {
 		const channelID = this.guild.settings.starboard.channel;
 		return (channelID && this.guild.channels.get(channelID)) || null;
 	}
@@ -62,7 +62,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @since 3.0.0
 	 * @type {number}
 	 */
-	get minimum() {
+	public get minimum() {
 		return this.guild.settings.starboard.minimum;
 	}
 
@@ -71,7 +71,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @since 3.0.0
 	 * @type {Provider}
 	 */
-	get provider() {
+	public get provider() {
 		return this.client.providers.default;
 	}
 
@@ -79,7 +79,7 @@ module.exports = class StarboardManager extends Collection {
 	 * Dispose all entries from this Starboard
 	 * @since 3.0.0
 	 */
-	dispose() {
+	public dispose() {
 		for (const sMessage of this.values()) sMessage.dispose();
 		this.clear();
 	}
@@ -92,7 +92,7 @@ module.exports = class StarboardManager extends Collection {
 	 * @param {string} userID The user id
 	 * @returns {Promise<?StarboardMessage>}
 	 */
-	async fetch(channel, messageID, userID) {
+	public async fetch(channel, messageID, userID) {
 		const entry = super.get(`${channel.id}-${messageID}`);
 		if (entry) return entry;
 		const message = await channel.messages.fetch(messageID).catch(() => null);

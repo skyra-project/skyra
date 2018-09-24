@@ -2,7 +2,7 @@ const { Command, Timestamp, MessageEmbed, util: { fetch } } = require('../../ind
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_XKCD_DESCRIPTION'),
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [input]) {
+	public async run(msg, [input]) {
 		const query = typeof input !== 'undefined'
 			? /^\d+$/.test(input) ? Number(input) : input : null;
 
@@ -31,11 +31,11 @@ module.exports = class extends Command {
 			.setTimestamp());
 	}
 
-	getTime(year, month, day) {
+	public getTime(year, month, day) {
 		return this.timestamp.display(new Date(Number(year), Number(month) - 1, Number(day)));
 	}
 
-	async getNumber(query, i18n) {
+	public async getNumber(query, i18n) {
 		const xkcdInfo = await fetch('http://xkcd.com/info.0.json', 'json');
 
 		if (typeof query === 'number') {

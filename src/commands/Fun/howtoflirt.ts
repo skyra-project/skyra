@@ -5,7 +5,7 @@ const Canvas = require('canvas');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -19,12 +19,12 @@ module.exports = class extends Command {
 		this.template = null;
 	}
 
-	async run(msg, [user]) {
+	public async run(msg, [user]) {
 		const attachment = await this.generate(msg, user);
 		return msg.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
 	}
 
-	async generate(msg, user) {
+	public async generate(msg, user) {
 		/* Initialize Canvas */
 		const canvas = Canvas.createCanvas(500, 500);
 		const background = new Canvas.Image();
@@ -71,7 +71,7 @@ module.exports = class extends Command {
 		return canvas.toBuffer();
 	}
 
-	async init() {
+	public async init() {
 		this.template = await readFile(join(assetsFolder, '/images/memes/howtoflirt.png'));
 	}
 

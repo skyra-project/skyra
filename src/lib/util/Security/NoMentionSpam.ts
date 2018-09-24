@@ -20,7 +20,7 @@ class NoMentionSpam extends Map {
 	 * @param {boolean} [create] Whether this call should add a new entry
 	 * @returns {NoMentionSpamEntry}
 	 */
-	get(userID, create = false) {
+	public get(userID, create = false) {
 		const cooldown = super.get(userID);
 		if (cooldown) return cooldown;
 		if (!create) return null;
@@ -37,7 +37,7 @@ class NoMentionSpam extends Map {
 	 * @param {number} amount The amount of points to add
 	 * @returns {number}
 	 */
-	add(userID, amount) {
+	public add(userID, amount) {
 		const entry = this.get(userID, true);
 		entry.amount += amount;
 		this._timeout(entry);
@@ -50,7 +50,7 @@ class NoMentionSpam extends Map {
 	 * @param {string} userID The user id to delete
 	 * @returns {boolean}
 	 */
-	delete(userID) {
+	public delete(userID) {
 		const entry = super.get(userID);
 		if (!entry) return false;
 
@@ -63,7 +63,7 @@ class NoMentionSpam extends Map {
 	 * @since 3.0.0
 	 * @returns {void}
 	 */
-	clear() {
+	public clear() {
 		// Clear all timeouts
 		for (const entry of this.values())
 			clearTimeout(entry.timeout);
@@ -78,7 +78,7 @@ class NoMentionSpam extends Map {
 	 * @param {NoMentionSpamEntry} entry The entry to update
 	 * @private
 	 */
-	_timeout(entry) {
+	public _timeout(entry) {
 		clearTimeout(entry.timeout);
 		entry.timeout = setTimeout(() => this.delete(entry.id), (entry.amount + 4) * 1000);
 	}

@@ -2,7 +2,7 @@ const { Command, util: { announcementCheck }, MessageEmbed } = require('../../in
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['announce'],
 			requiredPermissions: ['MANAGE_ROLES'],
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [message]) {
+	public async run(msg, [message]) {
 		const announcementID = msg.guild.settings.channels.announcement;
 		if (!announcementID) throw msg.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
@@ -36,7 +36,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_ANNOUNCEMENT_CANCELLED');
 	}
 
-	ask(msg, content) {
+	public ask(msg, content) {
 		try {
 			return msg.ask(msg.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
 				embed: new MessageEmbed()
@@ -49,7 +49,7 @@ module.exports = class extends Command {
 		}
 	}
 
-	async send(msg, channel, role, content) {
+	public async send(msg, channel, role, content) {
 		await role.edit({ mentionable: true });
 		await channel.send(content);
 		await role.edit({ mentionable: false });

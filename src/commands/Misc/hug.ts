@@ -5,7 +5,7 @@ const { Canvas } = require('canvas-constructor');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -19,12 +19,12 @@ module.exports = class extends Command {
 		this.template = null;
 	}
 
-	async run(msg, [user]) {
+	public async run(msg, [user]) {
 		const attachment = await this.generate(msg, user);
 		return msg.channel.send({ files: [{ attachment, name: 'hug.png' }] });
 	}
 
-	async generate(msg, user) {
+	public async generate(msg, user) {
 		if (user.id === msg.author.id) ({ user } = this.client);
 
 		const [hugged, hugger] = await Promise.all([
@@ -39,7 +39,7 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-	async init() {
+	public async init() {
 		this.template = await readFile(join(assetsFolder, './images/memes/hug.png'));
 	}
 

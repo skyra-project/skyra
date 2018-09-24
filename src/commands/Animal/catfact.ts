@@ -2,7 +2,7 @@ const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['kittenfact'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg) {
+	public async run(msg) {
 		const { fact } = await fetch('https://catfact.ninja/fact', 'json');
 		return msg.sendEmbed(new MessageEmbed()
 			.setColor(0xFFE0B2)

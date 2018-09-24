@@ -8,7 +8,7 @@ class RawEventStore extends Store {
 	 * @since 3.0.0
 	 * @param {KlasaClient} client The Klasa Client
 	 */
-	constructor(client) {
+	public constructor(client) {
 		super(client, 'rawEvents', RawEvent);
 	}
 

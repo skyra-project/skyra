@@ -3,7 +3,7 @@ const discord = require('discord.js');
 const { join } = require('path');
 
 // Load all dependencies
-Object.keys(JSON.parse(require('fs').readFileSync('./package.json', 'utf8')).dependencies).forEach(mod => require(mod));
+Object.keys(JSON.parse(require('fs').readFileSync('./package.json', 'utf8')).dependencies).forEach(require);
 
 module.exports = {
 	rootFolder: __dirname,

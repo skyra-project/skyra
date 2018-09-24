@@ -5,7 +5,7 @@ const { Canvas } = require('canvas-constructor');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -20,12 +20,12 @@ module.exports = class extends Command {
 		this.template = null;
 	}
 
-	async run(msg, [text]) {
+	public async run(msg, [text]) {
 		const attachment = await this.generate(text);
 		return msg.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
 	}
 
-	generate(text) {
+	public generate(text) {
 		return new Canvas(700, 612)
 			.addImage(this.template, 0, 0, 700, 612)
 			.setTextAlign('center')
@@ -36,7 +36,7 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-	async init() {
+	public async init() {
 		this.template = await readFile(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 

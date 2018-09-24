@@ -2,7 +2,7 @@ const { Command, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			runIn: ['text'],
 			aliases: ['giveaway'],
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [time, ...rawTitle]) {
+	public async run(msg, [time, ...rawTitle]) {
 		const offset = time.getTime() - Date.now();
 
 		// A little margin of error

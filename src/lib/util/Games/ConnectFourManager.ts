@@ -2,7 +2,7 @@ const ConnectFour = require('./ConnectFour');
 
 module.exports = class ConnectFourManager {
 
-	constructor(client) {
+	public constructor(client) {
 		/**
 		 * The KlasaClient instance that manages this manager
 		 * @since 3.0.0
@@ -24,7 +24,7 @@ module.exports = class ConnectFourManager {
 	 * @param {string} channel The channel to check for
 	 * @returns {boolean}
 	 */
-	has(channel) {
+	public has(channel) {
 		return this.matches.has(channel);
 	}
 
@@ -34,7 +34,7 @@ module.exports = class ConnectFourManager {
 	 * @param {string} channel The channel to delete
 	 * @returns {boolean}
 	 */
-	delete(channel) {
+	public delete(channel) {
 		const match = this.matches.get(channel);
 		if (match) {
 			this.matches.delete(channel);
@@ -52,7 +52,7 @@ module.exports = class ConnectFourManager {
 	 * @param {KlasaUser} challengee The challengee KlasaUser instance
 	 * @returns {Function}
 	 */
-	alloc(channel, challenger, challengee) {
+	public alloc(channel, challenger, challengee) {
 		if (this.matches.has(channel)) return null;
 		this.matches.set(channel, null);
 		return this._alloc.bind(this, channel, challenger, challengee);
@@ -66,7 +66,7 @@ module.exports = class ConnectFourManager {
 	 * @param {KlasaUser} challengee The challengee KlasaUser instance
 	 * @returns {ConnectFour}
 	 */
-	create(channel, challenger, challengee) {
+	public create(channel, challenger, challengee) {
 		if (this.matches.has(channel)) return null;
 		const match = new ConnectFour(challenger, challengee);
 		this.matches.set(channel, match);
@@ -83,7 +83,7 @@ module.exports = class ConnectFourManager {
 	 * @returns {?ConnectFour}
 	 * @private
 	 */
-	_alloc(channel, challenger, challengee, accept) {
+	public _alloc(channel, challenger, challengee, accept) {
 		this.matches.delete(channel);
 		if (accept) return this.create(channel, challenger, challengee);
 		return null;

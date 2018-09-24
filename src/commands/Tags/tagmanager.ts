@@ -2,7 +2,7 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_TAGMANAGER_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_TAGMANAGER_EXTENDED'),
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async add(msg, [tag, contents]) {
+	public async add(msg, [tag, contents]) {
 		// Check if it is an acceptable tag name
 		if (tag.includes('`') || tag.includes('\u200B')) throw msg.language.get('COMMAND_TAGS_NAME_NOTALLOWED');
 		if (tag.length > 50) throw msg.language.get('COMMAND_TAGS_NAME_TOOLONG');
@@ -32,7 +32,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TAGS_ADD_ADDED', [tag, contents]);
 	}
 
-	async edit(msg, [tag, contents]) {
+	public async edit(msg, [tag, contents]) {
 		tag = tag.toLowerCase();
 
 		const currentTags = msg.guild.settings.tags;
@@ -46,7 +46,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TAGS_EDITED', [tag, contents, oldTag]);
 	}
 
-	async remove(msg, [tag]) {
+	public async remove(msg, [tag]) {
 		tag = tag.toLowerCase();
 
 		const currentTags = msg.guild.settings.tags;

@@ -3,11 +3,11 @@ const ROLE_REGEXP = /^(?:<@&)?(\d{17,19})>?$/;
 
 module.exports = class extends Argument {
 
-	get role() {
+	public get role() {
 		return this.store.get('role');
 	}
 
-	async run(arg, possible, msg, filter) {
+	public async run(arg, possible, msg, filter) {
 		if (!arg) throw msg.language.get('RESOLVER_INVALID_ROLENAME', possible.name);
 		if (!msg.guild) return this.role.run(arg, possible, msg);
 		const resRole = this.resolveRole(arg, msg.guild);
@@ -18,7 +18,7 @@ module.exports = class extends Argument {
 		throw msg.language.get('RESOLVER_INVALID_ROLENAME', possible.name);
 	}
 
-	resolveRole(query, guild) {
+	public resolveRole(query, guild) {
 		if (ROLE_REGEXP.test(query)) return guild.roles.get(ROLE_REGEXP.exec(query)[1]);
 		return null;
 	}

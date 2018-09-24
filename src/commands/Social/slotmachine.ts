@@ -2,7 +2,7 @@ const { Command, Slotmachine } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['slot', 'slots', 'slotmachines'],
 			requiredPermissions: ['ATTACH_FILES'],
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [text]) {
+	public async run(msg, [text]) {
 		const coins = Number(text);
 		if (msg.author.settings.money < coins)
 			throw msg.language.get('COMMAND_SLOTMACHINES_MONEY', msg.author.settings.money);

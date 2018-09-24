@@ -2,11 +2,11 @@ const { Inhibitor } = require('../index');
 
 module.exports = class extends Inhibitor {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, { spamProtection: true });
 	}
 
-	async run(msg, cmd) {
+	public async run(msg, cmd) {
 		if (!cmd.spam
 			|| !msg.guild
 			|| msg.guild.settings.channels.spam === msg.channel.id

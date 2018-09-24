@@ -3,11 +3,11 @@ const { Extendable, MessageEmbed } = require('../index');
 
 module.exports = class extends Extendable {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, { appliesTo: [MessageEmbed] });
 	}
 
-	splitFields(content) {
+	public splitFields(content) {
 		if (typeof content === 'undefined') return this;
 
 		if (Array.isArray(content)) content = content.join('\n');

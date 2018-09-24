@@ -2,7 +2,7 @@ const { Command, Color, MessageEmbed } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['setcolour'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	async run(msg, [input]) {
+	public async run(msg, [input]) {
 		const { hex, b10 } = Color.parse(input);
 
 		await msg.author.settings.update('color', hex.toString().slice(1));

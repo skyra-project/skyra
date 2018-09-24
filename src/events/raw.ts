@@ -2,12 +2,12 @@ const { Event } = require('../index');
 
 module.exports = class extends Event {
 
-	run(data) {
+	public run(data) {
 		const piece = this.client.rawEvents.get(data.t);
 		if (piece && data.d) this._runPiece(piece, data.d);
 	}
 
-	async _runPiece(piece, data) {
+	public async _runPiece(piece, data) {
 		try {
 			const processed = await piece.process(data);
 			if (processed) await piece.run(processed);

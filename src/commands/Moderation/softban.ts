@@ -2,7 +2,7 @@ const { ModerationCommand } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['BAN_MEMBERS'],
 			description: (language) => language.get('COMMAND_SOFTBAN_DESCRIPTION'),
@@ -13,7 +13,7 @@ module.exports = class extends ModerationCommand {
 		});
 	}
 
-	async handle(msg, user, member, reason) {
+	public async handle(msg, user, member, reason) {
 		if (member && !member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
 		await msg.guild.members.ban(user.id, {
 			days: 'days' in msg.flags ? Math.min(7, Math.max(0, Number(msg.flags.days))) : 0,

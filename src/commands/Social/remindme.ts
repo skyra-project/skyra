@@ -4,7 +4,7 @@ const REMINDER_TYPE = 'reminder';
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['remind', 'reminder'],
 			bucket: 2,
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [action, data]) {
+	public async run(msg, [action, data]) {
 		if (!data || action === 'list') return this.list(msg);
 		if (action === 'delete') return this.delete(msg, data);
 
@@ -32,10 +32,10 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_REMINDME_CREATE', [task.id]);
 	}
 
-	async list(msg) {
-		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === msg.author.id);
+	public async list(msg) {
+		const tasks = this.client.schedule.tasks.filter((task) => task.data && task.data.user === msg.author.id);
 		if (!tasks.length) return msg.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
-		await new PromptList(tasks.map(task => [
+		await new PromptList(tasks.map((task) => [
 			task.id,
 			`${timestamp.display(task.time)} - ${task.data.content.length > 40 ? `${task.data.content.slice(0, 40)}...` : task.data.content}`
 		])).run(msg).catch(() => null);
@@ -43,7 +43,7 @@ module.exports = class extends Command {
 		return msg;
 	}
 
-	async delete(msg, data) {
+	public async delete(msg, data) {
 		if (!data) throw msg.language.get('COMMAND_REMINDME_DELETE_INVALID_PARAMETERS');
 		const [id] = data;
 		let selectedTask = null;
@@ -57,7 +57,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_REMINDME_DELETE', [selectedTask]);
 	}
 
-	async parseInput(msg, string) {
+	public async parseInput(msg, string) {
 		const parsed = {
 			time: null,
 			title: null
@@ -81,7 +81,7 @@ module.exports = class extends Command {
 		return parsed;
 	}
 
-	async askTime(msg, alert) {
+	public async askTime(msg, alert) {
 		await msg.sendMessage(alert);
 
 		let time, attempts = 0;

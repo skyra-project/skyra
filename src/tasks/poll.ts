@@ -3,7 +3,7 @@ const TASK_EOL = TIME.DAY * 2;
 
 module.exports = class extends Task {
 
-	async run(doc) {
+	public async run(doc) {
 		const guild = this.client.guilds.get(doc.guild);
 		if (!guild) return;
 
@@ -29,13 +29,13 @@ module.exports = class extends Task {
 		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: doc });
 	}
 
-	_catchErrorUser(error) {
+	public _catchErrorUser(error) {
 		// 10013: Unknown user
 		if (error.code === 10013) return;
 		throw error;
 	}
 
-	_catchErrorMessage(error) {
+	public _catchErrorMessage(error) {
 		// 50007: Cannot send messages to this user
 		if (error.code === 50007) return;
 		throw error;

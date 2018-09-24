@@ -19,7 +19,7 @@ const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
 
 module.exports = class extends Monitor {
 
-	async run(msg) {
+	public async run(msg) {
 		if (await msg.hasAtLeastPermissionLevel(5)) return;
 
 		const { selfmod } = msg.guild.settings;
@@ -52,7 +52,7 @@ module.exports = class extends Monitor {
 		}
 	}
 
-	shouldRun(msg) {
+	public shouldRun(msg) {
 		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
 
 		const { selfmod } = msg.guild.settings;

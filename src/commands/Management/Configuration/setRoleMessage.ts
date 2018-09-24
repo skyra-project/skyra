@@ -3,7 +3,7 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			bucket: 2,
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 			usage: '(message:message)'
 		});
 
-		this.createCustomResolver('message', async (arg, possible, msg) => {
+		this.createCustomResolver('message', async(arg, possible, msg) => {
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 
 			const rolesChannel = msg.guild.settings.channels.roles;
@@ -34,7 +34,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [message]) {
+	public async run(msg, [message]) {
 		await msg.guild.settings.update('roles.messageReaction', message.id);
 		return msg.sendLocale('COMMAND_SETMESSAGEROLE_SET');
 	}

@@ -14,13 +14,13 @@ const COLORS = {
 
 module.exports = class extends RawEvent {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, { name: 'GUILD_MEMBER_ADD' });
 	}
 
-	async run({ guild, member }) {
+	public async run({ guild, member }) {
 		guild.nameDictionary.delete(member.id, member.displayName);
-		const stickyRoles = guild.settings.stickyRoles.find(stickyRole => stickyRole.id === member.id);
+		const stickyRoles = guild.settings.stickyRoles.find((stickyRole) => stickyRole.id === member.id);
 		if (stickyRoles) {
 			// Handle the case the user is muted
 			const mute = guild.settings.roles.muted;
@@ -42,13 +42,13 @@ module.exports = class extends RawEvent {
 		}
 	}
 
-	async process(data) {
+	public async process(data) {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return null;
 		return { guild, member: guild.members.add(data) };
 	}
 
-	async _handleStickyRoles(guild, member, stickyRoles) {
+	public async _handleStickyRoles(guild, member, stickyRoles) {
 		const roles = [];
 		for (const role of stickyRoles.roles)
 			if (guild.roles.has(role)) roles.push(role);
@@ -59,28 +59,28 @@ module.exports = class extends RawEvent {
 		await member.roles.add(roles);
 	}
 
-	async _handleMute(guild, member) {
+	public async _handleMute(guild, member) {
 		if (guild.me.permissions.has(FLAGS.MANAGE_ROLES)) {
 			const role = guild.roles.get(guild.settings.roles.muted);
-			if (!role) guild.settings.reset('roles.muted').catch(error => this.client.emit('apiError', error));
-			else member.roles.add(role).catch(error => this.client.emit('apiError', error));
+			if (!role) guild.settings.reset('roles.muted').catch((error) => this.client.emit('apiError', error));
+			else member.roles.add(role).catch((error) => this.client.emit('apiError', error));
 		}
 	}
 
-	async _handleJoin(guild, member) {
+	public async _handleJoin(guild, member) {
 		if (guild.settings.selfmod.raid && guild.me.permissions.has(FLAGS.KICK_MEMBERS))
 			if (await this._handleRAID(guild, member)) return;
 
 		if (guild.settings.roles.initial) {
 			const role = guild.roles.get(guild.settings.roles.initial);
 			if (!role || role.position >= guild.me.roles.highest.position) guild.settings.reset('roles.initial');
-			else member.roles.add(role).catch(error => this.client.emit('apiError', error));
+			else member.roles.add(role).catch((error) => this.client.emit('apiError', error));
 		}
 		if (guild.settings.messages['join-dm'])
 			member.user.send(this._handleGreeting(guild.settings.messages['join-dm'], guild, member.user)).catch(() => null);
 	}
 
-	_handleLog(guild, member, asset) {
+	public _handleLog(guild, member, asset) {
 		this.client.emit('guildMessageLog', MESSAGE_LOGS.kMember, guild, () => new MessageEmbed()
 			.setColor(asset.color)
 			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
@@ -88,7 +88,7 @@ module.exports = class extends RawEvent {
 			.setTimestamp());
 	}
 
-	async _handleMessage(guild, member) {
+	public async _handleMessage(guild, member) {
 		if (guild.settings.channels.default && guild.settings.messages.greeting) {
 			const channel = guild.channels.get(guild.settings.channels.default);
 			if (channel && channel.postable) channel.send(this._handleGreeting(guild.settings.messages.greeting, guild, member.user));
@@ -96,7 +96,7 @@ module.exports = class extends RawEvent {
 		}
 	}
 
-	async _handleRAID(guild, member) {
+	public async _handleRAID(guild, member) {
 		const raidManager = guild.security.raid;
 		if (raidManager.has(member.id) || raidManager.add(member.id).size < guild.settings.selfmod.raidthreshold)
 			return false;
@@ -105,8 +105,8 @@ module.exports = class extends RawEvent {
 		return true;
 	}
 
-	_handleGreeting(string, guild, user) {
-		return string.replace(REGEXP, match => {
+	public _handleGreeting(string, guild, user) {
+		return string.replace(REGEXP, (match) => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;
 				case MATCHES.MEMBERNAME: return user.username;

@@ -28,7 +28,7 @@ class Util {
 	 * @param {Readable} stream The readable stream to read
 	 * @returns {Promise<Buffer>}
 	 */
-	static streamToBuffer(stream) {
+	public static streamToBuffer(stream) {
 		if (!(stream instanceof Readable)) throw new TypeError(`Expected stream to be a Readable stream, got: ${new Type(stream)}`);
 
 		return new Promise((res, rej) => {
@@ -56,7 +56,7 @@ class Util {
 	 * @param {string} path The path to fix
 	 * @returns {Image}
 	 */
-	static async loadImage(path) {
+	public static async loadImage(path) {
 		const buffer = await readFile(path);
 		const image = new Image();
 		image.src = buffer;
@@ -71,7 +71,7 @@ class Util {
 	 * @param {KlasaMessage} msg The message instance to check with
 	 * @returns {Role}
 	 */
-	static announcementCheck(msg) {
+	public static announcementCheck(msg) {
 		const announcementID = msg.guild.settings.roles.subscriber;
 		if (!announcementID) throw msg.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
@@ -82,10 +82,10 @@ class Util {
 		return role;
 	}
 
-	static async removeMute(guild, id) {
+	public static async removeMute(guild, id) {
 		const { settings } = guild;
 
-		const stickyRolesIndex = settings.stickyRoles.findIndex(stickyRole => stickyRole.id === id);
+		const stickyRolesIndex = settings.stickyRoles.findIndex((stickyRole) => stickyRole.id === id);
 		if (stickyRolesIndex === -1) return false;
 
 		const stickyRoles = settings.stickyRoles[stickyRolesIndex];
@@ -110,7 +110,7 @@ class Util {
 	 * @param {GuildMember} moderator The moderator that triggered this check
 	 * @param {GuildMember} target The member to check against
 	 */
-	static moderationCheck(msg, moderator, target) {
+	public static moderationCheck(msg, moderator, target) {
 		if (target === msg.guild.me) throw msg.language.get('COMMAND_TOSKYRA');
 		if (target === moderator) throw msg.language.get('COMMAND_USERSELF');
 		if (target === msg.guild.owner) throw msg.language.get('COMMAND_ROLE_HIGHER_SKYRA');
@@ -127,7 +127,7 @@ class Util {
 	 * @param {DiscordAPIError} error The error to de-idiotify
 	 * @throws {DiscordAPIError}
 	 */
-	static deIdiotify(error) {
+	public static deIdiotify(error) {
 		if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
 		throw error;
 	}
@@ -140,7 +140,7 @@ class Util {
 	 * @param {string} emoji The emoji to resolve
 	 * @returns {string}
 	 */
-	static resolveEmoji(emoji) {
+	public static resolveEmoji(emoji) {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
 		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
@@ -153,7 +153,7 @@ class Util {
 	 * @param {number} level The number to check against
 	 * @returns {UtilOneToTenEntry}
 	 */
-	static oneToTen(level) {
+	public static oneToTen(level) {
 		if (level < 0) level = 0;
 		else if (level > 10) level = 10;
 		return Util.ONE_TO_TEN[level | 0];
@@ -166,7 +166,7 @@ class Util {
 	 * @param {string} pass The password
 	 * @returns {string}
 	 */
-	static basicAuth(user, pass) {
+	public static basicAuth(user, pass) {
 		return `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
 	}
 
@@ -176,7 +176,7 @@ class Util {
 	 * @param {number} code The status code to check against
 	 * @returns {string}
 	 */
-	static httpResponses(code) {
+	public static httpResponses(code) {
 		return `[${code}] ${STATUS_CODES[code]}`;
 	}
 
@@ -189,7 +189,7 @@ class Util {
      * @returns {string}
      * @static
      */
-	static splitText(str, length, char = ' ') {
+	public static splitText(str, length, char = ' ') {
 		const x = str.substring(0, length).lastIndexOf(char);
 		const pos = x === -1 ? length : x;
 		return str.substring(0, pos);
@@ -203,7 +203,7 @@ class Util {
 	 * @returns {string}
 	 * @static
 	 */
-	static cutText(str, length) {
+	public static cutText(str, length) {
 		if (str.length < length) return str;
 		const cut = Util.splitText(str, length - 3);
 		if (cut.length < length - 3) return `${cut}...`;
@@ -217,7 +217,7 @@ class Util {
 	 * @param {(64|128|256|512|1024|2048)} size The size of the avatar to download.
 	 * @returns {Promise<Buffer>}
 	 */
-	static fetchAvatar(user, size = 512) {
+	public static fetchAvatar(user, size = 512) {
 		const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
 		// @ts-ignore
 		return Util.fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
@@ -231,7 +231,7 @@ class Util {
 	 * @param {string} [type] The type of expected output
 	 * @returns {Promise<*>}
 	 */
-	static async fetch(url, options, type) {
+	public static async fetch(url, options, type) {
 		if (typeof options === 'undefined') {
 			options = {};
 			type = 'json';
@@ -261,7 +261,7 @@ class Util {
 	 * @param {KlasaMessage} message The Message to get the content from
 	 * @returns {?string}
 	 */
-	static getContent(message) {
+	public static getContent(message) {
 		if (message.content) return message.content;
 		return (message.embeds.length && message.embeds[0].description) || null;
 	}
@@ -272,13 +272,13 @@ class Util {
 	 * @param {KlasaMessage} message The Message to get the image from
 	 * @returns {?string}
 	 */
-	static getImage(message) {
+	public static getImage(message) {
 		if (message.attachments.size) {
-			const attachment = message.attachments.find(att => Util.IMAGE_EXTENSION.test(att.url));
+			const attachment = message.attachments.find((att) => Util.IMAGE_EXTENSION.test(att.url));
 			if (attachment) return attachment.url;
 		}
 		if (message.embeds.length) {
-			const embed = message.embeds.find(emb => emb.type === 'image');
+			const embed = message.embeds.find((emb) => emb.type === 'image');
 			if (embed) return embed.url;
 		}
 		return null;
@@ -292,7 +292,7 @@ class Util {
 	 * @param {KlasaMessage} msg The message instance to use as context
 	 * @returns {Role}
 	 */
-	static async createMuteRole(msg) {
+	public static async createMuteRole(msg) {
 		if (msg.guild.settings.roles.muted
 			&& msg.guild.roles.has(msg.guild.settings.roles.muted)) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
 
@@ -323,7 +323,7 @@ class Util {
 	 * @returns {Promise<*>}
 	 * @private
 	 */
-	static async _createMuteRolePush(channel, role, array) {
+	public static async _createMuteRolePush(channel, role, array) {
 		if (channel.type === 'category') return null;
 		return channel.updateOverwrite(role, Util.MUTE_ROLE_PERMISSIONS[channel.type])
 			.catch(() => array.push(String(channel)));

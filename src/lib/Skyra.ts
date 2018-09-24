@@ -98,7 +98,7 @@ export default class Skyra extends Client {
 	 */
 	public version: string;
 
-	constructor(options) {
+	public constructor(options) {
 		super(options);
 
 		this.version = version;

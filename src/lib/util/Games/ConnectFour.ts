@@ -10,7 +10,7 @@ module.exports = class ConnectFour {
 	 * @property {number} y
 	 */
 
-	constructor(challenger, challengee) {
+	public constructor(challenger, challengee) {
 		/**
 		 * The Client that manages this instance
 		 * @since 3.0.0
@@ -96,7 +96,7 @@ module.exports = class ConnectFour {
 	 * @type {ConnectFourManager}
 	 * @readonly
 	 */
-	get manager() {
+	public get manager() {
 		return this.client.connectFour;
 	}
 
@@ -106,7 +106,7 @@ module.exports = class ConnectFour {
 	 * @type {boolean}
 	 * @readonly
 	 */
-	get manageMessages() {
+	public get manageMessages() {
 		return this.message.channel.permissionsFor(this.message.guild.me).has(MANAGE_MESSAGES);
 	}
 
@@ -115,7 +115,7 @@ module.exports = class ConnectFour {
 	 * @since 3.0.0
 	 * @param {KlasaMessage} message The Message that runs this game
 	 */
-	async run(message) {
+	public async run(message) {
 		if (this.running) return;
 		this.running = true;
 
@@ -136,7 +136,7 @@ module.exports = class ConnectFour {
 					await this.render(error);
 				} else if (error === RESPONSES.FULL_GAME) {
 					await this.message.edit(this.language.get('COMMAND_C4_GAME_DRAW', this.renderTable()));
-					if (this.manageMessages) await this.message.reactions.removeAll().catch(err => this.client.emit('apiError', err));
+					if (this.manageMessages) await this.message.reactions.removeAll().catch((err) => this.client.emit('apiError', err));
 					break;
 				} else if (error === RESPONSES.TIMEOUT) {
 					await this.message.edit(this.language.get('COMMAND_GAMES_TIMEOUT'));
@@ -161,12 +161,12 @@ module.exports = class ConnectFour {
 	 * @since 3.0.0
 	 * @param {ConnectFourWinningRow} row The winning row
 	 */
-	showWinner(row) {
+	public showWinner(row) {
 		this.winner = this.turn === 0 ? this.challenger : this.challengee;
 		const VALUE = this.turn === 0 ? 'WINNER_1' : 'WINNER_2';
 		// @ts-ignore
 		for (const { x, y } of row) this.table[x][y] = VALUE;
-		if (this.manageMessages) this.message.reactions.removeAll().catch(error => this.client.emit('apiError', error));
+		if (this.manageMessages) this.message.reactions.removeAll().catch((error) => this.client.emit('apiError', error));
 	}
 
 	/**
@@ -174,7 +174,7 @@ module.exports = class ConnectFour {
 	 * @since 3.0.0
 	 * @returns {Promise<?ConnectFourWinningRow>}
 	 */
-	async getRow() {
+	public async getRow() {
 		const PLAYER = (this.turn === 0 ? this.challenger : this.challengee).id;
 		const reaction = await new Promise((resolve, reject) => {
 			const timeout = setTimeout(() => reject(RESPONSES.TIMEOUT), 60000);
@@ -195,7 +195,7 @@ module.exports = class ConnectFour {
 	 * @param {number} row The row to push
 	 * @returns {?ConnectFourWinningRow}
 	 */
-	pushLine(row) {
+	public pushLine(row) {
 		if (this.isFullLine(row)) throw RESPONSES.FULL_LINE;
 
 		const column = this.table[row];
@@ -213,7 +213,7 @@ module.exports = class ConnectFour {
 	 * @since 3.0.0
 	 * @returns {boolean}
 	 */
-	isFullGame() {
+	public isFullGame() {
 		for (let x = 0; x < this.table.length; x++)
 			if (!this.isFullLine(x)) return false;
 
@@ -226,7 +226,7 @@ module.exports = class ConnectFour {
 	 * @param {number} row The row to check
 	 * @returns {boolean}
 	 */
-	isFullLine(row) {
+	public isFullLine(row) {
 		return this.table[row][4] !== 0;
 	}
 
@@ -237,7 +237,7 @@ module.exports = class ConnectFour {
 	 * @param {number} posY The position Y to check
 	 * @returns {ConnectFourWinningRow}
 	 */
-	check(posX, posY) {
+	public check(posX, posY) {
 		const row = this._check(posX, posY);
 		if (row) this.showWinner(row);
 		return row;
@@ -251,7 +251,7 @@ module.exports = class ConnectFour {
 	 * @returns {ConnectFourWinningRow}
 	 * @private
 	 */
-	_check(posX, posY) {
+	public _check(posX, posY) {
 		const PLAYER = this.turn + 1;
 		const MIN_X = Math.max(0, posX - 3),
 			MIN_Y = Math.max(0, posY - 3),
@@ -275,11 +275,10 @@ module.exports = class ConnectFour {
 						{ x: x - 3, y: posY },
 						{ x: x - 2, y: posY },
 						{ x: x - 1, y: posY },
-						{ x: x, y: posY }
+						{ x, y: posY }
 					];
 				}
 			} else { horizontal = 0; }
-
 
 			// Check diagonals up
 			const upY = posY + offset;
@@ -291,7 +290,7 @@ module.exports = class ConnectFour {
 							{ x: x - 3, y: upY - 3 },
 							{ x: x - 2, y: upY - 2 },
 							{ x: x - 1, y: upY - 1 },
-							{ x: x, y: upY }
+							{ x, y: upY }
 						];
 					}
 				} else { diagUp = 0; }
@@ -307,7 +306,7 @@ module.exports = class ConnectFour {
 							{ x: x - 3, y: downY + 3 },
 							{ x: x - 2, y: downY + 2 },
 							{ x: x - 1, y: downY + 1 },
-							{ x: x, y: downY }
+							{ x, y: downY }
 						];
 					}
 				} else { diagDown = 0; }
@@ -323,7 +322,7 @@ module.exports = class ConnectFour {
 	 * @param {number} [error] The error number
 	 * @returns {string}
 	 */
-	render(error) {
+	public render(error) {
 		return this.message.edit((error === RESPONSES.FULL_LINE ? this.language.get('COMMAND_C4_GAME_COLUMN_FULL') : '') +
 			this.language.get(
 				this.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT',
@@ -339,7 +338,7 @@ module.exports = class ConnectFour {
 	 * @since 3.0.0
 	 * @returns {string}
 	 */
-	renderTable() {
+	public renderTable() {
 		const MAX_LENGTH = this.table.length;
 
 		let output = '';
@@ -354,7 +353,7 @@ module.exports = class ConnectFour {
 	 * Switch the current turn
 	 * @since 3.0.0
 	 */
-	switch() {
+	public switch() {
 		this.turn = this.turn ? 0 : 1;
 	}
 
@@ -364,7 +363,7 @@ module.exports = class ConnectFour {
 	 * @param {string} emoji The emoji
 	 * @param {string} userID The user ID that reacted to the message
 	 */
-	send(emoji, userID) {
+	public send(emoji, userID) {
 		if (this.collector) this.collector(emoji, userID);
 	}
 
@@ -374,17 +373,17 @@ module.exports = class ConnectFour {
 	 * @param {string} emoji The emoji to remove
 	 * @param {string} userID The user ID that reacted to the message
 	 */
-	async removeEmoji(emoji, userID) {
+	public async removeEmoji(emoji, userID) {
 		await this.client.api.channels[this.message.channel.id].messages[this.message.id]
 			.reactions[encodeURIComponent(emoji)][userID].delete()
-			.catch(error => this.client.emit('apiError', error));
+			.catch((error) => this.client.emit('apiError', error));
 	}
 
 	/**
 	 * Free memory by nully-ing all properties
 	 * @since 3.0.0
 	 */
-	dispose() {
+	public dispose() {
 		this.challenger = null;
 		this.challengee = null;
 		this.message = null;
@@ -405,7 +404,7 @@ module.exports = class ConnectFour {
 	 * @returns {ConnectFourWinningRow}
 	 * @private
 	 */
-	_checkVerticals(posX, MIN_Y, MAX_Y, PLAYER) {
+	public _checkVerticals(posX, MIN_Y, MAX_Y, PLAYER) {
 		let verticals = 0, y;
 		for (y = MIN_Y; y < MAX_Y; y++) {
 			const row = this.table[posX][y];
@@ -420,7 +419,7 @@ module.exports = class ConnectFour {
 				{ x: posX, y: y - 3 },
 				{ x: posX, y: y - 2 },
 				{ x: posX, y: y - 1 },
-				{ x: posX, y: y }
+				{ x: posX, y }
 			];
 		}
 

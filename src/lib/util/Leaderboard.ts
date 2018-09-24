@@ -38,7 +38,7 @@ class Leaderboard {
 	 * @since 3.0.0
 	 * @param {Skyra} client The client that instantiated this class
 	 */
-	constructor(client) {
+	public constructor(client) {
 		/**
 		 * The Client that initialized this instance
 		 * @since 3.0.0
@@ -110,7 +110,7 @@ class Leaderboard {
 	 * @param {(string)} guild A guild id or instance
 	 * @returns {Promise<Collection<string, LeaderboardUser>>}
 	 */
-	async getMembers(guild) {
+	public async getMembers(guild) {
 		if (this._tempPromises.guilds.has(guild)) await this._tempPromises.guilds.get(guild);
 		else if (!this.guilds.has(guild)) await this.syncMembers(guild);
 		return this.guilds.get(guild);
@@ -121,7 +121,7 @@ class Leaderboard {
 	 * @since 3.0.0
 	 * @returns {Promise<Collection<string, LeaderboardUser>>}
 	 */
-	async getUsers() {
+	public async getUsers() {
 		if (this._tempPromises.users) await this._tempPromises.users;
 		else if (this.users.size === 0) await this.syncUsers();
 		return this.users;
@@ -132,7 +132,7 @@ class Leaderboard {
 	 * @since 3.0.0
 	 * @param {string} guild A guild id or instance
 	 */
-	async syncMembers(guild) {
+	public async syncMembers(guild) {
 		if (typeof guild !== 'string') throw new TypeError(`Expected the parameter 'guild' to be an instance of Guild or a string. Got: ${typeof guild}`);
 
 		// If it's still on timeout, reset it
@@ -141,7 +141,7 @@ class Leaderboard {
 		// It's not deleting the entry as the previous run will resolve
 
 		// Get the sorted data from the db
-		const promise = new Promise(async (resolve) => {
+		const promise = new Promise(async(resolve) => {
 			const r = this.client.providers.default.db;
 			// orderBy with index on getAll doesn't work: https://github.com/rethinkdb/rethinkdb/issues/2670
 			const data = await r.table('localScores').getAll(guild, { index: 'guildID' }).orderBy(r.desc('count')).limit(LIMITS.MEMBERS);
@@ -176,8 +176,8 @@ class Leaderboard {
 	 * Sync the global leaderboard
 	 * @since 3.0.0
 	 */
-	async syncUsers() {
-		await (this._tempPromises.users = new Promise(async (resolve) => {
+	public async syncUsers() {
+		await (this._tempPromises.users = new Promise(async(resolve) => {
 			// Get the sorted data from the db
 			const r = this.client.providers.default.db;
 			const data = await r.table('users').orderBy({ index: r.desc('points') }).limit(LIMITS.GLOBAL);
@@ -205,7 +205,7 @@ class Leaderboard {
 	 * Clear the entire cache and timeouts
 	 * @since 3.0.0
 	 */
-	dispose() {
+	public dispose() {
 		this.clearGuilds();
 		this.clearUsers();
 	}
@@ -214,7 +214,7 @@ class Leaderboard {
 	 * Clear the guilds cache
 	 * @since 3.0.0
 	 */
-	clearGuilds() {
+	public clearGuilds() {
 		for (const timeout of this.timeouts.guilds.values())
 			timeout.stop();
 	}
@@ -223,7 +223,7 @@ class Leaderboard {
 	 * Clear the user leaderboard cache
 	 * @since 3.0.0
 	 */
-	clearUsers() {
+	public clearUsers() {
 		if (this.timeouts.users)
 			this.timeouts.users.stop();
 	}

@@ -3,7 +3,7 @@ const { clientID } = require('../../../config');
 
 module.exports = class ToJSON {
 
-	static user(data) {
+	public static user(data) {
 		if (!(data instanceof User)) return null;
 		return {
 			id: data.id,
@@ -15,7 +15,7 @@ module.exports = class ToJSON {
 		};
 	}
 
-	static guildMember(data) {
+	public static guildMember(data) {
 		if (!(data instanceof GuildMember)) return null;
 		return {
 			id: data.id,
@@ -30,7 +30,7 @@ module.exports = class ToJSON {
 		};
 	}
 
-	static guild(data) {
+	public static guild(data) {
 		if (!(data instanceof Guild)) return null;
 		return {
 			id: data.id,
@@ -48,7 +48,7 @@ module.exports = class ToJSON {
 		};
 	}
 
-	static role(data) {
+	public static role(data) {
 		if (!(data instanceof Role)) return null;
 		return {
 			id: data.id,
@@ -61,7 +61,7 @@ module.exports = class ToJSON {
 		};
 	}
 
-	static channel(data) {
+	public static channel(data) {
 		if (!(data instanceof Channel)) return null;
 		const output = {
 			id: data.id,

@@ -5,7 +5,7 @@ const { Canvas } = require('canvas-constructor');
 
 module.exports = class extends Command {
 
-	constructor(client, store, file, directory) {
+	public constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['pray'],
 			requiredPermissions: ['ATTACH_FILES'],
@@ -20,13 +20,13 @@ module.exports = class extends Command {
 		this.template = null;
 	}
 
-	async run(msg, [user = msg.author]) {
+	public async run(msg, [user = msg.author]) {
 		const attachment = await this.generate(msg, user);
 		return msg.channel.send({ files: [{ attachment, name: 'F.png' }] })
-			.then(message => msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS') ? message.react('🇫') : message);
+			.then((message) => msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS') ? message.react('🇫') : message);
 	}
 
-	async generate(msg, user) {
+	public async generate(msg, user) {
 		const praised = await fetchAvatar(user, 256);
 
 		return new Canvas(960, 540)
@@ -35,7 +35,7 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-	async init() {
+	public async init() {
 		this.template = await readFile(join(assetsFolder, './images/memes/f.png'));
 	}
 

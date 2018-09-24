@@ -37,6 +37,7 @@
     "heapdump": "^0.3.9",
     "klasa": "github:dirigeants/klasa",
     "node-fetch": "^2.2.0",
+    "rethinkdb-ts": "^2.4.0-rc.7",
     "rethinkdbdash": "^2.3.31",
     "veza": "^0.3.1"
   },

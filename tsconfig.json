@@ -5,6 +5,7 @@
 		"noImplicitAny": true,
 		"strictNullChecks": true,
 		"noEmit": true,
+		"experimentalDecorators": true,
 		"forceConsistentCasingInFileNames": true,
 		"checkJs": true,
 		"moduleResolution": "node",

@@ -1983,6 +1983,8 @@ module.exports = class extends Language {
 			 */
 
 			COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
+			COMMAND_TAGS_NAME_NOTALLOWED: 'A tag name may not have a grave accent nor invisible characters.',
+			COMMAND_TAGS_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
 			COMMAND_TAGS_ADD_EXISTS: (tag) => `The tag '${tag}' already exists.`,
 			COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
 			COMMAND_TAGS_ADD_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,

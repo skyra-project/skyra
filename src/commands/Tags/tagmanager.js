@@ -15,6 +15,11 @@ module.exports = class extends Command {
 	}
 
 	async add(msg, [tag, contents]) {
+		// Check if it is an acceptable tag name
+		if (tag.includes('`') || tag.includes('\u200B')) throw msg.language.get('COMMAND_TAGS_NAME_NOTALLOWED');
+		if (tag.length > 50) throw msg.language.get('COMMAND_TAGS_NAME_TOOLONG');
+
+		// Lowercase tag name
 		tag = tag.toLowerCase();
 
 		const currentTags = msg.guild.settings.tags;

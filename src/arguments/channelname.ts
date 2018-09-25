@@ -1,6 +1,5 @@
-import { Snowflake } from 'discord.js';
-import { KlasaGuildChannel, Possible } from 'klasa';
-import { Argument, FuzzySearch } from '../index';
+import { KlasaGuildChannel } from 'klasa';
+import { Argument, FuzzySearch, Possible, Snowflake } from '../index';
 import { SkyraGuild, SkyraMessage } from '../lib/types/klasa';
 const CHANNEL_REGEXP: RegExp = /^(?:<#)?(\d{17,19})>?$/;
 

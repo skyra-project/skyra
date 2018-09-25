@@ -79,6 +79,15 @@ export type ModerationLogEditData = {
 	reason?: string | null;
 };
 
+//#region util
+export type ColorOutput = {
+	readonly hex: HEX;
+	readonly rgb: RGB;
+	readonly hsl: HSL;
+	readonly b10: B10;
+};
+//#endregion util
+
 //#region config.ts
 export type ConfigurationDatabase = {
 	rebirthdb: {

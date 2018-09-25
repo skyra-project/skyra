@@ -87,7 +87,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 	return FriendlyDuration.duration(time, TIMES);
 }
 
-module.exports = class extends Language {
+export default class extends Language {
 
 	public constructor(client, store, file, directory) {
 		super(client, store, file, directory);
@@ -2158,4 +2158,4 @@ module.exports = class extends Language {
 
 	public async init() { } // eslint-disable-line no-empty-function
 
-};
+}

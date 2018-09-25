@@ -2,9 +2,9 @@ const { Command, MessageEmbed } = require('../../../index');
 
 const SORT = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['serverinfo'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -15,7 +15,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		let tChannels = 0, vChannels = 0, cChannels = 0;
 		for (const channel of msg.guild.channels.values()) {
 			if (channel.type === 'text') tChannels++;
@@ -39,4 +39,4 @@ module.exports = class extends Command {
 				msg.guild.roles.size, msg.guild.region, msg.guild.createdAt, msg.guild.verificationLevel), true));
 	}
 
-};
+}

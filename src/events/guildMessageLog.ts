@@ -1,6 +1,6 @@
 const { Event, constants: { MESSAGE_LOGS }, DiscordAPIError } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public async run(type, guild, makeMessage) {
 		const key = TYPES[type];
@@ -27,7 +27,7 @@ module.exports = class extends Event {
 		}
 	}
 
-};
+}
 
 const TYPES = {
 	[MESSAGE_LOGS.kMember]: 'channels.log',

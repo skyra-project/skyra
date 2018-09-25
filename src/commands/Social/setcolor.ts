@@ -1,8 +1,8 @@
 const { Command, Color, MessageEmbed } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['setcolour'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -25,4 +25,4 @@ module.exports = class extends Command {
 			.setDescription(msg.language.get('COMMAND_SETCOLOR', hex)));
 	}
 
-};
+}

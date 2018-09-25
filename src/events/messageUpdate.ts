@@ -1,7 +1,7 @@
 const { Event, discordUtil: { escapeMarkdown }, MessageEmbed, constants: { MESSAGE_LOGS } } = require('../index');
 const { diffWordsWithSpace } = require('diff');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public async run(old, message) {
 		// Run monitors
@@ -23,4 +23,4 @@ module.exports = class extends Event {
 			.setTimestamp());
 	}
 
-};
+}

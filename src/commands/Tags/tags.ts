@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMANDS_TAGS_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMANDS_TAGS_EXTENDED'),
@@ -28,4 +28,4 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TAGS_LIST', [[...tags.keys()].map((tag) => `\`${prefix}${tag}\``)]);
 	}
 
-};
+}

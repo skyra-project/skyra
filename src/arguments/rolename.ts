@@ -1,9 +1,10 @@
-const { Argument, FuzzySearch } = require('../index');
-const ROLE_REGEXP = /^(?:<@&)?(\d{17,19})>?$/;
+import { Argument, FuzzySearch } from '../index';
+const ROLE_REGEXP: RegExp = /^(?:<@&)?(\d{17,19})>?$/;
 
-module.exports = class extends Argument {
+export default class extends Argument {
 
-	public get role() {
+	public get role(): Argument {
+		// @ts-ignore
 		return this.store.get('role');
 	}
 
@@ -23,4 +24,4 @@ module.exports = class extends Argument {
 		return null;
 	}
 
-};
+}

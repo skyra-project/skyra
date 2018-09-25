@@ -3,9 +3,9 @@ const { Command } = require('klasa');
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes)$/i;
 const SNEYRA_ID = '338249781594030090';
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			runIn: ['text'],
 			cooldown: 30,
@@ -63,4 +63,4 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_MARRY_ACCEPTED', [msg.author, user]);
 	}
 
-};
+}

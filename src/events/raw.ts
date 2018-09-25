@@ -1,6 +1,6 @@
 const { Event } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public run(data) {
 		const piece = this.client.rawEvents.get(data.t);
@@ -17,4 +17,4 @@ module.exports = class extends Event {
 		}
 	}
 
-};
+}

@@ -1,8 +1,8 @@
 const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['kittenfact'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -13,7 +13,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		const { fact } = await fetch('https://catfact.ninja/fact', 'json');
 		return msg.sendEmbed(new MessageEmbed()
 			.setColor(0xFFE0B2)
@@ -21,4 +21,4 @@ module.exports = class extends Command {
 			.setDescription(fact));
 	}
 
-};
+}

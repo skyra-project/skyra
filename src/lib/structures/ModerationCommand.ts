@@ -123,4 +123,4 @@ export default abstract class ModerationCommand extends Command {
 
 }
 
-module.exports = ModerationCommand;
+export default ModerationCommand;

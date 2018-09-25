@@ -40,7 +40,7 @@ const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
  * @since 3.0.0
  * @version 2.0.0
  */
-module.exports = class MemorySweeper extends Task {
+export default class MemorySweeper extends Task {
 
 	public async run() {
 		const OLD_SNOWFLAKE = binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
@@ -112,4 +112,4 @@ module.exports = class MemorySweeper extends Task {
 		return `\u001B[39m\u001B[32m${text}\u001B[39m\u001B[90m`;
 	}
 
-};
+}

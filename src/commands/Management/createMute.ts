@@ -1,8 +1,8 @@
 const { Command, util: { createMuteRole } } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			cooldown: 150,
@@ -13,10 +13,10 @@ module.exports = class extends Command {
 		});
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		if (msg.guild.roles.size >= 250) throw msg.language.get('COMMAND_MUTE_CONFIGURE_TOOMANY_ROLES');
 		await createMuteRole(await msg.sendLocale('SYSTEM_PROCESSING'));
 		return msg.responses;
 	}
 
-};
+}

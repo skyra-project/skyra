@@ -1,8 +1,8 @@
 const { Inhibitor } = require('../index');
 
-module.exports = class extends Inhibitor {
+export default class extends Inhibitor {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: InhibitorStore, file: string[], directory: string) {
 		super(client, store, file, directory, { spamProtection: true });
 	}
 
@@ -22,4 +22,4 @@ module.exports = class extends Inhibitor {
 			throw msg.language.get('INHIBITOR_SPAM', channel);
 	}
 
-};
+}

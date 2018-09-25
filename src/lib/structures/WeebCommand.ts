@@ -67,4 +67,4 @@ class WeebCommand extends Command {
 
 }
 
-module.exports = WeebCommand;
+export default WeebCommand;

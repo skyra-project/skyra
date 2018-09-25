@@ -9,9 +9,9 @@ const MONO_COMMAND = `mono ${E_LOCATION}`;
 const EXEC_OPTIONS = { timeout: 30000, cwd: BWD_FOLDER };
 const REPLACER = new RegExp(regExpEsc(S_LOCATION), 'g');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['c#eval', 'csev', 'c#ev'],
 			description: (language) => language.get('COMMAND_CSEVAL_DESCRIPTION'),
@@ -59,7 +59,7 @@ module.exports = class extends Command {
 		return { type: 'function', input: TEMPLATES.function(input) };
 	}
 
-};
+}
 
 const TEMPLATES = {
 	function: (code) => `

@@ -1,8 +1,9 @@
-const { Command } = require('../../index');
+// const { Command } = require('../../index');
+import { Command } from '../../index';
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_DICE_DESCRIPTION'),
@@ -35,4 +36,4 @@ module.exports = class extends Command {
 		return total;
 	}
 
-};
+}

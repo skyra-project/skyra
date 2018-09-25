@@ -1,6 +1,6 @@
 const ConnectFour = require('./ConnectFour');
 
-module.exports = class ConnectFourManager {
+export default class ConnectFourManager {
 
 	public constructor(client) {
 		/**
@@ -89,4 +89,4 @@ module.exports = class ConnectFourManager {
 		return null;
 	}
 
-};
+}

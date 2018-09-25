@@ -1,8 +1,8 @@
 const { WeebCommand } = require('../../index');
 
-module.exports = class extends WeebCommand {
+export default class extends WeebCommand {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_WCUDDLE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_WCUDDLE_EXTENDED'),
@@ -12,4 +12,4 @@ module.exports = class extends WeebCommand {
 		});
 	}
 
-};
+}

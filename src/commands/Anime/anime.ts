@@ -1,8 +1,8 @@
 const { Command, PromptList, MessageEmbed, util: { fetch, oneToTen, cutText } } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
@@ -66,4 +66,4 @@ module.exports = class extends Command {
 		return ((total / (max * 20)) * 100).toFixed(2);
 	}
 
-};
+}

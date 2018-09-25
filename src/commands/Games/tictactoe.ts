@@ -4,9 +4,9 @@ const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
 const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['ttt'],
 			requiredPermissions: [FLAGS.ADD_REACTIONS],
@@ -145,4 +145,4 @@ module.exports = class extends Command {
 		return output;
 	}
 
-};
+}

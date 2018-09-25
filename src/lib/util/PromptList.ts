@@ -137,4 +137,4 @@ class PromptList {
 
 }
 
-module.exports = PromptList;
+export default PromptList;

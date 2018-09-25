@@ -6,9 +6,9 @@ const PERMISSIONS = Permissions.resolve([
 	Permissions.FLAGS.MANAGE_CHANNELS
 ]);
 
-module.exports = class extends ModerationCommand {
+export default class extends ModerationCommand {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			description: (language) => language.get('COMMAND_MUTE_DESCRIPTION'),
@@ -60,4 +60,4 @@ module.exports = class extends ModerationCommand {
 		return roles;
 	}
 
-};
+}

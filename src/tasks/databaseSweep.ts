@@ -1,6 +1,6 @@
 const { Task } = require('klasa');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public async run() {
 		this.disable();
@@ -27,4 +27,4 @@ module.exports = class extends Task {
 		).delete()).deleted;
 	}
 
-};
+}

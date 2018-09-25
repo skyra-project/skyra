@@ -2,7 +2,7 @@ const { Argument, FuzzySearch } = require('../index');
 const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
 
-module.exports = class extends Argument {
+export default class extends Argument {
 
 	public get user() {
 		return this.store.get('user');
@@ -28,4 +28,4 @@ module.exports = class extends Argument {
 		return null;
 	}
 
-};
+}

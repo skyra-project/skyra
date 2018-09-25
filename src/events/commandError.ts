@@ -1,8 +1,8 @@
 const { Event, DiscordAPIError, klasaUtil: { codeBlock } } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: EventStore, file: string[], directory: string) {
 		super(client, store, file, directory);
 		this.logChannel = null;
 	}
@@ -59,4 +59,4 @@ module.exports = class extends Event {
 		return `${error.code ? `[${error.code}] ` : ''}ERROR: /${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`;
 	}
 
-};
+}

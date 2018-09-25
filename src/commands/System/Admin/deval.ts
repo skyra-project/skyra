@@ -1,8 +1,8 @@
 const { Command, Stopwatch, klasaUtil: { codeBlock } } = require('../../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['d-ev', 'dashboard-eval'],
 			description: (language) => language.get('COMMAND_EVAL_DESCRIPTION'),
@@ -31,4 +31,4 @@ module.exports = class extends Command {
 		return msg.send(`⏱ ${time} | **${success ? 'Output' : 'Error'}**${codeBlock('js', result)}`);
 	}
 
-};
+}

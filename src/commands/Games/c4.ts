@@ -1,10 +1,12 @@
-const { Command } = require('../../index');
+import { CommandStore } from 'klasa';
+import { Command } from '../../index';
+import Skyra from '../../lib/Skyra';
 
 const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['connect-four'],
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS'],
@@ -43,4 +45,4 @@ module.exports = class extends Command {
 		return null;
 	}
 
-};
+}

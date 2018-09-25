@@ -7,4 +7,4 @@ export default abstract class RawEvent extends Piece {
 
 }
 
-module.exports = RawEvent;
+export default RawEvent;

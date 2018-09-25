@@ -2,9 +2,9 @@ const { Command } = require('../../index');
 const SORT = (x, y) => +(x.points > y.points) || +(x.points === y.points) - 1;
 
 /* eslint-disable max-len */
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['autoroles', 'levelrole', 'lvlrole'],
 			requiredPermissions: ['MANAGE_ROLES'],
@@ -75,4 +75,4 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole]);
 	}
 
-};
+}

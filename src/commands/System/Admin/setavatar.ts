@@ -1,9 +1,9 @@
 const { Command, util: { fetch } } = require('../../../index');
 const attachmentFilter = /\.(?:webp|png|jpg|gif)$/i;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_SETAVATAR_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SETAVATAR_EXTENDED'),
@@ -28,4 +28,4 @@ module.exports = class extends Command {
 		return msg.sendMessage(`Dear ${msg.author}, I have changed my avatar for you.`);
 	}
 
-};
+}

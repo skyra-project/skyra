@@ -1,6 +1,6 @@
 const { Monitor, MessageEmbed } = require('../index');
 
-module.exports = class extends Monitor {
+export default class extends Monitor {
 
 	public async run(msg) {
 		if (!msg.guild
@@ -34,4 +34,4 @@ module.exports = class extends Monitor {
 		return invitelinks && !ignoreChannels.includes(msg.channel.id);
 	}
 
-};
+}

@@ -117,6 +117,14 @@ export const MODERATION: ConstantsModeration = Object.freeze({
 	TYPE_KEYS,
 });
 
+export default {
+	CONNECT_FOUR,
+	EMOJIS,
+	MESSAGE_LOGS,
+	MODERATION,
+	TIME
+};
+
 export type ConstantsTime = Readonly<{
 	DAY: number;
 	HOUR: number;

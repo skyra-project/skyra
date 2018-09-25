@@ -7,9 +7,9 @@ const MATCHES = {
 	GUILD: '%GUILD%'
 };
 
-module.exports = class extends RawEvent {
+export default class extends RawEvent {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: RawEventStore, file: string[], directory: string) {
 		super(client, store, file, directory, { name: 'GUILD_MEMBER_REMOVE' });
 	}
 
@@ -58,4 +58,4 @@ module.exports = class extends RawEvent {
 		return { guild, user: this.client.users.add(data.user) };
 	}
 
-};
+}

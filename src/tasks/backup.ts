@@ -2,7 +2,7 @@ const { Task, Timestamp } = require('klasa');
 const { outputJSONAtomic, readJSON, remove, pathExists } = require('fs-nextra');
 const { join } = require('path');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public constructor(client, store, file, directory) {
 		super(client, store, file, directory);
@@ -80,4 +80,4 @@ module.exports = class extends Task {
 		}
 	}
 
-};
+}

@@ -1,6 +1,6 @@
 const { Inhibitor } = require('../index');
 
-module.exports = class extends Inhibitor {
+export default class extends Inhibitor {
 
 	public async run(msg, cmd) {
 		if (cmd.enabled
@@ -15,4 +15,4 @@ module.exports = class extends Inhibitor {
 		return entry ? entry.includes(cmd.name) : false;
 	}
 
-};
+}

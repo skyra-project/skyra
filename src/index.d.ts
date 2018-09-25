@@ -520,12 +520,6 @@ export class NoMentionSpam extends Map<Snowflake, NoMentionSpamEntry> {
 export { KlasaUtil as klasaUtil };
 export { DiscordUtil as discordUtil };
 
-export const versions: {
-	skyra: string;
-	klasa: string;
-	discord: string;
-};
-
 declare class B10 {
 	public constructor(value: number);
 	public value: number;
@@ -578,8 +572,6 @@ declare class RGB {
 }
 
 //#region types
-
-
 
 type ModerationTypesEnum =
 	// BAN

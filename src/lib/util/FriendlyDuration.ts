@@ -209,4 +209,4 @@ const INTL_OPTIONS = Object.freeze({
  */
 FriendlyDuration._dateFormats = new Map();
 
-module.exports = FriendlyDuration;
+export default FriendlyDuration;

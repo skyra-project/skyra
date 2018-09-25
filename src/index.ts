@@ -1,3 +1,6 @@
+import { version as discordVersion } from 'discord.js';
+import { version as klasaVersion } from 'klasa';
+
 export {
 	Argument,
 	ArgumentStore,
@@ -105,6 +108,7 @@ export {
 	Webhook,
 	WebhookClient
 } from 'discord.js';
+export * from './lib/types/klasa';
 
 import { join } from 'path';
 import { VERSION } from '../config';
@@ -119,80 +123,59 @@ export { default as Skyra } from './lib/Skyra';
 // Extensions
 export { default as SkyraGuild } from './lib/extensions/SkyraGuild';
 export { default as SkyraGuildMember } from './lib/extensions/SkyraGuildMember';
+// Structures
+export { default as GuildSettings } from './lib/structures/GuildSettings';
+export { default as MemberSettings } from './lib/structures/MemberSettings';
+export { default as UserSettings } from './lib/structures/UserSettings';
+export { default as StarboardManager } from './lib/structures/StarboardManager';
+export { default as StarboardMessage } from './lib/structures/StarboardMessage';
 
-module.exports = {
-	assetsFolder: join(__dirname, '..', 'assets'),
-	rootFolder: __dirname,
-
-	// Export everything from Discord.js
-	...discord,
-
-	// Export everything from Klasa
-	...klasa,
-
-	// SkyraClient
-	Skyra: require('./lib/Skyra'),
-	config: require('../config'),
-	version: require('../config').version,
-
-	// Extensions
-	SkyraGuild: require('./lib/extensions/SkyraGuild'),
-	SkyraGuildMember: require('./lib/extensions/SkyraGuildMember'),
-
-	// Structures
-	GuildSettings: require('./lib/structures/GuildSettings'),
-	MemberSettings: require('./lib/structures/MemberSettings'),
-	UserSettings: require('./lib/structures/UserSettings'),
-	StarboardManager: require('./lib/structures/StarboardManager'),
-	StarboardMessage: require('./lib/structures/StarboardMessage'),
-
-	ModerationCommand: require('./lib/structures/ModerationCommand'),
-	WeebCommand: require('./lib/structures/WeebCommand'),
+export { default as ModerationCommand } from './lib/structures/ModerationCommand';
+export { default as WeebCommand } from './lib/structures/WeebCommand';
 
 	// Custom API store and piece
-	API: require('./lib/structures/API'),
-	APIStore: require('./lib/structures/APIStore'),
-	RawEvent: require('./lib/structures/RawEvent'),
-	RawEventStore: require('./lib/structures/RawEventStore'),
+export { default as API } from './lib/structures/API';
+export { default as APIStore } from './lib/structures/APIStore';
+export { default as RawEvent } from './lib/structures/RawEvent';
+export { default as RawEventStore } from './lib/structures/RawEventStore';
 
 	// Util
-	Color: require('./lib/util/Color'),
-	FriendlyDuration: require('./lib/util/FriendlyDuration'),
-	FuzzySearch: require('./lib/util/FuzzySearch'),
-	LanguageHelp: require('./lib/util/LanguageHelp'),
-	Leaderboard: require('./lib/util/Leaderboard'),
-	PreciseTimeout: require('./lib/util/PreciseTimeout'),
-	PromptList: require('./lib/util/PromptList'),
-	ToJSON: require('./lib/util/ToJSON'),
-	DatabaseInit: require('./lib/util/DatabaseInit'),
-	constants: require('./lib/util/constants'),
-	util: require('./lib/util/util'),
+export { default as Color } from './lib/util/Color';
+export { default as FriendlyDuration } from './lib/util/FriendlyDuration';
+export { default as FuzzySearch } from './lib/util/FuzzySearch';
+export { default as LanguageHelp } from './lib/util/LanguageHelp';
+export { default as Leaderboard } from './lib/util/Leaderboard';
+export { default as PreciseTimeout } from './lib/util/PreciseTimeout';
+export { default as PromptList } from './lib/util/PromptList';
+export { default as ToJSON } from './lib/util/ToJSON';
+export { default as DatabaseInit } from './lib/util/DatabaseInit';
+export { default as constants } from './lib/util/constants';
+export { default as util } from './lib/util/util';
 
 	// Util/External
-	rUnicodeEmoji: require('./lib/util/External/rUnicodeEmoji'),
-	levenshtein: require('./lib/util/External/levenshtein'),
+export { default as rUnicodeEmoji } from './lib/util/External/rUnicodeEmoji';
+export { default as levenshtein } from './lib/util/External/levenshtein';
 
 	// Games
-	ConnectFour: require('./lib/util/Games/ConnectFour'),
-	ConnectFourManager: require('./lib/util/Games/ConnectFourManager'),
-	Slotmachine: require('./lib/util/Games/Slotmachine'),
+export { default as ConnectFour } from './lib/util/Games/ConnectFour';
+export { default as ConnectFourManager } from './lib/util/Games/ConnectFourManager';
+export { default as Slotmachine } from './lib/util/Games/Slotmachine';
 
 	// Ratelimits
-	TimeoutManager: require('./lib/util/Ratelimits/TimeoutManager'),
+export { default as TimeoutManager } from './lib/util/Ratelimits/TimeoutManager';
 
 	// Moderation
-	AntiRaid: require('./lib/util/Security/AntiRaid'),
-	GuildSecurity: require('./lib/util/GuildSecurity'),
-	ModerationManager: require('./lib/structures/ModerationManager'),
-	ModerationManagerEntry: require('./lib/structures/ModerationManagerEntry'),
-	NoMentionSpam: require('./lib/util/Security/NoMentionSpam'),
+export { default as AntiRaid } from './lib/util/Security/AntiRaid';
+export { default as GuildSecurity } from './lib/util/GuildSecurity';
+export { default as ModerationManager } from './lib/structures/ModerationManager';
+export { default as ModerationManagerEntry } from './lib/structures/ModerationManagerEntry';
+export { default as NoMentionSpam } from './lib/util/Security/NoMentionSpam';
 
-	klasaUtil: klasa.util,
-	discordUtil: discord.Util,
+export { util as klasaUtil } from 'klasa';
+export { Util as discordUtil } from 'discord.js';
 
-	versions: {
-		get skyra() { return module.exports.version; },
-		klasa: klasa.version,
-		discord: discord.version
-	}
+export const versions: { skyra: string; klasa: string; discord: string } = {
+	discord: discordVersion,
+	klasa: klasaVersion,
+	skyra: VERSION,
 };

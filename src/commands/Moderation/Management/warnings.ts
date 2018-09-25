@@ -2,9 +2,9 @@ const { Command, constants: { MODERATION: { TYPE_KEYS } }, RichDisplay, MessageE
 
 const RH_TIMELIMIT = 30000;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			bucket: 2,
@@ -46,4 +46,4 @@ module.exports = class extends Command {
 		return `Case \`${warning.case}\`. Moderator: **${users.get(warning.moderator)}**.\n${warning.reason || 'None'}`;
 	}
 
-};
+}

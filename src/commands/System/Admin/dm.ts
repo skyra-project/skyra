@@ -1,8 +1,8 @@
 const { Command } = require('klasa');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_DM_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_DM_EXTENDED'),
@@ -23,4 +23,4 @@ module.exports = class extends Command {
 			.catch(() => msg.alert(`I am sorry, I could not send the message to ${user}`));
 	}
 
-};
+}

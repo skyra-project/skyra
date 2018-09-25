@@ -33,4 +33,4 @@ class UserSettings extends Settings {
 
 }
 
-module.exports = UserSettings;
+export default UserSettings;

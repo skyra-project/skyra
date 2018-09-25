@@ -17,7 +17,7 @@ const OFFSET = 0b100000;
 // eslint-disable-next-line no-bitwise
 const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
 
-module.exports = class extends Monitor {
+export default class extends Monitor {
 
 	public async run(msg) {
 		if (await msg.hasAtLeastPermissionLevel(5)) return;
@@ -59,4 +59,4 @@ module.exports = class extends Monitor {
 		return msg.content.length > selfmod.capsminimum && selfmod.capsfilter && !selfmod.ignoreChannels.includes(msg.channel.id);
 	}
 
-};
+}

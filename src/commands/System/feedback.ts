@@ -1,8 +1,8 @@
 const { Command, MessageEmbed } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['suggest'],
 			bucket: 2,
@@ -34,4 +34,4 @@ module.exports = class extends Command {
 		this.channel = this.client.channels.get('257561807500214273');
 	}
 
-};
+}

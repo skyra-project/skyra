@@ -1,8 +1,8 @@
 const { Command } = require('../../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 5,
@@ -48,4 +48,4 @@ module.exports = class extends Command {
 			: msg.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``));
 	}
 
-};
+}

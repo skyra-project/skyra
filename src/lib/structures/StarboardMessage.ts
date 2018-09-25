@@ -398,4 +398,4 @@ class StarboardMessage {
 
 StarboardMessage.COLORS = COLORS;
 
-module.exports = StarboardMessage;
+export default StarboardMessage;

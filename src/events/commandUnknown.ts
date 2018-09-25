@@ -1,6 +1,6 @@
 const { Event, Stopwatch } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public async run(msg, command) {
 		if (!msg.guild || msg.guild.settings.disabledChannels.includes(msg.channel.id)) return;
@@ -37,4 +37,4 @@ module.exports = class extends Event {
 		this.commandHandler.runCommand(msg, timer);
 	}
 
-};
+}

@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			runIn: ['text'],
 			cooldown: 0,
@@ -21,4 +21,4 @@ module.exports = class extends Command {
 	// 	// This is where you place the code you want to run for your command
 	// }
 
-};
+}

@@ -1,6 +1,6 @@
 const { Task, constants: { MODERATION: { SCHEMA_KEYS, TYPE_KEYS } }, util: { removeMute }, Permissions: { FLAGS } } = require('../index');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public async run(doc) {
 		// Get the guild
@@ -39,4 +39,4 @@ module.exports = class extends Task {
 			.create();
 	}
 
-};
+}

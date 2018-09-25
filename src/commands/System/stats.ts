@@ -2,9 +2,9 @@ const { Command, Duration } = require('klasa');
 const { version } = require('discord.js');
 const { uptime, loadavg } = require('os');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		return msg.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
 	}
 
@@ -45,4 +45,4 @@ module.exports = class extends Command {
 		};
 	}
 
-};
+}

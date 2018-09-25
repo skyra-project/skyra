@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['nickname'],
 			requiredPermissions: ['CHANGE_NICKNAME'],
@@ -20,4 +20,4 @@ module.exports = class extends Command {
 		return msg.alert(msg.language.get(...nick.length > 0 ? ['COMMAND_NICK_SET', nick] : ['COMMAND_NICK_CLEARED']));
 	}
 
-};
+}

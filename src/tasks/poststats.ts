@@ -1,6 +1,6 @@
 const { Task, config, util: { fetch } } = require('../index');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public async run() {
 		if (this.client.options.dev) return;
@@ -52,4 +52,4 @@ module.exports = class extends Task {
 		// 	.catch(err => this.client.emit('error', `ERROR [ServerHound]:\nError: ${(err && err.stack) || err}`));
 	}
 
-};
+}

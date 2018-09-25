@@ -1,8 +1,8 @@
 const { Command } = require('klasa');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['updoot'],
 			description: (language) => language.get('COMMAND_UPVOTE_DESCRIPTION'),
@@ -10,8 +10,8 @@ module.exports = class extends Command {
 		});
 	}
 
-	public run(msg) {
+	public run(msg: SkyraMessage) {
 		return msg.sendLocale('COMMAND_UPVOTE_MESSAGE');
 	}
 
-};
+}

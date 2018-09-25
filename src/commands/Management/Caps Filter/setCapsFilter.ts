@@ -7,9 +7,9 @@ const VALUES = {
 	delete: { value: 1 << 0, key: 'COMMAND_SETCAPSFILTER_DELETE' }
 };
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_SETCAPSFILTER_DESCRIPTION'),
@@ -42,4 +42,4 @@ module.exports = class extends Command {
 		return msg.sendLocale(key, [enable]);
 	}
 
-};
+}

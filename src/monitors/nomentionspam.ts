@@ -1,8 +1,8 @@
 const { Monitor, constants: { MODERATION: { TYPE_KEYS } } } = require('../index');
 
-module.exports = class extends Monitor {
+export default class extends Monitor {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: MonitorStore, file: string[], directory: string) {
 		super(client, store, file, directory, { ignoreBots: false });
 	}
 
@@ -42,4 +42,4 @@ module.exports = class extends Monitor {
 		return clone;
 	}
 
-};
+}

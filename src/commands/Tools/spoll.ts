@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['simplepoll'],
 			requiredPermissions: ['ADD_REACTIONS'],
@@ -13,11 +13,11 @@ module.exports = class extends Command {
 		});
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		for (const reaction of ['👍', '👎', '🤷'])
 			if (!msg.reactions.has(reaction)) await msg.react(reaction);
 
 		return msg;
 	}
 
-};
+}

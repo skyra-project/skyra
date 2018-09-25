@@ -4,9 +4,9 @@ const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11
 
 /* eslint-disable no-bitwise */
 /* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 10,
 			requiredPermissions: ['ATTACH_FILES'],
@@ -48,4 +48,4 @@ module.exports = class extends Command {
 		return r.join('-');
 	}
 
-};
+}

@@ -1,6 +1,6 @@
 const { Event } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public async run() {
 		await this.initCleanupTask();
@@ -46,4 +46,4 @@ module.exports = class extends Event {
 			await this.client.schedule.create('backup', '0 0 * * *', {});
 	}
 
-};
+}

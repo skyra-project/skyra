@@ -2,9 +2,9 @@ const { Command, MessageEmbed } = require('../../index');
 
 const sortRanks = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['userinfo'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -56,4 +56,4 @@ module.exports = class extends Command {
 			.setTimestamp();
 	}
 
-};
+}

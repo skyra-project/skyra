@@ -187,4 +187,4 @@ type MemberSettingsData = {
 	count: number;
 };
 
-module.exports = MemberSettings;
+export default MemberSettings;

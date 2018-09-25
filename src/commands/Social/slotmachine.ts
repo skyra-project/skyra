@@ -1,8 +1,8 @@
 const { Command, Slotmachine } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['slot', 'slots', 'slotmachines'],
 			requiredPermissions: ['ATTACH_FILES'],
@@ -24,4 +24,4 @@ module.exports = class extends Command {
 		return msg.channel.send({ files: [{ attachment, name: 'Slotmachine.png' }] });
 	}
 
-};
+}

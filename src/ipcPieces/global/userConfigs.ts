@@ -1,6 +1,6 @@
 const { API } = require('../../index');
 
-module.exports = class extends API {
+export default class extends API {
 
 	public async run({ userID }) {
 		const user = await this.client.users.fetch(userID).catch(() => null);
@@ -11,4 +11,4 @@ module.exports = class extends API {
 		return null;
 	}
 
-};
+}

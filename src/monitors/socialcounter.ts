@@ -1,9 +1,9 @@
 const { Monitor, Permissions: { FLAGS: { MANAGE_ROLES } } } = require('../index');
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 
-module.exports = class extends Monitor {
+export default class extends Monitor {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: MonitorStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			ignoreBots: true,
 			ignoreEdits: true,
@@ -84,4 +84,4 @@ module.exports = class extends Monitor {
 		return latest;
 	}
 
-};
+}

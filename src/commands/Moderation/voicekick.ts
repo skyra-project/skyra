@@ -1,8 +1,8 @@
 const { ModerationCommand } = require('../../index');
 
-module.exports = class extends ModerationCommand {
+export default class extends ModerationCommand {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS'],
 			description: (language) => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
@@ -32,4 +32,4 @@ module.exports = class extends ModerationCommand {
 		return voiceChannel.delete('Temporal Voice Channel Deletion');
 	}
 
-};
+}

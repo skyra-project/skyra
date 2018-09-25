@@ -1,8 +1,8 @@
 const { Command } = require('../../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			permissionLevel: 10,
 			guarded: true,
@@ -10,7 +10,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		await msg.sendLocale('COMMAND_REBOOT').catch((err) => this.client.emit('apiError', err));
 
 		try {
@@ -23,4 +23,4 @@ module.exports = class extends Command {
 		return null;
 	}
 
-};
+}

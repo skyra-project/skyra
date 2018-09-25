@@ -1,7 +1,7 @@
 const { User, GuildMember, Role, Channel, Guild } = require('discord.js');
 const { clientID } = require('../../../config');
 
-module.exports = class ToJSON {
+export default class ToJSON {
 
 	public static user(data) {
 		if (!(data instanceof User)) return null;
@@ -80,4 +80,4 @@ module.exports = class ToJSON {
 		return output;
 	}
 
-};
+}

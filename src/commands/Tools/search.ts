@@ -1,8 +1,8 @@
 const { Command, MessageEmbed, util: { fetch } } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
@@ -31,4 +31,4 @@ module.exports = class extends Command {
 		msg.sendMessage({ embed });
 	}
 
-};
+}

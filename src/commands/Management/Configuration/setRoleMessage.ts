@@ -1,9 +1,9 @@
 const { Command, Serializer } = require('../../../index');
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			bucket: 2,
@@ -39,4 +39,4 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_SETMESSAGEROLE_SET');
 	}
 
-};
+}

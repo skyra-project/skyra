@@ -1,8 +1,8 @@
 const { Event, klasaUtil } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: EventStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			once: true,
 			event: 'ready'
@@ -63,4 +63,4 @@ module.exports = class extends Event {
 		await promise;
 	}
 
-};
+}

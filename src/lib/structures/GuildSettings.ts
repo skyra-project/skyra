@@ -38,4 +38,4 @@ export default class GuildSettings extends Settings {
 
 }
 
-module.exports = GuildSettings;
+export default GuildSettings;

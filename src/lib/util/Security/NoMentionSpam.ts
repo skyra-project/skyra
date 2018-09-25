@@ -85,4 +85,4 @@ class NoMentionSpam extends Map {
 
 }
 
-module.exports = NoMentionSpam;
+export default NoMentionSpam;

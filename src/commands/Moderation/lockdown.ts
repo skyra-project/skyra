@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['lock', 'unlock'],
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
@@ -33,4 +33,4 @@ module.exports = class extends Command {
 			: null);
 	}
 
-};
+}

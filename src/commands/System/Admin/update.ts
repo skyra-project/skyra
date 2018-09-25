@@ -1,8 +1,8 @@
 const { Command, klasaUtil } = require('../../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['pull'],
 			description: 'Update the bot',
@@ -35,4 +35,4 @@ module.exports = class extends Command {
 		return stdout.startsWith(`refs/heads/${branch}`) || stdout.startsWith(branch);
 	}
 
-};
+}

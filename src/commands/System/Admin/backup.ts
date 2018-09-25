@@ -1,8 +1,8 @@
 const { Command } = require('klasa');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_BACKUP_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_BACKUP_EXTENDED'),
@@ -11,7 +11,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		// Disable this command so it cannot
 		// run twice during a backup
 		this.disable();
@@ -30,4 +30,4 @@ module.exports = class extends Command {
 		return message;
 	}
 
-};
+}

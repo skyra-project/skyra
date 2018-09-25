@@ -7,9 +7,9 @@ url.searchParams.append('image_type', 'photo');
 url.searchParams.append('category', 'animals');
 url.searchParams.append('key', require.main.exports.config.tokens.pixabay);
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		this.hits = [];
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		const data = this.hits[Math.ceil(Math.random() * this.hits.length)];
 		return msg.sendMessage(`${data.tags}\n${data.pageURL}`);
 	}
@@ -34,4 +34,4 @@ module.exports = class extends Command {
 		}
 	}
 
-};
+}

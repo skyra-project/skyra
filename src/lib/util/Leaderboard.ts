@@ -233,6 +233,6 @@ class Leaderboard {
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 
-module.exports = Leaderboard;
+export default Leaderboard;
 
 const PreciseTimeout = require('./PreciseTimeout');

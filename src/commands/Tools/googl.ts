@@ -4,9 +4,9 @@ const REG_GOOGL = /^https:\/\/goo\.gl\/.+/;
 const LONG_URL = new URL('https://www.googleapis.com/urlshortener/v1/url');
 LONG_URL.searchParams.set('key', KEY);
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['shortenurl', 'googleshorturl', 'shorten'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -38,4 +38,4 @@ module.exports = class extends Command {
 		return i18n.get('COMMAND_GOOGL_SHORT', body.longUrl);
 	}
 
-};
+}

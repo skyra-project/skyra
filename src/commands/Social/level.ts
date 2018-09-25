@@ -5,9 +5,9 @@ const { readFile } = require('fs-nextra');
 
 const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['lvl'],
 			requiredPermissions: ['ATTACH_FILES'],
@@ -100,4 +100,4 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-};
+}

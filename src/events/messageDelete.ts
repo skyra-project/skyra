@@ -1,6 +1,6 @@
 const { Event, util: { getContent, getImage }, MessageEmbed, constants: { MESSAGE_LOGS } } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public async run(message) {
 		if (message.command && message.command.deletable) for (const msg of message.responses) msg.nuke();
@@ -18,4 +18,4 @@ module.exports = class extends Event {
 			.setTimestamp());
 	}
 
-};
+}

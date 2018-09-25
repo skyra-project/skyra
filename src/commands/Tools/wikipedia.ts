@@ -2,9 +2,9 @@ const { Command, util: { fetch, cutText }, MessageEmbed } = require('../../index
 
 const API_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['wiki'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -52,4 +52,4 @@ module.exports = class extends Command {
 		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
 	}
 
-};
+}

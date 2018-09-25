@@ -1,6 +1,6 @@
 const { Task, constants: { MODERATION: { TYPE_KEYS, SCHEMA_KEYS } }, Permissions: { FLAGS } } = require('../index');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public async run(doc) {
 		// Get the guild and check for permissions
@@ -23,4 +23,4 @@ module.exports = class extends Task {
 			.create();
 	}
 
-};
+}

@@ -68,4 +68,4 @@ class FuzzySearch {
 
 }
 
-module.exports = FuzzySearch;
+export default FuzzySearch;

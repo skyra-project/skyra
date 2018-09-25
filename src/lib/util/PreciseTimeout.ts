@@ -74,4 +74,4 @@ class PreciseTimeout {
 
 }
 
-module.exports = PreciseTimeout;
+export default PreciseTimeout;

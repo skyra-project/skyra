@@ -3,9 +3,9 @@ const { Command, Serializer } = require('../../index');
 const REG_USERS = Serializer.regex.userOrMember, REG_TAG = /[^#]{2,32}#\d{4,4}/;
 const REG_ROLES = Serializer.regex.role;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_POLL_DESCRIPTION'),
@@ -147,4 +147,4 @@ module.exports = class extends Command {
 		return (users && users.includes(msg.author.id)) || (roles && roles.some((role) => msg.member.roles.has(role))) || !!users;
 	}
 
-};
+}

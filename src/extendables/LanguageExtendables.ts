@@ -1,9 +1,9 @@
 // @ts-nocheck
 const { Extendable, Language } = require('../index');
 
-module.exports = class extends Extendable {
+export default class extends Extendable {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: ExtendableStore, file: string[], directory: string) {
 		super(client, store, file, directory, { appliesTo: [Language] });
 	}
 
@@ -11,4 +11,4 @@ module.exports = class extends Extendable {
 		return this.language[keyname] || this.store.default.language[keyname] || null;
 	}
 
-};
+}

@@ -63,4 +63,4 @@ class LanguageHelp {
 
 }
 
-module.exports = LanguageHelp;
+export default LanguageHelp;

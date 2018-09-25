@@ -1,9 +1,9 @@
 const { Command, RichDisplay, constants: { TIME }, MessageEmbed, FuzzySearch } = require('../../index');
 const RH_TIMELIMIT = TIME.MINUTE * 5;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['MANAGE_ROLES'],
 			cooldown: 5,
@@ -102,4 +102,4 @@ module.exports = class extends Command {
 		return display.run(await msg.channel.send(msg.language.get('SYSTEM_PROCESSING')), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
 	}
 
-};
+}

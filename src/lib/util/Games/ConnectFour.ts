@@ -2,7 +2,7 @@ const { CONNECT_FOUR: { REACTIONS, RESPONSES, EMOJIS } } = require('../constants
 const { Permissions: { FLAGS: { MANAGE_MESSAGES } } } = require('discord.js');
 const { DiscordAPIError } = require('discord.js');
 
-module.exports = class ConnectFour {
+export default class ConnectFour {
 
 	/**
 	 * @typedef {Object[]} ConnectFourWinningRow
@@ -426,4 +426,4 @@ module.exports = class ConnectFour {
 		return null;
 	}
 
-};
+}

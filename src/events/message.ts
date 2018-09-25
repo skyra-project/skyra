@@ -1,6 +1,6 @@
 const { Event } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public async run(msg) {
 		if (msg.system || msg.webhookID) return;
@@ -11,4 +11,4 @@ module.exports = class extends Event {
 		}
 	}
 
-};
+}

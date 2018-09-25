@@ -1,7 +1,7 @@
 import { Snowflake } from 'discord.js';
-import { SkyraUser } from './klasa';
-import { KlasaConsoleConfig, KlasaClientOptions } from 'klasa';
+import { KlasaClientOptions, KlasaConsoleConfig } from 'klasa';
 import { RPoolConnectionOptions } from 'rethinkdb-ts';
+import { SkyraUser } from './klasa';
 
 export type SkyraClientOptions = {
 	dev?: boolean;

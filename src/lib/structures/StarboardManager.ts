@@ -7,7 +7,7 @@ const StarboardMessage = require('./StarboardMessage');
  * @extends {Collection<string, StarboardMessage>}
  * @version 4.0.0
  */
-module.exports = class StarboardManager extends Collection {
+export default class StarboardManager extends Collection {
 
 	/**
 	 * Instantiate a StarboardManager
@@ -106,4 +106,4 @@ module.exports = class StarboardManager extends Collection {
 		return null;
 	}
 
-};
+}

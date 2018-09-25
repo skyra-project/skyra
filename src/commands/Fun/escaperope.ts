@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 60,
@@ -11,9 +11,9 @@ module.exports = class extends Command {
 		});
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		if (msg.deletable) msg.nuke().catch(() => null);
 		return msg.sendLocale('COMMAND_ESCAPEROPE_OUTPUT', [msg.author]);
 	}
 
-};
+}

@@ -1,8 +1,8 @@
 const { Command, MessageEmbed } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['kitten', 'cat'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -23,7 +23,7 @@ module.exports = class extends Command {
 		this.index = Math.ceil(Math.random() * this.rand.length);
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		if (this.index > this.rand.length - 1) this.index = 0;
 		else this.index += 1;
 
@@ -31,4 +31,4 @@ module.exports = class extends Command {
 			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.rand[this.index]}.jpg`));
 	}
 
-};
+}

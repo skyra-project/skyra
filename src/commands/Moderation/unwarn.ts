@@ -1,8 +1,8 @@
 const { ModerationCommand, constants: { MODERATION: { TYPE_KEYS } } } = require('../../index');
 
-module.exports = class extends ModerationCommand {
+export default class extends ModerationCommand {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_UNWARN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_UNWARN_EXTENDED'),
@@ -29,4 +29,4 @@ module.exports = class extends ModerationCommand {
 		return this.sendModlog(msg, user, reason);
 	}
 
-};
+}

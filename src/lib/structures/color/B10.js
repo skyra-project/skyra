@@ -1,4 +1,4 @@
-module.exports = class B10 {
+export default class B10 {
 
 	/**
      * B10 Parser.

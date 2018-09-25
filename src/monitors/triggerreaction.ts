@@ -1,6 +1,6 @@
 const { Monitor } = require('../index');
 
-module.exports = class extends Monitor {
+export default class extends Monitor {
 
 	public async run(msg) {
 		const content = msg.content.toLowerCase();
@@ -22,4 +22,4 @@ module.exports = class extends Monitor {
 			&& msg.guild.settings.trigger.includes.length;
 	}
 
-};
+}

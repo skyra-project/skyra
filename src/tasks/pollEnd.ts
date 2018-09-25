@@ -1,9 +1,9 @@
 const { Task } = require('../index');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public run() {
 		return Promise.resolve();
 	}
 
-};
+}

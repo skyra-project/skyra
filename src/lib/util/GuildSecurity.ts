@@ -80,7 +80,7 @@ class GuildSecurity {
 
 }
 
-module.exports = GuildSecurity;
+export default GuildSecurity;
 
 const AntiRaid = require('./Security/AntiRaid');
 const NoMentionSpam = require('./Security/NoMentionSpam');

@@ -3,9 +3,9 @@ const { Command, RichDisplay, klasaUtil: { isFunction }, MessageEmbed, Permissio
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 const time = 1000 * 60 * 3;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['commands', 'cmd', 'cmds'],
 			guarded: true,
@@ -98,4 +98,4 @@ module.exports = class extends Command {
 		return commands;
 	}
 
-};
+}

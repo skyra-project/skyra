@@ -1,8 +1,8 @@
 const { Command } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['choise', 'pick'],
 			bucket: 2,
@@ -37,4 +37,4 @@ module.exports = class extends Command {
 		throw i18n.get('COMMAND_CHOICE_DUPLICATES', [...filtered].join('\', \''));
 	}
 
-};
+}

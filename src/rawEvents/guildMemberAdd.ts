@@ -12,9 +12,9 @@ const COLORS = {
 	MUTE: { color: 0xFDD835, title: 'Muted Member Join' }
 };
 
-module.exports = class extends RawEvent {
+export default class extends RawEvent {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: RawEventStore, file: string[], directory: string) {
 		super(client, store, file, directory, { name: 'GUILD_MEMBER_ADD' });
 	}
 
@@ -117,4 +117,4 @@ module.exports = class extends RawEvent {
 		});
 	}
 
-};
+}

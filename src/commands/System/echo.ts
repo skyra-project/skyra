@@ -1,8 +1,8 @@
 const { Command } = require('klasa');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['talk'],
 			description: (language) => language.get('COMMAND_ECHO_DESCRIPTION'),
@@ -32,4 +32,4 @@ module.exports = class extends Command {
 		return msg;
 	}
 
-};
+}

@@ -1,5 +1,5 @@
 /* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
-module.exports = class HEX {
+export default class HEX {
 
 	/**
      * HEX Parser.

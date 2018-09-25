@@ -1,8 +1,8 @@
 const { Command, Timestamp, MessageEmbed, util: { fetch } } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_XKCD_DESCRIPTION'),
@@ -53,4 +53,4 @@ module.exports = class extends Command {
 		return Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1;
 	}
 
-};
+}

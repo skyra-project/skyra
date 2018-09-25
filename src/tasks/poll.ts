@@ -1,7 +1,7 @@
 const { Task, constants: { TIME }, klasaUtil: { codeBlock } } = require('../index');
 const TASK_EOL = TIME.DAY * 2;
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public async run(doc) {
 		const guild = this.client.guilds.get(doc.guild);
@@ -41,4 +41,4 @@ module.exports = class extends Task {
 		throw error;
 	}
 
-};
+}

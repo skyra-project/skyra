@@ -1,6 +1,6 @@
 const { Event, DiscordAPIError } = require('../index');
 
-module.exports = class extends Event {
+export default class extends Event {
 
 	public run(error) {
 		if (error instanceof DiscordAPIError) {
@@ -14,4 +14,4 @@ module.exports = class extends Event {
 		}
 	}
 
-};
+}

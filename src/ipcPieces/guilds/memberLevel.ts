@@ -1,7 +1,7 @@
 const { API, config: { ownerID } } = require('../../index');
 const { Permissions: { FLAGS } } = require('discord.js');
 
-module.exports = class extends API {
+export default class extends API {
 
 	public run({ guildID, memberID, level }) {
 		const guild = this.client.guilds.get(guildID);
@@ -23,7 +23,7 @@ module.exports = class extends API {
 		return false;
 	}
 
-};
+}
 
 const EMPTY = Symbol('empty');
 const LEVELS = [];

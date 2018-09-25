@@ -2,9 +2,9 @@ const { Command, constants: { TIME } } = require('../../index');
 const GRACE_PERIOD = TIME.HOUR;
 const DAILY_PERIOD = TIME.HOUR * 12;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['dailies'],
 			cooldown: 30,
@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		this.spam = true;
 	}
 
-	public async run(msg) {
+	public async run(msg: SkyraMessage) {
 		const now = Date.now();
 		await msg.author.settings.sync();
 		const time = msg.author.settings.timeDaily;
@@ -51,4 +51,4 @@ module.exports = class extends Command {
 		return money;
 	}
 
-};
+}

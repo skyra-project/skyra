@@ -144,4 +144,4 @@ Slotmachine.images = Object.seal({
 	SHINY: null
 });
 
-module.exports = Slotmachine;
+export default Slotmachine;

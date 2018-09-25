@@ -116,4 +116,4 @@ class Color {
 
 Color.Resolver = Resolver;
 
-module.exports = Color;
+export default Color;

@@ -1,9 +1,9 @@
 const { Command, Serializer, util: { getContent } } = require('../../index');
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['source', 'msg-source', 'message-source'],
 			cooldown: 15,
@@ -30,4 +30,4 @@ module.exports = class extends Command {
 		return msg.sendMessage(getContent(message) + attachments, { code: 'md' });
 	}
 
-};
+}

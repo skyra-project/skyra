@@ -3,9 +3,9 @@ const { readFile } = require('fs-nextra');
 const { join } = require('path');
 const { Canvas } = require('canvas-constructor');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -47,4 +47,4 @@ module.exports = class extends Command {
 		this.kyra = await this.client.users.fetch(this.client.options.ownerID);
 	}
 
-};
+}

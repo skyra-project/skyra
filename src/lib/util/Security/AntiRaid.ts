@@ -184,4 +184,4 @@ export default class AntiRaid {
 
 function noop(): undefined { return; }
 
-module.exports = AntiRaid;
+export default AntiRaid;

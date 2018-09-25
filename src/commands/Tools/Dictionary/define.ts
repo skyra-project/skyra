@@ -4,9 +4,9 @@ const options = { headers: { Accept: 'application/json', app_id: API_ID, app_key
 const URL = 'https://od-api.oxforddictionaries.com/api/v1/entries/en/';
 const TABLENAME = 'oxford';
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 20,
 			bucket: 2,
@@ -92,4 +92,4 @@ module.exports = class extends Command {
 		};
 	}
 
-};
+}

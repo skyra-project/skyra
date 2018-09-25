@@ -6,9 +6,9 @@ const attachmentFilter = /\.(?:webp|png|jpg|gif)$/i;
 
 const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
@@ -144,4 +144,4 @@ module.exports = class extends Command {
 			.toBufferAsync();
 	}
 
-};
+}

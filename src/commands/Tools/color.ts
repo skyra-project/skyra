@@ -6,9 +6,9 @@ const cL = (colour) => Math.max(Math.min(colour, 255), 0);
 const sCL = (colour) => colour >= 128 ? 0 : 255;
 
 /* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B", "x", "y"] }] */
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['colour'],
 			requiredPermissions: ['ATTACH_FILES'],
@@ -70,4 +70,4 @@ module.exports = class extends Command {
 		);
 	}
 
-};
+}

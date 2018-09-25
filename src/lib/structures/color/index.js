@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	B10: require('./B10'),
 	HEX: require('./HEX'),
 	HSL: require('./HSL'),

@@ -1,9 +1,9 @@
 const { Command, MessageEmbed, klasaUtil: { toTitleCase }, util: { fetch, cutText } } = require('../../../index');
 const ZWS = '\u200B';
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			requiredPermissions: ['EMBED_LINKS'],
@@ -47,4 +47,4 @@ module.exports = class extends Command {
 		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
 
-};
+}

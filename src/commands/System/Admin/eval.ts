@@ -2,9 +2,9 @@ const { Command, Stopwatch, Type, util } = require('klasa');
 const { inspect } = require('util');
 const fetch = require('node-fetch');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['ev'],
 			description: (language) => language.get('COMMAND_EVAL_DESCRIPTION'),
@@ -138,4 +138,4 @@ module.exports = class extends Command {
 		return `https://hastebin.com/${key}.${language}`;
 	}
 
-};
+}

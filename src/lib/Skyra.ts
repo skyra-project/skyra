@@ -10,7 +10,7 @@ import TimeoutManager from './util/Ratelimits/TimeoutManager';
 
 import { enumerable } from './types/Decorators';
 import { SkyraGuildStore } from './types/discord.js';
-import { ProviderStore } from './types/klasa';
+import { ProviderStore, PermissionLevels } from './types/klasa';
 
 import { VERSION } from '../../config';
 import { SkyraClientOptions } from './types/skyra';
@@ -36,7 +36,7 @@ type SkyraUsageStatus = {
 
 export default class Skyra extends Client {
 
-	public constructor(options: SkyraClientOptions) {
+	public constructor(options?: SkyraClientOptions) {
 		super(options);
 
 		this.version = VERSION;
@@ -57,7 +57,7 @@ export default class Skyra extends Client {
 			.on('error', (error, client) => this.emit('error', `[IPC] Error from ${client.name}: ${error}`))
 			.on('message', this.emit.bind(this, 'apiMessage'));
 
-		if (!options.dev) this.ipc.connectTo('skyra-dashboard', 8800);
+		if (!this.options.dev) this.ipc.connectTo('skyra-dashboard', 8800);
 
 		this.usageStatus = Object.seal({
 			cmd: new Array(96).fill(0),
@@ -95,8 +95,11 @@ export default class Skyra extends Client {
 	public connectFour: ConnectFourManager;
 
 //#region Overrides
-	public guilds: SkyraGuildStore;
-	public providers: ProviderStore;
+	// @ts-ignore
+	public static defaultPermissionLevels: PermissionLevels = Client.defaultPermissionLevels;
+	public options: SkyraClientOptions = this.options;
+	public guilds: SkyraGuildStore = this.guilds;
+	public providers: ProviderStore = this.providers;
 //#endregion Overrides
 
 	/**

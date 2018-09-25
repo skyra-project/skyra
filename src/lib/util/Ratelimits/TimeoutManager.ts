@@ -118,4 +118,4 @@ class TimeoutManager {
 
 }
 
-module.exports = TimeoutManager;
+export default TimeoutManager;

@@ -1,7 +1,7 @@
 const { MODERATION: { SCHEMA_KEYS } } = require('./constants');
 let init = false;
 
-module.exports = class DatabaseInit {
+export default class DatabaseInit {
 
 	public static async init(r) {
 		if (init) return;
@@ -77,4 +77,4 @@ module.exports = class DatabaseInit {
 		));
 	}
 
-};
+}

@@ -1,13 +1,17 @@
-const { Skyra, config, assetsFolder, Permissions: { FLAGS } } = module.exports = require('./index');
+import { Canvas } from 'canvas-constructor';
+import { join } from 'path';
+import { CONSOLE, DATABASE, TOKENS, VERSION } from '../config';
+import { assets, Permissions, Skyra } from './index';
+import { SkyraMessage } from './lib/types/klasa';
+const { FLAGS } = Permissions;
 
 // Canvas setup
-const { join } = require('path');
-require('canvas-constructor').Canvas
-	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular')
-	.registerFont(join(assetsFolder, 'fonts', 'NotoEmoji.ttf'), 'RobotoRegular')
-	.registerFont(join(assetsFolder, 'fonts', 'NotoSans-Regular.ttf'), 'RobotoRegular')
-	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight')
-	.registerFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
+Canvas
+	.registerFont(join(assets, 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(assets, 'fonts', 'NotoEmoji.ttf'), 'RobotoRegular')
+	.registerFont(join(assets, 'fonts', 'NotoSans-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(assets, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight')
+	.registerFont(join(assets, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
 
 Skyra.defaultUserSchema
 	.add('badgeList', 'String', { array: true, configurable: false })
@@ -91,24 +95,24 @@ Skyra.defaultGuildSchema
 		.add('includes', 'any', { array: true, configurable: false }));
 
 // eslint-disable-next-line no-process-env
-const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
+const DEV: boolean = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 
 // Skyra setup
 Skyra.defaultPermissionLevels
-	.add(4, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.staff
+	.add(4, (_, msg: SkyraMessage) => Boolean(msg.member) && (msg.guild.settings.roles.staff
 		? msg.member.roles.has(msg.guild.settings.roles.staff)
 		: msg.member.permissions.has(FLAGS.MANAGE_MESSAGES)), { fetch: true })
-	.add(5, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.moderator
+	.add(5, (_, msg: SkyraMessage) => Boolean(msg.member) && (msg.guild.settings.roles.moderator
 		? msg.member.roles.has(msg.guild.settings.roles.moderator)
 		: msg.member.permissions.has(FLAGS.BAN_MEMBERS)), { fetch: true })
-	.add(6, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.admin
+	.add(6, (_, msg: SkyraMessage) => Boolean(msg.member) && (msg.guild.settings.roles.admin
 		? msg.member.roles.has(msg.guild.settings.roles.admin)
 		: msg.member.permissions.has(FLAGS.MANAGE_GUILD)), { fetch: true });
 
-const skyra = new Skyra({
+const skyra: Skyra = new Skyra({
 	commandEditing: true,
 	commandLogging: false,
-	console: config.console,
+	console: CONSOLE,
 	consoleEvents: { verbose: true },
 	dev: DEV,
 	disabledEvents: [
@@ -132,12 +136,12 @@ const skyra = new Skyra({
 	prefix: DEV ? 'sd!' : 's!',
 	presence: { activity: { name: DEV ? 'sd!help' : 'Skyra, help', type: 'LISTENING' } },
 	providers: {
-		default: 'rethinkdb',
-		rethinkdb: DEV ? config.database.rethinkdb.development : config.database.rethinkdb.production
+		default: 'rebirthdb',
+		rebirthdb: DEV ? DATABASE.rebirthdb.development : DATABASE.rebirthdb.production
 	},
 	readyMessage: (client) =>
-		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
-	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)(,|!)/i,
+		`Skyra ${VERSION} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+	regexPrefix: DEV ? undefined : /^(hey )?(eva|skyra)(,|!)/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },
 	slowmode: 750,
@@ -145,5 +149,5 @@ const skyra = new Skyra({
 	typing: false
 });
 
-skyra.login(DEV ? config.tokens.bot.dev : config.tokens.bot.stable)
+skyra.login(DEV ? TOKENS.BOT.DEV : TOKENS.BOT.STABLE)
 	.catch((error) => skyra.console.wtf(`Login Error:\n${(error && error.stack) || error}`));

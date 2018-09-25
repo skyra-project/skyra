@@ -3,7 +3,7 @@ const { diffWordsWithSpace } = require('diff');
 
 const DELETE_FLAG = 0b01, LOG_FLAG = 0b10;
 
-module.exports = class extends Monitor {
+export default class extends Monitor {
 
 	public async run(msg) {
 		if (await msg.hasAtLeastPermissionLevel(5)) return;
@@ -42,4 +42,4 @@ module.exports = class extends Monitor {
 		return filter.level !== 0 && filter.regexp !== null && !selfmod.ignoreChannels.includes(msg.channel.id);
 	}
 
-};
+}

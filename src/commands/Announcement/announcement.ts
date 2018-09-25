@@ -1,8 +1,8 @@
 const { Command, util: { announcementCheck }, MessageEmbed } = require('../../index');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['announce'],
 			requiredPermissions: ['MANAGE_ROLES'],
@@ -55,4 +55,4 @@ module.exports = class extends Command {
 		await role.edit({ mentionable: false });
 	}
 
-};
+}

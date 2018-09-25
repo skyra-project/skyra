@@ -1,6 +1,6 @@
 const { Task, klasaUtil: { sleep }, MessageEmbed, klasaUtil: { codeBlock } } = require('../index');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public async run(data) {
 		try {
@@ -91,4 +91,4 @@ module.exports = class extends Task {
 		}
 	}
 
-};
+}

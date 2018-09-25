@@ -1,6 +1,6 @@
 const { Task, MessageEmbed } = require('../index');
 
-module.exports = class extends Task {
+export default class extends Task {
 
 	public async run() {
 		const { guilds } = this.client;
@@ -51,4 +51,4 @@ module.exports = class extends Task {
 		};
 	}
 
-};
+}

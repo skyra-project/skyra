@@ -1,8 +1,8 @@
 const { RawEvent } = require('../index');
 
-module.exports = class extends RawEvent {
+export default class extends RawEvent {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: RawEventStore, file: string[], directory: string) {
 		super(client, store, file, directory, { name: 'USER_UPDATE' });
 	}
 
@@ -18,4 +18,4 @@ module.exports = class extends RawEvent {
 		if (user) user._patch(data);
 	}
 
-};
+}

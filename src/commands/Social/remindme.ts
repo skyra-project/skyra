@@ -2,9 +2,9 @@ const { Command, PromptList, Timestamp, Duration, constants: { TIME: { YEAR } },
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 const REMINDER_TYPE = 'reminder';
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['remind', 'reminder'],
 			bucket: 2,
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		await new PromptList(tasks.map((task) => [
 			task.id,
 			`${timestamp.display(task.time)} - ${task.data.content.length > 40 ? `${task.data.content.slice(0, 40)}...` : task.data.content}`
-		])).run(msg).catch(() => null);
+		])).run(msg: SkyraMessage).catch(() => null);
 
 		return msg;
 	}
@@ -96,4 +96,4 @@ module.exports = class extends Command {
 		return time;
 	}
 
-};
+}

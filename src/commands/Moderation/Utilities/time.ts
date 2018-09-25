@@ -1,9 +1,9 @@
 const { Command, Duration, constants: { MODERATION: { SCHEMA_KEYS, TYPE_KEYS } } } = require('../../../index');
 const { Permissions: { FLAGS } } = require('discord.js');
 
-module.exports = class extends Command {
+export default class extends Command {
 
-	public constructor(client, store, file, directory) {
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: 'Sets a timer.',
@@ -117,4 +117,4 @@ module.exports = class extends Command {
 		return 'unvmute';
 	}
 
-};
+}

@@ -1,4 +1,4 @@
-# Skyra 3.3.0
+# Skyra 4.0.0 «Nerom»
 
 [![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 
@@ -10,7 +10,7 @@ This repository holds Skyra's private source code. Extracting code from this rep
 
 Skyra does not only feature almost every single feature that is needed in the majority of guilds while it's also completely configurable, but she also has a backstory that she inherited from the lore I have been creating since I was a child.
 
-There are over 10 rewrites (at the date of writting this, 12), with an active development of over a year, I have met many developers and friends in Discord, in February 2017, I met the Dirigeants team which I started to contribute for Komada, and later, for Klasa. Nowadays, Klasa holds the opensource part of Skyra.
+There are over 10 rewrites (at the date of writting this, 13), with an active development of over a year, I have met many developers and friends in Discord, in February 2017, I met the Dirigeants team which I started to contribute for Komada, and later, for Klasa. Nowadays, Klasa holds the opensource part of Skyra.
 
 ## Links
 

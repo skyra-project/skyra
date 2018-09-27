@@ -1,0 +1,15 @@
+const { API } = require('../../index');
+
+export default class extends API {
+
+	public run() {
+		return {
+			response: this.client.ws.shards
+				// Internal Sharding Support
+				? this.client.ws.shards.map((shard) => shard.status)
+				// Without Sharding
+				: [this.client.ws.connection.status]
+		};
+	}
+
+}

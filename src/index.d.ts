@@ -1,4 +1,31 @@
 //#region imports
+import { Image } from 'canvas-constructor';
+import {
+	BanOptions,
+	Base64Resolvable,
+	BufferResolvable,
+	Channel,
+	ClientUser,
+	Collection,
+	DataStore,
+	DiscordAPIError,
+	FetchMemberOptions,
+	GuildEditData,
+	GuildMember,
+	GuildMemberEditData,
+	GuildMemberResolvable,
+	GuildMemberStore,
+	GuildPruneMembersOptions,
+	GuildResolvable,
+	MessageEmbed,
+	MessageOptions,
+	Role,
+	RoleData,
+	Snowflake,
+	TextChannel,
+	UserResolvable,
+	Util as DiscordUtil
+} from 'discord.js';
 import {
 	Command,
 	CommandOptions,
@@ -28,145 +55,11 @@ import {
 	Timestamp,
 	util as KlasaUtil,
 } from 'klasa';
-import {
-	BanOptions,
-	Base64Resolvable,
-	BufferResolvable,
-	Channel,
-	ClientUser,
-	Collection,
-	DataStore,
-	DiscordAPIError,
-	FetchMemberOptions,
-	GuildEditData,
-	GuildMember,
-	GuildMemberEditData,
-	GuildMemberResolvable,
-	GuildMemberStore,
-	GuildPruneMembersOptions,
-	GuildResolvable,
-	MessageEmbed,
-	MessageOptions,
-	Role,
-	RoleData,
-	Snowflake,
-	TextChannel,
-	UserResolvable,
-	Util as DiscordUtil
-} from 'discord.js';
-import { Node, NodeMessage } from 'veza';
-import { Image } from 'canvas-constructor';
 import { Readable } from 'stream';
+import { Node, NodeMessage } from 'veza';
 //#endregion imports
 //#region exports
-export {
-	Argument,
-	ArgumentStore,
-	Client,
-	Colors,
-	CommandPrompt,
-	CommandStore,
-	CommandUsage,
-	Cron,
-	Duration,
-	EventStore,
-	ExtendableStore,
-	FinalizerStore,
-	Gateway,
-	GatewayDriver,
-	GatewayStorage,
-	InhibitorStore,
-	KlasaClient,
-	KlasaConsole,
-	KlasaGuild,
-	KlasaMessage,
-	KlasaUser,
-	LanguageStore,
-	MonitorStore,
-	Piece,
-	Possible,
-	ProviderStore,
-	QueryBuilder,
-	ReactionHandler,
-	RichDisplay,
-	RichMenu,
-	Schedule,
-	ScheduledTask,
-	Schema,
-	SchemaFolder,
-	SchemaPiece,
-	Settings,
-	Serializer,
-	SerializerStore,
-	SQLProvider,
-	Stopwatch,
-	Store,
-	Tag,
-	TaskStore,
-	TextPrompt,
-	Timestamp,
-	Type,
-	Usage
-} from 'klasa';
-export {
-	Activity,
-	Base,
-	BaseClient,
-	CategoryChannel,
-	Channel,
-	ChannelStore,
-	ClientApplication,
-	Collection,
-	Collector,
-	DataResolver,
-	DataStore,
-	DiscordAPIError,
-	DMChannel,
-	Emoji,
-	GroupDMChannel,
-	Guild,
-	GuildAuditLogs,
-	GuildChannel,
-	GuildChannelStore,
-	GuildEmoji,
-	GuildEmojiRoleStore,
-	GuildEmojiStore,
-	GuildMember,
-	GuildMemberRoleStore,
-	GuildMemberStore,
-	GuildStore,
-	Invite,
-	Message,
-	MessageAttachment,
-	MessageCollector,
-	MessageMentions,
-	MessageReaction,
-	MessageStore,
-	PermissionOverwrites,
-	Permissions,
-	Presence,
-	PresenceStore,
-	ReactionCollector,
-	ReactionEmoji,
-	ReactionUserStore,
-	RichPresenceAssets,
-	Role,
-	RoleStore,
-	Shard,
-	ShardClientUtil,
-	ShardingManager,
-	Snowflake,
-	SnowflakeUtil,
-	Structures,
-	TextChannel,
-	User,
-	UserStore,
-	version,
-	VoiceChannel,
-	VoiceRegion,
-	Webhook,
-	WebhookClient
-} from 'discord.js';
+
 //#endregion exports
 
 export const rootFolder: string;
@@ -200,26 +93,6 @@ export class Skyra extends KlasaClient {
 	public dispose(): void;
 
 	public static defaultPermissionLevels: SkyraPermissionLevels;
-}
-
-export class MemberSettings {
-	public constructor(member: SkyraGuildMember);
-	public readonly client: Skyra;
-	public readonly guildID: string;
-	public readonly userID: string;
-	public readonly member: SkyraGuildMember;
-	public count: number;
-	private UUID: string;
-	private _syncStatus: Promise<this> | null;
-
-	public sync(): Promise<this>;
-	public update(amount: number): Promise<this>;
-	public destroy(): Promise<void>;
-	public toJSON(): { count: number, guild: GuildEditData, member: GuildMemberEditData };
-	public toString(): string;
-	private _patch(data: { count?: number }): void;
-	private _sync(): Promise<this>;
-	private resolveData(entries: Array<ObjectLiteral>): ObjectLiteral;
 }
 
 export class StarboardManager extends Collection<Snowflake, StarboardMessage> {
@@ -343,14 +216,14 @@ export class FriendlyDuration {
 }
 
 export class FuzzySearch<K, V> {
-	constructor(collection: Collection<K, V>, access: (entry: V) => string, filter?: (entry: V) => boolean);
+	public constructor(collection: Collection<K, V>, access: (entry: V) => string, filter?: (entry: V) => boolean);
 	public filter: (entry: V) => boolean;
 	public access: (entry: V) => string;
 	public run(msg: SkyraMessage, query: string): V;
 }
 
 export class LanguageHelp {
-	constructor();
+	public constructor();
 	public explainedUsage: string | null;
 	public possibleFormats: string | null;
 	public examples: string | null;
@@ -536,7 +409,7 @@ export class Slotmachine {
 }
 
 export class TimeoutManager {
-	constructor(client: Skyra);
+	public constructor(client: Skyra);
 	public client: Skyra;
 	private cache: Array<RatelimitEntry>;
 	private _interval: NodeJS.Timer | null;
@@ -647,12 +520,6 @@ export class NoMentionSpam extends Map<Snowflake, NoMentionSpamEntry> {
 export { KlasaUtil as klasaUtil };
 export { DiscordUtil as discordUtil };
 
-export const versions: {
-	skyra: string;
-	klasa: string;
-	discord: string;
-};
-
 declare class B10 {
 	public constructor(value: number);
 	public value: number;
@@ -705,10 +572,6 @@ declare class RGB {
 }
 
 //#region types
-
-type SkyraClientOptions = {
-	dev?: boolean;
-} & KlasaClientOptions;
 
 type ModerationTypesEnum =
 	// BAN
@@ -818,7 +681,7 @@ type UtilOneToTenEntry = {
 type RatelimitEntry = {
 	id: string;
 	time: number;
-	callback: () => void;
+	callback(): void;
 };
 
 type SkyraConstants = Readonly<{
@@ -1064,19 +927,7 @@ type SkyraConfiguration = {
 		colors: ObjectLiteral<KlasaConsoleColorObjects>;
 	};
 	tokens: ObjectLiteral;
-	dash: {
-		session: {
-			secret: string;
-			resave: boolean;
-			saveUnitialized: boolean;
-		};
-		oauthSecret: string;
-		callback: string;
-		port: string;
-		domain: string;
-		privateAuth: string;
-		secretAuth: string;
-	};
+	dash:
 };
 
 type ObjectLiteral<T = any> = {
@@ -1084,245 +935,3 @@ type ObjectLiteral<T = any> = {
 };
 
 //#endregion types
-//#region klasa
-
-declare class SkyraPermissionLevels extends PermissionLevels {
-	public add(level: number, check: (client: Skyra, message: SkyraMessage) => boolean, options?: PermissionLevelOptions): this;
-}
-
-export { SkyraPermissionLevels as PermissionLevels };
-
-declare abstract class SkyraCommand extends Command {
-	public client: Skyra;
-	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage, params: string[]) => any): this;
-	public inhibit(msg: SkyraMessage): Promise<boolean>;
-}
-
-export { SkyraCommand as Command };
-
-declare abstract class SkyraEvent extends Event {
-	public client: Skyra;
-}
-
-export { SkyraEvent as Event };
-
-declare abstract class SkyraExtendable extends Extendable {
-	public client: Skyra;
-}
-
-export { SkyraExtendable as Extendable };
-
-declare abstract class SkyraFinalizer extends Finalizer {
-	public client: Skyra;
-}
-
-export { SkyraFinalizer as Finalizer };
-
-declare abstract class SkyraInhibitor extends Inhibitor {
-	public client: Skyra;
-}
-
-export { SkyraInhibitor as Inhibitor };
-
-declare abstract class SkyraLanguage extends Language {
-	public client: Skyra;
-}
-
-export { SkyraLanguage as Language };
-
-declare abstract class SkyraMonitor extends Monitor {
-	public client: Skyra;
-}
-
-export { SkyraMonitor as Monitor };
-
-declare abstract class SkyraProvider extends Provider {
-	public client: Skyra;
-}
-
-export { SkyraProvider as Provider };
-
-declare abstract class SkyraTask extends Task {
-	public client: Skyra;
-}
-
-export { SkyraTask as Task };
-
-//#endregion klasa
-//#region discord.js
-
-declare class SkyraClientUser extends ClientUser {
-	public client: Skyra;
-	public settings: UserSettings;
-}
-
-export { SkyraClientUser as ClientUser };
-
-declare class SkyraMessageEmbed extends MessageEmbed {
-	public splitFields(input: string | string[]): this;
-}
-
-export { SkyraMessageEmbed as MessageEmbed };
-
-declare class SkyraUserStore extends DataStore<Snowflake, SkyraUser, typeof SkyraUser, UserResolvable> {
-	constructor(client: Skyra, iterable?: Iterable<any>);
-	public fetch(id: Snowflake, cache?: boolean): Promise<SkyraUser>;
-}
-
-declare class SkyraGuildStore extends DataStore<Snowflake, SkyraGuild, typeof SkyraGuild, GuildResolvable> {
-	constructor(client: Skyra, iterable?: Iterable<any>);
-	public create(name: string, options?: { region?: string, icon?: BufferResolvable | Base64Resolvable }): Promise<SkyraGuild>;
-}
-
-declare class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMember, typeof SkyraGuildMember, GuildMemberResolvable> {
-	constructor(guild: SkyraGuild, iterable?: Iterable<any>);
-	public ban(user: UserResolvable, options?: BanOptions): Promise<SkyraGuildMember | SkyraUser | Snowflake>;
-	public fetch(options: UserResolvable | FetchMemberOptions): Promise<SkyraGuildMember>;
-	public fetch(): Promise<SkyraGuildMemberStore>;
-	public fetch(options: FetchMemberOptions): Promise<Collection<Snowflake, SkyraGuildMember>>;
-	public prune(options?: GuildPruneMembersOptions): Promise<number>;
-	public unban(user: UserResolvable, reason?: string): Promise<SkyraUser>;
-}
-
-declare class SkyraMessage extends KlasaMessage {
-	public guildSettings: GuildSettings;
-	public guild: SkyraGuild;
-	public alert(content: string | Array<string>, timer?: number): SkyraMessage;
-	public alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
-	public ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;
-	public nuke(time?: number): this;
-}
-
-export class SkyraGuild extends KlasaGuild {
-	public client: Skyra;
-	public members: SkyraGuildMemberStore;
-	public settings: GuildSettings;
-	public moderation: ModerationManager;
-	public security: GuildSecurity;
-	public starboard: StarboardManager;
-	public readonly nameDictionary: Collection<Snowflake, string>;
-	public fetchName(id: Snowflake): Promise<string>;
-}
-
-export class SkyraUser extends KlasaUser {
-	public client: Skyra;
-	public settings: UserSettings;
-}
-
-export class SkyraGuildMember extends GuildMember {
-	public settings: MemberSettings;
-	public guild: SkyraGuild;
-}
-
-export class GuildSettings extends Settings {
-	// START OF GUILD SCHEMA
-	_tags: Array<[string, string]>;
-	channels: {
-		announcement: Snowflake | null;
-		default: Snowflake | null;
-		log: Snowflake | null;
-		messagelogs: Snowflake | null;
-		modlog: Snowflake | null;
-		roles: Snowflake | null;
-		spam: Snowflake | null;
-	};
-	disabledChannels: Array<Snowflake>;
-	disabledCommands: Array<string>;
-	disabledCommandsChannels: { [k: string]: Array<string> };
-	events: {
-		banAdd: boolean;
-		banRemove: boolean;
-		commands: boolean;
-		memberAdd: boolean;
-		memberNicknameChange: boolean;
-		memberRemove: boolean;
-		memberRolesChange: boolean;
-		messageDelete: boolean;
-		messageEdit: boolean;
-		messagePrune: boolean;
-	};
-	filter: {
-		level: number;
-		raw: Array<string>;
-		regexp: RegExp | null;
-	};
-	language: string;
-	messages: {
-		farewell: string | null;
-		greeting: string | null;
-		'join-dm': string | null;
-		warnings: boolean;
-	};
-	stickyRoles: Array<{ id: Snowflake, roles: Array<Snowflake> }>;
-	prefix: string;
-	roles: {
-		admin: Snowflake | null;
-		auto: Array<{ id: Snowflake, points: number }>;
-		initial: Snowflake | null;
-		messageReaction: Snowflake | null;
-		moderator: Snowflake | null;
-		muted: Snowflake | null;
-		public: Array<Snowflake>;
-		reactions: Array<{ emoji: string, role: Snowflake }>;
-		removeInitial: boolean;
-		staff: Snowflake | null;
-		subscriber: Snowflake | null;
-	};
-	selfmod: {
-		ignoreChannels: Array<Snowflake>;
-		invitelinks: boolean;
-		nmsthreshold: number;
-		nomentionspam: boolean;
-		raid: boolean;
-		raidthreshold: number;
-	};
-	social: {
-		achieve: boolean;
-		achieveMessage: string | null;
-		boost: number;
-		monitorBoost: number;
-	};
-	starboard: {
-		channel: Snowflake | null;
-		ignoreChannels: Array<Snowflake>;
-		minimum: number;
-	};
-	trigger: {
-		alias: Array<{ input: string, output: string }>;
-		includes: Array<{ action: 'react', input: string, output: string }>;
-	};
-	twitch: {
-		channel: Snowflake | null;
-		list: Array<string>;
-		messagestart: string | null;
-		messagestop: string | null;
-		mode: number;
-	};
-	// END OF GUILD SCHEMA
-	public tags: Collection<string, string>;
-	public updateFilter(): void;
-	public static superRegExp(filterArray: Array<string>): RegExp;
-}
-
-export class UserSettings extends Settings {
-	// START OF USER SCHEMA
-	public badgeList: Array<string>;
-	public badgeSet: Array<string>;
-	public bannerList: Array<string>;
-	public bias: number;
-	public color: string;
-	public marry: Snowflake;
-	public money: number;
-	public points: number;
-	public reputation: number;
-	public themeLevel: string;
-	public themeProfile: string;
-	public timeDaily: number;
-	public timeReputation: number;
-	// END OF USER SCHEMA
-	public readonly level: number;
-	public win(money: number, guild: SkyraGuild): Promise<number>;
-	public use(money: number): Promise<number>;
-}
-
-//#endregion discord.js

@@ -27,7 +27,7 @@ module.exports = class extends Task {
 				.catch(err => this.client.emit('error', `ERROR [bots.discord.pw]:\nError: ${(err && err.stack) || err}`));
 		}
 		if (config.tokens.botsForDiscord) {
-			fetch(`https://botsfordiscord.com/api/v1/bots/${this.client.user.id}`, {
+			fetch(`https://botsfordiscord.com/api/bots/${this.client.user.id}`, {
 				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.botsForDiscord },
 				method: 'POST',
 				body

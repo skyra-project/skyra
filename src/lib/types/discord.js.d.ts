@@ -13,13 +13,18 @@ import {
 	MessageEmbed,
 	MessageOptions,
 	Snowflake,
-	UserResolvable
+	UserResolvable,
+	ChannelResolvable,
+	GuildChannel,
+	GuildCreateChannelOptions
 } from 'discord.js';
 import {
 	KlasaGuild,
 	KlasaMessage,
 	KlasaUser,
-	Settings
+	Settings,
+	KlasaTextChannel,
+	KlasaVoiceChannel
 } from 'klasa';
 import Skyra from '../Skyra';
 import {
@@ -62,8 +67,22 @@ export class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMember
 	public unban(user: UserResolvable, reason?: string): Promise<SkyraUser>;
 }
 
+export class SkyraGuildChannel extends GuildChannel {
+	// @ts-ignore
+	public client: Skyra;
+	// @ts-ignore
+	public guild: SkyraGuild;
+}
+
+export class SkyraGuildChannelStore extends DataStore<Snowflake, SkyraGuildChannel, ChannelResolvable> {
+	constructor(guild: SkyraGuild, iterable?: Iterable<any>);
+	public create(name: string, options?: GuildCreateChannelOptions): Promise<KlasaTextChannel | KlasaVoiceChannel>;
+}
+
 export class SkyraGuildMember extends GuildMember {
+	// @ts-ignore
 	public client: Skyra;
 	public settings: MemberSettings;
+	// @ts-ignore
 	public guild: SkyraGuild;
 }

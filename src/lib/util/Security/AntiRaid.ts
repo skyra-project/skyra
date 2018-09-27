@@ -183,5 +183,3 @@ export default class AntiRaid {
 }
 
 function noop(): undefined { return; }
-
-export default AntiRaid;

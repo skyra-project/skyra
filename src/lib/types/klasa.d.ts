@@ -23,7 +23,8 @@ import {
 	Provider,
 	ProviderStore,
 	Settings,
-	Task
+	Task,
+	Argument
 } from 'klasa';
 import rebirthdb from '../../providers/rebirthdb';
 import Skyra from '../Skyra';
@@ -31,7 +32,8 @@ import ModerationManager from '../structures/ModerationManager';
 import {
 	MessageEmbed,
 	SkyraGuildMember,
-	SkyraGuildMemberStore
+	SkyraGuildMemberStore,
+	SkyraGuildChannelStore
 } from './discord.js';
 
 declare class SkyraPermissionLevels extends PermissionLevels {
@@ -42,6 +44,7 @@ declare class SkyraPermissionLevels extends PermissionLevels {
 export { SkyraPermissionLevels as PermissionLevels };
 
 declare abstract class SkyraCommand extends Command {
+	// @ts-ignore
 	public client: Skyra;
 	// @ts-ignore
 	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage, params: string[]) => any): this;
@@ -51,48 +54,56 @@ declare abstract class SkyraCommand extends Command {
 export { SkyraCommand as Command };
 
 declare abstract class SkyraEvent extends Event {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraEvent as Event };
 
 declare abstract class SkyraExtendable extends Extendable {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraExtendable as Extendable };
 
 declare abstract class SkyraFinalizer extends Finalizer {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraFinalizer as Finalizer };
 
 declare abstract class SkyraInhibitor extends Inhibitor {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraInhibitor as Inhibitor };
 
 declare abstract class SkyraLanguage extends Language {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraLanguage as Language };
 
 declare abstract class SkyraMonitor extends Monitor {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraMonitor as Monitor };
 
 declare abstract class SkyraProvider extends Provider {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraProvider as Provider };
 
 declare abstract class SkyraProviderStore extends ProviderStore {
+	// @ts-ignore
 	public client: Skyra;
 	public default: rebirthdb;
 }
@@ -100,10 +111,20 @@ declare abstract class SkyraProviderStore extends ProviderStore {
 export { SkyraProviderStore as ProviderStore };
 
 declare abstract class SkyraTask extends Task {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraTask as Task };
+
+declare abstract class SkyraArgument extends Argument {
+	// @ts-ignore
+	public client: Skyra;
+	// @ts-ignore
+	public abstract run(arg: string, possible: Possible, message: SkyraMessage): Promise<any>;
+}
+
+export { SkyraArgument as Argument };
 
 export class SkyraMessage extends KlasaMessage {
 	public guildSettings: GuildSettings;
@@ -114,26 +135,37 @@ export class SkyraMessage extends KlasaMessage {
 	public ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;
 	public nuke(time?: number): this;
 
+	// @ts-ignore
 	public sendLocale(key: string, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	// @ts-ignore
 	public sendLocale(key: string, localeArgs?: Array<any>, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	// @ts-ignore
 	public sendMessage(content?: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	// @ts-ignore
 	public sendEmbed(embed: MessageEmbed, content?: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	// @ts-ignore
 	public sendCode(language: string, content: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
+	// @ts-ignore
 	public send(content?: StringResolvable, options?: MessageOptions): Promise<SkyraMessage | SkyraMessage[]>;
 }
 
 export class SkyraGuild extends KlasaGuild {
+	// @ts-ignore
+	public channels: SkyraGuildChannelStore;
+	// @ts-ignore
 	public client: Skyra;
+	// @ts-ignore
 	public members: SkyraGuildMemberStore;
-	public settings: GuildSettings;
 	public moderation: ModerationManager;
 	public security: GuildSecurity;
+	public settings: GuildSettings;
 	public starboard: StarboardManager;
 	public readonly nameDictionary: Collection<Snowflake, string>;
 	public fetchName(id: Snowflake): Promise<string>;
 }
 
 export class SkyraUser extends KlasaUser {
+	// @ts-ignore
 	public client: Skyra;
 	public settings: UserSettings;
 }

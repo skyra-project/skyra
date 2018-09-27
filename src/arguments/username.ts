@@ -1,28 +1,36 @@
-const { Argument, FuzzySearch } = require('../index');
-const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
-const USER_TAG = /^\w{1,32}#\d{4}$/;
+import { Collection } from 'discord.js';
+import { Argument, FuzzySearch, Possible, Snowflake } from '../index';
+import { SkyraGuildMember } from '../lib/types/discord.js';
+import { Argument as ArgumentType, SkyraGuild, SkyraMessage, SkyraUser } from '../lib/types/klasa';
+const USER_REGEXP: RegExp = /^(?:<@!?)?(\d{17,19})>?$/;
+const USER_TAG: RegExp = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 
-	public get user() {
+	public get user(): ArgumentType {
+		// @ts-ignore
 		return this.store.get('user');
 	}
 
-	public async run(arg, possible, msg, filter) {
+	// @ts-ignore
+	public async run(arg: string, possible: Possible, msg: SkyraMessage, filter: (entry: string) => boolean): Promise<SkyraUser> {
 		if (!arg) throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 		if (!msg.guild) return this.user.run(arg, possible, msg);
-		const resUser = await this.resolveUser(arg, msg.guild);
+		const resUser: SkyraUser | null = await this.resolveUser(arg, msg.guild);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(msg.guild.nameDictionary, (entry) => entry, filter).run(msg, arg);
-		if (result) return this.client.users.fetch(result[0]);
+		const result: [Snowflake, string] | null = await new FuzzySearch<Snowflake, string, Collection<Snowflake, string>>(msg.guild.nameDictionary, (entry) => entry, filter).run(msg, arg);
+		// @ts-ignore
+		if (result) return this.client.users.fetch(result[0]) as Promise<SkyraUser>;
 		throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 
-	public resolveUser(query, guild) {
-		if (USER_REGEXP.test(query)) return guild.client.users.fetch(USER_REGEXP.exec(query)[1]).catch(() => null);
+	public async resolveUser(query: string, guild: SkyraGuild): Promise<SkyraUser | null> {
+		// @ts-ignore
+		if (USER_REGEXP.test(query)) return guild.client.users.fetch((<RegExpExecArray> USER_REGEXP.exec(query))[1]).catch(() => null);
 		if (USER_TAG.test(query)) {
-			const res = guild.members.find((member) => member.user.tag === query);
+			const res: SkyraGuildMember | undefined = guild.members.find((member) => member.user.tag === query);
+			// @ts-ignore
 			return res ? res.user : null;
 		}
 		return null;

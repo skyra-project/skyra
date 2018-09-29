@@ -24,10 +24,10 @@ module.exports = class extends Command {
 
 	async run(msg, [, message]) {
 		const attachments = message.attachments.size
-			? `\n\n\n=============\n${message.attachments.map(att => `📁 <${att.url}>`).join('\n')}`
+			? `${message.attachments.map(att => `📁 <${att.url}>`).join('\n')}`
 			: '';
-
-		return msg.sendMessage(getContent(message) + attachments, { code: 'md' });
+		const content = getContent(message);
+		return msg.sendMessage(`${content || ''}${content ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
 	}
 
 };

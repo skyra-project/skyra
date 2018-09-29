@@ -27,7 +27,7 @@ module.exports = class extends Command {
 			? message.attachments.map(att => `📁 <${att.url}>`).join('\n')
 			: '';
 		const content = getContent(message);
-		return msg.sendMessage(`${content || ''}${content ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
+		return msg.sendMessage(`${content || ''}${content && attachments ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
 	}
 
 };

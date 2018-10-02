@@ -20,6 +20,7 @@ module.exports = class extends ModerationCommand {
 	}
 
 	async inhibit(msg) {
+		if (msg.command !== this) return false;
 		const id = msg.guild.settings.roles.muted;
 		const role = (id && msg.guild.roles.get(id)) || null;
 		if (!role) {

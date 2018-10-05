@@ -194,8 +194,8 @@ export class Skyra extends KlasaClient {
 	};
 	public readonly timeoutManager: TimeoutManager;
 	public readonly connectFour: ConnectFourManager;
-	private _updateStatsInterval: NodeJS.Timer;
-	private _skyraReady: boolean;
+	public _updateStatsInterval: NodeJS.Timer;
+	public _skyraReady: boolean;
 
 	public updateStats(): void;
 	public dispose(): void;
@@ -1213,6 +1213,7 @@ export class SkyraUser extends KlasaUser {
 }
 
 export class SkyraGuildMember extends GuildMember {
+	public client: Skyra;
 	public settings: MemberSettings;
 	public guild: SkyraGuild;
 }

@@ -1,4 +1,5 @@
 /// <reference path="../../index.d.ts" />
+/// <reference path="../../veza.d.ts" />
 const { Store, util: { isObject } } = require('klasa');
 const API = require('./API');
 
@@ -28,7 +29,7 @@ class APIStore extends Store {
 	/**
 	 * Run the router
 	 * @since 3.0.0
-	 * @param {*} message The data to process
+	 * @param {Veza.NodeMessage} message The data to process
 	 * @returns {Promise<APIResponse>}
 	 */
 	run(message) {
@@ -40,7 +41,7 @@ class APIStore extends Store {
 	 * Run the piece
 	 * @since 3.0.0
 	 * @param {API} piece The Piece to run
-	 * @param {*} message The data to process
+	 * @param {Veza.NodeMessage} message The data to process
 	 * @returns {Promise<APIResponse>}
 	 */
 	async runPiece(piece, message) {
@@ -49,7 +50,9 @@ class APIStore extends Store {
 			if (result === null) return NOT_FOUND;
 			if (!isObject(result)) return { success: true, response: result, type: 'SUCCESS', code: 200 };
 
+			// @ts-ignore
 			for (const [key, value] of DEFAULTS_SUCCESS) if (typeof result[key] === 'undefined') result[key] = value;
+			// @ts-ignore
 			return result;
 		} catch (error) {
 			if (error === null) return NOT_FOUND;

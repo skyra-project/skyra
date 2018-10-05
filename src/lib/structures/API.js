@@ -2,7 +2,11 @@ const { Piece } = require('klasa');
 
 class API extends Piece {
 
-	async run() {
+	/**
+	 * @param {Object} data The data from the message
+	 * @abstract
+	 */
+	async run(data) { // eslint-disable-line no-unused-vars
 		// Defined in extension Classes
 	}
 

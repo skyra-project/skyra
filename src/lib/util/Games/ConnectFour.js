@@ -1,3 +1,4 @@
+/// <reference path="../../../index.d.ts" />
 const { CONNECT_FOUR: { REACTIONS, RESPONSES, EMOJIS } } = require('../constants');
 const { Permissions: { FLAGS: { MANAGE_MESSAGES } } } = require('discord.js');
 const { DiscordAPIError } = require('discord.js');
@@ -14,35 +15,35 @@ module.exports = class ConnectFour {
 		/**
 		 * The Client that manages this instance
 		 * @since 3.0.0
-		 * @type {KlasaClient}
+		 * @type {SKYRA.Skyra}
 		 */
 		this.client = challenger.client;
 
 		/**
 		 * The challenger of the game
 		 * @since 3.0.0
-		 * @type {KlasaUser}
+		 * @type {SKYRA.SkyraUser}
 		 */
 		this.challenger = challenger;
 
 		/**
 		 * The challengee of the game
 		 * @since 3.0.0
-		 * @type {KlasaUser}
+		 * @type {SKYRA.SkyraUser}
 		 */
 		this.challengee = challengee;
 
 		/**
 		 * The Message used for the game
 		 * @since 3.0.0
-		 * @type {?KlasaMessage}
+		 * @type {?SKYRA.SkyraMessage}
 		 */
 		this.message = null;
 
 		/**
 		 * The Language used for the game's internacionalization
 		 * @since 3.0.0
-		 * @type {?Language}
+		 * @type {?SKYRA.Language}
 		 */
 		this.language = null;
 
@@ -71,7 +72,7 @@ module.exports = class ConnectFour {
 		/**
 		 * The winner of the game
 		 * @since 3.0.0
-		 * @type {?KlasaUser}
+		 * @type {?SKYRA.SkyraUser}
 		 */
 		this.winner = null;
 
@@ -93,7 +94,7 @@ module.exports = class ConnectFour {
 	/**
 	 * Get the ConnectFourManager instance that manages this
 	 * @since 3.0.0
-	 * @type {ConnectFourManager}
+	 * @type {SKYRA.ConnectFourManager}
 	 * @readonly
 	 */
 	get manager() {
@@ -107,19 +108,22 @@ module.exports = class ConnectFour {
 	 * @readonly
 	 */
 	get manageMessages() {
+		// @ts-ignore
 		return this.message.channel.permissionsFor(this.message.guild.me).has(MANAGE_MESSAGES);
 	}
 
 	/**
 	 * Run the ConnectFour game
 	 * @since 3.0.0
-	 * @param {KlasaMessage} message The Message that runs this game
+	 * @param {SKYRA.SkyraMessage} message The Message that runs this game
 	 */
 	async run(message) {
 		if (this.running) return;
 		this.running = true;
 
+		// @ts-ignore
 		this.language = message.language;
+		// @ts-ignore
 		this.message = await message.edit(this.language.get('SYSTEM_LOADING'));
 		for (const reaction of REACTIONS) await this.message.react(reaction);
 		await this.render();
@@ -321,9 +325,10 @@ module.exports = class ConnectFour {
 	 * Render the current table and add a head
 	 * @since 3.0.0
 	 * @param {number} [error] The error number
-	 * @returns {string}
+	 * @returns {SKYRA.SkyraMessage}
 	 */
 	render(error) {
+		// @ts-ignore
 		return this.message.edit((error === RESPONSES.FULL_LINE ? this.language.get('COMMAND_C4_GAME_COLUMN_FULL') : '') +
 			this.language.get(
 				this.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT',
@@ -375,6 +380,7 @@ module.exports = class ConnectFour {
 	 * @param {string} userID The user ID that reacted to the message
 	 */
 	async removeEmoji(emoji, userID) {
+		// @ts-ignore
 		await this.client.api.channels[this.message.channel.id].messages[this.message.id]
 			.reactions[encodeURIComponent(emoji)][userID].delete()
 			.catch(error => this.client.emit('apiError', error));

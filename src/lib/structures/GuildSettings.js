@@ -6,14 +6,17 @@ const { Settings } = require('klasa');
  * @version 8.0.0
  * @extends {Settings}
  */
+// @ts-ignore
 class GuildSettings extends Settings {
 
 	_patch(...args) {
+		// @ts-ignore
 		super._patch(...args);
 		this.updateFilter();
 	}
 
 	updateFilter() {
+		// @ts-ignore
 		this.filter.regexp = this.filter.raw.length ? GuildSettings.superRegExp(this.filter.raw) : null;
 	}
 

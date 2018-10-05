@@ -53,7 +53,7 @@ module.exports = class RGB {
 					break;
 				case b: h = ((r - g) / d) + 4;
 					break;
-																				// no default
+				// no default
 			}
 			h /= 6;
 		}

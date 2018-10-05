@@ -7,16 +7,11 @@ const { GuildMember } = require('discord.js');
  */
 class AntiRaid {
 
-	/**
-	 * Create a new AntiRaid instance
-	 * @since 2.1.0
-	 * @param {KlasaGuild} guild The Guild instance that manages this instance
-	 */
 	constructor(guild) {
 		/**
 		 * The Guild instance that manages this instance
 		 * @since 2.1.0
-		 * @type {KlasaGuild}
+		 * @type {SKYRA.SkyraGuild}
 		 */
 		this.guild = guild;
 
@@ -42,7 +37,7 @@ class AntiRaid {
 	 * Check if a member is in the raid list
 	 * @since 3.3.0
 	 * @param {(GuildMember|string)} member The member to check
-	 * @returns {this}
+	 * @returns {boolean}
 	 */
 	has(member) {
 		const userID = member instanceof GuildMember ? member.id : member;
@@ -161,8 +156,9 @@ class AntiRaid {
 
 		for (const memberID of this.members()) {
 			/**
-			 * @type {GuildMember}
+			 * @type {?SKYRA.SkyraGuildMember}
 			 */
+			// @ts-ignore
 			const member = await this.guild.members.fetch(memberID).catch(noop);
 			// Check if:
 			// The member exists

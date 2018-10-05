@@ -1,3 +1,4 @@
+/// <reference path="../../../index.d.ts" />
 const ConnectFour = require('./ConnectFour');
 
 module.exports = class ConnectFourManager {
@@ -6,7 +7,7 @@ module.exports = class ConnectFourManager {
 		/**
 		 * The KlasaClient instance that manages this manager
 		 * @since 3.0.0
-		 * @type {KlasaClient}
+		 * @type {SKYRA.Skyra}
 		 */
 		this.client = client;
 
@@ -48,8 +49,8 @@ module.exports = class ConnectFourManager {
 	 * Allocate a match for a channel
 	 * @since 3.0.0
 	 * @param {string} channel The channel to allocate the channel for
-	 * @param {KlasaUser} challenger The challenger KlasaUser instance
-	 * @param {KlasaUser} challengee The challengee KlasaUser instance
+	 * @param {SKYRA.SkyraUser} challenger The challenger KlasaUser instance
+	 * @param {SKYRA.SkyraUser} challengee The challengee KlasaUser instance
 	 * @returns {Function}
 	 */
 	alloc(channel, challenger, challengee) {
@@ -62,8 +63,8 @@ module.exports = class ConnectFourManager {
 	 * Create a new match for a channel
 	 * @since 3.0.0
 	 * @param {string} channel The channel to set the match to
-	 * @param {KlasaUser} challenger The challenger KlasaUser instance
-	 * @param {KlasaUser} challengee The challengee KlasaUser instance
+	 * @param {SKYRA.SkyraUser} challenger The challenger KlasaUser instance
+	 * @param {SKYRA.SkyraUser} challengee The challengee KlasaUser instance
 	 * @returns {ConnectFour}
 	 */
 	create(channel, challenger, challengee) {
@@ -77,8 +78,8 @@ module.exports = class ConnectFourManager {
 	 * If true is passed to accept, this will create a new match.
 	 * @since 3.0.0
 	 * @param {string} channel The channel to allocate the channel for
-	 * @param {KlasaUser} challenger The challenger KlasaUser instance
-	 * @param {KlasaUser} challengee The challengee KlasaUser instance
+	 * @param {SKYRA.SkyraUser} challenger The challenger KlasaUser instance
+	 * @param {SKYRA.SkyraUser} challengee The challengee KlasaUser instance
 	 * @param {boolean} accept Whether the allocation is accepted
 	 * @returns {?ConnectFour}
 	 * @private

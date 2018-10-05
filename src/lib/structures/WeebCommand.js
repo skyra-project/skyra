@@ -1,21 +1,17 @@
-const { Command } = require('klasa');
+const { Command, util: { mergeDefault } } = require('klasa');
 const { MessageEmbed } = require('discord.js');
 const { tokens: { WEEB_SH }, version } = require('../../../config');
 const { fetch } = require('../util/util');
 
-const DEFAULTS = [
-	['requiredPermissions', ['EMBED_LINKS']],
-	['bucket', 2],
-	['cooldown', 30],
-	['runIn', ['text']]
-];
-const hasKey = Object.prototype.hasOwnProperty;
-
 class WeebCommand extends Command {
 
 	constructor(client, store, file, core, { queryType, responseName, ...options }) {
-		// Assign all redundant variables
-		for (const [key, value] of DEFAULTS) if (!hasKey.call(options, key)) options[key] = value;
+		options = mergeDefault({
+			requiredPermissions: ['EMBED_LINKS'],
+			bucket: 2,
+			cooldown: 30,
+			runIn: ['text']
+		}, options);
 
 		super(client, store, file, core, options);
 

@@ -27,6 +27,7 @@ import {
 	Task,
 	Timestamp,
 	util as KlasaUtil,
+	ProviderStore,
 } from 'klasa';
 import {
 	BanOptions,
@@ -57,6 +58,8 @@ import {
 import { Node, NodeMessage } from 'veza';
 import { Image } from 'canvas-constructor';
 import { Readable } from 'stream';
+import { URL } from 'url';
+import { R, MasterPool, WriteResult, TableChangeResult } from 'rethinkdb-ts';
 //#endregion imports
 //#region exports
 export {
@@ -85,7 +88,6 @@ export {
 	MonitorStore,
 	Piece,
 	Possible,
-	ProviderStore,
 	QueryBuilder,
 	ReactionHandler,
 	RichDisplay,
@@ -174,11 +176,14 @@ export const rootFolder: string;
 export const assetsFolder: string;
 export const config: SkyraConfiguration;
 
+// @ts-ignore
 export class Skyra extends KlasaClient {
 	public constructor(options?: SkyraClientOptions);
 	public options: SkyraClientOptions;
 	public users: SkyraUserStore;
 	public guilds: SkyraGuildStore;
+	// @ts-ignore
+	public providers: SkyraProviderStore;
 	public user: SkyraClientUser;
 
 	public version: string;
@@ -296,21 +301,27 @@ export class WeebCommand extends SkyraCommand {
 }
 
 export abstract class API extends Piece {
+	// @ts-ignore
 	public client: Skyra;
 }
 
+// @ts-ignore
 export class APIStore extends Store<string, API, typeof API> {
+	// @ts-ignore
 	public client: Skyra;
 	public run(message: NodeMessage): Promise<APIResponse>;
 	public runPiece(piece: API, message: NodeMessage): Promise<APIResponse>;
 }
 
 export abstract class RawEvent extends Piece {
+	// @ts-ignore
 	public client: Skyra;
 	public abstract process(): any;
 }
 
+// @ts-ignore
 export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
+	// @ts-ignore
 	public client: Skyra;
 }
 
@@ -548,9 +559,9 @@ export class TimeoutManager {
 	public has(id: string): boolean;
 	public delete(id: string): boolean;
 	public dispose(): void;
-	public keys(): Iterator<string>;
-	public values(): Iterator<RatelimitEntry>;
-	public [Symbol.iterator](): Iterator<RatelimitEntry>;
+	public keys(): Iterable<string>;
+	public values(): Iterable<RatelimitEntry>;
+	public [Symbol.iterator](): Iterable<RatelimitEntry>;
 	private _run(): void;
 }
 
@@ -565,9 +576,9 @@ export class AntiRaid {
 	public delete(member: SkyraGuildMember | Snowflake): this;
 	public execute(): Promise<Array<SkyraGuildMember>>;
 	public has(member: SkyraGuildMember | Snowflake): this;
-	public keys(): Iterator<string>;
+	public keys(): Iterable<string>;
 	public kick(member: SkyraGuildMember): SkyraGuildMember;
-	public members(): Iterator<Snowflake>;
+	public members(): Iterable<Snowflake>;
 	public prune(kick?: boolean): Promise<Array<SkyraGuildMember>>;
 	public stop(): void;
 }
@@ -704,6 +715,26 @@ declare class RGB {
 	public readonly b10: B10;
 	public valid(): boolean;
 	public toString(): string;
+}
+
+export class RebirthDB extends SkyraProvider {
+	public db: R;
+	public pool: MasterPool | null;
+	public create(table: string, id: string, value?: { [k: string]: any }): Promise<WriteResult>;
+	public createTable(table: string): Promise<TableChangeResult>;
+	public delete(table: string, id: string): Promise<WriteResult>;
+	public deleteTable(table: string): Promise<TableChangeResult>;
+	public get<T extends object>(table: string, id: string): Promise<T>;
+	public getAll<T extends object>(table: string, entries?: Array<string>): Promise<Array<T>>;
+	public getKeys(table: string, entries?: Array<string>): Promise<Array<string>>;
+	public getRandom<T extends object>(table: string): Promise<T>;
+	public has(table: string, id: string): Promise<boolean>;
+	public hasTable(table: string): Promise<boolean>;
+	public init(): Promise<void>;
+	public ping(): Promise<number>;
+	public replace(table: string, id: string, value?: { [k: string]: any }): Promise<WriteResult>;
+	public sync(table: string): Promise<{ synced: number }>;
+	public update(table: string, id: string, value?: { [k: string]: any }): Promise<WriteResult>;
 }
 
 //#region types
@@ -1090,12 +1121,14 @@ type ObjectLiteral<T = any> = {
 //#region klasa
 
 declare class SkyraPermissionLevels extends PermissionLevels {
+	// @ts-ignore
 	public add(level: number, check: (client: Skyra, message: SkyraMessage) => boolean, options?: PermissionLevelOptions): this;
 }
 
 export { SkyraPermissionLevels as PermissionLevels };
 
 declare abstract class SkyraCommand extends Command {
+	// @ts-ignore
 	public client: Skyra;
 	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage, params: string[]) => any): this;
 	public inhibit(msg: SkyraMessage): Promise<boolean>;
@@ -1104,52 +1137,69 @@ declare abstract class SkyraCommand extends Command {
 export { SkyraCommand as Command };
 
 declare abstract class SkyraEvent extends Event {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraEvent as Event };
 
 declare abstract class SkyraExtendable extends Extendable {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraExtendable as Extendable };
 
 declare abstract class SkyraFinalizer extends Finalizer {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraFinalizer as Finalizer };
 
 declare abstract class SkyraInhibitor extends Inhibitor {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraInhibitor as Inhibitor };
 
 declare abstract class SkyraLanguage extends Language {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraLanguage as Language };
 
 declare abstract class SkyraMonitor extends Monitor {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraMonitor as Monitor };
 
 declare abstract class SkyraProvider extends Provider {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraProvider as Provider };
 
 declare abstract class SkyraTask extends Task {
+	// @ts-ignore
 	public client: Skyra;
 }
 
 export { SkyraTask as Task };
+
+declare abstract class SkyraProviderStore extends ProviderStore {
+	// @ts-ignore
+	public client: Skyra;
+	// @ts-ignore
+	public default: RebirthDB;
+}
+
+export { SkyraProviderStore as ProviderStore };
 
 //#endregion klasa
 //#region discord.js
@@ -1160,6 +1210,11 @@ declare class SkyraClientUser extends ClientUser {
 }
 
 export { SkyraClientUser as ClientUser };
+
+export class SkyraTextChannel extends KlasaTextChannel {
+	public client: Skyra;
+	public guild: SkyraGuild;
+}
 
 declare class SkyraMessageEmbed extends MessageEmbed {
 	public splitFields(input: string | string[]): this;
@@ -1187,7 +1242,7 @@ declare class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMembe
 	public unban(user: UserResolvable, reason?: string): Promise<SkyraUser>;
 }
 
-declare class SkyraMessage extends KlasaMessage {
+export class SkyraMessage extends KlasaMessage {
 	public guildSettings: GuildSettings;
 	public guild: SkyraGuild;
 	public alert(content: string | Array<string>, timer?: number): SkyraMessage;
@@ -1290,6 +1345,7 @@ export class GuildSettings extends Settings {
 		channel: Snowflake | null;
 		ignoreChannels: Array<Snowflake>;
 		minimum: number;
+		emoji: string | null;
 	};
 	public trigger: {
 		alias: Array<{ input: string, output: string }>;

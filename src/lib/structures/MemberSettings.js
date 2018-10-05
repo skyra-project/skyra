@@ -1,3 +1,4 @@
+/// <reference path="../../index.d.ts" />
 const { util } = require('klasa');
 const SORT = (x, y) => +(y.count > x.count) || +(x.count === y.count) - 1;
 
@@ -15,11 +16,6 @@ class MemberSettings {
 	 * @property {string} member
 	 */
 
-	/**
-	 * Create a new instance of MemberSettings given a GuildMember instance
-	 * @since 3.0.0
-	 * @param {SkyraGuildMember} member A GuildMember instance
-	 */
 	constructor(member) {
 		Object.defineProperties(this, {
 			client: { writable: true },
@@ -32,7 +28,7 @@ class MemberSettings {
 		/**
 		 * The client this MemberSettings was created with.
 		 * @since 3.0.0
-		 * @type {Skyra}
+		 * @type {SKYRA.Skyra}
 		 * @readonly
 		 */
 		this.client = member.client;
@@ -63,7 +59,7 @@ class MemberSettings {
 		/**
 		 * The UUID for this entry.
 		 * @since 3.0.0
-		 * @type {boolean}
+		 * @type {string}
 		 * @private
 		 */
 		this.UUID = null;
@@ -83,7 +79,7 @@ class MemberSettings {
 	/**
 	 * Get the member
 	 * @since 3.0.0
-	 * @returns {SkyraGuildMember}
+	 * @returns {SKYRA.SkyraGuildMember}
 	 * @readonly
 	 */
 	get member() {
@@ -112,8 +108,8 @@ class MemberSettings {
 		if (!util.isNumber(amount)) throw new TypeError(`[${this}] MemberSettings#update expects a number.`);
 		if (amount < 0) throw new TypeError(`[${this}] MemberSettings#update expects a positive number.`);
 		await (this.UUID
-			? this.client.providers.default.db.table('localScores').get(this.UUID).update({ count: amount | 0 })
-			: this.client.providers.default.db.table('localScores').insert({ guildID: this.guildID, userID: this.userID, count: amount | 0 })
+			? this.client.providers.default.db.table('localScores').get(this.UUID).update({ count: amount | 0 }).run()
+			: this.client.providers.default.db.table('localScores').insert({ guildID: this.guildID, userID: this.userID, count: amount | 0 }).run()
 				.then(result => { [this.UUID] = result.generated_keys; }));
 		this.count = amount | 0;
 
@@ -142,8 +138,8 @@ class MemberSettings {
 		const member = guild ? guild.members.get(this.userID) : null;
 
 		return {
-			guild: guild ? guild.toJSON() : null,
-			member: member ? member.toJSON() : null,
+			guild: guild ? guild.id : null,
+			member: member ? member.id : null,
 			count: this.count
 		};
 	}
@@ -169,7 +165,7 @@ class MemberSettings {
 	 * @private
 	 */
 	async _sync() {
-		const data = this.resolveData(await this.client.providers.default.db.table('localScores').getAll([this.guildID, this.userID], { index: 'guild_user' })
+		const data = this.resolveData(await this.client.providers.default.db.table('localScores').getAll([this.guildID, this.userID], { index: 'guild_user' }).run()
 			.catch(() => []));
 
 		if (data) {

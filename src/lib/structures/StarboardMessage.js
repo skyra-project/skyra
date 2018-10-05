@@ -1,3 +1,4 @@
+/// <reference path="../../index.d.ts" />
 const { MessageEmbed } = require('discord.js');
 const { getImage } = require('../util/util');
 
@@ -26,31 +27,26 @@ const LASTCOLOR = COLORS[MAXCOLORS];
 
 class StarboardMessage {
 
-	/**
-	 * Construct a new StarboardMessage
-	 * @since 3.0.0
-	 * @param {StarboardManager} manager The StarboardManager instance that manages this instance
-	 * @param {KlasaMessage} message The starred Message instance
-	 */
 	constructor(manager, message) {
 		/**
 		 * The StarboardManager instance that manages this instance
 		 * @since 3.0.0
-		 * @type {StarboardManager}
+		 * @type {SKYRA.StarboardManager}
 		 */
 		this.manager = manager;
 
 		/**
 		 * The starred Message instance
 		 * @since 3.0.0
-		 * @type {TextChannel}
+		 * @type {SKYRA.SkyraTextChannel}
 		 */
+		// @ts-ignore
 		this.channel = message.channel;
 
 		/**
 		 * The starred Message instance
 		 * @since 3.0.0
-		 * @type {KlasaMessage}
+		 * @type {SKYRA.SkyraMessage}
 		 */
 		this.message = message;
 
@@ -71,7 +67,7 @@ class StarboardMessage {
 		/**
 		 * The Message instance that is sent in the Starboard channel
 		 * @since 3.0.0
-		 * @type {?KlasaMessage}
+		 * @type {?SKYRA.SkyraMessage}
 		 * @private
 		 */
 		this.starMessage = null;
@@ -104,7 +100,7 @@ class StarboardMessage {
 	/**
 	 * The Client that manages this instance
 	 * @since 3.0.0
-	 * @type {KlasaClient}
+	 * @type {SKYRA.Skyra}
 	 */
 	get client() {
 		return this.manager.client;
@@ -113,7 +109,7 @@ class StarboardMessage {
 	/**
 	 * The provider that manages this starboard
 	 * @since 3.0.0
-	 * @type {Provider}
+	 * @type {SKYRA.RebirthDB}
 	 */
 	get provider() {
 		return this.manager.provider;
@@ -278,6 +274,7 @@ class StarboardMessage {
 				if (error.code === '10008') this.destroy();
 			}
 		} else {
+			// @ts-ignore
 			this.starMessage = await this.manager.starboardChannel.send(content, { embed: this.embed });
 			await this._updateDatabase({ starMessageID: this.starMessage.id });
 		}
@@ -341,7 +338,7 @@ class StarboardMessage {
 	async _updateDatabase(object) {
 		if (this._syncStatus) await this._syncStatus;
 		if (!this.UUID)
-			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...object })).generated_keys;
+			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...object }).run()).generated_keys;
 		else
 			await this.provider.db.table(TABLENAME).get(this.UUID).update(object);
 	}
@@ -361,7 +358,8 @@ class StarboardMessage {
 				.getAll([this.channel.id, this.message.id], TABLEINDEX)
 				.limit(1)
 				.nth(0)
-				.default(null);
+				.default(null)
+				.run();
 
 			if (data) {
 				this.UUID = data.id;
@@ -371,6 +369,7 @@ class StarboardMessage {
 				if (data.starMessageID) this.starMessage = await channel.messages.fetch(data.starMessageID).catch(() => null);
 				if (!this.disabled && !this.starMessage && this.stars >= this.manager.minimum) {
 					const content = `${this.emoji} **${this.stars}** ${this.channel} ID: ${this.message.id}`;
+					// @ts-ignore
 					this.starMessage = await channel.send(content, this.embed);
 					this.provider.db.table(TABLENAME).get(this.UUID).update({ starMessageID: this.starMessage.id });
 				}
@@ -388,6 +387,7 @@ class StarboardMessage {
 	 * @private
 	 */
 	_fetchUsers() {
+		// @ts-ignore
 		return this.client.api.channels[this.channel.id].messages[this.message.id]
 			.reactions[this.channel.guild.settings.starboard.emoji]
 			.get({ query: { limit: 100 } })

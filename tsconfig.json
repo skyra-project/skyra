@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"lib": ["esnext"],
 		"module": "commonjs",
 		"target": "esnext",
 		"noImplicitAny": true,
@@ -7,10 +8,11 @@
 		"noEmit": true,
 		"forceConsistentCasingInFileNames": true,
 		"checkJs": true,
-		"moduleResolution": "node",
-		"strict": true
+		"moduleResolution": "node"
 	},
 	"files": [
-		"src/index.d.ts"
+		"src/index.d.ts",
+		"src/veza.d.ts",
+		"src/rebirthdb.d.ts"
 	]
 }

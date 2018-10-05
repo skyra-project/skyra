@@ -1,3 +1,4 @@
+/// <reference lib="esnext" />
 /* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 module.exports = class HEX {
 
@@ -8,9 +9,9 @@ module.exports = class HEX {
      * @param {string} b Blue value. ('00' - 'ff')
      */
 	constructor(r, g, b) {
-		this.r = r.padStart(2, 0);
-		this.g = g.padStart(2, 0);
-		this.b = b.padStart(2, 0);
+		this.r = r.padStart(2, '0');
+		this.g = g.padStart(2, '0');
+		this.b = b.padStart(2, '0');
 
 		this.valid();
 	}

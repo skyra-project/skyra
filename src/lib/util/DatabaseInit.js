@@ -1,8 +1,13 @@
+/// <reference path="../../rebirthdb.d.ts" />
 const { MODERATION: { SCHEMA_KEYS } } = require('./constants');
 let init = false;
 
 module.exports = class DatabaseInit {
 
+	/**
+	 * Init the database
+	 * @param {RebirthDBTS.R} r The R
+	 */
 	static async init(r) {
 		if (init) return;
 		await Promise.all([
@@ -16,18 +21,30 @@ module.exports = class DatabaseInit {
 		init = true;
 	}
 
+	/**
+	 * Init the Oxford table
+	 * @param {RebirthDBTS.R} r The R
+	 */
 	static async initOxford(r) {
 		const TABLENAME = 'oxford';
 
 		await DatabaseInit.ensureTable(r, TABLENAME);
 	}
 
+	/**
+	 * Init the banners table
+	 * @param {RebirthDBTS.R} r The R
+	 */
 	static async initBanners(r) {
 		const TABLENAME = 'banners';
 
 		await DatabaseInit.ensureTable(r, TABLENAME);
 	}
 
+	/**
+	 * Init the starboard table
+	 * @param {RebirthDBTS.R} r The R
+	 */
 	static async initStarboard(r) {
 		const TABLENAME = 'starboard';
 
@@ -36,6 +53,10 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
+	/**
+	 * Init the users table
+	 * @param {RebirthDBTS.R} r The R
+	 */
 	static async initGlobalScores(r) {
 		const TABLENAME = 'users';
 
@@ -44,6 +65,10 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
+	/**
+	 * Init the members table
+	 * @param {RebirthDBTS.R} r The R
+	 */
 	static async initLocalScores(r) {
 		const TABLENAME = 'localScores';
 
@@ -54,6 +79,10 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
+	/**
+	 * Init the moderation table
+	 * @param {RebirthDBTS.R} r The R
+	 */
 	static async initModeration(r) {
 		const TABLENAME = 'moderation';
 
@@ -64,14 +93,25 @@ module.exports = class DatabaseInit {
 		]);
 	}
 
+	/**
+	 * Ensure the table exists
+	 * @param {RebirthDBTS.R} r The R
+	 * @param {string} table The table
+	 */
 	static async ensureTable(r, table) {
-		await r.branch(r.tableList().contains(table), null, r.tableCreate(table));
+		await r.branch(r.tableList().contains(table), null, r.tableCreate(table)).run();
 	}
 
+	/**
+	 * Ensure the table exists
+	 * @param {RebirthDBTS.R} r The R
+	 * @param {string} table The table
+	 * @param {Array<Array<*>>} indexes The indexes to create
+	 */
 	static async ensureTableAndIndex(r, table, indexes) {
 		await DatabaseInit.ensureTable(r, table);
 		await Promise.all(indexes.map(([index, indexValue]) =>
-			r.branch(r.table(table).indexList().contains(index), null, r.table(table).indexCreate(index, indexValue)).then(() =>
+			r.branch(r.table(table).indexList().contains(index), null, r.table(table).indexCreate(index, indexValue)).run().then(() =>
 				r.branch(r.table(table).indexStatus(index).nth(0)('ready'), null, r.table(table).indexWait(index))
 			)
 		));

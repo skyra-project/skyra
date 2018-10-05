@@ -1,4 +1,3 @@
-/// <reference path="../../index.d.ts" />
 /// <reference path="../../veza.d.ts" />
 const { Store, util: { isObject } } = require('klasa');
 const API = require('./API');
@@ -17,11 +16,6 @@ class APIStore extends Store {
 	 * @property {number} code
 	 */
 
-	/**
-	 * Constructs our APIStore for use in Klasa
-	 * @since 3.0.0
-	 * @param {SKYRA.Skyra} client The Klasa Client
-	 */
 	constructor(client) {
 		super(client, 'ipcPieces', API);
 	}
@@ -58,6 +52,7 @@ class APIStore extends Store {
 			if (error === null) return NOT_FOUND;
 			if (!isObject(error)) return { success: false, response: error, type: 'UNKNOWN', code: 403 };
 
+			// @ts-ignore
 			for (const [key, value] of DEFAULTS_FAILURE) if (typeof error[key] === 'undefined') error[key] = value;
 			return error;
 		}

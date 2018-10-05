@@ -1,3 +1,4 @@
+/// <reference path="../../../index.d.ts" />
 const { Canvas } = require('canvas-constructor');
 const { loadImage } = require('../util');
 const REELS = [
@@ -38,9 +39,28 @@ const POSITIONS = [0, 0, 0];
 class Slotmachine {
 
 	constructor(msg, amount) {
+		/**
+		 * The player
+		 * @type {SKYRA.SkyraUser}
+		 */
 		this.player = msg.author;
+
+		/**
+		 * The boost
+		 * @type {number}
+		 */
 		this.boost = msg.guildSettings.social.boost;
+
+		/**
+		 * The winnings
+		 * @type {number}
+		 */
 		this.winnings = 0;
+
+		/**
+		 * The amount bet
+		 * @type {number}
+		 */
 		this.amount = amount;
 	}
 

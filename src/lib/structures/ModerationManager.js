@@ -1,3 +1,4 @@
+/// <reference path="../../index.d.ts" />
 /* eslint "no-bitwise": "off" */
 const { MODERATION: { SCHEMA_KEYS, ACTIONS, ERRORS } } = require('../util/constants');
 const ModerationManagerEntry = require('./ModerationManagerEntry');
@@ -8,8 +9,22 @@ class ModerationManager extends Collection {
 
 	constructor(guild) {
 		super();
+		/**
+		 * The Guild instance that manages this manager
+		 * @type {SKYRA.SkyraGuild}
+		 */
 		this.guild = guild;
+
+		/**
+		 * The current case count
+		 * @type {number}
+		 */
 		this._count = null;
+
+		/**
+		 * The timer that sweeps this manager's entries
+		 * @type {NodeJS.Timer}
+		 */
 		this._timer = null;
 	}
 
@@ -45,6 +60,7 @@ class ModerationManager extends Collection {
 		}
 
 		if (Array.isArray(id) && id.length) {
+			// @ts-ignore
 			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild.id, entryID]), { index: 'guild_case' })
 				.run());
 		}

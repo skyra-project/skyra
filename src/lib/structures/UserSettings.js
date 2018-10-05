@@ -9,6 +9,7 @@ const { Settings } = require('klasa');
 class UserSettings extends Settings {
 
 	get level() {
+		// @ts-ignore
 		return Math.floor(0.2 * Math.sqrt(this.points));
 	}
 
@@ -18,16 +19,18 @@ class UserSettings extends Settings {
 	}
 
 	add(money) {
-		this.money += money;
-		return this.update('money', this.money).then(() => this.money);
+		// @ts-ignore
+		return this.update('money', this.money + money).then(() => this.money);
 	}
 
 	use(money) {
+		// @ts-ignore
 		if (this.money < money) {
 			const error = new Error(`[FAILSAFE] ${this} | Cannot get a debt.`);
 			this.client.emit('wtf', error);
 			throw error;
 		}
+		// @ts-ignore
 		return this.update('money', this.money - money).then(() => this.money);
 	}
 

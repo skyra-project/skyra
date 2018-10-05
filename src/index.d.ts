@@ -1328,3 +1328,5 @@ export class UserSettings extends Settings {
 }
 
 //#endregion discord.js
+
+export as namespace SKYRA;

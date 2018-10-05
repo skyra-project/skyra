@@ -1,3 +1,4 @@
+/// <reference path="../../index.d.ts" />
 const { Store, util: { isObject } } = require('klasa');
 const API = require('./API');
 
@@ -18,7 +19,7 @@ class APIStore extends Store {
 	/**
 	 * Constructs our APIStore for use in Klasa
 	 * @since 3.0.0
-	 * @param {Skyra} client The Klasa Client
+	 * @param {SKYRA.Skyra} client The Klasa Client
 	 */
 	constructor(client) {
 		super(client, 'ipcPieces', API);

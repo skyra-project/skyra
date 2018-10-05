@@ -1,4 +1,4 @@
-const { Event, constants: { MESSAGE_LOGS }, DiscordAPIError } = require('../index');
+const { Event, constants: { MESSAGE_LOGS }, DiscordAPIError, HTTPError } = require('../index');
 
 module.exports = class extends Event {
 
@@ -22,7 +22,7 @@ module.exports = class extends Event {
 		try {
 			await channel.send(makeMessage());
 		} catch (error) {
-			this.client.emit('error', error instanceof DiscordAPIError
+			this.client.emit('error', error instanceof DiscordAPIError || error instanceof HTTPError
 				? `Failed to send ${type.toString()} log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
 				: `Failed to send ${type.toString()} log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`);
 		}

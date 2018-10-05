@@ -1,4 +1,4 @@
-const { Event, DiscordAPIError } = require('../index');
+const { Event, DiscordAPIError, HTTPError } = require('../index');
 
 module.exports = class extends Event {
 
@@ -7,6 +7,12 @@ module.exports = class extends Event {
 			this.client.console.warn(
 				`[API ERROR] [CODE: ${error.code}] ${error.message}\n` +
 				`            [PATH: ${error.method} ${error.path}]`
+			);
+			this.client.console.wtf(error.stack);
+		} else if (error instanceof HTTPError) {
+			this.client.console.warn(
+				`[HTTP ERROR] [CODE: ${error.code}] ${error.message}\n` +
+				`             [PATH: ${error.method} ${error.path}]`
 			);
 			this.client.console.wtf(error.stack);
 		} else {

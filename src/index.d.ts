@@ -135,6 +135,7 @@ export {
 	GuildMemberRoleStore,
 	GuildMemberStore,
 	GuildStore,
+	HTTPError,
 	Invite,
 	Message,
 	MessageAttachment,

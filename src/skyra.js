@@ -25,7 +25,7 @@ Skyra.defaultUserSchema
 	.add('timeReputation', 'Integer', { default: 0, configurable: false });
 
 Skyra.defaultGuildSchema
-	.add('_tags', 'any', { array: true, configurable: false })
+	.add('tags', 'any', { array: true, configurable: false })
 	.add('channels', folder => folder
 		.add('announcement', 'TextChannel')
 		.add('default', 'TextChannel')

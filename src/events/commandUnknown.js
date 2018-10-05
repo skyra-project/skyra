@@ -2,39 +2,44 @@ const { Event, Stopwatch } = require('../index');
 
 module.exports = class extends Event {
 
-	async run(msg, command) {
-		if (!msg.guild || msg.guild.settings.disabledChannels.includes(msg.channel.id)) return;
+	async run(message, command) {
+		if (!message.guild || message.guild.settings.disabledChannels.includes(message.channel.id)) return null;
 
-		const tag = msg.guild.settings.tags.get(command);
-		if (tag) msg.sendMessage(tag);
-		else if (msg.guild.settings.trigger.alias.length) this.handleCommand(msg, command);
+		const tag = message.guild.settings.tags.find((t) => t[0] === command);
+		if (tag) return this.runTag(message, tag);
+
+		const alias = message.guild.settings.trigger.alias.find(entry => entry.input === command);
+		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
+		if (commandAlias) return this.runCommand(message, commandAlias);
+
+		return null;
 	}
 
-	get commandHandler() {
-		return this.client.monitors.get('commandHandler');
+	async runCommand(message, command) {
+		const commandHandler = this.client.monitors.get('commandHandler');
+		const { regex: prefix, length: prefixLength } = commandHandler.getPrefix(message);
+
+		return commandHandler.runCommand(message._registerCommand({ command, prefix, prefixLength }));
 	}
 
-	async handleCommand(msg, command) {
-		const alias = (entry => entry
-			? this.client.commands.get(entry.output)
-			: undefined)(msg.guild.settings.trigger.alias.find(entry => entry.input === command));
-		if (!alias) return;
-
-		// @ts-ignore
-		const { regex: prefix, length: prefixLength } = this.commandHandler.getPrefix(msg);
-
+	async runTag(message, command) {
+		const tagCommand = this.client.commands.get('tag');
 		const timer = new Stopwatch();
-		msg._registerCommand({ command: alias, prefix, prefixLength });
 
 		try {
-			await this.client.inhibitors.run(msg, alias, false);
+			await this.client.inhibitors.run(message, tagCommand);
+			try {
+				const commandRun = tagCommand.show(message, [command]);
+				timer.stop();
+				const response = await commandRun;
+				this.client.finalizers.run(message, tagCommand, response, timer);
+				this.client.emit('commandSuccess', message, tagCommand, ['show', command], response);
+			} catch (error) {
+				this.client.emit('commandError', message, tagCommand, ['show', command], error);
+			}
 		} catch (response) {
-			this.client.emit('commandInhibited', msg, alias, response);
-			return;
+			this.client.emit('commandInhibited', message, tagCommand, response);
 		}
-
-		// @ts-ignore
-		this.commandHandler.runCommand(msg, timer);
 	}
 
 };

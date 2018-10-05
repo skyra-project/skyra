@@ -1227,12 +1227,11 @@ module.exports = class extends Language {
 			 * TAGS COMMANDS
 			 */
 
-			COMMAND_TAGMANAGER_DESCRIPTION: `Manage this guilds' tags.`,
-			COMMAND_TAGMANAGER_EXTENDED: builder.display('tagmanager', {
-				extendedHelp: `This command gives you tag management (you can use it to add, remove or edit them).
-				What are tags? Tags are chunk of texts stored under a name, which allows you, for example,
-				you can do \`Skyra, tag rule1\` and get a response with what the rule number one of your server is.
-				Besides that, tags are also used for memes, who doesn't like memes?`,
+			COMMAND_TAG_DESCRIPTION: `Manage this guilds' tags.`,
+			COMMAND_TAG_EXTENDED: builder.display('tag', {
+				extendedHelp: `What are tags? Tags are chunk of texts stored under a name, which allows you, for example,
+					you can do \`Skyra, tag rule1\` and get a response with what the rule number one of your server is.
+					Besides that, tags are also used for memes, who doesn't like memes?`,
 				explainedUsage: [
 					['action', 'The action to perform: **add** to add new tags, **remove** to delete them, and **edit** to edit them.'],
 					['tag', `The tag's name.`],
@@ -1241,19 +1240,11 @@ module.exports = class extends Language {
 				examples: [
 					'add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
 					'edit rule1 Just be respectful with the others.',
-					'remove rule1'
+					'rule1',
+					'source rule1',
+					'remove rule1',
+					'list'
 				]
-			}),
-			COMMANDS_TAGS_DESCRIPTION: `List or get a tag.`,
-			COMMANDS_TAGS_EXTENDED: builder.display('tags', {
-				extendedHelp: `What are tags? Tags are chunk of texts stored under a name, which allows you, for example,
-					you can do \`Skyra, tag rule1\` and get a response with what the rule number one of your server is.
-					Besides that, tags are also used for memes, who doesn't like memes?`,
-				explainedUsage: [
-					['list', 'Show a list of all tags for this server.'],
-					['tag', 'Show the content of the selected tag.']
-				],
-				examples: ['list', 'rule1']
 			}),
 
 			/**
@@ -1987,17 +1978,17 @@ module.exports = class extends Language {
 			 * TAGS COMMANDS
 			 */
 
-			COMMAND_TAGS_NAME_REQUIRED: 'You must specify a tag name.',
-			COMMAND_TAGS_NAME_NOTALLOWED: 'A tag name may not have a grave accent nor invisible characters.',
-			COMMAND_TAGS_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
-			COMMAND_TAGS_ADD_EXISTS: (tag) => `The tag '${tag}' already exists.`,
-			COMMAND_TAGS_CONTENT_REQUIRED: 'You must provide a content for this tag.',
-			COMMAND_TAGS_ADD_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
-			COMMAND_TAGS_REMOVE_NOT_EXISTS: (tag) => `The tag '${tag}' does not exist.`,
-			COMMAND_TAGS_REMOVE_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
-			COMMAND_TAGS_EDITED: (name, content, old) => `Successfully edited the tag **${name}** which had a content of **${old}** to **${content}**.`,
-			COMMAND_TAGS_LIST_EMPTY: 'The tag list for this server is empty.',
-			COMMAND_TAGS_LIST: (tags) => `There ${tags.length === 1 ? 'is' : 'are'} ${tags.length} tags: ${tags.join(', ')}`,
+			COMMAND_TAG_PERMISSIONLEVEL: 'You must be a staff member, moderator, or admin, to be able to manage tags.',
+			COMMAND_TAG_NAME_NOTALLOWED: 'A tag name may not have a grave accent nor invisible characters.',
+			COMMAND_TAG_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
+			COMMAND_TAG_EXISTS: (tag) => `The tag '${tag}' already exists.`,
+			COMMAND_TAG_CONTENT_REQUIRED: 'You must provide a content for this tag.',
+			COMMAND_TAG_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
+			COMMAND_TAG_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
+			COMMAND_TAG_NOTEXISTS: (tag) => `The tag '${tag}' does not exist.`,
+			COMMAND_TAG_EDITED: (name, content) => `Successfully edited the tag **${name}** with a content of **${content}**.`,
+			COMMAND_TAG_LIST_EMPTY: 'The tag list for this server is empty.',
+			COMMAND_TAG_LIST: (tags) => `There ${tags.length === 1 ? 'is' : 'are'} ${tags.length} tags: ${tags.join(', ')}`,
 
 			/**
 			 * ##############

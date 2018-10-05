@@ -1,19 +1,15 @@
 const { Settings } = require('klasa');
-const { Collection } = require('discord.js');
 
 /**
  * The GuildSettings class that manages per-guild settings
  * @since 1.6.0
- * @version 7.1.0
+ * @version 8.0.0
  * @extends {Settings}
  */
 class GuildSettings extends Settings {
 
 	_patch(...args) {
 		super._patch(...args);
-
-		this.tags = new Collection();
-		for (const [name, content] of this._tags) this.tags.set(name, content);
 		this.updateFilter();
 	}
 

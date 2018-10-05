@@ -1,3 +1,4 @@
+/// <reference path="../index.d.ts" />
 const { RawEvent, util: { resolveEmoji } } = require('../index');
 
 module.exports = class extends RawEvent {
@@ -13,6 +14,8 @@ module.exports = class extends RawEvent {
 
 	async process({ user_id, channel_id, message_id, emoji }) { // eslint-disable-line camelcase
 		// Verify channel
+		/** @type {SKYRA.SkyraTextChannel} */
+		// @ts-ignore
 		const channel = this.client.channels.get(channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
 

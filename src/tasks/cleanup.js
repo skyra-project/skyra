@@ -1,3 +1,4 @@
+/// <reference lib="esnext" />
 /**
  * @license
  * MIT License
@@ -70,7 +71,9 @@ module.exports = class MemorySweeper extends Task {
 
 		// Per-Channel sweeper
 		for (const channel of this.client.channels.values()) {
+			// @ts-ignore
 			if (channel.type === 'text' && channel.lastMessageID) {
+				// @ts-ignore
 				channel.lastMessageID = null;
 				lastMessages++;
 			}

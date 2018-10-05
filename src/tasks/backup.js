@@ -1,8 +1,14 @@
-const { Task, Timestamp } = require('klasa');
+const { Task, Timestamp } = require('../index');
 const { outputJSONAtomic, readJSON, remove, pathExists } = require('fs-nextra');
 const { join } = require('path');
 
 module.exports = class extends Task {
+
+	/**
+	 * @typedef {Object} BackupManagerData
+	 * @property {number} lastUpdated
+	 * @property {Array<Array<string>>} backups
+	 */
 
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory);
@@ -29,6 +35,8 @@ module.exports = class extends Task {
 
 	// Remove old backups to save space
 	async writeFile(paths) {
+		/** @type {BackupManagerData} */
+		// @ts-ignore
 		const data = await readJSON(this.fileManager);
 
 		// Update the timestamp to latest
@@ -65,6 +73,8 @@ module.exports = class extends Task {
 	 * @returns {Promise<Array<*>>}
 	 */
 	async upload(providerName, table, time) {
+		/** @type {Object[]} */
+		// @ts-ignore
 		const data = await readJSON(join(this.dirManager, `${time}-${table}.json`));
 		const provider = this.client.providers.get(providerName);
 		return Promise.all(data.map(value => provider.create(table, value.id, value)));

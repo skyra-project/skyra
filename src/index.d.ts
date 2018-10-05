@@ -502,6 +502,7 @@ export class ConnectFour {
 
 	public run(message: SkyraMessage): Promise<void>;
 	public dispose(): void;
+	public send(emoji: string, userID: Snowflake): void;
 	private showWinner(row: ConnectFourWinningRow): void;
 	private getRow(): Promise<ConnectFourWinningRow | null>;
 	private pushLine(row: number): ConnectFourWinningRow | null;
@@ -512,7 +513,6 @@ export class ConnectFour {
 	private render(error?: number): string;
 	private renderTable(): string;
 	private switch(): void;
-	private send(emoji: string, userID: Snowflake): void;
 	private removeEmoji(emoji: string, userID: Snowflake): Promise<void>;
 	private _checkVerticals(posX: number, MIN_Y: number, MAX_Y: number, PLAYER: 1 | 2): ConnectFourWinningRow | null;
 }
@@ -878,7 +878,7 @@ type SkyraConstants = Readonly<{
 			WINNER_1: string;
 			WINNER_2: string;
 		}>;
-		REACTIONS: Readonly<Array<string>>;
+		REACTIONS: ReadonlyArray<string>;
 		REACTION_OPTIONS: Readonly<{
 			time: number;
 			max: number;

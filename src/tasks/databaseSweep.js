@@ -1,4 +1,5 @@
-const { Task } = require('klasa');
+/// <reference path="../rebirthdb.d.ts" />
+const { Task } = require('../index');
 
 module.exports = class extends Task {
 
@@ -13,18 +14,20 @@ module.exports = class extends Task {
 		this.enable();
 	}
 
+	/** @param {RebirthDBTS.R} r The R */
 	async sweepUserProfiles(r) {
 		return (await r.table('users').filter(
 			r.row('points').le(25)
-				.and(r.row.hasFields(['color', 'reputation', 'money', 'bannerList']).not())
+				.and(r.row.hasFields('color', 'reputation', 'money', 'bannerList').not())
 				.and(r.row('bannerList').default([]).count().eq(0))
-		).delete()).deleted;
+		).delete().run()).deleted;
 	}
 
+	/** @param {RebirthDBTS.R} r The R */
 	async sweepMemberProfiles(r) {
 		return (await r.table('localScores').filter(
 			r.row('count').le(25)
-		).delete()).deleted;
+		).delete().run()).deleted;
 	}
 
 };

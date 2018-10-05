@@ -11,6 +11,7 @@ module.exports = class extends Task {
 			if (!channel) return;
 
 			const [message, author] = await Promise.all([
+				// @ts-ignore
 				channel.messages.fetch(data.messageID),
 				this.client.users.fetch(data.userID)
 			]);

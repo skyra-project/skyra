@@ -8,6 +8,7 @@ module.exports = class extends RawEvent {
 
 	process(data) {
 		const user = this.client.users.get(data.user.id);
+		// @ts-ignore
 		if (user) user._patch(data.user);
 	}
 

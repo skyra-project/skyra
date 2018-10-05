@@ -27,6 +27,7 @@ module.exports = class extends Task {
 
 	async editMessage(task, channelID, messageID, { content, embed }) {
 		try {
+			// @ts-ignore
 			await this.client.api.channels[channelID].messages[messageID].patch({
 				data: {
 					content,

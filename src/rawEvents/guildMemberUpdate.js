@@ -11,6 +11,7 @@ module.exports = class extends RawEvent {
 		if (guild) {
 			guild.nameDictionary.set(data.user.id, data.nick || data.user.username);
 			const member = guild.members.get(data.user.id);
+			// @ts-ignore
 			if (member) member._patch(data);
 		}
 	}

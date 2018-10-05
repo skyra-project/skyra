@@ -1,3 +1,4 @@
+/// <reference path="../index.d.ts" />
 const { RawEvent, constants: { CONNECT_FOUR }, util: { resolveEmoji } } = require('../index');
 const { DiscordAPIError } = require('discord.js');
 const CONNECT_FOUR_WHITELIST = new Set(CONNECT_FOUR.REACTIONS);
@@ -19,6 +20,8 @@ module.exports = class extends RawEvent {
 
 	async process(data) {
 		// Verify channel
+		/** @type {SKYRA.SkyraTextChannel} */
+		// @ts-ignore
 		const channel = this.client.channels.get(data.channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
 

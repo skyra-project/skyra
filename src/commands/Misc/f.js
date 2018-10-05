@@ -1,4 +1,4 @@
-const { Command, util: { fetchAvatar }, assetsFolder } = require('../../index');
+const { Command, util: { fetchAvatar }, assetsFolder, Permissions: { FLAGS } } = require('../../index');
 const { readFile } = require('fs-nextra');
 const { join } = require('path');
 const { Canvas } = require('canvas-constructor');
@@ -23,7 +23,7 @@ module.exports = class extends Command {
 	async run(msg, [user = msg.author]) {
 		const attachment = await this.generate(msg, user);
 		return msg.channel.send({ files: [{ attachment, name: 'F.png' }] })
-			.then(message => msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS') ? message.react('🇫') : message);
+			.then(message => msg.channel.permissionsFor(msg.guild.me).has(FLAGS.ADD_REACTIONS) ? message.react('🇫') : message);
 	}
 
 	async generate(msg, user) {

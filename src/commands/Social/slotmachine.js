@@ -11,11 +11,12 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_SLOTMACHINE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SLOTMACHINE_EXTENDED'),
 			runIn: ['text'],
-			usage: '<50|100|200|500|1000>'
+			usage: '<50|100|200|500|1000|2000|5000|10000>'
 		});
 	}
 
 	async run(msg, [text]) {
+		await msg.author.settings.sync();
 		const coins = Number(text);
 		if (msg.author.settings.money < coins)
 			throw msg.language.get('COMMAND_SLOTMACHINES_MONEY', msg.author.settings.money);

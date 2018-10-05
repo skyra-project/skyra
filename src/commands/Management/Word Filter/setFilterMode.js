@@ -1,10 +1,10 @@
 const { Command } = require('../../../index');
 
-const TYPES = {
-	disabled: { number: 0, language: 'COMMAND_SETFILTERMODE_DISABLED' },
-	deleteonly: { number: 1, language: 'COMMAND_SETFILTERMODE_DELETEONLY' },
-	logonly: { number: 2, language: 'COMMAND_SETFILTERMODE_LOGONLY' },
-	all: { number: 3, language: 'COMMAND_SETFILTERMODE_ALL' }
+/* eslint-disable no-bitwise */
+const VALUES = {
+	alert: { value: 1 << 2, key: 'COMMAND_SETFILTERMODE_ALERT' },
+	log: { value: 1 << 1, key: 'COMMAND_SETFILTERMODE_LOG' },
+	delete: { value: 1 << 0, key: 'COMMAND_SETFILTERMODE_DELETE' }
 };
 
 module.exports = class extends Command {
@@ -16,16 +16,30 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_SETFILTERMODE_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
-			usage: '<disabled|deleteonly|logonly|all>'
+			usage: '<delete|log|alert|show:default> [enable|disable]',
+			usageDelim: ' '
 		});
 	}
 
-	async run(msg, [type]) {
-		const { number, language } = TYPES[type];
-		if (msg.guild.settings.filter.level === number) throw msg.language.get('COMMAND_SETFILTERMODE_EQUALS');
-		await msg.guild.settings.update('filter.level', number);
+	async run(msg, [type, mode = 'enable']) {
+		const { level } = msg.guild.settings.filter;
+		if (type === 'show') {
+			return msg.sendLocale('COMMAND_SETFILTERMODE_SHOW', [
+				level & VALUES.alert.value,
+				level & VALUES.log.value,
+				level & VALUES.delete.value
+			], { code: 'asciidoc' });
+		}
 
-		return msg.sendLocale(language);
+		const { value, key } = VALUES[type];
+		const enable = mode === 'enable';
+		const changed = enable
+			? level | value
+			: level & ~value;
+		if (level === changed) throw msg.language.get('COMMAND_SETFILTERMODE_EQUALS');
+		await msg.guild.settings.update('filter.level', changed);
+
+		return msg.sendLocale(key, [enable]);
 	}
 
 };

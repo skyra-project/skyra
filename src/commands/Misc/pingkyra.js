@@ -17,9 +17,11 @@ module.exports = class extends Command {
 			usage: '<user:username>'
 		});
 
-		this.spam = true;
-		this.kyra = null;
 		this.template = null;
+	}
+
+	get kyra() {
+		return this.client.application.owner;
 	}
 
 	async run(msg, [user]) {
@@ -44,7 +46,6 @@ module.exports = class extends Command {
 
 	async init() {
 		this.template = await readFile(join(assetsFolder, './images/memes/pingkyra.png'));
-		this.kyra = await this.client.users.fetch(this.client.options.ownerID);
 	}
 
 };

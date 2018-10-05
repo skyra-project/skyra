@@ -11,25 +11,35 @@ module.exports = class extends Command {
 			permissionLevel: 5,
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|remove|reset|show> [word:string]',
+			usage: '<add|remove|reset|show:default> [word:string]',
 			usageDelim: ' '
+		});
+
+		this.createCustomResolver('word', (arg, possible, msg, [type]) => {
+			if (type === 'reset' || type === 'show') return undefined;
+			if (arg) return arg.toLowerCase();
+			throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
 		});
 	}
 
 	async add(msg, [word]) {
-		if (!word) throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
-		word = word.toLowerCase();
-		if (msg.guild.settings.filter.raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', true);
+		// Check if the word is not filtered
+		const { raw, regexp } = msg.guild.settings.filter;
+		if (raw.includes(word) || (regexp && regexp.test(word))) throw msg.language.get('COMMAND_FILTER_FILTERED', true);
+
+		// Perform update
 		await msg.guild.settings.update('filter.raw', word, { action: 'add' });
 		msg.guild.settings.updateFilter();
 		return msg.sendLocale('COMMAND_FILTER_ADDED', [word]);
 	}
 
 	async remove(msg, [word]) {
-		if (!word) throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
-		word = word.toLowerCase();
-		if (!msg.guild.settings.filter.raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', false);
-		if (msg.guild.settings.filter.raw.length === 1) return this.reset(msg);
+		// Check if the word is already filtered
+		const { raw } = msg.guild.settings.filter;
+		if (!raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', false);
+
+		// Perform update
+		if (raw.length === 1) return this.reset(msg);
 		await msg.guild.settings.update('filter.raw', word, { action: 'remove' });
 		msg.guild.settings.updateFilter();
 		return msg.sendLocale('COMMAND_FILTER_REMOVED', [word]);

@@ -12,8 +12,11 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_WHOIS_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_WHOIS_EXTENDED'),
 			runIn: ['text'],
-			usage: '[query:username]'
+			usage: '(user:username)'
 		});
+
+		this.createCustomResolver('username', (arg, possible, msg) =>
+			arg ? this.client.arguments.get('username').run(arg, possible, msg) : msg.author);
 	}
 
 	async run(msg, [user = msg.author]) {

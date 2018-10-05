@@ -46,7 +46,7 @@ module.exports = class extends Extendable {
 
 };
 
-const OPTIONS = { time: 20000, max: 1 };
+const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 

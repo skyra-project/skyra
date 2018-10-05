@@ -45,7 +45,7 @@ Skyra.defaultGuildSchema
 		.add('messageDelete', 'Boolean', { default: false })
 		.add('messageEdit', 'Boolean', { default: false }))
 	.add('filter', folder => folder
-		.add('level', 'Integer', { default: 0, min: 0, max: 3, configurable: false })
+		.add('level', 'Integer', { default: 0, min: 0, max: 7, configurable: false })
 		.add('raw', 'String', { array: true, configurable: false }))
 	.add('messages', folder => folder
 		.add('farewell', 'String', { max: 2000 })

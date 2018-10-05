@@ -14,12 +14,13 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_BANNER_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_BANNER_EXTENDED'),
 			runIn: ['text'],
-			usage: '[list|buy|reset|set] (banner:banner)',
+			subcommands: true,
+			usage: '<buy|reset|set|show:default> (banner:banner)',
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('banner', (arg, possible, msg, [type = 'list']) => {
-			if (type === 'list' || type === 'reset') return undefined;
+		this.createCustomResolver('banner', (arg, possible, msg, [type]) => {
+			if (type === 'show' || type === 'reset') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_BANNER_MISSING');
 			const banner = this.banners.get(arg);
 			if (banner) return banner;
@@ -30,16 +31,6 @@ module.exports = class extends Command {
 		this.collectors = new Collection();
 		this.display = null;
 		this.listPrompt = this.definePrompt('<all|user>');
-	}
-
-	run(msg, [type = 'list', banner]) {
-		switch (type) {
-			case 'list': return this._list(msg);
-			case 'reset': return this.reset(msg);
-			case 'buy': return this.buy(msg, banner);
-			case 'set': return this.set(msg, banner);
-			default: return null;
-		}
 	}
 
 	async reset(msg) {
@@ -117,7 +108,7 @@ module.exports = class extends Command {
 		collector.once('end', () => this.collectors.delete(collectorID));
 	}
 
-	async _list(msg) {
+	async show(msg) {
 		const [response] = await this.listPrompt.createPrompt(msg).run(msg.language.get('COMMAND_BANNER_PROMPT'));
 		return response === 'all' ? this._buyList(msg) : this._userList(msg);
 	}

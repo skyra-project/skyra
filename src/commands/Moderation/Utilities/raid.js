@@ -9,7 +9,7 @@ module.exports = class extends Command {
 			description: 'Manage the Anti-RAID system.',
 			permissionLevel: 6,
 			runIn: ['text'],
-			usage: '<list|clear|cool>'
+			usage: '<clear|cool|show:default>'
 		});
 	}
 
@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		return this[type](msg);
 	}
 
-	list(msg) {
+	show(msg) {
 		const { raid } = msg.guild.security;
 		const embed = new MessageEmbed()
 			.setTitle(msg.language.get('COMMAND_RAID_LIST'))

@@ -7,27 +7,28 @@ module.exports = class extends Command {
 
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_TRIGGERS_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_TRIGGERS_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
+			requiredPermissions: ['ADD_REACTIONS'],
 			runIn: ['text'],
-			usage: '[list|add|remove] (type:type) (input:input) (output:output)',
+			subcommands: true,
+			usage: '<add|remove|show:default> (type:type) (input:input) (output:output)',
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('type', (arg, possible, msg, [action = 'list']) => {
-			if (action === 'list') return undefined;
+		this.createCustomResolver('type', (arg, possible, msg, [action]) => {
+			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
 			throw msg.language.get('COMMAND_TRIGGERS_NOTYPE');
-		}).createCustomResolver('input', (arg, possible, msg, [action = 'list']) => {
-			if (action === 'list') return undefined;
+		}).createCustomResolver('input', (arg, possible, msg, [action]) => {
+			if (action === 'show') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			return arg.toLowerCase();
-		}).createCustomResolver('output', async (arg, possible, msg, [action = 'list', type]) => {
-			if (action === 'list' || action === 'remove') return undefined;
+		}).createCustomResolver('output', async (arg, possible, msg, [action, type]) => {
+			if (action === 'show' || action === 'remove') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			if (type === 'reaction') {
 				try {
@@ -47,16 +48,7 @@ module.exports = class extends Command {
 		});
 	}
 
-	async run(msg, [action = 'list', type, input, output]) {
-		switch (action) {
-			case 'list': return this.list(msg);
-			case 'add': return this.add(msg, type, input, output);
-			case 'remove': return this.remove(msg, type, input);
-			default: return null;
-		}
-	}
-
-	async remove(msg, type, input) {
+	async remove(msg, [type, input]) {
 		const list = this._getList(msg, type);
 		const index = list.findIndex(entry => entry.input === input);
 		if (index === -1) throw msg.language.get('COMMAND_TRIGGERS_REMOVE_NOTTAKEN');
@@ -71,7 +63,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TRIGGERS_REMOVE');
 	}
 
-	async add(msg, type, input, output) {
+	async add(msg, [type, input, output]) {
 		const list = this._getList(msg, type);
 		if (list.some(entry => entry.input === input)) throw msg.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
 
@@ -81,7 +73,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_TRIGGERS_ADD');
 	}
 
-	list(msg) {
+	show(msg) {
 		const { trigger } = msg.guild.settings;
 		const output = [];
 		for (const alias of trigger.alias)

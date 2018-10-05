@@ -8,17 +8,16 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_DM_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
-			usage: '<user:user> <message:string> [...]',
-			usageDelim: ','
+			usage: '<user:user> <message:...string>'
 		});
 	}
 
-	async run(msg, [user, ...content]) {
+	async run(msg, [user, content]) {
 		const attachment = msg.attachments.size > 0 ? msg.attachments.first().url : null;
 		const options = {};
 		if (attachment) options.files = [{ attachment }];
 
-		return user.send(content.join(', '), options)
+		return user.send(content, options)
 			.then(() => msg.alert(`Message successfully sent to ${user}`))
 			.catch(() => msg.alert(`I am sorry, I could not send the message to ${user}`));
 	}

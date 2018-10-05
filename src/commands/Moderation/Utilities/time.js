@@ -9,12 +9,12 @@ module.exports = class extends Command {
 			description: 'Sets a timer.',
 			permissionLevel: 6,
 			runIn: ['text'],
-			usage: '[cancel] <Case:integer> [timer:string] [...]',
+			usage: '[cancel] <Case:integer> [timer:...string]',
 			usageDelim: ' '
 		});
 	}
 
-	async run(msg, [cancel, caseID, ...time]) {
+	async run(msg, [cancel, caseID, time]) {
 		const modlog = await msg.guild.moderation.fetch(caseID);
 		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
 		if (!cancel && modlog.temporary) throw msg.language.get('COMMAND_TIME_TIMED');
@@ -28,7 +28,7 @@ module.exports = class extends Command {
 		if (task) throw msg.language.get('MODLOG_TIMED', task.data.timestamp - Date.now());
 		if (!time.length) throw msg.language.get('COMMAND_TIME_UNDEFINED_TIME');
 
-		const { offset } = new Duration(time.join(' '));
+		const { offset } = new Duration(time);
 		await this.client.schedule.create(type, offset + Date.now(), {
 			catchUp: true,
 			data: {

@@ -9,11 +9,14 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_AVATAR_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_AVATAR_EXTENDED'),
 			runIn: ['text'],
-			usage: '[user:username]'
+			usage: '(user:username)'
 		});
+
+		this.createCustomResolver('username', (arg, possible, msg) =>
+			arg ? this.client.arguments.get('username').run(arg, possible, msg) : msg.author);
 	}
 
-	async run(msg, [user = msg.author]) {
+	async run(msg, [user]) {
 		if (!user.avatar) throw msg.language.get('COMMAND_AVATAR_NONE');
 		return msg.sendEmbed(new MessageEmbed()
 			.setAuthor(user.tag, user.avatarURL({ size: 64 }))

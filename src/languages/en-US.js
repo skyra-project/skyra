@@ -1,5 +1,5 @@
 /* eslint object-curly-newline: "off", max-len: "off" */
-const { Language, LanguageHelp, Timestamp, FriendlyDuration, klasaUtil: { toTitleCase, codeBlock }, constants: { EMOJIS: { SHINY, GREENTICK, REDCROSS } }, versions: { skyra, klasa } } = require('../index');
+const { Language, LanguageHelp, Timestamp, FriendlyDuration, util: { pick }, klasaUtil: { toTitleCase, codeBlock }, constants: { EMOJIS: { LOADING, SHINY, GREENTICK, REDCROSS } }, versions: { skyra, klasa } } = require('../index');
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -1719,10 +1719,15 @@ module.exports = class extends Language {
 			COMMAND_FILTER_SHOW_EMPTY: 'The list of filtered words is empty!',
 			COMMAND_FILTER_SHOW: (words) => `There is the list of all filtered words: ${words}`,
 			COMMAND_SETFILTERMODE_EQUALS: 'The word filter mode did not change, it was already set up with that mode.',
-			COMMAND_SETFILTERMODE_DISABLED: 'The word filter is now disabled. No messages will be deleted nor logged.',
-			COMMAND_SETFILTERMODE_DELETEONLY: 'The word filter is now in **DeleteOnly** mode. Messages will be deleted but not logged.',
-			COMMAND_SETFILTERMODE_LOGONLY: 'The word filter is now in **LogOnly** mode. Messages will not be deleted but logged to your modlogs channel.',
-			COMMAND_SETFILTERMODE_ALL: 'The word filter is now in **All** mode. Messages will be both deleted and logged to your modlogs channel.',
+			COMMAND_SETFILTERMODE_ALERT: (enabled) => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+			COMMAND_SETFILTERMODE_LOG: (enabled) => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+			COMMAND_SETFILTERMODE_DELETE: (enabled) => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+			COMMAND_SETFILTERMODE_SHOW: (falert, flog, fdelete) => [
+				`= Word Filter Flags =`, '',
+				`Alert  :: ${falert ? 'Enabled' : 'Disabled'}`,
+				`Log    :: ${flog ? 'Enabled' : 'Disabled'}`,
+				`Delete :: ${fdelete ? 'Enabled' : 'Disabled'}`
+			].join('\n'),
 			COMMAND_SETCAPSFILTER_SHOW: (falert, flog, fdelete) => [
 				`= Caps Filter Flags =`, '',
 				`Alert  :: ${falert ? 'Enabled' : 'Disabled'}`,
@@ -2163,13 +2168,24 @@ module.exports = class extends Language {
 			COMMAND_TOSKYRA: 'Eww... I thought you loved me! 💔',
 			COMMAND_USERSELF: 'Why would you do that to yourself?',
 
-			SYSTEM_FETCHING: '`Fetching...`',
+			SYSTEM_FETCHING: pick([
+				`${LOADING} Downloading data...`,
+				`${LOADING} Fetching Commander Data...`,
+				`${LOADING} Chasing after starships...`
+			]),
 			SYSTEM_FETCHING_USERS: 'Some users are playing hide-and-seek, please wait a moment until I find them all...',
 			SYSTEM_PROCESSING: '`Processing...`',
 			SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
 			SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
 			SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the **${PERMS.BAN_MEMBERS}** permission?`,
-			SYSTEM_LOADING: '`Loading... please wait.`',
+			SYSTEM_LOADING: pick([
+				`${LOADING} Watching hamsters run...`,
+				`${LOADING} Finding people at hide-and-seek...`,
+				`${LOADING} Trying to figure out this command...`,
+				`${LOADING} Fetching data from the cloud...`,
+				`${LOADING} Calibrating lenses...`,
+				`${LOADING} Playing rock, scissors, paper...`
+			]),
 			SYSTEM_ERROR: 'Something happened!',
 			SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
 			SYSTEM_NOTENOUGH_PARAMETERS: `I am sorry, but you did not provide enough parameters...`,

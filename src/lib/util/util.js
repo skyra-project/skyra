@@ -284,6 +284,19 @@ class Util {
 		return null;
 	}
 
+	// Utils for i18n
+
+	/**
+	 * Create an array random picker
+	 * @since 4.0.0
+	 * @param {any[]} array The array to pick
+	 * @returns {any}
+	 */
+	static pick(array) {
+		const { length } = array;
+		return () => array[Math.floor(Math.random() * length)];
+	}
+
 	// Mute role based utils
 
 	/**

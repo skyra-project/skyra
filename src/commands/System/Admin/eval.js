@@ -1,6 +1,5 @@
-const { Command, Stopwatch, Type, util } = require('klasa');
+const { Command, Stopwatch, Type, klasaUtil: { codeBlock, clean, isThenable, sleep }, util: { fetch } } = require('../../../index');
 const { inspect } = require('util');
-const fetch = require('node-fetch');
 
 module.exports = class extends Command {
 
@@ -27,7 +26,7 @@ module.exports = class extends Command {
 			return null;
 		}
 
-		const footer = util.codeBlock('ts', type);
+		const footer = codeBlock('ts', type);
 		const sendAs = msg.flags.output || msg.flags['output-to'] || (msg.flags.log ? 'log' : null);
 		return this.handleMessage(msg, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer, language });
 	}
@@ -61,7 +60,7 @@ module.exports = class extends Command {
 					return this.handleMessage(msg, options, { success, result, time, footer, language });
 				}
 				return msg.sendMessage(msg.language.get(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
-					time, util.codeBlock(language, result), footer));
+					time, codeBlock(language, result), footer));
 			}
 		}
 	}
@@ -80,7 +79,7 @@ module.exports = class extends Command {
 	timedEval(msg, code, flagTime) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(msg, code);
 		return Promise.race([
-			util.sleep(flagTime).then(() => ({
+			sleep(flagTime).then(() => ({
 				success: false,
 				result: msg.language.get('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
 				time: '⏱ ...',
@@ -101,7 +100,7 @@ module.exports = class extends Command {
 			result = eval(code);
 			syncTime = stopwatch.toString();
 			type = new Type(result);
-			if (util.isThenable(result)) {
+			if (isThenable(result)) {
 				thenable = true;
 				stopwatch.restart();
 				result = await result;
@@ -123,18 +122,16 @@ module.exports = class extends Command {
 				showHidden: Boolean(msg.flags.showHidden)
 			});
 		}
-		return { success, type, time: this.formatTime(syncTime, asyncTime), result: util.clean(result) };
+		return { success, type, time: this.formatTime(syncTime, asyncTime), result: clean(result) };
 	}
 
 	formatTime(syncTime, asyncTime) {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
 
-	async getHaste(evalResult, language) {
+	async getHaste(evalResult, language = 'js') {
 		// @ts-ignore
-		const key = await fetch('https://hastebin.com/documents', { method: 'POST', body: evalResult })
-			.then(response => response.json())
-			.then(body => body.key);
+		const { key } = await fetch('https://hastebin.com/documents', { method: 'POST', body: evalResult }, 'json');
 		return `https://hastebin.com/${key}.${language}`;
 	}
 

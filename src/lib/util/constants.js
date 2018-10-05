@@ -62,6 +62,7 @@ module.exports = {
 	}),
 
 	EMOJIS : Object.freeze({
+		LOADING   : '<a:SkyraLoading:497584859045429250>',
 		SHINY     : '<:ShinyYellow:324157128270938113>',
 		GREENTICK : '<:greenTick:405073335907647489>',
 		REDCROSS  : '<:redCross:405073349664833537>'

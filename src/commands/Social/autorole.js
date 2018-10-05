@@ -14,12 +14,20 @@ module.exports = class extends Command {
 			permissionLevel: 6,
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<list|add|remove|update> [points:integer{0,1000000}] [role:rolename]',
+			usage: '<add|remove|update|show:default> (role:rolename) [points:points{0,1000000}]',
 			usageDelim: ' '
+		});
+
+		this.createCustomResolver('rolename', (arg, possible, msg, [type]) => {
+			if (type === 'show') return undefined;
+			return this.client.arguments.get('rolename').run(arg, possible, msg);
+		}).createCustomResolver('points', (arg, possible, msg, [type]) => {
+			if (type === 'show' || type === 'remove') return undefined;
+			return this.client.arguments.get('integer').run(arg, possible, msg);
 		});
 	}
 
-	async list(msg) {
+	async show(msg) {
 		const autoRoles = msg.guild.settings.roles.auto;
 		if (!autoRoles.length) throw msg.language.get('COMMAND_AUTOROLE_LIST_EMPTY');
 
@@ -36,7 +44,7 @@ module.exports = class extends Command {
 		return msg.sendMessage(output.join('\n'), { code: 'http' });
 	}
 
-	async add(msg, [points, role]) {
+	async add(msg, [role, points]) {
 		if (typeof points === 'undefined') throw msg.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
 		if (typeof role === 'undefined') throw msg.language.get('REQUIRE_ROLE');
 
@@ -48,7 +56,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
 	}
 
-	async remove(msg, [, role]) {
+	async remove(msg, [role]) {
 		if (typeof role === 'undefined') throw msg.language.get('REQUIRE_ROLE');
 
 		const autoRoles = msg.guild.settings.roles.auto;
@@ -61,7 +69,7 @@ module.exports = class extends Command {
 		return msg.sendLocale('COMMAND_AUTOROLE_REMOVE', [role, deleteEntry.points]);
 	}
 
-	async update(msg, [points, role]) {
+	async update(msg, [role, points]) {
 		if (typeof points === 'undefined') throw msg.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
 		if (typeof roles === 'undefined') throw msg.language.get('REQUIRE_ROLE');
 

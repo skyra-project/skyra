@@ -24,7 +24,7 @@ module.exports = class extends Command {
 	}
 
 	async getHaste(result) {
-		const body = await fetch('https://hastebin.com/documents', { method: 'JSON', body: result });
+		const body = await fetch('https://hastebin.com/documents', { method: 'JSON', body: result }, 'json');
 		return `https://hastebin.com/${body.key}.js`;
 	}
 

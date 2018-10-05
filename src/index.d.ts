@@ -440,30 +440,31 @@ declare class Util {
 		10: UtilOneToTenEntry;
 	}>;
 	public static IMAGE_EXTENSION: RegExp;
-	public static streamToBuffer(stream: Readable): Promise<Buffer>;
-	public static loadImage(path: string): Image;
 	public static announcementCheck(msg: SkyraMessage): Role;
-	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
-	public static moderationCheck(msg: SkyraMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void;
-	public static deIdiotify(error: DiscordAPIError): never;
-	public static resolveEmoji(emoji: string): string | null;
-	public static oneToTen(level: number): UtilOneToTenEntry;
 	public static basicAuth(user: string, password: string): string;
-	public static httpResponses(code: number): string;
-	public static splitText(input: string, length: number, char?: string): string;
+	public static createMuteRole(msg: SkyraMessage): Promise<Role>;
 	public static cutText(input: string, length: number): string;
-	public static fetchAvatar(user: SkyraUser, size?: 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048): Promise<Buffer>;
-	public static fetch<T = ObjectLiteral>(url: URL | string, type?: 'json'): Promise<T>;
-	public static fetch<T = ObjectLiteral>(url: URL | string, options?: ObjectLiteral, type?: 'json'): Promise<T>;
-	public static fetch(url: URL | string, type?: 'buffer'): Promise<Buffer>;
+	public static deIdiotify(error: DiscordAPIError): never;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: 'buffer'): Promise<Buffer>;
-	public static fetch(url: URL | string, type?: 'text'): Promise<string>;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: 'text'): Promise<string>;
-	public static fetch(url: URL | string, type?: string): Promise<any>;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: string): Promise<any>;
+	public static fetch(url: URL | string, type?: 'buffer'): Promise<Buffer>;
+	public static fetch(url: URL | string, type?: 'text'): Promise<string>;
+	public static fetch(url: URL | string, type?: string): Promise<any>;
+	public static fetch<T = ObjectLiteral>(url: URL | string, options?: ObjectLiteral, type?: 'json'): Promise<T>;
+	public static fetch<T = ObjectLiteral>(url: URL | string, type?: 'json'): Promise<T>;
+	public static fetchAvatar(user: SkyraUser, size?: 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048): Promise<Buffer>;
 	public static getContent(message: SkyraMessage): string | null;
 	public static getImage(message: SkyraMessage): string | null;
-	public static createMuteRole(msg: SkyraMessage): Promise<Role>;
+	public static httpResponses(code: number): string;
+	public static loadImage(path: string): Image;
+	public static moderationCheck(msg: SkyraMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void;
+	public static oneToTen(level: number): UtilOneToTenEntry;
+	public static pick<T>(array: T[]): () => T;
+	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
+	public static resolveEmoji(emoji: string): string | null;
+	public static splitText(input: string, length: number, char?: string): string;
+	public static streamToBuffer(stream: Readable): Promise<Buffer>;
 	private static _createMuteRolePush(channel: Channel, role: Role, array: Array<Snowflake>): Promise<any>;
 }
 
@@ -832,6 +833,7 @@ type SkyraConstants = Readonly<{
 		YEAR: number;
 	}>;
 	EMOJIS: Readonly<{
+		LOADING: string;
 		SHINY: string;
 		GREENTICK: string;
 		REDCROSS: string;

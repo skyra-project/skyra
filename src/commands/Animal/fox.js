@@ -1,11 +1,5 @@
-const { Command, util: { fetch } } = require('../../index');
-const url = new URL('https://pixabay.com/api/');
-url.searchParams.append('q', 'fox');
-url.searchParams.append('safesearch', 'true');
-url.searchParams.append('per_page', '200');
-url.searchParams.append('image_type', 'photo');
-url.searchParams.append('category', 'animals');
-url.searchParams.append('key', require.main.exports.config.tokens.pixabay);
+const { Command, util: { fetch }, MessageEmbed } = require('../../index');
+const url = new URL('https://randomfox.ca/floof');
 
 module.exports = class extends Command {
 
@@ -17,21 +11,15 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_FOX_EXTENDED')
 		});
 		this.spam = true;
-		this.hits = [];
 	}
 
 	async run(msg) {
-		const data = this.hits[Math.ceil(Math.random() * this.hits.length)];
-		return msg.sendMessage(`${data.tags}\n${data.pageURL}`);
-	}
-
-	async init() {
-		const data = await fetch(url, 'json');
-		const { hits } = data;
-		for (let i = 0; i < hits.length; i++) {
-			if (hits[i].type === 'photo')
-				this.hits.push({ pageURL: hits[i].pageURL, tags: `**Tags**: ${hits[i].tags}` });
-		}
+		const { image, link } = await fetch(url, 'json');
+		return msg.sendEmbed(new MessageEmbed()
+			.setAuthor(msg.author.username, msg.author.displayAvatarURL({ size: 64 }))
+			.setImage(image)
+			.setURL(link)
+			.setTimestamp());
 	}
 
 };

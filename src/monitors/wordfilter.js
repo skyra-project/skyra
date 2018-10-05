@@ -1,7 +1,8 @@
 const { Monitor, MessageEmbed, klasaUtil: { codeBlock }, discordUtil: { escapeMarkdown }, util: { cutText }, constants: { MESSAGE_LOGS } } = require('../index');
 const { diffWordsWithSpace } = require('diff');
 
-const DELETE_FLAG = 0b01, LOG_FLAG = 0b10;
+// eslint-disable-next-line no-bitwise
+const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
 
 module.exports = class extends Monitor {
 
@@ -13,14 +14,14 @@ module.exports = class extends Monitor {
 		if (filtered === msg.content) return;
 
 		// eslint-disable-next-line no-bitwise
-		if (filter.level & DELETE_FLAG) {
-			if (msg.deletable) {
-				if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', cutText(filtered, 1900)))).catch(() => null);
-				msg.nuke().catch(() => null);
-			}
-			if (msg.channel.postable)
-				msg.alert(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
+		if ((filter.level & DELETE_FLAG) && msg.deletable) {
+			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', cutText(filtered, 1900)))).catch(() => null);
+			msg.nuke().catch(() => null);
 		}
+
+		// eslint-disable-next-line no-bitwise
+		if ((filter.level & ALERT_FLAG) && msg.channel.postable)
+			msg.alert(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
 
 		// eslint-disable-next-line no-bitwise
 		if (filter.level & LOG_FLAG) {

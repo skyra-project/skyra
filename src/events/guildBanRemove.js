@@ -4,9 +4,10 @@ module.exports = class extends Event {
 
 	async run(guild, user) {
 		if (!guild.available || !guild.settings.events.banRemove) return null;
+		await guild.moderation.waitLock();
 		return guild.moderation.new
-			.setUser(user)
 			.setType(TYPE_KEYS.UN_BAN)
+			.setUser(user)
 			.create();
 	}
 

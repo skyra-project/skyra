@@ -1,7 +1,9 @@
 /// <reference path="../../index.d.ts" />
+/// <reference lib="esnext" />
 /* eslint "no-bitwise": "off" */
 const { MODERATION: { SCHEMA_KEYS, ACTIONS, ERRORS } } = require('../util/constants');
 const ModerationManagerEntry = require('./ModerationManagerEntry');
+const { createReferPromise } = require('../util/util');
 const { Collection } = require('discord.js');
 const TABLENAME = 'moderation';
 
@@ -23,9 +25,15 @@ class ModerationManager extends Collection {
 
 		/**
 		 * The timer that sweeps this manager's entries
-		 * @type {NodeJS.Timer}
+		 * @type {?NodeJS.Timer}
 		 */
 		this._timer = null;
+
+		/**
+		 * The promise to wait for tasks to complete
+		 * @type {Object[]}
+		 */
+		this._locks = [];
 	}
 
 	get pool() {
@@ -103,6 +111,22 @@ class ModerationManager extends Collection {
 		await this.table.get(entry.id).update(entry).run();
 
 		return entry;
+	}
+
+	createLock() {
+		const lock = createReferPromise();
+		this._locks.push(lock);
+		lock.promise.finally(() => { this._locks.splice(this._locks.indexOf(lock), 1); });
+
+		return lock.resolve;
+	}
+
+	releaseLock() {
+		for (const lock of this._locks) lock.resolve();
+	}
+
+	waitLock() {
+		return Promise.all(this._locks.map(lock => lock.promise));
 	}
 
 	_cache(entries, type = 'none') {

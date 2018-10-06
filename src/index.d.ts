@@ -469,6 +469,7 @@ declare class Util {
 	public static moderationCheck(msg: SkyraMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void;
 	public static oneToTen(level: number): UtilOneToTenEntry;
 	public static pick<T>(array: T[]): () => T;
+	public static createReferPromise<T>(): { resolve: (value: T) => void, reject: (value: T) => void, promise: Promise<T> };
 	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
 	public static resolveEmoji(emoji: string | { name: string, id: Snowflake | null, animated: boolean }): string | null;
 	public static splitText(input: string, length: number, char?: string): string;
@@ -600,6 +601,9 @@ export class ModerationManager extends Collection<string, ModerationManagerEntry
 	public new: ModerationManagerEntry;
 	private readonly pool: object;
 	private readonly table: object;
+	public createLock(): () => void;
+	public releaseLock(): void;
+	public waitLock(): Promise<Array<undefined>>;
 	public fetch(caseID: number): Promise<ModerationManagerEntry>;
 	public fetch(userID: Snowflake): Promise<Array<ModerationManagerEntry>>;
 	public fetch(caseIDs: Array<number>): Promise<Array<ModerationManagerEntry>>;

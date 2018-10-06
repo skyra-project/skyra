@@ -48,7 +48,8 @@ class ModerationManagerEntry {
 		if (this.moderator) return true;
 
 		const now = Date.now();
-		const entries = this.manager.filter(entry => entry.user === this.user && entry.createdAt - now < TIME.MINUTE);
+		const user = typeof this.user === 'string' ? this.user : this.user.id;
+		const entries = this.manager.filter(entry => (typeof entry.user === 'string' ? entry.user : entry.user.id) === user && entry.createdAt - now < TIME.MINUTE);
 
 		// If there is no moderation log for this user that has not received a report, it should send
 		if (!entries.size) return true;

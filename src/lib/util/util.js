@@ -285,6 +285,18 @@ class Util {
 		return null;
 	}
 
+	// Utils for misc
+
+	static createReferPromise() {
+		let resolve, reject;
+		const promise = new Promise((res, rej) => {
+			resolve = res;
+			reject = rej;
+		});
+
+		return { promise, resolve, reject };
+	}
+
 	// Utils for i18n
 
 	/**

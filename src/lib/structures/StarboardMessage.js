@@ -245,15 +245,15 @@ class StarboardMessage {
 	async edit(options) {
 		this._lastUpdated = Date.now();
 
+		if ('disabled' in options) this.disabled = options.disabled;
+		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
+		if ('stars' in options && !this.disabled) await this._editMessage();
+
 		if (this._syncStatus) await this._syncStatus;
 		if (!this.UUID)
 			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...options }).run()).generated_keys;
 		else
 			await this.provider.db.table(TABLENAME).get(this.UUID).update(options).run();
-
-		if ('disabled' in options) this.disabled = options.disabled;
-		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
-		if ('stars' in options && !this.disabled) await this._editMessage();
 
 		return this;
 	}

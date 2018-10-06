@@ -152,6 +152,7 @@ class StarboardMessage {
 		if (!this.message) return null;
 		return new MessageEmbed()
 			.setURL(this.message.url)
+			.setTitle(this.message.language.get('STARBOARD_JUMPTO'))
 			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL())
 			.setColor(this.color)
 			.setDescription(this.message.content)

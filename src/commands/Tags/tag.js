@@ -28,8 +28,8 @@ const { Command } = require('../../index');
 
 module.exports = class extends Command {
 
-	constructor(...args) {
-		super(...args, {
+	constructor(client, store, file, directory) {
+		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_TAG_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_TAG_EXTENDED'),
 			runIn: ['text'],

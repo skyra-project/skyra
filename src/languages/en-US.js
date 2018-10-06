@@ -1988,7 +1988,7 @@ module.exports = class extends Language {
 			COMMAND_TAG_NOTEXISTS: (tag) => `The tag '${tag}' does not exist.`,
 			COMMAND_TAG_EDITED: (name, content) => `Successfully edited the tag **${name}** with a content of **${content}**.`,
 			COMMAND_TAG_LIST_EMPTY: 'The tag list for this server is empty.',
-			COMMAND_TAG_LIST: (tags) => `There ${tags.length === 1 ? 'is' : 'are'} ${tags.length} tags: ${tags.join(', ')}`,
+			COMMAND_TAG_LIST: (tags) => (tags.length === 1 ? 'There is 1 tag: ' : `There are ${tags.length} tags: `) + tags.join(', '),
 
 			/**
 			 * ##############

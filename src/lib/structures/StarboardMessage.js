@@ -249,7 +249,7 @@ class StarboardMessage {
 		if (!this.UUID)
 			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...options }).run()).generated_keys;
 		else
-			await this.provider.db.table(TABLENAME).get(this.UUID).update(options);
+			await this.provider.db.table(TABLENAME).get(this.UUID).update(options).run();
 
 		if ('disabled' in options) this.disabled = options.disabled;
 		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;

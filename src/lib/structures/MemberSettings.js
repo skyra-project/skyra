@@ -122,7 +122,7 @@ class MemberSettings {
 	 */
 	async destroy() {
 		if (this.UUID) {
-			await this.client.providers.default.db.table('localScores').get(this.UUID).delete();
+			await this.client.providers.default.db.table('localScores').get(this.UUID).delete().run();
 			this.UUID = null;
 		}
 		this.count = 0;

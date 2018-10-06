@@ -1,3 +1,4 @@
+/// <reference path="../../index.d.ts" />
 const { Collection } = require('discord.js');
 const LIMITS = {
 	GLOBAL: 25000,
@@ -33,16 +34,11 @@ class Leaderboard {
 	 * @memberof Leaderboard
 	 */
 
-	/**
-	 * Create a new leaderboard singleton
-	 * @since 3.0.0
-	 * @param {Skyra} client The client that instantiated this class
-	 */
 	constructor(client) {
 		/**
 		 * The Client that initialized this instance
 		 * @since 3.0.0
-		 * @type {Skyra}
+		 * @type {SKYRA.Skyra}
 		 */
 		this.client = client;
 
@@ -144,7 +140,7 @@ class Leaderboard {
 		const promise = new Promise(async (resolve) => {
 			const r = this.client.providers.default.db;
 			// orderBy with index on getAll doesn't work: https://github.com/rethinkdb/rethinkdb/issues/2670
-			const data = await r.table('localScores').getAll(guild, { index: 'guildID' }).orderBy(r.desc('count')).limit(LIMITS.MEMBERS);
+			const data = await r.table('localScores').getAll(guild, { index: 'guildID' }).orderBy(r.desc('count')).limit(LIMITS.MEMBERS).run();
 
 			// Clear the leaderboards for said guild
 			if (!this.guilds.has(guild)) this.guilds.set(guild, new Collection());
@@ -180,7 +176,7 @@ class Leaderboard {
 		await (this._tempPromises.users = new Promise(async (resolve) => {
 			// Get the sorted data from the db
 			const r = this.client.providers.default.db;
-			const data = await r.table('users').orderBy({ index: r.desc('points') }).limit(LIMITS.GLOBAL);
+			const data = await r.table('users').orderBy({ index: r.desc('points') }).limit(LIMITS.GLOBAL).run();
 
 			// Get the store and initialize the position number, then save all entries
 			this.users.clear();

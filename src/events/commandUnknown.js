@@ -4,9 +4,10 @@ module.exports = class extends Event {
 
 	async run(message, command) {
 		if (!message.guild || message.guild.settings.disabledChannels.includes(message.channel.id)) return null;
+		command = command.toLowerCase();
 
-		const tag = message.guild.settings.tags.find((t) => t[0] === command);
-		if (tag) return this.runTag(message, tag);
+		const tag = message.guild.settings.tags.some((t) => t[0] === command);
+		if (tag) return this.runTag(message, command);
 
 		const alias = message.guild.settings.trigger.alias.find(entry => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;

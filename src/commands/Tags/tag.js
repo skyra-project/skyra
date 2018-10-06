@@ -40,7 +40,7 @@ module.exports = class extends Command {
 
 		this.createCustomResolver('string', (arg, possible, message, [action]) => {
 			if (action === 'list') return undefined;
-			if (!arg) throw message.language.get('RESOLVER_INVALID_STRING', arg);
+			if (!arg) throw message.language.get('RESOLVER_INVALID_STRING', possible.name);
 			if (arg.includes('`') || arg.includes('\u200B')) throw message.language.get('COMMAND_TAG_NAME_NOTALLOWED');
 			if (arg.length > 50) throw message.language.get('COMMAND_TAG_NAME_TOOLONG');
 			return arg.toLowerCase();

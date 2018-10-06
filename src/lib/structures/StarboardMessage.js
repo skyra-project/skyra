@@ -1,5 +1,5 @@
 /// <reference path="../../index.d.ts" />
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, DiscordAPIError } = require('discord.js');
 const { getImage } = require('../util/util');
 
 const TABLENAME = 'starboard', TABLEINDEX = { index: 'channel_message' };
@@ -175,7 +175,15 @@ class StarboardMessage {
 	 * @returns {Promise<this>}
 	 */
 	sync() {
-		if (!this._syncStatus) this._syncStatus = this._sync();
+		if (!this._syncStatus) {
+			this._syncStatus = Promise.all([
+				this._syncDatabase(),
+				this._syncDiscord()
+			]).then(() => {
+				this._syncStatus = null;
+				return this;
+			});
+		}
 		return this._syncStatus;
 	}
 
@@ -186,8 +194,7 @@ class StarboardMessage {
 	 */
 	async disable() {
 		if (this.disabled) return false;
-		await this.provider.db.table(TABLENAME).get(this.UUID).update({ disabled: true });
-		this.disabled = true;
+		await this.edit({ disabled: true });
 		return true;
 	}
 
@@ -198,14 +205,8 @@ class StarboardMessage {
 	 */
 	async enable() {
 		if (!this.disabled) return false;
-		await this.provider.db.table(TABLENAME).get(this.UUID).update({ disabled: false });
-		this.disabled = false;
-
-		// Send the stars if it updated
-		const prevStars = this.stars;
-		if (prevStars !== await this.fetchStars()) await this.setStars();
-
-		// Return true
+		await this.edit({ disabled: false });
+		await this.sync();
 		return true;
 	}
 
@@ -213,112 +214,57 @@ class StarboardMessage {
 	 * Add a new user to the list
 	 * @since 3.0.0
 	 * @param {string} userID The user's ID to add
-	 * @returns {Promise<boolean>}
 	 */
-	add(userID) {
-		if (this.message.author.id === userID || this.users.has(userID)) return Promise.resolve(false);
-		this.users.add(userID);
-		return this.setStars();
+	async add(userID) {
+		if (this.message.author.id !== userID && !this.users.has(userID)) {
+			this.users.add(userID);
+			await this.edit({ stars: this.stars });
+		}
 	}
 
 	/**
 	 * Remove a user to the list
 	 * @since 3.0.0
 	 * @param {string} userID The user's ID to remove
-	 * @returns {Promise<boolean>}
 	 */
-	remove(userID) {
-		if (this.message.author.id !== userID) {
+	async remove(userID) {
+		if (this.message.author.id !== userID && this.users.has(userID)) {
 			this.users.delete(userID);
-			return this.setStars();
+			await this.edit({ stars: this.stars });
 		}
-		return Promise.resolve(false);
 	}
 
 	/**
-	 * Fetch all users that reacted with ⭐ and cache them to the list
-	 * @since 3.0.0
-	 * @returns {Promise<number>}
+	 * Save data to the database
+	 * @param {Object} options The options
+	 * @param {string} [options.starMessageID] The star message id
+	 * @param {number} [options.stars] The stars
+	 * @param {boolean} [options.disabled] Whether or not the message is disabled
+	 * @returns {Promise<this>}
 	 */
-	async fetchStars() {
-		const users = await this._fetchUsers();
-		if (!users.length) {
-			this.destroy();
-			return 0;
-		}
+	async edit(options) {
+		this._lastUpdated = Date.now();
 
-		this.users.clear();
-		for (const user of users) this.users.add(user.id);
-		this.users.delete(this.message.author.id);
-		return this.users.size;
-	}
-
-	/**
-	 * Update the Message sent to the starboard channel
-	 * @since 3.0.0
-	 * @returns {Promise<boolean>}
-	 */
-	async updateMessage() {
-		// Don't update if it's not fully sync
 		if (this._syncStatus) await this._syncStatus;
+		if (!this.UUID)
+			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...options }).run()).generated_keys;
+		else
+			await this.provider.db.table(TABLENAME).get(this.UUID).update(options);
 
-		const { stars } = this;
-		if (this.disabled || this.manager.minimum > stars) return false;
-		const content = `${this.emoji} **${stars}** ${this.channel} ID: ${this.message.id}`;
-		if (this.starMessage) {
-			try {
-				await this.starMessage.edit(content, { embed: this.embed });
-			} catch (error) {
-				this.client.emit('warn', '[StarboardMessage] At updateMessage');
-				this.client.emit('apiError', error);
-				if (error.code === '10008') this.destroy();
-			}
-		} else {
-			// @ts-ignore
-			this.starMessage = await this.manager.starboardChannel.send(content, { embed: this.embed });
-			await this._updateDatabase({ starMessageID: this.starMessage.id });
-		}
-		this._lastUpdated = Date.now();
+		if ('disabled' in options) this.disabled = options.disabled;
+		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
+		if ('stars' in options && !this.disabled) await this._editMessage();
 
-		return true;
-	}
-
-	/**
-	 * Set the amount of stars for this instance
-	 * @since 3.0.0
-	 * @returns {Promise<boolean>}
-	 */
-	async setStars() {
-		if (this.disabled) return false;
-		this._lastUpdated = Date.now();
-
-		await this._updateDatabase({ stars: this.stars });
-		await this.updateMessage();
-
-		return true;
+		return this;
 	}
 
 	/**
 	 * Destroy this instance
 	 * @since 3.0.0
 	 */
-	destroy() {
+	async destroy() {
+		if (this.UUID) await this.provider.db.table(TABLENAME).get(this.UUID).delete().run();
 		this.manager.delete(`${this.channel.id}-${this.message.id}`);
-		this.dispose();
-	}
-
-	/**
-	 * Dispose this instance to free space
-	 * @since 3.0.0
-	 */
-	dispose() {
-		this.manager = null;
-		this.channel = null;
-		this.message = null;
-		this.disabled = true;
-		this.starMessage = null;
-		this.UUID = null;
-		this.users.clear();
 	}
 
 	toJSON() {
@@ -335,63 +281,100 @@ class StarboardMessage {
 		return `StarboardMessage(${this.channel.id}-${this.message.id}, ${this.stars})`;
 	}
 
-	async _updateDatabase(object) {
-		if (this._syncStatus) await this._syncStatus;
-		if (!this.UUID)
-			[this.UUID] = (await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...object }).run()).generated_keys;
-		else
-			await this.provider.db.table(TABLENAME).get(this.UUID).update(object);
+	/**
+	 * Edits the message or sends a new one if it does not exist, includes full error handling
+	 * @private
+	 */
+	async _editMessage() {
+		const content = `${this.emoji} **${this.stars}** ${this.channel} ID: ${this.message.id}`;
+		if (this.starMessage) {
+			try {
+				await this.starMessage.edit(content, this.embed);
+			} catch (error) {
+				if (!(error instanceof DiscordAPIError)) return;
+
+				// Missing Access
+				if (error.code === 50001) return;
+				// Unknown Message
+				if (error.code === 10008) await this.edit({ starMessageID: null, disabled: true });
+			}
+		} else {
+			try {
+				const message = await this.manager.starboardChannel.send(content, this.embed);
+				// @ts-ignore
+				this.starMessage = message;
+			} catch (error) {
+				if (!(error instanceof DiscordAPIError)) return;
+
+				// Missing Access
+				if (error.code === 50001) return;
+				// Emit to console
+				this.client.emit('wtf', error);
+			}
+		}
 	}
 
 	/**
-	 * Sync the StarboardMessage instance with the database
-	 * @since 3.0.0
-	 * @returns {Promise<this>}
+	 * Synchronize the data with Discord
 	 * @private
 	 */
-	async _sync() {
-		await this.fetchStars();
-
-		if (this.stars) {
-			const data = await this.provider.db
-				.table(TABLENAME)
-				.getAll([this.channel.id, this.message.id], TABLEINDEX)
-				.limit(1)
-				.nth(0)
-				.default(null)
-				.run();
-
-			if (data) {
-				this.UUID = data.id;
-				this.disabled = Boolean(data.disabled);
-
-				const channel = this.manager.starboardChannel;
-				if (data.starMessageID) this.starMessage = await channel.messages.fetch(data.starMessageID).catch(() => null);
-				if (!this.disabled && !this.starMessage && this.stars >= this.manager.minimum) {
-					const content = `${this.emoji} **${this.stars}** ${this.channel} ID: ${this.message.id}`;
-					// @ts-ignore
-					this.starMessage = await channel.send(content, this.embed);
-					this.provider.db.table(TABLENAME).get(this.UUID).update({ starMessageID: this.starMessage.id });
-				}
+	async _syncDiscord() {
+		let users;
+		try {
+			// @ts-ignore
+			users = await this.client.api.channels[this.channel.id].messages[this.message.id]
+				.reactions[this.channel.guild.settings.starboard.emoji]
+				.get({ query: { limit: 100 } });
+		} catch (error) {
+			if (error instanceof DiscordAPIError) {
+				// Missing Access
+				if (error.code === 50001) return;
+				// Unknown Message
+				if (error.code === 10008) await this.destroy();
+				return;
 			}
 		}
 
-		this._syncStatus = null;
-		return this;
+		if (!users.length) {
+			await this.destroy();
+			return;
+		}
+
+		this.users.clear();
+		for (const user of users) this.users.add(user.id);
+		this.users.delete(this.message.author.id);
 	}
 
 	/**
-	 * Fetch the users
-	 * @since 3.0.0
-	 * @returns {Promise<Object<string, *>[]>}
+	 * Synchronizes the data with the database
 	 * @private
 	 */
-	_fetchUsers() {
-		// @ts-ignore
-		return this.client.api.channels[this.channel.id].messages[this.message.id]
-			.reactions[this.channel.guild.settings.starboard.emoji]
-			.get({ query: { limit: 100 } })
-			.catch(() => []);
+	async _syncDatabase() {
+		const data = await this.provider.db
+			.table(TABLENAME)
+			.getAll([this.channel.id, this.message.id], TABLEINDEX)
+			.limit(1)
+			.nth(0)
+			.default(null)
+			.run();
+
+		if (data) {
+			this.UUID = data.id;
+			this.disabled = Boolean(data.disabled);
+
+			const channel = this.manager.starboardChannel;
+			if (data.starMessageID) {
+				await channel.messages.fetch(data.starMessageID)
+					// @ts-ignore
+					.then((message) => { this.starMessage = message; })
+					.catch(() => undefined);
+			}
+			if (!this.disabled && !this.starMessage && this.stars >= this.manager.minimum)
+				await this._editMessage();
+		} else {
+			this.UUID = null;
+			this.disabled = false;
+		}
 	}
 
 }

@@ -168,8 +168,6 @@ module.exports = class Skyra extends Client {
 			// @ts-ignore
 			guild.security.dispose();
 			// @ts-ignore
-			guild.starboard.dispose();
-			// @ts-ignore
 			guild.nameDictionary.clear();
 		}
 	}

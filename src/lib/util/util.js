@@ -1,7 +1,7 @@
 const { STATUS_CODES } = require('http');
 const fetch = require('node-fetch');
 const { DiscordAPIError } = require('discord.js');
-const { Type } = require('klasa');
+const { Type, util: { isObject } } = require('klasa');
 const { Image } = require('canvas');
 const { readFile } = require('fs-nextra');
 const { Readable } = require('stream');
@@ -137,10 +137,11 @@ class Util {
 	/**
 	 * Resolve an emoji
 	 * @since 3.2.0
-	 * @param {string} emoji The emoji to resolve
+	 * @param {string|Object} emoji The emoji to resolve
 	 * @returns {string}
 	 */
 	static resolveEmoji(emoji) {
+		if (isObject(emoji)) return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}` : emoji.name;
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
 		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);

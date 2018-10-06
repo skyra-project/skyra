@@ -73,15 +73,6 @@ module.exports = class StarboardManager extends Collection {
 	}
 
 	/**
-	 * Dispose all entries from this Starboard
-	 * @since 3.0.0
-	 */
-	dispose() {
-		for (const sMessage of this.values()) sMessage.dispose();
-		this.clear();
-	}
-
-	/**
 	 * Fetch a StarboardMessage entry
 	 * @since 3.0.0
 	 * @param {SKYRA.SkyraTextChannel} channel The text channel the message was sent

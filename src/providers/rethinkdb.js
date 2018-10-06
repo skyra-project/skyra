@@ -1,5 +1,5 @@
-const { Provider, util: { mergeDefault, chunk } } = require('klasa');
-const { r } = require('rethinkdb-ts'); // eslint-disable-line id-length
+const { Provider, klasaUtil: { mergeDefault, chunk } } = require('../index');
+const { r } = require('rethinkdb-ts');
 
 module.exports = class extends Provider {
 
@@ -13,7 +13,7 @@ module.exports = class extends Provider {
 		this.pool = await r.connectPool(mergeDefault({
 			db: 'test',
 			silent: false
-		}, this.client.options.providers.rebirthdb));
+		}, this.client.options.providers.rethinkdb));
 	}
 
 	get exec() {

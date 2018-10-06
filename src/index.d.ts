@@ -236,7 +236,6 @@ export class StarboardManager extends Collection<Snowflake, StarboardMessage> {
 	public readonly minimum: number;
 	public readonly provider: SkyraProvider;
 
-	public dispose(): void;
 	public fetch(channel: KlasaTextChannel, messageID: Snowflake, userID: Snowflake): Promise<StarboardMessage | null>;
 }
 
@@ -261,18 +260,15 @@ export class StarboardMessage {
 	public sync(): Promise<this>;
 	public disable(): Promise<boolean>;
 	public enable(): Promise<boolean>;
-	public add(userID: Snowflake): Promise<boolean>;
-	public remove(userID: Snowflake): Promise<boolean>;
-	public fetchStars(): Promise<number>;
-	public updateMessage(): Promise<boolean>;
-	public setStars(): Promise<boolean>;
-	public destroy(): void;
-	public dispose(): void;
+	public add(userID: Snowflake): Promise<void>;
+	public remove(userID: Snowflake): Promise<void>;
+	public edit(options: { starMessageID?: Snowflake, stars?: number, disabled?: boolean }): Promise<this>;
+	public destroy(): Promise<void>;
 	public toJSON(): { channelID: Snowflake, disabled: boolean, messageID: Snowflake, starMessageID: Snowflake | null, stars: number };
 	public toString(): string;
-	private _updateDatabase(object: ObjectLiteral): Promise<void>;
-	private _sync(): Promise<this>;
-	private _fetchUsers(): Promise<ObjectLiteral>;
+	private _editMessage(): Promise<void>;
+	private _syncDiscord(): Promise<void>;
+	private _syncDatabase(): Promise<void>;
 
 	public static COLORS: Array<number>;
 }
@@ -474,7 +470,7 @@ declare class Util {
 	public static oneToTen(level: number): UtilOneToTenEntry;
 	public static pick<T>(array: T[]): () => T;
 	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
-	public static resolveEmoji(emoji: string): string | null;
+	public static resolveEmoji(emoji: string | { name: string, id: Snowflake | null, animated: boolean }): string | null;
 	public static splitText(input: string, length: number, char?: string): string;
 	public static streamToBuffer(stream: Readable): Promise<Buffer>;
 	private static _createMuteRolePush(channel: Channel, role: Role, array: Array<Snowflake>): Promise<any>;

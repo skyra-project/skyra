@@ -2044,6 +2044,7 @@ module.exports = class extends Language {
 			COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
 			COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
 			COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',
+			COMMAND_ROLES_ABORT: (prefix) => `I looked far and wide, but I seem to not have found what you were looking for. Please run \`${prefix}roles\` for the full list!`,
 			COMMAND_ROLES_LIST_TITLE: 'List of public roles',
 			COMMAND_ROLES_ADDED: (roles) => `The following roles have been added to your profile: \`${roles}\``,
 			COMMAND_ROLES_REMOVED: (roles) => `The following roles have been removed from your profile: \`${roles}\``,

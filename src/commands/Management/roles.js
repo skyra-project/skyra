@@ -30,9 +30,11 @@ module.exports = class extends Command {
 
 	async run(msg, [roles]) {
 		const { public: publicRoles, removeInitial, initial } = msg.guild.settings.roles;
-		if (!publicRoles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
-		if (!roles.length) return this.list(msg, publicRoles);
+		if (!roles.length) {
+			if (msg.args.length) throw msg.language.get('COMMAND_ROLES_ABORT');
+			return this.list(msg, publicRoles);
+		}
 		const memberRoles = new Set(msg.member.roles.keys());
 		const filterRoles = new Set(roles);
 		const unlistedRoles = [], unmanageable = [], addedRoles = [], removedRoles = [];

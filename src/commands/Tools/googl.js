@@ -1,4 +1,4 @@
-const { Command, config: { tokens: { google: KEY } }, MessageEmbed, util: { fetch } } = require('../../index');
+const { Command, config: { tokens: { GOOGLE_API: KEY } }, MessageEmbed, util: { fetch } } = require('../../index');
 
 const REG_GOOGL = /^https:\/\/goo\.gl\/.+/;
 const LONG_URL = new URL('https://www.googleapis.com/urlshortener/v1/url');

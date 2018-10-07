@@ -1,4 +1,4 @@
-const { Command, config: { tokens: { oxford: { API_ID, API_KEY } } }, util: { fetch } } = require('../../../index');
+const { Command, config: { tokens: { OXFORD_API: { API_ID, API_KEY } } }, util: { fetch } } = require('../../../index');
 
 const options = { headers: { Accept: 'application/json', app_id: API_ID, app_key: API_KEY } }; // eslint-disable-line camelcase
 const URL = 'https://od-api.oxforddictionaries.com/api/v1/entries/en/';

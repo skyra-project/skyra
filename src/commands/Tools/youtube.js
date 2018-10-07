@@ -1,4 +1,4 @@
-const { Command, config: { tokens: { google: KEY } }, util: { fetch } } = require('../../index');
+const { Command, config: { tokens: { GOOGLE_API: KEY } }, util: { fetch } } = require('../../index');
 
 module.exports = class extends Command {
 

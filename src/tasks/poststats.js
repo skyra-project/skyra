@@ -8,36 +8,36 @@ module.exports = class extends Task {
 		const guilds = this.client.guilds.size;
 		const users = this.client.guilds.reduce((a, b) => a + b.memberCount, 0);
 		const body = `{"server_count":${guilds}}`;
-		if (config.tokens.discordBotOrg) {
+		if (config.tokens.DISCORD_BOT_ORG) {
 			fetch(`https://discordbots.org/api/bots/${this.client.user.id}/stats`, {
-				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.discordBotOrg },
+				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.DISCORD_BOT_ORG },
 				method: 'POST',
 				body
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [discordbots.org]: ${guilds}`))
 				.catch(err => this.client.emit('error', `ERROR [discordbots.org]:\nError: ${(err && err.stack) || err}`));
 		}
-		if (config.tokens.discordBots) {
+		if (config.tokens.DISCORD_BOTS) {
 			fetch(`https://bots.discord.pw/api/bots/${this.client.user.id}/stats`, {
-				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.discordBots },
+				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.DISCORD_BOTS },
 				method: 'POST',
 				body
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [bots.discord.pw]: ${guilds}`))
 				.catch(err => this.client.emit('error', `ERROR [bots.discord.pw]:\nError: ${(err && err.stack) || err}`));
 		}
-		if (config.tokens.botsForDiscord) {
+		if (config.tokens.BOTS_FOR_DISCORD) {
 			fetch(`https://botsfordiscord.com/api/bot/${this.client.user.id}`, {
-				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.botsForDiscord },
+				headers: { 'Content-Type': 'application/json', Authorization: config.tokens.BOTS_FOR_DISCORD },
 				method: 'POST',
 				body
 			}, 'result')
 				.then(() => this.client.emit('verbose', `POST [botsfordiscord.com]: ${guilds}`))
 				.catch(err => this.client.emit('error', `ERROR [botsfordiscord.com]:\nError: ${(err && err.stack) || err}`));
 		}
-		if (config.tokens.discordBotList) {
+		if (config.tokens.DISCORD_BOT_LIST) {
 			fetch(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`, {
-				headers: { 'Content-Type': 'application/json', Authorization: `Bot ${config.tokens.discordBotList}` },
+				headers: { 'Content-Type': 'application/json', Authorization: `Bot ${config.tokens.DISCORD_BOT_LIST}` },
 				method: 'POST',
 				body: `{"guilds":${guilds},"users":${users}}`
 			}, 'result')

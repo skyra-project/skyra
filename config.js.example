@@ -1,0 +1,77 @@
+module.exports = {
+	name: 'Skyra',
+	prefix: 's!',
+	ownerID: '242043489611808769',
+	version: '4.0.0 Nerom',
+	database: {
+		rethinkdb: {
+			production: {
+				db: '',
+				user: '',
+				password: ''
+			},
+			development: {
+				db: 'test'
+			}
+		}
+	},
+	console: {
+		utc: true,
+		useColor: true,
+		colors: {
+			debug: {
+				type: 'log',
+				message: { background: null, text: null, style: null },
+				time: { background: null, text: 'magenta', style: null }
+			},
+			error: {
+				type: 'error',
+				message: { background: null, text: null, style: null },
+				time: { background: 'red', text: 'white', style: null }
+			},
+			log: {
+				type: 'log',
+				message: { background: null, text: null, style: null },
+				time: { background: null, text: 'lightblue', style: null }
+			},
+			info: {
+				type: 'log',
+				message: { background: null, text: 'gray', style: null },
+				time: { background: null, text: 'lightyellow', style: null }
+			},
+			verbose: {
+				type: 'log',
+				message: { background: null, text: 'gray', style: null },
+				time: { background: null, text: 'gray', style: null }
+			},
+			warn: {
+				type: 'warn',
+				message: { background: null, text: 'lightyellow', style: null },
+				time: { background: null, text: 'lightyellow', style: null }
+			},
+			wtf: {
+				type: 'error',
+				message: { background: null, text: 'red', style: null },
+				time: { background: 'red', text: 'white', style: null }
+			}
+		}
+	},
+	tokens: {
+		BOT: {
+			STABLE: '',
+			DEV: ''
+		},
+		BOTS_FOR_DISCORD: '',
+		DISCORD_BOT_ORG: '',
+		DISCORD_BOTS: '',
+		DISCORD_BOT_LIST: '',
+		GOOGLE_API: '',
+		GOOGLE_MAP_API: '',
+		OXFORD_API: {
+			API_ID: '',
+			API_KEY: ''
+		},
+		WEATHER_API: '',
+		WEEB_SH: ''
+	}
+};

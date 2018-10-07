@@ -6,7 +6,7 @@ const builder = new LanguageHelp()
 	.setPossibleFormats('🔢 | ***Possible formats***')
 	.setExamples('🔗 | ***Examples***')
 	.setReminder('⏰ | ***Reminder***');
-const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');has higher
+const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
 
 const TIMES = {
 	YEAR: {

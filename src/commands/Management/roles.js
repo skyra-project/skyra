@@ -14,7 +14,7 @@ module.exports = class extends Command {
 		});
 
 		this.createCustomResolver('rolenames', async (arg, possible, msg) => {
-			if (!msg.guild.settings.roles.public.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
+			if (!msg.guild.settings.roles.public.length) return null;
 			if (!arg) return [];
 
 			const search = new FuzzySearch(msg.guild.roles, (role) => role.name, (role) => msg.guild.settings.roles.public.includes(role.id));
@@ -31,6 +31,7 @@ module.exports = class extends Command {
 	async run(msg, [roles]) {
 		const { public: publicRoles, removeInitial, initial } = msg.guild.settings.roles;
 
+		if (!roles) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
 			if (msg.args.length) throw msg.language.get('COMMAND_ROLES_ABORT');
 			return this.list(msg, publicRoles);

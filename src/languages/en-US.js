@@ -6,7 +6,7 @@ const builder = new LanguageHelp()
 	.setPossibleFormats('🔢 | ***Possible formats***')
 	.setExamples('🔗 | ***Examples***')
 	.setReminder('⏰ | ***Reminder***');
-const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
+const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');has higher
 
 const TIMES = {
 	YEAR: {
@@ -2154,10 +2154,10 @@ module.exports = class extends Language {
 
 			COMMAND_DM_NOT_SENT: 'I cannot send you a message in DMs, did you block me?',
 			COMMAND_DM_SENT: 'I have sent you the message in DMs.',
-			COMMAND_ROLE_HIGHER_SKYRA: 'The selected member has higher or equal role position than me.',
-			COMMAND_ROLE_HIGHER: 'The selected member has higher or equal role position than you.',
+			COMMAND_ROLE_HIGHER_SKYRA: 'The selected member has a role position that is higher than or equal to mine.',
+			COMMAND_ROLE_HIGHER: 'The selected member has a role position that is higher than or equal to yours.',
 			COMMAND_SUCCESS: 'Successfully executed the command.',
-			COMMAND_TOSKYRA: 'Eww... I thought you loved me! 💔',
+			COMMAND_TOSKYRA: 'Why... I thought you loved me! 💔',
 			COMMAND_USERSELF: 'Why would you do that to yourself?',
 
 			SYSTEM_FETCHING: pick([

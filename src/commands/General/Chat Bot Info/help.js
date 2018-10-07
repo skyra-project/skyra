@@ -1,4 +1,4 @@
-const { Command, RichDisplay, klasaUtil: { isFunction }, MessageEmbed, Permissions } = require('../../../index');
+const { Command, UserRichDisplay, klasaUtil: { isFunction }, MessageEmbed, Permissions } = require('../../../index');
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 const time = 1000 * 60 * 3;
@@ -17,9 +17,6 @@ module.exports = class extends Command {
 			if (!arg || arg === '') return undefined;
 			return this.client.arguments.get('command').run(arg, possible, message);
 		});
-
-		// Cache the handlers
-		this.handlers = new Map();
 	}
 
 	async run(message, [command]) {
@@ -32,17 +29,10 @@ module.exports = class extends Command {
 		}
 
 		if (!message.flags.all && message.guild && message.channel.permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY)) {
-			// Finish the previous handler
-			const previousHandler = this.handlers.get(message.author.id);
-			if (previousHandler) previousHandler.stop();
-
-			const handler = await (await this.buildDisplay(message)).run(await message.send('Loading Commands...'), {
+			return (await this.buildDisplay(message)).run(await message.send('Loading Commands...'), message.author.id, {
 				filter: (reaction, user) => user.id === message.author.id,
 				time
 			});
-			handler.once('end', () => this.handlers.delete(message.author.id));
-			this.handlers.set(message.author.id, handler);
-			return handler;
 		}
 
 		return message.author.send(await this.buildHelp(message), { split: { char: '\n' } })
@@ -64,7 +54,7 @@ module.exports = class extends Command {
 	async buildDisplay(message) {
 		const commands = await this._fetchCommands(message);
 		const { prefix } = message.guildSettings;
-		const display = new RichDisplay();
+		const display = new UserRichDisplay();
 		const color = message.member.displayColor;
 		for (const [category, list] of commands) {
 			display.addPage(new MessageEmbed()

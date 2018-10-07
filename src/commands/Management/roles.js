@@ -1,4 +1,4 @@
-const { Command, RichDisplay, constants: { TIME }, MessageEmbed, FuzzySearch } = require('../../index');
+const { Command, UserRichDisplay, constants: { TIME }, MessageEmbed, FuzzySearch } = require('../../index');
 const RH_TIMELIMIT = TIME.MINUTE * 5;
 
 module.exports = class extends Command {
@@ -93,7 +93,7 @@ module.exports = class extends Command {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
-		const display = new RichDisplay(new MessageEmbed()
+		const display = new UserRichDisplay(msg.author, new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
 			.setTitle(msg.language.get('COMMAND_ROLES_LIST_TITLE'))

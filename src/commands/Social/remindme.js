@@ -1,7 +1,6 @@
-const { Command, Timestamp, Duration, constants: { TIME }, klasaUtil: { isNumber, chunk }, util: { cutText }, RichDisplay, MessageEmbed } = require('../../index');
+const { Command, Timestamp, Duration, constants: { TIME }, klasaUtil: { isNumber, chunk }, util: { cutText }, UserRichDisplay, MessageEmbed } = require('../../index');
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 const REMINDER_TYPE = 'reminder';
-const RH_TIMELIMIT = TIME.MINUTE * 5;
 
 module.exports = class extends Command {
 
@@ -37,14 +36,14 @@ module.exports = class extends Command {
 		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === msg.author.id);
 		if (!tasks.length) return msg.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
 
-		const display = new RichDisplay(new MessageEmbed()
+		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL()));
 
 		const pages = chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage(template => template.setDescription(page.join('\n')));
 
-		return display.run(await msg.channel.send(msg.language.get('SYSTEM_PROCESSING')), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
+		return display.run(await msg.channel.send(msg.language.get('SYSTEM_PROCESSING')), msg.author.id);
 	}
 
 	async delete(msg, data) {

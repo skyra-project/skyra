@@ -1,6 +1,4 @@
-const { Command, constants: { MODERATION: { TYPE_KEYS } }, RichDisplay, MessageEmbed, klasaUtil: { chunk } } = require('../../../index');
-
-const RH_TIMELIMIT = 30000;
+const { Command, constants: { MODERATION: { TYPE_KEYS } }, UserRichDisplay, MessageEmbed, klasaUtil: { chunk } } = require('../../../index');
 
 module.exports = class extends Command {
 
@@ -21,7 +19,7 @@ module.exports = class extends Command {
 		const warnings = (await msg.guild.moderation.fetch(target ? target.id : undefined)).filter(log => log.type === TYPE_KEYS.WARN);
 		if (!warnings.size) throw msg.language.get('COMMAND_WARNINGS_EMPTY');
 
-		const display = new RichDisplay(new MessageEmbed()
+		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
 			.setTitle(msg.language.get('COMMAND_WARNINGS_AMOUNT', warnings.size)));
@@ -40,7 +38,8 @@ module.exports = class extends Command {
 		for (const page of chunk([...warnings.values()], 10))
 			display.addPage(template => template.setDescription(page.map(format)));
 
-		return display.run(await msg.sendLocale('SYSTEM_PROCESSING'), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
+		await display.run(await msg.sendLocale('SYSTEM_PROCESSING'), msg.author.id);
+		return msg;
 	}
 
 	displayWarning(users, warning) {

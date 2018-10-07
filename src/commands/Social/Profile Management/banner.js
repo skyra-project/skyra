@@ -1,6 +1,4 @@
-const { Command, RichDisplay, constants: { TIME: { MINUTE }, EMOJIS: { SHINY } }, Collection, MessageEmbed } = require('../../../index');
-
-const PROMPT_TIME = MINUTE * 5;
+const { Command, UserRichDisplay, constants: { EMOJIS: { SHINY } }, MessageEmbed } = require('../../../index');
 const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
 
 module.exports = class extends Command {
@@ -28,7 +26,6 @@ module.exports = class extends Command {
 		});
 
 		this.banners = new Map();
-		this.collectors = new Collection();
 		this.display = null;
 		this.listPrompt = this.definePrompt('<all|user>');
 	}
@@ -81,7 +78,7 @@ module.exports = class extends Command {
 		const banners = new Set(msg.author.settings.bannerList);
 		if (!banners.size) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY', msg.guild.settings.prefix);
 
-		const display = new RichDisplay(new MessageEmbed().setColor(0xFFAB40));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(0xFFAB40));
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
@@ -96,16 +93,7 @@ module.exports = class extends Command {
 	}
 
 	async _runDisplay(msg, display) {
-		const collectorID = msg.author.id;
-		const existing = this.collectors.get(collectorID);
-		if (existing) existing.stop();
-
-		const collector = await display.run(await msg.channel.send(msg.language.get('SYSTEM_LOADING')), {
-			filter: (_, user) => user.id === msg.author.id,
-			time: PROMPT_TIME
-		});
-		this.collectors.set(collectorID, collector);
-		collector.once('end', () => this.collectors.delete(collectorID));
+		return display.run(await msg.channel.send(msg.language.get('SYSTEM_LOADING')), msg.author.id);
 	}
 
 	async show(msg) {
@@ -128,7 +116,7 @@ module.exports = class extends Command {
 
 	async init() {
 		const table = await this.client.providers.default.getAll('banners');
-		const display = new RichDisplay(new MessageEmbed().setColor(0xFFAB40));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(0xFFAB40));
 		for (const list of table) {
 			for (const banner of list.banners) {
 				this.banners.set(banner.id, {

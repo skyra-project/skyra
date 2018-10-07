@@ -1,31 +1,32 @@
 /* eslint no-bitwise: "off" */
 
 /**
+ * @typedef  {Object} DurationFormatAssetsTime
+ * @property {DurationFormatAssetsUnit} WEEK
+ * @property {DurationFormatAssetsUnit} DAY
+ * @property {DurationFormatAssetsUnit} HOUR
+ * @property {DurationFormatAssetsUnit} MINUTE
+ * @property {DurationFormatAssetsUnit} SECOND
+ */
+
+/**
+ * @typedef  {Object} DurationFormatAssetsUnit
+ * @property {string} [1]
+ * @property {string} [2]
+ * @property {string} [3]
+ * @property {string} [4]
+ * @property {string} [5]
+ * @property {string} [6]
+ * @property {string} DEFAULT
+ */
+
+/**
  * The FriendlyDuration static class in charge of humanify the duration timestamps
  * @since 2.1.0
  * @version 2.0.0
  */
 class FriendlyDuration {
 
-	/**
-	 * @typedef  {Object} DurationFormatAssetsTime
-	 * @property {DurationFormatAssetsUnit} WEEK
-	 * @property {DurationFormatAssetsUnit} DAY
-	 * @property {DurationFormatAssetsUnit} HOUR
-	 * @property {DurationFormatAssetsUnit} MINUTE
-	 * @property {DurationFormatAssetsUnit} SECOND
-	 */
-
-	/**
-	 * @typedef  {Object} DurationFormatAssetsUnit
-	 * @property {string} [1]
-	 * @property {string} [2]
-	 * @property {string} [3]
-	 * @property {string} [4]
-	 * @property {string} [5]
-	 * @property {string} [6]
-	 * @property {string} DEFAULT
-	 */
 
 	/**
 	 * Display an i18n-formatted date

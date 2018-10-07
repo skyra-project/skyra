@@ -28,6 +28,9 @@ import {
 	Timestamp,
 	util as KlasaUtil,
 	ProviderStore,
+	RichDisplay,
+	ReactionHandler,
+	RichDisplayRunOptions,
 } from 'klasa';
 import {
 	BanOptions,
@@ -271,6 +274,12 @@ export class StarboardMessage {
 	private _syncDatabase(): Promise<void>;
 
 	public static COLORS: Array<number>;
+}
+
+export class UserRichDisplay extends RichDisplay {
+	// @ts-ignore
+	public run(message: KlasaMessage, target: Snowflake, options?: RichDisplayRunOptions): Promise<ReactionHandler>;
+	public static displays: Map<string, ReactionHandler>;
 }
 
 export abstract class ModerationCommand extends SkyraCommand {

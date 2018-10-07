@@ -1,6 +1,7 @@
-const { Command, PromptList, Timestamp, Duration, constants: { TIME: { YEAR } }, klasaUtil: { isNumber } } = require('../../index');
+const { Command, Timestamp, Duration, constants: { TIME }, klasaUtil: { isNumber, chunk }, util: { cutText }, RichDisplay, MessageEmbed } = require('../../index');
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 const REMINDER_TYPE = 'reminder';
+const RH_TIMELIMIT = TIME.MINUTE * 5;
 
 module.exports = class extends Command {
 
@@ -35,12 +36,15 @@ module.exports = class extends Command {
 	async list(msg) {
 		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === msg.author.id);
 		if (!tasks.length) return msg.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
-		await new PromptList(tasks.map(task => [
-			task.id,
-			`${timestamp.display(task.time)} - ${task.data.content.length > 40 ? `${task.data.content.slice(0, 40)}...` : task.data.content}`
-		])).run(msg).catch(() => null);
 
-		return msg;
+		const display = new RichDisplay(new MessageEmbed()
+			.setColor(msg.member.displayColor)
+			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL()));
+
+		const pages = chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
+		for (const page of pages) display.addPage(template => template.setDescription(page.join('\n')));
+
+		return display.run(await msg.channel.send(msg.language.get('SYSTEM_PROCESSING')), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
 	}
 
 	async delete(msg, data) {
@@ -75,7 +79,7 @@ module.exports = class extends Command {
 				parsed.time = new Duration(string.slice(indexOfTime + 4)).offset;
 		}
 
-		if (!isNumber(parsed.time) || parsed.time < 59500 || parsed.time > (YEAR * 5))
+		if (!isNumber(parsed.time) || parsed.time < 59500 || parsed.time > (TIME.YEAR * 5))
 			parsed.time = await this.askTime(msg, msg.language.get('COMMAND_REMINDME_INPUT_PROMPT'));
 
 		return parsed;

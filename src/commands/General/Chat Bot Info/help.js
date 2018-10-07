@@ -1,7 +1,6 @@
 const { Command, UserRichDisplay, klasaUtil: { isFunction }, MessageEmbed, Permissions } = require('../../../index');
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
-const time = 1000 * 60 * 3;
 
 module.exports = class extends Command {
 
@@ -28,12 +27,8 @@ module.exports = class extends Command {
 			].join('\n'));
 		}
 
-		if (!message.flags.all && message.guild && message.channel.permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY)) {
-			return (await this.buildDisplay(message)).run(await message.send('Loading Commands...'), message.author.id, {
-				filter: (reaction, user) => user.id === message.author.id,
-				time
-			});
-		}
+		if (!message.flags.all && message.guild && message.channel.permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY))
+			return (await this.buildDisplay(message)).run(await message.send('Loading Commands...'), message.author.id);
 
 		return message.author.send(await this.buildHelp(message), { split: { char: '\n' } })
 			.then(() => { if (message.channel.type !== 'dm') message.sendLocale('COMMAND_HELP_DM'); })

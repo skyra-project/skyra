@@ -43,7 +43,7 @@ module.exports = class extends Command {
 		const pages = chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage(template => template.setDescription(page.join('\n')));
 
-		return display.run(await msg.channel.send(msg.language.get('SYSTEM_PROCESSING')), msg.author.id);
+		return display.run(await msg.channel.send(msg.language.get('SYSTEM_LOADING')), msg.author.id);
 	}
 
 	async delete(msg, data) {

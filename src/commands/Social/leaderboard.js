@@ -40,11 +40,11 @@ module.exports = class extends Command {
 			if (positionOffset > value.position) continue;
 			if (positionOffset + 10 < value.position) break;
 			retrievedPage.push(value);
-			if (!value.name) promises.push(msg.guild.fetchName(id).then(username => { value.name = username || `Unknown: ${id}`; }));
+			if (!value.name) promises.push(this.client.fetchUsername(id).then(username => { value.name = username || `Unknown: ${id}`; }));
 		}
 
 		if (promises.length) {
-			await msg.sendLocale('SYSTEM_FETCHING_USERS');
+			await msg.sendLocale('SYSTEM_LOADING');
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage)

@@ -93,7 +93,7 @@ module.exports = class extends Command {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 
-		const display = new UserRichDisplay(msg.author, new MessageEmbed()
+		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
 			.setTitle(msg.language.get('COMMAND_ROLES_LIST_TITLE'))
@@ -102,7 +102,7 @@ module.exports = class extends Command {
 		const pages = Math.ceil(roles.length / 10);
 		for (let i = 0; i < pages; i++) display.addPage(template => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
 
-		return display.run(await msg.channel.send(msg.language.get('SYSTEM_PROCESSING')), { filter: (reaction, user) => user === msg.author, time: RH_TIMELIMIT });
+		return display.run(await msg.channel.send(msg.language.get('SYSTEM_LOADING')), msg.author.id);
 	}
 
 };

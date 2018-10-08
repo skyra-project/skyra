@@ -29,7 +29,7 @@ module.exports = class extends Command {
 		const users = new Map();
 		for (const warning of warnings.values()) {
 			const id = warning.moderator;
-			if (!users.has(id)) users.set(id, await msg.guild.fetchName(id) || id);
+			if (!users.has(id)) users.set(id, await this.client.fetchUsername(id));
 		}
 
 		// Set up the formatter
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		for (const page of chunk([...warnings.values()], 10))
 			display.addPage(template => template.setDescription(page.map(format)));
 
-		await display.run(await msg.sendLocale('SYSTEM_PROCESSING'), msg.author.id);
+		await display.run(await msg.sendLocale('SYSTEM_LOADING'), msg.author.id);
 		return msg;
 	}
 

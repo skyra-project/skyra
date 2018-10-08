@@ -15,7 +15,7 @@ module.exports = class extends Command {
 
 	async run(msg) {
 		if (msg.guild.roles.size >= 250) throw msg.language.get('COMMAND_MUTE_CONFIGURE_TOOMANY_ROLES');
-		await createMuteRole(await msg.sendLocale('SYSTEM_PROCESSING'));
+		await createMuteRole(await msg.sendLocale('SYSTEM_LOADING'));
 		return msg.responses;
 	}
 

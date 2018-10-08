@@ -11,20 +11,22 @@ module.exports = class extends Argument {
 	async run(arg, possible, msg, filter) {
 		if (!arg) throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 		if (!msg.guild) return this.user.run(arg, possible, msg);
-		const resUser = await this.resolveUser(arg, msg.guild);
+		const resUser = await this.resolveUser(arg);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(msg.guild.nameDictionary, (entry) => entry, filter).run(msg, arg);
+		const result = await new FuzzySearch(msg.guild.memberUsernames, (entry) => entry, filter).run(msg, arg);
 		if (result) return this.client.users.fetch(result[0]);
 		throw msg.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 
-	resolveUser(query, guild) {
-		if (USER_REGEXP.test(query)) return guild.client.users.fetch(USER_REGEXP.exec(query)[1]).catch(() => null);
-		if (USER_TAG.test(query)) {
-			const res = guild.members.find(member => member.user.tag === query);
-			return res ? res.user : null;
-		}
+	resolveUser(query) {
+		const id = USER_REGEXP.test(query)
+			? USER_REGEXP.exec(query)[1]
+			: USER_TAG.test(query)
+				? this.client.usernames.findKey(tag => tag === query) || null
+				: null;
+
+		if (id) return this.client.users.fetch(id);
 		return null;
 	}
 

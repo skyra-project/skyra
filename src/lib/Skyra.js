@@ -1,3 +1,4 @@
+const { Collection } = require('discord.js');
 const { Client } = require('klasa');
 const { loadavg } = require('os');
 
@@ -120,6 +121,8 @@ module.exports = class Skyra extends Client {
 		 */
 		this.timeoutManager = new TimeoutManager(this);
 
+		this.usernames = new Collection();
+
 		/**
 		 * @type {NodeJS.Timer}
 		 * @since 3.0.0
@@ -133,6 +136,22 @@ module.exports = class Skyra extends Client {
 		 * @private
 		 */
 		this._skyraReady = false;
+	}
+
+	async fetchTag(id) {
+		// Return from cache if exists
+		const cache = this.usernames.get(id);
+		if (cache) return cache;
+
+		// Fetch the user and set to cache
+		const user = await this.users.fetch(id);
+		this.usernames.set(user.id, user.tag);
+		return user.tag;
+	}
+
+	async fetchUsername(id) {
+		const tag = await this.fetchTag(id);
+		return tag.slice(0, tag.indexOf('#'));
 	}
 
 	/**
@@ -168,7 +187,7 @@ module.exports = class Skyra extends Client {
 			// @ts-ignore
 			guild.security.dispose();
 			// @ts-ignore
-			guild.nameDictionary.clear();
+			guild.memberSnowflakes.clear();
 		}
 	}
 

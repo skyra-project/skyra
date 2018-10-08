@@ -29,7 +29,7 @@ module.exports = class extends ModerationCommand {
 			if (msg.guild.roles.size >= 250) throw msg.language.get('COMMAND_MUTE_CONFIGURE_TOOMANY_ROLES');
 			await msg.prompt(msg.language.get('COMMAND_MUTE_CONFIGURE'))
 				.catch(() => { throw msg.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
-			await msg.sendLocale('SYSTEM_PROCESSING');
+			await msg.sendLocale('SYSTEM_LOADING');
 			await createMuteRole(msg);
 		}
 

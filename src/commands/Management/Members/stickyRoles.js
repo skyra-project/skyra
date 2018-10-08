@@ -50,7 +50,7 @@ module.exports = class extends Command {
 				const resolved = msg.guild.roles.get(role);
 				if (resolved) roles.push(resolved.name);
 			}
-			if (roles.length) output.push(await msg.guild.fetchName(stickyRole.id) || `<@${stickyRole.id}>`, roles.join(', '));
+			if (roles.length) output.push(await this.client.fetchUsername(stickyRole.id), roles.join(', '));
 		}));
 
 		if (!output.length) {

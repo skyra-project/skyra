@@ -37,33 +37,34 @@ module.exports = Structures.extend('Guild', Guild => {
 			 */
 			this.moderation = new ModerationManager(this);
 
-			Object.defineProperty(this, 'nameDictionary', { writable: true });
+			Object.defineProperty(this, 'memberSnowflakes', { writable: true });
 
 			/**
 			 * The name dictionary for this guild
-			 * @since 3.2.0
-			 * @name SkyraGuild#nameDictionary
-			 * @type {Collection<string, string | Symbol>}
+			 * @since 4.0.0
+			 * @type {Set<string>}
 			 */
-			this.nameDictionary = new Collection();
+			this.memberSnowflakes = new Set();
 		}
 
-		/**
-		 * Fetch an user's username by its id
-		 * @since 3.2.0
-		 * @param {string} id The ID to fetch
-		 * @returns {Promise<?string>}
-		 */
-		async fetchName(id) {
-			const result = this.nameDictionary.get(id) || await this.members.fetch(id).then(({ displayName }) => {
-				this.nameDictionary.set(id, displayName);
-				return displayName;
-			}).catch(() => {
-				this.nameDictionary.set(id, kUnknownMember);
-				return kUnknownMember;
-			});
-			// @ts-ignore
-			return result === kUnknownMember ? null : result;
+		get memberTags() {
+			const collection = new Collection();
+			for (const snowflake of this.memberSnowflakes) {
+				// @ts-ignore
+				const username = this.client.usernames.get(snowflake);
+				if (username) collection.set(snowflake, username);
+			}
+			return collection;
+		}
+
+		get memberUsernames() {
+			const collection = new Collection();
+			for (const snowflake of this.memberSnowflakes) {
+				// @ts-ignore
+				const username = this.client.usernames.get(snowflake);
+				if (username) collection.set(snowflake, username.slice(0, username.indexOf('#')));
+			}
+			return collection;
 		}
 
 	}

@@ -66,7 +66,6 @@ import { R, MasterPool, WriteResult, TableChangeResult } from 'rethinkdb-ts';
 //#endregion imports
 //#region exports
 export {
-	Argument,
 	ArgumentStore,
 	Client,
 	Colors,
@@ -202,9 +201,12 @@ export class Skyra extends KlasaClient {
 	};
 	public readonly timeoutManager: TimeoutManager;
 	public readonly connectFour: ConnectFourManager;
+	public readonly usernames: Collection<Snowflake, string>;
 	public _updateStatsInterval: NodeJS.Timer;
 	public _skyraReady: boolean;
 
+	public fetchTag(id: Snowflake): Promise<string>;
+	public fetchUsername(id: Snowflake): Promise<string>;
 	public updateStats(): void;
 	public dispose(): void;
 
@@ -1145,6 +1147,13 @@ declare abstract class SkyraCommand extends Command {
 
 export { SkyraCommand as Command };
 
+declare abstract class SkyraArgument extends Event {
+	// @ts-ignore
+	public client: Skyra;
+}
+
+export { SkyraArgument as Argument };
+
 declare abstract class SkyraEvent extends Event {
 	// @ts-ignore
 	public client: Skyra;
@@ -1267,8 +1276,9 @@ export class SkyraGuild extends KlasaGuild {
 	public moderation: ModerationManager;
 	public security: GuildSecurity;
 	public starboard: StarboardManager;
-	public readonly nameDictionary: Collection<Snowflake, string>;
-	public fetchName(id: Snowflake): Promise<string>;
+	public readonly memberSnowflakes: Set<Snowflake>;
+	public readonly memberTags: Map<Snowflake, string>;
+	public readonly memberUsernames: Map<Snowflake, string>;
 }
 
 export class SkyraUser extends KlasaUser {

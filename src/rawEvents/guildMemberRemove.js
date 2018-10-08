@@ -14,7 +14,8 @@ module.exports = class extends RawEvent {
 	}
 
 	async run({ guild, user }) {
-		if (guild.nameDictionary.has(user.id)) guild.nameDictionary.delete(user.id);
+		guild.memberSnowflakes.delete(user.id);
+		if (this.client.guilds.some(g => g.memberSnowflakes.has(user.id))) this.client.usernames.delete(user.id);
 		if (guild.members.has(user.id)) guild.members.delete(user.id);
 		if (guild.security.raid.has(user.id)) guild.security.raid.delete(user.id);
 		if (guild.settings.events.memberRemove) {

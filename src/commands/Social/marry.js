@@ -1,4 +1,4 @@
-const { Command } = require('klasa');
+const { Command } = require('../../index');
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes)$/i;
 const SNEYRA_ID = '338249781594030090';
@@ -26,7 +26,7 @@ module.exports = class extends Command {
 
 	async _display(msg) {
 		if (!msg.author.settings.marry) return msg.sendLocale('COMMAND_MARRY_NOTTAKEN');
-		const username = await msg.guild.fetchName(msg.author.settings.marry);
+		const username = await this.client.fetchUsername(msg.author.settings.marry);
 		return msg.sendLocale('COMMAND_MARRY_WITH', [username || `<@${msg.author.settings.marry}>`]);
 	}
 

@@ -2165,8 +2165,6 @@ module.exports = class extends Language {
 				`${LOADING} Fetching Commander Data...`,
 				`${LOADING} Chasing after starships...`
 			]),
-			SYSTEM_FETCHING_USERS: 'Some users are playing hide-and-seek, please wait a moment until I find them all...',
-			SYSTEM_PROCESSING: '`Processing...`',
 			SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
 			SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
 			SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the **${PERMS.BAN_MEMBERS}** permission?`,

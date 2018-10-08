@@ -6,7 +6,6 @@ class LongLivingReactionCollector {
 		/** @type {SKYRA.Skyra} */
 		this.client = client;
 		this.listener = listener;
-		this.time = null;
 		this._timer = null;
 		this.client.llrCollectors.add(this);
 	}
@@ -20,17 +19,17 @@ class LongLivingReactionCollector {
 	}
 
 	setTime(time) {
-		this.time = time;
 		if (this._timer) clearTimeout(this._timer);
-		this.timer = setTimeout(() => this.end(), this.time);
+		this.timer = setTimeout(() => this.end(), time);
 		return this;
 	}
 
 	end() {
 		this.client.llrCollectors.delete(this);
-		this.time = null;
-		if (this._timer) clearTimeout(this._timer);
-		this._timer = null;
+		if (this._timer) {
+			clearTimeout(this._timer);
+			this._timer = null;
+		}
 		return this;
 	}
 

@@ -45,7 +45,7 @@ class SettingsMenu {
 		this.response = await this.message.send(this.message.language.get('SYSTEM_LOADING'));
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client, this.onReaction.bind(this));
-		this.llrc.setTime(Date.now() + 120000);
+		this.llrc.setTime(120000);
 		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author.id === this.message.author.id);
 		this.messageCollector.on('collect', (msg) => this.onMessage(msg));
 		await this.response.edit(this.render());
@@ -118,7 +118,7 @@ class SettingsMenu {
 	/** @param {SKYRA.ReactionData} reaction */
 	async onReaction(reaction, user) {
 		if (user.id !== this.message.author.id) return;
-		this.llrc.setTime(Date.now() + 120000);
+		this.llrc.setTime(120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.stop();
 			await this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null });

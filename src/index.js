@@ -31,6 +31,7 @@ module.exports = {
 	StarboardManager: require('./lib/structures/StarboardManager'),
 	StarboardMessage: require('./lib/structures/StarboardMessage'),
 	UserRichDisplay: require('./lib/structures/UserRichDisplay'),
+	SettingsMenu: require('./lib/structures/SettingsMenu'),
 
 	ModerationCommand: require('./lib/structures/ModerationCommand'),
 	WeebCommand: require('./lib/structures/WeebCommand'),

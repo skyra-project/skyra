@@ -32,6 +32,8 @@ import {
 	RichDisplay,
 	ReactionHandler,
 	RichDisplayRunOptions,
+	SchemaPiece,
+	SettingsUpdateOptions,
 } from 'klasa';
 import {
 	BanOptions,
@@ -57,7 +59,10 @@ import {
 	Snowflake,
 	TextChannel,
 	UserResolvable,
-	Util as DiscordUtil
+	Util as DiscordUtil,
+	MessageCollector,
+	ReactionCollector,
+	MessageReaction
 } from 'discord.js';
 import { Node, NodeMessage } from 'veza';
 import { Image } from 'canvas-constructor';
@@ -331,6 +336,28 @@ export abstract class RawEvent extends Piece {
 export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 	// @ts-ignore
 	public client: Skyra;
+}
+
+export class SettingsMenu {
+	public constructor(message: SkyraMessage);
+	public message: SkyraMessage;
+	public schema: Schema | SchemaPiece;
+	public oldSettings: GuildSettings;
+	public reactionCollector: ReactionCollector | null;
+	public messageCollector: MessageCollector | null;
+	public readonly pointerIsFolder: boolean;
+	public readonly changedCurrentPieceValue: boolean;
+	public readonly changedPieceValue: boolean;
+	private errorMessage: string | null;
+	private embed: SkyraMessageEmbed;
+	private response: SkyraMessage | null;
+	public init(): Promise<void>;
+	public stop(): void;
+	private render(): void;
+	private onMessage(message: SkyraMessage): Promise<void>;
+	private onReaction(reaction: MessageReaction, user: SkyraUser): Promise<void>;
+	private tryUpdate(value: string, options: SettingsUpdateOptions): Promise<void>;
+	private tryUndo(): Promise<void>;
 }
 
 export class Color {
@@ -1262,6 +1289,7 @@ declare class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMembe
 }
 
 export class SkyraMessage extends KlasaMessage {
+	public client: Skyra;
 	public guildSettings: GuildSettings;
 	public guild: SkyraGuild;
 	public alert(content: string | Array<string>, timer?: number): SkyraMessage;

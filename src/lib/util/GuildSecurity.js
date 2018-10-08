@@ -4,16 +4,11 @@
  */
 class GuildSecurity {
 
-	/**
-	 * Create a new instance of GuildSecurity
-	 * @since 3.0.0
-	 * @param {SkyraGuild} guild The guild that manages this instance
-	 */
 	constructor(guild) {
 		/**
 		 * The SkyraGuild instance which manages this instance
 		 * @since 3.0.0
-		 * @type {SkyraGuild}
+		 * @type {SKYRA.SkyraGuild}
 		 */
 		this.guild = guild;
 

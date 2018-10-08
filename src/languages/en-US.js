@@ -220,6 +220,8 @@ module.exports = class extends Language {
 			 * ################################
 			 */
 
+			COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
+
 			/**
 			 * ################
 			 * ANIMALS COMMANDS

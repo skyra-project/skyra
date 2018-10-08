@@ -1,4 +1,5 @@
-const { Command, klasaUtil: { toTitleCase, codeBlock }, SettingsMenu } = require('../../index');
+const { Command, klasaUtil: { toTitleCase, codeBlock }, SettingsMenu, Permissions } = require('../../index');
+const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
 module.exports = class extends Command {
 
@@ -26,6 +27,8 @@ module.exports = class extends Command {
 	}
 
 	menu(message) {
+		if (!message.channel.permissionsFor(this.client.user.id).has(MENU_REQUIREMENTS))
+			throw message.language.get('COMMAND_CONF_MENU_NOPERMISSIONS');
 		return new SettingsMenu(message).init();
 	}
 

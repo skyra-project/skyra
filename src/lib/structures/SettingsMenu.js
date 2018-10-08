@@ -52,9 +52,10 @@ class SettingsMenu {
 	}
 
 	render() {
+		const i18n = this.message.language;
 		const description = [];
 		if (this.pointerIsFolder) {
-			description.push(`Currently at: 📁 ${this.schema.path || 'Root'}`);
+			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys = [], folders = [];
 			for (const [key, value] of this.schema.entries()) {
@@ -65,20 +66,22 @@ class SettingsMenu {
 				}
 			}
 
-			if (!folders.length && !keys.length) description.push('There are no configurable keys for this folder');
-			else description.push('Please select any of the following entries', ...folders.map(folder => `• \\📁${folder}`), '', ...keys.map(key => `• ${key}`));
+			if (!folders.length && !keys.length) description.push(i18n.get('COMMAND_CONF_MENU_RENDER_NOKEYS'));
+			else description.push(i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'), ...folders.map(folder => `• \\📁${folder}`), '', ...keys.map(key => `• ${key}`));
 		} else {
-			description.push(`Currently at: ${this.schema.path}`);
+			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 			if (this.schema.configurable) {
 				description.push(
-					'Some key metadata to fill later...',
-					'\nText Commands:',
-					'• Update Value → `set <value>`',
-					this.schema.array ? '• Remove Value → `remove <value>`' : '',
-					this.changedPieceValue ? '• Reset Value → `reset`' : '',
-					this.changedCurrentPieceValue ? '• Undo Update → `undo`' : '',
-					`\nCurrent Value: **\`\`${this.message.guild.settings.resolveString(this.message, this.schema).replace(/``+/g, '`\u200B`')}\`\`**`);
+					'Some key metadata to fill later...\n',
+					'',
+					i18n.get('COMMAND_CONF_MENU_RENDER_TCTITLE'),
+					i18n.get('COMMAND_CONF_MENU_RENDER_UPDATE'),
+					this.schema.array ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : null,
+					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : null,
+					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : null,
+					'',
+					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild.settings.resolveString(this.message, this.schema).replace(/``+/g, '`\u200B`')));
 			}
 		}
 
@@ -86,8 +89,8 @@ class SettingsMenu {
 		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user);
 
 		return this.embed
-			.setDescription(`${description.filter(v => v).join('\n')}\n\u200B`)
-			.setFooter(this.schema.parent ? 'Press ◀ to go back' : '')
+			.setDescription(`${description.filter(v => v !== null).join('\n')}\n\u200B`)
+			.setFooter(this.schema.parent ? i18n.get('COMMAND_CONF_MENU_RENDER_BACK') : '')
 			.setTimestamp();
 	}
 
@@ -97,7 +100,7 @@ class SettingsMenu {
 		if (this.pointerIsFolder) {
 			const schema = this.schema.get(message.content);
 			if (schema && (schema.type === 'Folder' ? schema.configurableKeys.length : schema.configurable)) this.schema = schema;
-			else this.errorMessage = 'Invalid key';
+			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_KEY');
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
@@ -105,10 +108,10 @@ class SettingsMenu {
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { action: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
-			else this.errorMessage = 'Invalid action';
+			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_ACTION');
 		}
 
-		if (this.errorMessage !== 'Invalid action') message.nuke();
+		if (!this.errorMessage) message.nuke();
 		this.message.send(this.render());
 	}
 
@@ -118,7 +121,7 @@ class SettingsMenu {
 		this.llrc.setTime(Date.now() + 120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.stop();
-			await this.response.edit('Successfully saved all changes.', { embed: null });
+			await this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null });
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
 			this._removeReactionFromUser(EMOJIS.BACK, user);
 			this.schema = this.schema.parent;

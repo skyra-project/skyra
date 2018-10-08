@@ -1,5 +1,4 @@
-const { Command, UserRichDisplay, constants: { TIME }, MessageEmbed, FuzzySearch } = require('../../index');
-const RH_TIMELIMIT = TIME.MINUTE * 5;
+const { Command, UserRichDisplay, MessageEmbed, FuzzySearch } = require('../../index');
 
 module.exports = class extends Command {
 

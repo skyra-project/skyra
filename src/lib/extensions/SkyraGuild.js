@@ -3,8 +3,6 @@ const GuildSecurity = require('../util/GuildSecurity');
 const StarboardManager = require('../structures/StarboardManager');
 const ModerationManager = require('../structures/ModerationManager');
 
-const kUnknownMember = Symbol('UnknownMember');
-
 module.exports = Structures.extend('Guild', Guild => {
 	/**
 	 * Skyra's Extended Guild

@@ -1,5 +1,6 @@
 //#region imports
 import {
+	Argument,
 	Command,
 	CommandOptions,
 	CommandStore,
@@ -1147,7 +1148,7 @@ declare abstract class SkyraCommand extends Command {
 
 export { SkyraCommand as Command };
 
-declare abstract class SkyraArgument extends Event {
+declare abstract class SkyraArgument extends Argument {
 	// @ts-ignore
 	public client: Skyra;
 }

@@ -221,6 +221,20 @@ module.exports = class extends Language {
 			 */
 
 			COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
+			COMMAND_CONF_MENU_RENDER_AT_FOLDER: (path) => `Currently at: \\📁 ${path}`,
+			COMMAND_CONF_MENU_RENDER_AT_PIECE: (path) => `Currently at: \\📁 ${path}`,
+			COMMAND_CONF_MENU_RENDER_NOKEYS: 'There are no configurable keys for this folder',
+			COMMAND_CONF_MENU_RENDER_SELECT: 'Please select any of the following entries',
+			COMMAND_CONF_MENU_RENDER_TCTITLE: 'Text Commands:',
+			COMMAND_CONF_MENU_RENDER_UPDATE: '• Update Value → `set <value>`',
+			COMMAND_CONF_MENU_RENDER_REMOVE: '• Remove Value → `remove <value>`',
+			COMMAND_CONF_MENU_RENDER_RESET: '• Reset Value → `reset`',
+			COMMAND_CONF_MENU_RENDER_UNDO: '• Undo Update → `undo`',
+			COMMAND_CONF_MENU_RENDER_CVALUE: (value) => `Current Value: **\`\`${value}\`\`**`,
+			COMMAND_CONF_MENU_RENDER_BACK: 'Press ◀ to go back',
+			COMMAND_CONF_MENU_INVALID_KEY: 'Invalid Key, please try again with any of the following options.',
+			COMMAND_CONF_MENU_INVALID_ACTION: 'Invalid Action, please try again with any of the following options.',
+			COMMAND_CONF_MENU_SAVED: 'Successfully saved all changes.',
 
 			/**
 			 * ################

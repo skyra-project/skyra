@@ -67,7 +67,7 @@ class SettingsMenu {
 			}
 
 			if (!folders.length && !keys.length) description.push(i18n.get('COMMAND_CONF_MENU_RENDER_NOKEYS'));
-			else description.push(i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'), ...folders.map(folder => `• \\📁${folder}`), '', ...keys.map(key => `• ${key}`));
+			else description.push(i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'), '', ...folders.map(folder => `• \\📁${folder}`), ...keys.map(key => `• ${key}`));
 		} else {
 			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');

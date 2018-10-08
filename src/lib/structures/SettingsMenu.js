@@ -1,4 +1,6 @@
-const { Schema, MessageEmbed } = require('../../index');
+const { Schema } = require('klasa');
+const { MessageEmbed } = require('discord.js');
+const LongLivingReactionCollector = require('../util/LongLivingReactionCollector');
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 
 class SettingsMenu {
@@ -8,9 +10,9 @@ class SettingsMenu {
 		this.message = message;
 		this.schema = message.client.gateways.guilds.schema;
 		this.oldSettings = message.guild.settings.clone();
-		this.reactionCollector = null;
 		this.messageCollector = null;
 		this.errorMessage = null;
+		this.llrc = null;
 		this.embed = new MessageEmbed()
 			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128 }))
 			.setColor(this.message.member.displayColor);
@@ -41,9 +43,9 @@ class SettingsMenu {
 	async init() {
 		// @ts-ignore
 		this.response = await this.message.send(this.message.language.get('SYSTEM_LOADING'));
-		this.response.react(EMOJIS.STOP);
-		this.reactionCollector = this.response.createReactionCollector((reaction, user) => user.id === this.message.author.id);
-		this.reactionCollector.on('collect', (reaction, user) => this.onReaction(reaction, user));
+		await this.response.react(EMOJIS.STOP);
+		this.llrc = new LongLivingReactionCollector(this.message.client, this.onReaction.bind(this));
+		this.llrc.setTime(Date.now() + 120000);
 		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author.id === this.message.author.id);
 		this.messageCollector.on('collect', (msg) => this.onMessage(msg));
 		await this.response.edit(this.render());
@@ -80,11 +82,8 @@ class SettingsMenu {
 			}
 		}
 
-		const hasParent = Boolean(this.schema.parent);
-		const hasReaction = this.response.reactions.has(EMOJIS.BACK);
-
-		if (hasParent && !hasReaction) this.response.react(EMOJIS.BACK);
-		else if (!hasParent && hasReaction) this.response.reactions.get(EMOJIS.BACK).users.remove(this.message.client.user.id);
+		if (this.schema.parent) this.response.react(EMOJIS.BACK);
+		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user);
 
 		return this.embed
 			.setDescription(`${description.filter(v => v).join('\n')}\n\u200B`)
@@ -97,7 +96,7 @@ class SettingsMenu {
 		this.errorMessage = null;
 		if (this.pointerIsFolder) {
 			const schema = this.schema.get(message.content);
-			if (schema && schema.type === 'Folder' ? schema.configurableKeys.length : schema.configurable) this.schema = schema;
+			if (schema && (schema.type === 'Folder' ? schema.configurableKeys.length : schema.configurable)) this.schema = schema;
 			else this.errorMessage = 'Invalid key';
 		} else {
 			const [command, ...params] = message.content.split(' ');
@@ -113,17 +112,25 @@ class SettingsMenu {
 		this.message.send(this.render());
 	}
 
-	/** @param {SKYRA.MessageReaction} reaction */
+	/** @param {SKYRA.ReactionData} reaction */
 	async onReaction(reaction, user) {
+		if (user.id !== this.message.author.id) return;
+		this.llrc.setTime(Date.now() + 120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {
-			reaction.users.remove(user.id);
 			this.stop();
 			await this.response.edit('Successfully saved all changes.', { embed: null });
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
-			reaction.users.remove(user.id);
+			this._removeReactionFromUser(EMOJIS.BACK, user);
 			this.schema = this.schema.parent;
 			await this.response.edit(this.render());
 		}
+	}
+
+	_removeReactionFromUser(reaction, user) {
+		// @ts-ignore
+		return this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
+			.reactions(encodeURIComponent(reaction), user.id === this.message.client.user.id ? '@me' : user.id)
+			.delete();
 	}
 
 	async tryUpdate(value, options) {
@@ -148,7 +155,7 @@ class SettingsMenu {
 
 	stop() {
 		if (this.response.reactions.size) this.response.reactions.removeAll();
-		if (!this.reactionCollector.ended) this.reactionCollector.stop();
+		if (!this.llrc.ended) this.llrc.end();
 		if (!this.messageCollector.ended) this.messageCollector.stop();
 	}
 

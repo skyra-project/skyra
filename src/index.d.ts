@@ -208,6 +208,7 @@ export class Skyra extends KlasaClient {
 	public readonly timeoutManager: TimeoutManager;
 	public readonly connectFour: ConnectFourManager;
 	public readonly usernames: Collection<Snowflake, string>;
+	public readonly llrCollectors: Set<LongLivingReactionCollector>;
 	public _updateStatsInterval: NodeJS.Timer;
 	public _skyraReady: boolean;
 
@@ -408,6 +409,14 @@ export class LanguageHelp {
 	public setReminder(text: string): this;
 	public display(name: string, options: LanguageHelpDisplayOptions, multiline?: boolean): string;
 	private static resolveMultilineString(input: string | Array<string>, multiline?: boolean): string;
+}
+
+export class LongLivingReactionCollector {
+	public constructor(client: Skyra, listener: (reaction: ReactionData, user: SkyraUser | { id: Snowflake }) => void);
+	public readonly ended: boolean;
+	public send(reaction: ReactionData, userID: SkyraUser | { id: Snowflake }): void;
+	public setTime(time: number): this;
+	public end(): this;
 }
 
 export class Leaderboard {
@@ -781,6 +790,22 @@ export class RebirthDB extends SkyraProvider {
 type SkyraClientOptions = {
 	dev?: boolean;
 } & KlasaClientOptions;
+
+export type ReactionData = {
+	channelID: Snowflake;
+	emoji: {
+		animated: boolean;
+		id: Snowflake | null;
+		managed: boolean;
+		name: string;
+		requireColons: boolean;
+		roles: Array<Snowflake>;
+		user: SkyraUser | { id: Snowflake };
+	};
+	guildID: Snowflake;
+	messageID: Snowflake;
+	userID: Snowflake;
+};
 
 type ModerationTypesEnum =
 	// BAN

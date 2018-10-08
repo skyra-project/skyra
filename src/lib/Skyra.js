@@ -103,6 +103,7 @@ module.exports = class Skyra extends Client {
 		Object.defineProperties(this, {
 			connectFour: { writable: true },
 			timeoutManager: { writable: true },
+			usernames: { writable: true },
 			_updateStatsInterval: { writable: true },
 			_skyraReady: { writable: true }
 		});
@@ -121,7 +122,19 @@ module.exports = class Skyra extends Client {
 		 */
 		this.timeoutManager = new TimeoutManager(this);
 
+		/**
+		 * The usernames collection
+		 * @since 4.0.0
+		 * @type {Collection<string, string>}
+		 */
 		this.usernames = new Collection();
+
+		/**
+		 * The LongLivingReactionCollector set
+		 * @since 4.0.0
+		 * @type {Set<LongLivingReactionCollector>}
+		 */
+		this.llrCollectors = new Set();
 
 		/**
 		 * @type {NodeJS.Timer}

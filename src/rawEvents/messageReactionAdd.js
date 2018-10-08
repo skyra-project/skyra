@@ -24,6 +24,25 @@ module.exports = class extends RawEvent {
 		const channel = this.client.channels.get(data.channel_id);
 		if (!channel || channel.type !== 'text' || !channel.readable) return false;
 
+		const parsed = {
+			channelID: data.channel_id,
+			emoji: {
+				animated: data.emoji.animated || null,
+				id: data.emoji.id,
+				managed: data.emoji.managed || null,
+				name: data.emoji.name,
+				requireColons: data.emoji.require_colons,
+				roles: data.emoji.roles,
+				user: (data.emoji.user && this.client.users.add(data.emoji.user)) || { id: data.user_id }
+			},
+			guildID: data.guild_id,
+			messageID: data.message_id,
+			userID: data.user_id
+		};
+
+		for (const llrc of this.client.llrCollectors)
+			llrc.send(parsed, parsed.emoji.user);
+
 		// Handle Role Channel
 		if (channel.id === channel.guild.settings.channels.roles)
 			this._handleRoleChannel(channel.guild, data.emoji, data.user_id, data.message_id);

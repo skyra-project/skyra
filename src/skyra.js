@@ -123,7 +123,6 @@ const skyra = new Skyra({
 	messageCacheLifetime: 300,
 	messageCacheMaxSize: 50,
 	messageSweepInterval: 120,
-	ownerID: '242043489611808769',
 	pieceDefaults: {
 		commands: { deletable: true, promptLimit: 5, promptTime: 60000, quotedStringSupport: true },
 		ipcPieces: { enabled: true },

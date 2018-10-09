@@ -44,7 +44,9 @@ class SettingsMenu {
 		// @ts-ignore
 		this.response = await this.message.send(this.message.language.get('SYSTEM_LOADING'));
 		await this.response.react(EMOJIS.STOP);
-		this.llrc = new LongLivingReactionCollector(this.message.client, this.onReaction.bind(this));
+		this.llrc = new LongLivingReactionCollector(this.message.client)
+			.setListener(this.onReaction.bind(this))
+			.setEndListener(this.stop.bind(this));
 		this.llrc.setTime(120000);
 		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author.id === this.message.author.id);
 		this.messageCollector.on('collect', (msg) => this.onMessage(msg));
@@ -120,8 +122,7 @@ class SettingsMenu {
 		if (user.id !== this.message.author.id) return;
 		this.llrc.setTime(120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {
-			this.stop();
-			await this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null });
+			this.llrc.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
 			this._removeReactionFromUser(EMOJIS.BACK, user);
 			this.schema = this.schema.parent;
@@ -158,8 +159,9 @@ class SettingsMenu {
 
 	stop() {
 		if (this.response.reactions.size) this.response.reactions.removeAll();
-		if (!this.llrc.ended) this.llrc.end();
 		if (!this.messageCollector.ended) this.messageCollector.stop();
+		this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
+			.catch((error) => this.message.client.emit('apiError', error));
 	}
 
 }

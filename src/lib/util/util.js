@@ -297,6 +297,13 @@ class Util {
 		return { promise, resolve, reject };
 	}
 
+	static parseRange(input) {
+		const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(input) || [null, input, input];
+		let min = parseInt(smin), max = parseInt(smax);
+		if (min > max) [max, min] = [min, max];
+		return Array.from({ length: max - min + 1 }, (_, index) => min + index);
+	}
+
 	// Utils for i18n
 
 	/**

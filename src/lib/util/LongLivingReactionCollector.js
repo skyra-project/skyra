@@ -2,12 +2,23 @@
 
 class LongLivingReactionCollector {
 
-	constructor(client, listener) {
+	constructor(client, listener = null, endListener = null) {
 		/** @type {SKYRA.Skyra} */
 		this.client = client;
 		this.listener = listener;
+		this.endListener = endListener;
 		this._timer = null;
 		this.client.llrCollectors.add(this);
+	}
+
+	setListener(listener) {
+		this.listener = listener;
+		return this;
+	}
+
+	setEndListener(listener) {
+		this.endListener = listener;
+		return this;
 	}
 
 	get ended() {
@@ -30,6 +41,7 @@ class LongLivingReactionCollector {
 			clearTimeout(this._timer);
 			this._timer = null;
 		}
+		if (this.endListener) this.endListener();
 		return this;
 	}
 

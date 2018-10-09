@@ -1,4 +1,4 @@
-const { Command, constants: { MODERATION: { SCHEMA_KEYS } }, klasaUtil: { codeBlock } } = require('../../index');
+const { Command, constants: { MODERATION: { SCHEMA_KEYS } }, util: { parseRange } } = require('../../index');
 
 module.exports = class extends Command {
 
@@ -8,49 +8,45 @@ module.exports = class extends Command {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_REASON_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_REASON_EXTENDED'),
-			name: 'reason',
 			permissionLevel: 5,
 			runIn: ['text'],
-			usage: '<latest|case:integer> <reason:...string>',
+			usage: '(cases:case) <reason:...string>',
 			usageDelim: ' '
+		});
+
+		this.createCustomResolver('case', async (arg, possible, message) => {
+			if (!arg) throw message.language.get('COMMAND_REASON_MISSING_CASE');
+			if (arg.toLowerCase() === 'latest') return [await message.guild.moderation.count()];
+			return parseRange(arg);
 		});
 	}
 
-	async run(msg, [selected, reason]) {
+	async run(msg, [cases, reason]) {
 		if (!reason) reason = null;
 
-		// Get all cases
-		if (selected === 'latest') selected = await msg.guild.moderation.count();
-		const modlog = await msg.guild.moderation.fetch(selected);
-		if (!modlog) throw msg.language.get('COMMAND_REASON_NOT_EXISTS');
+		const entries = await msg.guild.moderation.fetch(cases);
+		if (!entries.size) throw msg.language.get('COMMAND_REASON_NOT_EXISTS', cases.length > 1);
 
-		const oldReason = modlog.reason;
+		const channel = msg.guild.channels.get(msg.guild.settings.channels.modlog);
+		const messages = channel ? await channel.messages.fetch({ limit: 100 }) : null;
 
-		// Update the moderation case
-		await modlog.edit({ [SCHEMA_KEYS.REASON]: reason });
+		for (const [caseID, modlog] of entries.entries()) {
+			// Update the moderation case
+			await modlog.edit({ [SCHEMA_KEYS.REASON]: reason });
 
-		const channelID = msg.guild.settings.channels.modlog;
-		if (channelID) {
-			const channel = msg.guild.channels.get(msg.guild.settings.channels.modlog);
-			if (channel) {
-				// Fetch the message to edit it
-				const messages = await channel.messages.fetch({ limit: 100 });
-				const message = messages.find(mes => mes.author.id === this.client.user.id
+			const message = messages ? messages.find(mes => mes.author.id === this.client.user.id
 					&& mes.embeds.length > 0
 					&& mes.embeds[0].type === 'rich'
-					&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${selected}`
-				);
+					&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${caseID}`
+			) : null;
 
-				await (message ? message.edit(await modlog.prepareEmbed()) : channel.send(await modlog.prepareEmbed()));
-			} else {
-				await msg.guild.settings.reset('channels.mod');
-			}
+			await (message ? message.edit(await modlog.prepareEmbed()) : channel && channel.send(await modlog.prepareEmbed()));
 		}
 
-		return msg.alert(`Successfully updated the log ${selected}.${codeBlock('http', [
-			`Old reason : ${oldReason || 'Not set.'}`,
-			`New reason : ${modlog.reason}`
-		].join('\n'))}`);
+		if (!channel)
+			await msg.guild.settings.reset('channels.mod');
+
+		return msg.alert(msg.language.get('COMMAND_REASON_UPDATED', entries, reason));
 	}
 
 };

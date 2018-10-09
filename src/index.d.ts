@@ -414,10 +414,12 @@ export class LanguageHelp {
 }
 
 export class LongLivingReactionCollector {
-	public constructor(client: Skyra, listener: (reaction: ReactionData, user: SkyraUser | { id: Snowflake }) => void);
+	public constructor(client: Skyra, listener?: (reaction: ReactionData, user: SkyraUser | { id: Snowflake }) => void, endListener?: () => void);
 	public readonly ended: boolean;
-	public send(reaction: ReactionData, userID: SkyraUser | { id: Snowflake }): void;
+	public setListener(listener: (reaction: ReactionData, userID: SkyraUser | { id: Snowflake }) => void): this;
+	public setEndListener(listener: () => void): this;
 	public setTime(time: number): this;
+	public send(reaction: ReactionData, userID: SkyraUser | { id: Snowflake }): void;
 	public end(): this;
 }
 
@@ -520,6 +522,7 @@ declare class Util {
 	public static oneToTen(level: number): UtilOneToTenEntry;
 	public static pick<T>(array: T[]): () => T;
 	public static createReferPromise<T>(): { resolve: (value: T) => void, reject: (value: T) => void, promise: Promise<T> };
+	public static parseRange(input: string): Array<number>;
 	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
 	public static resolveEmoji(emoji: string | { name: string, id: Snowflake | null, animated: boolean }): string | null;
 	public static splitText(input: string, length: number, char?: string): string;

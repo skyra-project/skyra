@@ -37,11 +37,11 @@
     "heapdump": "^0.3.9",
     "klasa": "github:dirigeants/klasa",
     "node-fetch": "^2.2.0",
-    "rethinkdb-ts": "^2.4.0-rc.7",
+    "rethinkdb-ts": "^2.4.0-rc.8",
     "veza": "^0.3.1"
   },
   "devDependencies": {
-    "@types/node": "^10.11.4",
+    "@types/node": "^10.11.5",
     "eslint": "^5.6.1",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
     "tslint": "^5.11.0",

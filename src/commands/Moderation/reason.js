@@ -24,29 +24,37 @@ module.exports = class extends Command {
 	async run(msg, [cases, reason]) {
 		if (!reason) reason = null;
 
-		const entries = await msg.guild.moderation.fetch(cases);
-		if (!entries.size) throw msg.language.get('COMMAND_REASON_NOT_EXISTS', cases.length > 1);
+		const modlogs = await msg.guild.moderation.fetch(cases);
+		if (!modlogs.size) throw msg.language.get('COMMAND_REASON_NOT_EXISTS', cases.length > 1);
 
 		const channel = msg.guild.channels.get(msg.guild.settings.channels.modlog);
 		const messages = channel ? await channel.messages.fetch({ limit: 100 }) : null;
 
-		for (const [caseID, modlog] of entries.entries()) {
+		const promises = [];
+		for (const modlog of modlogs.values())
 			// Update the moderation case
-			await modlog.edit({ [SCHEMA_KEYS.REASON]: reason });
+			promises.push(this._updateReason(channel, messages, modlog, reason));
 
-			const message = messages ? messages.find(mes => mes.author.id === this.client.user.id
-					&& mes.embeds.length > 0
-					&& mes.embeds[0].type === 'rich'
-					&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${caseID}`
-			) : null;
+		await Promise.all(promises);
 
-			await (message ? message.edit(await modlog.prepareEmbed()) : channel && channel.send(await modlog.prepareEmbed()));
+		if (!channel) msg.guild.settings.reset('channels.modlog').catch((error) => this.client.emit('wtf', error));
+		return msg.alert(msg.language.get('COMMAND_REASON_UPDATED', modlogs, reason));
+	}
+
+	async _updateReason(channel, messages, modlog, reason) {
+		await modlog.edit({ [SCHEMA_KEYS.REASON]: reason });
+
+		if (channel) {
+			const message = messages.find(mes => mes.author.id === this.client.user.id
+				&& mes.embeds.length > 0
+				&& mes.embeds[0].type === 'rich'
+				&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${modlog.case}`
+			);
+
+			const embed = await modlog.prepareEmbed();
+			if (message) await message.edit(embed);
+			else await channel.send(embed);
 		}
-
-		if (!channel)
-			await msg.guild.settings.reset('channels.mod');
-
-		return msg.alert(msg.language.get('COMMAND_REASON_UPDATED', entries, reason));
 	}
 
 };

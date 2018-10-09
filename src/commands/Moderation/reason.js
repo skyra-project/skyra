@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		await Promise.all(promises);
 
 		if (!channel) msg.guild.settings.reset('channels.modlog').catch((error) => this.client.emit('wtf', error));
-		return msg.alert(msg.language.get('COMMAND_REASON_UPDATED', modlogs.map(modlog => modlog.case), reason));
+		return msg.alert(msg.language.get('COMMAND_REASON_UPDATED', cases, reason));
 	}
 
 	async _updateReason(channel, messages, modlog, reason) {

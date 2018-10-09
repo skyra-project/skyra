@@ -2120,9 +2120,9 @@ module.exports = class extends Language {
 			COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',
 			SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continue reading](${url})`,
 			COMMAND_URBAN_OUTPUT: (index, pages, definition, example, author) => [
-				`→ \`Definition\` :: ${index}/${pages}\n${definition}`,
-				`→ \`Example\` :: ${example}`,
-				`→ \`Author\` :: ${author}`
+				`→ \`Definition ::\` ${index}/${pages}\n${definition}`,
+				`→ \`Example    ::\` ${example}`,
+				`→ \`Author     ::\` ${author}`
 			].join('\n\n'),
 			COMMAND_WHOIS_MEMBER: (member) => [
 				`→ \`ID         ::\` **${member.id}**`,

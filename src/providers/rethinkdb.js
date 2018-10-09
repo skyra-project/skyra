@@ -1,4 +1,4 @@
-const { Provider, klasaUtil: { mergeDefault, chunk } } = require('../index');
+const { Provider, klasaUtil: { mergeDefault, chunk }, DatabaseInit } = require('../index');
 const { r } = require('rethinkdb-ts');
 
 module.exports = class extends Provider {
@@ -10,10 +10,13 @@ module.exports = class extends Provider {
 	}
 
 	async init() {
-		this.pool = await r.connectPool(mergeDefault({
+		const options = mergeDefault({
 			db: 'test',
 			silent: false
-		}, this.client.options.providers.rethinkdb));
+		}, this.client.options.providers.rethinkdb);
+		this.pool = await r.connectPool(options);
+		await this.db.branch(this.db.dbList().contains(options.db), null, this.db.dbCreate(options.db)).run();
+		await DatabaseInit.init(this.db);
 	}
 
 	get exec() {

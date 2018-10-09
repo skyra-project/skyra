@@ -1043,6 +1043,17 @@ module.exports = class extends Language {
 			 * SOCIAL COMMANDS
 			 */
 
+			COMMAND_SOCIAL_DESCRIPTION: 'Configure this guild\'s member points.',
+			COMMAND_SOCIAL_EXTENDED: builder.display('social', {
+				extendedHelp: `This command allows for updating other members' points.`,
+				explainedUsage: [
+					['set <user> <amount>', 'Sets an amount of points to the user.'],
+					['add <user> <amount>', 'Adds an amount of points to the user.'],
+					['remove <user> <amount>', 'Removes an amount of points from the user.'],
+					['reset <user>', 'Resets all pointss from the user.']
+				],
+				examples: ['set @kyra 40000', 'add @kyra 2400', 'remove @kyra 3000', 'reset @kyra']
+			}),
 			COMMAND_BANNER_DESCRIPTION: 'Configure the banner for your profile.',
 			COMMAND_BANNER_EXTENDED: builder.display('banner', {
 				extendedHelp: `Banners are vertical in Skyra, they decorate your profile card.`,
@@ -1916,6 +1927,11 @@ module.exports = class extends Language {
 			COMMAND_BALANCE: (user, amount) => `The user ${user} has a total of ${amount}${SHINY}`,
 			COMMAND_BALANCE_SELF: (amount) => `You have a total of ${amount}${SHINY}`,
 			COMMAND_BALANCE_BOTS: `I think they have 5 gears as much, bots don't have ${SHINY}`,
+			COMMAND_SOCIAL_MEMBER_NOTEXISTS: `${REDCROSS} The member is not in this server, and is not in my database either.`,
+			COMMAND_SOCIAL_ADD: (user, amount, added) => `${GREENTICK} Successfully added ${added} point${added === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
+			COMMAND_SOCIAL_REMOVE: (user, amount, removed) => `${GREENTICK} Successfully removed ${removed} point${removed === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
+			COMMAND_SOCIAL_UNCHANGED: (user) => `${REDCROSS} The user ${user} already had the given amount of points, no update was needed.`,
+			COMMAND_SOCIAL_RESET: (user) => `${GREENTICK} The user ${user} got his points removed.`,
 			COMMAND_BANNER_MISSING: 'You must specify a banner id to buy.',
 			COMMAND_BANNER_NOTEXISTS: (prefix) => `This banner id does not exist. Please check \`${prefix}banner list\` for a list of banners you can buy.`,
 			COMMAND_BANNER_USERLIST_EMPTY: (prefix) => `You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,

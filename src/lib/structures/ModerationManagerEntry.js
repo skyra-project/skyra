@@ -1,3 +1,4 @@
+/// <reference path="../../index.d.ts" />
 const { MODERATION: { TYPE_ASSETS, TYPE_KEYS, SCHEMA_KEYS, ACTIONS, ERRORS }, TIME: { YEAR } } = require('../util/constants');
 const { constants: { TIME }, Duration, Timestamp } = require('klasa');
 const { MessageEmbed } = require('discord.js');

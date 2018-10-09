@@ -89,11 +89,14 @@ class MemberSettings {
 	/**
 	 * Synchronize the MemberSettings instance with the database
 	 * @since 3.0.0
+	 * @param {boolean} [force=false] Whether the sync should download from the database or not
 	 * @returns {Promise<this>}
 	 */
-	sync() {
+	sync(force = false) {
 		if (!this.client._skyraReady) return Promise.resolve(this);
-		if (!this._syncStatus) this._syncStatus = this._sync();
+		if (this._syncStatus) return this._syncStatus;
+		if (!force) return Promise.resolve(this);
+		this._syncStatus = this._sync();
 		return this._syncStatus;
 	}
 

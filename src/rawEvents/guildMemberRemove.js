@@ -10,8 +10,8 @@ const MATCHES = {
 module.exports = class extends RawEvent {
 
 	/**
-	 *  GUILD_MEMBER_REMOVE Packet
-	 *  ##########################
+	 *	GUILD_MEMBER_REMOVE Packet
+	 *	##########################
 	 *	{
 	 *		user: {
 	 *			username: 'username',

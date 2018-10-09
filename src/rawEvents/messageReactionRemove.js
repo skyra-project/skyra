@@ -4,19 +4,19 @@ const { RawEvent, util: { resolveEmoji } } = require('../index');
 module.exports = class extends RawEvent {
 
 	/**
-	 * 	MESSAGE_REACTION_REMOVE Packet
-	 *  ##############################
-	 * 	{
-	 * 		user_id: 'id',
-	 * 		message_id: 'id',
-	 * 		emoji: {
-	 * 			name: '😄',
-	 * 			id: null,
-	 * 			animated: false
-	 * 		},
-	 * 		channel_id: 'id',
-	 * 		guild_id: 'id'
-	 * 	}
+	 *	MESSAGE_REACTION_REMOVE Packet
+	 *	##############################
+	 *	{
+	 *		user_id: 'id',
+	 *		message_id: 'id',
+	 *		emoji: {
+	 *			name: '😄',
+	 *			id: null,
+	 *			animated: false
+	 *		},
+	 *		channel_id: 'id',
+	 *		guild_id: 'id'
+	 *	}
 	 */
 
 	async run(data) { // eslint-disable-line camelcase

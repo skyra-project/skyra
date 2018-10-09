@@ -4,8 +4,8 @@ const { RawEvent } = require('../index');
 module.exports = class extends RawEvent {
 
 	/**
-	 *  MESSAGE_DELETE_BULK Packet
-	 *  ##########################
+	 *	MESSAGE_DELETE_BULK Packet
+	 *	##########################
 	 *	{
 	 *		ids: ['id', 'id', 'id', 'id'],
 	 *		channel_id: 'id',

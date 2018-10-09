@@ -5,13 +5,13 @@ module.exports = class extends RawEvent {
 
 
 	/**
-	 *  MESSAGE_REACTION_REMOVE_ALL Packet
-	 *  ##################################
-	 * 	{
-	 * 		message_id: '499172527575400458',
-	 * 		channel_id: '473443094759473172',
-	 * 		guild_id: '254360814063058944'
-	 * 	}
+	 *	MESSAGE_REACTION_REMOVE_ALL Packet
+	 *	##################################
+	 *	{
+	 *		message_id: '499172527575400458',
+	 *		channel_id: '473443094759473172',
+	 *		guild_id: '254360814063058944'
+	 *	}
 	 */
 
 	async run(data) {

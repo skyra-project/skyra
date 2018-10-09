@@ -3,8 +3,8 @@ const { RawEvent } = require('../index');
 module.exports = class extends RawEvent {
 
 	/**
-	 *  GUILD_MEMBER_UPDATE Packet
-	 *  ##########################
+	 *	GUILD_MEMBER_UPDATE Packet
+	 *	##########################
 	 *	{
 	 *		user: {
 	 *			username: 'username',

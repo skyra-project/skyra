@@ -15,8 +15,8 @@ const COLORS = {
 module.exports = class extends RawEvent {
 
 	/**
-	 * 	GUILD_MEMBER_ADD Packet
-	 *  #######################
+	 *	GUILD_MEMBER_ADD Packet
+	 *	#######################
 	 *	{
 	 *		user: {
 	 *			username: 'name',

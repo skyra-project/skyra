@@ -68,7 +68,7 @@ import { Node, NodeMessage } from 'veza';
 import { Image } from 'canvas-constructor';
 import { Readable } from 'stream';
 import { URL } from 'url';
-import { R, MasterPool, WriteResult, TableChangeResult } from 'rethinkdb-ts';
+import { R, MasterPool, WriteResult, TableChangeResult, RTable } from 'rethinkdb-ts';
 //#endregion imports
 //#region exports
 export {
@@ -652,8 +652,8 @@ export class ModerationManager extends Collection<string, ModerationManagerEntry
 	private _count: number | null;
 	private _timer: NodeJS.Timer | null;
 	public new: ModerationManagerEntry;
-	private readonly pool: object;
-	private readonly table: object;
+	public readonly pool: R;
+	public readonly table: RTable;
 	public createLock(): () => void;
 	public releaseLock(): void;
 	public waitLock(): Promise<Array<undefined>>;
@@ -662,9 +662,9 @@ export class ModerationManager extends Collection<string, ModerationManagerEntry
 	public fetch(caseIDs: Array<number>): Promise<Array<ModerationManagerEntry>>;
 	public fetch(): Promise<this>;
 	public count(): Promise<number>;
-	public update(data: ModerationManagerUpdateData): Promise<void>;
-	public insert(data: ModerationManagerInsertData): Promise<ModerationManagerEntry>;
-	public appeal(data: ModerationManagerAppealData): Promise<ModerationManagerEntry>;
+	public update(data: ModerationManagerUpdateData | ModerationManagerEntry): Promise<void>;
+	public insert(data: ModerationManagerInsertData | ModerationManagerEntry): Promise<ModerationManagerEntry>;
+	public appeal(data: ModerationManagerAppealData | ModerationManagerEntry): Promise<ModerationManagerEntry>;
 }
 
 export class ModerationManagerEntry {

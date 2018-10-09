@@ -8,7 +8,9 @@ const TEMPORARY_TYPES = [TYPE_KEYS.BAN, TYPE_KEYS.MUTE, TYPE_KEYS.VOICE_MUTE];
 class ModerationManagerEntry {
 
 	constructor(manager, data = {}) {
+		/** @type {SKYRA.ModerationManager} */
 		this.manager = manager;
+		// @ts-ignore
 		this.id = 'id' in data ? data.id : null;
 		this.case = SCHEMA_KEYS.CASE in data ? data[SCHEMA_KEYS.CASE] : null;
 		this.duration = SCHEMA_KEYS.DURATION in data ? data[SCHEMA_KEYS.DURATION] : null;
@@ -49,6 +51,7 @@ class ModerationManagerEntry {
 
 		const now = Date.now();
 		const user = typeof this.user === 'string' ? this.user : this.user.id;
+		// @ts-ignore
 		const entries = this.manager.filter(entry => (typeof entry.user === 'string' ? entry.user : entry.user.id) === user && entry.createdAt - now < TIME.MINUTE);
 
 		// If there is no moderation log for this user that has not received a report, it should send
@@ -118,20 +121,22 @@ class ModerationManagerEntry {
 
 	async prepareEmbed() {
 		if (!this.user) throw new Error('A user has not been set.');
-		const [user, moderator] = await Promise.all([
-			typeof this.user === 'string' ? await this.manager.guild.client.users.fetch(this.user) : this.user,
-			typeof this.moderator === 'string' ? await this.manager.guild.client.users.fetch(this.moderator) : this.moderator || this.manager.guild.client.user
+		const userID = typeof this.user === 'string' ? this.user : this.user.id;
+		const [userTag, moderator] = await Promise.all([
+			this.manager.guild.client.fetchUsername(userID),
+			typeof this.moderator === 'string' ? this.manager.guild.client.users.fetch(this.moderator) : this.moderator || this.manager.guild.client.user
 		]);
 
 		const assets = TYPE_ASSETS[this.type];
 		const description = (this.duration ? [
 			`❯ **Type**: ${assets.title}`,
-			`❯ **User:** ${user.tag} (${user.id})`,
+			`❯ **User:** ${userTag} (${userID})`,
 			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.prefix}reason ${this.case} to claim.\``}`,
+			// @ts-ignore
 			`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
 		] : [
 			`❯ **Type**: ${assets.title}`,
-			`❯ **User:** ${user.tag} (${user.id})`,
+			`❯ **User:** ${userTag} (${userID})`,
 			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.prefix}reason ${this.case} to claim.\``}`
 		]).join('\n');
 
@@ -210,8 +215,11 @@ class ModerationManagerEntry {
 
 		this.case = await this.manager.count() + 1;
 		[this.id] = (await this.manager.table.insert(this.toJSON()).run()).generated_keys;
+		// @ts-ignore
 		this.manager.insert(this);
 
+		/** @type {SKYRA.SkyraTextChannel} */
+		// @ts-ignore
 		const channel = (this.manager.guild.settings.channels.modlog && this.manager.guild.channels.get(this.manager.guild.settings.channels.modlog)) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();

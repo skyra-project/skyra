@@ -49,7 +49,7 @@ module.exports = class DatabaseInit {
 		const TABLENAME = 'starboard';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
-			['channel_message', [r.row('channelID'), r.row('messageID')]]
+			['channel_message', rows => [rows('channelID'), rows('messageID')]]
 		]);
 	}
 
@@ -61,7 +61,7 @@ module.exports = class DatabaseInit {
 		const TABLENAME = 'users';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
-			['points', undefined]
+			['points', rows => rows('points')]
 		]);
 	}
 
@@ -73,9 +73,9 @@ module.exports = class DatabaseInit {
 		const TABLENAME = 'localScores';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
-			['guild_user', [r.row('guildID'), r.row('userID')]],
-			['guildID', undefined],
-			['count', undefined]
+			['guild_user', rows => [rows('guildID'), rows('userID')]],
+			['guildID', rows => rows('guildID')],
+			['count', rows => rows('count')]
 		]);
 	}
 
@@ -87,9 +87,9 @@ module.exports = class DatabaseInit {
 		const TABLENAME = 'moderation';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
-			['guildID', undefined],
-			['guild_case', [r.row(SCHEMA_KEYS.GUILD), r.row(SCHEMA_KEYS.CASE)]],
-			['guild_user', [r.row(SCHEMA_KEYS.GUILD), r.row(SCHEMA_KEYS.USER)]]
+			['guildID', rows => rows('guildID')],
+			['guild_case', rows => [rows(SCHEMA_KEYS.GUILD), rows(SCHEMA_KEYS.CASE)]],
+			['guild_user', rows => [rows(SCHEMA_KEYS.GUILD), rows(SCHEMA_KEYS.USER)]]
 		]);
 	}
 
@@ -112,7 +112,7 @@ module.exports = class DatabaseInit {
 		await DatabaseInit.ensureTable(r, table);
 		await Promise.all(indexes.map(([index, indexValue]) =>
 			r.branch(r.table(table).indexList().contains(index), null, r.table(table).indexCreate(index, indexValue)).run().then(() =>
-				r.branch(r.table(table).indexStatus(index).nth(0)('ready'), null, r.table(table).indexWait(index))
+				r.branch(r.table(table).indexStatus(index).nth(0)('ready'), null, r.table(table).indexWait(index)).run()
 			)
 		));
 	}

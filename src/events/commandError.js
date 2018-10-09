@@ -29,7 +29,8 @@ module.exports = class extends Event {
 	}
 
 	async init() {
-		this.logChannel = this.client.guilds.get('254360814063058944').channels.get('432495057552277504');
+		const guild = this.client.guilds.get('254360814063058944');
+		if (guild) this.logChannel = guild.channels.get('432495057552277504');
 	}
 
 	_sendErrorChannel(msg, command, error) {

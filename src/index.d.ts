@@ -330,13 +330,15 @@ export class APIStore extends Store<string, API, typeof API> {
 export abstract class RawEvent extends Piece {
 	// @ts-ignore
 	public client: Skyra;
-	public abstract process(): any;
+	public abstract run(): any;
 }
 
 // @ts-ignore
 export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 	// @ts-ignore
 	public client: Skyra;
+	public run(data: ObjectLiteral): void;
+	private _run(piece: RawEvent, data: ObjectLiteral): Promise<void>;
 }
 
 export class SettingsMenu {
@@ -792,7 +794,7 @@ type SkyraClientOptions = {
 } & KlasaClientOptions;
 
 export type ReactionData = {
-	channelID: Snowflake;
+	channel: SkyraTextChannel;
 	emoji: {
 		animated: boolean;
 		id: Snowflake | null;
@@ -802,7 +804,7 @@ export type ReactionData = {
 		roles: Array<Snowflake>;
 		user: SkyraUser | { id: Snowflake };
 	};
-	guildID: Snowflake;
+	guild: SkyraGuild;
 	messageID: Snowflake;
 	userID: Snowflake;
 };

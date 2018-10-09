@@ -2,11 +2,23 @@ const { RawEvent } = require('../index');
 
 module.exports = class extends RawEvent {
 
-	constructor(client, store, file, directory) {
-		super(client, store, file, directory, { name: 'GUILD_MEMBER_UPDATE' });
-	}
+	/**
+	 *  GUILD_MEMBER_UPDATE Packet
+	 *  ##########################
+	 *	{
+	 *		user: {
+	 *			username: 'username',
+	 *			id: 'id',
+	 *			discriminator: 'discriminator',
+	 *			avatar: 'avatar'
+	 *		},
+	 *		roles: ['id'],
+	 *		nick: null,
+	 *		guild_id: 'id'
+	 *	}
+	 */
 
-	process(data) {
+	run(data) {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (guild) {
 			guild.memberSnowflakes.add(data.user.id);

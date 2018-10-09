@@ -2,10 +2,6 @@ const { RawEvent } = require('../index');
 
 module.exports = class extends RawEvent {
 
-	constructor(client, store, file, directory) {
-		super(client, store, file, directory, { name: 'USER_UPDATE' });
-	}
-
 	// 	{ id: '80351110224678912',
 	// 	  username: 'Nelly',
 	// 	  discriminator: '1337',
@@ -13,7 +9,7 @@ module.exports = class extends RawEvent {
 	// 	  verified: true,
 	// 	  email: 'nelly@discordapp.com' }
 
-	process(data) {
+	run(data) {
 		const user = this.client.users.get(data.id);
 		// @ts-ignore
 		if (user) user._patch(data);

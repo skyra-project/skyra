@@ -9,38 +9,59 @@ const MATCHES = {
 
 module.exports = class extends RawEvent {
 
-	constructor(client, store, file, directory) {
-		super(client, store, file, directory, { name: 'GUILD_MEMBER_REMOVE' });
-	}
+	/**
+	 *  GUILD_MEMBER_REMOVE Packet
+	 *  ##########################
+	 *	{
+	 *		user: {
+	 *			username: 'username',
+	 *			id: 'id',
+	 *			discriminator: 'discriminator',
+	 *			avatar: 'avatar'
+	 *		},
+	 *		guild_id: 'id'
+	 *	}
+	 */
 
-	async run({ guild, user }) {
-		guild.memberSnowflakes.delete(user.id);
-		if (!this.client.guilds.some(g => g.memberSnowflakes.has(user.id))) this.client.usernames.delete(user.id);
-		if (guild.members.has(user.id)) guild.members.delete(user.id);
-		if (guild.security.raid.has(user.id)) guild.security.raid.delete(user.id);
+	async run(data) {
+		const guild = this.client.guilds.get(data.guild_id);
+		if (!guild || !guild.available) return;
+
+		guild.memberSnowflakes.delete(data.user.id);
+		if (!this.client.guilds.some(g => g.memberSnowflakes.has(data.user.id))) this.client.usernames.delete(data.user.id);
+		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
+		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
+
 		if (guild.settings.events.memberRemove) {
-			this._handleLog(guild, user).catch(error => this.client.emit('apiError', error));
-			this._handleMessage(guild, user).catch(error => this.client.emit('apiError', error));
+			this.handleMemberLog(guild, data);
+			this.handleFarewellMessage(guild, data);
 		}
 	}
 
-	async _handleLog(guild, user) {
+	handleMemberLog(guild, data) {
 		this.client.emit('guildMessageLog', MESSAGE_LOGS.kMember, guild, () => new MessageEmbed()
 			.setColor(0xF9A825)
-			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL())
+			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
+				// @ts-ignore
+				// eslint-disable-next-line new-cap
+				? this.client.rest.cdn.Avatar(data.user.id, data.user.avatar)
+				// @ts-ignore
+				// eslint-disable-next-line new-cap
+				: this.client.rest.cdn.DefaultAvatar(data.user.discriminator % 5))
 			.setFooter('Member left')
 			.setTimestamp());
 	}
 
-	async _handleMessage(guild, user) {
+	handleFarewellMessage(guild, user) {
 		if (guild.settings.channels.default && guild.settings.messages.farewell) {
 			const channel = guild.channels.get(guild.settings.channels.default);
-			if (channel && channel.postable) await channel.send(this._handleFarewell(guild, user));
-			else await guild.settings.reset('channels.default');
+			if (channel && channel.postable)
+				channel.send(this.transformMessage(guild, user)).catch(error => this.client.emit('apiError', error));
+			else guild.settings.reset('channels.default');
 		}
 	}
 
-	_handleFarewell(guild, user) {
+	transformMessage(guild, user) {
 		return guild.settings.messages.farewell.replace(REGEXP, match => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;
@@ -50,13 +71,6 @@ module.exports = class extends RawEvent {
 				default: return match;
 			}
 		});
-	}
-
-	async process(data) {
-		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild.available) return null;
-
-		return { guild, user: this.client.users.add(data.user) };
 	}
 
 };

@@ -141,7 +141,7 @@ class Util {
 	 * @returns {string}
 	 */
 	static resolveEmoji(emoji) {
-		if (isObject(emoji)) return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}` : emoji.name;
+		if (isObject(emoji)) return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}` : encodeURIComponent(emoji.name);
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
 		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);

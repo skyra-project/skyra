@@ -47,10 +47,11 @@ module.exports = class StarboardManager extends Collection {
 	/**
 	 * Get the Starboard channel
 	 * @since 3.0.0
-	 * @type {SKYRA.TextChannel}
+	 * @type {SKYRA.SkyraTextChannel}
 	 */
 	get starboardChannel() {
 		const channelID = this.guild.settings.starboard.channel;
+		// @ts-ignore
 		return (channelID && this.guild.channels.get(channelID)) || null;
 	}
 
@@ -66,7 +67,7 @@ module.exports = class StarboardManager extends Collection {
 	/**
 	 * The provider that manages this starboard
 	 * @since 3.0.0
-	 * @type {SKYRA.Provider}
+	 * @type {SKYRA.RebirthDB}
 	 */
 	get provider() {
 		return this.client.providers.default;

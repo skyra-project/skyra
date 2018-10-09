@@ -244,9 +244,9 @@ export class StarboardManager extends Collection<Snowflake, StarboardMessage> {
 	public constructor(guild: SkyraGuild);
 	public client: Skyra;
 	public guild: SkyraGuild;
-	public readonly starboardChannel: KlasaTextChannel;
+	public readonly starboardChannel: SkyraTextChannel;
 	public readonly minimum: number;
-	public readonly provider: SkyraProvider;
+	public readonly provider: RebirthDB;
 
 	public fetch(channel: KlasaTextChannel, messageID: Snowflake, userID: Snowflake): Promise<StarboardMessage | null>;
 }

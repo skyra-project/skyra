@@ -58,7 +58,7 @@ Skyra.defaultGuildSchema
 		.add('admin', 'Role')
 		.add('auto', 'any', { array: true })
 		.add('initial', 'Role')
-		.add('messageReaction', 'String', { min: 17, max: 18 })
+		.add('messageReaction', 'String', { min: 17, max: 18, configurable: false })
 		.add('moderator', 'Role')
 		.add('muted', 'Role')
 		.add('public', 'Role', { array: true })

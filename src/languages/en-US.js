@@ -86,6 +86,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 	return FriendlyDuration.duration(time, TIMES);
 }
 
+// @ts-ignore
 module.exports = class extends Language {
 
 	constructor(client, store, file, directory) {
@@ -222,7 +223,7 @@ module.exports = class extends Language {
 
 			COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
 			COMMAND_CONF_MENU_RENDER_AT_FOLDER: (path) => `Currently at: \\📁 ${path}`,
-			COMMAND_CONF_MENU_RENDER_AT_PIECE: (path) => `Currently at: \\📁 ${path}`,
+			COMMAND_CONF_MENU_RENDER_AT_PIECE: (path) => `Currently at: ${path}`,
 			COMMAND_CONF_MENU_RENDER_NOKEYS: 'There are no configurable keys for this folder',
 			COMMAND_CONF_MENU_RENDER_SELECT: 'Please select any of the following entries',
 			COMMAND_CONF_MENU_RENDER_TCTITLE: 'Text Commands:',
@@ -235,6 +236,51 @@ module.exports = class extends Language {
 			COMMAND_CONF_MENU_INVALID_KEY: 'Invalid Key, please try again with any of the following options.',
 			COMMAND_CONF_MENU_INVALID_ACTION: 'Invalid Action, please try again with any of the following options.',
 			COMMAND_CONF_MENU_SAVED: 'Successfully saved all changes.',
+
+			SETTINGS_PREFIX: 'A prefix is an affix that is added in front of the word, in this case, the message. It allows bots to distinguish between a regular message and a command.',
+			SETTINGS_LANGUAGE: 'The language I will use for your server. It may not be available in the language you want.',
+			SETTINGS_DISABLEDCOMMANDS: 'The disabled commands, core commands may not be disabled, and moderators will override this. All commands must be in lower case.',
+			SETTINGS_CHANNELS_ANNOUNCEMENT: 'The channel for announcements, in pair with the key `roles.subscriber`, they are required for the announce command.',
+			SETTINGS_CHANNELS_DEFAULT: 'The channel I will use to send greetings and farewells, you must enable the events and set up the messages, in other categories.',
+			SETTINGS_CHANNELS_LOG: 'The channel for member logs, you must enable the events (`events.memberAdd` for new members, `events.memberRemove` for members who left).',
+			SETTINGS_CHANNELS_MESSAGELOGS: 'The channel for (non-NSFW) message logs, you must enable the events (`events.messageDelete` for deleted messages, `events.messageEdit` for edited messages).',
+			SETTINGS_CHANNELS_MODLOG: 'The channel for moderation logs, once enabled, I will post all my moderation cases there. If `events.banRemove` and/or `events.banRemove` are enabled, I will automatically post anonymous logs.',
+			SETTINGS_CHANNELS_NSFWMESSAGELOGS: 'The channel for NSFW message logs, same requirement as normal message logs, but will only send NSFW messages.',
+			SETTINGS_CHANNELS_ROLES: 'The channel for the reaction roles.',
+			SETTINGS_CHANNELS_SPAM: 'The channel for me to redirect users to when they use commands I consider spammy.',
+			SETTINGS_DISABLEDCHANNELS: 'A list of channels for disabled commands, for example, setting up a channel called general will forbid all users from using my commands there. Moderators+ override this purposedly to allow them to moderate without switching channels.',
+			SETTINGS_EVENTS_BANADD: 'This event posts anonymous moderation logs when a user gets banned. You must set up `channels.modlog`.',
+			SETTINGS_EVENTS_BANREMOVE: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.modlog`.',
+			SETTINGS_EVENTS_MEMBERADD: 'This event posts member logs when a user joins. They will be posted in `channels.log`.',
+			SETTINGS_EVENTS_MEMBERREMOVE: 'This event posts member logs when a user leaves. They will be posted in `channels.log`.',
+			SETTINGS_EVENTS_MESSAGEDELETE: 'This event posts message logs when a message is edited. They will be posted in `channels.messagelogs` (or `channel.nsfwmessagelogs` in case of NSFW channels).',
+			SETTINGS_EVENTS_MESSAGEEDIT: 'This event posts message logs when a message is edited. They will be posted in `channels.messagelogs` (or `channel.nsfwmessagelogs` in case of NSFW channels).',
+			SETTINGS_MESSAGES_FAREWELL: 'The message I shall send to when a user leaves. You must set up `channels.default` and `events.memberRemove`',
+			SETTINGS_MESSAGES_GREETING: 'The message I shall send to when a user joins. You must set up `channels.default` and `events.memberAdd`',
+			SETTINGS_MESSAGES_JOIN_DM: 'The message I shall send to when a user joins in DMs.',
+			SETTINGS_MESSAGES_WARNINGS: 'Whether or not I should send warnings to the user when they receive one.',
+			SETTINGS_ROLES_ADMIN: `The administrator role, their priviledges in Skyra will be upon moderative, covering management. Defaults to anyone with the ${PERMS.MANAGE_GUILD} permission.`,
+			SETTINGS_ROLES_INITIAL: 'The initial role, if configured, I will give it to users as soon as they join.',
+			SETTINGS_ROLES_MODERATOR: 'The moderator role, their priviledges will cover almost all moderation commands. Defaults to anyone who can ban members.',
+			SETTINGS_ROLES_MUTED: 'The muted role, if configured, I will give new muted users this role. Otherwise I will prompt you the creation of one.',
+			SETTINGS_ROLES_PUBLIC: 'The public roles, they will be given with no cost to any user using the `roles` command.',
+			SETTINGS_ROLES_REMOVEINITIAL: 'Whether the claim of a public role should remove the initial one too.',
+			SETTINGS_ROLES_STAFF: 'The staff role, their priviledges are nearly helpers of moderators and administrators, but they cannot take any actions besides warnings.',
+			SETTINGS_ROLES_SUBSCRIBER: 'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
+			SETTINGS_SELFMOD_CAPSMINIMUM: 'The minimum amount of characters the message must have before trying to delete it. You must enable it with the `setCapsFilter` command.',
+			SETTINGS_SELFMOD_CAPSTHRESHOLD: 'The minimum percentage of caps allowed before taking action. You must enable it with the `setCapsFilter` command.',
+			SETTINGS_SELFMOD_IGNORECHANNELS: 'The channels I will ignore, be careful any channel configured will have all auto-moderation systems (CapsFilter, InviteLinks, and NoMentionSpam) deactivated.',
+			SETTINGS_SELFMOD_INVITELINKS: 'Whether or not I should delete invite links or not.',
+			SETTINGS_SELFMOD_NMSTHRESHOLD: 'The minimum amount of "points" a user must accumulate before landing the hammer. A user mention will count as 1 point, a role mention as 2 points, and an everyone/here mention as 5 points.',
+			SETTINGS_SELFMOD_NOMENTIONSPAM: 'Whether or not I should have the ban hammer ready for mention spammers.',
+			SETTINGS_SELFMOD_RAID: 'Whether or not I should kick users when they try to raid the server.',
+			SETTINGS_SELFMOD_RAIDTHRESHOLD: 'The minimum amount of users joined on the last 20 seconds required before starting to kick them and anybody else who joins until a minute cooldown or forced cooldown (using the `raid` command to manage this).',
+			SETTINGS_SOCIAL_ACHIEVE: 'Whether or not I should congratulate people who get a new leveled role.',
+			SETTINGS_SOCIAL_ACHIEVEMESSAGE: 'The congratulation message for people when they get a new leveled role. Requires `social.achieve` to be enabled.',
+			SETTINGS_SOCIAL_IGNORECHANNELS: 'The channels I should ignore when adding points.',
+			SETTINGS_STARBOARD_CHANNEL: 'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
+			SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
+			SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
 
 			/**
 			 * ################

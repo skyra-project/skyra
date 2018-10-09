@@ -73,11 +73,11 @@ class SettingsMenu {
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 			if (this.schema.configurable) {
 				description.push(
-					'Some key metadata to fill later...\n',
+					i18n.get(`SETTINGS_${this.schema.path.replace(/[.-]/g, '_').toUpperCase()}`),
 					'',
 					i18n.get('COMMAND_CONF_MENU_RENDER_TCTITLE'),
 					i18n.get('COMMAND_CONF_MENU_RENDER_UPDATE'),
-					this.schema.array ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : null,
+					this.schema.array && this.message.guild.settings.get(this.schema.path).length ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : null,
 					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : null,
 					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : null,
 					'',
@@ -104,7 +104,7 @@ class SettingsMenu {
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
-			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' '), { action: 'set' });
+			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' '), { action: 'add' });
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { action: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();

@@ -1,7 +1,9 @@
 /// <reference path="../../../index.d.ts" />
+const LongLivingReactionCollector = require('../LongLivingReactionCollector');
 const { CONNECT_FOUR: { REACTIONS, RESPONSES, EMOJIS } } = require('../constants');
 const { Permissions: { FLAGS: { MANAGE_MESSAGES } } } = require('discord.js');
 const { DiscordAPIError } = require('discord.js');
+const { resolveEmoji } = require('../util');
 
 module.exports = class ConnectFour {
 
@@ -82,6 +84,7 @@ module.exports = class ConnectFour {
 		 * @type {?Function}
 		 */
 		this.collector = null;
+		this.llrc = null;
 
 		/**
 		 * Whether this instance is running or not
@@ -119,6 +122,8 @@ module.exports = class ConnectFour {
 	 */
 	async run(message) {
 		if (this.running) return;
+		this.llrc = new LongLivingReactionCollector(this.client, this.send.bind(this));
+		this.llrc.setTime(120000);
 		this.running = true;
 
 		// @ts-ignore
@@ -171,6 +176,7 @@ module.exports = class ConnectFour {
 		// @ts-ignore
 		for (const { x, y } of row) this.table[x][y] = VALUE;
 		if (this.manageMessages) this.message.reactions.removeAll().catch(error => this.client.emit('apiError', error));
+		this.llrc.end();
 	}
 
 	/**
@@ -181,12 +187,13 @@ module.exports = class ConnectFour {
 	async getRow() {
 		const PLAYER = (this.turn === 0 ? this.challenger : this.challengee).id;
 		const reaction = await new Promise((resolve, reject) => {
-			const timeout = setTimeout(() => reject(RESPONSES.TIMEOUT), 60000);
-			this.collector = (emoji, userID) => {
-				if (userID === PLAYER) {
-					if (this.manageMessages) this.removeEmoji(emoji, userID);
+			const timeout = setTimeout(() => reject(RESPONSES.TIMEOUT), 120000);
+			this.collector = (react, userID) => {
+				if (userID === PLAYER && REACTIONS.includes(react.emoji)) {
+					this.llrc.setTime(120000);
+					if (this.manageMessages) this.removeEmoji(react.emoji, userID);
 					clearTimeout(timeout);
-					resolve(emoji);
+					resolve(react.emoji.name);
 				}
 			};
 		});
@@ -366,11 +373,10 @@ module.exports = class ConnectFour {
 	/**
 	 * Send a reaction to the internal handler
 	 * @since 3.0.0
-	 * @param {string} emoji The emoji
-	 * @param {string} userID The user ID that reacted to the message
+	 * @param {SKYRA.ReactionData} reaction The emoji
 	 */
-	send(emoji, userID) {
-		if (this.collector) this.collector(emoji, userID);
+	send(reaction) {
+		if (this.collector) this.collector(reaction, reaction.userID);
 	}
 
 	/**
@@ -382,7 +388,7 @@ module.exports = class ConnectFour {
 	async removeEmoji(emoji, userID) {
 		// @ts-ignore
 		await this.client.api.channels[this.message.channel.id].messages[this.message.id]
-			.reactions[encodeURIComponent(emoji)][userID].delete()
+			.reactions[resolveEmoji(emoji)][userID].delete()
 			.catch(error => this.client.emit('apiError', error));
 	}
 

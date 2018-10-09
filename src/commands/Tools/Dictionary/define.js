@@ -66,7 +66,7 @@ module.exports = class extends Command {
 	}
 
 	async fetch(msg, query) {
-		const data = await this.r.table(TABLENAME).get(query);
+		const data = await this.r.table(TABLENAME).get(query).run();
 		if (data) {
 			if (!data.valid) throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
 			return data.lexicalEntries;

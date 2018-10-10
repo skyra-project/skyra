@@ -2041,7 +2041,9 @@ module.exports = class extends Language {
 			COMMAND_STAR_STATS: 'Starboard Stats',
 			COMMAND_STAR_STATS_DESCRIPTION: (messages, stars) => `${messages} ${messages === 1 ? 'message' : 'messages'} starred with a total of ${stars} ${stars === 1 ? 'star' : 'stars'}.`,
 			COMMAND_STAR_TOPSTARRED: 'Top Starred Posts',
+			COMMAND_STAR_TOPSTARRED_DESCRIPTION: (medal, id, stars) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 			COMMAND_STAR_TOPRECEIVERS: 'Top Star Receivers',
+			COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal, id, stars) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 
 			/**
 			 * ###############

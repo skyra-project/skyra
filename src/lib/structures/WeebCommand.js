@@ -5,7 +5,7 @@ const { fetch } = require('../util/util');
 
 class WeebCommand extends Command {
 
-	constructor(client, store, file, core, { queryType, responseName, ...options }) {
+	constructor(client, store, file, directory, { queryType, responseName, ...options }) {
 		options = mergeDefault({
 			requiredPermissions: ['EMBED_LINKS'],
 			bucket: 2,
@@ -13,7 +13,7 @@ class WeebCommand extends Command {
 			runIn: ['text']
 		}, options);
 
-		super(client, store, file, core, options);
+		super(client, store, file, directory, options);
 
 		/**
 		 * The type for this command.

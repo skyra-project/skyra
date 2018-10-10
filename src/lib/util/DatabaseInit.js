@@ -49,7 +49,9 @@ module.exports = class DatabaseInit {
 		const TABLENAME = 'starboard';
 
 		await DatabaseInit.ensureTableAndIndex(r, TABLENAME, [
-			['channel_message', rows => [rows('channelID'), rows('messageID')]]
+			['channel_message', rows => [rows('channelID'), rows('messageID')]],
+			['guildID', rows => rows('guildID')],
+			['stars', rows => rows('stars')]
 		]);
 	}
 

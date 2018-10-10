@@ -271,6 +271,7 @@ class StarboardMessage {
 	toJSON() {
 		return {
 			userID: this.message.author.id,
+			guildID: this.channel.guild.id,
 			channelID: this.channel.id,
 			disabled: this.disabled,
 			messageID: this.message.id,

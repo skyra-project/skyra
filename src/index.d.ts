@@ -292,7 +292,7 @@ export class UserRichDisplay extends RichDisplay {
 }
 
 export abstract class ModerationCommand extends SkyraCommand {
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], core: boolean, options?: ModerationCommandOptions);
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string, options?: ModerationCommandOptions);
 	public modType: ModerationTypesEnum;
 	public requiredMember: boolean;
 
@@ -306,7 +306,7 @@ export abstract class ModerationCommand extends SkyraCommand {
 }
 
 export class WeebCommand extends SkyraCommand {
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], core: boolean, options?: WeebCommandOptions);
+	public constructor(client: Skyra, store: CommandStore, file: string[], directory: string, options?: WeebCommandOptions);
 	public queryType: string;
 	public responseName: string;
 	public requiresUser: boolean;

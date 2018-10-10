@@ -1195,6 +1195,16 @@ module.exports = class extends Language {
 			}),
 
 			/**
+			 * ##################
+			 * STARBOARD COMMANDS
+			 */
+
+			COMMAND_STAR_DESCRIPTION: 'Get a random starred message from the database or the star leaderboard.',
+			COMMAND_STAR_EXTENDED: builder.display('star', {
+				extendedHelp: `This command shows a random starred message or the starboard usage and leaderboard for this server.`
+			}),
+
+			/**
 			 * ###############
 			 * SYSTEM COMMANDS
 			 */
@@ -2021,6 +2031,17 @@ module.exports = class extends Language {
 			COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
 			COMMAND_SOCIAL_POINTS: 'May you specify the amount of points you want to add or remove?',
 			COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) => `You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${amount === 1 ? 'point' : 'points'} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
+
+			/**
+			 * ##################
+			 * STARBOARD COMMANDS
+			 */
+
+			COMMAND_STAR_NOSTARS: 'There is no starred message.',
+			COMMAND_STAR_STATS: 'Starboard Stats',
+			COMMAND_STAR_STATS_DESCRIPTION: (messages, stars) => `${messages} ${messages === 1 ? 'message' : 'messages'} starred with a total of ${stars} ${stars === 1 ? 'star' : 'stars'}.`,
+			COMMAND_STAR_TOPSTARRED: 'Top Starred Posts',
+			COMMAND_STAR_TOPRECEIVERS: 'Top Star Receivers',
 
 			/**
 			 * ###############

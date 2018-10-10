@@ -259,18 +259,22 @@ class Util {
 	/**
 	 * Get the content from a message.
 	 * @since 3.0.0
-	 * @param {KlasaMessage} message The Message to get the content from
+	 * @param {SKYRA.SkyraMessage} message The Message to get the content from
 	 * @returns {?string}
 	 */
 	static getContent(message) {
 		if (message.content) return message.content;
-		return (message.embeds.length && message.embeds[0].description) || null;
+		for (const embed of message.embeds) {
+			if (embed.description) return embed.description;
+			if (embed.fields.length) return embed.fields[0].value;
+		}
+		return null;
 	}
 
 	/**
 	 * Get the first image from a message.
 	 * @since 3.0.0
-	 * @param {KlasaMessage} message The Message to get the image from
+	 * @param {SKYRA.SkyraMessage} message The Message to get the image from
 	 * @returns {?string}
 	 */
 	static getImage(message) {
@@ -278,9 +282,9 @@ class Util {
 			const attachment = message.attachments.find(att => Util.IMAGE_EXTENSION.test(att.url));
 			if (attachment) return attachment.url;
 		}
-		if (message.embeds.length) {
-			const embed = message.embeds.find(emb => emb.type === 'image');
-			if (embed) return embed.url;
+		for (const embed of message.embeds) {
+			if (embed.type === 'image') return embed.url;
+			if (embed.image) return embed.image.url;
 		}
 		return null;
 	}

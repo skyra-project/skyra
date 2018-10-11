@@ -34,10 +34,10 @@ module.exports = class extends Command {
 			await this.client.providers.default.db.table('starboard').get(starboardData.id).delete().run();
 			return this.random(message);
 		}
-		const starredMessage = await channel.messages.fetch(starboardData.messageID);
+		const starredMessage = await channel.messages.fetch(starboardData.messageID).catch(() => null);
 		if (!message) {
 			await this.client.providers.default.db.table('starboard').get(starboardData.id).delete().run();
-			return this.random(starredMessage);
+			return this.random(message);
 		}
 
 		const title = `${this._getEmoji(starboardData)} **${starboardData.stars}** ${starredMessage.channel} ID: ${starredMessage.id}`;

@@ -151,10 +151,12 @@ class Leaderboard {
 			let i = 0;
 			for (const entry of data) {
 				const old = store.get(entry.userID);
-				if (old && old.points > entry.count)
+				if (old && old.points > entry.count) {
+					this.client.emit('verbose', `[CORRUPTION] [localScores - ${entry.guildID}:${entry.userID}] (${entry.id}) ${entry.count} < ${old.points}.`);
 					r.table('localScores').get(entry.id).delete().run();
-				else
+				} else {
 					store.set(entry.userID, { name: null, points: entry.count, position: ++i });
+				}
 			}
 
 			this._tempPromises.guilds.delete(guild);
@@ -188,13 +190,9 @@ class Leaderboard {
 			// Get the store and initialize the position number, then save all entries
 			this.users.clear();
 			let i = 0;
-			for (const entry of data) {
-				const old = this.users.get(entry.id);
-				if (old && old.points > entry.points)
-					r.table('localScores').get(entry.id).delete().run();
-				else
-					this.users.set(entry.id, { name: null, points: entry.points, position: ++i });
-			}
+			for (const entry of data)
+				this.users.set(entry.id, { name: null, points: entry.points, position: ++i });
+
 
 			this._tempPromises.users = null;
 			resolve();

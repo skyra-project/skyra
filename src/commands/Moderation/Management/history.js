@@ -18,7 +18,7 @@ module.exports = class extends Command {
 	async run(msg, [target = msg.author]) {
 		const logs = await msg.guild.moderation.fetch(target.id);
 		let warnings = 0, mutes = 0, kicks = 0, bans = 0;
-		for (const log of logs) {
+		for (const log of logs.values()) {
 			if (log.appealed) continue;
 			switch (log.type) {
 				case TYPE_KEYS.TEMPORARY_BAN:

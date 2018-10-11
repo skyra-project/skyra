@@ -694,7 +694,7 @@ export class ModerationManagerEntry {
 	public readonly name: string;
 	public readonly temporary: boolean;
 	public reason: string | null;
-	public type: number;
+	public type: ModerationTypesEnum;
 	public user: Snowflake | null;
 	private shouldSend: boolean;
 	public appeal(): Promise<this>;

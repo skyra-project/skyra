@@ -900,6 +900,12 @@ module.exports = class extends Language {
 			 * MODERATION/MANAGEMENT COMMANDS
 			 */
 
+			COMMAND_HISTORY_DESCRIPTION: 'Display the count of moderation cases from this guild or from a user.',
+			COMMAND_HISTORY_EXTENDED: builder.display('history', {
+				extendedHelp: `This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been
+					appealed.`,
+				examples: ['', '@Pete']
+			}),
 			COMMAND_WARNINGS_DESCRIPTION: 'List all warnings from this guild or from a user.',
 			COMMAND_WARNINGS_EXTENDED: builder.display('warnings', {
 				extendedHelp: `This command shows either all warnings filed in this guild, or all warnings filed in this guild
@@ -1890,6 +1896,11 @@ module.exports = class extends Language {
 			 * MODERATION/MANAGEMENT COMMANDS
 			 */
 
+			COMMAND_HISTORY_FOOTER: (warnings, mutes, kicks, bans) => `This user has ${
+				warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${
+				mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
+				kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
+				bans} ${bans === 1 ? 'ban' : 'bans'}.`,
 			COMMAND_WARNINGS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
 			COMMAND_WARNINGS_AMOUNT: (amount) => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
 

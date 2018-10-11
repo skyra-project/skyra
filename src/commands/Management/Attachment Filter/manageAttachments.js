@@ -1,4 +1,4 @@
-const { Command, Adder } = require('../../../index');
+const { Command, Adder, Duration: { year } } = require('../../../index');
 
 const TYPES = {
 	maximum: {
@@ -74,8 +74,9 @@ module.exports = class extends Command {
 					: (message.guild.settings.selfmod.attachmentAction & 0b0111) & 0b0111;
 			}
 
+			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, year];
 			const duration = Math.round(((await this.client.arguments.get('duration').run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
-			if (duration < 5000 || duration > 120000) throw message.language.get('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, message.language.get('RESOLVER_DATE_SUFFIX'));
+			if (duration < min || duration > max) throw message.language.get('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.get('RESOLVER_DATE_SUFFIX'));
 			return duration;
 		});
 	}

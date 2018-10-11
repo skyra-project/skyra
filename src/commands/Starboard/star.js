@@ -35,7 +35,7 @@ module.exports = class extends Command {
 			return this.random(message);
 		}
 		const starredMessage = await channel.messages.fetch(starboardData.messageID).catch(() => null);
-		if (!message) {
+		if (!starredMessage) {
 			await this.client.providers.default.db.table('starboard').get(starboardData.id).delete().run();
 			return this.random(message);
 		}

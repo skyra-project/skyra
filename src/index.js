@@ -43,6 +43,7 @@ module.exports = {
 	RawEventStore: require('./lib/structures/RawEventStore'),
 
 	// Util
+	Adder: require('./lib/util/Adder'),
 	LongLivingReactionCollector: require('./lib/util/LongLivingReactionCollector'),
 	Color: require('./lib/util/Color'),
 	FriendlyDuration: require('./lib/util/FriendlyDuration'),

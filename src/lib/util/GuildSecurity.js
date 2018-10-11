@@ -1,6 +1,6 @@
 /**
  * @class GuildSecurity
- * @version 1.0.0
+ * @version 2.0.0
  */
 class GuildSecurity {
 
@@ -13,10 +13,16 @@ class GuildSecurity {
 		this.guild = guild;
 
 		/**
+		 * The Adder instance used to control spam
+		 * @since 4.0.0
+		 * @type {?SKYRA.Adder}
+		 */
+		this.adder = null;
+
+		/**
 		 * The AntiRaid instance managed by this guild, if exists
 		 * @since 3.0.0
 		 * @type {AntiRaid}
-		 * @private
 		 */
 		this.raid = new AntiRaid(this.guild);
 
@@ -24,7 +30,6 @@ class GuildSecurity {
 		 * The NoMentionSpam instance managed by this guild, if exists
 		 * @since 3.0.0
 		 * @type {NoMentionSpam}
-		 * @private
 		 */
 		this.nms = new NoMentionSpam();
 

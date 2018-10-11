@@ -324,10 +324,82 @@ class Util {
 	// Mute role based utils
 
 	/**
+	 * Mute a member
+	 * @since 4.0.0
+	 * @param {SKYRA.SkyraGuildMember} moderator The member who mutes
+	 * @param {SKYRA.SkyraGuildMember} target The member to mute
+	 * @param {string} [reason] The reason for the mute
+	 * @returns {Promise<SKYRA.ModerationManagerEntry>}
+	 */
+	static async mute(moderator, target, reason) {
+		const mute = target.guild.roles.get(target.guild.settings.roles.muted);
+		if (!mute) throw target.guild.language.get('COMMAND_MUTE_UNCONFIGURED');
+
+		const stickyRolesIndex = target.guild.settings.stickyRoles.findIndex(stickyRole => stickyRole.id === target.id);
+		const stickyRoles = stickyRolesIndex !== -1 ? target.guild.settings.stickyRoles[stickyRolesIndex] : { id: target.id, roles: [] };
+		if (stickyRoles.roles.includes(mute.id)) throw target.guild.language.get('COMMAND_MUTE_MUTED');
+
+		// Parse the roles
+		const roles = Util.muteGetRoles(target);
+
+		await target.edit({ roles: target.roles.filter(role => role.managed).map(role => role.id).concat(mute.id) });
+		const entry = { id: target.id, roles: stickyRoles.roles.concat(mute.id) };
+		const { errors } = await target.guild.settings.update('stickyRoles', entry, stickyRolesIndex !== -1 ? { arrayPosition: stickyRolesIndex } : { action: 'add' });
+		if (errors.length) throw errors[0];
+
+		const modlog = target.guild.moderation.new
+			.setModerator(moderator.id)
+			.setUser(target.id)
+			// @ts-ignore
+			.setType(TYPE_KEYS.MUTE)
+			.setReason(reason)
+			.setExtraData(roles);
+		return modlog.create();
+	}
+
+	/**
+	 * Mute a member
+	 * @since 4.0.0
+	 * @param {SKYRA.SkyraGuild} guild The guild for context
+	 * @param {SKYRA.SkyraUser} moderator The member who mutes
+	 * @param {SKYRA.SkyraUser} target The member to mute
+	 * @param {string} [reason] The reason for the mute
+	 * @param {number} [days] The number of days for the prune messages
+	 * @returns {Promise<SKYRA.ModerationManagerEntry>}
+	 */
+	static async softban(guild, moderator, target, reason, days = 1) {
+		await guild.members.ban(target.id, {
+			days,
+			reason: `${reason ? `Softban with reason: ${reason}` : null}`
+		});
+		await guild.members.unban(target.id, 'Softban.');
+
+		const modlog = guild.moderation.new
+			.setModerator(moderator.id)
+			.setUser(target.id)
+			// @ts-ignore
+			.setType(TYPE_KEYS.SOFT_BAN)
+			.setReason(reason);
+		return modlog.create();
+	}
+
+	/**
+	 * Get all the roles for the mute
+	 * @since 4.0.0
+	 * @param {SKYRA.SkyraGuildMember} member The member to get the roles from
+	 * @returns {SKYRA.Snowflake[]}
+	 */
+	static muteGetRoles(member) {
+		const roles = [...member.roles.keys()];
+		roles.splice(roles.indexOf(member.guild.id), 1);
+		return roles;
+	}
+
+	/**
 	 * Create the mute role
 	 * @since 3.0.0
-	 * @param {KlasaMessage} msg The message instance to use as context
-	 * @returns {Role}
+	 * @param {SKYRA.SkyraMessage} msg The message instance to use as context
+	 * @returns {Promise<SKYRA.Role>}
 	 */
 	static async createMuteRole(msg) {
 		if (msg.guild.settings.roles.muted
@@ -401,3 +473,5 @@ Util.ONE_TO_TEN = Object.freeze({
 Util.IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
 
 module.exports = Util;
+
+const { MODERATION: { TYPE_KEYS } } = require('./constants');

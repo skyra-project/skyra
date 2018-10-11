@@ -716,6 +716,25 @@ module.exports = class extends Language {
 			}),
 
 			/**
+			 * #####################################
+			 * MANAGEMENT/ATTACHMENT FILTER COMMANDS
+			 */
+
+			COMMAND_MANAGEATTACHMENTS_DESCRIPTION: 'Manage attachment management in this guild.',
+			COMMAND_MANAGEATTACHMENTS_EXTENDED: builder.display('manageAttachments', {
+				extendedHelp: `This command manages the attachment management for me in this guild.`,
+				examples: ['maximum 25', 'duration 1m', 'action mute', 'logs y', 'enable', 'disable'],
+				explainedUsage: [
+					['maximum <maximum>', 'The maximum amount of attachments allowed.'],
+					['duration <duration>', 'The lifetime for the attachments in the system.'],
+					['action <ban|kick|mute|softban>', 'Defines the action I will take once a user breaks the threshold.'],
+					['logs <y|yes|n|no>', 'Defines whether or not should I log when somebody breaks the threshold.'],
+					['enable', 'Enables the attachment filter.'],
+					['disable', 'Disables the attachment filter.']
+				]
+			}),
+
+			/**
 			 * ###############################
 			 * MANAGEMENT/CAPS FILTER COMMANDS
 			 */
@@ -1812,6 +1831,13 @@ module.exports = class extends Language {
 			COMMAND_SETCAPSFILTER_ALERT: (enabled) => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
 			COMMAND_SETCAPSFILTER_LOG: (enabled) => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
 			COMMAND_SETCAPSFILTER_DELETE: (enabled) => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+			COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE: 'You must input a value for this type.',
+			COMMAND_MANAGEATTACHMENTS_INVALID_ACTION: 'The type must be `ban`, `kick`, `mute`, or `softban`.',
+			COMMAND_MANAGEATTACHMENTS_MAXIMUM: (maximum) => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}`,
+			COMMAND_MANAGEATTACHMENTS_DURATION: (time) => `${GREENTICK} Success set the lifetime for the manager's entries to ${duration(time)}`,
+			COMMAND_MANAGEATTACHMENTS_ACTION: `${GREENTICK} Successfully changed the moderative action for the manager.`,
+			COMMAND_MANAGEATTACHMENTS_LOGS: `${GREENTICK} Successfully changed the preferences for message logging.`,
+			COMMAND_MANAGEATTACHMENTS_ENABLED: (enabled) => `${GREENTICK} Successfully ${enabled ? 'enabled' : 'disabled'} the attachment management.`,
 
 			/**
 			 * #################################
@@ -2227,6 +2253,7 @@ module.exports = class extends Language {
 			CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
 			CONST_MONITOR_WORDFILTER: 'Filtered Word',
 			CONST_MONITOR_CAPSFILTER: 'Too Many UpperCases',
+			CONST_MONITOR_ATTACHMENTFILTER: 'Too Many Attachments',
 			MONITOR_NOINVITE: (user) => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
 			MONITOR_WORDFILTER_DM: (filtered) => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,
 			MONITOR_CAPSFILTER_DM: (message) => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,
@@ -2253,6 +2280,7 @@ module.exports = class extends Language {
 			 * #################################
 			 */
 
+			RESOLVER_DATE_SUFFIX: ' seconds',
 			POWEREDBY_WEEBSH: 'Powered by weeb.sh',
 			PREFIX_REMINDER: (prefix) => `The prefix in this guild is set to: \`${prefix}\``,
 

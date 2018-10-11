@@ -393,14 +393,14 @@ export class FriendlyDuration {
 }
 
 export class FuzzySearch<K, V> {
-	constructor(collection: Collection<K, V>, access: (entry: V) => string, filter?: (entry: V) => boolean);
+	public constructor(collection: Collection<K, V>, access: (entry: V) => string, filter?: (entry: V) => boolean);
 	public filter: (entry: V) => boolean;
 	public access: (entry: V) => string;
 	public run(msg: SkyraMessage, query: string): V;
 }
 
 export class LanguageHelp {
-	constructor();
+	public constructor();
 	public explainedUsage: string | null;
 	public possibleFormats: string | null;
 	public examples: string | null;
@@ -411,6 +411,16 @@ export class LanguageHelp {
 	public setReminder(text: string): this;
 	public display(name: string, options: LanguageHelpDisplayOptions, multiline?: boolean): string;
 	private static resolveMultilineString(input: string | Array<string>, multiline?: boolean): string;
+}
+
+export class Adder<T> extends Array<{ id: T, end: number }> {
+	public constructor(maximum: number, duration: number);
+	public maximum: number;
+	public duration: number;
+	public add(id: T, times?: number): number;
+	public remove(id: T): number;
+	public count(id: T): number;
+	public sweep(): number;
 }
 
 export class LongLivingReactionCollector {
@@ -503,6 +513,7 @@ declare class Util {
 	public static announcementCheck(msg: SkyraMessage): Role;
 	public static basicAuth(user: string, password: string): string;
 	public static createMuteRole(msg: SkyraMessage): Promise<Role>;
+	public static createReferPromise<T>(): { resolve: (value: T) => void, reject: (value: T) => void, promise: Promise<T> };
 	public static cutText(input: string, length: number): string;
 	public static deIdiotify(error: DiscordAPIError): never;
 	public static fetch(url: URL | string, options?: ObjectLiteral, type?: 'buffer'): Promise<Buffer>;
@@ -519,15 +530,17 @@ declare class Util {
 	public static httpResponses(code: number): string;
 	public static loadImage(path: string): Image;
 	public static moderationCheck(msg: SkyraMessage, moderator: SkyraGuildMember, target: SkyraGuildMember): void;
+	public static mute(moderator: SkyraGuildMember, target: SkyraGuildMember, reason?: string): Promise<ModerationManagerEntry>;
 	public static oneToTen(level: number): UtilOneToTenEntry;
-	public static pick<T>(array: T[]): () => T;
-	public static createReferPromise<T>(): { resolve: (value: T) => void, reject: (value: T) => void, promise: Promise<T> };
 	public static parseRange(input: string): Array<number>;
+	public static pick<T>(array: T[]): () => T;
 	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
 	public static resolveEmoji(emoji: string | { name: string, id: Snowflake | null, animated: boolean }): string | null;
+	public static softban(guild: SkyraGuild, moderator: SkyraUser, target: SkyraUser, reason?: string, days?: number): Promise<ModerationManagerEntry>;
 	public static splitText(input: string, length: number, char?: string): string;
 	public static streamToBuffer(stream: Readable): Promise<Buffer>;
 	private static _createMuteRolePush(channel: Channel, role: Role, array: Array<Snowflake>): Promise<any>;
+	private static muteGetRoles(member: SkyraGuildMember): Snowflake[];
 }
 
 export { Util as util };
@@ -636,9 +649,10 @@ export class AntiRaid {
 export class GuildSecurity {
 	public constructor(guild: SkyraGuild);
 	public guild: SkyraGuild;
-	public readonly raid: AntiRaid;
-	public readonly nms: NoMentionSpam;
-	public readonly lockdowns: Map<Snowflake, NodeJS.Timer>;
+	public adder: Adder<Snowflake> | null;
+	public raid: AntiRaid;
+	public nms: NoMentionSpam;
+	public lockdowns: Map<Snowflake, NodeJS.Timer>;
 
 	public dispose(): void;
 	public clearRaid(): void;
@@ -1322,6 +1336,7 @@ export class SkyraMessage extends KlasaMessage {
 	public client: Skyra;
 	public guildSettings: GuildSettings;
 	public guild: SkyraGuild;
+	public member: SkyraGuildMember;
 	public alert(content: string | Array<string>, timer?: number): SkyraMessage;
 	public alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
 	public ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;
@@ -1335,6 +1350,7 @@ export class SkyraGuild extends KlasaGuild {
 	public moderation: ModerationManager;
 	public security: GuildSecurity;
 	public starboard: StarboardManager;
+	public me: SkyraGuildMember;
 	public readonly memberSnowflakes: Set<Snowflake>;
 	public readonly memberTags: Map<Snowflake, string>;
 	public readonly memberUsernames: Map<Snowflake, string>;
@@ -1406,6 +1422,13 @@ export class GuildSettings extends Settings {
 		subscriber: Snowflake | null;
 	};
 	public selfmod: {
+		attachment: boolean;
+		attachmentMaximum: number;
+		attachmentDuration: number;
+		attachmentAction: 0b000 | 0b001 | 0b010 | 0b011 | 0b100 | 0b101 | 0b110 | 0b111;
+		capsfilter: number;
+		capsminimum: number;
+		capsthreshold: number;
 		ignoreChannels: Array<Snowflake>;
 		invitelinks: boolean;
 		nmsthreshold: number;

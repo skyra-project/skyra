@@ -1,4 +1,4 @@
-const { ModerationCommand } = require('../../index');
+const { ModerationCommand, util: { softban } } = require('../../index');
 
 module.exports = class extends ModerationCommand {
 
@@ -19,13 +19,7 @@ module.exports = class extends ModerationCommand {
 
 	async handle(msg, user, member, reason) {
 		if (member && !member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
-		await msg.guild.members.ban(user.id, {
-			days: 'days' in msg.flags ? Math.min(7, Math.max(0, Number(msg.flags.days))) : 0,
-			reason: `${reason ? `Softban with reason: ${reason}` : null}`
-		});
-		await msg.guild.members.unban(user.id, 'Softban.');
-
-		return this.sendModlog(msg, user, reason);
+		return softban(msg.guild, msg.author, user, reason, 'days' in msg.flags ? Math.min(7, Math.max(0, Number(msg.flags.days))) : 1);
 	}
 
 	async posthandle(msg, targets, reason, prehandled) {

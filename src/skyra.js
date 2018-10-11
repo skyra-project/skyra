@@ -67,6 +67,10 @@ Skyra.defaultGuildSchema
 		.add('staff', 'Role')
 		.add('subscriber', 'Role'))
 	.add('selfmod', folder => folder
+		.add('attachment', 'Boolean', { default: false })
+		.add('attachmentMaximum', 'Integer', { default: 20, min: 0, max: 60 })
+		.add('attachmentDuration', 'Integer', { default: 20000, min: 5000, max: 120000, configurable: false })
+		.add('attachmentAction', 'Integer', { default: 0, configurable: false })
 		.add('capsfilter', 'Integer', { default: 0, min: 0, max: 7, configurable: false })
 		.add('capsminimum', 'Integer', { default: 10, min: 0, max: 2000 })
 		.add('capsthreshold', 'Integer', { default: 50, min: 0, max: 100 })
@@ -96,15 +100,15 @@ const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in 
 
 // Skyra setup
 Skyra.defaultPermissionLevels
-	.add(4, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.staff
+	.add(4, (client, msg) => msg.member ? msg.guild.settings.roles.staff
 		? msg.member.roles.has(msg.guild.settings.roles.staff)
-		: msg.member.permissions.has(FLAGS.MANAGE_MESSAGES)), { fetch: true })
-	.add(5, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.moderator
+		: msg.member.permissions.has(FLAGS.MANAGE_MESSAGES) : false, { fetch: true })
+	.add(5, (client, msg) => msg.member ? msg.guild.settings.roles.moderator
 		? msg.member.roles.has(msg.guild.settings.roles.moderator)
-		: msg.member.permissions.has(FLAGS.BAN_MEMBERS)), { fetch: true })
-	.add(6, (client, msg) => Boolean(msg.member) && (msg.guild.settings.roles.admin
+		: msg.member.permissions.has(FLAGS.BAN_MEMBERS) : false, { fetch: true })
+	.add(6, (client, msg) => msg.member ? msg.guild.settings.roles.admin
 		? msg.member.roles.has(msg.guild.settings.roles.admin)
-		: msg.member.permissions.has(FLAGS.MANAGE_GUILD)), { fetch: true });
+		: msg.member.permissions.has(FLAGS.MANAGE_GUILD) : false, { fetch: true });
 
 const skyra = new Skyra({
 	commandEditing: true,

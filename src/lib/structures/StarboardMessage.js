@@ -289,6 +289,7 @@ class StarboardMessage {
 	 * @private
 	 */
 	async _editMessage() {
+		if (this.stars < this.manager.minimum) return;
 		const content = `${this.emoji} **${this.stars}** ${this.channel} ID: ${this.message.id}`;
 		if (this.starMessage) {
 			try {

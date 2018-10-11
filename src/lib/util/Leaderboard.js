@@ -148,7 +148,14 @@ class Leaderboard {
 
 			// Get the store and initialize the position number, then save all entries
 			const store = this.guilds.get(guild);
-			for (let i = 0; i < data.length; i++) store.set(data[i].userID, { name: null, points: data[i].count, position: i + 1 });
+			let i = 0;
+			for (const entry of data) {
+				const old = store.get(entry.userID);
+				if (old && old.points > entry.count)
+					r.table('localScores').get(entry.id).delete().run();
+				else
+					store.set(entry.userID, { name: null, points: entry.count, position: ++i });
+			}
 
 			this._tempPromises.guilds.delete(guild);
 			resolve();
@@ -180,7 +187,14 @@ class Leaderboard {
 
 			// Get the store and initialize the position number, then save all entries
 			this.users.clear();
-			for (let i = 0; i < data.length; i++) this.users.set(data[i].id, { name: null, points: data[i].points, position: i + 1 });
+			let i = 0;
+			for (const entry of data) {
+				const old = this.users.get(entry.id);
+				if (old && old.points > entry.points)
+					r.table('localScores').get(entry.id).delete().run();
+				else
+					this.users.set(entry.id, { name: null, points: entry.points, position: ++i });
+			}
 
 			this._tempPromises.users = null;
 			resolve();

@@ -95,7 +95,7 @@ class MemberSettings {
 	sync(force = false) {
 		if (!this.client._skyraReady) return Promise.resolve(this);
 		if (this._syncStatus) return this._syncStatus;
-		if (!force) return Promise.resolve(this);
+		if (this.UUID && !force) return Promise.resolve(this);
 		this._syncStatus = this._sync();
 		return this._syncStatus;
 	}
@@ -168,7 +168,9 @@ class MemberSettings {
 	 * @private
 	 */
 	async _sync() {
-		const data = this.resolveData(await this.client.providers.default.db.table('localScores').getAll([this.guildID, this.userID], { index: 'guild_user' }).run()
+		const data = this.resolveData(await this.client.providers.default.db.table('localScores')
+			.getAll([this.guildID, this.userID], { index: 'guild_user' })
+			.run()
 			.catch(() => []));
 
 		if (data) {

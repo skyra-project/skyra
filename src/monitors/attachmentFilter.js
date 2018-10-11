@@ -69,11 +69,13 @@ module.exports = class extends Monitor {
 		const { selfmod } = msg.guild.settings;
 		if (!selfmod.attachment || selfmod.ignoreChannels.includes(msg.channel.id)) return false;
 
+		const guildMe = msg.guild.me;
+
 		// eslint-disable-next-line no-bitwise
 		switch (selfmod.attachmentAction & 0b11) {
-			case 0b000: return msg.guild.me.roles.highest.position > msg.member.roles.highest.position;
+			case 0b000: return guildMe.roles.highest.position > msg.member.roles.highest.position;
 			case 0b001: return msg.member.kickable;
-			case 0b010: return msg.guild.me.roles.highest.position > msg.member.roles.highest.position && msg.guild.me.permissions.has(FLAGS.MANAGE_ROLES);
+			case 0b010: return msg.guild.settings.roles.muted && guildMe.roles.highest.position > msg.member.roles.highest.position && guildMe.permissions.has(FLAGS.MANAGE_ROLES);
 			case 0b011: return msg.member.bannable;
 			case 0b100: return msg.member.bannable;
 			default: return false;

@@ -193,7 +193,6 @@ class Leaderboard {
 			for (const entry of data)
 				this.users.set(entry.id, { name: null, points: entry.points, position: ++i });
 
-
 			this._tempPromises.users = null;
 			resolve();
 		}));

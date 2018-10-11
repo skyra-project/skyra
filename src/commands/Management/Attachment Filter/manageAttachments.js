@@ -5,8 +5,12 @@ const TYPES = {
 		key: 'selfmod.attachmentMaximum',
 		language: 'COMMAND_MANAGEATTACHMENTS_MAXIMUM'
 	},
-	duration: {
+	expire: {
 		key: 'selfmod.attachmentDuration',
+		language: 'COMMAND_MANAGEATTACHMENTS_EXPIRE'
+	},
+	duration: {
+		key: 'selfmod.attachmentPunishmentDuration',
 		language: 'COMMAND_MANAGEATTACHMENTS_DURATION'
 	},
 	action: {
@@ -27,7 +31,7 @@ const TYPES = {
 	}
 };
 
-const ACTIONS = ['ban', 'kick', 'mute', 'softban'];
+const ACTIONS = ['warn', 'kick', 'mute', 'softban', 'ban'];
 
 module.exports = class extends Command {
 
@@ -38,7 +42,7 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
-			usage: '<maximum|duration|action|logs|enable|disable> (value:value)',
+			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
 			usageDelim: ' '
 		});
 
@@ -57,7 +61,7 @@ module.exports = class extends Command {
 				const action = arg.toLowerCase();
 				const index = ACTIONS.indexOf(action);
 				// eslint-disable-next-line no-bitwise
-				if (index !== -1) return (message.guild.settings.selfmod.attachmentAction & 0b100) + index;
+				if (index !== -1) return (message.guild.settings.selfmod.attachmentAction & 0b1000) + index;
 				throw message.language.get('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
 			}
 
@@ -65,9 +69,9 @@ module.exports = class extends Command {
 				const value = await this.client.arguments.get('boolean').run(arg, possible, message);
 				return value
 					// eslint-disable-next-line no-bitwise
-					? (message.guild.settings.selfmod.attachmentAction & 0b011) | 0b100
+					? (message.guild.settings.selfmod.attachmentAction & 0b0111) | 0b1000
 					// eslint-disable-next-line no-bitwise
-					: (message.guild.settings.selfmod.attachmentAction & 0b011) & 0b011;
+					: (message.guild.settings.selfmod.attachmentAction & 0b0111) & 0b0111;
 			}
 
 			const duration = Math.round(((await this.client.arguments.get('duration').run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;

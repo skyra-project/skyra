@@ -71,6 +71,7 @@ Skyra.defaultGuildSchema
 		.add('attachmentMaximum', 'Integer', { default: 20, min: 0, max: 60 })
 		.add('attachmentDuration', 'Integer', { default: 20000, min: 5000, max: 120000, configurable: false })
 		.add('attachmentAction', 'Integer', { default: 0, configurable: false })
+		.add('attachmentPunishmentDuration', 'Integer', { configurable: false })
 		.add('capsfilter', 'Integer', { default: 0, min: 0, max: 7, configurable: false })
 		.add('capsminimum', 'Integer', { default: 10, min: 0, max: 2000 })
 		.add('capsthreshold', 'Integer', { default: 50, min: 0, max: 100 })

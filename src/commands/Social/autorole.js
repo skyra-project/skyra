@@ -71,7 +71,7 @@ module.exports = class extends Command {
 
 	async update(msg, [role, points]) {
 		if (typeof points === 'undefined') throw msg.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
-		if (typeof roles === 'undefined') throw msg.language.get('REQUIRE_ROLE');
+		if (typeof role === 'undefined') throw msg.language.get('REQUIRE_ROLE');
 
 		const autoRoles = msg.guild.settings.roles.auto;
 		if (!autoRoles.length || !autoRoles.some(entry => entry.id === role.id))

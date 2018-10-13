@@ -155,7 +155,7 @@ module.exports = class extends Language {
 			MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error, time) => `${tag} | **${error}** | You have **${time}** seconds to respond to this prompt with a valid argument. Type **"ABORT"** to abort this prompt.`, // eslint-disable-line max-len
 			MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time) => `${tag} | **${name}** is a repeating argument | You have **${time}** seconds to respond to this prompt with additional valid arguments. Type **"CANCEL"** to cancel this prompt.`, // eslint-disable-line max-len
 			MONITOR_COMMAND_HANDLER_ABORTED: 'Aborted',
-			INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${remaining} seconds.`,
+			INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in second${remaining === 1 ? '' : 's'}.`,
 			INHIBITOR_DISABLED: 'This command is currently disabled',
 			INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing}**`,
 			INHIBITOR_NSFW: 'You may not use NSFW commands in this channel.',
@@ -289,12 +289,12 @@ module.exports = class extends Language {
 
 			COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a mysterious cat fact.',
 			COMMAND_CATFACT_EXTENDED: builder.display('catfact', {
-				extendedHelp: `Do you know cats are very curious, right? They certainly have a lot of fun and weird facts.
+				extendedHelp: `Do **you** know cats are very curious, right? They certainly have a lot of fun and weird facts.
 				This command queries catfact.ninja and retrieves a fact so you can read it.`
 			}),
 			COMMAND_DOG_DESCRIPTION: 'Cute doggos! ❤',
 			COMMAND_DOG_EXTENDED: builder.display('dog', {
-				extendedHelp: `Do **you** know how cute are dogs? They are so beautiful! This command uses a tiny selection of images
+				extendedHelp: `Do **you** know how cute dogs are? They are so beautiful! This command uses a tiny selection of images
 					From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
 					some images that, sadly, got deleted and I cannot retrieve them 💔.`
 			}),

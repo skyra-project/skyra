@@ -47,7 +47,7 @@ module.exports = class extends RawEvent {
 
 		if (data.channel_id === channel.guild.settings.channels.roles)
 			this.handleRoleChannel(parsed);
-		else if (channel.guild.settings.starboard.channel !== parsed.channel.id && resolveEmoji(parsed.emoji) === channel.guild.settings.starboard.emoji)
+		else if (!parsed.channel.nsfw && channel.guild.settings.starboard.channel !== parsed.channel.id && resolveEmoji(parsed.emoji) === channel.guild.settings.starboard.emoji)
 			this.handleStarboard(parsed);
 	}
 

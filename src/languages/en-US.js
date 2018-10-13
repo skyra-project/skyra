@@ -2059,7 +2059,7 @@ module.exports = class extends Language {
 			COMMAND_REPUTATIONS_BOTS: 'Bots cannot have reputation points...',
 			COMMAND_REPUTATIONS_SELF: (points) => `You have a total of ${points} reputation points.`,
 			COMMAND_REPUTATIONS: (user, points) => `The user ${user} has a total of ${points === 1 ? 'one reputation point' : `${points} reputation points`}.`,
-			COMMAND_REQUIRE_ROLE: () => "I am sorry, but you must provide a role for this command.",
+			COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
 			COMMAND_SCOREBOARD_POSITION: (position) => `Your placing position is: ${position}`,
 			COMMAND_SETCOLOR: (color) => `Color changed to ${color}`,
 			COMMAND_SLOTMACHINES_MONEY: (money) => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,

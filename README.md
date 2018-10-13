@@ -2,15 +2,14 @@
 
 [![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 
-This repository holds Skyra's private source code. Extracting code from this repository without permission is forbidden.
+This repository holds the private code for Skyra. Using, sharing, duplicating, or any other forms of redistrubition of this code without permission is strictly forbidden.
 
 ## Story
+**A bit of story**: Skyra, formerly known as kyraBOT (renamed in the middle of March of 2017), is a standalone Discord Bot that was born out of curiosity in a SoloLearn guild. With help from other developers, due to my lack of experience (I made websites and templates for After Effects, but never a backend application) Skyra was born. Skyra's name comes from a comment made by a user, joining "kyra" with "SkyNET", creating "SkyraNET", I liked the name and later, she got renamed to "Skyra". Originally, it was going to be renamed as "Shiny" (name taken for the currency) however I decided against this.
 
-**A bit of story:** Skyra, formerly known as kyraBOT (renamed on mid-March of 2017), is a standalone Discord Bot that was born from curiosity in a SoloLearn guild, helped with other developers, I was a newbie at that moment, I made websites and templates for After Effects, but never a backend application. Skyra's name comes from a joke a user made with SkyNET, joining "kyra" with "SkyNET", ending up in "SkyraNET", I liked the name and later, she got renamed to "Skyra". Originally, it was going to be renamed as "Shiny", name taken for the currency.
+Skyra does not only feature almost every single feature that is needed in the majority of guilds (discord servers) while being completely configurable, she also has a backstory, inherited from the lore I have been creating since I was a child.
 
-Skyra does not only feature almost every single feature that is needed in the majority of guilds while it's also completely configurable, but she also has a backstory that she inherited from the lore I have been creating since I was a child.
-
-There are over 10 rewrites (at the date of writting this, 12), with an active development of over a year, I have met many developers and friends in Discord, in February 2017, I met the Dirigeants team which I started to contribute for Komada, and later, for Klasa. Nowadays, Klasa holds the opensource part of Skyra.
+There have been over 12 rewrites with an active development of over a year, I have met many developers and friends in Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for Klasa. Nowadays, Klasa holds the open-source part of Skyra.
 
 ## Links
 

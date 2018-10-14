@@ -30,32 +30,16 @@ module.exports = class extends Command {
 		this.listPrompt = this.definePrompt('<all|user>');
 	}
 
-	async reset(msg) {
-		const banners = msg.author.settings.bannerList;
-		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
-		if (msg.author.settings.themeProfile === '0001') throw msg.language.get('COMMAND_BANNER_RESET_DEFAULT');
-
-		await msg.author.settings.update('themeProfile', '0001');
-		return msg.sendLocale('COMMAND_BANNER_RESET');
-	}
-
-	async set(msg, banner) {
-		const banners = msg.author.settings.bannerList;
-		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
-		if (!banners.includes(banner.id)) throw msg.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
-
-		await msg.author.settings.update('themeProfile', banner.id);
-		return msg.sendLocale('COMMAND_BANNER_SET', [banner.title]);
-	}
-
-	async buy(msg, banner) {
+	async buy(msg, [banner]) {
 		const banners = new Set(msg.author.settings.bannerList);
 		if (banners.has(banner.id)) throw msg.language.get('COMMAND_BANNER_BOUGHT', msg.guild.settings.prefix, banner.id);
 
 		if (msg.author.settings.money < banner.price) throw msg.language.get('COMMAND_BANNER_MONEY', msg.author.settings.money, banner.price);
 
-		const accepted = await this.prompt(msg, banner);
+		const accepted = await this._prompt(msg, banner);
 		if (!accepted) throw msg.language.get('COMMAND_BANNER_PAYMENT_CANCELLED');
+
+		if (msg.author.settings.money < banner.price) throw msg.language.get('COMMAND_BANNER_MONEY', msg.author.settings.money, banner.price);
 
 		banners.add(banner.id);
 
@@ -68,6 +52,29 @@ module.exports = class extends Command {
 		]);
 
 		return msg.sendLocale('COMMAND_BANNER_BUY', [banner.title]);
+	}
+
+	async reset(msg) {
+		const banners = msg.author.settings.bannerList;
+		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
+		if (msg.author.settings.themeProfile === '0001') throw msg.language.get('COMMAND_BANNER_RESET_DEFAULT');
+
+		await msg.author.settings.update('themeProfile', '0001');
+		return msg.sendLocale('COMMAND_BANNER_RESET');
+	}
+
+	async set(msg, [banner]) {
+		const banners = msg.author.settings.bannerList;
+		if (!banners.length) throw msg.language.get('COMMAND_BANNER_USERLIST_EMPTY');
+		if (!banners.includes(banner.id)) throw msg.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
+
+		await msg.author.settings.update('themeProfile', banner.id);
+		return msg.sendLocale('COMMAND_BANNER_SET', [banner.title]);
+	}
+
+	async show(msg) {
+		const [response] = await this.listPrompt.createPrompt(msg).run(msg.language.get('COMMAND_BANNER_PROMPT'));
+		return response === 'all' ? this._buyList(msg) : this._userList(msg);
 	}
 
 	_buyList(msg) {
@@ -96,12 +103,7 @@ module.exports = class extends Command {
 		return display.run(await msg.channel.send(msg.language.get('SYSTEM_LOADING')), msg.author.id);
 	}
 
-	async show(msg) {
-		const [response] = await this.listPrompt.createPrompt(msg).run(msg.language.get('COMMAND_BANNER_PROMPT'));
-		return response === 'all' ? this._buyList(msg) : this._userList(msg);
-	}
-
-	async prompt(msg, banner) {
+	async _prompt(msg, banner) {
 		const embed = new MessageEmbed()
 			.setColor(msg.member.displayColor)
 			.setDescription([

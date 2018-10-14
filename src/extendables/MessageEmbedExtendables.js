@@ -18,7 +18,10 @@ module.exports = class extends Extendable {
 
 		let x;
 		while (content.length) {
-			if (content.length < 1024) return this.fields.push({ name: '\u200B', value: content, inline: false });
+			if (content.length < 1024) {
+				this.fields.push({ name: '\u200B', value: content, inline: false });
+				return this;
+			}
 
 			x = content.slice(0, 1024).lastIndexOf('\n');
 			if (x === -1) x = 1024;

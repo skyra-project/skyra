@@ -75,10 +75,10 @@ module.exports = class extends Command {
 		try {
 			const fetched = await fetch(URL + query, options, 'json');
 			const lexicalEntries = fetched.results[0].lexicalEntries.slice(0, 5).map(this._resolveData);
-			await this.r.table(TABLENAME).insert({ id: query, valid: true, lexicalEntries });
+			await this.r.table(TABLENAME).insert({ id: query, valid: true, lexicalEntries }).run();
 			return lexicalEntries;
 		} catch (error) {
-			await this.r.table(TABLENAME).insert({ id: query, valid: false });
+			await this.r.table(TABLENAME).insert({ id: query, valid: false }).run();
 			throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
 		}
 	}

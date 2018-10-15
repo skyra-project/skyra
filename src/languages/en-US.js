@@ -67,7 +67,8 @@ const PERMS = {
 	MUTE_MEMBERS: 'Mute Members',
 	DEAFEN_MEMBERS: 'Deafen Members',
 	MOVE_MEMBERS: 'Move Members',
-	USE_VAD: 'Use Voice Activity'
+	USE_VAD: 'Use Voice Activity',
+	PRIORITY_SPEAKER: 'Priority Speaker'
 };
 
 const random = num => Math.round(Math.random() * num);
@@ -104,11 +105,11 @@ module.exports = class extends Language {
 
 			DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
 			DEFAULT_LANGUAGE: 'Default Language',
-			SETTING_GATEWAY_EXPECTS_GUILD: 'The parameter <Guild> expects either a Guild or a Guild Object.',
+			SETTING_GATEWAY_EXPECTS_GUILD: 'The parameter <Guild> expects either a Guild ID or a Guild Object.',
 			SETTING_GATEWAY_VALUE_FOR_KEY_NOEXT: (data, key) => `The value ${data} for the key ${key} does not exist.`,
 			SETTING_GATEWAY_VALUE_FOR_KEY_ALREXT: (data, key) => `The value ${data} for the key ${key} already exists.`,
 			SETTING_GATEWAY_SPECIFY_VALUE: 'You must specify the value to add or filter.',
-			SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `The key ${key} is not an Array.`,
+			SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `The key ${key} does not accept multiple values.`,
 			SETTING_GATEWAY_KEY_NOEXT: (key) => `The key ${key} does not exist in the current data schema.`,
 			SETTING_GATEWAY_INVALID_TYPE: 'The type parameter must be either add or remove.',
 			RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `Provided too few ${name}s. Atleast ${min} ${min === 1 ? 'is' : 'are'} required.`,
@@ -144,7 +145,7 @@ module.exports = class extends Language {
 			MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error, time) => `${tag} | **${error}** | You have **${time}** seconds to respond to this prompt with a valid argument. Type **"ABORT"** to abort this prompt.`, // eslint-disable-line max-len
 			MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time) => `${tag} | **${name}** is a repeating argument | You have **${time}** seconds to respond to this prompt with additional valid arguments. Type **"CANCEL"** to cancel this prompt.`, // eslint-disable-line max-len
 			MONITOR_COMMAND_HANDLER_ABORTED: 'Aborted',
-			INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in second${remaining === 1 ? '' : 's'}.`,
+			INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${duration(remaining)}.`,
 			INHIBITOR_DISABLED: 'This command is currently disabled',
 			INHIBITOR_MISSING_BOT_PERMS: (missing) => `Insufficient permissions, missing: **${missing}**`,
 			INHIBITOR_NSFW: 'You may not use NSFW commands in this channel.',
@@ -159,19 +160,19 @@ module.exports = class extends Language {
 				guildsAdded.length ? `**Guilds Added**\n${codeBlock('', guildsAdded.join(', '))}` : '',
 				guildsRemoved.length ? `**Guilds Removed**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
 			].filter(val => val !== '').join('\n'),
-			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
+			COMMAND_UNLOAD: (type, name) => `${GREENTICK} Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
-			COMMAND_TRANSFER_ERROR: '❌ That file has been transferred already or never existed.',
-			COMMAND_TRANSFER_SUCCESS: (type, name) => `✅ Successfully transferred ${type}: ${name}`,
+			COMMAND_TRANSFER_ERROR: `${REDCROSS} That file has been transferred already or never existed.`,
+			COMMAND_TRANSFER_SUCCESS: (type, name) => `${GREENTICK} Successfully transferred ${type}: ${name}`,
 			COMMAND_TRANSFER_FAILED: (type, name) => `Transfer of ${type}: ${name} to Client has failed. Please check your Console.`,
 			COMMAND_TRANSFER_DESCRIPTION: 'Transfers a core piece to its respective folder',
-			COMMAND_RELOAD: (type, name, time) => `✅ Reloaded ${type}: ${name}. (Took: ${time})`,
-			COMMAND_RELOAD_ALL: (type, time) => `✅ Reloaded all ${type}. (Took: ${time})`,
-			COMMAND_RELOAD_EVERYTHING: (time) => `✅ Reloaded everything. (Took: ${time})`,
+			COMMAND_RELOAD: (type, name, time) => `${GREENTICK} Reloaded ${type}: ${name}. (Took: ${time})`,
+			COMMAND_RELOAD_ALL: (type, time) => `${GREENTICK} Reloaded all ${type}. (Took: ${time})`,
+			COMMAND_RELOAD_EVERYTHING: (time) => `${GREENTICK} Reloaded everything. (Took: ${time})`,
 			COMMAND_RELOAD_DESCRIPTION: 'Reloads a klasa piece, or all pieces of a klasa store.',
-			COMMAND_REBOOT: 'Rebooting...',
+			COMMAND_REBOOT: `${LOADING} Rebooting...`,
 			COMMAND_REBOOT_DESCRIPTION: 'Reboots the bot.',
-			COMMAND_PING: 'Ping?',
+			COMMAND_PING: `${LOADING} Ping?`,
 			COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
 			COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
 			COMMAND_INVITE_DESCRIPTION: 'Displays the join server link of the bot.',
@@ -179,7 +180,7 @@ module.exports = class extends Language {
 			COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
 			COMMAND_HELP_NO_EXTENDED: 'No extended help available.',
 			COMMAND_HELP_DM: '📥 | The list of commands you have access to has been sent to your DMs.',
-			COMMAND_HELP_NODM: '❌ | You have DMs disabled, I couldn\'t send you the commands in DMs.',
+			COMMAND_HELP_NODM: `${REDCROSS} | You have DMs disabled, I couldn't send you the commands in DMs.`,
 			COMMAND_ENABLE: (type, name) => `+ Successfully enabled ${type}: ${name}`,
 			COMMAND_ENABLE_DESCRIPTION: 'Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.',
 			COMMAND_DISABLE: (type, name) => `+ Successfully disabled ${type}: ${name}`,
@@ -201,7 +202,7 @@ module.exports = class extends Language {
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 			COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
 			COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
-			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
+			COMMAND_LOAD_ERROR: (type, name, error) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 			COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 			/**
@@ -1726,7 +1727,6 @@ module.exports = class extends Language {
 				'I do not know, maybe destiny.',
 				'Because I said so.',
 				'I have no idea.',
-				'Harambe did nothing wrong.',
 				'Ask the owner of this server.',
 				'Ask again.',
 				'To get to the other side.',
@@ -2404,7 +2404,7 @@ module.exports = class extends Language {
 			GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
 			GUILD_BANS_EMPTY: 'There are no bans registered in this server.',
 			GUILD_BANS_NOT_FOUND: 'Please, write a valid user ID or tag.',
-			CHANNEL_NOT_READABLE: `I am sorry, but I need the permission **${PERMS.VIEW_CHANNEL}**`,
+			CHANNEL_NOT_READABLE: `I am sorry, but I need the permissions **${PERMS.VIEW_CHANNEL}** and **${PERMS.READ_MESSAGE_HISTORY}**`,
 
 			USER_NOT_IN_GUILD: 'This user is not in this server.',
 
@@ -2420,13 +2420,9 @@ module.exports = class extends Language {
 				? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''}`,
 			EVENTS_MESSAGE_UPDATE: 'Message Edited',
 			EVENTS_MESSAGE_DELETE: 'Message Deleted',
-			EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
 			EVENTS_COMMAND: (command) => `Command Used: ${command}`,
 			EVENTS_STREAM_START: (member) => `The user **${member.user.tag}** is now live! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
 			EVENTS_STREAM_STOP: (member) => `The user **${member.user.tag}** is not longer live!`,
-			EVENTS_STARBOARD_SELF: (user) => `Dear ${user}, you cannot star your own messages.`,
-			EVENTS_STARBOARD_BOT: (user) => `Dear ${user}, you cannot star bot messages.`,
-			EVENTS_STARBOARD_EMPTY: (user) => `Dear ${user}, you cannot star empty messages.`,
 
 			SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reseated the value for `channels.default`',
 			SETTINGS_DELETE_ROLES_INITIAL: 'Reseated the value for `roles.initial`',
@@ -2437,9 +2433,9 @@ module.exports = class extends Language {
 			GUILD_WARN_NOT_FOUND: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
 			GUILD_MEMBER_NOT_VOICECHANNEL: 'I cannot execute this action in a member that is not connected to a voice channel.',
 
-			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} ${amount === 1 ? 'result' : 'results'}. Please choose a number between 1 and ${amount}, or write **abort** to abort the prompt.\n${list}`,
+			PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `There are ${amount} ${amount === 1 ? 'result' : 'results'}. Please choose a number between 1 and ${amount}, or write **"CANCEL"** to cancel the prompt.\n${list}`,
 			PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Invalid input. Attempt **${attempt}** out of **${maxAttempts}**\n${list}`,
-			PROMPTLIST_ABORT: 'abort',
+			PROMPTLIST_ABORT: 'cancel',
 			PROMPTLIST_ABORTED: 'Successfully aborted the prompt.',
 
 			FUZZYSEARCH_MATCHES: (matches, codeblock) => `I found multiple matches! **Please select a number within 0 and ${matches}**:\n${codeblock}\nWrite **ABORT** if you want to exit the prompt.`,

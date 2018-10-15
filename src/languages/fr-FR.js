@@ -1593,7 +1593,6 @@ module.exports = class extends Language {
 			EVENTS_MESSAGE_UPDATE: 'Message édité',
 			EVENTS_MESSAGE_UPDATE_MSG: (old, msg) => `Avant: ${old.substring(0, 950)}\nNouveau: ${msg.substring(0, 950)}`,
 			EVENTS_MESSAGE_DELETE: 'Message supprimé',
-			EVENTS_MESSAGE_DELETE_MSG: (msg) => msg.substring(0, 1900),
 			EVENTS_COMMAND: (command) => `Commande utilisée: ${command}`,
 			EVENTS_STREAM_START: (member) => `L'utilisateur **${member.user.tag}** est maintenant en live! **${member.presence.game.name}**\n${member.presence.game.url}`,
 			EVENTS_STREAM_STOP: (member) => `L'utilisateur **${member.user.tag}** n'est plus en live!`,

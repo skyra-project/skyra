@@ -121,7 +121,7 @@ module.exports = class ConnectFour {
 	 */
 	async run(message) {
 		if (this.running) return;
-		this.llrc = new LongLivingReactionCollector(this.client, this.send.bind(this), this.dispose.bind(this));
+		this.llrc = new LongLivingReactionCollector(this.client, this.send.bind(this), this.gameTimeout.bind(this));
 		this.llrc.setTime(120000);
 		this.running = true;
 
@@ -143,25 +143,42 @@ module.exports = class ConnectFour {
 				if (error === RESPONSES.FULL_LINE) {
 					await this.render(error);
 				} else if (error === RESPONSES.FULL_GAME) {
-					await this.message.edit(this.language.get('COMMAND_C4_GAME_DRAW', this.renderTable()));
-					if (this.manageMessages) await this.message.reactions.removeAll().catch(err => this.client.emit('apiError', err));
+					await this.gameFullLine();
 					break;
 				} else if (error === RESPONSES.TIMEOUT) {
-					await this.message.edit(this.language.get('COMMAND_GAMES_TIMEOUT'));
+					await this.gameTimeout();
 					break;
 				} else if (error && error.code === 10008) {
-					this.manager.delete(this.message.channel.id);
-					this.llrc.end();
+					this.gameLostMessage();
 					break;
 				} else {
-					this.client.emit('commandError', this.message, this.client.commands.get('c4'), [this.challengee], error);
-					// Break the game
-					row = true;
+					if (this.message) this.client.emit('commandError', this.message, this.client.commands.get('c4'), [this.challengee], error);
+					else this.client.emit('wtf', error);
+					break;
 				}
 			}
 
 			if (row) break;
 		}
+	}
+
+	async gameFullLine() {
+		await this.gameDraw();
+	}
+
+	async gameDraw() {
+		await this.message.edit(this.language.get('COMMAND_C4_GAME_DRAW', this.renderTable()));
+		if (this.manageMessages) await this.message.reactions.removeAll().catch(err => this.client.emit('apiError', err));
+	}
+
+	async gameTimeout() {
+		await this.message.edit(this.language.get('COMMAND_GAMES_TIMEOUT'));
+		this.llrc.end();
+	}
+
+	gameLostMessage() {
+		this.manager.delete(this.message.channel.id);
+		this.llrc.end();
 	}
 
 	/**
@@ -186,12 +203,11 @@ module.exports = class ConnectFour {
 	async getRow() {
 		const PLAYER = (this.turn === 0 ? this.challenger : this.challengee).id;
 		const reaction = await new Promise((resolve, reject) => {
-			const timeout = setTimeout(() => reject(RESPONSES.TIMEOUT), 120000);
+			this.llrc.setTime(120000);
+			this.llrc.setEndListener(reject);
 			this.collector = (react, userID) => {
 				if (userID === PLAYER && REACTIONS.includes(react.emoji.name)) {
-					this.llrc.setTime(120000);
 					if (this.manageMessages) this.removeEmoji(react.emoji, userID);
-					clearTimeout(timeout);
 					resolve(react.emoji.name);
 				}
 			};

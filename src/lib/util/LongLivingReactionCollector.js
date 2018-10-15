@@ -36,12 +36,16 @@ class LongLivingReactionCollector {
 	}
 
 	end() {
-		this.client.llrCollectors.delete(this);
+		if (!this.client.llrCollectors.delete(this)) return this;
+
 		if (this._timer) {
 			clearTimeout(this._timer);
 			this._timer = null;
 		}
-		if (this.endListener) this.endListener();
+		if (this.endListener) {
+			process.nextTick(this.endListener.bind(null));
+			this.endListener = null;
+		}
 		return this;
 	}
 

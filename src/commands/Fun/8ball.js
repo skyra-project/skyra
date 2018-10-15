@@ -26,18 +26,9 @@ module.exports = class extends Command {
 		if (!this.checkQuestion(prefixes.QUESTION || '?', input))
 			throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
 
-		if (this.check(prefixes.HOW_MANY, input)) return this.generate(QuestionTypes.HowMany, i18n);
-		if (this.check(prefixes.HOW_MUCH, input)) return this.generate(QuestionTypes.HowMuch, i18n);
-		if (this.check(prefixes.WHAT, input)) return this.generate(QuestionTypes.What, i18n);
-		if (this.check(prefixes.WHEN, input)) return this.generate(QuestionTypes.When, i18n);
-		if (this.check(prefixes.WHO, input)) return this.generate(QuestionTypes.Who, i18n);
-		if (this.check(prefixes.WHY, input)) return this.generate(QuestionTypes.Why, i18n);
-		return this.generate(QuestionTypes.Else, i18n);
-	}
-
-	generate(type, i18n) {
-		const row = i18n.EIGHT_BALL[type];
-		return row[Math.floor(Math.random() * row.length)];
+		for (const key of QUESTION_KEYS)
+			if (this.check(prefixes[key])) return i18n.get(`COMMAND_8BALL_${key}`);
+		return i18n.get('COMMAND_8BALL_ELSE');
 	}
 
 	checkQuestion(question, input) {
@@ -50,12 +41,4 @@ module.exports = class extends Command {
 
 };
 
-const QuestionTypes = {
-	HowMany: 'HOWMANY',
-	HowMuch: 'HOWMUCH',
-	What: 'WHAT',
-	When: 'WHEN',
-	Who: 'WHO',
-	Why: 'WHY',
-	Else: 'ELSE'
-};
+const QUESTION_KEYS = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];

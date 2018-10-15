@@ -72,16 +72,6 @@ const PERMS = {
 
 const random = num => Math.round(Math.random() * num);
 
-const EIGHT_BALL = {
-	WHEN: ['Soon™', 'Maybe tomorrow.', 'Maybe next year...', 'Right now.', 'In a few months.'],
-	WHAT: ['A plane.', 'What? Ask again.', 'A gift.', 'Nothing.', 'A ring.', 'I do not know, maybe something.'],
-	HOWMUCH: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', 'I do not know, ask a physicist.', 'Nothing.', `Within ${random(10)} and ${random(1000)}L.`, `${random(10)}e${random(1000)}L.`, "2 or 3 liters, I don't remember.", 'Infinity.', '1010 liters.'],
-	HOWMANY: ['A lot.', 'A bit.', 'A few.', 'Ask me tomorrow.', "I don't know, ask a physicist.", 'Nothing.', `Within ${random(10)} and ${random(1000)}.`, `${random(10)}e${random(1000)}.`, '2 or 3, I do not remember.', 'Infinity', '1010.'],
-	WHY: ['Maybe genetics.', 'Because somebody decided it.', 'For the glory of satan, of course!', 'I do not know, maybe destiny.', 'Because I said so.', 'I have no idea.', 'Harambe did nothing wrong.', 'Ask the owner of this server.', 'Ask again.', 'To get to the other side.', 'It says so in the Bible.'],
-	WHO: ['A human.', 'A robot.', 'An airplane.', 'A bird.', 'A carbon composition.', 'A bunch of zeroes and ones.', 'I have no clue, is it material?', 'That is not logical.'],
-	ELSE: ['Most likely.', 'Nope.', 'YES!', 'Maybe.']
-};
-
 function duration(time) { // eslint-disable-line no-unused-vars
 	return FriendlyDuration.duration(time, TIMES);
 }
@@ -93,7 +83,6 @@ module.exports = class extends Language {
 		super(client, store, file, directory);
 
 		this.PERMISSIONS = PERMS;
-		this.EIGHT_BALL = EIGHT_BALL;
 
 		this.HUMAN_LEVELS = {
 			0: 'None',
@@ -1690,6 +1679,76 @@ module.exports = class extends Language {
 				WHY: 'why',
 				WHO: 'who'
 			},
+			COMMAND_8BALL_WHEN: pick([
+				'Soon™',
+				'Maybe tomorrow.',
+				'Maybe next year...',
+				'Right now.',
+				'In a few months.']),
+			COMMAND_8BALL_WHAT: pick([
+				'A plane.',
+				'What? Ask again.',
+				'A gift.',
+				'Nothing.',
+				'A ring.',
+				'I do not know, maybe something.'
+			]),
+			COMMAND_8BALL_HOWMUCH: pick([
+				'A lot.',
+				'A bit.',
+				'A few.',
+				'Ask me tomorrow.',
+				'I do not know, ask a physicist.',
+				'Nothing.',
+				`Within ${random(10)} and ${random(1000)}L.`,
+				`${random(10)}e${random(1000)}L.`,
+				"2 or 3 liters, I don't remember.",
+				'Infinity.',
+				'1010 liters.'
+			]),
+			COMMAND_8BALL_HOWMANY: pick([
+				'A lot.',
+				'A bit.',
+				'A few.',
+				'Ask me tomorrow.',
+				"I don't know, ask a physicist.",
+				'Nothing.',
+				`Within ${random(10)} and ${random(1000)}.`,
+				`${random(10)}e${random(1000)}.`,
+				'2 or 3, I do not remember.',
+				'Infinity',
+				'1010.'
+			]),
+			COMMAND_8BALL_WHY: pick([
+				'Maybe genetics.',
+				'Because somebody decided it.',
+				'For the glory of satan, of course!',
+				'I do not know, maybe destiny.',
+				'Because I said so.',
+				'I have no idea.',
+				'Harambe did nothing wrong.',
+				'Ask the owner of this server.',
+				'Ask again.',
+				'To get to the other side.',
+				'It says so in the Bible.'
+			]),
+			COMMAND_8BALL_WHO: pick([
+				'A human.',
+				'A robot.',
+				'An airplane.',
+				'A bird.',
+				'A carbon composition.',
+				'A bunch of zeroes and ones.',
+				'I have no clue, is it material?',
+				'That is not logical.'
+			]),
+			COMMAND_8BALL_ELSE: pick([
+				'Most likely.',
+				'Nope.',
+				'YES!',
+				'Maybe.'
+			]),
+
 			COMMAND_CATFACT_TITLE: 'Cat Fact',
 			COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${codeBlock('', word)}`,
 			COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',

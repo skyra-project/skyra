@@ -32,7 +32,7 @@ module.exports = class extends Command {
 
 		if (!roles) throw msg.language.get('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
-			if (msg.args.length) throw msg.language.get('COMMAND_ROLES_ABORT');
+			if (msg.args.some(v => v)) throw msg.language.get('COMMAND_ROLES_ABORT', msg.guild.settings.prefix);
 			return this.list(msg, publicRoles);
 		}
 		const memberRoles = new Set(msg.member.roles.keys());

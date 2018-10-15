@@ -2,7 +2,6 @@
 const LongLivingReactionCollector = require('../LongLivingReactionCollector');
 const { CONNECT_FOUR: { REACTIONS, RESPONSES, EMOJIS } } = require('../constants');
 const { Permissions: { FLAGS: { MANAGE_MESSAGES } } } = require('discord.js');
-const { DiscordAPIError } = require('discord.js');
 const { resolveEmoji } = require('../util');
 
 module.exports = class ConnectFour {
@@ -122,7 +121,7 @@ module.exports = class ConnectFour {
 	 */
 	async run(message) {
 		if (this.running) return;
-		this.llrc = new LongLivingReactionCollector(this.client, this.send.bind(this));
+		this.llrc = new LongLivingReactionCollector(this.client, this.send.bind(this), this.dispose.bind(this));
 		this.llrc.setTime(120000);
 		this.running = true;
 
@@ -152,9 +151,9 @@ module.exports = class ConnectFour {
 					break;
 				} else if (error && error.code === 10008) {
 					this.manager.delete(this.message.channel.id);
-					this.dispose();
+					this.llrc.end();
+					break;
 				} else {
-					if (error instanceof DiscordAPIError) Error.captureStackTrace(error);
 					this.client.emit('commandError', this.message, this.client.commands.get('c4'), [this.challengee], error);
 					// Break the game
 					row = true;
@@ -189,7 +188,7 @@ module.exports = class ConnectFour {
 		const reaction = await new Promise((resolve, reject) => {
 			const timeout = setTimeout(() => reject(RESPONSES.TIMEOUT), 120000);
 			this.collector = (react, userID) => {
-				if (userID === PLAYER && REACTIONS.includes(react.emoji)) {
+				if (userID === PLAYER && REACTIONS.includes(react.emoji.name)) {
 					this.llrc.setTime(120000);
 					if (this.manageMessages) this.removeEmoji(react.emoji, userID);
 					clearTimeout(timeout);
@@ -252,80 +251,6 @@ module.exports = class ConnectFour {
 		const row = this._check(posX, posY);
 		if (row) this.showWinner(row);
 		return row;
-	}
-
-	/**
-	 * Check if there's a winning row.
-	 * @since 3.0.0
-	 * @param {number} posX The position X to check
-	 * @param {number} posY The position Y to check
-	 * @returns {ConnectFourWinningRow}
-	 * @private
-	 */
-	_check(posX, posY) {
-		const PLAYER = this.turn + 1;
-		const MIN_X = Math.max(0, posX - 3),
-			MIN_Y = Math.max(0, posY - 3),
-			MAX_X = Math.min(6, posX + 3),
-			MAX_Y = Math.min(4, posY + 3);
-
-		// @ts-ignore
-		const verticals = this._checkVerticals(posX, MIN_Y, MAX_Y, PLAYER);
-		if (verticals) return verticals;
-
-		let diagUp = 0, diagDown = 0, horizontal = 0;
-		for (let offset = MIN_X - posX; offset <= MAX_X - posX; offset++) {
-			const x = posX + offset;
-			const tableX = this.table[x];
-
-			// Check horizontals
-			if (tableX[posY] === PLAYER) {
-				horizontal++;
-				if (horizontal === 4) {
-					return [
-						{ x: x - 3, y: posY },
-						{ x: x - 2, y: posY },
-						{ x: x - 1, y: posY },
-						{ x: x, y: posY }
-					];
-				}
-			} else { horizontal = 0; }
-
-
-			// Check diagonals up
-			const upY = posY + offset;
-			if (MIN_Y <= upY && upY <= MAX_Y) {
-				if (tableX[upY] === PLAYER) {
-					diagUp++;
-					if (diagUp === 4) {
-						return [
-							{ x: x - 3, y: upY - 3 },
-							{ x: x - 2, y: upY - 2 },
-							{ x: x - 1, y: upY - 1 },
-							{ x: x, y: upY }
-						];
-					}
-				} else { diagUp = 0; }
-			}
-
-			// Check diagonals down
-			const downY = posY - offset;
-			if (MIN_Y <= downY && downY <= MAX_Y) {
-				if (tableX[downY] === PLAYER) {
-					diagDown++;
-					if (diagDown === 4) {
-						return [
-							{ x: x - 3, y: downY + 3 },
-							{ x: x - 2, y: downY + 2 },
-							{ x: x - 1, y: downY + 1 },
-							{ x: x, y: downY }
-						];
-					}
-				} else { diagDown = 0; }
-			}
-		}
-
-		return null;
 	}
 
 	/**
@@ -405,6 +330,80 @@ module.exports = class ConnectFour {
 		this.table = null;
 		this.winner = null;
 		this.running = false;
+	}
+
+	/**
+	 * Check if there's a winning row.
+	 * @since 3.0.0
+	 * @param {number} posX The position X to check
+	 * @param {number} posY The position Y to check
+	 * @returns {ConnectFourWinningRow}
+	 * @private
+	 */
+	_check(posX, posY) {
+		const PLAYER = this.turn + 1;
+		const MIN_X = Math.max(0, posX - 3),
+			MIN_Y = Math.max(0, posY - 3),
+			MAX_X = Math.min(6, posX + 3),
+			MAX_Y = Math.min(4, posY + 3);
+
+		// @ts-ignore
+		const verticals = this._checkVerticals(posX, MIN_Y, MAX_Y, PLAYER);
+		if (verticals) return verticals;
+
+		let diagUp = 0, diagDown = 0, horizontal = 0;
+		for (let offset = MIN_X - posX; offset <= MAX_X - posX; offset++) {
+			const x = posX + offset;
+			const tableX = this.table[x];
+
+			// Check horizontals
+			if (tableX[posY] === PLAYER) {
+				horizontal++;
+				if (horizontal === 4) {
+					return [
+						{ x: x - 3, y: posY },
+						{ x: x - 2, y: posY },
+						{ x: x - 1, y: posY },
+						{ x: x, y: posY }
+					];
+				}
+			} else { horizontal = 0; }
+
+
+			// Check diagonals up
+			const upY = posY + offset;
+			if (MIN_Y <= upY && upY <= MAX_Y) {
+				if (tableX[upY] === PLAYER) {
+					diagUp++;
+					if (diagUp === 4) {
+						return [
+							{ x: x - 3, y: upY - 3 },
+							{ x: x - 2, y: upY - 2 },
+							{ x: x - 1, y: upY - 1 },
+							{ x: x, y: upY }
+						];
+					}
+				} else { diagUp = 0; }
+			}
+
+			// Check diagonals down
+			const downY = posY - offset;
+			if (MIN_Y <= downY && downY <= MAX_Y) {
+				if (tableX[downY] === PLAYER) {
+					diagDown++;
+					if (diagDown === 4) {
+						return [
+							{ x: x - 3, y: downY + 3 },
+							{ x: x - 2, y: downY + 2 },
+							{ x: x - 1, y: downY + 1 },
+							{ x: x, y: downY }
+						];
+					}
+				} else { diagDown = 0; }
+			}
+		}
+
+		return null;
 	}
 
 	/**

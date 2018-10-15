@@ -27,7 +27,7 @@ module.exports = class extends Command {
 			throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
 
 		for (const key of QUESTION_KEYS)
-			if (this.check(prefixes[key])) return i18n.get(`COMMAND_8BALL_${key}`);
+			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}`);
 		return i18n.get('COMMAND_8BALL_ELSE');
 	}
 

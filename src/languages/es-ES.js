@@ -2,11 +2,11 @@
 const { Language, LanguageHelp, Timestamp, FriendlyDuration, util: { pick }, klasaUtil: { toTitleCase, codeBlock }, constants: { EMOJIS: { LOADING, SHINY, GREENTICK, REDCROSS } }, versions: { skyra, klasa } } = require('../index');
 
 const builder = new LanguageHelp()
-	.setExplainedUsage('⚙ | ***Explained usage***')
-	.setPossibleFormats('🔢 | ***Possible formats***')
-	.setExamples('🔗 | ***Examples***')
-	.setReminder('⏰ | ***Reminder***');
-const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
+	.setExplainedUsage('⚙ | ***Uso Explicado***')
+	.setPossibleFormats('🔢 | ***Formatos Posibles***')
+	.setExamples('🔗 | ***Ejemplos***')
+	.setReminder('⏰ | ***Recordatorio***');
+const timestamp = new Timestamp('DD/MM/YYYY [a las] HH:mm:ss');
 
 const TIMES = {
 	YEAR: {
@@ -2200,17 +2200,17 @@ module.exports = class extends Language {
 			 * TOOLS COMMANDS
 			 */
 
-			COMMAND_AVATAR_NONE: 'The user does not have an avatar set.',
+			COMMAND_AVATAR_NONE: 'El usuario no tiene ninguna foto de perfil puesta.',
 			COMMAND_COLOR: (hex, rgb, hsl) => [
 				`HEX: **${hex}**`,
 				`RGB: **${rgb}**`,
 				`HSL: **${hsl}**`
 			].join('\n'),
-			COMMAND_DEFINE_NOTFOUND: 'I could not find a definition for this word.',
-			COMMAND_DEFINE: (input, output) => `Search results for \`${input}\`:\n${output}`,
+			COMMAND_DEFINE_NOTFOUND: 'No pude encontrar una definición para esta palabra.',
+			COMMAND_DEFINE: (input, output) => `Resultados de la búsqueda para \`${input}\`:\n${output}`,
 			COMMAND_EMOJI_CUSTOM: (emoji, id) => [
 				`→ \`Emoji\` :: **${emoji}**`,
-				'→ `Type` :: **Custom**',
+				'→ `Type` :: **Personalizado**',
 				`→ \`ID\` :: **${id}**`
 			].join('\n'),
 			COMMAND_EMOJI_TWEMOJI: (emoji, id) => [
@@ -2218,82 +2218,82 @@ module.exports = class extends Language {
 				'→ `Type` :: **Twemoji**',
 				`→ \`ID\` :: **${id}**`
 			].join('\n'),
-			COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' is not a valid emoji.`,
-			COMMAND_GOOGL_LONG: (url) => `**Shortened URL: [${url}](${url})**`,
-			COMMAND_GOOGL_SHORT: (url) => `**Expanded URL: [${url}](${url})**`,
-			COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
-			COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',
-			COMMAND_POLL_WANT_USERS: 'Do you want to include a users whitelist?',
-			COMMAND_POLL_FIRSTUSER: 'Alright! Write a list of all users you want to whitelist from the poll separating their names or mentions by comma.',
-			COMMAND_POLL_WANT_ROLES: 'Before creating the poll, do you want to whitelist roles?',
-			COMMAND_POLL_FIRSTROLE: 'Alright! Write a list of all roles you want to whitelist from the poll separating their names or mentions by comma.',
+			COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' no es un emoji válido.`,
+			COMMAND_GOOGL_LONG: (url) => `**URL Acortada: [${url}](${url})**`,
+			COMMAND_GOOGL_SHORT: (url) => `**URL Expandida: [${url}](${url})**`,
+			COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
+			COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
+			COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',
+			COMMAND_POLL_FIRSTUSER: '¡De acuerdo! Escribe una lista de todos los usuarios que quieras incluir en la lista blanca, separando sus nombres, menciones, o id de usuario por coma.',
+			COMMAND_POLL_WANT_ROLES: 'Antes de crear la encuesta, ¿quieres incluir una lista blanca de roles?',
+			COMMAND_POLL_FIRSTROLE: '¡De acuerdo! Escribe una lista de todos los roles que quieras incluir en la lista blanca, separando sus nombres, menciones, o id de rol por coma.',
 			COMMAND_POLL_CREATE: (title, roles, users, options, time, id) => [
-				`Successfully created a poll.`,
-				`Title    : '${title}'`,
-				`Roles    : ${roles ? roles.join(' | ') : 'None'}`,
-				`Users    : ${users ? users.join(' | ') : 'None'}`,
-				`Options  : ${options ? options.join(' | ') : 'None'}`,
-				`Duration : ${duration(time)}`,
+				`He creado la encuesta con éxito.`,
+				`Título   : '${title}'`,
+				`Roles    : ${roles ? roles.join(' | ') : 'Ninguno'}`,
+				`Usuarios : ${users ? users.join(' | ') : 'Ninguno'}`,
+				`Opciones : ${options ? options.join(' | ') : 'Ninguno'}`,
+				`Duración : ${duration(time)}`,
 				`ID       : ${id}`
 			],
-			COMMAND_POLL_LIST_EMPTY: 'I could not find an active poll for this guild.',
-			COMMAND_POLL_NOTEXISTS: 'The poll you want to retrieve either expired or does not exist.',
-			COMMAND_POLL_NOTMANAGEABLE: 'This poll is protected and cannot be managed by anybody that is not the author nor a guild administrator.',
-			COMMAND_POLL_REMOVE: 'Successfully removed the selected poll.',
-			COMMAND_POLL_INVALID_OPTION: (options) => `Invalid option. Choose one of the following: ${options}.`,
-			COMMAND_POLL_ALREADY_VOTED: 'You have already voted to this poll!',
-			COMMAND_POLL_VOTE: 'Successfully voted! Selfdestructing this message in 10 seconds!',
-			COMMAND_POLL_MISSING_ID: 'You need to provide me the poll\'s ID!',
-			COMMAND_POLL_EMPTY_VOTES: 'Unfortunately, nobody has voted in this poll.',
-			COMMAND_PRICE_CURRENCY: (from, to, amount) => `Current ${from} price is ${amount} ${to}`,
-			COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
-			COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
-			COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',
-			COMMAND_ROLES_ABORT: (prefix) => `I looked far and wide, but I seem to not have found what you were looking for. Please run \`${prefix}roles\` for the full list!`,
-			COMMAND_ROLES_LIST_TITLE: 'List of public roles',
-			COMMAND_ROLES_ADDED: (roles) => `The following roles have been added to your profile: \`${roles}\``,
-			COMMAND_ROLES_REMOVED: (roles) => `The following roles have been removed from your profile: \`${roles}\``,
-			COMMAND_ROLES_NOT_PUBLIC: (roles) => `The following roles are not public: \`${roles}\``,
-			COMMAND_ROLES_NOT_MANAGEABLE: (roles) => `The following roles cannot be given by me due to their hierarchy role position: \`${roles}\``,
-			COMMAND_ROLES_AUDITLOG: 'Authorized: Public Role Management | \'Roles\' Command.',
-			COMMAND_DUCKDUCKGO_NOTFOUND: 'I am sorry, but DuckDuckGo API returned a blank response. Try again with different keywords.',
-			COMMAND_DUCKDUCKGO_LOOKALSO: 'Related to this topic:',
+			COMMAND_POLL_LIST_EMPTY: `${REDCROSS} No pude encontrar una encuesta activa para este servidor.`,
+			COMMAND_POLL_NOTEXISTS: `${REDCROSS} La encuesta que quieres obtener no existe o ha expirado.`,
+			COMMAND_POLL_NOTMANAGEABLE: `${REDCROSS} Esta encuesta está protegida y sólo puede ser modificada por su autor o por un administrador de este servidor.`,
+			COMMAND_POLL_REMOVE: `${GREENTICK} Eliminada la encuesta con éxito.`,
+			COMMAND_POLL_INVALID_OPTION: (options) => `${REDCROSS} Opción inválida. Por favor, elige una de las siguientes opciones: ${options}.`,
+			COMMAND_POLL_ALREADY_VOTED: `${REDCROSS} ¡Ya votaste en esta encuesta!`,
+			COMMAND_POLL_VOTE: `${GREENTICK} ¡Votado con éxito! Autodestruyendo mensaje en 10 segundos...`,
+			COMMAND_POLL_MISSING_ID: '¡Necesitas la id de la encuesta!',
+			COMMAND_POLL_EMPTY_VOTES: 'Infortunadamente, nadie ha votado en la encuesta.',
+			COMMAND_PRICE_CURRENCY: (from, to, amount) => `El precio de la cantidad seleccionada de ${from} es de ${amount} ${to}`,
+			COMMAND_PRICE_CURRENCY_NOT_FOUND: '¡Ha habido un error! Por favor, revise de nuevo la ortografía y que especificaste una moneda válida.',
+			COMMAND_QUOTE_MESSAGE: 'Esto es muy raro, pero dicho mensaje no tiene ni contenido ni imagen.',
+			COMMAND_ROLES_LIST_EMPTY: '¡Este servidor no tiene ningún rol público!',
+			COMMAND_ROLES_ABORT: (prefix) => `He buscado en todos los rincones pero no he encontrado lo que buscabas. ¡Por favor escribe \`${prefix}roles\` para recibir la lista completa!`,
+			COMMAND_ROLES_LIST_TITLE: 'Lista de roles públicos',
+			COMMAND_ROLES_ADDED: (roles) => `Los siguientes roles han sido añadidos a tu perfil: \`${roles}\``,
+			COMMAND_ROLES_REMOVED: (roles) => `Los siguientes roles han sido removidos de tu perfil: \`${roles}\``,
+			COMMAND_ROLES_NOT_PUBLIC: (roles) => `Los siguientes roles no son públicos: \`${roles}\``,
+			COMMAND_ROLES_NOT_MANAGEABLE: (roles) => `Los siguientes roles no se pudieron entregar debido a la posición jerárquica: \`${roles}\``,
+			COMMAND_ROLES_AUDITLOG: 'Autorización: Administración de Roles Públicos | Comando \'Roles\'.',
+			COMMAND_DUCKDUCKGO_NOTFOUND: 'Lo siento, pero la API de DuckDuckGo ha devuelto una respuesta en blanco. Prueba de nuevo con otras palabras.',
+			COMMAND_DUCKDUCKGO_LOOKALSO: 'Temas Relacionados:',
 
-			COMMAND_URBAN_NOTFOUND: 'I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?',
-			COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',
-			SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continue reading](${url})`,
+			COMMAND_URBAN_NOTFOUND: 'Lo siento, la palabra que buscabas no parece estar definida en UrbanDictionary. ¿Prueba con otra palabra?',
+			COMMAND_URBAN_INDEX_NOTFOUND: 'Quizás quieras probar con un número de página más pequeño.',
+			SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continúa leyendo](${url})`,
 			COMMAND_URBAN_OUTPUT: (index, pages, definition, example, author) => [
-				`→ \`Definition ::\` ${index}/${pages}\n${definition}`,
-				`→ \`Example    ::\` ${example}`,
-				`→ \`Author     ::\` ${author}`
+				`→ \`Definición ::\` ${index}/${pages}\n${definition}`,
+				`→ \`Ejemplo    ::\` ${example}`,
+				`→ \`Autor      ::\` ${author}`
 			].join('\n\n'),
 			COMMAND_WHOIS_MEMBER: (member) => [
-				`→ \`ID         ::\` **${member.id}**`,
-				`→ \`Tag        ::\` **${member.user.tag}**`,
-				`→ \`Nickname   ::\` **${member.nickname || 'Not set'}**`,
-				`→ \`Created At ::\` **${timestamp.displayUTC(member.user.createdAt)}**`,
-				`→ \`Joined     ::\` **${timestamp.displayUTC(member.joinedAt)}**`
+				`→ \`ID             ::\` **${member.id}**`,
+				`→ \`Etiqueta       ::\` **${member.user.tag}**`,
+				`→ \`Apodo          ::\` **${member.nickname || 'Not set'}**`,
+				`→ \`Fecha Creación ::\` **${timestamp.displayUTC(member.user.createdAt)}**`,
+				`→ \`Fecha Ingreso  ::\` **${timestamp.displayUTC(member.joinedAt)}**`
 			].join('\n'),
 			COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
 			COMMAND_WHOIS_USER: (user) => [
-				`→ \`ID         ::\` **${user.id}**`,
-				`→ \`Tag        ::\` **${user.tag}**`,
-				`→ \`Created At ::\` **${timestamp.displayUTC(user.createdAt)}**`
+				`→ \`ID             ::\` **${user.id}**`,
+				`→ \`Etiqueta       ::\` **${user.tag}**`,
+				`→ \`Fecha Creación ::\` **${timestamp.displayUTC(user.createdAt)}**`
 			].join('\n'),
-			COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
-			COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
-			COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',
+			COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
+			COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',
+			COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',
 
 			/**
 			 * ################
 			 * WEATHER COMMANDS
 			 */
 
-			COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
-			COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
-			COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
-			COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
-			COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
+			COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
+			COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
+			COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
+			COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
+			COMMAND_WEATHER_ERROR_UNKNOWN: 'Error Desconocido.',
 
 			/**
 			 * #############

@@ -200,9 +200,9 @@ module.exports = class extends Language {
 			COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
 			COMMAND_CONF_USER: (key, list) => `**User Setting ${key}**\n${list}`,
 			MESSAGE_PROMPT_TIMEOUT: 'La solicitud no recibió ninguna respuesta a tiempo.',
-			COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
+			COMMAND_LOAD: (time, type, name) => `${GREENTICK} Successfully loaded ${type}: ${name}. (Took: ${time})`,
 			COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
-			COMMAND_LOAD_ERROR: (type, name, error) => `❌ Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
+			COMMAND_LOAD_ERROR: (type, name, error) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 			COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 			/**
@@ -1872,9 +1872,9 @@ module.exports = class extends Language {
 			COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
 			COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
 			COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
-			COMMAND_FILTER_ADDED: (word) => `| ✅ | Success! Added the word ${word} to the filter.`,
-			COMMAND_FILTER_REMOVED: (word) => `| ✅ | Success! Removed the word ${word} from the filter.`,
-			COMMAND_FILTER_RESET: '| ✅ | Success! The filter has been reset.',
+			COMMAND_FILTER_ADDED: (word) => `${GREENTICK} Success! Added the word ${word} to the filter.`,
+			COMMAND_FILTER_REMOVED: (word) => `${GREENTICK} Success! Removed the word ${word} from the filter.`,
+			COMMAND_FILTER_RESET: `${GREENTICK} Success! The filter has been reset.`,
 			COMMAND_FILTER_SHOW_EMPTY: 'The list of filtered words is empty!',
 			COMMAND_FILTER_SHOW: (words) => `There is the list of all filtered words: ${words}`,
 			COMMAND_SETFILTERMODE_EQUALS: 'The word filter mode did not change, it was already set up with that mode.',
@@ -1982,7 +1982,7 @@ module.exports = class extends Language {
 			COMMAND_TIME_UNSUPPORTED_TIPE: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
 			COMMAND_TIME_NOT_SCHEDULED: 'This task is not scheduled.',
 			COMMAND_TIME_ABORTED: (title) => `Successfully aborted the schedule for ${title}`,
-			COMMAND_TIME_SCHEDULED: (title, user, time) => `✅ Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(time)}`,
+			COMMAND_TIME_SCHEDULED: (title, user, time) => `${GREENTICK} Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(time)}`,
 
 			/**
 			 * ###################
@@ -2046,11 +2046,11 @@ module.exports = class extends Language {
 			COMMAND_BANNER_RESET_DEFAULT: 'You are already using the default banner.',
 			COMMAND_BANNER_RESET: 'Your banner has been reset to the default.',
 			COMMAND_BANNER_SET_NOT_BOUGHT: 'You did not buy this banner yet.',
-			COMMAND_BANNER_SET: (banner) => `|\`✅\`| **Success**. You have set your banner to: __${banner}__`,
+			COMMAND_BANNER_SET: (banner) => `${GREENTICK} **Success**. You have set your banner to: __${banner}__`,
 			COMMAND_BANNER_BOUGHT: (prefix, banner) => `You already have this banner, you may want to use \`${prefix}banner set ${banner}\` to make it visible in your profile.`,
 			COMMAND_BANNER_MONEY: (money, cost) => `You do not have enough money to buy this banner. You have ${money}${SHINY}, the banner costs ${cost}${SHINY}`,
-			COMMAND_BANNER_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
-			COMMAND_BANNER_BUY: (banner) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
+			COMMAND_BANNER_PAYMENT_CANCELLED: `${REDCROSS} The payment has been cancelled.`,
+			COMMAND_BANNER_BUY: (banner) => `${GREENTICK} **Success**. You have bought the banner: __${banner}__`,
 			COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
 			COMMAND_DAILY_TIME: (time) => `El siguiente pago está disponible en: ${duration(time)}`,
 			COMMAND_DAILY_TIME_SUCCESS: (amount) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
@@ -2127,7 +2127,7 @@ module.exports = class extends Language {
 			COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 			COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
 			COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
-			COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
+			COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `${GREENTICK} **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
 			COMMAND_SOCIAL_POINTS: 'May you specify the amount of points you want to add or remove?',
 			COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) => `You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${amount === 1 ? 'point' : 'points'} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
 
@@ -2300,21 +2300,21 @@ module.exports = class extends Language {
 			 * WEEB COMMANDS
 			 */
 
-			COMMAND_WBLUSH: 'You made them blush! 😊',
-			COMMAND_WCRY: user => `Dear ${user}, did you make them cry? 💔`,
-			COMMAND_WCUDDLE: user => `Here is a cuddle for you, ${user} 💞`,
-			COMMAND_WDANCE: 'Dancing! 💃',
-			COMMAND_WHUG: user => `Here is a nice hug for you, ${user} ❤`,
-			COMMAND_WKISS: user => `Here is a kiss for you, ${user} 💜`,
-			COMMAND_WLICK: user => `Licking ${user} 👅`,
+			COMMAND_WBLUSH: '¡Le/a ruborizaste! 😊',
+			COMMAND_WCRY: user => `Querido ${user}, ¿le/a hiciste llorar? 💔`,
+			COMMAND_WCUDDLE: user => `Ahí va un abracito para tí, ${user} 💞`,
+			COMMAND_WDANCE: '¡Olé! 💃',
+			COMMAND_WHUG: user => `¡Un abrazo! ${user} ❤`,
+			COMMAND_WKISS: user => `¡Un besito! ${user} 💜`,
+			COMMAND_WLICK: user => `Lamiendo ${user} 👅`,
 			COMMAND_WNOM: `Nom, nom, nom! 😊`,
-			COMMAND_WNEKO: `Nya! 🐱`,
-			COMMAND_WPAT: user => `Gently pats ${user}'s head ❤`,
-			COMMAND_WPOUT: `Uh?`,
-			COMMAND_WSLAP: user => `Slapping ${user}!`,
-			COMMAND_WSMUG: `There's a smug face!`,
-			COMMAND_WSTARE: user => `Dear ${user}, somebody is staring at you 👀`,
-			COMMAND_WTICKLE: user => `Tickles for you, ${user}!`,
+			COMMAND_WNEKO: `Miau! 🐱`,
+			COMMAND_WPAT: user => `\\*Da palmaditas en la cabeza de ${user}\\* ❤`,
+			COMMAND_WPOUT: `¿Oh?`,
+			COMMAND_WSLAP: user => `¡Abofeteando ${user}!`,
+			COMMAND_WSMUG: `\\*Sonríe con superioridad\\*`,
+			COMMAND_WSTARE: user => `Querido ${user}... hay alguien observándote 👀`,
+			COMMAND_WTICKLE: user => `Cosquillitas para tí, ${user}!`,
 
 			/**
 			 * #################################
@@ -2322,22 +2322,22 @@ module.exports = class extends Language {
 			 * #################################
 			 */
 
-			CONST_MONITOR_INVITELINK: 'Invite link',
+			CONST_MONITOR_INVITELINK: 'Enlace Invitación',
 			CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
-			CONST_MONITOR_WORDFILTER: 'Filtered Word',
-			CONST_MONITOR_CAPSFILTER: 'Too Many UpperCases',
-			CONST_MONITOR_ATTACHMENTFILTER: 'Too Many Attachments',
-			MONITOR_NOINVITE: (user) => `|\`❌\`| Dear ${user}, invite links aren't allowed here.`,
+			CONST_MONITOR_WORDFILTER: 'Palabra Filtrada',
+			CONST_MONITOR_CAPSFILTER: 'Demasiadas Mayúsculas',
+			CONST_MONITOR_ATTACHMENTFILTER: 'Demasiados Documentos',
+			MONITOR_NOINVITE: (user) => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
 			MONITOR_WORDFILTER_DM: (filtered) => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
-			MONITOR_CAPSFILTER_DM: (message) => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,
-			MONITOR_WORDFILTER: (user) => `|\`❌\`| Pardon, dear ${user}, you said something that is not allowed in this server.`,
-			MONITOR_CAPSFILTER: (user) => `|\`❌\`| EEEOOO ${user}! PLEASE DO NOT SHOUT IN THIS PLACE! YOU HAVE HIT THE CAPS LIMIT!`,
+			MONITOR_CAPSFILTER_DM: (message) => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
+			MONITOR_WORDFILTER: (user) => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
+			MONITOR_CAPSFILTER: (user) => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
 			MONITOR_NMS_MESSAGE: (user) => [
-				`The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
-				"Do not worry! I'm here to help you! 😄"
+				`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
+				'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
 			].join('\n'),
-			MONITOR_NMS_MODLOG: (threshold, amount) => `[NOMENTIONSPAM] Threshold: ${threshold}. Reached: ${amount}`,
-			MONITOR_SOCIAL_ACHIEVEMENT: 'Congratulations dear %MEMBER%, you achieved the role %ROLE%',
+			MONITOR_NMS_MODLOG: (threshold, amount) => `[NOMENTIONSPAM] Límite: ${threshold}. Alcanzado: ${amount}`,
+			MONITOR_SOCIAL_ACHIEVEMENT: '¡Felicidades %MEMBER! ¡Has logrado el rol %ROLE%!',
 
 			/**
 			 * #################################
@@ -2345,7 +2345,7 @@ module.exports = class extends Language {
 			 * #################################
 			 */
 
-			INHIBITOR_SPAM: (channel) => `Can we move to ${channel} please? This command might be too spammy and can ruin other people's conversations.`,
+			INHIBITOR_SPAM: (channel) => `¿Podemos movernos al canal ${channel}, por favor? Este comando puede ser muy molesto y arruinar las conversaciones de otras personas.`,
 
 			/**
 			 * #################################
@@ -2353,50 +2353,48 @@ module.exports = class extends Language {
 			 * #################################
 			 */
 
-			RESOLVER_DATE_SUFFIX: ' seconds',
+			RESOLVER_DATE_SUFFIX: ' segundos',
 			POWEREDBY_WEEBSH: 'Powered by weeb.sh',
-			PREFIX_REMINDER: (prefix) => `The prefix in this guild is set to: \`${prefix}\``,
+			PREFIX_REMINDER: (prefix) => `El prefijo de este servidor está configurado a: \`${prefix}\``,
 
-			UNEXPECTED_ISSUE: 'An unexpected error popped up! Safely aborting this command...',
+			UNEXPECTED_ISSUE: '¡Algo inesperado pasó! Cancelando este comando...',
 
-			COMMAND_DM_NOT_SENT: 'I cannot send you a message in DMs, did you block me?',
-			COMMAND_DM_SENT: 'I have sent you the message in DMs.',
-			COMMAND_ROLE_HIGHER_SKYRA: 'The selected member has a role position that is higher than or equal to mine.',
-			COMMAND_ROLE_HIGHER: 'The selected member has a role position that is higher than or equal to yours.',
-			COMMAND_SUCCESS: 'Successfully executed the command.',
-			COMMAND_TOSKYRA: 'Why... I thought you loved me! 💔',
-			COMMAND_USERSELF: 'Why would you do that to yourself?',
+			COMMAND_DM_NOT_SENT: 'No te he podido enviar el mensaje en mensaje directo... ¿me has bloqueado?',
+			COMMAND_DM_SENT: 'Te he enviado la información a través de un mensaje directo.',
+			COMMAND_ROLE_HIGHER_SKYRA: 'El miembro seleccionado tiene una posición jerárquica más alta o igual que el mío.',
+			COMMAND_ROLE_HIGHER: 'El miembro seleccionado tiene una posición jerárquica más alta o igual al tuyo.',
+			COMMAND_SUCCESS: 'Ejecutado el comando con éxito.',
+			COMMAND_TOSKYRA: '¿Por qué...? ¡Pensaba que me amabas! 💔',
+			COMMAND_USERSELF: '¿Por qué te harías eso a tí mismo?',
 
 			SYSTEM_FETCHING: pick([
-				`${LOADING} Downloading data...`,
-				`${LOADING} Fetching Commander Data...`,
-				`${LOADING} Chasing after starships...`
+				`${LOADING} Descargando datos...`,
+				`${LOADING} Buscando al Comandante Data...`,
+				`${LOADING} Persiguiendo otras naves estelares...`
 			]),
-			SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
-			SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
-			SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the **${PERMS.BAN_MEMBERS}** permission?`,
+			SYSTEM_HIGHEST_ROLE: 'La posición del rol es más alta o equivalente al mío, por lo tanto no puedo concederlo a nadie.',
+			SYSTEM_CHANNEL_NOT_POSTABLE: 'No tengo permisos para mandar mensajes a éste canal.',
+			SYSTEM_FETCHBANS_FAIL: `He fallado al buscar la lista de baneos. ¿Tengo el permiso **${PERMS.BAN_MEMBERS}**?`,
 			SYSTEM_LOADING: pick([
-				`${LOADING} Watching hamsters run...`,
-				`${LOADING} Finding people at hide-and-seek...`,
-				`${LOADING} Trying to figure out this command...`,
-				`${LOADING} Fetching data from the cloud...`,
-				`${LOADING} Calibrating lenses...`,
-				`${LOADING} Playing rock, scissors, paper...`
+				`${LOADING} Observando a los hamsters correr...`,
+				`${LOADING} Encontrando a los jugadores en el escondite...`,
+				`${LOADING} Intentando resolver este comando...`,
+				`${LOADING} Buscando data desde la nube...`,
+				`${LOADING} Calibrando lentes...`,
+				`${LOADING} Jugando a Piedra, Papel, Tijeras...`
 			]),
-			SYSTEM_ERROR: 'Something happened!',
-			SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
-			SYSTEM_NOTENOUGH_PARAMETERS: `I am sorry, but you did not provide enough parameters...`,
-			SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: '**Aborting mute role creation**: There is already one that exists.',
-			SYSTEM_GUILD_MUTECREATE_TOOMANYROLES: '**Aborting mute role creation**: There are 250 roles in this guild, you need to delete one role.',
-			SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels} to ${role}...`,
-			SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied) => denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ',
-			SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permissions applied for ${accepted} channels${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
+			SYSTEM_MESSAGE_NOT_FOUND: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
+			SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: '**Cancelando la creación del rol de mute**: Ya existe un rol de mute.',
+			SYSTEM_GUILD_MUTECREATE_TOOMANYROLES: '**Cancelando la creación del rol de mute**: Hay 250 roles en este servidor, necesitas borrar uno.',
+			SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
+			SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied) => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
+			SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 
-			STARBOARD_JUMPTO: 'Jump to Message ►',
+			STARBOARD_JUMPTO: 'Salta al Mensaje ►',
 
-			RESOLVER_INVALID_CHANNELNAME: (name) => `${name} must be a valid channel name, id, or tag.`,
-			RESOLVER_INVALID_ROLENAME: (name) => `${name} must be a valid role name, id, or mention.`,
-			RESOLVER_INVALID_USERNAME: (name) => `${name} must be a valid user name, id, or mention.`,
+			RESOLVER_INVALID_CHANNELNAME: (name) => `${name} debe ser una mención, nombre, o id válido de un canal.`,
+			RESOLVER_INVALID_ROLENAME: (name) => `${name} debe ser una mención, nombre, o id válido de un rol.`,
+			RESOLVER_INVALID_USERNAME: (name) => `${name} debe ser una mención, nombre, o id válido de un usuario.`,
 
 			LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 

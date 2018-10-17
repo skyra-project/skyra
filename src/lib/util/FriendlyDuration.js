@@ -59,7 +59,7 @@ class FriendlyDuration {
 		for (const type of UNIT_TYPES)
 			if (result[type]) output.push(FriendlyDuration._addUnit(result[type], assets[type]));
 
-		return output.join(' ');
+		return output.join(' ') || FriendlyDuration._addUnit(0, assets.SECOND);
 	}
 
 	/**

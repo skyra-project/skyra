@@ -12,7 +12,7 @@ module.exports = class extends Event {
 		this.client.emit('guildMessageLog', message.channel.nsfw ? MESSAGE_LOGS.kNSFWMessage : MESSAGE_LOGS.kMessage, guild, () => new MessageEmbed()
 			.setColor(0xFFAB40)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL())
-			.setDescription(message.language.get('EVENTS_MESSAGE_DELETE_MSG', cutText(getContent(message) || '', 1900)))
+			.setDescription(cutText(getContent(message) || '', 1900))
 			.setFooter(`${message.language.get('EVENTS_MESSAGE_DELETE')} • ${message.channel.name}`)
 			.setImage(getImage(message))
 			.setTimestamp());

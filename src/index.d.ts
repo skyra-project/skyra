@@ -17,23 +17,24 @@ import {
 	KlasaUser,
 	Language,
 	Monitor,
+	MultiArgument,
 	PermissionLevelOptions,
 	PermissionLevels,
 	Piece,
 	Possible,
 	Provider,
+	ProviderStore,
+	ReactionHandler,
+	RichDisplay,
+	RichDisplayRunOptions,
 	Schema,
+	SchemaPiece,
 	Settings,
+	SettingsUpdateOptions,
 	Store,
 	Task,
 	Timestamp,
 	util as KlasaUtil,
-	ProviderStore,
-	RichDisplay,
-	ReactionHandler,
-	RichDisplayRunOptions,
-	SchemaPiece,
-	SettingsUpdateOptions,
 } from 'klasa';
 import {
 	BanOptions,
@@ -105,9 +106,9 @@ export {
 	Schema,
 	SchemaFolder,
 	SchemaPiece,
-	Settings,
 	Serializer,
 	SerializerStore,
+	Settings,
 	SQLProvider,
 	Stopwatch,
 	Store,
@@ -116,7 +117,7 @@ export {
 	TextPrompt,
 	Timestamp,
 	Type,
-	Usage
+	Usage,
 } from 'klasa';
 export {
 	Activity,
@@ -187,7 +188,7 @@ export const config: SkyraConfiguration;
 // @ts-ignore
 export class Skyra extends KlasaClient {
 	public constructor(options?: SkyraClientOptions);
-	public options: SkyraClientOptions;
+	public options: Required<SkyraClientOptions>;
 	public users: SkyraUserStore;
 	public guilds: SkyraGuildStore;
 	// @ts-ignore
@@ -589,6 +590,16 @@ export class ConnectFourManager {
 	public alloc(channel: Snowflake, challenger: SkyraUser, challengee: SkyraUser): (accept: boolean) => ConnectFour | null;
 	public create(channel: Snowflake, challenger: SkyraUser, challengee: SkyraUser): ConnectFour;
 	private _alloc(channel: Snowflake, challenger: SkyraUser, challengee: SkyraUser, accept: boolean): ConnectFour | null;
+}
+
+export class HungerGamesUsage {
+	public constructor(usage: string);
+	public tributes: number;
+	public deaths: Set<number>;
+	private parts: Array<number | string>;
+	public display(...values: Array<string>): string;
+	private parse(usage: string): void;
+	public static create(usage: string): HungerGamesUsage;
 }
 
 export class Slotmachine {
@@ -1225,6 +1236,14 @@ declare abstract class SkyraArgument extends Argument {
 }
 
 export { SkyraArgument as Argument };
+
+
+declare abstract class SkyraMultiArgument extends MultiArgument {
+	// @ts-ignore
+	public client: Skyra;
+}
+
+export { SkyraMultiArgument as MultiArgument };
 
 declare abstract class SkyraEvent extends Event {
 	// @ts-ignore

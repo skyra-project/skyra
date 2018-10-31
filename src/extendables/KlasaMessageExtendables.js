@@ -15,11 +15,11 @@ module.exports = class extends Extendable {
 		return responses.first();
 	}
 
-	async ask(content, options) {
+	async ask(content, options, promptOptions) {
 		const message = await this.send(content, options);
 		return !this.guild || this.channel.permissionsFor(this.guild.me).has(FLAGS.ADD_REACTIONS)
-			? awaitReaction(this, message)
-			: awaitMessage(this);
+			? awaitReaction(this, message, promptOptions)
+			: awaitMessage(this, promptOptions);
 	}
 
 	alert(content, options, timer) {
@@ -50,10 +50,10 @@ const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
-async function awaitReaction(msg, message) {
+async function awaitReaction(msg, message, promptOptions = OPTIONS) {
 	await message.react(REACTIONS.YES);
 	await message.react(REACTIONS.NO);
-	const reactions = await message.awaitReactions((__, user) => user === msg.author, OPTIONS);
+	const reactions = await message.awaitReactions((__, user) => user === msg.author, promptOptions);
 
 	// Remove all reactions if the user has permissions to do so
 	if (msg.guild && msg.channel.permissionsFor(msg.guild.me).has(FLAGS.MANAGE_MESSAGES))
@@ -62,8 +62,8 @@ async function awaitReaction(msg, message) {
 	return reactions.size && reactions.firstKey() === REACTIONS.YES;
 }
 
-async function awaitMessage(msg) {
-	const messages = await msg.channel.awaitMessages(mes => mes.author === msg.author, OPTIONS);
+async function awaitMessage(msg, promptOptions = OPTIONS) {
+	const messages = await msg.channel.awaitMessages(mes => mes.author === msg.author, promptOptions);
 	return messages.size && REG_ACCEPT.test(messages.first().content);
 }
 

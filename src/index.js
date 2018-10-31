@@ -64,6 +64,7 @@ module.exports = {
 	// Games
 	ConnectFour: require('./lib/util/Games/ConnectFour'),
 	ConnectFourManager: require('./lib/util/Games/ConnectFourManager'),
+	HungerGamesUsage: require('./lib/util/Games/HungerGamesUsage'),
 	Slotmachine: require('./lib/util/Games/Slotmachine'),
 
 	// Ratelimits

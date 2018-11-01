@@ -1780,6 +1780,7 @@ module.exports = class extends Language {
 			COMMAND_GAMES_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
 			COMMAND_GAMES_SELF: 'You must be so sad to play against yourself. Try again with another user.',
 			COMMAND_GAMES_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
+			COMMAND_GAMES_TOO_MANY_OR_FEW: (min, max) => `I am sorry but the amount of players is less than ${min} or greater than ${max}.`,
 			COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 			COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 			COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',

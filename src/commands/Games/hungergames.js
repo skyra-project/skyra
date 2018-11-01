@@ -20,7 +20,7 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
 			runIn: ['text'],
-			usage: '<user:string{6,50}> [...]',
+			usage: '<user:string{2,50}> [...]',
 			usageDelim: ' '
 		});
 
@@ -31,6 +31,7 @@ module.exports = class extends Command {
 		const filtered = new Set(tributes);
 		if (filtered.size !== tributes.length) throw msg.language.get('COMMAND_GAMES_REPEAT');
 		if (this.playing.has(msg.channel.id)) throw msg.language.get('COMMAND_GAMES_PROGRESS');
+		if (tributes.length < 4 || tributes.length > 48) throw msg.language.get('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
 		this.playing.add(msg.channel.id);
 
 		try {

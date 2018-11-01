@@ -14,7 +14,7 @@ module.exports = class extends Command {
 
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
-			aliases: ['hunger-games'],
+			aliases: ['hunger-games', 'hg'],
 			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 0,
 			description: (language) => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),

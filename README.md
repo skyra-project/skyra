@@ -1,6 +1,8 @@
-# Skyra 4.0.0
+# Skyra 4.0.0 [![Discord](https://discordapp.com/api/guilds/254360814063058944/embed.png)](https://skyradiscord.com/join)
 
 [![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
+[![Discord Bots](https://discordbots.org/api/widget/servers/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
+[![Discord Bots](https://discordbots.org/api/widget/upvotes/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 
 This repository holds the private code for Skyra. Using, sharing, duplicating, or any other forms of redistrubition of this code without permission is strictly forbidden.
 

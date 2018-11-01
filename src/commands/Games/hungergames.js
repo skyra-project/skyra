@@ -20,7 +20,7 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
 			runIn: ['text'],
-			usage: '<user:string{,50}> [...]',
+			usage: '<user:string{6,50}> [...]',
 			usageDelim: ' '
 		});
 
@@ -37,7 +37,7 @@ module.exports = class extends Command {
 			const game = Object.seal({
 				bloodbath: true,
 				sun: true,
-				tributes: new Set(this.shuffle([...filtered])),
+				tributes: this.shuffle([...filtered]),
 				turn: 0
 			});
 			while (game.tributes.size > 1) {
@@ -90,22 +90,29 @@ module.exports = class extends Command {
 		if (amount === 0) return [];
 		if (amount === 1) return [tribute];
 		const array = [...turn];
-		const result = [tribute];
 		array.splice(array.indexOf(tribute), 1);
-		for (let i = 1; i < amount; i++) [result[i]] = array.splice(Math.floor(Math.random() * array.length), 1);
-		return result;
+
+		let m = array.length;
+		while (m) {
+			const i = Math.floor(Math.random() * m--);
+			[array[m], array[i]] = [array[i], array[m]];
+		}
+		array.unshift(tribute);
+		return array.slice(0, amount);
 	}
 
 	makeResultEvents(msg, game, events) {
 		const results = [];
 		const deaths = [];
+		let maxDeaths = this.calculateMaxDeaths(game);
+
 		const turn = new Set([...game.tributes]);
 		for (const tribute of game.tributes) {
 			// If the player already had its turn, skip
 			if (!turn.has(tribute)) continue;
 
 			// Pick a valid event
-			const event = this.pick(events, turn.size, deaths.length === 0 ? game.tributes.size <= 8 ? 2 : game.tributes.size / 2 : 1);
+			const event = this.pick(events, turn.size, maxDeaths);
 
 			// Pick the tributes
 			const pickedTributes = this.pickTributes(tribute, turn, event.tributes);
@@ -118,6 +125,7 @@ module.exports = class extends Command {
 			for (const death of event.deaths) {
 				game.tributes.delete(pickedTributes[death]);
 				deaths.push(pickedTributes[death]);
+				maxDeaths--;
 			}
 
 			// Push the result of this match
@@ -128,14 +136,30 @@ module.exports = class extends Command {
 	}
 
 	shuffle(tributes) {
-		const arr = tributes.slice(0);
-		for (let i = arr.length - 1; i >= 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			const temp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = temp;
+		let m = tributes.length;
+		while (m) {
+			const i = Math.floor(Math.random() * m--);
+			[tributes[m], tributes[i]] = [tributes[i], tributes[m]];
 		}
 		return new Set(tributes);
+	}
+
+	calculateMaxDeaths(game) {
+		// If there are more than 16 tributes, perform a large blood bath
+		return game.tributes.size >= 16
+			// For 16 people, 4 die, 36 -> 6, and so on keeps the game interesting.
+			// If it's in bloodbath, perform 50% more deaths.
+			? Math.ceil(Math.sqrt(game.tributes.size) * game.bloodbath ? 1.5 : 1)
+			// If there are more than 7 tributes, proceed to kill them in 4 or more.
+			: game.tributes.size > 7
+				// If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.
+				? game.bloodbath
+					? Math.ceil(Math.min(game.tributes.size - 3, Math.sqrt(game.tributes.size) * 2))
+					: 4
+				// If there are 4 tributes, eliminate 2, else 1 (3 -> 2, 2 -> 1)
+				: game.tributes.size === 4
+					? 2
+					: 1;
 	}
 
 };

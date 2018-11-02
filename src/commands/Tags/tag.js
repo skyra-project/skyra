@@ -50,7 +50,7 @@ module.exports = class extends Command {
 	async add(message, [tagName, content]) {
 		if (!await message.hasAtLeastPermissionLevel(4)) throw message.language.get('COMMAND_TAG_PERMISSIONLEVEL');
 		if (message.guild.settings.tags.some(([name]) => name === tagName)) throw message.language.get('COMMAND_TAG_EXISTS', tagName);
-		if (!content.length) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
+		if (!content) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
 		await message.guild.settings.update('tags', [...message.guild.settings.tags, [tagName, content]], { action: 'overwrite' });
 		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, content]);
 	}
@@ -65,7 +65,7 @@ module.exports = class extends Command {
 
 	async edit(message, [tagName, content]) {
 		if (!await message.hasAtLeastPermissionLevel(4)) throw message.language.get('COMMAND_TAG_PERMISSIONLEVEL');
-		if (!content.length) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
+		if (!content) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
 		const index = message.guild.settings.tags.findIndex(([name]) => name === tagName);
 		if (index === -1) throw message.language.get('COMMAND_TAG_NOTEXISTS', tagName);
 		await message.guild.settings.update('tags', [tagName, content], { arrayPosition: index });

@@ -471,7 +471,7 @@ module.exports = class extends Language {
 			COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
 			COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
 				extendedHelp: `Enough discussion, let the games begin!`,
-				examples: ['Skyra', 'Katniss', 'Peeta', 'Clove', 'Cato', 'Johanna', 'Brutus', 'Blight']
+				examples: ['Skyra Katniss Peeta Clove Cato Johanna Brutus Blight']
 			}),
 			COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
 			COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {

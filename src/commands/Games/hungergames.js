@@ -1,6 +1,5 @@
-const { Command, klasaUtil: { chunk } } = require('../../index');
-
-const RESPONSE_OPTIONS = { time: 120000, errors: ['time'], max: 1 };
+const { Command, klasaUtil: { chunk }, LongLivingReactionCollector } = require('../../index');
+const EMOJIS = ['🇳', '🇾'];
 
 module.exports = class extends Command {
 
@@ -34,13 +33,27 @@ module.exports = class extends Command {
 		if (tributes.length < 4 || tributes.length > 48) throw msg.language.get('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
 		this.playing.add(msg.channel.id);
 
+		let resolve = null;
+		let gameMessage = null;
+		const game = Object.seal({
+			bloodbath: true,
+			sun: true,
+			tributes: this.shuffle([...filtered]),
+			turn: 0,
+			llrc: new LongLivingReactionCollector(this.client, (reaction) => {
+				if (!gameMessage || typeof resolve !== 'function') return;
+				if (reaction.userID === msg.author.id && reaction.messageID === gameMessage.id && EMOJIS.includes(reaction.emoji.name)) {
+					game.llrc.setTime(120000);
+					resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
+					resolve = null;
+				}
+			}, () => {
+				if (typeof resolve === 'function') resolve(false);
+				this.playing.delete(msg.channel.id);
+			})
+		});
+
 		try {
-			const game = Object.seal({
-				bloodbath: true,
-				sun: true,
-				tributes: this.shuffle([...filtered]),
-				turn: 0
-			});
 			while (game.tributes.size > 1) {
 				// If it's not bloodbath and it became the day, increase the turn
 				if (!game.bloodbath && game.sun) game.turn++;
@@ -52,9 +65,12 @@ module.exports = class extends Command {
 
 				// Ask for the user to proceed
 				for (const text of texts) {
-					const verification = await msg.ask(text, {}, RESPONSE_OPTIONS);
+					gameMessage = await msg.channel.send(text);
+					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji);
+					const verification = await new Promise((res) => { resolve = res; });
+					gameMessage.nuke().catch(error => this.client.emit('apiError', error));
 					if (!verification) {
-						this.playing.delete(msg.channel.id);
+						game.llrc.end();
 						return msg.sendLocale('COMMAND_HG_STOP');
 					}
 				}
@@ -63,10 +79,10 @@ module.exports = class extends Command {
 			}
 
 			// The match finished with one remaining player
-			this.playing.delete(msg.channel.id);
+			game.llrc.end();
 			return msg.sendLocale('COMMAND_HG_WINNER', [game.tributes.values().next().value]);
 		} catch (err) {
-			this.playing.delete(msg.channel.id);
+			game.llrc.end();
 			throw err;
 		}
 	}

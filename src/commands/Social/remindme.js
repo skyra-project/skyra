@@ -37,7 +37,7 @@ module.exports = class extends Command {
 		if (!tasks.length) return msg.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(msg.member.displayColor)
+			.setColor(msg.member ? msg.member.displayColor : parseInt(msg.author.settings.color, 16))
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL()));
 
 		const pages = chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);

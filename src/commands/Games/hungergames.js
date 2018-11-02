@@ -3,14 +3,6 @@ const EMOJIS = ['🇳', '🇾'];
 
 module.exports = class extends Command {
 
-	/**
-	 * @typedef {Object} HungerGamesContext
-	 * @property {boolean} bloodbath
-	 * @property {boolean} sun
-	 * @property {string[]} tributes
-	 * @property {number} turn
-	 */
-
 	constructor(client, store, file, directory) {
 		super(client, store, file, directory, {
 			aliases: ['hunger-games', 'hg'],

@@ -535,6 +535,7 @@ declare class Util {
 	public static oneToTen(level: number): UtilOneToTenEntry;
 	public static parseRange(input: string): Array<number>;
 	public static pick<T>(array: T[]): () => T;
+	public static cleanMentions(message: SkyraMessage, input: string): string;
 	public static removeMute(guild: SkyraGuild, member: Snowflake): Promise<boolean>;
 	public static resolveEmoji(emoji: string | { name: string, id: Snowflake | null, animated: boolean }): string | null;
 	public static softban(guild: SkyraGuild, moderator: SkyraUser, target: SkyraUser, reason?: string, days?: number): Promise<ModerationManagerEntry>;

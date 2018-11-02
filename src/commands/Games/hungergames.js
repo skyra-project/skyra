@@ -185,7 +185,7 @@ module.exports = class extends Command {
 		return game.tributes.size >= 16
 			// For 16 people, 4 die, 36 -> 6, and so on keeps the game interesting.
 			// If it's in bloodbath, perform 50% more deaths.
-			? Math.ceil(Math.sqrt(game.tributes.size) * game.bloodbath ? 1.5 : 1)
+			? Math.ceil(Math.sqrt(game.tributes.size) * (game.bloodbath ? 1.5 : 1))
 			// If there are more than 7 tributes, proceed to kill them in 4 or more.
 			: game.tributes.size > 7
 				// If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.

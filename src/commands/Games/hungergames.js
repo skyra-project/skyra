@@ -43,7 +43,6 @@ module.exports = class extends Command {
 			llrc: new LongLivingReactionCollector(this.client, (reaction) => {
 				if (!gameMessage || typeof resolve !== 'function') return;
 				if (reaction.userID === msg.author.id && reaction.messageID === gameMessage.id && EMOJIS.includes(reaction.emoji.name)) {
-					game.llrc.setTime(120000);
 					resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
 					resolve = null;
 				}
@@ -65,6 +64,7 @@ module.exports = class extends Command {
 
 				// Ask for the user to proceed
 				for (const text of texts) {
+					game.llrc.setTime(120000);
 					gameMessage = await msg.channel.send(text);
 					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji);
 					const verification = await new Promise((res) => { resolve = res; });

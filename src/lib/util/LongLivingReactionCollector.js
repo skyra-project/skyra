@@ -31,7 +31,7 @@ class LongLivingReactionCollector {
 
 	setTime(time) {
 		if (this._timer) clearTimeout(this._timer);
-		this.timer = setTimeout(() => this.end(), time);
+		this._timer = setTimeout(() => this.end(), time);
 		return this;
 	}
 

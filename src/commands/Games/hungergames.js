@@ -1,4 +1,4 @@
-const { Command, klasaUtil: { chunk }, LongLivingReactionCollector, util: { cleanMentions } } = require('../../index');
+const { Command, klasaUtil: { chunk }, LongLivingReactionCollector, util: { cleanMentions }, KlasaMessage } = require('../../index');
 const EMOJIS = ['🇳', '🇾'];
 
 module.exports = class extends Command {
@@ -18,6 +18,32 @@ module.exports = class extends Command {
 		this.playing = new Set();
 	}
 
+	async collectorInhibitor(msg, gameMessage, reaction) {
+		// If there's no gameMessage, inhibit
+		if (!gameMessage) return true;
+
+		// If the message reacted is not the game's, inhibit
+		if (reaction.messageID !== gameMessage.id) return true;
+
+		// If the emoji reacted is not valid, inhibit
+		if (!EMOJIS.includes(reaction.emoji.name)) return true;
+
+		// If the user who reacted is the author, don't inhibit
+		if (reaction.userID === msg.author.id) return false;
+
+		try {
+			// Fetch the member for level measuring purposes
+			const member = await msg.guild.members.fetch(reaction.userID);
+			// Check if the user is a moderator
+			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call({
+				author: member.user, member, guild: member.guild, client: this.client
+			}, 5);
+			return !hasLevel;
+		} catch (__) {
+			return true;
+		}
+	}
+
 	async run(msg, tributes) {
 		const filtered = new Set(tributes);
 		if (filtered.size !== tributes.length) throw msg.language.get('COMMAND_GAMES_REPEAT');
@@ -32,12 +58,13 @@ module.exports = class extends Command {
 			sun: true,
 			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, msg))),
 			turn: 0,
-			llrc: new LongLivingReactionCollector(this.client, (reaction) => {
-				if (!gameMessage || typeof resolve !== 'function') return;
-				if (reaction.userID === msg.author.id && reaction.messageID === gameMessage.id && EMOJIS.includes(reaction.emoji.name)) {
-					resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
-					resolve = null;
-				}
+			llrc: new LongLivingReactionCollector(this.client, async (reaction) => {
+				// Ignore if resolve is not ready
+				if (typeof resolve !== 'function'
+					// Run the collector inhibitor
+					|| await this.collectorInhibitor(msg, gameMessage, reaction)) return;
+				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
+				resolve = null;
 			}, () => {
 				if (typeof resolve === 'function') resolve(false);
 				this.playing.delete(msg.channel.id);

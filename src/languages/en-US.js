@@ -468,6 +468,11 @@ module.exports = class extends Language {
 					game in which the players first choose a color and then take turns dropping colored discs from the top into a
 					seven-column, ~~six~~ five-row vertically suspended grid.`
 			}),
+			COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
+			COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
+				extendedHelp: `Enough discussion, let the games begin!`,
+				examples: ['Skyra', 'Katniss', 'Peeta', 'Clove', 'Cato', 'Johanna', 'Brutus', 'Blight']
+			}),
 			COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
 			COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
 				extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two

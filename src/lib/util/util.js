@@ -308,6 +308,35 @@ class Util {
 		return Array.from({ length: max - min + 1 }, (_, index) => min + index);
 	}
 
+	/**
+	 * Clean all mentions from a content
+	 * @param {SKYRA.SkyraMessage} message The message
+	 * @param {string} input The input to clean
+	 * @returns {string}
+	 */
+	static cleanMentions(message, input) {
+		return input
+			.replace(/@(here|everyone)/g, '@\u200B$1')
+			.replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
+				switch (type) {
+					case '@':
+					case '@!': {
+						const usertag = message.client.usernames.get(id);
+						return usertag ? `@${usertag.slice(0, usertag.lastIndexOf('#'))}` : match;
+					}
+					case '@&': {
+						const role = message.guild ? message.guild.roles.get(id) : null;
+						return role ? `@${role.name}` : match;
+					}
+					case '#': {
+						const channel = message.guild ? message.guild.channels.get(id) : null;
+						return channel ? `#${channel.name}` : match;
+					}
+					default: return match;
+				}
+			});
+	}
+
 	// Utils for i18n
 
 	/**

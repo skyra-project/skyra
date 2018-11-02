@@ -132,7 +132,7 @@ module.exports = class Skyra extends Client {
 		/**
 		 * The LongLivingReactionCollector set
 		 * @since 4.0.0
-		 * @type {Set<LongLivingReactionCollector>}
+		 * @type {Set<SKYRA.LongLivingReactionCollector>}
 		 */
 		this.llrCollectors = new Set();
 

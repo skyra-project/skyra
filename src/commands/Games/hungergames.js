@@ -1,4 +1,4 @@
-const { Command, klasaUtil: { chunk }, LongLivingReactionCollector } = require('../../index');
+const { Command, klasaUtil: { chunk }, LongLivingReactionCollector, util: { cleanMentions } } = require('../../index');
 const EMOJIS = ['🇳', '🇾'];
 
 module.exports = class extends Command {
@@ -38,7 +38,7 @@ module.exports = class extends Command {
 		const game = Object.seal({
 			bloodbath: true,
 			sun: true,
-			tributes: this.shuffle([...filtered]),
+			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, msg))),
 			turn: 0,
 			llrc: new LongLivingReactionCollector(this.client, (reaction) => {
 				if (!gameMessage || typeof resolve !== 'function') return;

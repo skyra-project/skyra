@@ -8,7 +8,8 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_DM_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
-			usage: '<user:user> <message:...string>'
+			usage: '<user:user> <message:...string>',
+			usageDelim: ' '
 		});
 	}
 

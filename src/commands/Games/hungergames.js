@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
 			runIn: ['text'],
 			usage: '<user:string{2,50}> [...]',
-			usageDelim: ' '
+			usageDelim: ','
 		});
 
 		this.playing = new Set();

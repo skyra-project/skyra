@@ -28,26 +28,12 @@ class Util {
 	 * @param {Readable} stream The readable stream to read
 	 * @returns {Promise<Buffer>}
 	 */
-	static streamToBuffer(stream) {
+	static async streamToBuffer(stream) {
 		if (!(stream instanceof Readable)) throw new TypeError(`Expected stream to be a Readable stream, got: ${new Type(stream)}`);
 
-		return new Promise((res, rej) => {
-			const array = [];
-
-			function onData(data) {
-				array.push(data);
-			}
-
-			function finish(error) {
-				stream.removeAllListeners();
-				return error ? rej(error) : res(Buffer.concat(array));
-			}
-
-			stream.on('data', onData);
-			stream.on('end', finish);
-			stream.on('error', finish);
-			stream.on('close', finish);
-		});
+		const data = [];
+		for await (const buffer of stream) data.push(buffer);
+		return Buffer.concat(data);
 	}
 
 	/**

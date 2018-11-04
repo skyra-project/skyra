@@ -31,6 +31,9 @@ module.exports = class extends Command {
 		// If the user who reacted is the author, don't inhibit
 		if (reaction.userID === msg.author.id) return false;
 
+		// Don't listen to herself
+		if (reaction.userID === this.client.user.id) return true;
+
 		try {
 			// Fetch the member for level measuring purposes
 			const member = await msg.guild.members.fetch(reaction.userID);

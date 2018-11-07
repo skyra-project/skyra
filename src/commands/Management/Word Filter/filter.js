@@ -11,7 +11,7 @@ module.exports = class extends Command {
 			permissionLevel: 5,
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|remove|reset|show:default> [word:string]',
+			usage: '<add|remove|reset|show:default> (word:word)',
 			usageDelim: ' '
 		});
 

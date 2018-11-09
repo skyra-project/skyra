@@ -95,7 +95,7 @@ module.exports = class MemorySweeper extends Task {
 			`${HEADER} ${
 				this.setColor(presences)} [Presence]s | ${
 				this.setColor(guildMembers)} [GuildMember]s | ${
-				this.setColor(voiceStates)} [Voice States] | ${
+				this.setColor(voiceStates)} [Voice State]s | ${
 				this.setColor(users)} [User]s | ${
 				this.setColor(emojis)} [Emoji]s | ${
 				this.setColor(lastMessages)} [Last Message]s.`);

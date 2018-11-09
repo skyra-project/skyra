@@ -17,4 +17,3 @@ config.js
 yarn.lock
 package-lock.json
 
-config\.js\.example

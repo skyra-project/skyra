@@ -47,7 +47,7 @@ module.exports = class extends Command {
 		await user.settings.sync();
 
 		await Promise.all([
-			msg.author.settings.update([['money', msg.author.settings.money - banner.price], ['bannerList', [...banners]]]),
+			msg.author.settings.update([['money', msg.author.settings.money - banner.price], ['bannerList', [...banners]]], { action: 'overwrite' }),
 			user.settings.update('money', user.settings.money + (banner.price * 0.1))
 		]);
 

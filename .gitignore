@@ -16,3 +16,5 @@ config.js
 # Ignore package locks
 yarn.lock
 package-lock.json
+
+config\.js\.example

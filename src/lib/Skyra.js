@@ -7,7 +7,9 @@ const APIStore = require('./structures/APIStore');
 const RawEventStore = require('./structures/RawEventStore');
 const { Node } = require('veza');
 const ConnectFourManager = require('./util/Games/ConnectFourManager');
+const Jackpot = require('./util/Games/Jackpot');
 const TimeoutManager = require('./util/Ratelimits/TimeoutManager');
+
 
 module.exports = class Skyra extends Client {
 
@@ -114,6 +116,14 @@ module.exports = class Skyra extends Client {
 		 * @type {ConnectFourManager}
 		 */
 		this.connectFour = new ConnectFourManager(this);
+
+		/**
+		 * The jackpot manager
+		 * @since 3.0.0
+		 * @type {Jackpot}
+		 */
+
+		this.jackpot = new Jackpot(this);
 
 		/**
 		 * The TimeoutManager instance

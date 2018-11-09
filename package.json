@@ -28,7 +28,7 @@
   "author": "kyranet",
   "license": "UNLICENSED",
   "dependencies": {
-    "canvas": "^2.0.1",
+    "canvas": "^2.1.0",
     "canvas-constructor": "^2.0.0",
     "diff": "^3.5.0",
     "discord.js": "github:discordjs/discord.js",

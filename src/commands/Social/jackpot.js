@@ -11,6 +11,7 @@ module.exports = class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_JACKPOT_EXTENDED'),
 			runIn: ['text'],
 			usage: '<join|view|add> [amount:int]',
+			usageDelim: ' ',
 			subcommands: true
 		});
 	}

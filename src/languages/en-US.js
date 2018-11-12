@@ -1220,7 +1220,7 @@ module.exports = class extends Language {
 				explainedUsage: [
 					['Amount', 'Any number - as long as you can afford it.']
 				],
-				renmider: 'The jackpot is drawn once a day. You will only know if you win - however you can view all users in the jackpot by using @Skyra jackpot view.'
+				reminder: 'The jackpot is drawn once a day. You will only know if you win - however you can view all users in the jackpot by using `@Skyra jackpot view.`'
 			}),
 
 			/**

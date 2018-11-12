@@ -1214,6 +1214,15 @@ module.exports = class extends Language {
 				reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
 			}),
 
+			COMMAND_JACKPOT_DESCRIPTION: `Join the jackpot and maybe win some ${SHINY}.`,
+			COMMAND_JACKPOT_DESCRIPTION_EXTENDED: builder.display('jackpot', {
+				extendedHelp: `A jackpot is when several people bet money and one random person is chosen.`,
+				explainedUsage: [
+					['Amount', 'Any number - as long as you can afford it.']
+				],
+				renmider: 'The jackpot is drawn once a day. You will only know if you win - however you can view all users in the jackpot by using @Skyra jackpot view.'
+			})
+
 			/**
 			 * ##################
 			 * STARBOARD COMMANDS
@@ -1805,11 +1814,11 @@ module.exports = class extends Language {
 			COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
 			COMMAND_TICTACTOE_DRAW: (board) => `This match concluded in a **draw**!\n${board}`,
 			COMMAND_JACKPOT_USER_ALREADY_JOINED: (user) => `Sorry, dear ${user.username}, but you have already joined the jackpot. You can increase your bet with @Skyra jackpot add <amount>.`,
-			COMMAND_JACKPOT_USER_JOIN: (amount) => `You have now joined the jackpot, with a starting bet of ${amount}<:ShinyYellow:324157128270938113>. I will draw a winner at midnight and if you have won, I will DM you!`,
+			COMMAND_JACKPOT_USER_JOIN: (amount) => `You have now joined the jackpot, with a starting bet of ${amount}${SHINY}. I will draw a winner at midnight and if you have won, I will DM you!`,
 			COMMAND_JACKPOT_NOT_FOUND: 'Sorry, there is no jackpot at the moment. You can start one with @Skyra jackpot join though!',
-			COMMAND_JACKPOT_USER_LIST: (users, amount) => `The current users have joined the jackpot: \n${users.join('\n')}\n\n CURRENT JACKPOT WORTH: ${amount}<:ShinyYellow:324157128270938113>.`,
-			COMMAND_JACKPOT_USER_ADD: (amount) => `Okay! I've bumped the amount you've put into the jackpot up to ${amount}<:ShinyYellow:324157128270938113>.`,
-			COMMAND_JACKPOT_USER_WIN: (amount) => `Congrats! You've won ${amount}<:ShinyYellow:324157128270938113> in the jackpot!`,
+			COMMAND_JACKPOT_USER_LIST: (users, amount) => `The current users have joined the jackpot: \n${users.join('\n')}\n\n CURRENT JACKPOT WORTH: ${amount}${SHINY}.`,
+			COMMAND_JACKPOT_USER_ADD: (amount) => `Okay! I've bumped the amount you've put into the jackpot up to ${amount}${SHINY}.`,
+			COMMAND_JACKPOT_USER_WIN: (amount) => `Congrats! You've won ${amount}${SHINY} in the jackpot!`,
 
 			/**
 			 * #################

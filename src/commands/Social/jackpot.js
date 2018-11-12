@@ -18,7 +18,7 @@ module.exports = class extends Command {
 
 	async join(message, [amount]) {
 		if (this.client.settings.jackpot.some(user => user.id === message.author.id)) return message.sendLocale('COMMAND_JACKPOT_USER_ALREADY_JOINED', [message.author]);
-		if (message.author.settings.money < amount) return message.sendlocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
+		if (message.author.settings.money < amount) return message.sendLocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
 		await message.author.settings.update('money', message.author.settings.money - amount);
 		return message.sendLocale('COMMAND_JACKPOT_USER_JOIN', [this.client.jackpot.add(message.author.id, amount)]);
 	}

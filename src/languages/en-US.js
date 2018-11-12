@@ -1215,13 +1215,13 @@ module.exports = class extends Language {
 			}),
 
 			COMMAND_JACKPOT_DESCRIPTION: `Join the jackpot and maybe win some ${SHINY}.`,
-			COMMAND_JACKPOT_DESCRIPTION_EXTENDED: builder.display('jackpot', {
+			COMMAND_JACKPOT_EXTENDED: builder.display('jackpot', {
 				extendedHelp: `A jackpot is when several people bet money and one random person is chosen.`,
 				explainedUsage: [
 					['Amount', 'Any number - as long as you can afford it.']
 				],
 				renmider: 'The jackpot is drawn once a day. You will only know if you win - however you can view all users in the jackpot by using @Skyra jackpot view.'
-			})
+			}),
 
 			/**
 			 * ##################

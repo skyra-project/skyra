@@ -29,6 +29,8 @@ module.exports = class extends Event {
 		// Init the schedule
 		await this.client.schedule.init();
 
+		if (!this.client.schedule.tasks.some(task => task.taskName === 'jackpot')) await this.client.schedule.create('jackpot', '@daily');
+
 		if (this.client.options.readyMessage !== null)
 			this.client.emit('log', klasaUtil.isFunction(this.client.options.readyMessage) ? this.client.options.readyMessage(this.client) : this.client.options.readyMessage);
 

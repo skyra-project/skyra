@@ -5,12 +5,14 @@ class Jackpot {
 	}
 
 	async add(id, amount) {
-		const object = this.client.jackpot.find(user => user.id === id);
-		const index = this.client.jackpot.findIndex(user => user.id === id);
+		const object = this.client.settings.jackpot.find(user => user.id === id);
+		const index = this.client.settings.jackpot.findIndex(user => user.id === id);
+
+		console.log(object);
 
 		// eslint-disable-next-line curly
-		if (object !== null) {
-			await this.client.settings.update('jackpot', { id, amount: object.amount + amount }, { index });
+		if (object) {
+			await this.client.settings.update('jackpot', { id, amount: object.amount + amount }, { arrayPosition: index, action: 'overwrite' });
 		} else await this.client.settings.update('jackpot', { id, amount });
 		return this.client.settings.jackpot.find(jackpotUser => jackpotUser.id === id).amount;
 	}

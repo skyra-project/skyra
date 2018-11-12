@@ -20,15 +20,22 @@ module.exports = class extends Command {
 		if (this.client.settings.jackpot.some(user => user.id === message.author.id)) return message.sendLocale('COMMAND_JACKPOT_USER_ALREADY_JOINED', [message.author]);
 		if (message.author.settings.money < amount) return message.sendLocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
 		await message.author.settings.update('money', message.author.settings.money - amount);
-		return message.sendLocale('COMMAND_JACKPOT_USER_JOIN', [this.client.jackpot.add(message.author.id, amount)]);
+		return message.sendLocale('COMMAND_JACKPOT_USER_JOIN', [await this.client.jackpot.add(message.author.id, amount)]);
 	}
 
 	async view(message) {
 		if (this.client.settings.jackpot.length === 0) return message.sendLocale('COMMAND_JACKPOT_NOT_FOUND');
-		const users = this.client.settings.jackpot.map(async jackpotUser => {
-			const userTag = await this.client.fetchTag(jackpotUser.id).catch(() => null);
-			return userTag === null ? `Deleted user: ${jackpotUser.amount}` : `${userTag.tag}: ${jackpotUser.amount}`;
-		});
+
+		const users = [];
+
+		for (const user of this.client.settings.jackpot) {
+			try {
+				const tag = await this.client.fetchTag(user.id);
+				users.push(`${tag}: ${user.amount}`);
+			} catch (e) {
+				users.push(`Deleted user: ${user.amount}`);
+			}
+		}
 		// eslint-disable-next-line
 		return message.sendLocale('COMMAND_JACKPOT_USER_LIST', [users, this.client.settings.jackpot.reduce((a, b) => a + b.amount, 0)]);
 	}
@@ -36,10 +43,10 @@ module.exports = class extends Command {
 	async add(message, [amount]) {
 		if (!this.client.settings.jackpot.some(user => user.id === message.author.id)) return message.sendLocale('COMMAND_JACKPOT_USER_NOT_FOUND');
 
-		if (message.author.settings.money < amount) return message.sendlocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
+		if (message.author.settings.money < amount) return message.sendLocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
 		await message.author.settings.update('money', message.author.settings.money - amount);
 
-		return message.sendLocale('JACKPOT_USER_ADD', [this.client.jackpot.add(message.author.id, amount)]);
+		return message.sendLocale('COMMAND_JACKPOT_USER_ADD', [await this.client.jackpot.add(message.author.id, amount)]);
 	}
 
 };

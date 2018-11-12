@@ -10,7 +10,7 @@ module.exports = class extends Task {
 		if (user === null) return;
 
 		await user.settings.update('money', user.settings.money + amount);
-		user.send(`Hey! You just won the jackpot for: ${amount}!`).catch(() => null);
+		user.sendLocale('COMMAND_JACKPOT_USER_WIN', [amount]).catch(() => null);
 	}
 
 };

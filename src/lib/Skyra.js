@@ -118,11 +118,10 @@ module.exports = class Skyra extends Client {
 		this.connectFour = new ConnectFourManager(this);
 
 		/**
-		 * The jackpot manager
-		 * @since 3.0.0
+		 * The current Jackpot
+		 * @since 4.0.0
 		 * @type {Jackpot}
 		 */
-
 		this.jackpot = new Jackpot(this);
 
 		/**

@@ -2,37 +2,30 @@ class Jackpot {
 
 	constructor(client) {
 		this.client = client;
-		this.users = [];
 	}
 
 	async add(id, amount) {
-		this.users.push({ id, amount });
-		if (await this.client.providers.default.has('jackpot', id)) await this.client.providers.default.update('jackpot', id, { amount });
-		else await this.client.providers.default.create('jackpot', id, { amount });
-		return this.users.find(jackpotUser => jackpotUser.id === id).amount;
+		const object = this.client.jackpot.find(user => user.id === id);
+		const index = this.client.jackpot.findIndex(user => user.id === id);
+
+		// eslint-disable-next-line curly
+		if (object !== null) {
+			await this.client.settings.update('jackpot', { id, amount: object.amount + amount }, { index });
+		} else await this.client.settings.update('jackpot', { id, amount });
+		return this.client.settings.jackpot.find(jackpotUser => jackpotUser.id === id).amount;
 	}
 
 	async draw() {
-		if (this.users.length === 0) return null;
-		// eslint-disable-next-line curly
-		for (const user of this.users) {
-			await this.client.providers.default.delete('jackpot', user.id);
-		}
-
+		if (this.client.settings.jackpot.length === 0) return { id: null, amount: 0 };
 
 		// eslint-disable-next-line
-        const amount = this.users.reduce((a, b) => { a.amount += b.amount; });
+        const amount = this.client.settings.jackpot.reduce((a, b) => a + b.amount, 0);
 
-		const user = this.users[Math.floor(Math.random() * this.users.length)].id;
+		const user = this.client.settings.jackpot[Math.floor(Math.random() * this.client.settings.jackpot)].id;
 
-		this.users = [];
-		this.time = 0;
+		await this.client.settings.reset('jackpot');
 
 		return { user, amount };
-	}
-
-	async init() {
-		this.data = await this.client.providers.default.getAll('jackpot');
 	}
 
 }

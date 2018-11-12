@@ -1808,7 +1808,7 @@ module.exports = class extends Language {
 			COMMAND_JACKPOT_USER_JOIN: (amount) => `You have now joined the jackpot, with a starting bet of ${amount}. I will draw a winner at midnight and if you have won, I will DM you!`,
 			COMMAND_JACKPOT_NOT_FOUND: 'Sorry, there is no jackpot at the moment. You can start one with @Skyra jackpot join though!',
 			COMMAND_JACKPOT_USER_LIST: (users, amount) => `The current users have joined the jackpot: ${users.join('\n')}\n\n CURRENT JACKPOT WORTH: ${amount}`,
-			COMMAND_JACKPOT_ADD: (amount) => `Okay! I've bumped the amount you've put into the jackpot up to ${amount}.`
+			COMMAND_JACKPOT_ADD: (amount) => `Okay! I've bumped the amount you've put into the jackpot up to ${amount}.`,
 
 			/**
 			 * #################
@@ -2050,6 +2050,7 @@ module.exports = class extends Language {
 			COMMAND_AUTOROLE_UNKNOWN_ROLE: (role) => `Unknown role: ${role}`,
 			COMMAND_BALANCE: (user, amount) => `The user ${user} has a total of ${amount}${SHINY}`,
 			COMMAND_BALANCE_SELF: (amount) => `You have a total of ${amount}${SHINY}`,
+			COMMAND_SOCIAL_MISSING_MONEY: (money) => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
 			COMMAND_BALANCE_BOTS: `I think they have 5 gears as much, bots don't have ${SHINY}`,
 			COMMAND_SOCIAL_MEMBER_NOTEXISTS: `${REDCROSS} The member is not in this server, and is not in my database either.`,
 			COMMAND_SOCIAL_ADD: (user, amount, added) => `${GREENTICK} Successfully added ${added} point${added === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
@@ -2138,7 +2139,7 @@ module.exports = class extends Language {
 			COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
 			COMMAND_SCOREBOARD_POSITION: (position) => `Your placing position is: ${position}`,
 			COMMAND_SETCOLOR: (color) => `Color changed to ${color}`,
-			COMMAND_SLOTMACHINES_MONEY: (money) => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
+
 			COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
 			COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 			COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',

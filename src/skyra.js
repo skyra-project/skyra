@@ -9,6 +9,9 @@ require('canvas-constructor').Canvas
 	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight')
 	.registerFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
 
+Skyra.defaultClientSchema
+	.add('jackpot', 'any', { array: true });
+
 Skyra.defaultUserSchema
 	.add('badgeList', 'String', { array: true, configurable: false })
 	.add('badgeSet', 'String', { array: true, configurable: false })

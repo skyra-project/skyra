@@ -7,6 +7,12 @@ module.exports = class extends Event {
 		await this.initBackupTask();
 		await this.initPostStatsTask();
 		await this.initGiveawayRecurrentTask();
+		await this.initJackpot();
+	}
+
+	async initJackpot() {
+		if (!this.client.schedule.tasks.some(task => task.taskName === 'jackpot'))
+			await this.client.schedule.create('jackpot', '@daily');
 	}
 
 	async initGiveawayRecurrentTask() {

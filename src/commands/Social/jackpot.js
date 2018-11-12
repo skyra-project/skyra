@@ -10,17 +10,10 @@ module.exports = class extends Command {
 			description: (language) => language.get('COMMAND_JACKPOT_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_JACKPOT_EXTENDED'),
 			runIn: ['text'],
-			usage: '<join|view|add> [amount:int]',
+			usage: '<view|add> [amount:int]',
 			usageDelim: ' ',
 			subcommands: true
 		});
-	}
-
-	async join(message, [amount]) {
-		if (this.client.settings.jackpot.some(user => user.id === message.author.id)) return message.sendLocale('COMMAND_JACKPOT_USER_ALREADY_JOINED', [message.author]);
-		if (message.author.settings.money < amount) return message.sendLocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
-		await message.author.settings.update('money', message.author.settings.money - amount);
-		return message.sendLocale('COMMAND_JACKPOT_USER_JOIN', [await this.client.jackpot.add(message.author.id, amount)]);
 	}
 
 	async view(message) {
@@ -31,9 +24,9 @@ module.exports = class extends Command {
 		for (const user of this.client.settings.jackpot) {
 			try {
 				const tag = await this.client.fetchTag(user.id);
-				users.push(`${tag}: ${user.amount}`);
+				users.push(`${tag}: ${user.amount}<:ShinyYellow:324157128270938113>`);
 			} catch (e) {
-				users.push(`Deleted user: ${user.amount}`);
+				users.push(`Deleted user: ${user.amount}<:ShinyYellow:324157128270938113>`);
 			}
 		}
 		// eslint-disable-next-line
@@ -41,12 +34,12 @@ module.exports = class extends Command {
 	}
 
 	async add(message, [amount]) {
-		if (!this.client.settings.jackpot.some(user => user.id === message.author.id)) return message.sendLocale('COMMAND_JACKPOT_USER_NOT_FOUND');
+		const isAlreadyInJackpot = this.client.settings.jackpot.some(user => user.id === message.author.id);
 
 		if (message.author.settings.money < amount) return message.sendLocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
 		await message.author.settings.update('money', message.author.settings.money - amount);
 
-		return message.sendLocale('COMMAND_JACKPOT_USER_ADD', [await this.client.jackpot.add(message.author.id, amount)]);
+		return message.sendLocale(isAlreadyInJackpot ? 'COMMAND_JACKPOT_USER_JOIN' : 'COMMAND_JACKPOT_USER_ADD', [await this.client.jackpot.add(message.author.id, amount)]);
 	}
 
 };

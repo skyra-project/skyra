@@ -29,7 +29,6 @@ module.exports = class extends Command {
 				users.push(`Deleted user: ${user.amount}<:ShinyYellow:324157128270938113>`);
 			}
 		}
-		// eslint-disable-next-line
 		return message.sendLocale('COMMAND_JACKPOT_USER_LIST', [users, this.client.settings.jackpot.reduce((a, b) => a + b.amount, 0)]);
 	}
 

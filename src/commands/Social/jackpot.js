@@ -33,9 +33,8 @@ module.exports = class extends Command {
 	}
 
 	async add(message, [amount]) {
-		const isAlreadyInJackpot = this.client.settings.jackpot.some(user => user.id === message.author.id);
-
 		if (message.author.settings.money < amount) return message.sendLocale('COMMAND_SOCIAL_MISSING_MONEY', [message.author.settings.money]);
+		const isAlreadyInJackpot = this.client.settings.jackpot.some(user => user.id === message.author.id);
 		await message.author.settings.update('money', message.author.settings.money - amount);
 
 		return message.sendLocale(isAlreadyInJackpot ? 'COMMAND_JACKPOT_USER_JOIN' : 'COMMAND_JACKPOT_USER_ADD', [await this.client.jackpot.add(message.author.id, amount)]);

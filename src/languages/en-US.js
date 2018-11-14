@@ -1816,7 +1816,7 @@ module.exports = class extends Language {
 			COMMAND_JACKPOT_USER_ALREADY_JOINED: (user) => `Sorry, dear ${user.username}, but you have already joined the jackpot. You can increase your bet with \`@Skyra jackpot add <amount>.\``,
 			COMMAND_JACKPOT_USER_JOIN: (amount) => `You have now joined the jackpot, with a starting bet of ${amount}${SHINY}. I will draw a winner at midnight and if you have won, I will notify you in Direct Messages!`,
 			COMMAND_JACKPOT_NOT_FOUND: 'Sorry, there is no jackpot at the moment. You can start one with `@Skyra jackpot join` though!',
-			COMMAND_JACKPOT_USER_LIST: (users, amount) => `There ${users.length > 1 ? `are ${users.length} users` : `is one user`} in the jackpot currently: \n${users.join('\n')}\n\n CURRENT JACKPOT WORTH: ${amount}${SHINY}.`,
+			COMMAND_JACKPOT_USER_LIST: (users, amount) => `There ${users.length > 1 ? `are ${users.length} users` : `is one user`} in the jackpot currently: \n${users.join('\n')}\n\n**CURRENT JACKPOT WORTH:** ${amount}${SHINY}.`,
 			COMMAND_JACKPOT_USER_ADD: (amount) => `Okay! I've bumped the amount you've put into the jackpot up to ${amount}${SHINY}.`,
 			COMMAND_JACKPOT_USER_WIN: (amount) => `Congrats! You've won ${amount}${SHINY} in the jackpot!`,
 

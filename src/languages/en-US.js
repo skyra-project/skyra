@@ -2136,7 +2136,6 @@ module.exports = class extends Language {
 			COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 			COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
 			COMMAND_REMINDME_NOTFOUND: 'I cannot find something here. The reminder either never existed or it ended.',
-
 			COMMAND_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
 			COMMAND_REPUTATION_USABLE: 'You can give a reputation point now.',
 			COMMAND_REPUTATION_USER_NOTFOUND: 'You must mention a user to give a reputation point.',

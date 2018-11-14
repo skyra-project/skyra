@@ -10,7 +10,9 @@ class Jackpot {
 		if (index !== -1) {
 			const object = this.client.settings[index];
 			await this.client.settings.update('jackpot', { id, amount: object.amount + amount }, { arrayPosition: index, action: 'overwrite' });
-		} else { await this.client.settings.update('jackpot', { id, amount }); }
+		} else {
+			await this.client.settings.update('jackpot', { id, amount });
+		}
 		return this.client.settings.jackpot.find(jackpotUser => jackpotUser.id === id).amount;
 	}
 

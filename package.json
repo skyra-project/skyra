@@ -38,7 +38,7 @@
     "klasa": "github:dirigeants/klasa",
     "node-fetch": "^2.2.1",
     "rethinkdb-ts": "^2.4.0-rc.11",
-    "veza": "^0.3.1"
+    "veza": "^0.3.2"
   },
   "devDependencies": {
     "@types/node": "^10.12.6",

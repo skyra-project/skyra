@@ -10,7 +10,6 @@ const ConnectFourManager = require('./util/Games/ConnectFourManager');
 const Jackpot = require('./util/Games/Jackpot');
 const TimeoutManager = require('./util/Ratelimits/TimeoutManager');
 
-
 module.exports = class Skyra extends Client {
 
 	/**

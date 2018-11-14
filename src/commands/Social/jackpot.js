@@ -19,8 +19,6 @@ module.exports = class extends Command {
 	async view(message) {
 		if (this.client.settings.jackpot.length === 0) return message.sendLocale('COMMAND_JACKPOT_NOT_FOUND');
 
-		const users = [];
-
 		const users = await Promise.all(this.client.settings.jackpot.map(user => this.client.fetchTag(user.id)
 			.then((tag) => `${tag}: ${user.amount}${SHINY}`)
 			.catch(() => `Deleted User: ${user.amount}${SHINY}`)

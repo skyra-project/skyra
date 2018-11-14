@@ -16,8 +16,8 @@ class Jackpot {
 
 	async draw() {
 		if (this.client.settings.jackpot.length === 0) return { id: null, amount: 0 };
-		
-        	const amount = this.client.settings.jackpot.reduce((a, b) => a + b.amount, 0);
+
+		const amount = this.client.settings.jackpot.reduce((a, b) => a + b.amount, 0);
 
 		const user = this.client.settings.jackpot[Math.floor(Math.random() * this.client.settings.jackpot)].id;
 

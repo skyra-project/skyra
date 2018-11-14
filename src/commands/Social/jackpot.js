@@ -24,9 +24,9 @@ module.exports = class extends Command {
 		for (const user of this.client.settings.jackpot) {
 			try {
 				const tag = await this.client.fetchTag(user.id);
-				users.push(`${tag}: ${user.amount}<:ShinyYellow:324157128270938113>`);
+				users.push(`${tag}: ${user.amount}${require.main.exports.constants.EMOJIS.SHINY}`);
 			} catch (e) {
-				users.push(`Deleted user: ${user.amount}<:ShinyYellow:324157128270938113>`);
+				users.push(`Deleted user: ${user.amount}${require.main.exports.constants.EMOJIS.SHINY}`);
 			}
 		}
 		return message.sendLocale('COMMAND_JACKPOT_USER_LIST', [users, this.client.settings.jackpot.reduce((a, b) => a + b.amount, 0)]);

@@ -1,4 +1,4 @@
-const { Command, { constants: { EMOJIS: { SHINY } } } } = require('../../index');
+const { Command, constants: { EMOJIS: { SHINY } } } = require('../../index');
 
 module.exports = class extends Command {
 

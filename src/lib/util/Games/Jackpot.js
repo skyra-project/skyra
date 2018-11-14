@@ -5,8 +5,7 @@ class Jackpot {
 	}
 
 	async add(id, amount) {
-		const index = this.client.settings.jackpot.findIndex(user => user.id === id);
-		
+		const index = this.client.settings.jackpot.findIndex(user => user.id === id);		
 		const element = { id, amount: index === -1 ? amount : this.client.settings.jackpot[index].amount + amount };
 		await this.client.settings.update('jackpot', element, { arrayPosition: index === -1 ? null : index });
 		return element;

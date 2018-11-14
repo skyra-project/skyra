@@ -5,15 +5,9 @@ class Jackpot {
 	}
 
 	async add(id, amount) {
-		const index = this.client.settings.jackpot.findIndex(user => user.id === id);
-
-		if (index !== -1) {
-			const object = this.client.settings[index];
-			await this.client.settings.update('jackpot', { id, amount: object.amount + amount }, { arrayPosition: index, action: 'overwrite' });
-		} else {
-			await this.client.settings.update('jackpot', { id, amount });
-		}
-		return this.client.settings.jackpot.find(jackpotUser => jackpotUser.id === id).amount;
+		const element = { id, amount: index === -1 ? amount : this.client.settings.jackpot[index].amount + amount };
+		await this.client.settings.update('jackpot', element, { arrayPosition: index === -1 ? null : index });
+		return element;
 	}
 
 	async draw() {

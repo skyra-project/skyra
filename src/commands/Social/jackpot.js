@@ -21,14 +21,11 @@ module.exports = class extends Command {
 
 		const users = [];
 
-		for (const user of this.client.settings.jackpot) {
-			try {
-				const tag = await this.client.fetchTag(user.id);
-				users.push(`${tag}: ${user.amount}${SHINY}`);
-			} catch (e) {
-				users.push(`Deleted user: ${user.amount}${SHINY}`);
-			}
-		}
+		const users = await Promise.all(
+			this.client.settings.jackpot.map(
+				user => this.client.fetchTag(user.id).then((tag) => `${tag}: ${user.amount}${SHINY}`).catch(() => `Deleted User: ${user.amount}${SHINY}`)
+			)
+		);
 		return message.sendLocale('COMMAND_JACKPOT_USER_LIST', [users, this.client.settings.jackpot.reduce((a, b) => a + b.amount, 0)]);
 	}
 

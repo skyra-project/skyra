@@ -10,7 +10,7 @@ module.exports = class extends IPCMonitor {
 		const newAmount = this.getNewAmount(action, oldAmount, amount);
 
 		await user.settings.update(type, newAmount);
-		return { response: newAmount };
+		return newAmount;
 	}
 
 	getNewAmount(action, oldAmount, amount) {

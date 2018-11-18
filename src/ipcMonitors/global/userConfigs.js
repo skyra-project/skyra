@@ -6,7 +6,7 @@ module.exports = class extends IPCMonitor {
 		const user = await this.client.users.fetch(userID).catch(() => null);
 		if (user) {
 			await user.settings.sync();
-			return { response: user.settings.toJSON() };
+			return user.settings.toJSON();
 		}
 		return null;
 	}

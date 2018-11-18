@@ -1,6 +1,6 @@
 const { Collection } = require('discord.js');
 const { Client } = require('klasa');
-const { loadavg, platform } = require('os');
+const { loadavg } = require('os');
 
 const Leaderboard = require('./util/Leaderboard');
 const IPCMonitorStore = require('./structures/IPCMonitorStore');
@@ -64,7 +64,7 @@ module.exports = class Skyra extends Client {
 			.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
 		if (!options.dev) {
-			this.ipc.connectTo('ny-api', platform() === 'win32' ? '//./pipe/tmp/NyAPI.sock' : '/tmp/NyAPI.sock')
+			this.ipc.connectTo('ny-api', 9997)
 				.catch((error) => { this.console.error(error); });
 		}
 

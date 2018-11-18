@@ -54,7 +54,9 @@ module.exports = class MemorySweeper extends Task {
 			guild.presences.clear();
 
 			// Clear voice states
+			// @ts-ignore
 			voiceStates += guild.voiceStates.size;
+			// @ts-ignore
 			guild.voiceStates.clear();
 
 			// Clear members that haven't send a message in the last 30 minutes

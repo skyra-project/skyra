@@ -95,6 +95,7 @@ function duration(time) { // eslint-disable-line no-unused-vars
 	return FriendlyDuration.duration(time, TIMES);
 }
 
+// @ts-ignore
 module.exports = class extends Language {
 
 	constructor(client, store, file, directory) {

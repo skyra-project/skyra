@@ -16,6 +16,7 @@ module.exports = class extends Event {
 
 		this.client.settings = this.client.gateways.clientStorage.get(this.client.user.id, true);
 		// Added for consistency with other datastores, Client#clients does not exist
+		// @ts-ignore
 		this.client.gateways.clientStorage.cache.set(this.client.user.id, this.client);
 		await Promise.all([
 			this._prepareSkyra(),
@@ -24,6 +25,7 @@ module.exports = class extends Event {
 
 		// Init all the pieces
 		await Promise.all(this.client.pieceStores.filter(store => !['providers', 'extendables'].includes(store.name)).map(store => store.init()));
+		// @ts-ignore
 		klasaUtil.initClean(this.client);
 		this.client.ready = true;
 
@@ -31,6 +33,7 @@ module.exports = class extends Event {
 		await this.client.schedule.init();
 
 		if (this.client.options.readyMessage !== null)
+			// @ts-ignore
 			this.client.emit('log', klasaUtil.isFunction(this.client.options.readyMessage) ? this.client.options.readyMessage(this.client) : this.client.options.readyMessage);
 
 		this.client.emit('klasaReady');
@@ -61,7 +64,9 @@ module.exports = class extends Event {
 				if (member.id !== clientID) queue.push([guild.id, member.id]);
 		}
 		this.client._skyraReady = true;
+		// @ts-ignore
 		const entries = await table.getAll(...queue, { index: 'guild_user' }).run();
+		// @ts-ignore
 		for (const entry of entries) guilds.get(entry.guildID).members.get(entry.userID).settings._patch(entry);
 
 		await promise;

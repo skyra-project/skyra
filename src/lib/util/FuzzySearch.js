@@ -17,50 +17,62 @@ class FuzzySearch {
 		this.access = access;
 	}
 
-	run(msg, query) {
+	run(message, query) {
 		const lowcquery = query.toLowerCase();
-		const apResults = [];
-		const exResults = [];
+		const results = [];
 
-		let lowerCaseName, current, distance = 2;
+		let lowerCaseName, current, distance;
+		let almostExacts = 0;
 		for (const [id, entry] of this.collection.entries()) {
 			if (!this.filter(entry)) continue;
-			current = this.access(entry);
-			if (typeof current !== 'string') continue;
-			lowerCaseName = current.toLowerCase();
-			if (lowerCaseName === lowcquery) {
-				const resolved = [id, entry];
-				apResults.push(resolved);
-				exResults.push(resolved);
-			} else if (lowerCaseName.includes(lowcquery) || ((distance = levenshtein(lowcquery, lowerCaseName, false)) !== -1)) {
-				const resolved = [id, entry];
-				apResults.push(resolved);
-				if (distance <= 1) {
-					exResults.push(resolved);
-					distance = 2;
-				}
-			} else {
-				continue;
-			}
 
-			if (apResults.length === 10) break;
+			current = this.access(entry);
+			lowerCaseName = current.toLowerCase();
+
+			// If lowercase result, go next
+			if (lowerCaseName === lowcquery)
+				distance = 0;
+			else if (lowerCaseName.includes(lowcquery))
+				distance = lowerCaseName.length - lowcquery.length;
+			else
+				distance = levenshtein(lowcquery, lowerCaseName, false);
+
+			if (distance === -1) continue;
+
+			// Push the results
+			results.push([id, entry, distance]);
+
+			// Continue earlier
+			if (distance <= 1) almostExacts++;
+			if (almostExacts === 10) break;
 		}
 
-		return this.select(msg, exResults.length ? exResults : apResults);
+		if (!results.length) return null;
+
+		// Almost precisive matches
+		const sorted = results.sort((a, b) => a[1] - b[1]);
+		const precision = sorted[0][2];
+		if ([0, 1].includes(precision)) {
+			let i = 0;
+			while (i < results.length && i === precision) i++;
+			return this.select(message, i === results.length ? results : results.slice(0, i));
+		}
+
+		return this.select(message, results);
 	}
 
-	async select(msg, results) {
+	async select(message, results) {
 		switch (results.length) {
 			case 0: return null;
 			case 1: return results[0];
 			// Two or more
 			default: {
-				const { content: number } = await msg.prompt(msg.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
+				const { content: number } = await message.prompt(message.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
 					codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
 				if (number.toLowerCase() === 'abort') return null;
 				const parsed = Number(number);
-				if (!Number.isSafeInteger(parsed)) throw msg.language.get('FUZZYSEARCH_INVALID_NUMBER');
-				if (parsed < 0 || parsed >= results.length) throw msg.language.get('FUZZYSEARCH_INVALID_INDEX');
+				if (!Number.isSafeInteger(parsed)) throw message.language.get('FUZZYSEARCH_INVALID_NUMBER');
+				if (parsed < 0 || parsed >= results.length) throw message.language.get('FUZZYSEARCH_INVALID_INDEX');
 				return results[parsed];
 			}
 		}

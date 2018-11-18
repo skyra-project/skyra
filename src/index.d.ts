@@ -315,17 +315,16 @@ export class WeebCommand extends SkyraCommand {
 	public run(msg: SkyraMessage, params: Array<SkyraUser>): Promise<SkyraMessage>;
 }
 
-export abstract class API extends Piece {
+export abstract class IPCMonitor extends Piece {
 	// @ts-ignore
 	public client: Skyra;
 }
 
 // @ts-ignore
-export class IPCMonitorStore extends Store<string, API, typeof API> {
+export class IPCMonitorStore extends Store<string, IPCMonitor, typeof IPCMonitor> {
 	// @ts-ignore
 	public client: Skyra;
 	public run(message: NodeMessage): Promise<APIResponse>;
-	public runPiece(piece: API, message: NodeMessage): Promise<APIResponse>;
 }
 
 export abstract class RawEvent extends Piece {

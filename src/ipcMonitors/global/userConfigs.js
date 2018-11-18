@@ -1,6 +1,6 @@
-const { API } = require('../../index');
+const { IPCMonitor } = require('../../index');
 
-module.exports = class extends API {
+module.exports = class extends IPCMonitor {
 
 	async run({ userID }) {
 		const user = await this.client.users.fetch(userID).catch(() => null);

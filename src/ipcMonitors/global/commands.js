@@ -1,6 +1,6 @@
-const { API } = require('../../index');
+const { IPCMonitor } = require('../../index');
 
-module.exports = class extends API {
+module.exports = class extends IPCMonitor {
 
 	run({ category = null, lang = 'en-US' }) {
 		const language = this.client.languages.get(lang) || this.client.languages.default;

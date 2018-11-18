@@ -1,6 +1,6 @@
-const { API, ToJSON } = require('../../index');
+const { IPCMonitor, ToJSON } = require('../../index');
 
-module.exports = class extends API {
+module.exports = class extends IPCMonitor {
 
 	async run({ userID }) {
 		try {

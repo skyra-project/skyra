@@ -1,7 +1,7 @@
-const { API, config: { ownerID } } = require('../../index');
+const { IPCMonitor, config: { ownerID } } = require('../../index');
 const { Permissions: { FLAGS } } = require('discord.js');
 
-module.exports = class extends API {
+module.exports = class extends IPCMonitor {
 
 	run({ guildID, memberID, level }) {
 		const guild = this.client.guilds.get(guildID);

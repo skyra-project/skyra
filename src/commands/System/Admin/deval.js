@@ -19,7 +19,7 @@ module.exports = class extends Command {
 
 		const stopwatch = new Stopwatch();
 		try {
-			[success, result] = await this.client.ipc.sendTo('ny-api', { route: 'eval', payload: code }));
+			[success, result] = await this.client.ipc.sendTo('ny-api', ['eval', code]);
 			time = stopwatch.toString();
 		} catch (error) {
 			time = stopwatch.toString();

@@ -60,7 +60,7 @@ module.exports = class extends Command {
 			.addText(TITLE.NEXT_IN, 340, 131)
 
 			// Draw the progress bar
-			.setColor(`#${color}`)
+			.setColor(`#${color || 'FF239D'}`)
 			.addRect(341, 88, progressBar, 5)
 
 			// Draw the information

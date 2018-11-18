@@ -10,6 +10,7 @@ module.exports = class extends Event {
 	}
 
 	async run() {
+		await this.client.tasks.get('cleanup').run({});
 		await this.client.fetchApplication();
 		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.application.owner.id;
 

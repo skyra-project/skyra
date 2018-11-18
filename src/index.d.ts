@@ -197,7 +197,7 @@ export class Skyra extends KlasaClient {
 
 	public version: string;
 	public leaderboard: Leaderboard;
-	public ipcPieces: APIStore;
+	public ipcMonitors: IPCMonitorStore;
 	public rawEvents: RawEventStore;
 	public ipc: Node;
 	public usageStatus: {
@@ -321,7 +321,7 @@ export abstract class API extends Piece {
 }
 
 // @ts-ignore
-export class APIStore extends Store<string, API, typeof API> {
+export class IPCMonitorStore extends Store<string, API, typeof API> {
 	// @ts-ignore
 	public client: Skyra;
 	public run(message: NodeMessage): Promise<APIResponse>;

@@ -37,8 +37,8 @@ module.exports = {
 	WeebCommand: require('./lib/structures/WeebCommand'),
 
 	// Custom API store and piece
-	API: require('./lib/structures/API'),
-	APIStore: require('./lib/structures/APIStore'),
+	IPCMonitor: require('./lib/structures/IPCMonitor'),
+	IPCMonitorStore: require('./lib/structures/IPCMonitorStore'),
 	RawEvent: require('./lib/structures/RawEvent'),
 	RawEventStore: require('./lib/structures/RawEventStore'),
 

@@ -130,7 +130,7 @@ const skyra = new Skyra({
 	messageSweepInterval: 120,
 	pieceDefaults: {
 		commands: { deletable: true, promptLimit: 5, promptTime: 60000, quotedStringSupport: true },
-		ipcPieces: { enabled: true },
+		ipcMonitors: { enabled: true },
 		monitors: { ignoreOthers: false },
 		rawEvents: { enabled: true }
 	},

@@ -1,9 +1,9 @@
 const { Collection } = require('discord.js');
 const { Client } = require('klasa');
-const { loadavg } = require('os');
+const { loadavg, platform } = require('os');
 
 const Leaderboard = require('./util/Leaderboard');
-const APIStore = require('./structures/APIStore');
+const IPCMonitorStore = require('./structures/IPCMonitorStore');
 const RawEventStore = require('./structures/RawEventStore');
 const { Node } = require('veza');
 const ConnectFourManager = require('./util/Games/ConnectFourManager');
@@ -39,9 +39,9 @@ module.exports = class Skyra extends Client {
 		/**
 		 * The API handler
 		 * @since 3.0.0
-		 * @type {APIStore}
+		 * @type {IPCMonitorStore}
 		 */
-		this.ipcPieces = new APIStore(this);
+		this.ipcMonitors = new IPCMonitorStore(this);
 
 		/**
 		 * The Raw Event store
@@ -51,19 +51,22 @@ module.exports = class Skyra extends Client {
 		this.rawEvents = new RawEventStore(this);
 
 		// Register the API handler
-		this.registerStore(this.ipcPieces)
+		this.registerStore(this.ipcMonitors)
 			.registerStore(this.rawEvents);
 
 		// Create the IPC controller singleton
-		this.ipc = new Node('skyra-bot')
+		this.ipc = new Node('skyra-master')
 			.on('client.connect', (client) => this.emit('verbose', `[IPC] Client Connected: ${client.name}`))
 			.on('client.disconnect', (client) => this.emit('warn', `[IPC] Client Disconnected: ${client.name}`))
 			.on('client.destroy', (client) => this.emit('warn', `[IPC] Client Destroyed: ${client.name}`))
 			.on('client.ready', (client) => this.emit('verbose', `[IPC] Client Ready: Named ${client.name}`))
 			.on('error', (error, client) => this.emit('error', `[IPC] Error from ${client.name}: ${error}`))
-			.on('message', this.emit.bind(this, 'apiMessage'));
+			.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
-		if (!options.dev) this.ipc.connectTo('skyra-dashboard', 8800);
+		if (!options.dev) {
+			this.ipc.connectTo('ny-api', platform() === 'win32' ? '//./pipe/tmp/NyAPI.sock' : '/tmp/NyAPI.sock')
+				.catch((error) => { this.console.error(error); });
+		}
 
 		/**
 		 * The UsageStatus object containing Skyra's metrics in the last 12 hours,

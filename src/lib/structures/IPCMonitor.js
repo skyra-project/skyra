@@ -1,6 +1,6 @@
 const { Piece } = require('klasa');
 
-class API extends Piece {
+class IPCMonitor extends Piece {
 
 	/**
 	 * @param {Object} data The data from the message
@@ -16,4 +16,4 @@ class API extends Piece {
 
 }
 
-module.exports = API;
+module.exports = IPCMonitor;

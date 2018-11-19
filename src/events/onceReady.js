@@ -10,7 +10,6 @@ module.exports = class extends Event {
 	}
 
 	async run() {
-		await this.client.tasks.get('cleanup').run({});
 		await this.client.fetchApplication();
 		if (!this.client.options.ownerID) this.client.options.ownerID = this.client.application.owner.id;
 
@@ -18,6 +17,7 @@ module.exports = class extends Event {
 		// Added for consistency with other datastores, Client#clients does not exist
 		// @ts-ignore
 		this.client.gateways.clientStorage.cache.set(this.client.user.id, this.client);
+		this._preload();
 		await Promise.all([
 			this._prepareSkyra(),
 			this.client.gateways.sync()
@@ -39,19 +39,33 @@ module.exports = class extends Event {
 		this.client.emit('klasaReady');
 	}
 
-	async _prepareSkyra() {
+	_preload() {
+		// Populate the usernames
 		for (const user of this.client.users.values())
 			this.client.usernames.set(user.id, user.tag);
 
+		// Clear all users
+		this.client.users.clear();
+
 		// Fill the dictionary name for faster user fetching
 		for (const guild of this.client.guilds.values()) {
+			const { me } = guild;
+
+			// Populate the snowflakes
 			for (const member of guild.members.values())
 				guild.memberSnowflakes.add(member.id);
+
+			// Clear all members
+			guild.members.clear();
+			guild.members.set(me.id, me);
+			guild.presences.clear();
+			guild.emojis.clear();
+			// @ts-ignore
+			guild.voiceStates.clear();
 		}
+	}
 
-		// Sweep
-		this.client.tasks.get('cleanup').run({});
-
+	async _prepareSkyra() {
 		const promise = require('../lib/util/Games/Slotmachine').init();
 
 		// Sync any settings instance

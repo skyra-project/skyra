@@ -1489,7 +1489,6 @@ export class UserSettings extends Settings {
 	public badgeList: Array<string>;
 	public badgeSet: Array<string>;
 	public bannerList: Array<string>;
-	public bias: number;
 	public color: string;
 	public marry: Snowflake;
 	public money: number;

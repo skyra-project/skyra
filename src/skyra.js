@@ -14,7 +14,6 @@ Skyra.defaultUserSchema
 	.add('badgeList', 'String', { array: true, configurable: false })
 	.add('badgeSet', 'String', { array: true, configurable: false })
 	.add('bannerList', 'String', { array: true, configurable: false })
-	.add('bias', 'Float', { default: 0, min: 0, max: 5, configurable: false })
 	.add('color', 'String', { configurable: false })
 	.add('marry', 'User', { configurable: false })
 	.add('money', 'Float', { default: 0, min: 0, max: 2147483647, configurable: false })

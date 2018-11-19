@@ -50,9 +50,9 @@ class FuzzySearch {
 		if (!results.length) return null;
 
 		// Almost precisive matches
-		const sorted = results.sort((a, b) => a[1] - b[1]);
+		const sorted = results.sort((a, b) => a[2] - b[2]);
 		const precision = sorted[0][2];
-		if ([0, 1].includes(precision)) {
+		if (precision <= 2) {
 			let i = 0;
 			while (i < results.length && i === precision) i++;
 			return this.select(message, i === results.length ? results : results.slice(0, i));

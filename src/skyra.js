@@ -1,4 +1,5 @@
 const { Skyra, config, assetsFolder, Permissions: { FLAGS } } = module.exports = require('./index');
+require('util').inspect.defaultOptions.depth = 1;
 
 // Canvas setup
 const { join } = require('path');

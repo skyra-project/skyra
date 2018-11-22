@@ -4,6 +4,7 @@ import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { URL } from 'url';
 import { isObject } from 'util';
+import { ModerationTypesEnum } from '../structures/ModerationManager';
 import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData } from '../types/Discord';
 import { MODERATION } from './constants';
@@ -19,8 +20,8 @@ export interface UtilOneToTenEntry {
 
 export interface ReferredPromise<T> {
 	promise: Promise<T>;
-	resolve(value: T): void;
-	reject(error: Error): void;
+	resolve(value?: T): void;
+	reject(error?: Error): void;
 }
 
 /**
@@ -309,7 +310,7 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
 	const modlog = target.guild.moderation.new
 		.setModerator(moderator.id)
 		.setUser(target.id)
-		.setType(MODERATION.TYPE_KEYS.MUTE)
+		.setType(MODERATION.TYPE_KEYS.MUTE as ModerationTypesEnum)
 		.setReason(reason)
 		.setExtraData(roles);
 	return modlog.create();

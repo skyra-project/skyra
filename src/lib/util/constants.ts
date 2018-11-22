@@ -46,7 +46,7 @@ const TYPE_ASSETS = Object.freeze({
 	[TYPE_KEYS.TEMPORARY_VOICE_MUTE] : Object.freeze({ color : 0xFF4081, title : 'Temporary Voice Mute' })
 });
 
-export const TIME = Object.freeze; ({
+export const TIME = Object.freeze({
 	DAY: 1000 * 60 * 60 * 24,
 	HOUR: 1000 * 60 * 60,
 	MILLISECOND: 1,

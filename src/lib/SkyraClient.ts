@@ -4,6 +4,7 @@ import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
 import { VERSION } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
+import { MemberGateway } from './structures/MemberGateway';
 import { RawEventStore } from './structures/RawEventStore';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { Leaderboard } from './util/Leaderboard';
@@ -67,6 +68,8 @@ export class SkyraClient extends KlasaClient {
 
 	public constructor(options?: SkyraClientOptions) {
 		super(options);
+
+		this.gateways.register(new MemberGateway(this, 'members'));
 
 		// Register the API handler
 		this.registerStore(this.ipcMonitors)

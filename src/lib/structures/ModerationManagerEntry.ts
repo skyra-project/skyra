@@ -1,51 +1,62 @@
-import { MODERATION : { TYPE_ASSETS, TYPE_KEYS, SCHEMA_KEYS, ACTIONS, ERRORS }, TIME; : { YEAR; } } from; '../util/constants';
-import { constants : { TIME }, Duration, Timestamp; } from; 'klasa';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, TextChannel, User } from 'discord.js';
+import { Duration } from 'klasa';
+import { MODERATION, TIME } from '../util/constants';
+import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData, ModerationTypesEnum } from './ModerationManager';
+
+const { TYPE_ASSETS, TYPE_KEYS, SCHEMA_KEYS, ACTIONS, ERRORS } = MODERATION;
 const kTimeout = Symbol('ModerationManagerTimeout');
 
 const TEMPORARY_TYPES = [TYPE_KEYS.BAN, TYPE_KEYS.MUTE, TYPE_KEYS.VOICE_MUTE];
 
 export class ModerationManagerEntry {
 
-	public constructor(manager, data = {}) {
-		/** @type {SKYRA.ModerationManager} */
+	public manager: ModerationManager;
+	public id: string = null;
+	public case: number = null;
+	public duration: number | null = null;
+	public extraData: any = null;
+	public moderator: string | User | null = null;
+	public reason: string | null = null;
+	public type: ModerationTypesEnum = null;
+	public user: string | User = null;
+	public createdAt: number = null;
+	private [kTimeout] = Date.now() + (TIME.MINUTE * 15);
+
+	public constructor(manager: ModerationManager, data: ModerationManagerInsertData) {
 		this.manager = manager;
 		// @ts-ignore
-		this.id = 'id' in data ? data.id : null;
-		this.case = SCHEMA_KEYS.CASE in data ? data[SCHEMA_KEYS.CASE] : null;
-		this.duration = SCHEMA_KEYS.DURATION in data ? data[SCHEMA_KEYS.DURATION] : null;
-		this.extraData = SCHEMA_KEYS.EXTRA_DATA in data ? data[SCHEMA_KEYS.EXTRA_DATA] : null;
-		this.moderator = SCHEMA_KEYS.MODERATOR in data ? data[SCHEMA_KEYS.MODERATOR] : null;
-		this.reason = SCHEMA_KEYS.REASON in data ? data[SCHEMA_KEYS.REASON] : null;
-		this.type = SCHEMA_KEYS.TYPE in data ? data[SCHEMA_KEYS.TYPE] : null;
-		this.user = SCHEMA_KEYS.USER in data ? data[SCHEMA_KEYS.USER] : null;
-		this.createdAt = SCHEMA_KEYS.CREATED_AT in data ? data[SCHEMA_KEYS.CREATED_AT] : null;
-		this[kTimeout] = Date.now() + (TIME.MINUTE * 15);
+		if ('id' in data) this.id = data.id;
+		if (SCHEMA_KEYS.CASE in data) this.case = data[SCHEMA_KEYS.CASE];
+		if (SCHEMA_KEYS.DURATION in data) this.duration = data[SCHEMA_KEYS.DURATION];
+		if (SCHEMA_KEYS.EXTRA_DATA in data) this.extraData = data[SCHEMA_KEYS.EXTRA_DATA];
+		if (SCHEMA_KEYS.MODERATOR in data) this.moderator = data[SCHEMA_KEYS.MODERATOR];
+		if (SCHEMA_KEYS.REASON in data) this.reason = data[SCHEMA_KEYS.REASON];
+		if (SCHEMA_KEYS.TYPE in data) this.type = data[SCHEMA_KEYS.TYPE];
+		if (SCHEMA_KEYS.USER in data) this.user = data[SCHEMA_KEYS.USER];
+		if (SCHEMA_KEYS.CREATED_AT in data) this.createdAt = data[SCHEMA_KEYS.CREATED_AT];
 	}
 
-	public get name() {
+	public get name(): string {
 		return TYPE_ASSETS[this.type].title;
 	}
 
-	public get appealed() {
-		// eslint-disable-next-line no-bitwise
+	public get appealed(): boolean {
 		return Boolean(this.type & ACTIONS.APPEALED);
 	}
 
-	public get temporary() {
-		// eslint-disable-next-line no-bitwise
+	public get temporary(): boolean {
 		return Boolean(this.type & ACTIONS.TEMPORARY);
 	}
 
-	public get cacheExpired() {
+	public get cacheExpired(): boolean {
 		return Date.now() > this[kTimeout];
 	}
 
-	public get cacheRemaining() {
+	public get cacheRemaining(): number {
 		return Math.max(Date.now() - this[kTimeout], 0);
 	}
 
-	public get shouldSend() {
+	public get shouldSend(): boolean {
 		// If the moderation log is not anonymous, it should always send
 		if (this.moderator) return true;
 
@@ -67,9 +78,14 @@ export class ModerationManagerEntry {
 		return true;
 	}
 
-	public async edit({ [SCHEMA_KEYS.DURATION]: duration, [SCHEMA_KEYS.MODERATOR]: moderator, [SCHEMA_KEYS.REASON]: reason, [SCHEMA_KEYS.EXTRA_DATA]: extraData } = {}) {
+	public async edit({
+		[SCHEMA_KEYS.DURATION]: duration,
+		[SCHEMA_KEYS.MODERATOR]: moderator,
+		[SCHEMA_KEYS.REASON]: reason,
+		[SCHEMA_KEYS.EXTRA_DATA]: extraData
+	}: ModerationManagerUpdateData = {}): Promise<this> {
 		const flattened = {
-			[SCHEMA_KEYS.DURATION]: typeof duration !== 'undefined' && TEMPORARY_TYPES.includes(this.type) && (duration === null || duration < YEAR)
+			[SCHEMA_KEYS.DURATION]: typeof duration !== 'undefined' && TEMPORARY_TYPES.includes(this.type) && (duration === null || duration < TIME.YEAR)
 				? duration
 				: undefined,
 			[SCHEMA_KEYS.MODERATOR]: typeof moderator !== 'undefined'
@@ -106,7 +122,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public async appeal() {
+	public async appeal(): Promise<this> {
 		if (this.appealed) return this;
 
 		// eslint-disable-next-line no-bitwise
@@ -114,12 +130,12 @@ export class ModerationManagerEntry {
 		if (!(type in TYPE_ASSETS)) throw ERRORS.CASE_TYPE_NOT_APPEAL;
 
 		await this.manager.table.get(this.id).update({ [SCHEMA_KEYS.TYPE]: type }).run();
-		this.type = type;
+		this.type = <ModerationTypesEnum> type;
 
 		return this;
 	}
 
-	public async prepareEmbed() {
+	public async prepareEmbed(): Promise<MessageEmbed> {
 		if (!this.user) throw new Error('A user has not been set.');
 		const userID = typeof this.user === 'string' ? this.user : this.user.id;
 		const [userTag, moderator] = await Promise.all([
@@ -131,13 +147,13 @@ export class ModerationManagerEntry {
 		const description = (this.duration ? [
 			`❯ **Type**: ${assets.title}`,
 			`❯ **User:** ${userTag} (${userID})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.prefix}reason ${this.case} to claim.\``}`,
+			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get('prefix')}reason ${this.case} to claim.\``}`,
 			// @ts-ignore
 			`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
 		] : [
 			`❯ **Type**: ${assets.title}`,
 			`❯ **User:** ${userTag} (${userID})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.prefix}reason ${this.case} to claim.\``}`
+			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get('prefix')}reason ${this.case} to claim.\``}`
 		]).join('\n');
 
 		return new MessageEmbed()
@@ -148,37 +164,37 @@ export class ModerationManagerEntry {
 			.setTimestamp(new Date(this.createdAt || Date.now()));
 	}
 
-	public setCase(value) {
+	public setCase(value: number): this {
 		this.case = value;
 		return this;
 	}
 
-	public setDuration(value) {
+	public setDuration(value: string | number): this {
 		if (!TEMPORARY_TYPES.includes(this.type)) return this;
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
-		if (!this.duration || this.duration > YEAR) this.duration = null;
+		if (!this.duration || this.duration > TIME.YEAR) this.duration = null;
 		// eslint-disable-next-line no-bitwise
 		if (this.duration) this.type |= ACTIONS.TEMPORARY;
 		return this;
 	}
 
-	public setExtraData(value) {
+	public setExtraData(value: any): this {
 		this.extraData = value;
 		return this;
 	}
 
-	public setModerator(value) {
+	public setModerator(value: User | string): this {
 		this.moderator = value;
 		return this;
 	}
 
-	public setReason(value) {
+	public setReason(value: string): this {
 		if (!value) return this;
 		value = (Array.isArray(value) ? value.join(' ') : value).trim();
 
 		if (value && TEMPORARY_TYPES.includes(this.type)) {
-			const match = ModerationManagerEntry.regexParse.exec(value);
+			const match = regexParse.exec(value);
 			if (match) {
 				this.setDuration(match[1]);
 				value = value.slice(0, match.index);
@@ -189,7 +205,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setType(value) {
+	public setType(value: ModerationTypesEnum): this {
 		if (typeof value === 'string' && (value in TYPE_KEYS))
 			value = TYPE_KEYS[value];
 
@@ -200,12 +216,12 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setUser(value) {
+	public setUser(value: User | string): this {
 		this.user = value;
 		return this;
 	}
 
-	public async create() {
+	public async create(): Promise<this> {
 		// If the entry was created, there is no point on re-sending
 		if (!this.user || this.createdAt) return null;
 		this.createdAt = Date.now();
@@ -218,9 +234,8 @@ export class ModerationManagerEntry {
 		// @ts-ignore
 		this.manager.insert(this);
 
-		/** @type {SKYRA.SkyraTextChannel} */
-		// @ts-ignore
-		const channel = (this.manager.guild.settings.channels.modlog && this.manager.guild.channels.get(this.manager.guild.settings.channels.modlog)) || null;
+		const channelID = this.manager.guild.settings.get('channels.modlog') as string;
+		const channel = (channelID && this.manager.guild.channels.get(channelID) as TextChannel) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();
 			channel.send(messageEmbed).catch((error) => this.manager.guild.client.emit('error', error));
@@ -243,7 +258,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public toJSON() {
+	public toJSON(): ModerationManagerInsertData {
 		return {
 			[SCHEMA_KEYS.CASE]: this.case,
 			[SCHEMA_KEYS.DURATION]: this.duration,
@@ -254,14 +269,13 @@ export class ModerationManagerEntry {
 			[SCHEMA_KEYS.TYPE]: this.type,
 			[SCHEMA_KEYS.USER]: this.user ? typeof this.user === 'string' ? this.user : this.user.id : null,
 			[SCHEMA_KEYS.CREATED_AT]: this.createdAt
-		};
+		} as ModerationManagerInsertData;
 	}
 
-	public toString() {
+	public toString(): string {
 		return `ModerationManagerEntry<${this.id}>`;
 	}
 
 }
 
-ModerationManagerEntry.timestamp = new Timestamp('hh:mm:ss');
-ModerationManagerEntry.regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
+const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;

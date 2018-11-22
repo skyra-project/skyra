@@ -1,0 +1,444 @@
+import { Guild, GuildMember, ImageSize, Message, Role, User } from 'discord.js';
+import nodeFetch, { RequestInit, Response } from 'node-fetch';
+import { URL } from 'url';
+import { isObject } from 'util';
+import { APIEmojiData } from '../types/Discord';
+import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
+
+const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
+const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
+
+export interface UtilOneToTenEntry {
+	emoji: string;
+	color: number;
+}
+
+export interface ReferredPromise<T> {
+	promise: Promise<T>;
+	resolve(value: T): void;
+	reject(error: Error): void;
+}
+
+/**
+ * Read a stream and resolve to a buffer
+ * @param stream The readable stream to read
+ */
+export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
+	const data = [];
+	for await (const buffer of stream) data.push(buffer);
+	return Buffer.concat(data);
+}
+
+/**
+ * Check if the announcement is correctly set up
+ * @param message The message instance to check with
+ */
+export function announcementCheck(message: Message): Role {
+	const announcementID = message.guild.settings.get('roles.subscriber') as string;
+	if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
+
+	const role = message.guild.roles.get(announcementID);
+	if (!role) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
+
+	if (role.position >= message.guild.me.roles.highest.position) throw message.language.get('SYSTEM_HIGHEST_ROLE');
+	return role;
+}
+
+/**
+ * Remove a muted user from the guild
+ * @param guild The guild
+ * @param id The id of the user
+ */
+export async function removeMute(guild: Guild, id: string): Promise<boolean> {
+	const { settings } = guild;
+	const guildStickyRoles = settings.get('stickyRoles') as any[];
+
+	const stickyRolesIndex = guildStickyRoles.findIndex((stickyRole) => stickyRole.id === id);
+	if (stickyRolesIndex === -1) return false;
+
+	const stickyRoles = guildStickyRoles[stickyRolesIndex];
+
+	const index = stickyRoles.roles.indexOf(settings.get('roles.muted'));
+	if (index === -1) return false;
+
+	stickyRoles.roles.splice(index, 1);
+	const { errors } = await (stickyRoles.roles.length
+		? settings.update('stickyRoles', { id, roles: stickyRoles.roles }, { arrayIndex: stickyRolesIndex })
+		: settings.update('stickyRoles', stickyRoles, { arrayAction: 'remove' }));
+	if (errors.length) throw errors;
+
+	return true;
+}
+
+/**
+ * Check if the member is exactly moderatable
+ * @param message The message for context
+ * @param moderator The moderator
+ * @param target The target
+ */
+export function moderationCheck(message: Message, moderator: GuildMember, target: GuildMember): void {
+	if (target === message.guild.me) throw message.language.get('COMMAND_TOSKYRA');
+	if (target === moderator) throw message.language.get('COMMAND_USERSELF');
+	if (target === message.guild.owner) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
+	const { position } = target.roles.highest;
+	if (position >= message.guild.me.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
+	if (position >= moderator.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER');
+}
+
+/**
+ * Resolve an emoji
+ * @param emoji The emoji to resolve
+ */
+export function resolveEmoji(emoji: string | APIEmojiData): string {
+	if (typeof emoji === 'string') {
+		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
+		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
+		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
+	} else if (isObject(emoji)) {
+		return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}` : encodeURIComponent(emoji.name);
+	}
+	return null;
+}
+
+export function oneToTen(level: number): UtilOneToTenEntry {
+	level |= 0;
+	if (level < 0) level = 0;
+	else if (level > 10) level = 10;
+	return ONE_TO_TEN.get(level);
+}
+
+/**
+ * Split a string by its latest space character in a range from the character 0 to the selected one.
+ * @param str The text to split.
+ * @param length The length of the desired string.
+ * @param char The character to split with
+ */
+export function splitText(str: string, length: number, char: string = ' '): string {
+	const x = str.substring(0, length).lastIndexOf(char);
+	const pos = x === -1 ? length : x;
+	return str.substring(0, pos);
+}
+
+/**
+ * Split a text by its latest space character in a range from the character 0 to the selected one.
+ * @param str The text to split.
+ * @param length The length of the desired string.
+ */
+export function cutText(str: string, length: number): string {
+	if (str.length < length) return str;
+	const cut = splitText(str, length - 3);
+	if (cut.length < length - 3) return `${cut}...`;
+	return `${cut.slice(0, length - 3)}...`;
+}
+
+export function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
+	const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
+	return fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
+}
+
+async function fetch(url: URL | string, type: 'json'): Promise<any>;
+async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<any>;
+async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;
+async function fetch(url: URL | string, options: RequestInit, type: 'buffer'): Promise<Buffer>;
+async function fetch(url: URL | string, type: 'text'): Promise<string>;
+async function fetch(url: URL | string, options: RequestInit, type: 'text'): Promise<string>;
+async function fetch(url: URL | string, type: 'result'): Promise<Response>;
+async function fetch(url: URL | string, options: RequestInit, type: 'result'): Promise<Response>;
+async function fetch(url: URL | string, options: RequestInit, type: 'result' | 'json' | 'buffer' | 'text'): Promise<Response | Buffer | string | any>;
+async function fetch(url: URL | string, options: RequestInit | 'result' | 'json' | 'buffer' | 'text', type?: 'result' | 'json' | 'buffer' | 'text'): Promise<any> {
+	if (typeof options === 'undefined') {
+		options = {};
+		type = 'json';
+	} else if (typeof options === 'string') {
+		type = options;
+		options = {};
+	} else if (typeof type === 'undefined') {
+		type = 'json';
+	}
+
+	// @ts-ignore
+	const result: Response = await nodeFetch(url, options);
+	if (!result.ok) throw result.statusText;
+
+	switch (type) {
+		case 'result': return result;
+		case 'buffer': return result.buffer();
+		case 'json': return result.json();
+		case 'text': return result.text();
+		default: throw new Error(`Unknown type ${type}`);
+	}
+}
+
+/**
+ * Get the content from a message.
+ * @param message The Message instance to get the content from
+ */
+export function getContent(message: Message): string | null {
+	if (message.content) return message.content;
+	for (const embed of message.embeds) {
+		if (embed.description) return embed.description;
+		if (embed.fields.length) return embed.fields[0].value;
+	}
+	return null;
+}
+
+/**
+ * Get the image url from a message.
+ * @param message The Message instance to get the image url from
+ */
+export function getImage(message: Message): string | null {
+	if (message.attachments.size) {
+		const attachment = message.attachments.find((att) => Util.IMAGE_EXTENSION.test(att.url));
+		if (attachment) return attachment.url;
+	}
+	for (const embed of message.embeds) {
+		if (embed.type === 'image') return embed.url;
+		if (embed.image) return embed.image.url;
+	}
+	return null;
+}
+
+/**
+ * Create a referred promise
+ */
+export function createReferPromise<T>(): ReferredPromise<T> {
+	let resolve, reject;
+	const promise: Promise<T> = new Promise((res, rej) => {
+		resolve = res;
+		reject = rej;
+	});
+
+	return { promise, resolve, reject };
+}
+
+/**
+ * Parse a range
+ * @param input The input to parse
+ * @example
+ * parseRange('23..25');
+ * // -> [23, 24, 25]
+ */
+export function parseRange(input: string): number[] {
+	const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(input) || [null, input, input];
+	let min = parseInt(smin), max = parseInt(smax);
+	if (min > max) [max, min] = [min, max];
+	return Array.from({ length: max - min + 1 }, (_, index) => min + index);
+}
+
+/**
+ * Clean all mentions from a content
+ * @param message The message for context
+ * @param input The input to clean
+ */
+export function cleanMentions(message: Message, input: string): string {
+	return input
+		.replace(/@(here|everyone)/g, '@\u200B$1')
+		.replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
+			switch (type) {
+				case '@':
+				case '@!': {
+					const usertag = message.client.usernames.get(id);
+					return usertag ? `@${usertag.slice(0, usertag.lastIndexOf('#'))}` : match;
+				}
+				case '@&': {
+					const role = message.guild ? message.guild.roles.get(id) : null;
+					return role ? `@${role.name}` : match;
+				}
+				case '#': {
+					const channel = message.guild ? message.guild.channels.get(id) : null;
+					return channel ? `#${channel.name}` : match;
+				}
+				default: return match;
+			}
+		});
+}
+
+/**
+ * Creates an array picker function
+ * @param array The array to create a pick function from
+ * @example
+ * const picker = createPick([1, 2, 3, 4]);
+ * picker(); // 2
+ * picker(); // 1
+ * picker(); // 4
+ */
+export function createPick<T>(array: T[]): () => T {
+	const { length } = array;
+	return () => array[Math.floor(Math.random() * length)];
+}
+
+export async function mute(moderator: GuildMember, target: GuildMember, reason: string): Promise<ModerationManagerEntry> {
+	const role = target.guild.roles.get(target.guild.settings.get('roles.muted') as string);
+	if (!role) throw target.guild.language.get('COMMAND_MUTE_UNCONFIGURED');
+
+	const stickyRolesIndex = target.guild.settings.get('stickyRoles').findIndex((stickyRole) => stickyRole.id === target.id);
+	const stickyRoles = stickyRolesIndex !== -1 ? target.guild.settings.stickyRoles[stickyRolesIndex] : { id: target.id, roles: [] };
+	if (stickyRoles.roles.includes(role.id)) throw target.guild.language.get('COMMAND_MUTE_MUTED');
+
+	// Parse the roles
+	const roles = Util.muteGetRoles(target);
+
+	await target.edit({ roles: target.roles.filter((r) => r.managed).map((r) => r.id).concat(role.id) });
+	const entry = { id: target.id, roles: stickyRoles.roles.concat(role.id) };
+	const { errors } = await target.guild.settings.update('stickyRoles', entry, stickyRolesIndex !== -1 ? { arrayIndex: stickyRolesIndex } : { arrayAction: 'add' });
+	if (errors.length) throw errors[0];
+
+	const modlog = target.guild.moderation.new
+		.setModerator(moderator.id)
+		.setUser(target.id)
+		.setType(TYPE_KEYS.MUTE)
+		.setReason(reason)
+		.setExtraData(roles);
+	return modlog.create();
+}
+
+/**
+ * The static Util class
+ * @version 2.0.0
+ */
+class Util {
+
+	// Mute role based utils
+
+	/**
+	 * Mute a member
+		 * @param {SKYRA.SkyraGuildMember} moderator The member who mutes
+	 * @param {SKYRA.SkyraGuildMember} target The member to mute
+	 * @param {string} [reason] The reason for the mute
+	 * @returns {Promise<SKYRA.ModerationManagerEntry>}
+	 */
+	public static async mute(moderator, target, reason) {
+
+	}
+
+	/**
+	 * Mute a member
+		 * @param {SKYRA.SkyraGuild} guild The guild for context
+	 * @param {SKYRA.SkyraUser} moderator The member who mutes
+	 * @param {SKYRA.SkyraUser} target The member to mute
+	 * @param {string} [reason] The reason for the mute
+	 * @param {number} [days] The number of days for the prune messages
+	 * @returns {Promise<SKYRA.ModerationManagerEntry>}
+	 */
+	public static async softban(guild, moderator, target, reason, days = 1) {
+		await guild.members.ban(target.id, {
+			days,
+			reason: `${reason ? `Softban with reason: ${reason}` : null}`
+		});
+		await guild.members.unban(target.id, 'Softban.');
+
+		const modlog = guild.moderation.new
+			.setModerator(moderator.id)
+			.setUser(target.id)
+			// @ts-ignore
+			.setType(TYPE_KEYS.SOFT_BAN)
+			.setReason(reason);
+		return modlog.create();
+	}
+
+	/**
+	 * Get all the roles for the mute
+		 * @param {SKYRA.SkyraGuildMember} member The member to get the roles from
+	 * @returns {SKYRA.Snowflake[]}
+	 */
+	public static muteGetRoles(member) {
+		const roles = [...member.roles.keys()];
+		roles.splice(roles.indexOf(member.guild.id), 1);
+		return roles;
+	}
+
+	/**
+	 * Create the mute role
+		 * @param {SKYRA.SkyraMessage} msg The message instance to use as context
+	 * @returns {Promise<SKYRA.Role>}
+	 */
+	public static async createMuteRole(msg) {
+		if (msg.guild.settings.roles.muted
+			&& msg.guild.roles.has(msg.guild.settings.roles.muted)) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
+
+		if (msg.guild.roles.size === 250) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
+		const role = await msg.guild.roles.create(Util.MUTE_ROLE_OPTIONS);
+		const { channels } = msg.guild;
+		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
+		const denied = [];
+		let accepted = 0;
+
+		for (const channel of channels.values()) { // eslint-disable-line no-restricted-syntax
+			await Util._createMuteRolePush(channel, role, denied);
+			accepted++;
+		}
+
+		const messageEdit2 = msg.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
+		await msg.guild.settings.update('roles.muted', role.id, msg.guild);
+		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, msg.author, role]);
+		return role;
+	}
+
+	/**
+	 * Push the permissions for the muted role into a channel
+		 * @param {Channel} channel The channel to modify
+	 * @param {Role} role The role to update
+	 * @param {string[]} array The array to push in case it did fail
+	 * @returns {Promise<*>}
+	 * @private
+	 */
+	public static async _createMuteRolePush(channel, role, array) {
+		if (channel.type === 'category') return null;
+		return channel.updateOverwrite(role, Util.MUTE_ROLE_PERMISSIONS[channel.type])
+			.catch(() => array.push(String(channel)));
+	}
+
+}
+
+const MUTE_ROLE_PERMISSIONS = Object.freeze({
+	text: { SEND_MESSAGES: false, ADD_REACTIONS: false },
+	voice: { CONNECT: false }
+});
+
+const MUTE_ROLE_OPTIONS = Object.freeze({
+	reason: '[SETUP] Authorized to create a \'Muted\' role.',
+	data: {
+		name: 'Muted',
+		color: 0x422c0b,
+		hoist: false,
+		permissions: [],
+		mentionable: false
+	}
+});
+
+const ONE_TO_TEN = new Map([
+	[0, { emoji: '😪', color: 0x5B1100 }],
+	[1, { emoji: '😪', color: 0x5B1100 }],
+	[2, { emoji: '😫', color: 0xAB1100 }],
+	[3, { emoji: '😔', color: 0xFF2B00 }],
+	[4, { emoji: '😒', color: 0xFF6100 }],
+	[5, { emoji: '😌', color: 0xFF9C00 }],
+	[6, { emoji: '😕', color: 0xB4BF00 }],
+	[7, { emoji: '😬', color: 0x84FC00 }],
+	[8, { emoji: '🙂', color: 0x5BF700 }],
+	[9, { emoji: '😃', color: 0x24F700 }],
+	[10, { emoji: '😍', color: 0x51D4EF }]
+]);
+
+export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
+
+/**
+ * @enumerable decorator that sets the enumerable property of a class field to false.
+ * @param value true|false
+ */
+export function enumerable(value: boolean): (target: any, propertyKey: string) => void {
+	return (target, key): void => {
+		Object.defineProperty(target, key, {
+			enumerable: value,
+			set(this: any, val: any): void {
+				// tslint:disable-next-line
+				Object.defineProperty(this, key, {
+					configurable: true,
+					enumerable: value,
+					value: val,
+					writable: true,
+				});
+			},
+		});
+	};
+}

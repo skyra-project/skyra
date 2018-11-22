@@ -1,24 +1,24 @@
 {
   "name": "skyra",
-  "version": "4.0.0",
-  "description": "Standalone Discord Bot built on Klasa",
-  "main": "src/skyra.js",
+  "version": "5.0.0",
+  "description": "Multipurpose Discord Bot built on Klasa",
+  "main": "dist/src/skyra.js",
   "scripts": {
+    "lint": "tslint -p tsconfig.json src/**/*.ts --fix",
     "pm2:delete": "pm2 delete Skyra",
     "pm2:logs": "pm2 logs Skyra --lines=200",
     "pm2:restart": "pm2 restart Skyra",
-    "pm2:start": "pm2 start src/skyra.js --name=\"Skyra\"",
-    "pm2:start-dev": "pm2 start src/skyra.js --name=\"Skyra\" --env={ \"DEV\": \"true\" }",
-    "pm2:start-harmony": "pm2 start src/skyra.js --node-args=\"--harmony\" --name=\"Skyra\"",
-    "pm2:start-harmony-dev": "pm2 start src/skyra.js --node-args=\"--harmony\" --name=\"Skyra\" --env={ \"DEV\": \"true\" }",
+    "pm2:start-harmony": "pm2 start dist/src/Skyra.js --node-args=\"--harmony\" --name=\"Skyra\"",
+    "pm2:start": "pm2 start dist/src/Skyra.js --name=\"Skyra\"",
     "pm2:stop": "pm2 stop Skyra",
-    "dev:unix": "DEV=true node src/skyra.js",
-    "dev:windows": "$env:DEV=\"true\"; node src/skyra.js",
-    "start": "node src/skyra.js",
-    "test": "eslint src && tslint src/index.d.ts",
-    "lint": "eslint --fix src",
-    "deps:update": "yarn install dirigeants/klasa discordjs/discord.js",
-    "deps:install": "yarn install --production"
+    "start": "node dist/src/Skyra.js",
+    "test": "tslint -p tsconfig.json src/**/*.ts",
+    "update": "yarn",
+    "compile": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyranet/Skyra.git"
   },
   "keywords": [
     "discord.js",
@@ -26,34 +26,34 @@
     "bot",
     "standalone"
   ],
-  "author": "kyranet",
+  "contributors": [
+    "kyranet"
+  ],
+  "private": true,
+  "author": "kyranet <kyradiscord@gmail.com>",
   "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/kyranet/Skyra/issues"
+  },
   "dependencies": {
-    "canvas": "^2.2.0",
-    "canvas-constructor": "^2.1.1",
-    "diff": "^4.0.1",
+    "canvas": "^2.1.0",
+    "canvas-constructor": "^2.0.1",
+    "diff": "^3.5.0",
     "discord.js": "github:discordjs/discord.js",
-    "fs-nextra": "^0.3.8",
-    "gifencoder": "^2.0.1",
-    "heapdump": "^0.3.12",
-    "klasa": "github:dirigeants/klasa",
+    "fs-nextra": "^0.3.7",
+    "gifencoder": "^1.1.0",
+    "heapdump": "^0.3.11",
+    "klasa": "dirigeants/klasa#settings",
     "node-fetch": "^2.3.0",
     "rethinkdb-ts": "^2.4.0-rc.11",
     "veza": "^0.3.3"
   },
   "devDependencies": {
-    "@types/node": "^10.12.19",
-    "eslint": "^5.12.0",
+    "@types/node": "^10.12.9",
+    "@types/node-fetch": "^2.1.4",
+    "eslint": "^5.9.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
-    "tslint": "^5.12.0",
-    "typescript": "^3.2.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kyranet/Skyra.git"
-  },
-  "bugs": {
-    "url": "https://github.com/kyranet/Skyra/issues"
-  },
-  "homepage": "https://github.com/kyranet/Skyra#readme"
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
+  }
 }

@@ -1,17 +1,25 @@
 {
+	"compileOnSave": true,
 	"compilerOptions": {
+        "declaration": true,
 		"lib": ["esnext"],
 		"module": "commonjs",
-		"target": "esnext",
-		"noImplicitAny": true,
-		"strictNullChecks": true,
-		"noEmit": true,
-		"forceConsistentCasingInFileNames": true,
-		"moduleResolution": "node"
+		"outDir": "./dist",
+		"types": ["node", "node-fetch"],
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "removeComments": true,
+		"sourceMap": true,
+		"experimentalDecorators": true,
+        "target": "esnext"
 	},
-	"files": [
-		"src/index.d.ts",
-		"src/veza.d.ts",
-		"src/rebirthdb.d.ts"
+	"exclude": [
+		"node_modules",
+		"bin",
+		"examples",
+		"scripts"
+	],
+	"include": [
+		"./src/**/*"
 	]
 }

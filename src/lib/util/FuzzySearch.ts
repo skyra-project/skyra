@@ -1,25 +1,25 @@
-import { util : { codeBlock }; } from; 'klasa';
-import levenshtein from './External/levenshtein';
+import { Collection, Message } from 'discord.js';
+import { util } from 'klasa';
+import { levenshtein } from './External/levenshtein';
 
-class FuzzySearch {
+export type FuzzySearchAccess<V> = (value: V) => string;
+export type FuzzySearchFilter<V> = (value: V) => boolean;
 
-	public constructor(collection, access, filter = () => true) {
+export class FuzzySearch<K extends string, V> {
+
+	private collection: Collection<K, V>;
+	private access: FuzzySearchAccess<V>;
+	private filter: FuzzySearchFilter<V>;
+
+	public constructor(collection: Collection<K, V>, access: FuzzySearchAccess<V>, filter: FuzzySearchFilter<V> = () => true) {
 		this.collection = collection;
-
-		/**
-		 * @type {function(object):boolean}
-		 */
-		this.filter = filter;
-
-		/**
-		 * @type {function(object):string}
-		 */
 		this.access = access;
+		this.filter = filter;
 	}
 
-	public run(message, query) {
+	public run(message: Message, query: string): Promise<[K, V, number]> {
 		const lowcquery = query.toLowerCase();
-		const results = [];
+		const results: [K, V, number][] = [];
 
 		let lowerCaseName, current, distance;
 		let almostExacts = 0;
@@ -61,16 +61,16 @@ class FuzzySearch {
 		return this.select(message, results);
 	}
 
-	public async select(message, results) {
+	public async select(message: Message, results: [K, V, number][]): Promise<[K, V, number]> {
 		switch (results.length) {
 			case 0: return null;
 			case 1: return results[0];
 			// Two or more
 			default: {
-				const { content: number } = await message.prompt(message.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
-					codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
-				if (number.toLowerCase() === 'abort') return null;
-				const parsed = Number(number);
+				const { content: n } = await message.prompt(message.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
+					util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
+				if (n.toLowerCase() === 'abort') return null;
+				const parsed = Number(n);
 				if (!Number.isSafeInteger(parsed)) throw message.language.get('FUZZYSEARCH_INVALID_NUMBER');
 				if (parsed < 0 || parsed >= results.length) throw message.language.get('FUZZYSEARCH_INVALID_INDEX');
 				return results[parsed];
@@ -79,5 +79,3 @@ class FuzzySearch {
 	}
 
 }
-
-export FuzzySearch;

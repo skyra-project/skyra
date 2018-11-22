@@ -15,7 +15,6 @@ const REGEXP = {
 	RGB_EXEC: /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/i
 };
 
-/* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 export class Color {
 
 	public static parse(input: string): HEX | B10 | RGB | HSL {

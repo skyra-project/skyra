@@ -21,7 +21,6 @@ export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 	 */
 	public async _run(piece: RawEvent, data: Object): Promise<void> {
 		try {
-			// @ts-ignore
 			await piece.run(data);
 		} catch (error) {
 			this.client.emit('wtf', `[RAWEVENT] ${piece.path}\n${error

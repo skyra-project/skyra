@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed, User } from 'discord.js';
+import { Client, Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { Command, CommandOptions, CommandStore, util } from 'klasa';
 import { URL } from 'url';
 import { TOKENS, VERSION } from '../../../config';
@@ -17,8 +17,6 @@ export class WeebCommand extends Command {
 
 	private readonly requiresUser = Boolean(this.usage.parsedUsage.length);
 
-	private readonly url = new URL('https://api-v2.weeb.sh/images/random');
-
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
 		super(client, store, file, directory, util.mergeDefault({
 			bucket: 2,
@@ -29,13 +27,14 @@ export class WeebCommand extends Command {
 
 		this.queryType = options.queryType;
 		this.responseName = options.responseName;
-
-		this.url.searchParams.append('type', this.queryType);
-		this.url.searchParams.append('nsfw', 'false');
 	}
 
 	public async run(message: Message, params?: User[]): Promise<Message> {
-		const { url } = await fetch(this.url, {
+		const query = new URL('https://api-v2.weeb.sh/images/random');
+		query.searchParams.append('type', this.queryType);
+		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
+
+		const { url } = await fetch(query, {
 			headers: {
 				Authorization: `Wolke ${TOKENS.WEEB_SH}`,
 				'User-Agent': `Skyra/${VERSION}`

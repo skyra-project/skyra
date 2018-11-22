@@ -21,7 +21,7 @@ class GuildSettings extends Settings {
 
 	/**
 	 * Build a super RegExp from an array
-		 * @param {string[]} filterArray The array to process
+	 * @param {string[]} filterArray The array to process
 	 * @returns {RegExp}
 	 */
 	public static superRegExp(filterArray) {

@@ -1,6 +1,4 @@
-export {
-	B10: require;('./B10'),
-	HEX;: require('./HEX'),
-	HSL;: require('./HSL'),
-	RGB;: require('./RGB');
-}
+export * from './B10';
+export * from './HEX';
+export * from './HSL';
+export * from './RGB';

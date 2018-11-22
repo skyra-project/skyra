@@ -1,5 +1,8 @@
 import { Canvas } from 'canvas-constructor';
+import { Message, User } from 'discord.js';
+import { join } from 'path';
 import { loadImage } from '../util';
+
 const REELS = [
 	[8, 2, 1, 4, 5, 4, 3, 2, 2, 0, 2, 3, 7, 7, 0, 5, 2, 1, 5, 4, 7, 3, 6, 6, 7, 2, 4, 3, 1, 8, 0, 4, 5, 6, 6, 1, 2, 1, 4, 5, 0, 8, 6, 1, 3, 0, 1],
 	[4, 1, 2, 2, 4, 3, 8, 2, 1, 6, 5, 2, 7, 0, 0, 6, 1, 4, 2, 1, 0, 2, 5, 5, 3, 6, 8, 7, 1, 1, 7, 4, 4, 3, 3, 0, 6, 1, 3, 5, 6, 0, 3, 0, 5, 6, 4],
@@ -34,56 +37,47 @@ const COORDINATES = [
 
 const POSITIONS = [0, 0, 0];
 
-class Slotmachine {
+export class Slotmachine {
 
-	public constructor(msg, amount) {
-		/**
-		 * The player
-		 * @type {SKYRA.SkyraUser}
-		 */
-		this.player = msg.author;
+	/**
+	 * The amount bet
+	 */
+	public amount: number;
 
-		/**
-		 * The boost
-		 * @type {number}
-		 */
-		this.boost = msg.guildSettings.social.boost;
+	/**
+	 * The winnings
+	 */
+	public winnings = 0;
 
-		/**
-		 * The winnings
-		 * @type {number}
-		 */
-		this.winnings = 0;
+	/**
+	 * The player
+	 */
+	public get player(): User {
+		return this.message.author;
+	}
 
-		/**
-		 * The amount bet
-		 * @type {number}
-		 */
+	public get boost(): number {
+		return (this.message.guild && (this.player.client.settings.get('boosts.guilds') as string[]).includes(this.message.guild.id) ? 1.5 : 1)
+			+ ((this.player.client.settings.get('boosts.users') as string[]).includes(this.message.author.id) ? 1.5 : 1);
+	}
+
+	public constructor(public message: Message, amount: number) {
 		this.amount = amount;
 	}
 
-	public static async init() {
-		import { join } from 'path';
-		const [icon, shiny] = await Promise.all([
-			loadImage(join(__dirname, '../../../../assets/images/social/sm-icons.png')),
-			loadImage(join(__dirname, '../../../../assets/images/social/shiny-icon.png'))
-		]);
-		Slotmachine.images.ICON = icon;
-		Slotmachine.images.SHINY = shiny;
-	}
-
-	public async run() {
+	public async run(): Promise<Buffer> {
 		const { settings } = this.player;
 		const rolls = this.roll();
 		this.calculate(rolls);
 
-		const amount = this.winnings !== 0 ? settings.money + (this.winnings * this.boost) : settings.money - this.amount;
+		const money = settings.get('money') as number;
+		const amount = this.winnings !== 0 ? money + (this.winnings * this.boost) : money - this.amount;
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update('money', amount);
 		return this.render(rolls);
 	}
 
-	public async render(rolls) {
+	public async render(rolls: number[]): Promise<Buffer> {
 		const win = this.winnings > 0;
 		const length = win ? 300 : 150;
 
@@ -106,6 +100,7 @@ class Slotmachine {
 		await Promise.all(rolls.map((value, index) => new Promise((res) => {
 			const { x, y } = ASSETS[value];
 			const coord = COORDINATES[index];
+			// @ts-ignore
 			canvas.context.drawImage(Slotmachine.images.ICON, x, y, ICON_SIZE, ICON_SIZE, coord.x, coord.y, ICON_SIZE, ICON_SIZE);
 			res();
 		})));
@@ -122,14 +117,14 @@ class Slotmachine {
 		return canvas.toBufferAsync();
 	}
 
-	public calculate(roll) {
+	public calculate(roll: number[]): void {
 		for (const [COMB1, COMB2, COMB3] of COMBINATIONS) {
 			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3])
 				this.winnings += this.amount * VALUES[roll[COMB1]];
 		}
 	}
 
-	public roll() {
+	public roll(): number[] {
 		const roll = [];
 		for (let i = 0; i < 3; i++) {
 			const reel = REELS[i];
@@ -144,18 +139,25 @@ class Slotmachine {
 		return roll;
 	}
 
-	public _spinReel(reel) {
+	public _spinReel(reel: number): number {
 		const REEL_LENGTH = REELS[reel].length;
 		const position = (POSITIONS[reel] + Math.round((Math.random() * REEL_LENGTH) + 3)) % REEL_LENGTH;
 		POSITIONS[reel] = position;
 		return position;
 	}
 
+	public static images = Object.seal({
+		ICON: null,
+		SHINY: null
+	});
+
+	public static async init(): Promise<void> {
+		const [icon, shiny] = await Promise.all([
+			loadImage(join(__dirname, '../../../../assets/images/social/sm-icons.png')),
+			loadImage(join(__dirname, '../../../../assets/images/social/shiny-icon.png'))
+		]);
+		Slotmachine.images.ICON = icon;
+		Slotmachine.images.SHINY = shiny;
+	}
+
 }
-
-Slotmachine.images = Object.seal({
-	ICON: null,
-	SHINY: null
-});
-
-export Slotmachine;

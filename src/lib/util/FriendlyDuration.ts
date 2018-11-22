@@ -28,7 +28,7 @@ class FriendlyDuration {
 
 	/**
 	 * Display an i18n-formatted date
-		 * @param {(number|Date)} date The date to show
+	 * @param {(number|Date)} date The date to show
 	 * @param {string} language The language to display
 	 * @returns {string}
 	 */
@@ -44,7 +44,7 @@ class FriendlyDuration {
 
 	/**
 	 * Display the duration
-		 * @param {number} duration The duration in milliseconds to parse and display
+	 * @param {number} duration The duration in milliseconds to parse and display
 	 * @param {DurationFormatAssetsTime} assets The language assets
 	 * @returns {string}
 	 */
@@ -60,7 +60,7 @@ class FriendlyDuration {
 
 	/**
 	 * Adds an unit, if non zero
-		 * @param {number} time The duration of said unit
+	 * @param {number} time The duration of said unit
 	 * @param {DurationFormatAssetsUnit} unit The unit language assets
 	 * @returns {string}
 	 * @private
@@ -72,7 +72,7 @@ class FriendlyDuration {
 
 	/**
 	 * Parse the duration
-		 * @param {number} duration The duration in milliseconds to parse
+	 * @param {number} duration The duration in milliseconds to parse
 	 * @returns {Object}
 	 * @private
 	 */
@@ -91,7 +91,7 @@ class FriendlyDuration {
 	/**
 	 * Parses the time duration by extracting the amount of units
 	 * given both the duration and the unit
-		 * @param {number} time The time duration to parse
+	 * @param {number} time The time duration to parse
 	 * @param {string} unit The unit
 	 * @returns {number}
 	 * @private
@@ -110,18 +110,17 @@ class FriendlyDuration {
 
 /**
  * The supported time types
- * @type {Readonly<TimeParserTimeTypes>}
  */
 const TIME_TYPES = Object.freeze({
-	MILLISECOND: 'MILLISECOND',
-	SECOND: 'SECOND',
-	MINUTE: 'MINUTE',
-	HOUR: 'HOUR',
 	DAY: 'DAY',
-	WEEK: 'WEEK',
+	HOUR: 'HOUR',
+	MILLISECOND: 'MILLISECOND',
+	MINUTE: 'MINUTE',
 	MONTH: 'MONTH',
+	SECOND: 'SECOND',
+	WEEK: 'WEEK',
 	YEAR: 'YEAR'
-});
+}) as Readonly<TimeParserTimeTypes>;
 
 /**
  * The duration of each time type in milliseconds
@@ -137,7 +136,7 @@ const TIME_TOKENS = Object.freeze({
 	// 29.53059 days is the official duration of a month: https://en.wikipedia.org/wiki/Month
 	[TIME_TYPES.MONTH]: 2628000000,
 	[TIME_TYPES.YEAR]: 31536000000
-});
+}) as Readonly<TimeParserTimeTokens>;
 
 const UNIT_DISTANCES = Object.freeze({
 	SECOND: TIME_TOKENS.MINUTE / TIME_TOKENS.SECOND,
@@ -151,7 +150,6 @@ const UNIT_DISTANCES = Object.freeze({
 
 /**
  * The unit types supported for parsing
- * @type {ReadonlyArray<string>}
  */
 const UNIT_TYPES = Object.freeze([
 	TIME_TYPES.YEAR,

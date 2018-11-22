@@ -1,5 +1,6 @@
-import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Client, DiscordAPIError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import RethinkDB from '../../providers/rethinkdb';
+import { getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
 const TABLENAME = 'starboard', TABLEINDEX = { index: 'channel_message' };
@@ -197,7 +198,7 @@ export class StarboardMessage {
 
 	/**
 	 * Destroy this instance
-		 */
+	 */
 	public async destroy(): Promise<void> {
 		if (this.existenceStatus === null) await this.sync();
 		if (this.existenceStatus) await this.provider.db.table(TABLENAME).get(this.id).delete().run();

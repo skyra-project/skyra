@@ -5,7 +5,7 @@ const kTimeout = Symbol('ModerationManagerTimeout');
 
 const TEMPORARY_TYPES = [TYPE_KEYS.BAN, TYPE_KEYS.MUTE, TYPE_KEYS.VOICE_MUTE];
 
-class ModerationManagerEntry {
+export class ModerationManagerEntry {
 
 	public constructor(manager, data = {}) {
 		/** @type {SKYRA.ModerationManager} */
@@ -265,5 +265,3 @@ class ModerationManagerEntry {
 
 ModerationManagerEntry.timestamp = new Timestamp('hh:mm:ss');
 ModerationManagerEntry.regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
-
-export ModerationManagerEntry;

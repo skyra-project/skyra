@@ -1,7 +1,8 @@
-import { Client, Message, User } from 'discord.js';
-import { CommandOptions, CommandStore } from 'klasa';
+import { Client, Message, MessageEmbed, User } from 'discord.js';
+import { Command, CommandOptions, CommandStore, util } from 'klasa';
 import { URL } from 'url';
-import { TOKENS } from '../../../config';
+import { TOKENS, VERSION } from '../../../config';
+import { fetch } from '../util/util';
 
 export class WeebCommand extends Command {
 
@@ -19,7 +20,7 @@ export class WeebCommand extends Command {
 	private readonly url = new URL('https://api-v2.weeb.sh/images/random');
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
-		super(client, store, file, directory, mergeDefault({
+		super(client, store, file, directory, util.mergeDefault({
 			bucket: 2,
 			cooldown: 30,
 			requiredPermissions: ['EMBED_LINKS'],
@@ -37,7 +38,7 @@ export class WeebCommand extends Command {
 		const { url } = await fetch(this.url, {
 			headers: {
 				Authorization: `Wolke ${TOKENS.WEEB_SH}`,
-				'User-Agent': `Skyra/${version}`
+				'User-Agent': `Skyra/${VERSION}`
 			}
 		}, 'json');
 

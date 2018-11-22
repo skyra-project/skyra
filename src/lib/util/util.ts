@@ -1,8 +1,12 @@
-import { Guild, GuildMember, ImageSize, Message, Role, User } from 'discord.js';
+import { Image } from 'canvas';
+import { Guild, GuildMember, ImageSize, Message, Role, TextChannel, User, VoiceChannel } from 'discord.js';
+import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { URL } from 'url';
 import { isObject } from 'util';
+import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData } from '../types/Discord';
+import { MODERATION } from './constants';
 import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
@@ -17,6 +21,17 @@ export interface ReferredPromise<T> {
 	promise: Promise<T>;
 	resolve(value: T): void;
 	reject(error: Error): void;
+}
+
+/**
+ * Load an image by its path
+ * @param path The path to the image to load
+ */
+export async function loadImage(path: string): Promise<Image> {
+	const buffer = await readFile(path);
+	const image = new Image();
+	image.src = buffer;
+	return image;
 }
 
 /**
@@ -136,16 +151,16 @@ export function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> 
 	return fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
 }
 
-async function fetch(url: URL | string, type: 'json'): Promise<any>;
-async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<any>;
-async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;
-async function fetch(url: URL | string, options: RequestInit, type: 'buffer'): Promise<Buffer>;
-async function fetch(url: URL | string, type: 'text'): Promise<string>;
-async function fetch(url: URL | string, options: RequestInit, type: 'text'): Promise<string>;
-async function fetch(url: URL | string, type: 'result'): Promise<Response>;
-async function fetch(url: URL | string, options: RequestInit, type: 'result'): Promise<Response>;
-async function fetch(url: URL | string, options: RequestInit, type: 'result' | 'json' | 'buffer' | 'text'): Promise<Response | Buffer | string | any>;
-async function fetch(url: URL | string, options: RequestInit | 'result' | 'json' | 'buffer' | 'text', type?: 'result' | 'json' | 'buffer' | 'text'): Promise<any> {
+export async function fetch(url: URL | string, type: 'json'): Promise<any>;
+export async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<any>;
+export async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;
+export async function fetch(url: URL | string, options: RequestInit, type: 'buffer'): Promise<Buffer>;
+export async function fetch(url: URL | string, type: 'text'): Promise<string>;
+export async function fetch(url: URL | string, options: RequestInit, type: 'text'): Promise<string>;
+export async function fetch(url: URL | string, type: 'result'): Promise<Response>;
+export async function fetch(url: URL | string, options: RequestInit, type: 'result'): Promise<Response>;
+export async function fetch(url: URL | string, options: RequestInit, type: 'result' | 'json' | 'buffer' | 'text'): Promise<Response | Buffer | string | any>;
+export async function fetch(url: URL | string, options: RequestInit | 'result' | 'json' | 'buffer' | 'text', type?: 'result' | 'json' | 'buffer' | 'text'): Promise<any> {
 	if (typeof options === 'undefined') {
 		options = {};
 		type = 'json';
@@ -188,7 +203,7 @@ export function getContent(message: Message): string | null {
  */
 export function getImage(message: Message): string | null {
 	if (message.attachments.size) {
-		const attachment = message.attachments.find((att) => Util.IMAGE_EXTENSION.test(att.url));
+		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.url));
 		if (attachment) return attachment.url;
 	}
 	for (const embed of message.embeds) {
@@ -237,7 +252,7 @@ export function cleanMentions(message: Message, input: string): string {
 			switch (type) {
 				case '@':
 				case '@!': {
-					const usertag = message.client.usernames.get(id);
+					const usertag = message.client.usertags.get(id);
 					return usertag ? `@${usertag.slice(0, usertag.lastIndexOf('#'))}` : match;
 				}
 				case '@&': {
@@ -267,16 +282,24 @@ export function createPick<T>(array: T[]): () => T {
 	return () => array[Math.floor(Math.random() * length)];
 }
 
-export async function mute(moderator: GuildMember, target: GuildMember, reason: string): Promise<ModerationManagerEntry> {
+/**
+ * Mute a member
+ * @param moderator The member who mutes
+ * @param target The member to mute
+ * @param reason The reason for the mute
+ */
+export async function mute(moderator: GuildMember, target: GuildMember, reason?: string): Promise<ModerationManagerEntry> {
 	const role = target.guild.roles.get(target.guild.settings.get('roles.muted') as string);
 	if (!role) throw target.guild.language.get('COMMAND_MUTE_UNCONFIGURED');
 
-	const stickyRolesIndex = target.guild.settings.get('stickyRoles').findIndex((stickyRole) => stickyRole.id === target.id);
-	const stickyRoles = stickyRolesIndex !== -1 ? target.guild.settings.stickyRoles[stickyRolesIndex] : { id: target.id, roles: [] };
+	const all = target.guild.settings.get('stickyRoles') as { id: string; roles: string[] }[];
+
+	const stickyRolesIndex = all.findIndex((stickyRole) => stickyRole.id === target.id);
+	const stickyRoles = stickyRolesIndex !== -1 ? all[stickyRolesIndex] : { id: target.id, roles: [] };
 	if (stickyRoles.roles.includes(role.id)) throw target.guild.language.get('COMMAND_MUTE_MUTED');
 
 	// Parse the roles
-	const roles = Util.muteGetRoles(target);
+	const roles = muteGetRoles(target);
 
 	await target.edit({ roles: target.roles.filter((r) => r.managed).map((r) => r.id).concat(role.id) });
 	const entry = { id: target.id, roles: stickyRoles.roles.concat(role.id) };
@@ -286,108 +309,85 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason: 
 	const modlog = target.guild.moderation.new
 		.setModerator(moderator.id)
 		.setUser(target.id)
-		.setType(TYPE_KEYS.MUTE)
+		.setType(MODERATION.TYPE_KEYS.MUTE)
 		.setReason(reason)
 		.setExtraData(roles);
 	return modlog.create();
 }
 
 /**
- * The static Util class
- * @version 2.0.0
+ * Softban a member
+ * @param guild The guild for context
+ * @param moderator The member who mutes
+ * @param target The member to mute
+ * @param reason The reason for the mute
+ * @param days The number of days for the prune messages
  */
-class Util {
+export async function softban(guild: Guild, moderator: User, target: User, reason: string = null, days: number = 1): Promise<ModerationManagerEntry> {
+	await guild.members.ban(target.id, {
+		days,
+		reason: `${reason ? `Softban with reason: ${reason}` : null}`
+	});
+	await guild.members.unban(target.id, 'Softban.');
 
-	// Mute role based utils
+	const modlog = guild.moderation.new
+		.setModerator(moderator.id)
+		.setUser(target.id)
+		// @ts-ignore
+		.setType(TYPE_KEYS.SOFT_BAN)
+		.setReason(reason);
+	return modlog.create();
+}
 
-	/**
-	 * Mute a member
-		 * @param {SKYRA.SkyraGuildMember} moderator The member who mutes
-	 * @param {SKYRA.SkyraGuildMember} target The member to mute
-	 * @param {string} [reason] The reason for the mute
-	 * @returns {Promise<SKYRA.ModerationManagerEntry>}
-	 */
-	public static async mute(moderator, target, reason) {
+/**
+ * Get all the roles for the mute
+ * @param member The member to get the roles from
+ */
+export function muteGetRoles(member: GuildMember): string[] {
+	const roles = [...member.roles.keys()];
+	roles.splice(roles.indexOf(member.guild.id), 1);
+	return roles;
+}
 
+/**
+ * Create the mute role
+ * @param message The message instance to use as context
+ */
+export async function createMuteRole(message: Message): Promise<Role> {
+	const id = message.guild.settings.get('roles.muted') as string;
+	if (id && message.guild.roles.has(id)) throw message.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
+
+	if (message.guild.roles.size === 250) throw message.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
+	const role = await message.guild.roles.create(MUTE_ROLE_OPTIONS);
+	const { channels } = message.guild;
+	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
+	const denied = [];
+	let accepted = 0;
+
+	for (const channel of channels.values()) { // eslint-disable-line no-restricted-syntax
+		await _createMuteRolePush(channel as TextChannel | VoiceChannel, role, denied);
+		accepted++;
 	}
 
-	/**
-	 * Mute a member
-		 * @param {SKYRA.SkyraGuild} guild The guild for context
-	 * @param {SKYRA.SkyraUser} moderator The member who mutes
-	 * @param {SKYRA.SkyraUser} target The member to mute
-	 * @param {string} [reason] The reason for the mute
-	 * @param {number} [days] The number of days for the prune messages
-	 * @returns {Promise<SKYRA.ModerationManagerEntry>}
-	 */
-	public static async softban(guild, moderator, target, reason, days = 1) {
-		await guild.members.ban(target.id, {
-			days,
-			reason: `${reason ? `Softban with reason: ${reason}` : null}`
-		});
-		await guild.members.unban(target.id, 'Softban.');
+	const messageEdit2 = message.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
+	await message.guild.settings.update('roles.muted', role.id);
+	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, message.author, role]);
+	return role;
+}
 
-		const modlog = guild.moderation.new
-			.setModerator(moderator.id)
-			.setUser(target.id)
-			// @ts-ignore
-			.setType(TYPE_KEYS.SOFT_BAN)
-			.setReason(reason);
-		return modlog.create();
+/**
+ * Push the permissions for the muted role into a channel
+ * @param channel The channel to modify
+ * @param role The role to update
+ * @param array The array to push in case it did fail
+ */
+async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]): Promise<void> {
+	if (channel.type === 'category') return;
+	try {
+		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type]);
+	} catch {
+		array.push(String(channel));
 	}
-
-	/**
-	 * Get all the roles for the mute
-		 * @param {SKYRA.SkyraGuildMember} member The member to get the roles from
-	 * @returns {SKYRA.Snowflake[]}
-	 */
-	public static muteGetRoles(member) {
-		const roles = [...member.roles.keys()];
-		roles.splice(roles.indexOf(member.guild.id), 1);
-		return roles;
-	}
-
-	/**
-	 * Create the mute role
-		 * @param {SKYRA.SkyraMessage} msg The message instance to use as context
-	 * @returns {Promise<SKYRA.Role>}
-	 */
-	public static async createMuteRole(msg) {
-		if (msg.guild.settings.roles.muted
-			&& msg.guild.roles.has(msg.guild.settings.roles.muted)) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
-
-		if (msg.guild.roles.size === 250) throw msg.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
-		const role = await msg.guild.roles.create(Util.MUTE_ROLE_OPTIONS);
-		const { channels } = msg.guild;
-		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
-		const denied = [];
-		let accepted = 0;
-
-		for (const channel of channels.values()) { // eslint-disable-line no-restricted-syntax
-			await Util._createMuteRolePush(channel, role, denied);
-			accepted++;
-		}
-
-		const messageEdit2 = msg.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
-		await msg.guild.settings.update('roles.muted', role.id, msg.guild);
-		await msg.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, msg.author, role]);
-		return role;
-	}
-
-	/**
-	 * Push the permissions for the muted role into a channel
-		 * @param {Channel} channel The channel to modify
-	 * @param {Role} role The role to update
-	 * @param {string[]} array The array to push in case it did fail
-	 * @returns {Promise<*>}
-	 * @private
-	 */
-	public static async _createMuteRolePush(channel, role, array) {
-		if (channel.type === 'category') return null;
-		return channel.updateOverwrite(role, Util.MUTE_ROLE_PERMISSIONS[channel.type])
-			.catch(() => array.push(String(channel)));
-	}
-
 }
 
 const MUTE_ROLE_PERMISSIONS = Object.freeze({
@@ -396,14 +396,14 @@ const MUTE_ROLE_PERMISSIONS = Object.freeze({
 });
 
 const MUTE_ROLE_OPTIONS = Object.freeze({
-	reason: '[SETUP] Authorized to create a \'Muted\' role.',
 	data: {
-		name: 'Muted',
-		color: 0x422c0b,
+		color: 0x422C0B,
 		hoist: false,
-		permissions: [],
-		mentionable: false
-	}
+		mentionable: false,
+		name: 'Muted',
+		permissions: []
+	},
+	reason: '[SETUP] Authorized to create a \'Muted\' role.'
 });
 
 const ONE_TO_TEN = new Map([

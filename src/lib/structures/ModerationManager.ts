@@ -2,10 +2,10 @@
 import { MODERATION : { SCHEMA_KEYS, ACTIONS, ERRORS }; } from; '../util/constants';
 import { Collection } from 'discord.js';
 import { createReferPromise } from '../util/util';
-import ModerationManagerEntry from './ModerationManagerEntry';
+import { ModerationManagerEntry } from './ModerationManagerEntry';
 const TABLENAME = 'moderation';
 
-class ModerationManager extends Collection {
+export class ModerationManager extends Collection {
 
 	public constructor(guild) {
 		super();
@@ -140,7 +140,7 @@ class ModerationManager extends Collection {
 
 		switch (type) {
 			case 'fetch': this._count = entries.length; break;
-			case 'insert': this._count++; break;
+			case 'insert': this._count++;
 		}
 
 		if (!this._timer) {
@@ -158,5 +158,3 @@ class ModerationManager extends Collection {
 	}
 
 }
-
-export ModerationManager;

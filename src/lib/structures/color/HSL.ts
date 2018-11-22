@@ -1,13 +1,17 @@
 /* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 export class HSL {
 
+	private h: number;
+	private s: number;
+	private l: number;
+
 	/**
-     * HSL Parser.
-     * @param {number} h Hue. (0 - 360)
-     * @param {number} s Saturation. (0 - 100)
-     * @param {number} l Lightness. (0 - 100)
-     */
-	public constructor(h, s, l) {
+	 * HSL Parser.
+	 * @param h Hue. (0 - 360)
+	 * @param s Saturation. (0 - 100)
+	 * @param l Lightness. (0 - 100)
+	 */
+	public constructor(h: number | string, s: number | string, l: number | string) {
 		this.h = Number(h);
 		this.s = Number(s);
 		this.l = Number(l);
@@ -15,18 +19,18 @@ export class HSL {
 		this.valid();
 	}
 
-	public valid() {
+	public valid(): boolean {
 		if (this.h < 0 || this.h > 360) throw `Invalid Hue range. Must be between 0 and 360, and it is ${this.h}`;
 		if (this.s < 0 || this.s > 100) throw `Invalid Saturation range. Must be between 0 and 100, and it is ${this.s}`;
 		if (this.l < 0 || this.l > 100) throw `Invalid Lightness range. Must be between 0 and 100, and it is ${this.l}`;
 		return true;
 	}
 
-	public get hex() {
+	public get hex(): HEX {
 		return this.rgb.hex;
 	}
 
-	public get rgb() {
+	public get rgb(): RGB {
 		const h = this.h / 360;
 		const s = this.s / 100;
 		const l = this.l / 100;
@@ -50,19 +54,19 @@ export class HSL {
 		return new RGB(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255));
 	}
 
-	public get hsl() {
+	public get hsl(): HSL {
 		return this;
 	}
 
-	public get b10() {
+	public get b10(): B10 {
 		return this.hex.b10;
 	}
 
-	public toString() {
+	public toString(): string {
 		return String(`hsl(${this.h}, ${this.s}, ${this.l})`);
 	}
 
-	public static hue2rgb(p, q, t) {
+	public static hue2rgb(p: number, q: number, t: number): number {
 		if (t < 0) t += 1;
 		if (t > 1) t -= 1;
 		if (t < 1 / 6) return p + (((q - p) * 6) * t);
@@ -73,4 +77,6 @@ export class HSL {
 
 }
 
-import RGB from './RGB';
+import { B10 } from './B10';
+import { HEX } from './HEX';
+import { RGB } from './RGB';

@@ -44,13 +44,13 @@ export class ConnectFour {
 	 * The table game
 	 */
 	public table = [
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0]
+		[0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0]
 	];
 
 	/**
@@ -229,7 +229,7 @@ export class ConnectFour {
 	 * @param row The row to check
 	 */
 	public isFullLine(row: number): boolean {
-		return this.table[row][4] !== 0;
+		return this.table[row][5] !== 0;
 	}
 
 	/**
@@ -266,7 +266,7 @@ export class ConnectFour {
 		const MAX_LENGTH = this.table.length;
 
 		let output = '';
-		for (let y = 4; y >= 0; y--) {
+		for (let y = 5; y >= 0; y--) {
 			for (let x = 0; x < MAX_LENGTH; x++) output += `${CONNECT_FOUR.EMOJIS[this.table[x][y]]}       `;
 			output += '\n';
 		}
@@ -323,7 +323,7 @@ export class ConnectFour {
 		const MIN_X = Math.max(0, posX - 3),
 			MIN_Y = Math.max(0, posY - 3),
 			MAX_X = Math.min(6, posX + 3),
-			MAX_Y = Math.min(4, posY + 3);
+			MAX_Y = Math.min(5, posY + 3);
 
 		// @ts-ignore
 		const verticals = this._checkVerticals(posX, MIN_Y, MAX_Y, PLAYER);
@@ -337,7 +337,7 @@ export class ConnectFour {
 			// Check horizontals
 			if (tableX[posY] === PLAYER) {
 				horizontal++;
-				if (horizontal === 4) {
+				if (horizontal === 5) {
 					return [
 						{ x: x - 3, y: posY },
 						{ x: x - 2, y: posY },
@@ -352,7 +352,7 @@ export class ConnectFour {
 			if (MIN_Y <= upY && upY <= MAX_Y) {
 				if (tableX[upY] === PLAYER) {
 					diagUp++;
-					if (diagUp === 4) {
+					if (diagUp === 5) {
 						return [
 							{ x: x - 3, y: upY - 3 },
 							{ x: x - 2, y: upY - 2 },
@@ -368,7 +368,7 @@ export class ConnectFour {
 			if (MIN_Y <= downY && downY <= MAX_Y) {
 				if (tableX[downY] === PLAYER) {
 					diagDown++;
-					if (diagDown === 4) {
+					if (diagDown === 5) {
 						return [
 							{ x: x - 3, y: downY + 3 },
 							{ x: x - 2, y: downY + 2 },
@@ -396,11 +396,13 @@ export class ConnectFour {
 			const row = this.table[posX][y];
 			if (row === PLAYER) {
 				verticals++;
-				if (verticals === 4) break;
-			} else { verticals = 0; }
+				if (verticals === 5) break;
+			} else {
+				verticals = 0;
+			}
 		}
 
-		if (verticals === 4) {
+		if (verticals === 5) {
 			return [
 				{ x: posX, y: y - 3 },
 				{ x: posX, y: y - 2 },

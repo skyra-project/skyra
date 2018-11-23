@@ -1,9 +1,9 @@
-import { IPCMonitor, ToJSON } from '../../index';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	run() {
-		return this.client.guilds.map(ToJSON.guild);
+	public async run(): Promise<any> {
+		return this.client.guilds.map((guild) => guild.toJSON());
 	}
 
-};
+}

@@ -1,14 +1,14 @@
-import { IPCMonitor, ToJSON } from '../../index';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	run({ guildID, channelID }) {
+	public async run({ guildID, channelID }: any): Promise<any> {
 		const guild = this.client.guilds.get(guildID);
 		if (guild) {
 			const channel = guild.channels.get(channelID);
-			if (channel) return ToJSON.channel(channel);
+			if (channel) return channel.toJSON();
 		}
 		return null;
 	}
 
-};
+}

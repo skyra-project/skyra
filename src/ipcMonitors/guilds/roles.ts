@@ -1,9 +1,9 @@
-import { IPCMonitor, ToJSON } from '../../index';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	run({ guildID }) {
-		return (guild => guild ? guild.roles.map(ToJSON.role) : null)(this.client.guilds.get(guildID));
+	public async run({ guildID }: { guildID: string }): Promise<any> {
+		return ((guild) => guild ? guild.roles.map((role) => role.toJSON()) : null)(this.client.guilds.get(guildID));
 	}
 
-};
+}

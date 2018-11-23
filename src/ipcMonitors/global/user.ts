@@ -1,14 +1,14 @@
-import { IPCMonitor, ToJSON } from '../../index';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	async run({ userID }) {
+	public async run({ userID }: { userID: string }): Promise<any> {
 		try {
 			const user = await this.client.users.fetch(userID);
-			return ToJSON.user(user);
+			return user.toJSON();
 		} catch (error) {
 			return null;
 		}
 	}
 
-};
+}

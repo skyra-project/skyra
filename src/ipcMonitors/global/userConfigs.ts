@@ -1,8 +1,8 @@
-import { IPCMonitor } from '../../index';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	async run({ userID }) {
+	public async run({ userID }: { userID: string }): Promise<any> {
 		const user = await this.client.users.fetch(userID).catch(() => null);
 		if (user) {
 			await user.settings.sync();
@@ -11,4 +11,4 @@ export default class extends IPCMonitor {
 		return null;
 	}
 
-};
+}

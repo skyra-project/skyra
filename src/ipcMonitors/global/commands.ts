@@ -1,11 +1,11 @@
-import { IPCMonitor } from '../../index';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	run({ category = null, lang = 'en-US' }) {
+	public async run({ category = null, lang = 'en-US' }: any): Promise<IPCMonitorCommands[]> {
 		const language = this.client.languages.get(lang) || this.client.languages.default;
-		const commands = category ? this.client.commands.filter(cmd => cmd.category === category) : this.client.commands;
-		return commands.map(cmd => ({
+		const commands = category ? this.client.commands.filter((cmd) => cmd.category === category) : this.client.commands;
+		return commands.map((cmd) => ({
 			bucket: cmd.bucket,
 			cooldown: cmd.cooldown,
 			description: typeof cmd.description === 'function' ? cmd.description(language) : cmd.description,
@@ -17,4 +17,15 @@ export default class extends IPCMonitor {
 		}));
 	}
 
-};
+}
+
+export interface IPCMonitorCommands {
+	bucket: number;
+	cooldown: number;
+	description: string;
+	extendedHelp: string;
+	guildOnly: boolean;
+	name: string;
+	permissionLevel: number;
+	usage: string;
+}

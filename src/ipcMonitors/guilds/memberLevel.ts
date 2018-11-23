@@ -1,40 +1,16 @@
-import { IPCMonitor, config: { ownerID } } from '../../index';
-import { Permissions: { FLAGS } } from 'discord.js';
+import { Message } from 'discord.js';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	run({ guildID, memberID, level }) {
+	public async run({ guildID, memberID, level }: { guildID: string; memberID: string; level: number }): Promise<boolean> {
 		const guild = this.client.guilds.get(guildID);
 		if (guild) {
 			const member = guild.members.get(memberID);
-			if (member) return this.hasLevel(guild, member, level);
+			if (member) return (await this.client.permissionLevels.run({ guild, member, author: member.user } as Message, level)).permission;
 			return null;
 		}
 		return null;
 	}
 
-	hasLevel(guild, member, level) {
-		for (let i = level; i < LEVELS.length; i++) {
-			const entry = LEVELS[i];
-			if (entry === EMPTY) continue;
-			if (entry(guild, member)) return true;
-		}
-
-		return false;
-	}
-
-};
-
-const EMPTY = Symbol('empty');
-const LEVELS = [];
-LEVELS[0] = () => true;
-LEVELS[1] = EMPTY;
-LEVELS[2] = EMPTY;
-LEVELS[3] = EMPTY;
-LEVELS[4] = (guild, member) => guild.settings.roles.staff ? member.roles.has(guild.settings.roles.staff) : member.permissions.has(FLAGS.MANAGE_MESSAGES);
-LEVELS[5] = (guild, member) => guild.settings.roles.moderator ? member.roles.has(guild.settings.roles.moderator) : member.permissions.has(FLAGS.BAN_MEMBERS);
-LEVELS[6] = (guild, member) => guild.settings.roles.admin ? member.roles.has(guild.settings.roles.admin) : member.permissions.has(FLAGS.MANAGE_GUILD);
-LEVELS[7] = (guild, member) => member.id === guild.ownerID;
-LEVELS[8] = EMPTY;
-LEVELS[9] = (__, member) => member.id === ownerID;
-LEVELS[10] = (__, member) => member.id === ownerID;
+}

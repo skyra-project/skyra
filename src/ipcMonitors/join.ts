@@ -1,9 +1,9 @@
-import { IPCMonitor } from '../index';
+import { IPCMonitor } from '../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	run() {
+	public async run(): Promise<string> {
 		return 'https://discordapp.com/invite/6gakFR2';
 	}
 
-};
+}

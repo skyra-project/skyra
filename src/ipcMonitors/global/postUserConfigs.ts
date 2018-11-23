@@ -1,8 +1,8 @@
-import { IPCMonitor } from '../../index';
+import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	async run({ userID, type, action, amount }) {
+	public async run({ userID, type, action, amount }: any): Promise<number> {
 		const user = await this.client.users.fetch(userID).catch(() => null);
 		if (!user) return null;
 		await user.settings.sync();
@@ -13,27 +13,16 @@ export default class extends IPCMonitor {
 		return newAmount;
 	}
 
-	getNewAmount(action, oldAmount, amount) {
+	public getNewAmount(action: 'set' | 'add' | 'remove', oldAmount: number, amount: number): number {
 		switch (action) {
 			case 'set': return amount;
 			case 'add': return oldAmount + amount;
 			case 'remove': {
-				if (amount > oldAmount) {
-					throw {
-						message: 'Failed to remove points from user. \'value\' is greater than \'current\'',
-						data: {
-							current: oldAmount,
-							tried: amount,
-							action: action
-						},
-						code: 403,
-						type: 'PROFILE_REMOVE_VALUE'
-					};
-				}
+				if (amount > oldAmount) throw 'Failed to remove points from user. \'value\' is greater than \'current\'';
 				return oldAmount - amount;
 			}
 			default: throw null;
 		}
 	}
 
-};
+}

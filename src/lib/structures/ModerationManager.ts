@@ -1,12 +1,11 @@
 /* eslint "no-bitwise": "off" */
 import { Collection, Guild } from 'discord.js';
 import { R, RTable } from 'rethinkdb-ts';
-import { MODERATION } from '../util/constants';
+import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 
 const TABLENAME = 'moderation';
-const { SCHEMA_KEYS, ACTIONS, ERRORS } = MODERATION;
 
 export class ModerationManager extends Collection<number, ModerationManagerEntry> {
 
@@ -65,7 +64,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			return this._count === super.size
 				? super.filter((entry) => entry.user === id)
 				: this._cache((await this.table.getAll([this.guild.id, id], { index: 'guild_user' })
-					.orderBy(this.pool.asc(SCHEMA_KEYS.CASE))
+					.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
 					.run()) as ModerationManagerInsertData[], CacheActions.None);
 		}
 
@@ -77,7 +76,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 		if (super.size !== this._count) {
 			this._cache(await this.table.getAll(this.guild.id, { index: 'guildID' })
-				.orderBy(this.pool.asc(SCHEMA_KEYS.CASE))
+				.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
 				.run(), CacheActions.Fetch);
 		}
 		return this;
@@ -89,7 +88,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public async update(data: ModerationManagerUpdateData | ModerationManagerEntry): Promise<void> {
-		if (!data.id && SCHEMA_KEYS.CASE in data) data.id = (await this.fetch(data[SCHEMA_KEYS.CASE] as number) || { id: null }).id;
+		if (!data.id && ModerationSchemaKeys.Case in data) data.id = (await this.fetch(data[ModerationSchemaKeys.Case] as number) || { id: null }).id;
 		if (!data.id) throw new Error('A id has not been specified and cannot be found.');
 		await this.table.get(data.id).update(data).run();
 	}
@@ -101,15 +100,15 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	public async appeal(data: ModerationManagerUpdateData | ModerationManagerEntry): Promise<ModerationManagerEntry> {
 		let entry;
 		if ('id' in data) entry = await this.table.get(data.id).default(null).run();
-		else if (SCHEMA_KEYS.CASE in data) entry = await this.fetch(data[SCHEMA_KEYS.CASE]);
-		else if (SCHEMA_KEYS.USER in data) entry = (await this.fetch(data[SCHEMA_KEYS.USER])).find((log) => !(log[SCHEMA_KEYS.TYPE] & ACTIONS.APPEALED));
+		else if (ModerationSchemaKeys.Case in data) entry = await this.fetch(data[ModerationSchemaKeys.Case]);
+		else if (ModerationSchemaKeys.User in data) entry = (await this.fetch(data[ModerationSchemaKeys.User])).find((log) => !(log[ModerationSchemaKeys.Type] & ModerationActions.Appealed));
 		else throw new Error('Expected the entry id, case, or user. Got none of them.');
 
-		if (!entry || entry[SCHEMA_KEYS.GUILD] !== this.guild.id) throw new Error(ERRORS.CASE_NOT_EXISTS);
-		if (entry[SCHEMA_KEYS.TYPE] & ACTIONS.APPEALED) throw new Error(ERRORS.CASE_APPEALED);
+		if (!entry || entry[ModerationSchemaKeys.Guild] !== this.guild.id) throw new Error(ModerationErrors.CaseNotExists);
+		if (entry[ModerationSchemaKeys.Type] & ModerationActions.Appealed) throw new Error(ModerationErrors.CaseAppealed);
 
-		entry[SCHEMA_KEYS.TYPE] |= ACTIONS.APPEALED;
-		entry[SCHEMA_KEYS.TYPE] &= ~ACTIONS.TEMPORARY;
+		entry[ModerationSchemaKeys.Type] |= ModerationActions.Appealed;
+		entry[ModerationSchemaKeys.Type] &= ~ModerationActions.Temporary;
 		await this.table.get(entry.id).update(entry).run();
 
 		return entry;
@@ -175,67 +174,21 @@ enum CacheActions {
 	Insert
 }
 
-export interface ModerationLogCacheEntryData {
-	CASE: 'caseID';
-	DURATION: 'duration';
-	EXTRA_DATA: 'extraData';
-	GUILD: 'guildID';
-	MODERATOR: 'moderatorID';
-	REASON: 'reason';
-	TYPE: 'type';
-	USER: 'userID';
-	CREATED_AT: 'createdAt';
-}
-
-declare const ModerationSchemaKeysConstant: ModerationLogCacheEntryData;
-
 export interface ModerationManagerInsertData {
-	[ModerationSchemaKeysConstant.DURATION]: number | null;
-	[ModerationSchemaKeysConstant.EXTRA_DATA]: any;
-	[ModerationSchemaKeysConstant.MODERATOR]: string | null;
-	[ModerationSchemaKeysConstant.REASON]: string | null;
-	[ModerationSchemaKeysConstant.TYPE]: ModerationManagerTypeResolvable;
-	[ModerationSchemaKeysConstant.USER]: string | null;
+	[ModerationSchemaKeys.Duration]: number | null;
+	[ModerationSchemaKeys.ExtraData]: any;
+	[ModerationSchemaKeys.Moderator]: string | null;
+	[ModerationSchemaKeys.Reason]: string | null;
+	[ModerationSchemaKeys.Type]: ModerationManagerTypeResolvable;
+	[ModerationSchemaKeys.User]: string | null;
 }
 
 export interface ModerationManagerUpdateData {
 	id?: string;
-	[ModerationSchemaKeysConstant.DURATION]?: number | null;
-	[ModerationSchemaKeysConstant.EXTRA_DATA]?: any;
-	[ModerationSchemaKeysConstant.MODERATOR]?: string | null;
-	[ModerationSchemaKeysConstant.REASON]?: string | null;
+	[ModerationSchemaKeys.Duration]?: number | null;
+	[ModerationSchemaKeys.ExtraData]?: any;
+	[ModerationSchemaKeys.Moderator]?: string | null;
+	[ModerationSchemaKeys.Reason]?: string | null;
 }
 
-export type ModerationManagerTypeResolvable = ModerationTypesEnum | number;
-
-export type ModerationTypesEnum =
-	// BAN
-	0b0000 |
-	// KICK
-	0b0001 |
-	// MUTE
-	0b0010 |
-	// PRUNE
-	0b0011 |
-	// SOFT_BAN
-	0b0100 |
-	// VOICE_KICK
-	0b0101 |
-	// VOICE_MUTE
-	0b0110 |
-	// WARN
-	0b0111 |
-	// BAN & APPEALED
-	0b010000 |
-	// MUTE & APPEALED
-	0b010010 |
-	// VOICE_MUTE & APPEALED
-	0b010101 |
-	// WARN & APPEALED
-	0b010111 |
-	// BAN & TEMPORARY
-	0b100000 |
-	// MUTE & TEMPORARY
-	0b100010 |
-	// VOICE_MUTE & TEMPORARY
-	0b100110;
+export type ModerationManagerTypeResolvable = ModerationTypeKeys | number;

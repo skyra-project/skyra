@@ -4,15 +4,18 @@ const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {
 
-	public async run(doc: any): Promise<void> {
-		const guild = this.client.guilds.get(doc.guild);
+	public async run({ id }: { id: string }): Promise<void> {
+		const poll = await this.client.providers.default.get<PollData>('polls', id);
+		if (!poll) return;
+
+		const guild = this.client.guilds.get(poll.guild);
 		if (!guild) return;
 
-		const user = await this.client.users.fetch(doc.author).catch(this._catchErrorUser);
+		const user = await this.client.users.fetch(poll.author).catch(this._catchErrorUser);
 		if (!user) return;
 
 		let content;
-		const { id, title, options, votes, voted } = doc;
+		const { title, options, votes, voted } = poll;
 		if (voted.length) {
 			const maxLengthNames = options.reduce((acc, opt) => opt.length > acc ? opt.length : acc, 0);
 			const graph = [];
@@ -27,7 +30,7 @@ export default class extends Task {
 		}
 
 		await user.send(content).catch(this._catchErrorMessage);
-		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: doc });
+		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: { id } });
 	}
 
 	public _catchErrorUser(error: DiscordAPIError): void {
@@ -42,4 +45,14 @@ export default class extends Task {
 		throw error;
 	}
 
+}
+
+export interface PollData {
+	id: string;
+	author: string;
+	guild: string;
+	title: string;
+	options: string[];
+	votes: {};
+	voted: [];
 }

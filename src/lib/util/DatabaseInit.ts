@@ -1,5 +1,5 @@
 import { R, RDatum } from 'rethinkdb-ts';
-import { MODERATION } from './constants';
+import { ModerationSchemaKeys } from './constants';
 
 export class DatabaseInit {
 
@@ -21,8 +21,8 @@ export class DatabaseInit {
 		]],
 		['moderation', [
 			['guildID', (rows) => rows('guildID')],
-			['guild_case', (rows) => [rows(MODERATION.SCHEMA_KEYS.GUILD), rows(MODERATION.SCHEMA_KEYS.CASE)]],
-			['guild_user', (rows) => [rows(MODERATION.SCHEMA_KEYS.GUILD), rows(MODERATION.SCHEMA_KEYS.USER)]]
+			['guild_case', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.Case)]],
+			['guild_user', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.User)]]
 		]],
 		['polls', [
 			['guild', (rows) => rows('guildID')]

@@ -1,11 +1,10 @@
 import { Client, GuildMember, Message, User } from 'discord.js';
 import { Command, CommandOptions, CommandStore, util } from 'klasa';
-import { MODERATION } from '../util/constants';
-import { ModerationTypesEnum } from './ModerationManager';
+import { ModerationTypeKeys } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 
 export interface ModerationCommandOptions extends CommandOptions {
-	modType: ModerationTypesEnum;
+	modType: ModerationTypeKeys;
 	requiredMember?: boolean;
 }
 
@@ -19,7 +18,7 @@ export abstract class ModerationCommand extends Command {
 	/**
 	 * The type for this command.
 	 */
-	public modType: ModerationTypesEnum;
+	public modType: ModerationTypeKeys;
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
 		super(client, store, file, directory, util.mergeDefault({
@@ -113,5 +112,3 @@ export abstract class ModerationCommand extends Command {
 	}
 
 }
-
-export const types = MODERATION.TYPE_KEYS;

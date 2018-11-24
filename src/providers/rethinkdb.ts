@@ -1,4 +1,4 @@
-import { Provider } from 'klasa';
+import { Provider, util } from 'klasa';
 import { MasterPool, r, R, TableChangeResult, WriteResult } from 'rethinkdb-ts';
 
 export default class RethinkDB extends Provider {
@@ -7,7 +7,7 @@ export default class RethinkDB extends Provider {
 	public pool: MasterPool;
 
 	public async init(): Promise<void> {
-		const options = mergeDefault({
+		const options = util.mergeDefault({
 			db: 'test',
 			silent: false
 		}, this.client.options.providers.rethinkdb);
@@ -47,7 +47,7 @@ export default class RethinkDB extends Provider {
 
 	public async getAll(table: string, entries: string[] = []): Promise<any[]> {
 		if (entries.length) {
-			const chunks = chunk(entries, 50000);
+			const chunks = util.chunk(entries, 50000);
 			const output = [];
 			// @ts-ignore
 			for (const myChunk of chunks) output.push(...await this.db.table(table).getAll(...myChunk).run());
@@ -58,7 +58,7 @@ export default class RethinkDB extends Provider {
 
 	public async getKeys(table: string, entries: string[] = []): Promise<string[]> {
 		if (entries.length) {
-			const chunks = chunk(entries, 50000);
+			const chunks = util.chunk(entries, 50000);
 			const output = [];
 			// @ts-ignore
 			for (const myChunk of chunks) output.push(...await this.db.table(table).getAll(...myChunk)('id').run());

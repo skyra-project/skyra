@@ -1,21 +1,18 @@
 import { Permissions } from 'discord.js';
 import { KlasaGuild, KlasaUser, Task } from 'klasa';
-import { ModerationTypesEnum } from '../lib/structures/ModerationManager';
-import { MODERATION } from '../lib/util/constants';
-
-const { TYPE_KEYS, SCHEMA_KEYS } = MODERATION;
+import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
 const { FLAGS } = Permissions;
 
 export default class extends Task {
 
 	public async run(doc: any): Promise<void> {
 		// Get the guild and check for permissions
-		const guild = this.client.guilds.get(doc[SCHEMA_KEYS.GUILD]);
+		const guild = this.client.guilds.get(doc[ModerationSchemaKeys.Guild]);
 		if (!guild || !guild.me.permissions.has(FLAGS.BAN_MEMBERS)) return;
 
 		// Fetch the user to unban
-		const userID = doc[SCHEMA_KEYS.USER];
-		const reason = `Ban released after ${this.client.languages.default.duration(doc[SCHEMA_KEYS.DURATION])}`;
+		const userID = doc[ModerationSchemaKeys.User];
+		const reason = `Ban released after ${this.client.languages.default.duration(doc[ModerationSchemaKeys.Duration])}`;
 
 		// Unban the user and send the modlog
 		const banLog = await this._fetchBanLog(guild, userID);
@@ -23,7 +20,7 @@ export default class extends Task {
 		await guild.moderation.new
 			.setModerator(this.client.user.id)
 			.setUser(userID)
-			.setType(TYPE_KEYS.UN_BAN as ModerationTypesEnum)
+			.setType(ModerationTypeKeys.UnBan)
 			.setReason(banLog && banLog.reason ? `${reason}\nReason for ban: ${banLog.reason}` : reason)
 			.create();
 	}

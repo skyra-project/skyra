@@ -10,42 +10,6 @@ const WARN       = 0b0111;
 const ACTION_APPEALED = 1 << 4,
 	ACTION_TEMPORARY = 1 << 5;
 
-const TYPE_KEYS = Object.freeze({
-	BAN,
-	KICK,
-	MUTE,
-	PRUNE,
-	SOFT_BAN,
-	TEMPORARY_BAN: BAN | ACTION_TEMPORARY,
-	TEMPORARY_MUTE: MUTE | ACTION_TEMPORARY,
-	TEMPORARY_VOICE_MUTE: VOICE_MUTE | ACTION_TEMPORARY,
-	UN_BAN: BAN | ACTION_APPEALED,
-	UN_MUTE: MUTE | ACTION_APPEALED,
-	UN_VOICE_MUTE: VOICE_MUTE | ACTION_APPEALED,
-	UN_WARN: WARN | ACTION_APPEALED,
-	VOICE_KICK,
-	VOICE_MUTE,
-	WARN,
-});
-
-const TYPE_ASSETS = Object.freeze({
-	[TYPE_KEYS.BAN]                  : Object.freeze({ color : 0xD50000, title : 'Ban' }),
-	[TYPE_KEYS.KICK]                 : Object.freeze({ color : 0xF57F17, title : 'Kick' }),
-	[TYPE_KEYS.MUTE]                 : Object.freeze({ color : 0xF9A825, title : 'Mute' }),
-	[TYPE_KEYS.PRUNE]                : Object.freeze({ color : 0xB2FF59, title : 'Message Prune' }),
-	[TYPE_KEYS.SOFT_BAN]             : Object.freeze({ color : 0xFF1744, title : 'Softban' }),
-	[TYPE_KEYS.VOICE_KICK]           : Object.freeze({ color : 0xFFBB2D, title : 'Voice Kick' }),
-	[TYPE_KEYS.VOICE_MUTE]           : Object.freeze({ color : 0xFBC02D, title : 'Voice Mute' }),
-	[TYPE_KEYS.WARN]                 : Object.freeze({ color : 0xFFD600, title : 'Warn' }),
-	[TYPE_KEYS.UN_BAN]               : Object.freeze({ color : 0x304FFE, title : 'Unban' }),
-	[TYPE_KEYS.UN_MUTE]              : Object.freeze({ color : 0x448AFF, title : 'Unmute' }),
-	[TYPE_KEYS.UN_VOICE_MUTE]        : Object.freeze({ color : 0xBBDEFB, title : 'Voice Unmute' }),
-	[TYPE_KEYS.UN_WARN]              : Object.freeze({ color : 0xFFF494, title : 'Unwarn' }),
-	[TYPE_KEYS.TEMPORARY_BAN]        : Object.freeze({ color : 0xC51162, title : 'Temporary Ban' }),
-	[TYPE_KEYS.TEMPORARY_MUTE]       : Object.freeze({ color : 0xF50057, title : 'Temporary Mute' }),
-	[TYPE_KEYS.TEMPORARY_VOICE_MUTE] : Object.freeze({ color : 0xFF4081, title : 'Temporary Voice Mute' })
-});
-
 export const TIME = Object.freeze({
 	DAY: 1000 * 60 * 60 * 24,
 	HOUR: 1000 * 60 * 60,
@@ -85,27 +49,61 @@ export const CONNECT_FOUR = Object.freeze({
 
 export enum MessageLogsEnum { Message, NSFWMessage, Moderation, Member }
 
-export const MODERATION = Object.freeze({
-	ACTIONS: Object.freeze({
-		APPEALED: ACTION_APPEALED,
-		TEMPORARY: ACTION_TEMPORARY
-	}),
-	ERRORS: Object.freeze({
-		CASE_APPEALED: 'CASE_APPEALED',
-		CASE_NOT_EXISTS: 'CASE_NOT_EXISTS',
-		CASE_TYPE_NOT_APPEAL: 'CASE_TYPE_NOT_APPEAL'
-	}),
-	SCHEMA_KEYS: Object.freeze({
-		CASE: 'caseID',
-		CREATED_AT: 'createdAt',
-		DURATION: 'duration',
-		EXTRA_DATA: 'extraData',
-		GUILD: 'guildID',
-		MODERATOR: 'moderatorID',
-		REASON: 'reason',
-		TYPE: 'type',
-		USER: 'userID'
-	}),
-	TYPE_ASSETS,
-	TYPE_KEYS
+export enum ModerationTypeKeys {
+	Ban = BAN,
+	Kick = KICK,
+	Mute = MUTE,
+	Prune = PRUNE,
+	Softban = SOFT_BAN,
+	TemporaryBan = BAN | ACTION_TEMPORARY,
+	TemporaryMute = MUTE | ACTION_TEMPORARY,
+	TemporaryVoiceMute = VOICE_MUTE | ACTION_TEMPORARY,
+	UnBan = BAN | ACTION_APPEALED,
+	UnMute = MUTE | ACTION_APPEALED,
+	UnVoiceMute = VOICE_MUTE | ACTION_APPEALED,
+	UnWarn = WARN | ACTION_APPEALED,
+	VoiceKick = VOICE_KICK,
+	VoiceMute = VOICE_MUTE,
+	Warn = WARN
+}
+
+export const TYPE_ASSETS: Record<ModerationTypeKeys, { color: number; title: string }> = Object.freeze({
+	[ModerationTypeKeys.Ban]: Object.freeze({ color: 0xD50000, title: 'Ban' }),
+	[ModerationTypeKeys.Kick]: Object.freeze({ color: 0xF57F17, title: 'Kick' }),
+	[ModerationTypeKeys.Mute]: Object.freeze({ color: 0xF9A825, title: 'Mute' }),
+	[ModerationTypeKeys.Prune]: Object.freeze({ color: 0xB2FF59, title: 'Message Prune' }),
+	[ModerationTypeKeys.Softban]: Object.freeze({ color: 0xFF1744, title: 'Softban' }),
+	[ModerationTypeKeys.VoiceKick]: Object.freeze({ color: 0xFFBB2D, title: 'Voice Kick' }),
+	[ModerationTypeKeys.VoiceMute]: Object.freeze({ color: 0xFBC02D, title: 'Voice Mute' }),
+	[ModerationTypeKeys.Warn]: Object.freeze({ color: 0xFFD600, title: 'Warn' }),
+	[ModerationTypeKeys.UnWarn]: Object.freeze({ color: 0x304FFE, title: 'Unban' }),
+	[ModerationTypeKeys.UnMute]: Object.freeze({ color: 0x448AFF, title: 'Unmute' }),
+	[ModerationTypeKeys.UnVoiceMute]: Object.freeze({ color: 0xBBDEFB, title: 'Voice Unmute' }),
+	[ModerationTypeKeys.UnWarn]: Object.freeze({ color: 0xFFF494, title: 'Unwarn' }),
+	[ModerationTypeKeys.TemporaryBan]: Object.freeze({ color: 0xC51162, title: 'Temporary Ban' }),
+	[ModerationTypeKeys.TemporaryMute]: Object.freeze({ color: 0xF50057, title: 'Temporary Mute' }),
+	[ModerationTypeKeys.TemporaryVoiceMute]: Object.freeze({ color: 0xFF4081, title: 'Temporary Voice Mute' })
 });
+
+export enum ModerationActions {
+	Appealed = ACTION_APPEALED,
+	Temporary = ACTION_TEMPORARY
+}
+
+export enum ModerationErrors {
+	CaseAppealed = 'CASE_APPEALED',
+	CaseNotExists = 'CASE_NOT_EXISTS',
+	CaseTypeNotAppeal = 'CASE_TYPE_NOT_APPEAL'
+}
+
+export enum ModerationSchemaKeys {
+	Case = 'caseID',
+	CreatedAt = 'createdAt',
+	Duration = 'duration',
+	ExtraData = 'extraData',
+	Guild = 'guild',
+	Moderator = 'moderatorID',
+	Reason = 'reason',
+	Type = 'type',
+	User = 'userID'
+}

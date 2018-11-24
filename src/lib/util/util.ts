@@ -4,10 +4,9 @@ import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { URL } from 'url';
 import { isObject } from 'util';
-import { ModerationTypesEnum } from '../structures/ModerationManager';
 import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData } from '../types/Discord';
-import { MODERATION } from './constants';
+import { ModerationTypeKeys } from './constants';
 import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
@@ -310,7 +309,7 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
 	const modlog = target.guild.moderation.new
 		.setModerator(moderator.id)
 		.setUser(target.id)
-		.setType(MODERATION.TYPE_KEYS.MUTE as ModerationTypesEnum)
+		.setType(ModerationTypeKeys.Mute)
 		.setReason(reason)
 		.setExtraData(roles);
 	return modlog.create();

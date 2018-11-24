@@ -1,12 +1,11 @@
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
-import { MODERATION, TIME } from '../util/constants';
-import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData, ModerationTypesEnum } from './ModerationManager';
+import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS } from '../util/constants';
+import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
-const { TYPE_ASSETS, TYPE_KEYS, SCHEMA_KEYS, ACTIONS, ERRORS } = MODERATION;
 const kTimeout = Symbol('ModerationManagerTimeout');
 
-const TEMPORARY_TYPES = [TYPE_KEYS.BAN, TYPE_KEYS.MUTE, TYPE_KEYS.VOICE_MUTE];
+const TEMPORARY_TYPES = [ModerationTypeKeys.Ban, ModerationTypeKeys.Mute, ModerationTypeKeys.VoiceMute];
 
 export class ModerationManagerEntry {
 
@@ -17,7 +16,7 @@ export class ModerationManagerEntry {
 	public extraData: any = null;
 	public moderator: string | User | null = null;
 	public reason: string | null = null;
-	public type: ModerationTypesEnum = null;
+	public type: ModerationTypeKeys = null;
 	public user: string | User = null;
 	public createdAt: number = null;
 	private [kTimeout] = Date.now() + (TIME.MINUTE * 15);
@@ -26,14 +25,14 @@ export class ModerationManagerEntry {
 		this.manager = manager;
 		// @ts-ignore
 		if ('id' in data) this.id = data.id;
-		if (SCHEMA_KEYS.CASE in data) this.case = data[SCHEMA_KEYS.CASE];
-		if (SCHEMA_KEYS.DURATION in data) this.duration = data[SCHEMA_KEYS.DURATION];
-		if (SCHEMA_KEYS.EXTRA_DATA in data) this.extraData = data[SCHEMA_KEYS.EXTRA_DATA];
-		if (SCHEMA_KEYS.MODERATOR in data) this.moderator = data[SCHEMA_KEYS.MODERATOR];
-		if (SCHEMA_KEYS.REASON in data) this.reason = data[SCHEMA_KEYS.REASON];
-		if (SCHEMA_KEYS.TYPE in data) this.type = data[SCHEMA_KEYS.TYPE];
-		if (SCHEMA_KEYS.USER in data) this.user = data[SCHEMA_KEYS.USER];
-		if (SCHEMA_KEYS.CREATED_AT in data) this.createdAt = data[SCHEMA_KEYS.CREATED_AT];
+		if (ModerationSchemaKeys.Case in data) this.case = data[ModerationSchemaKeys.Case];
+		if (ModerationSchemaKeys.Duration in data) this.duration = data[ModerationSchemaKeys.Duration];
+		if (ModerationSchemaKeys.ExtraData in data) this.extraData = data[ModerationSchemaKeys.ExtraData];
+		if (ModerationSchemaKeys.Moderator in data) this.moderator = data[ModerationSchemaKeys.Moderator];
+		if (ModerationSchemaKeys.Reason in data) this.reason = data[ModerationSchemaKeys.Reason];
+		if (ModerationSchemaKeys.Type in data) this.type = data[ModerationSchemaKeys.Type];
+		if (ModerationSchemaKeys.User in data) this.user = data[ModerationSchemaKeys.User];
+		if (ModerationSchemaKeys.CreatedAt in data) this.createdAt = data[ModerationSchemaKeys.CreatedAt];
 	}
 
 	public get name(): string {
@@ -41,11 +40,11 @@ export class ModerationManagerEntry {
 	}
 
 	public get appealed(): boolean {
-		return Boolean(this.type & ACTIONS.APPEALED);
+		return Boolean(this.type & ModerationActions.Appealed);
 	}
 
 	public get temporary(): boolean {
-		return Boolean(this.type & ACTIONS.TEMPORARY);
+		return Boolean(this.type & ModerationActions.Temporary);
 	}
 
 	public get cacheExpired(): boolean {
@@ -72,51 +71,49 @@ export class ModerationManagerEntry {
 		if (entries.some((entry) => entry.type === this.type)) return false;
 
 		// If this log is a ban or an unban, but the user was softbanned recently, abort
-		if ((this.type === TYPE_KEYS.BAN || this.type === TYPE_KEYS.UN_BAN) && entries.some((entry) => entry.type === TYPE_KEYS.SOFT_BAN)) return false;
+		if ((this.type === ModerationTypeKeys.Ban || this.type === ModerationTypeKeys.UnBan) && entries.some((entry) => entry.type === ModerationTypeKeys.Softban)) return false;
 
 		// For all other cases, it should send
 		return true;
 	}
 
 	public async edit({
-		[SCHEMA_KEYS.DURATION]: duration,
-		[SCHEMA_KEYS.MODERATOR]: moderator,
-		[SCHEMA_KEYS.REASON]: reason,
-		[SCHEMA_KEYS.EXTRA_DATA]: extraData
+		[ModerationSchemaKeys.Duration]: duration,
+		[ModerationSchemaKeys.Moderator]: moderator,
+		[ModerationSchemaKeys.Reason]: reason,
+		[ModerationSchemaKeys.ExtraData]: extraData
 	}: ModerationManagerUpdateData = {}): Promise<this> {
 		const flattened = {
-			[SCHEMA_KEYS.DURATION]: typeof duration !== 'undefined' && TEMPORARY_TYPES.includes(this.type) && (duration === null || duration < TIME.YEAR)
+			[ModerationSchemaKeys.Duration]: typeof duration !== 'undefined' && TEMPORARY_TYPES.includes(this.type) && (duration === null || duration < TIME.YEAR)
 				? duration
 				: undefined,
-			[SCHEMA_KEYS.MODERATOR]: typeof moderator !== 'undefined'
+			[ModerationSchemaKeys.Moderator]: typeof moderator !== 'undefined'
 				? typeof moderator === 'string' ? moderator : moderator.id
 				: undefined,
-			[SCHEMA_KEYS.REASON]: typeof reason !== 'undefined'
+			[ModerationSchemaKeys.Reason]: typeof reason !== 'undefined'
 				? reason || null
 				: undefined,
-			[SCHEMA_KEYS.EXTRA_DATA]: typeof extraData !== 'undefined'
+			[ModerationSchemaKeys.ExtraData]: typeof extraData !== 'undefined'
 				? extraData
 				: undefined,
-			[SCHEMA_KEYS.TYPE]: this.type
+			[ModerationSchemaKeys.Type]: this.type
 		};
 
-		if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined') {
-			// eslint-disable-next-line no-bitwise
-			if (flattened[SCHEMA_KEYS.DURATION]) flattened[SCHEMA_KEYS.TYPE] |= ACTIONS.TEMPORARY;
-			// eslint-disable-next-line no-bitwise
-			else flattened[SCHEMA_KEYS.TYPE] &= ~ACTIONS.TEMPORARY;
+		if (typeof flattened[ModerationSchemaKeys.Duration] !== 'undefined') {
+			if (flattened[ModerationSchemaKeys.Duration]) flattened[ModerationSchemaKeys.Type] |= ModerationActions.Temporary;
+			else flattened[ModerationSchemaKeys.Type] &= ~ModerationActions.Temporary;
 		}
 
-		if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined'
-			|| typeof flattened[SCHEMA_KEYS.MODERATOR] !== 'undefined'
-			|| typeof flattened[SCHEMA_KEYS.REASON] !== 'undefined'
-			|| typeof flattened[SCHEMA_KEYS.EXTRA_DATA] !== 'undefined') {
+		if (typeof flattened[ModerationSchemaKeys.Duration] !== 'undefined'
+			|| typeof flattened[ModerationSchemaKeys.Moderator] !== 'undefined'
+			|| typeof flattened[ModerationSchemaKeys.Reason] !== 'undefined'
+			|| typeof flattened[ModerationSchemaKeys.ExtraData] !== 'undefined') {
 			await this.manager.table.get(this.id).update(flattened).run();
-			if (typeof flattened[SCHEMA_KEYS.DURATION] !== 'undefined') this.duration = flattened[SCHEMA_KEYS.DURATION];
-			if (typeof flattened[SCHEMA_KEYS.MODERATOR] !== 'undefined') this.moderator = flattened[SCHEMA_KEYS.MODERATOR];
-			if (typeof flattened[SCHEMA_KEYS.REASON] !== 'undefined') this.reason = flattened[SCHEMA_KEYS.REASON];
-			if (typeof flattened[SCHEMA_KEYS.EXTRA_DATA] !== 'undefined') this.extraData = flattened[SCHEMA_KEYS.EXTRA_DATA];
-			this.type = flattened[SCHEMA_KEYS.TYPE];
+			if (typeof flattened[ModerationSchemaKeys.Duration] !== 'undefined') this.duration = flattened[ModerationSchemaKeys.Duration];
+			if (typeof flattened[ModerationSchemaKeys.Moderator] !== 'undefined') this.moderator = flattened[ModerationSchemaKeys.Moderator];
+			if (typeof flattened[ModerationSchemaKeys.Reason] !== 'undefined') this.reason = flattened[ModerationSchemaKeys.Reason];
+			if (typeof flattened[ModerationSchemaKeys.ExtraData] !== 'undefined') this.extraData = flattened[ModerationSchemaKeys.ExtraData];
+			this.type = flattened[ModerationSchemaKeys.Type];
 		}
 
 		return this;
@@ -126,11 +123,11 @@ export class ModerationManagerEntry {
 		if (this.appealed) return this;
 
 		// eslint-disable-next-line no-bitwise
-		const type = this.type | ACTIONS.APPEALED;
-		if (!(type in TYPE_ASSETS)) throw ERRORS.CASE_TYPE_NOT_APPEAL;
+		const type = this.type | ModerationActions.Appealed;
+		if (!(type in TYPE_ASSETS)) throw ModerationErrors.CaseTypeNotAppeal;
 
-		await this.manager.table.get(this.id).update({ [SCHEMA_KEYS.TYPE]: type }).run();
-		this.type = <ModerationTypesEnum> type;
+		await this.manager.table.get(this.id).update({ [ModerationSchemaKeys.Type]: type }).run();
+		this.type = type;
 
 		return this;
 	}
@@ -173,8 +170,7 @@ export class ModerationManagerEntry {
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
 		if (!this.duration || this.duration > TIME.YEAR) this.duration = null;
-		// eslint-disable-next-line no-bitwise
-		if (this.duration) this.type |= ACTIONS.TEMPORARY;
+		if (this.duration) this.type |= ModerationActions.Temporary;
 		return this;
 	}
 
@@ -204,9 +200,9 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setType(value: ModerationTypesEnum): this {
-		if (typeof value === 'string' && (value in TYPE_KEYS))
-			value = TYPE_KEYS[value];
+	public setType(value: keyof typeof ModerationTypeKeys | ModerationTypeKeys): this {
+		if (typeof value === 'string' && (value in ModerationTypeKeys))
+			value = ModerationTypeKeys[value];
 
 		else if (typeof value !== 'number')
 			throw new TypeError(`${this} | The type ${value} is not valid.`);
@@ -241,15 +237,15 @@ export class ModerationManagerEntry {
 		}
 
 		// eslint-disable-next-line no-bitwise
-		if (this.duration && (this.type | ACTIONS.APPEALED) in TYPE_ASSETS) {
+		if (this.duration && (this.type | ModerationActions.Appealed) in TYPE_ASSETS) {
 			// eslint-disable-next-line no-bitwise
-			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ACTIONS.APPEALED].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
+			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
 				catchUp: true,
 				data: {
-					[SCHEMA_KEYS.USER]: typeof this.user === 'string' ? this.user : this.user.id,
-					[SCHEMA_KEYS.GUILD]: this.manager.guild.id,
-					[SCHEMA_KEYS.DURATION]: this.duration,
-					[SCHEMA_KEYS.CASE]: this.case
+					[ModerationSchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
+					[ModerationSchemaKeys.Guild]: this.manager.guild.id,
+					[ModerationSchemaKeys.Duration]: this.duration,
+					[ModerationSchemaKeys.Case]: this.case
 				}
 			}).catch((error) => this.manager.guild.client.emit('error', error));
 		}
@@ -259,15 +255,15 @@ export class ModerationManagerEntry {
 
 	public toJSON(): ModerationManagerInsertData {
 		return {
-			[SCHEMA_KEYS.CASE]: this.case,
-			[SCHEMA_KEYS.DURATION]: this.duration,
-			[SCHEMA_KEYS.EXTRA_DATA]: this.extraData,
-			[SCHEMA_KEYS.GUILD]: this.manager.guild.id,
-			[SCHEMA_KEYS.MODERATOR]: this.moderator ? typeof this.moderator === 'string' ? this.moderator : this.moderator.id : null,
-			[SCHEMA_KEYS.REASON]: this.reason,
-			[SCHEMA_KEYS.TYPE]: this.type,
-			[SCHEMA_KEYS.USER]: this.user ? typeof this.user === 'string' ? this.user : this.user.id : null,
-			[SCHEMA_KEYS.CREATED_AT]: this.createdAt
+			[ModerationSchemaKeys.Case]: this.case,
+			[ModerationSchemaKeys.Duration]: this.duration,
+			[ModerationSchemaKeys.ExtraData]: this.extraData,
+			[ModerationSchemaKeys.Guild]: this.manager.guild.id,
+			[ModerationSchemaKeys.Moderator]: this.moderator ? typeof this.moderator === 'string' ? this.moderator : this.moderator.id : null,
+			[ModerationSchemaKeys.Reason]: this.reason,
+			[ModerationSchemaKeys.Type]: this.type,
+			[ModerationSchemaKeys.User]: this.user ? typeof this.user === 'string' ? this.user : this.user.id : null,
+			[ModerationSchemaKeys.CreatedAt]: this.createdAt
 		} as ModerationManagerInsertData;
 	}
 

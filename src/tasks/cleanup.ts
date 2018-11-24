@@ -24,7 +24,8 @@
  * SOFTWARE.
  */
 
-import { Task, discordUtil: { binaryToID } } from '../index';
+import { Util } from 'discord.js';
+import { Task } from 'klasa';
 
 // THRESHOLD equals to 30 minutes in milliseconds:
 //     - 1000 milliseconds = 1 second
@@ -42,8 +43,8 @@ const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
  */
 export default class MemorySweeper extends Task {
 
-	async run() {
-		const OLD_SNOWFLAKE = binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
+	public async run(): Promise<void> {
+		const OLD_SNOWFLAKE = Util.binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
 		let presences = 0, guildMembers = 0, voiceStates = 0, emojis = 0, lastMessages = 0, users = 0;
 
 		// Per-Guild sweeper
@@ -107,17 +108,16 @@ export default class MemorySweeper extends Task {
 	 * > 1000 : Light Red colour
 	 * > 100  : Light Yellow colour
 	 * < 100  : Green colour
-		 * @param {number} number The number to colourise
-	 * @returns {string}
+	 * @param n The number to colourise
 	 */
-	setColor(number) {
-		const text = String(number).padStart(5, ' ');
+	public setColor(n: number): string {
+		const text = String(n).padStart(5, ' ');
 		// Light Red color
-		if (number > 1000) return `\u001B[39m\u001B[91m${text}\u001B[39m\u001B[90m`;
+		if (n > 1000) return `\u001B[39m\u001B[91m${text}\u001B[39m\u001B[90m`;
 		// Light Yellow color
-		if (number > 100) return `\u001B[39m\u001B[93m${text}\u001B[39m\u001B[90m`;
+		if (n > 100) return `\u001B[39m\u001B[93m${text}\u001B[39m\u001B[90m`;
 		// Green color
 		return `\u001B[39m\u001B[32m${text}\u001B[39m\u001B[90m`;
 	}
 
-};
+}

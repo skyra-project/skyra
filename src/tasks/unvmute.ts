@@ -1,8 +1,14 @@
-import { Task, constants: { MODERATION: { TYPE_KEYS, SCHEMA_KEYS } }, Permissions: { FLAGS } } from '../index';
+import { Permissions } from 'discord.js';
+import { Task } from 'klasa';
+import { ModerationTypesEnum } from '../lib/structures/ModerationManager';
+import { MODERATION } from '../lib/util/constants';
+
+const { TYPE_KEYS, SCHEMA_KEYS } = MODERATION;
+const { FLAGS } = Permissions;
 
 export default class extends Task {
 
-	async run(doc) {
+	public async run(doc: any): Promise<void> {
 		// Get the guild and check for permissions
 		const guild = this.client.guilds.get(doc[SCHEMA_KEYS.GUILD]);
 		if (!guild || !guild.me.permissions.has(FLAGS.MUTE_MEMBERS)) return;
@@ -19,9 +25,9 @@ export default class extends Task {
 		await guild.moderation.new
 			.setModerator(this.client.user.id)
 			.setUser(user)
-			.setType(TYPE_KEYS.UN_VOICE_MUTE)
+			.setType(TYPE_KEYS.UN_VOICE_MUTE as ModerationTypesEnum)
 			.setReason(member ? reason : `${reason}\n**Skyra**: But the member was away.`)
 			.create();
 	}
 
-};
+}

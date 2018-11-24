@@ -1,9 +1,10 @@
-import { Task, constants: { TIME }, klasaUtil: { codeBlock } } from '../index';
-const TASK_EOL = TIME.DAY * 2;
+import { DiscordAPIError } from 'discord.js';
+import { constants, Task, util } from 'klasa';
+const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {
 
-	async run(doc) {
+	public async run(doc: any): Promise<void> {
 		const guild = this.client.guilds.get(doc.guild);
 		if (!guild) return;
 
@@ -20,7 +21,7 @@ export default class extends Task {
 				graph.push(`${opt.padEnd(maxLengthNames, ' ')} : [${'#'.repeat((percentage / 100) * 25).padEnd(25, ' ')}] (${percentage}%)`);
 			}
 			content = `Hey! Your poll __${title}__ with ID \`${id}\` just finished, check the results!${
-				codeBlock('http', [`Entry ID: '${id}' (${title})`, ...graph].join('\n'))}`;
+				util.codeBlock('http', [`Entry ID: '${id}' (${title})`, ...graph].join('\n'))}`;
 		} else {
 			content = `Hey! Your poll __${title}__ with ID \`${id}\` just finished, but nobody voted :(`;
 		}
@@ -29,16 +30,16 @@ export default class extends Task {
 		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: doc });
 	}
 
-	_catchErrorUser(error) {
+	public _catchErrorUser(error: DiscordAPIError): void {
 		// 10013: Unknown user
 		if (error.code === 10013) return;
 		throw error;
 	}
 
-	_catchErrorMessage(error) {
+	public _catchErrorMessage(error: DiscordAPIError): void {
 		// 50007: Cannot send messages to this user
 		if (error.code === 50007) return;
 		throw error;
 	}
 
-};
+}

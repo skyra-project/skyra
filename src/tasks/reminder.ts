@@ -1,32 +1,31 @@
+import { DiscordAPIError } from 'discord.js';
 import { Task, Timestamp } from 'klasa';
 
 export default class extends Task {
 
-	constructor(client, store, file, directory) {
-		super(client, store, file, directory);
+	public timestamp = new Timestamp('MMMM d, hh:mm:ss');
 
-		this.timestamp = new Timestamp('MMMM d, hh:mm:ss');
-	}
-
-	async run(doc) {
+	public async run(doc: any): Promise<any> {
 		// Fetch the user to send the message to
-		const user = await this.client.users.fetch(doc.user).catch(this._catchErrorUser);
+		const user = await this.client.users.fetch(doc.user)
+			.catch(this._catchErrorUser);
+
 		if (user) {
 			await user.send(`⏲ Hey! You asked me on ${this.timestamp.displayUTC()} to remind you:\n*${doc.content}*`)
 				.catch(this._catchErrorMessage);
 		}
 	}
 
-	_catchErrorUser(error) {
+	public _catchErrorUser(error: DiscordAPIError): void {
 		// 10013: Unknown user
 		if (error.code === 10013) return;
 		throw error;
 	}
 
-	_catchErrorMessage(error) {
+	public _catchErrorMessage(error: DiscordAPIError): void {
 		// 50007: Cannot send messages to this user
 		if (error.code === 50007) return;
 		throw error;
 	}
 
-};
+}

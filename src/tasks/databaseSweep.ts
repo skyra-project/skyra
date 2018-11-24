@@ -1,9 +1,10 @@
 
-import { Task } from '../index';
+import { Task } from 'klasa';
+import { R } from 'rethinkdb-ts';
 
 export default class extends Task {
 
-	async run() {
+	public async run(): Promise<void> {
 		this.disable();
 		const r = this.client.providers.default.db;
 		const [users, members] = await Promise.all([
@@ -14,8 +15,7 @@ export default class extends Task {
 		this.enable();
 	}
 
-	/** @param {RebirthDBTS.R} r The R */
-	async sweepUserProfiles(r) {
+	public async sweepUserProfiles(r: R): Promise<number> {
 		return (await r.table('users').filter(
 			r.row('points').le(25)
 				.and(r.row.hasFields('color', 'reputation', 'money', 'bannerList').not())
@@ -23,11 +23,10 @@ export default class extends Task {
 		).delete().run()).deleted;
 	}
 
-	/** @param {RebirthDBTS.R} r The R */
-	async sweepMemberProfiles(r) {
+	public async sweepMemberProfiles(r: R): Promise<number> {
 		return (await r.table('localScores').filter(
 			r.row('count').le(25)
 		).delete().run()).deleted;
 	}
 
-};
+}

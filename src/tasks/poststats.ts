@@ -12,8 +12,8 @@ export default class extends Task {
 	public async run(): Promise<void> {
 		if (this.client.options.dev) return;
 
-		const guilds = this.client.guilds.size;
-		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0);
+		const guilds = this.client.guilds.size.toString();
+		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0).toString();
 
 		const results = (await Promise.all([
 			this.query(`https://discordbots.org/api/bots/${this.client.user.id}/stats`,
@@ -26,7 +26,7 @@ export default class extends Task {
 				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList)
 		])).filter((value) => value !== null);
 
-		if (results.length) this.client.emit('log', `${header} ${results.join(' | ')}`);
+		if (results.length) this.client.emit('log', `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 	}
 
 	public async query(url: string, body: string, token: string, list: Lists): Promise<string> {

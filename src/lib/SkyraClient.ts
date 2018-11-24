@@ -199,6 +199,10 @@ declare module 'discord.js' {
 
 declare module 'klasa' {
 
+	export interface Language {
+		duration(time: number): string;
+	}
+
 	export interface Provider {
 		db: R;
 		pool: MasterPool;

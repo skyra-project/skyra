@@ -148,7 +148,6 @@ export class ModerationManagerEntry {
 			`❯ **Type**: ${assets.title}`,
 			`❯ **User:** ${userTag} (${userID})`,
 			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get('prefix')}reason ${this.case} to claim.\``}`,
-			// @ts-ignore
 			`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
 		] : [
 			`❯ **Type**: ${assets.title}`,

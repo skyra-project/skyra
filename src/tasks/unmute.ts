@@ -42,7 +42,6 @@ export default class extends Task {
 			.setModerator(this.client.user.id)
 			.setUser(user)
 			.setType(TYPE_KEYS.UN_MUTE as ModerationTypesEnum)
-			// @ts-ignore
 			.setReason(`Mute released after ${this.client.languages.default.duration(doc[SCHEMA_KEYS.DURATION])}`)
 			.create();
 	}

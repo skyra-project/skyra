@@ -2,9 +2,9 @@ import { Task } from 'klasa';
 
 export default class extends Task {
 
-	public run(): Promise<void> {
+	public async run({ id }: { id: string }): Promise<void> {
 		// TODO: Do something that's actually good, store polls in its table
-		return Promise.resolve();
+		await this.client.providers.default.delete('polls', id);
 	}
 
 }

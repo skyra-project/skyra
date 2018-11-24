@@ -15,7 +15,6 @@ export default class extends Task {
 
 		// Fetch the user to unban
 		const userID = doc[SCHEMA_KEYS.USER];
-		// @ts-ignore
 		const reason = `Ban released after ${this.client.languages.default.duration(doc[SCHEMA_KEYS.DURATION])}`;
 
 		// Unban the user and send the modlog

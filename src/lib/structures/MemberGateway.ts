@@ -1,15 +1,31 @@
-import { GuildMember } from 'discord.js';
-import { Gateway } from 'klasa';
-import { MemberSettings } from './MemberSettings';
+import { GuildStore } from 'discord.js';
+import { Gateway, Settings } from 'klasa';
 
 export class MemberGateway extends Gateway {
 
 	protected _synced: boolean;
+	protected cache: GuildStore;
 
-	public create(target: GuildMember): MemberSettings {
-		const settings = new MemberSettings(this, target);
-		if (this._synced && this.schema.size) settings.sync(true).catch((err) => this.client.emit('error', err));
-		return settings;
+	public get(id: string): Settings {
+		const [guildID, memberID] = id.split('.');
+		const guild = this.cache.get(guildID);
+		if (!guild) return null;
+
+		const member = guild.members.get(memberID);
+		return (member && member.settings) || null;
+	}
+
+	public async sync(input: string): Promise<Settings>;
+	public async sync(input?: string[]): Promise<Gateway>;
+	public async sync(input?: string | string[]): Promise<Settings | Gateway> {
+		const result = await super.sync(input);
+		if (result === this) {
+			for (const guild of this.cache.values()) {
+				// @ts-ignore
+				for (const member of guild.members.values()) if (member.settings.existenceStatus === null) member.settings.existenceStatus = false;
+			}
+		}
+		return result;
 	}
 
 }

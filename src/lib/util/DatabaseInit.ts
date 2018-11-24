@@ -36,7 +36,7 @@ export class DatabaseInit {
 	public static async run(r: R): Promise<void> {
 		if (this.initialized) return;
 		this.initialized = true;
-		await Promise.all(this.tables.map((table) => this.ensureTable(r, table)));
+		await Promise.all(this.tables.map(this.ensureTable.bind(null, r)));
 	}
 
 	/**
@@ -46,11 +46,11 @@ export class DatabaseInit {
 	 */
 	public static async ensureTable(r: R, [table, indexes]: [string, [string, (rows: RDatum) => RDatum[] | RDatum][]]): Promise<void> {
 		await r.branch(r.tableList().contains(table), null, r.tableCreate(table)).run();
-		await Promise.all(indexes.map(([index, value]) => {
+		await Promise.all(indexes.map(([index, value]) =>
 			r.branch(r.table(table).indexList().contains(index), null, r.table(table).indexCreate(index, value)).run().then(() =>
 				r.branch(r.table(table).indexStatus(index).nth(0)('ready'), null, r.table(table).indexWait(index)).run()
-			);
-		}));
+			)
+		));
 	}
 
 }

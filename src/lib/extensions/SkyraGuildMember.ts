@@ -1,17 +1,17 @@
 import { GuildMember, Structures } from 'discord.js';
-import { MemberSettings } from '../structures/MemberSettings';
+import { Settings } from 'klasa';
 
 export class SkyraGuildMember extends GuildMember {
 
 	/**
 	 * The member level settings for this context
 	 */
-	public settings = this.client.gateways.get('members').acquire(this) as MemberSettings;
+	public settings = this.client.gateways.get('members').acquire(this, `${this.guild.id}.${this.id}`);
 }
 
 declare module 'discord.js' {
 	export interface GuildMember {
-		settings: MemberSettings;
+		settings: Settings;
 	}
 }
 

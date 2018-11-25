@@ -1,5 +1,5 @@
 /* eslint "no-bitwise": "off" */
-import { Collection, Guild } from 'discord.js';
+import { Collection, Guild, User } from 'discord.js';
 import { R, RTable } from 'rethinkdb-ts';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';
@@ -180,14 +180,14 @@ export interface ModerationManagerInsertData {
 	[ModerationSchemaKeys.Moderator]: string | null;
 	[ModerationSchemaKeys.Reason]: string | null;
 	[ModerationSchemaKeys.Type]: ModerationManagerTypeResolvable;
-	[ModerationSchemaKeys.User]: string | null;
+	[ModerationSchemaKeys.User]: string | User | null;
 }
 
 export interface ModerationManagerUpdateData {
 	id?: string;
 	[ModerationSchemaKeys.Duration]?: number | null;
 	[ModerationSchemaKeys.ExtraData]?: any;
-	[ModerationSchemaKeys.Moderator]?: string | null;
+	[ModerationSchemaKeys.Moderator]?: string | User | null;
 	[ModerationSchemaKeys.Reason]?: string | null;
 }
 

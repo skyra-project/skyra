@@ -122,7 +122,6 @@ export class ModerationManagerEntry {
 	public async appeal(): Promise<this> {
 		if (this.appealed) return this;
 
-		// eslint-disable-next-line no-bitwise
 		const type = this.type | ModerationActions.Appealed;
 		if (!(type in TYPE_ASSETS)) throw ModerationErrors.CaseTypeNotAppeal;
 
@@ -236,9 +235,7 @@ export class ModerationManagerEntry {
 			channel.send(messageEmbed).catch((error) => this.manager.guild.client.emit('error', error));
 		}
 
-		// eslint-disable-next-line no-bitwise
 		if (this.duration && (this.type | ModerationActions.Appealed) in TYPE_ASSETS) {
-			// eslint-disable-next-line no-bitwise
 			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
 				catchUp: true,
 				data: {

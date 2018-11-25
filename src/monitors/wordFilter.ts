@@ -1,46 +1,78 @@
-import { Monitor, MessageEmbed, klasaUtil: { codeBlock }, discordUtil: { escapeMarkdown }, util: { cutText }, constants: { MESSAGE_LOGS } } from '../index';
-import { diffWordsWithSpace } from 'diff';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { KlasaMessage, Monitor, util } from 'klasa';
+import { MessageLogsEnum } from '../lib/util/constants';
+import { cutText } from '../lib/util/util';
 
-// eslint-disable-next-line no-bitwise
 const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
 
 export default class extends Monitor {
 
-	async run(msg) {
-		if (await msg.hasAtLeastPermissionLevel(5)) return;
+	public async run(message: KlasaMessage): Promise<void> {
+		const level = message.guild.settings.get('filter.level') as number;
+		if (!level) return;
 
-		const { filter } = msg.guild.settings;
-		const filtered = msg.content.replace(filter.regexp, match => '*'.repeat(match.length));
-		if (filtered === msg.content) return;
+		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		// eslint-disable-next-line no-bitwise
-		if ((filter.level & DELETE_FLAG) && msg.deletable) {
-			if (filtered.length > 25) msg.author.send(msg.language.get('MONITOR_WORDFILTER_DM', codeBlock('md', cutText(filtered, 1900)))).catch(() => null);
-			msg.nuke().catch(() => null);
+		const results = this.filter(message.content, message.guild.security.regexp);
+		if (results === null) return;
+
+		if ((level & DELETE_FLAG) && message.deletable) {
+			if (message.content.length > 25) message.author.send(message.language.get('MONITOR_WORDFILTER_DM',
+				util.codeBlock('md', cutText(results.filtered, 1900)))).catch(() => null);
+			message.nuke().catch(() => null);
 		}
 
-		// eslint-disable-next-line no-bitwise
-		if ((filter.level & ALERT_FLAG) && msg.channel.postable)
-			msg.alert(msg.language.get('MONITOR_WORDFILTER', msg.author)).catch(() => null);
+		if ((level & ALERT_FLAG) && message.channel.postable)
+			message.alert(message.language.get('MONITOR_WORDFILTER', message.author)).catch(() => null);
 
-		// eslint-disable-next-line no-bitwise
-		if (filter.level & LOG_FLAG) {
-			this.client.emit('guildMessageLog', MESSAGE_LOGS.kModeration, msg.guild, () => new MessageEmbed()
-				.splitFields(cutText(diffWordsWithSpace(msg.content, filtered)
-					.map(result => result.removed ? `__${escapeMarkdown(result.value)}__` : !result.added ? escapeMarkdown(result.value) : '')
-					.join(''), 4000))
-				.setColor(0xefae45)
-				.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-				.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_WORDFILTER')}`)
+		if (level & LOG_FLAG) {
+			this.client.emit('guildMessageLog', MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
+				.splitFields(cutText(results.highlighted, 4000))
+				.setColor(0xEFAE45)
+				.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+				.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_WORDFILTER')}`)
 				.setTimestamp());
 		}
 	}
 
-	shouldRun(msg) {
-		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
+	public shouldRun(message: KlasaMessage): boolean {
+		if (!this.enabled || !message.guild || message.author.id === this.client.user.id) return false;
 
-		const { selfmod, filter } = msg.guild.settings;
-		return filter.level !== 0 && filter.regexp !== null && !selfmod.ignoreChannels.includes(msg.channel.id);
+		return message.guild.security.regexp && !(message.guild.settings.get('selfmod.ignoreChannels') as string[]).includes(message.channel.id);
 	}
 
-};
+	private filter(str: string, regex: RegExp): { filtered: string; highlighted: string } | null {
+		const matches = str.match(regex);
+		if (matches === null) return null;
+
+		let last = 0;
+		let next = 0;
+
+		const filtered = [];
+		const highlighted = [];
+		for (const match of matches) {
+			next = str.indexOf(match, last);
+			const section = str.slice(last, next);
+			if (section) {
+				filtered.push(section, '*'.repeat(match.length));
+				highlighted.push(section, `__${match}__`);
+			} else {
+				filtered.push('*'.repeat(match.length));
+				highlighted.push(`__${match}__`);
+			}
+			last = next + match.length;
+		}
+
+		if (last !== str.length) {
+			const end = str.slice(last);
+			filtered.push(end);
+			highlighted.push(end);
+		}
+
+		return {
+			filtered: filtered.join(''),
+			highlighted: highlighted.join('')
+		};
+	}
+
+}

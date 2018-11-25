@@ -1,25 +1,26 @@
-import { Monitor } from '../index';
+import { KlasaMessage, Monitor } from 'klasa';
+import { GuildSettingsTriggerIncludes } from '../lib/types/Misc';
 
 export default class extends Monitor {
 
-	async run(msg) {
-		const content = msg.content.toLowerCase();
-		const trigger = msg.guild.settings.trigger.includes.find(trg => content.includes(trg.input));
+	public async run(message: KlasaMessage): Promise<void> {
+		const content = message.content.toLowerCase();
+		const trigger = (message.guild.settings.get('trigger.includes') as GuildSettingsTriggerIncludes).find((trg) => content.includes(trg.input));
 		if (trigger && trigger.action === 'react') {
-			if (msg.reactable) {
-				await msg.react(trigger.output)
-					.catch(error => { if (error.code !== 10008) this.client.emit('apiError', error); });
+			if (message.reactable) {
+				await message.react(trigger.output)
+					.catch((error) => { if (error.code !== 10008) this.client.emit('apiError', error); });
 			}
 		}
 	}
 
-	shouldRun(msg) {
+	public shouldRun(message: KlasaMessage): boolean {
 		return this.enabled
-			&& msg._edits.length === 0
-			&& msg.guild
-			&& msg.author.bot === false
-			&& msg.author.id !== this.client.user.id
-			&& msg.guild.settings.trigger.includes.length;
+			&& message.editedTimestamp === null
+			&& message.guild
+			&& message.author.bot === false
+			&& message.author.id !== this.client.user.id
+			&& (message.guild.settings.get('trigger.includes') as GuildSettingsTriggerIncludes).length !== 0;
 	}
 
-};
+}

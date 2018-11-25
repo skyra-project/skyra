@@ -60,7 +60,6 @@ export default class extends Command {
 			if (type === 'action') {
 				const action = arg.toLowerCase();
 				const index = ACTIONS.indexOf(action);
-				// eslint-disable-next-line no-bitwise
 				if (index !== -1) return (message.guild.settings.selfmod.attachmentAction & 0b1000) + index;
 				throw message.language.get('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
 			}
@@ -68,9 +67,7 @@ export default class extends Command {
 			if (type === 'logs') {
 				const value = await this.client.arguments.get('boolean').run(arg, possible, message);
 				return value
-					// eslint-disable-next-line no-bitwise
 					? (message.guild.settings.selfmod.attachmentAction & 0b0111) | 0b1000
-					// eslint-disable-next-line no-bitwise
 					: (message.guild.settings.selfmod.attachmentAction & 0b0111) & 0b0111;
 			}
 
@@ -98,7 +95,6 @@ export default class extends Command {
 					message.guild.security.adder.maximum = selfmod.attachmentMaximum;
 					message.guild.security.adder.duration = selfmod.attachmentDuration;
 				}
-				break;
 			}
 		}
 		return message.sendLocale(language, [value]);

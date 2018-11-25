@@ -19,7 +19,6 @@ export default class extends Monitor {
 			message.guild.security.adder.add(message.author.id, message.attachments.size);
 			return;
 		} catch (_) {
-			// eslint-disable-next-line no-bitwise
 			switch (selfmod.attachmentAction & 0b111) {
 				case 0b000: await this.actionAndSend(message, ModerationTypeKeys.Warn, () =>
 					null); break;
@@ -37,7 +36,6 @@ export default class extends Monitor {
 					message.member.ban()
 						.catch((error) => this.client.emit('apiError', error)));
 			}
-			// eslint-disable-next-line no-bitwise
 			if (selfmod.attachmentAction & 0b1000) {
 				this.client.emit('guildMessageLog', MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 					.setColor(0xEFAE45)
@@ -78,7 +76,6 @@ export default class extends Monitor {
 
 		const guildMe = message.guild.me;
 
-		// eslint-disable-next-line no-bitwise
 		switch (selfmod.attachmentAction & 0b11) {
 			case 0b000: return guildMe.roles.highest.position > message.member.roles.highest.position;
 			case 0b001: return message.member.kickable;

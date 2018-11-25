@@ -28,22 +28,18 @@ export default class extends Monitor {
 		const { length } = message.content;
 		let count = 0, i = 0;
 
-		// eslint-disable-next-line no-bitwise
 		while (i < length) if ((message.content.charCodeAt(i++) & OFFSET) === 0) count++;
 
 		if ((count / length) * 100 < selfmod.capsthreshold) return;
 
-		// eslint-disable-next-line no-bitwise
 		if ((selfmod.capsfilter & DELETE_FLAG) && message.deletable) {
 			if (length > 25) message.author.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))).catch(() => null);
 			message.nuke().catch(() => null);
 		}
 
-		// eslint-disable-next-line no-bitwise
 		if ((selfmod.capsfilter & ALERT_FLAG) && message.channel.postable)
 			message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)).catch(() => null);
 
-		// eslint-disable-next-line no-bitwise
 		if (selfmod.capsfilter & LOG_FLAG) {
 			this.client.emit('guildMessageLog', MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 				.splitFields(message.content)

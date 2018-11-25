@@ -2340,7 +2340,8 @@ export default class extends Language {
 			`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
 			'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
 		].join('\n'),
-		MONITOR_NMS_MODLOG: (threshold, amount) => `[NOMENTIONSPAM] Límite: ${threshold}. Alcanzado: ${amount}`,
+		MONITOR_NMS_MODLOG: (threshold) => `[NOMENTIONSPAM] Automático: Límite de Spam de Menciones alcanzado.\nLímite: ${threshold}.`,
+		MONITOR_NMS_ALERT: `Ten cuidado con mencionar otra vez más, estás a punto de ser expulsado por exceder el límite de spam de menciones de este servidor.`,
 		MONITOR_SOCIAL_ACHIEVEMENT: '¡Felicidades %MEMBER! ¡Has logrado el rol %ROLE%!',
 
 		/**

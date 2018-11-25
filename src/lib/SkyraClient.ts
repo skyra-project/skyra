@@ -162,9 +162,13 @@ SkyraClient.defaultGuildSchema
 		.add('ignoreChannels', 'TextChannel', { array: true })
 		.add('invitelinks', 'Boolean', { default: false })
 		.add('nmsthreshold', 'Integer', { default: 20, min: 10, max: 100 })
-		.add('nomentionspam', 'Boolean')
 		.add('raid', 'Boolean')
 		.add('raidthreshold', 'Integer', { default: 10, min: 2, max: 50 }))
+	.add('no-mention-spam', (folder) => folder
+		.add('enabled', 'Boolean', { default: false })
+		.add('alerts', 'Boolean', { default: false })
+		.add('mentionsAllowed', 'Integer', { default: 20 })
+		.add('timePeriod', 'Integer', { default: 8 }))
 	.add('social', (folder) => folder
 		.add('achieve', 'Boolean', { default: false })
 		.add('achieveMessage', 'String')
@@ -213,6 +217,10 @@ declare module 'klasa' {
 
 	export interface KlasaClientOptions {
 		dev?: boolean;
+		nms?: {
+			role?: number;
+			everyone?: number;
+		};
 	}
 
 	export interface KlasaPieceDefaults {

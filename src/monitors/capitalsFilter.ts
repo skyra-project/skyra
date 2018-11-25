@@ -1,4 +1,7 @@
-import { Monitor, MessageEmbed, klasaUtil: { codeBlock }, util: { cutText }, constants: { MESSAGE_LOGS } } from '../index';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { KlasaMessage, Monitor, SettingsFolder, util } from 'klasa';
+import { MessageLogsEnum } from '../lib/util/constants';
+import { cutText } from '../lib/util/util';
 const OFFSET = 0b100000;
 /**
  * In ASCII, the 6th bit tells whether a character is lowercase or uppercase:
@@ -14,49 +17,48 @@ const OFFSET = 0b100000;
  * lower case to upper case (upper case characters are unaffected).
  */
 
-// eslint-disable-next-line no-bitwise
 const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
 
 export default class extends Monitor {
 
-	async run(msg) {
-		if (await msg.hasAtLeastPermissionLevel(5)) return;
+	public async run(message: KlasaMessage): Promise<void> {
+		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const { selfmod } = msg.guild.settings;
-		const { length } = msg.content;
+		const selfmod = (message.guild.settings.get('selfmod') as SettingsFolder).pluck('capsfilter', 'capsthreshold');
+		const { length } = message.content;
 		let count = 0, i = 0;
 
 		// eslint-disable-next-line no-bitwise
-		while (i < length) if ((msg.content.charCodeAt(i++) & OFFSET) === 0) count++;
+		while (i < length) if ((message.content.charCodeAt(i++) & OFFSET) === 0) count++;
 
 		if ((count / length) * 100 < selfmod.capsthreshold) return;
 
 		// eslint-disable-next-line no-bitwise
-		if ((selfmod.capsfilter & DELETE_FLAG) && msg.deletable) {
-			if (length > 25) msg.author.send(msg.language.get('MONITOR_CAPSFILTER_DM', codeBlock('md', cutText(msg.content, 1900)))).catch(() => null);
-			msg.nuke().catch(() => null);
+		if ((selfmod.capsfilter & DELETE_FLAG) && message.deletable) {
+			if (length > 25) message.author.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))).catch(() => null);
+			message.nuke().catch(() => null);
 		}
 
 		// eslint-disable-next-line no-bitwise
-		if ((selfmod.capsfilter & ALERT_FLAG) && msg.channel.postable)
-			msg.alert(msg.language.get('MONITOR_CAPSFILTER', msg.author)).catch(() => null);
+		if ((selfmod.capsfilter & ALERT_FLAG) && message.channel.postable)
+			message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)).catch(() => null);
 
 		// eslint-disable-next-line no-bitwise
 		if (selfmod.capsfilter & LOG_FLAG) {
-			this.client.emit('guildMessageLog', MESSAGE_LOGS.kModeration, msg.guild, () => new MessageEmbed()
-				.splitFields(msg.content)
-				.setColor(0xefae45)
-				.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-				.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_CAPSFILTER')}`)
+			this.client.emit('guildMessageLog', MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
+				.splitFields(message.content)
+				.setColor(0xEFAE45)
+				.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+				.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_CAPSFILTER')}`)
 				.setTimestamp());
 		}
 	}
 
-	shouldRun(msg) {
-		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
+	public shouldRun(message: KlasaMessage): boolean {
+		if (!this.enabled || !message.guild || message.author.id === this.client.user.id) return false;
 
-		const { selfmod } = msg.guild.settings;
-		return msg.content.length > selfmod.capsminimum && selfmod.capsfilter && !selfmod.ignoreChannels.includes(msg.channel.id);
+		const selfmod = (message.guild.settings.get('selfmod') as SettingsFolder).pluck('capsminimum', 'capsfilter', 'ignoreChannels');
+		return message.content.length > selfmod.capsminimum && selfmod.capsfilter && !selfmod.ignoreChannels.includes(message.channel.id);
 	}
 
-};
+}

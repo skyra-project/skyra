@@ -1,45 +1,33 @@
-import { Monitor, constants: { MODERATION: { TYPE_KEYS } } } from '../index';
+// Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
+import { KlasaMessage, Monitor } from 'klasa';
 
 export default class extends Monitor {
 
-	public constructor(client: Client, store: MonitorStore, file: string[], directory: string) {
-		super(client, store, file, directory, { ignoreBots: false });
-	}
+	private roleValue = this.client.options.nms.role;
+	private everyoneValue = this.client.options.nms.everyone;
 
-	async run(msg) {
-		if (!msg.guild
-			|| !msg.guild.settings.selfmod.nomentionspam
-			|| !msg.member
-			|| !msg.member.bannable
-			|| (msg.mentions.users.size === 1 && msg.mentions.users.first().bot)
-			|| await msg.hasAtLeastPermissionLevel(5)) return false;
+	public async run(message: KlasaMessage): Promise<void> {
+		if (!message.guild || !message.guild.settings.get('no-mention-spam.enabled')) return;
 
-		const count = (msg.mentions.everyone ? 5 : 0) + (msg.mentions.roles.size * 2) + (msg.mentions.users.size
-			? this.filterUsers(msg.author.id, msg.mentions.users).size : 0);
-		if (!count) return false;
+		const mentions = message.mentions.users.filter((user) => !user.bot && user !== message.author).size +
+			(message.mentions.roles.size * this.roleValue) +
+			(Number(message.mentions.everyone) * this.everyoneValue);
 
-		const amount = msg.guild.security.nms.add(msg.author.id, count);
-		if (amount >= msg.guild.settings.selfmod.nmsthreshold) {
-			await msg.guild.members.ban(msg.author.id, { days: 0, reason: msg.language.get('CONST_MONITOR_NMS') }).catch(error => this.client.emit('apiError', error));
-			await msg.sendLocale('MONITOR_NMS_MESSAGE', [msg.author]).catch(error => this.client.emit('apiError', error));
-			msg.guild.security.nms.delete(msg.author.id);
+		if (!mentions) return;
 
-			return msg.guild.moderation.new
-				.setModerator(this.client.user)
-				.setUser(msg.author)
-				.setType(TYPE_KEYS.BAN)
-				.setReason(msg.language.get('MONITOR_NMS_MODLOG', msg.guild.settings.selfmod.nmsthreshold, amount))
-				.create();
+		const rateLimit = message.guild.security.nms.acquire(message.author.id);
+
+		try {
+            for (let i = 0; i < mentions; i++) rateLimit.drip();
+			// Reset time, don't let them relax
+            rateLimit.resetTime();
+			// @ts-ignore 2341
+            if (message.guild.settings.get('no-mention-spam.alerts') && rateLimit.remaining / rateLimit.bucket < 0.2) {
+                this.client.emit('mentionSpamWarning', message);
+			}
+		} catch (err) {
+			this.client.emit('mentionSpamExceeded', message);
 		}
-
-		return true;
 	}
 
-	filterUsers(userID, collection) {
-		if (!collection.has(userID)) return collection;
-		const clone = collection.clone();
-		clone.delete(userID);
-		return clone;
-	}
-
-};
+}

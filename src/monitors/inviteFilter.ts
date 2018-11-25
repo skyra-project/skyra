@@ -1,37 +1,37 @@
-import { Monitor, MessageEmbed } from '../index';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { KlasaMessage, Monitor, SettingsFolder } from 'klasa';
 
 export default class extends Monitor {
 
-	async run(msg) {
-		if (!msg.guild
-			|| !msg.guild.settings.selfmod.invitelinks
-			|| !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(msg.content)
-			|| await msg.hasAtLeastPermissionLevel(5)) return false;
+	public async run(message: KlasaMessage): Promise<void> {
+		if (!message.guild
+			|| !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(message.content)
+			|| await message.hasAtLeastPermissionLevel(5)) return;
 
-		if (msg.deletable) {
-			await msg.nuke();
-			await msg.alert(msg.language.get('MONITOR_NOINVITE', msg.author));
+		if (message.deletable) {
+			await message.nuke();
+			await message.alert(message.language.get('MONITOR_NOINVITE', message.author));
 		}
 
-		if (!msg.guild.settings.channels.modlog)
+		if (!message.guild.settings.get('channels.modlog'))
 			return null;
 
-		const channel = msg.guild.channels.get(msg.guild.settings.channels.modlog);
+		const channel = message.guild.channels.get(message.guild.settings.get('channels.modlog') as string) as TextChannel;
 		if (!channel)
-			return msg.guild.settings.update('channels.modlog').then(() => null);
+			return message.guild.settings.reset('channels.modlog').then(() => null);
 
-		return channel.send(new MessageEmbed()
-			.setColor(0xefae45)
-			.setAuthor(`${msg.author.tag} (${msg.author.id})`, msg.author.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${msg.channel.name} | ${msg.language.get('CONST_MONITOR_INVITELINK')}`)
+		await channel.send(new MessageEmbed()
+			.setColor(0xEFAE45)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_INVITELINK')}`)
 			.setTimestamp());
 	}
 
-	shouldRun(msg) {
-		if (!this.enabled || !msg.guild || msg.author.id === this.client.user.id) return false;
+	public shouldRun(message: KlasaMessage): boolean {
+		if (!this.enabled || !message.guild || message.author.id === this.client.user.id) return false;
 
-		const { invitelinks, ignoreChannels } = msg.guild.settings.selfmod;
-		return invitelinks && !ignoreChannels.includes(msg.channel.id);
+		const selfmod = (message.guild.settings.get('selfmod') as SettingsFolder).pluck('invitelinks', 'ignoreChannels');
+		return selfmod.invitelinks && !selfmod.ignoreChannels.includes(message.channel.id);
 	}
 
-};
+}

@@ -2351,7 +2351,8 @@ export default class extends Language {
 			`The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
 			"Do not worry! I'm here to help you! 😄"
 		].join('\n'),
-		MONITOR_NMS_MODLOG: (threshold, amount) => `[NOMENTIONSPAM] Threshold: ${threshold}. Reached: ${amount}`,
+		MONITOR_NMS_MODLOG: (threshold) => `[NOMENTIONSPAM] Automatic: Mention Spam threshold exceeded.\nThreshold: ${threshold}.`,
+		MONITOR_NMS_ALERT: `Be careful mentioning any more, as you are about to be banned for exceeding this server's mention threshold.`,
 		MONITOR_SOCIAL_ACHIEVEMENT: 'Congratulations dear %MEMBER%, you achieved the role %ROLE%',
 
 		/**

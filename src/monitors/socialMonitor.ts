@@ -1,46 +1,31 @@
-import { Monitor, Permissions: { FLAGS: { MANAGE_ROLES } } } from '../index';
+import { KlasaMessage, Monitor } from 'klasa';
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 
 export default class extends Monitor {
 
-	public constructor(client: Client, store: MonitorStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
-			ignoreBots: true,
-			ignoreEdits: true,
-			ignoreWebhooks: true,
-			ignoreSelf: true
-		});
-	}
+	public async run(message: KlasaMessage): Promise<void> {
+		if (!message.guild
+			|| (message.guild.settings.get('social.ignoreChannels') as any[]).includes(message.channel.id)
+			|| this.cooldown(message)) return;
 
-	async run(msg) {
-		if (!msg.guild
-			|| msg.guild.settings.social.ignoreChannels.includes(msg.channel.id)
-			|| this.cooldown(msg)) return;
-
-		if (!msg.member) await msg.guild.members.fetch(msg.author.id).catch(() => null);
-		const memberPoints = msg.member && msg.member.settings;
+		if (!message.member) await message.guild.members.fetch(message.author.id).catch(() => null);
 
 		// Ensure the user and member settings are up-to-date
-		await msg.author.settings.sync();
-		if (memberPoints && memberPoints._syncStatus) await memberPoints._syncStatus;
+		await Promise.all([message.author.settings.sync(), message.member.settings.sync()]);
 
 		try {
-			const add = Math.round(((Math.random() * 4) + 4) * msg.guild.settings.social.monitorBoost);
-			await msg.author.settings.update('points', msg.author.settings.points + add);
-			if (memberPoints) {
-				await memberPoints.update(memberPoints.count + add);
-				await this.handleRoles(msg, memberPoints.count);
-			}
+			const add = Math.round(((Math.random() * 4) + 4) * (message.guild.settings.get('social.monitorBoost') as number));
+			await Promise.all([message.author.settings.increase('points', add), message.member.settings.increase('points', add)]);
 		} catch (err) {
-			this.client.emit('error', `Failed to add points to ${msg.author.id}: ${(err && err.stack) || err}`);
+			this.client.emit('error', `Failed to add points to ${message.author.id}: ${(err && err.stack) || err}`);
 		}
 	}
 
-	cooldown(msg) {
+	public cooldown(msg) {
 		return !this.client.timeoutManager.set(`social-${msg.author.id}`, Date.now() + 60000, () => null);
 	}
 
-	async handleRoles(msg, memberPoints) {
+	public async handleRoles(msg, memberPoints) {
 		const autoRoles = msg.guild.settings.roles.auto;
 		if (!autoRoles.length || !msg.guild.me.permissions.has(MANAGE_ROLES)) return null;
 
@@ -51,7 +36,7 @@ export default class extends Monitor {
 		if (!role || role.position > msg.guild.me.roles.highest.position) {
 			return msg.guild.settings.update('roles.auto', autoRole, { action: 'delete' })
 				.then(() => this.handleRoles(msg, memberPoints))
-				.catch(error => this.client.emit('apiError', error));
+				.catch((error) => this.client.emit('apiError', error));
 		}
 
 		if (msg.member.roles.has(role.id)) return null;
@@ -62,7 +47,7 @@ export default class extends Monitor {
 				: null);
 	}
 
-	getMessage(member, role, message) {
+	public getMessage(member, role, message) {
 		return message.replace(MESSAGE_REGEXP, (match) => {
 			switch (match) {
 				case '%ROLE%': return role.name;
@@ -75,7 +60,7 @@ export default class extends Monitor {
 		});
 	}
 
-	getLatestRole(autoRoles, points) {
+	public getLatestRole(autoRoles, points) {
 		let latest = null;
 		for (const role of autoRoles) {
 			if (role.points > points) break;
@@ -84,4 +69,4 @@ export default class extends Monitor {
 		return latest;
 	}
 
-};
+}

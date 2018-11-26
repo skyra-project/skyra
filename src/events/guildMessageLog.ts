@@ -1,19 +1,20 @@
-import { Event, constants: { MESSAGE_LOGS }, DiscordAPIError, HTTPError } from '../index';
+import { DiscordAPIError, Guild, HTTPError, TextChannel } from 'discord.js';
+import { Event } from 'klasa';
+import { MessageLogsEnum } from '../lib/util/constants';
 
 export default class extends Event {
 
-
-	async run(type, guild, makeMessage) {
+	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => string): Promise<void> {
 		const key = TYPES[type];
 		if (!key) {
 			this.client.emit('warn', `[EVENT] GuildMessageLog: Unknown type ${type.toString()}`);
 			return;
 		}
 
-		const id = guild.settings.get(key);
+		const id = guild.settings.get(key) as string;
 		if (!id) return;
 
-		const channel = guild.channels.get(id);
+		const channel = guild.channels.get(id) as TextChannel;
 		if (!channel) {
 			await guild.settings.reset(key);
 			return;
@@ -28,11 +29,11 @@ export default class extends Event {
 		}
 	}
 
-};
+}
 
 const TYPES = {
-	[MESSAGE_LOGS.kMember]: 'channels.log',
-	[MESSAGE_LOGS.kMessage]: 'channels.messagelogs',
-	[MESSAGE_LOGS.kModeration]: 'channels.modlog',
-	[MESSAGE_LOGS.kNSFWMessage]: 'channels.nsfwmessagelogs'
-};
+	[MessageLogsEnum.Member]: 'channels.log',
+	[MessageLogsEnum.Message]: 'channels.messagelogs',
+	[MessageLogsEnum.Moderation]: 'channels.modlog',
+	[MessageLogsEnum.NSFWMessage]: 'channels.nsfwmessagelogs'
+} as Record<MessageLogsEnum, string>;

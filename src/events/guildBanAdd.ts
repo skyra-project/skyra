@@ -1,14 +1,16 @@
-import { Event, constants: { MODERATION: { TYPE_KEYS } } } from '../index';
+import { Guild, User } from 'discord.js';
+import { Event } from 'klasa';
+import { ModerationTypeKeys } from '../lib/util/constants';
 
 export default class extends Event {
 
-	async run(guild, user) {
-		if (!guild.available || !guild.settings.events.banAdd) return null;
+	public async run(guild: Guild, user: User): Promise<void> {
+		if (!guild.available || !guild.settings.get('events.banAdd')) return;
 		await guild.moderation.waitLock();
-		return guild.moderation.new
-			.setType(TYPE_KEYS.BAN)
+		await guild.moderation.new
+			.setType(ModerationTypeKeys.Ban)
 			.setUser(user)
 			.create();
 	}
 
-};
+}

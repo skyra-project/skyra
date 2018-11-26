@@ -1,30 +1,32 @@
-import { Event, Stopwatch } from 'klasa';
+import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
+import { GuildSettingsTriggerAlias } from '../lib/types/Misc';
 
 export default class extends Event {
 
-	public async run(message, command) {
-		if (!message.guild || message.guild.settings.disabledChannels.includes(message.channel.id)) return null;
+	public async run(message: KlasaMessage, command: string): Promise<any> {
+		if (!message.guild || (message.guild.settings.get('disabledChannels') as string[]).includes(message.channel.id)) return null;
 		command = command.toLowerCase();
 
-		const tag = message.guild.settings.tags.some((t) => t[0] === command);
+		const tag = (message.guild.settings.get('tags') as [string, string][]).some((t) => t[0] === command);
 		if (tag) return this.runTag(message, command);
 
-		const alias = message.guild.settings.trigger.alias.find((entry) => entry.input === command);
+		const alias = (message.guild.settings.get('trigger.alias') as GuildSettingsTriggerAlias).find((entry) => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);
 
 		return null;
 	}
 
-	public async runCommand(message, command) {
-		const commandHandler = this.client.monitors.get('commandHandler');
+	public runCommand(message: KlasaMessage, command: Command): Promise<any> {
+		const commandHandler = this.client.monitors.get('commandHandler') as any;
 		const { regex: prefix, length: prefixLength } = commandHandler.getPrefix(message);
 
+		// @ts-ignore
 		return commandHandler.runCommand(message._registerCommand({ command, prefix, prefixLength }));
 	}
 
-	public async runTag(message, command) {
-		const tagCommand = this.client.commands.get('tag');
+	public async runTag(message: KlasaMessage, command: string): Promise<any> {
+		const tagCommand = this.client.commands.get('tag') as any;
 		const timer = new Stopwatch();
 
 		try {

@@ -1,9 +1,9 @@
-import { Event } from '../index';
+import { Event } from 'klasa';
 
 export default class extends Event {
 
-	run(err) {
+	public run(err: { code: number; reason: string }): void {
 		this.client.console.error(`Disconnected | ${err.code}: ${err.reason}`);
 	}
 
-};
+}

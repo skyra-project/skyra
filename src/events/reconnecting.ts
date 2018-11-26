@@ -1,9 +1,9 @@
-import { Event } from '../index';
+import { Event } from 'klasa';
 
 export default class extends Event {
 
-	run() {
+	public run(): void {
 		this.client.console.warn('Reconnecting...');
 	}
 
-};
+}

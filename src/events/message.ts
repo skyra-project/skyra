@@ -1,14 +1,14 @@
-import { Event } from '../index';
+import { Event, KlasaMessage } from 'klasa';
 
 export default class extends Event {
 
-	async run(msg) {
-		if (msg.system || msg.webhookID) return;
+	public async run(message: KlasaMessage): Promise<void> {
+		if (message.system || message.webhookID) return;
 
 		if (this.client.ready) {
-			if (msg.guild && !msg.member) await msg.guild.members.fetch(msg.author.id);
-			this.client.monitors.run(msg);
+			if (message.guild && !message.member) await message.guild.members.fetch(message.author.id);
+			this.client.monitors.run(message);
 		}
 	}
 
-};
+}

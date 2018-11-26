@@ -1,9 +1,9 @@
-import { Event } from '../index';
+import { Event } from 'klasa';
 
 export default class extends Event {
 
-	run(data) {
+	public run(data: any): void {
 		this.client.rawEvents.run(data);
 	}
 
-};
+}

@@ -1,5 +1,6 @@
 import { RPoolConnectionOptions } from 'rethinkdb-ts';
 import { SkyraClientOptions } from './src/lib/SkyraClient';
+import { APIWebhookData } from './src/lib/types/Discord';
 
 const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 
@@ -84,6 +85,21 @@ export const CLIENT_OPTIONS: SkyraClientOptions = {
 
 export const VERSION = '5.0.0 Nerom';
 export const NAME = 'Skyra';
+export const WEBHOOK_ERROR: APIWebhookData = DEV ? {
+	avatar: '7d52ea85e9ffe07ac8b15d4b60cf29d7',
+	channel_id: '432495057552277504',
+	guild_id: '254360814063058944',
+	id: '516616472269946885',
+	name: 'Skyra Development',
+	token: '',
+} : {
+	avatar: '8555889e893215cac63193dc2ad0b52d',
+	channel_id: '432495057552277504',
+	guild_id: '254360814063058944',
+	id: '516619861397340182',
+	name: 'Skyra Production',
+	token: '',
+};
 
 export const TOKENS = {
 	ANIMELIST: {

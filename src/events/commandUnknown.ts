@@ -1,29 +1,29 @@
-import { Event, Stopwatch } from '../index';
+import { Event, Stopwatch } from 'klasa';
 
 export default class extends Event {
 
-	async run(message, command) {
+	public async run(message, command) {
 		if (!message.guild || message.guild.settings.disabledChannels.includes(message.channel.id)) return null;
 		command = command.toLowerCase();
 
 		const tag = message.guild.settings.tags.some((t) => t[0] === command);
 		if (tag) return this.runTag(message, command);
 
-		const alias = message.guild.settings.trigger.alias.find(entry => entry.input === command);
+		const alias = message.guild.settings.trigger.alias.find((entry) => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);
 
 		return null;
 	}
 
-	async runCommand(message, command) {
+	public async runCommand(message, command) {
 		const commandHandler = this.client.monitors.get('commandHandler');
 		const { regex: prefix, length: prefixLength } = commandHandler.getPrefix(message);
 
 		return commandHandler.runCommand(message._registerCommand({ command, prefix, prefixLength }));
 	}
 
-	async runTag(message, command) {
+	public async runTag(message, command) {
 		const tagCommand = this.client.commands.get('tag');
 		const timer = new Stopwatch();
 
@@ -43,4 +43,4 @@ export default class extends Event {
 		}
 	}
 
-};
+}

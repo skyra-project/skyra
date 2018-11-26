@@ -1,8 +1,8 @@
-import { Collection } from 'discord.js';
+import { Collection, Webhook } from 'discord.js';
 import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
 import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
-import { VERSION } from '../../config';
+import { VERSION, WEBHOOK_ERROR } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { MemberGateway } from './structures/MemberGateway';
 import { RawEventStore } from './structures/RawEventStore';
@@ -32,6 +32,11 @@ export class SkyraClient extends KlasaClient {
 	 * The raw event store
 	 */
 	public rawEvents = new RawEventStore(this);
+
+	/**
+	 * The webhook to use for the error event
+	 */
+	public webhookError = new Webhook(this, WEBHOOK_ERROR);
 
 	/**
 	 * The ConnectFour manager
@@ -195,6 +200,7 @@ declare module 'discord.js' {
 		usertags: Collection<string, string>;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: Node;
+		webhookError: Webhook;
 		fetchTag(id: string): Promise<string>;
 		fetchUsername(id: string): Promise<string>;
 	}

@@ -1,64 +1,56 @@
-import { Event, DiscordAPIError, klasaUtil: { codeBlock } } from '../index';
+import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
+import { Command, Event, KlasaMessage, util } from 'klasa';
 
 export default class extends Event {
 
-	constructor(client, store, file, directory) {
-		super(client, store, file, directory);
-		this.logChannel = null;
-	}
-
-	run(msg, command, params, error) {
+	public run(message: KlasaMessage, command: Command, _: string[], error: Error): void {
 		if (typeof error === 'string') {
-			msg.alert(msg.language.get('EVENTS_ERROR_STRING', msg.author, error))
-				.catch(this._handleMessageError);
+			message.alert(message.language.get('EVENTS_ERROR_STRING', message.author, error))
+				.catch((err) => this.client.emit('wtf', err));
 		} else if (error instanceof Error) {
-			this._sendErrorChannel(msg, command, error);
+			this._sendErrorChannel(message, command, error);
 
 			// Extract useful information about the DiscordAPIError
-			if (error instanceof DiscordAPIError)
+			if (error instanceof DiscordAPIError || error instanceof HTTPError)
 				this.client.emit('apiError', error);
 			else
-				this.client.emit('warn', `${this._getWarnError(msg, command, error)} (${msg.author.id}) | ${error.constructor.name}`);
-
+				this.client.emit('warn', `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 
 			// Emit where the error was emitted
 			this.client.emit('wtf', `[COMMAND] ${command.path}\n${error.stack || error}`);
-			msg.alert(msg.author === this.client.owner ? codeBlock('js', error.stack) : msg.language.get('EVENTS_ERROR_WTF'))
-				.catch(this._handleMessageError);
+			message.alert(message.author.id === this.client.options.ownerID ? util.codeBlock('js', error.stack) : message.language.get('EVENTS_ERROR_WTF'))
+				.catch((err) => this.client.emit('wtf', err));
 		}
 	}
 
-	async init() {
-		const guild = this.client.guilds.get('254360814063058944');
-		if (guild) this.logChannel = guild.channels.get('432495057552277504');
+	private _sendErrorChannel(message: KlasaMessage, command: Command, error: Error): Promise<KlasaMessage> {
+		let output: string;
+		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
+			output = [
+				`\`Command   ::\` ${command.path}`,
+				`\`Path      ::\` ${error.path}`,
+				`\`Code      ::\` ${error.code}`,
+				`\`Location  ::\` ${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`,
+				`\`Arguments ::\` ${message.args.length ? `[${message.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
+				`\`Error     ::\` ${error.stack || error}`
+			].join('\n');
+		} else {
+			output = [
+				`\`Command   ::\` ${command.path}`,
+				`\`Location  ::\` ${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`,
+				`\`Arguments ::\` ${message.args.length ? `[${message.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
+				`\`Error     ::\` ${error.stack || error}`
+			].join('\n');
+		}
+
+		return this.client.webhookError.send(new MessageEmbed()
+			.setDescription(output)
+			.setAuthor(message.author.username, message.author.displayAvatarURL(), message.url)
+			.setTimestamp()) as Promise<KlasaMessage>;
 	}
 
-	_sendErrorChannel(msg, command, error) {
-		if (!this.logChannel) return;
-		const isDiscordAPIError = error instanceof DiscordAPIError;
-		// @ts-ignore
-		this.logChannel.send(codeBlock('asciidoc', (isDiscordAPIError ? [
-			`Command   :: ${command.path}`,
-			`Path      :: ${error.path}`,
-			`Code      :: ${error.code}`,
-			`Location  :: ${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`,
-			`Arguments :: ${msg.args.length ? `[${msg.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
-			`Error     :: ${error.stack || error}`
-		] : [
-			`Command   :: ${command.path}`,
-			`Location  :: ${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`,
-			`Arguments :: ${msg.args.length ? `[${msg.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
-			`Error     :: ${error.stack || error}`
-		]).join('\n'))).catch(() => null);
+	private _getWarnError(message: KlasaMessage): string {
+		return `ERROR: /${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`;
 	}
 
-	_handleMessageError(sendError) {
-		Error.captureStackTrace(sendError);
-		this.client.emit('wtf', sendError);
-	}
-
-	_getWarnError(msg, command, error) {
-		return `${error.code ? `[${error.code}] ` : ''}ERROR: /${msg.guild ? `${msg.guild.id}/${msg.channel.id}` : `DM/${msg.author.id}`}/${msg.id}`;
-	}
-
-};
+}

@@ -59,6 +59,19 @@ export interface APIGuildMemberData extends APIGuildMemberPartial {
 	user: APIUserData;
 }
 
+/**
+ * https://discordapp.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+ */
+export interface APIWebhookData {
+	id: string;
+	guild_id?: string;
+	channel_id: string;
+	user?: APIUserData;
+	name: string | null;
+	avatar: string | null;
+	token: string;
+}
+
 export interface WSGuildMemberAdd extends APIGuildMemberData {
 	guild_id: string;
 }

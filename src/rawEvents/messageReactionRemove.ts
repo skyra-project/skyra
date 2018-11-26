@@ -1,46 +1,28 @@
-
-import { RawEvent, util: { resolveEmoji } } from '../index';
+import { TextChannel } from 'discord.js';
+import { RawEvent } from '../lib/structures/RawEvent';
+import { WSMessageReactionRemove } from '../lib/types/Discord';
+import { GuildSettingsRolesReactions } from '../lib/types/Misc';
+import { resolveEmoji } from '../lib/util/util';
 
 export default class extends RawEvent {
 
-	/**
-	 *	MESSAGE_REACTION_REMOVE Packet
-	 *	##############################
-	 *	{
-	 *		user_id: 'id',
-	 *		message_id: 'id',
-	 *		emoji: {
-	 *			name: '😄',
-	 *			id: null,
-	 *			animated: false
-	 *		},
-	 *		channel_id: 'id',
-	 *		guild_id: 'id'
-	 *	}
-	 */
+	public async run(data: WSMessageReactionRemove): Promise<void> {
+		const channel = this.client.channels.get(data.channel_id) as TextChannel;
+		if (!channel || channel.type !== 'text' || !channel.readable) return;
 
-	async run(data) { // eslint-disable-line camelcase
-		// Verify channel
-		/** @type {SKYRA.SkyraTextChannel} */
-		// @ts-ignore
-		const channel = this.client.channels.get(data.channel_id);
-		// @ts-ignore
-		if (!channel || channel.type !== 'text' || !channel.readable) return false;
-
-		if (channel.id === channel.guild.settings.channels.roles)
+		if (channel.id === channel.guild.settings.get('channels.roles'))
 			this.handleRoleChannel(channel, data);
-
-		return false;
 	}
 
-	async handleRoleChannel(channel, data) {
-		const { messageReaction } = channel.guild.settings.roles;
+	public async handleRoleChannel(channel: TextChannel, data: WSMessageReactionRemove): Promise<void> {
+		const messageReaction = channel.guild.settings.get('roles.messageReaction');
 		if (!messageReaction || messageReaction !== data.message_id) return;
 
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;
 
-		const roleEntry = channel.guild.settings.roles.reactions.find(entry => entry.emoji === parsed);
+		const roleEntry = (channel.guild.settings.get('roles.reactions') as GuildSettingsRolesReactions)
+			.find((entry) => entry.emoji === parsed);
 		if (!roleEntry) return;
 
 		try {
@@ -51,4 +33,4 @@ export default class extends RawEvent {
 		}
 	}
 
-};
+}

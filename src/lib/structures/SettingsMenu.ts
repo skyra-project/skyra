@@ -1,6 +1,6 @@
 import { Message, MessageCollector, MessageEmbed } from 'discord.js';
 import { Schema, SchemaFolder, SchemaPiece, SettingsFolderUpdateOptions } from 'klasa';
-import { APIReactionAddData } from '../types/Discord';
+import { WSMessageReactionAdd } from '../types/Discord';
 import { LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
@@ -123,7 +123,7 @@ export class SettingsMenu {
 		await this.message.send(this.render());
 	}
 
-	private async onReaction(reaction: APIReactionAddData, user: { id: string }): Promise<void> {
+	private async onReaction(reaction: WSMessageReactionAdd, user: { id: string }): Promise<void> {
 		if (user.id !== this.message.author.id) return;
 		this.llrc.setTime(120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {

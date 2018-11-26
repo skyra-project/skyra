@@ -1,7 +1,6 @@
-import { Client, User } from 'discord.js';
-import { APIReactionAddData } from '../types/Discord';
+import { Client, Guild, TextChannel, User } from 'discord.js';
 
-export type LongLivingReactionCollectorListener = (reaction: APIReactionAddData, user: User | { id: string }) => void;
+export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 
 export class LongLivingReactionCollector {
 
@@ -32,8 +31,8 @@ export class LongLivingReactionCollector {
 		return this.client.llrCollectors.has(this);
 	}
 
-	public send(reaction: APIReactionAddData, user: User | { id: string }): void {
-		this.listener(reaction, user);
+	public send(reaction: LLRCData): void {
+		this.listener(reaction);
 	}
 
 	public setTime(time: number): this {
@@ -56,4 +55,22 @@ export class LongLivingReactionCollector {
 		return this;
 	}
 
+}
+
+export interface LLRCDataEmoji {
+	animated: boolean;
+	id: string | null;
+	managed: boolean | null;
+	name: string;
+	requireColons: boolean | null;
+	roles: string[] | null;
+	user: User | { id: string };
+}
+
+export interface LLRCData {
+	channel: TextChannel;
+	emoji: LLRCDataEmoji;
+	guild: Guild;
+	messageID: string;
+	userID: string;
 }

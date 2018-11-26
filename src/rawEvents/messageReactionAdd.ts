@@ -1,10 +1,13 @@
 import { TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
-import { APIReactionAddData } from '../lib/types/Discord';
+import { WSMessageReactionAdd } from '../lib/types/Discord';
+import { GuildSettingsRolesReactions } from '../lib/types/Misc';
+import { LLRCData } from '../lib/util/LongLivingReactionCollector';
+import { resolveEmoji } from '../lib/util/util';
 
 export default class extends RawEvent {
 
-	public async run(data: APIReactionAddData): Promise<void> {
+	public async run(data: WSMessageReactionAdd): Promise<void> {
 		const channel = this.client.channels.get(data.channel_id) as TextChannel;
 		if (!channel || channel.type !== 'text' || !channel.readable) return;
 
@@ -13,37 +16,37 @@ export default class extends RawEvent {
 			emoji: {
 				animated: data.emoji.animated,
 				id: data.emoji.id,
-				managed: data.emoji.managed || null,
+				managed: 'managed' in data.emoji ? data.emoji.managed : null,
 				name: data.emoji.name,
-				requireColons: data.emoji.require_colons || null,
+				requireColons: 'require_colons' in data.emoji ? data.emoji.require_colons : null,
 				roles: data.emoji.roles || null,
 				user: (data.emoji.user && this.client.users.add(data.emoji.user)) || { id: data.user_id }
 			},
 			guild: channel.guild,
 			messageID: data.message_id,
 			userID: data.user_id
-		};
+		} as LLRCData;
 
 		for (const llrc of this.client.llrCollectors)
-			llrc.send(parsed, parsed.emoji.user);
+			llrc.send(parsed);
 
-		if (data.channel_id === channel.guild.settings.channels.roles)
+		if (data.channel_id === channel.guild.settings.get('channels.roles'))
 			this.handleRoleChannel(parsed);
-		else if (!parsed.channel.nsfw && channel.guild.settings.starboard.channel !== parsed.channel.id && resolveEmoji(parsed.emoji) === channel.guild.settings.starboard.emoji)
+		else if (!parsed.channel.nsfw
+			&& parsed.channel.id !== channel.guild.settings.get('starboard.channel')
+			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get('starboard.emoji'))
 			this.handleStarboard(parsed);
 	}
 
-	/**
-	 * @param {SKYRA.ReactionData} parsed The parsed data
-	 */
-	public async handleRoleChannel(parsed) {
-		const { messageReaction } = parsed.guild.settings.roles;
+	public async handleRoleChannel(parsed: LLRCData): Promise<void> {
+		const messageReaction = parsed.guild.settings.get('roles.messageReaction');
 		if (!messageReaction || messageReaction !== parsed.messageID) return;
 
 		const emoji = resolveEmoji(parsed.emoji);
 		if (!emoji) return;
 
-		const roleEntry = parsed.guild.settings.roles.reactions.find((entry) => entry.emoji === emoji);
+		const roleEntry = (parsed.guild.settings.get('roles.reactions') as GuildSettingsRolesReactions)
+			.find((entry) => entry.emoji === emoji);
 		if (!roleEntry) return;
 
 		try {
@@ -54,18 +57,13 @@ export default class extends RawEvent {
 		}
 	}
 
-	/**
-	 * @param {SKYRA.ReactionData} parsed The parsed data
-	 */
-	public async handleStarboard(parsed) {
+	public async handleStarboard(parsed: LLRCData): Promise<void> {
 		try {
-			const starboardSettings = parsed.guild.settings.starboard;
-			if (!starboardSettings.channel || starboardSettings.ignoreChannels.includes(parsed.channel.id)) return;
+			const channel = parsed.guild.settings.get('starboard.channel') as string;
+			const ignoreChannels = parsed.guild.settings.get('starboard.ignoreChannels') as string[];
+			if (!channel || ignoreChannels.includes(parsed.channel.id)) return;
 
-			// Safeguard
-			/** @type {SKYRA.SkyraTextChannel} */
-			// @ts-ignore
-			const starboardChannel = parsed.guild.channels.get(starboardSettings.channel);
+			const starboardChannel = parsed.guild.channels.get(channel) as TextChannel;
 			if (!starboardChannel || !starboardChannel.postable) {
 				await parsed.guild.settings.reset('starboard.channel');
 				return;

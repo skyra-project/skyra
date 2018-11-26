@@ -1,8 +1,7 @@
 import { Client, Message, Permissions, TextChannel, User } from 'discord.js';
 import { Language } from 'klasa';
-import { APIEmojiData, APIReactionAddData } from '../../types/Discord';
 import { CONNECT_FOUR } from '../constants';
-import { LongLivingReactionCollector, LongLivingReactionCollectorListener } from '../LongLivingReactionCollector';
+import { LLRCData, LLRCDataEmoji, LongLivingReactionCollector, LongLivingReactionCollectorListener } from '../LongLivingReactionCollector';
 import { resolveEmoji } from '../util';
 import { ConnectFourManager } from './ConnectFourManager';
 
@@ -187,10 +186,10 @@ export class ConnectFour {
 		const reaction = await new Promise<string>((resolve, reject) => {
 			this.llrc.setTime(120000);
 			this.llrc.setEndListener(reject);
-			this.collector = (react, user) => {
-				if (user.id === PLAYER && CONNECT_FOUR.REACTIONS.includes(react.emoji.name)) {
-					if (this.manageMessages) this.removeEmoji(react.emoji, user.id);
-					resolve(react.emoji.name);
+			this.collector = (data) => {
+				if (data.userID === PLAYER && CONNECT_FOUR.REACTIONS.includes(data.emoji.name)) {
+					if (this.manageMessages) this.removeEmoji(data.emoji, data.userID);
+					resolve(data.emoji.name);
 				}
 			};
 		});
@@ -284,8 +283,8 @@ export class ConnectFour {
 	 * Send a reaction to the internal handler
 	 * @param reaction The emoji
 	 */
-	public send(reaction: APIReactionAddData): void {
-		if (this.collector) this.collector(reaction, { id: reaction.user_id });
+	public send(reaction: LLRCData): void {
+		if (this.collector) this.collector(reaction);
 	}
 
 	/**
@@ -293,7 +292,7 @@ export class ConnectFour {
 	 * @param emoji The emoji to remove
 	 * @param userID The user ID that reacted to the message
 	 */
-	public async removeEmoji(emoji: string | APIEmojiData, userID: string): Promise<void> {
+	public async removeEmoji(emoji: string | LLRCDataEmoji, userID: string): Promise<void> {
 		// @ts-ignore
 		await this.client.api.channels[this.message.channel.id].messages[this.message.id]
 			.reactions[resolveEmoji(emoji)][userID].delete()

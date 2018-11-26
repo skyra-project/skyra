@@ -1,19 +1,9 @@
-
-import { RawEvent } from '../index';
+import { RawEvent } from '../lib/structures/RawEvent';
+import { WSMessageDelete } from '../lib/types/Discord';
 
 export default class extends RawEvent {
 
-	/**
-	 *	MESSAGE_DELETE Packet
-	 *	#####################
-	 *	{
-	 *		id: 'id',
-  	 *		channel_id: 'id',
-	 *		guild_id: 'id'
-	 *	}
-	 */
-
-	async run(data) {
+	public async run(data: WSMessageDelete): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.channels.has(data.channel_id)) return;
 		guild.starboard.delete(`${data.channel_id}-${data.id}`);
@@ -27,10 +17,9 @@ export default class extends RawEvent {
 				.delete({ returnChanges: true })
 				.run();
 
-
 			if (!results.deleted) return;
 
-			const { channel } = guild.settings.starboard;
+			const channel = guild.settings.get('starboard.channel') as string;
 			if (!channel) return;
 
 			for (const change of results.changes) {
@@ -47,4 +36,4 @@ export default class extends RawEvent {
 		}
 	}
 
-};
+}

@@ -8,6 +8,7 @@ import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData } from '../types/Discord';
 import { ModerationTypeKeys } from './constants';
 import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
+import { LLRCDataEmoji } from './LongLivingReactionCollector';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -104,7 +105,7 @@ export function moderationCheck(message: Message, moderator: GuildMember, target
  * Resolve an emoji
  * @param emoji The emoji to resolve
  */
-export function resolveEmoji(emoji: string | APIEmojiData): string {
+export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji): string {
 	if (typeof emoji === 'string') {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;

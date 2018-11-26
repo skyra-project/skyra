@@ -1,20 +1,9 @@
-
-import { RawEvent } from '../index';
+import { RawEvent } from '../lib/structures/RawEvent';
+import { WSMessageReactionRemoveAll } from '../lib/types/Discord';
 
 export default class extends RawEvent {
 
-
-	/**
-	 *	MESSAGE_REACTION_REMOVE_ALL Packet
-	 *	##################################
-	 *	{
-	 *		message_id: '499172527575400458',
-	 *		channel_id: '473443094759473172',
-	 *		guild_id: '254360814063058944'
-	 *	}
-	 */
-
-	async run(data) {
+	public async run(data: WSMessageReactionRemoveAll): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.channels.has(data.channel_id)) return;
 		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
@@ -30,7 +19,7 @@ export default class extends RawEvent {
 
 			if (!results.deleted) return;
 
-			const { channel } = guild.settings.starboard;
+			const channel = guild.settings.get('starboard.channel');
 			if (!channel) return;
 
 			for (const change of results.changes) {
@@ -47,4 +36,4 @@ export default class extends RawEvent {
 		}
 	}
 
-};
+}

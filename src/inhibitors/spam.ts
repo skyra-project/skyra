@@ -1,25 +1,30 @@
-import { Inhibitor } from '../index';
+import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
+import { SkyraCommand } from '../lib/structures/SkyraCommand';
 
 export default class extends Inhibitor {
 
-	constructor(client, store, file, directory) {
-		super(client, store, file, directory, { spamProtection: true });
-	}
+	public spamProtection = true;
 
-	async run(msg, cmd) {
-		if (!cmd.spam
-			|| !msg.guild
-			|| msg.guild.settings.channels.spam === msg.channel.id
-			|| await msg.hasAtLeastPermissionLevel(5)) return;
+	private ratelimit = new RateLimitManager(1, 30000);
 
-		const channel = msg.guild.channels.get(msg.guild.settings.channels.spam);
+	public async run(message: KlasaMessage, command: SkyraCommand): Promise<void> {
+		if (!command.spam || !message.guild) return;
+
+		const channelID = message.guild.settings.get('channels.spam') as string;
+		if (channelID === message.channel.id) return;
+		if (await message.hasAtLeastPermissionLevel(5)) return;
+
+		const channel = message.guild.channels.get(channelID);
 		if (!channel) {
-			await msg.guild.settings.reset('channels.spam');
+			await message.guild.settings.reset('channels.spam');
 			return;
 		}
 
-		if (!this.client.timeoutManager.set(`cooldown-${msg.channel.id}`, Date.now() + 30000, () => null))
-			throw msg.language.get('INHIBITOR_SPAM', channel);
+		try {
+			this.ratelimit.acquire(message.channel.id).drip();
+		} catch {
+			throw message.language.get('INHIBITOR_SPAM', channel);
+		}
 	}
 
-};
+}

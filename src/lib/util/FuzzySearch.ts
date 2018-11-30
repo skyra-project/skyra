@@ -35,9 +35,7 @@ export class FuzzySearch<K extends string, V> {
 			else if (lowerCaseName.includes(lowcquery))
 				distance = lowerCaseName.length - lowcquery.length;
 			else
-				distance = levenshtein(lowcquery, lowerCaseName, false);
-
-			if (distance === -1) continue;
+				distance = levenshtein(lowcquery, lowerCaseName);
 
 			// Push the results
 			results.push([id, entry, distance]);

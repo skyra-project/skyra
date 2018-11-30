@@ -112,7 +112,6 @@
 		"typedef": [
 			true,
 			"parameter",
-			"call-signature",
 			"property-declaration"
 		],
 		"typedef-whitespace": [

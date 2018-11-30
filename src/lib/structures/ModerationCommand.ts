@@ -1,14 +1,15 @@
-import { Client, GuildMember, Message, User } from 'discord.js';
-import { Command, CommandOptions, CommandStore, util } from 'klasa';
+import { Client, GuildMember, User } from 'discord.js';
+import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
 import { ModerationTypeKeys } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
+import { SkyraCommand } from './SkyraCommand';
 
 export interface ModerationCommandOptions extends CommandOptions {
 	modType: ModerationTypeKeys;
 	requiredMember?: boolean;
 }
 
-export abstract class ModerationCommand extends Command {
+export abstract class ModerationCommand extends SkyraCommand {
 
 	/**
 	 * Whether a member is required or not.
@@ -33,7 +34,7 @@ export abstract class ModerationCommand extends Command {
 		this.requiredMember = options.requiredMember;
 	}
 
-	public async run(message: Message, [targets, reason]: [User[], string?]): Promise<Message> {
+	public async run(message: KlasaMessage, [targets, reason]: [User[], string?]): Promise<KlasaMessage | KlasaMessage[]> {
 		if (!reason) reason = null;
 
 		const prehandled = await this.prehandle(message, targets, reason);
@@ -67,19 +68,19 @@ export abstract class ModerationCommand extends Command {
 			// noop
 		}
 
-		return message.sendMessage(output.join('\n')) as Promise<Message>;
+		return message.sendMessage(output.join('\n')) as Promise<KlasaMessage>;
 	}
 
 	// tslint:disable-next-line:no-unused-vars
-	public abstract async prehandle(message: Message, targets: User[], reason: string): Promise<any>;
+	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<any>;
 
 	// eslint-disable-next-line no-unused-vars
-	public abstract async handle(message: Message, target: User, member: GuildMember | null, reason: string, prehandled: any): Promise<any>;
+	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: any): Promise<any>;
 
 	// eslint-disable-next-line no-unused-vars
-	public abstract async posthandle(message: Message, targets: User[], reason: string, prehandled: any): Promise<any>;
+	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: any): Promise<any>;
 
-	public async checkModeratable(message: Message, target: User): Promise<GuildMember | null> {
+	public async checkModeratable(message: KlasaMessage, target: User): Promise<GuildMember | null> {
 		if (target.id === message.author.id)
 			throw message.language.get('COMMAND_USERSELF');
 
@@ -99,7 +100,7 @@ export abstract class ModerationCommand extends Command {
 		return member;
 	}
 
-	public sendModlog(message: Message, target: User, reason: string, extraData: any): Promise<ModerationManagerEntry> {
+	public sendModlog(message: KlasaMessage, target: User, reason: string, extraData: any): Promise<ModerationManagerEntry> {
 		if (Array.isArray(reason)) reason = reason.join(' ');
 		const modlog = message.guild.moderation.new
 			.setModerator(message.author.id)

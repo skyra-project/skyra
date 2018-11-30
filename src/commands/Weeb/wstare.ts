@@ -1,8 +1,10 @@
-import { WeebCommand } from '../../index';
+import { Client } from 'discord.js';
+import { CommandStore } from 'klasa';
+import { WeebCommand } from '../../lib/structures/WeebCommand';
 
 export default class extends WeebCommand {
 
-	constructor(client, store, file, directory) {
+	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_WSTARE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_WSTARE_EXTENDED'),
@@ -12,4 +14,4 @@ export default class extends WeebCommand {
 		});
 	}
 
-};
+}

@@ -1,7 +1,12 @@
-import { Command, config : { tokens: { GOOGLE_MAP_API, WEATHER_API } }, assetsFolder, util; : { fetch; } } from; '../../index';
 import { Canvas } from 'canvas-constructor';
+import { Client } from 'discord.js';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
+import { TOKENS } from '../../../config';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
 const COLORS = {
 	cloudy: '#88929F',
@@ -13,27 +18,27 @@ const COLORS = {
 	windy: '#33B679'
 };
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 120,
 			description: (language) => language.get('COMMAND_WEATHER_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_WEATHER_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<city:string>'
 		});
 	}
 
-	public async run(msg, [query]) {
+	public async run(message: KlasaMessage, [query]: [string]) {
 		const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
-		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${GOOGLE_MAP_API}`, 'json');
+		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${TOKENS.GOOGLE_MAP_API}`, 'json');
 
 		if (response.status !== 'OK')
-			throw msg.language.get(this.handleNotOK(response.status));
+			throw message.language.get(this.handleNotOK(response.status));
 		if (response.results.length === 0)
-			throw msg.language.get('COMMAND_WEATHER_ERROR_ZERO_RESULTS');
+			throw message.language.get('COMMAND_WEATHER_ERROR_ZERO_RESULTS');
 
 		const geocodelocation = response.results[0].formatted_address;
 		const params = `${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}`;
@@ -50,7 +55,7 @@ export default class extends Command {
 		const localityOrCountry = locality ? country : {};
 		const state = locality && governing ? governing : localityOrCountry || {};
 
-		const { currently } = await fetch(`https://api.darksky.net/forecast/${WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
+		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
 
 		const { icon } = currently;
 		const condition = currently.summary;
@@ -58,10 +63,10 @@ export default class extends Command {
 		const temperature = Math.round(currently.temperature);
 		const humidity = Math.round(currently.humidity * 100);
 
-		return this.draw(msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity });
+		return this.draw(message, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity });
 	}
 
-	public async draw(msg, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity }) {
+	public async draw(message: KlasaMessage, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity }: WeatherData) {
 		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
 		const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
 			readFile(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
@@ -110,10 +115,10 @@ export default class extends Command {
 
 			.toBufferAsync();
 
-		return msg.channel.send({ files: [{ attachment, name: `${geocodelocation}.png` }] });
+		return message.channel.send({ files: [{ attachment, name: `${geocodelocation}.png` }] }) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
 
-	public timePicker(icon) {
+	public timePicker(icon: string) {
 		switch (icon) {
 			case 'clear-day':
 			case 'partly-cloudy-day':
@@ -143,7 +148,7 @@ export default class extends Command {
 		}
 	}
 
-	public handleNotOK(status) {
+	public handleNotOK(status: string) {
 		switch (status) {
 			case 'ZERO_RESULTS':
 				return 'COMMAND_WEATHER_ERROR_ZERO_RESULTS';
@@ -159,4 +164,15 @@ export default class extends Command {
 		}
 	}
 
+}
+
+interface WeatherData {
+	geocodelocation: string;
+	state: Record<string, string>;
+	city: Record<string, string>;
+	condition: string;
+	icon: string;
+	chanceofrain: number;
+	temperature: number;
+	humidity: number;
 }

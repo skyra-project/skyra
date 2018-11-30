@@ -1,10 +1,11 @@
-import { Client, Message, MessageEmbed, TextChannel, User } from 'discord.js';
-import { Command, CommandOptions, CommandStore, util } from 'klasa';
+import { Client, MessageEmbed, TextChannel, User } from 'discord.js';
+import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
 import { URL } from 'url';
 import { TOKENS, VERSION } from '../../../config';
 import { fetch } from '../util/util';
+import { SkyraCommand } from './SkyraCommand';
 
-export class WeebCommand extends Command {
+export class WeebCommand extends SkyraCommand {
 
 	/**
 	 * The type for this command.
@@ -29,7 +30,7 @@ export class WeebCommand extends Command {
 		this.responseName = options.responseName;
 	}
 
-	public async run(message: Message, params?: User[]): Promise<Message> {
+	public async run(message: KlasaMessage, params?: User[]) {
 		const query = new URL('https://api-v2.weeb.sh/images/random');
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
@@ -50,7 +51,7 @@ export class WeebCommand extends Command {
 				.setColor(message.member.displayColor)
 				.setImage(url)
 				.setFooter(message.language.get('POWEREDBY_WEEBSH'))
-		}) as Promise<Message>;
+		}) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
 
 }

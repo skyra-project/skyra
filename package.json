@@ -14,7 +14,8 @@
     "start": "node dist/src/Skyra.js",
     "test": "tslint -p tsconfig.json src/**/*.ts",
     "update": "yarn",
-    "compile": "tsc -p ."
+    "compile": "tsc -p .",
+    "watch": "tsc -p . -w"
   },
   "repository": {
     "type": "git",
@@ -54,6 +55,6 @@
     "eslint": "^5.9.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
     "tslint": "^5.11.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.2.1"
   }
 }

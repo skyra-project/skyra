@@ -1,15 +1,19 @@
-import { Command, config : { tokens: { OXFORD_API: { API_ID, API_KEY } } }, util; : { fetch; } } from; '../../../index';
+import { Client } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { TOKENS } from '../../../../config';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { fetch } from '../../../lib/util/util';
 
-const options = { headers: { Accept: 'application/json', app_id: API_ID, app_key: API_KEY } }; // eslint-disable-line camelcase
+const options = { headers: { Accept: 'application/json', app_id: TOKENS.OXFORD_API.API_ID, app_key: TOKENS.OXFORD_API.API_KEY } };
 const URL = 'https://od-api.oxforddictionaries.com/api/v1/entries/en/';
 const TABLENAME = 'oxford';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			cooldown: 20,
 			bucket: 2,
+			cooldown: 20,
 			description: (language) => language.get('COMMAND_DEFINE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_DEFINE_EXTENDED'),
 			usage: '<input:string>'
@@ -20,29 +24,29 @@ export default class extends Command {
 		return this.client.providers.default.db;
 	}
 
-	public async run(msg, [input]) {
-		const lexicalEntries = await this.fetch(msg, encodeURIComponent(input.toLowerCase()));
+	public async run(message: KlasaMessage, [input]: [string]) {
+		const lexicalEntries = await this.fetch(message, encodeURIComponent(input.toLowerCase()));
 
-		const output = [];
+		const output = [] as string[];
 		for (const entry of lexicalEntries) this.resolveEntry(output, entry);
 		output.push('*Powered by Oxford Dictionaries*');
 
-		return msg.sendMessage(output.join('\n\n'));
+		return message.sendMessage(output.join('\n\n'));
 	}
 
-	public resolveEntry(output, { pronounciations, lexicalCategory, text, entries }) {
+	private resolveEntry(output: string[], { pronounciations, lexicalCategory, text, entries }: DefineLexicalEntry) {
 		output.push([
 			`\`${output.length + 1}\` [\`${lexicalCategory}\`] **${text}** ${this.resolvePronounciations(pronounciations)}`,
 			this.format(entries)
 		].join('\n'));
 	}
 
-	public resolvePronounciations(pronounciations) {
+	private resolvePronounciations(pronounciations: DefinePronounciation[]) {
 		if (!pronounciations.length) return '';
 		return pronounciations.map((pronounciation) => `\`/${pronounciation.spelling}/\` (${pronounciation.notation})`).join(' ');
 	}
 
-	public format(entries) {
+	private format(entries: any[]) {
 		const output = [];
 
 		let i = 0;
@@ -65,10 +69,10 @@ export default class extends Command {
 		return output.join('\n');
 	}
 
-	public async fetch(msg, query) {
+	private async fetch(message: KlasaMessage, query: string): Promise<DefineLexicalEntries> {
 		const data = await this.r.table(TABLENAME).get(query).run();
 		if (data) {
-			if (!data.valid) throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
+			if (!data.valid) throw message.language.get('COMMAND_DEFINE_NOTFOUND');
 			return data.lexicalEntries;
 		}
 
@@ -79,11 +83,11 @@ export default class extends Command {
 			return lexicalEntries;
 		} catch (error) {
 			await this.r.table(TABLENAME).insert({ id: query, valid: false }).run();
-			throw msg.language.get('COMMAND_DEFINE_NOTFOUND');
+			throw message.language.get('COMMAND_DEFINE_NOTFOUND');
 		}
 	}
 
-	public _resolveData({ pronunciations, lexicalCategory, text, entries }) {
+	private _resolveData({ pronunciations, lexicalCategory, text, entries }: any): DefineLexicalEntry {
 		return {
 			entries: entries.map((entry) => entry.senses.map((sense) => sense.definitions.join('\n'))),
 			lexicalCategory,
@@ -93,3 +97,17 @@ export default class extends Command {
 	}
 
 }
+
+interface DefinePronounciation {
+	spelling: string;
+	notation: string;
+}
+
+interface DefineLexicalEntry {
+	entries: string[];
+	lexicalCategory: string;
+	pronounciations: DefinePronounciation[];
+	text: string;
+}
+
+interface DefineLexicalEntries extends Array<DefineLexicalEntry> { }

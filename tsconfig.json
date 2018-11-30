@@ -1,16 +1,17 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-        "declaration": true,
+		"alwaysStrict": true,
+		"experimentalDecorators": true,
 		"lib": ["esnext"],
 		"module": "commonjs",
+		"noUnusedParameters": true,
 		"outDir": "./dist",
-		"types": ["node", "node-fetch"],
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "removeComments": true,
 		"sourceMap": true,
-		"experimentalDecorators": true,
+		"types": ["node", "node-fetch"],
+        "declaration": true,
+        "noUnusedLocals": true,
+        "removeComments": true,
         "target": "esnext"
 	},
 	"exclude": [

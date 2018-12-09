@@ -21,7 +21,7 @@ export class FuzzySearch<K extends string, V> {
 		const lowcquery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 
-		let lowerCaseName, current, distance;
+		let lowerCaseName: string, current: string, distance: number;
 		let almostExacts = 0;
 		for (const [id, entry] of this.collection.entries()) {
 			if (!this.filter(entry)) continue;
@@ -52,28 +52,23 @@ export class FuzzySearch<K extends string, V> {
 		const precision = sorted[0][2];
 		if (precision <= 2) {
 			let i = 0;
-			while (i < results.length && i === precision) i++;
-			return this.select(message, i === results.length ? results : results.slice(0, i));
+			while (i < sorted.length && sorted[i][2] === precision) i++;
+			return this.select(message, i === sorted.length ? sorted : sorted.slice(0, i));
 		}
 
-		return this.select(message, results);
+		return this.select(message, sorted);
 	}
 
 	public async select(message: Message, results: [K, V, number][]): Promise<[K, V, number]> {
-		switch (results.length) {
-			case 0: return null;
-			case 1: return results[0];
-			// Two or more
-			default: {
-				const { content: n } = await message.prompt(message.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
-					util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
-				if (n.toLowerCase() === 'abort') return null;
-				const parsed = Number(n);
-				if (!Number.isSafeInteger(parsed)) throw message.language.get('FUZZYSEARCH_INVALID_NUMBER');
-				if (parsed < 0 || parsed >= results.length) throw message.language.get('FUZZYSEARCH_INVALID_INDEX');
-				return results[parsed];
-			}
-		}
+		if (results.length === 1) return results[0];
+
+			const { content: n } = await message.prompt(message.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
+				util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
+			if (n.toLowerCase() === 'abort') return null;
+			const parsed = Number(n);
+			if (!Number.isSafeInteger(parsed)) throw message.language.get('FUZZYSEARCH_INVALID_NUMBER');
+			if (parsed < 0 || parsed >= results.length) throw message.language.get('FUZZYSEARCH_INVALID_INDEX');
+			return results[parsed];
 	}
 
 }

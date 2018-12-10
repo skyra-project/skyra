@@ -1231,30 +1231,6 @@ export default class extends Language {
 		COMMAND_BACKUP_EXTENDED: builder.display('backup', {
 			extendedHelp: `The backup command force-starts the backup task which runs twice a week.`
 		}),
-		COMMAND_CPPEVAL_DESCRIPTION: 'Evaluates arbitrary C++. Reserved for bot owner.',
-		COMMAND_CPPEVAL_EXTENDED: builder.display('c++eval', {
-			extendedHelp: `The C++eval command evaluates command as-in, and wraps it into a main method. No namespaces are exported.
-				The --raw flag disables the code wrap, making it accept raw input.`,
-			examples: [
-				'std::cout << 2 + 2 - 1;'
-			]
-		}),
-		COMMAND_CSEVAL_DESCRIPTION: 'Evaluates arbitrary C#. Reserved for bot owner.',
-		COMMAND_CSEVAL_EXTENDED: builder.display('c#eval', {
-			extendedHelp: `The C#eval command evaluates command as-in, and wraps it into a main method.
-				The --raw flag disables the code wrap, making it accept raw input.
-					Exported namespaces are:
-					- System
-					- System.Collections
-					- System.Collections.Generic
-					- System.Linq
-					- System.Reflection`,
-			// Please do not translate the namespaces
-			examples: [
-				'return new[] { 2, 2 }.Sum() - 1;',
-				'return 2 + 2 - 1;'
-			]
-		}),
 		COMMAND_DM_DESCRIPTION: 'Sends a Direct Message. Reserved for bot owner for replying purposes.',
 		COMMAND_DM_EXTENDED: builder.display('dm', {
 			extendedHelp: `The DM command is reserved for bot owner, and it's only used for very certain purposes, such as replying feedback
@@ -1283,14 +1259,6 @@ export default class extends Language {
 		COMMAND_EXEC_DESCRIPTION: 'Execute Order 66.',
 		COMMAND_EXEC_EXTENDED: builder.display('exec', {
 			extendedHelp: `You better not know about this.`
-		}),
-		COMMAND_PYEVAL_DESCRIPTION: 'Evaluates arbitrary Python code. Reserved for bot owner.',
-		COMMAND_PYEVAL_EXTENDED: builder.display('pyeval', {
-			extendedHelp: `The pyeval command evaluates command as-in. No namespaces are exported.
-				The --py3 flag changes the eval mode from python 2.7 to python 3.6.`,
-			examples: [
-				'print(2 + 2 - 1)'
-			]
 		}),
 		COMMAND_SETAVATAR_DESCRIPTION: `Set Skyra's avatar.`,
 		COMMAND_SETAVATAR_EXTENDED: builder.display('setAvatar', {

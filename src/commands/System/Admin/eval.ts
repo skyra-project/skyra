@@ -216,7 +216,7 @@ const FOREIGN_CONTROLLERS: Record<EvalLanguage, ForeignController> = {
 		async before(code: string) {
 			const output = templates.get(EvalLanguage.CPlusPlus)(code.replace(/return (.+)/, 'auto __v = $1;'));
 			await outputFileAtomic(CPP_FILE, code);
-			await exec(`g++ ${CPP_FILE} -o ${CPP_EXEC}`);
+			await exec(`g++ ${CPP_FILE} -o ${CPP_EXEC} -Wall -Wextra`);
 			return output;
 		},
 		async evaluate(_: KlasaMessage, code: string) {

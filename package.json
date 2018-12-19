@@ -34,7 +34,7 @@
     "diff": "^3.5.0",
     "discord.js": "github:discordjs/discord.js#18d7892fe967c5a6a49b75d7c7942b1f7d838fd4",
     "fs-nextra": "^0.3.7",
-    "gifencoder": "^1.1.0",
+    "gifencoder": "^2.0.1",
     "heapdump": "^0.3.12",
     "klasa": "github:dirigeants/klasa",
     "node-fetch": "^2.3.0",

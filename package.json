@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@types/node": "^10.12.10",
-    "eslint": "^5.9.0",
+    "eslint": "^5.11.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
     "tslint": "^5.11.0",
     "typescript": "^3.1.6"

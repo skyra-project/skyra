@@ -13,12 +13,12 @@ export default class extends Command {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('message', async(arg, possible, msg, [channel = msg.channel]) => {
-			if (channel.type !== 'text') throw msg.language.get('RESOLVER_INVALID_CHANNEL', 'Channel');
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
-			const message = await channel.messages.fetch(arg).catch(() => null);
-			if (message) return message;
-			throw msg.language.get('SYSTEM_MESSAGE_NOT_FOUND');
+		this.createCustomResolver('message', async(arg, _, message, [channel = message.channel]) => {
+			if (channel.type !== 'text') throw message.language.get('RESOLVER_INVALID_CHANNEL', 'Channel');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('RESOLVER_INVALID_MSG', 'Message');
+			const m = await channel.messages.fetch(arg).catch(() => null);
+			if (m) return m;
+			throw message.language.get('SYSTEM_MESSAGE_NOT_FOUND');
 		});
 	}
 

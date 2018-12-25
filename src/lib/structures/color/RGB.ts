@@ -1,9 +1,9 @@
 /* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 export class RGB {
 
-	private r: number;
-	private g: number;
-	private b: number;
+	public r: number;
+	public g: number;
+	public b: number;
 
 	/**
 	 * RGB Parser.

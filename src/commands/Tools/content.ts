@@ -1,7 +1,10 @@
-import { Command, Serializer, util : { getContent }; } from; '../../index';
+import { Client, TextChannel } from 'discord.js';
+import { CommandStore, KlasaMessage, Serializer } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { getContent } from '../../lib/util/util';
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
@@ -14,20 +17,20 @@ export default class extends Command {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('message', async(arg, possible, msg, [channel = msg.channel]) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
-			const message = await channel.messages.fetch(arg).catch(() => null);
-			if (message) return message;
-			throw msg.language.get('SYSTEM_MESSAGE_NOT_FOUND');
+		this.createCustomResolver('message', async(arg, _, message, [channel = message.channel as TextChannel]: [TextChannel]) => {
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('RESOLVER_INVALID_MSG', 'Message');
+			const target = await channel.messages.fetch(arg).catch(() => null);
+			if (target) return target;
+			throw message.language.get('SYSTEM_MESSAGE_NOT_FOUND');
 		});
 	}
 
-	public async run(msg, [, message]) {
-		const attachments = message.attachments.size
-			? message.attachments.map((att) => `📁 <${att.url}>`).join('\n')
+	public async run(message: KlasaMessage, [, target]: [TextChannel, KlasaMessage]) {
+		const attachments = target.attachments.size
+			? target.attachments.map((att) => `📁 <${att.url}>`).join('\n')
 			: '';
-		const content = getContent(message);
-		return msg.sendMessage(`${content || ''}${content && attachments ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
+		const content = getContent(target);
+		return message.sendMessage(`${content || ''}${content && attachments ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
 	}
 
 }

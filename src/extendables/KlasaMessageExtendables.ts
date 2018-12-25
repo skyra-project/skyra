@@ -52,7 +52,7 @@ export default class extends Extendable {
 declare module 'discord.js' {
 	interface Message {
 		prompt(content: string, time?: number): Promise<Message>;
-		ask(content: string, options: MessageOptions, promptOptions: MessageExtendablesAskOptions): Promise<boolean>;
+		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		alert(content: string, timer?: number): Promise<Message>;
 		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
 		nuke(time?: number): Promise <Message>;

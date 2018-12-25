@@ -1,48 +1,57 @@
-import { ModerationCommand, util : { removeMute }; } from; '../../index';
+import { Client, Role, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
+import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { ModerationTypeKeys } from '../../lib/util/constants';
+import { removeMute } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['MANAGE_ROLES'],
 			description: (language) => language.get('COMMAND_UNMUTE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_UNMUTE_EXTENDED'),
-			modType: ModerationCommand.types.UN_MUTE,
+			modType: ModerationTypeKeys.UnMute,
 			permissionLevel: 5,
-			requiredMember: true
+			requiredMember: true,
+			requiredPermissions: ['MANAGE_ROLES']
 		});
 	}
 
-	public async inhibit(msg) {
-		const id = msg.guild.settings.roles.muted;
-		if (id && msg.guild.roles.has(id)) return false;
-		throw msg.language.get('GUILD_SETTINGS_ROLES_MUTED');
+	public async inhibit(message: KlasaMessage) {
+		const id = message.guild.settings.get('roles.muted') as string;
+		if (id && message.guild.roles.has(id)) return false;
+		throw message.language.get('GUILD_SETTINGS_ROLES_MUTED');
 	}
 
-	public async handle(msg, user, member, reason) {
-		const modlog = (await msg.guild.moderation.fetch(user.id)).filter((log) => log.type === ModerationCommand.types.MUTE).last();
-		if (!modlog) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
+	public async prehandle() { /* Do nothing */ }
+
+	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
+		const modlog = (await message.guild.moderation.fetch(user.id)).filter((log) => log.type === ModerationTypeKeys.Mute).pop();
+		if (!modlog) throw message.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 
 		// Cache and concatenate with the current roles
-		const { position } = msg.guild.me.roles.highest;
+		const { position } = message.guild.me.roles.highest;
 		const roles = [...new Set((modlog.extraData || [])
 			// Map by Role instances
-			.map((id) => msg.guild.roles.get(id))
+			.map((id) => message.guild.roles.get(id))
 			// Concatenate with the member's roles
 			.concat(...member.roles.values()))]
 			// Filter removed and unmanageable roles
-			.filter((role) => role && role.position < position && !role.managed)
+			.filter((role: Role) => role && role.position < position && !role.managed)
 			// Map by id
-			.map((role) => role.id);
+			.map((role: Role) => role.id);
 
 		// Remove the muted role
-		const muteIndex = roles.indexOf(msg.guild.settings.roles.muted);
+		const muteIndex = roles.indexOf(message.guild.settings.get('roles.muted') as string);
 		if (muteIndex !== -1) roles.splice(muteIndex, 1);
 
 		// Edit roles
 		await member.edit({ roles });
-		return this.sendModlog(msg, user, reason);
+		return this.sendModlog(message, user, reason);
 	}
+
+	public async posthandle() { /* Do nothing */ }
 
 }

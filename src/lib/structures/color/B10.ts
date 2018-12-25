@@ -1,6 +1,6 @@
 export class B10 {
 
-	private value: number;
+	public value: number;
 
 	/**
 	 * B10 Parser.

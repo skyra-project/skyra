@@ -1,22 +1,30 @@
-import { ModerationCommand } from '../../index';
+import { Client, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
+import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['KICK_MEMBERS'],
 			description: (language) => language.get('COMMAND_KICK_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_KICK_EXTENDED'),
-			modType: ModerationCommand.types.KICK,
+			modType: ModerationTypeKeys.Kick,
 			permissionLevel: 5,
-			requiredMember: true
+			requiredMember: true,
+			requiredPermissions: ['KICK_MEMBERS']
 		});
 	}
 
-	public async handle(msg, user, member, reason) {
-		if (!member.kickable) throw msg.language.get('COMMAND_KICK_NOT_KICKABLE');
+	public async prehandle() { /* Do nothing */ }
+
+	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
+		if (!member.kickable) throw message.language.get('COMMAND_KICK_NOT_KICKABLE');
 		await member.kick(reason);
-		return this.sendModlog(msg, user, reason);
+		return this.sendModlog(message, user, reason);
 	}
+
+	public async posthandle() { /* Do nothing */ }
 
 }

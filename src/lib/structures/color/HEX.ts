@@ -1,8 +1,8 @@
 export class HEX {
 
-	private r: string;
-	private g: string;
-	private b: string;
+	public r: string;
+	public g: string;
+	public b: string;
 
 	/**
 	 * HEX Parser.

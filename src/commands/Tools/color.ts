@@ -1,33 +1,37 @@
-import { Command, Color : { parse, luminance, hexConcat }; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
+import { Client } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { RGB } from '../../lib/structures/color';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Color } from '../../lib/util/Color';
 
 /* Color limiter */
-const cL = (colour) => Math.max(Math.min(colour, 255), 0);
-const sCL = (colour) => colour >= 128 ? 0 : 255;
+const cL = (color: number) => Math.max(Math.min(color, 255), 0);
+const sCL = (color: number) => color >= 128 ? 0 : 255;
 
 /* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B", "x", "y"] }] */
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['colour'],
-			requiredPermissions: ['ATTACH_FILES'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_COLOR_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_COLOR_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<color:string> [separator:integer{0,255}]',
 			usageDelim: ' >'
 		});
 	}
 
-	public async run(msg, [input, diff = 10]) {
-		const { hex, hsl, rgb } = parse(input);
+	public async run(message: KlasaMessage, [input, diff = 10]: [string, number]) {
+		const { hex, hsl, rgb } = Color.parse(input);
 
 		const attachment = await this.showColor(rgb, diff);
-		return msg.channel.send(msg.language.get('COMMAND_COLOR', hex, rgb, hsl), { files: [{ attachment, name: 'color.png' }] });
+		return message.channel.send(message.language.get('COMMAND_COLOR', hex, rgb, hsl), { files: [{ attachment, name: 'color.png' }] });
 	}
 
-	public async showColor(color, diff) {
+	public async showColor(color: RGB, diff: number) {
 		const red = color.r;
 		const green = color.g;
 		const blue = color.b;
@@ -48,23 +52,23 @@ export default class extends Command {
 		]);
 
 		/* Complementary */
-		const thisLum = sCL(luminance(255 - red, 255 - green, 255 - blue));
+		const thisLum = sCL(Color.luminance(255 - red, 255 - green, 255 - blue));
 		return canvas
 			.setColor(`rgb(${255 - red}, ${255 - green}, ${255 - blue})`)
 			.addRect(5, 365, 360, 20)
 			.setTextFont('16px FiraSans')
 			.setColor(`rgb(${thisLum}, ${thisLum}, ${thisLum})`)
-			.addText(hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
+			.addText(Color.hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
 			.toBufferAsync();
 	}
 
-	public processFrame(ctx, x, y, red, green, blue) {
+	public processFrame(ctx: any, x: number, y: number, red: number, green: number, blue: number) {
 		ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
 		ctx.fillRect(x, y, 120, 120);
-		const thisLum = sCL(luminance(red, green, blue));
+		const thisLum = sCL(Color.luminance(red, green, blue));
 		ctx.fillStyle = `rgb(${thisLum}, ${thisLum}, ${thisLum})`;
 		ctx.fillText(
-			hexConcat(red, green, blue),
+			Color.hexConcat(red, green, blue),
 			10 + x,
 			20 + y,
 		);

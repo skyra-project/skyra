@@ -1,9 +1,9 @@
 /* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 export class HSL {
 
-	private h: number;
-	private s: number;
-	private l: number;
+	public h: number;
+	public s: number;
+	public l: number;
 
 	/**
 	 * HSL Parser.

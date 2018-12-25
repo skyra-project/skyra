@@ -46,10 +46,10 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return new ModerationManagerEntry(this, {} as ModerationManagerInsertData);
 	}
 
-	public async fetch(id: string[]): Promise<ModerationManagerEntry[]>;
+	public async fetch(id: string | number[]): Promise<ModerationManagerEntry[]>;
 	public async fetch(id?: []): Promise<this>;
-	public async fetch(id: string | number): Promise<ModerationManagerEntry>;
-	public async fetch(id?: string | number | string[]): Promise<ModerationManagerEntry | ModerationManagerEntry[] | Collection<number, ModerationManagerEntry> | this> {
+	public async fetch(id: number): Promise<ModerationManagerEntry>;
+	public async fetch(id?: string | number | number[]): Promise<ModerationManagerEntry | ModerationManagerEntry[] | Collection<number, ModerationManagerEntry> | this> {
 		// Case number
 		if (typeof id === 'number') {
 			return super.get(id) || this._cache(await this.table.getAll([this.guild.id, id], { index: 'guild_case' })

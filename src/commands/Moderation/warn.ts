@@ -1,4 +1,8 @@
-import { ModerationCommand } from '../../index';
+import { Client, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
+import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -7,15 +11,20 @@ export default class extends ModerationCommand {
 			aliases: ['warning'],
 			description: (language) => language.get('COMMAND_WARN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_WARN_EXTENDED'),
-			modType: ModerationCommand.types.WARN,
+			modType: ModerationTypeKeys.Warn,
 			permissionLevel: 5,
 			requiredMember: true
 		});
 	}
 
-	public handle(msg, user, member, reason) {
-		if (reason && msg.guild.settings.messages.warnings) user.send(msg.language.get('COMMAND_WARN_DM', msg.author.tag, msg.guild, reason)).catch(() => null);
-		return this.sendModlog(msg, user, reason);
+	public async prehandle() { /* Do nothing */ }
+
+	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string) {
+		if (reason && message.guild.settings.get('messages.warnings'))
+			user.send(message.language.get('COMMAND_WARN_DM', message.author.tag, message.guild, reason)).catch(() => null);
+		return this.sendModlog(message, user, reason);
 	}
+
+	public async posthandle() { /* Do nothing */ }
 
 }

@@ -1,4 +1,9 @@
-import { ModerationCommand, constants : { MODERATION: { TYPE_KEYS } }; } from; '../../index';
+import { Client, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
+import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEntry';
+import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -6,27 +11,32 @@ export default class extends ModerationCommand {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_UNWARN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_UNWARN_EXTENDED'),
-			modType: ModerationCommand.types.UN_WARN,
+			modType: ModerationTypeKeys.UnWarn,
 			permissionLevel: 5,
 			requiredMember: true,
 			usage: '<case:number> [reason:...string]'
 		});
 	}
 
-	public async run(msg, [caseID, reason]) {
-		const modlog = await msg.guild.moderation.fetch(caseID);
-		if (!modlog || modlog.type !== TYPE_KEYS.WARN) throw msg.language.get('GUILD_WARN_NOT_FOUND');
+	public async prehandle() { /* Do nothing */ }
 
-		const user = await this.client.users.fetch(modlog.user);
-		const unwarnLog = await this.handle(msg, user, null, reason, modlog);
+	// @ts-ignore
+	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
+		const modlog = await message.guild.moderation.fetch(caseID);
+		if (!modlog || modlog.type !== ModerationTypeKeys.Warn) throw message.language.get('GUILD_WARN_NOT_FOUND');
 
-		return msg.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
+		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user;
+		const unwarnLog = await this.handle(message, user, null, reason, modlog);
+
+		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
 	}
 
-	public async handle(msg, user, member, reason, modlog) {
+	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string, modlog: ModerationManagerEntry) {
 		// Appeal the modlog and send a log to the moderation log channel
 		await modlog.appeal();
-		return this.sendModlog(msg, user, reason);
+		return this.sendModlog(message, user, reason);
 	}
+
+	public async posthandle() { /* Do nothing */ }
 
 }

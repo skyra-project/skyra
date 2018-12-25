@@ -1,37 +1,42 @@
-import { Command, config : { tokens: { GOOGLE_API: KEY } }, MessageEmbed, util; : { fetch; } } from; '../../index';
+import { Client, MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage, Language } from 'klasa';
+import { URL } from 'url';
+import { TOKENS } from '../../../config';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
 
 const REG_GOOGL = /^https:\/\/goo\.gl\/.+/;
 const LONG_URL = new URL('https://www.googleapis.com/urlshortener/v1/url');
-LONG_URL.searchParams.set('key', KEY);
+LONG_URL.searchParams.set('key', TOKENS.GOOGLE_API);
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['shortenurl', 'googleshorturl', 'shorten'],
-			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_GOOGL_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_GOOGL_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<URL:url>'
 		});
 	}
 
-	public async run(msg, [url]) {
+	public async run(message: KlasaMessage, [url]: [string]) {
 		const embed = new MessageEmbed()
-			.setDescription(await (REG_GOOGL.test(url) ? this.short(url, msg.language) : this.long(url, msg.language)))
+			.setDescription(await (REG_GOOGL.test(url) ? this.short(url, message.language) : this.long(url, message.language)))
 			.setTimestamp();
-		return msg.sendMessage({ embed });
+		return message.sendMessage({ embed });
 	}
 
-	public async long(longUrl, i18n) {
-		const body = await fetch(LONG_URL, { method: 'POST', body: { longUrl } }, 'json');
+	public async long(longUrl: string, i18n: Language) {
+		const body = await fetch(LONG_URL, { method: 'POST', body: JSON.stringify({ longUrl }) }, 'json');
 		return i18n.get('COMMAND_GOOGL_LONG', body.id);
 	}
 
-	public async short(shortUrl, i18n) {
+	public async short(shortUrl: string, i18n: Language) {
 		const url = new URL('https://www.googleapis.com/urlshortener/v1/url');
-		url.searchParams.append('key', KEY);
+		url.searchParams.append('key', TOKENS.GOOGLE_API);
 		url.searchParams.append('shortURL', shortUrl);
 
 		const body = await fetch(url, 'json');

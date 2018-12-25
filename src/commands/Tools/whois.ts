@@ -15,8 +15,8 @@ export default class extends Command {
 			usage: '(user:username)'
 		});
 
-		this.createCustomResolver('username', (arg, possible, msg) =>
-			arg ? this.client.arguments.get('username').run(arg, possible, msg) : msg.author);
+		this.createCustomResolver('username', (arg, possible, message) =>
+			arg ? this.client.arguments.get('username').run(arg, possible, message) : message.author);
 	}
 
 	public async run(msg, [user = msg.author]) {

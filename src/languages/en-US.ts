@@ -1976,6 +1976,8 @@ export default class extends Language {
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
 		COMMAND_LOCKDOWN_LOCKING: (channel) => `Locking the channel ${channel}...`,
+		COMMAND_LOCKDOWN_LOCKED: (channel) => `The channel ${channel} was already locked.`,
+		COMMAND_LOCKDOWN_UNLOCKED: (channel) => `The channel ${channel} was not locked.`,
 		COMMAND_LOCKDOWN_OPEN: (channel) => `The lockdown for the channel ${channel} has been released.`,
 		COMMAND_MUTE_LOWLEVEL: 'I am sorry, there is no Mute role configured. Please ask an Administrator or the Guild Owner to set it up.',
 		COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',

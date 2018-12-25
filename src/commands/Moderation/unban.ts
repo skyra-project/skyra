@@ -1,32 +1,43 @@
-import { ModerationCommand } from '../../index';
+import { Client, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
+import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['BAN_MEMBERS'],
 			description: (language) => language.get('COMMAND_UNBAN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_UNBAN_EXTENDED'),
-			modType: ModerationCommand.types.UN_BAN,
+			modType: ModerationTypeKeys.UnBan,
 			permissionLevel: 5,
-			requiredMember: false
+			requiredMember: false,
+			requiredPermissions: ['BAN_MEMBERS']
 		});
 	}
 
-	public async prehandle(msg) {
-		const bans = await msg.guild.fetchBans().catch(() => { throw msg.language.get('SYSTEM_FETCHBANS_FAIL'); });
-		if (bans.size) return { bans, unlock: msg.guild.settings.events.banRemove ? msg.guild.moderation.createLock() : null };
-		throw msg.language.get('GUILD_BANS_EMPTY');
+	public async prehandle(message: KlasaMessage): Promise<Unlock> {
+		const bans = await message.guild.fetchBans()
+			.then((result) => result.map((ban) => ban.user.id))
+			.catch(() => { throw message.language.get('SYSTEM_FETCHBANS_FAIL'); });
+		if (bans.length) return { bans, unlock: message.guild.settings.get('events.banRemove') ? message.guild.moderation.createLock() : null };
+		throw message.language.get('GUILD_BANS_EMPTY');
 	}
 
-	public async handle(msg, user, member, reason, { bans }) {
-		if (!bans.has(user.id)) throw msg.language.get('GUILD_BANS_NOT_FOUND');
-		await msg.guild.members.unban(user.id, reason);
-		return this.sendModlog(msg, user, reason);
+	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string, { bans }: Unlock) {
+		if (!bans.includes(user.id)) throw message.language.get('GUILD_BANS_NOT_FOUND');
+		await message.guild.members.unban(user.id, reason);
+		return this.sendModlog(message, user, reason);
 	}
 
-	public async posthandle(msg, targets, reason, prehandled) {
+	public async posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
 		if (prehandled) prehandled.unlock();
 	}
 
+}
+
+interface Unlock {
+	bans: string[];
+	unlock(): void;
 }

@@ -1,31 +1,39 @@
-import { ModerationCommand } from '../../index';
+import { Client, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
+import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['BAN_MEMBERS'],
 			description: (language) => language.get('COMMAND_BAN_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_BAN_EXTENDED'),
-			modType: ModerationCommand.types.BAN,
+			modType: ModerationTypeKeys.Ban,
 			permissionLevel: 5,
-			requiredMember: false
+			requiredMember: false,
+			requiredPermissions: ['BAN_MEMBERS']
 		});
 	}
 
-	public async prehandle(msg) {
-		return msg.guild.settings.events.banAdd ? { unlock: msg.guild.moderation.createLock() } : null;
+	public async prehandle(message: KlasaMessage): Promise<Unlock> {
+		return message.guild.settings.get('events.banAdd') ? { unlock: message.guild.moderation.createLock() } : null;
 	}
 
-	public async handle(msg, user, member, reason) {
-		if (member && !member.bannable) throw msg.language.get('COMMAND_BAN_NOT_BANNABLE');
-		await msg.guild.members.ban(user.id, { days: (msg.flags.day && Number(msg.flags.day)) || 0, reason });
+	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
+		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
+		await message.guild.members.ban(user.id, { days: (message.flags.day && Number(message.flags.day)) || 0, reason });
 
-		return this.sendModlog(msg, user, reason);
+		return this.sendModlog(message, user, reason);
 	}
 
-	public async posthandle(msg, targets, reason, prehandled) {
+	public async posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
 		if (prehandled) prehandled.unlock();
 	}
 
+}
+
+interface Unlock {
+	unlock(): void;
 }

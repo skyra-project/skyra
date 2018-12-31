@@ -30,7 +30,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "canvas": "^2.1.0",
-    "canvas-constructor": "^2.0.1",
+    "canvas-constructor": "^2.1.1",
     "diff": "^3.5.0",
     "discord.js": "github:discordjs/discord.js#18d7892fe967c5a6a49b75d7c7942b1f7d838fd4",
     "fs-nextra": "^0.3.7",

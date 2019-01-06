@@ -64,7 +64,7 @@ export class SkyraClient extends KlasaClient {
 	public constructor(options?: KlasaClientOptions) {
 		super(options);
 
-		const { members } = this.options.gateways;
+		const { members = {} } = this.options.gateways;
 		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultClientSchema;
 		this.gateways.register(new MemberGateway(this, 'members', members));
 

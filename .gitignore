@@ -8,6 +8,7 @@ src/bwd/backups/
 
 # Ignore the config file (contains sensitive information such as tokens)
 config.js
+config.ts
 
 # Ignore heapsnapshot and log files
 *.heapsnapshot

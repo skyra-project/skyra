@@ -10,10 +10,8 @@ import {
 	Inhibitor,
 	KlasaClient,
 	KlasaClientOptions,
-	KlasaConsoleColorObjects,
 	KlasaGuild,
 	KlasaMessage,
-	KlasaTextChannel,
 	KlasaUser,
 	Language,
 	Monitor,
@@ -35,6 +33,7 @@ import {
 	Task,
 	Timestamp,
 	util as KlasaUtil,
+	ConsoleColorObjects,
 } from 'klasa';
 import {
 	BanOptions,
@@ -218,7 +217,7 @@ export class Skyra extends KlasaClient {
 	public updateStats(): void;
 	public dispose(): void;
 
-	public static defaultPermissionLevels: SkyraPermissionLevels;
+	public static defaultPermissionLevels: PermissionLevels;
 }
 
 export class MemberSettings {
@@ -249,13 +248,13 @@ export class StarboardManager extends Collection<Snowflake, StarboardMessage> {
 	public readonly minimum: number;
 	public readonly provider: RebirthDB;
 
-	public fetch(channel: KlasaTextChannel, messageID: Snowflake, userID: Snowflake): Promise<StarboardMessage | null>;
+	public fetch(channel: TextChannel, messageID: Snowflake, userID: Snowflake): Promise<StarboardMessage | null>;
 }
 
 export class StarboardMessage {
 	public constructor(manager: StarboardManager, message: SkyraMessage);
 	public manager: StarboardManager;
-	public channel: KlasaTextChannel;
+	public channel: TextChannel;
 	public message: SkyraMessage;
 	public disabled: boolean;
 	public users: Set<Snowflake>;
@@ -352,7 +351,7 @@ export class SettingsMenu {
 	public readonly changedCurrentPieceValue: boolean;
 	public readonly changedPieceValue: boolean;
 	private errorMessage: string | null;
-	private embed: SkyraMessageEmbed;
+	private embed: MessageEmbed;
 	private response: SkyraMessage | null;
 	public init(): Promise<void>;
 	public stop(): void;
@@ -711,7 +710,7 @@ export class ModerationManagerEntry {
 	public appeal(): Promise<this>;
 	public create(): Promise<this | null>;
 	public edit(options: ModerationManagerUpdateData): Promise<this>;
-	public prepareEmbed(): Promise<SkyraMessageEmbed>;
+	public prepareEmbed(): Promise<MessageEmbed>;
 	public setCase(value: number): this;
 	public setDuration(value: number | string): this;
 	public setExtraData(value: object | string): this;
@@ -1189,7 +1188,7 @@ type SkyraConfiguration = {
 	console: {
 		utc: boolean;
 		useColor: boolean;
-		colors: ObjectLiteral<KlasaConsoleColorObjects>;
+		colors: ObjectLiteral<ConsoleColorObjects>;
 	};
 	tokens: ObjectLiteral;
 	dash: {
@@ -1214,17 +1213,9 @@ type ObjectLiteral<T = any> = {
 //#endregion types
 //#region klasa
 
-declare class SkyraPermissionLevels extends PermissionLevels {
-	// @ts-ignore
-	public add(level: number, check: (client: Skyra, message: SkyraMessage) => boolean, options?: PermissionLevelOptions): this;
-}
-
-export { SkyraPermissionLevels as PermissionLevels };
-
 declare abstract class SkyraCommand extends Command {
 	// @ts-ignore
 	public client: Skyra;
-	public createCustomResolver(type: string, resolver: (arg: string, possible: Possible, message: SkyraMessage, params: string[]) => any): this;
 	public inhibit(msg: SkyraMessage): Promise<boolean>;
 }
 
@@ -1320,16 +1311,10 @@ declare class SkyraClientUser extends ClientUser {
 
 export { SkyraClientUser as ClientUser };
 
-export class SkyraTextChannel extends KlasaTextChannel {
+export class SkyraTextChannel extends TextChannel {
 	public client: Skyra;
 	public guild: SkyraGuild;
 }
-
-declare class SkyraMessageEmbed extends MessageEmbed {
-	public splitFields(input: string | string[]): this;
-}
-
-export { SkyraMessageEmbed as MessageEmbed };
 
 declare class SkyraUserStore extends DataStore<Snowflake, SkyraUser, typeof SkyraUser, UserResolvable> {
 	constructor(client: Skyra, iterable?: Iterable<any>);
@@ -1351,28 +1336,40 @@ declare class SkyraGuildMemberStore extends DataStore<Snowflake, SkyraGuildMembe
 	public unban(user: UserResolvable, reason?: string): Promise<SkyraUser>;
 }
 
+declare module 'discord.js' {
+	export interface Message {
+		alert(content: string | Array<string>, timer?: number): SkyraMessage;
+		alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
+		ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;
+		nuke(time?: number): this;
+	}
+
+	export interface Guild {
+		moderation: ModerationManager;
+		security: GuildSecurity;
+		starboard: StarboardManager;
+		readonly memberSnowflakes: Set<Snowflake>;
+		readonly memberTags: Map<Snowflake, string>;
+		readonly memberUsernames: Map<Snowflake, string>;
+	}
+
+	export interface MessageEmbed {
+		splitFields(input: string | string[]): this;
+	}
+}
+
 export class SkyraMessage extends KlasaMessage {
 	public client: Skyra;
 	public guildSettings: GuildSettings;
 	public guild: SkyraGuild;
 	public member: SkyraGuildMember;
-	public alert(content: string | Array<string>, timer?: number): SkyraMessage;
-	public alert(content: string | Array<string>, options?: MessageOptions, timer?: number): SkyraMessage;
-	public ask(content: string | Array<string>, options?: MessageOptions): Promise<boolean>;
-	public nuke(time?: number): this;
 }
 
 export class SkyraGuild extends KlasaGuild {
 	public client: Skyra;
 	public members: SkyraGuildMemberStore;
 	public settings: GuildSettings;
-	public moderation: ModerationManager;
-	public security: GuildSecurity;
-	public starboard: StarboardManager;
 	public me: SkyraGuildMember;
-	public readonly memberSnowflakes: Set<Snowflake>;
-	public readonly memberTags: Map<Snowflake, string>;
-	public readonly memberUsernames: Map<Snowflake, string>;
 }
 
 export class SkyraUser extends KlasaUser {

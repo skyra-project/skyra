@@ -25,7 +25,7 @@ Skyra.defaultUserSchema
 	.add('timeReputation', 'Integer', { default: 0, configurable: false });
 
 Skyra.defaultGuildSchema
-	.add('prefix', 'string', { filter: (value) => value.length >= 1 && value.length <= 10 })
+	.add('prefix', 'string', { filter: (_, value) => value.length >= 1 && value.length <= 10 })
 	.add('tags', 'any', { array: true, configurable: false })
 	.add('channels', folder => folder
 		.add('announcement', 'TextChannel')
@@ -101,15 +101,15 @@ const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in 
 
 // Skyra setup
 Skyra.defaultPermissionLevels
-	.add(4, (client, msg) => msg.member ? msg.guild.settings.roles.staff
-		? msg.member.roles.has(msg.guild.settings.roles.staff)
-		: msg.member.permissions.has(FLAGS.MANAGE_MESSAGES) : false, { fetch: true })
-	.add(5, (client, msg) => msg.member ? msg.guild.settings.roles.moderator
-		? msg.member.roles.has(msg.guild.settings.roles.moderator)
-		: msg.member.permissions.has(FLAGS.BAN_MEMBERS) : false, { fetch: true })
-	.add(6, (client, msg) => msg.member ? msg.guild.settings.roles.admin
-		? msg.member.roles.has(msg.guild.settings.roles.admin)
-		: msg.member.permissions.has(FLAGS.MANAGE_GUILD) : false, { fetch: true });
+	.add(4, ({ guild, member }) => member ? guild.settings.get('roles.staff')
+		? member.roles.has(guild.settings.get('roles.staff'))
+		: member.permissions.has(FLAGS.MANAGE_MESSAGES) : false, { fetch: true })
+	.add(5, ({ guild, member }) => member ? guild.settings.get('roles.moderator')
+		? member.roles.has(guild.settings.get('roles.moderator'))
+		: member.permissions.has(FLAGS.BAN_MEMBERS) : false, { fetch: true })
+	.add(6, ({ guild, member }) => member ? guild.settings.get('roles.admin')
+		? member.roles.has(guild.settings.get('roles.admin'))
+		: member.permissions.has(FLAGS.MANAGE_GUILD) : false, { fetch: true });
 
 const skyra = new Skyra({
 	commandEditing: true,
@@ -142,7 +142,7 @@ const skyra = new Skyra({
 	},
 	readyMessage: (client) =>
 		`Skyra ${config.version} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
-	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)(,|!)/i,
+	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)[,!]/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },
 	slowmode: 750,

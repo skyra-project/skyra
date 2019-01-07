@@ -1959,7 +1959,7 @@ module.exports = class extends Language {
 			 * MISC COMMANDS
 			 */
 
-			COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://discordbots.org/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
+			COMMAND_UPVOTE_MESSAGE: `Here is the link: **<https://botsfordiscord.com/bots/266624760782258186>**! You'll receive 500<:ShinyYellow:324157128270938113> every time you vote, or 2000${SHINY} every five! Remember, you can vote every 24 hours.`,
 			COMMAND_VAPORWAVE_OUTPUT: (string) => `Here is your converted message:\n${string}`,
 
 			/**

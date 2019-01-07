@@ -16,10 +16,3 @@ export default class extends Extendable {
 	}
 
 }
-
-declare module 'klasa' {
-	export interface SettingsFolder {
-		increase(key: string, value: number): Promise<SettingsFolderUpdateResult>;
-		decrease(key: string, value: number): Promise<SettingsFolderUpdateResult>;
-	}
-}

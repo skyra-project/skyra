@@ -1,8 +1,11 @@
-import { Command, util : { fetch, cutText }, MessageEmbed; } from; '../../index';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Client, MessageEmbed } from 'discord.js';
+import { CommandStore, Language } from 'klasa';
+import { fetch, cutText } from '../../lib/util/util';
 
 const API_URL = 'https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&indexpageids=1&redirects=1&explaintext=1&exsectionformat=plain&titles=';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
@@ -37,7 +40,7 @@ export default class extends Command {
 			.setFooter('© Wikipedia'));
 	}
 
-	public parseURL(url) {
+	public parseURL(url: string) {
 		return encodeURIComponent(
 			url
 				.toLowerCase()
@@ -47,7 +50,7 @@ export default class extends Command {
 		);
 	}
 
-	public content(definition, url, i18n) {
+	public content(definition: string, url: string, i18n: Language) {
 		if (definition.length < 750) return definition;
 		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
 	}

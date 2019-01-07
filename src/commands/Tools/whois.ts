@@ -1,8 +1,10 @@
-import { Command, MessageEmbed } from '../../index';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Client, MessageEmbed } from 'discord.js';
+import { CommandStore } from 'klasa';
 
 const sortRanks = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

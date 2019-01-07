@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Message, MessageOptions, TextChannel } from 'discord.js';
 import { Client, ExtendableStore } from 'klasa';
 
@@ -9,64 +8,53 @@ export default class extends Extendable {
 	}
 
 	public async prompt(content: string, time: number = 30000): Promise<Message> {
-		const message = await this.channel.send(content);
-		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
+		const self = this as Message;
+		const message = await self.channel.send(content);
+		const responses = await self.channel.awaitMessages((msg) => msg.author === self.author, { time, max: 1 });
 		message.nuke();
-		if (responses.size === 0) throw this.language.get('MESSAGE_PROMPT_TIMEOUT');
+		if (responses.size === 0) throw self.language.get('MESSAGE_PROMPT_TIMEOUT');
 		return responses.first();
 	}
 
 	public async ask(content: string, options: MessageOptions, promptOptions: MessageExtendablesAskOptions): Promise<boolean> {
-		const message = await this.send(content, options);
-		return !this.guild || this.channel.permissionsFor(this.guild.me).has(FLAGS.ADD_REACTIONS)
-			? awaitReaction(<unknown> this as Message, message, promptOptions)
-			: awaitMessage(<unknown> this as Message, promptOptions);
+		const self = this as Message;
+		const message = await self.send(content, options);
+		return !self.guild || self.channel.permissionsFor(self.guild.me).has(FLAGS.ADD_REACTIONS)
+			? awaitReaction(self, message, promptOptions)
+			: awaitMessage(self, promptOptions);
 	}
 
 	public alert(content: string, timer?: number): Promise<Message>;
 	public alert(content: string, options?: MessageOptions, timer?: number): Promise<Message>;
 	public alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message> {
-		if (!this.channel.postable) return Promise.resolve(null);
+		const self = this as Message;
+		if (!self.channel.postable) return Promise.resolve(null);
 		if (typeof options === 'number' && typeof timer === 'undefined') {
 			timer = options;
 			options = undefined;
 		}
 
-		return this.sendMessage(content, options).then((msg) => {
+		return self.sendMessage(content, options).then((msg) => {
 			msg.nuke(typeof timer === 'number' ? timer : 10000)
-				.catch((error) => this.client.emit('error', error));
+				.catch((error) => self.client.emit('error', error));
 			return msg;
 		});
 	}
 
 	public nuke(time: number = 0): Promise<Message> {
-		if (time === 0) return nuke(<unknown> this as Message);
+		const self = this as Message;
+		if (time === 0) return nuke(self);
 
-		const count = this.edits.length;
+		const count = self.edits.length;
 		return sleep(time)
-			.then(() => !this.deleted && this.edits.length === count ? nuke(<unknown> this as Message) : this);
+			.then(() => !self.deleted && self.edits.length === count ? nuke(self) : self);
 	}
 
-}
-
-declare module 'discord.js' {
-	interface Message {
-		prompt(content: string, time?: number): Promise<Message>;
-		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
-		alert(content: string, timer?: number): Promise<Message>;
-		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
-		nuke(time?: number): Promise <Message>;
-	}
 }
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
-
-export interface MessageExtendablesAskOptions {
-	time?: number;
-	max?: number;
-}
 
 async function awaitReaction(message: Message, messageSent: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS): Promise<boolean> {
 	await messageSent.react(REACTIONS.YES);

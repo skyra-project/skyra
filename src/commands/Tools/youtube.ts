@@ -1,6 +1,10 @@
-import { Command, config : { tokens: { GOOGLE_API: KEY } }, util; : { fetch; } } from; '../../index';
+import { Client } from 'discord.js';
+import { CommandStore } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
+import { TOKENS } from '../../../config';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
@@ -15,7 +19,7 @@ export default class extends Command {
 
 	public async run(msg, [input, ind = 1]) {
 		const index = --ind;
-		const data = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${KEY}&safeSearch=strict`, 'json');
+		const data = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${TOKENS.GOOGLE_API}&safeSearch=strict`, 'json');
 		const result = data.items[index];
 
 		if (!result) {

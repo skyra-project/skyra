@@ -34,9 +34,3 @@ export default class extends Extendable {
 	}
 
 }
-
-declare module 'discord.js' {
-	export interface MessageEmbed {
-		splitFields(content: string | string[]): this;
-	}
-}

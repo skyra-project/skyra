@@ -1,6 +1,5 @@
-// @ts-nocheck
 import { Client } from 'discord.js';
-import { ExtendableStore, Language } from 'klasa';
+import { ExtendableStore, Language, LanguageStore } from 'klasa';
 
 export default class extends Extendable {
 
@@ -9,13 +8,12 @@ export default class extends Extendable {
 	}
 
 	public retrieve(key: string): any {
-		return this.language[key] || this.store.default.language[key] || null;
+		const self = this as Language;
+		const value = self.language[key];
+		if (value) return value;
+
+		const deft = (self.store as LanguageStore).default;
+		return (self !== deft && deft.language[key]) || null;
 	}
 
-}
-
-declare module 'klasa' {
-	export interface Language {
-		retrieve(key: string): any;
-	}
 }

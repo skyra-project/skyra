@@ -18,9 +18,3 @@ export default class extends Extendable {
 	}
 
 }
-
-declare module 'discord.js' {
-	export interface User {
-		fetchRank(): Promise<number>;
-	}
-}

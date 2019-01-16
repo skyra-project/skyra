@@ -1,4 +1,5 @@
 const { ModerationCommand, util: { removeMute } } = require('../../index');
+const MUTE_TYPES = [ModerationCommand.types.MUTE, ModerationCommand.types.TEMPORARY_MUTE];
 
 module.exports = class extends ModerationCommand {
 
@@ -20,7 +21,7 @@ module.exports = class extends ModerationCommand {
 	}
 
 	async handle(msg, user, member, reason) {
-		const modlog = (await msg.guild.moderation.fetch(user.id)).filter(log => log.type === ModerationCommand.types.MUTE).last();
+		const modlog = (await msg.guild.moderation.fetch(user.id)).filter(log => MUTE_TYPES.includes(log.type)).last();
 		if (!modlog) throw msg.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 

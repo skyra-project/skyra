@@ -25,7 +25,7 @@ Skyra.defaultUserSchema
 	.add('timeReputation', 'Integer', { default: 0, configurable: false });
 
 Skyra.defaultGuildSchema
-	.add('prefix', 'string', { filter: (_, value) => value.length >= 1 && value.length <= 10 })
+	.add('prefix', 'string', { filter: (_, value) => value.length <= 10 })
 	.add('tags', 'any', { array: true, configurable: false })
 	.add('channels', folder => folder
 		.add('announcement', 'TextChannel')

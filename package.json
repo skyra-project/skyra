@@ -45,7 +45,7 @@
     "@types/node": "^10.12.19",
     "eslint": "^5.12.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
-    "tslint": "^5.12.0",
+    "tslint": "^5.12.1",
     "typescript": "^3.2.2"
   },
   "repository": {

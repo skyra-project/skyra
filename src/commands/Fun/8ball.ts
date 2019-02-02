@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 			{ disableEveryone: true });
 	}
 
-	public generator(input: string, i18n: Language) {
+	private generator(input: string, i18n: Language) {
 		const prefixes = <unknown> (i18n.language.COMMAND_8BALL_QUESTIONS
 			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as EightBallLanguage;
 
@@ -32,11 +32,11 @@ export default class extends SkyraCommand {
 		return i18n.get('COMMAND_8BALL_ELSE');
 	}
 
-	public checkQuestion(question: string | RegExp, input: string) {
+	private checkQuestion(question: string | RegExp, input: string) {
 		return question instanceof RegExp ? question.test(input) : input.endsWith(question);
 	}
 
-	public check(prefix: string | RegExp, input: string) {
+	private check(prefix: string | RegExp, input: string) {
 		return prefix instanceof RegExp ? prefix.test(input) : input.startsWith(prefix);
 	}
 

@@ -1,74 +1,75 @@
-import { Command, Permissions : { FLAGS }; } from; '../../index';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
 const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private channels: Set<string> = new Set();
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['ttt'],
-			requiredPermissions: [FLAGS.ADD_REACTIONS],
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_TICTACTOE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_TICTACTOE_EXTENDED'),
+			requiredPermissions: ['ADD_REACTIONS'],
 			runIn: ['text'],
 			usage: '<user:username>'
 		});
-
-		this.channels = new Set();
 	}
 
-	public async run(msg, [user]) {
-		if (user.id === this.client.user.id) throw msg.language.get('COMMAND_GAMES_SKYRA');
-		if (user.bot) throw msg.language.get('COMMAND_GAMES_BOT');
-		if (user.id === msg.author.id) throw msg.language.get('COMMAND_GAMES_SELF');
-		if (this.channels.has(msg.channel.id)) throw msg.language.get('COMMAND_GAMES_PROGRESS');
-		this.channels.add(msg.channel.id);
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		if (user.id === this.client.user.id) throw message.language.get('COMMAND_GAMES_SKYRA');
+		if (user.bot) throw message.language.get('COMMAND_GAMES_BOT');
+		if (user.id === message.author.id) throw message.language.get('COMMAND_GAMES_SELF');
+		if (this.channels.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
+		this.channels.add(message.channel.id);
 
-		const prompt = await msg.sendLocale('COMMAND_TICTACTOE_PROMPT', [msg.author, user]);
-		const response = await msg.channel.awaitMessages((message) => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
+		const prompt = await message.sendLocale('COMMAND_TICTACTOE_PROMPT', [message.author, user]) as KlasaMessage;
+		const response = await message.channel.awaitMessages((msg) => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(msg.content), RESPONSE_OPTIONS)
 			.then((messages) => messages.first())
-			.catch(() => false);
+			.catch(() => null);
 
 		if (!response || !/ye(s|ah?)?/i.test(response.content)) {
-			await prompt.edit(msg.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
-			this.channels.delete(msg.channel.id);
+			await prompt.edit(message.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
+			this.channels.delete(message.channel.id);
 			return prompt.nuke(10000);
 		}
 
 		try {
-			await this.game(prompt, [msg.author, user].sort(() => Math.random() - 0.5));
+			await this.game(prompt, [message.author, user].sort(() => Math.random() - 0.5));
 		} catch (_) {
-			await prompt.edit(msg.language.get('UNEXPECTED_ISSUE')).catch((error) => this.client.emit('apiError', error));
+			await prompt.edit(message.language.get('UNEXPECTED_ISSUE')).catch((error) => this.client.emit('apiError', error));
 		}
 
-		this.channels.delete(msg.channel.id);
+		this.channels.delete(message.channel.id);
 		return prompt;
 	}
 
-	public async game(msg, players) {
+	public async game(message: KlasaMessage, players: KlasaUser[]) {
 		// Add all reactions
-		for (const emoji of EMOJIS) await msg.react(emoji);
+		for (const emoji of EMOJIS) await message.react(emoji);
 		const board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 		try {
-			const winner = await this._game(msg, players, board);
-			return msg.edit(winner
-				? msg.language.get('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
-				: msg.language.get('COMMAND_TICTACTOE_DRAW', this.render(board)));
-		} catch (message) {
-			if (typeof message === 'string') return msg.edit(message);
-			throw message;
+			const winner = await this._game(message, players, board);
+			return message.edit(winner
+				? message.language.get('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
+				: message.language.get('COMMAND_TICTACTOE_DRAW', this.render(board)));
+		} catch (error) {
+			if (typeof error === 'string') return message.edit(error);
+			throw error;
 		}
 	}
 
-	public _game(msg, players, board) {
-		let timeout, turn = 0, chosen, winner, player, blocked = true;
-		return new Promise((resolve, reject) => {
+	private _game(message: KlasaMessage, players: KlasaUser[], board: number[]) {
+		let timeout: NodeJS.Timeout, turn = 0, chosen: number, winner: number, player: KlasaUser, blocked = true;
+		return new Promise<number>((resolve, reject) => {
 			// Make the collectors
-			const collector = msg.createReactionCollector((reaction, user) => !blocked
+			const collector = message.createReactionCollector((reaction, user) => !blocked
 				&& user.id === player.id
 				&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
 				&& board[chosen] === 0);
@@ -78,10 +79,10 @@ export default class extends Command {
 				player = players[turn % 2];
 
 				try {
-					await msg.edit(msg.language.get('COMMAND_TICTACTOE_TURN', PLAYER[turn % 2], player.username, this.render(board)));
+					await message.edit(message.language.get('COMMAND_TICTACTOE_TURN', PLAYER[turn % 2], player.username, this.render(board)));
 					timeout = setTimeout(() => {
 						collector.stop();
-						reject(msg.language.get('COMMAND_GAMES_TIMEOUT'));
+						reject(message.language.get('COMMAND_GAMES_TIMEOUT'));
 					}, 60000);
 					blocked = false;
 				} catch (error) {
@@ -109,13 +110,13 @@ export default class extends Command {
 					makeRound();
 				} else {
 					collector.stop();
-					resolve();
+					resolve(null);
 				}
 			});
 		});
 	}
 
-	public checkBoard(board) {
+	private checkBoard(board: number[]) {
 		for (let i = 0; i < 3; i++) {
 			const n = i * 3;
 			if (board[i] === 0) continue;
@@ -131,7 +132,7 @@ export default class extends Command {
 		return undefined;
 	}
 
-	public render(board) {
+	private render(board: number[]) {
 		let output = '', i = 0;
 		while (i < board.length) {
 			for (const value of board.slice(i, i + 3)) {

@@ -35,11 +35,11 @@ export default class extends SkyraCommand {
 			.setTimestamp());
 	}
 
-	public getTime(year: string, month: string, day: string) {
+	private getTime(year: string, month: string, day: string) {
 		return this.timestamp.display(new Date(Number(year), Number(month) - 1, Number(day)));
 	}
 
-	public async getNumber(query: string | number, i18n: Language) {
+	private async getNumber(query: string | number, i18n: Language) {
 		const xkcdInfo = await fetch('http://xkcd.com/info.0.json', 'json');
 
 		if (typeof query === 'number') {

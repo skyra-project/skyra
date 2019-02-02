@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_ANNOUNCEMENT_CANCELLED');
 	}
 
-	public ask(message: KlasaMessage, content: string) {
+	private ask(message: KlasaMessage, content: string) {
 		try {
 			return message.ask(message.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
 				embed: new MessageEmbed()
@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	public async send(channel: TextChannel, role: Role, content: string) {
+	private async send(channel: TextChannel, role: Role, content: string) {
 		await role.edit({ mentionable: true });
 		await channel.send(content);
 		await role.edit({ mentionable: false });

@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 			[message.author, words[Math.floor(Math.random() * words.length)]]);
 	}
 
-	public filterWords(words: string[], i18n: Language) {
+	private filterWords(words: string[], i18n: Language) {
 		if (words.length < 2) throw i18n.get('COMMAND_CHOICE_MISSING');
 
 		const output = new Set();

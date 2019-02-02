@@ -50,16 +50,6 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_CONF_GET', [piece.path, message.guild.settings.display(message, piece)]);
 	}
 
-	public getPath(key: string) {
-		const { schema } = this.client.gateways.get('guilds');
-		if (!key) return schema;
-		try {
-			return schema.get(key);
-		} catch (__) {
-			return undefined;
-		}
-	}
-
 	public async set(message: KlasaMessage, [key, ...valueToSet]: string[]) {
 		const status = await message.guild.settings.update(key, valueToSet.join(' '), { onlyConfigurable: true, arrayAction: 'add' });
 		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_UPDATED', [key, message.guild.settings.display(message, status.updated[0].piece)]);
@@ -75,7 +65,17 @@ export default class extends SkyraCommand {
 		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_RESET', [key, message.guild.settings.display(message, status.updated[0].piece)]);
 	}
 
-	public check(message: KlasaMessage, key: string, { errors, updated }: SettingsFolderUpdateResult) {
+	private getPath(key: string) {
+		const { schema } = this.client.gateways.get('guilds');
+		if (!key) return schema;
+		try {
+			return schema.get(key);
+		} catch (__) {
+			return undefined;
+		}
+	}
+
+	private check(message: KlasaMessage, key: string, { errors, updated }: SettingsFolderUpdateResult) {
 		if (errors.length) return message.sendMessage(errors[0]);
 		if (!updated.length) return message.sendLocale('COMMAND_CONF_NOCHANGE', [key]);
 		return null;

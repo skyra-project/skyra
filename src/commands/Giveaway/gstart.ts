@@ -1,37 +1,39 @@
-import { Command, MessageEmbed } from '../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			runIn: ['text'],
 			aliases: ['giveaway'],
-			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
 			description: (language) => language.get('COMMAND_GIVEAWAY_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_GIVEAWAY_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
+			runIn: ['text'],
 			usage: '<time:time> <title:...string{,256}>',
 			usageDelim: ' '
 		});
 	}
 
-	public async run(msg, [time, title]) {
+	public async run(message: KlasaMessage, [time, title]: [Date, string]) {
 		const offset = time.getTime() - Date.now();
 
 		// A little margin of error
-		if (offset < 59900) throw msg.language.get('GIVEAWAY_TIME');
+		if (offset < 59900) throw message.language.get('GIVEAWAY_TIME');
 		const date = new Date(offset + Date.now() - 20000);
 
-		let message;
+		let remoteMessage;
 		try {
-			message = await msg.channel.send(msg.language.get('GIVEAWAY_TITLE'), {
+			remoteMessage = await message.channel.send(message.language.get('GIVEAWAY_TITLE'), {
 				embed: new MessageEmbed()
 					.setColor(0x49C6F7)
 					.setTitle(title)
-					.setDescription(msg.language.get('GIVEAWAY_DURATION', offset))
-					.setFooter(msg.language.get('GIVEAWAY_ENDS_AT'))
+					.setDescription(message.language.get('GIVEAWAY_DURATION', offset))
+					.setFooter(message.language.get('GIVEAWAY_ENDS_AT'))
 					.setTimestamp(date)
 			});
-			await message.react('🎉');
+			await remoteMessage.react('🎉');
 		} catch (_) {
 			return null;
 		}
@@ -39,17 +41,17 @@ export default class extends Command {
 		const { id } = await this.client.schedule.create('giveaway', date, {
 			catchUp: true,
 			data: {
+				channelID: message.channel.id,
+				guildID: message.guild.id,
+				messageID: remoteMessage.id,
 				timestamp: date.getTime() + 20000,
-				guildID: msg.guild.id,
-				channelID: msg.channel.id,
-				messageID: message.id,
-				userID: msg.author.id,
-				title
+				title,
+				userID: message.author.id
 			}
 		});
 
-		await msg.author.send(msg.language.get('GIVEAWAY_START_DIRECT_MESSAGE', title, id)).catch(() => null);
-		return message;
+		await message.author.send(message.language.get('GIVEAWAY_START_DIRECT_MESSAGE', title, id)).catch(() => null);
+		return remoteMessage;
 	}
 
 }

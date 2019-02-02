@@ -27,7 +27,11 @@ export default class extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'Shindeiru.png' }] });
 	}
 
-	public async generate(target: KlasaUser, author: KlasaUser) {
+	public async init() {
+		this.template = await readFile(join(assetsFolder, '/images/memes/Shindeiru.png'));
+	}
+
+	private async generate(target: KlasaUser, author: KlasaUser) {
 		if (target === author) author = this.client.user;
 
 		/* Get the buffers from both profile avatars */
@@ -42,10 +46,6 @@ export default class extends SkyraCommand {
 			.addImage(theAliveOne, 310, 135, 128, 128, { type: 'round', radius: 64, restore: true })
 			.addImage(theDeadOne, 109, 364, 256, 256, { type: 'round', radius: 128, restore: true })
 			.toBufferAsync();
-	}
-
-	public async init() {
-		this.template = await readFile(join(assetsFolder, '/images/memes/Shindeiru.png'));
 	}
 
 }

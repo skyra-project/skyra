@@ -29,7 +29,11 @@ export default class extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
 	}
 
-	public async generate(message: KlasaMessage, user: KlasaUser) {
+	public async init() {
+		this.template = await readFile(join(assetsFolder, '/images/memes/howtoflirt.png'));
+	}
+
+	private async generate(message: KlasaMessage, user: KlasaUser) {
 		if (user.id === message.author.id) ({ user } = this.client);
 
 		/* Get the buffers from both profile avatars */
@@ -58,10 +62,6 @@ export default class extends SkyraCommand {
 		}
 
 		return canvas.toBuffer();
-	}
-
-	public async init() {
-		this.template = await readFile(join(assetsFolder, '/images/memes/howtoflirt.png'));
 	}
 
 }

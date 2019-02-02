@@ -1,14 +1,17 @@
-import { Command, UserRichDisplay, klasaUtil : { isFunction }, MessageEmbed, Permissions; } from; '../../../index';
+import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['commands', 'cmd', 'cmds'],
-			guarded: true,
 			description: (language) => language.get('COMMAND_HELP_DESCRIPTION'),
+			guarded: true,
 			usage: '(Command:command)'
 		});
 
@@ -18,26 +21,26 @@ export default class extends Command {
 		});
 	}
 
-	public async run(message, [command]) {
+	public async run(message: KlasaMessage, [command]: [SkyraCommand?]) {
 		if (command) {
 			return message.sendMessage([
-				message.language.get('COMMAND_HELP_TITLE', command.name, isFunction(command.description) ? command.description(message.language) : command.description),
+				message.language.get('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
 				message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
-				message.language.get('COMMAND_HELP_EXTENDED', isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
+				message.language.get('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
 			].join('\n'));
 		}
 
-		if (!message.flags.all && message.guild && message.channel.permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY))
-			return (await this.buildDisplay(message)).run(await message.send('Loading Commands...'), message.author.id);
+		if (!message.flags.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY))
+			return (await this.buildDisplay(message)).run(await message.send('Loading Commands...') as KlasaMessage, message.author.id);
 
 		return message.author.send(await this.buildHelp(message), { split: { char: '\n' } })
 			.then(() => { if (message.channel.type !== 'dm') message.sendLocale('COMMAND_HELP_DM'); })
 			.catch(() => { if (message.channel.type !== 'dm') message.sendLocale('COMMAND_HELP_NODM'); });
 	}
 
-	public async buildHelp(message) {
+	private async buildHelp(message: KlasaMessage) {
 		const commands = await this._fetchCommands(message);
-		const { prefix } = message.guildSettings;
+		const prefix = message.guildSettings.get('prefix');
 
 		const helpMessage = [];
 		for (const [category, list] of commands)
@@ -46,9 +49,9 @@ export default class extends Command {
 		return helpMessage.join('\n');
 	}
 
-	public async buildDisplay(message) {
+	private async buildDisplay(message: KlasaMessage) {
 		const commands = await this._fetchCommands(message);
-		const { prefix } = message.guildSettings;
+		const prefix = message.guildSettings.get('prefix');
 		const display = new UserRichDisplay();
 		const color = message.member.displayColor;
 		for (const [category, list] of commands) {
@@ -62,12 +65,12 @@ export default class extends Command {
 		return display;
 	}
 
-	public formatCommand(message, prefix, richDisplay, command) {
+	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: SkyraCommand) {
 		const description = typeof command.description === 'function' ? command.description(message.language) : command.description;
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 
-	public async _fetchCommands(message) {
+	private async _fetchCommands(message: KlasaMessage) {
 		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
 		const commands = new Map();
 		await Promise.all(this.client.commands.map((command) => run(command, true)

@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_DICE_OUTPUT', [sd, rl, this.roll(rl, sd)]);
 	}
 
-	public roll(rolls: number, sides: number) {
+	private roll(rolls: number, sides: number) {
 		return Math.floor(Math.random() * (sides + 1) * rolls);
 	}
 

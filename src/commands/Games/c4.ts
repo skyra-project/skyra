@@ -1,44 +1,45 @@
-import { Command } from '../../index';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['connect-four'],
-			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS'],
 			cooldown: 0,
 			description: (language) => language.get('COMMAND_C4_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_C4_EXTENDED'),
+			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS'],
 			runIn: ['text'],
 			usage: '<user:username>'
 		});
 	}
 
-	public async run(msg, [user]) {
-		if (user.id === this.client.user.id) throw msg.language.get('COMMAND_GAMES_SKYRA');
-		if (user.bot) throw msg.language.get('COMMAND_GAMES_BOT');
-		if (user.id === msg.author.id) throw msg.language.get('COMMAND_GAMES_SELF');
-		if (this.client.connectFour.has(msg.channel.id)) throw msg.language.get('COMMAND_GAMES_PROGRESS');
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		if (user.id === this.client.user.id) throw message.language.get('COMMAND_GAMES_SKYRA');
+		if (user.bot) throw message.language.get('COMMAND_GAMES_BOT');
+		if (user.id === message.author.id) throw message.language.get('COMMAND_GAMES_SELF');
+		if (this.client.connectFour.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
 
 		// ConnectFourManager#alloc returns a function that when getting true, it creates the game. Otherwise it de-alloc.
-		const createGame = this.client.connectFour.alloc(msg.channel.id, msg.author, user);
+		const createGame = this.client.connectFour.alloc(message.channel.id, message.author, user);
 
-		const prompt = await msg.sendLocale('COMMAND_C4_PROMPT', [msg.author, user]);
-		const response = await msg.channel.awaitMessages((message) => message.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
+		const prompt = await message.sendLocale('COMMAND_C4_PROMPT', [message.author, user]) as KlasaMessage;
+		const response = await message.channel.awaitMessages((msg) => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
 			.then((messages) => messages.first())
-			.catch(() => false);
+			.catch(() => null);
 
 		if (response && /ye(s|ah?)?/i.test(response.content)) {
 			await createGame(true).run(prompt);
 		} else {
 			createGame(false);
-			await prompt.edit(msg.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
+			await prompt.edit(message.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
 			prompt.nuke(10000);
 		}
 
-		this.client.connectFour.delete(msg.channel.id);
+		this.client.connectFour.delete(message.channel.id);
 
 		return null;
 	}

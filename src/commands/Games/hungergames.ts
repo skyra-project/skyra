@@ -1,24 +1,91 @@
-import { Command, klasaUtil : { chunk }, LongLivingReactionCollector, util; : { cleanMentions; }, KlasaMessage; } from; '../../index';
+import { CommandStore, KlasaClient, KlasaMessage, Language, util } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
+import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
+import { cleanMentions } from '../../lib/util/util';
+
 const EMOJIS = ['🇳', '🇾'];
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public playing: Set<string> = new Set();
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['hunger-games', 'hg'],
-			requiredPermissions: ['ADD_REACTIONS'],
 			cooldown: 0,
 			description: (language) => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
+			requiredPermissions: ['ADD_REACTIONS'],
 			runIn: ['text'],
 			usage: '<user:string{2,50}> [...]',
 			usageDelim: ','
 		});
-
-		this.playing = new Set();
 	}
 
-	public async collectorInhibitor(msg, gameMessage, reaction) {
+	public async run(message: KlasaMessage, tributes: string[]) {
+		const filtered = new Set(tributes);
+		if (filtered.size !== tributes.length) throw message.language.get('COMMAND_GAMES_REPEAT');
+		if (this.playing.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
+		if (tributes.length < 4 || tributes.length > 48) throw message.language.get('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
+		this.playing.add(message.channel.id);
+
+		let resolve = null;
+		let gameMessage = null;
+		const game = Object.seal({
+			bloodbath: true,
+			llrc: new LongLivingReactionCollector(this.client, async(reaction) => {
+				// Ignore if resolve is not ready
+				if (typeof resolve !== 'function'
+				// Run the collector inhibitor
+				|| await this.collectorInhibitor(message, gameMessage, reaction)) return;
+				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
+				resolve = null;
+			}, () => {
+				if (typeof resolve === 'function') resolve(false);
+				this.playing.delete(message.channel.id);
+			}),
+			sun: true,
+			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message))),
+			turn: 0,
+		}) as HungerGamesGame;
+
+		try {
+			while (game.tributes.size > 1) {
+				// If it's not bloodbath and it became the day, increase the turn
+				if (!game.bloodbath && game.sun) game.turn++;
+				const events = game.bloodbath ? 'HG_BLOODBATH' : game.sun ? 'HG_DAY' : 'HG_NIGHT';
+
+				// Main logic of the game
+				const { results, deaths } = this.makeResultEvents(game, message.language.get(events));
+				const texts = this.buildTexts(message.language, game, results, deaths);
+
+				// Ask for the user to proceed
+				for (const text of texts) {
+					game.llrc.setTime(120000);
+					gameMessage = await message.channel.send(text);
+					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji);
+					const verification = await new Promise((res) => { resolve = res; });
+					gameMessage.nuke().catch((error) => this.client.emit('apiError', error));
+					if (!verification) {
+						game.llrc.end();
+						return message.sendLocale('COMMAND_HG_STOP');
+					}
+				}
+				if (!game.bloodbath) game.sun = !game.sun;
+				else game.bloodbath = false;
+			}
+
+			// The match finished with one remaining player
+			game.llrc.end();
+			return message.sendLocale('COMMAND_HG_WINNER', [game.tributes.values().next().value]);
+		} catch (err) {
+			game.llrc.end();
+			throw err;
+		}
+	}
+
+	private async collectorInhibitor(message: KlasaMessage, gameMessage: KlasaMessage, reaction: LLRCData) {
 		// If there's no gameMessage, inhibit
 		if (!gameMessage) return true;
 
@@ -29,17 +96,17 @@ export default class extends Command {
 		if (!EMOJIS.includes(reaction.emoji.name)) return true;
 
 		// If the user who reacted is the author, don't inhibit
-		if (reaction.userID === msg.author.id) return false;
+		if (reaction.userID === message.author.id) return false;
 
 		// Don't listen to herself
 		if (reaction.userID === this.client.user.id) return true;
 
 		try {
 			// Fetch the member for level measuring purposes
-			const member = await msg.guild.members.fetch(reaction.userID);
+			const member = await message.guild.members.fetch(reaction.userID);
 			// Check if the user is a moderator
 			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call({
-				author: member.user, member, guild: member.guild, client: this.client
+				author: member.user, client: this.client, guild: member.guild, member
 			}, 5);
 			return !hasLevel;
 		} catch (__) {
@@ -47,85 +114,23 @@ export default class extends Command {
 		}
 	}
 
-	public async run(msg, tributes) {
-		const filtered = new Set(tributes);
-		if (filtered.size !== tributes.length) throw msg.language.get('COMMAND_GAMES_REPEAT');
-		if (this.playing.has(msg.channel.id)) throw msg.language.get('COMMAND_GAMES_PROGRESS');
-		if (tributes.length < 4 || tributes.length > 48) throw msg.language.get('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
-		this.playing.add(msg.channel.id);
-
-		let resolve = null;
-		let gameMessage = null;
-		const game = Object.seal({
-			bloodbath: true,
-			sun: true,
-			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, msg))),
-			turn: 0,
-			llrc: new LongLivingReactionCollector(this.client, async(reaction) => {
-				// Ignore if resolve is not ready
-				if (typeof resolve !== 'function'
-					// Run the collector inhibitor
-					|| await this.collectorInhibitor(msg, gameMessage, reaction)) return;
-				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
-				resolve = null;
-			}, () => {
-				if (typeof resolve === 'function') resolve(false);
-				this.playing.delete(msg.channel.id);
-			})
-		});
-
-		try {
-			while (game.tributes.size > 1) {
-				// If it's not bloodbath and it became the day, increase the turn
-				if (!game.bloodbath && game.sun) game.turn++;
-				const events = game.bloodbath ? 'HG_BLOODBATH' : game.sun ? 'HG_DAY' : 'HG_NIGHT';
-
-				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(msg, game, msg.language.get(events));
-				const texts = this.buildTexts(msg.language, game, results, deaths);
-
-				// Ask for the user to proceed
-				for (const text of texts) {
-					game.llrc.setTime(120000);
-					gameMessage = await msg.channel.send(text);
-					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji);
-					const verification = await new Promise((res) => { resolve = res; });
-					gameMessage.nuke().catch((error) => this.client.emit('apiError', error));
-					if (!verification) {
-						game.llrc.end();
-						return msg.sendLocale('COMMAND_HG_STOP');
-					}
-				}
-				if (!game.bloodbath) game.sun = !game.sun;
-				else game.bloodbath = false;
-			}
-
-			// The match finished with one remaining player
-			game.llrc.end();
-			return msg.sendLocale('COMMAND_HG_WINNER', [game.tributes.values().next().value]);
-		} catch (err) {
-			game.llrc.end();
-			throw err;
-		}
-	}
-
-	public buildTexts(language, game, results, deaths) {
+	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
 		const header = language.get('COMMAND_HG_RESULT_HEADER', game);
 		const death = deaths.length ? `${language.get('COMMAND_HG_RESULT_DEATHS', deaths.length)}\n\n${deaths.map((d) => `- ${d}`).join('\n')}` : '';
 		const proceed = language.get('COMMAND_HG_RESULT_PROCEED');
-		const panels = chunk(results, 5);
+		const panels = util.chunk(results, 5);
 
 		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`);
 		if (deaths.length) texts.push(`${death}\n\n_${proceed}_`);
 		return texts;
 	}
 
-	public pick(events, tributes, maxDeaths) {
+	private pick(events: HungerGamesUsage[], tributes: number, maxDeaths: number) {
 		events = events.filter((event) => event.tributes <= tributes && event.deaths.size <= maxDeaths);
 		return events[Math.floor(Math.random() * events.length)];
 	}
 
-	public pickTributes(tribute, turn, amount) {
+	private pickTributes(tribute: string, turn: Set<string>, amount: number) {
 		if (amount === 0) return [];
 		if (amount === 1) return [tribute];
 		const array = [...turn];
@@ -140,9 +145,9 @@ export default class extends Command {
 		return array.slice(0, amount);
 	}
 
-	public makeResultEvents(msg, game, events) {
-		const results = [];
-		const deaths = [];
+	private makeResultEvents(game: HungerGamesGame, events: HungerGamesUsage[]) {
+		const results = [] as string[];
+		const deaths = [] as string[];
 		let maxDeaths = this.calculateMaxDeaths(game);
 
 		const turn = new Set([...game.tributes]);
@@ -174,7 +179,7 @@ export default class extends Command {
 		return { results, deaths };
 	}
 
-	public shuffle(tributes) {
+	private shuffle(tributes: string[]) {
 		let m = tributes.length;
 		while (m) {
 			const i = Math.floor(Math.random() * m--);
@@ -183,7 +188,7 @@ export default class extends Command {
 		return new Set(tributes);
 	}
 
-	public calculateMaxDeaths(game) {
+	private calculateMaxDeaths(game: HungerGamesGame) {
 		// If there are more than 16 tributes, perform a large blood bath
 		return game.tributes.size >= 16
 			// For 16 people, 4 die, 36 -> 6, and so on keeps the game interesting.
@@ -201,4 +206,12 @@ export default class extends Command {
 					: 1;
 	}
 
+}
+
+interface HungerGamesGame {
+	bloodbath: boolean;
+	llrc: LongLivingReactionCollector;
+	sun: boolean;
+	tributes: Set<string>;
+	turn: number;
 }

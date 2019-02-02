@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			.setFooter('© kitsu.io'));
 	}
 
-	public async getIndex(message: KlasaMessage, entries: Kitsu.Datum[]) {
+	private async getIndex(message: KlasaMessage, entries: Kitsu.Datum[]) {
 		if (entries.length === 1) return entries[0];
 		const _choice = await PromptList.run(message, entries.slice(0, 10).map((entry) => {
 			if (entry.attributes.averageRating === null) entry.attributes.averageRating = this.extractAverage(entry);
@@ -57,11 +57,11 @@ export default class extends SkyraCommand {
 		return chosen;
 	}
 
-	public extractTitle(titles: Kitsu.Titles) {
+	private extractTitle(titles: Kitsu.Titles) {
 		return Object.values(titles).find(Boolean);
 	}
 
-	public extractAverage(entry: Kitsu.Datum) {
+	private extractAverage(entry: Kitsu.Datum) {
 		let total = 0, max = 0;
 		for (const array of Object.entries(entry.attributes.ratingFrequencies)) {
 			const [key, value] = array.map(Number);

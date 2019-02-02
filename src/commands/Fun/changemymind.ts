@@ -28,7 +28,11 @@ export default class extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
 	}
 
-	public async generate(author: KlasaUser, text: string) {
+	public async init() {
+		this.template = await readFile(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
+	}
+
+	private async generate(author: KlasaUser, text: string) {
 		const guy = await fetchAvatar(author, 128);
 
 		return new Canvas(591, 607)
@@ -45,10 +49,6 @@ export default class extends SkyraCommand {
 
 			// Render
 			.toBufferAsync();
-	}
-
-	public async init() {
-		this.template = await readFile(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
 	}
 
 }

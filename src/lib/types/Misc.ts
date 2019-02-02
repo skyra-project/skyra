@@ -15,3 +15,4 @@ export interface GuildSettingsRolesAuto extends Array<{ id: string; points: numb
 export interface GuildSettingsRolesReactions extends Array<{ emoji: string; role: string }> { }
 export interface GuildSettingsTriggerAlias extends Array<{ input: string; output: string }> { }
 export interface GuildSettingsTriggerIncludes extends Array<{ action: 'react'; input: string; output: string }> { }
+export interface GuildSettingsTags extends Array<[string, string]> { }

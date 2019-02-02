@@ -247,7 +247,7 @@ export default class extends Language {
 		SETTINGS_EVENTS_BANREMOVE: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.modlog`.',
 		SETTINGS_EVENTS_MEMBERADD: 'This event posts member logs when a user joins. They will be posted in `channels.log`.',
 		SETTINGS_EVENTS_MEMBERREMOVE: 'This event posts member logs when a user leaves. They will be posted in `channels.log`.',
-		SETTINGS_EVENTS_MESSAGEDELETE: 'This event posts message logs when a message is edited. They will be posted in `channels.messagelogs` (or `channel.nsfwmessagelogs` in case of NSFW channels).',
+		SETTINGS_EVENTS_MESSAGEDELETE: 'This event posts message logs when a message is deleted. They will be posted in `channels.messagelogs` (or `channel.nsfwmessagelogs` in case of NSFW channels).',
 		SETTINGS_EVENTS_MESSAGEEDIT: 'This event posts message logs when a message is edited. They will be posted in `channels.messagelogs` (or `channel.nsfwmessagelogs` in case of NSFW channels).',
 		SETTINGS_MESSAGES_FAREWELL: 'The message I shall send to when a user leaves. You must set up `channels.default` and `events.memberRemove`',
 		SETTINGS_MESSAGES_GREETING: 'The message I shall send to when a user joins. You must set up `channels.default` and `events.memberAdd`',

@@ -1,46 +1,49 @@
-import { Command, util : { announcementCheck }, MessageEmbed; } from; '../../index';
+import { MessageEmbed, Role, TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { announcementCheck } from '../../lib/util/util';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['announce'],
-			requiredPermissions: ['MANAGE_ROLES'],
 			bucket: 6,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
 			permissionLevel: 4,
+			requiredPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
 			usage: '<announcement:string{,1900}>'
 		});
 	}
 
-	public async run(msg, [message]) {
-		const announcementID = msg.guild.settings.channels.announcement;
-		if (!announcementID) throw msg.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
+	public async run(message: KlasaMessage, [announcement]: [string]) {
+		const announcementID = message.guild.settings.get('channels.announcement') as string;
+		if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
-		const channel = msg.guild.channels.get(announcementID);
-		if (!channel) throw msg.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
+		const channel = message.guild.channels.get(announcementID) as TextChannel;
+		if (!channel) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
-		if (!channel.postable) throw msg.language.get('SYSTEM_CHANNEL_NOT_POSTABLE');
+		if (!channel.postable) throw message.language.get('SYSTEM_CHANNEL_NOT_POSTABLE');
 
-		const role = announcementCheck(msg);
-		const content = `${msg.language.get('COMMAND_ANNOUNCEMENT', role)}\n${message}`;
+		const role = announcementCheck(message);
+		const content = `${message.language.get('COMMAND_ANNOUNCEMENT', role)}\n${announcement}`;
 
-		if (await this.ask(msg, content)) {
-			await this.send(msg, channel, role, content);
-			return msg.sendLocale('COMMAND_ANNOUNCEMENT_SUCCESS');
+		if (await this.ask(message, content)) {
+			await this.send(channel, role, content);
+			return message.sendLocale('COMMAND_ANNOUNCEMENT_SUCCESS');
 		}
 
-		return msg.sendLocale('COMMAND_ANNOUNCEMENT_CANCELLED');
+		return message.sendLocale('COMMAND_ANNOUNCEMENT_CANCELLED');
 	}
 
-	public ask(msg, content) {
+	public ask(message: KlasaMessage, content: string) {
 		try {
-			return msg.ask(msg.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
+			return message.ask(message.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
 				embed: new MessageEmbed()
-					.setColor(msg.member.displayColor || 0xDFDFDF)
+					.setColor(message.member.displayColor || 0xDFDFDF)
 					.setDescription(content)
 					.setTimestamp()
 			});
@@ -49,7 +52,7 @@ export default class extends Command {
 		}
 	}
 
-	public async send(msg, channel, role, content) {
+	public async send(channel: TextChannel, role: Role, content: string) {
 		await role.edit({ mentionable: true });
 		await channel.send(content);
 		await role.edit({ mentionable: false });

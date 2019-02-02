@@ -1,50 +1,50 @@
-import { Command, MessageEmbed } from '../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			requiredPermissions: ['EMBED_LINKS'],
 			description: (language) => language.get('COMMAND_LOVE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_LOVE_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
+			spam: true,
 			usage: '<user:username>'
 		});
-		this.spam = true;
 	}
 
-	public async run(msg, [user]) {
-		const isSelf = msg.author.id === user.id;
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);
 
 		let result;
 		if (estimatedPercentage < 45) {
-			result = msg.language.get('COMMAND_LOVE_LESS45');
+			result = message.language.get('COMMAND_LOVE_LESS45');
 		} else if (estimatedPercentage < 75) {
-			result = msg.language.get('COMMAND_LOVE_LESS75');
+			result = message.language.get('COMMAND_LOVE_LESS75');
 		} else if (estimatedPercentage < 100) {
-			result = msg.language.get('COMMAND_LOVE_LESS100');
+			result = message.language.get('COMMAND_LOVE_LESS100');
 		} else {
 			result = isSelf
-				? msg.language.get('COMMAND_LOVE_ITSELF')
-				: msg.language.get('COMMAND_LOVE_100');
+				? message.language.get('COMMAND_LOVE_ITSELF')
+				: message.language.get('COMMAND_LOVE_100');
 		}
 
-		const embed = new MessageEmbed()
-			.setColor(msg.member.colorRole ? msg.member.colorRole.color : 0xE840CF)
-			.setAuthor('❤ Love Meter ❤', msg.author.displayAvatarURL())
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(message.member.roles.color.color || 0xE840CF)
+			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL())
 			.setThumbnail('https://twemoji.maxcdn.com/2/72x72/1f49e.png')
 			.setDescription([
 				`💗 **${user.tag}**`,
-				`💗 **${msg.author.tag}**\n`,
+				`💗 **${message.author.tag}**\n`,
 				`${estimatedPercentage}% | \`\u200b${'█'.repeat(Math.round(percentage * 40)).padEnd(40)}\u200b\` |\n`,
-				`**${msg.language.get('COMMAND_LOVE_RESULT')}**: ${result}`
-			].join('\n'));
-
-		return msg.sendEmbed(embed);
+				`**${message.language.get('COMMAND_LOVE_RESULT')}**: ${result}`
+			].join('\n')));
 	}
 
 }

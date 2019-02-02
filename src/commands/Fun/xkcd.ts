@@ -1,27 +1,31 @@
-import { Command, Timestamp, MessageEmbed, util : { fetch }; } from; '../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, Language, Timestamp } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private timestamp = new Timestamp('MMMM, dddd dd YYYY');
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_XKCD_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_XKCD_EXTENDED'),
+			spam: true,
 			usage: '[query:string]'
 		});
-		this.timestamp = new Timestamp('MMMM, dddd dd YYYY');
-		this.spam = true;
 	}
 
-	public async run(msg, [input]) {
+	public async run(message: KlasaMessage, [input]: [string]) {
 		const query = typeof input !== 'undefined'
 			? /^\d+$/.test(input) ? Number(input) : input : null;
 
-		const comicNumber = await this.getNumber(query, msg.language);
+		const comicNumber = await this.getNumber(query, message.language);
 		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
-			.catch(() => { throw msg.language.get('COMMAND_XKCD_NOTFOUND'); });
+			.catch(() => { throw message.language.get('COMMAND_XKCD_NOTFOUND'); });
 
-		return msg.sendEmbed(new MessageEmbed()
+		return message.sendEmbed(new MessageEmbed()
 			.setColor(0xD7CCC8)
 			.setImage(comic.img)
 			.setTitle(comic.title)
@@ -31,11 +35,11 @@ export default class extends Command {
 			.setTimestamp());
 	}
 
-	public getTime(year, month, day) {
+	public getTime(year: string, month: string, day: string) {
 		return this.timestamp.display(new Date(Number(year), Number(month) - 1, Number(day)));
 	}
 
-	public async getNumber(query, i18n) {
+	public async getNumber(query: string | number, i18n: Language) {
 		const xkcdInfo = await fetch('http://xkcd.com/info.0.json', 'json');
 
 		if (typeof query === 'number') {

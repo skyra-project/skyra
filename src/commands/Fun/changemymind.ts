@@ -1,31 +1,34 @@
-import { Command, util : { fetchAvatar }, assetsFolder; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['cmm'],
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_CHANGEMYMIND_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_CHANGEMYMIND_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<text:string{1,50}>'
 		});
-
-		this.template = null;
 	}
 
-	public async run(msg, [text]) {
-		const attachment = await this.generate(msg.author, text);
-		return msg.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
+	public async run(message: KlasaMessage, [text]: [string]) {
+		const attachment = await this.generate(message.author, text);
+		return message.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
 	}
 
-	public async generate(author, text) {
+	public async generate(author: KlasaUser, text: string) {
 		const guy = await fetchAvatar(author, 128);
 
 		return new Canvas(591, 607)

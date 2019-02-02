@@ -24,11 +24,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Command } from '../../index';
 
-export default class extends Command {
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { GuildSettingsTags } from '../../lib/types/Misc';
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+export default class extends SkyraCommand {
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_TAG_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_TAG_EXTENDED'),
@@ -47,44 +50,62 @@ export default class extends Command {
 		});
 	}
 
-	public async add(message, [tagName, content]) {
+	public async add(message: KlasaMessage, [tagName, content]: [string, string]) {
+		// Check for permissions and content length
 		if (!await message.hasAtLeastPermissionLevel(4)) throw message.language.get('COMMAND_TAG_PERMISSIONLEVEL');
-		if (message.guild.settings.tags.some(([name]) => name === tagName)) throw message.language.get('COMMAND_TAG_EXISTS', tagName);
 		if (!content) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
-		await message.guild.settings.update('tags', [...message.guild.settings.tags, [tagName, content]], { action: 'overwrite' });
+
+		// Get tags, and if it does not exist, throw
+		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		if (tags.some(([name]) => name === tagName)) throw message.language.get('COMMAND_TAG_EXISTS', tagName);
+		await message.guild.settings.update('tags', [...tags, [tagName, content]], { arrayAction: 'overwrite' });
+
 		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, content]);
 	}
 
-	public async remove(message, [tagName]) {
+	public async remove(message: KlasaMessage, [tagName]: [string]) {
 		if (!await message.hasAtLeastPermissionLevel(4)) throw message.language.get('COMMAND_TAG_PERMISSIONLEVEL');
-		const tag = message.guild.settings.tags.find(([name]) => name === tagName);
+		// Get tags, and if it does not exist, throw
+		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+
+		const tag = tags.find(([name]) => name === tagName);
 		if (!tag) throw message.language.get('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild.settings.update('tags', tag, { action: 'remove' });
+		await message.guild.settings.update('tags', tag, { arrayAction: 'remove' });
+
 		return message.sendLocale('COMMAND_TAG_REMOVED', [tagName]);
 	}
 
-	public async edit(message, [tagName, content]) {
+	public async edit(message: KlasaMessage, [tagName, content]: [string, string]) {
 		if (!await message.hasAtLeastPermissionLevel(4)) throw message.language.get('COMMAND_TAG_PERMISSIONLEVEL');
 		if (!content) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
-		const index = message.guild.settings.tags.findIndex(([name]) => name === tagName);
+
+		// Get tags, and if it does not exist, throw
+		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const index = tags.findIndex(([name]) => name === tagName);
 		if (index === -1) throw message.language.get('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild.settings.update('tags', [tagName, content], { arrayPosition: index });
+		await message.guild.settings.update('tags', [[tagName, content]], { arrayIndex: index });
+
 		return message.sendLocale('COMMAND_TAG_EDITED', [tagName, content]);
 	}
 
-	public async list(message) {
-		if (!message.guild.settings.tags.length) throw message.language.get('COMMAND_TAG_LIST_EMPTY');
-		const { prefix } = message.guild.settings;
-		return message.sendLocale('COMMAND_TAG_LIST', [message.guild.settings.tags.map((v) => `\`${prefix}${v[0]}\``)]);
+	public async list(message: KlasaMessage) {
+		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		if (!tags.length) throw message.language.get('COMMAND_TAG_LIST_EMPTY');
+
+		// Get prefix and display all tags
+		const prefix = message.guild.settings.get('prefix') as string;
+		return message.sendLocale('COMMAND_TAG_LIST', [tags.map((v) => `\`${prefix}${v[0]}\``)]);
 	}
 
-	public show(message, [tagName]) {
-		const tag = message.guild.settings.tags.find(([name]) => name === tagName);
+	public show(message: KlasaMessage, [tagName]: [string]) {
+		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tag = tags.find(([name]) => name === tagName);
 		return tag ? message.send(tag[1]) : null;
 	}
 
-	public source(message, [tagName]) {
-		const tag = message.guild.settings.tags.find(([name]) => name === tagName);
+	public source(message: KlasaMessage, [tagName]: [string]) {
+		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tag = tags.find(([name]) => name === tagName);
 		return tag ? message.sendCode('', tag[1]) : null;
 	}
 

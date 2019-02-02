@@ -1,8 +1,9 @@
-import { Command } from '../../index';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 60,
@@ -11,9 +12,9 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg) {
-		if (msg.deletable) msg.nuke().catch(() => null);
-		return msg.sendLocale('COMMAND_ESCAPEROPE_OUTPUT', [msg.author]);
+	public async run(message: KlasaMessage) {
+		if (message.deletable) message.nuke().catch(() => null);
+		return message.sendLocale('COMMAND_ESCAPEROPE_OUTPUT', [message.author]);
 	}
 
 }

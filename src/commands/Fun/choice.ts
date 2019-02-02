@@ -1,8 +1,9 @@
-import { Command } from '../../index';
+import { CommandStore, KlasaClient, KlasaMessage, Language } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['choise', 'pick'],
 			bucket: 2,
@@ -15,13 +16,13 @@ export default class extends Command {
 		this.spam = true;
 	}
 
-	public async run(msg, options) {
-		const words = this.filterWords(options, msg.language);
-		return msg.sendLocale('COMMAND_CHOICE_OUTPUT',
-			[msg.author, words[Math.floor(Math.random() * words.length)]]);
+	public async run(message: KlasaMessage, options: string[]) {
+		const words = this.filterWords(options, message.language);
+		return message.sendLocale('COMMAND_CHOICE_OUTPUT',
+			[message.author, words[Math.floor(Math.random() * words.length)]]);
 	}
 
-	public filterWords(words, i18n) {
+	public filterWords(words: string[], i18n: Language) {
 		if (words.length < 2) throw i18n.get('COMMAND_CHOICE_MISSING');
 
 		const output = new Set();

@@ -1,37 +1,41 @@
-import { Command, util, discordUtil : { escapeMarkdown }; } from; '../../index';
+import { Util } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { oneToTen } from '../../lib/util/util';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_RATE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_RATE_EXTENDED'),
+			spam: true,
 			usage: '<user:string>'
 		});
-		this.spam = true;
 	}
 
-	public async run(msg, [user]) {
+	public async run(message: KlasaMessage, [user]: [string]) {
 		// Escape all markdown
-		user = escapeMarkdown(user);
+		user = Util.escapeMarkdown(user);
 
 		let ratewaifu;
 		let rate;
 
 		if (/^(you|yourself|skyra)$/i.test(user)) {
 			rate = 100;
-			[ratewaifu, user] = msg.language.get('COMMAND_RATE_MYSELF');
+			[ratewaifu, user] = message.language.get('COMMAND_RATE_MYSELF');
 		} else {
-			if (/^(myself|me)$/i.test(user)) user = msg.author.username;
-			else user = user.replace(/\bmy\b/g, 'your');
+			user = /^(myself|me)$/i.test(user)
+				? message.author.username
+				: user.replace(/\bmy\b/g, 'your');
 
 			const rng = Math.round(Math.random() * 100);
-			[ratewaifu, rate] = [util.oneToTen((rng / 10) | 0).emoji, rng];
+			[ratewaifu, rate] = [oneToTen((rng / 10) | 0).emoji, rng];
 		}
 
-		return msg.sendMessage(`**${msg.author.username}**, ${msg.language.get('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, { disableEveryone: true });
+		return message.sendMessage(`**${message.author.username}**, ${message.language.get('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, { disableEveryone: true });
 	}
 
 }

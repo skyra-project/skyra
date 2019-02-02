@@ -1,72 +1,61 @@
-import { Command, util : { fetchAvatar }, assetsFolder; } from; '../../index';
-import Canvas from 'canvas';
+import { Image } from 'canvas';
+import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_HOWTOFLIRT_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_HOWTOFLIRT_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
+			spam: true,
 			usage: '<user:username>'
 		});
-		this.spam = true;
-		this.template = null;
 	}
 
-	public async run(msg, [user]) {
-		const attachment = await this.generate(msg, user);
-		return msg.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		const attachment = await this.generate(message, user);
+		return message.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
 	}
 
-	public async generate(msg, user) {
-		/* Initialize Canvas */
-		const canvas = Canvas.createCanvas(500, 500);
-		const background = new Canvas.Image();
-		const user1 = new Canvas.Image();
-		const user2 = new Canvas.Image();
-		const ctx = canvas.getContext('2d');
-
-		if (user.id === msg.author.id) ({ user } = this.client);
+	public async generate(message: KlasaMessage, user: KlasaUser) {
+		if (user.id === message.author.id) ({ user } = this.client);
 
 		/* Get the buffers from both profile avatars */
-		const [user1Buffer, user2Buffer] = await Promise.all([
-			fetchAvatar(msg.author, 128),
+		const buffers = await Promise.all([
+			fetchAvatar(message.author, 128),
 			fetchAvatar(user, 128)
 		]);
-
-		/* Background */
-		background.onload = () => ctx.drawImage(background, 0, 0, 500, 500);
-		background.src = this.template;
-		user1.src = user1Buffer;
-		user2.src = user2Buffer;
-
-		/* Tony */
-		await Promise.all(coord1.map(({ center, radius }) => new Promise((res) => {
-			ctx.save();
-			ctx.beginPath();
-			ctx.arc(center[0], center[1], radius, 0, Math.PI * 2, false);
-			ctx.clip();
-			ctx.drawImage(user1, center[0] - radius, center[1] - radius, radius * 2, radius * 2);
-			ctx.restore();
-			res();
+		const images = await Promise.all(buffers.map((buffer) => new Promise<Image>((resolve, reject) => {
+			const image = new Image(128, 128);
+			image.src = buffer;
+			image.onload = resolve;
+			image.onerror = reject;
+			resolve(image);
 		})));
-		/* Capitain */
-		await Promise.all(coord2.map(({ center, radius }) => new Promise((res) => {
-			ctx.save();
-			ctx.beginPath();
-			ctx.arc(center[0], center[1], radius, 0, Math.PI * 2, false);
-			ctx.clip();
-			ctx.drawImage(user2, center[0] - radius, center[1] - radius, radius * 2, radius * 2);
-			user2.src = user2Buffer;
-			ctx.restore();
-			res();
-		})));
+
+		/* Initialize Canvas */
+		const canvas = new Canvas(500, 500)
+			.addImage(this.template, 0, 0, 500, 500);
+
+		for (const index of [0, 1]) {
+			const image = images[index];
+			const coordinates = imageCoordinates[index];
+			for (const coordinate of coordinates) {
+				canvas.addCircularImage(image, coordinate.center[0], coordinate.center[1], coordinate.radius);
+			}
+		}
 
 		return canvas.toBuffer();
 	}
@@ -77,14 +66,15 @@ export default class extends Command {
 
 }
 
-const coord1 = [
-	{ center: [211, 53], radius: 18 },
-	{ center: [136, 237], radius: 53 },
-	{ center: [130, 385], radius: 34 }
-];
-const coord2 = [
-	{ center: [35, 25], radius: 22 },
-	{ center: [326, 67], radius: 50 },
-	{ center: [351, 229], radius: 43 },
-	{ center: [351, 390], radius: 40 }
+const imageCoordinates = [
+	[
+		{ center: [211, 53], radius: 18 },
+		{ center: [136, 237], radius: 53 },
+		{ center: [130, 385], radius: 34 }
+	], [
+		{ center: [35, 25], radius: 22 },
+		{ center: [326, 67], radius: 50 },
+		{ center: [351, 229], radius: 43 },
+		{ center: [351, 390], radius: 40 }
+	]
 ];

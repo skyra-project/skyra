@@ -1,9 +1,14 @@
-import { Command, util : { fetch }, MessageEmbed; } from; '../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { URL } from 'url';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
+
 const url = new URL('https://randomfox.ca/floof');
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -13,10 +18,10 @@ export default class extends Command {
 		this.spam = true;
 	}
 
-	public async run(msg) {
+	public async run(message: KlasaMessage) {
 		const { image, link } = await fetch(url, 'json');
-		return msg.sendEmbed(new MessageEmbed()
-			.setAuthor(msg.author.username, msg.author.displayAvatarURL({ size: 64 }))
+		return message.sendEmbed(new MessageEmbed()
+			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 64 }))
 			.setImage(image)
 			.setURL(link)
 			.setTimestamp());

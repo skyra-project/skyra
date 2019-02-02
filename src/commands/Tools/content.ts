@@ -1,12 +1,12 @@
-import { Client, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, Serializer } from 'klasa';
+import { TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getContent } from '../../lib/util/util';
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['source', 'msg-source', 'message-source'],
 			cooldown: 15,

@@ -1,5 +1,4 @@
-import { Client } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch } from '../../lib/util/util';
 
@@ -9,7 +8,7 @@ const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11
 /* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
 export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_EMOJI_DESCRIPTION'),

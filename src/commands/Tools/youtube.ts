@@ -1,4 +1,5 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { URL } from 'url';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch } from '../../lib/util/util';
@@ -18,7 +19,12 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [input, ind = 1]: [string, number]) {
 		const index = --ind;
-		const data = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(input)}&key=${TOKENS.GOOGLE_API}&safeSearch=strict`, 'json');
+		const url = new URL('https://www.googleapis.com/youtube/v3/search');
+		url.searchParams.append('part', 'snippet');
+		url.searchParams.append('safeSearch', 'strict');
+		url.searchParams.append('q', input);
+		url.searchParams.append('key', TOKENS.GOOGLE_API);
+		const data = await fetch(url, 'json');
 		const result = data.items[index];
 
 		if (!result) {

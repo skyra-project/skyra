@@ -1,18 +1,18 @@
+import { GuildMember, MessageEmbed, Role, User } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser, Language } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Client, MessageEmbed } from 'discord.js';
-import { CommandStore } from 'klasa';
 
-const sortRanks = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
+const sortRanks = (x: Role, y: Role) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['userinfo'],
-			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_WHOIS_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_WHOIS_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
 		});
@@ -21,19 +21,19 @@ export default class extends SkyraCommand {
 			arg ? this.client.arguments.get('username').run(arg, possible, message) : message.author);
 	}
 
-	public async run(msg, [user = msg.author]) {
-		const member = await msg.guild.members.fetch(user.id).catch(() => null);
+	public async run(message: KlasaMessage, [user = message.author]: [User?]) {
+		const member = await message.guild.members.fetch(user.id).catch(() => null);
 
 		const embed = new MessageEmbed();
-		if (member) this.member(member, embed, msg.language);
-		else this.user(user, embed, msg.language);
+		if (member) this.member(member, embed, message.language);
+		else this.user(user, embed, message.language);
 
-		return msg.sendMessage({ embed });
+		return message.sendMessage({ embed });
 	}
 
-	public member(member, embed, i18n) {
+	public member(member: GuildMember, embed: MessageEmbed, i18n: Language) {
 		embed
-			.setColor(member.displayColor || 0xdfdfdf)
+			.setColor(member.displayColor || 0xDFDFDF)
 			.setTitle(`${member.user.bot ? '🤖 ' : ''}${member.user.tag}`)
 			.setURL(member.user.displayAvatarURL({ size: 1024 }))
 			.setDescription(i18n.get('COMMAND_WHOIS_MEMBER', member))
@@ -43,16 +43,16 @@ export default class extends SkyraCommand {
 
 		if (member.roles.size > 1) {
 			const roles = member.roles.sort(sortRanks);
-			roles.delete(member.guild.defaultRole.id);
+			roles.delete(member.guild.id);
 			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map((role) => role.name).join(', '));
 		}
 
 		return embed;
 	}
 
-	public user(user, embed, i18n) {
+	public user(user: KlasaUser, embed: MessageEmbed, i18n: Language) {
 		return embed
-			.setColor(0xdfdfdf)
+			.setColor(0xDFDFDF)
 			.setTitle(`${user.bot ? '🤖 ' : ''}${user.tag}`)
 			.setURL(user.displayAvatarURL({ size: 1024 }))
 			.setDescription(i18n.get('COMMAND_WHOIS_USER', user))

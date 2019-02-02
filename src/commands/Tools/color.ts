@@ -1,6 +1,5 @@
 import { Canvas } from 'canvas-constructor';
-import { Client } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { RGB } from '../../lib/structures/color';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Color } from '../../lib/util/Color';
@@ -12,7 +11,7 @@ const sCL = (color: number) => color >= 128 ? 0 : 255;
 /* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B", "x", "y"] }] */
 export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['colour'],
 			cooldown: 15,

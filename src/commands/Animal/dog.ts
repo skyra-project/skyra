@@ -1,35 +1,36 @@
-import { Command, MessageEmbed } from '../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private ids = [
+		'55991', '56020', '236567', '215795', '198588', '239388', '55709',
+		'304011', '239386', '137479', '95278', '393154', '61910', '264155',
+		'239389', '239395', '293551', '22761', '265279', '137000', '293552',
+		'449188', '140491', '203497', '112888', '3058440', '371698', '277752',
+		'179920', '96127', '261963', '106499'
+	];
+	private index = Math.ceil(Math.random() * this.ids.length);
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['doggo', 'puppy'],
-			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_DOG_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_DOG_EXTENDED')
+			extendedHelp: (language) => language.get('COMMAND_DOG_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
+			spam: true
 		});
-
-		this.rand = [
-			'55991', '56020', '236567', '215795', '198588', '239388', '55709',
-			'304011', '239386', '137479', '95278', '393154', '61910', '264155',
-			'239389', '239395', '293551', '22761', '265279', '137000', '293552',
-			'449188', '140491', '203497', '112888', '3058440', '371698', '277752',
-			'179920', '96127', '261963', '106499'
-		];
-
-		this.spam = true;
-		this.index = Math.ceil(Math.random() * this.rand.length);
 	}
 
-	public async run(msg) {
-		if (this.index >= this.rand.length - 1) this.index = 0;
+	public async run(message: KlasaMessage) {
+		if (this.index >= this.ids.length - 1) this.index = 0;
 		else this.index++;
 
-		return msg.sendEmbed(new MessageEmbed()
-			.setColor(msg.color)
-			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.rand[this.index]}.jpg`));
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(0xDFDFDF)
+			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.ids[this.index]}.jpg`));
 	}
 
 }

@@ -1,8 +1,8 @@
-import { Command, util : { fetch }; } from; '../../index';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 
 export default class extends Command {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_PRICE_DESCRIPTION'),
@@ -12,7 +12,7 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg, [from, to, amount = 1]) {
+	public async run(message: KlasaMessage, [from, to, amount = 1]: [string, string, number]) {
 		from = from.toUpperCase();
 		to = to.toUpperCase();
 
@@ -22,8 +22,8 @@ export default class extends Command {
 
 		const body = await fetch(url, 'json');
 
-		if (body.Response === 'Error') throw msg.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
-		return msg.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * body[to]]);
+		if (body.Response === 'Error') throw message.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
+		return message.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * body[to]]);
 	}
 
 }

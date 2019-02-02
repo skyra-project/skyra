@@ -1,7 +1,6 @@
 import { Canvas } from 'canvas-constructor';
-import { Client } from 'discord.js';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
@@ -20,7 +19,7 @@ const COLORS = {
 
 export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 120,

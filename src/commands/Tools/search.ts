@@ -1,8 +1,11 @@
-import { Command, MessageEmbed, util : { fetch }; } from; '../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
@@ -13,11 +16,11 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg, [query]) {
+	public async run(message: KlasaMessage, [query]: [string]) {
 		const body = await fetch(`http://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, 'json');
 
 		if (body.Heading.length === 0)
-			throw msg.language.get('COMMAND_DUCKDUCKGO_NOTFOUND');
+			throw message.language.get('COMMAND_DUCKDUCKGO_NOTFOUND');
 
 		const embed = new MessageEmbed()
 			.setAuthor(body.Heading, this.client.user.displayAvatarURL({ size: 64 }))
@@ -26,9 +29,9 @@ export default class extends Command {
 			.setDescription(body.AbstractText);
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0)
-			embed.addField(msg.language.get('COMMAND_DUCKDUCKGO_LOOKALSO'), body.RelatedTopics[0].Text);
+			embed.addField(message.language.get('COMMAND_DUCKDUCKGO_LOOKALSO'), body.RelatedTopics[0].Text);
 
-		msg.sendMessage({ embed });
+		return message.sendMessage({ embed });
 	}
 
 }

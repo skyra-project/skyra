@@ -1,5 +1,4 @@
-import { Client } from 'discord.js';
-import { CommandStore, KlasaMessage, Serializer } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 const REG_USERS = Serializer.regex.userOrMember, REG_TAG = /[^#]{2,32}#\d{4,4}/;
@@ -11,7 +10,7 @@ export default class extends SkyraCommand {
 	public rolePrompt = this.definePrompt('<user:rolename> [...]', ',');
 	public timePrompt = this.definePrompt('<time:time>');
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_POLL_DESCRIPTION'),

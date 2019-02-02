@@ -1,23 +1,26 @@
-import { Command, MessageEmbed, util : { fetch }; } from; '../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['kittenfact'],
-			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_CATFACT_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_CATFACT_EXTENDED')
+			extendedHelp: (language) => language.get('COMMAND_CATFACT_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS']
 		});
 		this.spam = true;
 	}
 
-	public async run(msg) {
+	public async run(message: KlasaMessage) {
 		const { fact } = await fetch('https://catfact.ninja/fact', 'json');
-		return msg.sendEmbed(new MessageEmbed()
+		return message.sendEmbed(new MessageEmbed()
 			.setColor(0xFFE0B2)
-			.setTitle(msg.language.get('COMMAND_CATFACT_TITLE'))
+			.setTitle(message.language.get('COMMAND_CATFACT_TITLE'))
 			.setDescription(fact));
 	}
 

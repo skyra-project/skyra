@@ -1,5 +1,5 @@
-import { Client, MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Language, util } from 'klasa';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { cutText, fetch } from '../../../lib/util/util';
 
@@ -7,7 +7,7 @@ const ZWS = '\u200B';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			cooldown: 15,

@@ -1,7 +1,9 @@
 import { Command, CommandOptions, CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { SkyraClient } from '../SkyraClient';
 
 export class SkyraCommand extends Command {
 
+	public client: SkyraClient;
 	public spam: boolean;
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions) {

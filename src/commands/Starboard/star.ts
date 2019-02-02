@@ -1,9 +1,15 @@
-import { Command, MessageEmbed, StarboardMessage : { COLORS }, util; : { getImage, getContent; } } from; '../../index';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { RCursor } from 'rethinkdb-ts';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { COLORS } from '../../lib/structures/StarboardMessage';
+import { getContent, getImage } from '../../lib/util/util';
+
 const MEDALS = ['🥇', '🥈', '🥉'];
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: [],
 			cooldown: 10,
@@ -18,7 +24,7 @@ export default class extends Command {
 		});
 	}
 
-	public async random(message) {
+	public async random(message: KlasaMessage) {
 		const starboardData = await this.client.providers.default.db
 			.table('starboard')
 			.getAll(message.guild.id, { index: 'guildID' })
@@ -29,7 +35,7 @@ export default class extends Command {
 
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOMESSAGE');
 
-		const channel = message.guild.channels.get(starboardData.channelID);
+		const channel = message.guild.channels.get(starboardData.channelID) as TextChannel;
 		if (!channel) {
 			await this.client.providers.default.db.table('starboard').get(starboardData.id).delete().run();
 			return this.random(message);
@@ -55,21 +61,20 @@ export default class extends Command {
 		return message.sendMessage(title, embed);
 	}
 
-	public async top(message) {
+	public async top(message: KlasaMessage) {
 		const starboardMessages = await this.client.providers.default.db
 			.table('starboard')
 			.getAll(message.guild.id, { index: 'guildID' })
 			.pluck('messageID', 'userID', 'stars')
-			.getCursor();
+			.getCursor() as RCursor<StarPluck>;
 
 		let totalStars = 0;
 		const topMessages = [];
 		const topReceivers = new Map();
 
-		const min = message.guild.settings.starboard.minimum;
+		const min = message.guild.settings.get('starboard.minimum') as number;
 
-		// @ts-ignore
-		for await (const starboardMessage of starboardMessages) {
+		for await (const starboardMessage of starboardMessages as unknown as AsyncIterable<StarPluck>) {
 			if (starboardMessage.stars < min) continue;
 			topMessages.push([starboardMessage.messageID, starboardMessage.stars]);
 			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
@@ -84,14 +89,14 @@ export default class extends Command {
 
 		const i18n = message.language.get.bind(message.language);
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(0xffd000)
+			.setColor(0xFFD000)
 			.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', totalMessages, totalStars))
 			.addField(i18n('COMMAND_STAR_TOPSTARRED'), topThreeMessages.map(([mID, stars], index) => i18n('COMMAND_STAR_TOPSTARRED_DESCRIPTION', MEDALS[index], mID, stars)))
 			.addField(i18n('COMMAND_STAR_TOPRECEIVERS'), topThreeReceivers.map(([uID, stars], index) => i18n('COMMAND_STAR_TOPRECEIVERS_DESCRIPTION', MEDALS[index], uID, stars)))
 			.setTimestamp());
 	}
 
-	public _getEmoji(starboardData) {
+	public _getEmoji(starboardData: StarPluck) {
 		const { stars } = starboardData;
 		if (stars < 5) return '⭐';
 		if (stars < 10) return '🌟';
@@ -99,4 +104,10 @@ export default class extends Command {
 		return '✨';
 	}
 
+}
+
+interface StarPluck {
+	messageID: string;
+	userID: string;
+	stars: number;
 }

@@ -1,9 +1,12 @@
-import { Command, util : { fetch }; } from; '../../../index';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { fetch } from '../../../lib/util/util';
+
 const attachmentFilter = /\.(?:webp|png|jpg|gif)$/i;
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_SETAVATAR_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SETAVATAR_EXTENDED'),
@@ -23,9 +26,9 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg, [avatar]) {
+	public async run(message: KlasaMessage, [avatar]: [string]) {
 		await this.client.user.setAvatar(avatar);
-		return msg.sendMessage(`Dear ${msg.author}, I have changed my avatar for you.`);
+		return message.sendMessage(`Dear ${message.author}, I have changed my avatar for you.`);
 	}
 
 }

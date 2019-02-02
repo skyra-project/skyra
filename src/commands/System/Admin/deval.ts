@@ -1,8 +1,9 @@
-import { Command, Stopwatch, klasaUtil : { codeBlock }; } from; '../../../index';
+import { CommandStore, KlasaClient, KlasaMessage, Stopwatch, util } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['d-ev', 'dashboard-eval'],
 			description: (language) => language.get('COMMAND_EVAL_DESCRIPTION'),
@@ -13,9 +14,9 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg, [code]) {
-		if (msg.flags.async) code = `(async () => {\n${code}\n})();`;
-		let result, success, time;
+	public async run(message: KlasaMessage, [code]: [string]) {
+		if (message.flags.async) code = `(async () => {\n${code}\n})();`;
+		let result: string, success: boolean, time: string;
 
 		const stopwatch = new Stopwatch();
 		try {
@@ -27,7 +28,7 @@ export default class extends Command {
 			success = false;
 		}
 
-		return msg.send(`⏱ ${time} | **${success ? 'Output' : 'Error'}**${codeBlock('js', result)}`);
+		return message.send(`⏱ ${time} | **${success ? 'Output' : 'Error'}**${util.codeBlock('js', result)}`);
 	}
 
 }

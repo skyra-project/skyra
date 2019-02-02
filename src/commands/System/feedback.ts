@@ -1,8 +1,12 @@
-import { Command, MessageEmbed } from '../../index';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private channel: TextChannel = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['suggest'],
 			bucket: 2,
@@ -16,22 +20,22 @@ export default class extends Command {
 		this.channel = null;
 	}
 
-	public async run(msg, [feedback]) {
+	public async run(message: KlasaMessage, [feedback]: [string]) {
 		const embed = new MessageEmbed()
-			.setColor(0x06d310)
-			.setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL({ size: 128 }))
+			.setColor(0x06D310)
+			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128 }))
 			.setDescription(feedback)
-			.setFooter(`${msg.author.id} | Feedback`)
+			.setFooter(`${message.author.id} | Feedback`)
 			.setTimestamp();
 
-		if (msg.deletable) msg.nuke().catch(() => null);
+		if (message.deletable) message.nuke().catch(() => null);
 
 		await this.channel.send({ embed });
-		return msg.alert(msg.language.get('COMMAND_FEEDBACK'));
+		return message.alert(message.language.get('COMMAND_FEEDBACK'));
 	}
 
-	public init() {
-		this.channel = this.client.channels.get('257561807500214273');
+	public async init() {
+		this.channel = this.client.channels.get('257561807500214273') as TextChannel;
 	}
 
 }

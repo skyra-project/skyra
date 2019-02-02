@@ -1,10 +1,11 @@
 import { version } from 'discord.js';
-import { Command, Duration } from 'klasa';
+import { CommandStore, Duration, KlasaClient, KlasaMessage } from 'klasa';
 import { loadavg, uptime } from 'os';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
@@ -14,26 +15,26 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg) {
-		return msg.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
+	public async run(message: KlasaMessage) {
+		return message.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
 	}
 
 	public get STATS() {
 		return {
-			USERS: this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
-			GUILDS: this.client.guilds.size.toLocaleString(),
 			CHANNELS: this.client.channels.size.toLocaleString(),
-			VERSION: `v${version}`,
-			NODE_JS: process.version
+			GUILDS: this.client.guilds.size.toLocaleString(),
+			NODE_JS: process.version,
+			USERS: this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
+			VERSION: `v${version}`
 		};
 	}
 
 	public get UPTIME() {
 		const now = Date.now();
 		return {
+			CLIENT: Duration.toNow(now - this.client.uptime, false),
 			HOST: Duration.toNow(now - (uptime() * 1000), false),
-			TOTAL: Duration.toNow(now - (process.uptime() * 1000), false),
-			CLIENT: Duration.toNow(now - this.client.uptime, false)
+			TOTAL: Duration.toNow(now - (process.uptime() * 1000), false)
 		};
 	}
 

@@ -1,5 +1,5 @@
-import { Client, Permissions, TextChannel, User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Permissions, TextChannel, User } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { ModerationTypeKeys } from '../../lib/util/constants';
@@ -12,7 +12,7 @@ const PERMISSIONS = Permissions.resolve([
 
 export default class extends ModerationCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			description: (language) => language.get('COMMAND_MUTE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_MUTE_EXTENDED'),

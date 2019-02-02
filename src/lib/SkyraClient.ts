@@ -1,5 +1,6 @@
-import { Collection, Webhook } from 'discord.js';
+import { Collection, PermissionString, Webhook } from 'discord.js';
 import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
+import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
 import { VERSION, WEBHOOK_ERROR } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
@@ -187,3 +188,52 @@ SkyraClient.defaultGuildSchema
 	.add('trigger', (folder) => folder
 		.add('alias', 'any', { array: true, configurable: false })
 		.add('includes', 'any', { array: true, configurable: false }));
+
+declare module 'discord.js' {
+
+	export interface Client {
+		version: string;
+		leaderboard: Leaderboard;
+		ipcMonitors: IPCMonitorStore;
+		rawEvents: RawEventStore;
+		connectFour: ConnectFourManager;
+		usertags: Collection<string, string>;
+		llrCollectors: Set<LongLivingReactionCollector>;
+		ipc: Node;
+		webhookError: Webhook;
+		fetchTag(id: string): Promise<string>;
+		fetchUsername(id: string): Promise<string>;
+	}
+
+}
+
+declare module 'klasa' {
+
+	export interface Language {
+		PERMISSIONS: Record<PermissionString, string>;
+		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
+		duration(time: number): string;
+	}
+
+	export interface Provider {
+		db: R;
+		pool: MasterPool;
+		ping(): Promise<number>;
+		sync(table: string): Promise<{ synced: number }>;
+		getRandom(table: string): Promise<any>;
+	}
+
+	export interface KlasaClientOptions {
+		dev?: boolean;
+		nms?: {
+			role?: number;
+			everyone?: number;
+		};
+	}
+
+	export interface PieceDefaults {
+		ipcMonitors?: PieceOptions;
+		rawEvents?: PieceOptions;
+	}
+
+}

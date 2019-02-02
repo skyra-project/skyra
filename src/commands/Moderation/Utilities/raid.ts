@@ -1,44 +1,46 @@
-import { Command, MessageEmbed } from '../../../index';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 5,
 			description: 'Manage the Anti-RAID system.',
 			permissionLevel: 6,
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<clear|cool|show:default>'
 		});
 	}
 
-	public async run(msg, [type]) {
-		if (!msg.guild.settings.selfmod.raid) throw msg.language.get('COMMAND_RAID_DISABLED');
-		if (!msg.guild.me.permissions.has('KICK_MEMBERS')) throw msg.language.get('COMMAND_RAID_MISSING_KICK');
+	public async run(message: KlasaMessage, [type]: [string]) {
+		if (!message.guild.settings.get('selfmod.raid')) throw message.language.get('COMMAND_RAID_DISABLED');
+		if (!message.guild.me.permissions.has('KICK_MEMBERS')) throw message.language.get('COMMAND_RAID_MISSING_KICK');
 
-		return this[type](msg);
+		return this[type](message);
 	}
 
-	public show(msg) {
-		const { raid } = msg.guild.security;
+	public show(message: KlasaMessage) {
+		const { raid } = message.guild.security;
 		const embed = new MessageEmbed()
-			.setTitle(msg.language.get('COMMAND_RAID_LIST'))
+			.setTitle(message.language.get('COMMAND_RAID_LIST'))
 			.setDescription([...raid.keys()].map((user) => `<@${user}>`))
-			.setFooter(`${raid.size}/${msg.guild.settings.selfmod.raidthreshold} ${msg.language.get('CONST_USERS')}`)
+			.setFooter(`${raid.size}/${message.guild.settings.get('selfmod.raidthreshold')} ${message.language.get('CONST_USERS')}`)
 			.setTimestamp();
 
-		return msg.sendMessage({ embed });
+		return message.sendMessage({ embed });
 	}
 
-	public clear(msg) {
-		msg.guild.security.raid.clear();
-		return msg.sendLocale('COMMAND_RAID_CLEAR');
+	public clear(message: KlasaMessage) {
+		message.guild.security.raid.clear();
+		return message.sendLocale('COMMAND_RAID_CLEAR');
 	}
 
-	public cool(msg) {
-		msg.guild.security.raid.stop();
-		return msg.sendLocale('COMMAND_RAID_COOL');
+	public cool(message: KlasaMessage) {
+		message.guild.security.raid.stop();
+		return message.sendLocale('COMMAND_RAID_COOL');
 	}
 
 }

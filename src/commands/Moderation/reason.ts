@@ -1,5 +1,5 @@
-import { Client, Collection, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Collection, TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { ModerationSchemaKeys } from '../../lib/util/constants';
@@ -7,7 +7,7 @@ import { parseRange } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_REASON_DESCRIPTION'),

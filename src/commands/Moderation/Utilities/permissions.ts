@@ -1,39 +1,43 @@
-import { Command, MessageEmbed, Permissions : { FLAGS }; } from; '../../../index';
-const PERMISSION_FLAGS = Object.keys(FLAGS);
+import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+export default class extends SkyraCommand {
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['EMBED_LINKS'],
 			bucket: 2,
 			cooldown: 10,
 			description: 'Check the permission for a member, or yours.',
 			permissionLevel: 6,
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '[member:username]'
 		});
 	}
 
-	public async run(msg, [user = msg.author]) {
-		if (!user) throw msg.language.get('REQUIRE_USER');
-		const member = await msg.guild.members.fetch(user.id).catch(() => { throw msg.language.get('USER_NOT_IN_GUILD'); });
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+		if (!user) throw message.language.get('REQUIRE_USER');
+		const member = await message.guild.members.fetch(user.id).catch(() => { throw message.language.get('USER_NOT_IN_GUILD'); });
 
 		const { permissions } = member;
 		const list = ['\u200B'];
-		if (permissions.has(FLAGS.ADMINISTRATOR)) {
-			list.push(msg.language.get('COMMAND_PERMISSIONS_ALL'));
+		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
+			list.push(message.language.get('COMMAND_PERMISSIONS_ALL'));
 		} else {
-			for (let i = 0; i < PERMISSION_FLAGS.length; i++)
-				list.push(`${permissions.has(PERMISSION_FLAGS[i]) ? '🔹' : '🔸'} ${msg.language.PERMISSIONS[PERMISSION_FLAGS[i]] || PERMISSION_FLAGS[i]}`);
+			for (const flag of PERMISSION_FLAGS) {
+				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${message.language.PERMISSIONS[flag] || flag}`);
+			}
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(msg.member.displayColor || 0xdfdfdf)
-			.setTitle(msg.language.get('COMMAND_PERMISSIONS', user.tag, user.id))
+			.setColor(message.member.displayColor || 0xDFDFDF)
+			.setTitle(message.language.get('COMMAND_PERMISSIONS', user.tag, user.id))
 			.setDescription(list.join('\n'));
 
-		return msg.sendMessage({ embed });
+		return message.sendMessage({ embed });
 	}
 
 }

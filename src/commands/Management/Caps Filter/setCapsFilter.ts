@@ -1,15 +1,16 @@
-import { Command } from '../../../index';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
 /* eslint-disable no-bitwise */
 const VALUES = {
 	alert: { value: 1 << 2, key: 'COMMAND_SETCAPSFILTER_ALERT' },
-	log: { value: 1 << 1, key: 'COMMAND_SETCAPSFILTER_LOG' },
-	delete: { value: 1 << 0, key: 'COMMAND_SETCAPSFILTER_DELETE' }
+	delete: { value: 1 << 0, key: 'COMMAND_SETCAPSFILTER_DELETE' },
+	log: { value: 1 << 1, key: 'COMMAND_SETCAPSFILTER_LOG' }
 };
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_SETCAPSFILTER_DESCRIPTION'),
@@ -21,10 +22,10 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg, [type, mode = 'enable']) {
-		const { capsfilter } = msg.guild.settings.selfmod;
+	public async run(message: KlasaMessage, [type, mode = 'enable']: [string, string?]) {
+		const capsfilter = message.guild.settings.get('selfmod.capsfilter') as number;
 		if (type === 'show') {
-			return msg.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [
+			return message.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [
 				capsfilter & VALUES.alert.value,
 				capsfilter & VALUES.log.value,
 				capsfilter & VALUES.delete.value
@@ -36,10 +37,10 @@ export default class extends Command {
 		const changed = enable
 			? capsfilter | value
 			: capsfilter & ~value;
-		if (capsfilter === changed) throw msg.language.get('COMMAND_SETCAPSFILTER_EQUALS');
-		await msg.guild.settings.update('selfmod.capsfilter', changed);
+		if (capsfilter === changed) throw message.language.get('COMMAND_SETCAPSFILTER_EQUALS');
+		await message.guild.settings.update('selfmod.capsfilter', changed);
 
-		return msg.sendLocale(key, [enable]);
+		return message.sendLocale(key, [enable]);
 	}
 
 }

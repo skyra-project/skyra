@@ -1,8 +1,9 @@
-import { Command } from '../../../index';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 5,
@@ -15,47 +16,48 @@ export default class extends Command {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('word', (arg, possible, msg, [type]) => {
+		this.createCustomResolver('word', (arg, _, msg, [type]) => {
 			if (type === 'reset' || type === 'show') return undefined;
 			if (arg) return arg.toLowerCase();
 			throw msg.language.get('COMMAND_FILTER_UNDEFINED_WORD');
 		});
 	}
 
-	public async add(msg, [word]) {
+	public async add(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is not filtered
-		const { raw, regexp } = msg.guild.settings.filter;
-		if (raw.includes(word) || (regexp && regexp.test(word))) throw msg.language.get('COMMAND_FILTER_FILTERED', true);
+		const raw = message.guild.settings.get('filter.raw') as string[];
+		const regexp = message.guild.security.regexp;
+		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.get('COMMAND_FILTER_FILTERED', true);
 
 		// Perform update
-		await msg.guild.settings.update('filter.raw', word, { action: 'add' });
-		msg.guild.settings.updateFilter();
-		return msg.sendLocale('COMMAND_FILTER_ADDED', [word]);
+		await message.guild.settings.update('filter.raw', word, { arrayAction: 'add' });
+		message.guild.security.updateRegExp(message.guild.settings.get('filter.raw') as string[]);
+		return message.sendLocale('COMMAND_FILTER_ADDED', [word]);
 	}
 
-	public async remove(msg, [word]) {
+	public async remove(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is already filtered
-		const { raw } = msg.guild.settings.filter;
-		if (!raw.includes(word)) throw msg.language.get('COMMAND_FILTER_FILTERED', false);
+		const raw = message.guild.settings.get('filter.raw') as string[];
+		if (!raw.includes(word)) throw message.language.get('COMMAND_FILTER_FILTERED', false);
 
 		// Perform update
-		if (raw.length === 1) return this.reset(msg);
-		await msg.guild.settings.update('filter.raw', word, { action: 'remove' });
-		msg.guild.settings.updateFilter();
-		return msg.sendLocale('COMMAND_FILTER_REMOVED', [word]);
+		if (raw.length === 1) return this.reset(message);
+		await message.guild.settings.update('filter.raw', word, { arrayAction: 'remove' });
+		message.guild.security.updateRegExp(message.guild.settings.get('filter.raw') as string[]);
+		return message.sendLocale('COMMAND_FILTER_REMOVED', [word]);
 	}
 
-	public async reset(msg) {
-		await msg.guild.settings.reset('filter.raw');
-		msg.guild.settings.filter.regexp = null;
-		return msg.sendLocale('COMMAND_FILTER_RESET');
+	public async reset(message: KlasaMessage) {
+		await message.guild.settings.reset('filter.raw');
+		message.guild.security.regexp = null;
+		return message.sendLocale('COMMAND_FILTER_RESET');
 	}
 
-	public show(msg) {
-		const { raw } = msg.guild.settings.filter;
-		return msg.sendMessage(!raw.length
-			? msg.language.get('COMMAND_FILTER_SHOW_EMPTY')
-			: msg.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``));
+	public show(message: KlasaMessage) {
+		const raw = message.guild.settings.get('filter.raw') as string[];
+		return message.sendMessage(!raw.length
+			? message.language.get('COMMAND_FILTER_SHOW_EMPTY')
+			: message.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``));
 	}
 
 }

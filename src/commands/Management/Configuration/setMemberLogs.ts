@@ -1,8 +1,10 @@
-import { Command } from '../../../index';
+import { TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -14,12 +16,12 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg, [channel]) {
-		if (channel === 'here') ({ channel } = msg);
-		else if (channel.type !== 'text') throw msg.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
-		if (msg.guild.settings.channels.log === channel.id) throw msg.language.get('CONFIGURATION_EQUALS');
-		await msg.guild.settings.update('channels.log', channel);
-		return msg.sendLocale('COMMAND_SETMEMBERLOGS_SET', [channel]);
+	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
+		if (channel === 'here') channel = message.channel as TextChannel;
+		else if (channel.type !== 'text') throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
+		if (message.guild.settings.get('channels.log') === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
+		await message.guild.settings.update('channels.log', channel);
+		return message.sendLocale('COMMAND_SETMEMBERLOGS_SET', [channel]);
 	}
 
 }

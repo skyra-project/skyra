@@ -1,42 +1,53 @@
-import { Command, MessageEmbed } from '../../../index';
+import { MessageEmbed, Role } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-const SORT = (x, y) => +(y.position > x.position) || +(x.position === y.position) - 1;
+const SORT = (x: Role, y: Role) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['serverinfo'],
-			requiredPermissions: ['EMBED_LINKS'],
 			cooldown: 15,
 			description: (language) => language.get('COMMAND_GUILDINFO_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_GUILDINFO_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
 	}
 
-	public async run(msg) {
+	public async run(message: KlasaMessage) {
 		let tChannels = 0, vChannels = 0, cChannels = 0;
-		for (const channel of msg.guild.channels.values()) {
+		for (const channel of message.guild.channels.values()) {
 			if (channel.type === 'text') tChannels++;
 			else if (channel.type === 'voice') vChannels++;
 			else cChannels++;
 		}
 
-		const i18n = msg.language, { COMMAND_SERVERINFO_TITLES } = i18n.language, roles = [...msg.guild.roles.values()].sort(SORT);
+		const serverInfoTitles = message.language.get('COMMAND_SERVERINFO_TITLES') as unknown as ServerInfoTitles;
+		const roles = [...message.guild.roles.values()].sort(SORT);
 		roles.pop();
-		const owner = await this.client.users.fetch(msg.guild.ownerID);
-		return msg.sendEmbed(new MessageEmbed()
-			.setColor(msg.member.displayColor || msg.guild.me.displayColor || 0xDFDFDF)
-			.setThumbnail(msg.guild.iconURL())
-			.setTitle(`${msg.guild.name} [${msg.guild.id}]`)
-			.splitFields(i18n.get('COMMAND_SERVERINFO_ROLES', !roles.length ? i18n.get('COMMAND_SERVERINFO_NOROLES') : roles.map((role) => role.name).join(', ')))
-			.addField(COMMAND_SERVERINFO_TITLES.CHANNELS, i18n.get('COMMAND_SERVERINFO_CHANNELS',
-				tChannels, vChannels, cChannels, msg.guild.afkChannelID, msg.guild.afkTimeout), true)
-			.addField(COMMAND_SERVERINFO_TITLES.MEMBERS, i18n.get('COMMAND_SERVERINFO_MEMBERS',
-				msg.guild.memberCount, owner), true)
-			.addField(COMMAND_SERVERINFO_TITLES.OTHER, i18n.get('COMMAND_SERVERINFO_OTHER',
-				msg.guild.roles.size, msg.guild.region, msg.guild.createdAt, msg.guild.verificationLevel), true));
+		const owner = await this.client.users.fetch(message.guild.ownerID);
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(message.member.displayColor || message.guild.me.displayColor || 0xDFDFDF)
+			.setThumbnail(message.guild.iconURL())
+			.setTitle(`${message.guild.name} [${message.guild.id}]`)
+			.splitFields(message.language.get('COMMAND_SERVERINFO_ROLES', !roles.length
+				? message.language.get('COMMAND_SERVERINFO_NOROLES')
+				: roles.map((role) => role.name).join(', ')))
+			.addField(serverInfoTitles.CHANNELS, message.language.get('COMMAND_SERVERINFO_CHANNELS',
+				tChannels, vChannels, cChannels, message.guild.afkChannelID, message.guild.afkTimeout), true)
+			.addField(serverInfoTitles.MEMBERS, message.language.get('COMMAND_SERVERINFO_MEMBERS',
+				message.guild.memberCount, owner), true)
+			.addField(serverInfoTitles.OTHER, message.language.get('COMMAND_SERVERINFO_OTHER',
+				message.guild.roles.size, message.guild.region, message.guild.createdAt, message.guild.verificationLevel), true));
 	}
 
+}
+
+interface ServerInfoTitles {
+	CHANNELS: string;
+	MEMBERS: string;
+	OTHER: string;
 }

@@ -1,8 +1,11 @@
-import { Command } from '../../../index';
+import { TextChannel } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage, SettingsFolderUpdateResult } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { GuildSettingsDisabledCommandsChannels } from '../../../lib/types/Misc';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -10,9 +13,9 @@ export default class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_MANAGECOMMANDCHANNEL_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
+			subcommands: true,
 			usage: '<show|add|remove|reset> (channel:channel) (command:command)',
-			usageDelim: ' ',
-			subcommands: true
+			usageDelim: ' '
 		});
 
 		this.createCustomResolver('channel', async(arg, possible, msg) => {
@@ -30,45 +33,72 @@ export default class extends Command {
 		});
 	}
 
-	public async show(msg, [channel]) {
-		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id];
-		if (disabledCommands && disabledCommands.length) return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_SHOW', [channel, `\`${disabledCommands.join('` | `')}\``]);
-		throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY');
+	public async show(message: KlasaMessage, [channel]: [TextChannel]) {
+		const disabledCommandsChannels = message.guild.settings.get('disabledCommandsChannels') as GuildSettingsDisabledCommandsChannels;
+		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
+		if (entry && entry.commands.length) {
+			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_SHOW', [channel, `\`${entry.commands.join('` | `')}\``]);
+		}
+		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY');
 	}
 
-	public async add(msg, [channel, command]) {
-		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id] || [];
-		if (disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
-		await msg.guild.settings.update('disabledCommandsChannels', {
-			...msg.guild.settings.disabledCommandsChannels,
-			[channel.id]: disabledCommands.concat(command.name)
-		});
-		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [channel, command.name]);
+	public async add(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
+		const disabledCommandsChannels = message.guild.settings.get('disabledCommandsChannels') as GuildSettingsDisabledCommandsChannels;
+		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
+
+		if (index === -1) {
+			await message.guild.settings.update('disabledCommandsChannels', {
+				channel: channel.id,
+				commands: [command.name]
+			}, { arrayAction: 'add' });
+		} else {
+			const entry = disabledCommandsChannels[index];
+			if (entry.commands.includes(command.name)) throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
+
+			await message.guild.settings.update('disabledCommandsChannels', {
+				channel: entry.channel,
+				commands: entry.commands.concat(command.name)
+			}, { arrayIndex: index });
+		}
+		return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [channel, command.name]);
 	}
 
-	public async remove(msg, [channel, command]) {
-		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id] || [];
-		if (!disabledCommands.includes(command.name)) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', channel);
-		await msg.guild.settings.update('disabledCommandsChannels', getRemovedObject(msg.guild.settings.disabledCommandsChannels, channel, command));
-		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel, command.name]);
+	public async remove(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
+		const disabledCommandsChannels = message.guild.settings.get('disabledCommandsChannels') as GuildSettingsDisabledCommandsChannels;
+		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
+
+		if (index !== -1) {
+			const entry = disabledCommandsChannels[index];
+			const commandIndex = entry.commands.indexOf(command.name);
+			if (commandIndex !== -1) {
+				let results: SettingsFolderUpdateResult;
+				if (entry.commands.length > 1) {
+					const clone = entry.commands.slice();
+					clone.splice(commandIndex, 1);
+					results = await message.guild.settings.update('disabledCommandsChannels', {
+						channel: entry.channel,
+						commands: clone
+					});
+				} else {
+					results = await message.guild.settings.update('disabledCommandsChannels', entry, { arrayAction: 'remove' });
+				}
+
+				if (results.errors.length) throw String(results.errors[0]);
+				return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel, command.name]);
+			}
+		}
+		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', channel);
 	}
 
-	public async reset(msg, [channel]) {
-		const disabledCommands = msg.guild.settings.disabledCommandsChannels[channel.id];
-		if (!disabledCommands) throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY');
-		delete msg.guild.settings.disabledCommandsChannels[channel.id];
-		await msg.guild.settings.update('disabledCommandsChannels', { ...msg.guild.settings.disabledCommandsChannels });
-		return msg.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_RESET', [channel]);
+	public async reset(message: KlasaMessage, [channel]: [TextChannel]) {
+		const disabledCommandsChannels = message.guild.settings.get('disabledCommandsChannels') as GuildSettingsDisabledCommandsChannels;
+		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
+
+		if (entry) {
+			await message.guild.settings.update('disabledCommandsChannels', entry, { arrayAction: 'remove' });
+			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_RESET', [channel]);
+		}
+		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY');
 	}
 
-}
-
-function getRemovedObject(all, channel, command) {
-	const disabledCommands = all[channel.id];
-	if (disabledCommands.length > 1) {
-		delete all[channel.id];
-		return { ...all };
-	}
-	const commands = disabledCommands.slice().splice(disabledCommands.indexOf(command.name), 1);
-	return { ...all, [channel.id]: commands };
 }

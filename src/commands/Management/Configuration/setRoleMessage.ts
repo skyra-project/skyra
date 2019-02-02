@@ -1,24 +1,24 @@
-import { Command, Serializer } from '../../../index';
-const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
+import { CommandStore, KlasaClient, KlasaMessage, Resolver } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			bucket: 2,
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
 			permissionLevel: 6,
+			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '(message:message)'
 		});
 
-		this.createCustomResolver('message', async(arg, possible, msg) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
+		this.createCustomResolver('message', async(arg, _, msg) => {
+			if (!arg || !Resolver.regex.snowflake.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 
-			const rolesChannel = msg.guild.settings.channels.roles;
+			const rolesChannel = msg.guild.settings.get('channels.roles') as string;
 			if (!rolesChannel) throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 
 			if (!msg.guild.channels.has(rolesChannel)) {
@@ -26,7 +26,7 @@ export default class extends Command {
 				throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 			}
 			if (rolesChannel !== msg.channel.id) throw msg.language.get('COMMAND_SETMESSAGEROLE_WRONGCHANNEL', `<#${rolesChannel}>`);
-			if (msg.guild.settings.roles.messageReaction === arg) throw msg.language.get('CONFIGURATION_EQUALS');
+			if (msg.guild.settings.get('roles.messageReaction') === arg) throw msg.language.get('CONFIGURATION_EQUALS');
 
 			const message = await msg.channel.messages.fetch(arg).catch(() => null);
 			if (message) return message;
@@ -34,9 +34,9 @@ export default class extends Command {
 		});
 	}
 
-	public async run(msg, [message]) {
-		await msg.guild.settings.update('roles.messageReaction', message.id);
-		return msg.sendLocale('COMMAND_SETMESSAGEROLE_SET');
+	public async run(message: KlasaMessage, [reactionMessage]: [KlasaMessage]) {
+		await message.guild.settings.update('roles.messageReaction', reactionMessage.id);
+		return message.sendLocale('COMMAND_SETMESSAGEROLE_SET');
 	}
 
 }

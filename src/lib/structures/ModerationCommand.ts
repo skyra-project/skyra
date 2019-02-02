@@ -1,5 +1,5 @@
-import { Client, GuildMember, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
+import { GuildMember, User } from 'discord.js';
+import { CommandOptions, CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { ModerationTypeKeys } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand } from './SkyraCommand';
@@ -21,7 +21,7 @@ export abstract class ModerationCommand extends SkyraCommand {
 	 */
 	public modType: ModerationTypeKeys;
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
 		super(client, store, file, directory, util.mergeDefault({
 			requiredMember: false,
 			runIn: ['text'],

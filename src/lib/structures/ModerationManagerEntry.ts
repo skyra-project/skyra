@@ -47,6 +47,10 @@ export class ModerationManagerEntry {
 		return Boolean(this.type & ModerationActions.Temporary);
 	}
 
+	public get basicType(): ModerationTypeKeys {
+		return this.type & ~(ModerationActions.Appealed | ModerationActions.Temporary);
+	}
+
 	public get cacheExpired(): boolean {
 		return Date.now() > this[kTimeout];
 	}
@@ -61,14 +65,13 @@ export class ModerationManagerEntry {
 
 		const now = Date.now();
 		const user = typeof this.user === 'string' ? this.user : this.user.id;
-		// @ts-ignore
 		const entries = this.manager.filter((entry) => (typeof entry.user === 'string' ? entry.user : entry.user.id) === user && entry.createdAt - now < TIME.MINUTE);
 
 		// If there is no moderation log for this user that has not received a report, it should send
 		if (!entries.size) return true;
 
 		// If there was a log with the same type in the last minute, do not duplicate
-		if (entries.some((entry) => entry.type === this.type)) return false;
+		if (entries.some((entry) => entry.basicType === this.basicType)) return false;
 
 		// If this log is a ban or an unban, but the user was softbanned recently, abort
 		if ((this.type === ModerationTypeKeys.Ban || this.type === ModerationTypeKeys.UnBan) && entries.some((entry) => entry.type === ModerationTypeKeys.Softban)) return false;

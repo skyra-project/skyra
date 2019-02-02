@@ -9,6 +9,9 @@ export interface EmojiData {
 	animated: boolean;
 }
 
+export interface UserSettingsBadgeList extends Array<string> { }
+export interface UserSettingsBannerList extends Array<string> { }
+
 export interface GuildSettingsDisabledCommandsChannels extends Array<{ channel: string; commands: string[] }> { }
 export interface GuildSettingsStickyRoles extends Array<GuildSettingsStickyRole> { }
 export interface GuildSettingsRolesAuto extends Array<{ id: string; points: number }> { }

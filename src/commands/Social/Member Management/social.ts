@@ -1,8 +1,9 @@
-import { Command } from '../../../index';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
@@ -21,7 +22,7 @@ export default class extends Command {
 		});
 	}
 
-	public async add(message, [user, amount]) {
+	public async add(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
 		let newAmount;
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
 		if (member) {
@@ -45,7 +46,7 @@ export default class extends Command {
 		return message.sendLocale('COMMAND_SOCIAL_ADD', [user.username, newAmount, amount]);
 	}
 
-	public async remove(message, [user, amount]) {
+	public async remove(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
 		let newAmount;
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
 		if (member) {
@@ -69,7 +70,7 @@ export default class extends Command {
 		return message.sendLocale('COMMAND_SOCIAL_REMOVE', [user.username, newAmount, amount]);
 	}
 
-	public async set(message, [user, amount]) {
+	public async set(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
 		// If sets to zero, it shall reset
 		if (amount === 0) return this.reset(message, [user]);
 
@@ -101,7 +102,7 @@ export default class extends Command {
 		return message.sendLocale(variation > 0 ? 'COMMAND_SOCIAL_ADD' : 'COMMAND_SOCIAL_REMOVE', [user.username, original + variation, Math.abs(variation)]);
 	}
 
-	public async reset(message, [user]) {
+	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
 		if (member) {
 			// Update from SettingsGateway
@@ -122,7 +123,7 @@ export default class extends Command {
 		return message.sendLocale('COMMAND_SOCIAL_RESET', [user.username]);
 	}
 
-	public _getMemberSettings(guildID, userID) {
+	public _getMemberSettings(guildID: string, userID: string) {
 		return this.client.providers.default.db
 			.table('localScores')
 			.getAll([guildID, userID], { index: 'guild_user' })

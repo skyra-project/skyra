@@ -16,7 +16,8 @@ export default class extends Extendable {
 		return responses.first();
 	}
 
-	public async ask(content: string, options: MessageOptions, promptOptions: MessageExtendablesAskOptions): Promise<boolean> {
+	public async ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+	public async ask(content: string | MessageOptions, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean> {
 		const self = this as Message;
 		const message = await self.send(content, options);
 		return !self.guild || self.channel.permissionsFor(self.guild.me).has(FLAGS.ADD_REACTIONS)

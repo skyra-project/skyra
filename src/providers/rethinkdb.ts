@@ -1,11 +1,11 @@
 import { Provider, util } from 'klasa';
-import { MasterPool, r, R, TableChangeResult, WriteResult } from 'rethinkdb-ts';
+import { MasterPool, r, TableChangeResult, WriteResult } from 'rethinkdb-ts';
 import { DatabaseInit } from '../lib/util/DatabaseInit';
 
 export default class RethinkDB extends Provider {
 
-	public db: R;
-	public pool: MasterPool;
+	public db = r;
+	public pool: MasterPool = null;
 
 	public async init(): Promise<void> {
 		const options = util.mergeDefault({

@@ -2,6 +2,7 @@ import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { CLIENT_ID } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
 import { assetsFolder } from '../../Skyra';
@@ -10,7 +11,7 @@ export default class extends SkyraCommand {
 
 	private template: Buffer = null;
 	private readonly ownerID = this.client.options.ownerID;
-	private readonly skyraID = this.client.user.id;
+	private readonly skyraID = CLIENT_ID;
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

@@ -1,6 +1,7 @@
 import { Canvas } from 'canvas-constructor';
 import { Message, User } from 'discord.js';
 import { join } from 'path';
+import { assetsFolder } from '../../../Skyra';
 import { loadImage } from '../util';
 
 const REELS = [
@@ -154,8 +155,8 @@ export class Slotmachine {
 
 	public static async init(): Promise<void> {
 		const [icon, shiny] = await Promise.all([
-			loadImage(join(__dirname, '../../../../assets/images/social/sm-icons.png')),
-			loadImage(join(__dirname, '../../../../assets/images/social/shiny-icon.png'))
+			loadImage(join(assetsFolder, 'images', 'social', 'sm-icons.png')),
+			loadImage(join(assetsFolder, 'images', 'social', 'shiny-icon.png'))
 		]);
 		Slotmachine.images.ICON = icon;
 		Slotmachine.images.SHINY = shiny;

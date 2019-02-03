@@ -6,7 +6,7 @@ import { CLIENT_OPTIONS, TOKENS } from '../config';
 import { SkyraClient } from './lib/SkyraClient';
 inspect.defaultOptions.depth = 1;
 
-export const rootFolder = join(__dirname, '..');
+export const rootFolder = join(__dirname, '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
 
 const { FLAGS } = Permissions;

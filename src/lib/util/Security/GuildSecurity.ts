@@ -22,15 +22,12 @@ export class GuildSecurity {
 	/**
 	 * The AntiRaid instance managed by this guild, if exists
 	 */
-	public raid = new AntiRaid(this.guild);
+	public raid: AntiRaid;
 
 	/**
 	 * The ratelimit management for the no-mention-spam behavior
 	 */
-	public nms = new RateLimitManager(
-		this.guild.settings.get('no-mention-spam.mentionsAllowed') as number,
-		this.guild.settings.get('no-mention-spam.timePeriod') as number * 1000
-	);
+	public nms: RateLimitManager;
 
 	/**
 	 * The lockdowns map
@@ -44,6 +41,11 @@ export class GuildSecurity {
 
 	public constructor(guild: Guild) {
 		this.guild = guild;
+		this.raid = new AntiRaid(this.guild);
+		this.nms = new RateLimitManager(
+			this.guild.settings.get('no-mention-spam.mentionsAllowed') as number,
+			this.guild.settings.get('no-mention-spam.timePeriod') as number * 1000
+		);
 	}
 
 	/**

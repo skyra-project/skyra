@@ -1227,10 +1227,6 @@ export default class extends Language {
 		 * SYSTEM COMMANDS
 		 */
 
-		COMMAND_BACKUP_DESCRIPTION: 'Performs a backup of the database.',
-		COMMAND_BACKUP_EXTENDED: builder.display('backup', {
-			extendedHelp: `The backup command force-starts the backup task which runs twice a week.`
-		}),
 		COMMAND_DM_DESCRIPTION: 'Sends a Direct Message. Reserved for bot owner for replying purposes.',
 		COMMAND_DM_EXTENDED: builder.display('dm', {
 			extendedHelp: `The DM command is reserved for bot owner, and it's only used for very certain purposes, such as replying feedback

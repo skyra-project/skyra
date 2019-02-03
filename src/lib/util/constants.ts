@@ -1,3 +1,5 @@
+import { KlasaClientOptions } from 'klasa';
+
 const BAN        = 0b0000;
 const KICK       = 0b0001;
 const MUTE       = 0b0010;
@@ -107,3 +109,10 @@ export enum ModerationSchemaKeys {
 	Type = 'type',
 	User = 'userID'
 }
+
+export const clientOptions = {
+	nms: {
+		everyone: 5,
+		role: 2
+	}
+} as KlasaClientOptions;

@@ -1,15 +1,19 @@
 import { Collection, PermissionString, Webhook } from 'discord.js';
-import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
+import { KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
 import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
 import { VERSION, WEBHOOK_ERROR } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { MemberGateway } from './structures/MemberGateway';
 import { RawEventStore } from './structures/RawEventStore';
+import { clientOptions } from './util/constants';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { Leaderboard } from './util/Leaderboard';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { enumerable } from './util/util';
+
+import './extensions/SkyraGuild';
+import './extensions/SkyraGuildMember';
 
 export class SkyraClient extends KlasaClient {
 
@@ -62,7 +66,7 @@ export class SkyraClient extends KlasaClient {
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
 	public constructor(options?: KlasaClientOptions) {
-		super(options);
+		super(util.mergeDefault(clientOptions, options));
 
 		const { members = {} } = this.options.gateways;
 		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
@@ -126,7 +130,7 @@ SkyraClient.defaultGuildSchema
 		.add('roles', 'TextChannel')
 		.add('spam', 'TextChannel'))
 	.add('disabledChannels', 'TextChannel', { array: true })
-	.add('disabledCommandsChannels', 'any', { default: {}, configurable: false })
+	.add('disabledCommandsChannels', 'any', { array: true, configurable: false })
 	.add('events', (folder) => folder
 		.add('banAdd', 'Boolean', { default: false })
 		.add('banRemove', 'Boolean', { default: false })

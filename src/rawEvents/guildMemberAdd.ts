@@ -1,7 +1,6 @@
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSGuildMemberAdd } from '../lib/types/Discord';
-import { GuildSettingsStickyRoles } from '../lib/types/Misc';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 

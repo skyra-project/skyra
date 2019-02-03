@@ -46,14 +46,6 @@ export class Leaderboard {
 		this.client = client;
 	}
 
-	/**
-	 * Get the global leaderboard
-	 */
-	public async fetch(): Promise<Collection<string, LeaderboardUser>>;
-	/**
-	 * Get the leaderboard for the selected guild
-	 * @param guild A guild id
-	 */
 	public async fetch(guild?: string): Promise<Collection<string, LeaderboardUser>> {
 		if (guild) {
 			if (this._tempPromises.guilds.has(guild)) await this._tempPromises.guilds.get(guild);

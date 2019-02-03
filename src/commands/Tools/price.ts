@@ -1,6 +1,9 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { URL } from 'url';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetch } from '../../lib/util/util';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

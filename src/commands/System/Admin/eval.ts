@@ -4,6 +4,8 @@ import { Client, CommandStore, KlasaMessage, Stopwatch, Type, util } from 'klasa
 import { join } from 'path';
 import { ScriptTarget, transpileModule, TranspileOptions } from 'typescript';
 import { inspect } from 'util';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { fetch } from '../../../lib/util/util';
 import { rootFolder } from '../../../Skyra';
 
 const tsTranspileOptions: TranspileOptions = { compilerOptions: { allowJs: true, checkJs: true, target: ScriptTarget.ESNext } };
@@ -14,7 +16,7 @@ const CS_EXEC = join(BWD_FOLDER, 'cs', 'eval.exe');
 const CPP_FILE = join(BWD_FOLDER, 'cpp', 'eval.cpp');
 const CPP_EXEC = join(BWD_FOLDER, 'cpp', 'eval.exe');
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
 	private readonly timeout = 60000;
 
@@ -36,11 +38,11 @@ export default class extends Command {
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime, languageType);
 
 		if (message.flags.silent) {
-			if (!success && result && result.stack) this.client.emit('error', result.stack);
+			if (!success && result && (result as unknown as Error).stack) this.client.emit('error', (result as unknown as Error).stack);
 			return null;
 		}
 
-		const footer = codeBlock('ts', type);
+		const footer = util.codeBlock('ts', type);
 		const sendAs = message.flags.output || message.flags['output-to'] || (message.flags.log ? 'log' : null);
 		return this.handleMessage(message, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer, language });
 	}
@@ -60,15 +62,15 @@ export default class extends Command {
 	}
 
 	private timedEval(message: KlasaMessage, code: string, flagTime: number, languageType: EvalLanguage) {
-		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
+		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code, languageType);
 		return Promise.race([
-			sleep(flagTime).then(() => ({
+			util.sleep(flagTime).then(() => ({
 				result: message.language.get('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'
 			})),
-			this.eval(message, code)
+			this.eval(message, code, languageType)
 		]);
 	}
 
@@ -76,9 +78,9 @@ export default class extends Command {
 	private async eval(message: KlasaMessage, code: string, languageType: EvalLanguage) {
 		switch (languageType) {
 			case EvalLanguage.TypeScript:
-				return this.eval(message, transpileModule(code, tsTranspileOptions).outputText);
+				return this.nativeEval(message, transpileModule(code, tsTranspileOptions).outputText);
 			case EvalLanguage.JavaScript:
-				return this.eval(message, code);
+				return this.nativeEval(message, code);
 			default:
 				return this.foreignEval(message, code, languageType);
 		}
@@ -94,7 +96,7 @@ export default class extends Command {
 			result = eval(code);
 			syncTime = stopwatch.toString();
 			type = new Type(result);
-			if (isThenable(result)) {
+			if (util.isThenable(result)) {
 				thenable = true;
 				stopwatch.restart();
 				result = await result;
@@ -116,31 +118,31 @@ export default class extends Command {
 				showHidden: Boolean(message.flags.showHidden)
 			});
 		}
-		return { success, type, time: this.formatTime(syncTime, asyncTime), result: clean(result) };
+		return { success, type, time: this.formatTime(syncTime, asyncTime), result: util.clean(result) };
 	}
 
-	private foreignEval(message: KlasaMessage, code: string, languageType: EvalLanguage) {
+	private async foreignEval(message: KlasaMessage, code: string, languageType: EvalLanguage) {
 		const controller = FOREIGN_CONTROLLERS[languageType];
 		const stopwatch = new Stopwatch();
 
 		try {
 			const preprocessed = await controller.before(code);
+
+			stopwatch.reset();
+			try {
+				const evaluated = await controller.evaluate(message, preprocessed);
+				const time = this.formatTime(stopwatch, null);
+				const { type, value } = controller.extract(evaluated);
+				return { success: true, type, time, result: value };
+			} catch (error) {
+				return { success: false, type: 'Error', time: this.formatTime(stopwatch, null), result: String(error) };
+			}
 		} catch (error) {
 			return { success: false, type: 'Compiler Error', time: this.formatTime(stopwatch, null), result: String(error) };
 		}
-
-		stopwatch.reset();
-		try {
-			const evaluated = await controller.evaluate(message, preprocessed);
-			const time = this.formatTime(stopwatch.toString(), null);
-			const { type, value } = controller.extract(evaluated);
-			return { success: true, type, time, result: value };
-		} catch (error) {
-			return { success: false, type: 'Error', time: this.formatTime(stopwatch, null), result: String(error) };
-		}
 	}
 
-	private formatTime(syncTime: number, asyncTime: number) {
+	private formatTime(syncTime: Stopwatch, asyncTime: number) {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
 
@@ -178,7 +180,7 @@ export default class extends Command {
 					return this.handleMessage(message, options, { success, result, time, footer, language });
 				}
 				return message.sendMessage(message.language.get(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
-					time, codeBlock(language, result), footer));
+					time, util.codeBlock(language, result), footer));
 			}
 		}
 	}
@@ -196,41 +198,8 @@ export default class extends Command {
 
 }
 
-const FOREIGN_CONTROLLERS: Record<EvalLanguage, ForeignController> = {
-	[EvalLanguage.CSharp]: {
-		async before(code: string) {
-			const output = templates.get(EvalLanguage.CSharp)(/return/.test(code) ? code : `${code}\n\t\treturn null;`);
-			await outputFileAtomic(CS_FILE, output);
-			await exec(`csc ${CS_FILE}`);
-			return output;
-		},
-		async evaluate(_: KlasaMessage, code: string) {
-			return exec(`mono ${CS_EXEC}`);
-		},
-		extract(output: string) {
-			const [type, ...rest] = output.split('\n');
-			return { type, value: rest.join('\n') };
-		}
-	},
-	[EvalLanguage.CPlusPlus]: {
-		async before(code: string) {
-			const output = templates.get(EvalLanguage.CPlusPlus)(code.replace(/return (.+)/, 'auto __v = $1;'));
-			await outputFileAtomic(CPP_FILE, code);
-			await exec(`g++ ${CPP_FILE} -o ${CPP_EXEC} -Wall -Wextra`);
-			return output;
-		},
-		async evaluate(_: KlasaMessage, code: string) {
-			return exec(CPP_EXEC);
-		},
-		extract(output: string) {
-			const [type, ...rest] = output.split('\n');
-			return { type, value: rest.join('\n') };
-		}
-	}
-};
-
 interface ForeignController {
-	before(code: string): string;
+	before(code: string): string | Promise<string>;
 	evaluate(message: KlasaMessage, code: string): unknown;
 	extract(output: unknown): {
 		type: string;
@@ -307,3 +276,46 @@ int main()
 }
     `]
 ]);
+
+const FOREIGN_CONTROLLERS: Record<EvalLanguage, ForeignController> = {
+	[EvalLanguage.JavaScript]: {
+		before(code: string) { return code; },
+		evaluate() { return null; },
+		extract() { return null; }
+	},
+	[EvalLanguage.TypeScript]: {
+		before(code: string) { return code; },
+		evaluate() { return null; },
+		extract() { return null; }
+	},
+	[EvalLanguage.CSharp]: {
+		async before(code: string) {
+			const output = templates.get(EvalLanguage.CSharp)(/return/.test(code) ? code : `${code}\n\t\treturn null;`);
+			await outputFileAtomic(CS_FILE, output);
+			await exec(`csc ${CS_FILE}`);
+			return output;
+		},
+		async evaluate() {
+			return exec(`mono ${CS_EXEC}`);
+		},
+		extract(output: string) {
+			const [type, ...rest] = output.split('\n');
+			return { type, value: rest.join('\n') };
+		}
+	},
+	[EvalLanguage.CPlusPlus]: {
+		async before(code: string) {
+			const output = templates.get(EvalLanguage.CPlusPlus)(code.replace(/return (.+)/, 'auto __v = $1;'));
+			await outputFileAtomic(CPP_FILE, code);
+			await exec(`g++ ${CPP_FILE} -o ${CPP_EXEC} -Wall -Wextra`);
+			return output;
+		},
+		async evaluate() {
+			return exec(CPP_EXEC);
+		},
+		extract(output: string) {
+			const [type, ...rest] = output.split('\n');
+			return { type, value: rest.join('\n') };
+		}
+	}
+};

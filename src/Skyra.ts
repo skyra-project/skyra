@@ -2,12 +2,13 @@ import { Canvas } from 'canvas-constructor';
 import { Permissions } from 'discord.js';
 import { join } from 'path';
 import { inspect } from 'util';
-import { CLIENT_OPTIONS, TOKENS } from '../config';
+import { CLIENT_OPTIONS, DEV, TOKENS } from '../config';
 import { SkyraClient } from './lib/SkyraClient';
 inspect.defaultOptions.depth = 1;
 
 export const rootFolder = join(__dirname, '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
+export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
 
 const { FLAGS } = Permissions;
 

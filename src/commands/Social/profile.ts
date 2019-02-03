@@ -5,10 +5,11 @@ import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/namespaces/UserSettings';
 import { fetchAvatar } from '../../lib/util/util';
+import { cdnFolder } from '../../Skyra';
 
 // Skyra's CDN assets folder
-const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
-const BADGES_FOLDER = join('/var', 'www', 'assets', 'img', 'badges');
+const THEMES_FOLDER = join(cdnFolder, 'img', 'banners');
+const BADGES_FOLDER = join(cdnFolder, 'img', 'badges');
 
 export default class extends SkyraCommand {
 

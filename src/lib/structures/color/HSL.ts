@@ -77,6 +77,4 @@ export class HSL {
 
 }
 
-import { B10 } from './B10';
-import { HEX } from './HEX';
 import { RGB } from './RGB';

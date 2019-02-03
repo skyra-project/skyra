@@ -100,7 +100,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return member;
 	}
 
-	public sendModlog(message: KlasaMessage, target: User, reason: string, extraData?: unknown): Promise<ModerationManagerEntry> {
+	public sendModlog(message: KlasaMessage, target: User, reason: string, extraData?: object): Promise<ModerationManagerEntry> {
 		if (Array.isArray(reason)) reason = reason.join(' ');
 		const modlog = message.guild.moderation.new
 			.setModerator(message.author.id)

@@ -33,7 +33,7 @@ export default class extends ModerationCommand {
 
 		// Cache and concatenate with the current roles
 		const { position } = message.guild.me.roles.highest;
-		const roles = [...new Set<Role>((modlog.extraData || [])
+		const roles = [...new Set<Role>((modlog.extraData as string[] || [])
 			// Map by Role instances
 			.map((id: string) => message.guild.roles.get(id))
 			// Concatenate with the member's roles

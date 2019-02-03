@@ -29,7 +29,7 @@ export default class extends Task {
 		// If the member is found, update the roles
 		if (member) {
 			const { position } = guild.me.roles.highest;
-			const roles = (modlog[ModerationSchemaKeys.ExtraData] || [])
+			const roles = (modlog[ModerationSchemaKeys.ExtraData] as string[] || [])
 				.concat(member.roles.filter((role) => role.position < position && !role.managed).map((role) => role.id));
 			await member.edit({ roles }).catch(() => null);
 		}

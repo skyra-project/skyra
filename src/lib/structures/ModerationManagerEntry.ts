@@ -13,7 +13,7 @@ export class ModerationManagerEntry {
 	public id: string = null;
 	public case: number = null;
 	public duration: number | null = null;
-	public extraData: unknown = null;
+	public extraData: object = null;
 	public moderator: string | User | null = null;
 	public reason: string | null = null;
 	public type: ModerationTypeKeys = null;
@@ -176,7 +176,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setExtraData(value: unknown) {
+	public setExtraData(value: object) {
 		this.extraData = value;
 		return this;
 	}

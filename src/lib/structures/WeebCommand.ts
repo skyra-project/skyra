@@ -1,5 +1,5 @@
-import { Client, MessageEmbed, TextChannel, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
+import { MessageEmbed, TextChannel, User } from 'discord.js';
+import { CommandOptions, CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { URL } from 'url';
 import { TOKENS, VERSION } from '../../../config';
 import { fetch } from '../util/util';
@@ -18,7 +18,7 @@ export class WeebCommand extends SkyraCommand {
 
 	private readonly requiresUser = Boolean(this.usage.parsedUsage.length);
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
 		super(client, store, file, directory, util.mergeDefault({
 			bucket: 2,
 			cooldown: 30,

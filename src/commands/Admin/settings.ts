@@ -1,5 +1,5 @@
 import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, Schema, SchemaPiece, SettingsFolderUpdateResult, util } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage, Schema, SchemaEntry, SettingsFolderUpdateResult, util } from 'klasa';
 import { SettingsMenu } from '../../lib/structures/SettingsMenu';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
@@ -20,11 +20,11 @@ export default class extends SkyraCommand {
 		});
 
 		this
-			.createCustomResolver('key', (arg, _, message, [action]) => {
+			.createCustomResolver('key', (arg, _, message, [action]: [string]) => {
 				if (['show', 'menu'].includes(action) || arg) return arg;
 				throw message.language.get('COMMAND_CONF_NOKEY');
 			})
-			.createCustomResolver('value', (arg, _, message, [action]) => {
+			.createCustomResolver('value', (arg, _, message, [action]: [string]) => {
 				if (!['set', 'remove'].includes(action) || arg) return arg;
 				throw message.language.get('COMMAND_CONF_NOVALUE');
 			});
@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 		const piece = this.getPath(key);
 		if (!piece || (piece.type === 'Folder'
 			? !(piece as Schema).configurableKeys.length
-			: !(piece as SchemaPiece).configurable)) return message.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
+			: !(piece as SchemaEntry).configurable)) return message.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
 		if (piece.type === 'Folder') {
 			return message.sendLocale('COMMAND_CONF_SERVER', [
 				key ? `: ${key.split('.').map(util.toTitleCase).join('/')}` : '',
@@ -52,17 +52,17 @@ export default class extends SkyraCommand {
 
 	public async set(message: KlasaMessage, [key, ...valueToSet]: string[]) {
 		const status = await message.guild.settings.update(key, valueToSet.join(' '), { onlyConfigurable: true, arrayAction: 'add' });
-		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_UPDATED', [key, message.guild.settings.display(message, status.updated[0].piece)]);
+		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_UPDATED', [key, message.guild.settings.display(message, status.updated[0].entry)]);
 	}
 
 	public async remove(message: KlasaMessage, [key, ...valueToRemove]: string[]) {
 		const status = await message.guild.settings.update(key, valueToRemove.join(' '), { onlyConfigurable: true, arrayAction: 'remove' });
-		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_UPDATED', [key, message.guild.settings.display(message, status.updated[0].piece)]);
+		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_UPDATED', [key, message.guild.settings.display(message, status.updated[0].entry)]);
 	}
 
 	public async reset(message: KlasaMessage, [key]: string[]) {
 		const status = await message.guild.settings.reset(key);
-		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_RESET', [key, message.guild.settings.display(message, status.updated[0].piece)]);
+		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_RESET', [key, message.guild.settings.display(message, status.updated[0].entry)]);
 	}
 
 	private getPath(key: string) {

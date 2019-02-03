@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 
 	private ask(message: KlasaMessage, content: string) {
 		try {
-			return message.ask(message.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
+			return message.ask(message.language.get('COMMAND_ANNOUNCEMENT_PROMPT') as string, {
 				embed: new MessageEmbed()
 					.setColor(message.member.displayColor || 0xDFDFDF)
 					.setDescription(content)

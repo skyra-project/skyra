@@ -1,6 +1,5 @@
 /* eslint "no-bitwise": "off" */
 import { Collection, Guild, User } from 'discord.js';
-import { R, RTable } from 'rethinkdb-ts';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
@@ -177,7 +176,7 @@ enum CacheActions {
 
 export interface ModerationManagerInsertData {
 	[ModerationSchemaKeys.Duration]: number | null;
-	[ModerationSchemaKeys.ExtraData]: unknown;
+	[ModerationSchemaKeys.ExtraData]: object | null;
 	[ModerationSchemaKeys.Moderator]: string | null;
 	[ModerationSchemaKeys.Reason]: string | null;
 	[ModerationSchemaKeys.Type]: ModerationManagerTypeResolvable;
@@ -187,7 +186,7 @@ export interface ModerationManagerInsertData {
 export interface ModerationManagerUpdateData {
 	id?: string;
 	[ModerationSchemaKeys.Duration]?: number | null;
-	[ModerationSchemaKeys.ExtraData]?: unknown;
+	[ModerationSchemaKeys.ExtraData]?: object | null;
 	[ModerationSchemaKeys.Moderator]?: string | User | null;
 	[ModerationSchemaKeys.Reason]?: string | null;
 }

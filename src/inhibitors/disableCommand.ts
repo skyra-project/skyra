@@ -4,7 +4,7 @@ import { GuildSettingsDisabledCommandsChannels } from '../lib/types/Misc';
 
 export default class extends Inhibitor {
 
-	public async run(message: KlasaMessage, command: SkyraCommand): Promise<void> {
+	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.enabled || !message.guild) return;
 
 		const disabledChannels = message.guild.settings.get('disabledChannels') as string[];

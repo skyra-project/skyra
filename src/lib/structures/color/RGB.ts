@@ -19,22 +19,22 @@ export class RGB {
 		this.valid();
 	}
 
-	public valid(): boolean {
+	public valid() {
 		if (this.r < 0 || this.r > 255) throw `Invalid Red range. Must be between 0 and 255, and it is ${this.r}`;
 		if (this.g < 0 || this.g > 255) throw `Invalid Green range. Must be between 0 and 255, and it is ${this.g}`;
 		if (this.b < 0 || this.b > 255) throw `Invalid Blue range. Must be between 0 and 255, and it is ${this.b}`;
 		return true;
 	}
 
-	public get hex(): HEX {
+	public get hex() {
 		return new HEX(this.r.toString(16), this.g.toString(16), this.b.toString(16));
 	}
 
-	public get rgb(): RGB {
+	public get rgb() {
 		return this;
 	}
 
-	public get hsl(): HSL {
+	public get hsl() {
 		const r = this.r / 255;
 		const g = this.g / 255;
 		const b = this.b / 255;
@@ -63,11 +63,11 @@ export class RGB {
 		return new HSL(Math.round(h * 360), Math.round(s * 100), Math.round(l * 100));
 	}
 
-	public get b10(): B10 {
+	public get b10() {
 		return this.hex.b10;
 	}
 
-	public toString(): string {
+	public toString() {
 		return String(`rgb(${this.r}, ${this.g}, ${this.b})`);
 	}
 

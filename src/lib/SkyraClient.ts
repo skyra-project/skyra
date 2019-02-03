@@ -78,7 +78,7 @@ export class SkyraClient extends KlasaClient {
 		}
 	}
 
-	public async fetchTag(id: string): Promise<string> {
+	public async fetchTag(id: string) {
 		// Return from cache if exists
 		const cache = this.usertags.get(id);
 		if (cache) return cache;
@@ -89,7 +89,7 @@ export class SkyraClient extends KlasaClient {
 		return user.tag;
 	}
 
-	public async fetchUsername(id: string): Promise<string> {
+	public async fetchUsername(id: string) {
 		const tag = await this.fetchTag(id);
 		return tag.slice(0, tag.indexOf('#'));
 	}
@@ -220,7 +220,7 @@ declare module 'klasa' {
 		pool: MasterPool;
 		ping(): Promise<number>;
 		sync(table: string): Promise<{ synced: number }>;
-		getRandom(table: string): Promise<any>;
+		getRandom(table: string): Promise<unknown>;
 	}
 
 	export interface KlasaClientOptions {

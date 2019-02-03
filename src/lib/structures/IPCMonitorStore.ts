@@ -11,7 +11,7 @@ export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<I
 		super(client, 'ipcMonitors', IPCMonitor);
 	}
 
-	public async run(message: NodeMessage): Promise<void> {
+	public async run(message: NodeMessage) {
 		if (!Array.isArray(message.data) || message.data.length === 0 || message.data.length > 2) {
 			if (message.data) this.client.console.wtf('Invalid Payload', message.data);
 			message.reply([0, 'INVALID_PAYLOAD']);

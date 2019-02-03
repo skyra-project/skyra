@@ -7,7 +7,7 @@ export default class extends Inhibitor {
 
 	private readonly ratelimit = new RateLimitManager(1, 30000);
 
-	public async run(message: KlasaMessage, command: SkyraCommand): Promise<void> {
+	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.spam || !message.guild) return;
 
 		const channelID = message.guild.settings.get('channels.spam') as string;

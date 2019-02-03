@@ -4,7 +4,7 @@ import { MessageLogsEnum } from '../lib/util/constants';
 
 export default class extends Event {
 
-	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => string): Promise<void> {
+	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => string) {
 		const key = TYPES[type];
 		if (!key) {
 			this.client.emit('warn', `[EVENT] GuildMessageLog: Unknown type ${type.toString()}`);

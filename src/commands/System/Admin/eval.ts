@@ -231,8 +231,8 @@ const FOREIGN_CONTROLLERS: Record<EvalLanguage, ForeignController> = {
 
 interface ForeignController {
 	before(code: string): string;
-	evaluate(message: KlasaMessage, code: string): any;
-	extract(output: any): {
+	evaluate(message: KlasaMessage, code: string): unknown;
+	extract(output: unknown): {
 		type: string;
 		value: string;
 	};

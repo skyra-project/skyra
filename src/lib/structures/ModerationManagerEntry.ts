@@ -13,7 +13,7 @@ export class ModerationManagerEntry {
 	public id: string = null;
 	public case: number = null;
 	public duration: number | null = null;
-	public extraData: any = null;
+	public extraData: unknown = null;
 	public moderator: string | User | null = null;
 	public reason: string | null = null;
 	public type: ModerationTypeKeys = null;
@@ -35,15 +35,15 @@ export class ModerationManagerEntry {
 		if (ModerationSchemaKeys.CreatedAt in data) this.createdAt = data[ModerationSchemaKeys.CreatedAt];
 	}
 
-	public get name(): string {
+	public get name() {
 		return TYPE_ASSETS[this.type].title;
 	}
 
-	public get appealed(): boolean {
+	public get appealed() {
 		return Boolean(this.type & ModerationActions.Appealed);
 	}
 
-	public get temporary(): boolean {
+	public get temporary() {
 		return Boolean(this.type & ModerationActions.Temporary);
 	}
 
@@ -51,15 +51,15 @@ export class ModerationManagerEntry {
 		return this.type & ~(ModerationActions.Appealed | ModerationActions.Temporary);
 	}
 
-	public get cacheExpired(): boolean {
+	public get cacheExpired() {
 		return Date.now() > this[kTimeout];
 	}
 
-	public get cacheRemaining(): number {
+	public get cacheRemaining() {
 		return Math.max(Date.now() - this[kTimeout], 0);
 	}
 
-	public get shouldSend(): boolean {
+	public get shouldSend() {
 		// If the moderation log is not anonymous, it should always send
 		if (this.moderator) return true;
 
@@ -85,7 +85,7 @@ export class ModerationManagerEntry {
 		[ModerationSchemaKeys.Moderator]: moderator,
 		[ModerationSchemaKeys.Reason]: reason,
 		[ModerationSchemaKeys.ExtraData]: extraData
-	}: ModerationManagerUpdateData = {}): Promise<this> {
+	}: ModerationManagerUpdateData = {}) {
 		const flattened = {
 			[ModerationSchemaKeys.Duration]: typeof duration !== 'undefined' && TEMPORARY_TYPES.includes(this.type) && (duration === null || duration < TIME.YEAR)
 				? duration
@@ -122,7 +122,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public async appeal(): Promise<this> {
+	public async appeal() {
 		if (this.appealed) return this;
 
 		const type = this.type | ModerationActions.Appealed;
@@ -134,7 +134,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public async prepareEmbed(): Promise<MessageEmbed> {
+	public async prepareEmbed() {
 		if (!this.user) throw new Error('A user has not been set.');
 		const userID = typeof this.user === 'string' ? this.user : this.user.id;
 		const [userTag, moderator] = await Promise.all([
@@ -162,12 +162,12 @@ export class ModerationManagerEntry {
 			.setTimestamp(new Date(this.createdAt || Date.now()));
 	}
 
-	public setCase(value: number): this {
+	public setCase(value: number) {
 		this.case = value;
 		return this;
 	}
 
-	public setDuration(value: string | number): this {
+	public setDuration(value: string | number) {
 		if (!TEMPORARY_TYPES.includes(this.type)) return this;
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
@@ -176,17 +176,17 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setExtraData(value: any): this {
+	public setExtraData(value: unknown) {
 		this.extraData = value;
 		return this;
 	}
 
-	public setModerator(value: User | string): this {
+	public setModerator(value: User | string) {
 		this.moderator = value;
 		return this;
 	}
 
-	public setReason(value: string): this {
+	public setReason(value: string) {
 		if (!value) return this;
 		value = (Array.isArray(value) ? value.join(' ') : value).trim();
 
@@ -202,7 +202,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setType(value: keyof typeof ModerationTypeKeys | ModerationTypeKeys): this {
+	public setType(value: keyof typeof ModerationTypeKeys | ModerationTypeKeys) {
 		if (typeof value === 'string' && (value in ModerationTypeKeys))
 			value = ModerationTypeKeys[value];
 
@@ -213,7 +213,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setUser(value: User | string): this {
+	public setUser(value: User | string) {
 		this.user = value;
 		return this;
 	}
@@ -267,7 +267,7 @@ export class ModerationManagerEntry {
 		} as ModerationManagerInsertData;
 	}
 
-	public toString(): string {
+	public toString() {
 		return `ModerationManagerEntry<${this.id}>`;
 	}
 

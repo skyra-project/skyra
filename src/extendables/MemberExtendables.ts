@@ -8,11 +8,12 @@ export default class extends Extendable {
 		super(client, store, file, directory, { appliesTo: [GuildMember] });
 	}
 
-	public async fetchRank(): Promise<number> {
-		const list = await this.client.leaderboard.getMembers(this.guild.id);
-		const rank = list.get(this.id);
+	public async fetchRank() {
+		const self = this as GuildMember;
+		const list = await self.client.leaderboard.fetch(self.guild.id);
+		const rank = list.get(self.id);
 		if (!rank) return list.size;
-		if (!rank.name) rank.name = this.user.username;
+		if (!rank.name) rank.name = self.user.username;
 		return rank.position;
 	}
 

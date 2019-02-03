@@ -7,7 +7,7 @@ const TABLENAME = 'starboard', TABLEINDEX = { index: 'channel_message' };
 
 export class StarboardMessage {
 
-	public get id(): string {
+	public get id() {
 		return `${this.channel.guild.id}.${this.message.id}`;
 	}
 
@@ -35,7 +35,7 @@ export class StarboardMessage {
 	/**
 	 * The emoji to use
 	 */
-	private get emoji(): string {
+	private get emoji() {
 		const stars = this.stars;
 		if (stars < 5) return '⭐';
 		if (stars < 10) return '🌟';
@@ -218,7 +218,7 @@ export class StarboardMessage {
 		};
 	}
 
-	public toString(): string {
+	public toString() {
 		return `StarboardMessage(${this.message.id}, ${this.stars})`;
 	}
 

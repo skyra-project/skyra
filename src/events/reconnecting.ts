@@ -2,7 +2,7 @@ import { Event } from 'klasa';
 
 export default class extends Event {
 
-	public run(): void {
+	public run() {
 		this.client.console.warn('Reconnecting...');
 	}
 

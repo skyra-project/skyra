@@ -4,7 +4,7 @@ import { ModerationTypeKeys } from '../lib/util/constants';
 
 export default class extends Event {
 
-	public async run(message: KlasaMessage): Promise<void> {
+	public async run(message: KlasaMessage) {
 		const lock = message.guild.moderation.createLock();
 		await message.guild.members.ban(message.author.id, { days: 0, reason: message.language.get('CONST_MONITOR_NMS') }).catch((error) => this.client.emit('apiError', error));
 		await message.sendLocale('MONITOR_NMS_MESSAGE', [message.author]).catch((error) => this.client.emit('apiError', error));

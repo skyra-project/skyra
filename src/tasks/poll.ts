@@ -14,7 +14,7 @@ export default class extends Task {
 		const user = await this.client.users.fetch(poll.author).catch(this._catchErrorUser);
 		if (!user) return;
 
-		let content;
+		let content: string;
 		const { title, options, votes, voted } = poll;
 		if (voted.length) {
 			const maxLengthNames = options.reduce((acc, opt) => opt.length > acc ? opt.length : acc, 0);

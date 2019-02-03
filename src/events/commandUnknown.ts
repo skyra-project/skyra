@@ -3,7 +3,7 @@ import { GuildSettingsTriggerAlias } from '../lib/types/Misc';
 
 export default class extends Event {
 
-	public async run(message: KlasaMessage, command: string): Promise<any> {
+	public async run(message: KlasaMessage, command: string) {
 		if (!message.guild || (message.guild.settings.get('disabledChannels') as string[]).includes(message.channel.id)) return null;
 		command = command.toLowerCase();
 
@@ -17,7 +17,7 @@ export default class extends Event {
 		return null;
 	}
 
-	public runCommand(message: KlasaMessage, command: Command): Promise<any> {
+	public runCommand(message: KlasaMessage, command: Command) {
 		const commandHandler = this.client.monitors.get('commandHandler') as any;
 		const { regex: prefix, length: prefixLength } = commandHandler.getPrefix(message);
 
@@ -25,7 +25,7 @@ export default class extends Event {
 		return commandHandler.runCommand(message._registerCommand({ command, prefix, prefixLength }));
 	}
 
-	public async runTag(message: KlasaMessage, command: string): Promise<any> {
+	public async runTag(message: KlasaMessage, command: string) {
 		const tagCommand = this.client.commands.get('tag') as any;
 		const timer = new Stopwatch();
 

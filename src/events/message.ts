@@ -2,7 +2,7 @@ import { Event, KlasaMessage } from 'klasa';
 
 export default class extends Event {
 
-	public async run(message: KlasaMessage): Promise<void> {
+	public async run(message: KlasaMessage) {
 		if (message.system || message.webhookID) return;
 
 		if (this.client.ready) {

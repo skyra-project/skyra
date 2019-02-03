@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 		return pronounciations.map((pronounciation) => `\`/${pronounciation.spelling}/\` (${pronounciation.notation})`).join(' ');
 	}
 
-	private format(entries: any[]) {
+	private format(entries: string[][]) {
 		const output = [];
 
 		let i = 0;
@@ -86,7 +86,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private _resolveData({ pronunciations, lexicalCategory, text, entries }: any): DefineLexicalEntry {
+	private _resolveData({ pronunciations, lexicalCategory, text, entries }: RawDefineLexicalEntry): DefineLexicalEntry {
 		return {
 			entries: entries.map((entry) => entry.senses.map((sense) => sense.definitions.join('\n'))),
 			lexicalCategory,
@@ -102,8 +102,15 @@ interface DefinePronounciation {
 	notation: string;
 }
 
+interface RawDefineLexicalEntry {
+	entries: Array<{ senses: Array<{ definitions: string[] }> }>;
+	lexicalCategory: string;
+	pronunciations: Array<{ phoneticSpelling: string; phoneticNotation: string }>;
+	text: string;
+}
+
 interface DefineLexicalEntry {
-	entries: string[];
+	entries: string[][];
 	lexicalCategory: string;
 	pronounciations: DefinePronounciation[];
 	text: string;

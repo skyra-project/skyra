@@ -9,7 +9,7 @@ export class FriendlyDuration {
 	 * @param duration The duration in milliseconds to parse and display
 	 * @param assets The language assets
 	 */
-	public static duration(duration: number, assets: DurationFormatAssetsTime): string {
+	public static duration(duration: number, assets: DurationFormatAssetsTime) {
 		const result = FriendlyDuration._parse(duration);
 		const output = [];
 
@@ -24,7 +24,7 @@ export class FriendlyDuration {
 	 * @param time The duration of said unit
 	 * @param unit The unit language assets
 	 */
-	public static _addUnit(time: number, unit: DurationFormatAssetsUnit): string {
+	public static _addUnit(time: number, unit: DurationFormatAssetsUnit) {
 		if (time in unit) return `${time} ${unit[time]}`;
 		return `${time} ${unit.DEFAULT}`;
 	}

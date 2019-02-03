@@ -32,7 +32,7 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	 * @param key The key to add
 	 * @param value The StarboardMessage to add
 	 */
-	public set(key: string, value: StarboardMessage): this {
+	public set(key: string, value: StarboardMessage) {
 		if (this.size >= 25) {
 			const entry = this.find((sMes) => sMes.stars < this.minimum)
 				|| this.reduce((acc, sMes) => acc.lastUpdated > sMes.lastUpdated ? sMes : acc, this.first());

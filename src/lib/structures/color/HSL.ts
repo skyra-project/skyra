@@ -19,18 +19,18 @@ export class HSL {
 		this.valid();
 	}
 
-	public valid(): boolean {
+	public valid() {
 		if (this.h < 0 || this.h > 360) throw `Invalid Hue range. Must be between 0 and 360, and it is ${this.h}`;
 		if (this.s < 0 || this.s > 100) throw `Invalid Saturation range. Must be between 0 and 100, and it is ${this.s}`;
 		if (this.l < 0 || this.l > 100) throw `Invalid Lightness range. Must be between 0 and 100, and it is ${this.l}`;
 		return true;
 	}
 
-	public get hex(): HEX {
+	public get hex() {
 		return this.rgb.hex;
 	}
 
-	public get rgb(): RGB {
+	public get rgb() {
 		const h = this.h / 360;
 		const s = this.s / 100;
 		const l = this.l / 100;
@@ -54,19 +54,19 @@ export class HSL {
 		return new RGB(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255));
 	}
 
-	public get hsl(): HSL {
+	public get hsl() {
 		return this;
 	}
 
-	public get b10(): B10 {
+	public get b10() {
 		return this.hex.b10;
 	}
 
-	public toString(): string {
+	public toString() {
 		return String(`hsl(${this.h}, ${this.s}, ${this.l})`);
 	}
 
-	public static hue2rgb(p: number, q: number, t: number): number {
+	public static hue2rgb(p: number, q: number, t: number) {
 		if (t < 0) t += 1;
 		if (t > 1) t -= 1;
 		if (t < 1 / 6) return p + (((q - p) * 6) * t);

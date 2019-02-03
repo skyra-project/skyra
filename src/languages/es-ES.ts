@@ -81,7 +81,7 @@ const PERMS = {
 
 const random = (num: number) => Math.round(Math.random() * num);
 
-function duration(time: number): string {
+function duration(time: number) {
 	return FriendlyDuration.duration(time, TIMES);
 }
 
@@ -2422,7 +2422,7 @@ export default class extends Language {
 		CONST_USERS: 'Usuarios'
 	};
 
-	public async init(): Promise<void> {
+	public async init() {
 		// noop
 	}
 

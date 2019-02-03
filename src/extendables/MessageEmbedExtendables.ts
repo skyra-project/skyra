@@ -8,7 +8,7 @@ export default class extends Extendable {
 		super(client, store, file, directory, { appliesTo: [MessageEmbed] });
 	}
 
-	public splitFields(content: string | string[]): this {
+	public splitFields(content: string | string[]) {
 		if (typeof content === 'undefined') return this;
 
 		if (Array.isArray(content)) content = content.join('\n');

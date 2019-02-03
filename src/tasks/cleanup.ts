@@ -110,7 +110,7 @@ export default class MemorySweeper extends Task {
 	 * < 100  : Green colour
 	 * @param n The number to colourise
 	 */
-	public setColor(n: number): string {
+	public setColor(n: number) {
 		const text = String(n).padStart(5, ' ');
 		// Light Red color
 		if (n > 1000) return `\u001B[39m\u001B[91m${text}\u001B[39m\u001B[90m`;

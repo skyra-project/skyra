@@ -5,27 +5,27 @@ export class LanguageHelp {
 	private examples: string | null = null;
 	private reminder: string | null = null;
 
-	public setExplainedUsage(text: string): this {
+	public setExplainedUsage(text: string) {
 		this.explainedUsage = text;
 		return this;
 	}
 
-	public setPossibleFormats(text: string): this {
+	public setPossibleFormats(text: string) {
 		this.possibleFormats = text;
 		return this;
 	}
 
-	public setExamples(text: string): this {
+	public setExamples(text: string) {
 		this.examples = text;
 		return this;
 	}
 
-	public setReminder(text: string): this {
+	public setReminder(text: string) {
 		this.reminder = text;
 		return this;
 	}
 
-	public display(name: string, options: LanguageHelpDisplayOptions, multiline: boolean = false): string {
+	public display(name: string, options: LanguageHelpDisplayOptions, multiline: boolean = false) {
 		const { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
 		const output = [];
 
@@ -54,7 +54,7 @@ export class LanguageHelp {
 		return output.join('\n');
 	}
 
-	public static resolveMultilineString(str: string | string[], multiline: boolean): string {
+	public static resolveMultilineString(str: string | string[], multiline: boolean) {
 		return Array.isArray(str)
 			? LanguageHelp.resolveMultilineString(str.join(multiline ? '\n' : ' '), multiline)
 			: str.split('\n').map((line) => line.trim()).join(multiline ? '\n' : ' ');

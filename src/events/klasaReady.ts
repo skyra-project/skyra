@@ -3,7 +3,7 @@ import { Slotmachine } from '../lib/util/Games/Slotmachine';
 
 export default class extends Event {
 
-	public async run(): Promise<void> {
+	public async run() {
 		// Populate the usernames
 		for (const user of this.client.users.values())
 			this.client.usertags.set(user.id, user.tag);
@@ -39,13 +39,13 @@ export default class extends Event {
 		}
 	}
 
-	public async initGiveawayRecurrentTask(): Promise<void> {
+	public async initGiveawayRecurrentTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some((task) => task.taskName === 'giveawayRecurrent'))
 			await this.client.schedule.create('giveawayRecurrent', '*/10 * * * *', {});
 	}
 
-	public async initPostStatsTask(): Promise<void> {
+	public async initPostStatsTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some((task) => task.taskName === 'poststats'))
 			await this.client.schedule.create('poststats', '*/15 * * * *', {});
@@ -53,7 +53,7 @@ export default class extends Event {
 
 	// If this task is not being run, let's create the
 	// ScheduledTask and make it run every 10 minutes.
-	public async initCleanupTask(): Promise<void> {
+	public async initCleanupTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some((task) => task.taskName === 'cleanup'))
 			await this.client.schedule.create('cleanup', '*/10 * * * *', {});
@@ -62,7 +62,7 @@ export default class extends Event {
 	// If this task is not being run, let's create the
 	// ScheduledTask and make it run every Monday and Thursday,
 	// one minute after the backup.
-	public async initDBSweepTask(): Promise<void> {
+	public async initDBSweepTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some((task) => task.taskName === 'databaseSweep'))
 			await this.client.schedule.create('databaseSweep', '1 0 * * mon,thu', {});
@@ -70,7 +70,7 @@ export default class extends Event {
 
 	// If this task is not being run, let's create the
 	// ScheduledTask and make it run every Monday and Thursday.
-	public async initBackupTask(): Promise<void> {
+	public async initBackupTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some((task) => task.taskName === 'backup'))
 			await this.client.schedule.create('backup', '0 0 * * *', {});

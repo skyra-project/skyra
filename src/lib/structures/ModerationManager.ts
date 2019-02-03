@@ -34,15 +34,15 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		this.guild = guild;
 	}
 
-	public get pool(): R {
+	public get pool() {
 		return this.guild.client.providers.default.db;
 	}
 
-	public get table(): RTable<any> {
+	public get table() {
 		return this.guild.client.providers.default.db.table(TABLENAME);
 	}
 
-	public get new(): ModerationManagerEntry {
+	public get new() {
 		return new ModerationManagerEntry(this, {} as ModerationManagerInsertData);
 	}
 
@@ -82,22 +82,22 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return this;
 	}
 
-	public async count(): Promise<number> {
+	public async count() {
 		if (this._count === null) await this.fetch();
 		return this._count;
 	}
 
-	public async update(data: ModerationManagerUpdateData | ModerationManagerEntry): Promise<void> {
+	public async update(data: ModerationManagerUpdateData | ModerationManagerEntry) {
 		if (!data.id && ModerationSchemaKeys.Case in data) data.id = (await this.fetch(data[ModerationSchemaKeys.Case] as number) || { id: null }).id;
 		if (!data.id) throw new Error('A id has not been specified and cannot be found.');
 		await this.table.get(data.id).update(data).run();
 	}
 
-	public insert(data: ModerationManagerInsertData | ModerationManagerEntry): ModerationManagerEntry {
+	public insert(data: ModerationManagerInsertData | ModerationManagerEntry) {
 		return this._cache(data, CacheActions.Insert);
 	}
 
-	public async appeal(data: ModerationManagerUpdateData | ModerationManagerEntry): Promise<ModerationManagerEntry> {
+	public async appeal(data: ModerationManagerUpdateData | ModerationManagerEntry) {
 		let entry;
 		if ('id' in data) entry = await this.table.get(data.id).default(null).run();
 		else if (ModerationSchemaKeys.Case in data) entry = await this.fetch(data[ModerationSchemaKeys.Case]);
@@ -114,7 +114,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return entry;
 	}
 
-	public createLock(): () => void {
+	public createLock() {
 		const lock = createReferPromise<undefined>();
 		this._locks.push(lock);
 		// tslint:disable-next-line:no-floating-promises
@@ -123,11 +123,11 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return lock.resolve;
 	}
 
-	public releaseLock(): void {
+	public releaseLock() {
 		for (const lock of this._locks) lock.resolve();
 	}
 
-	public waitLock(): Promise<undefined[]> {
+	public waitLock() {
 		return Promise.all(this._locks.map((lock) => lock.promise));
 	}
 
@@ -163,7 +163,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			: parsedEntries;
 	}
 
-	public static get [Symbol.species](): typeof Collection {
+	public static get [Symbol.species]() {
 		return Collection;
 	}
 
@@ -177,7 +177,7 @@ enum CacheActions {
 
 export interface ModerationManagerInsertData {
 	[ModerationSchemaKeys.Duration]: number | null;
-	[ModerationSchemaKeys.ExtraData]: any;
+	[ModerationSchemaKeys.ExtraData]: unknown;
 	[ModerationSchemaKeys.Moderator]: string | null;
 	[ModerationSchemaKeys.Reason]: string | null;
 	[ModerationSchemaKeys.Type]: ModerationManagerTypeResolvable;
@@ -187,7 +187,7 @@ export interface ModerationManagerInsertData {
 export interface ModerationManagerUpdateData {
 	id?: string;
 	[ModerationSchemaKeys.Duration]?: number | null;
-	[ModerationSchemaKeys.ExtraData]?: any;
+	[ModerationSchemaKeys.ExtraData]?: unknown;
 	[ModerationSchemaKeys.Moderator]?: string | User | null;
 	[ModerationSchemaKeys.Reason]?: string | null;
 }

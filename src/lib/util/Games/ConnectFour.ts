@@ -262,7 +262,7 @@ export class ConnectFour {
 	/**
 	 * Render the current table
 	 */
-	public renderTable(): string {
+	public renderTable() {
 		const MAX_LENGTH = this.table.length;
 
 		let output = '';

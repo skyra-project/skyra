@@ -18,35 +18,34 @@ export class HEX {
 		this.valid();
 	}
 
-	public valid(): boolean {
+	public valid() {
 		if (Number.isNaN(parseInt(this.r, 16))) throw `Invalid Red range. Must be between '00' and 'ff', and it is '${this.r}'`;
 		if (Number.isNaN(parseInt(this.g, 16))) throw `Invalid Green range. Must be between '00' and 'ff', and it is '${this.g}'`;
 		if (Number.isNaN(parseInt(this.b, 16))) throw `Invalid Blue range. Must be between '00' and 'ff', and it is '${this.b}'`;
 		return true;
 	}
 
-	public get hex(): HEX {
+	public get hex() {
 		return this;
 	}
 
-	public get rgb(): RGB {
+	public get rgb() {
 		return new RGB(parseInt(this.r, 16), parseInt(this.g, 16), parseInt(this.b, 16));
 	}
 
-	public get hsl(): HSL {
+	public get hsl() {
 		return this.rgb.hsl;
 	}
 
-	public get b10(): B10 {
+	public get b10() {
 		return new B10(parseInt(this.r + this.g + this.b, 16));
 	}
 
-	public toString(): string {
+	public toString() {
 		return String(`#${this.r}${this.g}${this.b}`);
 	}
 
 }
 
 import { B10 } from './B10';
-import { HSL } from './HSL';
 import { RGB } from './RGB';

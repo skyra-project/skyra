@@ -5,7 +5,7 @@ const { FLAGS } = Permissions;
 
 export default class extends Task {
 
-	public async run(doc: any): Promise<void> {
+	public async run(doc: any) {
 		// Get the guild and check for permissions
 		const guild = this.client.guilds.get(doc[ModerationSchemaKeys.Guild]);
 		if (!guild || !guild.me.permissions.has(FLAGS.BAN_MEMBERS)) return;

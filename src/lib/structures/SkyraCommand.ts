@@ -12,7 +12,7 @@ export class SkyraCommand extends Command {
 	}
 
 	// @ts-ignore
-	public inhibit(message: KlasaMessage): any {
+	public inhibit(message: KlasaMessage) {
 		return false;
 	}
 

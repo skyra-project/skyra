@@ -105,7 +105,7 @@ export function moderationCheck(message: Message, moderator: GuildMember, target
  * Resolve an emoji
  * @param emoji The emoji to resolve
  */
-export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji): string {
+export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji) {
 	if (typeof emoji === 'string') {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
@@ -129,7 +129,7 @@ export function oneToTen(level: number): UtilOneToTenEntry {
  * @param length The length of the desired string.
  * @param char The character to split with
  */
-export function splitText(str: string, length: number, char: string = ' '): string {
+export function splitText(str: string, length: number, char: string = ' ') {
 	const x = str.substring(0, length).lastIndexOf(char);
 	const pos = x === -1 ? length : x;
 	return str.substring(0, pos);
@@ -140,7 +140,7 @@ export function splitText(str: string, length: number, char: string = ' '): stri
  * @param str The text to split.
  * @param length The length of the desired string.
  */
-export function cutText(str: string, length: number): string {
+export function cutText(str: string, length: number) {
 	if (str.length < length) return str;
 	const cut = splitText(str, length - 3);
 	if (cut.length < length - 3) return `${cut}...`;
@@ -246,7 +246,7 @@ export function parseRange(input: string): number[] {
  * @param message The message for context
  * @param input The input to clean
  */
-export function cleanMentions(message: Message, input: string): string {
+export function cleanMentions(message: Message, input: string) {
 	return input
 		.replace(/@(here|everyone)/g, '@\u200B$1')
 		.replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {

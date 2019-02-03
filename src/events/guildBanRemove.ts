@@ -4,7 +4,7 @@ import { ModerationTypeKeys } from '../lib/util/constants';
 
 export default class extends Event {
 
-	public async run(guild: Guild, user: User): Promise<void> {
+	public async run(guild: Guild, user: User) {
 		if (!guild.available || !guild.settings.get('events.banRemove')) return;
 		await guild.moderation.waitLock();
 		await guild.moderation.new

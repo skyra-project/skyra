@@ -6,7 +6,7 @@ export class MemberGateway extends Gateway {
 	protected _synced: boolean;
 	protected cache: GuildStore;
 
-	public get(id: string): Settings {
+	public get(id: string) {
 		const [guildID, memberID] = id.split('.');
 		const guild = this.cache.get(guildID);
 		if (!guild) return null;

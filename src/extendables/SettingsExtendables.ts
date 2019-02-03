@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ExtendableStore, KlasaClient, SettingsFolder, SettingsFolderUpdateResult } from 'klasa';
 
 export default class extends Extendable {
@@ -7,12 +6,14 @@ export default class extends Extendable {
 		super(client, store, file, directory, { appliesTo: [SettingsFolder] });
 	}
 
-	public increase(key: string, value: number): Promise<SettingsFolderUpdateResult> {
-		return this.update(key, this.get(key) + value);
+	public increase(key: string, value: number) {
+		const self = this as SettingsFolder;
+		return self.update(key, this.get(key) + value);
 	}
 
-	public decrease(key: string, value: number): Promise<SettingsFolderUpdateResult> {
-		return this.update(key, this.get(key) - value);
+	public decrease(key: string, value: number) {
+		const self = this as SettingsFolder;
+		return self.update(key, this.get(key) - value);
 	}
 
 }

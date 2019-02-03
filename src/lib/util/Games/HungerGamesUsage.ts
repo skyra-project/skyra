@@ -8,7 +8,7 @@ export class HungerGamesUsage {
 		this.parse(usage);
 	}
 
-	public display(...values: string[]): string {
+	public display(...values: string[]) {
 		return this.parts.map((part) => typeof part === 'number' ? values[part] : part).join('');
 	}
 

@@ -128,7 +128,7 @@ export default class extends RawEvent {
 		return false;
 	}
 
-	public transformMessage(str: string, guild: Guild, user: User): string {
+	public transformMessage(str: string, guild: Guild, user: User) {
 		return str.replace(REGEXP, (match) => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;

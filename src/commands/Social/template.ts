@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	public async inhibit(message: KlasaMessage) {
+	public inhibit(message: KlasaMessage) {
 		return !message.guild || message.guild.id !== '256566731684839428';
 	}
 

@@ -139,14 +139,14 @@ export class SettingsMenu {
 		}
 	}
 
-	private _removeReactionFromUser(reaction: string, user: { id: string }): Promise<any> {
+	private _removeReactionFromUser(reaction: string, user: { id: string }): Promise<unknown> {
 		// @ts-ignore
 		return this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
 			.reactions(encodeURIComponent(reaction), user.id === this.message.client.user.id ? '@me' : user.id)
 			.delete();
 	}
 
-	private async tryUpdate(value: any, options?: SettingsFolderUpdateOptions): Promise<void> {
+	private async tryUpdate(value: any, options?: SettingsFolderUpdateOptions) {
 		const { errors, updated } = await (value === null
 			? this.message.guild.settings.reset(this.schema.path)
 			: this.message.guild.settings.update(this.schema.path, value, options));
@@ -154,7 +154,7 @@ export class SettingsMenu {
 		else if (!updated.length) this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 	}
 
-	private async tryUndo(): Promise<void> {
+	private async tryUndo() {
 		if (!this.changedCurrentPieceValue) {
 			this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 		} else {

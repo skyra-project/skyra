@@ -5,7 +5,7 @@ import { MessageLogsEnum } from '../lib/util/constants';
 
 export default class extends Event {
 
-	public async run(old: KlasaMessage, message: KlasaMessage): Promise<void> {
+	public async run(old: KlasaMessage, message: KlasaMessage) {
 		// Run monitors
 		if (!this.client.ready || old.content === message.content) return;
 		// tslint:disable-next-line:no-floating-promises

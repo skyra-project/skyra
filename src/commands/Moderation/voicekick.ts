@@ -17,13 +17,13 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public prehandle(message: KlasaMessage, users: User[], reason: string): Promise<VoiceChannel> {
+	public prehandle(message: KlasaMessage, users: User[], reason: string) {
 		return message.guild.channels.create('temp', {
 			permissionOverwrites: [{ id: message.guild.id, deny: 0x00000400 }, ...users.map((user) => ({ id: user.id, allow: 0x00000400 }))],
 			reason,
 			type: 'voice',
 			userLimit: 1
-		}) as Promise<VoiceChannel>;
+		});
 	}
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string, voiceChannel: VoiceChannel) {

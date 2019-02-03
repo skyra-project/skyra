@@ -5,7 +5,7 @@ const NEWLINE = '\n';
 
 export default class extends Event {
 
-	public run(error: Error): void {
+	public run(error: Error) {
 		if (error instanceof DiscordAPIError) {
 			this.client.console.warn(
 				`[API ERROR] [CODE: ${error.code}] ${error.message}${NEWLINE}` +

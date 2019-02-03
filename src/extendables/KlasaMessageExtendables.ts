@@ -7,7 +7,7 @@ export default class extends Extendable {
 		super(client, store, file, directory, { appliesTo: [Message] });
 	}
 
-	public async prompt(content: string, time: number = 30000): Promise<Message> {
+	public async prompt(content: string, time: number = 30000) {
 		const self = this as Message;
 		const message = await self.channel.send(content);
 		const responses = await self.channel.awaitMessages((msg) => msg.author === self.author, { time, max: 1 });
@@ -16,8 +16,8 @@ export default class extends Extendable {
 		return responses.first();
 	}
 
-	public async ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
-	public async ask(content: string | MessageOptions, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean> {
+	public async ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions);
+	public async ask(content: string | MessageOptions, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions) {
 		const self = this as Message;
 		const message = await self.send(content, options);
 		return !self.guild || self.channel.permissionsFor(self.guild.me).has(FLAGS.ADD_REACTIONS)
@@ -25,9 +25,9 @@ export default class extends Extendable {
 			: awaitMessage(self, promptOptions);
 	}
 
-	public alert(content: string, timer?: number): Promise<Message>;
-	public alert(content: string, options?: MessageOptions, timer?: number): Promise<Message>;
-	public alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message> {
+	public alert(content: string, timer?: number);
+	public alert(content: string, options?: MessageOptions, timer?: number);
+	public alert(content: string, options?: number | MessageOptions, timer?: number) {
 		const self = this as Message;
 		if (!self.channel.postable) return Promise.resolve(null);
 		if (typeof options === 'number' && typeof timer === 'undefined') {
@@ -42,7 +42,7 @@ export default class extends Extendable {
 		});
 	}
 
-	public nuke(time: number = 0): Promise<Message> {
+	public nuke(time: number = 0) {
 		const self = this as Message;
 		if (time === 0) return nuke(self);
 
@@ -57,7 +57,7 @@ const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
-async function awaitReaction(message: Message, messageSent: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS): Promise<boolean> {
+async function awaitReaction(message: Message, messageSent: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
 	await messageSent.react(REACTIONS.YES);
 	await messageSent.react(REACTIONS.NO);
 	const reactions = await messageSent.awaitReactions((__, user) => user === message.author, promptOptions);
@@ -69,12 +69,12 @@ async function awaitReaction(message: Message, messageSent: Message, promptOptio
 	return reactions.size && reactions.firstKey() === REACTIONS.YES;
 }
 
-async function awaitMessage(message: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS): Promise<boolean> {
+async function awaitMessage(message: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
 	const messages = await message.channel.awaitMessages((mes) => mes.author === message.author, promptOptions);
 	return messages.size && REG_ACCEPT.test(messages.first().content);
 }
 
-async function nuke(message: Message): Promise<Message> {
+async function nuke(message: Message) {
 	try {
 		return await message.delete();
 	} catch (error) {

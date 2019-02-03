@@ -2,7 +2,7 @@ import { IPCMonitor } from '../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	public async run(data: WebhookBody): Promise<string> {
+	public async run(data: WebhookBody) {
 		if (data.bot !== this.client.user.id) throw 'BAD';
 		const user = await this.client.users.fetch(data.user);
 		const settings = await user.settings.sync();

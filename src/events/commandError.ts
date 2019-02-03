@@ -3,7 +3,7 @@ import { Command, Event, KlasaMessage, util } from 'klasa';
 
 export default class extends Event {
 
-	public run(message: KlasaMessage, command: Command, _: string[], error: Error): void {
+	public run(message: KlasaMessage, command: Command, _: string[], error: Error) {
 		if (typeof error === 'string') {
 			message.alert(message.language.get('EVENTS_ERROR_STRING', message.author, error))
 				.catch((err) => this.client.emit('wtf', err));
@@ -51,7 +51,7 @@ export default class extends Event {
 			.catch((err) => this.client.emit('apiError', err));
 	}
 
-	private _getWarnError(message: KlasaMessage): string {
+	private _getWarnError(message: KlasaMessage) {
 		return `ERROR: /${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`;
 	}
 

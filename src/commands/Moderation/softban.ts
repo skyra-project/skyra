@@ -18,7 +18,7 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public async prehandle(message: KlasaMessage): Promise<Unlock> {
+	public async prehandle(message: KlasaMessage) {
 		return message.guild.settings.get('events.banAdd') || message.guild.settings.get('events.banRemove') ? { unlock: message.guild.moderation.createLock() } : null;
 	}
 

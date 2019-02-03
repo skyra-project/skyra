@@ -17,12 +17,12 @@ export class LongLivingReactionCollector {
 		this.client.llrCollectors.add(this);
 	}
 
-	public setListener(listener: LongLivingReactionCollectorListener): this {
+	public setListener(listener: LongLivingReactionCollectorListener) {
 		this.listener = listener;
 		return this;
 	}
 
-	public setEndListener(listener: () => void): this {
+	public setEndListener(listener: () => void) {
 		this.endListener = listener;
 		return this;
 	}
@@ -35,13 +35,13 @@ export class LongLivingReactionCollector {
 		this.listener(reaction);
 	}
 
-	public setTime(time: number): this {
+	public setTime(time: number) {
 		if (this._timer) clearTimeout(this._timer);
 		this._timer = setTimeout(() => this.end(), time);
 		return this;
 	}
 
-	public end(): this {
+	public end() {
 		if (!this.client.llrCollectors.delete(this)) return this;
 
 		if (this._timer) {

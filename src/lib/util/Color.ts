@@ -28,7 +28,7 @@ export class Color {
 		throw `${input} is not a supported type.`;
 	}
 
-	public static generateHexadecimal(): string {
+	public static generateHexadecimal() {
 		return [
 			Color.generateBetween(255, 200).toString(16),
 			Color.generateBetween(255, 200).toString(16),
@@ -44,7 +44,7 @@ export class Color {
 		return (0.299 * (r ** 2)) + (0.587 * (g ** 2)) + (0.114 * (b ** 2));
 	}
 
-	public static hexConcat(r: number, g: number, b: number): string {
+	public static hexConcat(r: number, g: number, b: number) {
 		return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 	}
 

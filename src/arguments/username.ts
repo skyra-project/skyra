@@ -1,15 +1,15 @@
-import { Argument, KlasaMessage, KlasaUser, Possible } from 'klasa';
+import { Argument, KlasaMessage, Possible } from 'klasa';
 import { FuzzySearch } from '../lib/util/FuzzySearch';
 const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 
-	public get user(): any {
+	public get user() {
 		return this.store.get('user');
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<any> {
+	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean) {
 		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(arg);
@@ -20,7 +20,7 @@ export default class extends Argument {
 		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 
-	public resolveUser(query: string): Promise<KlasaUser> {
+	public resolveUser(query: string) {
 		const id = USER_REGEXP.test(query)
 			? USER_REGEXP.exec(query)[1]
 			: USER_TAG.test(query)

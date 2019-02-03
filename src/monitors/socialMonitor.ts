@@ -60,7 +60,7 @@ export default class extends Monitor {
 		}
 	}
 
-	public getMessage(member: GuildMember, role: Role, content: string): string {
+	public getMessage(member: GuildMember, role: Role, content: string) {
 		return content.replace(MESSAGE_REGEXP, (match) => {
 			switch (match) {
 				case '%ROLE%': return role.name;

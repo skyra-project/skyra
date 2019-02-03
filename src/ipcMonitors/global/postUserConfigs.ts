@@ -2,7 +2,7 @@ import { IPCMonitor } from '../../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	public async run({ userID, type, action, amount }: any): Promise<number> {
+	public async run({ userID, type, action, amount }: any) {
 		const user = await this.client.users.fetch(userID).catch(() => null);
 		if (!user) return null;
 		await user.settings.sync();
@@ -13,7 +13,7 @@ export default class extends IPCMonitor {
 		return newAmount;
 	}
 
-	public getNewAmount(action: 'set' | 'add' | 'remove', oldAmount: number, amount: number): number {
+	public getNewAmount(action: 'set' | 'add' | 'remove', oldAmount: number, amount: number) {
 		switch (action) {
 			case 'set': return amount;
 			case 'add': return oldAmount + amount;

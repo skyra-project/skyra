@@ -9,7 +9,7 @@ export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 		super(client, 'rawEvents', RawEvent);
 	}
 
-	public run(data: { t: WSEventType; d: any }): void {
+	public run(data: { t: WSEventType; d: unknown }): void {
 		const piece = data.d && super.get(Constants.Events[data.t]);
 		// tslint:disable-next-line:no-floating-promises
 		if (piece) this._run(piece, data.d);
@@ -20,7 +20,7 @@ export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 	 * @param piece The piece to run
 	 * @param data The data payload
 	 */
-	public async _run(piece: RawEvent, data: Object): Promise<void> {
+	public async _run(piece: RawEvent, data: unknown): Promise<void> {
 		try {
 			await piece.run(data);
 		} catch (error) {

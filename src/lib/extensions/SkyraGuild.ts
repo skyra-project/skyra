@@ -14,7 +14,7 @@ export class SkyraGuild extends KlasaGuild {
 	@enumerable(false)
 	public memberSnowflakes: Set<string> = new Set();
 
-	public get memberTags(): Collection<string, string> {
+	public get memberTags() {
 		const collection = new Collection<string, string>();
 		for (const snowflake of this.memberSnowflakes) {
 			// @ts-ignore
@@ -24,7 +24,7 @@ export class SkyraGuild extends KlasaGuild {
 		return collection;
 	}
 
-	public get memberUsernames(): Collection<string, string> {
+	public get memberUsernames() {
 		const collection = new Collection<string, string>();
 		for (const snowflake of this.memberSnowflakes) {
 			// @ts-ignore

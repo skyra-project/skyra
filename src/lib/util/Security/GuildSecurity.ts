@@ -50,7 +50,7 @@ export class GuildSecurity {
 	 * Build a super RegExp from an array
 	 * @param filterArray The array to process
 	 */
-	public updateRegExp(filterArray: string[]): this {
+	public updateRegExp(filterArray: string[]) {
 		const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
 			item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
 		this.regexp = new RegExp(`\\b(?:${filtered})\\b`, 'gi');

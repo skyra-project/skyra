@@ -9,7 +9,7 @@ export interface ModerationCommandOptions extends CommandOptions {
 	requiredMember?: boolean;
 }
 
-export abstract class ModerationCommand extends SkyraCommand {
+export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	/**
 	 * Whether a member is required or not.
@@ -34,7 +34,7 @@ export abstract class ModerationCommand extends SkyraCommand {
 		this.requiredMember = options.requiredMember;
 	}
 
-	public async run(message: KlasaMessage, [targets, reason]: [User[], string?]): Promise<KlasaMessage | KlasaMessage[]> {
+	public async run(message: KlasaMessage, [targets, reason]: [User[], string?]) {
 		if (!reason) reason = null;
 
 		const prehandled = await this.prehandle(message, targets, reason);
@@ -72,15 +72,15 @@ export abstract class ModerationCommand extends SkyraCommand {
 	}
 
 	// tslint:disable-next-line:no-unused-vars
-	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<any>;
+	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<T>;
 
 	// eslint-disable-next-line no-unused-vars
-	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: any): Promise<any>;
+	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: T): Promise<unknown>;
 
 	// eslint-disable-next-line no-unused-vars
-	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: any): Promise<any>;
+	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: T): Promise<unknown>;
 
-	public async checkModeratable(message: KlasaMessage, target: User): Promise<GuildMember | null> {
+	public async checkModeratable(message: KlasaMessage, target: User) {
 		if (target.id === message.author.id)
 			throw message.language.get('COMMAND_USERSELF');
 
@@ -90,7 +90,7 @@ export abstract class ModerationCommand extends SkyraCommand {
 		const member = await message.guild.members.fetch(target.id).catch(() => {
 			if (this.requiredMember) throw message.language.get('USER_NOT_IN_GUILD');
 			return null;
-		});
+		}) as GuildMember | null;
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
 			if (targetHighestRolePosition >= message.guild.me.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
@@ -100,7 +100,7 @@ export abstract class ModerationCommand extends SkyraCommand {
 		return member;
 	}
 
-	public sendModlog(message: KlasaMessage, target: User, reason: string, extraData?: any): Promise<ModerationManagerEntry> {
+	public sendModlog(message: KlasaMessage, target: User, reason: string, extraData?: unknown): Promise<ModerationManagerEntry> {
 		if (Array.isArray(reason)) reason = reason.join(' ');
 		const modlog = message.guild.moderation.new
 			.setModerator(message.author.id)

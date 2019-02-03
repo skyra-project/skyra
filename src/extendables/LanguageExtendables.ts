@@ -7,7 +7,7 @@ export default class extends Extendable {
 		super(client, store, file, directory, { appliesTo: [Language] });
 	}
 
-	public retrieve(key: string): any {
+	public retrieve(key: string) {
 		const self = this as Language;
 		const value = self.language[key];
 		if (value) return value;

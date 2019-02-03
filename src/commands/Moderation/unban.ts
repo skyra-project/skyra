@@ -17,7 +17,7 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public async prehandle(message: KlasaMessage): Promise<Unlock> {
+	public async prehandle(message: KlasaMessage) {
 		const bans = await message.guild.fetchBans()
 			.then((result) => result.map((ban) => ban.user.id))
 			.catch(() => { throw message.language.get('SYSTEM_FETCHBANS_FAIL'); });

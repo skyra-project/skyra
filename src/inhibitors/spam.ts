@@ -5,7 +5,7 @@ export default class extends Inhibitor {
 
 	public spamProtection = true;
 
-	private ratelimit = new RateLimitManager(1, 30000);
+	private readonly ratelimit = new RateLimitManager(1, 30000);
 
 	public async run(message: KlasaMessage, command: SkyraCommand): Promise<void> {
 		if (!command.spam || !message.guild) return;

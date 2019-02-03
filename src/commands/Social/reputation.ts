@@ -5,7 +5,7 @@ import { TIME } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
-	private busy: Set<any> = new Set();
+	private readonly busy: Set<string> = new Set();
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

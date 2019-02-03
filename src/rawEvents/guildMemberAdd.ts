@@ -2,6 +2,7 @@ import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSGuildMemberAdd } from '../lib/types/Discord';
 import { GuildSettingsStickyRoles } from '../lib/types/Misc';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
 const { FLAGS } = Permissions;
@@ -55,16 +56,22 @@ export default class extends RawEvent {
 				(channel as TextChannel).send(this.transformMessage(guild.settings.get('messages.greeting') as string, guild, member.user))
 					.catch((error) => this.client.emit('apiError', error));
 			} else {
-				guild.settings.reset('channels.default');
+				guild.settings.reset('channels.default')
+					.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
+					.catch((error) => this.client.emit('wtf', error));
 			}
 		}
 	}
 
 	public handleInitialRole(guild: Guild, member: GuildMember): void {
-		if (guild.settings.get('roles.initial')) {
-			const role = guild.roles.get(guild.settings.get('roles.initial') as string);
-			if (!role || role.position >= guild.me.roles.highest.position) guild.settings.reset('roles.initial');
-			else member.roles.add(role).catch((error) => this.client.emit('apiError', error));
+		const initialRole = guild.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
+		if (initialRole) {
+			const role = guild.roles.get(initialRole);
+			if (!role || role.position >= guild.me.roles.highest.position) guild.settings.reset('roles.initial')
+				.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
+				.catch((error) => this.client.emit('wtf', error));
+			else member.roles.add(role)
+				.catch((error) => this.client.emit('apiError', error));
 		}
 	}
 
@@ -90,7 +97,8 @@ export default class extends RawEvent {
 	public handleStickyRoles(guild: Guild, member: GuildMember): boolean {
 		if (!guild.me.permissions.has(FLAGS.MANAGE_ROLES)) return false;
 
-		const stickyRoles = (guild.settings.get('stickyRoles') as GuildSettingsStickyRoles).find((stickyRole) => stickyRole.user === member.id);
+		const all = guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+		const stickyRoles = all.find((stickyRole) => stickyRole.user === member.id);
 		if (!stickyRoles) return false;
 
 		// Handle the case the user is muted
@@ -112,7 +120,9 @@ export default class extends RawEvent {
 			if (guild.roles.has(role)) roles.push(role);
 
 		if (stickyRoles.roles.length !== roles.length)
-			guild.settings.update('stickyRoles', { id: member.id, roles }, { arrayIndex: (guild.settings.get('stickyRoles') as GuildSettingsStickyRoles).indexOf(stickyRoles) });
+			guild.settings.update('stickyRoles', { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles) })
+				.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
+				.catch((error) => this.client.emit('wtf', error));
 
 		member.roles.add(roles).catch((error) => this.client.emit('apiError', error));
 

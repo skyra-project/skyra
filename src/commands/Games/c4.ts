@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		} else {
 			createGame(false);
 			await prompt.edit(message.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
-			prompt.nuke(10000);
+			await prompt.nuke(10000);
 		}
 
 		this.client.connectFour.delete(message.channel.id);

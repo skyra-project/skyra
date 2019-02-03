@@ -10,8 +10,13 @@ export default class extends RawEvent {
 		const channel = this.client.channels.get(data.channel_id) as TextChannel;
 		if (!channel || channel.type !== 'text' || !channel.readable) return;
 
-		if (channel.id === channel.guild.settings.get('channels.roles'))
-			this.handleRoleChannel(channel, data);
+		if (channel.id === channel.guild.settings.get('channels.roles')) {
+			try {
+				await this.handleRoleChannel(channel, data);
+			} catch (error) {
+				this.client.emit('wtf', error);
+			}
+		}
 	}
 
 	public async handleRoleChannel(channel: TextChannel, data: WSMessageReactionRemove): Promise<void> {

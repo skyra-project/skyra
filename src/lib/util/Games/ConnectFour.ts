@@ -188,7 +188,8 @@ export class ConnectFour {
 			this.llrc.setEndListener(reject);
 			this.collector = (data) => {
 				if (data.userID === PLAYER && CONNECT_FOUR.REACTIONS.includes(data.emoji.name)) {
-					if (this.manageMessages) this.removeEmoji(data.emoji, data.userID);
+					if (this.manageMessages) this.removeEmoji(data.emoji, data.userID)
+						.catch((error) => this.client.emit('apiError', error));
 					resolve(data.emoji.name);
 				}
 			};
@@ -295,8 +296,7 @@ export class ConnectFour {
 	public async removeEmoji(emoji: string | LLRCDataEmoji, userID: string): Promise<void> {
 		// @ts-ignore
 		await this.client.api.channels[this.message.channel.id].messages[this.message.id]
-			.reactions[resolveEmoji(emoji)][userID].delete()
-			.catch((error) => this.client.emit('apiError', error));
+			.reactions[resolveEmoji(emoji)][userID].delete();
 	}
 
 	/**

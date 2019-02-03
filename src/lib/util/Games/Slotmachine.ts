@@ -97,7 +97,8 @@ export class Slotmachine {
 			.addRect(96, 54, 2, 38)
 			.restore();
 
-		await Promise.all(rolls.map((value, index) => new Promise((res) => {
+		// tslint:disable-next-line:no-floating-promises
+		await Promise.all(rolls.map((value, index) => new Promise<void>((res) => {
 			const { x, y } = ASSETS[value];
 			const coord = COORDINATES[index];
 			// @ts-ignore

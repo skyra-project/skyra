@@ -10,9 +10,9 @@ const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
 
 export default class extends SkyraCommand {
 
-	private banners: Map<string, BannerCache> = new Map();
+	private readonly banners: Map<string, BannerCache> = new Map();
+	private readonly listPrompt = this.definePrompt('<all|user>');
 	private display = null;
-	private listPrompt = this.definePrompt('<all|user>');
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

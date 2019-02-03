@@ -18,7 +18,7 @@ export default class extends Monitor {
 		return this.enabled
 			&& message.editedTimestamp === null
 			&& message.guild
-			&& message.author.bot === false
+			&& !message.author.bot
 			&& message.author.id !== this.client.user.id
 			&& (message.guild.settings.get('trigger.includes') as GuildSettingsTriggerIncludes).length !== 0;
 	}

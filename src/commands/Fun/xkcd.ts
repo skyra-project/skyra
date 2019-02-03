@@ -5,7 +5,7 @@ import { fetch } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	private timestamp = new Timestamp('MMMM, dddd dd YYYY');
+	private readonly timestamp = new Timestamp('MMMM, dddd dd YYYY');
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

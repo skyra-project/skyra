@@ -58,11 +58,11 @@ export namespace Kitsu {
 	}
 
 	export enum AgeRating {
-		PG = "PG",
+		PG = 'PG',
 	}
 
 	export enum AgeRatingGuide {
-		Teens13OrOlder = "Teens 13 or older",
+		Teens13OrOlder = 'Teens 13 or older',
 	}
 
 	export interface CoverImage {

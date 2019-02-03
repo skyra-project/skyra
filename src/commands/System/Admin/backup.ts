@@ -27,6 +27,7 @@ export default class extends SkyraCommand {
 		this.enable();
 
 		// Delete the message sent later and return it
+		// tslint:disable-next-line:no-floating-promises
 		response.nuke(10000);
 		return response;
 	}

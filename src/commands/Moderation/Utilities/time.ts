@@ -70,7 +70,8 @@ export default class extends SkyraCommand {
 		if (!modlog) return null;
 		const channel = message.guild.channels.get(modlog) as TextChannel;
 		if (!channel) {
-			message.guild.settings.reset('channels.modlog');
+			const { errors } = await message.guild.settings.reset('channels.modlog');
+			if (errors.length) throw String(errors[0]);
 			return null;
 		}
 

@@ -16,7 +16,7 @@ const CPP_EXEC = join(BWD_FOLDER, 'cpp', 'eval.exe');
 
 export default class extends Command {
 
-	private timeout = 60000;
+	private readonly timeout = 60000;
 
 	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

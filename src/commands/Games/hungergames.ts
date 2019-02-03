@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		this.playing.add(message.channel.id);
 
 		let resolve = null;
-		let gameMessage = null;
+		let gameMessage: KlasaMessage = null;
 		const game = Object.seal({
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(this.client, async(reaction) => {
@@ -63,9 +63,11 @@ export default class extends SkyraCommand {
 				// Ask for the user to proceed
 				for (const text of texts) {
 					game.llrc.setTime(120000);
-					gameMessage = await message.channel.send(text);
-					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji);
-					const verification = await new Promise((res) => { resolve = res; });
+					gameMessage = await message.channel.send(text) as KlasaMessage;
+					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji)
+						.catch((error) => this.client.emit('apiError', error));
+					// tslint:disable-next-line:no-floating-promises
+					const verification = await new Promise<boolean>((res) => { resolve = res; });
 					gameMessage.nuke().catch((error) => this.client.emit('apiError', error));
 					if (!verification) {
 						game.llrc.end();

@@ -33,9 +33,12 @@ export default class extends SkyraCommand {
 		if (!message.flags.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY))
 			return (await this.buildDisplay(message)).run(await message.send('Loading Commands...') as KlasaMessage, message.author.id);
 
-		return message.author.send(await this.buildHelp(message), { split: { char: '\n' } })
-			.then(() => { if (message.channel.type !== 'dm') message.sendLocale('COMMAND_HELP_DM'); })
-			.catch(() => { if (message.channel.type !== 'dm') message.sendLocale('COMMAND_HELP_NODM'); });
+		try {
+			const response = await message.author.send(await this.buildHelp(message), { split: { char: '\n' } });
+			return message.channel.type === 'dm' ? response : message.sendLocale('COMMAND_HELP_DM');
+		} catch {
+			return message.channel.type === 'dm' ? null : message.sendLocale('COMMAND_HELP_NODM');
+		}
 	}
 
 	private async buildHelp(message: KlasaMessage) {

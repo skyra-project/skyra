@@ -7,9 +7,9 @@ export type FuzzySearchFilter<V> = (value: V) => boolean;
 
 export class FuzzySearch<K extends string, V> {
 
-	private collection: Collection<K, V>;
-	private access: FuzzySearchAccess<V>;
-	private filter: FuzzySearchFilter<V>;
+	private readonly collection: Collection<K, V>;
+	private readonly access: FuzzySearchAccess<V>;
+	private readonly filter: FuzzySearchFilter<V>;
 
 	public constructor(collection: Collection<K, V>, access: FuzzySearchAccess<V>, filter: FuzzySearchFilter<V> = () => true) {
 		this.collection = collection;

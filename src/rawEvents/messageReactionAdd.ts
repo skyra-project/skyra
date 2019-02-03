@@ -30,12 +30,21 @@ export default class extends RawEvent {
 		for (const llrc of this.client.llrCollectors)
 			llrc.send(parsed);
 
-		if (data.channel_id === channel.guild.settings.get('channels.roles'))
-			this.handleRoleChannel(parsed);
-		else if (!parsed.channel.nsfw
+		if (data.channel_id === channel.guild.settings.get('channels.roles')) {
+			try {
+				await this.handleRoleChannel(parsed);
+			} catch (error) {
+				this.client.emit('wtf', error);
+			}
+		} else if (!parsed.channel.nsfw
 			&& parsed.channel.id !== channel.guild.settings.get('starboard.channel')
-			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get('starboard.emoji'))
-			this.handleStarboard(parsed);
+			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get('starboard.emoji')) {
+			try {
+				await this.handleStarboard(parsed);
+			} catch (error) {
+				this.client.emit('wtf', error);
+			}
+		}
 	}
 
 	public async handleRoleChannel(parsed: LLRCData): Promise<void> {

@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 	}
 
-	public processFrame(ctx: any, x: number, y: number, red: number, green: number, blue: number) {
+	public async processFrame(ctx: any, x: number, y: number, red: number, green: number, blue: number) {
 		ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
 		ctx.fillRect(x, y, 120, 120);
 		const thisLum = sCL(Color.luminance(red, green, blue));

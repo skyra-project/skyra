@@ -4,7 +4,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 export default class extends SkyraCommand {
 
-	private ids = [
+	private readonly ids = [
 		'77227', '60575', '202462', '164687', '344049', '112786', '103656',
 		'384799', '207142', '73164', '42265', '60578', '94171', '78621',
 		'138232', '60533', '73165', '54706', '32208', '25687', '20627',

@@ -1,6 +1,7 @@
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { APIUserData, WSGuildMemberRemove } from '../lib/types/Discord';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
@@ -22,13 +23,13 @@ export default class extends RawEvent {
 		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
 		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
 
-		if (guild.settings.get('events.memberRemove')) {
+		if (guild.settings.get(GuildSettings.Events.MemberRemove)) {
 			this.handleMemberLog(guild, data);
 			this.handleFarewellMessage(guild, data.user);
 		}
 	}
 
-	public handleMemberLog(guild: Guild, data: WSGuildMemberRemove): void {
+	public handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
 		this.client.emit('guildMessageLog', MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(0xF9A825)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
@@ -42,17 +43,21 @@ export default class extends RawEvent {
 			.setTimestamp());
 	}
 
-	public handleFarewellMessage(guild: Guild, user: APIUserData): void {
+	public handleFarewellMessage(guild: Guild, user: APIUserData) {
 		if (guild.settings.get('channels.default') && guild.settings.get('messages.farewell')) {
 			const channel = guild.channels.get(guild.settings.get('channels.default') as string) as TextChannel;
 			if (channel && channel.postable)
 				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit('apiError', error));
-			else guild.settings.reset('channels.default');
+			else {
+				guild.settings.reset('channels.default')
+					.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
+					.catch((error) => this.client.emit('wtf', error));
+			}
 		}
 	}
 
-	public transformMessage(guild: Guild, user: APIUserData): string {
-		return (guild.settings.get('messages.farewell') as string).replace(REGEXP, (match) => {
+	public transformMessage(guild: Guild, user: APIUserData) {
+		return (guild.settings.get(GuildSettings.Messages.Farewell) as GuildSettings.Messages.Farewell).replace(REGEXP, (match) => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;
 				case MATCHES.MEMBERNAME: return user.username;

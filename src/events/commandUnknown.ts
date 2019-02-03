@@ -35,6 +35,7 @@ export default class extends Event {
 				const commandRun = tagCommand.show(message, [command]);
 				timer.stop();
 				const response = await commandRun;
+				// tslint:disable-next-line:no-floating-promises
 				this.client.finalizers.run(message, tagCommand, response, timer);
 				this.client.emit('commandSuccess', message, tagCommand, ['show', command], response);
 			} catch (error) {

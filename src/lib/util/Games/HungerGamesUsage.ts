@@ -2,7 +2,7 @@ export class HungerGamesUsage {
 
 	public tributes = 0;
 	public deaths: Set<number> = new Set();
-	private parts: (string | number)[] = [];
+	private readonly parts: (string | number)[] = [];
 
 	public constructor(usage: string) {
 		this.parse(usage);

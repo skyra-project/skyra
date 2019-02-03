@@ -27,7 +27,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	/**
 	 * The promise to wait for tasks to complete
 	 */
-	private _locks: ReferredPromise<undefined>[] = [];
+	private readonly _locks: ReferredPromise<undefined>[] = [];
 
 	public constructor(guild: Guild) {
 		super();
@@ -117,6 +117,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	public createLock(): () => void {
 		const lock = createReferPromise<undefined>();
 		this._locks.push(lock);
+		// tslint:disable-next-line:no-floating-promises
 		lock.promise.finally(() => { this._locks.splice(this._locks.indexOf(lock), 1); });
 
 		return lock.resolve;

@@ -40,7 +40,9 @@ export default class extends SkyraCommand {
 		message.guild.security.lockdowns.set(channel.id, timeout);
 
 		// Perform cleanup later
-		if (timeout) timeout.run().then(this._unlock.bind(this, message, channel));
+		if (timeout) timeout.run()
+			.then(this._unlock.bind(this, message, channel))
+			.catch(this._unlock.bind(this, message, channel));
 	}
 
 	private async _unlock(message: KlasaMessage, channel: TextChannel) {

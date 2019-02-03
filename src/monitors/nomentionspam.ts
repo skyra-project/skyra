@@ -3,8 +3,8 @@ import { KlasaMessage, Monitor } from 'klasa';
 
 export default class extends Monitor {
 
-	private roleValue = this.client.options.nms.role;
-	private everyoneValue = this.client.options.nms.everyone;
+	private readonly roleValue = this.client.options.nms.role;
+	private readonly everyoneValue = this.client.options.nms.everyone;
 
 	public async run(message: KlasaMessage): Promise<void> {
 		if (!message.guild || !message.guild.settings.get('no-mention-spam.enabled')) return;

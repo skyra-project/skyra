@@ -7,7 +7,7 @@ const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
 export default class extends SkyraCommand {
 
-	private channels: Set<string> = new Set();
+	private readonly channels: Set<string> = new Set();
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
@@ -91,6 +91,7 @@ export default class extends SkyraCommand {
 				}
 			};
 
+			// tslint:disable-next-line:no-floating-promises
 			makeRound();
 
 			collector.on('collect', () => {
@@ -107,6 +108,7 @@ export default class extends SkyraCommand {
 					collector.stop();
 					resolve(winner);
 				} else if (++turn < 9) {
+					// tslint:disable-next-line:no-floating-promises
 					makeRound();
 				} else {
 					collector.stop();

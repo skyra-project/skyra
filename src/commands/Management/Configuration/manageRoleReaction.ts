@@ -2,6 +2,7 @@ import { Role } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettingsRolesReactions } from '../../../lib/types/Misc';
+import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
 import { resolveEmoji } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
@@ -40,7 +41,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: KlasaMessage) {
-		const list = new Set(message.guild.settings.get('roles.reactions') as GuildSettingsRolesReactions);
+		const list = new Set(message.guild.settings.get(GuildSettings.Roles.Reactions) as GuildSettings.Roles.Reactions);
 		const oldLength = list.size;
 		if (!list.size) throw message.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		const lines = [];
@@ -49,7 +50,10 @@ export default class extends SkyraCommand {
 			if (!role) list.delete(entry);
 			else lines.push(`${role.name.padEnd(25, ' ')} :: ${entry.emoji}`);
 		}
-		if (oldLength !== list.size) message.guild.settings.update('roles.reactions', [...list], { arrayAction: 'overwrite' });
+		if (oldLength !== list.size) {
+			const { errors } = await message.guild.settings.update(GuildSettings.Roles.Reactions, [...list], { arrayAction: 'overwrite' });
+			if (errors.length) throw errors[0];
+		}
 		if (!lines.length) throw message.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		return message.sendMessage(util.codeBlock('asciicode', lines.join('\n')));
 	}

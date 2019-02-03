@@ -47,7 +47,7 @@ export default class extends Task {
 
 }
 
-export interface PollData {
+interface PollData {
 	id: string;
 	author: string;
 	guild: string;

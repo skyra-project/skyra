@@ -5,7 +5,7 @@ export class DatabaseInit {
 
 	private static initialized = false;
 
-	private static tables: [string, [string, (rows: RDatum) => RDatum[] | RDatum][]][] = [
+	private static readonly tables: [string, [string, (rows: RDatum) => RDatum[] | RDatum][]][] = [
 		['oxford', []],
 		['banners', []],
 		['starboard', [

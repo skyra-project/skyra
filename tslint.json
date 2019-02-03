@@ -32,7 +32,6 @@
 		"array-type": false,
 		"arrow-return-shorthand": true,
 		"class-name": true,
-		"completed-docs": [true, "enums", "enum-members", "interfaces", "types"],
 		"eofline": true,
 		"import-spacing": true,
 		"indent": true,

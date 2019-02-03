@@ -1,12 +1,13 @@
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
 import { GuildSettingsRolesAuto } from '../lib/types/Misc';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const { FLAGS: { MANAGE_ROLES } } = Permissions;
 
 export default class extends Monitor {
 
-	private ratelimits = new RateLimitManager(1, 60);
+	private readonly ratelimits = new RateLimitManager(1, 60);
 
 	public async run(message: KlasaMessage): Promise<void> {
 		if (!message.guild
@@ -52,8 +53,9 @@ export default class extends Monitor {
 
 		await message.member.roles.add(role);
 		if (message.guild.settings.get('social.achieve') && message.channel.postable) {
-			message.channel.send(
-				this.getMessage(message.member, role, (message.guild.settings.get('social.achieveMessage') as string) || message.language.get('MONITOR_SOCIAL_ACHIEVEMENT'))
+			await message.channel.send(
+				this.getMessage(message.member, role, (message.guild.settings.get(GuildSettings.Social.AchieveMessage) as GuildSettings.Social.AchieveMessage)
+					|| message.language.get('MONITOR_SOCIAL_ACHIEVEMENT'))
 			);
 		}
 	}

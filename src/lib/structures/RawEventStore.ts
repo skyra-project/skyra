@@ -11,6 +11,7 @@ export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 
 	public run(data: { t: WSEventType; d: any }): void {
 		const piece = data.d && super.get(Constants.Events[data.t]);
+		// tslint:disable-next-line:no-floating-promises
 		if (piece) this._run(piece, data.d);
 	}
 

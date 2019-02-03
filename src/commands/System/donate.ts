@@ -12,9 +12,12 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		return message.author.send(message.language.get('COMMAND_DONATE_EXTENDED'))
-			.then(() => { if (message.channel.type !== 'dm') message.alert(message.language.get('COMMAND_DM_SENT')); })
-			.catch(() => { if (message.channel.type !== 'dm') message.alert(message.language.get('COMMAND_DM_NOT_SENT')); });
+		try {
+			const response = await message.author.send(message.language.get('COMMAND_DONATE_EXTENDED'));
+			return message.channel.type === 'dm' ? message.alert(message.language.get('COMMAND_DM_SENT')) : response;
+		} catch {
+			return message.channel.type === 'dm' ? null : message.alert(message.language.get('COMMAND_DM_NOT_SENT'));
+		}
 	}
 
 }

@@ -117,7 +117,7 @@ export class Leaderboard {
 				const old = store.get(entry.userID);
 				if (old && old.points > entry.count) {
 					this.client.emit('verbose', `[CORRUPTION] [localScores - ${entry.guildID}:${entry.userID}] (${entry.id}) ${entry.count} < ${old.points}.`);
-					r.table('localScores').get(entry.id).delete().run();
+					await r.table('localScores').get(entry.id).delete().run();
 				} else {
 					store.set(entry.userID, { name: null, points: entry.count, position: ++i });
 				}
@@ -134,6 +134,7 @@ export class Leaderboard {
 		const timeout = new PreciseTimeout(MINUTE * 10);
 		this.timeouts.guilds.set(guild, timeout);
 
+		// tslint:disable-next-line:no-floating-promises
 		timeout.run().then(() => {
 			this.timeouts.guilds.delete(guild);
 			this.guilds.get(guild).clear();
@@ -165,6 +166,7 @@ export class Leaderboard {
 
 		// Set the timeout for the refresh
 		this.timeouts.users = new PreciseTimeout(MINUTE * 15);
+		// tslint:disable-next-line:no-floating-promises
 		this.timeouts.users.run().then(() => {
 			this.timeouts.users = null;
 			this.users.clear();

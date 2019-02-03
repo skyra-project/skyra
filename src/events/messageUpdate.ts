@@ -8,6 +8,7 @@ export default class extends Event {
 	public async run(old: KlasaMessage, message: KlasaMessage): Promise<void> {
 		// Run monitors
 		if (!this.client.ready || old.content === message.content) return;
+		// tslint:disable-next-line:no-floating-promises
 		this.client.monitors.run(message);
 
 		if (!message.guild || message.author === this.client.user) return;

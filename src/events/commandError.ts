@@ -8,6 +8,7 @@ export default class extends Event {
 			message.alert(message.language.get('EVENTS_ERROR_STRING', message.author, error))
 				.catch((err) => this.client.emit('wtf', err));
 		} else if (error instanceof Error) {
+			// tslint:disable-next-line:no-floating-promises
 			this._sendErrorChannel(message, command, error);
 
 			// Extract useful information about the DiscordAPIError
@@ -23,7 +24,7 @@ export default class extends Event {
 		}
 	}
 
-	private _sendErrorChannel(message: KlasaMessage, command: Command, error: Error): Promise<KlasaMessage> {
+	private _sendErrorChannel(message: KlasaMessage, command: Command, error: Error) {
 		let output: string;
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			output = [
@@ -46,7 +47,8 @@ export default class extends Event {
 		return this.client.webhookError.send(new MessageEmbed()
 			.setDescription(output)
 			.setAuthor(message.author.username, message.author.displayAvatarURL(), message.url)
-			.setTimestamp()) as Promise<KlasaMessage>;
+			.setTimestamp())
+			.catch((err) => this.client.emit('apiError', err));
 	}
 
 	private _getWarnError(message: KlasaMessage): string {

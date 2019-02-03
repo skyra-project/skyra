@@ -33,15 +33,15 @@ export default class extends ModerationCommand {
 
 		// Cache and concatenate with the current roles
 		const { position } = message.guild.me.roles.highest;
-		const roles = [...new Set((modlog.extraData || [])
+		const roles = [...new Set<Role>((modlog.extraData || [])
 			// Map by Role instances
-			.map((id) => message.guild.roles.get(id))
+			.map((id: string) => message.guild.roles.get(id))
 			// Concatenate with the member's roles
 			.concat(...member.roles.values()))]
 			// Filter removed and unmanageable roles
-			.filter((role: Role) => role && role.position < position && !role.managed)
+			.filter((role) => role && role.position < position && !role.managed)
 			// Map by id
-			.map((role: Role) => role.id);
+			.map((role) => role.id);
 
 		// Remove the muted role
 		const muteIndex = roles.indexOf(message.guild.settings.get('roles.muted') as string);

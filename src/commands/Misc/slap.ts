@@ -9,8 +9,8 @@ import { assetsFolder } from '../../Skyra';
 export default class extends SkyraCommand {
 
 	private template: Buffer = null;
-	private ownerID = this.client.options.ownerID;
-	private skyraID = this.client.user.id;
+	private readonly ownerID = this.client.options.ownerID;
+	private readonly skyraID = this.client.user.id;
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

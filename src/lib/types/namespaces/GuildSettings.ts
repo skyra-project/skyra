@@ -1,3 +1,5 @@
+// tslint:disable:no-shadowed-variable
+// TSLint gives false errors
 export namespace GuildSettings {
 
 	export type Prefix = string;

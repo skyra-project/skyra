@@ -10,7 +10,7 @@ const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
 
 export default class extends SkyraCommand {
 
-	private banners = new Map();
+	private banners: Map<string, BannerCache> = new Map();
 	private display = null;
 	private listPrompt = this.definePrompt('<all|user>');
 
@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async buy(message: KlasaMessage, [banner]: [BannerEntry]) {
+	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
 		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild.settings.get(GuildSettings.Prefix), banner.id);
 
@@ -71,7 +71,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_BANNER_RESET');
 	}
 
-	public async set(message: KlasaMessage, [banner]: [BannerEntry]) {
+	public async set(message: KlasaMessage, [banner]: [BannerCache]) {
 		const banners = message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList;
 		if (!banners.length) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY');
 		if (!banners.includes(banner.id)) throw message.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
@@ -135,7 +135,7 @@ export default class extends SkyraCommand {
 		return display.run(await message.channel.send(message.language.get('SYSTEM_LOADING')) as KlasaMessage, message.author.id);
 	}
 
-	private async _prompt(message: KlasaMessage, banner: BannerEntry) {
+	private async _prompt(message: KlasaMessage, banner: BannerCache) {
 		const embed = new MessageEmbed()
 			.setColor(message.member.displayColor)
 			.setDescription([
@@ -160,5 +160,14 @@ interface BannerEntry {
 	id: string;
 	price: number;
 	resAuthor: string;
+	title: string;
+}
+
+interface BannerCache {
+	author: string;
+	authorName: null;
+	id: string;
+	list: string;
+	price: number;
 	title: string;
 }

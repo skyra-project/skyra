@@ -1,5 +1,12 @@
 {
+	"extends": [
+		"tslint-eslint-rules",
+		"tslint-no-circular-imports"
+	],
 	"rules": {
+		"object-curly-spacing": ["error", "always"],
+		"ter-padded-blocks": ["error", { "classes": "always", "blocks": "never", "switches": "never" }],
+
 		"member-access": [true, "check-accessor", "check-constructor"],
 		"member-ordering": [true, {
 			"order": [
@@ -93,7 +100,6 @@
 		"triple-equals": true,
 		"type-literal-delimiter": true,
 		"unified-signatures": true,
-		"object-curly-spacing": true,
 		"use-isnan": true,
 		"variable-name": [true, "allow-leading-underscore", "ban-keywords"],
 		"whitespace": [

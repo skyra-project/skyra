@@ -231,7 +231,7 @@ declare module 'klasa' {
 		};
 	}
 
-	export interface PieceDefaults {
+	export interface KlasaPieceDefaults {
 		ipcMonitors?: PieceOptions;
 		rawEvents?: PieceOptions;
 	}

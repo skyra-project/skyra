@@ -54,7 +54,6 @@
     "@types/node": "^10.12.21",
     "@types/node-fetch": "^2.1.4",
     "tslint": "^5.12.1",
-    "tslint-eslint-rules": "^5.4.0",
-    "tslint-no-circular-imports": "^0.6.1"
+    "tslint-eslint-rules": "^5.4.0"
   }
 }

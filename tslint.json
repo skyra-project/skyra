@@ -1,7 +1,6 @@
 {
 	"extends": [
-		"tslint-eslint-rules",
-		"tslint-no-circular-imports"
+		"tslint-eslint-rules"
 	],
 	"rules": {
 		"object-curly-spacing": ["error", "always"],

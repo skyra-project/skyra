@@ -13,7 +13,7 @@ import { LLRCDataEmoji } from './LongLivingReactionCollector';
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
 
-export interface UtilOneToTenEntry {
+interface UtilOneToTenEntry {
 	emoji: string;
 	color: number;
 }
@@ -84,21 +84,6 @@ export async function removeMute(guild: Guild, id: string): Promise<boolean> {
 	if (errors.length) throw errors;
 
 	return true;
-}
-
-/**
- * Check if the member is exactly moderatable
- * @param message The message for context
- * @param moderator The moderator
- * @param target The target
- */
-export function moderationCheck(message: Message, moderator: GuildMember, target: GuildMember): void {
-	if (target === message.guild.me) throw message.language.get('COMMAND_TOSKYRA');
-	if (target === moderator) throw message.language.get('COMMAND_USERSELF');
-	if (target === message.guild.owner) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
-	const { position } = target.roles.highest;
-	if (position >= message.guild.me.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
-	if (position >= moderator.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER');
 }
 
 /**

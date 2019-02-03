@@ -2,7 +2,7 @@ import { Permissions, TextChannel } from 'discord.js';
 import { CommandStore, Duration, KlasaClient, KlasaMessage, KlasaUser, ScheduledTask } from 'klasa';
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettingsStickyRoles } from '../../../lib/types/Misc';
+import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../../../lib/util/constants';
 
 export default class extends SkyraCommand {
@@ -109,7 +109,7 @@ export default class extends SkyraCommand {
 
 	private async checkMute(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild.me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
-		const stickyRoles = (message.guild.settings.get('stickyRoles') as GuildSettingsStickyRoles).find((stickyRole) => stickyRole.user === user.id);
+		const stickyRoles = (message.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles).find((stickyRole) => stickyRole.user === user.id);
 		if (!stickyRoles || !stickyRoles.roles.includes(message.guild.settings.get('roles.muted') as string)) throw message.language.get('COMMAND_MUTE_USER_NOT_MUTED');
 		return 'unmute';
 	}

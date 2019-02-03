@@ -1,7 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSMessageReactionRemove } from '../lib/types/Discord';
-import { GuildSettingsRolesReactions } from '../lib/types/Misc';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { resolveEmoji } from '../lib/util/util';
 
 export default class extends RawEvent {
@@ -26,7 +26,7 @@ export default class extends RawEvent {
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;
 
-		const roleEntry = (channel.guild.settings.get('roles.reactions') as GuildSettingsRolesReactions)
+		const roleEntry = (channel.guild.settings.get(GuildSettings.Roles.Reactions) as GuildSettings.Roles.Reactions)
 			.find((entry) => entry.emoji === parsed);
 		if (!roleEntry) return;
 

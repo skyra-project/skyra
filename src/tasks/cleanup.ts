@@ -41,7 +41,7 @@ const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
 /**
  * @version 2.0.0
  */
-export default class MemorySweeper extends Task {
+export default class extends Task {
 
 	public async run(): Promise<void> {
 		const OLD_SNOWFLAKE = Util.binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);

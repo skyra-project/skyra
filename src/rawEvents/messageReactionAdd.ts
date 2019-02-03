@@ -1,7 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSMessageReactionAdd } from '../lib/types/Discord';
-import { GuildSettingsRolesReactions } from '../lib/types/Misc';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
 import { resolveEmoji } from '../lib/util/util';
 
@@ -48,13 +48,13 @@ export default class extends RawEvent {
 	}
 
 	public async handleRoleChannel(parsed: LLRCData): Promise<void> {
-		const messageReaction = parsed.guild.settings.get('roles.messageReaction');
+		const messageReaction = parsed.guild.settings.get(GuildSettings.Roles.MessageReaction) as GuildSettings.Roles.MessageReaction;
 		if (!messageReaction || messageReaction !== parsed.messageID) return;
 
 		const emoji = resolveEmoji(parsed.emoji);
 		if (!emoji) return;
 
-		const roleEntry = (parsed.guild.settings.get('roles.reactions') as GuildSettingsRolesReactions)
+		const roleEntry = (parsed.guild.settings.get(GuildSettings.Roles.Reactions) as GuildSettings.Roles.Reactions)
 			.find((entry) => entry.emoji === emoji);
 		if (!roleEntry) return;
 

@@ -336,7 +336,7 @@ export const COLORS = [
 const MAXCOLORS = COLORS.length - 1;
 const LASTCOLOR = COLORS[MAXCOLORS];
 
-export interface StarboardMessageEdit {
+interface StarboardMessageEdit {
 	/**
 	 * The star message id
 	 */
@@ -351,7 +351,7 @@ export interface StarboardMessageEdit {
 	disabled?: boolean;
 }
 
-export interface StarboardMessageData {
+interface StarboardMessageData {
 	id: string;
 	channelID: string;
 	disabled: boolean;

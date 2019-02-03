@@ -125,7 +125,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 
 }
 
-export interface AntiRaidEntry {
+interface AntiRaidEntry {
 	id: string;
 	time: number;
 }

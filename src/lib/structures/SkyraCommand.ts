@@ -18,6 +18,6 @@ export class SkyraCommand extends Command {
 
 }
 
-export interface SkyraCommandOptions extends CommandOptions {
+interface SkyraCommandOptions extends CommandOptions {
 	spam?: boolean;
 }

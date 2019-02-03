@@ -5,9 +5,8 @@ import { join } from 'path';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/namespaces/UserSettings';
-import { fetch, fetchAvatar } from '../../lib/util/util';
+import { fetch, fetchAvatar, IMAGE_EXTENSION } from '../../lib/util/util';
 import { assetsFolder } from '../../Skyra';
-const attachmentFilter = /\.(?:webp|png|jpg|gif)$/i;
 
 const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 
@@ -29,10 +28,10 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('attachment', async(arg, possible, msg) => {
 			if (msg.attachments.size) {
-				const attachment = msg.attachments.find((att) => attachmentFilter.test(att.url));
+				const attachment = msg.attachments.find((att) => IMAGE_EXTENSION.test(att.url));
 				if (attachment) return fetch(attachment.url, 'buffer');
 			}
-			const url = ((res) => res && res.protocol && attachmentFilter.test(res.pathname) && res.hostname && res.href)(new URL(arg));
+			const url = ((res) => res && res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');
 			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
 		});

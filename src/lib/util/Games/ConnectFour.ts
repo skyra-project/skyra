@@ -5,12 +5,12 @@ import { LLRCData, LLRCDataEmoji, LongLivingReactionCollector, LongLivingReactio
 import { resolveEmoji } from '../util';
 import { ConnectFourManager } from './ConnectFourManager';
 
-export interface ConnectFourWinningRowElement {
+interface ConnectFourWinningRowElement {
 	x: number;
 	y: number;
 }
 
-export interface ConnectFourWinningRow extends Array<ConnectFourWinningRowElement> {}
+interface ConnectFourWinningRow extends Array<ConnectFourWinningRowElement> {}
 
 export class ConnectFour {
 

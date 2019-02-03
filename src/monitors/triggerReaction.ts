@@ -1,11 +1,11 @@
 import { KlasaMessage, Monitor } from 'klasa';
-import { GuildSettingsTriggerIncludes } from '../lib/types/Misc';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends Monitor {
 
 	public async run(message: KlasaMessage): Promise<void> {
 		const content = message.content.toLowerCase();
-		const trigger = (message.guild.settings.get('trigger.includes') as GuildSettingsTriggerIncludes).find((trg) => content.includes(trg.input));
+		const trigger = (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).find((trg) => content.includes(trg.input));
 		if (trigger && trigger.action === 'react') {
 			if (message.reactable) {
 				await message.react(trigger.output)
@@ -20,7 +20,7 @@ export default class extends Monitor {
 			&& message.guild
 			&& !message.author.bot
 			&& message.author.id !== this.client.user.id
-			&& (message.guild.settings.get('trigger.includes') as GuildSettingsTriggerIncludes).length !== 0;
+			&& (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).length !== 0;
 	}
 
 }

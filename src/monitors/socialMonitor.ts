@@ -1,6 +1,5 @@
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
-import { GuildSettingsRolesAuto } from '../lib/types/Misc';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const { FLAGS: { MANAGE_ROLES } } = Permissions;
@@ -35,7 +34,7 @@ export default class extends Monitor {
 	}
 
 	public async handleRoles(message: KlasaMessage, memberPoints: number): Promise<void> {
-		const autoRoles = message.guild.settings.get('roles.auto') as GuildSettingsRolesAuto;
+		const autoRoles = message.guild.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
 		if (!autoRoles.length || !message.guild.me.permissions.has(MANAGE_ROLES)) return;
 
 		const autoRole = this.getLatestRole(autoRoles, memberPoints);
@@ -73,7 +72,7 @@ export default class extends Monitor {
 		});
 	}
 
-	public getLatestRole(autoRoles: GuildSettingsRolesAuto, points: number): { id: string; points: number } {
+	public getLatestRole(autoRoles: GuildSettings.Roles.Auto, points: number): { id: string; points: number } {
 		let latest = null;
 		for (const role of autoRoles) {
 			if (role.points > points) break;

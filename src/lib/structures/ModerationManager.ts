@@ -191,4 +191,4 @@ export interface ModerationManagerUpdateData {
 	[ModerationSchemaKeys.Reason]?: string | null;
 }
 
-export type ModerationManagerTypeResolvable = ModerationTypeKeys | number;
+type ModerationManagerTypeResolvable = ModerationTypeKeys | number;

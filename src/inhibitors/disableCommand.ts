@@ -1,19 +1,19 @@
 import { Inhibitor, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
-import { GuildSettingsDisabledCommandsChannels } from '../lib/types/Misc';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends Inhibitor {
 
 	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.enabled || !message.guild) return;
 
-		const disabledChannels = message.guild.settings.get('disabledChannels') as string[];
+		const disabledChannels = message.guild.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels;
 		if (disabledChannels.includes(message.channel.id)) {
 			if (await message.hasAtLeastPermissionLevel(5)) return;
 			throw true;
 		}
 
-		const disabledCommandChannels = message.guild.settings.get('disabledCommandsChannels') as GuildSettingsDisabledCommandsChannels;
+		const disabledCommandChannels = message.guild.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
 		const disabledCommandChannel = disabledCommandChannels.find((d) => d.channel === message.channel.id);
 		if (disabledCommandChannel && disabledCommandChannel.commands.includes(command.name)) {
 			if (await message.hasAtLeastPermissionLevel(5)) return;

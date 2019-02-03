@@ -62,7 +62,7 @@ export class LanguageHelp {
 
 }
 
-export interface LanguageHelpDisplayOptions {
+interface LanguageHelpDisplayOptions {
 	extendedHelp?: string[] | string;
 	explainedUsage?: Array<[string, string]>;
 	possibleFormats?: Array<[string, string]>;

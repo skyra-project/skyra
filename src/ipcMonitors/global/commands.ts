@@ -18,14 +18,3 @@ export default class extends IPCMonitor {
 	}
 
 }
-
-export interface IPCMonitorCommands {
-	bucket: number;
-	cooldown: number;
-	description: string;
-	extendedHelp: string;
-	guildOnly: boolean;
-	name: string;
-	permissionLevel: number;
-	usage: string;
-}

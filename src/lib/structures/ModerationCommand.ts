@@ -4,7 +4,7 @@ import { ModerationTypeKeys } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand } from './SkyraCommand';
 
-export interface ModerationCommandOptions extends CommandOptions {
+interface ModerationCommandOptions extends CommandOptions {
 	modType: ModerationTypeKeys;
 	requiredMember?: boolean;
 }

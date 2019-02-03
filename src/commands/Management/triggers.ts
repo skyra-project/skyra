@@ -1,6 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettingsTriggerAlias, GuildSettingsTriggerIncludes } from '../../lib/types/Misc';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 
 const REG_TYPE = /alias|reaction/i;
 const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
@@ -76,8 +76,8 @@ export default class extends SkyraCommand {
 	}
 
 	public show(message: KlasaMessage) {
-		const aliases = message.guild.settings.get('trigger.alias') as GuildSettingsTriggerAlias;
-		const includes = message.guild.settings.get('trigger.includes') as GuildSettingsTriggerIncludes;
+		const aliases = message.guild.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
+		const includes = message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
 		const output = [];
 		for (const alias of aliases)
 			output.push(`Alias    :: ${alias.input} -> ${alias.output}`);
@@ -87,7 +87,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage(util.codeBlock('asciidoc', output.join('\n')));
 	}
 
-	public _format(type: string, input: string, output: string) {
+	private _format(type: string, input: string, output: string) {
 		switch (type) {
 			case 'alias': return { input, output };
 			case 'reaction': return { action: 'react', input, output };
@@ -95,7 +95,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	public _getListName(type: string) {
+	private _getListName(type: string) {
 		switch (type) {
 			case 'alias': return 'trigger.alias';
 			case 'reaction':
@@ -103,11 +103,11 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	public _getList(message: KlasaMessage, type: string) {
+	private _getList(message: KlasaMessage, type: string) {
 		switch (type) {
-			case 'alias': return message.guild.settings.get('trigger.alias') as GuildSettingsTriggerAlias;
+			case 'alias': return message.guild.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
 			case 'reaction':
-			default: return message.guild.settings.get('trigger.includes') as GuildSettingsTriggerIncludes;
+			default: return message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
 		}
 	}
 

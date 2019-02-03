@@ -27,7 +27,7 @@
 
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettingsTags } from '../../lib/types/Misc';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 
 export default class extends SkyraCommand {
 
@@ -56,9 +56,9 @@ export default class extends SkyraCommand {
 		if (!content) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
 
 		// Get tags, and if it does not exist, throw
-		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tags = message.guild.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
 		if (tags.some(([name]) => name === tagName)) throw message.language.get('COMMAND_TAG_EXISTS', tagName);
-		await message.guild.settings.update('tags', [...tags, [tagName, content]], { arrayAction: 'overwrite' });
+		await message.guild.settings.update(GuildSettings.Tags, [...tags, [tagName, content]], { arrayAction: 'overwrite' });
 
 		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, content]);
 	}
@@ -66,11 +66,11 @@ export default class extends SkyraCommand {
 	public async remove(message: KlasaMessage, [tagName]: [string]) {
 		if (!await message.hasAtLeastPermissionLevel(4)) throw message.language.get('COMMAND_TAG_PERMISSIONLEVEL');
 		// Get tags, and if it does not exist, throw
-		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tags = message.guild.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
 
 		const tag = tags.find(([name]) => name === tagName);
 		if (!tag) throw message.language.get('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild.settings.update('tags', tag, { arrayAction: 'remove' });
+		await message.guild.settings.update(GuildSettings.Tags, tag, { arrayAction: 'remove' });
 
 		return message.sendLocale('COMMAND_TAG_REMOVED', [tagName]);
 	}
@@ -80,31 +80,31 @@ export default class extends SkyraCommand {
 		if (!content) throw message.language.get('COMMAND_TAG_CONTENT_REQUIRED');
 
 		// Get tags, and if it does not exist, throw
-		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tags = message.guild.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
 		const index = tags.findIndex(([name]) => name === tagName);
 		if (index === -1) throw message.language.get('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild.settings.update('tags', [[tagName, content]], { arrayIndex: index });
+		await message.guild.settings.update(GuildSettings.Tags, [[tagName, content]], { arrayIndex: index });
 
 		return message.sendLocale('COMMAND_TAG_EDITED', [tagName, content]);
 	}
 
 	public async list(message: KlasaMessage) {
-		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tags = message.guild.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
 		if (!tags.length) throw message.language.get('COMMAND_TAG_LIST_EMPTY');
 
 		// Get prefix and display all tags
-		const prefix = message.guild.settings.get('prefix') as string;
+		const prefix = message.guild.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
 		return message.sendLocale('COMMAND_TAG_LIST', [tags.map((v) => `\`${prefix}${v[0]}\``)]);
 	}
 
 	public show(message: KlasaMessage, [tagName]: [string]) {
-		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tags = message.guild.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
 		const tag = tags.find(([name]) => name === tagName);
 		return tag ? message.send(tag[1]) : null;
 	}
 
 	public source(message: KlasaMessage, [tagName]: [string]) {
-		const tags = message.guild.settings.get('tags') as GuildSettingsTags;
+		const tags = message.guild.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
 		const tag = tags.find(([name]) => name === tagName);
 		return tag ? message.sendCode('', tag[1]) : null;
 	}

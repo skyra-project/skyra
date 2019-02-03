@@ -76,11 +76,11 @@ enum TimeTypes {
 	Year = 'YEAR'
 }
 
-export interface DurationFormatAssetsUnit extends Record<number, string> {
+interface DurationFormatAssetsUnit extends Record<number, string> {
 	DEFAULT: string;
 }
 
-export interface DurationFormatAssetsTime {
+interface DurationFormatAssetsTime {
 	[TimeTypes.Second]: DurationFormatAssetsUnit;
 	[TimeTypes.Minute]: DurationFormatAssetsUnit;
 	[TimeTypes.Hour]: DurationFormatAssetsUnit;

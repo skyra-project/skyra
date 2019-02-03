@@ -56,7 +56,7 @@ export class WeebCommand extends SkyraCommand {
 
 }
 
-export interface WeebCommandOptions extends CommandOptions {
+interface WeebCommandOptions extends CommandOptions {
 	queryType: string;
 	responseName: string;
 }

@@ -33,15 +33,6 @@ export interface APIEmojiData extends APIEmojiPartial {
 }
 
 /**
- * https://discordapp.com/developers/docs/resources/channel#reaction-object
- */
-export interface APIReactionData {
-	count: number;
-	me: boolean;
-	emoji: APIEmojiData;
-}
-
-/**
  * Not Documented, but Partial packets only exclude the user property
  */
 export interface APIGuildMemberPartial {

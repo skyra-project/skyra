@@ -1,7 +1,6 @@
 import { MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, SettingsFolderUpdateOptions } from 'klasa';
-import { WSMessageReactionAdd } from '../types/Discord';
-import { LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
+import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 
@@ -46,8 +45,7 @@ export class SettingsMenu {
 	}
 
 	public async init(): Promise<void> {
-		// @ts-ignore
-		this.response = await this.message.send(this.message.language.get('SYSTEM_LOADING'));
+		this.response = await this.message.send(this.message.language.get('SYSTEM_LOADING')) as KlasaMessage;
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client)
 			.setListener(this.onReaction.bind(this))
@@ -96,7 +94,7 @@ export class SettingsMenu {
 
 		if (parent) this.response.react(EMOJIS.BACK)
 			.catch((error) => this.response.client.emit('apiError', error));
-		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user)
+		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id)
 			.catch((error) => this.response.client.emit('apiError', error));
 
 		return this.embed
@@ -126,23 +124,23 @@ export class SettingsMenu {
 		await this.message.send(this.render());
 	}
 
-	private async onReaction(reaction: WSMessageReactionAdd, user: { id: string }): Promise<void> {
-		if (user.id !== this.message.author.id) return;
+	private async onReaction(reaction: LLRCData): Promise<void> {
+		if (reaction.userID !== this.message.author.id) return;
 		this.llrc.setTime(120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
-			this._removeReactionFromUser(EMOJIS.BACK, user)
+			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID)
 				.catch((error) => this.response.client.emit('apiError', error));
 			this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
 			await this.response.edit(this.render());
 		}
 	}
 
-	private _removeReactionFromUser(reaction: string, user: { id: string }): Promise<unknown> {
+	private _removeReactionFromUser(reaction: string, userID: string): Promise<unknown> {
 		// @ts-ignore
 		return this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
-			.reactions(encodeURIComponent(reaction), user.id === this.message.client.user.id ? '@me' : user.id)
+			.reactions(encodeURIComponent(reaction), userID === this.message.client.user.id ? '@me' : userID)
 			.delete();
 	}
 

@@ -1,5 +1,6 @@
 import { Provider, util } from 'klasa';
 import { MasterPool, r, R, TableChangeResult, WriteResult } from 'rethinkdb-ts';
+import { DatabaseInit } from '../lib/util/DatabaseInit';
 
 export default class RethinkDB extends Provider {
 
@@ -13,7 +14,7 @@ export default class RethinkDB extends Provider {
 		}, this.client.options.providers.rethinkdb);
 		this.pool = await r.connectPool(options);
 		await this.db.branch(this.db.dbList().contains(options.db), null, this.db.dbCreate(options.db)).run();
-		// await DatabaseInit.init(this.db);
+		await DatabaseInit.run(this.db);
 	}
 
 	public async ping(): Promise<number> {

@@ -2,8 +2,8 @@ import { Collection, Message } from 'discord.js';
 import { util } from 'klasa';
 import { levenshtein } from './External/levenshtein';
 
-export type FuzzySearchAccess<V> = (value: V) => string;
-export type FuzzySearchFilter<V> = (value: V) => boolean;
+type FuzzySearchAccess<V> = (value: V) => string;
+type FuzzySearchFilter<V> = (value: V) => boolean;
 
 export class FuzzySearch<K extends string, V> {
 

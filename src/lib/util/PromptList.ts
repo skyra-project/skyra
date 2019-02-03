@@ -104,9 +104,9 @@ export class PromptList {
 
 }
 
-export interface PromptListOptions {
+interface PromptListOptions {
 	maxAttempts?: number;
 	listMode?: boolean;
 }
 
-export type PromptListResolvable = Array<string | Array<string>> | Map<string, string> | Set<string> | IterableIterator<string>;
+type PromptListResolvable = Array<string | Array<string>> | Map<string, string> | Set<string> | IterableIterator<string>;

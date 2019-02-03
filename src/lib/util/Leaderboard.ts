@@ -173,12 +173,12 @@ export interface LeaderboardUser {
 	name: string | null;
 }
 
-export interface LeaderboardTimeouts {
+interface LeaderboardTimeouts {
 	users: PreciseTimeout | null;
 	guilds: Collection<string, PreciseTimeout>;
 }
 
-export interface LeaderboardPromises {
+interface LeaderboardPromises {
 	/**
 	 * The Promise that is syncing the user leaderboard cache with the database, if syncing
 	 */

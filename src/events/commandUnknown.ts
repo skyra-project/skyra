@@ -1,5 +1,5 @@
 import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
-import { GuildSettingsTriggerAlias } from '../lib/types/Misc';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends Event {
 
@@ -10,7 +10,7 @@ export default class extends Event {
 		const tag = (message.guild.settings.get('tags') as [string, string][]).some((t) => t[0] === command);
 		if (tag) return this.runTag(message, command);
 
-		const alias = (message.guild.settings.get('trigger.alias') as GuildSettingsTriggerAlias).find((entry) => entry.input === command);
+		const alias = (message.guild.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias).find((entry) => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);
 

@@ -11,20 +11,17 @@ export class UserRichDisplay extends RichDisplay {
 		}, options);
 		if (target) {
 			// Stop the previous display and cache the new one
-			const display = handlers.get(target);
+			const display = UserRichDisplay.handlers.get(target);
 			if (display) display.stop();
 		}
 
 		const handler = (await super.run(message, options))
-			.once('end', () => handlers.delete(target));
-		handlers.set(target, handler);
+			.once('end', () => UserRichDisplay.handlers.delete(target));
+		UserRichDisplay.handlers.set(target, handler);
 
 		return handler;
 	}
 
-}
+	public static readonly handlers: Map<string, ReactionHandler> = new Map();
 
-/**
- * The cached handlers
- */
-export const handlers: Map<string, ReactionHandler> = new Map();
+}

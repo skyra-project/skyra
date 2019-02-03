@@ -1,32 +1,36 @@
-import { Command, util : { fetchAvatar }, assetsFolder, Permissions; : { FLAGS; } } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['pray'],
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_F_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_F_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '[user:username]'
 		});
-
-		this.template = null;
 	}
 
-	public async run(msg, [user = msg.author]) {
-		const attachment = await this.generate(msg, user);
-		return msg.channel.send({ files: [{ attachment, name: 'F.png' }] })
-			.then((message) => msg.channel.permissionsFor(msg.guild.me).has(FLAGS.ADD_REACTIONS) ? message.react('🇫') : message);
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+		const attachment = await this.generate(user);
+		const response = await message.channel.send({ files: [{ attachment, name: 'F.png' }] }) as KlasaMessage;
+		if (response.reactable) await response.react('🇫');
+		return response;
 	}
 
-	public async generate(msg, user) {
+	public async generate(user: KlasaUser) {
 		const praised = await fetchAvatar(user, 256);
 
 		return new Canvas(960, 540)

@@ -1,8 +1,10 @@
-import { Command } from '../../index';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserSettings } from '../../lib/types/namespaces/UserSettings';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['bal', 'credits'],
 			bucket: 2,
@@ -14,13 +16,13 @@ export default class extends Command {
 		this.spam = true;
 	}
 
-	public async run(msg, [user = msg.author]) {
-		if (user.bot) throw msg.language.get('COMMAND_BALANCE_BOTS');
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+		if (user.bot) throw message.language.get('COMMAND_BALANCE_BOTS');
 
 		await user.settings.sync();
-		return msg.author === user
-			? msg.sendLocale('COMMAND_BALANCE_SELF', [user.settings.money])
-			: msg.sendLocale('COMMAND_BALANCE', [user.username, user.settings.money]);
+		return message.author === user
+			? message.sendLocale('COMMAND_BALANCE_SELF', [user.settings.get(UserSettings.Money)])
+			: message.sendLocale('COMMAND_BALANCE', [user.username, user.settings.get(UserSettings.Money)]);
 	}
 
 }

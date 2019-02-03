@@ -1,20 +1,28 @@
-import { Command, util : { fetchAvatar, fetch }, assetsFolder; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { join } from 'path';
+import { URL } from 'url';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { fetch, fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 const attachmentFilter = /\.(?:webp|png|jpg|gif)$/i;
 
 const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private profile: Buffer = null;
+	private panel: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_PROFILE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_PROFILE_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<attachment:attachment>'
 		});
@@ -28,23 +36,25 @@ export default class extends Command {
 			if (url) return fetch(url, 'buffer');
 			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
 		});
-
-		this.profile = null;
-		this.panel = null;
 	}
 
-	public async run(msg, [file]) {
-		const output = await this.showProfile(msg, file);
-		return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
+	public async run(message: KlasaMessage, [file]: [Buffer]) {
+		const output = await this.showProfile(message, file);
+		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	public async inhibit(msg) {
-		return !msg.guild || msg.guild.id !== '256566731684839428';
+	public async inhibit(message: KlasaMessage) {
+		return !message.guild || message.guild.id !== '256566731684839428';
 	}
 
-	public async showProfile(msg, file) {
-		await msg.author.settings.sync();
-		const { points, color, money, reputation, level } = msg.author.settings;
+	public async showProfile(message: KlasaMessage, file: Buffer) {
+		await message.author.settings.sync();
+		const level = message.author.profileLevel;
+		const points = message.author.settings.get(UserSettings.Points) as UserSettings.Points;
+		const badgeSet = message.author.settings.get(UserSettings.BadgeSet) as UserSettings.BadgeSet;
+		const color = message.author.settings.get(UserSettings.Color) as UserSettings.Color;
+		const money = message.author.settings.get(UserSettings.Money) as UserSettings.Money;
+		const reputation = message.author.settings.get(UserSettings.Reputation) as UserSettings.Reputation;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -53,12 +63,12 @@ export default class extends Command {
 
 		/* Global leaderboard */
 		const rank = '∞';
-		const imgAvatarSRC = await fetchAvatar(msg.author, 256);
+		const imgAvatarSRC = await fetchAvatar(message.author, 256);
 
-		const TITLE = msg.language.fetch('COMMAND_PROFILE');
-		const canvas = new Canvas(msg.author.settings.badgeSet.length ? 700 : 640, 391);
-		if (msg.author.settings.badgeSet.length) {
-			const badges = await Promise.all(msg.author.settings.badgeSet.map((name) =>
+		const TITLE = message.language.retrieve('COMMAND_PROFILE');
+		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
+		if (badgeSet.length) {
+			const badges = await Promise.all(badgeSet.map((name) =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))
 			));
 
@@ -85,9 +95,9 @@ export default class extends Command {
 			// Name title
 			.setTextFont('35px RobotoRegular')
 			.setColor('rgb(23,23,23')
-			.addResponsiveText(msg.author.username, 227, 73, 306)
+			.addResponsiveText(message.author.username, 227, 73, 306)
 			.setTextFont('25px RobotoLight')
-			.addText(`#${msg.author.discriminator}`, 227, 105)
+			.addText(`#${message.author.discriminator}`, 227, 105)
 
 			// Statistics Titles
 			.addText(TITLE.GLOBAL_RANK, 227, 276)
@@ -102,16 +112,16 @@ export default class extends Command {
 			.setTextAlign('right')
 			.setTextFont('25px RobotoLight')
 			.addText(rank, 594, 276)
-			.addText(money, 594, 229)
-			.addText(reputation, 594, 181)
-			.addText(points, 594, 346)
+			.addText(money.toString(), 594, 229)
+			.addText(reputation.toString(), 594, 181)
+			.addText(points.toString(), 594, 346)
 
 			// Level
 			.setTextAlign('center')
 			.setTextFont('30px RobotoLight')
 			.addText(TITLE.LEVEL, 576, 58)
 			.setTextFont('40px RobotoRegular')
-			.addText(level, 576, 100)
+			.addText(level.toString(), 576, 100)
 
 			// Avatar
 			.addImage(imgAvatarSRC, 32, 32, 142, 142, { type: 'round', radius: 71 })

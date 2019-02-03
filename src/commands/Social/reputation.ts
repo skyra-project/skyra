@@ -1,8 +1,13 @@
-import { Command, constants : { TIME: { DAY } }; } from; '../../index';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { TIME } from '../../lib/util/constants';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private busy: Set<any> = new Set();
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['rep'],
 			bucket: 2,
@@ -11,6 +16,7 @@ export default class extends Command {
 			extendedHelp: (language) => language.get('COMMAND_REPUTATION_EXTENDED'),
 			quotedStringSupport: true,
 			runIn: ['text'],
+			spam: true,
 			usage: '[check] (user:username)',
 			usageDelim: ' '
 		});
@@ -19,45 +25,39 @@ export default class extends Command {
 			if (!arg) return check ? msg.author : undefined;
 			return this.client.arguments.get('username').run(arg, possible, msg);
 		});
-
-		this.spam = true;
-		this.busy = new Set();
 	}
 
-	public async run(msg, [check, user]) {
+	public async run(message: KlasaMessage, [check, user]: ['check', KlasaUser]) {
 		const now = Date.now();
-		const userProfile = msg.author.settings;
-		const targetProfile = (user && user.settings) || null;
-
-		await userProfile.sync();
+		const selfSettings = await message.author.settings.sync();
+		const extSettings = user ? await user.settings.sync() : null;
 
 		if (check) {
-			if (user.bot) throw msg.language.get('COMMAND_REPUTATION_BOTS');
-			if (targetProfile) await targetProfile.sync();
-			return msg.sendMessage(msg.author === user
-				? msg.language.get('COMMAND_REPUTATIONS_SELF', userProfile.reputation)
-				: msg.language.get('COMMAND_REPUTATIONS', user.username, targetProfile.reputation));
+			if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
+			return message.sendMessage(message.author === user
+				? message.language.get('COMMAND_REPUTATIONS_SELF', selfSettings.get(UserSettings.Reputation) as UserSettings.Reputation)
+				: message.language.get('COMMAND_REPUTATIONS', user.username, extSettings.get(UserSettings.Reputation) as UserSettings.Reputation));
 		}
 
-		if (this.busy.has(msg.author.id) || userProfile.timeReputation + DAY > now)
-			return msg.sendLocale('COMMAND_REPUTATION_TIME', [userProfile.timeReputation + DAY - now]);
+		const timeReputation = selfSettings.get(UserSettings.TimeReputation) as UserSettings.TimeReputation;
+		if (this.busy.has(message.author.id) || timeReputation + TIME.DAY > now)
+			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + TIME.DAY - now]);
 
-		if (!user) return msg.sendLocale('COMMAND_REPUTATION_USABLE');
-		if (user.bot) throw msg.language.get('COMMAND_REPUTATION_BOTS');
-		if (user === msg.author) throw msg.language.get('COMMAND_REPUTATION_SELF');
-		this.busy.add(msg.author.id);
+		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');
+		if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
+		if (user === message.author) throw message.language.get('COMMAND_REPUTATION_SELF');
+		this.busy.add(message.author.id);
 
 		try {
-			if (targetProfile) await targetProfile.sync();
-			await targetProfile.update('reputation', targetProfile.reputation + 1);
-			await userProfile.update('timeReputation', now);
+			await extSettings.increase('reputation', 1);
+			await selfSettings.update('timeReputation', now);
 		} catch (err) {
-			this.busy.delete(msg.author.id);
+			this.busy.delete(message.author.id);
 			throw err;
 		}
 
-		this.busy.delete(msg.author.id);
-		return msg.sendLocale('COMMAND_REPUTATION_GIVE', [user]);
+		this.busy.delete(message.author.id);
+		return message.sendLocale('COMMAND_REPUTATION_GIVE', [user]);
 	}
 
 }

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Client, User } from 'discord.js';
 import { ExtendableStore } from 'klasa';
+import { UserSettings } from '../lib/types/namespaces/UserSettings';
 
 export default class extends Extendable {
 
@@ -8,7 +9,11 @@ export default class extends Extendable {
 		super(client, store, file, directory, { appliesTo: [User] });
 	}
 
-	public async fetchRank(): Promise<number> {
+	public get profileLevel() {
+		return Math.floor(0.2 * Math.sqrt(this.get(UserSettings.Points) as UserSettings.Points));
+	}
+
+	public async fetchRank() {
 		const list = await this.client.leaderboard.getUsers();
 
 		const rank = list.get(this.id);

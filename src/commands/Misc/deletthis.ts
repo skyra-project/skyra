@@ -1,37 +1,42 @@
-import { Command, util : { fetchAvatar }, assetsFolder; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+	private ownerID = this.client.options.ownerID;
+	private skyraID = this.client.user.id;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['deletethis'],
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_DELETTHIS_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_DELETTHIS_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<user:username>'
 		});
-
-		this.template = null;
 	}
 
-	public async run(msg, [user]) {
-		const attachment = await this.generate(msg, user);
-		return msg.channel.send({ files: [{ attachment, name: 'deletThis.png' }] });
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		const attachment = await this.generate(message, user);
+		return message.channel.send({ files: [{ attachment, name: 'deletThis.png' }] });
 	}
 
-	public async generate(msg, user) {
-		let selectedUser;
-		let hammerer;
-		if (user.id === '242043489611808769' === msg.author.id) throw '💥';
-		if (user === msg.author) [selectedUser, hammerer] = [msg.author, this.client.user];
-		else if (['242043489611808769', '251484593859985411'].includes(user.id)) [selectedUser, hammerer] = [msg.author, user];
-		else [selectedUser, hammerer] = [user, msg.author];
+	public async generate(message: KlasaMessage, user: KlasaUser) {
+		let selectedUser: KlasaUser;
+		let hammerer: KlasaUser;
+		if (user.id === this.ownerID && message.author.id === this.ownerID) throw '💥';
+		if (user === message.author) [selectedUser, hammerer] = [message.author, this.client.user];
+		else if ([this.ownerID, this.skyraID].includes(user.id)) [selectedUser, hammerer] = [message.author, user];
+		else [selectedUser, hammerer] = [user, message.author];
 
 		const [Hammered, Hammerer] = await Promise.all([
 			fetchAvatar(selectedUser, 256),

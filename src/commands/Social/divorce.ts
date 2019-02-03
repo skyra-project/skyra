@@ -1,37 +1,40 @@
-import { Command } from '../../index';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserSettings } from '../../lib/types/namespaces/UserSettings';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			runIn: ['text'],
-			requiredPermissions: ['ADD_REACTIONS'],
 			description: (language) => language.get('COMMAND_DIVORCE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_DIVORCE_EXTENDED')
+			extendedHelp: (language) => language.get('COMMAND_DIVORCE_EXTENDED'),
+			requiredPermissions: ['ADD_REACTIONS'],
+			runIn: ['text']
 		});
 	}
 
-	public async run(msg) {
-		if (!msg.author.settings.marry) return msg.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
+	public async run(message: KlasaMessage) {
+		const marry = message.author.settings.get(UserSettings.Marry) as UserSettings.Marry;
+		if (!marry) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 		// Ask the user if they're sure
-		const accept = await msg.ask(msg.language.get('COMMAND_DIVORCE_PROMPT'));
-		if (!accept) return msg.sendLocale('COMMAND_DIVORCE_CANCEL');
+		const accept = await message.ask(message.language.get('COMMAND_DIVORCE_PROMPT'));
+		if (!accept) return message.sendLocale('COMMAND_DIVORCE_CANCEL');
 
 		// Fetch the user and sync the settings
-		const user = await this.client.users.fetch(msg.author.settings.marry);
+		const user = await this.client.users.fetch(marry);
 		await user.settings.sync();
 
 		// Reset the values for both entries
 		await Promise.all([
-			msg.author.settings.reset('marry'),
+			message.author.settings.reset('marry'),
 			user.settings.reset('marry')
 		]);
 
 		// Tell the user about the divorce
-		user.send(msg.language.get('COMMAND_DIVORCE_DM', msg.author.username)).catch(() => null);
+		user.send(message.language.get('COMMAND_DIVORCE_DM', message.author.username)).catch(() => null);
 
-		return msg.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
+		return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
 	}
 
 }

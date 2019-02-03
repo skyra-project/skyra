@@ -19,6 +19,7 @@ declare module 'discord.js' {
 	}
 
 	interface User {
+		profileLevel: number;
 		fetchRank(): Promise<number>;
 	}
 

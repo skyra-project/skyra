@@ -65,7 +65,7 @@ export class SkyraClient extends KlasaClient {
 		super(options);
 
 		const { members = {} } = this.options.gateways;
-		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultClientSchema;
+		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
 		this.gateways.register(new MemberGateway(this, 'members', members));
 
 		// Register the API handler

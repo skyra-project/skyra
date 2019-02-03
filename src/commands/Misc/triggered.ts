@@ -1,40 +1,47 @@
-import { Command, util : { fetchAvatar, streamToBuffer }, assetsFolder; } from; '../../index';
-import Canvas from 'canvas';
+import { Image } from 'canvas';
+import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import GIFEncoder from 'gifencoder';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar, streamToBuffer } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_TRIGGERED_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_TRIGGERED_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
+			spam: true,
 			usage: '[user:username]'
 		});
-
-		this.spam = true;
-		this.template = null;
 	}
 
-	public async run(msg, [user = msg.author]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);
-		return msg.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
+		return message.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
 	}
 
-	public async generate(user) {
-		const imgTitle = new Canvas.Image();
-		const imgTriggered = new Canvas.Image();
+	public async generate(user: KlasaUser) {
 		const encoder = new GIFEncoder(350, 393);
-		const canvas = Canvas.createCanvas(350, 393);
-		const ctx = canvas.getContext('2d');
+		const canvas = new Canvas(350, 393);
 
-		imgTitle.src = this.template;
-		imgTriggered.src = await fetchAvatar(user, 512);
+		const buffers = [this.template, await fetchAvatar(user, 512)];
+		const [imgTitle, imgTriggered] = await Promise.all(buffers.map((buffer) => new Promise<Image>((resolve, reject) => {
+			const image = new Image(128, 128);
+			image.src = buffer;
+			image.onload = resolve;
+			image.onerror = reject;
+			resolve(image);
+		})));
 
 		const stream = encoder.createReadStream();
 		encoder.start();
@@ -46,11 +53,12 @@ export default class extends Command {
 		const coord2 = [-25, -13, -34, -10];
 
 		for (let i = 0; i < 4; i++) {
-			ctx.drawImage(imgTriggered, coord1[i], coord2[i], 400, 400);
-			ctx.fillStyle = 'rgba(255 , 100, 0, 0.4)';
-			ctx.drawImage(imgTitle, 0, 340, 350, 53);
-			ctx.fillRect(0, 0, 350, 350);
-			encoder.addFrame(ctx);
+			encoder.addFrame(canvas
+				.addImage(imgTriggered, coord1[i], coord2[i], 400, 400)
+				.addImage(imgTitle, 0, 340, 350, 53)
+				.setColor('rgba(255 , 100, 0, 0.4)')
+				.addRect(0, 0, 350, 350)
+				.context);
 		}
 
 		encoder.finish();

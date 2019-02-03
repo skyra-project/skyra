@@ -1,31 +1,33 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { assetsFolder, Command } from '../../index';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_THESEARCH_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_THESEARCH_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
+			spam: true,
 			usage: '<text:string>'
 		});
-
-		this.spam = true;
-		this.template = null;
 	}
 
-	public async run(msg, [text]) {
+	public async run(message: KlasaMessage, [text]: [string]) {
 		const attachment = await this.generate(text);
-		return msg.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
+		return message.channel.send({ files: [{ attachment, name: 'TheSearch.png' }] });
 	}
 
-	public generate(text) {
+	public generate(text: string) {
 		return new Canvas(700, 612)
 			.addImage(this.template, 0, 0, 700, 612)
 			.setTextAlign('center')

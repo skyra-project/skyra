@@ -1,37 +1,46 @@
-import { Command, util : { fetchAvatar }; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { fetchAvatar } from '../../lib/util/util';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
 const BADGES_FOLDER = join('/var', 'www', 'assets', 'img', 'badges');
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private profile: Buffer = null;
+	private panel: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_PROFILE_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_PROFILE_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
+			spam: true,
 			usage: '[user:username]'
 		});
-
-		this.spam = true;
-		this.profile = null;
-		this.panel = null;
 	}
 
-	public async run(msg, [user = msg.author]) {
-		const output = await this.showProfile(msg, user);
-		return msg.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+		const output = await this.showProfile(message, user);
+		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	public async showProfile(msg, user) {
+	public async showProfile(message: KlasaMessage, user: KlasaUser) {
 		await user.settings.sync();
-		const { points, color, themeProfile, money, reputation, level } = user.settings;
+		const level = user.profileLevel;
+		const points = user.settings.get(UserSettings.Points) as UserSettings.Points;
+		const themeProfile = user.settings.get(UserSettings.ThemeProfile) as UserSettings.ThemeProfile;
+		const badgeSet = user.settings.get(UserSettings.BadgeSet) as UserSettings.BadgeSet;
+		const color = user.settings.get(UserSettings.Color) as UserSettings.Color;
+		const money = user.settings.get(UserSettings.Money) as UserSettings.Money;
+		const reputation = user.settings.get(UserSettings.Reputation) as UserSettings.Reputation;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -45,10 +54,10 @@ export default class extends Command {
 			fetchAvatar(user, 256)
 		]);
 
-		const TITLE = msg.language.fetch('COMMAND_PROFILE');
-		const canvas = new Canvas(user.settings.badgeSet.length ? 700 : 640, 391);
-		if (user.settings.badgeSet.length) {
-			const badges = await Promise.all(user.settings.badgeSet.map((name) =>
+		const TITLE = message.language.retrieve('COMMAND_PROFILE');
+		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
+		if (badgeSet.length) {
+			const badges = await Promise.all(badgeSet.map((name) =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))
 			));
 
@@ -91,17 +100,17 @@ export default class extends Command {
 			// Statistics Values
 			.setTextAlign('right')
 			.setTextFont('25px RobotoLight')
-			.addText(rank, 594, 276)
-			.addText(money, 594, 229)
-			.addText(reputation, 594, 181)
-			.addText(points, 594, 346)
+			.addText(rank.toString(), 594, 276)
+			.addText(money.toString(), 594, 229)
+			.addText(reputation.toString(), 594, 181)
+			.addText(points.toString(), 594, 346)
 
 			// Level
 			.setTextAlign('center')
 			.setTextFont('30px RobotoLight')
 			.addText(TITLE.LEVEL, 576, 58)
 			.setTextFont('40px RobotoRegular')
-			.addText(level, 576, 100)
+			.addText(level.toString(), 576, 100)
 
 			// Avatar
 			.addImage(imgAvatarSRC, 32, 32, 142, 142, { type: 'round', radius: 71 })

@@ -1,36 +1,39 @@
-import { Command, util : { fetchAvatar }, assetsFolder; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
-			permissionLevel: 10,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_PINGKYRA_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_PINGKYRA_EXTENDED'),
+			permissionLevel: 10,
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<user:username>'
 		});
-
-		this.template = null;
 	}
 
 	public get kyra() {
 		return this.client.application.owner;
 	}
 
-	public async run(msg, [user]) {
-		const attachment = await this.generate(msg, user);
-		return msg.channel.send({ files: [{ attachment, name: 'pingkyra.png' }] });
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		const attachment = await this.generate(message, user);
+		return message.channel.send({ files: [{ attachment, name: 'pingkyra.png' }] });
 	}
 
-	public async generate(msg, user) {
-		if (user.id === this.kyra.id || user.id === this.client.user.id) user = msg.author;
+	public async generate(message: KlasaMessage, user: KlasaUser) {
+		if (user.id === this.kyra.id || user.id === this.client.user.id) user = message.author;
 
 		const [runner, kyra] = await Promise.all([
 			fetchAvatar(user, 128),

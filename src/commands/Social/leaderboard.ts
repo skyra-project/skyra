@@ -1,13 +1,16 @@
-import { Command } from '../../index';
+import { Collection } from 'discord.js';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { LeaderboardUser } from '../../lib/util/Leaderboard';
 
 const titles = {
 	global: '🌐 Global Score Scoreboard',
 	local: '🏡 Local Score Scoreboard'
 };
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
@@ -21,17 +24,15 @@ export default class extends Command {
 		this.spam = true;
 	}
 
-	public async run(msg, [type = 'local', index = 1]) {
-		const list = await (type === 'local'
-			? this.client.leaderboard.getMembers(msg.guild.id)
-			: this.client.leaderboard.getUsers());
+	public async run(message: KlasaMessage, [type = 'local', index = 1]: [string, number]) {
+		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild.id : null);
 
-		const { position } = list.get(msg.author.id) || { position: list.size + 1 };
-		const page = await this.generatePage(msg, list, index - 1, position);
-		return msg.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
+		const { position } = list.get(message.author.id) || { position: list.size + 1 };
+		const page = await this.generatePage(message, list, index - 1, position);
+		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
 
-	public async generatePage(msg, list, index, position) {
+	public async generatePage(message: KlasaMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {
 		if (index > list.size / 10) index = 0;
 		const retrievedPage = [], promises = [],
 			page = [], listSize = list.size, pageCount = Math.ceil(listSize / 10),
@@ -44,20 +45,20 @@ export default class extends Command {
 		}
 
 		if (promises.length) {
-			await msg.sendLocale('SYSTEM_LOADING');
+			await message.sendLocale('SYSTEM_LOADING');
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage)
 			page.push(`• ${value.position.toString().padStart(indexLength, ' ')}: ${this.keyUser(value.name).padEnd(25, ' ')} :: ${value.points}`);
 
 		page.push('');
-		page.push(msg.language.get('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
-		page.push(msg.language.get('COMMAND_SCOREBOARD_POSITION', position));
+		page.push(message.language.get('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
+		page.push(message.language.get('COMMAND_SCOREBOARD_POSITION', position));
 
 		return page;
 	}
 
-	public keyUser(str) {
+	public keyUser(str: string) {
 		const user = this.client.users.get(str);
 		if (user) str = user.username;
 		if (str.length < 25) return str;

@@ -1,8 +1,9 @@
-import { Command } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['updoot'],
 			description: (language) => language.get('COMMAND_UPVOTE_DESCRIPTION'),
@@ -10,8 +11,8 @@ export default class extends Command {
 		});
 	}
 
-	public run(msg) {
-		return msg.sendLocale('COMMAND_UPVOTE_MESSAGE');
+	public run(message: KlasaMessage) {
+		return message.sendLocale('COMMAND_UPVOTE_MESSAGE');
 	}
 
 }

@@ -1,36 +1,42 @@
-import { Command, util : { fetchAvatar }; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { fetchAvatar } from '../../lib/util/util';
 
 const THEMES_FOLDER = join('/var', 'www', 'assets', 'img', 'banners');
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['lvl'],
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_LEVEL_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_LEVEL_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
+			spam: true,
 			usage: '[user:username]'
 		});
-
-		this.spam = true;
-		this.template = null;
 	}
 
-	public async run(msg, [user = msg.author]) {
-		const output = await this.showProfile(msg, user);
-		return msg.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+		const output = await this.showProfile(message, user);
+		return message.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
 	}
 
-	public async showProfile(msg, user) {
+	public async showProfile(message: KlasaMessage, user: KlasaUser) {
 		await user.settings.sync();
-		const { points, color, themeLevel, level } = user.settings;
+		const points = user.settings.get(UserSettings.Points) as UserSettings.Points;
+		const color = user.settings.get(UserSettings.Color) as UserSettings.Color;
+		const themeLevel = user.settings.get(UserSettings.ThemeLevel) as UserSettings.ThemeLevel;
+		const level = user.profileLevel;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -42,7 +48,7 @@ export default class extends Command {
 			fetchAvatar(user, 256)
 		]);
 
-		const TITLE = msg.language.fetch('COMMAND_LEVEL');
+		const TITLE = message.language.retrieve('COMMAND_LEVEL');
 		return new Canvas(640, 174)
 			// Draw the background
 			.save()
@@ -66,7 +72,7 @@ export default class extends Command {
 			// Draw the information
 			.setColor('rgb(23,23,23)')
 			.setTextAlign('right')
-			.addText(points, 606, 73)
+			.addText(points.toString(), 606, 73)
 			.addText((nextLevel - points).toString(), 606, 131)
 
 			// Draw the level
@@ -74,7 +80,7 @@ export default class extends Command {
 			.setTextFont('35px RobotoLight')
 			.addText(TITLE.LEVEL, 268, 73)
 			.setTextFont('45px RobotoRegular')
-			.addText(level, 273, 128)
+			.addText(level.toString(), 273, 128)
 
 			// Draw the avatar
 			.save()

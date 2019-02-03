@@ -1,35 +1,38 @@
-import { Command, util : { fetchAvatar }, assetsFolder; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_GOOFYTIME_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_GOOFYTIME_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
+			spam: true,
 			usage: '<user:username>'
 		});
-
-		this.spam = true;
-		this.template = null;
 	}
 
-	public async run(msg, [user]) {
-		const attachment = await this.generate(msg, user);
-		return msg.channel.send({ files: [{ attachment, name: 'It\'s Goofy time.png' }] });
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		const attachment = await this.generate(message, user);
+		return message.channel.send({ files: [{ attachment, name: 'It\'s Goofy time.png' }] });
 	}
 
-	public async generate(msg, user) {
+	public async generate(message: KlasaMessage, user: KlasaUser) {
 		const [goofied, goofy] = await Promise.all([
 			fetchAvatar(user, 128),
-			fetchAvatar(msg.author, 128)
+			fetchAvatar(message.author, 128)
 		]);
 
 		return new Canvas(356, 435)

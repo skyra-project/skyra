@@ -16,8 +16,8 @@ export class MemberGateway extends Gateway {
 	}
 
 	public async sync(input: string): Promise<Settings>;
-	public async sync(input?: string[]): Promise<Gateway>;
-	public async sync(input?: string | string[]): Promise<Settings | Gateway> {
+	public async sync(input?: string[]): Promise<this>;
+	public async sync(input?: string | string[]): Promise<Settings | this> {
 		const result = await super.sync(input);
 		if (result === this) {
 			for (const guild of this.cache.values()) {

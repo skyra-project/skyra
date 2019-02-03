@@ -1,10 +1,15 @@
-import { Command, constants : { TIME }; } from; '../../index';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
+import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { TIME } from '../../lib/util/constants';
+
 const GRACE_PERIOD = TIME.HOUR;
 const DAILY_PERIOD = TIME.HOUR * 12;
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
 			aliases: ['dailies'],
 			cooldown: 30,
@@ -14,40 +19,41 @@ export default class extends Command {
 		this.spam = true;
 	}
 
-	public async run(msg) {
+	public async run(message: KlasaMessage) {
 		const now = Date.now();
-		await msg.author.settings.sync();
-		const time = msg.author.settings.timeDaily;
+		await message.author.settings.sync();
+		const time = message.author.settings.get(UserSettings.TimeDaily) as UserSettings.TimeDaily;
 
 		// It's been 12 hours, grant dailies
 		if (time <= now) {
-			return msg.sendLocale('COMMAND_DAILY_TIME_SUCCESS',
-				[await this.claimDaily(msg, now + DAILY_PERIOD)]);
+			return message.sendLocale('COMMAND_DAILY_TIME_SUCCESS',
+				[await this.claimDaily(message, now + DAILY_PERIOD)]);
 		}
 
 		const remaining = time - now;
 
 		// If it's not under the grace period (1 hour), tell them the time
-		if (remaining > GRACE_PERIOD) return msg.sendLocale('COMMAND_DAILY_TIME', [remaining]);
+		if (remaining > GRACE_PERIOD) return message.sendLocale('COMMAND_DAILY_TIME', [remaining]);
 
 		// It's been 11-12 hours, ask for the user if they want to claim the grace period
-		const accepted = await msg.ask(msg.language.get('COMMAND_DAILY_GRACE', remaining));
-		if (!accepted) return msg.sendLocale('COMMAND_DAILY_GRACE_DENIED');
+		const accepted = await message.ask(message.language.get('COMMAND_DAILY_GRACE', remaining));
+		if (!accepted) return message.sendLocale('COMMAND_DAILY_GRACE_DENIED');
 
 		// The user accepted the grace period
-		return msg.sendLocale('COMMAND_DAILY_GRACE_ACCEPTED', [
-			await this.claimDaily(msg, now + remaining + DAILY_PERIOD),
+		return message.sendLocale('COMMAND_DAILY_GRACE_ACCEPTED', [
+			await this.claimDaily(message, now + remaining + DAILY_PERIOD),
 			remaining + DAILY_PERIOD
 		]);
 	}
 
-	public async claimDaily(msg, nextTime) {
+	public async claimDaily(message: KlasaMessage, nextTime: UserSettings.TimeDaily) {
 		let money = 200;
-		if (msg.guild) {
-			await msg.guild.settings.sync();
-			money *= msg.guild.settings.social.boost;
+		if (message.guild) {
+			await message.guild.settings.sync();
+			money *= message.guild.settings.get(GuildSettings.Social.Boost) as GuildSettings.Social.Boost;
 		}
-		await msg.author.settings.update([['money', msg.author.settings.money + money], ['timeDaily', nextTime]]);
+		money += message.author.settings.get(UserSettings.Money) as UserSettings.Money;
+		await message.author.settings.update([['money', money], ['timeDaily', nextTime]]);
 		return money;
 	}
 

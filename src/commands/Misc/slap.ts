@@ -1,37 +1,42 @@
-import { Command, util : { fetchAvatar }, assetsFolder; } from; '../../index';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { fetchAvatar } from '../../lib/util/util';
+import { assetsFolder } from '../../Skyra';
 
-export default class extends Command {
+export default class extends SkyraCommand {
 
-	public constructor(client: Client, store: CommandStore, file: string[], directory: string) {
+	private template: Buffer = null;
+	private ownerID = this.client.options.ownerID;
+	private skyraID = this.client.user.id;
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			requiredPermissions: ['ATTACH_FILES'],
 			bucket: 2,
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_SLAP_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_SLAP_EXTENDED'),
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
+			spam: true,
 			usage: '<user:username>'
 		});
-
-		this.spam = true;
-		this.template = null;
 	}
 
-	public async run(msg, [user]) {
-		const attachment = await this.generate(msg, user);
-		return msg.channel.send({ files: [{ attachment, name: 'slap.png' }] });
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		const attachment = await this.generate(message, user);
+		return message.channel.send({ files: [{ attachment, name: 'slap.png' }] });
 	}
 
-	public async generate(msg, user) {
+	public async generate(message: KlasaMessage, user: KlasaUser) {
 		let selectedUser;
 		let slapper;
-		if (user.id === '242043489611808769' === msg.author.id) throw '💥';
-		if (user === msg.author) [selectedUser, slapper] = [msg.author, this.client.user];
-		else if (['242043489611808769', '251484593859985411'].includes(user.id)) [selectedUser, slapper] = [msg.author, user];
-		else [selectedUser, slapper] = [user, msg.author];
+		if (user.id === this.ownerID && message.author.id === this.ownerID) throw '💥';
+		if (user === message.author) [selectedUser, slapper] = [message.author, this.client.user];
+		else if ([this.ownerID, this.skyraID].includes(user.id)) [selectedUser, slapper] = [message.author, user];
+		else [selectedUser, slapper] = [user, message.author];
 
 		const [Slapped, Slapper] = await Promise.all([
 			fetchAvatar(selectedUser, 256),

@@ -1,4 +1,3 @@
-import { exec } from 'child_process';
 import { outputFileAtomic } from 'fs-nextra';
 import { Client, CommandStore, KlasaMessage, Stopwatch, Type, util } from 'klasa';
 import { join } from 'path';
@@ -138,7 +137,7 @@ export default class extends SkyraCommand {
 				return { success: false, type: 'Error', time: this.formatTime(stopwatch, null), result: String(error) };
 			}
 		} catch (error) {
-			return { success: false, type: 'Compiler Error', time: this.formatTime(stopwatch, null), result: String(error) };
+			return { success: false, type: 'CompilerError', time: this.formatTime(stopwatch, null), result: String(error) };
 		}
 	}
 
@@ -292,11 +291,11 @@ const FOREIGN_CONTROLLERS: Record<EvalLanguage, ForeignController> = {
 		async before(code: string) {
 			const output = templates.get(EvalLanguage.CSharp)(/return/.test(code) ? code : `${code}\n\t\treturn null;`);
 			await outputFileAtomic(CS_FILE, output);
-			await exec(`csc ${CS_FILE}`);
+			await util.exec(`csc ${CS_FILE}`);
 			return output;
 		},
 		async evaluate() {
-			return exec(`mono ${CS_EXEC}`);
+			return (await util.exec(`mono ${CS_EXEC}`)).stdout;
 		},
 		extract(output: string) {
 			const [type, ...rest] = output.split('\n');
@@ -307,11 +306,11 @@ const FOREIGN_CONTROLLERS: Record<EvalLanguage, ForeignController> = {
 		async before(code: string) {
 			const output = templates.get(EvalLanguage.CPlusPlus)(code.replace(/return (.+)/, 'auto __v = $1;'));
 			await outputFileAtomic(CPP_FILE, code);
-			await exec(`g++ ${CPP_FILE} -o ${CPP_EXEC} -Wall -Wextra`);
+			await util.exec(`g++ ${CPP_FILE} -o ${CPP_EXEC} -Wall -Wextra`);
 			return output;
 		},
 		async evaluate() {
-			return exec(CPP_EXEC);
+			return (await util.exec(CPP_EXEC)).stdout;
 		},
 		extract(output: string) {
 			const [type, ...rest] = output.split('\n');

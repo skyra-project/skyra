@@ -11,7 +11,7 @@ export default class extends Extendable {
 		const self = this as unknown as Message;
 		const message = await self.channel.send(content) as Message;
 		const responses = await self.channel.awaitMessages((msg) => msg.author === self.author, { time, max: 1 });
-		message.nuke();
+		message.nuke().catch((error) => self.client.emit('apiError', error));
 		if (responses.size === 0) throw self.language.get('MESSAGE_PROMPT_TIMEOUT');
 		return responses.first();
 	}

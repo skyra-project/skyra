@@ -61,6 +61,7 @@ export class FuzzySearch<K extends string, V> {
 
 	private async select(message: Message, results: [K, V, number][]): Promise<[K, V, number]> {
 		if (results.length === 1) return results[0];
+		if (results.length > 10) results.length = 10;
 
 		const { content: n } = await message.prompt(message.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
 			util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));

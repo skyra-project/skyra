@@ -12,8 +12,7 @@ export default class extends RawEvent {
 		try {
 			const results = await this.client.providers.default.db
 				.table('starboard')
-				.getAll([data.channel_id, data.message_id], { index: 'channel_message' })
-				.limit(1)
+				.get(`${data.channel_id}.${data.message_id}`)
 				.delete({ returnChanges: true })
 				.run();
 

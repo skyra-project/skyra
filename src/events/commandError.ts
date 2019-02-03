@@ -1,5 +1,7 @@
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage, util } from 'klasa';
+import { inlineCodeblock } from '../lib/util/util';
+import { rootFolder } from '../Skyra';
 
 export default class extends Event {
 
@@ -28,25 +30,24 @@ export default class extends Event {
 		let output: string;
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			output = [
-				`\`Command   ::\` ${command.path}`,
-				`\`Path      ::\` ${error.path}`,
-				`\`Code      ::\` ${error.code}`,
-				`\`Location  ::\` ${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`,
-				`\`Arguments ::\` ${message.args.length ? `[${message.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
-				`\`Error     ::\` ${error.stack || error}`
+				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
+				`${inlineCodeblock('Path      ::')} ${error.path}`,
+				`${inlineCodeblock('Code      ::')} ${error.code}`,
+				`${inlineCodeblock('Arguments ::')} ${message.params.length ? `[${message.params.join(command.usageDelim)}]` : 'Not Supplied'}`,
+				`${inlineCodeblock('Error     ::')} ${util.codeBlock('js', error.stack || error)}`
 			].join('\n');
 		} else {
 			output = [
-				`\`Command   ::\` ${command.path}`,
-				`\`Location  ::\` ${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`,
-				`\`Arguments ::\` ${message.args.length ? `[${message.args.join(command.usageDelim)}]` : 'Not Supplied'}`,
-				`\`Error     ::\` ${error.stack || error}`
+				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
+				`${inlineCodeblock('Arguments ::')} ${message.params.length ? `[\`${message.params.join(`\`${command.usageDelim}\``)}\`]` : 'Not Supplied'}`,
+				`${inlineCodeblock('Error     ::')} ${util.codeBlock('js', error.stack || error)}`
 			].join('\n');
 		}
 
 		return this.client.webhookError.send(new MessageEmbed()
 			.setDescription(output)
-			.setAuthor(message.author.username, message.author.displayAvatarURL(), message.url)
+			.setColor(0xFC1020)
+			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 64 }), message.url)
 			.setTimestamp())
 			.catch((err) => this.client.emit('apiError', err));
 	}

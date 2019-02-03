@@ -361,6 +361,10 @@ export async function createMuteRole(message: Message): Promise<Role> {
 	return role;
 }
 
+export function inlineCodeblock(input: string) {
+	return `\`${input.replace(/ /g, '\u00A0').replace(/`/g, '\\`')}\``;
+}
+
 /**
  * Push the permissions for the muted role into a channel
  * @param channel The channel to modify

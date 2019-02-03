@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 			.setDescription([
 				`💗 **${user.tag}**`,
 				`💗 **${message.author.tag}**\n`,
-				`${estimatedPercentage}% | \`\u200b${'█'.repeat(Math.round(percentage * 40)).padEnd(40)}\u200b\` |\n`,
+				`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
 				`**${message.language.get('COMMAND_LOVE_RESULT')}**: ${result}`
 			].join('\n')));
 	}

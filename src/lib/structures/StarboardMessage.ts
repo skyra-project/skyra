@@ -3,7 +3,7 @@ import RethinkDB from '../../providers/rethinkdb';
 import { getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
-const TABLENAME = 'starboard', TABLEINDEX = { index: 'channel_message' };
+const TABLENAME = 'starboard';
 
 export class StarboardMessage {
 
@@ -256,13 +256,11 @@ export class StarboardMessage {
 	 * Synchronizes the data with the database
 	 */
 	private async _syncDatabase(): Promise<void> {
-		const data: StarboardMessageData = await this.provider.db
+		const data = await this.provider.db
 			.table(TABLENAME)
-			.getAll([this.channel.id, this.message.id], TABLEINDEX)
-			.limit(1)
-			.nth(0)
+			.get(this.id)
 			.default(null)
-			.run();
+			.run() as StarboardMessageData;
 
 		if (data) {
 			this.disabled = Boolean(data.disabled);

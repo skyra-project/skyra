@@ -4,7 +4,7 @@ import { VERSION } from '../../config';
 import { EMOJIS } from '../lib/util/constants';
 import { FriendlyDuration } from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
-import { createPick } from '../lib/util/util';
+import { createPick, inlineCodeblock } from '../lib/util/util';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const { LOADING, SHINY, GREENTICK, REDCROSS } = EMOJIS;
@@ -2179,14 +2179,14 @@ export default class extends Language {
 		COMMAND_DEFINE_NOTFOUND: 'No pude encontrar una definición para esta palabra.',
 		COMMAND_DEFINE: (input, output) => `Resultados de la búsqueda para \`${input}\`:\n${output}`,
 		COMMAND_EMOJI_CUSTOM: (emoji, id) => [
-			`→ \`Emoji\` :: **${emoji}**`,
-			'→ `Type` :: **Personalizado**',
-			`→ \`ID\` :: **${id}**`
+			`→ ${inlineCodeblock('Emoji ::')} **${emoji}**`,
+			`→ ${inlineCodeblock('Type  ::')} **Personalizado**`,
+			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
 		COMMAND_EMOJI_TWEMOJI: (emoji, id) => [
-			`→ \`Emoji\` :: \`${emoji}\``,
-			'→ `Type` :: **Twemoji**',
-			`→ \`ID\` :: **${id}**`
+			`→ ${inlineCodeblock('Emoji ::')} \`${emoji}\``,
+			`→ ${inlineCodeblock('Type  ::')} **Twemoji**`,
+			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' no es un emoji válido.`,
 		COMMAND_GOOGL_LONG: (url) => `**URL Acortada: [${url}](${url})**`,
@@ -2233,22 +2233,22 @@ export default class extends Language {
 		COMMAND_URBAN_INDEX_NOTFOUND: 'Quizás quieras probar con un número de página más pequeño.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continúa leyendo](${url})`,
 		COMMAND_URBAN_OUTPUT: (index, pages, definition, example, author) => [
-			`→ \`Definición ::\` ${index}/${pages}\n${definition}`,
-			`→ \`Ejemplo    ::\` ${example}`,
-			`→ \`Autor      ::\` ${author}`
+			`→ ${inlineCodeblock('Definición ::')} ${index}/${pages}\n${definition}`,
+			`→ ${inlineCodeblock('Ejemplo    ::')} ${example}`,
+			`→ ${inlineCodeblock('Autor      ::')} ${author}`
 		].join('\n\n'),
 		COMMAND_WHOIS_MEMBER: (member) => [
-			`→ \`ID             ::\` **${member.id}**`,
-			`→ \`Etiqueta       ::\` **${member.user.tag}**`,
-			`→ \`Apodo          ::\` **${member.nickname || 'Not set'}**`,
-			`→ \`Fecha Creación ::\` **${timestamp.displayUTC(member.user.createdAt)}**`,
-			`→ \`Fecha Ingreso  ::\` **${timestamp.displayUTC(member.joinedAt)}**`
+			`→ ${inlineCodeblock('ID             ::')} **${member.id}**`,
+			`→ ${inlineCodeblock('Etiqueta       ::')} **${member.user.tag}**`,
+			`→ ${inlineCodeblock('Apodo          ::')} **${member.nickname || 'Not set'}**`,
+			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(member.user.createdAt)}**`,
+			`→ ${inlineCodeblock('Fecha Ingreso  ::')} **${timestamp.displayUTC(member.joinedAt)}**`
 		].join('\n'),
 		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
 		COMMAND_WHOIS_USER: (user) => [
-			`→ \`ID             ::\` **${user.id}**`,
-			`→ \`Etiqueta       ::\` **${user.tag}**`,
-			`→ \`Fecha Creación ::\` **${timestamp.displayUTC(user.createdAt)}**`
+			`→ ${inlineCodeblock('ID             ::')} **${user.id}**`,
+			`→ ${inlineCodeblock('Etiqueta       ::')} **${user.tag}**`,
+			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(user.createdAt)}**`
 		].join('\n'),
 		COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',

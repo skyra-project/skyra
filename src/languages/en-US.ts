@@ -5,7 +5,7 @@ import { EMOJIS } from '../lib/util/constants';
 import { FriendlyDuration } from '../lib/util/FriendlyDuration';
 import { HungerGamesUsage } from '../lib/util/Games/HungerGamesUsage';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
-import { createPick } from '../lib/util/util';
+import { createPick, inlineCodeblock } from '../lib/util/util';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const { LOADING, SHINY, GREENTICK, REDCROSS } = EMOJIS;
@@ -2190,14 +2190,14 @@ export default class extends Language {
 		COMMAND_DEFINE_NOTFOUND: 'I could not find a definition for this word.',
 		COMMAND_DEFINE: (input, output) => `Search results for \`${input}\`:\n${output}`,
 		COMMAND_EMOJI_CUSTOM: (emoji, id) => [
-			`→ \`Emoji\` :: **${emoji}**`,
-			'→ `Type` :: **Custom**',
-			`→ \`ID\` :: **${id}**`
+			`→ ${inlineCodeblock('Emoji ::')} **${emoji}**`,
+			`→ ${inlineCodeblock('Type  ::')} **Custom**`,
+			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
 		COMMAND_EMOJI_TWEMOJI: (emoji, id) => [
-			`→ \`Emoji\` :: \`${emoji}\``,
-			'→ `Type` :: **Twemoji**',
-			`→ \`ID\` :: **${id}**`
+			`→ ${inlineCodeblock('Emoji ::')} \`${emoji}\``,
+			`→ ${inlineCodeblock('Type  ::')} **Twemoji**`,
+			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' is not a valid emoji.`,
 		COMMAND_GOOGL_LONG: (url) => `**Shortened URL: [${url}](${url})**`,
@@ -2244,22 +2244,22 @@ export default class extends Language {
 		COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continue reading](${url})`,
 		COMMAND_URBAN_OUTPUT: (index, pages, definition, example, author) => [
-			`→ \`Definition ::\` ${index}/${pages}\n${definition}`,
-			`→ \`Example    ::\` ${example}`,
-			`→ \`Author     ::\` ${author}`
+			`→ ${inlineCodeblock('Definition ::')} ${index}/${pages}\n${definition}`,
+			`→ ${inlineCodeblock('Example    ::')} ${example}`,
+			`→ ${inlineCodeblock('Author     ::')} ${author}`
 		].join('\n\n'),
 		COMMAND_WHOIS_MEMBER: (member) => [
-			`→ \`ID         ::\` **${member.id}**`,
-			`→ \`Tag        ::\` **${member.user.tag}**`,
-			`→ \`Nickname   ::\` **${member.nickname || 'Not set'}**`,
-			`→ \`Created At ::\` **${timestamp.displayUTC(member.user.createdAt)}**`,
-			`→ \`Joined     ::\` **${timestamp.displayUTC(member.joinedAt)}**`
+			`→ ${inlineCodeblock('ID         ::')} **${member.id}**`,
+			`→ ${inlineCodeblock('Tag        ::')} **${member.user.tag}**`,
+			`→ ${inlineCodeblock('Nickname   ::')} **${member.nickname || 'Not set'}**`,
+			`→ ${inlineCodeblock('Created At ::')} **${timestamp.displayUTC(member.user.createdAt)}**`,
+			`→ ${inlineCodeblock('Joined     ::')} **${timestamp.displayUTC(member.joinedAt)}**`
 		].join('\n'),
 		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
 		COMMAND_WHOIS_USER: (user) => [
-			`→ \`ID         ::\` **${user.id}**`,
-			`→ \`Tag        ::\` **${user.tag}**`,
-			`→ \`Created At ::\` **${timestamp.displayUTC(user.createdAt)}**`
+			`→ ${inlineCodeblock('ID         ::')} **${user.id}**`,
+			`→ ${inlineCodeblock('Tag        ::')} **${user.tag}**`,
+			`→ ${inlineCodeblock('Created At ::')} **${timestamp.displayUTC(user.createdAt)}**`
 		].join('\n'),
 		COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',

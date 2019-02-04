@@ -1,5 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, Resolver } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
 
 export default class extends SkyraCommand {
 
@@ -18,15 +19,15 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('message', async(arg, _, msg) => {
 			if (!arg || !Resolver.regex.snowflake.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 
-			const rolesChannel = msg.guild.settings.get('channels.roles') as string;
+			const rolesChannel = msg.guild.settings.get(GuildSettings.Channels.Roles) as GuildSettings.Channels.Roles;
 			if (!rolesChannel) throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 
 			if (!msg.guild.channels.has(rolesChannel)) {
-				await msg.guild.settings.reset('channels.roles');
+				await msg.guild.settings.reset(GuildSettings.Channels.Roles);
 				throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 			}
 			if (rolesChannel !== msg.channel.id) throw msg.language.get('COMMAND_SETMESSAGEROLE_WRONGCHANNEL', `<#${rolesChannel}>`);
-			if (msg.guild.settings.get('roles.messageReaction') === arg) throw msg.language.get('CONFIGURATION_EQUALS');
+			if (msg.guild.settings.get(GuildSettings.Roles.MessageReaction) === arg) throw msg.language.get('CONFIGURATION_EQUALS');
 
 			const message = await msg.channel.messages.fetch(arg).catch(() => null);
 			if (message) return message;
@@ -35,7 +36,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [reactionMessage]: [KlasaMessage]) {
-		await message.guild.settings.update('roles.messageReaction', reactionMessage.id);
+		await message.guild.settings.update(GuildSettings.Roles.MessageReaction, reactionMessage.id);
 		return message.sendLocale('COMMAND_SETMESSAGEROLE_SET');
 	}
 

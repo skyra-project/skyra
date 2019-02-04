@@ -1,4 +1,5 @@
 import { Collection, Guild, GuildMember } from 'discord.js';
+import { GuildSettings } from '../../types/namespaces/GuildSettings';
 
 /**
  * The AntiRaid class that manages the raiding protection for guilds
@@ -30,27 +31,27 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 		this.guild = guild;
 	}
 
-	public get limit(): number {
-		return this.guild.settings.get('selfmod.raidthreshold') as number;
+	public get limit() {
+		return this.guild.settings.get(GuildSettings.Selfmod.Raidthreshold) as GuildSettings.Selfmod.Raidthreshold;
 	}
 
-	public add(id: string): void {
+	public add(id: string) {
 		this.sweep();
 		this.create(id);
 	}
 
-	public acquire(id: string): AntiRaidEntry {
+	public acquire(id: string) {
 		return this.get(id) || this.create(id);
 	}
 
-	public create(id: string): AntiRaidEntry {
+	public create(id: string) {
 		const rateLimit = { id, time: Date.now() + 20000 };
 		this.set(id, rateLimit);
 		if (!this._sweepInterval) this._sweepInterval = setInterval(this.sweep.bind(this), 30000);
 		return rateLimit;
 	}
 
-	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: AntiRaid) => boolean, thisArg?: any): number {
+	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: AntiRaid) => boolean, thisArg?: any) {
 		if (!fn) {
 			const now = Date.now();
 			fn = (value) => now > value.time;
@@ -68,7 +69,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	/**
 	 * Stop the attack mode
 	 */
-	public stop(): void {
+	public stop() {
 		if (this._timeout) {
 			clearTimeout(this._timeout);
 			this._timeout = null;
@@ -80,19 +81,19 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	 * Kicks a member
 	 * @param member The member to kick
 	 */
-	public async kick(member: GuildMember): Promise<GuildMember> {
-		await member.kick(`[ANTI-RAID] Threshold: ${this.guild.settings.get('selfmod.raidthreshold')}`);
+	public async kick(member: GuildMember) {
+		await member.kick(`[ANTI-RAID] Threshold: ${this.limit}`);
 		this.delete(member.id);
 		return member;
 	}
 
-	public [Symbol.asyncIterator](): AsyncIterator<GuildMember> {
+	public [Symbol.asyncIterator]() {
 		this.sweep();
 		const entriesIterator = this.entries();
-		const initialRole = this.guild.settings.get('roles.initial') as string;
+		const initialRole = this.guild.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
 		const minRolesAmount = initialRole ? 2 : 1;
 
-		const asyncIterator: AsyncIterator<GuildMember | null> = {
+		return {
 			next: async() => {
 				const next = entriesIterator.next();
 				if (next.done) return { done: true, value: null };
@@ -118,9 +119,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 				return { done: false, value: null };
 			},
 
-		};
-
-		return asyncIterator;
+		} as AsyncIterator<GuildMember | null>;
 	}
 
 }

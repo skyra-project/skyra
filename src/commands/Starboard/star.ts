@@ -3,6 +3,7 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { RCursor } from 'rethinkdb-ts';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { COLORS } from '../../lib/structures/StarboardMessage';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { getContent, getImage } from '../../lib/util/util';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -72,7 +73,7 @@ export default class extends SkyraCommand {
 		const topMessages = [];
 		const topReceivers = new Map();
 
-		const min = message.guild.settings.get('starboard.minimum') as number;
+		const min = message.guild.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
 
 		for await (const starboardMessage of starboardMessages as unknown as AsyncIterable<StarPluck>) {
 			if (starboardMessage.stars < min) continue;

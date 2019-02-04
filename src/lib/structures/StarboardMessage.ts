@@ -1,5 +1,6 @@
 import { Client, DiscordAPIError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import RethinkDB from '../../providers/rethinkdb';
+import { GuildSettings } from '../types/namespaces/GuildSettings';
 import { getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
@@ -230,7 +231,7 @@ export class StarboardMessage {
 		try {
 			// @ts-ignore
 			users = await this.client.api.channels[this.channel.id].messages[this.message.id]
-				.reactions[this.channel.guild.settings.get('starboard.emoji')]
+				.reactions[this.channel.guild.settings.get(GuildSettings.Starboard.Emoji)]
 				.get({ query: { limit: 100 } });
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {

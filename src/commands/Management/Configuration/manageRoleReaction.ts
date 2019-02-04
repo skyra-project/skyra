@@ -61,8 +61,11 @@ export default class extends SkyraCommand {
 		if (this._checkRoleReaction(message, reaction, role.id)) throw message.language.get('COMMAND_MANAGEROLEREACTION_EXISTS');
 		const { errors } = await message.guild.settings.update(GuildSettings.Roles.Reactions, { emoji: reaction, role: role.id }, { arrayAction: 'add' });
 		if (errors.length) throw errors[0];
-		if (message.guild.settings.get('roles.messageReaction'))
-			await this._reactMessage(message.guild.settings.get('channels.roles') as string, message.guild.settings.get('roles.messageReaction') as string, reaction);
+		if (message.guild.settings.get(GuildSettings.Roles.MessageReaction))
+			await this._reactMessage(
+				message.guild.settings.get(GuildSettings.Channels.Roles) as GuildSettings.Channels.Roles,
+				message.guild.settings.get(GuildSettings.Roles.MessageReaction) as GuildSettings.Roles.MessageReaction,
+				reaction);
 		return message.sendLocale('COMMAND_MANAGEROLEREACTION_ADD');
 	}
 

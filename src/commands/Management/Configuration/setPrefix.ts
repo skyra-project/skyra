@@ -1,5 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
 
 export default class extends SkyraCommand {
 
@@ -16,8 +17,8 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [prefix]: [string]) {
-		if (message.guild.settings.get('prefix') === prefix) throw message.language.get('CONFIGURATION_EQUALS');
-		await message.guild.settings.update('prefix', prefix);
+		if (message.guild.settings.get(GuildSettings.Prefix) === prefix) throw message.language.get('CONFIGURATION_EQUALS');
+		await message.guild.settings.update(GuildSettings.Prefix, prefix);
 		return message.sendLocale('COMMAND_SETPREFIX_SET', [prefix]);
 	}
 

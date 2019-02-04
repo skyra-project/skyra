@@ -170,7 +170,6 @@ SkyraClient.defaultGuildSchema
 		.add('capsthreshold', 'Integer', { default: 50, min: 0, max: 100 })
 		.add('ignoreChannels', 'TextChannel', { array: true })
 		.add('invitelinks', 'Boolean', { default: false })
-		.add('nmsthreshold', 'Integer', { default: 20, min: 10, max: 100 })
 		.add('raid', 'Boolean')
 		.add('raidthreshold', 'Integer', { default: 10, min: 2, max: 50 }))
 	.add('no-mention-spam', (folder) => folder

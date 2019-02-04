@@ -1,5 +1,6 @@
 import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends Inhibitor {
 
@@ -10,13 +11,13 @@ export default class extends Inhibitor {
 	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.spam || !message.guild) return;
 
-		const channelID = message.guild.settings.get('channels.spam') as string;
+		const channelID = message.guild.settings.get(GuildSettings.Channels.Spam) as GuildSettings.Channels.Spam;
 		if (channelID === message.channel.id) return;
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
 		const channel = message.guild.channels.get(channelID);
 		if (!channel) {
-			await message.guild.settings.reset('channels.spam');
+			await message.guild.settings.reset(GuildSettings.Channels.Spam);
 			return;
 		}
 

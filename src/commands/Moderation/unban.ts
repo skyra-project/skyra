@@ -2,6 +2,7 @@ import { User } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
@@ -21,7 +22,7 @@ export default class extends ModerationCommand {
 		const bans = await message.guild.fetchBans()
 			.then((result) => result.map((ban) => ban.user.id))
 			.catch(() => { throw message.language.get('SYSTEM_FETCHBANS_FAIL'); });
-		if (bans.length) return { bans, unlock: message.guild.settings.get('events.banRemove') ? message.guild.moderation.createLock() : null };
+		if (bans.length) return { bans, unlock: message.guild.settings.get(GuildSettings.Events.BanRemove) ? message.guild.moderation.createLock() : null };
 		throw message.language.get('GUILD_BANS_EMPTY');
 	}
 

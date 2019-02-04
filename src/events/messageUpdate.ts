@@ -1,6 +1,7 @@
 import { diffWordsWithSpace } from 'diff';
 import { MessageEmbed, TextChannel, Util } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
 export default class extends Event {
@@ -14,7 +15,7 @@ export default class extends Event {
 		if (!message.guild || message.author === this.client.user) return;
 
 		const { guild } = message;
-		if (!guild.settings.get('events.messageEdit')) return;
+		if (!guild.settings.get(GuildSettings.Events.MessageEdit)) return;
 
 		this.client.emit('guildMessageLog', (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, guild, () => new MessageEmbed()
 			.setColor(0xDCE775)

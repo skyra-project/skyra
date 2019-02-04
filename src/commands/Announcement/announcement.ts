@@ -1,6 +1,7 @@
 import { MessageEmbed, Role, TextChannel } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { announcementCheck } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
@@ -20,7 +21,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [announcement]: [string]) {
-		const announcementID = message.guild.settings.get('channels.announcement') as string;
+		const announcementID = message.guild.settings.get(GuildSettings.Channels.Announcements) as string;
 		if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
 		const channel = message.guild.channels.get(announcementID) as TextChannel;

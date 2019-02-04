@@ -1,5 +1,6 @@
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
+import { GuildSettings } from '../types/namespaces/GuildSettings';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS } from '../util/constants';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
@@ -146,12 +147,12 @@ export class ModerationManagerEntry {
 		const description = (this.duration ? [
 			`❯ **Type**: ${assets.title}`,
 			`❯ **User:** ${userTag} (${userID})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get('prefix')}reason ${this.case} to claim.\``}`,
+			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get(GuildSettings.Prefix)}reason ${this.case} to claim.\``}`,
 			`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
 		] : [
 			`❯ **Type**: ${assets.title}`,
 			`❯ **User:** ${userTag} (${userID})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get('prefix')}reason ${this.case} to claim.\``}`
+				`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get(GuildSettings.Prefix)}reason ${this.case} to claim.\``}`
 		]).join('\n');
 
 		return new MessageEmbed()
@@ -228,10 +229,9 @@ export class ModerationManagerEntry {
 
 		this.case = await this.manager.count() + 1;
 		[this.id] = (await this.manager.table.insert(this.toJSON()).run()).generated_keys;
-		// @ts-ignore
 		this.manager.insert(this);
 
-		const channelID = this.manager.guild.settings.get('channels.modlog') as string;
+		const channelID = this.manager.guild.settings.get(GuildSettings.Channels.ModerationLogs) as string;
 		const channel = (channelID && this.manager.guild.channels.get(channelID) as TextChannel) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();

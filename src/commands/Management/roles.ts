@@ -2,6 +2,7 @@ import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { FuzzySearch } from '../../lib/util/FuzzySearch';
 
 export default class extends SkyraCommand {
@@ -11,13 +12,13 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: (language) => language.get('COMMAND_ROLES_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_ROLES_EXTENDED'),
-			requiredPermissions: ['MANAGE_ROLES'],
+			requiredPermissions: ['MANAGE_ROLES', 'MANAGE_MESSAGES'],
 			runIn: ['text'],
 			usage: '(roles:rolenames)'
 		});
 
 		this.createCustomResolver('rolenames', async(arg, _, message) => {
-			const rolesPublic = message.guild.settings.get('roles.public') as string[];
+			const rolesPublic = message.guild.settings.get(GuildSettings.Roles.Public) as GuildSettings.Roles.Public;
 			if (!rolesPublic.length) return null;
 			if (!arg) return [];
 
@@ -33,11 +34,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [roles]: [Role[]]) {
-		const rolesPublic = message.guild.settings.get('roles.public') as string[];
+		const rolesPublic = message.guild.settings.get(GuildSettings.Roles.Public) as GuildSettings.Roles.Public;
 
 		if (!roles) throw message.language.get('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
-			if (message.args.some((v) => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', message.guild.settings.get('prefix'));
+			if (message.args.some((v) => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', message.guild.settings.get(GuildSettings.Prefix));
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member.roles.keys());
@@ -60,13 +61,13 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		const rolesRemoveInitial = message.guild.settings.get('roles.removeInitial') as boolean;
-		const rolesInitial = message.guild.settings.get('roles.initial') as string;
+		const rolesRemoveInitial = message.guild.settings.get(GuildSettings.Roles.RemoveInitial) as GuildSettings.Roles.RemoveInitial;
+		const rolesInitial = message.guild.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
 
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!message.guild.roles.has(rolesInitial)) message.guild.settings.reset('roles.initial').catch((error) => this.client.emit('wtf', error));
+			if (!message.guild.roles.has(rolesInitial)) message.guild.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit('wtf', error));
 			else if (message.member.roles.has(rolesInitial)) memberRoles.delete(rolesInitial);
 		}
 

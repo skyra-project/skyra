@@ -1,5 +1,6 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { cutText, getContent, getImage } from '../lib/util/util';
 
@@ -9,7 +10,7 @@ export default class extends Event {
 		if (!message.guild || message.author.id === this.client.user.id) return;
 
 		const { guild } = message;
-		if (!guild.settings.get('events.messageDelete')) return;
+		if (!guild.settings.get(GuildSettings.Events.MessageDelete)) return;
 
 		const channel = message.channel as TextChannel;
 		this.client.emit('guildMessageLog', channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, guild, () => new MessageEmbed()

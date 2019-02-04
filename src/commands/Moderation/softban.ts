@@ -2,6 +2,7 @@ import { User } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 import { softban } from '../../lib/util/util';
 
@@ -19,7 +20,9 @@ export default class extends ModerationCommand {
 	}
 
 	public async prehandle(message: KlasaMessage) {
-		return message.guild.settings.get('events.banAdd') || message.guild.settings.get('events.banRemove') ? { unlock: message.guild.moderation.createLock() } : null;
+		return message.guild.settings.get(GuildSettings.Events.BanAdd) || message.guild.settings.get(GuildSettings.Events.BanRemove)
+			? { unlock: message.guild.moderation.createLock() }
+			: null;
 	}
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {

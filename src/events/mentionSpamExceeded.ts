@@ -1,5 +1,6 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 import { Event, KlasaMessage } from 'klasa';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { ModerationTypeKeys } from '../lib/util/constants';
 
 export default class extends Event {
@@ -15,7 +16,7 @@ export default class extends Event {
 				.setModerator(this.client.user)
 				.setUser(message.author)
 				.setType(ModerationTypeKeys.Ban)
-				.setReason(message.language.get('MONITOR_NMS_MODLOG', message.guild.settings.get('selfmod.nmsthreshold')))
+				.setReason(message.language.get('MONITOR_NMS_MODLOG', message.guild.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed)))
 				.create();
 		} catch (error) {
 			this.client.emit('wtf', error);

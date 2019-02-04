@@ -1,5 +1,6 @@
 import { Client, Collection, Guild, TextChannel } from 'discord.js';
 import RethinkDB from '../../providers/rethinkdb';
+import { GuildSettings } from '../types/namespaces/GuildSettings';
 import { StarboardMessage } from './StarboardMessage';
 
 /**
@@ -45,7 +46,7 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	 * Get the Starboard channel
 	 */
 	public get starboardChannel(): TextChannel | null {
-		const channelID = this.guild.settings.get('starboard.channel') as string;
+		const channelID = this.guild.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
 		return (channelID && this.guild.channels.get(channelID) as TextChannel) || null;
 	}
 
@@ -53,7 +54,7 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	 * Get the minimum amount of stars
 	 */
 	public get minimum(): number {
-		return this.guild.settings.get('starboard.minimum') as number;
+		return this.guild.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
 	}
 
 	/**

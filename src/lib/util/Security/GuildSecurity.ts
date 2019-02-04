@@ -1,5 +1,6 @@
 import { Guild } from 'discord.js';
 import { RateLimitManager } from 'klasa';
+import { GuildSettings } from '../../types/namespaces/GuildSettings';
 import { Adder } from '../Adder';
 import { PreciseTimeout } from '../PreciseTimeout';
 import { AntiRaid } from './AntiRaid';
@@ -43,8 +44,8 @@ export class GuildSecurity {
 		this.guild = guild;
 		this.raid = new AntiRaid(this.guild);
 		this.nms = new RateLimitManager(
-			this.guild.settings.get('no-mention-spam.mentionsAllowed') as number,
-			this.guild.settings.get('no-mention-spam.timePeriod') as number * 1000
+			this.guild.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed) as GuildSettings.NoMentionSpam.MentionsAllowed,
+			this.guild.settings.get(GuildSettings.NoMentionSpam.TimePeriod) as GuildSettings.NoMentionSpam.TimePeriod * 1000
 		);
 	}
 

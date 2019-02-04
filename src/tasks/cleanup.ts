@@ -104,11 +104,11 @@ export default class extends Task {
 	}
 
 	/**
-	 * Set a colour depending on the amount:
-	 * > 1000 : Light Red colour
-	 * > 100  : Light Yellow colour
-	 * < 100  : Green colour
-	 * @param n The number to colourise
+	 * Set a color depending on the amount:
+	 * > 1000 : Light Red color
+	 * > 100  : Light Yellow color
+	 * < 100  : Green color
+	 * @param n The number to colorise
 	 */
 	public setColor(n: number) {
 		const text = String(n).padStart(5, ' ');

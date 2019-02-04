@@ -1,5 +1,6 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor, SettingsFolder, util } from 'klasa';
+import { KlasaMessage, Monitor, util } from 'klasa';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { cutText } from '../lib/util/util';
 const OFFSET = 0b100000;
@@ -24,23 +25,24 @@ export default class extends Monitor {
 	public async run(message: KlasaMessage): Promise<void> {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const selfmod = (message.guild.settings.get('selfmod') as SettingsFolder).pluck('capsfilter', 'capsthreshold');
+		const capsfilter = message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
+		const capsthreshold = message.guild.settings.get(GuildSettings.Selfmod.Capsthreshold) as GuildSettings.Selfmod.Capsthreshold;
 		const { length } = message.content;
 		let count = 0, i = 0;
 
 		while (i < length) if ((message.content.charCodeAt(i++) & OFFSET) === 0) count++;
 
-		if ((count / length) * 100 < selfmod.capsthreshold) return;
+		if ((count / length) * 100 < capsthreshold) return;
 
-		if ((selfmod.capsfilter & DELETE_FLAG) && message.deletable) {
+		if ((capsfilter & DELETE_FLAG) && message.deletable) {
 			if (length > 25) message.author.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))).catch(() => null);
 			message.nuke().catch(() => null);
 		}
 
-		if ((selfmod.capsfilter & ALERT_FLAG) && message.channel.postable)
+		if ((capsfilter & ALERT_FLAG) && message.channel.postable)
 			message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)).catch(() => null);
 
-		if (selfmod.capsfilter & LOG_FLAG) {
+		if (capsfilter & LOG_FLAG) {
 			this.client.emit('guildMessageLog', MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 				.splitFields(message.content)
 				.setColor(0xEFAE45)
@@ -53,8 +55,10 @@ export default class extends Monitor {
 	public shouldRun(message: KlasaMessage): boolean {
 		if (!this.enabled || !message.guild || message.author.id === this.client.user.id) return false;
 
-		const selfmod = (message.guild.settings.get('selfmod') as SettingsFolder).pluck('capsminimum', 'capsfilter', 'ignoreChannels');
-		return message.content.length > selfmod.capsminimum && selfmod.capsfilter && !selfmod.ignoreChannels.includes(message.channel.id);
+		const capsminimum = message.guild.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum;
+		const capsfilter = message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
+		const ignoreChannels = message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels;
+		return message.content.length > capsminimum && capsfilter && !ignoreChannels.includes(message.channel.id);
 	}
 
 }

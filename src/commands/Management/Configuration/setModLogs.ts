@@ -1,6 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
 
 export default class extends SkyraCommand {
 
@@ -19,8 +20,8 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (channel.type !== 'text') throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
-		if (message.guild.settings.get('channels.modlog') === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
-		await message.guild.settings.update('channels.modlog', channel);
+		if (message.guild.settings.get(GuildSettings.Channels.ModerationLogs) === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
+		await message.guild.settings.update(GuildSettings.Channels.ModerationLogs, channel);
 		return message.sendLocale('COMMAND_SETMODLOGS_SET', [channel]);
 	}
 

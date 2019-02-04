@@ -2,6 +2,7 @@ import { Role, User } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 import { removeMute } from '../../lib/util/util';
 
@@ -19,7 +20,7 @@ export default class extends ModerationCommand {
 	}
 
 	public async inhibit(message: KlasaMessage) {
-		const id = message.guild.settings.get('roles.muted') as string;
+		const id = message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
 		if (id && message.guild.roles.has(id)) return false;
 		throw message.language.get('GUILD_SETTINGS_ROLES_MUTED');
 	}
@@ -44,7 +45,7 @@ export default class extends ModerationCommand {
 			.map((role) => role.id);
 
 		// Remove the muted role
-		const muteIndex = roles.indexOf(message.guild.settings.get('roles.muted') as string);
+		const muteIndex = roles.indexOf(message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
 		if (muteIndex !== -1) roles.splice(muteIndex, 1);
 
 		// Edit roles

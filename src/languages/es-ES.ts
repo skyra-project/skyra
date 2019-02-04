@@ -113,8 +113,11 @@ export default class extends Language {
 		SETTING_GATEWAY_VALUE_FOR_KEY_ALREXT: (data, key) => `El valor ${data} para la clave ${key} ya existe.`,
 		SETTING_GATEWAY_SPECIFY_VALUE: 'Debes especificar el valor para añadir o eliminar.',
 		SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `La clave ${key} no acepta múltiples valores.`,
+		SETTING_GATEWAY_CHOOSE_KEY: (keys) => `Por favor, elija alguno de las siguientes claves: '${keys}'`,
+		SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: 'Este grupo no es configurable.',
 		SETTING_GATEWAY_KEY_NOEXT: (key) => `La clave ${key} no existe en el esquema de datos.`,
 		SETTING_GATEWAY_INVALID_TYPE: `El tipo de parámetro debe ser o 'add' para añadir, o 'remove' para eliminar.`,
+		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `${entry.key} no acepta el valor: ${value}`,
 		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `No pude resolver suficientes ${name}s. Al menos ${min} ${min === 1 ? 'es' : 'son'} requeridos.`,
 		RESOLVER_INVALID_BOOL: (name) => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,
 		RESOLVER_INVALID_CHANNEL: (name) => `${name} debe ser una mención de canal o una id de canal válida.`,
@@ -184,6 +187,7 @@ export default class extends Language {
 		COMMAND_HELP_NO_EXTENDED: 'No está documentado completamente.',
 		COMMAND_HELP_DM: '📥 | La lista de comandos ha sido enviada a tus mensajes privados.',
 		COMMAND_HELP_NODM: `${REDCROSS} | Parece que tienes tus mensajes privados desactivados, no pude mandarte el mensaje.`,
+		COMMAND_HELP_ALL_FLAG: `${LOADING} Mostrando una categoría por página. ¿Problemas con el mensaje? Envía \`Skyra, help --all\` para la lista de todos los comandos en tus Mensajes Directos.`,
 		COMMAND_ENABLE: (type, name) => `+ Activado con éxito la pieza tipo ${type}: ${name}`,
 		COMMAND_ENABLE_DESCRIPTION: 'Re-activa o activa temporalmente una pieza de Klasa. El estado por defecto es restaurado al recargar.',
 		COMMAND_DISABLE: (type, name) => `+ Desactivado con éxito la pieza tipo ${type}: ${name}`,
@@ -695,7 +699,7 @@ export default class extends Language {
 		COMMAND_ROLEINFO_EXTENDED: builder.display('roleinfo', {
 			extendedHelp: `The roleinfo command displays information for a role, such as its id, name, color, whether it's hoisted
 					(displays separately) or not, it's role hierarchy position, whether it's mentionable or not, how many members have said
-					role, and its permissions. It sends an embedded message with the colour of the role.`,
+					role, and its permissions. It sends an embedded message with the color of the role.`,
 			explainedUsage: [
 				['role', 'The role name, partial name, mention or id.']
 			],
@@ -706,6 +710,24 @@ export default class extends Language {
 			extendedHelp: `The serverinfo command displays information for the guild the message got sent. It shows the amount of channels,
 					with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles,
 					region, creation date, verification level... between others.`
+		}),
+
+		/**
+		 * ###########################
+		 * MANAGEMENT/MEMBERS COMMANDS
+		 */
+
+		COMMAND_STICKYROLES_DESCRIPTION: 'Manage sticky roles for users.',
+		COMMAND_STICKYROLES_EXTENDED: builder.display('stickyRoles', {
+			extendedHelp: `The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when
+				you leave, and are applied back as soon as they join.`,
+			explainedUsage: [
+				['action', 'Either you want to check the sticky roles, add one, remove one, or remove all of them.'],
+				['user', 'The user target for all the actions.'],
+				['role', 'The role to add or remove.']
+			],
+			examples: ['add Skyra Goddess', 'show Skyra', 'remove Skyra Goddess', 'reset Skyra'],
+			reminder: `The member's roles will not be modified by this command, you need to add or remove them.`
 		}),
 
 		/**
@@ -1910,6 +1932,21 @@ export default class extends Language {
 		COMMAND_SETMESSAGELOGS_SET: (channel) => `Successfully set the message logs channel to ${channel}.`,
 		COMMAND_SETMODLOGS_SET: (channel) => `Successfully set the mod logs channel to ${channel}.`,
 		COMMAND_SETPREFIX_SET: (prefix) => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
+
+		/**
+		 * ###########################
+		 * MANAGEMENT/MEMBERS COMMANDS
+		 */
+
+		COMMAND_STICKYROLES_REQUIRED_USER: 'A user target is required for this command to work.',
+		COMMAND_STICKYROLES_REQUIRED_ROLE: 'A role name is required when adding or removing a role.',
+		COMMAND_STICKYROLES_NOTEXISTS: (user) => `The user ${user} does not have any sticky roles or does not have the specified one.`,
+		COMMAND_STICKYROLES_RESET: (user) => `Successfully removed all sticky roles from ${user}.`,
+		COMMAND_STICKYROLES_REMOVE: (user) => `Successfully removed the specified role from ${user}.`,
+		COMMAND_STICKYROLES_ADD_EXISTS: (user) => `The user ${user} already had the specified role as sticky.`,
+		COMMAND_STICKYROLES_ADD: (user) => `Successfully added the specified role as sticky to ${user}.`,
+		COMMAND_STICKYROLES_SHOW_EMPTY: `There are no sticky roles to show.`,
+		COMMAND_STICKYROLES_SHOW_SINGLE: (user, roles) => `Sticky Role(s) for **${user}**: \`${roles.join('`, `')}\`.`,
 
 		/**
 		 * #############

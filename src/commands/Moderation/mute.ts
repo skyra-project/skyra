@@ -2,6 +2,7 @@ import { Permissions, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
+import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 import { createMuteRole, mute } from '../../lib/util/util';
 
@@ -25,7 +26,7 @@ export default class extends ModerationCommand {
 
 	public async inhibit(message: KlasaMessage) {
 		if (message.command !== this) return false;
-		const id = message.guild.settings.get('roles.muted') as string;
+		const id = message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
 		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
 			if (!await message.hasAtLeastPermissionLevel(6)) throw message.language.get('COMMAND_MUTE_LOWLEVEL');

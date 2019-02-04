@@ -109,13 +109,16 @@ export default class extends Language {
 
 		DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
 		DEFAULT_LANGUAGE: 'Default Language',
-		SETTING_GATEWAY_EXPECTS_GUILD: 'The parameter <Guild> expects either a Guild ID or a Guild Object.',
+		SETTING_GATEWAY_EXPECTS_GUILD: 'The parameter <Guild> expects either a Guild or a Guild Object.',
 		SETTING_GATEWAY_VALUE_FOR_KEY_NOEXT: (data, key) => `The value ${data} for the key ${key} does not exist.`,
 		SETTING_GATEWAY_VALUE_FOR_KEY_ALREXT: (data, key) => `The value ${data} for the key ${key} already exists.`,
 		SETTING_GATEWAY_SPECIFY_VALUE: 'You must specify the value to add or filter.',
-		SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `The key ${key} does not accept multiple values.`,
+		SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `The key ${key} is not an Array.`,
+		SETTING_GATEWAY_CHOOSE_KEY: (keys) => `Please, choose one of the following keys: '${keys}'`,
+		SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: 'This group is not configurable.',
 		SETTING_GATEWAY_KEY_NOEXT: (key) => `The key ${key} does not exist in the current data schema.`,
 		SETTING_GATEWAY_INVALID_TYPE: 'The type parameter must be either add or remove.',
+		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `${entry.key} doesn't accept the value: ${value}`,
 		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `Provided too few ${name}s. Atleast ${min} ${min === 1 ? 'is' : 'are'} required.`,
 		RESOLVER_INVALID_BOOL: (name) => `${name} must be true or false.`,
 		RESOLVER_INVALID_CHANNEL: (name) => `${name} must be a channel tag or valid channel id.`,
@@ -185,6 +188,7 @@ export default class extends Language {
 		COMMAND_HELP_NO_EXTENDED: 'No extended help available.',
 		COMMAND_HELP_DM: '📥 | The list of commands you have access to has been sent to your DMs.',
 		COMMAND_HELP_NODM: `${REDCROSS} | You have DMs disabled, I couldn't send you the commands in DMs.`,
+		COMMAND_HELP_ALL_FLAG: `${LOADING} Displaying one category per page. Have issues with the embed? Run \`Skyra, help --all\` for a full list in DMs.`,
 		COMMAND_ENABLE: (type, name) => `+ Successfully enabled ${type}: ${name}`,
 		COMMAND_ENABLE_DESCRIPTION: 'Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.',
 		COMMAND_DISABLE: (type, name) => `+ Successfully disabled ${type}: ${name}`,
@@ -701,7 +705,7 @@ export default class extends Language {
 		COMMAND_ROLEINFO_EXTENDED: builder.display('roleinfo', {
 			extendedHelp: `The roleinfo command displays information for a role, such as its id, name, color, whether it's hoisted
 					(displays separately) or not, it's role hierarchy position, whether it's mentionable or not, how many members have said
-					role, and its permissions. It sends an embedded message with the colour of the role.`,
+					role, and its permissions. It sends an embedded message with the color of the role.`,
 			explainedUsage: [
 				['role', 'The role name, partial name, mention or id.']
 			],
@@ -712,6 +716,24 @@ export default class extends Language {
 			extendedHelp: `The serverinfo command displays information for the guild the message got sent. It shows the amount of channels,
 					with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles,
 					region, creation date, verification level... between others.`
+		}),
+
+		/**
+		 * ###########################
+		 * MANAGEMENT/MEMBERS COMMANDS
+		 */
+
+		COMMAND_STICKYROLES_DESCRIPTION: 'Manage sticky roles for users.',
+		COMMAND_STICKYROLES_EXTENDED: builder.display('stickyRoles', {
+			extendedHelp: `The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when
+				you leave, and are applied back as soon as they join.`,
+			explainedUsage: [
+				['action', 'Either you want to check the sticky roles, add one, remove one, or remove all of them.'],
+				['user', 'The user target for all the actions.'],
+				['role', 'The role to add or remove.']
+			],
+			examples: ['add Skyra Goddess', 'show Skyra', 'remove Skyra Goddess', 'reset Skyra'],
+			reminder: `The member's roles will not be modified by this command, you need to add or remove them.`
 		}),
 
 		/**
@@ -1921,6 +1943,21 @@ export default class extends Language {
 		COMMAND_SETMESSAGELOGS_SET: (channel) => `Successfully set the message logs channel to ${channel}.`,
 		COMMAND_SETMODLOGS_SET: (channel) => `Successfully set the mod logs channel to ${channel}.`,
 		COMMAND_SETPREFIX_SET: (prefix) => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
+
+		/**
+		 * ###########################
+		 * MANAGEMENT/MEMBERS COMMANDS
+		 */
+
+		COMMAND_STICKYROLES_REQUIRED_USER: 'A user target is required for this command to work.',
+		COMMAND_STICKYROLES_REQUIRED_ROLE: 'A role name is required when adding or removing a role.',
+		COMMAND_STICKYROLES_NOTEXISTS: (user) => `The user ${user} does not have any sticky roles or does not have the specified one.`,
+		COMMAND_STICKYROLES_RESET: (user) => `Successfully removed all sticky roles from ${user}.`,
+		COMMAND_STICKYROLES_REMOVE: (user) => `Successfully removed the specified role from ${user}.`,
+		COMMAND_STICKYROLES_ADD_EXISTS: (user) => `The user ${user} already had the specified role as sticky.`,
+		COMMAND_STICKYROLES_ADD: (user) => `Successfully added the specified role as sticky to ${user}.`,
+		COMMAND_STICKYROLES_SHOW_EMPTY: `There are no sticky roles to show.`,
+		COMMAND_STICKYROLES_SHOW_SINGLE: (user, roles) => `Sticky Role(s) for **${user}**: \`${roles.join('`, `')}\`.`,
 
 		/**
 		 * #############

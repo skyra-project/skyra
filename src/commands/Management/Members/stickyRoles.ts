@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(client, store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_MANAGEROLEREACTION_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MANAGEROLEREACTION_EXTENDED'),
+			description: (language) => language.get('COMMAND_STICKYROLES_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_STICKYROLES_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
 			requiredPermissions: ['MANAGE_ROLES'],
@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 			if (!arg) throw msg.language.get('COMMAND_STICKYROLES_REQUIRED_USER');
 			return this.client.arguments.get('username').run(arg, possible, msg);
 		}).createCustomResolver('rolename', (arg, possible, msg, [action]) => {
-			if (action === 'reset' || (action === 'show' && !arg)) return undefined;
+			if (action === 'reset' || action === 'show') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_STICKYROLES_REQUIRED_ROLE');
 			return this.client.arguments.get('rolename').run(arg, possible, msg);
 		});
@@ -85,45 +85,21 @@ export default class extends SkyraCommand {
 
 	public async show(message: KlasaMessage, [user]: [KlasaUser]) {
 		const all = message.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
-		if (user) {
-			const entry = all.find((stickyRole) => stickyRole.user === user.id);
-			if (!entry) throw message.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
+		const entry = all.find((stickyRole) => stickyRole.user === user.id);
+		if (!entry) throw message.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
 
-			const cleaned = await this._clean(message, entry);
-			if (!cleaned) {
-				await message.guild.settings.update(GuildSettings.StickyRoles, entry, { arrayAction: 'remove' });
-				throw message.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
-			}
-
-			if (cleaned.raw.roles.length !== entry.roles.length) {
-				const index = all.indexOf(entry);
-				await message.guild.settings.update(GuildSettings.StickyRoles, entry, { arrayIndex: index });
-			}
-
-			return message.sendLocale('COMMAND_STICKYROLES_SHOW_SINGLE', [cleaned.resolved.user, cleaned.resolved.roles]);
-		}
-
-		const raw = [];
-		const resolved = [];
-		let dirty = false;
-		for (const entry of all) {
-			const cleaned = await this._clean(message, entry);
-			if (cleaned) {
-				if (cleaned.raw.roles.length !== entry.roles.length) dirty = true;
-				resolved.push(cleaned.resolved);
-				raw.push(cleaned.raw);
-			} else {
-				dirty = true;
-			}
-		}
-
-		if (!resolved.length) {
-			await message.guild.settings.reset(GuildSettings.StickyRoles);
+		const cleaned = await this._clean(message, entry);
+		if (!cleaned) {
+			await message.guild.settings.update(GuildSettings.StickyRoles, entry, { arrayAction: 'remove' });
 			throw message.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
 		}
-		if (dirty) await message.guild.settings.update(GuildSettings.StickyRoles, raw, { arrayAction: 'overwrite' });
 
-		return message.sendLocale('COMMAND_STICKYROLES_SHOW', [resolved]);
+		if (cleaned.raw.roles.length !== entry.roles.length) {
+			const index = all.indexOf(entry);
+			await message.guild.settings.update(GuildSettings.StickyRoles, entry, { arrayIndex: index });
+		}
+
+		return message.sendLocale('COMMAND_STICKYROLES_SHOW_SINGLE', [cleaned.resolved.user, cleaned.resolved.roles]);
 	}
 
 	private async _clean(message: KlasaMessage, entry: StickyRole) {

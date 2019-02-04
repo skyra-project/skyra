@@ -1,5 +1,6 @@
-import { CommandStore, KlasaClient, KlasaMessage, SchemaFolder } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
 import { Adder } from '../../../lib/util/Adder';
 import { TIME } from '../../../lib/util/constants';
 
@@ -30,15 +31,15 @@ export default class extends SkyraCommand {
 			if (type === 'action') {
 				const action = arg.toLowerCase();
 				const index = ACTIONS.indexOf(action);
-				if (index !== -1) return (message.guild.settings.get('selfmod.attachmentAction') as number & 0b1000) + index;
+				if (index !== -1) return (message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b1000) + index;
 				throw message.language.get('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
 			}
 
 			if (type === 'logs') {
 				const value = await this.client.arguments.get('boolean').run(arg, possible, message);
 				return value
-					? (message.guild.settings.get('selfmod.attachmentAction') as number & 0b0111) | 0b1000
-					: (message.guild.settings.get('selfmod.attachmentAction') as number & 0b0111) & 0b0111;
+					? (message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b0111) | 0b1000
+					: (message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b0111) & 0b0111;
 			}
 
 			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, TIME.YEAR];
@@ -58,12 +59,13 @@ export default class extends SkyraCommand {
 			case 'enable':
 			case 'maximum':
 			case 'duration': {
-				const selfmod = message.guild.settings.get('selfmod') as SchemaFolder;
+				const attachmentMaximum = message.guild.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
+				const attachmentDuration = message.guild.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
 				if (!message.guild.security.adder) {
-					message.guild.security.adder = new Adder(selfmod.get('attachmentMaximum'), selfmod.get('attachmentDuration'));
+					message.guild.security.adder = new Adder(attachmentMaximum, attachmentDuration);
 				} else {
-					message.guild.security.adder.maximum = selfmod.get('attachmentMaximum');
-					message.guild.security.adder.duration = selfmod.get('attachmentDuration');
+					message.guild.security.adder.maximum = attachmentMaximum;
+					message.guild.security.adder.duration = attachmentDuration;
 				}
 			}
 		}

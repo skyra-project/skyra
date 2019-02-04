@@ -6,6 +6,7 @@ import { URL } from 'url';
 import { isObject } from 'util';
 import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData } from '../types/Discord';
+import { GuildSettings } from '../types/namespaces/GuildSettings';
 import { ModerationTypeKeys } from './constants';
 import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
@@ -50,7 +51,7 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * @param message The message instance to check with
  */
 export function announcementCheck(message: Message): Role {
-	const announcementID = message.guild.settings.get('roles.subscriber') as string;
+	const announcementID = message.guild.settings.get(GuildSettings.Roles.Subscriber) as GuildSettings.Roles.Subscriber;
 	if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
 	const role = message.guild.roles.get(announcementID);
@@ -67,14 +68,14 @@ export function announcementCheck(message: Message): Role {
  */
 export async function removeMute(guild: Guild, id: string): Promise<boolean> {
 	const { settings } = guild;
-	const guildStickyRoles = settings.get('stickyRoles') as any[];
+	const guildStickyRoles = settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
 
-	const stickyRolesIndex = guildStickyRoles.findIndex((stickyRole) => stickyRole.id === id);
+	const stickyRolesIndex = guildStickyRoles.findIndex((stickyRole) => stickyRole.user === id);
 	if (stickyRolesIndex === -1) return false;
 
 	const stickyRoles = guildStickyRoles[stickyRolesIndex];
 
-	const index = stickyRoles.roles.indexOf(settings.get('roles.muted'));
+	const index = stickyRoles.roles.indexOf(settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
 	if (index === -1) return false;
 
 	stickyRoles.roles.splice(index, 1);
@@ -275,12 +276,12 @@ export function createPick<T>(array: T[]): () => T {
  * @param reason The reason for the mute
  */
 export async function mute(moderator: GuildMember, target: GuildMember, reason?: string): Promise<ModerationManagerEntry> {
-	const role = target.guild.roles.get(target.guild.settings.get('roles.muted') as string);
+	const role = target.guild.roles.get(target.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
 	if (!role) throw target.guild.language.get('COMMAND_MUTE_UNCONFIGURED');
 
-	const all = target.guild.settings.get('stickyRoles') as { id: string; roles: string[] }[];
+	const all = target.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
 
-	const stickyRolesIndex = all.findIndex((stickyRole) => stickyRole.id === target.id);
+	const stickyRolesIndex = all.findIndex((stickyRole) => stickyRole.user === target.id);
 	const stickyRoles = stickyRolesIndex !== -1 ? all[stickyRolesIndex] : { id: target.id, roles: [] };
 	if (stickyRoles.roles.includes(role.id)) throw target.guild.language.get('COMMAND_MUTE_MUTED');
 
@@ -340,7 +341,7 @@ export function muteGetRoles(member: GuildMember): string[] {
  * @param message The message instance to use as context
  */
 export async function createMuteRole(message: Message): Promise<Role> {
-	const id = message.guild.settings.get('roles.muted') as string;
+	const id = message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
 	if (id && message.guild.roles.has(id)) throw message.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
 
 	if (message.guild.roles.size === 250) throw message.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
@@ -356,7 +357,7 @@ export async function createMuteRole(message: Message): Promise<Role> {
 	}
 
 	const messageEdit2 = message.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
-	await message.guild.settings.update('roles.muted', role.id);
+	await message.guild.settings.update(GuildSettings.Roles.Muted, role.id);
 	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, message.author, role]);
 	return role;
 }

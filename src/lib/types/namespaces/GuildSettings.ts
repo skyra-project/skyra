@@ -49,6 +49,7 @@ export namespace GuildSettings {
 		export type MessageReaction = string;
 		export type Moderator = string;
 		export type Muted = string;
+		export type Public = string[];
 		export type Reactions = Array<RolesReaction>;
 		export type RemoveInitial = boolean;
 		export type Staff = string;
@@ -66,7 +67,6 @@ export namespace GuildSettings {
 		export type Capsthreshold = number;
 		export type IgnoreChannels = Array<string>;
 		export type Invitelinks = boolean;
-		export type Nmsthreshold = number;
 		export type Raid = string;
 		export type Raidthreshold = number;
 	}
@@ -149,6 +149,7 @@ export namespace GuildSettings {
 		export const MessageReaction = 'roles.messageReaction';
 		export const Moderator = 'roles.moderator';
 		export const Muted = 'roles.muted';
+		export const Public = 'roles.public';
 		export const Reactions = 'roles.reactions';
 		export const RemoveInitial = 'roles.removeInitial';
 		export const Staff = 'roles.staff';
@@ -166,7 +167,6 @@ export namespace GuildSettings {
 		export const Capsthreshold = 'selfmod.capsthreshold';
 		export const IgnoreChannels = 'selfmod.ignoreChannels';
 		export const Invitelinks = 'selfmod.invitelinks';
-		export const Nmsthreshold = 'selfmod.nmsthreshold';
 		export const Raid = 'selfmod.raid';
 		export const Raidthreshold = 'selfmod.raidthreshold';
 	}

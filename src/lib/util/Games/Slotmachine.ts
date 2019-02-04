@@ -2,6 +2,7 @@ import { Canvas } from 'canvas-constructor';
 import { Message, User } from 'discord.js';
 import { join } from 'path';
 import { assetsFolder } from '../../../Skyra';
+import { UserSettings } from '../../types/namespaces/UserSettings';
 import { loadImage } from '../util';
 
 const REELS = [
@@ -71,7 +72,7 @@ export class Slotmachine {
 		const rolls = this.roll();
 		this.calculate(rolls);
 
-		const money = settings.get('money') as number;
+		const money = settings.get(UserSettings.Money) as UserSettings.Money;
 		const amount = this.winnings !== 0 ? money + (this.winnings * this.boost) : money - this.amount;
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update('money', amount);

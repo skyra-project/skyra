@@ -1,6 +1,7 @@
 
 import { Task } from 'klasa';
 import { R } from 'rethinkdb-ts';
+import { Events } from '../lib/types/Enums';
 
 export default class extends Task {
 
@@ -11,7 +12,7 @@ export default class extends Task {
 			this.sweepUserProfiles(r),
 			this.sweepMemberProfiles(r)
 		]);
-		this.client.emit('verbose', `[DB:SWEEP] Swept ${users.toLocaleString()} [UserProfile]s and ${members.toLocaleString()} [MemberProfile]s`);
+		this.client.emit(Events.Verbose, `[DB:SWEEP] Swept ${users.toLocaleString()} [UserProfile]s and ${members.toLocaleString()} [MemberProfile]s`);
 		this.enable();
 	}
 

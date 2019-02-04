@@ -1,5 +1,6 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 import { KlasaMessage, Monitor } from 'klasa';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends Monitor {
@@ -24,10 +25,10 @@ export default class extends Monitor {
             rateLimit.resetTime();
 			// @ts-ignore 2341
             if (message.guild.settings.get(GuildSettings.NoMentionSpam.Alerts) && rateLimit.remaining / rateLimit.bucket < 0.2) {
-                this.client.emit('mentionSpamWarning', message);
+				this.client.emit(Events.MentionSpamWarning, message);
 			}
 		} catch (err) {
-			this.client.emit('mentionSpamExceeded', message);
+			this.client.emit(Events.MentionSpamExceeded, message);
 		}
 	}
 

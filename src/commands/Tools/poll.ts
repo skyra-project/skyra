@@ -1,5 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Events } from '../../lib/types/Enums';
 
 const REG_USERS = Serializer.regex.userOrMember, REG_TAG = /[^#]{2,32}#\d{4,4}/;
 const REG_ROLES = Serializer.regex.role;
@@ -86,7 +87,7 @@ export default class extends SkyraCommand {
 
 	public async vote(message: KlasaMessage, [id, option]: [string, string]) {
 		if (!id) throw message.language.get('COMMAND_POLL_MISSING_ID');
-		if (message.deletable) message.nuke().catch((error) => this.client.emit('apiError', error));
+		if (message.deletable) message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
 		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll' || found.data.guild !== message.guild.id) throw message.language.get('COMMAND_POLL_NOTEXISTS');
 		if (found.data.voted.includes(message.author.id)) throw message.language.get('COMMAND_POLL_ALREADY_VOTED');

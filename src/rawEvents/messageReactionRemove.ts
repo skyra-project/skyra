@@ -1,6 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSMessageReactionRemove } from '../lib/types/Discord';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { resolveEmoji } from '../lib/util/util';
 
@@ -14,7 +15,7 @@ export default class extends RawEvent {
 			try {
 				await this.handleRoleChannel(channel, data);
 			} catch (error) {
-				this.client.emit('wtf', error);
+				this.client.emit(Events.Wtf, error);
 			}
 		}
 	}
@@ -34,7 +35,7 @@ export default class extends RawEvent {
 			const member = await channel.guild.members.fetch(data.user_id);
 			if (member.roles.has(roleEntry.role)) await member.roles.remove(roleEntry.role);
 		} catch (error) {
-			this.client.emit('apiError', error);
+			this.client.emit(Events.ApiError, error);
 		}
 	}
 

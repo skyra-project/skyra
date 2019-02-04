@@ -1,6 +1,7 @@
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSGuildMemberAdd } from '../lib/types/Discord';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
@@ -41,7 +42,7 @@ export default class extends RawEvent {
 	}
 
 	private handleMemberLog(guild: Guild, member: GuildMember, asset: { color: number; title: string }) {
-		this.client.emit('guildMessageLog', MessageLogsEnum.Member, guild, () => new MessageEmbed()
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(asset.color)
 			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
 			.setFooter(asset.title)
@@ -55,11 +56,11 @@ export default class extends RawEvent {
 			const channel = guild.channels.get(channelsDefault);
 			if (channel && (channel as TextChannel).postable) {
 				(channel as TextChannel).send(this.transformMessage(messagesGreeting, guild, member.user))
-					.catch((error) => this.client.emit('apiError', error));
+					.catch((error) => this.client.emit(Events.ApiError, error));
 			} else {
 				guild.settings.reset(GuildSettings.Channels.Default)
-					.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
-					.catch((error) => this.client.emit('wtf', error));
+					.then(({ errors }) => errors.length ? this.client.emit(Events.Wtf, errors[0]) : null)
+					.catch((error) => this.client.emit(Events.Wtf, error));
 			}
 		}
 	}
@@ -69,10 +70,10 @@ export default class extends RawEvent {
 		if (initialRole) {
 			const role = guild.roles.get(initialRole);
 			if (!role || role.position >= guild.me.roles.highest.position) guild.settings.reset(GuildSettings.Roles.Initial)
-				.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
-				.catch((error) => this.client.emit('wtf', error));
+				.then(({ errors }) => errors.length ? this.client.emit(Events.Wtf, errors[0]) : null)
+				.catch((error) => this.client.emit(Events.Wtf, error));
 			else member.roles.add(role)
-				.catch((error) => this.client.emit('apiError', error));
+				.catch((error) => this.client.emit(Events.ApiError, error));
 		}
 	}
 
@@ -109,8 +110,8 @@ export default class extends RawEvent {
 		if (rolesMuted && stickyRoles.roles.includes(rolesMuted)) {
 			// Handle mute
 			const role = guild.roles.get(rolesMuted);
-			if (!role) guild.settings.reset(GuildSettings.Roles.Muted).catch((error) => this.client.emit('apiError', error));
-			else member.roles.add(role).catch((error) => this.client.emit('apiError', error));
+			if (!role) guild.settings.reset(GuildSettings.Roles.Muted).catch((error) => this.client.emit(Events.ApiError, error));
+			else member.roles.add(role).catch((error) => this.client.emit(Events.ApiError, error));
 
 			// Handle log
 			this.handleMemberLog(guild, member, COLORS.MUTE);
@@ -124,10 +125,10 @@ export default class extends RawEvent {
 
 		if (stickyRoles.roles.length !== roles.length)
 			guild.settings.update(GuildSettings.StickyRoles, { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles) })
-				.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
-				.catch((error) => this.client.emit('wtf', error));
+				.then(({ errors }) => errors.length ? this.client.emit(Events.Wtf, errors[0]) : null)
+				.catch((error) => this.client.emit(Events.Wtf, error));
 
-		member.roles.add(roles).catch((error) => this.client.emit('apiError', error));
+		member.roles.add(roles).catch((error) => this.client.emit(Events.ApiError, error));
 
 		return false;
 	}

@@ -1,5 +1,6 @@
 import { Client, Message, Permissions, TextChannel, User } from 'discord.js';
 import { Language } from 'klasa';
+import { Events } from '../../types/Enums';
 import { CONNECT_FOUR } from '../constants';
 import { LLRCData, LLRCDataEmoji, LongLivingReactionCollector, LongLivingReactionCollectorListener } from '../LongLivingReactionCollector';
 import { resolveEmoji } from '../util';
@@ -136,8 +137,8 @@ export class ConnectFour {
 					this.gameLostMessage();
 					break;
 				} else {
-					if (this.message) this.client.emit('commandError', this.message, this.client.commands.get('c4'), [this.challengee], error);
-					else this.client.emit('wtf', error);
+					if (this.message) this.client.emit(Events.CommandError, this.message, this.client.commands.get('c4'), [this.challengee], error);
+					else this.client.emit(Events.Wtf, error);
 					break;
 				}
 			}
@@ -146,16 +147,16 @@ export class ConnectFour {
 		}
 	}
 
-	public async gameFullLine(): Promise<void> {
+	public async gameFullLine() {
 		await this.gameDraw();
 	}
 
-	public async gameDraw(): Promise<void> {
+	public async gameDraw() {
 		await this.message.edit(this.language.get('COMMAND_C4_GAME_DRAW', this.renderTable()));
-		if (this.manageMessages) await this.message.reactions.removeAll().catch((err) => this.client.emit('apiError', err));
+		if (this.manageMessages) await this.message.reactions.removeAll().catch((err) => this.client.emit(Events.ApiError, err));
 	}
 
-	public async gameTimeout(): Promise<void> {
+	public async gameTimeout() {
 		await this.message.edit(this.language.get('COMMAND_GAMES_TIMEOUT'));
 		this.llrc.end();
 	}
@@ -174,7 +175,7 @@ export class ConnectFour {
 		const VALUE = this.turn === 0 ? 'WINNER_1' : 'WINNER_2';
 		// @ts-ignore
 		for (const { x, y } of row) this.table[x][y] = VALUE;
-		if (this.manageMessages) this.message.reactions.removeAll().catch((error) => this.client.emit('apiError', error));
+		if (this.manageMessages) this.message.reactions.removeAll().catch((error) => this.client.emit(Events.ApiError, error));
 		this.llrc.end();
 	}
 
@@ -189,7 +190,7 @@ export class ConnectFour {
 			this.collector = (data) => {
 				if (data.userID === PLAYER && CONNECT_FOUR.REACTIONS.includes(data.emoji.name)) {
 					if (this.manageMessages) this.removeEmoji(data.emoji, data.userID)
-						.catch((error) => this.client.emit('apiError', error));
+						.catch((error) => this.client.emit(Events.ApiError, error));
 					resolve(data.emoji.name);
 				}
 			};

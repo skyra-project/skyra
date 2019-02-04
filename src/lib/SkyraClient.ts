@@ -14,6 +14,7 @@ import { enumerable } from './util/util';
 
 import './extensions/SkyraGuild';
 import './extensions/SkyraGuildMember';
+import { Events } from './types/Enums';
 
 export class SkyraClient extends KlasaClient {
 
@@ -58,11 +59,11 @@ export class SkyraClient extends KlasaClient {
 	 * The Veza Node
 	 */
 	public ipc = new Node('skyra-master')
-		.on('client.connect', (client) => this.emit('verbose', `[IPC] Client Connected: ${client.name}`))
-		.on('client.disconnect', (client) => this.emit('warn', `[IPC] Client Disconnected: ${client.name}`))
-		.on('client.destroy', (client) => this.emit('warn', `[IPC] Client Destroyed: ${client.name}`))
-		.on('client.ready', (client) => this.emit('verbose', `[IPC] Client Ready: Named ${client.name}`))
-		.on('error', (error, client) => this.emit('error', `[IPC] Error from ${client.name}: ${error}`))
+		.on('client.connect', (client) => this.emit(Events.Verbose, `[IPC] Client Connected: ${client.name}`))
+		.on('client.disconnect', (client) => this.emit(Events.Warn, `[IPC] Client Disconnected: ${client.name}`))
+		.on('client.destroy', (client) => this.emit(Events.Warn, `[IPC] Client Destroyed: ${client.name}`))
+		.on('client.ready', (client) => this.emit(Events.Verbose, `[IPC] Client Ready: Named ${client.name}`))
+		.on('error', (error, client) => this.emit(Events.Error, `[IPC] Error from ${client.name}: ${error}`))
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
 	public constructor(options?: KlasaClientOptions) {

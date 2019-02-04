@@ -1,5 +1,6 @@
 import { MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, SettingsFolderUpdateOptions } from 'klasa';
+import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
@@ -93,9 +94,9 @@ export class SettingsMenu {
 		const parent = (this.schema as SchemaEntry | SchemaFolder).parent;
 
 		if (parent) this.response.react(EMOJIS.BACK)
-			.catch((error) => this.response.client.emit('apiError', error));
+			.catch((error) => this.response.client.emit(Events.ApiError, error));
 		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id)
-			.catch((error) => this.response.client.emit('apiError', error));
+			.catch((error) => this.response.client.emit(Events.ApiError, error));
 
 		return this.embed
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n\u200B`)
@@ -131,7 +132,7 @@ export class SettingsMenu {
 			this.llrc.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
 			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID)
-				.catch((error) => this.response.client.emit('apiError', error));
+				.catch((error) => this.response.client.emit(Events.ApiError, error));
 			this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
 			await this.response.edit(this.render());
 		}
@@ -166,10 +167,10 @@ export class SettingsMenu {
 
 	private stop(): void {
 		if (this.response.reactions.size) this.response.reactions.removeAll()
-			.catch((error) => this.response.client.emit('apiError', error));
+			.catch((error) => this.response.client.emit(Events.ApiError, error));
 		if (!this.messageCollector.ended) this.messageCollector.stop();
 		this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
-			.catch((error) => this.message.client.emit('apiError', error));
+			.catch((error) => this.message.client.emit(Events.ApiError, error));
 	}
 
 }

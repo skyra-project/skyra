@@ -4,6 +4,7 @@ import { join } from 'path';
 import { ScriptTarget, transpileModule, TranspileOptions } from 'typescript';
 import { inspect } from 'util';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { Events } from '../../../lib/types/Enums';
 import { fetch } from '../../../lib/util/util';
 import { rootFolder } from '../../../Skyra';
 
@@ -37,7 +38,7 @@ export default class extends SkyraCommand {
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime, languageType);
 
 		if (message.flags.silent) {
-			if (!success && result && (result as unknown as Error).stack) this.client.emit('error', (result as unknown as Error).stack);
+			if (!success && result && (result as unknown as Error).stack) this.client.emit(Events.Wtf, (result as unknown as Error).stack);
 			return null;
 		}
 
@@ -87,11 +88,13 @@ export default class extends SkyraCommand {
 
 	private async nativeEval(message: KlasaMessage, code: string) {
 		const stopwatch = new Stopwatch();
-		let success, syncTime, asyncTime, result;
+		let success: boolean, syncTime: string, asyncTime: string, result: any;
 		let thenable = false;
 		let type;
 		try {
 			if (message.flags.async) code = `(async () => {\n${code}\n})();`;
+			// @ts-ignore
+			const msg = message;
 			result = eval(code);
 			syncTime = stopwatch.toString();
 			type = new Type(result);
@@ -130,18 +133,18 @@ export default class extends SkyraCommand {
 			stopwatch.reset();
 			try {
 				const evaluated = await controller.evaluate(message, preprocessed);
-				const time = this.formatTime(stopwatch, null);
+				const time = this.formatTime(stopwatch.toString(), null);
 				const { type, value } = controller.extract(evaluated);
 				return { success: true, type, time, result: value };
 			} catch (error) {
-				return { success: false, type: 'Error', time: this.formatTime(stopwatch, null), result: String(error) };
+				return { success: false, type: 'Error', time: this.formatTime(stopwatch.toString(), null), result: String(error) };
 			}
 		} catch (error) {
-			return { success: false, type: 'CompilerError', time: this.formatTime(stopwatch, null), result: String(error) };
+			return { success: false, type: 'CompilerError', time: this.formatTime(stopwatch.toString(), null), result: String(error) };
 		}
 	}
 
-	private formatTime(syncTime: Stopwatch, asyncTime: number) {
+	private formatTime(syncTime: string, asyncTime: string) {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
 
@@ -167,7 +170,7 @@ export default class extends SkyraCommand {
 			}
 			case 'console':
 			case 'log': {
-				this.client.emit('log', result);
+				this.client.emit(Events.Log, result);
 				return message.sendLocale('COMMAND_EVAL_OUTPUT_CONSOLE', [time, footer]);
 			}
 			case 'abort':

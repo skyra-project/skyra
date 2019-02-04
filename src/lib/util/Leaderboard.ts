@@ -1,4 +1,5 @@
 import { Client, Collection } from 'discord.js';
+import { Events } from '../types/Enums';
 import { PreciseTimeout } from './PreciseTimeout';
 
 const LIMITS = {
@@ -108,7 +109,7 @@ export class Leaderboard {
 			for (const entry of data) {
 				const old = store.get(entry.userID);
 				if (old && old.points > entry.count) {
-					this.client.emit('verbose', `[CORRUPTION] [localScores - ${entry.guildID}:${entry.userID}] (${entry.id}) ${entry.count} < ${old.points}.`);
+					this.client.emit(Events.Verbose, `[CORRUPTION] [localScores - ${entry.guildID}:${entry.userID}] (${entry.id}) ${entry.count} < ${old.points}.`);
 					await r.table('localScores').get(entry.id).delete().run();
 				} else {
 					store.set(entry.userID, { name: null, points: entry.count, position: ++i });

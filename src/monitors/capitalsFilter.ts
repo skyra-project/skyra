@@ -1,5 +1,6 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor, util } from 'klasa';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { cutText } from '../lib/util/util';
@@ -43,7 +44,7 @@ export default class extends Monitor {
 			message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)).catch(() => null);
 
 		if (capsfilter & LOG_FLAG) {
-			this.client.emit('guildMessageLog', MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
+			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 				.splitFields(message.content)
 				.setColor(0xEFAE45)
 				.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))

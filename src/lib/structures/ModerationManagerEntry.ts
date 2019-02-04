@@ -1,5 +1,6 @@
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
+import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/namespaces/GuildSettings';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS } from '../util/constants';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
@@ -235,7 +236,7 @@ export class ModerationManagerEntry {
 		const channel = (channelID && this.manager.guild.channels.get(channelID) as TextChannel) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();
-			channel.send(messageEmbed).catch((error) => this.manager.guild.client.emit('error', error));
+			channel.send(messageEmbed).catch((error) => this.manager.guild.client.emit(Events.ApiError, error));
 		}
 
 		if (this.duration && (this.type | ModerationActions.Appealed) in TYPE_ASSETS) {
@@ -247,7 +248,7 @@ export class ModerationManagerEntry {
 					[ModerationSchemaKeys.Duration]: this.duration,
 					[ModerationSchemaKeys.Case]: this.case
 				}
-			}).catch((error) => this.manager.guild.client.emit('error', error));
+			}).catch((error) => this.manager.guild.client.emit(Events.ApiError, error));
 		}
 
 		return this;

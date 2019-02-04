@@ -1,5 +1,6 @@
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSMessageDelete } from '../lib/types/Discord';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends RawEvent {
@@ -28,11 +29,11 @@ export default class extends RawEvent {
 					// @ts-ignore
 					this.client.api.channels(channel).messages(messageID)
 						.delete({ reason: 'Starboard Management: Message Deleted' })
-						.catch((error) => this.client.emit('apiError', error));
+						.catch((error) => this.client.emit(Events.ApiError, error));
 				}
 			}
 		} catch (error) {
-			this.client.emit('wtf', error);
+			this.client.emit(Events.Wtf, error);
 		}
 	}
 

@@ -1,6 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSMessageReactionAdd } from '../lib/types/Discord';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
 import { resolveEmoji } from '../lib/util/util';
@@ -34,7 +35,7 @@ export default class extends RawEvent {
 			try {
 				await this.handleRoleChannel(parsed);
 			} catch (error) {
-				this.client.emit('wtf', error);
+				this.client.emit(Events.Wtf, error);
 			}
 		} else if (!parsed.channel.nsfw
 			&& parsed.channel.id !== channel.guild.settings.get(GuildSettings.Starboard.Channel)
@@ -42,7 +43,7 @@ export default class extends RawEvent {
 			try {
 				await this.handleStarboard(parsed);
 			} catch (error) {
-				this.client.emit('wtf', error);
+				this.client.emit(Events.Wtf, error);
 			}
 		}
 	}
@@ -62,7 +63,7 @@ export default class extends RawEvent {
 			const member = await parsed.guild.members.fetch(parsed.userID);
 			if (!member.roles.has(roleEntry.role)) await member.roles.add(roleEntry.role);
 		} catch (error) {
-			this.client.emit('apiError', error);
+			this.client.emit(Events.ApiError, error);
 		}
 	}
 
@@ -83,7 +84,7 @@ export default class extends RawEvent {
 			const sMessage = await starboard.fetch(parsed.channel, parsed.messageID, parsed.userID);
 			if (sMessage) await sMessage.add(parsed.userID);
 		} catch (error) {
-			this.client.emit('apiError', error);
+			this.client.emit(Events.ApiError, error);
 		}
 	}
 

@@ -2,6 +2,7 @@ import { Collection, TextChannel } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Events } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { ModerationSchemaKeys } from '../../lib/util/constants';
 import { parseRange } from '../../lib/util/util';
@@ -43,7 +44,7 @@ export default class extends SkyraCommand {
 
 		await Promise.all(promises);
 
-		if (!channel) message.guild.settings.reset(GuildSettings.Channels.ModerationLogs).catch((error) => this.client.emit('wtf', error));
+		if (!channel) message.guild.settings.reset(GuildSettings.Channels.ModerationLogs).catch((error) => this.client.emit(Events.Wtf, error));
 		return message.alert(message.language.get('COMMAND_REASON_UPDATED', cases, reason));
 	}
 

@@ -1,5 +1,6 @@
 import { GuildMember, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { Events } from '../types/Enums';
 import { ModerationTypeKeys } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand } from './SkyraCommand';
@@ -29,7 +30,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			usageDelim: ' '
 		}, options));
 
-		if (typeof options.modType === 'undefined') this.client.emit('error', `[COMMAND] ${this} does not have a type.`);
+		if (typeof options.modType === 'undefined') this.client.emit(Events.Error, `[COMMAND] ${this} does not have a type.`);
 		this.modType = options.modType;
 		this.requiredMember = options.requiredMember;
 	}

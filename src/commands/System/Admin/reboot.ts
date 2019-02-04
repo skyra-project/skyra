@@ -1,5 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { Events } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -12,7 +13,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		await message.sendLocale('COMMAND_REBOOT').catch((err) => this.client.emit('apiError', err));
+		await message.sendLocale('COMMAND_REBOOT').catch((err) => this.client.emit(Events.ApiError, err));
 
 		try {
 			this.client.destroy();

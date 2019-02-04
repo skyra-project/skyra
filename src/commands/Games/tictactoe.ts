@@ -1,5 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Events } from '../../lib/types/Enums';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
@@ -42,7 +43,7 @@ export default class extends SkyraCommand {
 		try {
 			await this.game(prompt, [message.author, user].sort(() => Math.random() - 0.5));
 		} catch (_) {
-			await prompt.edit(message.language.get('UNEXPECTED_ISSUE')).catch((error) => this.client.emit('apiError', error));
+			await prompt.edit(message.language.get('UNEXPECTED_ISSUE')).catch((error) => this.client.emit(Events.ApiError, error));
 		}
 
 		this.channels.delete(message.channel.id);

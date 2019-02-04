@@ -26,6 +26,7 @@
 
 import { Util } from 'discord.js';
 import { Task } from 'klasa';
+import { Events } from '../lib/types/Enums';
 
 // THRESHOLD equals to 30 minutes in milliseconds:
 //     - 1000 milliseconds = 1 second
@@ -93,7 +94,7 @@ export default class extends Task {
 		}
 
 		// Emit a log
-		this.client.emit('verbose',
+		this.client.emit(Events.Verbose,
 			`${HEADER} ${
 				this.setColor(presences)} [Presence]s | ${
 				this.setColor(guildMembers)} [GuildMember]s | ${

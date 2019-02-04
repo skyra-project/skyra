@@ -2,6 +2,7 @@ import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
+import { Events } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
 import { FuzzySearch } from '../../lib/util/FuzzySearch';
 
@@ -67,7 +68,7 @@ export default class extends SkyraCommand {
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!message.guild.roles.has(rolesInitial)) message.guild.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit('wtf', error));
+			if (!message.guild.roles.has(rolesInitial)) message.guild.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit(Events.Wtf, error));
 			else if (message.member.roles.has(rolesInitial)) memberRoles.delete(rolesInitial);
 		}
 

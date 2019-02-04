@@ -1,5 +1,6 @@
 import { MessageEmbed, Permissions } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { Adder } from '../lib/util/Adder';
 import { MessageLogsEnum, ModerationTypeKeys } from '../lib/util/constants';
@@ -26,20 +27,20 @@ export default class extends Monitor {
 					null); break;
 				case 0b001: await this.actionAndSend(message, ModerationTypeKeys.Kick, () =>
 					message.member.kick()
-						.catch((error) => this.client.emit('apiError', error))); break;
+						.catch((error) => this.client.emit(Events.ApiError, error))); break;
 				case 0b010: await this.actionAndSend(message, ModerationTypeKeys.Mute, () =>
 					mute(message.guild.me, message.member, 'AttachmentFilter: Threshold Reached.')
-						.catch((error) => this.client.emit('apiError', error)), false); break;
+						.catch((error) => this.client.emit(Events.ApiError, error)), false); break;
 				case 0b011: await this.actionAndSend(message, ModerationTypeKeys.Softban, () =>
 					// @ts-ignore
 					softban(message.guild, this.client.user, message.author, 'AttachmentFilter: Threshold Reached.', 1)
-						.catch((error) => this.client.emit('apiError', error)), false); break;
+						.catch((error) => this.client.emit(Events.ApiError, error)), false); break;
 				case 0b100: await this.actionAndSend(message, ModerationTypeKeys.Ban, () =>
 					message.member.ban()
-						.catch((error) => this.client.emit('apiError', error)));
+						.catch((error) => this.client.emit(Events.ApiError, error)));
 			}
 			if (attachmentAction & 0b1000) {
-				this.client.emit('guildMessageLog', MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 					.setColor(0xEFAE45)
 					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 					// @ts-ignore

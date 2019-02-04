@@ -2,6 +2,7 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { URL } from 'url';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Events } from '../../lib/types/Enums';
 import { fetch } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
@@ -39,7 +40,7 @@ export default class extends SkyraCommand {
 			case 'youtube#playlist': output = `https://www.youtube.com/playlist?list=${result.id.playlistId}`; break;
 			case 'youtube#video': output = `https://youtu.be/${result.id.videoId}`; break;
 			default: {
-				this.client.emit('wtf', `YouTube [${input}] [${ind}] -> Returned incompatible kind '${result.id.kind}'.`);
+				this.client.emit(Events.Wtf, `YouTube [${input}] [${ind}] -> Returned incompatible kind '${result.id.kind}'.`);
 				throw 'I found an incompatible kind of result...';
 			}
 		}

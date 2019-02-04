@@ -1,6 +1,7 @@
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
 import { APIUserData, WSGuildMemberRemove } from '../lib/types/Discord';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
@@ -30,7 +31,7 @@ export default class extends RawEvent {
 	}
 
 	public handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
-		this.client.emit('guildMessageLog', MessageLogsEnum.Member, guild, () => new MessageEmbed()
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(0xF9A825)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
 				// @ts-ignore
@@ -47,11 +48,11 @@ export default class extends RawEvent {
 		if (channelsDefault && messagesFarewell) {
 			const channel = guild.channels.get(channelsDefault) as TextChannel;
 			if (channel && channel.postable)
-				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit('apiError', error));
+				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit(Events.ApiError, error));
 			else {
 				guild.settings.reset(GuildSettings.Channels.Default)
-					.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
-					.catch((error) => this.client.emit('wtf', error));
+					.then(({ errors }) => errors.length ? this.client.emit(Events.Wtf, errors[0]) : null)
+					.catch((error) => this.client.emit(Events.Wtf, error));
 			}
 		}
 	}

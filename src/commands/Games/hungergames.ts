@@ -1,5 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Events } from '../../lib/types/Enums';
 import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
 import { cleanMentions } from '../../lib/util/util';
@@ -65,10 +66,10 @@ export default class extends SkyraCommand {
 					game.llrc.setTime(120000);
 					gameMessage = await message.channel.send(text) as KlasaMessage;
 					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji)
-						.catch((error) => this.client.emit('apiError', error));
+						.catch((error) => this.client.emit(Events.ApiError, error));
 					// tslint:disable-next-line:no-floating-promises
 					const verification = await new Promise<boolean>((res) => { resolve = res; });
-					gameMessage.nuke().catch((error) => this.client.emit('apiError', error));
+					gameMessage.nuke().catch((error) => this.client.emit(Events.ApiError, error));
 					if (!verification) {
 						game.llrc.end();
 						return message.sendLocale('COMMAND_HG_STOP');

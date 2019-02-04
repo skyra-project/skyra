@@ -1,5 +1,6 @@
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
+import { Events } from '../lib/types/Enums';
 import { ClientSettings } from '../lib/types/namespaces/ClientSettings';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MemberSettings } from '../lib/types/namespaces/MemberSettings';
@@ -39,7 +40,7 @@ export default class extends Monitor {
 			]);
 			if (member) await this.handleRoles(message, member.settings.get(MemberSettings.Points) as MemberSettings.Points);
 		} catch (err) {
-			this.client.emit('error', `Failed to add points to ${message.author.id}: ${(err && err.stack) || err}`);
+			this.client.emit(Events.Error, `Failed to add points to ${message.author.id}: ${(err && err.stack) || err}`);
 		}
 	}
 
@@ -54,7 +55,7 @@ export default class extends Monitor {
 		if (!role || role.position > message.guild.me.roles.highest.position) {
 			message.guild.settings.update(GuildSettings.Roles.Auto, autoRole, { arrayAction: 'remove' })
 				.then(() => this.handleRoles(message, memberPoints))
-				.catch((error) => this.client.emit('apiError', error));
+				.catch((error) => this.client.emit(Events.Error, error));
 			return;
 		}
 

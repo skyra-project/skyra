@@ -4,6 +4,7 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Events } from '../../lib/types/Enums';
 import { fetch } from '../../lib/util/util';
 import { assetsFolder } from '../../Skyra';
 
@@ -158,7 +159,7 @@ export default class extends SkyraCommand {
 			case 'OVER_QUERY_LIMIT':
 				return 'COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT';
 			default:
-				this.client.emit('log', `Weather::handleNotOK | Unknown Error: ${status}`);
+				this.client.emit(Events.Wtf, `Weather::handleNotOK | Unknown Error: ${status}`);
 				return 'COMMAND_WEATHER_ERROR_UNKNOWN';
 		}
 	}

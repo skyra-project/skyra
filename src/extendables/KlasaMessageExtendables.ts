@@ -1,5 +1,6 @@
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
 import { Extendable, ExtendableStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { Events } from '../lib/types/Enums';
 
 export default class extends Extendable {
 
@@ -11,7 +12,7 @@ export default class extends Extendable {
 		const self = this as unknown as Message;
 		const message = await self.channel.send(content) as Message;
 		const responses = await self.channel.awaitMessages((msg) => msg.author === self.author, { time, max: 1 });
-		message.nuke().catch((error) => self.client.emit('apiError', error));
+		message.nuke().catch((error) => self.client.emit(Events.ApiError, error));
 		if (responses.size === 0) throw self.language.get('MESSAGE_PROMPT_TIMEOUT');
 		return responses.first();
 	}
@@ -41,7 +42,7 @@ export default class extends Extendable {
 
 		return self.sendMessage(content, options as MessageOptions).then((msg: KlasaMessage) => {
 			msg.nuke(typeof timer === 'number' ? timer : 10000)
-				.catch((error) => self.client.emit('error', error));
+				.catch((error) => self.client.emit(Events.ApiError, error));
 			return msg;
 		});
 	}
@@ -68,7 +69,7 @@ async function awaitReaction(message: Message, messageSent: Message, promptOptio
 
 	// Remove all reactions if the user has permissions to do so
 	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES))
-		messageSent.reactions.removeAll().catch((error) => messageSent.client.emit('wtf', error));
+		messageSent.reactions.removeAll().catch((error) => messageSent.client.emit(Events.ApiError, error));
 
 	return reactions.size && reactions.firstKey() === REACTIONS.YES;
 }

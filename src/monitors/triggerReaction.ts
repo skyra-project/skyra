@@ -1,4 +1,5 @@
 import { KlasaMessage, Monitor } from 'klasa';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends Monitor {
@@ -9,7 +10,7 @@ export default class extends Monitor {
 		if (trigger && trigger.action === 'react') {
 			if (message.reactable) {
 				await message.react(trigger.output)
-					.catch((error) => { if (error.code !== 10008) this.client.emit('apiError', error); });
+					.catch((error) => { if (error.code !== 10008) this.client.emit(Events.ApiError, error); });
 			}
 		}
 	}

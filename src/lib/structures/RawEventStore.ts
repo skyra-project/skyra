@@ -1,5 +1,6 @@
 import { Client, Constants, WSEventType } from 'discord.js';
 import { Store } from 'klasa';
+import { Events } from '../types/Enums';
 import { RawEvent } from './RawEvent';
 
 export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
@@ -24,7 +25,7 @@ export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 		try {
 			await piece.run(data);
 		} catch (error) {
-			this.client.emit('wtf', `[RAWEVENT] ${piece.path}\n${error
+			this.client.emit(Events.Error, `[RAWEVENT] ${piece.path}\n${error
 				? error.stack ? error.stack : error : 'Unknown error'}`);
 		}
 	}

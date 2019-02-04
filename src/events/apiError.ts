@@ -1,5 +1,6 @@
 import { DiscordAPIError, HTTPError } from 'discord.js';
 import { Event } from 'klasa';
+import { Events } from '../lib/types/Enums';
 
 const NEWLINE = '\n';
 
@@ -19,7 +20,7 @@ export default class extends Event {
 			);
 			this.client.console.wtf(error.stack);
 		} else {
-			this.client.emit('wtf', error);
+			this.client.emit(Events.Wtf, error);
 		}
 	}
 

@@ -1,5 +1,6 @@
 import { Colors, Task } from 'klasa';
 import { TOKENS } from '../../config';
+import { Events } from '../lib/types/Enums';
 import { fetch } from '../lib/util/util';
 
 const r = new Colors({ text: 'red' });
@@ -26,7 +27,7 @@ export default class extends Task {
 				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList)
 		])).filter((value) => value !== null);
 
-		if (results.length) this.client.emit('log', `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
+		if (results.length) this.client.emit(Events.Log, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 	}
 
 	public async query(url: string, body: string, token: string, list: Lists): Promise<string> {

@@ -1,5 +1,6 @@
-import { Client, DiscordAPIError, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import RethinkDB from '../../providers/rethinkdb';
+import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/namespaces/GuildSettings';
 import { getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
@@ -302,12 +303,12 @@ export class StarboardMessage {
 				// @ts-ignore
 				this.starMessage = message;
 			} catch (error) {
-				if (!(error instanceof DiscordAPIError)) return;
+				if (!(error instanceof DiscordAPIError) && !(error instanceof HTTPError)) return;
 
 				// Missing Access
 				if (error.code === 50001) return;
 				// Emit to console
-				this.client.emit('wtf', error);
+				this.client.emit(Events.Wtf, error);
 			}
 		}
 	}

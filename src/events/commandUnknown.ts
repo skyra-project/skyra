@@ -1,4 +1,5 @@
 import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
+import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends Event {
@@ -37,12 +38,12 @@ export default class extends Event {
 				const response = await commandRun;
 				// tslint:disable-next-line:no-floating-promises
 				this.client.finalizers.run(message, tagCommand, response, timer);
-				this.client.emit('commandSuccess', message, tagCommand, ['show', command], response);
+				this.client.emit(Events.CommandSuccess, message, tagCommand, ['show', command], response);
 			} catch (error) {
-				this.client.emit('commandError', message, tagCommand, ['show', command], error);
+				this.client.emit(Events.CommandError, message, tagCommand, ['show', command], error);
 			}
 		} catch (response) {
-			this.client.emit('commandInhibited', message, tagCommand, response);
+			this.client.emit(Events.CommandInhibited, message, tagCommand, response);
 		}
 	}
 

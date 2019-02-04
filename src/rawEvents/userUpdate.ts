@@ -1,5 +1,5 @@
 import { RawEvent } from '../lib/structures/RawEvent';
-import { APIUserData } from '../lib/types/Discord';
+import { APIUserData } from '../lib/types/DiscordAPI';
 
 export default class extends RawEvent {
 

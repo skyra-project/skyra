@@ -1,7 +1,7 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { ClientSettings } from '../../lib/types/namespaces/ClientSettings';
-import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { ClientSettings } from '../../lib/types/settings/ClientSettings';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { TIME } from '../../lib/util/constants';
 
 const GRACE_PERIOD = TIME.HOUR;

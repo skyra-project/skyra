@@ -1,6 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { Adder } from '../../../lib/util/Adder';
 import { TIME } from '../../../lib/util/constants';
 

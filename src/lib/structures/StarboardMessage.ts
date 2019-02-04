@@ -1,7 +1,7 @@
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import RethinkDB from '../../providers/rethinkdb';
 import { Events } from '../types/Enums';
-import { GuildSettings } from '../types/namespaces/GuildSettings';
+import { GuildSettings } from '../types/settings/GuildSettings';
 import { getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 

@@ -1,7 +1,6 @@
 import { Client } from 'discord.js';
 import { Store } from 'klasa';
 import { NodeMessage } from 'veza';
-import { ConstructorType } from '../types/Misc';
 import { IPCMonitor } from './IPCMonitor';
 
 export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<IPCMonitor>> {
@@ -34,3 +33,5 @@ export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<I
 	}
 
 }
+
+type ConstructorType<V> = new (...args: any[]) => V;

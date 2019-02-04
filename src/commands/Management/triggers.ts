@@ -1,6 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 
 const REG_TYPE = /alias|reaction/i;
 const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;

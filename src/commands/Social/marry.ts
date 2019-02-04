@@ -1,6 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes)$/i;
 const SNEYRA_ID = '338249781594030090';

@@ -2,7 +2,7 @@ import { Role, User } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 import { removeMute } from '../../lib/util/util';
 

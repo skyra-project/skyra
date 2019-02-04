@@ -1,7 +1,7 @@
 import { MessageEmbed, Permissions } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { Adder } from '../lib/util/Adder';
 import { MessageLogsEnum, ModerationTypeKeys } from '../lib/util/constants';
 import { mute } from '../lib/util/util';

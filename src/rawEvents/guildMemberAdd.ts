@@ -1,8 +1,8 @@
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
-import { WSGuildMemberAdd } from '../lib/types/Discord';
+import { WSGuildMemberAdd } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
 const { FLAGS } = Permissions;

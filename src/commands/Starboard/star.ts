@@ -3,7 +3,7 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { RCursor } from 'rethinkdb-ts';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { COLORS } from '../../lib/structures/StarboardMessage';
-import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { getContent, getImage } from '../../lib/util/util';
 
 const MEDALS = ['🥇', '🥈', '🥉'];

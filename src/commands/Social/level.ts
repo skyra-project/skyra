@@ -3,7 +3,7 @@ import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { fetchAvatar } from '../../lib/util/util';
 import { cdnFolder } from '../../Skyra';
 

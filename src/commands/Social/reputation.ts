@@ -1,6 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { TIME } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {

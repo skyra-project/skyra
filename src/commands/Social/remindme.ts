@@ -2,7 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, Duration, KlasaClient, KlasaMessage, Timestamp, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { UserSettings } from '../../lib/types/namespaces/UserSettings';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { TIME } from '../../lib/util/constants';
 import { cutText } from '../../lib/util/util';
 

@@ -1,5 +1,5 @@
 import { RawEvent } from '../lib/structures/RawEvent';
-import { WSGuildMemberUpdate } from '../lib/types/Discord';
+import { WSGuildMemberUpdate } from '../lib/types/DiscordAPI';
 
 export default class extends RawEvent {
 

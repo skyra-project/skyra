@@ -3,7 +3,7 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Events } from '../../lib/types/Enums';
-import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { FuzzySearch } from '../../lib/util/FuzzySearch';
 
 export default class extends SkyraCommand {

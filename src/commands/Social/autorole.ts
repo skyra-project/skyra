@@ -1,7 +1,7 @@
 import { Role } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings, RolesAuto } from '../../lib/types/namespaces/GuildSettings';
+import { GuildSettings, RolesAuto } from '../../lib/types/settings/GuildSettings';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => +(x.points > y.points) || +(x.points === y.points) - 1;
 

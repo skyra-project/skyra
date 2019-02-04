@@ -4,7 +4,7 @@ import { join } from 'path';
 import { inspect } from 'util';
 import { CLIENT_OPTIONS, DEV, TOKENS } from '../config';
 import { SkyraClient } from './lib/SkyraClient';
-import { GuildSettings } from './lib/types/namespaces/GuildSettings';
+import { GuildSettings } from './lib/types/settings/GuildSettings';
 inspect.defaultOptions.depth = 1;
 
 export const rootFolder = join(__dirname, '..', '..');

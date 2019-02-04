@@ -3,7 +3,7 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
-import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys } from '../../lib/util/constants';
 import { parseRange } from '../../lib/util/util';
 

@@ -1,6 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 const VALUES = {
 	alert: { value: 1 << 2, key: 'COMMAND_SETCAPSFILTER_ALERT' },

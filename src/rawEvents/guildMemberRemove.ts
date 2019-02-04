@@ -1,8 +1,8 @@
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
-import { APIUserData, WSGuildMemberRemove } from '../lib/types/Discord';
+import { APIUserData, WSGuildMemberRemove } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;

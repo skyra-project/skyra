@@ -1,8 +1,8 @@
 import { TextChannel } from 'discord.js';
 import { RawEvent } from '../lib/structures/RawEvent';
-import { WSMessageReactionAdd } from '../lib/types/Discord';
+import { WSMessageReactionAdd } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
 import { resolveEmoji } from '../lib/util/util';
 

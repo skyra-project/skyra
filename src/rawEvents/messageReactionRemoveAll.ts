@@ -1,7 +1,7 @@
 import { RawEvent } from '../lib/structures/RawEvent';
-import { WSMessageReactionRemoveAll } from '../lib/types/Discord';
+import { WSMessageReactionRemoveAll } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 
 export default class extends RawEvent {
 

@@ -1,6 +1,6 @@
 import { KlasaMessage, Monitor } from 'klasa';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 
 export default class extends Monitor {
 

@@ -1,7 +1,7 @@
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
-import { MemberSettings } from '../../lib/types/namespaces/MemberSettings';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { MemberSettings } from '../../lib/types/settings/MemberSettings';
 
 export default class extends SkyraCommand {
 

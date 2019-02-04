@@ -1,6 +1,6 @@
 import { Client, Collection, Guild, TextChannel } from 'discord.js';
 import RethinkDB from '../../providers/rethinkdb';
-import { GuildSettings } from '../types/namespaces/GuildSettings';
+import { GuildSettings } from '../types/settings/GuildSettings';
 import { StarboardMessage } from './StarboardMessage';
 
 /**

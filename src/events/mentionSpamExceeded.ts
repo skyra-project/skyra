@@ -1,7 +1,7 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 import { Event, KlasaMessage } from 'klasa';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { ModerationTypeKeys } from '../lib/util/constants';
 
 export default class extends Event {

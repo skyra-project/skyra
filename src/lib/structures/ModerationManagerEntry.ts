@@ -1,7 +1,7 @@
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { Events } from '../types/Enums';
-import { GuildSettings } from '../types/namespaces/GuildSettings';
+import { GuildSettings } from '../types/settings/GuildSettings';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS } from '../util/constants';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 

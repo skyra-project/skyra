@@ -2,7 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Kitsu } from '../../lib/types/Kitsu';
+import { Kitsu } from '../../lib/types/definitions/Kitsu';
 import { PromptList } from '../../lib/util/PromptList';
 import { cutText, fetch, oneToTen } from '../../lib/util/util';
 

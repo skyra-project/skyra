@@ -1,7 +1,7 @@
 import { Role } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings, StickyRole } from '../../../lib/types/namespaces/GuildSettings';
+import { GuildSettings, StickyRole } from '../../../lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 

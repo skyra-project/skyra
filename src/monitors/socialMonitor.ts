@@ -1,10 +1,10 @@
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
 import { Events } from '../lib/types/Enums';
-import { ClientSettings } from '../lib/types/namespaces/ClientSettings';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
-import { MemberSettings } from '../lib/types/namespaces/MemberSettings';
-import { UserSettings } from '../lib/types/namespaces/UserSettings';
+import { ClientSettings } from '../lib/types/settings/ClientSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { MemberSettings } from '../lib/types/settings/MemberSettings';
+import { UserSettings } from '../lib/types/settings/UserSettings';
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const { FLAGS: { MANAGE_ROLES } } = Permissions;
 

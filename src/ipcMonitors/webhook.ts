@@ -1,5 +1,5 @@
 import { IPCMonitor } from '../lib/structures/IPCMonitor';
-import { UserSettings } from '../lib/types/namespaces/UserSettings';
+import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends IPCMonitor {
 

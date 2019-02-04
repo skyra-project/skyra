@@ -2,8 +2,8 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
-import { UserSettings } from '../../../lib/types/namespaces/UserSettings';
+import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { UserSettings } from '../../../lib/types/settings/UserSettings';
 import { EMOJIS } from '../../../lib/util/constants';
 
 const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';

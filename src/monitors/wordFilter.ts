@@ -1,7 +1,7 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor, util } from 'klasa';
 import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { cutText } from '../lib/util/util';
 

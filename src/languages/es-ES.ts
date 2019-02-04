@@ -903,7 +903,7 @@ export default class extends Language {
 		COMMAND_VAPORWAVE_DESCRIPTION: 'Vapowave characters!',
 		COMMAND_VAPORWAVE_EXTENDED: builder.display('vaporwave', {
 			extendedHelp: `Well, what can I tell you? This command turns your messages into unicode monospaced characters. That
-					is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...`, // eslint-disable-line no-irregular-whitespace
+					is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...`,
 			explainedUsage: [
 				['phrase', 'The phrase to convert']
 			],

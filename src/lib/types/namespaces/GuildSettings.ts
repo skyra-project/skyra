@@ -81,9 +81,7 @@ export namespace GuildSettings {
 	export namespace Social {
 		export type Achieve = boolean;
 		export type AchieveMessage = string;
-		export type Boost = number;
 		export type IgnoreChannels = Array<string>;
-		export type MonitorBoost = number;
 	}
 
 	export namespace Starboard {
@@ -181,9 +179,7 @@ export namespace GuildSettings {
 	export namespace Social {
 		export const Achieve = 'social.achieve';
 		export const AchieveMessage = 'social.achieveMessage';
-		export const Boost = 'social.boost';
 		export const IgnoreChannels = 'social.ignoreChannels';
-		export const MonitorBoost = 'social.monitorBoost';
 	}
 
 	export namespace Starboard {

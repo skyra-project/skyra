@@ -6,11 +6,11 @@ import { resolveEmoji } from '../lib/util/util';
 
 export default class extends RawEvent {
 
-	public async run(data: WSMessageReactionRemove): Promise<void> {
+	public async run(data: WSMessageReactionRemove) {
 		const channel = this.client.channels.get(data.channel_id) as TextChannel;
 		if (!channel || channel.type !== 'text' || !channel.readable) return;
 
-		if (channel.id === channel.guild.settings.get('channels.roles')) {
+		if (channel.id === channel.guild.settings.get(GuildSettings.Channels.Roles)) {
 			try {
 				await this.handleRoleChannel(channel, data);
 			} catch (error) {
@@ -19,8 +19,8 @@ export default class extends RawEvent {
 		}
 	}
 
-	public async handleRoleChannel(channel: TextChannel, data: WSMessageReactionRemove): Promise<void> {
-		const messageReaction = channel.guild.settings.get('roles.messageReaction');
+	private async handleRoleChannel(channel: TextChannel, data: WSMessageReactionRemove) {
+		const messageReaction = channel.guild.settings.get(GuildSettings.Roles.MessageReaction) as GuildSettings.Roles.MessageReaction;
 		if (!messageReaction || messageReaction !== data.message_id) return;
 
 		const parsed = resolveEmoji(data.emoji);

@@ -34,22 +34,22 @@ export default class extends RawEvent {
 			.setColor(0xF9A825)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
 				// @ts-ignore
-				// eslint-disable-next-line new-cap
 				? this.client.rest.cdn.Avatar(data.user.id, data.user.avatar)
 				// @ts-ignore
-				// eslint-disable-next-line new-cap
 				: this.client.rest.cdn.DefaultAvatar(data.user.discriminator % 5))
 			.setFooter('Member left')
 			.setTimestamp());
 	}
 
 	public handleFarewellMessage(guild: Guild, user: APIUserData) {
-		if (guild.settings.get('channels.default') && guild.settings.get('messages.farewell')) {
-			const channel = guild.channels.get(guild.settings.get('channels.default') as string) as TextChannel;
+		const channelsDefault = guild.settings.get(GuildSettings.Channels.Default) as GuildSettings.Channels.Default;
+		const messagesFarewell = guild.settings.get(GuildSettings.Messages.Farewell) as GuildSettings.Messages.Farewell;
+		if (channelsDefault && messagesFarewell) {
+			const channel = guild.channels.get(channelsDefault) as TextChannel;
 			if (channel && channel.postable)
 				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit('apiError', error));
 			else {
-				guild.settings.reset('channels.default')
+				guild.settings.reset(GuildSettings.Channels.Default)
 					.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
 					.catch((error) => this.client.emit('wtf', error));
 			}

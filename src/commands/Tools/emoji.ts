@@ -4,8 +4,6 @@ import { fetch } from '../../lib/util/util';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
 
-/* eslint-disable no-bitwise */
-/* eslint id-length: ["error", { "exceptions": ["r", "c", "p", "i"] }] */
 export default class extends SkyraCommand {
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {

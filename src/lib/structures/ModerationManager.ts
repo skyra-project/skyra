@@ -1,4 +1,3 @@
-/* eslint "no-bitwise": "off" */
 import { Collection, Guild, User } from 'discord.js';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';

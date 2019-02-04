@@ -71,13 +71,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return message.sendMessage(output.join('\n')) as Promise<KlasaMessage>;
 	}
 
-	// tslint:disable-next-line:no-unused-vars
 	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<T>;
 
-	// eslint-disable-next-line no-unused-vars
 	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: T): Promise<unknown>;
 
-	// eslint-disable-next-line no-unused-vars
 	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: T): Promise<unknown>;
 
 	public async checkModeratable(message: KlasaMessage, target: User) {

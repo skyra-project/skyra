@@ -1,6 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/namespaces/GuildSettings';
+import { ClientSettings } from '../../lib/types/namespaces/ClientSettings';
 import { UserSettings } from '../../lib/types/namespaces/UserSettings';
 import { TIME } from '../../lib/util/constants';
 
@@ -50,7 +50,9 @@ export default class extends SkyraCommand {
 		let money = 200;
 		if (message.guild) {
 			await message.guild.settings.sync();
-			money *= message.guild.settings.get(GuildSettings.Social.Boost) as GuildSettings.Social.Boost;
+			const boostGuilds = this.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+			const boostUsers = this.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
+			money *= (boostGuilds.includes(message.guild.id) ? 1.5 : 1) + (boostUsers.includes(message.author.id) ? 1.5 : 1);
 		}
 		money += message.author.settings.get(UserSettings.Money) as UserSettings.Money;
 		await message.author.settings.update([['money', money], ['timeDaily', nextTime]]);

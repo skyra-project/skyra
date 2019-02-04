@@ -2,7 +2,6 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/namespaces/GuildSettings';
 
-/* eslint-disable no-bitwise */
 const VALUES = {
 	alert: { value: 1 << 2, key: 'COMMAND_SETCAPSFILTER_ALERT' },
 	delete: { value: 1 << 0, key: 'COMMAND_SETCAPSFILTER_DELETE' },

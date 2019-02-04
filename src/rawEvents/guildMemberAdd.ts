@@ -20,7 +20,7 @@ const COLORS = {
 
 export default class extends RawEvent {
 
-	public async run(data: WSGuildMemberAdd): Promise<void> {
+	public async run(data: WSGuildMemberAdd) {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
@@ -34,13 +34,13 @@ export default class extends RawEvent {
 		this.handleInitialRole(guild, member);
 
 		// If not muted and memberAdd is configured, handle everything
-		if (guild.settings.get('events.memberAdd')) {
+		if (guild.settings.get(GuildSettings.Events.MemberAdd)) {
 			this.handleMemberLog(guild, member, COLORS.JOIN);
 			this.handleGreetingMessage(guild, member);
 		}
 	}
 
-	public handleMemberLog(guild: Guild, member: GuildMember, asset: { color: number; title: string }): void {
+	private handleMemberLog(guild: Guild, member: GuildMember, asset: { color: number; title: string }) {
 		this.client.emit('guildMessageLog', MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(asset.color)
 			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
@@ -48,25 +48,27 @@ export default class extends RawEvent {
 			.setTimestamp());
 	}
 
-	public handleGreetingMessage(guild: Guild, member: GuildMember): void {
-		if (guild.settings.get('channels.default') && guild.settings.get('messages.greeting')) {
-			const channel = guild.channels.get(guild.settings.get('channels.default') as string);
+	private handleGreetingMessage(guild: Guild, member: GuildMember) {
+		const channelsDefault = guild.settings.get(GuildSettings.Channels.Default) as GuildSettings.Channels.Default;
+		const messagesGreeting = guild.settings.get(GuildSettings.Messages.Greeting) as GuildSettings.Messages.Greeting;
+		if (channelsDefault && messagesGreeting) {
+			const channel = guild.channels.get(channelsDefault);
 			if (channel && (channel as TextChannel).postable) {
-				(channel as TextChannel).send(this.transformMessage(guild.settings.get('messages.greeting') as string, guild, member.user))
+				(channel as TextChannel).send(this.transformMessage(messagesGreeting, guild, member.user))
 					.catch((error) => this.client.emit('apiError', error));
 			} else {
-				guild.settings.reset('channels.default')
+				guild.settings.reset(GuildSettings.Channels.Default)
 					.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
 					.catch((error) => this.client.emit('wtf', error));
 			}
 		}
 	}
 
-	public handleInitialRole(guild: Guild, member: GuildMember): void {
+	private handleInitialRole(guild: Guild, member: GuildMember) {
 		const initialRole = guild.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
 		if (initialRole) {
 			const role = guild.roles.get(initialRole);
-			if (!role || role.position >= guild.me.roles.highest.position) guild.settings.reset('roles.initial')
+			if (!role || role.position >= guild.me.roles.highest.position) guild.settings.reset(GuildSettings.Roles.Initial)
 				.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
 				.catch((error) => this.client.emit('wtf', error));
 			else member.roles.add(role)
@@ -74,13 +76,15 @@ export default class extends RawEvent {
 		}
 	}
 
-	public handleJoinDM(guild: Guild, member: GuildMember): void {
-		if (guild.settings.get('messages.join-dm'))
-			member.user.send(this.transformMessage(guild.settings.get('messages.join-dm') as string, guild, member.user)).catch(() => null);
+	private handleJoinDM(guild: Guild, member: GuildMember) {
+		const messagesJoinDM = guild.settings.get(GuildSettings.Messages.JoinDM) as GuildSettings.Messages.JoinDM;
+		if (messagesJoinDM) {
+			member.user.send(this.transformMessage(messagesJoinDM, guild, member.user)).catch(() => null);
+		}
 	}
 
-	public async handleRAID(guild: Guild, member: GuildMember): Promise<boolean> {
-		if (!guild.settings.get('selfmod.raid') || !guild.me.permissions.has(FLAGS.KICK_MEMBERS)) return false;
+	private async handleRAID(guild: Guild, member: GuildMember) {
+		if (!guild.settings.get(GuildSettings.Selfmod.Raid) || !guild.me.permissions.has(FLAGS.KICK_MEMBERS)) return false;
 
 		try {
 			guild.security.raid.acquire(member.id);
@@ -93,7 +97,7 @@ export default class extends RawEvent {
 		return true;
 	}
 
-	public handleStickyRoles(guild: Guild, member: GuildMember): boolean {
+	private handleStickyRoles(guild: Guild, member: GuildMember) {
 		if (!guild.me.permissions.has(FLAGS.MANAGE_ROLES)) return false;
 
 		const all = guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
@@ -101,11 +105,11 @@ export default class extends RawEvent {
 		if (!stickyRoles) return false;
 
 		// Handle the case the user is muted
-		const mute = guild.settings.get('roles.muted') as string;
-		if (mute && stickyRoles.roles.includes(mute)) {
+		const rolesMuted = guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+		if (rolesMuted && stickyRoles.roles.includes(rolesMuted)) {
 			// Handle mute
-			const role = guild.roles.get(guild.settings.get('roles.muted') as string);
-			if (!role) guild.settings.reset('roles.muted').catch((error) => this.client.emit('apiError', error));
+			const role = guild.roles.get(rolesMuted);
+			if (!role) guild.settings.reset(GuildSettings.Roles.Muted).catch((error) => this.client.emit('apiError', error));
 			else member.roles.add(role).catch((error) => this.client.emit('apiError', error));
 
 			// Handle log
@@ -119,7 +123,7 @@ export default class extends RawEvent {
 			if (guild.roles.has(role)) roles.push(role);
 
 		if (stickyRoles.roles.length !== roles.length)
-			guild.settings.update('stickyRoles', { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles) })
+			guild.settings.update(GuildSettings.StickyRoles, { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles) })
 				.then(({ errors }) => errors.length ? this.client.emit('wtf', errors[0]) : null)
 				.catch((error) => this.client.emit('wtf', error));
 
@@ -128,7 +132,7 @@ export default class extends RawEvent {
 		return false;
 	}
 
-	public transformMessage(str: string, guild: Guild, user: User) {
+	private transformMessage(str: string, guild: Guild, user: User) {
 		return str.replace(REGEXP, (match) => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;

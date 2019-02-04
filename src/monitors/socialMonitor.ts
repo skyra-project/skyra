@@ -1,6 +1,9 @@
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
+import { ClientSettings } from '../lib/types/namespaces/ClientSettings';
 import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
+import { MemberSettings } from '../lib/types/namespaces/MemberSettings';
+import { UserSettings } from '../lib/types/namespaces/UserSettings';
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const { FLAGS: { MANAGE_ROLES } } = Permissions;
 
@@ -9,8 +12,9 @@ export default class extends Monitor {
 	private readonly ratelimits = new RateLimitManager(1, 60);
 
 	public async run(message: KlasaMessage): Promise<void> {
-		if (!message.guild
-			|| (message.guild.settings.get('social.ignoreChannels') as string[]).includes(message.channel.id)) return;
+		if (!message.guild) return;
+		const ignoreChannels = message.guild.settings.get(GuildSettings.Social.IgnoreChannels) as GuildSettings.Social.IgnoreChannels;
+		if (ignoreChannels.includes(message.channel.id)) return;
 
 		const ratelimit = this.ratelimits.acquire(message.author.id);
 		try {
@@ -25,9 +29,15 @@ export default class extends Monitor {
 		await Promise.all([message.author.settings.sync(), member && member.settings.sync()]);
 
 		try {
-			const add = Math.round(((Math.random() * 4) + 4) * (message.guild.settings.get('social.monitorBoost') as number));
-			await Promise.all([message.author.settings.increase('points', add), member && member.settings.increase('points', add)]);
-			if (member) await this.handleRoles(message, member.settings.get('points') as number);
+			// If boosted guild, increase rewards
+			const boosts = this.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+			const add = Math.round(((Math.random() * 4) + 4) * (boosts.includes(message.guild.id) ? 1.5 : 1));
+
+			await Promise.all([
+				message.author.settings.increase(UserSettings.Points, add),
+				member && member.settings.increase(MemberSettings.Points, add)
+			]);
+			if (member) await this.handleRoles(message, member.settings.get(MemberSettings.Points) as MemberSettings.Points);
 		} catch (err) {
 			this.client.emit('error', `Failed to add points to ${message.author.id}: ${(err && err.stack) || err}`);
 		}
@@ -42,7 +52,7 @@ export default class extends Monitor {
 
 		const role = message.guild.roles.get(autoRole.id);
 		if (!role || role.position > message.guild.me.roles.highest.position) {
-			message.guild.settings.update('roles.auto', autoRole, { arrayAction: 'remove' })
+			message.guild.settings.update(GuildSettings.Roles.Auto, autoRole, { arrayAction: 'remove' })
 				.then(() => this.handleRoles(message, memberPoints))
 				.catch((error) => this.client.emit('apiError', error));
 			return;
@@ -51,7 +61,7 @@ export default class extends Monitor {
 		if (message.member.roles.has(role.id)) return null;
 
 		await message.member.roles.add(role);
-		if (message.guild.settings.get('social.achieve') && message.channel.postable) {
+		if (message.guild.settings.get(GuildSettings.Social.Achieve) && message.channel.postable) {
 			await message.channel.send(
 				this.getMessage(message.member, role, (message.guild.settings.get(GuildSettings.Social.AchieveMessage) as GuildSettings.Social.AchieveMessage)
 					|| message.language.get('MONITOR_SOCIAL_ACHIEVEMENT'))
@@ -66,7 +76,7 @@ export default class extends Monitor {
 				case '%MEMBER%': return member.toString();
 				case '%MEMBERNAME%': return member.user.username;
 				case '%GUILD%': return member.guild.name;
-				case '%POINTS%': return member.settings.get('points').toString();
+				case '%POINTS%': return member.settings.get(MemberSettings.Points).toString();
 				default: return match;
 			}
 		});

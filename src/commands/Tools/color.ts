@@ -8,7 +8,6 @@ import { Color } from '../../lib/util/Color';
 const cL = (color: number) => Math.max(Math.min(color, 255), 0);
 const sCL = (color: number) => color >= 128 ? 0 : 255;
 
-/* eslint id-length: ["error", { "exceptions": ["c", "R", "G", "B", "x", "y"] }] */
 export default class extends SkyraCommand {
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {

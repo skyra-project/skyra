@@ -27,8 +27,8 @@ export default class extends SkyraCommand {
 
 		// Reset the values for both entries
 		await Promise.all([
-			message.author.settings.reset('marry'),
-			user.settings.reset('marry')
+			message.author.settings.reset(UserSettings.Marry),
+			user.settings.reset(UserSettings.Marry)
 		]);
 
 		// Tell the user about the divorce

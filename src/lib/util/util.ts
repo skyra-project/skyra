@@ -351,7 +351,7 @@ export async function createMuteRole(message: Message): Promise<Role> {
 	const denied = [];
 	let accepted = 0;
 
-	for (const channel of channels.values()) { // eslint-disable-line no-restricted-syntax
+	for (const channel of channels.values()) {
 		await _createMuteRolePush(channel as TextChannel | VoiceChannel, role, denied);
 		accepted++;
 	}

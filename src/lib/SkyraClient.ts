@@ -117,11 +117,16 @@ SkyraClient.defaultUserSchema
 	.add('timeDaily', 'Integer', { default: 0, configurable: false })
 	.add('timeReputation', 'Integer', { default: 0, configurable: false });
 
+SkyraClient.defaultClientSchema
+	.add('boosts', (folder) => folder
+		.add('guilds', 'String', { array: true, min: 17, max: 19 })
+		.add('users', 'User', { array: true }));
+
 SkyraClient.defaultGuildSchema
 	.add('prefix', 'string', { filter: (_: KlasaClient, value: string) => value.length >= 1 && value.length <= 10 })
 	.add('tags', 'any', { array: true, configurable: false })
 	.add('channels', (folder) => folder
-		.add('announcement', 'TextChannel')
+		.add('announcements', 'TextChannel')
 		.add('default', 'TextChannel')
 		.add('log', 'TextChannel')
 		.add('messagelogs', 'TextChannel')
@@ -180,9 +185,7 @@ SkyraClient.defaultGuildSchema
 	.add('social', (folder) => folder
 		.add('achieve', 'Boolean', { default: false })
 		.add('achieveMessage', 'String')
-		.add('boost', 'Float', { default: 1, configurable: false })
-		.add('ignoreChannels', 'TextChannel', { array: true })
-		.add('monitorBoost', 'Float', { default: 1, configurable: false }))
+		.add('ignoreChannels', 'TextChannel', { array: true }))
 	.add('starboard', (folder) => folder
 		.add('channel', 'TextChannel')
 		.add('emoji', 'String', { default: '%E2%AD%90', configurable: false })

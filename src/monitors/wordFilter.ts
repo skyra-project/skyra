@@ -1,5 +1,6 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor, util } from 'klasa';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { cutText } from '../lib/util/util';
 
@@ -8,7 +9,7 @@ const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
 export default class extends Monitor {
 
 	public async run(message: KlasaMessage): Promise<void> {
-		const level = message.guild.settings.get('filter.level') as number;
+		const level = message.guild.settings.get(GuildSettings.Filter.Level) as GuildSettings.Filter.Level;
 		if (!level) return;
 
 		if (await message.hasAtLeastPermissionLevel(5)) return;
@@ -36,9 +37,10 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		if (!this.enabled || !message.guild || message.author.id === this.client.user.id) return false;
+		if (!this.enabled || !message.guild || message.author.id === this.client.user.id || !message.guild.security.regexp) return false;
 
-		return message.guild.security.regexp && !(message.guild.settings.get('selfmod.ignoreChannels') as string[]).includes(message.channel.id);
+		const ignoreChannels = message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels;
+		return !ignoreChannels.includes(message.channel.id);
 	}
 
 	private filter(str: string, regex: RegExp): { filtered: string; highlighted: string } | null {

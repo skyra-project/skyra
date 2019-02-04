@@ -1,5 +1,6 @@
 import { RawEvent } from '../lib/structures/RawEvent';
 import { WSMessageDeleteBulk } from '../lib/types/Discord';
+import { GuildSettings } from '../lib/types/namespaces/GuildSettings';
 
 export default class extends RawEvent {
 
@@ -19,7 +20,7 @@ export default class extends RawEvent {
 
 			if (!results.deleted) return;
 
-			const channel = guild.settings.get('starboard.channel');
+			const channel = guild.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
 			if (!channel) return;
 
 			const messageSnowflakes = results.changes

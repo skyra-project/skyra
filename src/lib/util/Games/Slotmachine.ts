@@ -2,6 +2,7 @@ import { Canvas } from 'canvas-constructor';
 import { Message, User } from 'discord.js';
 import { join } from 'path';
 import { assetsFolder } from '../../../Skyra';
+import { ClientSettings } from '../../types/namespaces/ClientSettings';
 import { UserSettings } from '../../types/namespaces/UserSettings';
 import { loadImage } from '../util';
 
@@ -59,8 +60,10 @@ export class Slotmachine {
 	}
 
 	public get boost(): number {
-		return (this.message.guild && (this.player.client.settings.get('boosts.guilds') as string[]).includes(this.message.guild.id) ? 1.5 : 1)
-			+ ((this.player.client.settings.get('boosts.users') as string[]).includes(this.message.author.id) ? 1.5 : 1);
+		const userBoosts = this.player.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
+		const guildBoosts = this.player.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
+			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
 	}
 
 	public constructor(public message: Message, amount: number) {

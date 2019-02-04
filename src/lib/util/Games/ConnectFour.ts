@@ -116,7 +116,7 @@ export class ConnectFour {
 		for (const reaction of CONNECT_FOUR.REACTIONS) await this.message.react(reaction);
 		await this.render();
 
-		while (this.running) { // eslint-disable-line
+		while (this.running) {
 			let row;
 			try {
 				if (this.isFullGame()) throw CONNECT_FOUR.RESPONSES.FULL_GAME;

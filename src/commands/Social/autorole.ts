@@ -5,7 +5,6 @@ import { GuildSettings, RolesAuto } from '../../lib/types/namespaces/GuildSettin
 
 const SORT = (x: RolesAuto, y: RolesAuto) => +(x.points > y.points) || +(x.points === y.points) - 1;
 
-/* eslint-disable max-len */
 export default class extends SkyraCommand {
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {

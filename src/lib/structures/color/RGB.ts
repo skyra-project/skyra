@@ -1,4 +1,3 @@
-/* eslint id-length: ["error", { "exceptions": ["h", "s", "l", "r", "g", "b", "d", "p", "q", "t"] }] */
 export class RGB {
 
 	public r: number;

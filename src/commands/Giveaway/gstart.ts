@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 		const offset = time.getTime() - Date.now();
 
 		if (offset < 9500) throw message.language.get('GIVEAWAY_TIME');
-		const giveaway = await this.client.giveaways.create({
+		await this.client.giveaways.create({
 			channelID: message.channel.id,
 			endsAt: time.getTime() + 500,
 			guildID: message.guild.id,
@@ -27,8 +27,6 @@ export default class extends SkyraCommand {
 			minimumWinners: 1,
 			title
 		});
-
-		await message.author.send(message.language.get('GIVEAWAY_START_DIRECT_MESSAGE', title, giveaway.id)).catch(() => null);
 	}
 
 }

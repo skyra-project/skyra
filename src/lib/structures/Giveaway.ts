@@ -1,5 +1,6 @@
-import { DiscordAPIError, MessageEmbed } from 'discord.js';
+import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
+import { FetchError } from 'node-fetch';
 import { CLIENT_ID } from '../../../config';
 import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
@@ -150,6 +151,7 @@ export class Giveaway {
 		const state = this.state;
 		if (state === States.Finished) {
 			this.winners = await this.pickWinners();
+			await this.announceWinners(language);
 			await this.finish();
 		} else {
 			this.refreshAt = this.calculateNextRefresh();
@@ -157,6 +159,16 @@ export class Giveaway {
 		const content = this.getContent(state, language);
 		const embed = await this.getEmbed(state, language);
 		return { content, embed };
+	}
+
+	private async announceWinners(language: Language) {
+		if (!this.winners.length) return;
+		const content = language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map((winner) => `<@${winner}>`));
+		try {
+			await (this.store.client as any).api.channels(this.channelID).messages.post({ data: { content } });
+		} catch (error) {
+			this.store.client.emit(Events.ApiError, error);
+		}
 	}
 
 	private async getEmbed(state: States, language: Language) {
@@ -208,6 +220,7 @@ export class Giveaway {
 		const remaining = this.remaining;
 		if (remaining < TIME.SECOND * 5) return Date.now() + TIME.SECOND;
 		if (remaining < TIME.SECOND * 30) return Date.now() + Math.min(remaining - TIME.SECOND * 6, TIME.SECOND * 5);
+		if (remaining < TIME.MINUTE * 2) return Date.now() + TIME.SECOND * 15;
 		if (remaining < TIME.MINUTE * 5) return Date.now() + TIME.SECOND * 20;
 		if (remaining < TIME.MINUTE * 15) return Date.now() + TIME.MINUTE;
 		if (remaining < TIME.MINUTE * 30) return Date.now() + TIME.MINUTE * 2;
@@ -229,13 +242,23 @@ export class Giveaway {
 	private async fetchParticipants() {
 		const users: Set<string> = new Set();
 
-		// Fetch loop, to get +100 users
-		let buffer: any[];
-		do {
-			buffer = await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).reactions(Giveaway.EMOJI)
-				.get({ query: { limit: 100, after: buffer ? buffer[buffer.length - 1] : undefined } });
-			for (const user of buffer) users.add(user.id);
-		} while (buffer.length % 100 === 0);
+		try {
+			// Fetch loop, to get +100 users
+			let buffer: any[];
+			do {
+				buffer = await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).reactions(Giveaway.EMOJI)
+					.get({ query: { limit: 100, after: buffer ? buffer[buffer.length - 1] : undefined } });
+				for (const user of buffer) users.add(user.id);
+			} while (buffer.length % 100 === 0);
+		} catch (error) {
+			if (error instanceof DiscordAPIError) {
+				// UNKNOWN_MESSAGE | UNKNOWN_EMOJI
+				if (error.code === 10008 || error.code === 10014) return [];
+			} else if (error instanceof HTTPError || error instanceof FetchError) {
+				if (error.code === 'ECONNRESET') return this.fetchParticipants();
+			}
+			return [];
+		}
 
 		users.delete(CLIENT_ID);
 		return [...users];

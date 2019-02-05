@@ -1,4 +1,3 @@
-import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
@@ -19,39 +18,17 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [time, title]: [Date, string]) {
 		const offset = time.getTime() - Date.now();
 
-		// A little margin of error
-		if (offset < 59900) throw message.language.get('GIVEAWAY_TIME');
-		const date = new Date(offset + Date.now() - 20000);
-
-		let remoteMessage;
-		try {
-			remoteMessage = await message.channel.send(message.language.get('GIVEAWAY_TITLE'), {
-				embed: new MessageEmbed()
-					.setColor(0x49C6F7)
-					.setTitle(title)
-					.setDescription(message.language.get('GIVEAWAY_DURATION', offset))
-					.setFooter(message.language.get('GIVEAWAY_ENDS_AT'))
-					.setTimestamp(date)
-			});
-			await remoteMessage.react('🎉');
-		} catch (_) {
-			return null;
-		}
-
-		const { id } = await this.client.schedule.create('giveaway', date, {
-			catchUp: true,
-			data: {
-				channelID: message.channel.id,
-				guildID: message.guild.id,
-				messageID: remoteMessage.id,
-				timestamp: date.getTime() + 20000,
-				title,
-				userID: message.author.id
-			}
+		if (offset < 9500) throw message.language.get('GIVEAWAY_TIME');
+		const giveaway = await this.client.giveaways.create({
+			channelID: message.channel.id,
+			endsAt: time.getTime() + 500,
+			guildID: message.guild.id,
+			minimum: 1,
+			minimumWinners: 1,
+			title
 		});
 
-		await message.author.send(message.language.get('GIVEAWAY_START_DIRECT_MESSAGE', title, id)).catch(() => null);
-		return remoteMessage;
+		await message.author.send(message.language.get('GIVEAWAY_START_DIRECT_MESSAGE', title, giveaway.id)).catch(() => null);
 	}
 
 }

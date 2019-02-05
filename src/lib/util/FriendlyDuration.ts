@@ -13,8 +13,8 @@ export class FriendlyDuration {
 		const result = FriendlyDuration._parse(duration);
 		const output = [];
 
-		for (const type of UNIT_TYPES)
-			if (result[type]) output.push(FriendlyDuration._addUnit(result[type], assets[type]));
+		for (const [timeType, amount] of result)
+			output.push(FriendlyDuration._addUnit(amount, assets[timeType]));
 
 		return output.join(' ') || FriendlyDuration._addUnit(0, assets.SECOND);
 	}
@@ -36,10 +36,10 @@ export class FriendlyDuration {
 	private static _parse(duration: number): [TimeTypes, number][] {
 		const output: [TimeTypes, number][] = [];
 		for (const unit of UNIT_TYPES) {
-			const amount = Math.ceil(FriendlyDuration._parseUnit(duration, unit) * TIME_TOKENS.get(unit));
+			const amount = FriendlyDuration._parseUnit(duration, unit);
 			if (amount === 0) continue;
 			output.push([unit, amount]);
-			duration -= amount;
+			duration -= amount * TIME_TOKENS.get(unit);
 		}
 		return output;
 	}

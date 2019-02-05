@@ -1800,7 +1800,7 @@ export default class extends Language {
 		 * GIVEAWAY COMMANDS
 		 */
 
-		GIVEAWAY_TIME: 'A giveaway must last at least 1 minute.',
+		GIVEAWAY_TIME: 'A giveaway must last at least 10 seconds.',
 		GIVEAWAY_ENDS_AT: 'Ends at:',
 		GIVEAWAY_DURATION: (time) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
 		GIVEAWAY_TITLE: '🎉 **GIVEAWAY** 🎉',
@@ -1810,8 +1810,8 @@ export default class extends Language {
 		].join('\n'),
 		GIVEAWAY_LASTCHANCE: (time) => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
 		GIVEAWAY_LASTCHANCE_TITLE: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
-		GIVEAWAY_ENDED: (winner) => `Winner: ${winner} (${winner.id})`,
-		GIVEWAWY_ENDED_NO_WINNER: 'No winner...',
+		GIVEAWAY_ENDED: (winners) => winners.length === 1 ? `Winner: ${winners[0]}` : `Winners: ${winners.join(', ')}`,
+		GIVEAWAY_ENDED_NO_WINNER: 'No winner...',
 		GIVEAWAY_ENDED_AT: 'Ended at:',
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (mention, title) => `Congratulations ${mention}! You won the giveaway **${title}**`,

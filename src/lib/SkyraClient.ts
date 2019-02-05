@@ -1,5 +1,5 @@
 import { Collection, PermissionString, Webhook } from 'discord.js';
-import { KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
+import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
 import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
 import { VERSION, WEBHOOK_ERROR } from '../../config';
@@ -14,6 +14,8 @@ import { enumerable } from './util/util';
 
 import './extensions/SkyraGuild';
 import './extensions/SkyraGuildMember';
+import { GiveawayManager } from './structures/GiveawayManager';
+import { Databases } from './types/constants/Constants';
 import { Events } from './types/Enums';
 
 export class SkyraClient extends KlasaClient {
@@ -37,6 +39,11 @@ export class SkyraClient extends KlasaClient {
 	 * The raw event store
 	 */
 	public rawEvents = new RawEventStore(this);
+
+	/**
+	 * The Giveaway manager
+	 */
+	public giveaways = new GiveawayManager(this);
 
 	/**
 	 * The webhook to use for the error event
@@ -71,7 +78,10 @@ export class SkyraClient extends KlasaClient {
 
 		const { members = {} } = this.options.gateways;
 		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
-		this.gateways.register(new MemberGateway(this, 'members', members));
+		this.gateways
+			.register(new MemberGateway(this, Databases.Members, members))
+			.register(new GatewayStorage(this, Databases.Giveaway))
+			.register(new GatewayStorage(this, Databases.Starboard));
 
 		// Register the API handler
 		this.registerStore(this.ipcMonitors)
@@ -203,6 +213,7 @@ declare module 'discord.js' {
 		leaderboard: Leaderboard;
 		ipcMonitors: IPCMonitorStore;
 		rawEvents: RawEventStore;
+		giveaways: GiveawayManager;
 		connectFour: ConnectFourManager;
 		usertags: Collection<string, string>;
 		llrCollectors: Set<LongLivingReactionCollector>;

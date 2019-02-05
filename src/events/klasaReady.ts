@@ -1,4 +1,5 @@
 import { Event } from 'klasa';
+import { Events } from '../lib/types/Enums';
 import { Slotmachine } from '../lib/util/Games/Slotmachine';
 
 export default class extends Event {
@@ -29,9 +30,10 @@ export default class extends Event {
 		}
 
 		try {
-			await Slotmachine.init();
-			await this.initCleanupTask();
-			await this.initPostStatsTask();
+			Slotmachine.init().catch((error) => this.client.emit(Events.Wtf, error));
+			this.client.giveaways.init().catch((error) => this.client.emit(Events.Wtf, error));
+			this.initCleanupTask().catch((error) => this.client.emit(Events.Wtf, error));
+			this.initPostStatsTask().catch((error) => this.client.emit(Events.Wtf, error));
 		} catch (error) {
 			this.client.console.wtf(error);
 		}

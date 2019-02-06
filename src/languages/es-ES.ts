@@ -1793,10 +1793,6 @@ export default class extends Language {
 		GIVEAWAY_ENDS_AT: 'Termina en:',
 		GIVEAWAY_DURATION: (time) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
 		GIVEAWAY_TITLE: '🎉 **GIVEAWAY** 🎉',
-		GIVEAWAY_START_DIRECT_MESSAGE: (title, id) => [
-			`Hello! I will keep you updated! Once your giveaway (**${title}** | ID \`${id}\`) finishes, I will send you the winner here followed with a list of other 10 possible winners.`,
-			`The ability to cancel or stop giveaways is a feature coming soon!`
-		].join('\n'),
 		GIVEAWAY_LASTCHANCE: (time) => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
 		GIVEAWAY_LASTCHANCE_TITLE: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
 		GIVEAWAY_ENDED: (winners) => winners.length === 1 ? `Ganador/a: ${winners[0]}` : `Ganadores: ${winners.join(', ')}`,
@@ -1804,12 +1800,6 @@ export default class extends Language {
 		GIVEAWAY_ENDED_AT: 'Ended at:',
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (mention, title) => `Congratulations ${mention}! You won the giveaway **${title}**`,
-		GIVEAWAY_ENDED_DIRECT_MESSAGE: (title, id, winner, amount, list) => [
-			`Hello! The giveaway you started (**${title}** | ID \`${id}\`) just finished! Winner is ${winner.tag} (${winner.id})`,
-			`However, I have also calculated another ${amount} possible winners:${list}`
-		].join('\n'),
-		GIVEAWAY_ENDED_DIRECT_MESSAGE_ONLY_WINNER: (title, id, winner) => `Hello! The giveaway you started (**${title}** | ID \`${id}\`) just finished! Winner is ${winner.tag} (${winner.id})`,
-		GIVEAWAY_ENDED_DIRECT_MESSAGE_NO_WINNER: (title, id) => `Hello! The giveaway you started (**${title}** | ID \`${id}\`) just finished! But there's no winner!`,
 
 		/**
 		 * ###################

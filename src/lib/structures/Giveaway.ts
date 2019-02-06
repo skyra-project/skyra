@@ -163,7 +163,7 @@ export class Giveaway {
 
 	private async announceWinners(language: Language) {
 		if (!this.winners.length) return;
-		const content = language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map((winner) => `<@${winner}>`));
+		const content = language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map((winner) => `<@${winner}>`), this.title);
 		try {
 			await (this.store.client as any).api.channels(this.channelID).messages.post({ data: { content } });
 		} catch (error) {

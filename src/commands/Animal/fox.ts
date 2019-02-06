@@ -19,11 +19,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const { image, link } = await fetch(url, 'json');
+		const { image } = await fetch(url, 'json');
 		return message.sendEmbed(new MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 64 }))
+			.setColor((message.member && message.member.roles.color.color) || 0xFFAB2D)
 			.setImage(image)
-			.setURL(link)
 			.setTimestamp());
 	}
 

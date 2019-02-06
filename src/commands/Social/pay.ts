@@ -33,8 +33,8 @@ export default class extends SkyraCommand {
 
 	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number) {
 		await user.settings.sync();
-		await message.author.settings.increase(UserSettings.Money, money);
-		await user.settings.decrease(UserSettings.Money, money);
+		await message.author.settings.decrease(UserSettings.Money, money);
+		await user.settings.increase(UserSettings.Money, money);
 		return message.alert(message.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}
 

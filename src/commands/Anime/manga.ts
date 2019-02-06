@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		const mangaURL = `https://kitsu.io/manga/${entry.attributes.slug}`;
 		const titles = <unknown> message.language.language.COMMAND_ANIME_TITLES as MangaLanguage;
 		const type = entry.attributes.subtype;
-		const title = entry.attributes.titles.en || entry.attributes.titles.enJp || entry.attributes.titles.jaJp;
+		const title = entry.attributes.titles.en || entry.attributes.titles.enJp || Object.values(entry.attributes.titles)[0] || '--';
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(score.color)
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 			max += value;
 		}
 
-		return ((total / (max * 20)) * 100).toFixed(2);
+		return total ? ((total / (max * 20)) * 100).toFixed(2) : '--.--';
 	}
 
 }

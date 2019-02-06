@@ -29,8 +29,9 @@ export default class extends SkyraCommand {
 		else this.index++;
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(0xDFDFDF)
-			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.ids[this.index]}.jpg`));
+			.setColor((message.member && message.member.roles.color.color) || 0xFFAB2D)
+			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.ids[this.index]}.jpg`)
+			.setTimestamp());
 	}
 
 }

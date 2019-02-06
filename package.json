@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "canvas": "^2.3.1",
-    "canvas-constructor": "^2.1.1",
+    "canvas-constructor": "kyranet/canvasConstructor#next",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.3.8",

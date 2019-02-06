@@ -1,5 +1,5 @@
 import { MessageCollector, MessageEmbed } from 'discord.js';
-import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, SettingsFolderUpdateOptions } from 'klasa';
+import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
 import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 
@@ -8,18 +8,21 @@ const EMOJIS = { BACK: '◀', STOP: '⏹' };
 export class SettingsMenu {
 
 	private readonly message: KlasaMessage;
-	private schema: Schema | SchemaEntry = this.message.client.gateways.get('guilds').schema;
-	private readonly oldSettings = this.message.guild.settings.clone();
+	private schema: Schema | SchemaEntry;
+	private readonly oldSettings: Settings;
 	private messageCollector: MessageCollector;
 	private errorMessage;
 	private llrc: LongLivingReactionCollector;
-	private readonly embed = new MessageEmbed()
-		.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128 }))
-		.setColor(this.message.member.displayColor);
+	private readonly embed: MessageEmbed;
 	private response: KlasaMessage = null;
 
 	public constructor(message: KlasaMessage) {
 		this.message = message;
+		this.schema = this.message.client.gateways.get('guilds').schema;
+		this.oldSettings = this.message.guild.settings.clone();
+		this.embed = new MessageEmbed()
+			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128 }))
+			.setColor(this.message.member.displayColor);
 	}
 
 	private get pointerIsFolder(): boolean {

@@ -42,10 +42,11 @@ export default class extends SkyraCommand {
 			.addImage(guy, 114, 32, 82, 82, { type: 'round', radius: 41, restore: true })
 
 			// Add text
+			.setTextAlign('center')
 			.setColor('rgb(23,23,23)')
 			.setTextFont('42px RobotoRegular')
 			.createRectClip(144, 345, 336, 133)
-			.addMultilineText(text, 141, 375, 340, 48)
+			.addWrappedText(text, 311, 375, 340)
 
 			// Render
 			.toBufferAsync();

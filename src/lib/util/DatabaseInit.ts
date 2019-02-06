@@ -1,4 +1,5 @@
 import { R, RDatum } from 'rethinkdb-ts';
+import { Databases } from '../types/constants/Constants';
 import { ModerationSchemaKeys } from './constants';
 
 export class DatabaseInit {
@@ -6,25 +7,25 @@ export class DatabaseInit {
 	private static initialized = false;
 
 	private static readonly tables: [string, [string, (rows: RDatum) => RDatum[] | RDatum][]][] = [
-		['oxford', []],
-		['banners', []],
-		['starboard', [
+		[Databases.Oxford, []],
+		[Databases.Banners, []],
+		[Databases.Starboard, [
 			['guildID', (rows) => rows('guildID')],
 			['stars', (rows) => rows('stars')]
 		]],
-		['users', [
+		[Databases.Users, [
 			['points', (rows) => rows('points')]
 		]],
-		['members', [
+		[Databases.Members, [
 			['guildID', (rows) => rows('guildID')],
 			['points', (rows) => rows('points')]
 		]],
-		['moderation', [
+		[Databases.Moderation, [
 			['guildID', (rows) => rows('guildID')],
 			['guild_case', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.Case)]],
 			['guild_user', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.User)]]
 		]],
-		['polls', [
+		[Databases.Polls, [
 			['guild', (rows) => rows('guildID')]
 		]]
 	];

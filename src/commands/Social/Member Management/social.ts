@@ -1,5 +1,6 @@
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { Databases } from '../../../lib/types/constants/Constants';
 
 export default class extends SkyraCommand {
 
@@ -37,7 +38,7 @@ export default class extends SkyraCommand {
 			// Update from database
 			newAmount = entry.count + amount;
 			await this.client.providers.default.db
-				.table('localScores')
+				.table(Databases.Members)
 				.get(entry.id)
 				.update({ count: newAmount })
 				.run();
@@ -61,7 +62,7 @@ export default class extends SkyraCommand {
 			// Update from database
 			newAmount = Math.max(entry.count - amount, 0);
 			await this.client.providers.default.db
-				.table('localScores')
+				.table(Databases.Members)
 				.get(entry.id)
 				.update({ count: newAmount })
 				.run();
@@ -93,7 +94,7 @@ export default class extends SkyraCommand {
 			variation = amount - original;
 			if (variation === 0) return message.sendLocale('COMMAND_SOCIAL_UNCHANGED', [user.username]);
 			await this.client.providers.default.db
-				.table('localScores')
+				.table(Databases.Members)
 				.get(entry.id)
 				.update({ count: amount })
 				.run();
@@ -114,7 +115,7 @@ export default class extends SkyraCommand {
 
 			// Update from database
 			await this.client.providers.default.db
-				.table('localScores')
+				.table(Databases.Members)
 				.get(entry.id)
 				.update({ count: 0 })
 				.run();
@@ -125,7 +126,7 @@ export default class extends SkyraCommand {
 
 	public _getMemberSettings(guildID: string, userID: string) {
 		return this.client.providers.default.db
-			.table('localScores')
+			.table(Databases.Members)
 			.getAll([guildID, userID], { index: 'guild_user' })
 			.limit(1)
 			.nth(0)

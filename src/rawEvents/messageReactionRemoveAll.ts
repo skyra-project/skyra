@@ -1,4 +1,5 @@
 import { RawEvent } from '../lib/structures/RawEvent';
+import { Databases } from '../lib/types/constants/Constants';
 import { WSMessageReactionRemoveAll } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
@@ -13,7 +14,7 @@ export default class extends RawEvent {
 		// Delete entry from starboard if it exists
 		try {
 			const results = await this.client.providers.default.db
-				.table('starboard')
+				.table(Databases.Starboard)
 				.get(`${data.channel_id}.${data.message_id}`)
 				.delete({ returnChanges: true })
 				.run();

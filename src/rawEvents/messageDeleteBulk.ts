@@ -1,4 +1,5 @@
 import { RawEvent } from '../lib/structures/RawEvent';
+import { Databases } from '../lib/types/constants/Constants';
 import { WSMessageDeleteBulk } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
@@ -14,7 +15,7 @@ export default class extends RawEvent {
 		try {
 			// @ts-ignore
 			const results = await this.client.providers.default.db
-				.table('starboard')
+				.table(Databases.Starboard)
 				.getAll(...data.ids.map((id) => [data.channel_id, id]))
 				.delete({ returnChanges: true })
 				.run();

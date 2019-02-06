@@ -43,14 +43,14 @@ export default class extends RawEvent {
 	}
 
 	public handleFarewellMessage(guild: Guild, user: APIUserData) {
-		const channelsDefault = guild.settings.get(GuildSettings.Channels.Default) as GuildSettings.Channels.Default;
+		const channelsFarewell = guild.settings.get(GuildSettings.Channels.Farewell) as GuildSettings.Channels.Farewell;
 		const messagesFarewell = guild.settings.get(GuildSettings.Messages.Farewell) as GuildSettings.Messages.Farewell;
-		if (channelsDefault && messagesFarewell) {
-			const channel = guild.channels.get(channelsDefault) as TextChannel;
+		if (channelsFarewell && messagesFarewell) {
+			const channel = guild.channels.get(channelsFarewell) as TextChannel;
 			if (channel && channel.postable)
 				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit(Events.ApiError, error));
 			else {
-				guild.settings.reset(GuildSettings.Channels.Default)
+				guild.settings.reset(GuildSettings.Channels.Farewell)
 					.then(({ errors }) => errors.length ? this.client.emit(Events.Wtf, errors[0]) : null)
 					.catch((error) => this.client.emit(Events.Wtf, error));
 			}

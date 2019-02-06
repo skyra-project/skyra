@@ -2,6 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
+import { Databases } from '../../../lib/types/constants/Constants';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { UserSettings } from '../../../lib/types/settings/UserSettings';
 import { EMOJIS } from '../../../lib/util/constants';
@@ -86,7 +87,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		const table = await this.client.providers.default.getAll('banners') as Array<BannerList>;
+		const table = await this.client.providers.default.getAll(Databases.Banners) as Array<BannerList>;
 		const display = new UserRichDisplay(new MessageEmbed().setColor(0xFFAB40));
 		for (const list of table) {
 			for (const banner of list.banners) {

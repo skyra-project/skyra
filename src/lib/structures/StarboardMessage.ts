@@ -1,11 +1,10 @@
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import RethinkDB from '../../providers/rethinkdb';
+import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
-
-const TABLENAME = 'starboard';
 
 export class StarboardMessage {
 
@@ -191,9 +190,9 @@ export class StarboardMessage {
 		if ('stars' in options && !this.disabled) await this._editMessage();
 
 		if (!this.existenceStatus)
-			await this.provider.db.table(TABLENAME).insert({ ...this.toJSON(), ...options }).run();
+			await this.provider.db.table(Databases.Starboard).insert({ ...this.toJSON(), ...options }).run();
 		else
-			await this.provider.db.table(TABLENAME).get(this.id).update(options).run();
+			await this.provider.db.table(Databases.Starboard).get(this.id).update(options).run();
 
 		return this;
 	}
@@ -203,7 +202,7 @@ export class StarboardMessage {
 	 */
 	public async destroy(): Promise<void> {
 		if (this.existenceStatus === null) await this.sync();
-		if (this.existenceStatus) await this.provider.db.table(TABLENAME).get(this.id).delete().run();
+		if (this.existenceStatus) await this.provider.db.table(Databases.Starboard).get(this.id).delete().run();
 		this.manager.delete(this.message.id);
 	}
 
@@ -259,7 +258,7 @@ export class StarboardMessage {
 	 */
 	private async _syncDatabase(): Promise<void> {
 		const data = await this.provider.db
-			.table(TABLENAME)
+			.table(Databases.Starboard)
 			.get(this.id)
 			.default(null)
 			.run() as StarboardMessageData;

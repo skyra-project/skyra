@@ -1,4 +1,5 @@
 import { Client, Collection } from 'discord.js';
+import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { PreciseTimeout } from './PreciseTimeout';
 
@@ -97,7 +98,7 @@ export class Leaderboard {
 		const promise: Promise<void> = new Promise(async(resolve) => {
 			const r = this.client.providers.default.db;
 			// orderBy with index on getAll doesn't work: https://github.com/rethinkdb/rethinkdb/issues/2670
-			const data = await r.table('localScores').getAll(guild, { index: 'guildID' }).orderBy(r.desc('count')).limit(LIMITS.MEMBERS).run();
+			const data = await r.table(Databases.Members).getAll(guild, { index: 'guildID' }).orderBy(r.desc('count')).limit(LIMITS.MEMBERS).run();
 
 			// Clear the leaderboards for said guild
 			if (!this.guilds.has(guild)) this.guilds.set(guild, new Collection());
@@ -109,8 +110,8 @@ export class Leaderboard {
 			for (const entry of data) {
 				const old = store.get(entry.userID);
 				if (old && old.points > entry.count) {
-					this.client.emit(Events.Verbose, `[CORRUPTION] [localScores - ${entry.guildID}:${entry.userID}] (${entry.id}) ${entry.count} < ${old.points}.`);
-					await r.table('localScores').get(entry.id).delete().run();
+					this.client.emit(Events.Verbose, `[CORRUPTION] [${Databases.Members} - ${entry.guildID}:${entry.userID}] (${entry.id}) ${entry.count} < ${old.points}.`);
+					await r.table(Databases.Members).get(entry.id).delete().run();
 				} else {
 					store.set(entry.userID, { name: null, points: entry.count, position: ++i });
 				}
@@ -142,7 +143,7 @@ export class Leaderboard {
 		await (this._tempPromises.users = new Promise(async(resolve) => {
 			// Get the sorted data from the db
 			const r = this.client.providers.default.db;
-			const data = await r.table('users').orderBy({ index: r.desc('points') }).limit(LIMITS.GLOBAL).run();
+			const data = await r.table(Databases.Users).orderBy({ index: r.desc('points') }).limit(LIMITS.GLOBAL).run();
 
 			// Get the store and initialize the position number, then save all entries
 			this.users.clear();

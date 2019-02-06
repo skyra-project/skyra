@@ -1,11 +1,12 @@
 import { DiscordAPIError } from 'discord.js';
 import { constants, Task, util } from 'klasa';
+import { Databases } from '../lib/types/constants/Constants';
 const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {
 
 	public async run({ id }: { id: string }): Promise<void> {
-		const poll = await this.client.providers.default.get<PollData>('polls', id);
+		const poll = await this.client.providers.default.get(Databases.Polls, id) as PollData;
 		if (!poll) return;
 
 		const guild = this.client.guilds.get(poll.guild);

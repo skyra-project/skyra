@@ -32,9 +32,8 @@ export default class extends SkyraCommand {
 			.addImage(this.template, 0, 0, 700, 612)
 			.setTextAlign('center')
 			.setTextFont('19px FamilyFriends')
-			.createRectPath(61, 335, 156, 60)
-			.clip()
-			.addMultilineText(text.toUpperCase(), 139, 360, 156, 28)
+			.createRectClip(61, 335, 156, 60)
+			.addWrappedText(text, 143, 360, 156)
 			.toBufferAsync();
 	}
 

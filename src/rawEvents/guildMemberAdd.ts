@@ -50,15 +50,15 @@ export default class extends RawEvent {
 	}
 
 	private handleGreetingMessage(guild: Guild, member: GuildMember) {
-		const channelsDefault = guild.settings.get(GuildSettings.Channels.Default) as GuildSettings.Channels.Default;
+		const channelsGreeting = guild.settings.get(GuildSettings.Channels.Greeting) as GuildSettings.Channels.Greeting;
 		const messagesGreeting = guild.settings.get(GuildSettings.Messages.Greeting) as GuildSettings.Messages.Greeting;
-		if (channelsDefault && messagesGreeting) {
-			const channel = guild.channels.get(channelsDefault);
+		if (channelsGreeting && messagesGreeting) {
+			const channel = guild.channels.get(channelsGreeting);
 			if (channel && (channel as TextChannel).postable) {
 				(channel as TextChannel).send(this.transformMessage(messagesGreeting, guild, member.user))
 					.catch((error) => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Channels.Default)
+				guild.settings.reset(GuildSettings.Channels.Greeting)
 					.then(({ errors }) => errors.length ? this.client.emit(Events.Wtf, errors[0]) : null)
 					.catch((error) => this.client.emit(Events.Wtf, error));
 			}

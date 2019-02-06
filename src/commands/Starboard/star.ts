@@ -3,6 +3,7 @@ import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { RCursor } from 'rethinkdb-ts';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { COLORS } from '../../lib/structures/StarboardMessage';
+import { Databases } from '../../lib/types/constants/Constants';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { getContent, getImage } from '../../lib/util/util';
 
@@ -27,7 +28,7 @@ export default class extends SkyraCommand {
 
 	public async random(message: KlasaMessage) {
 		const starboardData = await this.client.providers.default.db
-			.table('starboard')
+			.table(Databases.Starboard)
 			.getAll(message.guild.id, { index: 'guildID' })
 			.sample(1)
 			.nth(0)
@@ -38,12 +39,12 @@ export default class extends SkyraCommand {
 
 		const channel = message.guild.channels.get(starboardData.channelID) as TextChannel;
 		if (!channel) {
-			await this.client.providers.default.db.table('starboard').get(starboardData.id).delete().run();
+			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete().run();
 			return this.random(message);
 		}
 		const starredMessage = await channel.messages.fetch(starboardData.messageID).catch(() => null);
 		if (!starredMessage) {
-			await this.client.providers.default.db.table('starboard').get(starboardData.id).delete().run();
+			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete().run();
 			return this.random(message);
 		}
 
@@ -64,7 +65,7 @@ export default class extends SkyraCommand {
 
 	public async top(message: KlasaMessage) {
 		const starboardMessages = await this.client.providers.default.db
-			.table('starboard')
+			.table(Databases.Starboard)
 			.getAll(message.guild.id, { index: 'guildID' })
 			.pluck('messageID', 'userID', 'stars')
 			.getCursor() as RCursor<StarPluck>;

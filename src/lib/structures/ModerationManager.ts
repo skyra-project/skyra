@@ -1,9 +1,8 @@
 import { Collection, Guild, User } from 'discord.js';
+import { Databases } from '../types/constants/Constants';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
-
-const TABLENAME = 'moderation';
 
 export class ModerationManager extends Collection<number, ModerationManagerEntry> {
 
@@ -37,7 +36,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public get table() {
-		return this.guild.client.providers.default.db.table(TABLENAME);
+		return this.guild.client.providers.default.db.table(Databases.Moderation);
 	}
 
 	public get new() {

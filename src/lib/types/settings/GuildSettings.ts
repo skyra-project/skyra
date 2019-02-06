@@ -7,7 +7,8 @@ export namespace GuildSettings {
 
 	export namespace Channels {
 		export type Announcements = string;
-		export type Default = string;
+		export type Greeting = string;
+		export type Farewell = string;
 		export type MemberLogs = string;
 		export type MessageLogs = string;
 		export type ModerationLogs = string;
@@ -105,11 +106,12 @@ export namespace GuildSettings {
 
 	export namespace Channels {
 		export const Announcements = 'channels.announcements';
-		export const Default = 'channels.default';
-		export const MemberLogs = 'channels.log';
-		export const MessageLogs = 'channels.messagelogs';
-		export const ModerationLogs = 'channels.modlog';
-		export const NSFWMessageLogs = 'channels.nsfwmessagelogs';
+		export const Greeting = 'channels.greeting';
+		export const Farewell = 'channels.farewell';
+		export const MemberLogs = 'channels.member-logs';
+		export const MessageLogs = 'channels.message-logs';
+		export const ModerationLogs = 'channels.moderation-logs';
+		export const NSFWMessageLogs = 'channels.nsfw-message-logs';
 		export const Roles = 'channels.roles';
 		export const Spam = 'channels.spam';
 	}

@@ -1,0 +1,49 @@
+import { version } from 'discord.js';
+import { CommandStore, Duration, KlasaClient, KlasaMessage } from 'klasa';
+import { loadavg, uptime } from 'os';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+
+export default class extends SkyraCommand {
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
+		super(client, store, file, directory, {
+			aliases: ['stats', 'sts'],
+			bucket: 2,
+			cooldown: 15,
+			description: (language) => language.get('COMMAND_STATS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_STATS_EXTENDED')
+		});
+	}
+
+	public async run(message: KlasaMessage) {
+		return message.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
+	}
+
+	public get STATS() {
+		return {
+			CHANNELS: this.client.channels.size.toLocaleString(),
+			GUILDS: this.client.guilds.size.toLocaleString(),
+			NODE_JS: process.version,
+			USERS: this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
+			VERSION: `v${version}`
+		};
+	}
+
+	public get UPTIME() {
+		const now = Date.now();
+		return {
+			CLIENT: Duration.toNow(now - this.client.uptime, false),
+			HOST: Duration.toNow(now - (uptime() * 1000), false),
+			TOTAL: Duration.toNow(now - (process.uptime() * 1000), false)
+		};
+	}
+
+	public get USAGE() {
+		return {
+			CPU_LOAD: `${Math.round(loadavg()[0] * 100) / 100}%`,
+			RAM_TOTAL: `${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,
+			RAM_USED: `${Math.round(100 * (process.memoryUsage().heapUsed / 1048576)) / 100}MB`
+		};
+	}
+
+}

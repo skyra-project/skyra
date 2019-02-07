@@ -1,0 +1,45 @@
+import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
+
+export default class extends SkyraCommand {
+
+	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
+		super(client, store, file, directory, {
+			bucket: 2,
+			cooldown: 10,
+			description: (language) => language.get('COMMAND_PAY_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_PAY_EXTENDED'),
+			runIn: ['text'],
+			spam: true,
+			usage: '<amount:integer> <user:user>',
+			usageDelim: ' ',
+		});
+	}
+
+	public async run(message: KlasaMessage, [money, user]: [number, KlasaUser]) {
+		if (message.author === user) throw message.language.get('COMMAND_PAY_SELF');
+		if (user.bot) return message.sendLocale('COMMAND_SOCIAL_PAY_BOT');
+
+		if (money <= 0) throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
+
+		await message.author.settings.sync();
+		const currency = message.author.settings.get(UserSettings.Money) as UserSettings.Money;
+		if (currency < money) throw message.language.get('COMMAND_PAY_MISSING_MONEY', money, currency);
+
+		const accepted = await message.ask(message.language.get('COMMAND_PAY_PROMPT', user.username, money));
+		return accepted ? this.acceptPayment(message, user, money) : this.denyPayment(message);
+	}
+
+	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number) {
+		await user.settings.sync();
+		await message.author.settings.decrease(UserSettings.Money, money);
+		await user.settings.increase(UserSettings.Money, money);
+		return message.alert(message.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
+	}
+
+	private denyPayment(message: KlasaMessage) {
+		return message.alert(message.language.get('COMMAND_PAY_PROMPT_DENY'));
+	}
+
+}

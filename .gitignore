@@ -3,11 +3,10 @@ node_modules/
 .vs/
 
 # Ignore bwd folders
-src/bwd/provider/
-src/bwd/backups/
+dist/
+bwd/
 
 # Ignore the config file (contains sensitive information such as tokens)
-config.js
 config.ts
 
 # Ignore heapsnapshot and log files

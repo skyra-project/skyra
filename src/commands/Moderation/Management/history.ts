@@ -22,18 +22,15 @@ export default class extends SkyraCommand {
 		const logs = await message.guild.moderation.fetch(target.id);
 		let warnings = 0, mutes = 0, kicks = 0, bans = 0;
 		for (const log of logs.values()) {
-			if (log.appealed) continue;
-			switch (log.type) {
-				case ModerationTypeKeys.TemporaryBan:
+			switch (log.basicType) {
 				case ModerationTypeKeys.Ban:
 				case ModerationTypeKeys.Softban: bans++;
 					break;
-				case ModerationTypeKeys.TemporaryMute:
 				case ModerationTypeKeys.Mute: mutes++;
 					break;
 				case ModerationTypeKeys.Kick: kicks++;
 					break;
-				case ModerationTypeKeys.Warn: warnings++;
+				case ModerationTypeKeys.Warn: if (!log.appealed) warnings++;
 			}
 		}
 

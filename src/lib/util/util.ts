@@ -6,7 +6,7 @@ import { URL } from 'url';
 import { isObject } from 'util';
 import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData } from '../types/DiscordAPI';
-import { GuildSettings } from '../types/settings/GuildSettings';
+import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys } from './constants';
 import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
@@ -291,14 +291,14 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
 	const all = target.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
 
 	const stickyRolesIndex = all.findIndex((stickyRole) => stickyRole.user === target.id);
-	const stickyRoles = stickyRolesIndex !== -1 ? all[stickyRolesIndex] : { id: target.id, roles: [] };
+	const stickyRoles: StickyRole = stickyRolesIndex !== -1 ? all[stickyRolesIndex] : { roles: [], user: target.id };
 	if (stickyRoles.roles.includes(role.id)) throw target.guild.language.get('COMMAND_MUTE_MUTED');
 
 	// Parse the roles
 	const roles = muteGetRoles(target);
 
 	await target.edit({ roles: target.roles.filter((r) => r.managed).map((r) => r.id).concat(role.id) });
-	const entry = { id: target.id, roles: stickyRoles.roles.concat(role.id) };
+	const entry: StickyRole = { roles: stickyRoles.roles.concat(role.id), user: target.id };
 	const { errors } = await target.guild.settings.update('stickyRoles', entry, stickyRolesIndex !== -1 ? { arrayIndex: stickyRolesIndex } : { arrayAction: 'add' });
 	if (errors.length) throw errors[0];
 

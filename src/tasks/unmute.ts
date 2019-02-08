@@ -1,5 +1,6 @@
 import { Permissions } from 'discord.js';
 import { Task } from 'klasa';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
 import { removeMute } from '../lib/util/util';
 const { FLAGS } = Permissions;
@@ -29,8 +30,9 @@ export default class extends Task {
 		// If the member is found, update the roles
 		if (member) {
 			const { position } = guild.me.roles.highest;
+			const rolesMute = guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
 			const roles = (modlog[ModerationSchemaKeys.ExtraData] as string[] || [])
-				.concat(member.roles.filter((role) => role.position < position && !role.managed).map((role) => role.id));
+				.concat(member.roles.filter((role) => role.id !== rolesMute && role.position < position && !role.managed).map((role) => role.id));
 			await member.edit({ roles }).catch(() => null);
 		}
 

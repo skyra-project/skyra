@@ -23,12 +23,12 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [target]: [KlasaUser]) {
 		const warnings = (await message.guild.moderation.fetch(target ? target.id : undefined)).filter((log) => log.type === ModerationTypeKeys.Warn);
-		if (!warnings.length) throw message.language.get('COMMAND_WARNINGS_EMPTY');
+		if (!warnings.size) throw message.language.get('COMMAND_WARNINGS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
-			.setTitle(message.language.get('COMMAND_WARNINGS_AMOUNT', warnings.length)));
+			.setTitle(message.language.get('COMMAND_WARNINGS_AMOUNT', warnings.size)));
 
 		// Fetch usernames
 		const users = new Map() as Map<string, string>;

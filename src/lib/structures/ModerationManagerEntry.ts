@@ -7,8 +7,6 @@ import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdate
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 
-const TEMPORARY_TYPES = [ModerationTypeKeys.Ban, ModerationTypeKeys.Mute, ModerationTypeKeys.VoiceMute];
-
 export class ModerationManagerEntry {
 
 	public manager: ModerationManager;
@@ -47,6 +45,14 @@ export class ModerationManagerEntry {
 
 	public get temporary() {
 		return Boolean(this.type & ModerationActions.Temporary);
+	}
+
+	public get appealable() {
+		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Appealed) in TYPE_ASSETS;
+	}
+
+	public get temporable() {
+		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Temporary) in TYPE_ASSETS;
 	}
 
 	public get basicType(): ModerationTypeKeys {
@@ -89,7 +95,7 @@ export class ModerationManagerEntry {
 		[ModerationSchemaKeys.ExtraData]: extraData
 	}: ModerationManagerUpdateData = {}) {
 		const flattened = {
-			[ModerationSchemaKeys.Duration]: typeof duration !== 'undefined' && TEMPORARY_TYPES.includes(this.type) && (duration === null || duration < TIME.YEAR)
+			[ModerationSchemaKeys.Duration]: typeof duration !== 'undefined' && this.temporable && (duration === null || duration < TIME.YEAR)
 				? duration
 				: undefined,
 			[ModerationSchemaKeys.Moderator]: typeof moderator !== 'undefined'
@@ -126,10 +132,9 @@ export class ModerationManagerEntry {
 
 	public async appeal() {
 		if (this.appealed) return this;
+		if (!this.appealable) throw ModerationErrors.CaseTypeNotAppeal;
 
 		const type = this.type | ModerationActions.Appealed;
-		if (!(type in TYPE_ASSETS)) throw ModerationErrors.CaseTypeNotAppeal;
-
 		await this.manager.table.get(this.id).update({ [ModerationSchemaKeys.Type]: type }).run();
 		this.type = type;
 
@@ -170,7 +175,6 @@ export class ModerationManagerEntry {
 	}
 
 	public setDuration(value: string | number) {
-		if (!TEMPORARY_TYPES.includes(this.type)) return this;
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
 		if (!this.duration || this.duration > TIME.YEAR) this.duration = null;
@@ -192,7 +196,7 @@ export class ModerationManagerEntry {
 		if (!value) return this;
 		value = (Array.isArray(value) ? value.join(' ') : value).trim();
 
-		if (value && TEMPORARY_TYPES.includes(this.type)) {
+		if (value && this.temporable) {
 			const match = regexParse.exec(value);
 			if (match) {
 				this.setDuration(match[1]);
@@ -239,8 +243,8 @@ export class ModerationManagerEntry {
 			channel.send(messageEmbed).catch((error) => this.manager.guild.client.emit(Events.ApiError, error));
 		}
 
-		if (this.duration && (this.type | ModerationActions.Appealed) in TYPE_ASSETS) {
-			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.type | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
+		if (this.duration) {
+			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.basicType | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
 				catchUp: true,
 				data: {
 					[ModerationSchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
@@ -248,7 +252,7 @@ export class ModerationManagerEntry {
 					[ModerationSchemaKeys.Duration]: this.duration,
 					[ModerationSchemaKeys.Case]: this.case
 				}
-			}).catch((error) => this.manager.guild.client.emit(Events.ApiError, error));
+			}).catch((error) => this.manager.guild.client.emit(Events.Wtf, error));
 		}
 
 		return this;

@@ -43,7 +43,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return new ModerationManagerEntry(this, {} as ModerationManagerInsertData);
 	}
 
-	public async fetch(id: string | number[]): Promise<ModerationManagerEntry[]>;
+	public async fetch(id: string | number[]): Promise<Collection<number, ModerationManagerEntry>>;
 	public async fetch(id?: []): Promise<this>;
 	public async fetch(id: number): Promise<ModerationManagerEntry>;
 	public async fetch(id?: string | number | number[]): Promise<ModerationManagerEntry | ModerationManagerEntry[] | Collection<number, ModerationManagerEntry> | this> {
@@ -53,7 +53,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 				.limit(1)
 				.nth(0)
 				.default(null)
-				.run());
+				.run(), CacheActions.None);
 		}
 
 		// User id
@@ -132,7 +132,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	private _cache(entries: (ModerationManagerInsertData | ModerationManagerEntry)[], type?: CacheActions): Collection<number, ModerationManagerEntry>;
 	private _cache(
 		entries: ModerationManagerEntry | ModerationManagerInsertData | (ModerationManagerEntry | ModerationManagerInsertData)[] | null,
-		type: CacheActions = CacheActions.None): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
+		type: CacheActions): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
 		if (!entries) return null;
 
 		const parsedEntries = Array.isArray(entries)
@@ -143,7 +143,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			super.set(entry.case, entry);
 
 		switch (type) {
-			case CacheActions.Fetch: this._count = parsedEntries.length; break;
+			case CacheActions.Fetch: this._count = super.size; break;
 			case CacheActions.Insert: this._count++;
 		}
 

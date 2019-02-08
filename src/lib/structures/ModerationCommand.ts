@@ -40,7 +40,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		const prehandled = await this.prehandle(message, targets, reason);
 		const promises = [];
-		const processed = [], errored = [];
+		const processed = [] as Array<{ log: ModerationManagerEntry; target: User }>;
+		const errored = [] as Array<{ error: Error; target: User }>;
 		for (const target of new Set(targets)) {
 			promises.push(this.checkModeratable(message, target)
 				.then((member) => this.handle(message, target, member, reason, prehandled))
@@ -49,8 +50,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		}
 
 		await Promise.all(promises);
+
 		const output = [];
 		if (processed.length) {
+			reason = processed[0].log.reason;
 			const sorted = processed.sort((a, b) => a.log.case - b.log.case);
 			const cases = sorted.map(({ log }) => log.case);
 			const users = sorted.map(({ target }) => `\`${target.tag}\``);
@@ -69,12 +72,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			// noop
 		}
 
-		return message.sendMessage(output.join('\n')) as Promise<KlasaMessage>;
+		return message.sendMessage(output.join('\n'));
 	}
 
 	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<T>;
 
-	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: T): Promise<unknown>;
+	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: T): Promise<ModerationManagerEntry>;
 
 	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: T): Promise<unknown>;
 

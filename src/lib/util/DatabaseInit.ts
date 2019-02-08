@@ -21,7 +21,7 @@ export class DatabaseInit {
 			['points', (rows) => rows('points')]
 		]],
 		[Databases.Moderation, [
-			['guildID', (rows) => rows('guildID')],
+			['guildID', (rows) => rows(ModerationSchemaKeys.Guild)],
 			['guild_case', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.Case)]],
 			['guild_user', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.User)]]
 		]],

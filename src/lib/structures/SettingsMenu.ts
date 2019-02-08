@@ -2,6 +2,7 @@ import { MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
 import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
+import { getColor } from '../util/util';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 
@@ -22,7 +23,7 @@ export class SettingsMenu {
 		this.oldSettings = this.message.guild.settings.clone();
 		this.embed = new MessageEmbed()
 			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128 }))
-			.setColor(this.message.member.displayColor);
+			.setColor(getColor(this.message) || 0xFFAB2D);
 	}
 
 	private get pointerIsFolder(): boolean {

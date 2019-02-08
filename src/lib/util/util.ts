@@ -7,6 +7,7 @@ import { isObject } from 'util';
 import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData } from '../types/DiscordAPI';
 import { GuildSettings } from '../types/settings/GuildSettings';
+import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys } from './constants';
 import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
@@ -198,6 +199,14 @@ export function getImage(message: Message): string | null {
 		if (embed.image) return embed.image.url;
 	}
 	return null;
+}
+
+export function getColor(message: Message) {
+	const settingsColor = message.author.settings.get(UserSettings.Color) as UserSettings.Color;
+	if (settingsColor) {
+		return parseInt(settingsColor, 16);
+	}
+	return (message.member && message.member.displayColor) || null;
 }
 
 /**

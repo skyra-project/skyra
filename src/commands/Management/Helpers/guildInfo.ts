@@ -1,6 +1,7 @@
 import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { getColor } from '../../../lib/util/util';
 
 const SORT = (x: Role, y: Role) => +(y.position > x.position) || +(x.position === y.position) - 1;
 
@@ -30,7 +31,7 @@ export default class extends SkyraCommand {
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild.ownerID);
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(message.member.displayColor || message.guild.me.displayColor || 0xDFDFDF)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setThumbnail(message.guild.iconURL())
 			.setTitle(`${message.guild.name} [${message.guild.id}]`)
 			.splitFields(message.language.get('COMMAND_SERVERINFO_ROLES', !roles.length

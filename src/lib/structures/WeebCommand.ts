@@ -2,7 +2,7 @@ import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { URL } from 'url';
 import { TOKENS, VERSION } from '../../../config';
-import { fetch } from '../util/util';
+import { fetch, getColor } from '../util/util';
 import { SkyraCommand } from './SkyraCommand';
 
 export class WeebCommand extends SkyraCommand {
@@ -48,7 +48,7 @@ export class WeebCommand extends SkyraCommand {
 		{
 			embed: new MessageEmbed()
 				.setTitle('→').setURL(url)
-				.setColor(message.member.displayColor)
+				.setColor(getColor(message) || 0xFFAB2D)
 				.setImage(url)
 				.setFooter(message.language.get('POWEREDBY_WEEBSH'))
 		}) as Promise<KlasaMessage | KlasaMessage[]>;

@@ -2,7 +2,7 @@ import { MessageEmbed, Role, TextChannel } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { announcementCheck } from '../../lib/util/util';
+import { announcementCheck, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 		try {
 			return message.ask(message.language.get('COMMAND_ANNOUNCEMENT_PROMPT') as string, {
 				embed: new MessageEmbed()
-					.setColor(message.member.displayColor || 0xDFDFDF)
+					.setColor(getColor(message) || 0xFFAB2D)
 					.setDescription(content)
 					.setTimestamp()
 			});

@@ -5,6 +5,7 @@ import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Events } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { FuzzySearch } from '../../lib/util/FuzzySearch';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -103,7 +104,7 @@ export default class extends SkyraCommand {
 		if (!roles.length) throw message.language.get('COMMAND_ROLES_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(message.member.displayColor)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
 			.setTitle(message.language.get('COMMAND_ROLES_LIST_TITLE'))
 		);

@@ -2,6 +2,7 @@ import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
+import { getColor } from '../../../lib/util/util';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
@@ -56,7 +57,7 @@ export default class extends SkyraCommand {
 		const commands = await this._fetchCommands(message);
 		const prefix = message.guildSettings.get('prefix');
 		const display = new UserRichDisplay();
-		const color = message.member.displayColor;
+		const color = getColor(message) || 0xFFAB2D;
 		for (const [category, list] of commands) {
 			display.addPage(new MessageEmbed()
 				.setTitle(`${category} Commands`)

@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
+import { fetch, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const { fact } = await fetch('https://catfact.ninja/fact', 'json');
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(0xFFE0B2)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setTitle(message.language.get('COMMAND_CATFACT_TITLE'))
 			.setDescription(fact));
 	}

@@ -2,7 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, Language } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { cutText, fetch } from '../../lib/util/util';
+import { cutText, fetch, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(new MessageEmbed()
 			.setTitle(content.title)
 			.setURL(pageURL)
-			.setColor(0x05C9E8)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition
 				.replace(/\n{2,}/g, '\n')

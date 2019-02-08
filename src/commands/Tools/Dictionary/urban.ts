@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { cutText, fetch } from '../../../lib/util/util';
+import { cutText, fetch, getColor } from '../../../lib/util/util';
 
 const ZWS = '\u200B';
 
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(new MessageEmbed()
 			.setTitle(`Word: ${util.toTitleCase(query)}`)
 			.setURL(result.permalink)
-			.setColor(message.member.displayColor)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setThumbnail('http://i.imgur.com/CcIZZsa.png')
 			.splitFields(message.language.get('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
 			.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)

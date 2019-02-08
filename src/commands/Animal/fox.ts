@@ -2,7 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
+import { fetch, getColor } from '../../lib/util/util';
 
 const url = new URL('https://randomfox.ca/floof');
 
@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const { image } = await fetch(url, 'json');
 		return message.sendEmbed(new MessageEmbed()
-			.setColor((message.member && message.member.roles.color.color) || 0xFFAB2D)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setImage(image)
 			.setTimestamp());
 	}

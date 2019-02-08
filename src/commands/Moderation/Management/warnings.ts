@@ -4,6 +4,7 @@ import { ModerationManagerEntry } from '../../../lib/structures/ModerationManage
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { ModerationTypeKeys } from '../../../lib/util/constants';
+import { getColor } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -25,7 +26,7 @@ export default class extends SkyraCommand {
 		if (!warnings.length) throw message.language.get('COMMAND_WARNINGS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(message.member.displayColor)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
 			.setTitle(message.language.get('COMMAND_WARNINGS_AMOUNT', warnings.length)));
 

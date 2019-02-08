@@ -1,6 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -22,7 +23,7 @@ export default class extends SkyraCommand {
 		if (!user.avatar) throw message.language.get('COMMAND_AVATAR_NONE');
 		return message.sendEmbed(new MessageEmbed()
 			.setAuthor(user.tag, user.avatarURL({ size: 128 }))
-			.setColor(message.member.displayColor || 0xDFDFDF)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setImage(user.avatarURL({ size: 2048 })));
 	}
 

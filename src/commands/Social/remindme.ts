@@ -2,9 +2,8 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, Duration, KlasaClient, KlasaMessage, Timestamp, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { TIME } from '../../lib/util/constants';
-import { cutText } from '../../lib/util/util';
+import { cutText, getColor } from '../../lib/util/util';
 
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 const REMINDER_TYPE = 'reminder';
@@ -44,7 +43,7 @@ export default class extends SkyraCommand {
 		if (!tasks.length) return message.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(message.member ? message.member.displayColor : parseInt(message.author.settings.get(UserSettings.Color) as UserSettings.Color, 16))
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL()));
 
 		const pages = util.chunk(tasks.map((task) => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);

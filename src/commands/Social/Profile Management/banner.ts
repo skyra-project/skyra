@@ -6,6 +6,7 @@ import { Databases } from '../../../lib/types/constants/Constants';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { UserSettings } from '../../../lib/types/settings/UserSettings';
 import { EMOJIS } from '../../../lib/util/constants';
+import { getColor } from '../../../lib/util/util';
 
 const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
 
@@ -118,7 +119,7 @@ export default class extends SkyraCommand {
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
 		if (!banners.size) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', message.guild.settings.get(GuildSettings.Prefix));
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(0xFFAB40));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(getColor(message) || 0xFFAB2D));
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
@@ -138,7 +139,7 @@ export default class extends SkyraCommand {
 
 	private async _prompt(message: KlasaMessage, banner: BannerCache) {
 		const embed = new MessageEmbed()
-			.setColor(message.member.displayColor)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setDescription([
 				`**Title**: ${banner.title} (\`${banner.id}\`)`,
 				`**Price**: ${banner.price}${EMOJIS.SHINY}`

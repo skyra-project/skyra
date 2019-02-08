@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, Language, Timestamp } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
+import { fetch, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 			.catch(() => { throw message.language.get('COMMAND_XKCD_NOTFOUND'); });
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(0xD7CCC8)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setImage(comic.img)
 			.setTitle(comic.title)
 			.setURL(`https://xkcd.com/${comicNumber}/`)

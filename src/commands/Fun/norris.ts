@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
+import { fetch, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const data = await fetch('https://api.chucknorris.io/jokes/random', 'json');
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(0x80D8FF)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setTitle(message.language.get('COMMAND_NORRIS_OUTPUT'))
 			.setURL(data.url)
 			.setThumbnail(data.icon_url)

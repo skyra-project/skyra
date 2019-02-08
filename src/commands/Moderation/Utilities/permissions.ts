@@ -1,6 +1,7 @@
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { getColor } from '../../../lib/util/util';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
@@ -33,7 +34,7 @@ export default class extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(message.member.displayColor || 0xDFDFDF)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setTitle(message.language.get('COMMAND_PERMISSIONS', user.tag, user.id))
 			.setDescription(list.join('\n'));
 

@@ -1,6 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -31,7 +32,7 @@ export default class extends SkyraCommand {
 		else this.index += 1;
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor((message.member && message.member.roles.color.color) || 0xFFAB2D)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setImage(`https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-${this.ids[this.index]}.jpg`)
 			.setTimestamp());
 	}

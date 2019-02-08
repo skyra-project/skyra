@@ -1,6 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -36,7 +37,7 @@ export default class extends SkyraCommand {
 		}
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(message.member.roles.color.color || 0xE840CF)
+			.setColor(getColor(message) || 0xFFAB2D)
 			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL())
 			.setThumbnail('https://twemoji.maxcdn.com/2/72x72/1f49e.png')
 			.setDescription([

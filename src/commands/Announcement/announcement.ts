@@ -1,10 +1,12 @@
-import { MessageEmbed, Role, TextChannel } from 'discord.js';
+import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { announcementCheck, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
+
+	private messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
@@ -33,7 +35,7 @@ export default class extends SkyraCommand {
 		const content = `${message.language.get('COMMAND_ANNOUNCEMENT', role)}\n${announcement}`;
 
 		if (await this.ask(message, content)) {
-			await this.send(channel, role, content);
+			await this.send(message, channel, role, content);
 			return message.sendLocale('COMMAND_ANNOUNCEMENT_SUCCESS');
 		}
 
@@ -53,10 +55,29 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async send(channel: TextChannel, role: Role, content: string) {
-		await role.edit({ mentionable: true });
-		await channel.send(content);
-		await role.edit({ mentionable: false });
+	private async send(message: KlasaMessage, channel: TextChannel, role: Role, content: string) {
+		// If it's not mentionable, set, send/edit, and unset mentionable
+		const mentionable = role.mentionable;
+		if (!mentionable) await role.edit({ mentionable: true });
+
+		// Retrieve last announcement if there was one
+		const previous = this.messages.get(message);
+		if (previous) {
+			try {
+				await previous.edit(content);
+			} catch (error) {
+				if (error instanceof DiscordAPIError && error.code === 10008) {
+					// Unknown Message
+					this.messages.set(message, await channel.send(content) as KlasaMessage);
+				} else {
+					throw error;
+				}
+			}
+		} else {
+			this.messages.set(message, await channel.send(content) as KlasaMessage);
+		}
+
+		if (!mentionable) await role.edit({ mentionable: false });
 	}
 
 }

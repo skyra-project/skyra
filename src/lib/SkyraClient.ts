@@ -80,7 +80,11 @@ export class SkyraClient extends KlasaClient {
 		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
 		this.gateways
 			.register(new MemberGateway(this, Databases.Members, members))
+			.register(new GatewayStorage(this, Databases.Banners))
 			.register(new GatewayStorage(this, Databases.Giveaway))
+			.register(new GatewayStorage(this, Databases.Moderation))
+			.register(new GatewayStorage(this, Databases.Oxford))
+			.register(new GatewayStorage(this, Databases.Polls))
 			.register(new GatewayStorage(this, Databases.Starboard));
 
 		// Register the API handler

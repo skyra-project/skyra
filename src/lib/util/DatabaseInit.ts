@@ -1,5 +1,7 @@
 import { R, RDatum } from 'rethinkdb-ts';
 import { Databases } from '../types/constants/Constants';
+import { MemberSettings } from '../types/settings/MemberSettings';
+import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationSchemaKeys } from './constants';
 
 export class DatabaseInit {
@@ -7,18 +9,16 @@ export class DatabaseInit {
 	private static initialized = false;
 
 	private static readonly tables: [string, [string, (rows: RDatum) => RDatum[] | RDatum][]][] = [
-		[Databases.Oxford, []],
-		[Databases.Banners, []],
 		[Databases.Starboard, [
 			['guildID', (rows) => rows('guildID')],
 			['stars', (rows) => rows('stars')]
 		]],
 		[Databases.Users, [
-			['points', (rows) => rows('points')]
+			['points', (rows) => rows(UserSettings.Points)]
 		]],
 		[Databases.Members, [
 			['guildID', (rows) => rows('guildID')],
-			['points', (rows) => rows('points')]
+			['points', (rows) => rows(MemberSettings.Points)]
 		]],
 		[Databases.Moderation, [
 			['guildID', (rows) => rows(ModerationSchemaKeys.Guild)],
@@ -46,7 +46,6 @@ export class DatabaseInit {
 	 * @param table The table
 	 */
 	public static async ensureTable(r: R, [table, indexes]: [string, [string, (rows: RDatum) => RDatum[] | RDatum][]]): Promise<void> {
-		await r.branch(r.tableList().contains(table), null, r.tableCreate(table)).run();
 		await Promise.all(indexes.map(([index, value]) =>
 			r.branch(r.table(table).indexList().contains(index), null, r.table(table).indexCreate(index, value)).run().then(() =>
 				r.branch(r.table(table).indexStatus(index).nth(0)('ready'), null, r.table(table).indexWait(index)).run()

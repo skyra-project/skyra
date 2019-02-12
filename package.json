@@ -41,7 +41,7 @@
     "canvas-constructor": "kyranet/canvasConstructor#next",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
-    "fs-nextra": "^0.4.2",
+    "fs-nextra": "^0.4.3",
     "gifencoder": "^2.0.1",
     "heapdump": "^0.3.12",
     "klasa": "github:dirigeants/klasa#settings",

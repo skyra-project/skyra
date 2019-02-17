@@ -903,9 +903,9 @@ export default class extends Language {
 			],
 			examples: ['kyra']
 		}),
-		COMMAND_UPVOTE_DESCRIPTION: 'Get a link to upvote Skyra in **Discord Bot List**',
+		COMMAND_UPVOTE_DESCRIPTION: 'Get a link to upvote Skyra in **Bots For Discord**',
 		COMMAND_UPVOTE_EXTENDED: builder.display('upvote', {
-			extendedHelp: `Discord Bot List is a website where you can find amazing bots for your website. If you really love me,
+			extendedHelp: `Bots For Discord is a website where you can find amazing bots for your website. If you really love me,
 					you can help me a lot by upvoting me every 24 hours, so more users will be able to find me!`
 		}),
 		COMMAND_VAPORWAVE_DESCRIPTION: 'Vapowave characters!',
@@ -1956,7 +1956,7 @@ export default class extends Language {
 		 * MISC COMMANDS
 		 */
 
-		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://discordbots.org/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
+		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
 
 		/**

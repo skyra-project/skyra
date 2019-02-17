@@ -1,7 +1,7 @@
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import GIFEncoder from 'gifencoder';
+import * as GIFEncoder from 'gifencoder';
 import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';

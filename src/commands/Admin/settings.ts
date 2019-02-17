@@ -13,6 +13,7 @@ export default class extends SkyraCommand {
 			description: (language) => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
 			guarded: true,
 			permissionLevel: 6,
+			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',

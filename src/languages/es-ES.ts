@@ -2406,6 +2406,7 @@ export default class extends Language {
 		CHANNEL_NOT_READABLE: `Lo siento, pero necesito los permisos **${PERMS.VIEW_CHANNEL}** y **${PERMS.READ_MESSAGE_HISTORY}** para poder leer los mensajes.`,
 
 		USER_NOT_IN_GUILD: 'El usuario no está en este servidor.',
+		USER_NOT_EXISTENT: 'El usuario no parece existir. ¿Estás seguro/a que es una ID de usuario válida?',
 
 		EVENTS_GUILDMEMBERADD: 'Nuevo Usuario',
 		EVENTS_GUILDMEMBERADD_MUTE: 'Nuevo Usuario Muteado',

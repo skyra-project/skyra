@@ -16,7 +16,8 @@ export default class extends Argument {
 		if (resUser) return resUser;
 
 		const result = await new FuzzySearch(message.guild.memberUsernames, (entry) => entry, filter).run(message, arg);
-		if (result) return this.client.users.fetch(result[0]);
+		if (result) return this.client.users.fetch(result[0])
+			.catch(() => { throw message.language.get('USER_NOT_EXISTENT'); });
 		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 

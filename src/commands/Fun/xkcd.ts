@@ -12,6 +12,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_XKCD_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_XKCD_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '[query:string]'
 		});

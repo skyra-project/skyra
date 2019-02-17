@@ -107,8 +107,9 @@ export class Leaderboard {
 
 			// Get the store and initialize the position number, then save all entries
 			const store = this.guilds.get(guild);
+			let i = 0;
 			for (const entry of data) {
-				store.set(entry.id.split('.')[1], { name: null, points: entry[MemberSettings.Points], position: store.size });
+				store.set(entry.id.split('.')[1], { name: null, points: entry[MemberSettings.Points], position: ++i });
 			}
 
 			this._tempPromises.guilds.delete(guild);

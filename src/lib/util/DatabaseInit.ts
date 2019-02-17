@@ -8,25 +8,25 @@ export class DatabaseInit {
 
 	private static initialized = false;
 
-	private static readonly tables: [string, [string, (rows: RDatum) => RDatum[] | RDatum][]][] = [
+	private static readonly tables: [string, [string, (doc: RDatum) => RDatum[] | RDatum][]][] = [
 		[Databases.Starboard, [
-			['guildID', (rows) => rows('guildID')],
-			['stars', (rows) => rows('stars')]
+			['guildID', (doc) => doc('guildID')],
+			['stars', (doc) => doc('stars')]
 		]],
 		[Databases.Users, [
-			['points', (rows) => rows(UserSettings.Points)]
+			['points', (doc) => doc(UserSettings.Points)]
 		]],
 		[Databases.Members, [
-			['guildID', (rows) => rows('guildID')],
-			['points', (rows) => rows(MemberSettings.Points)]
+			['guildID', (doc) => doc('id').split('.').nth(0)],
+			['points', (doc) => doc(MemberSettings.Points)]
 		]],
 		[Databases.Moderation, [
-			['guildID', (rows) => rows(ModerationSchemaKeys.Guild)],
-			['guild_case', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.Case)]],
-			['guild_user', (rows) => [rows(ModerationSchemaKeys.Guild), rows(ModerationSchemaKeys.User)]]
+			['guildID', (doc) => doc(ModerationSchemaKeys.Guild)],
+			['guild_case', (doc) => [doc(ModerationSchemaKeys.Guild), doc(ModerationSchemaKeys.Case)]],
+			['guild_user', (doc) => [doc(ModerationSchemaKeys.Guild), doc(ModerationSchemaKeys.User)]]
 		]],
 		[Databases.Polls, [
-			['guild', (rows) => rows('guildID')]
+			['guild', (doc) => doc('guildID')]
 		]]
 	];
 

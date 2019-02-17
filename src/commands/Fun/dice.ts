@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 	}
 
 	private roll(rolls: number, sides: number) {
-		return Math.floor(Math.random() * (sides + 1) * rolls);
+		return Math.ceil(Math.random() * sides * rolls);
 	}
 
 }

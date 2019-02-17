@@ -1626,7 +1626,7 @@ export default class extends Language {
 
 		COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
 		COMMAND_SUBSCRIBE_SUCCESS: (role) => `Successfully granted the role: **${role}**`,
-		COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}***`,
+		COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}**`,
 		COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
 		COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}:`,
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Successfully posted a new announcement.',
@@ -1750,7 +1750,7 @@ export default class extends Language {
 		COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${codeBlock('', word)}`,
 		COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',
 		COMMAND_CHOICE_DUPLICATES: (words) => `Why would I accept duplicated words? '${words}'.`,
-		COMMAND_DICE_OUTPUT: (sides, rolls, result) => `you rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
+		COMMAND_DICE_OUTPUT: (sides, rolls, result) => `You rolled the **${sides}**-dice **${rolls}** times, you got: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'Amount of rolls must be a number between 1 and 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'Amount of sides must be a number between 4 and 1024.',
 		// https://bulbapedia.bulbagarden.net/wiki/Escape_Rope

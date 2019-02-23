@@ -3,6 +3,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch } from '../../lib/util/util';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
+const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 
 export default class extends SkyraCommand {
 
@@ -28,6 +29,8 @@ export default class extends SkyraCommand {
 		const r = this.emoji(emoji);
 		const buffer = await fetch(`https://twemoji.maxcdn.com/2/72x72/${r}.png`, 'buffer')
 			.catch(() => { throw message.language.get('COMMAND_EMOJI_INVALID', emoji); });
+
+		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.get('COMMAND_EMOJI_TOO_LARGE', emoji);
 
 		return message.sendLocale('COMMAND_EMOJI_TWEMOJI', [emoji, r], { files: [{ attachment: buffer, name: `${r}.png` }] });
 	}

@@ -2229,6 +2229,7 @@ export default class extends Language {
 			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' is not a valid emoji.`,
+		COMMAND_EMOJI_TOO_LARGE: (emoji) => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,
 		COMMAND_GOOGL_LONG: (url) => `**Shortened URL: [${url}](${url})**`,
 		COMMAND_GOOGL_SHORT: (url) => `**Expanded URL: [${url}](${url})**`,
 		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',

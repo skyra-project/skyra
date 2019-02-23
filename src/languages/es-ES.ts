@@ -2218,6 +2218,7 @@ export default class extends Language {
 			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' no es un emoji válido.`,
+		COMMAND_EMOJI_TOO_LARGE: (emoji) => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
 		COMMAND_GOOGL_LONG: (url) => `**URL Acortada: [${url}](${url})**`,
 		COMMAND_GOOGL_SHORT: (url) => `**URL Expandida: [${url}](${url})**`,
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',

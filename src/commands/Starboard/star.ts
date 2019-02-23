@@ -27,9 +27,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async random(message: KlasaMessage) {
-		const starboardData = await this.client.providers.default.db
+		const r = this.client.providers.default.db;
+		const starboardData = await r
 			.table(Databases.Starboard)
 			.getAll(message.guild.id, { index: 'guildID' })
+			.filter(r.row('starMessageID').ne(null))
 			.sample(1)
 			.nth(0)
 			.default(null)

@@ -20,7 +20,7 @@ export default class extends Event {
 
 	public runCommand(message: KlasaMessage, command: Command) {
 		const commandHandler = this.client.monitors.get('commandHandler') as any;
-		const { regex: prefix, length: prefixLength } = commandHandler.getPrefix(message);
+		const { prefix, prefixLength } = commandHandler.parseCommand(message);
 
 		// @ts-ignore
 		return commandHandler.runCommand(message._registerCommand({ command, prefix, prefixLength }));

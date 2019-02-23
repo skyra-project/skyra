@@ -14,7 +14,7 @@ export async function migrate(r: R) {
 		}, {}),
 		r.branch(rows.hasFields('disabledCommandsChannels').and(rows('disabledCommandsChannels').typeOf().eq('OBJECT')), {
 			disabledCommandsChannels: rows('disabledCommandsChannels').keys().map((key) => ({ channel: key, commands: rows('disabledCommandsChannels')(key) }))
-		}, []),
+		}, {}),
 		r.branch(rows.hasFields('selfmod').and(rows('selfmod').hasFields('nmsthreshold', 'nomentionspam')), {
 			'no-mention-spam': r.expr({}).merge(
 				r.branch(rows('selfmod').hasFields('nomentionspam'), { enabled: rows('selfmod')('nomentionspam') }, {}),

@@ -27,9 +27,11 @@ export default class extends Monitor {
 		try {
 			await message.react(trigger.output);
 		} catch (error) {
-			// Unknown Message
+			// Unknown Message (Message has been deleted)
 			if (error.code === 10008) return;
-			// Unknown Emoji
+			// Reaction blocked (Attempted to react to a user who blocked the bot)
+			if (error.code === 90001) return;
+			// Unknown Emoji (The emoji has been deleted or the bot is not in the whitelist)
 			if (error.code === 10014) {
 				const { errors } = await message.guild.settings.update(GuildSettings.Trigger.Includes, trigger, { arrayAction: 'remove' });
 				if (errors.length) this.client.emit(Events.Wtf, errors);

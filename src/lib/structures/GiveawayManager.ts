@@ -7,7 +7,7 @@ export class GiveawayManager extends Array<Giveaway> {
 
 	private readonly pending: Giveaway[] = [];
 	private interval: NodeJS.Timer = null;
-	private running: Array<Promise<void>> = [];
+	private readonly running: Array<Promise<void>> = [];
 
 	public constructor(public client: KlasaClient) {
 		super();

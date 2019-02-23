@@ -6,7 +6,7 @@ import { announcementCheck, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	private messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
+	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {

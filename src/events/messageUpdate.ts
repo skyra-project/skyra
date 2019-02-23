@@ -9,7 +9,7 @@ export default class extends Event {
 
 	public async run(old: KlasaMessage, message: KlasaMessage) {
 		// Run monitors
-		if (!this.client.ready || old.content === message.content) return;
+		if (!this.client.ready || old.partial || old.content === message.content) return;
 		// tslint:disable-next-line:no-floating-promises
 		this.client.monitors.run(message);
 

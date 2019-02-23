@@ -198,7 +198,7 @@ export namespace GuildSettings {
 
 }
 
-interface DisabledCommandChannel {
+export interface DisabledCommandChannel {
 	channel: string;
 	commands: string[];
 }
@@ -213,17 +213,17 @@ export interface RolesAuto {
 	points: number;
 }
 
-interface RolesReaction {
+export interface RolesReaction {
 	emoji: string;
 	role: string;
 }
 
-interface TriggerAlias {
+export interface TriggerAlias {
 	input: string;
 	output: string;
 }
 
-interface TriggerIncludes {
+export interface TriggerIncludes {
 	action: 'react';
 	input: string;
 	output: string;

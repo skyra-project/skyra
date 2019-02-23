@@ -12,7 +12,7 @@ export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean) {
 		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 		if (!message.guild) return this.user.run(arg, possible, message);
-		const resUser = await this.resolveUser(arg);
+		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
 		const result = await new FuzzySearch(message.guild.memberUsernames, (entry) => entry, filter).run(message, arg);
@@ -21,14 +21,15 @@ export default class extends Argument {
 		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 
-	public resolveUser(query: string) {
+	public resolveUser(message: KlasaMessage, query: string) {
 		const id = USER_REGEXP.test(query)
 			? USER_REGEXP.exec(query)[1]
 			: USER_TAG.test(query)
 				? this.client.usertags.findKey((tag) => tag === query) || null
 				: null;
 
-		if (id) return this.client.users.fetch(id);
+		if (id) return this.client.users.fetch(id)
+			.catch(() => { throw message.language.get('USER_NOT_EXISTENT'); });
 		return null;
 	}
 

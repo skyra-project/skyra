@@ -19,8 +19,8 @@ export default class extends Task {
 		const results = (await Promise.all([
 			this.query(`https://discordbots.org/api/bots/${this.client.user.id}/stats`,
 				`{"server_count":${guilds}}`, TOKENS.DISCORD_BOT_ORG, Lists.DiscordBotsOrg),
-			this.query(`https://bots.discord.pw/api/bots/${this.client.user.id}/stats`,
-				`{"server_count":${guilds}}`, TOKENS.DISCORD_BOTS, Lists.DiscordBotsPw),
+			this.query(`https://discord.bots.gg/api/v1/bots/${this.client.user.id}/stats`,
+				`{"guildCount":${guilds}}`, TOKENS.DISCORD_BOTS, Lists.DiscordBotsGG),
 			this.query(`https://botsfordiscord.com/api/bot/${this.client.user.id}`,
 				`{"server_count":${guilds}}`, TOKENS.BOTS_FOR_DISCORD, Lists.BotsForDiscord),
 			this.query(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`,
@@ -50,5 +50,5 @@ enum Lists {
 	BotsForDiscord = 'botsfordiscord.com',
 	DiscordBotList = 'discordbotlist.com',
 	DiscordBotsOrg = 'discordbots.org',
-	DiscordBotsPw = 'discordbots.pw'
+	DiscordBotsGG = 'discord.bots.gg'
 }

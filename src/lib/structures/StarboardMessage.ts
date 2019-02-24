@@ -1,9 +1,8 @@
-import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
-import RethinkDB from '../../providers/rethinkdb';
+import { DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { fetchReactionUsers, getImage } from '../util/util';
+import { fetchReactionUsers, getImage, splitText } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
 export class StarboardMessage {
@@ -15,21 +14,21 @@ export class StarboardMessage {
 	/**
 	 * The amount of stars this StarboardMessage has
 	 */
-	public get stars(): number {
+	public get stars() {
 		return this.users.size;
 	}
 
 	/**
 	 * The Client that manages this instance
 	 */
-	private get client(): Client {
+	private get client() {
 		return this.manager.client;
 	}
 
 	/**
 	 * The provider that manages this starboard
 	 */
-	private get provider(): RethinkDB {
+	private get provider() {
 		return this.manager.provider;
 	}
 
@@ -49,10 +48,25 @@ export class StarboardMessage {
 	/**
 	 * The color for the embed
 	 */
-	private get color(): number {
+	private get color() {
 		const stars = this.stars;
 		if (stars <= MAXCOLORS) return COLORS[stars];
 		return LASTCOLOR;
+	}
+
+	/**
+	 * The formatted masked url
+	 */
+	private get maskedUrl() {
+		return `[${this.message.language.get('STARBOARD_JUMPTO')}](${this.message.url})`;
+	}
+
+	/**
+	 * The text
+	 */
+	private get content() {
+		const cut = splitText(this.message.content, 1800, ' ');
+		return `${this.maskedUrl}\n\n${cut}${cut.length === this.message.content.length ? '' : '...'}`;
 	}
 
 	/**
@@ -65,11 +79,9 @@ export class StarboardMessage {
 		}
 		if (!this.message) return null;
 		return new MessageEmbed()
-			.setURL(this.message.url)
-			.setTitle(this.message.language.get('STARBOARD_JUMPTO'))
 			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL())
 			.setColor(this.color)
-			.setDescription(this.message.content)
+			.setDescription(this.content)
 			.setTimestamp(this.message.createdAt)
 			.setImage(getImage(this.message));
 	}

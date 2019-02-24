@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 			await message.guild.settings.sync();
 			const boostGuilds = this.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
 			const boostUsers = this.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
-			money *= (boostGuilds.includes(message.guild.id) ? 1.5 : 1) + (boostUsers.includes(message.author.id) ? 1.5 : 1);
+			money *= (boostGuilds.includes(message.guild.id) ? 1.5 : 1) * (boostUsers.includes(message.author.id) ? 1.5 : 1);
 		}
 		const total = money + (message.author.settings.get(UserSettings.Money) as UserSettings.Money);
 		await message.author.settings.update([['money', total], ['timeDaily', nextTime]]);

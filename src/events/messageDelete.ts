@@ -8,7 +8,7 @@ import { cutText, getContent, getImage } from '../lib/util/util';
 export default class extends Event {
 
 	public async run(message: KlasaMessage) {
-		if (!message.partial && (!message.guild || message.author.id === this.client.user.id)) return;
+		if (message.partial || !message.guild || message.author.id === this.client.user.id) return;
 
 		const { guild } = message;
 		if (!guild.settings.get(GuildSettings.Events.MessageDelete)) return;

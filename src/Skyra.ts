@@ -35,8 +35,3 @@ SkyraClient.defaultPermissionLevels
 
 const client = new SkyraClient(CLIENT_OPTIONS);
 client.login(CLIENT_OPTIONS.dev ? TOKENS.BOT.DEV : TOKENS.BOT.STABLE).catch((error) => { client.console.error(error); });
-
-if (!CLIENT_OPTIONS.dev) {
-    client.ipc.connectTo('ny-api', 9997)
-        .catch((error) => { client.console.error(error); });
-}

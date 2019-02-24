@@ -2,7 +2,7 @@ import { DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from '
 import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { fetchReactionUsers, getImage, splitText } from '../util/util';
+import { cutText, fetchReactionUsers, getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
 export class StarboardMessage {
@@ -65,8 +65,7 @@ export class StarboardMessage {
 	 * The text
 	 */
 	private get content() {
-		const cut = splitText(this.message.content, 1800, ' ');
-		return `${this.maskedUrl}\n\n${cut}${cut.length === this.message.content.length ? '' : '...'}`;
+		return `${this.maskedUrl}\n\n${cutText(this.message.content, 1800)}`;
 	}
 
 	/**

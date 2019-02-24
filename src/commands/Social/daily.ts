@@ -14,9 +14,9 @@ export default class extends SkyraCommand {
 			aliases: ['dailies'],
 			cooldown: 30,
 			description: (language) => language.get('COMMAND_DAILY_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_DAILY_EXTENDED')
+			extendedHelp: (language) => language.get('COMMAND_DAILY_EXTENDED'),
+			spam: true
 		});
-		this.spam = true;
 	}
 
 	public async run(message: KlasaMessage) {
@@ -54,8 +54,8 @@ export default class extends SkyraCommand {
 			const boostUsers = this.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
 			money *= (boostGuilds.includes(message.guild.id) ? 1.5 : 1) + (boostUsers.includes(message.author.id) ? 1.5 : 1);
 		}
-		money += message.author.settings.get(UserSettings.Money) as UserSettings.Money;
-		await message.author.settings.update([['money', money], ['timeDaily', nextTime]]);
+		const total = money + (message.author.settings.get(UserSettings.Money) as UserSettings.Money);
+		await message.author.settings.update([['money', total], ['timeDaily', nextTime]]);
 		return money;
 	}
 

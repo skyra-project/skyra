@@ -27,11 +27,11 @@ export class SettingsMenu {
 	}
 
 	private get pointerIsFolder(): boolean {
-		return this.schema instanceof Schema;
+		return this.schema.type === 'Folder';
 	}
 
 	private get changedCurrentPieceValue(): boolean {
-		if (this.schema.type === 'Folder') return false;
+		if (this.pointerIsFolder) return false;
 		const schema = this.schema as SchemaEntry;
 		if (schema.array) {
 			const current = this.message.guild.settings.get(this.schema.path) as any[];
@@ -112,7 +112,7 @@ export class SettingsMenu {
 		this.errorMessage = null;
 		if (this.pointerIsFolder) {
 			const schema = (this.schema as Schema).get(message.content);
-			if (schema && (schema.type === 'Folder' ? (schema as Schema).configurableKeys.length : (schema as SchemaEntry).configurable)) this.schema = schema;
+			if (schema && this.isConfigurable(schema)) this.schema = schema;
 			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_KEY');
 		} else {
 			const [command, ...params] = message.content.split(' ');
@@ -137,7 +137,7 @@ export class SettingsMenu {
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
 			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID)
 				.catch((error) => this.response.client.emit(Events.ApiError, error));
-			this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
+			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
 			await this.response.edit(this.render());
 		}
 	}
@@ -175,6 +175,12 @@ export class SettingsMenu {
 		if (!this.messageCollector.ended) this.messageCollector.stop();
 		this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
 			.catch((error) => this.message.client.emit(Events.ApiError, error));
+	}
+
+	private isConfigurable(schema: Schema | SchemaEntry) {
+		return schema.type === 'Folder'
+			? (schema as Schema).configurableKeys.length !== 0
+			: (schema as SchemaEntry).configurable;
 	}
 
 }

@@ -1,4 +1,4 @@
-# Skyra 4.0.0 [![Discord](https://discordapp.com/api/guilds/254360814063058944/embed.png)](https://skyradiscord.com/join)
+# Skyra 5.0.0 [![Discord](https://discordapp.com/api/guilds/254360814063058944/embed.png)](https://skyradiscord.com/join)
 
 [![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 [![Discord Bots](https://discordbots.org/api/widget/servers/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
@@ -25,4 +25,3 @@ There have been over 12 rewrites with an active development of over a year, I ha
 **Framework links**
 
 - [Klasa's Website](https://klasa.js.org)
-- [Klasa's Guild](https://discord.gg/FpEFSyY)

@@ -3,7 +3,7 @@ import RethinkDB from '../../providers/rethinkdb';
 import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { getImage, fetchReactionUsers } from '../util/util';
+import { fetchReactionUsers, getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
 export class StarboardMessage {

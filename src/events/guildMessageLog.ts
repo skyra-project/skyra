@@ -2,6 +2,7 @@ import { DiscordAPIError, Guild, HTTPError, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { MessageLogsEnum } from '../lib/util/constants';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 
 export default class extends Event {
 
@@ -33,8 +34,8 @@ export default class extends Event {
 }
 
 const TYPES = {
-	[MessageLogsEnum.Member]: 'channels.log',
-	[MessageLogsEnum.Message]: 'channels.messagelogs',
-	[MessageLogsEnum.Moderation]: 'channels.modlog',
-	[MessageLogsEnum.NSFWMessage]: 'channels.nsfwmessagelogs'
+	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,
+	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
+	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
+	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs
 } as Record<MessageLogsEnum, string>;

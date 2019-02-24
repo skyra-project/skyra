@@ -14,5 +14,4 @@ config.ts
 *.log
 
 # Ignore package locks
-yarn.lock
 package-lock.json

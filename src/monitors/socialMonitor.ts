@@ -10,7 +10,7 @@ const { FLAGS: { MANAGE_ROLES } } = Permissions;
 
 export default class extends Monitor {
 
-	private readonly ratelimits = new RateLimitManager(1, 60);
+	private readonly ratelimits = new RateLimitManager(1, 60000);
 
 	public async run(message: KlasaMessage): Promise<void> {
 		if (!message.guild) return;

@@ -6,7 +6,7 @@ import { fetch } from '../lib/util/util';
 const r = new Colors({ text: 'red' });
 const g = new Colors({ text: 'green' });
 const b = new Colors({ text: 'lightblue' });
-const header = b.format('[POST STATS]');
+const header = b.format('[POST STATS   ]');
 
 export default class extends Task {
 
@@ -27,7 +27,7 @@ export default class extends Task {
 				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList)
 		])).filter((value) => value !== null);
 
-		if (results.length) this.client.emit(Events.Log, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
+		if (results.length) this.client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 	}
 
 	public async query(url: string, body: string, token: string, list: Lists): Promise<string> {

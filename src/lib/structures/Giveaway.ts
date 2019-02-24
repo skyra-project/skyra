@@ -5,7 +5,7 @@ import { CLIENT_ID } from '../../../config';
 import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { TIME } from '../util/constants';
-import { resolveEmoji } from '../util/util';
+import { fetchReactionUsers, resolveEmoji } from '../util/util';
 import { GiveawayManager } from './GiveawayManager';
 
 export class Giveaway {
@@ -240,16 +240,10 @@ export class Giveaway {
 	}
 
 	private async fetchParticipants() {
-		const users: Set<string> = new Set();
-
 		try {
-			// Fetch loop, to get +100 users
-			let buffer: any[];
-			do {
-				buffer = await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).reactions(Giveaway.EMOJI)
-					.get({ query: { limit: 100, after: buffer ? buffer[buffer.length - 1] : undefined } });
-				for (const user of buffer) users.add(user.id);
-			} while (buffer.length % 100 === 0);
+			const users = await fetchReactionUsers(this.store.client, this.channelID, this.messageID, Giveaway.EMOJI);
+			users.delete(CLIENT_ID);
+			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// UNKNOWN_MESSAGE | UNKNOWN_EMOJI
@@ -259,9 +253,6 @@ export class Giveaway {
 			}
 			return [];
 		}
-
-		users.delete(CLIENT_ID);
-		return [...users];
 	}
 
 	public static EMOJI = resolveEmoji(`🎉`);

@@ -3,7 +3,7 @@ import RethinkDB from '../../providers/rethinkdb';
 import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { getImage } from '../util/util';
+import { getImage, fetchReactionUsers } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
 export class StarboardMessage {
@@ -227,12 +227,9 @@ export class StarboardMessage {
 	 * Synchronize the data with Discord
 	 */
 	private async _syncDiscord(): Promise<void> {
-		let users;
 		try {
-			// @ts-ignore
-			users = await this.client.api.channels[this.channel.id].messages[this.message.id]
-				.reactions[this.channel.guild.settings.get(GuildSettings.Starboard.Emoji)]
-				.get({ query: { limit: 100 } });
+			this.users = await fetchReactionUsers(this.client, this.channel.id, this.message.id,
+				this.channel.guild.settings.get(GuildSettings.Starboard.Emoji) as GuildSettings.Starboard.Emoji);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Missing Access
@@ -243,13 +240,11 @@ export class StarboardMessage {
 			}
 		}
 
-		if (!users.length) {
+		if (!this.users.size) {
 			await this.destroy();
 			return;
 		}
 
-		this.users.clear();
-		for (const user of users) this.users.add(user.id);
 		this.users.delete(this.message.author.id);
 	}
 

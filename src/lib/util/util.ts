@@ -1,11 +1,11 @@
 import { Image } from 'canvas';
-import { Guild, GuildMember, ImageSize, Message, Role, TextChannel, User, VoiceChannel } from 'discord.js';
+import { Client, Guild, GuildMember, ImageSize, Message, Role, TextChannel, User, VoiceChannel } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { URL } from 'url';
 import { isObject } from 'util';
 import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
-import { APIEmojiData } from '../types/DiscordAPI';
+import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys } from './constants';
@@ -137,6 +137,20 @@ export function cutText(str: string, length: number) {
 export function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
 	return fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
+}
+
+export async function fetchReactionUsers(client: Client, channelID: string, messageID: string, reaction: string) {
+	const users: Set<string> = new Set();
+	let rawUsers: APIUserData[];
+
+	// Fetch loop, to get +100 users
+	do {
+		rawUsers = await (client as any).api.channels(channelID).messages(messageID).reactions(reaction)
+			.get({ query: { limit: 100, after: rawUsers && rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } }) as APIUserData[];
+		for (const user of rawUsers) users.add(user.id);
+	} while (rawUsers.length === 100);
+
+	return users;
 }
 
 export async function fetch(url: URL | string, type: 'json'): Promise<any>;

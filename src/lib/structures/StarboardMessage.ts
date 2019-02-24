@@ -41,7 +41,9 @@ export class StarboardMessage {
 		if (stars < 5) return '⭐';
 		if (stars < 10) return '🌟';
 		if (stars < 25) return '💫';
-		return '✨';
+		if (stars < 100) return '✨';
+		if (stars < 200) return '🌠';
+		return '🌌';
 	}
 
 	/**

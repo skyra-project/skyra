@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "canvas": "^2.3.1",
-    "canvas-constructor": "kyranet/canvasConstructor#next",
+    "canvas-constructor": "^3.0.1",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.4.3",
@@ -48,7 +48,7 @@
     "node-fetch": "^2.3.0",
     "rethinkdb-ts": "^2.4.0-rc.12",
     "typescript": "^3.3.3333",
-    "veza": "^0.3.3"
+    "veza": "^0.4.0"
   },
   "devDependencies": {
     "@types/node": "^11.9.5",

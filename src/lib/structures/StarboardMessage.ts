@@ -65,7 +65,7 @@ export class StarboardMessage {
 	 * The text
 	 */
 	private get content() {
-		return `${this.maskedUrl}\n\n${cutText(this.message.content, 1800)}`;
+		return `${this.maskedUrl}\n${cutText(this.message.content, 1800)}`;
 	}
 
 	/**

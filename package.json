@@ -51,7 +51,7 @@
     "veza": "^0.3.3"
   },
   "devDependencies": {
-    "@types/node": "^11.9.4",
+    "@types/node": "^11.9.5",
     "@types/node-fetch": "^2.1.6",
     "tslint": "^5.13.0",
     "tslint-eslint-rules": "^5.4.0"

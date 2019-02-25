@@ -123,7 +123,7 @@ export class StarboardMessage {
 	/**
 	 * Whether this entry exists in the DB or not, null if it's not synchronized.
 	 */
-	private readonly existenceStatus: boolean | null = null;
+	private existenceStatus: boolean | null = null;
 
 	public constructor(manager: StarboardManager, message: Message) {
 		this.manager = manager;
@@ -224,7 +224,7 @@ export class StarboardMessage {
 			channelID: this.channel.id,
 			disabled: this.disabled,
 			guildID: this.channel.guild.id,
-			id: `${this.channel.guild.id}.${this.message.id}`,
+			id: this.id,
 			messageID: this.message.id,
 			starMessageID: (this.starMessage && this.starMessage.id) || null,
 			stars: this.stars,
@@ -273,6 +273,7 @@ export class StarboardMessage {
 
 		if (data) {
 			this.disabled = Boolean(data.disabled);
+			this.existenceStatus = true;
 
 			const channel = this.manager.starboardChannel;
 			if (data.starMessageID) {
@@ -283,6 +284,7 @@ export class StarboardMessage {
 			if (!this.disabled && !this.starMessage && this.stars >= this.manager.minimum)
 				await this._editMessage();
 		} else {
+			this.existenceStatus = false;
 			this.disabled = false;
 		}
 	}
@@ -297,7 +299,7 @@ export class StarboardMessage {
 			try {
 				await this.starMessage.edit(content, this.embed);
 			} catch (error) {
-				if (!(error instanceof DiscordAPIError)) return;
+				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
 				// Missing Access
 				if (error.code === 50001) return;
@@ -306,11 +308,10 @@ export class StarboardMessage {
 			}
 		} else {
 			try {
-				const message = await this.manager.starboardChannel.send(content, this.embed);
-				// @ts-ignore
+				const message = await this.manager.starboardChannel.send(content, this.embed) as Message;
 				this.starMessage = message;
 			} catch (error) {
-				if (!(error instanceof DiscordAPIError) && !(error instanceof HTTPError)) return;
+				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
 				// Missing Access
 				if (error.code === 50001) return;

@@ -76,7 +76,6 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 
 		const message = await channel.messages.fetch(messageID).catch(() => null);
 		if (message) {
-			// @ts-ignore
 			const starboardMessage = new StarboardMessage(this, message);
 			super.set(messageID, starboardMessage);
 			await starboardMessage.sync();

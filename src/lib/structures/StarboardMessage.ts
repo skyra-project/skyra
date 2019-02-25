@@ -206,7 +206,7 @@ export class StarboardMessage {
 			await this.provider.db.table(Databases.Starboard).insert({ ...this.toJSON(), ...options }).run();
 			this.existenceStatus = true;
 		} else {
-			await this.provider.db.table(Databases.Starboard).get(this.id).update(options).run();
+			await this.provider.db.table(Databases.Starboard).get(this.id).update({ ...this.toJSON(), ...options }).run();
 		}
 
 		return this;
@@ -283,11 +283,9 @@ export class StarboardMessage {
 					.then((message) => { this.starMessage = message; })
 					.catch(() => undefined);
 			}
-			if (!this.disabled && !this.starMessage && this.stars >= this.manager.minimum)
-				await this._editMessage();
 		} else {
-			this.existenceStatus = false;
 			this.disabled = false;
+			this.existenceStatus = false;
 		}
 	}
 
@@ -310,8 +308,7 @@ export class StarboardMessage {
 			}
 		} else {
 			try {
-				const message = await this.manager.starboardChannel.send(content, this.embed) as Message;
-				this.starMessage = message;
+				this.starMessage = await this.manager.starboardChannel.send(content, this.embed) as Message;
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 

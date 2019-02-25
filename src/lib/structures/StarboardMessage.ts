@@ -202,10 +202,12 @@ export class StarboardMessage {
 		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
 		if ('stars' in options && !this.disabled) await this._editMessage();
 
-		if (!this.existenceStatus)
+		if (!this.existenceStatus) {
 			await this.provider.db.table(Databases.Starboard).insert({ ...this.toJSON(), ...options }).run();
-		else
+			this.existenceStatus = true;
+		} else {
 			await this.provider.db.table(Databases.Starboard).get(this.id).update(options).run();
+		}
 
 		return this;
 	}

@@ -9,14 +9,14 @@ export default class extends RawEvent {
 	public async run(data: WSMessageDeleteBulk): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.channels.has(data.channel_id)) return;
-		for (const id of data.ids) guild.starboard.delete(`${data.channel_id}-${id}`);
+		for (const id of data.ids) guild.starboard.delete(id);
 
 		// Delete entries from starboard if it exists
 		try {
 			// @ts-ignore
 			const results = await this.client.providers.default.db
 				.table(Databases.Starboard)
-				.getAll(...data.ids.map((id) => [data.channel_id, id]))
+				.getAll(...data.ids.map((id) => [data.channel_id, id]), { index: 'channel_message' })
 				.delete({ returnChanges: true })
 				.run();
 

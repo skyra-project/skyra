@@ -11,7 +11,8 @@ export class DatabaseInit {
 	private static readonly tables: [string, [string, (doc: RDatum) => RDatum[] | RDatum][]][] = [
 		[Databases.Starboard, [
 			['guildID', (doc) => doc('guildID')],
-			['stars', (doc) => doc('stars')]
+			['stars', (doc) => doc('stars')],
+			['channel_message', (doc) => [doc('channelID'), doc('messageID')]]
 		]],
 		[Databases.Users, [
 			['points', (doc) => doc(UserSettings.Points)]

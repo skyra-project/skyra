@@ -209,6 +209,7 @@ export default class extends Language {
 		COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
 		COMMAND_CONF_USER: (key, list) => `**User Setting ${key}**\n${list}`,
 		MESSAGE_PROMPT_TIMEOUT: 'La solicitud no recibió ninguna respuesta a tiempo.',
+		TEXT_PROMPT_ABORT_OPTIONS: ['abortar', 'parar', 'cancelar'],
 		COMMAND_LOAD: (time, type, name) => `${GREENTICK} Successfully loaded ${type}: ${name}. (Took: ${time})`,
 		COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
 		COMMAND_LOAD_ERROR: (type, name, error) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,

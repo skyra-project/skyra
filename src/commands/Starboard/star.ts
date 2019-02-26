@@ -66,9 +66,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async top(message: KlasaMessage) {
-		const starboardMessages = await this.client.providers.default.db
+		const r = this.client.providers.default.db;
+		const starboardMessages = await r
 			.table(Databases.Starboard)
 			.getAll(message.guild.id, { index: 'guildID' })
+			.filter(r.row('starMessageID').ne(null))
 			.pluck('messageID', 'userID', 'stars')
 			.getCursor() as RCursor<StarPluck>;
 

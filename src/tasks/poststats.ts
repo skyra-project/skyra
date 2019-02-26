@@ -24,7 +24,9 @@ export default class extends Task {
 			this.query(`https://botsfordiscord.com/api/bot/${this.client.user.id}`,
 				`{"server_count":${guilds}}`, TOKENS.BOTS_FOR_DISCORD, Lists.BotsForDiscord),
 			this.query(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`,
-				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList)
+				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList),
+			this.query(`https://bots.ondiscord.xyz/bot-api/bots/${this.client.user.id}/guilds`,
+				`{"guildCount":${guilds}}`, TOKENS.BOTS_ON_DISCORD, Lists.BotsOnDiscord)
 		])).filter((value) => value !== null);
 
 		if (results.length) this.client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
@@ -50,5 +52,6 @@ enum Lists {
 	BotsForDiscord = 'botsfordiscord.com',
 	DiscordBotList = 'discordbotlist.com',
 	DiscordBotsOrg = 'discordbots.org',
-	DiscordBotsGG = 'discord.bots.gg'
+	DiscordBotsGG = 'discord.bots.gg',
+	BotsOnDiscord = 'bots.ondiscord.xyz'
 }

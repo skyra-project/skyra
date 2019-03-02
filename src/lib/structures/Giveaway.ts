@@ -86,8 +86,8 @@ export class Giveaway {
 			await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).patch({ data: await this.getData() });
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// Unknown message
-				if (error.code === 10008) {
+				// Unknown message | Missing Access | Invalid Form Body
+				if (error.code === 10008 || error.code === 50001 || error.code === 50035) {
 					await this.destroy();
 				} else {
 					this.store.client.emit(Events.ApiError, error);

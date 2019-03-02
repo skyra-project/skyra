@@ -11,7 +11,7 @@ This repository holds the private code for Skyra. Using, sharing, duplicating, o
 
 Skyra does not only feature almost every single feature that is needed in the majority of guilds (discord servers) while being completely configurable, she also has a backstory, inherited from the lore I have been creating since I was a child.
 
-There have been over 12 rewrites with an active development of over a year, I have met many developers and friends in Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for Klasa. Nowadays, Klasa holds the open-source part of Skyra.
+There have been over 13 rewrites with an active development of over two years, I have met many developers and friends in Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for Klasa. Nowadays, Klasa holds the open-source part of Skyra.
 
 ## Links
 

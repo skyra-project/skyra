@@ -1,7 +1,7 @@
 import { Command, CommandOptions, CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { SkyraClient } from '../SkyraClient';
 
-export class SkyraCommand extends Command {
+export abstract class SkyraCommand extends Command {
 
 	public client: SkyraClient;
 	public spam: boolean;
@@ -10,6 +10,9 @@ export class SkyraCommand extends Command {
 		super(client, store, file, directory, util.mergeDefault({ spam: false }, options));
 		this.spam = options.spam;
 	}
+
+	// @ts-ignore
+	public run(message: KlasaMessage, params: any[]): any { return message; }
 
 	// @ts-ignore
 	public inhibit(message: KlasaMessage): Promise<boolean> | boolean {

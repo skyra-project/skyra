@@ -1,5 +1,6 @@
 import { Collection, PermissionString, Webhook } from 'discord.js';
 import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
+import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
 import { VERSION, WEBHOOK_ERROR } from '../../config';
@@ -62,9 +63,16 @@ export class SkyraClient extends KlasaClient {
 	@enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
-	/**
-	 * The Veza Node
-	 */
+	@enumerable(false)
+	public lavalink = new Lavalink({
+		send: async(guildID: string, packet: any) => {
+			const guild = this.guilds.get(guildID);
+			if (guild) this.ws.shards.get(guild.shardID).send(packet);
+			else throw new Error('attempted to send a packet on the wrong shard');
+		},
+		...this.options.lavalink
+	});
+
 	public ipc = new Node('skyra-master')
 		.on('client.connect', (client) => this.emit(Events.Verbose, `[IPC] Client Connected: ${client.name}`))
 		.on('client.disconnect', (client) => this.emit(Events.Warn, `[IPC] Client Disconnected: ${client.name}`))
@@ -220,6 +228,7 @@ declare module 'discord.js' {
 		rawEvents: RawEventStore;
 		giveaways: GiveawayManager;
 		connectFour: ConnectFourManager;
+		lavalink: Lavalink;
 		usertags: Collection<string, string>;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: Node;
@@ -252,6 +261,7 @@ declare module 'klasa' {
 			role?: number;
 			everyone?: number;
 		};
+		lavalink?: BaseNodeOptions;
 	}
 
 	export interface PieceDefaults {

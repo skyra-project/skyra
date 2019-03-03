@@ -1,6 +1,6 @@
+import { KlasaClientOptions } from 'klasa';
 import { RPoolConnectionOptions } from 'rethinkdb-ts';
-import { SkyraClientOptions } from './src/lib/SkyraClient';
-import { APIWebhookData } from './src/lib/types/Discord';
+import { APIWebhookData } from './src/lib/types/DiscordAPI';
 
 const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 
@@ -11,7 +11,7 @@ export const DATABASE_PRODUCTION: RPoolConnectionOptions = {
 	user: ''
 };
 
-export const CLIENT_OPTIONS: SkyraClientOptions = {
+export const CLIENT_OPTIONS: KlasaClientOptions = {
 	commandEditing: true,
 	commandLogging: false,
 	console: {
@@ -55,9 +55,16 @@ export const CLIENT_OPTIONS: SkyraClientOptions = {
 		'GUILD_MEMBER_UPDATE',
 		'PRESENCE_UPDATE',
 		'TYPING_START',
-		'USER_UPDATE',
-		'VOICE_SERVER_UPDATE'
+		'USER_UPDATE'
 	],
+	lavalink: {
+		hosts: {
+			rest: 'http://IP:REST_PORT',
+			ws: 'ws://IP:WS_PORT'
+		},
+		password: 'PASSWORD',
+		userID: 'USER_ID'
+	},
 	messageCacheLifetime: 300,
 	messageCacheMaxSize: 50,
 	messageSweepInterval: 120,

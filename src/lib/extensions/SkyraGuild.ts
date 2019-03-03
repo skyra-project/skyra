@@ -3,6 +3,7 @@ import { KlasaGuild } from 'klasa';
 import { enumerable } from '../util/util';
 
 import { ModerationManager } from '../structures/ModerationManager';
+import { Queue } from '../structures/music/Queue';
 import { StarboardManager } from '../structures/StarboardManager';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 
@@ -10,6 +11,7 @@ export class SkyraGuild extends KlasaGuild {
 	public security = new GuildSecurity(this);
 	public starboard = new StarboardManager(this);
 	public moderation = new ModerationManager(this);
+	public music = new Queue(this);
 
 	@enumerable(false)
 	public memberSnowflakes: Set<string> = new Set();
@@ -41,6 +43,7 @@ declare module 'discord.js' {
 		security: GuildSecurity;
 		starboard: StarboardManager;
 		moderation: ModerationManager;
+		music: Queue;
 		memberSnowflakes: Set<string>;
 		memberTags: Collection<string, string>;
 		memberUsernames: Collection<string, string>;

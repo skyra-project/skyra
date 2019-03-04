@@ -25,8 +25,6 @@ export default class extends Event {
 			guild.members.set(me.id, me);
 			guild.presences.clear();
 			guild.emojis.clear();
-			// @ts-ignore
-			guild.voiceStates.clear();
 		}
 
 		try {

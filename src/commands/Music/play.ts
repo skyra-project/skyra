@@ -2,6 +2,7 @@ import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { Track } from 'lavalink';
 import { Queue } from '../../lib/structures/music/Queue';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
+import { Events } from '../../lib/types/Enums';
 
 export default class extends MusicCommand {
 
@@ -25,7 +26,7 @@ export default class extends MusicCommand {
 			// If there are songs, add them
 			await this.client.commands.get('add').run(message, [songs]);
 			if (music.playing) return;
-		} else if (!music.length) {
+		} else if (!music.canPlay) {
 			await message.sendLocale('COMMAND_QUEUE_EMPTY');
 			return;
 		}
@@ -42,12 +43,12 @@ export default class extends MusicCommand {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music[0].title]);
 		} else {
 			music.channelID = message.channel.id;
-			this.play(music).catch((error) => this.client.emit('wtf', error));
+			this.play(music).catch((error) => this.client.emit(Events.Wtf, error));
 		}
 	}
 
 	public async play(music: Queue): Promise<void> {
-		while (music.length) {
+		while (music.length && music.channel) {
 			const [song] = music;
 			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song.title, await song.fetchRequester()]);
 			await util.sleep(250);
@@ -55,7 +56,7 @@ export default class extends MusicCommand {
 			try {
 				await music.play();
 			} catch (error) {
-				if (typeof error !== 'string') this.client.emit('error', error);
+				if (typeof error !== 'string') this.client.emit(Events.Error, error);
 				if (music.channel) await music.channel.send(error);
 				await music.leave();
 				break;
@@ -64,7 +65,7 @@ export default class extends MusicCommand {
 
 		if (!music.length && music.channelID) {
 			await music.channel.sendLocale('COMMAND_PLAY_END');
-			await music.leave().catch((error) => { this.client.emit('wtf', error); });
+			await music.leave().catch((error) => { this.client.emit(Events.Wtf, error); });
 		}
 	}
 

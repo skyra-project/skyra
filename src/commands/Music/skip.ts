@@ -25,8 +25,8 @@ export default class extends MusicCommand {
 			}
 		}
 
-		await music.skip();
-		return message.sendLocale('COMMAND_SKIP_SUCCESS', [music[0].title]);
+		const song = await music.skip();
+		return message.sendLocale('COMMAND_SKIP_SUCCESS', [song.title]);
 	}
 
 	public handleSkips(musicManager: Queue, user: Snowflake): string | false {

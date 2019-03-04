@@ -19,7 +19,7 @@ export default class extends Inhibitor {
 		if (message.channel.type !== 'text') return;
 
 		// Checks for empty queue
-		if (command.music.has(FLAGS.QUEUE_NOT_EMPTY) && !message.guild.music.length) {
+		if (command.music.has(FLAGS.QUEUE_NOT_EMPTY) && !message.guild.music.canPlay) {
 			throw message.language.get(message.guild.music.playing
 				? 'INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING'
 				: 'INHIBITOR_MUSIC_QUEUE_EMPTY');

@@ -13,7 +13,7 @@ export default class extends MusicCommand {
 
 	public async run(message: KlasaMessage) {
 		const queue = message.guild.music;
-		if (!queue.length) throw message.language.get('COMMAND_QUEUE_EMPTY');
+		if (!queue.length) throw message.language.get(queue.song ? 'COMMAND_QUEUE_LAST' : 'COMMAND_QUEUE_EMPTY');
 
 		const output = [];
 		for (let i = 0; i < Math.min(queue.length, 10); i++) {

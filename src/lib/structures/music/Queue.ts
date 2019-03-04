@@ -1,6 +1,7 @@
 import { Client, Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
 import { LoadType, Status, Track } from 'lavalink';
+import { Events } from '../../types/Enums';
 import { enumerable } from '../../util/util';
 import { Song } from './Song';
 import { UserManagerStore } from './UserManagerStore';
@@ -21,6 +22,7 @@ export class Queue extends Array<Song> {
 
 	public volume = 100;
 	public replay = false;
+	public song: Song = null;
 
 	public get player() {
 		return this.client.lavalink.players.get(this.guild.id);
@@ -31,28 +33,21 @@ export class Queue extends Array<Song> {
 		return player ? player.status : Status.ENDED;
 	}
 
+	public get canPlay() { return Boolean(this.song || this.length); }
 	public get playing() { return this.status === Status.PLAYING; }
 	public get paused() { return this.status === Status.PAUSED; }
 	public get ended() { return this.status === Status.ENDED; }
 
 	public get channel() {
-		return this.client.channels.get(this.channelID) as TextChannel || null;
+		return (this.channelID && this.client.channels.get(this.channelID) as TextChannel) || null;
 	}
 
 	public get playingTime() {
-		return this.times.resumed ? Date.now() - this.times.resumed : 0;
-	}
-
-	public get pausedTime() {
-		return this.times.paused ? Date.now() - this.times.paused : 0;
-	}
-
-	public get trackPosition() {
-		return this.position + this.playingTime;
+		return this.lastUpdate ? this.position + (Date.now() - this.lastUpdate) : 0;
 	}
 
 	public get trackRemaining() {
-		return this.length ? this[0].duration - this.trackPosition : 0;
+		return this.length ? this[0].duration - this.playingTime : 0;
 	}
 
 	public get voiceChannel() {
@@ -64,21 +59,10 @@ export class Queue extends Array<Song> {
 		return (voiceChannel && voiceChannel.connection) || null;
 	}
 
-	public get dispatcher() {
-		const connection = this.connection;
-		return (connection && connection.dispatcher) || null;
-	}
-
 	public get listeners() {
 		const voiceChannel = this.voiceChannel;
 		return voiceChannel ? voiceChannel.members.map((member) => member.id) : [];
 	}
-
-	@enumerable(false)
-	private readonly times = {
-		paused: 0,
-		resumed: 0
-	};
 
 	private readonly _listeners = {
 		disconnect: null,
@@ -88,6 +72,9 @@ export class Queue extends Array<Song> {
 
 	@enumerable(false)
 	private position = 0;
+
+	@enumerable(false)
+	private lastUpdate = 0;
 
 	public constructor(guild: Guild) {
 		super();
@@ -149,7 +136,12 @@ export class Queue extends Array<Song> {
 		return new Promise<void>((resolve, reject) => {
 			// Setup the events
 			if (this._listeners.end) this._listeners.end(true);
-			this._listeners.end = (finish: boolean) => {
+			this._listeners.end = (finish) => {
+				if (this.replay) {
+					this.player.play(this.song.track).catch(reject);
+					return;
+				}
+				this.reset();
 				this._listeners.end = null;
 				this._listeners.disconnect = null;
 				this._listeners.error = null;
@@ -164,60 +156,50 @@ export class Queue extends Array<Song> {
 				if (code >= 4000) reject(this.guild.language.get('MUSICMANAGER_PLAY_DISCONNECTION'));
 				else resolve();
 			};
-			this.times.paused = 0;
-			this.times.resumed = Date.now();
+			this.position = 0;
+			this.lastUpdate = 0;
+			this.song = this.shift();
 
-			this.player.play(this[0].track)
+			this.player.play(this.song.track)
 				.catch(reject);
 		});
 	}
 
 	public async pause() {
-		if (!this.paused) {
-			await this.player.pause(true);
-			this.times.paused = Date.now();
-			this.times.resumed = 0;
-		}
+		if (!this.paused) await this.player.pause(true);
 		return this;
 	}
 
 	public async resume() {
-		if (!this.playing) {
-			await this.player.pause(false);
-			this.times.paused = 0;
-			this.times.resumed = Date.now();
-		}
+		if (!this.playing) await this.player.pause(false);
 		return this;
 	}
 
 	public async skip() {
-		this.reset();
+		this.setReplay(false);
+		const song = this.song || (this.length ? this[0] : null);
 		await this.player.stop();
-		return this;
+		return song;
 	}
 
 	public prune() {
-		if (this.length) this.length = this.playing ? 1 : 0;
+		this.length = 0;
 		return this;
 	}
 
 	public shuffle() {
-		const first = this.length && this.playingTime ? this.shift() : null;
 		let m = this.length;
 		while (m) {
 			const i = Math.floor(Math.random() * m--);
 			[this[m], this[i]] = [this[i], this[m]];
 		}
-		if (first) this.unshift(first);
 		return this;
 	}
 
-	public receiver(payload: LavalinkEvent): void {
+	public receiver(payload: LavalinkEvent) {
 		// If it's the end of the track, handle next song
 		if (isTrackEndEvent(payload)) {
 			if (this._listeners.end) this._listeners.end(true);
-			if (!this.replay) this.shift();
-			this.reset();
 			return;
 		}
 
@@ -226,7 +208,7 @@ export class Queue extends Array<Song> {
 			this.client.emit('error', `[LL:${this.guild.id}] Error: ${payload.error}`);
 			if (this._listeners.error) this._listeners.error(payload.error);
 			if (this.channel) this.channel.sendLocale('MUSICMANAGER_ERROR', [util.codeBlock('', payload.error)])
-				.catch((error) => { this.client.emit('wtf', error); });
+				.catch((error) => { this.client.emit(Events.Wtf, error); });
 			return;
 		}
 
@@ -235,7 +217,7 @@ export class Queue extends Array<Song> {
 			if (this.channel && payload.thresholdMs > 1000) {
 				this.channel.sendLocale('MUSICMANAGER_STUCK', [Math.ceil(payload.thresholdMs / 1000)])
 					.then((message: KlasaMessage) => message.delete({ timeout: payload.thresholdMs }))
-					.catch((error) => { this.client.emit('wtf', error); });
+					.catch((error) => { this.client.emit(Events.Wtf, error); });
 			}
 			return;
 		}
@@ -246,7 +228,7 @@ export class Queue extends Array<Song> {
 				this.client.emit('error', `[LL:${this.guild.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
 				this.channel.sendLocale('MUSICMANAGER_CLOSE')
 					.then((message: KlasaMessage) => message.delete({ timeout: 10000 }))
-					.catch((error) => { this.client.emit('wtf', error); });
+					.catch((error) => { this.client.emit(Events.Wtf, error); });
 			}
 			if (this._listeners.disconnect) this._listeners.disconnect(payload.code);
 			this.reset(true);
@@ -255,7 +237,8 @@ export class Queue extends Array<Song> {
 
 		// If it's a player update, update the position
 		if (isPlayerUpdate(payload)) {
-			this.position = payload.state.position + Date.now() - payload.state.time;
+			this.position = payload.state.position;
+			this.lastUpdate = payload.state.time;
 			return;
 		}
 
@@ -267,9 +250,9 @@ export class Queue extends Array<Song> {
 	}
 
 	private reset(volume: boolean = false) {
+		this.song = null;
 		this.position = 0;
-		this.times.paused = 0;
-		this.times.resumed = 0;
+		this.lastUpdate = 0;
 		if (volume) this.volume = 100;
 	}
 

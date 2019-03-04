@@ -46,19 +46,13 @@ export default class extends Task {
 
 	public async run(): Promise<void> {
 		const OLD_SNOWFLAKE = Util.binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
-		let presences = 0, guildMembers = 0, voiceStates = 0, emojis = 0, lastMessages = 0, users = 0;
+		let presences = 0, guildMembers = 0, emojis = 0, lastMessages = 0, users = 0;
 
 		// Per-Guild sweeper
 		for (const guild of this.client.guilds.values()) {
 			// Clear presences
 			presences += guild.presences.size;
 			guild.presences.clear();
-
-			// Clear voice states
-			// @ts-ignore
-			voiceStates += guild.voiceStates.size;
-			// @ts-ignore
-			guild.voiceStates.clear();
 
 			// Clear members that haven't send a message in the last 30 minutes
 			const { me } = guild;
@@ -98,7 +92,6 @@ export default class extends Task {
 			`${HEADER} ${
 				this.setColor(presences)} [Presence]s | ${
 				this.setColor(guildMembers)} [GuildMember]s | ${
-				this.setColor(voiceStates)} [Voice State]s | ${
 				this.setColor(users)} [User]s | ${
 				this.setColor(emojis)} [Emoji]s | ${
 				this.setColor(lastMessages)} [Last Message]s.`);

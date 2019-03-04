@@ -205,7 +205,7 @@ export class Queue extends Array<Song> {
 
 		// If there was an exception, handle it accordingly
 		if (isTrackExceptionEvent(payload)) {
-			this.client.emit('error', `[LL:${this.guild.id}] Error: ${payload.error}`);
+			this.client.emit(Events.Error, `[LL:${this.guild.id}] Error: ${payload.error}`);
 			if (this._listeners.error) this._listeners.error(payload.error);
 			if (this.channel) this.channel.sendLocale('MUSICMANAGER_ERROR', [util.codeBlock('', payload.error)])
 				.catch((error) => { this.client.emit(Events.Wtf, error); });
@@ -225,7 +225,7 @@ export class Queue extends Array<Song> {
 		// If the websocket closes badly (code >= 4000), there's most likely an error
 		if (isWebSocketClosedEvent(payload)) {
 			if (payload.code >= 4000) {
-				this.client.emit('error', `[LL:${this.guild.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
+				this.client.emit(Events.Error, `[LL:${this.guild.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
 				this.channel.sendLocale('MUSICMANAGER_CLOSE')
 					.then((message: KlasaMessage) => message.delete({ timeout: 10000 }))
 					.catch((error) => { this.client.emit(Events.Wtf, error); });

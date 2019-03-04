@@ -5,6 +5,7 @@ export default class extends MusicCommand {
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
+			aliases: ['q'],
 			description: (language) => language.get('COMMAND_QUEUE_DESCRIPTION'),
 			music: ['QUEUE_NOT_EMPTY']
 		});

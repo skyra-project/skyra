@@ -202,11 +202,13 @@ export class Queue extends Array<Song> {
 	}
 
 	public shuffle() {
+		const first = this.length && this.playingTime ? this.shift() : null;
 		let m = this.length;
 		while (m) {
 			const i = Math.floor(Math.random() * m--);
 			[this[m], this[i]] = [this[i], this[m]];
 		}
+		if (first) this.unshift(first);
 		return this;
 	}
 

@@ -8,7 +8,7 @@ import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
-import { ModerationTypeKeys } from './constants';
+import { ModerationTypeKeys, TIME } from './constants';
 import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
 
@@ -24,6 +24,20 @@ export interface ReferredPromise<T> {
 	promise: Promise<T>;
 	resolve(value?: T): void;
 	reject(error?: Error): void;
+}
+
+export function showSeconds(duration: number) {
+	const seconds = Math.floor(duration / TIME.SECOND) % 60;
+	if (duration < TIME.MINUTE) return seconds === 1 ? 'a second' : `${seconds} seconds`;
+
+	const minutes = Math.floor(duration / TIME.MINUTE) % 60;
+	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+	if (duration >= TIME.HOUR) {
+		const hours = Math.floor(duration / TIME.HOUR);
+		output = `${hours.toString().padStart(2, '0')}:${output}`;
+	}
+
+	return output;
 }
 
 /**

@@ -303,7 +303,7 @@ export default class extends Language {
 		COMMAND_CONF_MENU_RENDER_AT_FOLDER: (path) => `Currently at: \\📁 ${path}`,
 		COMMAND_CONF_MENU_RENDER_AT_PIECE: (path) => `Currently at: ${path}`,
 		COMMAND_CONF_MENU_RENDER_NOKEYS: 'There are no configurable keys for this folder',
-		COMMAND_CONF_MENU_RENDER_SELECT: 'Please select any of the following entries',
+		COMMAND_CONF_MENU_RENDER_SELECT: `Please type in any of the following entries' names`,
 		COMMAND_CONF_MENU_RENDER_TCTITLE: 'Text Commands:',
 		COMMAND_CONF_MENU_RENDER_UPDATE: '• Update Value → `set <value>`',
 		COMMAND_CONF_MENU_RENDER_REMOVE: '• Remove Value → `remove <value>`',

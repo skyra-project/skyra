@@ -47,7 +47,7 @@ export default class extends Inhibitor {
 		if (sameVoiceChannel || command.music.has(FLAGS.USER_VOICE_CHANNEL)) {
 			if (!message.member.voice.channelID) throw message.language.get('INHIBITOR_MUSIC_USER_VOICE_CHANNEL');
 		}
-		if (sameVoiceChannel || command.music.has(FLAGS.AELIA_VOICE_CHANNEL)) {
+		if (sameVoiceChannel || command.music.has(FLAGS.SKYRA_VOICE_CHANNEL)) {
 			if (!message.guild.me.voice.channelID) throw message.language.get('INHIBITOR_MUSIC_BOT_VOICE_CHANNEL');
 		}
 

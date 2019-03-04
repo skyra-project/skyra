@@ -5,6 +5,7 @@ import { URL } from 'url';
 export default class extends Argument {
 
 	public async run(arg: string, _: Possible, message: KlasaMessage): Promise<any> {
+		if (!arg) throw message.language.get('MUSICMANAGER_FETCH_NO_ARGUMENTS');
 		if (!message.guild) return null;
 
 		arg = arg.replace(/<(.+)>/g, '$1');

@@ -196,8 +196,17 @@ export class Queue extends Array<Song> {
 		return this;
 	}
 
-	public prune(): this {
+	public prune() {
 		if (this.length) this.length = this.playing ? 1 : 0;
+		return this;
+	}
+
+	public shuffle() {
+		let m = this.length;
+		while (m) {
+			const i = Math.floor(Math.random() * m--);
+			[this[m], this[i]] = [this[i], this[m]];
+		}
 		return this;
 	}
 

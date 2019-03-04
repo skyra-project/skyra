@@ -5,14 +5,14 @@ export default class extends MusicCommand {
 
 	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
 		super(client, store, file, directory, {
-			description: (language) => language.get('COMMAND_PAUSE_DESCRIPTION'),
-			music: ['VOICE_PLAYING', 'SAME_VOICE_CHANNEL', 'DJ_MEMBER']
+			description: (language) => language.get('COMMAND_SHUFFLE_DESCRIPTION'),
+			music: ['QUEUE_NOT_EMPTY', 'DJ_MEMBER']
 		});
 	}
 
 	public async run(message: KlasaMessage) {
-		await message.guild.music.pause();
-		return message.sendLocale('COMMAND_PAUSE_SUCCESS');
+		const amount = message.guild.music.shuffle().length;
+		return message.sendLocale('COMMAND_SHUFFLE_SUCCESS', [amount]);
 	}
 
 }

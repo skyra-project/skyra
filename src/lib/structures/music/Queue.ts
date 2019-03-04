@@ -249,6 +249,15 @@ export class Queue extends Array<Song> {
 		}
 	}
 
+	public async manageableFor(message: KlasaMessage) {
+		// The queue is manageable for deejays.
+		if (this.deejays.has(message.author.id)) return true;
+		// If the current song and all queued songs are requested by the author, the queue is still manageable.
+		if ((this.song ? this.song.requester === message.author.id : true) && this.every((song) => song.requester === message.author.id)) return true;
+		// Else if the author is a moderator+, queues are always manageable for them.
+		return message.hasAtLeastPermissionLevel(5);
+	}
+
 	private reset(volume: boolean = false) {
 		this.song = null;
 		this.position = 0;

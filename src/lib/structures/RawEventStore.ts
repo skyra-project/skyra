@@ -32,8 +32,13 @@ export class RawEventStore extends Store<string, RawEvent, typeof RawEvent> {
 
 }
 
+// TODO: Remove once https://github.com/discordjs/discord.js/pull/3124 merges
+if (!('VOICE_SERVER_UPDATE' in Constants.Events)) Object.assign(Constants.Events, { VOICE_SERVER_UPDATE: 'voiceServerUpdate' });
+if (!('VOICE_STATE_UPDATE' in Constants.WSEvents)) Object.assign(Constants.WSEvents, { VOICE_STATE_UPDATE: 'VOICE_STATE_UPDATE' });
+
 declare module 'discord.js' {
 	const Constants: {
-		Events: Record<WSEventType, WSEventType>;
+		Events: Record<WSEventType, string>;
+		WSEvents: Record<WSEventType, WSEventType>;
 	};
 }

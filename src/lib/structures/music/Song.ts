@@ -47,9 +47,9 @@ export class Song {
 		return showSeconds(this.duration);
 	}
 
-	public async fetchAuthor() {
+	public async fetchRequester() {
 		try {
-			return await this.queue.client.users.fetch(this.author);
+			return await this.queue.client.users.fetch(this.requester);
 		} catch (e) {
 			return null;
 		}

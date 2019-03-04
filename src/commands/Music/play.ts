@@ -49,7 +49,7 @@ export default class extends MusicCommand {
 	public async play(music: Queue): Promise<void> {
 		while (music.length) {
 			const [song] = music;
-			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song]);
+			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song.title, await song.fetchRequester()]);
 			await util.sleep(250);
 
 			try {
@@ -62,7 +62,7 @@ export default class extends MusicCommand {
 			}
 		}
 
-		if (!music.length) {
+		if (!music.length && music.channelID) {
 			await music.channel.sendLocale('COMMAND_PLAY_END');
 			await music.leave().catch((error) => { this.client.emit('wtf', error); });
 		}

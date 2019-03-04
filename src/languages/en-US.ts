@@ -241,7 +241,7 @@ export default class extends Language {
 		COMMAND_PAUSE_SUCCESS: '⏸ Paused',
 		COMMAND_PLAY_DESCRIPTION: `Let's start the queue!`,
 		COMMAND_PLAY_END: `⏹ From 1 to 10, being 1 the worst score and 10 the best, how would you rate the session? It just ended!`,
-		COMMAND_PLAY_NEXT: (song) => `🎧 Playing: **${song.title}** as requested by: **${song.requester}**`,
+		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
 		COMMAND_PLAY_QUEUE_EMPTY: (prefix) => `Deck's empty my friend, add some songs to the queue with the \`${prefix}add\` command so I can play them.`,
 		COMMAND_PLAY_QUEUE_PAUSED: (song) => `There was a track going on! Playing it back! Now playing: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: `Hey! The disk is already spinning!`,

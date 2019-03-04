@@ -12,7 +12,7 @@ export default class extends Inhibitor {
 		});
 	}
 
-	public async run(message: KlasaMessage, command: MusicCommand): Promise<void> {
+	public async run(message: KlasaMessage, command: MusicCommand) {
 		if (!(command instanceof MusicCommand) || !command.music.bitfield) return;
 
 		// MusicCommands only run in text channels
@@ -39,7 +39,7 @@ export default class extends Inhibitor {
 				: 'INHIBITOR_MUSIC_NOT_PAUSED_STOPPED');
 		}
 
-		if (command.music.has(FLAGS.DJ_MEMBER) && !await message.hasAtLeastPermissionLevel(5)) {
+		if (command.music.has(FLAGS.DJ_MEMBER) && (!message.guild.music.deejays.has(message.author.id) || !await message.hasAtLeastPermissionLevel(5))) {
 			throw message.language.get('INHIBITOR_MUSIC_DJ_MEMBER');
 		}
 

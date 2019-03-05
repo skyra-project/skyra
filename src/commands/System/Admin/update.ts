@@ -19,10 +19,10 @@ export default class extends SkyraCommand {
 	}
 
 	private async compile(message: KlasaMessage) {
-		const { stdout, stderr } = await util.exec('yarn run compile')
+		const { stderr } = await util.exec('yarn run compile')
 			.catch((error) => ({ stdout: '', stderr: (error && error.message) || error || '' }));
 		if (stderr.length) throw stderr.trim();
-		return message.send(`✔ Successfully compiled.\n${util.codeBlock('prolog', stdout)}`);
+		return message.channel.send(`✔ Successfully compiled.`);
 	}
 
 	private async fetch(message: KlasaMessage, branch: string) {

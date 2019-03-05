@@ -189,7 +189,7 @@ export async function fetch(url: URL | string, options: RequestInit | 'result' |
 
 	// @ts-ignore
 	const result: Response = await nodeFetch(url, options);
-	if (!result.ok) throw result.statusText;
+	if (!result.ok) throw result.status;
 
 	switch (type) {
 		case 'result': return result;

@@ -2,6 +2,7 @@ import { Colors, Task } from 'klasa';
 import { TOKENS } from '../../config';
 import { Events } from '../lib/types/Enums';
 import { fetch } from '../lib/util/util';
+import { FetchError } from 'node-fetch';
 
 const r = new Colors({ text: 'red' });
 const g = new Colors({ text: 'green' });
@@ -41,8 +42,9 @@ export default class extends Task {
 				method: 'POST'
 			}, 'result');
 			return g.format(list);
-		} catch {
-			return r.format(list);
+		} catch (error) {
+			const reason = typeof error === 'object' ? error.status || error.code || '' : error;
+			return `${r.format(list)}${reason ? ` [${r.format(reason)}]` : ''}`;
 		}
 	}
 

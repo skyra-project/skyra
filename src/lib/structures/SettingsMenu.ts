@@ -97,10 +97,10 @@ export class SettingsMenu {
 
 		const parent = (this.schema as SchemaEntry | SchemaFolder).parent;
 
-		if (parent) this.response.react(EMOJIS.BACK)
-			.catch((error) => this.response.client.emit(Events.ApiError, error));
-		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id)
-			.catch((error) => this.response.client.emit(Events.ApiError, error));
+		// tslint:disable-next-line:no-floating-promises
+		if (parent) this._reactResponse(EMOJIS.BACK);
+		// tslint:disable-next-line:no-floating-promises
+		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id);
 
 		return this.embed
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n\u200B`)
@@ -129,7 +129,7 @@ export class SettingsMenu {
 
 		// tslint:disable-next-line:no-floating-promises
 		if (!this.errorMessage) message.nuke();
-		if (this.response) await this._renderResponse();
+		await this._renderResponse();
 	}
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
@@ -141,11 +141,12 @@ export class SettingsMenu {
 			// tslint:disable-next-line:no-floating-promises
 			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID);
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
-			if (this.response) await this._renderResponse();
+			await this._renderResponse();
 		}
 	}
 
 	private async _removeReactionFromUser(reaction: string, userID: string) {
+		if (!this.response) return;
 		try {
 			// @ts-ignore
 			return await this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
@@ -171,7 +172,23 @@ export class SettingsMenu {
 		}
 	}
 
+	private async _reactResponse(emoji: string) {
+		if (!this.response) return;
+		try {
+			await this.response.react(emoji);
+		} catch (error) {
+			// Unknown Message
+			if (error instanceof DiscordAPIError && error.code === 10008) {
+				this.response = null;
+				this.llrc.end();
+			} else {
+				this.message.client.emit(Events.ApiError, error);
+			}
+		}
+	}
+
 	private async _renderResponse() {
+		if (!this.response) return;
 		try {
 			await this.response.edit(this.render());
 		} catch (error) {

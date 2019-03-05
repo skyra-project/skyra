@@ -2,7 +2,6 @@ import { Colors, Task } from 'klasa';
 import { TOKENS } from '../../config';
 import { Events } from '../lib/types/Enums';
 import { fetch } from '../lib/util/util';
-import { FetchError } from 'node-fetch';
 
 const r = new Colors({ text: 'red' });
 const g = new Colors({ text: 'green' });

@@ -1,4 +1,4 @@
-import { MessageCollector, MessageEmbed } from 'discord.js';
+import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
 import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
@@ -108,7 +108,10 @@ export class SettingsMenu {
 			.setTimestamp();
 	}
 
-	private async onMessage(message: KlasaMessage): Promise<void> {
+	private async onMessage(message: KlasaMessage) {
+		// In case of messages that do not have a content, like attachments, ignore
+		if (!message.content) return;
+
 		this.errorMessage = null;
 		if (this.pointerIsFolder) {
 			const schema = (this.schema as Schema).get(message.content);
@@ -135,18 +138,26 @@ export class SettingsMenu {
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
-			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID)
-				.catch((error) => this.response.client.emit(Events.ApiError, error));
+			// tslint:disable-next-line:no-floating-promises
+			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID);
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
 			await this.response.edit(this.render());
 		}
 	}
 
-	private _removeReactionFromUser(reaction: string, userID: string): Promise<unknown> {
-		// @ts-ignore
-		return this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
-			.reactions(encodeURIComponent(reaction), userID === this.message.client.user.id ? '@me' : userID)
-			.delete();
+	private _removeReactionFromUser(reaction: string, userID: string) {
+		try {
+			// @ts-ignore
+			return await this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
+				.reactions(encodeURIComponent(reaction), userID === this.message.client.user.id ? '@me' : userID)
+				.delete();
+		} catch (error) {
+			if (error instanceof DiscordAPIError) {
+				// Unknown Message | Unknown Emoji
+				if (error.code === 10008 || error.code === 10014) return this;
+			}
+			this.message.client.emit(Events.ApiError, error);
+		}
 	}
 
 	private async tryUpdate(value: any, options?: SettingsFolderUpdateOptions) {

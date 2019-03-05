@@ -1,4 +1,4 @@
-import { Client, Message, Permissions, TextChannel, User } from 'discord.js';
+import { Client, DiscordAPIError, Message, Permissions, TextChannel, User } from 'discord.js';
 import { Language } from 'klasa';
 import { Events } from '../../types/Enums';
 import { CONNECT_FOUR } from '../constants';
@@ -295,9 +295,18 @@ export class ConnectFour {
 	 * @param userID The user ID that reacted to the message
 	 */
 	public async removeEmoji(emoji: string | LLRCDataEmoji, userID: string): Promise<void> {
-		// @ts-ignore
-		await this.client.api.channels[this.message.channel.id].messages[this.message.id]
-			.reactions[resolveEmoji(emoji)][userID].delete();
+		try {
+			// @ts-ignore
+			await this.client.api.channels[this.message.channel.id].messages[this.message.id]
+				.reactions[resolveEmoji(emoji)][userID].delete();
+		} catch (error) {
+			if (error instanceof DiscordAPIError) {
+				// Unknown Message | Unknown Emoji
+				if (error.code === 10008 || error.code === 10014) return;
+			}
+
+			this.client.emit(Events.ApiError, error);
+		}
 	}
 
 	/**

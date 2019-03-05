@@ -123,11 +123,10 @@ export class Giveaway {
 				await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).delete();
 			} catch (error) {
 				if (error instanceof DiscordAPIError) {
-					// Unknown message
-					if (error.code !== 10008) this.store.client.emit(Events.ApiError, error);
-				} else {
-					this.store.client.emit(Events.Wtf, error);
+					// Unknown Message | Unknown Emoji
+					if (error.code === 10008 || error.code === 10014) return this;
 				}
+				this.store.client.emit(Events.ApiError, error);
 			}
 		}
 		return this;

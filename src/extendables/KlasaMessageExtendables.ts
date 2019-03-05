@@ -83,6 +83,7 @@ async function nuke(message: Message) {
 	try {
 		return await message.delete();
 	} catch (error) {
+		// Unknown Message
 		if (error.code === 10008) return message;
 		throw error;
 	}

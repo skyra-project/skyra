@@ -16,7 +16,7 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage, [force = false]: [boolean]) {
 		const { music } = message.guild;
 
-		if (music.voiceChannel.members.size > 4) {
+		if (music.listeners.length >= 4) {
 			if (force) {
 				if (!await message.hasAtLeastPermissionLevel(5)) throw message.language.get('COMMAND_SKIP_PERMISSIONS');
 			} else {

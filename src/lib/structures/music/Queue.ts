@@ -137,7 +137,7 @@ export class Queue extends Array<Song> {
 			// Setup the events
 			if (this._listeners.end) this._listeners.end(true);
 			this._listeners.end = (finish) => {
-				if (this.replay) {
+				if (this.song && this.replay) {
 					this.player.play(this.song.track).catch(reject);
 					return;
 				}

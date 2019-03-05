@@ -40,7 +40,7 @@ export default class extends MusicCommand {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PLAYING');
 		} else if (music.paused) {
 			await music.resume();
-			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music[0].title]);
+			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music.song]);
 		} else {
 			music.channelID = message.channel.id;
 			this.play(music).catch((error) => this.client.emit(Events.Wtf, error));

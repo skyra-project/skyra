@@ -22,9 +22,10 @@ export default class extends MusicCommand {
 
 		const { channel } = message.member.voice;
 		if (!channel) throw message.language.get('COMMAND_JOIN_NO_VOICECHANNEL');
-		if (message.guild.music.playing) {
-			const aeliaVoiceChannel = message.guild.music.voiceChannel;
-			if (channel.id === aeliaVoiceChannel.id) throw message.language.get('COMMAND_JOIN_VOICE_SAME');
+
+		let skyraVoiceChannel: VoiceChannel;
+		if (message.guild.music.playing && (skyraVoiceChannel = message.guild.music.voiceChannel)) {
+			if (channel.id === skyraVoiceChannel.id) throw message.language.get('COMMAND_JOIN_VOICE_SAME');
 			throw message.language.get('COMMAND_JOIN_VOICE_DIFFERENT');
 		}
 		this.resolvePermissions(message, channel as VoiceChannel);
@@ -34,9 +35,10 @@ export default class extends MusicCommand {
 	}
 
 	public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {
-		if (voiceChannel.full) throw message.language.get('COMMAND_JOIN_VOICE_FULL');
-
 		const permissions = voiceChannel.permissionsFor(message.guild.me);
+
+		// Administrators can join voice channels even if they are full
+		if (voiceChannel.full && !permissions.has(FLAGS.ADMINISTRATOR)) throw message.language.get('COMMAND_JOIN_VOICE_FULL');
 		if (!permissions.has(FLAGS.CONNECT)) throw message.language.get('COMMAND_JOIN_VOICE_NO_CONNECT');
 		if (!permissions.has(FLAGS.SPEAK)) throw message.language.get('COMMAND_JOIN_VOICE_NO_SPEAK');
 	}

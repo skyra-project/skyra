@@ -141,7 +141,7 @@ export class SettingsMenu {
 			// tslint:disable-next-line:no-floating-promises
 			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID);
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
-			await this.response.edit(this.render());
+			if (this.response) await this.response.edit(this.render());
 		}
 	}
 
@@ -153,9 +153,20 @@ export class SettingsMenu {
 				.delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// Unknown Message | Unknown Emoji
-				if (error.code === 10008 || error.code === 10014) return this;
+				// Unknown Message
+				if (error.code === 10008) {
+					this.response = null;
+					this.llrc.end();
+					return this;
+				}
+
+				// Unknown Emoji
+				if (error.code === 10014) {
+					return this;
+				}
 			}
+
+			// Log any other error
 			this.message.client.emit(Events.ApiError, error);
 		}
 	}

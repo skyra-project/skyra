@@ -14,29 +14,37 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [branch = 'master']: [string?]) {
-		const response = await this.fetch(message, branch);
+		await this.fetch(message, branch);
 		await this.compile(message);
-		return message.send(response);
 	}
 
 	private async compile(message: KlasaMessage) {
-		const { stdout, stderr } = await util.exec('yarn run compile');
+		const { stdout, stderr } = await util.exec('yarn run compile')
+			.catch((error) => ({ stdout: '', stderr: (error && error.message) || error || '' }));
 		if (stderr.length) throw stderr.trim();
-		await message.send(`✔ Successfully compiled.\n${util.codeBlock('prolog', stdout)}`);
-		await util.sleep(2000);
+		return message.send(`✔ Successfully compiled.\n${util.codeBlock('prolog', stdout)}`);
 	}
 
 	private async fetch(message: KlasaMessage, branch: string) {
 		await util.exec('git fetch');
 		const { stdout, stderr } = await util.exec(`git pull origin ${branch}`);
+
+		// If it's up to date, do nothing
 		if (stdout.includes('Already up-to-date.')) throw '✔ Up to date.';
+
+		// If it was not a successful pull, return the output
 		if (!this.isSuccessfulPull(stdout)) {
+			// If the pull failed because it was in a different branch, run checkout
+			if (!await this.isCurrentBranch(branch)) {
+				return this.checkout(message, branch);
+			}
+
+			// If the pull failed because local changes, run a stash
 			if (this.needsStash(stdout + stderr)) return this.stash(message);
-		} else if (await !this.isCurrentBranch(branch)) {
-			await this.checkout(message, branch);
 		}
 
-		return util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'));
+		// For all other cases, return the original output
+		return message.send(util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n')));
 	}
 
 	private async stash(message: KlasaMessage) {
@@ -47,12 +55,13 @@ export default class extends SkyraCommand {
 			throw `Unsuccessful pull, stashing:\n\n${util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'))}`;
 		}
 
-		return util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'));
+		return message.send(util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n')));
 	}
 
 	private async checkout(message: KlasaMessage, branch: string) {
 		await message.send(`Switching to ${branch}...`);
 		await util.exec(`git checkout ${branch}`);
+		return message.send(`✔ Switched to ${branch}.`);
 	}
 
 	private async isCurrentBranch(branch: string) {

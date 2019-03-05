@@ -58,7 +58,7 @@ export class SettingsMenu {
 		this.llrc.setTime(120000);
 		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author.id === this.message.author.id);
 		this.messageCollector.on('collect', (msg) => this.onMessage(msg));
-		await this.response.edit(this.render());
+		await this._renderResponse();
 	}
 
 	private render(): MessageEmbed {
@@ -129,7 +129,7 @@ export class SettingsMenu {
 
 		// tslint:disable-next-line:no-floating-promises
 		if (!this.errorMessage) message.nuke();
-		await this.message.send(this.render());
+		if (this.response) await this._renderResponse();
 	}
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
@@ -141,7 +141,7 @@ export class SettingsMenu {
 			// tslint:disable-next-line:no-floating-promises
 			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID);
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
-			if (this.response) await this.response.edit(this.render());
+			if (this.response) await this._renderResponse();
 		}
 	}
 
@@ -168,6 +168,20 @@ export class SettingsMenu {
 
 			// Log any other error
 			this.message.client.emit(Events.ApiError, error);
+		}
+	}
+
+	private async _renderResponse() {
+		try {
+			await this.response.edit(this.render());
+		} catch (error) {
+			// Unknown Message
+			if (error instanceof DiscordAPIError && error.code === 10008) {
+				this.response = null;
+				this.llrc.end();
+			} else {
+				this.message.client.emit(Events.ApiError, error);
+			}
 		}
 	}
 

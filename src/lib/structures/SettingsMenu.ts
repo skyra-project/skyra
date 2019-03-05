@@ -145,7 +145,7 @@ export class SettingsMenu {
 		}
 	}
 
-	private _removeReactionFromUser(reaction: string, userID: string) {
+	private async _removeReactionFromUser(reaction: string, userID: string) {
 		try {
 			// @ts-ignore
 			return await this.message.client.api.channels[this.message.channel.id].messages[this.response.id]

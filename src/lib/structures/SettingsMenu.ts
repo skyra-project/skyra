@@ -192,11 +192,13 @@ export class SettingsMenu {
 	}
 
 	private stop(): void {
-		if (this.response.reactions.size) this.response.reactions.removeAll()
-			.catch((error) => this.response.client.emit(Events.ApiError, error));
+		if (this.response) {
+			if (this.response.reactions.size) this.response.reactions.removeAll()
+				.catch((error) => this.response.client.emit(Events.ApiError, error));
+			this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
+				.catch((error) => this.message.client.emit(Events.ApiError, error));
+		}
 		if (!this.messageCollector.ended) this.messageCollector.stop();
-		this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
-			.catch((error) => this.message.client.emit(Events.ApiError, error));
 	}
 
 	private isConfigurable(schema: Schema | SchemaEntry) {

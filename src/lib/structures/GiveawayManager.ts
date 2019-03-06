@@ -3,15 +3,14 @@ import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { Giveaway, GiveawayCreateData, GiveawayData } from './Giveaway';
 
-export class GiveawayManager extends Array<Giveaway> {
+export class GiveawayManager {
 
+	public readonly queue: Array<Giveaway> = [];
 	private readonly pending: Giveaway[] = [];
 	private interval: NodeJS.Timer = null;
 	private readonly running: Array<Promise<void>> = [];
 
-	public constructor(public client: KlasaClient) {
-		super();
-	}
+	public constructor(public client: KlasaClient) {}
 
 	public async init() {
 		const r = this.client.providers.default.db;
@@ -25,7 +24,7 @@ export class GiveawayManager extends Array<Giveaway> {
 	}
 
 	public next() {
-		return this.length ? this[0] : null;
+		return this.queue.length ? this.queue[0] : null;
 	}
 
 	public async run() {
@@ -33,7 +32,7 @@ export class GiveawayManager extends Array<Giveaway> {
 		if (this.running.length) return;
 
 		const now = Date.now();
-		for (const giveaway of this) {
+		for (const giveaway of this.queue) {
 			if (giveaway.refreshAt > now) break;
 			// tslint:disable-next-line:no-floating-promises
 			this.running.push(this.runGiveaway());
@@ -67,13 +66,13 @@ export class GiveawayManager extends Array<Giveaway> {
 	}
 
 	public get(index: number | string) {
-		if (typeof index === 'string') index = this.findIndex((value) => value.id === index);
+		if (typeof index === 'string') index = this.queue.findIndex((value) => value.id === index);
 		return this.checkBounds(index) ? this[index] : null;
 	}
 
 	private async runGiveaway() {
 		try {
-			const giveaway = await this.shift().render();
+			const giveaway = await this.queue.shift().render();
 			if (!giveaway.finished) this.pending.push(giveaway);
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
@@ -81,7 +80,7 @@ export class GiveawayManager extends Array<Giveaway> {
 	}
 
 	private check() {
-		if (this.length) {
+		if (this.queue.length) {
 			if (!this.interval) this.interval = setInterval(this.run.bind(this), 1000);
 		} else if (this.interval) {
 			clearInterval(this.interval);
@@ -91,14 +90,14 @@ export class GiveawayManager extends Array<Giveaway> {
 	}
 
 	private checkBounds(index: number) {
-		if (!this.length) return false;
-		return index >= 0 && index < this.length;
+		if (!this.queue.length) return false;
+		return index >= 0 && index < this.queue.length;
 	}
 
 	private insert(giveaway: Giveaway) {
-		const index = this.findIndex((entry) => entry.refreshAt > giveaway.refreshAt);
-		if (index === -1) this.push(giveaway);
-		else this.splice(index, 0, giveaway);
+		const index = this.queue.findIndex((entry) => entry.refreshAt > giveaway.refreshAt);
+		if (index === -1) this.queue.push(giveaway);
+		else this.queue.splice(index, 0, giveaway);
 		return this;
 	}
 

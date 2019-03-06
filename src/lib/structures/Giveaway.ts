@@ -70,10 +70,6 @@ export class Giveaway {
 		return this;
 	}
 
-	public async run() {
-		await this.render();
-	}
-
 	public async render() {
 		// TODO: Make a promise queue, if there are 1 or more pending edits
 		// on heavy ratelimits, skip all of them and unshift the last edit
@@ -149,20 +145,21 @@ export class Giveaway {
 		const language = this.language;
 		const state = this.state;
 		if (state === States.Finished) {
+			await this.finish();
 			this.winners = await this.pickWinners();
 			await this.announceWinners(language);
-			await this.finish();
 		} else {
 			this.refreshAt = this.calculateNextRefresh();
 		}
 		const content = this.getContent(state, language);
-		const embed = await this.getEmbed(state, language);
+		const embed = this.getEmbed(state, language);
 		return { content, embed };
 	}
 
 	private async announceWinners(language: Language) {
-		if (!this.winners.length) return;
-		const content = language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map((winner) => `<@${winner}>`), this.title);
+		const content = this.winners
+			? language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map((winner) => `<@${winner}>`), this.title)
+			: language.get('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', this.title);
 		try {
 			await (this.store.client as any).api.channels(this.channelID).messages.post({ data: { content } });
 		} catch (error) {
@@ -170,8 +167,8 @@ export class Giveaway {
 		}
 	}
 
-	private async getEmbed(state: States, language: Language) {
-		const description = await this.getDescription(state, language);
+	private getEmbed(state: States, language: Language) {
+		const description = this.getDescription(state, language);
 		const footer = this.getFooter(state, language);
 		return new MessageEmbed()
 			.setColor(this.getColor(state))
@@ -191,10 +188,10 @@ export class Giveaway {
 		}
 	}
 
-	private async getDescription(state: States, language: Language) {
+	private getDescription(state: States, language: Language) {
 		switch (state) {
 			case States.Finished: return this.winners && this.winners.length
-				? language.get('GIVEAWAY_ENDED', await this.winners.map((winner) => `<@${winner}>`))
+				? language.get('GIVEAWAY_ENDED', this.winners.map((winner) => `<@${winner}>`))
 				: language.get('GIVEAWAY_ENDED_NO_WINNER');
 			case States.LastChance: return language.get('GIVEAWAY_LASTCHANCE', this.remaining);
 			default: return language.get('GIVEAWAY_DURATION', this.remaining);
@@ -249,6 +246,7 @@ export class Giveaway {
 				if (error.code === 10008 || error.code === 10014) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants();
+				this.store.client.emit(Events.ApiError, error);
 			}
 			return [];
 		}

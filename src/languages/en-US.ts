@@ -1896,6 +1896,7 @@ export default class extends Language {
 		GIVEAWAY_ENDED_AT: 'Ended at:',
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (winners, title) => `Congratulations ${winners.join(' ')}! You won the giveaway **${title}**`,
+		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: (title) => `The giveaway **${title}** ended without enough participants.`,
 
 		/**
 		 * ###################

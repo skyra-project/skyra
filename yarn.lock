@@ -10,9 +10,9 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^11.9.6":
-  version "11.10.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.10.4.tgz#3f5fc4f0f322805f009e00ab35a2ff3d6b778e42"
-  integrity sha512-wa09itaLE8L705aXd8F80jnFpxz3Y1/KRHfKsYL2bPc0XF+wEWu8sR9n5bmeu8Ba1N9z2GRNzm/YdHcghLkLKg==
+  version "11.10.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.10.5.tgz#fbaca34086bdc118011e1f05c47688d432f2d571"
+  integrity sha512-DuIRlQbX4K+d5I+GMnv+UfnGh+ist0RdlvOp+JZ7ePJ6KQONCFQv/gKYSU1ZzbVdFSUCKZOltjmpFAGGv5MdYA==
 
 abbrev@1:
   version "1.1.1"
@@ -219,7 +219,6 @@ diff@^4.0.1:
 
 "discord.js@github:discordjs/discord.js":
   version "12.0.0-dev"
-  uid "132788937a61490b5003117006f9e28164c14608"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/132788937a61490b5003117006f9e28164c14608"
   dependencies:
     form-data "^2.3.3"
@@ -415,9 +414,9 @@ js-yaml@^3.7.0:
     fs-nextra "^0.4.3"
 
 lavalink@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.4.0.tgz#7b1d31c31853d0c8bcdf58be3d7f5e1cfcc6398b"
-  integrity sha512-hNuEDotMw9LsDnNCh8MJ8eQumrjmDy5KPPkGP+6X8kCVgJ7mhT3mzqRSEjuwCuav8MWASeL5jtfoUAqJdubZbA==
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.4.1.tgz#6e82e8afa3cb25c0f52f19848b13d43fc8c11473"
+  integrity sha512-KV6+UENBP/xXbSNQX0C8SH7iXm+4XRymYfSu4SvdFEx4L7XwyW7iyCPOUdjZoJDXTPh+AQ9yQHbpw3JCaY7Bdg==
   dependencies:
     ws "^6.0.0"
 
@@ -838,9 +837,9 @@ wrappy@1:
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
 ws@^6.0.0, ws@^6.1.3:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.4.tgz#5b5c8800afab925e94ccb29d153c8d02c1776ef9"
-  integrity sha512-eqZfL+NE/YQc1/ZynhojeV8q+H050oR8AZ2uIev7RU10svA9ZnJUddHcOUZTJLinZ9yEfdA2kSATS2qZK5fhJA==
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.0.tgz#13806d9913b2a5f3cbb9ba47b563c002cbc7c526"
+  integrity sha512-deZYUNlt2O4buFCa3t5bKLf8A7FPP/TVjwOeVNpw818Ma5nk4MLXls2eoEGS39o8119QIYxTrTDoPQ5B/gTD6w==
   dependencies:
     async-limiter "~1.0.0"
 

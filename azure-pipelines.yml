@@ -1,0 +1,9 @@
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: dirigeants/pipelines
+      endpoint: kyranet
+
+jobs:
+  - template: lint.yml@templates

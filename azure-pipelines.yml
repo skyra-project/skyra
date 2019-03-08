@@ -5,5 +5,5 @@ resources:
       name: dirigeants/pipelines
       endpoint: kyranet
 
-  jobs:
+jobs:
   - template: lint.yml@templates

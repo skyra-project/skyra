@@ -12,7 +12,7 @@
     "pm2:start": "pm2 start dist/src/Skyra.js --name=\"Skyra\"",
     "pm2:stop": "pm2 stop Skyra",
     "start": "node dist/src/Skyra.js",
-    "test": "tslint -p tsconfig.json src/**/*.ts",
+    "test:lint": "tslint -p tsconfig.json src/**/*.ts",
     "update": "yarn",
     "compile": "tsc -p .",
     "watch": "tsc -p . -w"

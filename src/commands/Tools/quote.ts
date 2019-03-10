@@ -2,7 +2,6 @@ import { GuildChannel, MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaClient, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getContent, getImage } from '../../lib/util/util';
-
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 export default class extends SkyraCommand {

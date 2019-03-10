@@ -1,6 +1,7 @@
-import { CommandStore, KlasaClient, KlasaMessage, Resolver } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 export default class extends SkyraCommand {
 
@@ -17,7 +18,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('message', async(arg, _, msg) => {
-			if (!arg || !Resolver.regex.snowflake.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 
 			const rolesChannel = msg.guild.settings.get(GuildSettings.Channels.Roles) as GuildSettings.Channels.Roles;
 			if (!rolesChannel) throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');

@@ -30,11 +30,11 @@ export default class extends MusicCommand {
 	}
 
 	public handleSkips(musicManager: Queue, user: Snowflake): string | false {
-		if (!musicManager[0].skips) musicManager[0].skips.clear();
-		if (musicManager[0].skips.has(user)) return musicManager.guild.language.get('COMMAND_SKIP_VOTES_VOTED');
-		musicManager[0].skips.add(user);
+		const { song } = musicManager;
+		if (song.skips.has(user)) return musicManager.guild.language.get('COMMAND_SKIP_VOTES_VOTED');
+		song.skips.add(user);
 		const members = musicManager.listeners.length;
-		return this.shouldInhibit(musicManager, members, musicManager[0].skips.size);
+		return this.shouldInhibit(musicManager, members, song.skips.size);
 	}
 
 	public shouldInhibit(musicManager: Queue, total: number, size: number): false | string {

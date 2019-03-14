@@ -17,10 +17,9 @@
 		"sourceMap": true,
 		"strictBindCallApply": true,
 		"types": ["node", "node-fetch"],
-        "declaration": true,
-        "noUnusedLocals": true,
-        "removeComments": true,
-        "target": "esnext"
+		"noUnusedLocals": true,
+		"removeComments": true,
+		"target": "esnext"
 	},
 	"exclude": [
 		"node_modules",

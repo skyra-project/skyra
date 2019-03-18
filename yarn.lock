@@ -103,10 +103,10 @@ canvas-constructor@^3.0.1:
   resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-3.0.1.tgz#3da62c9abfced4f7a1e1f7c023c5d00a6a328c60"
   integrity sha512-p0zIefgmwEJ/iE9YhMeXdhibd+NXBpvKKgfwSGlbdrf4UfU+qIpBEUdLfxvlT5yHhc8G8TxrK4GS9IMgK1lhtA==
 
-canvas@^2.2.0, canvas@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.3.1.tgz#da0c8a916505aa34f9365d6b77d28b969241bfd0"
-  integrity sha512-jSxwf4V9AGD6t6yBC600xFZKjrfKTR0T0RUNlX/AODs/ifrfJHIQjFEK8iF2euNy6z7K3GNv82DJgTjYZZktqA==
+canvas@^2.2.0, canvas@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.4.0.tgz#987c090c56b6d122e666ab9f471dcab62ae9bff3"
+  integrity sha512-+xxeaKwQJyXHBdMhVhqFoGqNAAUW5vr2DbhQEusER2RR4H2m+Zn2QLKiwp43BabNhQBITQ3bp54+DYrGrI+wmA==
   dependencies:
     nan "^2.12.1"
     node-pre-gyp "^0.11.0"

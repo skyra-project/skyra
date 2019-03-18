@@ -80,6 +80,13 @@ babel-code-frame@^6.22.0:
     esutils "^2.0.2"
     js-tokens "^3.0.2"
 
+backoff@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/backoff/-/backoff-2.5.0.tgz#f616eda9d3e4b66b8ca7fca79f695722c5f8e26f"
+  integrity sha1-9hbtqdPktmuMp/ynn2lXIsX44m8=
+  dependencies:
+    precond "0.2"
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -415,11 +422,12 @@ js-yaml@^3.7.0:
   dependencies:
     fs-nextra "^0.4.3"
 
-lavalink@^2.4.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.4.1.tgz#6e82e8afa3cb25c0f52f19848b13d43fc8c11473"
-  integrity sha512-KV6+UENBP/xXbSNQX0C8SH7iXm+4XRymYfSu4SvdFEx4L7XwyW7iyCPOUdjZoJDXTPh+AQ9yQHbpw3JCaY7Bdg==
+lavalink@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.5.0.tgz#2184b01f7acadf752cacbe5ad6833147e9c9b696"
+  integrity sha512-ve0E9j33KfAGc8f6Ujsp5c3hRdlw47dzdo6QhDZ/cG9FJL8Hj80TSEllnPd8JpsQFtG1EuDIo0E2/HHeNEczrw==
   dependencies:
+    backoff "^2.5.0"
     ws "^6.0.0"
 
 mime-db@~1.38.0:
@@ -593,6 +601,11 @@ path-parse@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+
+precond@0.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/precond/-/precond-0.2.3.tgz#aa9591bcaa24923f1e0f4849d240f47efc1075ac"
+  integrity sha1-qpWRvKokkj8eD0hJ0kD0fvwQdaw=
 
 prism-media@^1.0.0:
   version "1.0.1"

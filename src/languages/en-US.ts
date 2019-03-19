@@ -2531,7 +2531,10 @@ export default class extends Language {
 			`{1} kills {2T} with a sickle.`,
 			`{1} and {2T} fight for a bag. {1} strangles {2T} with the straps and runs.`,
 			`{1T} and {2} fight for a bag. {2} strangles {1T} with the straps and runs.`,
-			`{1} repeatedly stabs {2T} to death with sais.`
+			`{1} repeatedly stabs {2T} to death with sais.`,
+			`{1T} trips over while running from the cornucopia, and is killed by {2}.`,
+			`{1} trips over while running from the cornucopia, {2} picks them up, they run off together.`,
+			`{1} aims an arrow at {2}'s head and shoots, {3T} jumps in the way and sacrifies their life to save them.`,
 		].map(HungerGamesUsage.create),
 		HG_DAY: [
 			`{1} goes hunting.`,
@@ -2660,7 +2663,13 @@ export default class extends Language {
 			`{1} tracks down and kills {2T}.`,
 			`{1} repeatedly stabs {2T} to death with sais.`,
 			`{1} doodles in the dirt.`,
-			`{1} chases a butterfly.`
+			`{1} chases a butterfly.`,
+			`{1T} falls off a cliff, and is impaled by a stick.`,
+			`{1} runs into {2}, they decide to team up.`,
+			`{1} sees {2} through the trees, and plans on killing them.`,
+			`{1} sneaks up behind {2T}, and snaps their neck.`,
+			`{1T} challenges {2} to a fight, and promptly dies.`,
+			`{1} murders their partner, {2T}, to have more supplies for themself.`
 		].map(HungerGamesUsage.create),
 		HG_NIGHT: [
 			`{1} starts a fire.`,
@@ -2787,7 +2796,8 @@ export default class extends Language {
 			`{1} and {2} track down and kill {3T}.`,
 			`{1} tracks down and kills {2T}.`,
 			`{1} repeatedly stabs {2T} to death with sais.`,
-			`{1} writes in their journal.`
+			`{1} writes in their journal.`,
+			`{1} watches {2} sitting at their campfire, and considers killing them.`
 		].map(HungerGamesUsage.create),
 
 		/**

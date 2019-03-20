@@ -37,7 +37,7 @@
     "url": "https://github.com/kyranet/Skyra/issues"
   },
   "dependencies": {
-    "canvas": "^2.4.0",
+    "canvas": "^2.4.1",
     "canvas-constructor": "^3.0.1",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",

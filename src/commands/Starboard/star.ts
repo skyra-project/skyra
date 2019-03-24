@@ -17,7 +17,6 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: (language) => language.get('COMMAND_STAR_DESCRIPTION'),
 			extendedHelp: (language) => language.get('COMMAND_STAR_EXTENDED'),
-			permissionLevel: 10,
 			requiredPermissions: ['EMBED_LINKS'],
 			requiredSettings: [],
 			runIn: ['text'],
@@ -37,7 +36,7 @@ export default class extends SkyraCommand {
 			.default(null)
 			.run();
 
-		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOMESSAGE');
+		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
 		const channel = message.guild.channels.get(starboardData.channelID) as TextChannel;
 		if (!channel) {
@@ -107,7 +106,9 @@ export default class extends SkyraCommand {
 		if (stars < 5) return '⭐';
 		if (stars < 10) return '🌟';
 		if (stars < 25) return '💫';
-		return '✨';
+		if (stars < 100) return '✨';
+		if (stars < 200) return '🌠';
+		return '🌌';
 	}
 
 }

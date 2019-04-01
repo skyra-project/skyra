@@ -45,7 +45,7 @@
     "gifencoder": "^2.0.1",
     "heapdump": "^0.3.12",
     "klasa": "github:dirigeants/klasa#settings",
-    "lavalink": "^2.5.0",
+    "lavalink": "^2.6.0",
     "node-fetch": "^2.3.0",
     "rethinkdb-ts": "^2.4.0-rc.12",
     "typescript": "^3.4.1",

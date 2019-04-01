@@ -422,10 +422,10 @@ js-yaml@^3.7.0:
   dependencies:
     fs-nextra "^0.4.3"
 
-lavalink@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.5.0.tgz#2184b01f7acadf752cacbe5ad6833147e9c9b696"
-  integrity sha512-ve0E9j33KfAGc8f6Ujsp5c3hRdlw47dzdo6QhDZ/cG9FJL8Hj80TSEllnPd8JpsQFtG1EuDIo0E2/HHeNEczrw==
+lavalink@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.6.0.tgz#e8700b1b407776d4b795590e5b52e08b9caf8caf"
+  integrity sha512-K5NjnG8wQh/hRRuRzSH/mwjvV71JH59DP2heErSfe5Kc2R7bLk9ePlFlmYigWkg36sXHVnDJXPma890BlEZDJg==
   dependencies:
     backoff "^2.5.0"
     ws "^6.0.0"

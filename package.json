@@ -48,7 +48,7 @@
     "lavalink": "^2.5.0",
     "node-fetch": "^2.3.0",
     "rethinkdb-ts": "^2.4.0-rc.12",
-    "typescript": "^3.3.4000",
+    "typescript": "^3.4.1",
     "veza": "^0.4.0"
   },
   "devDependencies": {

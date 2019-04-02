@@ -54,7 +54,7 @@
   "devDependencies": {
     "@types/node": "^11.12.2",
     "@types/node-fetch": "^2.1.7",
-    "tslint": "^5.14.0",
+    "tslint": "^5.15.0",
     "tslint-eslint-rules": "^5.4.0"
   }
 }

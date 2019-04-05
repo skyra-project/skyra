@@ -647,10 +647,10 @@ resolve@^1.3.2:
   dependencies:
     path-parse "^1.0.6"
 
-rethinkdb-ts@^2.4.0-rc.12:
-  version "2.4.0-rc.12"
-  resolved "https://registry.yarnpkg.com/rethinkdb-ts/-/rethinkdb-ts-2.4.0-rc.12.tgz#08d74b2cced5b4d6121f05eb001e9baa5790d127"
-  integrity sha512-gb7NCGuHfDHn3rKfLsczBHIwsHg4wPAHva2IhEiPJ8Rc8ARACltZiHcpiTfYxQz/6rIHrTztAJDyaKNyfMQ2Tw==
+rethinkdb-ts@^2.4.0-rc.13:
+  version "2.4.0-rc.13"
+  resolved "https://registry.yarnpkg.com/rethinkdb-ts/-/rethinkdb-ts-2.4.0-rc.13.tgz#61bbc9e53989f2f5e29323117e19d2b67154b975"
+  integrity sha512-8Jp9mR/Zmszt86D/lN3KIx1TlaqRZ9Pi/tY3RbAKtJsJ/1SlQA/nAVUZJvCAMxMzRWGNNVsPhxooMNiMp8J/3Q==
 
 rimraf@^2.6.1:
   version "2.6.3"

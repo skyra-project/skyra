@@ -47,7 +47,7 @@
     "klasa": "github:dirigeants/klasa#settings",
     "lavalink": "^2.6.0",
     "node-fetch": "^2.3.0",
-    "rethinkdb-ts": "^2.4.0-rc.12",
+    "rethinkdb-ts": "^2.4.0-rc.13",
     "typescript": "^3.4.1",
     "veza": "^0.4.0"
   },

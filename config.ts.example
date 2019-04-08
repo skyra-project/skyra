@@ -1,3 +1,5 @@
+// Remove `.example` from the file extension to configure Skyra
+
 import { KlasaClientOptions } from 'klasa';
 import { RPoolConnectionOptions } from 'rethinkdb-ts';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';

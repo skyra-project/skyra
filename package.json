@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@types/node": "^11.13.2",
-    "@types/node-fetch": "^2.3.0",
+    "@types/node-fetch": "^2.3.1",
     "tslint": "^5.15.0",
     "tslint-eslint-rules": "^5.4.0"
   }

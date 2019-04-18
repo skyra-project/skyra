@@ -401,8 +401,8 @@ js-yaml@^3.13.0:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  uid "6d43a838665b6d4f832127a938bdf8107f146595"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/6d43a838665b6d4f832127a938bdf8107f146595"
+  uid "41a137f7cb638b6556a1bd9c0a2f6b8663715e35"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/41a137f7cb638b6556a1bd9c0a2f6b8663715e35"
   dependencies:
     fs-nextra "^0.4.3"
 

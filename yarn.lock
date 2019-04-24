@@ -217,8 +217,8 @@ diff@^4.0.1:
 
 "discord.js@github:discordjs/discord.js":
   version "12.0.0-dev"
-  uid c4b79571ba5bd468c6c2b27b7c6f43d421730dd5
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/c4b79571ba5bd468c6c2b27b7c6f43d421730dd5"
+  uid "7b531648e09d9b461cee52897926e11a5debfcea"
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/7b531648e09d9b461cee52897926e11a5debfcea"
   dependencies:
     form-data "^2.3.3"
     node-fetch "^2.3.0"

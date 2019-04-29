@@ -325,10 +325,10 @@ has-unicode@^2.0.0:
   resolved "https://registry.yarnpkg.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
   integrity sha1-4Ob+aijPUROIVeCG0Wkedx3iqLk=
 
-heapdump@^0.3.12:
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/heapdump/-/heapdump-0.3.12.tgz#5623be7816a8a92ab2d42b1b422f9e829a58da89"
-  integrity sha512-OSVdkxGd9xAJNEP0RA/ZvKEzGTEjCnkvmMEGF1ScR/87tH92v5Dpv6g/Fs8GvZA9UxdMpxU1G9NEC2D0OxZjJQ==
+heapdump@^0.3.13:
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/heapdump/-/heapdump-0.3.13.tgz#1d0fa47609704c2c0f306ce4de58ce5a75127e74"
+  integrity sha512-yVskMya9FTo3GJPxjI8DhE0hP/EebW+o9RpRXlkSUFFhGs8qdAU2DeRdzwbkn73jHbAK0N/sdq8mIj39UCRpQg==
   dependencies:
     nan "^2.11.1"
 

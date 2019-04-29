@@ -43,7 +43,7 @@
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.4.5",
     "gifencoder": "^2.0.1",
-    "heapdump": "^0.3.12",
+    "heapdump": "^0.3.13",
     "klasa": "github:dirigeants/klasa#settings",
     "lavalink": "^2.6.1",
     "node-fetch": "^2.3.0",

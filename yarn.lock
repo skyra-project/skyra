@@ -333,12 +333,12 @@ has-unicode@^2.0.0:
   resolved "https://registry.yarnpkg.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
   integrity sha1-4Ob+aijPUROIVeCG0Wkedx3iqLk=
 
-heapdump@^0.3.13:
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/heapdump/-/heapdump-0.3.13.tgz#1d0fa47609704c2c0f306ce4de58ce5a75127e74"
-  integrity sha512-yVskMya9FTo3GJPxjI8DhE0hP/EebW+o9RpRXlkSUFFhGs8qdAU2DeRdzwbkn73jHbAK0N/sdq8mIj39UCRpQg==
+heapdump@^0.3.14:
+  version "0.3.14"
+  resolved "https://registry.yarnpkg.com/heapdump/-/heapdump-0.3.14.tgz#cd616c8f63855fd928eee8179ba462ce461c547d"
+  integrity sha512-omSf+s4yDxHWsh8uNdzhDQFi9tkuBEaxn3pUnHetcEB4XD5L/bWDAFmtnSHP2HmtfnYqkaK6Y76TbhfSOPP7/A==
   dependencies:
-    nan "^2.11.1"
+    nan "^2.13.2"
 
 iconv-lite@^0.4.4:
   version "0.4.24"
@@ -483,7 +483,7 @@ ms@2.0.0:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
 
-nan@^2.11.1, nan@^2.13.2:
+nan@^2.13.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
   integrity sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==

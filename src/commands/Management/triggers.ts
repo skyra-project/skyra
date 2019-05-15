@@ -1,9 +1,9 @@
 import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { resolveEmoji } from '../../lib/util/util';
 
 const REG_TYPE = /alias|reaction/i;
-const REG_REAC = /^<(:[^:]+:\d{17,19})>$/;
 
 export default class extends SkyraCommand {
 
@@ -34,7 +34,8 @@ export default class extends SkyraCommand {
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			if (type === 'reaction') {
 				try {
-					if (REG_REAC.test(arg)) [, arg] = REG_REAC.exec(arg);
+					arg = resolveEmoji(arg);
+					if (!arg) throw null;
 					await msg.react(arg);
 					return arg;
 				} catch (_) {

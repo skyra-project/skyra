@@ -12,6 +12,7 @@ export const DATABASE_PRODUCTION: RPoolConnectionOptions = {
 	password: '',
 	user: ''
 };
+export const VERSION = '5.1.0 Nerom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	commandEditing: true,
@@ -92,24 +93,25 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	typing: false
 };
 
-export const VERSION = '5.0.0 Nerom';
 export const NAME = 'Skyra';
 export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
-export const WEBHOOK_ERROR: APIWebhookData = DEV ? {
-	avatar: '7d52ea85e9ffe07ac8b15d4b60cf29d7',
-	channel_id: '432495057552277504',
-	guild_id: '254360814063058944',
-	id: '516616472269946885',
-	name: 'Skyra Development',
-	token: '',
-} : {
-	avatar: '8555889e893215cac63193dc2ad0b52d',
-	channel_id: '432495057552277504',
-	guild_id: '254360814063058944',
-	id: '516619861397340182',
-	name: 'Skyra Production',
-	token: '',
-};
+export const WEBHOOK_ERROR: APIWebhookData = DEV
+	? {
+		avatar: '7d52ea85e9ffe07ac8b15d4b60cf29d7',
+		channel_id: '432495057552277504',
+		guild_id: '254360814063058944',
+		id: '516616472269946885',
+		name: 'Skyra Development',
+		token: ''
+	}
+	: {
+		avatar: '8555889e893215cac63193dc2ad0b52d',
+		channel_id: '432495057552277504',
+		guild_id: '254360814063058944',
+		id: '516619861397340182',
+		name: 'Skyra Production',
+		token: ''
+	};
 
 export const TOKENS = {
 	ANIMELIST: {

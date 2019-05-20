@@ -1,10 +1,12 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"alwaysStrict": true,
+		"declaration": false,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
 		"incremental": true,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"target": "esnext",
 		"lib": [
 			"esnext",
 			"esnext.array",
@@ -12,15 +14,17 @@
 			"esnext.intl",
 			"esnext.symbol"
 		],
-		"declaration": false,
-		"sourceMap": true,
-		"removeComments": false,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"alwaysStrict": true,
-		"allowSyntheticDefaultImports": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noUnusedLocals": true,
+		"outDir": "./dist",
 		"pretty": true,
-		"types": ["node", "node-fetch"],
+		"removeComments": true,
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"strictBindCallApply": true,
+		"target": "esnext",
+		"types": ["node", "node-fetch"]
 	},
 	"include": [
 		"./src/**/*"

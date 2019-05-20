@@ -2,6 +2,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch } from '../../lib/util/util';
+import { TOKENS } from '../../../config';
 
 export default class extends SkyraCommand {
 
@@ -23,7 +24,9 @@ export default class extends SkyraCommand {
 		url.searchParams.append('fsym', from);
 		url.searchParams.append('tsyms', to);
 
-		const body = await fetch(url, 'json');
+		const body = await fetch(url, {
+			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE}`]]
+		}, 'json');
 
 		if (body.Response === 'Error') throw message.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		return message.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * body[to]]);

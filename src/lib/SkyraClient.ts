@@ -229,6 +229,11 @@ declare module 'discord.js' {
 		fetchUsername(id: string): Promise<string>;
 	}
 
+	// TODO(kyranet): Remove this once https://github.com/discordjs/discord.js/pull/3284 merges
+	interface Collection<K, V> {
+		reduce<T>(fn: (accumulator: T, value: V, key: K, collection: Collection<K, V>) => T, initialValue?: T): T;
+	}
+
 }
 
 declare module 'klasa' {

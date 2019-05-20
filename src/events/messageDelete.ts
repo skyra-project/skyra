@@ -10,7 +10,7 @@ export default class extends Event {
 	public async run(message: KlasaMessage) {
 		if (message.command && message.command.deletable) {
 			for (const msg of message.responses) {
-				msg.nuke().catch((error) => this.client.emit(Events.ApiError, error));
+				msg.nuke().catch(error => this.client.emit(Events.ApiError, error));
 			}
 		}
 

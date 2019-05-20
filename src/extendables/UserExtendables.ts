@@ -1,25 +1,23 @@
 import { User } from 'discord.js';
-import { Extendable, ExtendableStore, KlasaClient } from 'klasa';
+import { Extendable, ExtendableStore } from 'klasa';
 import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends Extendable {
 
-	public constructor(client: KlasaClient, store: ExtendableStore, file: string[], directory: string) {
-		super(client, store, file, directory, { appliesTo: [User] });
+	public constructor(store: ExtendableStore, file: string[], directory: string) {
+		super(store, file, directory, { appliesTo: [User] });
 	}
 
-	public get profileLevel() {
-		const self = this as unknown as User;
-		return Math.floor(0.2 * Math.sqrt(self.settings.get(UserSettings.Points) as UserSettings.Points));
+	public get profileLevel(this: User) {
+		return Math.floor(0.2 * Math.sqrt(this.settings.get(UserSettings.Points) as UserSettings.Points));
 	}
 
-	public async fetchRank() {
-		const self = this as unknown as User;
-		const list = await self.client.leaderboard.fetch();
+	public async fetchRank(this: User) {
+		const list = await this.client.leaderboard.fetch();
 
-		const rank = list.get(self.id);
+		const rank = list.get(this.id);
 		if (!rank) return list.size;
-		if (!rank.name) rank.name = self.username;
+		if (!rank.name) rank.name = this.username;
 		return rank.position;
 	}
 

@@ -1,10 +1,14 @@
-import { RawEvent } from '../lib/structures/RawEvent';
 import { Databases } from '../lib/types/constants/Constants';
 import { WSMessageDeleteBulk } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { EventStore, Event } from 'klasa';
 
-export default class extends RawEvent {
+export default class extends Event {
+
+	public constructor(store: EventStore, file: string[], directory: string) {
+		super(store, file, directory, { name: 'MESSAGE_DELETE_BULK', emitter: store.client.ws });
+	}
 
 	public async run(data: WSMessageDeleteBulk): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
@@ -13,10 +17,10 @@ export default class extends RawEvent {
 
 		// Delete entries from starboard if it exists
 		try {
-			// @ts-ignore
 			const results = await this.client.providers.default.db
 				.table(Databases.Starboard)
-				.getAll(...data.ids.map((id) => [data.channel_id, id]), { index: 'channel_message' })
+				// @ts-ignore
+				.getAll(...data.ids.map(id => [data.channel_id, id]), { index: 'channel_message' })
 				.delete({ returnChanges: true })
 				.run();
 
@@ -26,21 +30,21 @@ export default class extends RawEvent {
 			if (!channel) return;
 
 			const messageSnowflakes = results.changes
-				.map((change) => change.old_val.starMessageID)
-				.filter((v) => v);
+				.map(change => change.old_val.starMessageID)
+				.filter(v => v);
 
 			if (messageSnowflakes.length === 0) return;
 			if (messageSnowflakes.length === 1) {
 				// @ts-ignore
 				this.client.api.channels(channel).messages(messageSnowflakes[0])
 					.delete({ reason: 'Starboard Management: Message Deleted' })
-					.catch((error) => this.client.emit(Events.ApiError, error));
+					.catch(error => this.client.emit(Events.ApiError, error));
 				return;
 			}
 			// @ts-ignore
 			this.client.api.channels[channel].messages['bulk-delete']
 				.post({ data: { messages: messageSnowflakes }, reason: 'Starboard Management: Message Deleted' })
-				.catch((error) => this.client.emit(Events.ApiError, error));
+				.catch(error => this.client.emit(Events.ApiError, error));
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 		}

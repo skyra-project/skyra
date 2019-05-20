@@ -1,15 +1,16 @@
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { Databases } from '../../../lib/types/constants/Constants';
+import { MemberSettings } from '../../../lib/types/settings/MemberSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_SOCIAL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_SOCIAL_EXTENDED'),
+			description: language => language.get('COMMAND_SOCIAL_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_SOCIAL_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			subcommands: true,
@@ -29,14 +30,14 @@ export default class extends SkyraCommand {
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
-			newAmount = member.settings.count + amount;
+			newAmount = (member.settings.get(MemberSettings.Points) as MemberSettings.Points) + amount;
 			await member.settings.update(newAmount);
 		} else {
 			const entry = await this._getMemberSettings(message.guild.id, user.id);
 			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
-			newAmount = entry.count + amount;
+			newAmount = (entry.count as number) + amount;
 			await this.client.providers.default.db
 				.table(Databases.Members)
 				.get(entry.id)
@@ -75,8 +76,8 @@ export default class extends SkyraCommand {
 		// If sets to zero, it shall reset
 		if (amount === 0) return this.reset(message, [user]);
 
-		let variation;
-		let original;
+		let variation: number;
+		let original: number;
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
 		if (member) {
 			// Update from SettingsGateway
@@ -100,7 +101,9 @@ export default class extends SkyraCommand {
 				.run();
 		}
 
-		return message.sendLocale(variation > 0 ? 'COMMAND_SOCIAL_ADD' : 'COMMAND_SOCIAL_REMOVE', [user.username, original + variation, Math.abs(variation)]);
+		return message.sendLocale(variation > 0
+			? 'COMMAND_SOCIAL_ADD'
+			: 'COMMAND_SOCIAL_REMOVE', [user.username, original + variation, Math.abs(variation)]);
 	}
 
 	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {

@@ -1,18 +1,17 @@
 import { GuildMember } from 'discord.js';
-import { Extendable, ExtendableStore, KlasaClient } from 'klasa';
+import { Extendable, ExtendableStore } from 'klasa';
 
 export default class extends Extendable {
 
-	public constructor(client: KlasaClient, store: ExtendableStore, file: string[], directory: string) {
-		super(client, store, file, directory, { appliesTo: [GuildMember] });
+	public constructor(store: ExtendableStore, file: string[], directory: string) {
+		super(store, file, directory, { appliesTo: [GuildMember] });
 	}
 
-	public async fetchRank() {
-		const self = this as unknown as GuildMember;
-		const list = await self.client.leaderboard.fetch(self.guild.id);
-		const rank = list.get(self.id);
+	public async fetchRank(this: GuildMember) {
+		const list = await this.client.leaderboard.fetch(this.guild.id);
+		const rank = list.get(this.id);
 		if (!rank) return list.size;
-		if (!rank.name) rank.name = self.user.username;
+		if (!rank.name) rank.name = this.user.username;
 		return rank.position;
 	}
 

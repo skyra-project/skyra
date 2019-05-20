@@ -1,16 +1,16 @@
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { MemberSettings } from '../../lib/types/settings/MemberSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_MYLEVEL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MYLEVEL_EXTENDED'),
+			description: language => language.get('COMMAND_MYLEVEL_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_MYLEVEL_EXTENDED'),
 			runIn: ['text'],
 			usage: '[user:username]'
 		});
@@ -34,8 +34,9 @@ export default class extends SkyraCommand {
 	}
 
 	public getLatestRole(points: number, autoroles: GuildSettings.Roles.Auto) {
-		for (const autorole of autoroles)
+		for (const autorole of autoroles) {
 			if (autorole.points > points) return autorole;
+		}
 
 		return null;
 	}

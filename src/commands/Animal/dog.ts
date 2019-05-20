@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getColor } from '../../lib/util/util';
 
@@ -12,14 +12,15 @@ export default class extends SkyraCommand {
 		'449188', '140491', '203497', '112888', '3058440', '371698', '277752',
 		'179920', '96127', '261963', '106499'
 	];
+
 	private index = Math.ceil(Math.random() * this.ids.length);
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['doggo', 'puppy'],
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_DOG_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_DOG_EXTENDED'),
+			description: language => language.get('COMMAND_DOG_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_DOG_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true
 		});

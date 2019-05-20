@@ -1,16 +1,16 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_LOVE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_LOVE_EXTENDED'),
+			description: language => language.get('COMMAND_LOVE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_LOVE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			spam: true,

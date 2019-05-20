@@ -4,8 +4,8 @@ export default class extends IPCMonitor {
 
 	public async run({ category = null, lang = 'en-US' }: any) {
 		const language = this.client.languages.get(lang) || this.client.languages.default;
-		const commands = category ? this.client.commands.filter((cmd) => cmd.category === category) : this.client.commands;
-		return commands.map((cmd) => ({
+		const commands = category ? this.client.commands.filter(cmd => cmd.category === category) : this.client.commands;
+		return commands.map(cmd => ({
 			bucket: cmd.bucket,
 			cooldown: cmd.cooldown,
 			description: typeof cmd.description === 'function' ? cmd.description(language) : cmd.description,

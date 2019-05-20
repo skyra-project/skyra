@@ -1,6 +1,6 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
@@ -20,12 +20,12 @@ const COLORS = {
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 120,
-			description: (language) => language.get('COMMAND_WEATHER_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WEATHER_EXTENDED'),
+			description: language => language.get('COMMAND_WEATHER_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_WEATHER_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<city:string>'
 		});
@@ -35,14 +35,19 @@ export default class extends SkyraCommand {
 		const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
 		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${TOKENS.GOOGLE_MAP_API}`, 'json');
 
-		if (response.status !== 'OK')
+		if (response.status !== 'OK') {
 			throw message.language.get(this.handleNotOK(response.status));
-		if (response.results.length === 0)
+		}
+		if (response.results.length === 0) {
 			throw message.language.get('COMMAND_WEATHER_ERROR_ZERO_RESULTS');
+		}
 
 		const geocodelocation = response.results[0].formatted_address;
 		const params = `${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}`;
-		let locality, governing, country, continent;
+		let locality: string;
+		let governing: string;
+		let country: string;
+		let continent: string;
 
 		for (const component of response.results[0].address_components) {
 			if (!locality && component.types.includes('locality')) locality = component;

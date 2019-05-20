@@ -1,16 +1,17 @@
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { PreciseTimeout } from '../../lib/util/PreciseTimeout';
 
+// TODO(kyranet): Add a textchannel argument to this.
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['lock', 'unlock'],
 			cooldown: 5,
-			description: (language) => language.get('COMMAND_LOCKDOWN_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_LOCKDOWN_EXTENDED'),
+			description: language => language.get('COMMAND_LOCKDOWN_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_LOCKDOWN_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 		});
@@ -40,9 +41,14 @@ export default class extends SkyraCommand {
 		message.guild.security.lockdowns.set(channel.id, timeout);
 
 		// Perform cleanup later
-		if (timeout) timeout.run()
-			.then(this._unlock.bind(this, message, channel))
-			.catch(this._unlock.bind(this, message, channel));
+		if (timeout) {
+			try {
+				await timeout.run();
+				this._unlock(message, channel);
+			} catch {
+				this._unlock(message, channel);
+			}
+		}
 	}
 
 	private async _unlock(message: KlasaMessage, channel: TextChannel) {

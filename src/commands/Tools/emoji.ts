@@ -1,17 +1,18 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch } from '../../lib/util/util';
 
-const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/, REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
+const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;
+const REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
 const MAX_EMOJI_SIZE = 1024 * 1024 * 8;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_EMOJI_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_EMOJI_EXTENDED'),
+			description: language => language.get('COMMAND_EMOJI_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_EMOJI_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<emoji:string>'
 		});
@@ -37,7 +38,9 @@ export default class extends SkyraCommand {
 
 	public emoji(emoji: string) {
 		const r = [];
-		let c = 0, p = 0, i = 0;
+		let c = 0;
+		let p = 0;
+		let i = 0;
 
 		while (i < emoji.length) {
 			c = emoji.charCodeAt(i++);

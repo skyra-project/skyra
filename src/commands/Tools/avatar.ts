@@ -1,15 +1,15 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_AVATAR_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_AVATAR_EXTENDED'),
+			description: language => language.get('COMMAND_AVATAR_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_AVATAR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'

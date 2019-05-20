@@ -1,68 +1,4 @@
 /**
- * The FriendlyDuration static class in charge of humanify the duration timestamps
- * @version 2.0.0
- */
-export class FriendlyDuration {
-
-	/**
-	 * Display the duration
-	 * @param duration The duration in milliseconds to parse and display
-	 * @param assets The language assets
-	 */
-	public static duration(duration: number, assets: DurationFormatAssetsTime) {
-		const result = FriendlyDuration._parse(duration);
-		const output = [];
-
-		for (const [timeType, amount] of result)
-			output.push(FriendlyDuration._addUnit(amount, assets[timeType]));
-
-		return output.join(' ') || FriendlyDuration._addUnit(0, assets.SECOND);
-	}
-
-	/**
-	 * Adds an unit, if non zero
-	 * @param time The duration of said unit
-	 * @param unit The unit language assets
-	 */
-	public static _addUnit(time: number, unit: DurationFormatAssetsUnit) {
-		if (time in unit) return `${time} ${unit[time]}`;
-		return `${time} ${unit.DEFAULT}`;
-	}
-
-	/**
-	 * Parse the duration
-	 * @param duration The duration in milliseconds to parse
-	 */
-	private static _parse(duration: number): [TimeTypes, number][] {
-		const output: [TimeTypes, number][] = [];
-		for (const unit of UNIT_TYPES) {
-			const amount = FriendlyDuration._parseUnit(duration, unit);
-			if (amount === 0) continue;
-			output.push([unit, amount]);
-			duration -= amount * TIME_TOKENS.get(unit);
-		}
-		return output;
-	}
-
-	/**
-	 * Parses the time duration by extracting the amount of units
-	 * given both the duration and the unit
-	 * @param time The time duration to parse
-	 * @param unit The unit
-	 */
-	private static _parseUnit(time: number, unit: TimeTypes): number {
-		// NOTE: The |0 converts any number into a 32-bit integer,
-		// trimming the decimals at an incredibly speed as it does
-		// data conversion and is significantly faster than Math.floor.
-		// However, this also limits its range to 2^31: 2147483648,
-		// which is, invalid (you cannot have a number to represent
-		// 2147483648 weeks, that's an invalid date).
-		return ((time / TIME_TOKENS.get(unit)) % UNIT_DISTANCES.get(unit)) | 0;
-	}
-
-}
-
-/**
  * The supported time types
  */
 enum TimeTypes {
@@ -74,18 +10,6 @@ enum TimeTypes {
 	Week = 'WEEK',
 	Month = 'MONTH',
 	Year = 'YEAR'
-}
-
-interface DurationFormatAssetsUnit extends Record<number, string> {
-	DEFAULT: string;
-}
-
-interface DurationFormatAssetsTime {
-	[TimeTypes.Second]: DurationFormatAssetsUnit;
-	[TimeTypes.Minute]: DurationFormatAssetsUnit;
-	[TimeTypes.Hour]: DurationFormatAssetsUnit;
-	[TimeTypes.Day]: DurationFormatAssetsUnit;
-	[TimeTypes.Week]: DurationFormatAssetsUnit;
 }
 
 /**
@@ -100,7 +24,7 @@ const TIME_TOKENS = new Map([
 	[TimeTypes.Week, 1000 * 60 * 60 * 24 * 7],
 	// 29.53059 days is the official duration of a month: https://en.wikipedia.org/wiki/Month
 	[TimeTypes.Month, 2628000000],
-	[TimeTypes.Year, 31536000000],
+	[TimeTypes.Year, 31536000000]
 ]);
 
 const UNIT_DISTANCES = new Map([
@@ -125,3 +49,72 @@ const UNIT_TYPES = Object.freeze([
 	TimeTypes.Minute,
 	TimeTypes.Second
 ]);
+
+/**
+ * Display the duration
+ * @param duration The duration in milliseconds to parse and display
+ * @param assets The language assets
+ */
+export default function(duration: number, assets: DurationFormatAssetsTime) {
+	const result = _parse(duration);
+	const output = [];
+
+	for (const [timeType, amount] of result) {
+		output.push(_addUnit(amount, assets[timeType]));
+	}
+
+	return output.join(' ') || _addUnit(0, assets.SECOND);
+}
+
+/**
+ * Adds an unit, if non zero
+ * @param time The duration of said unit
+ * @param unit The unit language assets
+ */
+function _addUnit(time: number, unit: DurationFormatAssetsUnit) {
+	if (time in unit) return `${time} ${unit[time]}`;
+	return `${time} ${unit.DEFAULT}`;
+}
+
+/**
+ * Parse the duration
+ * @param duration The duration in milliseconds to parse
+ */
+function _parse(duration: number): [TimeTypes, number][] {
+	const output: [TimeTypes, number][] = [];
+	for (const unit of UNIT_TYPES) {
+		const amount = _parseUnit(duration, unit);
+		if (amount === 0) continue;
+		output.push([unit, amount]);
+		duration -= amount * TIME_TOKENS.get(unit);
+	}
+	return output;
+}
+
+/**
+ * Parses the time duration by extracting the amount of units
+ * given both the duration and the unit
+ * @param time The time duration to parse
+ * @param unit The unit
+ */
+function _parseUnit(time: number, unit: TimeTypes): number {
+	// NOTE: The |0 converts any number into a 32-bit integer,
+	// trimming the decimals at an incredibly speed as it does
+	// data conversion and is significantly faster than Math.floor.
+	// However, this also limits its range to 2^31: 2147483648,
+	// which is, invalid (you cannot have a number to represent
+	// 2147483648 weeks, that's an invalid date).
+	return ((time / TIME_TOKENS.get(unit)) % UNIT_DISTANCES.get(unit)) | 0;
+}
+
+interface DurationFormatAssetsUnit extends Record<number, string> {
+	DEFAULT: string;
+}
+
+interface DurationFormatAssetsTime {
+	[TimeTypes.Second]: DurationFormatAssetsUnit;
+	[TimeTypes.Minute]: DurationFormatAssetsUnit;
+	[TimeTypes.Hour]: DurationFormatAssetsUnit;
+	[TimeTypes.Day]: DurationFormatAssetsUnit;
+	[TimeTypes.Week]: DurationFormatAssetsUnit;
+}

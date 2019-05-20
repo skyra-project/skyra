@@ -1,8 +1,16 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
+
 import { Collection, Guild, User } from 'discord.js';
 import { Databases } from '../types/constants/Constants';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
+
+enum CacheActions {
+	None,
+	Fetch,
+	Insert
+}
 
 export class ModerationManager extends Collection<number, ModerationManagerEntry> {
 
@@ -40,13 +48,14 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public get new() {
+		// eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
 		return new ModerationManagerEntry(this, {} as ModerationManagerInsertData);
 	}
 
-	public async fetch(id: string | number[]): Promise<Collection<number, ModerationManagerEntry>>;
-	public async fetch(id?: []): Promise<this>;
 	public async fetch(id: number): Promise<ModerationManagerEntry>;
-	public async fetch(id?: string | number | number[]): Promise<ModerationManagerEntry | ModerationManagerEntry[] | Collection<number, ModerationManagerEntry> | this> {
+	public async fetch(id: string | number[]): Promise<Collection<number, ModerationManagerEntry>>;
+	public async fetch(): Promise<this>;
+	public async fetch(id?: string | number | number[]): Promise<ModerationManagerEntry | Collection<number, ModerationManagerEntry> | this> {
 		// Case number
 		if (typeof id === 'number') {
 			return super.get(id) || this._cache(await this.table.getAll([this.guild.id, id], { index: 'guild_case' })
@@ -59,7 +68,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		// User id
 		if (typeof id === 'string') {
 			return this._count === super.size
-				? super.filter((entry) => entry.user === id)
+				? super.filter(entry => entry.user === id)
 				: this._cache((await this.table.getAll([this.guild.id, id], { index: 'guild_user' })
 					.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
 					.run()) as ModerationManagerInsertData[], CacheActions.None);
@@ -67,7 +76,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 		if (Array.isArray(id) && id.length) {
 			// @ts-ignore
-			return this._cache(await this.table.getAll(...id.map((entryID) => [this.guild.id, entryID]), { index: 'guild_case' })
+			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild.id, entryID]), { index: 'guild_case' })
 				.run());
 		}
 
@@ -96,10 +105,15 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 	public async appeal(data: ModerationManagerUpdateData | ModerationManagerEntry) {
 		let entry;
-		if ('id' in data) entry = await this.table.get(data.id).default(null).run();
-		else if (ModerationSchemaKeys.Case in data) entry = await this.fetch(data[ModerationSchemaKeys.Case]);
-		else if (ModerationSchemaKeys.User in data) entry = (await this.fetch(data[ModerationSchemaKeys.User])).find((log) => !(log[ModerationSchemaKeys.Type] & ModerationActions.Appealed));
-		else throw new Error('Expected the entry id, case, or user. Got none of them.');
+		if ('id' in data) {
+			entry = await this.table.get(data.id).default(null).run();
+		} else if (ModerationSchemaKeys.Case in data) {
+			entry = await this.fetch(data[ModerationSchemaKeys.Case]);
+		} else if (ModerationSchemaKeys.User in data) {
+			entry = (await this.fetch(data[ModerationSchemaKeys.User] as string)).find(log => !(log[ModerationSchemaKeys.Type] & ModerationActions.Appealed));
+		} else {
+			throw new Error('Expected the entry id, case, or user. Got none of them.');
+		}
 
 		if (!entry || entry[ModerationSchemaKeys.Guild] !== this.guild.id) throw new Error(ModerationErrors.CaseNotExists);
 		if (entry[ModerationSchemaKeys.Type] & ModerationActions.Appealed) throw new Error(ModerationErrors.CaseAppealed);
@@ -114,8 +128,10 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	public createLock() {
 		const lock = createReferPromise<undefined>();
 		this._locks.push(lock);
-		// tslint:disable-next-line:no-floating-promises
-		lock.promise.finally(() => { this._locks.splice(this._locks.indexOf(lock), 1); });
+		// eslint-disable-next-line promise/catch-or-return
+		lock.promise.finally(() => {
+			this._locks.splice(this._locks.indexOf(lock), 1);
+		});
 
 		return lock.resolve;
 	}
@@ -125,38 +141,41 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public waitLock() {
-		return Promise.all(this._locks.map((lock) => lock.promise));
+		return Promise.all(this._locks.map(lock => lock.promise));
 	}
 
-	private _cache(entries: ModerationManagerInsertData | ModerationManagerEntry, type?: CacheActions): ModerationManagerEntry;
+	private _cache(entry: ModerationManagerInsertData | ModerationManagerEntry, type?: CacheActions): ModerationManagerEntry;
 	private _cache(entries: (ModerationManagerInsertData | ModerationManagerEntry)[], type?: CacheActions): Collection<number, ModerationManagerEntry>;
 	private _cache(
 		entries: ModerationManagerEntry | ModerationManagerInsertData | (ModerationManagerEntry | ModerationManagerInsertData)[] | null,
-		type: CacheActions): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
+		type: CacheActions
+	): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
 		if (!entries) return null;
 
 		const parsedEntries = Array.isArray(entries)
-			? entries.map((entry) => entry instanceof ModerationManagerEntry ? entry : new ModerationManagerEntry(this, entry))
+			? entries.map(entry => entry instanceof ModerationManagerEntry ? entry : new ModerationManagerEntry(this, entry))
 			: [entries instanceof ModerationManagerEntry ? entries : new ModerationManagerEntry(this, entries)];
 
-		for (const entry of parsedEntries)
+		for (const entry of parsedEntries) {
 			super.set(entry.case, entry);
+		}
 
 		switch (type) {
-			case CacheActions.Fetch: this._count = super.size; break;
+			case CacheActions.Fetch: this._count = super.size;
+				break;
 			case CacheActions.Insert: this._count++;
 		}
 
 		if (!this._timer) {
 			this._timer = setInterval(() => {
-				super.sweep((value) => value.cacheExpired);
+				super.sweep(value => value.cacheExpired);
 				if (!super.size) this._timer = null;
 			}, 1000);
 		}
 
+		// @ts-ignore
 		return Array.isArray(entries)
-			// @ts-ignore
-			? new Collection<number, ModerationManagerEntry>(parsedEntries.map((entry) => [entry.case, entry]))
+			? new Collection<number, ModerationManagerEntry>(parsedEntries.map(entry => [entry.case, entry]))
 			: parsedEntries;
 	}
 
@@ -164,12 +183,6 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return Collection;
 	}
 
-}
-
-enum CacheActions {
-	None,
-	Fetch,
-	Insert
 }
 
 export interface ModerationManagerInsertData {

@@ -9,11 +9,15 @@ const LIMITS = {
 	MEMBERS: 5000
 };
 
+const SECOND = 1000;
+const MINUTE = SECOND * 60;
+
 /**
  * The Leaderboard singleton class in charge of storing local and global leaderboards
  * @version 2.0.0
  */
 export class Leaderboard {
+
 	/**
 	 * The Client that initialized this instance
 	 */
@@ -73,16 +77,18 @@ export class Leaderboard {
 	 * Clear the guilds cache
 	 */
 	public clearGuilds(): void {
-		for (const timeout of this.timeouts.guilds.values())
+		for (const timeout of this.timeouts.guilds.values()) {
 			timeout.stop();
+		}
 	}
 
 	/**
 	 * Clear the user leaderboard cache
 	 */
 	public clearUsers(): void {
-		if (this.timeouts.users)
+		if (this.timeouts.users) {
 			this.timeouts.users.stop();
+		}
 	}
 
 	/**
@@ -91,19 +97,22 @@ export class Leaderboard {
 	 */
 	private async _syncMembers(guild: string): Promise<void> {
 		// If it's still on timeout, reset it
-		if (this.timeouts.guilds.has(guild))
+		if (this.timeouts.guilds.has(guild)) {
 			this.timeouts.guilds.get(guild).stop();
+		}
 		// It's not deleting the entry as the previous run will resolve
 
 		// Get the sorted data from the db
-		const promise: Promise<void> = new Promise(async(resolve) => {
+		const promise: Promise<void> = new Promise(async resolve => {
 			const r = this.client.providers.default.db;
 			// orderBy with index on getAll doesn't work
-			const data = await r.table(Databases.Members).getAll(guild, { index: 'guildID' }).orderBy(r.desc(MemberSettings.Points)).limit(LIMITS.MEMBERS).run();
+			const data = await r.table(Databases.Members).getAll(guild, { index: 'guildID' }).orderBy(r.desc(MemberSettings.Points))
+				.limit(LIMITS.MEMBERS)
+				.run();
 
 			// Clear the leaderboards for said guild
-			if (!this.guilds.has(guild)) this.guilds.set(guild, new Collection());
-			else this.guilds.get(guild).clear();
+			if (this.guilds.has(guild)) this.guilds.get(guild).clear();
+			else this.guilds.set(guild, new Collection());
 
 			// Get the store and initialize the position number, then save all entries
 			const store = this.guilds.get(guild);
@@ -123,7 +132,7 @@ export class Leaderboard {
 		const timeout = new PreciseTimeout(MINUTE * 10);
 		this.timeouts.guilds.set(guild, timeout);
 
-		// tslint:disable-next-line:no-floating-promises
+		// eslint-disable-next-line promise/catch-or-return, promise/prefer-await-to-then, promise/always-return
 		timeout.run().then(() => {
 			this.timeouts.guilds.delete(guild);
 			this.guilds.get(guild).clear();
@@ -135,16 +144,18 @@ export class Leaderboard {
 	 * Sync the global leaderboard
 	 */
 	private async _syncUsers(): Promise<void> {
-		await (this._tempPromises.users = new Promise(async(resolve) => {
+		await (this._tempPromises.users = new Promise(async resolve => {
 			// Get the sorted data from the db
 			const r = this.client.providers.default.db;
-			const data = await r.table(Databases.Users).orderBy({ index: r.desc(UserSettings.Points) }).limit(LIMITS.GLOBAL).run();
+			const data = await r.table(Databases.Users).orderBy({ index: r.desc(UserSettings.Points) }).limit(LIMITS.GLOBAL)
+				.run();
 
 			// Get the store and initialize the position number, then save all entries
 			this.users.clear();
 			let i = 0;
-			for (const entry of data)
+			for (const entry of data) {
 				this.users.set(entry.id, { name: null, points: entry.points, position: ++i });
+			}
 
 			this._tempPromises.users = null;
 			resolve();
@@ -155,7 +166,7 @@ export class Leaderboard {
 
 		// Set the timeout for the refresh
 		this.timeouts.users = new PreciseTimeout(MINUTE * 15);
-		// tslint:disable-next-line:no-floating-promises
+		// eslint-disable-next-line promise/catch-or-return, promise/prefer-await-to-then, promise/always-return
 		this.timeouts.users.run().then(() => {
 			this.timeouts.users = null;
 			this.users.clear();
@@ -185,6 +196,3 @@ interface LeaderboardPromises {
 	 */
 	guilds: Collection<string, Promise<void>>;
 }
-
-const SECOND = 1000;
-const MINUTE = SECOND * 60;

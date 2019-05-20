@@ -1,10 +1,14 @@
-import { RawEvent } from '../lib/structures/RawEvent';
 import { Databases } from '../lib/types/constants/Constants';
 import { WSMessageDelete } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { EventStore, Event } from 'klasa';
 
-export default class extends RawEvent {
+export default class extends Event {
+
+	public constructor(store: EventStore, file: string[], directory: string) {
+		super(store, file, directory, { name: 'MESSAGE_DELETE', emitter: store.client.ws });
+	}
 
 	public async run(data: WSMessageDelete): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
@@ -30,7 +34,7 @@ export default class extends RawEvent {
 					// @ts-ignore
 					this.client.api.channels(channel).messages(messageID)
 						.delete({ reason: 'Starboard Management: Message Deleted' })
-						.catch((error) => this.client.emit(Events.ApiError, error));
+						.catch(error => this.client.emit(Events.ApiError, error));
 				}
 			}
 		} catch (error) {

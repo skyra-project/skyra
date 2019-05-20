@@ -1,13 +1,13 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
 import { showSeconds } from '../../lib/util/util';
 
 export default class extends MusicCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['pt'],
-			description: (language) => language.get('COMMAND_TIME_DESCRIPTION'),
+			description: language => language.get('COMMAND_TIME_DESCRIPTION'),
 			music: ['QUEUE_NOT_EMPTY', 'VOICE_PLAYING']
 		});
 	}

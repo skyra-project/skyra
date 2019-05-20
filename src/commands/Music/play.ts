@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import { Track } from 'lavalink';
 import { Queue } from '../../lib/structures/music/Queue';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
@@ -6,16 +6,14 @@ import { Events } from '../../lib/types/Enums';
 
 export default class extends MusicCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
-			description: (language) => language.get('COMMAND_PLAY_DESCRIPTION'),
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
+			description: language => language.get('COMMAND_PLAY_DESCRIPTION'),
 			music: ['USER_VOICE_CHANNEL'],
 			usage: '(song:song)'
 		});
 
-		this.createCustomResolver('song', (arg, possible, message) => {
-			return arg ? this.client.arguments.get('song').run(arg, possible, message) : null;
-		});
+		this.createCustomResolver('song', (arg, possible, message) => arg ? this.client.arguments.get('song').run(arg, possible, message) : null);
 	}
 
 	// @ts-ignore
@@ -43,7 +41,7 @@ export default class extends MusicCommand {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music.song]);
 		} else {
 			music.channelID = message.channel.id;
-			this.play(music).catch((error) => this.client.emit(Events.Wtf, error));
+			this.play(music).catch(error => this.client.emit(Events.Wtf, error));
 		}
 	}
 
@@ -65,7 +63,9 @@ export default class extends MusicCommand {
 
 		if (!music.length && music.channelID) {
 			await music.channel.sendLocale('COMMAND_PLAY_END');
-			await music.leave().catch((error) => { this.client.emit(Events.Wtf, error); });
+			await music.leave().catch(error => {
+				this.client.emit(Events.Wtf, error);
+			});
 		}
 	}
 

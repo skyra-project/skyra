@@ -8,9 +8,17 @@ const g = new Colors({ text: 'green' });
 const b = new Colors({ text: 'lightblue' });
 const header = b.format('[POST STATS   ]');
 
+enum Lists {
+	BotsForDiscord = 'botsfordiscord.com',
+	DiscordBotList = 'discordbotlist.com',
+	DiscordBotsOrg = 'discordbots.org',
+	DiscordBotsGG = 'discord.bots.gg',
+	BotsOnDiscord = 'bots.ondiscord.xyz'
+}
+
 export default class extends Task {
 
-	public async run(): Promise<void> {
+	public async run() {
 		if (this.client.options.dev) return;
 
 		const guilds = this.client.guilds.size.toString();
@@ -27,17 +35,17 @@ export default class extends Task {
 				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList),
 			this.query(`https://bots.ondiscord.xyz/bot-api/bots/${this.client.user.id}/guilds`,
 				`{"guildCount":${guilds}}`, TOKENS.BOTS_ON_DISCORD, Lists.BotsOnDiscord)
-		])).filter((value) => value !== null);
+		])).filter(value => value !== null);
 
 		if (results.length) this.client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 	}
 
-	public async query(url: string, body: string, token: string, list: Lists): Promise<string> {
+	public async query(url: string, body: string, token: string, list: Lists) {
 		try {
 			if (!token) return null;
 			await fetch(url, {
 				body,
-				headers: { 'Content-Type': 'application/json', Authorization: token },
+				headers: { 'Content-Type': 'application/json', 'Authorization': token },
 				method: 'POST'
 			}, 'result');
 			return g.format(list);
@@ -47,12 +55,4 @@ export default class extends Task {
 		}
 	}
 
-}
-
-enum Lists {
-	BotsForDiscord = 'botsfordiscord.com',
-	DiscordBotList = 'discordbotlist.com',
-	DiscordBotsOrg = 'discordbots.org',
-	DiscordBotsGG = 'discord.bots.gg',
-	BotsOnDiscord = 'bots.ondiscord.xyz'
 }

@@ -4,6 +4,13 @@ import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
+const TYPES: Record<MessageLogsEnum, string> = {
+	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,
+	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
+	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
+	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs
+};
+
 export default class extends Event {
 
 	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => string) {
@@ -32,10 +39,3 @@ export default class extends Event {
 	}
 
 }
-
-const TYPES = {
-	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,
-	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
-	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
-	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs
-} as Record<MessageLogsEnum, string>;

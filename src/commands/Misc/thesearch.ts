@@ -1,6 +1,6 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { assetsFolder } from '../../Skyra';
@@ -9,12 +9,12 @@ export default class extends SkyraCommand {
 
 	private template: Buffer = null;
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_THESEARCH_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_THESEARCH_EXTENDED'),
+			description: language => language.get('COMMAND_THESEARCH_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_THESEARCH_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,

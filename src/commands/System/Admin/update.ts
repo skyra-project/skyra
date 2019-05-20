@@ -1,10 +1,10 @@
-import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['pull'],
 			description: 'Update the bot',
 			guarded: true,
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 
 	private async compile(message: KlasaMessage) {
 		const { stderr } = await util.exec('yarn run compile')
-			.catch((error) => ({ stdout: '', stderr: (error && error.message) || error || '' }));
+			.catch(error => ({ stdout: '', stderr: (error && error.message) || error || '' }));
 		if (stderr.length) throw stderr.trim();
 		return message.channel.send(`✔ Successfully compiled.`);
 	}

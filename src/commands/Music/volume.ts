@@ -1,12 +1,12 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['vol'],
-			description: (language) => language.get('COMMAND_VOLUME_DESCRIPTION'),
+			description: language => language.get('COMMAND_VOLUME_DESCRIPTION'),
 			music: ['SAME_VOICE_CHANNEL', 'VOICE_PLAYING'],
 			usage: '[volume:number]'
 		});
@@ -26,8 +26,7 @@ export default class extends MusicCommand {
 		return message.sendLocale('COMMAND_VOLUME_CHANGED', [volume > previousVolume
 			? (volume === 200 ? '📢' : '🔊')
 			: (volume === 0 ? '🔇' : '🔉'),
-			volume
-		]);
+		volume]);
 	}
 
 }

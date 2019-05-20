@@ -1,5 +1,5 @@
 import { BitFieldResolvable } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaClient, util } from 'klasa';
+import { CommandOptions, CommandStore, util } from 'klasa';
 import { MusicBitField, MusicBitFieldString } from './MusicBitField';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -10,11 +10,11 @@ export abstract class MusicCommand extends SkyraCommand {
 	 */
 	public music: MusicBitField;
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string, options: MusicCommandOptions = {}) {
+	public constructor(store: CommandStore, file: string[], directory: string, options: MusicCommandOptions = {}) {
 		// By nature, music commands only run in VoiceChannels, which are in Guilds.
 		util.mergeDefault({ runIn: ['text'], requireMusic: 0 }, options);
 
-		super(client, store, file, directory, options);
+		super(store, file, directory, options);
 		this.music = new MusicBitField(options.music);
 	}
 

@@ -38,14 +38,14 @@ export class SettingsMenu {
 			const old = this.oldSettings.get(this.schema.path) as any[];
 			return current.length !== old.length || current.some((value, i) => value !== old[i]);
 		}
-		// tslint:disable-next-line:triple-equals
+		// eslint-disable-next-line eqeqeq
 		return this.message.guild.settings.get(this.schema.path) != this.oldSettings.get(this.schema.path);
 	}
 
 	private get changedPieceValue(): boolean {
 		if (this.schema.type === 'Folder') return false;
 		const schema = this.schema as SchemaEntry;
-		// tslint:disable-next-line:triple-equals
+		// eslint-disable-next-line eqeqeq
 		return this.message.guild.settings.get(this.schema.path) != schema.default;
 	}
 
@@ -56,8 +56,8 @@ export class SettingsMenu {
 			.setListener(this.onReaction.bind(this))
 			.setEndListener(this.stop.bind(this));
 		this.llrc.setTime(120000);
-		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author.id === this.message.author.id);
-		this.messageCollector.on('collect', (msg) => this.onMessage(msg));
+		this.messageCollector = this.response.channel.createMessageCollector(msg => msg.author.id === this.message.author.id);
+		this.messageCollector.on('collect', msg => this.onMessage(msg));
 		await this._renderResponse();
 	}
 
@@ -67,7 +67,8 @@ export class SettingsMenu {
 		if (this.pointerIsFolder) {
 			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
 			if (this.errorMessage) description.push(this.errorMessage);
-			const keys = [], folders = [];
+			const keys = [];
+			const folders = [];
 			for (const [key, value] of (this.schema as Schema).entries()) {
 				if (value.type === 'Folder') {
 					if ((value as Schema).configurableKeys.length) folders.push(key);
@@ -77,7 +78,7 @@ export class SettingsMenu {
 			}
 
 			if (!folders.length && !keys.length) description.push(i18n.get('COMMAND_CONF_MENU_RENDER_NOKEYS'));
-			else description.push(i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'), '', ...folders.map((folder) => `• \\📁${folder}`), ...keys.map((key) => `• ${key}`));
+			else description.push(i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'), '', ...folders.map(folder => `• \\📁${folder}`), ...keys.map(key => `• ${key}`));
 		} else {
 			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
@@ -91,7 +92,8 @@ export class SettingsMenu {
 					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : null,
 					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : null,
 					'',
-					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild.settings.display(this.message, this.schema).replace(/``+/g, '`\u200B`')));
+					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild.settings.display(this.message, this.schema).replace(/``+/g, '`\u200B`'))
+				);
 			}
 		}
 
@@ -103,7 +105,7 @@ export class SettingsMenu {
 		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id);
 
 		return this.embed
-			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n\u200B`)
+			.setDescription(`${description.filter(v => v !== null).join('\n')}\n\u200B`)
 			.setFooter(parent ? i18n.get('COMMAND_CONF_MENU_RENDER_BACK') : '')
 			.setTimestamp();
 	}
@@ -211,23 +213,25 @@ export class SettingsMenu {
 	}
 
 	private async tryUndo() {
-		if (!this.changedCurrentPieceValue) {
-			this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
-		} else {
+		if (this.changedCurrentPieceValue) {
 			const previousValue = this.oldSettings.get(this.schema.path);
 			const { errors } = await (previousValue === null
 				? this.message.guild.settings.reset(this.schema.path)
 				: this.message.guild.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
 			if (errors.length) this.errorMessage = String(errors[0]);
+		} else {
+			this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 		}
 	}
 
 	private stop(): void {
 		if (this.response) {
-			if (this.response.reactions.size) this.response.reactions.removeAll()
-				.catch((error) => this.response.client.emit(Events.ApiError, error));
+			if (this.response.reactions.size) {
+				this.response.reactions.removeAll()
+					.catch(error => this.response.client.emit(Events.ApiError, error));
+			}
 			this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
-				.catch((error) => this.message.client.emit(Events.ApiError, error));
+				.catch(error => this.message.client.emit(Events.ApiError, error));
 		}
 		if (!this.messageCollector.ended) this.messageCollector.stop();
 	}

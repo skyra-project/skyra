@@ -1,19 +1,17 @@
-import { Extendable, ExtendableStore, KlasaClient, SettingsFolder } from 'klasa';
+import { Extendable, ExtendableStore, SettingsFolder } from 'klasa';
 
 export default class extends Extendable {
 
-	public constructor(client: KlasaClient, store: ExtendableStore, file: string[], directory: string) {
-		super(client, store, file, directory, { appliesTo: [SettingsFolder] });
+	public constructor(store: ExtendableStore, file: string[], directory: string) {
+		super(store, file, directory, { appliesTo: [SettingsFolder] });
 	}
 
-	public increase(key: string, value: number) {
-		const self = this as unknown as SettingsFolder;
-		return self.update(key, (self.get(key) as number) + value);
+	public increase(this: SettingsFolder, key: string, value: number) {
+		return this.update(key, (this.get(key) as number) + value);
 	}
 
-	public decrease(key: string, value: number) {
-		const self = this as unknown as SettingsFolder;
-		return self.update(key, (self.get(key) as number) - value);
+	public decrease(this: SettingsFolder, key: string, value: number) {
+		return this.update(key, (this.get(key) as number) - value);
 	}
 
 }

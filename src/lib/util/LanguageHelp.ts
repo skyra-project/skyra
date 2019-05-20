@@ -30,26 +30,31 @@ export class LanguageHelp {
 		const output = [];
 
 		// Extended help
-		if (extendedHelp)
+		if (extendedHelp) {
 			output.push(LanguageHelp.resolveMultilineString(extendedHelp, multiline), '');
+		}
 
 		// Explained usage
-		if (explainedUsage.length)
+		if (explainedUsage.length) {
 			output.push(this.explainedUsage, ...explainedUsage.map(([arg, desc]) => `→ **${arg}**: ${desc}`), '');
+		}
 
 		// Possible formats
-		if (possibleFormats.length)
+		if (possibleFormats.length) {
 			output.push(this.possibleFormats, ...possibleFormats.map(([type, example]) => `→ **${type}**: ${example}`), '');
+		}
 
 		// Examples
-		if (examples.length)
-			output.push(this.examples, ...examples.map((example) => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
-		else
+		if (examples.length) {
+			output.push(this.examples, ...examples.map(example => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
+		} else {
 			output.push(this.examples, `→ Skyra, ${name}`, '');
+		}
 
 		// Reminder
-		if (reminder)
+		if (reminder) {
 			output.push(this.reminder, LanguageHelp.resolveMultilineString(reminder, multiline));
+		}
 
 		return output.join('\n');
 	}
@@ -57,7 +62,7 @@ export class LanguageHelp {
 	public static resolveMultilineString(str: string | string[], multiline: boolean) {
 		return Array.isArray(str)
 			? LanguageHelp.resolveMultilineString(str.join(multiline ? '\n' : ' '), multiline)
-			: str.split('\n').map((line) => line.trim()).join(multiline ? '\n' : ' ');
+			: str.split('\n').map(line => line.trim()).join(multiline ? '\n' : ' ');
 	}
 
 }

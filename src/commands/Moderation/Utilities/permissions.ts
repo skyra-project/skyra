@@ -1,5 +1,5 @@
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { getColor } from '../../../lib/util/util';
 
@@ -7,8 +7,8 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
 			description: 'Check the permission for a member, or yours.',
@@ -21,7 +21,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		if (!user) throw message.language.get('REQUIRE_USER');
-		const member = await message.guild.members.fetch(user.id).catch(() => { throw message.language.get('USER_NOT_IN_GUILD'); });
+		const member = await message.guild.members.fetch(user.id).catch(() => {
+			throw message.language.get('USER_NOT_IN_GUILD');
+		});
 
 		const { permissions } = member;
 		const list = ['\u200B'];

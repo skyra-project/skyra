@@ -1,18 +1,18 @@
 import { Role } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings, RolesAuto } from '../../lib/types/settings/GuildSettings';
 
-const SORT = (x: RolesAuto, y: RolesAuto) => +(x.points > y.points) || +(x.points === y.points) - 1;
+const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['autoroles', 'levelrole', 'lvlrole'],
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_AUTOROLE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_AUTOROLE_EXTENDED'),
+			description: language => language.get('COMMAND_AUTOROLE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_AUTOROLE_EXTENDED'),
 			permissionLevel: 6,
 			requiredPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
@@ -52,8 +52,9 @@ export default class extends SkyraCommand {
 		if (typeof role === 'undefined') throw message.language.get('COMMAND_REQUIRE_ROLE');
 
 		const autoRoles = message.guild.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
-		if (autoRoles.length && autoRoles.some((entry) => entry.id === role.id))
+		if (autoRoles.length && autoRoles.some(entry => entry.id === role.id)) {
 			throw message.language.get('COMMAND_AUTOROLE_UPDATE_CONFIGURED');
+		}
 
 		await message.guild.settings.update('roles.auto', [...autoRoles, { id: role.id, points }].sort(SORT), { arrayAction: 'overwrite' });
 		return message.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
@@ -63,10 +64,11 @@ export default class extends SkyraCommand {
 		if (typeof role === 'undefined') throw message.language.get('REQUIRE_ROLE');
 
 		const autoRoles = message.guild.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
-		if (!autoRoles.length || !autoRoles.some((entry) => entry.id === role.id))
+		if (!autoRoles.length || !autoRoles.some(entry => entry.id === role.id)) {
 			throw message.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
+		}
 
-		const deleteEntry = autoRoles.find((entry) => entry.id === role.id);
+		const deleteEntry = autoRoles.find(entry => entry.id === role.id);
 		await message.guild.settings.update('roles.auto', deleteEntry, { arrayAction: 'remove' });
 
 		return message.sendLocale('COMMAND_AUTOROLE_REMOVE', [role, deleteEntry.points]);
@@ -77,10 +79,11 @@ export default class extends SkyraCommand {
 		if (typeof role === 'undefined') throw message.language.get('COMMAND_REQUIRE_ROLE');
 
 		const autoRoles = message.guild.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
-		if (!autoRoles.length || !autoRoles.some((entry) => entry.id === role.id))
+		if (!autoRoles.length || !autoRoles.some(entry => entry.id === role.id)) {
 			throw message.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
+		}
 
-		const autoRole = autoRoles.find((entry) => entry.id === role.id);
+		const autoRole = autoRoles.find(entry => entry.id === role.id);
 		autoRole.points = points;
 		await message.guild.settings.update('roles.auto', [...autoRoles].sort(SORT), { arrayAction: 'overwrite' });
 		return message.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole]);

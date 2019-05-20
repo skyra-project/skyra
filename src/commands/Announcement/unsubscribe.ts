@@ -1,14 +1,14 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { announcementCheck } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_UNSUBSCRIBE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_UNSUBSCRIBE_EXTENDED'),
+			description: language => language.get('COMMAND_UNSUBSCRIBE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_UNSUBSCRIBE_EXTENDED'),
 			requiredPermissions: ['MANAGE_ROLES'],
 			runIn: ['text']
 		});

@@ -14,7 +14,7 @@ export default class extends Inhibitor {
 		}
 
 		const disabledCommandChannels = message.guild.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
-		const disabledCommandChannel = disabledCommandChannels.find((d) => d.channel === message.channel.id);
+		const disabledCommandChannel = disabledCommandChannels.find(d => d.channel === message.channel.id);
 		if (disabledCommandChannel && disabledCommandChannel.commands.includes(command.name)) {
 			if (await message.hasAtLeastPermissionLevel(5)) return;
 			throw true;

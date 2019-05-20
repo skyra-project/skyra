@@ -34,7 +34,7 @@ export class PreciseTimeout {
 
 		while (!this.stopped) {
 			// tslint:disable-next-line:no-floating-promises
-			await new Promise<void>((resolve) => {
+			await new Promise<void>(resolve => {
 				this.resolve = resolve;
 				this.timeout = setTimeout(cb, Date.now() - this.endsAt + 10);
 			});

@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage, Language, util } from 'klasa';
+import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
 import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
@@ -11,12 +11,12 @@ export default class extends SkyraCommand {
 
 	public playing: Set<string> = new Set();
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['hunger-games', 'hg'],
 			cooldown: 0,
-			description: (language) => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
+			description: language => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
 			requiredPermissions: ['ADD_REACTIONS'],
 			runIn: ['text'],
 			usage: '<user:string{2,50}> [...]',
@@ -33,9 +33,9 @@ export default class extends SkyraCommand {
 
 		let resolve = null;
 		let gameMessage: KlasaMessage = null;
-		const game = Object.seal({
+		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,
-			llrc: new LongLivingReactionCollector(this.client, async(reaction) => {
+			llrc: new LongLivingReactionCollector(this.client, async reaction => {
 				// Ignore if resolve is not ready
 				if (typeof resolve !== 'function'
 				// Run the collector inhibitor
@@ -48,8 +48,8 @@ export default class extends SkyraCommand {
 			}),
 			sun: true,
 			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message))),
-			turn: 0,
-		}) as HungerGamesGame;
+			turn: 0
+		});
 
 		try {
 			while (game.tributes.size > 1) {
@@ -65,18 +65,22 @@ export default class extends SkyraCommand {
 				for (const text of texts) {
 					game.llrc.setTime(120000);
 					gameMessage = await message.channel.send(text) as KlasaMessage;
-					for (const emoji of ['🇾', '🇳']) gameMessage.react(emoji)
-						.catch((error) => this.client.emit(Events.ApiError, error));
-					// tslint:disable-next-line:no-floating-promises
-					const verification = await new Promise<boolean>((res) => { resolve = res; });
-					gameMessage.nuke().catch((error) => this.client.emit(Events.ApiError, error));
+					for (const emoji of ['🇾', '🇳']) {
+						gameMessage.react(emoji)
+							.catch(error => this.client.emit(Events.ApiError, error));
+					}
+					// eslint-disable-next-line promise/param-names
+					const verification = await new Promise<boolean>(res => {
+						resolve = res;
+					});
+					gameMessage.nuke().catch(error => this.client.emit(Events.ApiError, error));
 					if (!verification) {
 						game.llrc.end();
 						return message.sendLocale('COMMAND_HG_STOP');
 					}
 				}
-				if (!game.bloodbath) game.sun = !game.sun;
-				else game.bloodbath = false;
+				if (game.bloodbath) game.bloodbath = false;
+				else game.sun = !game.sun;
 			}
 
 			// The match finished with one remaining player
@@ -119,17 +123,17 @@ export default class extends SkyraCommand {
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
 		const header = language.get('COMMAND_HG_RESULT_HEADER', game);
-		const death = deaths.length ? `${language.get('COMMAND_HG_RESULT_DEATHS', deaths.length)}\n\n${deaths.map((d) => `- ${d}`).join('\n')}` : '';
+		const death = deaths.length ? `${language.get('COMMAND_HG_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
 		const proceed = language.get('COMMAND_HG_RESULT_PROCEED');
 		const panels = util.chunk(results, 5);
 
-		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`);
+		const texts = panels.map(panel => `__**${header}:**__\n\n${panel.map(text => `- ${text}`).join('\n')}\n\n_${proceed}_`);
 		if (deaths.length) texts.push(`${death}\n\n_${proceed}_`);
 		return texts;
 	}
 
 	private pick(events: HungerGamesUsage[], tributes: number, maxDeaths: number) {
-		events = events.filter((event) => event.tributes <= tributes && event.deaths.size <= maxDeaths);
+		events = events.filter(event => event.tributes <= tributes && event.deaths.size <= maxDeaths);
 		return events[Math.floor(Math.random() * events.length)];
 	}
 
@@ -165,8 +169,9 @@ export default class extends SkyraCommand {
 			const pickedTributes = this.pickTributes(tribute, turn, event.tributes);
 
 			// Delete all the picked tributes from this round
-			for (const picked of pickedTributes)
+			for (const picked of pickedTributes) {
 				turn.delete(picked);
+			}
 
 			// Kill all the unfortunate tributes
 			for (const death of event.deaths) {

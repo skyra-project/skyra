@@ -26,6 +26,7 @@ export class RGB {
 	}
 
 	public get hex() {
+		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
 		return new HEX(this.r.toString(16), this.g.toString(16), this.b.toString(16));
 	}
 
@@ -45,7 +46,8 @@ export class RGB {
 
 		if (max === min) {
 			/* Achromatic */
-			h = 0; s = 0;
+			h = 0;
+			s = 0;
 		} else {
 			const d = max - min;
 			s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -59,6 +61,7 @@ export class RGB {
 			}
 			h /= 6;
 		}
+		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
 		return new HSL(Math.round(h * 360), Math.round(s * 100), Math.round(l * 100));
 	}
 

@@ -1,27 +1,27 @@
 import { Role } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { resolveEmoji } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_MANAGEROLEREACTION_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MANAGEROLEREACTION_EXTENDED'),
+			description: language => language.get('COMMAND_MANAGEROLEREACTION_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_MANAGEROLEREACTION_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
 			requiredPermissions: ['READ_MESSAGE_HISTORY', 'ADD_REACTIONS'],
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<show|add|remove|reset> (role:rolename) (emoji:emoji)',
-			usageDelim: ' ',
+			usageDelim: ' '
 		});
 
-		this.createCustomResolver('emoji', async(arg, _, msg, [action = 'show']) => {
+		this.createCustomResolver('emoji', async (arg, _, msg, [action = 'show']) => {
 			if (action === 'show' || action === 'reset') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION');
 
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 				arg = resolveEmoji(arg);
 				await msg.react(arg);
 				return arg;
-			} catch (_) {
+			} catch {
 				throw msg.language.get('COMMAND_TRIGGERS_INVALIDREACTION');
 			}
 		}).createCustomResolver('rolename', (arg, possible, msg, [action = 'show']) => {
@@ -46,8 +46,8 @@ export default class extends SkyraCommand {
 		const lines = [];
 		for (const entry of list) {
 			const role = message.guild.roles.get(entry.role);
-			if (!role) list.delete(entry);
-			else lines.push(`${role.name.padEnd(25, ' ')} :: ${entry.emoji}`);
+			if (role) lines.push(`${role.name.padEnd(25, ' ')} :: ${entry.emoji}`);
+			else list.delete(entry);
 		}
 		if (oldLength !== list.size) {
 			const { errors } = await message.guild.settings.update(GuildSettings.Roles.Reactions, [...list], { arrayAction: 'overwrite' });
@@ -61,18 +61,20 @@ export default class extends SkyraCommand {
 		if (this._checkRoleReaction(message, reaction, role.id)) throw message.language.get('COMMAND_MANAGEROLEREACTION_EXISTS');
 		const { errors } = await message.guild.settings.update(GuildSettings.Roles.Reactions, { emoji: reaction, role: role.id }, { arrayAction: 'add' });
 		if (errors.length) throw errors[0];
-		if (message.guild.settings.get(GuildSettings.Roles.MessageReaction))
+		if (message.guild.settings.get(GuildSettings.Roles.MessageReaction)) {
 			await this._reactMessage(
 				message.guild.settings.get(GuildSettings.Channels.Roles) as GuildSettings.Channels.Roles,
 				message.guild.settings.get(GuildSettings.Roles.MessageReaction) as GuildSettings.Roles.MessageReaction,
-				reaction);
+				reaction
+			);
+		}
 		return message.sendLocale('COMMAND_MANAGEROLEREACTION_ADD');
 	}
 
 	public async remove(message: KlasaMessage, [, reaction]: [Role, string]) {
 		const list = message.guild.settings.get(GuildSettings.Roles.Reactions) as GuildSettings.Roles.Reactions;
 		if (!list.length) throw message.language.get('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
-		const entry = list.find((en) => en.emoji === reaction);
+		const entry = list.find(en => en.emoji === reaction);
 		if (!entry) throw message.language.get('COMMAND_MANAGEROLEREACTION_REMOVE_NOTEXISTS');
 		const { errors } = await message.guild.settings.update(GuildSettings.Roles.Reactions, entry, { arrayAction: 'remove' });
 		if (errors.length) throw errors[0];

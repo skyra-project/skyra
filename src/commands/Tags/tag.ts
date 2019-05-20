@@ -25,16 +25,16 @@
  * SOFTWARE.
  */
 
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
-			description: (language) => language.get('COMMAND_TAG_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_TAG_EXTENDED'),
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
+			description: language => language.get('COMMAND_TAG_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_TAG_EXTENDED'),
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<add|remove|edit|source|list|show:default> (tag:string) [content:...string]',
@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 
 		// Get prefix and display all tags
 		const prefix = message.guild.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
-		return message.sendLocale('COMMAND_TAG_LIST', [tags.map((v) => `\`${prefix}${v[0]}\``)]);
+		return message.sendLocale('COMMAND_TAG_LIST', [tags.map(v => `\`${prefix}${v[0]}\``)]);
 	}
 
 	public show(message: KlasaMessage, [tagName]: [string]) {

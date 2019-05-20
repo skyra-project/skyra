@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { TOKENS } from '../../../../config';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { Databases } from '../../../lib/types/constants/Constants';
@@ -9,12 +9,12 @@ const URL = 'https://od-api.oxforddictionaries.com/api/v1/entries/en/';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 20,
-			description: (language) => language.get('COMMAND_DEFINE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_DEFINE_EXTENDED'),
+			description: language => language.get('COMMAND_DEFINE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_DEFINE_EXTENDED'),
 			usage: '<input:string>'
 		});
 	}
@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 
 	private resolvePronounciations(pronounciations: DefinePronounciation[]) {
 		if (!pronounciations.length) return '';
-		return pronounciations.map((pronounciation) => `\`/${pronounciation.spelling}/\` (${pronounciation.notation})`).join(' ');
+		return pronounciations.map(pronounciation => `\`/${pronounciation.spelling}/\` (${pronounciation.notation})`).join(' ');
 	}
 
 	private format(entries: string[][]) {
@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 			let y = 0;
 			for (const subentry of entry) {
 				const isNestedLast = y === length - 1;
-				output.push(`\`${y !== 0 ? nextLine : line}${y === 0 && length > 1 ? '┬' : length === 1 ? '─' : isNestedLast ? '└' : '├'}\` ${subentry}`);
+				output.push(`\`${y === 0 ? line : nextLine}${y === 0 && length > 1 ? '┬' : length === 1 ? '─' : isNestedLast ? '└' : '├'}\` ${subentry}`);
 				y++;
 			}
 
@@ -88,9 +88,9 @@ export default class extends SkyraCommand {
 
 	private _resolveData({ pronunciations, lexicalCategory, text, entries }: RawDefineLexicalEntry): DefineLexicalEntry {
 		return {
-			entries: entries.map((entry) => entry.senses.map((sense) => sense.definitions.join('\n'))),
+			entries: entries.map(entry => entry.senses.map(sense => sense.definitions.join('\n'))),
 			lexicalCategory,
-			pronounciations: pronunciations.map((pronounciation) => ({ spelling: pronounciation.phoneticSpelling, notation: pronounciation.phoneticNotation })),
+			pronounciations: pronunciations.map(pronounciation => ({ spelling: pronounciation.phoneticSpelling, notation: pronounciation.phoneticNotation })),
 			text
 		};
 	}
@@ -116,4 +116,5 @@ interface DefineLexicalEntry {
 	text: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface DefineLexicalEntries extends Array<DefineLexicalEntry> { }

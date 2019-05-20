@@ -1,8 +1,12 @@
 import { VoiceServerUpdate } from 'lavalink';
-import { RawEvent } from '../lib/structures/RawEvent';
 import { Events } from '../lib/types/Enums';
+import { EventStore, Event } from 'klasa';
 
-export default class extends RawEvent {
+export default class extends Event {
+
+	public constructor(store: EventStore, file: string[], directory: string) {
+		super(store, file, directory, { name: 'VOICE_SERVER_UPDATE', emitter: store.client.ws });
+	}
 
 	public async run(data: VoiceServerUpdate): Promise<void> {
 		try {

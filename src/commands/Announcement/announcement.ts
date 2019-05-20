@@ -1,5 +1,5 @@
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { announcementCheck, getColor } from '../../lib/util/util';
@@ -8,13 +8,13 @@ export default class extends SkyraCommand {
 
 	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['announce'],
 			bucket: 6,
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
+			description: language => language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
 			permissionLevel: 4,
 			requiredPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],

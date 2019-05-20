@@ -1,16 +1,16 @@
 import { KlasaClientOptions } from 'klasa';
 
-const BAN        = 0b0000;
-const KICK       = 0b0001;
-const MUTE       = 0b0010;
-const PRUNE      = 0b0011;
-const SOFT_BAN   = 0b0100;
+const BAN = 0b0000;
+const KICK = 0b0001;
+const MUTE = 0b0010;
+const PRUNE = 0b0011;
+const SOFT_BAN = 0b0100;
 const VOICE_KICK = 0b0101;
 const VOICE_MUTE = 0b0110;
-const WARN       = 0b0111;
+const WARN = 0b0111;
 
-const ACTION_APPEALED = 1 << 4,
-	ACTION_TEMPORARY = 1 << 5;
+const ACTION_APPEALED = 1 << 4;
+const ACTION_TEMPORARY = 1 << 5;
 
 export const TIME = Object.freeze({
 	DAY: 1000 * 60 * 60 * 24,
@@ -110,9 +110,9 @@ export enum ModerationSchemaKeys {
 	User = 'userID'
 }
 
-export const clientOptions = {
+export const clientOptions: KlasaClientOptions = {
 	nms: {
 		everyone: 5,
 		role: 2
 	}
-} as KlasaClientOptions;
+};

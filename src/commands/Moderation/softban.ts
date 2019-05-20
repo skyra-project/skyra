@@ -1,5 +1,5 @@
 import { User } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
@@ -8,10 +8,10 @@ import { softban } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
-			description: (language) => language.get('COMMAND_SOFTBAN_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_SOFTBAN_EXTENDED'),
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
+			description: language => language.get('COMMAND_SOFTBAN_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_SOFTBAN_EXTENDED'),
 			modType: ModerationTypeKeys.Softban,
 			permissionLevel: 5,
 			requiredMember: false,

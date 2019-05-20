@@ -1,11 +1,13 @@
 import { Collection, Guild, GuildMember } from 'discord.js';
 import { GuildSettings } from '../../types/settings/GuildSettings';
+import { noop } from '../util';
 
 /**
  * The AntiRaid class that manages the raiding protection for guilds
  * @version 4.0.0
  */
 export class AntiRaid extends Collection<string, AntiRaidEntry> {
+
 	/**
 	 * The Guild instance that manages this instance
 	 */
@@ -54,7 +56,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: AntiRaid) => boolean, thisArg?: any) {
 		if (!fn) {
 			const now = Date.now();
-			fn = (value) => now > value.time;
+			fn = value => now > value.time;
 		}
 		const amount = super.sweep(fn, thisArg);
 
@@ -92,9 +94,8 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 		const entriesIterator = this.entries();
 		const initialRole = this.guild.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
 		const minRolesAmount = initialRole ? 2 : 1;
-
-		return {
-			next: async() => {
+		const iterator: AsyncIterator<GuildMember | null> = {
+			next: async () => {
 				const next = entriesIterator.next();
 				if (next.done) return { done: true, value: null };
 				const [id, value] = next.value;
@@ -110,16 +111,20 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 				if (member
 					&& member.kickable
 					&& member.roles.size <= minRolesAmount
-					&& initialRole ? member.roles.has(initialRole) : true
+					&& initialRole
+					? member.roles.has(initialRole)
+					: true
 				) {
-					return { done: false, value: <unknown> member as GuildMember };
+					return { done: false, value: member as GuildMember };
 				}
 
 				this.delete(id);
 				return { done: false, value: null };
-			},
+			}
 
-		} as AsyncIterator<GuildMember | null>;
+		};
+
+		return iterator;
 	}
 
 }
@@ -127,8 +132,4 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 interface AntiRaidEntry {
 	id: string;
 	time: number;
-}
-
-function noop(): void {
-	// noop
 }

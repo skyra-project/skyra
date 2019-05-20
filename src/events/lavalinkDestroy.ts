@@ -1,11 +1,11 @@
-import { Event, EventStore, KlasaClient } from 'klasa';
+import { Event, EventStore } from 'klasa';
 import { Events } from '../lib/types/Enums';
 
 export default class extends Event {
 
-	public constructor(client: KlasaClient, store: EventStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
-			emitter: client.lavalink,
+	public constructor(store: EventStore, file: string[], directory: string) {
+		super(store, file, directory, {
+			emitter: store.client.lavalink,
 			event: 'destroy'
 		});
 	}

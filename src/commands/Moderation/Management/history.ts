@@ -1,16 +1,18 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { ModerationTypeKeys } from '../../../lib/util/constants';
 
+const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
+
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_HISTORY_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_HISTORY_EXTENDED'),
+			description: language => language.get('COMMAND_HISTORY_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_HISTORY_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
@@ -20,7 +22,10 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
 		const logs = await message.guild.moderation.fetch(target.id);
-		let warnings = 0, mutes = 0, kicks = 0, bans = 0;
+		let warnings = 0;
+		let mutes = 0;
+		let kicks = 0;
+		let bans = 0;
 		for (const log of logs.values()) {
 			switch (log.basicType) {
 				case ModerationTypeKeys.Ban:
@@ -43,5 +48,3 @@ export default class extends SkyraCommand {
 	}
 
 }
-
-const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];

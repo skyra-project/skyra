@@ -1,16 +1,16 @@
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, SettingsFolderUpdateResult } from 'klasa';
+import { CommandStore, KlasaMessage, SettingsFolderUpdateResult } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_MANAGECOMMANDCHANNEL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MANAGECOMMANDCHANNEL_EXTENDED'),
+			description: language => language.get('COMMAND_MANAGECOMMANDCHANNEL_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_MANAGECOMMANDCHANNEL_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			subcommands: true,
@@ -18,12 +18,12 @@ export default class extends SkyraCommand {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('channel', async(arg, possible, msg) => {
+		this.createCustomResolver('channel', async (arg, possible, msg) => {
 			if (!arg) return msg.channel;
 			const channel = await this.client.arguments.get('channelname').run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
 			throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL');
-		}).createCustomResolver('command', async(arg, possible, msg, [type]) => {
+		}).createCustomResolver('command', async (arg, possible, msg, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (arg) {
 				const command = await this.client.arguments.get('command').run(arg, possible, msg);
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 
 	public async show(message: KlasaMessage, [channel]: [TextChannel]) {
 		const disabledCommandsChannels = message.guild.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
-		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
+		const entry = disabledCommandsChannels.find(e => e.channel === channel.id);
 		if (entry && entry.commands.length) {
 			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_SHOW', [channel, `\`${entry.commands.join('` | `')}\``]);
 		}
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
 		const disabledCommandsChannels = message.guild.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
-		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
+		const index = disabledCommandsChannels.findIndex(e => e.channel === channel.id);
 
 		if (index === -1) {
 			await message.guild.settings.update(GuildSettings.DisabledCommandChannels, {
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
 		const disabledCommandsChannels = message.guild.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
-		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
+		const index = disabledCommandsChannels.findIndex(e => e.channel === channel.id);
 
 		if (index !== -1) {
 			const entry = disabledCommandsChannels[index];
@@ -92,7 +92,7 @@ export default class extends SkyraCommand {
 
 	public async reset(message: KlasaMessage, [channel]: [TextChannel]) {
 		const disabledCommandsChannels = message.guild.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
-		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
+		const entry = disabledCommandsChannels.find(e => e.channel === channel.id);
 
 		if (entry) {
 			await message.guild.settings.update(GuildSettings.DisabledCommandChannels, entry, { arrayAction: 'remove' });

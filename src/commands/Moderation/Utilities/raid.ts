@@ -1,12 +1,12 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 5,
 			description: 'Manage the Anti-RAID system.',
 			permissionLevel: 6,
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		const { raid } = message.guild.security;
 		const embed = new MessageEmbed()
 			.setTitle(message.language.get('COMMAND_RAID_LIST'))
-			.setDescription([...raid.keys()].map((user) => `<@${user}>`))
+			.setDescription([...raid.keys()].map(user => `<@${user}>`))
 			.setFooter(`${raid.size}/${message.guild.settings.get(GuildSettings.Selfmod.Raidthreshold)} ${message.language.get('CONST_USERS')}`)
 			.setTimestamp();
 

@@ -1,16 +1,16 @@
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['connect-four'],
 			cooldown: 0,
-			description: (language) => language.get('COMMAND_C4_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_C4_EXTENDED'),
+			description: language => language.get('COMMAND_C4_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_C4_EXTENDED'),
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -27,8 +27,8 @@ export default class extends SkyraCommand {
 		const createGame = this.client.connectFour.alloc(message.channel.id, message.author, user);
 
 		const prompt = await message.sendLocale('COMMAND_C4_PROMPT', [message.author, user]) as KlasaMessage;
-		const response = await message.channel.awaitMessages((msg) => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
-			.then((messages) => messages.first())
+		const response = await message.channel.awaitMessages(msg => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
+			.then(messages => messages.first())
 			.catch(() => null);
 
 		if (response && /ye(s|ah?)?/i.test(response.content)) {

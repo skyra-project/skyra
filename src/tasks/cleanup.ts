@@ -32,9 +32,9 @@ import { Events } from '../lib/types/Enums';
 //     - 1000 milliseconds = 1 second
 //     - 60 seconds        = 1 minute
 //     - 30 minutes
-const THRESHOLD = 1000 * 60 * 30,
-	EPOCH = 1420070400000,
-	EMPTY = '0000100000000000000000';
+const THRESHOLD = 1000 * 60 * 30;
+const EPOCH = 1420070400000;
+const EMPTY = '0000100000000000000000';
 
 // The header with the console colours
 const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
@@ -46,7 +46,11 @@ export default class extends Task {
 
 	public async run(): Promise<void> {
 		const OLD_SNOWFLAKE = Util.binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
-		let presences = 0, guildMembers = 0, emojis = 0, lastMessages = 0, users = 0;
+		let presences = 0;
+		let guildMembers = 0;
+		let emojis = 0;
+		let lastMessages = 0;
+		let users = 0;
 
 		// Per-Guild sweeper
 		for (const guild of this.client.guilds.values()) {

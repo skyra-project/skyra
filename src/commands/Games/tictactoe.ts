@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
 
@@ -10,12 +10,12 @@ export default class extends SkyraCommand {
 
 	private readonly channels: Set<string> = new Set();
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['ttt'],
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_TICTACTOE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_TICTACTOE_EXTENDED'),
+			description: language => language.get('COMMAND_TICTACTOE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_TICTACTOE_EXTENDED'),
 			requiredPermissions: ['ADD_REACTIONS'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -30,8 +30,8 @@ export default class extends SkyraCommand {
 		this.channels.add(message.channel.id);
 
 		const prompt = await message.sendLocale('COMMAND_TICTACTOE_PROMPT', [message.author, user]) as KlasaMessage;
-		const response = await message.channel.awaitMessages((msg) => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(msg.content), RESPONSE_OPTIONS)
-			.then((messages) => messages.first())
+		const response = await message.channel.awaitMessages(msg => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(msg.content), RESPONSE_OPTIONS)
+			.then(messages => messages.first())
 			.catch(() => null);
 
 		if (!response || !/ye(s|ah?)?/i.test(response.content)) {
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 		try {
 			await this.game(prompt, [message.author, user].sort(() => Math.random() - 0.5));
 		} catch (_) {
-			await prompt.edit(message.language.get('UNEXPECTED_ISSUE')).catch((error) => this.client.emit(Events.ApiError, error));
+			await prompt.edit(message.language.get('UNEXPECTED_ISSUE')).catch(error => this.client.emit(Events.ApiError, error));
 		}
 
 		this.channels.delete(message.channel.id);
@@ -67,7 +67,12 @@ export default class extends SkyraCommand {
 	}
 
 	private _game(message: KlasaMessage, players: KlasaUser[], board: number[]) {
-		let timeout: NodeJS.Timeout, turn = 0, chosen: number, winner: number, player: KlasaUser, blocked = true;
+		let timeout: NodeJS.Timeout;
+		let turn = 0;
+		let chosen: number;
+		let winner: number;
+		let player: KlasaUser;
+		let blocked = true;
 		return new Promise<number>((resolve, reject) => {
 			// Make the collectors
 			const collector = message.createReactionCollector((reaction, user) => !blocked
@@ -75,7 +80,7 @@ export default class extends SkyraCommand {
 				&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
 				&& board[chosen] === 0);
 
-			const makeRound = async() => {
+			const makeRound = async () => {
 				if (timeout) clearTimeout(timeout);
 				player = players[turn % 2];
 
@@ -105,7 +110,8 @@ export default class extends SkyraCommand {
 				board[chosen] = (turn % 2) + 1;
 
 				// If there is a winner, resolve with it
-				if (winner = this.checkBoard(board)) {
+				winner = this.checkBoard(board);
+				if (winner) {
 					collector.stop();
 					resolve(winner);
 				} else if (++turn < 9) {
@@ -136,7 +142,8 @@ export default class extends SkyraCommand {
 	}
 
 	private render(board: number[]) {
-		let output = '', i = 0;
+		let output = '';
+		let i = 0;
 		while (i < board.length) {
 			for (const value of board.slice(i, i + 3)) {
 				output += value === 0 ? EMOJIS[i] : PLAYER[value - 1];

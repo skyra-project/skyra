@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { TIME } from '../../lib/util/constants';
@@ -7,13 +7,13 @@ export default class extends SkyraCommand {
 
 	private readonly busy: Set<string> = new Set();
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['rep'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_REPUTATION_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_REPUTATION_EXTENDED'),
+			description: language => language.get('COMMAND_REPUTATION_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_REPUTATION_EXTENDED'),
 			quotedStringSupport: true,
 			runIn: ['text'],
 			spam: true,
@@ -40,8 +40,9 @@ export default class extends SkyraCommand {
 		}
 
 		const timeReputation = selfSettings.get(UserSettings.TimeReputation) as UserSettings.TimeReputation;
-		if (this.busy.has(message.author.id) || timeReputation + TIME.DAY > now)
+		if (this.busy.has(message.author.id) || timeReputation + TIME.DAY > now) {
 			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + TIME.DAY - now]);
+		}
 
 		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');
 		if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');

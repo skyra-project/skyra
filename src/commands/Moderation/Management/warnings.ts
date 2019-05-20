@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser, util } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
@@ -8,12 +8,12 @@ import { getColor } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_WARNINGS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WARNINGS_EXTENDED'),
+			description: language => language.get('COMMAND_WARNINGS_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_WARNINGS_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			runIn: ['text'],
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [target]: [KlasaUser]) {
-		const warnings = (await message.guild.moderation.fetch(target ? target.id : undefined)).filter((log) => log.type === ModerationTypeKeys.Warn);
+		const warnings = (await message.guild.moderation.fetch(target ? target.id : undefined)).filter(log => log.type === ModerationTypeKeys.Warn);
 		if (!warnings.size) throw message.language.get('COMMAND_WARNINGS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
@@ -40,8 +40,9 @@ export default class extends SkyraCommand {
 		// Set up the formatter
 		const format = this.displayWarning.bind(this, users);
 
-		for (const page of util.chunk([...warnings.values()], 10))
-			display.addPage((template) => template.setDescription(page.map(format)));
+		for (const page of util.chunk([...warnings.values()], 10)) {
+			display.addPage(template => template.setDescription(page.map(format)));
+		}
 
 		await display.run(await message.sendLocale('SYSTEM_LOADING') as KlasaMessage, message.author.id);
 		return message;

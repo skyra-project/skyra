@@ -22,7 +22,7 @@ export default class extends Event {
 			.setColor(0xDCE775)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL(), message.url)
 			.splitFields(diffWordsWithSpace(Util.escapeMarkdown(old.content), Util.escapeMarkdown(message.content))
-				.map((result) => result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value)
+				.map(result => result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value)
 				.join(' '))
 			.setFooter(`${message.language.get('EVENTS_MESSAGE_UPDATE')} | ${(message.channel as TextChannel).name}`)
 			.setTimestamp());

@@ -1,5 +1,5 @@
 import { GuildMember, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
 import { Events } from '../types/Enums';
 import { ModerationTypeKeys } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
@@ -22,8 +22,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	 */
 	public modType: ModerationTypeKeys;
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
-		super(client, store, file, directory, util.mergeDefault({
+	public constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
+		super(store, file, directory, util.mergeDefault({
 			requiredMember: false,
 			runIn: ['text'],
 			usage: '<users:...user{,10}> [reason:...string]',
@@ -39,17 +39,17 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		if (!reason) reason = null;
 
 		const prehandled = await this.prehandle(message, targets, reason);
-		const promises = [];
 		const processed = [] as Array<{ log: ModerationManagerEntry; target: User }>;
 		const errored = [] as Array<{ error: Error; target: User }>;
 		for (const target of new Set(targets)) {
-			promises.push(this.checkModeratable(message, target)
-				.then((member) => this.handle(message, target, member, reason, prehandled))
-				.then((log) => processed.push({ log, target }))
-				.catch((error) => errored.push({ error, target })));
+			try {
+				const member = await this.checkModeratable(message, target);
+				const log = await this.handle(message, target, member, reason, prehandled);
+				processed.push({ log, target });
+			} catch (error) {
+				errored.push({ error, target });
+			}
 		}
-
-		await Promise.all(promises);
 
 		const output = [];
 		if (processed.length) {
@@ -82,11 +82,13 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: T): Promise<unknown>;
 
 	public async checkModeratable(message: KlasaMessage, target: User) {
-		if (target.id === message.author.id)
+		if (target.id === message.author.id) {
 			throw message.language.get('COMMAND_USERSELF');
+		}
 
-		if (target.id === this.client.user.id)
+		if (target.id === this.client.user.id) {
 			throw message.language.get('COMMAND_TOSKYRA');
+		}
 
 		const member = await message.guild.members.fetch(target.id).catch(() => {
 			if (this.requiredMember) throw message.language.get('USER_NOT_IN_GUILD');

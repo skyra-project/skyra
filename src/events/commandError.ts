@@ -6,28 +6,37 @@ import { rootFolder } from '../Skyra';
 
 export default class extends Event {
 
-	public run(message: KlasaMessage, command: Command, _: string[], error: Error) {
+	public async run(message: KlasaMessage, command: Command, _: string[], error: Error) {
 		if (typeof error === 'string') {
-			message.alert(message.language.get('EVENTS_ERROR_STRING', message.author, error))
-				.catch((err) => this.client.emit(Events.ApiError, err));
+			try {
+				await message.alert(message.language.get('EVENTS_ERROR_STRING', message.author, error));
+			} catch (err) {
+				this.client.emit(Events.ApiError, err);
+			}
 		} else if (error instanceof Error) {
 			// tslint:disable-next-line:no-floating-promises
 			this._sendErrorChannel(message, command, error);
 
 			// Extract useful information about the DiscordAPIError
-			if (error instanceof DiscordAPIError || error instanceof HTTPError)
+			if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 				this.client.emit(Events.ApiError, error);
-			else
+			} else {
 				this.client.emit(Events.Warn, `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
+			}
 
 			// Emit where the error was emitted
 			this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error}`);
-			message.alert(message.author.id === this.client.options.ownerID ? util.codeBlock('js', error.stack) : message.language.get('EVENTS_ERROR_WTF'))
-				.catch((err) => this.client.emit(Events.ApiError, err));
+			try {
+				await message.alert(this.client.options.owners.includes(message.author.id)
+					? util.codeBlock('js', error.stack)
+					: message.language.get('EVENTS_ERROR_WTF'));
+			} catch (err) {
+				this.client.emit(Events.ApiError, err);
+			}
 		}
 	}
 
-	private _sendErrorChannel(message: KlasaMessage, command: Command, error: Error) {
+	private async _sendErrorChannel(message: KlasaMessage, command: Command, error: Error) {
 		let output: string;
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			output = [
@@ -45,12 +54,15 @@ export default class extends Event {
 			].join('\n');
 		}
 
-		return this.client.webhookError.send(new MessageEmbed()
-			.setDescription(output)
-			.setColor(0xFC1020)
-			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 64 }), message.url)
-			.setTimestamp())
-			.catch((err) => this.client.emit(Events.ApiError, err));
+		try {
+			await this.client.webhookError.send(new MessageEmbed()
+				.setDescription(output)
+				.setColor(0xFC1020)
+				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 64 }), message.url)
+				.setTimestamp());
+		} catch (err) {
+			this.client.emit(Events.ApiError, err);
+		}
 	}
 
 	private _getWarnError(message: KlasaMessage) {

@@ -6,6 +6,7 @@ import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTy
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
+const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
 
 export class ModerationManagerEntry {
 
@@ -73,16 +74,16 @@ export class ModerationManagerEntry {
 
 		const now = Date.now();
 		const user = typeof this.user === 'string' ? this.user : this.user.id;
-		const entries = this.manager.filter((entry) => (typeof entry.user === 'string' ? entry.user : entry.user.id) === user && entry.createdAt - now < TIME.MINUTE);
+		const entries = this.manager.filter(entry => (typeof entry.user === 'string' ? entry.user : entry.user.id) === user && entry.createdAt - now < TIME.MINUTE);
 
 		// If there is no moderation log for this user that has not received a report, it should send
 		if (!entries.size) return true;
 
 		// If there was a log with the same type in the last minute, do not duplicate
-		if (entries.some((entry) => entry.basicType === this.basicType)) return false;
+		if (entries.some(entry => entry.basicType === this.basicType)) return false;
 
 		// If this log is a ban or an unban, but the user was softbanned recently, abort
-		if ((this.type === ModerationTypeKeys.Ban || this.type === ModerationTypeKeys.UnBan) && entries.some((entry) => entry.type === ModerationTypeKeys.Softban)) return false;
+		if ((this.type === ModerationTypeKeys.Ban || this.type === ModerationTypeKeys.UnBan) && entries.some(entry => entry.type === ModerationTypeKeys.Softban)) return false;
 
 		// For all other cases, it should send
 		return true;
@@ -98,15 +99,17 @@ export class ModerationManagerEntry {
 			[ModerationSchemaKeys.Duration]: typeof duration !== 'undefined' && this.temporable && (duration === null || duration < TIME.YEAR)
 				? duration
 				: undefined,
-			[ModerationSchemaKeys.Moderator]: typeof moderator !== 'undefined'
-				? typeof moderator === 'string' ? moderator : moderator.id
-				: undefined,
-			[ModerationSchemaKeys.Reason]: typeof reason !== 'undefined'
-				? reason || null
-				: undefined,
-			[ModerationSchemaKeys.ExtraData]: typeof extraData !== 'undefined'
-				? extraData
-				: undefined,
+			[ModerationSchemaKeys.Moderator]: typeof moderator === 'undefined'
+				? undefined
+				: typeof moderator === 'string'
+					? moderator
+					: moderator.id,
+			[ModerationSchemaKeys.Reason]: typeof reason === 'undefined'
+				? undefined
+				: reason || null,
+			[ModerationSchemaKeys.ExtraData]: typeof extraData === 'undefined'
+				? undefined
+				: extraData,
 			[ModerationSchemaKeys.Type]: this.type
 		};
 
@@ -150,16 +153,19 @@ export class ModerationManagerEntry {
 		]);
 
 		const assets = TYPE_ASSETS[this.type];
-		const description = (this.duration ? [
-			`❯ **Type**: ${assets.title}`,
-			`❯ **User:** ${userTag} (${userID})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get(GuildSettings.Prefix)}reason ${this.case} to claim.\``}`,
-			`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
-		] : [
-			`❯ **Type**: ${assets.title}`,
-			`❯ **User:** ${userTag} (${userID})`,
+		const description = (this.duration
+			? [
+				`❯ **Type**: ${assets.title}`,
+				`❯ **User:** ${userTag} (${userID})`,
+				`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get(GuildSettings.Prefix)}reason ${this.case} to claim.\``}`,
+				`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
+			]
+			: [
+				`❯ **Type**: ${assets.title}`,
+				`❯ **User:** ${userTag} (${userID})`,
 				`❯ **Reason:** ${this.reason || `Please use \`${this.manager.guild.settings.get(GuildSettings.Prefix)}reason ${this.case} to claim.\``}`
-		]).join('\n');
+			]
+		).join('\n');
 
 		return new MessageEmbed()
 			.setColor(assets.color)
@@ -209,11 +215,11 @@ export class ModerationManagerEntry {
 	}
 
 	public setType(value: keyof typeof ModerationTypeKeys | ModerationTypeKeys) {
-		if (typeof value === 'string' && (value in ModerationTypeKeys))
+		if (typeof value === 'string' && (value in ModerationTypeKeys)) {
 			value = ModerationTypeKeys[value];
-
-		else if (typeof value !== 'number')
+		} else if (typeof value !== 'number') {
 			throw new TypeError(`${this} | The type ${value} is not valid.`);
+		}
 
 		this.type = value;
 		return this;
@@ -240,7 +246,7 @@ export class ModerationManagerEntry {
 		const channel = (channelID && this.manager.guild.channels.get(channelID) as TextChannel) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();
-			channel.send(messageEmbed).catch((error) => this.manager.guild.client.emit(Events.ApiError, error));
+			channel.send(messageEmbed).catch(error => this.manager.guild.client.emit(Events.ApiError, error));
 		}
 
 		if (this.duration) {
@@ -252,14 +258,16 @@ export class ModerationManagerEntry {
 					[ModerationSchemaKeys.Duration]: this.duration,
 					[ModerationSchemaKeys.Case]: this.case
 				}
-			}).catch((error) => this.manager.guild.client.emit(Events.Wtf, error));
+			}).catch(error => this.manager.guild.client.emit(Events.Wtf, error));
 		}
 
 		return this;
 	}
 
 	public toJSON(): ModerationManagerInsertData {
-		return {
+		// TODO(kyranet): Fix this
+		const data: ModerationManagerInsertData = {
+			// @ts-ignore
 			[ModerationSchemaKeys.Case]: this.case,
 			[ModerationSchemaKeys.Duration]: this.duration,
 			[ModerationSchemaKeys.ExtraData]: this.extraData,
@@ -269,7 +277,8 @@ export class ModerationManagerEntry {
 			[ModerationSchemaKeys.Type]: this.type,
 			[ModerationSchemaKeys.User]: this.user ? typeof this.user === 'string' ? this.user : this.user.id : null,
 			[ModerationSchemaKeys.CreatedAt]: this.createdAt
-		} as ModerationManagerInsertData;
+		};
+		return data;
 	}
 
 	public toString() {
@@ -277,5 +286,3 @@ export class ModerationManagerEntry {
 	}
 
 }
-
-const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;

@@ -1,15 +1,15 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_SETPREFIX_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_SETPREFIX_EXTENDED'),
+			description: language => language.get('COMMAND_SETPREFIX_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_SETPREFIX_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '<prefix:string{1,10}>'

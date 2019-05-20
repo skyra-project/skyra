@@ -1,8 +1,7 @@
-/* tslint:disable object-literal-sort-keys */
 import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
 import { EMOJIS } from '../lib/util/constants';
-import { FriendlyDuration } from '../lib/util/FriendlyDuration';
+import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
 
@@ -82,7 +81,7 @@ const PERMS = {
 const random = (num: number) => Math.round(Math.random() * num);
 
 function duration(time: number) {
-	return FriendlyDuration.duration(time, TIMES);
+	return friendlyDuration(time, TIMES);
 }
 
 export default class extends Language {
@@ -106,38 +105,38 @@ export default class extends Language {
 		 * ################################
 		 */
 
-		DEFAULT: (key) => `La clave ${key} aún no ha sido traducida a es-ES.`,
+		DEFAULT: key => `La clave ${key} aún no ha sido traducida a es-ES.`,
 		DEFAULT_LANGUAGE: 'Lenguaje Predeterminado',
 		SETTING_GATEWAY_EXPECTS_GUILD: 'El parámetro <Guild> requiere o una ID o una instancia de Guild.',
 		SETTING_GATEWAY_VALUE_FOR_KEY_NOEXT: (data, key) => `El valor ${data} para la clave ${key} no existe.`,
 		SETTING_GATEWAY_VALUE_FOR_KEY_ALREXT: (data, key) => `El valor ${data} para la clave ${key} ya existe.`,
 		SETTING_GATEWAY_SPECIFY_VALUE: 'Debes especificar el valor para añadir o eliminar.',
-		SETTING_GATEWAY_KEY_NOT_ARRAY: (key) => `La clave ${key} no acepta múltiples valores.`,
-		SETTING_GATEWAY_CHOOSE_KEY: (keys) => `Por favor, elija alguno de las siguientes claves: '${keys}'`,
+		SETTING_GATEWAY_KEY_NOT_ARRAY: key => `La clave ${key} no acepta múltiples valores.`,
+		SETTING_GATEWAY_CHOOSE_KEY: keys => `Por favor, elija alguno de las siguientes claves: '${keys}'`,
 		SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: 'Este grupo no es configurable.',
-		SETTING_GATEWAY_KEY_NOEXT: (key) => `La clave ${key} no existe en el esquema de datos.`,
+		SETTING_GATEWAY_KEY_NOEXT: key => `La clave ${key} no existe en el esquema de datos.`,
 		SETTING_GATEWAY_INVALID_TYPE: `El tipo de parámetro debe ser o 'add' para añadir, o 'remove' para eliminar.`,
 		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `${entry.key} no acepta el valor: ${value}`,
 		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `No pude resolver suficientes ${name}s. Al menos ${min} ${min === 1 ? 'es' : 'son'} requeridos.`,
-		RESOLVER_INVALID_BOOL: (name) => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,
-		RESOLVER_INVALID_CHANNEL: (name) => `${name} debe ser una mención de canal o una id de canal válida.`,
+		RESOLVER_INVALID_BOOL: name => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,
+		RESOLVER_INVALID_CHANNEL: name => `${name} debe ser una mención de canal o una id de canal válida.`,
 		RESOLVER_INVALID_CUSTOM: (name, type) => `${name} debe ser un válido ${type}.`,
-		RESOLVER_INVALID_DATE: (name) => `${name} debe ser una fecha válida.`,
-		RESOLVER_INVALID_DURATION: (name) => `${name} debe ser una duración válida.`,
-		RESOLVER_INVALID_EMOJI: (name) => `${name} debe ser un emoji o una id de emoji válida.`,
-		RESOLVER_INVALID_FLOAT: (name) => `${name} debe ser un número válido.`,
-		RESOLVER_INVALID_GUILD: (name) => `${name} debe ser una id de servidor válida.`,
-		RESOLVER_INVALID_INT: (name) => `${name} debe ser un número entero válido.`,
-		RESOLVER_INVALID_LITERAL: (name) => `La opción no coincide con la única posibilidad: ${name}`,
-		RESOLVER_INVALID_MEMBER: (name) => `${name} debe ser una mención de usuario o una id de usuario válida.`,
-		RESOLVER_INVALID_MSG: (name) => `${name} debe ser una id de mensaje válida.`,
+		RESOLVER_INVALID_DATE: name => `${name} debe ser una fecha válida.`,
+		RESOLVER_INVALID_DURATION: name => `${name} debe ser una duración válida.`,
+		RESOLVER_INVALID_EMOJI: name => `${name} debe ser un emoji o una id de emoji válida.`,
+		RESOLVER_INVALID_FLOAT: name => `${name} debe ser un número válido.`,
+		RESOLVER_INVALID_GUILD: name => `${name} debe ser una id de servidor válida.`,
+		RESOLVER_INVALID_INT: name => `${name} debe ser un número entero válido.`,
+		RESOLVER_INVALID_LITERAL: name => `La opción no coincide con la única posibilidad: ${name}`,
+		RESOLVER_INVALID_MEMBER: name => `${name} debe ser una mención de usuario o una id de usuario válida.`,
+		RESOLVER_INVALID_MSG: name => `${name} debe ser una id de mensaje válida.`,
 		RESOLVER_INVALID_PIECE: (name, piece) => `${name} debe ser un nombre de ${piece} válido.`,
 		RESOLVER_INVALID_REGEX_MATCH: (name, pattern) => `${name} debe combinar con el siguiente patrón \`${pattern}\`.`,
-		RESOLVER_INVALID_ROLE: (name) => `${name} debe ser una mención de rol o una id de rol válida.`,
-		RESOLVER_INVALID_STRING: (name) => `${name} debe ser un texto no vacío válido.`,
-		RESOLVER_INVALID_TIME: (name) => `${name} debe ser una duración o fecha válida.`,
-		RESOLVER_INVALID_URL: (name) => `${name} debe ser un enlace válido.`,
-		RESOLVER_INVALID_USER: (name) => `${name} debe ser una mención o una id de usuario válida.`,
+		RESOLVER_INVALID_ROLE: name => `${name} debe ser una mención de rol o una id de rol válida.`,
+		RESOLVER_INVALID_STRING: name => `${name} debe ser un texto no vacío válido.`,
+		RESOLVER_INVALID_TIME: name => `${name} debe ser una duración o fecha válida.`,
+		RESOLVER_INVALID_URL: name => `${name} debe ser un enlace válido.`,
+		RESOLVER_INVALID_USER: name => `${name} debe ser una mención o una id de usuario válida.`,
 		RESOLVER_STRING_SUFFIX: ' carácteres',
 		RESOLVER_MINMAX_EXACTLY: (name, min, suffix) => `${name} debe ser exactamente de ${min}${suffix}.`,
 		RESOLVER_MINMAX_BOTH: (name, min, max, suffix) => `${name} debe ser de exactamente entr ${min} y ${max}${suffix}.`,
@@ -145,29 +144,29 @@ export default class extends Language {
 		RESOLVER_MINMAX_MAX: (name, max, suffix) => `${name} debe ser menor que ${max}${suffix}.`,
 		REACTIONHANDLER_PROMPT: '¿A qué página te gustaría saltar?',
 		COMMANDMESSAGE_MISSING: 'Faltan uno o más argumentos al final de la entrada.',
-		COMMANDMESSAGE_MISSING_REQUIRED: (name) => `El argumento ${name} es requerido.`,
-		COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Falta una opción requerida: (${possibles})`,
-		COMMANDMESSAGE_NOMATCH: (possibles) => `Su opción no se pudo encontrar en ninguna de las posibilidades: (${possibles})`,
+		COMMANDMESSAGE_MISSING_REQUIRED: name => `El argumento ${name} es requerido.`,
+		COMMANDMESSAGE_MISSING_OPTIONALS: possibles => `Falta una opción requerida: (${possibles})`,
+		COMMANDMESSAGE_NOMATCH: possibles => `Su opción no se pudo encontrar en ninguna de las posibilidades: (${possibles})`,
 		MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error, time, abortOptions) => `${tag} | **${error}** | Tienes **${time}** segundos para responder a este mensaje con un argumento válido. Escribe **${abortOptions.join('**, **')}** para cancelar la solicitud.`,
 		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) => `${tag} | El argumento **${name}** puede aceptar multiples valores | Tienes **${time}** segundos para responder a esta solicitud con valores adicionales. Escribe **${cancelOptions.join('**, **')}** para cancelar la solicitud.`,
 		MONITOR_COMMAND_HANDLER_ABORTED: 'Cancelado.',
 		MONITOR_COMMAND_HANDLER_POSSIBILITIES: ['abortar', 'parar'],
 		MONITOR_COMMAND_HANDLER_REPEATING_POSSIBLITIES: ['cancelar'],
-		INHIBITOR_COOLDOWN: (remaining) => `Acabas de usar este comando. Puedes usarlo de nuevo en ${duration(remaining)}.`,
+		INHIBITOR_COOLDOWN: remaining => `Acabas de usar este comando. Puedes usarlo de nuevo en ${duration(remaining)}.`,
 		INHIBITOR_DISABLED: 'Este comando está desactivado',
-		INHIBITOR_MISSING_BOT_PERMS: (missing) => `No tengo los permisos suficientes, me faltan: **${missing}**`,
+		INHIBITOR_MISSING_BOT_PERMS: missing => `No tengo los permisos suficientes, me faltan: **${missing}**`,
 		INHIBITOR_NSFW: 'Este comando no es apto para este canal, no es un canal marcado como "NSFW"',
 		INHIBITOR_PERMISSIONS: 'No tienes permisos para usar este comando',
-		INHIBITOR_REQUIRED_SETTINGS: (settings) => `El servidor requiere ${settings.length === 1 ? 'el ajuste' : 'los ajustes'} del servidor **${settings.join(', ')}**, y por lo tanto, no puedo ejecutar el comando.`,
-		INHIBITOR_RUNIN: (types) => `Éste comando sólo está disponible en los canales de ${types}`,
-		INHIBITOR_RUNIN_NONE: (name) => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
+		INHIBITOR_REQUIRED_SETTINGS: settings => `El servidor requiere ${settings.length === 1 ? 'el ajuste' : 'los ajustes'} del servidor **${settings.join(', ')}**, y por lo tanto, no puedo ejecutar el comando.`,
+		INHIBITOR_RUNIN: types => `Éste comando sólo está disponible en los canales de ${types}`,
+		INHIBITOR_RUNIN_NONE: name => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
 		COMMAND_BLACKLIST_DESCRIPTION: 'Pone o quita usuarios and servidores de mi lista negra.',
 		COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
 			usersAdded.length ? `**Usuarios Añadidos**\n${codeBlock('', usersAdded.join(', '))}` : '',
 			usersRemoved.length ? `**Usuarios Eliminados**\n${codeBlock('', usersRemoved.join(', '))}` : '',
 			guildsAdded.length ? `**Servidores Añadidos**\n${codeBlock('', guildsAdded.join(', '))}` : '',
 			guildsRemoved.length ? `**Servidores Eliminados**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
-		].filter((val) => val !== '').join('\n'),
+		].filter(val => val !== '').join('\n'),
 		COMMAND_UNLOAD: (type, name) => `${GREENTICK} Eliminado con éxito la pieza tipo ${type}: ${name}`,
 		COMMAND_UNLOAD_DESCRIPTION: 'Elimina una pieza de Klasa.',
 		COMMAND_TRANSFER_ERROR: `${REDCROSS} El archivo ya había sido transferido o nunca existió.`,
@@ -176,7 +175,7 @@ export default class extends Language {
 		COMMAND_TRANSFER_DESCRIPTION: 'Transfiere una pieza interna a su carpeta respectiva.',
 		COMMAND_RELOAD: (type, name, time) => `${GREENTICK} Recargada la pieza tipo ${type}: ${name}. (Tomó: ${time})`,
 		COMMAND_RELOAD_ALL: (type, time) => `${GREENTICK} Recargadas todas las piezas tipo ${type}. (Tomó: ${time})`,
-		COMMAND_RELOAD_EVERYTHING: (time) => `${GREENTICK} Recargado todo. (Tomó: ${time})`,
+		COMMAND_RELOAD_EVERYTHING: time => `${GREENTICK} Recargado todo. (Tomó: ${time})`,
 		COMMAND_RELOAD_DESCRIPTION: 'Recarga una pieza de Klasa, o todas las piezas de su lista.',
 		COMMAND_REBOOT: `${LOADING} Reiniciando...`,
 		COMMAND_REBOOT_DESCRIPTION: 'Reinicia el bot.',
@@ -197,13 +196,13 @@ export default class extends Language {
 		COMMAND_DISABLE_WARN: 'Probablemente no quieras desactivar eso, ya que no tendrías ningún comando para re-activarlo.',
 		COMMAND_CONF_NOKEY: 'Debes proveer el nombre de una clave.',
 		COMMAND_CONF_NOVALUE: 'Debes proveer un valor para la clave.',
-		COMMAND_CONF_GUARDED: (name) => `La pieza ${toTitleCase(name)} no debería ser desactivada.`,
+		COMMAND_CONF_GUARDED: name => `La pieza ${toTitleCase(name)} no debería ser desactivada.`,
 		COMMAND_CONF_UPDATED: (key, response) => `Actualizado con éxito la clave **${key}** al valor: \`${response}\`.`,
 		COMMAND_CONF_KEY_NOT_ARRAY: 'Esta clave no acepta múltiples valores. Usa la acción \'reset\' en su lugar.',
-		COMMAND_CONF_GET_NOEXT: (key) => `The key **${key}** does not seem to exist.`,
+		COMMAND_CONF_GET_NOEXT: key => `The key **${key}** does not seem to exist.`,
 		COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
 		COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
-		COMMAND_CONF_NOCHANGE: (key) => `The value for **${key}** was already that value.`,
+		COMMAND_CONF_NOCHANGE: key => `The value for **${key}** was already that value.`,
 		COMMAND_CONF_SERVER_DESCRIPTION: 'Define per-server settings.',
 		COMMAND_CONF_SERVER: (key, list) => `**Server Setting ${key}**\n${list}`,
 		COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
@@ -222,62 +221,62 @@ export default class extends Language {
 		 */
 
 		COMMAND_ADD_DESCRIPTION: `Añade una canción a la cola.`,
-		COMMAND_ADD_PLAYLIST: (amount) => amount === 1
+		COMMAND_ADD_PLAYLIST: amount => amount === 1
 			? `🎵 Añadida **una** canción a la cola 🎶`
 			: `🎵 Añadidas **${amount}** canciones a la cola 🎶`,
-		COMMAND_ADD_SONG: (title) => `🎵 Añadida la canción **${title}** a la cola 🎶`,
+		COMMAND_ADD_SONG: title => `🎵 Añadida la canción **${title}** a la cola 🎶`,
 		COMMAND_CLEAR_DESCRIPTION: `Borra las canciones de la cola.`,
 		COMMAND_CLEAR_DENIED: `¡No puedes ejecutar este comando mientras que hayan más de 4 usuarios! ¡Debes ser el Dj de esta fiesta!`,
-		COMMAND_CLEAR_SUCCESS: (amount) => amount === 1
+		COMMAND_CLEAR_SUCCESS: amount => amount === 1
 			? `🗑 Una canción fue borrada de la cola.`
 			: `🗑 ${amount} canciones fueron borradas de la cola.`,
 		COMMAND_JOIN_DESCRIPTION: `Unirse al canal de voz del autor del mensaje.`,
 		COMMAND_JOIN_NO_MEMBER: `Lo siento, pero Discord no me ha mandado la información necesaria que necesito para saber en qué canal de voz estás conectado/a...`,
 		COMMAND_JOIN_NO_VOICECHANNEL: `No estás conectado/a a un canal de voz.`,
-		COMMAND_JOIN_SUCCESS: (channel) => `Me he conectado con éxito al canal de voz ${channel}`,
+		COMMAND_JOIN_SUCCESS: channel => `Me he conectado con éxito al canal de voz ${channel}`,
 		COMMAND_JOIN_VOICE_DIFFERENT: `Lo siento, pero estoy reproduciendo música en otro canal de voz. ¡Intenta de nuevo más tarde o únete a ellos!`,
 		COMMAND_JOIN_VOICE_FULL: `No puedo unirme a tu canal de voz, está lleno... ¡echa a alguien con las botas o haz espacio para mí!`,
 		COMMAND_JOIN_VOICE_NO_CONNECT: `No tengo suficientes permisos para unirme a tu canal de voz, necesito el permiso para conectarme a canales de voz.`,
 		COMMAND_JOIN_VOICE_NO_SPEAK: `Puedo conectarme... pero no hablar. Por favor dame permisos para hablar.`,
 		COMMAND_JOIN_VOICE_SAME: `¡Sube el volumen! ¡Ya estoy reproduciendo música ahí!`,
 		COMMAND_LEAVE_DESCRIPTION: `Desconecta del canal de voz.`,
-		COMMAND_LEAVE_SUCCESS: (channel) => `Me he desconectado con éxito del canal de voz ${channel}`,
+		COMMAND_LEAVE_SUCCESS: channel => `Me he desconectado con éxito del canal de voz ${channel}`,
 		COMMAND_PAUSE_DESCRIPTION: `Pausa la canción actual.`,
 		COMMAND_PAUSE_SUCCESS: '⏸ Pausado.',
 		COMMAND_PLAY_DESCRIPTION: `¡Empecemos la cola!`,
 		COMMAND_PLAY_END: `⏹ Del 1 al 10, siendo 1 la peor puntuación y 10 la mejor, ¿cómo valorarías la sesión? ¡Ya ha terminado!`,
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
-		COMMAND_PLAY_QUEUE_PAUSED: (song) => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
+		COMMAND_PLAY_QUEUE_PAUSED: song => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: `¡Ey! ¡El disco ya está girando!`,
 		COMMAND_PLAYING_DESCRIPTION: `Obtén información de la canción actual.`,
-		COMMAND_PLAYING_DURATION: (time) => `**Duración**: ${time}`,
+		COMMAND_PLAYING_DURATION: time => `**Duración**: ${time}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: `¿Es conmigo? Porque no hay nada en reproducción...`,
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: `Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.`,
 		COMMAND_QUEUE_DESCRIPTION: `Revisa la lista de cola.`,
-		COMMAND_QUEUE_EMPTY: (prefix) => `¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando \`${prefix}add\`.`,
+		COMMAND_QUEUE_EMPTY: prefix => `¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando \`${prefix}add\`.`,
 		COMMAND_QUEUE_LINE: (title, requester) => `*${title}*, pedida por: **${requester}**`,
-		COMMAND_QUEUE_TRUNCATED: (amount) => `Mostrando 10 canciones de ${amount}`,
+		COMMAND_QUEUE_TRUNCATED: amount => `Mostrando 10 canciones de ${amount}`,
 		COMMAND_REMOVE_DESCRIPTION: `Elimina una canción de la lista de cola.`,
 		COMMAND_REMOVE_INDEX_INVALID: `Mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...`,
-		COMMAND_REMOVE_INDEX_OUT: (amount) => `He intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
+		COMMAND_REMOVE_INDEX_OUT: amount => `He intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
 		COMMAND_REMOVE_DENIED: [
 			`Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o`,
 			`grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!`
 		].join(' '),
-		COMMAND_REMOVE_SUCCESS: (song) => `🗑 Borrada la canción **${song.title}**, pedida por **${song.requester}**, de la cola.`,
+		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.title}**, pedida por **${song.requester}**, de la cola.`,
 		COMMAND_RESUME_DESCRIPTION: `Reanuda la canción actual.`,
 		COMMAND_RESUME_SUCCESS: `▶ Reanudado.`,
 		COMMAND_SKIP_DESCRIPTION: `Salta la canción actual.`,
 		COMMAND_SKIP_PERMISSIONS: `No puedes ejecutar este comando, debes ser un DJ o un Moderador.`,
 		COMMAND_SKIP_VOTES_VOTED: `Ya has votado para saltar esta canción.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votos: ${amount} de ${needed}`,
-		COMMAND_SKIP_SUCCESS: (title) => `⏭ Saltada la canción ${title}.`,
+		COMMAND_SKIP_SUCCESS: title => `⏭ Saltada la canción ${title}.`,
 		COMMAND_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
 		COMMAND_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
 		COMMAND_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
-		COMMAND_TIME_REMAINING: (time) => `🕰 Tiempo restante: ${time}`,
+		COMMAND_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
-		COMMAND_VOLUME_SUCCESS: (volume) => `📢 Volumen: ${volume}%`,
+		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
@@ -299,13 +298,13 @@ export default class extends Language {
 		MUSICMANAGER_PLAY_NO_SONGS: `¡No hay más canciones en la cola!`,
 		MUSICMANAGER_PLAY_PLAYING: `Los discos están girando, ¿no los escuchas?`,
 		MUSICMANAGER_PLAY_DISCONNECTION: `¡Fuí desconectada a la fuerza por Discord!`,
-		MUSICMANAGER_ERROR: (error) => `¡Algo pasó!\n${error}`,
-		MUSICMANAGER_STUCK: (seconds) => `Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en ${seconds === 1 ? 'un segundo' : `${seconds} segundos`}!`,
+		MUSICMANAGER_ERROR: error => `¡Algo pasó!\n${error}`,
+		MUSICMANAGER_STUCK: seconds => `Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en ${seconds === 1 ? 'un segundo' : `${seconds} segundos`}!`,
 		MUSICMANAGER_CLOSE: `¡Oops, parece que he tenido un pequeño problemita con Discord!`,
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
-		COMMAND_CONF_MENU_RENDER_AT_FOLDER: (path) => `Currently at: \\📁 ${path}`,
-		COMMAND_CONF_MENU_RENDER_AT_PIECE: (path) => `Currently at: ${path}`,
+		COMMAND_CONF_MENU_RENDER_AT_FOLDER: path => `Currently at: \\📁 ${path}`,
+		COMMAND_CONF_MENU_RENDER_AT_PIECE: path => `Currently at: ${path}`,
 		COMMAND_CONF_MENU_RENDER_NOKEYS: 'There are no configurable keys for this folder',
 		COMMAND_CONF_MENU_RENDER_SELECT: 'Please select any of the following entries',
 		COMMAND_CONF_MENU_RENDER_TCTITLE: 'Text Commands:',
@@ -313,7 +312,7 @@ export default class extends Language {
 		COMMAND_CONF_MENU_RENDER_REMOVE: '• Remove Value → `remove <value>`',
 		COMMAND_CONF_MENU_RENDER_RESET: '• Reset Value → `reset`',
 		COMMAND_CONF_MENU_RENDER_UNDO: '• Undo Update → `undo`',
-		COMMAND_CONF_MENU_RENDER_CVALUE: (value) => `Current Value: **\`\`${value}\`\`**`,
+		COMMAND_CONF_MENU_RENDER_CVALUE: value => `Current Value: **\`\`${value}\`\`**`,
 		COMMAND_CONF_MENU_RENDER_BACK: 'Press ◀ to go back',
 		COMMAND_CONF_MENU_INVALID_KEY: 'Invalid Key, please try again with any of the following options.',
 		COMMAND_CONF_MENU_INVALID_ACTION: 'Invalid Action, please try again with any of the following options.',
@@ -1673,7 +1672,7 @@ export default class extends Language {
 			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
 			synopsis
 		],
-		COMMAND_ANIME_OUTPUT_STATUS: (entry) => [
+		COMMAND_ANIME_OUTPUT_STATUS: entry => [
 			`  ❯  Estado actual: **${entry.attributes.status}**`,
 			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
 		],
@@ -1689,16 +1688,16 @@ export default class extends Language {
 			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
 			synopsis
 		],
-		COMMAND_MANGA_OUTPUT_STATUS: (entry) => [
+		COMMAND_MANGA_OUTPUT_STATUS: entry => [
 			`  ❯  Estado actual: **${entry.attributes.status}**`,
 			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
 		],
 		COMMAND_MANGA_TITLES: {
-			MANGA: '📘 Manga',
-			NOVEL: '📕 Novela',
-			MANHWA: '🇰🇷 Manhwa',
+			'MANGA': '📘 Manga',
+			'NOVEL': '📕 Novela',
+			'MANHWA': '🇰🇷 Manhwa',
 			'ONE-SHOT': '☄ Cameo',
-			SPECIAL: '🎴 Especial'
+			'SPECIAL': '🎴 Especial'
 		},
 
 		/**
@@ -1707,10 +1706,10 @@ export default class extends Language {
 		 */
 
 		COMMAND_SUBSCRIBE_NO_ROLE: 'Este servidor no configuró el rol para los anuncios.',
-		COMMAND_SUBSCRIBE_SUCCESS: (role) => `Concedido con éxito el rol: **${role}**`,
-		COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Removido con éxito el rol: **${role}***`,
+		COMMAND_SUBSCRIBE_SUCCESS: role => `Concedido con éxito el rol: **${role}**`,
+		COMMAND_UNSUBSCRIBE_SUCCESS: role => `Removido con éxito el rol: **${role}***`,
 		COMMAND_SUBSCRIBE_NO_CHANNEL: 'Este servidor no tiene un canal de anuncios configurado.',
-		COMMAND_ANNOUNCEMENT: (role) => `**Nuevo anuncio para** ${role}:`,
+		COMMAND_ANNOUNCEMENT: role => `**Nuevo anuncio para** ${role}:`,
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Se ha publicado un nuevo anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Se ha cancelado el anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
@@ -1740,8 +1739,8 @@ export default class extends Language {
 			'And more!'
 		].join('\n'),
 		COMMAND_HELP_TITLE: (name, description) => `📃 | ***Mensaje de Ayuda*** | __**${name}**__\n${description}\n`,
-		COMMAND_HELP_USAGE: (usage) => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
-		COMMAND_HELP_EXTENDED: (extendedHelp) => `🔍 | ***Descripción Extendida***\n${extendedHelp}`,
+		COMMAND_HELP_USAGE: usage => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
+		COMMAND_HELP_EXTENDED: extendedHelp => `🔍 | ***Descripción Extendida***\n${extendedHelp}`,
 
 		/**
 		 * ##############
@@ -1832,12 +1831,12 @@ export default class extends Language {
 		COMMAND_CATFACT_TITLE: 'Hecho Gatuno',
 		COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${codeBlock('', word)}`,
 		COMMAND_CHOICE_MISSING: 'Por favor, escribe al menos dos opciones separadas con coma.',
-		COMMAND_CHOICE_DUPLICATES: (words) => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
+		COMMAND_CHOICE_DUPLICATES: words => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
 		COMMAND_DICE_OUTPUT: (sides, rolls, result) => `Has lanzado el dado de **${sides}** lados **${rolls}** veces, obtienes: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'La cantidad de lanzamientos debe ser un número entre 1 y 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'La cantidad de lados debe ser un número entre 4 y 1024.',
 		// https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
-		COMMAND_ESCAPEROPE_OUTPUT: (user) => `**${user}** usó **Cuerda Huída**`,
+		COMMAND_ESCAPEROPE_OUTPUT: user => `**${user}** usó **Cuerda Huída**`,
 		COMMAND_LOVE_LESS45: 'Prueba de nuevo la próxima vez...',
 		COMMAND_LOVE_LESS75: '¡Bastante bien!',
 		COMMAND_LOVE_LESS100: '¡Haríais una gran pareja!',
@@ -1847,7 +1846,7 @@ export default class extends Language {
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
 		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `Uhm... le daría a **${user}** un **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['me quiero a mí misma mucho 😊', 'yo'],
-		COMMAND_XKCD_COMICS: (amount) => `Hay ${amount} comics.`,
+		COMMAND_XKCD_COMICS: amount => `Hay ${amount} comics.`,
 		COMMAND_XKCD_NOTFOUND: 'He buscado en todos los rincones, pero no he tenido suerte encontrando este comic, ¡prueba más tarde o prueba con otro!',
 
 		/**
@@ -1867,12 +1866,12 @@ export default class extends Language {
 		COMMAND_C4_START: (player, table) => `Let's play! Turn for: **${player}**.\n${table}`,
 		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
 		COMMAND_C4_GAME_WIN: (user, turn, table) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!\n${table}`,
-		COMMAND_C4_GAME_DRAW: (table) => `This match concluded in a **draw**!\n${table}`,
+		COMMAND_C4_GAME_DRAW: table => `This match concluded in a **draw**!\n${table}`,
 		COMMAND_C4_GAME_NEXT: (player, turn, table) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).\n${table}`,
 		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
 		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
 		COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
-		COMMAND_TICTACTOE_DRAW: (board) => `This match concluded in a **draw**!\n${board}`,
+		COMMAND_TICTACTOE_DRAW: board => `This match concluded in a **draw**!\n${board}`,
 
 		/**
 		 * #################
@@ -1881,23 +1880,23 @@ export default class extends Language {
 
 		GIVEAWAY_TIME: 'El sorteo debe durar al menos 10 seconds.',
 		GIVEAWAY_ENDS_AT: 'Termina en:',
-		GIVEAWAY_DURATION: (time) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
+		GIVEAWAY_DURATION: time => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
 		GIVEAWAY_TITLE: '🎉 **GIVEAWAY** 🎉',
-		GIVEAWAY_LASTCHANCE: (time) => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
+		GIVEAWAY_LASTCHANCE: time => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
 		GIVEAWAY_LASTCHANCE_TITLE: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
-		GIVEAWAY_ENDED: (winners) => winners.length === 1 ? `Ganador/a: ${winners[0]}` : `Ganadores: ${winners.join(', ')}`,
+		GIVEAWAY_ENDED: winners => winners.length === 1 ? `Ganador/a: ${winners[0]}` : `Ganadores: ${winners.join(', ')}`,
 		GIVEWAWY_ENDED_NO_WINNER: 'No winner...',
 		GIVEAWAY_ENDED_AT: 'Ended at:',
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (mention, title) => `Congratulations ${mention}! You won the giveaway **${title}**`,
-		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: (title) => `The giveaway **${title}** ended without enough participants.`,
+		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: title => `The giveaway **${title}** ended without enough participants.`,
 
 		/**
 		 * ###################
 		 * MANAGEMENT COMMANDS
 		 */
 
-		COMMAND_NICK_SET: (nickname) => `Changed the nickname to **${nickname}**.`,
+		COMMAND_NICK_SET: nickname => `Changed the nickname to **${nickname}**.`,
 		COMMAND_NICK_CLEARED: 'Nickname cleared.',
 		COMMAND_TRIGGERS_NOTYPE: 'You need to insert a trigger type (**alias**|**reaction**)',
 		COMMAND_TRIGGERS_NOOUTPUT: 'You need to insert the trigger output.',
@@ -1913,7 +1912,7 @@ export default class extends Language {
 			MEMBERS: 'Members',
 			OTHER: 'Other'
 		},
-		COMMAND_SERVERINFO_ROLES: (roles) => `**Roles**\n\n${roles}`,
+		COMMAND_SERVERINFO_ROLES: roles => `**Roles**\n\n${roles}`,
 		COMMAND_SERVERINFO_NOROLES: 'Roles? Where? There is no other than the `@everyone` role!',
 		COMMAND_SERVERINFO_CHANNELS: (text, voice, categories, afkChannel, afkTime) => [
 			`• **${text}** Text, **${voice}** Voice, **${categories}** categories.`,
@@ -1931,7 +1930,7 @@ export default class extends Language {
 			`• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**`
 		].join('\n'),
 		COMMAND_ROLEINFO_TITLES: { PERMISSIONS: 'Permissions' },
-		COMMAND_ROLEINFO: (role) => [
+		COMMAND_ROLEINFO: role => [
 			`ID: **${role.id}**`,
 			`Name: **${role.name}**`,
 			`Color: **${role.hexColor}**`,
@@ -1940,18 +1939,18 @@ export default class extends Language {
 			`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`
 		].join('\n'),
 		COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
-		COMMAND_ROLEINFO_PERMISSIONS: (permissions) => permissions.length > 0 ? permissions.map((key) => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+		COMMAND_ROLEINFO_PERMISSIONS: permissions => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
 		COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
-		COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
-		COMMAND_FILTER_ADDED: (word) => `${GREENTICK} Success! Added the word ${word} to the filter.`,
-		COMMAND_FILTER_REMOVED: (word) => `${GREENTICK} Success! Removed the word ${word} from the filter.`,
+		COMMAND_FILTER_FILTERED: filtered => `This word is ${filtered ? 'already' : 'not'} filtered.`,
+		COMMAND_FILTER_ADDED: word => `${GREENTICK} Success! Added the word ${word} to the filter.`,
+		COMMAND_FILTER_REMOVED: word => `${GREENTICK} Success! Removed the word ${word} from the filter.`,
 		COMMAND_FILTER_RESET: `${GREENTICK} Success! The filter has been reset.`,
 		COMMAND_FILTER_SHOW_EMPTY: 'The list of filtered words is empty!',
-		COMMAND_FILTER_SHOW: (words) => `There is the list of all filtered words: ${words}`,
+		COMMAND_FILTER_SHOW: words => `There is the list of all filtered words: ${words}`,
 		COMMAND_SETFILTERMODE_EQUALS: 'The word filter mode did not change, it was already set up with that mode.',
-		COMMAND_SETFILTERMODE_ALERT: (enabled) => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETFILTERMODE_LOG: (enabled) => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETFILTERMODE_DELETE: (enabled) => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+		COMMAND_SETFILTERMODE_ALERT: enabled => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+		COMMAND_SETFILTERMODE_LOG: enabled => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+		COMMAND_SETFILTERMODE_DELETE: enabled => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
 		COMMAND_SETFILTERMODE_SHOW: (falert, flog, fdelete) => [
 			`= Word Filter Flags =`, '',
 			`Alert  :: ${falert ? 'Enabled' : 'Disabled'}`,
@@ -1965,17 +1964,17 @@ export default class extends Language {
 			`Delete :: ${fdelete ? 'Enabled' : 'Disabled'}`
 		].join('\n'),
 		COMMAND_SETCAPSFILTER_EQUALS: 'The caps filter flags did not change, it was already set up with that mode.',
-		COMMAND_SETCAPSFILTER_ALERT: (enabled) => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETCAPSFILTER_LOG: (enabled) => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETCAPSFILTER_DELETE: (enabled) => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+		COMMAND_SETCAPSFILTER_ALERT: enabled => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+		COMMAND_SETCAPSFILTER_LOG: enabled => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
+		COMMAND_SETCAPSFILTER_DELETE: enabled => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
 		COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE: 'You must input a value for this type.',
 		COMMAND_MANAGEATTACHMENTS_INVALID_ACTION: 'The type must be `ban`, `kick`, `mute`, or `softban`.',
-		COMMAND_MANAGEATTACHMENTS_MAXIMUM: (maximum) => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}.`,
-		COMMAND_MANAGEATTACHMENTS_EXPIRE: (time) => `${GREENTICK} Successfully set the lifetime for the manager's entries to ${duration(time)}.`,
-		COMMAND_MANAGEATTACHMENTS_DURATION: (time) => `${GREENTICK} Successfully set the duration for moderation logs to ${duration(time)}.`,
+		COMMAND_MANAGEATTACHMENTS_MAXIMUM: maximum => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}.`,
+		COMMAND_MANAGEATTACHMENTS_EXPIRE: time => `${GREENTICK} Successfully set the lifetime for the manager's entries to ${duration(time)}.`,
+		COMMAND_MANAGEATTACHMENTS_DURATION: time => `${GREENTICK} Successfully set the duration for moderation logs to ${duration(time)}.`,
 		COMMAND_MANAGEATTACHMENTS_ACTION: `${GREENTICK} Successfully changed the moderative action for the manager.`,
 		COMMAND_MANAGEATTACHMENTS_LOGS: `${GREENTICK} Successfully changed the preferences for message logging.`,
-		COMMAND_MANAGEATTACHMENTS_ENABLED: (enabled) => `${GREENTICK} Successfully ${enabled ? 'enabled' : 'disabled'} the attachment management.`,
+		COMMAND_MANAGEATTACHMENTS_ENABLED: enabled => `${GREENTICK} Successfully ${enabled ? 'enabled' : 'disabled'} the attachment management.`,
 
 		/**
 		 * #################################
@@ -1988,10 +1987,10 @@ export default class extends Language {
 		COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY: 'The list of disabled commands for the specified channel is empty!',
 		COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET: 'The command you are trying to disable is already disabled!',
 		COMMAND_MANAGECOMMANDCHANNEL_ADD: (channel, command) => `Successfully disabled the command ${command} for the channel ${channel}!`,
-		COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET: (channel) => `The command you are trying to enable was not disabled for ${channel}.`,
+		COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET: channel => `The command you are trying to enable was not disabled for ${channel}.`,
 		COMMAND_MANAGECOMMANDCHANNEL_REMOVE: (channel, command) => `Successfully enabled the command ${command} for the channel ${channel}!`,
 		COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY: 'This channel had no disabled command, so I decided to do nothing.',
-		COMMAND_MANAGECOMMANDCHANNEL_RESET: (channel) => `Successfully enabled all disabled commands in ${channel}, enjoy!`,
+		COMMAND_MANAGECOMMANDCHANNEL_RESET: channel => `Successfully enabled all disabled commands in ${channel}, enjoy!`,
 		COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION: 'You must input a valid reaction that can be used by me.',
 		COMMAND_MANAGEROLEREACTION_REQUIRED_ROLE: 'You must input the name of the role you want me to add.',
 		COMMAND_MANAGEROLEREACTION_LIST_EMPTY: 'This guild has no role reaction set up.',
@@ -2001,18 +2000,18 @@ export default class extends Language {
 		COMMAND_MANAGEROLEREACTION_REMOVE: 'Successfully removed the role reaction.',
 		COMMAND_MANAGEROLEREACTION_RESET: 'Successfully removed all role reactions.',
 		COMMAND_SETMESSAGEROLE_CHANNELNOTSET: 'In order to configure the message role, you must configure the channel first.',
-		COMMAND_SETMESSAGEROLE_WRONGCHANNEL: (channel) => `In order to reduce confusion, I would suggest you to move to ${channel}`,
+		COMMAND_SETMESSAGEROLE_WRONGCHANNEL: channel => `In order to reduce confusion, I would suggest you to move to ${channel}`,
 		COMMAND_SETMESSAGEROLE_SET: 'Successfully set the message role.',
-		COMMAND_SETSTARBOARDEMOJI_SET: (emoji) => `Successfully set a new emoji for the next star messages: ${emoji}`,
-		COMMAND_SETROLECHANNEL_SET: (channel) => `Successfully set the role channel to ${channel}.`,
+		COMMAND_SETSTARBOARDEMOJI_SET: emoji => `Successfully set a new emoji for the next star messages: ${emoji}`,
+		COMMAND_SETROLECHANNEL_SET: channel => `Successfully set the role channel to ${channel}.`,
 		CONFIGURATION_TEXTCHANNEL_REQUIRED: 'The selected channel is not a valid text channel, try again with another.',
 		CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',
-		COMMAND_SETIGNORECHANNELS_SET: (channel) => `Ignoring all command input from ${channel} now.`,
-		COMMAND_SETIGNORECHANNELS_REMOVED: (channel) => `Listening all command input from ${channel} now.`,
-		COMMAND_SETMEMBERLOGS_SET: (channel) => `Successfully set the member logs channel to ${channel}.`,
-		COMMAND_SETMESSAGELOGS_SET: (channel) => `Successfully set the message logs channel to ${channel}.`,
-		COMMAND_SETMODLOGS_SET: (channel) => `Successfully set the mod logs channel to ${channel}.`,
-		COMMAND_SETPREFIX_SET: (prefix) => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
+		COMMAND_SETIGNORECHANNELS_SET: channel => `Ignoring all command input from ${channel} now.`,
+		COMMAND_SETIGNORECHANNELS_REMOVED: channel => `Listening all command input from ${channel} now.`,
+		COMMAND_SETMEMBERLOGS_SET: channel => `Successfully set the member logs channel to ${channel}.`,
+		COMMAND_SETMESSAGELOGS_SET: channel => `Successfully set the message logs channel to ${channel}.`,
+		COMMAND_SETMODLOGS_SET: channel => `Successfully set the mod logs channel to ${channel}.`,
+		COMMAND_SETPREFIX_SET: prefix => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
 
 		/**
 		 * ###########################
@@ -2021,11 +2020,11 @@ export default class extends Language {
 
 		COMMAND_STICKYROLES_REQUIRED_USER: 'A user target is required for this command to work.',
 		COMMAND_STICKYROLES_REQUIRED_ROLE: 'A role name is required when adding or removing a role.',
-		COMMAND_STICKYROLES_NOTEXISTS: (user) => `The user ${user} does not have any sticky roles or does not have the specified one.`,
-		COMMAND_STICKYROLES_RESET: (user) => `Successfully removed all sticky roles from ${user}.`,
-		COMMAND_STICKYROLES_REMOVE: (user) => `Successfully removed the specified role from ${user}.`,
-		COMMAND_STICKYROLES_ADD_EXISTS: (user) => `The user ${user} already had the specified role as sticky.`,
-		COMMAND_STICKYROLES_ADD: (user) => `Successfully added the specified role as sticky to ${user}.`,
+		COMMAND_STICKYROLES_NOTEXISTS: user => `The user ${user} does not have any sticky roles or does not have the specified one.`,
+		COMMAND_STICKYROLES_RESET: user => `Successfully removed all sticky roles from ${user}.`,
+		COMMAND_STICKYROLES_REMOVE: user => `Successfully removed the specified role from ${user}.`,
+		COMMAND_STICKYROLES_ADD_EXISTS: user => `The user ${user} already had the specified role as sticky.`,
+		COMMAND_STICKYROLES_ADD: user => `Successfully added the specified role as sticky to ${user}.`,
 		COMMAND_STICKYROLES_SHOW_EMPTY: `There are no sticky roles to show.`,
 		COMMAND_STICKYROLES_SHOW_SINGLE: (user, roles) => `Sticky Role(s) for **${user}**: \`${roles.join('`, `')}\`.`,
 
@@ -2048,7 +2047,7 @@ export default class extends Language {
 			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
 			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
 		COMMAND_WARNINGS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_WARNINGS_AMOUNT: (amount) => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
+		COMMAND_WARNINGS_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
 
 		/**
 		 * #############################
@@ -2062,12 +2061,12 @@ export default class extends Language {
 		COMMAND_RAID_LIST: 'List of users in the RAID queue',
 		COMMAND_RAID_CLEAR: 'Successfully cleared the RAID list.',
 		COMMAND_RAID_COOL: 'Successfully deactivated the RAID.',
-		COMMAND_FLOW: (amount) => `${amount} messages have been sent within the last minute.`,
+		COMMAND_FLOW: amount => `${amount} messages have been sent within the last minute.`,
 		COMMAND_TIME_TIMED: 'The selected moderation case has already been timed.',
 		COMMAND_TIME_UNDEFINED_TIME: 'You must specify a time.',
 		COMMAND_TIME_UNSUPPORTED_TIPE: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
 		COMMAND_TIME_NOT_SCHEDULED: 'This task is not scheduled.',
-		COMMAND_TIME_ABORTED: (title) => `Successfully aborted the schedule for ${title}`,
+		COMMAND_TIME_ABORTED: title => `Successfully aborted the schedule for ${title}`,
 		COMMAND_TIME_SCHEDULED: (title, user, time) => `${GREENTICK} Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(time)}`,
 
 		/**
@@ -2077,11 +2076,11 @@ export default class extends Language {
 
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
-		COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
-		COMMAND_LOCKDOWN_LOCKED: (channel) => `The channel ${channel} was already locked.`,
-		COMMAND_LOCKDOWN_LOCKING: (channel) => `Locking the channel ${channel}...`,
-		COMMAND_LOCKDOWN_UNLOCKED: (channel) => `The channel ${channel} was not locked.`,
-		COMMAND_LOCKDOWN_OPEN: (channel) => `The lockdown for the channel ${channel} has been released.`,
+		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
+		COMMAND_LOCKDOWN_LOCKED: channel => `The channel ${channel} was already locked.`,
+		COMMAND_LOCKDOWN_LOCKING: channel => `Locking the channel ${channel}...`,
+		COMMAND_LOCKDOWN_UNLOCKED: channel => `The channel ${channel} was not locked.`,
+		COMMAND_LOCKDOWN_OPEN: channel => `The lockdown for the channel ${channel} has been released.`,
 		COMMAND_MUTE_LOWLEVEL: 'I am sorry, there is no Mute role configured. Please ask an Administrator or the Guild Owner to set it up.',
 		COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',
 		COMMAND_MUTE_CONFIGURE: 'Do you want me to create and configure the Mute role now?',
@@ -2106,7 +2105,7 @@ export default class extends Language {
 		COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
 		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
-		COMMAND_MODERATION_FAILED: (users) => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
+		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
 
 		/**
 		 * ###############
@@ -2119,30 +2118,30 @@ export default class extends Language {
 		COMMAND_AUTOROLE_REMOVE: (role, before) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
 		COMMAND_AUTOROLE_ADD: (role, points) => `Added new autorole: ${role.name} (${role.id}). Points required: ${points}`,
 		COMMAND_AUTOROLE_LIST_EMPTY: 'There is no role configured as an autorole in this server.',
-		COMMAND_AUTOROLE_UNKNOWN_ROLE: (role) => `Unknown role: ${role}`,
+		COMMAND_AUTOROLE_UNKNOWN_ROLE: role => `Unknown role: ${role}`,
 		COMMAND_BALANCE: (user, amount) => `The user ${user} has a total of ${amount}${SHINY}`,
-		COMMAND_BALANCE_SELF: (amount) => `You have a total of ${amount}${SHINY}`,
+		COMMAND_BALANCE_SELF: amount => `You have a total of ${amount}${SHINY}`,
 		COMMAND_BALANCE_BOTS: `I think they have 5 gears as much, bots don't have ${SHINY}`,
 		COMMAND_SOCIAL_MEMBER_NOTEXISTS: `${REDCROSS} The member is not in this server, and is not in my database either.`,
 		COMMAND_SOCIAL_ADD: (user, amount, added) => `${GREENTICK} Successfully added ${added} point${added === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
 		COMMAND_SOCIAL_REMOVE: (user, amount, removed) => `${GREENTICK} Successfully removed ${removed} point${removed === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
-		COMMAND_SOCIAL_UNCHANGED: (user) => `${REDCROSS} The user ${user} already had the given amount of points, no update was needed.`,
-		COMMAND_SOCIAL_RESET: (user) => `${GREENTICK} The user ${user} got his points removed.`,
+		COMMAND_SOCIAL_UNCHANGED: user => `${REDCROSS} The user ${user} already had the given amount of points, no update was needed.`,
+		COMMAND_SOCIAL_RESET: user => `${GREENTICK} The user ${user} got his points removed.`,
 		COMMAND_BANNER_MISSING: 'You must specify a banner id to buy.',
-		COMMAND_BANNER_NOTEXISTS: (prefix) => `This banner id does not exist. Please check \`${prefix}banner list\` for a list of banners you can buy.`,
-		COMMAND_BANNER_USERLIST_EMPTY: (prefix) => `You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,
+		COMMAND_BANNER_NOTEXISTS: prefix => `This banner id does not exist. Please check \`${prefix}banner list\` for a list of banners you can buy.`,
+		COMMAND_BANNER_USERLIST_EMPTY: prefix => `You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,
 		COMMAND_BANNER_RESET_DEFAULT: 'You are already using the default banner.',
 		COMMAND_BANNER_RESET: 'Your banner has been reset to the default.',
 		COMMAND_BANNER_SET_NOT_BOUGHT: 'You did not buy this banner yet.',
-		COMMAND_BANNER_SET: (banner) => `${GREENTICK} **Success**. You have set your banner to: __${banner}__`,
+		COMMAND_BANNER_SET: banner => `${GREENTICK} **Success**. You have set your banner to: __${banner}__`,
 		COMMAND_BANNER_BOUGHT: (prefix, banner) => `You already have this banner, you may want to use \`${prefix}banner set ${banner}\` to make it visible in your profile.`,
 		COMMAND_BANNER_MONEY: (money, cost) => `You do not have enough money to buy this banner. You have ${money}${SHINY}, the banner costs ${cost}${SHINY}`,
 		COMMAND_BANNER_PAYMENT_CANCELLED: `${REDCROSS} The payment has been cancelled.`,
-		COMMAND_BANNER_BUY: (banner) => `${GREENTICK} **Success**. You have bought the banner: __${banner}__`,
+		COMMAND_BANNER_BUY: banner => `${GREENTICK} **Success**. You have bought the banner: __${banner}__`,
 		COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
-		COMMAND_DAILY_TIME: (time) => `El siguiente pago está disponible en: ${duration(time)}`,
-		COMMAND_DAILY_TIME_SUCCESS: (amount) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
-		COMMAND_DAILY_GRACE: (remaining) => [
+		COMMAND_DAILY_TIME: time => `El siguiente pago está disponible en: ${duration(time)}`,
+		COMMAND_DAILY_TIME_SUCCESS: amount => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
+		COMMAND_DAILY_GRACE: remaining => [
 			`¿Te gustaría recibir el pago temprano? El tiempo restante será añadido al periodo normal de espera, de 12 horas.`,
 			`Tiempo restante: ${duration(remaining)}`
 		].join('\n'),
@@ -2156,9 +2155,9 @@ export default class extends Language {
 		COMMAND_DIVORCE_NOTTAKEN: 'Who would you divorce? You are not even taken!',
 		COMMAND_DIVORCE_PROMPT: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',
 		COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you will continue with your partner!',
-		COMMAND_DIVORCE_DM: (user) => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
-		COMMAND_DIVORCE_SUCCESS: (user) => `Successful divorce 💔... You are no longer married to ${user}!`,
-		COMMAND_MARRY_WITH: (user) => `Dear, how could you forget it... You are currently married to ${user}!`,
+		COMMAND_DIVORCE_DM: user => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
+		COMMAND_DIVORCE_SUCCESS: user => `Successful divorce 💔... You are no longer married to ${user}!`,
+		COMMAND_MARRY_WITH: user => `Dear, how could you forget it... You are currently married to ${user}!`,
 		COMMAND_MARRY_NOTTAKEN: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?',
 		COMMAND_MARRY_SKYRA: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
 		COMMAND_MARRY_SNEYRA: 'In your dreams. She is my sister, I am not letting somebody harm her!',
@@ -2189,30 +2188,30 @@ export default class extends Language {
 		COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',
 		COMMAND_REMINDME_TIME: 'Your reminder must be at least one minute long.',
 		COMMAND_REMINDME_SHORT_TIME: 'You did not give me a duration of at least one minute long. Cancelling prompt.',
-		COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
+		COMMAND_REMINDME_CREATE: id => `A reminder with ID \`${id}\` has been created.`,
 		COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
 		COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
-		COMMAND_REMINDME_DELETE: (task) => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
+		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
 		COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 		COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 		COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
 		COMMAND_REMINDME_NOTFOUND: 'I cannot find something here. The reminder either never existed or it ended.',
 
-		COMMAND_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
+		COMMAND_REPUTATION_TIME: remaining => `You can give a reputation point in ${duration(remaining)}`,
 		COMMAND_REPUTATION_USABLE: 'You can give a reputation point now.',
 		COMMAND_REPUTATION_USER_NOTFOUND: 'You must mention a user to give a reputation point.',
 		COMMAND_REPUTATION_SELF: 'You cannot give a reputation point to yourself.',
 		COMMAND_REPUTATION_BOTS: 'You cannot give a reputation point to bots.',
-		COMMAND_REPUTATION_GIVE: (user) => `You have given a reputation point to **${user}**!`,
+		COMMAND_REPUTATION_GIVE: user => `You have given a reputation point to **${user}**!`,
 		COMMAND_REPUTATIONS_BOTS: 'Bots cannot have reputation points...',
-		COMMAND_REPUTATIONS_SELF: (points) => `You have a total of ${points} reputation points.`,
+		COMMAND_REPUTATIONS_SELF: points => `You have a total of ${points} reputation points.`,
 		COMMAND_REPUTATIONS: (user, points) => `The user ${user} has a total of ${points === 1 ? 'one reputation point' : `${points} reputation points`}.`,
 		COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
-		COMMAND_SCOREBOARD_POSITION: (position) => `Your placing position is: ${position}`,
-		COMMAND_SETCOLOR: (color) => `Color changed to ${color}`,
-		COMMAND_SLOTMACHINES_MONEY: (money) => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
+		COMMAND_SCOREBOARD_POSITION: position => `Your placing position is: ${position}`,
+		COMMAND_SETCOLOR: color => `Color changed to ${color}`,
+		COMMAND_SLOTMACHINES_MONEY: money => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
 		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
-		COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
 		COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
 		COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `${GREENTICK} **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
@@ -2237,7 +2236,7 @@ export default class extends Language {
 		 * SYSTEM COMMANDS
 		 */
 
-		COMMAND_EVAL_TIMEOUT: (seconds) => `TIMEOUT: Took longer than ${seconds} seconds.`,
+		COMMAND_EVAL_TIMEOUT: seconds => `TIMEOUT: Took longer than ${seconds} seconds.`,
 		COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
 		COMMAND_EVAL_OUTPUT: (time, output, type) => `**Output**:${output}\n**Type**:${type}\n${time}`,
 		COMMAND_EVAL_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.\n**Type**:${type}\n${time}`,
@@ -2274,14 +2273,14 @@ export default class extends Language {
 		COMMAND_TAG_PERMISSIONLEVEL: 'You must be a staff member, moderator, or admin, to be able to manage tags.',
 		COMMAND_TAG_NAME_NOTALLOWED: 'A tag name may not have a grave accent nor invisible characters.',
 		COMMAND_TAG_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
-		COMMAND_TAG_EXISTS: (tag) => `The tag '${tag}' already exists.`,
+		COMMAND_TAG_EXISTS: tag => `The tag '${tag}' already exists.`,
 		COMMAND_TAG_CONTENT_REQUIRED: 'You must provide a content for this tag.',
 		COMMAND_TAG_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
-		COMMAND_TAG_REMOVED: (name) => `Successfully removed the tag **${name}**.`,
-		COMMAND_TAG_NOTEXISTS: (tag) => `The tag '${tag}' does not exist.`,
+		COMMAND_TAG_REMOVED: name => `Successfully removed the tag **${name}**.`,
+		COMMAND_TAG_NOTEXISTS: tag => `The tag '${tag}' does not exist.`,
 		COMMAND_TAG_EDITED: (name, content) => `Successfully edited the tag **${name}** with a content of **${content}**.`,
 		COMMAND_TAG_LIST_EMPTY: 'The tag list for this server is empty.',
-		COMMAND_TAG_LIST: (tags) => (tags.length === 1 ? 'There is 1 tag: ' : `There are ${tags.length} tags: `) + tags.join(', '),
+		COMMAND_TAG_LIST: tags => `${(tags.length === 1 ? 'There is 1 tag: ' : `There are ${tags.length} tags: `)}${tags.join(', ')}`,
 
 		/**
 		 * ##############
@@ -2306,10 +2305,10 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Type  ::')} **Twemoji**`,
 			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
-		COMMAND_EMOJI_INVALID: (emoji) => `'${emoji}' no es un emoji válido.`,
-		COMMAND_EMOJI_TOO_LARGE: (emoji) => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
-		COMMAND_GOOGL_LONG: (url) => `**URL Acortada: [${url}](${url})**`,
-		COMMAND_GOOGL_SHORT: (url) => `**URL Expandida: [${url}](${url})**`,
+		COMMAND_EMOJI_INVALID: emoji => `'${emoji}' no es un emoji válido.`,
+		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
+		COMMAND_GOOGL_LONG: url => `**URL Acortada: [${url}](${url})**`,
+		COMMAND_GOOGL_SHORT: url => `**URL Expandida: [${url}](${url})**`,
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
 		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',
@@ -2329,7 +2328,7 @@ export default class extends Language {
 		COMMAND_POLL_NOTEXISTS: `${REDCROSS} La encuesta que quieres obtener no existe o ha expirado.`,
 		COMMAND_POLL_NOTMANAGEABLE: `${REDCROSS} Esta encuesta está protegida y sólo puede ser modificada por su autor o por un administrador de este servidor.`,
 		COMMAND_POLL_REMOVE: `${GREENTICK} Eliminada la encuesta con éxito.`,
-		COMMAND_POLL_INVALID_OPTION: (options) => `${REDCROSS} Opción inválida. Por favor, elige una de las siguientes opciones: ${options}.`,
+		COMMAND_POLL_INVALID_OPTION: options => `${REDCROSS} Opción inválida. Por favor, elige una de las siguientes opciones: ${options}.`,
 		COMMAND_POLL_ALREADY_VOTED: `${REDCROSS} ¡Ya votaste en esta encuesta!`,
 		COMMAND_POLL_VOTE: `${GREENTICK} ¡Votado con éxito! Autodestruyendo mensaje en 10 segundos...`,
 		COMMAND_POLL_MISSING_ID: '¡Necesitas la id de la encuesta!',
@@ -2338,12 +2337,12 @@ export default class extends Language {
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: '¡Ha habido un error! Por favor, revise de nuevo la ortografía y que especificaste una moneda válida.',
 		COMMAND_QUOTE_MESSAGE: 'Esto es muy raro, pero dicho mensaje no tiene ni contenido ni imagen.',
 		COMMAND_ROLES_LIST_EMPTY: '¡Este servidor no tiene ningún rol público!',
-		COMMAND_ROLES_ABORT: (prefix) => `He buscado en todos los rincones pero no he encontrado lo que buscabas. ¡Por favor escribe \`${prefix}roles\` para recibir la lista completa!`,
+		COMMAND_ROLES_ABORT: prefix => `He buscado en todos los rincones pero no he encontrado lo que buscabas. ¡Por favor escribe \`${prefix}roles\` para recibir la lista completa!`,
 		COMMAND_ROLES_LIST_TITLE: 'Lista de roles públicos',
-		COMMAND_ROLES_ADDED: (roles) => `Los siguientes roles han sido añadidos a tu perfil: \`${roles}\``,
-		COMMAND_ROLES_REMOVED: (roles) => `Los siguientes roles han sido removidos de tu perfil: \`${roles}\``,
-		COMMAND_ROLES_NOT_PUBLIC: (roles) => `Los siguientes roles no son públicos: \`${roles}\``,
-		COMMAND_ROLES_NOT_MANAGEABLE: (roles) => `Los siguientes roles no se pudieron entregar debido a la posición jerárquica: \`${roles}\``,
+		COMMAND_ROLES_ADDED: roles => `Los siguientes roles han sido añadidos a tu perfil: \`${roles}\``,
+		COMMAND_ROLES_REMOVED: roles => `Los siguientes roles han sido removidos de tu perfil: \`${roles}\``,
+		COMMAND_ROLES_NOT_PUBLIC: roles => `Los siguientes roles no son públicos: \`${roles}\``,
+		COMMAND_ROLES_NOT_MANAGEABLE: roles => `Los siguientes roles no se pudieron entregar debido a la posición jerárquica: \`${roles}\``,
 		COMMAND_ROLES_AUDITLOG: 'Autorización: Administración de Roles Públicos | Comando \'Roles\'.',
 		COMMAND_DUCKDUCKGO_NOTFOUND: 'Lo siento, pero la API de DuckDuckGo ha devuelto una respuesta en blanco. Prueba de nuevo con otras palabras.',
 		COMMAND_DUCKDUCKGO_LOOKALSO: 'Temas Relacionados:',
@@ -2356,7 +2355,7 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Ejemplo    ::')} ${example}`,
 			`→ ${inlineCodeblock('Autor      ::')} ${author}`
 		].join('\n\n'),
-		COMMAND_WHOIS_MEMBER: (member) => [
+		COMMAND_WHOIS_MEMBER: member => [
 			`→ ${inlineCodeblock('ID             ::')} **${member.id}**`,
 			`→ ${inlineCodeblock('Etiqueta       ::')} **${member.user.tag}**`,
 			`→ ${inlineCodeblock('Apodo          ::')} **${member.nickname || 'Not set'}**`,
@@ -2364,7 +2363,7 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Fecha Ingreso  ::')} **${timestamp.displayUTC(member.joinedAt)}**`
 		].join('\n'),
 		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
-		COMMAND_WHOIS_USER: (user) => [
+		COMMAND_WHOIS_USER: user => [
 			`→ ${inlineCodeblock('ID             ::')} **${user.id}**`,
 			`→ ${inlineCodeblock('Etiqueta       ::')} **${user.tag}**`,
 			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(user.createdAt)}**`
@@ -2390,20 +2389,20 @@ export default class extends Language {
 		 */
 
 		COMMAND_WBLUSH: '¡Le/a ruborizaste! 😊',
-		COMMAND_WCRY: (user) => `Querido ${user}, ¿le/a hiciste llorar? 💔`,
-		COMMAND_WCUDDLE: (user) => `Ahí va un abracito para tí, ${user} 💞`,
+		COMMAND_WCRY: user => `Querido ${user}, ¿le/a hiciste llorar? 💔`,
+		COMMAND_WCUDDLE: user => `Ahí va un abracito para tí, ${user} 💞`,
 		COMMAND_WDANCE: '¡Olé! 💃',
-		COMMAND_WHUG: (user) => `¡Un abrazo! ${user} ❤`,
-		COMMAND_WKISS: (user) => `¡Un besito! ${user} 💜`,
-		COMMAND_WLICK: (user) => `Lamiendo ${user} 👅`,
+		COMMAND_WHUG: user => `¡Un abrazo! ${user} ❤`,
+		COMMAND_WKISS: user => `¡Un besito! ${user} 💜`,
+		COMMAND_WLICK: user => `Lamiendo ${user} 👅`,
 		COMMAND_WNOM: `Nom, nom, nom! 😊`,
 		COMMAND_WNEKO: `Miau! 🐱`,
-		COMMAND_WPAT: (user) => `\\*Da palmaditas en la cabeza de ${user}\\* ❤`,
+		COMMAND_WPAT: user => `\\*Da palmaditas en la cabeza de ${user}\\* ❤`,
 		COMMAND_WPOUT: `¿Oh?`,
-		COMMAND_WSLAP: (user) => `¡Abofeteando ${user}!`,
+		COMMAND_WSLAP: user => `¡Abofeteando ${user}!`,
 		COMMAND_WSMUG: `\\*Sonríe con superioridad\\*`,
-		COMMAND_WSTARE: (user) => `Querido ${user}... hay alguien observándote 👀`,
-		COMMAND_WTICKLE: (user) => `Cosquillitas para tí, ${user}!`,
+		COMMAND_WSTARE: user => `Querido ${user}... hay alguien observándote 👀`,
+		COMMAND_WTICKLE: user => `Cosquillitas para tí, ${user}!`,
 
 		/**
 		 * #################################
@@ -2416,16 +2415,16 @@ export default class extends Language {
 		CONST_MONITOR_WORDFILTER: 'Palabra Filtrada',
 		CONST_MONITOR_CAPSFILTER: 'Demasiadas Mayúsculas',
 		CONST_MONITOR_ATTACHMENTFILTER: 'Demasiados Documentos',
-		MONITOR_NOINVITE: (user) => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
-		MONITOR_WORDFILTER_DM: (filtered) => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
-		MONITOR_CAPSFILTER_DM: (message) => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
-		MONITOR_WORDFILTER: (user) => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
-		MONITOR_CAPSFILTER: (user) => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
-		MONITOR_NMS_MESSAGE: (user) => [
+		MONITOR_NOINVITE: user => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
+		MONITOR_WORDFILTER_DM: filtered => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
+		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
+		MONITOR_WORDFILTER: user => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
+		MONITOR_CAPSFILTER: user => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
+		MONITOR_NMS_MESSAGE: user => [
 			`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
 			'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
 		].join('\n'),
-		MONITOR_NMS_MODLOG: (threshold) => `[NOMENTIONSPAM] Automático: Límite de Spam de Menciones alcanzado.\nLímite: ${threshold}.`,
+		MONITOR_NMS_MODLOG: threshold => `[NOMENTIONSPAM] Automático: Límite de Spam de Menciones alcanzado.\nLímite: ${threshold}.`,
 		MONITOR_NMS_ALERT: `Ten cuidado con mencionar otra vez más, estás a punto de ser expulsado por exceder el límite de spam de menciones de este servidor.`,
 		MONITOR_SOCIAL_ACHIEVEMENT: '¡Felicidades %MEMBER! ¡Has logrado el rol %ROLE%!',
 
@@ -2435,7 +2434,7 @@ export default class extends Language {
 		 * #################################
 		 */
 
-		INHIBITOR_SPAM: (channel) => `¿Podemos movernos al canal ${channel}, por favor? Este comando puede ser muy molesto y arruinar las conversaciones de otras personas.`,
+		INHIBITOR_SPAM: channel => `¿Podemos movernos al canal ${channel}, por favor? Este comando puede ser muy molesto y arruinar las conversaciones de otras personas.`,
 
 		/**
 		 * #################################
@@ -2445,7 +2444,7 @@ export default class extends Language {
 
 		RESOLVER_DATE_SUFFIX: ' segundos',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',
-		PREFIX_REMINDER: (prefix) => `El prefijo de este servidor está configurado a: \`${prefix}\``,
+		PREFIX_REMINDER: prefix => `El prefijo de este servidor está configurado a: \`${prefix}\``,
 
 		UNEXPECTED_ISSUE: '¡Algo inesperado pasó! Cancelando este comando...',
 
@@ -2477,14 +2476,14 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: '**Cancelando la creación del rol de mute**: Ya existe un rol de mute.',
 		SYSTEM_GUILD_MUTECREATE_TOOMANYROLES: '**Cancelando la creación del rol de mute**: Hay 250 roles en este servidor, necesitas borrar uno.',
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
-		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied) => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
+		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 
 		STARBOARD_JUMPTO: 'Salta al Mensaje ►',
 
-		RESOLVER_INVALID_CHANNELNAME: (name) => `${name} debe ser una mención, nombre, o id válido de un canal.`,
-		RESOLVER_INVALID_ROLENAME: (name) => `${name} debe ser una mención, nombre, o id válido de un rol.`,
-		RESOLVER_INVALID_USERNAME: (name) => `${name} debe ser una mención, nombre, o id válido de un usuario.`,
+		RESOLVER_INVALID_CHANNELNAME: name => `${name} debe ser una mención, nombre, o id válido de un canal.`,
+		RESOLVER_INVALID_ROLENAME: name => `${name} debe ser una mención, nombre, o id válido de un rol.`,
+		RESOLVER_INVALID_USERNAME: name => `${name} debe ser una mención, nombre, o id válido de un usuario.`,
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 
@@ -2504,21 +2503,27 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERREMOVE: 'Usuario Menos',
 		EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Actualizado el apodo de **${previous}** a **${current}**`,
 		EVENTS_GUILDMEMBER_ADDED_NICKNAME: (_, current) => `Añadido un nuevo apodo **${current}**`,
-		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous) => `Eliminado el apodo **${previous}**`,
+		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: previous => `Eliminado el apodo **${previous}**`,
 		EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) => `${removed.length > 0
-			? `${removed.length === 1 ? 'Eliminado el rol' : 'Eliminados los roles'}: ${removed.join(', ')}\n` : ''}${added.length > 0
-				? `${added.length === 1 ? 'Añadido el rol' : 'Añadidos los roles'}: ${added.join(', ')}` : ''}`,
+			? `${removed.length === 1
+				? 'Eliminado el rol'
+				: 'Eliminados los roles'}: ${removed.join(', ')}\n`
+			: ''}${added.length > 0
+			? `${added.length === 1
+				? 'Añadido el rol'
+				: 'Añadidos los roles'}: ${added.join(', ')}`
+			: ''}`,
 		EVENTS_MESSAGE_UPDATE: 'Mensaje Editado',
 		EVENTS_MESSAGE_DELETE: 'Mensaje Eliminado',
-		EVENTS_COMMAND: (command) => `Comando Usado: ${command}`,
-		EVENTS_STREAM_START: (member) => `¡El usuario **${member.user.tag}** está en vivo! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
-		EVENTS_STREAM_STOP: (member) => `¡El usuario **${member.user.tag}** ha dejado de estar en vivo!`,
+		EVENTS_COMMAND: command => `Comando Usado: ${command}`,
+		EVENTS_STREAM_START: member => `¡El usuario **${member.user.tag}** está en vivo! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
+		EVENTS_STREAM_STOP: member => `¡El usuario **${member.user.tag}** ha dejado de estar en vivo!`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Restablecido el valor para la clave `channels.default`',
 		SETTINGS_DELETE_ROLES_INITIAL: 'Restablecido el valor para la clave `roles.initial`',
 		SETTINGS_DELETE_ROLES_MUTE: 'Restablecido el valor para la clave `roles.muted`',
 
-		MODLOG_TIMED: (remaining) => `Este caso de moderación ya había sido temporizado. Expira en ${duration(remaining)}`,
+		MODLOG_TIMED: remaining => `Este caso de moderación ya había sido temporizado. Expira en ${duration(remaining)}`,
 
 		GUILD_WARN_NOT_FOUND: 'Fallé al buscar el caso de moderación para su reclamación. O no existe, o no es una advertencia, o ya estaba reclamada.',
 		GUILD_MEMBER_NOT_VOICECHANNEL: 'No puedo tomar acción en un miembro que no está conectado a un canal de voz.',

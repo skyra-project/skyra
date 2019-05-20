@@ -16,13 +16,11 @@ export default class extends Argument {
 		} else if (('sc' in message.flags) || ('soundcloud' in message.flags)) {
 			const tracks = await message.guild.music.fetch(`scsearch: ${arg}`);
 			return tracks[0];
-		} else {
-			const tracks = await message.guild.music.fetch(`ytsearch: ${arg}`).catch(() => [] as Track[]);
-			if (!tracks.length) tracks.push(...await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
-			if (!tracks.length) throw message.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
-			return tracks[0];
 		}
-
+		const tracks = await message.guild.music.fetch(`ytsearch: ${arg}`).catch(() => [] as Track[]);
+		if (!tracks.length) tracks.push(...await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
+		if (!tracks.length) throw message.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
+		return tracks[0];
 	}
 
 	public parseURL(url: string): { url: string; playlist: boolean } {

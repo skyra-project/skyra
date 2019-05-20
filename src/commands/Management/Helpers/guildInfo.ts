@@ -1,25 +1,27 @@
 import { MessageEmbed, Role } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { getColor } from '../../../lib/util/util';
 
-const SORT = (x: Role, y: Role) => +(y.position > x.position) || +(x.position === y.position) - 1;
+const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['serverinfo'],
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_GUILDINFO_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_GUILDINFO_EXTENDED'),
+			description: language => language.get('COMMAND_GUILDINFO_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_GUILDINFO_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
 	}
 
 	public async run(message: KlasaMessage) {
-		let tChannels = 0, vChannels = 0, cChannels = 0;
+		let tChannels = 0;
+		let vChannels = 0;
+		let cChannels = 0;
 		for (const channel of message.guild.channels.values()) {
 			if (channel.type === 'text') tChannels++;
 			else if (channel.type === 'voice') vChannels++;
@@ -34,9 +36,9 @@ export default class extends SkyraCommand {
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setThumbnail(message.guild.iconURL())
 			.setTitle(`${message.guild.name} [${message.guild.id}]`)
-			.splitFields(message.language.get('COMMAND_SERVERINFO_ROLES', !roles.length
-				? message.language.get('COMMAND_SERVERINFO_NOROLES')
-				: roles.map((role) => role.name).join(', ')))
+			.splitFields(message.language.get('COMMAND_SERVERINFO_ROLES', roles.length
+				? roles.map(role => role.name).join(', ')
+				: message.language.get('COMMAND_SERVERINFO_NOROLES')))
 			.addField(serverInfoTitles.CHANNELS, message.language.get('COMMAND_SERVERINFO_CHANNELS',
 				tChannels, vChannels, cChannels, message.guild.afkChannelID, message.guild.afkTimeout), true)
 			.addField(serverInfoTitles.MEMBERS, message.language.get('COMMAND_SERVERINFO_MEMBERS',

@@ -5,7 +5,9 @@ import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { cutText } from '../lib/util/util';
 
-const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
+const ALERT_FLAG = 1 << 2;
+const LOG_FLAG = 1 << 1;
+const DELETE_FLAG = 1 << 0;
 
 export default class extends Monitor {
 
@@ -19,13 +21,16 @@ export default class extends Monitor {
 		if (results === null) return;
 
 		if ((level & DELETE_FLAG) && message.deletable) {
-			if (message.content.length > 25) message.author.send(message.language.get('MONITOR_WORDFILTER_DM',
-				util.codeBlock('md', cutText(results.filtered, 1900)))).catch(() => null);
+			if (message.content.length > 25) {
+				message.author.send(message.language.get('MONITOR_WORDFILTER_DM',
+					util.codeBlock('md', cutText(results.filtered, 1900)))).catch(() => null);
+			}
 			message.nuke().catch(() => null);
 		}
 
-		if ((level & ALERT_FLAG) && message.channel.postable)
+		if ((level & ALERT_FLAG) && message.channel.postable) {
 			message.alert(message.language.get('MONITOR_WORDFILTER', message.author)).catch(() => null);
+		}
 
 		if (level & LOG_FLAG) {
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()

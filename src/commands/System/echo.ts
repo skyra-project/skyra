@@ -1,14 +1,14 @@
 import { MessageOptions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['talk'],
-			description: (language) => language.get('COMMAND_ECHO_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_ECHO_EXTENDED'),
+			description: language => language.get('COMMAND_ECHO_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_ECHO_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '[channel:channel] [message:string] [...]',
@@ -22,10 +22,11 @@ export default class extends SkyraCommand {
 		const attachment = message.attachments.size ? message.attachments.first().url : null;
 		const mesContent = content.length ? content.join(' ') : '';
 
-		if (!mesContent && !attachment)
+		if (!mesContent && !attachment) {
 			throw 'I have no content nor attachment to send, please write something.';
+		}
 
-		const options = {} as MessageOptions;
+		const options: MessageOptions = {};
 		if (attachment) options.files = [{ attachment }];
 
 		await channel.send(mesContent, options);

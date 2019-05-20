@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, Language } from 'klasa';
+import { CommandStore, KlasaMessage, Language } from 'klasa';
 import { URL } from 'url';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
@@ -11,12 +11,12 @@ LONG_URL.searchParams.set('key', TOKENS.GOOGLE_API);
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['shortenurl', 'googleshorturl', 'shorten'],
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_GOOGL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_GOOGL_EXTENDED'),
+			description: language => language.get('COMMAND_GOOGL_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_GOOGL_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<URL:url>'
 		});

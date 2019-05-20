@@ -1,23 +1,23 @@
-import { CommandStore, KlasaClient, KlasaMessage, Serializer } from 'klasa';
+import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
+			description: language => language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
 			permissionLevel: 6,
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '(message:message)'
 		});
 
-		this.createCustomResolver('message', async(arg, _, msg) => {
+		this.createCustomResolver('message', async (arg, _, msg) => {
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
 
 			const rolesChannel = msg.guild.settings.get(GuildSettings.Channels.Roles) as GuildSettings.Channels.Roles;

@@ -1,17 +1,17 @@
 import { GuildMember, MessageEmbed, Role, User } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser, Language } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser, Language } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-const sortRanks = (x: Role, y: Role) => +(y.position > x.position) || +(x.position === y.position) - 1;
+const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['userinfo'],
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WHOIS_EXTENDED'),
+			description: language => language.get('COMMAND_WHOIS_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 		if (member.roles.size > 1) {
 			const roles = member.roles.sort(sortRanks);
 			roles.delete(member.guild.id);
-			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map((role) => role.name).join(', '));
+			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
 		}
 
 		return embed;

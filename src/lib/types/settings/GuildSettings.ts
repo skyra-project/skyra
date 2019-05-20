@@ -1,198 +1,161 @@
-// tslint:disable:no-shadowed-variable
-// TSLint gives false errors
+/* eslint-disable @typescript-eslint/no-namespace */
+
 export namespace GuildSettings {
 
 	export type Prefix = string;
-	export type Tags = Array<[string, string]>;
-
-	export namespace Channels {
-		export type Announcements = string;
-		export type Greeting = string;
-		export type Farewell = string;
-		export type MemberLogs = string;
-		export type MessageLogs = string;
-		export type ModerationLogs = string;
-		export type NSFWMessageLogs = string;
-		export type Roles = string;
-		export type Spam = string;
-	}
-
-	export type DisabledChannels = Array<string>;
-	export type DisabledCommandChannels = Array<DisabledCommandChannel>;
-
-	export namespace Events {
-		export type BanAdd = boolean;
-		export type BanRemove = boolean;
-		export type MemberAdd = boolean;
-		export type MemberRemove = boolean;
-		export type MessageDelete = boolean;
-		export type MessageEdit = boolean;
-	}
-
-	export namespace Filter {
-		export type Level = number;
-		export type Raw = Array<string>;
-	}
-
-	export namespace Messages {
-		export type Farewell = string;
-		export type Greeting = string;
-		export type JoinDM = string;
-		export type Warnings = boolean;
-	}
-
-	export type StickyRoles = Array<StickyRole>;
-
-	export namespace Roles {
-		export type Admin = string;
-		export type Auto = Array<RolesAuto>;
-		export type Initial = string;
-		export type MessageReaction = string;
-		export type Moderator = string;
-		export type Muted = string;
-		export type Public = string[];
-		export type Reactions = Array<RolesReaction>;
-		export type RemoveInitial = boolean;
-		export type Staff = string;
-		export type Subscriber = string;
-	}
-
-	export namespace Selfmod {
-		export type Attachment = boolean;
-		export type AttachmentAction = number;
-		export type AttachmentDuration = number;
-		export type AttachmentMaximum = number;
-		export type AttachmentPunishmentDuration = number;
-		export type Capsfilter = number;
-		export type Capsminimum = number;
-		export type Capsthreshold = number;
-		export type IgnoreChannels = Array<string>;
-		export type Invitelinks = boolean;
-		export type Raid = string;
-		export type Raidthreshold = number;
-	}
-
-	export namespace NoMentionSpam {
-		export type Alerts = boolean;
-		export type Enabled = boolean;
-		export type MentionsAllowed = number;
-		export type TimePeriod = number;
-	}
-
-	export namespace Social {
-		export type Achieve = boolean;
-		export type AchieveMessage = string;
-		export type IgnoreChannels = Array<string>;
-	}
-
-	export namespace Starboard {
-		export type Channel = string;
-		export type Emoji = string;
-		export type IgnoreChannels = string;
-		export type Minimum = number;
-	}
-
-	export namespace Trigger {
-		export type Alias = Array<TriggerAlias>;
-		export type Includes = Array<TriggerIncludes>;
-	}
-
-}
-
-export namespace GuildSettings {
-
 	export const Prefix = 'prefix';
+	export type Tags = Array<[string, string]>;
 	export const Tags = 'tags';
 
 	export namespace Channels {
+		export type Announcements = string;
 		export const Announcements = 'channels.announcements';
+		export type Greeting = string;
 		export const Greeting = 'channels.greeting';
+		export type Farewell = string;
 		export const Farewell = 'channels.farewell';
+		export type MemberLogs = string;
 		export const MemberLogs = 'channels.member-logs';
+		export type MessageLogs = string;
 		export const MessageLogs = 'channels.message-logs';
+		export type ModerationLogs = string;
 		export const ModerationLogs = 'channels.moderation-logs';
+		export type NSFWMessageLogs = string;
 		export const NSFWMessageLogs = 'channels.nsfw-message-logs';
+		export type Roles = string;
 		export const Roles = 'channels.roles';
+		export type Spam = string;
 		export const Spam = 'channels.spam';
 	}
 
+	export type DisabledChannels = Array<string>;
 	export const DisabledChannels = 'disabledChannels';
+	export type DisabledCommandChannels = Array<DisabledCommandChannel>;
 	export const DisabledCommandChannels = 'disabledCommandsChannels';
 
 	export namespace Events {
+		export type BanAdd = boolean;
 		export const BanAdd = 'events.banAdd';
+		export type BanRemove = boolean;
 		export const BanRemove = 'events.banRemove';
+		export type MemberAdd = boolean;
 		export const MemberAdd = 'events.memberAdd';
+		export type MemberRemove = boolean;
 		export const MemberRemove = 'events.memberRemove';
+		export type MessageDelete = boolean;
 		export const MessageDelete = 'events.messageDelete';
+		export type MessageEdit = boolean;
 		export const MessageEdit = 'events.messageEdit';
 	}
 
 	export namespace Filter {
+		export type Level = number;
 		export const Level = 'filter.level';
+		export type Raw = Array<string>;
 		export const Raw = 'filter.raw';
 	}
 
 	export namespace Messages {
+		export type Farewell = string;
 		export const Farewell = 'messages.farewell';
+		export type Greeting = string;
 		export const Greeting = 'messages.greeting';
+		export type JoinDM = string;
 		export const JoinDM = 'messages.join-dm';
+		export type Warnings = boolean;
 		export const Warnings = 'messages.warnings';
 	}
 
+	export type StickyRoles = Array<StickyRole>;
 	export const StickyRoles = 'stickyRoles';
 
 	export namespace Roles {
+		export type Admin = string;
 		export const Admin = 'roles.admin';
+		export type Auto = Array<RolesAuto>;
 		export const Auto = 'roles.auto';
+		export type Initial = string;
 		export const Initial = 'roles.initial';
+		export type MessageReaction = string;
 		export const MessageReaction = 'roles.messageReaction';
+		export type Moderator = string;
 		export const Moderator = 'roles.moderator';
+		export type Muted = string;
 		export const Muted = 'roles.muted';
+		export type Public = string[];
 		export const Public = 'roles.public';
+		export type Reactions = Array<RolesReaction>;
 		export const Reactions = 'roles.reactions';
+		export type RemoveInitial = boolean;
 		export const RemoveInitial = 'roles.removeInitial';
+		export type Staff = string;
 		export const Staff = 'roles.staff';
+		export type Subscriber = string;
 		export const Subscriber = 'roles.subscriber';
 	}
 
 	export namespace Selfmod {
+		export type Attachment = boolean;
 		export const Attachment = 'selfmod.attachment';
+		export type AttachmentAction = number;
 		export const AttachmentAction = 'selfmod.attachmentAction';
+		export type AttachmentDuration = number;
 		export const AttachmentDuration = 'selfmod.attachmentDuration';
+		export type AttachmentMaximum = number;
 		export const AttachmentMaximum = 'selfmod.attachmentMaximum';
+		export type AttachmentPunishmentDuration = number;
 		export const AttachmentPunishmentDuration = 'selfmod.attachmentPunishmentDuration';
+		export type Capsfilter = number;
 		export const Capsfilter = 'selfmod.capsfilter';
+		export type Capsminimum = number;
 		export const Capsminimum = 'selfmod.capsminimum';
+		export type Capsthreshold = number;
 		export const Capsthreshold = 'selfmod.capsthreshold';
+		export type IgnoreChannels = Array<string>;
 		export const IgnoreChannels = 'selfmod.ignoreChannels';
+		export type Invitelinks = boolean;
 		export const Invitelinks = 'selfmod.invitelinks';
+		export type Raid = string;
 		export const Raid = 'selfmod.raid';
+		export type Raidthreshold = number;
 		export const Raidthreshold = 'selfmod.raidthreshold';
 	}
 
 	export namespace NoMentionSpam {
+		export type Alerts = boolean;
 		export const Alerts = 'no-mention-spam.alerts';
+		export type Enabled = boolean;
 		export const Enabled = 'no-mention-spam.enabled';
+		export type MentionsAllowed = number;
 		export const MentionsAllowed = 'no-mention-spam.mentionsAllowed';
+		export type TimePeriod = number;
 		export const TimePeriod = 'no-mention-spam.timePeriod';
 	}
 
 	export namespace Social {
+		export type Achieve = boolean;
 		export const Achieve = 'social.achieve';
+		export type AchieveMessage = string;
 		export const AchieveMessage = 'social.achieveMessage';
+		export type IgnoreChannels = Array<string>;
 		export const IgnoreChannels = 'social.ignoreChannels';
 	}
 
 	export namespace Starboard {
+		export type Channel = string;
 		export const Channel = 'starboard.channel';
+		export type Emoji = string;
 		export const Emoji = 'starboard.emoji';
+		export type IgnoreChannels = string;
 		export const IgnoreChannels = 'starboard.ignoreChannels';
+		export type Minimum = number;
 		export const Minimum = 'starboard.minimum';
 	}
 
 	export namespace Trigger {
+		export type Alias = Array<TriggerAlias>;
 		export const Alias = 'trigger.alias';
+		export type Includes = Array<TriggerIncludes>;
 		export const Includes = 'trigger.includes';
 	}
 

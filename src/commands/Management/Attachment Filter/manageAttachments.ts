@@ -1,23 +1,56 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { Adder } from '../../../lib/util/Adder';
 import { TIME } from '../../../lib/util/constants';
 
+const TYPES = {
+	action: {
+		key: GuildSettings.Selfmod.AttachmentAction,
+		language: 'COMMAND_MANAGEATTACHMENTS_ACTION'
+	},
+	disable: {
+		key: GuildSettings.Selfmod.Attachment,
+		language: 'COMMAND_MANAGEATTACHMENTS_ENABLED'
+	},
+	duration: {
+		key: GuildSettings.Selfmod.AttachmentPunishmentDuration,
+		language: 'COMMAND_MANAGEATTACHMENTS_DURATION'
+	},
+	enable: {
+		key: GuildSettings.Selfmod.Attachment,
+		language: 'COMMAND_MANAGEATTACHMENTS_ENABLED'
+	},
+	expire: {
+		key: GuildSettings.Selfmod.AttachmentDuration,
+		language: 'COMMAND_MANAGEATTACHMENTS_EXPIRE'
+	},
+	logs: {
+		key: GuildSettings.Selfmod.AttachmentAction,
+		language: 'COMMAND_MANAGEATTACHMENTS_LOGS'
+	},
+	maximum: {
+		key: GuildSettings.Selfmod.AttachmentMaximum,
+		language: 'COMMAND_MANAGEATTACHMENTS_MAXIMUM'
+	}
+};
+
+const ACTIONS = ['warn', 'kick', 'mute', 'softban', 'ban'];
+
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 5,
-			description: (language) => language.get('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
+			description: language => language.get('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('value', async(arg, possible, message, [type]) => {
+		this.createCustomResolver('value', async (arg, possible, message, [type]) => {
 			if (type === 'enable') return true;
 			if (type === 'disable') return false;
 			if (!arg) throw message.language.get('COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE');
@@ -55,17 +88,18 @@ export default class extends SkyraCommand {
 
 		// Update the adder
 		switch (type) {
-			case 'disable': message.guild.security.adder = null; break;
+			case 'disable': message.guild.security.adder = null;
+				break;
 			case 'enable':
 			case 'maximum':
 			case 'duration': {
 				const attachmentMaximum = message.guild.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
 				const attachmentDuration = message.guild.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
-				if (!message.guild.security.adder) {
-					message.guild.security.adder = new Adder(attachmentMaximum, attachmentDuration);
-				} else {
+				if (message.guild.security.adder) {
 					message.guild.security.adder.maximum = attachmentMaximum;
 					message.guild.security.adder.duration = attachmentDuration;
+				} else {
+					message.guild.security.adder = new Adder(attachmentMaximum, attachmentDuration);
 				}
 			}
 		}
@@ -73,36 +107,3 @@ export default class extends SkyraCommand {
 	}
 
 }
-
-const TYPES = {
-	action: {
-		key: 'selfmod.attachmentAction',
-		language: 'COMMAND_MANAGEATTACHMENTS_ACTION'
-	},
-	disable: {
-		key: 'selfmod.attachment',
-		language: 'COMMAND_MANAGEATTACHMENTS_ENABLED'
-	},
-	duration: {
-		key: 'selfmod.attachmentPunishmentDuration',
-		language: 'COMMAND_MANAGEATTACHMENTS_DURATION'
-	},
-	enable: {
-		key: 'selfmod.attachment',
-		language: 'COMMAND_MANAGEATTACHMENTS_ENABLED'
-	},
-	expire: {
-		key: 'selfmod.attachmentDuration',
-		language: 'COMMAND_MANAGEATTACHMENTS_EXPIRE'
-	},
-	logs: {
-		key: 'selfmod.attachmentAction',
-		language: 'COMMAND_MANAGEATTACHMENTS_LOGS'
-	},
-	maximum: {
-		key: 'selfmod.attachmentMaximum',
-		language: 'COMMAND_MANAGEATTACHMENTS_MAXIMUM'
-	}
-};
-
-const ACTIONS = ['warn', 'kick', 'mute', 'softban', 'ban'];

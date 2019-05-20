@@ -1,14 +1,16 @@
-import { CommandStore, KlasaClient, KlasaMessage, Language, util } from 'klasa';
+import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+
+const QUESTION_KEYS = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_8BALL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_8BALL_EXTENDED'),
+			description: language => language.get('COMMAND_8BALL_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_8BALL_EXTENDED'),
 			spam: true,
 			usage: '<question:string>'
 		});
@@ -21,14 +23,16 @@ export default class extends SkyraCommand {
 	}
 
 	private generator(input: string, i18n: Language) {
-		const prefixes = <unknown> (i18n.language.COMMAND_8BALL_QUESTIONS
-			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as EightBallLanguage;
+		const prefixes = (i18n.language.COMMAND_8BALL_QUESTIONS
+			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as unknown as EightBallLanguage;
 
-		if (!this.checkQuestion(prefixes.QUESTION || '?', input))
+		if (!this.checkQuestion(prefixes.QUESTION || '?', input)) {
 			throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
+		}
 
-		for (const key of QUESTION_KEYS)
+		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}`);
+		}
 		return i18n.get('COMMAND_8BALL_ELSE');
 	}
 
@@ -41,8 +45,6 @@ export default class extends SkyraCommand {
 	}
 
 }
-
-const QUESTION_KEYS = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
 
 interface EightBallLanguage {
 	QUESTION: string | RegExp;

@@ -1,17 +1,17 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, Language } from 'klasa';
+import { CommandStore, KlasaMessage, Language } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { cutText, fetch, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['wiki'],
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_WIKIPEDIA_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WIKIPEDIA_EXTENDED'),
+			description: language => language.get('COMMAND_WIKIPEDIA_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_WIKIPEDIA_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<query:string>'
 		});
@@ -29,8 +29,9 @@ export default class extends SkyraCommand {
 		url.searchParams.append('titles', this.parseURL(input));
 		const text = await fetch(url, 'json');
 
-		if (text.query.pageids[0] === '-1')
+		if (text.query.pageids[0] === '-1') {
 			throw message.language.get('COMMAND_WIKIPEDIA_NOTFOUND');
+		}
 
 		const pageURL = `https://en.wikipedia.org/wiki/${url.searchParams.get('titles')}`;
 		const content = text.query.pages[text.query.pageids[0]];

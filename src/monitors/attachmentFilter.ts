@@ -4,12 +4,12 @@ import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { Adder } from '../lib/util/Adder';
 import { MessageLogsEnum, ModerationTypeKeys } from '../lib/util/constants';
-import { mute } from '../lib/util/util';
+import { mute, softban } from '../lib/util/util';
 const { FLAGS } = Permissions;
 
 export default class extends Monitor {
 
-	public async run(message: KlasaMessage): Promise<void> {
+	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
 		const attachmentAction = message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction;
@@ -23,21 +23,24 @@ export default class extends Monitor {
 			return;
 		} catch (_) {
 			switch (attachmentAction & 0b111) {
-				case 0b000: await this.actionAndSend(message, ModerationTypeKeys.Warn, () =>
-					null); break;
+				case 0b000: await this.actionAndSend(message, ModerationTypeKeys.Warn, () => null);
+					break;
 				case 0b001: await this.actionAndSend(message, ModerationTypeKeys.Kick, () =>
 					message.member.kick()
-						.catch((error) => this.client.emit(Events.ApiError, error))); break;
+						.catch(error => this.client.emit(Events.ApiError, error)));
+					break;
 				case 0b010: await this.actionAndSend(message, ModerationTypeKeys.Mute, () =>
 					mute(message.guild.me, message.member, 'AttachmentFilter: Threshold Reached.')
-						.catch((error) => this.client.emit(Events.ApiError, error)), false); break;
+						.catch(error => this.client.emit(Events.ApiError, error)), false);
+					break;
 				case 0b011: await this.actionAndSend(message, ModerationTypeKeys.Softban, () =>
-					// @ts-ignore
 					softban(message.guild, this.client.user, message.author, 'AttachmentFilter: Threshold Reached.', 1)
-						.catch((error) => this.client.emit(Events.ApiError, error)), false); break;
+						.catch(error => this.client.emit(Events.ApiError, error)), false);
+					break;
 				case 0b100: await this.actionAndSend(message, ModerationTypeKeys.Ban, () =>
 					message.member.ban()
-						.catch((error) => this.client.emit(Events.ApiError, error)));
+						.catch(error => this.client.emit(Events.ApiError, error)));
+					break;
 			}
 			if (attachmentAction & 0b1000) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()

@@ -1,6 +1,6 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
@@ -15,23 +15,23 @@ export default class extends SkyraCommand {
 	private profile: Buffer = null;
 	private panel: Buffer = null;
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_PROFILE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_PROFILE_EXTENDED'),
+			description: language => language.get('COMMAND_PROFILE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_PROFILE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<attachment:attachment>'
 		});
 
-		this.createCustomResolver('attachment', async(arg, possible, msg) => {
+		this.createCustomResolver('attachment', async (arg, possible, msg) => {
 			if (msg.attachments.size) {
-				const attachment = msg.attachments.find((att) => IMAGE_EXTENSION.test(att.url));
+				const attachment = msg.attachments.find(att => IMAGE_EXTENSION.test(att.url));
 				if (attachment) return fetch(attachment.url, 'buffer');
 			}
-			const url = ((res) => res && res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
+			const url = (res => res && res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');
 			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
 		});
@@ -67,9 +67,8 @@ export default class extends SkyraCommand {
 		const TITLE = message.language.retrieve('COMMAND_PROFILE');
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
 		if (badgeSet.length) {
-			const badges = await Promise.all(badgeSet.map((name) =>
-				readFile(join(BADGES_FOLDER, `${name}.png`))
-			));
+			const badges = await Promise.all(badgeSet.map(name =>
+				readFile(join(BADGES_FOLDER, `${name}.png`))));
 
 			canvas.addImage(this.panel, 600, 0, 100, 391);
 			let position = 20;

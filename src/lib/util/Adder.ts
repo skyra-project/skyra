@@ -16,7 +16,7 @@ export class Adder<T> extends Array {
 		this.duration = duration;
 	}
 
-	public add(id: T, times: number = 1): number {
+	public add(id: T, times: number = 1) {
 		this.sweep();
 		const amount = this.count(id) + times;
 		if (amount > this.maximum) {
@@ -28,7 +28,7 @@ export class Adder<T> extends Array {
 		return amount;
 	}
 
-	public remove(id: T): number {
+	public remove(id: T) {
 		let deleted = 0;
 		let i = 0;
 		let entry;
@@ -46,11 +46,11 @@ export class Adder<T> extends Array {
 		return deleted;
 	}
 
-	public count(id: T): number {
-		return this.reduce((count, entry) => entry.id === id ? count + 1 : count, 0);
+	public count(id: T) {
+		return this.reduce<number>((count, entry) => entry.id === id ? count + 1 : count, 0);
 	}
 
-	public sweep(): number {
+	public sweep() {
 		const now = Date.now();
 		let i = 0;
 		while (i < this.length && this[i].end <= now) i++;

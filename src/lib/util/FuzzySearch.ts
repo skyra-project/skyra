@@ -21,7 +21,9 @@ export class FuzzySearch<K extends string, V> {
 		const lowcquery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 
-		let lowerCaseName: string, current: string, distance: number;
+		let lowerCaseName: string;
+		let current: string;
+		let distance: number;
 		let almostExacts = 0;
 		for (const [id, entry] of this.collection.entries()) {
 			if (!this.filter(entry)) continue;
@@ -30,12 +32,13 @@ export class FuzzySearch<K extends string, V> {
 			lowerCaseName = current.toLowerCase();
 
 			// If lowercase result, go next
-			if (lowerCaseName === lowcquery)
+			if (lowerCaseName === lowcquery) {
 				distance = 0;
-			else if (lowerCaseName.includes(lowcquery))
+			} else if (lowerCaseName.includes(lowcquery)) {
 				distance = lowerCaseName.length - lowcquery.length;
-			else
+			} else {
 				distance = levenshtein(lowcquery, lowerCaseName);
+			}
 
 			// Push the results
 			results.push([id, entry, distance]);

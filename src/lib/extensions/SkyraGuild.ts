@@ -8,6 +8,7 @@ import { StarboardManager } from '../structures/StarboardManager';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 
 export class SkyraGuild extends KlasaGuild {
+
 	public security = new GuildSecurity(this);
 	public starboard = new StarboardManager(this);
 	public moderation = new ModerationManager(this);

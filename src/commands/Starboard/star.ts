@@ -1,5 +1,5 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { RCursor } from 'rethinkdb-ts';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { COLORS } from '../../lib/structures/StarboardMessage';
@@ -11,12 +11,12 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: [],
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_STAR_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_STAR_EXTENDED'),
+			description: language => language.get('COMMAND_STAR_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_STAR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			requiredSettings: [],
 			runIn: ['text'],
@@ -40,12 +40,14 @@ export default class extends SkyraCommand {
 
 		const channel = message.guild.channels.get(starboardData.channelID) as TextChannel;
 		if (!channel) {
-			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete().run();
+			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete()
+				.run();
 			return this.random(message);
 		}
 		const starredMessage = await channel.messages.fetch(starboardData.messageID).catch(() => null);
 		if (!starredMessage) {
-			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete().run();
+			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete()
+				.run();
 			return this.random(message);
 		}
 
@@ -74,8 +76,8 @@ export default class extends SkyraCommand {
 			.getCursor() as RCursor<StarPluck>;
 
 		let totalStars = 0;
-		const topMessages = [];
-		const topReceivers = new Map();
+		const topMessages: [string, number][] = [];
+		const topReceivers: Map<string, number> = new Map();
 
 		const min = message.guild.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
 

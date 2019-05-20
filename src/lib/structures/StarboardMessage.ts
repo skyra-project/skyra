@@ -5,6 +5,26 @@ import { GuildSettings } from '../types/settings/GuildSettings';
 import { cutText, fetchReactionUsers, getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 
+export const COLORS = [
+	0xFFE3AF,
+	0xFFE0A5,
+	0xFFDD9C,
+	0xFFDB92,
+	0xFFD889,
+	0xFFD57F,
+	0xFFD275,
+	0xFFCF6B,
+	0xFFCC61,
+	0xFFCA57,
+	0xFFC74C,
+	0xFFC440,
+	0xFFC133,
+	0xFFBE23,
+	0xFFBB09
+];
+const MAXCOLORS = COLORS.length - 1;
+const LASTCOLOR = COLORS[MAXCOLORS];
+
 export class StarboardMessage {
 
 	public get id() {
@@ -140,6 +160,7 @@ export class StarboardMessage {
 		if (!force || syncStatus) return syncStatus || Promise.resolve(this);
 
 		// If it's not currently synchronizing, create a new sync status for the sync queue
+		// eslint-disable-next-line promise/prefer-await-to-then
 		const sync = Promise.all([this._syncDatabase(), this._syncDiscord()]).then(() => {
 			this.manager.syncMap.delete(this);
 			return this;
@@ -202,11 +223,12 @@ export class StarboardMessage {
 		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
 		if ('stars' in options && !this.disabled) await this._editMessage();
 
-		if (!this.existenceStatus) {
+		if (this.existenceStatus) {
+			await this.provider.db.table(Databases.Starboard).get(this.id).update({ ...this.toJSON(), ...options })
+				.run();
+		} else {
 			await this.provider.db.table(Databases.Starboard).insert({ ...this.toJSON(), ...options }).run();
 			this.existenceStatus = true;
-		} else {
-			await this.provider.db.table(Databases.Starboard).get(this.id).update({ ...this.toJSON(), ...options }).run();
 		}
 
 		return this;
@@ -217,7 +239,10 @@ export class StarboardMessage {
 	 */
 	public async destroy(): Promise<void> {
 		if (this.existenceStatus === null) await this.sync();
-		if (this.existenceStatus) await this.provider.db.table(Databases.Starboard).get(this.id).delete().run();
+		if (this.existenceStatus) {
+			await this.provider.db.table(Databases.Starboard).get(this.id).delete()
+				.run();
+		}
 		this.manager.delete(this.message.id);
 	}
 
@@ -280,7 +305,8 @@ export class StarboardMessage {
 			const channel = this.manager.starboardChannel;
 			if (data.starMessageID) {
 				await channel.messages.fetch(data.starMessageID)
-					.then((message) => { this.starMessage = message; })
+					// eslint-disable-next-line promise/always-return
+					.then(message => { this.starMessage = message; })
 					.catch(() => undefined);
 			}
 		} else {
@@ -321,27 +347,6 @@ export class StarboardMessage {
 	}
 
 }
-
-// Colors
-export const COLORS = [
-	0xFFE3AF,
-	0xFFE0A5,
-	0xFFDD9C,
-	0xFFDB92,
-	0xFFD889,
-	0xFFD57F,
-	0xFFD275,
-	0xFFCF6B,
-	0xFFCC61,
-	0xFFCA57,
-	0xFFC74C,
-	0xFFC440,
-	0xFFC133,
-	0xFFBE23,
-	0xFFBB09
-];
-const MAXCOLORS = COLORS.length - 1;
-const LASTCOLOR = COLORS[MAXCOLORS];
 
 interface StarboardMessageEdit {
 	/**

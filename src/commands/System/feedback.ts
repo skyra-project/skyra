@@ -1,18 +1,18 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 export default class extends SkyraCommand {
 
 	private channel: TextChannel = null;
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['suggest'],
 			bucket: 2,
 			cooldown: 20,
-			description: (language) => language.get('COMMAND_FEEDBACK_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_FEEDBACK_EXTENDED'),
+			description: language => language.get('COMMAND_FEEDBACK_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_FEEDBACK_EXTENDED'),
 			guarded: true,
 			usage: '<message:string{8,1900}>'
 		});

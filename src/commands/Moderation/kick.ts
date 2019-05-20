@@ -1,15 +1,15 @@
 import { User } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
-			description: (language) => language.get('COMMAND_KICK_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_KICK_EXTENDED'),
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
+			description: language => language.get('COMMAND_KICK_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_KICK_EXTENDED'),
 			modType: ModerationTypeKeys.Kick,
 			permissionLevel: 5,
 			requiredMember: true,

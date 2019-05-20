@@ -1,16 +1,16 @@
 import { Role } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings, StickyRole } from '../../../lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_STICKYROLES_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_STICKYROLES_EXTENDED'),
+			description: language => language.get('COMMAND_STICKYROLES_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_STICKYROLES_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
 			requiredPermissions: ['MANAGE_ROLES'],
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 
 	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
 		const all = message.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
-		const entry = all.find((stickyRole) => stickyRole.user === user.id);
+		const entry = all.find(stickyRole => stickyRole.user === user.id);
 		if (!entry) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 
 		await message.guild.settings.update(GuildSettings.StickyRoles, entry, { arrayAction: 'remove' });
@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [user, role]: [KlasaUser, Role]) {
 		const all = message.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
-		const entry = all.find((stickyRole) => stickyRole.user === user.id);
+		const entry = all.find(stickyRole => stickyRole.user === user.id);
 		if (!entry) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 
 		const cleaned = await this._clean(message, entry);
@@ -64,11 +64,9 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [user, role]: [KlasaUser, Role]) {
 		const all = message.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
-		const entry = all.find((stickyRole) => stickyRole.user === user.id);
+		const entry = all.find(stickyRole => stickyRole.user === user.id);
 
-		if (!entry) {
-			await message.guild.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] });
-		} else {
+		if (entry) {
 			const cleaned = await this._clean(message, entry);
 			if (!cleaned) {
 				await message.guild.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] }, { arrayIndex: all.indexOf(entry) });
@@ -78,6 +76,8 @@ export default class extends SkyraCommand {
 				cleaned.raw.roles.push(role.id);
 			}
 			await message.guild.settings.update(GuildSettings.StickyRoles, cleaned.raw, { arrayIndex: all.indexOf(entry) });
+		} else {
+			await message.guild.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] });
 		}
 
 		return message.sendLocale('COMMAND_STICKYROLES_ADD', [user.username]);
@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 
 	public async show(message: KlasaMessage, [user]: [KlasaUser]) {
 		const all = message.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
-		const entry = all.find((stickyRole) => stickyRole.user === user.id);
+		const entry = all.find(stickyRole => stickyRole.user === user.id);
 		if (!entry) throw message.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
 
 		const cleaned = await this._clean(message, entry);
@@ -117,16 +117,18 @@ export default class extends SkyraCommand {
 
 		try {
 			const user = await this.client.fetchUsername(entry.user);
-			if (user) return {
-				raw: {
-					roles: ids,
-					user: entry.user
-				},
-				resolved: {
-					roles,
-					user
-				}
-			};
+			if (user) {
+				return {
+					raw: {
+						roles: ids,
+						user: entry.user
+					},
+					resolved: {
+						roles,
+						user
+					}
+				};
+			}
 		} catch {} // tslint:disable-line:no-empty
 		return null;
 	}

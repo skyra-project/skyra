@@ -5,12 +5,15 @@ import { Giveaway, GiveawayCreateData, GiveawayData } from './Giveaway';
 
 export class GiveawayManager {
 
+	public client: KlasaClient;
 	public readonly queue: Array<Giveaway> = [];
 	private readonly pending: Giveaway[] = [];
 	private interval: NodeJS.Timer = null;
 	private readonly running: Array<Promise<void>> = [];
 
-	public constructor(public client: KlasaClient) {}
+	public constructor(client: KlasaClient) {
+		this.client = client;
+	}
 
 	public async init() {
 		const r = this.client.providers.default.db;
@@ -66,7 +69,7 @@ export class GiveawayManager {
 	}
 
 	public get(index: number | string) {
-		if (typeof index === 'string') index = this.queue.findIndex((value) => value.id === index);
+		if (typeof index === 'string') index = this.queue.findIndex(value => value.id === index);
 		return this.checkBounds(index) ? this[index] : null;
 	}
 
@@ -95,16 +98,15 @@ export class GiveawayManager {
 	}
 
 	private insert(giveaway: Giveaway) {
-		const index = this.queue.findIndex((entry) => entry.refreshAt > giveaway.refreshAt);
+		const index = this.queue.findIndex(entry => entry.refreshAt > giveaway.refreshAt);
 		if (index === -1) this.queue.push(giveaway);
 		else this.queue.splice(index, 0, giveaway);
 		return this;
 	}
 
 	private generateID() {
-		const shardID = this.client.shard ? (Array.isArray(this.client.shard.id) ? this.client.shard.id[0] : this.client.shard.id) : 0;
-		const dateID = Date.now();
-		return dateID.toString(36) + shardID.toString(36);
+		const shardID = this.client.shard ? this.client.shard.ids[0] : 0;
+		return `${Date.now().toString(36)}${shardID.toString(36)}`;
 	}
 
 }

@@ -18,6 +18,7 @@ export class B10 {
 
 	public get hex() {
 		const hex = this.value.toString(16).padStart(6, '0');
+		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
 		return new HEX(hex.substring(0, 2), hex.substring(2, 4), hex.substring(4, 6));
 	}
 

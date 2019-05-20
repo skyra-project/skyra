@@ -1,15 +1,15 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_PRICE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_PRICE_EXTENDED'),
+			description: language => language.get('COMMAND_PRICE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_PRICE_EXTENDED'),
 			usage: '<from:string> <to:string> [amount:integer]',
 			usageDelim: ' '
 		});

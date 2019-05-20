@@ -4,7 +4,6 @@
   "description": "Multipurpose Discord Bot built on Klasa",
   "main": "dist/src/skyra.js",
   "scripts": {
-    "lint": "tslint -p tsconfig.json src/**/*.ts --fix",
     "pm2:delete": "pm2 delete Skyra",
     "pm2:logs": "pm2 logs Skyra --lines=200",
     "pm2:restart": "pm2 restart Skyra",
@@ -12,7 +11,8 @@
     "pm2:start": "pm2 start dist/src/Skyra.js --name=\"Skyra\"",
     "pm2:stop": "pm2 stop Skyra",
     "start": "node dist/src/Skyra.js",
-    "test:lint": "tslint -p tsconfig.json src/**/*.ts",
+    "test": "eslint --ext ts src",
+    "test:lint": "eslint --ext ts src",
     "update": "yarn",
     "compile": "tsc -p .",
     "watch": "tsc -p . -w"
@@ -37,6 +37,7 @@
     "url": "https://github.com/kyranet/Skyra/issues"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
     "canvas": "^2.5.0",
     "canvas-constructor": "^3.0.1",
     "diff": "^4.0.1",
@@ -54,7 +55,7 @@
   "devDependencies": {
     "@types/node": "^12.0.2",
     "@types/node-fetch": "^2.3.4",
-    "tslint": "^5.16.0",
-    "tslint-eslint-rules": "^5.4.0"
+    "eslint": "^5.16.0",
+    "eslint-config-marine": "^2.2.0"
   }
 }

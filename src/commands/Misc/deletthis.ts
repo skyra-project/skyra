@@ -1,6 +1,6 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { CLIENT_ID } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
@@ -10,16 +10,15 @@ import { assetsFolder } from '../../Skyra';
 export default class extends SkyraCommand {
 
 	private template: Buffer = null;
-	private readonly ownerID = this.client.options.ownerID;
 	private readonly skyraID = CLIENT_ID;
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['deletethis'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_DELETTHIS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_DELETTHIS_EXTENDED'),
+			description: language => language.get('COMMAND_DELETTHIS_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_DELETTHIS_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -34,9 +33,9 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		let selectedUser: KlasaUser;
 		let hammerer: KlasaUser;
-		if (user.id === this.ownerID && message.author.id === this.ownerID) throw '💥';
+		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
 		if (user === message.author) [selectedUser, hammerer] = [message.author, this.client.user];
-		else if ([this.ownerID, this.skyraID].includes(user.id)) [selectedUser, hammerer] = [message.author, user];
+		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, hammerer] = [message.author, user];
 		else [selectedUser, hammerer] = [user, message.author];
 
 		const [Hammered, Hammerer] = await Promise.all([

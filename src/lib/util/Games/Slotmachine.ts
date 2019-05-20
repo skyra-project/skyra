@@ -66,7 +66,13 @@ export class Slotmachine {
 			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
 	}
 
-	public constructor(public message: Message, amount: number) {
+	/**
+	 * The message that ran this instance
+	 */
+	public message: Message;
+
+	public constructor(message: Message, amount: number) {
+		this.message = message;
 		this.amount = amount;
 	}
 
@@ -76,7 +82,7 @@ export class Slotmachine {
 		this.calculate(rolls);
 
 		const money = settings.get(UserSettings.Money) as UserSettings.Money;
-		const amount = this.winnings !== 0 ? money + (this.winnings * this.boost) : money - this.amount;
+		const amount = this.winnings === 0 ? money - this.amount : money + (this.winnings * this.boost);
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update('money', amount);
 		return this.render(rolls);
@@ -102,13 +108,11 @@ export class Slotmachine {
 			.addRect(96, 54, 2, 38)
 			.restore();
 
-		// tslint:disable-next-line:no-floating-promises
-		await Promise.all(rolls.map((value, index) => new Promise<void>((res) => {
+		await Promise.all(rolls.map((value, index) => new Promise(resolve => {
 			const { x, y } = ASSETS[value];
 			const coord = COORDINATES[index];
-			// @ts-ignore
 			canvas.context.drawImage(Slotmachine.images.ICON, x, y, ICON_SIZE, ICON_SIZE, coord.x, coord.y, ICON_SIZE, ICON_SIZE);
-			res();
+			resolve();
 		})));
 
 		if (win) {
@@ -125,8 +129,9 @@ export class Slotmachine {
 
 	public calculate(roll: number[]): void {
 		for (const [COMB1, COMB2, COMB3] of COMBINATIONS) {
-			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3])
+			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3]) {
 				this.winnings += this.amount * VALUES[roll[COMB1]];
+			}
 		}
 	}
 
@@ -139,7 +144,8 @@ export class Slotmachine {
 			roll.push(
 				reel[rand === 0 ? reelLength - 1 : rand - 1],
 				reel[rand],
-				reel[rand === reelLength - 1 ? 0 : rand + 1]);
+				reel[rand === reelLength - 1 ? 0 : rand + 1]
+			);
 		}
 
 		return roll;

@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch, getColor } from '../../lib/util/util';
@@ -8,12 +8,12 @@ const url = new URL('https://randomfox.ca/floof');
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_FOX_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_FOX_EXTENDED')
+			description: language => language.get('COMMAND_FOX_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_FOX_EXTENDED')
 		});
 		this.spam = true;
 	}

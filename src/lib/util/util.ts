@@ -15,6 +15,38 @@ import { LLRCDataEmoji } from './LongLivingReactionCollector';
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
 
+const MUTE_ROLE_PERMISSIONS = Object.freeze({
+	text: { SEND_MESSAGES: false, ADD_REACTIONS: false },
+	voice: { CONNECT: false }
+});
+
+const MUTE_ROLE_OPTIONS = Object.freeze({
+	data: {
+		color: 0x422C0B,
+		hoist: false,
+		mentionable: false,
+		name: 'Muted',
+		permissions: []
+	},
+	reason: '[SETUP] Authorized to create a \'Muted\' role.'
+});
+
+const ONE_TO_TEN = new Map([
+	[0, { emoji: '😪', color: 0x5B1100 }],
+	[1, { emoji: '😪', color: 0x5B1100 }],
+	[2, { emoji: '😫', color: 0xAB1100 }],
+	[3, { emoji: '😔', color: 0xFF2B00 }],
+	[4, { emoji: '😒', color: 0xFF6100 }],
+	[5, { emoji: '😌', color: 0xFF9C00 }],
+	[6, { emoji: '😕', color: 0xB4BF00 }],
+	[7, { emoji: '😬', color: 0x84FC00 }],
+	[8, { emoji: '🙂', color: 0x5BF700 }],
+	[9, { emoji: '😃', color: 0x24F700 }],
+	[10, { emoji: '😍', color: 0x51D4EF }]
+]);
+
+export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
+
 interface UtilOneToTenEntry {
 	emoji: string;
 	color: number;
@@ -25,6 +57,8 @@ export interface ReferredPromise<T> {
 	resolve(value?: T): void;
 	reject(error?: Error): void;
 }
+
+export function noop() { }
 
 export function showSeconds(duration: number) {
 	const seconds = Math.floor(duration / TIME.SECOND) % 60;
@@ -85,7 +119,7 @@ export async function removeMute(guild: Guild, id: string): Promise<boolean> {
 	const { settings } = guild;
 	const guildStickyRoles = settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
 
-	const stickyRolesIndex = guildStickyRoles.findIndex((stickyRole) => stickyRole.user === id);
+	const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
 	if (stickyRolesIndex === -1) return false;
 
 	const stickyRoles = guildStickyRoles[stickyRolesIndex];
@@ -148,25 +182,6 @@ export function cutText(str: string, length: number) {
 	return `${cut.slice(0, length - 3)}...`;
 }
 
-export function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
-	const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
-	return fetch(url, 'buffer').catch((err) => { throw `Could not download the profile avatar: ${err}`; });
-}
-
-export async function fetchReactionUsers(client: Client, channelID: string, messageID: string, reaction: string) {
-	const users: Set<string> = new Set();
-	let rawUsers: APIUserData[];
-
-	// Fetch loop, to get +100 users
-	do {
-		rawUsers = await (client as any).api.channels(channelID).messages(messageID).reactions(reaction)
-			.get({ query: { limit: 100, after: rawUsers && rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } }) as APIUserData[];
-		for (const user of rawUsers) users.add(user.id);
-	} while (rawUsers.length === 100);
-
-	return users;
-}
-
 export async function fetch(url: URL | string, type: 'json'): Promise<any>;
 export async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<any>;
 export async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;
@@ -200,6 +215,29 @@ export async function fetch(url: URL | string, options: RequestInit | 'result' |
 	}
 }
 
+export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
+	const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
+	try {
+		return await fetch(url, 'buffer');
+	} catch (error) {
+		throw `Could not download the profile avatar: ${error}`;
+	}
+}
+
+export async function fetchReactionUsers(client: Client, channelID: string, messageID: string, reaction: string) {
+	const users: Set<string> = new Set();
+	let rawUsers: APIUserData[];
+
+	// Fetch loop, to get +100 users
+	do {
+		rawUsers = await (client as any).api.channels(channelID).messages(messageID).reactions(reaction)
+			.get({ query: { limit: 100, after: rawUsers && rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } }) as APIUserData[];
+		for (const user of rawUsers) users.add(user.id);
+	} while (rawUsers.length === 100);
+
+	return users;
+}
+
 /**
  * Get the content from a message.
  * @param message The Message instance to get the content from
@@ -219,7 +257,7 @@ export function getContent(message: Message): string | null {
  */
 export function getImage(message: Message): string | null {
 	if (message.attachments.size) {
-		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.url));
+		const attachment = message.attachments.find(att => IMAGE_EXTENSION.test(att.url));
 		if (attachment) return attachment.url;
 	}
 	for (const embed of message.embeds) {
@@ -241,7 +279,9 @@ export function getColor(message: Message) {
  * Create a referred promise
  */
 export function createReferPromise<T>(): ReferredPromise<T> {
-	let resolve, reject;
+	let resolve: (value: T) => void;
+	let reject: (error?: Error) => void;
+	// eslint-disable-next-line promise/param-names
 	const promise: Promise<T> = new Promise((res, rej) => {
 		resolve = res;
 		reject = rej;
@@ -259,7 +299,8 @@ export function createReferPromise<T>(): ReferredPromise<T> {
  */
 export function parseRange(input: string): number[] {
 	const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(input) || [null, input, input];
-	let min = parseInt(smin), max = parseInt(smax);
+	let min = parseInt(smin, 10);
+	let max = parseInt(smax, 10);
 	if (min > max) [max, min] = [min, max];
 	return Array.from({ length: max - min + 1 }, (_, index) => min + index);
 }
@@ -307,6 +348,16 @@ export function createPick<T>(array: T[]): () => T {
 }
 
 /**
+ * Get all the roles for the mute
+ * @param member The member to get the roles from
+ */
+export function muteGetRoles(member: GuildMember): string[] {
+	const roles = [...member.roles.keys()];
+	roles.splice(roles.indexOf(member.guild.id), 1);
+	return roles;
+}
+
+/**
  * Mute a member
  * @param moderator The member who mutes
  * @param target The member to mute
@@ -318,16 +369,16 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
 
 	const all = target.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
 
-	const stickyRolesIndex = all.findIndex((stickyRole) => stickyRole.user === target.id);
-	const stickyRoles: StickyRole = stickyRolesIndex !== -1 ? all[stickyRolesIndex] : { roles: [], user: target.id };
+	const stickyRolesIndex = all.findIndex(stickyRole => stickyRole.user === target.id);
+	const stickyRoles: StickyRole = stickyRolesIndex === -1 ? { roles: [], user: target.id } : all[stickyRolesIndex];
 	if (stickyRoles.roles.includes(role.id)) throw target.guild.language.get('COMMAND_MUTE_MUTED');
 
 	// Parse the roles
 	const roles = muteGetRoles(target);
 
-	await target.edit({ roles: target.roles.filter((r) => r.managed).map((r) => r.id).concat(role.id) });
+	await target.edit({ roles: target.roles.filter(r => r.managed).map(r => r.id).concat(role.id) });
 	const entry: StickyRole = { roles: stickyRoles.roles.concat(role.id), user: target.id };
-	const { errors } = await target.guild.settings.update('stickyRoles', entry, stickyRolesIndex !== -1 ? { arrayIndex: stickyRolesIndex } : { arrayAction: 'add' });
+	const { errors } = await target.guild.settings.update('stickyRoles', entry, stickyRolesIndex === -1 ? { arrayAction: 'add' } : { arrayIndex: stickyRolesIndex });
 	if (errors.length) throw errors[0];
 
 	const modlog = target.guild.moderation.new
@@ -354,23 +405,27 @@ export async function softban(guild: Guild, moderator: User, target: User, reaso
 	});
 	await guild.members.unban(target.id, 'Softban.');
 
-	const modlog = guild.moderation.new
+	return guild.moderation.new
 		.setModerator(moderator.id)
 		.setUser(target.id)
-		// @ts-ignore
-		.setType(TYPE_KEYS.SOFT_BAN)
-		.setReason(reason);
-	return modlog.create();
+		.setType(ModerationTypeKeys.Softban)
+		.setReason(reason)
+		.create();
 }
 
 /**
- * Get all the roles for the mute
- * @param member The member to get the roles from
+ * Push the permissions for the muted role into a channel
+ * @param channel The channel to modify
+ * @param role The role to update
+ * @param array The array to push in case it did fail
  */
-export function muteGetRoles(member: GuildMember): string[] {
-	const roles = [...member.roles.keys()];
-	roles.splice(roles.indexOf(member.guild.id), 1);
-	return roles;
+async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]): Promise<void> {
+	if (channel.type === 'category') return;
+	try {
+		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type]);
+	} catch {
+		array.push(String(channel));
+	}
 }
 
 /**
@@ -404,53 +459,6 @@ export function inlineCodeblock(input: string) {
 }
 
 /**
- * Push the permissions for the muted role into a channel
- * @param channel The channel to modify
- * @param role The role to update
- * @param array The array to push in case it did fail
- */
-async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]): Promise<void> {
-	if (channel.type === 'category') return;
-	try {
-		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type]);
-	} catch {
-		array.push(String(channel));
-	}
-}
-
-const MUTE_ROLE_PERMISSIONS = Object.freeze({
-	text: { SEND_MESSAGES: false, ADD_REACTIONS: false },
-	voice: { CONNECT: false }
-});
-
-const MUTE_ROLE_OPTIONS = Object.freeze({
-	data: {
-		color: 0x422C0B,
-		hoist: false,
-		mentionable: false,
-		name: 'Muted',
-		permissions: []
-	},
-	reason: '[SETUP] Authorized to create a \'Muted\' role.'
-});
-
-const ONE_TO_TEN = new Map([
-	[0, { emoji: '😪', color: 0x5B1100 }],
-	[1, { emoji: '😪', color: 0x5B1100 }],
-	[2, { emoji: '😫', color: 0xAB1100 }],
-	[3, { emoji: '😔', color: 0xFF2B00 }],
-	[4, { emoji: '😒', color: 0xFF6100 }],
-	[5, { emoji: '😌', color: 0xFF9C00 }],
-	[6, { emoji: '😕', color: 0xB4BF00 }],
-	[7, { emoji: '😬', color: 0x84FC00 }],
-	[8, { emoji: '🙂', color: 0x5BF700 }],
-	[9, { emoji: '😃', color: 0x24F700 }],
-	[10, { emoji: '😍', color: 0x51D4EF }]
-]);
-
-export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
-
-/**
  * @enumerable decorator that sets the enumerable property of a class field to false.
  * @param value true|false
  */
@@ -464,9 +472,9 @@ export function enumerable(value: boolean): (target: any, propertyKey: string) =
 					configurable: true,
 					enumerable: value,
 					value: val,
-					writable: true,
+					writable: true
 				});
-			},
+			}
 		});
 	};
 }

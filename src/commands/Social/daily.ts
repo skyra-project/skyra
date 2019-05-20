@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
@@ -9,12 +9,12 @@ const DAILY_PERIOD = TIME.HOUR * 12;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['dailies'],
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_DAILY_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_DAILY_EXTENDED'),
+			description: language => language.get('COMMAND_DAILY_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_DAILY_EXTENDED'),
 			spam: true
 		});
 	}

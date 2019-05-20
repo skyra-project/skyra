@@ -1,19 +1,19 @@
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_PAY_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_PAY_EXTENDED'),
+			description: language => language.get('COMMAND_PAY_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_PAY_EXTENDED'),
 			runIn: ['text'],
 			spam: true,
 			usage: '<amount:integer> <user:user>',
-			usageDelim: ' ',
+			usageDelim: ' '
 		});
 	}
 

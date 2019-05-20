@@ -61,14 +61,14 @@ export class Queue extends Array<Song> {
 
 	public get listeners() {
 		const voiceChannel = this.voiceChannel;
-		return voiceChannel ? voiceChannel.members.map((member) => member.id) : [];
+		return voiceChannel ? voiceChannel.members.map(member => member.id) : [];
 	}
 
-	private readonly _listeners = {
+	private readonly _listeners: MusicManagerListeners = {
 		disconnect: null,
 		end: null,
 		error: null
-	} as MusicManagerListeners;
+	};
 
 	@enumerable(false)
 	private position = 0;
@@ -84,7 +84,7 @@ export class Queue extends Array<Song> {
 	}
 
 	public add(user: string, song: Track | Track[]): this {
-		if (Array.isArray(song)) this.push(...song.map((info) => new Song(this, info, user)));
+		if (Array.isArray(song)) this.push(...song.map(info => new Song(this, info, user)));
 		else this.push(new Song(this, song, user));
 		return this;
 	}
@@ -136,7 +136,7 @@ export class Queue extends Array<Song> {
 		return new Promise<void>((resolve, reject) => {
 			// Setup the events
 			if (this._listeners.end) this._listeners.end(true);
-			this._listeners.end = (finish) => {
+			this._listeners.end = finish => {
 				if (this.song && this.replay) {
 					this.player.play(this.song.track).catch(reject);
 					return;
@@ -147,11 +147,11 @@ export class Queue extends Array<Song> {
 				this._listeners.error = null;
 				if (finish) resolve();
 			};
-			this._listeners.error = (error) => {
+			this._listeners.error = error => {
 				this._listeners.end(false);
 				reject(error);
 			};
-			this._listeners.disconnect = (code) => {
+			this._listeners.disconnect = code => {
 				this._listeners.end(false);
 				if (code >= 4000) reject(this.guild.language.get('MUSICMANAGER_PLAY_DISCONNECTION'));
 				else resolve();
@@ -207,8 +207,10 @@ export class Queue extends Array<Song> {
 		if (isTrackExceptionEvent(payload)) {
 			this.client.emit(Events.Error, `[LL:${this.guild.id}] Error: ${payload.error}`);
 			if (this._listeners.error) this._listeners.error(payload.error);
-			if (this.channel) this.channel.sendLocale('MUSICMANAGER_ERROR', [util.codeBlock('', payload.error)])
-				.catch((error) => { this.client.emit(Events.Wtf, error); });
+			if (this.channel) {
+				this.channel.sendLocale('MUSICMANAGER_ERROR', [util.codeBlock('', payload.error)])
+					.catch(error => { this.client.emit(Events.Wtf, error); });
+			}
 			return;
 		}
 
@@ -216,8 +218,9 @@ export class Queue extends Array<Song> {
 		if (isTrackStuckEvent(payload)) {
 			if (this.channel && payload.thresholdMs > 1000) {
 				this.channel.sendLocale('MUSICMANAGER_STUCK', [Math.ceil(payload.thresholdMs / 1000)])
+					// eslint-disable-next-line promise/prefer-await-to-then
 					.then((message: KlasaMessage) => message.delete({ timeout: payload.thresholdMs }))
-					.catch((error) => { this.client.emit(Events.Wtf, error); });
+					.catch(error => { this.client.emit(Events.Wtf, error); });
 			}
 			return;
 		}
@@ -227,8 +230,9 @@ export class Queue extends Array<Song> {
 			if (payload.code >= 4000) {
 				this.client.emit(Events.Error, `[LL:${this.guild.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
 				this.channel.sendLocale('MUSICMANAGER_CLOSE')
+					// eslint-disable-next-line promise/prefer-await-to-then
 					.then((message: KlasaMessage) => message.delete({ timeout: 10000 }))
-					.catch((error) => { this.client.emit(Events.Wtf, error); });
+					.catch(error => { this.client.emit(Events.Wtf, error); });
 			}
 			if (this._listeners.disconnect) this._listeners.disconnect(payload.code);
 			this.reset(true);
@@ -245,7 +249,6 @@ export class Queue extends Array<Song> {
 		// If it's a destroy payload, reset this instance
 		if (isDestroy(payload)) {
 			this.reset(true);
-			return;
 		}
 	}
 
@@ -253,7 +256,7 @@ export class Queue extends Array<Song> {
 		// The queue is manageable for deejays.
 		if (this.deejays.has(message.author.id)) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
-		if ((this.song ? this.song.requester === message.author.id : true) && this.every((song) => song.requester === message.author.id)) return true;
+		if ((this.song ? this.song.requester === message.author.id : true) && this.every(song => song.requester === message.author.id)) return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return message.hasAtLeastPermissionLevel(5);
 	}

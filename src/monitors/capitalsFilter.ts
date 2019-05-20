@@ -19,7 +19,9 @@ const OFFSET = 0b100000;
  * lower case to upper case (upper case characters are unaffected).
  */
 
-const ALERT_FLAG = 1 << 2, LOG_FLAG = 1 << 1, DELETE_FLAG = 1 << 0;
+const ALERT_FLAG = 1 << 2;
+const LOG_FLAG = 1 << 1;
+const DELETE_FLAG = 1 << 0;
 
 export default class extends Monitor {
 
@@ -29,7 +31,8 @@ export default class extends Monitor {
 		const capsfilter = message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
 		const capsthreshold = message.guild.settings.get(GuildSettings.Selfmod.Capsthreshold) as GuildSettings.Selfmod.Capsthreshold;
 		const { length } = message.content;
-		let count = 0, i = 0;
+		let count = 0;
+		let i = 0;
 
 		while (i < length) if ((message.content.charCodeAt(i++) & OFFSET) === 0) count++;
 
@@ -40,8 +43,9 @@ export default class extends Monitor {
 			message.nuke().catch(() => null);
 		}
 
-		if ((capsfilter & ALERT_FLAG) && message.channel.postable)
+		if ((capsfilter & ALERT_FLAG) && message.channel.postable) {
 			message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)).catch(() => null);
+		}
 
 		if (capsfilter & LOG_FLAG) {
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()

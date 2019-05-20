@@ -54,8 +54,8 @@ export class GuildSecurity {
 	 * @param filterArray The array to process
 	 */
 	public updateRegExp(filterArray: string[]) {
-		const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
-			item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
+		const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '')
+			+ item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
 		this.regexp = new RegExp(`\\b(?:${filtered})\\b`, 'gi');
 		return this;
 	}

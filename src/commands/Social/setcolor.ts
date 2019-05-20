@@ -1,17 +1,17 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Color } from '../../lib/util/Color';
+import { parse } from '../../lib/util/Color';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['setcolour'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_SETCOLOR_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_SETCOLOR_EXTENDED'),
+			description: language => language.get('COMMAND_SETCOLOR_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_SETCOLOR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '<color:string>'
@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const { hex, b10 } = Color.parse(input);
+		const { hex, b10 } = parse(input);
 
 		await message.author.settings.update('color', hex.toString().slice(1));
 		return message.sendEmbed(new MessageEmbed()

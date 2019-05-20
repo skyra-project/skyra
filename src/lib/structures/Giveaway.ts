@@ -8,8 +8,21 @@ import { TIME } from '../util/constants';
 import { fetchReactionUsers, resolveEmoji } from '../util/util';
 import { GiveawayManager } from './GiveawayManager';
 
+enum States {
+	Running,
+	LastChance,
+	Finished
+}
+
+enum Colors {
+	Blue = 0x47C7F7,
+	Orange = 0xFFA721,
+	Red = 0xE80F2B
+}
+
 export class Giveaway {
 
+	public store: GiveawayManager;
 	public id: string;
 	public endsAt: number;
 	public refreshAt: number;
@@ -24,7 +37,8 @@ export class Giveaway {
 	private paused = false;
 	private rendering = false;
 
-	public constructor(public store: GiveawayManager, data: GiveawayData) {
+	public constructor(store: GiveawayManager, data: GiveawayData) {
+		this.store = store;
 		this.id = data.id;
 		this.title = data.title;
 		this.endsAt = data.endsAt;
@@ -65,7 +79,8 @@ export class Giveaway {
 		this.resume();
 
 		// Add a reaction to the message and save to database
-		await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).reactions(Giveaway.EMOJI, '@me').put();
+		await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).reactions(Giveaway.EMOJI, '@me')
+			.put();
 		await this.store.client.providers.default.create(Databases.Giveaway, this.id, this.toJSON());
 		return this;
 	}
@@ -158,7 +173,7 @@ export class Giveaway {
 
 	private async announceWinners(language: Language) {
 		const content = this.winners
-			? language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map((winner) => `<@${winner}>`), this.title)
+			? language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map(winner => `<@${winner}>`), this.title)
 			: language.get('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', this.title);
 		try {
 			await (this.store.client as any).api.channels(this.channelID).messages.post({ data: { content } });
@@ -191,7 +206,7 @@ export class Giveaway {
 	private getDescription(state: States, language: Language) {
 		switch (state) {
 			case States.Finished: return this.winners && this.winners.length
-				? language.get('GIVEAWAY_ENDED', this.winners.map((winner) => `<@${winner}>`))
+				? language.get('GIVEAWAY_ENDED', this.winners.map(winner => `<@${winner}>`))
 				: language.get('GIVEAWAY_ENDED_NO_WINNER');
 			case States.LastChance: return language.get('GIVEAWAY_LASTCHANCE', this.remaining);
 			default: return language.get('GIVEAWAY_DURATION', this.remaining);
@@ -215,12 +230,12 @@ export class Giveaway {
 	private calculateNextRefresh() {
 		const remaining = this.remaining;
 		if (remaining < TIME.SECOND * 5) return Date.now() + TIME.SECOND;
-		if (remaining < TIME.SECOND * 30) return Date.now() + Math.min(remaining - TIME.SECOND * 6, TIME.SECOND * 5);
-		if (remaining < TIME.MINUTE * 2) return Date.now() + TIME.SECOND * 15;
-		if (remaining < TIME.MINUTE * 5) return Date.now() + TIME.SECOND * 20;
+		if (remaining < TIME.SECOND * 30) return Date.now() + Math.min(remaining - (TIME.SECOND * 6), TIME.SECOND * 5);
+		if (remaining < TIME.MINUTE * 2) return Date.now() + (TIME.SECOND * 15);
+		if (remaining < TIME.MINUTE * 5) return Date.now() + (TIME.SECOND * 20);
 		if (remaining < TIME.MINUTE * 15) return Date.now() + TIME.MINUTE;
-		if (remaining < TIME.MINUTE * 30) return Date.now() + TIME.MINUTE * 2;
-		return Date.now() + TIME.MINUTE * 5;
+		if (remaining < TIME.MINUTE * 30) return Date.now() + (TIME.MINUTE * 2);
+		return Date.now() + (TIME.MINUTE * 5);
 	}
 
 	private async pickWinners() {
@@ -268,16 +283,4 @@ export interface GiveawayCreateData {
 export interface GiveawayData extends GiveawayCreateData {
 	id: string;
 	messageID: string;
-}
-
-enum States {
-	Running,
-	LastChance,
-	Finished
-}
-
-enum Colors {
-	Blue = 0x47C7F7,
-	Orange = 0xFFA721,
-	Red = 0xE80F2B
 }

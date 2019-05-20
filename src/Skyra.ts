@@ -15,23 +15,30 @@ const { FLAGS } = Permissions;
 
 // Canvas setup
 Canvas
-    .registerFont(join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular')
-    .registerFont(join(assetsFolder, 'fonts', 'NotoEmoji.ttf'), 'RobotoRegular')
-    .registerFont(join(assetsFolder, 'fonts', 'NotoSans-Regular.ttf'), 'RobotoRegular')
-    .registerFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight')
-    .registerFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
+	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(assetsFolder, 'fonts', 'NotoEmoji.ttf'), 'RobotoRegular')
+	.registerFont(join(assetsFolder, 'fonts', 'NotoSans-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight')
+	.registerFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
 
 // Skyra setup
 SkyraClient.defaultPermissionLevels
-    .add(4, (message) => message.member ? message.guild.settings.get(GuildSettings.Roles.Staff)
-        ? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Staff) as GuildSettings.Roles.Staff)
-        : message.member.permissions.has(FLAGS.MANAGE_MESSAGES) : false, { fetch: true })
-    .add(5, (message) => message.member ? message.guild.settings.get(GuildSettings.Roles.Moderator)
-        ? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Moderator) as GuildSettings.Roles.Moderator)
-        : message.member.permissions.has(FLAGS.BAN_MEMBERS) : false, { fetch: true })
-    .add(6, (message) => message.member ? message.guild.settings.get(GuildSettings.Roles.Admin)
-        ? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Admin) as GuildSettings.Roles.Admin)
-        : message.member.permissions.has(FLAGS.MANAGE_GUILD) : false, { fetch: true });
+	.add(4, message => message.member
+		? message.guild.settings.get(GuildSettings.Roles.Staff)
+			? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Staff) as GuildSettings.Roles.Staff)
+			: message.member.permissions.has(FLAGS.MANAGE_MESSAGES)
+		: false, { fetch: true })
+	.add(5, message => message.member
+		? message.guild.settings.get(GuildSettings.Roles.Moderator)
+			? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Moderator) as GuildSettings.Roles.Moderator)
+			: message.member.permissions.has(FLAGS.BAN_MEMBERS)
+		: false, { fetch: true })
+	.add(6, message => message.member
+		? message.guild.settings.get(GuildSettings.Roles.Admin)
+			? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Admin) as GuildSettings.Roles.Admin)
+			: message.member.permissions.has(FLAGS.MANAGE_GUILD)
+		: false, { fetch: true });
 
 const client = new SkyraClient(CLIENT_OPTIONS);
-client.login(CLIENT_OPTIONS.dev ? TOKENS.BOT.DEV : TOKENS.BOT.STABLE).catch((error) => { client.console.error(error); });
+client.login(CLIENT_OPTIONS.dev ? TOKENS.BOT.DEV : TOKENS.BOT.STABLE)
+	.catch(error => { client.console.error(error); });

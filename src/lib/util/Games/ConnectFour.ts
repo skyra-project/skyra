@@ -11,6 +11,7 @@ interface ConnectFourWinningRowElement {
 	y: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ConnectFourWinningRow extends Array<ConnectFourWinningRowElement> {}
 
 export class ConnectFour {
@@ -153,7 +154,7 @@ export class ConnectFour {
 
 	public async gameDraw() {
 		await this.message.edit(this.language.get('COMMAND_C4_GAME_DRAW', this.renderTable()));
-		if (this.manageMessages) await this.message.reactions.removeAll().catch((err) => this.client.emit(Events.ApiError, err));
+		if (this.manageMessages) await this.message.reactions.removeAll().catch(err => this.client.emit(Events.ApiError, err));
 	}
 
 	public async gameTimeout() {
@@ -175,7 +176,7 @@ export class ConnectFour {
 		const VALUE = this.turn === 0 ? 'WINNER_1' : 'WINNER_2';
 		// @ts-ignore
 		for (const { x, y } of row) this.table[x][y] = VALUE;
-		if (this.manageMessages) this.message.reactions.removeAll().catch((error) => this.client.emit(Events.ApiError, error));
+		if (this.manageMessages) this.message.reactions.removeAll().catch(error => this.client.emit(Events.ApiError, error));
 		this.llrc.end();
 	}
 
@@ -187,10 +188,12 @@ export class ConnectFour {
 		const reaction = await new Promise<string>((resolve, reject) => {
 			this.llrc.setTime(120000);
 			this.llrc.setEndListener(reject);
-			this.collector = (data) => {
+			this.collector = data => {
 				if (data.userID === PLAYER && CONNECT_FOUR.REACTIONS.includes(data.emoji.name)) {
-					if (this.manageMessages) this.removeEmoji(data.emoji, data.userID)
-						.catch((error) => this.client.emit(Events.ApiError, error));
+					if (this.manageMessages) {
+						this.removeEmoji(data.emoji, data.userID)
+							.catch(error => this.client.emit(Events.ApiError, error));
+					}
 					resolve(data.emoji.name);
 				}
 			};
@@ -219,8 +222,9 @@ export class ConnectFour {
 	 * Check whether the game has all the lines full
 	 */
 	public isFullGame(): boolean {
-		for (let x = 0; x < this.table.length; x++)
+		for (let x = 0; x < this.table.length; x++) {
 			if (!this.isFullLine(x)) return false;
+		}
 
 		return true;
 	}
@@ -250,14 +254,13 @@ export class ConnectFour {
 	 */
 	public render(error?: number): Promise<Message> {
 		// @ts-ignore
-		return this.message.edit((error === RESPONSES.FULL_LINE ? this.language.get('COMMAND_C4_GAME_COLUMN_FULL') : '') +
-			this.language.get(
+		return this.message.edit((error === CONNECT_FOUR.RESPONSES.FULL_LINE ? this.language.get('COMMAND_C4_GAME_COLUMN_FULL') : '')
+			+ this.language.get(
 				this.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT',
 				this.turn === 0 ? this.challenger.username : this.challengee.username,
 				this.turn,
 				this.renderTable()
-			)
-		);
+			));
 	}
 
 	/**
@@ -329,16 +332,18 @@ export class ConnectFour {
 	 */
 	private _check(posX: number, posY: number): ConnectFourWinningRow {
 		const PLAYER = this.turn + 1;
-		const MIN_X = Math.max(0, posX - 3),
-			MIN_Y = Math.max(0, posY - 3),
-			MAX_X = Math.min(6, posX + 3),
-			MAX_Y = Math.min(5, posY + 3);
+		const MIN_X = Math.max(0, posX - 3);
+		const MIN_Y = Math.max(0, posY - 3);
+		const MAX_X = Math.min(6, posX + 3);
+		const MAX_Y = Math.min(5, posY + 3);
 
 		// @ts-ignore
 		const verticals = this._checkVerticals(posX, MIN_Y, MAX_Y, PLAYER);
 		if (verticals) return verticals;
 
-		let diagUp = 0, diagDown = 0, horizontal = 0;
+		let diagUp = 0;
+		let diagDown = 0;
+		let horizontal = 0;
 		for (let offset = MIN_X - posX; offset <= MAX_X - posX; offset++) {
 			const x = posX + offset;
 			const tableX = this.table[x];
@@ -400,7 +405,8 @@ export class ConnectFour {
 	 * @param PLAYER The current player
 	 */
 	private _checkVerticals(posX: number, MIN_Y: number, MAX_Y: number, PLAYER: number): ConnectFourWinningRow | null {
-		let verticals = 0, y;
+		let verticals = 0;
+		let y: number;
 		for (y = MIN_Y; y < MAX_Y; y++) {
 			const row = this.table[posX][y];
 			if (row === PLAYER) {

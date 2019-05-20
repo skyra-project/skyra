@@ -1,59 +1,54 @@
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
-import { Extendable, ExtendableStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { Extendable, ExtendableStore, KlasaMessage, util } from 'klasa';
 import { Events } from '../lib/types/Enums';
 
 export default class extends Extendable {
 
-	public constructor(client: KlasaClient, store: ExtendableStore, file: string[], directory: string) {
-		super(client, store, file, directory, { appliesTo: [Message] });
+	public constructor(store: ExtendableStore, file: string[], directory: string) {
+		super(store, file, directory, { appliesTo: [Message] });
 	}
 
-	public async prompt(content: string, time: number = 30000) {
-		const self = this as unknown as Message;
-		const message = await self.channel.send(content) as Message;
-		const responses = await self.channel.awaitMessages((msg) => msg.author === self.author, { time, max: 1 });
-		message.nuke().catch((error) => self.client.emit(Events.ApiError, error));
-		if (responses.size === 0) throw self.language.get('MESSAGE_PROMPT_TIMEOUT');
+	public async prompt(this: Message, content: string, time: number = 30000) {
+		const message = await this.channel.send(content) as Message;
+		const responses = await this.channel.awaitMessages(msg => msg.author === this.author, { time, max: 1 });
+		message.nuke().catch(error => this.client.emit(Events.ApiError, error));
+		if (responses.size === 0) throw this.language.get('MESSAGE_PROMPT_TIMEOUT');
 		return responses.first();
 	}
 
-	public async ask(options: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
-	public async ask(content: string | MessageOptions, options?: MessageOptions | MessageExtendablesAskOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean> {
+	public async ask(this: Message, options: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+	public async ask(this: Message, content: string | MessageOptions, options?: MessageOptions | MessageExtendablesAskOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean> {
 		if (typeof content !== 'string') {
 			options = content;
 			content = null;
 		}
-		const self = this as unknown as Message;
-		const message = await self.send(content, options as MessageOptions) as KlasaMessage;
-		return !self.guild || (self.channel as TextChannel).permissionsFor(self.guild.me).has(Permissions.FLAGS.ADD_REACTIONS)
-			? awaitReaction(self, message, promptOptions)
-			: awaitMessage(self, promptOptions);
+		const message = await this.send(content, options as MessageOptions) as KlasaMessage;
+		return !this.guild || (this.channel as TextChannel).permissionsFor(this.guild.me).has(Permissions.FLAGS.ADD_REACTIONS)
+			? awaitReaction(this, message, promptOptions)
+			: awaitMessage(this, promptOptions);
 	}
 
-	public alert(content: string, timer?: number);
-	public alert(content: string, options?: MessageOptions, timer?: number);
-	public alert(content: string, options?: number | MessageOptions, timer?: number) {
-		const self = this as unknown as Message;
-		if (!self.channel.postable) return Promise.resolve(null);
+	public async alert(this: Message, content: string, timer?: number): Promise<Message>;
+	public async alert(this: Message, content: string, options?: MessageOptions, timer?: number): Promise<Message>;
+	public async alert(this: Message, content: string, options?: number | MessageOptions, timer?: number): Promise<Message> {
+		if (!this.channel.postable) return Promise.resolve(null);
 		if (typeof options === 'number' && typeof timer === 'undefined') {
 			timer = options;
 			options = undefined;
 		}
 
-		return self.sendMessage(content, options as MessageOptions).then((msg: KlasaMessage) => {
-			msg.nuke(typeof timer === 'number' ? timer : 10000)
-				.catch((error) => self.client.emit(Events.ApiError, error));
-			return msg;
-		});
+		const msg = await this.sendMessage(content, options as MessageOptions) as Message;
+		msg.nuke(typeof timer === 'number' ? timer : 10000)
+			.catch(error => this.client.emit(Events.ApiError, error));
+		return msg;
 	}
 
-	public async nuke(time: number = 0) {
-		const self = this as unknown as Message;
-		if (time === 0) return nuke(self);
+	public async nuke(this: Message, time: number = 0) {
+		if (time === 0) return nuke(this);
 
-		const count = self.edits.length;
+		const count = this.edits.length;
 		await util.sleep(time);
-		return !self.deleted && self.edits.length === count ? nuke(self) : self;
+		return !this.deleted && this.edits.length === count ? nuke(this) : this;
 	}
 
 }
@@ -68,14 +63,15 @@ async function awaitReaction(message: Message, messageSent: Message, promptOptio
 	const reactions = await messageSent.awaitReactions((__, user) => user === message.author, promptOptions);
 
 	// Remove all reactions if the user has permissions to do so
-	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES))
-		messageSent.reactions.removeAll().catch((error) => messageSent.client.emit(Events.ApiError, error));
+	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES)) {
+		messageSent.reactions.removeAll().catch(error => messageSent.client.emit(Events.ApiError, error));
+	}
 
 	return reactions.size && reactions.firstKey() === REACTIONS.YES;
 }
 
 async function awaitMessage(message: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
-	const messages = await message.channel.awaitMessages((mes) => mes.author === message.author, promptOptions);
+	const messages = await message.channel.awaitMessages(mes => mes.author === message.author, promptOptions);
 	return messages.size && REG_ACCEPT.test(messages.first().content);
 }
 

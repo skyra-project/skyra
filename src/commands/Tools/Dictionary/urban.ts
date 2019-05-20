@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, Language, util } from 'klasa';
+import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { cutText, fetch, getColor } from '../../../lib/util/util';
 
@@ -7,12 +7,12 @@ const ZWS = '\u200B';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_URBAN_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_URBAN_EXTENDED'),
+			description: language => language.get('COMMAND_URBAN_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_URBAN_EXTENDED'),
 			nsfw: true,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
@@ -23,8 +23,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [query, ind = 1]: [string, number]) {
 		const index = ind - 1;
-		if (index < 0)
+		if (index < 0) {
 			throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
+		}
 
 		const { list } = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json');
 

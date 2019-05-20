@@ -50,6 +50,7 @@ export class HSL {
 			g = HSL.hue2rgb(p, q, h);
 			b = HSL.hue2rgb(p, q, h - (1 / 3));
 		}
+		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
 		return new RGB(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255));
 	}
 

@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 
@@ -7,16 +7,16 @@ const SNEYRA_ID = '338249781594030090';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_MARRY_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MARRY_EXTENDED'),
+			description: language => language.get('COMMAND_MARRY_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_MARRY_EXTENDED'),
 			runIn: ['text'],
 			usage: '(user:username)'
 		});
 
-		this.createCustomResolver('username', async(arg, possible, msg) => {
+		this.createCustomResolver('username', async (arg, possible, msg) => {
 			if (!arg) return undefined;
 			return this.client.arguments.get('username').run(arg, possible, msg);
 		});
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 
 		// Get a message from the user.
 		await message.sendLocale('COMMAND_MARRY_PETITION', [message.author, user]);
-		const messages = await message.channel.awaitMessages((msg) => msg.author.id === user.id, { time: 60000, max: 1 });
+		const messages = await message.channel.awaitMessages(msg => msg.author.id === user.id, { time: 60000, max: 1 });
 		if (!messages.size) return message.sendLocale('COMMAND_MARRY_NOREPLY');
 
 		const response = messages.first();

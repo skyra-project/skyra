@@ -1,15 +1,15 @@
-import { User, VoiceChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
-			description: (language) => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_VOICEKICK_EXTENDED'),
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
+			description: language => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_VOICEKICK_EXTENDED'),
 			modType: ModerationTypeKeys.VoiceKick,
 			permissionLevel: 5,
 			requiredMember: true,
@@ -17,23 +17,14 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public prehandle(message: KlasaMessage, users: User[], reason: string) {
-		return message.guild.channels.create('temp', {
-			permissionOverwrites: [{ id: message.guild.id, deny: 0x00000400 }, ...users.map((user) => ({ id: user.id, allow: 0x00000400 }))],
-			reason,
-			type: 'voice',
-			userLimit: 1
-		});
-	}
+	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string, voiceChannel: VoiceChannel) {
+	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
 		if (!member.voice.channelID) throw message.language.get('GUILD_MEMBER_NOT_VOICECHANNEL');
-		await member.setVoiceChannel(voiceChannel);
+		await member.voice.setChannel(null);
 		return this.sendModlog(message, user, reason);
 	}
 
-	public posthandle(_: KlasaMessage, __: User[], ___: string, voiceChannel: VoiceChannel) {
-		return voiceChannel.delete('Temporal Voice Channel Deletion');
-	}
+	public async posthandle() { /* Do nothing */ }
 
 }

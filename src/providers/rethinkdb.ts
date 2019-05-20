@@ -73,7 +73,8 @@ export default class RethinkDB extends Provider {
 	}
 
 	public has(table: string, id: string): Promise<boolean> {
-		return this.db.table(table).get(id).ne(null).run();
+		return this.db.table(table).get(id).ne(null)
+			.run();
 	}
 
 	public getRandom(table: string): Promise<any> {
@@ -85,15 +86,18 @@ export default class RethinkDB extends Provider {
 	}
 
 	public update(table: string, id: string, value: object = {}): Promise<WriteResult> {
-		return this.db.table(table).get(id).update(this.parseUpdateInput(value)).run();
+		return this.db.table(table).get(id).update(this.parseUpdateInput(value))
+			.run();
 	}
 
 	public replace(table: string, id: string, value: object = {}): Promise<WriteResult> {
-		return this.db.table(table).get(id).replace({ ...this.parseUpdateInput(value), id }).run();
+		return this.db.table(table).get(id).replace({ ...this.parseUpdateInput(value), id })
+			.run();
 	}
 
 	public delete(table: string, id: string): Promise<WriteResult> {
-		return this.db.table(table).get(id).delete().run();
+		return this.db.table(table).get(id).delete()
+			.run();
 	}
 
 }

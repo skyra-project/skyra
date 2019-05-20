@@ -1,5 +1,5 @@
 import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage, Schema, SchemaEntry, SettingsFolderUpdateResult, util } from 'klasa';
+import { CommandStore, KlasaMessage, Schema, SchemaEntry, SettingsFolderUpdateResult, util } from 'klasa';
 import { SettingsMenu } from '../../lib/structures/SettingsMenu';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
@@ -7,10 +7,10 @@ const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, 
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['conf', 'config', 'configs', 'configuration'],
-			description: (language) => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
+			description: language => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
 			guarded: true,
 			permissionLevel: 6,
 			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
@@ -32,8 +32,9 @@ export default class extends SkyraCommand {
 	}
 
 	public menu(message: KlasaMessage) {
-		if (!(message.channel as TextChannel).permissionsFor(this.client.user.id).has(MENU_REQUIREMENTS))
+		if (!(message.channel as TextChannel).permissionsFor(this.client.user.id).has(MENU_REQUIREMENTS)) {
 			throw message.language.get('COMMAND_CONF_MENU_NOPERMISSIONS');
+		}
 		return new SettingsMenu(message).init();
 	}
 

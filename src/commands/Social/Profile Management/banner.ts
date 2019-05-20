@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { Databases } from '../../../lib/types/constants/Constants';
@@ -16,13 +16,13 @@ export default class extends SkyraCommand {
 	private readonly listPrompt = this.definePrompt('<all|user>');
 	private display = null;
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			aliases: ['banners'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_BANNER_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_BANNER_EXTENDED'),
+			description: language => language.get('COMMAND_BANNER_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_BANNER_EXTENDED'),
 			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
 			runIn: ['text'],
 			subcommands: true,
@@ -101,7 +101,7 @@ export default class extends SkyraCommand {
 					title: banner.title
 				});
 
-				display.addPage((template) => template
+				display.addPage(template => template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
 					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));
@@ -123,7 +123,7 @@ export default class extends SkyraCommand {
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
-				display.addPage((template) => template
+				display.addPage(template => template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
 					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));

@@ -1,36 +1,35 @@
 import { MessageEmbed } from 'discord.js';
-import { Extendable, ExtendableStore, KlasaClient } from 'klasa';
+import { Extendable, ExtendableStore } from 'klasa';
 
 export default class extends Extendable {
 
-	public constructor(client: KlasaClient, store: ExtendableStore, file: string[], directory: string) {
-		super(client, store, file, directory, { appliesTo: [MessageEmbed] });
+	public constructor(store: ExtendableStore, file: string[], directory: string) {
+		super(store, file, directory, { appliesTo: [MessageEmbed] });
 	}
 
-	public splitFields(content: string | string[]) {
-		const self = this as unknown as MessageEmbed;
-		if (typeof content === 'undefined') return self;
+	public splitFields(this: MessageEmbed, content: string | string[]) {
+		if (typeof content === 'undefined') return this;
 
 		if (Array.isArray(content)) content = content.join('\n');
-		if (content.length < 2048 && !self.description) {
-			self.description = content;
-			return self;
+		if (content.length < 2048 && !this.description) {
+			this.description = content;
+			return this;
 		}
 
-		let x;
+		let x: number;
 		while (content.length) {
 			if (content.length < 1024) {
-				self.fields.push({ name: '\u200B', value: content, inline: false });
-				return self;
+				this.fields.push({ name: '\u200B', value: content, inline: false });
+				return this;
 			}
 
 			x = content.slice(0, 1024).lastIndexOf('\n');
 			if (x === -1) x = 1024;
 
-			self.fields.push({ name: '\u200B', value: content.slice(0, x), inline: false });
+			this.fields.push({ name: '\u200B', value: content.slice(0, x), inline: false });
 			content = content.slice(x + 1);
 		}
-		return self;
+		return this;
 	}
 
 }

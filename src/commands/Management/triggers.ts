@@ -1,4 +1,4 @@
-import { CommandStore, KlasaClient, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { resolveEmoji } from '../../lib/util/util';
@@ -7,11 +7,11 @@ const REG_TYPE = /alias|reaction/i;
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			cooldown: 5,
-			description: (language) => language.get('COMMAND_TRIGGERS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_TRIGGERS_EXTENDED'),
+			description: language => language.get('COMMAND_TRIGGERS_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_TRIGGERS_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
 			requiredPermissions: ['ADD_REACTIONS'],
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 			if (action === 'show') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			return arg.toLowerCase();
-		}).createCustomResolver('output', async(arg, _, msg, [action, type]) => {
+		}).createCustomResolver('output', async (arg, _, msg, [action, type]) => {
 			if (action === 'show' || action === 'remove') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			if (type === 'reaction') {
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 					if (!arg) throw null;
 					await msg.react(arg);
 					return arg;
-				} catch (_) {
+				} catch {
 					throw msg.language.get('COMMAND_TRIGGERS_INVALIDREACTION');
 				}
 			} else if (type === 'alias') {
@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [type, input]: [string, string]) {
 		const list = this._getList(message, type);
-		const index = list.findIndex((entry) => entry.input === input);
+		const index = list.findIndex(entry => entry.input === input);
 		if (index === -1) throw message.language.get('COMMAND_TRIGGERS_REMOVE_NOTTAKEN');
 
 		// Create a shallow clone and remove the item
@@ -68,7 +68,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [type, input, output]: [string, string, string]) {
 		const list = this._getList(message, type);
-		if (list.some((entry) => entry.input === input)) throw message.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
+		if (list.some(entry => entry.input === input)) throw message.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
 
 		const { errors } = await message.guild.settings.update(this._getListName(type), [...list, this._format(type, input, output)], { arrayAction: 'overwrite' });
 		if (errors.length) throw errors[0];
@@ -80,10 +80,12 @@ export default class extends SkyraCommand {
 		const aliases = message.guild.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
 		const includes = message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
 		const output = [];
-		for (const alias of aliases)
+		for (const alias of aliases) {
 			output.push(`Alias    :: ${alias.input} -> ${alias.output}`);
-		for (const react of includes)
+		}
+		for (const react of includes) {
 			output.push(`Reaction :: ${react.input} -> ${react.output}`);
+		}
 		if (!output.length) throw message.language.get('COMMAND_TRIGGERS_LIST_EMPTY');
 		return message.sendMessage(util.codeBlock('asciidoc', output.join('\n')));
 	}

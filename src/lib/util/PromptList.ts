@@ -32,7 +32,7 @@ export class PromptList {
 	 */
 	public static async run(message: Message, entries: PromptListResolvable, options?: PromptListOptions, resolved: boolean = false): Promise<number> {
 		const n = await PromptList._run(message, resolved ? entries as string[] : PromptList._resolveData(entries), options);
-		await Promise.all(message.responses.map((response) => response.nuke().catch(() => null)));
+		await Promise.all(message.responses.map(response => response.nuke().catch(() => null)));
 		return n;
 	}
 
@@ -47,13 +47,15 @@ export class PromptList {
 		const codeblock = util.codeBlock('asciidoc', list.join('\n'));
 		await message.sendLocale(listMode ? 'PROMPTLIST_LIST' : 'PROMPTLIST_MULTIPLE_CHOICE', [codeblock, possibles]);
 		const abortString = message.language.get('PROMPTLIST_ABORT').toLowerCase();
-		const promptFilter = (m: Message) => m.author === m.author
+		const promptFilter = (m: Message) => m.author === message.author
 			&& (m.content.toLowerCase() === abortString || !isNaN(Number(m.content)));
-		let response, n, attempts = 0;
+		let response: Message;
+		let n: number;
+		let attempts = 0;
 		do {
 			if (attempts !== 0) await message.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [codeblock, attempts, maxAttempts]);
 			response = await message.channel.awaitMessages(promptFilter, promptOptions)
-				.then((responses) => responses.size ? responses.first() : null);
+				.then(responses => responses.size ? responses.first() : null);
 
 			if (response) {
 				if (response.deletable) response.nuke().catch(() => null);
@@ -72,7 +74,8 @@ export class PromptList {
 	 */
 	private static _resolveData(data: PromptListResolvable): string[] {
 		const output = [];
-		let maxLength, i = 0;
+		let maxLength: number;
+		let i = 0;
 
 		if (Array.isArray(data)) {
 			maxLength = Math.min(10, data.length);
@@ -86,13 +89,13 @@ export class PromptList {
 			maxLength = Math.min(10, data.size);
 			for (const entry of data.entries()) {
 				if (i >= maxLength) return output;
-				else output[i++] = `${i.toString().padStart(2, ' ')} :: ${entry.join(' : ')}`;
+				output[i++] = `${i.toString().padStart(2, ' ')} :: ${entry.join(' : ')}`;
 			}
 		} else if (data instanceof Set) {
 			maxLength = Math.min(10, data.size);
 			for (const entry of data) {
 				if (i >= maxLength) return output;
-				else output[i++] = `${i.toString().padStart(2, ' ')} :: ${entry}`;
+				output[i++] = `${i.toString().padStart(2, ' ')} :: ${entry}`;
 			}
 		} else {
 			throw new TypeError(`Expected an array, instance of Map, Set, or an iterable, but got: ${new Type(data)}`);

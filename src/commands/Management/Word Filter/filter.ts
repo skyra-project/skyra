@@ -1,15 +1,15 @@
-import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 
-	public constructor(client: KlasaClient, store: CommandStore, file: string[], directory: string) {
-		super(client, store, file, directory, {
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 5,
-			description: (language) => language.get('COMMAND_FILTER_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_FILTER_EXTENDED'),
+			description: language => language.get('COMMAND_FILTER_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_FILTER_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
 			subcommands: true,
@@ -56,9 +56,9 @@ export default class extends SkyraCommand {
 
 	public show(message: KlasaMessage) {
 		const raw = message.guild.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
-		return message.sendMessage(!raw.length
-			? message.language.get('COMMAND_FILTER_SHOW_EMPTY')
-			: message.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``));
+		return message.sendMessage(raw.length
+			? message.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``)
+			: message.language.get('COMMAND_FILTER_SHOW_EMPTY'));
 	}
 
 }

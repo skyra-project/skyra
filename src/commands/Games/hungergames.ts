@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 			cooldown: 0,
 			description: language => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS'],
+			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:string{2,50}> [...]',
 			usageDelim: ','

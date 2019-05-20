@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.get('COMMAND_MANAGEROLEREACTION_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
-			requiredPermissions: ['READ_MESSAGE_HISTORY', 'ADD_REACTIONS'],
+			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<show|add|remove|reset> (role:rolename) (emoji:emoji)',

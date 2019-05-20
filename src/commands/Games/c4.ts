@@ -12,7 +12,7 @@ export default class extends SkyraCommand {
 			cooldown: 0,
 			description: language => language.get('COMMAND_C4_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_C4_EXTENDED'),
-			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS'],
+			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

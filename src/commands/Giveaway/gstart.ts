@@ -8,7 +8,7 @@ export default class extends SkyraCommand {
 			aliases: ['giveaway'],
 			description: language => language.get('COMMAND_GIVEAWAY_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_GIVEAWAY_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS'],
+			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<time:time> <title:...string{,256}>',
 			usageDelim: ' '

@@ -8,7 +8,7 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			description: language => language.get('COMMAND_DIVORCE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_DIVORCE_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS'],
+			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text']
 		});
 	}

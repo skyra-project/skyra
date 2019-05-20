@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.get('COMMAND_TICTACTOE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_TICTACTOE_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS'],
+			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
 		});

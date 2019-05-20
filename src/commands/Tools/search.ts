@@ -12,7 +12,8 @@ export default class extends SkyraCommand {
 			description: language => language.get('COMMAND_SEARCH_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_SEARCH_EXTENDED'),
 			usage: '<query:string>',
-			usageDelim: ' '
+			usageDelim: ' ',
+			requiredPermissions: ['EMBED_LINKS']
 		});
 	}
 

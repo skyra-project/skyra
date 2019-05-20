@@ -13,7 +13,8 @@ export default class extends SkyraCommand {
 			aliases: ['commands', 'cmd', 'cmds'],
 			description: language => language.get('COMMAND_HELP_DESCRIPTION'),
 			guarded: true,
-			usage: '(Command:command)'
+			usage: '(Command:command)',
+			flagSupport: true
 		});
 
 		this.createCustomResolver('command', (arg, possible, message) => {

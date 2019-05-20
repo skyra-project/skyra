@@ -22,7 +22,8 @@ export default class extends SkyraCommand {
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<create|list|remove|vote|result> [parameters:string] [...]',
-			usageDelim: ' '
+			usageDelim: ' ',
+			flagSupport: true
 		});
 	}
 

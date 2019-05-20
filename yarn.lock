@@ -730,7 +730,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/58c23d781cc00792eee0c66d7e6fbdca410f1cbd"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/3e1cceb33e5a91bfeb6a313e056a976842964783"
   dependencies:
     fs-nextra "^0.4.3"
 

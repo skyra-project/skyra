@@ -14,7 +14,8 @@ export default class extends ModerationCommand {
 			modType: ModerationTypeKeys.Ban,
 			permissionLevel: 5,
 			requiredMember: false,
-			requiredPermissions: ['BAN_MEMBERS']
+			requiredPermissions: ['BAN_MEMBERS'],
+			flagSupport: true
 		});
 	}
 

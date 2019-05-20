@@ -10,7 +10,8 @@ export default class extends MusicCommand {
 		super(store, file, directory, {
 			description: language => language.get('COMMAND_PLAY_DESCRIPTION'),
 			music: ['USER_VOICE_CHANNEL'],
-			usage: '(song:song)'
+			usage: '(song:song)',
+			flagSupport: true
 		});
 
 		this.createCustomResolver('song', (arg, possible, message) => arg ? this.client.arguments.get('song').run(arg, possible, message) : null);

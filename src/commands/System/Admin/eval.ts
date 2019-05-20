@@ -126,7 +126,8 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.get('COMMAND_EVAL_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
-			usage: '<expression:str>'
+			usage: '<expression:str>',
+			flagSupport: true
 		});
 	}
 

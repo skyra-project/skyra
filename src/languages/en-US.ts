@@ -1880,6 +1880,7 @@ export default class extends Language {
 		 */
 
 		GIVEAWAY_TIME: 'A giveaway must last at least 10 seconds.',
+		GIVEAWAY_TIME_TOO_LONG: 'Hey! That\'s an incredibly long time to keep track of!',
 		GIVEAWAY_ENDS_AT: 'Ends at:',
 		GIVEAWAY_DURATION: time => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
 		GIVEAWAY_TITLE: '🎉 **GIVEAWAY** 🎉',

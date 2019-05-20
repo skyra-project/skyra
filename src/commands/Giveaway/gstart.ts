@@ -1,6 +1,8 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
+const YEAR = 1000 * 60 * 60 * 24 * 365;
+
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -19,6 +21,7 @@ export default class extends SkyraCommand {
 		const offset = time.getTime() - Date.now();
 
 		if (offset < 9500) throw message.language.get('GIVEAWAY_TIME');
+		if (offset > YEAR) throw message.language.get('GIVEAWAY_TIME_TOO_LONG');
 		await this.client.giveaways.create({
 			channelID: message.channel.id,
 			endsAt: time.getTime() + 500,

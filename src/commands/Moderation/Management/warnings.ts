@@ -44,8 +44,9 @@ export default class extends SkyraCommand {
 			display.addPage(template => template.setDescription(page.map(format)));
 		}
 
-		await display.run(await message.sendLocale('SYSTEM_LOADING') as KlasaMessage, message.author.id);
-		return message;
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
+		await display.run(response, message.author.id);
+		return response;
 	}
 
 	public displayWarning(users: Map<string, string>, warning: ModerationManagerEntry) {

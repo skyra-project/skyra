@@ -33,7 +33,10 @@ export default class extends SkyraCommand {
 		}
 
 		if (!message.flags.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY)) {
-			return (await this.buildDisplay(message)).run(await message.send('Loading Commands...') as KlasaMessage, message.author.id);
+			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
+			const display = await this.buildDisplay(message);
+			await display.run(response, message.author.id);
+			return response;
 		}
 
 		try {

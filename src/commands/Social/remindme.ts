@@ -49,7 +49,9 @@ export default class extends SkyraCommand {
 		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage(template => template.setDescription(page.join('\n')));
 
-		return display.run(await message.channel.send(message.language.get('SYSTEM_LOADING')) as KlasaMessage, message.author.id);
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
+		await display.run(response, message.author.id);
+		return response;
 	}
 
 	public async delete(message: KlasaMessage, id: string) {

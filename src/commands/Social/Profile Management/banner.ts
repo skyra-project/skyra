@@ -134,7 +134,9 @@ export default class extends SkyraCommand {
 	}
 
 	private async _runDisplay(message: KlasaMessage, display: UserRichDisplay) {
-		return display.run(await message.channel.send(message.language.get('SYSTEM_LOADING')) as KlasaMessage, message.author.id);
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
+		await display.run(response, message.author.id);
+		return response;
 	}
 
 	private async _prompt(message: KlasaMessage, banner: BannerCache) {

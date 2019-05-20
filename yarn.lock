@@ -328,7 +328,7 @@ diff@^4.0.1:
 
 "discord.js@github:discordjs/discord.js":
   version "12.0.0-dev"
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/abebeac193f70e25c842cf4e51e12dd53e1096ca"
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/b3060ea229e5a5395f7fb67291ead0440e6c55ca"
   dependencies:
     form-data "^2.3.3"
     node-fetch "^2.3.0"
@@ -730,7 +730,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/3e1cceb33e5a91bfeb6a313e056a976842964783"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/7909587ef927470417879e2b5f3788cd56088850"
   dependencies:
     fs-nextra "^0.4.3"
 

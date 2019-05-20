@@ -4,6 +4,13 @@ import { Events } from '../lib/types/Enums';
 import { inlineCodeblock } from '../lib/util/util';
 import { rootFolder } from '../Skyra';
 
+const BLACKLISTED_CODES = [
+	// Unknown Channel
+	10003,
+	// Unknown Message
+	10008
+];
+
 export default class extends Event {
 
 	public async run(message: KlasaMessage, command: Command, _: string[], error: Error) {
@@ -19,6 +26,7 @@ export default class extends Event {
 
 			// Extract useful information about the DiscordAPIError
 			if (error instanceof DiscordAPIError || error instanceof HTTPError) {
+				if (BLACKLISTED_CODES.includes(error.code)) return;
 				this.client.emit(Events.ApiError, error);
 			} else {
 				this.client.emit(Events.Warn, `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);

@@ -1461,14 +1461,6 @@ export default class extends Language {
 		}),
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
-		COMMAND_GOOGL_DESCRIPTION: 'Shorten your links with this tool.',
-		COMMAND_GOOGL_EXTENDED: builder.display('googl', {
-			extendedHelp: `Shorten your urls with Googl!`,
-			explainedUsage: [
-				['URL', 'The URL to shorten or expand.']
-			],
-			examples: ['https://github.com/', 'https://goo.gl/un5E']
-		}),
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
@@ -2307,8 +2299,6 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: emoji => `'${emoji}' no es un emoji válido.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
-		COMMAND_GOOGL_LONG: url => `**URL Acortada: [${url}](${url})**`,
-		COMMAND_GOOGL_SHORT: url => `**URL Expandida: [${url}](${url})**`,
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
 		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',

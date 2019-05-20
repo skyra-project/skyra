@@ -1464,14 +1464,6 @@ export default class extends Language {
 		}),
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
-		COMMAND_GOOGL_DESCRIPTION: 'Shorten your links with this tool.',
-		COMMAND_GOOGL_EXTENDED: builder.display('googl', {
-			extendedHelp: `Shorten your urls with Googl!`,
-			explainedUsage: [
-				['URL', 'The URL to shorten or expand.']
-			],
-			examples: ['https://github.com/', 'https://goo.gl/un5E']
-		}),
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
@@ -2316,8 +2308,6 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: emoji => `'${emoji}' is not a valid emoji.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,
-		COMMAND_GOOGL_LONG: url => `**Shortened URL: [${url}](${url})**`,
-		COMMAND_GOOGL_SHORT: url => `**Expanded URL: [${url}](${url})**`,
 		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
 		COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',
 		COMMAND_POLL_WANT_USERS: 'Do you want to include a users whitelist?',

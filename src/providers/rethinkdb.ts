@@ -1,6 +1,6 @@
 import { Provider, util } from 'klasa';
 import { MasterPool, r, TableChangeResult, WriteResult } from 'rethinkdb-ts';
-import { DatabaseInit } from '../lib/util/DatabaseInit';
+import * as DatabaseInit from '../lib/util/DatabaseInit';
 
 export default class RethinkDB extends Provider {
 

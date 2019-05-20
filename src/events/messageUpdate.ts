@@ -8,12 +8,7 @@ import { MessageLogsEnum } from '../lib/util/constants';
 export default class extends Event {
 
 	public async run(old: KlasaMessage, message: KlasaMessage) {
-		// Run monitors
-		if (!this.client.ready || old.partial || old.content === message.content) return;
-		// tslint:disable-next-line:no-floating-promises
-		this.client.monitors.run(message);
-
-		if (!message.guild || message.author === this.client.user) return;
+		if (!this.client.ready || !message.guild || old.content === message.content || message.author === this.client.user) return;
 
 		const { guild } = message;
 		if (!guild.settings.get(GuildSettings.Events.MessageEdit)) return;

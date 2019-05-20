@@ -8,12 +8,6 @@ import { cutText, getContent, getImage } from '../lib/util/util';
 export default class extends Event {
 
 	public async run(message: KlasaMessage) {
-		if (message.command && message.command.deletable) {
-			for (const msg of message.responses) {
-				msg.nuke().catch(error => this.client.emit(Events.ApiError, error));
-			}
-		}
-
 		if (message.partial || !message.guild || message.author.id === this.client.user.id) return;
 
 		const { guild } = message;

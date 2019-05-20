@@ -14,8 +14,8 @@ export default class extends MusicCommand {
 
 	public async run(message: KlasaMessage) {
 		const { music } = message.guild;
-		if (!music.playing) throw `Are you speaking to me? Because my deck is empty...`;
-		return (music[0].stream
+		if (!music.song) throw `Uhm... I think I missed something... oh yeah, I'm not playing anything.`;
+		return (music.song.stream
 			? message.sendLocale('COMMAND_TIME_STREAM')
 			: message.sendLocale('COMMAND_TIME_REMAINING', [showSeconds(music.trackRemaining)]));
 	}

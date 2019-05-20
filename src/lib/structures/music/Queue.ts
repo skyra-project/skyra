@@ -47,7 +47,7 @@ export class Queue extends Array<Song> {
 	}
 
 	public get trackRemaining() {
-		return this.length ? this[0].duration - this.playingTime : 0;
+		return this.song ? this.song.duration - this.playingTime : 0;
 	}
 
 	public get voiceChannel() {

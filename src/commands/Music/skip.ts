@@ -30,7 +30,7 @@ export default class extends MusicCommand {
 	}
 
 	public handleSkips(musicManager: Queue, user: Snowflake): string | false {
-		const { song } = musicManager;
+		const song = musicManager.song || (musicManager.length ? musicManager[0] : null);
 		if (song.skips.has(user)) return musicManager.guild.language.get('COMMAND_SKIP_VOTES_VOTED');
 		song.skips.add(user);
 		const members = musicManager.listeners.length;

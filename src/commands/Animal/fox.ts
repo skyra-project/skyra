@@ -13,7 +13,8 @@ export default class extends SkyraCommand {
 			bucket: 2,
 			cooldown: 10,
 			description: language => language.get('COMMAND_FOX_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_FOX_EXTENDED')
+			extendedHelp: language => language.get('COMMAND_FOX_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS']
 		});
 		this.spam = true;
 	}

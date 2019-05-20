@@ -1,5 +1,5 @@
 import { Client, DiscordAPIError, Message, Permissions, TextChannel, User } from 'discord.js';
-import { Language } from 'klasa';
+import { Language, KlasaMessage } from 'klasa';
 import { Events } from '../../types/Enums';
 import { CONNECT_FOUR } from '../constants';
 import { LLRCData, LLRCDataEmoji, LongLivingReactionCollector, LongLivingReactionCollectorListener } from '../LongLivingReactionCollector';
@@ -35,6 +35,11 @@ export class ConnectFour {
 	 * The Message used for the game
 	 */
 	public message: Message = null;
+
+	/**
+	 * The Language used for the game's internacionalization
+	 */
+	public language: Language = null;
 
 	/**
 	 * The current turn
@@ -74,13 +79,6 @@ export class ConnectFour {
 	 */
 	public running = false;
 
-	/**
-	 * The Language used for the game's internacionalization
-	 */
-	public get language(): Language {
-		return this.message.language;
-	}
-
 	public constructor(challenger: User, challengee: User) {
 		this.client = challenger.client;
 		this.challenger = challenger;
@@ -110,16 +108,13 @@ export class ConnectFour {
 		this.llrc = new LongLivingReactionCollector(this.client, this.send.bind(this), this.gameTimeout.bind(this));
 		this.llrc.setTime(120000);
 		this.running = true;
-
-		// @ts-ignore
 		this.language = message.language;
-		// @ts-ignore
-		this.message = await message.edit(this.language.get('SYSTEM_LOADING'));
+		this.message = await message.send(this.language.get('SYSTEM_LOADING')) as KlasaMessage;
 		for (const reaction of CONNECT_FOUR.REACTIONS) await this.message.react(reaction);
 		await this.render();
 
 		while (this.running) {
-			let row;
+			let row: ConnectFourWinningRow = null;
 			try {
 				if (this.isFullGame()) throw CONNECT_FOUR.RESPONSES.FULL_GAME;
 				row = await this.getRow();
@@ -310,19 +305,6 @@ export class ConnectFour {
 
 			this.client.emit(Events.ApiError, error);
 		}
-	}
-
-	/**
-	 * Free memory by nully-ing all properties
-	 */
-	public dispose(): void {
-		this.challenger = null;
-		this.challengee = null;
-		this.message = null;
-		this.turn = null;
-		this.table = null;
-		this.winner = null;
-		this.running = false;
 	}
 
 	/**

@@ -1,14 +1,14 @@
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
-const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
 
 export default class extends SkyraCommand {
 
 	private readonly channels: Set<string> = new Set();
+	private prompt: Usage;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -20,6 +20,8 @@ export default class extends SkyraCommand {
 			runIn: ['text'],
 			usage: '<user:username>'
 		});
+
+		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -29,25 +31,22 @@ export default class extends SkyraCommand {
 		if (this.channels.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
 		this.channels.add(message.channel.id);
 
-		const prompt = await message.sendLocale('COMMAND_TICTACTOE_PROMPT', [message.author, user]) as KlasaMessage;
-		const response = await message.channel.awaitMessages(msg => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(msg.content), RESPONSE_OPTIONS)
-			.then(messages => messages.first())
-			.catch(() => null);
-
-		if (!response || !/ye(s|ah?)?/i.test(response.content)) {
-			await prompt.edit(message.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
-			this.channels.delete(message.channel.id);
-			return prompt.nuke(10000);
-		}
-
 		try {
-			await this.game(prompt, [message.author, user].sort(() => Math.random() - 0.5));
-		} catch (_) {
-			await prompt.edit(message.language.get('UNEXPECTED_ISSUE')).catch(error => this.client.emit(Events.ApiError, error));
+			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_TICTACTOE_PROMPT', message.author, user));
+			if (response) {
+				try {
+					await this.game(message.responses[0], [message.author, user].sort(() => Math.random() - 0.5));
+				} catch {
+					await message.send(message.language.get('UNEXPECTED_ISSUE')).catch(error => this.client.emit(Events.ApiError, error));
+				}
+			} else {
+				await message.alert(message.language.get('COMMAND_GAMES_PROMPT_DENY'));
+			}
+		} catch {
+			await message.alert(message.language.get('COMMAND_GAMES_PROMPT_TIMEOUT'));
+		} finally {
+			this.channels.delete(message.channel.id);
 		}
-
-		this.channels.delete(message.channel.id);
-		return prompt;
 	}
 
 	public async game(message: KlasaMessage, players: KlasaUser[]) {

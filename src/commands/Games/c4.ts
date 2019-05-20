@@ -1,9 +1,10 @@
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-
-const RESPONSE_OPTIONS = { time: 30000, errors: ['time'], max: 1 };
+import { Events } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
+
+	private prompt: Usage;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -15,6 +16,8 @@ export default class extends SkyraCommand {
 			runIn: ['text'],
 			usage: '<user:username>'
 		});
+
+		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -22,26 +25,21 @@ export default class extends SkyraCommand {
 		if (user.bot) throw message.language.get('COMMAND_GAMES_BOT');
 		if (user.id === message.author.id) throw message.language.get('COMMAND_GAMES_SELF');
 		if (this.client.connectFour.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
+		this.client.connectFour.set(message.channel.id, null);
 
-		// ConnectFourManager#alloc returns a function that when getting true, it creates the game. Otherwise it de-alloc.
-		const createGame = this.client.connectFour.alloc(message.channel.id, message.author, user);
-
-		const prompt = await message.sendLocale('COMMAND_C4_PROMPT', [message.author, user]) as KlasaMessage;
-		const response = await message.channel.awaitMessages(msg => msg.author.id === user.id && /^(ye(s|ah?)?|no)$/i.test(message.content), RESPONSE_OPTIONS)
-			.then(messages => messages.first())
-			.catch(() => null);
-
-		if (response && /ye(s|ah?)?/i.test(response.content)) {
-			await createGame(true).run(prompt);
-		} else {
-			createGame(false);
-			await prompt.edit(message.language.get(response ? 'COMMAND_GAMES_PROMPT_DENY' : 'COMMAND_GAMES_PROMPT_TIMEOUT'));
-			await prompt.nuke(10000);
+		try {
+			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_C4_PROMPT', message.author, user));
+			if (response) {
+				await this.client.connectFour.create(message.channel.id, message.author, user).run(message);
+			} else {
+				await message.alert(message.language.get('COMMAND_GAMES_PROMPT_DENY'));
+			}
+		} catch (error) {
+			if (typeof error !== 'string') this.client.emit(Events.Wtf, error);
+			await message.alert(message.language.get('COMMAND_GAMES_PROMPT_TIMEOUT'));
+		} finally {
+			this.client.connectFour.delete(message.channel.id);
 		}
-
-		this.client.connectFour.delete(message.channel.id);
-
-		return null;
 	}
 
 }

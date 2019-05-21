@@ -8,7 +8,7 @@ import { UserSettings } from '../../../lib/types/settings/UserSettings';
 import { EMOJIS } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
 
-const CDN_URL = 'https://cdn.skyradiscord.com/img/banners/';
+const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 
 export default class extends SkyraCommand {
 

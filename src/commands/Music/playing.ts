@@ -14,10 +14,10 @@ export default class extends MusicCommand {
 
 	public async run(message: KlasaMessage) {
 		const queue = message.guild.music;
-		if (!queue.length) throw message.language.get('COMMAND_PLAYING_QUEUE_EMPTY');
+		const song = queue.song || (queue.length ? queue[0] : null);
+		if (!song) throw message.language.get('COMMAND_PLAYING_QUEUE_EMPTY');
 		if (!queue.playing) throw message.language.get('COMMAND_PLAYING_QUEUE_NOT_PLAYING');
 
-		const [song] = queue;
 		return message.sendMessage(new MessageEmbed()
 			.setColor(12916736)
 			.setTitle(song.title)

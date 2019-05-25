@@ -4,7 +4,7 @@ export namespace GuildSettings {
 
 	export type Prefix = string;
 	export const Prefix = 'prefix';
-	export type Tags = Array<[string, string]>;
+	export type Tags = readonly [string, string][];
 	export const Tags = 'tags';
 
 	export namespace Channels {
@@ -28,9 +28,9 @@ export namespace GuildSettings {
 		export const Spam = 'channels.spam';
 	}
 
-	export type DisabledChannels = Array<string>;
+	export type DisabledChannels = readonly string[];
 	export const DisabledChannels = 'disabledChannels';
-	export type DisabledCommandChannels = Array<DisabledCommandChannel>;
+	export type DisabledCommandChannels = readonly DisabledCommandChannel[];
 	export const DisabledCommandChannels = 'disabledCommandsChannels';
 
 	export namespace Events {
@@ -51,7 +51,7 @@ export namespace GuildSettings {
 	export namespace Filter {
 		export type Level = number;
 		export const Level = 'filter.level';
-		export type Raw = Array<string>;
+		export type Raw = readonly string[];
 		export const Raw = 'filter.raw';
 	}
 
@@ -64,15 +64,17 @@ export namespace GuildSettings {
 		export const JoinDM = 'messages.join-dm';
 		export type Warnings = boolean;
 		export const Warnings = 'messages.warnings';
+		export type IgnoreChannels = readonly string[];
+		export const IgnoreChannels = 'messages.ignoreChannels';
 	}
 
-	export type StickyRoles = Array<StickyRole>;
+	export type StickyRoles = readonly StickyRole[];
 	export const StickyRoles = 'stickyRoles';
 
 	export namespace Roles {
 		export type Admin = string;
 		export const Admin = 'roles.admin';
-		export type Auto = Array<RolesAuto>;
+		export type Auto = readonly RolesAuto[];
 		export const Auto = 'roles.auto';
 		export type Initial = string;
 		export const Initial = 'roles.initial';
@@ -84,7 +86,7 @@ export namespace GuildSettings {
 		export const Muted = 'roles.muted';
 		export type Public = string[];
 		export const Public = 'roles.public';
-		export type Reactions = Array<RolesReaction>;
+		export type Reactions = readonly RolesReaction[];
 		export const Reactions = 'roles.reactions';
 		export type RemoveInitial = boolean;
 		export const RemoveInitial = 'roles.removeInitial';
@@ -111,7 +113,7 @@ export namespace GuildSettings {
 		export const Capsminimum = 'selfmod.capsminimum';
 		export type Capsthreshold = number;
 		export const Capsthreshold = 'selfmod.capsthreshold';
-		export type IgnoreChannels = Array<string>;
+		export type IgnoreChannels = readonly string[];
 		export const IgnoreChannels = 'selfmod.ignoreChannels';
 		export type Invitelinks = boolean;
 		export const Invitelinks = 'selfmod.invitelinks';
@@ -137,7 +139,7 @@ export namespace GuildSettings {
 		export const Achieve = 'social.achieve';
 		export type AchieveMessage = string;
 		export const AchieveMessage = 'social.achieveMessage';
-		export type IgnoreChannels = Array<string>;
+		export type IgnoreChannels = readonly string[];
 		export const IgnoreChannels = 'social.ignoreChannels';
 	}
 
@@ -153,9 +155,9 @@ export namespace GuildSettings {
 	}
 
 	export namespace Trigger {
-		export type Alias = Array<TriggerAlias>;
+		export type Alias = readonly TriggerAlias[];
 		export const Alias = 'trigger.alias';
-		export type Includes = Array<TriggerIncludes>;
+		export type Includes = readonly TriggerIncludes[];
 		export const Includes = 'trigger.includes';
 	}
 

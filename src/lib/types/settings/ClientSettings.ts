@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace ClientSettings {
-	export type UserBlacklist = Array<string>;
+	export type UserBlacklist = readonly string[];
 	export const UserBlacklist = 'userBlacklist';
-	export type GuildBlacklist = Array<string>;
+	export type GuildBlacklist = readonly string[];
 	export const GuildBlacklist = 'guildBlacklist';
-	export type Schedules = Array<RawScheduledTask>;
+	export type Schedules = readonly RawScheduledTask[];
 	export const Schedules = 'schedules';
 
 	export namespace Boosts {

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace UserSettings {
-	export type BadgeList = string[];
+	export type BadgeList = readonly string[];
 	export const BadgeList = 'badgeList';
-	export type BadgeSet = string[];
+	export type BadgeSet = readonly string[];
 	export const BadgeSet = 'badgeSet';
-	export type BannerList = string[];
+	export type BannerList = readonly string[];
 	export const BannerList = 'bannerList';
 	export type Color = string;
 	export const Color = 'color';

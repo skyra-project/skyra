@@ -7,3 +7,17 @@ resources:
 
 jobs:
   - template: lint.yml@templates
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-16.04'
+    dependsOn: Lint
+    condition: succeeded()
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '10.x'
+        displayName: 'Install Node.js'
+      - script: yarn
+        displayName: 'Install Dependencies'
+      - script: 'yarn build'
+        displayName: 'Test Build'

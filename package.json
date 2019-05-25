@@ -15,7 +15,7 @@
     "test": "eslint --ext ts src",
     "test:lint": "eslint --ext ts src",
     "update": "yarn",
-    "compile": "tsc -p .",
+    "build": "tsc -p .",
     "watch": "tsc -p . -w"
   },
   "repository": {

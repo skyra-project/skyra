@@ -21,11 +21,11 @@ export default class extends SkyraCommand {
 		});
 
 		this
-			.createCustomResolver('key', (arg, _, message, [action]: [string]) => {
+			.createCustomResolver('key', (arg, _, message, [action]: string[]) => {
 				if (['show', 'menu'].includes(action) || arg) return arg;
 				throw message.language.get('COMMAND_CONF_NOKEY');
 			})
-			.createCustomResolver('value', (arg, _, message, [action]: [string]) => {
+			.createCustomResolver('value', (arg, _, message, [action]: string[]) => {
 				if (!['set', 'remove'].includes(action) || arg) return arg;
 				throw message.language.get('COMMAND_CONF_NOVALUE');
 			});

@@ -3,6 +3,7 @@ import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { getColor, noop } from '../../../lib/util/util';
+import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
@@ -49,7 +50,7 @@ export default class extends SkyraCommand {
 
 	private async buildHelp(message: KlasaMessage) {
 		const commands = await this._fetchCommands(message);
-		const prefix = message.guildSettings.get('prefix');
+		const prefix = message.guildSettings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
 
 		const helpMessage = [];
 		for (const [category, list] of commands) {
@@ -61,7 +62,8 @@ export default class extends SkyraCommand {
 
 	private async buildDisplay(message: KlasaMessage) {
 		const commands = await this._fetchCommands(message);
-		const prefix = message.guildSettings.get('prefix');
+		const prefix = message.guildSettings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
+
 		const display = new UserRichDisplay();
 		const color = getColor(message) || 0xFFAB2D;
 		for (const [category, list] of commands) {

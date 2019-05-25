@@ -21,7 +21,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	/**
 	 * The sweep interval for this AntiRaid
 	 */
-	private _sweepInterval: NodeJS.Timer | null;
+	private _sweepInterval: NodeJS.Timeout | null;
 
 	/**
 	 * The timeout to disable attack mode
@@ -49,11 +49,11 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	public create(id: string) {
 		const rateLimit = { id, time: Date.now() + 20000 };
 		this.set(id, rateLimit);
-		if (!this._sweepInterval) this._sweepInterval = setInterval(this.sweep.bind(this), 30000);
+		if (!this._sweepInterval) this._sweepInterval = setInterval(this.sweep.bind(this), 30000) as unknown as NodeJS.Timeout;
 		return rateLimit;
 	}
 
-	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: AntiRaid) => boolean, thisArg?: any) {
+	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: Collection<string, AntiRaidEntry>) => boolean, thisArg?: any) {
 		if (!fn) {
 			const now = Date.now();
 			fn = value => now > value.time;

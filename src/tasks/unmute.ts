@@ -1,4 +1,4 @@
-import { Permissions } from 'discord.js';
+import { Permissions, GuildMember } from 'discord.js';
 import { Task } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
@@ -25,7 +25,7 @@ export default class extends Task {
 
 		// Fetch the user, then the member
 		const user = await this.client.users.fetch(doc[ModerationSchemaKeys.User]);
-		const member = await guild.members.fetch(user.id).catch(() => null);
+		const member = await guild.members.fetch(user.id).catch(() => null) as GuildMember | null;
 
 		// If the member is found, update the roles
 		if (member) {

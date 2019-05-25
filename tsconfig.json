@@ -22,6 +22,7 @@
 		"removeComments": true,
 		"resolveJsonModule": true,
 		"sourceMap": true,
+		"strictFunctionTypes": true,
 		"strictBindCallApply": true,
 		"target": "esnext",
 		"types": ["node", "node-fetch"]

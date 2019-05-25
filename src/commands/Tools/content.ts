@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as TextChannel]: [TextChannel]) => {
+		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as TextChannel]: TextChannel[]) => {
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('RESOLVER_INVALID_MSG', 'Message');
 			const target = await channel.messages.fetch(arg).catch(() => null);
 			if (target) return target;

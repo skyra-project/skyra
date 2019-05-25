@@ -217,7 +217,7 @@ export class Queue extends Array<Song> {
 		// If Lavalink gets stuck, alert the users of the downtime
 		if (isTrackStuckEvent(payload)) {
 			if (this.channel && payload.thresholdMs > 1000) {
-				this.channel.sendLocale('MUSICMANAGER_STUCK', [Math.ceil(payload.thresholdMs / 1000)])
+				(this.channel.sendLocale('MUSICMANAGER_STUCK', [Math.ceil(payload.thresholdMs / 1000)]) as Promise<KlasaMessage>)
 					// eslint-disable-next-line promise/prefer-await-to-then
 					.then((message: KlasaMessage) => message.delete({ timeout: payload.thresholdMs }))
 					.catch(error => { this.client.emit(Events.Wtf, error); });
@@ -229,7 +229,7 @@ export class Queue extends Array<Song> {
 		if (isWebSocketClosedEvent(payload)) {
 			if (payload.code >= 4000) {
 				this.client.emit(Events.Error, `[LL:${this.guild.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
-				this.channel.sendLocale('MUSICMANAGER_CLOSE')
+				(this.channel.sendLocale('MUSICMANAGER_CLOSE') as Promise<KlasaMessage>)
 					// eslint-disable-next-line promise/prefer-await-to-then
 					.then((message: KlasaMessage) => message.delete({ timeout: 10000 }))
 					.catch(error => { this.client.emit(Events.Wtf, error); });

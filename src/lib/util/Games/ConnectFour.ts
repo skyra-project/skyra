@@ -266,6 +266,7 @@ export class ConnectFour {
 
 		let output = '';
 		for (let y = 5; y >= 0; y--) {
+			// @ts-ignore
 			for (let x = 0; x < MAX_LENGTH; x++) output += `${CONNECT_FOUR.EMOJIS[this.table[x][y]]}       `;
 			output += '\n';
 		}

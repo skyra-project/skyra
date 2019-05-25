@@ -9,10 +9,10 @@ import { GuildSecurity } from '../util/Security/GuildSecurity';
 
 export class SkyraGuild extends KlasaGuild {
 
-	public security = new GuildSecurity(this);
-	public starboard = new StarboardManager(this);
-	public moderation = new ModerationManager(this);
-	public music = new Queue(this);
+	public security: GuildSecurity = new GuildSecurity(this);
+	public starboard: StarboardManager = new StarboardManager(this);
+	public moderation: ModerationManager = new ModerationManager(this);
+	public music: Queue = new Queue(this);
 
 	@enumerable(false)
 	public memberSnowflakes: Set<string> = new Set();

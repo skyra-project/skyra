@@ -60,6 +60,7 @@ export default function(duration: number, assets: DurationFormatAssetsTime) {
 	const output = [];
 
 	for (const [timeType, amount] of result) {
+		// @ts-ignore
 		output.push(_addUnit(amount, assets[timeType]));
 	}
 

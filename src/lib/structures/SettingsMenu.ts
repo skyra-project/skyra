@@ -12,7 +12,7 @@ export class SettingsMenu {
 	private schema: Schema | SchemaEntry;
 	private readonly oldSettings: Settings;
 	private messageCollector: MessageCollector;
-	private errorMessage;
+	private errorMessage: string | null = null;
 	private llrc: LongLivingReactionCollector;
 	private readonly embed: MessageEmbed;
 	private response: KlasaMessage = null;

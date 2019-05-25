@@ -1,4 +1,5 @@
-import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions, util } from 'klasa';
+import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions, util, KlasaUser } from 'klasa';
+import { MessageReaction } from 'discord.js';
 const FIVE_MINUTES = 60000 * 5;
 
 export class UserRichDisplay extends RichDisplay {
@@ -6,7 +7,7 @@ export class UserRichDisplay extends RichDisplay {
 	// @ts-ignore
 	public async run(message: KlasaMessage, target: string = message.author.id, options: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
 		util.mergeDefault({
-			filter: (_, user) => user.id === target,
+			filter: (_: MessageReaction, user: KlasaUser) => user.id === target,
 			time: FIVE_MINUTES
 		}, options);
 		if (target) {

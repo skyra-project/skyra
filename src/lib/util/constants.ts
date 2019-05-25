@@ -69,7 +69,7 @@ export enum ModerationTypeKeys {
 	Warn = WARN
 }
 
-export const TYPE_ASSETS: Record<ModerationTypeKeys, { color: number; title: string }> = Object.freeze({
+export const TYPE_ASSETS: Readonly<Record<ModerationTypeKeys, ModerationTypeAssets>> = Object.freeze({
 	[ModerationTypeKeys.Ban]: Object.freeze({ color: 0xD50000, title: 'Ban' }),
 	[ModerationTypeKeys.Kick]: Object.freeze({ color: 0xF57F17, title: 'Kick' }),
 	[ModerationTypeKeys.Mute]: Object.freeze({ color: 0xF9A825, title: 'Mute' }),
@@ -86,6 +86,11 @@ export const TYPE_ASSETS: Record<ModerationTypeKeys, { color: number; title: str
 	[ModerationTypeKeys.TemporaryMute]: Object.freeze({ color: 0xF50057, title: 'Temporary Mute' }),
 	[ModerationTypeKeys.TemporaryVoiceMute]: Object.freeze({ color: 0xFF4081, title: 'Temporary Voice Mute' })
 });
+
+export interface ModerationTypeAssets {
+	color: number;
+	title: string;
+}
 
 export enum ModerationActions {
 	Appealed = ACTION_APPEALED,

@@ -2,7 +2,7 @@ import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS } from '../util/constants';
+import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS, ModerationTypeAssets } from '../util/constants';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
@@ -152,7 +152,7 @@ export class ModerationManagerEntry {
 			typeof this.moderator === 'string' ? this.manager.guild.client.users.fetch(this.moderator) : this.moderator || this.manager.guild.client.user
 		]);
 
-		const assets = TYPE_ASSETS[this.type];
+		const assets: ModerationTypeAssets = TYPE_ASSETS[this.type];
 		const description = (this.duration
 			? [
 				`❯ **Type**: ${assets.title}`,

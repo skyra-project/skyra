@@ -59,7 +59,7 @@ export class LanguageHelp {
 		return output.join('\n');
 	}
 
-	public static resolveMultilineString(str: string | string[], multiline: boolean) {
+	public static resolveMultilineString(str: string | string[], multiline: boolean): string {
 		return Array.isArray(str)
 			? LanguageHelp.resolveMultilineString(str.join(multiline ? '\n' : ' '), multiline)
 			: str.split('\n').map(line => line.trim()).join(multiline ? '\n' : ' ');

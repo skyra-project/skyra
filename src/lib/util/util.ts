@@ -90,8 +90,8 @@ export async function loadImage(path: string): Promise<Image> {
  * @param stream The readable stream to read
  */
 export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
-	const data = [];
-	for await (const buffer of stream) data.push(buffer);
+	const data: Buffer[] = [];
+	for await (const buffer of stream) data.push(buffer as Buffer);
 	return Buffer.concat(data);
 }
 
@@ -422,6 +422,7 @@ export async function softban(guild: Guild, moderator: User, target: User, reaso
 async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]): Promise<void> {
 	if (channel.type === 'category') return;
 	try {
+		// @ts-ignore
 		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type]);
 	} catch {
 		array.push(String(channel));
@@ -440,7 +441,7 @@ export async function createMuteRole(message: Message): Promise<Role> {
 	const role = await message.guild.roles.create(MUTE_ROLE_OPTIONS);
 	const { channels } = message.guild;
 	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
-	const denied = [];
+	const denied: string[] = [];
 	let accepted = 0;
 
 	for (const channel of channels.values()) {

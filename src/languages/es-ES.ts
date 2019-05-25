@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
 import { EMOJIS } from '../lib/util/constants';

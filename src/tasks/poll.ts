@@ -54,6 +54,6 @@ interface PollData {
 	guild: string;
 	title: string;
 	options: string[];
-	votes: {};
+	votes: Record<string, number>;
 	voted: [];
 }

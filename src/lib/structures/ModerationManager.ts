@@ -2,9 +2,9 @@
 
 import { Collection, Guild, User } from 'discord.js';
 import { Databases } from '../types/constants/Constants';
-import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys } from '../util/constants';
+import { ModerationActions, ModerationErrors, ModerationSchemaKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';
-import { ModerationManagerEntry } from './ModerationManagerEntry';
+import { ModerationManagerEntry, ModerationManagerEntrySerialized, ModerationManagerEntryDeserialized } from './ModerationManagerEntry';
 
 enum CacheActions {
 	None,
@@ -49,7 +49,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 	public get new() {
 		// eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
-		return new ModerationManagerEntry(this, {} as ModerationManagerInsertData);
+		return new ModerationManagerEntry(this, {} as ModerationManagerEntrySerialized);
 	}
 
 	public async fetch(id: number): Promise<ModerationManagerEntry>;
@@ -71,13 +71,13 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 				? super.filter(entry => entry.user === id)
 				: this._cache((await this.table.getAll([this.guild.id, id], { index: 'guild_user' })
 					.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
-					.run()) as ModerationManagerInsertData[], CacheActions.None);
+					.run()) as ModerationManagerEntryDeserialized[], CacheActions.None);
 		}
 
 		if (Array.isArray(id) && id.length) {
 			// @ts-ignore
 			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild.id, entryID]), { index: 'guild_case' })
-				.run());
+				.run(), CacheActions.None);
 		}
 
 		if (super.size !== this._count) {
@@ -99,7 +99,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		await this.table.get(data.id).update(data).run();
 	}
 
-	public insert(data: ModerationManagerInsertData | ModerationManagerEntry) {
+	public insert(data: ModerationManagerEntry | ModerationManagerEntrySerialized) {
 		return this._cache(data, CacheActions.Insert);
 	}
 
@@ -144,10 +144,10 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return Promise.all(this._locks.map(lock => lock.promise));
 	}
 
-	private _cache(entry: ModerationManagerInsertData | ModerationManagerEntry, type?: CacheActions): ModerationManagerEntry;
-	private _cache(entries: (ModerationManagerInsertData | ModerationManagerEntry)[], type?: CacheActions): Collection<number, ModerationManagerEntry>;
+	private _cache(entry: ModerationManagerEntry | ModerationManagerEntrySerialized, type: CacheActions): ModerationManagerEntry;
+	private _cache(entries: (ModerationManagerEntry | ModerationManagerEntrySerialized)[], type: CacheActions): Collection<number, ModerationManagerEntry>;
 	private _cache(
-		entries: ModerationManagerEntry | ModerationManagerInsertData | (ModerationManagerEntry | ModerationManagerInsertData)[] | null,
+		entries: ModerationManagerEntry | ModerationManagerEntrySerialized | (ModerationManagerEntry | ModerationManagerEntrySerialized)[] | null,
 		type: CacheActions
 	): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
 		if (!entries) return null;
@@ -164,6 +164,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			case CacheActions.Fetch: this._count = super.size;
 				break;
 			case CacheActions.Insert: this._count++;
+				break;
 		}
 
 		if (!this._timer) {
@@ -185,15 +186,6 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 }
 
-export interface ModerationManagerInsertData {
-	[ModerationSchemaKeys.Duration]: number | null;
-	[ModerationSchemaKeys.ExtraData]: object | null;
-	[ModerationSchemaKeys.Moderator]: string | null;
-	[ModerationSchemaKeys.Reason]: string | null;
-	[ModerationSchemaKeys.Type]: ModerationManagerTypeResolvable;
-	[ModerationSchemaKeys.User]: string | User | null;
-}
-
 export interface ModerationManagerUpdateData {
 	id?: string;
 	[ModerationSchemaKeys.Duration]?: number | null;
@@ -201,5 +193,3 @@ export interface ModerationManagerUpdateData {
 	[ModerationSchemaKeys.Moderator]?: string | User | null;
 	[ModerationSchemaKeys.Reason]?: string | null;
 }
-
-type ModerationManagerTypeResolvable = ModerationTypeKeys | number;

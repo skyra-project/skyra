@@ -108,7 +108,7 @@ export enum ModerationSchemaKeys {
 	CreatedAt = 'createdAt',
 	Duration = 'duration',
 	ExtraData = 'extraData',
-	Guild = 'guild',
+	Guild = 'guildID',
 	Moderator = 'moderatorID',
 	Reason = 'reason',
 	Type = 'type',

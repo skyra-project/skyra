@@ -3,7 +3,7 @@ import { Duration } from 'klasa';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS, ModerationTypeAssets } from '../util/constants';
-import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
+import { ModerationManager, ModerationManagerUpdateData } from './ModerationManager';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
@@ -11,29 +11,29 @@ const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
 export class ModerationManagerEntry {
 
 	public manager: ModerationManager;
-	public id: string = null;
-	public case: number = null;
-	public duration: number | null = null;
-	public extraData: object = null;
-	public moderator: string | User | null = null;
-	public reason: string | null = null;
-	public type: ModerationTypeKeys = null;
-	public user: string | User = null;
-	public createdAt: number = null;
+	public id: string;
+	public case: number;
+	public duration: number | null;
+	public extraData: object;
+	public moderator: string | User | null;
+	public reason: string | null;
+	public type: ModerationTypeKeys;
+	public user: string | User;
+	public createdAt: number;
 	private [kTimeout] = Date.now() + (TIME.MINUTE * 15);
 
-	public constructor(manager: ModerationManager, data: ModerationManagerInsertData) {
+	public constructor(manager: ModerationManager, data: Partial<ModerationManagerEntrySerialized | ModerationManagerEntryDeserialized>) {
 		this.manager = manager;
-		// @ts-ignore
-		if ('id' in data) this.id = data.id;
-		if (ModerationSchemaKeys.Case in data) this.case = data[ModerationSchemaKeys.Case];
-		if (ModerationSchemaKeys.Duration in data) this.duration = data[ModerationSchemaKeys.Duration];
-		if (ModerationSchemaKeys.ExtraData in data) this.extraData = data[ModerationSchemaKeys.ExtraData];
-		if (ModerationSchemaKeys.Moderator in data) this.moderator = data[ModerationSchemaKeys.Moderator];
-		if (ModerationSchemaKeys.Reason in data) this.reason = data[ModerationSchemaKeys.Reason];
-		if (ModerationSchemaKeys.Type in data) this.type = data[ModerationSchemaKeys.Type];
-		if (ModerationSchemaKeys.User in data) this.user = data[ModerationSchemaKeys.User];
-		if (ModerationSchemaKeys.CreatedAt in data) this.createdAt = data[ModerationSchemaKeys.CreatedAt];
+
+		this.id = 'id' in data ? data.id : null;
+		this.case = ModerationSchemaKeys.Case in data ? data[ModerationSchemaKeys.Case] : null;
+		this.duration = ModerationSchemaKeys.Duration in data ? data[ModerationSchemaKeys.Duration] : null;
+		this.extraData = ModerationSchemaKeys.ExtraData in data ? data[ModerationSchemaKeys.ExtraData] : null;
+		this.moderator = ModerationSchemaKeys.Moderator in data ? data[ModerationSchemaKeys.Moderator] : null;
+		this.reason = ModerationSchemaKeys.Reason in data ? data[ModerationSchemaKeys.Reason] : null;
+		this.type = ModerationSchemaKeys.Type in data ? data[ModerationSchemaKeys.Type] : null;
+		this.user = ModerationSchemaKeys.User in data ? data[ModerationSchemaKeys.User] : null;
+		this.createdAt = ModerationSchemaKeys.CreatedAt in data ? data[ModerationSchemaKeys.CreatedAt] : null;
 	}
 
 	public get name() {
@@ -264,10 +264,8 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public toJSON(): ModerationManagerInsertData {
-		// TODO(kyranet): Fix this
-		const data: ModerationManagerInsertData = {
-			// @ts-ignore
+	public toJSON(): ModerationManagerEntrySerialized {
+		const data: ModerationManagerEntrySerialized = {
 			[ModerationSchemaKeys.Case]: this.case,
 			[ModerationSchemaKeys.Duration]: this.duration,
 			[ModerationSchemaKeys.ExtraData]: this.extraData,
@@ -285,4 +283,20 @@ export class ModerationManagerEntry {
 		return `ModerationManagerEntry<${this.id}>`;
 	}
 
+}
+
+export interface ModerationManagerEntrySerialized {
+	caseID: number;
+	createdAt: number | null;
+	duration: number | null;
+	extraData: any | null;
+	guildID: string;
+	moderatorID: string;
+	reason: string | null;
+	type: ModerationTypeKeys;
+	userID: string;
+}
+
+export interface ModerationManagerEntryDeserialized extends ModerationManagerEntrySerialized {
+	id: string;
 }

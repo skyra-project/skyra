@@ -99,9 +99,7 @@ export class SettingsMenu {
 
 		const parent = (this.schema as SchemaEntry | SchemaFolder).parent;
 
-		// tslint:disable-next-line:no-floating-promises
 		if (parent) this._reactResponse(EMOJIS.BACK);
-		// tslint:disable-next-line:no-floating-promises
 		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id);
 
 		return this.embed
@@ -129,7 +127,6 @@ export class SettingsMenu {
 			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_ACTION');
 		}
 
-		// tslint:disable-next-line:no-floating-promises
 		if (!this.errorMessage) message.nuke();
 		await this._renderResponse();
 	}
@@ -140,7 +137,6 @@ export class SettingsMenu {
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
-			// tslint:disable-next-line:no-floating-promises
 			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID);
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
 			await this._renderResponse();

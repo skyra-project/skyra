@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 		try {
 			this.client.destroy();
 			await Promise.all(this.client.providers.map(provider => provider.shutdown()));
-		} catch (error) {} // tslint:disable-line:no-empty
+		} catch {}
 
 		process.exit();
 		return null;

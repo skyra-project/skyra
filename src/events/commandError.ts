@@ -21,7 +21,6 @@ export default class extends Event {
 				this.client.emit(Events.ApiError, err);
 			}
 		} else if (error instanceof Error) {
-			// tslint:disable-next-line:no-floating-promises
 			this._sendErrorChannel(message, command, error);
 
 			// Extract useful information about the DiscordAPIError

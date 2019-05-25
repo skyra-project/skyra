@@ -2,7 +2,6 @@ import { BitField } from 'discord.js';
 
 export class MusicBitField extends BitField<MusicBitFieldString> {
 
-	/* tslint:disable object-literal-sort-keys */
 	public static FLAGS: Record<MusicBitFieldString, number> = {
 		USER_VOICE_CHANNEL: 1 << 0,
 		SKYRA_VOICE_CHANNEL: 1 << 1,
@@ -12,7 +11,6 @@ export class MusicBitField extends BitField<MusicBitFieldString> {
 		VOICE_PAUSED: 1 << 5,
 		DJ_MEMBER: 1 << 6
 	};
-	/* tslint:enable object-literal-sort-keys */
 
 }
 

@@ -96,7 +96,6 @@ export default class extends SkyraCommand {
 				}
 			};
 
-			// tslint:disable-next-line:no-floating-promises
 			makeRound();
 
 			collector.on('collect', () => {
@@ -114,7 +113,6 @@ export default class extends SkyraCommand {
 					collector.stop();
 					resolve(winner);
 				} else if (++turn < 9) {
-					// tslint:disable-next-line:no-floating-promises
 					makeRound();
 				} else {
 					collector.stop();

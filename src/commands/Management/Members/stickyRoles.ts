@@ -129,7 +129,7 @@ export default class extends SkyraCommand {
 					}
 				};
 			}
-		} catch {} // tslint:disable-line:no-empty
+		} catch {}
 		return null;
 	}
 

@@ -37,7 +37,6 @@ export class GiveawayManager {
 		const now = Date.now();
 		for (const giveaway of this.queue) {
 			if (giveaway.refreshAt > now) break;
-			// tslint:disable-next-line:no-floating-promises
 			this.running.push(this.runGiveaway());
 		}
 

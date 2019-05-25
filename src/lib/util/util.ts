@@ -467,7 +467,6 @@ export function enumerable(value: boolean): (target: any, propertyKey: string) =
 		Object.defineProperty(target, key, {
 			enumerable: value,
 			set(this: any, val: any): void {
-				// tslint:disable-next-line
 				Object.defineProperty(this, key, {
 					configurable: true,
 					enumerable: value,

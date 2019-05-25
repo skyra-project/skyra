@@ -174,10 +174,9 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			}, 1000);
 		}
 
-		// @ts-ignore
 		return Array.isArray(entries)
 			? new Collection<number, ModerationManagerEntry>(parsedEntries.map(entry => [entry.case, entry]))
-			: parsedEntries;
+			: parsedEntries[0];
 	}
 
 	public static get [Symbol.species]() {

@@ -249,8 +249,8 @@ export class ConnectFour {
 	 */
 	public render(error?: number): Promise<Message> {
 		// @ts-ignore
-		return this.message.edit((error === CONNECT_FOUR.RESPONSES.FULL_LINE ? this.language.get('COMMAND_C4_GAME_COLUMN_FULL') : '')
-			+ this.language.get(
+		return this.message.edit((error === CONNECT_FOUR.RESPONSES.FULL_LINE ? this.language.get('COMMAND_C4_GAME_COLUMN_FULL') : '') +
+			this.language.get(
 				this.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT',
 				this.turn === 0 ? this.challenger.username : this.challengee.username,
 				this.turn,

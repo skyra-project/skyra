@@ -11,9 +11,9 @@ export default class extends Monitor {
 	public async run(message: KlasaMessage): Promise<void> {
 		if (!message.guild || !message.guild.settings.get(GuildSettings.NoMentionSpam.Enabled)) return;
 
-		const mentions = message.mentions.users.filter(user => !user.bot && user !== message.author).size
-			+ (message.mentions.roles.size * this.roleValue)
-			+ (Number(message.mentions.everyone) * this.everyoneValue);
+		const mentions = message.mentions.users.filter(user => !user.bot && user !== message.author).size +
+			(message.mentions.roles.size * this.roleValue) +
+			(Number(message.mentions.everyone) * this.everyoneValue);
 
 		if (!mentions) return;
 

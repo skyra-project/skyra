@@ -462,11 +462,11 @@ export function inlineCodeblock(input: string) {
  * @enumerable decorator that sets the enumerable property of a class field to false.
  * @param value true|false
  */
-export function enumerable(value: boolean): (target: any, propertyKey: string) => void {
-	return (target, key): void => {
+export function enumerable(value: boolean) {
+	return (target: any, key: string) => {
 		Object.defineProperty(target, key, {
 			enumerable: value,
-			set(this: any, val: any): void {
+			set(this: any, val: any) {
 				Object.defineProperty(this, key, {
 					configurable: true,
 					enumerable: value,

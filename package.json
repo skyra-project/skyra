@@ -11,6 +11,7 @@
     "pm2:start": "pm2 start dist/src/Skyra.js --name=\"Skyra\"",
     "pm2:stop": "pm2 stop Skyra",
     "start": "node dist/src/Skyra.js",
+    "lint": "eslint --ext ts src --fix",
     "test": "eslint --ext ts src",
     "test:lint": "eslint --ext ts src",
     "update": "yarn",

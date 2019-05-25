@@ -8,6 +8,6 @@
 		"no-dupe-class-members": 0,
 		"no-use-before-define": ["error", { "functions": false }],
 		"padded-blocks": ["error", { "classes": "always" }],
-		"operator-linebreak": ["error", "before"]
+		"operator-linebreak": ["error", "before", { "overrides": { "+": "after", "-": "after" } }]
 	}
 }

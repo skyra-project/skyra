@@ -32,7 +32,6 @@ export default class extends SkyraCommand {
 
 		// Perform update
 		await message.guild.settings.update(GuildSettings.Filter.Raw, word, { arrayAction: 'add' });
-		message.guild.security.updateRegExp(message.guild.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw);
 		return message.sendLocale('COMMAND_FILTER_ADDED', [word]);
 	}
 
@@ -44,7 +43,6 @@ export default class extends SkyraCommand {
 		// Perform update
 		if (raw.length === 1) return this.reset(message);
 		await message.guild.settings.update(GuildSettings.Filter.Raw, word, { arrayAction: 'remove' });
-		message.guild.security.updateRegExp(message.guild.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw);
 		return message.sendLocale('COMMAND_FILTER_REMOVED', [word]);
 	}
 

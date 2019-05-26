@@ -6,27 +6,54 @@ import { ClientSettings } from '../../types/settings/ClientSettings';
 import { UserSettings } from '../../types/settings/UserSettings';
 import { loadImage } from '../util';
 
-const REELS = [
+enum Icons {
+	Cherry,
+	Bar,
+	Lemon,
+	Watermelon,
+	Bells,
+	Heart,
+	Horseshoe,
+	Diamond,
+	Seven
+}
+
+interface Coordinate {
+	x: number;
+	y: number;
+}
+
+const kReels: readonly Icons[][] = [
 	[8, 2, 1, 4, 5, 4, 3, 2, 2, 0, 2, 3, 7, 7, 0, 5, 2, 1, 5, 4, 7, 3, 6, 6, 7, 2, 4, 3, 1, 8, 0, 4, 5, 6, 6, 1, 2, 1, 4, 5, 0, 8, 6, 1, 3, 0, 1],
 	[4, 1, 2, 2, 4, 3, 8, 2, 1, 6, 5, 2, 7, 0, 0, 6, 1, 4, 2, 1, 0, 2, 5, 5, 3, 6, 8, 7, 1, 1, 7, 4, 4, 3, 3, 0, 6, 1, 3, 5, 6, 0, 3, 0, 5, 6, 4],
 	[3, 7, 1, 4, 2, 6, 5, 4, 1, 3, 0, 6, 1, 3, 4, 2, 1, 8, 1, 5, 2, 2, 7, 1, 4, 3, 4, 0, 7, 2, 2, 1, 0, 8, 4, 0, 6, 3, 5, 6, 8, 1, 8, 3, 4, 5, 7]
 ];
-const COMBINATIONS = [[0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-const VALUES = [4, 4, 5, 7, 9, 11, 14, 18, 24];
+const kCombinations = [[0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+const kValues = new Map<Icons, number>([
+	[Icons.Cherry, 4],
+	[Icons.Bar, 4],
+	[Icons.Lemon, 5],
+	[Icons.Watermelon, 7],
+	[Icons.Bells, 9],
+	[Icons.Heart, 11],
+	[Icons.Horseshoe, 14],
+	[Icons.Diamond, 18],
+	[Icons.Seven, 24]
+]);
 
-const ICON_SIZE = 38;
-const ASSETS = [
-	{ x: ICON_SIZE * 2, y: ICON_SIZE * 2 },
-	{ x: ICON_SIZE, y: ICON_SIZE * 2 },
-	{ x: 0, y: ICON_SIZE * 2 },
-	{ x: ICON_SIZE * 2, y: ICON_SIZE },
-	{ x: ICON_SIZE, y: ICON_SIZE },
-	{ x: 0, y: ICON_SIZE },
-	{ x: ICON_SIZE * 2, y: 0 },
-	{ x: ICON_SIZE, y: 0 },
-	{ x: 0, y: 0 }
-];
-const COORDINATES = [
+const kIconSize = 38;
+const kAssets = new Map<Icons, Coordinate>([
+	[Icons.Cherry, { x: kIconSize * 2, y: kIconSize * 2 }],
+	[Icons.Bar, { x: kIconSize, y: kIconSize * 2 }],
+	[Icons.Lemon, { x: 0, y: kIconSize * 2 }],
+	[Icons.Watermelon, { x: kIconSize * 2, y: kIconSize }],
+	[Icons.Bells, { x: kIconSize, y: kIconSize }],
+	[Icons.Heart, { x: 0, y: kIconSize }],
+	[Icons.Horseshoe, { x: kIconSize * 2, y: 0 }],
+	[Icons.Diamond, { x: kIconSize, y: 0 }],
+	[Icons.Seven, { x: 0, y: 0 }]
+]);
+const kCoordinates: readonly Coordinate[] = [
 	{ x: 14, y: 12 },
 	{ x: 14, y: 54 },
 	{ x: 14, y: 96 },
@@ -38,7 +65,7 @@ const COORDINATES = [
 	{ x: 98, y: 96 }
 ];
 
-const POSITIONS = [0, 0, 0];
+const kPositions = [0, 0, 0];
 
 export class Slotmachine {
 
@@ -59,13 +86,6 @@ export class Slotmachine {
 		return this.message.author;
 	}
 
-	public get boost(): number {
-		const userBoosts = this.player.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
-		const guildBoosts = this.player.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
-		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
-			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
-	}
-
 	/**
 	 * The message that ran this instance
 	 */
@@ -76,7 +96,14 @@ export class Slotmachine {
 		this.amount = amount;
 	}
 
-	public async run(): Promise<Buffer> {
+	public get boost() {
+		const userBoosts = this.player.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
+		const guildBoosts = this.player.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
+			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
+	}
+
+	public async run() {
 		const { settings } = this.player;
 		const rolls = this.roll();
 		this.calculate(rolls);
@@ -88,7 +115,7 @@ export class Slotmachine {
 		return this.render(rolls);
 	}
 
-	public async render(rolls: number[]): Promise<Buffer> {
+	public async render(rolls: readonly Icons[]) {
 		const win = this.winnings > 0;
 		const length = win ? 300 : 150;
 
@@ -109,9 +136,9 @@ export class Slotmachine {
 			.restore();
 
 		await Promise.all(rolls.map((value, index) => new Promise(resolve => {
-			const { x, y } = ASSETS[value];
-			const coord = COORDINATES[index];
-			canvas.context.drawImage(Slotmachine.images.ICON, x, y, ICON_SIZE, ICON_SIZE, coord.x, coord.y, ICON_SIZE, ICON_SIZE);
+			const { x, y } = kAssets.get(value);
+			const coord = kCoordinates[index];
+			canvas.context.drawImage(Slotmachine.images.ICON, x, y, kIconSize, kIconSize, coord.x, coord.y, kIconSize, kIconSize);
 			resolve();
 		})));
 
@@ -127,18 +154,18 @@ export class Slotmachine {
 		return canvas.toBufferAsync();
 	}
 
-	public calculate(roll: number[]): void {
-		for (const [COMB1, COMB2, COMB3] of COMBINATIONS) {
+	public calculate(roll: readonly Icons[]) {
+		for (const [COMB1, COMB2, COMB3] of kCombinations) {
 			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3]) {
-				this.winnings += this.amount * VALUES[roll[COMB1]];
+				this.winnings += this.amount * kValues.get(roll[COMB1]);
 			}
 		}
 	}
 
-	public roll(): number[] {
-		const roll = [];
+	public roll() {
+		const roll: Icons[] = [];
 		for (let i = 0; i < 3; i++) {
-			const reel = REELS[i];
+			const reel = kReels[i];
 			const reelLength = reel.length;
 			const rand = this._spinReel(i);
 			roll.push(
@@ -148,13 +175,13 @@ export class Slotmachine {
 			);
 		}
 
-		return roll;
+		return roll as readonly Icons[];
 	}
 
-	public _spinReel(reel: number): number {
-		const REEL_LENGTH = REELS[reel].length;
-		const position = (POSITIONS[reel] + Math.round((Math.random() * REEL_LENGTH) + 3)) % REEL_LENGTH;
-		POSITIONS[reel] = position;
+	public _spinReel(reel: number) {
+		const kReelLength = kReels[reel].length;
+		const position = (kPositions[reel] + Math.round((Math.random() * kReelLength) + 3)) % kReelLength;
+		kPositions[reel] = position;
 		return position;
 	}
 

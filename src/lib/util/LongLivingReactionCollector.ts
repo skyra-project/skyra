@@ -32,7 +32,7 @@ export class LongLivingReactionCollector {
 	}
 
 	public send(reaction: LLRCData): void {
-		this.listener(reaction);
+		if (this.listener) this.listener(reaction);
 	}
 
 	public setTime(time: number) {

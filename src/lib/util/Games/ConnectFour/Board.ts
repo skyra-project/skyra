@@ -88,7 +88,7 @@ export class Board {
 		for (let r = 0; r <= kRows - 4; ++r) {
 			let rPosition = r;
 			for (let c = 0; c < kColumns && rPosition < kRows; ++c, ++rPosition) {
-				if (this.getAt(c, rPosition)) {
+				if (this.getAt(c, rPosition) === cell) {
 					if (++count === 4) {
 						return [
 							[c - 3, rPosition - 3],
@@ -108,7 +108,7 @@ export class Board {
 		for (let r = kRows - 1; r >= kRows - 4; --r) {
 			let rPosition = r;
 			for (let c = 0; c < kColumns && rPosition < kRows && rPosition >= 0; ++c, --rPosition) {
-				if (this.getAt(c, rPosition)) {
+				if (this.getAt(c, rPosition) === cell) {
 					if (++count === 4) {
 						return [
 							[c - 3, rPosition + 3],
@@ -128,7 +128,7 @@ export class Board {
 		for (let c = 1; c < kColumns; ++c) {
 			let cPosition = c;
 			for (let r = kRows - 1; r < kRows && cPosition < kColumns && cPosition >= 1; ++cPosition, --r) {
-				if (this.getAt(cPosition, r)) {
+				if (this.getAt(cPosition, r) === cell) {
 					if (++count === 4) {
 						return [
 							[cPosition - 3, r + 3],

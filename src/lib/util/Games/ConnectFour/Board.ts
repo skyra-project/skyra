@@ -6,17 +6,19 @@ export enum Cell {
 	WinnerPlayerTwo
 }
 
-const kColumns = 7;
-const kRows = 6;
+export const kColumns = 7;
+export const kRows = 6;
 const kRenderMargin = '       ';
 
 export class Board {
 
 	private cells: Cell[];
+	private stack: Cell[][];
 
 	public constructor(cells?: readonly Cell[]) {
 		if (!cells) cells = Board.generate();
 		this.cells = cells as Cell[];
+		this.stack = [];
 	}
 
 	public getAt(x: number, y: number) {
@@ -27,8 +29,14 @@ export class Board {
 		this.cells[x + (y * kColumns)] = value;
 	}
 
-	public clone() {
-		return new Board(this.cells.slice());
+	public save() {
+		this.stack.push(this.cells.slice(0));
+	}
+
+	public restore() {
+		if (this.stack.length) {
+			this.cells = this.stack.pop();
+		}
 	}
 
 	public render() {

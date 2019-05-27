@@ -11,7 +11,7 @@ export abstract class Player {
 	public name: string;
 	public color: PlayerColor;
 	protected game: Game;
-	private cell: Cell;
+	protected cell: Cell;
 	private winning: Cell;
 
 	public constructor(game: Game, cell: Cell, winning: Cell, color: PlayerColor, name: string) {

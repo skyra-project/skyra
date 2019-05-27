@@ -7,8 +7,11 @@ const kPoints = 100000;
 
 export class PlayerAI extends Player {
 
+	private readonly opposite: Cell;
+
 	public constructor(game: Game, cell: Cell, winning: Cell, color: PlayerColor) {
 		super(game, cell, winning, color, 'Skyra');
+		this.opposite = cell === Cell.PlayerOne ? Cell.PlayerTwo : Cell.PlayerOne;
 	}
 
 	public async start() {
@@ -43,8 +46,11 @@ export class PlayerAI extends Player {
 			for (let x = 0; x < kColumns; ++x) {
 				if (board.isLineFull(x)) continue;
 				board.save();
-				win = this.simulateDrop(x);
-				if (win) return kPoints;
+				win = this.simulateDrop(x, this.opposite);
+				if (win) {
+					board.restore();
+					return kPoints;
+				}
 				bestMove = Math.max(bestMove, this.minimax(depth - 1, alpha, beta, !isMaximisingPlayer));
 				board.restore();
 				alpha = Math.max(alpha, bestMove);
@@ -61,8 +67,11 @@ export class PlayerAI extends Player {
 		for (let x = 0; x < kColumns; ++x) {
 			if (board.isLineFull(x)) continue;
 			board.save();
-			win = this.simulateDrop(x);
-			if (win) return -kPoints;
+			win = this.simulateDrop(x, this.cell);
+			if (win) {
+				board.restore();
+				return -kPoints;
+			}
 			bestMove = Math.min(bestMove, this.minimax(depth - 1, alpha, beta, !isMaximisingPlayer));
 			board.restore();
 			beta = Math.min(beta, bestMove);
@@ -74,12 +83,12 @@ export class PlayerAI extends Player {
 		return bestMove;
 	}
 
-	private simulateDrop(x: number) {
+	private simulateDrop(x: number, cell: Cell) {
 		const y = this.game.board.getMoveAt(x);
 		if (y === -1) return false;
 
 		// Can set
-		this.game.board.setAt(x, y, this.cell);
+		this.game.board.setAt(x, y, cell);
 		return Boolean(this.game.board.check(x, y));
 	}
 

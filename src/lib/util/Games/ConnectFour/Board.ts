@@ -161,7 +161,7 @@ export class Board {
 	}
 
 	public isLineFull(x: number) {
-		return this.getAt(x, kRows - 1) !== Cell.Empty;
+		return this.getAt(x, 0) !== Cell.Empty;
 	}
 
 	public getMoveAt(x: number) {

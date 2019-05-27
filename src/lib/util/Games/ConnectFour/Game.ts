@@ -69,7 +69,7 @@ export class Game {
 
 	private async updateContent() {
 		try {
-			await this.message.send(`${this.content}\n${this.board.render()}`);
+			await this.message.edit(`${this.content}\n${this.board.render()}`);
 		} catch (error) {
 			if (error instanceof DiscordAPIError && (error.code === 10003 || error.code === 10008)) {
 				this.stop();

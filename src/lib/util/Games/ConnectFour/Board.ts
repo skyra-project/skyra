@@ -20,11 +20,11 @@ export class Board {
 	}
 
 	public getAt(x: number, y: number) {
-		return this.cells[x + y];
+		return this.cells[x + (y * kColumns)];
 	}
 
 	public setAt(x: number, y: number, value: Cell) {
-		this.cells[x + y] = value;
+		this.cells[x + (y * kColumns)] = value;
 	}
 
 	public clone() {

@@ -39,7 +39,8 @@ export class Game {
 		return this._content;
 	}
 
-	private _turnLeft: boolean = Math.round(Math.random()) === 0;
+	private _turnLeft: boolean = false;
+	// private _turnLeft: boolean = Math.round(Math.random()) === 0;
 	private _content: string = '';
 	private _retries: number = 3;
 	private _stopped: boolean = false;
@@ -55,8 +56,7 @@ export class Game {
 	public async run() {
 		this.message = await this.message.send(this.language.get('SYSTEM_LOADING')) as KlasaMessage;
 		for (const reaction of CONNECT_FOUR.REACTIONS) await this.message.react(reaction);
-		await this.updateContent();
-
+		this.content = this.language.get('COMMAND_C4_GAME_NEXT', this.next.name, this.next.color);
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 
 		while (!this.winner && !this._stopped) {

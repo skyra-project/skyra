@@ -12,8 +12,4 @@ export class PlayerAI extends Player {
 
 	}
 
-	public finish() {
-
-	}
-
 }

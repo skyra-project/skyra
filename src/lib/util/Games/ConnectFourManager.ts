@@ -29,7 +29,7 @@ export class ConnectFourManager extends Collection<string, Game> {
 		const game = new Game(message);
 		const playerA = challenger === skyra
 			? new PlayerAI(game, Cell.PlayerOne, Cell.WinnerPlayerOne, PlayerColor.Blue)
-			: new PlayerHuman(game, Cell.PlayerOne, Cell.PlayerTwo, PlayerColor.Blue, challenger);
+			: new PlayerHuman(game, Cell.PlayerOne, Cell.WinnerPlayerOne, PlayerColor.Blue, challenger);
 		const playerB = challengee === skyra
 			? new PlayerAI(game, Cell.PlayerTwo, Cell.WinnerPlayerTwo, PlayerColor.Red)
 			: new PlayerHuman(game, Cell.PlayerTwo, Cell.WinnerPlayerTwo, PlayerColor.Red, challengee);

@@ -2522,7 +2522,6 @@ export default class extends Language {
 
 		PROMPTLIST_MULTIPLE_CHOICE: (list, amount) => `He encontrado ${amount} ${amount === 1 ? 'resultado' : 'resultados'}. Por favor escriba un número entre 1 y ${amount}, o escriba **"CANCELAR"** para cancelar la solicitud.\n${list}`,
 		PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Valor inválido. Intento **${attempt}** de **${maxAttempts}**\n${list}`,
-		PROMPTLIST_ABORT: 'cancelar',
 		PROMPTLIST_ABORTED: 'Cancelada la solicitud con éxito.',
 
 		FUZZYSEARCH_MATCHES: (matches, codeblock) => `¡Encontré múltiples resultados! **Por favor selecciona un número entre 0 y ${matches}**:\n${codeblock}\nEscribe **ABORT** para cancelar la solicitud.`,

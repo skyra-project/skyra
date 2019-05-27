@@ -3,7 +3,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
-import { PromptList } from '../../lib/util/PromptList';
+import { prompt } from '../../lib/util/PromptList';
 import { cutText, fetch, oneToTen } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 
 	private async getIndex(message: KlasaMessage, entries: Kitsu.Datum[]) {
 		if (entries.length === 1) return entries[0];
-		const _choice = await PromptList.run(message, entries.slice(0, 10).map(entry => {
+		const _choice = await prompt(message, entries.slice(0, 10).map(entry => {
 			if (entry.attributes.averageRating === null) entry.attributes.averageRating = this.extractAverage(entry);
 			return `(${entry.attributes.averageRating}) ${this.extractTitle(entry.attributes.titles)}`;
 		}));

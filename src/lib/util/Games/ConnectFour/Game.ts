@@ -59,11 +59,12 @@ export class Game {
 		this.content = this.language.get('COMMAND_C4_GAME_NEXT', this.next.name, this.next.color);
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 
-		while (!this.winner && !this._stopped) {
+		let stop = false;
+		while (!stop) {
 			const player = this.next;
 			await player.start();
+			if (!(stop = Boolean(this.winner || this._stopped))) this._turnLeft = !this._turnLeft;
 			await player.finish();
-			this._turnLeft = !this._turnLeft;
 		}
 	}
 

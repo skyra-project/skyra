@@ -1,6 +1,6 @@
 import { Board } from './Board';
 import { KlasaMessage } from 'klasa';
-import { DiscordAPIError } from 'discord.js';
+import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
 import { Events } from '../../../types/Enums';
 import { Player } from './Player';
 import { LongLivingReactionCollector } from '../../LongLivingReactionCollector';
@@ -39,14 +39,25 @@ export class Game {
 		return this._content;
 	}
 
-	private _turnLeft: boolean = false;
-	// private _turnLeft: boolean = Math.round(Math.random()) === 0;
+	private _turnLeft: boolean = Math.round(Math.random()) === 0;
 	private _content: string = '';
 	private _retries: number = 3;
 	private _stopped: boolean = false;
 
 	public get next() {
 		return this.players[this._turnLeft ? 1 : 0];
+	}
+
+	public get running() {
+		return !this.winner && !this._stopped;
+	}
+
+	/**
+	 * Whether Skyra has the MANAGE_MESSAGES permission or not
+	 */
+	public get manageMessages(): boolean {
+		const message = this.message;
+		return (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES);
 	}
 
 	public stop() {
@@ -63,16 +74,22 @@ export class Game {
 		while (!stop) {
 			const player = this.next;
 			await player.start();
-			if (!(stop = Boolean(this.winner || this._stopped))) this._turnLeft = !this._turnLeft;
+			if (!(stop = !this.running)) this._turnLeft = !this._turnLeft;
 			await player.finish();
+		}
+
+		if (!this.message.deleted && this.manageMessages) {
+			await this.message.reactions.removeAll().catch(err => this.message.client.emit(Events.ApiError, err));
 		}
 	}
 
 	private async updateContent() {
 		try {
 			await this.message.edit(`${this.content}\n${this.board.render()}`);
+			this._retries = 3;
 		} catch (error) {
 			if (error instanceof DiscordAPIError && (error.code === 10003 || error.code === 10008)) {
+				this.message.alert(this.message.language.get('COMMAND_C4_GAME_DRAW'));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

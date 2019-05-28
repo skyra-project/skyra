@@ -24,6 +24,7 @@ export abstract class Player {
 
 	public abstract start(): Promise<void> | void;
 	public finish(): Promise<void> | void {
+		if (!this.game.running) return;
 		const next = this.game.next;
 		this.game.content = this.game.language.get(
 			this.game.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT',

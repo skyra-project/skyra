@@ -4,7 +4,7 @@ import { KlasaUser } from 'klasa';
 import { Cell } from './Board';
 import { LLRCDataEmoji } from '../../LongLivingReactionCollector';
 import { CONNECT_FOUR } from '../../constants';
-import { TextChannel, Permissions, DiscordAPIError } from 'discord.js';
+import { DiscordAPIError } from 'discord.js';
 import { Events } from '../../../types/Enums';
 import { resolveEmoji } from '../../util';
 
@@ -17,21 +17,13 @@ export class PlayerHuman extends Player {
 		this.player = player;
 	}
 
-	/**
-	 * Whether Skyra has the MANAGE_MESSAGES permission or not
-	 */
-	private get manageMessages(): boolean {
-		const message = this.game.message;
-		return (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES);
-	}
-
 	public async start() {
 		const reaction = await new Promise<string>(resolve => {
-			this.game.llrc.setTime(120000);
+			this.game.llrc.setTime(60000);
 			this.game.llrc.setEndListener(() => resolve(''));
 			this.game.llrc.setListener(data => {
 				if (data.userID === this.player.id && CONNECT_FOUR.REACTIONS.includes(data.emoji.name)) {
-					if (this.manageMessages) {
+					if (this.game.manageMessages) {
 						this.removeEmoji(data.emoji, data.userID)
 							.catch(error => this.game.message.client.emit(Events.ApiError, error));
 					}

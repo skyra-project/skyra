@@ -1,7 +1,12 @@
 import { Client, Collection, User } from 'discord.js';
-import { ConnectFour } from './ConnectFour';
+import { Game } from './ConnectFour/Game';
+import { PlayerAI } from './ConnectFour/PlayerAI';
+import { Cell } from './ConnectFour/Board';
+import { PlayerColor } from './ConnectFour/Player';
+import { PlayerHuman } from './ConnectFour/PlayerHuman';
+import { KlasaMessage } from 'klasa';
 
-export class ConnectFourManager extends Collection<string, ConnectFour> {
+export class ConnectFourManager extends Collection<string, Game> {
 
 	/**
 	 * The Client instance that manages this manager
@@ -19,10 +24,18 @@ export class ConnectFourManager extends Collection<string, ConnectFour> {
 	 * @param challenger The challenger KlasaUser instance
 	 * @param challengee The challengee KlasaUser instance
 	 */
-	public create(channel: string, challenger: User, challengee: User): ConnectFour | null {
-		const match = new ConnectFour(challenger, challengee);
-		this.set(channel, match);
-		return match;
+	public create(message: KlasaMessage, challenger: User, challengee: User): Game | null {
+		const skyra = challengee.client.user;
+		const game = new Game(message);
+		const playerA = challenger === skyra
+			? new PlayerAI(game, Cell.PlayerOne, Cell.WinnerPlayerOne, PlayerColor.Blue)
+			: new PlayerHuman(game, Cell.PlayerOne, Cell.WinnerPlayerOne, PlayerColor.Blue, challenger);
+		const playerB = challengee === skyra
+			? new PlayerAI(game, Cell.PlayerTwo, Cell.WinnerPlayerTwo, PlayerColor.Red)
+			: new PlayerHuman(game, Cell.PlayerTwo, Cell.WinnerPlayerTwo, PlayerColor.Red, challengee);
+		game.setPlayers([playerA, playerB]);
+		this.set(message.channel.id, game);
+		return game;
 	}
 
 }

@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 		try {
 			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_C4_PROMPT', message.author, user));
 			if (response) {
-				await this.client.connectFour.create(message.channel.id, message.author, user).run(message);
+				await this.client.connectFour.create(message, message.author, user).run();
 			} else {
 				await message.alert(message.language.get('COMMAND_GAMES_PROMPT_DENY'));
 			}

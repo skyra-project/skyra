@@ -5,19 +5,19 @@ export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 export class LongLivingReactionCollector {
 
 	public client: Client;
-	public listener: LongLivingReactionCollectorListener;
+	public listener: LongLivingReactionCollectorListener | null;
 	public endListener: () => void;
 
 	private _timer: NodeJS.Timeout = null;
 
-	public constructor(client: Client, listener: LongLivingReactionCollectorListener = null, endListener: () => void = null) {
+	public constructor(client: Client, listener: LongLivingReactionCollectorListener | null = null, endListener: () => void = null) {
 		this.client = client;
 		this.listener = listener;
 		this.endListener = endListener;
 		this.client.llrCollectors.add(this);
 	}
 
-	public setListener(listener: LongLivingReactionCollectorListener) {
+	public setListener(listener: LongLivingReactionCollectorListener | null) {
 		this.listener = listener;
 		return this;
 	}
@@ -32,12 +32,13 @@ export class LongLivingReactionCollector {
 	}
 
 	public send(reaction: LLRCData): void {
-		this.listener(reaction);
+		if (this.listener) this.listener(reaction);
 	}
 
 	public setTime(time: number) {
 		if (this._timer) clearTimeout(this._timer);
-		this._timer = setTimeout(() => this.end(), time);
+		if (time === -1) this._timer = null;
+		else this._timer = setTimeout(() => this.end(), time);
 		return this;
 	}
 

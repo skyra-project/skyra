@@ -25,7 +25,6 @@ export default class extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setAuthor(body.Heading, this.client.user.displayAvatarURL({ size: 64 }))
 			.setTitle(body.Heading)
 			.setURL(body.AbstractURL)
 			.setThumbnail(body.Image)

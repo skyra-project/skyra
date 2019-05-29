@@ -540,7 +540,7 @@ fs-minipass@^1.2.5:
   dependencies:
     minipass "^2.2.1"
 
-fs-nextra@^0.4.3, fs-nextra@^0.4.5:
+fs-nextra@^0.4.5:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/fs-nextra/-/fs-nextra-0.4.5.tgz#0f44a00dd6c0547adaf59ce875e59941d0c70664"
   integrity sha512-oY2o6j0izYzJWp2sow21SekkR3qeMZqHV5ZfNFvfKimFU7piw1/AWwiwbcWjuSfwrfCmHyHymWZOyNbKOzew5g==
@@ -731,9 +731,10 @@ json-stable-stringify-without-jsonify@^1.0.1:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/7909587ef927470417879e2b5f3788cd56088850"
+  uid "99eeec82eb13980a04d52782ea3cc8f799131f14"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/99eeec82eb13980a04d52782ea3cc8f799131f14"
   dependencies:
-    fs-nextra "^0.4.3"
+    fs-nextra "^0.4.5"
 
 lavalink@^2.6.1:
   version "2.6.1"

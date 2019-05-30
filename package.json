@@ -17,7 +17,7 @@
     "update": "yarn",
     "build": "tsc -p .",
     "watch": "tsc -p . -w",
-    "develop": "yarn build && yarn start"
+    "dev": "yarn build && yarn start"
   },
   "repository": {
     "type": "git",

@@ -3,7 +3,7 @@ import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'k
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
-import { VERSION, WEBHOOK_ERROR } from '../../config';
+import { VERSION, WEBHOOK_ERROR, DEV } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { MemberGateway } from './structures/MemberGateway';
 import { clientOptions } from './util/constants';
@@ -58,14 +58,16 @@ export class SkyraClient extends KlasaClient {
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
-	public lavalink: Lavalink = new Lavalink({
-		send: async (guildID: string, packet: any) => {
-			const guild = this.guilds.get(guildID);
-			if (guild) this.ws.shards.get(guild.shardID).send(packet);
-			else throw new Error('attempted to send a packet on the wrong shard');
-		},
-		...this.options.lavalink
-	});
+	public lavalink: Lavalink = DEV
+		? null
+		: new Lavalink({
+			send: async (guildID: string, packet: any) => {
+				const guild = this.guilds.get(guildID);
+				if (guild) this.ws.shards.get(guild.shardID).send(packet);
+				else throw new Error('attempted to send a packet on the wrong shard');
+			},
+			...this.options.lavalink
+		});
 
 	public ipc = new Node('skyra-master')
 		.on('client.connect', client => this.emit(Events.Verbose, `[IPC] Client Connected: ${client.name}`))

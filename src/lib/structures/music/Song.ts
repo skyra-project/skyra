@@ -56,7 +56,7 @@ export class Song {
 	}
 
 	public toString(): string {
-		return `Song<${this.url}>`;
+		return `<${this.url}>`;
 	}
 
 }

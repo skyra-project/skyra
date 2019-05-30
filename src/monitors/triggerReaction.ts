@@ -16,11 +16,13 @@ export default class extends Monitor {
 
 	public shouldRun(message: KlasaMessage): boolean {
 		return this.enabled
-		&& message.editedTimestamp === null
-		&& message.guild
-		&& !message.author.bot
-		&& message.author.id !== this.client.user.id
-		&& (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).length !== 0;
+			&& message.guild
+			&& !message.editedTimestamp
+			&& !message.webhookID
+			&& !message.system
+			&& !message.author.bot
+			&& message.author.id !== this.client.user.id
+			&& (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).length !== 0;
 	}
 
 	private async tryReact(message: KlasaMessage, trigger: TriggerIncludes) {

@@ -3,7 +3,7 @@ import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'k
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { MasterPool, R } from 'rethinkdb-ts';
 import { Node } from 'veza';
-import { VERSION, WEBHOOK_ERROR, DEV } from '../../config';
+import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { MemberGateway } from './structures/MemberGateway';
 import { clientOptions } from './util/constants';
@@ -58,7 +58,7 @@ export class SkyraClient extends KlasaClient {
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
-	public lavalink: Lavalink | null = DEV
+	public lavalink: Lavalink | null = DEV_LAVALINK
 		? null
 		: new Lavalink({
 			send: async (guildID: string, packet: any) => {

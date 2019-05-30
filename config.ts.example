@@ -5,6 +5,7 @@ import { RPoolConnectionOptions } from 'rethinkdb-ts';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';
 
 const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
+export const DEV_LAVALINK = true
 
 export const DATABASE_DEVELOPMENT: RPoolConnectionOptions = { db: 'test' };
 export const DATABASE_PRODUCTION: RPoolConnectionOptions = {

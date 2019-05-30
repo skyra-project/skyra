@@ -20,7 +20,9 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (channel.type !== 'text') throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
-		if (message.guild.settings.get(GuildSettings.Channels.MemberLogs) === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
+
+		const previous = message.guild.settings.get(GuildSettings.Channels.MemberLogs) as GuildSettings.Channels.MemberLogs;
+		if (previous === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
 		await message.guild.settings.update(GuildSettings.Channels.MemberLogs, channel);
 		return message.sendLocale('COMMAND_SETMEMBERLOGS_SET', [channel]);
 	}

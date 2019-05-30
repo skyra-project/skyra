@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 		switch (type) {
 			case 'alias': return { input, output };
 			case 'reaction': return { action: 'react', input, output };
-			default: throw new TypeError('UNKNOWN TYPE');
+			default: throw new TypeError(`Unknown Type: ${type}`);
 		}
 	}
 

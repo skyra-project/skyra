@@ -1,6 +1,8 @@
 import { Event } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { Slotmachine } from '../lib/util/Games/Slotmachine';
+import * as DatabaseInit from '../lib/util/DatabaseInit';
+import { r } from 'rethinkdb-ts';
 
 export default class extends Event {
 
@@ -34,6 +36,7 @@ export default class extends Event {
 			this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error));
 			this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));
 			this.initPostStatsTask().catch(error => this.client.emit(Events.Wtf, error));
+			await DatabaseInit.run(r);
 		} catch (error) {
 			this.client.console.wtf(error);
 		}

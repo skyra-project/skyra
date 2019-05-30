@@ -75,16 +75,20 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		if (!this.enabled || !message.guild || !message.attachments.size || message.author.id === this.client.user.id) return false;
+		return this.enabled
+			&& message.guild
+			&& !message.webhookID
+			&& !message.system
+			&& message.attachments.size
+			&& message.author.id !== this.client.user.id
+			&& message.guild.settings.get(GuildSettings.Selfmod.Attachment) as GuildSettings.Selfmod.Attachment
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
+			&& this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction);
+	}
 
-		const attachment = message.guild.settings.get(GuildSettings.Selfmod.Attachment) as GuildSettings.Selfmod.Attachment;
-		const attachmentAction = message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction;
-		const ignoreChannels = message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels;
-		if (!attachment || ignoreChannels.includes(message.channel.id)) return false;
-
+	private hasPermissions(message: KlasaMessage, action: number) {
 		const guildMe = message.guild.me;
-
-		switch (attachmentAction & 0b11) {
+		switch (action & 0b11) {
 			case 0b000: return guildMe.roles.highest.position > message.member.roles.highest.position;
 			case 0b001: return message.member.kickable;
 			case 0b010: return message.guild.settings.get(GuildSettings.Roles.Muted)

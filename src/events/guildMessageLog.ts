@@ -29,6 +29,9 @@ export default class extends Event {
 			return;
 		}
 
+		// Don't post if it's not possible
+		if (!channel.postable) return;
+
 		try {
 			await channel.send(makeMessage());
 		} catch (error) {

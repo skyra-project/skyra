@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 
 	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
-		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild.settings.get(GuildSettings.Prefix), banner.id);
+		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix, banner.id);
 
 		const money = message.author.settings.get(UserSettings.Money) as UserSettings.Money;
 		if (money < banner.price) throw message.language.get('COMMAND_BANNER_MONEY', money, banner.price);
@@ -116,8 +116,9 @@ export default class extends SkyraCommand {
 	}
 
 	private _userList(message: KlasaMessage) {
+		const prefix = message.guild.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
-		if (!banners.size) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', message.guild.settings.get(GuildSettings.Prefix));
+		if (!banners.size) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', prefix);
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(getColor(message) || 0xFFAB2D));
 		for (const id of banners) {

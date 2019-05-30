@@ -43,10 +43,13 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		if (!this.enabled || !message.guild || message.author.id === this.client.user.id || !message.guild.security.regexp) return false;
-
-		const ignoreChannels = message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels;
-		return !ignoreChannels.includes(message.channel.id);
+		return this.enabled
+			&& message.guild
+			&& !message.webhookID
+			&& !message.system
+			&& message.author.id !== this.client.user.id
+			&& message.guild.security.regexp
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 	private filter(str: string, regex: RegExp): { filtered: string; highlighted: string } | null {

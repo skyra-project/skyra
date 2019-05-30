@@ -40,7 +40,8 @@ export default class extends SkyraCommand {
 
 		if (!roles) throw message.language.get('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
-			if (message.args.some(v => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', message.guild.settings.get(GuildSettings.Prefix));
+			const prefix = message.guild.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
+			if (message.args.some(v => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', prefix);
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member.roles.keys());

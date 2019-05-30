@@ -8,7 +8,7 @@ export default class extends Monitor {
 
 	public async run(message: KlasaMessage): Promise<void> {
 		if (!message.guild
-			|| !/(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(message.content)
+			|| !/(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d]+/i.test(message.content)
 			|| await message.hasAtLeastPermissionLevel(5)) return;
 
 		if (message.deletable) {
@@ -24,11 +24,13 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		if (!this.enabled || !message.guild || message.author.id === this.client.user.id) return false;
-
-		const inviteLinks = message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks;
-		const ignoreChannels = message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels;
-		return inviteLinks && !ignoreChannels.includes(message.channel.id);
+		return this.enabled
+			&& message.guild
+			&& !message.webhookID
+			&& !message.system
+			&& message.author.id !== this.client.user.id
+			&& message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 }

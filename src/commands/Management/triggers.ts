@@ -94,15 +94,15 @@ export default class extends SkyraCommand {
 		switch (type) {
 			case 'alias': return { input, output };
 			case 'reaction': return { action: 'react', input, output };
-			default: throw new TypeError('UNKNOWN TYPE');
+			default: throw new TypeError(`Unknown Type: ${type}`);
 		}
 	}
 
 	private _getListName(type: string) {
 		switch (type) {
-			case 'alias': return 'trigger.alias';
+			case 'alias': return GuildSettings.Trigger.Alias;
 			case 'reaction':
-			default: return 'trigger.includes';
+			default: return GuildSettings.Trigger.Includes;
 		}
 	}
 

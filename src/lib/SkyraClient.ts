@@ -58,7 +58,7 @@ export class SkyraClient extends KlasaClient {
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
-	public lavalink: Lavalink = DEV
+	public lavalink: Lavalink | null = DEV
 		? null
 		: new Lavalink({
 			send: async (guildID: string, packet: any) => {

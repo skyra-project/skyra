@@ -58,12 +58,14 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		if (!this.enabled || !message.guild || message.author.id === this.client.user.id) return false;
-
-		const capsminimum = message.guild.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum;
-		const capsfilter = message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
-		const ignoreChannels = message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels;
-		return message.content.length > capsminimum && capsfilter && !ignoreChannels.includes(message.channel.id);
+		return this.enabled
+			&& message.guild
+			&& !message.webhookID
+			&& !message.system
+			&& message.author.id !== this.client.user.id
+			&& message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter
+			&& (message.guild.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum) < message.content.length
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 }

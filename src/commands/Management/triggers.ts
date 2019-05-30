@@ -100,9 +100,9 @@ export default class extends SkyraCommand {
 
 	private _getListName(type: string) {
 		switch (type) {
-			case 'alias': return 'trigger.alias';
+			case 'alias': return GuildSettings.Trigger.Alias;
 			case 'reaction':
-			default: return 'trigger.includes';
+			default: return GuildSettings.Trigger.Includes;
 		}
 	}
 

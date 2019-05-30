@@ -4,7 +4,7 @@ import { KlasaClientOptions } from 'klasa';
 import { RPoolConnectionOptions } from 'rethinkdb-ts';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';
 
-const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
+export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 
 export const DATABASE_DEVELOPMENT: RPoolConnectionOptions = { db: 'test' };
 export const DATABASE_PRODUCTION: RPoolConnectionOptions = {
@@ -49,7 +49,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 			}
 		},
 		useColor: true,
-		utc: true,
+		utc: true
 	},
 	consoleEvents: { verbose: true },
 	dev: DEV,
@@ -80,10 +80,10 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	prefix: DEV ? 'sd!' : 's!',
 	presence: { activity: { name: DEV ? 'sd!help' : 'Skyra, help', type: 'LISTENING' } },
 	providers: {
-		default: 'rethinkdb',
-		rethinkdb: DEV ? DATABASE_DEVELOPMENT : DATABASE_PRODUCTION
+		'default': 'rethinkdb',
+		'rethinkdb': DEV ? DATABASE_DEVELOPMENT : DATABASE_PRODUCTION
 	},
-	readyMessage: (client) =>
+	readyMessage: client =>
 		`Skyra ${VERSION} ready! [${client.user.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	regexPrefix: DEV ? null : /^(hey )?(eva|skyra)[,!]/i,
 	restTimeOffset: 0,
@@ -125,6 +125,7 @@ export const TOKENS = {
 		STALE: ''
 	},
 	BOTS_FOR_DISCORD: '',
+	BOTS_ON_DISCORD: '',
 	CRYPTOCOMPARE: '',
 	DISCORD_BOTS: '',
 	DISCORD_BOT_LIST: '',

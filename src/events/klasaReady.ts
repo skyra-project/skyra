@@ -32,11 +32,12 @@ export default class extends Event {
 		}
 
 		try {
+			// IMPORTANT: DatabaseInit needs to run before all others so that the tables are prepared
+			await DatabaseInit.run(r);
 			Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error));
 			this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error));
 			this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));
 			this.initPostStatsTask().catch(error => this.client.emit(Events.Wtf, error));
-			await DatabaseInit.run(r);
 		} catch (error) {
 			this.client.console.wtf(error);
 		}

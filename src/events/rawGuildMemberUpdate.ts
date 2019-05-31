@@ -1,4 +1,4 @@
-import { WSGuildMemberUpdate } from '../lib/types/DiscordAPI';
+import { WSGuildMemberUpdate, AuditLogResult, AuditLogEntry, Change } from '../lib/types/DiscordAPI';
 import { Event, EventStore } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 
@@ -24,29 +24,19 @@ export default class extends Event {
 				limit: 10,
 				action_type: 25
 			}
-		});
+		}) as AuditLogResult;
 
-		for (const entry of auditLogs.audit_log_entries) {
-			if (entry.target_id !== member.id) continue;
+		const entry = auditLogs.audit_log_entries.find(e => e.target_id === member.id && e.changes.find(c => c.key === '$add'));
+		if (!entry) return;
 
-			for (const change of entry.changes) {
-				if (change.key !== '$add') continue;
+		const change = entry.changes.find(c => c.key === '$add' && c.new_value.length);
+		const updatedRoleID = change.new_value[0].id;
+		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
 
-				const updatedRoleID = change.new_value.id;
-				const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		for (const set of allRoleSets) {
+			if (!set.roles.includes(updatedRoleID)) continue;
 
-				for (const set of allRoleSets) {
-					if (!set.roles.includes(updatedRoleID)) continue;
-
-					await member.roles.remove(set.roles.filter((id: string) => id !== updatedRoleID));
-
-					// Once the first entry is found break out since we only want latest change
-					break;
-				}
-			}
-
-			// Break out after first is found because we only want the latest change
-			break;
+			await member.roles.remove(set.roles.filter((id: string) => id !== updatedRoleID));
 		}
 	}
 

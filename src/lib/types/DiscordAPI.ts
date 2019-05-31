@@ -112,3 +112,35 @@ export interface WSMessageReactionRemoveAll {
 	channel_id: string;
 	guild_id: string;
 }
+
+export interface AuditLogResult {
+	webhooks: any[];
+	users: User[];
+	audit_log_entries: AuditLogEntry[];
+}
+
+export interface AuditLogEntry {
+	target_id: string;
+	changes: Change[];
+	user_id: string;
+	id: string;
+	action_type: number;
+}
+
+export interface Change {
+	new_value: NewValue[];
+	key: string;
+}
+
+export interface NewValue {
+	name: string;
+	id: string;
+}
+
+export interface User {
+	username: string;
+	discriminator: string;
+	id: string;
+	avatar: string;
+	bot?: boolean;
+}

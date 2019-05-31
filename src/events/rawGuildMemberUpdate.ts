@@ -26,7 +26,7 @@ export default class extends Event {
 			}
 		}) as AuditLogResult;
 
-		const entry = auditLogs.audit_log_entries.find(e => e.target_id === member.id && e.changes.find(c => c.key === '$add'));
+		const entry = auditLogs.audit_log_entries.find(e => e.target_id === member.id && e.changes.find(c => c.key === '$add' && c.new_value.length));
 		if (!entry) return;
 
 		const change = entry.changes.find(c => c.key === '$add' && c.new_value.length);

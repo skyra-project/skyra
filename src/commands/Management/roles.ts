@@ -52,6 +52,8 @@ export default class extends SkyraCommand {
 		const removedRoles = [];
 		const { position } = message.guild.me.roles.highest;
 
+		const allRoleSets = message.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+
 		for (const role of filterRoles) {
 			if (!role) continue;
 			if (!rolesPublic.includes(role.id)) {
@@ -64,6 +66,18 @@ export default class extends SkyraCommand {
 			} else {
 				memberRoles.add(role.id);
 				addedRoles.push(role.name);
+
+				for (const set of allRoleSets) {
+					if (!set.roles.includes(role.id)) continue;
+					for (const id of set.roles) {
+						if (role.id === id) continue;
+
+						if (memberRoles.has(id)) {
+							memberRoles.delete(role.id);
+							removedRoles.push(role.name);
+						}
+					}
+				}
 			}
 		}
 

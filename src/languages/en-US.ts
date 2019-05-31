@@ -266,6 +266,7 @@ export default class extends Language {
 		COMMAND_ROLESET_ADDED: (name, roles) => `The ${name} unique role set now has the following roles as well: ${roles}.`,
 		COMMAND_ROLESET_INVALID_NAME: name => `You can not remove the ${name} unique role set because it does not exist.`,
 		COMMAND_ROLESET_REMOVED: (name, roles) => `The ${name} unique role set will no longer include the following roles: ${roles}`,
+		COMMAND_ROLESET_UPDATED: name => `The ${name} unique role set has been updated.`,
 		COMMAND_SHUFFLE_DESCRIPTION: 'Randomizes the order of the songs in the queue.',
 		COMMAND_SHUFFLE_SUCCESS: amount => `${GREENTICK} Successfully randomized ${amount} songs.`,
 		COMMAND_SKIP_DESCRIPTION: `Skip the current song.`,

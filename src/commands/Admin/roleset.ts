@@ -80,7 +80,7 @@ export default class extends SkyraCommand {
 			// Add any role that wasnt in the set that the user provided
 			// This will also remove any of the roles that user provided and were already in the set
 			const newroles = set.roles.map(id => roles.find(role => role.id === id) ? null : id).filter(id => id);
-			console.log(set.roles.length, newroles.length);
+
 			for (const role of roles) if (!set.roles.includes(role.id)) newroles.push(role.id);
 
 			return { name, roles: newroles };

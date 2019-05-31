@@ -33,11 +33,14 @@ export default class extends Event {
 		const updatedRoleID = change.new_value[0].id;
 		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
 
+		let memberRoles = member.roles.map(role => role.id);
 		for (const set of allRoleSets) {
 			if (!set.roles.includes(updatedRoleID)) continue;
 
-			await member.roles.remove(set.roles.filter((id: string) => id !== updatedRoleID));
+			memberRoles = memberRoles.filter(id => !set.roles.includes(id) || id === updatedRoleID);
 		}
+
+		await member.roles.set(memberRoles);
 	}
 
 }

@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 			const { errors } = await message.guild.settings.update(GuildSettings.Roles.UniqueRoleSets, [{ name, roles }]);
 			if (errors.length) this.client.emit('error', errors.join('\n'));
 
-			return message.sendLocale(`COMMAND_ROLESET_CREATED`, [name, roles]);
+			return message.sendLocale(`COMMAND_ROLESET_CREATED`, [name, roles.map(role => role.name)]);
 		}
 
 		// The set does exist so we want to only ADD new roles in
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 		const { errors } = await message.guild.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
 		if (errors.length) this.client.emit('error', errors.join('\n'));
 
-		return message.sendLocale('COMMAND_ROLESETS_ADDED', [name, roles]);
+		return message.sendLocale('COMMAND_ROLESETS_ADDED', [name, roles.map(role => role.name)]);
 	}
 
 	public async remove(message: KlasaMessage, [name, roles]: [string, Role[]]) {
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 		const { errors } = await message.guild.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
 		if (errors.length) this.client.emit('error', errors.join('\n'));
 
-		return message.sendLocale('COMMAND_ROLESETS_REMOVED', [name, roles]);
+		return message.sendLocale('COMMAND_ROLESETS_REMOVED', [name, roles.map(role => role.name)]);
 	}
 
 	public async auto(message: KlasaMessage, [name, roles]: [string, Role[]]) {

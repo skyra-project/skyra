@@ -66,7 +66,19 @@ export default class extends Event {
 
 		try {
 			const member = await parsed.guild.members.fetch(parsed.userID);
-			if (!member.roles.has(roleEntry.role)) await member.roles.add(roleEntry.role);
+			if (member.roles.has(roleEntry.role)) return;
+
+			const memberRoles = member.roles.map(r => r.id);
+			const allRoleSets = member.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+
+			for (const set of allRoleSets) {
+				if (!set.roles.includes(roleEntry.role)) continue;
+				memberRoles.filter(id => !set.roles.includes(id));
+			}
+
+			memberRoles.push(roleEntry.role);
+
+			await member.roles.set(memberRoles);
 		} catch (error) {
 			this.client.emit(Events.ApiError, error);
 		}

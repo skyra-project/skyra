@@ -1,4 +1,4 @@
-import { WSGuildMemberUpdate, AuditLogResult, AuditLogEntry, Change } from '../lib/types/DiscordAPI';
+import { WSGuildMemberUpdate, AuditLogResult } from '../lib/types/DiscordAPI';
 import { Event, EventStore } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 

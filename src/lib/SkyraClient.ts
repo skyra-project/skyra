@@ -182,7 +182,8 @@ SkyraClient.defaultGuildSchema
 		.add('reactions', 'any', { array: true })
 		.add('removeInitial', 'Boolean')
 		.add('staff', 'Role')
-		.add('subscriber', 'Role'))
+		.add('subscriber', 'Role')
+		.add('uniqueRoleSets', 'any', { array: true }))
 	.add('selfmod', folder => folder
 		.add('attachment', 'Boolean', { 'default': false })
 		.add('attachmentMaximum', 'Integer', { 'default': 20, 'min': 0, 'max': 60 })

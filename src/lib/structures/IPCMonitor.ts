@@ -9,6 +9,6 @@ export abstract class IPCMonitor extends Piece {
 	// @ts-ignore
 	public store: IPCMonitorStore;
 
-	public abstract async run(message: unknown): Promise<unknown>;
+	public abstract run(message: unknown): unknown;
 
 }

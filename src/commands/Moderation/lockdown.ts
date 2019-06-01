@@ -12,6 +12,7 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.get('COMMAND_LOCKDOWN_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_LOCKDOWN_EXTENDED'),
+			runIn: ['text'],
 			permissionLevel: 5,
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 		});

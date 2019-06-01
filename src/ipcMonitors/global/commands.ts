@@ -9,14 +9,15 @@ export default class extends IPCMonitor {
 			const commands = (category ? this.client.commands.filter(cmd => cmd.category === category) : this.client.commands).filter(cmd => cmd.permissionLevel < 9);
 			const serializedCommands = commands.map(cmd => ({
 				bucket: cmd.bucket,
+				category: cmd.category,
 				cooldown: cmd.cooldown,
 				description: typeof cmd.description === 'function' ? cmd.description(language) : cmd.description,
 				extendedHelp: typeof cmd.extendedHelp === 'function' ? cmd.extendedHelp(language) : cmd.extendedHelp,
+				guarded: cmd.guarded,
 				guildOnly: !cmd.runIn.includes('dm'),
 				name: cmd.name,
-				category: cmd.category,
-				requiredPermissions: cmd.requiredPermissions.toArray(),
 				permissionLevel: cmd.permissionLevel,
+				requiredPermissions: cmd.requiredPermissions.toArray(),
 				usage: cmd.usageString
 			}));
 			return serializedCommands;

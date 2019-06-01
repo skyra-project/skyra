@@ -3,7 +3,7 @@ import { Events } from '../../lib/types/Enums';
 
 export default class extends IPCMonitor {
 
-	public run({ category = null, lang = 'en-US' }: any) {
+	public run({ category = null, lang = 'en-US' }: any = {}) {
 		try {
 			const language = this.client.languages.get(lang) || this.client.languages.default;
 			const commands = category ? this.client.commands.filter(cmd => cmd.category === category) : this.client.commands;

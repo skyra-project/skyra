@@ -14,11 +14,35 @@ export default class extends Event {
 
 		guild.memberSnowflakes.add(data.user.id);
 		this.client.usertags.set(data.user.id, `${data.user.username}#${data.user.discriminator}`);
-		const member = guild.members.get(data.user.id);
+		const member = await guild.members.fetch(data.user.id).catch(() => null);
+		if (!member) return;
 		// @ts-ignore
 		if (member) member._patch(data);
 
 		// Handle unique role sets
+		let hasMultipleRolesInOneSet = false;
+		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+
+		// First check if the user has multiple roles from a set
+		for (const set of allRoleSets) {
+			let hasOneRole = false;
+			for (const id of set.roles) {
+				if (!member.roles.has(id)) continue;
+
+				if (hasOneRole) {
+					hasMultipleRolesInOneSet = true;
+					break;
+				} else {
+					hasOneRole = true;
+				}
+			}
+			// If we already know the member has multiple roles break the loop
+			if (hasMultipleRolesInOneSet) break;
+		}
+
+		// If the user does not have multiple roles from any set cancel
+		if (!hasMultipleRolesInOneSet) return;
+
 		const auditLogs = await (this.client as any).api.guilds(data.guild_id, 'audit-logs').get({
 			query: {
 				limit: 10,
@@ -26,13 +50,12 @@ export default class extends Event {
 			}
 		}) as AuditLogResult;
 
-		const entry = auditLogs.audit_log_entries.find(e => e.target_id === member.id && e.changes.find(c => c.key === '$add' && c.new_value.length));
+		const entry = auditLogs.audit_log_entries.find(e => e.user_id !== this.client.user.id && e.target_id === data.user.id && e.changes.find(c => c.key === '$add' && c.new_value.length));
 		if (!entry) return;
 
 		const change = entry.changes.find(c => c.key === '$add' && c.new_value.length);
 		const updatedRoleID = change.new_value[0].id;
-		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
-
+		console.log('the raw event reached the member set');
 		let memberRoles = member.roles.map(role => role.id);
 		for (const set of allRoleSets) {
 			if (!set.roles.includes(updatedRoleID)) continue;

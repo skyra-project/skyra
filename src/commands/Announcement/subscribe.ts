@@ -18,17 +18,18 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const role = announcementCheck(message);
 		const allRoleSets = message.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
-
-		const memberRoles = message.member.roles.map(r => r.id);
-
+		// Get all the role ids that the member has and remove the guild id so we dont assign the everyone role
+		let memberRoles = message.member.roles.map(r => r.id).filter(id => id !== message.guild.id);
+		// For each set that has the subscriber role remove all the roles from the set
 		for (const set of allRoleSets) {
 			if (!set.roles.includes(role.id)) continue;
-			memberRoles.filter(id => !set.roles.includes(id));
+			memberRoles = memberRoles.filter(id => !set.roles.includes(id));
 		}
 
 		memberRoles.push(role.id);
 
 		await message.member.roles.set(memberRoles);
+
 		return message.sendLocale('COMMAND_SUBSCRIBE_SUCCESS', [role.name]);
 	}
 

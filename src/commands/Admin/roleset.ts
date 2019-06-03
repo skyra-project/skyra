@@ -28,6 +28,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
+	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
 	public async add(message: KlasaMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const allRolesets = message.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
@@ -57,16 +58,11 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_ROLESET_ADDED', [name, roles.map(role => role.name).join(', ')]);
 	}
 
+	// This subcommand will always remove roles from a provided role set.
 	public async remove(message: KlasaMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const allRolesets = message.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
-		const roleset = allRolesets.find(set => set.name === name);
-
-		// TODO: Kyra if name is a semi we can add this check in a custom resolver
-		if (!roleset) return message.sendLocale(`COMMAND_ROLESET_INVALID_NAME`, [name]);
-
 		// The set does exist so we want to only REMOVE provided roles from it
-
 		// Create a new array that we can use to overwrite the existing one in settings
 		const newsets = allRolesets.map(set => set.name === name ? set : { name, roles: set.roles.filter((id: string) => !roles.find(role => role.id === id)) });
 
@@ -76,6 +72,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_ROLESET_REMOVED', [name, roles.map(role => role.name).join(', ')]);
 	}
 
+	// This subcommand will run if a user doesnt type add or remove. The bot will then add AND remove based on whether that role is in the set already.
 	public async auto(message: KlasaMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const allRolesets = message.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
@@ -102,6 +99,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale(`COMMAND_ROLESET_UPDATED`, [name]);
 	}
 
+	// This subcommand will show the user a list of role sets and each role in that set.
 	public async list(message: KlasaMessage) {
 		// Get all rolesets from settings
 		const allRolesets = message.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;

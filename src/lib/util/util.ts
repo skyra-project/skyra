@@ -9,7 +9,7 @@ import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys, TIME } from './constants';
-import { REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
+import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
@@ -144,6 +144,7 @@ export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji) {
 	if (typeof emoji === 'string') {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
+		if (REGEX_UNICODE_BOXNM.test(emoji)) return encodeURIComponent(emoji);
 		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
 	} else if (isObject(emoji)) {
 		// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974

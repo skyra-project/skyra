@@ -146,7 +146,8 @@ export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji) {
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
 		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
 	} else if (isObject(emoji)) {
-		return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}` : encodeURIComponent(emoji.name);
+		// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974
+		return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name);
 	}
 	return null;
 }

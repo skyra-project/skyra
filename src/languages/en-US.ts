@@ -73,6 +73,7 @@ const PERMS = {
 	ADD_REACTIONS: 'Add Reactions',
 	CONNECT: 'Connect',
 	SPEAK: 'Speak',
+	STREAM: 'Stream',
 	MUTE_MEMBERS: 'Mute Members',
 	DEAFEN_MEMBERS: 'Deafen Members',
 	MOVE_MEMBERS: 'Move Members',

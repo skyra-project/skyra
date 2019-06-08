@@ -72,6 +72,7 @@ const PERMS = {
 	ADD_REACTIONS: 'Añadir reacciones',
 	CONNECT: 'Conectar',
 	SPEAK: 'Hablar',
+	STREAM: 'Conectar en Vivo',
 	MUTE_MEMBERS: 'Silenciar Miembros',
 	DEAFEN_MEMBERS: 'Ensordecer Miembros',
 	MOVE_MEMBERS: 'Mover Miembros',

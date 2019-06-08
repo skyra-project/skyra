@@ -39,14 +39,12 @@
     "url": "https://github.com/kyranet/Skyra/issues"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^1.9.0",
     "canvas": "^2.5.0",
-    "canvas-constructor": "^3.0.1",
+    "canvas-constructor": "^3.0.3",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.4.5",
     "gifencoder": "^2.0.1",
-    "heapdump": "^0.3.14",
     "klasa": "github:dirigeants/klasa#settings",
     "lavalink": "^2.6.1",
     "node-fetch": "^2.6.0",
@@ -55,9 +53,11 @@
     "veza": "^0.5.0"
   },
   "devDependencies": {
-    "@types/node": "^12.0.3",
-    "@types/node-fetch": "^2.3.4",
+    "@types/node": "^12.0.7",
+    "@types/node-fetch": "^2.3.5",
+    "@typescript-eslint/eslint-plugin": "^1.9.1-alpha.26",
+    "@typescript-eslint/parser": "^1.9.1-alpha.26",
     "eslint": "^5.16.0",
-    "eslint-config-marine": "^2.2.0"
+    "eslint-config-bamboo": "^1.2.0"
   }
 }

@@ -55,7 +55,7 @@ export class Giveaway {
 	}
 
 	public get language() {
-		const guild = this.guild;
+		const { guild } = this;
 		return guild ? guild.language : null;
 	}
 
@@ -64,7 +64,7 @@ export class Giveaway {
 	}
 
 	private get state() {
-		const remaining = this.remaining;
+		const { remaining } = this;
 		if (remaining <= 0) return States.Finished;
 		if (remaining < TIME.SECOND * 20) return States.LastChance;
 		return States.Running;
@@ -157,8 +157,8 @@ export class Giveaway {
 	}
 
 	private async getData() {
-		const language = this.language;
-		const state = this.state;
+		const { language } = this;
+		const { state } = this;
 		if (state === States.Finished) {
 			await this.finish();
 			this.winners = await this.pickWinners();
@@ -228,7 +228,7 @@ export class Giveaway {
 	}
 
 	private calculateNextRefresh() {
-		const remaining = this.remaining;
+		const { remaining } = this;
 		if (remaining < TIME.SECOND * 5) return Date.now() + TIME.SECOND;
 		if (remaining < TIME.SECOND * 30) return Date.now() + Math.min(remaining - (TIME.SECOND * 6), TIME.SECOND * 5);
 		if (remaining < TIME.MINUTE * 2) return Date.now() + (TIME.SECOND * 15);

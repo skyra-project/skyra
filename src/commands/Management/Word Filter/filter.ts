@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 	public async add(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is not filtered
 		const raw = message.guild.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
-		const regexp = message.guild.security.regexp;
+		const { regexp } = message.guild.security;
 		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.get('COMMAND_FILTER_FILTERED', true);
 
 		// Perform update

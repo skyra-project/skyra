@@ -36,13 +36,9 @@ export default class extends Event {
 			llrc.send(parsed);
 		}
 
-		if (data.channel_id === channel.guild.settings.get(GuildSettings.Channels.Roles)) {
-			try {
-				await this.handleRoleChannel(parsed);
-			} catch (error) {
-				this.client.emit(Events.Wtf, error);
-			}
-		} else if (!parsed.channel.nsfw
+		this.client.emit(Events.RoleReactionAdd, parsed);
+
+		if (!parsed.channel.nsfw
 			&& parsed.channel.id !== channel.guild.settings.get(GuildSettings.Starboard.Channel)
 			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get(GuildSettings.Starboard.Emoji)) {
 			try {

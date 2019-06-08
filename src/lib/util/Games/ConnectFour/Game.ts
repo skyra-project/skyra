@@ -14,6 +14,9 @@ export class Game {
 	public winner: Player | null;
 	public llrc: LongLivingReactionCollector | null;
 	public stopped: boolean = false;
+	private _turnLeft: boolean = Math.round(Math.random()) === 0;
+	private _content: string = '';
+	private _retries: number = 3;
 
 	public constructor(message: KlasaMessage) {
 		this.board = new Board();
@@ -40,10 +43,6 @@ export class Game {
 		return this._content;
 	}
 
-	private _turnLeft: boolean = Math.round(Math.random()) === 0;
-	private _content: string = '';
-	private _retries: number = 3;
-
 	public get next() {
 		return this.players[this._turnLeft ? 1 : 0];
 	}
@@ -56,7 +55,7 @@ export class Game {
 	 * Whether Skyra has the MANAGE_MESSAGES permission or not
 	 */
 	public get manageMessages(): boolean {
-		const message = this.message;
+		const { message } = this;
 		return (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES);
 	}
 

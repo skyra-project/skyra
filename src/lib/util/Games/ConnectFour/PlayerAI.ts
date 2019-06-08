@@ -17,7 +17,7 @@ export class PlayerAI extends Player {
 	public async start() {
 		await util.sleep(250);
 
-		const board = this.game.board;
+		const { board } = this.game;
 		let bestMove = -kPoints;
 		let bestMoveFound = -1;
 		for (let x = 0; x < kColumns; ++x) {
@@ -39,7 +39,7 @@ export class PlayerAI extends Player {
 			return -this.evaluate();
 		}
 
-		const board = this.game.board;
+		const { board } = this.game;
 		if (isMaximisingPlayer) {
 			let bestMove = -kPoints;
 			let win: boolean;

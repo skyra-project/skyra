@@ -23,12 +23,9 @@
  * SOFTWARE.
  */
 
-import { writeSnapshot } from 'heapdump';
+import { writeHeapSnapshot } from 'v8';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { join } from 'path';
-import { promisify } from 'util';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-const writeSnapshotAsync = promisify(writeSnapshot);
 
 export default class extends SkyraCommand {
 
@@ -53,10 +50,9 @@ export default class extends SkyraCommand {
 		await message.sendMessage('Capturing HEAP Snapshot. This may take a while...');
 
 		// Capture the snapshot (this freezes the entire VM)
-		const path = join(process.cwd(), `${Date.now()}.heapsnapshot`);
-		await writeSnapshotAsync(path);
+		const filename = writeHeapSnapshot();
 
-		return message.sendMessage(`Captured in \`${path}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`);
+		return message.sendMessage(`Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`);
 	}
 
 }

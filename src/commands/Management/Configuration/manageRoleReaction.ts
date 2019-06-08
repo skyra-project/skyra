@@ -17,11 +17,11 @@ export default class extends SkyraCommand {
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<show|add|remove|reset> (role:rolename) (emoji:emoji)',
+			usage: '<add|remove|reset|show:default> (role:rolename) (emoji:emoji)',
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('emoji', async (arg, _, msg, [action = 'show']) => {
+		this.createCustomResolver('emoji', async (arg, _, msg, [action]) => {
 			if (action === 'show' || action === 'reset') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION');
 
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 			} catch {
 				throw msg.language.get('COMMAND_TRIGGERS_INVALIDREACTION');
 			}
-		}).createCustomResolver('rolename', (arg, possible, msg, [action = 'show']) => {
+		}).createCustomResolver('rolename', (arg, possible, msg, [action]) => {
 			if (action !== 'add') return undefined;
 			if (!arg) throw msg.language.get('COMMAND_MANAGEROLEREACTION_REQUIRED_ROLE');
 			return this.client.arguments.get('rolename').run(arg, possible, msg);

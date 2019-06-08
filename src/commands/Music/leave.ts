@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const voiceChannel = message.guild.music.voiceChannel;
+		const { voiceChannel } = message.guild.music;
 		await message.guild.music.leave();
 		return message.sendLocale('COMMAND_LEAVE_SUCCESS', [voiceChannel]);
 	}

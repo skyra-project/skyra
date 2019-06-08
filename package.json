@@ -46,7 +46,6 @@
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.4.5",
     "gifencoder": "^2.0.1",
-    "heapdump": "^0.3.14",
     "klasa": "github:dirigeants/klasa#settings",
     "lavalink": "^2.6.1",
     "node-fetch": "^2.6.0",
@@ -58,6 +57,6 @@
     "@types/node": "^12.0.7",
     "@types/node-fetch": "^2.3.5",
     "eslint": "^5.16.0",
-    "eslint-config-marine": "^2.2.0"
+    "eslint-config-marine": "^3.0.2"
   }
 }

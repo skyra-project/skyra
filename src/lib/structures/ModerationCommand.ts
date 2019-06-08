@@ -75,12 +75,6 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return message.sendMessage(output.join('\n'));
 	}
 
-	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<T>;
-
-	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: T): Promise<ModerationManagerEntry>;
-
-	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: T): Promise<unknown>;
-
 	public async checkModeratable(message: KlasaMessage, target: User) {
 		if (target.id === message.author.id) {
 			throw message.language.get('COMMAND_USERSELF');
@@ -114,5 +108,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		if (extraData) modlog.setExtraData(extraData);
 		return modlog.create();
 	}
+
+	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<T>;
+
+	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: T): Promise<ModerationManagerEntry>;
+
+	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: T): Promise<unknown>;
 
 }

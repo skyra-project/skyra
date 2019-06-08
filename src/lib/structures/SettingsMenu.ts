@@ -97,7 +97,7 @@ export class SettingsMenu {
 			}
 		}
 
-		const parent = (this.schema as SchemaEntry | SchemaFolder).parent;
+		const { parent } = this.schema as SchemaEntry | SchemaFolder;
 
 		if (parent) this._reactResponse(EMOJIS.BACK);
 		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id);

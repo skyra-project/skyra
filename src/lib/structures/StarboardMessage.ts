@@ -56,7 +56,7 @@ export class StarboardMessage {
 	 * The emoji to use
 	 */
 	private get emoji() {
-		const stars = this.stars;
+		const { stars } = this;
 		if (stars < 5) return '⭐';
 		if (stars < 10) return '🌟';
 		if (stars < 25) return '💫';
@@ -69,7 +69,7 @@ export class StarboardMessage {
 	 * The color for the embed
 	 */
 	private get color() {
-		const stars = this.stars;
+		const { stars } = this;
 		if (stars <= MAXCOLORS) return COLORS[stars];
 		return LASTCOLOR;
 	}

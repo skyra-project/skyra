@@ -29,7 +29,7 @@ export class Queue extends Array<Song> {
 	}
 
 	public get status() {
-		const player = this.player;
+		const { player } = this;
 		return player ? player.status : Status.ENDED;
 	}
 
@@ -55,12 +55,12 @@ export class Queue extends Array<Song> {
 	}
 
 	public get connection() {
-		const voiceChannel = this.voiceChannel;
+		const { voiceChannel } = this;
 		return (voiceChannel && voiceChannel.connection) || null;
 	}
 
 	public get listeners() {
-		const voiceChannel = this.voiceChannel;
+		const { voiceChannel } = this;
 		return voiceChannel ? voiceChannel.members.map(member => member.id) : [];
 	}
 
@@ -110,7 +110,7 @@ export class Queue extends Array<Song> {
 	}
 
 	public async seek(position: number) {
-		const player = this.player;
+		const { player } = this;
 		if (player) await player.seek(position);
 		return this;
 	}

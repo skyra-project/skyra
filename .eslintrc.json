@@ -1,13 +1,6 @@
 {
-	"extends": "marine/node",
+	"extends": "bamboo",
 	"rules": {
-		"@typescript-eslint/explicit-function-return-type": 0,
-		"@typescript-eslint/no-use-before-define": ["error", { "typedefs": false, "functions": false }],
-		"@typescript-eslint/promise-function-async": 0,
-		"no-throw-literal": 0,
-		"no-dupe-class-members": 0,
-		"no-use-before-define": ["error", { "functions": false }],
-		"padded-blocks": ["error", { "classes": "always" }],
-		"operator-linebreak": ["error", "before", { "overrides": { "+": "after", "-": "after" } }]
+		"no-throw-literal": 0
 	}
 }

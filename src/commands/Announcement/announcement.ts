@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 
 	private async send(message: KlasaMessage, channel: TextChannel, role: Role, content: string) {
 		// If it's not mentionable, set, send/edit, and unset mentionable
-		const mentionable = role.mentionable;
+		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
 		// Retrieve last announcement if there was one

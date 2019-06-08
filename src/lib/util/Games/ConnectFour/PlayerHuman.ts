@@ -49,7 +49,7 @@ export class PlayerHuman extends Player {
 
 	private async removeEmoji(emoji: LLRCDataEmoji, userID: string): Promise<void> {
 		try {
-			const message = this.game.message;
+			const { message } = this.game;
 			// @ts-ignore
 			await message.client.api.channels[message.channel.id].messages[message.id]
 				.reactions[resolveEmoji(emoji)][userID].delete();

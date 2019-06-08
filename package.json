@@ -39,7 +39,6 @@
     "url": "https://github.com/kyranet/Skyra/issues"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^1.9.0",
     "canvas": "^2.5.0",
     "canvas-constructor": "^3.0.3",
     "diff": "^4.0.1",
@@ -56,7 +55,9 @@
   "devDependencies": {
     "@types/node": "^12.0.7",
     "@types/node-fetch": "^2.3.5",
+    "@typescript-eslint/eslint-plugin": "^1.9.1-alpha.26",
+    "@typescript-eslint/parser": "^1.9.1-alpha.26",
     "eslint": "^5.16.0",
-    "eslint-config-marine": "^3.0.2"
+    "eslint-config-bamboo": "^1.2.0"
   }
 }

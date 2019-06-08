@@ -14,22 +14,24 @@ export default class extends Argument {
 		let tracks: Track[];
 		let soundcloud = true;
 		if (parsedURL) {
-			tracks = await message.guild.music.fetch(arg);
+			tracks = await message.guild.music.fetch(arg).catch(() => [] as Track[]);
 			returnAll = parsedURL.playlist;
 		} else if (('sc' in message.flags) || ('soundcloud' in message.flags)) {
-			tracks = await message.guild.music.fetch(`scsearch: ${arg}`);
+			tracks = await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]);
 			returnAll = false;
 			soundcloud = false;
 		} else {
 			tracks = await message.guild.music.fetch(`ytsearch: ${arg}`).catch(() => [] as Track[]);
 			returnAll = false;
 		}
-		if (soundcloud && !tracks.length) tracks.push(...await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
-		if (!tracks.length) throw message.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
+		if (!tracks.length) {
+			if (soundcloud) tracks.push(...await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
+			if (!tracks.length) throw message.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
+		}
 		return returnAll ? tracks : tracks[0];
 	}
 
-	public parseURL(url: string): { url: string; playlist: boolean } {
+	public parseURL(url: string): { url: string; playlist: boolean } | null {
 		try {
 			const parsed = new URL(url);
 			return parsed.protocol && parsed.hostname && (parsed.protocol === 'https:' || parsed.protocol === 'http:')

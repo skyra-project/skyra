@@ -27,6 +27,8 @@ export enum Events {
 	MonitorError = 'monitorError',
 	Raw = 'raw',
 	Reconnecting = 'reconnecting',
+	RoleReactionAdd = 'roleReactionAdd',
+	RoleReactionRemove = 'roleReactionRemove',
 	TaskError = 'taskError',
 	UnhandledRejection = 'unhandledRejection',
 	Verbose = 'verbose',

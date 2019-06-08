@@ -36,13 +36,9 @@ export default class extends Event {
 			llrc.send(parsed);
 		}
 
-		if (data.channel_id === channel.guild.settings.get(GuildSettings.Channels.Roles)) {
-			try {
-				await this.handleRoleChannel(parsed);
-			} catch (error) {
-				this.client.emit(Events.Wtf, error);
-			}
-		} else if (!parsed.channel.nsfw
+		this.client.emit(Events.RoleReactionAdd, parsed);
+
+		if (!parsed.channel.nsfw
 			&& parsed.channel.id !== channel.guild.settings.get(GuildSettings.Starboard.Channel)
 			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get(GuildSettings.Starboard.Emoji)) {
 			try {
@@ -50,25 +46,6 @@ export default class extends Event {
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);
 			}
-		}
-	}
-
-	public async handleRoleChannel(parsed: LLRCData): Promise<void> {
-		const messageReaction = parsed.guild.settings.get(GuildSettings.Roles.MessageReaction) as GuildSettings.Roles.MessageReaction;
-		if (!messageReaction || messageReaction !== parsed.messageID) return;
-
-		const emoji = resolveEmoji(parsed.emoji);
-		if (!emoji) return;
-
-		const roleEntry = (parsed.guild.settings.get(GuildSettings.Roles.Reactions) as GuildSettings.Roles.Reactions)
-			.find(entry => entry.emoji === emoji);
-		if (!roleEntry) return;
-
-		try {
-			const member = await parsed.guild.members.fetch(parsed.userID);
-			if (!member.roles.has(roleEntry.role)) await member.roles.add(roleEntry.role);
-		} catch (error) {
-			this.client.emit(Events.ApiError, error);
 		}
 	}
 

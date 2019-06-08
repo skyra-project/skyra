@@ -10,17 +10,23 @@ export default class extends Argument {
 
 		arg = arg.replace(/<(.+)>/g, '$1');
 		const parsedURL = this.parseURL(arg);
+		let returnAll: boolean;
+		let tracks: Track[];
+		let soundcloud = true;
 		if (parsedURL) {
-			const tracks = await message.guild.music.fetch(arg);
-			return parsedURL.playlist ? tracks : tracks[0];
+			tracks = await message.guild.music.fetch(arg);
+			returnAll = parsedURL.playlist;
 		} else if (('sc' in message.flags) || ('soundcloud' in message.flags)) {
-			const tracks = await message.guild.music.fetch(`scsearch: ${arg}`);
-			return tracks[0];
+			tracks = await message.guild.music.fetch(`scsearch: ${arg}`);
+			returnAll = false;
+			soundcloud = false;
+		} else {
+			tracks = await message.guild.music.fetch(`ytsearch: ${arg}`).catch(() => [] as Track[]);
+			returnAll = false;
 		}
-		const tracks = await message.guild.music.fetch(`ytsearch: ${arg}`).catch(() => [] as Track[]);
-		if (!tracks.length) tracks.push(...await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
+		if (soundcloud && !tracks.length) tracks.push(...await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
 		if (!tracks.length) throw message.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
-		return tracks[0];
+		return returnAll ? tracks : tracks[0];
 	}
 
 	public parseURL(url: string): { url: string; playlist: boolean } {

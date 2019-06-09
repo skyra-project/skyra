@@ -2105,7 +2105,7 @@ export default class extends Language {
 		COMMAND_REASON_NOT_EXISTS: (range = false) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
 		COMMAND_REASON_UPDATED: (entries, newReason) => [
 			`${GREENTICK} Updated ${entries.length} case${entries.size === 1 ? '' : 's'}`,
-			` └─ Set the${entries.size === 1 ? '' : 'ir'} reason to ${newReason}`
+			` └─ Set ${entries.size === 1 ? 'its reason' : 'their reasons'} to ${newReason}`
 		].join('\n'),
 		COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
 		COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,

@@ -2090,7 +2090,9 @@ export default class extends Language {
 		COMMAND_REASON_MISSING_CASE: 'You need to provide a case or a case range.',
 		COMMAND_REASON_NOT_EXISTS: (range = false) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
 		COMMAND_REASON_UPDATED: (entries, newReason) => [
-			`${GREENTICK} Updated ${entries.length} case${entries.size === 1 ? '' : 's'}`,
+			entries.length === 1
+				? `${GREENTICK} Actualizado 1 caso.`
+				: `${GREENTICK} Actualizados ${entries.length} casos.`,
 			` └─ Set the${entries.size === 1 ? '' : 'ir'} reason to ${newReason}`
 		].join('\n'),
 		COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,

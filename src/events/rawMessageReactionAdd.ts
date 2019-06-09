@@ -49,37 +49,6 @@ export default class extends Event {
 		}
 	}
 
-	public async handleRoleChannel(parsed: LLRCData): Promise<void> {
-		const messageReaction = parsed.guild.settings.get(GuildSettings.Roles.MessageReaction) as GuildSettings.Roles.MessageReaction;
-		if (!messageReaction || messageReaction !== parsed.messageID) return;
-
-		const emoji = resolveEmoji(parsed.emoji);
-		if (!emoji) return;
-
-		const roleEntry = (parsed.guild.settings.get(GuildSettings.Roles.Reactions) as GuildSettings.Roles.Reactions)
-			.find(entry => entry.emoji === emoji);
-		if (!roleEntry) return;
-
-		try {
-			const member = await parsed.guild.members.fetch(parsed.userID);
-			if (member.roles.has(roleEntry.role)) return;
-
-			const memberRoles = member.roles.map(r => r.id);
-			const allRoleSets = member.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
-
-			for (const set of allRoleSets) {
-				if (!set.roles.includes(roleEntry.role)) continue;
-				memberRoles.filter(id => !set.roles.includes(id));
-			}
-
-			memberRoles.push(roleEntry.role);
-
-			await member.roles.set(memberRoles);
-		} catch (error) {
-			this.client.emit(Events.ApiError, error);
-		}
-	}
-
 	public async handleStarboard(parsed: LLRCData): Promise<void> {
 		try {
 			const channel = parsed.guild.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;

@@ -45,6 +45,9 @@ export default class extends SkyraCommand {
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member.roles.keys());
+		// Remove the everyone role
+		memberRoles.delete(message.guild.id)
+
 		const filterRoles = new Set(roles);
 		const unlistedRoles = [];
 		const unmanageable = [];
@@ -68,13 +71,19 @@ export default class extends SkyraCommand {
 				addedRoles.push(role.name);
 
 				for (const set of allRoleSets) {
+					// If the set does not have the role being added skip to next set
 					if (!set.roles.includes(role.id)) continue;
+
 					for (const id of set.roles) {
+						// If this role is the role being added skip
 						if (role.id === id) continue;
 
 						if (memberRoles.has(id)) {
-							memberRoles.delete(role.id);
-							removedRoles.push(role.name);
+							// If the member has this role we need to delete it
+							memberRoles.delete(id);
+							// get to the role object so we can get the name of the role to show the user it was removed
+							const roleToRemove = message.guild.roles.get(id)
+							removedRoles.push(roleToRemove.name);
 						}
 					}
 				}
@@ -90,7 +99,7 @@ export default class extends SkyraCommand {
 			if (!message.guild.roles.has(rolesInitial)) message.guild.settings.reset(GuildSettings.Roles.Initial).catch(error => this.client.emit(Events.Wtf, error));
 			else if (message.member.roles.has(rolesInitial)) memberRoles.delete(rolesInitial);
 		}
-
+		console.log(`end`, memberRoles)
 		// Apply the roles
 		if (removedRoles.length || addedRoles.length) await message.member.roles.set([...memberRoles], message.language.get('COMMAND_ROLES_AUDITLOG'));
 

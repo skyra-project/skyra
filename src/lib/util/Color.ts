@@ -26,14 +26,6 @@ export function parse(input: string): HEX | B10 | RGB | HSL {
 	throw `${input} is not a supported type.`;
 }
 
-export function generateHexadecimal() {
-	return [
-		generateBetween(255, 200).toString(16),
-		generateBetween(255, 200).toString(16),
-		generateBetween(255, 200).toString(16)
-	].join('');
-}
-
 function generateBetween(max: number, min: number): number {
 	return Math.floor(Math.random() * (max - min)) + 1 + min;
 }
@@ -46,11 +38,11 @@ export function hexConcat(r: number, g: number, b: number) {
 	return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 }
 
-function _generateRandom(): HEX {
-	return new Resolver.HEX(
-		generateBetween(255, 200).toString(16),
-		generateBetween(255, 200).toString(16),
-		generateBetween(255, 200).toString(16)
+function _generateRandom() {
+	return new Resolver.HSL(
+		generateBetween(360, 0),
+		generateBetween(100, 75),
+		generateBetween(100, 65)
 	);
 }
 

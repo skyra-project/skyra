@@ -10,10 +10,10 @@ export default class extends Event {
 	public async run(old: KlasaMessage, message: KlasaMessage) {
 		if (!this.client.ready || !message.guild || old.content === message.content || message.author === this.client.user) return;
 
-		const { guild } = message;
-		if (!guild!.settings.get(GuildSettings.Events.MessageEdit)) return;
+		const [messageEditLogEnabled, disabledChannelIDs] = message.guild.settings.pluck(GuildSettings.Events.MessageEdit, GuildSettings.Events.IgnoredChannelIDs);
+		if (!messageEditLogEnabled || disabledChannelIDs.includes(message.channel.id)) return;
 
-		this.client.emit(Events.GuildMessageLog, (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, guild, () => new MessageEmbed()
+		this.client.emit(Events.GuildMessageLog, (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
 			.setColor(0xDCE775)
 			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL(), message.url)
 			.splitFields(diffWordsWithSpace(Util.escapeMarkdown(old.content), Util.escapeMarkdown(message.content))

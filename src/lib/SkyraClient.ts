@@ -161,7 +161,8 @@ SkyraClient.defaultGuildSchema
 		.add('memberAdd', 'Boolean', { 'default': false })
 		.add('memberRemove', 'Boolean', { 'default': false })
 		.add('messageDelete', 'Boolean', { 'default': false })
-		.add('messageEdit', 'Boolean', { 'default': false }))
+		.add('messageEdit', 'Boolean', { 'default': false })
+		.add('ignoredChannelIDs', 'TextChannel', { array: true }))
 	.add('filter', folder => folder
 		.add('level', 'Integer', { 'default': 0, 'min': 0, 'max': 7, 'configurable': false })
 		.add('raw', 'String', { array: true, configurable: false }))

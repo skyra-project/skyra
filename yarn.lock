@@ -359,10 +359,10 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-bamboo@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-bamboo/-/eslint-config-bamboo-1.2.0.tgz#97ca9b974a22707ff766f1d1d06248a4c0cb2d27"
-  integrity sha512-HCFM0P7jSJtrmg0tjpndXh6N4DYY2O7ZTRxKmnuaIhomao00n6/irSFMvDvHdV8uNohOsRkC7WNTB0xaG7HZ8Q==
+eslint-config-bamboo@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-bamboo/-/eslint-config-bamboo-1.3.0.tgz#317ada861b0ecc8bc6197060b355c8fa39e74233"
+  integrity sha512-9GSYD1YCZMV0wxlCVFb3mHu/litMO9YduvswgK1eAUlPH4oAXN6KZxcuVBNexP/Aw1uamkL/cEVX3uvyE2Rotg==
 
 eslint-scope@^4.0.0, eslint-scope@^4.0.3:
   version "4.0.3"
@@ -714,7 +714,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/69c291729a45d04e835fde42872159c2f9a3f185"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/614dd9f06dcba6f7d1ffb31bc5f365f0c9e52c55"
   dependencies:
     fs-nextra "^0.4.5"
 

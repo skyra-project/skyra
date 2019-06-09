@@ -99,7 +99,7 @@ export default class extends SkyraCommand {
 			if (!message.guild.roles.has(rolesInitial)) message.guild.settings.reset(GuildSettings.Roles.Initial).catch(error => this.client.emit(Events.Wtf, error));
 			else if (message.member.roles.has(rolesInitial)) memberRoles.delete(rolesInitial);
 		}
-		console.log(`end`, memberRoles)
+
 		// Apply the roles
 		if (removedRoles.length || addedRoles.length) await message.member.roles.set([...memberRoles], message.language.get('COMMAND_ROLES_AUDITLOG'));
 

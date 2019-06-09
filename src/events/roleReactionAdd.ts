@@ -25,7 +25,26 @@ export default class extends Event {
 
 		try {
 			const member = await parsed.guild.members.fetch(parsed.userID);
-			if (!member.roles.has(roleEntry.role)) await member.roles.add(roleEntry.role);
+			if (member.roles.has(roleEntry.role)) return;
+
+			// Conver the array into a set
+			const memberRoles = new Set(member.roles.keys());
+			// Remove the eveeryone role from the set
+			memberRoles.delete(parsed.guild.id);
+
+			const allRoleSets = member.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+
+			for (const set of allRoleSets) {
+				// If the set doesnt have the role being added to the user skip
+				if (!set.roles.includes(roleEntry.role)) continue;
+				// For every role that the user has check if it is in this set and remove it
+				for (const id of memberRoles) if (set.roles.includes(id)) memberRoles.delete(id);
+			}
+
+			// Add the role to the set that the user has gained
+			memberRoles.add(roleEntry.role);
+			// Set all the roles at once.
+			await member.roles.set([...memberRoles]);
 		} catch (error) {
 			this.client.emit(Events.ApiError, error);
 		}

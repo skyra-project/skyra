@@ -94,6 +94,8 @@ export namespace GuildSettings {
 		export const Staff = 'roles.staff';
 		export type Subscriber = string;
 		export const Subscriber = 'roles.subscriber';
+		export type UniqueRoleSets = any[];
+		export const UniqueRoleSets = 'roles.uniqueRoleSets';
 	}
 
 	export namespace Selfmod {

@@ -45,12 +45,17 @@ export default class extends SkyraCommand {
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member.roles.keys());
+		// Remove the everyone role
+		memberRoles.delete(message.guild.id);
+
 		const filterRoles = new Set(roles);
 		const unlistedRoles = [];
 		const unmanageable = [];
 		const addedRoles = [];
 		const removedRoles = [];
 		const { position } = message.guild.me.roles.highest;
+
+		const allRoleSets = message.guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
 
 		for (const role of filterRoles) {
 			if (!role) continue;
@@ -64,6 +69,24 @@ export default class extends SkyraCommand {
 			} else {
 				memberRoles.add(role.id);
 				addedRoles.push(role.name);
+
+				for (const set of allRoleSets) {
+					// If the set does not have the role being added skip to next set
+					if (!set.roles.includes(role.id)) continue;
+
+					for (const id of set.roles) {
+						// If this role is the role being added skip
+						if (role.id === id) continue;
+
+						if (memberRoles.has(id)) {
+							// If the member has this role we need to delete it
+							memberRoles.delete(id);
+							// get to the role object so we can get the name of the role to show the user it was removed
+							const roleToRemove = message.guild.roles.get(id);
+							removedRoles.push(roleToRemove.name);
+						}
+					}
+				}
 			}
 		}
 

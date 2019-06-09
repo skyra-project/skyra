@@ -2474,7 +2474,7 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 
-		STARBOARD_JUMPTO: 'Salta al Mensaje ►',
+		JUMPTO: 'Salta al Mensaje ►',
 
 		RESOLVER_INVALID_CHANNELNAME: name => `${name} debe ser una mención, nombre, o id válido de un canal.`,
 		RESOLVER_INVALID_ROLENAME: name => `${name} debe ser una mención, nombre, o id válido de un rol.`,

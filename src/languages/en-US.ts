@@ -2845,7 +2845,7 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permissions applied for ${accepted} channels${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
 
-		STARBOARD_JUMPTO: 'Jump to Message ►',
+		JUMPTO: 'Jump to Message ►',
 
 		RESOLVER_INVALID_CHANNELNAME: name => `${name} must be a valid channel name, id, or tag.`,
 		RESOLVER_INVALID_ROLENAME: name => `${name} must be a valid role name, id, or mention.`,

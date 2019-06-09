@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 		const image = getImage(starredMessage);
 		const embed = new MessageEmbed()
 			.setURL(starredMessage.url)
-			.setTitle(message.language.get('STARBOARD_JUMPTO'))
+			.setTitle(message.language.get('JUMPTO'))
 			.setAuthor(starredMessage.author!.username, starredMessage.author!.displayAvatarURL())
 			.setColor(starboardData.stars < COLORS.length ? COLORS[starboardData.stars] : COLORS[COLORS.length - 1])
 			.setTimestamp(starredMessage.createdAt);

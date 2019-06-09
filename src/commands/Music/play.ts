@@ -3,6 +3,7 @@ import { Track } from 'lavalink';
 import { Queue } from '../../lib/structures/music/Queue';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
 import { Events } from '../../lib/types/Enums';
+import messageDelete from '../../events/messageDelete';
 
 export default class extends MusicCommand {
 
@@ -51,7 +52,7 @@ export default class extends MusicCommand {
 
 			const requester = await song.fetchRequester();
 			const member = requester ? await music.guild.members.fetch(requester.id).catch(() => null) : null;
-			const name = member ? member.displayName : requester ? requester.username : `Unknown user.`;
+			const name = member ? member.displayName : requester ? requester.username : music.guild.language.get(`COMMAND_PLAY_UNKNOWN_USER`);
 
 			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song.title, name]);
 			await util.sleep(250);

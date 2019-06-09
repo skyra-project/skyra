@@ -17,14 +17,20 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const randomImageBuffer = await fetch('https://cataas.com/cat', 'buffer').catch(() => null);
-		if (!randomImageBuffer) return message.send('https://wallpapercave.com/wp/wp3021105.jpg');
-
-		return message.sendEmbed(new MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
-			.attachFiles([{ attachment: randomImageBuffer, name: 'randomcat.jpg' }])
-			.setImage('attachment://randomcat.jpg')
-			.setTimestamp());
+			.setTimestamp();
+
+		try {
+			const randomImageBuffer = await fetch('https://cataas.com/cat', 'buffer');
+			embed
+				.attachFiles([{ attachment: randomImageBuffer, name: 'randomcat.jpg' }])
+				.setImage('attachment://randomcat.jpg');
+		} catch {
+			embed
+				.setImage('https://wallpapercave.com/wp/wp3021105.jpg');
+		}
+		return message.sendEmbed(embed);
 	}
 
 }

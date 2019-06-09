@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 		}
 		const memberRoles = new Set(message.member.roles.keys());
 		// Remove the everyone role
-		memberRoles.delete(message.guild.id)
+		memberRoles.delete(message.guild.id);
 
 		const filterRoles = new Set(roles);
 		const unlistedRoles = [];
@@ -82,7 +82,7 @@ export default class extends SkyraCommand {
 							// If the member has this role we need to delete it
 							memberRoles.delete(id);
 							// get to the role object so we can get the name of the role to show the user it was removed
-							const roleToRemove = message.guild.roles.get(id)
+							const roleToRemove = message.guild.roles.get(id);
 							removedRoles.push(roleToRemove.name);
 						}
 					}

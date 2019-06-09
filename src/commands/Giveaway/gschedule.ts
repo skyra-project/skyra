@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		if (offset > YEAR) throw message.language.get('GIVEAWAY_TIME_TOO_LONG');
 
 		// This creates an single time task to start the giveaway
-		await this.client.schedule.create('giveaway', Date.now() + schedule, {
+		await this.client.schedule.create('giveaway', Date.now() + schedule.getTime(), {
 			data: {
 				channelID: message.channel.id,
 				endsAt: time.getTime() + 500,

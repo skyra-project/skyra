@@ -43,7 +43,7 @@ export class WeebCommand extends SkyraCommand {
 		}, 'json');
 
 		return message.sendMessage(this.requiresUser
-			? message.language.get(this.responseName, params[0].username)
+			? message.language.get(this.responseName, params![0].username)
 			: message.language.get(this.responseName),
 		{
 			embed: new MessageEmbed()

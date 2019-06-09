@@ -22,16 +22,16 @@ export default class extends ModerationCommand {
 
 	// @ts-ignore
 	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
-		const modlog = await message.guild.moderation.fetch(caseID);
+		const modlog = await message.guild!.moderation.fetch(caseID);
 		if (!modlog || modlog.type !== ModerationTypeKeys.Warn) throw message.language.get('GUILD_WARN_NOT_FOUND');
 
-		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user;
+		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user!;
 		const unwarnLog = await this.handle(message, user, null, reason, modlog);
 
 		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
 	}
 
-	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string, modlog: ModerationManagerEntry) {
+	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember | null, reason: string | null, modlog: ModerationManagerEntry) {
 		// Appeal the modlog and send a log to the moderation log channel
 		await modlog.appeal();
 		return this.sendModlog(message, user, reason);

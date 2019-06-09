@@ -12,17 +12,17 @@ const DELETE_FLAG = 1 << 0;
 export default class extends Monitor {
 
 	public async run(message: KlasaMessage): Promise<void> {
-		const level = message.guild.settings.get(GuildSettings.Filter.Level) as GuildSettings.Filter.Level;
+		const level = message.guild!.settings.get(GuildSettings.Filter.Level) as GuildSettings.Filter.Level;
 		if (!level) return;
 
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const results = this.filter(message.content, message.guild.security.regexp);
+		const results = this.filter(message.content, message.guild!.security.regexp!);
 		if (results === null) return;
 
 		if ((level & DELETE_FLAG) && message.deletable) {
 			if (message.content.length > 25) {
-				message.author.send(message.language.get('MONITOR_WORDFILTER_DM',
+				message.author!.send(message.language.get('MONITOR_WORDFILTER_DM',
 					util.codeBlock('md', cutText(results.filtered, 1900)))).catch(() => null);
 			}
 			message.nuke().catch(() => null);
@@ -36,20 +36,20 @@ export default class extends Monitor {
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 				.splitFields(cutText(results.highlighted, 4000))
 				.setColor(0xEFAE45)
-				.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+				.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
 				.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_WORDFILTER')}`)
 				.setTimestamp());
 		}
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		return this.enabled
+		return Boolean(this.enabled
 			&& message.guild
 			&& !message.webhookID
 			&& !message.system
-			&& message.author.id !== this.client.user.id
-			&& message.guild.security.regexp
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& message.author!.id !== this.client.user!.id
+			&& message.guild!.security.regexp
+			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id));
 	}
 
 	private filter(str: string, regex: RegExp): { filtered: string; highlighted: string } | null {
@@ -59,8 +59,8 @@ export default class extends Monitor {
 		let last = 0;
 		let next = 0;
 
-		const filtered = [];
-		const highlighted = [];
+		const filtered: string[] = [];
+		const highlighted: string[] = [];
 		for (const match of matches) {
 			next = str.indexOf(match, last);
 			const section = str.slice(last, next);

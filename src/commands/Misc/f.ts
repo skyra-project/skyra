@@ -8,7 +8,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		const attachment = await this.generate(user);
 		const response = await message.channel.send({ files: [{ attachment, name: 'F.png' }] }) as KlasaMessage;
 		if (response.reactable) await response.react('🇫');
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 
 		return new Canvas(960, 540)
 			.addImage(praised, 349, 87, 109, 109)
-			.addImage(this.template, 0, 0, 960, 540)
+			.addImage(this.template!, 0, 0, 960, 540)
 			.toBufferAsync();
 	}
 

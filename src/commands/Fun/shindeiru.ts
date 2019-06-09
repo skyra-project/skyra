@@ -8,7 +8,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		const attachment = await this.generate(user, message.author);
+		const attachment = await this.generate(user, message.author!);
 		return message.channel.send({ files: [{ attachment, name: 'Shindeiru.png' }] });
 	}
 
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async generate(target: KlasaUser, author: KlasaUser) {
-		if (target === author) author = this.client.user;
+		if (target === author) author = this.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const [theAliveOne, theDeadOne] = await Promise.all([
@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 		]);
 
 		return new Canvas(500, 668)
-			.addImage(this.template, 0, 0, 500, 668)
+			.addImage(this.template!, 0, 0, 500, 668)
 			.addImage(theDeadOne, 96, 19, 113, 113, { type: 'round', radius: 56.5, restore: true })
 			.addImage(theAliveOne, 310, 135, 128, 128, { type: 'round', radius: 64, restore: true })
 			.addImage(theDeadOne, 109, 364, 256, 256, { type: 'round', radius: 128, restore: true })

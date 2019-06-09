@@ -20,23 +20,23 @@ export default class extends ModerationCommand {
 	}
 
 	public async inhibit(message: KlasaMessage) {
-		const id = message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
-		if (id && message.guild.roles.has(id)) return false;
+		const id = message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+		if (id && message.guild!.roles.has(id)) return false;
 		throw message.language.get('GUILD_SETTINGS_ROLES_MUTED');
 	}
 
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
-		const modlog = (await message.guild.moderation.fetch(user.id)).filter(log => log.type === ModerationTypeKeys.Mute).last();
+		const modlog = (await message.guild!.moderation.fetch(user.id)).filter(log => log.type === ModerationTypeKeys.Mute).last();
 		if (!modlog) throw message.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 
 		// Cache and concatenate with the current roles
-		const { position } = message.guild.me.roles.highest;
+		const { position } = message.guild!.me!.roles.highest;
 		const roles = [...new Set<Role>((modlog.extraData as string[] || [])
 			// Map by Role instances
-			.map((id: string) => message.guild.roles.get(id))
+			.map(id => message.guild!.roles.get(id)!)
 			// Concatenate with the member's roles
 			.concat(...member.roles.values()))]
 			// Filter removed and unmanageable roles
@@ -45,7 +45,7 @@ export default class extends ModerationCommand {
 			.map(role => role.id);
 
 		// Remove the muted role
-		const muteIndex = roles.indexOf(message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
+		const muteIndex = roles.indexOf(message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
 		if (muteIndex !== -1) roles.splice(muteIndex, 1);
 
 		// Edit roles

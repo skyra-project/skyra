@@ -8,7 +8,7 @@ export class GiveawayManager {
 	public client: KlasaClient;
 	public readonly queue: Array<Giveaway> = [];
 	private readonly pending: Giveaway[] = [];
-	private interval: NodeJS.Timer = null;
+	private interval: NodeJS.Timer | null = null;
 	private readonly running: Array<Promise<void>> = [];
 
 	public constructor(client: KlasaClient) {
@@ -45,7 +45,7 @@ export class GiveawayManager {
 
 		// TODO: Optimize this to not be O(n^2)
 		// Add all elements from the pending queue
-		while (this.pending.length) this.insert(this.pending.shift());
+		while (this.pending.length) this.insert(this.pending.shift()!);
 		this.check();
 	}
 
@@ -74,7 +74,7 @@ export class GiveawayManager {
 
 	private async runGiveaway() {
 		try {
-			const giveaway = await this.queue.shift().render();
+			const giveaway = await this.queue.shift()!.render();
 			if (!giveaway.finished) this.pending.push(giveaway);
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);

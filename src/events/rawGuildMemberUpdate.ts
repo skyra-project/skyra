@@ -12,16 +12,16 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild) return;
 
-		guild.memberSnowflakes.add(data.user.id);
+		guild!.memberSnowflakes.add(data.user.id);
 		this.client.usertags.set(data.user.id, `${data.user.username}#${data.user.discriminator}`);
-		const member = await guild.members.fetch(data.user.id).catch(() => null);
+		const member = await guild!.members.fetch(data.user.id).catch(() => null);
 		if (!member) return;
 		// @ts-ignore
 		if (member) member._patch(data);
 
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
-		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		const allRoleSets = guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
 
 		// First check if the user has multiple roles from a set
 		for (const set of allRoleSets) {
@@ -50,10 +50,10 @@ export default class extends Event {
 			}
 		}) as AuditLogResult;
 
-		const entry = auditLogs.audit_log_entries.find(e => e.user_id !== this.client.user.id && e.target_id === data.user.id && e.changes.find(c => c.key === '$add' && c.new_value.length));
+		const entry = auditLogs.audit_log_entries.find(e => e.user_id !== this.client.user!.id && e.target_id === data.user.id && e.changes.find(c => c.key === '$add' && c.new_value.length));
 		if (!entry) return;
 
-		const change = entry.changes.find(c => c.key === '$add' && c.new_value.length);
+		const change = entry.changes.find(c => c.key === '$add' && c.new_value.length)!;
 		const updatedRoleID = change.new_value[0].id;
 		console.log('the raw event reached the member set');
 		let memberRoles = member.roles.map(role => role.id);

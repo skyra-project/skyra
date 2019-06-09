@@ -13,7 +13,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage, [volume]: [number]) {
-		const { music } = message.guild;
+		const { music } = message.guild!;
 		const previousVolume = music.volume;
 
 		// If no argument was given

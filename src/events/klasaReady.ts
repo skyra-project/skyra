@@ -17,18 +17,18 @@ export default class extends Event {
 
 		// Fill the dictionary name for faster user fetching
 		for (const guild of this.client.guilds.values()) {
-			const { me } = guild;
+			const me = guild!.me!;
 
 			// Populate the snowflakes
-			for (const member of guild.members.values()) {
-				guild.memberSnowflakes.add(member.id);
+			for (const member of guild!.members.values()) {
+				guild!.memberSnowflakes.add(member.id);
 			}
 
 			// Clear all members
-			guild.members.clear();
-			guild.members.set(me.id, me);
-			guild.presences.clear();
-			guild.emojis.clear();
+			guild!.members.clear();
+			guild!.members.set(me.id, me);
+			guild!.presences.clear();
+			guild!.emojis.clear();
 		}
 
 		try {

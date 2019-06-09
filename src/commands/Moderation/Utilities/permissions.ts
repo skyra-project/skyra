@@ -19,9 +19,9 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		if (!user) throw message.language.get('REQUIRE_USER');
-		const member = await message.guild.members.fetch(user.id).catch(() => {
+		const member = await message.guild!.members.fetch(user.id).catch(() => {
 			throw message.language.get('USER_NOT_IN_GUILD');
 		});
 

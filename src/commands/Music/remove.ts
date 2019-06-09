@@ -14,12 +14,12 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage, [index]: [number]) {
 		if (index <= 0) throw message.language.get('COMMAND_REMOVE_INDEX_INVALID');
 
-		const { music } = message.guild;
+		const { music } = message.guild!;
 		if (index > music.length) throw message.language.get('COMMAND_REMOVE_INDEX_OUT', music.length);
 
 		index--;
 		const song = music[index];
-		if (song.requester !== message.author.id && !await message.hasAtLeastPermissionLevel(5)) {
+		if (song.requester !== message.author!.id && !await message.hasAtLeastPermissionLevel(5)) {
 			throw message.language.get('COMMAND_REMOVE_DENIED');
 		}
 

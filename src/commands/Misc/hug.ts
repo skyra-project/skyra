@@ -8,7 +8,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -28,15 +28,15 @@ export default class extends SkyraCommand {
 	}
 
 	public async generate(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === message.author.id) ({ user } = this.client);
+		if (user.id === message.author!.id) user = this.client.user!;
 
 		const [hugged, hugger] = await Promise.all([
 			fetchAvatar(user, 256),
-			fetchAvatar(message.author, 256)
+			fetchAvatar(message.author!, 256)
 		]);
 
 		return new Canvas(660, 403)
-			.addImage(this.template, 0, 0, 660, 403)
+			.addImage(this.template!, 0, 0, 660, 403)
 			.addImage(hugger, 124, 92, 109, 109, { type: 'round', radius: 54, restore: true })
 			.addImage(hugged, 233, 57, 98, 98, { type: 'round', radius: 49, restore: true })
 			.toBufferAsync();

@@ -7,7 +7,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 
 	public generate(text: string) {
 		return new Canvas(700, 612)
-			.addImage(this.template, 0, 0, 700, 612)
+			.addImage(this.template!, 0, 0, 700, 612)
 			.setTextAlign('center')
 			.setTextFont('19px FamilyFriends')
 			.createRectClip(61, 335, 156, 60)

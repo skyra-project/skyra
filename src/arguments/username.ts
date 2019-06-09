@@ -15,7 +15,7 @@ export default class extends Argument {
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(message.guild.memberUsernames, entry => entry, filter).run(message, arg);
+		const result = await new FuzzySearch(message.guild!.memberUsernames, entry => entry, filter).run(message, arg);
 		if (result) {
 			return this.client.users.fetch(result[0])
 				.catch(() => { throw message.language.get('USER_NOT_EXISTENT'); });
@@ -25,7 +25,7 @@ export default class extends Argument {
 
 	public resolveUser(message: KlasaMessage, query: string) {
 		const id = USER_REGEXP.test(query)
-			? USER_REGEXP.exec(query)[1]
+			? USER_REGEXP.exec(query)![1]
 			: USER_TAG.test(query)
 				? this.client.usertags.findKey(tag => tag === query) || null
 				: null;

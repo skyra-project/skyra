@@ -27,7 +27,7 @@ export class LanguageHelp {
 
 	public display(name: string, options: LanguageHelpDisplayOptions, multiline: boolean = false) {
 		const { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
-		const output = [];
+		const output: string[] = [];
 
 		// Extended help
 		if (extendedHelp) {
@@ -36,24 +36,24 @@ export class LanguageHelp {
 
 		// Explained usage
 		if (explainedUsage.length) {
-			output.push(this.explainedUsage, ...explainedUsage.map(([arg, desc]) => `→ **${arg}**: ${desc}`), '');
+			output.push(this.explainedUsage!, ...explainedUsage.map(([arg, desc]) => `→ **${arg}**: ${desc}`), '');
 		}
 
 		// Possible formats
 		if (possibleFormats.length) {
-			output.push(this.possibleFormats, ...possibleFormats.map(([type, example]) => `→ **${type}**: ${example}`), '');
+			output.push(this.possibleFormats!, ...possibleFormats.map(([type, example]) => `→ **${type}**: ${example}`), '');
 		}
 
 		// Examples
 		if (examples.length) {
-			output.push(this.examples, ...examples.map(example => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
+			output.push(this.examples!, ...examples.map(example => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
 		} else {
-			output.push(this.examples, `→ Skyra, ${name}`, '');
+			output.push(this.examples!, `→ Skyra, ${name}`, '');
 		}
 
 		// Reminder
 		if (reminder) {
-			output.push(this.reminder, LanguageHelp.resolveMultilineString(reminder, multiline));
+			output.push(this.reminder!, LanguageHelp.resolveMultilineString(reminder, multiline));
 		}
 
 		return output.join('\n');

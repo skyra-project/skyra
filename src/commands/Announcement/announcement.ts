@@ -23,10 +23,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [announcement]: [string]) {
-		const announcementID = message.guild.settings.get(GuildSettings.Channels.Announcements) as GuildSettings.Channels.Announcements;
+		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements) as GuildSettings.Channels.Announcements;
 		if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
-		const channel = message.guild.channels.get(announcementID) as TextChannel;
+		const channel = message.guild!.channels.get(announcementID) as TextChannel;
 		if (!channel) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
 		if (!channel.postable) throw message.language.get('SYSTEM_CHANNEL_NOT_POSTABLE');
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 					.setDescription(content)
 					.setTimestamp()
 			});
-		} catch (_) {
+		} catch {
 			return false;
 		}
 	}

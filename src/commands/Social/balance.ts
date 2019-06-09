@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 		this.spam = true;
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		if (user.bot) throw message.language.get('COMMAND_BALANCE_BOTS');
 
 		await user.settings.sync();

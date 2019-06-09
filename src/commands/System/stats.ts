@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	public get UPTIME() {
 		const now = Date.now();
 		return {
-			CLIENT: Duration.toNow(now - this.client.uptime, false),
+			CLIENT: Duration.toNow(now - this.client.uptime!, false),
 			HOST: Duration.toNow(now - (uptime() * 1000), false),
 			TOTAL: Duration.toNow(now - (process.uptime() * 1000), false)
 		};

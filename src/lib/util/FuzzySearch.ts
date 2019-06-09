@@ -17,7 +17,7 @@ export class FuzzySearch<K extends string, V> {
 		this.filter = filter;
 	}
 
-	public run(message: Message, query: string): Promise<[K, V, number]> {
+	public run(message: Message, query: string) {
 		const lowcquery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 
@@ -48,7 +48,7 @@ export class FuzzySearch<K extends string, V> {
 			if (almostExacts === 10) break;
 		}
 
-		if (!results.length) return null;
+		if (!results.length) return Promise.resolve(null);
 
 		// Almost precisive matches
 		const sorted = results.sort((a, b) => a[2] - b[2]);
@@ -62,7 +62,7 @@ export class FuzzySearch<K extends string, V> {
 		return this.select(message, sorted);
 	}
 
-	private async select(message: Message, results: [K, V, number][]): Promise<[K, V, number]> {
+	private async select(message: Message, results: [K, V, number][]) {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 

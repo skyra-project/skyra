@@ -6,7 +6,7 @@ export default class extends IPCMonitor {
 		try {
 			const user = await this.client.users.fetch(userID);
 			return user.toJSON();
-		} catch (error) {
+		} catch {
 			return null;
 		}
 	}

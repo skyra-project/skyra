@@ -25,22 +25,22 @@ export default class extends Task {
 		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0).toString();
 
 		const results = (await Promise.all([
-			this.query(`https://discordbots.org/api/bots/${this.client.user.id}/stats`,
+			this.query(`https://discordbots.org/api/bots/${this.client.user!.id}/stats`,
 				`{"server_count":${guilds}}`, TOKENS.DISCORD_BOT_ORG, Lists.DiscordBotsOrg),
-			this.query(`https://discord.bots.gg/api/v1/bots/${this.client.user.id}/stats`,
+			this.query(`https://discord.bots.gg/api/v1/bots/${this.client.user!.id}/stats`,
 				`{"guildCount":${guilds}}`, TOKENS.DISCORD_BOTS, Lists.DiscordBotsGG),
-			this.query(`https://botsfordiscord.com/api/bot/${this.client.user.id}`,
+			this.query(`https://botsfordiscord.com/api/bot/${this.client.user!.id}`,
 				`{"server_count":${guilds}}`, TOKENS.BOTS_FOR_DISCORD, Lists.BotsForDiscord),
-			this.query(`https://discordbotlist.com/api/bots/${this.client.user.id}/stats`,
+			this.query(`https://discordbotlist.com/api/bots/${this.client.user!.id}/stats`,
 				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList),
-			this.query(`https://bots.ondiscord.xyz/bot-api/bots/${this.client.user.id}/guilds`,
+			this.query(`https://bots.ondiscord.xyz/bot-api/bots/${this.client.user!.id}/guilds`,
 				`{"guildCount":${guilds}}`, TOKENS.BOTS_ON_DISCORD, Lists.BotsOnDiscord)
 		])).filter(value => value !== null);
 
 		if (results.length) this.client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 	}
 
-	public async query(url: string, body: string, token: string, list: Lists) {
+	public async query(url: string, body: string, token: string | null, list: Lists) {
 		try {
 			if (!token) return null;
 			await fetch(url, {

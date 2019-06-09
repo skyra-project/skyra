@@ -19,7 +19,7 @@ export default class extends Task {
 		const { title, options, votes, voted } = poll;
 		if (voted.length) {
 			const maxLengthNames = options.reduce((acc, opt) => opt.length > acc ? opt.length : acc, 0);
-			const graph = [];
+			const graph: string[] = [];
 			for (const opt of options) {
 				const percentage = Math.round((votes[opt] / voted.length) * 100);
 				graph.push(`${opt.padEnd(maxLengthNames, ' ')} : [${'#'.repeat((percentage / 100) * 25).padEnd(25, ' ')}] (${percentage}%)`);

@@ -54,26 +54,26 @@ function _generateRandom(): HEX {
 	);
 }
 
-function _HEX(input: string): HEX {
+function _HEX(input: string) {
 	if (!REGEXP.HEX.test(input)) return null;
-	let raw = REGEXP.HEX_EXEC.exec(input)[1];
+	let raw = REGEXP.HEX_EXEC.exec(input)![1];
 	if (raw.length === 3) raw = raw.split('').map(char => char + char).join('');
 	return new Resolver.HEX(raw.substring(0, 2), raw.substring(2, 4), raw.substring(4, 6));
 }
 
-function _RGB(input: string): RGB {
+function _RGB(input: string) {
 	if (!REGEXP.RGB.test(input)) return null;
-	const raw = REGEXP.RGB_EXEC.exec(input);
+	const raw = REGEXP.RGB_EXEC.exec(input)!;
 	return new Resolver.RGB(parseInt(raw[1], 10), parseInt(raw[2], 10), parseInt(raw[3], 10));
 }
 
-function _HSL(input: string): HSL {
+function _HSL(input: string) {
 	if (!REGEXP.HSL.test(input)) return null;
-	const raw = REGEXP.HSL_EXEC.exec(input);
+	const raw = REGEXP.HSL_EXEC.exec(input)!;
 	return new Resolver.HSL(parseInt(raw[1], 10), parseInt(raw[2], 10), parseInt(raw[3], 10));
 }
 
-function _B10(input: string): B10 {
+function _B10(input: string) {
 	if (!REGEXP.B10.test(input)) return null;
 	return new Resolver.B10(input);
 }

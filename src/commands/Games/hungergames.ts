@@ -31,15 +31,15 @@ export default class extends SkyraCommand {
 		if (tributes.length < 4 || tributes.length > 48) throw message.language.get('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
 		this.playing.add(message.channel.id);
 
-		let resolve = null;
-		let gameMessage: KlasaMessage = null;
+		let resolve: ((value?: boolean) => void) | null = null;
+		let gameMessage: KlasaMessage | null = null;
 		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(this.client, async reaction => {
 				// Ignore if resolve is not ready
 				if (typeof resolve !== 'function'
 				// Run the collector inhibitor
-				|| await this.collectorInhibitor(message, gameMessage, reaction)) return;
+				|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
 				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
 				resolve = null;
 			}, () => {
@@ -103,20 +103,20 @@ export default class extends SkyraCommand {
 		if (!EMOJIS.includes(reaction.emoji.name)) return true;
 
 		// If the user who reacted is the author, don't inhibit
-		if (reaction.userID === message.author.id) return false;
+		if (reaction.userID === message.author!.id) return false;
 
 		// Don't listen to herself
-		if (reaction.userID === this.client.user.id) return true;
+		if (reaction.userID === this.client.user!.id) return true;
 
 		try {
 			// Fetch the member for level measuring purposes
-			const member = await message.guild.members.fetch(reaction.userID);
+			const member = await message.guild!.members.fetch(reaction.userID);
 			// Check if the user is a moderator
 			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call({
 				author: member.user, client: this.client, guild: member.guild, member
 			}, 5);
 			return !hasLevel;
-		} catch (__) {
+		} catch {
 			return true;
 		}
 	}

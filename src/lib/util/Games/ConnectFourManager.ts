@@ -6,7 +6,7 @@ import { PlayerColor } from './ConnectFour/Player';
 import { PlayerHuman } from './ConnectFour/PlayerHuman';
 import { KlasaMessage } from 'klasa';
 
-export class ConnectFourManager extends Collection<string, Game> {
+export class ConnectFourManager extends Collection<string, Game | null> {
 
 	/**
 	 * The Client instance that manages this manager

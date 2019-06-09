@@ -12,8 +12,8 @@ const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 
 export default class extends SkyraCommand {
 
-	private profile: Buffer = null;
-	private panel: Buffer = null;
+	private profile: Buffer | null = null;
+	private panel: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -43,17 +43,17 @@ export default class extends SkyraCommand {
 	}
 
 	public inhibit(message: KlasaMessage) {
-		return !message.guild || message.guild.id !== '256566731684839428';
+		return !message.guild || message.guild!.id !== '256566731684839428';
 	}
 
 	public async showProfile(message: KlasaMessage, file: Buffer) {
-		await message.author.settings.sync();
-		const level = message.author.profileLevel;
-		const points = message.author.settings.get(UserSettings.Points) as UserSettings.Points;
-		const badgeSet = message.author.settings.get(UserSettings.BadgeSet) as UserSettings.BadgeSet;
-		const color = message.author.settings.get(UserSettings.Color) as UserSettings.Color;
-		const money = message.author.settings.get(UserSettings.Money) as UserSettings.Money;
-		const reputation = message.author.settings.get(UserSettings.Reputation) as UserSettings.Reputation;
+		await message.author!.settings.sync();
+		const level = message.author!.profileLevel;
+		const points = message.author!.settings.get(UserSettings.Points) as UserSettings.Points;
+		const badgeSet = message.author!.settings.get(UserSettings.BadgeSet) as UserSettings.BadgeSet;
+		const color = message.author!.settings.get(UserSettings.Color) as UserSettings.Color;
+		const money = message.author!.settings.get(UserSettings.Money) as UserSettings.Money;
+		const reputation = message.author!.settings.get(UserSettings.Reputation) as UserSettings.Reputation;
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 
 		/* Global leaderboard */
 		const rank = '∞';
-		const imgAvatarSRC = await fetchAvatar(message.author, 256);
+		const imgAvatarSRC = await fetchAvatar(message.author!, 256);
 
 		const TITLE = message.language.retrieve('COMMAND_PROFILE');
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 			const badges = await Promise.all(badgeSet.map(name =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))));
 
-			canvas.addImage(this.panel, 600, 0, 100, 391);
+			canvas.addImage(this.panel!, 600, 0, 100, 391);
 			let position = 20;
 			for (const badge of badges) {
 				canvas.addImage(badge, 635, position, 50, 50);
@@ -84,7 +84,7 @@ export default class extends SkyraCommand {
 			.createBeveledClip(10, 10, 620, 371, 8)
 			.addImage(file, 9, 9, 188, 373)
 			.restore()
-			.addImage(this.profile, 0, 0, 640, 391)
+			.addImage(this.profile!, 0, 0, 640, 391)
 
 			// Progress bar
 			.setColor(`#${color}`)
@@ -93,9 +93,9 @@ export default class extends SkyraCommand {
 			// Name title
 			.setTextFont('35px RobotoRegular')
 			.setColor('rgb(23,23,23')
-			.addResponsiveText(message.author.username, 227, 73, 306)
+			.addResponsiveText(message.author!.username, 227, 73, 306)
 			.setTextFont('25px RobotoLight')
-			.addText(`#${message.author.discriminator}`, 227, 105)
+			.addText(`#${message.author!.discriminator}`, 227, 105)
 
 			// Statistics Titles
 			.addText(TITLE.GLOBAL_RANK, 227, 276)

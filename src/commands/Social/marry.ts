@@ -27,43 +27,43 @@ export default class extends SkyraCommand {
 	}
 
 	public async _display(message: KlasaMessage) {
-		const marry = message.author.settings.get(UserSettings.Marry) as UserSettings.Marry;
+		const marry = message.author!.settings.get(UserSettings.Marry) as UserSettings.Marry;
 		if (!marry) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 		const username = await this.client.fetchUsername(marry);
 		return message.sendLocale('COMMAND_MARRY_WITH', [username || `<@${marry}>`]);
 	}
 
 	public async _marry(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === this.client.user.id) return message.sendLocale('COMMAND_MARRY_SKYRA');
+		if (user.id === this.client.user!.id) return message.sendLocale('COMMAND_MARRY_SKYRA');
 		if (user.id === SNEYRA_ID) return message.sendLocale('COMMAND_MARRY_SNEYRA');
-		if (user.id === message.author.id) return message.sendLocale('COMMAND_MARRY_SELF');
+		if (user.id === message.author!.id) return message.sendLocale('COMMAND_MARRY_SELF');
 		if (user.bot) return message.sendLocale('COMMAND_MARRY_BOTS');
 
 		// settings is already sync by the monitors.
-		if (message.author.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
+		if (message.author!.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
 
 		// Check if the target user is already married.
 		await user.settings.sync();
 		if (user.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_TAKEN');
 
 		// Get a message from the user.
-		await message.sendLocale('COMMAND_MARRY_PETITION', [message.author, user]);
-		const messages = await message.channel.awaitMessages(msg => msg.author.id === user.id, { time: 60000, max: 1 });
+		await message.sendLocale('COMMAND_MARRY_PETITION', [message.author!, user]);
+		const messages = await message.channel.awaitMessages(msg => msg.author!.id === user.id, { time: 60000, max: 1 });
 		if (!messages.size) return message.sendLocale('COMMAND_MARRY_NOREPLY');
 
-		const response = messages.first();
+		const response = messages.first()!;
 		if (!REGEXP_ACCEPT.test(response.content)) return message.sendLocale('COMMAND_MARRY_DENIED');
 
 		// The user may have tried to marry somebody else while the prompt was running.
 		if (user.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_TAKEN');
-		if (message.author.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
+		if (message.author!.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
 
 		await Promise.all([
-			message.author.settings.update('marry', user),
+			message.author!.settings.update('marry', user),
 			user.settings.update('marry', message.author)
 		]);
 
-		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [message.author, user]);
+		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [message.author!, user]);
 	}
 
 }

@@ -34,10 +34,10 @@ export default class extends SkyraCommand {
 			if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
 			if (type === 'reaction') {
 				try {
-					arg = resolveEmoji(arg);
-					if (!arg) throw null;
-					await msg.react(arg);
-					return arg;
+					const emoji = resolveEmoji(arg);
+					if (!emoji) throw null;
+					await msg.react(emoji);
+					return emoji;
 				} catch {
 					throw msg.language.get('COMMAND_TRIGGERS_INVALIDREACTION');
 				}
@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 		const clone = [...list];
 		clone.splice(index, 1);
 
-		const { errors } = await message.guild.settings.update(this._getListName(type), clone, { arrayAction: 'overwrite' });
+		const { errors } = await message.guild!.settings.update(this._getListName(type), clone, { arrayAction: 'overwrite' });
 		if (errors.length) throw errors[0];
 
 		return message.sendLocale('COMMAND_TRIGGERS_REMOVE');
@@ -70,16 +70,16 @@ export default class extends SkyraCommand {
 		const list = this._getList(message, type);
 		if (list.some(entry => entry.input === input)) throw message.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
 
-		const { errors } = await message.guild.settings.update(this._getListName(type), [...list, this._format(type, input, output)], { arrayAction: 'overwrite' });
+		const { errors } = await message.guild!.settings.update(this._getListName(type), [...list, this._format(type, input, output)], { arrayAction: 'overwrite' });
 		if (errors.length) throw errors[0];
 
 		return message.sendLocale('COMMAND_TRIGGERS_ADD');
 	}
 
 	public show(message: KlasaMessage) {
-		const aliases = message.guild.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
-		const includes = message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
-		const output = [];
+		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
+		const includes = message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
+		const output: string[] = [];
 		for (const alias of aliases) {
 			output.push(`Alias    :: ${alias.input} -> ${alias.output}`);
 		}
@@ -108,9 +108,9 @@ export default class extends SkyraCommand {
 
 	private _getList(message: KlasaMessage, type: string) {
 		switch (type) {
-			case 'alias': return message.guild.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
+			case 'alias': return message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
 			case 'reaction':
-			default: return message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
+			default: return message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
 		}
 	}
 

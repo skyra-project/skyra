@@ -1,4 +1,4 @@
-import { MessageEmbed, Permissions } from 'discord.js';
+import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
@@ -12,42 +12,41 @@ export default class extends Monitor {
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const attachmentAction = message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction;
-		const attachmentMaximum = message.guild.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
-		const attachmentDuration = message.guild.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
+		const attachmentAction = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction;
+		const attachmentMaximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
+		const attachmentDuration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
 
-		if (!message.guild.security.adder) message.guild.security.adder = new Adder(attachmentMaximum, attachmentDuration);
+		if (!message.guild!.security.adder) message.guild!.security.adder = new Adder(attachmentMaximum, attachmentDuration);
 
 		try {
-			message.guild.security.adder.add(message.author.id, message.attachments.size);
+			message.guild!.security.adder.add(message.author!.id, message.attachments.size);
 			return;
-		} catch (_) {
+		} catch {
 			switch (attachmentAction & 0b111) {
 				case 0b000: await this.actionAndSend(message, ModerationTypeKeys.Warn, () => null);
 					break;
 				case 0b001: await this.actionAndSend(message, ModerationTypeKeys.Kick, () =>
-					message.member.kick()
+					message.member!.kick()
 						.catch(error => this.client.emit(Events.ApiError, error)));
 					break;
 				case 0b010: await this.actionAndSend(message, ModerationTypeKeys.Mute, () =>
-					mute(message.guild.me, message.member, 'AttachmentFilter: Threshold Reached.')
+					mute(message.guild!.me!, message.member!, 'AttachmentFilter: Threshold Reached.')
 						.catch(error => this.client.emit(Events.ApiError, error)), false);
 					break;
 				case 0b011: await this.actionAndSend(message, ModerationTypeKeys.Softban, () =>
-					softban(message.guild, this.client.user, message.author, 'AttachmentFilter: Threshold Reached.', 1)
+					softban(message.guild!, this.client.user!, message.author!, 'AttachmentFilter: Threshold Reached.', 1)
 						.catch(error => this.client.emit(Events.ApiError, error)), false);
 					break;
 				case 0b100: await this.actionAndSend(message, ModerationTypeKeys.Ban, () =>
-					message.member.ban()
+					message.member!.ban()
 						.catch(error => this.client.emit(Events.ApiError, error)));
 					break;
 			}
 			if (attachmentAction & 0b1000) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 					.setColor(0xEFAE45)
-					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
-					// @ts-ignore
-					.setFooter(`#${message.channel.name} | ${message.language.get('CONST_MONITOR_ATTACHMENTFILTER')}`)
+					.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
+					.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_ATTACHMENTFILTER')}`)
 					.setTimestamp());
 			}
 		}
@@ -59,14 +58,14 @@ export default class extends Monitor {
 	 * @param performAction The action to perform
 	 * @param createModerationLog Whether or not this should create a new moderation log entry
 	 */
-	public async actionAndSend(message: KlasaMessage, type: ModerationTypeKeys, performAction: () => Promise<unknown>, createModerationLog: boolean = true): Promise<void> {
-		const lock = message.guild.moderation.createLock();
+	public async actionAndSend(message: KlasaMessage, type: ModerationTypeKeys, performAction: () => unknown, createModerationLog: boolean = true): Promise<void> {
+		const lock = message.guild!.moderation.createLock();
 		await performAction();
 		if (createModerationLog) {
-			await message.guild.moderation.new
-				.setModerator(this.client.user.id)
-				.setUser(message.author.id)
-				.setDuration(message.guild.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration) as GuildSettings.Selfmod.AttachmentPunishmentDuration)
+			await message.guild!.moderation.new
+				.setModerator(this.client.user!.id)
+				.setUser(message.author!.id)
+				.setDuration(message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration) as GuildSettings.Selfmod.AttachmentPunishmentDuration)
 				.setReason('AttachmentFilter: Threshold Reached.')
 				.setType(type)
 				.create();
@@ -74,28 +73,28 @@ export default class extends Monitor {
 		lock();
 	}
 
-	public shouldRun(message: KlasaMessage): boolean {
-		return this.enabled
+	public shouldRun(message: KlasaMessage) {
+		return Boolean(this.enabled
 			&& message.guild
 			&& !message.webhookID
 			&& !message.system
 			&& message.attachments.size
-			&& message.author.id !== this.client.user.id
-			&& message.guild.settings.get(GuildSettings.Selfmod.Attachment) as GuildSettings.Selfmod.Attachment
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
-			&& this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction);
+			&& message.author!.id !== this.client.user!.id
+			&& message.guild!.settings.get(GuildSettings.Selfmod.Attachment) as GuildSettings.Selfmod.Attachment
+			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
+			&& this.hasPermissions(message, message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction));
 	}
 
 	private hasPermissions(message: KlasaMessage, action: number) {
-		const guildMe = message.guild.me;
+		const guildMe = message.guild!.me!;
 		switch (action & 0b11) {
-			case 0b000: return guildMe.roles.highest.position > message.member.roles.highest.position;
-			case 0b001: return message.member.kickable;
-			case 0b010: return message.guild.settings.get(GuildSettings.Roles.Muted)
-				&& guildMe.roles.highest.position > message.member.roles.highest.position
+			case 0b000: return guildMe.roles.highest.position > message.member!.roles.highest.position;
+			case 0b001: return message.member!.kickable;
+			case 0b010: return message.guild!.settings.get(GuildSettings.Roles.Muted)
+				&& guildMe.roles.highest.position > message.member!.roles.highest.position
 				&& guildMe.permissions.has(FLAGS.MANAGE_ROLES);
-			case 0b011: return message.member.bannable;
-			case 0b100: return message.member.bannable;
+			case 0b011: return message.member!.bannable;
+			case 0b100: return message.member!.bannable;
 			default: return false;
 		}
 	}

@@ -50,15 +50,15 @@ export default class extends SkyraCommand {
 		let continent: string;
 
 		for (const component of response.results[0].address_components) {
-			if (!locality && component.types.includes('locality')) locality = component;
-			if (!governing && component.types.includes('administrative_area_level_1')) governing = component;
-			if (!country && component.types.includes('country')) country = component;
-			if (!continent && component.types.includes('continent')) continent = component;
+			if (!locality! && component.types.includes('locality')) locality = component;
+			if (!governing! && component.types.includes('administrative_area_level_1')) governing = component;
+			if (!country! && component.types.includes('country')) country = component;
+			if (!continent! && component.types.includes('continent')) continent = component;
 		}
 
-		const city = locality || governing || country || continent || {};
-		const localityOrCountry = locality ? country : {};
-		const state = locality && governing ? governing : localityOrCountry || {};
+		const city = locality! || governing! || country! || continent! || {};
+		const localityOrCountry = locality! ? country! : {};
+		const state = locality! && governing! ? governing! : localityOrCountry || {};
 
 		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
 

@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 	}
 
 	private format(entries: string[][]) {
-		const output = [];
+		const output: string[] = [];
 
 		let i = 0;
 		for (const entry of entries) {

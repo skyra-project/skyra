@@ -23,21 +23,21 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('case', async (arg, _, message) => {
 			if (!arg) throw message.language.get('COMMAND_REASON_MISSING_CASE');
-			if (arg.toLowerCase() === 'latest') return [await message.guild.moderation.count()];
+			if (arg.toLowerCase() === 'latest') return [await message.guild!.moderation.count()];
 			return parseRange(arg);
 		});
 	}
 
-	public async run(message: KlasaMessage, [cases, reason]: [number[], string]) {
+	public async run(message: KlasaMessage, [cases, reason]: [number[], string | null]) {
 		if (!reason) reason = null;
 
-		const modlogs = await message.guild.moderation.fetch(cases);
+		const modlogs = await message.guild!.moderation.fetch(cases);
 		if (!modlogs.size) throw message.language.get('COMMAND_REASON_NOT_EXISTS', cases.length > 1);
 
-		const channel = message.guild.channels.get(message.guild.settings.get(GuildSettings.Channels.ModerationLogs) as GuildSettings.Channels.ModerationLogs) as TextChannel;
+		const channel = message.guild!.channels.get(message.guild!.settings.get(GuildSettings.Channels.ModerationLogs) as GuildSettings.Channels.ModerationLogs) as TextChannel;
 		const messages = channel ? await channel.messages.fetch({ limit: 100 }) as Collection<string, KlasaMessage> : null;
 
-		const promises = [];
+		const promises: Promise<void>[] = [];
 		for (const modlog of modlogs.values()) {
 			// Update the moderation case
 			promises.push(this._updateReason(channel, messages, modlog, reason));
@@ -45,18 +45,18 @@ export default class extends SkyraCommand {
 
 		await Promise.all(promises);
 
-		if (!channel) message.guild.settings.reset(GuildSettings.Channels.ModerationLogs).catch(error => this.client.emit(Events.Wtf, error));
+		if (!channel) message.guild!.settings.reset(GuildSettings.Channels.ModerationLogs).catch(error => this.client.emit(Events.Wtf, error));
 		return message.alert(message.language.get('COMMAND_REASON_UPDATED', cases, reason));
 	}
 
-	public async _updateReason(channel: TextChannel, messages: Collection<string, KlasaMessage>, modlog: ModerationManagerEntry, reason: string) {
+	public async _updateReason(channel: TextChannel, messages: Collection<string, KlasaMessage> | null, modlog: ModerationManagerEntry, reason: string | null) {
 		await modlog.edit({ [ModerationSchemaKeys.Reason]: reason });
 
 		if (channel) {
-			const message = messages.find(mes => mes.author.id === this.client.user.id
+			const message = messages!.find(mes => mes.author!.id === this.client.user!.id
 				&& mes.embeds.length > 0
 				&& mes.embeds[0].type === 'rich'
-				&& mes.embeds[0].footer && mes.embeds[0].footer.text === `Case ${modlog.case}`);
+				&& Boolean(mes.embeds[0].footer) && mes.embeds[0].footer!.text === `Case ${modlog.case}`);
 
 			const embed = await modlog.prepareEmbed();
 			if (message) await message.edit(embed);

@@ -11,18 +11,18 @@ export class SettingsMenu {
 	private readonly message: KlasaMessage;
 	private schema: Schema | SchemaEntry;
 	private readonly oldSettings: Settings;
-	private messageCollector: MessageCollector;
+	private messageCollector: MessageCollector | null = null;
 	private errorMessage: string | null = null;
-	private llrc: LongLivingReactionCollector;
+	private llrc: LongLivingReactionCollector | null = null;
 	private readonly embed: MessageEmbed;
-	private response: KlasaMessage = null;
+	private response: KlasaMessage | null = null;
 
 	public constructor(message: KlasaMessage) {
 		this.message = message;
-		this.schema = this.message.client.gateways.get('guilds').schema;
-		this.oldSettings = this.message.guild.settings.clone();
+		this.schema = this.message.client.gateways.get('guilds')!.schema;
+		this.oldSettings = this.message.guild!.settings.clone();
 		this.embed = new MessageEmbed()
-			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(this.message.author!.username, this.message.author!.displayAvatarURL({ size: 128 }))
 			.setColor(getColor(this.message) || 0xFFAB2D);
 	}
 
@@ -34,19 +34,19 @@ export class SettingsMenu {
 		if (this.pointerIsFolder) return false;
 		const schema = this.schema as SchemaEntry;
 		if (schema.array) {
-			const current = this.message.guild.settings.get(this.schema.path) as any[];
+			const current = this.message.guild!.settings.get(this.schema.path) as any[];
 			const old = this.oldSettings.get(this.schema.path) as any[];
 			return current.length !== old.length || current.some((value, i) => value !== old[i]);
 		}
 		// eslint-disable-next-line eqeqeq
-		return this.message.guild.settings.get(this.schema.path) != this.oldSettings.get(this.schema.path);
+		return this.message.guild!.settings.get(this.schema.path) != this.oldSettings.get(this.schema.path);
 	}
 
 	private get changedPieceValue(): boolean {
 		if (this.schema.type === 'Folder') return false;
 		const schema = this.schema as SchemaEntry;
 		// eslint-disable-next-line eqeqeq
-		return this.message.guild.settings.get(this.schema.path) != schema.default;
+		return this.message.guild!.settings.get(this.schema.path) != schema.default;
 	}
 
 	public async init(): Promise<void> {
@@ -56,19 +56,19 @@ export class SettingsMenu {
 			.setListener(this.onReaction.bind(this))
 			.setEndListener(this.stop.bind(this));
 		this.llrc.setTime(120000);
-		this.messageCollector = this.response.channel.createMessageCollector(msg => msg.author.id === this.message.author.id);
+		this.messageCollector = this.response.channel.createMessageCollector(msg => msg.author!.id === this.message.author!.id);
 		this.messageCollector.on('collect', msg => this.onMessage(msg));
 		await this._renderResponse();
 	}
 
 	private render(): MessageEmbed {
 		const i18n = this.message.language;
-		const description = [];
+		const description: string[] = [];
 		if (this.pointerIsFolder) {
 			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
 			if (this.errorMessage) description.push(this.errorMessage);
-			const keys = [];
-			const folders = [];
+			const keys: string[] = [];
+			const folders: string[] = [];
 			for (const [key, value] of (this.schema as Schema).entries()) {
 				if (value.type === 'Folder') {
 					if ((value as Schema).configurableKeys.length) folders.push(key);
@@ -88,11 +88,11 @@ export class SettingsMenu {
 					'',
 					i18n.get('COMMAND_CONF_MENU_RENDER_TCTITLE'),
 					i18n.get('COMMAND_CONF_MENU_RENDER_UPDATE'),
-					(this.schema as SchemaEntry).array && (this.message.guild.settings.get(this.schema.path) as any[]).length ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : null,
-					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : null,
-					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : null,
+					(this.schema as SchemaEntry).array && (this.message.guild!.settings.get(this.schema.path) as any[]).length ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
+					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : '',
+					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : '',
 					'',
-					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild.settings.display(this.message, this.schema).replace(/``+/g, '`\u200B`'))
+					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild!.settings.display(this.message, this.schema).replace(/``+/g, '`\u200B`'))
 				);
 			}
 		}
@@ -100,7 +100,7 @@ export class SettingsMenu {
 		const { parent } = this.schema as SchemaEntry | SchemaFolder;
 
 		if (parent) this._reactResponse(EMOJIS.BACK);
-		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user.id);
+		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id);
 
 		return this.embed
 			.setDescription(`${description.filter(v => v !== null).join('\n')}\n\u200B`)
@@ -132,10 +132,10 @@ export class SettingsMenu {
 	}
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
-		if (reaction.userID !== this.message.author.id) return;
-		this.llrc.setTime(120000);
+		if (reaction.userID !== this.message.author!.id) return;
+		this.llrc!.setTime(120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {
-			this.llrc.end();
+			this.llrc!.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
 			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID);
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
@@ -148,14 +148,14 @@ export class SettingsMenu {
 		try {
 			// @ts-ignore
 			return await this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
-				.reactions(encodeURIComponent(reaction), userID === this.message.client.user.id ? '@me' : userID)
+				.reactions(encodeURIComponent(reaction), userID === this.message.client.user!.id ? '@me' : userID)
 				.delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Unknown Message
 				if (error.code === 10008) {
 					this.response = null;
-					this.llrc.end();
+					this.llrc!.end();
 					return this;
 				}
 
@@ -178,7 +178,7 @@ export class SettingsMenu {
 			// Unknown Message
 			if (error instanceof DiscordAPIError && error.code === 10008) {
 				this.response = null;
-				this.llrc.end();
+				this.llrc!.end();
 			} else {
 				this.message.client.emit(Events.ApiError, error);
 			}
@@ -193,7 +193,7 @@ export class SettingsMenu {
 			// Unknown Message
 			if (error instanceof DiscordAPIError && error.code === 10008) {
 				this.response = null;
-				this.llrc.end();
+				this.llrc!.end();
 			} else {
 				this.message.client.emit(Events.ApiError, error);
 			}
@@ -202,8 +202,8 @@ export class SettingsMenu {
 
 	private async tryUpdate(value: any, options?: SettingsFolderUpdateOptions) {
 		const { errors, updated } = await (value === null
-			? this.message.guild.settings.reset(this.schema.path)
-			: this.message.guild.settings.update(this.schema.path, value, options));
+			? this.message.guild!.settings.reset(this.schema.path)
+			: this.message.guild!.settings.update(this.schema.path, value, options));
 		if (errors.length) this.errorMessage = String(errors[0]);
 		else if (!updated.length) this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 	}
@@ -212,8 +212,8 @@ export class SettingsMenu {
 		if (this.changedCurrentPieceValue) {
 			const previousValue = this.oldSettings.get(this.schema.path);
 			const { errors } = await (previousValue === null
-				? this.message.guild.settings.reset(this.schema.path)
-				: this.message.guild.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
+				? this.message.guild!.settings.reset(this.schema.path)
+				: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
 			if (errors.length) this.errorMessage = String(errors[0]);
 		} else {
 			this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
@@ -224,12 +224,12 @@ export class SettingsMenu {
 		if (this.response) {
 			if (this.response.reactions.size) {
 				this.response.reactions.removeAll()
-					.catch(error => this.response.client.emit(Events.ApiError, error));
+					.catch(error => this.response!.client.emit(Events.ApiError, error));
 			}
 			this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
 				.catch(error => this.message.client.emit(Events.ApiError, error));
 		}
-		if (!this.messageCollector.ended) this.messageCollector.stop();
+		if (!this.messageCollector!.ended) this.messageCollector!.stop();
 	}
 
 	private isConfigurable(schema: Schema | SchemaEntry) {

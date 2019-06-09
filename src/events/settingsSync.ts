@@ -10,8 +10,8 @@ export default class extends Event {
 
 		const blockedWords = settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
 		const guild = settings.target as SkyraGuild;
-		if (blockedWords.length) guild.security.updateRegExp(blockedWords);
-		else guild.security.regexp = null;
+		if (blockedWords.length) guild!.security.updateRegExp(blockedWords);
+		else guild!.security.regexp = null;
 	}
 
 }

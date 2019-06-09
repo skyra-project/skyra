@@ -27,8 +27,8 @@ export abstract class Player {
 		const { next } = this.game;
 		this.game.content = this.game.language.get(
 			this.game.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT',
-			next.name,
-			next.color
+			next!.name,
+			next!.color
 		);
 	}
 

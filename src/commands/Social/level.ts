@@ -11,7 +11,7 @@ const THEMES_FOLDER = join(cdnFolder, 'img', 'banners');
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		const output = await this.showProfile(message, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
 	}
@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 			.createBeveledClip(10, 10, 620, 154, 8)
 			.addImage(themeImageSRC, 9, 9, 189, 157)
 			.restore()
-			.addImage(this.template, 0, 0, 640, 174)
+			.addImage(this.template!, 0, 0, 640, 174)
 
 			// Set styles
 			.setColor('rgb(23,23,23)')

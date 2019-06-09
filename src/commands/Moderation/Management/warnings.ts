@@ -21,19 +21,21 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [target]: [KlasaUser]) {
-		const warnings = (await message.guild.moderation.fetch(target ? target.id : undefined)).filter(log => log.type === ModerationTypeKeys.Warn);
+	public async run(message: KlasaMessage, [target]: [KlasaUser?]) {
+		const warnings = (await (target
+			? message.guild!.moderation.fetch(target!.id)
+			: message.guild!.moderation.fetch())).filter(log => log.type === ModerationTypeKeys.Warn);
 		if (!warnings.size) throw message.language.get('COMMAND_WARNINGS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
-			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL())
+			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL())
 			.setTitle(message.language.get('COMMAND_WARNINGS_AMOUNT', warnings.size)));
 
 		// Fetch usernames
 		const users = new Map() as Map<string, string>;
 		for (const warning of warnings.values()) {
-			const id = typeof warning.moderator === 'string' ? warning.moderator : warning.moderator.id;
+			const id = typeof warning.moderator === 'string' ? warning.moderator : warning.moderator!.id;
 			if (!users.has(id)) users.set(id, await this.client.fetchUsername(id));
 		}
 
@@ -45,12 +47,12 @@ export default class extends SkyraCommand {
 		}
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.run(response, message.author.id);
+		await display.run(response, message.author!.id);
 		return response;
 	}
 
 	public displayWarning(users: Map<string, string>, warning: ModerationManagerEntry) {
-		const id = typeof warning.moderator === 'string' ? warning.moderator : warning.moderator.id;
+		const id = typeof warning.moderator === 'string' ? warning.moderator : warning.moderator!.id;
 		return `Case \`${warning.case}\`. Moderator: **${users.get(id)}**.\n${warning.reason || 'None'}`;
 	}
 

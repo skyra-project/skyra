@@ -6,11 +6,11 @@ export class LongLivingReactionCollector {
 
 	public client: Client;
 	public listener: LongLivingReactionCollectorListener | null;
-	public endListener: () => void;
+	public endListener: (() => void) | null;
 
-	private _timer: NodeJS.Timeout = null;
+	private _timer: NodeJS.Timeout | null = null;
 
-	public constructor(client: Client, listener: LongLivingReactionCollectorListener | null = null, endListener: () => void = null) {
+	public constructor(client: Client, listener: LongLivingReactionCollectorListener | null = null, endListener: (() => void) | null = null) {
 		this.client = client;
 		this.listener = listener;
 		this.endListener = endListener;

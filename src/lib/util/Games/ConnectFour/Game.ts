@@ -10,7 +10,7 @@ export class Game {
 
 	public readonly board: Board;
 	public message: KlasaMessage;
-	public players: readonly [Player, Player];
+	public players: readonly [Player | null, Player | null];
 	public winner: Player | null;
 	public llrc: LongLivingReactionCollector | null;
 	public stopped: boolean = false;
@@ -56,26 +56,26 @@ export class Game {
 	 */
 	public get manageMessages(): boolean {
 		const { message } = this;
-		return (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES);
+		return (message.channel as TextChannel).permissionsFor(message.guild!.me!)!.has(Permissions.FLAGS.MANAGE_MESSAGES);
 	}
 
 	public stop() {
 		this.stopped = true;
-		if (this.llrc.endListener) this.llrc.endListener();
+		if (this.llrc!.endListener) this.llrc!.endListener();
 	}
 
 	public async run() {
 		this.message = await this.message.send(this.language.get('SYSTEM_LOADING')) as KlasaMessage;
 		for (const reaction of CONNECT_FOUR.REACTIONS) await this.message.react(reaction);
-		this.content = this.language.get('COMMAND_C4_GAME_NEXT', this.next.name, this.next.color);
+		this.content = this.language.get('COMMAND_C4_GAME_NEXT', this.next!.name, this.next!.color);
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 
 		let stop = false;
 		while (!stop) {
 			const player = this.next;
-			await player.start();
+			await player!.start();
 			if (!(stop = !this.running)) this._turnLeft = !this._turnLeft;
-			await player.finish();
+			await player!.finish();
 		}
 
 		if (!this.message.deleted && this.manageMessages) {

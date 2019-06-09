@@ -18,11 +18,15 @@ export abstract class MusicCommand extends SkyraCommand {
 		this.music = new MusicBitField(options.music);
 	}
 
+	public async init() {
+		if (!this.client.lavalink) this.disable();
+	}
+
 }
 
 /**
  * The music command options
  */
-export type MusicCommandOptions = CommandOptions & {
+export interface MusicCommandOptions extends CommandOptions {
 	music?: BitFieldResolvable<MusicBitFieldString>;
-};
+}

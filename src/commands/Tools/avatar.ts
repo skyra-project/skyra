@@ -22,9 +22,9 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		if (!user.avatar) throw message.language.get('COMMAND_AVATAR_NONE');
 		return message.sendEmbed(new MessageEmbed()
-			.setAuthor(user.tag, user.avatarURL({ size: 128 }))
+			.setAuthor(user.tag, user.avatarURL({ size: 128 })!)
 			.setColor(getColor(message) || 0xFFAB2D)
-			.setImage(user.avatarURL({ size: 2048 })));
+			.setImage(user.avatarURL({ size: 2048 })!));
 	}
 
 }

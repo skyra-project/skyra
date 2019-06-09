@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [emoji]: [string]) {
 		if (REG_EMOJI.test(emoji)) {
-			const [, animated, emojiName, emojiID] = /^<(a)?:(\w{2,32}):(\d{17,21})>$/.exec(emoji);
+			const [, animated, emojiName, emojiID] = /^<(a)?:(\w{2,32}):(\d{17,21})>$/.exec(emoji)!;
 			return message.sendLocale('COMMAND_EMOJI_CUSTOM', [emojiName, emojiID], {
 				files: [{ attachment: `https://cdn.discordapp.com/emojis/${emojiID}.${animated ? 'gif' : 'png'}` }]
 			});
@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 	}
 
 	public emoji(emoji: string) {
-		const r = [];
+		const r: string[] = [];
 		let c = 0;
 		let p = 0;
 		let i = 0;

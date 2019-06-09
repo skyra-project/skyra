@@ -7,7 +7,7 @@ export class SkyraGuildMember extends GuildMember {
 	/**
 	 * The member level settings for this context
 	 */
-	public settings = this.client.gateways.get(Databases.Members).acquire(this, `${this.guild.id}.${this.id}`);
+	public settings = this.client.gateways.get(Databases.Members)!.acquire(this, `${this.guild!.id}.${this.id}`);
 
 }
 

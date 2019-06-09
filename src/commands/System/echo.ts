@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, ...content]: [TextChannel?, ...string[]]) {
 		if (message.deletable) message.nuke().catch(() => null);
 
-		const attachment = message.attachments.size ? message.attachments.first().url : null;
+		const attachment = message.attachments.size ? message.attachments.first()!.url : null;
 		const mesContent = content.length ? content.join(' ') : '';
 
 		if (!mesContent && !attachment) {

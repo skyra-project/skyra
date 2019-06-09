@@ -22,7 +22,7 @@ const imageCoordinates = [
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -47,11 +47,11 @@ export default class extends SkyraCommand {
 	}
 
 	private async generate(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === message.author.id) ({ user } = this.client);
+		if (user.id === message.author!.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const buffers = await Promise.all([
-			fetchAvatar(message.author, 128),
+			fetchAvatar(message.author!, 128),
 			fetchAvatar(user, 128)
 		]);
 		const images = await Promise.all(buffers.map(buffer => new Promise<Image>((resolve, reject) => {
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 
 		/* Initialize Canvas */
 		const canvas = new Canvas(500, 500)
-			.addImage(this.template, 0, 0, 500, 500);
+			.addImage(this.template!, 0, 0, 500, 500);
 
 		for (const index of [0, 1]) {
 			const image = images[index];

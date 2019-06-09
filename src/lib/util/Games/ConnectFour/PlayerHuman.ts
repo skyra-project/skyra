@@ -19,9 +19,9 @@ export class PlayerHuman extends Player {
 
 	public async start() {
 		const reaction = await new Promise<string>(resolve => {
-			this.game.llrc.setTime(60000);
-			this.game.llrc.setEndListener(() => resolve(''));
-			this.game.llrc.setListener(data => {
+			this.game.llrc!.setTime(60000);
+			this.game.llrc!.setEndListener(() => resolve(''));
+			this.game.llrc!.setListener(data => {
 				if (data.userID === this.player.id && CONNECT_FOUR.REACTIONS.includes(data.emoji.name)) {
 					if (this.game.manageMessages) {
 						this.removeEmoji(data.emoji, data.userID)
@@ -43,8 +43,8 @@ export class PlayerHuman extends Player {
 
 	public finish() {
 		super.finish();
-		this.game.llrc.setTime(-1);
-		this.game.llrc.setListener(null);
+		this.game.llrc!.setTime(-1);
+		this.game.llrc!.setListener(null);
 	}
 
 	private async removeEmoji(emoji: LLRCDataEmoji, userID: string): Promise<void> {

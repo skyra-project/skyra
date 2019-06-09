@@ -31,13 +31,13 @@ async function ask(message: Message, list: readonly string[]) {
 	const abortOptions = message.language.get('TEXT_PROMPT_ABORT_OPTIONS') as readonly string[];
 	const promptFilter = (m: Message) => m.author === message.author
 		&& (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
-	let response: Message;
+	let response: Message | null;
 	let n: number;
 	let attempts = 0;
 	do {
 		if (attempts !== 0) await message.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [codeblock, attempts, kAttempts]);
 		response = await message.channel.awaitMessages(promptFilter, kPromptOptions)
-			.then(responses => responses.size ? responses.first() : null);
+			.then(responses => responses.size ? responses.first()! : null);
 
 		if (response) {
 			if (response.deletable) response.nuke().catch(() => null);
@@ -48,14 +48,14 @@ async function ask(message: Message, list: readonly string[]) {
 	} while (response && attempts++ < kAttempts);
 
 	if (!response || attempts >= kAttempts) throw null;
-	return (n | 0) - 1;
+	return (n! | 0) - 1;
 }
 
 function *resolve(data: PromptListResolvable, maxLength: number): Iterable<string> {
 	let i = 0;
 	for (const entry of data) {
-		if (typeof entry === 'string') yield `${i.toString().padStart(2, ' ')} :: ${entry}`;
-		else if (Array.isArray(entry)) yield `${i.toString().padStart(2, ' ')} :: ${entry.join(' : ')}`;
+		if (typeof entry === 'string') yield `${(i + 1).toString().padStart(2, ' ')} :: ${entry}`;
+		else if (Array.isArray(entry)) yield `${(i + 1).toString().padStart(2, ' ')} :: ${entry.join(' : ')}`;
 
 		if (++i >= maxLength) break;
 	}

@@ -25,18 +25,18 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [type = 'local', index = 1]: [string, number]) {
-		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild.id : null);
+		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild!.id : undefined);
 
-		const { position } = list.get(message.author.id) || { position: (list.size + 1) as number };
+		const { position } = list.get(message.author!.id) || { position: (list.size + 1) as number };
 		const page = await this.generatePage(message, list, index - 1, position);
 		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
 
 	public async generatePage(message: KlasaMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {
 		if (index > list.size / 10) index = 0;
-		const retrievedPage = [];
-		const promises = [];
-		const page = [];
+		const retrievedPage: LeaderboardUser[] = [];
+		const promises: Promise<void>[] = [];
+		const page: string[] = [];
 		const listSize = list.size;
 		const pageCount = Math.ceil(listSize / 10);
 		const indexLength = ((index * 10) + 10).toString().length;
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {
-			page.push(`• ${value.position.toString().padStart(indexLength, ' ')}: ${this.keyUser(value.name).padEnd(25, ' ')} :: ${value.points}`);
+			page.push(`• ${value.position.toString().padStart(indexLength, ' ')}: ${this.keyUser(value.name!).padEnd(25, ' ')} :: ${value.points}`);
 		}
 
 		page.push('');

@@ -20,12 +20,12 @@ export default class extends ModerationCommand {
 	}
 
 	public async prehandle(message: KlasaMessage) {
-		return message.guild.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild.moderation.createLock() } : null;
+		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
 		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
-		await message.guild.members.ban(user.id, { days: (message.flags.day && Number(message.flags.day)) || 0, reason });
+		await message.guild!.members.ban(user.id, { days: (message.flags.day && Number(message.flags.day)) || 0, reason });
 
 		return this.sendModlog(message, user, reason);
 	}

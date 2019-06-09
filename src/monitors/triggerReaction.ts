@@ -6,7 +6,7 @@ export default class extends Monitor {
 
 	public async run(message: KlasaMessage): Promise<void> {
 		const content = message.content.toLowerCase();
-		const trigger = (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).find(trg => content.includes(trg.input));
+		const trigger = (message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).find(trg => content.includes(trg.input));
 		if (trigger && trigger.action === 'react') {
 			if (message.reactable) {
 				await this.tryReact(message, trigger);
@@ -15,14 +15,14 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		return this.enabled
+		return Boolean(this.enabled
 			&& message.guild
 			&& !message.editedTimestamp
 			&& !message.webhookID
 			&& !message.system
-			&& !message.author.bot
-			&& message.author.id !== this.client.user.id
-			&& (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).length !== 0;
+			&& !message.author!.bot
+			&& message.author!.id !== this.client.user!.id
+			&& (message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).length !== 0);
 	}
 
 	private async tryReact(message: KlasaMessage, trigger: TriggerIncludes) {
@@ -35,7 +35,7 @@ export default class extends Monitor {
 			if (error.code === 90001) return;
 			// Unknown Emoji (The emoji has been deleted or the bot is not in the whitelist)
 			if (error.code === 10014) {
-				const { errors } = await message.guild.settings.update(GuildSettings.Trigger.Includes, trigger, { arrayAction: 'remove' });
+				const { errors } = await message.guild!.settings.update(GuildSettings.Trigger.Includes, trigger, { arrayAction: 'remove' });
 				if (errors.length) this.client.emit(Events.Wtf, errors);
 				return;
 			}

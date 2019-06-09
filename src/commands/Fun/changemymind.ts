@@ -8,7 +8,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
-		const attachment = await this.generate(message.author, text);
+		const attachment = await this.generate(message.author!, text);
 		return message.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
 	}
 
@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		const guy = await fetchAvatar(author, 128);
 
 		return new Canvas(591, 607)
-			.addImage(this.template, 0, 0, 591, 607)
+			.addImage(this.template!, 0, 0, 591, 607)
 
 			// Add user's avatar
 			.addImage(guy, 114, 32, 82, 82, { type: 'round', radius: 41, restore: true })

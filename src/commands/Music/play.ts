@@ -17,9 +17,8 @@ export default class extends MusicCommand {
 		this.createCustomResolver('song', (arg, possible, message) => arg ? this.client.arguments.get('song').run(arg, possible, message) : null);
 	}
 
-	// @ts-ignore
-	public async run(message: KlasaMessage, [songs]: [Track | Track[]]): Promise<void> {
-		const { music } = message.guild;
+	public async run(message: KlasaMessage, [songs]: [Track | Track[]]) {
+		const { music } = message.guild!;
 
 		if (songs) {
 			// If there are songs, add them
@@ -63,7 +62,7 @@ export default class extends MusicCommand {
 		}
 
 		if (!music.length && music.channelID) {
-			await music.channel.sendLocale('COMMAND_PLAY_END');
+			await music.channel!.sendLocale('COMMAND_PLAY_END');
 			await music.leave().catch(error => {
 				this.client.emit(Events.Wtf, error);
 			});

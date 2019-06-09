@@ -1,17 +1,15 @@
-import { GuildStore } from 'discord.js';
-import { Gateway, Settings } from 'klasa';
+import { Gateway, Settings, KlasaGuild } from 'klasa';
 
 export class MemberGateway extends Gateway {
 
-	protected _synced: boolean;
-	protected cache: GuildStore;
+	protected _synced: boolean = false;
 
 	public get(id: string) {
 		const [guildID, memberID] = id.split('.');
 		const guild = this.cache.get(guildID);
 		if (!guild) return null;
 
-		const member = guild.members.get(memberID);
+		const member = guild!.members.get(memberID);
 		return (member && member.settings) || null;
 	}
 
@@ -20,9 +18,9 @@ export class MemberGateway extends Gateway {
 	public async sync(input?: string | string[]): Promise<Settings | this> {
 		const result = await super.sync(input);
 		if (result === this) {
-			for (const guild of this.cache.values()) {
+			for (const guild of this.cache.values() as IterableIterator<KlasaGuild>) {
 				// @ts-ignore
-				for (const member of guild.members.values()) if (member.settings.existenceStatus === null) member.settings.existenceStatus = false;
+				for (const member of guild!.members.values()) if (member.settings.existenceStatus === null) member.settings.existenceStatus = false;
 			}
 		}
 		return result;

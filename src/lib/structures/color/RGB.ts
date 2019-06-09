@@ -26,7 +26,7 @@ export class RGB {
 	}
 
 	public get hex() {
-		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		return new HEX(this.r.toString(16), this.g.toString(16), this.b.toString(16));
 	}
 
@@ -40,8 +40,8 @@ export class RGB {
 		const b = this.b / 255;
 		const max = Math.max(r, g, b);
 		const min = Math.min(r, g, b);
-		let h;
-		let s;
+		let h: number;
+		let s: number;
 		const l = (max + min) / 2;
 
 		if (max === min) {
@@ -59,10 +59,11 @@ export class RGB {
 				case b: h = ((r - g) / d) + 4;
 				// no default
 			}
-			h /= 6;
+			// TODO(kyranet): This feel more wrong than eating cactus.
+			h! /= 6;
 		}
-		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
-		return new HSL(Math.round(h * 360), Math.round(s * 100), Math.round(l * 100));
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+		return new HSL(Math.round(h! * 360), Math.round(s * 100), Math.round(l * 100));
 	}
 
 	public get b10() {

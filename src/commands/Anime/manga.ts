@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 			.catch(error => { throw error || message.language.get('COMMAND_ANIME_NO_CHOICE'); });
 
 		const synopsis = cutText(entry.attributes.synopsis, 750);
-		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10));
+		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10))!;
 		const mangaURL = `https://kitsu.io/manga/${entry.attributes.slug}`;
 		const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as MangaLanguage;
 		const type = entry.attributes.subtype;

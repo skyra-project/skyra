@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [type, mode = 'enable']: [string, string?]) {
-		const level = message.guild.settings.get(GuildSettings.Filter.Level) as GuildSettings.Filter.Level;
+		const level = message.guild!.settings.get(GuildSettings.Filter.Level) as GuildSettings.Filter.Level;
 		if (type === 'show') {
 			return message.sendLocale('COMMAND_SETFILTERMODE_SHOW', [
 				level & VALUES.alert.value,
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 			? level | value
 			: level & ~value;
 		if (level === changed) throw message.language.get('COMMAND_SETFILTERMODE_EQUALS');
-		await message.guild.settings.update(GuildSettings.Filter.Level, changed);
+		await message.guild!.settings.update(GuildSettings.Filter.Level, changed);
 
 		return message.sendLocale(key, [enable]);
 	}

@@ -6,8 +6,8 @@ export class PreciseTimeout {
 
 	private readonly endsAt: number;
 	private stopped = false;
-	private resolve: () => void = null;
-	private timeout: NodeJS.Timeout = null;
+	private resolve: (() => void) | null = null;
+	private timeout: NodeJS.Timeout | null = null;
 
 	/**
 	 * Create a new PreciseTimeout
@@ -15,9 +15,6 @@ export class PreciseTimeout {
 	 */
 	public constructor(time: number) {
 		this.endsAt = Date.now() + time;
-		this.stopped = false;
-		this.resolve = null;
-		this.timeout = null;
 	}
 
 	/**
@@ -28,7 +25,7 @@ export class PreciseTimeout {
 
 		const cb = () => {
 			if (Date.now() + 10 >= this.endsAt) this.stopped = true;
-			this.resolve();
+			this.resolve!();
 			this.resolve = null;
 		};
 

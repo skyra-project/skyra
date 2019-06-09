@@ -28,8 +28,8 @@ export default class extends Monitor {
 	public async run(message: KlasaMessage): Promise<void> {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const capsfilter = message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
-		const capsthreshold = message.guild.settings.get(GuildSettings.Selfmod.Capsthreshold) as GuildSettings.Selfmod.Capsthreshold;
+		const capsfilter = message.guild!.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
+		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capsthreshold) as GuildSettings.Selfmod.Capsthreshold;
 		const { length } = message.content;
 		let count = 0;
 		let i = 0;
@@ -39,7 +39,7 @@ export default class extends Monitor {
 		if ((count / length) * 100 < capsthreshold) return;
 
 		if ((capsfilter & DELETE_FLAG) && message.deletable) {
-			if (length > 25) message.author.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))).catch(() => null);
+			if (length > 25) message.author!.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))).catch(() => null);
 			message.nuke().catch(() => null);
 		}
 
@@ -51,21 +51,21 @@ export default class extends Monitor {
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 				.splitFields(message.content)
 				.setColor(0xEFAE45)
-				.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+				.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
 				.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_CAPSFILTER')}`)
 				.setTimestamp());
 		}
 	}
 
 	public shouldRun(message: KlasaMessage): boolean {
-		return this.enabled
+		return Boolean(this.enabled
 			&& message.guild
 			&& !message.webhookID
 			&& !message.system
-			&& message.author.id !== this.client.user.id
-			&& message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter
-			&& (message.guild.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum) < message.content.length
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& message.author!.id !== this.client.user!.id
+			&& message.guild!.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter
+			&& (message.guild!.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum) < message.content.length
+			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id));
 	}
 
 }

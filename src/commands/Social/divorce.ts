@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const marry = message.author.settings.get(UserSettings.Marry) as UserSettings.Marry;
+		const marry = message.author!.settings.get(UserSettings.Marry) as UserSettings.Marry;
 		if (!marry) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 		// Ask the user if they're sure
@@ -27,12 +27,12 @@ export default class extends SkyraCommand {
 
 		// Reset the values for both entries
 		await Promise.all([
-			message.author.settings.reset(UserSettings.Marry),
+			message.author!.settings.reset(UserSettings.Marry),
 			user.settings.reset(UserSettings.Marry)
 		]);
 
 		// Tell the user about the divorce
-		user.send(message.language.get('COMMAND_DIVORCE_DM', message.author.username)).catch(() => null);
+		user.send(message.language.get('COMMAND_DIVORCE_DM', message.author!.username)).catch(() => null);
 
 		return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
 	}

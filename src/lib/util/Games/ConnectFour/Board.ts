@@ -35,12 +35,12 @@ export class Board {
 
 	public restore() {
 		if (this.stack.length) {
-			this.cells = this.stack.pop();
+			this.cells = this.stack.pop()!;
 		}
 	}
 
 	public render() {
-		const output = [];
+		const output: string[] = [];
 		for (let y = 0; y < kRows; ++y) {
 			// Render each line
 			const line: string[] = [];

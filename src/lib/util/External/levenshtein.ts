@@ -79,7 +79,7 @@ function fullLevenshtein(a: string, b: string, la: number, lb: number, offset: n
 	let bx2: number;
 	let bx3: number;
 
-	const vector = [];
+	const vector: number[] = [];
 
 	while (y < la) {
 		vector.push(y + 1, a.charCodeAt(offset + y++));
@@ -122,5 +122,5 @@ function fullLevenshtein(a: string, b: string, la: number, lb: number, offset: n
 		}
 	}
 
-	return dd;
+	return dd!;
 }

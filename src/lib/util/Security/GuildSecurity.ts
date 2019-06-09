@@ -33,7 +33,7 @@ export class GuildSecurity {
 	/**
 	 * The lockdowns map
 	 */
-	public lockdowns: Map<string, PreciseTimeout> = new Map();
+	public lockdowns: Map<string, PreciseTimeout | null> = new Map();
 
 	/**
 	 * The RegExp
@@ -44,8 +44,8 @@ export class GuildSecurity {
 		this.guild = guild;
 		this.raid = new AntiRaid(this.guild);
 		this.nms = new RateLimitManager(
-			this.guild.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed) as GuildSettings.NoMentionSpam.MentionsAllowed,
-			this.guild.settings.get(GuildSettings.NoMentionSpam.TimePeriod) as GuildSettings.NoMentionSpam.TimePeriod * 1000
+			this.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed) as GuildSettings.NoMentionSpam.MentionsAllowed,
+			this.guild!.settings.get(GuildSettings.NoMentionSpam.TimePeriod) as GuildSettings.NoMentionSpam.TimePeriod * 1000
 		);
 	}
 

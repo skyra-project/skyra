@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user, content]: [KlasaUser, string]) {
-		const attachment = message.attachments.size > 0 ? message.attachments.first().url : null;
+		const attachment = message.attachments.size > 0 ? message.attachments.first()!.url : null;
 		const options: MessageOptions = {};
 		if (attachment) options.files = [{ attachment }];
 

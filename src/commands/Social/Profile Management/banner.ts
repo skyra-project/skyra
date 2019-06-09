@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 
 	private readonly banners: Map<string, BannerCache> = new Map();
 	private readonly listPrompt = this.definePrompt('<all|user>');
-	private display = null;
+	private display: UserRichDisplay | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -40,10 +40,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
-		const banners = new Set(message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
-		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix, banner.id);
+		const banners = new Set(message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
+		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix, banner.id);
 
-		const money = message.author.settings.get(UserSettings.Money) as UserSettings.Money;
+		const money = message.author!.settings.get(UserSettings.Money) as UserSettings.Money;
 		if (money < banner.price) throw message.language.get('COMMAND_BANNER_MONEY', money, banner.price);
 
 		const accepted = await this._prompt(message, banner);
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		await user.settings.sync();
 
 		await Promise.all([
-			message.author.settings.update([[UserSettings.Money, money - banner.price], [UserSettings.BannerList, [...banners]]], { arrayAction: 'overwrite' }),
+			message.author!.settings.update([[UserSettings.Money, money - banner.price], [UserSettings.BannerList, [...banners]]], { arrayAction: 'overwrite' }),
 			user.settings.increase(UserSettings.Money, banner.price * 0.1)
 		]);
 
@@ -65,20 +65,20 @@ export default class extends SkyraCommand {
 	}
 
 	public async reset(message: KlasaMessage) {
-		const banners = message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList;
+		const banners = message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList;
 		if (!banners.length) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY');
-		if (message.author.settings.get(UserSettings.ThemeProfile) === '0001') throw message.language.get('COMMAND_BANNER_RESET_DEFAULT');
+		if (message.author!.settings.get(UserSettings.ThemeProfile) === '0001') throw message.language.get('COMMAND_BANNER_RESET_DEFAULT');
 
-		await message.author.settings.update(UserSettings.ThemeProfile, '0001');
+		await message.author!.settings.update(UserSettings.ThemeProfile, '0001');
 		return message.sendLocale('COMMAND_BANNER_RESET');
 	}
 
 	public async set(message: KlasaMessage, [banner]: [BannerCache]) {
-		const banners = message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList;
+		const banners = message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList;
 		if (!banners.length) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY');
 		if (!banners.includes(banner.id)) throw message.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
 
-		await message.author.settings.update(UserSettings.ThemeProfile, banner.id);
+		await message.author!.settings.update(UserSettings.ThemeProfile, banner.id);
 		return message.sendLocale('COMMAND_BANNER_SET', [banner.title]);
 	}
 
@@ -112,12 +112,12 @@ export default class extends SkyraCommand {
 	}
 
 	private _buyList(message: KlasaMessage) {
-		return this._runDisplay(message, this.display);
+		return this._runDisplay(message, this.display!);
 	}
 
 	private _userList(message: KlasaMessage) {
-		const prefix = message.guild.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
-		const banners = new Set(message.author.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
+		const prefix = message.guild!.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
+		const banners = new Set(message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
 		if (!banners.size) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', prefix);
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(getColor(message) || 0xFFAB2D));
@@ -136,7 +136,7 @@ export default class extends SkyraCommand {
 
 	private async _runDisplay(message: KlasaMessage, display: UserRichDisplay) {
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.run(response, message.author.id);
+		await display.run(response, message.author!.id);
 		return response;
 	}
 

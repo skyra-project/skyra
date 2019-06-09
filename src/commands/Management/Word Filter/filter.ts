@@ -26,34 +26,34 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is not filtered
-		const raw = message.guild.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
-		const { regexp } = message.guild.security;
+		const raw = message.guild!.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
+		const { regexp } = message.guild!.security;
 		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.get('COMMAND_FILTER_FILTERED', true);
 
 		// Perform update
-		await message.guild.settings.update(GuildSettings.Filter.Raw, word, { arrayAction: 'add' });
+		await message.guild!.settings.update(GuildSettings.Filter.Raw, word, { arrayAction: 'add' });
 		return message.sendLocale('COMMAND_FILTER_ADDED', [word]);
 	}
 
 	public async remove(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is already filtered
-		const raw = message.guild.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
+		const raw = message.guild!.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
 		if (!raw.includes(word)) throw message.language.get('COMMAND_FILTER_FILTERED', false);
 
 		// Perform update
 		if (raw.length === 1) return this.reset(message);
-		await message.guild.settings.update(GuildSettings.Filter.Raw, word, { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.Filter.Raw, word, { arrayAction: 'remove' });
 		return message.sendLocale('COMMAND_FILTER_REMOVED', [word]);
 	}
 
 	public async reset(message: KlasaMessage) {
-		await message.guild.settings.reset(GuildSettings.Filter.Raw);
-		message.guild.security.regexp = null;
+		await message.guild!.settings.reset(GuildSettings.Filter.Raw);
+		message.guild!.security.regexp = null;
 		return message.sendLocale('COMMAND_FILTER_RESET');
 	}
 
 	public show(message: KlasaMessage) {
-		const raw = message.guild.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
+		const raw = message.guild!.settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
 		return message.sendMessage(raw.length
 			? message.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``)
 			: message.language.get('COMMAND_FILTER_SHOW_EMPTY'));

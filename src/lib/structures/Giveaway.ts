@@ -29,7 +29,7 @@ export class Giveaway {
 	public title: string;
 	public minimum: number;
 	public minimumWinners: number;
-	public messageID: string;
+	public messageID: string | null;
 	public channelID: string;
 	public guildID: string;
 	public finished = false;
@@ -56,7 +56,7 @@ export class Giveaway {
 
 	public get language() {
 		const { guild } = this;
-		return guild ? guild.language : null;
+		return guild ? guild!.language : null;
 	}
 
 	public get remaining() {
@@ -157,17 +157,16 @@ export class Giveaway {
 	}
 
 	private async getData() {
-		const { language } = this;
-		const { state } = this;
+		const { state, language } = this;
 		if (state === States.Finished) {
 			await this.finish();
 			this.winners = await this.pickWinners();
-			await this.announceWinners(language);
+			await this.announceWinners(language!);
 		} else {
 			this.refreshAt = this.calculateNextRefresh();
 		}
-		const content = this.getContent(state, language);
-		const embed = this.getEmbed(state, language);
+		const content = this.getContent(state, language!);
+		const embed = this.getEmbed(state, language!);
 		return { content, embed };
 	}
 
@@ -252,7 +251,7 @@ export class Giveaway {
 
 	private async fetchParticipants() {
 		try {
-			const users = await fetchReactionUsers(this.store.client, this.channelID, this.messageID, Giveaway.EMOJI);
+			const users = await fetchReactionUsers(this.store.client, this.channelID, this.messageID!, Giveaway.EMOJI!);
 			users.delete(CLIENT_ID);
 			return [...users];
 		} catch (error) {
@@ -282,5 +281,5 @@ export interface GiveawayCreateData {
 
 export interface GiveawayData extends GiveawayCreateData {
 	id: string;
-	messageID: string;
+	messageID: string | null;
 }

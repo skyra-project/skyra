@@ -10,7 +10,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		const attachment = await this.generate(user);
 		return message.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
 	}
@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 		const buffers = [this.template, await fetchAvatar(user, 512)];
 		const [imgTitle, imgTriggered] = await Promise.all(buffers.map(buffer => new Promise<Image>((resolve, reject) => {
 			const image = new Image(128, 128);
-			image.src = buffer;
+			image.src = buffer!;
 			image.onload = resolve;
 			image.onerror = reject;
 			resolve(image);

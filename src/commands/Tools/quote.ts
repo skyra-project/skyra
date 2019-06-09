@@ -27,8 +27,8 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [, remoteMessage]: [TextChannel, KlasaMessage]) {
 		const embed = new MessageEmbed()
-			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128 }))
-			.setImage(getImage(remoteMessage))
+			.setAuthor(remoteMessage.author!.tag, remoteMessage.author!.displayAvatarURL({ size: 128 }))
+			.setImage(getImage(remoteMessage)!)
 			.setTimestamp(remoteMessage.createdAt);
 
 		const content = getContent(remoteMessage);

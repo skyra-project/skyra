@@ -21,8 +21,8 @@ export default class extends SkyraCommand {
 			arg ? this.client.arguments.get('username').run(arg, possible, message) : message.author);
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [User?]) {
-		const member = await message.guild.members.fetch(user.id).catch(() => null);
+	public async run(message: KlasaMessage, [user = message.author!]: [User]) {
+		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 
 		const embed = new MessageEmbed();
 		if (member) this.member(member, embed, message.language);
@@ -38,12 +38,12 @@ export default class extends SkyraCommand {
 			.setURL(member.user.displayAvatarURL({ size: 1024 }))
 			.setDescription(i18n.get('COMMAND_WHOIS_MEMBER', member))
 			.setThumbnail(member.user.displayAvatarURL({ size: 256 }))
-			.setFooter(`${this.client.user.username} ${this.client.version} | ${member.user.id}`, this.client.user.displayAvatarURL({ size: 128 }))
+			.setFooter(`${this.client.user!.username} ${this.client.version} | ${member.user.id}`, this.client.user!.displayAvatarURL({ size: 128 }))
 			.setTimestamp();
 
 		if (member.roles.size > 1) {
 			const roles = member.roles.sort(sortRanks);
-			roles.delete(member.guild.id);
+			roles.delete(member.guild!.id);
 			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
 		}
 
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 			.setURL(user.displayAvatarURL({ size: 1024 }))
 			.setDescription(i18n.get('COMMAND_WHOIS_USER', user))
 			.setThumbnail(user.displayAvatarURL({ size: 256 }))
-			.setFooter(`${this.client.user.username} ${this.client.version} | ES | ${user.id}`, this.client.user.displayAvatarURL({ size: 128 }))
+			.setFooter(`${this.client.user!.username} ${this.client.version} | ES | ${user.id}`, this.client.user!.displayAvatarURL({ size: 128 }))
 			.setTimestamp();
 	}
 

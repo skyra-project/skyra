@@ -3,6 +3,9 @@ import { WSMessageDeleteBulk } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { EventStore, Event } from 'klasa';
+import { DiscordAPIError } from 'discord.js';
+import { WriteResult } from 'rethinkdb-ts';
+import { StarboardMessageData } from '../lib/structures/StarboardMessage';
 
 export default class extends Event {
 
@@ -12,8 +15,8 @@ export default class extends Event {
 
 	public async run(data: WSMessageDeleteBulk): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild.channels.has(data.channel_id)) return;
-		for (const id of data.ids) guild.starboard.delete(id);
+		if (!guild || !guild!.channels.has(data.channel_id)) return;
+		for (const id of data.ids) guild!.starboard.delete(id);
 
 		// Delete entries from starboard if it exists
 		try {
@@ -22,15 +25,15 @@ export default class extends Event {
 				// @ts-ignore
 				.getAll(...data.ids.map(id => [data.channel_id, id]), { index: 'channel_message' })
 				.delete({ returnChanges: true })
-				.run();
+				.run() as WriteResult<StarboardMessageData>;
 
-			if (!results.deleted) return;
+			if (!results.changes || !results.deleted) return;
 
-			const channel = guild.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
+			const channel = guild!.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
 			if (!channel) return;
 
 			const messageSnowflakes = results.changes
-				.map(change => change.old_val.starMessageID)
+				.map(change => change.old_val ? change.old_val.starMessageID : null)
 				.filter(v => v);
 
 			if (messageSnowflakes.length === 0) return;
@@ -38,13 +41,13 @@ export default class extends Event {
 				// @ts-ignore
 				this.client.api.channels(channel).messages(messageSnowflakes[0])
 					.delete({ reason: 'Starboard Management: Message Deleted' })
-					.catch(error => this.client.emit(Events.ApiError, error));
+					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 				return;
 			}
 			// @ts-ignore
 			this.client.api.channels[channel].messages['bulk-delete']
 				.post({ data: { messages: messageSnowflakes }, reason: 'Starboard Management: Message Deleted' })
-				.catch(error => this.client.emit(Events.ApiError, error));
+				.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 		}

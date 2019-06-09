@@ -21,9 +21,9 @@ export default class extends SkyraCommand {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (channel.type !== 'text') throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 
-		const current = message.guild.settings.get(GuildSettings.Channels.ModerationLogs) as GuildSettings.Channels.ModerationLogs;
+		const current = message.guild!.settings.get(GuildSettings.Channels.ModerationLogs) as GuildSettings.Channels.ModerationLogs;
 		if (current === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
-		await message.guild.settings.update(GuildSettings.Channels.ModerationLogs, channel);
+		await message.guild!.settings.update(GuildSettings.Channels.ModerationLogs, channel);
 		return message.sendLocale('COMMAND_SETMODLOGS_SET', [channel]);
 	}
 

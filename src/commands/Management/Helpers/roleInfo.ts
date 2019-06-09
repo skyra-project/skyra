@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public run(message: KlasaMessage, [role = message.member.roles.highest]: [Role?]) {
+	public run(message: KlasaMessage, [role = message.member!.roles.highest]: [Role?]) {
 		const roleInfoTitles = message.language.get('COMMAND_ROLEINFO_TITLES') as unknown as RoleInfoTitles;
 		const { permissions } = role;
 		return message.sendEmbed(new MessageEmbed()

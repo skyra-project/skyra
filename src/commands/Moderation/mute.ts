@@ -26,12 +26,12 @@ export default class extends ModerationCommand {
 
 	public async inhibit(message: KlasaMessage) {
 		if (message.command !== this) return false;
-		const id = message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
-		const role = (id && message.guild.roles.get(id)) || null;
+		const id = message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+		const role = (id && message.guild!.roles.get(id)) || null;
 		if (!role) {
 			if (!await message.hasAtLeastPermissionLevel(6)) throw message.language.get('COMMAND_MUTE_LOWLEVEL');
-			if (!(message.channel as TextChannel).permissionsFor(message.guild.me).has(PERMISSIONS)) throw message.language.get('COMMAND_MUTECREATE_MISSING_PERMISSION');
-			if (message.guild.roles.size >= 250) throw message.language.get('COMMAND_MUTE_CONFIGURE_TOOMANY_ROLES');
+			if (!(message.channel as TextChannel).permissionsFor(message.guild!.me!)!.has(PERMISSIONS)) throw message.language.get('COMMAND_MUTECREATE_MISSING_PERMISSION');
+			if (message.guild!.roles.size >= 250) throw message.language.get('COMMAND_MUTE_CONFIGURE_TOOMANY_ROLES');
 			await message.ask(message.language.get('COMMAND_MUTE_CONFIGURE'))
 				.catch(() => { throw message.language.get('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
 			await message.sendLocale('SYSTEM_LOADING');
@@ -44,7 +44,7 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, _: User, member: SkyraGuildMember, reason: string) {
-		return mute(message.member, member, reason);
+		return mute(message.member!, member, reason);
 	}
 
 	public async posthandle() { /* Do nothing */ }

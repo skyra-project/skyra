@@ -103,9 +103,9 @@ export default class extends SkyraCommand {
 			}
 			success = true;
 		} catch (error) {
-			if (!syncTime) syncTime = stopwatch.toString();
-			if (thenable && !asyncTime) asyncTime = stopwatch.toString();
-			if (!type) type = new Type(error);
+			if (!syncTime!) syncTime = stopwatch.toString();
+			if (thenable && !asyncTime!) asyncTime = stopwatch.toString();
+			if (!type!) type = new Type(error);
 			result = error;
 			success = false;
 		}
@@ -121,7 +121,7 @@ export default class extends SkyraCommand {
 						showHidden: Boolean(message.flags.showHidden)
 					});
 		}
-		return { success, type, time: this.formatTime(syncTime, asyncTime), result: util.clean(result) };
+		return { success, type: type!, time: this.formatTime(syncTime!, asyncTime!), result: util.clean(result) };
 	}
 
 	private formatTime(syncTime: string, asyncTime: string) {
@@ -190,7 +190,7 @@ interface InternalEvalResults {
 }
 
 interface InternalEvalOptions {
-	sendAs: string;
+	sendAs: string | null;
 	hastebinUnavailable: boolean;
-	url: string;
+	url: string | null;
 }

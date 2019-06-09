@@ -20,7 +20,6 @@ export class SkyraGuild extends KlasaGuild {
 	public get memberTags() {
 		const collection = new Collection<string, string>();
 		for (const snowflake of this.memberSnowflakes) {
-			// @ts-ignore
 			const username = this.client.usertags.get(snowflake);
 			if (username) collection.set(snowflake, username);
 		}
@@ -30,7 +29,6 @@ export class SkyraGuild extends KlasaGuild {
 	public get memberUsernames() {
 		const collection = new Collection<string, string>();
 		for (const snowflake of this.memberSnowflakes) {
-			// @ts-ignore
 			const username = this.client.usertags.get(snowflake);
 			if (username) collection.set(snowflake, username.slice(0, username.indexOf('#')));
 		}

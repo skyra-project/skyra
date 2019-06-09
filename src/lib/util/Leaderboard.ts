@@ -57,7 +57,7 @@ export class Leaderboard {
 		if (guild) {
 			if (this._tempPromises.guilds.has(guild)) await this._tempPromises.guilds.get(guild);
 			else if (!this.guilds.has(guild)) await this._syncMembers(guild);
-			return this.guilds.get(guild);
+			return this.guilds.get(guild)!;
 		}
 
 		if (this._tempPromises.users) await this._tempPromises.users;
@@ -98,7 +98,7 @@ export class Leaderboard {
 	private async _syncMembers(guild: string): Promise<void> {
 		// If it's still on timeout, reset it
 		if (this.timeouts.guilds.has(guild)) {
-			this.timeouts.guilds.get(guild).stop();
+			this.timeouts.guilds.get(guild)!.stop();
 		}
 		// It's not deleting the entry as the previous run will resolve
 
@@ -111,11 +111,11 @@ export class Leaderboard {
 				.run();
 
 			// Clear the leaderboards for said guild
-			if (this.guilds.has(guild)) this.guilds.get(guild).clear();
+			if (this.guilds.has(guild)) this.guilds.get(guild)!.clear();
 			else this.guilds.set(guild, new Collection());
 
 			// Get the store and initialize the position number, then save all entries
-			const store = this.guilds.get(guild);
+			const store = this.guilds.get(guild)!;
 			let i = 0;
 			for (const entry of data) {
 				store.set(entry.id.split('.')[1], { name: null, points: entry[MemberSettings.Points], position: ++i });
@@ -135,7 +135,7 @@ export class Leaderboard {
 		// eslint-disable-next-line promise/catch-or-return, promise/prefer-await-to-then, promise/always-return
 		timeout.run().then(() => {
 			this.timeouts.guilds.delete(guild);
-			this.guilds.get(guild).clear();
+			this.guilds.get(guild)!.clear();
 			this.guilds.delete(guild);
 		});
 	}

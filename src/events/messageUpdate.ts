@@ -11,11 +11,11 @@ export default class extends Event {
 		if (!this.client.ready || !message.guild || old.content === message.content || message.author === this.client.user) return;
 
 		const { guild } = message;
-		if (!guild.settings.get(GuildSettings.Events.MessageEdit)) return;
+		if (!guild!.settings.get(GuildSettings.Events.MessageEdit)) return;
 
 		this.client.emit(Events.GuildMessageLog, (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, guild, () => new MessageEmbed()
 			.setColor(0xDCE775)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL(), message.url)
+			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL(), message.url)
 			.splitFields(diffWordsWithSpace(Util.escapeMarkdown(old.content), Util.escapeMarkdown(message.content))
 				.map(result => result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value)
 				.join(' '))

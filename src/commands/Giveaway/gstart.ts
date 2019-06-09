@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		await this.client.giveaways.create({
 			channelID: message.channel.id,
 			endsAt: time.getTime() + 500,
-			guildID: message.guild.id,
+			guildID: message.guild!.id,
 			minimum: 1,
 			minimumWinners: 1,
 			title

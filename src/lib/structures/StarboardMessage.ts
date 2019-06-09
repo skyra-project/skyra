@@ -28,7 +28,7 @@ const LASTCOLOR = COLORS[MAXCOLORS];
 export class StarboardMessage {
 
 	public get id() {
-		return `${this.channel.guild.id}.${this.message.id}`;
+		return `${this.channel.guild!.id}.${this.message.id}`;
 	}
 
 	/**
@@ -91,18 +91,18 @@ export class StarboardMessage {
 	/**
 	 * The embed for the message
 	 */
-	private get embed(): MessageEmbed {
+	private get embed() {
 		if (this.starMessage && this.starMessage.embeds) {
 			return this.starMessage.embeds[0]
 				.setColor(this.color);
 		}
 		if (!this.message) return null;
 		return new MessageEmbed()
-			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL())
+			.setAuthor(this.message.author!.username, this.message.author!.displayAvatarURL())
 			.setColor(this.color)
 			.setDescription(this.content)
 			.setTimestamp(this.message.createdAt)
-			.setImage(getImage(this.message));
+			.setImage(getImage(this.message)!);
 	}
 
 	/**
@@ -138,7 +138,7 @@ export class StarboardMessage {
 	/**
 	 * The Message instance that is sent in the Starboard channel
 	 */
-	private starMessage: Message = null;
+	private starMessage: Message | null = null;
 
 	/**
 	 * Whether this entry exists in the DB or not, null if it's not synchronized.
@@ -194,7 +194,7 @@ export class StarboardMessage {
 	 * @param id The user's ID to add
 	 */
 	public async add(id: string): Promise<void> {
-		if (this.message.author.id !== id && !this.users.has(id)) {
+		if (this.message.author!.id !== id && !this.users.has(id)) {
 			this.users.add(id);
 			await this.edit({ stars: this.stars });
 		}
@@ -205,7 +205,7 @@ export class StarboardMessage {
 	 * @param id The user's ID to remove
 	 */
 	public async remove(id: string): Promise<void> {
-		if (this.message.author.id !== id && this.users.has(id)) {
+		if (this.message.author!.id !== id && this.users.has(id)) {
 			this.users.delete(id);
 			await this.edit({ stars: this.stars });
 		}
@@ -219,7 +219,7 @@ export class StarboardMessage {
 		this.lastUpdated = Date.now();
 		if (this.existenceStatus === null) await this.sync();
 
-		if ('disabled' in options) this.disabled = options.disabled;
+		if ('disabled' in options) this.disabled = options.disabled!;
 		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
 		if ('stars' in options && !this.disabled) await this._editMessage();
 
@@ -250,12 +250,12 @@ export class StarboardMessage {
 		return {
 			channelID: this.channel.id,
 			disabled: this.disabled,
-			guildID: this.channel.guild.id,
+			guildID: this.channel.guild!.id,
 			id: this.id,
 			messageID: this.message.id,
 			starMessageID: (this.starMessage && this.starMessage.id) || null,
 			stars: this.stars,
-			userID: this.message.author.id
+			userID: this.message.author!.id
 		};
 	}
 
@@ -269,7 +269,7 @@ export class StarboardMessage {
 	private async _syncDiscord(): Promise<void> {
 		try {
 			this.users = await fetchReactionUsers(this.client, this.channel.id, this.message.id,
-				this.channel.guild.settings.get(GuildSettings.Starboard.Emoji) as GuildSettings.Starboard.Emoji);
+				this.channel.guild!.settings.get(GuildSettings.Starboard.Emoji) as GuildSettings.Starboard.Emoji);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Missing Access
@@ -285,7 +285,7 @@ export class StarboardMessage {
 			return;
 		}
 
-		this.users.delete(this.message.author.id);
+		this.users.delete(this.message.author!.id);
 	}
 
 	/**
@@ -302,7 +302,7 @@ export class StarboardMessage {
 			this.disabled = Boolean(data.disabled);
 			this.existenceStatus = true;
 
-			const channel = this.manager.starboardChannel;
+			const channel = this.manager.starboardChannel!;
 			if (data.starMessageID) {
 				await channel.messages.fetch(data.starMessageID)
 					// eslint-disable-next-line promise/always-return
@@ -323,7 +323,7 @@ export class StarboardMessage {
 		const content = `${this.emoji} **${this.stars}** ${this.channel} ID: ${this.message.id}`;
 		if (this.starMessage) {
 			try {
-				await this.starMessage.edit(content, this.embed);
+				await this.starMessage.edit(content, this.embed!);
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
@@ -334,7 +334,7 @@ export class StarboardMessage {
 			}
 		} else {
 			try {
-				this.starMessage = await this.manager.starboardChannel.send(content, this.embed) as Message;
+				this.starMessage = await this.manager.starboardChannel!.send(content, this.embed!) as Message;
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
@@ -352,7 +352,7 @@ interface StarboardMessageEdit {
 	/**
 	 * The star message id
 	 */
-	starMessageID?: string;
+	starMessageID?: string | null;
 	/**
 	 * The amount of stars
 	 */
@@ -363,7 +363,7 @@ interface StarboardMessageEdit {
 	disabled?: boolean;
 }
 
-interface StarboardMessageData {
+export interface StarboardMessageData {
 	id: string;
 	channelID: string;
 	disabled: boolean;

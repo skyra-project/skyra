@@ -25,17 +25,17 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		if (user.id === this.client.user.id) throw message.language.get('COMMAND_GAMES_SKYRA');
+		if (user.id === this.client.user!.id) throw message.language.get('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw message.language.get('COMMAND_GAMES_BOT');
-		if (user.id === message.author.id) throw message.language.get('COMMAND_GAMES_SELF');
+		if (user.id === message.author!.id) throw message.language.get('COMMAND_GAMES_SELF');
 		if (this.channels.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
 		this.channels.add(message.channel.id);
 
 		try {
-			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_TICTACTOE_PROMPT', message.author, user));
+			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_TICTACTOE_PROMPT', message.author!, user));
 			if (response) {
 				try {
-					await this.game(message.responses[0], [message.author, user].sort(() => Math.random() - 0.5));
+					await this.game(message.responses[0], [message.author!, user].sort(() => Math.random() - 0.5));
 				} catch {
 					await message.send(message.language.get('UNEXPECTED_ISSUE')).catch(error => this.client.emit(Events.ApiError, error));
 				}
@@ -69,10 +69,10 @@ export default class extends SkyraCommand {
 		let timeout: NodeJS.Timeout;
 		let turn = 0;
 		let chosen: number;
-		let winner: number;
+		let winner: number | null;
 		let player: KlasaUser;
 		let blocked = true;
-		return new Promise<number>((resolve, reject) => {
+		return new Promise<number | null>((resolve, reject) => {
 			// Make the collectors
 			const collector = message.createReactionCollector((reaction, user) => !blocked
 				&& user.id === player.id
@@ -135,7 +135,7 @@ export default class extends SkyraCommand {
 		if (board[2] !== 0 && board[2] === board[4] && board[4] === board[6]) return board[2];
 
 		// no winner
-		return undefined;
+		return null;
 	}
 
 	private render(board: number[]) {

@@ -1,11 +1,10 @@
-import { Client } from 'discord.js';
-import { Store } from 'klasa';
+import { Store, KlasaClient } from 'klasa';
 import { NodeMessage } from 'veza';
 import { IPCMonitor } from './IPCMonitor';
 
 export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<IPCMonitor>> {
 
-	public constructor(client: Client) {
+	public constructor(client: KlasaClient) {
 		// @ts-ignore
 		super(client, 'ipcMonitors', IPCMonitor);
 	}

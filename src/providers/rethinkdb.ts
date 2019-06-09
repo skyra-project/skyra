@@ -1,10 +1,10 @@
 import { Provider, util } from 'klasa';
 import { MasterPool, r, TableChangeResult, WriteResult } from 'rethinkdb-ts';
 
-export default class RethinkDB extends Provider {
+export default class extends Provider {
 
 	public db = r;
-	public pool: MasterPool = null;
+	public pool: MasterPool | null = null;
 
 	public async init(): Promise<void> {
 		const options = util.mergeDefault({
@@ -21,7 +21,7 @@ export default class RethinkDB extends Provider {
 	}
 
 	public shutdown(): Promise<void> {
-		return this.pool.drain();
+		return this.pool!.drain();
 	}
 
 	/* Table methods */

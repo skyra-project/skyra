@@ -50,7 +50,7 @@ export class Song {
 	public async fetchRequester() {
 		try {
 			return await this.queue.client.users.fetch(this.requester);
-		} catch (e) {
+		} catch {
 			return null;
 		}
 	}

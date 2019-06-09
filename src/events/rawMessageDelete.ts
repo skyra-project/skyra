@@ -3,6 +3,7 @@ import { WSMessageDelete } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { EventStore, Event } from 'klasa';
+import { DiscordAPIError } from 'discord.js';
 
 export default class extends Event {
 
@@ -12,8 +13,8 @@ export default class extends Event {
 
 	public async run(data: WSMessageDelete): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild.channels.has(data.channel_id)) return;
-		guild.starboard.delete(data.id);
+		if (!guild || !guild!.channels.has(data.channel_id)) return;
+		guild!.starboard.delete(data.id);
 
 		// Delete entry from starboard if it exists
 		try {
@@ -25,16 +26,16 @@ export default class extends Event {
 
 			if (!results.deleted) return;
 
-			const channel = guild.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
+			const channel = guild!.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
 			if (!channel) return;
 
-			for (const change of results.changes) {
+			for (const change of results.changes!) {
 				const messageID = change.old_val.starMessageID;
 				if (messageID) {
 					// @ts-ignore
 					this.client.api.channels(channel).messages(messageID)
 						.delete({ reason: 'Starboard Management: Message Deleted' })
-						.catch(error => this.client.emit(Events.ApiError, error));
+						.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 				}
 			}
 		} catch (error) {

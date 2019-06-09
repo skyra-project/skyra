@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 		return this.timestamp.display(new Date(Number(year), Number(month) - 1, Number(day)));
 	}
 
-	private async getNumber(query: string | number, i18n: Language) {
+	private async getNumber(query: string | number | null, i18n: Language) {
 		const xkcdInfo = await fetch('http://xkcd.com/info.0.json', 'json');
 
 		if (typeof query === 'number') {

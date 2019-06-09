@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 		const r = this.client.providers.default.db;
 		const starboardData = await r
 			.table(Databases.Starboard)
-			.getAll(message.guild.id, { index: 'guildID' })
+			.getAll(message.guild!.id, { index: 'guildID' })
 			.filter(r.row('starMessageID').ne(null))
 			.sample(1)
 			.nth(0)
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
-		const channel = message.guild.channels.get(starboardData.channelID) as TextChannel;
+		const channel = message.guild!.channels.get(starboardData.channelID) as TextChannel;
 		if (!channel) {
 			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete()
 				.run();
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setURL(starredMessage.url)
 			.setTitle(message.language.get('STARBOARD_JUMPTO'))
-			.setAuthor(starredMessage.author.username, starredMessage.author.displayAvatarURL())
+			.setAuthor(starredMessage.author!.username, starredMessage.author!.displayAvatarURL())
 			.setColor(starboardData.stars < COLORS.length ? COLORS[starboardData.stars] : COLORS[COLORS.length - 1])
 			.setTimestamp(starredMessage.createdAt);
 
@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 		const r = this.client.providers.default.db;
 		const starboardMessages = await r
 			.table(Databases.Starboard)
-			.getAll(message.guild.id, { index: 'guildID' })
+			.getAll(message.guild!.id, { index: 'guildID' })
 			.filter(r.row('starMessageID').ne(null))
 			.pluck('messageID', 'userID', 'stars')
 			.getCursor() as RCursor<StarPluck>;
@@ -79,7 +79,7 @@ export default class extends SkyraCommand {
 		const topMessages: [string, number][] = [];
 		const topReceivers: Map<string, number> = new Map();
 
-		const min = message.guild.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
+		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
 
 		for await (const starboardMessage of starboardMessages as unknown as AsyncIterable<StarPluck>) {
 			if (starboardMessage.stars < min) continue;

@@ -13,8 +13,8 @@ const BADGES_FOLDER = join(cdnFolder, 'img', 'badges');
 
 export default class extends SkyraCommand {
 
-	private profile: Buffer = null;
-	private panel: Buffer = null;
+	private profile: Buffer | null = null;
+	private panel: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		const output = await this.showProfile(message, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 			const badges = await Promise.all(badgeSet.map(name =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))));
 
-			canvas.addImage(this.panel, 600, 0, 100, 391);
+			canvas.addImage(this.panel!, 600, 0, 100, 391);
 			let position = 20;
 			for (const badge of badges) {
 				canvas.addImage(badge, 635, position, 50, 50);
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 			.createBeveledClip(10, 10, 620, 371, 8)
 			.addImage(themeImageSRC, 9, 9, 188, 373)
 			.restore()
-			.addImage(this.profile, 0, 0, 640, 391)
+			.addImage(this.profile!, 0, 0, 640, 391)
 
 			// Progress bar
 			.setColor(`#${color || 'FF239D'}`)

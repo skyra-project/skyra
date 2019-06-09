@@ -21,12 +21,12 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	/**
 	 * The sweep interval for this AntiRaid
 	 */
-	private _sweepInterval: NodeJS.Timeout | null;
+	private _sweepInterval: NodeJS.Timeout | null = null;
 
 	/**
 	 * The timeout to disable attack mode
 	 */
-	private _timeout: NodeJS.Timeout | null;
+	private _timeout: NodeJS.Timeout | null = null;
 
 	public constructor(guild: Guild) {
 		super();
@@ -34,7 +34,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	}
 
 	public get limit() {
-		return this.guild.settings.get(GuildSettings.Selfmod.Raidthreshold) as GuildSettings.Selfmod.Raidthreshold;
+		return this.guild!.settings.get(GuildSettings.Selfmod.Raidthreshold) as GuildSettings.Selfmod.Raidthreshold;
 	}
 
 	public add(id: string) {
@@ -61,7 +61,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 		const amount = super.sweep(fn, thisArg);
 
 		if (this.size === 0) {
-			clearInterval(this._sweepInterval);
+			clearInterval(this._sweepInterval!);
 			this._sweepInterval = null;
 		}
 
@@ -92,14 +92,14 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	public [Symbol.asyncIterator]() {
 		this.sweep();
 		const entriesIterator = this.entries();
-		const initialRole = this.guild.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
+		const initialRole = this.guild!.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
 		const minRolesAmount = initialRole ? 2 : 1;
 		const iterator: AsyncIterator<GuildMember | null> = {
 			next: async () => {
 				const next = entriesIterator.next();
 				if (next.done) return { done: true, value: null };
 				const [id, value] = next.value;
-				const member = await this.guild.members.fetch(value.id).catch(noop);
+				const member = await this.guild!.members.fetch(value.id).catch(noop);
 
 				// Check if:
 				// The member exists

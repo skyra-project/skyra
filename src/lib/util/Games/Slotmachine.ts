@@ -1,5 +1,6 @@
 import { Canvas } from 'canvas-constructor';
-import { Message, User } from 'discord.js';
+import { Image } from 'canvas';
+import { Message } from 'discord.js';
 import { join } from 'path';
 import { assetsFolder } from '../../../Skyra';
 import { ClientSettings } from '../../types/settings/ClientSettings';
@@ -82,8 +83,8 @@ export class Slotmachine {
 	/**
 	 * The player
 	 */
-	public get player(): User {
-		return this.message.author;
+	public get player() {
+		return this.message.author!;
 	}
 
 	/**
@@ -97,10 +98,10 @@ export class Slotmachine {
 	}
 
 	public get boost() {
-		const userBoosts = this.player.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
-		const guildBoosts = this.player.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
-		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
-			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
+		const userBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
+		const guildBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+		return (this.message.guild && guildBoosts.includes(this.message.guild!.id) ? 1.5 : 1)
+			* (userBoosts.includes(this.message.author!.id) ? 1.5 : 1);
 	}
 
 	public async run() {
@@ -136,9 +137,9 @@ export class Slotmachine {
 			.restore();
 
 		await Promise.all(rolls.map((value, index) => new Promise(resolve => {
-			const { x, y } = kAssets.get(value);
+			const { x, y } = kAssets.get(value)!;
 			const coord = kCoordinates[index];
-			canvas.context.drawImage(Slotmachine.images.ICON, x, y, kIconSize, kIconSize, coord.x, coord.y, kIconSize, kIconSize);
+			canvas.addImage(Slotmachine.images.ICON!, x, y, kIconSize, kIconSize, coord.x, coord.y, kIconSize, kIconSize);
 			resolve();
 		})));
 
@@ -148,7 +149,7 @@ export class Slotmachine {
 				.setTextAlign('right')
 				.addText('You won', 280, 60)
 				.addText(this.winnings.toString(), 250, 100)
-				.addImage(Slotmachine.images.SHINY, 260, 68, 20, 39);
+				.addImage(Slotmachine.images.SHINY!, 260, 68, 20, 39);
 		}
 
 		return canvas.toBufferAsync();
@@ -157,7 +158,7 @@ export class Slotmachine {
 	public calculate(roll: readonly Icons[]) {
 		for (const [COMB1, COMB2, COMB3] of kCombinations) {
 			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3]) {
-				this.winnings += this.amount * kValues.get(roll[COMB1]);
+				this.winnings += this.amount * kValues.get(roll[COMB1])!;
 			}
 		}
 	}
@@ -185,7 +186,7 @@ export class Slotmachine {
 		return position;
 	}
 
-	public static images = Object.seal({
+	public static images = Object.seal<SlotmachineAssets>({
 		ICON: null,
 		SHINY: null
 	});
@@ -199,4 +200,9 @@ export class Slotmachine {
 		Slotmachine.images.SHINY = shiny;
 	}
 
+}
+
+interface SlotmachineAssets {
+	ICON: Image | null;
+	SHINY: Image | null;
 }

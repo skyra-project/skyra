@@ -15,7 +15,7 @@ enum TimeTypes {
 /**
  * The duration of each time type in milliseconds
  */
-const TIME_TOKENS = new Map([
+const TIME_TOKENS = new Map<TimeTypes, number>([
 	[TimeTypes.Millisecond, 1],
 	[TimeTypes.Second, 1000],
 	[TimeTypes.Minute, 1000 * 60],
@@ -27,13 +27,13 @@ const TIME_TOKENS = new Map([
 	[TimeTypes.Year, 31536000000]
 ]);
 
-const UNIT_DISTANCES = new Map([
-	[TimeTypes.Day, TIME_TOKENS.get(TimeTypes.Week) / TIME_TOKENS.get(TimeTypes.Day)],
-	[TimeTypes.Hour, TIME_TOKENS.get(TimeTypes.Day) / TIME_TOKENS.get(TimeTypes.Hour)],
-	[TimeTypes.Minute, TIME_TOKENS.get(TimeTypes.Hour) / TIME_TOKENS.get(TimeTypes.Minute)],
-	[TimeTypes.Month, TIME_TOKENS.get(TimeTypes.Year) / TIME_TOKENS.get(TimeTypes.Month)],
-	[TimeTypes.Second, TIME_TOKENS.get(TimeTypes.Minute) / TIME_TOKENS.get(TimeTypes.Second)],
-	[TimeTypes.Week, TIME_TOKENS.get(TimeTypes.Month) / TIME_TOKENS.get(TimeTypes.Week)],
+const UNIT_DISTANCES = new Map<TimeTypes, number>([
+	[TimeTypes.Day, TIME_TOKENS.get(TimeTypes.Week)! / TIME_TOKENS.get(TimeTypes.Day)!],
+	[TimeTypes.Hour, TIME_TOKENS.get(TimeTypes.Day)! / TIME_TOKENS.get(TimeTypes.Hour)!],
+	[TimeTypes.Minute, TIME_TOKENS.get(TimeTypes.Hour)! / TIME_TOKENS.get(TimeTypes.Minute)!],
+	[TimeTypes.Month, TIME_TOKENS.get(TimeTypes.Year)! / TIME_TOKENS.get(TimeTypes.Month)!],
+	[TimeTypes.Second, TIME_TOKENS.get(TimeTypes.Minute)! / TIME_TOKENS.get(TimeTypes.Second)!],
+	[TimeTypes.Week, TIME_TOKENS.get(TimeTypes.Month)! / TIME_TOKENS.get(TimeTypes.Week)!],
 	[TimeTypes.Year, Infinity]
 ]);
 
@@ -87,7 +87,7 @@ function _parse(duration: number): [TimeTypes, number][] {
 		const amount = _parseUnit(duration, unit);
 		if (amount === 0) continue;
 		output.push([unit, amount]);
-		duration -= amount * TIME_TOKENS.get(unit);
+		duration -= amount * TIME_TOKENS.get(unit)!;
 	}
 	return output;
 }
@@ -105,7 +105,7 @@ function _parseUnit(time: number, unit: TimeTypes): number {
 	// However, this also limits its range to 2^31: 2147483648,
 	// which is, invalid (you cannot have a number to represent
 	// 2147483648 weeks, that's an invalid date).
-	return ((time / TIME_TOKENS.get(unit)) % UNIT_DISTANCES.get(unit)) | 0;
+	return ((time / TIME_TOKENS.get(unit)!) % UNIT_DISTANCES.get(unit)!) | 0;
 }
 
 interface DurationFormatAssetsUnit extends Record<number, string> {

@@ -26,14 +26,14 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
 		let newAmount;
-		const member = await message.guild.members.fetch(user.id).catch(() => null);
+		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
 			newAmount = (member.settings.get(MemberSettings.Points) as MemberSettings.Points) + amount;
 			await member.settings.update(newAmount);
 		} else {
-			const entry = await this._getMemberSettings(message.guild.id, user.id);
+			const entry = await this._getMemberSettings(message.guild!.id, user.id);
 			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
@@ -50,14 +50,14 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
 		let newAmount;
-		const member = await message.guild.members.fetch(user.id).catch(() => null);
+		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
-			newAmount = Math.max(member.settings.count - amount, 0);
+			newAmount = Math.max((member.settings.get(MemberSettings.Points) as MemberSettings.Points) - amount, 0);
 			await member.settings.update(newAmount);
 		} else {
-			const entry = await this._getMemberSettings(message.guild.id, user.id);
+			const entry = await this._getMemberSettings(message.guild!.id, user.id);
 			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
@@ -78,16 +78,16 @@ export default class extends SkyraCommand {
 
 		let variation: number;
 		let original: number;
-		const member = await message.guild.members.fetch(user.id).catch(() => null);
+		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
-			original = member.settings.count;
+			original = member.settings.get(MemberSettings.Points) as MemberSettings.Points;
 			variation = amount - original;
 			if (variation === 0) return message.sendLocale('COMMAND_SOCIAL_UNCHANGED', [user.username]);
-			await member.settings.update(amount);
+			await member.settings.update(MemberSettings.Points, amount);
 		} else {
-			const entry = await this._getMemberSettings(message.guild.id, user.id);
+			const entry = await this._getMemberSettings(message.guild!.id, user.id);
 			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
@@ -107,13 +107,13 @@ export default class extends SkyraCommand {
 	}
 
 	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
-		const member = await message.guild.members.fetch(user.id).catch(() => null);
+		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
-			await member.settings.update(0);
+			await member.settings.reset(MemberSettings.Points);
 		} else {
-			const entry = await this._getMemberSettings(message.guild.id, user.id);
+			const entry = await this._getMemberSettings(message.guild!.id, user.id);
 			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database

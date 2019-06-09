@@ -4,7 +4,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
 export default class extends SkyraCommand {
 
-	private channel: TextChannel = null;
+	private channel: TextChannel | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -16,25 +16,24 @@ export default class extends SkyraCommand {
 			guarded: true,
 			usage: '<message:string{8,1900}>'
 		});
-
-		this.channel = null;
 	}
 
 	public async run(message: KlasaMessage, [feedback]: [string]) {
 		const embed = new MessageEmbed()
 			.setColor(0x06D310)
-			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author!.tag}`, message.author!.displayAvatarURL({ size: 128 }))
 			.setDescription(feedback)
-			.setFooter(`${message.author.id} | Feedback`)
+			.setFooter(`${message.author!.id} | Feedback`)
 			.setTimestamp();
 
 		if (message.deletable) message.nuke().catch(() => null);
 
-		await this.channel.send({ embed });
+		await this.channel!.send({ embed });
 		return message.alert(message.language.get('COMMAND_FEEDBACK'));
 	}
 
 	public async init() {
+		// TODO(kyranet): This should be replaced with a webhook
 		this.channel = this.client.channels.get('257561807500214273') as TextChannel;
 	}
 

@@ -160,7 +160,7 @@ export default class extends Language {
 		INHIBITOR_REQUIRED_SETTINGS: settings => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length === 1 ? '' : 's'} and thus the command cannot run.`,
 		INHIBITOR_RUNIN: types => `This command is only available in ${types} channels`,
 		INHIBITOR_RUNIN_NONE: name => `The ${name} command is not configured to run in any channel.`,
-		INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild.',
+		INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild!.',
 		INHIBITOR_DISABLED_GLOBAL: 'This command has been globally disabled by the bot owner.',
 		COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',
 		COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
@@ -605,14 +605,14 @@ export default class extends Language {
 			],
 			examples: ['6h A hug from Skyra.']
 		}),
-		COMMAND_LIST_DESCRIPTION: 'Check the list of channels, roles, members or warnings for this guild.',
+		COMMAND_LIST_DESCRIPTION: 'Check the list of channels, roles, members or warnings for this guild!.',
 		COMMAND_LIST_EXTENDED: builder.display('list', {
 			extendedHelp: `This command is designed to list (sorted) information for this guild with possible filters. For example,
 					you can read all the channels with their ids or all the roles from the guild, sorted by their position and hierarchy
 					position, respectively. However, this command also allows to display the members of a role or check the warnings given.`,
 			explainedUsage: [
-				['channels', 'Show a list of all channels for this guild.'],
-				['roles', 'Show a list of all roles for this guild.'],
+				['channels', 'Show a list of all channels for this guild!.'],
+				['roles', 'Show a list of all roles for this guild!.'],
 				['members', 'Show a list of all members for a role. If not provided, defaults to the author\'s highest role.'],
 				['warnings', 'Show a list of all warnings for this guild, or all warnings given to a user.'],
 				['input', 'If you take the members parameter, this parameter will select a role. In warnings this will select a member of the guild, otherwise it is ignored.']
@@ -629,7 +629,7 @@ export default class extends Language {
 			explainedUsage: [
 				['add', 'Add an alias.'],
 				['remove', 'Remove an alias.'],
-				['list', 'List all aliases for this guild.'],
+				['list', 'List all aliases for this guild!.'],
 				['command', 'The command to define the alias to. (i.e. `ping`).'],
 				['alias', 'The alias to apply for the aforementioned command.']
 			],
@@ -641,18 +641,18 @@ export default class extends Language {
 		 * MANAGEMENT COMMANDS
 		 */
 
-		COMMAND_NICK_DESCRIPTION: `Change Skyra's nickname for this guild.`,
+		COMMAND_NICK_DESCRIPTION: `Change Skyra's nickname for this guild!.`,
 		COMMAND_NICK_EXTENDED: builder.display('nick', {
-			extendedHelp: `This command allows you to change Skyra's nickname easily for the guild.`,
+			extendedHelp: `This command allows you to change Skyra's nickname easily for the guild!.`,
 			reminder: `This command requires the **${PERMS.CHANGE_NICKNAME}** permission. Make sure Skyra has it.`,
 			explainedUsage: [
 				['nick', `The new nickname. If you don't put any, it'll reset it instead.`]
 			],
 			examples: ['SkyNET', 'Assistant', '']
 		}),
-		COMMAND_TRIGGERS_DESCRIPTION: `Set custom triggers for your guild.`,
+		COMMAND_TRIGGERS_DESCRIPTION: `Set custom triggers for your guild!.`,
 		COMMAND_TRIGGERS_EXTENDED: builder.display('triggers', {
-			extendedHelp: `This command allows administrators to go further with the personalization of Skyra in the guild. A trigger is
+			extendedHelp: `This command allows administrators to go further with the personalization of Skyra in the guild!. A trigger is
 					a piece that can active other functions. For example, the aliases are triggers that get executed when the command does not
 					exist in bot, triggering the unknown command event. When this happens, the alias system executes and tries to find an entry
 					that matches with the input.`,
@@ -804,7 +804,7 @@ export default class extends Language {
 			],
 			examples: ['Administrator', 'Moderator', '']
 		}),
-		COMMAND_GUILDINFO_DESCRIPTION: 'Check the information of the guild.',
+		COMMAND_GUILDINFO_DESCRIPTION: 'Check the information of the guild!.',
 		COMMAND_GUILDINFO_EXTENDED: builder.display('serverinfo', {
 			extendedHelp: `The serverinfo command displays information for the guild the message got sent. It shows the amount of channels,
 					with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles,
@@ -834,9 +834,9 @@ export default class extends Language {
 		 * MANAGEMENT/ATTACHMENT FILTER COMMANDS
 		 */
 
-		COMMAND_MANAGEATTACHMENTS_DESCRIPTION: 'Manage attachment management in this guild.',
+		COMMAND_MANAGEATTACHMENTS_DESCRIPTION: 'Manage attachment management in this guild!.',
 		COMMAND_MANAGEATTACHMENTS_EXTENDED: builder.display('manageAttachments', {
-			extendedHelp: `This command manages the attachment management for me in this guild.`,
+			extendedHelp: `This command manages the attachment management for me in this guild!.`,
 			examples: ['maximum 25', 'duration 1m', 'action mute', 'logs y', 'enable', 'disable'],
 			explainedUsage: [
 				['maximum <maximum>', 'The maximum amount of attachments allowed.'],
@@ -1124,7 +1124,7 @@ export default class extends Language {
 					that can prune many many messages.`,
 			examples: ['@Pete', '@Pete Spamming all channels', '@Pete 7 All messages sent in 7 are gone now, YEE HAH!']
 		}),
-		COMMAND_UNBAN_DESCRIPTION: 'Unban somebody from this guild.',
+		COMMAND_UNBAN_DESCRIPTION: 'Unban somebody from this guild!.',
 		COMMAND_UNBAN_EXTENDED: builder.display('unban', {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
 					cleans them up, and allows the pass to this guild's gates.`,
@@ -1205,7 +1205,7 @@ export default class extends Language {
 			examples: ['list', 'buy 0w1p06', 'set 0w1p06', 'reset']
 		}),
 
-		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild.',
+		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild!.',
 		COMMAND_AUTOROLE_EXTENDED: builder.display('autorole', {
 			extendedHelp: `Autoroles? They are roles that are available for everyone, and automatically given when they reach an
 					amount of (local) points, an administrator must configure them through a setting command.`,
@@ -1242,7 +1242,7 @@ export default class extends Language {
 		COMMAND_LEVEL_EXTENDED: builder.display('level', {
 			extendedHelp: `How much until the next level?`,
 			explainedUsage: [
-				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
+				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
 			]
 		}),
 		COMMAND_DIVORCE_DESCRIPTION: 'Break up with your couple!',
@@ -1262,7 +1262,7 @@ export default class extends Language {
 		COMMAND_MYLEVEL_EXTENDED: builder.display('mylevel', {
 			extendedHelp: `How much until next auto role? How many points do I have in this guild?`,
 			explainedUsage: [
-				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
+				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
 			]
 		}),
 		COMMAND_PAY_DESCRIPTION: `Pay somebody with your ${SHINY}.`,
@@ -1281,7 +1281,7 @@ export default class extends Language {
 			extendedHelp: `This command sends a card image with some of your user profile such as your global rank, experience...
 				Additionally, you are able to customize your colours with the 'setColor' command.`,
 			explainedUsage: [
-				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author.']
+				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
 			]
 		}),
 		COMMAND_REMINDME_DESCRIPTION: 'Manage your reminders.',
@@ -1369,7 +1369,7 @@ export default class extends Language {
 					The --no-timeout flag disables the timeout
 					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${PERMS.ATTACH_FILES} permission.`,
 			examples: [
-				'msg.author.username;',
+				'msg.author!.username;',
 				'1 + 1;'
 			]
 		}, true),
@@ -2331,7 +2331,7 @@ export default class extends Language {
 			`Duration : ${duration(time)}`,
 			`ID       : ${id}`
 		],
-		COMMAND_POLL_LIST_EMPTY: 'I could not find an active poll for this guild.',
+		COMMAND_POLL_LIST_EMPTY: 'I could not find an active poll for this guild!.',
 		COMMAND_POLL_NOTEXISTS: 'The poll you want to retrieve either expired or does not exist.',
 		COMMAND_POLL_NOTMANAGEABLE: 'This poll is protected and cannot be managed by anybody that is not the author nor a guild administrator.',
 		COMMAND_POLL_REMOVE: 'Successfully removed the selected poll.',

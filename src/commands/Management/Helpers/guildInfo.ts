@@ -22,29 +22,29 @@ export default class extends SkyraCommand {
 		let tChannels = 0;
 		let vChannels = 0;
 		let cChannels = 0;
-		for (const channel of message.guild.channels.values()) {
+		for (const channel of message.guild!.channels.values()) {
 			if (channel.type === 'text') tChannels++;
 			else if (channel.type === 'voice') vChannels++;
 			else cChannels++;
 		}
 
 		const serverInfoTitles = message.language.get('COMMAND_SERVERINFO_TITLES') as unknown as ServerInfoTitles;
-		const roles = [...message.guild.roles.values()].sort(SORT);
+		const roles = [...message.guild!.roles.values()].sort(SORT);
 		roles.pop();
-		const owner = await this.client.users.fetch(message.guild.ownerID);
+		const owner = await this.client.users.fetch(message.guild!.ownerID);
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
-			.setThumbnail(message.guild.iconURL())
-			.setTitle(`${message.guild.name} [${message.guild.id}]`)
+			.setThumbnail(message.guild!.iconURL()!)
+			.setTitle(`${message.guild!.name} [${message.guild!.id}]`)
 			.splitFields(message.language.get('COMMAND_SERVERINFO_ROLES', roles.length
 				? roles.map(role => role.name).join(', ')
 				: message.language.get('COMMAND_SERVERINFO_NOROLES')))
 			.addField(serverInfoTitles.CHANNELS, message.language.get('COMMAND_SERVERINFO_CHANNELS',
-				tChannels, vChannels, cChannels, message.guild.afkChannelID, message.guild.afkTimeout), true)
+				tChannels, vChannels, cChannels, message.guild!.afkChannelID, message.guild!.afkTimeout), true)
 			.addField(serverInfoTitles.MEMBERS, message.language.get('COMMAND_SERVERINFO_MEMBERS',
-				message.guild.memberCount, owner), true)
+				message.guild!.memberCount, owner), true)
 			.addField(serverInfoTitles.OTHER, message.language.get('COMMAND_SERVERINFO_OTHER',
-				message.guild.roles.size, message.guild.region, message.guild.createdAt, message.guild.verificationLevel), true));
+				message.guild!.roles.size, message.guild!.region, message.guild!.createdAt, message.guild!.verificationLevel), true));
 	}
 
 }

@@ -17,30 +17,30 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [type]: [string]) {
-		if (!message.guild.settings.get(GuildSettings.Selfmod.Raid)) throw message.language.get('COMMAND_RAID_DISABLED');
-		if (!message.guild.me.permissions.has('KICK_MEMBERS')) throw message.language.get('COMMAND_RAID_MISSING_KICK');
+		if (!message.guild!.settings.get(GuildSettings.Selfmod.Raid)) throw message.language.get('COMMAND_RAID_DISABLED');
+		if (!message.guild!.me!.permissions.has('KICK_MEMBERS')) throw message.language.get('COMMAND_RAID_MISSING_KICK');
 
 		return this[type](message);
 	}
 
 	public show(message: KlasaMessage) {
-		const { raid } = message.guild.security;
+		const { raid } = message.guild!.security;
 		const embed = new MessageEmbed()
 			.setTitle(message.language.get('COMMAND_RAID_LIST'))
 			.setDescription([...raid.keys()].map(user => `<@${user}>`))
-			.setFooter(`${raid.size}/${message.guild.settings.get(GuildSettings.Selfmod.Raidthreshold)} ${message.language.get('CONST_USERS')}`)
+			.setFooter(`${raid.size}/${message.guild!.settings.get(GuildSettings.Selfmod.Raidthreshold)} ${message.language.get('CONST_USERS')}`)
 			.setTimestamp();
 
 		return message.sendMessage({ embed });
 	}
 
 	public clear(message: KlasaMessage) {
-		message.guild.security.raid.clear();
+		message.guild!.security.raid.clear();
 		return message.sendLocale('COMMAND_RAID_CLEAR');
 	}
 
 	public cool(message: KlasaMessage) {
-		message.guild.security.raid.stop();
+		message.guild!.security.raid.stop();
 		return message.sendLocale('COMMAND_RAID_COOL');
 	}
 

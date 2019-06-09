@@ -33,15 +33,15 @@ export default class extends SkyraCommand {
 			].join('\n'));
 		}
 
-		if (!message.flags.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user).has(PERMISSIONS_RICHDISPLAY)) {
+		if (!message.flags.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
 			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
 			const display = await this.buildDisplay(message);
-			await display.run(response, message.author.id);
+			await display.run(response, message.author!.id);
 			return response;
 		}
 
 		try {
-			const response = await message.author.send(await this.buildHelp(message), { split: { 'char': '\n' } });
+			const response = await message.author!.send(await this.buildHelp(message), { split: { 'char': '\n' } });
 			return message.channel.type === 'dm' ? response : message.sendLocale('COMMAND_HELP_DM');
 		} catch {
 			return message.channel.type === 'dm' ? null : message.sendLocale('COMMAND_HELP_NODM');
@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 		const commands = await this._fetchCommands(message);
 		const prefix = message.guildSettings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
 
-		const helpMessage = [];
+		const helpMessage: string[] = [];
 		for (const [category, list] of commands) {
 			helpMessage.push(`**${category} Commands**:\n`, list.map(this.formatCommand.bind(this, message, prefix, false)).join('\n'), '');
 		}

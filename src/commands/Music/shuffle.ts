@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const amount = message.guild.music.shuffle().length;
+		const amount = message.guild!.music.shuffle().length;
 		return message.sendLocale('COMMAND_SHUFFLE_SUCCESS', [amount]);
 	}
 

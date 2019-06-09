@@ -17,10 +17,4 @@ export class MusicBitField extends BitField<MusicBitFieldString> {
 /**
  * The bitfields for the MusicBitField
  */
-export type MusicBitFieldString = 'USER_VOICE_CHANNEL'
-| 'SKYRA_VOICE_CHANNEL'
-| 'SAME_VOICE_CHANNEL'
-| 'QUEUE_NOT_EMPTY'
-| 'VOICE_PLAYING'
-| 'VOICE_PAUSED'
-| 'DJ_MEMBER';
+export type MusicBitFieldString = 'USER_VOICE_CHANNEL' | 'SKYRA_VOICE_CHANNEL' | 'SAME_VOICE_CHANNEL' | 'QUEUE_NOT_EMPTY' | 'VOICE_PLAYING' | 'VOICE_PAUSED' | 'DJ_MEMBER';

@@ -1,4 +1,4 @@
-export class Adder<T> extends Array {
+export class Adder<T> extends Array<{ id: T; end: number }> {
 
 	/**
 	 * The maximum amount of entries in this instance
@@ -31,7 +31,7 @@ export class Adder<T> extends Array {
 	public remove(id: T) {
 		let deleted = 0;
 		let i = 0;
-		let entry;
+		let entry: { id: T; end: number };
 
 		while (i < this.length) {
 			entry = this[i];

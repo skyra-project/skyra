@@ -21,16 +21,16 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		if (user.id === this.client.user.id) throw message.language.get('COMMAND_GAMES_SKYRA');
+		if (user.id === this.client.user!.id) throw message.language.get('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw message.language.get('COMMAND_GAMES_BOT');
-		if (user.id === message.author.id) throw message.language.get('COMMAND_GAMES_SELF');
+		if (user.id === message.author!.id) throw message.language.get('COMMAND_GAMES_SELF');
 		if (this.client.connectFour.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
 		this.client.connectFour.set(message.channel.id, null);
 
 		try {
-			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_C4_PROMPT', message.author, user));
+			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_C4_PROMPT', message.author!, user));
 			if (response) {
-				await this.client.connectFour.create(message, message.author, user).run();
+				await this.client.connectFour.create(message, message.author!, user)!.run();
 			} else {
 				await message.alert(message.language.get('COMMAND_GAMES_PROMPT_DENY'));
 			}

@@ -18,19 +18,19 @@ export default class extends Monitor {
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 			.setColor(0xEFAE45)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_INVITELINK')}`)
 			.setTimestamp());
 	}
 
-	public shouldRun(message: KlasaMessage): boolean {
-		return this.enabled
+	public shouldRun(message: KlasaMessage) {
+		return Boolean(this.enabled
 			&& message.guild
 			&& !message.webhookID
 			&& !message.system
-			&& message.author.id !== this.client.user.id
-			&& message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& message.author!.id !== this.client.user!.id
+			&& message.guild!.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
+			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id));
 	}
 
 }

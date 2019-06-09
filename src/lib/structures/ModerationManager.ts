@@ -22,12 +22,12 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	/**
 	 * The current case count
 	 */
-	private _count: number = null;
+	private _count: number | null = null;
 
 	/**
 	 * The timer that sweeps this manager's entries
 	 */
-	private _timer: NodeJS.Timeout = null;
+	private _timer: NodeJS.Timeout | null = null;
 
 	/**
 	 * The promise to wait for tasks to complete
@@ -40,11 +40,11 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public get pool() {
-		return this.guild.client.providers.default.db;
+		return this.guild!.client.providers.default.db;
 	}
 
 	public get table() {
-		return this.guild.client.providers.default.db.table(Databases.Moderation);
+		return this.guild!.client.providers.default.db.table(Databases.Moderation);
 	}
 
 	public get new() {
@@ -54,11 +54,11 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 	public async fetch(id: number): Promise<ModerationManagerEntry>;
 	public async fetch(id: string | number[]): Promise<Collection<number, ModerationManagerEntry>>;
-	public async fetch(): Promise<this>;
-	public async fetch(id?: string | number | number[]): Promise<ModerationManagerEntry | Collection<number, ModerationManagerEntry> | this> {
+	public async fetch(id?: null): Promise<this>;
+	public async fetch(id?: string | number | number[] | null): Promise<ModerationManagerEntry | Collection<number, ModerationManagerEntry> | this> {
 		// Case number
 		if (typeof id === 'number') {
-			return super.get(id) || this._cache(await this.table.getAll([this.guild.id, id], { index: 'guild_case' })
+			return super.get(id) || this._cache(await this.table.getAll([this.guild!.id, id], { index: 'guild_case' })
 				.limit(1)
 				.nth(0)
 				.default(null)
@@ -69,19 +69,19 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		if (typeof id === 'string') {
 			return this._count === super.size
 				? super.filter(entry => entry.user === id)
-				: this._cache((await this.table.getAll([this.guild.id, id], { index: 'guild_user' })
+				: this._cache((await this.table.getAll([this.guild!.id, id], { index: 'guild_user' })
 					.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
 					.run()) as ModerationManagerEntryDeserialized[], CacheActions.None);
 		}
 
 		if (Array.isArray(id) && id.length) {
 			// @ts-ignore
-			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild.id, entryID]), { index: 'guild_case' })
+			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild!.id, entryID]), { index: 'guild_case' })
 				.run(), CacheActions.None);
 		}
 
 		if (super.size !== this._count) {
-			this._cache(await this.table.getAll(this.guild.id, { index: 'guildID' })
+			this._cache(await this.table.getAll(this.guild!.id, { index: 'guildID' })
 				.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
 				.run(), CacheActions.Fetch);
 		}
@@ -90,7 +90,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 	public async count() {
 		if (this._count === null) await this.fetch();
-		return this._count;
+		return this._count!;
 	}
 
 	public async update(data: ModerationManagerUpdateData | ModerationManagerEntry) {
@@ -110,12 +110,12 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		} else if (ModerationSchemaKeys.Case in data) {
 			entry = await this.fetch(data[ModerationSchemaKeys.Case]);
 		} else if (ModerationSchemaKeys.User in data) {
-			entry = (await this.fetch(data[ModerationSchemaKeys.User] as string)).find(log => !(log[ModerationSchemaKeys.Type] & ModerationActions.Appealed));
+			entry = (await this.fetch(data[ModerationSchemaKeys.User] as string)).find(log => !(log[ModerationSchemaKeys.Type]! & ModerationActions.Appealed));
 		} else {
 			throw new Error('Expected the entry id, case, or user. Got none of them.');
 		}
 
-		if (!entry || entry[ModerationSchemaKeys.Guild] !== this.guild.id) throw new Error(ModerationErrors.CaseNotExists);
+		if (!entry || entry[ModerationSchemaKeys.Guild] !== this.guild!.id) throw new Error(ModerationErrors.CaseNotExists);
 		if (entry[ModerationSchemaKeys.Type] & ModerationActions.Appealed) throw new Error(ModerationErrors.CaseAppealed);
 
 		entry[ModerationSchemaKeys.Type] |= ModerationActions.Appealed;
@@ -157,13 +157,13 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			: [entries instanceof ModerationManagerEntry ? entries : new ModerationManagerEntry(this, entries)];
 
 		for (const entry of parsedEntries) {
-			super.set(entry.case, entry);
+			super.set(entry.case!, entry);
 		}
 
 		switch (type) {
 			case CacheActions.Fetch: this._count = super.size;
 				break;
-			case CacheActions.Insert: this._count++;
+			case CacheActions.Insert: this._count!++;
 				break;
 		}
 
@@ -175,7 +175,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		}
 
 		return Array.isArray(entries)
-			? new Collection<number, ModerationManagerEntry>(parsedEntries.map(entry => [entry.case, entry]))
+			? new Collection<number, ModerationManagerEntry>(parsedEntries.map(entry => [entry.case!, entry]))
 			: parsedEntries[0];
 	}
 

@@ -4,13 +4,14 @@ import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { URL } from 'url';
 import { isObject } from 'util';
-import { ModerationManagerEntry } from '../structures/ModerationManagerEntry';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys, TIME } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
+import { util } from 'klasa';
+import { Mutable } from '../types/util';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -31,7 +32,7 @@ const MUTE_ROLE_OPTIONS = Object.freeze({
 	reason: '[SETUP] Authorized to create a \'Muted\' role.'
 });
 
-const ONE_TO_TEN = new Map([
+const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5B1100 }],
 	[1, { emoji: '😪', color: 0x5B1100 }],
 	[2, { emoji: '😫', color: 0xAB1100 }],
@@ -46,11 +47,6 @@ const ONE_TO_TEN = new Map([
 ]);
 
 export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
-
-interface UtilOneToTenEntry {
-	emoji: string;
-	color: number;
-}
 
 export interface ReferredPromise<T> {
 	promise: Promise<T>;
@@ -78,7 +74,7 @@ export function showSeconds(duration: number) {
  * Load an image by its path
  * @param path The path to the image to load
  */
-export async function loadImage(path: string): Promise<Image> {
+export async function loadImage(path: string) {
 	const buffer = await readFile(path);
 	const image = new Image();
 	image.src = buffer;
@@ -89,7 +85,7 @@ export async function loadImage(path: string): Promise<Image> {
  * Read a stream and resolve to a buffer
  * @param stream The readable stream to read
  */
-export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
+export async function streamToBuffer(stream: NodeJS.ReadableStream) {
 	const data: Buffer[] = [];
 	for await (const buffer of stream) data.push(buffer as Buffer);
 	return Buffer.concat(data);
@@ -99,14 +95,14 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * Check if the announcement is correctly set up
  * @param message The message instance to check with
  */
-export function announcementCheck(message: Message): Role {
-	const announcementID = message.guild.settings.get(GuildSettings.Roles.Subscriber) as GuildSettings.Roles.Subscriber;
+export function announcementCheck(message: Message) {
+	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber) as GuildSettings.Roles.Subscriber;
 	if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
-	const role = message.guild.roles.get(announcementID);
+	const role = message.guild!.roles.get(announcementID);
 	if (!role) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
-	if (role.position >= message.guild.me.roles.highest.position) throw message.language.get('SYSTEM_HIGHEST_ROLE');
+	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get('SYSTEM_HIGHEST_ROLE');
 	return role;
 }
 
@@ -115,7 +111,7 @@ export function announcementCheck(message: Message): Role {
  * @param guild The guild
  * @param id The id of the user
  */
-export async function removeMute(guild: Guild, id: string): Promise<boolean> {
+export async function removeMute(guild: Guild, id: string) {
 	const { settings } = guild;
 	const guildStickyRoles = settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
 
@@ -127,7 +123,8 @@ export async function removeMute(guild: Guild, id: string): Promise<boolean> {
 	const index = stickyRoles.roles.indexOf(settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
 	if (index === -1) return false;
 
-	stickyRoles.roles.splice(index, 1);
+	const clone = util.deepClone(stickyRoles) as Mutable<StickyRole>;
+	clone.roles.splice(index, 1);
 	const { errors } = await (stickyRoles.roles.length
 		? settings.update('stickyRoles', { id, roles: stickyRoles.roles }, { arrayIndex: stickyRolesIndex })
 		: settings.update('stickyRoles', stickyRoles, { arrayAction: 'remove' }));
@@ -153,7 +150,7 @@ export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji) {
 	return null;
 }
 
-export function oneToTen(level: number): UtilOneToTenEntry {
+export function oneToTen(level: number) {
 	level |= 0;
 	if (level < 0) level = 0;
 	else if (level > 10) level = 10;
@@ -218,7 +215,7 @@ export async function fetch(url: URL | string, options: RequestInit | 'result' |
 }
 
 export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
-	const url = user.avatar ? user.avatarURL({ format: 'png', size }) : user.defaultAvatarURL;
+	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
 		return await fetch(url, 'buffer');
 	} catch (error) {
@@ -228,12 +225,12 @@ export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Bu
 
 export async function fetchReactionUsers(client: Client, channelID: string, messageID: string, reaction: string) {
 	const users: Set<string> = new Set();
-	let rawUsers: APIUserData[];
+	let rawUsers: APIUserData[] = [];
 
 	// Fetch loop, to get +100 users
 	do {
 		rawUsers = await (client as any).api.channels(channelID).messages(messageID).reactions(reaction)
-			.get({ query: { limit: 100, after: rawUsers && rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } }) as APIUserData[];
+			.get({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } }) as APIUserData[];
 		for (const user of rawUsers) users.add(user.id);
 	} while (rawUsers.length === 100);
 
@@ -270,7 +267,7 @@ export function getImage(message: Message): string | null {
 }
 
 export function getColor(message: Message) {
-	const settingsColor = message.author.settings.get(UserSettings.Color) as UserSettings.Color;
+	const settingsColor = message.author!.settings.get(UserSettings.Color) as UserSettings.Color;
 	if (settingsColor) {
 		return parseInt(settingsColor, 16);
 	}
@@ -280,16 +277,15 @@ export function getColor(message: Message) {
 /**
  * Create a referred promise
  */
-export function createReferPromise<T>(): ReferredPromise<T> {
-	let resolve: (value: T) => void;
+export function createReferPromise<T>() {
+	let resolve: (value?: T) => void;
 	let reject: (error?: Error) => void;
-	// eslint-disable-next-line promise/param-names
 	const promise: Promise<T> = new Promise((res, rej) => {
 		resolve = res;
 		reject = rej;
 	});
 
-	return { promise, resolve, reject };
+	return { promise, resolve: resolve!, reject: reject! };
 }
 
 /**
@@ -323,11 +319,11 @@ export function cleanMentions(message: Message, input: string) {
 					return usertag ? `@${usertag.slice(0, usertag.lastIndexOf('#'))}` : match;
 				}
 				case '@&': {
-					const role = message.guild ? message.guild.roles.get(id) : null;
+					const role = message.guild ? message.guild!.roles.get(id) : null;
 					return role ? `@${role.name}` : match;
 				}
 				case '#': {
-					const channel = message.guild ? message.guild.channels.get(id) : null;
+					const channel = message.guild ? message.guild!.channels.get(id) : null;
 					return channel ? `#${channel.name}` : match;
 				}
 				default: return match;
@@ -355,7 +351,7 @@ export function createPick<T>(array: T[]): () => T {
  */
 export function muteGetRoles(member: GuildMember): string[] {
 	const roles = [...member.roles.keys()];
-	roles.splice(roles.indexOf(member.guild.id), 1);
+	roles.splice(roles.indexOf(member.guild!.id), 1);
 	return roles;
 }
 
@@ -365,31 +361,31 @@ export function muteGetRoles(member: GuildMember): string[] {
  * @param target The member to mute
  * @param reason The reason for the mute
  */
-export async function mute(moderator: GuildMember, target: GuildMember, reason?: string): Promise<ModerationManagerEntry> {
-	const role = target.guild.roles.get(target.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
-	if (!role) throw target.guild.language.get('COMMAND_MUTE_UNCONFIGURED');
+export async function mute(moderator: GuildMember, target: GuildMember, reason?: string) {
+	const role = target.guild!.roles.get(target.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
+	if (!role) throw target.guild!.language.get('COMMAND_MUTE_UNCONFIGURED');
 
-	const all = target.guild.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+	const all = target.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
 
 	const stickyRolesIndex = all.findIndex(stickyRole => stickyRole.user === target.id);
 	const stickyRoles: StickyRole = stickyRolesIndex === -1 ? { roles: [], user: target.id } : all[stickyRolesIndex];
-	if (stickyRoles.roles.includes(role.id)) throw target.guild.language.get('COMMAND_MUTE_MUTED');
+	if (stickyRoles.roles.includes(role.id)) throw target.guild!.language.get('COMMAND_MUTE_MUTED');
 
 	// Parse the roles
 	const roles = muteGetRoles(target);
 
 	await target.edit({ roles: target.roles.filter(r => r.managed).map(r => r.id).concat(role.id) });
 	const entry: StickyRole = { roles: stickyRoles.roles.concat(role.id), user: target.id };
-	const { errors } = await target.guild.settings.update('stickyRoles', entry, stickyRolesIndex === -1 ? { arrayAction: 'add' } : { arrayIndex: stickyRolesIndex });
+	const { errors } = await target.guild!.settings.update('stickyRoles', entry, stickyRolesIndex === -1 ? { arrayAction: 'add' } : { arrayIndex: stickyRolesIndex });
 	if (errors.length) throw errors[0];
 
-	const modlog = target.guild.moderation.new
+	const modlog = target.guild!.moderation.new
 		.setModerator(moderator.id)
 		.setUser(target.id)
 		.setType(ModerationTypeKeys.Mute)
 		.setReason(reason)
 		.setExtraData(roles);
-	return modlog.create();
+	return (await modlog.create())!;
 }
 
 /**
@@ -400,19 +396,19 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
  * @param reason The reason for the mute
  * @param days The number of days for the prune messages
  */
-export async function softban(guild: Guild, moderator: User, target: User, reason: string = null, days: number = 1): Promise<ModerationManagerEntry> {
-	await guild.members.ban(target.id, {
+export async function softban(guild: Guild, moderator: User, target: User, reason?: string, days: number = 1) {
+	await guild!.members.ban(target.id, {
 		days,
 		reason: `${reason ? `Softban with reason: ${reason}` : null}`
 	});
-	await guild.members.unban(target.id, 'Softban.');
+	await guild!.members.unban(target.id, 'Softban.');
 
-	return guild.moderation.new
+	return (await guild!.moderation.new
 		.setModerator(moderator.id)
 		.setUser(target.id)
 		.setType(ModerationTypeKeys.Softban)
 		.setReason(reason)
-		.create();
+		.create())!;
 }
 
 /**
@@ -421,7 +417,7 @@ export async function softban(guild: Guild, moderator: User, target: User, reaso
  * @param role The role to update
  * @param array The array to push in case it did fail
  */
-async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]): Promise<void> {
+async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]) {
 	if (channel.type === 'category') return;
 	try {
 		// @ts-ignore
@@ -435,13 +431,13 @@ async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Ro
  * Create the mute role
  * @param message The message instance to use as context
  */
-export async function createMuteRole(message: Message): Promise<Role> {
-	const id = message.guild.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
-	if (id && message.guild.roles.has(id)) throw message.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
+export async function createMuteRole(message: Message) {
+	const id = message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+	if (id && message.guild!.roles.has(id)) throw message.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
 
-	if (message.guild.roles.size === 250) throw message.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
-	const role = await message.guild.roles.create(MUTE_ROLE_OPTIONS);
-	const { channels } = message.guild;
+	if (message.guild!.roles.size === 250) throw message.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
+	const role = await message.guild!.roles.create(MUTE_ROLE_OPTIONS);
+	const { channels } = message.guild!;
 	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
 	const denied: string[] = [];
 	let accepted = 0;
@@ -452,8 +448,8 @@ export async function createMuteRole(message: Message): Promise<Role> {
 	}
 
 	const messageEdit2 = message.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
-	await message.guild.settings.update(GuildSettings.Roles.Muted, role.id);
-	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, message.author, role]);
+	await message.guild!.settings.update(GuildSettings.Roles.Muted, role.id);
+	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, message.author!, role]);
 	return role;
 }
 
@@ -479,4 +475,9 @@ export function enumerable(value: boolean) {
 			}
 		});
 	};
+}
+
+interface UtilOneToTenEntry {
+	emoji: string;
+	color: number;
 }

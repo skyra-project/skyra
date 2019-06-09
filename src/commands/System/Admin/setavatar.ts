@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [avatar]: [string]) {
-		await this.client.user.setAvatar(avatar);
+		await this.client.user!.setAvatar(avatar);
 		return message.sendMessage(`Dear ${message.author}, I have changed my avatar for you.`);
 	}
 

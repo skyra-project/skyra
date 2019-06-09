@@ -21,8 +21,8 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string) {
-		if (reason && message.guild.settings.get(GuildSettings.Messages.Warnings)) {
-			user.send(message.language.get('COMMAND_WARN_DM', message.author.tag, message.guild, reason)).catch(() => null);
+		if (reason && message.guild!.settings.get(GuildSettings.Messages.Warnings)) {
+			user.send(message.language.get('COMMAND_WARN_DM', message.author!.tag, message.guild, reason)).catch(() => null);
 		}
 		return this.sendModlog(message, user, reason);
 	}

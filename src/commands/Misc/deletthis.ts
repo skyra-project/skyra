@@ -9,7 +9,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 	private readonly skyraID = CLIENT_ID;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -33,10 +33,10 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		let selectedUser: KlasaUser;
 		let hammerer: KlasaUser;
-		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
-		if (user === message.author) [selectedUser, hammerer] = [message.author, this.client.user];
-		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, hammerer] = [message.author, user];
-		else [selectedUser, hammerer] = [user, message.author];
+		if (user.id === message.author!.id && this.client.options.owners.includes(message.author!.id)) throw '💥';
+		if (user === message.author) [selectedUser, hammerer] = [message.author!, this.client.user!];
+		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, hammerer] = [message.author!, user];
+		else [selectedUser, hammerer] = [user, message.author!];
 
 		const [Hammered, Hammerer] = await Promise.all([
 			fetchAvatar(selectedUser, 256),
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 
 		/* Initialize Canvas */
 		return new Canvas(650, 471)
-			.addImage(this.template, 0, 0, 650, 471)
+			.addImage(this.template!, 0, 0, 650, 471)
 			.rotate(0.4)
 			.addImage(Hammerer, 297, -77, 154, 154, { type: 'round', radius: 77, restore: true })
 			.resetTransformation()

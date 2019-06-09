@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [nick = '']: [string?]) {
-		await message.guild.me.setNickname(nick);
+		await message.guild!.me!.setNickname(nick);
 		return nick
 			? message.alert(message.language.get('COMMAND_NICK_SET', nick))
 			: message.alert(message.language.get('COMMAND_NICK_CLEARED'));

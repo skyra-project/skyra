@@ -5,13 +5,13 @@ import { GuildSettings } from '../lib/types/settings/GuildSettings';
 export default class extends Event {
 
 	public async run(message: KlasaMessage, command: string) {
-		if (!message.guild || (message.guild.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels).includes(message.channel.id)) return null;
+		if (!message.guild || (message.guild!.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels).includes(message.channel.id)) return null;
 		command = command.toLowerCase();
 
-		const tag = (message.guild.settings.get(GuildSettings.Tags) as GuildSettings.Tags).some(t => t[0] === command);
+		const tag = (message.guild!.settings.get(GuildSettings.Tags) as GuildSettings.Tags).some(t => t[0] === command);
 		if (tag) return this.runTag(message, command);
 
-		const alias = (message.guild.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias).find(entry => entry.input === command);
+		const alias = (message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias).find(entry => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);
 

@@ -21,8 +21,8 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const now = Date.now();
-		await message.author.settings.sync();
-		const time = message.author.settings.get(UserSettings.TimeDaily) as UserSettings.TimeDaily;
+		await message.author!.settings.sync();
+		const time = message.author!.settings.get(UserSettings.TimeDaily) as UserSettings.TimeDaily;
 
 		// It's been 12 hours, grant dailies
 		if (time <= now) {
@@ -49,13 +49,13 @@ export default class extends SkyraCommand {
 	public async claimDaily(message: KlasaMessage, nextTime: UserSettings.TimeDaily) {
 		let money = 200;
 		if (message.guild) {
-			await message.guild.settings.sync();
-			const boostGuilds = this.client.settings.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
-			const boostUsers = this.client.settings.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
-			money *= (boostGuilds.includes(message.guild.id) ? 1.5 : 1) * (boostUsers.includes(message.author.id) ? 1.5 : 1);
+			await message.guild!.settings.sync();
+			const boostGuilds = this.client.settings!.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+			const boostUsers = this.client.settings!.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
+			money *= (boostGuilds.includes(message.guild!.id) ? 1.5 : 1) * (boostUsers.includes(message.author!.id) ? 1.5 : 1);
 		}
-		const total = money + (message.author.settings.get(UserSettings.Money) as UserSettings.Money);
-		await message.author.settings.update([['money', total], ['timeDaily', nextTime]]);
+		const total = money + (message.author!.settings.get(UserSettings.Money) as UserSettings.Money);
+		await message.author!.settings.update([['money', total], ['timeDaily', nextTime]]);
 		return money;
 	}
 

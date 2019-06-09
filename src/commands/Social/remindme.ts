@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, Duration, KlasaMessage, Timestamp, util } from 'klasa';
+import { CommandStore, Duration, KlasaMessage, Timestamp, util, ScheduledTask } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { TIME } from '../../lib/util/constants';
@@ -27,11 +27,11 @@ export default class extends SkyraCommand {
 		if (action === 'delete') return this.delete(message, data);
 
 		const { time, title } = await this.parseInput(message, data);
-		const task = await this.client.schedule.create(REMINDER_TYPE, Date.now() + time, {
+		const task = await this.client.schedule.create(REMINDER_TYPE, Date.now() + time!, {
 			catchUp: true,
 			data: {
 				content: title,
-				user: message.author.id
+				user: message.author!.id
 			}
 		});
 
@@ -39,27 +39,27 @@ export default class extends SkyraCommand {
 	}
 
 	public async list(message: KlasaMessage) {
-		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === message.author.id);
+		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === message.author!.id);
 		if (!tasks.length) return message.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
-			.setAuthor(this.client.user.username, this.client.user.displayAvatarURL()));
+			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL()));
 
 		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage(template => template.setDescription(page.join('\n')));
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.run(response, message.author.id);
+		await display.run(response, message.author!.id);
 		return response;
 	}
 
 	public async delete(message: KlasaMessage, id: string) {
 		if (!id) throw message.language.get('COMMAND_REMINDME_DELETE_INVALID_PARAMETERS');
-		let selectedTask = null;
+		let selectedTask: ScheduledTask | null = null;
 		for (const task of this.client.schedule.tasks) {
 			if (task.id !== id) continue;
-			if (task.taskName !== REMINDER_TYPE || !task.data || task.data.user !== message.author.id) break;
+			if (task.taskName !== REMINDER_TYPE || !task.data || task.data.user !== message.author!.id) break;
 			selectedTask = task;
 		}
 		if (!selectedTask) throw message.language.get('COMMAND_REMINDME_NOTFOUND');
@@ -68,7 +68,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async parseInput(message: KlasaMessage, input: string) {
-		const parsed: { time: number; title: string } = {
+		const parsed: { time: number | null; title: string | null } = {
 			time: null,
 			title: null
 		};
@@ -99,9 +99,9 @@ export default class extends SkyraCommand {
 		let time: number;
 		let attempts = 0;
 		do {
-			const messages = await message.channel.awaitMessages(msg => msg.author === message.author, { time: 30000, max: 1 });
+			const messages = await message.channel.awaitMessages(msg => msg.author === message.author!, { time: 30000, max: 1 });
 			if (!messages.size) throw null;
-			time = new Duration(messages.first().content).offset;
+			time = new Duration(messages.first()!.content).offset;
 			attempts++;
 		} while (time < 60000 && attempts < 5);
 

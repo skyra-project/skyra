@@ -64,15 +64,15 @@ export default class extends SkyraCommand {
 			if (type === 'action') {
 				const action = arg.toLowerCase();
 				const index = ACTIONS.indexOf(action);
-				if (index !== -1) return (message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b1000) + index;
+				if (index !== -1) return (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b1000) + index;
 				throw message.language.get('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
 			}
 
 			if (type === 'logs') {
 				const value = await this.client.arguments.get('boolean').run(arg, possible, message);
 				return value
-					? (message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b0111) | 0b1000
-					: (message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b0111) & 0b0111;
+					? (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b0111) | 0b1000
+					: (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction & 0b0111) & 0b0111;
 			}
 
 			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, TIME.YEAR];
@@ -84,22 +84,22 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [type, value]: [string, number]) {
 		const { key, language } = TYPES[type];
-		await message.guild.settings.update(key, value);
+		await message.guild!.settings.update(key, value);
 
 		// Update the adder
 		switch (type) {
-			case 'disable': message.guild.security.adder = null;
+			case 'disable': message.guild!.security.adder = null;
 				break;
 			case 'enable':
 			case 'maximum':
 			case 'duration': {
-				const attachmentMaximum = message.guild.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
-				const attachmentDuration = message.guild.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
-				if (message.guild.security.adder) {
-					message.guild.security.adder.maximum = attachmentMaximum;
-					message.guild.security.adder.duration = attachmentDuration;
+				const attachmentMaximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
+				const attachmentDuration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
+				if (message.guild!.security.adder) {
+					message.guild!.security.adder.maximum = attachmentMaximum;
+					message.guild!.security.adder.duration = attachmentDuration;
 				} else {
-					message.guild.security.adder = new Adder(attachmentMaximum, attachmentDuration);
+					message.guild!.security.adder = new Adder(attachmentMaximum, attachmentDuration);
 				}
 			}
 		}

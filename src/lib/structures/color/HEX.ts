@@ -30,7 +30,7 @@ export class HEX {
 	}
 
 	public get rgb() {
-		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		return new RGB(parseInt(this.r, 16), parseInt(this.g, 16), parseInt(this.b, 16));
 	}
 
@@ -39,7 +39,7 @@ export class HEX {
 	}
 
 	public get b10() {
-		// eslint-disable-next-line no-use-before-define, @typescript-eslint/no-use-before-define
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		return new B10(parseInt(this.r + this.g + this.b, 16));
 	}
 

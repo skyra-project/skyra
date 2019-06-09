@@ -28,28 +28,28 @@ export class SkyraClient extends KlasaClient {
 	/**
 	 * The loaded Leaderboard singleton instance
 	 */
-	public leaderboard: Leaderboard = new Leaderboard(this);
+	public leaderboard: Leaderboard = new Leaderboard(this as KlasaClient);
 
 	/**
 	 * The IPC monitor store
 	 */
-	public ipcMonitors: IPCMonitorStore = new IPCMonitorStore(this);
+	public ipcMonitors: IPCMonitorStore = new IPCMonitorStore(this as KlasaClient);
 
 	/**
 	 * The Giveaway manager
 	 */
-	public giveaways: GiveawayManager = new GiveawayManager(this);
+	public giveaways: GiveawayManager = new GiveawayManager(this as KlasaClient);
 
 	/**
 	 * The webhook to use for the error event
 	 */
-	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
+	public webhookError: Webhook = new Webhook(this as KlasaClient, WEBHOOK_ERROR);
 
 	/**
 	 * The ConnectFour manager
 	 */
 	@enumerable(false)
-	public connectFour: ConnectFourManager = new ConnectFourManager(this);
+	public connectFour: ConnectFourManager = new ConnectFourManager(this as KlasaClient);
 
 	@enumerable(false)
 	public usertags: Collection<string, string> = new Collection();
@@ -63,7 +63,7 @@ export class SkyraClient extends KlasaClient {
 		: new Lavalink({
 			send: async (guildID: string, packet: any) => {
 				const guild = this.guilds.get(guildID);
-				if (guild) this.ws.shards.get(guild.shardID).send(packet);
+				if (guild) this.ws.shards.get(guild!.shardID)!.send(packet);
 				else throw new Error('attempted to send a packet on the wrong shard');
 			},
 			...this.options.lavalink
@@ -77,24 +77,24 @@ export class SkyraClient extends KlasaClient {
 		.on('error', (error, client) => this.emit(Events.Error, `[IPC] Error from ${client.name}: ${error}`))
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
-	public constructor(options?: KlasaClientOptions) {
+	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));
 
 		const { members = {} } = this.options.gateways;
 		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
 		this.gateways
-			.register(new MemberGateway(this, Databases.Members, members))
-			.register(new GatewayStorage(this, Databases.Banners))
-			.register(new GatewayStorage(this, Databases.Giveaway))
-			.register(new GatewayStorage(this, Databases.Moderation))
-			.register(new GatewayStorage(this, Databases.Oxford))
-			.register(new GatewayStorage(this, Databases.Polls))
-			.register(new GatewayStorage(this, Databases.Starboard));
+			.register(new MemberGateway(this as KlasaClient, Databases.Members, members))
+			.register(new GatewayStorage(this as KlasaClient, Databases.Banners))
+			.register(new GatewayStorage(this as KlasaClient, Databases.Giveaway))
+			.register(new GatewayStorage(this as KlasaClient, Databases.Moderation))
+			.register(new GatewayStorage(this as KlasaClient, Databases.Oxford))
+			.register(new GatewayStorage(this as KlasaClient, Databases.Polls))
+			.register(new GatewayStorage(this as KlasaClient, Databases.Starboard));
 
 		// Register the API handler
 		this.registerStore(this.ipcMonitors);
 
-		if (!options.dev) {
+		if (!this.options.dev) {
 			this.ipc.connectTo('ny-api', 9997)
 				.catch((error: Error) => { this.console.error(error); });
 		}
@@ -223,7 +223,7 @@ declare module 'discord.js' {
 		ipcMonitors: IPCMonitorStore;
 		giveaways: GiveawayManager;
 		connectFour: ConnectFourManager;
-		lavalink: Lavalink;
+		lavalink: Lavalink | null;
 		usertags: Collection<string, string>;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: Node;
@@ -244,7 +244,7 @@ declare module 'klasa' {
 
 	export interface Provider {
 		db: R;
-		pool: MasterPool;
+		pool: MasterPool | null;
 		ping(): Promise<number>;
 		sync(table: string): Promise<{ synced: number }>;
 		getRandom(table: string): Promise<unknown>;

@@ -17,20 +17,20 @@ export default class extends Extendable {
 	}
 
 	public async ask(this: Message, options: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
-	public async ask(this: Message, content: string | MessageOptions, options?: MessageOptions | MessageExtendablesAskOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean> {
+	public async ask(this: Message, content: string | MessageOptions | null, options?: MessageOptions | MessageExtendablesAskOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean> {
 		if (typeof content !== 'string') {
-			options = content;
+			options = content!;
 			content = null;
 		}
 		const message = await this.send(content, options as MessageOptions) as KlasaMessage;
-		return !this.guild || (this.channel as TextChannel).permissionsFor(this.guild.me).has(Permissions.FLAGS.ADD_REACTIONS)
+		return !this.guild || (this.channel as TextChannel).permissionsFor(this.guild!.me!)!.has(Permissions.FLAGS.ADD_REACTIONS)
 			? awaitReaction(this, message, promptOptions)
 			: awaitMessage(this, promptOptions);
 	}
 
-	public async alert(this: Message, content: string, timer?: number): Promise<Message>;
-	public async alert(this: Message, content: string, options?: MessageOptions, timer?: number): Promise<Message>;
-	public async alert(this: Message, content: string, options?: number | MessageOptions, timer?: number): Promise<Message> {
+	public async alert(this: Message, content: string, timer?: number): Promise<Message | null>;
+	public async alert(this: Message, content: string, options?: MessageOptions, timer?: number): Promise<Message | null>;
+	public async alert(this: Message, content: string, options?: number | MessageOptions, timer?: number): Promise<Message | null> {
 		if (!this.channel.postable) return Promise.resolve(null);
 		if (typeof options === 'number' && typeof timer === 'undefined') {
 			timer = options;
@@ -60,19 +60,19 @@ const REG_ACCEPT = /^y|yes?|yeah?$/i;
 async function awaitReaction(message: Message, messageSent: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
 	await messageSent.react(REACTIONS.YES);
 	await messageSent.react(REACTIONS.NO);
-	const reactions = await messageSent.awaitReactions((__, user) => user === message.author, promptOptions);
+	const reactions = await messageSent.awaitReactions((__, user) => user === message.author!, promptOptions);
 
 	// Remove all reactions if the user has permissions to do so
-	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild.me).has(Permissions.FLAGS.MANAGE_MESSAGES)) {
+	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild!.me!)!.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
 		messageSent.reactions.removeAll().catch(error => messageSent.client.emit(Events.ApiError, error));
 	}
 
-	return reactions.size && reactions.firstKey() === REACTIONS.YES;
+	return Boolean(reactions.size) && reactions.firstKey() === REACTIONS.YES;
 }
 
 async function awaitMessage(message: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
-	const messages = await message.channel.awaitMessages(mes => mes.author === message.author, promptOptions);
-	return messages.size && REG_ACCEPT.test(messages.first().content);
+	const messages = await message.channel.awaitMessages(mes => mes.author === message.author!, promptOptions);
+	return Boolean(messages.size) && REG_ACCEPT.test(messages.first()!.content);
 }
 
 async function nuke(message: Message) {

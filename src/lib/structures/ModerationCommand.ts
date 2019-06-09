@@ -32,10 +32,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		if (typeof options.modType === 'undefined') this.client.emit(Events.Error, `[COMMAND] ${this} does not have a type.`);
 		this.modType = options.modType;
-		this.requiredMember = options.requiredMember;
+		this.requiredMember = options.requiredMember!;
 	}
 
-	public async run(message: KlasaMessage, [targets, reason]: [User[], string?]) {
+	public async run(message: KlasaMessage, [targets, reason]: [User[], string | null]) {
 		if (!reason) reason = null;
 
 		const prehandled = await this.prehandle(message, targets, reason);
@@ -54,7 +54,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const output = [];
 		if (processed.length) {
 			reason = processed[0].log.reason;
-			const sorted = processed.sort((a, b) => a.log.case - b.log.case);
+			const sorted = processed.sort((a, b) => a.log.case! - b.log.case!);
 			const cases = sorted.map(({ log }) => log.case);
 			const users = sorted.map(({ target }) => `\`${target.tag}\``);
 			const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
@@ -68,7 +68,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		try {
 			await this.posthandle(message, targets, reason, prehandled);
-		} catch (_) {
+		} catch {
 			// noop
 		}
 
@@ -76,43 +76,43 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	}
 
 	public async checkModeratable(message: KlasaMessage, target: User) {
-		if (target.id === message.author.id) {
+		if (target.id === message.author!.id) {
 			throw message.language.get('COMMAND_USERSELF');
 		}
 
-		if (target.id === this.client.user.id) {
+		if (target.id === this.client.user!.id) {
 			throw message.language.get('COMMAND_TOSKYRA');
 		}
 
-		const member = await message.guild.members.fetch(target.id).catch(() => {
+		const member = await message.guild!.members.fetch(target.id).catch(() => {
 			if (this.requiredMember) throw message.language.get('USER_NOT_IN_GUILD');
 			return null;
 		}) as GuildMember | null;
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild.me.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
-			if (targetHighestRolePosition >= message.member.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER');
+			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
+			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER');
 		}
 
 		return member;
 	}
 
-	public sendModlog(message: KlasaMessage, target: User, reason: string, extraData?: object): Promise<ModerationManagerEntry> {
+	public async sendModlog(message: KlasaMessage, target: User, reason: string | null, extraData?: object) {
 		if (Array.isArray(reason)) reason = reason.join(' ');
-		const modlog = message.guild.moderation.new
-			.setModerator(message.author.id)
+		const modlog = message.guild!.moderation.new
+			.setModerator(message.author!.id)
 			.setUser(target.id)
 			.setType(this.modType)
 			.setReason(reason);
 
 		if (extraData) modlog.setExtraData(extraData);
-		return modlog.create();
+		return (await modlog.create())!;
 	}
 
-	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string): Promise<T>;
+	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string | null): Promise<T>;
 
-	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string, prehandled: T): Promise<ModerationManagerEntry>;
+	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string | null, prehandled: T): Promise<ModerationManagerEntry>;
 
-	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string, prehandled: T): Promise<unknown>;
+	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string | null, prehandled: T): Promise<unknown>;
 
 }

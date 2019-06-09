@@ -94,7 +94,7 @@ export namespace GuildSettings {
 		export const Staff = 'roles.staff';
 		export type Subscriber = string;
 		export const Subscriber = 'roles.subscriber';
-		export type UniqueRoleSets = any[];
+		export type UniqueRoleSets = readonly UniqueRoleSet[];
 		export const UniqueRoleSets = 'roles.uniqueRoleSets';
 	}
 
@@ -167,12 +167,12 @@ export namespace GuildSettings {
 
 export interface DisabledCommandChannel {
 	channel: string;
-	commands: string[];
+	commands: readonly string[];
 }
 
 export interface StickyRole {
 	user: string;
-	roles: string[];
+	roles: readonly string[];
 }
 
 export interface RolesAuto {
@@ -194,4 +194,9 @@ export interface TriggerIncludes {
 	action: 'react';
 	input: string;
 	output: string;
+}
+
+export interface UniqueRoleSet {
+	name: string;
+	roles: readonly string[];
 }

@@ -24,18 +24,18 @@ Canvas
 // Skyra setup
 SkyraClient.defaultPermissionLevels
 	.add(4, message => message.member
-		? message.guild.settings.get(GuildSettings.Roles.Staff)
-			? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Staff) as GuildSettings.Roles.Staff)
+		? message.guild!.settings.get(GuildSettings.Roles.Staff)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Staff) as GuildSettings.Roles.Staff)
 			: message.member.permissions.has(FLAGS.MANAGE_MESSAGES)
 		: false, { fetch: true })
 	.add(5, message => message.member
-		? message.guild.settings.get(GuildSettings.Roles.Moderator)
-			? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Moderator) as GuildSettings.Roles.Moderator)
+		? message.guild!.settings.get(GuildSettings.Roles.Moderator)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Moderator) as GuildSettings.Roles.Moderator)
 			: message.member.permissions.has(FLAGS.BAN_MEMBERS)
 		: false, { fetch: true })
 	.add(6, message => message.member
-		? message.guild.settings.get(GuildSettings.Roles.Admin)
-			? message.member.roles.has(message.guild.settings.get(GuildSettings.Roles.Admin) as GuildSettings.Roles.Admin)
+		? message.guild!.settings.get(GuildSettings.Roles.Admin)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Admin) as GuildSettings.Roles.Admin)
 			: message.member.permissions.has(FLAGS.MANAGE_GUILD)
 		: false, { fetch: true });
 

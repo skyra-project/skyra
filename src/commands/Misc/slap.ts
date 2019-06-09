@@ -9,7 +9,7 @@ import { assetsFolder } from '../../Skyra';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer = null;
+	private template: Buffer | null = null;
 	private readonly skyraID = CLIENT_ID;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -33,10 +33,10 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		let selectedUser: KlasaUser;
 		let slapper: KlasaUser;
-		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
-		if (user === message.author) [selectedUser, slapper] = [message.author, this.client.user];
-		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, slapper] = [message.author, user];
-		else [selectedUser, slapper] = [user, message.author];
+		if (user.id === message.author!.id && this.client.options.owners.includes(message.author!.id)) throw '💥';
+		if (user === message.author) [selectedUser, slapper] = [message.author!, this.client.user!];
+		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, slapper] = [message.author!, user];
+		else [selectedUser, slapper] = [user, message.author!];
 
 		const [Slapped, Slapper] = await Promise.all([
 			fetchAvatar(selectedUser, 256),
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 
 		/* Initialize Canvas */
 		return new Canvas(950, 475)
-			.addImage(this.template, 0, 0, 950, 475)
+			.addImage(this.template!, 0, 0, 950, 475)
 			.addImage(Slapper, 410, 107, 131, 131, { type: 'round', radius: 66, restore: true })
 			.addImage(Slapped, 159, 180, 169, 169, { type: 'round', radius: 85, restore: true })
 			.toBufferAsync();

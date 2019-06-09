@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 		// if (this.index > this.ids.length - 1) this.index = 0;
 		// else this.index += 1;
 		const randomImageBuffer = await fetch('https://cataas.com/cat', 'buffer').catch(() => null);
-		if (!randomImageBuffer) return message.send('https://wallpapercave.com/wp/wp3021105.jpg')
+		if (!randomImageBuffer) return message.send('https://wallpapercave.com/wp/wp3021105.jpg');
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)

@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async generatePage(message: KlasaMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {
-		if (index > list.size / 10) index = 0;
+		if (index > list.size / 10 || index < 0) index = 0;
 		const retrievedPage: LeaderboardUser[] = [];
 		const promises: Promise<void>[] = [];
 		const page: string[] = [];

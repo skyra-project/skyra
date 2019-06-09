@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 
 		try {
 			const randomDogData = await fetch('https://dog.ceo/api/breeds/image/random', 'json');
-			if (randomDogData && randomDogData.status === "success") embed.setImage(randomDogData.message);
+			if (randomDogData && randomDogData.status === 'success') embed.setImage(randomDogData.message);
 		} catch {
 			embed.setImage('https://i.imgur.com/cF0XUF5.jpg');
 		}

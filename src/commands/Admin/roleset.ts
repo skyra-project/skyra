@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
 		// The set does exist so we want to only REMOVE provided roles from it
 		// Create a new array that we can use to overwrite the existing one in settings
-		const newsets = allRolesets.map(set => set.name === name ? set : { name, roles: set.roles.filter((id: string) => !roles.find(role => role.id === id)) });
+		const newsets = allRolesets.map(set => set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find(role => role.id === id)) } : set);
 
 		const { errors } = await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
 		if (errors.length) this.client.emit('error', errors.join('\n'));

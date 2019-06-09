@@ -2905,7 +2905,8 @@ export default class extends Language {
 		EVENTS_ERROR_WTF: `${REDCROSS} What a Terrible Failure! I am very sorry!`,
 		EVENTS_ERROR_STRING: (mention, message) => `${REDCROSS} Dear ${mention}, ${message}`,
 
-		CONST_USERS: 'Users'
+		CONST_USERS: 'Users',
+		UNKNOWN_USER: `Unknown user.`
 	};
 
 	public async init() {

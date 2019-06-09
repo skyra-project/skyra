@@ -48,7 +48,12 @@ export default class extends MusicCommand {
 	public async play(music: Queue): Promise<void> {
 		while (music.length && music.channel) {
 			const [song] = music;
-			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song.title, await song.fetchRequester()]);
+
+			const requester = await song.fetchRequester();
+			const member = requester ? await music.guild.members.fetch(requester.id).catch(() => null) : null;
+			const name = member ? member.displayName : requester ? requester.username : music.guild.language.get(`UNKNOWN_USER`);
+
+			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song.title, name]);
 			await util.sleep(250);
 
 			try {

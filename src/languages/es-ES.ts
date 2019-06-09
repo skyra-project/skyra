@@ -2532,7 +2532,8 @@ export default class extends Language {
 		EVENTS_ERROR_WTF: '¡Vaya fallo más terrible! ¡Lo siento!',
 		EVENTS_ERROR_STRING: (mention, message) => `Querido ${mention}, ${message}`,
 
-		CONST_USERS: 'Usuarios'
+		CONST_USERS: 'Usuarios',
+		UNKNOWN_USER: `Usuario desconocido.`
 	};
 
 	public async init() {

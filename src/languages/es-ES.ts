@@ -248,7 +248,6 @@ export default class extends Language {
 		COMMAND_PLAY_DESCRIPTION: `¡Empecemos la cola!`,
 		COMMAND_PLAY_END: `⏹ Del 1 al 10, siendo 1 la peor puntuación y 10 la mejor, ¿cómo valorarías la sesión? ¡Ya ha terminado!`,
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
-		COMMAND_PLAY_UNKNOWN_USER: `Usuario desconocido.`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: `¡Ey! ¡El disco ya está girando!`,
 		COMMAND_PLAYING_DESCRIPTION: `Obtén información de la canción actual.`,
@@ -2533,7 +2532,8 @@ export default class extends Language {
 		EVENTS_ERROR_WTF: '¡Vaya fallo más terrible! ¡Lo siento!',
 		EVENTS_ERROR_STRING: (mention, message) => `Querido ${mention}, ${message}`,
 
-		CONST_USERS: 'Usuarios'
+		CONST_USERS: 'Usuarios',
+		UNKNOWN_USER: `Usuario desconocido.`
 	};
 
 	public async init() {

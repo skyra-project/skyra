@@ -244,7 +244,6 @@ export default class extends Language {
 		COMMAND_PLAY_DESCRIPTION: `Let's start the queue!`,
 		COMMAND_PLAY_END: `Looks like the queue ended here, I hope you enjoyed the session!`,
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
-		COMMAND_PLAY_UNKNOWN_USER: `Unknown user.`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `There was a track going on! Playing it back! Now playing: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: `${REDCROSS} Hey! The disk is already spinning!`,
 		COMMAND_PLAYING_DESCRIPTION: `Get information from the current song.`,
@@ -2906,7 +2905,8 @@ export default class extends Language {
 		EVENTS_ERROR_WTF: `${REDCROSS} What a Terrible Failure! I am very sorry!`,
 		EVENTS_ERROR_STRING: (mention, message) => `${REDCROSS} Dear ${mention}, ${message}`,
 
-		CONST_USERS: 'Users'
+		CONST_USERS: 'Users',
+		UNKNOWN_USER: `Unknown user.`,
 	};
 
 	public async init() {

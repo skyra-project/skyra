@@ -1,7 +1,7 @@
 import { GuildChannel, MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getContent, getImage } from '../../lib/util/util';
+import { getContent, getImage, cutText } from '../../lib/util/util';
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 export default class extends SkyraCommand {
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 			.setTimestamp(remoteMessage.createdAt);
 
 		const content = getContent(remoteMessage);
-		if (content) embed.setDescription(content);
+		if (content) embed.setDescription(`[${message.language.get('STARBOARD_JUMPTO')}](${message.url})\n${cutText(content, 1800)}`);
 
 		return message.sendEmbed(embed);
 	}

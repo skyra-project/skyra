@@ -3,7 +3,6 @@ import { Track } from 'lavalink';
 import { Queue } from '../../lib/structures/music/Queue';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
 import { Events } from '../../lib/types/Enums';
-import messageDelete from '../../events/messageDelete';
 
 export default class extends MusicCommand {
 

@@ -40,8 +40,6 @@ export namespace GuildSettings {
 		export const BanAdd = 'events.banAdd';
 		export type BanRemove = boolean;
 		export const BanRemove = 'events.banRemove';
-		export type IgnoredChannelIDs = Snowflake[];
-		export const IgnoredChannelIDs = 'events.ignoredChannelIDs';
 		export type MemberAdd = boolean;
 		export const MemberAdd = 'events.memberAdd';
 		export type MemberRemove = boolean;

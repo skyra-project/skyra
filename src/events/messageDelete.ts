@@ -10,7 +10,7 @@ export default class extends Event {
 	public async run(message: KlasaMessage) {
 		if (message.partial || !message.guild || message.author!.id === this.client.user!.id) return;
 
-		const [messageDeleteLogEnabled, disabledChannelIDs] = message.guild.settings.pluck(GuildSettings.Events.MessageDelete, GuildSettings.Events.IgnoredChannelIDs);
+		const [messageDeleteLogEnabled, disabledChannelIDs] = message.guild.settings.pluck(GuildSettings.Events.MessageDelete, GuildSettings.Messages.IgnoreChannels);
 		if (!messageDeleteLogEnabled || disabledChannelIDs.includes(message.channel.id)) return;
 
 		const channel = message.channel as TextChannel;

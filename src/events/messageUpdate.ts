@@ -10,8 +10,9 @@ export default class extends Event {
 	public async run(old: KlasaMessage, message: KlasaMessage) {
 		if (!this.client.ready || !message.guild || old.content === message.content || message.author === this.client.user) return;
 
-		const [messageEditLogEnabled, disabledChannelIDs] = message.guild.settings.pluck(GuildSettings.Events.MessageEdit, GuildSettings.Messages.IgnoreChannels);
-		if (!messageEditLogEnabled || disabledChannelIDs.includes(message.channel.id)) return;
+		const [enabled, ignoreChannels] = message.guild.settings
+			.pluck(GuildSettings.Events.MessageEdit, GuildSettings.Messages.IgnoreChannels) as [GuildSettings.Events.MessageEdit, GuildSettings.Messages.IgnoreChannels];
+		if (!enabled || ignoreChannels.includes(message.channel.id)) return;
 
 		this.client.emit(Events.GuildMessageLog, (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
 			.setColor(0xDCE775)

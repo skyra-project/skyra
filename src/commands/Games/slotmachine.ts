@@ -9,7 +9,7 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['slot', 'slots', 'slotmachines'],
 			bucket: 2,
-			cooldown: 10,
+			cooldown: 7,
 			description: language => language.get('COMMAND_SLOTMACHINE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_SLOTMACHINE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],

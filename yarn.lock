@@ -35,12 +35,12 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.7.tgz#4f2563bad652b2acb1722d7e7aae2b0ff62d192c"
   integrity sha512-1YKeT4JitGgE4SOzyB9eMwO0nGVNkNEsm9qlIt1Lqm/tG2QEiSMTD4kS3aO6L+w5SClLVxALmIBESK6Mk5wX0A==
 
-"@typescript-eslint/eslint-plugin@^1.9.1-alpha.26":
-  version "1.9.1-alpha.26"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-1.9.1-alpha.26.tgz#4922c0f76d9b004745260ba66dec772f2f4bc3a9"
-  integrity sha512-ie7rrWvL+12rSQ5+pLHAFTpdCvuJsb88L1ef/2Qvrbv8M8A74pWP7K34GvfXGoKYDd/Kj752u1DJb0V3uQAqdw==
+"@typescript-eslint/eslint-plugin@^1.10.2":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-1.10.2.tgz#552fc64cfcb19c6162190360217c945e8faa330a"
+  integrity sha512-7449RhjE1oLFIy5E/5rT4wG5+KsfPzakJuhvpzXJ3C46lq7xywY0/Rjo9ZBcwrfbk0nRZ5xmUHkk7DZ67tSBKw==
   dependencies:
-    "@typescript-eslint/experimental-utils" "1.9.1-alpha.26+b16409a"
+    "@typescript-eslint/experimental-utils" "1.10.2"
     eslint-utils "^1.3.1"
     functional-red-black-tree "^1.0.1"
     regexpp "^2.0.1"
@@ -52,14 +52,6 @@
   integrity sha512-Hf5lYcrnTH5Oc67SRrQUA7KuHErMvCf5RlZsyxXPIT6AXa8fKTyfFO6vaEnUmlz48RpbxO4f0fY3QtWkuHZNjg==
   dependencies:
     "@typescript-eslint/typescript-estree" "1.10.2"
-    eslint-scope "^4.0.0"
-
-"@typescript-eslint/experimental-utils@1.9.1-alpha.26+b16409a":
-  version "1.9.1-alpha.26"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-1.9.1-alpha.26.tgz#db2c882ff3e67b7c033600b8130e92dda9880b12"
-  integrity sha512-PzMSPY/JQFkLnafsdE/OpM/P021IpcZS3MX72KzdcgXdcC37m0/sw37uy8z11gVS9pPEhs7oUR3ETCL0d9y8MQ==
-  dependencies:
-    "@typescript-eslint/typescript-estree" "1.9.1-alpha.26+b16409a"
     eslint-scope "^4.0.0"
 
 "@typescript-eslint/parser@^1.10.2":
@@ -76,14 +68,6 @@
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-1.10.2.tgz#8403585dd74b6cfb6f78aa98b6958de158b5897b"
   integrity sha512-Kutjz0i69qraOsWeI8ETqYJ07tRLvD9URmdrMoF10bG8y8ucLmPtSxROvVejWvlJUGl2et/plnMiKRDW+rhEhw==
-  dependencies:
-    lodash.unescape "4.0.1"
-    semver "5.5.0"
-
-"@typescript-eslint/typescript-estree@1.9.1-alpha.26+b16409a":
-  version "1.9.1-alpha.26"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-1.9.1-alpha.26.tgz#64ac9c71a73e2ba1513b9c15de5ab1240916f9e2"
-  integrity sha512-KEuodPoT4yxSPPW9/zE83ScrkrcpDsHcFjRchPbSFL0Jc54wOACOV+41cZm8ME97E91yvafAukQ78ok/mvNY0g==
   dependencies:
     lodash.unescape "4.0.1"
     semver "5.5.0"

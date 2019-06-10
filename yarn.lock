@@ -46,6 +46,14 @@
     regexpp "^2.0.1"
     tsutils "^3.7.0"
 
+"@typescript-eslint/experimental-utils@1.10.2":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-1.10.2.tgz#cd548c03fc1a2b3ba5c136d1599001a1ede24215"
+  integrity sha512-Hf5lYcrnTH5Oc67SRrQUA7KuHErMvCf5RlZsyxXPIT6AXa8fKTyfFO6vaEnUmlz48RpbxO4f0fY3QtWkuHZNjg==
+  dependencies:
+    "@typescript-eslint/typescript-estree" "1.10.2"
+    eslint-scope "^4.0.0"
+
 "@typescript-eslint/experimental-utils@1.9.1-alpha.26+b16409a":
   version "1.9.1-alpha.26"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-1.9.1-alpha.26.tgz#db2c882ff3e67b7c033600b8130e92dda9880b12"
@@ -54,15 +62,23 @@
     "@typescript-eslint/typescript-estree" "1.9.1-alpha.26+b16409a"
     eslint-scope "^4.0.0"
 
-"@typescript-eslint/parser@^1.9.1-alpha.26":
-  version "1.9.1-alpha.26"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-1.9.1-alpha.26.tgz#e68eb73605b808f1be10926072e5a968c12b8111"
-  integrity sha512-CJeSlw5n4oHAEtUrkqMXWUzsiuqTc9/fW9jh2jSoSM+NZ/mx1SWirWN3i6Z0rlslVmehB8izsR7p4hmJf2vTBA==
+"@typescript-eslint/parser@^1.10.2":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-1.10.2.tgz#36cfe8c6bf1b6c1dd81da56f88c8588f4b1a852b"
+  integrity sha512-xWDWPfZfV0ENU17ermIUVEVSseBBJxKfqBcRCMZ8nAjJbfA5R7NWMZmFFHYnars5MjK4fPjhu4gwQv526oZIPQ==
   dependencies:
     "@types/eslint-visitor-keys" "^1.0.0"
-    "@typescript-eslint/experimental-utils" "1.9.1-alpha.26+b16409a"
-    "@typescript-eslint/typescript-estree" "1.9.1-alpha.26+b16409a"
+    "@typescript-eslint/experimental-utils" "1.10.2"
+    "@typescript-eslint/typescript-estree" "1.10.2"
     eslint-visitor-keys "^1.0.0"
+
+"@typescript-eslint/typescript-estree@1.10.2":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-1.10.2.tgz#8403585dd74b6cfb6f78aa98b6958de158b5897b"
+  integrity sha512-Kutjz0i69qraOsWeI8ETqYJ07tRLvD9URmdrMoF10bG8y8ucLmPtSxROvVejWvlJUGl2et/plnMiKRDW+rhEhw==
+  dependencies:
+    lodash.unescape "4.0.1"
+    semver "5.5.0"
 
 "@typescript-eslint/typescript-estree@1.9.1-alpha.26+b16409a":
   version "1.9.1-alpha.26"

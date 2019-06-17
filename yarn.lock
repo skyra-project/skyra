@@ -1297,10 +1297,10 @@ util-deprecate@~1.0.1:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
 
-veza@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/veza/-/veza-0.5.0.tgz#b66e33fda83aac5490d6e25d5e036f870cbf166a"
-  integrity sha512-KyPotWWG4GIm9nZnBDA43vHf/s2tJIJJTyGSI7Dw6xu/gLoDohSzWbFM04B9a+5XR8+UrXMicsS3WoaSGwKJHA==
+veza@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/veza/-/veza-0.5.1.tgz#a4f326b7ec8326b3c0ef37c222cb0ce2d1ff4a77"
+  integrity sha512-MrqMS+z9YAIw6lb6GK+kus9SpWWuwEymVwhlbbko5o5rMHS9myRmqgAYL1JqmHVm4QONDXVQx4TRXrJfYSLllQ==
 
 which@^1.2.9:
   version "1.3.1"

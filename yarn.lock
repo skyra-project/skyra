@@ -1045,10 +1045,10 @@ restore-cursor@^2.0.0:
     onetime "^2.0.0"
     signal-exit "^3.0.2"
 
-rethinkdb-ts@^2.4.0-rc.13:
-  version "2.4.0-rc.13"
-  resolved "https://registry.yarnpkg.com/rethinkdb-ts/-/rethinkdb-ts-2.4.0-rc.13.tgz#61bbc9e53989f2f5e29323117e19d2b67154b975"
-  integrity sha512-8Jp9mR/Zmszt86D/lN3KIx1TlaqRZ9Pi/tY3RbAKtJsJ/1SlQA/nAVUZJvCAMxMzRWGNNVsPhxooMNiMp8J/3Q==
+rethinkdb-ts@^2.4.0-rc.15:
+  version "2.4.0-rc.15"
+  resolved "https://registry.yarnpkg.com/rethinkdb-ts/-/rethinkdb-ts-2.4.0-rc.15.tgz#397772409aa9db1d0c997ab5c38334126e6a3504"
+  integrity sha512-MR/VjfReVg1s1VHRzZZ4CZLciKDhWGcnGJURL+zJnGDVqHuHIbZ5DW/3EkqwD7uIPBFLdIpXNAcmTBDvhMQMtw==
 
 rimraf@2.6.3, rimraf@^2.6.1:
   version "2.6.3"

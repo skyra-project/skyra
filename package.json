@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "canvas": "^2.5.0",
-    "canvas-constructor": "^3.0.3",
+    "canvas-constructor": "^3.1.0",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.4.5",

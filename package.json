@@ -46,7 +46,7 @@
     "fs-nextra": "^0.4.5",
     "gifencoder": "^2.0.1",
     "klasa": "github:dirigeants/klasa#settings",
-    "lavalink": "^2.6.1",
+    "lavalink": "^2.8.1",
     "node-fetch": "^2.6.0",
     "rethinkdb-ts": "^2.4.0-rc.15",
     "typescript": "^3.5.3",

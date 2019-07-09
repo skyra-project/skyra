@@ -720,10 +720,10 @@ json-stable-stringify-without-jsonify@^1.0.1:
   dependencies:
     fs-nextra "^0.4.5"
 
-lavalink@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.6.1.tgz#5aa38b3792d807c765199ce6d8be51b7bca04bf5"
-  integrity sha512-ByiWmGdISzFbAA3B9v1/6+1yQn2RY8/W8PR/Z6qII424pBvIMnGxns43ZpPfdRSmsxvyDThHHB5n5mPw8bnlHg==
+lavalink@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.8.1.tgz#d7d9754509d506da53ce33e787a6498826f381a2"
+  integrity sha512-vySylUgan5Rk/kux9cK5grZX2vTs/Hgjb8JeUt7+wJPfSwmjChZAc/yPp0iCcdXrIQsOXyOptZIcqVDGrYJsBQ==
   dependencies:
     backoff "^2.5.0"
     ws "^6.0.0"

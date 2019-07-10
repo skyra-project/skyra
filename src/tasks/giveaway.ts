@@ -4,7 +4,7 @@ import { GiveawayCreateData } from '../lib/structures/Giveaway';
 
 export default class extends Task {
 
-	public async run(data: GiveawayCreateData): Promise<any> {
+	public run(data: GiveawayCreateData) {
 		return this.client.giveaways.create(data);
 	}
 

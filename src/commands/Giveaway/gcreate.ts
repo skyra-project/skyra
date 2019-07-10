@@ -7,7 +7,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['giveawayschedule'],
+			aliases: ['giveawayschedule', 'gs', 'gc'],
 			description: language => language.get('COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_GIVEAWAYSCHEDULE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],

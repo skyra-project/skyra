@@ -606,7 +606,7 @@ export default class extends Language {
 			examples: ['6h A hug from Skyra.']
 		}),
 		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: `Schedule a giveaway to start at a certain time.`,
-		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('giveaway', {
+		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
 			extendedHelp: `This command prepares a giveaway to start at a certain time if you do not wish to start it immediately. See the help for giveaway command for more details.`,
 			explainedUsage: [
 				['schedule', 'The time to wait before starting the giveaway.'],

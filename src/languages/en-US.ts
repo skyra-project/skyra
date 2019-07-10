@@ -605,6 +605,16 @@ export default class extends Language {
 			],
 			examples: ['6h A hug from Skyra.']
 		}),
+		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: `Schedule a giveaway to start at a certain time.`,
+		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
+			extendedHelp: `This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.`,
+			explainedUsage: [
+				['schedule', 'The time to wait before starting the giveaway.'],
+				['time', 'The time the giveaway should last.'],
+				['title', 'The title of the giveaway.']
+			],
+			examples: ['30m 6h A hug from Skyra.']
+		}),
 		COMMAND_LIST_DESCRIPTION: 'Check the list of channels, roles, members or warnings for this guild!.',
 		COMMAND_LIST_EXTENDED: builder.display('list', {
 			extendedHelp: `This command is designed to list (sorted) information for this guild with possible filters. For example,
@@ -1899,6 +1909,7 @@ export default class extends Language {
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (winners, title) => `Congratulations ${winners.join(' ')}! You won the giveaway **${title}**`,
 		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: title => `The giveaway **${title}** ended without enough participants.`,
+		GIVEAWAY_SCHEDULED: time => `The giveaway will start at ${time}.`,
 
 		/**
 		 * ###################

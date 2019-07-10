@@ -1,6 +1,7 @@
 # Ignore a blackhole and the folder for development
 node_modules/
 .vs/
+/rethinkdb_data/
 
 # Ignore bwd folders
 dist/

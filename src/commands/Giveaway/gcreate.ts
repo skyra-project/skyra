@@ -13,19 +13,21 @@ export default class extends SkyraCommand {
 			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<schedule:time> <time:time> <title:...string{,256}>',
-			usageDelim: ' '
+			usageDelim: ' ',
+			promptLimit: Infinity
 		});
 	}
 
 	public async run(message: KlasaMessage, [schedule, time, title]: [Date, Date, string]) {
 		// First do the checks for the giveaway itself
 		const offset = time.getTime() - Date.now();
+		const scheduleOffset = schedule.getTime() - Date.now();
 
-		if (offset < 9500) throw message.language.get('GIVEAWAY_TIME');
-		if (offset > YEAR) throw message.language.get('GIVEAWAY_TIME_TOO_LONG');
+		if (offset < 9500 || scheduleOffset < 9500) throw message.language.get('GIVEAWAY_TIME');
+		if (offset > YEAR || scheduleOffset > YEAR) throw message.language.get('GIVEAWAY_TIME_TOO_LONG');
 
 		// This creates an single time task to start the giveaway
-		await this.client.schedule.create('giveaway', Date.now() + schedule.getTime(), {
+		await this.client.schedule.create('giveaway', schedule.getTime(), {
 			data: {
 				channelID: message.channel.id,
 				endsAt: time.getTime() + 500,
@@ -37,7 +39,7 @@ export default class extends SkyraCommand {
 			catchUp: true
 		});
 
-		return message.sendLocale('COMMAND_GIVEAWAYSCHEDULE_CREATED', [schedule, time, title]);
+		return message.sendLocale('GIVEAWAY_SCHEDULED', [schedule, time, title]);
 	}
 
 }

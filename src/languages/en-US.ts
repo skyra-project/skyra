@@ -250,6 +250,8 @@ export default class extends Language {
 		COMMAND_PLAYING_DURATION: time => `**Duration**: ${time}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: `${REDCROSS} Are you speaking to me? Because my deck is empty...`,
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: `${REDCROSS} I think you're listening to background noise, I'm not playing anything.`,
+		COMMAND_REPEAT_DESCRIPTION: `Toggle repeating the current song.`,
+		COMMAND_REPEAT_SUCCESS: enabled => enabled ? `This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!` : `I was actually getting tired of this too, but I didn't want to say anything.`,
 		COMMAND_QUEUE_DESCRIPTION: `Check the queue list.`,
 		COMMAND_QUEUE_EMPTY: `The session is over, add some songs to the queue, you can for example do \`Skyra, add Imperial March\`, and... *dumbrolls*!`,
 		COMMAND_QUEUE_LAST: `There are no more songs! After the one playing is over, the session will end!`,

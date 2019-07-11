@@ -254,6 +254,8 @@ export default class extends Language {
 		COMMAND_PLAYING_DURATION: time => `**Duración**: ${time}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: `¿Es conmigo? Porque no hay nada en reproducción...`,
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: `Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.`,
+		COMMAND_REPEAT_DESCRIPTION: `Se alterna repitiendo la canción actual.`,
+		COMMAND_REPEAT_SUCCESS: enabled => enabled ? `This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!` : `I was actually getting tired of this too, but I didn't want to say anything.`,
 		COMMAND_QUEUE_DESCRIPTION: `Revisa la lista de cola.`,
 		COMMAND_QUEUE_EMPTY: prefix => `¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando \`${prefix}add\`.`,
 		COMMAND_QUEUE_LINE: (title, requester) => `*${title}*, pedida por: **${requester}**`,

@@ -100,7 +100,6 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	public createLock() {
 		const lock = createReferPromise<undefined>();
 		this._locks.push(lock);
-		// eslint-disable-next-line promise/catch-or-return
 		lock.promise.finally(() => {
 			this._locks.splice(this._locks.indexOf(lock), 1);
 		});

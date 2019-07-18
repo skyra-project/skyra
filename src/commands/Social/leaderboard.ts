@@ -47,7 +47,6 @@ export default class extends SkyraCommand {
 			retrievedPage.push(value);
 			if (!value.name) {
 				promises.push(this.client.fetchUsername(id)
-					// eslint-disable-next-line promise/prefer-await-to-then, promise/always-return
 					.then(username => { value.name = username || `Unknown: ${id}`; }));
 			}
 		}

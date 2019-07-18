@@ -160,7 +160,6 @@ export class StarboardMessage {
 		if (!force || syncStatus) return syncStatus || Promise.resolve(this);
 
 		// If it's not currently synchronizing, create a new sync status for the sync queue
-		// eslint-disable-next-line promise/prefer-await-to-then
 		const sync = Promise.all([this._syncDatabase(), this._syncDiscord()]).then(() => {
 			this.manager.syncMap.delete(this);
 			return this;
@@ -308,7 +307,6 @@ export class StarboardMessage {
 			const channel = this.manager.starboardChannel!;
 			if (data.starMessageID) {
 				await channel.messages.fetch(data.starMessageID)
-					// eslint-disable-next-line promise/always-return
 					.then(message => { this.starMessage = message; })
 					.catch(() => undefined);
 			}

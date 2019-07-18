@@ -57,7 +57,6 @@ export default class extends SkyraCommand {
 	private timedEval(message: KlasaMessage, code: string, flagTime: number, languageType: EvalLanguage) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code, languageType);
 		return Promise.race([
-			// eslint-disable-next-line promise/prefer-await-to-then
 			util.sleep(flagTime).then(() => ({
 				result: message.language.get('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
 				success: false,

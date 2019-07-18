@@ -54,7 +54,6 @@ export default class extends Monitor {
 		const role = message.guild!.roles.get(autoRole.id);
 		if (!role || role.position > message.guild!.me!.roles.highest.position) {
 			message.guild!.settings.update(GuildSettings.Roles.Auto, autoRole, { arrayAction: 'remove', throwOnError: true })
-				// eslint-disable-next-line promise/prefer-await-to-then
 				.then(() => this.handleRoles(message, memberPoints))
 				.catch(error => this.client.emit(Events.Error, error));
 			return;

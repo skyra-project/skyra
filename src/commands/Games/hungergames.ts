@@ -69,7 +69,6 @@ export default class extends SkyraCommand {
 						gameMessage.react(emoji)
 							.catch(error => this.client.emit(Events.ApiError, error));
 					}
-					// eslint-disable-next-line promise/param-names
 					const verification = await new Promise<boolean>(res => {
 						resolve = res;
 					});

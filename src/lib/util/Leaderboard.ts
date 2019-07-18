@@ -132,7 +132,6 @@ export class Leaderboard {
 		const timeout = new PreciseTimeout(MINUTE * 10);
 		this.timeouts.guilds.set(guild, timeout);
 
-		// eslint-disable-next-line promise/catch-or-return, promise/prefer-await-to-then, promise/always-return
 		timeout.run().then(() => {
 			this.timeouts.guilds.delete(guild);
 			this.guilds.get(guild)!.clear();
@@ -166,7 +165,6 @@ export class Leaderboard {
 
 		// Set the timeout for the refresh
 		this.timeouts.users = new PreciseTimeout(MINUTE * 15);
-		// eslint-disable-next-line promise/catch-or-return, promise/prefer-await-to-then, promise/always-return
 		this.timeouts.users.run().then(() => {
 			this.timeouts.users = null;
 			this.users.clear();

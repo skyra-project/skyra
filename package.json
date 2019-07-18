@@ -2,7 +2,7 @@
   "name": "skyra",
   "version": "5.1.0",
   "description": "Multipurpose Discord Bot built on Klasa",
-  "main": "dist/src/skyra.js",
+  "main": "dist/src/Skyra.js",
   "scripts": {
     "pm2:delete": "pm2 delete Skyra",
     "pm2:logs": "pm2 logs Skyra --lines=200",
@@ -50,7 +50,8 @@
     "node-fetch": "^2.6.0",
     "rethinkdb-ts": "^2.4.0-rc.15",
     "typescript": "^3.5.3",
-    "veza": "^0.6.0"
+    "veza": "^0.6.0",
+    "zucc": "^0.1.2"
   },
   "devDependencies": {
     "@types/node": "^12.6.8",

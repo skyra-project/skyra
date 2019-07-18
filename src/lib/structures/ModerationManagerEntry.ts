@@ -122,7 +122,7 @@ export class ModerationManagerEntry {
 			|| typeof flattened[ModerationSchemaKeys.Moderator] !== 'undefined'
 			|| typeof flattened[ModerationSchemaKeys.Reason] !== 'undefined'
 			|| typeof flattened[ModerationSchemaKeys.ExtraData] !== 'undefined') {
-			await this.manager.table.get(this.id).update(flattened).run();
+			await this.manager.table.get(this.id).update(flattened as ModerationManagerEntrySerialized).run();
 			if (typeof flattened[ModerationSchemaKeys.Duration] !== 'undefined') this.duration = flattened[ModerationSchemaKeys.Duration]!;
 			if (typeof flattened[ModerationSchemaKeys.Moderator] !== 'undefined') this.moderator = flattened[ModerationSchemaKeys.Moderator]!;
 			if (typeof flattened[ModerationSchemaKeys.Reason] !== 'undefined') this.reason = flattened[ModerationSchemaKeys.Reason]!;

@@ -5,6 +5,7 @@ import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
 import { assetsFolder } from '../../Skyra';
+import { User } from 'discord.js';
 
 export default class extends SkyraCommand {
 
@@ -24,7 +25,7 @@ export default class extends SkyraCommand {
 	}
 
 	public get kyra() {
-		return this.client.application.owner!;
+		return this.client.application.owner as User;
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {

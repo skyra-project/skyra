@@ -95,7 +95,7 @@ export class SkyraClient extends KlasaClient {
 		this.registerStore(this.ipcMonitors);
 
 		if (!this.options.dev) {
-			this.ipc.connectTo('ny-api', 9997)
+			this.ipc.connectTo(9997)
 				.catch((error: Error) => { this.console.error(error); });
 		}
 	}

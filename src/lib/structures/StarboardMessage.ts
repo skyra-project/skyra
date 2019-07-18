@@ -211,6 +211,10 @@ export class StarboardMessage {
 		}
 	}
 
+	public get table() {
+		return this.provider.db.table<StarboardMessageData>(Databases.Starboard);
+	}
+
 	/**
 	 * Save data to the database
 	 * @param options The options
@@ -224,10 +228,10 @@ export class StarboardMessage {
 		if ('stars' in options && !this.disabled) await this._editMessage();
 
 		if (this.existenceStatus) {
-			await this.provider.db.table(Databases.Starboard).get(this.id).update({ ...this.toJSON(), ...options })
+			await this.table.get(this.id).update({ ...this.toJSON(), ...options })
 				.run();
 		} else {
-			await this.provider.db.table(Databases.Starboard).insert({ ...this.toJSON(), ...options }).run();
+			await this.table.insert({ ...this.toJSON(), ...options }).run();
 			this.existenceStatus = true;
 		}
 
@@ -240,8 +244,7 @@ export class StarboardMessage {
 	public async destroy(): Promise<void> {
 		if (this.existenceStatus === null) await this.sync();
 		if (this.existenceStatus) {
-			await this.provider.db.table(Databases.Starboard).get(this.id).delete()
-				.run();
+			await this.table.get(this.id).delete().run();
 		}
 		this.manager.delete(this.message.id);
 	}
@@ -293,10 +296,10 @@ export class StarboardMessage {
 	 */
 	private async _syncDatabase(): Promise<void> {
 		const data = await this.provider.db
-			.table(Databases.Starboard)
+			.table<StarboardMessageData | null>(Databases.Starboard)
 			.get(this.id)
 			.default(null)
-			.run() as StarboardMessageData;
+			.run();
 
 		if (data) {
 			this.disabled = Boolean(data.disabled);

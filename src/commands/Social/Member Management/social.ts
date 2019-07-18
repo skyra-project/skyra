@@ -3,6 +3,11 @@ import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { Databases } from '../../../lib/types/constants/Constants';
 import { MemberSettings } from '../../../lib/types/settings/MemberSettings';
 
+interface DatabaseMemberSchema {
+	id: string;
+	count: number;
+}
+
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -95,7 +100,7 @@ export default class extends SkyraCommand {
 			variation = amount - original;
 			if (variation === 0) return message.sendLocale('COMMAND_SOCIAL_UNCHANGED', [user.username]);
 			await this.client.providers.default.db
-				.table(Databases.Members)
+				.table<DatabaseMemberSchema>(Databases.Members)
 				.get(entry.id)
 				.update({ count: amount })
 				.run();
@@ -118,7 +123,7 @@ export default class extends SkyraCommand {
 
 			// Update from database
 			await this.client.providers.default.db
-				.table(Databases.Members)
+				.table<DatabaseMemberSchema>(Databases.Members)
 				.get(entry.id)
 				.update({ count: 0 })
 				.run();

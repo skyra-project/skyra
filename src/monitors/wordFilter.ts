@@ -42,14 +42,17 @@ export default class extends Monitor {
 		}
 	}
 
-	public shouldRun(message: KlasaMessage): boolean {
-		return Boolean(this.enabled
-			&& message.guild
-			&& !message.webhookID
+	public shouldRun(message: KlasaMessage) {
+		return this.enabled
+			&& message.guild !== null
+			&& message.author !== null
+			&& message.webhookID !== null
+			&& message.content.length > 0
 			&& !message.system
-			&& message.author!.id !== this.client.user!.id
-			&& message.guild!.security.regexp
-			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id));
+			&& message.author.id !== this.client.user!.id
+			&& message.guild!.security.regexp !== null
+			&& message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 	private filter(str: string, regex: RegExp): { filtered: string; highlighted: string } | null {

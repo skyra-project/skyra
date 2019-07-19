@@ -74,27 +74,29 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage) {
-		return Boolean(this.enabled
-			&& message.guild
-			&& !message.webhookID
+		return this.enabled
+			&& message.guild !== null
+			&& message.author !== null
+			&& message.webhookID !== null
+			&& message.attachments.size > 0
 			&& !message.system
-			&& message.attachments.size
-			&& message.author!.id !== this.client.user!.id
-			&& message.guild!.settings.get(GuildSettings.Selfmod.Attachment) as GuildSettings.Selfmod.Attachment
+			&& message.author.id !== this.client.user!.id
+			&& message.guild.settings.get(GuildSettings.Selfmod.Attachment) as GuildSettings.Selfmod.Attachment
 			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
-			&& this.hasPermissions(message, message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction));
+			&& this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction);
 	}
 
 	private hasPermissions(message: KlasaMessage, action: number) {
 		const guildMe = message.guild!.me!;
+		const member = message.member!;
 		switch (action & 0b11) {
-			case 0b000: return guildMe.roles.highest.position > message.member!.roles.highest.position;
-			case 0b001: return message.member!.kickable;
-			case 0b010: return message.guild!.settings.get(GuildSettings.Roles.Muted)
-				&& guildMe.roles.highest.position > message.member!.roles.highest.position
+			case 0b000: return guildMe.roles.highest.position > member.roles.highest.position;
+			case 0b001: return member.kickable;
+			case 0b010: return (message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted) !== null
+				&& guildMe.roles.highest.position > member.roles.highest.position
 				&& guildMe.permissions.has(FLAGS.MANAGE_ROLES);
-			case 0b011: return message.member!.bannable;
-			case 0b100: return message.member!.bannable;
+			case 0b011: return member.bannable;
+			case 0b100: return member.bannable;
 			default: return false;
 		}
 	}

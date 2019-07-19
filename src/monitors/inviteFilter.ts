@@ -4,12 +4,12 @@ import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 
+const kRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d]{2,}/i;
+
 export default class extends Monitor {
 
-	public async run(message: KlasaMessage): Promise<void> {
-		if (!message.guild
-			|| !/(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d]+/i.test(message.content)
-			|| await message.hasAtLeastPermissionLevel(5)) return;
+	public async run(message: KlasaMessage) {
+		if (await message.hasAtLeastPermissionLevel(5) || !kRegExp.test(message.content)) return;
 
 		if (message.deletable) {
 			await message.nuke();
@@ -24,13 +24,15 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage) {
-		return Boolean(this.enabled
-			&& message.guild
-			&& !message.webhookID
+		return this.enabled
+			&& message.guild !== null
+			&& message.author !== null
+			&& message.webhookID !== null
+			&& message.content.length > 0
 			&& !message.system
-			&& message.author!.id !== this.client.user!.id
-			&& message.guild!.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
-			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id));
+			&& message.author.id !== this.client.user!.id
+			&& message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 }

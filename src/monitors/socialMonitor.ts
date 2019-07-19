@@ -13,13 +13,8 @@ export default class extends Monitor {
 	private readonly ratelimits = new RateLimitManager(1, 60000);
 
 	public async run(message: KlasaMessage) {
-		if (!message.guild) return;
-		const ignoreChannels = message.guild!.settings.get(GuildSettings.Social.IgnoreChannels) as GuildSettings.Social.IgnoreChannels;
-		if (ignoreChannels.includes(message.channel.id)) return;
-
-		const ratelimit = this.ratelimits.acquire(message.author!.id);
 		try {
-			ratelimit.drip();
+			this.ratelimits.acquire(message.author!.id).drip();
 		} catch {
 			return;
 		}
@@ -90,6 +85,17 @@ export default class extends Monitor {
 			latest = role;
 		}
 		return latest;
+	}
+
+	public shouldRun(message: KlasaMessage) {
+		return this.enabled
+			&& message.guild !== null
+			&& message.author !== null
+			&& message.webhookID !== null
+			&& message.content.length > 0
+			&& !message.system
+			&& message.author.id !== this.client.user!.id
+			&& !(message.guild.settings.get(GuildSettings.Social.IgnoreChannels) as GuildSettings.Social.IgnoreChannels).includes(message.channel.id);
 	}
 
 }

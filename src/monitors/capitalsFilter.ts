@@ -57,15 +57,17 @@ export default class extends Monitor {
 		}
 	}
 
-	public shouldRun(message: KlasaMessage): boolean {
-		return Boolean(this.enabled
-			&& message.guild
-			&& !message.webhookID
+	public shouldRun(message: KlasaMessage) {
+		return this.enabled
+			&& message.guild !== null
+			&& message.author !== null
+			&& message.webhookID !== null
+			&& message.content.length > 0
 			&& !message.system
-			&& message.author!.id !== this.client.user!.id
-			&& message.guild!.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter
-			&& (message.guild!.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum) < message.content.length
-			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id));
+			&& message.author.id !== this.client.user!.id
+			&& (message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter) !== 0
+			&& (message.guild.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum) < message.content.length
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 }

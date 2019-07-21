@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 				this.playing.delete(message.channel.id);
 			}),
 			sun: true,
-			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message))),
+			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message.guild!))),
 			turn: 0
 		});
 

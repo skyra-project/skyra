@@ -308,22 +308,22 @@ export function parseRange(input: string): number[] {
  * @param message The message for context
  * @param input The input to clean
  */
-export function cleanMentions(message: Message, input: string) {
+export function cleanMentions(guild: Guild, input: string) {
 	return input
 		.replace(/@(here|everyone)/g, '@\u200B$1')
 		.replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
 			switch (type) {
 				case '@':
 				case '@!': {
-					const usertag = message.client.usertags.get(id);
+					const usertag = guild.client.usertags.get(id);
 					return usertag ? `@${usertag.slice(0, usertag.lastIndexOf('#'))}` : match;
 				}
 				case '@&': {
-					const role = message.guild ? message.guild!.roles.get(id) : null;
+					const role = guild.roles.get(id);
 					return role ? `@${role.name}` : match;
 				}
 				case '#': {
-					const channel = message.guild ? message.guild!.channels.get(id) : null;
+					const channel = guild.channels.get(id);
 					return channel ? `#${channel.name}` : match;
 				}
 				default: return match;

@@ -267,7 +267,7 @@ export default class extends Language {
 			`Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o`,
 			`grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!`
 		].join(' '),
-		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.title}**, pedida por **${song.requester}**, de la cola.`,
+		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.safeTitle}**, pedida por **${song.requester}**, de la cola.`,
 		COMMAND_RESUME_DESCRIPTION: `Reanuda la canción actual.`,
 		COMMAND_RESUME_SUCCESS: `▶ Reanudado.`,
 		COMMAND_SKIP_DESCRIPTION: `Salta la canción actual.`,

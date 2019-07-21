@@ -83,10 +83,18 @@ export class Queue extends Array<Song> {
 		this.deejays = new UserManagerStore(this.client);
 	}
 
-	public add(user: string, song: Track | Track[]): this {
-		if (Array.isArray(song)) this.push(...song.map(info => new Song(this, info, user)));
-		else this.push(new Song(this, song, user));
-		return this;
+	public add(user: string, song: Track): Song;
+	public add(user: string, song: Track[]): Song[];
+	public add(user: string, song: Track | Track[]) {
+		if (Array.isArray(song)) {
+			const parsedSongs = song.map(info => new Song(this, info, user));
+			this.push(...parsedSongs);
+			return parsedSongs;
+		}
+
+		const parsedSong = new Song(this, song, user);
+		this.push(parsedSong);
+		return parsedSong;
 	}
 
 	public async fetch(song: string) {

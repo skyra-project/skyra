@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
+import { Util } from 'discord.js';
 
 export default class extends MusicCommand {
 
@@ -19,7 +20,9 @@ export default class extends MusicCommand {
 		for (let i = 0; i < Math.min(queue.length, 10); i++) {
 			const song = queue[i];
 			output[i] = [
-				`[__\`${String(i + 1).padStart(2, '0')}\`__] ${message.language.get('COMMAND_QUEUE_LINE', song.title.replace(/\*/g, '\\*'), (await song.fetchRequester())!.tag)}`,
+				`[__\`${String(i + 1).padStart(2, '0')}\`__] ${message.language.get(
+					'COMMAND_QUEUE_LINE', song.safeTitle, Util.escapeMarkdown((await song.fetchRequester())!.tag)
+				)}`,
 				`   └── <${song.url}> (${song.friendlyDuration})`
 			].join('\n');
 		}

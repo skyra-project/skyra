@@ -55,7 +55,7 @@
   "devDependencies": {
     "@types/node": "^12.6.8",
     "@types/node-fetch": "^2.3.7",
-    "@typescript-eslint/eslint-plugin": "^1.12.0",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.1.0",
     "eslint-config-bamboo": "^1.3.0"

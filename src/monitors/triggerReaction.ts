@@ -18,12 +18,11 @@ export default class extends Monitor {
 		return this.enabled
 			&& message.guild !== null
 			&& message.author !== null
-			&& message.webhookID === null
 			&& message.editedTimestamp === null
 			&& message.content.length > 0
 			&& !message.system
 			&& !message.author.bot
-			&& message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks;
+			&& (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).length > 0;
 	}
 
 	private async tryReact(message: KlasaMessage, trigger: TriggerIncludes) {

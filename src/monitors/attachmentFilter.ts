@@ -77,7 +77,7 @@ export default class extends Monitor {
 		return this.enabled
 			&& message.guild !== null
 			&& message.author !== null
-			&& message.webhookID !== null
+			&& message.webhookID === null
 			&& message.attachments.size > 0
 			&& !message.system
 			&& message.author.id !== this.client.user!.id

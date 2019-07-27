@@ -25,7 +25,7 @@ export default class extends ModerationCommand {
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
 		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
-		await message.guild!.members.ban(user.id, { days: (message.flags.days && Number(message.flags.days)) || 0, reason });
+		await message.guild!.members.ban(user.id, { days: Number(message.flags.day || message.flags.days) || 0, reason });
 
 		return this.sendModlog(message, user, reason);
 	}

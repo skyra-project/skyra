@@ -3,7 +3,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { resolveEmoji } from '../../lib/util/util';
 
-const REG_TYPE = /alias|reaction/i;
+const REG_TYPE = /^(alias|reaction)$/i;
 
 export default class extends SkyraCommand {
 

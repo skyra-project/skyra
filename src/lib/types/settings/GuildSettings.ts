@@ -28,6 +28,8 @@ export namespace GuildSettings {
 		export const Spam = 'channels.spam';
 	}
 
+	export type CommandAutodelete = readonly [string, number][];
+	export const CommandAutodelete = 'command-autodelete';
 	export type DisabledChannels = readonly string[];
 	export const DisabledChannels = 'disabledChannels';
 	export type DisabledCommandChannels = readonly DisabledCommandChannel[];

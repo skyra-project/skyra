@@ -153,6 +153,7 @@ SkyraClient.defaultGuildSchema
 		.add('nsfw-message-logs', 'TextChannel')
 		.add('roles', 'TextChannel')
 		.add('spam', 'TextChannel'))
+	.add('command-autodelete', 'any', { array: true })
 	.add('disabledChannels', 'TextChannel', { array: true })
 	.add('disabledCommandsChannels', 'any', { array: true, configurable: false })
 	.add('events', folder => folder

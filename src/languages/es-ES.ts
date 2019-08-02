@@ -674,6 +674,18 @@ export default class extends Language {
 		 * MANAGEMENT/CONFIGURATION COMMANDS
 		 */
 
+		COMMAND_MANAGECOMMANDAUTODELETE_DESCRIPTION: 'Manage per-channel autodelete timer.',
+		COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED: builder.display('manageCommandAutodelete', {
+			extendedHelp: `This command manages this guild's per-channel command autodelete timer, it serves well to leave a channel clean from commands.`,
+			explainedUsage: [
+				['show', 'Show the autodelete timer for all channels.'],
+				['add [channel] <command>', 'Add an autodelete timer for the specified channel.'],
+				['remove [channel]', 'Remove the autotimer from the specified channel.'],
+				['reset', 'Clear all autodelete timers.']
+			],
+			reminder: 'The channel argument is optional, defaulting to the message\'s channel, but it uses fuzzy search when possible.',
+			examples: ['show', 'add #general 4s', 'remove #general', 'reset']
+		}),
 		COMMAND_MANAGECOMMANDCHANNEL_DESCRIPTION: 'Manage per-channel command blacklist.',
 		COMMAND_MANAGECOMMANDCHANNEL_EXTENDED: builder.display('manageCommandChannel', {
 			extendedHelp: `This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want
@@ -1988,6 +2000,14 @@ export default class extends Language {
 		 * MANAGEMENT/CONFIGURATION COMMANDS
 		 */
 
+		COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL: 'You must input a valid text channel, people cannot use commands in a voice or a category channel!',
+		COMMAND_MANAGECOMMANDAUTODELETE_REQUIRED_DURATION: 'You must specify an amount of seconds for the command to be automatically deleted.',
+		COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY: 'There are no command autodelete configured right now.',
+		COMMAND_MANAGECOMMANDAUTODELETE_SHOW: codeblock => `All command autodeletes configured:${codeblock}`,
+		COMMAND_MANAGECOMMANDAUTODELETE_ADD: (channel, time) => `${GREENTICK} Success! All successful commands in ${channel} will be deleted after ${duration(time)}!`,
+		COMMAND_MANAGECOMMANDAUTODELETE_REMOVE: channel => `${GREENTICK} Success! Commands will not be automatically deleted in ${channel} anymore!`,
+		COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET: channel => `${REDCROSS} The channel ${channel} was not configured to automatically delete messages!`,
+		COMMAND_MANAGECOMMANDAUTODELETE_RESET: 'All the command autodeletes have been reset.',
 		COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL: 'You must input a valid text channel, people cannot use commands in a voice or a category channel!',
 		COMMAND_MANAGECOMMANDCHANNEL_REQUIRED_COMMAND: 'You must specify what command do you want to add or remove from the channel\'s filter.',
 		COMMAND_MANAGECOMMANDCHANNEL_SHOW: (channel, commands) => `List of disabled commands in ${channel}: ${commands}`,

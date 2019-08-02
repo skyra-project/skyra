@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		const value: ArrayElementType<GuildSettings.CommandAutodelete> = [channel.id, duration];
 
 		if (index === -1) {
-			await message.guild!.settings.update(GuildSettings.CommandAutodelete, value, { arrayAction: 'add' });
+			await message.guild!.settings.update(GuildSettings.CommandAutodelete, [value], { arrayAction: 'add' });
 		} else {
 			await message.guild!.settings.update(GuildSettings.CommandAutodelete, value, { arrayIndex: index });
 		}

@@ -1,5 +1,5 @@
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, Duration, util } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { TIME } from '../../../lib/util/constants';
@@ -29,8 +29,9 @@ export default class extends SkyraCommand {
 		}).createCustomResolver('duration', async (arg, possible, msg, [type]) => {
 			if (type !== 'add') return undefined;
 			if (arg) {
-				const duration = await this.client.arguments.get('duration').run(arg, possible, msg) as Duration;
-				if (duration.offset < TIME.HOUR) return duration;
+				const date = await this.client.arguments.get('duration').run(arg, possible, msg) as Date;
+				const duration = Math.ceil((date.getTime() - Date.now()) / 1000) * 1000;
+				if (duration < TIME.HOUR) return duration;
 			}
 			throw msg.language.get('COMMAND_MANAGECOMMANDAUTODELETE_REQUIRED_DURATION');
 		});
@@ -50,17 +51,17 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_SHOW', [util.codeBlock('asciidoc', list.join('\n'))]);
 	}
 
-	public async add(message: KlasaMessage, [channel, duration]: [TextChannel, Duration]) {
+	public async add(message: KlasaMessage, [channel, duration]: [TextChannel, number]) {
 		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete) as GuildSettings.CommandAutodelete;
 		const index = commandAutodelete.findIndex(([id]) => id === channel.id);
-		const value: ArrayElementType<GuildSettings.CommandAutodelete> = [channel.id, duration.offset];
+		const value: ArrayElementType<GuildSettings.CommandAutodelete> = [channel.id, duration];
 
 		if (index === -1) {
 			await message.guild!.settings.update(GuildSettings.CommandAutodelete, value, { arrayAction: 'add' });
 		} else {
 			await message.guild!.settings.update(GuildSettings.CommandAutodelete, value, { arrayIndex: index });
 		}
-		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_ADD', [channel, duration.offset]);
+		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_ADD', [channel, duration]);
 	}
 
 	public async remove(message: KlasaMessage, [channel]: [TextChannel]) {

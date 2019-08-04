@@ -50,7 +50,8 @@
     "node-fetch": "^2.6.0",
     "rethinkdb-ts": "^2.4.0-rc.16",
     "typescript": "^3.5.3",
-    "veza": "^0.6.0"
+    "veza": "^0.6.0",
+    "zlib-sync": "^0.1.5"
   },
   "devDependencies": {
     "@types/node": "^12.6.9",

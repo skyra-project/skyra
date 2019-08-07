@@ -370,10 +370,10 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-bamboo@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-bamboo/-/eslint-config-bamboo-1.3.0.tgz#317ada861b0ecc8bc6197060b355c8fa39e74233"
-  integrity sha512-9GSYD1YCZMV0wxlCVFb3mHu/litMO9YduvswgK1eAUlPH4oAXN6KZxcuVBNexP/Aw1uamkL/cEVX3uvyE2Rotg==
+eslint-config-bamboo@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-bamboo/-/eslint-config-bamboo-2.0.0.tgz#0c80fe6d80f66afd6662d1d7a1a40fdea55a0a93"
+  integrity sha512-o4/O5GPdnDrzhu4aI38hUBUNcm8TXe7clQNu9gDr697Z15ZMv5G8C8Wg6liJkE3YATrwANboJU1kvHs/r5N9KQ==
 
 eslint-scope@^4.0.0:
   version "4.0.3"

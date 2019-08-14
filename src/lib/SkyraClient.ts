@@ -1,8 +1,8 @@
 import { Collection, PermissionString, Webhook } from 'discord.js';
-import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
+import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util, Colors } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { MasterPool, R } from 'rethinkdb-ts';
-import { Node } from 'veza';
+import { Client as VezaClient } from 'veza';
 import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { MemberGateway } from './structures/MemberGateway';
@@ -18,6 +18,10 @@ import { GiveawayManager } from './structures/GiveawayManager';
 import { Databases } from './types/constants/Constants';
 import { Events } from './types/Enums';
 
+const g = new Colors({ text: 'green' }).format('[IPC   ]');
+const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
+const r = new Colors({ text: 'red' }).format('[IPC   ]');
+
 export class SkyraClient extends KlasaClient {
 
 	/**
@@ -28,28 +32,28 @@ export class SkyraClient extends KlasaClient {
 	/**
 	 * The loaded Leaderboard singleton instance
 	 */
-	public leaderboard: Leaderboard = new Leaderboard(this as KlasaClient);
+	public leaderboard: Leaderboard = new Leaderboard(this);
 
 	/**
 	 * The IPC monitor store
 	 */
-	public ipcMonitors: IPCMonitorStore = new IPCMonitorStore(this as KlasaClient);
+	public ipcMonitors: IPCMonitorStore = new IPCMonitorStore(this);
 
 	/**
 	 * The Giveaway manager
 	 */
-	public giveaways: GiveawayManager = new GiveawayManager(this as KlasaClient);
+	public giveaways: GiveawayManager = new GiveawayManager(this);
 
 	/**
 	 * The webhook to use for the error event
 	 */
-	public webhookError: Webhook = new Webhook(this as KlasaClient, WEBHOOK_ERROR);
+	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
 
 	/**
 	 * The ConnectFour manager
 	 */
 	@enumerable(false)
-	public connectFour: ConnectFourManager = new ConnectFourManager(this as KlasaClient);
+	public connectFour: ConnectFourManager = new ConnectFourManager(this);
 
 	@enumerable(false)
 	public usertags: Collection<string, string> = new Collection();
@@ -69,12 +73,10 @@ export class SkyraClient extends KlasaClient {
 			...this.options.lavalink
 		});
 
-	public ipc = new Node('skyra-master')
-		.on('client.connect', client => this.emit(Events.Verbose, `[IPC] Client Connected: ${client.name}`))
-		.on('client.disconnect', client => this.emit(Events.Warn, `[IPC] Client Disconnected: ${client.name}`))
-		.on('client.destroy', client => this.emit(Events.Warn, `[IPC] Client Destroyed: ${client.name}`))
-		.on('client.ready', client => this.emit(Events.Verbose, `[IPC] Client Ready: Named ${client.name}`))
-		.on('error', (error, client) => this.emit(Events.Error, `[IPC] Error from ${client.name}: ${error}`))
+	public ipc = new VezaClient('skyra-master')
+		.on('disconnect', client => { this.emit(Events.Warn, `${y} Disconnected: ${client.name}`); })
+		.on('ready', client => { this.emit(Events.Verbose, `${g} Ready ${client.name}`); })
+		.on('error', (error, client) => { this.emit(Events.Error, `${r} Error from ${client.name}`, error); })
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
 	public constructor(options: KlasaClientOptions = {}) {
@@ -83,13 +85,13 @@ export class SkyraClient extends KlasaClient {
 		const { members = {} } = this.options.gateways;
 		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
 		this.gateways
-			.register(new MemberGateway(this as KlasaClient, Databases.Members, members))
-			.register(new GatewayStorage(this as KlasaClient, Databases.Banners))
-			.register(new GatewayStorage(this as KlasaClient, Databases.Giveaway))
-			.register(new GatewayStorage(this as KlasaClient, Databases.Moderation))
-			.register(new GatewayStorage(this as KlasaClient, Databases.Oxford))
-			.register(new GatewayStorage(this as KlasaClient, Databases.Polls))
-			.register(new GatewayStorage(this as KlasaClient, Databases.Starboard));
+			.register(new MemberGateway(this, Databases.Members, members))
+			.register(new GatewayStorage(this, Databases.Banners))
+			.register(new GatewayStorage(this, Databases.Giveaway))
+			.register(new GatewayStorage(this, Databases.Moderation))
+			.register(new GatewayStorage(this, Databases.Oxford))
+			.register(new GatewayStorage(this, Databases.Polls))
+			.register(new GatewayStorage(this, Databases.Starboard));
 
 		// Register the API handler
 		this.registerStore(this.ipcMonitors);
@@ -228,7 +230,7 @@ declare module 'discord.js' {
 		lavalink: Lavalink | null;
 		usertags: Collection<string, string>;
 		llrCollectors: Set<LongLivingReactionCollector>;
-		ipc: Node;
+		ipc: VezaClient;
 		webhookError: Webhook;
 		fetchTag(id: string): Promise<string>;
 		fetchUsername(id: string): Promise<string>;

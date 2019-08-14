@@ -200,12 +200,12 @@ canvas-constructor@^3.1.0:
   resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-3.1.0.tgz#5aa2c806d899c58c3a5102ea54ef1ca5fea98299"
   integrity sha512-S3CIisunkG6IqDIhCecPkm+xx5iTvsum3pDH3a96Tl7uS1h1Me1dfePwBjnt83I2OqtUopZoFYtTgjYpcNV2Aw==
 
-canvas@^2.2.0, canvas@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.5.0.tgz#cf0ef59d4790575689c0d50e59c7b8023a11f38a"
-  integrity sha512-wwRz2cLMgb9d+rnotOJCoc04Bzj3aJMpWc6JxAD6lP7bYz0ldcn0sKddoZ0vhD5T8HBxrK+XmRDJb68/2VqARw==
+canvas@^2.2.0, canvas@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/canvas/-/canvas-2.6.0.tgz#7a8f87b6148845d97e6ee30947fba1508bed4941"
+  integrity sha512-bEO9f1ThmbknLPxCa8Es7obPlN9W3stB1bo7njlhOFKIdUTldeTqXCh9YclCPAi2pSQs84XA0jq/QEZXSzgyMw==
   dependencies:
-    nan "^2.13.2"
+    nan "^2.14.0"
     node-pre-gyp "^0.11.0"
     simple-get "^3.0.3"
 
@@ -857,7 +857,7 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
-nan@^2.13.2, nan@^2.14.0:
+nan@^2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==

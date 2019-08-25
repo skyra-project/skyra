@@ -8,9 +8,13 @@
 
 - [`Node.js`]: To run the project.
 - [`RethinkDB`]: To store persistent data.
+- [`Lavalink`]: (Dev Optional) Audio server.
+- [`Ny-API`]: (Dev Optional) Central server.
 
 [`Node.js`]: https://nodejs.org/en/download/current/
 [`RethinkDB`]: https://rethinkdb.com/docs/install/
+[`Lavalink`]: https://github.com/Frederikam/Lavalink
+[`Ny-API`]: https://github.com/kyranet/Ny-API
 
 ## Set-Up
 
@@ -34,7 +38,7 @@ linter warnings.
 
 [`config.ts.example`]: /config.ts.example
 
-## Lore
+## Story
 
 **A bit of story**: Skyra, formerly known as kyraBOT (renamed in the middle of March of 2017), is a multipurpose Discord
 Bot that was born out of curiosity in a SoloLearn guild. With help from other developers, due to my lack of experience
@@ -50,6 +54,8 @@ There have been over 13 rewrites with an active development of over two years, I
 Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for
 Klasa.
 
+*Who knows, I might write a book someday for Skyra's lore.*
+
 The development for a next major version has migrated to [Lyrch].
 
 [Lyrch]: https://github.com/kyranet/Lyrch
@@ -59,7 +65,7 @@ The development for a next major version has migrated to [Lyrch].
 **Skyra links**
 
 - [Skyra Invite Link](https://skyra.pw/invite)
-- [Skyra's Lounge](https://skyra.pw/join)
+- [Support Server](https://skyra.pw/join)
 - [Patreon](https://www.patreon.com/kyranet)
 - [Translation](https://skyra.pw/translate)
 

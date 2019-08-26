@@ -1,4 +1,4 @@
-import { GuildMember, Structures } from 'discord.js';
+import { Structures } from 'discord.js';
 import { Settings } from 'klasa';
 import { Databases } from '../types/constants/Constants';
 

@@ -5,7 +5,7 @@ export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			emitter: 'lavalink',
+			emitter: store.client.lavalink!,
 			event: 'playerUpdate'
 		});
 	}

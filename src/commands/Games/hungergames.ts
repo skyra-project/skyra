@@ -20,7 +20,8 @@ export default class extends SkyraCommand {
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '[user:string{2,50}] [...]',
-			usageDelim: ','
+			usageDelim: ',',
+			flagSupport: true
 		});
 	}
 

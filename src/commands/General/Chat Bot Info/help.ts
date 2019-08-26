@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 	}
 
 	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: SkyraCommand) {
-		const description = typeof command.description === 'function' ? command.description(message.language) : command.description;
+		const description = util.isFunction(command.description) ? command.description(message.language) : command.description;
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 

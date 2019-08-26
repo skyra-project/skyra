@@ -34,6 +34,8 @@ export default class extends SkyraCommand {
 			for (const { author } of messages.values()) {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
+		} else if (tributes.length === 0) {
+			throw message.language.get('COMMAND_GAMES_NO_PLAYERS', message.guild!.settings.get('prefix'));
 		}
 
 		const filtered = new Set(tributes);

@@ -133,10 +133,6 @@ export const TOKENS = {
 	DISCORD_BOT_ORG: '',
 	GOOGLE_API: '',
 	GOOGLE_MAP_API: '',
-	OXFORD_API: {
-		API_ID: '',
-		API_KEY: ''
-	},
 	TWITCH: {
 		CLIENT_ID: '',
 		SECRET: ''

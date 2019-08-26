@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		// Handle case for a single command
-		const command = commandOrPage && typeof commandOrPage !== 'number' ? commandOrPage : null;
+		const command = commandOrPage && !util.isNumber(commandOrPage) ? commandOrPage : null;
 		if (command) {
 			return message.sendMessage([
 				message.language.get('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 			const display = await this.buildDisplay(message);
 
 			// Extract start page and sanitize it
-			let startPage = commandOrPage && typeof commandOrPage === 'number' ? --commandOrPage : null;
+			let startPage = commandOrPage && util.isNumber(commandOrPage) ? --commandOrPage : null;
 			if (startPage !== null) {
 				if (startPage < 0 || startPage >= display.pages.length) startPage = 0;
 			}

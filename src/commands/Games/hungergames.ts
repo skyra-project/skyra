@@ -19,12 +19,23 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
-			usage: '<user:string{2,50}> [...]',
+			usage: '[user:string{2,50}] [...]',
 			usageDelim: ','
 		});
 	}
 
-	public async run(message: KlasaMessage, tributes: string[]) {
+	public async run(message: KlasaMessage, tributes: string[] = []) {
+		const autoFilled = message.flags.autofill;
+		const autoSkip = message.flags.autoskip;
+
+		if (autoFilled) {
+			const messages = await message.channel.messages.fetch({ limit: 100 });
+
+			for (const { author } of messages.values()) {
+				if (author && !tributes.includes(author.username)) tributes.push(author.username);
+			}
+		}
+
 		const filtered = new Set(tributes);
 		if (filtered.size !== tributes.length) throw message.language.get('COMMAND_GAMES_REPEAT');
 		if (this.playing.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
@@ -69,8 +80,12 @@ export default class extends SkyraCommand {
 						gameMessage.react(emoji)
 							.catch(error => this.client.emit(Events.ApiError, error));
 					}
-					const verification = await new Promise<boolean>(res => {
+					const verification = await new Promise<boolean>(async res => {
 						resolve = res;
+						if (autoSkip) {
+							await util.sleep((gameMessage!.content.length / 20) * 1000);
+							res(true);
+						}
 					});
 					gameMessage.nuke().catch(error => this.client.emit(Events.ApiError, error));
 					if (!verification) {

@@ -89,7 +89,6 @@ export class SkyraClient extends KlasaClient {
 			.register(new GatewayStorage(this, Databases.Banners))
 			.register(new GatewayStorage(this, Databases.Giveaway))
 			.register(new GatewayStorage(this, Databases.Moderation))
-			.register(new GatewayStorage(this, Databases.Oxford))
 			.register(new GatewayStorage(this, Databases.Polls))
 			.register(new GatewayStorage(this, Databases.Starboard));
 

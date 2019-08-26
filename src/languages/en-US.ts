@@ -1485,14 +1485,6 @@ export default class extends Language {
 		}),
 		COMMAND_CONTENT_DESCRIPTION: 'Get messages\' raw content.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
-		COMMAND_DEFINE_DESCRIPTION: 'Check the definition of a word.',
-		COMMAND_DEFINE_EXTENDED: builder.display('define', {
-			extendedHelp: `What does "heel" mean?`,
-			explainedUsage: [
-				['Word', 'The word or phrase you want to get the definition from.']
-			],
-			examples: ['heel']
-		}),
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
@@ -2336,8 +2328,6 @@ export default class extends Language {
 			`RGB: **${rgb}**`,
 			`HSL: **${hsl}**`
 		].join('\n'),
-		COMMAND_DEFINE_NOTFOUND: 'I could not find a definition for this word.',
-		COMMAND_DEFINE: (input, output) => `Search results for \`${input}\`:\n${output}`,
 		COMMAND_EMOJI_CUSTOM: (emoji, id) => [
 			`→ ${inlineCodeblock('Emoji ::')} **${emoji}**`,
 			`→ ${inlineCodeblock('Type  ::')} **Custom**`,

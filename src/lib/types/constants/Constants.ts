@@ -3,7 +3,6 @@ export enum Databases {
 	Giveaway = 'giveaway',
 	Members = 'members',
 	Moderation = 'moderation',
-	Oxford = 'oxford',
 	Polls = 'polls',
 	Starboard = 'starboard',
 	Users = 'users'

@@ -1,4 +1,4 @@
-import { Canvas } from 'canvas-constructor'
+import { Canvas } from 'canvas-constructor';
 import { Permissions } from 'discord.js';
 import { join } from 'path';
 import { inspect } from 'util';

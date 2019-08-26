@@ -1,5 +1,4 @@
 import { Collection, Structures } from 'discord.js';
-import { KlasaGuild } from 'klasa';
 import { enumerable } from '../util/util';
 
 import { ModerationManager } from '../structures/ModerationManager';
@@ -7,7 +6,7 @@ import { Queue } from '../structures/music/Queue';
 import { StarboardManager } from '../structures/StarboardManager';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 
-export class SkyraGuild extends KlasaGuild {
+export class SkyraGuild extends Structures.get('Guild') {
 
 	public security: GuildSecurity = new GuildSecurity(this);
 	public starboard: StarboardManager = new StarboardManager(this);

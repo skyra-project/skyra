@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 		try {
 			const parsed = new URL(url);
 			// Only discordapp.com urls are allowed.
-			if (!parsed.host.endsWith('discordapp.com')) return null;
+			if (/^(beta\.|canary\.)?discordapp\.com$/g.test(parsed.hostname)) return null;
 
 			const extract = MESSAGE_LINK_REGEXP.exec(parsed.pathname);
 			if (!extract) return null;

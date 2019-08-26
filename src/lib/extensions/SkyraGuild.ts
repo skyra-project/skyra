@@ -1,5 +1,4 @@
 import { Collection, Structures } from 'discord.js';
-import { KlasaGuild } from 'klasa';
 import { enumerable } from '../util/util';
 
 import { ModerationManager } from '../structures/ModerationManager';

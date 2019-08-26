@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 				const attachment = msg.attachments.find(att => IMAGE_EXTENSION.test(att.url));
 				if (attachment) return fetch(attachment.url, 'buffer');
 			}
-			const url = (res => res && res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
+			const url = (res => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');
 			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
 		});

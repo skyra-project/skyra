@@ -454,7 +454,7 @@ export async function createMuteRole(message: Message) {
 }
 
 export function inlineCodeblock(input: string) {
-	return `\`${input.replace(/ /g, '\u00A0').replace(/`/g, '\\`')}\``;
+	return `\`${input.replace(/ /gs, '\u00A0').replace(/`/g, '\\`')}\``;
 }
 
 /**

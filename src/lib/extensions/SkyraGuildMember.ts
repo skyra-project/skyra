@@ -2,7 +2,7 @@ import { GuildMember, Structures } from 'discord.js';
 import { Settings } from 'klasa';
 import { Databases } from '../types/constants/Constants';
 
-export class SkyraGuildMember extends GuildMember {
+export class SkyraGuildMember extends Structures.get('GuildMember') {
 
 	/**
 	 * The member level settings for this context

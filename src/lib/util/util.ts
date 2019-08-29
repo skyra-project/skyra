@@ -296,9 +296,9 @@ export function createReferPromise<T>() {
  * // -> [23, 24, 25]
  */
 export function parseRange(input: string): number[] {
-	const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(input) || [null, input, input];
-	let min = parseInt(smin, 10);
-	let max = parseInt(smax, 10);
+	const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(input) || [input, input, input];
+	let min = Number(smin);
+	let max = Number(smax);
 	if (min > max) [max, min] = [min, max];
 	return Array.from({ length: max - min + 1 }, (_, index) => min + index);
 }

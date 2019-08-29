@@ -34,7 +34,7 @@
   ],
   "private": true,
   "author": "kyranet <kyradiscord@gmail.com>",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/kyranet/Skyra/issues"
   },

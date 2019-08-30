@@ -350,8 +350,10 @@ diff@^4.0.1:
 
 "discord.js@github:discordjs/discord.js":
   version "12.0.0-dev"
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/2a3fb705d0296266e3cd7e9976a47459c69653a9"
+  uid "89d9b0f498b797ab15d7d1452ef0e25a9085fd59"
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/89d9b0f498b797ab15d7d1452ef0e25a9085fd59"
   dependencies:
+    abort-controller "^3.0.0"
     form-data "^2.3.3"
     node-fetch "^2.3.0"
     pako "^1.0.8"

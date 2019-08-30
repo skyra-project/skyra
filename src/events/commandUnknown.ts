@@ -1,6 +1,7 @@
 import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { CommandHandler, CommandHandlerParseResultOk } from '../lib/types/definitions/Internals';
 
 export default class extends Event {
 
@@ -19,8 +20,8 @@ export default class extends Event {
 	}
 
 	public runCommand(message: KlasaMessage, command: Command) {
-		const commandHandler = this.client.monitors.get('commandHandler') as any;
-		const { prefix, prefixLength } = commandHandler.parseCommand(message);
+		const commandHandler = this.client.monitors.get('commandHandler') as unknown as CommandHandler;
+		const { prefix, prefixLength } = commandHandler.parseCommand(message) as CommandHandlerParseResultOk;
 
 		// @ts-ignore
 		return commandHandler.runCommand(message._registerCommand({ command, prefix, prefixLength }));

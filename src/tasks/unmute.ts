@@ -7,7 +7,7 @@ const { FLAGS } = Permissions;
 
 export default class extends Task {
 
-	public async run(doc: any): Promise<void> {
+	public async run(doc: UnmuteTaskData) {
 		// Get the guild
 		const guild = this.client.guilds.get(doc[ModerationSchemaKeys.Guild]);
 
@@ -45,4 +45,10 @@ export default class extends Task {
 			.create();
 	}
 
+}
+
+interface UnmuteTaskData {
+	[ModerationSchemaKeys.Guild]: string;
+	[ModerationSchemaKeys.User]: string;
+	[ModerationSchemaKeys.Duration]: number;
 }

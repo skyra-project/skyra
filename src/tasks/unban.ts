@@ -5,7 +5,7 @@ const { FLAGS } = Permissions;
 
 export default class extends Task {
 
-	public async run(doc: any) {
+	public async run(doc: UnbanTaskData) {
 		// Get the guild and check for permissions
 		const guild = this.client.guilds.get(doc[ModerationSchemaKeys.Guild]);
 		if (!guild || !guild!.me!.permissions.has(FLAGS.BAN_MEMBERS)) return;
@@ -30,4 +30,10 @@ export default class extends Task {
 		return users.get(userID) || null;
 	}
 
+}
+
+interface UnbanTaskData {
+	[ModerationSchemaKeys.Guild]: string;
+	[ModerationSchemaKeys.User]: string;
+	[ModerationSchemaKeys.Duration]: number;
 }

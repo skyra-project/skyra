@@ -10,10 +10,10 @@ export abstract class SkyraCommand extends Command {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public run(message: KlasaMessage, params: any[]): any { return message; }
+	public run(message: KlasaMessage, _params: unknown[]): any { return message; }
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public inhibit(message: KlasaMessage): Promise<boolean> | boolean {
+	public inhibit(_message: KlasaMessage): Promise<boolean> | boolean {
 		return false;
 	}
 

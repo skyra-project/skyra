@@ -114,7 +114,7 @@ export interface WSMessageReactionRemoveAll {
 }
 
 export interface AuditLogResult {
-	webhooks: any[];
+	webhooks: unknown[];
 	users: User[];
 	audit_log_entries: AuditLogEntry[];
 }

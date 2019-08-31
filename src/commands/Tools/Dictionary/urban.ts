@@ -63,7 +63,7 @@ export interface UrbanDictionaryResultOkEntry {
 	definition: string;
 	permalink: string;
 	thumbs_up: number;
-	sound_urls: any[];
+	sound_urls: unknown[];
 	author: string;
 	word: string;
 	defid: number;

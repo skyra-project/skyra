@@ -2,6 +2,7 @@ import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { CommandHandler, CommandHandlerParseResultOk } from '../lib/types/definitions/Internals';
+import { SkyraCommand } from '../lib/structures/SkyraCommand';
 
 export default class extends Event {
 
@@ -28,7 +29,7 @@ export default class extends Event {
 	}
 
 	public async runTag(message: KlasaMessage, command: string) {
-		const tagCommand = this.client.commands.get('tag') as any;
+		const tagCommand = this.client.commands.get('tag') as TagCommand;
 		const timer = new Stopwatch();
 
 		try {
@@ -47,4 +48,13 @@ export default class extends Event {
 		}
 	}
 
+}
+
+interface TagCommand extends SkyraCommand {
+	add(message: KlasaMessage, args: [string, string]): Promise<KlasaMessage>;
+	remove(message: KlasaMessage, args: [string]): Promise<KlasaMessage>;
+	edit(message: KlasaMessage, args: [string, string]): Promise<KlasaMessage>;
+	list(message: KlasaMessage): Promise<KlasaMessage>;
+	show(message: KlasaMessage, args: [string]): Promise<KlasaMessage>;
+	source(message: KlasaMessage, args: [string]): Promise<KlasaMessage>;
 }

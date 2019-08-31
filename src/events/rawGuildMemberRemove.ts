@@ -4,6 +4,7 @@ import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { Event, EventStore } from 'klasa';
+import { rest } from '../lib/util/Models/Rest';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
@@ -38,10 +39,8 @@ export default class extends Event {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(0xF9A825)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
-				// @ts-ignore
-				? this.client.rest.cdn.Avatar(data.user.id, data.user.avatar)
-				// @ts-ignore
-				: this.client.rest.cdn.DefaultAvatar(data.user.discriminator % 5))
+				? rest(this.client).cdn.Avatar(data.user.id, data.user.avatar)
+				: rest(this.client).cdn.DefaultAvatar(Number(data.user.discriminator) % 5))
 			.setFooter('Member left')
 			.setTimestamp());
 	}

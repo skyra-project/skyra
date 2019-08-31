@@ -1,6 +1,7 @@
 import { WSGuildMemberUpdate, AuditLogResult } from '../lib/types/DiscordAPI';
 import { Event, EventStore } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { api } from '../lib/util/Models/Api';
 
 export default class extends Event {
 
@@ -43,7 +44,7 @@ export default class extends Event {
 		// If the user does not have multiple roles from any set cancel
 		if (!hasMultipleRolesInOneSet) return;
 
-		const auditLogs = await (this.client as any).api.guilds(data.guild_id, 'audit-logs').get({
+		const auditLogs = await api(this.client).guilds(data.guild_id)['audit-logs'].get({
 			query: {
 				limit: 10,
 				action_type: 25

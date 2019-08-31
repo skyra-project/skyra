@@ -3,6 +3,7 @@ import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFold
 import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 import { getColor } from '../util/util';
+import { api } from '../util/Models/Api';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 
@@ -146,10 +147,11 @@ export class SettingsMenu {
 	private async _removeReactionFromUser(reaction: string, userID: string) {
 		if (!this.response) return;
 		try {
-			// @ts-ignore
-			return await this.message.client.api.channels[this.message.channel.id].messages[this.response.id]
-				.reactions(encodeURIComponent(reaction), userID === this.message.client.user!.id ? '@me' : userID)
-				.delete();
+			const request = api(this.message.client)
+				.channels(this.message.channel.id)
+				.messages(this.response.id)
+				.reactions(encodeURIComponent(reaction));
+			return await (userID === this.message.client.user!.id ? request['@me'] : request(userID)).delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Unknown Message

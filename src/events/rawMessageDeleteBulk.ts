@@ -6,6 +6,7 @@ import { EventStore, Event } from 'klasa';
 import { DiscordAPIError } from 'discord.js';
 import { WriteResult } from 'rethinkdb-ts';
 import { StarboardMessageData } from '../lib/structures/StarboardMessage';
+import { api } from '../lib/util/Models/Api';
 
 export default class extends Event {
 
@@ -38,14 +39,12 @@ export default class extends Event {
 
 			if (messageSnowflakes.length === 0) return;
 			if (messageSnowflakes.length === 1) {
-				// @ts-ignore
-				this.client.api.channels(channel).messages(messageSnowflakes[0])
+				api(this.client).channels(channel).messages(messageSnowflakes[0]!)
 					.delete({ reason: 'Starboard Management: Message Deleted' })
 					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 				return;
 			}
-			// @ts-ignore
-			this.client.api.channels[channel].messages['bulk-delete']
+			api(this.client).channels(channel).messages['bulk-delete']
 				.post({ data: { messages: messageSnowflakes }, reason: 'Starboard Management: Message Deleted' })
 				.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 		} catch (error) {

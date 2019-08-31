@@ -7,6 +7,7 @@ import { CONNECT_FOUR } from '../../constants';
 import { DiscordAPIError } from 'discord.js';
 import { Events } from '../../../types/Enums';
 import { resolveEmoji } from '../../util';
+import { api } from '../../Models/Api';
 
 export class PlayerHuman extends Player {
 
@@ -50,9 +51,8 @@ export class PlayerHuman extends Player {
 	private async removeEmoji(emoji: LLRCDataEmoji, userID: string): Promise<void> {
 		try {
 			const { message } = this.game;
-			// @ts-ignore
-			await message.client.api.channels[message.channel.id].messages[message.id]
-				.reactions[resolveEmoji(emoji)][userID].delete();
+			await api(message.client).channels(message.channel.id).messages(message.id)
+				.reactions(resolveEmoji(emoji)!)(userID).delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Unknown Message | Unknown Emoji

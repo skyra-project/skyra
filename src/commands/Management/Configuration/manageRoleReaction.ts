@@ -3,6 +3,7 @@ import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { resolveEmoji } from '../../../lib/util/util';
+import { api } from '../../../lib/util/Models/Api';
 
 export default class extends SkyraCommand {
 
@@ -91,8 +92,11 @@ export default class extends SkyraCommand {
 	}
 
 	public _reactMessage(channelID: string, messageID: string, reaction: string) {
-		// @ts-ignore
-		return this.client.api.channels[channelID].messages[messageID].reactions[this.client.emojis.resolveIdentifier(reaction)]['@me'].put();
+		return api(this.client)
+			.channels(channelID)
+			.messages(messageID)
+			.reactions(this.client.emojis.resolveIdentifier(reaction)!)['@me']
+			.put();
 	}
 
 	public _checkRoleReaction(message: KlasaMessage, reaction: string, roleID: string) {

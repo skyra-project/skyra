@@ -7,6 +7,7 @@ import { Events } from '../types/Enums';
 import { TIME } from '../util/constants';
 import { fetchReactionUsers, resolveEmoji } from '../util/util';
 import { GiveawayManager } from './GiveawayManager';
+import { api } from '../util/Models/Api';
 
 enum States {
 	Running,
@@ -74,12 +75,15 @@ export class Giveaway {
 		this.pause();
 
 		// Create the message
-		const message = await (this.store.client as any).api.channels(this.channelID).messages.post({ data: await this.getData() });
+		const message = await api(this.store.client).channels(this.channelID).messages.post({ data: await this.getData() }) as { id: string };
 		this.messageID = message.id;
 		this.resume();
 
 		// Add a reaction to the message and save to database
-		await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).reactions(Giveaway.EMOJI, '@me')
+		await api(this.store.client)
+			.channels(this.channelID)
+			.messages(this.messageID)
+			.reactions(Giveaway.EMOJI!)['@me']
 			.put();
 		await this.store.client.providers.default.create(Databases.Giveaway, this.id, this.toJSON());
 		return this;
@@ -94,7 +98,10 @@ export class Giveaway {
 		this.rendering = true;
 
 		try {
-			await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).patch({ data: await this.getData() });
+			await api(this.store.client)
+				.channels(this.channelID)
+				.messages(this.messageID!)
+				.patch({ data: await this.getData() });
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Unknown message | Missing Access | Invalid Form Body
@@ -131,7 +138,10 @@ export class Giveaway {
 		await this.finish();
 		if (this.messageID) {
 			try {
-				await (this.store.client as any).api.channels(this.channelID).messages(this.messageID).delete();
+				await api(this.store.client)
+					.channels(this.channelID)
+					.messages(this.messageID)
+					.delete();
 			} catch (error) {
 				if (error instanceof DiscordAPIError) {
 					// Unknown Message | Unknown Emoji
@@ -175,7 +185,7 @@ export class Giveaway {
 			? language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map(winner => `<@${winner}>`), this.title)
 			: language.get('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', this.title);
 		try {
-			await (this.store.client as any).api.channels(this.channelID).messages.post({ data: { content } });
+			await api(this.store.client).channels(this.channelID).messages.post({ data: { content } });
 		} catch (error) {
 			this.store.client.emit(Events.ApiError, error);
 		}

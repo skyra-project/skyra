@@ -12,6 +12,7 @@ import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmo
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
 import { util } from 'klasa';
 import { Mutable } from '../types/util';
+import { api } from './Models/Api';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -229,7 +230,10 @@ export async function fetchReactionUsers(client: Client, channelID: string, mess
 
 	// Fetch loop, to get +100 users
 	do {
-		rawUsers = await (client as any).api.channels(channelID).messages(messageID).reactions(reaction)
+		rawUsers = await api(client)
+			.channels(channelID)
+			.messages(messageID)
+			.reactions(reaction)
 			.get({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } }) as APIUserData[];
 		for (const user of rawUsers) users.add(user.id);
 	} while (rawUsers.length === 100);

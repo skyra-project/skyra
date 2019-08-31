@@ -6,6 +6,7 @@ import { Event, EventStore } from 'klasa';
 import { WriteResult } from 'rethinkdb-ts';
 import { StarboardMessageData } from '../lib/structures/StarboardMessage';
 import { DiscordAPIError } from 'discord.js';
+import { api } from '../lib/util/Models/Api';
 
 export default class extends Event {
 
@@ -34,8 +35,7 @@ export default class extends Event {
 			for (const change of results.changes) {
 				const messageID = change.old_val ? change.old_val.starMessageID : null;
 				if (messageID) {
-					// @ts-ignore
-					this.client.api.channels(channel).messages(messageID)
+					api(this.client).channels(channel).messages(messageID)
 						.delete({ reason: 'Starboard Management: Reactions Cleared' })
 						.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 				}

@@ -4,6 +4,7 @@ import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { EventStore, Event } from 'klasa';
 import { DiscordAPIError } from 'discord.js';
+import { api } from '../lib/util/Models/Api';
 
 export default class extends Event {
 
@@ -32,8 +33,7 @@ export default class extends Event {
 			for (const change of results.changes!) {
 				const messageID = change.old_val.starMessageID;
 				if (messageID) {
-					// @ts-ignore
-					this.client.api.channels(channel).messages(messageID)
+					api(this.client).channels(channel).messages(messageID)
 						.delete({ reason: 'Starboard Management: Message Deleted' })
 						.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 				}

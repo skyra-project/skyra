@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 		const rank = '∞';
 		const imgAvatarSRC = await fetchAvatar(message.author!, 256);
 
-		const TITLE = message.language.retrieve('COMMAND_PROFILE');
+		const TITLE = message.language.retrieve('COMMAND_PROFILE') as ProfileTitles;
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
 		if (badgeSet.length) {
 			const badges = await Promise.all(badgeSet.map(name =>
@@ -152,4 +152,12 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 	}
 
+}
+
+interface ProfileTitles {
+	GLOBAL_RANK: string;
+	CREDITS: string;
+	REPUTATION: string;
+	EXPERIENCE: string;
+	LEVEL: string;
 }

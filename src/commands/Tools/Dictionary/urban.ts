@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 			throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
 		}
 
-		const { list } = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
+		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
 
 		const result = list[index];
 		if (typeof result === 'undefined') {
@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 			.setTitle(`Word: ${util.toTitleCase(query)}`)
 			.setURL(result.permalink)
 			.setColor(getColor(message) || 0xFFAB2D)
-			.setThumbnail('http://i.imgur.com/CcIZZsa.png')
+			.setThumbnail('https://i.imgur.com/CcIZZsa.png')
 			.splitFields(message.language.get('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
 			.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
 			.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)

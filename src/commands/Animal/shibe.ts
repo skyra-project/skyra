@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const urls = await fetch('http://shibe.online/api/shibes?count=1', 'json');
+		const urls = await fetch('https://shibe.online/api/shibes?count=1', 'json');
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setImage(urls[0])

@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const TITLE = message.language.retrieve('COMMAND_LEVEL');
+		const TITLE = message.language.retrieve('COMMAND_LEVEL') as LevelTitles;
 		return new Canvas(640, 174)
 			// Draw the background
 			.save()
@@ -107,4 +107,10 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 	}
 
+}
+
+interface LevelTitles {
+	EXPERIENCE: string;
+	NEXT_IN: string;
+	LEVEL: string;
 }

@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const data = await fetch('https://api.chucknorris.io/jokes/random', 'json');
+		const data = await fetch('https://api.chucknorris.io/jokes/random', 'json') as NorrisResultOk;
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setTitle(message.language.get('COMMAND_NORRIS_OUTPUT'))
@@ -26,4 +26,14 @@ export default class extends SkyraCommand {
 			.setDescription(data.value));
 	}
 
+}
+
+export interface NorrisResultOk {
+	categories: string[];
+	created_at: Date;
+	icon_url: string;
+	id: string;
+	updated_at: Date;
+	url: string;
+	value: string;
 }

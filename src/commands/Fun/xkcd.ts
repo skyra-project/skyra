@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 
 		const comicNumber = await this.getNumber(query, message.language);
 		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
-			.catch(() => { throw message.language.get('COMMAND_XKCD_NOTFOUND'); });
+			.catch(() => { throw message.language.get('COMMAND_XKCD_NOTFOUND'); }) as XkcdResultOk;
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getNumber(query: string | number | null, i18n: Language) {
-		const xkcdInfo = await fetch('http://xkcd.com/info.0.json', 'json');
+		const xkcdInfo = await fetch('https://xkcd.com/info.0.json', 'json') as XkcdResultOk;
 
 		if (typeof query === 'number') {
 			if (query <= xkcdInfo.num) return query;
@@ -61,4 +61,18 @@ export default class extends SkyraCommand {
 		return Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1;
 	}
 
+}
+
+export interface XkcdResultOk {
+	month: string;
+	num: number;
+	link: string;
+	year: string;
+	news: string;
+	safe_title: string;
+	transcript: string;
+	alt: string;
+	img: string;
+	title: string;
+	day: string;
 }

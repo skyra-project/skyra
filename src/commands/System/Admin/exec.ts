@@ -27,9 +27,9 @@ export default class extends SkyraCommand {
 		return message.sendMessage(joined.length > 2000 ? await this.getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined);
 	}
 
-	public async getHaste(result: string) {
-		const body = await fetch('https://hastebin.com/documents', { method: 'JSON', body: result }, 'json');
-		return `https://hastebin.com/${body.key}.js`;
+	private async getHaste(result: string) {
+		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: result }, 'json') as { key: string };
+		return `https://hasteb.in/${key}.js`;
 	}
 
 }

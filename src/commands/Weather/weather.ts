@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
-		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${TOKENS.GOOGLE_MAP_API}`, 'json');
+		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${TOKENS.GOOGLE_MAP_API}`, 'json') as GoogleMapsResultOk;
 
 		if (response.status !== 'OK') {
 			throw message.language.get(this.handleNotOK(response.status));
@@ -50,17 +50,17 @@ export default class extends SkyraCommand {
 		let continent: string;
 
 		for (const component of response.results[0].address_components) {
-			if (!locality! && component.types.includes('locality')) locality = component;
-			if (!governing! && component.types.includes('administrative_area_level_1')) governing = component;
-			if (!country! && component.types.includes('country')) country = component;
-			if (!continent! && component.types.includes('continent')) continent = component;
+			if (!locality! && component.types.includes('locality')) locality = component.long_name;
+			if (!governing! && component.types.includes('administrative_area_level_1')) governing = component.long_name;
+			if (!country! && component.types.includes('country')) country = component.long_name;
+			if (!continent! && component.types.includes('continent')) continent = component.long_name;
 		}
 
 		const city = locality! || governing! || country! || continent! || {};
 		const localityOrCountry = locality! ? country! : {};
 		const state = locality! && governing! ? governing! : localityOrCountry || {};
 
-		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json');
+		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json') as WeatherResultOk;
 
 		const { icon } = currently;
 		const condition = currently.summary;
@@ -180,4 +180,117 @@ interface WeatherData {
 	chanceofrain: number;
 	temperature: number;
 	humidity: number;
+}
+
+export interface GoogleMapsResultOk {
+	results: GoogleMapsResultOkResult[];
+	status: string;
+}
+
+export interface GoogleMapsResultOkResult {
+	address_components: GoogleMapsOkAddressComponent[];
+	formatted_address: string;
+	geometry: GoogleMapsOkGeometry;
+	place_id: string;
+	types: string[];
+}
+
+export interface GoogleMapsOkAddressComponent {
+	long_name: string;
+	short_name: string;
+	types: string[];
+}
+
+export interface GoogleMapsOkGeometry {
+	bounds: GoogleMapsOkBounds;
+	location: GoogleMapsOkLocation;
+	location_type: string;
+	viewport: GoogleMapsOkBounds;
+}
+
+export interface GoogleMapsOkBounds {
+	northeast: GoogleMapsOkLocation;
+	southwest: GoogleMapsOkLocation;
+}
+
+export interface GoogleMapsOkLocation {
+	lat: number;
+	lng: number;
+}
+
+export interface WeatherResultOk {
+	latitude: number;
+	longitude: number;
+	timezone: string;
+	currently: WeatherResultOkCurrently;
+	daily: WeatherResultOkDaily;
+	offset: number;
+}
+
+export interface WeatherResultOkCurrently {
+	time: number;
+	summary: string;
+	icon: string;
+	precipIntensity: number;
+	precipProbability: number;
+	temperature: number;
+	apparentTemperature: number;
+	dewPoint: number;
+	humidity: number;
+	pressure: number;
+	windSpeed: number;
+	windGust: number;
+	windBearing: number;
+	cloudCover: number;
+	uvIndex: number;
+	visibility: number;
+	ozone: number;
+}
+
+export interface WeatherResultOkDaily {
+	summary: string;
+	icon: string;
+	data: WeatherResultOkDatum[];
+}
+
+export interface WeatherResultOkDatum {
+	time: number;
+	summary: string;
+	icon: string;
+	sunriseTime: number;
+	sunsetTime: number;
+	moonPhase: number;
+	precipIntensity: number;
+	precipIntensityMax: number;
+	precipIntensityMaxTime: number;
+	precipProbability: number;
+	precipType?: string;
+	temperatureHigh: number;
+	temperatureHighTime: number;
+	temperatureLow: number;
+	temperatureLowTime: number;
+	apparentTemperatureHigh: number;
+	apparentTemperatureHighTime: number;
+	apparentTemperatureLow: number;
+	apparentTemperatureLowTime: number;
+	dewPoint: number;
+	humidity: number;
+	pressure: number;
+	windSpeed: number;
+	windGust: number;
+	windGustTime: number;
+	windBearing: number;
+	cloudCover: number;
+	uvIndex: number;
+	uvIndexTime: number;
+	visibility: number;
+	ozone: number;
+	temperatureMin: number;
+	temperatureMinTime: number;
+	temperatureMax: number;
+	temperatureMaxTime: number;
+	apparentTemperatureMin: number;
+	apparentTemperatureMinTime: number;
+	apparentTemperatureMax: number;
+	apparentTemperatureMaxTime: number;
 }

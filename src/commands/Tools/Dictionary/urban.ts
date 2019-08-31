@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 			throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
 		}
 
-		const { list } = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json');
+		const { list } = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
 
 		const result = list[index];
 		if (typeof result === 'undefined') {
@@ -53,4 +53,22 @@ export default class extends SkyraCommand {
 		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
 
+}
+
+export interface UrbanDictionaryResultOk {
+	list: UrbanDictionaryResultOkEntry[];
+}
+
+export interface UrbanDictionaryResultOkEntry {
+	definition: string;
+	permalink: string;
+	thumbs_up: number;
+	sound_urls: any[];
+	author: string;
+	word: string;
+	defid: number;
+	current_vote: string;
+	written_on: Date;
+	example: string;
+	thumbs_down: number;
 }

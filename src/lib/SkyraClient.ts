@@ -250,7 +250,7 @@ declare module 'klasa' {
 		pool: MasterPool | null;
 		ping(): Promise<number>;
 		sync(table: string): Promise<{ synced: number }>;
-		getRandom(table: string): Promise<unknown>;
+		getRandom(table: string): Promise<unknown[]>;
 	}
 
 	export interface KlasaClientOptions {

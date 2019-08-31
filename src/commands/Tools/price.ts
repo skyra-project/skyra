@@ -26,10 +26,24 @@ export default class extends SkyraCommand {
 
 		const body = await fetch(url, {
 			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE}`]]
-		}, 'json');
+		}, 'json') as CryptoCompareResultOk | CryptoCompareResultError;
 
 		if (body.Response === 'Error') throw message.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		return message.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * body[to]]);
 	}
 
 }
+
+export interface CryptoCompareResultError {
+	Response: 'Error';
+	Message: string;
+	HasWarning: boolean;
+	Type: number;
+	RateLimit: CryptoCompareResultErrorData;
+	Data: CryptoCompareResultErrorData;
+	ParamWithError: string;
+}
+
+export interface CryptoCompareResultErrorData { }
+
+export interface CryptoCompareResultOk extends Record<string, number> { }

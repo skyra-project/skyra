@@ -40,7 +40,7 @@ export class WeebCommand extends SkyraCommand {
 				'Authorization': `Wolke ${TOKENS.WEEB_SH}`,
 				'User-Agent': `Skyra/${VERSION}`
 			}
-		}, 'json');
+		}, 'json') as WeebCommandResult;
 
 		return message.sendMessage(this.requiresUser
 			? message.language.get(this.responseName, params![0].username)
@@ -59,4 +59,8 @@ export class WeebCommand extends SkyraCommand {
 interface WeebCommandOptions extends CommandOptions {
 	queryType: string;
 	responseName: string;
+}
+
+interface WeebCommandResult {
+	url: string;
 }

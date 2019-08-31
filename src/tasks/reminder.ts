@@ -5,13 +5,13 @@ export default class extends Task {
 
 	public timestamp = new Timestamp('MMMM d, hh:mm:ss');
 
-	public async run(doc: any): Promise<any> {
+	public async run(data: ReminderTaskData) {
 		// Fetch the user to send the message to
-		const user = await this.client.users.fetch(doc.user)
+		const user = await this.client.users.fetch(data.user)
 			.catch(this._catchErrorUser);
 
 		if (user) {
-			await user.send(`⏲ Hey! You asked me on ${this.timestamp.displayUTC()} to remind you:\n*${doc.content}*`)
+			await user.send(`⏲ Hey! You asked me on ${this.timestamp.displayUTC()} to remind you:\n*${data.content}*`)
 				.catch(this._catchErrorMessage);
 		}
 	}
@@ -28,4 +28,9 @@ export default class extends Task {
 		throw error;
 	}
 
+}
+
+interface ReminderTaskData {
+	user: string;
+	content: string;
 }

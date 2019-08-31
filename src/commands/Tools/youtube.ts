@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('safeSearch', 'strict');
 		url.searchParams.append('q', input);
 		url.searchParams.append('key', TOKENS.GOOGLE_API);
-		const data = await fetch(url, 'json');
+		const data = await fetch(url, 'json') as YouTubeResultOk;
 		const result = data.items[index];
 
 		if (!result) {
@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 				: 'COMMAND_YOUTUBE_INDEX_NOTFOUND');
 		}
 
-		let output;
+		let output: string;
 		switch (result.id.kind) {
 			case 'youtube#channel': output = `https://youtube.com/channel/${result.id.channelId}`;
 				break;
@@ -51,4 +51,54 @@ export default class extends SkyraCommand {
 		return message.sendMessage(output);
 	}
 
+}
+
+export interface YouTubeResultOk {
+	kind: string;
+	etag: string;
+	nextPageToken: string;
+	regionCode: string;
+	pageInfo: YouTubeResultOkPageInfo;
+	items: YouTubeResultOkItem[];
+}
+
+export interface YouTubeResultOkItem {
+	kind: string;
+	etag: string;
+	id: YouTubeResultOkID;
+	snippet: YouTubeResultOkSnippet;
+}
+
+export interface YouTubeResultOkID {
+	kind: string;
+	playlistId?: string;
+	channelId?: string;
+	videoId?: string;
+}
+
+export interface YouTubeResultOkSnippet {
+	publishedAt: Date;
+	channelId: string;
+	title: string;
+	description: string;
+	thumbnails: YouTubeResultOkThumbnails;
+	channelTitle: string;
+	liveBroadcastContent: string;
+}
+
+export interface YouTubeResultOkThumbnails {
+	default: YouTubeResultOkThumbnail;
+	medium: YouTubeResultOkThumbnail;
+	high: YouTubeResultOkThumbnail;
+}
+
+export interface YouTubeResultOkThumbnail {
+	url: string;
+	width: number;
+	height: number;
+}
+
+export interface YouTubeResultOkPageInfo {
+	totalResults: number;
+	resultsPerPage: number;
 }

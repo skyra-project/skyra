@@ -34,8 +34,8 @@ export class SettingsMenu {
 		if (this.pointerIsFolder) return false;
 		const schema = this.schema as SchemaEntry;
 		if (schema.array) {
-			const current = this.message.guild!.settings.get(this.schema.path) as any[];
-			const old = this.oldSettings.get(this.schema.path) as any[];
+			const current = this.message.guild!.settings.get(this.schema.path) as unknown[];
+			const old = this.oldSettings.get(this.schema.path) as unknown[];
 			return current.length !== old.length || current.some((value, i) => value !== old[i]);
 		}
 		// eslint-disable-next-line eqeqeq
@@ -88,7 +88,7 @@ export class SettingsMenu {
 					'',
 					i18n.get('COMMAND_CONF_MENU_RENDER_TCTITLE'),
 					i18n.get('COMMAND_CONF_MENU_RENDER_UPDATE'),
-					(this.schema as SchemaEntry).array && (this.message.guild!.settings.get(this.schema.path) as any[]).length ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
+					(this.schema as SchemaEntry).array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
 					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : '',
 					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : '',
 					'',
@@ -200,7 +200,7 @@ export class SettingsMenu {
 		}
 	}
 
-	private async tryUpdate(value: any, options?: SettingsFolderUpdateOptions) {
+	private async tryUpdate(value: unknown, options?: SettingsFolderUpdateOptions) {
 		const { errors, updated } = await (value === null
 			? this.message.guild!.settings.reset(this.schema.path)
 			: this.message.guild!.settings.update(this.schema.path, value, options));

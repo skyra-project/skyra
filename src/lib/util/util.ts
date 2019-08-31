@@ -181,16 +181,16 @@ export function cutText(str: string, length: number) {
 	return `${cut.slice(0, length - 3)}...`;
 }
 
-export async function fetch(url: URL | string, type: 'json'): Promise<any>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<any>;
+export async function fetch(url: URL | string, type: 'json'): Promise<object>;
+export async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<object>;
 export async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;
 export async function fetch(url: URL | string, options: RequestInit, type: 'buffer'): Promise<Buffer>;
 export async function fetch(url: URL | string, type: 'text'): Promise<string>;
 export async function fetch(url: URL | string, options: RequestInit, type: 'text'): Promise<string>;
 export async function fetch(url: URL | string, type: 'result'): Promise<Response>;
 export async function fetch(url: URL | string, options: RequestInit, type: 'result'): Promise<Response>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'result' | 'json' | 'buffer' | 'text'): Promise<Response | Buffer | string | any>;
-export async function fetch(url: URL | string, options: RequestInit | 'result' | 'json' | 'buffer' | 'text', type?: 'result' | 'json' | 'buffer' | 'text'): Promise<any> {
+export async function fetch(url: URL | string, options: RequestInit, type: 'result' | 'json' | 'buffer' | 'text'): Promise<Response | Buffer | string | object>;
+export async function fetch(url: URL | string, options: RequestInit | 'result' | 'json' | 'buffer' | 'text', type?: 'result' | 'json' | 'buffer' | 'text') {
 	if (typeof options === 'undefined') {
 		options = {};
 		type = 'json';
@@ -462,10 +462,10 @@ export function inlineCodeblock(input: string) {
  * @param value true|false
  */
 export function enumerable(value: boolean) {
-	return (target: any, key: string) => {
+	return (target: unknown, key: string) => {
 		Object.defineProperty(target, key, {
 			enumerable: value,
-			set(this: any, val: any) {
+			set(this: unknown, val: unknown) {
 				Object.defineProperty(this, key, {
 					configurable: true,
 					enumerable: value,

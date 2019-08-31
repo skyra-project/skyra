@@ -17,11 +17,16 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const { fact } = await fetch('https://catfact.ninja/fact', 'json');
+		const { fact } = await fetch('https://catfact.ninja/fact', 'json') as CatfactResultOk;
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setTitle(message.language.get('COMMAND_CATFACT_TITLE'))
 			.setDescription(fact));
 	}
 
+}
+
+export interface CatfactResultOk {
+	fact: string;
+	length: number;
 }

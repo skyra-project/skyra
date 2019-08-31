@@ -26,8 +26,9 @@ export default class extends SkyraCommand {
 		url.searchParams.append('redirects', '1');
 		url.searchParams.append('explaintext', '1');
 		url.searchParams.append('exsectionformat', 'plain');
+		url.searchParams.append('exlimit', '1');
 		url.searchParams.append('titles', this.parseURL(input));
-		const text = await fetch(url, 'json');
+		const text = await fetch(url, 'json') as WikipediaResultOk;
 
 		if (text.query.pageids[0] === '-1') {
 			throw message.language.get('COMMAND_WIKIPEDIA_NOTFOUND');
@@ -63,4 +64,29 @@ export default class extends SkyraCommand {
 		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
 	}
 
+}
+
+export interface WikipediaResultOk {
+	batchcomplete: string;
+	query: WikipediaResultOkQuery;
+}
+
+export interface WikipediaResultOkQuery {
+	normalized: WikipediaResultOkNormalized[];
+	pageids: string[];
+	pages: WikipediaResultOkPages;
+}
+
+export interface WikipediaResultOkNormalized {
+	from: string;
+	to: string;
+}
+
+export interface WikipediaResultOkPages extends Record<string, WikipediaResultOkPage> {}
+
+export interface WikipediaResultOkPage {
+	pageid: number;
+	ns: number;
+	title: string;
+	extract: string;
 }

@@ -290,7 +290,7 @@ export interface ModerationManagerEntrySerialized {
 	caseID: number;
 	createdAt: number | null;
 	duration: number | null;
-	extraData: any | null;
+	extraData: object | null;
 	guildID: string;
 	moderatorID: string | null;
 	reason: string | null;

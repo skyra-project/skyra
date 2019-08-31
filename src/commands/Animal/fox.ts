@@ -20,11 +20,16 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const { image } = await fetch(url, 'json');
+		const { image } = await fetch(url, 'json') as FoxResultOk;
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setImage(image)
 			.setTimestamp());
 	}
 
+}
+
+export interface FoxResultOk {
+	image: string;
+	link: string;
 }

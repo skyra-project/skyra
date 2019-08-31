@@ -82,7 +82,7 @@ export default class extends SkyraCommand {
 		let success: boolean;
 		let syncTime: string;
 		let asyncTime: string;
-		let result: any;
+		let result: unknown;
 		let thenable = false;
 		let type: Type;
 		try {
@@ -120,7 +120,7 @@ export default class extends SkyraCommand {
 						showHidden: Boolean(message.flags.showHidden)
 					});
 		}
-		return { success, type: type!, time: this.formatTime(syncTime!, asyncTime!), result: util.clean(result) };
+		return { success, type: type!, time: this.formatTime(syncTime!, asyncTime!), result: util.clean(result as string) };
 	}
 
 	private formatTime(syncTime: string, asyncTime: string) {
@@ -128,7 +128,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getHaste(evalResult: string, language: string = 'js') {
-		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult }, 'json');
+		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult }, 'json') as { key: string };
 		return `https://hasteb.in/${key}.${language}`;
 	}
 
@@ -182,7 +182,7 @@ export default class extends SkyraCommand {
 
 interface InternalEvalResults {
 	success: boolean;
-	result: any;
+	result: string;
 	time: string;
 	footer: string;
 	language: string;

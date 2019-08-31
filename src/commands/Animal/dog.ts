@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 			.setTimestamp();
 
 		try {
-			const randomDogData = await fetch('https://dog.ceo/api/breeds/image/random', 'json');
+			const randomDogData = await fetch('https://dog.ceo/api/breeds/image/random', 'json') as DogResultOk;
 			if (randomDogData && randomDogData.status === 'success') embed.setImage(randomDogData.message);
 		} catch {
 			embed.setImage('https://i.imgur.com/cF0XUF5.jpg');
@@ -31,4 +31,9 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(embed);
 	}
 
+}
+
+export interface DogResultOk {
+	message: string;
+	status: string;
 }

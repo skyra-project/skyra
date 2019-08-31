@@ -32,7 +32,7 @@ declare module 'discord.js' {
 declare module 'klasa' {
 
 	interface Language {
-		retrieve(key: string): any;
+		retrieve(key: string): unknown;
 	}
 
 	interface SettingsFolder {

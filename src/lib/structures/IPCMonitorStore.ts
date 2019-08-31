@@ -33,4 +33,4 @@ export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<I
 
 }
 
-type ConstructorType<V> = new (...args: any[]) => V;
+type ConstructorType<V> = new (...args: unknown[]) => V;

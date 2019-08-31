@@ -83,7 +83,7 @@ export class Giveaway {
 		await api(this.store.client)
 			.channels(this.channelID)
 			.messages(this.messageID)
-			.reactions(Giveaway.EMOJI!)['@me']
+			.reactions(Giveaway.EMOJI!, '@me')
 			.put();
 		await this.store.client.providers.default.create(Databases.Giveaway, this.id, this.toJSON());
 		return this;

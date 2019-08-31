@@ -147,11 +147,11 @@ export class SettingsMenu {
 	private async _removeReactionFromUser(reaction: string, userID: string) {
 		if (!this.response) return;
 		try {
-			const request = api(this.message.client)
+			return await api(this.message.client)
 				.channels(this.message.channel.id)
 				.messages(this.response.id)
-				.reactions(encodeURIComponent(reaction));
-			return await (userID === this.message.client.user!.id ? request['@me'] : request(userID)).delete();
+				.reactions(encodeURIComponent(reaction), userID === this.message.client.user!.id ? '@me' : userID)
+				.delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Unknown Message

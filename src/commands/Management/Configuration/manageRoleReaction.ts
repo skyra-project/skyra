@@ -95,7 +95,7 @@ export default class extends SkyraCommand {
 		return api(this.client)
 			.channels(channelID)
 			.messages(messageID)
-			.reactions(this.client.emojis.resolveIdentifier(reaction)!)['@me']
+			.reactions(this.client.emojis.resolveIdentifier(reaction)!, '@me')
 			.put();
 	}
 

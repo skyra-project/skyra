@@ -5,7 +5,7 @@ import { TOKENS, VERSION } from '../../../config';
 import { fetch, getColor } from '../util/util';
 import { SkyraCommand } from './SkyraCommand';
 
-export class WeebCommand extends SkyraCommand {
+export abstract class WeebCommand extends SkyraCommand {
 
 	/**
 	 * The type for this command.

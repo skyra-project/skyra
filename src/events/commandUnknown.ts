@@ -1,7 +1,7 @@
-import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
+import { Command, Event, KlasaMessage, Stopwatch, CommandPrompt } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { CommandHandler, CommandHandlerParseResultOk } from '../lib/types/definitions/Internals';
+import { CommandHandler } from '../lib/types/definitions/Internals';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
 
 export default class extends Event {
@@ -13,7 +13,8 @@ export default class extends Event {
 		const tag = (message.guild!.settings.get(GuildSettings.Tags) as GuildSettings.Tags).some(t => t[0] === command);
 		if (tag) return this.runTag(message, command);
 
-		const alias = (message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias).find(entry => entry.input === command);
+		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
+		const alias = aliases.find(entry => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);
 
@@ -22,10 +23,14 @@ export default class extends Event {
 
 	public runCommand(message: KlasaMessage, command: Command) {
 		const commandHandler = this.client.monitors.get('commandHandler') as unknown as CommandHandler;
-		const { prefix, prefixLength } = commandHandler.parseCommand(message) as CommandHandlerParseResultOk;
-
-		// @ts-ignore
-		return commandHandler.runCommand(message._registerCommand({ command, prefix, prefixLength }));
+		message.command = command;
+		(message as unknown as { prompter: CommandPrompt }).prompter = message.command.usage.createPrompt(message, {
+			flagSupport: message.command.flagSupport,
+			quotedStringSupport: message.command.quotedStringSupport,
+			time: message.command.promptTime,
+			limit: message.command.promptLimit
+		});
+		return commandHandler.runCommand(message);
 	}
 
 	public async runTag(message: KlasaMessage, command: string) {

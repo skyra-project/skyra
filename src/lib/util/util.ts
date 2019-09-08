@@ -16,6 +16,7 @@ import { api } from './Models/Api';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
+const REGEX_PARSED_FCUSTOM_EMOJI = /^a?:[^:]+:\d{17,19}$/;
 
 const MUTE_ROLE_PERMISSIONS = Object.freeze({
 	text: { SEND_MESSAGES: false, ADD_REACTIONS: false },
@@ -149,6 +150,10 @@ export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji) {
 		return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name);
 	}
 	return null;
+}
+
+export function displayEmoji(emoji: string) {
+	return REGEX_PARSED_FCUSTOM_EMOJI.test(emoji) ? `<${emoji}>` : decodeURIComponent(emoji);
 }
 
 export function oneToTen(level: number) {

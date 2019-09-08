@@ -1,7 +1,9 @@
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { resolveEmoji } from '../../lib/util/util';
+import { resolveEmoji, displayEmoji } from '../../lib/util/util';
+import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
+import { MessageEmbed } from 'discord.js';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
@@ -81,13 +83,22 @@ export default class extends SkyraCommand {
 		const includes = message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
 		const output: string[] = [];
 		for (const alias of aliases) {
-			output.push(`Alias    :: ${alias.input} -> ${alias.output}`);
+			output.push(`Alias \`${alias.input}\` -> \`${alias.output}\``);
 		}
 		for (const react of includes) {
-			output.push(`Reaction :: ${react.input} -> ${react.output}`);
+			output.push(`Reaction :: \`${react.input}\` -> ${displayEmoji(react.output)}`);
 		}
 		if (!output.length) throw message.language.get('COMMAND_TRIGGERS_LIST_EMPTY');
-		return message.sendMessage(util.codeBlock('asciidoc', output.join('\n')));
+
+		const display = new UserRichDisplay(new MessageEmbed()
+			.setAuthor(message.author!.username, message.author!.displayAvatarURL({ size: 128 }))
+			.setColor(message.member!.displayColor));
+
+		for (const page of util.chunk(output, 10)) {
+			display.addPage((embed: MessageEmbed) => embed.setDescription(page));
+		}
+
+		return display.run(message, undefined, { time: 120000 });
 	}
 
 	private _format(type: string, input: string, output: string) {

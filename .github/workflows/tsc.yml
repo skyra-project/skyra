@@ -16,8 +16,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12
-    - name: yarn install
-      run: yarn install
+    - name: yarn
+      run: yarn --ignore-scripts
     - name: configuration
       run: cp config.ts.example config.ts
     - name: tsc

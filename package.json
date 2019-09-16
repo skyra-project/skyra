@@ -58,7 +58,7 @@
     "@types/node-fetch": "^2.5.0",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
-    "eslint": "^6.3.0",
+    "eslint": "^6.4.0",
     "eslint-config-bamboo": "^2.0.0"
   }
 }

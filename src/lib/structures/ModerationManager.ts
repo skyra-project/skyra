@@ -151,7 +151,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public static get [Symbol.species]() {
-		return Collection;
+		return Collection[Symbol.species];
 	}
 
 }

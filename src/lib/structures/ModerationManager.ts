@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-
-import { Collection, Guild, User } from 'discord.js';
+import { Collection, CollectionConstructor } from '@discordjs/collection';
+import { Guild, User } from 'discord.js';
 import { Databases } from '../types/constants/Constants';
 import { ModerationSchemaKeys } from '../util/constants';
 import { createReferPromise, ReferredPromise } from '../util/util';
@@ -151,7 +151,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public static get [Symbol.species]() {
-		return Collection;
+		return Collection as unknown as CollectionConstructor;
 	}
 
 }

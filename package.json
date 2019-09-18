@@ -54,6 +54,7 @@
     "zlib-sync": "^0.1.5"
   },
   "devDependencies": {
+    "@discordjs/collection": "^0.1.3",
     "@types/node": "^12.7.5",
     "@types/node-fetch": "^2.5.0",
     "@typescript-eslint/eslint-plugin": "^1.13.0",

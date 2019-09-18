@@ -53,7 +53,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 		return rateLimit;
 	}
 
-	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: Collection<string, AntiRaidEntry>) => boolean, thisArg?: unknown) {
+	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: this) => boolean, thisArg?: unknown) {
 		if (!fn) {
 			const now = Date.now();
 			fn = value => now > value.time;

@@ -2,7 +2,7 @@ import { IPCMonitor } from '../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	public async run() {
+	public run() {
 		const memoryUsage = process.memoryUsage();
 		return {
 			name: 'skyra',

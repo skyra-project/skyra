@@ -108,7 +108,7 @@ export default class extends SkyraCommand {
 		return 'unban';
 	}
 
-	private async checkMute(message: KlasaMessage, user: KlasaUser) {
+	private checkMute(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
 		const stickyRoles = (message.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
 		if (!stickyRoles || !stickyRoles.roles.includes(message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted)) throw message.language.get('COMMAND_MUTE_USER_NOT_MUTED');

@@ -18,8 +18,9 @@ export abstract class MusicCommand extends SkyraCommand {
 		this.music = new MusicBitField(options.music);
 	}
 
-	public async init() {
+	public init() {
 		if (!this.client.lavalink) this.disable();
+		return Promise.resolve();
 	}
 
 }

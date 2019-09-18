@@ -109,10 +109,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return (await modlog.create())!;
 	}
 
-	public abstract async prehandle(message: KlasaMessage, targets: User[], reason: string | null): Promise<T>;
+	public abstract prehandle(message: KlasaMessage, targets: User[], reason: string | null): Promise<T> | T;
 
-	public abstract async handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string | null, prehandled: T): Promise<ModerationManagerEntry>;
+	public abstract handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string | null, prehandled: T): Promise<ModerationManagerEntry> | ModerationManagerEntry;
 
-	public abstract async posthandle(message: KlasaMessage, targets: User[], reason: string | null, prehandled: T): Promise<unknown>;
+	public abstract posthandle(message: KlasaMessage, targets: User[], reason: string | null, prehandled: T): unknown;
 
 }

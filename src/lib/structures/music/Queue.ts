@@ -267,7 +267,7 @@ export class Queue extends Array<Song> {
 		return message.hasAtLeastPermissionLevel(5);
 	}
 
-	private reset(volume: boolean = false) {
+	private reset(volume = false) {
 		this.song = null;
 		this.position = 0;
 		this.lastUpdate = 0;

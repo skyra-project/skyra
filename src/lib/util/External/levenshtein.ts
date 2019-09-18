@@ -27,7 +27,7 @@
  * @param b The second string to compare
  * @param full Whether it should continue after distance 2 or continue
  */
-export function levenshtein(a: string, b: string, full: boolean = true): number {
+export function levenshtein(a: string, b: string, full = true): number {
 	if (a === b) return 0;
 	if (a.length > b.length) [a, b] = [b, a];
 

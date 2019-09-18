@@ -8,21 +8,21 @@ export default class extends Task {
 	public async run(data: ReminderTaskData) {
 		// Fetch the user to send the message to
 		const user = await this.client.users.fetch(data.user)
-			.catch(this._catchErrorUser);
+			.catch(error => this._catchErrorUser(error));
 
 		if (user) {
 			await user.send(`⏲ Hey! You asked me on ${this.timestamp.displayUTC()} to remind you:\n*${data.content}*`)
-				.catch(this._catchErrorMessage);
+				.catch(error => this._catchErrorMessage(error));
 		}
 	}
 
-	public _catchErrorUser(error: DiscordAPIError): void {
+	private _catchErrorUser(error: DiscordAPIError): void {
 		// 10013: Unknown user
 		if (error.code === 10013) return;
 		throw error;
 	}
 
-	public _catchErrorMessage(error: DiscordAPIError): void {
+	private _catchErrorMessage(error: DiscordAPIError): void {
 		// 50007: Cannot send messages to this user
 		if (error.code === 50007) return;
 		throw error;

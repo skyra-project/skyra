@@ -17,12 +17,12 @@ export default class extends SkyraCommand {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver(`name`, async (arg, possible, message, [subcommand]) => {
+		this.createCustomResolver(`name`, (arg, possible, message, [subcommand]) => {
 			if (!arg && subcommand === 'list') return undefined;
 			return this.client.arguments.get('string').run(arg, possible, message);
 		});
 
-		this.createCustomResolver(`rolenames`, async (arg, possible, message, [subcommand]) => {
+		this.createCustomResolver(`rolenames`, (arg, possible, message, [subcommand]) => {
 			if (!arg && subcommand === 'list') return undefined;
 			return this.client.arguments.get('rolenames').run(arg, possible, message);
 		});

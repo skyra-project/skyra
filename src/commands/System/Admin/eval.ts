@@ -6,7 +6,6 @@ import { Events } from '../../../lib/types/Enums';
 import { fetch } from '../../../lib/util/util';
 import * as transpileOptions from '../../../../tsconfig.json';
 
-// @ts-ignore
 const tsTranspileOptions: TranspileOptions = { compilerOptions: transpileOptions.compilerOptions };
 
 enum EvalLanguage {
@@ -87,7 +86,8 @@ export default class extends SkyraCommand {
 		let type: Type;
 		try {
 			if (message.flags.async) code = `(async () => {\n${code}\n})();`;
-			// @ts-ignore
+			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+			// @ts-ignore 6133
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const msg = message;
 			// eslint-disable-next-line no-eval
@@ -127,7 +127,7 @@ export default class extends SkyraCommand {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
 
-	private async getHaste(evalResult: string, language: string = 'js') {
+	private async getHaste(evalResult: string, language = 'js') {
 		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult }, 'json') as { key: string };
 		return `https://hasteb.in/${key}.${language}`;
 	}

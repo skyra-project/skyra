@@ -20,7 +20,7 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public async prehandle(message: KlasaMessage) {
+	public prehandle(message: KlasaMessage) {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) || message.guild!.settings.get(GuildSettings.Events.BanRemove)
 			? { unlock: message.guild!.moderation.createLock() }
 			: null;
@@ -31,7 +31,7 @@ export default class extends ModerationCommand {
 		return softban(message.guild!, message.author!, user, reason, 'days' in message.flags ? Math.min(7, Math.max(0, Number(message.flags.days))) : 1);
 	}
 
-	public async posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
+	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
 		if (prehandled) prehandled.unlock();
 	}
 

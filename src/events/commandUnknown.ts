@@ -3,10 +3,11 @@ import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { CommandHandler } from '../lib/types/definitions/Internals';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
+import { floatPromise } from '../lib/util/util';
 
 export default class extends Event {
 
-	public async run(message: KlasaMessage, command: string) {
+	public run(message: KlasaMessage, command: string) {
 		if (!message.guild || (message.guild!.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels).includes(message.channel.id)) return null;
 		command = command.toLowerCase();
 
@@ -43,7 +44,7 @@ export default class extends Event {
 				const commandRun = tagCommand.show(message, [command]);
 				timer.stop();
 				const response = await commandRun;
-				this.client.finalizers.run(message, tagCommand, response, timer);
+				floatPromise(this, this.client.finalizers.run(message, tagCommand, response, timer));
 				this.client.emit(Events.CommandSuccess, message, tagCommand, ['show', command], response);
 			} catch (error) {
 				this.client.emit(Events.CommandError, message, tagCommand, ['show', command], error);

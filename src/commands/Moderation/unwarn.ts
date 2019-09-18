@@ -20,7 +20,8 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	// @ts-ignore
+	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+	// @ts-ignore 2416
 	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
 		if (!modlog || modlog.type !== ModerationTypeKeys.Warn) throw message.language.get('GUILD_WARN_NOT_FOUND');

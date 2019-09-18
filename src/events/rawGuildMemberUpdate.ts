@@ -17,7 +17,8 @@ export default class extends Event {
 		this.client.usertags.set(data.user.id, `${data.user.username}#${data.user.discriminator}`);
 		const member = await guild!.members.fetch(data.user.id).catch(() => null);
 		if (!member) return;
-		// @ts-ignore
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+		// @ts-ignore 2339
 		if (member) member._patch(data);
 
 		// Handle unique role sets

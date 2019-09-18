@@ -16,7 +16,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	/**
 	 * Whether the guild is under attack or not
 	 */
-	public attack: boolean = false;
+	public attack = false;
 
 	/**
 	 * The sweep interval for this AntiRaid

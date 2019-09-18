@@ -45,6 +45,7 @@ export default class extends SkyraCommand {
 			: !(piece as SchemaEntry).configurable)) return message.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
 		if (piece.type === 'Folder') {
 			return message.sendLocale('COMMAND_CONF_SERVER', [
+				// eslint-disable-next-line @typescript-eslint/unbound-method
 				key ? `: ${key.split('.').map(util.toTitleCase).join('/')}` : '',
 				util.codeBlock('asciidoc', message.guild!.settings.display(message, piece))
 			]);

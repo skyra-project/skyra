@@ -2,7 +2,7 @@ import { Gateway, Settings, KlasaGuild } from 'klasa';
 
 export class MemberGateway extends Gateway {
 
-	protected _synced: boolean = false;
+	protected _synced = false;
 
 	public get(id: string) {
 		const [guildID, memberID] = id.split('.');
@@ -19,7 +19,8 @@ export class MemberGateway extends Gateway {
 		const result = await super.sync(input);
 		if (result === this) {
 			for (const guild of this.cache.values() as IterableIterator<KlasaGuild>) {
-				// @ts-ignore
+				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+				// @ts-ignore 2341
 				for (const member of guild!.members.values()) if (member.settings.existenceStatus === null) member.settings.existenceStatus = false;
 			}
 		}

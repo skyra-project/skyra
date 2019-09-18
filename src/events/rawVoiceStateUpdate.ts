@@ -16,8 +16,9 @@ export default class extends Event {
 		}
 	}
 
-	public async init() {
+	public init() {
 		if (!this.client.lavalink) this.disable();
+		return Promise.resolve();
 	}
 
 }

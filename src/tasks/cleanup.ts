@@ -24,7 +24,7 @@
  * SOFTWARE.
  */
 
-import { Util } from 'discord.js';
+import { Util, TextChannel, Channel } from 'discord.js';
 import { Task } from 'klasa';
 import { Events } from '../lib/types/Enums';
 
@@ -44,7 +44,7 @@ const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
  */
 export default class extends Task {
 
-	public async run(): Promise<void> {
+	public run() {
 		const OLD_SNOWFLAKE = Util.binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
 		let presences = 0;
 		let guildMembers = 0;
@@ -61,7 +61,6 @@ export default class extends Task {
 			// Clear members that haven't send a message in the last 30 minutes
 			const { me } = guild;
 			for (const [id, member] of guild!.members) {
-				// @ts-ignore
 				if (member === me) continue;
 				if (member.voice.channelID) continue;
 				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
@@ -76,9 +75,7 @@ export default class extends Task {
 
 		// Per-Channel sweeper
 		for (const channel of this.client.channels.values()) {
-			// @ts-ignore
-			if (channel.type === 'text' && channel.lastMessageID) {
-				// @ts-ignore
+			if (this.isTextChannel(channel) && channel.lastMessageID) {
 				channel.lastMessageID = null;
 				lastMessages++;
 			}
@@ -116,6 +113,10 @@ export default class extends Task {
 		if (n > 100) return `\u001B[39m\u001B[93m${text}\u001B[39m\u001B[90m`;
 		// Green color
 		return `\u001B[39m\u001B[32m${text}\u001B[39m\u001B[90m`;
+	}
+
+	private isTextChannel(channel: Channel): channel is TextChannel {
+		return channel.type === 'text';
 	}
 
 }

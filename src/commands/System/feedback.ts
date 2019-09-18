@@ -32,9 +32,10 @@ export default class extends SkyraCommand {
 		return message.alert(message.language.get('COMMAND_FEEDBACK'));
 	}
 
-	public async init() {
+	public init() {
 		// TODO(kyranet): This should be replaced with a webhook
 		this.channel = this.client.channels.get('257561807500214273') as TextChannel;
+		return Promise.resolve();
 	}
 
 }

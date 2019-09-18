@@ -3,6 +3,7 @@ import { Task } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
 import { removeMute } from '../lib/util/util';
+import { SkyraGuildMember } from '../lib/extensions/SkyraGuildMember';
 const { FLAGS } = Permissions;
 
 export default class extends Task {
@@ -30,9 +31,8 @@ export default class extends Task {
 		// If the member is found, update the roles
 		if (member) {
 			const { position } = guild!.me!.roles.highest;
-			const rolesMute = guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
-			const roles = (modlog[ModerationSchemaKeys.ExtraData] as string[] || [])
-				.concat(member.roles.filter(role => role.id !== rolesMute && role.position < position && !role.managed).map(role => role.id));
+			const rolesMuted = guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+			const roles = this.extractRoles(member, rolesMuted, position, modlog.extraData as readonly string[] | null);
 			await member.edit({ roles }).catch(() => null);
 		}
 
@@ -43,6 +43,17 @@ export default class extends Task {
 			.setType(ModerationTypeKeys.UnMute)
 			.setReason(`Mute released after ${this.client.languages.default.duration(doc[ModerationSchemaKeys.Duration])}`)
 			.create();
+	}
+
+	private extractRoles(member: SkyraGuildMember, muteRole: string, rolePosition: number, roles: readonly string[] | null) {
+		if (roles === null) roles = [];
+
+		const set = new Set<string>();
+		for (const role of member.roles.values()) {
+			if (role.id !== muteRole && role.position < rolePosition && !role.managed) set.add(role.id);
+		}
+
+		return [...set];
 	}
 
 }

@@ -47,23 +47,21 @@ export default class extends Provider {
 	public async getAll(table: string, entries: string[] = []) {
 		if (entries.length) {
 			const chunks = util.chunk(entries, 50000);
-			const output = [];
-			// @ts-ignore
+			const output: unknown[] = [];
 			for (const myChunk of chunks) output.push(...await this.db.table(table).getAll(...myChunk).run());
 			return output;
 		}
-		return this.db.table(table).run();
+		return await this.db.table(table).run() as unknown[];
 	}
 
 	public async getKeys(table: string, entries: string[] = []) {
 		if (entries.length) {
 			const chunks = util.chunk(entries, 50000);
-			const output = [];
-			// @ts-ignore
+			const output: string[] = [];
 			for (const myChunk of chunks) output.push(...await this.db.table(table).getAll(...myChunk)('id').run());
 			return output;
 		}
-		return this.db.table(table)('id').run();
+		return await this.db.table(table)('id').run() as string[];
 	}
 
 	public get(table: string, id: string) {

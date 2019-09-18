@@ -23,7 +23,8 @@ export default class extends Event {
 		try {
 			const results = await this.client.providers.default.db
 				.table(Databases.Starboard)
-				// @ts-ignore
+				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+				// @ts-ignore 2345
 				.getAll(...data.ids.map(id => [data.channel_id, id]), { index: 'channel_message' })
 				.delete({ returnChanges: true })
 				.run() as WriteResult<StarboardMessageData>;

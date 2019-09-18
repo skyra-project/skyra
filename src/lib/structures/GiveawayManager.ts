@@ -18,7 +18,6 @@ export class GiveawayManager {
 	public async init() {
 		const r = this.client.providers.default.db;
 		const entries = await (this.client.shard
-			// @ts-ignore
 			? r.table(Databases.Giveaway).getAll(...this.client.guilds.keys(), { index: 'guildID' })
 			: r.table(Databases.Giveaway)).run() as GiveawayData[];
 

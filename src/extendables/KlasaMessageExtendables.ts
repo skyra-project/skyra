@@ -8,7 +8,7 @@ export default class extends Extendable {
 		super(store, file, directory, { appliesTo: [Message] });
 	}
 
-	public async prompt(this: Message, content: string, time: number = 30000) {
+	public async prompt(this: Message, content: string, time = 30000) {
 		const message = await this.channel.send(content) as Message;
 		const responses = await this.channel.awaitMessages(msg => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch(error => this.client.emit(Events.ApiError, error));
@@ -43,7 +43,7 @@ export default class extends Extendable {
 		return msg;
 	}
 
-	public async nuke(this: Message, time: number = 0) {
+	public async nuke(this: Message, time = 0) {
 		if (time === 0) return nuke(this);
 
 		const count = this.edits.length;

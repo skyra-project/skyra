@@ -13,10 +13,10 @@ export class Game {
 	public players: readonly [Player | null, Player | null];
 	public winner: Player | null;
 	public llrc: LongLivingReactionCollector | null;
-	public stopped: boolean = false;
+	public stopped = false;
 	private _turnLeft: boolean = Math.round(Math.random()) === 0;
-	private _content: string = '';
-	private _retries: number = 3;
+	private _content = '';
+	private _retries = 3;
 
 	public constructor(message: KlasaMessage) {
 		this.board = new Board();
@@ -36,6 +36,7 @@ export class Game {
 
 	public set content(value: string) {
 		this._content = value;
+		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		this.updateContent();
 	}
 
@@ -89,7 +90,7 @@ export class Game {
 			this._retries = 3;
 		} catch (error) {
 			if (error instanceof DiscordAPIError && (error.code === 10003 || error.code === 10008)) {
-				this.message.alert(this.message.language.get('COMMAND_C4_GAME_DRAW'));
+				await this.message.alert(this.message.language.get('COMMAND_C4_GAME_DRAW'));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

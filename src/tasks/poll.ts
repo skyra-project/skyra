@@ -12,7 +12,7 @@ export default class extends Task {
 		const guild = this.client.guilds.get(poll.guild);
 		if (!guild) return;
 
-		const user = await this.client.users.fetch(poll.author).catch(this._catchErrorUser);
+		const user = await this.client.users.fetch(poll.author).catch(error => this._catchErrorUser(error));
 		if (!user) return;
 
 		let content: string;
@@ -30,7 +30,7 @@ export default class extends Task {
 			content = `Hey! Your poll __${title}__ with ID \`${id}\` just finished, but nobody voted :(`;
 		}
 
-		await user.send(content).catch(this._catchErrorMessage);
+		await user.send(content).catch(error => this._catchErrorMessage(error));
 		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: { id } });
 	}
 

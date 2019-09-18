@@ -200,7 +200,8 @@ export class Giveaway {
 			.setDescription(description)
 			.setFooter(footer)
 			.setTimestamp(this.endsAt)
-			// @ts-ignore
+			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+			// @ts-ignore 2341
 			._apiTransform();
 	}
 

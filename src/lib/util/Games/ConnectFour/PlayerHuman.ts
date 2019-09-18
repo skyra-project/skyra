@@ -42,8 +42,8 @@ export class PlayerHuman extends Player {
 		}
 	}
 
-	public finish() {
-		super.finish();
+	public async finish() {
+		await super.finish();
 		this.game.llrc!.setTime(-1);
 		this.game.llrc!.setListener(null);
 	}

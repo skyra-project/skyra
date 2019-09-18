@@ -58,7 +58,7 @@ export default class extends Monitor {
 	 * @param performAction The action to perform
 	 * @param createModerationLog Whether or not this should create a new moderation log entry
 	 */
-	public async actionAndSend(message: KlasaMessage, type: ModerationTypeKeys, performAction: () => unknown, createModerationLog: boolean = true): Promise<void> {
+	public async actionAndSend(message: KlasaMessage, type: ModerationTypeKeys, performAction: () => unknown, createModerationLog = true): Promise<void> {
 		const lock = message.guild!.moderation.createLock();
 		await performAction();
 		if (createModerationLog) {

@@ -3,7 +3,7 @@ import { Collection, CollectionConstructor } from '@discordjs/collection';
 import { Guild, User } from 'discord.js';
 import { Databases } from '../types/constants/Constants';
 import { ModerationSchemaKeys } from '../util/constants';
-import { createReferPromise, ReferredPromise } from '../util/util';
+import { createReferPromise, ReferredPromise, floatPromise } from '../util/util';
 import { ModerationManagerEntry, ModerationManagerEntrySerialized, ModerationManagerEntryDeserialized } from './ModerationManagerEntry';
 
 enum CacheActions {
@@ -48,14 +48,13 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public get new() {
-		// eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
 		return new ModerationManagerEntry(this, {} as ModerationManagerEntrySerialized);
 	}
 
-	public async fetch(id: number): Promise<ModerationManagerEntry>;
+	public async fetch(id: number): Promise<ModerationManagerEntry | null>;
 	public async fetch(id: string | number[]): Promise<Collection<number, ModerationManagerEntry>>;
 	public async fetch(id?: null): Promise<this>;
-	public async fetch(id?: string | number | number[] | null): Promise<ModerationManagerEntry | Collection<number, ModerationManagerEntry> | this> {
+	public async fetch(id?: string | number | number[] | null): Promise<ModerationManagerEntry | Collection<number, ModerationManagerEntry> | this | null> {
 		// Case number
 		if (typeof id === 'number') {
 			return super.get(id) || this._cache(await this.table.getAll([this.guild!.id, id], { index: 'guild_case' })
@@ -75,8 +74,9 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		}
 
 		if (Array.isArray(id) && id.length) {
-			// @ts-ignore
-			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild!.id, entryID]), { index: 'guild_case' })
+			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+			// @ts-ignore 2345
+			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild!.id, entryID] as [string, number][]), { index: 'guild_case' })
 				.run(), CacheActions.None);
 		}
 
@@ -100,9 +100,9 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	public createLock() {
 		const lock = createReferPromise<undefined>();
 		this._locks.push(lock);
-		lock.promise.finally(() => {
+		floatPromise(this.guild, lock.promise.finally(() => {
 			this._locks.splice(this._locks.indexOf(lock), 1);
-		});
+		}));
 
 		return lock.resolve;
 	}

@@ -19,7 +19,7 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public async prehandle(message: KlasaMessage) {
+	public prehandle(message: KlasaMessage) {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
@@ -30,7 +30,7 @@ export default class extends ModerationCommand {
 		return this.sendModlog(message, user, reason);
 	}
 
-	public async posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
+	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
 		if (prehandled) prehandled.unlock();
 	}
 

@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 			usage: '<Emoji:emoji>'
 		});
 
-		this.createCustomResolver('emoji', async (arg, possible, msg) => {
+		this.createCustomResolver('emoji', (arg, possible, msg) => {
 			const resolved = resolveEmoji(arg);
 			if (resolved) return resolved;
 			throw msg.language.get('RESOLVER_INVALID_EMOJI', possible.name);

@@ -20,7 +20,7 @@ export default class extends Event {
 		super(store, file, directory, { name: 'GUILD_MEMBER_REMOVE', emitter: store.client.ws });
 	}
 
-	public async run(data: WSGuildMemberRemove): Promise<void> {
+	public run(data: WSGuildMemberRemove) {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild!.available) return;
 

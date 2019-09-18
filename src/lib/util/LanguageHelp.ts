@@ -25,7 +25,7 @@ export class LanguageHelp {
 		return this;
 	}
 
-	public display(name: string, options: LanguageHelpDisplayOptions, multiline: boolean = false) {
+	public display(name: string, options: LanguageHelpDisplayOptions, multiline = false) {
 		const { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
 		const output: string[] = [];
 

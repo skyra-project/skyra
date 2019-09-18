@@ -7,9 +7,10 @@ export default class extends Event {
 		super(store, file, directory, { name: 'USER_UPDATE', emitter: store.client.ws });
 	}
 
-	public async run(data: APIUserData): Promise<void> {
+	public run(data: APIUserData) {
 		const user = this.client.users.get(data.id);
-		// @ts-ignore
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+		// @ts-ignore 2339
 		if (user) user._patch(data);
 	}
 

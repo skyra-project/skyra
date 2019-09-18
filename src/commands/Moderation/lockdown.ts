@@ -19,7 +19,6 @@ export default class extends SkyraCommand {
 	}
 
 	public run(message: KlasaMessage, [channel = message.channel as TextChannel, time]: [TextChannel, Date]) {
-		// @ts-ignore
 		return this[message.guild!.security.lockdowns.has(message.channel.id) ? 'unlock' : 'lock'](message, channel, time);
 	}
 
@@ -43,12 +42,8 @@ export default class extends SkyraCommand {
 
 		// Perform cleanup later
 		if (timeout) {
-			try {
-				await timeout.run();
-				this._unlock(message, channel);
-			} catch {
-				this._unlock(message, channel);
-			}
+			await timeout.run();
+			await this._unlock(message, channel);
 		}
 	}
 

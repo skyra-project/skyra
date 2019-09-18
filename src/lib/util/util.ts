@@ -13,6 +13,7 @@ import { LLRCDataEmoji } from './LongLivingReactionCollector';
 import { util } from 'klasa';
 import { Mutable } from '../types/util';
 import { api } from './Models/Api';
+import { Events } from '../types/Enums';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -56,6 +57,7 @@ export interface ReferredPromise<T> {
 	reject(error?: Error): void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() { }
 
 export function showSeconds(duration: number) {
@@ -169,7 +171,7 @@ export function oneToTen(level: number) {
  * @param length The length of the desired string.
  * @param char The character to split with
  */
-export function splitText(str: string, length: number, char: string = ' ') {
+export function splitText(str: string, length: number, char = ' ') {
 	const x = str.substring(0, length).lastIndexOf(char);
 	const pos = x === -1 ? length : x;
 	return str.substring(0, pos);
@@ -207,7 +209,6 @@ export async function fetch(url: URL | string, options: RequestInit | 'result' |
 		type = 'json';
 	}
 
-	// @ts-ignore
 	const result: Response = await nodeFetch(url, options);
 	if (!result.ok) throw result.status;
 
@@ -405,7 +406,7 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
  * @param reason The reason for the mute
  * @param days The number of days for the prune messages
  */
-export async function softban(guild: Guild, moderator: User, target: User, reason?: string, days: number = 1) {
+export async function softban(guild: Guild, moderator: User, target: User, reason?: string, days = 1) {
 	await guild!.members.ban(target.id, {
 		days,
 		reason: `${reason ? `Softban with reason: ${reason}` : null}`
@@ -429,7 +430,6 @@ export async function softban(guild: Guild, moderator: User, target: User, reaso
 async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]) {
 	if (channel.type === 'category') return;
 	try {
-		// @ts-ignore
 		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type]);
 	} catch {
 		array.push(String(channel));
@@ -464,6 +464,10 @@ export async function createMuteRole(message: Message) {
 
 export function inlineCodeblock(input: string) {
 	return `\`${input.replace(/ /g, '\u00A0').replace(/`/g, '`\u200B')}\``;
+}
+
+export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
+	promise.catch(error => ctx.client.emit(Events.Wtf, error));
 }
 
 /**

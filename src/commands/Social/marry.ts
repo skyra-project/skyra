@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 			usage: '(user:username)'
 		});
 
-		this.createCustomResolver('username', async (arg, possible, msg) => {
+		this.createCustomResolver('username', (arg, possible, msg) => {
 			if (!arg) return undefined;
 			return this.client.arguments.get('username').run(arg, possible, msg);
 		});

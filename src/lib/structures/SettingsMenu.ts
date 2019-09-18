@@ -2,7 +2,7 @@ import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
 import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
-import { getColor } from '../util/util';
+import { getColor, floatPromise } from '../util/util';
 import { api } from '../util/Models/Api';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
@@ -100,8 +100,8 @@ export class SettingsMenu {
 
 		const { parent } = this.schema as SchemaEntry | SchemaFolder;
 
-		if (parent) this._reactResponse(EMOJIS.BACK);
-		else this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id);
+		if (parent) floatPromise(this.message, this._reactResponse(EMOJIS.BACK));
+		else floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
 		return this.embed
 			.setDescription(`${description.filter(v => v !== null).join('\n')}\n\u200B`)
@@ -128,7 +128,7 @@ export class SettingsMenu {
 			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_ACTION');
 		}
 
-		if (!this.errorMessage) message.nuke();
+		if (!this.errorMessage) floatPromise(this.message, message.nuke());
 		await this._renderResponse();
 	}
 
@@ -138,7 +138,7 @@ export class SettingsMenu {
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc!.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
-			this._removeReactionFromUser(EMOJIS.BACK, reaction.userID);
+			floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, reaction.userID));
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
 			await this._renderResponse();
 		}

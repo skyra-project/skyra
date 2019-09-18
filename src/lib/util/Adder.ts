@@ -16,7 +16,7 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 		this.duration = duration;
 	}
 
-	public add(id: T, times: number = 1) {
+	public add(id: T, times = 1) {
 		this.sweep();
 		const amount = this.count(id) + times;
 		if (amount > this.maximum) {

@@ -21,7 +21,7 @@ export default class extends Event {
 				this.client.emit(Events.ApiError, err);
 			}
 		} else if (error instanceof Error) {
-			this._sendErrorChannel(message, command, error);
+			await this._sendErrorChannel(message, command, error);
 
 			// Extract useful information about the DiscordAPIError
 			if (error instanceof DiscordAPIError || error instanceof HTTPError) {

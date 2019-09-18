@@ -7,7 +7,7 @@ import { cutText, getContent, getImage } from '../lib/util/util';
 
 export default class extends Event {
 
-	public async run(message: KlasaMessage) {
+	public run(message: KlasaMessage) {
 		if (message.partial || !message.guild || message.author!.id === this.client.user!.id) return;
 
 		const [enabled, ignoreChannels] = message.guild.settings

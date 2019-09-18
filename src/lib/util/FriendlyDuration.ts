@@ -57,10 +57,9 @@ const UNIT_TYPES = Object.freeze([
  */
 export default function(duration: number, assets: DurationFormatAssetsTime) {
 	const result = _parse(duration);
-	const output = [];
+	const output: string[] = [];
 
 	for (const [timeType, amount] of result) {
-		// @ts-ignore
 		output.push(_addUnit(amount, assets[timeType]));
 	}
 

@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 		}
 
 		if ('roles' in message.flags && message.flags.roles !== 'roles') {
-			roles = await this._resolveRoles(message, message.flags.roles.split(',').map(role => role.trim()));
+			roles = this._resolveRoles(message, message.flags.roles.split(',').map(role => role.trim()));
 		} else if (!('no-prompt' in message.flags)) {
 			const wants = await message.ask(message.language.get('COMMAND_POLL_WANT_ROLES'));
 			if (wants) roles = await this.rolePrompt.createPrompt(message).run(message.language.get('COMMAND_POLL_FIRSTROLE')).catch(() => null);
@@ -123,7 +123,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage([`Entry ID: '${poll.id}' (${title})`, ...graph].join('\n'), { code: 'http' });
 	}
 
-	public async _resolveRoles(message: KlasaMessage, roles: string[]) {
+	public _resolveRoles(message: KlasaMessage, roles: string[]) {
 		const output: string[] = [];
 		for (const role of roles) {
 			const resolved = REG_ROLES.test(role)

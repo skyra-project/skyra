@@ -19,7 +19,7 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public async inhibit(message: KlasaMessage) {
+	public inhibit(message: KlasaMessage) {
 		const id = message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
 		if (id && message.guild!.roles.has(id)) return false;
 		throw message.language.get('GUILD_SETTINGS_ROLES_MUTED');

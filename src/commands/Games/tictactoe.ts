@@ -1,6 +1,7 @@
 import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
+import { floatPromise } from '../../lib/util/util';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
@@ -96,7 +97,7 @@ export default class extends SkyraCommand {
 				}
 			};
 
-			makeRound();
+			floatPromise(this, makeRound());
 
 			collector.on('collect', () => {
 				blocked = true;
@@ -113,7 +114,7 @@ export default class extends SkyraCommand {
 					collector.stop();
 					resolve(winner);
 				} else if (++turn < 9) {
-					makeRound();
+					floatPromise(this, makeRound());
 				} else {
 					collector.stop();
 					resolve(null);

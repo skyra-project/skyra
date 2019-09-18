@@ -37,17 +37,15 @@ export default class extends SkyraCommand {
 		const canvas = new Canvas(370, 390)
 			.setTextFont('18px FiraSans');
 
-		await Promise.all([
-			this.processFrame(canvas.context, 5, 5, cL(red + (diff * 2)), cL(green), cL(blue)),
-			this.processFrame(canvas.context, 5, 125, cL(red + diff), cL(green + diff), cL(blue)),
-			this.processFrame(canvas.context, 5, 245, cL(red), cL(green + (diff * 2)), cL(blue)),
-			this.processFrame(canvas.context, 125, 5, cL(red + diff), cL(green), cL(blue + diff)),
-			this.processFrame(canvas.context, 125, 125, cL(red), cL(green), cL(blue)),
-			this.processFrame(canvas.context, 125, 245, cL(red - diff), cL(green), cL(blue - diff)),
-			this.processFrame(canvas.context, 245, 5, cL(red), cL(green), cL(blue + (diff * 2))),
-			this.processFrame(canvas.context, 245, 125, cL(red - diff), cL(green - diff), cL(blue)),
-			this.processFrame(canvas.context, 245, 245, cL(red - (diff * 2)), cL(green - (diff * 2)), cL(blue - (diff * 2)))
-		]);
+		this.processFrame(canvas.context, 5, 5, cL(red + (diff * 2)), cL(green), cL(blue));
+		this.processFrame(canvas.context, 5, 125, cL(red + diff), cL(green + diff), cL(blue));
+		this.processFrame(canvas.context, 5, 245, cL(red), cL(green + (diff * 2)), cL(blue));
+		this.processFrame(canvas.context, 125, 5, cL(red + diff), cL(green), cL(blue + diff));
+		this.processFrame(canvas.context, 125, 125, cL(red), cL(green), cL(blue));
+		this.processFrame(canvas.context, 125, 245, cL(red - diff), cL(green), cL(blue - diff));
+		this.processFrame(canvas.context, 245, 5, cL(red), cL(green), cL(blue + (diff * 2)));
+		this.processFrame(canvas.context, 245, 125, cL(red - diff), cL(green - diff), cL(blue));
+		this.processFrame(canvas.context, 245, 245, cL(red - (diff * 2)), cL(green - (diff * 2)), cL(blue - (diff * 2)));
 
 		/* Complementary */
 		const thisLum = sCL(luminance(255 - red, 255 - green, 255 - blue));
@@ -60,7 +58,7 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 	}
 
-	public async processFrame(ctx: CanvasRenderingContext2D, x: number, y: number, red: number, green: number, blue: number) {
+	public processFrame(ctx: CanvasRenderingContext2D, x: number, y: number, red: number, green: number, blue: number) {
 		ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
 		ctx.fillRect(x, y, 120, 120);
 		const thisLum = sCL(luminance(red, green, blue));

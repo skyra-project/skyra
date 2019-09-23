@@ -8,6 +8,13 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar, streamToBuffer } from '../../lib/util/util';
 import { assetsFolder } from '../../Skyra';
 
+const COORDINATES: readonly [number, number][] = [
+	[-25, -25],
+	[-50, -13],
+	[-42, -34],
+	[-14, -10]
+];
+
 export default class extends SkyraCommand {
 
 	private template: Buffer | null = null;
@@ -27,7 +34,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		const attachment = await this.generate(user);
-		return message.channel.send({ files: [{ attachment, name: 'triggered.gif' }] });
+		return message.channel.sendFile(attachment, 'triggered.gif');
 	}
 
 	public async generate(user: KlasaUser) {
@@ -40,23 +47,19 @@ export default class extends SkyraCommand {
 			image.src = buffer!;
 			image.onload = resolve;
 			image.onerror = reject;
-			resolve(image);
 		})));
 
 		const stream = encoder.createReadStream();
 		encoder.start();
 		encoder.setRepeat(0);
 		encoder.setDelay(50);
-		encoder.setQuality(200);
+		encoder.setQuality(100);
 
-		const coord1 = [-25, -50, -42, -14];
-		const coord2 = [-25, -13, -34, -10];
-
-		for (let i = 0; i < 4; i++) {
+		for (const [x, y] of COORDINATES) {
 			encoder.addFrame(canvas
-				.addImage(imgTriggered, coord1[i], coord2[i], 400, 400)
+				.addImage(imgTriggered, x, y, 400, 400)
 				.addImage(imgTitle, 0, 340, 350, 53)
-				.setColor('rgba(255 , 100, 0, 0.4)')
+				.setColor('rgba(255, 100, 0, 0.4)')
 				.addRect(0, 0, 350, 350)
 				.context);
 		}

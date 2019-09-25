@@ -357,8 +357,8 @@ diff@^4.0.1:
 
 "discord.js@github:discordjs/discord.js":
   version "12.0.0-dev"
-  uid "60f89bd96f7e110617af021642a810e7fb71e694"
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/60f89bd96f7e110617af021642a810e7fb71e694"
+  uid d280d1b03f595f1c4464ab1a8ba20cf74088ec2d
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/d280d1b03f595f1c4464ab1a8ba20cf74088ec2d"
   dependencies:
     "@discordjs/collection" "^0.1.1"
     abort-controller "^3.0.0"

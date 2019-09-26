@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { Collection, CollectionConstructor } from '@discordjs/collection';
+import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { Guild, User } from 'discord.js';
 import { Databases } from '../types/constants/Constants';
 import { ModerationSchemaKeys } from '../util/constants';

@@ -1,6 +1,5 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
 import { prompt } from '../../lib/util/PromptList';

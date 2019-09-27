@@ -1,5 +1,4 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetch } from '../../lib/util/util';
 import { TOKENS } from '../../../config';

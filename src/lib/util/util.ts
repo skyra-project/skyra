@@ -2,7 +2,6 @@ import { Image } from 'canvas';
 import { Client, Guild, GuildMember, ImageSize, Message, Role, TextChannel, User, VoiceChannel } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import { URL } from 'url';
 import { isObject } from 'util';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
@@ -260,20 +259,59 @@ export function getContent(message: Message): string | null {
 	return null;
 }
 
+export interface ImageAttachment {
+	url: string;
+	proxyURL: string;
+	height: number;
+	width: number;
+}
+
+/**
+ * Get a image attachment from a message.
+ * @param message The Message instance to get the image url from
+ */
+export function getAttachment(message: Message): ImageAttachment | null {
+	if (message.attachments.size) {
+		const attachment = message.attachments.find(att => IMAGE_EXTENSION.test(att.url));
+		if (attachment) {
+			return {
+				url: attachment.url,
+				proxyURL: attachment.proxyURL!,
+				height: attachment.height!,
+				width: attachment.width!
+			};
+		}
+	}
+
+	for (const embed of message.embeds) {
+		if (embed.type === 'image') {
+			return {
+				url: embed.thumbnail!.url,
+				proxyURL: embed.thumbnail!.proxyURL!,
+				height: embed.thumbnail!.height!,
+				width: embed.thumbnail!.width!
+			};
+		}
+		if (embed.image) {
+			return {
+				url: embed.image.url,
+				proxyURL: embed.image.proxyURL!,
+				height: embed.image.height!,
+				width: embed.image.width!
+			};
+		}
+	}
+
+	return null;
+}
+
 /**
  * Get the image url from a message.
  * @param message The Message instance to get the image url from
  */
 export function getImage(message: Message): string | null {
-	if (message.attachments.size) {
-		const attachment = message.attachments.find(att => IMAGE_EXTENSION.test(att.url));
-		if (attachment) return attachment.url;
-	}
-	for (const embed of message.embeds) {
-		if (embed.type === 'image') return embed.url;
-		if (embed.image) return embed.image.url;
-	}
-	return null;
+	const attachment = getAttachment(message);
+	return attachment ? attachment.proxyURL || attachment.url : null;
 }
 
 export function getColor(message: Message) {

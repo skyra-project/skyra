@@ -1,6 +1,5 @@
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
-import { URL } from 'url';
 import { TOKENS, VERSION } from '../../../config';
 import { fetch, getColor } from '../util/util';
 import { SkyraCommand } from './SkyraCommand';

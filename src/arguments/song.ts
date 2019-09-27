@@ -1,6 +1,5 @@
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import { Track } from 'lavalink';
-import { URL } from 'url';
 
 export default class extends Argument {
 

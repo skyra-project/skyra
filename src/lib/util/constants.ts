@@ -49,7 +49,7 @@ export const CONNECT_FOUR = Object.freeze({
 	})
 });
 
-export enum MessageLogsEnum { Message, NSFWMessage, Moderation, Member }
+export enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member }
 
 export enum ModerationTypeKeys {
 	Ban = BAN,

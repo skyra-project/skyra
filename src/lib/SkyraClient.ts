@@ -152,6 +152,7 @@ SkyraClient.defaultGuildSchema
 		.add('message-logs', 'TextChannel')
 		.add('moderation-logs', 'TextChannel')
 		.add('nsfw-message-logs', 'TextChannel')
+		.add('image-logs', 'TextChannel')
 		.add('roles', 'TextChannel')
 		.add('spam', 'TextChannel'))
 	.add('command-autodelete', 'any', { array: true })

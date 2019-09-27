@@ -2,7 +2,6 @@ import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { URL } from 'url';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { fetch, fetchAvatar, IMAGE_EXTENSION } from '../../lib/util/util';

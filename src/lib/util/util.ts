@@ -472,7 +472,7 @@ export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>)
 
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.
- * @param value true|false
+ * @param value
  */
 export function enumerable(value: boolean) {
 	return (target: unknown, key: string) => {

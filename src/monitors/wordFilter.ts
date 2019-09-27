@@ -3,7 +3,8 @@ import { KlasaMessage, Monitor, util } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
-import { cutText } from '../lib/util/util';
+import { cutText, getContent } from '../lib/util/util';
+import { remove } from 'confusables';
 
 const ALERT_FLAG = 1 << 2;
 const LOG_FLAG = 1 << 1;
@@ -15,9 +16,10 @@ export default class extends Monitor {
 		const level = message.guild!.settings.get(GuildSettings.Filter.Level) as GuildSettings.Filter.Level;
 		if (!level) return;
 
-		if (await message.hasAtLeastPermissionLevel(5)) return;
+		const content = getContent(message);
+		if (content === null || await message.hasAtLeastPermissionLevel(5)) return;
 
-		const results = this.filter(message.content, message.guild!.security.regexp!);
+		const results = this.filter(remove(content), message.guild!.security.regexp!);
 		if (results === null) return;
 
 		if ((level & DELETE_FLAG) && message.deletable) {
@@ -47,7 +49,6 @@ export default class extends Monitor {
 			&& message.guild !== null
 			&& message.author !== null
 			&& message.webhookID === null
-			&& message.content.length > 0
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
 			&& message.guild!.security.regexp !== null

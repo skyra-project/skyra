@@ -42,6 +42,7 @@
   "dependencies": {
     "canvas": "^2.6.0",
     "canvas-constructor": "^3.1.0",
+    "confusables": "^0.3.1",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js",
     "fs-nextra": "^0.4.5",

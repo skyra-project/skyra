@@ -14,8 +14,9 @@
     "lint": "eslint --ext ts src --fix",
     "test": "eslint --ext ts src",
     "test:lint": "eslint --ext ts src",
-    "update": "yarn",
+    "update": "rm -rf node_modules && yarn",
     "build": "tsc -p .",
+    "build-clear": "rm -rf dist && tsc -p .",
     "watch": "tsc -p . -w",
     "dev": "yarn build && yarn start"
   },

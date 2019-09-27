@@ -467,7 +467,7 @@ export function inlineCodeblock(input: string) {
 }
 
 export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
-	promise.catch(error => ctx.client.emit(Events.Wtf, error));
+	if (util.isThenable(promise)) promise.catch(error => ctx.client.emit(Events.Wtf, error));
 }
 
 /**

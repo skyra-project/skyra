@@ -7,6 +7,7 @@ import { MessageLogsEnum } from '../lib/util/constants';
 const TYPES: Record<MessageLogsEnum, string> = {
 	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,
 	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
+	[MessageLogsEnum.Image]: GuildSettings.Channels.ImageLogs,
 	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
 	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs
 };

@@ -40,21 +40,24 @@ export default class extends Task {
 		const reload = this.client.commands.get('reload') as Reload;
 		if (piece === null) {
 			await reload.everything(fakeMessage);
-			log = `Reloaded everything in ${timer}.`;
+			log = `Reloaded everything in ${timer.stop()}.`;
 		} else {
 			await reload.run(fakeMessage, [piece]);
-			log = `Reloaded it in ${timer}`;
+			log = `Reloaded it in ${timer.stop()}`;
 		}
 
-		timer.stop();
 		this.client.emit(Events.Verbose, `${name} was updated. ${log}`);
 	}
 
 	public init() {
+		// Unload task if not running on development mode
 		if (!this.client.options.dev) {
 			this.unload();
 			return Promise.resolve();
 		}
+
+		// Do not create a second FS watcher
+		if (this.client.fsWatcher !== null) return Promise.resolve();
 
 		this.client.fsWatcher = watch(process.cwd(), {
 			ignored: [

@@ -733,6 +733,15 @@ export default class extends Language {
 			reminder: 'You cannot set the same channel twice, instead, Skyra will remove it.',
 			examples: ['#general', 'here']
 		}),
+		COMMAND_SETIMAGELOGS_DESCRIPTION: 'Set the image logs channel.',
+		COMMAND_SETIMAGELOGS_EXTENDED: builder.display('setImageLogs', {
+			extendedHelp: `This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with
+					the attachment re-uploaded. All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra.`,
+			explainedUsage: [
+				['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']
+			],
+			examples: ['#image-logs', 'here']
+		}),
 		COMMAND_SETMEMBERLOGS_DESCRIPTION: 'Set the member logs channel.',
 		COMMAND_SETMEMBERLOGS_EXTENDED: builder.display('setMemberLogs', {
 			extendedHelp: `This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: "Member Join" and
@@ -2044,6 +2053,7 @@ export default class extends Language {
 		CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',
 		COMMAND_SETIGNORECHANNELS_SET: channel => `Ignoring all command input from ${channel} now.`,
 		COMMAND_SETIGNORECHANNELS_REMOVED: channel => `Listening all command input from ${channel} now.`,
+		COMMAND_SETIMAGELOGS_SET: channel => `Successfully set the image logs channel to ${channel}.`,
 		COMMAND_SETMEMBERLOGS_SET: channel => `Successfully set the member logs channel to ${channel}.`,
 		COMMAND_SETMESSAGELOGS_SET: channel => `Successfully set the message logs channel to ${channel}.`,
 		COMMAND_SETMODLOGS_SET: channel => `Successfully set the mod logs channel to ${channel}.`,

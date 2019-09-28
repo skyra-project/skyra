@@ -321,7 +321,7 @@ export class StarboardMessage {
 	 */
 	private async _editMessage(): Promise<void> {
 		if (this.stars < this.manager.minimum) return;
-		const content = `${this.emoji} **${this.stars}** ${this.channel} ID: ${this.message.id}`;
+		const content = `${this.emoji} **${this.stars}** ${this.channel}`;
 		if (this.starMessage) {
 			try {
 				await this.starMessage.edit(content, this.embed!);

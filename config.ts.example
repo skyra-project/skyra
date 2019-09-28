@@ -2,7 +2,10 @@
 
 import { KlasaClientOptions } from 'klasa';
 import { RPoolConnectionOptions } from 'rethinkdb-ts';
+import { ServerOptions } from 'http';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';
+import ApiRequest from './src/lib/structures/api/ApiRequest';
+import ApiResponse from './src/lib/structures/api/ApiResponse';
 
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : DEV;

@@ -830,9 +830,20 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
+"klasa-dashboard-hooks@github:kyranet/klasa-dashboard-hooks#master":
+  version "0.0.1-dev"
+  resolved "https://codeload.github.com/kyranet/klasa-dashboard-hooks/tar.gz/74ac1a8503ba09a728948377ea92feeaebf30bd0"
+  dependencies:
+    node-fetch "^2.6.0"
+
+klasa-decorators@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/klasa-decorators/-/klasa-decorators-0.0.1.tgz#c4bcc7dd2b78814b4f625e611f82790ec6061d52"
+  integrity sha512-uCoMz750Lnp0dM8VC787hnRrF9wqWfUrjT7dp+8ihqp6xmtX8ZSXoeK08WJgAhEdEdIDsUG+VMXi9gcG54EZMA==
+
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/be0d9553d76703640b9b8691ce0121570b19a963"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/7a80c0bd1fb03b03ca6f3723fd7e320e6b94f20f"
   dependencies:
     fs-nextra "^0.4.5"
 

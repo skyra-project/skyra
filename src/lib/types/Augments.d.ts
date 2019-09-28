@@ -41,3 +41,11 @@ declare module 'klasa' {
 	}
 
 }
+
+declare module 'klasa-dashboard-hooks' {
+
+	interface AuthData {
+		user_id: string;
+	}
+
+}

@@ -17,6 +17,7 @@ import './extensions/SkyraGuildMember';
 import { GiveawayManager } from './structures/GiveawayManager';
 import { Databases } from './types/constants/Constants';
 import { Events } from './types/Enums';
+import { FSWatcher } from 'chokidar';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -48,6 +49,8 @@ export class SkyraClient extends KlasaClient {
 	 * The webhook to use for the error event
 	 */
 	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
+
+	public fsWatcher: FSWatcher | null = null;
 
 	/**
 	 * The ConnectFour manager
@@ -232,6 +235,7 @@ declare module 'discord.js' {
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: VezaClient;
 		webhookError: Webhook;
+		fsWatcher: FSWatcher | null;
 		fetchTag(id: string): Promise<string>;
 		fetchUsername(id: string): Promise<string>;
 	}

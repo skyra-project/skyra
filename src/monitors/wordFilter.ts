@@ -12,12 +12,13 @@ const DELETE_FLAG = 1 << 0;
 
 export default class extends Monitor {
 
-	public async run(message: KlasaMessage): Promise<void> {
+	public async run(message: KlasaMessage) {
 		const level = message.guild!.settings.get(GuildSettings.Filter.Level) as GuildSettings.Filter.Level;
 		if (!level) return;
 
 		const content = getContent(message);
-		if (content === null || await message.hasAtLeastPermissionLevel(5)) return;
+		if (content === null) return;
+		if (await message.hasAtLeastPermissionLevel(5)) return;
 
 		const results = this.filter(remove(content), message.guild!.security.regexp!);
 		if (results === null) return;
@@ -52,7 +53,6 @@ export default class extends Monitor {
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
 			&& message.guild!.security.regexp !== null
-			&& message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
 			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 

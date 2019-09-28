@@ -332,6 +332,7 @@ export default class extends Language {
 		SETTINGS_CHANNELS_ANNOUNCEMENTS: 'The channel for announcements, in pair with the key `roles.subscriber`, they are required for the announce command.',
 		SETTINGS_CHANNELS_GREETING: 'The channel I will use to send greetings, you must enable the events and set up the messages, in other categories.',
 		SETTINGS_CHANNELS_FAREWELL: 'The channel I will use to send farewells, you must enable the events and set up the messages, in other categories.',
+		SETTINGS_CHANNELS_IMAGE_LOGS: 'The channel I will use to re-upload all images I see.',
 		SETTINGS_CHANNELS_MEMBER_LOGS: 'The channel for member logs, you must enable the events (`events.memberAdd` for new members, `events.memberRemove` for members who left).',
 		SETTINGS_CHANNELS_MESSAGE_LOGS: 'The channel for (non-NSFW) message logs, you must enable the events (`events.messageDelete` for deleted messages, `events.messageEdit` for edited messages).',
 		SETTINGS_CHANNELS_MODERATION_LOGS: 'The channel for moderation logs, once enabled, I will post all my moderation cases there. If `events.banRemove` and/or `events.banRemove` are enabled, I will automatically post anonymous logs.',

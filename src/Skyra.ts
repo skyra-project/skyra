@@ -11,6 +11,9 @@ export const rootFolder = join(__dirname, '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
 export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
 
+import klasaDashboardHooks = require('klasa-dashboard-hooks');
+SkyraClient.use(klasaDashboardHooks);
+
 const { FLAGS } = Permissions;
 
 // Canvas setup

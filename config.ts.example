@@ -7,6 +7,11 @@ import { APIWebhookData } from './src/lib/types/DiscordAPI';
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : DEV;
 
+const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
+	IncomingMessage: ApiRequest,
+	ServerResponse: ApiResponse
+};
+
 export const DATABASE_DEVELOPMENT: RPoolConnectionOptions = { db: 'test' };
 export const DATABASE_PRODUCTION: RPoolConnectionOptions = {
 	db: '',
@@ -91,11 +96,19 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	schedule: { interval: 5000 },
 	slowmode: 750,
 	slowmodeAggressive: true,
-	typing: false
+	typing: false,
+	/* Klasa Dashboard Hooks */
+	dashboardHooks: {
+		apiPrefix: '/',
+		port: 1234,
+		serverOptions: DASHBOARD_SERVER_OPTIONS
+	}
 };
 
 export const NAME = 'Skyra';
 export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
+export const CLIENT_SECRET = '';
+
 export const WEBHOOK_ERROR: APIWebhookData = DEV
 	? {
 		avatar: '7d52ea85e9ffe07ac8b15d4b60cf29d7',

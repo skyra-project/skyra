@@ -13,6 +13,11 @@ import { util } from 'klasa';
 import { Mutable } from '../types/util';
 import { api } from './Models/Api';
 import { Events } from '../types/Enums';
+import { createFunctionInhibitor } from 'klasa-decorators';
+import { Util } from 'klasa-dashboard-hooks';
+import { CLIENT_SECRET } from '../../../config';
+import ApiRequest from '../structures/api/ApiRequest';
+import ApiResponse from '../structures/api/ApiResponse';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -527,6 +532,18 @@ export function enumerable(value: boolean) {
 		});
 	};
 }
+
+export const authenticated = createFunctionInhibitor(
+	(request: ApiRequest) => {
+		if (!request.headers.authorization) return false;
+		request.auth = Util.decrypt(request.headers.authorization, CLIENT_SECRET);
+		if (!request.auth!.user_id || !request.auth!.token) return false;
+		return true;
+	},
+	(_request: ApiRequest, response: ApiResponse) => {
+		response.error(403);
+	}
+);
 
 interface UtilOneToTenEntry {
 	emoji: string;

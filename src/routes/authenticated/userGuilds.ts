@@ -1,14 +1,13 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import { Permissions } from 'discord.js';
-
-const { FLAGS: { MANAGE_GUILD } } = Permissions;
-
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { Events } from '../../lib/types/Enums';
 import { inspect } from 'util';
 
-module.exports = class extends Route {
+const { FLAGS: { MANAGE_GUILD } } = Permissions;
+
+export default class extends Route {
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
 		super(store, file, directory, { route: '/guilds/:guild/settings', authenticated: true });
@@ -45,4 +44,4 @@ module.exports = class extends Route {
 
 	}
 
-};
+}

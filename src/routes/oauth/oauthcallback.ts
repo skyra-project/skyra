@@ -3,7 +3,7 @@ import { URL } from 'url';
 import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
-import OauthUser from './oauthUser';
+import OauthUser from './oauthuser';
 
 export default class extends Route {
 

@@ -1,7 +1,7 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../../lib/structures/api/ApiResponse';
-import { authenticated } from '../../../lib/util/util';
+import { authenticated, ratelimit } from '../../../lib/util/util';
 import { Permissions } from 'discord.js';
 import { Events } from '../../../lib/types/Enums';
 import { inspect } from 'util';
@@ -15,6 +15,7 @@ export default class extends Route {
 	}
 
 	@authenticated
+	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;
 
@@ -31,6 +32,7 @@ export default class extends Route {
 	}
 
 	@authenticated
+	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 

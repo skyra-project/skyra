@@ -1,6 +1,7 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '../lib/structures/api/ApiRequest';
 import ApiResponse from '../lib/structures/api/ApiResponse';
+import { ratelimit } from '../lib/util/util';
 
 export default class extends Route {
 
@@ -8,6 +9,7 @@ export default class extends Route {
 		super(store, file, directory, { route: 'commands' });
 	}
 
+	@ratelimit(2, 2500)
 	public get(request: ApiRequest, response: ApiResponse) {
 		const { lang, category } = request.query;
 		const language = (lang && this.client.languages.get(lang as string)) || this.client.languages.default;

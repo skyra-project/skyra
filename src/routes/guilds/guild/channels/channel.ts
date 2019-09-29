@@ -1,7 +1,7 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../../../lib/structures/api/ApiResponse';
-import { authenticated } from '../../../../lib/util/util';
+import { authenticated, ratelimit } from '../../../../lib/util/util';
 import { Permissions } from 'discord.js';
 import { flattenChannel } from '../../../../lib/util/Models/ApiTransform';
 
@@ -14,6 +14,7 @@ export default class extends Route {
 	}
 
 	@authenticated
+	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;
 

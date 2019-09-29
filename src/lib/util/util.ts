@@ -9,7 +9,7 @@ import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys, TIME } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
-import { util } from 'klasa';
+import { util, RateLimitManager } from 'klasa';
 import { Mutable } from '../types/util';
 import { api } from './Models/Api';
 import { Events } from '../types/Enums';
@@ -544,6 +544,36 @@ export const authenticated = createFunctionInhibitor(
 		response.error(403);
 	}
 );
+
+export function ratelimit(bucket: number, cooldown: number, auth = false) {
+	const manager = new RateLimitManager(bucket, cooldown);
+	const xRateLimitLimit = bucket;
+	return createFunctionInhibitor(
+		(request: ApiRequest, response: ApiResponse) => {
+			const id = (auth ? request.auth!.user_id : request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
+			const bucket = manager.acquire(id);
+
+			response.setHeader('Date', new Date().toUTCString());
+			if (bucket.limited) {
+				response.setHeader('Retry-After', bucket.remainingTime.toString());
+				return false;
+			}
+
+			try {
+				bucket.drip();
+			} catch {}
+
+			response.setHeader('X-RateLimit-Limit', xRateLimitLimit);
+			response.setHeader('X-RateLimit-Remaining', bucket.bucket.toString());
+			response.setHeader('X-RateLimit-Reset', bucket.remainingTime.toString());
+
+			return true;
+		},
+		(_request: ApiRequest, response: ApiResponse) => {
+			response.error(429);
+		}
+	);
+}
 
 interface UtilOneToTenEntry {
 	emoji: string;

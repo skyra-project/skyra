@@ -4,6 +4,7 @@ import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import OauthUser from './oauthuser';
+import { ratelimit } from '../../lib/util/util';
 
 export default class extends Route {
 
@@ -11,6 +12,7 @@ export default class extends Route {
 		super(store, file, directory, { route: 'oauth/callback' });
 	}
 
+	@ratelimit(2, 60000)
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 		if (!requestBody.code) {

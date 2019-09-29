@@ -5,6 +5,7 @@ import { extname, basename, sep, join } from 'path';
 import { floatPromise } from '../lib/util/util';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
 import { Events } from '../lib/types/Enums';
+import { WATCH_FILES } from '../../config';
 
 const nodeModules = `${sep}node_modules${sep}`;
 
@@ -57,7 +58,7 @@ export default class extends Task {
 
 	public init() {
 		// Unload task if not running on development mode
-		if (!this.client.options.dev) {
+		if (!this.client.options.dev || !WATCH_FILES) {
 			this.unload();
 			return Promise.resolve();
 		}

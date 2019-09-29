@@ -1,9 +1,8 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor, util } from 'klasa';
-import { Events } from '../lib/types/Enums';
+import { KlasaMessage, util } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
-import { cutText } from '../lib/util/util';
+import { cutText, floatPromise } from '../lib/util/util';
+import { ModerationMonitor } from '../lib/structures/ModerationMonitor';
 const OFFSET = 0b100000;
 /**
  * In ASCII, the 6th bit tells whether a character is lowercase or uppercase:
@@ -19,16 +18,18 @@ const OFFSET = 0b100000;
  * lower case to upper case (upper case characters are unaffected).
  */
 
-const ALERT_FLAG = 1 << 2;
-const LOG_FLAG = 1 << 1;
-const DELETE_FLAG = 1 << 0;
+export default class extends ModerationMonitor {
 
-export default class extends Monitor {
+	protected softPunishmentPath = GuildSettings.Selfmod.CapsFilter;
+	protected hardPunishmentPath = null;
 
-	public async run(message: KlasaMessage): Promise<void> {
-		if (await message.hasAtLeastPermissionLevel(5)) return;
+	public shouldRun(message: KlasaMessage) {
+		return super.shouldRun(message)
+			&& message.content.length > 0
+			&& (message.guild!.settings.get(GuildSettings.Selfmod.CapsMinimum) as GuildSettings.Selfmod.CapsMinimum) < message.content.length;
+	}
 
-		const capsfilter = message.guild!.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
+	protected preProcess(message: KlasaMessage) {
 		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capsthreshold) as GuildSettings.Selfmod.Capsthreshold;
 		const { length } = message.content;
 		let count = 0;
@@ -36,38 +37,25 @@ export default class extends Monitor {
 
 		while (i < length) if ((message.content.charCodeAt(i++) & OFFSET) === 0) count++;
 
-		if ((count / length) * 100 < capsthreshold) return;
-
-		if ((capsfilter & DELETE_FLAG) && message.deletable) {
-			if (length > 25) message.author!.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))).catch(() => null);
-			message.nuke().catch(() => null);
-		}
-
-		if ((capsfilter & ALERT_FLAG) && message.channel.postable) {
-			message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)).catch(() => null);
-		}
-
-		if (capsfilter & LOG_FLAG) {
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
-				.splitFields(message.content)
-				.setColor(0xEFAE45)
-				.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-				.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_CAPSFILTER')}`)
-				.setTimestamp());
-		}
+		return (count / length) * 100 > capsthreshold ? count : null;
 	}
 
-	public shouldRun(message: KlasaMessage) {
-		return this.enabled
-			&& message.guild !== null
-			&& message.author !== null
-			&& message.webhookID === null
-			&& message.content.length > 0
-			&& !message.system
-			&& message.author.id !== this.client.user!.id
-			&& (message.guild.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter) !== 0
-			&& (message.guild.settings.get(GuildSettings.Selfmod.Capsminimum) as GuildSettings.Selfmod.Capsminimum) < message.content.length
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+	protected onDelete(message: KlasaMessage, value: number) {
+		if (value > 25) floatPromise(this, message.author!.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))));
+		floatPromise(this, message.nuke());
+	}
+
+	protected onAlert(message: KlasaMessage) {
+		floatPromise(this, message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)));
+	}
+
+	protected onLogMessage(message: KlasaMessage) {
+		return new MessageEmbed()
+			.splitFields(message.content)
+			.setColor(0xEFAE45)
+			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_CAPSFILTER')}`)
+			.setTimestamp();
 	}
 
 }

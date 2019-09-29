@@ -100,7 +100,6 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	slowmode: 750,
 	slowmodeAggressive: true,
 	typing: false,
-	/* Klasa Dashboard Hooks */
 	dashboardHooks: {
 		apiPrefix: '/',
 		port: 1234,
@@ -110,7 +109,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 
 export const NAME = 'Skyra';
 export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
-export const CLIENT_SECRET = '';
+export const CLIENT_SECRET = DEV ? '' : '';
 
 export const WEBHOOK_ERROR: APIWebhookData = DEV
 	? {

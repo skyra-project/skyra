@@ -21,6 +21,11 @@ export class GuildSecurity {
 	public adder: Adder<string> | null = null;
 
 	/**
+	 * The Adder instance used to control newline spam
+	 */
+	public newLineAdder: Adder<string> | null = null;
+
+	/**
 	 * The AntiRaid instance managed by this guild, if exists
 	 */
 	public raid: AntiRaid;

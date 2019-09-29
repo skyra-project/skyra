@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2019 dirigeants. All rights reserved. MIT license.
 import { Task, Stopwatch, KlasaMessage, Piece } from 'klasa';
 import { watch } from 'chokidar';
-import { extname, basename, sep } from 'path';
+import { extname, basename, sep, join } from 'path';
 import { floatPromise } from '../lib/util/util';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
 import { Events } from '../lib/types/Enums';
@@ -23,11 +23,17 @@ interface Reload extends SkyraCommand {
 	everything(message: KlasaMessage): Promise<unknown>;
 }
 
+interface Run {
+	name: string;
+	store: string | null;
+	piece: Piece | null;
+}
+
 export default class extends Task {
 
 	private running = false;
 
-	public async run({ name, piece }: { name: string; piece: Piece | null }) {
+	public async run({ name, store, piece }: Run) {
 		const timer = new Stopwatch();
 
 		for (const module of Object.keys(require.cache)) {
@@ -46,7 +52,7 @@ export default class extends Task {
 			log = `Reloaded it in ${timer.stop()}`;
 		}
 
-		this.client.emit(Events.Verbose, `${name} was updated. ${log}`);
+		this.client.emit(Events.Verbose, `[${store}] ${name} was updated. ${log}`);
 	}
 
 	public init() {
@@ -59,10 +65,9 @@ export default class extends Task {
 		// Do not create a second FS watcher
 		if (this.client.fsWatcher !== null) return Promise.resolve();
 
-		this.client.fsWatcher = watch(process.cwd(), {
+		this.client.fsWatcher = watch(join(process.cwd(), 'dist'), {
 			ignored: [
-				'**/node_modules/**/*',
-				'**/bwd/provider/**/*'
+				'**/tsconfig.tsbuildinfo'
 			],
 			persistent: true,
 			ignoreInitial: true,
@@ -70,23 +75,20 @@ export default class extends Task {
 		});
 
 		const reloadStore = async (path: string) => {
-			const store = path.split(sep)
-				.find(dir => this.client.pieceStores.has(dir));
-
 			const name = basename(path);
+			const store = path.split(sep).find(dir => this.client.pieceStores.has(dir)) || null;
+			const piece = store ? this.client.pieceStores.get(store).get(name.replace(extname(name), '')) || null : null;
 
-			if (!store) {
+
+			if (!piece) {
 				if (this.running) return;
 				this.running = true;
-				await this.run({ name, piece: null });
+				await this.run({ name, store, piece });
 				this.running = false;
 				return;
 			}
 
-			const piece = this.client.pieceStores.get(store)
-				.get(name.replace(extname(name), ''));
-
-			floatPromise(this, this.run({ name, piece }));
+			floatPromise(this, this.run({ name, store, piece }));
 		};
 
 		for (const event of ['add', 'change', 'unlink']) {

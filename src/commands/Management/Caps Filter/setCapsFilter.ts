@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [type, mode = 'enable']: [string, string?]) {
-		const capsfilter = message.guild!.settings.get(GuildSettings.Selfmod.Capsfilter) as GuildSettings.Selfmod.Capsfilter;
+		const capsfilter = message.guild!.settings.get(GuildSettings.Selfmod.CapsFilter) as GuildSettings.Selfmod.CapsFilter;
 		if (type === 'show') {
 			return message.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [
 				capsfilter & VALUES.alert.value,
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 			? capsfilter | value
 			: capsfilter & ~value;
 		if (capsfilter === changed) throw message.language.get('COMMAND_SETCAPSFILTER_EQUALS');
-		await message.guild!.settings.update(GuildSettings.Selfmod.Capsfilter, changed);
+		await message.guild!.settings.update(GuildSettings.Selfmod.CapsFilter, changed);
 
 		return message.sendLocale(key, [enable]);
 	}

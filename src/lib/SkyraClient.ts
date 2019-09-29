@@ -200,6 +200,13 @@ SkyraClient.defaultGuildSchema
 		.add('capsfilter', 'Integer', { 'default': 0, 'min': 0, 'max': 7, 'configurable': false })
 		.add('capsminimum', 'Integer', { 'default': 10, 'min': 0, 'max': 2000 })
 		.add('capsthreshold', 'Integer', { 'default': 50, 'min': 0, 'max': 100 })
+		.add('newlines', newline => newline
+			.add('maximum', 'Integer', { 'default': 0, 'min': 0, 'max': 2000 })
+			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
+			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
+			.add('hardActionDuration', 'Integer', { min: 1000 })
+			.add('thresholdMaximum', 'Integer', { 'default': 10, 'min': 0, 'max': 60 })
+			.add('thresholdDuration', 'Integer', { 'default': 60, 'min': 0, 'max': 120 }))
 		.add('ignoreChannels', 'TextChannel', { array: true })
 		.add('invitelinks', 'Boolean', { 'default': false })
 		.add('raid', 'Boolean')

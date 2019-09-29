@@ -1,3 +1,5 @@
+import { SelfModeratorHardActionFlags } from '../../structures/SelfModeratorBitField';
+
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace GuildSettings {
@@ -113,12 +115,28 @@ export namespace GuildSettings {
 		export const AttachmentMaximum = 'selfmod.attachmentMaximum';
 		export type AttachmentPunishmentDuration = number;
 		export const AttachmentPunishmentDuration = 'selfmod.attachmentPunishmentDuration';
-		export type Capsfilter = number;
-		export const Capsfilter = 'selfmod.capsfilter';
-		export type Capsminimum = number;
-		export const Capsminimum = 'selfmod.capsminimum';
+		export type CapsFilter = number;
+		export const CapsFilter = 'selfmod.capsfilter';
+		export type CapsMinimum = number;
+		export const CapsMinimum = 'selfmod.capsminimum';
 		export type Capsthreshold = number;
 		export const Capsthreshold = 'selfmod.capsthreshold';
+
+		export namespace NewLines {
+			export const Maximum = 'selfmod.newlines.maximum';
+			export type Maximum = number;
+			export const SoftAction = 'selfmod.newlines.softAction';
+			export type SoftAction = number;
+			export const HardAction = 'selfmod.newlines.hardAction';
+			export type HardAction = SelfModeratorHardActionFlags;
+			export const HardActionDuration = 'selfmod.newlines.hardActionDuration';
+			export type HardActionDuration = number;
+			export const ThresholdMaximum = 'selfmod.newlines.thresholdMaximum';
+			export type ThresholdMaximum = number;
+			export const ThresholdDuration = 'selfmod.newlines.thresholdDuration';
+			export type ThresholdDuration = number | null;
+		}
+
 		export type IgnoreChannels = readonly string[];
 		export const IgnoreChannels = 'selfmod.ignoreChannels';
 		export type Invitelinks = boolean;

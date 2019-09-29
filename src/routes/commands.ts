@@ -9,8 +9,8 @@ export default class extends Route {
 	}
 
 	public get(request: ApiRequest, response: ApiResponse) {
-		const { lang, category } = request.params;
-		const language = (lang && this.client.languages.get(lang)) || this.client.languages.default;
+		const { lang, category } = request.query;
+		const language = (lang && this.client.languages.get(lang as string)) || this.client.languages.default;
 		const commands = (category
 			? this.client.commands.filter(cmd => cmd.category === category)
 			: this.client.commands

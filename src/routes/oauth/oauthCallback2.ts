@@ -3,7 +3,7 @@ import { URL } from 'url';
 import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
-import OauthUser from './oauthuser';
+import OauthUser from './oauthUser2';
 import { ratelimit } from '../../lib/util/util';
 
 export default class extends Route {
@@ -45,6 +45,7 @@ export default class extends Route {
 
 		const body = await res.json();
 		const user = await oauthUser.api(body.access_token);
+		console.log(body);
 
 		response.json(({
 			access_token: Util.encrypt({

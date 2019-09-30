@@ -11,6 +11,10 @@ export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : DEV;
 
+export const NAME = 'Skyra';
+export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
+export const CLIENT_SECRET = DEV ? '' : '';
+
 const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
 	IncomingMessage: ApiRequest,
 	ServerResponse: ApiResponse
@@ -62,6 +66,8 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		utc: true
 	},
 	consoleEvents: { verbose: true },
+	clientID: CLIENT_ID,
+	clientSecret: CLIENT_SECRET,
 	dev: DEV,
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
@@ -76,7 +82,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 			ws: 'ws://IP:WS_PORT'
 		},
 		password: 'PASSWORD',
-		userID: 'USER_ID'
+		userID: CLIENT_ID
 	},
 	messageCacheLifetime: 300,
 	messageCacheMaxSize: 50,
@@ -107,10 +113,6 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		serverOptions: DASHBOARD_SERVER_OPTIONS
 	}
 };
-
-export const NAME = 'Skyra';
-export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
-export const CLIENT_SECRET = DEV ? '' : '';
 
 export const WEBHOOK_ERROR: APIWebhookData = DEV
 	? {

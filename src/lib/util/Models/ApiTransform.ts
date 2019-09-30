@@ -101,11 +101,11 @@ export function flattenChannel(channel: GuildChannel): FlattenedGuildChannel;
 export function flattenChannel(channel: DMChannel): FlattenedDMChannel;
 export function flattenChannel(channel: Channel): FlattenedChannel;
 export function flattenChannel(channel: Channel) {
-	if (channel instanceof NewsChannel) return flattenChannelNews(channel);
-	if (channel instanceof TextChannel) return flattenChannelText(channel);
-	if (channel instanceof VoiceChannel) return flattenChannelVoice(channel);
-	if (channel instanceof GuildChannel) return flattenChannelGuild(channel);
-	if (channel instanceof DMChannel) return flattenChannelDM(channel);
+	if (channel.type === 'news') return flattenChannelNews(channel as NewsChannel);
+	if (channel.type === 'text') return flattenChannelText(channel as TextChannel);
+	if (channel.type === 'voice') return flattenChannelVoice(channel as VoiceChannel);
+	if ('guild' in channel) return flattenChannelGuild(channel as GuildChannel);
+	if (channel.type === 'dm') return flattenChannelDM(channel as DMChannel);
 	return flattenChannelFallback(channel);
 }
 

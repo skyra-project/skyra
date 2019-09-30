@@ -12,7 +12,8 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.get('COMMAND_SETPREFIX_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
-			usage: '<prefix:string{1,10}>'
+			usage: '<prefix:string{1,10}>',
+			aliases: ['prefix']
 		});
 	}
 

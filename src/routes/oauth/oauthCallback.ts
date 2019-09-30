@@ -36,7 +36,7 @@ export default class extends Route {
 			return;
 		}
 
-		const oauthUser = this.store.get('oauthuser') as unknown as OauthUser;
+		const oauthUser = this.store.get('oauthUser') as unknown as OauthUser;
 
 		if (!oauthUser) {
 			response.error(500);
@@ -45,7 +45,6 @@ export default class extends Route {
 
 		const body = await res.json();
 		const user = await oauthUser.api(body.access_token);
-		console.log(body);
 
 		response.json(({
 			access_token: Util.encrypt({

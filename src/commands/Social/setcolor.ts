@@ -21,6 +21,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const { hex, b10 } = parse(input);
 
+		await message.author!.settings.sync();
 		await message.author!.settings.update('color', hex.toString().slice(1));
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)

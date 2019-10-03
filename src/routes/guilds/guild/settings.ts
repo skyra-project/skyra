@@ -11,7 +11,7 @@ const { FLAGS: { MANAGE_GUILD } } = Permissions;
 export default class extends Route {
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'guilds/:guild/settings' });
+		super(store, file, directory, { name: 'guildSettings', route: 'guilds/:guild/settings' });
 	}
 
 	@authenticated

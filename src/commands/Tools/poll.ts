@@ -36,22 +36,22 @@ export default class extends SkyraCommand {
 		let roles: string[] | null = null;
 		let options: string[] | null = null;
 
-		if ('users' in message.flags && message.flags.users !== 'users') {
-			users = await this._resolveUsers(message, message.flags.users.split(',').map(user => user.trim()));
-		} else if (!('no-prompt' in message.flags)) {
+		if ('users' in message.flagArgs && message.flagArgs.users !== 'users') {
+			users = await this._resolveUsers(message, message.flagArgs.users.split(',').map(user => user.trim()));
+		} else if (!('no-prompt' in message.flagArgs)) {
 			const wants = await message.ask(message.language.get('COMMAND_POLL_WANT_USERS'));
 			if (wants) users = (await this.userPrompt.createPrompt(message).run(message.language.get('COMMAND_POLL_FIRSTUSER')) as KlasaUser[]).map(user => user.id);
 		}
 
-		if ('roles' in message.flags && message.flags.roles !== 'roles') {
-			roles = this._resolveRoles(message, message.flags.roles.split(',').map(role => role.trim()));
-		} else if (!('no-prompt' in message.flags)) {
+		if ('roles' in message.flagArgs && message.flagArgs.roles !== 'roles') {
+			roles = this._resolveRoles(message, message.flagArgs.roles.split(',').map(role => role.trim()));
+		} else if (!('no-prompt' in message.flagArgs)) {
 			const wants = await message.ask(message.language.get('COMMAND_POLL_WANT_ROLES'));
 			if (wants) roles = await this.rolePrompt.createPrompt(message).run(message.language.get('COMMAND_POLL_FIRSTROLE')).catch(() => null);
 		}
 
-		options = 'options' in message.flags && message.flags.options !== 'options'
-			? message.flags.options.split(',').map(option => option.trim().toLowerCase())
+		options = 'options' in message.flagArgs && message.flagArgs.options !== 'options'
+			? message.flagArgs.options.split(',').map(option => option.trim().toLowerCase())
 			: ['yes', 'no'];
 
 		const data = {

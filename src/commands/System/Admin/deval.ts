@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [code]: [string]) {
-		if (message.flags.async) code = `(async () => {\n${code}\n})();`;
+		if (message.flagArgs.async) code = `(async () => {\n${code}\n})();`;
 		let result: string;
 		let success: boolean;
 		let time: string;

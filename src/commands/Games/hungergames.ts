@@ -26,8 +26,8 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, tributes: string[] = []) {
-		const autoFilled = message.flags.autofill;
-		const autoSkip = message.flags.autoskip;
+		const autoFilled = message.flagArgs.autofill;
+		const autoSkip = message.flagArgs.autoskip;
 
 		if (autoFilled) {
 			const messages = await message.channel.messages.fetch({ limit: 100 });

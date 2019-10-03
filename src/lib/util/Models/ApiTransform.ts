@@ -196,7 +196,7 @@ interface FlattenedGuildChannel extends FlattenedChannel {
 	guildID: string;
 	name: string;
 	rawPosition: number;
-	parentID: string;
+	parentID: string | null;
 	permissionOverwrites: [string, PermissionOverwrites][];
 }
 

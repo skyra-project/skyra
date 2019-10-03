@@ -28,7 +28,7 @@ export default class extends ModerationCommand {
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
 		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
-		return softban(message.guild!, message.author!, user, reason, 'days' in message.flags ? Math.min(7, Math.max(0, Number(message.flags.days))) : 1);
+		return softban(message.guild!, message.author!, user, reason, 'days' in message.flagArgs ? Math.min(7, Math.max(0, Number(message.flagArgs.days))) : 1);
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {

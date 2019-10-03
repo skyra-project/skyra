@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const result = await util.exec(input, { timeout: 'timeout' in message.flags ? Number(message.flags.timeout) : 60000 })
+		const result = await util.exec(input, { timeout: 'timeout' in message.flagArgs ? Number(message.flagArgs.timeout) : 60000 })
 			.catch(error => ({ stdout: null, stderr: error }));
 		const output = result.stdout ? `**\`OUTPUT\`**${util.codeBlock('prolog', result.stdout)}` : '';
 		const outerr = result.stderr ? `**\`ERROR\`**${util.codeBlock('prolog', result.stderr)}` : '';

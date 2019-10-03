@@ -30,18 +30,18 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [code]: [string]) {
-		const flagTime = 'no-timeout' in message.flags ? 'wait' in message.flags ? Number(message.flags.wait) : this.timeout : Infinity;
-		const language = message.flags.lang || message.flags.language || (message.flags.json ? 'json' : 'js');
+		const flagTime = 'no-timeout' in message.flagArgs ? 'wait' in message.flagArgs ? Number(message.flagArgs.wait) : this.timeout : Infinity;
+		const language = message.flagArgs.lang || message.flagArgs.language || (message.flagArgs.json ? 'json' : 'js');
 		const languageType = this.getLanguageType(language);
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime, languageType);
 
-		if (message.flags.silent) {
+		if (message.flagArgs.silent) {
 			if (!success && result && (result as unknown as Error).stack) this.client.emit(Events.Wtf, (result as unknown as Error).stack);
 			return null;
 		}
 
 		const footer = util.codeBlock('ts', type);
-		const sendAs = message.flags.output || message.flags['output-to'] || (message.flags.log ? 'log' : null);
+		const sendAs = message.flagArgs.output || message.flagArgs['output-to'] || (message.flagArgs.log ? 'log' : null);
 		return this.handleMessage(message, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer, language });
 	}
 
@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 		let thenable = false;
 		let type: Type;
 		try {
-			if (message.flags.async) code = `(async () => {\n${code}\n})();`;
+			if (message.flagArgs.async) code = `(async () => {\n${code}\n})();`;
 			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 			// @ts-ignore 6133
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -113,11 +113,11 @@ export default class extends SkyraCommand {
 		if (typeof result !== 'string') {
 			result = result instanceof Error
 				? result.stack
-				: message.flags.json
+				: message.flagArgs.json
 					? JSON.stringify(result, null, 4)
 					: inspect(result, {
-						depth: message.flags.depth ? parseInt(message.flags.depth, 10) || 0 : 0,
-						showHidden: Boolean(message.flags.showHidden)
+						depth: message.flagArgs.depth ? parseInt(message.flagArgs.depth, 10) || 0 : 0,
+						showHidden: Boolean(message.flagArgs.showHidden)
 					});
 		}
 		return { success, type: type!, time: this.formatTime(syncTime!, asyncTime!), result: util.clean(result as string) };

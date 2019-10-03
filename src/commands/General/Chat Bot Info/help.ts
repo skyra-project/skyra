@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 			].join('\n'));
 		}
 
-		if (!message.flags.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
+		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
 			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
 			const display = await this.buildDisplay(message);
 

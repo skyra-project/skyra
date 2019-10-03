@@ -15,7 +15,7 @@ export default class extends Argument {
 		if (parsedURL) {
 			tracks = await message.guild!.music.fetch(arg).catch(() => [] as Track[]);
 			returnAll = parsedURL.playlist;
-		} else if (('sc' in message.flags) || ('soundcloud' in message.flags)) {
+		} else if (('sc' in message.flagArgs) || ('soundcloud' in message.flagArgs)) {
 			tracks = await message.guild!.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]);
 			returnAll = false;
 			soundcloud = false;

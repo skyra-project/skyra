@@ -8,7 +8,7 @@ import { inspect } from 'util';
 export default class extends Route {
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'users/@me/settings' });
+		super(store, file, directory, { name: 'userSettings', route: 'users/@me/settings' });
 	}
 
 	@authenticated

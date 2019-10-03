@@ -513,6 +513,17 @@ export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>)
 	if (util.isThenable(promise)) promise.catch(error => ctx.client.emit(Events.Wtf, error));
 }
 
+export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {
+	if (typeof path === 'string') path = path.split('.');
+
+	let value: unknown;
+	for (const key of path) {
+		value = object[key];
+		if (value === null || value === undefined) return value;
+	}
+	return value;
+}
+
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.
  * @param value

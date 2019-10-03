@@ -11,7 +11,7 @@ const { FLAGS: { MANAGE_GUILD } } = Permissions;
 export default class extends Route {
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'guilds/:guild/settings' });
+		super(store, file, directory, { name: 'guildSettings', route: 'guilds/:guild/settings' });
 	}
 
 	@authenticated
@@ -49,7 +49,7 @@ export default class extends Route {
 		const canManage = member.permissions.has(MANAGE_GUILD);
 		if (!canManage) return response.error(401);
 
-		const { updated, errors } = await botGuild.settings.update(requestBody.data, { action: 'overwrite' });
+		const { errors } = await botGuild.settings.update(requestBody.data, { action: 'overwrite' });
 
 		if (errors.length > 0) {
 			this.client.emit(Events.Error,
@@ -58,7 +58,7 @@ export default class extends Route {
 			return response.error(500);
 		}
 
-		return response.json(updated);
+		return response.json({ newSettings: botGuild.settings.toJSON() });
 	}
 
 }

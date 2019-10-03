@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 	}
 
 	public get kyra() {
-		return this.client.application.owner as User;
+		return this.client.owners.values().next().value as User;
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {

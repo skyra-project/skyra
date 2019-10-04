@@ -984,7 +984,7 @@ export default class extends Language {
 			examples: ['Mercy']
 		}),
 		COMMAND_CHASE_DESCRIPTION: 'How dare you ping me!?',
-		COMMAND_CHASE_EXTENDED: builder.display('CHASE', {
+		COMMAND_CHASE_EXTENDED: builder.display('chase', {
 			extendedHelp: `There are a few things that annoy kyra, one of them are **Windows 10's notifications**! Which also
 				includes mentions from Discord, hence why this command exists.`,
 			explainedUsage: [

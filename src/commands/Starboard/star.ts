@@ -2,10 +2,9 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { RCursor } from 'rethinkdb-ts';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { COLORS } from '../../lib/structures/StarboardMessage';
+import { StarboardMessageData } from '../../lib/structures/StarboardMessage';
 import { Databases } from '../../lib/types/constants/Constants';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { getContent, getImage } from '../../lib/util/util';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
@@ -34,36 +33,42 @@ export default class extends SkyraCommand {
 			.sample(1)
 			.nth(0)
 			.default(null)
-			.run();
+			.run() as StarboardMessageData;
 
+		// If there is no starboard message, return no stars
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
-		const channel = message.guild!.channels.get(starboardData.channelID) as TextChannel;
-		if (!channel) {
+		// If there is no configured starboard channel, return no stars
+		// TODO(kyranet): Change this to a more descriptive message
+		const starboardChannelID = message.guild!.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
+		if (!starboardChannelID) return message.sendLocale('COMMAND_STAR_NOSTARS');
+
+		// If there is no configured starboard channel, return no stars
+		// TODO(kyranet): Change this to a more descriptive message
+		const starboardChannel = message.guild!.channels.get(starboardChannelID) as TextChannel;
+		if (!starboardChannel) {
+			await message.guild!.settings.reset(GuildSettings.Starboard.Channel);
+			return message.sendLocale('COMMAND_STAR_NOSTARS');
+		}
+
+		// If the channel the message was starred from does not longer exist, delete
+		const starredMessageChannel = message.guild!.channels.get(starboardData.channelID) as TextChannel;
+		if (!starredMessageChannel) {
 			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete()
 				.run();
 			return this.random(message);
 		}
-		const starredMessage = await channel.messages.fetch(starboardData.messageID).catch(() => null);
+
+		// If the starred message does not longer exist in the starboard channel, assume it was deleted by a
+		// moderator, therefore delete it from database and search another
+		const starredMessage = await starboardChannel.messages.fetch(starboardData.starMessageID!).catch(() => null);
 		if (!starredMessage) {
 			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete()
 				.run();
 			return this.random(message);
 		}
 
-		const title = `${this._getEmoji(starboardData)} **${starboardData.stars}** ${starredMessage.channel} ID: ${starredMessage.id}`;
-		const description = getContent(starredMessage);
-		const image = getImage(starredMessage);
-		const embed = new MessageEmbed()
-			.setURL(starredMessage.url)
-			.setTitle(message.language.get('JUMPTO'))
-			.setAuthor(starredMessage.author!.username, starredMessage.author!.displayAvatarURL())
-			.setColor(starboardData.stars < COLORS.length ? COLORS[starboardData.stars] : COLORS[COLORS.length - 1])
-			.setTimestamp(starredMessage.createdAt);
-
-		if (description) embed.setDescription(description);
-		if (image) embed.setImage(image);
-		return message.sendMessage(title, embed);
+		return message.sendMessage(starredMessage.content, starredMessage.embeds[0]);
 	}
 
 	public async top(message: KlasaMessage) {

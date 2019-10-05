@@ -1,4 +1,4 @@
-import { Permissions, GuildMember } from 'discord.js';
+import { Permissions, GuildMember, Role } from 'discord.js';
 import { Task } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
@@ -45,15 +45,19 @@ export default class extends Task {
 			.create();
 	}
 
-	private extractRoles(member: SkyraGuildMember, muteRole: string, rolePosition: number, roles: readonly string[] | null) {
-		if (roles === null) roles = [];
+	private extractRoles(member: SkyraGuildMember, muteRole: string, rolePosition: number, rawRoleIDs: readonly string[] | null) {
+		if (rawRoleIDs === null) roles = [];
+		
+		const rawRoles = rawRoleIDs.map(id => member.guild.roles.get(id)).filter(role => role) as Role[];
+		const roles = new Set<string>(member.roles.keys());
 
-		const set = new Set<string>();
-		for (const role of member.roles.values()) {
-			if (role.id !== muteRole && role.position < rolePosition && !role.managed) set.add(role.id);
+		for (const rawRole of rawRoles) {
+			if (rawRole.position < rolePosition) roles.add(rawRole.id);
 		}
+		
+		roles.delete(muteRole);
 
-		return [...set];
+		return [...roles];
 	}
 
 }

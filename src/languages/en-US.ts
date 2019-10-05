@@ -911,8 +911,8 @@ export default class extends Language {
 		COMMAND_SETFILTERMODE_EXTENDED: builder.display('setFilterMode', {
 			extendedHelp: `The setFilterMode command manages the mode of the word blacklist, in Skyra, there are three modes: **Disabled** (the default value)
 					which as its name suggests, it disables the word filter; **DeleteOnly**, which deletes the message; **LogOnly**, which does not delete the message
-					but instead sends a modlog; and **All**, which enables both message deletion and logging.`,
-			reminder: 'Both **LogOnly** and **All** modes require the key `channels.modlogs` to be set up.'
+					but instead sends a modlog.`,
+			reminder: 'The **Log** mode require the key `channels.moderation-logs` to be set up.'
 		}),
 
 		/**
@@ -2889,7 +2889,7 @@ export default class extends Language {
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
-		GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.modlog #modlogs`.',
+		GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.moderation-logs #modlogs`.',
 		GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
 		GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
 		GUILD_BANS_EMPTY: 'There are no bans registered in this server.',

@@ -46,7 +46,7 @@ export default class extends Task {
 	}
 
 	private extractRoles(member: SkyraGuildMember, muteRole: string, rolePosition: number, rawRoleIDs: readonly string[] | null) {
-		if (rawRoleIDs === null) roles = [];
+		if (rawRoleIDs === null) rawRoleIDs = [];
 		
 		const rawRoles = rawRoleIDs.map(id => member.guild.roles.get(id)).filter(role => role) as Role[];
 		const roles = new Set<string>(member.roles.keys());

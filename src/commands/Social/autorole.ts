@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 			else filtered.delete(obj);
 		}
 
-		if (filtered.size !== autoRoles.length) await message.guild!.settings.update('roles.auto', [...filtered], { arrayAction: 'overwrite' });
+		if (filtered.size !== autoRoles.length) await message.guild!.settings.update(GuildSettings.Roles.Auto, [...filtered], { arrayAction: 'overwrite' });
 		if (!output.length) throw message.language.get('COMMAND_AUTOROLE_LIST_EMPTY');
 		return message.sendMessage(output.join('\n'), { code: 'http' });
 	}
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 			throw message.language.get('COMMAND_AUTOROLE_UPDATE_CONFIGURED');
 		}
 
-		await message.guild!.settings.update('roles.auto', [...autoRoles, { id: role.id, points }].sort(SORT), { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, [...autoRoles, { id: role.id, points }].sort(SORT), { arrayAction: 'overwrite' });
 		return message.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
 	}
 

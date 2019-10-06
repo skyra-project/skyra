@@ -112,7 +112,7 @@ export class Slotmachine {
 		const money = settings.get(UserSettings.Money) as UserSettings.Money;
 		const amount = this.winnings === 0 ? money - this.amount : money + (this.winnings * this.boost);
 		if (amount < 0) throw 'You cannot have negative money.';
-		await settings.update('money', amount);
+		await settings.update(UserSettings.Money, amount);
 		return this.render(rolls);
 	}
 

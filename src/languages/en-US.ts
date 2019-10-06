@@ -1092,6 +1092,13 @@ export default class extends Language {
 		COMMAND_CASE_EXTENDED: builder.display('case', {
 			extendedHelp: ``
 		}),
+		COMMAND_SLOWMODE_DESCRIPTION: `Set the channel's slowmode value in seconds.`,
+		COMMAND_SLOWMODE_EXTENDED: builder.display('slowmode', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_CHANNELS}** and will modify the channel's ratelimit per
+					user to any value between 0 and 120 seconds.`,
+			examples: ['0', 'reset', '4'],
+			reminder: `To reset a channel's ratelimit per user, you can use either 0 or 'reset'.`
+		}),
 
 		/**
 		 * ###################
@@ -2121,6 +2128,9 @@ export default class extends Language {
 		 * MODERATION COMMANDS
 		 */
 
+		COMMAND_SLOWMODE_SET: cooldown => cooldown === 0
+			? `The cooldown for this channel has been reset.`
+			: `The cooldown for this channel has been set to ${cooldown} second${cooldown === 1 ? '' : 's'}.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,

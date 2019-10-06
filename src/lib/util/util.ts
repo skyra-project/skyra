@@ -134,8 +134,8 @@ export async function removeMute(guild: Guild, id: string) {
 	const clone = util.deepClone(stickyRoles) as Mutable<StickyRole>;
 	clone.roles.splice(index, 1);
 	const { errors } = await (stickyRoles.roles.length
-		? settings.update('stickyRoles', { id, roles: stickyRoles.roles }, { arrayIndex: stickyRolesIndex })
-		: settings.update('stickyRoles', stickyRoles, { arrayAction: 'remove' }));
+		? settings.update(GuildSettings.StickyRoles, { id, roles: stickyRoles.roles }, { arrayIndex: stickyRolesIndex })
+		: settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayAction: 'remove' }));
 	if (errors.length) throw errors;
 
 	return true;
@@ -429,7 +429,7 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
 
 	await target.edit({ roles: target.roles.filter(r => r.managed).map(r => r.id).concat(role.id) });
 	const entry: StickyRole = { roles: stickyRoles.roles.concat(role.id), user: target.id };
-	const { errors } = await target.guild!.settings.update('stickyRoles', entry, stickyRolesIndex === -1 ? { arrayAction: 'add' } : { arrayIndex: stickyRolesIndex });
+	const { errors } = await target.guild!.settings.update(GuildSettings.StickyRoles, entry, stickyRolesIndex === -1 ? { arrayAction: 'add' } : { arrayIndex: stickyRolesIndex });
 	if (errors.length) throw errors[0];
 
 	const modlog = target.guild!.moderation.new

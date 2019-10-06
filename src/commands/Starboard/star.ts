@@ -25,15 +25,20 @@ export default class extends SkyraCommand {
 	}
 
 	public async random(message: KlasaMessage) {
+		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
 		const r = this.client.providers.default.db;
 		const starboardData = await r
-			.table(Databases.Starboard)
+			.table<StarboardMessageData>(Databases.Starboard)
 			.getAll(message.guild!.id, { index: 'guildID' })
-			.filter(r.row('starMessageID').ne(null))
+			.filter(starMessage => r.and(
+				starMessage('starMessageID').ne(null),
+				starMessage('disabled').ne(true),
+				starMessage('stars').ge(min)
+			))
 			.sample(1)
 			.nth(0)
 			.default(null)
-			.run() as StarboardMessageData;
+			.run();
 
 		// If there is no starboard message, return no stars
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
@@ -72,23 +77,27 @@ export default class extends SkyraCommand {
 	}
 
 	public async top(message: KlasaMessage) {
+		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
 		const r = this.client.providers.default.db;
 		const starboardMessages = await r
-			.table(Databases.Starboard)
+			.table<StarboardMessageData>(Databases.Starboard)
 			.getAll(message.guild!.id, { index: 'guildID' })
-			.filter(r.row('starMessageID').ne(null))
-			.pluck('messageID', 'userID', 'stars')
+			.filter(starMessage => r.and(
+				starMessage('starMessageID').ne(null),
+				starMessage('disabled').ne(true),
+				starMessage('stars').ge(min)
+			))
+			.pluck('messageID', 'guildID', 'channelID', 'userID', 'stars')
 			.getCursor() as RCursor<StarPluck>;
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
 		const topReceivers: Map<string, number> = new Map();
 
-		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
-
 		for await (const starboardMessage of starboardMessages as unknown as AsyncIterable<StarPluck>) {
-			if (starboardMessage.stars < min) continue;
-			topMessages.push([starboardMessage.messageID, starboardMessage.stars]);
+			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
+			const maskedUrl = `[${message.language.get('JUMPTO')}](${url})`;
+			topMessages.push([maskedUrl, starboardMessage.stars]);
 			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;
 		}
@@ -108,10 +117,16 @@ export default class extends SkyraCommand {
 			.setTimestamp());
 	}
 
+	private makeStarLink(guildID: string, channeLID: string, messageID: string) {
+		return `https://canary.discordapp.com/channels/${guildID}/${channeLID}/${messageID}`;
+	}
+
 }
 
 interface StarPluck {
 	messageID: string;
+	guildID: string;
+	channelID: string;
 	userID: string;
 	stars: number;
 }

@@ -124,7 +124,7 @@ export default class extends SkyraCommand {
 		if (remove.length) {
 			const allRoles = new Set(publicRoles);
 			for (const role of remove) allRoles.delete(role);
-			await message.guild!.settings.update('roles.public', [...allRoles], { arrayAction: 'overwrite' });
+			await message.guild!.settings.update(GuildSettings.Roles.Public, [...allRoles], { arrayAction: 'overwrite' });
 		}
 
 		// There's the possibility all roles could be inexistent, therefore the system

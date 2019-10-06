@@ -50,8 +50,8 @@ export default class extends SkyraCommand {
 		this.busy.add(message.author!.id);
 
 		try {
-			await extSettings!.increase('reputation', 1);
-			await selfSettings.update('timeReputation', now);
+			await extSettings!.increase(UserSettings.Reputation, 1);
+			await selfSettings.update(UserSettings.TimeReputation, now);
 		} catch (err) {
 			this.busy.delete(message.author!.id);
 			throw err;

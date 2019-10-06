@@ -59,8 +59,8 @@ export default class extends SkyraCommand {
 		if (message.author!.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
 
 		await Promise.all([
-			message.author!.settings.update('marry', user),
-			user.settings.update('marry', message.author)
+			message.author!.settings.update(UserSettings.Marry, user),
+			user.settings.update(UserSettings.Marry, message.author)
 		]);
 
 		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [message.author!, user]);

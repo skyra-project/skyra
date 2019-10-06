@@ -108,16 +108,6 @@ export default class extends SkyraCommand {
 			.setTimestamp());
 	}
 
-	public _getEmoji(starboardData: StarPluck) {
-		const { stars } = starboardData;
-		if (stars < 5) return '⭐';
-		if (stars < 10) return '🌟';
-		if (stars < 25) return '💫';
-		if (stars < 100) return '✨';
-		if (stars < 200) return '🌠';
-		return '🌌';
-	}
-
 }
 
 interface StarPluck {

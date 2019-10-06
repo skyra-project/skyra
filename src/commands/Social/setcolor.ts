@@ -2,6 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { parse } from '../../lib/util/Color';
+import { UserSettings } from '../../lib/types/settings/UserSettings';
 
 export default class extends SkyraCommand {
 
@@ -21,7 +22,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const { hex, b10 } = parse(input);
 
-		await message.author!.settings.update('color', hex.toString().slice(1));
+		await message.author!.settings.update(UserSettings.Color, hex.toString().slice(1));
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)
 			.setAuthor(message.author!.tag, message.author!.displayAvatarURL({ size: 128 }))

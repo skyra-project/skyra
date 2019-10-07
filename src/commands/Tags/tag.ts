@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 
 		const tag = tags.find(([name]) => name === tagName);
 		if (!tag) throw message.language.get('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild!.settings.update(GuildSettings.Tags, tag, { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.Tags, [tag], { arrayAction: 'remove' });
 
 		return message.sendLocale('COMMAND_TAG_REMOVED', [tagName]);
 	}

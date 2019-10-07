@@ -5,6 +5,14 @@ import { Adder } from '../Adder';
 import { PreciseTimeout } from '../PreciseTimeout';
 import { AntiRaid } from './AntiRaid';
 
+export interface Adders {
+	attachments: Adder<string> | null;
+	capitals: Adder<string> | null;
+	newlines: Adder<string> | null;
+	invites: Adder<string> | null;
+	words: Adder<string> | null;
+}
+
 /**
  * @version 3.0.0
  */
@@ -16,14 +24,15 @@ export class GuildSecurity {
 	public guild: Guild;
 
 	/**
-	 * The Adder instance used to control spam
+	 * The anti-spam adders used to control spam
 	 */
-	public adder: Adder<string> | null = null;
-
-	/**
-	 * The Adder instance used to control newline spam
-	 */
-	public newLineAdder: Adder<string> | null = null;
+	public adders: Adders = {
+		attachments: null,
+		capitals: null,
+		newlines: null,
+		invites: null,
+		words: null
+	};
 
 	/**
 	 * The AntiRaid instance managed by this guild, if exists

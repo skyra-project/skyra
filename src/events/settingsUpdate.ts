@@ -9,7 +9,7 @@ export default class extends Event {
 		// If the synchronized settings isn't from the guilds gateway, return early.
 		if (settings.gateway.name !== 'guilds') return;
 
-		const blockedWords = getFromPath(changes, GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw | undefined;
+		const blockedWords = getFromPath(changes, GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw | undefined;
 
 		// If the changes do not include updating the raw filter, return early too.
 		if (typeof blockedWords === 'undefined') return;

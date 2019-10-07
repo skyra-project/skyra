@@ -54,13 +54,6 @@ export namespace GuildSettings {
 		export const MessageEdit = 'events.messageEdit';
 	}
 
-	export namespace Filter {
-		export type Level = number;
-		export const Level = 'filter.level';
-		export type Raw = readonly string[];
-		export const Raw = 'filter.raw';
-	}
-
 	export namespace Messages {
 		export type Farewell = string;
 		export const Farewell = 'messages.farewell';
@@ -115,12 +108,23 @@ export namespace GuildSettings {
 		export const AttachmentMaximum = 'selfmod.attachmentMaximum';
 		export type AttachmentPunishmentDuration = number;
 		export const AttachmentPunishmentDuration = 'selfmod.attachmentPunishmentDuration';
-		export type CapsFilter = number;
-		export const CapsFilter = 'selfmod.capsfilter';
-		export type CapsMinimum = number;
-		export const CapsMinimum = 'selfmod.capsminimum';
-		export type Capsthreshold = number;
-		export const Capsthreshold = 'selfmod.capsthreshold';
+
+		export namespace Capitals {
+			export const Minimum = 'selfmod.capitals.minimum';
+			export type Minimum = number;
+			export const Maximum = 'selfmod.capitals.maximum';
+			export type Maximum = number;
+			export const SoftAction = 'selfmod.capitals.softAction';
+			export type SoftAction = number;
+			export const HardAction = 'selfmod.capitals.hardAction';
+			export type HardAction = SelfModeratorHardActionFlags;
+			export const HardActionDuration = 'selfmod.capitals.hardActionDuration';
+			export type HardActionDuration = number;
+			export const ThresholdMaximum = 'selfmod.capitals.thresholdMaximum';
+			export type ThresholdMaximum = number;
+			export const ThresholdDuration = 'selfmod.capitals.thresholdDuration';
+			export type ThresholdDuration = number | null;
+		}
 
 		export namespace NewLines {
 			export const Maximum = 'selfmod.newlines.maximum';
@@ -137,10 +141,36 @@ export namespace GuildSettings {
 			export type ThresholdDuration = number | null;
 		}
 
+		export namespace Invites {
+			export const SoftAction = 'selfmod.invites.softAction';
+			export type SoftAction = number;
+			export const HardAction = 'selfmod.invites.hardAction';
+			export type HardAction = SelfModeratorHardActionFlags;
+			export const HardActionDuration = 'selfmod.invites.hardActionDuration';
+			export type HardActionDuration = number;
+			export const ThresholdMaximum = 'selfmod.invites.thresholdMaximum';
+			export type ThresholdMaximum = number;
+			export const ThresholdDuration = 'selfmod.invites.thresholdDuration';
+			export type ThresholdDuration = number | null;
+		}
+
+		export namespace Filter {
+			export const Raw = 'selfmod.filter.raw';
+			export type Raw = readonly string[];
+			export const SoftAction = 'selfmod.filter.softAction';
+			export type SoftAction = number;
+			export const HardAction = 'selfmod.filter.hardAction';
+			export type HardAction = SelfModeratorHardActionFlags;
+			export const HardActionDuration = 'selfmod.filter.hardActionDuration';
+			export type HardActionDuration = number;
+			export const ThresholdMaximum = 'selfmod.filter.thresholdMaximum';
+			export type ThresholdMaximum = number;
+			export const ThresholdDuration = 'selfmod.filter.thresholdDuration';
+			export type ThresholdDuration = number | null;
+		}
+
 		export type IgnoreChannels = readonly string[];
 		export const IgnoreChannels = 'selfmod.ignoreChannels';
-		export type Invitelinks = boolean;
-		export const Invitelinks = 'selfmod.invitelinks';
 		export type Raid = string;
 		export const Raid = 'selfmod.raid';
 		export type Raidthreshold = number;

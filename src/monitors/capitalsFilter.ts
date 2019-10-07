@@ -2,7 +2,7 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { cutText, floatPromise } from '../lib/util/util';
-import { ModerationMonitor } from '../lib/structures/ModerationMonitor';
+import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationMonitor';
 const OFFSET = 0b100000;
 /**
  * In ASCII, the 6th bit tells whether a character is lowercase or uppercase:
@@ -20,17 +20,23 @@ const OFFSET = 0b100000;
 
 export default class extends ModerationMonitor {
 
-	protected softPunishmentPath = GuildSettings.Selfmod.CapsFilter;
-	protected hardPunishmentPath = null;
+	protected softPunishmentPath: string = GuildSettings.Selfmod.Capitals.SoftAction;
+	protected hardPunishmentPath: HardPunishment = {
+		action: GuildSettings.Selfmod.Capitals.HardAction,
+		actionDuration: GuildSettings.Selfmod.Capitals.HardActionDuration,
+		adder: 'capitals',
+		adderMaximum: GuildSettings.Selfmod.Capitals.ThresholdMaximum,
+		adderDuration: GuildSettings.Selfmod.Capitals.ThresholdDuration
+	};
 
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)
 			&& message.content.length > 0
-			&& (message.guild!.settings.get(GuildSettings.Selfmod.CapsMinimum) as GuildSettings.Selfmod.CapsMinimum) < message.content.length;
+			&& (message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) as GuildSettings.Selfmod.Capitals.Minimum) < message.content.length;
 	}
 
 	protected preProcess(message: KlasaMessage) {
-		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capsthreshold) as GuildSettings.Selfmod.Capsthreshold;
+		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum) as GuildSettings.Selfmod.Capitals.Maximum;
 		const { length } = message.content;
 		let count = 0;
 		let i = 0;

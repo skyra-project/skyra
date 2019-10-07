@@ -8,7 +8,7 @@ export default class extends Event {
 		// If the synchronized settings isn't from the guilds gateway, return early.
 		if (settings.gateway.name !== 'guilds') return;
 
-		const blockedWords = settings.get(GuildSettings.Filter.Raw) as GuildSettings.Filter.Raw;
+		const blockedWords = settings.get(GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw;
 		const guild = settings.target as SkyraGuild;
 		if (blockedWords.length) guild!.security.updateRegExp(blockedWords);
 		else guild!.security.regexp = null;

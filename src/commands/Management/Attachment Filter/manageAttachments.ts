@@ -88,18 +88,18 @@ export default class extends SkyraCommand {
 
 		// Update the adder
 		switch (type) {
-			case 'disable': message.guild!.security.adder = null;
+			case 'disable': message.guild!.security.adders.attachments = null;
 				break;
 			case 'enable':
 			case 'maximum':
 			case 'duration': {
 				const attachmentMaximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
 				const attachmentDuration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
-				if (message.guild!.security.adder) {
-					message.guild!.security.adder.maximum = attachmentMaximum;
-					message.guild!.security.adder.duration = attachmentDuration;
+				if (message.guild!.security.adders.attachments) {
+					message.guild!.security.adders.attachments.maximum = attachmentMaximum;
+					message.guild!.security.adders.attachments.duration = attachmentDuration;
 				} else {
-					message.guild!.security.adder = new Adder(attachmentMaximum, attachmentDuration);
+					message.guild!.security.adders.attachments = new Adder(attachmentMaximum, attachmentDuration);
 				}
 			}
 		}

@@ -11,7 +11,7 @@ export default class extends ModerationMonitor {
 	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.NewLines.HardAction,
 		actionDuration: GuildSettings.Selfmod.NewLines.HardActionDuration,
-		adder: 'newLineAdder',
+		adder: 'newlines',
 		adderMaximum: GuildSettings.Selfmod.NewLines.ThresholdMaximum,
 		adderDuration: GuildSettings.Selfmod.NewLines.ThresholdDuration
 	};

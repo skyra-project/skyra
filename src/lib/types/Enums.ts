@@ -35,3 +35,12 @@ export enum Events {
 	Warn = 'warn',
 	Wtf = 'wtf'
 }
+
+export enum PermissionLevels {
+	Everyone = 0,
+	Staff = 4,
+	Moderator = 5,
+	Administrator = 6,
+	ServerOwner = 7,
+	BotOwner = 10
+}

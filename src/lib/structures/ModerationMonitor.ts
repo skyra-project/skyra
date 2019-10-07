@@ -5,14 +5,16 @@ import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { Adder } from '../util/Adder';
 import { ModerationTypeKeys, MessageLogsEnum } from '../util/constants';
 import { floatPromise, mute, softban } from '../util/util';
-import { Events } from '../types/Enums';
+import { Events, PermissionLevels } from '../types/Enums';
 import { MessageEmbed } from 'discord.js';
 
-export abstract class ModerationMonitor extends Monitor {
+export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	public async run(message: KlasaMessage) {
 		const filter = message.guild!.settings.get(this.softPunishmentPath) as number;
 		if (filter === 0) return;
+
+		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const bitField = new SelfModeratorBitField(filter);
 		const preProcessed = await this.preProcess(message);
@@ -28,7 +30,8 @@ export abstract class ModerationMonitor extends Monitor {
 		}
 
 		try {
-			message.guild!.security[$adder]!.add(message.author!.id, preProcessed);
+			const points = typeof preProcessed === 'number' ? preProcessed : 1;
+			message.guild!.security[$adder]!.add(message.author!.id, points);
 		} catch {
 			await this.processHardPunishment(message);
 		}
@@ -44,7 +47,7 @@ export abstract class ModerationMonitor extends Monitor {
 			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
-	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: number) {
+	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {
 		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) this.onDelete(message, preProcessed);
 		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && message.channel.postable) this.onAlert(message, preProcessed);
 		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) this.onLog(message, preProcessed);
@@ -116,31 +119,23 @@ export abstract class ModerationMonitor extends Monitor {
 		unlock();
 	}
 
-	protected onLog(message: KlasaMessage, value: number) {
+	protected onLog(message: KlasaMessage, value: T) {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, value));
 	}
 
 	protected abstract softPunishmentPath: string;
 	protected abstract hardPunishmentPath: HardPunishment | null;
-	protected abstract preProcess(message: KlasaMessage): Promise<number | null> | number | null;
-	protected abstract onDelete(message: KlasaMessage, value: number): unknown;
-	protected abstract onAlert(message: KlasaMessage, value: number): unknown;
-	protected abstract onLogMessage(message: KlasaMessage, value: number): MessageEmbed;
+	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
+	protected abstract onDelete(message: KlasaMessage, value: T): unknown;
+	protected abstract onAlert(message: KlasaMessage, value: T): unknown;
+	protected abstract onLogMessage(message: KlasaMessage, value: T): MessageEmbed;
 
 }
 
 export interface HardPunishment {
 	action: string;
 	actionDuration: string;
-	adder: HardPunishmentAdders[keyof HardPunishmentAdders];
+	adder: keyof GuildSecurity['adders'];
 	adderMaximum: string;
 	adderDuration: string;
 }
-
-type HardPunishmentAdders = {
-	[K in keyof GuildSecurity]: GuildSecurity[K] extends Adder<unknown>
-		? K
-		: GuildSecurity[K] extends Adder<unknown> | null
-			? K
-			: never;
-};

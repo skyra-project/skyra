@@ -12,6 +12,7 @@ export const assetsFolder = join(rootFolder, 'assets');
 export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
 
 import klasaDashboardHooks = require('klasa-dashboard-hooks');
+import { PermissionLevels } from './lib/types/Enums';
 SkyraClient.use(klasaDashboardHooks);
 
 const { FLAGS } = Permissions;
@@ -26,17 +27,17 @@ Canvas
 
 // Skyra setup
 SkyraClient.defaultPermissionLevels
-	.add(4, message => message.member
+	.add(PermissionLevels.Staff, message => message.member
 		? message.guild!.settings.get(GuildSettings.Roles.Staff)
 			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Staff) as GuildSettings.Roles.Staff)
 			: message.member.permissions.has(FLAGS.MANAGE_MESSAGES)
 		: false, { fetch: true })
-	.add(5, message => message.member
+	.add(PermissionLevels.Moderator, message => message.member
 		? message.guild!.settings.get(GuildSettings.Roles.Moderator)
 			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Moderator) as GuildSettings.Roles.Moderator)
 			: message.member.permissions.has(FLAGS.BAN_MEMBERS)
 		: false, { fetch: true })
-	.add(6, message => message.member
+	.add(PermissionLevels.Administrator, message => message.member
 		? message.guild!.settings.get(GuildSettings.Roles.Admin)
 			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Admin) as GuildSettings.Roles.Admin)
 			: message.member.permissions.has(FLAGS.MANAGE_GUILD)

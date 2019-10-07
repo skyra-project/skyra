@@ -1,38 +1,45 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
-import { Events } from '../lib/types/Enums';
+import { KlasaMessage } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
+import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationMonitor';
+import { floatPromise } from '../lib/util/util';
 
 const kRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d]{2,}/i;
 
-export default class extends Monitor {
+export default class extends ModerationMonitor {
 
-	public async run(message: KlasaMessage) {
-		if (await message.hasAtLeastPermissionLevel(5) || !kRegExp.test(message.content)) return;
+	protected softPunishmentPath: string = GuildSettings.Selfmod.Invites.SoftAction;
+	protected hardPunishmentPath: HardPunishment = {
+		action: GuildSettings.Selfmod.Invites.HardAction,
+		actionDuration: GuildSettings.Selfmod.Invites.HardActionDuration,
+		adder: 'invites',
+		adderMaximum: GuildSettings.Selfmod.Invites.ThresholdMaximum,
+		adderDuration: GuildSettings.Selfmod.Invites.ThresholdDuration
+	};
 
-		if (message.deletable) {
-			await message.nuke();
-			await message.alert(message.language.get('MONITOR_NOINVITE', message.author));
-		}
+	public shouldRun(message: KlasaMessage) {
+		return super.shouldRun(message)
+			&& message.content.length > 0;
+	}
 
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
+	protected preProcess(message: KlasaMessage) {
+		return kRegExp.test(message.content) ? 1 : null;
+	}
+
+	protected onDelete(message: KlasaMessage) {
+		floatPromise(this, message.nuke());
+	}
+
+	protected onAlert(message: KlasaMessage) {
+		floatPromise(this, message.alert(message.language.get('MONITOR_NOINVITE', message.author)));
+	}
+
+	protected onLogMessage(message: KlasaMessage) {
+		return new MessageEmbed()
 			.setColor(0xEFAE45)
 			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_INVITELINK')}`)
-			.setTimestamp());
-	}
-
-	public shouldRun(message: KlasaMessage) {
-		return this.enabled
-			&& message.guild !== null
-			&& message.author !== null
-			&& message.webhookID === null
-			&& message.content.length > 0
-			&& !message.system
-			&& message.author.id !== this.client.user!.id
-			&& message.guild.settings.get(GuildSettings.Selfmod.Invitelinks) as GuildSettings.Selfmod.Invitelinks
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			.setTimestamp();
 	}
 
 }

@@ -8,10 +8,15 @@ import { floatPromise } from '../lib/util/util';
 export default class extends Event {
 
 	public run(message: KlasaMessage, command: string) {
-		if (!message.guild || (message.guild!.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels).includes(message.channel.id)) return null;
+		if (!message.guild) return null;
+
+		const disabledChannels = message.guild!.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels;
+		if (disabledChannels.includes(message.channel.id) && !message.hasAtLeastPermissionLevel(5)) return null;
+
 		command = command.toLowerCase();
 
-		const tag = (message.guild!.settings.get(GuildSettings.Tags) as GuildSettings.Tags).some(t => t[0] === command);
+		const tags = message.guild!.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
+		const tag = tags.some(t => t[0] === command);
 		if (tag) return this.runTag(message, command);
 
 		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;

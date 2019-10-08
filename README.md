@@ -11,12 +11,10 @@
 - [`Node.js`]: To run the project.
 - [`RethinkDB`]: To store persistent data.
 - [`Lavalink`]: (Dev Optional) Audio server.
-- [`Ny-API`]: (Dev Optional) Central server.
 
 [`Node.js`]: https://nodejs.org/en/download/current/
 [`RethinkDB`]: https://rethinkdb.com/docs/install/
 [`Lavalink`]: https://github.com/Frederikam/Lavalink
-[`Ny-API`]: https://github.com/kyranet/Ny-API
 
 ## Set-Up
 
@@ -31,7 +29,7 @@ $ yarn lint
 $ yarn start
 
 # Run Skyra in production mode, requires
-# Lavalink and Ny-API to be running:
+# Lavalink to be running:
 $ yarn pm2:start
 ```
 

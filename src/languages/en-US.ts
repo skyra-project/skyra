@@ -2855,22 +2855,22 @@ export default class extends Language {
 		SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION: name => `${REDCROSS} Action must be any of the following: \`enable\`, \`disable\`, \`action\`, \`punish\`, \`punish-duration\`, \`threshold-maximum\`, \`threshold-duration\`, or \`show\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS: name => `${REDCROSS} The specified action requires an extra argument to be passed. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_SOFTACTION: name => `${REDCROSS} Value must be any of the following: \`alert\`, \`log\`, or \`delete\`. Check \`Skyra, help ${name}\` for more information.`,
-		SELF_MODERATION_COMMAND_INVALID_HARDACTION: name => `${REDCROSS} Value must be any of the following: \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
+		SELF_MODERATION_COMMAND_INVALID_HARDACTION: name => `${REDCROSS} Value must be any of the following: \`none\`, \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_ENABLED: () => `${GREENTICK} Successfully enabled sub-system.`,
 		SELF_MODERATION_COMMAND_DISABLED: () => `${GREENTICK} Successfully disabled sub-system.`,
 		SELF_MODERATION_COMMAND_SOFT_ACTION: value => value
-			? `${GREENTICK} Successfully set soft-actions to: \`${value}\``
-			: `${GREENTICK} Successfully disabled soft-actions.`,
-		SELF_MODERATION_COMMAND_HARD_ACTION: value => `${GREENTICK} Successfully set hard action: ${value}`,
+			? `${GREENTICK} Successfully set actions to: \`${value}\``
+			: `${GREENTICK} Successfully disabled actions.`,
+		SELF_MODERATION_COMMAND_HARD_ACTION: value => `${GREENTICK} Successfully set punishment: ${value}`,
 		SELF_MODERATION_COMMAND_HARD_ACTION_DURATION: value => value
-			? `${GREENTICK} Successfully set the hard action appeal timer to: ${duration(value)}`
-			: `${GREENTICK} Successfully removed the hard action appeal timer.`,
+			? `${GREENTICK} Successfully set the punishment appeal timer to: ${duration(value)}`
+			: `${GREENTICK} Successfully removed the punishment appeal timer.`,
 		SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM: value => value
 			? `${GREENTICK} Successfully set the threshold maximum to: ${value}`
-			: `${GREENTICK} Successfully removed the threshold maximum, hard actions will not longer take place.`,
+			: `${GREENTICK} Successfully removed the threshold maximum, punishment will take place instantly if set.`,
 		SELF_MODERATION_COMMAND_THRESHOLD_DURATION: value => value
 			? `${GREENTICK} Successfully set the threshold duration to: ${duration(value)}`
-			: `${GREENTICK} Successfully removed the threshold duration, hard actions will not longer take place.`,
+			: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
 		SELF_MODERATION_COMMAND_SHOW: (kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration) => [
 			`Enabled      : ${kEnabled}`,
 			`Action`,

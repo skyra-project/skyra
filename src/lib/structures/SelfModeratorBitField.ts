@@ -20,9 +20,10 @@ export class SelfModeratorBitField extends BitField<SelfModeratorBitFieldString>
 export type SelfModeratorBitFieldString = 'DELETE' | 'LOG' | 'ALERT';
 
 export enum SelfModeratorHardActionFlags {
-	Warning = 1,
-	Kick = 2,
-	Mute = 3,
-	SoftBan = 4,
-	Ban = 5
+	None,
+	Warning,
+	Kick,
+	Mute,
+	SoftBan,
+	Ban
 }

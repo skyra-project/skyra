@@ -39,6 +39,7 @@ export const kSoftActions = new Map<string, ASKeys>([
 ]);
 
 export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
+	['r', SelfModeratorHardActionFlags.None], ['reset', SelfModeratorHardActionFlags.None], ['n', SelfModeratorHardActionFlags.None], ['none', SelfModeratorHardActionFlags.None],
 	['w', SelfModeratorHardActionFlags.Warning], ['warn', SelfModeratorHardActionFlags.Warning], ['warning', SelfModeratorHardActionFlags.Warning],
 	['m', SelfModeratorHardActionFlags.Mute], ['mute', SelfModeratorHardActionFlags.Mute],
 	['k', SelfModeratorHardActionFlags.Kick], ['kick', SelfModeratorHardActionFlags.Kick],

@@ -23,10 +23,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		if (this.hardPunishmentPath === null) return;
 
 		const maximum = message.guild!.settings.get(this.hardPunishmentPath.adderMaximum) as number;
-		if (!maximum) return;
+		if (!maximum) return this.processHardPunishment(message);
 
 		const duration = message.guild!.settings.get(this.hardPunishmentPath.adderDuration) as number;
-		if (!duration) return;
+		if (!duration) return this.processHardPunishment(message);
 
 		const $adder = this.hardPunishmentPath.adder;
 		if (message.guild!.security.adders[$adder] === null) {

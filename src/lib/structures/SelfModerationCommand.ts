@@ -1,4 +1,4 @@
-import { Command, CommandStore, CommandOptions, util, SchemaEntry, KlasaMessage } from 'klasa';
+import { Command, CommandStore, CommandOptions, util, SchemaEntry, KlasaMessage, Duration } from 'klasa';
 import { PermissionLevels } from '../types/Enums';
 import { SelfModeratorHardActionFlags, SelfModeratorBitField } from './SelfModeratorBitField';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
@@ -57,43 +57,43 @@ export abstract class SelfModerationCommand extends Command {
 			usageDelim: ' '
 		} as CommandOptions, options));
 
-		this.createCustomResolver('action', arg => {
+		this.createCustomResolver('action', (arg, _possible, message) => {
 			if (typeof arg === 'undefined') return AKeys.Show;
 			const action = kActions.get(arg.toLowerCase());
-			if (typeof action === 'undefined') throw `Action must be any of the following: "enable", "disable", "action", "punish", "punish-duration", "threshold-maximum", "threshold-duration", or "show". Check \`Skyra, help ${this.name}\` for more information.`;
+			if (typeof action === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION', this.name);
 			return action;
 		}).createCustomResolver('value', (arg, _possible, message, [type]: AKeys[]) => {
 			if (type === AKeys.Enable) return true;
 			if (type === AKeys.Disable) return false;
 			if (type === AKeys.Show) return null;
-			if (!arg) throw `The specified action requires an extra argument to be passed. Check \`Skyra, help ${this.name}\` for more information.`;
+			if (!arg) throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS', this.name);
 
 			if (type === AKeys.SoftAction) {
 				const softAction = kSoftActions.get(arg.toLowerCase());
-				if (typeof softAction === 'undefined') throw `Value must be any of the following: "alert", "log", or "delete". Check \`Skyra, help ${this.name}\` for more information.`;
+				if (typeof softAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_SOFTACTION', this.name);
 				const previousSoftAction = message.guild!.settings.get(this.keySoftAction) as number;
 				return this.toggle(previousSoftAction, softAction);
 			}
 
 			if (type === AKeys.HardAction) {
 				const hardAction = kHardActions.get(arg.toLowerCase());
-				if (typeof hardAction === 'undefined') throw `Value must be any of the following: "warn", "mute", "kick", "softban", or "ban". Check \`Skyra, help ${this.name}\` for more information.`;
+				if (typeof hardAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_HARDACTION', this.name);
 				return hardAction;
 			}
 
 			if (type === AKeys.HardActionDuration) {
 				const key = message.guild!.settings.schema.get(this.keyHardActionDuration) as SchemaEntry;
-				return key.parse(arg, message.guild!);
+				return this.parseDuration(message, key, arg, 'Hard Action Duration');
 			}
 
 			if (type === AKeys.ThresholdMaximum) {
 				const key = message.guild!.settings.schema.get(this.keyThresholdMaximum) as SchemaEntry;
-				return key.parse(arg, message.guild!);
+				return this.parseMaximum(message, key, arg, 'Threshold Maximum');
 			}
 
 			if (type === AKeys.ThresholdDuration) {
 				const key = message.guild!.settings.schema.get(this.keyThresholdDuration) as SchemaEntry;
-				return key.parse(arg, message.guild!);
+				return this.parseDuration(message, key, arg, 'Threshold Duration');
 			}
 
 			throw new Error('Unreachable.');
@@ -230,6 +230,22 @@ export abstract class SelfModerationCommand extends Command {
 			adder.maximum = maximum;
 			adder.duration = duration;
 		}
+	}
+
+	private parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
+		const parsed = Number(input);
+		if (parsed < 0) throw message.language.get('RESOLVER_INVALID_INT', name);
+		if (key.min !== null && parsed < key.min) throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_SHORT', key.min, parsed);
+		if (key.max !== null && parsed > key.max) throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_LONG', key.max, parsed);
+		return parsed;
+	}
+
+	private parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
+		const parsed = new Duration(input);
+		if (parsed.offset < 0) throw message.language.get('RESOLVER_INVALID_DURATION', name);
+		if (key.min !== null && parsed.offset < key.min) throw message.language.get('SELF_MODERATION_DURATION_TOO_SHORT', key.min, parsed.offset);
+		if (key.max !== null && parsed.offset > key.max) throw message.language.get('SELF_MODERATION_DURATION_TOO_LONG', key.max, parsed.offset);
+		return parsed.offset;
 	}
 
 	protected abstract $adder: keyof GuildSecurity['adders'];

@@ -2852,6 +2852,10 @@ export default class extends Language {
 		 * #################################
 		 */
 
+		SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION: name => `${REDCROSS} Action must be any of the following: \`enable\`, \`disable\`, \`action\`, \`punish\`, \`punish-duration\`, \`threshold-maximum\`, \`threshold-duration\`, or \`show\`. Check \`Skyra, help ${name}\` for more information.`,
+		SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS: name => `${REDCROSS} The specified action requires an extra argument to be passed. Check \`Skyra, help ${name}\` for more information.`,
+		SELF_MODERATION_COMMAND_INVALID_SOFTACTION: name => `${REDCROSS} Value must be any of the following: \`alert\`, \`log\`, or \`delete\`. Check \`Skyra, help ${name}\` for more information.`,
+		SELF_MODERATION_COMMAND_INVALID_HARDACTION: name => `${REDCROSS} Value must be any of the following: \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_ENABLED: () => `${GREENTICK} Successfully enabled sub-system.`,
 		SELF_MODERATION_COMMAND_DISABLED: () => `${GREENTICK} Successfully disabled sub-system.`,
 		SELF_MODERATION_COMMAND_SOFT_ACTION: value => value
@@ -2869,11 +2873,11 @@ export default class extends Language {
 			: `${GREENTICK} Successfully removed the threshold duration, hard actions will not longer take place.`,
 		SELF_MODERATION_COMMAND_SHOW: (kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration) => [
 			`Enabled      : ${kEnabled}`,
-			`Soft-Actions`,
+			`Action`,
 			` - Alert     : ${kAlert}`,
 			` - Log       : ${kLog}`,
 			` - Delete    : ${kDelete}`,
-			`Hard-Action`,
+			`Punishment`,
 			` - Type      : ${kHardAction}`,
 			` - Duration  : ${hardActionDuration === 0 ? 'Permanent' : duration(hardActionDuration)}`,
 			`Threshold`,
@@ -2891,6 +2895,10 @@ export default class extends Language {
 		SELF_MODERATION_HARD_ACTION_NONE: 'None',
 		SELF_MODERATION_ENABLED: 'Yes',
 		SELF_MODERATION_DISABLED: 'No',
+		SELF_MODERATION_MAXIMUM_TOO_SHORT: (minimum, value) => `${REDCROSS} The value (${value}) was too short, expected at least ${minimum}.`,
+		SELF_MODERATION_MAXIMUM_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${value}) was too long, expected maximum ${maximum}.`,
+		SELF_MODERATION_DURATION_TOO_SHORT: (minimum, value) => `${REDCROSS} The value (${duration(value)}) was too short, expected at least ${duration(minimum)}.`,
+		SELF_MODERATION_DURATION_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
 
 		RESOLVER_DATE_SUFFIX: ' seconds',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',

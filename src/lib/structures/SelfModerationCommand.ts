@@ -109,23 +109,24 @@ export abstract class SelfModerationCommand extends Command {
 		switch (action) {
 			case AKeys.Disable: {
 				message.guild!.security.adders[this.$adder] = null;
-				return message.sendMessage('Successfully disabled this filter.');
+				break;
+			}
+			case AKeys.SoftAction: {
+				value = this.displaySoftAction(message, value as number).join('`, `');
+				break;
+			}
+			case AKeys.HardAction: {
+				value = message.language.get(this.displayHardAction(value as SelfModeratorHardActionFlags));
+				break;
 			}
 			case AKeys.Enable:
 			case AKeys.ThresholdMaximum:
 			case AKeys.ThresholdDuration: {
-				const [maximum, duration] = message.guild!.settings.pluck(this.keyThresholdMaximum, this.keyThresholdDuration);
-				const adder = message.guild!.security.adders[this.$adder];
-				if (adder === null) {
-					message.guild!.security.adders[this.$adder] = new Adder(maximum, duration);
-				} else {
-					adder.maximum = maximum;
-					adder.duration = duration;
-				}
+				this.manageAdder(message);
 			}
 		}
 
-		return message.sendMessage('Successfully updated this filter.');
+		return message.sendLocale(this.getLanguageKey(action), [value]);
 	}
 
 	protected show(message: KlasaMessage) {
@@ -134,19 +135,20 @@ export abstract class SelfModerationCommand extends Command {
 			this.keyEnabled, this.keySoftAction, this.keyHardAction, this.keyHardActionDuration, this.keyThresholdMaximum,
 			this.keyThresholdDuration
 		);
-		return message.sendCode('prolog', [
-			`Enabled      : ${enabled ? 'Yes' : 'No'}`,
-			`Soft-Actions`,
-			` - Alert     : ${this.has(softAction, ASKeys.Alert) ? 'Yes' : 'No'}`,
-			` - Log       : ${this.has(softAction, ASKeys.Log) ? 'Yes' : 'No'}`,
-			` - Delete    : ${this.has(softAction, ASKeys.Delete) ? 'Yes' : 'No'}`,
-			`Hard-Action`,
-			` - Type      : ${this.displayHardAction(hardAction)}`,
-			` - Duration  : ${hardActionDuration === 0 ? 'Permanent' : `${hardActionDuration / 1000}s`}`,
-			`Threshold`,
-			` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
-			` - Duration  : ${thresholdDuration ? `${hardActionDuration / 1000}s` : 'Unset'}`
-		]);
+
+		const i18n = message.language.get.bind(message.language);
+		const [yes, no] = [i18n('SELF_MODERATION_ENABLED'), i18n('SELF_MODERATION_DISABLED')];
+		return message.sendCode('prolog', i18n(
+			'SELF_MODERATION_COMMAND_SHOW',
+			enabled ? yes : no,
+			this.has(softAction, ASKeys.Alert) ? yes : no,
+			this.has(softAction, ASKeys.Log) ? yes : no,
+			this.has(softAction, ASKeys.Delete) ? yes : no,
+			i18n(this.displayHardAction(hardAction)),
+			hardActionDuration,
+			thresholdMaximum,
+			thresholdDuration
+		));
 	}
 
 	private getProperty(action: AKeys) {
@@ -169,14 +171,43 @@ export abstract class SelfModerationCommand extends Command {
 		}
 	}
 
+	private getLanguageKey(action: AKeys) {
+		switch (action) {
+			case AKeys.Enable:
+				return 'SELF_MODERATION_COMMAND_ENABLED';
+			case AKeys.Disable:
+				return 'SELF_MODERATION_COMMAND_DISABLED';
+			case AKeys.SoftAction:
+				return 'SELF_MODERATION_COMMAND_SOFT_ACTION';
+			case AKeys.HardAction:
+				return 'SELF_MODERATION_COMMAND_HARD_ACTION';
+			case AKeys.HardActionDuration:
+				return 'SELF_MODERATION_COMMAND_HARD_ACTION_DURATION';
+			case AKeys.ThresholdMaximum:
+				return 'SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM';
+			case AKeys.ThresholdDuration:
+				return 'SELF_MODERATION_COMMAND_THRESHOLD_DURATION';
+			default:
+				throw new Error('Unexpected.');
+		}
+	}
+
+	private displaySoftAction(message: KlasaMessage, softAction: number) {
+		const actions: string[] = [];
+		if (this.has(softAction, ASKeys.Alert)) actions.push(message.language.get('SELF_MODERATION_SOFT_ACTION_ALERT'));
+		if (this.has(softAction, ASKeys.Log)) actions.push(message.language.get('SELF_MODERATION_SOFT_ACTION_LOG'));
+		if (this.has(softAction, ASKeys.Delete)) actions.push(message.language.get('SELF_MODERATION_SOFT_ACTION_DELETE'));
+		return actions;
+	}
+
 	private displayHardAction(hardAction: SelfModeratorHardActionFlags | null) {
 		switch (hardAction) {
-			case SelfModeratorHardActionFlags.Ban: return 'Ban';
-			case SelfModeratorHardActionFlags.Kick: return 'Kick';
-			case SelfModeratorHardActionFlags.Mute: return 'Mute';
-			case SelfModeratorHardActionFlags.SoftBan: return 'SoftBan';
-			case SelfModeratorHardActionFlags.Warning: return 'Warning';
-			default: return 'None';
+			case SelfModeratorHardActionFlags.Ban: return 'SELF_MODERATION_HARD_ACTION_BAN';
+			case SelfModeratorHardActionFlags.Kick: return 'SELF_MODERATION_HARD_ACTION_KICK';
+			case SelfModeratorHardActionFlags.Mute: return 'SELF_MODERATION_HARD_ACTION_MUTE';
+			case SelfModeratorHardActionFlags.SoftBan: return 'SELF_MODERATION_HARD_ACTION_SOFTBAN';
+			case SelfModeratorHardActionFlags.Warning: return 'SELF_MODERATION_HARD_ACTION_WARNING';
+			default: return 'SELF_MODERATION_HARD_ACTION_NONE';
 		}
 	}
 
@@ -186,6 +217,19 @@ export abstract class SelfModerationCommand extends Command {
 
 	private toggle(bitfields: number, bitfield: number) {
 		return this.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
+	}
+
+	private manageAdder(message: KlasaMessage) {
+		const [maximum, duration] = message.guild!.settings.pluck(this.keyThresholdMaximum, this.keyThresholdDuration);
+		const adder = message.guild!.security.adders[this.$adder];
+		if (!maximum || !duration) {
+			if (adder !== null) message.guild!.security.adders[this.$adder] = null;
+		} else if (adder === null) {
+			message.guild!.security.adders[this.$adder] = new Adder(maximum, duration);
+		} else {
+			adder.maximum = maximum;
+			adder.duration = duration;
+		}
 	}
 
 	protected abstract $adder: keyof GuildSecurity['adders'];

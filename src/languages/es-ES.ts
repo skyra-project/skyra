@@ -2469,6 +2469,46 @@ export default class extends Language {
 		 * #################################
 		 */
 
+		SELF_MODERATION_COMMAND_ENABLED: () => `${GREENTICK} Successfully enabled sub-system.`,
+		SELF_MODERATION_COMMAND_DISABLED: () => `${GREENTICK} Successfully disabled sub-system.`,
+		SELF_MODERATION_COMMAND_SOFT_ACTION: value => value
+			? `${GREENTICK} Successfully set soft-actions to: \`${value}\``
+			: `${GREENTICK} Successfully disabled soft-actions.`,
+		SELF_MODERATION_COMMAND_HARD_ACTION: value => `${GREENTICK} Successfully set hard action: ${value}`,
+		SELF_MODERATION_COMMAND_HARD_ACTION_DURATION: value => value
+			? `${GREENTICK} Successfully set the hard action appeal timer to: ${duration(value)}`
+			: `${GREENTICK} Successfully removed the hard action appeal timer.`,
+		SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM: value => value
+			? `${GREENTICK} Successfully set the threshold maximum to: ${value}`
+			: `${GREENTICK} Successfully removed the threshold maximum, hard actions will not longer take place.`,
+		SELF_MODERATION_COMMAND_THRESHOLD_DURATION: value => value
+			? `${GREENTICK} Successfully set the threshold duration to: ${duration(value)}`
+			: `${GREENTICK} Successfully removed the threshold duration, hard actions will not longer take place.`,
+		SELF_MODERATION_COMMAND_SHOW: (kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration) => [
+			`Enabled      : ${kEnabled}`,
+			`Soft-Actions`,
+			` - Alert     : ${kAlert}`,
+			` - Log       : ${kLog}`,
+			` - Delete    : ${kDelete}`,
+			`Hard-Action`,
+			` - Type      : ${kHardAction}`,
+			` - Duration  : ${hardActionDuration === 0 ? 'Permanent' : duration(hardActionDuration)}`,
+			`Threshold`,
+			` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
+			` - Duration  : ${thresholdDuration ? duration(thresholdDuration) : 'Unset'}`
+		].join('\n'),
+		SELF_MODERATION_SOFT_ACTION_ALERT: 'Alert',
+		SELF_MODERATION_SOFT_ACTION_LOG: 'Log',
+		SELF_MODERATION_SOFT_ACTION_DELETE: 'Delete',
+		SELF_MODERATION_HARD_ACTION_BAN: 'Ban',
+		SELF_MODERATION_HARD_ACTION_KICK: 'Kick',
+		SELF_MODERATION_HARD_ACTION_MUTE: 'Mute',
+		SELF_MODERATION_HARD_ACTION_SOFTBAN: 'SoftBan',
+		SELF_MODERATION_HARD_ACTION_WARNING: 'Warning',
+		SELF_MODERATION_HARD_ACTION_NONE: 'None',
+		SELF_MODERATION_ENABLED: 'Yes',
+		SELF_MODERATION_DISABLED: 'No',
+
 		RESOLVER_DATE_SUFFIX: ' segundos',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',
 		PREFIX_REMINDER: prefix => `El prefijo de este servidor está configurado a: \`${prefix}\``,

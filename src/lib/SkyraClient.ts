@@ -3,7 +3,7 @@ import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util, Colors }
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { MasterPool, R } from 'rethinkdb-ts';
 import { Client as VezaClient } from 'veza';
-import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK } from '../../config';
+import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT } from '../../config';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { MemberGateway } from './structures/MemberGateway';
 import { clientOptions } from './util/constants';
@@ -99,7 +99,7 @@ export class SkyraClient extends KlasaClient {
 		this.registerStore(this.ipcMonitors);
 
 		if (!this.options.dev) {
-			this.ipc.connectTo(9997)
+			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
 		}
 	}

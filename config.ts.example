@@ -10,6 +10,7 @@ import ApiResponse from './src/lib/structures/api/ApiResponse';
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : DEV;
+export const EVLYN_PORT = 3100;
 
 export const NAME = 'Skyra';
 export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';

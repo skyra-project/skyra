@@ -843,7 +843,7 @@ klasa-decorators@^0.0.1:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/805502d573689f316323a1923737ae4f54b7d713"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/c2d3017f9f617e1446ee459cc4f5400c0dace01b"
   dependencies:
     fs-nextra "^0.4.5"
 

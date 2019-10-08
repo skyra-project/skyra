@@ -22,7 +22,7 @@ export const kActions = new Map<string, AKeys>([
 	['p', AKeys.HardAction], ['punish', AKeys.HardAction], ['punishment', AKeys.HardAction],
 	['pd', AKeys.HardActionDuration], ['punish-duration', AKeys.HardActionDuration], ['punishment-duration', AKeys.HardActionDuration],
 	['t', AKeys.ThresholdMaximum], ['tm', AKeys.ThresholdMaximum], ['threshold-maximum', AKeys.ThresholdMaximum],
-	['td', AKeys.HardActionDuration], ['threshold-duration', AKeys.ThresholdDuration],
+	['td', AKeys.ThresholdDuration], ['threshold-duration', AKeys.ThresholdDuration],
 	['s', AKeys.Show], ['sh', AKeys.Show], ['show', AKeys.Show], ['display', AKeys.Show]
 ]);
 

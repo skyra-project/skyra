@@ -182,6 +182,9 @@ export class ModerationManagerEntry {
 	}
 
 	public setDuration(value: string | number) {
+		// If this cannot be reversed, skip
+		if (!this.temporable) return this;
+
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
 		if (!this.duration || this.duration > TIME.YEAR) this.duration = null;

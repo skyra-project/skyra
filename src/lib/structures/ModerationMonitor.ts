@@ -13,24 +13,29 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
-		const filter = message.guild!.settings.get(this.softPunishmentPath) as number;
-		const bitField = new SelfModeratorBitField(filter);
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
+		const filter = message.guild!.settings.get(this.softPunishmentPath) as number;
+		const bitField = new SelfModeratorBitField(filter);
 		this.processSoftPunishment(message, bitField, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
+
+		const maximum = message.guild!.settings.get(this.hardPunishmentPath.adderMaximum) as number;
+		if (!maximum) return;
+
+		const duration = message.guild!.settings.get(this.hardPunishmentPath.adderDuration) as number;
+		if (!duration) return;
+
 		const $adder = this.hardPunishmentPath.adder;
-		if (message.guild!.security[$adder] === null) {
-			const maximum = message.guild!.settings.get(this.hardPunishmentPath.adderMaximum) as number;
-			const duration = message.guild!.settings.get(this.hardPunishmentPath.adderDuration) as number;
-			message.guild!.security[$adder] = new Adder(maximum, duration);
+		if (message.guild!.security.adders[$adder] === null) {
+			message.guild!.security.adders[$adder] = new Adder(maximum, duration);
 		}
 
 		try {
 			const points = typeof preProcessed === 'number' ? preProcessed : 1;
-			message.guild!.security[$adder]!.add(message.author!.id, points);
+			message.guild!.security.adders[$adder]!.add(message.author!.id, points);
 		} catch {
 			await this.processHardPunishment(message);
 		}

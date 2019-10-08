@@ -24,7 +24,7 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 			throw new Error('Limit Reached');
 		}
 
-		for (let i = 0; i < times; i++)	this.push({ id, end: Date.now() + this.duration });
+		for (let i = 0; i < times; i++) this.push({ id, end: Date.now() + this.duration });
 		return amount;
 	}
 

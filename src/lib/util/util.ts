@@ -516,9 +516,9 @@ export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>)
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {
 	if (typeof path === 'string') path = path.split('.');
 
-	let value: unknown;
+	let value: unknown = object;
 	for (const key of path) {
-		value = object[key];
+		value = (value as Record<string, unknown>)[key];
 		if (value === null || value === undefined) return value;
 	}
 	return value;

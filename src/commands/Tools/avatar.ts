@@ -7,7 +7,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['a', 'ava'],
+			aliases: ['a', 'av', 'ava'],
 			cooldown: 15,
 			description: language => language.get('COMMAND_AVATAR_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_AVATAR_EXTENDED'),

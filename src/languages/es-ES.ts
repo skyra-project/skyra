@@ -355,8 +355,8 @@ export default class extends Language {
 		SETTINGS_ROLES_SUBSCRIBER: 'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
 		SETTINGS_SELFMOD_ATTACHMENT: 'Whether or not the attachment filter is enabled.',
 		SETTINGS_SELFMOD_ATTACHMENTMAXIMUM: 'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
-		SETTINGS_SELFMOD_CAPSMINIMUM: 'The minimum amount of characters the message must have before trying to delete it. You must enable it with the `setCapsFilter` command.',
-		SETTINGS_SELFMOD_CAPSTHRESHOLD: 'The minimum percentage of caps allowed before taking action. You must enable it with the `setCapsFilter` command.',
+		SETTINGS_SELFMOD_CAPSMINIMUM: 'The minimum amount of characters the message must have before trying to delete it. You must enable it with the `capsMode` command.',
+		SETTINGS_SELFMOD_CAPSTHRESHOLD: 'The minimum percentage of caps allowed before taking action. You must enable it with the `capsMode` command.',
 		SETTINGS_SELFMOD_IGNORECHANNELS: 'The channels I will ignore, be careful any channel configured will have all auto-moderation systems (CapsFilter, InviteLinks, and NoMentionSpam) deactivated.',
 		SETTINGS_SELFMOD_INVITELINKS: 'Whether or not I should delete invite links or not.',
 		SETTINGS_SELFMOD_RAID: 'Whether or not I should kick users when they try to raid the server.',
@@ -865,35 +865,123 @@ export default class extends Language {
 		}),
 
 		/**
-		 * ###############################
-		 * MANAGEMENT/CAPS FILTER COMMANDS
+		 * ##################################
+		 * MANAGEMENT/MESSAGE FILTER COMMANDS
 		 */
 
-		COMMAND_SETCAPSFILTER_DESCRIPTION: 'Manage this guild\'s flags for the caps filter.',
-		COMMAND_SETCAPSFILTER_EXTENDED: builder.display('setCapsFilter', {
-			extendedHelp: `There are three flags in the caps filter, each enable or disable a function:
-					- **Alert**: Whether or not the user should get a notification in the channel after reaching the threshold.
-					- **Log**: Whether or not the caps filter should log to the moderation log channel when it triggers.
-					- **Delete**: Whether or not the caps filter should delete the message.`
+		COMMAND_CAPITALSMODE_DESCRIPTION: 'Manage this guild\'s flags for the caps filter.',
+		COMMAND_CAPITALSMODE_EXTENDED: builder.display('capitalsMode', {
+			extendedHelp: `The capitalsMode command manages the behaviour of the caps system.
+				The minimum amount of characters before filtering can be set with \`Skyra, settings set selfmod.capitals.minimum <number>\`.
+				The percentage of uppercase letters can be set with \`Skyra, settings set selfmod.capitals.maximum <number>\`.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
 		}, true),
-
-		/**
-		 * ###############################
-		 * MANAGEMENT/WORD FILTER COMMANDS
-		 */
-
 		COMMAND_FILTER_DESCRIPTION: 'Manage this guild\'s word blacklist.',
 		COMMAND_FILTER_EXTENDED: builder.display('filter', {
-			extendedHelp: `The filter command manages the word blacklist for this server and must have a filter mode set up, check \`Skyra, help setFilterMode\`.
+			extendedHelp: `The filter command manages the word blacklist for this server and must have a filter mode set up, check \`Skyra, help filterMode\`.
 					Skyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters
 					duplicated characters for enhanced filtering.`
 		}),
-		COMMAND_SETFILTERMODE_DESCRIPTION: 'Manage this guild\'s word blacklist mode.',
-		COMMAND_SETFILTERMODE_EXTENDED: builder.display('setFilterMode', {
-			extendedHelp: `The setFilterMode command manages the mode of the word blacklist, in Skyra, there are three modes: **Disabled** (the default value)
-					which as its name suggests, it disables the word filter; **DeleteOnly**, which deletes the message; **LogOnly**, which does not delete the message
-					but instead sends a modlog; and **All**, which enables both message deletion and logging.`,
-			reminder: 'Both **LogOnly** and **All** modes require the key `channels.modlogs` to be set up.'
+		COMMAND_FILTERMODE_DESCRIPTION: 'Manage this server\'s word filter modes.',
+		COMMAND_FILTERMODE_EXTENDED: builder.display('filterMode', {
+			extendedHelp: `The filterMode command manages the behaviour of the word filter system.
+				Run \`Skyra, help filter\` for how to add words.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
+		COMMAND_INVITEMODE_DESCRIPTION: 'Manage the behaviour for the invite link filter.',
+		COMMAND_INVITEMODE_EXTENDED: builder.display('inviteMode', {
+			extendedHelp: `The inviteMode command manages the behaviour of the word filter system.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
+		COMMAND_NEWLINEMODE_DESCRIPTION: '',
+		COMMAND_NEWLINEMODE_EXTENDED: builder.display('newLineMode', {
+			extendedHelp: `The newLineMode command manages the behaviour of the new line filter system.
+				The maximum amount of lines allowed can be set with \`Skyra, settings set selfmod.newlines.minimum <number>\``,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
 		}),
 
 		/**
@@ -1965,26 +2053,6 @@ export default class extends Language {
 		COMMAND_FILTER_RESET: `${GREENTICK} Success! The filter has been reset.`,
 		COMMAND_FILTER_SHOW_EMPTY: 'The list of filtered words is empty!',
 		COMMAND_FILTER_SHOW: words => `There is the list of all filtered words: ${words}`,
-		COMMAND_SETFILTERMODE_EQUALS: 'The word filter mode did not change, it was already set up with that mode.',
-		COMMAND_SETFILTERMODE_ALERT: enabled => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETFILTERMODE_LOG: enabled => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETFILTERMODE_DELETE: enabled => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETFILTERMODE_SHOW: (falert, flog, fdelete) => [
-			`= Word Filter Flags =`, '',
-			`Alert  :: ${falert ? 'Enabled' : 'Disabled'}`,
-			`Log    :: ${flog ? 'Enabled' : 'Disabled'}`,
-			`Delete :: ${fdelete ? 'Enabled' : 'Disabled'}`
-		].join('\n'),
-		COMMAND_SETCAPSFILTER_SHOW: (falert, flog, fdelete) => [
-			`= Caps Filter Flags =`, '',
-			`Alert  :: ${falert ? 'Enabled' : 'Disabled'}`,
-			`Log    :: ${flog ? 'Enabled' : 'Disabled'}`,
-			`Delete :: ${fdelete ? 'Enabled' : 'Disabled'}`
-		].join('\n'),
-		COMMAND_SETCAPSFILTER_EQUALS: 'The caps filter flags did not change, it was already set up with that mode.',
-		COMMAND_SETCAPSFILTER_ALERT: enabled => `The Alert flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETCAPSFILTER_LOG: enabled => `The Log flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
-		COMMAND_SETCAPSFILTER_DELETE: enabled => `The Delete flag for the caps filter has been ${enabled ? 'enabled' : 'disabled'}.`,
 		COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE: 'You must input a value for this type.',
 		COMMAND_MANAGEATTACHMENTS_INVALID_ACTION: 'The type must be `ban`, `kick`, `mute`, or `softban`.',
 		COMMAND_MANAGEATTACHMENTS_MAXIMUM: maximum => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}.`,

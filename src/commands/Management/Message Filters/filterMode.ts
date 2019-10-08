@@ -15,8 +15,9 @@ export default class extends SelfModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_SETFILTERMODE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SETFILTERMODE_EXTENDED')
+			aliases: ['word-filter-mode'],
+			description: language => language.get('COMMAND_FILTERMODE_DESCRIPTION'),
+			extendedHelp: language => language.get('COMMAND_FILTERMODE_EXTENDED')
 		});
 	}
 

@@ -196,8 +196,8 @@ SkyraClient.defaultGuildSchema
 		.add('attachmentPunishmentDuration', 'Integer', { configurable: false })
 		.add('capitals', capitals => capitals
 			.add('enabled', 'Boolean', { 'default': false })
-			.add('minimum', 'Integer', { 'default': 10, 'min': 0, 'max': 2000 })
-			.add('maximum', 'Integer', { 'default': 0, 'min': 0, 'max': 2000 })
+			.add('minimum', 'Integer', { 'default': 15, 'min': 5, 'max': 2000 })
+			.add('maximum', 'Integer', { 'default': 50, 'min': 10, 'max': 100 })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
@@ -205,7 +205,7 @@ SkyraClient.defaultGuildSchema
 			.add('thresholdDuration', 'Integer', { 'default': 60, 'min': 0, 'max': 120000, 'configurable': false }))
 		.add('newlines', newline => newline
 			.add('enabled', 'Boolean', { 'default': false })
-			.add('maximum', 'Integer', { 'default': 0, 'min': 0, 'max': 2000 })
+			.add('maximum', 'Integer', { 'default': 20, 'min': 10, 'max': 2000 })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })

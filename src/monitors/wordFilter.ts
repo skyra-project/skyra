@@ -24,7 +24,7 @@ export default class extends ModerationMonitor {
 
 	protected preProcess(message: KlasaMessage) {
 		const content = getContent(message);
-		if (content === null) return;
+		if (content === null) return null;
 
 		return this.filter(remove(content), message.guild!.security.regexp!);
 	}

@@ -85,7 +85,7 @@ export class SkyraClient extends KlasaClient {
 	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));
 
-		const { members = {} } = this.options.gateways;
+		const { members = {} } = (this.options.settings.gateways || {});
 		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
 		this.gateways
 			.register(new MemberGateway(this, Databases.Members, members))
@@ -295,6 +295,10 @@ declare module 'klasa' {
 	export interface PieceDefaults {
 		ipcMonitors?: PieceOptions;
 		rawEvents?: PieceOptions;
+	}
+
+	export interface GatewaysOptions {
+		members?: GatewayOptions;
 	}
 
 }

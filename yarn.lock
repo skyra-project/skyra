@@ -397,7 +397,7 @@ diff@^4.0.1:
 
 "discord.js@github:discordjs/discord.js":
   version "12.0.0-dev"
-  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/e936f071c04557e7349ea193de3a17e1dc963562"
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/a8f06f251f1af87650711d4c163ed32d909d4e18"
   dependencies:
     "@discordjs/collection" "^0.1.1"
     abort-controller "^3.0.0"
@@ -843,7 +843,7 @@ klasa-decorators@^0.0.1:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/a7ef1a9d4fc2a1ca7bef85976795e65db2281009"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/805502d573689f316323a1923737ae4f54b7d713"
   dependencies:
     fs-nextra "^0.4.5"
 

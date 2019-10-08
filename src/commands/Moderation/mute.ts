@@ -44,7 +44,7 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, _: User, member: SkyraGuildMember, reason: string) {
-		return mute(message.member!, member, reason);
+		return mute(message.member!, member, { reason });
 	}
 
 	public async posthandle() { /* Do nothing */ }

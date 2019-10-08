@@ -414,7 +414,7 @@ export function muteGetRoles(member: GuildMember): string[] {
  * @param target The member to mute
  * @param reason The reason for the mute
  */
-export async function mute(moderator: GuildMember, target: GuildMember, reason?: string) {
+export async function mute(moderator: GuildMember, target: GuildMember, { reason, duration }: MuteOptions = {}) {
 	const role = target.guild!.roles.get(target.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
 	if (!role) throw target.guild!.language.get('COMMAND_MUTE_UNCONFIGURED');
 
@@ -438,6 +438,8 @@ export async function mute(moderator: GuildMember, target: GuildMember, reason?:
 		.setType(ModerationTypeKeys.Mute)
 		.setReason(reason)
 		.setExtraData(roles);
+
+	if (duration) modlog.setDuration(duration);
 	return (await modlog.create())!;
 }
 
@@ -586,7 +588,12 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 	);
 }
 
-interface UtilOneToTenEntry {
+export interface UtilOneToTenEntry {
 	emoji: string;
 	color: number;
+}
+
+export interface MuteOptions {
+	reason?: string;
+	duration?: number | string | null;
 }

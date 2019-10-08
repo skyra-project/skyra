@@ -88,7 +88,8 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onMute(message: KlasaMessage) {
-		await this.createAction(message, () => floatPromise(this, mute(message.guild!.me!, message.member!)));
+		const duration = message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null;
+		await this.createAction(message, () => floatPromise(this, mute(message.guild!.me!, message.member!, { duration })));
 	}
 
 	protected async onSoftBan(message: KlasaMessage) {

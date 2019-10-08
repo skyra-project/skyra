@@ -30,7 +30,7 @@ export default class extends Monitor {
 						.catch(error => this.client.emit(Events.ApiError, error)));
 					break;
 				case 0b010: await this.actionAndSend(message, ModerationTypeKeys.Mute, () =>
-					mute(message.guild!.me!, message.member!, 'AttachmentFilter: Threshold Reached.')
+					mute(message.guild!.me!, message.member!, { reason: 'AttachmentFilter: Threshold Reached.' })
 						.catch(error => this.client.emit(Events.ApiError, error)), false);
 					break;
 				case 0b011: await this.actionAndSend(message, ModerationTypeKeys.Softban, () =>

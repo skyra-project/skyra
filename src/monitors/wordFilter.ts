@@ -7,6 +7,7 @@ import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationM
 
 export default class extends ModerationMonitor {
 
+	protected keyEnabled: string = GuildSettings.Selfmod.Filter.Enabled;
 	protected softPunishmentPath: string = GuildSettings.Selfmod.Filter.SoftAction;
 	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Filter.HardAction,

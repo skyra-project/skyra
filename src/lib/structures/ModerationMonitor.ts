@@ -11,14 +11,13 @@ import { MessageEmbed } from 'discord.js';
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	public async run(message: KlasaMessage) {
-		const filter = message.guild!.settings.get(this.softPunishmentPath) as number;
-		if (filter === 0) return;
-
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
+		const filter = message.guild!.settings.get(this.softPunishmentPath) as number;
 		const bitField = new SelfModeratorBitField(filter);
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
+
 		this.processSoftPunishment(message, bitField, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
@@ -44,7 +43,8 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			&& message.webhookID === null
 			&& message.type === 'DEFAULT'
 			&& message.author.id !== this.client.user!.id
-			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& message.guild.settings.get(this.keyEnabled) as boolean
+			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {
@@ -123,6 +123,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, value));
 	}
 
+	protected abstract keyEnabled: string;
 	protected abstract softPunishmentPath: string;
 	protected abstract hardPunishmentPath: HardPunishment | null;
 	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;

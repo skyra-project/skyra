@@ -20,6 +20,7 @@ const OFFSET = 0b100000;
 
 export default class extends ModerationMonitor {
 
+	protected keyEnabled: string = GuildSettings.Selfmod.Capitals.Enabled;
 	protected softPunishmentPath: string = GuildSettings.Selfmod.Capitals.SoftAction;
 	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Capitals.HardAction,

@@ -1,46 +1,23 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { CommandStore } from 'klasa';
+import { SelfModerationCommand } from '../../../lib/structures/SelfModerationCommand';
+import { GuildSecurity } from '../../../lib/util/Security/GuildSecurity';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
-const VALUES = {
-	'alert': { value: 1 << 2, key: 'COMMAND_SETCAPSFILTER_ALERT' },
-	'delete': { value: 1 << 0, key: 'COMMAND_SETCAPSFILTER_DELETE' },
-	'log': { value: 1 << 1, key: 'COMMAND_SETCAPSFILTER_LOG' }
-};
+export default class extends SelfModerationCommand {
 
-export default class extends SkyraCommand {
+	protected $adder: keyof GuildSecurity['adders'] = 'capitals';
+	protected keyEnabled = GuildSettings.Selfmod.Capitals.Enabled;
+	protected keySoftAction = GuildSettings.Selfmod.Capitals.SoftAction;
+	protected keyHardAction = GuildSettings.Selfmod.Capitals.HardAction;
+	protected keyHardActionDuration = GuildSettings.Selfmod.Capitals.HardActionDuration;
+	protected keyThresholdMaximum = GuildSettings.Selfmod.Capitals.ThresholdMaximum;
+	protected keyThresholdDuration = GuildSettings.Selfmod.Capitals.ThresholdDuration;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			cooldown: 5,
 			description: language => language.get('COMMAND_SETCAPSFILTER_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SETCAPSFILTER_EXTENDED'),
-			permissionLevel: 5,
-			runIn: ['text'],
-			usage: '<delete|log|alert|show:default> [enable|disable]',
-			usageDelim: ' '
+			extendedHelp: language => language.get('COMMAND_SETCAPSFILTER_EXTENDED')
 		});
-	}
-
-	public async run(message: KlasaMessage, [type, mode = 'enable']: [string, string?]) {
-		const capsfilter = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.SoftAction) as GuildSettings.Selfmod.Capitals.SoftAction;
-		if (type === 'show') {
-			return message.sendLocale('COMMAND_SETCAPSFILTER_SHOW', [
-				capsfilter & VALUES.alert.value,
-				capsfilter & VALUES.log.value,
-				capsfilter & VALUES.delete.value
-			], { code: 'asciidoc' });
-		}
-
-		const { value, key } = VALUES[type];
-		const enable = mode === 'enable';
-		const changed = enable
-			? capsfilter | value
-			: capsfilter & ~value;
-		if (capsfilter === changed) throw message.language.get('COMMAND_SETCAPSFILTER_EQUALS');
-		await message.guild!.settings.update(GuildSettings.Selfmod.Capitals.SoftAction, changed);
-
-		return message.sendLocale(key, [enable]);
 	}
 
 }

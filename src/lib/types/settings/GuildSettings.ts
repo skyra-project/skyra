@@ -110,6 +110,8 @@ export namespace GuildSettings {
 		export const AttachmentPunishmentDuration = 'selfmod.attachmentPunishmentDuration';
 
 		export namespace Capitals {
+			export const Enabled = 'selfmod.capitals.enabled';
+			export type Enabled = boolean;
 			export const Minimum = 'selfmod.capitals.minimum';
 			export type Minimum = number;
 			export const Maximum = 'selfmod.capitals.maximum';
@@ -127,6 +129,8 @@ export namespace GuildSettings {
 		}
 
 		export namespace NewLines {
+			export const Enabled = 'selfmod.newlines.enabled';
+			export type Enabled = boolean;
 			export const Maximum = 'selfmod.newlines.maximum';
 			export type Maximum = number;
 			export const SoftAction = 'selfmod.newlines.softAction';
@@ -142,6 +146,8 @@ export namespace GuildSettings {
 		}
 
 		export namespace Invites {
+			export const Enabled = 'selfmod.invites.enabled';
+			export type Enabled = boolean;
 			export const SoftAction = 'selfmod.invites.softAction';
 			export type SoftAction = number;
 			export const HardAction = 'selfmod.invites.hardAction';
@@ -157,6 +163,8 @@ export namespace GuildSettings {
 		export namespace Filter {
 			export const Raw = 'selfmod.filter.raw';
 			export type Raw = readonly string[];
+			export const Enabled = 'selfmod.filter.enabled';
+			export type Enabled = boolean;
 			export const SoftAction = 'selfmod.filter.softAction';
 			export type SoftAction = number;
 			export const HardAction = 'selfmod.filter.hardAction';

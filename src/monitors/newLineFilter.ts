@@ -7,6 +7,7 @@ const NEW_LINE = '\n';
 
 export default class extends ModerationMonitor {
 
+	protected keyEnabled: string = GuildSettings.Selfmod.NewLines.Enabled;
 	protected softPunishmentPath: string = GuildSettings.Selfmod.NewLines.SoftAction;
 	protected hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.NewLines.HardAction,

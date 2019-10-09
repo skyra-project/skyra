@@ -2634,7 +2634,7 @@ export default class extends Language {
 		GUILD_SETTINGS_ROLES_MUTED: 'Necesitas configurar un rol de muteo. Utiliza `Skyra, settings set roles.muted <NombreDeRol>`.',
 		GUILD_MUTE_NOT_FOUND: 'He fallado al buscar un caso de moderación que justifique el mute del usuario. O el usuario nunca ha sido muteado, o todos sus muteos están reclamados.',
 		GUILD_BANS_EMPTY: 'No hay baneos registrados en este servidor.',
-		GUILD_BANS_NOT_FOUND: 'Por favor, mencione un usuario o escriba su id de usuario.',
+		GUILD_BANS_NOT_FOUND: 'Intenté y fallé al buscar el usuario. ¿Estás seguro de que está expulsado/a?.',
 		CHANNEL_NOT_READABLE: `Lo siento, pero necesito los permisos **${PERMS.VIEW_CHANNEL}** y **${PERMS.READ_MESSAGE_HISTORY}** para poder leer los mensajes.`,
 
 		USER_NOT_IN_GUILD: 'El usuario no está en este servidor.',

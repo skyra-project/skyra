@@ -3019,7 +3019,7 @@ export default class extends Language {
 		GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
 		GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
 		GUILD_BANS_EMPTY: 'There are no bans registered in this server.',
-		GUILD_BANS_NOT_FOUND: 'Please, write a valid user ID or tag.',
+		GUILD_BANS_NOT_FOUND: 'I tried and failed to find this user from the ban list. Are you certain this user is banned?',
 		CHANNEL_NOT_READABLE: `I am sorry, but I need the permissions **${PERMS.VIEW_CHANNEL}** and **${PERMS.READ_MESSAGE_HISTORY}**`,
 
 		USER_NOT_IN_GUILD: 'This user is not in this server.',

@@ -20,7 +20,13 @@ export default class extends SkyraCommand {
 			requiredSettings: [],
 			runIn: ['text'],
 			subcommands: true,
-			usage: '(top|random:default)'
+			usage: '(top|random:default) (duration:timespan)',
+			usageDelim: ' '
+		});
+
+		this.createCustomResolver('duration', (arg, possible, message, [subcommand]) => {
+			if (!arg || subcommand === 'random') return undefined;
+			return this.client.arguments.get('timespan').run(arg, possible, message);
 		});
 	}
 
@@ -76,7 +82,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage(starredMessage.content, starredMessage.embeds[0]);
 	}
 
-	public async top(message: KlasaMessage) {
+	public async top(message: KlasaMessage, [timespan]: [number?]) {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
 		const r = this.client.providers.default.db;
 		const starboardMessages = await r
@@ -87,14 +93,19 @@ export default class extends SkyraCommand {
 				starMessage('disabled').ne(true),
 				starMessage('stars').ge(min)
 			))
-			.pluck('messageID', 'guildID', 'channelID', 'userID', 'stars')
+			.pluck('messageID', 'guildID', 'channelID', 'starMessageID', 'userID', 'stars')
 			.getCursor() as RCursor<StarPluck>;
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
 		const topReceivers: Map<string, number> = new Map();
 
+		const minimum = timespan ? Date.now() - timespan : null;
 		for await (const starboardMessage of starboardMessages as unknown as AsyncIterable<StarPluck>) {
+			if (minimum) {
+				const postedAt = this.decodeSnowflake(starboardMessage.starMessageID);
+				if (postedAt < minimum) continue;
+			}
 			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
 			const maskedUrl = `[${message.language.get('JUMPTO')}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
@@ -117,6 +128,11 @@ export default class extends SkyraCommand {
 			.setTimestamp());
 	}
 
+	private decodeSnowflake(snowflake: string) {
+		// eslint-disable-next-line no-undef
+		return (BigInt(snowflake) >> 22n) + 1420070400000n;
+	}
+
 	private makeStarLink(guildID: string, channeLID: string, messageID: string) {
 		return `https://canary.discordapp.com/channels/${guildID}/${channeLID}/${messageID}`;
 	}
@@ -127,6 +143,7 @@ interface StarPluck {
 	messageID: string;
 	guildID: string;
 	channelID: string;
+	starMessageID: string;
 	userID: string;
 	stars: number;
 }

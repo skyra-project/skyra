@@ -1,11 +1,11 @@
 import { GuildMember, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import { Events } from '../types/Enums';
 import { ModerationTypeKeys } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
-import { SkyraCommand } from './SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
-interface ModerationCommandOptions extends CommandOptions {
+interface ModerationCommandOptions extends SkyraCommandOptions {
 	modType: ModerationTypeKeys;
 	requiredMember?: boolean;
 }

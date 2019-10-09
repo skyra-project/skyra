@@ -15,7 +15,7 @@ export default class extends ModerationCommand {
 			modType: ModerationTypeKeys.UnMute,
 			permissionLevel: 5,
 			requiredMember: true,
-			requiredPermissions: ['MANAGE_ROLES']
+			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
 	}
 

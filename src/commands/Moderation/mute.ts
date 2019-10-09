@@ -20,7 +20,7 @@ export default class extends ModerationCommand {
 			modType: ModerationTypeKeys.Mute,
 			permissionLevel: 5,
 			requiredMember: true,
-			requiredPermissions: ['MANAGE_ROLES']
+			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
 	}
 

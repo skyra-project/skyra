@@ -13,7 +13,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.get('COMMAND_STICKYROLES_EXTENDED'),
 			permissionLevel: 6,
 			quotedStringSupport: true,
-			requiredPermissions: ['MANAGE_ROLES'],
+			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<show|add|remove|reset> (user:username) (role:rolename)',

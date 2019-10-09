@@ -2542,6 +2542,19 @@ export default class extends Language {
 
 		/**
 		 * #################################
+		 * #          SERIALIZERS          #
+		 * #################################
+		 */
+
+		SERIALIZER_PERMISSION_NODE_INVALID: 'Invalid data.',
+		SERIALIZER_PERMISSION_NODE_INVALID_TARGET: 'No data could be found from the ID.',
+		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: command => `The command \`${command}\` does not exist or is invalid.`,
+		SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND: command => `You have set \`${command}\` twice, either allow it, or deny it.`,
+		SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS: 'For security, the everyone role cannot have allows.',
+		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: command => `For security and for me to work properly, you cannot deny the usage for the command \`${command}\`.`,
+
+		/**
+		 * #################################
 		 * #             UTILS             #
 		 * #################################
 		 */

@@ -9,6 +9,13 @@ export namespace GuildSettings {
 	export type Tags = readonly [string, string][];
 	export const Tags = 'tags';
 
+	export namespace Permissions {
+		export type Users = readonly PermissionsNode[];
+		export const Users = 'permissions.users';
+		export type Roles = readonly PermissionsNode[];
+		export const Roles = 'permissions.roles';
+	}
+
 	export namespace Channels {
 		export type Announcements = string;
 		export const Announcements = 'channels.announcements';
@@ -223,6 +230,12 @@ export namespace GuildSettings {
 		export const Includes = 'trigger.includes';
 	}
 
+}
+
+export interface PermissionsNode {
+	id: string;
+	allow: readonly string[];
+	deny: readonly string[];
 }
 
 export interface DisabledCommandChannel {

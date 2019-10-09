@@ -30,7 +30,10 @@ export default class extends Inhibitor {
 			missing = this.impliedPermissions.missing(command.requiredPermissions, false);
 		}
 
-		if (missing.length) throw message.language.get('INHIBITOR_MISSING_BOT_PERMS', missing);
+		if (missing.length) {
+			const permissions = message.language.PERMISSIONS;
+			throw message.language.get('INHIBITOR_MISSING_BOT_PERMS', missing.map(permission => permissions[permission]).join(', '));
+		}
 	}
 
 }

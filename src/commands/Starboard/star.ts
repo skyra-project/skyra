@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 			requiredSettings: [],
 			runIn: ['text'],
 			subcommands: true,
-			usage: '(top|random:default) (duration:timespan)',
+			usage: '(top|random:default) (duration:duration)',
 			usageDelim: ' '
 		});
 
@@ -102,7 +102,7 @@ export default class extends SkyraCommand {
 
 		const minimum = timespan ? Date.now() - timespan : null;
 		for await (const starboardMessage of starboardMessages as unknown as AsyncIterable<StarPluck>) {
-			if (minimum) {
+			if (minimum !== null) {
 				const postedAt = this.decodeSnowflake(starboardMessage.starMessageID);
 				if (postedAt < minimum) continue;
 			}

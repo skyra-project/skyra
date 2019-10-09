@@ -1124,6 +1124,13 @@ export default class extends Language {
 					appealed.`,
 			examples: ['', '@Pete']
 		}),
+		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
+		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
+			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
+					for a specific user. This command uses a reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}**
+					to execute correctly.`,
+			examples: ['', '@Pete']
+		}),
 		COMMAND_WARNINGS_DESCRIPTION: 'List all warnings from this guild or from a user.',
 		COMMAND_WARNINGS_EXTENDED: builder.display('warnings', {
 			extendedHelp: `This command shows either all warnings filed in this guild, or all warnings filed in this guild
@@ -2140,6 +2147,8 @@ export default class extends Language {
 			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
 			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
 			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
+		COMMAND_MUTES_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
+		COMMAND_MUTES_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'mute' : 'mutes'}.`,
 		COMMAND_WARNINGS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
 		COMMAND_WARNINGS_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
 

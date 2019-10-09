@@ -11,11 +11,12 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.get('COMMAND_BAN_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_BAN_EXTENDED'),
+			flagSupport: true,
 			modType: ModerationTypeKeys.Ban,
+			optionalDuration: true,
 			permissionLevel: 5,
 			requiredMember: false,
-			requiredPermissions: ['BAN_MEMBERS'],
-			flagSupport: true
+			requiredGuildPermissions: ['BAN_MEMBERS']
 		});
 	}
 
@@ -23,11 +24,11 @@ export default class extends ModerationCommand {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
-	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
+	public async handle(message: KlasaMessage, target: User, member: SkyraGuildMember, reason: string, _prehandled: Unlock, duration: number | null) {
 		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
-		await message.guild!.members.ban(user.id, { days: Number(message.flagArgs.day || message.flagArgs.days) || 0, reason });
+		await message.guild!.members.ban(target.id, { days: Number(message.flagArgs.day || message.flagArgs.days) || 0, reason });
 
-		return this.sendModlog(message, user, reason);
+		return this.sendModlog(message, target, reason, null, duration);
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {

@@ -12,8 +12,8 @@ export default class extends ModerationCommand {
 			extendedHelp: language => language.get('COMMAND_KICK_EXTENDED'),
 			modType: ModerationTypeKeys.Kick,
 			permissionLevel: 5,
-			requiredMember: true,
-			requiredPermissions: ['KICK_MEMBERS']
+			requiredGuildPermissions: ['KICK_MEMBERS'],
+			requiredMember: true
 		});
 	}
 

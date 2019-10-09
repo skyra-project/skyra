@@ -18,9 +18,10 @@ export default class extends ModerationCommand {
 			description: language => language.get('COMMAND_MUTE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_MUTE_EXTENDED'),
 			modType: ModerationTypeKeys.Mute,
+			optionalDuration: true,
 			permissionLevel: 5,
-			requiredMember: true,
-			requiredGuildPermissions: ['MANAGE_ROLES']
+			requiredGuildPermissions: ['MANAGE_ROLES'],
+			requiredMember: true
 		});
 	}
 
@@ -43,8 +44,8 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, _: User, member: SkyraGuildMember, reason: string) {
-		return mute(message.member!, member, { reason });
+	public async handle(message: KlasaMessage, _: User, member: SkyraGuildMember, reason: string, _prehandled: undefined, duration: number | null) {
+		return mute(message.member!, member, { reason, duration });
 	}
 
 	public async posthandle() { /* Do nothing */ }

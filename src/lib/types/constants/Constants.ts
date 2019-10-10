@@ -6,5 +6,6 @@ export enum Databases {
 	Moderation = 'moderation',
 	Polls = 'polls',
 	Starboard = 'starboard',
-	Users = 'users'
+	Users = 'users',
+	CommandCounter = 'commandCounter'
 }

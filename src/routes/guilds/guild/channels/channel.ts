@@ -29,9 +29,7 @@ export default class extends Route {
 
 		const channelID = request.params.channel;
 		const channel = guild.channels.get(channelID);
-		if (!channel) return response.error(404);
-
-		return response.json(flattenChannel(channel));
+		return channel ? response.json(flattenChannel(channel)) : response.error(404);
 	}
 
 }

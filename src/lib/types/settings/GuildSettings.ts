@@ -234,8 +234,8 @@ export namespace GuildSettings {
 
 export interface PermissionsNode {
 	id: string;
-	allow: readonly string[];
-	deny: readonly string[];
+	allow: string[];
+	deny: string[];
 }
 
 export interface DisabledCommandChannel {

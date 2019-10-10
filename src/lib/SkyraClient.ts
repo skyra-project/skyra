@@ -147,6 +147,9 @@ SkyraClient.defaultClientSchema
 SkyraClient.defaultGuildSchema
 	.add('prefix', 'string', { filter: (_: KlasaClient, value: string) => value.length > 10 })
 	.add('tags', 'any', { array: true, configurable: false })
+	.add('permissions', folder => folder
+		.add('users', 'PermissionNode', { array: true, configurable: false })
+		.add('roles', 'PermissionNode', { array: true, configurable: false }))
 	.add('channels', folder => folder
 		.add('announcements', 'TextChannel')
 		.add('greeting', 'TextChannel')

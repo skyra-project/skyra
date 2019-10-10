@@ -15,7 +15,7 @@ export default class extends SkyraCommand {
 			description: language => language.get('COMMAND_AUTOROLE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_AUTOROLE_EXTENDED'),
 			permissionLevel: 6,
-			requiredPermissions: ['MANAGE_ROLES'],
+			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<add|remove|update|show:default> (role:rolename) [points:points{0,1000000}]',

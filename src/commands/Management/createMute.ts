@@ -10,7 +10,7 @@ export default class extends SkyraCommand {
 			description: language => language.get('COMMAND_CREATEMUTE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_CREATEMUTE_EXTENDED'),
 			permissionLevel: 6,
-			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
+			requiredGuildPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			runIn: ['text']
 		});
 	}

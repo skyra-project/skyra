@@ -1071,15 +1071,21 @@ export default class extends Language {
 			],
 			examples: ['Mercy']
 		}),
-		COMMAND_CHASE_DESCRIPTION: 'How dare you ping me!?',
-		COMMAND_CHASE_EXTENDED: builder.display('chase', {
-			extendedHelp: `There are a few things that annoy kyra, one of them are **Windows 10's notifications**! Which also
-				includes mentions from Discord, hence why this command exists.`,
+		COMMAND_RANDREDDIT_DESCRIPTION: 'Retrieve a random Reddit post.',
+		COMMAND_RANDREDDIT_EXTENDED: builder.display('randreddit', {
+			extendedHelp: `This is actually something like a Russian Roulette, you can get a good meme, but you can also get a terrible meme.`,
 			explainedUsage: [
-				['pinger', 'The user who pinged Kyra.']
+				['reddit', 'The reddit to look at.']
 			],
-			examples: ['IAmInnocent'],
-			reminder: `If you mentioned kyra, you must self-execute this command against you.`
+			examples: ['discordapp']
+		}),
+		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
+		COMMAND_CHASE_EXTENDED: builder.display('chase', {
+			extendedHelp: `Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!`,
+			explainedUsage: [
+				['pinger', 'The user who you want to chase.']
+			],
+			examples: ['IAmInnocent']
 		}),
 		COMMAND_SHINDEIRU_DESCRIPTION: 'Omae wa mou shindeiru.',
 		COMMAND_SHINDEIRU_EXTENDED: builder.display('shindeiru', {
@@ -1141,6 +1147,13 @@ export default class extends Language {
 		COMMAND_HISTORY_EXTENDED: builder.display('history', {
 			extendedHelp: `This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been
 					appealed.`,
+			examples: ['', '@Pete']
+		}),
+		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
+		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
+			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
+					for a specific user. This command uses a reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}**
+					to execute correctly.`,
 			examples: ['', '@Pete']
 		}),
 		COMMAND_WARNINGS_DESCRIPTION: 'List all warnings from this guild or from a user.',
@@ -2155,6 +2168,11 @@ export default class extends Language {
 		 * MISC COMMANDS
 		 */
 
+		COMMAND_RANDREDDIT_BANNED: 'This reddit is banned and should not be used.',
+		COMMAND_RANDREDDIT_FAIL: 'I failed to retrieve data, are you sure you wrote the reddit correctly?',
+		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
+		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
+		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
 
@@ -2168,6 +2186,8 @@ export default class extends Language {
 			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
 			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
 			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
+		COMMAND_MUTES_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
+		COMMAND_MUTES_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'mute' : 'mutes'}.`,
 		COMMAND_WARNINGS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
 		COMMAND_WARNINGS_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
 
@@ -2916,6 +2936,19 @@ export default class extends Language {
 
 		/**
 		 * #################################
+		 * #          SERIALIZERS          #
+		 * #################################
+		 */
+
+		SERIALIZER_PERMISSION_NODE_INVALID: 'Invalid data.',
+		SERIALIZER_PERMISSION_NODE_INVALID_TARGET: 'No data could be found from the ID.',
+		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: command => `The command \`${command}\` does not exist or is invalid.`,
+		SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND: command => `You have set \`${command}\` twice, either allow it, or deny it.`,
+		SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS: 'For security, the everyone role cannot have allows.',
+		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: command => `For security and for me to work properly, you cannot deny the usage for the command \`${command}\`.`,
+
+		/**
+		 * #################################
 		 * #             UTILS             #
 		 * #################################
 		 */
@@ -3019,7 +3052,7 @@ export default class extends Language {
 		GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
 		GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
 		GUILD_BANS_EMPTY: 'There are no bans registered in this server.',
-		GUILD_BANS_NOT_FOUND: 'Please, write a valid user ID or tag.',
+		GUILD_BANS_NOT_FOUND: 'I tried and failed to find this user from the ban list. Are you certain this user is banned?',
 		CHANNEL_NOT_READABLE: `I am sorry, but I need the permissions **${PERMS.VIEW_CHANNEL}** and **${PERMS.READ_MESSAGE_HISTORY}**`,
 
 		USER_NOT_IN_GUILD: 'This user is not in this server.',

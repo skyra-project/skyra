@@ -11,18 +11,19 @@ export default class extends ModerationCommand {
 			description: language => language.get('COMMAND_VMUTE_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_VMUTE_EXTENDED'),
 			modType: ModerationTypeKeys.VoiceMute,
+			optionalDuration: true,
 			permissionLevel: 5,
 			requiredMember: true,
-			requiredPermissions: ['MUTE_MEMBERS']
+			requiredGuildPermissions: ['MUTE_MEMBERS']
 		});
 	}
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
+	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string, _prehandled: undefined, duration: number | null) {
 		if (member.voice.serverMute) throw message.language.get('COMMAND_MUTE_MUTED');
 		await member.voice.setMute(true, reason);
-		return this.sendModlog(message, user, reason);
+		return this.sendModlog(message, user, reason, null, duration);
 	}
 
 	public async posthandle() { /* Do nothing */ }

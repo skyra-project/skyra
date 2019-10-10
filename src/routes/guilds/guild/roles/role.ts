@@ -29,9 +29,7 @@ export default class extends Route {
 
 		const roleID = request.params.role;
 		const role = guild.roles.get(roleID);
-		if (!role) return response.error(404);
-
-		return response.json(flattenRole(role));
+		return role ? response.json(flattenRole(role)) : response.error(404);
 	}
 
 }

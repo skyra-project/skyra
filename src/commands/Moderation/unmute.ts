@@ -15,7 +15,7 @@ export default class extends ModerationCommand {
 			modType: ModerationTypeKeys.UnMute,
 			permissionLevel: 5,
 			requiredMember: true,
-			requiredPermissions: ['MANAGE_ROLES']
+			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
 	}
 
@@ -28,7 +28,7 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
-		const modlog = (await message.guild!.moderation.fetch(user.id)).filter(log => log.type === ModerationTypeKeys.Mute).last();
+		const modlog = (await message.guild!.moderation.fetch(user.id)).filter(log => log.type === ModerationTypeKeys.Mute || log.type === ModerationTypeKeys.TemporaryMute).last();
 		if (!modlog) throw message.language.get('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
 
@@ -46,6 +46,7 @@ export default class extends ModerationCommand {
 
 		// Edit roles
 		await member.edit({ roles: [...roles] });
+		await modlog.appeal();
 		return this.sendModlog(message, user, reason);
 	}
 

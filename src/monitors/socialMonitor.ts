@@ -91,6 +91,7 @@ export default class extends Monitor {
 		return this.enabled
 			&& message.guild !== null
 			&& message.author !== null
+			&& !message.author.bot
 			&& message.webhookID === null
 			&& message.content.length > 0
 			&& !message.system

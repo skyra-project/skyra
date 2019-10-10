@@ -2,7 +2,7 @@ import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { authenticated, ratelimit } from '../../lib/util/util';
-import { flattenUser } from '../../lib/util/Models/ApiTransform';
+import { flattenUser, flattenGuild, FlattenedGuild } from '../../lib/util/Models/ApiTransform';
 
 export default class extends Route {
 
@@ -14,7 +14,13 @@ export default class extends Route {
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const user = await this.client.users.fetch(request.auth!.user_id);
-		return user ? response.json(flattenUser(user)) : response.error(500);
+		if (!user) return response.error(500);
+
+		const guilds: FlattenedGuild[] = [];
+		for (const guild of this.client.guilds.values()) {
+			if (guild.memberSnowflakes.has(user.id)) guilds.push(flattenGuild(guild));
+		}
+		return response.json({ ...flattenUser(user), guilds });
 	}
 
 }

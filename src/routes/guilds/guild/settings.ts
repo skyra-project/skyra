@@ -34,7 +34,7 @@ export default class extends Route {
 	@authenticated
 	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
-		const requestBody = request.body as Record<string, string>;
+		const requestBody = request.body as { guild_id: string; data: object };
 
 		if (!requestBody.guild_id || !requestBody.data || requestBody.guild_id !== request.params.guild) {
 			return response.error(400);
@@ -49,7 +49,7 @@ export default class extends Route {
 		const canManage = member.permissions.has(MANAGE_GUILD);
 		if (!canManage) return response.error(401);
 
-		const { errors } = await botGuild.settings.update(requestBody.data, { action: 'overwrite' });
+		const { errors } = await botGuild.settings.update(requestBody.data, { arrayAction: 'overwrite' });
 
 		if (errors.length > 0) {
 			this.client.emit(Events.Error,

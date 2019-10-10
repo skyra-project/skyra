@@ -3,14 +3,14 @@ import ApiRequest from '../../../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../../../lib/structures/api/ApiResponse';
 import { authenticated, ratelimit } from '../../../../lib/util/util';
 import { Permissions } from 'discord.js';
-import { flattenChannel } from '../../../../lib/util/Models/ApiTransform';
+import { flattenMember } from '../../../../lib/util/Models/ApiTransform';
 
 const { FLAGS: { MANAGE_GUILD } } = Permissions;
 
 export default class extends Route {
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'guilds/:guild/channels/:channel' });
+		super(store, file, directory, { route: 'guilds/:guild/members/:member' });
 	}
 
 	@authenticated
@@ -21,15 +21,15 @@ export default class extends Route {
 		const guild = this.client.guilds.get(guildID);
 		if (!guild) return response.error(400);
 
-		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
-		if (!member) return response.error(400);
+		const memberAuthor = await guild.members.fetch(request.auth!.user_id).catch(() => null);
+		if (!memberAuthor) return response.error(400);
 
-		const canManage = member.permissions.has(MANAGE_GUILD);
+		const memberID = request.params.member;
+		const canManage = memberAuthor.id === memberID || memberAuthor.permissions.has(MANAGE_GUILD);
 		if (!canManage) return response.error(401);
 
-		const channelID = request.params.channel;
-		const channel = guild.channels.get(channelID);
-		return channel ? response.json(flattenChannel(channel)) : response.error(404);
+		const member = await guild.members.fetch(memberID).catch(() => null);
+		return member ? response.json(flattenMember(member)) : response.error(404);
 	}
 
 }

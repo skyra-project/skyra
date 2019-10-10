@@ -1052,15 +1052,21 @@ export default class extends Language {
 			],
 			examples: ['Mercy']
 		}),
-		COMMAND_CHASE_DESCRIPTION: 'How dare you ping me!?',
-		COMMAND_CHASE_EXTENDED: builder.display('chase', {
-			extendedHelp: `There are a few things that annoy kyra, one of them are **Windows 10's notifications**! Which also
-				includes mentions from Discord, hence why this command exists.`,
+		COMMAND_RANDREDDIT_DESCRIPTION: 'Retrieve a random Reddit post.',
+		COMMAND_RANDREDDIT_EXTENDED: builder.display('randreddit', {
+			extendedHelp: `This is actually something like a Russian Roulette, you can get a good meme, but you can also get a terrible meme.`,
 			explainedUsage: [
-				['pinger', 'The user who pinged Kyra.']
+				['reddit', 'The reddit to look at.']
 			],
-			examples: ['IAmInnocent'],
-			reminder: `If you mentioned kyra, you must self-execute this command against you.`
+			examples: ['discordapp']
+		}),
+		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
+		COMMAND_CHASE_EXTENDED: builder.display('chase', {
+			extendedHelp: `Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!`,
+			explainedUsage: [
+				['pinger', 'The user who you want to chase.']
+			],
+			examples: ['IAmInnocent']
 		}),
 		COMMAND_SHINDEIRU_DESCRIPTION: 'Omae wa mou shindeiru.',
 		COMMAND_SHINDEIRU_EXTENDED: builder.display('shindeiru', {
@@ -2134,6 +2140,11 @@ export default class extends Language {
 		 * MISC COMMANDS
 		 */
 
+		COMMAND_RANDREDDIT_BANNED: 'This reddit is banned and should not be used.',
+		COMMAND_RANDREDDIT_FAIL: 'I failed to retrieve data, are you sure you wrote the reddit correctly?',
+		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
+		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
+		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
 

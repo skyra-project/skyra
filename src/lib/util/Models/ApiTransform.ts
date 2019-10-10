@@ -32,7 +32,7 @@ export function flattenGuild(guild: Guild): FlattenedGuild {
 	};
 }
 
-interface FlattenedGuild {
+export interface FlattenedGuild {
 	id: string;
 	available: boolean;
 	channels: FlattenedGuildChannel[];
@@ -78,7 +78,7 @@ export function flattenRole(role: Role): FlattenedRole {
 	};
 }
 
-interface FlattenedRole {
+export interface FlattenedRole {
 	id: string;
 	guildID: string;
 	name: string;
@@ -185,13 +185,13 @@ function flattenChannelFallback(channel: Channel): FlattenedChannel {
 	};
 }
 
-interface FlattenedChannel {
+export interface FlattenedChannel {
 	id: string;
 	type: 'dm' | 'text' | 'voice' | 'category' | 'news' | 'store' | 'unknown';
 	createdTimestamp: number;
 }
 
-interface FlattenedGuildChannel extends FlattenedChannel {
+export interface FlattenedGuildChannel extends FlattenedChannel {
 	type: 'text' | 'voice' | 'category' | 'news' | 'store' | 'unknown';
 	guildID: string;
 	name: string;
@@ -200,26 +200,26 @@ interface FlattenedGuildChannel extends FlattenedChannel {
 	permissionOverwrites: [string, PermissionOverwrites][];
 }
 
-interface FlattenedNewsChannel extends FlattenedGuildChannel {
+export interface FlattenedNewsChannel extends FlattenedGuildChannel {
 	type: 'news';
 	topic: string;
 	nsfw: boolean;
 }
 
-interface FlattenedTextChannel extends FlattenedGuildChannel {
+export interface FlattenedTextChannel extends FlattenedGuildChannel {
 	type: 'text';
 	topic: string;
 	nsfw: boolean;
 	rateLimitPerUser: number;
 }
 
-interface FlattenedVoiceChannel extends FlattenedGuildChannel {
+export interface FlattenedVoiceChannel extends FlattenedGuildChannel {
 	type: 'voice';
 	bitrate: number;
 	userLimit: number;
 }
 
-interface FlattenedDMChannel extends FlattenedChannel {
+export interface FlattenedDMChannel extends FlattenedChannel {
 	type: 'dm';
 	recipient: string;
 }
@@ -238,7 +238,7 @@ export function flattenUser(user: User): FlattenedUser {
 	};
 }
 
-interface FlattenedUser {
+export interface FlattenedUser {
 	id: string;
 	bot: boolean;
 	username: string;
@@ -261,7 +261,7 @@ export function flattenMember(member: GuildMember): FlattenedMember {
 	};
 }
 
-interface FlattenedMember {
+export interface FlattenedMember {
 	id: string;
 	guildID: string;
 	user: FlattenedUser;

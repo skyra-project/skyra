@@ -4,6 +4,7 @@ import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { authenticated, ratelimit } from '../../lib/util/util';
 import { Permissions } from 'discord.js';
 import { flattenGuild } from '../../lib/util/Models/ApiTransform';
+import { api } from '../../lib/util/Models/Api';
 
 const { FLAGS: { MANAGE_GUILD } } = Permissions;
 
@@ -27,7 +28,8 @@ export default class extends Route {
 		const canManage = member.permissions.has(MANAGE_GUILD);
 		if (!canManage) return response.error(401);
 
-		return response.json(flattenGuild(guild));
+		const emojis = await api(this.client).guilds(guildID).emojis.get();
+		return response.json({ ...flattenGuild(guild), emojis });
 	}
 
 }

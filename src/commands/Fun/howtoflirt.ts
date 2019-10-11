@@ -26,6 +26,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['pants'],
 			bucket: 2,
 			cooldown: 30,
 			description: language => language.get('COMMAND_HOWTOFLIRT_DESCRIPTION'),

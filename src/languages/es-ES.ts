@@ -654,6 +654,27 @@ export default class extends Language {
 			],
 			examples: ['SkyNET', 'Assistant', '']
 		}),
+		COMMAND_PERMISSIONNODES_DESCRIPTION: 'Configure the permission nodes for this server.',
+		COMMAND_PERMISSIONNODES_EXTENDED: builder.display('pnodes', {
+			extendedHelp: `Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.
+					For example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved
+					to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command
+					for the staff role now.`,
+			explainedUsage: [
+				['action', 'Either `add`, `remove`, `reset`, or `show`. Defaults to `show`.'],
+				['target', 'Either a role name or a user name, allowing IDs and mentions for either.'],
+				['type', 'Either `allow` or `deny`. This is ignored when `action` is not `add` nor `remove`.'],
+				['command', 'The name of the command to allow or deny. This is ignored when `action` is not `add` nor `remove`.']
+			],
+			examples: [
+				'add staff allow warn',
+				'add moderators deny ban',
+				'remove staff allow warn',
+				'reset staff',
+				'show staff'
+			],
+			reminder: 'The server owner cannot have any actions, nor the `everyone` role can have allowed commands.'
+		}),
 		COMMAND_TRIGGERS_DESCRIPTION: `Set custom triggers for your guild!.`,
 		COMMAND_TRIGGERS_EXTENDED: builder.display('triggers', {
 			extendedHelp: `This command allows administrators to go further with the personalization of Skyra in the guild!. A trigger is
@@ -2017,6 +2038,17 @@ export default class extends Language {
 
 		COMMAND_NICK_SET: nickname => `Changed the nickname to **${nickname}**.`,
 		COMMAND_NICK_CLEARED: 'Nickname cleared.',
+		COMMAND_PERMISSIONNODES_INVALID_TYPE: `${REDCROSS} Invalid type, expected either of \`allow\` or \`deny\`.`,
+		COMMAND_PERMISSIONNODES_ADD: `${GREENTICK} Successfully added the command to the permission node.`,
+		COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS: `${REDCROSS} The selected permission node does not exist.`,
+		COMMAND_PERMISSIONNODES_COMMAND_NOT_EXISTS: `${REDCROSS} The selected command does not exist in the permision node.`,
+		COMMAND_PERMISSIONNODES_REMOVE: `${GREENTICK} Successfully removed the command from the permission node.`,
+		COMMAND_PERMISSIONNODES_RESET: `${GREENTICK} Successfully removed all commands from the permission node.`,
+		COMMAND_PERMISSIONNODES_SHOW: (name, allow, deny) => [
+			`Permissions for: __${name}__`,
+			`**Allow**: ${allow.length ? allow.join(', ') : 'None'}`,
+			`**Deny**: ${deny.length ? deny.join(', ') : 'None'}`
+		].join('\n'),
 		COMMAND_TRIGGERS_NOTYPE: 'You need to insert a trigger type (**alias**|**reaction**)',
 		COMMAND_TRIGGERS_NOOUTPUT: 'You need to insert the trigger output.',
 		COMMAND_TRIGGERS_INVALIDREACTION: 'This reaction does not seem valid for me, either it is not valid unicode or I do not have access to it.',

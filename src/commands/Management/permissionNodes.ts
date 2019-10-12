@@ -9,22 +9,23 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['pnodes', 'pnode'],
 			bucket: 2,
 			cooldown: 10,
 			description: language => language.get('COMMAND_PERMISSIONNODES_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_PERMISSIONNODES_EXTENDED'),
 			subcommands: true,
-			usage: '<add|remove|clear|show:default> <role:role|user:user> <allow|deny> (command:command)',
+			usage: '<add|remove|reset|show:default> <role:rolename|user:username> (type:type) (command:command)',
 			usageDelim: ' '
 		});
 
 		this.createCustomResolver('command', (arg, possible, message, [action]: string[]) => {
-			if (action === 'clear' || action === 'show') return undefined;
+			if (action === 'reset' || action === 'show') return undefined;
 			return this.client.arguments.get('command').run(arg, possible, message);
-		}).createCustomResolver('action', (arg, _possible, message, [action]: string[]) => {
-			if (action === 'clear' || action === 'show') return undefined;
+		}).createCustomResolver('type', (arg, _possible, message, [action]: string[]) => {
+			if (action === 'reset' || action === 'show') return undefined;
 			if (/allow|deny/i.test(arg)) return arg.toLowerCase();
-			throw message.language.get('COMMAND_PERMISSIONNODES_INVALID_ACTION');
+			throw message.language.get('COMMAND_PERMISSIONNODES_INVALID_TYPE');
 		});
 	}
 
@@ -82,7 +83,9 @@ export default class extends SkyraCommand {
 		const nodeIndex = nodes.findIndex(n => n.id === target.id);
 		if (nodeIndex === -1) throw message.language.get('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 
-		await message.guild!.settings.update(key, null, { throwOnError: true, arrayIndex: nodeIndex });
+		const clone = nodes.slice();
+		clone.splice(nodeIndex, 1);
+		await message.guild!.settings.update(key, clone, { throwOnError: true, arrayAction: 'overwrite' });
 		return message.sendLocale('COMMAND_PERMISSIONNODES_RESET');
 	}
 
@@ -96,8 +99,8 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale('COMMAND_PERMISSIONNODES_SHOW', [
 			isRole ? (target as Role).name : (target as User).username,
-			node.allow,
-			node.deny
+			node.allow.map(command => `\`${command}\``),
+			node.deny.map(command => `\`${command}\``)
 		]);
 	}
 

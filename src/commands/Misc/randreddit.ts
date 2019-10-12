@@ -18,6 +18,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('reddit', (arg, _possible, message) => {
+			if (!arg) throw message.language.get('COMMAND_RANDREDDIT_REQUIRED_REDDIT');
 			if (blacklist.test(arg)) throw message.language.get('COMMAND_RANDREDDIT_BANNED');
 			return arg.toLowerCase();
 		});

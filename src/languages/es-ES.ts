@@ -2140,6 +2140,7 @@ export default class extends Language {
 		 * MISC COMMANDS
 		 */
 
+		COMMAND_RANDREDDIT_REQUIRED_REDDIT: 'You must give the name of a reddit.',
 		COMMAND_RANDREDDIT_BANNED: 'This reddit is banned and should not be used.',
 		COMMAND_RANDREDDIT_FAIL: 'I failed to retrieve data, are you sure you wrote the reddit correctly?',
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',

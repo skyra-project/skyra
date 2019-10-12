@@ -15,7 +15,7 @@ export default class extends Argument {
 		const resRole = this.resolveRole(arg, message.guild);
 		if (resRole) return resRole;
 
-		const result = await new FuzzySearch(message.guild!.roles, entry => entry.name, filter).run(message, arg);
+		const result = await new FuzzySearch(message.guild!.roles, entry => entry.name, filter).run(message, arg, possible.min || undefined);
 		if (result) return result[1];
 		throw message.language.get('RESOLVER_INVALID_ROLENAME', possible.name);
 	}

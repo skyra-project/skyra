@@ -17,7 +17,7 @@ export class FuzzySearch<K extends string, V> {
 		this.filter = filter;
 	}
 
-	public run(message: Message, query: string) {
+	public run(message: Message, query: string, threshold = 5) {
 		const lowcquery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 
@@ -39,6 +39,9 @@ export class FuzzySearch<K extends string, V> {
 			} else {
 				distance = levenshtein(lowcquery, lowerCaseName);
 			}
+
+			// If the distance is bigger than the threshold, skip
+			if (distance > threshold) continue;
 
 			// Push the results
 			results.push([id, entry, distance]);

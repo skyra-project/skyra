@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage, Command } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { User, Role } from 'discord.js';
+import { Role, GuildMember } from 'discord.js';
 import { GuildSettings, PermissionsNode } from '../../lib/types/settings/GuildSettings';
 
 type Nodes = readonly PermissionsNode[];
@@ -15,7 +15,7 @@ export default class extends SkyraCommand {
 			description: language => language.get('COMMAND_PERMISSIONNODES_DESCRIPTION'),
 			extendedHelp: language => language.get('COMMAND_PERMISSIONNODES_EXTENDED'),
 			subcommands: true,
-			usage: '<add|remove|reset|show:default> <role:rolename|user:username> (type:type) (command:command)',
+			usage: '<add|remove|reset|show:default> <role:rolename{2}|user:membername> (type:type) (command:command)',
 			usageDelim: ' '
 		});
 
@@ -29,7 +29,8 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async add(message: KlasaMessage, [target, action, command]: [Role | User, 'allow' | 'deny', Command]) {
+	public async add(message: KlasaMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
+		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key) as Nodes;
@@ -54,7 +55,8 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_PERMISSIONNODES_ADD');
 	}
 
-	public async remove(message: KlasaMessage, [target, action, command]: [Role | User, 'allow' | 'deny', Command]) {
+	public async remove(message: KlasaMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
+		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key) as Nodes;
@@ -76,7 +78,8 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_PERMISSIONNODES_REMOVE');
 	}
 
-	public async reset(message: KlasaMessage, [target]: [Role | User]) {
+	public async reset(message: KlasaMessage, [target]: [Role | GuildMember]) {
+		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key) as Nodes;
@@ -89,7 +92,8 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_PERMISSIONNODES_RESET');
 	}
 
-	public show(message: KlasaMessage, [target]: [Role | User]) {
+	public show(message: KlasaMessage, [target]: [Role | GuildMember]) {
+		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
@@ -98,10 +102,24 @@ export default class extends SkyraCommand {
 		if (typeof node === 'undefined') throw message.language.get('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 
 		return message.sendLocale('COMMAND_PERMISSIONNODES_SHOW', [
-			isRole ? (target as Role).name : (target as User).username,
+			isRole ? (target as Role).name : (target as GuildMember).displayName,
 			node.allow.map(command => `\`${command}\``),
 			node.deny.map(command => `\`${command}\``)
 		]);
+	}
+
+	private checkPermissions(message: KlasaMessage, target: Role | GuildMember) {
+		// If it's to itself, always block
+		if (message.member === target) return false;
+
+		// If the target is the owner, always block
+		if (message.guild!.ownerID === target.id) return false;
+
+		// If the author is the owner, always allow
+		if (message.author!.id === message.guild!.ownerID) return true;
+
+		// Check hierarchy role positions, allow when greater, block otherwise
+		return message.member!.roles.highest.position > (target instanceof Role ? target.position : target.roles.highest.position);
 	}
 
 }

@@ -41,7 +41,7 @@ export default class extends Serializer {
 
 			const command = this.client.commands.get(allowed);
 			if (!command) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', allowed);
-			if (command.permissionLevel > 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', allowed);
+			if (command.permissionLevel >= 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', allowed);
 			commands.set(allowed, command);
 		}
 
@@ -50,7 +50,7 @@ export default class extends Serializer {
 
 			const command = this.client.commands.get(denied);
 			if (!command) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', denied);
-			if (command.permissionLevel > 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', denied);
+			if (command.permissionLevel >= 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', denied);
 			if (command.guarded) throw language.get('SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED', denied);
 			commands.set(denied, command);
 		}

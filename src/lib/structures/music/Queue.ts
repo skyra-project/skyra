@@ -4,7 +4,7 @@ import { LoadType, Status, Track } from 'lavalink';
 import { Events } from '../../types/Enums';
 import { enumerable } from '../../util/util';
 import { Song } from './Song';
-import { UserManagerStore } from './UserManagerStore';
+import { GuildSettings } from '../../types/settings/GuildSettings';
 
 export class Queue extends Array<Song> {
 
@@ -13,9 +13,6 @@ export class Queue extends Array<Song> {
 
 	@enumerable(false)
 	public guild: Guild;
-
-	@enumerable(false)
-	public deejays: UserManagerStore;
 
 	@enumerable(false)
 	public channelID: string | null = null;
@@ -80,7 +77,6 @@ export class Queue extends Array<Song> {
 		super();
 		this.client = guild!.client;
 		this.guild = guild;
-		this.deejays = new UserManagerStore(this.client);
 	}
 
 	public add(user: string, song: Track): Song;
@@ -131,7 +127,6 @@ export class Queue extends Array<Song> {
 	public async leave() {
 		await this.player.leave();
 		this.channelID = null;
-		this.deejays.clear();
 		this.reset(true);
 		return this;
 	}
@@ -259,8 +254,10 @@ export class Queue extends Array<Song> {
 	}
 
 	public async manageableFor(message: KlasaMessage) {
+		// Retrieve the DJ role
+		const djRole = message.guild!.settings.get(GuildSettings.Roles.Dj) as GuildSettings.Roles.Dj;
 		// The queue is manageable for deejays.
-		if (this.deejays.has(message.author!.id)) return true;
+		if (djRole && message.member!.roles.has(djRole)) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
 		if ((this.song ? this.song.requester === message.author!.id : true) && this.every(song => song.requester === message.author!.id)) return true;
 		// Else if the author is a moderator+, queues are always manageable for them.

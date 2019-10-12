@@ -1,7 +1,6 @@
 import { Track } from 'lavalink';
 import { enumerable, showSeconds, cleanMentions } from '../../util/util';
 import { Queue } from './Queue';
-import { UserManagerStore } from './UserManagerStore';
 import { Util } from 'discord.js';
 
 export class Song {
@@ -23,7 +22,7 @@ export class Song {
 	public position: number;
 	public title: string;
 	public url: string;
-	public skips: UserManagerStore;
+	public skips = new Set<string>();
 
 	/**
 	 * @param data The retrieved data
@@ -41,7 +40,6 @@ export class Song {
 		this.position = data.info.position;
 		this.title = data.info.title;
 		this.url = data.info.uri;
-		this.skips = new UserManagerStore(this.queue.client);
 	}
 
 	/**

@@ -98,6 +98,8 @@ export namespace GuildSettings {
 		export const RemoveInitial = 'roles.removeInitial';
 		export type Staff = string;
 		export const Staff = 'roles.staff';
+		export type Dj = string;
+		export const Dj = 'roles.dj';
 		export type Subscriber = string;
 		export const Subscriber = 'roles.subscriber';
 		export type UniqueRoleSets = readonly UniqueRoleSet[];

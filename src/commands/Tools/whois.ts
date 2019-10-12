@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 			.setTimestamp();
 
 		if (member.roles.size > 1) {
-			const roles = member.roles.sort(sortRanks);
+			const roles = member.roles.sorted(sortRanks);
 			roles.delete(member.guild!.id);
 			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
 		}

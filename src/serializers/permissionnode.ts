@@ -29,6 +29,11 @@ export default class extends Serializer {
 			throw language.get('SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS');
 		}
 
+		// The owner cannot have allows nor denies
+		if (target.id === guild.ownerID) {
+			throw language.get('SERIALIZER_PERMISSION_NODE_SECURITY_OWNER');
+		}
+
 		// Check all commands
 		const commands = new Map<string, Command>();
 		for (const allowed of data.allow) {

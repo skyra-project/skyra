@@ -5,12 +5,14 @@ import { ModerationManager } from '../structures/ModerationManager';
 import { Queue } from '../structures/music/Queue';
 import { StarboardManager } from '../structures/StarboardManager';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
+import { PermissionsManager } from '../structures/PermissionsManager';
 
 export class SkyraGuild extends Structures.get('Guild') {
 
 	public security: GuildSecurity = new GuildSecurity(this);
 	public starboard: StarboardManager = new StarboardManager(this);
 	public moderation: ModerationManager = new ModerationManager(this);
+	public permissionsManager: PermissionsManager = new PermissionsManager(this);
 	public music: Queue = new Queue(this);
 
 	@enumerable(false)
@@ -41,6 +43,7 @@ declare module 'discord.js' {
 		security: GuildSecurity;
 		starboard: StarboardManager;
 		moderation: ModerationManager;
+		permissionsManager: PermissionsManager;
 		music: Queue;
 		memberSnowflakes: Set<string>;
 		memberTags: Collection<string, string>;

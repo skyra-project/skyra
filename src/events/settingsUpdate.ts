@@ -5,18 +5,28 @@ import { getFromPath } from '../lib/util/util';
 
 export default class extends Event {
 
-	public run(settings: Settings, changes: Record<string, unknown>) {
+	public async run(settings: Settings, changes: Record<string, unknown>) {
 		// If the synchronized settings isn't from the guilds gateway, return early.
 		if (settings.gateway.name !== 'guilds') return;
 
-		const blockedWords = getFromPath(changes, GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw | undefined;
-
-		// If the changes do not include updating the raw filter, return early too.
-		if (typeof blockedWords === 'undefined') return;
-
 		const guild = settings.target as SkyraGuild;
-		if (blockedWords.length) guild!.security.updateRegExp(blockedWords);
-		else guild!.security.regexp = null;
+		this.updateFilter(guild, changes);
+		await this.updatePermissionNodes(guild, changes);
+	}
+
+	private updateFilter(guild: SkyraGuild, changes: Record<string, unknown>) {
+		const updated = getFromPath(changes, GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw | undefined;
+		if (typeof updated === 'undefined') return;
+
+		if (updated.length) guild.security.updateRegExp(updated);
+		else guild.security.regexp = null;
+	}
+
+	private updatePermissionNodes(guild: SkyraGuild, changes: Record<string, unknown>) {
+		const updated = getFromPath(changes, GuildSettings.Permissions.Roles) as GuildSettings.Permissions.Roles | undefined;
+		if (typeof updated === 'undefined') return;
+
+		return guild.permissionsManager.update(updated);
 	}
 
 }

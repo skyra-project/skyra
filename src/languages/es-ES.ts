@@ -268,6 +268,8 @@ export default class extends Language {
 			`grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!`
 		].join(' '),
 		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.safeTitle}**, pedida por **${song.requester}**, de la cola.`,
+		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
+		COMMAND_SEEK_SUCCESS: time => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: `Reanuda la canción actual.`,
 		COMMAND_RESUME_SUCCESS: `▶ Reanudado.`,
 		COMMAND_SKIP_DESCRIPTION: `Salta la canción actual.`,

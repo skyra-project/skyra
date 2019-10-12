@@ -263,6 +263,8 @@ export default class extends Language {
 		COMMAND_REMOVE_INDEX_OUT: amount => `${REDCROSS} Maybe time happened too fast for you, there are ${amount} ${amount === 1 ? 'song' : 'songs'} in the queue!`,
 		COMMAND_REMOVE_DENIED: `${REDCROSS} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.`,
 		COMMAND_REMOVE_SUCCESS: song => `${GREENTICK} Removed the song **${song.safeTitle}** requested by **${song.requester}**.`,
+		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
+		COMMAND_SEEK_SUCCESS: time => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: `Resumes the current song.`,
 		COMMAND_RESUME_SUCCESS: `▶ Resumed.`,
 		COMMAND_ROLESET_DESCRIPTION: `Manage unique role sets.`,

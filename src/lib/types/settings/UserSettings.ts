@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace UserSettings {
+
+	export type CommandUses = number;
+	export const CommandUses = 'commandUses';
 	export type BadgeList = readonly string[];
 	export const BadgeList = 'badgeList';
 	export type BadgeSet = readonly string[];
@@ -25,4 +28,5 @@ export namespace UserSettings {
 	export const TimeDaily = 'timeDaily';
 	export type TimeReputation = number;
 	export const TimeReputation = 'timeReputation';
+
 }

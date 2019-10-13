@@ -127,6 +127,7 @@ export class SkyraClient extends KlasaClient {
 }
 
 SkyraClient.defaultUserSchema
+	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })
 	.add('badgeList', 'String', { array: true, configurable: false })
 	.add('badgeSet', 'String', { array: true, configurable: false })
 	.add('bannerList', 'String', { array: true, configurable: false })
@@ -141,11 +142,13 @@ SkyraClient.defaultUserSchema
 	.add('timeReputation', 'Integer', { 'default': 0, 'configurable': false });
 
 SkyraClient.defaultClientSchema
+	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })
 	.add('boosts', folder => folder
 		.add('guilds', 'String', { array: true, min: 17, max: 19 })
 		.add('users', 'User', { array: true }));
 
 SkyraClient.defaultGuildSchema
+	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })
 	.add('prefix', 'string', { filter: (_: KlasaClient, value: string) => value.length > 10 })
 	.add('tags', 'any', { array: true, configurable: false })
 	.add('permissions', folder => folder

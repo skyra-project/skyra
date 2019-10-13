@@ -4,6 +4,8 @@ import { SelfModeratorHardActionFlags } from '../../structures/SelfModeratorBitF
 
 export namespace GuildSettings {
 
+	export type CommandUses = number;
+	export const CommandUses = 'commandUses';
 	export type Prefix = string;
 	export const Prefix = 'prefix';
 	export type Tags = readonly [string, string][];

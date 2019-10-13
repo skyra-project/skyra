@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace ClientSettings {
+
+	export type CommandUses = number;
+	export const CommandUses = 'commandUses';
 	export type UserBlacklist = readonly string[];
 	export const UserBlacklist = 'userBlacklist';
 	export type GuildBlacklist = readonly string[];
@@ -14,6 +17,7 @@ export namespace ClientSettings {
 		export type Users = string;
 		export const Users = 'boosts.users';
 	}
+
 }
 
 interface RawScheduledTask {

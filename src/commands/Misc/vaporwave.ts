@@ -6,8 +6,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: language => language.get('COMMAND_VAPORWAVE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_VAPORWAVE_EXTENDED'),
+			description: language => language.tget('COMMAND_VAPORWAVE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_VAPORWAVE_EXTENDED'),
 			spam: true,
 			usage: '<input:string>'
 		});

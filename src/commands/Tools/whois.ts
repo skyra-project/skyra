@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['userinfo'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_WHOIS_EXTENDED'),
+			description: language => language.tget('COMMAND_WHOIS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 			.setColor(member.displayColor || 0xDFDFDF)
 			.setTitle(`${member.user.bot ? '🤖 ' : ''}${member.user.tag}`)
 			.setURL(member.user.displayAvatarURL({ size: 1024 }))
-			.setDescription(i18n.get('COMMAND_WHOIS_MEMBER', member))
+			.setDescription(i18n.tget('COMMAND_WHOIS_MEMBER', member))
 			.setThumbnail(member.user.displayAvatarURL({ size: 256 }))
 			.setFooter(`${this.client.user!.username} ${this.client.version} | ${member.user.id}`, this.client.user!.displayAvatarURL({ size: 128 }))
 			.setTimestamp();
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 		if (member.roles.size > 1) {
 			const roles = member.roles.sorted(sortRanks);
 			roles.delete(member.guild!.id);
-			embed.addField(i18n.get('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
+			embed.addField(i18n.tget('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
 		}
 
 		return embed;
@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 			.setColor(0xDFDFDF)
 			.setTitle(`${user.bot ? '🤖 ' : ''}${user.tag}`)
 			.setURL(user.displayAvatarURL({ size: 1024 }))
-			.setDescription(i18n.get('COMMAND_WHOIS_USER', user))
+			.setDescription(i18n.tget('COMMAND_WHOIS_USER', user))
 			.setThumbnail(user.displayAvatarURL({ size: 256 }))
 			.setFooter(`${this.client.user!.username} ${this.client.version} | ES | ${user.id}`, this.client.user!.displayAvatarURL({ size: 128 }))
 			.setTimestamp();

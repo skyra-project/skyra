@@ -7,8 +7,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 60,
-			description: language => language.get('COMMAND_ESCAPEROPE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_ESCAPEROPE_EXTENDED')
+			description: language => language.tget('COMMAND_ESCAPEROPE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_ESCAPEROPE_EXTENDED')
 		});
 	}
 

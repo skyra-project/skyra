@@ -4,6 +4,7 @@ import { Events } from '../../lib/types/Enums';
 import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
 import { cleanMentions } from '../../lib/util/util';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 
 const EMOJIS = ['🇳', '🇾'];
 
@@ -15,8 +16,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['hunger-games', 'hg'],
 			cooldown: 0,
-			description: language => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
+			description: language => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '[user:string{2,50}] [...]',
@@ -36,13 +37,13 @@ export default class extends SkyraCommand {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
 		} else if (tributes.length === 0) {
-			throw message.language.get('COMMAND_GAMES_NO_PLAYERS', message.guild!.settings.get('prefix'));
+			throw message.language.tget('COMMAND_GAMES_NO_PLAYERS', message.guild!.settings.get(GuildSettings.Prefix));
 		}
 
 		const filtered = new Set(tributes);
-		if (filtered.size !== tributes.length) throw message.language.get('COMMAND_GAMES_REPEAT');
-		if (this.playing.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
-		if (tributes.length < 4 || tributes.length > 48) throw message.language.get('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
+		if (filtered.size !== tributes.length) throw message.language.tget('COMMAND_GAMES_REPEAT');
+		if (this.playing.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');
+		if (tributes.length < 4 || tributes.length > 48) throw message.language.tget('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value?: boolean) => void) | null = null;
@@ -72,7 +73,7 @@ export default class extends SkyraCommand {
 				const events = game.bloodbath ? 'HG_BLOODBATH' : game.sun ? 'HG_DAY' : 'HG_NIGHT';
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, message.language.get(events));
+				const { results, deaths } = this.makeResultEvents(game, message.language.tget(events));
 				const texts = this.buildTexts(message.language, game, results, deaths);
 
 				// Ask for the user to proceed
@@ -139,9 +140,9 @@ export default class extends SkyraCommand {
 	}
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
-		const header = language.get('COMMAND_HG_RESULT_HEADER', game);
-		const death = deaths.length ? `${language.get('COMMAND_HG_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
-		const proceed = language.get('COMMAND_HG_RESULT_PROCEED');
+		const header = language.tget('COMMAND_HG_RESULT_HEADER', game);
+		const death = deaths.length ? `${language.tget('COMMAND_HG_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
+		const proceed = language.tget('COMMAND_HG_RESULT_PROCEED');
 		const panels = util.chunk(results, 5);
 
 		const texts = panels.map(panel => `__**${header}:**__\n\n${panel.map(text => `- ${text}`).join('\n')}\n\n_${proceed}_`);
@@ -149,7 +150,7 @@ export default class extends SkyraCommand {
 		return texts;
 	}
 
-	private pick(events: HungerGamesUsage[], tributes: number, maxDeaths: number) {
+	private pick(events: readonly HungerGamesUsage[], tributes: number, maxDeaths: number) {
 		events = events.filter(event => event.tributes <= tributes && event.deaths.size <= maxDeaths);
 		return events[Math.floor(Math.random() * events.length)];
 	}
@@ -169,7 +170,7 @@ export default class extends SkyraCommand {
 		return array.slice(0, amount);
 	}
 
-	private makeResultEvents(game: HungerGamesGame, events: HungerGamesUsage[]) {
+	private makeResultEvents(game: HungerGamesGame, events: readonly HungerGamesUsage[]) {
 		const results = [] as string[];
 		const deaths = [] as string[];
 		let maxDeaths = this.calculateMaxDeaths(game);

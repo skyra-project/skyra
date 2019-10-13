@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['giveawayschedule', 'gs', 'gc'],
-			description: language => language.get('COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_GIVEAWAYSCHEDULE_EXTENDED'),
+			description: language => language.tget('COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_GIVEAWAYSCHEDULE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<schedule:time> <time:time> <title:...string{,256}>',
@@ -23,8 +23,8 @@ export default class extends SkyraCommand {
 		const offset = time.getTime() - Date.now();
 		const scheduleOffset = schedule.getTime() - Date.now();
 
-		if (offset < 9500 || scheduleOffset < 9500) throw message.language.get('GIVEAWAY_TIME');
-		if (offset > YEAR || scheduleOffset > YEAR) throw message.language.get('GIVEAWAY_TIME_TOO_LONG');
+		if (offset < 9500 || scheduleOffset < 9500) throw message.language.tget('GIVEAWAY_TIME');
+		if (offset > YEAR || scheduleOffset > YEAR) throw message.language.tget('GIVEAWAY_TIME_TOO_LONG');
 
 		// This creates an single time task to start the giveaway
 		await this.client.schedule.create('giveaway', schedule.getTime(), {

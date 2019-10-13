@@ -20,17 +20,17 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [cancel, caseID, time]: ['cancel', number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
-		if (!modlog) throw message.language.get('COMMAND_REASON_NOT_EXISTS');
-		if (!cancel && modlog.temporary) throw message.language.get('COMMAND_TIME_TIMED');
+		if (!modlog) throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
+		if (!cancel && modlog.temporary) throw message.language.tget('COMMAND_TIME_TIMED');
 
 		const user = await this.client.users.fetch(typeof modlog.user === 'string' ? modlog.user : modlog.user!.id);
 		const type = await this.getActions(message, modlog, user);
 		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[ModerationSchemaKeys.Case] === modlog.case)!;
 
 		if (cancel) return this.cancel(message, modlog, task);
-		if (modlog.appealed) throw message.language.get('MODLOG_APPEALED');
-		if (task) throw message.language.get('MODLOG_TIMED', task.data.timestamp - Date.now());
-		if (!time.length) throw message.language.get('COMMAND_TIME_UNDEFINED_TIME');
+		if (modlog.appealed) throw message.language.tget('MODERATION_LOG_APPEALED');
+		if (task) throw message.language.tget('MODLOG_TIMED', task.data.timestamp - Date.now());
+		if (!time.length) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
 
 		const { offset } = new Duration(time);
 		await this.client.schedule.create(type, offset + Date.now(), {
@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async cancel(message: KlasaMessage, modcase: ModerationManagerEntry, task: ScheduledTask) {
-		if (!task) throw message.language.get('COMMAND_TIME_NOT_SCHEDULED');
+		if (!task) throw message.language.tget('COMMAND_TIME_NOT_SCHEDULED');
 		await task.delete();
 
 		await modcase.edit({
@@ -93,34 +93,34 @@ export default class extends SkyraCommand {
 			case ModerationTypeKeys.Mute: return this.checkMute(message, user);
 			case ModerationTypeKeys.TemporaryVoiceMute:
 			case ModerationTypeKeys.VoiceMute: return this.checkVMute(message, user);
-			default: throw message.language.get('COMMAND_TIME_UNSUPPORTED_TIPE');
+			default: throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
 		}
 	}
 
 	private async checkBan(message: KlasaMessage, user: KlasaUser) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) throw message.language.get('COMMAND_UNBAN_MISSING_PERMISSION');
+		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) throw message.language.tget('COMMAND_UNBAN_MISSING_PERMISSION');
 		const users = await message.guild!.fetchBans().catch(() => {
-			throw message.language.get('SYSTEM_FETCHBANS_FAIL');
+			throw message.language.tget('SYSTEM_FETCHBANS_FAIL');
 		});
-		if (!users.size) throw message.language.get('GUILD_BANS_EMPTY');
+		if (!users.size) throw message.language.tget('GUILD_BANS_EMPTY');
 		const member = users.get(user.id);
-		if (!member) throw message.language.get('GUILD_BANS_NOT_FOUND');
+		if (!member) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 		return 'unban';
 	}
 
 	private checkMute(message: KlasaMessage, user: KlasaUser) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
+		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.tget('COMMAND_UNMUTE_MISSING_PERMISSION');
 		const stickyRoles = message.guild!.settings.get(GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
-		if (!stickyRoles || !stickyRoles.roles.includes(message.guild!.settings.get(GuildSettings.Roles.Muted))) throw message.language.get('COMMAND_MUTE_USER_NOT_MUTED');
+		if (!stickyRoles || !stickyRoles.roles.includes(message.guild!.settings.get(GuildSettings.Roles.Muted))) throw message.language.tget('COMMAND_MUTE_USER_NOT_MUTED');
 		return 'unmute';
 	}
 
 	private async checkVMute(message: KlasaMessage, user: KlasaUser) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) throw message.language.get('COMMAND_VMUTE_MISSING_PERMISSION');
+		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) throw message.language.tget('COMMAND_VMUTE_MISSING_PERMISSION');
 		const member = await message.guild!.members.fetch(user).catch(() => {
-			throw message.language.get('USER_NOT_IN_GUILD');
+			throw message.language.tget('USER_NOT_IN_GUILD');
 		});
-		if (!member.voice.serverMute) throw message.language.get('COMMAND_VMUTE_USER_NOT_MUTED');
+		if (!member.voice.serverMute) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
 		return 'unvmute';
 	}
 

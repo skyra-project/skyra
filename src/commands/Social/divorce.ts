@@ -6,8 +6,8 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_DIVORCE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_DIVORCE_EXTENDED'),
+			description: language => language.tget('COMMAND_DIVORCE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_DIVORCE_EXTENDED'),
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text']
 		});
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 		if (!marry) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 		// Ask the user if they're sure
-		const accept = await message.ask(message.language.get('COMMAND_DIVORCE_PROMPT'));
+		const accept = await message.ask(message.language.tget('COMMAND_DIVORCE_PROMPT'));
 		if (!accept) return message.sendLocale('COMMAND_DIVORCE_CANCEL');
 
 		// Fetch the user and sync the settings
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 		]);
 
 		// Tell the user about the divorce
-		user.send(message.language.get('COMMAND_DIVORCE_DM', message.author!.username)).catch(() => null);
+		user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author!.username)).catch(() => null);
 
 		return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
 	}

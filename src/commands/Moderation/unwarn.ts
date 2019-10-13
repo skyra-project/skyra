@@ -9,8 +9,8 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_UNWARN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_UNWARN_EXTENDED'),
+			description: language => language.tget('COMMAND_UNWARN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_UNWARN_EXTENDED'),
 			modType: ModerationTypeKeys.UnWarn,
 			permissionLevel: 5,
 			requiredMember: true,
@@ -24,7 +24,7 @@ export default class extends ModerationCommand {
 	// @ts-ignore 2416
 	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
-		if (!modlog || modlog.type !== ModerationTypeKeys.Warn) throw message.language.get('GUILD_WARN_NOT_FOUND');
+		if (!modlog || modlog.type !== ModerationTypeKeys.Warn) throw message.language.tget('GUILD_WARN_NOT_FOUND');
 
 		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user!;
 		const unwarnLog = await this.handle(message, user, null, reason, modlog);

@@ -6,8 +6,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['updoot'],
-			description: language => language.get('COMMAND_UPVOTE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_UPVOTE_EXTENDED')
+			description: language => language.tget('COMMAND_UPVOTE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_UPVOTE_EXTENDED')
 		});
 	}
 

@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['setcolour'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_SETCOLOR_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SETCOLOR_EXTENDED'),
+			description: language => language.tget('COMMAND_SETCOLOR_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SETCOLOR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '<color:string>'
@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)
 			.setAuthor(message.author!.tag, message.author!.displayAvatarURL({ size: 128 }))
-			.setDescription(message.language.get('COMMAND_SETCOLOR', hex)));
+			.setDescription(message.language.tget('COMMAND_SETCOLOR', hex.toString())));
 	}
 
 }

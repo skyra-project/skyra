@@ -9,8 +9,8 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_BAN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_BAN_EXTENDED'),
+			description: language => language.tget('COMMAND_BAN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_BAN_EXTENDED'),
 			flagSupport: true,
 			modType: ModerationTypeKeys.Ban,
 			optionalDuration: true,
@@ -25,7 +25,7 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(message: KlasaMessage, target: User, member: SkyraGuildMember, reason: string, _prehandled: Unlock, duration: number | null) {
-		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
+		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		await message.guild!.members.ban(target.id, { days: Number(message.flagArgs.day || message.flagArgs.days) || 0, reason });
 
 		return this.sendModlog(message, target, reason, null, duration);

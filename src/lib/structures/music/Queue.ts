@@ -104,8 +104,8 @@ export class Queue extends Array<Song> {
 
 	public async fetch(song: string) {
 		const response = await this.client.lavalink!.load(song);
-		if (response.loadType === LoadType.NO_MATCHES) throw this.guild!.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
-		if (response.loadType === LoadType.LOAD_FAILED) throw this.guild!.language.get('MUSICMANAGER_FETCH_LOAD_FAILED');
+		if (response.loadType === LoadType.NO_MATCHES) throw this.guild!.language.tget('MUSICMANAGER_FETCH_NO_MATCHES');
+		if (response.loadType === LoadType.LOAD_FAILED) throw this.guild!.language.tget('MUSICMANAGER_FETCH_LOAD_FAILED');
 		return response.tracks;
 	}
 
@@ -115,8 +115,8 @@ export class Queue extends Array<Song> {
 	}
 
 	public async setVolume(volume: number) {
-		if (volume <= 0) throw this.guild!.language.get('MUSICMANAGER_SETVOLUME_SILENT');
-		if (volume > 200) throw this.guild!.language.get('MUSICMANAGER_SETVOLUME_LOUD');
+		if (volume <= 0) throw this.guild!.language.tget('MUSICMANAGER_SETVOLUME_SILENT');
+		if (volume > 200) throw this.guild!.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
 		this.volume = volume;
 		await this.player.setVolume(volume);
 		return this;
@@ -142,9 +142,9 @@ export class Queue extends Array<Song> {
 	}
 
 	public play() {
-		if (!this.voiceChannel) return Promise.reject(this.guild!.language.get('MUSICMANAGER_PLAY_NO_VOICECHANNEL'));
-		if (!this.length) return Promise.reject(this.guild!.language.get('MUSICMANAGER_PLAY_NO_SONGS'));
-		if (this.playing) return Promise.reject(this.guild!.language.get('MUSICMANAGER_PLAY_PLAYING'));
+		if (!this.voiceChannel) return Promise.reject(this.guild!.language.tget('MUSICMANAGER_PLAY_NO_VOICECHANNEL'));
+		if (!this.length) return Promise.reject(this.guild!.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
+		if (this.playing) return Promise.reject(this.guild!.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
 		return new Promise<void>((resolve, reject) => {
 			// Setup the events
@@ -166,7 +166,7 @@ export class Queue extends Array<Song> {
 			};
 			this._listeners.disconnect = code => {
 				this._listeners.end!(false);
-				if (code >= 4000) reject(this.guild!.language.get('MUSICMANAGER_PLAY_DISCONNECTION'));
+				if (code >= 4000) reject(this.guild!.language.tget('MUSICMANAGER_PLAY_DISCONNECTION'));
 				else resolve();
 			};
 			this.position = 0;

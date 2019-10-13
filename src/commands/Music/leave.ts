@@ -5,7 +5,7 @@ export default class extends MusicCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_LEAVE_DESCRIPTION'),
+			description: language => language.tget('COMMAND_LEAVE_DESCRIPTION'),
 			music: ['SKYRA_VOICE_CHANNEL', 'DJ_MEMBER', 'SAME_VOICE_CHANNEL']
 		});
 	}

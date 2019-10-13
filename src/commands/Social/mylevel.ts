@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
-			description: language => language.get('COMMAND_MYLEVEL_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_MYLEVEL_EXTENDED'),
+			description: language => language.tget('COMMAND_MYLEVEL_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_MYLEVEL_EXTENDED'),
 			runIn: ['text'],
 			usage: '[user:username]'
 		});
@@ -20,14 +20,14 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => {
-			throw message.language.get('USER_NOT_IN_GUILD');
+			throw message.language.tget('USER_NOT_IN_GUILD');
 		});
 
 		await member.settings.sync();
 		const memberPoints = member.settings.get(MemberSettings.Points);
 		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
 		const title = nextRole
-			? `\n${message.language.get('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}`
+			? `\n${message.language.tget('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}`
 			: '';
 
 		return message.sendLocale('COMMAND_MYLEVEL', [memberPoints, title, user.id === message.author!.id ? null : user.username]);

@@ -105,12 +105,12 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream) {
  */
 export function announcementCheck(message: Message) {
 	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
-	if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
+	if (!announcementID) throw message.language.tget('COMMAND_SUBSCRIBE_NO_ROLE');
 
 	const role = message.guild!.roles.get(announcementID);
-	if (!role) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
+	if (!role) throw message.language.tget('COMMAND_SUBSCRIBE_NO_ROLE');
 
-	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get('SYSTEM_HIGHEST_ROLE');
+	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.tget('SYSTEM_HIGHEST_ROLE');
 	return role;
 }
 
@@ -416,13 +416,13 @@ export function muteGetRoles(member: GuildMember): string[] {
  */
 export async function mute(moderator: GuildMember, target: GuildMember, { reason, duration }: MuteOptions = {}) {
 	const role = target.guild!.roles.get(target.guild!.settings.get(GuildSettings.Roles.Muted));
-	if (!role) throw target.guild!.language.get('COMMAND_MUTE_UNCONFIGURED');
+	if (!role) throw target.guild!.language.tget('COMMAND_MUTE_UNCONFIGURED');
 
 	const all = target.guild!.settings.get(GuildSettings.StickyRoles);
 
 	const stickyRolesIndex = all.findIndex(stickyRole => stickyRole.user === target.id);
 	const stickyRoles: StickyRole = stickyRolesIndex === -1 ? { roles: [], user: target.id } : all[stickyRolesIndex];
-	if (stickyRoles.roles.includes(role.id)) throw target.guild!.language.get('COMMAND_MUTE_MUTED');
+	if (stickyRoles.roles.includes(role.id)) throw target.guild!.language.tget('COMMAND_MUTE_MUTED');
 
 	// Parse the roles
 	const roles = muteGetRoles(target);
@@ -487,9 +487,9 @@ async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Ro
  */
 export async function createMuteRole(message: Message) {
 	const id = message.guild!.settings.get(GuildSettings.Roles.Muted);
-	if (id && message.guild!.roles.has(id)) throw message.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
+	if (id && message.guild!.roles.has(id)) throw message.language.tget('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
 
-	if (message.guild!.roles.size === 250) throw message.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
+	if (message.guild!.roles.size === 250) throw message.language.tget('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
 	const role = await message.guild!.roles.create(MUTE_ROLE_OPTIONS);
 	const { channels } = message.guild!;
 	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
@@ -501,7 +501,7 @@ export async function createMuteRole(message: Message) {
 		accepted++;
 	}
 
-	const messageEdit2 = message.language.get('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
+	const messageEdit2 = message.language.tget('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
 	await message.guild!.settings.update(GuildSettings.Roles.Muted, role.id);
 	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, message.author!, role]);
 	return role;

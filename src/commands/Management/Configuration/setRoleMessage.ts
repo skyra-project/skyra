@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SETROLEMESSAGE_EXTENDED'),
+			description: language => language.tget('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SETROLEMESSAGE_EXTENDED'),
 			permissionLevel: 6,
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
@@ -18,21 +18,21 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('message', async (arg, _, msg) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.get('RESOLVER_INVALID_MSG', 'Message');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.tget('RESOLVER_INVALID_MSG', 'Message');
 
 			const rolesChannel = msg.guild!.settings.get(GuildSettings.Channels.Roles);
-			if (!rolesChannel) throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
+			if (!rolesChannel) throw msg.language.tget('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 
 			if (!msg.guild!.channels.has(rolesChannel)) {
 				await msg.guild!.settings.reset(GuildSettings.Channels.Roles);
-				throw msg.language.get('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
+				throw msg.language.tget('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');
 			}
-			if (rolesChannel !== msg.channel.id) throw msg.language.get('COMMAND_SETMESSAGEROLE_WRONGCHANNEL', `<#${rolesChannel}>`);
-			if (msg.guild!.settings.get(GuildSettings.Roles.MessageReaction) === arg) throw msg.language.get('CONFIGURATION_EQUALS');
+			if (rolesChannel !== msg.channel.id) throw msg.language.tget('COMMAND_SETMESSAGEROLE_WRONGCHANNEL', `<#${rolesChannel}>`);
+			if (msg.guild!.settings.get(GuildSettings.Roles.MessageReaction) === arg) throw msg.language.tget('CONFIGURATION_EQUALS');
 
 			const message = await msg.channel.messages.fetch(arg).catch(() => null);
 			if (message) return message;
-			throw msg.language.get('SYSTEM_MESSAGE_NOT_FOUND');
+			throw msg.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		});
 	}
 

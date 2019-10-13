@@ -2306,6 +2306,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_AUTOROLE_POINTS_REQUIRED: 'You must input a valid amount of points.',
+		COMMAND_AUTOROLE_UPDATE_CONFIGURED: 'This role is already configured as an autorole. Use the remove type instead.',
 		COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: 'This role is not configured as an autorole. Use the add type instead.',
 		COMMAND_AUTOROLE_UPDATE: (role, points, before) => `Updated autorole: ${role.name} (${role.id}). Points required: ${points} (before: ${before})`,
 		COMMAND_AUTOROLE_REMOVE: (role, before) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
@@ -2604,11 +2605,13 @@ export default class extends Language {
 		CONST_MONITOR_WORDFILTER: 'Filtered Word',
 		CONST_MONITOR_CAPSFILTER: 'Too Many UpperCases',
 		CONST_MONITOR_ATTACHMENTFILTER: 'Too Many Attachments',
+		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		MONITOR_NOINVITE: user => `${REDCROSS} Dear ${user}, invite links aren't allowed here.`,
 		MONITOR_WORDFILTER_DM: filtered => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Pardon, dear ${user}, you said something that is not allowed in this server.`,
 		MONITOR_CAPSFILTER: user => `${REDCROSS} EEEOOO ${user}! PLEASE DO NOT SHOUT IN THIS PLACE! YOU HAVE HIT THE CAPS LIMIT!`,
+		MONITOR_NEWLINEFILTER: user => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
 		MONITOR_NMS_MESSAGE: user => [
 			`The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
 			"Do not worry! I'm here to help you! 😄"
@@ -3051,6 +3054,7 @@ export default class extends Language {
 		SELF_MODERATION_DURATION_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
 
 		RESOLVER_DATE_SUFFIX: ' seconds',
+		RESOLVER_POSITIVE_AMOUNT: 'You must give me a positive number.',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',
 		PREFIX_REMINDER: prefix => `The prefix in this guild is set to: \`${prefix}\``,
 

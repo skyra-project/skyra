@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: language => language.get('COMMAND_SHIBE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SHIBE_EXTENDED'),
+			description: language => language.tget('COMMAND_SHIBE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SHIBE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true
 		});

@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['doggo', 'puppy'],
 			cooldown: 10,
-			description: language => language.get('COMMAND_DOG_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_DOG_EXTENDED'),
+			description: language => language.tget('COMMAND_DOG_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_DOG_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true
 		});

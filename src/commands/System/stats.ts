@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
 			cooldown: 15,
-			description: language => language.get('COMMAND_STATS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_STATS_EXTENDED')
+			description: language => language.tget('COMMAND_STATS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_STATS_EXTENDED')
 		});
 	}
 

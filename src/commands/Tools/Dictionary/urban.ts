@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_URBAN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_URBAN_EXTENDED'),
+			description: language => language.tget('COMMAND_URBAN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_URBAN_EXTENDED'),
 			nsfw: true,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [query, ind = 1]: [string, number]) {
 		const index = ind - 1;
 		if (index < 0) {
-			throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
+			throw message.language.tget('RESOLVER_POSITIVE_AMOUNT');
 		}
 
 		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
@@ -32,8 +32,8 @@ export default class extends SkyraCommand {
 		const result = list[index];
 		if (typeof result === 'undefined') {
 			throw index === 0
-				? message.language.get('COMMAND_URBAN_NOTFOUND')
-				: message.language.get('COMMAND_URBAN_INDEX_NOTFOUND');
+				? message.language.tget('COMMAND_URBAN_NOTFOUND')
+				: message.language.tget('COMMAND_URBAN_INDEX_NOTFOUND');
 		}
 
 		const definition = this.content(result.definition, result.permalink, message.language);
@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 			.setURL(result.permalink)
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setThumbnail('https://i.imgur.com/CcIZZsa.png')
-			.splitFields(message.language.get('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
+			.splitFields(message.language.tget('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
 			.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
 			.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)
 			.setFooter('© Urban Dictionary'));
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 
 	public content(definition: string, permalink: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
+		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
 
 }

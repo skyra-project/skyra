@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_FOX_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_FOX_EXTENDED'),
+			description: language => language.tget('COMMAND_FOX_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_FOX_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS']
 		});
 		this.spam = true;

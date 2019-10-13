@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_HISTORY_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_HISTORY_EXTENDED'),
+			description: language => language.tget('COMMAND_HISTORY_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_HISTORY_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(COLORS[index])
 			.setAuthor(target.username, target.displayAvatarURL())
-			.setFooter(message.language.get('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans)));
+			.setFooter(message.language.tget('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans)));
 	}
 
 }

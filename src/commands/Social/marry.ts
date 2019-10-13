@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 30,
-			description: language => language.get('COMMAND_MARRY_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_MARRY_EXTENDED'),
+			description: language => language.tget('COMMAND_MARRY_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_MARRY_EXTENDED'),
 			runIn: ['text'],
 			usage: '(user:username)'
 		});

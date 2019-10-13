@@ -13,8 +13,8 @@ export default class extends SkyraCommand {
 			aliases: ['announce'],
 			bucket: 6,
 			cooldown: 30,
-			description: language => language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
+			description: language => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
 			permissionLevel: 4,
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
@@ -24,15 +24,15 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [announcement]: [string]) {
 		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements);
-		if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
+		if (!announcementID) throw message.language.tget('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
 		const channel = message.guild!.channels.get(announcementID) as TextChannel;
-		if (!channel) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
+		if (!channel) throw message.language.tget('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
-		if (!channel.postable) throw message.language.get('SYSTEM_CHANNEL_NOT_POSTABLE');
+		if (!channel.postable) throw message.language.tget('SYSTEM_CHANNEL_NOT_POSTABLE');
 
 		const role = announcementCheck(message);
-		const content = `${message.language.get('COMMAND_ANNOUNCEMENT', role)}\n${announcement}`;
+		const content = `${message.language.tget('COMMAND_ANNOUNCEMENT', role.toString())}\n${announcement}`;
 
 		if (await this.ask(message, content)) {
 			await this.send(message, channel, role, content);
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 
 	private ask(message: KlasaMessage, content: string) {
 		try {
-			return message.ask(message.language.get('COMMAND_ANNOUNCEMENT_PROMPT') as string, {
+			return message.ask(message.language.tget('COMMAND_ANNOUNCEMENT_PROMPT') as string, {
 				embed: new MessageEmbed()
 					.setColor(getColor(message) || 0xFFAB2D)
 					.setDescription(content)

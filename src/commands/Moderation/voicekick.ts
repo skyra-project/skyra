@@ -8,8 +8,8 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_VOICEKICK_EXTENDED'),
+			description: language => language.tget('COMMAND_VOICEKICK_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_VOICEKICK_EXTENDED'),
 			modType: ModerationTypeKeys.VoiceKick,
 			permissionLevel: 5,
 			requiredMember: true,
@@ -20,7 +20,7 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
-		if (!member.voice.channelID) throw message.language.get('GUILD_MEMBER_NOT_VOICECHANNEL');
+		if (!member.voice.channelID) throw message.language.tget('GUILD_MEMBER_NOT_VOICECHANNEL');
 		await member.voice.setChannel(null);
 		return this.sendModlog(message, user, reason);
 	}

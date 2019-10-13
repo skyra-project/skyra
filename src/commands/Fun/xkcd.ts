@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: language => language.get('COMMAND_XKCD_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_XKCD_EXTENDED'),
+			description: language => language.tget('COMMAND_XKCD_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_XKCD_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '[query:string]'
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 
 		const comicNumber = await this.getNumber(query, message.language);
 		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
-			.catch(() => { throw message.language.get('COMMAND_XKCD_NOTFOUND'); }) as XkcdResultOk;
+			.catch(() => { throw message.language.tget('COMMAND_XKCD_NOTFOUND'); }) as XkcdResultOk;
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 
 		if (typeof query === 'number') {
 			if (query <= xkcdInfo.num) return query;
-			throw i18n.get('COMMAND_XKCD_COMICS', xkcdInfo.num);
+			throw i18n.tget('COMMAND_XKCD_COMICS', xkcdInfo.num);
 		}
 
 		if (query) {

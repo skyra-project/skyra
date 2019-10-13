@@ -23,12 +23,13 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })
+			new MessageEmbed()
+				.setDescription(message.language.tget('SYSTEM_LOADING'))
+				.setColor(getColor(message) || 0xFFAB2D)
 		) as KlasaMessage;
 
-		let { list } = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
-
-		list = list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
+		const result = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
+		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
 		const display = this.buildDisplay(list, message, query);
 
@@ -44,7 +45,7 @@ export default class extends SkyraCommand {
 	private buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
 		const display = new UserRichDisplay();
 
-		results.forEach(result => {
+		for (const result of results) {
 			const definition = this.content(result.definition, result.permalink, message.language);
 			const example = result.example ? this.content(result.example, result.permalink, message.language) : 'None';
 			display.addPage(
@@ -60,7 +61,7 @@ export default class extends SkyraCommand {
 					.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)
 					.setFooter('© Urban Dictionary')
 			);
-		});
+		}
 
 		return display;
 	}

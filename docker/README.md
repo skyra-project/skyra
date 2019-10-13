@@ -11,7 +11,7 @@ the [CI server](https://ci.fredboat.com/project.html?projectId=Lavalink).
 After it is done, copy and paste the [`application.yml.example`] file and rename it to `application.yml`, then fill it
 with the precise variables.
 
-[`application.yml.example`]: /application.yml.example
+[`application.yml.example`]: /docker/application.yml.example
 
 ## Running
 

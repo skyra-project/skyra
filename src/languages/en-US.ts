@@ -2540,11 +2540,6 @@ export default class extends Language {
 		COMMAND_URBAN_NOTFOUND: 'I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?',
 		COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continue reading](${url})`,
-		COMMAND_URBAN_OUTPUT: (index, pages, definition, example, author) => [
-			`→ ${inlineCodeblock('Definition ::')} ${index}/${pages}\n${definition}`,
-			`→ ${inlineCodeblock('Example    ::')} ${example}`,
-			`→ ${inlineCodeblock('Author     ::')} ${author}`
-		].join('\n\n'),
 		COMMAND_WHOIS_MEMBER: member => [
 			`→ ${inlineCodeblock('ID         ::')} **${member.id}**`,
 			`→ ${inlineCodeblock('Tag        ::')} **${member.user.tag}**`,

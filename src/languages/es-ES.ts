@@ -2511,11 +2511,6 @@ export default class extends Language {
 		COMMAND_URBAN_NOTFOUND: 'Lo siento, la palabra que buscabas no parece estar definida en UrbanDictionary. ¿Prueba con otra palabra?',
 		COMMAND_URBAN_INDEX_NOTFOUND: 'Quizás quieras probar con un número de página más pequeño.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continúa leyendo](${url})`,
-		COMMAND_URBAN_OUTPUT: (index, pages, definition, example, author) => [
-			`→ ${inlineCodeblock('Definición ::')} ${index}/${pages}\n${definition}`,
-			`→ ${inlineCodeblock('Ejemplo    ::')} ${example}`,
-			`→ ${inlineCodeblock('Autor      ::')} ${author}`
-		].join('\n\n'),
 		COMMAND_WHOIS_MEMBER: member => [
 			`→ ${inlineCodeblock('ID             ::')} **${member.id}**`,
 			`→ ${inlineCodeblock('Etiqueta       ::')} **${member.user.tag}**`,

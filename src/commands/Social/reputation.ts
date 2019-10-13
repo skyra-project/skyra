@@ -35,11 +35,11 @@ export default class extends SkyraCommand {
 		if (check) {
 			if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
 			return message.sendMessage(message.author === user
-				? message.language.get('COMMAND_REPUTATIONS_SELF', selfSettings.get(UserSettings.Reputation) as UserSettings.Reputation)
-				: message.language.get('COMMAND_REPUTATIONS', user.username, extSettings!.get(UserSettings.Reputation) as UserSettings.Reputation));
+				? message.language.get('COMMAND_REPUTATIONS_SELF', selfSettings.get(UserSettings.Reputation))
+				: message.language.get('COMMAND_REPUTATIONS', user.username, extSettings!.get(UserSettings.Reputation)));
 		}
 
-		const timeReputation = selfSettings.get(UserSettings.TimeReputation) as UserSettings.TimeReputation;
+		const timeReputation = selfSettings.get(UserSettings.TimeReputation);
 		if (this.busy.has(message.author!.id) || timeReputation + TIME.DAY > now) {
 			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + TIME.DAY - now]);
 		}

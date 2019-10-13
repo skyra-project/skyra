@@ -20,9 +20,9 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (channel.type !== 'text') throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
-		const oldLength = (message.guild!.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels).length;
+		const oldLength = message.guild!.settings.get(GuildSettings.DisabledChannels).length;
 		await message.guild!.settings.update(GuildSettings.DisabledChannels, channel);
-		const newLength = (message.guild!.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels).length;
+		const newLength = message.guild!.settings.get(GuildSettings.DisabledChannels).length;
 		return message.sendLocale(oldLength < newLength
 			? 'COMMAND_SETIGNORECHANNELS_SET'
 			: 'COMMAND_SETIGNORECHANNELS_REMOVED', [channel]);

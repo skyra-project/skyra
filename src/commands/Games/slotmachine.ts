@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [text]: [string]) {
 		await message.author!.settings.sync();
 		const coins = Number(text);
-		const money = message.author!.settings.get(UserSettings.Money) as UserSettings.Money;
+		const money = message.author!.settings.get(UserSettings.Money);
 		if (money < coins) {
 			throw message.language.get('COMMAND_SLOTMACHINES_MONEY', money);
 		}

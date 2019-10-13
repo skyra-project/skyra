@@ -104,7 +104,7 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream) {
  * @param message The message instance to check with
  */
 export function announcementCheck(message: Message) {
-	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber) as GuildSettings.Roles.Subscriber;
+	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
 	if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
 	const role = message.guild!.roles.get(announcementID);
@@ -121,14 +121,14 @@ export function announcementCheck(message: Message) {
  */
 export async function removeMute(guild: Guild, id: string) {
 	const { settings } = guild;
-	const guildStickyRoles = settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+	const guildStickyRoles = settings.get(GuildSettings.StickyRoles);
 
 	const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
 	if (stickyRolesIndex === -1) return false;
 
 	const stickyRoles = guildStickyRoles[stickyRolesIndex];
 
-	const index = stickyRoles.roles.indexOf(settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
+	const index = stickyRoles.roles.indexOf(settings.get(GuildSettings.Roles.Muted));
 	if (index === -1) return false;
 
 	const clone = util.deepClone(stickyRoles) as Mutable<StickyRole>;
@@ -320,7 +320,7 @@ export function getImage(message: Message): string | null {
 }
 
 export function getColor(message: Message) {
-	const settingsColor = message.author!.settings.get(UserSettings.Color) as UserSettings.Color;
+	const settingsColor = message.author!.settings.get(UserSettings.Color);
 	if (settingsColor) {
 		return parseInt(settingsColor, 16);
 	}
@@ -415,10 +415,10 @@ export function muteGetRoles(member: GuildMember): string[] {
  * @param reason The reason for the mute
  */
 export async function mute(moderator: GuildMember, target: GuildMember, { reason, duration }: MuteOptions = {}) {
-	const role = target.guild!.roles.get(target.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted);
+	const role = target.guild!.roles.get(target.guild!.settings.get(GuildSettings.Roles.Muted));
 	if (!role) throw target.guild!.language.get('COMMAND_MUTE_UNCONFIGURED');
 
-	const all = target.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+	const all = target.guild!.settings.get(GuildSettings.StickyRoles);
 
 	const stickyRolesIndex = all.findIndex(stickyRole => stickyRole.user === target.id);
 	const stickyRoles: StickyRole = stickyRolesIndex === -1 ? { roles: [], user: target.id } : all[stickyRolesIndex];
@@ -486,7 +486,7 @@ async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Ro
  * @param message The message instance to use as context
  */
 export async function createMuteRole(message: Message) {
-	const id = message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+	const id = message.guild!.settings.get(GuildSettings.Roles.Muted);
 	if (id && message.guild!.roles.has(id)) throw message.language.get('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
 
 	if (message.guild!.roles.size === 250) throw message.language.get('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');

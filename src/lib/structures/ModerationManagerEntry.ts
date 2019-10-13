@@ -153,7 +153,7 @@ export class ModerationManagerEntry {
 		]);
 
 		const assets: ModerationTypeAssets = TYPE_ASSETS[this.type!];
-		const prefix = this.manager.guild!.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
+		const prefix = this.manager.guild!.settings.get(GuildSettings.Prefix);
 		const description = (this.duration
 			? [
 				`❯ **Type**: ${assets.title}`,
@@ -246,7 +246,7 @@ export class ModerationManagerEntry {
 		[this.id] = (await this.manager.table.insert(this.toJSON()).run()).generated_keys!;
 		this.manager.insert(this);
 
-		const channelID = this.manager.guild!.settings.get(GuildSettings.Channels.ModerationLogs) as GuildSettings.Channels.ModerationLogs;
+		const channelID = this.manager.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
 		const channel = (channelID && this.manager.guild!.channels.get(channelID) as TextChannel) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();

@@ -272,7 +272,7 @@ export class Queue extends Array<Song> {
 
 	public async manageableFor(message: KlasaMessage) {
 		// Retrieve the DJ role
-		const djRole = message.guild!.settings.get(GuildSettings.Roles.Dj) as GuildSettings.Roles.Dj;
+		const djRole = message.guild!.settings.get(GuildSettings.Roles.Dj);
 		// The queue is manageable for deejays.
 		if (djRole && message.member!.roles.has(djRole)) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.

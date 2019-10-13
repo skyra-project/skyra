@@ -79,8 +79,8 @@ export default class extends SkyraCommand {
 	}
 
 	public show(message: KlasaMessage) {
-		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
-		const includes = message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
+		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias);
+		const includes = message.guild!.settings.get(GuildSettings.Trigger.Includes);
 		const output: string[] = [];
 		for (const alias of aliases) {
 			output.push(`Alias \`${alias.input}\` -> \`${alias.output}\``);
@@ -119,9 +119,9 @@ export default class extends SkyraCommand {
 
 	private _getList(message: KlasaMessage, type: string) {
 		switch (type) {
-			case 'alias': return message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
+			case 'alias': return message.guild!.settings.get(GuildSettings.Trigger.Alias);
 			case 'reaction':
-			default: return message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes;
+			default: return message.guild!.settings.get(GuildSettings.Trigger.Includes);
 		}
 	}
 

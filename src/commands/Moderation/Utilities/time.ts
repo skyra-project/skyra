@@ -66,7 +66,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async updateModlog(message: KlasaMessage, modcase: ModerationManagerEntry) {
-		const modlog = message.guild!.settings.get(GuildSettings.Channels.ModerationLogs) as GuildSettings.Channels.ModerationLogs;
+		const modlog = message.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
 		if (!modlog) return null;
 		const channel = message.guild!.channels.get(modlog) as TextChannel;
 		if (!channel) {
@@ -110,8 +110,8 @@ export default class extends SkyraCommand {
 
 	private checkMute(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
-		const stickyRoles = (message.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
-		if (!stickyRoles || !stickyRoles.roles.includes(message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted)) throw message.language.get('COMMAND_MUTE_USER_NOT_MUTED');
+		const stickyRoles = message.guild!.settings.get(GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
+		if (!stickyRoles || !stickyRoles.roles.includes(message.guild!.settings.get(GuildSettings.Roles.Muted))) throw message.language.get('COMMAND_MUTE_USER_NOT_MUTED');
 		return 'unmute';
 	}
 

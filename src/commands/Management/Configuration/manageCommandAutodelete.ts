@@ -3,7 +3,6 @@ import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { TIME } from '../../../lib/util/constants';
-import { ArrayElementType } from '../../../lib/types/util';
 
 export default class extends SkyraCommand {
 
@@ -38,7 +37,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: KlasaMessage) {
-		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete) as GuildSettings.CommandAutodelete;
+		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete);
 		if (!commandAutodelete.length) throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
 
 		const list: string[] = [];
@@ -52,9 +51,9 @@ export default class extends SkyraCommand {
 	}
 
 	public async add(message: KlasaMessage, [channel, duration]: [TextChannel, number]) {
-		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete) as GuildSettings.CommandAutodelete;
+		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete);
 		const index = commandAutodelete.findIndex(([id]) => id === channel.id);
-		const value: ArrayElementType<GuildSettings.CommandAutodelete> = [channel.id, duration];
+		const value: readonly [string, number] = [channel.id, duration];
 
 		if (index === -1) {
 			await message.guild!.settings.update(GuildSettings.CommandAutodelete, [value], { arrayAction: 'add' });
@@ -65,7 +64,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async remove(message: KlasaMessage, [channel]: [TextChannel]) {
-		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete) as GuildSettings.CommandAutodelete;
+		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete);
 		const index = commandAutodelete.findIndex(([id]) => id === channel.id);
 
 		if (index !== -1) {

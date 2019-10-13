@@ -1,5 +1,5 @@
 import { Guild, Role } from 'discord.js';
-import { GuildSettings } from '../types/settings/GuildSettings';
+import { GuildSettings, PermissionsNode } from '../types/settings/GuildSettings';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
@@ -13,7 +13,7 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 	}
 
 	public get rawNodes() {
-		return this.guild.settings.get(GuildSettings.Permissions.Roles) as GuildSettings.Permissions.Roles;
+		return this.guild.settings.get(GuildSettings.Permissions.Roles);
 	}
 
 	public async update(rawNodes = this.rawNodes) {
@@ -42,11 +42,11 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 		return this;
 	}
 
-	private generateSorted(rawNodes: GuildSettings.Permissions.Roles) {
+	private generateSorted(rawNodes: readonly PermissionsNode[]) {
 		const sortedRoles = [...this.guild.roles.values()].sort(sort);
 		const nodes = rawNodes.slice();
 
-		const sortedNodes: GuildSettings.Permissions.Roles[number][] = [];
+		const sortedNodes: PermissionsNode[] = [];
 		for (const sortedRole of sortedRoles) {
 			const index = nodes.findIndex(node => node.id === sortedRole.id);
 			if (index === -1) continue;

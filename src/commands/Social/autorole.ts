@@ -2,7 +2,6 @@ import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings, RolesAuto } from '../../lib/types/settings/GuildSettings';
-import { Mutable } from '../../lib/types/util';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
@@ -32,7 +31,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: KlasaMessage) {
-		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
+		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		if (!autoRoles.length) throw message.language.get('COMMAND_AUTOROLE_LIST_EMPTY');
 
 		const filtered = new Set(autoRoles);
@@ -52,7 +51,7 @@ export default class extends SkyraCommand {
 		if (typeof points === 'undefined') throw message.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
 		if (typeof role === 'undefined') throw message.language.get('COMMAND_REQUIRE_ROLE');
 
-		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
+		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		if (autoRoles.length && autoRoles.some(entry => entry.id === role.id)) {
 			throw message.language.get('COMMAND_AUTOROLE_UPDATE_CONFIGURED');
 		}
@@ -64,7 +63,7 @@ export default class extends SkyraCommand {
 	public async remove(message: KlasaMessage, [role]: [Role]) {
 		if (typeof role === 'undefined') throw message.language.get('REQUIRE_ROLE');
 
-		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
+		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		const index = autoRoles.findIndex(entry => entry.id === role.id);
 		if (index === -1) {
 			throw message.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
@@ -80,14 +79,14 @@ export default class extends SkyraCommand {
 		if (typeof points === 'undefined') throw message.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
 		if (typeof role === 'undefined') throw message.language.get('COMMAND_REQUIRE_ROLE');
 
-		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
+		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		const index = autoRoles.findIndex(entry => entry.id === role.id);
 		if (index === -1) {
 			throw message.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
 		}
 
 		const autoRole = autoRoles[index];
-		const clone = util.deepClone(autoRoles) as Mutable<GuildSettings.Roles.Auto>;
+		const clone = util.deepClone(autoRoles) as RolesAuto[];
 		clone[index].points = points;
 		await message.guild!.settings.update(GuildSettings.Roles.Auto, clone.sort(SORT), { arrayAction: 'overwrite' });
 		return message.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole]);

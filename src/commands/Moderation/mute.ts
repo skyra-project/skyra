@@ -27,7 +27,7 @@ export default class extends ModerationCommand {
 
 	public async inhibit(message: KlasaMessage) {
 		if (message.command !== this) return false;
-		const id = message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+		const id = message.guild!.settings.get(GuildSettings.Roles.Muted);
 		const role = (id && message.guild!.roles.get(id)) || null;
 		if (!role) {
 			if (!await message.hasAtLeastPermissionLevel(6)) throw message.language.get('COMMAND_MUTE_LOWLEVEL');

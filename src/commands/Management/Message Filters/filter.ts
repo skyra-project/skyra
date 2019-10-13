@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is not filtered
-		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw;
+		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
 		const { regexp } = message.guild!.security;
 		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.get('COMMAND_FILTER_FILTERED', true);
 
@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is already filtered
-		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw;
+		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
 		if (!raw.includes(word)) throw message.language.get('COMMAND_FILTER_FILTERED', false);
 
 		// Perform update
@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 	}
 
 	public show(message: KlasaMessage) {
-		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw;
+		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
 		return message.sendMessage(raw.length
 			? message.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``)
 			: message.language.get('COMMAND_FILTER_SHOW_EMPTY'));

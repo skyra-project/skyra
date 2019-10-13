@@ -49,7 +49,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			&& message.type === 'DEFAULT'
 			&& message.author.id !== this.client.user!.id
 			&& message.guild.settings.get(this.keyEnabled) as boolean
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {

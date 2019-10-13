@@ -1,5 +1,5 @@
 import { Event, Settings } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { GuildSettings, PermissionsNode } from '../lib/types/settings/GuildSettings';
 import { SkyraGuild } from '../lib/extensions/SkyraGuild';
 import { getFromPath } from '../lib/util/util';
 
@@ -15,7 +15,7 @@ export default class extends Event {
 	}
 
 	private updateFilter(guild: SkyraGuild, changes: Record<string, unknown>) {
-		const updated = getFromPath(changes, GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw | undefined;
+		const updated = getFromPath(changes, GuildSettings.Selfmod.Filter.Raw) as readonly string[] | undefined;
 		if (typeof updated === 'undefined') return;
 
 		if (updated.length) guild.security.updateRegExp(updated);
@@ -23,7 +23,7 @@ export default class extends Event {
 	}
 
 	private updatePermissionNodes(guild: SkyraGuild, changes: Record<string, unknown>) {
-		const updated = getFromPath(changes, GuildSettings.Permissions.Roles) as GuildSettings.Permissions.Roles | undefined;
+		const updated = getFromPath(changes, GuildSettings.Permissions.Roles) as readonly PermissionsNode[] | undefined;
 		if (typeof updated === 'undefined') return;
 
 		return guild.permissionsManager.update(updated);

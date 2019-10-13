@@ -98,8 +98,8 @@ export class Slotmachine {
 	}
 
 	public get boost() {
-		const userBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
-		const guildBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+		const userBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Users);
+		const guildBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Guilds);
 		return (this.message.guild && guildBoosts.includes(this.message.guild!.id) ? 1.5 : 1)
 			* (userBoosts.includes(this.message.author!.id) ? 1.5 : 1);
 	}
@@ -109,7 +109,7 @@ export class Slotmachine {
 		const rolls = this.roll();
 		this.calculate(rolls);
 
-		const money = settings.get(UserSettings.Money) as UserSettings.Money;
+		const money = settings.get(UserSettings.Money);
 		const amount = this.winnings === 0 ? money - this.amount : money + (this.winnings * this.boost);
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update(UserSettings.Money, amount);

@@ -40,10 +40,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
-		const banners = new Set(message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
-		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix, banner.id);
+		const banners = new Set(message.author!.settings.get(UserSettings.BannerList));
+		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix), banner.id);
 
-		const money = message.author!.settings.get(UserSettings.Money) as UserSettings.Money;
+		const money = message.author!.settings.get(UserSettings.Money);
 		if (money < banner.price) throw message.language.get('COMMAND_BANNER_MONEY', money, banner.price);
 
 		const accepted = await this._prompt(message, banner);
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async reset(message: KlasaMessage) {
-		const banners = message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList;
+		const banners = message.author!.settings.get(UserSettings.BannerList);
 		if (!banners.length) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY');
 		if (message.author!.settings.get(UserSettings.ThemeProfile) === '0001') throw message.language.get('COMMAND_BANNER_RESET_DEFAULT');
 
@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async set(message: KlasaMessage, [banner]: [BannerCache]) {
-		const banners = message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList;
+		const banners = message.author!.settings.get(UserSettings.BannerList);
 		if (!banners.length) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY');
 		if (!banners.includes(banner.id)) throw message.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
 
@@ -116,8 +116,8 @@ export default class extends SkyraCommand {
 	}
 
 	private _userList(message: KlasaMessage) {
-		const prefix = message.guild!.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
-		const banners = new Set(message.author!.settings.get(UserSettings.BannerList) as UserSettings.BannerList);
+		const prefix = message.guild!.settings.get(GuildSettings.Prefix);
+		const banners = new Set(message.author!.settings.get(UserSettings.BannerList));
 		if (!banners.size) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', prefix);
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(getColor(message) || 0xFFAB2D));

@@ -29,17 +29,17 @@ Canvas
 SkyraClient.defaultPermissionLevels
 	.add(PermissionLevels.Staff, message => message.member
 		? message.guild!.settings.get(GuildSettings.Roles.Staff)
-			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Staff) as GuildSettings.Roles.Staff)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Staff))
 			: message.member.permissions.has(FLAGS.MANAGE_MESSAGES)
 		: false, { fetch: true })
 	.add(PermissionLevels.Moderator, message => message.member
 		? message.guild!.settings.get(GuildSettings.Roles.Moderator)
-			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Moderator) as GuildSettings.Roles.Moderator)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Moderator))
 			: message.member.permissions.has(FLAGS.BAN_MEMBERS)
 		: false, { fetch: true })
 	.add(PermissionLevels.Administrator, message => message.member
 		? message.guild!.settings.get(GuildSettings.Roles.Admin)
-			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Admin) as GuildSettings.Roles.Admin)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Admin))
 			: message.member.permissions.has(FLAGS.MANAGE_GUILD)
 		: false, { fetch: true });
 

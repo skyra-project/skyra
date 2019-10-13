@@ -36,12 +36,12 @@ export default class extends SkyraCommand {
 	public async showProfile(message: KlasaMessage, user: KlasaUser) {
 		await user.settings.sync();
 		const level = user.profileLevel;
-		const points = user.settings.get(UserSettings.Points) as UserSettings.Points;
-		const themeProfile = user.settings.get(UserSettings.ThemeProfile) as UserSettings.ThemeProfile;
-		const badgeSet = user.settings.get(UserSettings.BadgeSet) as UserSettings.BadgeSet;
-		const color = user.settings.get(UserSettings.Color) as UserSettings.Color;
-		const money = user.settings.get(UserSettings.Money) as UserSettings.Money;
-		const reputation = user.settings.get(UserSettings.Reputation) as UserSettings.Reputation;
+		const points = user.settings.get(UserSettings.Points);
+		const themeProfile = user.settings.get(UserSettings.ThemeProfile);
+		const badgeSet = user.settings.get(UserSettings.BadgeSet);
+		const color = user.settings.get(UserSettings.Color);
+		const money = user.settings.get(UserSettings.Money);
+		const reputation = user.settings.get(UserSettings.Reputation);
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);

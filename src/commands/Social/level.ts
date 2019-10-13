@@ -34,9 +34,9 @@ export default class extends SkyraCommand {
 
 	public async showProfile(message: KlasaMessage, user: KlasaUser) {
 		await user.settings.sync();
-		const points = user.settings.get(UserSettings.Points) as UserSettings.Points;
-		const color = user.settings.get(UserSettings.Color) as UserSettings.Color;
-		const themeLevel = user.settings.get(UserSettings.ThemeLevel) as UserSettings.ThemeLevel;
+		const points = user.settings.get(UserSettings.Points);
+		const color = user.settings.get(UserSettings.Color);
+		const themeLevel = user.settings.get(UserSettings.ThemeLevel);
 		const level = user.profileLevel;
 
 		/* Calculate information from the user */

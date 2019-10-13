@@ -18,7 +18,7 @@ export default class extends ModerationMonitor {
 	};
 
 	protected preProcess(message: KlasaMessage) {
-		const threshold = message.guild!.settings.get(GuildSettings.Selfmod.NewLines.Maximum) as GuildSettings.Selfmod.NewLines.Maximum;
+		const threshold = message.guild!.settings.get(GuildSettings.Selfmod.NewLines.Maximum);
 		if (threshold === 0) return null;
 
 		const content = getContent(message);

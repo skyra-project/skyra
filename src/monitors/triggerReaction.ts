@@ -6,7 +6,7 @@ export default class extends Monitor {
 
 	public async run(message: KlasaMessage): Promise<void> {
 		const content = message.content.toLowerCase();
-		const trigger = (message.guild!.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).find(trg => content.includes(trg.input));
+		const trigger = message.guild!.settings.get(GuildSettings.Trigger.Includes).find(trg => content.includes(trg.input));
 		if (trigger && trigger.action === 'react') {
 			if (message.reactable) {
 				await this.tryReact(message, trigger);
@@ -22,7 +22,7 @@ export default class extends Monitor {
 			&& message.content.length > 0
 			&& !message.system
 			&& !message.author.bot
-			&& (message.guild.settings.get(GuildSettings.Trigger.Includes) as GuildSettings.Trigger.Includes).length > 0;
+			&& message.guild.settings.get(GuildSettings.Trigger.Includes).length > 0;
 	}
 
 	private async tryReact(message: KlasaMessage, trigger: TriggerIncludes) {

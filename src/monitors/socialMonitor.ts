@@ -26,21 +26,21 @@ export default class extends Monitor {
 
 		try {
 			// If boosted guild, increase rewards
-			const boosts = this.client.settings!.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
+			const boosts = this.client.settings!.get(ClientSettings.Boosts.Guilds);
 			const add = Math.round(((Math.random() * 4) + 4) * (boosts.includes(message.guild!.id) ? 1.5 : 1));
 
 			await Promise.all([
 				message.author!.settings.increase(UserSettings.Points, add),
 				member ? member.settings.increase(MemberSettings.Points, add) : Promise.resolve(null)
 			]);
-			if (member) await this.handleRoles(message, member.settings.get(MemberSettings.Points) as MemberSettings.Points);
+			if (member) await this.handleRoles(message, member.settings.get(MemberSettings.Points));
 		} catch (err) {
 			this.client.emit(Events.Error, `Failed to add points to ${message.author!.id}: ${(err && err.stack) || err}`);
 		}
 	}
 
 	public async handleRoles(message: KlasaMessage, memberPoints: number) {
-		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto;
+		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		if (!autoRoles.length || !message.guild!.me!.permissions.has(MANAGE_ROLES)) return;
 
 		const autoRole = this.getLatestRole(autoRoles, memberPoints);
@@ -59,7 +59,7 @@ export default class extends Monitor {
 		await message.member!.roles.add(role);
 		if (message.guild!.settings.get(GuildSettings.Social.Achieve) && message.channel.postable) {
 			await message.channel.send(
-				this.getMessage(message.member!, role, (message.guild!.settings.get(GuildSettings.Social.AchieveMessage) as GuildSettings.Social.AchieveMessage)
+				this.getMessage(message.member!, role, message.guild!.settings.get(GuildSettings.Social.AchieveMessage)
 					|| message.language.get('MONITOR_SOCIAL_ACHIEVEMENT'))
 			);
 		}
@@ -72,13 +72,13 @@ export default class extends Monitor {
 				case '%MEMBER%': return member.toString();
 				case '%MEMBERNAME%': return member.user.username;
 				case '%GUILD%': return member.guild!.name;
-				case '%POINTS%': return (member.settings.get(MemberSettings.Points) as MemberSettings.Points).toString();
+				case '%POINTS%': return member.settings.get(MemberSettings.Points).toString();
 				default: return match;
 			}
 		});
 	}
 
-	public getLatestRole(autoRoles: GuildSettings.Roles.Auto, points: number) {
+	public getLatestRole(autoRoles: readonly RolesAuto[], points: number) {
 		let latest: RolesAuto | null = null;
 		for (const role of autoRoles) {
 			if (role.points > points) break;
@@ -96,7 +96,7 @@ export default class extends Monitor {
 			&& message.content.length > 0
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
-			&& !(message.guild.settings.get(GuildSettings.Social.IgnoreChannels) as GuildSettings.Social.IgnoreChannels).includes(message.channel.id);
+			&& !message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id);
 	}
 
 }

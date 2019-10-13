@@ -31,7 +31,7 @@ export default class extends Task {
 		// If the member is found, update the roles
 		if (member) {
 			const { position } = guild!.me!.roles.highest;
-			const rolesMuted = guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+			const rolesMuted = guild!.settings.get(GuildSettings.Roles.Muted);
 			const roles = this.extractRoles(member, rolesMuted, position, modlog.extraData as readonly string[] | null);
 			await member.edit({ roles }).catch(() => null);
 		}

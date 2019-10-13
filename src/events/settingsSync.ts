@@ -14,7 +14,7 @@ export default class extends Event {
 	}
 
 	private updateFilter(guild: SkyraGuild, settings: Settings) {
-		const blockedWords = settings.get(GuildSettings.Selfmod.Filter.Raw) as GuildSettings.Selfmod.Filter.Raw;
+		const blockedWords = settings.get(GuildSettings.Selfmod.Filter.Raw) as readonly string[];
 
 		if (blockedWords.length) guild!.security.updateRegExp(blockedWords);
 		else guild!.security.regexp = null;

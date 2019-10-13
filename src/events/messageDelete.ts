@@ -15,8 +15,8 @@ export default class extends Event {
 	}
 
 	private handleMessageLogs(message: KlasaMessage) {
-		const [enabled, ignoreChannels] = message.guild!.settings
-			.pluck(GuildSettings.Events.MessageDelete, GuildSettings.Messages.IgnoreChannels) as [GuildSettings.Events.MessageDelete, GuildSettings.Messages.IgnoreChannels];
+		const enabled = message.guild!.settings.get(GuildSettings.Events.MessageDelete);
+		const ignoreChannels = message.guild!.settings.get(GuildSettings.Messages.IgnoreChannels);
 		if (!enabled || ignoreChannels.includes(message.channel.id)) return;
 
 		const channel = message.channel as TextChannel;

@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		if (money <= 0) throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
 
 		await message.author!.settings.sync();
-		const currency = message.author!.settings.get(UserSettings.Money) as UserSettings.Money;
+		const currency = message.author!.settings.get(UserSettings.Money);
 		if (currency < money) throw message.language.get('COMMAND_PAY_MISSING_MONEY', money, currency);
 
 		const accepted = await message.ask(message.language.get('COMMAND_PAY_PROMPT', user.username, money));

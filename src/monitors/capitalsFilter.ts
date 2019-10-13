@@ -33,11 +33,11 @@ export default class extends ModerationMonitor {
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)
 			&& message.content.length > 0
-			&& (message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) as GuildSettings.Selfmod.Capitals.Minimum) < message.content.length;
+			&& message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) < message.content.length;
 	}
 
 	protected preProcess(message: KlasaMessage) {
-		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum) as GuildSettings.Selfmod.Capitals.Maximum;
+		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum);
 		const { length } = message.content;
 		let count = 0;
 		let i = 0;

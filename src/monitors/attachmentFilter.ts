@@ -12,9 +12,9 @@ export default class extends Monitor {
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const attachmentAction = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction;
-		const attachmentMaximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum) as GuildSettings.Selfmod.AttachmentMaximum;
-		const attachmentDuration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration) as GuildSettings.Selfmod.AttachmentDuration;
+		const attachmentAction = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction);
+		const attachmentMaximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum);
+		const attachmentDuration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration);
 
 		if (!message.guild!.security.adders.attachments) message.guild!.security.adders.attachments = new Adder(attachmentMaximum, attachmentDuration);
 
@@ -65,7 +65,7 @@ export default class extends Monitor {
 			await message.guild!.moderation.new
 				.setModerator(this.client.user!.id)
 				.setUser(message.author!.id)
-				.setDuration(message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration) as GuildSettings.Selfmod.AttachmentPunishmentDuration)
+				.setDuration(message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration))
 				.setReason('AttachmentFilter: Threshold Reached.')
 				.setType(type)
 				.create();
@@ -81,9 +81,9 @@ export default class extends Monitor {
 			&& message.attachments.size > 0
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
-			&& message.guild.settings.get(GuildSettings.Selfmod.Attachment) as GuildSettings.Selfmod.Attachment
-			&& !(message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
-			&& this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction) as GuildSettings.Selfmod.AttachmentAction);
+			&& message.guild.settings.get(GuildSettings.Selfmod.Attachment)
+			&& !message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
+			&& this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction));
 	}
 
 	private hasPermissions(message: KlasaMessage, action: number) {
@@ -92,7 +92,7 @@ export default class extends Monitor {
 		switch (action & 0b11) {
 			case 0b000: return guildMe.roles.highest.position > member.roles.highest.position;
 			case 0b001: return member.kickable;
-			case 0b010: return (message.guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted) !== null
+			case 0b010: return message.guild!.settings.get(GuildSettings.Roles.Muted) !== null
 				&& guildMe.roles.highest.position > member.roles.highest.position
 				&& guildMe.permissions.has(FLAGS.MANAGE_ROLES);
 			case 0b011: return member.bannable;

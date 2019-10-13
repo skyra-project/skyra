@@ -1,21 +1,16 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { T } from './Shared';
 
 export namespace ClientSettings {
 
-	export type CommandUses = number;
-	export const CommandUses = 'commandUses';
-	export type UserBlacklist = readonly string[];
-	export const UserBlacklist = 'userBlacklist';
-	export type GuildBlacklist = readonly string[];
-	export const GuildBlacklist = 'guildBlacklist';
-	export type Schedules = readonly RawScheduledTask[];
-	export const Schedules = 'schedules';
+	export const CommandUses = T<number>('commandUses');
+	export const UserBlacklist = T<readonly string[]>('userBlacklist');
+	export const GuildBlacklist = T<readonly string[]>('guildBlacklist');
+	export const Schedules = T<readonly RawScheduledTask[]>('schedules');
 
 	export namespace Boosts {
-		export type Guilds = string;
-		export const Guilds = 'boosts.guilds';
-		export type Users = string;
-		export const Users = 'boosts.users';
+		export const Guilds = T<readonly string[]>('boosts.guilds');
+		export const Users = T<readonly string[]>('boosts.users');
 	}
 
 }

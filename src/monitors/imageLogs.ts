@@ -52,7 +52,7 @@ export default class extends Monitor {
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
 			&& message.guild.settings.get(GuildSettings.Channels.ImageLogs) !== null
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 	private getDimensions(width: number, height: number) {

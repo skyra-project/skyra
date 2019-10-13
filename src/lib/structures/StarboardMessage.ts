@@ -271,7 +271,7 @@ export class StarboardMessage {
 	private async _syncDiscord(): Promise<void> {
 		try {
 			this.users = await fetchReactionUsers(this.client, this.channel.id, this.message.id,
-				this.channel.guild!.settings.get(GuildSettings.Starboard.Emoji) as GuildSettings.Starboard.Emoji);
+				this.channel.guild!.settings.get(GuildSettings.Starboard.Emoji));
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Missing Access

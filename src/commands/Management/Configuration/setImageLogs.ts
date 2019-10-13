@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (channel.type !== 'text') throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 
-		const current = message.guild!.settings.get(GuildSettings.Channels.ImageLogs) as GuildSettings.Channels.ImageLogs;
+		const current = message.guild!.settings.get(GuildSettings.Channels.ImageLogs);
 		if (current === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
 		await message.guild!.settings.update(GuildSettings.Channels.ImageLogs, channel);
 		return message.sendLocale('COMMAND_SETIMAGELOGS_SET', [channel]);

@@ -1,3 +1,5 @@
+import { CustomGet } from './settings/Shared';
+
 declare module 'discord.js' {
 
 	interface MessageExtendablesAskOptions {
@@ -36,6 +38,8 @@ declare module 'klasa' {
 	}
 
 	interface SettingsFolder {
+		get<K extends string, S>(key: CustomGet<K, S>): S;
+		get(key: string): SettingsFolder | SettingsValue | readonly SettingsValue[];
 		increase(key: string, value: number): Promise<SettingsFolderUpdateResult>;
 		decrease(key: string, value: number): Promise<SettingsFolderUpdateResult>;
 	}

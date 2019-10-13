@@ -23,7 +23,7 @@ export default class extends Event {
 
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
-		const allRoleSets = guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		const allRoleSets = guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		// First check if the user has multiple roles from a set
 		for (const set of allRoleSets) {

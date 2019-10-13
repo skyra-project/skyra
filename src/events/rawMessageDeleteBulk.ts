@@ -31,7 +31,7 @@ export default class extends Event {
 
 			if (!results.changes || !results.deleted) return;
 
-			const channel = guild!.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
+			const channel = guild!.settings.get(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			const messageSnowflakes = results.changes

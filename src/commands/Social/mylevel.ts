@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { GuildSettings, RolesAuto } from '../../lib/types/settings/GuildSettings';
 import { MemberSettings } from '../../lib/types/settings/MemberSettings';
 
 export default class extends SkyraCommand {
@@ -24,8 +24,8 @@ export default class extends SkyraCommand {
 		});
 
 		await member.settings.sync();
-		const memberPoints = member.settings.get(MemberSettings.Points) as MemberSettings.Points;
-		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto) as GuildSettings.Roles.Auto);
+		const memberPoints = member.settings.get(MemberSettings.Points);
+		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
 		const title = nextRole
 			? `\n${message.language.get('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}`
 			: '';
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_MYLEVEL', [memberPoints, title, user.id === message.author!.id ? null : user.username]);
 	}
 
-	public getLatestRole(points: number, autoroles: GuildSettings.Roles.Auto) {
+	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {
 		for (const autorole of autoroles) {
 			if (autorole.points > points) return autorole;
 		}

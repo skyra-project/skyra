@@ -21,8 +21,8 @@ export default class extends SkyraCommand {
 
 		await user.settings.sync();
 		return message.author === user
-			? message.sendLocale('COMMAND_BALANCE_SELF', [(user.settings.get(UserSettings.Money) as UserSettings.Money).toLocaleString()])
-			: message.sendLocale('COMMAND_BALANCE', [user.username, (user.settings.get(UserSettings.Money) as UserSettings.Money).toLocaleString()]);
+			? message.sendLocale('COMMAND_BALANCE_SELF', [user.settings.get(UserSettings.Money).toLocaleString()])
+			: message.sendLocale('COMMAND_BALANCE', [user.username, user.settings.get(UserSettings.Money).toLocaleString()]);
 	}
 
 }

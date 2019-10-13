@@ -10,16 +10,16 @@ export default class extends Event {
 	public run(message: KlasaMessage, command: string) {
 		if (!message.guild) return null;
 
-		const disabledChannels = message.guild!.settings.get(GuildSettings.DisabledChannels) as GuildSettings.DisabledChannels;
+		const disabledChannels = message.guild!.settings.get(GuildSettings.DisabledChannels);
 		if (disabledChannels.includes(message.channel.id) && !message.hasAtLeastPermissionLevel(5)) return null;
 
 		command = command.toLowerCase();
 
-		const tags = message.guild!.settings.get(GuildSettings.Tags) as GuildSettings.Tags;
+		const tags = message.guild!.settings.get(GuildSettings.Tags);
 		const tag = tags.some(t => t[0] === command);
 		if (tag) return this.runTag(message, command);
 
-		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias) as GuildSettings.Trigger.Alias;
+		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias);
 		const alias = aliases.find(entry => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);

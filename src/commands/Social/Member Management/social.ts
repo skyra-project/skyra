@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
-			newAmount = (member.settings.get(MemberSettings.Points) as MemberSettings.Points) + amount;
+			newAmount = member.settings.get(MemberSettings.Points) + amount;
 			await member.settings.update(newAmount);
 		} else {
 			const entry = await this._getMemberSettings(message.guild!.id, user.id);
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
-			newAmount = Math.max((member.settings.get(MemberSettings.Points) as MemberSettings.Points) - amount, 0);
+			newAmount = Math.max(member.settings.get(MemberSettings.Points) - amount, 0);
 			await member.settings.update(newAmount);
 		} else {
 			const entry = await this._getMemberSettings(message.guild!.id, user.id);
@@ -87,7 +87,7 @@ export default class extends SkyraCommand {
 		if (member) {
 			// Update from SettingsGateway
 			await member.settings.sync();
-			original = member.settings.get(MemberSettings.Points) as MemberSettings.Points;
+			original = member.settings.get(MemberSettings.Points);
 			variation = amount - original;
 			if (variation === 0) return message.sendLocale('COMMAND_SOCIAL_UNCHANGED', [user.username]);
 			await member.settings.update(MemberSettings.Points, amount);

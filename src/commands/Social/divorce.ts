@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const marry = message.author!.settings.get(UserSettings.Marry) as UserSettings.Marry;
+		const marry = message.author!.settings.get(UserSettings.Marry);
 		if (!marry) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 		// Ask the user if they're sure

@@ -46,8 +46,8 @@ export default class extends Event {
 	}
 
 	public handleFarewellMessage(guild: Guild, user: APIUserData) {
-		const channelsFarewell = guild!.settings.get(GuildSettings.Channels.Farewell) as GuildSettings.Channels.Farewell;
-		const messagesFarewell = guild!.settings.get(GuildSettings.Messages.Farewell) as GuildSettings.Messages.Farewell;
+		const channelsFarewell = guild!.settings.get(GuildSettings.Channels.Farewell);
+		const messagesFarewell = guild!.settings.get(GuildSettings.Messages.Farewell);
 		if (channelsFarewell && messagesFarewell) {
 			const channel = guild!.channels.get(channelsFarewell) as TextChannel;
 			if (channel && channel.postable) {
@@ -61,7 +61,7 @@ export default class extends Event {
 	}
 
 	public transformMessage(guild: Guild, user: APIUserData) {
-		return (guild!.settings.get(GuildSettings.Messages.Farewell) as GuildSettings.Messages.Farewell).replace(REGEXP, match => {
+		return guild!.settings.get(GuildSettings.Messages.Farewell).replace(REGEXP, match => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;
 				case MATCHES.MEMBERNAME: return user.username;

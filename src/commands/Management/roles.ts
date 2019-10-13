@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('rolenames', async (arg, _, message) => {
-			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public) as GuildSettings.Roles.Public;
+			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
 			if (!rolesPublic.length) return null;
 			if (!arg) return [];
 
@@ -37,11 +37,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [roles]: [Role[]]) {
-		const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public) as GuildSettings.Roles.Public;
+		const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
 
 		if (!roles) throw message.language.get('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
-			const prefix = message.guild!.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
+			const prefix = message.guild!.settings.get(GuildSettings.Prefix);
 			if (message.args.some(v => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', prefix);
 			return this.list(message, rolesPublic);
 		}
@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 		const removedRoles: string[] = [];
 		const { position } = message.guild!.me!.roles.highest;
 
-		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		for (const role of filterRoles) {
 			if (!role) continue;
@@ -91,8 +91,8 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		const rolesRemoveInitial = message.guild!.settings.get(GuildSettings.Roles.RemoveInitial) as GuildSettings.Roles.RemoveInitial;
-		const rolesInitial = message.guild!.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
+		const rolesRemoveInitial = message.guild!.settings.get(GuildSettings.Roles.RemoveInitial);
+		const rolesInitial = message.guild!.settings.get(GuildSettings.Roles.Initial);
 
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
@@ -112,7 +112,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage(output.join('\n'));
 	}
 
-	public async list(message: KlasaMessage, publicRoles: string[]) {
+	public async list(message: KlasaMessage, publicRoles: readonly string[]) {
 		const remove: string[] = [];
 		const roles: string[] = [];
 		for (const roleID of publicRoles) {

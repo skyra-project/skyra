@@ -1,32 +1,20 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { T } from './Shared';
 
 export namespace UserSettings {
 
-	export type CommandUses = number;
-	export const CommandUses = 'commandUses';
-	export type BadgeList = readonly string[];
-	export const BadgeList = 'badgeList';
-	export type BadgeSet = readonly string[];
-	export const BadgeSet = 'badgeSet';
-	export type BannerList = readonly string[];
-	export const BannerList = 'bannerList';
-	export type Color = string;
-	export const Color = 'color';
-	export type Marry = string;
-	export const Marry = 'marry';
-	export type Money = number;
-	export const Money = 'money';
-	export type Points = number;
-	export const Points = 'points';
-	export type Reputation = number;
-	export const Reputation = 'reputation';
-	export type ThemeLevel = string;
-	export const ThemeLevel = 'themeLevel';
-	export type ThemeProfile = string;
-	export const ThemeProfile = 'themeProfile';
-	export type TimeDaily = number;
-	export const TimeDaily = 'timeDaily';
-	export type TimeReputation = number;
-	export const TimeReputation = 'timeReputation';
+	export const CommandUses = T<number>('commandUses');
+	export const BadgeList = T<readonly string[]>('badgeList');
+	export const BadgeSet = T<readonly string[]>('badgeSet');
+	export const BannerList = T<readonly string[]>('bannerList');
+	export const Color = T<string>('color');
+	export const Marry = T<string>('marry');
+	export const Money = T<number>('money');
+	export const Points = T<number>('points');
+	export const Reputation = T<number>('reputation');
+	export const ThemeLevel = T<string>('themeLevel');
+	export const ThemeProfile = T<string>('themeProfile');
+	export const TimeDaily = T<number>('timeDaily');
+	export const TimeReputation = T<number>('timeReputation');
 
 }

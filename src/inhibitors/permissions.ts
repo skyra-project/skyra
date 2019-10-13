@@ -20,7 +20,7 @@ export default class extends Inhibitor {
 		if (!author) return null;
 
 		// Assume sorted data
-		const permissionNodeRoles = message.guild!.settings.get(GuildSettings.Permissions.Users) as GuildSettings.Permissions.Users;
+		const permissionNodeRoles = message.guild!.settings.get(GuildSettings.Permissions.Users);
 		for (const node of permissionNodeRoles) {
 			if (node.id !== author.id) continue;
 			if (node.allow.includes(command.name)) return false;

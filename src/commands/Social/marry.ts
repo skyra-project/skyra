@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async _display(message: KlasaMessage) {
-		const marry = message.author!.settings.get(UserSettings.Marry) as UserSettings.Marry;
+		const marry = message.author!.settings.get(UserSettings.Marry);
 		if (!marry) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 		const username = await this.client.fetchUsername(marry);
 		return message.sendLocale('COMMAND_MARRY_WITH', [username || `<@${marry}>`]);

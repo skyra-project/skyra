@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
-		const all = message.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+		const all = message.guild!.settings.get(GuildSettings.StickyRoles);
 		const entry = all.find(stickyRole => stickyRole.user === user.id);
 		if (!entry) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 
@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async remove(message: KlasaMessage, [user, role]: [KlasaUser, Role]) {
-		const all = message.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+		const all = message.guild!.settings.get(GuildSettings.StickyRoles);
 		const entry = all.find(stickyRole => stickyRole.user === user.id);
 		if (!entry) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 
@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async add(message: KlasaMessage, [user, role]: [KlasaUser, Role]) {
-		const all = message.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+		const all = message.guild!.settings.get(GuildSettings.StickyRoles);
 		const entry = all.find(stickyRole => stickyRole.user === user.id);
 
 		if (entry) {
@@ -84,7 +84,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: KlasaMessage, [user]: [KlasaUser]) {
-		const all = message.guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+		const all = message.guild!.settings.get(GuildSettings.StickyRoles);
 		const entry = all.find(stickyRole => stickyRole.user === user.id);
 		if (!entry) throw message.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
 

@@ -1,237 +1,146 @@
 import { SelfModeratorHardActionFlags } from '../../structures/SelfModeratorBitField';
+import { T } from './Shared';
 
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace GuildSettings {
 
-	export type CommandUses = number;
-	export const CommandUses = 'commandUses';
-	export type Prefix = string;
-	export const Prefix = 'prefix';
-	export type Tags = readonly [string, string][];
-	export const Tags = 'tags';
+	export const CommandUses = T<number>('commandUses');
+	export const Prefix = T<string>('prefix');
+	export const Tags = T<readonly [string, string][]>('tags');
 
 	export namespace Permissions {
-		export type Users = readonly PermissionsNode[];
-		export const Users = 'permissions.users';
-		export type Roles = readonly PermissionsNode[];
-		export const Roles = 'permissions.roles';
+		export const Users = T<readonly PermissionsNode[]>('permissions.users');
+		export const Roles = T<readonly PermissionsNode[]>('permissions.roles');
 	}
 
 	export namespace Channels {
-		export type Announcements = string;
-		export const Announcements = 'channels.announcements';
-		export type Greeting = string;
-		export const Greeting = 'channels.greeting';
-		export type Farewell = string;
-		export const Farewell = 'channels.farewell';
-		export type MemberLogs = string;
-		export const MemberLogs = 'channels.member-logs';
-		export type MessageLogs = string;
-		export const MessageLogs = 'channels.message-logs';
-		export type ModerationLogs = string;
-		export const ModerationLogs = 'channels.moderation-logs';
-		export type NSFWMessageLogs = string;
-		export const NSFWMessageLogs = 'channels.nsfw-message-logs';
-		export type ImageLogs = string;
-		export const ImageLogs = 'channels.image-logs';
-		export type Roles = string;
-		export const Roles = 'channels.roles';
-		export type Spam = string;
-		export const Spam = 'channels.spam';
+		export const Announcements = T<string>('channels.announcements');
+		export const Greeting = T<string>('channels.greeting');
+		export const Farewell = T<string>('channels.farewell');
+		export const MemberLogs = T<string>('channels.member-logs');
+		export const MessageLogs = T<string>('channels.message-logs');
+		export const ModerationLogs = T<string>('channels.moderation-logs');
+		export const NSFWMessageLogs = T<string>('channels.nsfw-message-logs');
+		export const ImageLogs = T<string>('channels.image-logs');
+		export const Roles = T<string>('channels.roles');
+		export const Spam = T<string>('channels.spam');
 	}
 
-	export type CommandAutodelete = readonly [string, number][];
-	export const CommandAutodelete = 'command-autodelete';
-	export type DisabledChannels = readonly string[];
-	export const DisabledChannels = 'disabledChannels';
-	export type DisabledCommandChannels = readonly DisabledCommandChannel[];
-	export const DisabledCommandChannels = 'disabledCommandsChannels';
+	export const CommandAutodelete = T<readonly [string, number][]>('command-autodelete');
+	export const DisabledChannels = T<readonly string[]>('disabledChannels');
+	export const DisabledCommandChannels = T<readonly DisabledCommandChannel[]>('disabledCommandsChannels');
 
 	export namespace Events {
-		export type BanAdd = boolean;
-		export const BanAdd = 'events.banAdd';
-		export type BanRemove = boolean;
-		export const BanRemove = 'events.banRemove';
-		export type MemberAdd = boolean;
-		export const MemberAdd = 'events.memberAdd';
-		export type MemberRemove = boolean;
-		export const MemberRemove = 'events.memberRemove';
-		export type MessageDelete = boolean;
-		export const MessageDelete = 'events.messageDelete';
-		export type MessageEdit = boolean;
-		export const MessageEdit = 'events.messageEdit';
+		export const BanAdd = T<boolean>('events.banAdd');
+		export const BanRemove = T<boolean>('events.banRemove');
+		export const MemberAdd = T<boolean>('events.memberAdd');
+		export const MemberRemove = T<boolean>('events.memberRemove');
+		export const MessageDelete = T<boolean>('events.messageDelete');
+		export const MessageEdit = T<boolean>('events.messageEdit');
 	}
 
 	export namespace Messages {
-		export type Farewell = string;
-		export const Farewell = 'messages.farewell';
-		export type Greeting = string;
-		export const Greeting = 'messages.greeting';
-		export type JoinDM = string;
-		export const JoinDM = 'messages.join-dm';
-		export type Warnings = boolean;
-		export const Warnings = 'messages.warnings';
-		export type IgnoreChannels = readonly string[];
-		export const IgnoreChannels = 'messages.ignoreChannels';
+		export const Farewell = T<string>('messages.farewell');
+		export const Greeting = T<string>('messages.greeting');
+		export const JoinDM = T<string>('messages.join-dm');
+		export const Warnings = T<boolean>('messages.warnings');
+		export const IgnoreChannels = T<readonly string[]>('messages.ignoreChannels');
 	}
 
-	export type StickyRoles = readonly StickyRole[];
-	export const StickyRoles = 'stickyRoles';
+	export const StickyRoles = T<readonly StickyRole[]>('stickyRoles');
 
 	export namespace Roles {
-		export type Admin = string;
-		export const Admin = 'roles.admin';
-		export type Auto = readonly RolesAuto[];
-		export const Auto = 'roles.auto';
-		export type Initial = string;
-		export const Initial = 'roles.initial';
-		export type MessageReaction = string;
-		export const MessageReaction = 'roles.messageReaction';
-		export type Moderator = string;
-		export const Moderator = 'roles.moderator';
-		export type Muted = string;
-		export const Muted = 'roles.muted';
-		export type Public = string[];
-		export const Public = 'roles.public';
-		export type Reactions = readonly RolesReaction[];
-		export const Reactions = 'roles.reactions';
-		export type RemoveInitial = boolean;
-		export const RemoveInitial = 'roles.removeInitial';
-		export type Staff = string;
-		export const Staff = 'roles.staff';
-		export type Dj = string;
-		export const Dj = 'roles.dj';
-		export type Subscriber = string;
-		export const Subscriber = 'roles.subscriber';
-		export type UniqueRoleSets = readonly UniqueRoleSet[];
-		export const UniqueRoleSets = 'roles.uniqueRoleSets';
+		export const Admin = T<string>('roles.admin');
+		export const Auto = T<readonly RolesAuto[]>('roles.auto');
+		export const Initial = T<string>('roles.initial');
+		export const MessageReaction = T<string>('roles.messageReaction');
+		export const Moderator = T<string>('roles.moderator');
+		export const Muted = T<string>('roles.muted');
+		export const Public = T<readonly string[]>('roles.public');
+		export const Reactions = T<readonly RolesReaction[]>('roles.reactions');
+		export const RemoveInitial = T<boolean>('roles.removeInitial');
+		export const Staff = T<string>('roles.staff');
+		export const Dj = T<string>('roles.dj');
+		export const Subscriber = T<string>('roles.subscriber');
+		export const UniqueRoleSets = T<readonly UniqueRoleSet[]>('roles.uniqueRoleSets');
 	}
 
 	export namespace Selfmod {
-		export type Attachment = boolean;
-		export const Attachment = 'selfmod.attachment';
-		export type AttachmentAction = number;
-		export const AttachmentAction = 'selfmod.attachmentAction';
-		export type AttachmentDuration = number;
-		export const AttachmentDuration = 'selfmod.attachmentDuration';
-		export type AttachmentMaximum = number;
-		export const AttachmentMaximum = 'selfmod.attachmentMaximum';
-		export type AttachmentPunishmentDuration = number;
-		export const AttachmentPunishmentDuration = 'selfmod.attachmentPunishmentDuration';
+		export const Attachment = T<boolean>('selfmod.attachment');
+		export const AttachmentAction = T<number>('selfmod.attachmentAction');
+		export const AttachmentDuration = T<number>('selfmod.attachmentDuration');
+		export const AttachmentMaximum = T<number>('selfmod.attachmentMaximum');
+		export const AttachmentPunishmentDuration = T<number>('selfmod.attachmentPunishmentDuration');
 
 		export namespace Capitals {
-			export const Enabled = 'selfmod.capitals.enabled';
-			export type Enabled = boolean;
-			export const Minimum = 'selfmod.capitals.minimum';
-			export type Minimum = number;
-			export const Maximum = 'selfmod.capitals.maximum';
-			export type Maximum = number;
-			export const SoftAction = 'selfmod.capitals.softAction';
-			export type SoftAction = number;
-			export const HardAction = 'selfmod.capitals.hardAction';
-			export type HardAction = SelfModeratorHardActionFlags;
-			export const HardActionDuration = 'selfmod.capitals.hardActionDuration';
-			export type HardActionDuration = number;
-			export const ThresholdMaximum = 'selfmod.capitals.thresholdMaximum';
-			export type ThresholdMaximum = number;
-			export const ThresholdDuration = 'selfmod.capitals.thresholdDuration';
-			export type ThresholdDuration = number | null;
+			export const Enabled = T<boolean>('selfmod.capitals.enabled');
+			export const Minimum = T<number>('selfmod.capitals.minimum');
+			export const Maximum = T<number>('selfmod.capitals.maximum');
+			export const SoftAction = T<number>('selfmod.capitals.softAction');
+			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.capitals.hardAction');
+			export const HardActionDuration = T<number>('selfmod.capitals.hardActionDuration');
+			export const ThresholdMaximum = T<number>('selfmod.capitals.thresholdMaximum');
+			export const ThresholdDuration = T<number | null>('selfmod.capitals.thresholdDuration');
 		}
 
 		export namespace NewLines {
-			export const Enabled = 'selfmod.newlines.enabled';
-			export type Enabled = boolean;
-			export const Maximum = 'selfmod.newlines.maximum';
-			export type Maximum = number;
-			export const SoftAction = 'selfmod.newlines.softAction';
-			export type SoftAction = number;
-			export const HardAction = 'selfmod.newlines.hardAction';
-			export type HardAction = SelfModeratorHardActionFlags;
-			export const HardActionDuration = 'selfmod.newlines.hardActionDuration';
-			export type HardActionDuration = number;
-			export const ThresholdMaximum = 'selfmod.newlines.thresholdMaximum';
-			export type ThresholdMaximum = number;
-			export const ThresholdDuration = 'selfmod.newlines.thresholdDuration';
-			export type ThresholdDuration = number | null;
+			export const Enabled = T<boolean>('selfmod.newlines.enabled');
+			export const Maximum = T<number>('selfmod.newlines.maximum');
+			export const SoftAction = T<number>('selfmod.newlines.softAction');
+			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.newlines.hardAction');
+			export const HardActionDuration = T<number>('selfmod.newlines.hardActionDuration');
+			export const ThresholdMaximum = T<number>('selfmod.newlines.thresholdMaximum');
+			export const ThresholdDuration = T<number | null>('selfmod.newlines.thresholdDuration');
 		}
 
 		export namespace Invites {
-			export const Enabled = 'selfmod.invites.enabled';
-			export type Enabled = boolean;
-			export const SoftAction = 'selfmod.invites.softAction';
-			export type SoftAction = number;
-			export const HardAction = 'selfmod.invites.hardAction';
-			export type HardAction = SelfModeratorHardActionFlags;
-			export const HardActionDuration = 'selfmod.invites.hardActionDuration';
-			export type HardActionDuration = number;
-			export const ThresholdMaximum = 'selfmod.invites.thresholdMaximum';
-			export type ThresholdMaximum = number;
-			export const ThresholdDuration = 'selfmod.invites.thresholdDuration';
-			export type ThresholdDuration = number | null;
+			export const Enabled = T<boolean>('selfmod.invites.enabled');
+			export const SoftAction = T<number>('selfmod.invites.softAction');
+			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.invites.hardAction');
+			export const HardActionDuration = T<number>('selfmod.invites.hardActionDuration');
+			export const ThresholdMaximum = T<number>('selfmod.invites.thresholdMaximum');
+			export const ThresholdDuration = T<number | null>('selfmod.invites.thresholdDuration');
 		}
 
 		export namespace Filter {
-			export const Raw = 'selfmod.filter.raw';
-			export type Raw = readonly string[];
-			export const Enabled = 'selfmod.filter.enabled';
-			export type Enabled = boolean;
-			export const SoftAction = 'selfmod.filter.softAction';
-			export type SoftAction = number;
-			export const HardAction = 'selfmod.filter.hardAction';
-			export type HardAction = SelfModeratorHardActionFlags;
-			export const HardActionDuration = 'selfmod.filter.hardActionDuration';
-			export type HardActionDuration = number;
-			export const ThresholdMaximum = 'selfmod.filter.thresholdMaximum';
-			export type ThresholdMaximum = number;
-			export const ThresholdDuration = 'selfmod.filter.thresholdDuration';
-			export type ThresholdDuration = number | null;
+			export const Raw = T<readonly string[]>('selfmod.filter.raw');
+			export const Enabled = T<boolean>('selfmod.filter.enabled');
+			export const SoftAction = T<number>('selfmod.filter.softAction');
+			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.filter.hardAction');
+			export const HardActionDuration = T<number>('selfmod.filter.hardActionDuration');
+			export const ThresholdMaximum = T<number>('selfmod.filter.thresholdMaximum');
+			export const ThresholdDuration = T<number | null>('selfmod.filter.thresholdDuration');
 		}
 
-		export type IgnoreChannels = readonly string[];
-		export const IgnoreChannels = 'selfmod.ignoreChannels';
-		export type Raid = string;
-		export const Raid = 'selfmod.raid';
-		export type Raidthreshold = number;
-		export const Raidthreshold = 'selfmod.raidthreshold';
+		export const IgnoreChannels = T<readonly string[]>('selfmod.ignoreChannels');
+		export const Raid = T<string>('selfmod.raid');
+		export const Raidthreshold = T<number>('selfmod.raidthreshold');
 	}
 
 	export namespace NoMentionSpam {
-		export type Alerts = boolean;
-		export const Alerts = 'no-mention-spam.alerts';
-		export type Enabled = boolean;
-		export const Enabled = 'no-mention-spam.enabled';
-		export type MentionsAllowed = number;
-		export const MentionsAllowed = 'no-mention-spam.mentionsAllowed';
-		export type TimePeriod = number;
-		export const TimePeriod = 'no-mention-spam.timePeriod';
+		export const Alerts = T<boolean>('no-mention-spam.alerts');
+		export const Enabled = T<boolean>('no-mention-spam.enabled');
+		export const MentionsAllowed = T<number>('no-mention-spam.mentionsAllowed');
+		export const TimePeriod = T<number>('no-mention-spam.timePeriod');
 	}
 
 	export namespace Social {
-		export type Achieve = boolean;
-		export const Achieve = 'social.achieve';
-		export type AchieveMessage = string;
-		export const AchieveMessage = 'social.achieveMessage';
-		export type IgnoreChannels = readonly string[];
-		export const IgnoreChannels = 'social.ignoreChannels';
+		export const Achieve = T<boolean>('social.achieve');
+		export const AchieveMessage = T<string>('social.achieveMessage');
+		export const IgnoreChannels = T<readonly string[]>('social.ignoreChannels');
 	}
 
 	export namespace Starboard {
-		export type Channel = string;
-		export const Channel = 'starboard.channel';
-		export type Emoji = string;
-		export const Emoji = 'starboard.emoji';
-		export type IgnoreChannels = string;
-		export const IgnoreChannels = 'starboard.ignoreChannels';
-		export type Minimum = number;
-		export const Minimum = 'starboard.minimum';
+		export const Channel = T<string>('starboard.channel');
+		export const Emoji = T<string>('starboard.emoji');
+		export const IgnoreChannels = T<string>('starboard.ignoreChannels');
+		export const Minimum = T<number>('starboard.minimum');
 	}
 
 	export namespace Trigger {
-		export type Alias = readonly TriggerAlias[];
-		export const Alias = 'trigger.alias';
-		export type Includes = readonly TriggerIncludes[];
-		export const Includes = 'trigger.includes';
+		export const Alias = T<readonly TriggerAlias[]>('trigger.alias');
+		export const Includes = T<readonly TriggerIncludes[]>('trigger.includes');
 	}
 
 }

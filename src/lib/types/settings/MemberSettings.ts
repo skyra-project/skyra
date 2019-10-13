@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { T } from './Shared';
 
 export namespace MemberSettings {
-	export type Points = number;
-	export const Points = 'points';
+	export const Points = T<number>('points');
 }

@@ -9,7 +9,7 @@ export default class extends Extendable {
 	}
 
 	public get profileLevel(this: User) {
-		return Math.floor(0.2 * Math.sqrt(this.settings.get(UserSettings.Points) as UserSettings.Points));
+		return Math.floor(0.2 * Math.sqrt(this.settings.get(UserSettings.Points)));
 	}
 
 	public async fetchRank(this: User) {

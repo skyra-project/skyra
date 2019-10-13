@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async random(message: KlasaMessage) {
-		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
+		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const r = this.client.providers.default.db;
 		const starboardData = await r
 			.table<StarboardMessageData>(Databases.Starboard)
@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 
 		// If there is no configured starboard channel, return no stars
 		// TODO(kyranet): Change this to a more descriptive message
-		const starboardChannelID = message.guild!.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
+		const starboardChannelID = message.guild!.settings.get(GuildSettings.Starboard.Channel);
 		if (!starboardChannelID) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
 		// If there is no configured starboard channel, return no stars
@@ -83,7 +83,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async top(message: KlasaMessage, [timespan]: [number?]) {
-		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
+		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const r = this.client.providers.default.db;
 		const starboardMessages = await r
 			.table<StarboardMessageData>(Databases.Starboard)

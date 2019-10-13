@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const role = announcementCheck(message);
-		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		// Get all the role ids that the member has and remove the guild id so we dont assign the everyone role
 		const memberRolesSet = new Set(message.member!.roles.keys());

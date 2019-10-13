@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 
 	private async buildHelp(message: KlasaMessage) {
 		const commands = await this._fetchCommands(message);
-		const prefix = message.guildSettings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
+		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
 		const helpMessage: string[] = [];
 		for (const [category, list] of commands) {
@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 
 	private async buildDisplay(message: KlasaMessage) {
 		const commands = await this._fetchCommands(message);
-		const prefix = message.guildSettings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
+		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
 		const display = new UserRichDisplay();
 		const color = getColor(message) || 0xFFAB2D;

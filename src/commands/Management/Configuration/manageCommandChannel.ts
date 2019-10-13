@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: KlasaMessage, [channel]: [TextChannel]) {
-		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
+		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
 		const entry = disabledCommandsChannels.find(e => e.channel === channel.id);
 		if (entry && entry.commands.length) {
 			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_SHOW', [channel, `\`${entry.commands.join('` | `')}\``]);
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async add(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
-		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
+		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
 		const index = disabledCommandsChannels.findIndex(e => e.channel === channel.id);
 
 		if (index === -1) {
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async remove(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
-		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
+		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
 		const index = disabledCommandsChannels.findIndex(e => e.channel === channel.id);
 
 		if (index !== -1) {
@@ -91,7 +91,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async reset(message: KlasaMessage, [channel]: [TextChannel]) {
-		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels) as GuildSettings.DisabledCommandChannels;
+		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
 		const entry = disabledCommandsChannels.find(e => e.channel === channel.id);
 
 		if (entry) {

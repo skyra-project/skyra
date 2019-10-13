@@ -54,8 +54,8 @@ export default class extends Event {
 	}
 
 	private handleGreetingMessage(guild: Guild, member: GuildMember) {
-		const channelsGreeting = guild!.settings.get(GuildSettings.Channels.Greeting) as GuildSettings.Channels.Greeting;
-		const messagesGreeting = guild!.settings.get(GuildSettings.Messages.Greeting) as GuildSettings.Messages.Greeting;
+		const channelsGreeting = guild!.settings.get(GuildSettings.Channels.Greeting);
+		const messagesGreeting = guild!.settings.get(GuildSettings.Messages.Greeting);
 		if (channelsGreeting && messagesGreeting) {
 			const channel = guild!.channels.get(channelsGreeting);
 			if (channel && (channel as TextChannel).postable) {
@@ -69,7 +69,7 @@ export default class extends Event {
 	}
 
 	private handleInitialRole(guild: Guild, member: GuildMember) {
-		const initialRole = guild!.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
+		const initialRole = guild!.settings.get(GuildSettings.Roles.Initial);
 		if (initialRole) {
 			const role = guild!.roles.get(initialRole);
 			if (!role || role.position >= guild!.me!.roles.highest.position) {
@@ -83,7 +83,7 @@ export default class extends Event {
 	}
 
 	private handleJoinDM(guild: Guild, member: GuildMember) {
-		const messagesJoinDM = guild!.settings.get(GuildSettings.Messages.JoinDM) as GuildSettings.Messages.JoinDM;
+		const messagesJoinDM = guild!.settings.get(GuildSettings.Messages.JoinDM);
 		if (messagesJoinDM) {
 			member.user.send(this.transformMessage(messagesJoinDM, guild, member.user)).catch(() => null);
 		}
@@ -106,12 +106,12 @@ export default class extends Event {
 	private handleStickyRoles(guild: Guild, member: GuildMember) {
 		if (!guild!.me!.permissions.has(FLAGS.MANAGE_ROLES)) return false;
 
-		const all = guild!.settings.get(GuildSettings.StickyRoles) as GuildSettings.StickyRoles;
+		const all = guild!.settings.get(GuildSettings.StickyRoles);
 		const stickyRoles = all.find(stickyRole => stickyRole.user === member.id);
 		if (!stickyRoles) return false;
 
 		// Handle the case the user is muted
-		const rolesMuted = guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+		const rolesMuted = guild!.settings.get(GuildSettings.Roles.Muted);
 		if (rolesMuted && stickyRoles.roles.includes(rolesMuted)) {
 			// Handle mute
 			const role = guild!.roles.get(rolesMuted);

@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 		const modlogs = await message.guild!.moderation.fetch(cases);
 		if (!modlogs.size) throw message.language.get('COMMAND_REASON_NOT_EXISTS', cases.length > 1);
 
-		const channel = message.guild!.channels.get(message.guild!.settings.get(GuildSettings.Channels.ModerationLogs) as GuildSettings.Channels.ModerationLogs) as TextChannel;
+		const channel = message.guild!.channels.get(message.guild!.settings.get(GuildSettings.Channels.ModerationLogs)) as TextChannel;
 		const messages = channel ? await channel.messages.fetch({ limit: 100 }) as Collection<string, KlasaMessage> : null;
 
 		const promises: Promise<void>[] = [];

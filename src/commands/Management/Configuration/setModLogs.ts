@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_SETMODLOGS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SETMODLOGS_EXTENDED'),
+			description: language => language.tget('COMMAND_SETMODLOGS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SETMODLOGS_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			usage: '<here|channel:channel>'
@@ -19,10 +19,10 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
-		else if (channel.type !== 'text') throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
+		else if (channel.type !== 'text') throw message.language.tget('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 
 		const current = message.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
-		if (current === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
+		if (current === channel.id) throw message.language.tget('CONFIGURATION_EQUALS');
 		await message.guild!.settings.update(GuildSettings.Channels.ModerationLogs, channel);
 		return message.sendLocale('COMMAND_SETMODLOGS_SET', [channel]);
 	}

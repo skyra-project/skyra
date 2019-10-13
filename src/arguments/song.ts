@@ -4,7 +4,7 @@ import { Track } from 'lavalink';
 export default class extends Argument {
 
 	public async run(arg: string, _: Possible, message: KlasaMessage) {
-		if (!arg) throw message.language.get('MUSICMANAGER_FETCH_NO_ARGUMENTS');
+		if (!arg) throw message.language.tget('MUSICMANAGER_FETCH_NO_ARGUMENTS');
 		if (!message.guild) return null;
 
 		arg = arg.replace(/<(.+)>/g, '$1');
@@ -25,7 +25,7 @@ export default class extends Argument {
 		}
 		if (!tracks.length) {
 			if (soundcloud) tracks.push(...await message.guild!.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
-			if (!tracks.length) throw message.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
+			if (!tracks.length) throw message.language.tget('MUSICMANAGER_FETCH_NO_MATCHES');
 		}
 		return returnAll ? tracks : tracks[0];
 	}

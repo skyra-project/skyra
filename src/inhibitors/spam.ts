@@ -24,7 +24,7 @@ export default class extends Inhibitor {
 		try {
 			this.ratelimit.acquire(message.channel.id).drip();
 		} catch {
-			throw message.language.get('INHIBITOR_SPAM', channel);
+			throw message.language.tget('INHIBITOR_SPAM', channel.toString());
 		}
 	}
 

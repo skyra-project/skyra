@@ -42,8 +42,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: language => language.get('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
+			description: language => language.tget('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
 			permissionLevel: 5,
 			runIn: ['text'],
 			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
@@ -53,19 +53,19 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('value', async (arg, possible, message, [type]) => {
 			if (type === 'enable') return true;
 			if (type === 'disable') return false;
-			if (!arg) throw message.language.get('COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE');
+			if (!arg) throw message.language.tget('COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE');
 
 			if (type === 'maximum') {
 				const maximum = await this.client.arguments.get('integer').run(arg, possible, message);
 				if (maximum >= 0 && maximum <= 60) return maximum;
-				throw message.language.get('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, '');
+				throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, '');
 			}
 
 			if (type === 'action') {
 				const action = arg.toLowerCase();
 				const index = ACTIONS.indexOf(action);
 				if (index !== -1) return (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b1000) + index;
-				throw message.language.get('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
+				throw message.language.tget('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
 			}
 
 			if (type === 'logs') {
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 
 			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, TIME.YEAR];
 			const duration = Math.round(((await this.client.arguments.get('duration').run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
-			if (duration < min || duration > max) throw message.language.get('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.get('RESOLVER_DATE_SUFFIX'));
+			if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.tget('RESOLVER_DATE_SUFFIX'));
 			return duration;
 		});
 	}

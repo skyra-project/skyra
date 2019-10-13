@@ -9,15 +9,15 @@ export default class extends SkyraCommand {
 			aliases: ['bal', 'credits'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_BALANCE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_BALANCE_EXTENDED'),
+			description: language => language.tget('COMMAND_BALANCE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_BALANCE_EXTENDED'),
 			usage: '[user:username]'
 		});
 		this.spam = true;
 	}
 
 	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
-		if (user.bot) throw message.language.get('COMMAND_BALANCE_BOTS');
+		if (user.bot) throw message.language.tget('COMMAND_BALANCE_BOTS');
 
 		await user.settings.sync();
 		return message.author === user

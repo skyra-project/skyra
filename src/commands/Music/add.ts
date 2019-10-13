@@ -6,7 +6,7 @@ export default class extends MusicCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_ADD_DESCRIPTION'),
+			description: language => language.tget('COMMAND_ADD_DESCRIPTION'),
 			usage: '<song:song>',
 			flagSupport: true
 		});
@@ -14,8 +14,8 @@ export default class extends MusicCommand {
 
 	public run(message: KlasaMessage, [songs]: [Track | Track[]]) {
 		return message.sendMessage(Array.isArray(songs)
-			? message.language.get('COMMAND_ADD_PLAYLIST', message.guild!.music.add(message.author!.id, songs).length)
-			: message.language.get('COMMAND_ADD_SONG', message.guild!.music.add(message.author!.id, songs).safeTitle));
+			? message.language.tget('COMMAND_ADD_PLAYLIST', message.guild!.music.add(message.author!.id, songs).length)
+			: message.language.tget('COMMAND_ADD_SONG', message.guild!.music.add(message.author!.id, songs).safeTitle));
 	}
 
 }

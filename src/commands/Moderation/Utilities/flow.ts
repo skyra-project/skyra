@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [channel = message.channel as TextChannel]: [TextChannel?]) {
-		if (!channel.readable) throw message.language.get('CHANNEL_NOT_READABLE');
+		if (!channel.readable) throw message.language.tget('CHANNEL_NOT_READABLE');
 		const messages = await channel.messages.fetch({ limit: 100, before: message.id });
 		const minimum = message.createdTimestamp - 60000;
 		const amount = messages.reduce((prev, curr) => curr.createdTimestamp > minimum ? prev + 1 : prev, 0);

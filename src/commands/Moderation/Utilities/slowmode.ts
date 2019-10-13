@@ -7,8 +7,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: language => language.get('COMMAND_SLOWMODE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SLOWMODE_EXTENDED'),
+			description: language => language.tget('COMMAND_SLOWMODE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SLOWMODE_EXTENDED'),
 			requiredPermissions: ['MANAGE_CHANNELS'],
 			usage: '<reset|cooldown:integer{0,120}>',
 			runIn: ['text']

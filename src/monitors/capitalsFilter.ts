@@ -48,12 +48,12 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onDelete(message: KlasaMessage, value: number) {
-		if (value > 25) floatPromise(this, message.author!.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))));
+		if (value > 25) floatPromise(this, message.author!.send(message.language.tget('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))));
 		floatPromise(this, message.nuke());
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_CAPSFILTER', message.author!.toString())));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
@@ -61,7 +61,7 @@ export default class extends ModerationMonitor {
 			.splitFields(message.content)
 			.setColor(0xEFAE45)
 			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_CAPSFILTER')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_CAPSFILTER')}`)
 			.setTimestamp();
 	}
 

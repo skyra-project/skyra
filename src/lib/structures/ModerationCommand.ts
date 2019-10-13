@@ -62,19 +62,19 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 		}
 
-		const output = [];
+		const output: string[] = [];
 		if (processed.length) {
 			const logReason = processed[0].log.reason;
 			const sorted = processed.sort((a, b) => a.log.case! - b.log.case!);
-			const cases = sorted.map(({ log }) => log.case);
+			const cases = sorted.map(({ log }) => log.case as number);
 			const users = sorted.map(({ target }) => `\`${target.tag}\``);
 			const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
-			output.push(message.language.get('COMMAND_MODERATION_OUTPUT', cases, range, users, logReason));
+			output.push(message.language.tget('COMMAND_MODERATION_OUTPUT', cases, range, users, logReason));
 		}
 
 		if (errored.length) {
 			const users = errored.map(({ error, target }) => `- ${target.tag} → ${error}`);
-			output.push(message.language.get('COMMAND_MODERATION_FAILED', users));
+			output.push(message.language.tget('COMMAND_MODERATION_FAILED', users));
 		}
 
 		try {
@@ -88,21 +88,21 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	public async checkModeratable(message: KlasaMessage, target: User) {
 		if (target.id === message.author!.id) {
-			throw message.language.get('COMMAND_USERSELF');
+			throw message.language.tget('COMMAND_USERSELF');
 		}
 
 		if (target.id === this.client.user!.id) {
-			throw message.language.get('COMMAND_TOSKYRA');
+			throw message.language.tget('COMMAND_TOSKYRA');
 		}
 
 		const member = await message.guild!.members.fetch(target.id).catch(() => {
-			if (this.requiredMember) throw message.language.get('USER_NOT_IN_GUILD');
+			if (this.requiredMember) throw message.language.tget('USER_NOT_IN_GUILD');
 			return null;
 		}) as GuildMember | null;
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
-			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER');
+			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER_SKYRA');
+			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER');
 		}
 
 		return member;

@@ -12,8 +12,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_URBAN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_URBAN_EXTENDED'),
+			description: language => language.tget('COMMAND_URBAN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_URBAN_EXTENDED'),
 			nsfw: true,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })
+			new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })
 		) as KlasaMessage;
 
 		let { list } = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 
 	public content(definition: string, permalink: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
+		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
 
 	private buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {

@@ -15,8 +15,8 @@ export default class extends SkyraCommand {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_LEADERBOARD_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_LEADERBOARD_EXTENDED'),
+			description: language => language.tget('COMMAND_LEADERBOARD_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_LEADERBOARD_EXTENDED'),
 			runIn: ['text'],
 			usage: '[global|local] [index:integer]',
 			usageDelim: ' '
@@ -60,8 +60,8 @@ export default class extends SkyraCommand {
 		}
 
 		page.push('');
-		page.push(message.language.get('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
-		page.push(message.language.get('COMMAND_SCOREBOARD_POSITION', position));
+		page.push(message.language.tget('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
+		page.push(message.language.tget('COMMAND_SCOREBOARD_POSITION', position));
 
 		return page;
 	}

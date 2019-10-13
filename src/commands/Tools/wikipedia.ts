@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['wiki'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_WIKIPEDIA_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_WIKIPEDIA_EXTENDED'),
+			description: language => language.tget('COMMAND_WIKIPEDIA_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_WIKIPEDIA_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<query:string>'
 		});
@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 		const text = await fetch(url, 'json') as WikipediaResultOk;
 
 		if (text.query.pageids[0] === '-1') {
-			throw message.language.get('COMMAND_WIKIPEDIA_NOTFOUND');
+			throw message.language.tget('COMMAND_WIKIPEDIA_NOTFOUND');
 		}
 
 		const pageURL = `https://en.wikipedia.org/wiki/${url.searchParams.get('titles')}`;
@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 
 	private content(definition: string, url: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
+		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
 	}
 
 }

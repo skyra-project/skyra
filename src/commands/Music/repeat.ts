@@ -6,7 +6,7 @@ export default class extends MusicCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['replay'],
-			description: language => language.get('COMMAND_REPEAT_DESCRIPTION')
+			description: language => language.tget('COMMAND_REPEAT_DESCRIPTION')
 		});
 	}
 

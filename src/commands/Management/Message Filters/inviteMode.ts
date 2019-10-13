@@ -16,8 +16,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['invites-mode', 'inv-mode'],
-			description: language => language.get('COMMAND_INVITEMODE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_INVITEMODE_EXTENDED')
+			description: language => language.tget('COMMAND_INVITEMODE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_INVITEMODE_EXTENDED')
 		});
 	}
 

@@ -12,7 +12,7 @@ export default class extends Inhibitor {
 		}
 
 		const { broke, permission } = await this.client.permissionLevels.run(message, command.permissionLevel);
-		if (!permission) throw broke ? message.language.get('INHIBITOR_PERMISSIONS') : true;
+		if (!permission) throw broke ? message.language.tget('INHIBITOR_PERMISSIONS') : true;
 	}
 
 	private runUser(message: KlasaMessage, command: Command) {
@@ -24,7 +24,7 @@ export default class extends Inhibitor {
 		for (const node of permissionNodeRoles) {
 			if (node.id !== author.id) continue;
 			if (node.allow.includes(command.name)) return false;
-			if (node.deny.includes(command.name)) throw message.language.get('INHIBITOR_PERMISSIONS');
+			if (node.deny.includes(command.name)) throw message.language.tget('INHIBITOR_PERMISSIONS');
 		}
 
 		return null;
@@ -38,7 +38,7 @@ export default class extends Inhibitor {
 		for (const [id, node] of message.guild!.permissionsManager.entries()) {
 			if (!member.roles.has(id)) continue;
 			if (node.allow.has(command.name)) return false;
-			if (node.deny.has(command.name)) throw message.language.get('INHIBITOR_PERMISSIONS');
+			if (node.deny.has(command.name)) throw message.language.tget('INHIBITOR_PERMISSIONS');
 		}
 
 		return null;

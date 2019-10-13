@@ -8,7 +8,7 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['rs'],
-			description: language => language.get('COMMAND_ROLESET_DESCRIPTION'),
+			description: language => language.tget('COMMAND_ROLESET_DESCRIPTION'),
 			permissionLevel: 6,
 			requiredPermissions: [],
 			runIn: ['text'],

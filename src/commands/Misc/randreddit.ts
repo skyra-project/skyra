@@ -12,14 +12,14 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['rand', 'rand-reddit', 'reddit'],
 			cooldown: 3,
-			description: language => language.get('COMMAND_RANDREDDIT_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_RANDREDDIT_EXTENDED'),
+			description: language => language.tget('COMMAND_RANDREDDIT_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_RANDREDDIT_EXTENDED'),
 			usage: '<reddit:reddit>'
 		});
 
 		this.createCustomResolver('reddit', (arg, _possible, message) => {
-			if (!arg) throw message.language.get('COMMAND_RANDREDDIT_REQUIRED_REDDIT');
-			if (blacklist.test(arg)) throw message.language.get('COMMAND_RANDREDDIT_BANNED');
+			if (!arg) throw message.language.tget('COMMAND_RANDREDDIT_REQUIRED_REDDIT');
+			if (blacklist.test(arg)) throw message.language.tget('COMMAND_RANDREDDIT_BANNED');
 			return arg.toLowerCase();
 		});
 	}
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		const { kind, data } = await fetch(`https://www.reddit.com/r/${reddit}/.json?limit=30`, 'json') as RedditResponse;
 
 		if (!kind || !data || data.children.length === 0) {
-			throw message.language.get('COMMAND_RANDREDDIT_FAIL');
+			throw message.language.tget('COMMAND_RANDREDDIT_FAIL');
 		}
 
 		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 			: data.children.filter(child => !child.data.over_18 && !titleBlacklist.test(child.data.title));
 
 		if (posts.length === 0) {
-			throw message.language.get(nsfwEnabled ? 'COMMAND_RANDREDDIT_ALL_NSFL' : 'COMMAND_RANDREDDIT_ALL_NSFW');
+			throw message.language.tget(nsfwEnabled ? 'COMMAND_RANDREDDIT_ALL_NSFL' : 'COMMAND_RANDREDDIT_ALL_NSFW');
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;

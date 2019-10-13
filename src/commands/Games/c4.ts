@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['connect-four'],
 			cooldown: 0,
-			description: language => language.get('COMMAND_C4_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_C4_EXTENDED'),
+			description: language => language.tget('COMMAND_C4_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_C4_EXTENDED'),
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -21,22 +21,22 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		if (user.id === this.client.user!.id) throw message.language.get('COMMAND_GAMES_SKYRA');
-		if (user.bot) throw message.language.get('COMMAND_GAMES_BOT');
-		if (user.id === message.author!.id) throw message.language.get('COMMAND_GAMES_SELF');
-		if (this.client.connectFour.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
+		if (user.id === this.client.user!.id) throw message.language.tget('COMMAND_GAMES_SKYRA');
+		if (user.bot) throw message.language.tget('COMMAND_GAMES_BOT');
+		if (user.id === message.author!.id) throw message.language.tget('COMMAND_GAMES_SELF');
+		if (this.client.connectFour.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');
 		this.client.connectFour.set(message.channel.id, null);
 
 		try {
-			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.get('COMMAND_C4_PROMPT', message.author!, user));
+			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.tget('COMMAND_C4_PROMPT', message.author!.toString(), user.toString()));
 			if (response) {
 				await this.client.connectFour.create(message, message.author!, user)!.run();
 			} else {
-				await message.alert(message.language.get('COMMAND_GAMES_PROMPT_DENY'));
+				await message.alert(message.language.tget('COMMAND_GAMES_PROMPT_DENY'));
 			}
 		} catch (error) {
 			if (typeof error !== 'string') this.client.emit(Events.Wtf, error);
-			await message.alert(message.language.get('COMMAND_GAMES_PROMPT_TIMEOUT'));
+			await message.alert(message.language.tget('COMMAND_GAMES_PROMPT_TIMEOUT'));
 		} finally {
 			this.client.connectFour.delete(message.channel.id);
 		}

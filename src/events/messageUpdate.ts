@@ -20,7 +20,7 @@ export default class extends Event {
 			.splitFields(diffWordsWithSpace(Util.escapeMarkdown(old.content), Util.escapeMarkdown(message.content))
 				.map(result => result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value)
 				.join(' '))
-			.setFooter(`${message.language.get('EVENTS_MESSAGE_UPDATE')} | ${(message.channel as TextChannel).name}`)
+			.setFooter(`${message.language.tget('EVENTS_MESSAGE_UPDATE')} | ${(message.channel as TextChannel).name}`)
 			.setTimestamp());
 	}
 

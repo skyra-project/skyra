@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [index]: [number]) {
 		const modlog = await message.guild!.moderation.fetch(index);
 		if (modlog) return message.sendEmbed(await modlog.prepareEmbed());
-		throw message.language.get('COMMAND_REASON_NOT_EXISTS');
+		throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
 	}
 
 }

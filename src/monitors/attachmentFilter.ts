@@ -46,7 +46,7 @@ export default class extends Monitor {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 					.setColor(0xEFAE45)
 					.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-					.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_ATTACHMENTFILTER')}`)
+					.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_ATTACHMENTFILTER')}`)
 					.setTimestamp());
 			}
 		}

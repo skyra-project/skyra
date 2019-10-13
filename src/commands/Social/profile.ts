@@ -20,8 +20,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_PROFILE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_PROFILE_EXTENDED'),
+			description: language => language.tget('COMMAND_PROFILE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_PROFILE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			spam: true,
 			usage: '[user:username]'

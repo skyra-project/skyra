@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: language => language.get('COMMAND_QUOTE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_QUOTE_EXTENDED'),
+			description: language => language.tget('COMMAND_QUOTE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_QUOTE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '[channel:channel] (message:message)',
 			usageDelim: ' '
@@ -22,11 +22,11 @@ export default class extends SkyraCommand {
 			const messageUrl = await this.getFromUrl(message, arg);
 			if (messageUrl) return messageUrl;
 
-			if (channel.type !== 'text') throw message.language.get('RESOLVER_INVALID_CHANNEL', 'Channel');
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('RESOLVER_INVALID_MSG', 'Message');
+			if (channel.type !== 'text') throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MSG', 'Message');
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;
-			throw message.language.get('SYSTEM_MESSAGE_NOT_FOUND');
+			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		});
 	}
 
@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 			.setTimestamp(remoteMessage.createdAt);
 
 		const content = getContent(remoteMessage);
-		if (content) embed.setDescription(`[${message.language.get('JUMPTO')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
+		if (content) embed.setDescription(`[${message.language.tget('JUMPTO')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
 
 		return message.sendEmbed(embed);
 	}
@@ -57,8 +57,8 @@ export default class extends SkyraCommand {
 
 			const channel = guild.channels.get(_channel);
 			if (!channel) return null;
-			if (!('messages' in channel)) throw message.language.get('RESOLVER_INVALID_CHANNEL', 'Channel');
-			if (!(channel as TextChannel).readable) throw message.language.get('SYSTEM_MESSAGE_NOT_FOUND');
+			if (!('messages' in channel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
+			if (!(channel as TextChannel).readable) throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 
 			return await (channel as TextChannel).messages.fetch(_message);
 		} catch {

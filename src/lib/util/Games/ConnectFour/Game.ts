@@ -66,9 +66,9 @@ export class Game {
 	}
 
 	public async run() {
-		this.message = await this.message.send(this.language.get('SYSTEM_LOADING')) as KlasaMessage;
+		this.message = await this.message.send(this.language.tget('SYSTEM_LOADING')) as KlasaMessage;
 		for (const reaction of CONNECT_FOUR.REACTIONS) await this.message.react(reaction);
-		this.content = this.language.get('COMMAND_C4_GAME_NEXT', this.next!.name, this.next!.color);
+		this.content = this.language.tget('COMMAND_C4_GAME_NEXT', this.next!.name, this.next!.color);
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 
 		let stop = false;
@@ -90,7 +90,7 @@ export class Game {
 			this._retries = 3;
 		} catch (error) {
 			if (error instanceof DiscordAPIError && (error.code === 10003 || error.code === 10008)) {
-				await this.message.alert(this.message.language.get('COMMAND_C4_GAME_DRAW'));
+				await this.message.alert(this.message.language.tget('COMMAND_C4_GAME_DRAW'));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

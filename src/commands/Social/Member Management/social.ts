@@ -14,8 +14,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_SOCIAL_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SOCIAL_EXTENDED'),
+			description: language => language.tget('COMMAND_SOCIAL_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SOCIAL_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
 			subcommands: true,
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 			await member.settings.update(newAmount);
 		} else {
 			const entry = await this._getMemberSettings(message.guild!.id, user.id);
-			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
+			if (!entry) throw message.language.tget('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
 			newAmount = (entry.count as number) + amount;
@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 			await member.settings.update(newAmount);
 		} else {
 			const entry = await this._getMemberSettings(message.guild!.id, user.id);
-			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
+			if (!entry) throw message.language.tget('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
 			newAmount = Math.max(entry.count - amount, 0);
@@ -93,7 +93,7 @@ export default class extends SkyraCommand {
 			await member.settings.update(MemberSettings.Points, amount);
 		} else {
 			const entry = await this._getMemberSettings(message.guild!.id, user.id);
-			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
+			if (!entry) throw message.language.tget('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
 			original = entry.count;
@@ -119,7 +119,7 @@ export default class extends SkyraCommand {
 			await member.settings.reset(MemberSettings.Points);
 		} else {
 			const entry = await this._getMemberSettings(message.guild!.id, user.id);
-			if (!entry) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
+			if (!entry) throw message.language.tget('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 			// Update from database
 			await this.client.providers.default.db

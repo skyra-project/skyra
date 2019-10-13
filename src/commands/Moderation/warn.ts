@@ -10,8 +10,8 @@ export default class extends ModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['warning'],
-			description: language => language.get('COMMAND_WARN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_WARN_EXTENDED'),
+			description: language => language.tget('COMMAND_WARN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_WARN_EXTENDED'),
 			modType: ModerationTypeKeys.Warn,
 			permissionLevel: 5,
 			requiredMember: true
@@ -22,7 +22,7 @@ export default class extends ModerationCommand {
 
 	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string) {
 		if (reason && message.guild!.settings.get(GuildSettings.Messages.Warnings)) {
-			user.send(message.language.get('COMMAND_WARN_DM', message.author!.tag, message.guild, reason)).catch(() => null);
+			user.send(message.language.tget('COMMAND_WARN_DM', message.author!.tag, message.guild!.toString(), reason)).catch(() => null);
 		}
 		return this.sendModlog(message, user, reason);
 	}

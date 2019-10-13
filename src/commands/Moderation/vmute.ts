@@ -8,8 +8,8 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_VMUTE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_VMUTE_EXTENDED'),
+			description: language => language.tget('COMMAND_VMUTE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_VMUTE_EXTENDED'),
 			modType: ModerationTypeKeys.VoiceMute,
 			optionalDuration: true,
 			permissionLevel: 5,
@@ -21,7 +21,7 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string, _prehandled: undefined, duration: number | null) {
-		if (member.voice.serverMute) throw message.language.get('COMMAND_MUTE_MUTED');
+		if (member.voice.serverMute) throw message.language.tget('COMMAND_MUTE_MUTED');
 		await member.voice.setMute(true, reason);
 		return this.sendModlog(message, user, reason, null, duration);
 	}

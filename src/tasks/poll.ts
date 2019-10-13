@@ -48,12 +48,12 @@ export default class extends Task {
 
 }
 
-interface PollData {
+export interface PollData {
 	id: string;
 	author: string;
 	guild: string;
 	title: string;
 	options: string[];
 	votes: Record<string, number>;
-	voted: [];
+	voted: string[];
 }

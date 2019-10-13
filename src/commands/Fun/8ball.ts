@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-const QUESTION_KEYS = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
+const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
 
 export default class extends SkyraCommand {
 

@@ -432,6 +432,11 @@ interface ApiGuildsGuild {
 	 * Widget endpoints.
 	 */
 	'widget.png': ApiGuildsGuildWidget;
+
+	/**
+	 * Audit-Logs endpoints.
+	 */
+	'audit-logs': ApiGuildsGuildAuditLogs;
 }
 
 /**
@@ -823,6 +828,13 @@ interface ApiGuildsGuildWidget {
 	 * applies to `embed.png`.
 	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-widget-image
 	 */
+	get: ApiMethods['get'];
+}
+
+/**
+ * /guilds/{guild.id}/audit-logs
+ */
+interface ApiGuildsGuildAuditLogs {
 	get: ApiMethods['get'];
 }
 

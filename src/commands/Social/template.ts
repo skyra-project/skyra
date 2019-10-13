@@ -153,7 +153,7 @@ export default class extends SkyraCommand {
 
 }
 
-interface ProfileTitles {
+export interface ProfileTitles {
 	GLOBAL_RANK: string;
 	CREDITS: string;
 	REPUTATION: string;

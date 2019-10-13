@@ -10,22 +10,22 @@ export default class extends Task {
 
 	public async run(doc: UnmuteTaskData) {
 		// Get the guild
-		const guild = this.client.guilds.get(doc[ModerationSchemaKeys.Guild]);
+		const guild = this.client.guilds.get(doc.guildID);
 
 		if (!guild) return;
-		await removeMute(guild, doc[ModerationSchemaKeys.User]);
+		await removeMute(guild, doc.userID);
 
 		// And check for permissions
 		if (!guild!.me!.permissions.has(FLAGS.MANAGE_ROLES)) return;
 
 		// Check if the user is still muted
-		const modlog = await guild!.moderation.fetch(doc[ModerationSchemaKeys.Case] as number);
+		const modlog = await guild!.moderation.fetch(doc.caseID);
 		if (!modlog || modlog.appealed) return;
 
 		await modlog.appeal();
 
 		// Fetch the user, then the member
-		const user = await this.client.users.fetch(doc[ModerationSchemaKeys.User]);
+		const user = await this.client.users.fetch(doc.userID);
 		const member = await guild!.members.fetch(user.id).catch(() => null) as GuildMember | null;
 
 		// If the member is found, update the roles
@@ -41,7 +41,7 @@ export default class extends Task {
 			.setModerator(this.client.user!.id)
 			.setUser(user)
 			.setType(ModerationTypeKeys.UnMute)
-			.setReason(`Mute released after ${this.client.languages.default.duration(doc[ModerationSchemaKeys.Duration])}`)
+			.setReason(`Mute released after ${this.client.languages.default.duration(doc.duration)}`)
 			.create();
 	}
 
@@ -66,4 +66,5 @@ interface UnmuteTaskData {
 	[ModerationSchemaKeys.Guild]: string;
 	[ModerationSchemaKeys.User]: string;
 	[ModerationSchemaKeys.Duration]: number;
+	[ModerationSchemaKeys.Case]: number;
 }

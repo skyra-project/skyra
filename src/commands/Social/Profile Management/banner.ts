@@ -101,7 +101,7 @@ export default class extends SkyraCommand {
 					title: banner.title
 				});
 
-				display.addPage(template => template
+				display.addPage((template: MessageEmbed) => template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
 					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));
@@ -124,7 +124,7 @@ export default class extends SkyraCommand {
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
-				display.addPage(template => template
+				display.addPage((template: MessageEmbed) => template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
 					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));

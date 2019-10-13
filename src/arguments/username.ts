@@ -1,5 +1,6 @@
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import { FuzzySearch } from '../lib/util/FuzzySearch';
+import { User } from 'discord.js';
 const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
 
@@ -9,7 +10,7 @@ export default class extends Argument {
 		return this.store.get('user');
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean) {
+	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<User> {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);

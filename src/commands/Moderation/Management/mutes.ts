@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 		const format = this.displayMute.bind(this, users, message.language.duration.bind(message.language));
 
 		for (const page of util.chunk([...mutes.values()], 10)) {
-			display.addPage(template => template.setDescription(page.map(format)));
+			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
 		}
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;

@@ -13,6 +13,7 @@ export default class extends Middleware {
 		const stream = this.contentStream(request);
 		let body = '';
 
+		if (typeof stream === 'undefined') return;
 		for await (const chunk of stream) body += chunk;
 
 		const data = JSON.parse(body);
@@ -33,7 +34,7 @@ export default class extends Middleware {
 				break;
 			case 'identity':
 				stream = request;
-				stream.length = length;
+				stream.length = Number(length);
 		}
 		return stream;
 	}

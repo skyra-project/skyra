@@ -18,7 +18,7 @@ export class PlayerHuman extends Player {
 		this.player = player;
 	}
 
-	public async start() {
+	public async start(): Promise<void> {
 		const reaction = await new Promise<string>(resolve => {
 			this.game.llrc!.setTime(60000);
 			this.game.llrc!.setEndListener(() => resolve(''));

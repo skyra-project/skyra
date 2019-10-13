@@ -9,7 +9,7 @@ export default class extends Argument {
 		return this.store.get('role');
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: Role) => boolean) {
+	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: Role) => boolean): Promise<Role> {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_ROLENAME', possible.name);
 		if (!message.guild) return this.role.run(arg, possible, message);
 		const resRole = this.resolveRole(arg, message.guild);

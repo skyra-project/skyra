@@ -132,7 +132,7 @@ export default class extends SkyraCommand {
 		return `https://hasteb.in/${key}.${language}`;
 	}
 
-	private async handleMessage(message: KlasaMessage, options: InternalEvalOptions, { success, result, time, footer, language }: InternalEvalResults) {
+	private async handleMessage(message: KlasaMessage, options: InternalEvalOptions, { success, result, time, footer, language }: InternalEvalResults): Promise<KlasaMessage | KlasaMessage[] | null> {
 		switch (options.sendAs) {
 			case 'file': {
 				if (message.channel.attachable) return message.channel.sendFile(Buffer.from(result), 'output.txt', message.language.tget('COMMAND_EVAL_OUTPUT_FILE', time, footer));

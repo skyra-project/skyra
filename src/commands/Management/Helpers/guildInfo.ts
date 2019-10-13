@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 			.addField(serverInfoTitles.MEMBERS, message.language.tget('COMMAND_SERVERINFO_MEMBERS',
 				message.guild!.memberCount, owner), true)
 			.addField(serverInfoTitles.OTHER, message.language.tget('COMMAND_SERVERINFO_OTHER',
-				message.guild!.roles.size, message.guild!.region, message.guild!.createdTimestamp, message.guild!.verificationLevel), true));
+				message.guild!.roles.size, message.guild!.region, message.guild!.createdTimestamp, message.guild!.verificationLevel as 0 | 1 | 2 | 3 | 4), true));
 	}
 
 }

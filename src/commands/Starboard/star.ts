@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async random(message: KlasaMessage) {
+	public async random(message: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const r = this.client.providers.default.db;
 		const starboardData = await r

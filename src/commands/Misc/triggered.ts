@@ -42,12 +42,11 @@ export default class extends SkyraCommand {
 		const canvas = new Canvas(350, 393);
 
 		const buffers = [this.template, await fetchAvatar(user, 512)];
-		const [imgTitle, imgTriggered] = await Promise.all(buffers.map(buffer => new Promise<Image>((resolve, reject) => {
+		const [imgTitle, imgTriggered] = buffers.map(buffer => {
 			const image = new Image(128, 128);
 			image.src = buffer!;
-			image.onload = resolve;
-			image.onerror = reject;
-		})));
+			return image;
+		});
 
 		const stream = encoder.createReadStream();
 		encoder.start();

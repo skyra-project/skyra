@@ -1,4 +1,4 @@
-import { Collection, PermissionString, Webhook } from 'discord.js';
+import { Collection, Webhook } from 'discord.js';
 import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util, Colors } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { MasterPool, R } from 'rethinkdb-ts';
@@ -277,12 +277,6 @@ declare module 'discord.js' {
 }
 
 declare module 'klasa' {
-
-	export interface Language {
-		PERMISSIONS: Record<PermissionString, string>;
-		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
-		duration(time: number): string;
-	}
 
 	export interface Provider {
 		db: R;

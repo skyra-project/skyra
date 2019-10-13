@@ -12,8 +12,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_WARNINGS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_WARNINGS_EXTENDED'),
+			description: language => language.tget('COMMAND_WARNINGS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_WARNINGS_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			runIn: ['text'],
@@ -25,12 +25,12 @@ export default class extends SkyraCommand {
 		const warnings = (await (target
 			? message.guild!.moderation.fetch(target!.id)
 			: message.guild!.moderation.fetch())).filter(log => log.type === ModerationTypeKeys.Warn);
-		if (!warnings.size) throw message.language.get('COMMAND_WARNINGS_EMPTY');
+		if (!warnings.size) throw message.language.tget('COMMAND_WARNINGS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL())
-			.setTitle(message.language.get('COMMAND_WARNINGS_AMOUNT', warnings.size)));
+			.setTitle(message.language.tget('COMMAND_WARNINGS_AMOUNT', warnings.size)));
 
 		// Fetch usernames
 		const users = new Map() as Map<string, string>;
@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			display.addPage(template => template.setDescription(page.map(format)));
 		}
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
 		await display.run(response, message.author!.id);
 		return response;
 	}

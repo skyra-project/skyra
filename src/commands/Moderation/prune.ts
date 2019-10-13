@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['purge', 'nuke'],
 			cooldown: 5,
-			description: language => language.get('COMMAND_PRUNE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_PRUNE_EXTENDED'),
+			description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],

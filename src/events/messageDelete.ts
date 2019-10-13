@@ -24,7 +24,7 @@ export default class extends Event {
 			.setColor(0xFFAB40)
 			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL())
 			.setDescription(cutText(getContent(message) || '', 1900))
-			.setFooter(`${message.language.get('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
+			.setFooter(`${message.language.tget('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
 			.setImage(getImage(message)!)
 			.setTimestamp());
 	}

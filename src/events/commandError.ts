@@ -16,7 +16,7 @@ export default class extends Event {
 	public async run(message: KlasaMessage, command: Command, _: string[], error: Error) {
 		if (typeof error === 'string') {
 			try {
-				await message.alert(message.language.get('EVENTS_ERROR_STRING', message.author!, error));
+				await message.alert(message.language.tget('EVENTS_ERROR_STRING', message.author!.toString(), error));
 			} catch (err) {
 				this.client.emit(Events.ApiError, err);
 			}
@@ -36,7 +36,7 @@ export default class extends Event {
 			try {
 				await message.alert(this.client.options.owners.includes(message.author!.id)
 					? util.codeBlock('js', error.stack!)
-					: message.language.get('EVENTS_ERROR_WTF'));
+					: message.language.tget('EVENTS_ERROR_WTF'));
 			} catch (err) {
 				this.client.emit(Events.ApiError, err);
 			}

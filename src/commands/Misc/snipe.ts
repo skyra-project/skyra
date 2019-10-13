@@ -8,18 +8,18 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['sniped'],
-			description: language => language.get('COMMAND_SNIPE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SNIPE_EXTENDED'),
+			description: language => language.tget('COMMAND_SNIPE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SNIPE_EXTENDED'),
 			runIn: ['text']
 		});
 	}
 
 	public run(message: KlasaMessage) {
 		const channel = message.channel as TextChannel;
-		if (channel.sniped === null) throw message.language.get('COMMAND_SNIPE_EMPTY');
+		if (channel.sniped === null) throw message.language.tget('COMMAND_SNIPE_EMPTY');
 
 		const embed = new MessageEmbed()
-			.setTitle(message.language.get('COMMAND_SNIPE_TITLE'))
+			.setTitle(message.language.tget('COMMAND_SNIPE_TITLE'))
 			.setAuthor(channel.sniped.author!.username, channel.sniped.author!.displayAvatarURL({ size: 64 }))
 			.setTimestamp(channel.sniped.createdTimestamp);
 

@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_LOVE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_LOVE_EXTENDED'),
+			description: language => language.tget('COMMAND_LOVE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_LOVE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			spam: true,
@@ -25,15 +25,15 @@ export default class extends SkyraCommand {
 
 		let result;
 		if (estimatedPercentage < 45) {
-			result = message.language.get('COMMAND_LOVE_LESS45');
+			result = message.language.tget('COMMAND_LOVE_LESS45');
 		} else if (estimatedPercentage < 75) {
-			result = message.language.get('COMMAND_LOVE_LESS75');
+			result = message.language.tget('COMMAND_LOVE_LESS75');
 		} else if (estimatedPercentage < 100) {
-			result = message.language.get('COMMAND_LOVE_LESS100');
+			result = message.language.tget('COMMAND_LOVE_LESS100');
 		} else {
 			result = isSelf
-				? message.language.get('COMMAND_LOVE_ITSELF')
-				: message.language.get('COMMAND_LOVE_100');
+				? message.language.tget('COMMAND_LOVE_ITSELF')
+				: message.language.tget('COMMAND_LOVE_100');
 		}
 
 		return message.sendEmbed(new MessageEmbed()
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 				`💗 **${user.tag}**`,
 				`💗 **${message.author!.tag}**\n`,
 				`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
-				`**${message.language.get('COMMAND_LOVE_RESULT')}**: ${result}`
+				`**${message.language.tget('COMMAND_LOVE_RESULT')}**: ${result}`
 			].join('\n')));
 	}
 

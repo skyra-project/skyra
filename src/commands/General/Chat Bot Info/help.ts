@@ -12,7 +12,7 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['commands', 'cmd', 'cmds'],
-			description: language => language.get('COMMAND_HELP_DESCRIPTION'),
+			description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
 			guarded: true,
 			usage: '(Command:command|page:integer)',
 			flagSupport: true
@@ -29,14 +29,14 @@ export default class extends SkyraCommand {
 		const command = commandOrPage && !util.isNumber(commandOrPage) ? commandOrPage : null;
 		if (command) {
 			return message.sendMessage([
-				message.language.get('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
-				message.language.get('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
-				message.language.get('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
+				message.language.tget('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
+				message.language.tget('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
+				message.language.tget('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
 			].join('\n'));
 		}
 
 		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
-			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
+			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
 			const display = await this.buildDisplay(message);
 
 			// Extract start page and sanitize it

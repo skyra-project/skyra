@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_8BALL_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_8BALL_EXTENDED'),
+			description: language => language.tget('COMMAND_8BALL_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_8BALL_EXTENDED'),
 			spam: true,
 			usage: '<question:string>'
 		});

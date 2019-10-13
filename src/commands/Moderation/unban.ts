@@ -9,8 +9,8 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_UNBAN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_UNBAN_EXTENDED'),
+			description: language => language.tget('COMMAND_UNBAN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_UNBAN_EXTENDED'),
 			modType: ModerationTypeKeys.UnBan,
 			permissionLevel: 5,
 			requiredMember: false,
@@ -21,13 +21,13 @@ export default class extends ModerationCommand {
 	public async prehandle(message: KlasaMessage) {
 		const bans = await message.guild!.fetchBans()
 			.then(result => result.map(ban => ban.user.id))
-			.catch(() => { throw message.language.get('SYSTEM_FETCHBANS_FAIL'); });
+			.catch(() => { throw message.language.tget('SYSTEM_FETCHBANS_FAIL'); });
 		if (bans.length) return { bans, unlock: message.guild!.settings.get(GuildSettings.Events.BanRemove) ? message.guild!.moderation.createLock() : null };
-		throw message.language.get('GUILD_BANS_EMPTY');
+		throw message.language.tget('GUILD_BANS_EMPTY');
 	}
 
 	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string, { bans }: Unlock) {
-		if (!bans.includes(user.id)) throw message.language.get('GUILD_BANS_NOT_FOUND');
+		if (!bans.includes(user.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 		await message.guild!.members.unban(user.id, reason);
 		return this.sendModlog(message, user, reason);
 	}

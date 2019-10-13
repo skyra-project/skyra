@@ -32,14 +32,14 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_NOINVITE', message.author)));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_NOINVITE', message.author!.toString())));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.setColor(0xEFAE45)
 			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_INVITELINK')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_INVITELINK')}`)
 			.setTimestamp();
 	}
 

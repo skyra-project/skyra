@@ -60,7 +60,7 @@ export default class extends Monitor {
 		if (message.guild!.settings.get(GuildSettings.Social.Achieve) && message.channel.postable) {
 			await message.channel.send(
 				this.getMessage(message.member!, role, message.guild!.settings.get(GuildSettings.Social.AchieveMessage)
-					|| message.language.get('MONITOR_SOCIAL_ACHIEVEMENT'))
+					|| message.language.tget('MONITOR_SOCIAL_ACHIEVEMENT'))
 			);
 		}
 	}

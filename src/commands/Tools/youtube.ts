@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['yt'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_YOUTUBE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_YOUTUBE_EXTENDED'),
+			description: language => language.tget('COMMAND_YOUTUBE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_YOUTUBE_EXTENDED'),
 			usage: '<query:string> [index:integer{0,20}]',
 			usageDelim: ' #'
 		});
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		const result = data.items[index];
 
 		if (!result) {
-			throw message.language.get(index === 0
+			throw message.language.tget(index === 0
 				? 'COMMAND_YOUTUBE_NOTFOUND'
 				: 'COMMAND_YOUTUBE_INDEX_NOTFOUND');
 		}

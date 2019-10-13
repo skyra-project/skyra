@@ -20,8 +20,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['ev'],
-			description: language => language.get('COMMAND_EVAL_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_EVAL_EXTENDED'),
+			description: language => language.tget('COMMAND_EVAL_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_EVAL_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<expression:str>',
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code, languageType);
 		return Promise.race([
 			util.sleep(flagTime).then(() => ({
-				result: message.language.get('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
+				result: message.language.tget('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'
@@ -135,7 +135,7 @@ export default class extends SkyraCommand {
 	private async handleMessage(message: KlasaMessage, options: InternalEvalOptions, { success, result, time, footer, language }: InternalEvalResults) {
 		switch (options.sendAs) {
 			case 'file': {
-				if (message.channel.attachable) return message.channel.sendFile(Buffer.from(result), 'output.txt', message.language.get('COMMAND_EVAL_OUTPUT_FILE', time, footer));
+				if (message.channel.attachable) return message.channel.sendFile(Buffer.from(result), 'output.txt', message.language.tget('COMMAND_EVAL_OUTPUT_FILE', time, footer));
 				await this.getTypeOutput(message, options);
 				return this.handleMessage(message, options, { success, result, time, footer, language });
 			}
@@ -160,7 +160,7 @@ export default class extends SkyraCommand {
 					await this.getTypeOutput(message, options);
 					return this.handleMessage(message, options, { success, result, time, footer, language });
 				}
-				return message.sendMessage(message.language.get(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
+				return message.sendMessage(message.language.tget(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
 					time, util.codeBlock(language, result), footer));
 			}
 		}

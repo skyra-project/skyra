@@ -12,8 +12,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: language => language.get('COMMAND_REASON_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_REASON_EXTENDED'),
+			description: language => language.tget('COMMAND_REASON_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_REASON_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
@@ -22,17 +22,15 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('case', async (arg, _, message) => {
-			if (!arg) throw message.language.get('COMMAND_REASON_MISSING_CASE');
+			if (!arg) throw message.language.tget('COMMAND_REASON_MISSING_CASE');
 			if (arg.toLowerCase() === 'latest') return [await message.guild!.moderation.count()];
 			return parseRange(arg);
 		});
 	}
 
-	public async run(message: KlasaMessage, [cases, reason]: [number[], string | null]) {
-		if (!reason) reason = null;
-
+	public async run(message: KlasaMessage, [cases, reason]: [number[], string]) {
 		const modlogs = await message.guild!.moderation.fetch(cases);
-		if (!modlogs.size) throw message.language.get('COMMAND_REASON_NOT_EXISTS', cases.length > 1);
+		if (!modlogs.size) throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
 
 		const channel = message.guild!.channels.get(message.guild!.settings.get(GuildSettings.Channels.ModerationLogs)) as TextChannel;
 		const messages = channel ? await channel.messages.fetch({ limit: 100 }) as Collection<string, KlasaMessage> : null;
@@ -46,7 +44,7 @@ export default class extends SkyraCommand {
 		await Promise.all(promises);
 
 		if (!channel) message.guild!.settings.reset(GuildSettings.Channels.ModerationLogs).catch(error => this.client.emit(Events.Wtf, error));
-		return message.alert(message.language.get('COMMAND_REASON_UPDATED', cases, reason));
+		return message.alert(message.language.tget('COMMAND_REASON_UPDATED', cases, reason));
 	}
 
 	public async _updateReason(channel: TextChannel, messages: Collection<string, KlasaMessage> | null, modlog: ModerationManagerEntry, reason: string | null) {

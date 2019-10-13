@@ -182,8 +182,8 @@ export class Giveaway {
 
 	private async announceWinners(language: Language) {
 		const content = this.winners
-			? language.get('GIVEAWAY_ENDED_MESSAGE', this.winners.map(winner => `<@${winner}>`), this.title)
-			: language.get('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', this.title);
+			? language.tget('GIVEAWAY_ENDED_MESSAGE', this.winners.map(winner => `<@${winner}>`), this.title)
+			: language.tget('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', this.title);
 		try {
 			await api(this.store.client).channels(this.channelID).messages.post({ data: { content } });
 		} catch (error) {
@@ -207,19 +207,19 @@ export class Giveaway {
 
 	private getContent(state: States, language: Language) {
 		switch (state) {
-			case States.Finished: return language.get('GIVEAWAY_ENDED_TITLE');
-			case States.LastChance: return language.get('GIVEAWAY_LASTCHANCE_TITLE');
-			default: return language.get('GIVEAWAY_TITLE');
+			case States.Finished: return language.tget('GIVEAWAY_ENDED_TITLE');
+			case States.LastChance: return language.tget('GIVEAWAY_LASTCHANCE_TITLE');
+			default: return language.tget('GIVEAWAY_TITLE');
 		}
 	}
 
 	private getDescription(state: States, language: Language) {
 		switch (state) {
 			case States.Finished: return this.winners && this.winners.length
-				? language.get('GIVEAWAY_ENDED', this.winners.map(winner => `<@${winner}>`))
-				: language.get('GIVEAWAY_ENDED_NO_WINNER');
-			case States.LastChance: return language.get('GIVEAWAY_LASTCHANCE', this.remaining);
-			default: return language.get('GIVEAWAY_DURATION', this.remaining);
+				? language.tget('GIVEAWAY_ENDED', this.winners.map(winner => `<@${winner}>`))
+				: language.tget('GIVEAWAY_ENDED_NO_WINNER');
+			case States.LastChance: return language.tget('GIVEAWAY_LASTCHANCE', this.remaining);
+			default: return language.tget('GIVEAWAY_DURATION', this.remaining);
 		}
 	}
 
@@ -233,8 +233,8 @@ export class Giveaway {
 
 	private getFooter(state: States, language: Language) {
 		return state === States.Running
-			? language.get('GIVEAWAY_ENDS_AT')
-			: language.get('GIVEAWAY_ENDED_AT');
+			? language.tget('GIVEAWAY_ENDS_AT')
+			: language.tget('GIVEAWAY_ENDED_AT');
 	}
 
 	private calculateNextRefresh() {

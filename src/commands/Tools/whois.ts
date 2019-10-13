@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['userinfo'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_WHOIS_EXTENDED'),
+			description: language => language.tget('COMMAND_WHOIS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'

@@ -31,14 +31,14 @@ export default class extends ModerationMonitor {
 
 	protected onDelete(message: KlasaMessage, value: FilterResults) {
 		if (message.content.length > 25) {
-			message.author!.send(message.language.get('MONITOR_WORDFILTER_DM',
+			message.author!.send(message.language.tget('MONITOR_WORDFILTER_DM',
 				util.codeBlock('md', cutText(value.filtered, 1900)))).catch(() => null);
 		}
 		message.nuke().catch(() => null);
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_WORDFILTER', message.author)));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_WORDFILTER', message.author!.toString())));
 	}
 
 	protected onLogMessage(message: KlasaMessage, results: FilterResults) {
@@ -46,7 +46,7 @@ export default class extends ModerationMonitor {
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(0xEFAE45)
 			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_WORDFILTER')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_WORDFILTER')}`)
 			.setTimestamp();
 	}
 

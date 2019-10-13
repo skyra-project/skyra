@@ -10,7 +10,7 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['conf', 'config', 'configs', 'configuration'],
-			description: language => language.get('COMMAND_CONF_SERVER_DESCRIPTION'),
+			description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
 			guarded: true,
 			permissionLevel: 6,
 			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
@@ -23,17 +23,17 @@ export default class extends SkyraCommand {
 		this
 			.createCustomResolver('key', (arg, _, message, [action]: string[]) => {
 				if (['show', 'menu'].includes(action) || arg) return arg;
-				throw message.language.get('COMMAND_CONF_NOKEY');
+				throw message.language.tget('COMMAND_CONF_NOKEY');
 			})
 			.createCustomResolver('value', (arg, _, message, [action]: string[]) => {
 				if (!['set', 'remove'].includes(action) || arg) return arg;
-				throw message.language.get('COMMAND_CONF_NOVALUE');
+				throw message.language.tget('COMMAND_CONF_NOVALUE');
 			});
 	}
 
 	public menu(message: KlasaMessage) {
 		if (!(message.channel as TextChannel).permissionsFor(this.client.user!.id)!.has(MENU_REQUIREMENTS)) {
-			throw message.language.get('COMMAND_CONF_MENU_NOPERMISSIONS');
+			throw message.language.tget('COMMAND_CONF_MENU_NOPERMISSIONS');
 		}
 		return new SettingsMenu(message).init();
 	}

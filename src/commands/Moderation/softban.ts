@@ -10,8 +10,8 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_SOFTBAN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SOFTBAN_EXTENDED'),
+			description: language => language.tget('COMMAND_SOFTBAN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SOFTBAN_EXTENDED'),
 			modType: ModerationTypeKeys.Softban,
 			permissionLevel: 5,
 			requiredMember: false,
@@ -27,7 +27,7 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
-		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
+		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		return softban(message.guild!, message.author!, user, reason, 'days' in message.flagArgs ? Math.min(7, Math.max(0, Number(message.flagArgs.days))) : 1);
 	}
 

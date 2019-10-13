@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 15,
-			description: language => language.get('COMMAND_SUBSCRIBE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SUBSCRIBE_EXTENDED'),
+			description: language => language.tget('COMMAND_SUBSCRIBE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SUBSCRIBE_EXTENDED'),
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text']
 		});

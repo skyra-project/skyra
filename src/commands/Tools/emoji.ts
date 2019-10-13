@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: language => language.get('COMMAND_EMOJI_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_EMOJI_EXTENDED'),
+			description: language => language.tget('COMMAND_EMOJI_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_EMOJI_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<emoji:string>'
 		});
@@ -26,12 +26,12 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		if (!REG_TWEMOJI.test(emoji)) throw message.language.get('COMMAND_EMOJI_INVALID', emoji);
+		if (!REG_TWEMOJI.test(emoji)) throw message.language.tget('COMMAND_EMOJI_INVALID', emoji);
 		const r = this.emoji(emoji);
 		const buffer = await fetch(`https://twemoji.maxcdn.com/2/72x72/${r}.png`, 'buffer')
-			.catch(() => { throw message.language.get('COMMAND_EMOJI_INVALID', emoji); });
+			.catch(() => { throw message.language.tget('COMMAND_EMOJI_INVALID', emoji); });
 
-		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.get('COMMAND_EMOJI_TOO_LARGE', emoji);
+		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.tget('COMMAND_EMOJI_TOO_LARGE', emoji);
 
 		return message.sendLocale('COMMAND_EMOJI_TWEMOJI', [emoji, r], { files: [{ attachment: buffer, name: `${r}.png` }] });
 	}

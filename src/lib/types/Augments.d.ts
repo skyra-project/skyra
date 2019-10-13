@@ -1,4 +1,6 @@
 import { CustomGet } from './settings/Shared';
+import { PermissionString } from 'discord.js';
+import { LanguageKeys } from './Languages';
 
 declare module 'discord.js' {
 
@@ -31,10 +33,31 @@ declare module 'discord.js' {
 
 }
 
+interface Fn {
+	(...args: readonly any[]): unknown;
+}
+
+export type LanguageKeysSimple = {
+	[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? never : K;
+}[keyof LanguageKeys];
+
+export type LanguageKeysComplex = {
+	[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? K : never;
+}[keyof LanguageKeys];
+
 declare module 'klasa' {
 
 	interface Language {
-		retrieve(key: string): unknown;
+		PERMISSIONS: Record<PermissionString, string>;
+		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
+		duration(time: number): string;
+
+		get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
+		get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
+		tget<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
+		tget<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
+		retrieve<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
+		retrieve<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
 	}
 
 	interface SettingsFolder {

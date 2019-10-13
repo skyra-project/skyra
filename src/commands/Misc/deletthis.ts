@@ -17,8 +17,8 @@ export default class extends SkyraCommand {
 			aliases: ['deletethis'],
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_DELETTHIS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_DELETTHIS_EXTENDED'),
+			description: language => language.tget('COMMAND_DELETTHIS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_DELETTHIS_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<user:username>'

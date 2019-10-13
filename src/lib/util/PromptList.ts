@@ -28,7 +28,7 @@ async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = util.codeBlock('asciidoc', list.join('\n'));
 	const responseMessage = await message.channel.sendLocale('PROMPTLIST_MULTIPLE_CHOICE', [codeblock, possibles]);
-	const abortOptions = message.language.get('TEXT_PROMPT_ABORT_OPTIONS') as readonly string[];
+	const abortOptions = message.language.tget('TEXT_PROMPT_ABORT_OPTIONS') as readonly string[];
 	const promptFilter = (m: Message) => m.author === message.author
 		&& (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
 	let response: Message | null;
@@ -41,7 +41,7 @@ async function ask(message: Message, list: readonly string[]) {
 
 		if (response) {
 			if (response.deletable) response.nuke().catch(() => null);
-			if (abortOptions.includes(response.content.toLowerCase())) throw message.language.get('PROMPTLIST_ABORTED');
+			if (abortOptions.includes(response.content.toLowerCase())) throw message.language.tget('PROMPTLIST_ABORTED');
 			n = Number(response.content);
 			if (!Number.isNaN(n) && n >= 1 && n <= possibles) {
 				await responseMessage.delete();

@@ -14,8 +14,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: [],
 			cooldown: 10,
-			description: language => language.get('COMMAND_STAR_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_STAR_EXTENDED'),
+			description: language => language.tget('COMMAND_STAR_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_STAR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			requiredSettings: [],
 			runIn: ['text'],
@@ -107,7 +107,7 @@ export default class extends SkyraCommand {
 				if (postedAt < minimum) continue;
 			}
 			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
-			const maskedUrl = `[${message.language.get('JUMPTO')}](${url})`;
+			const maskedUrl = `[${message.language.tget('JUMPTO')}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
 			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;

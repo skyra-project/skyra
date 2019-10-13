@@ -3,6 +3,8 @@ import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
 import { TOKENS, VERSION } from '../../../config';
 import { fetch, getColor } from '../util/util';
 import { SkyraCommand } from './SkyraCommand';
+import { LanguageKeys } from '../types/Languages';
+import { LanguageKeysComplex, LanguageKeysSimple } from '../types/Augments';
 
 export abstract class WeebCommand extends SkyraCommand {
 
@@ -13,7 +15,7 @@ export abstract class WeebCommand extends SkyraCommand {
 	/**
 	 * The response name for Language#get
 	 */
-	public responseName: string;
+	public responseName: keyof LanguageKeys;
 
 	private readonly requiresUser = Boolean(this.usage.parsedUsage.length);
 
@@ -42,14 +44,14 @@ export abstract class WeebCommand extends SkyraCommand {
 		}, 'json') as WeebCommandResult;
 
 		return message.sendMessage(this.requiresUser
-			? message.language.get(this.responseName, params![0].username)
-			: message.language.get(this.responseName),
+			? message.language.tget(this.responseName as LanguageKeysComplex, params![0].username)
+			: message.language.tget(this.responseName as LanguageKeysSimple),
 		{
 			embed: new MessageEmbed()
 				.setTitle('→').setURL(url)
 				.setColor(getColor(message) || 0xFFAB2D)
 				.setImage(url)
-				.setFooter(message.language.get('POWEREDBY_WEEBSH'))
+				.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
 		}) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
 
@@ -57,7 +59,7 @@ export abstract class WeebCommand extends SkyraCommand {
 
 interface WeebCommandOptions extends CommandOptions {
 	queryType: string;
-	responseName: string;
+	responseName: keyof LanguageKeys;
 }
 
 interface WeebCommandResult {

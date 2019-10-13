@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['kittenfact'],
 			cooldown: 10,
-			description: language => language.get('COMMAND_CATFACT_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_CATFACT_EXTENDED'),
+			description: language => language.tget('COMMAND_CATFACT_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_CATFACT_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS']
 		});
 		this.spam = true;
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 		const { fact } = await fetch('https://catfact.ninja/fact', 'json') as CatfactResultOk;
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
-			.setTitle(message.language.get('COMMAND_CATFACT_TITLE'))
+			.setTitle(message.language.tget('COMMAND_CATFACT_TITLE'))
 			.setDescription(fact));
 	}
 

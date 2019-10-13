@@ -51,7 +51,7 @@ export class SettingsMenu {
 	}
 
 	public async init(): Promise<void> {
-		this.response = await this.message.send(this.message.language.get('SYSTEM_LOADING')) as KlasaMessage;
+		this.response = await this.message.send(this.message.language.tget('SYSTEM_LOADING')) as KlasaMessage;
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client)
 			.setListener(this.onReaction.bind(this))
@@ -117,7 +117,7 @@ export class SettingsMenu {
 		if (this.pointerIsFolder) {
 			const schema = (this.schema as Schema).get(message.content);
 			if (schema && this.isConfigurable(schema)) this.schema = schema;
-			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_KEY');
+			else this.errorMessage = this.message.language.tget('COMMAND_CONF_MENU_INVALID_KEY');
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
@@ -125,7 +125,7 @@ export class SettingsMenu {
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { arrayAction: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
-			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_ACTION');
+			else this.errorMessage = this.message.language.tget('COMMAND_CONF_MENU_INVALID_ACTION');
 		}
 
 		if (!this.errorMessage) floatPromise(this.message, message.nuke());
@@ -207,7 +207,7 @@ export class SettingsMenu {
 			? this.message.guild!.settings.reset(this.schema.path)
 			: this.message.guild!.settings.update(this.schema.path, value, options));
 		if (errors.length) this.errorMessage = String(errors[0]);
-		else if (!updated.length) this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+		else if (!updated.length) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 	}
 
 	private async tryUndo() {
@@ -218,7 +218,7 @@ export class SettingsMenu {
 				: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
 			if (errors.length) this.errorMessage = String(errors[0]);
 		} else {
-			this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+			this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 		}
 	}
 
@@ -228,7 +228,7 @@ export class SettingsMenu {
 				this.response.reactions.removeAll()
 					.catch(error => this.response!.client.emit(Events.ApiError, error));
 			}
-			this.response.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
+			this.response.edit(this.message.language.tget('COMMAND_CONF_MENU_SAVED'), { embed: null })
 				.catch(error => this.message.client.emit(Events.ApiError, error));
 		}
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();

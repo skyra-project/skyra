@@ -9,7 +9,7 @@ export default class extends MusicCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_PLAY_DESCRIPTION'),
+			description: language => language.tget('COMMAND_PLAY_DESCRIPTION'),
 			music: ['USER_VOICE_CHANNEL'],
 			usage: '(song:song)',
 			flagSupport: true
@@ -52,7 +52,7 @@ export default class extends MusicCommand {
 
 			const requester = await song.fetchRequester();
 			const member = requester ? await music.guild.members.fetch(requester.id).catch(() => null) : null;
-			const name = member ? member.displayName : requester ? requester.username : music.guild.language.get(`UNKNOWN_USER`);
+			const name = member ? member.displayName : requester ? requester.username : music.guild.language.tget(`UNKNOWN_USER`);
 
 			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song.safeTitle, Util.escapeMarkdown(name)]);
 			await util.sleep(250);

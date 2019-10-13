@@ -2,6 +2,7 @@ import { CommandStore, KlasaMessage, Serializer, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
 import { Message } from 'discord.js';
+import { PollData } from '../../tasks/poll';
 
 const REG_USERS = Serializer.regex.userOrMember;
 const REG_TAG = /[^#]{2,32}#\d{4,4}/;
@@ -84,8 +85,10 @@ export default class extends SkyraCommand {
 	public async remove(message: KlasaMessage, [id]: [string]) {
 		if (!id) throw message.language.tget('COMMAND_POLL_MISSING_ID');
 		const found = this.client.schedule.get(id);
-		if (!found || found.taskName !== 'poll' || found.data.guild !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		if (!(message.author!.id === found.data.author || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
+		if (!found || found.taskName !== 'poll') throw message.language.tget('COMMAND_POLL_NOTEXISTS');
+		const data = found.data as PollData;
+		if (data.guild !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
+		if (!(data.author === message.author!.id || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
 		await found.delete();
 		return message.sendLocale('COMMAND_POLL_REMOVE');
 	}
@@ -94,13 +97,15 @@ export default class extends SkyraCommand {
 		if (!id) throw message.language.tget('COMMAND_POLL_MISSING_ID');
 		if (message.deletable) message.nuke().catch(error => this.client.emit(Events.ApiError, error));
 		const found = this.client.schedule.get(id);
-		if (!found || found.taskName !== 'poll' || found.data.guild !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		if (found.data.voted.includes(message.author!.id)) throw message.language.tget('COMMAND_POLL_ALREADY_VOTED');
+		if (!found || found.taskName !== 'poll') throw message.language.tget('COMMAND_POLL_NOTEXISTS');
+		const data = found.data as PollData;
+		if (data.guild !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
+		if (data.voted.includes(message.author!.id)) throw message.language.tget('COMMAND_POLL_ALREADY_VOTED');
 		if (option) option = option.toLowerCase();
-		if (!option || !found.data.options.includes(option)) throw message.language.tget('COMMAND_POLL_INVALID_OPTION', found.data.options.map(opt => `\`${opt}\``).join(', '));
-		found.data.votes[option]++;
-		found.data.voted.push(message.author!.id);
-		await found.update({ data: found.data });
+		if (!option || !data.options.includes(option)) throw message.language.tget('COMMAND_POLL_INVALID_OPTION', data.options.map(opt => `\`${opt}\``).join(', '));
+		data.votes[option]++;
+		data.voted.push(message.author!.id);
+		await found.update({ data });
 		const m = await message.channel.send(message.language.tget('COMMAND_POLL_VOTE')) as Message;
 		return m.nuke(10000);
 	}
@@ -111,7 +116,7 @@ export default class extends SkyraCommand {
 		if (!(poll && (poll.taskName === 'poll' || poll.taskName === 'pollEnd') && poll.data.guild === message.guild!.id)) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
 		if (!(message.author!.id === poll.data.author || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
 
-		const { title, options, votes, voted } = poll.data;
+		const { title, options, votes, voted } = poll.data as PollData;
 		if (!voted.length) return message.sendLocale('COMMAND_POLL_EMPTY_VOTES');
 
 		const maxLengthNames = options.reduce((acc, opt) => opt.length > acc ? opt.length : acc, 0);

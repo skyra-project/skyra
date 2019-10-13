@@ -138,7 +138,7 @@ export default class extends SkyraCommand {
 			.setTitle(message.language.tget('COMMAND_ROLES_LIST_TITLE')));
 
 		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPage(template => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
+		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
 		await display.run(response, message.author!.id);

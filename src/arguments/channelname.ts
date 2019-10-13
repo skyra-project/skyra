@@ -9,7 +9,7 @@ export default class extends Argument {
 		return this.store.get('channel');
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean) {
+	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_CHANNELNAME', possible.name);
 		if (!message.guild) return this.channel.run(arg, possible, message);
 		const resChannel = this.resolveChannel(arg, message.guild);

@@ -5,7 +5,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['choise', 'pick'],
+			aliases: ['choose', 'choise', 'pick'],
 			bucket: 2,
 			cooldown: 10,
 			description: language => language.tget('COMMAND_CHOICE_DESCRIPTION'),

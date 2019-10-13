@@ -116,9 +116,9 @@ export namespace Kitsu {
 
 	export interface Titles {
 		en?: string;
-		enJp?: string;
-		enUs?: string;
-		jaJp?: string;
+		en_jp?: string;
+		en_us?: string;
+		ja_jp?: string;
 	}
 
 	export interface DatumLinks {

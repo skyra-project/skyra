@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 		const mangaURL = `https://kitsu.io/manga/${entry.attributes.slug}`;
 		const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as MangaLanguage;
 		const type = entry.attributes.subtype;
-		const title = entry.attributes.titles.en || entry.attributes.titles.enJp || Object.values(entry.attributes.titles)[0] || '--';
+		const title = entry.attributes.titles.en || entry.attributes.titles.en_jp || Object.values(entry.attributes.titles)[0] || '--';
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(score.color)

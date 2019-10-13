@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
 	}
 
-	public get STATS() {
+	public get STATS(): StatsGeneral {
 		return {
 			CHANNELS: this.client.channels.size.toLocaleString(),
 			GUILDS: this.client.guilds.size.toLocaleString(),
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 		};
 	}
 
-	public get UPTIME() {
+	public get UPTIME(): StatsUptime {
 		const now = Date.now();
 		return {
 			CLIENT: Duration.toNow(now - this.client.uptime!, false),
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 		};
 	}
 
-	public get USAGE() {
+	public get USAGE(): StatsUsage {
 		return {
 			CPU_LOAD: `${Math.round(loadavg()[0] * 100) / 100}%`,
 			RAM_TOTAL: `${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,
@@ -46,4 +46,24 @@ export default class extends SkyraCommand {
 		};
 	}
 
+}
+
+export interface StatsGeneral {
+	CHANNELS: string;
+	GUILDS: string;
+	NODE_JS: string;
+	USERS: string;
+	VERSION: string;
+}
+
+export interface StatsUptime {
+	CLIENT: string;
+	HOST: string;
+	TOTAL: string;
+}
+
+export interface StatsUsage {
+	CPU_LOAD: string;
+	RAM_TOTAL: string;
+	RAM_USED: string;
 }

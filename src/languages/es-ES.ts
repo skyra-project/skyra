@@ -5,6 +5,7 @@ import { EMOJIS } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
+import { LanguageKeys } from '../lib/types/Languages';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const { LOADING, SHINY, GREENTICK, REDCROSS } = EMOJIS;
@@ -99,7 +100,9 @@ export default class extends Language {
 
 	public duration = duration;
 
-	public language: Record<string, any> = {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+	// @ts-ignore:2416
+	public language: LanguageKeys = {
 		/**
 		 * ################################
 		 * #      FRAMEWORK MESSAGES      #
@@ -257,7 +260,7 @@ export default class extends Language {
 		COMMAND_REPEAT_DESCRIPTION: `Se alterna repitiendo la canción actual.`,
 		COMMAND_REPEAT_SUCCESS: enabled => enabled ? `This is your JAM isn't it? No te preocupes, repetiremos esto una y otra vez!` : `En realidad, también me estaba cansando de esto, pero no quería decir nada.`,
 		COMMAND_QUEUE_DESCRIPTION: `Revisa la lista de cola.`,
-		COMMAND_QUEUE_EMPTY: prefix => `¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando \`${prefix}add\`.`,
+		COMMAND_QUEUE_EMPTY: '¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando `Skyra, add`.',
 		COMMAND_QUEUE_LINE: (title, requester) => `*${title}*, pedida por: **${requester}**`,
 		COMMAND_QUEUE_TRUNCATED: amount => `Mostrando 10 canciones de ${amount}`,
 		COMMAND_REMOVE_DESCRIPTION: `Elimina una canción de la lista de cola.`,
@@ -1817,11 +1820,11 @@ export default class extends Language {
 			`**Título inglés:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'Ninguno'}`,
 			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
 			synopsis
-		],
+		].join('\n'),
 		COMMAND_ANIME_OUTPUT_STATUS: entry => [
 			`  ❯  Estado actual: **${entry.attributes.status}**`,
 			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
-		],
+		].join('\n'),
 		COMMAND_ANIME_TITLES: {
 			TYPE: 'Tipo',
 			SCORE: 'Puntuación',
@@ -1833,11 +1836,11 @@ export default class extends Language {
 			`**Título inglés:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'Ninguno'}`,
 			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
 			synopsis
-		],
+		].join('\n'),
 		COMMAND_MANGA_OUTPUT_STATUS: entry => [
 			`  ❯  Estado actual: **${entry.attributes.status}**`,
 			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
-		],
+		].join('\n'),
 		COMMAND_MANGA_TITLES: {
 			'MANGA': '📘 Manga',
 			'NOVEL': '📕 Novela',
@@ -2098,7 +2101,7 @@ export default class extends Language {
 			`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`
 		].join('\n'),
 		COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
-		COMMAND_ROLEINFO_PERMISSIONS: permissions => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+		COMMAND_ROLEINFO_PERMISSIONS: permissions => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`).join('\n') : 'Permissions not granted.',
 		COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
 		COMMAND_FILTER_FILTERED: filtered => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 		COMMAND_FILTER_ADDED: word => `${GREENTICK} Success! Added the word ${word} to the filter.`,
@@ -2258,7 +2261,7 @@ export default class extends Language {
 			entries.length === 1
 				? `${GREENTICK} Actualizado 1 caso.`
 				: `${GREENTICK} Actualizados ${entries.length} casos.`,
-			` └─ Set the${entries.size === 1 ? '' : 'ir'} reason to ${newReason}`
+			` └─ Set the${entries.length === 1 ? '' : 'ir'} reason to ${newReason}`
 		].join('\n'),
 		COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
 		COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
@@ -2353,7 +2356,7 @@ export default class extends Language {
 		COMMAND_REMINDME_CREATE: id => `A reminder with ID \`${id}\` has been created.`,
 		COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
 		COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
-		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
+		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time.getTime() - Date.now())}** has been successfully deleted.`,
 		COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 		COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 		COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
@@ -2425,7 +2428,7 @@ export default class extends Language {
 			`• CPU Load   :: ${USAGE.CPU_LOAD}`,
 			`• RAM +Node  :: ${USAGE.RAM_TOTAL}`,
 			`• RAM Usage  :: ${USAGE.RAM_USED}`
-		],
+		].join('\n'),
 
 		/**
 		 * #############
@@ -2481,7 +2484,7 @@ export default class extends Language {
 			`Opciones : ${options ? options.join(' | ') : 'Ninguno'}`,
 			`Duración : ${duration(time)}`,
 			`ID       : ${id}`
-		],
+		].join('\n'),
 		COMMAND_POLL_LIST_EMPTY: `${REDCROSS} No pude encontrar una encuesta activa para este servidor.`,
 		COMMAND_POLL_NOTEXISTS: `${REDCROSS} La encuesta que quieres obtener no existe o ha expirado.`,
 		COMMAND_POLL_NOTMANAGEABLE: `${REDCROSS} Esta encuesta está protegida y sólo puede ser modificada por su autor o por un administrador de este servidor.`,
@@ -2518,7 +2521,7 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Etiqueta       ::')} **${member.user.tag}**`,
 			`→ ${inlineCodeblock('Apodo          ::')} **${member.nickname || 'Not set'}**`,
 			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(member.user.createdAt)}**`,
-			`→ ${inlineCodeblock('Fecha Ingreso  ::')} **${timestamp.displayUTC(member.joinedAt)}**`
+			`→ ${inlineCodeblock('Fecha Ingreso  ::')} **${member.joinedTimestamp ? timestamp.displayUTC(member.joinedTimestamp) : 'Desconocido'}**`
 		].join('\n'),
 		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
 		COMMAND_WHOIS_USER: user => [
@@ -2618,8 +2621,8 @@ export default class extends Language {
 		SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS: name => `${REDCROSS} The specified action requires an extra argument to be passed. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_SOFTACTION: name => `${REDCROSS} Value must be any of the following: \`alert\`, \`log\`, or \`delete\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_HARDACTION: name => `${REDCROSS} Value must be any of the following: \`none\`, \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
-		SELF_MODERATION_COMMAND_ENABLED: () => `${GREENTICK} Successfully enabled sub-system.`,
-		SELF_MODERATION_COMMAND_DISABLED: () => `${GREENTICK} Successfully disabled sub-system.`,
+		SELF_MODERATION_COMMAND_ENABLED: `${GREENTICK} Successfully enabled sub-system.`,
+		SELF_MODERATION_COMMAND_DISABLED: `${GREENTICK} Successfully disabled sub-system.`,
 		SELF_MODERATION_COMMAND_SOFT_ACTION: value => value
 			? `${GREENTICK} Successfully set actions to: \`${value}\``
 			: `${GREENTICK} Successfully disabled actions.`,

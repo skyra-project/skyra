@@ -233,7 +233,7 @@ export default class extends SkyraCommand {
 
 }
 
-interface HungerGamesGame {
+export interface HungerGamesGame {
 	bloodbath: boolean;
 	llrc: LongLivingReactionCollector;
 	sun: boolean;

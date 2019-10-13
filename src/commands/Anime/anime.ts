@@ -32,12 +32,12 @@ export default class extends SkyraCommand {
 		const animeURL = `https://kitsu.io/anime/${entry.attributes.slug}`;
 		const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as AnimeLanguage;
 		const type = entry.attributes.subtype;
-		const title = entry.attributes.titles.en || entry.attributes.titles.enJp || Object.values(entry.attributes.titles)[0] || '--';
+		const title = entry.attributes.titles.en || entry.attributes.titles.en_jp || Object.values(entry.attributes.titles)[0] || '--';
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(score.color)
 			.setAuthor(title, entry.attributes.posterImage.tiny, animeURL)
-			.setDescription(message.language.get('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
+			.setDescription(message.language.get('COMMAND_ANIME_OUTPUT_DESCRIPTION', entry, synopsis))
 			.addField(titles.TYPE, message.language.get('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
 			.addField(titles.SCORE, `**${entry.attributes.averageRating}** / 100 ${score.emoji}`, true)
 			.addField(titles.STATUS, message.language.get('COMMAND_ANIME_OUTPUT_STATUS', entry))

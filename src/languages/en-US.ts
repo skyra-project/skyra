@@ -7,6 +7,7 @@ import friendlyDuration from '../lib/util/FriendlyDuration';
 import { HungerGamesUsage } from '../lib/util/Games/HungerGamesUsage';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
+import { LanguageKeys } from '../lib/types/Languages';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const { LOADING, SHINY, GREENTICK, REDCROSS } = EMOJIS;
@@ -101,7 +102,9 @@ export default class extends Language {
 
 	public duration = duration;
 
-	public language: Record<string, any> = {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+	// @ts-ignore:2416
+	public language: LanguageKeys = {
 		/**
 		 * ################################
 		 * #      FRAMEWORK MESSAGES      #
@@ -200,11 +203,11 @@ export default class extends Language {
 		COMMAND_CONF_NOKEY: 'You must provide a key',
 		COMMAND_CONF_NOVALUE: 'You must provide a value',
 		COMMAND_CONF_GUARDED: name => `${toTitleCase(name)} may not be disabled.`,
-		COMMAND_CONF_UPDATED: (key, response) => `Successfully updated the key **${key}**: \`${response}\``,
+		COMMAND_CONF_UPDATED: (key, value) => `Successfully updated the key **${key}**: \`${value}\``,
 		COMMAND_CONF_KEY_NOT_ARRAY: 'This key is not array type. Use the action \'reset\' instead.',
 		COMMAND_CONF_GET_NOEXT: key => `The key **${key}** does not seem to exist.`,
 		COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
-		COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
+		COMMAND_CONF_RESET: (key, value) => `The key **${key}** has been reset to: \`${value}\``,
 		COMMAND_CONF_NOCHANGE: key => `The value for **${key}** was already that value.`,
 		COMMAND_CONF_SERVER_DESCRIPTION: 'Define per-server settings.',
 		COMMAND_CONF_SERVER: (key, list) => `**Server Setting ${key}**\n${list}`,
@@ -228,7 +231,7 @@ export default class extends Language {
 		COMMAND_ADD_SONG: title => `${GREENTICK} Added **${title}** to the queue 🎶`,
 		COMMAND_CLEAR_DESCRIPTION: `Clears the queue list.`,
 		COMMAND_CLEAR_DENIED: `${REDCROSS} You can't execute this command when there are over 4 members! You must be a dee-jay or a moderator!`,
-		COMMAND_CLEAR_SUCCESS: amount => `${REDCROSS}  Pruned ${amount} songs.`,
+		COMMAND_CLEAR_SUCCESS: amount => `${REDCROSS}  Pruned ${amount} ${amount === 1 ? 'song' : 'songs'}.`,
 		COMMAND_JOIN_DESCRIPTION: `Joins the message author's voice channel.`,
 		COMMAND_JOIN_NO_MEMBER: `${REDCROSS} I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
 		COMMAND_JOIN_NO_VOICECHANNEL: `${REDCROSS} You are not connected in a voice channel.`,
@@ -252,7 +255,9 @@ export default class extends Language {
 		COMMAND_PLAYING_QUEUE_EMPTY: `${REDCROSS} Are you speaking to me? Because my deck is empty...`,
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: `${REDCROSS} I think you're listening to background noise, I'm not playing anything.`,
 		COMMAND_REPEAT_DESCRIPTION: `Toggle repeating the current song.`,
-		COMMAND_REPEAT_SUCCESS: enabled => enabled ? `This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!` : `I was actually getting tired of this too, but I didn't want to say anything.`,
+		COMMAND_REPEAT_SUCCESS: enabled => enabled
+			? `This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!`
+			: `I was actually getting tired of this too, but I didn't want to say anything.`,
 		COMMAND_QUEUE_DESCRIPTION: `Check the queue list.`,
 		COMMAND_QUEUE_EMPTY: `The session is over, add some songs to the queue, you can for example do \`Skyra, add Imperial March\`, and... *dumbrolls*!`,
 		COMMAND_QUEUE_LAST: `There are no more songs! After the one playing is over, the session will end!`,
@@ -277,7 +282,7 @@ export default class extends Language {
 		COMMAND_SHUFFLE_SUCCESS: amount => `${GREENTICK} Successfully randomized ${amount} songs.`,
 		COMMAND_SKIP_DESCRIPTION: `Skip the current song.`,
 		COMMAND_SKIP_PERMISSIONS: `${REDCROSS} You can't execute this command, you must be a DJ or a Moderator.`,
-		COMMAND_SKIP_VOTES_VOTED: `${REDCROSS} `,
+		COMMAND_SKIP_VOTES_VOTED: `${REDCROSS} You have already voted.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votes: ${amount} of ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Skipped **${title}**.`,
 		COMMAND_TIME_DESCRIPTION: `Check how much time is left for the song to end.`,
@@ -1836,11 +1841,11 @@ export default class extends Language {
 			`**English title:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'None'}`,
 			`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
 			synopsis
-		],
+		].join('\n'),
 		COMMAND_ANIME_OUTPUT_STATUS: entry => [
 			`  ❯  Current status: **${entry.attributes.status}**`,
 			`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Finished: **${entry.attributes.endDate}**` : ''}`
-		],
+		].join('\n'),
 		COMMAND_ANIME_TITLES: {
 			TYPE: 'Type',
 			SCORE: 'Score',
@@ -1852,11 +1857,11 @@ export default class extends Language {
 			`**English title:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'None'}`,
 			`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
 			synopsis
-		],
+		].join('\n'),
 		COMMAND_MANGA_OUTPUT_STATUS: entry => [
 			`  ❯  Current status: **${entry.attributes.status}**`,
 			`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Finished: **${entry.attributes.endDate}**` : ''}`
-		],
+		].join('\n'),
 		COMMAND_MANGA_TITLES: {
 			'MANGA': '📘 Manga',
 			'NOVEL': '📕 Novel',
@@ -2125,7 +2130,7 @@ export default class extends Language {
 			`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`
 		].join('\n'),
 		COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
-		COMMAND_ROLEINFO_PERMISSIONS: permissions => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+		COMMAND_ROLEINFO_PERMISSIONS: permissions => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`).join('\n') : 'Permissions not granted.',
 		COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
 		COMMAND_FILTER_FILTERED: filtered => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 		COMMAND_FILTER_ADDED: word => `| ✅ | Success! Added the word ${word} to the filter.`,
@@ -2283,8 +2288,8 @@ export default class extends Language {
 		COMMAND_REASON_MISSING_CASE: 'You need to provide a case or a case range.',
 		COMMAND_REASON_NOT_EXISTS: (range = false) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
 		COMMAND_REASON_UPDATED: (entries, newReason) => [
-			`${GREENTICK} Updated ${entries.length} case${entries.size === 1 ? '' : 's'}`,
-			` └─ Set ${entries.size === 1 ? 'its reason' : 'their reasons'} to ${newReason}`
+			`${GREENTICK} Updated ${entries.length} case${entries.length === 1 ? '' : 's'}`,
+			` └─ Set ${entries.length === 1 ? 'its reason' : 'their reasons'} to ${newReason}`
 		].join('\n'),
 		COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
 		COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
@@ -2379,7 +2384,7 @@ export default class extends Language {
 		COMMAND_REMINDME_CREATE: id => `A reminder with ID \`${id}\` has been created.`,
 		COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
 		COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
-		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
+		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time.getTime() - Date.now())}** has been successfully deleted.`,
 		COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 		COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 		COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
@@ -2402,7 +2407,7 @@ export default class extends Language {
 		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
 		COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
-		COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
+		COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} ${points === 1 ? 'point' : 'points'}.`,
 		COMMAND_SOCIAL_POINTS: 'May you specify the amount of points you want to add or remove?',
 		COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) => `You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${amount === 1 ? 'point' : 'points'} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
 
@@ -2451,7 +2456,7 @@ export default class extends Language {
 			`• CPU Load   :: ${USAGE.CPU_LOAD}`,
 			`• RAM +Node  :: ${USAGE.RAM_TOTAL}`,
 			`• RAM Usage  :: ${USAGE.RAM_USED}`
-		],
+		].join('\n'),
 
 		/**
 		 * #############
@@ -2507,7 +2512,7 @@ export default class extends Language {
 			`Options  : ${options ? options.join(' | ') : 'None'}`,
 			`Duration : ${duration(time)}`,
 			`ID       : ${id}`
-		],
+		].join('\n'),
 		COMMAND_POLL_LIST_EMPTY: 'I could not find an active poll for this guild!.',
 		COMMAND_POLL_NOTEXISTS: 'The poll you want to retrieve either expired or does not exist.',
 		COMMAND_POLL_NOTMANAGEABLE: 'This poll is protected and cannot be managed by anybody that is not the author nor a guild administrator.',
@@ -2544,7 +2549,7 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Tag        ::')} **${member.user.tag}**`,
 			`→ ${inlineCodeblock('Nickname   ::')} **${member.nickname || 'Not set'}**`,
 			`→ ${inlineCodeblock('Created At ::')} **${timestamp.displayUTC(member.user.createdAt)}**`,
-			`→ ${inlineCodeblock('Joined     ::')} **${timestamp.displayUTC(member.joinedAt)}**`
+			`→ ${inlineCodeblock('Joined     ::')} **${member.joinedTimestamp ? timestamp.displayUTC(member.joinedTimestamp) : 'Unknown'}**`
 		].join('\n'),
 		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
 		COMMAND_WHOIS_USER: user => [
@@ -3001,8 +3006,8 @@ export default class extends Language {
 		SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS: name => `${REDCROSS} The specified action requires an extra argument to be passed. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_SOFTACTION: name => `${REDCROSS} Value must be any of the following: \`alert\`, \`log\`, or \`delete\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_HARDACTION: name => `${REDCROSS} Value must be any of the following: \`none\`, \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
-		SELF_MODERATION_COMMAND_ENABLED: () => `${GREENTICK} Successfully enabled sub-system.`,
-		SELF_MODERATION_COMMAND_DISABLED: () => `${GREENTICK} Successfully disabled sub-system.`,
+		SELF_MODERATION_COMMAND_ENABLED: `${GREENTICK} Successfully enabled sub-system.`,
+		SELF_MODERATION_COMMAND_DISABLED: `${GREENTICK} Successfully disabled sub-system.`,
 		SELF_MODERATION_COMMAND_SOFT_ACTION: value => value
 			? `${GREENTICK} Successfully set actions to: \`${value}\``
 			: `${GREENTICK} Successfully disabled actions.`,
@@ -3121,8 +3126,6 @@ export default class extends Language {
 		EVENTS_MESSAGE_UPDATE: 'Message Edited',
 		EVENTS_MESSAGE_DELETE: 'Message Deleted',
 		EVENTS_COMMAND: command => `Command Used: ${command}`,
-		EVENTS_STREAM_START: member => `The user **${member.user.tag}** is now live! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
-		EVENTS_STREAM_STOP: member => `The user **${member.user.tag}** is not longer live!`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reseated the value for `channels.default`',
 		SETTINGS_DELETE_ROLES_INITIAL: 'Reseated the value for `roles.initial`',

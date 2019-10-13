@@ -22,11 +22,9 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
-		const response = await message.sendEmbed(
-			new MessageEmbed()
-				.setDescription(message.language.tget('SYSTEM_LOADING'))
-				.setColor(getColor(message) || 0xFFAB2D)
-		) as KlasaMessage;
+		const response = await message.sendEmbed(new MessageEmbed()
+			.setDescription(message.language.tget('SYSTEM_LOADING'))
+			.setColor(getColor(message) || 0xFFAB2D));
 
 		const result = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));

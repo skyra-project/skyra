@@ -14,6 +14,7 @@ import { enumerable } from './util/util';
 
 import './extensions/SkyraGuild';
 import './extensions/SkyraGuildMember';
+import './extensions/SkyraTextChannel';
 import { GiveawayManager } from './structures/GiveawayManager';
 import { Databases } from './types/constants/Constants';
 import { Events } from './types/Enums';

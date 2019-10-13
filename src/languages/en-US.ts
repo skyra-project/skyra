@@ -1129,6 +1129,11 @@ export default class extends Language {
 			examples: ['Jake'],
 			reminder: `You try to slap me and I'll slap you instead.`
 		}),
+		COMMAND_SNIPE_DESCRIPTION: 'Retrieve the last deleted message from a channel',
+		COMMAND_SNIPE_EXTENDED: builder.display('snipe', {
+			extendedHelp: `This just sends the last deleted message from this channel, somebody is misbehaving? This will
+				catch them.`
+		}),
 		COMMAND_THESEARCH_DESCRIPTION: 'Are we the only one in the universe, this man on earth probably knows.',
 		COMMAND_THESEARCH_EXTENDED: builder.display('thesearch', {
 			extendedHelp: `One man on Earth probably knows if there is intelligent life, ask and you shall receive an answer.`,
@@ -2209,6 +2214,8 @@ export default class extends Language {
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
 		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
 		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
+		COMMAND_SNIPE_EMPTY: 'There are no sniped messages in this channel.',
+		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
 

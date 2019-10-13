@@ -10,7 +10,12 @@ export default class extends Event {
 	public run(message: KlasaMessage) {
 		if (message.partial || !message.guild || message.author!.id === this.client.user!.id) return;
 
-		const [enabled, ignoreChannels] = message.guild.settings
+		this.handleMessageLogs(message);
+		this.handleSnipeMessage(message);
+	}
+
+	private handleMessageLogs(message: KlasaMessage) {
+		const [enabled, ignoreChannels] = message.guild!.settings
 			.pluck(GuildSettings.Events.MessageDelete, GuildSettings.Messages.IgnoreChannels) as [GuildSettings.Events.MessageDelete, GuildSettings.Messages.IgnoreChannels];
 		if (!enabled || ignoreChannels.includes(message.channel.id)) return;
 
@@ -22,6 +27,21 @@ export default class extends Event {
 			.setFooter(`${message.language.get('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
 			.setImage(getImage(message)!)
 			.setTimestamp());
+	}
+
+	private handleSnipeMessage(message: KlasaMessage) {
+		const channel = message.channel as TextChannel;
+		if (channel instanceof TextChannel) {
+			if (channel.snipedTimeout) this.client.clearTimeout(channel.snipedTimeout);
+
+			channel.sniped = message;
+			channel.snipedTimestamp = Date.now();
+			channel.snipedTimeout = this.client.setTimeout(() => {
+				channel.sniped = null;
+				channel.snipedTimestamp = null;
+				channel.snipedTimeout = null;
+			}, 15000);
+		}
 	}
 
 }

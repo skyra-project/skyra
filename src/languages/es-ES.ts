@@ -2277,6 +2277,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_AUTOROLE_POINTS_REQUIRED: 'You must input a valid amount of points.',
+		COMMAND_AUTOROLE_UPDATE_CONFIGURED: 'This role is already configured as an autorole. Use the remove type instead.',
 		COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: 'This role is not configured as an autorole. Use the add type instead.',
 		COMMAND_AUTOROLE_UPDATE: (role, points, before) => `Updated autorole: ${role.name} (${role.id}). Points required: ${points} (before: ${before})`,
 		COMMAND_AUTOROLE_REMOVE: (role, before) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
@@ -2575,11 +2576,13 @@ export default class extends Language {
 		CONST_MONITOR_WORDFILTER: 'Palabra Filtrada',
 		CONST_MONITOR_CAPSFILTER: 'Demasiadas Mayúsculas',
 		CONST_MONITOR_ATTACHMENTFILTER: 'Demasiados Documentos',
+		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		MONITOR_NOINVITE: user => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
 		MONITOR_WORDFILTER_DM: filtered => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
 		MONITOR_CAPSFILTER: user => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
+		MONITOR_NEWLINEFILTER: user => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
 		MONITOR_NMS_MESSAGE: user => [
 			`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
 			'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
@@ -2665,6 +2668,7 @@ export default class extends Language {
 		SELF_MODERATION_DURATION_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
 
 		RESOLVER_DATE_SUFFIX: ' segundos',
+		RESOLVER_POSITIVE_AMOUNT: 'You must give me a positive number.',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',
 		PREFIX_REMINDER: prefix => `El prefijo de este servidor está configurado a: \`${prefix}\``,
 

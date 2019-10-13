@@ -30,12 +30,12 @@ export default class extends SkyraCommand {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('banner', (arg, _, msg, [type]) => {
+		this.createCustomResolver('banner', (arg, _, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
-			if (!arg) throw msg.language.tget('COMMAND_BANNER_MISSING');
+			if (!arg) throw message.language.tget('COMMAND_BANNER_MISSING');
 			const banner = this.banners.get(arg);
 			if (banner) return banner;
-			throw msg.language.tget('COMMAND_BANNER_NOTEXISTS');
+			throw message.language.tget('COMMAND_BANNER_NOTEXISTS', message.guild!.settings.get(GuildSettings.Prefix));
 		});
 	}
 
@@ -66,7 +66,7 @@ export default class extends SkyraCommand {
 
 	public async reset(message: KlasaMessage) {
 		const banners = message.author!.settings.get(UserSettings.BannerList);
-		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY');
+		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
 		if (message.author!.settings.get(UserSettings.ThemeProfile) === '0001') throw message.language.tget('COMMAND_BANNER_RESET_DEFAULT');
 
 		await message.author!.settings.update(UserSettings.ThemeProfile, '0001');
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 
 	public async set(message: KlasaMessage, [banner]: [BannerCache]) {
 		const banners = message.author!.settings.get(UserSettings.BannerList);
-		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY');
+		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
 		if (!banners.includes(banner.id)) throw message.language.tget('COMMAND_BANNER_SET_NOT_BOUGHT');
 
 		await message.author!.settings.update(UserSettings.ThemeProfile, banner.id);

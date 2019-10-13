@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async remove(message: KlasaMessage, [role]: [Role]) {
-		if (typeof role === 'undefined') throw message.language.tget('REQUIRE_ROLE');
+		if (typeof role === 'undefined') throw message.language.tget('COMMAND_REQUIRE_ROLE');
 
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		const index = autoRoles.findIndex(entry => entry.id === role.id);

@@ -62,11 +62,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 		}
 
-		const output = [];
+		const output: string[] = [];
 		if (processed.length) {
 			const logReason = processed[0].log.reason;
 			const sorted = processed.sort((a, b) => a.log.case! - b.log.case!);
-			const cases = sorted.map(({ log }) => log.case);
+			const cases = sorted.map(({ log }) => log.case as number);
 			const users = sorted.map(({ target }) => `\`${target.tag}\``);
 			const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 			output.push(message.language.tget('COMMAND_MODERATION_OUTPUT', cases, range, users, logReason));

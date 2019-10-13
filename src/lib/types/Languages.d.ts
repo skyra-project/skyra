@@ -597,7 +597,7 @@ export interface LanguageKeys {
 	COMMAND_LOVE_RESULT: string;
 	COMMAND_NORRIS_OUTPUT: string;
 	COMMAND_RATE_OUTPUT: (user: string, rate: string, emoji: string) => string;
-	COMMAND_RATE_MYSELF: object;
+	COMMAND_RATE_MYSELF: [string, string];
 	COMMAND_XKCD_COMICS: (amount: string) => string;
 	COMMAND_XKCD_NOTFOUND: string;
 	COMMAND_GAMES_SKYRA: string;
@@ -787,9 +787,10 @@ export interface LanguageKeys {
 	COMMAND_VMUTE_USER_NOT_MUTED: string;
 	COMMAND_WARN_DM: (moderator: string, guild: string, reason: string) => string;
 	COMMAND_WARN_MESSAGE: (user: User, log: number) => string;
-	COMMAND_MODERATION_OUTPUT: (cases: readonly number[], range: string, users: readonly string[], reason: string | null) => string;
+	COMMAND_MODERATION_OUTPUT: (cases: readonly number[], range: string | number, users: readonly string[], reason: string | null) => string;
 	COMMAND_MODERATION_FAILED: (users: readonly string[]) => string;
 	COMMAND_AUTOROLE_POINTS_REQUIRED: string;
+	COMMAND_AUTOROLE_UPDATE_CONFIGURED: string;
 	COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: string;
 	COMMAND_AUTOROLE_UPDATE: (role: Role, points: number, before: number) => string;
 	COMMAND_AUTOROLE_REMOVE: (role: Role, before: number) => string;
@@ -981,6 +982,7 @@ export interface LanguageKeys {
 	MONITOR_CAPSFILTER_DM: (message: string) => string;
 	MONITOR_WORDFILTER: (user: string) => string;
 	MONITOR_CAPSFILTER: (user: string) => string;
+	MONITOR_NEWLINEFILTER: (user: string) => string;
 	MONITOR_NMS_MESSAGE: (user: User) => string;
 	MONITOR_NMS_MODLOG: (threshold: number) => string;
 	MONITOR_NMS_ALERT: string;
@@ -1024,6 +1026,7 @@ export interface LanguageKeys {
 	SELF_MODERATION_DURATION_TOO_SHORT: (minimum: number, value: number) => string;
 	SELF_MODERATION_DURATION_TOO_LONG: (maximum: number, value: number) => string;
 	RESOLVER_DATE_SUFFIX: string;
+	RESOLVER_POSITIVE_AMOUNT: string;
 	POWEREDBY_WEEBSH: string;
 	PREFIX_REMINDER: (prefix: string) => string;
 	UNEXPECTED_ISSUE: string;
@@ -1087,5 +1090,6 @@ export interface LanguageKeys {
 	EVENTS_ERROR_WTF: string;
 	EVENTS_ERROR_STRING: (mention: string, message: string) => string;
 	CONST_USERS: string;
+	CONST_MONITOR_NEWLINEFILTER: string;
 	UNKNOWN_USER: string;
 }

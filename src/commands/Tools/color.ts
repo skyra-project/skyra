@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 		const { hex, hsl, rgb } = parse(input);
 
 		const attachment = await this.showColor(rgb, diff);
-		return message.channel.send(message.language.tget('COMMAND_COLOR', hex.toString(), rgb, hsl), { files: [{ attachment, name: 'color.png' }] });
+		return message.channel.send(message.language.tget('COMMAND_COLOR', hex.toString(), rgb.toString(), hsl.toString()), { files: [{ attachment, name: 'color.png' }] });
 	}
 
 	public async showColor(color: RGB, diff: number) {

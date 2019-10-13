@@ -35,7 +35,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.tget('MONITOR_NEWLINEFILTER', message.author)));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_NEWLINEFILTER', message.author!.toString())));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {

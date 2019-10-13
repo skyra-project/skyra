@@ -66,15 +66,15 @@ export class SkyraClient extends KlasaClient {
 
 	@enumerable(false)
 	public lavalink: Lavalink | null = DEV_LAVALINK
-		? null
-		: new Lavalink({
+		? new Lavalink({
 			send: (guildID: string, packet: object) => {
 				const guild = this.guilds.get(guildID);
 				if (guild) this.ws.shards.get(guild!.shardID)!.send(packet);
 				else throw new Error('attempted to send a packet on the wrong shard');
 			},
 			...this.options.lavalink
-		});
+		})
+		: null;
 
 	public ipc = new VezaClient('skyra-master')
 		.on('disconnect', client => { this.emit(Events.Warn, `${y} Disconnected: ${client.name}`); })

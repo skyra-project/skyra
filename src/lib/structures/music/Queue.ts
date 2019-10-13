@@ -17,6 +17,9 @@ export class Queue extends Array<Song> {
 	@enumerable(false)
 	public channelID: string | null = null;
 
+	@enumerable(false)
+	public systemPaused = false;
+
 	public volume = 100;
 	public replay = false;
 	public song: Song | null = null;
@@ -56,9 +59,15 @@ export class Queue extends Array<Song> {
 		return (voiceChannel && voiceChannel.connection) || null;
 	}
 
-	public get listeners() {
+	public get listeners(): readonly string[] {
 		const { voiceChannel } = this;
-		return voiceChannel ? voiceChannel.members.map(member => member.id) : [];
+		if (voiceChannel) {
+			const members = voiceChannel.members.map(member => member.id);
+			const index = members.indexOf(this.client.user!.id);
+			if (index !== -1) members.splice(index);
+			return members;
+		}
+		return [];
 	}
 
 	private readonly _listeners: MusicManagerListeners = {
@@ -128,6 +137,7 @@ export class Queue extends Array<Song> {
 		await this.player.leave();
 		this.channelID = null;
 		this.reset(true);
+		this.systemPaused = false;
 		return this;
 	}
 
@@ -162,19 +172,26 @@ export class Queue extends Array<Song> {
 			this.position = 0;
 			this.lastUpdate = 0;
 			this.song = this.shift()!;
+			this.systemPaused = false;
 
 			this.player.play(this.song.track)
 				.catch(reject);
 		});
 	}
 
-	public async pause() {
-		if (!this.paused) await this.player.pause(true);
+	public async pause(systemPaused = false) {
+		if (!this.paused) {
+			await this.player.pause(true);
+			this.systemPaused = systemPaused;
+		}
 		return this;
 	}
 
 	public async resume() {
-		if (!this.playing) await this.player.pause(false);
+		if (!this.playing) {
+			await this.player.pause(false);
+			this.systemPaused = false;
+		}
 		return this;
 	}
 
@@ -268,6 +285,7 @@ export class Queue extends Array<Song> {
 		this.song = null;
 		this.position = 0;
 		this.lastUpdate = 0;
+		this.systemPaused = false;
 		if (volume) this.volume = 100;
 	}
 

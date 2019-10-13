@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		this.spam = true;
 	}
 
-	public async run(message: KlasaMessage, [type = 'local', index = 1]: [string, number]) {
+	public async run(message: KlasaMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
 		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild!.id : undefined);
 
 		const { position } = list.get(message.author!.id) || { position: (list.size + 1) as number };

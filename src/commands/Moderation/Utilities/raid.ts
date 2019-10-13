@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public run(message: KlasaMessage, [type]: [string]) {
+	public run(message: KlasaMessage, [type]: ['clear' | 'cool' | 'show']) {
 		if (!message.guild!.settings.get(GuildSettings.Selfmod.Raid)) throw message.language.tget('COMMAND_RAID_DISABLED');
 		if (!message.guild!.me!.permissions.has('KICK_MEMBERS')) throw message.language.tget('COMMAND_RAID_MISSING_KICK');
 

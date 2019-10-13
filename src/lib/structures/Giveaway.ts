@@ -34,7 +34,7 @@ export class Giveaway {
 	public channelID: string;
 	public guildID: string;
 	public finished = false;
-	private winners: string[] = [];
+	private winners: string[] | null = null;
 	private paused = false;
 	private rendering = false;
 
@@ -260,7 +260,7 @@ export class Giveaway {
 		return participants.slice(0, this.minimumWinners);
 	}
 
-	private async fetchParticipants() {
+	private async fetchParticipants(): Promise<string[]> {
 		try {
 			const users = await fetchReactionUsers(this.store.client, this.channelID, this.messageID!, Giveaway.EMOJI!);
 			users.delete(CLIENT_ID);

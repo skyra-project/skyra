@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 		const format = this.displayWarning.bind(this, users);
 
 		for (const page of util.chunk([...warnings.values()], 10)) {
-			display.addPage(template => template.setDescription(page.map(format)));
+			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
 		}
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;

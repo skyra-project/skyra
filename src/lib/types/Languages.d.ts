@@ -2,7 +2,7 @@ import { SchemaEntry, ScheduledTask } from 'klasa';
 import { Song } from '../structures/music/Song';
 import { Kitsu } from './definitions/Kitsu';
 import { HungerGamesGame } from '../../commands/Games/hungergames';
-import { User, Role, GuildMember } from 'discord.js';
+import { User, Role, GuildMember, PermissionString } from 'discord.js';
 import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/stats';
 import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
 
@@ -663,11 +663,11 @@ export interface LanguageKeys {
 	COMMAND_SERVERINFO_NOROLES: string;
 	COMMAND_SERVERINFO_CHANNELS: (text: number, voice: number, categories: number, afkChannel: string, afkTime: number) => string;
 	COMMAND_SERVERINFO_MEMBERS: (count: number, owner: User) => string;
-	COMMAND_SERVERINFO_OTHER: (size: number, region: string, createdAt: number, verificationLevel: number) => string;
+	COMMAND_SERVERINFO_OTHER: (size: number, region: string, createdAt: number, verificationLevel: 0 | 1 | 2 | 3 | 4) => string;
 	COMMAND_ROLEINFO_TITLES: object;
 	COMMAND_ROLEINFO: (role: Role) => string;
 	COMMAND_ROLEINFO_ALL: string;
-	COMMAND_ROLEINFO_PERMISSIONS: (permissions: readonly string[]) => string;
+	COMMAND_ROLEINFO_PERMISSIONS: (permissions: readonly PermissionString[]) => string;
 	COMMAND_FILTER_UNDEFINED_WORD: string;
 	COMMAND_FILTER_FILTERED: (filtered: boolean) => string;
 	COMMAND_FILTER_ADDED: (word: string) => string;

@@ -68,7 +68,7 @@ export class GiveawayManager {
 
 	public get(index: number | string) {
 		if (typeof index === 'string') index = this.queue.findIndex(value => value.id === index);
-		return this.checkBounds(index) ? this[index] : null;
+		return this.checkBounds(index) ? this.queue[index] : null;
 	}
 
 	private async runGiveaway() {

@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@discordjs/collection": "^0.1.3",
+    "@types/diff": "^4.0.2",
     "@types/node": "^12.7.12",
     "@types/node-fetch": "^2.5.2",
     "@typescript-eslint/eslint-plugin": "^2.3.3",

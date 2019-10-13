@@ -1,7 +1,6 @@
 {
 	"extends": "eslint-config-bamboo",
 	"compilerOptions": {
-		"noImplicitAny": false,
 		"outDir": "./dist",
 		"types": [
 			"node",

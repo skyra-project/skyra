@@ -475,7 +475,7 @@ export async function softban(guild: Guild, moderator: User, target: User, reaso
 async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]) {
 	if (channel.type === 'category') return;
 	try {
-		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type]);
+		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type as 'text' | 'voice']);
 	} catch {
 		array.push(String(channel));
 	}

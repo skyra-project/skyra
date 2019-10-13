@@ -137,7 +137,7 @@ export abstract class SelfModerationCommand extends Command {
 			this.keyThresholdDuration
 		);
 
-		const i18n = message.language.get.bind(message.language);
+		const i18n = message.language.tget.bind(message.language);
 		const [yes, no] = [i18n('SELF_MODERATION_ENABLED'), i18n('SELF_MODERATION_DISABLED')];
 		return message.sendCode('prolog', i18n(
 			'SELF_MODERATION_COMMAND_SHOW',

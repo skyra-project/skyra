@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 
 		if (typeof query === 'number') {
 			if (query <= xkcdInfo.num) return query;
-			throw i18n.get('COMMAND_XKCD_COMICS', xkcdInfo.num);
+			throw i18n.tget('COMMAND_XKCD_COMICS', xkcdInfo.num);
 		}
 
 		if (query) {

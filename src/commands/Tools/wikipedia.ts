@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 
 	private content(definition: string, url: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
+		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), url);
 	}
 
 }

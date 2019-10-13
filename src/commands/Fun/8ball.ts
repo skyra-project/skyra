@@ -27,13 +27,13 @@ export default class extends SkyraCommand {
 			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as unknown as EightBallLanguage;
 
 		if (!this.checkQuestion(prefixes.QUESTION || '?', input)) {
-			throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
+			throw i18n.tget('COMMAND_8BALL_NOT_QUESTION');
 		}
 
 		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}`);
 		}
-		return i18n.get('COMMAND_8BALL_ELSE');
+		return i18n.tget('COMMAND_8BALL_ELSE');
 	}
 
 	private checkQuestion(question: string | RegExp, input: string) {

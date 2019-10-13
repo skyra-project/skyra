@@ -66,7 +66,7 @@ export class SettingsMenu {
 		const i18n = this.message.language;
 		const description: string[] = [];
 		if (this.pointerIsFolder) {
-			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
+			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
@@ -78,22 +78,22 @@ export class SettingsMenu {
 				}
 			}
 
-			if (!folders.length && !keys.length) description.push(i18n.get('COMMAND_CONF_MENU_RENDER_NOKEYS'));
-			else description.push(i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'), '', ...folders.map(folder => `• \\📁${folder}`), ...keys.map(key => `• ${key}`));
+			if (!folders.length && !keys.length) description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_NOKEYS'));
+			else description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_SELECT'), '', ...folders.map(folder => `• \\📁${folder}`), ...keys.map(key => `• ${key}`));
 		} else {
-			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
+			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 			if ((this.schema as SchemaEntry).configurable) {
 				description.push(
 					i18n.get(`SETTINGS_${this.schema.path.replace(/[.-]/g, '_').toUpperCase()}`),
 					'',
-					i18n.get('COMMAND_CONF_MENU_RENDER_TCTITLE'),
-					i18n.get('COMMAND_CONF_MENU_RENDER_UPDATE'),
-					(this.schema as SchemaEntry).array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length ? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
-					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : '',
-					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : '',
+					i18n.tget('COMMAND_CONF_MENU_RENDER_TCTITLE'),
+					i18n.tget('COMMAND_CONF_MENU_RENDER_UPDATE'),
+					(this.schema as SchemaEntry).array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length ? i18n.tget('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
+					this.changedPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_RESET') : '',
+					this.changedCurrentPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_UNDO') : '',
 					'',
-					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild!.settings.display(this.message, this.schema).replace(/``+/g, '`\u200B`'))
+					i18n.tget('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild!.settings.display(this.message, this.schema).replace(/``+/g, '`\u200B`'))
 				);
 			}
 		}
@@ -105,7 +105,7 @@ export class SettingsMenu {
 
 		return this.embed
 			.setDescription(`${description.filter(v => v !== null).join('\n')}\n\u200B`)
-			.setFooter(parent ? i18n.get('COMMAND_CONF_MENU_RENDER_BACK') : '')
+			.setFooter(parent ? i18n.tget('COMMAND_CONF_MENU_RENDER_BACK') : '')
 			.setTimestamp();
 	}
 

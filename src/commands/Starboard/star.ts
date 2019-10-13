@@ -119,7 +119,7 @@ export default class extends SkyraCommand {
 		const topThreeMessages = topMessages.sort((a, b) => a[1] > b[1] ? -1 : 1).slice(0, 3);
 		const topThreeReceivers = [...topReceivers].sort((a, b) => a[1] > b[1] ? -1 : 1).slice(0, 3);
 
-		const i18n = message.language.get.bind(message.language);
+		const i18n = message.language.tget.bind(message.language);
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(0xFFD000)
 			.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', totalMessages, totalStars))

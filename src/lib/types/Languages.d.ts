@@ -598,7 +598,7 @@ export interface LanguageKeys {
 	COMMAND_NORRIS_OUTPUT: string;
 	COMMAND_RATE_OUTPUT: (user: string, rate: string, emoji: string) => string;
 	COMMAND_RATE_MYSELF: [string, string];
-	COMMAND_XKCD_COMICS: (amount: string) => string;
+	COMMAND_XKCD_COMICS: (amount: number) => string;
 	COMMAND_XKCD_NOTFOUND: string;
 	COMMAND_GAMES_SKYRA: string;
 	COMMAND_GAMES_BOT: string;

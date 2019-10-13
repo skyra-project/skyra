@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 
 	public content(definition: string, permalink: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
+		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
 
 }

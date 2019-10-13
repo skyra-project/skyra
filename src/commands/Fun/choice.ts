@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 	}
 
 	private filterWords(words: string[], i18n: Language) {
-		if (words.length < 2) throw i18n.get('COMMAND_CHOICE_MISSING');
+		if (words.length < 2) throw i18n.tget('COMMAND_CHOICE_MISSING');
 
 		const output = new Set();
 		const filtered = new Set();
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (output.size >= 2) return [...output];
-		throw i18n.get('COMMAND_CHOICE_DUPLICATES', [...filtered].join('\', \''));
+		throw i18n.tget('COMMAND_CHOICE_DUPLICATES', [...filtered].join('\', \''));
 	}
 
 }

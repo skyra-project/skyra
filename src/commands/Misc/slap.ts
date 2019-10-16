@@ -5,7 +5,7 @@ import { join } from 'path';
 import { CLIENT_ID } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 

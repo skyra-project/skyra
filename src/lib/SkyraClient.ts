@@ -1,24 +1,28 @@
-import { Collection, Webhook } from 'discord.js';
-import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util, Colors } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
-import { MasterPool, R } from 'rethinkdb-ts';
+import { Canvas } from 'canvas-constructor';
 import { Client as VezaClient } from 'veza';
-import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT } from '../../config';
-import { IPCMonitorStore } from './structures/IPCMonitorStore';
-import { MemberGateway } from './structures/MemberGateway';
-import { clientOptions } from './util/constants';
+import { clientOptions, assetsFolder } from './util/constants';
+import { Collection, Permissions, Webhook } from 'discord.js';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
+import { Databases } from './types/constants/Constants';
+import { enumerable } from './util/util';
+import { Events, PermissionLevels } from './types/Enums';
+import { FSWatcher } from 'chokidar';
+import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util, Colors } from 'klasa';
+import { GiveawayManager } from './structures/GiveawayManager';
+import { GuildSettings } from './types/settings/GuildSettings';
+import { IPCMonitorStore } from './structures/IPCMonitorStore';
+import { join } from 'path';
 import { Leaderboard } from './util/Leaderboard';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { enumerable } from './util/util';
+import { MasterPool, R } from 'rethinkdb-ts';
+import { MemberGateway } from './structures/MemberGateway';
+import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT } from '../../config';
+import klasaDashboardHooks = require('klasa-dashboard-hooks');
 
 import './extensions/SkyraGuild';
 import './extensions/SkyraGuildMember';
 import './extensions/SkyraTextChannel';
-import { GiveawayManager } from './structures/GiveawayManager';
-import { Databases } from './types/constants/Constants';
-import { Events } from './types/Enums';
-import { FSWatcher } from 'chokidar';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -126,6 +130,36 @@ export class SkyraClient extends KlasaClient {
 		.add('points', 'Number', { configurable: false });
 
 }
+
+SkyraClient.use(klasaDashboardHooks);
+
+const { FLAGS } = Permissions;
+
+// Canvas setup
+Canvas
+	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(assetsFolder, 'fonts', 'NotoEmoji.ttf'), 'RobotoRegular')
+	.registerFont(join(assetsFolder, 'fonts', 'NotoSans-Regular.ttf'), 'RobotoRegular')
+	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Light.ttf'), 'RobotoLight')
+	.registerFont(join(assetsFolder, 'fonts', 'Family-Friends.ttf'), 'FamilyFriends');
+
+// Skyra setup
+SkyraClient.defaultPermissionLevels
+	.add(PermissionLevels.Staff, message => message.member
+		? message.guild!.settings.get(GuildSettings.Roles.Staff)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Staff))
+			: message.member.permissions.has(FLAGS.MANAGE_MESSAGES)
+		: false, { fetch: true })
+	.add(PermissionLevels.Moderator, message => message.member
+		? message.guild!.settings.get(GuildSettings.Roles.Moderator)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Moderator))
+			: message.member.permissions.has(FLAGS.BAN_MEMBERS)
+		: false, { fetch: true })
+	.add(PermissionLevels.Administrator, message => message.member
+		? message.guild!.settings.get(GuildSettings.Roles.Admin)
+			? message.member.roles.has(message.guild!.settings.get(GuildSettings.Roles.Admin))
+			: message.member.permissions.has(FLAGS.MANAGE_GUILD)
+		: false, { fetch: true });
 
 SkyraClient.defaultUserSchema
 	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })

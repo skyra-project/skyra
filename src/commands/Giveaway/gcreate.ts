@@ -12,25 +12,24 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_GIVEAWAYSCHEDULE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
-			usage: '<schedule:time> <time:time> <title:...string{,256}>',
+			usage: '<schedule:time> <duration:timespan> <title:...string{,256}>',
 			usageDelim: ' ',
 			promptLimit: Infinity
 		});
 	}
 
-	public async run(message: KlasaMessage, [schedule, time, title]: [Date, Date, string]) {
+	public async run(message: KlasaMessage, [schedule, duration, title]: [Date, number, string]) {
 		// First do the checks for the giveaway itself
-		const offset = time.getTime() - Date.now();
 		const scheduleOffset = schedule.getTime() - Date.now();
 
-		if (offset < 9500 || scheduleOffset < 9500) throw message.language.tget('GIVEAWAY_TIME');
-		if (offset > YEAR || scheduleOffset > YEAR) throw message.language.tget('GIVEAWAY_TIME_TOO_LONG');
+		if (duration < 9500 || scheduleOffset < 9500) throw message.language.tget('GIVEAWAY_TIME');
+		if (duration > YEAR || scheduleOffset > YEAR) throw message.language.tget('GIVEAWAY_TIME_TOO_LONG');
 
 		// This creates an single time task to start the giveaway
 		await this.client.schedule.create('giveaway', schedule.getTime(), {
 			data: {
 				channelID: message.channel.id,
-				endsAt: time.getTime() + 500,
+				endsAt: duration,
 				guildID: message.guild!.id,
 				minimum: 1,
 				minimumWinners: 1,
@@ -39,7 +38,7 @@ export default class extends SkyraCommand {
 			catchUp: true
 		});
 
-		return message.sendLocale('GIVEAWAY_SCHEDULED', [schedule, time, title]);
+		return message.sendLocale('GIVEAWAY_SCHEDULED', [schedule, duration, title]);
 	}
 
 }

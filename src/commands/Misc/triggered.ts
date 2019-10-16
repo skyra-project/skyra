@@ -5,8 +5,8 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar, streamToBuffer } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
 import GIFEncoder = require('gifencoder');
+import { assetsFolder } from '../../lib/util/constants';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],

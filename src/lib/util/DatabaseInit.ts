@@ -11,6 +11,9 @@ const tables: readonly [string, [string, (doc: RDatum) => RDatum[] | RDatum][]][
 		['stars', doc => doc('stars')],
 		['channel_message', doc => [doc('channelID'), doc('messageID')]]
 	]],
+	[Databases.Giveaway, [
+		['guildID', doc => doc('guildID')]
+	]],
 	[Databases.Users, [
 		['points', doc => doc(UserSettings.Points)]
 	]],

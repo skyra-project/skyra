@@ -1,4 +1,10 @@
 import { KlasaClientOptions } from 'klasa';
+import { join } from 'path';
+import { DEV } from '../../../config';
+
+export const rootFolder = join(__dirname, '..', '..', '..', '..');
+export const assetsFolder = join(rootFolder, 'assets');
+export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
 
 const BAN = 0b0000;
 const KICK = 0b0001;

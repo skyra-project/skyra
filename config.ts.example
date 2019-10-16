@@ -13,6 +13,8 @@ export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVA
 export const EVLYN_PORT = 3100;
 
 export const NAME = 'Skyra';
+export const SHARD_COUNT = 2;
+export const CLUSTER_COUNT = 2;
 export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
 export const CLIENT_SECRET = DEV ? '' : '';
 

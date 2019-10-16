@@ -5,7 +5,7 @@ import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { fetch, fetchAvatar, IMAGE_EXTENSION } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 

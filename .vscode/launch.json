@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\dist\\src\\Skyra.js"
+            "name": "Main",
+            "program": "${workspaceFolder}\\dist\\src\\main.js"
         }
     ]
 }

@@ -2,10 +2,10 @@ import { Canvas } from 'canvas-constructor';
 import { Image } from 'canvas';
 import { Message } from 'discord.js';
 import { join } from 'path';
-import { assetsFolder } from '../../../Skyra';
 import { ClientSettings } from '../../types/settings/ClientSettings';
 import { UserSettings } from '../../types/settings/UserSettings';
 import { loadImage } from '../util';
+import { assetsFolder } from '../constants';
 
 enum Icons {
 	Cherry,

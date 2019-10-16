@@ -616,6 +616,16 @@ export default class extends Language {
 			],
 			examples: ['6h A hug from Skyra.']
 		}),
+		COMMAND_GIVEAWAYREROLL_DESCRIPTION: 'Re-roll the winners from a giveaway.',
+		COMMAND_GIVEAWAYREROLL_EXTENDED: builder.display('greroll', {
+			extendedHelp: `This command is designed to re-roll finished giveaways. Please check \`Skyra, help gstart\` for more information
+					about creating one.`,
+			explainedUsage: [
+				['message', 'The message to target. Defaults to last giveaway message.'],
+				['winners', 'The amount of winners to pick.']
+			],
+			examples: ['', '633939404745998346', '5', '633939404745998346 5']
+		}),
 		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: `Schedule a giveaway to start at a certain time.`,
 		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
 			extendedHelp: `This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.`,
@@ -851,6 +861,13 @@ export default class extends Language {
 			reminder: 'Use this wisely, not everyone expects the starboard to listen to a custom emoji.',
 			examples: ['⭐']
 		}),
+
+		/**
+		 * #################
+		 * GIVEAWAY COMMANDS
+		 */
+
+		COMMAND_GIVEAWAYREROLL_INVALID: 'The message ID does not exist or there is no finished giveaway.',
 
 		/**
 		 * ###########################

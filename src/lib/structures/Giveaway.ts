@@ -15,11 +15,13 @@ enum States {
 	Finished
 }
 
-enum Colors {
+export enum Colors {
 	Blue = 0x47C7F7,
 	Orange = 0xFFA721,
 	Red = 0xE80F2B
 }
+
+export const GiveawayEmoji = '🎉';
 
 export class Giveaway {
 
@@ -262,7 +264,7 @@ export class Giveaway {
 
 	private async fetchParticipants(): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(this.store.client, this.channelID, this.messageID!, Giveaway.EMOJI!);
+			const users = await fetchReactionUsers(this.store.client, this.channelID, this.messageID!, Giveaway.EMOJI);
 			users.delete(CLIENT_ID);
 			return [...users];
 		} catch (error) {
@@ -277,7 +279,7 @@ export class Giveaway {
 		}
 	}
 
-	public static EMOJI = resolveEmoji(`🎉`);
+	public static EMOJI = resolveEmoji(GiveawayEmoji)!;
 
 }
 

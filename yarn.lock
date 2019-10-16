@@ -197,7 +197,7 @@ astral-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-1.0.0.tgz#6c8c3fb827dd43ee3918f27b82782ab7658a6fd9"
   integrity sha512-+Ryf6g3BKoRc7jfp7ad8tM4TtMiaWvbF/1/sQcZPkkS7ag3D5nMBCe2UfOTONtAkaG0tO0ij3C5Lwmf1EiyjHg==
 
-async-limiter@~1.0.0:
+async-limiter@^1.0.0, async-limiter@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
@@ -277,7 +277,7 @@ chardet@^0.7.0:
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-chokidar@^3.0.2, chokidar@^3.2.2:
+chokidar@^3.0.2, chokidar@^3.2.1:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.2.2.tgz#a433973350021e09f2b853a2287781022c0dc935"
   integrity sha512-bw3pm7kZ2Wa6+jQWYP/c7bAZy3i4GwiIiMO2EeRjrE48l8vBqC/WvFhSF0xyM8fQiPEGvwMY/5bqDG7sSEOuhg==
@@ -415,7 +415,7 @@ diff@^4.0.1:
   resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.1.tgz#0c667cb467ebbb5cea7f14f135cc2dba7780a8ff"
   integrity sha512-s2+XdvhPCOF01LRQBC8hf4vhbVmI2CGS5aZnxLJlT5FtdhPCDFq80q++zK2KlrVorVDdL5BOGZ/VfLrVtYNF+Q==
 
-"discord.js@github:discordjs/discord.js":
+discord.js@discordjs/discord.js:
   version "12.0.0-dev"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/c3228b426370a6cc5d48cb41e28bbe9f731e8473"
   dependencies:
@@ -428,6 +428,20 @@ diff@^4.0.1:
     setimmediate "^1.0.5"
     tweetnacl "^1.0.1"
     ws "^6.1.3"
+
+"discord.js@github:discordjs/discord.js#15b75f36a976":
+  version "12.0.0-dev"
+  resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/15b75f36a976493b1da34297fc73948f714be807"
+  dependencies:
+    "@discordjs/collection" "^0.1.1"
+    abort-controller "^3.0.0"
+    form-data "^2.3.3"
+    node-fetch "^2.3.0"
+    pako "^1.0.10"
+    prism-media "^1.0.0"
+    setimmediate "^1.0.5"
+    tweetnacl "^1.0.1"
+    ws "^7.1.1"
 
 doctrine@^3.0.0:
   version "3.0.0"
@@ -867,6 +881,15 @@ klasa-decorators@^0.0.1:
   dependencies:
     fs-nextra "^0.4.5"
 
+kurasuta@^1.1.3-next2:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/kurasuta/-/kurasuta-1.1.3.tgz#d4c6808610aeda00fbd6cb7287c8308ded4665ae"
+  integrity sha512-8J/ngkCr3/i+8ffVWIktWm8GL3EJDzOy06dp3XyjvzbovrVIK31RXnLh+COhTQOU/+o/QFV/AJ3O6ZpIpURlwg==
+  dependencies:
+    discord.js discordjs/discord.js
+    node-fetch "^2.6.0"
+    veza "^1.1.0"
+
 lavalink@^2.8.1:
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.8.1.tgz#d7d9754509d506da53ce33e787a6498826f381a2"
@@ -1099,7 +1122,7 @@ osenv@^0.1.4:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
-pako@^1.0.8:
+pako@^1.0.10, pako@^1.0.8:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.10.tgz#4328badb5086a426aa90f541977d4955da5c9732"
   integrity sha512-0DTvPVU3ed8+HNXOu5Bs+o//Mbdj9VNQMUOe9oKCwh8l0GNwpTDMKCWbRjgtD291AWnkAgkqA/LOnQS8AmS1tw==
@@ -1530,6 +1553,13 @@ ws@^6.0.0, ws@^6.1.3:
   integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
   dependencies:
     async-limiter "~1.0.0"
+
+ws@^7.1.1:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.1.2.tgz#c672d1629de8bb27a9699eb599be47aeeedd8f73"
+  integrity sha512-gftXq3XI81cJCgkUiAVixA0raD9IVmXqsylCrjRygw4+UOOGzPoxnQ6r/CnVL9i+mDncJo94tSkyrtuuQVBmrg==
+  dependencies:
+    async-limiter "^1.0.0"
 
 yallist@^3.0.0, yallist@^3.0.3:
   version "3.1.1"

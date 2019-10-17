@@ -70,7 +70,8 @@ export default class extends SkyraCommand {
 	}
 
 	private validateMessage(message: Message) {
-		return message.author.id === CLIENT_ID
+		return message.author !== null
+			&& message.author.id === CLIENT_ID
 			&& message.embeds.length === 1
 			&& message.embeds[0].color === Colors.Red
 			&& message.reactions.has(GiveawayEmoji);

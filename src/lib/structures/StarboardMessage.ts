@@ -349,6 +349,7 @@ export class StarboardMessage {
 				})
 				.finally(() => this.manager.syncMessageMap.delete(this));
 			this.manager.syncMessageMap.set(this, promise);
+			await promise;
 		}
 	}
 

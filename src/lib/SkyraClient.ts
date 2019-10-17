@@ -39,9 +39,6 @@ const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
 const r = new Colors({ text: 'red' }).format('[IPC   ]');
 
-// Canvas setup
-
-
 export class SkyraClient extends KlasaClient {
 
 	/**

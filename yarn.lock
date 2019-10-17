@@ -1099,6 +1099,11 @@ osenv@^0.1.4:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
+paket-queue@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/paket-queue/-/paket-queue-0.1.0.tgz#8c15090eb2a0b0f1366f6ca001c285bb7f46e3cb"
+  integrity sha512-eDXNAASDE7j16CuOcAOexyZP9fKx1g1bfa4k8xQ6UdLcCyRHt/NmOPCfiX/bnffQA8ng82EAcSmThdw9PFGZbw==
+
 pako@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.10.tgz#4328badb5086a426aa90f541977d4955da5c9732"

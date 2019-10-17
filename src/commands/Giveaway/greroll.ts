@@ -16,28 +16,27 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_GIVEAWAYREROLL_EXTENDED'),
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
-			usage: '(message:message) [winners:number]'
-		});
-
-		this.createCustomResolver('message', async (arg, _possible, message) => {
-			// If it's a number, return undefined, this allows for `s!greroll 10` and pick 10 winners from last
-			if (arg && /^\d{1,10}$/.test(arg)) return undefined;
-
-			const target = arg
-				? message.channel.messages.fetch(arg).then(msg => this.validateMessage(msg) ? msg : null).catch(() => null)
-				: (await message.channel.messages.fetch()).find(msg => this.validateMessage(msg));
-			if (target) return target;
-			throw message.language.tget('COMMAND_GIVEAWAYREROLL_INVALID');
+			usage: '[winners:number{1,100}] [message:message]',
+			usageDelim: ' '
 		});
 	}
 
-	public async run(message: KlasaMessage, [target, winnerAmount = 1]: [KlasaMessage, number]) {
+	public async run(message: KlasaMessage, [winnerAmount = 1, rawTarget]: [number, KlasaMessage | undefined]) {
+		const target = await this.resolveMessage(message, rawTarget);
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
 			? message.language.tget('GIVEAWAY_ENDED_MESSAGE', winners.map(winner => `<@${winner}>`), title)
 			: message.language.tget('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', title);
 		return message.sendMessage(content);
+	}
+
+	private async resolveMessage(message: KlasaMessage, rawTarget: KlasaMessage | undefined) {
+		const target = rawTarget
+			? this.validateMessage(rawTarget) ? rawTarget : null
+			: (await message.channel.messages.fetch({ limit: 100 })).find(msg => this.validateMessage(msg)) || null;
+		if (target) return target as KlasaMessage;
+		throw message.language.tget('COMMAND_GIVEAWAYREROLL_INVALID');
 	}
 
 	private async pickWinners(message: KlasaMessage, winnerAmount: number) {

@@ -608,10 +608,10 @@ export default class extends Language {
 			extendedHelp: `This command is designed to re-roll finished giveaways. Please check \`Skyra, help gstart\` for more information
 					about creating one.`,
 			explainedUsage: [
-				['message', 'The message to target. Defaults to last giveaway message.'],
-				['winners', 'The amount of winners to pick.']
+				['winners', 'The amount of winners to pick.'],
+				['message', 'The message to target. Defaults to last giveaway message.']
 			],
-			examples: ['', '633939404745998346', '5', '633939404745998346 5']
+			examples: ['', '633939404745998346', '5', '5 633939404745998346']
 		}),
 		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: `Schedule a giveaway to start at a certain time.`,
 		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {

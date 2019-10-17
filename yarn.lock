@@ -415,7 +415,7 @@ diff@^4.0.1:
   resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.1.tgz#0c667cb467ebbb5cea7f14f135cc2dba7780a8ff"
   integrity sha512-s2+XdvhPCOF01LRQBC8hf4vhbVmI2CGS5aZnxLJlT5FtdhPCDFq80q++zK2KlrVorVDdL5BOGZ/VfLrVtYNF+Q==
 
-"discord.js@github:discordjs/discord.js#15b75f36a976":
+"discord.js@github:discordjs/discord.js#3393/head":
   version "12.0.0-dev"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/15b75f36a976493b1da34297fc73948f714be807"
   dependencies:
@@ -863,7 +863,7 @@ klasa-decorators@^0.0.1:
 
 "klasa@github:dirigeants/klasa#settings":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/e6f22b31073f3c0f46f374dbc9edc23a60eca588"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/d8d3d9ac5b4d2a84f49784413b9bac81a7f353b9"
   dependencies:
     fs-nextra "^0.4.5"
 

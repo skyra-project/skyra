@@ -45,7 +45,7 @@
     "chokidar": "^3.2.2",
     "confusables": "^0.3.1",
     "diff": "^4.0.1",
-    "discord.js": "github:discordjs/discord.js#15b75f36a976",
+    "discord.js": "github:discordjs/discord.js#3393/head",
     "fs-nextra": "^0.4.5",
     "gifencoder": "^2.0.1",
     "klasa": "github:dirigeants/klasa#settings",

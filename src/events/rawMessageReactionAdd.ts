@@ -51,11 +51,11 @@ export default class extends Event {
 
 	public async handleStarboard(parsed: LLRCData): Promise<void> {
 		try {
-			const channel = parsed.guild!.settings.get(GuildSettings.Starboard.Channel);
-			const ignoreChannels = parsed.guild!.settings.get(GuildSettings.Starboard.IgnoreChannels);
+			const channel = parsed.guild.settings.get(GuildSettings.Starboard.Channel);
+			const ignoreChannels = parsed.guild.settings.get(GuildSettings.Starboard.IgnoreChannels);
 			if (!channel || ignoreChannels.includes(parsed.channel.id)) return;
 
-			const starboardChannel = parsed.guild!.channels.get(channel) as TextChannel;
+			const starboardChannel = parsed.guild.channels.get(channel) as TextChannel;
 			if (!starboardChannel || !starboardChannel.postable) {
 				await parsed.guild!.settings.reset(GuildSettings.Starboard.Channel);
 				return;

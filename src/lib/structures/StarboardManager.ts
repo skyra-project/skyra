@@ -19,7 +19,8 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	 */
 	public guild: Guild;
 
-	public syncMap: WeakMap<StarboardMessage, Promise<StarboardMessage>> = new WeakMap();
+	public syncMap = new WeakMap<StarboardMessage, Promise<StarboardMessage>>();
+	public syncMessageMap = new WeakMap<StarboardMessage, Promise<void>>();
 
 	public constructor(guild: Guild) {
 		super();

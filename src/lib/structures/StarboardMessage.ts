@@ -160,10 +160,9 @@ export class StarboardMessage {
 		if (!force || syncStatus) return syncStatus || Promise.resolve(this);
 
 		// If it's not currently synchronizing, create a new sync status for the sync queue
-		const sync = Promise.all([this._syncDatabase(), this._syncDiscord()]).then(() => {
-			this.manager.syncMap.delete(this);
-			return this;
-		});
+		const sync = Promise.all([this._syncDatabase(), this._syncDiscord()])
+			.then(() => this)
+			.finally(() => this.manager.syncMap.delete(this));
 
 		this.manager.syncMap.set(this, sync);
 		return sync;
@@ -221,6 +220,10 @@ export class StarboardMessage {
 	public async edit(options: StarboardMessageEdit): Promise<this> {
 		this.lastUpdated = Date.now();
 		if (this.existenceStatus === null) await this.sync();
+
+		// If a message was in progress to be sent, await it first
+		const previousUpdate = this.manager.syncMessageMap.get(this);
+		if (previousUpdate) await previousUpdate;
 
 		if ('disabled' in options) this.disabled = options.disabled!;
 		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
@@ -334,16 +337,18 @@ export class StarboardMessage {
 				if (error.code === 10008) await this.edit({ starMessageID: null, disabled: true });
 			}
 		} else {
-			try {
-				this.starMessage = await this.manager.starboardChannel!.send(content, this.embed!) as Message;
-			} catch (error) {
-				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
+			const promise = this.manager.starboardChannel!.send(content, this.embed!)
+				.then(message => { this.starMessage = message; })
+				.catch(error => {
+					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
-				// Missing Access
-				if (error.code === 50001) return;
-				// Emit to console
-				this.client.emit(Events.Wtf, error);
-			}
+					// Missing Access
+					if (error.code === 50001) return;
+					// Emit to console
+					this.client.emit(Events.Wtf, error);
+				})
+				.finally(() => this.manager.syncMessageMap.delete(this));
+			this.manager.syncMessageMap.set(this, promise);
 		}
 	}
 

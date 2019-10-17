@@ -1,6 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { TextChannel } from 'discord.js';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -9,9 +10,10 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_SLOWMODE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SLOWMODE_EXTENDED'),
+			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['MANAGE_CHANNELS'],
-			usage: '<reset|cooldown:integer{0,120}>',
-			runIn: ['text']
+			runIn: ['text'],
+			usage: '<reset|cooldown:integer{0,120}>'
 		});
 	}
 

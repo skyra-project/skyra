@@ -27,8 +27,8 @@ export namespace Kitsu {
 		ratingFrequencies: { [key: string]: string };
 		userCount: number;
 		favoritesCount: number;
-		startDate: Date | null;
-		endDate: Date | null;
+		startDate?: Date;
+		endDate?: Date;
 		nextRelease: null | string;
 		popularityRank: number;
 		ratingRank: number;

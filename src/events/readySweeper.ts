@@ -35,7 +35,7 @@ export default class extends Event {
 			}
 
 			// Update counters
-			guildMembers += guild.memberCount;
+			guildMembers += guild.members.size - 1;
 			presences += guild.presences.size;
 			emojis += guild.emojis.size;
 

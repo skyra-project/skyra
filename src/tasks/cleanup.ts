@@ -55,8 +55,8 @@ export default class extends Task {
 		// Per-Guild sweeper
 		for (const guild of this.client.guilds.values()) {
 			// Clear presences
-			presences += guild!.presences.size;
-			guild!.presences.clear();
+			presences += guild.presences.size;
+			guild.presences.clear();
 
 			// Clear members that haven't send a message in the last 30 minutes
 			const { me } = guild;
@@ -64,13 +64,13 @@ export default class extends Task {
 				if (member === me) continue;
 				if (member.voice.channelID) continue;
 				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
-				guild!.members.delete(id);
+				guild.members.delete(id);
 				guildMembers++;
 			}
 
 			// Clear emojis
 			emojis += guild!.emojis.size;
-			guild!.emojis.clear();
+			guild.emojis.clear();
 		}
 
 		// Per-Channel sweeper

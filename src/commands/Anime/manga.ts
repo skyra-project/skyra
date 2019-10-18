@@ -1,9 +1,9 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
-import { prompt } from '../../lib/util/PromptList';
-import { cutText, fetch, oneToTen } from '../../lib/util/util';
+import { cutText, fetch, getColor, oneToTen } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -18,46 +18,25 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [mangaName]: [string]) {
+		const response = await message.sendEmbed(new MessageEmbed()
+			.setDescription(message.language.tget('SYSTEM_LOADING'))
+			.setColor(getColor(message) || 0xFFAB2D));
+
 		const url = new URL('https://kitsu.io/api/edge/manga');
 		url.searchParams.append('filter[text]', mangaName);
 
-		const body = await fetch(url, 'json')
+		const { data: entries } = await fetch(url, 'json')
 			.catch(() => { throw message.language.tget('COMMAND_ANIME_QUERY_FAIL'); }) as Kitsu.Result<Kitsu.MangaAttributes>;
 
-		const entry = await this.getIndex(message, body.data)
-			.catch(error => { throw error || message.language.tget('COMMAND_ANIME_NO_CHOICE'); });
-
-		const synopsis = cutText(entry.attributes.synopsis, 750);
-		const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10))!;
-		const mangaURL = `https://kitsu.io/manga/${entry.attributes.slug}`;
-		const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as MangaLanguage;
-		const type = entry.attributes.subtype;
-		const title = entry.attributes.titles.en || entry.attributes.titles.en_jp || Object.values(entry.attributes.titles)[0] || '--';
-
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(score.color)
-			.setAuthor(title, entry.attributes.posterImage.tiny, mangaURL)
-			.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
-			.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TITLES')[type.toUpperCase()] || type, true)
-			.addField(titles.SCORE, `**${entry.attributes.averageRating}** / 100 ${score.emoji}`, true)
-			.addField(titles.STATUS, message.language.tget('COMMAND_MANGA_OUTPUT_STATUS', entry))
-			.addField(titles.READ_IT, `**[${title}](${mangaURL})**`)
-			.setFooter('© kitsu.io'));
-	}
-
-	private async getIndex(message: KlasaMessage, entries: Kitsu.Datum[]) {
-		if (entries.length === 1) return entries[0];
-		const _choice = await prompt(message, entries.slice(0, 10).map(entry => {
+		const list = entries.map(entry => {
 			if (entry.attributes.averageRating === null) entry.attributes.averageRating = this.extractAverage(entry);
-			return `(${entry.attributes.averageRating}) ${this.extractTitle(entry.attributes.titles)}`;
-		}));
-		const chosen = entries[_choice];
-		if (!chosen) throw message.language.tget('COMMAND_ANIME_INVALID_CHOICE');
-		return chosen;
-	}
+			return entry;
+		});
 
-	private extractTitle(titles: Kitsu.Titles) {
-		return Object.values(titles).find(Boolean);
+		const display = this.buildDisplay(list, message);
+
+		await display.run(response, message.author.id);
+		return response;
 	}
 
 	private extractAverage(entry: Kitsu.Datum) {
@@ -70,6 +49,34 @@ export default class extends SkyraCommand {
 		}
 
 		return total ? ((total / (max * 20)) * 100).toFixed(2) : '--.--';
+	}
+
+	private buildDisplay(entries: (Kitsu.Datum<Kitsu.MangaAttributes>)[], message: KlasaMessage) {
+		const display = new UserRichDisplay();
+
+		for (const entry of entries) {
+			this.client.console.log(entry.attributes);
+			this.client.console.error('===========');
+			const synopsis = cutText(entry.attributes.synopsis, 750);
+			const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10))!;
+			const mangaURL = `https://kitsu.io/manga/${entry.attributes.slug}`;
+			const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as MangaLanguage;
+			const type = entry.attributes.subtype;
+			const title = entry.attributes.titles.en || entry.attributes.titles.en_jp || Object.values(entry.attributes.titles)[0] || '--';
+
+			display.addPage(
+				new MessageEmbed()
+					.setColor(score.color)
+					.setAuthor(title, entry.attributes.posterImage.tiny, mangaURL)
+					.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
+					.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TITLES')[type.toUpperCase()] || type, true)
+					.addField(titles.SCORE, `**${entry.attributes.averageRating}** / 100 ${score.emoji}`, true)
+					.addField(titles.STATUS, message.language.tget('COMMAND_MANGA_OUTPUT_STATUS', entry))
+					.addField(titles.READ_IT, `**[${title}](${mangaURL})**`)
+					.setFooter('© kitsu.io')
+			);
+		}
+		return display;
 	}
 
 }

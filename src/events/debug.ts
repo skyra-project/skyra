@@ -1,6 +1,6 @@
 import { Event } from 'klasa';
 
-const kReg = /(Sending a heartbeat|Latency of)/i;
+const kReg = /(Sending a heartbeat|Latency of|\[VOICE\])/i;
 
 export default class extends Event {
 

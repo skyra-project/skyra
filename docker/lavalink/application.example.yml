@@ -1,4 +1,4 @@
-# Rename `application.yml.example` to `application.yml` for usage
+# Rename `application.example.yml` to `application.yml` for usage
 
 server: # REST and WS server
   port: 2333

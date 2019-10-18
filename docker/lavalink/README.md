@@ -3,7 +3,7 @@
 This is required for voice, and since setting up a docker image like Lavalink with Kitematic is a pain, mostly due to
 this application being a complete joke of an application, I have created this folder for ease of development.
 
-# Set-Up
+## Set-Up
 
 You may download the `Lavalink.jar` file from either [releases](https://github.com/Frederikam/Lavalink/releases) or from
 the [CI server](https://ci.fredboat.com/project.html?projectId=Lavalink).
@@ -16,9 +16,9 @@ with the precise variables.
 ## Running
 
 ```bash
-# Build the image
+# Build the image, you do this only once:
 $ docker build -t lavalink .
 
-# Run the image
+# Run the image:
 $ docker run --name=lavalink -d -p 2333:2333 lavalink
 ```

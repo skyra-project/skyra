@@ -2,11 +2,19 @@ import { Provider, util } from 'klasa';
 import { MasterPool, r } from 'rethinkdb-ts';
 import { Queue } from 'paket-queue';
 
+class GetQueue extends Queue<string, unknown> {
+
+	protected createTimer() {
+		setTimeout(() => this.handleNextTick(), 5);
+	}
+
+}
+
 export default class extends Provider {
 
 	public db = r;
 	public pool: MasterPool | null = null;
-	private tableQueues = new Map<string, Queue<string, unknown>>();
+	private tableQueues = new Map<string, GetQueue>();
 
 	public async init() {
 		const options = util.mergeDefault({
@@ -107,7 +115,7 @@ export default class extends Provider {
 		const queue = this.tableQueues.get(table);
 		if (queue) return queue;
 
-		const newQueue = new Queue<string, unknown>(ids => this.getAll(table, ids), 10);
+		const newQueue = new GetQueue(ids => this.getAll(table, ids), 10);
 		this.tableQueues.set(table, newQueue);
 		return newQueue;
 	}

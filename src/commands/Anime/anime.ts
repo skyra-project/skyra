@@ -1,9 +1,11 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { stringify } from 'querystring';
+import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
-import { cutText, fetch, getColor, oneToTen } from '../../lib/util/util';
+import { cutText, fetch, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -22,54 +24,57 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(getColor(message) || 0xFFAB2D));
 
-		const url = new URL('https://kitsu.io/api/edge/anime');
-		url.searchParams.append('filter[text]', animeName);
+		const url = new URL(`https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`);
 
-		const { data: entries } = await fetch(url, 'json')
-			.catch(() => { throw message.language.tget('COMMAND_ANIME_QUERY_FAIL'); }) as Kitsu.Result<Kitsu.MangaAttributes>;
+		const { hits: entries } = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Algolia-API-Key': TOKENS.KITSU.KEY,
+				'X-Algolia-Application-Id': TOKENS.KITSU.ID
+			},
+			body: JSON.stringify(
+				{
+					params: stringify({
+						query: animeName,
+						facetFilters: ['kind:anime'],
+						hitsPerPage: 10
+					})
+				}
+			)
+		}, 'json')
+			.catch(() => { throw message.language.tget('COMMAND_ANIME_QUERY_FAIL'); }) as Kitsu.KitsuResult;
 
-		const list = entries.map(entry => {
-			if (entry.attributes.averageRating === null) entry.attributes.averageRating = this.extractAverage(entry);
-			return entry;
-		});
-
-		const display = this.buildDisplay(list, message);
+		const display = this.buildDisplay(entries, message);
 
 		await display.run(response, message.author.id);
 		return response;
 	}
 
-	private extractAverage(entry: Kitsu.Datum) {
-		let total = 0;
-		let max = 0;
-		for (const array of Object.entries(entry.attributes.ratingFrequencies)) {
-			const [key, value] = array.map(Number);
-			total += key * value;
-			max += value;
-		}
-
-		return total ? ((total / (max * 20)) * 100).toFixed(2) : '--.--';
-	}
-
-	private buildDisplay(entries: (Kitsu.Datum<Kitsu.MangaAttributes>)[], message: KlasaMessage) {
+	private buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
 		const display = new UserRichDisplay();
 
 		for (const entry of entries) {
-			const synopsis = cutText(entry.attributes.synopsis, 750);
-			const score = oneToTen(Math.ceil(Number(entry.attributes.averageRating) / 10))!;
-			const animeURL = `https://kitsu.io/anime/${entry.attributes.slug}`;
+			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
+			const score = `${entry.averageRating}%`;
+			const animeURL = `https://kitsu.io/anime/${entry.id}`;
 			const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as AnimeLanguage;
-			const type = entry.attributes.subtype;
-			const title = entry.attributes.titles.en || entry.attributes.titles.en_jp || Object.values(entry.attributes.titles)[0] || '--';
+			const type = entry.subtype;
+			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 
 			display.addPage(
 				new MessageEmbed()
-					.setColor(score.color)
-					.setAuthor(title, entry.attributes.posterImage.tiny, animeURL)
+					.setColor(getColor(message) || 0xFFAB2D)
+					.setTitle(title)
+					.setURL(animeURL)
 					.setDescription(message.language.tget('COMMAND_ANIME_OUTPUT_DESCRIPTION', entry, synopsis))
+					.setThumbnail(entry.posterImage.original)
 					.addField(titles.TYPE, message.language.tget('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
-					.addField(titles.SCORE, `**${entry.attributes.averageRating}** / 100 ${score.emoji}`, true)
-					.addField(titles.STATUS, message.language.tget('COMMAND_ANIME_OUTPUT_STATUS', entry))
+					.addField(titles.SCORE, score, true)
+					.addField(titles.EPISODES, entry.episodeCount ? entry.episodeCount : 'Still airing', true)
+					.addField(titles.EPISODE_LENGTH, message.language.duration(entry.episodeLength * 60 * 1000), true)
+					.addField(titles.AGE_RATING, entry.ageRating, true)
+					.addField(titles.FIRST_AIR_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
 					.addField(titles.WATCH_IT, `**[${title}](${animeURL})**`)
 					.setFooter('© kitsu.io')
 			);
@@ -77,13 +82,15 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-
 }
 
 interface AnimeLanguage {
 	TYPE: string;
 	SCORE: string;
-	STATUS: string;
+	EPISODES: string;
+	EPISODE_LENGTH: string;
+	AGE_RATING: string;
+	FIRST_AIR_DATE: string;
 	WATCH_IT: string;
 	READ_IT: string;
 }

@@ -62,13 +62,13 @@ export default class extends Monitor {
 		const lock = message.guild!.moderation.createLock();
 		await performAction();
 		if (createModerationLog) {
-			await message.guild!.moderation.new
-				.setModerator(this.client.user!.id)
-				.setUser(message.author!.id)
-				.setDuration(message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration))
-				.setReason('AttachmentFilter: Threshold Reached.')
-				.setType(type)
-				.create();
+			await message.guild!.moderation.create({
+				user_id: message.author.id,
+				moderator_id: this.client.user!.id,
+				type,
+				duration: message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration),
+				reason: 'AttachmentFilter: Threshold Reached.'
+			}).create();
 		}
 		lock();
 	}

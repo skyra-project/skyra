@@ -101,11 +101,12 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected sendModerationLog(message: KlasaMessage, type: ModerationTypeKeys) {
-		const moderationLog = message.guild!.moderation.new
-			.setModerator(this.client.user!.id)
-			.setUser(message.author!.id)
-			.setReason('Threshold Reached.')
-			.setType(type);
+		const moderationLog = message.guild!.moderation.create({
+			user_id: message.author.id,
+			moderator_id: this.client.user!.id,
+			type,
+			reason: 'Threshold Reached.'
+		});
 
 		const duration = message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null;
 		if (duration !== null) moderationLog.setDuration(duration);

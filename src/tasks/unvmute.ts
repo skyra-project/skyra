@@ -18,12 +18,12 @@ export default class extends Task {
 		if (member && member.voice.serverMute) await member.voice.setDeaf(false, `[AUTO] ${reason}`);
 
 		// Send the modlog
-		await guild!.moderation.new
-			.setModerator(this.client.user!.id)
-			.setUser(user)
-			.setType(ModerationTypeKeys.UnVoiceMute)
-			.setReason(member ? reason : `${reason}\n**Skyra**: But the member was away.`)
-			.create();
+		await guild.moderation.create({
+			user_id: user.id,
+			moderator_id: this.client.user!.id,
+			type: ModerationTypeKeys.UnVoiceMute,
+			reason: member ? reason : `${reason}\n**Skyra**: But the member was away.`
+		}).create();
 	}
 
 }

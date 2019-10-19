@@ -6,12 +6,12 @@ import { ModerationTypeKeys } from '../lib/util/constants';
 export default class extends Event {
 
 	public async run(guild: Guild, user: User) {
-		if (!guild!.available || !guild!.settings.get(GuildSettings.Events.BanAdd)) return;
-		await guild!.moderation.waitLock();
-		await guild!.moderation.new
-			.setType(ModerationTypeKeys.Ban)
-			.setUser(user)
-			.create();
+		if (!guild.available || !guild.settings.get(GuildSettings.Events.BanAdd)) return;
+		await guild.moderation.waitLock();
+		await guild.moderation.create({
+			user_id: user.id,
+			type: ModerationTypeKeys.Ban
+		}).create();
 	}
 
 }

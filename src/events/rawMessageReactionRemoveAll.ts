@@ -1,10 +1,7 @@
-import { Databases } from '../lib/types/constants/Constants';
 import { WSMessageReactionRemoveAll } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { Event, EventStore } from 'klasa';
-import { WriteResult } from 'rethinkdb-ts';
-import { StarboardMessageData } from '../lib/structures/StarboardMessage';
 import { DiscordAPIError } from 'discord.js';
 import { api } from '../lib/util/Models/Api';
 
@@ -21,24 +18,16 @@ export default class extends Event {
 
 		// Delete entry from starboard if it exists
 		try {
-			const results = await this.client.providers.default.db
-				.table(Databases.Starboard)
-				.get(`${data.channel_id}.${data.message_id}`)
-				.delete({ returnChanges: true })
-				.run() as WriteResult<StarboardMessageData>;
+			const results = await this.client.queries.deleteStarReturning(data.guild_id, data.message_id);
 
-			if (!results.changes || !results.deleted) return;
-
+			// Get channel
 			const channel = guild!.settings.get(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
-			for (const change of results.changes) {
-				const messageID = change.old_val ? change.old_val.starMessageID : null;
-				if (messageID) {
-					api(this.client).channels(channel).messages(messageID)
-						.delete({ reason: 'Starboard Management: Reactions Cleared' })
-						.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
-				}
+			if (results && results.star_message_id) {
+				await api(this.client).channels(channel).messages(results.star_message_id)
+					.delete({ reason: 'Starboard Management: Reactions Cleared' })
+					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 			}
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);

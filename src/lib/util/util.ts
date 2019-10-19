@@ -78,6 +78,10 @@ export function showSeconds(duration: number) {
 	return output;
 }
 
+export function isNullOrUndefined(value: unknown): value is null | undefined {
+	return value === null || value === undefined;
+}
+
 /**
  * Load an image by its path
  * @param path The path to the image to load
@@ -432,12 +436,13 @@ export async function mute(moderator: GuildMember, target: GuildMember, { reason
 	const { errors } = await target.guild!.settings.update(GuildSettings.StickyRoles, entry, stickyRolesIndex === -1 ? { arrayAction: 'add' } : { arrayIndex: stickyRolesIndex });
 	if (errors.length) throw errors[0];
 
-	const modlog = target.guild!.moderation.new
-		.setModerator(moderator.id)
-		.setUser(target.id)
-		.setType(ModerationTypeKeys.Mute)
-		.setReason(reason)
-		.setExtraData(roles);
+	const modlog = target.guild!.moderation.create({
+		user_id: target.id,
+		moderator_id: moderator.id,
+		type: ModerationTypeKeys.Mute,
+		reason,
+		extra_data: roles
+	});
 
 	if (duration) modlog.setDuration(duration);
 	return (await modlog.create())!;
@@ -458,12 +463,12 @@ export async function softban(guild: Guild, moderator: User, target: User, reaso
 	});
 	await guild!.members.unban(target.id, 'Softban.');
 
-	return (await guild!.moderation.new
-		.setModerator(moderator.id)
-		.setUser(target.id)
-		.setType(ModerationTypeKeys.Softban)
-		.setReason(reason)
-		.create())!;
+	return (await guild!.moderation.create({
+		user_id: target.id,
+		moderator_id: moderator.id,
+		type: ModerationTypeKeys.Softban,
+		reason
+	}).create())!;
 }
 
 /**

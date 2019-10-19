@@ -17,12 +17,12 @@ export default class extends Task {
 		// Unban the user and send the modlog
 		const banLog = await this._fetchBanLog(guild, userID);
 		if (banLog) await guild!.members.unban(userID, `[AUTO] ${reason}`);
-		await guild!.moderation.new
-			.setModerator(this.client.user!.id)
-			.setUser(userID)
-			.setType(ModerationTypeKeys.UnBan)
-			.setReason(banLog && banLog.reason ? `${reason}\nReason for ban: ${banLog.reason}` : reason)
-			.create();
+		await guild!.moderation.create({
+			user_id: userID,
+			moderator_id: this.client.user!.id,
+			type: ModerationTypeKeys.UnBan,
+			reason: banLog && banLog.reason ? `${reason}\nReason for ban: ${banLog.reason}` : reason
+		}).create();
 	}
 
 	public async _fetchBanLog(guild: KlasaGuild, userID: string) {

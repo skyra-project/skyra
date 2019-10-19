@@ -19,7 +19,7 @@ jobs:
     - name: yarn
       run: yarn --ignore-scripts
     - name: configuration
-      run: cp config.ts.example config.ts
+      run: cp config.example.ts config.ts
     - name: tsc
       uses: icrawl/action-tsc@v1
       env:

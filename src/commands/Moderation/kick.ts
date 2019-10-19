@@ -1,6 +1,5 @@
-import { User } from 'discord.js';
+import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { ModerationTypeKeys } from '../../lib/util/constants';
 
@@ -19,7 +18,7 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
+	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
 		if (!member.kickable) throw message.language.tget('COMMAND_KICK_NOT_KICKABLE');
 		await member.kick(reason);
 		return this.sendModlog(message, user, reason);

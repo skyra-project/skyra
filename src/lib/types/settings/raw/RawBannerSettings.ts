@@ -3,7 +3,7 @@ export interface RawBannerSettings {
 	group: string;
 	title: string;
 	author_id: string;
-	price: string;
+	price: number;
 }
 
 export const SQL_TABLE_SCHEMA = /* sql */`

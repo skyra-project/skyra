@@ -11,7 +11,8 @@
 		]
 	},
 	"include": [
-		"./src/**/*"
+		"./src/**/*",
+		"./database/**/*"
 	],
 	"exclude": [
 		"**/node_modules",

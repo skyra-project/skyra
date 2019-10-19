@@ -24,10 +24,7 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(getColor(message) || 0xFFAB2D));
 
-		const url = new URL(`https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`);
-
-
-		const { hits: entries } = await fetch(url, {
+		const { hits: entries } = await fetch(`https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

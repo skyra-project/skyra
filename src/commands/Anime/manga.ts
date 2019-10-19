@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 				{
 					params: stringify({
 						query: mangaName,
-						facetFilters: ['kind:anime'],
+						facetFilters: ['kind:manga'],
 						hitsPerPage: 10
 					})
 				}
@@ -66,7 +66,7 @@ export default class extends SkyraCommand {
 					.setTitle(title)
 					.setURL(mangaURL)
 					.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
-					.setImage(entry.posterImage.original)
+					.setThumbnail(entry.posterImage.original)
 					.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TITLES')[type.toUpperCase()] || type, true)
 					.addField(titles.SCORE, score, true)
 					.addField(titles.AGE_RATING, entry.ageRating ? entry.ageRating : 'None', true)

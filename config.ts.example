@@ -166,5 +166,9 @@ export const TOKENS = {
 	},
 	WEATHER_API: '',
 	WEEB_SH: '',
-	WOLFRAM: ''
+	WOLFRAM: '',
+	NINTENDO: {
+		ID: 'U3B6GR4UA3',
+		KEY: '9a20c93440cf63cf1a7008d75f7438bf'
+	}
 };

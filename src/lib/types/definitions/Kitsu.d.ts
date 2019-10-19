@@ -1,117 +1,63 @@
 export namespace Kitsu {
 
-	export interface Result<A extends Attributes> {
-		data: Datum<A>[];
-		meta: KitsuMeta;
-		links: KitsuLinks;
+	export interface KitsuResult {
+		exhaustiveNbHits: boolean;
+		hitsPerPage: number;
+		nbHits: number;
+		nbPages: number;
+		page: number;
+		params: string;
+		processingTimeMS: number;
+		query: string;
+		queryAfterRemoval: string;
+		hits: KitsuHit[];
 	}
 
-	export interface Datum<A extends Attributes = Attributes> {
-		id: string;
-		type: Type;
-		links: DatumLinks;
-		attributes: Attributes;
-		relationships: { [key: string]: Relationship };
-	}
-
-	export interface Attributes {
-		createdAt: Date;
-		updatedAt: Date;
-		slug: string;
-		synopsis: string;
-		coverImageTopOffset: number;
-		titles: Titles;
-		canonicalTitle: string;
+	export interface KitsuHit {
 		abbreviatedTitles: string[];
-		averageRating: string;
-		ratingFrequencies: { [key: string]: string };
-		userCount: number;
-		favoritesCount: number;
-		startDate: Date;
-		endDate: Date | null;
-		nextRelease: null | string;
-		popularityRank: number;
-		ratingRank: number;
-		ageRating: AgeRating;
-		ageRatingGuide: AgeRatingGuide;
-		subtype: string;
-		status: Status;
-		tba: null | string;
-		posterImage: PosterImage;
-		coverImage: CoverImage | null;
-	}
-
-	export interface AnimeAttributes extends Attributes {
-		episodeCount: number | null;
+		ageRating: 'PG' | 'G' | string;
+		averageRating: number;
+		canonicalTitle: string;
+		endDate: number;
+		episodeCount: number;
 		episodeLength: number;
+		favoritesCount: number;
+		id: number;
+		kind: 'anime' | string;
+		objectID: string;
+		season: 'spring' | 'summer' | 'autumn' | 'winter' | string;
+		seasonYear: number;
+		slug: string;
+		startDate: number;
+		subtype: 'TV' | 'movie' | 'special' | string;
+		synopsis: string;
 		totalLength: number;
-		youtubeVideoID: null | string;
-		showType: string;
-		nsfw: boolean;
+		userCount: number;
+		year: number;
+		posterImage: KitsuPosterImage;
+		titles: Titles;
+		_tags: string[];
 	}
 
-	export interface MangaAttributes extends Attributes {
-		chapterCount: number | null;
-		volumeCount: number | null;
-		serialization: null | string;
-		mangaType: string;
-	}
-
-	export enum AgeRating {
-		PG = 'PG',
-	}
-
-	export enum AgeRatingGuide {
-		Teens13OrOlder = 'Teens 13 or older',
-	}
-
-	export interface CoverImage {
-		tiny: string;
-		small: string;
-		large: string;
-		original: string;
-		meta: CoverImageMeta;
-	}
-
-	export interface CoverImageMeta {
-		dimensions: PurpleDimensions;
-	}
-
-	export interface PurpleDimensions {
-		tiny: Large;
-		small: Large;
-		large: Large;
-	}
-
-	export interface Large {
+	export interface KitsuPosterImageDimensions {
 		width: number | null;
 		height: number | null;
 	}
 
-	export interface PosterImage {
-		tiny: string;
-		small: string;
-		medium: string;
-		large: string;
+	export interface KitsuPosterImage {
+		tiny?: string;
+		small?: string;
+		medium?: string;
+		large?: string;
 		original: string;
-		meta: PosterImageMeta;
-	}
-
-	export interface PosterImageMeta {
-		dimensions: FluffyDimensions;
-	}
-
-	export interface FluffyDimensions {
-		tiny: Large;
-		small: Large;
-		medium: Large;
-		large: Large;
-	}
-
-	export enum Status {
-		Current = 'current',
-		Finished = 'finished',
-		Tba = 'tba'
+		meta: {
+			dimensions: {
+				large: KitsuPosterImageDimensions;
+				medium: KitsuPosterImageDimensions;
+				small: KitsuPosterImageDimensions;
+				tiny: KitsuPosterImageDimensions;
+			};
+		};
 	}
 
 	export interface Titles {
@@ -120,33 +66,4 @@ export namespace Kitsu {
 		en_us?: string;
 		ja_jp?: string;
 	}
-
-	export interface DatumLinks {
-		self: string;
-	}
-
-	export interface Relationship {
-		links: RelationshipLinks;
-	}
-
-	export interface RelationshipLinks {
-		self: string;
-		related: string;
-	}
-
-	export enum Type {
-		Anime = 'anime',
-		Manga = 'manga'
-	}
-
-	export interface KitsuLinks {
-		first: string;
-		next: string;
-		last: string;
-	}
-
-	export interface KitsuMeta {
-		count: number;
-	}
-
 }

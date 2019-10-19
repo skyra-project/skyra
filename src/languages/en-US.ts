@@ -1853,31 +1853,28 @@ export default class extends Language {
 		},
 		COMMAND_ANIME_QUERY_FAIL: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
 		COMMAND_ANIME_INVALID_CHOICE: `That's an invalid choice! Please try with another option.`,
-		COMMAND_ANIME_NO_CHOICE: 'You got me waiting... try again when you are decided!',
 		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-			`**English title:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'None'}`,
-			`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
+			`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
+			`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
+			`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
 			synopsis
-		].join('\n'),
-		COMMAND_ANIME_OUTPUT_STATUS: entry => [
-			`  ❯  Current status: **${entry.attributes.status}**`,
-			`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Finished: **${entry.attributes.endDate}**` : ''}`
 		].join('\n'),
 		COMMAND_ANIME_TITLES: {
 			TYPE: 'Type',
 			SCORE: 'Score',
-			STATUS: 'Status',
+			EPISODES: 'Episode(s)',
+			EPISODE_LENGTH: 'Episode length',
+			AGE_RATING: 'Age rating',
+			FIRST_AIR_DATE: 'First air date',
+			FIRST_PUBLISH_DATE: 'First publish date',
 			WATCH_IT: 'Watch it here:',
 			READ_IT: 'Read it here:'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-			`**English title:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'None'}`,
-			`**Japanese title:** ${entry.attributes.titles.ja_jp || 'None'}`,
+			`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
+			`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
+			`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
 			synopsis
-		].join('\n'),
-		COMMAND_MANGA_OUTPUT_STATUS: entry => [
-			`  ❯  Current status: **${entry.attributes.status}**`,
-			`    • Started: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Finished: **${entry.attributes.endDate}**` : ''}`
 		].join('\n'),
 		COMMAND_MANGA_TITLES: {
 			'MANGA': '📘 Manga',

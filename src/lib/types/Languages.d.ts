@@ -556,12 +556,9 @@ export interface LanguageKeys {
 	COMMAND_ANIME_TYPES: Record<string, string>;
 	COMMAND_ANIME_QUERY_FAIL: string;
 	COMMAND_ANIME_INVALID_CHOICE: string;
-	COMMAND_ANIME_NO_CHOICE: string;
-	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.Datum<Kitsu.Attributes>, synopsis: string) => string;
-	COMMAND_ANIME_OUTPUT_STATUS: (entry: Kitsu.Datum<Kitsu.Attributes>) => string;
+	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
 	COMMAND_ANIME_TITLES: Record<string, string>;
-	COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry: Kitsu.Datum<Kitsu.Attributes>, synopsis: string) => string;
-	COMMAND_MANGA_OUTPUT_STATUS: (entry: Kitsu.Datum<Kitsu.Attributes>) => string;
+	COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
 	COMMAND_MANGA_TITLES: Record<string, string>;
 	COMMAND_SUBSCRIBE_NO_ROLE: string;
 	COMMAND_SUBSCRIBE_SUCCESS: (role: string) => string;

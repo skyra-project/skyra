@@ -1831,31 +1831,28 @@ export default class extends Language {
 		},
 		COMMAND_ANIME_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		COMMAND_ANIME_INVALID_CHOICE: `¡Esa opción no es válida! Selecciona otra opción, por favor.`,
-		COMMAND_ANIME_NO_CHOICE: 'Me dejaste esperando... ¡prueba de nuevo cuando te hayas decidido!',
 		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-			`**Título inglés:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'Ninguno'}`,
-			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
+			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
+			`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
+			`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
 			synopsis
-		].join('\n'),
-		COMMAND_ANIME_OUTPUT_STATUS: entry => [
-			`  ❯  Estado actual: **${entry.attributes.status}**`,
-			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
 		].join('\n'),
 		COMMAND_ANIME_TITLES: {
 			TYPE: 'Tipo',
 			SCORE: 'Puntuación',
-			STATUS: 'Estado',
+			EPISODES: 'Episodio(s)',
+			EPISODE_LENGTH: 'Duración del episodio',
+			AGE_RATING: 'Clasificación de edad',
+			FIRST_AIR_DATE: 'Primera fecha de emisión',
+			FIRST_PUBLISH_DATE: 'Primera fecha de publicación',
 			WATCH_IT: 'Míralo Aquí:',
 			READ_IT: 'Léelo Aquí:'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-			`**Título inglés:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'Ninguno'}`,
-			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
+			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
+			`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
+			`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
 			synopsis
-		].join('\n'),
-		COMMAND_MANGA_OUTPUT_STATUS: entry => [
-			`  ❯  Estado actual: **${entry.attributes.status}**`,
-			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
 		].join('\n'),
 		COMMAND_MANGA_TITLES: {
 			'MANGA': '📘 Manga',

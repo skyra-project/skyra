@@ -7,8 +7,34 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Main",
-            "program": "${workspaceFolder}\\dist\\src\\main.js"
+            "name": "Main - Windows",
+            "args": [
+                "${workspaceFolder}\\dist\\src\\Skyra.js"
+            ],
+            "protocol": "inspector",
+            "internalConsoleOptions": "openOnSessionStart",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "preLaunchTask": "yarn: build",
+            "console": "internalConsole",
+            "outputCapture": "std",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Main - Linux",
+            "args": [
+                "${workspaceFolder}/dist/src/Skyra.js"
+            ],
+            "protocol": "inspector",
+            "internalConsoleOptions": "openOnSessionStart",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "preLaunchTask": "yarn: build",
+            "console": "internalConsole",
+            "outputCapture": "std",
         }
     ]
 }

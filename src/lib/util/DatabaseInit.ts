@@ -1,5 +1,7 @@
 import PostgresProvider from '../../providers/postgres';
 
+import { SQL_TABLE_SCHEMA as BannerSchema } from '../types/settings/raw/RawBannerSettings';
+import { SQL_TABLE_SCHEMA as CommandCounterSchema } from '../types/settings/raw/RawCommandCounterSettings';
 import { SQL_TABLE_SCHEMA as GiveawayTableSchema } from '../types/settings/raw/RawGiveawaySettings';
 import { SQL_TABLE_SCHEMA as MemberTableSchema } from '../types/settings/raw/RawMemberSettings';
 import { SQL_TABLE_SCHEMA as ModerationTableSchema } from '../types/settings/raw/RawModerationSettings';
@@ -11,7 +13,13 @@ export async function run(provider: PostgresProvider) {
 	if (initialized) return;
 	initialized = true;
 
-	const schemas = [GiveawayTableSchema, MemberTableSchema, ModerationTableSchema, StarboardTableSchema, UserTableSchema];
-	const queries = schemas.map(schema => provider.run(schema));
-	await Promise.all(queries);
+	await Promise.all([
+		BannerSchema,
+		CommandCounterSchema,
+		GiveawayTableSchema,
+		MemberTableSchema,
+		ModerationTableSchema,
+		StarboardTableSchema,
+		UserTableSchema
+	].map(schema => provider.run(schema)));
 }

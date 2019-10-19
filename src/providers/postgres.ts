@@ -21,7 +21,8 @@ export default class extends SQLProvider {
 		.add('float', { type: 'DOUBLE PRECISION' })
 		.add('uuid', { type: 'UUID' })
 		.add('any', { type: 'JSON', serializer: input => `'${JSON.stringify(input)}'::json` })
-		.add('json', { 'extends': 'any' });
+		.add('json', { 'extends': 'any' })
+		.add('permissionnode', { 'extends': 'any' });
 
 	public pgsql: Pool | null = null;
 	public dbconnection: PoolClient | null = null;

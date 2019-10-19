@@ -123,7 +123,7 @@ export class Leaderboard {
 		const store = this.guilds.get(guild)!;
 		let i = 0;
 		for (const entry of data) {
-			store.set(entry.id.split('.')[1], { name: null, points: entry.point_count, position: ++i });
+			store.set(entry.user_id.split('.')[1], { name: null, points: entry.point_count, position: ++i });
 		}
 
 		this._tempPromises.guilds.delete(guild);
@@ -157,7 +157,7 @@ export class Leaderboard {
 		this.users.clear();
 		let i = 0;
 		for (const entry of data) {
-			this.users.set(entry.id, { name: null, points: entry.point_count, position: ++i });
+			this.users.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
 		}
 
 		this._tempPromises.users = null;

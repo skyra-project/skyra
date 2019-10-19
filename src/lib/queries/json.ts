@@ -75,7 +75,7 @@ export class JsonCommonQuery implements CommonQuery {
 			.filter(value => value.point_count >= 25)
 			.sort((a, b) => a.point_count < b.point_count ? -1 : 1)
 			.slice(0, 25000)
-			.map(value => ({ id: value.id, point_count: value.point_count }) as LeaderboardEntry);
+			.map(value => ({ user_id: value.id, point_count: value.point_count }) as LeaderboardEntry);
 	}
 
 	public async fetchLeaderboardLocal(guildID: string) {
@@ -88,7 +88,7 @@ export class JsonCommonQuery implements CommonQuery {
 			.filter(value => value.point_count >= 25)
 			.sort((a, b) => a.point_count < b.point_count ? -1 : 1)
 			.slice(0, 5000)
-			.map(value => ({ id: value.user_id, point_count: value.point_count }) as LeaderboardEntry);
+			.map(value => ({ user_id: value.user_id, point_count: value.point_count }) as LeaderboardEntry);
 	}
 
 	public fetchMemberSettings(guildID: string, userID: string) {

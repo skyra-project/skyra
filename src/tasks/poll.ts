@@ -1,18 +1,15 @@
 import { DiscordAPIError } from 'discord.js';
 import { constants, Task, util } from 'klasa';
-import { Databases } from '../lib/types/constants/Constants';
+import { RawPollSettings } from '../commands/Tools/poll';
 const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {
 
-	public async run({ id }: { id: string }): Promise<void> {
-		const poll = await this.client.providers.default.get(Databases.Polls, id) as PollData;
-		if (!poll) return;
-
-		const guild = this.client.guilds.get(poll.guild);
+	public async run(poll: RawPollSettings & { id: string }) {
+		const guild = this.client.guilds.get(poll.guild_id);
 		if (!guild) return;
 
-		const user = await this.client.users.fetch(poll.author).catch(error => this._catchErrorUser(error));
+		const user = await this.client.users.fetch(poll.author_id).catch(error => this._catchErrorUser(error));
 		if (!user) return;
 
 		let content: string;
@@ -24,14 +21,14 @@ export default class extends Task {
 				const percentage = Math.round((votes[opt] / voted.length) * 100);
 				graph.push(`${opt.padEnd(maxLengthNames, ' ')} : [${'#'.repeat((percentage / 100) * 25).padEnd(25, ' ')}] (${percentage}%)`);
 			}
-			content = `Hey! Your poll __${title}__ with ID \`${id}\` just finished, check the results!${
-				util.codeBlock('http', [`Entry ID: '${id}' (${title})`, ...graph].join('\n'))}`;
+			content = `Hey! Your poll __${title}__ with ID \`${poll.id}\` just finished, check the results!${
+				util.codeBlock('http', [`Entry ID: '${poll.id}' (${title})`, ...graph].join('\n'))}`;
 		} else {
-			content = `Hey! Your poll __${title}__ with ID \`${id}\` just finished, but nobody voted :(`;
+			content = `Hey! Your poll __${title}__ with ID \`${poll.id}\` just finished, but nobody voted :(`;
 		}
 
 		await user.send(content).catch(error => this._catchErrorMessage(error));
-		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: { id } });
+		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: poll });
 	}
 
 	public _catchErrorUser(error: DiscordAPIError): void {
@@ -46,14 +43,4 @@ export default class extends Task {
 		throw error;
 	}
 
-}
-
-export interface PollData {
-	id: string;
-	author: string;
-	guild: string;
-	title: string;
-	options: string[];
-	votes: Record<string, number>;
-	voted: string[];
 }

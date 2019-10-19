@@ -91,7 +91,7 @@ export class PostgresCommonQuery implements CommonQuery {
 
 	public fetchLeaderboardGlobal() {
 		return this.provider.runAll(/* sql */`
-			SELECT id, point_count
+			SELECT "id" as "user_id", "point_count"
 			FROM users
 			WHERE
 				"point_count" >= 25
@@ -102,7 +102,7 @@ export class PostgresCommonQuery implements CommonQuery {
 
 	public fetchLeaderboardLocal(guildID: string) {
 		return this.provider.runAll(/* sql */`
-			SELECT id, point_count
+			SELECT "user_id", "point_count"
 			FROM members
 			WHERE
 				"guild_id" = $1 AND

@@ -34,7 +34,7 @@ export interface CommonQuery {
 }
 
 export interface LeaderboardEntry {
-	id: string;
+	user_id: string;
 	point_count: number;
 }
 

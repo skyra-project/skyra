@@ -2,7 +2,6 @@ import { CommandStore, KlasaMessage, Serializer, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
 import { Message } from 'discord.js';
-import { PollData } from '../../tasks/poll';
 
 const REG_USERS = Serializer.regex.userOrMember;
 const REG_TAG = /[^#]{2,32}#\d{4,4}/;
@@ -33,9 +32,9 @@ export default class extends SkyraCommand {
 		const [time] = await this.timePrompt.createPrompt(message).run(message.language.tget('COMMAND_POLL_TIME'));
 		const title = raw.join(' ');
 
-		let users: string[] | null = null;
-		let roles: string[] | null = null;
-		let options: string[] | null = null;
+		let users: string[] = [];
+		let roles: string[] = [];
+		let options: string[] = [];
 
 		if ('users' in message.flagArgs && message.flagArgs.users !== 'users') {
 			users = await this._resolveUsers(message, message.flagArgs.users.split(',').map(user => user.trim()));
@@ -48,16 +47,16 @@ export default class extends SkyraCommand {
 			roles = this._resolveRoles(message, message.flagArgs.roles.split(',').map(role => role.trim()));
 		} else if (!('no-prompt' in message.flagArgs)) {
 			const wants = await message.ask(message.language.tget('COMMAND_POLL_WANT_ROLES'));
-			if (wants) roles = await this.rolePrompt.createPrompt(message).run(message.language.tget('COMMAND_POLL_FIRSTROLE')).catch(() => null);
+			if (wants) roles = await this.rolePrompt.createPrompt(message).run(message.language.tget('COMMAND_POLL_FIRSTROLE')).catch(() => []);
 		}
 
 		options = 'options' in message.flagArgs && message.flagArgs.options !== 'options'
 			? message.flagArgs.options.split(',').map(option => option.trim().toLowerCase())
 			: ['yes', 'no'];
 
-		const data = {
-			author: message.author!.id,
-			guild: message.guild!.id,
+		const data: RawPollSettings = {
+			author_id: message.author!.id,
+			guild_id: message.guild!.id,
 			options,
 			roles,
 			timestamp: time.getTime(),
@@ -86,9 +85,9 @@ export default class extends SkyraCommand {
 		if (!id) throw message.language.tget('COMMAND_POLL_MISSING_ID');
 		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll') throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		const data = found.data as PollData;
-		if (data.guild !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		if (!(data.author === message.author!.id || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
+		const data = found.data as RawPollSettings;
+		if (data.guild_id !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
+		if (!(data.author_id === message.author!.id || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
 		await found.delete();
 		return message.sendLocale('COMMAND_POLL_REMOVE');
 	}
@@ -98,8 +97,8 @@ export default class extends SkyraCommand {
 		if (message.deletable) message.nuke().catch(error => this.client.emit(Events.ApiError, error));
 		const found = this.client.schedule.get(id);
 		if (!found || found.taskName !== 'poll') throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		const data = found.data as PollData;
-		if (data.guild !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
+		const data = found.data as RawPollSettings;
+		if (data.guild_id !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
 		if (data.voted.includes(message.author!.id)) throw message.language.tget('COMMAND_POLL_ALREADY_VOTED');
 		if (option) option = option.toLowerCase();
 		if (!option || !data.options.includes(option)) throw message.language.tget('COMMAND_POLL_INVALID_OPTION', data.options.map(opt => `\`${opt}\``).join(', '));
@@ -116,7 +115,7 @@ export default class extends SkyraCommand {
 		if (!(poll && (poll.taskName === 'poll' || poll.taskName === 'pollEnd') && poll.data.guild === message.guild!.id)) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
 		if (!(message.author!.id === poll.data.author || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
 
-		const { title, options, votes, voted } = poll.data as PollData;
+		const { title, options, votes, voted } = poll.data as RawPollSettings;
 		if (!voted.length) return message.sendLocale('COMMAND_POLL_EMPTY_VOTES');
 
 		const maxLengthNames = options.reduce((acc, opt) => opt.length > acc ? opt.length : acc, 0);
@@ -159,4 +158,16 @@ export default class extends SkyraCommand {
 		return (users && users.includes(message.author!.id)) || (roles && roles.some(role => message.member!.roles.has(role))) || Boolean(users);
 	}
 
+}
+
+export interface RawPollSettings {
+	author_id: string;
+	guild_id: string;
+	title: string;
+	timestamp: number;
+	options: string[];
+	roles: string[];
+	users: string[];
+	votes: Record<string, number>;
+	voted: string[];
 }

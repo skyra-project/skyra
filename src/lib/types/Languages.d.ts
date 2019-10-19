@@ -830,7 +830,7 @@ export interface LanguageKeys {
 	COMMAND_DIVORCE_CANCEL: string;
 	COMMAND_DIVORCE_DM: (user: string) => string;
 	COMMAND_DIVORCE_SUCCESS: (user: string) => string;
-	COMMAND_MARRY_WITH: (user: string) => string;
+	COMMAND_MARRY_WITH: (users: readonly string[]) => string;
 	COMMAND_MARRY_NOTTAKEN: string;
 	COMMAND_MARRY_SKYRA: string;
 	COMMAND_MARRY_SNEYRA: string;

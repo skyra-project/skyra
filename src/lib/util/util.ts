@@ -324,11 +324,7 @@ export function getImage(message: Message): string | null {
 }
 
 export function getColor(message: Message) {
-	const settingsColor = message.author!.settings.get(UserSettings.Color);
-	if (settingsColor) {
-		return parseInt(settingsColor, 16);
-	}
-	return (message.member && message.member.displayColor) || null;
+	return message.author.settings.get(UserSettings.Color) || (message.member && message.member.displayColor) || null;
 }
 
 /**

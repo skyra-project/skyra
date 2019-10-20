@@ -423,8 +423,7 @@ export default class extends Language {
 
 		COMMAND_ANIME_DESCRIPTION: 'Search your favourite anime by title with this command.',
 		COMMAND_ANIME_EXTENDED: builder.display('anime', {
-			extendedHelp: `This command queries Kitsu.io to show data for the anime you request. In a near future, this command
-				will allow you to navigate between the results so you can read the information of the anime.`,
+			extendedHelp: `This command queries Kitsu.io to show data for the anime you request.`,
 			explainedUsage: [
 				['query', `The anime's name you are looking for.`]
 			],
@@ -432,8 +431,7 @@ export default class extends Language {
 		}),
 		COMMAND_MANGA_DESCRIPTION: 'Search your favourite manga by title with this command.',
 		COMMAND_MANGA_EXTENDED: builder.display('manga', {
-			extendedHelp: `This command queries Kitsu.io to show data for the manga you request. In a near future, this command',
-				'will allow you to navigate between the results so you can read the information of the manga.`,
+			extendedHelp: 'This command queries Kitsu.io to show data for the manga you request.',
 			explainedUsage: [
 				['query', `The manga's name you are looking for.`]
 			],
@@ -1851,7 +1849,6 @@ export default class extends Language {
 			OVA: '📼 Original Video Animation',
 			SPECIAL: '🎴 Special'
 		},
-		COMMAND_ANIME_QUERY_FAIL: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
 		COMMAND_ANIME_INVALID_CHOICE: `That's an invalid choice! Please try with another option.`,
 		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
@@ -2515,6 +2512,14 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: emoji => `'${emoji}' is not a valid emoji.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,
+		COMMAND_ESHOP_DESCRIPTION: 'Request information for any American Nintendo Digital Store',
+		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {
+			extendedHelp: `This command queries Nintendo of America to show data for the game you request.`,
+			explainedUsage: [
+				['query', `The name of the game you're looking for.`]
+			],
+			examples: ['Breath of the Wild', 'Pokemon', 'Splatoon']
+		}),
 		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
 		COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',
 		COMMAND_POLL_WANT_USERS: 'Do you want to include a users whitelist?',
@@ -3103,6 +3108,7 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels} to ${role}...`,
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. ',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permissions applied for ${accepted} channels${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
+		SYSTEM_QUERY_FAIL: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
 
 		JUMPTO: 'Jump to Message ►',
 

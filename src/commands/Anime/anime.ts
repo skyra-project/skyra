@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 				}
 			)
 		}, 'json')
-			.catch(() => { throw message.language.tget('COMMAND_ANIME_QUERY_FAIL'); }) as Kitsu.KitsuResult;
+			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Kitsu.KitsuResult;
 
 		const display = this.buildDisplay(entries, message);
 

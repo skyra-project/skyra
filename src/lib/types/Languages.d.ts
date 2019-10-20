@@ -501,6 +501,8 @@ export interface LanguageKeys {
 	COMMAND_CONTENT_EXTENDED: string;
 	COMMAND_EMOJI_DESCRIPTION: string;
 	COMMAND_EMOJI_EXTENDED: string;
+	COMMAND_ESHOP_DESCRIPTION: string;
+	COMMAND_ESHOP_EXTENDED: string;
 	COMMAND_POLL_DESCRIPTION: string;
 	COMMAND_POLL_EXTENDED: string;
 	COMMAND_PRICE_DESCRIPTION: string;
@@ -554,7 +556,6 @@ export interface LanguageKeys {
 	COMMAND_WTICKLE_DESCRIPTION: string;
 	COMMAND_WTICKLE_EXTENDED: string;
 	COMMAND_ANIME_TYPES: Record<string, string>;
-	COMMAND_ANIME_QUERY_FAIL: string;
 	COMMAND_ANIME_INVALID_CHOICE: string;
 	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
 	COMMAND_ANIME_TITLES: Record<string, string>;
@@ -1046,6 +1047,7 @@ export interface LanguageKeys {
 	SYSTEM_FETCHBANS_FAIL: string;
 	SYSTEM_LOADING: () => string;
 	SYSTEM_ERROR: string;
+	SYSTEM_QUERY_FAIL: string;
 	SYSTEM_MESSAGE_NOT_FOUND: string;
 	SYSTEM_NOTENOUGH_PARAMETERS: string;
 	SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: string;

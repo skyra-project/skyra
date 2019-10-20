@@ -415,8 +415,7 @@ export default class extends Language {
 
 		COMMAND_ANIME_DESCRIPTION: 'Search your favourite anime by title with this command.',
 		COMMAND_ANIME_EXTENDED: builder.display('anime', {
-			extendedHelp: `This command queries Kitsu.io to show data for the anime you request. In a near future, this command
-				will allow you to navigate between the results so you can read the information of the anime.`,
+			extendedHelp: `This command queries Kitsu.io to show data for the anime you request.`,
 			explainedUsage: [
 				['query', `The anime's name you are looking for.`]
 			],
@@ -424,8 +423,7 @@ export default class extends Language {
 		}),
 		COMMAND_MANGA_DESCRIPTION: 'Search your favourite manga by title with this command.',
 		COMMAND_MANGA_EXTENDED: builder.display('manga', {
-			extendedHelp: `This command queries Kitsu.io to show data for the manga you request. In a near future, this command',
-				'will allow you to navigate between the results so you can read the information of the manga.`,
+			extendedHelp: `This command queries Kitsu.io to show data for the manga you request.`,
 			explainedUsage: [
 				['query', `The manga's name you are looking for.`]
 			],
@@ -1829,7 +1827,6 @@ export default class extends Language {
 			OVA: '📼 Animación de Vídeo Original',
 			SPECIAL: '🎴 Especial'
 		},
-		COMMAND_ANIME_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		COMMAND_ANIME_INVALID_CHOICE: `¡Esa opción no es válida! Selecciona otra opción, por favor.`,
 		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
@@ -2486,6 +2483,14 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: emoji => `'${emoji}' no es un emoji válido.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
+		COMMAND_ESHOP_DESCRIPTION: 'Solicite información para cualquier tienda digital estadounidense de Nintendo',
+		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {
+			extendedHelp: `Este comando consulta a Nintendo of America para mostrar los datos del juego que solicitas.`,
+			explainedUsage: [
+				['Solicitud', `El nombre del juego que estás buscando..`]
+			],
+			examples: ['Breath of the Wild', 'Pokemon', 'Splatoon']
+		}),
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
 		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',
@@ -2715,6 +2720,7 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
+		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 
 		JUMPTO: 'Salta al Mensaje ►',
 

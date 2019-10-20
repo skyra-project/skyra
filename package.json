@@ -53,7 +53,7 @@
     "klasa": "github:dirigeants/klasa#settings",
     "klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
     "klasa-decorators": "^0.0.1",
-    "lavalink": "^2.8.1",
+    "lavalink": "^2.8.2",
     "node-fetch": "^2.6.0",
     "paket-queue": "^0.1.0",
     "pg": "^7.12.1",

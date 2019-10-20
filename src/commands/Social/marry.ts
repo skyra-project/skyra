@@ -2,7 +2,7 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 
-const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes)$/i;
+const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';
 
 export default class extends SkyraCommand {
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public run(message: KlasaMessage, [user]: [KlasaUser | undefined]) {
 		return user ? this._marry(message, user) : this._display(message);
 	}
 

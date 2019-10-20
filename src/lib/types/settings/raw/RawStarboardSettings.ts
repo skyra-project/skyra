@@ -16,7 +16,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"channel_id"      VARCHAR(19) NOT NULL,
 		"guild_id"        VARCHAR(19) NOT NULL,
 		"star_message_id" VARCHAR(19),
-		"stars"           INT         NOT NULL,
+		"stars"           INTEGER     NOT NULL,
 		CONSTRAINT starboard_guild_message_idx PRIMARY KEY("guild_id", "message_id")
 	);
 `;

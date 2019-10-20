@@ -11,7 +11,7 @@ export interface RawGiveawaySettings {
 export const SQL_TABLE_SCHEMA = /* sql */`
 	CREATE TABLE IF NOT EXISTS giveaway (
 		"title"           VARCHAR(256)          NOT NULL,
-		"ends_at"         TIMESTAMP             NOT NULL,
+		"ends_at"         BIGINT                NOT NULL,
 		"guild_id"        VARCHAR(19)           NOT NULL,
 		"channel_id"      VARCHAR(19)           NOT NULL,
 		"message_id"      VARCHAR(19)           NOT NULL,

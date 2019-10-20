@@ -24,13 +24,13 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"badge_list"       VARCHAR(6)[]  DEFAULT '{}'::VARCHAR(6)[]  NOT NULL,
 		"color"            INTEGER       DEFAULT 0                   NOT NULL,
 		"marry"            VARCHAR(19)[] DEFAULT '{}'::VARCHAR(19)[] NOT NULL,
-		"money"            INTEGER       DEFAULT 0                   NOT NULL,
+		"money"            BIGINT        DEFAULT 0                   NOT NULL,
 		"point_count"      INTEGER       DEFAULT 0                   NOT NULL,
 		"reputation_count" INTEGER       DEFAULT 0                   NOT NULL,
 		"theme_level"      VARCHAR(6)    DEFAULT '1001'              NOT NULL,
 		"theme_profile"    VARCHAR(6)    DEFAULT '0001'              NOT NULL,
-		"next_daily"       TIMESTAMP,
-		"next_reputation"  TIMESTAMP,
+		"next_daily"       BIGINT,
+		"next_reputation"  BIGINT,
 		CONSTRAINT users_user_idx PRIMARY KEY ("id")
 	);
 `;

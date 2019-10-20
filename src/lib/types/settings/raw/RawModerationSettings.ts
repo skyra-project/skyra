@@ -16,8 +16,8 @@ export interface RawModerationSettings {
 export const SQL_TABLE_SCHEMA = /* sql */`
 	CREATE TABLE IF NOT EXISTS moderation (
 		"case_id"      INT           NOT NULL,
-		"created_at"   TIMESTAMP,
-		"duration"     INTERVAL,
+		"created_at"   BIGINT,
+		"duration"     INTEGER                CHECK(duration >= 0 AND duration <= 31536000000),
 		"extra_data"   JSON,
 		"guild_id"     VARCHAR(19)   NOT NULL,
 		"moderator_id" VARCHAR(19),

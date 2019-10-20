@@ -57,7 +57,6 @@
     "node-fetch": "^2.6.0",
     "paket-queue": "^0.1.0",
     "pg": "^7.12.1",
-    "typescript": "^3.6.4",
     "veza": "^1.1.0",
     "zlib-sync": "^0.1.5"
   },
@@ -72,6 +71,7 @@
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
     "eslint": "^6.5.1",
-    "eslint-config-bamboo": "^3.0.0"
+    "eslint-config-bamboo": "^3.0.0",
+    "typescript": "^3.7.0-dev.20191018"
   }
 }

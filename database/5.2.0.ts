@@ -5,12 +5,14 @@ import { join } from 'path';
 import { readJSON, outputJSON } from 'fs-nextra';
 import { RawBannerSettings } from '../src/lib/types/settings/raw/RawBannerSettings';
 import { RawGiveawaySettings } from '../src/lib/types/settings/raw/RawGiveawaySettings';
+import { RawGuildSettings } from '../src/lib/types/settings/raw/RawGuildSettings';
 import { RawMemberSettings } from '../src/lib/types/settings/raw/RawMemberSettings';
 import { RawModerationSettings } from '../src/lib/types/settings/raw/RawModerationSettings';
 import { RawStarboardSettings } from '../src/lib/types/settings/raw/RawStarboardSettings';
 import { RawUserSettings } from '../src/lib/types/settings/raw/RawUserSettings';
 import { RawCommandCounterSettings } from '../src/lib/types/settings/raw/RawCommandCounterSettings';
 import { AnyObject } from '../src/lib/types/util';
+import { RawClientSettings } from '../src/lib/types/settings/raw/RawClientSettings';
 
 async function main() {
 	await migrateAll();
@@ -74,31 +76,31 @@ async function migrateAll() {
 
 async function uploadAll(pgsql: Pool) {
 	console.time('Uploading banners');
-	await upload(pgsql, 'banners', 'banners');
+	await upload(pgsql, 'banners', 'banners').catch(error => console.error('banners', error));
 	console.timeEnd('Uploading banners');
-	// console.time('Uploading clientStorage');
-	// await upload(pgsql, 'clientStorage', 'clientStorage');
-	// console.timeEnd('Uploading clientStorage');
+	console.time('Uploading clientStorage');
+	await upload(pgsql, 'clientStorage', 'clientStorage').catch(error => console.error('clientStorage', error));
+	console.timeEnd('Uploading clientStorage');
 	console.time('Uploading commandCounter');
-	await upload(pgsql, 'commandCounter', 'command_counter');
+	await upload(pgsql, 'commandCounter', 'command_counter').catch(error => console.error('command_counter', error));
 	console.timeEnd('Uploading commandCounter');
 	console.time('Uploading giveaway');
-	await upload(pgsql, 'giveaway', 'giveaway');
+	await upload(pgsql, 'giveaway', 'giveaway').catch(error => console.error('giveaway', error));
 	console.timeEnd('Uploading giveaway');
-	// console.time('Uploading guilds');
-	// await upload(pgsql, 'guilds', 'guilds');
-	// console.timeEnd('Uploading guilds');
+	console.time('Uploading guilds');
+	await upload(pgsql, 'guilds', 'guilds').catch(error => console.error('guilds', error));
+	console.timeEnd('Uploading guilds');
 	console.time('Uploading members');
-	await upload(pgsql, 'members', 'members');
+	await upload(pgsql, 'members', 'members').catch(error => console.error('members', error));
 	console.timeEnd('Uploading members');
 	console.time('Uploading moderation');
-	await upload(pgsql, 'moderation', 'moderation');
+	await upload(pgsql, 'moderation', 'moderation').catch(error => console.error('moderation', error));
 	console.timeEnd('Uploading moderation');
 	console.time('Uploading starboard');
-	await upload(pgsql, 'starboard', 'starboard');
+	await upload(pgsql, 'starboard', 'starboard').catch(error => console.error('starboard', error));
 	console.timeEnd('Uploading starboard');
 	console.time('Uploading users');
-	await upload(pgsql, 'users', 'users');
+	await upload(pgsql, 'users', 'users').catch(error => console.error('users', error));
 	console.timeEnd('Uploading users');
 }
 
@@ -124,19 +126,19 @@ async function migrateBanners() {
 }
 
 async function migrateClientStorage() {
-	const entries = await readJSON(join(rootData, 'clientStorage.json')) as Partial<ClientStorage>[];
-	const transformed: ClientStorage[] = [];
+	const entries = await readJSON(join(rootData, 'clientStorage.json')) as ClientStorage[];
+	const transformed: RawClientSettings[] = [];
 
 	for (const entry of entries) {
 		transformed.push({
-			boosts: {
-				guilds: (entry.boosts && entry.boosts.guilds) || [],
-				users: (entry.boosts && entry.boosts.users) || []
-			},
 			commandUses: entry.commandUses || 0,
 			guildBlacklist: entry.guildBlacklist || [],
 			userBlacklist: entry.userBlacklist || [],
-			schedules: entry.schedules || []
+			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+			// @ts-ignore 2339
+			schedules: (entry.schedules || []).map(schedule => typeof schedule.time === 'number' ? schedule : ({ ...schedule, time: schedule.time.epoch_time * 1000 })),
+			boosts_guilds: entry.boosts?.guilds || [],
+			boosts_users: entry.boosts?.users || []
 		});
 	}
 
@@ -177,7 +179,109 @@ async function migrateGiveaway() {
 }
 
 async function migrateGuilds() {
-	const transformed = await readJSON(join(rootData, 'guilds.json'));
+	const entries = await readJSON(join(rootData, 'guilds.json')) as Guild[];
+	const transformed: RawGuildSettings[] = [];
+
+	for (const entry of entries) {
+		transformed.push({
+			'channels.announcements': entry.channels?.announcements || null,
+			'channels.farewell': entry.channels?.farewell || null,
+			'channels.greeting': entry.channels?.greeting || null,
+			'channels.image-logs': entry.channels?.['image-logs'] || null,
+			'channels.member-logs': entry.channels?.['member-logs'] || null,
+			'channels.message-logs': entry.channels?.['message-logs'] || null,
+			'channels.moderation-logs': entry.channels?.['moderation-logs'] || null,
+			'channels.nsfw-message-logs': entry.channels?.['nsfw-message-logs'] || null,
+			'channels.roles': entry.channels?.roles || null,
+			'channels.spam': entry.channels?.spam || null,
+			'command-autodelete': entry['command-autodelete'] || [],
+			'events.banAdd': entry.events?.banAdd || false,
+			'events.banRemove': entry.events?.banRemove || false,
+			'events.memberAdd': entry.events?.memberAdd || false,
+			'events.memberRemove': entry.events?.memberRemove || false,
+			'events.messageDelete': entry.events?.messageDelete || false,
+			'events.messageEdit': entry.events?.messageEdit || false,
+			'messages.farewell': entry.messages?.farewell || null,
+			'messages.greeting': entry.messages?.greeting || null,
+			'messages.ignoreChannels': entry.messages?.ignoreChannels || [],
+			'messages.join-dm': entry.messages?.['join-dm'] || null,
+			'messages.warnings': entry.messages?.warnings || false,
+			'no-mention-spam.alerts': entry['no-mention-spam']?.alerts || false,
+			'no-mention-spam.enabled': entry['no-mention-spam']?.enabled || false,
+			'no-mention-spam.mentionsAllowed': entry['no-mention-spam']?.mentionsAllowed || 20,
+			'no-mention-spam.timePeriod': entry['no-mention-spam']?.timePeriod || 8,
+			'permissions.roles': entry.permissions?.roles || [],
+			'permissions.users': entry.permissions?.users || [],
+			'roles.admin': entry.roles?.admin || null,
+			'roles.auto': entry.roles?.auto || [],
+			'roles.dj': entry.roles?.dj || null,
+			'roles.initial': entry.roles?.initial || null,
+			'roles.messageReaction': entry.roles?.messageReaction || null,
+			'roles.moderator': entry.roles?.moderator || null,
+			'roles.muted': entry.roles?.muted || null,
+			'roles.public': entry.roles?.public || [],
+			'roles.reactions': entry.roles?.reactions || [],
+			'roles.removeInitial': entry.roles?.removeInitial || false,
+			'roles.staff': entry.roles?.staff || null,
+			'roles.subscriber': entry.roles?.subscriber || null,
+			'roles.uniqueRoleSets': entry.roles?.uniqueRoleSets || [],
+			'selfmod.attachment': entry.selfmod?.attachment || false,
+			'selfmod.attachmentAction': entry.selfmod?.attachmentAction || 0,
+			'selfmod.attachmentDuration': entry.selfmod?.attachmentDuration || 20000,
+			'selfmod.attachmentMaximum': entry.selfmod?.attachmentMaximum || 20,
+			'selfmod.attachmentPunishmentDuration': entry.selfmod?.attachmentPunishmentDuration || null,
+			'selfmod.capitals.enabled': entry.selfmod?.capitals?.enabled || false,
+			'selfmod.capitals.hardAction': entry.selfmod?.capitals?.hardAction || 0,
+			'selfmod.capitals.hardActionDuration': entry.selfmod?.capitals?.hardActionDuration || null,
+			'selfmod.capitals.maximum': entry.selfmod?.capitals?.maximum || 50,
+			'selfmod.capitals.minimum': entry.selfmod?.capitals?.minimum || 15,
+			'selfmod.capitals.softAction': entry.selfmod?.capitals?.softAction || 0,
+			'selfmod.capitals.thresholdDuration': entry.selfmod?.capitals?.thresholdDuration || 60000,
+			'selfmod.capitals.thresholdMaximum': entry.selfmod?.capitals?.thresholdMaximum || 10,
+			'selfmod.filter.enabled': entry.selfmod?.filter?.enabled || false,
+			'selfmod.filter.hardAction': entry.selfmod?.filter?.hardAction || 0,
+			'selfmod.filter.hardActionDuration': entry.selfmod?.filter?.hardActionDuration || null,
+			'selfmod.filter.raw': entry.selfmod?.filter?.raw || [],
+			'selfmod.filter.softAction': entry.selfmod?.filter?.softAction || 0,
+			'selfmod.filter.thresholdDuration': entry.selfmod?.filter?.thresholdDuration || 60000,
+			'selfmod.filter.thresholdMaximum': entry.selfmod?.filter?.thresholdMaximum || 10,
+			'selfmod.ignoreChannels': entry.selfmod?.ignoreChannels || [],
+			'selfmod.invites.enabled': entry.selfmod?.invites?.enabled || false,
+			'selfmod.invites.hardAction': entry.selfmod?.invites?.hardAction || 0,
+			'selfmod.invites.hardActionDuration': entry.selfmod?.invites?.hardActionDuration || null,
+			'selfmod.invites.softAction': entry.selfmod?.invites?.softAction || 0,
+			'selfmod.invites.thresholdDuration': entry.selfmod?.invites?.thresholdDuration || 60000,
+			'selfmod.invites.thresholdMaximum': entry.selfmod?.invites?.thresholdMaximum || 10,
+			'selfmod.newlines.enabled': entry.selfmod?.newlines?.enabled || false,
+			'selfmod.newlines.hardAction': entry.selfmod?.newlines?.hardAction || 0,
+			'selfmod.newlines.hardActionDuration': entry.selfmod?.newlines?.hardActionDuration || null,
+			'selfmod.newlines.maximum': entry.selfmod?.newlines?.maximum || 20,
+			'selfmod.newlines.softAction': entry.selfmod?.newlines?.softAction || 0,
+			'selfmod.newlines.thresholdDuration': entry.selfmod?.newlines?.thresholdDuration || 60000,
+			'selfmod.newlines.thresholdMaximum': entry.selfmod?.newlines?.thresholdMaximum || 10,
+			'selfmod.raid': entry.selfmod?.raid || false,
+			'selfmod.raidthreshold': entry.selfmod?.raidthreshold || 10,
+			'social.achieve': entry.social?.achieve || false,
+			'social.achieveMessage': entry.social?.achieveMessage || null,
+			'social.ignoreChannels': entry.social?.ignoreChannels || [],
+			'starboard.channel': entry.starboard?.channel || null,
+			'starboard.emoji': entry.starboard?.emoji || '%E2%AD%90',
+			'starboard.ignoreChannels': entry.starboard?.ignoreChannels || [],
+			'starboard.minimum': entry.starboard?.minimum || 1,
+			'trigger.alias': entry.trigger?.alias || [],
+			'trigger.includes': entry.trigger?.includes || [],
+			'commandUses': entry.commandUses || 0,
+			'disableNaturalPrefix': entry.disableNaturalPrefix || false,
+			'disabledChannels': entry.disabledChannels || [],
+			'disabledCommands': entry.disabledCommands || [],
+			'disabledCommandsChannels': entry.disabledCommandsChannels || [],
+			'language': entry.language || 'en-US',
+			'prefix': entry.prefix || 's!',
+			'stickyRoles': entry.stickyRoles || [],
+			'tags': entry.tags || []
+		});
+	}
+
 	await outputJSON(join(rootData, 'guilds.new.json'), transformed);
 }
 
@@ -293,6 +397,7 @@ async function upload(pgsql: Pool, name: string, databaseName: string) {
 	if (data.length === 0) return;
 
 	const keys = Object.keys(data[0]);
+	console.log(`Uploading ${name} as ${databaseName} with ${keys.length} rows.`);
 	const stringifiedData = JSON.stringify(data).replace(/'/g, "''");
 	await pgsql.query(/* sql */`
 		WITH data_json (entries) as (
@@ -323,13 +428,139 @@ interface Banner {
 }
 
 interface ClientStorage {
-	commandUses: number;
-	userBlacklist: readonly string[];
-	guildBlacklist: readonly string[];
-	schedules: readonly object[];
-	boosts: {
-		guilds: readonly string[];
-		users: readonly string[];
+	commandUses?: number;
+	userBlacklist?: readonly string[];
+	guildBlacklist?: readonly string[];
+	schedules?: readonly object[];
+	boosts?: {
+		guilds?: readonly string[];
+		users?: readonly string[];
+	};
+}
+
+interface Guild {
+	prefix?: string;
+	language?: string;
+	disableNaturalPrefix?: boolean;
+	disabledCommands?: string[];
+	commandUses?: number;
+	tags?: object[];
+	permissions?: {
+		users?: object[];
+		roles?: object[];
+	};
+	channels?: {
+		announcements?: string | null;
+		greeting?: string | null;
+		farewell?: string | null;
+		'member-logs'?: string | null;
+		'message-logs'?: string | null;
+		'moderation-logs'?: string | null;
+		'nsfw-message-logs'?: string | null;
+		'image-logs'?: string | null;
+		roles?: string | string;
+		spam?: string | null;
+	};
+	'command-autodelete'?: object[];
+	disabledChannels?: string[];
+	disabledCommandsChannels?: object[];
+	events?: {
+		banAdd?: boolean;
+		banRemove?: boolean;
+		memberAdd?: boolean;
+		memberRemove?: boolean;
+		messageDelete?: boolean;
+		messageEdit?: boolean;
+	};
+	messages?: {
+		farewell?: string | null;
+		greeting?: string | null;
+		'join-dm'?: string | null;
+		warnings?: boolean;
+		ignoreChannels?: string[];
+	};
+	stickyRoles?: object[];
+	roles?: {
+		admin?: string | null;
+		auto?: object[];
+		initial?: string | null;
+		messageReaction?: string | null;
+		moderator?: string | null;
+		muted?: string | null;
+		public?: string[];
+		reactions?: object[];
+		removeInitial?: boolean;
+		staff?: string | null;
+		dj?: string | null;
+		subscriber?: string;
+		uniqueRoleSets?: object[];
+	};
+	selfmod?: {
+		attachment?: boolean;
+		attachmentMaximum?: number;
+		attachmentDuration?: number;
+		attachmentAction?: number;
+		attachmentPunishmentDuration?: number | null;
+		capitals?: {
+			enabled?: boolean;
+			minimum?: number;
+			maximum?: number;
+			softAction?: number;
+			hardAction?: number;
+			hardActionDuration?: null;
+			thresholdMaximum?: number;
+			thresholdDuration?: number;
+		};
+		newlines?: {
+			enabled?: boolean;
+			maximum?: number;
+			softAction?: number;
+			hardAction?: number;
+			hardActionDuration?: null;
+			thresholdMaximum?: number;
+			thresholdDuration?: number;
+		};
+		invites?: {
+			enabled?: boolean;
+			softAction?: number;
+			hardAction?: number;
+			hardActionDuration?: null;
+			thresholdMaximum?: number;
+			thresholdDuration?: number;
+		};
+		filter?: {
+			enabled?: boolean;
+			softAction?: number;
+			hardAction?: number;
+			hardActionDuration?: null;
+			thresholdMaximum?: number;
+			thresholdDuration?: number;
+			raw?: string[];
+		};
+		raid?: boolean;
+		raidthreshold?: number;
+		ignoreChannels?: string[];
+	};
+	'no-mention-spam'?: {
+		enabled?: boolean;
+		alerts?: boolean;
+		mentionsAllowed?: number;
+		timePeriod?: number;
+	};
+	social?: {
+		achieve?: boolean;
+		achieveMessage?: string | null;
+		ignoreChannels?: string[];
+	};
+	starboard?: {
+		channel?: string | null;
+		emoji?: string;
+		ignoreChannels?: string[];
+		minimum?: number;
+	};
+	trigger?: {
+		alias?: object[];
+		includes?: object[];
 	};
 }
 
@@ -386,5 +617,5 @@ interface User {
 	color?: string;
 	themeProfile?: string;
 	commandUses?: number;
-	badgeSet?: any[];
+	badgeSet?: string[];
 }

@@ -13,18 +13,16 @@ import { Databases } from './types/constants/Constants';
 // Import all structures
 import { GiveawayManager } from './structures/GiveawayManager';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
-import { MemberGateway } from './structures/MemberGateway';
 
 // Import all utils
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT } from '../../config';
+import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT, DEV_PGSQL } from '../../config';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import { enumerable } from './util/util';
 
 // Import all extensions and schemas
-import './extensions/SkyraGuildMember';
 import './extensions/SkyraTextChannel';
 import './extensions/SkyraGuild';
 import './schemas/Clients';
@@ -34,6 +32,9 @@ import './schemas/Users';
 // Import setup files
 import './setup/PermissionsLevels';
 import './setup/Canvas';
+import { CommonQuery } from './queries/common';
+import { PostgresCommonQuery } from './queries/postgres';
+import { JsonCommonQuery } from './queries/json';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -65,6 +66,11 @@ export class SkyraClient extends KlasaClient {
 	 * The webhook to use for the error event
 	 */
 	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
+
+	/**
+	 * The common queries for the database
+	 */
+	public queries: CommonQuery = DEV_PGSQL ? new PostgresCommonQuery(this) : new JsonCommonQuery(this);
 
 	public fsWatcher: FSWatcher | null = null;
 
@@ -101,14 +107,11 @@ export class SkyraClient extends KlasaClient {
 	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));
 
-		const { members = {} } = (this.options.settings.gateways || {});
-		members.schema = 'schema' in members ? members.schema : SkyraClient.defaultMemberSchema;
 		this.gateways
-			.register(new MemberGateway(this, Databases.Members, members))
+			.register(new GatewayStorage(this, Databases.Members))
 			.register(new GatewayStorage(this, Databases.Banners))
 			.register(new GatewayStorage(this, Databases.Giveaway))
 			.register(new GatewayStorage(this, Databases.Moderation))
-			.register(new GatewayStorage(this, Databases.Polls))
 			.register(new GatewayStorage(this, Databases.Starboard))
 			.register(new GatewayStorage(this, Databases.CommandCounter));
 

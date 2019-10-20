@@ -44,8 +44,8 @@ export default class extends SkyraCommand {
 		});
 
 		await modlog.edit({
-			[ModerationSchemaKeys.Duration]: offset,
-			[ModerationSchemaKeys.Moderator]: message.author!.id
+			duration: offset,
+			moderator_id: message.author!.id
 		});
 		await this.updateModlog(message, modlog);
 
@@ -57,8 +57,8 @@ export default class extends SkyraCommand {
 		await task.delete();
 
 		await modcase.edit({
-			[ModerationSchemaKeys.Duration]: null,
-			[ModerationSchemaKeys.Moderator]: message.author!.id
+			duration: null,
+			moderator_id: message.author!.id
 		});
 		await this.updateModlog(message, modcase);
 

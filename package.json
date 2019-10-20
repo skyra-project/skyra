@@ -40,6 +40,8 @@
     "url": "https://github.com/kyranet/Skyra/issues"
   },
   "dependencies": {
+    "@klasa/querybuilder": "^0.0.1",
+    "@klasa/utils": "^0.0.1",
     "canvas": "^2.6.0",
     "canvas-constructor": "^3.1.0",
     "chokidar": "^3.2.2",
@@ -54,8 +56,7 @@
     "lavalink": "^2.8.1",
     "node-fetch": "^2.6.0",
     "paket-queue": "^0.1.0",
-    "rethinkdb-ts": "^2.4.0-rc.16",
-    "typescript": "^3.6.4",
+    "pg": "^7.12.1",
     "veza": "^1.1.0",
     "zlib-sync": "^0.1.5"
   },
@@ -65,10 +66,12 @@
     "@types/diff": "^4.0.2",
     "@types/node": "^12.11.1",
     "@types/node-fetch": "^2.5.2",
+    "@types/pg": "^7.11.2",
     "@types/ws": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
     "eslint": "^6.5.1",
-    "eslint-config-bamboo": "^3.0.0"
+    "eslint-config-bamboo": "^3.0.0",
+    "typescript": "^3.7.0-dev.20191018"
   }
 }

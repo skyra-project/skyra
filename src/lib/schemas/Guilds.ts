@@ -93,8 +93,8 @@ export default Client.defaultGuildSchema
 	.add('no-mention-spam', folder => folder
 		.add('enabled', 'Boolean', { 'default': false })
 		.add('alerts', 'Boolean', { 'default': false })
-		.add('mentionsAllowed', 'Integer', { 'default': 20 })
-		.add('timePeriod', 'Integer', { 'default': 8 }))
+		.add('mentionsAllowed', 'Integer', { 'default': 20, 'min': 0 })
+		.add('timePeriod', 'Integer', { 'default': 8, 'min': 0 }))
 	.add('social', folder => folder
 		.add('achieve', 'Boolean', { 'default': false })
 		.add('achieveMessage', 'String')
@@ -103,7 +103,7 @@ export default Client.defaultGuildSchema
 		.add('channel', 'TextChannel')
 		.add('emoji', 'String', { 'default': '%E2%AD%90', 'configurable': false })
 		.add('ignoreChannels', 'TextChannel', { array: true })
-		.add('minimum', 'Integer', { 'default': 1, 'min': 1, 'max': 20 }))
+		.add('minimum', 'Integer', { 'default': 1, 'min': 1 }))
 	.add('trigger', folder => folder
 		.add('alias', 'any', { array: true, configurable: false })
 		.add('includes', 'any', { array: true, configurable: false }));

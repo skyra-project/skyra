@@ -23,11 +23,11 @@ export default class extends SkyraCommand {
 		if (offset < 9500) throw message.language.tget('GIVEAWAY_TIME');
 		if (offset > YEAR) throw message.language.tget('GIVEAWAY_TIME_TOO_LONG');
 		await this.client.giveaways.create({
-			channelID: message.channel.id,
-			endsAt: time.getTime() + 500,
-			guildID: message.guild!.id,
+			channel_id: message.channel.id,
+			ends_at: time.getTime() + 500,
+			guild_id: message.guild!.id,
 			minimum: 1,
-			minimumWinners: 1,
+			minimum_winners: 1,
 			title
 		});
 	}

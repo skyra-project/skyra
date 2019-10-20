@@ -1,6 +1,5 @@
-import { User } from 'discord.js';
+import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEntry';
 import { ModerationTypeKeys } from '../../lib/util/constants';
@@ -32,7 +31,7 @@ export default class extends ModerationCommand {
 		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
 	}
 
-	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember | null, reason: string | null, modlog: ModerationManagerEntry) {
+	public async handle(message: KlasaMessage, user: User, _: GuildMember | null, reason: string | null, modlog: ModerationManagerEntry) {
 		// Appeal the modlog and send a log to the moderation log channel
 		await modlog.appeal();
 		return this.sendModlog(message, user, reason);

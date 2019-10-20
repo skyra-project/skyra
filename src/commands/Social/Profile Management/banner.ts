@@ -7,6 +7,7 @@ import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { UserSettings } from '../../../lib/types/settings/UserSettings';
 import { EMOJIS } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
+import { RawBannerSettings } from '../../../lib/types/settings/raw/RawBannerSettings';
 
 const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 
@@ -88,24 +89,22 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		const table = await this.client.providers.default.getAll(Databases.Banners) as Array<BannerList>;
+		const banners = await this.client.providers.default.getAll(Databases.Banners) as RawBannerSettings[];
 		const display = new UserRichDisplay(new MessageEmbed().setColor(0xFFAB40));
-		for (const list of table) {
-			for (const banner of list.banners) {
-				this.banners.set(banner.id, {
-					author: banner.author,
-					authorName: null,
-					id: banner.id,
-					list: list.id,
-					price: banner.price,
-					title: banner.title
-				});
+		for (const banner of banners) {
+			this.banners.set(banner.id, {
+				author: banner.author_id,
+				authorName: null,
+				id: banner.id,
+				group: banner.group,
+				price: banner.price,
+				title: banner.title
+			});
 
-				display.addPage((template: MessageEmbed) => template
-					.setImage(`${CDN_URL}${banner.id}.png`)
-					.setTitle(banner.title)
-					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));
-			}
+			display.addPage((template: MessageEmbed) => template
+				.setImage(`${CDN_URL}${banner.id}.png`)
+				.setTitle(banner.title)
+				.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));
 		}
 
 		this.display = display;
@@ -155,24 +154,11 @@ export default class extends SkyraCommand {
 
 }
 
-interface BannerList {
-	banners: Array<BannerEntry>;
-	id: string;
-}
-
-interface BannerEntry {
-	author: string;
-	id: string;
-	price: number;
-	resAuthor: string;
-	title: string;
-}
-
 interface BannerCache {
 	author: string;
 	authorName: null;
 	id: string;
-	list: string;
+	group: string;
 	price: number;
 	title: string;
 }

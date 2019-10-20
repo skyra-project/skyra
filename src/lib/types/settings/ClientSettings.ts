@@ -9,8 +9,8 @@ export namespace ClientSettings {
 	export const Schedules = T<readonly RawScheduledTask[]>('schedules');
 
 	export namespace Boosts {
-		export const Guilds = T<readonly string[]>('boosts.guilds');
-		export const Users = T<readonly string[]>('boosts.users');
+		export const Guilds = T<readonly string[]>('boosts_guilds');
+		export const Users = T<readonly string[]>('boosts_users');
 	}
 
 }

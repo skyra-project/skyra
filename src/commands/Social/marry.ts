@@ -27,10 +27,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async _display(message: KlasaMessage) {
-		const marry = message.author!.settings.get(UserSettings.Marry);
-		if (!marry) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
-		const username = await this.client.fetchUsername(marry);
-		return message.sendLocale('COMMAND_MARRY_WITH', [username || `<@${marry}>`]);
+		const users = message.author!.settings.get(UserSettings.Marry);
+		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
+
+		const usernames = await Promise.all(users.map(user => this.client.fetchUsername(user)));
+		return message.sendLocale('COMMAND_MARRY_WITH', [usernames]);
 	}
 
 	public async _marry(message: KlasaMessage, user: KlasaUser) {
@@ -47,8 +48,8 @@ export default class extends SkyraCommand {
 		if (user.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_TAKEN');
 
 		// Get a message from the user.
-		await message.sendLocale('COMMAND_MARRY_PETITION', [message.author!, user]);
-		const messages = await message.channel.awaitMessages(msg => msg.author!.id === user.id, { time: 60000, max: 1 });
+		await message.sendLocale('COMMAND_MARRY_PETITION', [message.author, user]);
+		const messages = await message.channel.awaitMessages(msg => msg.author.id === user.id, { time: 60000, max: 1 });
 		if (!messages.size) return message.sendLocale('COMMAND_MARRY_NOREPLY');
 
 		const response = messages.first()!;
@@ -63,7 +64,7 @@ export default class extends SkyraCommand {
 			user.settings.update(UserSettings.Marry, message.author)
 		]);
 
-		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [message.author!, user]);
+		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [message.author, user]);
 	}
 
 }

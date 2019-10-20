@@ -13,13 +13,14 @@ export default class extends Event {
 		await message.sendLocale('MONITOR_NMS_MESSAGE', [message.author!]).catch(error => this.client.emit(Events.ApiError, error));
 		message.guild!.security.nms.delete(message.author!.id);
 
+		const reason = message.language.tget('MONITOR_NMS_MODLOG', message.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed));
 		try {
-			await message.guild!.moderation.new
-				.setModerator(this.client.user!)
-				.setUser(message.author!)
-				.setType(ModerationTypeKeys.Ban)
-				.setReason(message.language.tget('MONITOR_NMS_MODLOG', message.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed)))
-				.create();
+			await message.guild!.moderation.create({
+				user_id: message.author.id,
+				moderator_id: this.client.user!.id,
+				type: ModerationTypeKeys.Ban,
+				reason
+			}).create();
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 		} finally {

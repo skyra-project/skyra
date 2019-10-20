@@ -3,7 +3,6 @@ import { Task } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
 import { removeMute } from '../lib/util/util';
-import { SkyraGuildMember } from '../lib/extensions/SkyraGuildMember';
 const { FLAGS } = Permissions;
 
 export default class extends Task {
@@ -37,15 +36,15 @@ export default class extends Task {
 		}
 
 		// Send the modlog
-		await guild!.moderation.new
-			.setModerator(this.client.user!.id)
-			.setUser(user)
-			.setType(ModerationTypeKeys.UnMute)
-			.setReason(`Mute released after ${this.client.languages.default.duration(doc.duration)}`)
-			.create();
+		await guild!.moderation.create({
+			user_id: user.id,
+			moderator_id: this.client.user!.id,
+			type: ModerationTypeKeys.UnMute,
+			reason: `Mute released after ${this.client.languages.default.duration(doc.duration)}`
+		}).create();
 	}
 
-	private extractRoles(member: SkyraGuildMember, muteRole: string, rolePosition: number, rawRoleIDs: readonly string[] | null) {
+	private extractRoles(member: GuildMember, muteRole: string, rolePosition: number, rawRoleIDs: readonly string[] | null) {
 		if (rawRoleIDs === null) rawRoleIDs = [];
 
 		const rawRoles = rawRoleIDs.map(id => member.guild.roles.get(id)).filter(role => role) as Role[];

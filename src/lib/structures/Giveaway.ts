@@ -2,12 +2,12 @@ import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
 import { CLIENT_ID } from '../../../config';
-import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { TIME } from '../util/constants';
 import { fetchReactionUsers, resolveEmoji } from '../util/util';
 import { GiveawayManager } from './GiveawayManager';
 import { api } from '../util/Models/Api';
+import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 
 enum States {
 	Running,
@@ -26,7 +26,6 @@ export const GiveawayEmoji = '🎉';
 export class Giveaway {
 
 	public store: GiveawayManager;
-	public id: string;
 	public endsAt: number;
 	public refreshAt: number;
 	public title: string;
@@ -40,17 +39,20 @@ export class Giveaway {
 	private paused = false;
 	private rendering = false;
 
-	public constructor(store: GiveawayManager, data: GiveawayData) {
+	public constructor(store: GiveawayManager, data: PartialRawGiveawaySettings) {
 		this.store = store;
-		this.id = data.id;
 		this.title = data.title;
-		this.endsAt = data.endsAt;
-		this.channelID = data.channelID;
-		this.guildID = data.guildID;
-		this.messageID = data.messageID || null;
+		this.endsAt = data.ends_at;
+		this.channelID = data.channel_id;
+		this.guildID = data.guild_id;
+		this.messageID = data.message_id;
 		this.minimum = data.minimum;
-		this.minimumWinners = data.minimumWinners;
+		this.minimumWinners = data.minimum_winners;
 		this.refreshAt = this.calculateNextRefresh();
+	}
+
+	public get client() {
+		return this.store.client;
 	}
 
 	public get guild() {
@@ -87,7 +89,7 @@ export class Giveaway {
 			.messages(this.messageID)
 			.reactions(Giveaway.EMOJI!, '@me')
 			.put();
-		await this.store.client.providers.default.create(Databases.Giveaway, this.id, this.toJSON());
+		await this.client.queries.insertGiveaway(this.toJSON());
 		return this;
 	}
 
@@ -132,7 +134,7 @@ export class Giveaway {
 
 	public async finish() {
 		this.finished = true;
-		await this.store.client.providers.default.delete(Databases.Giveaway, this.id);
+		await this.store.client.queries.deleteGiveaway(this.guildID, this.messageID!);
 		return this;
 	}
 
@@ -155,15 +157,15 @@ export class Giveaway {
 		return this;
 	}
 
-	public toJSON(): GiveawayData {
+	public toJSON(): RawGiveawaySettings {
+		if (this.messageID === null) throw new TypeError('Cannot serialize Giveaway without instantiation.');
 		return {
-			channelID: this.channelID,
-			endsAt: this.endsAt,
-			guildID: this.guildID,
-			id: this.id,
-			messageID: this.messageID,
+			channel_id: this.channelID,
+			ends_at: this.endsAt,
+			guild_id: this.guildID,
+			message_id: this.messageID,
 			minimum: this.minimum,
-			minimumWinners: this.minimumWinners,
+			minimum_winners: this.minimumWinners,
 			title: this.title
 		};
 	}
@@ -283,16 +285,5 @@ export class Giveaway {
 
 }
 
-export interface GiveawayCreateData {
-	title: string;
-	endsAt: number;
-	guildID: string;
-	channelID: string;
-	minimum: number;
-	minimumWinners: number;
-}
-
-export interface GiveawayData extends GiveawayCreateData {
-	id: string;
-	messageID: string | null;
-}
+export type GiveawayCreateData = Omit<RawGiveawaySettings, 'message_id'>;
+export type PartialRawGiveawaySettings = GiveawayCreateData & { message_id: RawGiveawaySettings['message_id'] | null };

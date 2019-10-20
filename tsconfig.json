@@ -2,6 +2,7 @@
 	"extends": "eslint-config-bamboo",
 	"compilerOptions": {
 		"outDir": "./dist",
+		"target": "es2020",
 		"types": [
 			"node",
 			"node-fetch",
@@ -11,7 +12,8 @@
 		]
 	},
 	"include": [
-		"./src/**/*"
+		"./src/**/*",
+		"./database/**/*"
 	],
 	"exclude": [
 		"**/node_modules",

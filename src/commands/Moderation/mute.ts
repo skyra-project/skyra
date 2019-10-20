@@ -1,6 +1,5 @@
-import { Permissions, TextChannel, User } from 'discord.js';
+import { Permissions, TextChannel, User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
@@ -44,7 +43,7 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, _: User, member: SkyraGuildMember, reason: string, _prehandled: undefined, duration: number | null) {
+	public async handle(message: KlasaMessage, _: User, member: GuildMember, reason: string, _prehandled: undefined, duration: number | null) {
 		return mute(message.member!, member, { reason, duration });
 	}
 

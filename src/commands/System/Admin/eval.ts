@@ -1,17 +1,8 @@
 import { CommandStore, KlasaMessage, Stopwatch, Type, util } from 'klasa';
-import { transpileModule, TranspileOptions } from 'typescript';
 import { inspect } from 'util';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { Events } from '../../../lib/types/Enums';
 import { fetch } from '../../../lib/util/util';
-import * as transpileOptions from '../../../../tsconfig.json';
-
-const tsTranspileOptions: TranspileOptions = { compilerOptions: transpileOptions.compilerOptions };
-
-enum EvalLanguage {
-	JavaScript,
-	TypeScript
-}
 
 export default class extends SkyraCommand {
 
@@ -32,8 +23,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [code]: [string]) {
 		const flagTime = 'no-timeout' in message.flagArgs ? 'wait' in message.flagArgs ? Number(message.flagArgs.wait) : this.timeout : Infinity;
 		const language = message.flagArgs.lang || message.flagArgs.language || (message.flagArgs.json ? 'json' : 'js');
-		const languageType = this.getLanguageType(language);
-		const { success, result, time, type } = await this.timedEval(message, code, flagTime, languageType);
+		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
 
 		if (message.flagArgs.silent) {
 			if (!success && result && (result as unknown as Error).stack) this.client.emit(Events.Wtf, (result as unknown as Error).stack);
@@ -45,16 +35,8 @@ export default class extends SkyraCommand {
 		return this.handleMessage(message, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer, language });
 	}
 
-	private getLanguageType(language: string) {
-		switch (language) {
-			case 'typescript':
-			case 'ts': return EvalLanguage.TypeScript;
-			default: return EvalLanguage.JavaScript;
-		}
-	}
-
-	private timedEval(message: KlasaMessage, code: string, flagTime: number, languageType: EvalLanguage) {
-		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code, languageType);
+	private timedEval(message: KlasaMessage, code: string, flagTime: number) {
+		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
 		return Promise.race([
 			util.sleep(flagTime).then(() => ({
 				result: message.language.tget('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
@@ -62,21 +44,12 @@ export default class extends SkyraCommand {
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'
 			})),
-			this.eval(message, code, languageType)
+			this.eval(message, code)
 		]);
 	}
 
 	// Eval the input
-	private async eval(message: KlasaMessage, code: string, languageType: EvalLanguage) {
-		switch (languageType) {
-			case EvalLanguage.TypeScript:
-				return this.nativeEval(message, transpileModule(code, tsTranspileOptions).outputText);
-			case EvalLanguage.JavaScript:
-				return this.nativeEval(message, code);
-		}
-	}
-
-	private async nativeEval(message: KlasaMessage, code: string) {
+	private async eval(message: KlasaMessage, code: string) {
 		const stopwatch = new Stopwatch();
 		let success: boolean;
 		let syncTime: string;

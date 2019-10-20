@@ -1,6 +1,5 @@
-import { User } from 'discord.js';
+import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
@@ -24,7 +23,7 @@ export default class extends ModerationCommand {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
-	public async handle(message: KlasaMessage, target: User, member: SkyraGuildMember, reason: string, _prehandled: Unlock, duration: number | null) {
+	public async handle(message: KlasaMessage, target: User, member: GuildMember, reason: string, _prehandled: Unlock, duration: number | null) {
 		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		await message.guild!.members.ban(target.id, { days: Number(message.flagArgs.day || message.flagArgs.days) || 0, reason });
 

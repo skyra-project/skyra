@@ -1,6 +1,5 @@
-import { User } from 'discord.js';
+import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
@@ -26,7 +25,7 @@ export default class extends ModerationCommand {
 		throw message.language.tget('GUILD_BANS_EMPTY');
 	}
 
-	public async handle(message: KlasaMessage, user: User, _: SkyraGuildMember, reason: string, { bans }: Unlock) {
+	public async handle(message: KlasaMessage, user: User, _: GuildMember, reason: string, { bans }: Unlock) {
 		if (!bans.includes(user.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 		await message.guild!.members.unban(user.id, reason);
 		return this.sendModlog(message, user, reason);

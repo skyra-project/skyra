@@ -1,9 +1,6 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { RCursor } from 'rethinkdb-ts';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { StarboardMessageData } from '../../lib/structures/StarboardMessage';
-import { Databases } from '../../lib/types/constants/Constants';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -32,19 +29,7 @@ export default class extends SkyraCommand {
 
 	public async random(message: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
-		const r = this.client.providers.default.db;
-		const starboardData = await r
-			.table<StarboardMessageData>(Databases.Starboard)
-			.getAll(message.guild!.id, { index: 'guildID' })
-			.filter(starMessage => r.and(
-				starMessage('starMessageID').ne(null),
-				starMessage('disabled').ne(true),
-				starMessage('stars').ge(min)
-			))
-			.sample(1)
-			.nth(0)
-			.default(null)
-			.run();
+		const starboardData = await this.client.queries.fetchStarRandom(message.guild!.id, min);
 
 		// If there is no starboard message, return no stars
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
@@ -63,19 +48,17 @@ export default class extends SkyraCommand {
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
-		const starredMessageChannel = message.guild!.channels.get(starboardData.channelID) as TextChannel;
+		const starredMessageChannel = message.guild!.channels.get(starboardData.channel_id) as TextChannel;
 		if (!starredMessageChannel) {
-			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete()
-				.run();
+			await this.client.queries.deleteStar(message.guild!.id, starboardData.message_id);
 			return this.random(message);
 		}
 
 		// If the starred message does not longer exist in the starboard channel, assume it was deleted by a
 		// moderator, therefore delete it from database and search another
-		const starredMessage = await starboardChannel.messages.fetch(starboardData.starMessageID!).catch(() => null);
+		const starredMessage = await starboardChannel.messages.fetch(starboardData.star_message_id!).catch(() => null);
 		if (!starredMessage) {
-			await this.client.providers.default.db.table(Databases.Starboard).get(starboardData.id).delete()
-				.run();
+			await this.client.queries.deleteStar(message.guild!.id, starboardData.message_id);
 			return this.random(message);
 		}
 
@@ -84,32 +67,23 @@ export default class extends SkyraCommand {
 
 	public async top(message: KlasaMessage, [timespan]: [number?]) {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
-		const r = this.client.providers.default.db;
-		const starboardMessages = await r
-			.table<StarboardMessageData>(Databases.Starboard)
-			.getAll(message.guild!.id, { index: 'guildID' })
-			.filter(starMessage => r.and(
-				starMessage('starMessageID').ne(null),
-				starMessage('disabled').ne(true),
-				starMessage('stars').ge(min)
-			))
-			.pluck('messageID', 'guildID', 'channelID', 'starMessageID', 'userID', 'stars')
-			.getCursor() as RCursor<StarPluck>;
+		const starboardMessages = await this.client.queries.fetchStars(message.guild!.id, min);
+		if (starboardMessages.length === 0) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
 		const topReceivers: Map<string, number> = new Map();
 
 		const minimum = timespan ? Date.now() - timespan : null;
-		for await (const starboardMessage of starboardMessages as unknown as AsyncIterable<StarPluck>) {
+		for (const starboardMessage of starboardMessages) {
 			if (minimum !== null) {
-				const postedAt = this.decodeSnowflake(starboardMessage.starMessageID);
+				const postedAt = this.decodeSnowflake(starboardMessage.star_message_id!);
 				if (postedAt < minimum) continue;
 			}
-			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
+			const url = this.makeStarLink(starboardMessage.guild_id, starboardMessage.channel_id, starboardMessage.message_id);
 			const maskedUrl = `[${message.language.tget('JUMPTO')}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
-			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
+			topReceivers.set(starboardMessage.user_id, (topReceivers.get(starboardMessage.user_id) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;
 		}
 
@@ -129,6 +103,8 @@ export default class extends SkyraCommand {
 	}
 
 	private decodeSnowflake(snowflake: string) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+		// @ts-ignore 2737
 		// eslint-disable-next-line no-undef
 		return (BigInt(snowflake) >> 22n) + 1420070400000n;
 	}
@@ -137,13 +113,4 @@ export default class extends SkyraCommand {
 		return `https://canary.discordapp.com/channels/${guildID}/${channeLID}/${messageID}`;
 	}
 
-}
-
-interface StarPluck {
-	messageID: string;
-	guildID: string;
-	channelID: string;
-	starMessageID: string;
-	userID: string;
-	stars: number;
 }

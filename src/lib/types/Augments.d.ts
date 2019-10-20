@@ -9,7 +9,7 @@ import { LongLivingReactionCollector } from '../util/LongLivingReactionCollector
 import { FSWatcher } from 'chokidar';
 import { Node as Lavalink, BaseNodeOptions } from 'lavalink';
 import { Client as VezaClient } from 'veza';
-import { MasterPool, R } from 'rethinkdb-ts';
+import { CommonQuery } from '../queries/common';
 
 declare module 'discord.js' {
 
@@ -25,6 +25,7 @@ declare module 'discord.js' {
 		ipc: VezaClient;
 		webhookError: Webhook;
 		fsWatcher: FSWatcher | null;
+		queries: CommonQuery;
 		fetchTag(id: string): Promise<string>;
 		fetchUsername(id: string): Promise<string>;
 	}
@@ -59,14 +60,6 @@ declare module 'discord.js' {
 }
 
 declare module 'klasa' {
-
-	interface Provider {
-		db: R;
-		pool: MasterPool | null;
-		ping(): Promise<number>;
-		sync(table: string): Promise<{ synced: number }>;
-		getRandom(table: string): Promise<unknown[]>;
-	}
 
 	interface KlasaClientOptions {
 		dev?: boolean;

@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { Guild, User } from 'discord.js';
-import { Databases } from '../types/constants/Constants';
-import { ModerationSchemaKeys } from '../util/constants';
+import { Guild } from 'discord.js';
 import { createReferPromise, ReferredPromise, floatPromise } from '../util/util';
-import { ModerationManagerEntry, ModerationManagerEntrySerialized, ModerationManagerEntryDeserialized } from './ModerationManagerEntry';
+import { ModerationManagerEntry } from './ModerationManagerEntry';
+import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 
 enum CacheActions {
 	None,
@@ -34,21 +33,17 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	 */
 	private readonly _locks: ReferredPromise<undefined>[] = [];
 
+	public get client() {
+		return this.guild.client;
+	}
+
 	public constructor(guild: Guild) {
 		super();
 		this.guild = guild;
 	}
 
-	public get pool() {
-		return this.guild!.client.providers.default.db;
-	}
-
-	public get table() {
-		return this.guild!.client.providers.default.db.table<ModerationManagerEntrySerialized | null>(Databases.Moderation);
-	}
-
-	public get new() {
-		return new ModerationManagerEntry(this, {} as ModerationManagerEntrySerialized);
+	public create(data: ModerationManagerCreateData) {
+		return new ModerationManagerEntry(this, { guild_id: this.guild.id, ...data });
 	}
 
 	public async fetch(id: number): Promise<ModerationManagerEntry | null>;
@@ -57,33 +52,24 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	public async fetch(id?: string | number | number[] | null): Promise<ModerationManagerEntry | Collection<number, ModerationManagerEntry> | this | null> {
 		// Case number
 		if (typeof id === 'number') {
-			return super.get(id) || this._cache(await this.table.getAll([this.guild!.id, id], { index: 'guild_case' })
-				.limit(1)
-				.nth(0)
-				.default(null)
-				.run(), CacheActions.None);
+			return super.get(id) || this._cache(await this.guild.client.queries.fetchModerationLogByCase(this.guild.id, id), CacheActions.None);
 		}
 
 		// User id
 		if (typeof id === 'string') {
 			return this._count === super.size
 				? super.filter(entry => entry.user === id)
-				: this._cache((await this.table.getAll([this.guild!.id, id], { index: 'guild_user' })
-					.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
-					.run()) as ModerationManagerEntryDeserialized[], CacheActions.None);
+				: this._cache(await this.guild.client.queries.fetchModerationLogByUser(this.guild.id, id), CacheActions.None);
 		}
 
 		if (Array.isArray(id) && id.length) {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 			// @ts-ignore 2345
-			return this._cache(await this.table.getAll(...id.map(entryID => [this.guild!.id, entryID] as [string, number][]), { index: 'guild_case' })
-				.run(), CacheActions.None);
+			return this._cache(await this.guild.client.queries.fetchModerationLogByCases(this.guild.id, id), CacheActions.None);
 		}
 
 		if (super.size !== this._count) {
-			this._cache(await this.table.getAll(this.guild!.id, { index: 'guildID' })
-				.orderBy(this.pool.asc(ModerationSchemaKeys.Case))
-				.run(), CacheActions.Fetch);
+			this._cache(await this.guild.client.queries.fetchModerationLogByGuild(this.guild.id), CacheActions.Fetch);
 		}
 		return this;
 	}
@@ -93,7 +79,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return this._count!;
 	}
 
-	public insert(data: ModerationManagerEntry | ModerationManagerEntrySerialized) {
+	public insert(data: ModerationManagerEntry | RawModerationSettings) {
 		return this._cache(data, CacheActions.Insert);
 	}
 
@@ -115,10 +101,10 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		return Promise.all(this._locks.map(lock => lock.promise));
 	}
 
-	private _cache(entry: ModerationManagerEntry | ModerationManagerEntrySerialized | null, type: CacheActions): ModerationManagerEntry;
-	private _cache(entries: (ModerationManagerEntry | ModerationManagerEntrySerialized | null)[], type: CacheActions): Collection<number, ModerationManagerEntry>;
+	private _cache(entry: ModerationManagerEntry | RawModerationSettings | null, type: CacheActions): ModerationManagerEntry;
+	private _cache(entries: (ModerationManagerEntry | RawModerationSettings | null)[], type: CacheActions): Collection<number, ModerationManagerEntry>;
 	private _cache(
-		entries: ModerationManagerEntry | ModerationManagerEntrySerialized | (ModerationManagerEntry | ModerationManagerEntrySerialized | null)[] | null,
+		entries: ModerationManagerEntry | RawModerationSettings | (ModerationManagerEntry | RawModerationSettings | null)[] | null,
 		type: CacheActions
 	): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
 		if (!entries) return null;
@@ -156,10 +142,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 }
 
-export interface ModerationManagerUpdateData {
-	id?: string;
-	[ModerationSchemaKeys.Duration]?: number | null;
-	[ModerationSchemaKeys.ExtraData]?: object | null;
-	[ModerationSchemaKeys.Moderator]?: string | User | null;
-	[ModerationSchemaKeys.Reason]?: string | null;
-}
+export type ModerationManagerUpdateData = Partial<Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason'>>;
+export type ModerationManagerCreateData = Omit<ModerationManagerInsertData, 'guild_id'>;
+export type ModerationManagerInsertData = Pick<RawModerationSettings, 'guild_id' | 'user_id' | 'type'>
+& Partial<Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'created_at' | 'case_id'>>;

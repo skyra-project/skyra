@@ -18,7 +18,7 @@
 
 ## Set-Up
 
-Copy and paste the [`config.ts.example`] file and rename it to `config.ts`, then fill it with the precise variables.
+Copy and paste the [`config.example.ts`] file and rename it to `config.ts`, then fill it with the precise variables.
 Once all development requirements are set up:
 
 ```bash
@@ -36,7 +36,7 @@ $ yarn pm2:start
 > **Note**: Before pushing to the repository, please run `yarn lint` so formatting stays consistent and there are no
 linter warnings.
 
-[`config.ts.example`]: /config.ts.example
+[`config.example.ts`]: /config.example.ts
 
 ## Story
 

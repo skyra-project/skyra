@@ -1,6 +1,5 @@
-import { User } from 'discord.js';
+import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraGuildMember } from '../../lib/extensions/SkyraGuildMember';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { ModerationTypeKeys } from '../../lib/util/constants';
@@ -26,7 +25,7 @@ export default class extends ModerationCommand {
 			: null;
 	}
 
-	public async handle(message: KlasaMessage, user: User, member: SkyraGuildMember, reason: string) {
+	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
 		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		return softban(message.guild!, message.author!, user, reason, 'days' in message.flagArgs ? Math.min(7, Math.max(0, Number(message.flagArgs.days))) : 1);
 	}

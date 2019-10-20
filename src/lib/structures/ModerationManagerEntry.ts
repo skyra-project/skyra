@@ -3,7 +3,9 @@ import { Duration } from 'klasa';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS, ModerationTypeAssets } from '../util/constants';
-import { ModerationManager, ModerationManagerUpdateData } from './ModerationManager';
+import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
+import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
+import { isNullOrUndefined } from '../util/util';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
@@ -11,53 +13,55 @@ const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
 export class ModerationManagerEntry {
 
 	public manager: ModerationManager;
-	public id: string | null;
 	public case: number | null;
 	public duration: number | null;
 	public extraData: object | null;
 	public moderator: string | User | null;
 	public reason: string | null;
-	public type: ModerationTypeKeys | null;
-	public user: string | User | null;
+	public type: ModerationTypeKeys;
+	public user: string | User;
 	public createdAt: number | null;
 	private [kTimeout] = Date.now() + (TIME.MINUTE * 15);
 
-	public constructor(manager: ModerationManager, data: Partial<ModerationManagerEntrySerialized | ModerationManagerEntryDeserialized>) {
+	public constructor(manager: ModerationManager, data: ModerationManagerInsertData) {
 		this.manager = manager;
 
-		this.id = 'id' in data ? data.id! : null;
-		this.case = ModerationSchemaKeys.Case in data ? data[ModerationSchemaKeys.Case]! : null;
-		this.duration = ModerationSchemaKeys.Duration in data ? data[ModerationSchemaKeys.Duration]! : null;
-		this.extraData = ModerationSchemaKeys.ExtraData in data ? data[ModerationSchemaKeys.ExtraData]! : null;
-		this.moderator = ModerationSchemaKeys.Moderator in data ? data[ModerationSchemaKeys.Moderator]! : null;
-		this.reason = ModerationSchemaKeys.Reason in data ? data[ModerationSchemaKeys.Reason]! : null;
-		this.type = ModerationSchemaKeys.Type in data ? data[ModerationSchemaKeys.Type]! : null;
-		this.user = ModerationSchemaKeys.User in data ? data[ModerationSchemaKeys.User]! : null;
-		this.createdAt = ModerationSchemaKeys.CreatedAt in data ? data[ModerationSchemaKeys.CreatedAt]! : null;
+		this.case = data.case_id || null;
+		this.duration = data.duration || null;
+		this.extraData = data.extra_data || null;
+		this.moderator = data.moderator_id || null;
+		this.reason = data.reason || null;
+		this.type = data.type;
+		this.user = data.user_id;
+		this.createdAt = data.created_at || null;
+	}
+
+	public get client() {
+		return this.manager.client;
 	}
 
 	public get name() {
-		return TYPE_ASSETS[this.type!].title;
+		return TYPE_ASSETS[this.type].title;
 	}
 
 	public get appealed() {
-		return Boolean(this.type! & ModerationActions.Appealed);
+		return Boolean(this.type & ModerationActions.Appealed);
 	}
 
 	public get temporary() {
-		return Boolean(this.type! & ModerationActions.Temporary);
+		return Boolean(this.type & ModerationActions.Temporary);
 	}
 
 	public get appealable() {
-		return ((this.type! & ~ModerationActions.Temporary) | ModerationActions.Appealed) in TYPE_ASSETS;
+		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Appealed) in TYPE_ASSETS;
 	}
 
 	public get temporable() {
-		return ((this.type! & ~ModerationActions.Temporary) | ModerationActions.Temporary) in TYPE_ASSETS;
+		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Temporary) in TYPE_ASSETS;
 	}
 
 	public get basicType(): ModerationTypeKeys {
-		return this.type! & ~(ModerationActions.Appealed | ModerationActions.Temporary);
+		return this.type & ~(ModerationActions.Appealed | ModerationActions.Temporary);
 	}
 
 	public get cacheExpired() {
@@ -68,13 +72,21 @@ export class ModerationManagerEntry {
 		return Math.max(Date.now() - this[kTimeout], 0);
 	}
 
+	public get flattenedModerator() {
+		return this.moderator === null
+			? null
+			: typeof this.moderator === 'string'
+				? this.moderator
+				: this.moderator.id;
+	}
+
 	public get shouldSend() {
 		// If the moderation log is not anonymous, it should always send
 		if (this.moderator) return true;
 
 		const now = Date.now();
-		const user = typeof this.user === 'string' ? this.user : this.user!.id;
-		const entries = this.manager.filter(entry => (typeof entry.user === 'string' ? entry.user : entry.user!.id) === user && entry.createdAt! - now < TIME.MINUTE);
+		const user = typeof this.user === 'string' ? this.user : this.user.id;
+		const entries = this.manager.filter(entry => (typeof entry.user === 'string' ? entry.user : entry.user.id) === user && entry.createdAt! - now < TIME.MINUTE);
 
 		// If there is no moderation log for this user that has not received a report, it should send
 		if (!entries.size) return true;
@@ -89,46 +101,34 @@ export class ModerationManagerEntry {
 		return true;
 	}
 
-	public async edit({
-		[ModerationSchemaKeys.Duration]: duration,
-		[ModerationSchemaKeys.Moderator]: moderator,
-		[ModerationSchemaKeys.Reason]: reason,
-		[ModerationSchemaKeys.ExtraData]: extraData
-	}: ModerationManagerUpdateData = {}) {
-		const flattened = {
-			[ModerationSchemaKeys.Duration]: typeof duration !== 'undefined' && this.temporable && (duration === null || duration < TIME.YEAR)
-				? duration
-				: undefined,
-			[ModerationSchemaKeys.Moderator]: typeof moderator === 'undefined'
-				? undefined
-				: typeof moderator === 'string'
-					? moderator
-					: moderator!.id,
-			[ModerationSchemaKeys.Reason]: typeof reason === 'undefined'
-				? undefined
-				: reason || null,
-			[ModerationSchemaKeys.ExtraData]: typeof extraData === 'undefined'
-				? undefined
-				: extraData,
-			[ModerationSchemaKeys.Type]: this.type
+	public async edit(data: ModerationManagerUpdateData = {}) {
+		const flattened: ModerationManagerUpdateDataWithType = {
+			duration: isNullOrUndefined(data.duration) || !this.temporable || data.duration > TIME.YEAR
+				? this.duration
+				: data.duration || null,
+			moderator_id: typeof data.moderator_id === 'undefined'
+				? this.flattenedModerator
+				: data.moderator_id,
+			reason: typeof data.reason === 'undefined'
+				? this.reason
+				: data.reason || null,
+			extra_data: typeof data.extra_data === 'undefined'
+				? this.extraData
+				: data.extra_data,
+			type: this.type
 		};
 
-		if (typeof flattened[ModerationSchemaKeys.Duration] !== 'undefined') {
-			if (flattened[ModerationSchemaKeys.Duration]) flattened[ModerationSchemaKeys.Type]! |= ModerationActions.Temporary;
-			else flattened[ModerationSchemaKeys.Type]! &= ~ModerationActions.Temporary;
+		if (typeof flattened.duration !== 'undefined') {
+			if (flattened.duration) flattened.type |= ModerationActions.Temporary;
+			else flattened.type &= ~ModerationActions.Temporary;
 		}
 
-		if (typeof flattened[ModerationSchemaKeys.Duration] !== 'undefined'
-			|| typeof flattened[ModerationSchemaKeys.Moderator] !== 'undefined'
-			|| typeof flattened[ModerationSchemaKeys.Reason] !== 'undefined'
-			|| typeof flattened[ModerationSchemaKeys.ExtraData] !== 'undefined') {
-			await this.manager.table.get(this.id).update(flattened as ModerationManagerEntrySerialized).run();
-			if (typeof flattened[ModerationSchemaKeys.Duration] !== 'undefined') this.duration = flattened[ModerationSchemaKeys.Duration]!;
-			if (typeof flattened[ModerationSchemaKeys.Moderator] !== 'undefined') this.moderator = flattened[ModerationSchemaKeys.Moderator]!;
-			if (typeof flattened[ModerationSchemaKeys.Reason] !== 'undefined') this.reason = flattened[ModerationSchemaKeys.Reason]!;
-			if (typeof flattened[ModerationSchemaKeys.ExtraData] !== 'undefined') this.extraData = flattened[ModerationSchemaKeys.ExtraData]!;
-			this.type = flattened[ModerationSchemaKeys.Type];
-		}
+		await this.client.queries.updateModerationLog({ ...this.toJSON(), ...flattened });
+		this.duration = flattened.duration;
+		this.moderator = flattened.moderator_id;
+		this.reason = flattened.reason;
+		this.extraData = flattened.extra_data;
+		this.type = flattened.type;
 
 		return this;
 	}
@@ -137,8 +137,8 @@ export class ModerationManagerEntry {
 		if (this.appealed) return this;
 		if (!this.appealable) throw ModerationErrors.CaseTypeNotAppeal;
 
-		const type = this.type! | ModerationActions.Appealed;
-		await this.manager.table.get(this.id).update({ [ModerationSchemaKeys.Type]: type }).run();
+		const type = this.type | ModerationActions.Appealed;
+		await this.client.queries.updateModerationLog({ ...this.toJSON(), type });
 		this.type = type;
 
 		return this;
@@ -152,7 +152,7 @@ export class ModerationManagerEntry {
 			typeof this.moderator === 'string' ? this.manager.guild!.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.manager.guild!.client.user)
 		]);
 
-		const assets: ModerationTypeAssets = TYPE_ASSETS[this.type!];
+		const assets: ModerationTypeAssets = TYPE_ASSETS[this.type];
 		const prefix = this.manager.guild!.settings.get(GuildSettings.Prefix);
 		const description = (this.duration
 			? [
@@ -188,7 +188,7 @@ export class ModerationManagerEntry {
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
 		if (!this.duration || this.duration > TIME.YEAR) this.duration = null;
-		if (this.duration) this.type! |= ModerationActions.Temporary;
+		if (this.duration) this.type |= ModerationActions.Temporary;
 		return this;
 	}
 
@@ -243,7 +243,7 @@ export class ModerationManagerEntry {
 		if (!this.shouldSend) return null;
 
 		this.case = await this.manager.count() + 1;
-		[this.id] = (await this.manager.table.insert(this.toJSON()).run()).generated_keys!;
+		await this.client.queries.insertModerationLog(this.toJSON());
 		this.manager.insert(this);
 
 		const channelID = this.manager.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
@@ -260,7 +260,7 @@ export class ModerationManagerEntry {
 					[ModerationSchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
 					[ModerationSchemaKeys.Guild]: this.manager.guild!.id,
 					[ModerationSchemaKeys.Duration]: this.duration,
-					[ModerationSchemaKeys.Case]: this.case
+					[ModerationSchemaKeys.Case]: this.case!
 				}
 			}).catch(error => this.manager.guild!.client.emit(Events.Wtf, error));
 		}
@@ -268,39 +268,21 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public toJSON(): ModerationManagerEntrySerialized {
-		const data: ModerationManagerEntrySerialized = {
-			[ModerationSchemaKeys.Case]: this.case!,
-			[ModerationSchemaKeys.Duration]: this.duration,
-			[ModerationSchemaKeys.ExtraData]: this.extraData,
-			[ModerationSchemaKeys.Guild]: this.manager.guild!.id,
-			[ModerationSchemaKeys.Moderator]: this.moderator ? typeof this.moderator === 'string' ? this.moderator : this.moderator.id : null,
-			[ModerationSchemaKeys.Reason]: this.reason,
-			[ModerationSchemaKeys.Type]: this.type!,
-			[ModerationSchemaKeys.User]: this.user ? typeof this.user === 'string' ? this.user : this.user.id : null,
-			[ModerationSchemaKeys.CreatedAt]: this.createdAt
+	public toJSON(): RawModerationSettings {
+		if (this.case === null) throw new TypeError('Cannot serialize incomplete entry.');
+		return {
+			case_id: this.case,
+			duration: this.duration,
+			extra_data: this.extraData,
+			guild_id: this.manager.guild!.id,
+			moderator_id: this.moderator ? typeof this.moderator === 'string' ? this.moderator : this.moderator.id : null,
+			reason: this.reason,
+			type: this.type,
+			user_id: typeof this.user === 'string' ? this.user : this.user.id,
+			created_at: this.createdAt
 		};
-		return data;
-	}
-
-	public toString() {
-		return `ModerationManagerEntry<${this.id}>`;
 	}
 
 }
 
-export interface ModerationManagerEntrySerialized {
-	caseID: number;
-	createdAt: number | null;
-	duration: number | null;
-	extraData: object | null;
-	guildID: string;
-	moderatorID: string | null;
-	reason: string | null;
-	type: ModerationTypeKeys;
-	userID: string | null;
-}
-
-export interface ModerationManagerEntryDeserialized extends ModerationManagerEntrySerialized {
-	id: string;
-}
+type ModerationManagerUpdateDataWithType = Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'type'>;

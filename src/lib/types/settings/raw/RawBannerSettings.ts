@@ -13,6 +13,9 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"title"     VARCHAR(128) NOT NULL,
 		"author_id" VARCHAR(19)  NOT NULL,
 		"price"     INTEGER      NOT NULL,
-		PRIMARY KEY("id")
+		PRIMARY KEY("id"),
+		CHECK("group" <> ''),
+		CHECK("title" <> ''),
+		CHECK("price" >= 0)
 	);
 `;

@@ -131,6 +131,7 @@ async function migrateClientStorage() {
 
 	for (const entry of entries) {
 		transformed.push({
+			id: entry.id,
 			commandUses: entry.commandUses || 0,
 			guildBlacklist: entry.guildBlacklist || [],
 			userBlacklist: entry.userBlacklist || [],
@@ -184,6 +185,7 @@ async function migrateGuilds() {
 
 	for (const entry of entries) {
 		transformed.push({
+			'id': entry.id,
 			'channels.announcements': entry.channels?.announcements || null,
 			'channels.farewell': entry.channels?.farewell || null,
 			'channels.greeting': entry.channels?.greeting || null,
@@ -194,7 +196,7 @@ async function migrateGuilds() {
 			'channels.nsfw-message-logs': entry.channels?.['nsfw-message-logs'] || null,
 			'channels.roles': entry.channels?.roles || null,
 			'channels.spam': entry.channels?.spam || null,
-			'command-autodelete': entry['command-autodelete'] || [],
+			'command-autodelete': [],
 			'events.banAdd': entry.events?.banAdd || false,
 			'events.banRemove': entry.events?.banRemove || false,
 			'events.memberAdd': entry.events?.memberAdd || false,
@@ -318,7 +320,7 @@ async function migrateModeration() {
 			extra_data: entry.extraData,
 			guild_id: entry.guildID,
 			moderator_id: entry.moderatorID,
-			reason: entry.reason,
+			reason: entry.reason || null,
 			user_id: entry.userID,
 			type: entry.type
 		});
@@ -379,9 +381,9 @@ async function migrateUsers() {
 			badge_list: [],
 			color: typeof entry.color === 'string' ? parseInt(entry.color, 16) : 0,
 			marry: entry.marry ? [entry.marry] : [],
-			money: Math.round(entry.money || 0),
-			point_count: Math.round(entry.points || 0),
-			reputation_count: Math.round(entry.reputation || 0),
+			money: Math.max(Math.round(entry.money || 0), 0),
+			point_count: Math.max(Math.round(entry.points || 0), 0),
+			reputation_count: Math.max(Math.round(entry.reputation || 0), 0),
 			theme_level: '1001',
 			theme_profile: entry.themeProfile || '0001',
 			next_daily: entry.timeDaily || null,
@@ -396,18 +398,11 @@ async function upload(pgsql: Pool, name: string, databaseName: string) {
 	const data = await readJSON(join(rootData, `${name}.new.json`)) as AnyObject[];
 	if (data.length === 0) return;
 
-	const keys = Object.keys(data[0]);
-	console.log(`Uploading ${name} as ${databaseName} with ${keys.length} rows.`);
 	const stringifiedData = JSON.stringify(data).replace(/'/g, "''");
 	await pgsql.query(/* sql */`
-		WITH data_json (entries) as (
-			VALUES ('${stringifiedData}'::json)
-		)
-		INSERT INTO "${databaseName}" ("${keys.join('", "')}")
-		SELECT p.*
-		FROM data_json l
-			CROSS JOIN LATERAL json_populate_recordset(null::"${databaseName}", entries) as p
-			ON CONFLICT DO NOTHING;
+		INSERT INTO "${databaseName}"
+		SELECT * FROM json_populate_recordset(NULL::"${databaseName}", '${stringifiedData}')
+		ON CONFLICT DO NOTHING;
 	`);
 }
 
@@ -428,6 +423,7 @@ interface Banner {
 }
 
 interface ClientStorage {
+	id: string;
 	commandUses?: number;
 	userBlacklist?: readonly string[];
 	guildBlacklist?: readonly string[];
@@ -439,6 +435,7 @@ interface ClientStorage {
 }
 
 interface Guild {
+	id: string;
 	prefix?: string;
 	language?: string;
 	disableNaturalPrefix?: boolean;

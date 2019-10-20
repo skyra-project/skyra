@@ -1,4 +1,5 @@
 export interface RawGuildSettings {
+	'id': string;
 	'prefix': string;
 	'language': string;
 	'disableNaturalPrefix': boolean;
@@ -98,7 +99,7 @@ export interface RawGuildSettings {
 
 export const SQL_TABLE_SCHEMA = /* sql */`
 	CREATE TABLE IF NOT EXISTS guilds (
-		"id"                                   VARCHAR(19),
+		"id"                                   VARCHAR(19)                              NOT NULL,
 		"prefix"                               VARCHAR(10)   DEFAULT 's!'               NOT NULL,
 		"language"                             VARCHAR(5)    DEFAULT 'en-US'            NOT NULL,
 		"disableNaturalPrefix"                 BOOLEAN       DEFAULT FALSE              NOT NULL,
@@ -126,9 +127,9 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"events.memberRemove"                  BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"events.messageDelete"                 BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"events.messageEdit"                   BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"messages.farewell"                    VARCHAR(19),
-		"messages.greeting"                    VARCHAR(19),
-		"messages.join-dm"                     VARCHAR(19),
+		"messages.farewell"                    VARCHAR(2000),
+		"messages.greeting"                    VARCHAR(2000),
+		"messages.join-dm"                     VARCHAR(1500),
 		"messages.warnings"                    BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"messages.ignoreChannels"              VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"stickyRoles"                          JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
@@ -189,7 +190,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"social.achieveMessage"                VARCHAR(2000),
 		"social.ignoreChannels"                VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"starboard.channel"                    VARCHAR(19),
-		"starboard.emoji"                      VARCHAR(32)   DEFAULT '%E2%AD%90'        NOT NULL,
+		"starboard.emoji"                      VARCHAR(75)   DEFAULT '%E2%AD%90'        NOT NULL,
 		"starboard.ignoreChannels"             VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"starboard.minimum"                    SMALLINT      DEFAULT 1                  NOT NULL,
 		"trigger.alias"                        JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,

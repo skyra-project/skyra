@@ -15,8 +15,10 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"guild_id"        VARCHAR(19)           NOT NULL,
 		"channel_id"      VARCHAR(19)           NOT NULL,
 		"message_id"      VARCHAR(19)           NOT NULL,
-		"minimum"         INTEGER     DEFAULT 1 NOT NULL CHECK(minimum <> 0),
-		"minimum_winners" INTEGER     DEFAULT 1 NOT NULL CHECK(minimum_winners <> 0),
-		CONSTRAINT giveaway_guild_message_idx   PRIMARY KEY("guild_id", "message_id")
+		"minimum"         INTEGER     DEFAULT 1 NOT NULL,
+		"minimum_winners" INTEGER     DEFAULT 1 NOT NULL,
+		CONSTRAINT giveaway_guild_message_idx   PRIMARY KEY("guild_id", "message_id"),
+		CHECK("minimum" <> 0),
+		CHECK("minimum_winners" <> 0)
 	);
 `;

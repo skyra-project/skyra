@@ -31,6 +31,13 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"theme_profile"    VARCHAR(6)    DEFAULT '0001'              NOT NULL,
 		"next_daily"       BIGINT,
 		"next_reputation"  BIGINT,
-		CONSTRAINT users_user_idx PRIMARY KEY ("id")
+		CONSTRAINT users_user_idx PRIMARY KEY ("id"),
+		CHECK("command_uses" >= 0),
+		CHECK("color" >= 0 AND "color" <= 16777215),
+		CHECK("money" >= 0),
+		CHECK("point_count" >= 0),
+		CHECK("reputation_count" >= 0),
+		CHECK("next_daily" >= 0),
+		CHECK("next_reputation" >= 0)
 	);
 `;

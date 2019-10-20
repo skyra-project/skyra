@@ -17,13 +17,16 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 	CREATE TABLE IF NOT EXISTS moderation (
 		"case_id"      INT           NOT NULL,
 		"created_at"   BIGINT,
-		"duration"     INTEGER                CHECK(duration >= 0 AND duration <= 31536000000),
+		"duration"     INTEGER,
 		"extra_data"   JSON,
 		"guild_id"     VARCHAR(19)   NOT NULL,
 		"moderator_id" VARCHAR(19),
 		"reason"       VARCHAR(2000),
 		"user_id"      VARCHAR(19),
 		"type"         SMALLINT      NOT NULL,
-		CONSTRAINT moderation_guild_case_idx PRIMARY KEY("guild_id", "case_id")
+		CONSTRAINT moderation_guild_case_idx PRIMARY KEY("guild_id", "case_id"),
+		CHECK("duration" >= 0 AND "duration" <= 31536000000),
+		CHECK("reason" <> ''),
+		CHECK("type" >= 0)
 	);
 `;

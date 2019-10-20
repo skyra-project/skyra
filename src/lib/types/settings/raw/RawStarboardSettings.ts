@@ -10,13 +10,14 @@ export interface RawStarboardSettings {
 
 export const SQL_TABLE_SCHEMA = /* sql */`
 	CREATE TABLE IF NOT EXISTS starboard (
-		"enabled"         BOOL        NOT NULL,
+		"enabled"         BOOLEAN     NOT NULL,
 		"user_id"         VARCHAR(19) NOT NULL,
 		"message_id"      VARCHAR(19) NOT NULL,
 		"channel_id"      VARCHAR(19) NOT NULL,
 		"guild_id"        VARCHAR(19) NOT NULL,
 		"star_message_id" VARCHAR(19),
 		"stars"           INTEGER     NOT NULL,
-		CONSTRAINT starboard_guild_message_idx PRIMARY KEY("guild_id", "message_id")
+		CONSTRAINT starboard_guild_message_idx PRIMARY KEY("guild_id", "message_id"),
+		CHECK("stars" >= 0)
 	);
 `;

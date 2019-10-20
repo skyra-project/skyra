@@ -209,7 +209,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			ON CONFLICT (id)
 			DO
 				UPDATE
-				SET uses = EXCLUDED.uses + 1;
+				SET uses = command_counter.uses + 1;
 		`, [command]);
 	}
 
@@ -271,7 +271,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			ON CONFLICT ON CONSTRAINT members_guild_user_idx
 			DO
 				UPDATE
-				SET point_count = EXCLUDED.point_count - $3
+				SET point_count = members.point_count - $3
 			RETURNING point_count;
 		`, [guildID, userID, points]);
 		return data.point_count;
@@ -285,7 +285,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			ON CONFLICT ON CONSTRAINT members_guild_user_idx
 			DO
 				UPDATE
-				SET point_count = EXCLUDED.point_count + $3
+				SET point_count = members.point_count + $3
 			RETURNING point_count;
 		`, [guildID, userID, points]);
 		return data.point_count;

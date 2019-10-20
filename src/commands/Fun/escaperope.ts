@@ -13,7 +13,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		if (message.deletable) message.nuke().catch(() => null);
+		if (message.deletable) await message.nuke().catch(() => null);
 		return message.sendLocale('COMMAND_ESCAPEROPE_OUTPUT', [message.author!]);
 	}
 

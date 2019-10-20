@@ -6,7 +6,7 @@ export default Client.defaultUserSchema
 	.add(UserSettings.BannerList, 'String', { array: true, configurable: false })
 	.add(UserSettings.BadgeList, 'String', { array: true, configurable: false })
 	.add(UserSettings.BadgeSet, 'String', { array: true, configurable: false })
-	.add(UserSettings.Color, 'String', { configurable: false })
+	.add(UserSettings.Color, 'Number', { 'default': 0, 'min': 0, 'max': 0xFFFFFF, 'configurable': false })
 	.add(UserSettings.Marry, 'User', { array: true, configurable: false })
 	.add(UserSettings.Money, 'Float', { 'default': 0, 'min': 0, 'max': 2147483647, 'configurable': false })
 	.add(UserSettings.Points, 'Float', { 'default': 0, 'min': 0, 'max': 2147483647, 'configurable': false })

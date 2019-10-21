@@ -9,11 +9,11 @@
 ## Development Requirements
 
 - [`Node.js`]: To run the project.
-- [`RethinkDB`]: To store persistent data.
+- [`PostgreSQL`]: (Dev Optional) To store persistent data.
 - [`Lavalink`]: (Dev Optional) Audio server.
 
 [`Node.js`]: https://nodejs.org/en/download/current/
-[`RethinkDB`]: https://rethinkdb.com/docs/install/
+[`PostgreSQL`]: https://www.postgresql.org/download/
 [`Lavalink`]: https://github.com/Frederikam/Lavalink
 
 ## Set-Up
@@ -29,7 +29,7 @@ $ yarn lint
 $ yarn start
 
 # Run Skyra in production mode, requires
-# Lavalink to be running:
+# Lavalink and PostgreSQL to be running:
 $ yarn pm2:start
 ```
 
@@ -55,10 +55,6 @@ Discord, and in February 2017, I met the Dirigeants team, upon which I started t
 Klasa.
 
 *Who knows, I might write a book someday for Skyra's lore.*
-
-The development for a next major version has migrated to [Lyrch].
-
-[Lyrch]: https://github.com/kyranet/Lyrch
 
 ## Links
 

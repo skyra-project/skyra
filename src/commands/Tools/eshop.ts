@@ -62,8 +62,10 @@ export default class extends SkyraCommand {
 		const display = new UserRichDisplay();
 
 		for (const game of entries) {
+			const description = parseHTML(cutText(game.description.replace(/\s\n {2,}/g, ' '), 750));
 			let price = 'Free';
 			if (game.msrp && game.msrp > 0) price = `$${game.msrp} USD`;
+
 
 			display.addPage(
 				new MessageEmbed()
@@ -71,7 +73,7 @@ export default class extends SkyraCommand {
 					.setTitle(game.title)
 					.setURL(`https://nintendo.com${game.url}`)
 					.setThumbnail(`https://nintendo.com${game.boxArt}`)
-					.setDescription(parseHTML(cutText(game.description.replace(/\s\n {2,}/g, ' '), 750)))
+					.setDescription(description)
 					.addField('Price', price, true)
 					.addField('Availability', game.availability[0], true)
 					.addField('Release Date', game.releaseDateMask === 'TBD' ? game.releaseDateMask : new Timestamp('MMMM d YYYY').displayUTC(game.releaseDateMask), true)

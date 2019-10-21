@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
 import { SQLProvider, SchemaEntry, SchemaFolder, Type, SettingsFolderUpdateResult } from 'klasa';
-import { Pool, PoolClient, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
+import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
 import { isNumber, mergeDefault } from '@klasa/utils';
 import { DEV_PGSQL } from '../../config';
 import { run as databaseInitRun } from '../lib/util/DatabaseInit';
@@ -25,7 +25,6 @@ export default class extends SQLProvider {
 		.add('permissionnode', { 'extends': 'any' });
 
 	public pgsql: Pool | null = null;
-	public dbconnection: PoolClient | null = null;
 
 	public async init() {
 		if (!DEV_PGSQL) return this.unload();

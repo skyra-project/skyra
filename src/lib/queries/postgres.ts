@@ -129,7 +129,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			FROM moderation
 			WHERE
 				"guild_id" = $1 AND
-				"case"     = $2
+				"case_id"     = $2
 			LIMIT 1;
 		`, [guildID, caseNumber]) as Promise<RawModerationSettings>;
 	}
@@ -140,7 +140,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			FROM moderation
 			WHERE
 				"guild_id" = $1 AND
-				"case" IN (${caseNumbers.join(', ')});
+				"case_id" IN (${caseNumbers.join(', ')});
 		`, [guildID]) as Promise<RawModerationSettings[]>;
 	}
 

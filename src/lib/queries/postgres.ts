@@ -224,7 +224,17 @@ export class PostgresCommonQuery implements CommonQuery {
 		return this.provider.run(/* sql */`
 			INSERT INTO moderation ("case_id", "created_at", "duration", "extra_data", "guild_id", "moderator_id", "reason", "user_id", "type")
 			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-		`, [entry.case_id, entry.created_at, entry.duration, entry.extra_data, entry.guild_id, entry.moderator_id, entry.reason, entry.user_id, entry.type]);
+		`, [
+			entry.case_id,
+			entry.created_at,
+			entry.duration,
+			entry.extra_data === null ? null : JSON.stringify(entry.extra_data),
+			entry.guild_id,
+			entry.moderator_id,
+			entry.reason,
+			entry.user_id,
+			entry.type
+		]);
 	}
 
 	public insertStar(entry: RawStarboardSettings) {
@@ -246,7 +256,15 @@ export class PostgresCommonQuery implements CommonQuery {
 			WHERE
 				"guild_id" = $6 AND
 				"case_id"  = $7
-		`, [entry.type, entry.reason, entry.duration, entry.moderator_id, entry.extra_data, entry.guild_id, entry.case_id]);
+		`, [
+			entry.type,
+			entry.reason,
+			entry.duration,
+			entry.moderator_id,
+			entry.extra_data === null ? null : JSON.stringify(entry.extra_data),
+			entry.guild_id,
+			entry.case_id
+		]);
 	}
 
 	public updateStar(entry: RawStarboardSettings) {

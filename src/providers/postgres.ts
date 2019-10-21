@@ -1,8 +1,8 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
-import { SQLProvider, util, SchemaEntry, SchemaFolder, Type, SettingsFolderUpdateResult } from 'klasa';
-import { Pool, PoolClient, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult } from 'pg';
-import { isNumber } from '@klasa/utils';
+import { SQLProvider, SchemaEntry, SchemaFolder, Type, SettingsFolderUpdateResult } from 'klasa';
+import { Pool, PoolClient, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
+import { isNumber, mergeDefault } from '@klasa/utils';
 import { DEV_PGSQL } from '../../config';
 import { run as databaseInitRun } from '../lib/util/DatabaseInit';
 
@@ -30,32 +30,21 @@ export default class extends SQLProvider {
 	public async init() {
 		if (!DEV_PGSQL) return this.unload();
 
-		const connection = util.mergeDefault({
+		const poolOptions = mergeDefault<PoolConfig, PoolConfig>({
 			host: 'localhost',
 			port: 5432,
 			database: 'klasa',
-			options: {
-				max: 20,
-				idleTimeoutMillis: 30000,
-				connectionTimeoutMillis: 2000
-			}
+			max: 20,
+			idleTimeoutMillis: 30000,
+			connectionTimeoutMillis: 2000
 		}, this.client.options.providers.postgres);
-		this.pgsql = new Pool({
-			...connection.options,
-			host: connection.host,
-			port: connection.port,
-			user: connection.user,
-			password: connection.password,
-			database: connection.database
-		});
 
+		this.pgsql = new Pool(poolOptions);
 		this.pgsql.on('error', err => this.client.emit('error', err));
-		this.dbconnection = await this.pgsql.connect();
 		await databaseInitRun(this);
 	}
 
 	public async shutdown() {
-		if (this.dbconnection) this.dbconnection.release();
 		if (this.pgsql) await this.pgsql.end();
 	}
 

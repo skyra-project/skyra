@@ -64,7 +64,7 @@ export class Queue extends Array<Song> {
 		if (voiceChannel) {
 			const members = voiceChannel.members.map(member => member.id);
 			const index = members.indexOf(this.client.user!.id);
-			if (index !== -1) members.splice(index);
+			if (index !== -1) members.splice(index, 1);
 			return members;
 		}
 		return [];

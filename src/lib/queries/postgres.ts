@@ -105,8 +105,8 @@ export class PostgresCommonQuery implements CommonQuery {
 			SELECT "user_id", "point_count"
 			FROM members
 			WHERE
-				"guild_id" = $1 AND
-				"point_count"   >= 25
+				"guild_id"    = $1 AND
+				"point_count" >= 25
 			ORDER BY point_count DESC
 			LIMIT 5000;
 		`, [guildID]) as Promise<LeaderboardEntry[]>;
@@ -129,7 +129,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			FROM moderation
 			WHERE
 				"guild_id" = $1 AND
-				"case_id"     = $2
+				"case_id"  = $2
 			LIMIT 1;
 		`, [guildID, caseNumber]) as Promise<RawModerationSettings>;
 	}

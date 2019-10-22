@@ -62,13 +62,14 @@ export default class extends SkyraCommand {
 		const display = new UserRichDisplay();
 
 		for (const game of entries) {
+			const titles = message.language.language.COMMAND_ESHOP_TITLES as unknown as EshopLanguage;
 			const description = decode(cutText(game.description.replace(/\s\n {2,}/g, ' '), 750));
 			const esrbText = game.esrb
-			 ? [
-				 `**${game.esrb}**`,
-				  game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''
+				? [
+					`**${game.esrb}**`,
+					game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''
 				].join('')
-			 : 'Not in database';
+				: message.language.tget('COMMAND_ESHOP_NOT_IN_DATABASE');
 			let price = 'Free';
 			if (game.msrp && game.msrp > 0) price = `$${game.msrp} USD`;
 
@@ -79,19 +80,28 @@ export default class extends SkyraCommand {
 					.setURL(`https://nintendo.com${game.url}`)
 					.setThumbnail(`https://nintendo.com${game.boxArt}`)
 					.setDescription(description)
-					.addField('Price', price, true)
-					.addField('Availability', game.availability[0], true)
-					.addField('Release Date', game.releaseDateMask === 'TBD' ? game.releaseDateMask : new Timestamp('MMMM d YYYY').displayUTC(game.releaseDateMask), true)
-					.addField('Number of Players', util.toTitleCase(game.players), true)
-					.addField('Platform', game.platform, true)
+					.addField(titles.PRICE, price, true)
+					.addField(titles.AVAILABILITY, game.availability[0], true)
+					.addField(titles.RELEASE_DATE, game.releaseDateMask === 'TBD' ? game.releaseDateMask : new Timestamp('MMMM d YYYY').displayUTC(game.releaseDateMask), true)
+					.addField(titles.NUMBER_OF_PLAYERS, util.toTitleCase(game.players), true)
+					.addField(titles.PLATFORM, game.platform, true)
 					.addField('NSUID', game.nsuid ? game.nsuid : 'TBD', true)
 					.addField('ESRB', esrbText)
-					.addField('Categories', game.categories.join(', '))
+					.addField(titles.CATEGORIES, game.categories.join(', '))
 			);
 		}
 		return display;
 	}
 
+}
+
+interface EshopLanguage extends Record<string, string> {
+	PRICE: string;
+	AVAILABILITY: string;
+	RELEASE_DATE: string;
+	NUMBER_OF_PLAYERS: string;
+	PLATFORM: string;
+	CATEGORIES: string;
 }
 
 interface EShopHit {

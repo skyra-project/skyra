@@ -2491,6 +2491,15 @@ export default class extends Language {
 			],
 			examples: ['Breath of the Wild', 'Pokemon', 'Splatoon']
 		}),
+		COMMAND_ESHOP_NOT_IN_DATABASE: 'Ninguno disponible',
+		COMMAND_ESHOP_TITLES: {
+			PRICE: 'Precio',
+			AVAILABILITY: 'Disponibilidad',
+			RELEASE_DATE: 'Fecha de lanzamiento',
+			NUMBER_OF_PLAYERS: 'Número de jugadores',
+			PLATFORM: 'Plataforma',
+			CATEGORIES: 'Categorías',
+		},
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
 		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',

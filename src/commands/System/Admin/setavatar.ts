@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 			}
 			const url = (res => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');
-			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
+			throw msg.language.tget('RESOLVER_INVALID_URL', possible.name);
 		});
 	}
 

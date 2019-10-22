@@ -204,7 +204,7 @@ export class ModerationManagerEntry {
 
 	public setReason(value?: string | null) {
 		if (!value) return this;
-		value = (Array.isArray(value) ? value.join(' ') : value).trim();
+		value = value.trim();
 
 		if (value && this.temporable) {
 			const match = regexParse.exec(value);

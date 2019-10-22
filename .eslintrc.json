@@ -1,8 +1,7 @@
 {
 	"extends": "bamboo",
 	"rules": {
-		"no-throw-literal": 0,
-		"@typescript-eslint/no-unnecessary-type-assertion": 2
+		"no-throw-literal": 0
 	},
 	"parserOptions": {
 		"project": "./tsconfig.json"

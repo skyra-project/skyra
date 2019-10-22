@@ -72,7 +72,6 @@ export default class extends SkyraCommand {
 			let price = 'Free';
 			if (game.msrp && game.msrp > 0) price = `$${game.msrp} USD`;
 
-
 			display.addPage(
 				new MessageEmbed()
 					.setColor(getColor(message) || 0xFFA600)

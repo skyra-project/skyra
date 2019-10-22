@@ -70,6 +70,7 @@ export default class extends SkyraCommand {
 			const cleaned = await this._clean(message, entry);
 			if (!cleaned) {
 				await message.guild!.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] }, { arrayIndex: all.indexOf(entry) });
+				return message.sendLocale('COMMAND_STICKROLES_ADD', [user.username]);
 			} else if (cleaned.raw.roles.includes(role.id)) {
 				throw message.language.tget('COMMAND_STICKYROLES_ADD_EXISTS', user.username);
 			} else {

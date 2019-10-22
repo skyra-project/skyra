@@ -98,7 +98,7 @@ export default class extends SkyraCommand {
 			display.addPage((embed: MessageEmbed) => embed.setDescription(page));
 		}
 
-		return display.run(message, undefined, { time: 120000 });
+		return display.start(message, undefined, { time: 120000 });
 	}
 
 	private _format(type: string, input: string, output: string) {

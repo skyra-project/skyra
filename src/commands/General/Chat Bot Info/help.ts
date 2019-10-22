@@ -1,5 +1,5 @@
 import { MessageEmbed, Permissions, TextChannel, Collection } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage, util, Command } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { getColor, noop } from '../../../lib/util/util';
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 			return message.sendMessage(categories.map((cat, i) => {
 				const pg = String(i + 1).padStart(digits, '0');
 				const cmdCount = commands.get(cat)!.length;
-				return `\`${pg}.\` **${cat}** → ${lang.tget('COMMAND_HELP_COMMAND_COUNT', cmdCount)}`;
+				return `\`${pg}.\` **${cat}** → ${language.tget('COMMAND_HELP_COMMAND_COUNT', cmdCount)}`;
 			}));
 		}
 
@@ -96,19 +96,19 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: SkyraCommand) {
+	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {
 		const description = util.isFunction(command.description) ? command.description(message.language) : command.description;
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 
 	private async _fetchCommands(message: KlasaMessage) {
 		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
-		const commands = new Collection<string, SkyraCommand[]>();
+		const commands = new Collection<string, Command[]>();
 		await Promise.all(this.client.commands.map(command => run(command, true)
 			.then(() => {
 				const category = commands.get(command.category);
-				if (category) category.push(command as SkyraCommand);
-				else commands.set(command.category, [command as SkyraCommand]);
+				if (category) category.push(command);
+				else commands.set(command.category, [command]);
 				return null;
 			}).catch(noop)));
 

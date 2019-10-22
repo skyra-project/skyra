@@ -26,10 +26,10 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		if (message.flagArgs.categories || message.flagArgs.cat) {
-			const commands: Collection<string, SkyraCommand[]> = await this._fetchCommands(message);
+			const commands = await this._fetchCommands(message);
 			const categories = commands.keyArray();
 			const digits = categories.length.toString().length;
-			const lang = message.language;
+			const { language } = message;
 			return message.sendMessage(categories.map((cat, i) => {
 				const pg = String(i + 1).padStart(digits, '0');
 				const cmdCount = commands.get(cat)!.length;

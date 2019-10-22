@@ -84,7 +84,7 @@ export const TYPE_ASSETS: Readonly<Record<ModerationTypeKeys, ModerationTypeAsse
 	[ModerationTypeKeys.VoiceKick]: Object.freeze({ color: 0xFFBB2D, title: 'Voice Kick' }),
 	[ModerationTypeKeys.VoiceMute]: Object.freeze({ color: 0xFBC02D, title: 'Voice Mute' }),
 	[ModerationTypeKeys.Warn]: Object.freeze({ color: 0xFFD600, title: 'Warn' }),
-	[ModerationTypeKeys.UnWarn]: Object.freeze({ color: 0x304FFE, title: 'Unban' }),
+	[ModerationTypeKeys.UnBan]: Object.freeze({ color: 0x304FFE, title: 'Unban' }),
 	[ModerationTypeKeys.UnMute]: Object.freeze({ color: 0x448AFF, title: 'Unmute' }),
 	[ModerationTypeKeys.UnVoiceMute]: Object.freeze({ color: 0xBBDEFB, title: 'Voice Unmute' }),
 	[ModerationTypeKeys.UnWarn]: Object.freeze({ color: 0xFFF494, title: 'Unwarn' }),

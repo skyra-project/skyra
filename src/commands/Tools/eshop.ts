@@ -9,6 +9,8 @@ import { decode } from 'he';
 
 export default class extends SkyraCommand {
 
+	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
+
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
@@ -20,9 +22,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
+		const embedColor = getColor(message) || 0xFFAB2D;
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(getColor(message) || 0xFFAB2D));
+			.setColor(embedColor));
 
 		const { results: entries } = await fetch(`https://${TOKENS.NINTENDO.ID}-dsn.algolia.net/1/indexes/*/queries`, {
 			method: 'POST',
@@ -52,41 +55,40 @@ export default class extends SkyraCommand {
 		}, 'json')
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as EshopResult;
 
-		const display = this.buildDisplay(entries[0].hits, message);
+		const display = this.buildDisplay(entries[0].hits, message, embedColor);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private buildDisplay(entries: EShopHit[], message: KlasaMessage) {
+	private buildDisplay(entries: EShopHit[], message: KlasaMessage, embedColor: number) {
 		const display = new UserRichDisplay();
 
 		for (const game of entries) {
 			const titles = message.language.tget('COMMAND_ESHOP_TITLES');
-			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750)
+			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
+			const price = game.msrp ? message.language.tget('COMMAND_ESHOP_PRICE', game.msrp) : 'TBD';
 			const esrbText = game.esrb
 				? [
 					`**${game.esrb}**`,
 					game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''
 				].join('')
 				: message.language.tget('COMMAND_ESHOP_NOT_IN_DATABASE');
-			let price = 'Free';
-			if (game.msrp && game.msrp > 0) price = `$${game.msrp} USD`;
 
 			display.addPage(
 				new MessageEmbed()
-					.setColor(getColor(message) || 0xFFA600)
+					.setColor(embedColor)
 					.setTitle(game.title)
 					.setURL(`https://nintendo.com${game.url}`)
 					.setThumbnail(`https://nintendo.com${game.boxArt}`)
 					.setDescription(description)
 					.addField(titles.PRICE, price, true)
 					.addField(titles.AVAILABILITY, game.availability[0], true)
-					.addField(titles.RELEASE_DATE, game.releaseDateMask === 'TBD' ? game.releaseDateMask : new Timestamp('MMMM d YYYY').displayUTC(game.releaseDateMask), true)
+					.addField(titles.RELEASE_DATE, game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask), true)
 					.addField(titles.NUMBER_OF_PLAYERS, util.toTitleCase(game.players), true)
 					.addField(titles.PLATFORM, game.platform, true)
-					.addField('NSUID', game.nsuid ? game.nsuid : 'TBD', true)
-					.addField('ESRB', esrbText)
+					.addField(titles.NSUID, game.nsuid || 'TBD', true)
+					.addField(titles.ESRB, esrbText)
 					.addField(titles.CATEGORIES, game.categories.join(', '))
 			);
 		}

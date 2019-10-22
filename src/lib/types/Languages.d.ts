@@ -511,7 +511,10 @@ export interface LanguageKeys {
 		NUMBER_OF_PLAYERS: string;
 		PLATFORM: string;
 		CATEGORIES: string;
-	}
+		NSUID: 'NSUID';
+		ESRB: 'ESRB';
+	};
+	COMMAND_ESHOP_PRICE: (price: number) => string;
 	COMMAND_POLL_DESCRIPTION: string;
 	COMMAND_POLL_EXTENDED: string;
 	COMMAND_PRICE_DESCRIPTION: string;

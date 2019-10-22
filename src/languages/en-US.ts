@@ -2533,7 +2533,10 @@ export default class extends Language {
 			NUMBER_OF_PLAYERS: 'Number of Players',
 			PLATFORM: 'Platform',
 			CATEGORIES: 'Categories',
+			NSUID: 'NSUID',
+			ESRB: 'ESRB'
 		},
+		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Free',
 		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
 		COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',
 		COMMAND_POLL_WANT_USERS: 'Do you want to include a users whitelist?',

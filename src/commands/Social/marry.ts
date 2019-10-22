@@ -1,9 +1,28 @@
+import assert from 'assert';
+import { TextChannel, DMChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';
+
+enum YesNoAnswer {
+	Timeout,
+	ImplicitNo,
+	Yes,
+}
+
+async function askYesNo(channel: TextChannel | DMChannel, user: KlasaUser, question: string): Promise<YesNoAnswer> {
+	await channel.send(question);
+	const messages = await channel.awaitMessages(msg => msg.author.id === user.id, { time: 60000, max: 1 });
+	if (!messages.size) return YesNoAnswer.Timeout;
+
+	const response = messages.first()!;
+	return REGEXP_ACCEPT.test(response.content)
+		? YesNoAnswer.Yes
+		: YesNoAnswer.ImplicitNo;
+}
 
 export default class extends SkyraCommand {
 
@@ -35,36 +54,50 @@ export default class extends SkyraCommand {
 	}
 
 	public async _marry(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === this.client.user!.id) return message.sendLocale('COMMAND_MARRY_SKYRA');
-		if (user.id === SNEYRA_ID) return message.sendLocale('COMMAND_MARRY_SNEYRA');
-		if (user.id === message.author!.id) return message.sendLocale('COMMAND_MARRY_SELF');
+		const { author, channel, language } = message;
+
+		switch (user.id) {
+			case this.client.user!.id: return message.sendLocale('COMMAND_MARRY_SKYRA');
+			case SNEYRA_ID: return message.sendLocale('COMMAND_MARRY_SNEYRA');
+			case author.id: return message.sendLocale('COMMAND_MARRY_SELF');
+		}
 		if (user.bot) return message.sendLocale('COMMAND_MARRY_BOTS');
 
 		// settings is already sync by the monitors.
-		if (message.author!.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
+		let spouses = author.settings.get(UserSettings.Marry).slice();
+		let targetsSpouses = user.settings.get(UserSettings.Marry).slice();
 
-		// Check if the target user is already married.
-		await user.settings.sync();
-		if (user.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_TAKEN');
+		// Warn if starting polygamy:
+		// Check if the author is already monogamous.
+		if (spouses.length === 1) {
+			const answer = await askYesNo(channel, author, language.get('COMMAND_MARRY_AUTHOR_TAKEN'));
+			if (answer !== YesNoAnswer.Yes) return language.get('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', spouses[0]);
+		// Check if the author's first potential spouse is already married.
+		} else if (spouses.length === 0 && targetsSpouses.length > 0) {
+			const answer = await askYesNo(channel, author, language.get('COMMAND_MARRY_TAKEN', targetsSpouses.length));
+			if (answer !== YesNoAnswer.Yes) return language.get('COMMAND_MARRY_MULTIPLE_CANCEL', spouses[0]);
+		}
 
-		// Get a message from the user.
-		await message.sendLocale('COMMAND_MARRY_PETITION', [message.author, user]);
-		const messages = await message.channel.awaitMessages(msg => msg.author.id === user.id, { time: 60000, max: 1 });
-		if (!messages.size) return message.sendLocale('COMMAND_MARRY_NOREPLY');
+		const answer = await askYesNo(channel, user, language.get('COMMAND_MARRY_PETITION', author, user));
+		switch (answer) {
+			case YesNoAnswer.Timeout: return message.sendLocale('COMMAND_MARRY_NOREPLY');
+			case YesNoAnswer.ImplicitNo: return message.sendLocale('COMMAND_MARRY_DENIED');
+			case YesNoAnswer.Yes: break;
+			default: assert.fail('unreachable');
+		}
 
-		const response = messages.first()!;
-		if (!REGEXP_ACCEPT.test(response.content)) return message.sendLocale('COMMAND_MARRY_DENIED');
+		// Update the references, and clone them since they're readonly
+		spouses = author.settings.get(UserSettings.Marry).slice();
+		targetsSpouses = user.settings.get(UserSettings.Marry).slice();
 
-		// The user may have tried to marry somebody else while the prompt was running.
-		if (user.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_TAKEN');
-		if (message.author!.settings.get(UserSettings.Marry)) return message.sendLocale('COMMAND_MARRY_AUTHOR_TAKEN');
-
+		if (!spouses.includes(user.id)) spouses.push(user.id);
+		if (!targetsSpouses.includes(author.id)) targetsSpouses.push(author.id);
 		await Promise.all([
-			message.author!.settings.update(UserSettings.Marry, user),
-			user.settings.update(UserSettings.Marry, message.author)
+			author.settings.update(UserSettings.Marry, spouses),
+			user.settings.update(UserSettings.Marry, targetsSpouses)
 		]);
 
-		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [message.author, user]);
+		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [author, user]);
 	}
 
 }

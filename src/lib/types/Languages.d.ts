@@ -573,7 +573,7 @@ export interface LanguageKeys {
 		OVA: string;
 		SPECIAL: string;
 		[index: string]: string;
-	}
+	};
 	COMMAND_ANIME_INVALID_CHOICE: string;
 	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
 	COMMAND_ANIME_TITLES: {
@@ -584,7 +584,7 @@ export interface LanguageKeys {
 		AGE_RATING: string;
 		FIRST_AIR_DATE: string;
 		WATCH_IT: string;
-	}
+	};
 	COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
 	COMMAND_MANGA_TITLES: {
 		TYPE: string;
@@ -592,7 +592,7 @@ export interface LanguageKeys {
 		AGE_RATING: string;
 		FIRST_PUBLISH_DATE: string;
 		READ_IT: string;
-	}
+	};
 	COMMAND_MANGA_TYPES: {
 		'MANGA': string;
 		'NOVEL': string;
@@ -600,7 +600,7 @@ export interface LanguageKeys {
 		'ONE-SHOT': string;
 		'SPECIAL': string;
 		[index: string]: string;
-	}
+	};
 	COMMAND_SUBSCRIBE_NO_ROLE: string;
 	COMMAND_SUBSCRIBE_SUCCESS: (role: string) => string;
 	COMMAND_UNSUBSCRIBE_SUCCESS: (role: string) => string;

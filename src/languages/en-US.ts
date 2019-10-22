@@ -1863,7 +1863,7 @@ export default class extends Language {
 			EPISODE_LENGTH: 'Episode length',
 			AGE_RATING: 'Age rating',
 			FIRST_AIR_DATE: 'First air date',
-			WATCH_IT: 'Watch it here:',
+			WATCH_IT: 'Watch it here:'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,

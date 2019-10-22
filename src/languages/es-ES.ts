@@ -1841,7 +1841,7 @@ export default class extends Language {
 			EPISODE_LENGTH: 'Duración del episodio',
 			AGE_RATING: 'Clasificación de edad',
 			FIRST_AIR_DATE: 'Primera fecha de emisión',
-			WATCH_IT: 'Míralo Aquí:',
+			WATCH_IT: 'Míralo Aquí:'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,

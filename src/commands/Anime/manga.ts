@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
 			const score = `${entry.averageRating}%`;
 			const mangaURL = `https://kitsu.io/manga/${entry.id}`;
-			const titles = message.language.tget('COMMAND_MANGA_TITLES')
+			const titles = message.language.tget('COMMAND_MANGA_TITLES');
 			const type = entry.subtype;
 			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 

@@ -83,17 +83,17 @@ export abstract class SelfModerationCommand extends Command {
 			}
 
 			if (type === AKeys.HardActionDuration) {
-				const key = message.guild!.settings.schema.get(this.keyHardActionDuration);
+				const key = message.guild!.settings.schema.get(this.keyHardActionDuration) as SchemaEntry;
 				return this.parseDuration(message, key, arg, 'Hard Action Duration');
 			}
 
 			if (type === AKeys.ThresholdMaximum) {
-				const key = message.guild!.settings.schema.get(this.keyThresholdMaximum);
+				const key = message.guild!.settings.schema.get(this.keyThresholdMaximum) as SchemaEntry;
 				return this.parseMaximum(message, key, arg, 'Threshold Maximum');
 			}
 
 			if (type === AKeys.ThresholdDuration) {
-				const key = message.guild!.settings.schema.get(this.keyThresholdDuration);
+				const key = message.guild!.settings.schema.get(this.keyThresholdDuration) as SchemaEntry;
 				return this.parseDuration(message, key, arg, 'Threshold Duration');
 			}
 

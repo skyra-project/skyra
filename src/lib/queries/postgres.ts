@@ -77,7 +77,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"guild_id"   = $1 AND
 				"message_id" IN ('${messageIDs.join("', '")}')
 			RETURNING *;
-		`, [guildID, messageIDs]);
+		`, [guildID]);
 	}
 
 	public fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {

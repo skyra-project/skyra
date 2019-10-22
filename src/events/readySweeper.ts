@@ -1,13 +1,14 @@
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 import { Events } from '../lib/types/Enums';
+import { ApplyOptions } from '../lib/util/util';
 
 const HEADER = `\u001B[39m\u001B[94m[MEMORY CLEANUP]\u001B[39m\u001B[90m`;
 
+@ApplyOptions<EventOptions>({
+	event: 'ready',
+	once: true
+})
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: 'ready' });
-	}
 
 	public run() {
 		this.client.emit(Events.Verbose, `${HEADER} Running initial sweep...`);

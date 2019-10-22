@@ -1,10 +1,11 @@
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
+import { Event, EventOptions } from 'klasa';
 import { APIUserData, WSGuildMemberRemove } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
-import { Event, EventStore } from 'klasa';
 import { rest } from '../lib/util/Models/Rest';
+import { ApplyOptions } from '../lib/util/util';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
@@ -14,11 +15,11 @@ const MATCHES = {
 	MEMBERTAG: '%MEMBERTAG%'
 };
 
+@ApplyOptions<EventOptions>({
+	name: 'GUILD_MEMBER_REMOVE',
+	emitter: 'ws'
+})
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'GUILD_MEMBER_REMOVE', emitter: store.client.ws });
-	}
 
 	public run(data: WSGuildMemberRemove) {
 		const guild = this.client.guilds.get(data.guild_id);

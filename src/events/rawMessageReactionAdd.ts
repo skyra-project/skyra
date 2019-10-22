@@ -1,16 +1,16 @@
 import { TextChannel } from 'discord.js';
+import { Event, EventOptions } from 'klasa';
 import { WSMessageReactionAdd } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
-import { resolveEmoji } from '../lib/util/util';
-import { Event, EventStore } from 'klasa';
+import { ApplyOptions, resolveEmoji } from '../lib/util/util';
 
+@ApplyOptions<EventOptions>({
+	name: 'MESSAGE_REACTION_ADD',
+	emitter: 'ws'
+})
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'MESSAGE_REACTION_ADD', emitter: store.client.ws });
-	}
 
 	public async run(data: WSMessageReactionAdd): Promise<void> {
 		const channel = this.client.channels.get(data.channel_id) as TextChannel;

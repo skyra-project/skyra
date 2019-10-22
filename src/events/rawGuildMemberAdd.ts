@@ -1,9 +1,10 @@
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
+import { Event, EventOptions } from 'klasa';
 import { WSGuildMemberAdd } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
-import { Event, EventStore } from 'klasa';
+import { ApplyOptions } from '../lib/util/util';
 
 const { FLAGS } = Permissions;
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
@@ -19,11 +20,11 @@ const COLORS = {
 	MUTE: { color: 0xFDD835, title: 'Muted Member Join' }
 };
 
+@ApplyOptions<EventOptions>({
+	name: 'GUILD_MEMBER_ADD',
+	emitter: 'ws'
+})
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'GUILD_MEMBER_ADD', emitter: store.client.ws });
-	}
 
 	public async run(data: WSGuildMemberAdd) {
 		const guild = this.client.guilds.get(data.guild_id);

@@ -1,7 +1,11 @@
-import { Event } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { Slotmachine } from '../lib/util/Games/Slotmachine';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<EventOptions>({
+	once: true
+})
 export default class extends Event {
 
 	public run() {

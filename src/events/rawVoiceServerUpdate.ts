@@ -1,12 +1,13 @@
+import { Event, EventOptions } from 'klasa';
 import { VoiceServerUpdate } from 'lavalink';
 import { Events } from '../lib/types/Enums';
-import { EventStore, Event } from 'klasa';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<EventOptions>({
+	name: 'VOICE_SERVER_UPDATE',
+	emitter: 'ws'
+})
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'VOICE_SERVER_UPDATE', emitter: store.client.ws });
-	}
 
 	public async run(data: VoiceServerUpdate): Promise<void> {
 		try {

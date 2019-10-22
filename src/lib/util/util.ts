@@ -9,7 +9,7 @@ import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys, TIME } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
-import { util, RateLimitManager, PieceOptions, Piece, Store } from 'klasa';
+import { util, RateLimitManager, PieceOptions, Piece, Store, ArgResolverCustomMethod, Command, CommandOptions, CommandStore } from 'klasa';
 import { Mutable } from '../types/util';
 import { api } from './Models/Api';
 import { Events } from '../types/Enums';
@@ -547,14 +547,28 @@ export function enumerable(value: boolean) {
 	};
 }
 
-export function ApplyOptions<T extends PieceOptions>(options: T) {
+export function ApplyOptions<T extends PieceOptions>(options: T): Function {
 
-	return (target: Constructor<Piece>) => class extends target {
+	return (target: Constructor<Piece>): Constructor<Piece> => class extends target {
+
 		public constructor(store: Store<string, Piece, typeof Piece>, file: string[], directory: string) {
 			super(store, file, directory, options);
 		}
-	}
 
+	};
+
+}
+
+export function CreateResolver(name: string, fn: ArgResolverCustomMethod) {
+	return (target: Constructor<Command>) => class extends target {
+
+		public constructor(store: CommandStore, file: string[], directory: string, options: CommandOptions) {
+			super(store, file, directory, options);
+
+			this.createCustomResolver(name, fn);
+		}
+
+	};
 }
 
 export const authenticated = createFunctionInhibitor(

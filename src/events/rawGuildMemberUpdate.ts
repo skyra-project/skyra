@@ -1,13 +1,14 @@
-import { WSGuildMemberUpdate, AuditLogResult } from '../lib/types/DiscordAPI';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
+import { AuditLogResult, WSGuildMemberUpdate } from '../lib/types/DiscordAPI';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { api } from '../lib/util/Models/Api';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<EventOptions>({
+	name: 'GUILD_MEMBER_UPDATE',
+	emitter: 'ws'
+})
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'GUILD_MEMBER_UPDATE', emitter: store.client.ws });
-	}
 
 	public async run(data: WSGuildMemberUpdate): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);

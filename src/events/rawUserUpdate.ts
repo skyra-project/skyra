@@ -1,11 +1,12 @@
+import { Event, EventOptions } from 'klasa';
 import { APIUserData } from '../lib/types/DiscordAPI';
-import { Event, EventStore } from 'klasa';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<EventOptions>({
+	name: 'USER_UPDATE',
+	emitter: 'ws'
+})
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'USER_UPDATE', emitter: store.client.ws });
-	}
 
 	public run(data: APIUserData) {
 		const user = this.client.users.get(data.id);

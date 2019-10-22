@@ -13,12 +13,12 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('rolls', (arg, _, msg) => {
-			if (!arg || arg === '') return undefined;
+			if (!arg) return undefined;
 			const n = Number(arg);
 			if (util.isNumber(n) || n < 1 || n > 1024) throw msg.language.tget('COMMAND_DICE_ROLLS_ERROR');
 			return n | 0;
 		}).createCustomResolver('sides', (arg, _, msg) => {
-			if (!arg || arg === '') return undefined;
+			if (!arg) return undefined;
 			const n = Number(arg);
 			if (util.isNumber(n) || n < 4 || n > 1024) throw msg.language.tget('COMMAND_DICE_SIDES_ERROR');
 			return n | 0;

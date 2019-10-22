@@ -19,7 +19,7 @@ export default class extends Event {
 		if (!member) return;
 		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 		// @ts-ignore 2339
-		if (member) member._patch(data);
+		member._patch(data);
 
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;

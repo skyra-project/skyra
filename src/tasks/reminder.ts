@@ -15,7 +15,7 @@ export default class extends Task {
 				.catch(error => this._catchError(error));
 		}
 	}
-	
+
 	private _catchError(error: DiscordAPIError): void {
 		// 50007: Cannot send messages to this user
 		// 10013: Unknown user

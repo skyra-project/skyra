@@ -5,7 +5,7 @@ import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { cutText, fetch, getColor } from '../../lib/util/util';
-import parseHTML from '@favware/unescape';
+import { decode } from 'he';
 
 export default class extends SkyraCommand {
 
@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 
 		const display = this.buildDisplay(entries[0].hits);
 
-		await display.run(response, message.author.id);
+		await display.start(response, message.author.id);
 		return response;
 	}
 
@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 		const display = new UserRichDisplay();
 
 		for (const game of entries) {
-			const description = parseHTML(cutText(game.description.replace(/\s\n {2,}/g, ' '), 750));
+			const description = decode(cutText(game.description.replace(/\s\n {2,}/g, ' '), 750));
 			let price = 'Free';
 			if (game.msrp && game.msrp > 0) price = `$${game.msrp} USD`;
 

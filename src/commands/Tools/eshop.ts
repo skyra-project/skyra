@@ -63,6 +63,12 @@ export default class extends SkyraCommand {
 
 		for (const game of entries) {
 			const description = decode(cutText(game.description.replace(/\s\n {2,}/g, ' '), 750));
+			const esrbText = game.esrb
+			 ? [
+				 `**${game.esrb}**`,
+				  game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''
+				].join('')
+			 : 'Not in database';
 			let price = 'Free';
 			if (game.msrp && game.msrp > 0) price = `$${game.msrp} USD`;
 
@@ -80,7 +86,7 @@ export default class extends SkyraCommand {
 					.addField('Number of Players', util.toTitleCase(game.players), true)
 					.addField('Platform', game.platform, true)
 					.addField('NSUID', game.nsuid ? game.nsuid : 'TBD', true)
-					.addField('ESRB', game.esrb ? `**${game.esrb}** - ${game.esrbDescriptors.join(', ')}` : 'Not in database')
+					.addField('ESRB', esrbText)
 					.addField('Categories', game.categories.join(', '))
 			);
 		}
@@ -107,7 +113,7 @@ interface EShopHit {
 	categories: string[];
 	msrp: number | null;
 	esrb?: string;
-	esrbDescriptors: string[];
+	esrbDescriptors?: string[];
 	virtualConsole: string;
 	generalFilters: string[];
 	filterShops: string[];

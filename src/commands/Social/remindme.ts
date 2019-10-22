@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.run(response, message.author!.id);
+		await display.start(response, message.author!.id);
 		return response;
 	}
 

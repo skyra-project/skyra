@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 			if (startPage !== null) {
 				if (startPage < 0 || startPage >= display.pages.length) startPage = 0;
 			}
-			await display.run(response, message.author!.id, startPage === null ? undefined : { startPage });
+			await display.start(response, message.author!.id, startPage === null ? undefined : { startPage });
 			return response;
 		}
 

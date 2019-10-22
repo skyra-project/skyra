@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 
 		const display = this.buildDisplay(list, message, query);
 
-		await display.run(response, message.author!.id);
+		await display.start(response, message.author!.id);
 		return response;
 	}
 

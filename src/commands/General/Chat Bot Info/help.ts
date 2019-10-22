@@ -72,7 +72,9 @@ export default class extends SkyraCommand {
 		const commands = await this._fetchCommands(message);
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
-		const display = new UserRichDisplay();
+		const display = new UserRichDisplay()
+			.setFooterSuffix(' | Use the --all flag to get the full list in DMs');
+
 		const color = getColor(message) || 0xFFAB2D;
 		for (const [category, list] of commands) {
 			display.addPage(new MessageEmbed()

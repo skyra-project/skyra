@@ -1,11 +1,11 @@
+import { KlasaIncomingMessage, Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 import { createGunzip, createInflate } from 'zlib';
-import { KlasaIncomingMessage, Middleware, MiddlewareStore } from 'klasa-dashboard-hooks';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<MiddlewareOptions>({
+	priority: 20
+})
 export default class extends Middleware {
-
-	public constructor(store: MiddlewareStore, file: string[], directory: string) {
-		super(store, file, directory, { priority: 20 });
-	}
 
 	public async run(request: KlasaIncomingMessage) {
 		if (request.method !== 'POST') return;

@@ -1,12 +1,12 @@
-import { Middleware, MiddlewareStore } from 'klasa-dashboard-hooks';
+import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 import ApiRequest from '../lib/structures/api/ApiRequest';
 import ApiResponse from '../lib/structures/api/ApiResponse';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<MiddlewareOptions>({
+	priority: 10
+})
 export default class extends Middleware {
-
-	public constructor(store: MiddlewareStore, file: string[], directory: string) {
-		super(store, file, directory, { priority: 10 });
-	}
 
 	public run(request: ApiRequest, response: ApiResponse) {
 		response.setHeader('Access-Control-Allow-Origin', '*');

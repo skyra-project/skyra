@@ -52,13 +52,13 @@ export default class extends SkyraCommand {
 		}, 'json')
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as EshopResult;
 
-		const display = this.buildDisplay(entries[0].hits);
+		const display = this.buildDisplay(entries[0].hits, message);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private buildDisplay(entries: EShopHit[]) {
+	private buildDisplay(entries: EShopHit[], message: KlasaMessage) {
 		const display = new UserRichDisplay();
 
 		for (const game of entries) {
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 
 			display.addPage(
 				new MessageEmbed()
-					.setColor('#FFA600')
+					.setColor(getColor(message) || 0xFFA600)
 					.setTitle(game.title)
 					.setURL(`https://nintendo.com${game.url}`)
 					.setThumbnail(`https://nintendo.com${game.boxArt}`)

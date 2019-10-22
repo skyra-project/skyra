@@ -1,16 +1,14 @@
-import { Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
+import { Inhibitor, InhibitorOptions, KlasaMessage } from 'klasa';
 import { MusicBitField } from '../lib/structures/MusicBitField';
 import { MusicCommand } from '../lib/structures/MusicCommand';
+import { ApplyOptions } from '../lib/util/util';
 
 const { FLAGS } = MusicBitField;
 
+@ApplyOptions<InhibitorOptions>({
+	spamProtection: true
+})
 export default class extends Inhibitor {
-
-	public constructor(store: InhibitorStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			spamProtection: true
-		});
-	}
 
 	public async run(message: KlasaMessage, command: MusicCommand) {
 		if (!(command instanceof MusicCommand) || !command.music.bitfield) return;

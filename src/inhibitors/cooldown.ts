@@ -1,13 +1,11 @@
-import { Inhibitor, KlasaMessage, InhibitorStore, Finalizer } from 'klasa';
+import { Finalizer, Inhibitor, InhibitorOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<InhibitorOptions>({
+	spamProtection: true
+})
 export default class extends Inhibitor {
-
-	public constructor(store: InhibitorStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			spamProtection: true
-		});
-	}
 
 	public run(message: KlasaMessage, command: SkyraCommand) {
 		if (this.client.owners.has(message.author) || command.cooldown <= 0) return;

@@ -1,10 +1,12 @@
-import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
+import { Inhibitor, InhibitorOptions, KlasaMessage, RateLimitManager } from 'klasa';
 import { SkyraCommand } from '../lib/structures/SkyraCommand';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<InhibitorOptions>({
+	spamProtection: true
+})
 export default class extends Inhibitor {
-
-	public spamProtection = true;
 
 	private readonly ratelimit = new RateLimitManager(1, 30000);
 

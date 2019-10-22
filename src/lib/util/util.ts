@@ -548,11 +548,13 @@ export function enumerable(value: boolean) {
 }
 
 export function ApplyOptions<T extends PieceOptions>(options: T) {
+
 	return (target: Constructor<Piece>) => class extends target {
 		public constructor(store: Store<string, Piece, typeof Piece>, file: string[], directory: string) {
 			super(store, file, directory, options);
 		}
 	}
+
 }
 
 export const authenticated = createFunctionInhibitor(

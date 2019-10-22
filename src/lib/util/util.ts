@@ -1,5 +1,5 @@
 import { Image } from 'canvas';
-import { Client, Guild, GuildMember, ImageSize, Message, Role, TextChannel, User, VoiceChannel } from 'discord.js';
+import { Client, Guild, GuildMember, ImageSize, Message, Role, TextChannel, User, VoiceChannel, Constructor } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { isObject } from 'util';
@@ -9,7 +9,7 @@ import { UserSettings } from '../types/settings/UserSettings';
 import { ModerationTypeKeys, TIME } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
-import { util, RateLimitManager } from 'klasa';
+import { util, RateLimitManager, PieceOptions, Piece, Store } from 'klasa';
 import { Mutable } from '../types/util';
 import { api } from './Models/Api';
 import { Events } from '../types/Enums';
@@ -545,6 +545,14 @@ export function enumerable(value: boolean) {
 			}
 		});
 	};
+}
+
+export function ApplyOptions<T extends PieceOptions>(options: T) {
+	return (target: Constructor<Piece>) => class extends target {
+		public constructor(store: Store<string, Piece, typeof Piece>, file: string[], directory: string) {
+			super(store, file, directory, options);
+		}
+	}
 }
 
 export const authenticated = createFunctionInhibitor(

@@ -195,6 +195,7 @@ export default class extends Language {
 		COMMAND_HELP_DM: '📥 | The list of commands you have access to has been sent to your DMs.',
 		COMMAND_HELP_NODM: `${REDCROSS} | You have DMs disabled, I couldn't send you the commands in DMs.`,
 		COMMAND_HELP_ALL_FLAG: `${LOADING} Displaying one category per page. Have issues with the embed? Run \`Skyra, help --all\` for a full list in DMs.`,
+		COMMAND_HELP_COMMAND_COUNT: n => `${n} command${n === 1 ? '' : 's'}`,
 		COMMAND_ENABLE: (type, name) => `+ Successfully enabled ${type}: ${name}`,
 		COMMAND_ENABLE_DESCRIPTION: 'Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.',
 		COMMAND_DISABLE: (type, name) => `+ Successfully disabled ${type}: ${name}`,

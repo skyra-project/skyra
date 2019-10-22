@@ -46,16 +46,17 @@ export default class extends SkyraCommand {
 		]);
 	}
 
-	public async claimDaily(message: KlasaMessage, nextTime: number) {
+	private async claimDaily(message: KlasaMessage, nextTime: number) {
+		const money = this.calculateDailies(message);
+		const total = money + message.author.settings.get(UserSettings.Money);
+		await message.author.settings.update([[UserSettings.Money, total], [UserSettings.TimeDaily, nextTime]]);
+		return money;
+	}
+
+	private calculateDailies(message: KlasaMessage) {
 		let money = 200;
-		if (message.guild) {
-			await message.guild!.settings.sync();
-			const boostGuilds = this.client.settings!.get(ClientSettings.Boosts.Guilds);
-			const boostUsers = this.client.settings!.get(ClientSettings.Boosts.Users);
-			money *= (boostGuilds.includes(message.guild!.id) ? 1.5 : 1) * (boostUsers.includes(message.author!.id) ? 1.5 : 1);
-		}
-		const total = money + message.author!.settings.get(UserSettings.Money);
-		await message.author!.settings.update([['money', total], ['timeDaily', nextTime]]);
+		if (this.client.settings!.get(ClientSettings.Boosts.Users).includes(message.author.id)) money *= 1.5;
+		if (message.guild && this.client.settings!.get(ClientSettings.Boosts.Guilds).includes(message.guild.id)) money *= 1.5;
 		return money;
 	}
 

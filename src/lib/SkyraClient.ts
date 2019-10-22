@@ -4,7 +4,7 @@ import { Collection, Webhook } from 'discord.js';
 import { Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { FSWatcher } from 'chokidar';
-import klasaDashboardHooks = require('klasa-dashboard-hooks');
+import { DashboardClient } from 'klasa-dashboard-hooks';
 
 // Import all types
 import { Events } from './types/Enums';
@@ -145,4 +145,4 @@ export class SkyraClient extends KlasaClient {
 
 }
 
-SkyraClient.use(klasaDashboardHooks);
+SkyraClient.use(DashboardClient);

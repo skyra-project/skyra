@@ -64,8 +64,8 @@ export default class extends SkyraCommand {
 		if (user.bot) return message.sendLocale('COMMAND_MARRY_BOTS');
 
 		// settings is already sync by the monitors.
-		let spouses = author.settings.get(UserSettings.Marry).slice();
-		let targetsSpouses = user.settings.get(UserSettings.Marry).slice();
+		const spouses = author.settings.get(UserSettings.Marry);
+		const targetsSpouses = user.settings.get(UserSettings.Marry);
 
 		// Warn if starting polygamy:
 		// Check if the author is already monogamous.
@@ -86,15 +86,9 @@ export default class extends SkyraCommand {
 			default: assert.fail('unreachable');
 		}
 
-		// Update the references, and clone them since they're readonly
-		spouses = author.settings.get(UserSettings.Marry).slice();
-		targetsSpouses = user.settings.get(UserSettings.Marry).slice();
-
-		if (!spouses.includes(user.id)) spouses.push(user.id);
-		if (!targetsSpouses.includes(author.id)) targetsSpouses.push(author.id);
 		await Promise.all([
-			author.settings.update(UserSettings.Marry, spouses),
-			user.settings.update(UserSettings.Marry, targetsSpouses)
+			author.settings.update(UserSettings.Marry, user, { arrayAction: 'add' }),
+			user.settings.update(UserSettings.Marry, author, { arrayAction: 'add' })
 		]);
 
 		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [author, user]);

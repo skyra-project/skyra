@@ -1,12 +1,12 @@
-import { Extendable, ExtendableStore, Language, LanguageStore } from 'klasa';
-import { LanguageKeysSimple, LanguageKeysComplex } from '../lib/types/Augments';
+import { Extendable, ExtendableOptions, Language, LanguageStore } from 'klasa';
+import { LanguageKeysComplex, LanguageKeysSimple } from '../lib/types/Augments';
 import { LanguageKeys } from '../lib/types/Languages';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<ExtendableOptions>({
+	appliesTo: [Language]
+})
 export default class extends Extendable {
-
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [Language] });
-	}
 
 	public tget<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
 	public tget<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>

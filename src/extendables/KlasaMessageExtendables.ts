@@ -1,12 +1,12 @@
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
-import { Extendable, ExtendableStore, util } from 'klasa';
+import { Extendable, ExtendableOptions, util } from 'klasa';
 import { Events } from '../lib/types/Enums';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<ExtendableOptions>({
+	appliesTo: [Message]
+})
 export default class extends Extendable {
-
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [Message] });
-	}
 
 	public async prompt(this: Message, content: string, time = 30000) {
 		const message = await this.channel.send(content);

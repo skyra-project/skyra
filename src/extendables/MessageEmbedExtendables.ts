@@ -1,11 +1,11 @@
 import { MessageEmbed } from 'discord.js';
-import { Extendable, ExtendableStore } from 'klasa';
+import { Extendable, ExtendableOptions } from 'klasa';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<ExtendableOptions>({
+	appliesTo: [MessageEmbed]
+})
 export default class extends Extendable {
-
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [MessageEmbed] });
-	}
 
 	public splitFields(this: MessageEmbed, content: string | string[]) {
 		if (typeof content === 'undefined') return this;

@@ -1,12 +1,12 @@
 import { User } from 'discord.js';
-import { Extendable, ExtendableStore } from 'klasa';
+import { Extendable, ExtendableOptions } from 'klasa';
 import { UserSettings } from '../lib/types/settings/UserSettings';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<ExtendableOptions>({
+	appliesTo: [User]
+})
 export default class extends Extendable {
-
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [User] });
-	}
 
 	public get profileLevel(this: User) {
 		return Math.floor(0.2 * Math.sqrt(this.settings.get(UserSettings.Points)));

@@ -1,11 +1,11 @@
 import { GuildMember } from 'discord.js';
-import { Extendable, ExtendableStore } from 'klasa';
+import { Extendable, ExtendableOptions } from 'klasa';
+import { ApplyOptions } from '../lib/util/util';
 
+@ApplyOptions<ExtendableOptions>({
+	appliesTo: [GuildMember]
+})
 export default class extends Extendable {
-
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [GuildMember] });
-	}
 
 	public async fetchRank(this: GuildMember) {
 		const list = await this.client.leaderboard.fetch(this.guild.id);

@@ -1,16 +1,15 @@
+import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
+import { ApplyOptions, ratelimit } from '../../lib/util/util';
 import OauthUser from './oauthUser';
-import { ratelimit } from '../../lib/util/util';
 
+@ApplyOptions<RouteOptions>({
+	route: 'oauth/callback'
+})
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'oauth/callback' });
-	}
 
 	@ratelimit(2, 60000)
 	public async post(request: ApiRequest, response: ApiResponse) {

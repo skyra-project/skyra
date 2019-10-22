@@ -1,12 +1,11 @@
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { ApplyOptions } from '../../lib/util/util';
 
+@ApplyOptions<RouteOptions>({
+	route: 'oauth/user'
+})
 export default class extends Route {
-
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'oauth/user' });
-	}
 
 	public async api(token: string) {
 		token = `Bearer ${token}`;

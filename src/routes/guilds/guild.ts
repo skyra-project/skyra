@@ -1,18 +1,17 @@
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Permissions } from 'discord.js';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
-import { authenticated, ratelimit } from '../../lib/util/util';
-import { Permissions } from 'discord.js';
-import { flattenGuild } from '../../lib/util/Models/ApiTransform';
 import { api } from '../../lib/util/Models/Api';
+import { flattenGuild } from '../../lib/util/Models/ApiTransform';
+import { ApplyOptions, authenticated, ratelimit } from '../../lib/util/util';
 
 const { FLAGS: { MANAGE_GUILD } } = Permissions;
 
+@ApplyOptions<RouteOptions>({
+	route: 'guilds/:guild'
+})
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'guilds/:guild' });
-	}
 
 	@authenticated
 	@ratelimit(2, 5000, true)

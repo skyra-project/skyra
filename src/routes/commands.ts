@@ -1,13 +1,12 @@
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import ApiRequest from '../lib/structures/api/ApiRequest';
 import ApiResponse from '../lib/structures/api/ApiResponse';
-import { ratelimit } from '../lib/util/util';
+import { ApplyOptions, ratelimit } from '../lib/util/util';
 
+@ApplyOptions<RouteOptions>({
+	route: 'commands'
+})
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'commands' });
-	}
 
 	@ratelimit(2, 2500)
 	public get(request: ApiRequest, response: ApiResponse) {

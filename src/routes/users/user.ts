@@ -1,14 +1,13 @@
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
-import { authenticated, ratelimit } from '../../lib/util/util';
-import { flattenUser, flattenGuild, FlattenedGuild } from '../../lib/util/Models/ApiTransform';
+import { FlattenedGuild, flattenGuild, flattenUser } from '../../lib/util/Models/ApiTransform';
+import { ApplyOptions, authenticated, ratelimit } from '../../lib/util/util';
 
+@ApplyOptions<RouteOptions>({
+	route: 'users/@me'
+})
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'users/@me' });
-	}
 
 	@authenticated
 	@ratelimit(2, 5000, true)

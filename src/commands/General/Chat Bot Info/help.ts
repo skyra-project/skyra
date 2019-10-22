@@ -1,4 +1,4 @@
-import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
+import { MessageEmbed, Permissions, TextChannel, Collection } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
@@ -25,6 +25,13 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
+		if (message.flagArgs.categories || message.flagArgs.cat) {
+			const commands: Collection<string, SkyraCommand[]> = await this._fetchCommands(message);
+			return message.sendMessage(commands
+				.keyArray()
+				.map((cat, i) => `${i + 1}. ${cat} → (${commands.get(cat)!.length} commands)`));
+		}
+
 		// Handle case for a single command
 		const command = commandOrPage && !util.isNumber(commandOrPage) ? commandOrPage : null;
 		if (command) {
@@ -91,12 +98,12 @@ export default class extends SkyraCommand {
 
 	private async _fetchCommands(message: KlasaMessage) {
 		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
-		const commands = new Map();
+		const commands = new Collection<string, SkyraCommand[]>();
 		await Promise.all(this.client.commands.map(command => run(command, true)
 			.then(() => {
 				const category = commands.get(command.category);
-				if (category) category.push(command);
-				else commands.set(command.category, [command]);
+				if (category) category.push(command as SkyraCommand);
+				else commands.set(command.category, [command as SkyraCommand]);
 				return null;
 			}).catch(noop)));
 

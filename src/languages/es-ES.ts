@@ -1841,9 +1841,7 @@ export default class extends Language {
 			EPISODE_LENGTH: 'Duración del episodio',
 			AGE_RATING: 'Clasificación de edad',
 			FIRST_AIR_DATE: 'Primera fecha de emisión',
-			FIRST_PUBLISH_DATE: 'Primera fecha de publicación',
 			WATCH_IT: 'Míralo Aquí:',
-			READ_IT: 'Léelo Aquí:'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
@@ -1851,12 +1849,19 @@ export default class extends Language {
 			`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
 			synopsis
 		].join('\n'),
-		COMMAND_MANGA_TITLES: {
+		COMMAND_MANGA_TYPES: {
 			'MANGA': '📘 Manga',
 			'NOVEL': '📕 Novela',
 			'MANHWA': '🇰🇷 Manhwa',
 			'ONE-SHOT': '☄ Cameo',
 			'SPECIAL': '🎴 Especial'
+		},
+		COMMAND_MANGA_TITLES: {
+			TYPE: 'Tipo',
+			SCORE: 'Puntuación',
+			AGE_RATING: 'Clasificación de edad',
+			FIRST_PUBLISH_DATE: 'Primera fecha de publicación',
+			READ_IT: 'Léelo Aquí:'
 		},
 
 		/**

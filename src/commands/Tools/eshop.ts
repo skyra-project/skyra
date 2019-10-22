@@ -62,8 +62,8 @@ export default class extends SkyraCommand {
 		const display = new UserRichDisplay();
 
 		for (const game of entries) {
-			const titles = message.language.language.COMMAND_ESHOP_TITLES as unknown as EshopLanguage;
-			const description = decode(cutText(game.description.replace(/\s\n {2,}/g, ' '), 750));
+			const titles = message.language.tget('COMMAND_ESHOP_TITLES');
+			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750)
 			const esrbText = game.esrb
 				? [
 					`**${game.esrb}**`,
@@ -93,15 +93,6 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-}
-
-interface EshopLanguage extends Record<string, string> {
-	PRICE: string;
-	AVAILABILITY: string;
-	RELEASE_DATE: string;
-	NUMBER_OF_PLAYERS: string;
-	PLATFORM: string;
-	CATEGORIES: string;
 }
 
 interface EShopHit {

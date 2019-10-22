@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
 			const score = `${entry.averageRating}%`;
 			const animeURL = `https://kitsu.io/anime/${entry.id}`;
-			const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as AnimeLanguage;
+			const titles = message.language.tget('COMMAND_ANIME_TITLES');
 			const type = entry.subtype;
 			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 
@@ -80,15 +80,4 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-}
-
-interface AnimeLanguage {
-	TYPE: string;
-	SCORE: string;
-	EPISODES: string;
-	EPISODE_LENGTH: string;
-	AGE_RATING: string;
-	FIRST_AIR_DATE: string;
-	WATCH_IT: string;
-	READ_IT: string;
 }

@@ -1863,9 +1863,7 @@ export default class extends Language {
 			EPISODE_LENGTH: 'Episode length',
 			AGE_RATING: 'Age rating',
 			FIRST_AIR_DATE: 'First air date',
-			FIRST_PUBLISH_DATE: 'First publish date',
 			WATCH_IT: 'Watch it here:',
-			READ_IT: 'Read it here:'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
@@ -1873,12 +1871,19 @@ export default class extends Language {
 			`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
 			synopsis
 		].join('\n'),
-		COMMAND_MANGA_TITLES: {
+		COMMAND_MANGA_TYPES: {
 			'MANGA': '📘 Manga',
 			'NOVEL': '📕 Novel',
 			'MANHWA': '🇰🇷 Manhwa',
 			'ONE-SHOT': '☄ One Shot',
 			'SPECIAL': '🎴 Special'
+		},
+		COMMAND_MANGA_TITLES: {
+			 AGE_RATING: 'Age Rating',
+			 FIRST_PUBLISH_DATE: 'First published on',
+			 READ_IT: 'Read it here:',
+			 SCORE: 'Score',
+			 TYPE: 'Subtype'
 		},
 
 		/**

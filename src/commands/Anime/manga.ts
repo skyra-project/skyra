@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
 			const score = `${entry.averageRating}%`;
 			const mangaURL = `https://kitsu.io/manga/${entry.id}`;
-			const titles = message.language.language.COMMAND_ANIME_TITLES as unknown as MangaLanguage;
+			const titles = message.language.tget('COMMAND_MANGA_TITLES')
 			const type = entry.subtype;
 			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 					.setURL(mangaURL)
 					.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
 					.setThumbnail(entry.posterImage.original)
-					.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TITLES')[type.toUpperCase()] || type, true)
+					.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
 					.addField(titles.SCORE, score, true)
 					.addField(titles.AGE_RATING, entry.ageRating ? entry.ageRating : 'None', true)
 					.addField(titles.FIRST_PUBLISH_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
@@ -78,16 +78,4 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-}
-
-interface MangaLanguage {
-	TYPE: string;
-	SCORE: string;
-	EPISODES: string;
-	EPISODE_LENGTH: string;
-	AGE_RATING: string;
-	FIRST_AIR_DATE: string;
-	FIRST_PUBLISH_DATE: string;
-	WATCH_IT: string;
-	READ_IT: string;
 }

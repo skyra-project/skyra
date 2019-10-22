@@ -21,7 +21,7 @@ export default class extends ModerationCommand {
 
 	public async handle(message: KlasaMessage, user: User, _: GuildMember, reason: string) {
 		if (reason && message.guild!.settings.get(GuildSettings.Messages.Warnings)) {
-			user.send(message.language.tget('COMMAND_WARN_DM', message.author!.tag, message.guild!.toString(), reason)).catch(() => null);
+			user.send(message.language.tget('COMMAND_WARN_DM', message.author.tag, message.guild!.toString(), reason)).catch(() => null);
 		}
 		return this.sendModlog(message, user, reason);
 	}

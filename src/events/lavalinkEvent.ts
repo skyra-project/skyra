@@ -14,7 +14,7 @@ export default class extends Event {
 		if (!payload.guildId) return;
 		try {
 			const guild = this.client.guilds.get(payload.guildId);
-			if (guild) guild!.music.receiver(payload);
+			if (guild) guild.music.receiver(payload);
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 		}

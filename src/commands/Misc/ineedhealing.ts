@@ -29,10 +29,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async generate(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === message.author!.id) (user = this.client.user!);
+		if (user.id === message.author.id) (user = this.client.user!);
 
 		const [healer, healed] = await Promise.all([
-			fetchAvatar(message.author!, 128),
+			fetchAvatar(message.author, 128),
 			fetchAvatar(user, 128)
 		]);
 

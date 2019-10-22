@@ -84,7 +84,7 @@ export class Slotmachine {
 	 * The player
 	 */
 	public get player() {
-		return this.message.author!;
+		return this.message.author;
 	}
 
 	/**
@@ -100,8 +100,8 @@ export class Slotmachine {
 	public get boost() {
 		const userBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Users);
 		const guildBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Guilds);
-		return (this.message.guild && guildBoosts.includes(this.message.guild!.id) ? 1.5 : 1)
-			* (userBoosts.includes(this.message.author!.id) ? 1.5 : 1);
+		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
+			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
 	}
 
 	public async run() {

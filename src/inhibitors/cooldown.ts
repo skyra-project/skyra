@@ -10,7 +10,7 @@ export default class extends Inhibitor {
 	}
 
 	public run(message: KlasaMessage, command: SkyraCommand) {
-		if (this.client.owners.has(message.author!) || command.cooldown <= 0) return;
+		if (this.client.owners.has(message.author) || command.cooldown <= 0) return;
 
 		let existing: Cooldown;
 

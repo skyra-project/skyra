@@ -61,7 +61,7 @@ export class Giveaway {
 
 	public get language() {
 		const { guild } = this;
-		return guild ? guild!.language : null;
+		return guild ? guild.language : null;
 	}
 
 	public get remaining() {
@@ -87,7 +87,7 @@ export class Giveaway {
 		await api(this.store.client)
 			.channels(this.channelID)
 			.messages(this.messageID)
-			.reactions(Giveaway.EMOJI!, '@me')
+			.reactions(Giveaway.EMOJI, '@me')
 			.put();
 		await this.client.queries.insertGiveaway(this.toJSON());
 		return this;

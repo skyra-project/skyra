@@ -87,7 +87,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	}
 
 	public async checkModeratable(message: KlasaMessage, target: User) {
-		if (target.id === message.author!.id) {
+		if (target.id === message.author.id) {
 			throw message.language.tget('COMMAND_USERSELF');
 		}
 
@@ -98,7 +98,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const member = await message.guild!.members.fetch(target.id).catch(() => {
 			if (this.requiredMember) throw message.language.tget('USER_NOT_IN_GUILD');
 			return null;
-		}) as GuildMember | null;
+		});
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
 			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER_SKYRA');

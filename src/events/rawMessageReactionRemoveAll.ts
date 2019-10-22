@@ -13,15 +13,15 @@ export default class extends Event {
 
 	public async run(data: WSMessageReactionRemoveAll): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild!.channels.has(data.channel_id)) return;
-		guild!.starboard.delete(`${data.channel_id}-${data.message_id}`);
+		if (!guild || !guild.channels.has(data.channel_id)) return;
+		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
 
 		// Delete entry from starboard if it exists
 		try {
 			const results = await this.client.queries.deleteStarReturning(data.guild_id, data.message_id);
 
 			// Get channel
-			const channel = guild!.settings.get(GuildSettings.Starboard.Channel);
+			const channel = guild.settings.get(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			if (results && results.star_message_id) {

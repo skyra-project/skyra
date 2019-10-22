@@ -25,7 +25,7 @@ export default class extends ModerationCommand {
 		const modlog = await message.guild!.moderation.fetch(caseID);
 		if (!modlog || modlog.type !== ModerationTypeKeys.Warn) throw message.language.tget('GUILD_WARN_NOT_FOUND');
 
-		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user!;
+		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user;
 		const unwarnLog = await this.handle(message, user, null, reason, modlog);
 
 		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);

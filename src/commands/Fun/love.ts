@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		const isSelf = message.author!.id === user.id;
+		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);
 
@@ -38,11 +38,11 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message) || 0xFFAB2D)
-			.setAuthor('❤ Love Meter ❤', message.author!.displayAvatarURL())
+			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL())
 			.setThumbnail('https://twemoji.maxcdn.com/2/72x72/1f49e.png')
 			.setDescription([
 				`💗 **${user.tag}**`,
-				`💗 **${message.author!.tag}**\n`,
+				`💗 **${message.author.tag}**\n`,
 				`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
 				`**${message.language.tget('COMMAND_LOVE_RESULT')}**: ${result}`
 			].join('\n')));

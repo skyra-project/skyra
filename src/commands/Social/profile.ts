@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const output = await this.showProfile(message, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const TITLE = message.language.retrieve('COMMAND_PROFILE') as ProfileTitles;
+		const TITLE = message.language.retrieve('COMMAND_PROFILE');
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
 		if (badgeSet.length) {
 			const badges = await Promise.all(badgeSet.map(name =>

@@ -35,14 +35,14 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.tget('MONITOR_NEWLINEFILTER', message.author!.toString())));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_NEWLINEFILTER', message.author.toString())));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.splitFields(message.content)
 			.setColor(0xEFAE45)
-			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_NEWLINEFILTER')}`)
 			.setTimestamp();
 	}

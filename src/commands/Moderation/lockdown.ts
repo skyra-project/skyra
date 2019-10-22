@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 		// If there was a lockdown, abort lock
 		if (message.guild!.security.lockdowns.has(channel.id)) throw message.sendLocale('COMMAND_LOCKDOWN_LOCKED', [channel]);
 
-		const response = await message.sendLocale('COMMAND_LOCKDOWN_LOCKING', [channel]) as KlasaMessage;
+		const response = await message.sendLocale('COMMAND_LOCKDOWN_LOCKING', [channel]);
 		await channel.updateOverwrite(message.guild!.roles.get(message.guild!.id)!, { SEND_MESSAGES: false });
 		if (message.channel.postable) await response.sendLocale('COMMAND_LOCKDOWN_LOCK', [channel]);
 
@@ -48,8 +48,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async _unlock(message: KlasaMessage, channel: TextChannel) {
-		channel.guild!.security.lockdowns.delete(channel.id);
-		await channel.updateOverwrite(channel.guild!.id, { SEND_MESSAGES: true });
+		channel.guild.security.lockdowns.delete(channel.id);
+		await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
 		return message.sendLocale('COMMAND_LOCKDOWN_OPEN', [channel]);
 	}
 

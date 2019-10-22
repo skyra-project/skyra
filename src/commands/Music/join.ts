@@ -15,7 +15,7 @@ export default class extends MusicCommand {
 
 	public async run(message: KlasaMessage) {
 		if (!message.member) {
-			await message.guild!.members.fetch(message.author!.id).catch(() => {
+			await message.guild!.members.fetch(message.author.id).catch(() => {
 				throw message.language.tget('COMMAND_JOIN_NO_MEMBER');
 			});
 		}
@@ -28,9 +28,9 @@ export default class extends MusicCommand {
 			if (channel.id === skyraVoiceChannel.id) throw message.language.tget('COMMAND_JOIN_VOICE_SAME');
 			throw message.language.tget('COMMAND_JOIN_VOICE_DIFFERENT');
 		}
-		this.resolvePermissions(message, channel as VoiceChannel);
+		this.resolvePermissions(message, channel);
 
-		await message.guild!.music.connect(channel as VoiceChannel);
+		await message.guild!.music.connect(channel);
 		return message.sendLocale('COMMAND_JOIN_SUCCESS', [channel]);
 	}
 

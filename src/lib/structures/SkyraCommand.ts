@@ -9,7 +9,7 @@ export abstract class SkyraCommand extends Command {
 	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions = {}) {
 		super(store, file, directory, util.mergeDefault({ spam: false, requiredGuildPermissions: 0 }, options));
 		this.spam = options.spam!;
-		this.requiredGuildPermissions = new Permissions(options.requiredGuildPermissions!);
+		this.requiredGuildPermissions = new Permissions(options.requiredGuildPermissions);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

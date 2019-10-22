@@ -23,7 +23,7 @@ export class SettingsMenu {
 		this.schema = this.message.client.gateways.get('guilds')!.schema;
 		this.oldSettings = this.message.guild!.settings.clone();
 		this.embed = new MessageEmbed()
-			.setAuthor(this.message.author!.username, this.message.author!.displayAvatarURL({ size: 128 }))
+			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128 }))
 			.setColor(getColor(this.message) || 0xFFAB2D);
 	}
 
@@ -51,13 +51,13 @@ export class SettingsMenu {
 	}
 
 	public async init(): Promise<void> {
-		this.response = await this.message.send(this.message.language.tget('SYSTEM_LOADING')) as KlasaMessage;
+		this.response = await this.message.send(this.message.language.tget('SYSTEM_LOADING'));
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client)
 			.setListener(this.onReaction.bind(this))
 			.setEndListener(this.stop.bind(this));
 		this.llrc.setTime(120000);
-		this.messageCollector = this.response.channel.createMessageCollector(msg => msg.author!.id === this.message.author!.id);
+		this.messageCollector = this.response.channel.createMessageCollector(msg => msg.author!.id === this.message.author.id);
 		this.messageCollector.on('collect', msg => this.onMessage(msg));
 		await this._renderResponse();
 	}
@@ -133,7 +133,7 @@ export class SettingsMenu {
 	}
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
-		if (reaction.userID !== this.message.author!.id) return;
+		if (reaction.userID !== this.message.author.id) return;
 		this.llrc!.setTime(120000);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc!.end();

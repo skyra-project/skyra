@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async _display(message: KlasaMessage) {
-		const users = message.author!.settings.get(UserSettings.Marry);
+		const users = message.author.settings.get(UserSettings.Marry);
 		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 
 		const usernames = await Promise.all(users.map(user => this.client.fetchUsername(user)));

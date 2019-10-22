@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
-			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
+			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
 			const display = await this.buildDisplay(message);
 
 			// Extract start page and sanitize it
@@ -44,12 +44,12 @@ export default class extends SkyraCommand {
 			if (startPage !== null) {
 				if (startPage < 0 || startPage >= display.pages.length) startPage = 0;
 			}
-			await display.start(response, message.author!.id, startPage === null ? undefined : { startPage });
+			await display.start(response, message.author.id, startPage === null ? undefined : { startPage });
 			return response;
 		}
 
 		try {
-			const response = await message.author!.send(await this.buildHelp(message), { split: { 'char': '\n' } });
+			const response = await message.author.send(await this.buildHelp(message), { split: { 'char': '\n' } });
 			return message.channel.type === 'dm' ? response : message.sendLocale('COMMAND_HELP_DM');
 		} catch {
 			return message.channel.type === 'dm' ? null : message.sendLocale('COMMAND_HELP_NODM');

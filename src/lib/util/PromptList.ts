@@ -28,7 +28,7 @@ async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = util.codeBlock('asciidoc', list.join('\n'));
 	const responseMessage = await message.channel.sendLocale('PROMPTLIST_MULTIPLE_CHOICE', [codeblock, possibles]);
-	const abortOptions = message.language.tget('TEXT_PROMPT_ABORT_OPTIONS') as readonly string[];
+	const abortOptions = message.language.tget('TEXT_PROMPT_ABORT_OPTIONS');
 	const promptFilter = (m: Message) => m.author === message.author
 		&& (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
 	let response: Message | null;

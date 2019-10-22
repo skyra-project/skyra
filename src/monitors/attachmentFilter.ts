@@ -19,7 +19,7 @@ export default class extends Monitor {
 		if (!message.guild!.security.adders.attachments) message.guild!.security.adders.attachments = new Adder(attachmentMaximum, attachmentDuration);
 
 		try {
-			message.guild!.security.adders.attachments.add(message.author!.id, message.attachments.size);
+			message.guild!.security.adders.attachments.add(message.author.id, message.attachments.size);
 			return;
 		} catch {
 			switch (attachmentAction & 0b111) {
@@ -34,7 +34,7 @@ export default class extends Monitor {
 						.catch(error => this.client.emit(Events.ApiError, error)), false);
 					break;
 				case 0b011: await this.actionAndSend(message, ModerationTypeKeys.Softban, () =>
-					softban(message.guild!, this.client.user!, message.author!, 'AttachmentFilter: Threshold Reached.', 1)
+					softban(message.guild!, this.client.user!, message.author, 'AttachmentFilter: Threshold Reached.', 1)
 						.catch(error => this.client.emit(Events.ApiError, error)), false);
 					break;
 				case 0b100: await this.actionAndSend(message, ModerationTypeKeys.Ban, () =>
@@ -45,7 +45,7 @@ export default class extends Monitor {
 			if (attachmentAction & 0b1000) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 					.setColor(0xEFAE45)
-					.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
+					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 					.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_ATTACHMENTFILTER')}`)
 					.setTimestamp());
 			}
@@ -82,7 +82,7 @@ export default class extends Monitor {
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
 			&& message.guild.settings.get(GuildSettings.Selfmod.Attachment)
-			&& !message.guild!.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
+			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
 			&& this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction));
 	}
 

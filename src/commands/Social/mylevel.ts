@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 		this.spam = true;
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => {
 			throw message.language.tget('USER_NOT_IN_GUILD');
 		});
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 			? `\n${message.language.tget('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}`
 			: '';
 
-		return message.sendLocale('COMMAND_MYLEVEL', [memberPoints, title, user.id === message.author!.id ? null : user.username]);
+		return message.sendLocale('COMMAND_MYLEVEL', [memberPoints, title, user.id === message.author.id ? null : user.username]);
 	}
 
 	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {

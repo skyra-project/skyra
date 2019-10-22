@@ -148,18 +148,18 @@ export class ModerationManagerEntry {
 		if (!this.user) throw new Error('A user has not been set.');
 		const userID = typeof this.user === 'string' ? this.user : this.user.id;
 		const [userTag, moderator] = await Promise.all([
-			this.manager.guild!.client.fetchUsername(userID),
-			typeof this.moderator === 'string' ? this.manager.guild!.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.manager.guild!.client.user)
+			this.manager.guild.client.fetchUsername(userID),
+			typeof this.moderator === 'string' ? this.manager.guild.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.manager.guild.client.user)
 		]);
 
 		const assets: ModerationTypeAssets = TYPE_ASSETS[this.type];
-		const prefix = this.manager.guild!.settings.get(GuildSettings.Prefix);
+		const prefix = this.manager.guild.settings.get(GuildSettings.Prefix);
 		const description = (this.duration
 			? [
 				`❯ **Type**: ${assets.title}`,
 				`❯ **User:** ${userTag} (${userID})`,
 				`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}`,
-				`❯ **Expires In**: ${this.manager.guild!.client.languages.default.duration(this.duration)}`
+				`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
 			]
 			: [
 				`❯ **Type**: ${assets.title}`,
@@ -172,7 +172,7 @@ export class ModerationManagerEntry {
 			.setColor(assets.color)
 			.setAuthor(moderator!.tag, moderator!.displayAvatarURL({ size: 128 }))
 			.setDescription(description)
-			.setFooter(`Case ${this.case}`, this.manager.guild!.client.user!.displayAvatarURL({ size: 128 }))
+			.setFooter(`Case ${this.case}`, this.manager.guild.client.user!.displayAvatarURL({ size: 128 }))
 			.setTimestamp(new Date(this.createdAt || Date.now()));
 	}
 
@@ -246,23 +246,23 @@ export class ModerationManagerEntry {
 		await this.client.queries.insertModerationLog(this.toJSON());
 		this.manager.insert(this);
 
-		const channelID = this.manager.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
-		const channel = (channelID && this.manager.guild!.channels.get(channelID) as TextChannel) || null;
+		const channelID = this.manager.guild.settings.get(GuildSettings.Channels.ModerationLogs);
+		const channel = (channelID && this.manager.guild.channels.get(channelID) as TextChannel) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();
-			channel.send(messageEmbed).catch(error => this.manager.guild!.client.emit(Events.ApiError, error));
+			channel.send(messageEmbed).catch(error => this.manager.guild.client.emit(Events.ApiError, error));
 		}
 
 		if (this.duration) {
-			this.manager.guild!.client.schedule.create(TYPE_ASSETS[this.basicType | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
+			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.basicType | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
 				catchUp: true,
 				data: {
 					[ModerationSchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
-					[ModerationSchemaKeys.Guild]: this.manager.guild!.id,
+					[ModerationSchemaKeys.Guild]: this.manager.guild.id,
 					[ModerationSchemaKeys.Duration]: this.duration,
-					[ModerationSchemaKeys.Case]: this.case!
+					[ModerationSchemaKeys.Case]: this.case
 				}
-			}).catch(error => this.manager.guild!.client.emit(Events.Wtf, error));
+			}).catch(error => this.manager.guild.client.emit(Events.Wtf, error));
 		}
 
 		return this;
@@ -274,7 +274,7 @@ export class ModerationManagerEntry {
 			case_id: this.case,
 			duration: this.duration,
 			extra_data: this.extraData,
-			guild_id: this.manager.guild!.id,
+			guild_id: this.manager.guild.id,
 			moderator_id: this.moderator ? typeof this.moderator === 'string' ? this.moderator : this.moderator.id : null,
 			reason: this.reason,
 			type: this.type,

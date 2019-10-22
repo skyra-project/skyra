@@ -13,8 +13,8 @@ export default class extends Event {
 
 	public async run(data: WSMessageDeleteBulk): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild!.channels.has(data.channel_id)) return;
-		for (const id of data.ids) guild!.starboard.delete(id);
+		if (!guild || !guild.channels.has(data.channel_id)) return;
+		for (const id of data.ids) guild.starboard.delete(id);
 
 
 		// Delete entries from starboard if it exists
@@ -22,7 +22,7 @@ export default class extends Event {
 			const results = await this.client.queries.deleteStarsReturning(data.guild_id, data.ids);
 
 			// Get channel
-			const channel = guild!.settings.get(GuildSettings.Starboard.Channel);
+			const channel = guild.settings.get(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			const filteredResults: string[] = [];

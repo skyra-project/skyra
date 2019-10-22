@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 		await modlog.edit({ [ModerationSchemaKeys.Reason]: reason });
 
 		if (channel) {
-			const message = messages!.find(mes => mes.author!.id === this.client.user!.id
+			const message = messages!.find(mes => mes.author.id === this.client.user!.id
 				&& mes.embeds.length > 0
 				&& mes.embeds[0].type === 'rich'
 				&& Boolean(mes.embeds[0].footer) && mes.embeds[0].footer!.text === `Case ${modlog.case}`);

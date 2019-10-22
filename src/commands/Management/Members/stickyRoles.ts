@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 			} else {
 				cleaned.raw.roles.push(role.id);
 			}
-			await message.guild!.settings.update(GuildSettings.StickyRoles, cleaned!.raw, { arrayIndex: all.indexOf(entry) });
+			await message.guild!.settings.update(GuildSettings.StickyRoles, cleaned.raw, { arrayIndex: all.indexOf(entry) });
 		} else {
 			await message.guild!.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] });
 		}

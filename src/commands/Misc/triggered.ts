@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);
 		return message.channel.sendFile(attachment, 'triggered.gif');
 	}

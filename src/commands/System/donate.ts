@@ -13,7 +13,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		try {
-			const response = await message.author!.send(message.language.tget('COMMAND_DONATE_EXTENDED'));
+			const response = await message.author.send(message.language.tget('COMMAND_DONATE_EXTENDED'));
 			return message.channel.type === 'dm' ? message.alert(message.language.tget('COMMAND_DM_SENT')) : response;
 		} catch {
 			return message.channel.type === 'dm' ? null : message.alert(message.language.tget('COMMAND_DM_NOT_SENT'));

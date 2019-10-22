@@ -58,8 +58,8 @@ export class GuildSecurity {
 		this.guild = guild;
 		this.raid = new AntiRaid(this.guild);
 		this.nms = new RateLimitManager(
-			this.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed),
-			this.guild!.settings.get(GuildSettings.NoMentionSpam.TimePeriod) * 1000
+			this.guild.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed),
+			this.guild.settings.get(GuildSettings.NoMentionSpam.TimePeriod) * 1000
 		);
 	}
 

@@ -121,7 +121,7 @@ export default class extends SkyraCommand {
 		if (!EMOJIS.includes(reaction.emoji.name)) return true;
 
 		// If the user who reacted is the author, don't inhibit
-		if (reaction.userID === message.author!.id) return false;
+		if (reaction.userID === message.author.id) return false;
 
 		// Don't listen to herself
 		if (reaction.userID === this.client.user!.id) return true;

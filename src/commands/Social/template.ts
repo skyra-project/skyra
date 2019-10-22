@@ -42,17 +42,17 @@ export default class extends SkyraCommand {
 	}
 
 	public inhibit(message: KlasaMessage) {
-		return !message.guild || message.guild!.id !== '256566731684839428';
+		return !message.guild || message.guild.id !== '256566731684839428';
 	}
 
 	public async showProfile(message: KlasaMessage, file: Buffer) {
-		await message.author!.settings.sync();
-		const level = message.author!.profileLevel;
-		const points = message.author!.settings.get(UserSettings.Points);
-		const badgeSet = message.author!.settings.get(UserSettings.BadgeSet);
-		const color = message.author!.settings.get(UserSettings.Color);
-		const money = message.author!.settings.get(UserSettings.Money);
-		const reputation = message.author!.settings.get(UserSettings.Reputation);
+		await message.author.settings.sync();
+		const level = message.author.profileLevel;
+		const points = message.author.settings.get(UserSettings.Points);
+		const badgeSet = message.author.settings.get(UserSettings.BadgeSet);
+		const color = message.author.settings.get(UserSettings.Color);
+		const money = message.author.settings.get(UserSettings.Money);
+		const reputation = message.author.settings.get(UserSettings.Reputation);
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 
 		/* Global leaderboard */
 		const rank = '∞';
-		const imgAvatarSRC = await fetchAvatar(message.author!, 256);
+		const imgAvatarSRC = await fetchAvatar(message.author, 256);
 
 		const TITLE = message.language.retrieve('COMMAND_PROFILE') as ProfileTitles;
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
@@ -92,9 +92,9 @@ export default class extends SkyraCommand {
 			// Name title
 			.setTextFont('35px RobotoRegular')
 			.setColor('rgb(23,23,23')
-			.addResponsiveText(message.author!.username, 227, 73, 306)
+			.addResponsiveText(message.author.username, 227, 73, 306)
 			.setTextFont('25px RobotoLight')
-			.addText(`#${message.author!.discriminator}`, 227, 105)
+			.addText(`#${message.author.discriminator}`, 227, 105)
 
 			// Statistics Titles
 			.addText(TITLE.GLOBAL_RANK, 227, 276)

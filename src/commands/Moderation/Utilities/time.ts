@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		if (!modlog) throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
 		if (!cancel && modlog.temporary) throw message.language.tget('COMMAND_TIME_TIMED');
 
-		const user = await this.client.users.fetch(typeof modlog.user === 'string' ? modlog.user : modlog.user!.id);
+		const user = await this.client.users.fetch(typeof modlog.user === 'string' ? modlog.user : modlog.user.id);
 		const type = await this.getActions(message, modlog, user);
 		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[ModerationSchemaKeys.Case] === modlog.case)!;
 
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 
 		await modlog.edit({
 			duration: offset,
-			moderator_id: message.author!.id
+			moderator_id: message.author.id
 		});
 		await this.updateModlog(message, modlog);
 
@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 
 		await modcase.edit({
 			duration: null,
-			moderator_id: message.author!.id
+			moderator_id: message.author.id
 		});
 		await this.updateModlog(message, modcase);
 
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 
 		// Fetch the message to edit it
 		const messages = await channel.messages.fetch({ limit: 100 });
-		const msg = messages.find(mes => mes.author!.id === this.client.user!.id
+		const msg = messages.find(mes => mes.author.id === this.client.user!.id
 			&& mes.embeds.length > 0
 			&& mes.embeds[0].type === 'rich'
 			&& Boolean(mes.embeds[0].footer) && mes.embeds[0].footer!.text === `Case ${modcase.case}`);

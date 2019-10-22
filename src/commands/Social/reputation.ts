@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [check, user]: ['check', KlasaUser]) {
 		const now = Date.now();
-		const selfSettings = await message.author!.settings.sync();
+		const selfSettings = await message.author.settings.sync();
 		const extSettings = user ? await user.settings.sync() : null;
 
 		if (check) {
@@ -40,24 +40,24 @@ export default class extends SkyraCommand {
 		}
 
 		const timeReputation = selfSettings.get(UserSettings.TimeReputation);
-		if (this.busy.has(message.author!.id) || timeReputation + TIME.DAY > now) {
+		if (this.busy.has(message.author.id) || timeReputation + TIME.DAY > now) {
 			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + TIME.DAY - now]);
 		}
 
 		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');
 		if (user.bot) throw message.language.tget('COMMAND_REPUTATION_BOTS');
 		if (user === message.author) throw message.language.tget('COMMAND_REPUTATION_SELF');
-		this.busy.add(message.author!.id);
+		this.busy.add(message.author.id);
 
 		try {
 			await extSettings!.increase(UserSettings.Reputation, 1);
 			await selfSettings.update(UserSettings.TimeReputation, now);
 		} catch (err) {
-			this.busy.delete(message.author!.id);
+			this.busy.delete(message.author.id);
 			throw err;
 		}
 
-		this.busy.delete(message.author!.id);
+		this.busy.delete(message.author.id);
 		return message.sendLocale('COMMAND_REPUTATION_GIVE', [user]);
 	}
 

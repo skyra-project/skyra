@@ -13,13 +13,13 @@ export default class extends Monitor {
 
 	public async run(message: KlasaMessage) {
 		try {
-			this.ratelimits.acquire(message.author!.id).drip();
+			this.ratelimits.acquire(message.author.id).drip();
 		} catch {
 			return;
 		}
 
 		// Ensure the user and member settings are up-to-date
-		await message.author!.settings.sync();
+		await message.author.settings.sync();
 
 		try {
 			// If boosted guild, increase rewards
@@ -27,12 +27,12 @@ export default class extends Monitor {
 			const add = Math.round(((Math.random() * 4) + 4) * (boosts.includes(message.guild!.id) ? 1.5 : 1));
 
 			const [, points] = await Promise.all([
-				message.author!.settings.increase(UserSettings.Points, add),
+				message.author.settings.increase(UserSettings.Points, add),
 				this.client.queries.upsertIncrementMemberSettings(message.guild!.id, message.author.id, add)
 			]);
 			await this.handleRoles(message, points);
 		} catch (err) {
-			this.client.emit(Events.Error, `Failed to add points to ${message.author!.id}: ${(err && err.stack) || err}`);
+			this.client.emit(Events.Error, `Failed to add points to ${message.author.id}: ${(err && err.stack) || err}`);
 		}
 	}
 
@@ -68,7 +68,7 @@ export default class extends Monitor {
 				case '%ROLE%': return role.name;
 				case '%MEMBER%': return member.toString();
 				case '%MEMBERNAME%': return member.user.username;
-				case '%GUILD%': return member.guild!.name;
+				case '%GUILD%': return member.guild.name;
 				case '%POINTS%': return points.toString();
 				default: return match;
 			}

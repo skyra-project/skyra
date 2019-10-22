@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 			arg ? this.client.arguments.get('username').run(arg, possible, message) : message.author);
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [User]) {
+	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 
 		const embed = new MessageEmbed();
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 
 		if (member.roles.size > 1) {
 			const roles = member.roles.sorted(sortRanks);
-			roles.delete(member.guild!.id);
+			roles.delete(member.guild.id);
 			embed.addField(i18n.tget('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
 		}
 

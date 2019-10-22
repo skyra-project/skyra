@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
-		const attachment = await this.generate(message.author!, text);
+		const attachment = await this.generate(message.author, text);
 		return message.channel.send({ files: [{ attachment, name: 'ChangeMyMind.png' }] });
 	}
 

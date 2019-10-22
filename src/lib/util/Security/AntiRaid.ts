@@ -34,7 +34,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	}
 
 	public get limit() {
-		return this.guild!.settings.get(GuildSettings.Selfmod.Raidthreshold);
+		return this.guild.settings.get(GuildSettings.Selfmod.Raidthreshold);
 	}
 
 	public add(id: string) {
@@ -92,14 +92,14 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	public [Symbol.asyncIterator]() {
 		this.sweep();
 		const entriesIterator = this.entries();
-		const initialRole = this.guild!.settings.get(GuildSettings.Roles.Initial);
+		const initialRole = this.guild.settings.get(GuildSettings.Roles.Initial);
 		const minRolesAmount = initialRole ? 2 : 1;
 		const iterator: AsyncIterator<GuildMember | null> = {
 			next: async () => {
 				const next = entriesIterator.next();
 				if (next.done) return { done: true, value: null };
 				const [id, value] = next.value;
-				const member = await this.guild!.members.fetch(value.id).catch(noop);
+				const member = await this.guild.members.fetch(value.id).catch(noop);
 
 				// Check if:
 				// The member exists

@@ -23,9 +23,6 @@ export default class extends SkyraCommand {
 		const accept = await message.ask(message.language.tget('COMMAND_DIVORCE_PROMPT'));
 		if (!accept) return message.sendLocale('COMMAND_DIVORCE_CANCEL');
 
-		// Fetch the user and sync the settings
-		await user.settings.sync();
-
 		// Reset the values for both entries
 		await Promise.all([
 			message.author.settings.update(UserSettings.Marry, user, { arrayAction: 'remove' }),

@@ -7,6 +7,9 @@ import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
+const numUnitFormat = (n: number, wordS: string, wordP = `${wordS}s`): string =>
+	`${n} ${n === 1 ? wordS : wordP}`;
+
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -27,9 +30,10 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		if (message.flagArgs.categories || message.flagArgs.cat) {
 			const commands: Collection<string, SkyraCommand[]> = await this._fetchCommands(message);
-			return message.sendMessage(commands
-				.keyArray()
-				.map((cat, i) => `${i + 1}. ${cat} → (${commands.get(cat)!.length} commands)`));
+			const categories = commands.keyArray();
+			const digits = categories.length.toString().length;
+			return message.sendMessage(categories.map((cat, i) =>
+				`\`${String(i + 1).padStart(digits, '0')}.\` **${cat}** → ${numUnitFormat(commands.get(cat)!.length, 'command')}`));
 		}
 
 		// Handle case for a single command

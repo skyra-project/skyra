@@ -33,10 +33,10 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		let selectedUser: KlasaUser;
 		let slapper: KlasaUser;
-		if (user.id === message.author!.id && this.client.options.owners.includes(message.author!.id)) throw '💥';
-		if (user === message.author) [selectedUser, slapper] = [message.author!, this.client.user!];
-		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, slapper] = [message.author!, user];
-		else [selectedUser, slapper] = [user, message.author!];
+		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
+		if (user === message.author) [selectedUser, slapper] = [message.author, this.client.user!];
+		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, slapper] = [message.author, user];
+		else [selectedUser, slapper] = [user, message.author];
 
 		const [Slapped, Slapper] = await Promise.all([
 			fetchAvatar(selectedUser, 256),

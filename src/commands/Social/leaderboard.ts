@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
 		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild!.id : undefined);
 
-		const { position } = list.get(message.author!.id) || { position: (list.size + 1) as number };
+		const { position } = list.get(message.author.id) || { position: (list.size + 1) };
 		const page = await this.generatePage(message, list, index - 1, position);
 		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}

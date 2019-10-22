@@ -39,8 +39,8 @@ export default class extends Event {
 		this.client.emit(Events.RoleReactionAdd, parsed);
 
 		if (!parsed.channel.nsfw
-			&& parsed.channel.id !== channel.guild!.settings.get(GuildSettings.Starboard.Channel)
-			&& resolveEmoji(parsed.emoji) === channel.guild!.settings.get(GuildSettings.Starboard.Emoji)) {
+			&& parsed.channel.id !== channel.guild.settings.get(GuildSettings.Starboard.Channel)
+			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get(GuildSettings.Starboard.Emoji)) {
 			try {
 				await this.handleStarboard(parsed);
 			} catch (error) {
@@ -57,7 +57,7 @@ export default class extends Event {
 
 			const starboardChannel = parsed.guild.channels.get(channel) as TextChannel;
 			if (!starboardChannel || !starboardChannel.postable) {
-				await parsed.guild!.settings.reset(GuildSettings.Starboard.Channel);
+				await parsed.guild.settings.reset(GuildSettings.Starboard.Channel);
 				return;
 			}
 

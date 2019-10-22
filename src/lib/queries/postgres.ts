@@ -1,4 +1,4 @@
-import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference } from './common';
+import { CommonQuery, UpsertMemberSettingsReturningDifference } from './common';
 import PostgresProvider from '../../providers/postgres';
 import { Client } from 'discord.js';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
@@ -86,7 +86,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			FROM giveaway
 			WHERE
 				"guild_id" IN ('${guildIDs.join("', '")}');
-		`) as Promise<RawGiveawaySettings[]>;
+		`);
 	}
 
 	public fetchLeaderboardGlobal() {
@@ -97,7 +97,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"point_count" >= 25
 			ORDER BY point_count DESC
 			LIMIT 25000;
-		`) as Promise<LeaderboardEntry[]>;
+		`);
 	}
 
 	public fetchLeaderboardLocal(guildID: string) {
@@ -109,7 +109,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"point_count" >= 25
 			ORDER BY point_count DESC
 			LIMIT 5000;
-		`, [guildID]) as Promise<LeaderboardEntry[]>;
+		`, [guildID]);
 	}
 
 	public fetchMemberSettings(guildID: string, userID: string) {
@@ -131,7 +131,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"guild_id" = $1 AND
 				"case_id"  = $2
 			LIMIT 1;
-		`, [guildID, caseNumber]) as Promise<RawModerationSettings>;
+		`, [guildID, caseNumber]);
 	}
 
 	public fetchModerationLogByCases(guildID: string, caseNumbers: readonly number[]) {
@@ -141,7 +141,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			WHERE
 				"guild_id" = $1 AND
 				"case_id" IN (${caseNumbers.join(', ')});
-		`, [guildID]) as Promise<RawModerationSettings[]>;
+		`, [guildID]);
 	}
 
 	public fetchModerationLogByGuild(guildID: string) {
@@ -150,7 +150,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			FROM moderation
 			WHERE
 				"guild_id" = $1;
-		`, [guildID]) as Promise<RawModerationSettings[]>;
+		`, [guildID]);
 	}
 
 	public fetchModerationLogByUser(guildID: string, user: string) {
@@ -160,7 +160,7 @@ export class PostgresCommonQuery implements CommonQuery {
 			WHERE
 				"guild_id" = $1 AND
 				"user_id"  = $2;
-		`, [guildID, user]) as Promise<RawModerationSettings[]>;
+		`, [guildID, user]);
 	}
 
 	public async fetchStar(guildID: string, messageID: string) {
@@ -171,7 +171,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"guild_id"   = $1 AND
 				"message_id" = $2
 			LIMIT 1;
-		`, [guildID, messageID]) as RawStarboardSettings;
+		`, [guildID, messageID]);
 		return result || null;
 	}
 
@@ -185,7 +185,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"enabled"         = TRUE      AND
 				"stars"           >= $2
 			LIMIT 1;
-		`, [guildID, minimum]) as RawStarboardSettings;
+		`, [guildID, minimum]);
 		return result || null;
 	}
 
@@ -198,7 +198,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"star_message_id" IS NOT NULL AND
 				"enabled"         = TRUE      AND
 				"stars"           >= $2;
-		`, [guildID, minimum]) as Promise<RawStarboardSettings[]>;
+		`, [guildID, minimum]);
 	}
 
 	public insertCommandUseCounter(command: string) {

@@ -11,13 +11,13 @@ export default class extends Inhibitor {
 	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.spam || !message.guild) return;
 
-		const channelID = message.guild!.settings.get(GuildSettings.Channels.Spam);
+		const channelID = message.guild.settings.get(GuildSettings.Channels.Spam);
 		if (channelID === message.channel.id) return;
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const channel = message.guild!.channels.get(channelID);
+		const channel = message.guild.channels.get(channelID);
 		if (!channel) {
-			await message.guild!.settings.reset(GuildSettings.Channels.Spam);
+			await message.guild.settings.reset(GuildSettings.Channels.Spam);
 			return;
 		}
 

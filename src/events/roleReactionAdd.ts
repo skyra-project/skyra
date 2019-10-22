@@ -8,31 +8,31 @@ export default class extends Event {
 
 	public async run(parsed: LLRCData) {
 		// Role reactions only apply on the roles channel
-		const channelRoles = parsed.guild!.settings.get(GuildSettings.Channels.Roles);
+		const channelRoles = parsed.guild.settings.get(GuildSettings.Channels.Roles);
 		if (!channelRoles) return;
 
 		// There may be a message filter, or not, it could be applied to any message
-		const messageReaction = parsed.guild!.settings.get(GuildSettings.Roles.MessageReaction);
+		const messageReaction = parsed.guild.settings.get(GuildSettings.Roles.MessageReaction);
 		if (messageReaction && messageReaction !== parsed.messageID) return;
 
 		// Resolve the emoji (since there can be many formats)
 		const emoji = resolveEmoji(parsed.emoji);
 		if (!emoji) return;
 
-		const roleEntry = parsed.guild!.settings.get(GuildSettings.Roles.Reactions)
+		const roleEntry = parsed.guild.settings.get(GuildSettings.Roles.Reactions)
 			.find(entry => entry.emoji === emoji);
 		if (!roleEntry) return;
 
 		try {
-			const member = await parsed.guild!.members.fetch(parsed.userID);
+			const member = await parsed.guild.members.fetch(parsed.userID);
 			if (member.roles.has(roleEntry.role)) return;
 
 			// Conver the array into a set
 			const memberRoles = new Set(member.roles.keys());
 			// Remove the eveeryone role from the set
-			memberRoles.delete(parsed.guild!.id);
+			memberRoles.delete(parsed.guild.id);
 
-			const allRoleSets = member.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
+			const allRoleSets = member.guild.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 			for (const set of allRoleSets) {
 				// If the set doesnt have the role being added to the user skip

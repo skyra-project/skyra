@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		const [goofied, goofy] = await Promise.all([
 			fetchAvatar(user, 128),
-			fetchAvatar(message.author!, 128)
+			fetchAvatar(message.author, 128)
 		]);
 
 		return new Canvas(356, 435)

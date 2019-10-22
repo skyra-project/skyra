@@ -8,10 +8,10 @@ export default class extends Event {
 
 	public async run(message: KlasaMessage) {
 		const lock = message.guild!.moderation.createLock();
-		await message.guild!.members.ban(message.author!.id, { days: 0, reason: message.language.tget('CONST_MONITOR_NMS') })
+		await message.guild!.members.ban(message.author.id, { days: 0, reason: message.language.tget('CONST_MONITOR_NMS') })
 			.catch(error => this.client.emit(Events.ApiError, error));
-		await message.sendLocale('MONITOR_NMS_MESSAGE', [message.author!]).catch(error => this.client.emit(Events.ApiError, error));
-		message.guild!.security.nms.delete(message.author!.id);
+		await message.sendLocale('MONITOR_NMS_MESSAGE', [message.author]).catch(error => this.client.emit(Events.ApiError, error));
+		message.guild!.security.nms.delete(message.author.id);
 
 		const reason = message.language.tget('MONITOR_NMS_MODLOG', message.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed));
 		try {

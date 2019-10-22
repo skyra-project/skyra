@@ -21,8 +21,8 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const now = Date.now();
-		await message.author!.settings.sync();
-		const time = message.author!.settings.get(UserSettings.TimeDaily);
+		await message.author.settings.sync();
+		const time = message.author.settings.get(UserSettings.TimeDaily);
 
 		// It's been 12 hours, grant dailies
 		if (time <= now) {

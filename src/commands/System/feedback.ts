@@ -21,9 +21,9 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [feedback]: [string]) {
 		const embed = new MessageEmbed()
 			.setColor(0x06D310)
-			.setAuthor(`${message.author!.tag}`, message.author!.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128 }))
 			.setDescription(feedback)
-			.setFooter(`${message.author!.id} | Feedback`)
+			.setFooter(`${message.author.id} | Feedback`)
 			.setTimestamp();
 
 		if (message.deletable) message.nuke().catch(() => null);

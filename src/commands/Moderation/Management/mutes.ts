@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [target]: [KlasaUser?]) {
 		const mutes = (await (target
-			? message.guild!.moderation.fetch(target!.id)
+			? message.guild!.moderation.fetch(target.id)
 			: message.guild!.moderation.fetch())).filter(log => log.type === ModerationTypeKeys.Mute || log.type === ModerationTypeKeys.TemporaryMute);
 		if (!mutes.size) throw message.language.tget('COMMAND_MUTES_EMPTY');
 
@@ -46,8 +46,8 @@ export default class extends SkyraCommand {
 			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
 		}
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.start(response, message.author!.id);
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
+		await display.start(response, message.author.id);
 		return response;
 	}
 

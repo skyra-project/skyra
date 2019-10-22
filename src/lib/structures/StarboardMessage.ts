@@ -28,7 +28,7 @@ const LASTCOLOR = COLORS[MAXCOLORS];
 export class StarboardMessage {
 
 	public get id() {
-		return `${this.channel.guild!.id}.${this.message.id}`;
+		return `${this.channel.guild.id}.${this.message.id}`;
 	}
 
 	/**
@@ -91,7 +91,7 @@ export class StarboardMessage {
 		}
 		if (!this.message) return null;
 		return new MessageEmbed()
-			.setAuthor(this.message.author!.username, this.message.author!.displayAvatarURL())
+			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL())
 			.setColor(this.color)
 			.setDescription(this.content)
 			.setTimestamp(this.message.createdAt)
@@ -185,7 +185,7 @@ export class StarboardMessage {
 	 * @param id The user's ID to add
 	 */
 	public async add(id: string): Promise<void> {
-		if (this.message.author!.id !== id && !this.users.has(id)) {
+		if (this.message.author.id !== id && !this.users.has(id)) {
 			this.users.add(id);
 			await this.edit({ stars: this.stars });
 		}
@@ -196,7 +196,7 @@ export class StarboardMessage {
 	 * @param id The user's ID to remove
 	 */
 	public async remove(id: string): Promise<void> {
-		if (this.message.author!.id !== id && this.users.has(id)) {
+		if (this.message.author.id !== id && this.users.has(id)) {
 			this.users.delete(id);
 			await this.edit({ stars: this.stars });
 		}
@@ -243,11 +243,11 @@ export class StarboardMessage {
 		return {
 			channel_id: this.channel.id,
 			enabled: this.enabled,
-			guild_id: this.channel.guild!.id,
+			guild_id: this.channel.guild.id,
 			message_id: this.message.id,
 			star_message_id: (this.starMessage && this.starMessage.id) || null,
 			stars: this.stars,
-			user_id: this.message.author!.id
+			user_id: this.message.author.id
 		};
 	}
 
@@ -261,7 +261,7 @@ export class StarboardMessage {
 	private async _syncDiscord(): Promise<void> {
 		try {
 			this.users = await fetchReactionUsers(this.client, this.channel.id, this.message.id,
-				this.channel.guild!.settings.get(GuildSettings.Starboard.Emoji));
+				this.channel.guild.settings.get(GuildSettings.Starboard.Emoji));
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Missing Access
@@ -277,7 +277,7 @@ export class StarboardMessage {
 			return;
 		}
 
-		this.users.delete(this.message.author!.id);
+		this.users.delete(this.message.author.id);
 	}
 
 	/**

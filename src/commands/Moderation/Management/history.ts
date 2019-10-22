@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [target = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
 		const logs = await message.guild!.moderation.fetch(target.id);
 		let warnings = 0;
 		let mutes = 0;

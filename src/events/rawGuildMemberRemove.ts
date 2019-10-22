@@ -22,14 +22,14 @@ export default class extends Event {
 
 	public run(data: WSGuildMemberRemove) {
 		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild!.available) return;
+		if (!guild || !guild.available) return;
 
-		guild!.memberSnowflakes.delete(data.user.id);
+		guild.memberSnowflakes.delete(data.user.id);
 		if (!this.client.guilds.some(g => g.memberSnowflakes.has(data.user.id))) this.client.usertags.delete(data.user.id);
-		if (guild!.members.has(data.user.id)) guild!.members.delete(data.user.id);
-		if (guild!.security.raid.has(data.user.id)) guild!.security.raid.delete(data.user.id);
+		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
+		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
 
-		if (guild!.settings.get(GuildSettings.Events.MemberRemove)) {
+		if (guild.settings.get(GuildSettings.Events.MemberRemove)) {
 			this.handleMemberLog(guild, data);
 			this.handleFarewellMessage(guild, data.user);
 		}
@@ -46,27 +46,27 @@ export default class extends Event {
 	}
 
 	public handleFarewellMessage(guild: Guild, user: APIUserData) {
-		const channelsFarewell = guild!.settings.get(GuildSettings.Channels.Farewell);
-		const messagesFarewell = guild!.settings.get(GuildSettings.Messages.Farewell);
+		const channelsFarewell = guild.settings.get(GuildSettings.Channels.Farewell);
+		const messagesFarewell = guild.settings.get(GuildSettings.Messages.Farewell);
 		if (channelsFarewell && messagesFarewell) {
-			const channel = guild!.channels.get(channelsFarewell) as TextChannel;
+			const channel = guild.channels.get(channelsFarewell) as TextChannel;
 			if (channel && channel.postable) {
 				channel.send(this.transformMessage(guild, user))
 					.catch(error => this.client.emit(Events.ApiError, error));
 			} else {
-				guild!.settings.reset(GuildSettings.Channels.Farewell, { throwOnError: true })
+				guild.settings.reset(GuildSettings.Channels.Farewell, { throwOnError: true })
 					.catch(error => this.client.emit(Events.Wtf, error));
 			}
 		}
 	}
 
 	public transformMessage(guild: Guild, user: APIUserData) {
-		return guild!.settings.get(GuildSettings.Messages.Farewell).replace(REGEXP, match => {
+		return guild.settings.get(GuildSettings.Messages.Farewell).replace(REGEXP, match => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;
 				case MATCHES.MEMBERNAME: return user.username;
 				case MATCHES.MEMBERTAG: return `${user.username}#${user.discriminator}`;
-				case MATCHES.GUILD: return guild!.name;
+				case MATCHES.GUILD: return guild.name;
 				default: return match;
 			}
 		});

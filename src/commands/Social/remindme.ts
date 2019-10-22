@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 			catchUp: true,
 			data: {
 				content: title,
-				user: message.author!.id
+				user: message.author.id
 			}
 		});
 
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async list(message: KlasaMessage) {
-		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === message.author!.id);
+		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
@@ -49,8 +49,8 @@ export default class extends SkyraCommand {
 		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.start(response, message.author!.id);
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
+		await display.start(response, message.author.id);
 		return response;
 	}
 
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		let selectedTask: ScheduledTask | null = null;
 		for (const task of this.client.schedule.tasks) {
 			if (task.id !== id) continue;
-			if (task.taskName !== REMINDER_TYPE || !task.data || task.data.user !== message.author!.id) break;
+			if (task.taskName !== REMINDER_TYPE || !task.data || task.data.user !== message.author.id) break;
 			selectedTask = task;
 		}
 		if (!selectedTask) throw message.language.tget('COMMAND_REMINDME_NOTFOUND');
@@ -99,7 +99,7 @@ export default class extends SkyraCommand {
 		let time: number;
 		let attempts = 0;
 		do {
-			const messages = await message.channel.awaitMessages(msg => msg.author === message.author!, { time: 30000, max: 1 });
+			const messages = await message.channel.awaitMessages(msg => msg.author === message.author, { time: 30000, max: 1 });
 			if (!messages.size) throw null;
 			time = new Duration(messages.first()!.content).offset;
 			attempts++;

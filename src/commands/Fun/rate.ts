@@ -28,14 +28,14 @@ export default class extends SkyraCommand {
 			[ratewaifu, user] = message.language.tget('COMMAND_RATE_MYSELF');
 		} else {
 			user = /^(myself|me)$/i.test(user)
-				? message.author!.username
+				? message.author.username
 				: user.replace(/\bmy\b/g, 'your');
 
 			const rng = Math.round(Math.random() * 100);
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
-		return message.sendMessage(`**${message.author!.username}**, ${message.language.tget('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, { disableEveryone: true });
+		return message.sendMessage(`**${message.author.username}**, ${message.language.tget('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, { disableEveryone: true });
 	}
 
 }

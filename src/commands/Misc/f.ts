@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);
 		const response = await message.channel.send({ files: [{ attachment, name: 'F.png' }] }) as KlasaMessage;
 		if (response.reactable) await response.react('🇫');

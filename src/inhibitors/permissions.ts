@@ -6,7 +6,7 @@ export default class extends Inhibitor {
 	public async run(message: KlasaMessage, command: Command) {
 		// If the message was sent in a guild, the command isn't guarded (they are all 0, and
 		// cannot be denied), and the permission level is lower than 9, run the permission nodes.
-		if (message.guild && message.author!.id !== message.guild.ownerID && !command.guarded && command.permissionLevel < 9) {
+		if (message.guild && message.author.id !== message.guild.ownerID && !command.guarded && command.permissionLevel < 9) {
 			if (this.runUser(message, command) === false) return false;
 			if (this.runRole(message, command) === false) return false;
 		}

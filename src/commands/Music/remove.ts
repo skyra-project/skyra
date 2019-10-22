@@ -19,7 +19,7 @@ export default class extends MusicCommand {
 
 		index--;
 		const song = music[index];
-		if (song.requester !== message.author!.id && !await message.hasAtLeastPermissionLevel(5)) {
+		if (song.requester !== message.author.id && !await message.hasAtLeastPermissionLevel(5)) {
 			throw message.language.tget('COMMAND_REMOVE_DENIED');
 		}
 

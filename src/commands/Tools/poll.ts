@@ -1,7 +1,6 @@
-import { CommandStore, KlasaMessage, Serializer, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
-import { Message } from 'discord.js';
 
 const REG_USERS = Serializer.regex.userOrMember;
 const REG_TAG = /[^#]{2,32}#\d{4,4}/;
@@ -40,7 +39,7 @@ export default class extends SkyraCommand {
 			users = await this._resolveUsers(message, message.flagArgs.users.split(',').map(user => user.trim()));
 		} else if (!('no-prompt' in message.flagArgs)) {
 			const wants = await message.ask(message.language.tget('COMMAND_POLL_WANT_USERS'));
-			if (wants) users = (await this.userPrompt.createPrompt(message).run(message.language.tget('COMMAND_POLL_FIRSTUSER')) as KlasaUser[]).map(user => user.id);
+			if (wants) users = (await this.userPrompt.createPrompt(message).run(message.language.tget('COMMAND_POLL_FIRSTUSER'))).map(user => user.id);
 		}
 
 		if ('roles' in message.flagArgs && message.flagArgs.roles !== 'roles') {
@@ -55,7 +54,7 @@ export default class extends SkyraCommand {
 			: ['yes', 'no'];
 
 		const data: RawPollSettings = {
-			author_id: message.author!.id,
+			author_id: message.author.id,
 			guild_id: message.guild!.id,
 			options,
 			roles,
@@ -87,7 +86,7 @@ export default class extends SkyraCommand {
 		if (!found || found.taskName !== 'poll') throw message.language.tget('COMMAND_POLL_NOTEXISTS');
 		const data = found.data as RawPollSettings;
 		if (data.guild_id !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		if (!(data.author_id === message.author!.id || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
+		if (!(data.author_id === message.author.id || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
 		await found.delete();
 		return message.sendLocale('COMMAND_POLL_REMOVE');
 	}
@@ -99,13 +98,13 @@ export default class extends SkyraCommand {
 		if (!found || found.taskName !== 'poll') throw message.language.tget('COMMAND_POLL_NOTEXISTS');
 		const data = found.data as RawPollSettings;
 		if (data.guild_id !== message.guild!.id) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		if (data.voted.includes(message.author!.id)) throw message.language.tget('COMMAND_POLL_ALREADY_VOTED');
+		if (data.voted.includes(message.author.id)) throw message.language.tget('COMMAND_POLL_ALREADY_VOTED');
 		if (option) option = option.toLowerCase();
 		if (!option || !data.options.includes(option)) throw message.language.tget('COMMAND_POLL_INVALID_OPTION', data.options.map(opt => `\`${opt}\``).join(', '));
 		data.votes[option]++;
-		data.voted.push(message.author!.id);
+		data.voted.push(message.author.id);
 		await found.update({ data });
-		const m = await message.channel.send(message.language.tget('COMMAND_POLL_VOTE')) as Message;
+		const m = await message.channel.send(message.language.tget('COMMAND_POLL_VOTE'));
 		return m.nuke(10000);
 	}
 
@@ -113,7 +112,7 @@ export default class extends SkyraCommand {
 		if (!id) throw message.language.tget('COMMAND_POLL_MISSING_ID');
 		const poll = this.client.schedule.get(id);
 		if (!(poll && (poll.taskName === 'poll' || poll.taskName === 'pollEnd') && poll.data.guild === message.guild!.id)) throw message.language.tget('COMMAND_POLL_NOTEXISTS');
-		if (!(message.author!.id === poll.data.author || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
+		if (!(message.author.id === poll.data.author || await message.hasAtLeastPermissionLevel(7))) throw message.language.tget('COMMAND_POLL_NOTMANAGEABLE');
 
 		const { title, options, votes, voted } = poll.data as RawPollSettings;
 		if (!voted.length) return message.sendLocale('COMMAND_POLL_EMPTY_VOTES');
@@ -155,7 +154,7 @@ export default class extends SkyraCommand {
 	}
 
 	public _accepts(message: KlasaMessage, { users, roles }: { users: string[]; roles: string[] }) {
-		return (users && users.includes(message.author!.id)) || (roles && roles.some(role => message.member!.roles.has(role))) || Boolean(users);
+		return (users && users.includes(message.author.id)) || (roles && roles.some(role => message.member!.roles.has(role))) || Boolean(users);
 	}
 
 }

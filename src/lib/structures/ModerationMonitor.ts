@@ -35,7 +35,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 		try {
 			const points = typeof preProcessed === 'number' ? preProcessed : 1;
-			message.guild!.security.adders[$adder]!.add(message.author!.id, points);
+			message.guild!.security.adders[$adder]!.add(message.author.id, points);
 		} catch {
 			await this.processHardPunishment(message);
 		}
@@ -93,7 +93,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onSoftBan(message: KlasaMessage) {
-		await this.createAction(message, () => floatPromise(this, softban(message.guild!, message.guild!.me!.user, message.author!)));
+		await this.createAction(message, () => floatPromise(this, softban(message.guild!, message.guild!.me!.user, message.author)));
 	}
 
 	protected async onBan(message: KlasaMessage) {

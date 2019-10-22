@@ -28,11 +28,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async generate(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === message.author!.id) user = this.client.user!;
+		if (user.id === message.author.id) user = this.client.user!;
 
 		const [hugged, hugger] = await Promise.all([
 			fetchAvatar(user, 256),
-			fetchAvatar(message.author!, 256)
+			fetchAvatar(message.author, 256)
 		]);
 
 		return new Canvas(660, 403)

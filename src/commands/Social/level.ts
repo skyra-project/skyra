@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const output = await this.showProfile(message, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
 	}

@@ -116,7 +116,7 @@ export default class extends SkyraCommand {
 		if (message.guild!.ownerID === target.id) return false;
 
 		// If the author is the owner, always allow
-		if (message.author!.id === message.guild!.ownerID) return true;
+		if (message.author.id === message.guild!.ownerID) return true;
 
 		// Check hierarchy role positions, allow when greater, block otherwise
 		return message.member!.roles.highest.position > (target instanceof Role ? target.position : target.roles.highest.position);

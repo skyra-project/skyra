@@ -23,8 +23,8 @@ export default class extends SkyraCommand {
 
 		if (money <= 0) throw message.language.tget('RESOLVER_POSITIVE_AMOUNT');
 
-		await message.author!.settings.sync();
-		const currency = message.author!.settings.get(UserSettings.Money);
+		await message.author.settings.sync();
+		const currency = message.author.settings.get(UserSettings.Money);
 		if (currency < money) throw message.language.tget('COMMAND_PAY_MISSING_MONEY', money, currency);
 
 		const accepted = await message.ask(message.language.tget('COMMAND_PAY_PROMPT', user.username, money));
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 
 	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number) {
 		await user.settings.sync();
-		await message.author!.settings.decrease(UserSettings.Money, money);
+		await message.author.settings.decrease(UserSettings.Money, money);
 		await user.settings.increase(UserSettings.Money, money);
 		return message.alert(message.language.tget('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}

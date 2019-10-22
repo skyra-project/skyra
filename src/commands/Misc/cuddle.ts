@@ -28,11 +28,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async generate(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === message.author!.id) user = this.client.user!;
+		if (user.id === message.author.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const [man, woman] = await Promise.all([
-			fetchAvatar(message.author!, 256),
+			fetchAvatar(message.author, 256),
 			fetchAvatar(user, 256)
 		]);
 

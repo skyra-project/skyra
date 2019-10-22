@@ -1,5 +1,5 @@
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
-import { Extendable, ExtendableStore, KlasaMessage, util } from 'klasa';
+import { Extendable, ExtendableStore, util } from 'klasa';
 import { Events } from '../lib/types/Enums';
 
 export default class extends Extendable {
@@ -9,7 +9,7 @@ export default class extends Extendable {
 	}
 
 	public async prompt(this: Message, content: string, time = 30000) {
-		const message = await this.channel.send(content) as Message;
+		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages(msg => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch(error => this.client.emit(Events.ApiError, error));
 		if (responses.size === 0) throw this.language.tget('MESSAGE_PROMPT_TIMEOUT');
@@ -22,8 +22,8 @@ export default class extends Extendable {
 			options = content!;
 			content = null;
 		}
-		const message = await this.send(content, options as MessageOptions) as KlasaMessage;
-		return !this.guild || (this.channel as TextChannel).permissionsFor(this.guild!.me!)!.has(Permissions.FLAGS.ADD_REACTIONS)
+		const message = await this.send(content, options as MessageOptions);
+		return !this.guild || (this.channel as TextChannel).permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.ADD_REACTIONS)
 			? awaitReaction(this, message, promptOptions)
 			: awaitMessage(this, promptOptions);
 	}
@@ -60,10 +60,10 @@ const REG_ACCEPT = /^y|yes?|yeah?$/i;
 async function awaitReaction(message: Message, messageSent: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
 	await messageSent.react(REACTIONS.YES);
 	await messageSent.react(REACTIONS.NO);
-	const reactions = await messageSent.awaitReactions((__, user) => user === message.author!, promptOptions);
+	const reactions = await messageSent.awaitReactions((__, user) => user === message.author, promptOptions);
 
 	// Remove all reactions if the user has permissions to do so
-	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild!.me!)!.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
+	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild.me!)!.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
 		messageSent.reactions.removeAll().catch(error => messageSent.client.emit(Events.ApiError, error));
 	}
 
@@ -71,7 +71,7 @@ async function awaitReaction(message: Message, messageSent: Message, promptOptio
 }
 
 async function awaitMessage(message: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
-	const messages = await message.channel.awaitMessages(mes => mes.author === message.author!, promptOptions);
+	const messages = await message.channel.awaitMessages(mes => mes.author === message.author, promptOptions);
 	return Boolean(messages.size) && REG_ACCEPT.test(messages.first()!.content);
 }
 

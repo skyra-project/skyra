@@ -28,15 +28,15 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		if (user.id === this.client.user!.id) throw message.language.tget('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw message.language.tget('COMMAND_GAMES_BOT');
-		if (user.id === message.author!.id) throw message.language.tget('COMMAND_GAMES_SELF');
+		if (user.id === message.author.id) throw message.language.tget('COMMAND_GAMES_SELF');
 		if (this.channels.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');
 		this.channels.add(message.channel.id);
 
 		try {
-			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.tget('COMMAND_TICTACTOE_PROMPT', message.author!.toString(), user.toString()));
+			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.tget('COMMAND_TICTACTOE_PROMPT', message.author.toString(), user.toString()));
 			if (response) {
 				try {
-					await this.game(message.responses[0], [message.author!, user].sort(() => Math.random() - 0.5));
+					await this.game(message.responses[0], [message.author, user].sort(() => Math.random() - 0.5));
 				} catch {
 					await message.send(message.language.tget('UNEXPECTED_ISSUE')).catch(error => this.client.emit(Events.ApiError, error));
 				}

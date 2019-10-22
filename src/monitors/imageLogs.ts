@@ -35,7 +35,7 @@ export default class extends Monitor {
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () => new MessageEmbed()
 			.setColor(0xEFAE45)
-			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 			.setDescription(`[${message.language.tget('JUMPTO')}](${message.url})`)
 			.setFooter(`#${(message.channel as TextChannel).name}`)
 			.attachFiles([new MessageAttachment(buffer, filename)])

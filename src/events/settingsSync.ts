@@ -14,10 +14,10 @@ export default class extends Event {
 	}
 
 	private updateFilter(guild: SkyraGuild, settings: Settings) {
-		const blockedWords = settings.get(GuildSettings.Selfmod.Filter.Raw) as readonly string[];
+		const blockedWords = settings.get(GuildSettings.Selfmod.Filter.Raw);
 
-		if (blockedWords.length) guild!.security.updateRegExp(blockedWords);
-		else guild!.security.regexp = null;
+		if (blockedWords.length) guild.security.updateRegExp(blockedWords);
+		else guild.security.regexp = null;
 	}
 
 	private updatePermissionNodes(guild: SkyraGuild) {

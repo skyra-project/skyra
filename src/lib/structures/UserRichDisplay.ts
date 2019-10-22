@@ -4,7 +4,7 @@ const FIVE_MINUTES = 60000 * 5;
 
 export class UserRichDisplay extends RichDisplay {
 
-	public async start(message: KlasaMessage, target: string = message.author!.id, options: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
+	public async start(message: KlasaMessage, target: string = message.author.id, options: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
 		util.mergeDefault({
 			filter: (_: MessageReaction, user: KlasaUser) => user.id === target,
 			time: FIVE_MINUTES

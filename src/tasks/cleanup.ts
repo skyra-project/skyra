@@ -60,7 +60,7 @@ export default class extends Task {
 
 			// Clear members that haven't send a message in the last 30 minutes
 			const { me } = guild;
-			for (const [id, member] of guild!.members) {
+			for (const [id, member] of guild.members) {
 				if (member === me) continue;
 				if (member.voice.channelID) continue;
 				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
@@ -69,7 +69,7 @@ export default class extends Task {
 			}
 
 			// Clear emojis
-			emojis += guild!.emojis.size;
+			emojis += guild.emojis.size;
 			guild.emojis.clear();
 		}
 

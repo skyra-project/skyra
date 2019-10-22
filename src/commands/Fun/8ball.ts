@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		return message.sendLocale('COMMAND_8BALL_OUTPUT',
-			[message.author!, input, util.codeBlock('', this.generator(input.toLowerCase(), message.language))],
+			[message.author, input, util.codeBlock('', this.generator(input.toLowerCase(), message.language))],
 			{ disableEveryone: true });
 	}
 

@@ -15,13 +15,13 @@ export default class extends Argument {
 		const resRole = this.resolveRole(arg, message.guild);
 		if (resRole) return resRole;
 
-		const result = await new FuzzySearch(message.guild!.roles, entry => entry.name, filter).run(message, arg, possible.min || undefined);
+		const result = await new FuzzySearch(message.guild.roles, entry => entry.name, filter).run(message, arg, possible.min || undefined);
 		if (result) return result[1];
 		throw message.language.tget('RESOLVER_INVALID_ROLENAME', possible.name);
 	}
 
 	public resolveRole(query: string, guild: KlasaGuild) {
-		if (ROLE_REGEXP.test(query)) return guild!.roles.get(ROLE_REGEXP.exec(query)![1]);
+		if (ROLE_REGEXP.test(query)) return guild.roles.get(ROLE_REGEXP.exec(query)![1]);
 		return null;
 	}
 

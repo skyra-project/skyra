@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, options: string[]) {
 		const words = this.filterWords(options, message.language);
 		return message.sendLocale('COMMAND_CHOICE_OUTPUT',
-			[message.author!, words[Math.floor(Math.random() * words.length)]]);
+			[message.author, words[Math.floor(Math.random() * words.length)]]);
 	}
 
 	private filterWords(words: string[], i18n: Language) {

@@ -39,14 +39,14 @@ export default class extends SkyraCommand {
 			case 'invites':
 			case 'invite': return (mes: Message) => /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/\w+/.test(mes.content);
 			case 'bots':
-			case 'bot': return (mes: Message) => mes.author!.bot;
-			case 'you': return (mes: Message) => mes.author!.id === this.client.user!.id;
-			case 'me': return (mes: Message) => mes.author!.id === message.author!.id;
+			case 'bot': return (mes: Message) => mes.author.bot;
+			case 'you': return (mes: Message) => mes.author.id === this.client.user!.id;
+			case 'me': return (mes: Message) => mes.author.id === message.author.id;
 			case 'uploads':
 			case 'upload': return (mes: Message) => mes.attachments.size > 0;
 			case 'humans':
 			case 'human':
-			case 'user': return (mes: Message) => mes.author!.id === user!.id;
+			case 'user': return (mes: Message) => mes.author.id === user!.id;
 			default: return () => true;
 		}
 	}

@@ -1,6 +1,6 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
-import { SQLProvider, SchemaEntry, SchemaFolder, SettingsFolderUpdateResult } from 'klasa';
+import { SQLProvider, SchemaEntry, SchemaFolder, SettingsFolderUpdateResult, Type } from 'klasa';
 import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
 import { mergeDefault } from '@klasa/utils';
 import { DEV_PGSQL } from '../../config';
@@ -14,14 +14,13 @@ export default class extends SQLProvider {
 	public qb = new QueryBuilder({
 		array: type => `${type}[]`,
 		arraySerializer: (values, piece, resolver) =>
-			values.length ? `array[${values.map(value => resolver(value, piece)).join(', ')}]` : "'{}'",
+			values.length ? `ARRAY[${values.map(value => resolver(value, piece)).join(', ')}]` : "'{}'",
 		formatDatatype: (name, datatype, def = null) => `"${name}" ${datatype}${def === null ? '' : ` NOT NULL DEFAULT ${def}`}`
 	})
-		.add('boolean', { type: 'BOOL' })
-		.add('integer', { type: ({ max }) => max !== null && max >= 2 ** 32 ? 'BIGINT' : 'INTEGER' })
-		.add('float', { type: 'DOUBLE PRECISION' })
-		.add('uuid', { type: 'UUID' })
-		.add('any', { type: 'JSON', serializer: input => cJson(input as AnyObject), arraySerializer: input => cArrayJson(input as AnyObject[]) })
+		.add('boolean', { type: 'BOOL', serializer: input => this.cBoolean(input as boolean) })
+		.add('integer', { type: ({ max }) => max !== null && max >= 2 ** 32 ? 'BIGINT' : 'INTEGER', serializer: input => this.cNumber(input as number | bigint) })
+		.add('float', { type: 'DOUBLE PRECISION', serializer: input => this.cNumber(input as number) })
+		.add('any', { type: 'JSON', serializer: input => this.cJson(input as AnyObject), arraySerializer: input => this.cArrayJson(input as AnyObject[]) })
 		.add('json', { 'extends': 'any' })
 		.add('permissionnode', { 'extends': 'any' });
 
@@ -63,7 +62,7 @@ export default class extends SQLProvider {
 		// If rows were given, use them
 		if (rows) {
 			return this.run(/* sql */`
-				CREATE TABLE ${cIdentifier(table)} (${rows.map(([k, v]) => `${cIdentifier(k)} ${v}`).join(', ')});
+				CREATE TABLE ${this.cIdentifier(table)} (${rows.map(([k, v]) => `${this.cIdentifier(k)} ${v}`).join(', ')});
 			`);
 		}
 
@@ -75,7 +74,7 @@ export default class extends SQLProvider {
 		const generatedColumns = schemaValues.map(this.qb.generateDatatype.bind(this.qb));
 		const columns = ['"id" VARCHAR(19) NOT NULL UNIQUE', ...generatedColumns];
 		return this.run(/* sql */`
-			CREATE TABLE ${cIdentifier(table)} (
+			CREATE TABLE ${this.cIdentifier(table)} (
 				${columns.join(', ')},
 				PRIMARY KEY(id)
 			);
@@ -84,7 +83,7 @@ export default class extends SQLProvider {
 
 	public deleteTable(table: string) {
 		return this.run(/* sql */`
-			DROP TABLE IF EXISTS ${cIdentifier(table)};
+			DROP TABLE IF EXISTS ${this.cIdentifier(table)};
 		`);
 	}
 
@@ -94,7 +93,7 @@ export default class extends SQLProvider {
 		const filter = entries.length ? ` WHERE id IN ('${entries.join("', '")}')` : '';
 		const results = await this.runAll(/* sql */`
 			SELECT *
-			FROM ${cIdentifier(table)}${filter};
+			FROM ${this.cIdentifier(table)}${filter};
 		`);
 		return results.map(output => this.parseEntry(table, output));
 	}
@@ -102,7 +101,7 @@ export default class extends SQLProvider {
 	public async getKeys(table: string): Promise<string[]> {
 		const rows = await this.runAll(/* sql */`
 			SELECT id
-			FROM ${cIdentifier(table)};
+			FROM ${this.cIdentifier(table)};
 		`);
 		return rows.map(row => row.id);
 	}
@@ -115,20 +114,20 @@ export default class extends SQLProvider {
 		}
 		const output = await this.runOne(/* sql */`
 			SELECT *
-			FROM ${cIdentifier(table)}
+			FROM ${this.cIdentifier(table)}
 			WHERE
-				${cIdentifier(key)} = $1
+				${this.cIdentifier(key)} = ${this.cValue(table, key, value)}
 			LIMIT 1;
-		`, [value]);
+		`);
 		return this.parseEntry(table, output);
 	}
 
 	public async has(table: string, id: string) {
 		const result = await this.runOne(/* sql */`
 			SELECT id
-			FROM ${cIdentifier(table)}
+			FROM ${this.cIdentifier(table)}
 			WHERE
-				id = ${cString(id)}
+				id = ${this.cString(id)}
 			LIMIT 1;
 		`);
 		return Boolean(result);
@@ -143,18 +142,19 @@ export default class extends SQLProvider {
 			values.push(id);
 		}
 		return this.pgsql!.query(/* sql */`
-			INSERT INTO ${cIdentifier(table)} (${keys.map(cIdentifier).join(', ')})
-			VALUES (${makeRange(keys.length)});
-		`, values);
+			INSERT INTO ${this.cIdentifier(table)} (${keys.map(this.cIdentifier).join(', ')})
+			VALUES (${this.cValues(table, keys, values).join(', ')});
+		`);
 	}
 
 	public update(table: string, id: string, data: CreateOrUpdateValue) {
 		const [keys, values] = this.parseUpdateInput(data, false);
+		const resolvedValues = this.cValues(table, keys, values);
 		return this.pgsql!.query(/* sql */`
-			UPDATE ${cIdentifier(table)}
-			SET ${keys.map((key, i: number) => `${cIdentifier(key)} = $${i + 1}`)}
-			WHERE id = ${cString(id)};
-		`, values);
+			UPDATE ${this.cIdentifier(table)}
+			SET ${keys.map((key, i) => `${this.cIdentifier(key)} = ${resolvedValues[i]}`)}
+			WHERE id = ${this.cString(id)};
+		`);
 	}
 
 	public replace(table: string, id: string, data: CreateOrUpdateValue) {
@@ -163,13 +163,13 @@ export default class extends SQLProvider {
 
 	public delete(table: string, id: string) {
 		return this.run(/* sql */`
-			DELETE FROM ${cIdentifier(table)}
-			WHERE id = ${cString(id)};
+			DELETE FROM ${this.cIdentifier(table)}
+			WHERE id = ${this.cString(id)};
 		`);
 	}
 
 	public addColumn(table: string, column: SchemaFolder | SchemaEntry) {
-		const escapedTable = cIdentifier(table);
+		const escapedTable = this.cIdentifier(table);
 		const columns = (column instanceof SchemaFolder ? [...column.values(true)] : [column])
 			.map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ');
 		return this.run(/* sql */`
@@ -178,8 +178,8 @@ export default class extends SQLProvider {
 	}
 
 	public removeColumn(table: string, columns: string | string[]) {
-		const escapedTable = cIdentifier(table);
-		const escapedColumns = typeof columns === 'string' ? cIdentifier(columns) : columns.map(cIdentifier).join(', ');
+		const escapedTable = this.cIdentifier(table);
+		const escapedColumns = typeof columns === 'string' ? this.cIdentifier(columns) : columns.map(this.cIdentifier).join(', ');
 		return this.run(/* sql */`
 			ALTER TABLE ${escapedTable}
 			DROP COLUMN ${escapedColumns};
@@ -193,7 +193,7 @@ export default class extends SQLProvider {
 			: `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(entry.default, entry)}`;
 
 		return this.pgsql!.query(/* sql */`
-			ALTER TABLE ${cIdentifier(table)}
+			ALTER TABLE ${this.cIdentifier(table)}
 			ALTER COLUMN ${column}
 			TYPE ${datatype}${defaultConstraint};`);
 	}
@@ -203,8 +203,8 @@ export default class extends SQLProvider {
 			SELECT column_name
 			FROM information_schema.columns
 			WHERE
-				table_schema = ${cString(schema)} AND
-				table_name = ${cString(table)};
+				table_schema = ${this.cString(schema)} AND
+				table_name = ${this.cString(table)};
 		`);
 		return result.map(row => row.column_name);
 	}
@@ -239,36 +239,100 @@ export default class extends SQLProvider {
 		return results.rows[0] || null;
 	}
 
-}
+	private cValue(table: string, key: string, value: unknown) {
+		const gateway = this.client.gateways.get(table);
+		if (typeof gateway === 'undefined') return this.cUnknown(value);
 
-function cIdentifier(identifier: string) {
-	const escaped = identifier.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-	return `"${escaped}"`;
-}
+		const entry = gateway.schema.get(key) as SchemaEntry;
+		if (!entry || entry.type === 'Folder') return this.cUnknown(value);
 
-function cString(value: string) {
-	const escaped = value.replace(/'/g, "''");
-	return `'${escaped}'`;
-}
-
-function cJson(value: AnyObject) {
-	const escaped = cString(JSON.stringify(value));
-	return `${escaped}::JSON`;
-}
-
-function cArrayJson(value: AnyObject[]) {
-	return `ARRAY[${value.map(json => cString(JSON.stringify(json)))}]::JSON[]`;
-}
-
-function makeRange(values: number) {
-	if (values <= 0) throw new Error(`Invalid range ${values}`);
-	if (values === 1) return '$1';
-
-	let indexPlaceholders = '$1';
-	for (let i = 1; i < values; ++i) {
-		indexPlaceholders += `, $${i + 1}`;
+		const qbEntry = this.qb.get(entry.type);
+		return qbEntry
+			? entry.array
+				? qbEntry.arraySerializer(value as unknown[], entry, qbEntry.serializer)
+				: qbEntry.serializer(value, entry)
+			: this.cUnknown(value);
 	}
-	return indexPlaceholders;
+
+	private cValues(table: string, keys: readonly string[], values: readonly unknown[]) {
+		const gateway = this.client.gateways.get(table);
+		if (typeof gateway === 'undefined') return values.map(value => this.cUnknown(value));
+
+		const { schema } = gateway;
+		const parsedValues: string[] = [];
+		for (let i = 0; i < keys.length; ++i) {
+			const key = keys[i];
+			const value = values[i];
+			const entry = schema.get(key) as SchemaEntry;
+			if (!entry || entry.type === 'Folder') {
+				parsedValues.push(this.cUnknown(value));
+				continue;
+			}
+
+			const qbEntry = this.qb.get(entry.type);
+			parsedValues.push(qbEntry
+				? entry.array
+					? qbEntry.arraySerializer(value as unknown[], entry, qbEntry.serializer)
+					: qbEntry.serializer(value, entry)
+				: this.cUnknown(value));
+		}
+		return parsedValues;
+	}
+
+	private cIdentifier(identifier: string) {
+		const escaped = identifier.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+		return `"${escaped}"`;
+	}
+
+	private cString(value: string) {
+		const escaped = value.replace(/'/g, "''");
+		return `'${escaped}'`;
+	}
+
+	private cNumber(value: number | bigint) {
+		return value.toString();
+	}
+
+	private cBoolean(value: boolean) {
+		return value ? 'TRUE' : 'FALSE';
+	}
+
+	private cDate(value: Date) {
+		return this.cNumber(value.getTime());
+	}
+
+	private cArray(value: readonly unknown[]) {
+		return `ARRAY[${value.map(this.cUnknown).join(', ')}]`;
+	}
+
+	private cJson(value: AnyObject) {
+		const escaped = this.cString(JSON.stringify(value));
+		return `${escaped}::JSON`;
+	}
+
+	private cArrayJson(value: AnyObject[]) {
+		return `ARRAY[${value.map(json => this.cString(JSON.stringify(json)))}]::JSON[]`;
+	}
+
+	private cUnknown(value: unknown): string {
+		switch (typeof value) {
+			case 'bigint':
+			case 'number':
+				return this.cNumber(value);
+			case 'boolean':
+				return this.cBoolean(value);
+			case 'object':
+				if (value === null) return 'NULL';
+				if (Array.isArray(value)) return this.cArray(value);
+				if (value instanceof Date) return this.cDate(value);
+				return this.cJson(value);
+			case 'undefined':
+				return 'NULL';
+			default:
+				throw new TypeError(`Cannot serialize a ${new Type(value)}`);
+		}
+	}
+
 }
 
 type CreateOrUpdateValue = SettingsFolderUpdateResult[] | [string, unknown][] | Record<string, unknown>;

@@ -142,7 +142,7 @@ export default class extends SQLProvider {
 			values.push(id);
 		}
 		return this.pgsql!.query(/* sql */`
-			INSERT INTO ${this.cIdentifier(table)} (${keys.map(this.cIdentifier).join(', ')})
+			INSERT INTO ${this.cIdentifier(table)} (${keys.map(this.cIdentifier.bind(this)).join(', ')})
 			VALUES (${this.cValues(table, keys, values).join(', ')});
 		`);
 	}
@@ -179,7 +179,7 @@ export default class extends SQLProvider {
 
 	public removeColumn(table: string, columns: string | string[]) {
 		const escapedTable = this.cIdentifier(table);
-		const escapedColumns = typeof columns === 'string' ? this.cIdentifier(columns) : columns.map(this.cIdentifier).join(', ');
+		const escapedColumns = typeof columns === 'string' ? this.cIdentifier(columns) : columns.map(this.cIdentifier.bind(this)).join(', ');
 		return this.run(/* sql */`
 			ALTER TABLE ${escapedTable}
 			DROP COLUMN ${escapedColumns};
@@ -302,7 +302,7 @@ export default class extends SQLProvider {
 	}
 
 	private cArray(value: readonly unknown[]) {
-		return `ARRAY[${value.map(this.cUnknown).join(', ')}]`;
+		return `ARRAY[${value.map(this.cUnknown.bind(this)).join(', ')}]`;
 	}
 
 	private cJson(value: AnyObject) {

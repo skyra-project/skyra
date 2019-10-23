@@ -26,15 +26,15 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		if (message.flagArgs.categories || message.flagArgs.cat) {
-			const commands = await this._fetchCommands(message);
-			const categories = commands.keyArray();
-			const digits = categories.length.toString().length;
+			const commandsByCategory = await this._fetchCommands(message);
 			const { language } = message;
-			return message.sendMessage(categories.map((cat, i) => {
-				const pg = String(i + 1).padStart(digits, '0');
-				const cmdCount = commands.get(cat)!.length;
-				return `\`${pg}.\` **${cat}** → ${language.tget('COMMAND_HELP_COMMAND_COUNT', cmdCount)}`;
-			}));
+			let i = 0;
+			const commandCategories: string[] = [];
+			for (const [category, commands] of commandsByCategory) {
+				const line = String(++i).padStart(2, '0');
+				commandCategories.push(`\`${line}.\` **${category}** → ${language.tget('COMMAND_HELP_COMMAND_COUNT', commands.length)}`);
+			}
+			return message.sendMessage(commandCategories);
 		}
 
 		// Handle case for a single command

@@ -193,6 +193,7 @@ export default class extends Language {
 		COMMAND_HELP_DM: '📥 | La lista de comandos ha sido enviada a tus mensajes privados.',
 		COMMAND_HELP_NODM: `${REDCROSS} | Parece que tienes tus mensajes privados desactivados, no pude mandarte el mensaje.`,
 		COMMAND_HELP_ALL_FLAG: `${LOADING} Mostrando una categoría por página. ¿Problemas con el mensaje? Envía \`Skyra, help --all\` para la lista de todos los comandos en tus Mensajes Directos.`,
+		COMMAND_HELP_COMMAND_COUNT: n => `${n} comando${n === 1 ? '' : 's'}`,
 		COMMAND_ENABLE: (type, name) => `+ Activado con éxito la pieza tipo ${type}: ${name}`,
 		COMMAND_ENABLE_DESCRIPTION: 'Re-activa o activa temporalmente una pieza de Klasa. El estado por defecto es restaurado al recargar.',
 		COMMAND_DISABLE: (type, name) => `+ Desactivado con éxito la pieza tipo ${type}: ${name}`,

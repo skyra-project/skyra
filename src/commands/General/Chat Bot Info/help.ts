@@ -48,7 +48,10 @@ export default class extends SkyraCommand {
 		}
 
 		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
-			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
+			const response = await message.sendMessage(
+				message.language.tget('COMMAND_HELP_ALL_FLAG', message.guildSettings.get(GuildSettings.Prefix)),
+				new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })
+			);
 			const display = await this.buildDisplay(message);
 
 			// Extract start page and sanitize it
@@ -84,9 +87,7 @@ export default class extends SkyraCommand {
 		const commands = await this._fetchCommands(message);
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
-		const display = new UserRichDisplay()
-			.setFooterSuffix(' | Use the --all flag to get the full list in DMs');
-
+		const display = new UserRichDisplay();
 		const color = getColor(message) || 0xFFAB2D;
 		for (const [category, list] of commands) {
 			display.addPage(new MessageEmbed()

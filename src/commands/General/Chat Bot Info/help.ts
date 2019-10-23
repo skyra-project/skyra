@@ -1,5 +1,5 @@
-import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { MessageEmbed, Permissions, TextChannel, Collection } from 'discord.js';
+import { CommandStore, KlasaMessage, util, Command } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { getColor, noop } from '../../../lib/util/util';
@@ -25,6 +25,18 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
+		if (message.flagArgs.categories || message.flagArgs.cat) {
+			const commandsByCategory = await this._fetchCommands(message);
+			const { language } = message;
+			let i = 0;
+			const commandCategories: string[] = [];
+			for (const [category, commands] of commandsByCategory) {
+				const line = String(++i).padStart(2, '0');
+				commandCategories.push(`\`${line}.\` **${category}** → ${language.tget('COMMAND_HELP_COMMAND_COUNT', commands.length)}`);
+			}
+			return message.sendMessage(commandCategories);
+		}
+
 		// Handle case for a single command
 		const command = commandOrPage && !util.isNumber(commandOrPage) ? commandOrPage : null;
 		if (command) {
@@ -86,14 +98,14 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: SkyraCommand) {
+	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {
 		const description = util.isFunction(command.description) ? command.description(message.language) : command.description;
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 
 	private async _fetchCommands(message: KlasaMessage) {
 		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
-		const commands = new Map();
+		const commands = new Collection<string, Command[]>();
 		await Promise.all(this.client.commands.map(command => run(command, true)
 			.then(() => {
 				const category = commands.get(command.category);

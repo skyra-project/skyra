@@ -87,6 +87,7 @@ export interface LanguageKeys {
 	COMMAND_HELP_DM: string;
 	COMMAND_HELP_NODM: string;
 	COMMAND_HELP_ALL_FLAG: string;
+	COMMAND_HELP_COMMAND_COUNT: (n: number) => string;
 	COMMAND_ENABLE: (type: string, name: string) => string;
 	COMMAND_ENABLE_DESCRIPTION: string;
 	COMMAND_DISABLE: (type: string, name: string) => string;

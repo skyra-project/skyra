@@ -70,15 +70,15 @@ export default class extends SkyraCommand {
 		// Warn if starting polygamy:
 		// Check if the author is already monogamous.
 		if (spouses.length === 1) {
-			const answer = await askYesNo(channel, author, language.get('COMMAND_MARRY_AUTHOR_TAKEN'));
+			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_AUTHOR_TAKEN'));
 			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', [await this.client.fetchUsername(spouses[0])]);
 		// Check if the author's first potential spouse is already married.
 		} else if (spouses.length === 0 && targetsSpouses.length > 0) {
-			const answer = await askYesNo(channel, author, language.get('COMMAND_MARRY_TAKEN', targetsSpouses.length));
+			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_TAKEN', targetsSpouses.length));
 			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_MULTIPLE_CANCEL');
 		}
 
-		const answer = await askYesNo(channel, user, language.get('COMMAND_MARRY_PETITION', author, user));
+		const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author.username, user.username));
 		switch (answer) {
 			case YesNoAnswer.Timeout: return message.sendLocale('COMMAND_MARRY_NOREPLY');
 			case YesNoAnswer.ImplicitNo: return message.sendLocale('COMMAND_MARRY_DENIED');

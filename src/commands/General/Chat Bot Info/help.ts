@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 			aliases: ['commands', 'cmd', 'cmds'],
 			description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
 			guarded: true,
-			usage: '(Command:command|page:integer)',
+			usage: '(Command:command|page:integer|category:category)',
 			flagSupport: true
 		});
 
@@ -22,9 +22,19 @@ export default class extends SkyraCommand {
 			if (!arg) return undefined;
 			return this.client.arguments.get('command').run(arg, possible, message);
 		});
+		this.createCustomResolver('category', async (arg, _, msg) => {
+			if (!arg) return undefined;
+			arg = arg.toLowerCase();
+			const commandsByCategory = await this._fetchCommands(msg);
+			for (const [page, category] of commandsByCategory.keyArray().entries()) {
+				// Add 1, since 1 will be subtracted later
+				if (category.toLowerCase() === arg) return page + 1;
+			}
+			return undefined;
+		});
 	}
 
-	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
+	public async run(message: KlasaMessage, [commandOrPage]: [Command | number | undefined]) {
 		if (message.flagArgs.categories || message.flagArgs.cat) {
 			const commandsByCategory = await this._fetchCommands(message);
 			const { language } = message;
@@ -38,7 +48,7 @@ export default class extends SkyraCommand {
 		}
 
 		// Handle case for a single command
-		const command = commandOrPage && !util.isNumber(commandOrPage) ? commandOrPage : null;
+		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
 		if (command) {
 			return message.sendMessage([
 				message.language.tget('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
@@ -55,10 +65,10 @@ export default class extends SkyraCommand {
 			const display = await this.buildDisplay(message);
 
 			// Extract start page and sanitize it
-			let startPage = commandOrPage && util.isNumber(commandOrPage) ? --commandOrPage : null;
-			if (startPage !== null) {
-				if (startPage < 0 || startPage >= display.pages.length) startPage = 0;
-			}
+			const page = util.isNumber(commandOrPage) ? commandOrPage - 1 : null;
+			const startPage = page === null || page < 0 || page >= display.pages.length
+				? null
+				: page;
 			await display.start(response, message.author.id, startPage === null ? undefined : { startPage });
 			return response;
 		}
@@ -84,16 +94,16 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage) {
-		const commands = await this._fetchCommands(message);
+		const commandsByCategory = await this._fetchCommands(message);
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
 		const display = new UserRichDisplay();
 		const color = getColor(message) || 0xFFAB2D;
-		for (const [category, list] of commands) {
+		for (const [category, commands] of commandsByCategory) {
 			display.addPage(new MessageEmbed()
 				.setTitle(`${category} Commands`)
 				.setColor(color)
-				.setDescription(list.map(this.formatCommand.bind(this, message, prefix, true)).join('\n')));
+				.setDescription(commands.map(this.formatCommand.bind(this, message, prefix, true)).join('\n')));
 		}
 
 		return display;

@@ -1,11 +1,11 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp, CommandOptions } from 'klasa';
+import { CommandOptions, KlasaMessage, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
-import { cutText, fetch, getColor, ApplyOptions } from '../../lib/util/util';
+import { ApplyOptions, cutText, fetch, getColor } from '../../lib/util/util';
 
 @ApplyOptions<CommandOptions>({
 	cooldown: 10,

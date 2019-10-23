@@ -1,10 +1,10 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage, KlasaUser, CommandOptions } from 'klasa';
+import { CommandOptions, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchAvatar, ApplyOptions } from '../../lib/util/util';
 import { assetsFolder } from '../../lib/util/constants';
+import { ApplyOptions, fetchAvatar } from '../../lib/util/util';
 
 @ApplyOptions<CommandOptions>({
 	bucket: 2,

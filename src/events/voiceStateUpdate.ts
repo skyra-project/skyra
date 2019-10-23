@@ -11,9 +11,9 @@ export default class extends Event {
 		if (!voiceChannel) return;
 
 		// If the new state is not in the music voice channel
-		if (newState.channel !== voiceChannel && music.playing) {
+		if (music.playing) {
 			if (music.listeners.length === 0) await music.pause(true);
-		} else if (newState.channel === voiceChannel && music.paused && music.systemPaused) {
+		} else if (music.paused && music.systemPaused) {
 			if (music.listeners.length !== 0) await music.resume();
 		}
 	}

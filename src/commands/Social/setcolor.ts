@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 
 		await message.author.settings.sync();
 
-		await message.author.settings.update(UserSettings.Color, hex.toString().slice(1));
+		await message.author.settings.update(UserSettings.Color, b10.value);
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128 }))

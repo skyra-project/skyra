@@ -1,10 +1,11 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
-import { SQLProvider, SchemaEntry, SchemaFolder, Type, SettingsFolderUpdateResult } from 'klasa';
+import { SQLProvider, SchemaEntry, SchemaFolder, SettingsFolderUpdateResult } from 'klasa';
 import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
-import { isNumber, mergeDefault } from '@klasa/utils';
+import { mergeDefault } from '@klasa/utils';
 import { DEV_PGSQL } from '../../config';
 import { run as databaseInitRun } from '../lib/util/DatabaseInit';
+import { AnyObject } from '../lib/types/util';
 
 export default class extends SQLProvider {
 
@@ -20,7 +21,7 @@ export default class extends SQLProvider {
 		.add('integer', { type: ({ max }) => max !== null && max >= 2 ** 32 ? 'BIGINT' : 'INTEGER' })
 		.add('float', { type: 'DOUBLE PRECISION' })
 		.add('uuid', { type: 'UUID' })
-		.add('any', { type: 'JSON', serializer: input => `'${JSON.stringify(input)}'::json` })
+		.add('any', { type: 'JSON', serializer: input => cJson(input as AnyObject), arraySerializer: input => cArrayJson(input as AnyObject[]) })
 		.add('json', { 'extends': 'any' })
 		.add('permissionnode', { 'extends': 'any' });
 
@@ -58,43 +59,51 @@ export default class extends SQLProvider {
 		}
 	}
 
-	public createTable(table: string, rows?: readonly any[]) {
-		if (rows) return this.run(`CREATE TABLE ${sanitizeKeyName(table)} (${rows.map(([k, v]) => `${sanitizeKeyName(k)} ${v}`).join(', ')});`);
+	public createTable(table: string, rows?: readonly [string, string][]) {
+		// If rows were given, use them
+		if (rows) {
+			return this.run(/* sql */`
+				CREATE TABLE ${cIdentifier(table)} (${rows.map(([k, v]) => `${cIdentifier(k)} ${v}`).join(', ')});
+			`);
+		}
+
+		// Otherwise generate datatypes from the schema
 		const gateway = this.client.gateways.get(table);
 		if (!gateway) throw new Error(`There is no gateway defined with the name ${table} nor an array of rows with datatypes have been given. Expected any of either.`);
 
 		const schemaValues = [...gateway.schema.values(true)];
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore 2339
-		const idLength = gateway.idLength || 18;
-		return this.run(`
-			CREATE TABLE ${sanitizeKeyName(table)} (
-				${[`id VARCHAR(${idLength}) PRIMARY KEY NOT NULL UNIQUE`, ...schemaValues.map(this.qb.generateDatatype.bind(this.qb))].join(', ')}
-			)`);
+		const generatedColumns = schemaValues.map(this.qb.generateDatatype.bind(this.qb));
+		const columns = ['"id" VARCHAR(19) NOT NULL UNIQUE', ...generatedColumns];
+		return this.run(/* sql */`
+			CREATE TABLE ${cIdentifier(table)} (
+				${columns.join(', ')},
+				PRIMARY KEY(id)
+			);
+		`);
 	}
 
 	public deleteTable(table: string) {
-		return this.run(`DROP TABLE IF EXISTS ${sanitizeKeyName(table)};`);
-	}
-
-	public async countRows(table: string) {
-		const result = await this.runOne(`SELECT COUNT(*) FROM ${sanitizeKeyName(table)};`);
-		return Number(result.count);
+		return this.run(/* sql */`
+			DROP TABLE IF EXISTS ${cIdentifier(table)};
+		`);
 	}
 
 	/* Row methods */
 
 	public async getAll(table: string, entries: readonly string[] = []): Promise<unknown[]> {
-		if (entries.length) {
-			const results = await this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} WHERE id IN ('${entries.join("', '")}');`);
-			return results.map(output => this.parseEntry(table, output));
-		}
-		const results = await this.runAll(`SELECT * FROM ${sanitizeKeyName(table)};`);
+		const filter = entries.length ? ` WHERE id IN ('${entries.join("', '")}')` : '';
+		const results = await this.runAll(/* sql */`
+			SELECT *
+			FROM ${cIdentifier(table)}${filter};
+		`);
 		return results.map(output => this.parseEntry(table, output));
 	}
 
 	public async getKeys(table: string): Promise<string[]> {
-		const rows = await this.runAll(`SELECT id FROM ${sanitizeKeyName(table)};`);
+		const rows = await this.runAll(/* sql */`
+			SELECT id
+			FROM ${cIdentifier(table)};
+		`);
 		return rows.map(row => row.id);
 	}
 
@@ -104,21 +113,25 @@ export default class extends SQLProvider {
 			value = key;
 			key = 'id';
 		}
-		const output = await this.runOne(`SELECT * FROM ${sanitizeKeyName(table)} WHERE ${sanitizeKeyName(key)} = $1 LIMIT 1;`, [value]);
+		const output = await this.runOne(/* sql */`
+			SELECT *
+			FROM ${cIdentifier(table)}
+			WHERE
+				${cIdentifier(key)} = $1
+			LIMIT 1;
+		`, [value]);
 		return this.parseEntry(table, output);
 	}
 
-	public async has(table: string, id: string): Promise<boolean> {
-		const result = await this.runOne(`SELECT id FROM ${sanitizeKeyName(table)} WHERE id = $1 LIMIT 1;`, [id]);
+	public async has(table: string, id: string) {
+		const result = await this.runOne(/* sql */`
+			SELECT id
+			FROM ${cIdentifier(table)}
+			WHERE
+				id = ${cString(id)}
+			LIMIT 1;
+		`);
 		return Boolean(result);
-	}
-
-	public async getRandom(table: string): Promise<unknown[]> {
-		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY RANDOM() LIMIT 1;`);
-	}
-
-	public getSorted(table: string, key: string, order: 'ASC' | 'DESC' = 'DESC', limitMin?: number, limitMax?: number) {
-		return this.runAll(`SELECT * FROM ${sanitizeKeyName(table)} ORDER BY ${sanitizeKeyName(key)} ${order} ${parseRange(limitMin, limitMax)};`);
 	}
 
 	public create(table: string, id: string, data: CreateOrUpdateValue) {
@@ -129,62 +142,70 @@ export default class extends SQLProvider {
 			keys.push('id');
 			values.push(id);
 		}
-		return this.pgsql!.query(`
-			INSERT INTO ${sanitizeKeyName(table)} (${keys.map(sanitizeKeyName).join(', ')})
-			VALUES (${Array.from({ length: keys.length }, (__, i) => `$${i + 1}`).join(', ')});`, values);
+		return this.pgsql!.query(/* sql */`
+			INSERT INTO ${cIdentifier(table)} (${keys.map(cIdentifier).join(', ')})
+			VALUES (${makeRange(keys.length)});
+		`, values);
 	}
 
 	public update(table: string, id: string, data: CreateOrUpdateValue) {
 		const [keys, values] = this.parseUpdateInput(data, false);
-		return this.pgsql!.query(`
-			UPDATE ${sanitizeKeyName(table)}
-			SET ${keys.map((key, i: number) => `${sanitizeKeyName(key)} = $${i + 1}`)}
-			WHERE id = '${id.replace(/'/g, "''")}';`, values);
+		return this.pgsql!.query(/* sql */`
+			UPDATE ${cIdentifier(table)}
+			SET ${keys.map((key, i: number) => `${cIdentifier(key)} = $${i + 1}`)}
+			WHERE id = ${cString(id)};
+		`, values);
 	}
 
 	public replace(table: string, id: string, data: CreateOrUpdateValue) {
 		return this.update(table, id, data);
 	}
 
-	public incrementValue(table: string, id: string, key: string, amount = 1) {
-		return this.run(`UPDATE ${sanitizeKeyName(table)} SET $2 = $2 + $3 WHERE id = $1;`, [id, key, amount]);
-	}
-
-	public decrementValue(table: string, id: string, key: string, amount = 1) {
-		return this.run(`UPDATE ${sanitizeKeyName(table)} SET $2 = GREATEST(0, $2 - $3) WHERE id = $1;`, [id, key, amount]);
-	}
-
 	public delete(table: string, id: string) {
-		return this.run(`DELETE FROM ${sanitizeKeyName(table)} WHERE id = $1;`, [id]);
+		return this.run(/* sql */`
+			DELETE FROM ${cIdentifier(table)}
+			WHERE id = ${cString(id)};
+		`);
 	}
 
 	public addColumn(table: string, column: SchemaFolder | SchemaEntry) {
-		return this.run(column instanceof SchemaFolder
-			? `ALTER TABLE ${sanitizeKeyName(table)} ${[...column.values(true)].map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ')};`
-			: `ALTER TABLE ${sanitizeKeyName(table)} ADD COLUMN ${this.qb.generateDatatype(column)};`);
+		const escapedTable = cIdentifier(table);
+		const columns = (column instanceof SchemaFolder ? [...column.values(true)] : [column])
+			.map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ');
+		return this.run(/* sql */`
+			ALTER TABLE ${escapedTable} ${columns};
+		`);
 	}
 
 	public removeColumn(table: string, columns: string | string[]) {
-		if (typeof columns === 'string') return this.run(`ALTER TABLE ${sanitizeKeyName(table)} DROP COLUMN ${sanitizeKeyName(columns)};`);
-		if (Array.isArray(columns)) return this.run(`ALTER TABLE ${sanitizeKeyName(table)} DROP COLUMN ${columns.map(sanitizeKeyName).join(', ')};`);
-		throw new TypeError('Invalid usage of PostgreSQL#removeColumn. Expected a string or string[].');
+		const escapedTable = cIdentifier(table);
+		const escapedColumns = typeof columns === 'string' ? cIdentifier(columns) : columns.map(cIdentifier).join(', ');
+		return this.run(/* sql */`
+			ALTER TABLE ${escapedTable}
+			DROP COLUMN ${escapedColumns};
+		`);
 	}
 
 	public updateColumn(table: string, entry: SchemaEntry) {
 		const [column, datatype] = this.qb.generateDatatype(entry).split(' ');
-		return this.pgsql!.query(`ALTER TABLE ${sanitizeKeyName(table)} ALTER COLUMN ${column} TYPE ${datatype}${entry.default
+		const defaultConstraint = entry.default !== null
 			? `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(entry.default, entry)}`
-			: ''
-		};`);
+			: '';
+
+		return this.pgsql!.query(/* sql */`
+			ALTER TABLE ${cIdentifier(table)}
+			ALTER COLUMN ${column}
+			TYPE ${datatype}${defaultConstraint};`);
 	}
 
 	public async getColumns(table: string, schema = 'public') {
-		const result = await this.runAll(`
+		const result = await this.runAll(/* sql */`
 			SELECT column_name
 			FROM information_schema.columns
-			WHERE table_schema = $1
-				AND table_name = $2;
-		`, [schema, table]);
+			WHERE
+				table_schema = ${cString(schema)} AND
+				table_name = ${cString(table)};
+		`);
 		return result.map(row => row.column_name);
 	}
 
@@ -220,41 +241,34 @@ export default class extends SQLProvider {
 
 }
 
-/**
- * @param value The string to sanitize as a key
- */
-function sanitizeKeyName(value: string) {
-	if (typeof value !== 'string') throw new TypeError(`[SANITIZE_NAME] Expected a string, got: ${new Type(value)}`);
-	if (/`|"/.test(value)) throw new TypeError(`Invalid input (${value}).`);
-	if (value.startsWith('"') && value.endsWith('"')) return value;
-	return `"${value}"`;
+function cIdentifier(identifier: string) {
+	const escaped = identifier.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+	return `"${escaped}"`;
 }
 
-/**
- * @param min The minimum value
- * @param max The maximum value
- */
-function parseRange(min?: number, max?: number) {
-	// Min value validation
-	if (typeof min === 'undefined') return '';
-	if (!isNumber(min)) {
-		throw new TypeError(`[PARSE_RANGE] 'min' parameter expects an integer or undefined, got ${min}`);
-	}
-	if (min < 0) {
-		throw new RangeError(`[PARSE_RANGE] 'min' parameter expects to be equal or greater than zero, got ${min}`);
-	}
+function cString(value: string) {
+	const escaped = value.replace(/'/g, "''");
+	return `'${escaped}'`;
+}
 
-	// Max value validation
-	if (typeof max !== 'undefined') {
-		if (!isNumber(max)) {
-			throw new TypeError(`[PARSE_RANGE] 'max' parameter expects an integer or undefined, got ${max}`);
-		}
-		if (max <= min) {
-			throw new RangeError(`[PARSE_RANGE] 'max' parameter expects ${max} to be greater than ${min}. Got: ${max} <= ${min}`);
-		}
-	}
+function cJson(value: AnyObject) {
+	const escaped = cString(JSON.stringify(value));
+	return `${escaped}::JSON`;
+}
 
-	return `LIMIT ${min}${typeof max === 'number' ? `,${max}` : ''}`;
+function cArrayJson(value: AnyObject[]) {
+	return `ARRAY[${value.map(json => cString(JSON.stringify(json)))}]::JSON[]`;
+}
+
+function makeRange(values: number) {
+	if (values <= 0) throw new Error(`Invalid range ${values}`);
+	if (values === 1) return '$1';
+
+	let indexPlaceholders = '$1';
+	for (let i = 1; i < values; ++i) {
+		indexPlaceholders += `, $${i + 1}`;
+	}
+	return indexPlaceholders;
 }
 
 type CreateOrUpdateValue = SettingsFolderUpdateResult[] | [string, unknown][] | Record<string, unknown>;

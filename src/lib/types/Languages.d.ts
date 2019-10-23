@@ -501,6 +501,20 @@ export interface LanguageKeys {
 	COMMAND_CONTENT_EXTENDED: string;
 	COMMAND_EMOJI_DESCRIPTION: string;
 	COMMAND_EMOJI_EXTENDED: string;
+	COMMAND_ESHOP_DESCRIPTION: string;
+	COMMAND_ESHOP_EXTENDED: string;
+	COMMAND_ESHOP_NOT_IN_DATABASE: string;
+	COMMAND_ESHOP_TITLES: {
+		PRICE: string;
+		AVAILABILITY: string;
+		RELEASE_DATE: string;
+		NUMBER_OF_PLAYERS: string;
+		PLATFORM: string;
+		CATEGORIES: string;
+		NSUID: 'NSUID';
+		ESRB: 'ESRB';
+	};
+	COMMAND_ESHOP_PRICE: (price: number) => string;
 	COMMAND_POLL_DESCRIPTION: string;
 	COMMAND_POLL_EXTENDED: string;
 	COMMAND_PRICE_DESCRIPTION: string;
@@ -553,13 +567,40 @@ export interface LanguageKeys {
 	COMMAND_WSTARE_EXTENDED: string;
 	COMMAND_WTICKLE_DESCRIPTION: string;
 	COMMAND_WTICKLE_EXTENDED: string;
-	COMMAND_ANIME_TYPES: Record<string, string>;
-	COMMAND_ANIME_QUERY_FAIL: string;
+	COMMAND_ANIME_TYPES: {
+		TV: string;
+		MOVIE: string;
+		OVA: string;
+		SPECIAL: string;
+		[index: string]: string;
+	};
 	COMMAND_ANIME_INVALID_CHOICE: string;
 	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
-	COMMAND_ANIME_TITLES: Record<string, string>;
+	COMMAND_ANIME_TITLES: {
+		TYPE: string;
+		SCORE: string;
+		EPISODES: string;
+		EPISODE_LENGTH: string;
+		AGE_RATING: string;
+		FIRST_AIR_DATE: string;
+		WATCH_IT: string;
+	};
 	COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
-	COMMAND_MANGA_TITLES: Record<string, string>;
+	COMMAND_MANGA_TITLES: {
+		TYPE: string;
+		SCORE: string;
+		AGE_RATING: string;
+		FIRST_PUBLISH_DATE: string;
+		READ_IT: string;
+	};
+	COMMAND_MANGA_TYPES: {
+		'MANGA': string;
+		'NOVEL': string;
+		'MANHWA': string;
+		'ONE-SHOT': string;
+		'SPECIAL': string;
+		[index: string]: string;
+	};
 	COMMAND_SUBSCRIBE_NO_ROLE: string;
 	COMMAND_SUBSCRIBE_SUCCESS: (role: string) => string;
 	COMMAND_UNSUBSCRIBE_SUCCESS: (role: string) => string;
@@ -1046,6 +1087,7 @@ export interface LanguageKeys {
 	SYSTEM_FETCHBANS_FAIL: string;
 	SYSTEM_LOADING: () => string;
 	SYSTEM_ERROR: string;
+	SYSTEM_QUERY_FAIL: string;
 	SYSTEM_MESSAGE_NOT_FOUND: string;
 	SYSTEM_NOTENOUGH_PARAMETERS: string;
 	SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: string;

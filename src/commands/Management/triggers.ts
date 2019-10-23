@@ -1,57 +1,55 @@
-import { CommandStore, KlasaMessage, util } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { resolveEmoji, displayEmoji } from '../../lib/util/util';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { MessageEmbed } from 'discord.js';
+import { CommandOptions, KlasaMessage, util } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolver, displayEmoji, resolveEmoji } from '../../lib/util/util';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
-export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: language => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TRIGGERS_EXTENDED'),
-			permissionLevel: 6,
-			quotedStringSupport: true,
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<add|remove|show:default> (type:type) (input:input) (output:output)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('type', (arg, _, msg, [action]) => {
-			if (action === 'show') return undefined;
-			if (REG_TYPE.test(arg)) return arg.toLowerCase();
-			throw msg.language.tget('COMMAND_TRIGGERS_NOTYPE');
-		}).createCustomResolver('input', (arg, _, msg, [action]) => {
-			if (action === 'show') return undefined;
-			if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
-			return arg.toLowerCase();
-		}).createCustomResolver('output', async (arg, _, msg, [action, type]) => {
-			if (action === 'show' || action === 'remove') return undefined;
-			if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
-			if (type === 'reaction') {
-				try {
-					const emoji = resolveEmoji(arg);
-					if (!emoji) throw null;
-					await msg.react(emoji);
-					return emoji;
-				} catch {
-					throw msg.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
-				}
-			} else if (type === 'alias') {
-				const command = this.client.commands.get(arg);
-				if (command && command.permissionLevel < 10) return arg;
-				throw msg.language.tget('COMMAND_TRIGGERS_INVALIDALIAS');
-			} else {
-				return null;
-			}
-		});
+@ApplyOptions<CommandOptions>({
+	cooldown: 5,
+	description: language => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TRIGGERS_EXTENDED'),
+	permissionLevel: 6,
+	quotedStringSupport: true,
+	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<add|remove|show:default> (type:type) (input:input) (output:output)',
+	usageDelim: ' '
+})
+@CreateResolver('type', (arg, _, msg, [action]) => {
+	if (action === 'show') return undefined;
+	if (REG_TYPE.test(arg)) return arg.toLowerCase();
+	throw msg.language.tget('COMMAND_TRIGGERS_NOTYPE');
+})
+@CreateResolver('input', (arg, _, msg, [action]) => {
+	if (action === 'show') return undefined;
+	if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
+	return arg.toLowerCase();
+})
+@CreateResolver('output', async (arg, _, msg, [action, type]) => {
+	if (action === 'show' || action === 'remove') return undefined;
+	if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
+	if (type === 'reaction') {
+		try {
+			const emoji = resolveEmoji(arg);
+			if (!emoji) throw null;
+			await msg.react(emoji);
+			return emoji;
+		} catch {
+			throw msg.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
+		}
+	} else if (type === 'alias') {
+		const command = msg.client.commands.get(arg);
+		if (command && command.permissionLevel < 10) return arg;
+		throw msg.language.tget('COMMAND_TRIGGERS_INVALIDALIAS');
+	} else {
+		return null;
 	}
+})
+export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [type, input]: [string, string]) {
 		const list = this._getList(message, type);

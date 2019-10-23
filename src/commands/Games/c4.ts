@@ -1,24 +1,20 @@
-import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
+import { CommandOptions, KlasaMessage, KlasaUser, Usage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
+import { ApplyOptions } from '../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['connect-four'],
+	cooldown: 0,
+	description: language => language.tget('COMMAND_C4_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_C4_EXTENDED'),
+	requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '<user:username>'
+})
 export default class extends SkyraCommand {
 
-	private prompt: Usage;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['connect-four'],
-			cooldown: 0,
-			description: language => language.tget('COMMAND_C4_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_C4_EXTENDED'),
-			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '<user:username>'
-		});
-
-		this.prompt = this.definePrompt('<response:boolean>');
-	}
+	private prompt: Usage = this.definePrompt('<response:boolean>');
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		if (user.id === this.client.user!.id) throw message.language.tget('COMMAND_GAMES_SKYRA');

@@ -1,27 +1,24 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandOptions, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchAvatar } from '../../lib/util/util';
 import { assetsFolder } from '../../lib/util/constants';
+import { ApplyOptions, fetchAvatar } from '../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['pray'],
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_F_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_F_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	usage: '[user:username]'
+})
 export default class extends SkyraCommand {
 
 	private template: Buffer | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['pray'],
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_F_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_F_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			usage: '[user:username]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);

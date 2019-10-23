@@ -1,26 +1,24 @@
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
 import { assetsFolder } from '../../lib/util/constants';
+import { ApplyOptions } from '../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_THESEARCH_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_THESEARCH_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	spam: true,
+	usage: '<text:string>'
+})
 export default class extends SkyraCommand {
 
 	private template: Buffer | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_THESEARCH_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_THESEARCH_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			spam: true,
-			usage: '<text:string>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
 		const attachment = await this.generate(text);

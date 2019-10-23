@@ -1,24 +1,22 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandOptions, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { ModerationTypeKeys } from '../../../lib/util/constants';
+import { ApplyOptions } from '../../../lib/util/util';
 
 const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
 
+@ApplyOptions<CommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_HISTORY_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_HISTORY_EXTENDED'),
+	permissionLevel: 5,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '[user:username]'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_HISTORY_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_HISTORY_EXTENDED'),
-			permissionLevel: 5,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '[user:username]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
 		const logs = await message.guild!.moderation.fetch(target.id);

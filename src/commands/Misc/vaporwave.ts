@@ -1,17 +1,15 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { KlasaMessage } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
+import { ApplyOptions } from '../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 5,
+	description: language => language.tget('COMMAND_VAPORWAVE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_VAPORWAVE_EXTENDED'),
+	spam: true,
+	usage: '<input:string>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: language => language.tget('COMMAND_VAPORWAVE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_VAPORWAVE_EXTENDED'),
-			spam: true,
-			usage: '<input:string>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		let output = '';

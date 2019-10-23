@@ -1,8 +1,14 @@
-import { CommandStore } from 'klasa';
+import { CommandOptions } from 'klasa';
 import { SelfModerationCommand } from '../../../lib/structures/SelfModerationCommand';
-import { GuildSecurity } from '../../../lib/util/Security/GuildSecurity';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { GuildSecurity } from '../../../lib/util/Security/GuildSecurity';
+import { ApplyOptions } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['capitals-mode', 'caps-mode'],
+	description: language => language.tget('COMMAND_CAPITALSMODE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_CAPITALSMODE_EXTENDED')
+})
 export default class extends SelfModerationCommand {
 
 	protected $adder: keyof GuildSecurity['adders'] = 'capitals';
@@ -12,13 +18,5 @@ export default class extends SelfModerationCommand {
 	protected keyHardActionDuration = GuildSettings.Selfmod.Capitals.HardActionDuration;
 	protected keyThresholdMaximum = GuildSettings.Selfmod.Capitals.ThresholdMaximum;
 	protected keyThresholdDuration = GuildSettings.Selfmod.Capitals.ThresholdDuration;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['capitals-mode', 'caps-mode'],
-			description: language => language.tget('COMMAND_CAPITALSMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_CAPITALSMODE_EXTENDED')
-		});
-	}
 
 }

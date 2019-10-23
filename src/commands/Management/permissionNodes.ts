@@ -1,33 +1,31 @@
-import { CommandStore, KlasaMessage, Command } from 'klasa';
+import { GuildMember, Role } from 'discord.js';
+import { Command, CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Role, GuildMember } from 'discord.js';
 import { GuildSettings, PermissionsNode } from '../../lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolver } from '../../lib/util/util';
 
 type Nodes = readonly PermissionsNode[];
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['pnodes', 'pnode'],
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_PERMISSIONNODES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_PERMISSIONNODES_EXTENDED'),
+	subcommands: true,
+	usage: '<add|remove|reset|show:default> <role:rolename{2}|user:membername> (type:type) (command:command)',
+	usageDelim: ' '
+})
+@CreateResolver('command', (arg, possible, message, [action]: string[]) => {
+	if (action === 'reset' || action === 'show') return undefined;
+	return message.client.arguments.get('command').run(arg, possible, message);
+})
+@CreateResolver('type', (arg, _possible, message, [action]: string[]) => {
+	if (action === 'reset' || action === 'show') return undefined;
+	if (/allow|deny/i.test(arg)) return arg.toLowerCase();
+	throw message.language.tget('COMMAND_PERMISSIONNODES_INVALID_TYPE');
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['pnodes', 'pnode'],
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_PERMISSIONNODES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_PERMISSIONNODES_EXTENDED'),
-			subcommands: true,
-			usage: '<add|remove|reset|show:default> <role:rolename{2}|user:membername> (type:type) (command:command)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('command', (arg, possible, message, [action]: string[]) => {
-			if (action === 'reset' || action === 'show') return undefined;
-			return this.client.arguments.get('command').run(arg, possible, message);
-		}).createCustomResolver('type', (arg, _possible, message, [action]: string[]) => {
-			if (action === 'reset' || action === 'show') return undefined;
-			if (/allow|deny/i.test(arg)) return arg.toLowerCase();
-			throw message.language.tget('COMMAND_PERMISSIONNODES_INVALID_TYPE');
-		});
-	}
 
 	public async add(message: KlasaMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
 		if (!this.checkPermissions(message, target)) throw message.language.tget('COMMAND_PERMISSIONNODES_HIGHER');

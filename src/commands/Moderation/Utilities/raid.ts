@@ -1,20 +1,18 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { ApplyOptions } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	cooldown: 5,
+	description: 'Manage the Anti-RAID system.',
+	permissionLevel: 6,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<clear|cool|show:default>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: 'Manage the Anti-RAID system.',
-			permissionLevel: 6,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<clear|cool|show:default>'
-		});
-	}
 
 	public run(message: KlasaMessage, [type]: ['clear' | 'cool' | 'show']) {
 		if (!message.guild!.settings.get(GuildSettings.Selfmod.Raid)) throw message.language.tget('COMMAND_RAID_DISABLED');

@@ -1,28 +1,23 @@
 import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandOptions, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { getColor, noop } from '../../../lib/util/util';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolver, getColor, noop } from '../../../lib/util/util';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['commands', 'cmd', 'cmds'],
+	description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
+	guarded: true,
+	usage: '(Command:command|page:integer)',
+	flagSupport: true
+})
+@CreateResolver('command', (arg, possible, message) => {
+	return arg ? message.client.arguments.get('command').run(arg, possible, message) : undefined;
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['commands', 'cmd', 'cmds'],
-			description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
-			guarded: true,
-			usage: '(Command:command|page:integer)',
-			flagSupport: true
-		});
-
-		this.createCustomResolver('command', (arg, possible, message) => {
-			if (!arg) return undefined;
-			return this.client.arguments.get('command').run(arg, possible, message);
-		});
-	}
 
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
 		// Handle case for a single command

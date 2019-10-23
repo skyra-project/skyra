@@ -1,22 +1,20 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { Slotmachine } from '../../lib/util/Games/Slotmachine';
+import { ApplyOptions } from '../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['slot', 'slots', 'slotmachines'],
+	bucket: 2,
+	cooldown: 7,
+	description: language => language.tget('COMMAND_SLOTMACHINE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_SLOTMACHINE_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	usage: '<50|100|200|500|1000|2000|5000|10000>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['slot', 'slots', 'slotmachines'],
-			bucket: 2,
-			cooldown: 7,
-			description: language => language.tget('COMMAND_SLOTMACHINE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SLOTMACHINE_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			usage: '<50|100|200|500|1000|2000|5000|10000>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
 		await message.author.settings.sync();

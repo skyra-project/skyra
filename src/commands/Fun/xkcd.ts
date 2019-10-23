@@ -1,22 +1,19 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Language, Timestamp } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch, getColor } from '../../lib/util/util';
+import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
+import { ApplyOptions, fetch, getColor } from '../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_XKCD_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_XKCD_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	spam: true,
+	usage: '[query:string]'
+})
 export default class extends SkyraCommand {
 
 	private readonly timestamp = new Timestamp('MMMM, dddd dd YYYY');
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_XKCD_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_XKCD_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			spam: true,
-			usage: '[query:string]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const query = typeof input === 'undefined'

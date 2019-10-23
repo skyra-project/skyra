@@ -1,25 +1,22 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
+import { CommandOptions, KlasaMessage, KlasaUser, util } from 'klasa';
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { ModerationTypeKeys } from '../../../lib/util/constants';
-import { getColor } from '../../../lib/util/util';
+import { ApplyOptions, getColor } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_WARNINGS_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_WARNINGS_EXTENDED'),
+	permissionLevel: 5,
+	requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
+	runIn: ['text'],
+	usage: '[user:username]'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_WARNINGS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_WARNINGS_EXTENDED'),
-			permissionLevel: 5,
-			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
-			runIn: ['text'],
-			usage: '[user:username]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [target]: [KlasaUser?]) {
 		const warnings = (await (target

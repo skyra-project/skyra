@@ -1,40 +1,36 @@
 import { MessageEmbed, Role } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { KlasaMessage } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Events } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { FuzzySearch } from '../../lib/util/FuzzySearch';
-import { getColor } from '../../lib/util/util';
+import { ApplyOptions, CreateResolver, getColor } from '../../lib/util/util';
 
-export default class extends SkyraCommand {
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 5,
+	description: language => language.tget('COMMAND_ROLES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ROLES_EXTENDED'),
+	requiredPermissions: ['MANAGE_MESSAGES'],
+	requiredGuildPermissions: ['MANAGE_ROLES'],
+	runIn: ['text'],
+	usage: '(roles:rolenames)'
+})
+@CreateResolver('rolenames', async (arg, _, message) => {
+	const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
+	if (!rolesPublic.length) return null;
+	if (!arg) return [];
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: language => language.tget('COMMAND_ROLES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ROLES_EXTENDED'),
-			requiredPermissions: ['MANAGE_MESSAGES'],
-			requiredGuildPermissions: ['MANAGE_ROLES'],
-			runIn: ['text'],
-			usage: '(roles:rolenames)'
-		});
-
-		this.createCustomResolver('rolenames', async (arg, _, message) => {
-			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
-			if (!rolesPublic.length) return null;
-			if (!arg) return [];
-
-			const search = new FuzzySearch(message.guild!.roles, role => role.name, role => rolesPublic.includes(role.id));
-			const roles = arg.split(',').map(role => role.trim()).filter(role => role.length);
-			const output: Role[] = [];
-			for (const role of roles) {
-				const result = await search.run(message, role);
-				if (result) output.push(result[1]);
-			}
-			return output.length ? [...new Set(output)] : output;
-		});
+	const search = new FuzzySearch(message.guild!.roles, role => role.name, role => rolesPublic.includes(role.id));
+	const roles = arg.split(',').map(role => role.trim()).filter(role => role.length);
+	const output: Role[] = [];
+	for (const role of roles) {
+		const result = await search.run(message, role);
+		if (result) output.push(result[1]);
 	}
+	return output.length ? [...new Set(output)] : output;
+})
+export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [roles]: [Role[]]) {
 		const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);

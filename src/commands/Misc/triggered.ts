@@ -1,12 +1,12 @@
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchAvatar, streamToBuffer } from '../../lib/util/util';
-import GIFEncoder = require('gifencoder');
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
 import { assetsFolder } from '../../lib/util/constants';
+import { ApplyOptions, fetchAvatar, streamToBuffer } from '../../lib/util/util';
+import GIFEncoder = require('gifencoder');
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],
@@ -15,22 +15,19 @@ const COORDINATES: readonly [number, number][] = [
 	[-14, -10]
 ];
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_TRIGGERED_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TRIGGERED_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	spam: true,
+	usage: '[user:username]'
+})
 export default class extends SkyraCommand {
 
 	private template: Buffer | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_TRIGGERED_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TRIGGERED_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			spam: true,
-			usage: '[user:username]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);

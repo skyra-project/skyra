@@ -1,23 +1,20 @@
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandOptions, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { getColor } from '../../../lib/util/util';
+import { ApplyOptions, getColor } from '../../../lib/util/util';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
+@ApplyOptions<CommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: 'Check the permission for a member, or yours.',
+	permissionLevel: 6,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '[member:username]'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: 'Check the permission for a member, or yours.',
-			permissionLevel: 6,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '[member:username]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		if (!user) throw message.language.tget('USER_NOT_EXISTENT');

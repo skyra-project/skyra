@@ -1,32 +1,28 @@
 import { Role } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolver } from '../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['rs'],
+	description: language => language.tget('COMMAND_ROLESET_DESCRIPTION'),
+	permissionLevel: 6,
+	requiredPermissions: [],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<add|remove|list|auto:default> (name:name) (role:rolenames)',
+	usageDelim: ' '
+})
+@CreateResolver('name', (arg, possible, message, [subcommand]) => {
+	if (!arg && subcommand === 'list') return undefined;
+	return message.client.arguments.get('string').run(arg, possible, message);
+})
+@CreateResolver('rolenames', (arg, possible, message, [subcommand]) => {
+	if (!arg && subcommand === 'list') return undefined;
+	return message.client.arguments.get('rolenames').run(arg, possible, message);
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['rs'],
-			description: language => language.tget('COMMAND_ROLESET_DESCRIPTION'),
-			permissionLevel: 6,
-			requiredPermissions: [],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<add|remove|list|auto:default> (name:name) (role:rolenames)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver(`name`, (arg, possible, message, [subcommand]) => {
-			if (!arg && subcommand === 'list') return undefined;
-			return this.client.arguments.get('string').run(arg, possible, message);
-		});
-
-		this.createCustomResolver(`rolenames`, (arg, possible, message, [subcommand]) => {
-			if (!arg && subcommand === 'list') return undefined;
-			return this.client.arguments.get('rolenames').run(arg, possible, message);
-		});
-	}
 
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
 	public async add(message: KlasaMessage, [name, roles]: [string, Role[]]) {

@@ -1,8 +1,14 @@
-import { CommandStore } from 'klasa';
+import { CommandOptions } from 'klasa';
 import { SelfModerationCommand } from '../../../lib/structures/SelfModerationCommand';
-import { GuildSecurity } from '../../../lib/util/Security/GuildSecurity';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { GuildSecurity } from '../../../lib/util/Security/GuildSecurity';
+import { ApplyOptions } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['invites-mode', 'inv-mode'],
+	description: language => language.tget('COMMAND_INVITEMODE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_INVITEMODE_EXTENDED')
+})
 export default class extends SelfModerationCommand {
 
 	protected $adder: keyof GuildSecurity['adders'] = 'invites';
@@ -12,13 +18,5 @@ export default class extends SelfModerationCommand {
 	protected keyHardActionDuration = GuildSettings.Selfmod.Invites.HardActionDuration;
 	protected keyThresholdMaximum = GuildSettings.Selfmod.Invites.ThresholdMaximum;
 	protected keyThresholdDuration = GuildSettings.Selfmod.Invites.ThresholdDuration;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['invites-mode', 'inv-mode'],
-			description: language => language.tget('COMMAND_INVITEMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_INVITEMODE_EXTENDED')
-		});
-	}
 
 }

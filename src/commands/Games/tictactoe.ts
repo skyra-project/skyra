@@ -1,29 +1,24 @@
-import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
+import { CommandOptions, KlasaMessage, KlasaUser, Usage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
-import { floatPromise } from '../../lib/util/util';
+import { ApplyOptions, floatPromise } from '../../lib/util/util';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['ttt'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_TICTACTOE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TICTACTOE_EXTENDED'),
+	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '<user:username>'
+})
 export default class extends SkyraCommand {
 
 	private readonly channels: Set<string> = new Set();
-	private prompt: Usage;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['ttt'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_TICTACTOE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TICTACTOE_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '<user:username>'
-		});
-
-		this.prompt = this.definePrompt('<response:boolean>');
-	}
+	private prompt: Usage = this.definePrompt('<response:boolean>');
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		if (user.id === this.client.user!.id) throw message.language.tget('COMMAND_GAMES_SKYRA');

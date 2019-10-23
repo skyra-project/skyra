@@ -1,25 +1,22 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { CLIENT_ID } from '../../../config';
-import { Colors, GiveawayEmoji, Giveaway } from '../../lib/structures/Giveaway';
-import { fetchReactionUsers } from '../../lib/util/util';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { FetchError } from 'node-fetch';
+import { CLIENT_ID } from '../../../config';
+import { Colors, Giveaway, GiveawayEmoji } from '../../lib/structures/Giveaway';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
+import { ApplyOptions, fetchReactionUsers } from '../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['gr'],
+	description: language => language.tget('COMMAND_GIVEAWAYREROLL_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_GIVEAWAYREROLL_EXTENDED'),
+	requiredPermissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '[winners:number{1,100}] [message:message]',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['gr'],
-			description: language => language.tget('COMMAND_GIVEAWAYREROLL_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_GIVEAWAYREROLL_EXTENDED'),
-			requiredPermissions: ['READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '[winners:number{1,100}] [message:message]',
-			usageDelim: ' '
-		});
-	}
 
 	public async run(message: KlasaMessage, [winnerAmount = 1, rawTarget]: [number, KlasaMessage | undefined]) {
 		const target = await this.resolveMessage(message, rawTarget);

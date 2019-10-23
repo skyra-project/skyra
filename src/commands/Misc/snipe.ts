@@ -1,18 +1,15 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { TextChannel, MessageEmbed } from 'discord.js';
-import { getContent, getImage, getColor } from '../../lib/util/util';
+import { ApplyOptions, getColor, getContent, getImage } from '../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['sniped'],
+	description: language => language.tget('COMMAND_SNIPE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_SNIPE_EXTENDED'),
+	runIn: ['text']
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['sniped'],
-			description: language => language.tget('COMMAND_SNIPE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SNIPE_EXTENDED'),
-			runIn: ['text']
-		});
-	}
 
 	public run(message: KlasaMessage) {
 		const channel = message.channel as TextChannel;

@@ -1,18 +1,16 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { ApplyOptions } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	cooldown: 5,
+	description: 'Get the information from a case by its index.',
+	permissionLevel: 5,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<Case:integer>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: 'Get the information from a case by its index.',
-			permissionLevel: 5,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<Case:integer>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [index]: [number]) {
 		const modlog = await message.guild!.moderation.fetch(index);

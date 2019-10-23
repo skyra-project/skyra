@@ -559,7 +559,7 @@ export function ApplyOptions<T extends PieceOptions>(options: T): Function {
 
 }
 
-export function CreateResolver(name: string, fn: ArgResolverCustomMethod) {
+export function CreateResolver(name: string, fn: ArgResolverCustomMethod): Function {
 	return (target: Constructor<Command>) => class extends target {
 
 		public constructor(store: CommandStore, file: string[], directory: string, options: CommandOptions) {

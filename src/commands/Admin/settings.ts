@@ -1,35 +1,31 @@
 import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, Schema, SchemaEntry, SettingsFolderUpdateResult, util } from 'klasa';
+import { CommandOptions, KlasaMessage, Schema, SchemaEntry, SettingsFolderUpdateResult, util } from 'klasa';
 import { SettingsMenu } from '../../lib/structures/SettingsMenu';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { ApplyOptions, CreateResolver } from '../../lib/util/util';
 
 const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['conf', 'config', 'configs', 'configuration'],
+	description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
+	guarded: true,
+	permissionLevel: 6,
+	requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',
+	usageDelim: ' '
+})
+@CreateResolver('key', (arg, _, message, [action]: string[]) => {
+	if (['show', 'menu'].includes(action) || arg) return arg;
+	throw message.language.tget('COMMAND_CONF_NOKEY');
+})
+@CreateResolver('value', (arg, _, message, [action]: string[]) => {
+	if (['set', 'remove'].includes(action) || arg) return arg;
+	throw message.language.tget('COMMAND_CONF_NOVALUE');
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['conf', 'config', 'configs', 'configuration'],
-			description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
-			guarded: true,
-			permissionLevel: 6,
-			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',
-			usageDelim: ' '
-		});
-
-		this
-			.createCustomResolver('key', (arg, _, message, [action]: string[]) => {
-				if (['show', 'menu'].includes(action) || arg) return arg;
-				throw message.language.tget('COMMAND_CONF_NOKEY');
-			})
-			.createCustomResolver('value', (arg, _, message, [action]: string[]) => {
-				if (!['set', 'remove'].includes(action) || arg) return arg;
-				throw message.language.tget('COMMAND_CONF_NOVALUE');
-			});
-	}
 
 	public menu(message: KlasaMessage) {
 		if (!(message.channel as TextChannel).permissionsFor(this.client.user!.id)!.has(MENU_REQUIREMENTS)) {

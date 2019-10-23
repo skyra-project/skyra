@@ -1,28 +1,25 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolver } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	bucket: 2,
+	cooldown: 5,
+	description: language => language.tget('COMMAND_FILTER_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_FILTER_EXTENDED'),
+	permissionLevel: 5,
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<add|remove|reset|show:default> (word:word)',
+	usageDelim: ' '
+})
+@CreateResolver('word', (arg, _, msg, [type]) => {
+	if (type === 'reset' || type === 'show') return undefined;
+	if (arg) return arg.toLowerCase();
+	throw msg.language.tget('COMMAND_FILTER_UNDEFINED_WORD');
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 5,
-			description: language => language.tget('COMMAND_FILTER_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_FILTER_EXTENDED'),
-			permissionLevel: 5,
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<add|remove|reset|show:default> (word:word)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('word', (arg, _, msg, [type]) => {
-			if (type === 'reset' || type === 'show') return undefined;
-			if (arg) return arg.toLowerCase();
-			throw msg.language.tget('COMMAND_FILTER_UNDEFINED_WORD');
-		});
-	}
 
 	public async add(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is not filtered

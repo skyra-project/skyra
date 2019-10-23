@@ -1,22 +1,19 @@
 import { MessageEmbed, Role } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { getColor } from '../../../lib/util/util';
+import { ApplyOptions, getColor } from '../../../lib/util/util';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['serverinfo'],
+	cooldown: 15,
+	description: language => language.tget('COMMAND_GUILDINFO_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_GUILDINFO_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text']
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['serverinfo'],
-			cooldown: 15,
-			description: language => language.tget('COMMAND_GUILDINFO_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_GUILDINFO_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text']
-		});
-	}
 
 	public async run(message: KlasaMessage) {
 		let tChannels = 0;

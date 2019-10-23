@@ -1,20 +1,17 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getColor, fetch } from '../../lib/util/util';
+import { KlasaMessage } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
+import { ApplyOptions, fetch, getColor } from '../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['doggo', 'puppy'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_DOG_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_DOG_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	spam: true
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['doggo', 'puppy'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_DOG_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_DOG_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			spam: true
-		});
-	}
 
 	public async run(message: KlasaMessage) {
 		const embed = new MessageEmbed()

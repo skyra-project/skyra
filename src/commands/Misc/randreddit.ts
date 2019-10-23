@@ -1,28 +1,24 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
 import { TextChannel } from 'discord.js';
+import { CommandOptions, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { ApplyOptions, CreateResolver, fetch } from '../../lib/util/util';
 
 const blacklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty/i;
 const titleBlacklist = /nsfl/i;
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['rand', 'rand-reddit', 'reddit'],
+	cooldown: 3,
+	description: language => language.tget('COMMAND_RANDREDDIT_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_RANDREDDIT_EXTENDED'),
+	usage: '<reddit:reddit>'
+})
+@CreateResolver('reddit', (arg, _possible, message) => {
+	if (!arg) throw message.language.tget('COMMAND_RANDREDDIT_REQUIRED_REDDIT');
+	if (blacklist.test(arg)) throw message.language.tget('COMMAND_RANDREDDIT_BANNED');
+	return arg.toLowerCase();
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['rand', 'rand-reddit', 'reddit'],
-			cooldown: 3,
-			description: language => language.tget('COMMAND_RANDREDDIT_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_RANDREDDIT_EXTENDED'),
-			usage: '<reddit:reddit>'
-		});
-
-		this.createCustomResolver('reddit', (arg, _possible, message) => {
-			if (!arg) throw message.language.tget('COMMAND_RANDREDDIT_REQUIRED_REDDIT');
-			if (blacklist.test(arg)) throw message.language.tget('COMMAND_RANDREDDIT_BANNED');
-			return arg.toLowerCase();
-		});
-	}
 
 	public async run(message: KlasaMessage, [reddit]: [string]) {
 		const { kind, data } = await fetch(`https://www.reddit.com/r/${reddit}/.json?limit=30`, 'json') as RedditResponse;

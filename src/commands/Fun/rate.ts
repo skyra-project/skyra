@@ -1,20 +1,17 @@
 import { Util } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { oneToTen } from '../../lib/util/util';
+import { KlasaMessage } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
+import { ApplyOptions, oneToTen } from '../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_RATE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_RATE_EXTENDED'),
+	spam: true,
+	usage: '<user:string>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_RATE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_RATE_EXTENDED'),
-			spam: true,
-			usage: '<user:string>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user]: [string]) {
 		// Escape all markdown

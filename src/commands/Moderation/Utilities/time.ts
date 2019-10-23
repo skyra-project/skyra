@@ -1,22 +1,20 @@
 import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, Duration, KlasaMessage, KlasaUser, ScheduledTask } from 'klasa';
+import { CommandOptions, Duration, KlasaMessage, KlasaUser, ScheduledTask } from 'klasa';
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../../../lib/util/constants';
+import { ApplyOptions } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	cooldown: 5,
+	description: 'Sets a timer.',
+	permissionLevel: 6,
+	runIn: ['text'],
+	usage: '[cancel] <Case:integer> [timer:...string]',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: 'Sets a timer.',
-			permissionLevel: 6,
-			runIn: ['text'],
-			usage: '[cancel] <Case:integer> [timer:...string]',
-			usageDelim: ' '
-		});
-	}
 
 	public async run(message: KlasaMessage, [cancel, caseID, time]: ['cancel', number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);

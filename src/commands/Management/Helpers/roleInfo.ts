@@ -1,20 +1,18 @@
 import { MessageEmbed, Permissions, Role } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { ApplyOptions } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_ROLEINFO_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ROLEINFO_EXTENDED'),
+	permissionLevel: 6,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '[role:rolename]'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_ROLEINFO_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ROLEINFO_EXTENDED'),
-			permissionLevel: 6,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '[role:rolename]'
-		});
-	}
 
 	public run(message: KlasaMessage, [role = message.member!.roles.highest]: [Role?]) {
 		const roleInfoTitles = message.language.tget('COMMAND_ROLEINFO_TITLES') as unknown as RoleInfoTitles;

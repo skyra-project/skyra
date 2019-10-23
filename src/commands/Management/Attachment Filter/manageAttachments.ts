@@ -1,8 +1,9 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { Adder } from '../../../lib/util/Adder';
 import { TIME } from '../../../lib/util/constants';
+import { ApplyOptions, CreateResolver } from '../../../lib/util/util';
 
 const TYPES = {
 	action: {
@@ -37,50 +38,46 @@ const TYPES = {
 
 const ACTIONS = ['warn', 'kick', 'mute', 'softban', 'ban'];
 
-export default class extends SkyraCommand {
+@ApplyOptions<CommandOptions>({
+	cooldown: 5,
+	description: language => language.tget('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
+	permissionLevel: 5,
+	runIn: ['text'],
+	usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
+	usageDelim: ' '
+})
+@CreateResolver('value', async (arg, possible, message, [type]) => {
+	if (type === 'enable') return true;
+	if (type === 'disable') return false;
+	if (!arg) throw message.language.tget('COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE');
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: language => language.tget('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
-			permissionLevel: 5,
-			runIn: ['text'],
-			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('value', async (arg, possible, message, [type]) => {
-			if (type === 'enable') return true;
-			if (type === 'disable') return false;
-			if (!arg) throw message.language.tget('COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE');
-
-			if (type === 'maximum') {
-				const maximum = await this.client.arguments.get('integer').run(arg, possible, message);
-				if (maximum >= 0 && maximum <= 60) return maximum;
-				throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, '');
-			}
-
-			if (type === 'action') {
-				const action = arg.toLowerCase();
-				const index = ACTIONS.indexOf(action);
-				if (index !== -1) return (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b1000) + index;
-				throw message.language.tget('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
-			}
-
-			if (type === 'logs') {
-				const value = await this.client.arguments.get('boolean').run(arg, possible, message);
-				return value
-					? (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) | 0b1000
-					: (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) & 0b0111;
-			}
-
-			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, TIME.YEAR];
-			const duration = Math.round(((await this.client.arguments.get('duration').run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
-			if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.tget('RESOLVER_DATE_SUFFIX'));
-			return duration;
-		});
+	if (type === 'maximum') {
+		const maximum = await message.client.arguments.get('integer').run(arg, possible, message);
+		if (maximum >= 0 && maximum <= 60) return maximum;
+		throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, '');
 	}
+
+	if (type === 'action') {
+		const action = arg.toLowerCase();
+		const index = ACTIONS.indexOf(action);
+		if (index !== -1) return (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b1000) + index;
+		throw message.language.tget('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
+	}
+
+	if (type === 'logs') {
+		const value = await message.client.arguments.get('boolean').run(arg, possible, message);
+		return value
+			? (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) | 0b1000
+			: (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) & 0b0111;
+	}
+
+	const [min, max] = type === 'expire' ? [5000, 120000] : [60000, TIME.YEAR];
+	const duration = Math.round(((await message.client.arguments.get('duration').run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
+	if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.tget('RESOLVER_DATE_SUFFIX'));
+	return duration;
+})
+export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [type, value]: ['action' | 'enable' | 'disable' | 'maximum' | 'duration' | 'logs' | 'expire', number]) {
 		const { key, language } = TYPES[type];

@@ -1,26 +1,23 @@
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { KlasaMessage } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { announcementCheck, getColor } from '../../lib/util/util';
+import { announcementCheck, ApplyOptions, getColor } from '../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['announce'],
+	bucket: 6,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
+	permissionLevel: 4,
+	requiredGuildPermissions: ['MANAGE_ROLES'],
+	runIn: ['text'],
+	usage: '<announcement:string{,1900}>'
+})
 export default class extends SkyraCommand {
 
 	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['announce'],
-			bucket: 6,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
-			permissionLevel: 4,
-			requiredGuildPermissions: ['MANAGE_ROLES'],
-			runIn: ['text'],
-			usage: '<announcement:string{,1900}>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [announcement]: [string]) {
 		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements);

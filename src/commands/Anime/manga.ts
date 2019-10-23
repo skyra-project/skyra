@@ -1,23 +1,20 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { CommandOptions, KlasaMessage, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
-import { cutText, fetch, getColor } from '../../lib/util/util';
+import { ApplyOptions, cutText, fetch, getColor } from '../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_MANGA_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MANGA_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<mangaName:string>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_MANGA_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MANGA_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<mangaName:string>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [mangaName]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

@@ -1,30 +1,27 @@
-import { CommandStore, KlasaMessage, Language, util } from 'klasa';
+import { CommandOptions, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
-import { cleanMentions } from '../../lib/util/util';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { ApplyOptions, cleanMentions } from '../../lib/util/util';
 
 const EMOJIS = ['🇳', '🇾'];
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['hunger-games', 'hg'],
+	cooldown: 0,
+	description: language => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
+	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '[user:string{2,50}] [...]',
+	usageDelim: ',',
+	flagSupport: true
+})
 export default class extends SkyraCommand {
 
 	public playing: Set<string> = new Set();
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['hunger-games', 'hg'],
-			cooldown: 0,
-			description: language => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '[user:string{2,50}] [...]',
-			usageDelim: ',',
-			flagSupport: true
-		});
-	}
 
 	public async run(message: KlasaMessage, tributes: string[] = []) {
 		const autoFilled = message.flagArgs.autofill;

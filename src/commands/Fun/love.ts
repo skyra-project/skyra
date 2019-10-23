@@ -1,22 +1,19 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getColor } from '../../lib/util/util';
+import { KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../lib/structures/SkyraCommand';
+import { ApplyOptions, getColor } from '../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_LOVE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_LOVE_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	spam: true,
+	usage: '<user:username>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_LOVE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_LOVE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			spam: true,
-			usage: '<user:username>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const isSelf = message.author.id === user.id;

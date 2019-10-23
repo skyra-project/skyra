@@ -1,34 +1,32 @@
 import { Role } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { KlasaMessage, KlasaUser } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings, StickyRole } from '../../../lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolver } from '../../../lib/util/util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_STICKYROLES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_STICKYROLES_EXTENDED'),
+	permissionLevel: 6,
+	quotedStringSupport: true,
+	requiredGuildPermissions: ['MANAGE_ROLES'],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<show|add|remove|reset> (user:username) (role:rolename)',
+	usageDelim: ' '
+})
+@CreateResolver('username', (arg, possible, msg) => {
+	if (!arg) throw msg.language.tget('COMMAND_STICKYROLES_REQUIRED_USER');
+	return msg.client.arguments.get('username').run(arg, possible, msg);
+})
+@CreateResolver('rolename', (arg, possible, msg, [action]) => {
+	if (action === 'reset' || action === 'show') return undefined;
+	if (!arg) throw msg.language.tget('COMMAND_STICKYROLES_REQUIRED_ROLE');
+	return msg.client.arguments.get('rolename').run(arg, possible, msg);
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_STICKYROLES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_STICKYROLES_EXTENDED'),
-			permissionLevel: 6,
-			quotedStringSupport: true,
-			requiredGuildPermissions: ['MANAGE_ROLES'],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<show|add|remove|reset> (user:username) (role:rolename)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('username', (arg, possible, msg) => {
-			if (!arg) throw msg.language.tget('COMMAND_STICKYROLES_REQUIRED_USER');
-			return this.client.arguments.get('username').run(arg, possible, msg);
-		}).createCustomResolver('rolename', (arg, possible, msg, [action]) => {
-			if (action === 'reset' || action === 'show') return undefined;
-			if (!arg) throw msg.language.tget('COMMAND_STICKYROLES_REQUIRED_ROLE');
-			return this.client.arguments.get('rolename').run(arg, possible, msg);
-		});
-	}
 
 	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
 		const all = message.guild!.settings.get(GuildSettings.StickyRoles);

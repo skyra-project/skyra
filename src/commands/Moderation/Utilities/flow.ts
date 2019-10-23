@@ -1,19 +1,17 @@
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { ApplyOptions } from '../../../lib/util/util';
 
+@ApplyOptions<CommandOptions>({
+	bucket: 2,
+	cooldown: 15,
+	description: 'Check the messages/minute from a channel.',
+	permissionLevel: 4,
+	runIn: ['text'],
+	usage: '[channel:channelname]'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 15,
-			description: 'Check the messages/minute from a channel.',
-			permissionLevel: 4,
-			runIn: ['text'],
-			usage: '[channel:channelname]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [channel = message.channel as TextChannel]: [TextChannel?]) {
 		if (!channel.readable) throw message.language.tget('CHANNEL_NOT_READABLE');

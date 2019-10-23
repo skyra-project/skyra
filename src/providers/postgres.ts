@@ -188,9 +188,9 @@ export default class extends SQLProvider {
 
 	public updateColumn(table: string, entry: SchemaEntry) {
 		const [column, datatype] = this.qb.generateDatatype(entry).split(' ');
-		const defaultConstraint = entry.default !== null
-			? `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(entry.default, entry)}`
-			: '';
+		const defaultConstraint = entry.default === null
+			? ''
+			: `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(entry.default, entry)}`;
 
 		return this.pgsql!.query(/* sql */`
 			ALTER TABLE ${cIdentifier(table)}

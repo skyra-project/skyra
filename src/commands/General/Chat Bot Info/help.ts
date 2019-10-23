@@ -7,6 +7,8 @@ import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
+type Category = [string, Command[]];
+
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -14,7 +16,7 @@ export default class extends SkyraCommand {
 			aliases: ['commands', 'cmd', 'cmds'],
 			description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
 			guarded: true,
-			usage: '(Command:command|page:integer)',
+			usage: '(Command:command|category:category|page:integer)',
 			flagSupport: true
 		});
 
@@ -22,9 +24,18 @@ export default class extends SkyraCommand {
 			if (!arg) return undefined;
 			return this.client.arguments.get('command').run(arg, possible, message);
 		});
+		this.createCustomResolver('category', async (arg, _, msg) => {
+			if (!arg) return undefined;
+			arg = arg.toLowerCase();
+			const commandsByCategory = await this._fetchCommands(msg);
+			for (const [category, commands] of commandsByCategory) {
+				if (category.toLowerCase() === arg) return [category, commands];
+			}
+			return undefined;
+		});
 	}
 
-	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
+	public async run(message: KlasaMessage, [commandOrCategoryOrPage]: [Command | Category | number | undefined]) {
 		if (message.flagArgs.categories || message.flagArgs.cat) {
 			const commandsByCategory = await this._fetchCommands(message);
 			const { language } = message;
@@ -38,7 +49,7 @@ export default class extends SkyraCommand {
 		}
 
 		// Handle case for a single command
-		const command = commandOrPage && !util.isNumber(commandOrPage) ? commandOrPage : null;
+		const command = commandOrCategoryOrPage && !util.isNumber(commandOrCategoryOrPage) ? commandOrCategoryOrPage : null;
 		if (command) {
 			return message.sendMessage([
 				message.language.tget('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
@@ -55,7 +66,7 @@ export default class extends SkyraCommand {
 			const display = await this.buildDisplay(message);
 
 			// Extract start page and sanitize it
-			let startPage = commandOrPage && util.isNumber(commandOrPage) ? --commandOrPage : null;
+			let startPage = commandOrCategoryOrPage && util.isNumber(commandOrCategoryOrPage) ? --commandOrCategoryOrPage : null;
 			if (startPage !== null) {
 				if (startPage < 0 || startPage >= display.pages.length) startPage = 0;
 			}

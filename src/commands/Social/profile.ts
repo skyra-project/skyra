@@ -78,7 +78,7 @@ export default class extends SkyraCommand {
 			.addImage(this.profile!, 0, 0, 640, 391)
 
 			// Progress bar
-			.setColor(`#${color || 'FF239D'}`)
+			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
 			.addRect(227, 356, progressBar, 5)
 
 			// Name title

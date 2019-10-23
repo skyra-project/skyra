@@ -316,6 +316,8 @@ export default class extends SQLProvider {
 
 	private cUnknown(value: unknown): string {
 		switch (typeof value) {
+			case 'string':
+				return this.cString(value);
 			case 'bigint':
 			case 'number':
 				return this.cNumber(value);

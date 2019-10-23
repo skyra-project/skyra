@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 			aliases: ['commands', 'cmd', 'cmds'],
 			description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
 			guarded: true,
-			usage: '(Command:command|category:category|page:integer)',
+			usage: '(Command:command|page:integer|category:category)',
 			flagSupport: true
 		});
 

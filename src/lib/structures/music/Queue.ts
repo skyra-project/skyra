@@ -62,9 +62,11 @@ export class Queue extends Array<Song> {
 	public get listeners(): readonly string[] {
 		const { voiceChannel } = this;
 		if (voiceChannel) {
-			const members = voiceChannel.members.map(member => member.id);
-			const index = members.indexOf(this.client.user!.id);
-			if (index !== -1) members.splice(index, 1);
+			const members: string[] = [];
+			for (const [id, member] of voiceChannel.members) {
+				if (member.user.bot || member.voice.deaf) continue;
+				members.push(id);
+			}
 			return members;
 		}
 		return [];

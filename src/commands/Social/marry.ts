@@ -78,7 +78,7 @@ export default class extends SkyraCommand {
 			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_MULTIPLE_CANCEL');
 		}
 
-		const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author, user));
+		const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author.username, user.username));
 		switch (answer) {
 			case YesNoAnswer.Timeout: return message.sendLocale('COMMAND_MARRY_NOREPLY');
 			case YesNoAnswer.ImplicitNo: return message.sendLocale('COMMAND_MARRY_DENIED');

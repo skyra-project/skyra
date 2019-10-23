@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 			.addText(TITLE.NEXT_IN, 340, 131)
 
 			// Draw the progress bar
-			.setColor(`#${color || 'FF239D'}`)
+			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
 			.addRect(341, 88, progressBar, 5)
 
 			// Draw the information

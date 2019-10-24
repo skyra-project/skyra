@@ -6,6 +6,9 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
 import { cutText, fetch, getColor } from '../../lib/util/util';
+import { BrandingColors } from '../../lib/util/constants';
+
+const API_URL = `https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
 export default class extends SkyraCommand {
 
@@ -22,9 +25,17 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [mangaName]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(getColor(message) || 0xFFAB2D));
+			.setColor(BrandingColors.Secondary));
 
-		const { hits: entries } = await fetch(`https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`, {
+		const { hits: entries } = await this.fetchAPI(message, mangaName);
+		const display = this.buildDisplay(entries, message);
+
+		await display.start(response, message.author.id);
+		return response;
+	}
+
+	private fetchAPI(message: KlasaMessage, mangaName: string) {
+		return fetch(API_URL, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -41,39 +52,32 @@ export default class extends SkyraCommand {
 				}
 			)
 		}, 'json')
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Kitsu.KitsuResult;
-
-		const display = this.buildDisplay(entries, message);
-
-		await display.start(response, message.author.id);
-		return response;
+			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Kitsu.KitsuResult>;
 	}
 
 	private buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
-		const display = new UserRichDisplay();
+		const titles = message.language.tget('COMMAND_MANGA_TITLES');
+		const display = new UserRichDisplay(new MessageEmbed()
+			.setColor(getColor(message))
+			.setFooter('© kitsu.io'));
 
 		for (const entry of entries) {
 			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
 			const score = `${entry.averageRating}%`;
 			const mangaURL = `https://kitsu.io/manga/${entry.id}`;
-			const titles = message.language.tget('COMMAND_MANGA_TITLES');
 			const type = entry.subtype;
 			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 
-			display.addPage(
-				new MessageEmbed()
-					.setColor(getColor(message) || 0xFFAB2D)
-					.setTitle(title)
-					.setURL(mangaURL)
-					.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
-					.setThumbnail(entry.posterImage.original)
-					.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
-					.addField(titles.SCORE, score, true)
-					.addField(titles.AGE_RATING, entry.ageRating ? entry.ageRating : 'None', true)
-					.addField(titles.FIRST_PUBLISH_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
-					.addField(titles.READ_IT, `**[${title}](${mangaURL})**`)
-					.setFooter('© kitsu.io')
-			);
+			display.addPage((embed: MessageEmbed) => embed
+				.setTitle(title)
+				.setURL(mangaURL)
+				.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
+				.setThumbnail(entry.posterImage.original)
+				.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
+				.addField(titles.SCORE, score, true)
+				.addField(titles.AGE_RATING, entry.ageRating ? entry.ageRating : 'None', true)
+				.addField(titles.FIRST_PUBLISH_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
+				.addField(titles.READ_IT, `**[${title}](${mangaURL})**`));
 		}
 		return display;
 	}

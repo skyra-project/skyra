@@ -6,6 +6,9 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { cutText, fetch, getColor } from '../../lib/util/util';
 import { decode } from 'he';
+import { BrandingColors } from '../../lib/util/constants';
+
+const API_URL = `https://${TOKENS.NINTENDO.ID}-dsn.algolia.net/1/indexes/*/queries`;
 
 export default class extends SkyraCommand {
 
@@ -22,12 +25,18 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
-		const embedColor = getColor(message) || 0xFFAB2D;
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(embedColor));
+			.setColor(BrandingColors.Secondary));
 
-		const { results: entries } = await fetch(`https://${TOKENS.NINTENDO.ID}-dsn.algolia.net/1/indexes/*/queries`, {
+		const { results: entries } = await this.fetchAPI(message, gameName);
+		const display = this.buildDisplay(entries[0].hits, message);
+		await display.start(response, message.author.id);
+		return response;
+	}
+
+	private fetchAPI(message: KlasaMessage, gameName: string) {
+		return fetch(API_URL, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -53,16 +62,12 @@ export default class extends SkyraCommand {
 				}
 			)
 		}, 'json')
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as EshopResult;
-
-		const display = this.buildDisplay(entries[0].hits, message, embedColor);
-
-		await display.start(response, message.author.id);
-		return response;
+			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<EshopResult>;
 	}
 
-	private buildDisplay(entries: EShopHit[], message: KlasaMessage, embedColor: number) {
-		const display = new UserRichDisplay();
+	private buildDisplay(entries: EShopHit[], message: KlasaMessage) {
+		const display = new UserRichDisplay(new MessageEmbed()
+			.setColor(getColor(message)));
 
 		for (const game of entries) {
 			const titles = message.language.tget('COMMAND_ESHOP_TITLES');
@@ -75,22 +80,19 @@ export default class extends SkyraCommand {
 				].join('')
 				: message.language.tget('COMMAND_ESHOP_NOT_IN_DATABASE');
 
-			display.addPage(
-				new MessageEmbed()
-					.setColor(embedColor)
-					.setTitle(game.title)
-					.setURL(`https://nintendo.com${game.url}`)
-					.setThumbnail(`https://nintendo.com${game.boxArt}`)
-					.setDescription(description)
-					.addField(titles.PRICE, price, true)
-					.addField(titles.AVAILABILITY, game.availability[0], true)
-					.addField(titles.RELEASE_DATE, game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask), true)
-					.addField(titles.NUMBER_OF_PLAYERS, util.toTitleCase(game.players), true)
-					.addField(titles.PLATFORM, game.platform, true)
-					.addField(titles.NSUID, game.nsuid || 'TBD', true)
-					.addField(titles.ESRB, esrbText)
-					.addField(titles.CATEGORIES, game.categories.join(', '))
-			);
+			display.addPage((embed: MessageEmbed) => embed
+				.setTitle(game.title)
+				.setURL(`https://nintendo.com${game.url}`)
+				.setThumbnail(`https://nintendo.com${game.boxArt}`)
+				.setDescription(description)
+				.addField(titles.PRICE, price, true)
+				.addField(titles.AVAILABILITY, game.availability[0], true)
+				.addField(titles.RELEASE_DATE, game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask), true)
+				.addField(titles.NUMBER_OF_PLAYERS, util.toTitleCase(game.players), true)
+				.addField(titles.PLATFORM, game.platform, true)
+				.addField(titles.NSUID, game.nsuid || 'TBD', true)
+				.addField(titles.ESRB, esrbText)
+				.addField(titles.CATEGORIES, game.categories.join(', ')));
 		}
 		return display;
 	}

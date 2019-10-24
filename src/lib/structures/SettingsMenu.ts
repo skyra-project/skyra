@@ -24,7 +24,7 @@ export class SettingsMenu {
 		this.oldSettings = this.message.guild!.settings.clone();
 		this.embed = new MessageEmbed()
 			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128 }))
-			.setColor(getColor(this.message) || 0xFFAB2D);
+			.setColor(getColor(this.message));
 	}
 
 	private get pointerIsFolder(): boolean {

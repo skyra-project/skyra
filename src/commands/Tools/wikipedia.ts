@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(new MessageEmbed()
 			.setTitle(content.title)
 			.setURL(pageURL)
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition
 				.replace(/\n{2,}/g, '\n')

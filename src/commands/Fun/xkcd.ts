@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 			.catch(() => { throw message.language.tget('COMMAND_XKCD_NOTFOUND'); }) as XkcdResultOk;
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setImage(comic.img)
 			.setTitle(comic.title)
 			.setURL(`https://xkcd.com/${comicNumber}/`)

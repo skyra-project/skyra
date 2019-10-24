@@ -2,7 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, Duration, KlasaMessage, Timestamp, util, ScheduledTask } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { TIME } from '../../lib/util/constants';
+import { TIME, BrandingColors } from '../../lib/util/constants';
 import { cutText, getColor } from '../../lib/util/util';
 
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
@@ -43,13 +43,13 @@ export default class extends SkyraCommand {
 		if (!tasks.length) return message.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL()));
 
 		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		await display.start(response, message.author.id);
 		return response;
 	}

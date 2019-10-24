@@ -5,7 +5,7 @@ import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { Databases } from '../../../lib/types/constants/Constants';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { UserSettings } from '../../../lib/types/settings/UserSettings';
-import { EMOJIS } from '../../../lib/util/constants';
+import { EMOJIS, BrandingColors } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
 import { RawBannerSettings } from '../../../lib/types/settings/raw/RawBannerSettings';
 
@@ -90,7 +90,7 @@ export default class extends SkyraCommand {
 
 	public async init() {
 		const banners = await this.client.providers.default.getAll(Databases.Banners) as RawBannerSettings[];
-		const display = new UserRichDisplay(new MessageEmbed().setColor(0xFFAB40));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(BrandingColors.Primary));
 		for (const banner of banners) {
 			this.banners.set(banner.id, {
 				author: banner.author_id,
@@ -119,7 +119,7 @@ export default class extends SkyraCommand {
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList));
 		if (!banners.size) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', prefix);
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(getColor(message) || 0xFFAB2D));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(getColor(message)));
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
@@ -134,14 +134,14 @@ export default class extends SkyraCommand {
 	}
 
 	private async _runDisplay(message: KlasaMessage, display: UserRichDisplay) {
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		await display.start(response, message.author.id);
 		return response;
 	}
 
 	private async _prompt(message: KlasaMessage, banner: BannerCache) {
 		const embed = new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(BrandingColors.Secondary)
 			.setDescription([
 				`**Title**: ${banner.title} (\`${banner.id}\`)`,
 				`**Price**: ${banner.price}${EMOJIS.SHINY}`

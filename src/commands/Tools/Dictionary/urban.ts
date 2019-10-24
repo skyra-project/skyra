@@ -3,6 +3,7 @@ import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { cutText, fetch, getColor } from '../../../lib/util/util';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
+import { BrandingColors } from '../../../lib/util/constants';
 
 const ZWS = '\u200B';
 
@@ -24,7 +25,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(getColor(message) || 0xFFAB2D));
+			.setColor(BrandingColors.Secondary));
 
 		const result = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
@@ -41,24 +42,22 @@ export default class extends SkyraCommand {
 	}
 
 	private buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
-		const display = new UserRichDisplay();
+		const display = new UserRichDisplay(new MessageEmbed()
+			.setTitle(`Urban Dictionary: ${util.toTitleCase(query)}`)
+			.setColor(getColor(message))
+			.setThumbnail('https://i.imgur.com/CcIZZsa.png')
+			.setFooter('© Urban Dictionary'));
 
 		for (const result of results) {
 			const definition = this.content(result.definition, result.permalink, message.language);
 			const example = result.example ? this.content(result.example, result.permalink, message.language) : 'None';
-			display.addPage(
-				new MessageEmbed()
-					.setTitle(`Urban Dictionary: ${util.toTitleCase(query)}`)
-					.setURL(result.permalink)
-					.setColor(getColor(message) || 0xFFAB2D)
-					.setThumbnail('https://i.imgur.com/CcIZZsa.png')
-					.setDescription(definition)
-					.addField('Example', example)
-					.addField('Author', result.author)
-					.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
-					.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)
-					.setFooter('© Urban Dictionary')
-			);
+			display.addPage((embed: MessageEmbed) => embed
+				.setURL(result.permalink)
+				.setDescription(definition)
+				.addField('Example', example)
+				.addField('Author', result.author)
+				.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
+				.addField(ZWS, `\\👎 ${result.thumbs_down}`, true));
 		}
 
 		return display;

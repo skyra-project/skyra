@@ -49,7 +49,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		{
 			embed: new MessageEmbed()
 				.setTitle('→').setURL(url)
-				.setColor(getColor(message) || 0xFFAB2D)
+				.setColor(getColor(message))
 				.setImage(url)
 				.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
 		}) as Promise<KlasaMessage | KlasaMessage[]>;

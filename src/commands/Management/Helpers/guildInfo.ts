@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild!.ownerID);
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setThumbnail(message.guild!.iconURL()!)
 			.setTitle(`${message.guild!.name} [${message.guild!.id}]`)
 			.splitFields(message.language.tget('COMMAND_SERVERINFO_ROLES', roles.length

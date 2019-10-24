@@ -1,6 +1,7 @@
 import { GuildMember, MessageEmbed, Role, User } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser, Language } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { BrandingColors } from '../../lib/util/constants';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
@@ -33,7 +34,7 @@ export default class extends SkyraCommand {
 
 	public member(member: GuildMember, embed: MessageEmbed, i18n: Language) {
 		embed
-			.setColor(member.displayColor || 0xDFDFDF)
+			.setColor(member.displayColor || BrandingColors.Secondary)
 			.setTitle(`${member.user.bot ? '🤖 ' : ''}${member.user.tag}`)
 			.setURL(member.user.displayAvatarURL({ size: 1024 }))
 			.setDescription(i18n.tget('COMMAND_WHOIS_MEMBER', member))

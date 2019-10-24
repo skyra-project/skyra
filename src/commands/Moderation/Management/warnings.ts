@@ -3,7 +3,7 @@ import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { ModerationTypeKeys } from '../../../lib/util/constants';
+import { ModerationTypeKeys, BrandingColors } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		if (!warnings.size) throw message.language.tget('COMMAND_WARNINGS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL())
 			.setTitle(message.language.tget('COMMAND_WARNINGS_AMOUNT', warnings.size)));
 
@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
 		}
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		await display.start(response, message.author.id);
 		return response;
 	}

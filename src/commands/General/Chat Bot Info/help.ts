@@ -4,6 +4,7 @@ import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { getColor, noop } from '../../../lib/util/util';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { BrandingColors } from '../../../lib/util/constants';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
@@ -60,7 +61,7 @@ export default class extends SkyraCommand {
 		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
 			const response = await message.sendMessage(
 				message.language.tget('COMMAND_HELP_ALL_FLAG', message.guildSettings.get(GuildSettings.Prefix)),
-				new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })
+				new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary })
 			);
 			const display = await this.buildDisplay(message);
 
@@ -97,12 +98,11 @@ export default class extends SkyraCommand {
 		const commandsByCategory = await this._fetchCommands(message);
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
-		const display = new UserRichDisplay();
-		const color = getColor(message) || 0xFFAB2D;
+		const display = new UserRichDisplay(new MessageEmbed()
+			.setColor(getColor(message)));
 		for (const [category, commands] of commandsByCategory) {
 			display.addPage(new MessageEmbed()
 				.setTitle(`${category} Commands`)
-				.setColor(color)
 				.setDescription(commands.map(this.formatCommand.bind(this, message, prefix, true)).join('\n')));
 		}
 

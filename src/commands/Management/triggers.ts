@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { resolveEmoji, displayEmoji } from '../../lib/util/util';
+import { resolveEmoji, displayEmoji, getColor } from '../../lib/util/util';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { MessageEmbed } from 'discord.js';
 
@@ -92,7 +92,7 @@ export default class extends SkyraCommand {
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128 }))
-			.setColor(message.member!.displayColor));
+			.setColor(getColor(message)));
 
 		for (const page of util.chunk(output, 10)) {
 			display.addPage((embed: MessageEmbed) => embed.setDescription(page));

@@ -23,7 +23,9 @@ export default class extends Monitor {
 		url.searchParams.append('width', dimensions.width.toString());
 		url.searchParams.append('height', dimensions.height.toString());
 
-		const result = await fetch(url, 'result');
+		const result = await fetch(url, 'result').catch(error => {
+			throw new Error(`ImageLogs[${error}] ${url}`);
+		});
 		const contentLength = result.headers.get('content-length');
 		if (contentLength === null) return;
 

@@ -6,6 +6,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
 import { cutText, fetch, getColor } from '../../lib/util/util';
+import { BrandingColors } from '../../lib/util/constants';
 
 const API_URL = `https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
@@ -24,7 +25,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [animeName]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(getColor(message)));
+			.setColor(BrandingColors.Secondary));
 
 		const { hits: entries } = await this.fetchAPI(message, animeName);
 		const display = this.buildDisplay(entries, message);

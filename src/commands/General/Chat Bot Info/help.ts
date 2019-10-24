@@ -99,8 +99,7 @@ export default class extends SkyraCommand {
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
-		);
+			.setColor(getColor(message)));
 		for (const [category, commands] of commandsByCategory) {
 			display.addPage(new MessageEmbed()
 				.setTitle(`${category} Commands`)

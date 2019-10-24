@@ -67,8 +67,7 @@ export default class extends SkyraCommand {
 
 	private buildDisplay(entries: EShopHit[], message: KlasaMessage) {
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
-		);
+			.setColor(getColor(message)));
 
 		for (const game of entries) {
 			const titles = message.language.tget('COMMAND_ESHOP_TITLES');
@@ -93,8 +92,7 @@ export default class extends SkyraCommand {
 				.addField(titles.PLATFORM, game.platform, true)
 				.addField(titles.NSUID, game.nsuid || 'TBD', true)
 				.addField(titles.ESRB, esrbText)
-				.addField(titles.CATEGORIES, game.categories.join(', '))
-			);
+				.addField(titles.CATEGORIES, game.categories.join(', ')));
 		}
 		return display;
 	}

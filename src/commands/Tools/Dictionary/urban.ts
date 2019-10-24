@@ -57,8 +57,7 @@ export default class extends SkyraCommand {
 				.addField('Example', example)
 				.addField('Author', result.author)
 				.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
-				.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)
-			);
+				.addField(ZWS, `\\👎 ${result.thumbs_down}`, true));
 		}
 
 		return display;

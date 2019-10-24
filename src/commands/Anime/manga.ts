@@ -59,8 +59,7 @@ export default class extends SkyraCommand {
 		const titles = message.language.tget('COMMAND_MANGA_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
-			.setFooter('© kitsu.io')
-		);
+			.setFooter('© kitsu.io'));
 
 		for (const entry of entries) {
 			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
@@ -78,8 +77,7 @@ export default class extends SkyraCommand {
 				.addField(titles.SCORE, score, true)
 				.addField(titles.AGE_RATING, entry.ageRating ? entry.ageRating : 'None', true)
 				.addField(titles.FIRST_PUBLISH_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
-				.addField(titles.READ_IT, `**[${title}](${mangaURL})**`)
-			);
+				.addField(titles.READ_IT, `**[${title}](${mangaURL})**`));
 		}
 		return display;
 	}

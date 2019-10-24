@@ -59,8 +59,7 @@ export default class extends SkyraCommand {
 		const titles = message.language.tget('COMMAND_ANIME_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
-			.setFooter('© kitsu.io')
-		);
+			.setFooter('© kitsu.io'));
 
 		for (const entry of entries) {
 			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
@@ -80,8 +79,7 @@ export default class extends SkyraCommand {
 				.addField(titles.EPISODE_LENGTH, message.language.duration(entry.episodeLength * 60 * 1000), true)
 				.addField(titles.AGE_RATING, entry.ageRating, true)
 				.addField(titles.FIRST_AIR_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
-				.addField(titles.WATCH_IT, `**[${title}](${animeURL})**`)
-			);
+				.addField(titles.WATCH_IT, `**[${title}](${animeURL})**`));
 		}
 		return display;
 	}

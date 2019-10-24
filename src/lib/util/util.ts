@@ -6,7 +6,7 @@ import { isObject } from 'util';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
-import { ModerationTypeKeys, TIME } from './constants';
+import { ModerationTypeKeys, TIME, BrandingColors } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
 import { util, RateLimitManager } from 'klasa';
@@ -324,7 +324,7 @@ export function getImage(message: Message): string | null {
 }
 
 export function getColor(message: Message) {
-	return message.author.settings.get(UserSettings.Color) || (message.member && message.member.displayColor) || null;
+	return message.author.settings.get(UserSettings.Color) || (message.member && message.member.displayColor) || BrandingColors.Primary;
 }
 
 /**

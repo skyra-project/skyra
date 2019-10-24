@@ -6,6 +6,7 @@ import { Events } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { FuzzySearch } from '../../lib/util/FuzzySearch';
 import { getColor } from '../../lib/util/util';
+import { BrandingColors } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -133,14 +134,14 @@ export default class extends SkyraCommand {
 		if (!roles.length) throw message.language.tget('COMMAND_ROLES_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL())
 			.setTitle(message.language.tget('COMMAND_ROLES_LIST_TITLE')));
 
 		const pages = Math.ceil(roles.length / 10);
 		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D }));
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		await display.start(response, message.author.id);
 		return response;
 	}

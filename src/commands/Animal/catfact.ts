@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const { fact } = await fetch('https://catfact.ninja/fact', 'json') as CatfactResultOk;
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setTitle(message.language.tget('COMMAND_CATFACT_TITLE'))
 			.setDescription(fact));
 	}

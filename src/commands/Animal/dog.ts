@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const embed = new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setTimestamp();
 
 		try {

@@ -127,3 +127,8 @@ export const clientOptions: KlasaClientOptions = {
 		role: 2
 	}
 };
+
+export enum BrandingColors {
+	Primary = 0x5C71BD,
+	Secondary = 0xFF9D01
+}

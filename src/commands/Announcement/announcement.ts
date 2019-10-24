@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 		try {
 			return message.ask(message.language.tget('COMMAND_ANNOUNCEMENT_PROMPT'), {
 				embed: new MessageEmbed()
-					.setColor(getColor(message) || 0xFFAB2D)
+					.setColor(getColor(message))
 					.setDescription(content)
 					.setTimestamp()
 			});

@@ -1,6 +1,7 @@
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { BrandingColors } from '../../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -20,7 +21,7 @@ export default class extends SkyraCommand {
 		const roleInfoTitles = message.language.tget('COMMAND_ROLEINFO_TITLES') as unknown as RoleInfoTitles;
 		const { permissions } = role;
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(role.color || 0xDFDFDF)
+			.setColor(role.color || BrandingColors.Secondary)
 			.setTitle(`${role.name} [${role.id}]`)
 			.setDescription(message.language.tget('COMMAND_ROLEINFO', role))
 			.addField(roleInfoTitles.PERMISSIONS, permissions.has(Permissions.FLAGS.ADMINISTRATOR)

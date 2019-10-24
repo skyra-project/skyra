@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		if (!user.avatar) throw message.language.tget('COMMAND_AVATAR_NONE');
 		return message.sendEmbed(new MessageEmbed()
 			.setAuthor(user.tag, user.avatarURL({ size: 128 })!)
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setImage(user.avatarURL({ size: 2048 })!));
 	}
 

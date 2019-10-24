@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setTitle(message.language.tget('COMMAND_PERMISSIONS', user.tag, user.id))
 			.setDescription(list.join('\n'));
 

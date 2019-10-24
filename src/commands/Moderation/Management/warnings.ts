@@ -22,6 +22,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [target]: [KlasaUser?]) {
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		const warnings = (await (target
 			? message.guild!.moderation.fetch(target.id)
 			: message.guild!.moderation.fetch())).filter(log => log.type === ModerationTypeKeys.Warn);
@@ -35,25 +36,28 @@ export default class extends SkyraCommand {
 		// Fetch usernames
 		const users = new Map() as Map<string, string>;
 		for (const warning of warnings.values()) {
-			const id = typeof warning.moderator === 'string' ? warning.moderator : warning.moderator!.id;
+			const id = typeof warning.user === 'string' ? warning.user : warning.user!.id;
 			if (!users.has(id)) users.set(id, await this.client.fetchUsername(id));
 		}
 
 		// Set up the formatter
-		const format = this.displayWarning.bind(this, users);
+		const format = this.displayWarning.bind(this, users, message.language.duration.bind(message.language));
 
 		for (const page of util.chunk([...warnings.values()], 10)) {
 			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
 		}
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	public displayWarning(users: Map<string, string>, warning: ModerationManagerEntry) {
-		const id = typeof warning.moderator === 'string' ? warning.moderator : warning.moderator!.id;
-		return `Case \`${warning.case}\`. Moderator: **${users.get(id)}**.\n${warning.reason || 'None'}`;
+	public displayWarning(users: Map<string, string>, duration: (time: number) => string, warning: ModerationManagerEntry) {
+		const id = typeof warning.user === 'string' ? warning.user : warning.user!.id;
+		const remainingTime = warning.duration === null || warning.createdAt === null ? null : (warning.createdAt + warning.duration) - Date.now();
+		const formattedUser = users.get(id);
+		const formattedReason = warning.reason || 'None';
+		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
+		return `Case \`${warning.case}\`. User: **${formattedUser}**.\n${formattedReason}${formattedDuration}`;
 	}
 
 }

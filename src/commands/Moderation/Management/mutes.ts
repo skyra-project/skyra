@@ -22,6 +22,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [target]: [KlasaUser?]) {
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		const mutes = (await (target
 			? message.guild!.moderation.fetch(target.id)
 			: message.guild!.moderation.fetch())).filter(log => log.type === ModerationTypeKeys.Mute || log.type === ModerationTypeKeys.TemporaryMute);
@@ -35,7 +36,7 @@ export default class extends SkyraCommand {
 		// Fetch usernames
 		const users = new Map() as Map<string, string>;
 		for (const mute of mutes.values()) {
-			const id = typeof mute.moderator === 'string' ? mute.moderator : mute.moderator!.id;
+			const id = typeof mute.user === 'string' ? mute.user : mute.user!.id;
 			if (!users.has(id)) users.set(id, await this.client.fetchUsername(id));
 		}
 
@@ -46,14 +47,17 @@ export default class extends SkyraCommand {
 			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
 		}
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
 		await display.start(response, message.author.id);
 		return response;
 	}
 
 	public displayMute(users: Map<string, string>, duration: (time: number) => string, mute: ModerationManagerEntry) {
-		const id = typeof mute.moderator === 'string' ? mute.moderator : mute.moderator!.id;
-		return `Case \`${mute.case}\`. Moderator: **${users.get(id)}**.\n${mute.reason || 'None'}${mute.duration ? `\nExpires in: ${duration(mute.duration)}` : ''}`;
+		const id = typeof mute.user === 'string' ? mute.user : mute.user!.id;
+		const remainingTime = mute.duration === null || mute.createdAt === null ? null : (mute.createdAt + mute.duration) - Date.now();
+		const formattedUser = users.get(id);
+		const formattedReason = mute.reason || 'None';
+		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
+		return `Case \`${mute.case}\`. User: **${formattedUser}**.\n${formattedReason}${formattedDuration}`;
 	}
 
 }

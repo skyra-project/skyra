@@ -18,6 +18,7 @@ export default class extends Monitor {
 		if (image === null) return;
 
 		const dimensions = this.getDimensions(image.width, image.height);
+		if (!dimensions.height || !dimensions.width) return;
 		const url = new URL(image.proxyURL);
 		url.searchParams.append('width', dimensions.width.toString());
 		url.searchParams.append('height', dimensions.height.toString());

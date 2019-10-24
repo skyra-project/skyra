@@ -23,7 +23,7 @@ export default class extends Extendable {
 			content = null;
 		}
 		const message = await this.send(content, options as MessageOptions);
-		return !this.guild || (this.channel as TextChannel).permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.ADD_REACTIONS)
+		return this.reactable
 			? awaitReaction(this, message, promptOptions)
 			: awaitMessage(this, promptOptions);
 	}

@@ -806,6 +806,7 @@ export interface LanguageKeys {
 	COMMAND_TIME_ABORTED: (title: string) => string;
 	COMMAND_TIME_SCHEDULED: (title: string, user: User, time: number) => string;
 	COMMAND_SLOWMODE_SET: (cooldown: number) => string;
+	COMMAND_SLOWMODE_TOO_LONG: string;
 	COMMAND_BAN_NOT_BANNABLE: string;
 	COMMAND_KICK_NOT_KICKABLE: string;
 	COMMAND_LOCKDOWN_LOCK: (channel: string) => string;

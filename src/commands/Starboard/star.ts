@@ -17,11 +17,11 @@ export default class extends SkyraCommand {
 			requiredSettings: [],
 			runIn: ['text'],
 			subcommands: true,
-			usage: '(top|random:default) (duration:duration)',
+			usage: '(top|random:default) (duration:timespan)',
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('duration', (arg, possible, message, [subcommand]) => {
+		this.createCustomResolver('timespan', (arg, possible, message, [subcommand]) => {
 			if (!arg || subcommand === 'random') return undefined;
 			return this.client.arguments.get('timespan').run(arg, possible, message);
 		});

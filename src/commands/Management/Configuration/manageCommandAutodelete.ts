@@ -2,7 +2,6 @@ import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { TIME } from '../../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -15,7 +14,7 @@ export default class extends SkyraCommand {
 			permissionLevel: 6,
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<show|add|remove|reset> (channel:channel) (duration:duration)',
+			usage: '<show|add|remove|reset> (channel:channel) (duration:timespan)',
 			usageDelim: ' '
 		});
 
@@ -25,14 +24,9 @@ export default class extends SkyraCommand {
 			const channel = await this.client.arguments.get('channelname').run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
 			throw msg.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL');
-		}).createCustomResolver('duration', async (arg, possible, msg, [type]) => {
+		}).createCustomResolver('timespan', async (arg, possible, msg, [type]) => {
 			if (type !== 'add') return undefined;
-			if (arg) {
-				const date = await this.client.arguments.get('duration').run(arg, possible, msg) as Date;
-				const duration = Math.ceil((date.getTime() - Date.now()) / 1000) * 1000;
-				if (duration < TIME.HOUR) return duration;
-			}
-			throw msg.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_REQUIRED_DURATION');
+			return this.client.arguments.get('timespan').run(arg, possible, msg);
 		});
 	}
 

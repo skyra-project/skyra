@@ -13,12 +13,12 @@ export default class extends SkyraCommand {
 			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['MANAGE_CHANNELS'],
 			runIn: ['text'],
-			usage: '<reset|cooldown:integer{0,120}>'
+			usage: '<reset|off|cooldown:integer{0,120}>'
 		});
 	}
 
-	public async run(message: KlasaMessage, [cooldown]: ['reset' | number]) {
-		if (cooldown === 'reset') cooldown = 0;
+	public async run(message: KlasaMessage, [cooldown]: ['reset' | 'off' | number]) {
+		if (cooldown === 'reset' || cooldown === 'off') cooldown = 0;
 		const channel = message.channel as TextChannel;
 		await channel.setRateLimitPerUser(cooldown);
 		return message.sendLocale('COMMAND_SLOWMODE_SET', [cooldown]);

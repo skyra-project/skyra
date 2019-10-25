@@ -123,8 +123,8 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, userID]) as Promise<RawMemberSettings | null>;
 	}
 
-	public fetchModerationLogByCase(guildID: string, caseNumber: number) {
-		return this.provider.runOne(/* sql */`
+	public async fetchModerationLogByCase(guildID: string, caseNumber: number) {
+		const entry = await this.provider.runOne(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
@@ -132,35 +132,39 @@ export class PostgresCommonQuery implements CommonQuery {
 				"case_id"  = $2
 			LIMIT 1;
 		`, [guildID, caseNumber]);
+		return ({ ...entry, created_at: Number(entry.created_at) });
 	}
 
-	public fetchModerationLogByCases(guildID: string, caseNumbers: readonly number[]) {
-		return this.provider.runAll(/* sql */`
+	public async fetchModerationLogByCases(guildID: string, caseNumbers: readonly number[]) {
+		const entries = await this.provider.runAll(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
 				"guild_id" = $1 AND
 				"case_id" IN (${caseNumbers.join(', ')});
 		`, [guildID]);
+		return entries.map(entry => ({ ...entry, created_at: Number(entry.created_at) }));
 	}
 
-	public fetchModerationLogByGuild(guildID: string) {
-		return this.provider.runAll(/* sql */`
+	public async fetchModerationLogByGuild(guildID: string) {
+		const entries = await this.provider.runAll(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
 				"guild_id" = $1;
 		`, [guildID]);
+		return entries.map(entry => ({ ...entry, created_at: Number(entry.created_at) }));
 	}
 
-	public fetchModerationLogByUser(guildID: string, user: string) {
-		return this.provider.runAll(/* sql */`
+	public async fetchModerationLogByUser(guildID: string, user: string) {
+		const entries = await this.provider.runAll(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
 				"guild_id" = $1 AND
 				"user_id"  = $2;
 		`, [guildID, user]);
+		return entries.map(entry => ({ ...entry, created_at: Number(entry.created_at) }));
 	}
 
 	public async fetchStar(guildID: string, messageID: string) {

@@ -46,6 +46,7 @@ export namespace GuildSettings {
 		export const JoinDM = T<string>('messages.join-dm');
 		export const Warnings = T<boolean>('messages.warnings');
 		export const IgnoreChannels = T<readonly string[]>('messages.ignoreChannels');
+		export const ModeratorNameDisplay = T<boolean>('messages.moderator-name-display');
 	}
 
 	export const StickyRoles = T<readonly StickyRole[]>('stickyRoles');

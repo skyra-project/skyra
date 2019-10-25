@@ -14,6 +14,8 @@ export namespace UserSettings {
 	export const Reputation = T<number>('reputation_count');
 	export const ThemeLevel = T<string>('theme_level');
 	export const ThemeProfile = T<string>('theme_profile');
+	export const DarkTheme = T<boolean>('dark_theme');
+	export const ModerationDM = T<boolean>('moderation_dm');
 	export const TimeDaily = T<number>('next_daily');
 	export const TimeReputation = T<number>('next_reputation');
 

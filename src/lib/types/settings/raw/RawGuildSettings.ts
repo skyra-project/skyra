@@ -132,6 +132,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"messages.join-dm"                     VARCHAR(1500),
 		"messages.warnings"                    BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"messages.ignoreChannels"              VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"messages.moderator-name-display"      BOOLEAN       DEFAULT TRUE               NOT NULL,
 		"stickyRoles"                          JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.admin"                          VARCHAR(19),
 		"roles.auto"                           JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,

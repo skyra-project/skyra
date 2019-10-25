@@ -406,6 +406,8 @@ export interface LanguageKeys {
 	COMMAND_HISTORY_EXTENDED: string;
 	COMMAND_MUTES_DESCRIPTION: string;
 	COMMAND_MUTES_EXTENDED: string;
+	COMMAND_MODERATIONS_DESCRIPTION: string;
+	COMMAND_MODERATIONS_EXTENDED: string;
 	COMMAND_WARNINGS_DESCRIPTION: string;
 	COMMAND_WARNINGS_EXTENDED: string;
 	COMMAND_ARCHIVE_DESCRIPTION: string;
@@ -787,10 +789,8 @@ export interface LanguageKeys {
 	COMMAND_UPVOTE_MESSAGE: string;
 	COMMAND_VAPORWAVE_OUTPUT: (str: string) => string;
 	COMMAND_HISTORY_FOOTER: (warnings: number, mutes: number, kicks: number, bans: number) => string;
-	COMMAND_MUTES_EMPTY: string;
-	COMMAND_MUTES_AMOUNT: (amount: number) => string;
-	COMMAND_WARNINGS_EMPTY: string;
-	COMMAND_WARNINGS_AMOUNT: (amount: number) => string;
+	COMMAND_MODERATIONS_EMPTY: string;
+	COMMAND_MODERATIONS_AMOUNT: (amount: number) => string;
 	COMMAND_PERMISSIONS: (username: string, id: string) => string;
 	COMMAND_PERMISSIONS_ALL: string;
 	COMMAND_RAID_DISABLED: string;

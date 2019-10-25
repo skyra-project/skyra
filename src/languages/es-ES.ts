@@ -1176,6 +1176,17 @@ export default class extends Language {
 					appealed.`,
 			examples: ['', '@Pete']
 		}),
+		COMMAND_MODERATIONS_DESCRIPTION: 'List all running moderation logs from this guild.',
+		COMMAND_MODERATIONS_EXTENDED: builder.display('moderations', {
+			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a
+					reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}** to execute correctly.`,
+			examples: [
+				'',
+				'@Pete',
+				'mutes @Pete',
+				'warnings'
+			]
+		}),
 		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
 		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
@@ -2220,10 +2231,10 @@ export default class extends Language {
 			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
 			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
 			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
-		COMMAND_MUTES_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_MUTES_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'mute' : 'mutes'}.`,
-		COMMAND_WARNINGS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_WARNINGS_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
+		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
+		COMMAND_MODERATIONS_AMOUNT: amount => amount === 1
+			? 'There is 1 entry.'
+			: `There are ${amount} entries.`,
 
 		/**
 		 * #############################

@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
 		const nextLevel = Math.floor(((level + 1) / 0.2) ** 2);
-		const progressBar = Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265);
+		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
 
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
 			readFile(join(THEMES_FOLDER, `${themeLevel}.png`)),
@@ -64,11 +64,11 @@ export default class extends SkyraCommand {
 
 			// Statistics Titles
 			.addText(TITLE.EXPERIENCE, 340, 73)
-			.addText(TITLE.NEXT_IN, 340, 131)
+			.addText(TITLE.NEXT_IN, 340, 128)
 
 			// Draw the progress bar
 			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
-			.addRect(341, 88, progressBar, 5)
+			.addBeveledRect(341, 86, progressBar, 9, 3)
 
 			// Draw the information
 			.setColor('rgb(23,23,23)')
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 			.setTextFont('35px RobotoLight')
 			.addText(TITLE.LEVEL, 268, 73)
 			.setTextFont('45px RobotoRegular')
-			.addText(level.toString(), 273, 128)
+			.addText(level.toString(), 268, 128)
 
 			// Draw the avatar
 			.save()
@@ -95,15 +95,15 @@ export default class extends SkyraCommand {
 			.setAntialiasing('subpixel')
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)
-			.setColor('#ffffff')
+			.setColor('#FFFFFF')
 			.createBeveledPath(10, 10, 620, 154, 8)
 			.fill()
 			.createBeveledClip(10, 10, 620, 154, 5)
 			.clearPixels(10, 10, 186, 154)
 			.addCircle(103, 87, 70)
 			.resetShadows()
-			.setColor(`#f2f2f2`)
-			.addRect(340, 87, 267, 7)
+			.setColor(`#E8E8E8`)
+			.addBeveledRect(340, 85, 267, 11, 4)
 			.toBufferAsync();
 	}
 

@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
 		const nextLevel = Math.floor(((level + 1) / 0.2) ** 2);
-		const progressBar = Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 364);
+		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 364), 6);
 
 		/* Global leaderboard */
 		const rank = await user.fetchRank();
@@ -79,7 +79,7 @@ export default class extends SkyraCommand {
 
 			// Progress bar
 			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
-			.addRect(227, 356, progressBar, 5)
+			.addBeveledRect(227, 352, progressBar, 9, 3)
 
 			// Name title
 			.setTextFont('35px RobotoRegular')
@@ -95,7 +95,7 @@ export default class extends SkyraCommand {
 
 			// Experience
 			.setTextFont('20px RobotoLight')
-			.addText(TITLE.EXPERIENCE, 227, 346)
+			.addText(TITLE.EXPERIENCE, 227, 342)
 
 			// Statistics Values
 			.setTextAlign('right')
@@ -120,7 +120,7 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.profile = await new Canvas(640, 391)
 			.setAntialiasing('subpixel')
-			.setShadowColor('rgba(0,0,0,.7)')
+			.setShadowColor('rgba(0, 0, 0, 0.7)')
 			.setShadowBlur(7)
 			.setColor('#FFFFFF')
 			.createBeveledPath(10, 10, 620, 371, 8)
@@ -129,15 +129,15 @@ export default class extends SkyraCommand {
 			.clearPixels(10, 10, 186, 371)
 			.addCircle(103, 103, 70.5)
 			.resetShadows()
-			.setColor(`#f2f2f2`)
-			.addRect(226, 355, 366, 7)
+			.setColor(`#E8E8E8`)
+			.addBeveledRect(226, 351, 366, 11, 4)
 			.toBufferAsync();
 
 		this.panel = await new Canvas(100, 391)
 			.setAntialiasing('subpixel')
-			.setShadowColor('rgba(0,0,0,.7)')
+			.setShadowColor('rgba(0, 0, 0, 0.7)')
 			.setShadowBlur(7)
-			.setColor('#F2F2F2')
+			.setColor('#E8E8E8')
 			.createBeveledPath(10, 10, 80, 371, 8)
 			.fill()
 			.toBufferAsync();

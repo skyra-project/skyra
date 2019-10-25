@@ -4,8 +4,10 @@ import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 import { getColor, floatPromise } from '../util/util';
 import { api } from '../util/Models/Api';
+import { TIME } from '../util/constants';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
+const TIMEOUT = TIME.MINUTE * 15;
 
 export class SettingsMenu {
 
@@ -56,7 +58,7 @@ export class SettingsMenu {
 		this.llrc = new LongLivingReactionCollector(this.message.client)
 			.setListener(this.onReaction.bind(this))
 			.setEndListener(this.stop.bind(this));
-		this.llrc.setTime(120000);
+		this.llrc.setTime(TIMEOUT);
 		this.messageCollector = this.response.channel.createMessageCollector(msg => msg.author!.id === this.message.author.id);
 		this.messageCollector.on('collect', msg => this.onMessage(msg));
 		await this._renderResponse();
@@ -113,6 +115,7 @@ export class SettingsMenu {
 		// In case of messages that do not have a content, like attachments, ignore
 		if (!message.content) return;
 
+		this.llrc!.setTime(TIMEOUT);
 		this.errorMessage = null;
 		if (this.pointerIsFolder) {
 			const schema = (this.schema as Schema).get(message.content);
@@ -134,7 +137,7 @@ export class SettingsMenu {
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
 		if (reaction.userID !== this.message.author.id) return;
-		this.llrc!.setTime(120000);
+		this.llrc!.setTime(TIMEOUT);
 		if (reaction.emoji.name === EMOJIS.STOP) {
 			this.llrc!.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {

@@ -6,6 +6,7 @@ import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTy
 import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { isNullOrUndefined } from '../util/util';
+import { CLIENT_ID } from '../../../config';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
@@ -74,10 +75,16 @@ export class ModerationManagerEntry {
 
 	public get flattenedModerator() {
 		return this.moderator === null
-			? null
+			? CLIENT_ID
 			: typeof this.moderator === 'string'
 				? this.moderator
 				: this.moderator.id;
+	}
+
+	public get flattenedUser() {
+		return typeof this.user === 'string'
+			? this.user
+			: this.user.id;
 	}
 
 	public get shouldSend() {
@@ -275,10 +282,10 @@ export class ModerationManagerEntry {
 			duration: this.duration,
 			extra_data: this.extraData,
 			guild_id: this.manager.guild.id,
-			moderator_id: this.moderator ? typeof this.moderator === 'string' ? this.moderator : this.moderator.id : null,
+			moderator_id: this.flattenedModerator,
 			reason: this.reason,
 			type: this.type,
-			user_id: typeof this.user === 'string' ? this.user : this.user.id,
+			user_id: this.flattenedUser,
 			created_at: this.createdAt
 		};
 	}

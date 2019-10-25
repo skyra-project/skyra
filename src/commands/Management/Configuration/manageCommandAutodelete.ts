@@ -24,9 +24,9 @@ export default class extends SkyraCommand {
 			const channel = await this.client.arguments.get('channelname').run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
 			throw msg.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL');
-		}).createCustomResolver('timespan', (arg, possible, msg, [type]) => {
-			return type === 'add' ? this.client.arguments.get('timespan').run(arg, possible, msg) : undefined;
-		});
+		}).createCustomResolver('timespan', (arg, possible, msg, [type]) => type === 'add'
+			? this.client.arguments.get('timespan').run(arg, possible, msg)
+			: undefined);
 	}
 
 	public async show(message: KlasaMessage) {

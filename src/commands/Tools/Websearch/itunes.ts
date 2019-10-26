@@ -1,12 +1,9 @@
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { stringify } from 'querystring';
 import { fetch, getColor } from '../../../lib/util/util';
 import { MessageEmbed } from 'discord.js';
 import { BrandingColors } from '../../../lib/util/constants';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-
-const API_URL = `https://itunes.apple.com/search?`;
 
 export default class extends SkyraCommand {
 
@@ -27,22 +24,23 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		const { results: entries } = await this.fetchAPI(message, song.replace(/ /gm, '+'));
+		const { results: entries } = await this.fetchAPI(message, song);
 		const display = this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
 	private fetchAPI(message: KlasaMessage, song: string) {
-		return fetch(API_URL + stringify({
-			country: 'US',
-			entitiy: 'song',
-			explicit: 'no',
-			lang: 'en_us',
-			limit: 10,
-			media: 'music',
-			term: song
-		}).replace(/%2B/gm, '+'), 'json')
+		const url = new URL('https://itunes.apple.com/search');
+		url.searchParams.append('country', 'US');
+		url.searchParams.append('entity', 'song');
+		url.searchParams.append('explicit', 'no');
+		url.searchParams.append('lang', message.language.name.toLowerCase());
+		url.searchParams.append('limit', '10');
+		url.searchParams.append('media', 'music');
+		url.searchParams.append('term', song);
+
+		return fetch(url, 'json')
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<ITunesResult>;
 	}
 

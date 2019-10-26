@@ -34,6 +34,7 @@ export default Client.defaultGuildSchema
 		.add('join-dm', 'String', { max: 1500 })
 		.add('warnings', 'Boolean', { 'default': false })
 		.add('ignoreChannels', 'TextChannel', { array: true })
+		.add('moderation-dm', 'Boolean', { 'default': false })
 		.add('moderator-name-display', 'Boolean', { 'default': true }))
 	.add('stickyRoles', 'any', { array: true })
 	.add('roles', folder => folder

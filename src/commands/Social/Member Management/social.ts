@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('money', (arg, possible, message, [type]) => {
 			if (type === 'reset') return null;
-			return this.client.arguments.get('integer').run(arg, possible, message);
+			return this.client.arguments.get('integer')!.run(arg, possible, message);
 		});
 	}
 

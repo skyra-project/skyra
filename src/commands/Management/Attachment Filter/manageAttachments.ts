@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 			if (!arg) throw message.language.tget('COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE');
 
 			if (type === 'maximum') {
-				const maximum = await this.client.arguments.get('integer').run(arg, possible, message);
+				const maximum = await this.client.arguments.get('integer')!.run(arg, possible, message);
 				if (maximum >= 0 && maximum <= 60) return maximum;
 				throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, '');
 			}
@@ -69,14 +69,14 @@ export default class extends SkyraCommand {
 			}
 
 			if (type === 'logs') {
-				const value = await this.client.arguments.get('boolean').run(arg, possible, message);
+				const value = await this.client.arguments.get('boolean')!.run(arg, possible, message);
 				return value
 					? (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) | 0b1000
 					: (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) & 0b0111;
 			}
 
 			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, TIME.YEAR];
-			const duration = Math.round(((await this.client.arguments.get('duration').run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
+			const duration = Math.round(((await this.client.arguments.get('duration')!.run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
 			if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.tget('RESOLVER_DATE_SUFFIX'));
 			return duration;
 		});

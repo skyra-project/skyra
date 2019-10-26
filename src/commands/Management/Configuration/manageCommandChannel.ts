@@ -20,13 +20,13 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('channel', async (arg, possible, msg) => {
 			if (!arg) return msg.channel;
-			const channel = await this.client.arguments.get('channelname').run(arg, possible, msg);
+			const channel = await this.client.arguments.get('channelname')!.run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
 			throw msg.language.tget('COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL');
 		}).createCustomResolver('command', async (arg, possible, msg, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (arg) {
-				const command = await this.client.arguments.get('command').run(arg, possible, msg);
+				const command = await this.client.arguments.get('command')!.run(arg, possible, msg);
 				if (!command.disabled && command.permissionLevel < 9) return command;
 			}
 			throw msg.language.tget('COMMAND_MANAGECOMMANDCHANNEL_REQUIRED_COMMAND');

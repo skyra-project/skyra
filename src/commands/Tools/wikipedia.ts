@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 				.toLowerCase()
 				.replace(/[ ]/g, '_')
 				.replace(/\(/g, '%28')
-				.replace(/\)/g, '%29'),
+				.replace(/\)/g, '%29')
 		);
 	}
 

@@ -6,7 +6,7 @@ const CHANNEL_REGEXP = /^(?:<#)?(\d{17,19})>?$/;
 export default class extends Argument {
 
 	public get channel() {
-		return this.store.get('channel');
+		return this.store.get('channel')!;
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {

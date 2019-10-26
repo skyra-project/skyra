@@ -23,10 +23,10 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('rolename', (arg, possible, msg, [type]) => {
 			if (type === 'show') return undefined;
-			return this.client.arguments.get('rolename').run(arg, possible, msg);
+			return this.client.arguments.get('rolename')!.run(arg, possible, msg);
 		}).createCustomResolver('points', (arg, possible, msg, [type]) => {
 			if (type === 'show' || type === 'remove') return undefined;
-			return this.client.arguments.get('integer').run(arg, possible, msg);
+			return this.client.arguments.get('integer')!.run(arg, possible, msg);
 		});
 	}
 

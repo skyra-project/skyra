@@ -22,11 +22,11 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('username', (arg, possible, msg) => {
 			if (!arg) throw msg.language.tget('COMMAND_STICKYROLES_REQUIRED_USER');
-			return this.client.arguments.get('username').run(arg, possible, msg);
+			return this.client.arguments.get('username')!.run(arg, possible, msg);
 		}).createCustomResolver('rolename', (arg, possible, msg, [action]) => {
 			if (action === 'reset' || action === 'show') return undefined;
 			if (!arg) throw msg.language.tget('COMMAND_STICKYROLES_REQUIRED_ROLE');
-			return this.client.arguments.get('rolename').run(arg, possible, msg);
+			return this.client.arguments.get('rolename')!.run(arg, possible, msg);
 		});
 	}
 

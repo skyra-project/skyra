@@ -45,11 +45,11 @@ export default class extends SkyraCommand {
 	}
 
 	private buildDisplay(entries: ItunesData[], message: KlasaMessage) {
+		const titles = message.language.tget('COMMAND_ITUNES_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message)));
 
 		for (const song of entries) {
-			const titles = message.language.tget('COMMAND_ITUNES_TITLES');
 
 			display.addPage((embed: MessageEmbed) => embed
 				.setThumbnail(song.artworkUrl100)

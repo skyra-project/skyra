@@ -49,10 +49,10 @@ export default class extends ModerationMonitor {
 	}
 
 	protected async onDelete(message: KlasaMessage, value: number) {
+		floatPromise(this, message.nuke());
 		if (value > 25 && (await message.author.settings.sync()).get(UserSettings.ModerationDM)) {
 			floatPromise(this, message.author.sendLocale('MONITOR_CAPSFILTER_DM', [util.codeBlock('md', cutText(message.content, 1900))]));
 		}
-		floatPromise(this, message.nuke());
 	}
 
 	protected onAlert(message: KlasaMessage) {

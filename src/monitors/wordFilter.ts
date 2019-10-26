@@ -31,10 +31,10 @@ export default class extends ModerationMonitor {
 	}
 
 	protected async onDelete(message: KlasaMessage, value: FilterResults) {
+		floatPromise(this, message.nuke());
 		if (message.content.length > 25 && (await message.author.settings.sync()).get(UserSettings.ModerationDM)) {
 			floatPromise(this, message.author.sendLocale('MONITOR_WORDFILTER_DM', [util.codeBlock('md', cutText(value.filtered, 1900))]));
 		}
-		floatPromise(this, message.nuke());
 	}
 
 	protected onAlert(message: KlasaMessage) {

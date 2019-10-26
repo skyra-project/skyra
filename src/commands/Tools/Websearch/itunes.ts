@@ -25,6 +25,8 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		const { results: entries } = await this.fetchAPI(message, song);
+		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
+
 		const display = this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
 		return response;
@@ -45,11 +47,11 @@ export default class extends SkyraCommand {
 	}
 
 	private buildDisplay(entries: ItunesData[], message: KlasaMessage) {
+		const titles = message.language.tget('COMMAND_ITUNES_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message)));
 
 		for (const song of entries) {
-			const titles = message.language.tget('COMMAND_ITUNES_TITLES');
 
 			display.addPage((embed: MessageEmbed) => embed
 				.setThumbnail(song.artworkUrl100)

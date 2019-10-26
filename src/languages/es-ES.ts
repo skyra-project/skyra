@@ -2567,6 +2567,55 @@ export default class extends Language {
 			PREVIEW: 'Avance',
 			PREVIEW_LABEL: 'Haga clic aquí'
 		},
+		COMMAND_MOVIES_DESCRIPTION: 'Busca en TheMovieDatabase cualquier película',
+		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
+			extendedHelp: [
+				'Este comando consulta la API de TheMovieDatabase para obtener datos sobre sus películas favoritas',
+				'Consejo: Puede usar el filtro \'y:\' para reducir sus resultados por año. Ejemplo: \'Star Wars y: 1977\'.'
+			],
+			explainedUsage: [
+				['consulta', 'El nombre de la pelicula']
+			],
+			examples: ['Ocean\'s Eleven y:2001', 'Star Wars Revenge of the Sith', 'Spirited Away']
+		}),
+		COMMAND_MOVIES_TITLES: {
+			RUNTIME: 'Tiempo de ejecución',
+			USER_SCORE: 'Puntuación del usuario',
+			STATUS: 'Estado',
+			RELEASE_DATE: 'Fecha de lanzamiento',
+			IMDB_PAGE: 'Página de IMDB',
+			HOME_PAGE: 'Página de inicio',
+			COLLECTION: 'Colección',
+			GENRES: 'Géneros'
+		},
+		COMMAND_MOVIES_DATA: {
+			VARIABLE_RUNTIME: 'Variable',
+			MOVIE_IN_PRODUCTION: 'Película en producción',
+			LINK_CLICK_HERE: 'Haga clic aquí',
+			NONE: 'Ninguno',
+			NOT_PART_OF_COLLECTION: 'No es parte de una colección.',
+			NO_GENRES: 'Ninguno en TheMovieDB'
+		},
+		COMMAND_SHOWS_DESCRIPTION: 'Busca en la base de datos de películas cualquier programa',
+		COMMAND_SHOWS_EXTENDED: builder.display('shows', {
+			extendedHelp: 'Este comando consulta la base de datos de películas para obtener información sobre tus programas favoritos',
+			explainedUsage: [
+				['consulta', 'El nombre del show.']
+			],
+			examples: ['Final Space', 'Gravity Falls', 'Rick and Morty']
+		}),
+		COMMAND_SHOWS_TITLES: {
+			EPISODE_RUNTIME: 'Tiempo de ejecución del episodio',
+			USER_SCORE: 'Puntuación del usuario',
+			STATUS: 'Estado',
+			FIRST_AIR_DATE: 'Primera fecha de emisión',
+			GENRES: 'Géneros'
+		},
+		COMMAND_SHOWS_DATA: {
+			VARIABLE_RUNTIME: 'Variable',
+			UNKNOWN_USER_SCORE: 'Sin puntaje de usuario',
+			NO_GENRES: 'Ninguno en TheMovieDB'
+		},
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
 		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',
@@ -2797,6 +2846,7 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
+		SYSTEM_NO_RESULTS: 'No pude encontrar ningún resultado para esa consulta',
 
 		JUMPTO: 'Salta al Mensaje ►',
 

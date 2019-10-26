@@ -68,11 +68,11 @@ export default class extends SkyraCommand {
 	}
 
 	private buildDisplay(entries: EShopHit[], message: KlasaMessage) {
+		const titles = message.language.tget('COMMAND_ESHOP_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message)));
 
 		for (const game of entries) {
-			const titles = message.language.tget('COMMAND_ESHOP_TITLES');
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
 			const price = game.msrp ? message.language.tget('COMMAND_ESHOP_PRICE', game.msrp) : 'TBD';
 			const esrbText = game.esrb

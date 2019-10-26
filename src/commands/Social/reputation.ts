@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('username', (arg, possible, msg, [check]) => {
 			if (!arg) return check ? msg.author : undefined;
-			return this.client.arguments.get('username').run(arg, possible, msg);
+			return this.client.arguments.get('username')!.run(arg, possible, msg);
 		});
 	}
 

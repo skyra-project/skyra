@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('username', (arg, possible, message) =>
-			arg ? this.client.arguments.get('username').run(arg, possible, message) : message.author);
+			arg ? this.client.arguments.get('username')!.run(arg, possible, message) : message.author);
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {

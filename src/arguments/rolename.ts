@@ -6,7 +6,7 @@ const ROLE_REGEXP = /^(?:<@&)?(\d{17,19})>?$/;
 export default class extends Argument {
 
 	public get role() {
-		return this.store.get('role');
+		return this.store.get('role')!;
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: Role) => boolean): Promise<Role> {

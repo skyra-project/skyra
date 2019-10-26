@@ -21,11 +21,11 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('channel', async (arg, possible, msg, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (!arg) return msg.channel;
-			const channel = await this.client.arguments.get('channelname').run(arg, possible, msg);
+			const channel = await this.client.arguments.get('channelname')!.run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
 			throw msg.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL');
 		}).createCustomResolver('timespan', (arg, possible, msg, [type]) => type === 'add'
-			? this.client.arguments.get('timespan').run(arg, possible, msg)
+			? this.client.arguments.get('timespan')!.run(arg, possible, msg)
 			: undefined);
 	}
 

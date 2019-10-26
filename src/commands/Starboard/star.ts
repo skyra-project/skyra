@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('timespan', (arg, possible, message, [subcommand]) => {
 			if (!arg || subcommand === 'random') return undefined;
-			return this.client.arguments.get('timespan').run(arg, possible, message);
+			return this.client.arguments.get('timespan')!.run(arg, possible, message);
 		});
 	}
 

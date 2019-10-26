@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 		}).createCustomResolver('rolename', (arg, possible, msg, [action]) => {
 			if (action !== 'add') return undefined;
 			if (!arg) throw msg.language.tget('COMMAND_MANAGEROLEREACTION_REQUIRED_ROLE');
-			return this.client.arguments.get('rolename').run(arg, possible, msg);
+			return this.client.arguments.get('rolename')!.run(arg, possible, msg);
 		});
 	}
 

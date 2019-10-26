@@ -66,7 +66,7 @@ export default class extends SkyraCommand {
 		ctx.fillText(
 			hexConcat(red, green, blue),
 			10 + x,
-			20 + y,
+			20 + y
 		);
 	}
 

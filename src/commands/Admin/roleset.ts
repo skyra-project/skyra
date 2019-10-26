@@ -19,12 +19,12 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver(`name`, (arg, possible, message, [subcommand]) => {
 			if (!arg && subcommand === 'list') return undefined;
-			return this.client.arguments.get('string').run(arg, possible, message);
+			return this.client.arguments.get('string')!.run(arg, possible, message);
 		});
 
 		this.createCustomResolver(`rolenames`, (arg, possible, message, [subcommand]) => {
 			if (!arg && subcommand === 'list') return undefined;
-			return this.client.arguments.get('rolenames').run(arg, possible, message);
+			return this.client.arguments.get('rolenames')!.run(arg, possible, message);
 		});
 	}
 

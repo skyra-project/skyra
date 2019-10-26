@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('command', (arg, possible, message, [action]: string[]) => {
 			if (action === 'reset' || action === 'show') return undefined;
-			return this.client.arguments.get('command').run(arg, possible, message);
+			return this.client.arguments.get('command')!.run(arg, possible, message);
 		}).createCustomResolver('type', (arg, _possible, message, [action]: string[]) => {
 			if (action === 'reset' || action === 'show') return undefined;
 			if (/allow|deny/i.test(arg)) return arg.toLowerCase();

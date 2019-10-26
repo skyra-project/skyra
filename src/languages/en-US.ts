@@ -2577,6 +2577,25 @@ export default class extends Language {
 			ESRB: 'ESRB'
 		},
 		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Free',
+		COMMAND_ITUNES_DESCRIPTION: 'Searches iTunes API for music tracks',
+		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {
+			extendedHelp: 'This command queries the Apple iTunes API to show data on a music you request.',
+			explainedUsage: [
+				['query', 'The name of the song']
+			],
+			examples: ['Apocalyptica feat. Brent Smith', 'You\'re Gonna Go Far, Kid']
+		}),
+		COMMAND_ITUNES_TITLES: {
+			ARTIST: 'Artist',
+			COLLECTION: 'Collection',
+			COLLECTION_PRICE: 'Collection price (USD)',
+			TRACK_PRICE: 'Track price (USD)',
+			TRACK_RELEASE_DATE: 'Track Release Date',
+			NUMBER_OF_TRACKS_IN_COLLECTION: '# Tracks in collection',
+			PRIMARY_GENRE: 'Primary genre',
+			PREVIEW: 'Preview',
+			PREVIEW_LABEL: 'Click here'
+		},
 		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
 		COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',
 		COMMAND_POLL_WANT_USERS: 'Do you want to include a users whitelist?',

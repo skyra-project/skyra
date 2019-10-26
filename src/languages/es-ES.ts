@@ -2548,6 +2548,25 @@ export default class extends Language {
 			ESRB: 'ESRB'
 		},
 		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Gratis',
+		COMMAND_ITUNES_DESCRIPTION: 'Busca en la API de iTunes pistas de música',
+		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {
+			extendedHelp: 'Este comando consulta la API de iTunes de Apple para mostrar datos sobre la música que solicita.',
+			explainedUsage: [
+				['consulta', 'El nombre de la cancion']
+			],
+			examples: ['Apocalyptica feat. Brent Smith', 'You\'re Gonna Go Far, Kid']
+		}),
+		COMMAND_ITUNES_TITLES: {
+			ARTIST: 'Artista',
+			COLLECTION: 'Colección',
+			COLLECTION_PRICE: 'Precio de colección',
+			TRACK_PRICE: 'Precio de canción',
+			TRACK_RELEASE_DATE: 'Fecha de lanzamiento de la canción',
+			NUMBER_OF_TRACKS_IN_COLLECTION: 'Canciones en coleccion',
+			PRIMARY_GENRE: 'Genero primario',
+			PREVIEW: 'Avance',
+			PREVIEW_LABEL: 'Haga clic aquí'
+		},
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
 		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',

@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE);
 		url.searchParams.append('query', show);
 
-		if (year) url.searchParams.append('year', year);
+		if (year) url.searchParams.append('first_air_date_year', year);
 
 		return fetch(url, 'json')
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbSeriesList>;

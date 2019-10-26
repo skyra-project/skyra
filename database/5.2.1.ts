@@ -38,8 +38,9 @@ async function processQueries(pgsql: Pool) {
 
 	await pgsql.query(/* sql */`
 		ALTER TABLE "guilds"
-		ADD COLUMN IF NOT EXISTS "messages.moderation-dm"          BOOLEAN DEFAULT FALSE NOT NULL,
-		ADD COLUMN IF NOT EXISTS "messages.moderator-name-display" BOOLEAN DEFAULT TRUE  NOT NULL;
+		DROP COLUMN IF EXISTS     "messages.warnings",
+		ADD  COLUMN IF NOT EXISTS "messages.moderation-dm"          BOOLEAN DEFAULT FALSE NOT NULL,
+		ADD  COLUMN IF NOT EXISTS "messages.moderator-name-display" BOOLEAN DEFAULT TRUE  NOT NULL;
 	`);
 }
 

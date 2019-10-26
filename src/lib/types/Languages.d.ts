@@ -834,6 +834,8 @@ export interface LanguageKeys {
 	COMMAND_WARN_MESSAGE: (user: User, log: number) => string;
 	COMMAND_MODERATION_OUTPUT: (cases: readonly number[], range: string | number, users: readonly string[], reason: string | null) => string;
 	COMMAND_MODERATION_FAILED: (users: readonly string[]) => string;
+	COMMAND_MODERATION_DM: (guild: string, title: string, reason: string | null, moderator: User) => string;
+	COMMAND_MODERATION_DM_ANONYMOUS: (guild: string, title: string, reason: string | null) => string;
 	COMMAND_AUTOROLE_POINTS_REQUIRED: string;
 	COMMAND_AUTOROLE_UPDATE_CONFIGURED: string;
 	COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: string;

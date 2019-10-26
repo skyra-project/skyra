@@ -24,7 +24,6 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(message: KlasaMessage, target: User, member: GuildMember, reason: string, _prehandled: Unlock, duration: number | null) {
-		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		await message.guild!.members.ban(target.id, { days: Number(message.flagArgs.day || message.flagArgs.days) || 0, reason });
 
 		return this.sendModlog(message, target, reason, null, duration);
@@ -32,6 +31,12 @@ export default class extends ModerationCommand {
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
 		if (prehandled) prehandled.unlock();
+	}
+
+	public async checkModeratable(message: KlasaMessage, target: User, prehandled: Unlock) {
+		const member = await super.checkModeratable(message, target, prehandled);
+		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
+		return member;
 	}
 
 }

@@ -44,7 +44,6 @@ export namespace GuildSettings {
 		export const Farewell = T<string>('messages.farewell');
 		export const Greeting = T<string>('messages.greeting');
 		export const JoinDM = T<string>('messages.join-dm');
-		export const Warnings = T<boolean>('messages.warnings');
 		export const IgnoreChannels = T<readonly string[]>('messages.ignoreChannels');
 		export const ModerationDM = T<boolean>('messages.moderation-dm');
 		export const ModeratorNameDisplay = T<boolean>('messages.moderator-name-display');

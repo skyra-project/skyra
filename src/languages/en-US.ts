@@ -1902,11 +1902,11 @@ export default class extends Language {
 			'SPECIAL': '🎴 Special'
 		},
 		COMMAND_MANGA_TITLES: {
-			 AGE_RATING: 'Age Rating',
-			 FIRST_PUBLISH_DATE: 'First published on',
-			 READ_IT: 'Read it here:',
-			 SCORE: 'Score',
-			 TYPE: 'Subtype'
+			AGE_RATING: 'Age Rating',
+			FIRST_PUBLISH_DATE: 'First published on',
+			READ_IT: 'Read it here:',
+			SCORE: 'Score',
+			TYPE: 'Subtype'
 		},
 
 		/**
@@ -2618,7 +2618,7 @@ export default class extends Language {
 			GENRES: 'Genres'
 		},
 		COMMAND_MOVIES_DATA: {
-			RUNTIME_MINUTES: 'minutes',
+			VARIABLE_RUNTIME: 'Variable',
 			MOVIE_IN_PRODUCTION: 'Movie in production',
 			LINK_CLICK_HERE: 'Click here',
 			NONE: 'None',
@@ -2639,6 +2639,11 @@ export default class extends Language {
 			STATUS: 'Status',
 			FIRST_AIR_DATE: 'First air date',
 			GENRES: 'Genres'
+		},
+		COMMAND_SHOWS_DATA: {
+			VARIABLE_RUNTIME: 'Variable',
+			UNKNOWN_USER_SCORE: 'No user score',
+			NO_GENRES: 'None on TheMovieDB'
 		},
 		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
 		COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',

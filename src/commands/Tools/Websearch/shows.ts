@@ -57,22 +57,27 @@ export default class extends SkyraCommand {
 
 	private async buildDisplay(shows: Tmdb.TmdbSeriesList['results'], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_SHOWS_TITLES');
-		const fieldsData = message.language.tget('COMMAND_MOVIES_DATA');
+		const fieldsData = message.language.tget('COMMAND_SHOWS_DATA');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message)));
 
 		const showData = await Promise.all(shows.map(show => this.fetchShowData(message, show.id)));
 
 		for (const show of showData) {
-			console.log(show);
 			display.addPage((embed: MessageEmbed) => embed
 				.setTitle(show.name)
 				.setURL(`https://www.themoviedb.org/tv/${show.id}`)
 				.setImage(`https://image.tmdb.org/t/p/original${show.backdrop_path}`)
 				.setThumbnail(`https://image.tmdb.org/t/p/original${show.poster_path}`)
 				.setDescription(cutText(show.overview, 750))
-				.addField(titles.EPISODE_RUNTIME, `${show.episode_run_time} ${fieldsData.RUNTIME_MINUTES}`, true)
-				.addField(titles.USER_SCORE, show.vote_average ? show.vote_average : fieldsData.MOVIE_IN_PRODUCTION, true)
+				.addField(
+					titles.EPISODE_RUNTIME,
+					show.episode_run_time.length
+						? `${message.language.duration(show.episode_run_time[0] * 60 * 1000)}`
+						: fieldsData.VARIABLE_RUNTIME,
+					true
+				)
+				.addField(titles.USER_SCORE, show.vote_average ? show.vote_average : fieldsData.UNKNOWN_USER_SCORE, true)
 				.addField(titles.STATUS, show.status, true)
 				.addField(titles.FIRST_AIR_DATE, this.releaseDateTimestamp.displayUTC(show.first_air_date), true)
 				.addField(titles.GENRES, show.genres.length ? show.genres.map(genre => genre.name).join(', ') : fieldsData.NO_GENRES));

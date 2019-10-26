@@ -2589,7 +2589,7 @@ export default class extends Language {
 			GENRES: 'Géneros'
 		},
 		COMMAND_MOVIES_DATA: {
-			RUNTIME_MINUTES: 'minutos',
+			VARIABLE_RUNTIME: 'Variable',
 			MOVIE_IN_PRODUCTION: 'Película en producción',
 			LINK_CLICK_HERE: 'Haga clic aquí',
 			NONE: 'Ninguno',
@@ -2610,6 +2610,11 @@ export default class extends Language {
 			STATUS: 'Estado',
 			FIRST_AIR_DATE: 'Primera fecha de emisión',
 			GENRES: 'Géneros'
+		},
+		COMMAND_SHOWS_DATA: {
+			VARIABLE_RUNTIME: 'Variable',
+			UNKNOWN_USER_SCORE: 'Sin puntaje de usuario',
+			NO_GENRES: 'Ninguno en TheMovieDB'
 		},
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',

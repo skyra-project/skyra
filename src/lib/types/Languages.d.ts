@@ -548,7 +548,7 @@ export interface LanguageKeys {
 		GENRES: string;
 	};
 	COMMAND_MOVIES_DATA: {
-		RUNTIME_MINUTES: string;
+		VARIABLE_RUNTIME: string;
 		MOVIE_IN_PRODUCTION: string;
 		LINK_CLICK_HERE: string;
 		NONE: string;
@@ -563,6 +563,11 @@ export interface LanguageKeys {
 		STATUS: string;
 		FIRST_AIR_DATE: string;
 		GENRES: string;
+	};
+	COMMAND_SHOWS_DATA: {
+		VARIABLE_RUNTIME: string;
+		UNKNOWN_USER_SCORE: string;
+		NO_GENRES: string;
 	};
 	COMMAND_POLL_DESCRIPTION: string;
 	COMMAND_POLL_EXTENDED: string;

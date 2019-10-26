@@ -28,7 +28,7 @@ export const DATABASE_PRODUCTION: PoolConfig = {
 	password: '',
 	user: ''
 };
-export const VERSION = '5.2.0 Nirom';
+export const VERSION = '5.2.1 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	commandEditing: true,

@@ -56,9 +56,8 @@ export default class extends SkyraCommand {
 			if (!continent! && component.types.includes('continent')) continent = component.long_name;
 		}
 
-		const city = locality! || governing! || country! || continent! || {};
-		const localityOrCountry = locality! ? country! : {};
-		const state = locality! && governing! ? governing! : localityOrCountry || {};
+		const localityOrCountry = locality! ? country! : '';
+		const state = locality! && governing! ? governing! : localityOrCountry || '';
 
 		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json') as WeatherResultOk;
 
@@ -68,10 +67,10 @@ export default class extends SkyraCommand {
 		const temperature = Math.round(currently.temperature);
 		const humidity = Math.round(currently.humidity * 100);
 
-		return this.draw(message, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity });
+		return this.draw(message, { geocodelocation, state, condition, icon, chanceofrain, temperature, humidity });
 	}
 
-	public async draw(message: KlasaMessage, { geocodelocation, state, city, condition, icon, chanceofrain, temperature, humidity }: WeatherData) {
+	public async draw(message: KlasaMessage, { geocodelocation, state, condition, icon, chanceofrain, temperature, humidity }: WeatherData) {
 		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
 		const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
 			readFile(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
@@ -91,12 +90,12 @@ export default class extends SkyraCommand {
 			// City Name
 			.setTextFont('20px Roboto')
 			.setColor(fontColor)
-			.addText(city.long_name ? city.long_name : 'Unknown', 35, 50)
+			.addText(geocodelocation, 35, 50)
 
 			// Prefecture Name
 			.setTextFont('16px Roboto')
 			.setColor(theme === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)')
-			.addText(state.long_name ? state.long_name : '', 35, 72.5)
+			.addText(state || '', 35, 72.5)
 
 			// Temperature
 			.setTextFont("48px 'Roboto Mono'")
@@ -173,8 +172,7 @@ export default class extends SkyraCommand {
 
 interface WeatherData {
 	geocodelocation: string;
-	state: Record<string, string>;
-	city: Record<string, string>;
+	state: string;
 	condition: string;
 	icon: string;
 	chanceofrain: number;

@@ -535,6 +535,35 @@ export interface LanguageKeys {
 		PREVIEW: string;
 		PREVIEW_LABEL: string;
 	};
+	COMMAND_MOVIES_DESCRIPTION: string;
+	COMMAND_MOVIES_EXTENDED: string;
+	COMMAND_MOVIES_TITLES: {
+		RUNTIME: string;
+		USER_SCORE: string;
+		STATUS: string;
+		RELEASE_DATE: string;
+		IMDB_PAGE: string;
+		HOME_PAGE: string;
+		COLLECTION: string;
+		GENRES: string;
+	};
+	COMMAND_MOVIES_DATA: {
+		RUNTIME_MINUTES: string;
+		MOVIE_IN_PRODUCTION: string;
+		LINK_CLICK_HERE: string;
+		NONE: string;
+		NOT_PART_OF_COLLECTION: string;
+		NO_GENRES: string;
+	};
+	COMMAND_SHOWS_DESCRIPTION: string;
+	COMMAND_SHOWS_EXTENDED: string;
+	COMMAND_SHOWS_TITLES: {
+		EPISODE_RUNTIME: string;
+		USER_SCORE: string;
+		STATUS: string;
+		FIRST_AIR_DATE: string;
+		GENRES: string;
+	};
 	COMMAND_POLL_DESCRIPTION: string;
 	COMMAND_POLL_EXTENDED: string;
 	COMMAND_PRICE_DESCRIPTION: string;

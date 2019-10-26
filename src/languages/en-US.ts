@@ -2596,6 +2596,50 @@ export default class extends Language {
 			PREVIEW: 'Preview',
 			PREVIEW_LABEL: 'Click here'
 		},
+		COMMAND_MOVIES_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
+		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
+			extendedHelp: [
+				'This command queries TheMovieDatabase API for data on your favourite movies',
+				'Tip: You can use the \'y:\' filter to narrow your results by year. Example: \'star wars y:1977\'.'
+			],
+			explainedUsage: [
+				['query', 'The name of the movie']
+			],
+			examples: ['Ocean\'s Eleven y:2001', 'Star Wars Revenge of the Sith', 'Spirited Away']
+		}),
+		COMMAND_MOVIES_TITLES: {
+			RUNTIME: 'Runtime',
+			USER_SCORE: 'User score',
+			STATUS: 'Status',
+			RELEASE_DATE: 'Release date',
+			IMDB_PAGE: 'IMDB Page',
+			HOME_PAGE: 'Home Page',
+			COLLECTION: 'Collection',
+			GENRES: 'Genres'
+		},
+		COMMAND_MOVIES_DATA: {
+			RUNTIME_MINUTES: 'minutes',
+			MOVIE_IN_PRODUCTION: 'Movie in production',
+			LINK_CLICK_HERE: 'Click here',
+			NONE: 'None',
+			NOT_PART_OF_COLLECTION: 'Not part of a collection',
+			NO_GENRES: 'None on TheMovieDB'
+		},
+		COMMAND_SHOWS_DESCRIPTION: 'Searches The Movie Database for any show',
+		COMMAND_SHOWS_EXTENDED: builder.display('shows', {
+			extendedHelp: 'This command queries TheMovieDatabase for data on your favorute shows',
+			explainedUsage: [
+				['query', 'The name of the show']
+			],
+			examples: ['Final Space', 'Gravity Falls', 'Rick and Morty']
+		}),
+		COMMAND_SHOWS_TITLES: {
+			EPISODE_RUNTIME: 'Episode runtime',
+			USER_SCORE: 'User score',
+			STATUS: 'Status',
+			FIRST_AIR_DATE: 'First air date',
+			GENRES: 'Genres'
+		},
 		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
 		COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',
 		COMMAND_POLL_WANT_USERS: 'Do you want to include a users whitelist?',

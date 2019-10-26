@@ -1111,6 +1111,7 @@ export interface LanguageKeys {
 	SYSTEM_LOADING: () => string;
 	SYSTEM_ERROR: string;
 	SYSTEM_QUERY_FAIL: string;
+	SYSTEM_NO_RESULTS: string;
 	SYSTEM_MESSAGE_NOT_FOUND: string;
 	SYSTEM_NOTENOUGH_PARAMETERS: string;
 	SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: string;

@@ -28,6 +28,8 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		const { hits: entries } = await this.fetchAPI(message, animeName);
+		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
+
 		const display = this.buildDisplay(entries, message);
 
 		await display.start(response, message.author.id);

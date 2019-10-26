@@ -2797,6 +2797,7 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
+		SYSTEM_NO_RESULTS: 'No pude encontrar ningún resultado para esa consulta',
 
 		JUMPTO: 'Salta al Mensaje ►',
 

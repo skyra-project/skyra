@@ -1391,6 +1391,11 @@ export default class extends Language {
 			],
 			examples: ['list', 'buy 0w1p06', 'set 0w1p06', 'reset']
 		}),
+		COMMAND_TOGGLEDARKMODE_DESCRIPTION: 'Toggle between light and dark templates for your profile and rank cards.',
+		COMMAND_TOGGLEDARKMODE_EXTENDED: builder.display('toggleDarkMode', {
+			extendedHelp: `This command lets you toggle the template used to generate your profile.`,
+			examples: ['']
+		}),
 
 		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild!.',
 		COMMAND_AUTOROLE_EXTENDED: builder.display('autorole', {
@@ -2352,6 +2357,9 @@ export default class extends Language {
 		COMMAND_BANNER_PAYMENT_CANCELLED: `${REDCROSS} The payment has been cancelled.`,
 		COMMAND_BANNER_BUY: banner => `${GREENTICK} **Success**. You have bought the banner: __${banner}__`,
 		COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
+		COMMAND_TOGGLEDARKMODE_TOGGLED: enabled => enabled
+			? `${GREENTICK} Successfully enabled the dark mode.`
+			: `${GREENTICK} Successfully disabled the dark mode.`,
 		COMMAND_DAILY_TIME: time => `El siguiente pago está disponible en: ${duration(time)}`,
 		COMMAND_DAILY_TIME_SUCCESS: amount => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
 		COMMAND_DAILY_GRACE: remaining => [

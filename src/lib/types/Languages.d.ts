@@ -450,6 +450,8 @@ export interface LanguageKeys {
 	COMMAND_SOCIAL_EXTENDED: string;
 	COMMAND_BANNER_DESCRIPTION: string;
 	COMMAND_BANNER_EXTENDED: string;
+	COMMAND_TOGGLEDARKMODE_DESCRIPTION: string;
+	COMMAND_TOGGLEDARKMODE_EXTENDED: string;
 	COMMAND_AUTOROLE_DESCRIPTION: string;
 	COMMAND_AUTOROLE_EXTENDED: string;
 	COMMAND_BALANCE_DESCRIPTION: string;
@@ -867,6 +869,7 @@ export interface LanguageKeys {
 	COMMAND_BANNER_PAYMENT_CANCELLED: string;
 	COMMAND_BANNER_BUY: (banner: string) => string;
 	COMMAND_BANNER_PROMPT: string;
+	COMMAND_TOGGLEDARKMODE_TOGGLED: (enabled: boolean) => string;
 	COMMAND_DAILY_TIME: (time: number) => string;
 	COMMAND_DAILY_TIME_SUCCESS: (amount: string) => string;
 	COMMAND_DAILY_GRACE: (remaining: number) => string;

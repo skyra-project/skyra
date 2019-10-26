@@ -11,7 +11,8 @@ const THEMES_FOLDER = join(cdnFolder, 'img', 'banners');
 
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
+	private lightThemeTemplate: Buffer | null = null;
+	private darkThemeTemplate: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -38,6 +39,7 @@ export default class extends SkyraCommand {
 		const color = user.settings.get(UserSettings.Color);
 		const themeLevel = user.settings.get(UserSettings.ThemeLevel);
 		const level = user.profileLevel;
+		const darkTheme = user.settings.get(UserSettings.DarkTheme);
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -56,22 +58,21 @@ export default class extends SkyraCommand {
 			.createBeveledClip(10, 10, 620, 154, 8)
 			.addImage(themeImageSRC, 9, 9, 189, 157)
 			.restore()
-			.addImage(this.template!, 0, 0, 640, 174)
+			.addImage(darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
+
+			// Draw the progress bar
+			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
+			.addBeveledRect(341, 86, progressBar, 9, 3)
 
 			// Set styles
-			.setColor('rgb(23,23,23)')
+			.setColor(darkTheme ? '#F0F0F0' : '#171717')
 			.setTextFont('28px RobotoLight')
 
 			// Statistics Titles
 			.addText(TITLE.EXPERIENCE, 340, 73)
 			.addText(TITLE.NEXT_IN, 340, 128)
 
-			// Draw the progress bar
-			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
-			.addBeveledRect(341, 86, progressBar, 9, 3)
-
 			// Draw the information
-			.setColor('rgb(23,23,23)')
 			.setTextAlign('right')
 			.addText(points.toString(), 606, 73)
 			.addText((nextLevel - points).toString(), 606, 131)
@@ -91,20 +92,39 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.template = await new Canvas(640, 174)
-			.setAntialiasing('subpixel')
-			.setShadowColor('rgba(0,0,0,.7)')
-			.setShadowBlur(7)
-			.setColor('#FFFFFF')
-			.createBeveledPath(10, 10, 620, 154, 8)
-			.fill()
-			.createBeveledClip(10, 10, 620, 154, 5)
-			.clearPixels(10, 10, 186, 154)
-			.addCircle(103, 87, 70)
-			.resetShadows()
-			.setColor(`#E8E8E8`)
-			.addBeveledRect(340, 85, 267, 11, 4)
-			.toBufferAsync();
+		[
+			this.lightThemeTemplate,
+			this.darkThemeTemplate
+		] = await Promise.all([
+			new Canvas(640, 174)
+				.setAntialiasing('subpixel')
+				.setShadowColor('rgba(0,0,0,.7)')
+				.setShadowBlur(7)
+				.setColor('#FFFFFF')
+				.createBeveledPath(10, 10, 620, 154, 8)
+				.fill()
+				.createBeveledClip(10, 10, 620, 154, 5)
+				.clearPixels(10, 10, 186, 154)
+				.addCircle(103, 87, 70)
+				.resetShadows()
+				.setColor(`#E8E8E8`)
+				.addBeveledRect(340, 85, 267, 11, 4)
+				.toBufferAsync(),
+			new Canvas(640, 174)
+				.setAntialiasing('subpixel')
+				.setShadowColor('rgba(0,0,0,.7)')
+				.setShadowBlur(7)
+				.setColor('#202225')
+				.createBeveledPath(10, 10, 620, 154, 8)
+				.fill()
+				.createBeveledClip(10, 10, 620, 154, 5)
+				.clearPixels(10, 10, 186, 154)
+				.addCircle(103, 87, 70)
+				.resetShadows()
+				.setColor(`#2C2F33`)
+				.addBeveledRect(340, 85, 267, 11, 4)
+				.toBufferAsync()
+		]);
 	}
 
 }

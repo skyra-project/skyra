@@ -13,8 +13,10 @@ const BADGES_FOLDER = join(cdnFolder, 'img', 'badges');
 
 export default class extends SkyraCommand {
 
-	private profile: Buffer | null = null;
-	private panel: Buffer | null = null;
+	private lightThemeTemplate: Buffer | null = null;
+	private darkThemeTemplate: Buffer | null = null;
+	private lightThemeDock: Buffer | null = null;
+	private darkThemeDock: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -42,6 +44,7 @@ export default class extends SkyraCommand {
 		const color = user.settings.get(UserSettings.Color);
 		const money = user.settings.get(UserSettings.Money);
 		const reputation = user.settings.get(UserSettings.Reputation);
+		const darkTheme = user.settings.get(UserSettings.DarkTheme);
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -61,7 +64,7 @@ export default class extends SkyraCommand {
 			const badges = await Promise.all(badgeSet.map(name =>
 				readFile(join(BADGES_FOLDER, `${name}.png`))));
 
-			canvas.addImage(this.panel!, 600, 0, 100, 391);
+			canvas.addImage(darkTheme ? this.darkThemeDock! : this.lightThemeDock!, 600, 0, 100, 391);
 			let position = 20;
 			for (const badge of badges) {
 				canvas.addImage(badge, 635, position, 50, 50);
@@ -75,7 +78,7 @@ export default class extends SkyraCommand {
 			.createBeveledClip(10, 10, 620, 371, 8)
 			.addImage(themeImageSRC, 9, 9, 188, 373)
 			.restore()
-			.addImage(this.profile!, 0, 0, 640, 391)
+			.addImage(darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 391)
 
 			// Progress bar
 			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
@@ -83,7 +86,7 @@ export default class extends SkyraCommand {
 
 			// Name title
 			.setTextFont('35px RobotoRegular')
-			.setColor('rgb(23,23,23')
+			.setColor(darkTheme ? '#F0F0F0' : '#171717')
 			.addResponsiveText(user.username, 227, 73, 306)
 			.setTextFont('25px RobotoLight')
 			.addText(`#${user.discriminator}`, 227, 105)
@@ -118,29 +121,57 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.profile = await new Canvas(640, 391)
-			.setAntialiasing('subpixel')
-			.setShadowColor('rgba(0, 0, 0, 0.7)')
-			.setShadowBlur(7)
-			.setColor('#FFFFFF')
-			.createBeveledPath(10, 10, 620, 371, 8)
-			.fill()
-			.createBeveledClip(10, 10, 620, 371, 5)
-			.clearPixels(10, 10, 186, 371)
-			.addCircle(103, 103, 70.5)
-			.resetShadows()
-			.setColor(`#E8E8E8`)
-			.addBeveledRect(226, 351, 366, 11, 4)
-			.toBufferAsync();
-
-		this.panel = await new Canvas(100, 391)
-			.setAntialiasing('subpixel')
-			.setShadowColor('rgba(0, 0, 0, 0.7)')
-			.setShadowBlur(7)
-			.setColor('#E8E8E8')
-			.createBeveledPath(10, 10, 80, 371, 8)
-			.fill()
-			.toBufferAsync();
+		[
+			this.lightThemeTemplate,
+			this.darkThemeTemplate,
+			this.lightThemeDock,
+			this.darkThemeDock
+		] = await Promise.all([
+			new Canvas(640, 391)
+				.setAntialiasing('subpixel')
+				.setShadowColor('rgba(0, 0, 0, 0.7)')
+				.setShadowBlur(7)
+				.setColor('#FFFFFF')
+				.createBeveledPath(10, 10, 620, 371, 8)
+				.fill()
+				.createBeveledClip(10, 10, 620, 371, 5)
+				.clearPixels(10, 10, 186, 371)
+				.addCircle(103, 103, 70.5)
+				.resetShadows()
+				.setColor(`#E8E8E8`)
+				.addBeveledRect(226, 351, 366, 11, 4)
+				.toBufferAsync(),
+			new Canvas(640, 391)
+				.setAntialiasing('subpixel')
+				.setShadowColor('rgba(0, 0, 0, 0.7)')
+				.setShadowBlur(7)
+				.setColor('#202225')
+				.createBeveledPath(10, 10, 620, 371, 8)
+				.fill()
+				.createBeveledClip(10, 10, 620, 371, 5)
+				.clearPixels(10, 10, 186, 371)
+				.addCircle(103, 103, 70.5)
+				.resetShadows()
+				.setColor(`#2C2F33`)
+				.addBeveledRect(226, 351, 366, 11, 4)
+				.toBufferAsync(),
+			new Canvas(100, 391)
+				.setAntialiasing('subpixel')
+				.setShadowColor('rgba(0, 0, 0, 0.7)')
+				.setShadowBlur(7)
+				.setColor('#E8E8E8')
+				.createBeveledPath(10, 10, 80, 371, 8)
+				.fill()
+				.toBufferAsync(),
+			new Canvas(100, 391)
+				.setAntialiasing('subpixel')
+				.setShadowColor('rgba(0, 0, 0, 0.7)')
+				.setShadowBlur(7)
+				.setColor('#272A2E')
+				.createBeveledPath(10, 10, 80, 371, 8)
+				.fill()
+				.toBufferAsync()
+		]);
 	}
 
 }

@@ -9,7 +9,7 @@ export default class extends SkyraCommand {
 			aliases: ['darkmode', 'toggledarktheme', 'darktheme'],
 			cooldown: 5,
 			description: language => language.tget('COMMAND_TOGGLEDARKMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TOGGLEDARKMODE_EXTENDED'),
+			extendedHelp: language => language.tget('COMMAND_TOGGLEDARKMODE_EXTENDED')
 		});
 	}
 

@@ -25,14 +25,19 @@ export default class extends ModerationCommand {
 		throw message.language.tget('GUILD_BANS_EMPTY');
 	}
 
-	public async handle(message: KlasaMessage, user: User, _: GuildMember, reason: string, { bans }: Unlock) {
-		if (!bans.includes(user.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
+	public async handle(message: KlasaMessage, user: User, _: GuildMember, reason: string) {
 		await message.guild!.members.unban(user.id, reason);
 		return this.sendModlog(message, user, reason);
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
 		if (prehandled) prehandled.unlock();
+	}
+
+	public async checkModeratable(message: KlasaMessage, target: User, prehandled: Unlock) {
+		if (!prehandled.bans.includes(target.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
+		const member = await super.checkModeratable(message, target, prehandled);
+		return member;
 	}
 
 }

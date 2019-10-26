@@ -13,5 +13,7 @@ export default Client.defaultUserSchema
 	.add(UserSettings.Reputation, 'Integer', { 'default': 0, 'min': 0, 'configurable': false })
 	.add(UserSettings.ThemeLevel, 'String', { 'default': '1001', 'configurable': false })
 	.add(UserSettings.ThemeProfile, 'String', { 'default': '0001', 'configurable': false })
+	.add(UserSettings.DarkTheme, 'Boolean', { 'default': false })
+	.add(UserSettings.ModerationDM, 'Boolean', { 'default': true })
 	.add(UserSettings.TimeDaily, 'Integer', { 'default': 0, 'configurable': false })
 	.add(UserSettings.TimeReputation, 'Integer', { 'default': 0, 'configurable': false });

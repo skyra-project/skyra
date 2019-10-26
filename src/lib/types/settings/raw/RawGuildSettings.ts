@@ -30,8 +30,9 @@ export interface RawGuildSettings {
 	'messages.farewell': string | null;
 	'messages.greeting': string | null;
 	'messages.join-dm': string | null;
-	'messages.warnings': boolean;
 	'messages.ignoreChannels': string[];
+	'messages.moderation-dm': boolean;
+	'messages.moderator-name-display': boolean;
 	'stickyRoles': object[];
 	'roles.admin': string | null;
 	'roles.auto': object[];
@@ -130,8 +131,9 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"messages.farewell"                    VARCHAR(2000),
 		"messages.greeting"                    VARCHAR(2000),
 		"messages.join-dm"                     VARCHAR(1500),
-		"messages.warnings"                    BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"messages.ignoreChannels"              VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"messages.moderation-dm"               BOOLEAN       DEFAULT FALSE              NOT NULL,
+		"messages.moderator-name-display"      BOOLEAN       DEFAULT TRUE               NOT NULL,
 		"stickyRoles"                          JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.admin"                          VARCHAR(19),
 		"roles.auto"                           JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,

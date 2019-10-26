@@ -11,6 +11,8 @@ export interface RawUserSettings {
 	reputation_count: number;
 	theme_level: string;
 	theme_profile: string;
+	dark_theme: boolean;
+	moderation_dm: boolean;
 	next_daily: number | null;
 	next_reputation: number | null;
 }
@@ -29,6 +31,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"reputation_count" INTEGER       DEFAULT 0                   NOT NULL,
 		"theme_level"      VARCHAR(6)    DEFAULT '1001'              NOT NULL,
 		"theme_profile"    VARCHAR(6)    DEFAULT '0001'              NOT NULL,
+		"dark_theme"       BOOLEAN       DEFAULT FALSE               NOT NULL,
+		"moderation_dm"    BOOLEAN       DEFAULT TRUE                NOT NULL,
 		"next_daily"       BIGINT,
 		"next_reputation"  BIGINT,
 		CONSTRAINT users_user_idx PRIMARY KEY ("id"),

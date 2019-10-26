@@ -19,11 +19,16 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
-		if (!member.voice.channelID) throw message.language.tget('GUILD_MEMBER_NOT_VOICECHANNEL');
 		await member.voice.setChannel(null);
 		return this.sendModlog(message, user, reason);
 	}
 
 	public async posthandle() { /* Do nothing */ }
+
+	public async checkModeratable(message: KlasaMessage, target: User, prehandled: unknown) {
+		const member = await super.checkModeratable(message, target, prehandled);
+		if (member && !member.voice.channelID) throw message.language.tget('GUILD_MEMBER_NOT_VOICECHANNEL');
+		return member;
+	}
 
 }

@@ -3,6 +3,7 @@ import { KlasaMessage, util } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { cutText, floatPromise } from '../lib/util/util';
 import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationMonitor';
+import { UserSettings } from '../lib/types/settings/UserSettings';
 const OFFSET = 0b100000;
 /**
  * In ASCII, the 6th bit tells whether a character is lowercase or uppercase:
@@ -47,9 +48,11 @@ export default class extends ModerationMonitor {
 		return (count / length) * 100 > capsthreshold ? count : null;
 	}
 
-	protected onDelete(message: KlasaMessage, value: number) {
-		if (value > 25) floatPromise(this, message.author.send(message.language.tget('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))));
+	protected async onDelete(message: KlasaMessage, value: number) {
 		floatPromise(this, message.nuke());
+		if (value > 25 && (await message.author.settings.sync()).get(UserSettings.ModerationDM)) {
+			floatPromise(this, message.author.sendLocale('MONITOR_CAPSFILTER_DM', [util.codeBlock('md', cutText(message.content, 1900))]));
+		}
 	}
 
 	protected onAlert(message: KlasaMessage) {

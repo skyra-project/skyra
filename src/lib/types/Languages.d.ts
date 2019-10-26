@@ -430,6 +430,8 @@ export interface LanguageKeys {
 	COMMAND_REASON_EXTENDED: string;
 	COMMAND_SOFTBAN_DESCRIPTION: string;
 	COMMAND_SOFTBAN_EXTENDED: string;
+	COMMAND_TOGGLEMODERATIONDM_DESCRIPTION: string;
+	COMMAND_TOGGLEMODERATIONDM_EXTENDED: string;
 	COMMAND_UNBAN_DESCRIPTION: string;
 	COMMAND_UNBAN_EXTENDED: string;
 	COMMAND_UNMUTE_DESCRIPTION: string;
@@ -448,6 +450,8 @@ export interface LanguageKeys {
 	COMMAND_SOCIAL_EXTENDED: string;
 	COMMAND_BANNER_DESCRIPTION: string;
 	COMMAND_BANNER_EXTENDED: string;
+	COMMAND_TOGGLEDARKMODE_DESCRIPTION: string;
+	COMMAND_TOGGLEDARKMODE_EXTENDED: string;
 	COMMAND_AUTOROLE_DESCRIPTION: string;
 	COMMAND_AUTOROLE_EXTENDED: string;
 	COMMAND_BALANCE_DESCRIPTION: string;
@@ -826,6 +830,7 @@ export interface LanguageKeys {
 	COMMAND_REASON_MISSING_CASE: string;
 	COMMAND_REASON_NOT_EXISTS: () => string;
 	COMMAND_REASON_UPDATED: (entries: readonly number[], newReason: string) => string;
+	COMMAND_TOGGLEMODERATIONDM_TOGGLED: (value: boolean) => string;
 	COMMAND_UNBAN_MISSING_PERMISSION: string;
 	COMMAND_UNMUTE_MISSING_PERMISSION: string;
 	COMMAND_VMUTE_MISSING_PERMISSION: string;
@@ -834,6 +839,8 @@ export interface LanguageKeys {
 	COMMAND_WARN_MESSAGE: (user: User, log: number) => string;
 	COMMAND_MODERATION_OUTPUT: (cases: readonly number[], range: string | number, users: readonly string[], reason: string | null) => string;
 	COMMAND_MODERATION_FAILED: (users: readonly string[]) => string;
+	COMMAND_MODERATION_DM: (guild: string, title: string, reason: string | null, moderator: User) => string;
+	COMMAND_MODERATION_DM_ANONYMOUS: (guild: string, title: string, reason: string | null) => string;
 	COMMAND_AUTOROLE_POINTS_REQUIRED: string;
 	COMMAND_AUTOROLE_UPDATE_CONFIGURED: string;
 	COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: string;
@@ -862,6 +869,7 @@ export interface LanguageKeys {
 	COMMAND_BANNER_PAYMENT_CANCELLED: string;
 	COMMAND_BANNER_BUY: (banner: string) => string;
 	COMMAND_BANNER_PROMPT: string;
+	COMMAND_TOGGLEDARKMODE_TOGGLED: (enabled: boolean) => string;
 	COMMAND_DAILY_TIME: (time: number) => string;
 	COMMAND_DAILY_TIME_SUCCESS: (amount: string) => string;
 	COMMAND_DAILY_GRACE: (remaining: number) => string;

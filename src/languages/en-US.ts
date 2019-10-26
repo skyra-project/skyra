@@ -1327,6 +1327,12 @@ export default class extends Language {
 					that can prune many many messages.`,
 			examples: ['@Pete', '@Pete Spamming all channels', '@Pete 7 All messages sent in 7 are gone now, YEE HAH!']
 		}),
+		COMMAND_TOGGLEMODERATIONDM_DESCRIPTION: 'Toggle moderation DMs.',
+		COMMAND_TOGGLEMODERATIONDM_EXTENDED: builder.display('toggleModerationDM', {
+			extendedHelp: `This command allows you to toggle moderation DMs. By default, they are on, meaning that any moderation
+					action (automatic or manual) will DM you, but you can disable them with this command.`,
+			examples: ['']
+		}),
 		COMMAND_UNBAN_DESCRIPTION: 'Unban somebody from this guild!.',
 		COMMAND_UNBAN_EXTENDED: builder.display('unban', {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
@@ -1406,6 +1412,11 @@ export default class extends Language {
 				['set <bannerID>', 'Set your displayed banner, must be an ID.']
 			],
 			examples: ['list', 'buy 0w1p06', 'set 0w1p06', 'reset']
+		}),
+		COMMAND_TOGGLEDARKMODE_DESCRIPTION: 'Toggle between light and dark templates for your profile and rank cards.',
+		COMMAND_TOGGLEDARKMODE_EXTENDED: builder.display('toggleDarkMode', {
+			extendedHelp: `This command lets you toggle the template used to generate your profile.`,
+			examples: ['']
 		}),
 
 		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild!.',
@@ -2320,6 +2331,9 @@ export default class extends Language {
 			`${GREENTICK} Updated ${entries.length} case${entries.length === 1 ? '' : 's'}`,
 			` └─ Set ${entries.length === 1 ? 'its reason' : 'their reasons'} to ${newReason}`
 		].join('\n'),
+		COMMAND_TOGGLEMODERATIONDM_TOGGLED: value => value
+			? `${GREENTICK} Successfully enabled moderation DMs.`
+			: `${GREENTICK} Successfully disabled moderation DMs.`,
 		COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
 		COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
 		COMMAND_VMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MUTE_MEMBERS}** permission to be able to voice unmute.`,
@@ -2328,6 +2342,16 @@ export default class extends Language {
 		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
 		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
+		COMMAND_MODERATION_DM: (guild, title, reason, moderator) => [
+			`You got a **${title}** from **${guild}** by ${moderator.username}. Reason:`,
+			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
+			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
+		].join(''),
+		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason) => [
+			`You got a **${title}** from **${guild}**. Reason:`,
+			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
+			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
+		].join(''),
 
 		/**
 		 * ###############
@@ -2362,6 +2386,9 @@ export default class extends Language {
 		COMMAND_BANNER_PAYMENT_CANCELLED: '|`❌`| The payment has been cancelled.',
 		COMMAND_BANNER_BUY: banner => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
 		COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
+		COMMAND_TOGGLEDARKMODE_TOGGLED: enabled => enabled
+			? `${GREENTICK} Successfully enabled the dark mode.`
+			: `${GREENTICK} Successfully disabled the dark mode.`,
 		COMMAND_DAILY_TIME: time => `Next dailies are available in ${duration(time)}`,
 		COMMAND_DAILY_TIME_SUCCESS: amount => `Yay! You earned ${amount}${SHINY}! Next dailies in: 12 hours.`,
 		COMMAND_DAILY_GRACE: remaining => [

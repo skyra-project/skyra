@@ -102,7 +102,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		'postgres': DEV ? DATABASE_DEVELOPMENT : DATABASE_PRODUCTION
 	},
 	readyMessage: client =>
-		`Skyra ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	regexPrefix: DEV ? undefined : /^(hey +)?(eva|skyra)[,! ]/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },

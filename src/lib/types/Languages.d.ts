@@ -522,6 +522,19 @@ export interface LanguageKeys {
 		ESRB: 'ESRB';
 	};
 	COMMAND_ESHOP_PRICE: (price: number) => string;
+	COMMAND_ITUNES_DESCRIPTION: string;
+	COMMAND_ITUNES_EXTENDED: string;
+	COMMAND_ITUNES_TITLES: {
+		ARTIST: string;
+		COLLECTION: string;
+		COLLECTION_PRICE: string;
+		TRACK_PRICE: string;
+		TRACK_RELEASE_DATE: string;
+		NUMBER_OF_TRACKS_IN_COLLECTION: string;
+		PRIMARY_GENRE: string;
+		PREVIEW: string;
+		PREVIEW_LABEL: string;
+	};
 	COMMAND_POLL_DESCRIPTION: string;
 	COMMAND_POLL_EXTENDED: string;
 	COMMAND_PRICE_DESCRIPTION: string;

@@ -7,12 +7,12 @@ const USER_TAG = /^\w{1,32}#\d{4}$/;
 export default class extends Argument {
 
 	public get user() {
-		return this.store.get('user');
+		return this.store.get('user')!;
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<User> {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
-		if (!message.guild) return this.user!.run(arg, possible, message);
+		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 

@@ -29,10 +29,10 @@ export const TIME = Object.freeze({
 });
 
 export const EMOJIS = Object.freeze({
-	GREENTICK: '<:greenTick:405073335907647489>',
+	GREENTICK: '<:greenTick:637706251253317669>',
 	LOADING: '<a:SkyraLoading:497584859045429250>',
-	REDCROSS: '<:redCross:405073349664833537>',
-	SHINY: '<:ShinyYellow:324157128270938113>'
+	REDCROSS: '<:redCross:637706251257511973>',
+	SHINY: '<:shiny:612364146792726539>'
 });
 
 export const CONNECT_FOUR = Object.freeze({

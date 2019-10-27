@@ -2566,7 +2566,7 @@ export default class extends Language {
 		},
 		COMMAND_IGDB_DATA: {
 			NO_DEVELOPERS: 'Desarrollador(es) desconocidos',
-			NO_PLATFORMS: 'Plataforma(s) desconocidos',
+			NO_PLATFORMS: 'Plataforma(s) desconocidas',
 			NO_RELEASE_DATE: 'Fecha de lanzamiento desconocida',
 			NO_RATING: 'Ninguna calificación de usuario'
 		},

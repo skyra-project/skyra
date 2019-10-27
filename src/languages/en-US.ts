@@ -2577,6 +2577,28 @@ export default class extends Language {
 			ESRB: 'ESRB'
 		},
 		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Free',
+		COMMAND_IGDB_DESCRIPTION: 'Searches IGDB (Internet Game Database) for your favourite games',
+		COMMAND_IGDB_EXTENDED: builder.display('igdb', {
+			extendedHelp: 'This command queries the IGDB API to show data on your favourite games.',
+			explainedUsage: [
+				['query', 'The name of the game']
+			],
+			examples: ['Breath of the Wild', 'Borderlands 3']
+		}),
+		COMMAND_IGDB_TITLES: {
+			USER_SCORE: 'User score',
+			AGE_RATING: 'Age rating(s)',
+			RELEASE_DATE: 'Release date',
+			GENRES: 'Genre(s)',
+			DEVELOPERS: 'Developer(s)',
+			PLATFORMS: 'Platform(s)'
+		},
+		COMMAND_IGDB_DATA: {
+			NO_DEVELOPERS: 'Developer(s) unknown',
+			NO_PLATFORMS: 'Platform(s) unknown',
+			NO_RELEASE_DATE: 'Release date unknown',
+			NO_RATING: 'No user rating'
+		},
 		COMMAND_ITUNES_DESCRIPTION: 'Searches iTunes API for music tracks',
 		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {
 			extendedHelp: 'This command queries the Apple iTunes API to show data on a music you request.',

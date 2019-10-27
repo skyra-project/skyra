@@ -522,6 +522,22 @@ export interface LanguageKeys {
 		ESRB: 'ESRB';
 	};
 	COMMAND_ESHOP_PRICE: (price: number) => string;
+	COMMAND_IGDB_DESCRIPTION: string;
+	COMMAND_IGDB_EXTENDED: string;
+	COMMAND_IGDB_TITLES: {
+		USER_SCORE: string;
+		AGE_RATING: string;
+		RELEASE_DATE: string;
+		GENRES: string;
+		DEVELOPERS: string;
+		PLATFORMS: string;
+	};
+	COMMAND_IGDB_DATA: {
+		NO_DEVELOPERS: string;
+		NO_PLATFORMS: string;
+		NO_RELEASE_DATE: string;
+		NO_RATING: string;
+	};
 	COMMAND_ITUNES_DESCRIPTION: string;
 	COMMAND_ITUNES_EXTENDED: string;
 	COMMAND_ITUNES_TITLES: {

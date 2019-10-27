@@ -2548,6 +2548,28 @@ export default class extends Language {
 			ESRB: 'ESRB'
 		},
 		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Gratis',
+		COMMAND_IGDB_DESCRIPTION: 'Busca en IGDB (Internet Game Database) tus juegos favoritos',
+		COMMAND_IGDB_EXTENDED: builder.display('igdb', {
+			extendedHelp: 'Este comando consulta la API IGDB para mostrar datos de sus juegos favoritos.',
+			explainedUsage: [
+				['query', 'El nombre del juego']
+			],
+			examples: ['Breath of the Wild', 'Borderlands 3']
+		}),
+		COMMAND_IGDB_TITLES: {
+			USER_SCORE: 'Puntuación del usuario',
+			AGE_RATING: 'Calificación de edad',
+			RELEASE_DATE: 'Fecha de lanzamiento',
+			GENRES: 'Género(s)',
+			DEVELOPERS: 'Desarrollador(es)',
+			PLATFORMS: 'Plataforma(s)'
+		},
+		COMMAND_IGDB_DATA: {
+			NO_DEVELOPERS: 'Desarrollador(es) desconocidos',
+			NO_PLATFORMS: 'Plataforma(s) desconocidas',
+			NO_RELEASE_DATE: 'Fecha de lanzamiento desconocida',
+			NO_RATING: 'Ninguna calificación de usuario'
+		},
 		COMMAND_ITUNES_DESCRIPTION: 'Busca en la API de iTunes pistas de música',
 		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {
 			extendedHelp: 'Este comando consulta la API de iTunes de Apple para mostrar datos sobre la música que solicita.',

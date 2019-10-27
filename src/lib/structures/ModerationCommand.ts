@@ -140,8 +140,8 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			? false
 			: ('authored' in message.flagArgs) || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay);
 
-		if (named) await target.sendLocale('COMMAND_MODERATION_DM', [message.guild!.name, title, reason, message.author]);
-		else await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [message.guild!.name, title, reason]);
+		if (named) await target.sendLocale('COMMAND_MODERATION_DM', [message.guild!.name, title, reason, message.author]).catch(() => null);
+		else await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [message.guild!.name, title, reason]).catch(() => null);
 	}
 
 	private resolveOverloads(args: [User[], number | null, string | null] | [User[], string | null]): [User[], number | null, string | null] {

@@ -2,7 +2,7 @@ import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS, ModerationTypeAssets } from '../util/constants';
+import { Moderation, TIME } from '../util/constants';
 import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { isNullOrUndefined } from '../util/util';
@@ -19,7 +19,7 @@ export class ModerationManagerEntry {
 	public extraData: object | null;
 	public moderator: string | User | null;
 	public reason: string | null;
-	public type: ModerationTypeKeys;
+	public type: Moderation.TypeCodes;
 	public user: string | User;
 	public createdAt: number | null;
 	private [kTimeout] = Date.now() + (TIME.MINUTE * 15);
@@ -37,32 +37,61 @@ export class ModerationManagerEntry {
 		this.createdAt = data.created_at || null;
 	}
 
+	/**
+	 * The Client that manages this instance.
+	 */
 	public get client() {
 		return this.manager.client;
 	}
 
-	public get name() {
-		return this.type in TYPE_ASSETS ? TYPE_ASSETS[this.type].title : 'Unknown';
+	public get metadata() {
+		return Moderation.metadata.get(this.type) || null;
+	}
+
+	public get title() {
+		const { metadata } = this;
+		return metadata ? metadata.title : 'Unknown';
+	}
+
+	public get color() {
+		const { metadata } = this;
+		return metadata ? metadata.color : 0x000000;
+	}
+
+	public get createdTimestamp() {
+		return this.createdAt || Date.now();
+	}
+
+	public get typeVariation() {
+		return this.type & Moderation.TypeBits.Variation;
+	}
+
+	public get typeMetadata() {
+		return this.type & Moderation.TypeBits.Metadata;
 	}
 
 	public get appealed() {
-		return Boolean(this.type & ModerationActions.Appealed);
+		return this.typeMetadata === Moderation.TypeMetadata.Appealed;
 	}
 
 	public get temporary() {
-		return Boolean(this.type & ModerationActions.Temporary);
+		return this.typeMetadata === Moderation.TypeMetadata.Temporary;
+	}
+
+	public get fast() {
+		return this.typeMetadata === Moderation.TypeMetadata.Fast;
+	}
+
+	public get invalidated() {
+		return this.typeMetadata === Moderation.TypeMetadata.Invalidated;
 	}
 
 	public get appealable() {
-		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Appealed) in TYPE_ASSETS;
+		return !this.appealed && Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appealed);
 	}
 
 	public get temporable() {
-		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Temporary) in TYPE_ASSETS;
-	}
-
-	public get basicType(): ModerationTypeKeys {
-		return this.type & ~(ModerationActions.Appealed | ModerationActions.Temporary);
+		return !this.temporary && Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Temporary);
 	}
 
 	public get cacheExpired() {
@@ -99,10 +128,13 @@ export class ModerationManagerEntry {
 		if (!entries.size) return true;
 
 		// If there was a log with the same type in the last minute, do not duplicate
-		if (entries.some(entry => entry.basicType === this.basicType)) return false;
+		if (entries.some(entry => entry.typeVariation === this.typeVariation)) return false;
 
 		// If this log is a ban or an unban, but the user was softbanned recently, abort
-		if ((this.type === ModerationTypeKeys.Ban || this.type === ModerationTypeKeys.UnBan) && entries.some(entry => entry.type === ModerationTypeKeys.Softban)) return false;
+		if ((this.type === Moderation.TypeCodes.Ban || this.type === Moderation.TypeCodes.UnBan)
+			&& entries.some(entry => entry.type === Moderation.TypeCodes.Softban)) {
+			return false;
+		}
 
 		// For all other cases, it should send
 		return true;
@@ -126,8 +158,8 @@ export class ModerationManagerEntry {
 		};
 
 		if (typeof flattened.duration !== 'undefined') {
-			if (flattened.duration) flattened.type |= ModerationActions.Temporary;
-			else flattened.type &= ~ModerationActions.Temporary;
+			if (flattened.duration) flattened.type |= Moderation.TypeMetadata.Temporary;
+			else flattened.type &= ~Moderation.TypeMetadata.Temporary;
 		}
 
 		await this.client.queries.updateModerationLog({ ...this.toJSON(), ...flattened });
@@ -142,9 +174,9 @@ export class ModerationManagerEntry {
 
 	public async appeal() {
 		if (this.appealed) return this;
-		if (!this.appealable) throw ModerationErrors.CaseTypeNotAppeal;
+		if (!this.appealable) throw Moderation.CommandErrors.CaseTypeNotAppeal;
 
-		const type = this.type | ModerationActions.Appealed;
+		const type = this.type | Moderation.TypeMetadata.Appealed;
 		await this.client.queries.updateModerationLog({ ...this.toJSON(), type });
 		this.type = type;
 
@@ -156,31 +188,30 @@ export class ModerationManagerEntry {
 		const userID = typeof this.user === 'string' ? this.user : this.user.id;
 		const [userTag, moderator] = await Promise.all([
 			this.manager.guild.client.fetchUsername(userID),
-			typeof this.moderator === 'string' ? this.manager.guild.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.manager.guild.client.user)
+			typeof this.moderator === 'string' ? this.manager.guild.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.manager.guild.client.user!)
 		]);
 
-		const assets: ModerationTypeAssets = TYPE_ASSETS[this.type];
 		const prefix = this.manager.guild.settings.get(GuildSettings.Prefix);
 		const description = (this.duration
 			? [
-				`❯ **Type**: ${assets.title}`,
+				`❯ **Type**: ${this.title}`,
 				`❯ **User:** ${userTag} (${userID})`,
 				`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}`,
 				`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
 			]
 			: [
-				`❯ **Type**: ${assets.title}`,
+				`❯ **Type**: ${this.title}`,
 				`❯ **User:** ${userTag} (${userID})`,
 				`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}`
 			]
 		).join('\n');
 
 		return new MessageEmbed()
-			.setColor(assets.color)
-			.setAuthor(moderator!.tag, moderator!.displayAvatarURL({ size: 128 }))
+			.setColor(this.color)
+			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
 			.setDescription(description)
 			.setFooter(`Case ${this.case}`, this.manager.guild.client.user!.displayAvatarURL({ size: 128 }))
-			.setTimestamp(new Date(this.createdAt || Date.now()));
+			.setTimestamp(this.createdTimestamp);
 	}
 
 	public setCase(value: number) {
@@ -195,7 +226,7 @@ export class ModerationManagerEntry {
 		if (typeof value === 'number') this.duration = value;
 		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
 		if (!this.duration || this.duration > TIME.YEAR) this.duration = null;
-		if (this.duration) this.type |= ModerationActions.Temporary;
+		if (this.duration) this.type |= Moderation.TypeMetadata.Temporary;
 		return this;
 	}
 
@@ -225,13 +256,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setType(value: keyof typeof ModerationTypeKeys | ModerationTypeKeys) {
-		if (typeof value === 'string' && (value in ModerationTypeKeys)) {
-			value = ModerationTypeKeys[value];
-		} else if (typeof value !== 'number') {
-			throw new TypeError(`${this} | The type ${value} is not valid.`);
-		}
-
+	public setType(value: Moderation.TypeCodes) {
 		this.type = value;
 		return this;
 	}
@@ -260,19 +285,35 @@ export class ModerationManagerEntry {
 			channel.send(messageEmbed).catch(error => this.manager.guild.client.emit(Events.ApiError, error));
 		}
 
-		if (this.duration) {
-			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.basicType | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
+		const taskName = this.duration === null ? null : this.appealTaskName;
+		if (taskName !== null) {
+			this.manager.guild.client.schedule.create(taskName, this.duration! + Date.now(), {
 				catchUp: true,
 				data: {
-					[ModerationSchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
-					[ModerationSchemaKeys.Guild]: this.manager.guild.id,
-					[ModerationSchemaKeys.Duration]: this.duration,
-					[ModerationSchemaKeys.Case]: this.case
+					[Moderation.SchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
+					[Moderation.SchemaKeys.Guild]: this.manager.guild.id,
+					[Moderation.SchemaKeys.Duration]: this.duration,
+					[Moderation.SchemaKeys.Case]: this.case
 				}
 			}).catch(error => this.manager.guild.client.emit(Events.Wtf, error));
 		}
 
 		return this;
+	}
+
+	public get appealTaskName() {
+		if (this.appealable) return null;
+		switch (this.typeVariation) {
+			case Moderation.TypeCodes.UnWarn: return 'moderationEndWarning';
+			case Moderation.TypeCodes.Mute: return 'moderationEndMute';
+			case Moderation.TypeCodes.Ban: return 'moderationEndBan';
+			case Moderation.TypeCodes.VoiceMute: return 'moderationEndVoiceMute';
+			case Moderation.TypeCodes.RestrictionReaction: return 'moderationEndRestrictionReaction';
+			case Moderation.TypeCodes.RestrictionEmbed: return 'moderationEndRestrictionEmbed';
+			case Moderation.TypeCodes.RestrictionAttachment: return 'moderationEndRestrictionAttachment';
+			case Moderation.TypeCodes.RestrictionVoice: return 'moderationEndRestrictionVoice';
+			default: return null;
+		}
 	}
 
 	public toJSON(): RawModerationSettings {

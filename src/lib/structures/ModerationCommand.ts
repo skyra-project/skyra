@@ -1,7 +1,7 @@
 import { GuildMember, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { Events } from '../types/Enums';
-import { ModerationTypeKeys, TYPE_ASSETS } from '../util/constants';
+import { Moderation } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 import { GuildSettings } from '../types/settings/GuildSettings';
@@ -9,7 +9,7 @@ import { UserSettings } from '../types/settings/UserSettings';
 import { mergeDefault } from '@klasa/utils';
 
 interface ModerationCommandOptions extends SkyraCommandOptions {
-	modType: ModerationTypeKeys;
+	modType: Moderation.TypeCodes;
 	requiredMember?: boolean;
 	optionalDuration?: boolean;
 }
@@ -24,7 +24,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	/**
 	 * The type for this command.
 	 */
-	public modType: ModerationTypeKeys;
+	public modType: Moderation.TypeCodes;
 
 	/**
 	 * Whether or not this moderation command can create temporary actions.
@@ -56,7 +56,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const processed = [] as Array<{ log: ModerationManagerEntry; target: User }>;
 		const errored = [] as Array<{ error: Error; target: User }>;
 		const enabledModerationDM = message.guild!.settings.get(GuildSettings.Messages.ModerationDM);
-		const { title } = TYPE_ASSETS[this.modType];
+		const { title } = Moderation.metadata.get(this.modType)!;
 
 		for (const target of new Set(targets)) {
 			try {

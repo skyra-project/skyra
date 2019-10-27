@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
 import { DEV } from '../../../config';
@@ -5,18 +6,6 @@ import { DEV } from '../../../config';
 export const rootFolder = join(__dirname, '..', '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
 export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
-
-const BAN = 0b0000;
-const KICK = 0b0001;
-const MUTE = 0b0010;
-const PRUNE = 0b0011;
-const SOFT_BAN = 0b0100;
-const VOICE_KICK = 0b0101;
-const VOICE_MUTE = 0b0110;
-const WARN = 0b0111;
-
-const ACTION_APPEALED = 1 << 4;
-const ACTION_TEMPORARY = 1 << 5;
 
 export const TIME = Object.freeze({
 	DAY: 1000 * 60 * 60 * 24,
@@ -57,68 +46,123 @@ export const CONNECT_FOUR = Object.freeze({
 
 export enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member }
 
-export enum ModerationTypeKeys {
-	Ban = BAN,
-	Kick = KICK,
-	Mute = MUTE,
-	Prune = PRUNE,
-	Softban = SOFT_BAN,
-	TemporaryBan = BAN | ACTION_TEMPORARY,
-	TemporaryMute = MUTE | ACTION_TEMPORARY,
-	TemporaryVoiceMute = VOICE_MUTE | ACTION_TEMPORARY,
-	UnBan = BAN | ACTION_APPEALED,
-	UnMute = MUTE | ACTION_APPEALED,
-	UnVoiceMute = VOICE_MUTE | ACTION_APPEALED,
-	UnWarn = WARN | ACTION_APPEALED,
-	VoiceKick = VOICE_KICK,
-	VoiceMute = VOICE_MUTE,
-	Warn = WARN
-}
+export namespace Moderation {
 
-export const TYPE_ASSETS: Readonly<Record<ModerationTypeKeys, ModerationTypeAssets>> = Object.freeze({
-	[ModerationTypeKeys.Ban]: Object.freeze({ color: 0xD50000, title: 'Ban' }),
-	[ModerationTypeKeys.Kick]: Object.freeze({ color: 0xF57F17, title: 'Kick' }),
-	[ModerationTypeKeys.Mute]: Object.freeze({ color: 0xF9A825, title: 'Mute' }),
-	[ModerationTypeKeys.Prune]: Object.freeze({ color: 0xB2FF59, title: 'Message Prune' }),
-	[ModerationTypeKeys.Softban]: Object.freeze({ color: 0xFF1744, title: 'Softban' }),
-	[ModerationTypeKeys.VoiceKick]: Object.freeze({ color: 0xFFBB2D, title: 'Voice Kick' }),
-	[ModerationTypeKeys.VoiceMute]: Object.freeze({ color: 0xFBC02D, title: 'Voice Mute' }),
-	[ModerationTypeKeys.Warn]: Object.freeze({ color: 0xFFD600, title: 'Warn' }),
-	[ModerationTypeKeys.UnBan]: Object.freeze({ color: 0x304FFE, title: 'Unban' }),
-	[ModerationTypeKeys.UnMute]: Object.freeze({ color: 0x448AFF, title: 'Unmute' }),
-	[ModerationTypeKeys.UnVoiceMute]: Object.freeze({ color: 0xBBDEFB, title: 'Voice Unmute' }),
-	[ModerationTypeKeys.UnWarn]: Object.freeze({ color: 0xFFF494, title: 'Unwarn' }),
-	[ModerationTypeKeys.TemporaryBan]: Object.freeze({ color: 0xC51162, title: 'Temporary Ban' }),
-	[ModerationTypeKeys.TemporaryMute]: Object.freeze({ color: 0xF50057, title: 'Temporary Mute' }),
-	[ModerationTypeKeys.TemporaryVoiceMute]: Object.freeze({ color: 0xFF4081, title: 'Temporary Voice Mute' })
-});
+	/* eslint-disable no-multi-spaces */
+	const BAN                   = 0b0000000;
+	const KICK                  = 0b0000001;
+	const MUTE                  = 0b0000010;
+	const PRUNE                 = 0b0000011;
+	const SOFT_BAN              = 0b0000100;
+	const VOICE_KICK            = 0b0000101;
+	const VOICE_MUTE            = 0b0000110;
+	const WARN                  = 0b0000111;
+	const RESTRICTED_REACTION   = 0b0001000;
+	const RESTRICTED_EMBED      = 0b0001001;
+	const RESTRICTED_ATTACHMENT = 0b0001010;
+	const RESTRICTED_VOICE      = 0b0001011;
 
-export interface ModerationTypeAssets {
-	color: number;
-	title: string;
-}
+	const ACTION_APPEALED       = 0b0010000;
+	const ACTION_TEMPORARY      = 0b0100000;
+	const ACTION_FAST           = 0b0110000;
+	const ACTION_INVALIDATED    = 0b1000000;
 
-export enum ModerationActions {
-	Appealed = ACTION_APPEALED,
-	Temporary = ACTION_TEMPORARY
-}
+	export enum TypeBits {
+		Variation = 0b0001111,
+		Metadata  = 0b1110000
+	}
 
-export enum ModerationErrors {
-	CaseAppealed = 'CASE_APPEALED',
-	CaseNotExists = 'CASE_NOT_EXISTS',
-	CaseTypeNotAppeal = 'CASE_TYPE_NOT_APPEAL'
-}
+	export enum TypeCodes {
+		Warn                           = WARN,
+		Mute                           = MUTE,
+		Kick                           = KICK,
+		Softban                        = SOFT_BAN,
+		Ban                            = BAN,
+		VoiceMute                      = VOICE_MUTE,
+		VoiceKick                      = VOICE_KICK,
+		RestrictionReaction            = RESTRICTED_REACTION,
+		RestrictionEmbed               = RESTRICTED_EMBED,
+		RestrictionAttachment          = RESTRICTED_ATTACHMENT,
+		RestrictionVoice               = RESTRICTED_VOICE,
+		UnWarn                         = WARN                  | ACTION_APPEALED,
+		UnMute                         = MUTE                  | ACTION_APPEALED,
+		UnBan                          = BAN                   | ACTION_APPEALED,
+		UnVoiceMute                    = VOICE_MUTE            | ACTION_APPEALED,
+		UnRestrictionReaction          = RESTRICTED_REACTION   | ACTION_APPEALED,
+		UnRestrictionEmbed             = RESTRICTED_EMBED      | ACTION_APPEALED,
+		UnRestrictionAttachment        = RESTRICTED_ATTACHMENT | ACTION_APPEALED,
+		UnRestrictionVoice             = RESTRICTED_VOICE      | ACTION_APPEALED,
+		TemporaryMute                  = MUTE                  | ACTION_TEMPORARY,
+		TemporaryBan                   = BAN                   | ACTION_TEMPORARY,
+		TemporaryVoiceMute             = VOICE_MUTE            | ACTION_TEMPORARY,
+		TemporaryRestrictionReaction   = RESTRICTED_REACTION   | ACTION_TEMPORARY,
+		TemporaryRestrictionEmbed      = RESTRICTED_EMBED      | ACTION_TEMPORARY,
+		TemporaryRestrictionAttachment = RESTRICTED_ATTACHMENT | ACTION_TEMPORARY,
+		TemporaryRestrictionVoice      = RESTRICTED_VOICE      | ACTION_TEMPORARY,
+		Prune                          = PRUNE
+	}
+	/* eslint-enable no-multi-spaces */
 
-export enum ModerationSchemaKeys {
-	Case = 'caseID',
-	CreatedAt = 'createdAt',
-	Duration = 'duration',
-	ExtraData = 'extraData',
-	Guild = 'guildID',
-	Moderator = 'moderatorID',
-	Reason = 'reason',
-	Type = 'type',
-	User = 'userID'
+	export enum TypeMetadata {
+		Appealed = ACTION_APPEALED,
+		Temporary = ACTION_TEMPORARY,
+		Fast = ACTION_FAST,
+		Invalidated = ACTION_INVALIDATED
+	}
+
+	export const metadata = new Map<TypeCodes, ModerationTypeAssets>([
+		[TypeCodes.Warn, { color: 0xFFEB3B, title: 'Warning' }],
+		[TypeCodes.Mute, { color: 0xFFC107, title: 'Mute' }],
+		[TypeCodes.Kick, { color: 0xFF9800, title: 'Kick' }],
+		[TypeCodes.Softban, { color: 0xFF5722, title: 'Softban' }],
+		[TypeCodes.Ban, { color: 0xF44336, title: 'Ban' }],
+		[TypeCodes.VoiceMute, { color: 0xFFC107, title: 'Voice Mute' }],
+		[TypeCodes.VoiceKick, { color: 0xFF9800, title: 'Voice Kick' }],
+		[TypeCodes.RestrictionReaction, { color: 0xCDDC39, title: 'Reaction Restriction' }],
+		[TypeCodes.RestrictionEmbed, { color: 0xCDDC39, title: 'Embed Restriction' }],
+		[TypeCodes.RestrictionAttachment, { color: 0xCDDC39, title: 'Attachment Restriction' }],
+		[TypeCodes.RestrictionVoice, { color: 0xCDDC39, title: 'Voice Restriction' }],
+		[TypeCodes.UnWarn, { color: 0xE57373, title: 'Reverted Warning' }],
+		[TypeCodes.UnMute, { color: 0x03A9F4, title: 'Reverted Mute' }],
+		[TypeCodes.UnBan, { color: 0x03A9F4, title: 'Reverted Ban' }],
+		[TypeCodes.UnVoiceMute, { color: 0x03A9F4, title: 'Reverted Voice Mute' }],
+		[TypeCodes.UnRestrictionReaction, { color: 0x03A9F4, title: 'Reverted Reaction Restriction' }],
+		[TypeCodes.UnRestrictionEmbed, { color: 0x03A9F4, title: 'Reverted Embed Restriction' }],
+		[TypeCodes.UnRestrictionAttachment, { color: 0x03A9F4, title: 'Reverted Attachment Restriction' }],
+		[TypeCodes.UnRestrictionVoice, { color: 0x03A9F4, title: 'Reverted Voice Restriction' }],
+		[TypeCodes.TemporaryMute, { color: 0xFFD54F, title: 'Temporary Mute' }],
+		[TypeCodes.TemporaryBan, { color: 0xE57373, title: 'Temporary Ban' }],
+		[TypeCodes.TemporaryVoiceMute, { color: 0xFFD54F, title: 'Temporary Voice Mute' }],
+		[TypeCodes.TemporaryRestrictionReaction, { color: 0xDCE775, title: 'Temporary Reaction Restriction' }],
+		[TypeCodes.TemporaryRestrictionEmbed, { color: 0xDCE775, title: 'Temporary Embed Restriction' }],
+		[TypeCodes.TemporaryRestrictionAttachment, { color: 0xDCE775, title: 'Temporary Attachment Restriction' }],
+		[TypeCodes.TemporaryRestrictionVoice, { color: 0xDCE775, title: 'Temporary Voice Restriction' }],
+		[TypeCodes.Prune, { color: 0x000000, title: 'Prune' }]
+	]) as ReadonlyMap<TypeCodes, ModerationTypeAssets>;
+
+	export enum CommandErrors {
+		CaseAppealed = 'CASE_APPEALED',
+		CaseNotExists = 'CASE_NOT_EXISTS',
+		CaseTypeNotAppeal = 'CASE_TYPE_NOT_APPEAL'
+	}
+
+	export enum SchemaKeys {
+		Case = 'caseID',
+		CreatedAt = 'createdAt',
+		Duration = 'duration',
+		ExtraData = 'extraData',
+		Guild = 'guildID',
+		Moderator = 'moderatorID',
+		Reason = 'reason',
+		Type = 'type',
+		User = 'userID'
+	}
+
+	interface ModerationTypeAssets {
+		color: number;
+		title: string;
+	}
+
 }
 
 export const clientOptions: KlasaClientOptions = {

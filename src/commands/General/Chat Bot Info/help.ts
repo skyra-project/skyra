@@ -102,6 +102,7 @@ export default class extends SkyraCommand {
 			.setColor(getColor(message)));
 		for (const [category, commands] of commandsByCategory) {
 			display.addPage(new MessageEmbed()
+				.setColor(getColor(message))
 				.setTitle(`${category} Commands`)
 				.setDescription(commands.map(this.formatCommand.bind(this, message, prefix, true)).join('\n')));
 		}

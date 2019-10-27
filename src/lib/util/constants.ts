@@ -49,66 +49,70 @@ export enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member }
 export namespace Moderation {
 
 	/* eslint-disable no-multi-spaces */
-	const BAN                   = 0b0000000;
-	const KICK                  = 0b0000001;
-	const MUTE                  = 0b0000010;
-	const PRUNE                 = 0b0000011;
-	const SOFT_BAN              = 0b0000100;
-	const VOICE_KICK            = 0b0000101;
-	const VOICE_MUTE            = 0b0000110;
-	const WARN                  = 0b0000111;
-	const RESTRICTED_REACTION   = 0b0001000;
-	const RESTRICTED_EMBED      = 0b0001001;
-	const RESTRICTED_ATTACHMENT = 0b0001010;
-	const RESTRICTED_VOICE      = 0b0001011;
+	export enum TypeVariation {
+		Ban                  = 0b00000000,
+		Kick                 = 0b00000001,
+		Mute                 = 0b00000010,
+		Prune                = 0b00000011,
+		Softban              = 0b00000100,
+		VoiceKick            = 0b00000101,
+		VoiceMute            = 0b00000110,
+		Warning              = 0b00000111,
+		RestrictedReaction   = 0b00001000,
+		RestrictedEmbed      = 0b00001001,
+		RestrictedAttachment = 0b00001010,
+		RestrictedVoice      = 0b00001011
+	}
 
-	const ACTION_APPEALED       = 0b0010000;
-	const ACTION_TEMPORARY      = 0b0100000;
-	const ACTION_FAST           = 0b0110000;
-	const ACTION_INVALIDATED    = 0b1000000;
+	export enum TypeMetadata {
+		Appeal               = 0b00010000,
+		Temporary            = 0b00100000,
+		Fast                 = 0b01000000,
+		Invalidated          = 0b10000000
+	}
 
 	export enum TypeBits {
-		Variation = 0b0001111,
-		Metadata  = 0b1110000
+		Variation            = 0b00001111,
+		Metadata             = 0b11110000
 	}
 
 	export enum TypeCodes {
-		Warn                           = WARN,
-		Mute                           = MUTE,
-		Kick                           = KICK,
-		Softban                        = SOFT_BAN,
-		Ban                            = BAN,
-		VoiceMute                      = VOICE_MUTE,
-		VoiceKick                      = VOICE_KICK,
-		RestrictionReaction            = RESTRICTED_REACTION,
-		RestrictionEmbed               = RESTRICTED_EMBED,
-		RestrictionAttachment          = RESTRICTED_ATTACHMENT,
-		RestrictionVoice               = RESTRICTED_VOICE,
-		UnWarn                         = WARN                  | ACTION_APPEALED,
-		UnMute                         = MUTE                  | ACTION_APPEALED,
-		UnBan                          = BAN                   | ACTION_APPEALED,
-		UnVoiceMute                    = VOICE_MUTE            | ACTION_APPEALED,
-		UnRestrictionReaction          = RESTRICTED_REACTION   | ACTION_APPEALED,
-		UnRestrictionEmbed             = RESTRICTED_EMBED      | ACTION_APPEALED,
-		UnRestrictionAttachment        = RESTRICTED_ATTACHMENT | ACTION_APPEALED,
-		UnRestrictionVoice             = RESTRICTED_VOICE      | ACTION_APPEALED,
-		TemporaryMute                  = MUTE                  | ACTION_TEMPORARY,
-		TemporaryBan                   = BAN                   | ACTION_TEMPORARY,
-		TemporaryVoiceMute             = VOICE_MUTE            | ACTION_TEMPORARY,
-		TemporaryRestrictionReaction   = RESTRICTED_REACTION   | ACTION_TEMPORARY,
-		TemporaryRestrictionEmbed      = RESTRICTED_EMBED      | ACTION_TEMPORARY,
-		TemporaryRestrictionAttachment = RESTRICTED_ATTACHMENT | ACTION_TEMPORARY,
-		TemporaryRestrictionVoice      = RESTRICTED_VOICE      | ACTION_TEMPORARY,
-		Prune                          = PRUNE
+		Warn                               = TypeVariation.Warning,
+		Mute                               = TypeVariation.Mute,
+		Kick                               = TypeVariation.Kick,
+		Softban                            = TypeVariation.Softban,
+		Ban                                = TypeVariation.Ban,
+		VoiceMute                          = TypeVariation.VoiceMute,
+		VoiceKick                          = TypeVariation.VoiceKick,
+		RestrictionReaction                = TypeVariation.RestrictedReaction,
+		RestrictionEmbed                   = TypeVariation.RestrictedEmbed,
+		RestrictionAttachment              = TypeVariation.RestrictedAttachment,
+		RestrictionVoice                   = TypeVariation.RestrictedVoice,
+		UnWarn                             = TypeVariation.Warning              | TypeMetadata.Appeal,
+		UnMute                             = TypeVariation.Mute                 | TypeMetadata.Appeal,
+		UnBan                              = TypeVariation.Ban                  | TypeMetadata.Appeal,
+		UnVoiceMute                        = TypeVariation.VoiceMute            | TypeMetadata.Appeal,
+		UnRestrictionReaction              = TypeVariation.RestrictedReaction   | TypeMetadata.Appeal,
+		UnRestrictionEmbed                 = TypeVariation.RestrictedEmbed      | TypeMetadata.Appeal,
+		UnRestrictionAttachment            = TypeVariation.RestrictedAttachment | TypeMetadata.Appeal,
+		UnRestrictionVoice                 = TypeVariation.RestrictedVoice      | TypeMetadata.Appeal,
+		TemporaryMute                      = TypeVariation.Mute                 | TypeMetadata.Temporary,
+		TemporaryBan                       = TypeVariation.Ban                  | TypeMetadata.Temporary,
+		TemporaryVoiceMute                 = TypeVariation.VoiceMute            | TypeMetadata.Temporary,
+		TemporaryRestrictionReaction       = TypeVariation.RestrictedReaction   | TypeMetadata.Temporary,
+		TemporaryRestrictionEmbed          = TypeVariation.RestrictedEmbed      | TypeMetadata.Temporary,
+		TemporaryRestrictionAttachment     = TypeVariation.RestrictedAttachment | TypeMetadata.Temporary,
+		TemporaryRestrictionVoice          = TypeVariation.RestrictedVoice      | TypeMetadata.Temporary,
+		FastTemporaryMute                  = TypeVariation.Mute                 | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryBan                   = TypeVariation.Ban                  | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryVoiceMute             = TypeVariation.VoiceMute            | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryRestrictionReaction   = TypeVariation.RestrictedReaction   | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryRestrictionEmbed      = TypeVariation.RestrictedEmbed      | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryRestrictionAttachment = TypeVariation.RestrictedAttachment | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryRestrictionVoice      = TypeVariation.RestrictedVoice      | TypeMetadata.Temporary | TypeMetadata.Fast,
+		Prune                              = TypeVariation.Prune
 	}
 	/* eslint-enable no-multi-spaces */
-
-	export enum TypeMetadata {
-		Appealed = ACTION_APPEALED,
-		Temporary = ACTION_TEMPORARY,
-		Fast = ACTION_FAST,
-		Invalidated = ACTION_INVALIDATED
-	}
 
 	export const metadata = new Map<TypeCodes, ModerationTypeAssets>([
 		[TypeCodes.Warn, { color: 0xFFEB3B, title: 'Warning' }],

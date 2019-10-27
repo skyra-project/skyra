@@ -3,7 +3,7 @@ import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { ModerationTypeKeys, BrandingColors } from '../../../lib/util/constants';
+import { Moderation, BrandingColors } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
 import { Collection } from '@discordjs/collection';
 
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		const formattedModerator = users.get(entry.flattenedModerator);
 		const formattedReason = entry.reason || 'None';
 		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
-		const formattedTitle = displayName ? `**${entry.name}**\n` : '';
+		const formattedTitle = displayName ? `**${entry.title}**\n` : '';
 		return `${formattedTitle}Case \`${entry.case}\`. Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}`;
 	}
 
@@ -68,7 +68,7 @@ export default class extends SkyraCommand {
 		const formattedUser = users.get(entry.flattenedUser);
 		const formattedReason = entry.reason || 'None';
 		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
-		const formattedTitle = displayName ? `**${entry.name}**\n` : '';
+		const formattedTitle = displayName ? `**${entry.title}**\n` : '';
 		return `${formattedTitle}Case \`${entry.case}\`. User: **${formattedUser}**.\n${formattedReason}${formattedDuration}`;
 	}
 
@@ -94,22 +94,22 @@ export default class extends SkyraCommand {
 		switch (type) {
 			case 'mutes':
 				return target
-					? (entry: ModerationManagerEntry) => (entry.type === ModerationTypeKeys.Mute || entry.type === ModerationTypeKeys.TemporaryMute)
-						&& !entry.appealed && entry.flattenedUser === target.id
-					: (entry: ModerationManagerEntry) => (entry.type === ModerationTypeKeys.Mute || entry.type === ModerationTypeKeys.TemporaryMute)
-						&& !entry.appealed;
+					? (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Mute)
+						&& !entry.invalidated && entry.flattenedUser === target.id
+					: (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Mute)
+						&& !entry.invalidated;
 			case 'warnings':
 				return target
-					? (entry: ModerationManagerEntry) => (entry.type === ModerationTypeKeys.Warn)
-						&& !entry.appealed && entry.flattenedUser === target.id
-					: (entry: ModerationManagerEntry) => entry.type === ModerationTypeKeys.Warn
-						&& !entry.appealed;
+					? (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Warn)
+						&& !entry.invalidated && entry.flattenedUser === target.id
+					: (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Warn)
+						&& !entry.invalidated;
 			default:
 				return target
 					? (entry: ModerationManagerEntry) => entry.duration !== null
-						&& !entry.appealed && entry.flattenedUser === target.id
+						&& !entry.invalidated && entry.flattenedUser === target.id
 					: (entry: ModerationManagerEntry) => entry.duration !== null
-						&& !entry.appealed;
+						&& !entry.invalidated;
 		}
 	}
 

@@ -1,7 +1,7 @@
 import { Permissions, GuildMember, Role } from 'discord.js';
 import { Task } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
+import { Moderation } from '../lib/util/constants';
 import { removeMute } from '../lib/util/util';
 const { FLAGS } = Permissions;
 
@@ -19,9 +19,9 @@ export default class extends Task {
 
 		// Check if the user is still muted
 		const modlog = await guild.moderation.fetch(doc.caseID);
-		if (!modlog || modlog.appealed) return;
+		if (!modlog || modlog.appealType) return;
 
-		await modlog.appeal();
+		await modlog.invalidate();
 
 		// Fetch the user, then the member
 		const user = await this.client.users.fetch(doc.userID);
@@ -39,7 +39,7 @@ export default class extends Task {
 		await guild.moderation.create({
 			user_id: user.id,
 			moderator_id: this.client.user!.id,
-			type: ModerationTypeKeys.UnMute,
+			type: Moderation.TypeCodes.UnMute,
 			reason: `Mute released after ${this.client.languages.default.duration(doc.duration)}`
 		}).create();
 	}
@@ -62,8 +62,8 @@ export default class extends Task {
 }
 
 interface UnmuteTaskData {
-	[ModerationSchemaKeys.Guild]: string;
-	[ModerationSchemaKeys.User]: string;
-	[ModerationSchemaKeys.Duration]: number;
-	[ModerationSchemaKeys.Case]: number;
+	[Moderation.SchemaKeys.Guild]: string;
+	[Moderation.SchemaKeys.User]: string;
+	[Moderation.SchemaKeys.Duration]: number;
+	[Moderation.SchemaKeys.Case]: number;
 }

@@ -1096,13 +1096,21 @@ export default class extends Language {
 			],
 			examples: ['Mercy']
 		}),
-		COMMAND_RANDREDDIT_DESCRIPTION: 'Retrieve a random Reddit post.',
+		COMMAND_RANDREDDIT_DESCRIPTION: 'Recupera una publicación aleatoria de Reddit.',
 		COMMAND_RANDREDDIT_EXTENDED: builder.display('randreddit', {
-			extendedHelp: `This is actually something like a Russian Roulette, you can get a good meme, but you can also get a terrible meme.`,
+			extendedHelp: `Esto es en realidad algo así como una ruleta rusa, puedes obtener un buen meme, pero también puedes obtener un meme terrible.`,
 			explainedUsage: [
-				['reddit', 'The reddit to look at.']
+				['reddit', 'El reddit para mirar.']
 			],
 			examples: ['discordapp']
+		}),
+		COMMAND_REDDITUSER_DESCRIPTION: 'Recupere estadísticas para un usuario de Reddit.',
+		COMMAND_REDDITUSER_EXTENDED: builder.display('reddituser', {
+			extendedHelp: `Obtiene estadísticas de cualquier usuario de Reddit`,
+			explainedUsage: [
+				['usuario', 'El usuario de reddit para mirar.']
+			],
+			examples: ['GloriousGe0rge']
 		}),
 		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
 		COMMAND_CHASE_EXTENDED: builder.display('chase', {
@@ -2230,6 +2238,28 @@ export default class extends Language {
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
 		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
 		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
+		COMMAND_REDDITUSER_COMPLEXITY_LEVELS: ['muy bajo', 'bajo', 'medio', 'alto', 'muy alto', 'muy alto'],
+		COMMAND_REDDITUSER_INVALID_USER: user => `\`${user}\` no es un nombre de usuario de Reddit válido`,
+		COMMAND_REDDITUSER_QUERY_FAILED: 'No se pudieron encontrar datos para ese usuario de reddit',
+		COMMAND_REDDITUSER_TITLES: {
+			LINK_KARMA: 'Link Karma',
+			COMMENT_KARMA: 'Comentar Karma',
+			TOTAL_COMMENTS: 'Comentarios totales',
+			TOTAL_SUBMISSIONS: 'Presentaciones totales',
+			COMMENT_CONTROVERSIALITY: 'Comentario controversialidad',
+			TEXT_COMPLEXITY: 'Complejidad de texto',
+			TOP_5_SUBREDDITS: 'Top 5 Subreddits',
+			BY_SUBMISSIONS: 'por sumisión',
+			BY_COMMENTS: 'por comentarios',
+			BEST_COMMENT: 'Mejor comentario',
+			WORST_COMMENT: 'Peor comentario'
+		},
+		COMMAND_REDDITUSER_DATA: {
+			OVERVIEW_FOR: user => `Resumen de/u/${user}`,
+			PERMALINK: 'Enlace permanente',
+			DATA_AVAILABLE_FOR: 'Los datos están disponibles para los últimos 1000 comentarios y presentaciones (limitación de la API de Reddit)',
+			JOINED_REDDIT: timestamp => `Se unió a Reddit ${timestamp}`
+		},
 		COMMAND_SNIPE_EMPTY: 'There are no sniped messages in this channel.',
 		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',

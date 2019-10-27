@@ -851,6 +851,30 @@ export interface LanguageKeys {
 	COMMAND_RANDREDDIT_ALL_NSFW: string;
 	COMMAND_RANDREDDIT_ALL_NSFL: string;
 	COMMAND_RANDREDDIT_MESSAGE: (title: string, author: string, url: string) => string;
+	COMMAND_REDDITUSER_DESCRIPTION: string;
+	COMMAND_REDDITUSER_EXTENDED: string;
+	COMMAND_REDDITUSER_COMPLEXITY_LEVELS: string[];
+	COMMAND_REDDITUSER_INVALID_USER: (user: string) => string;
+	COMMAND_REDDITUSER_QUERY_FAILED: string;
+	COMMAND_REDDITUSER_TITLES: {
+		LINK_KARMA: string;
+		COMMENT_KARMA: string;
+		TOTAL_COMMENTS: string;
+		TOTAL_SUBMISSIONS: string;
+		COMMENT_CONTROVERSIALITY: string;
+		TEXT_COMPLEXITY: string;
+		TOP_5_SUBREDDITS: string;
+		BY_SUBMISSIONS: string;
+		BY_COMMENTS: string;
+		BEST_COMMENT: string;
+		WORST_COMMENT: string;
+	};
+	COMMAND_REDDITUSER_DATA: {
+		OVERVIEW_FOR: (user: string) => string;
+		PERMALINK: string;
+		DATA_AVAILABLE_FOR: string;
+		JOINED_REDDIT: (timestamp: string) => string;
+	};
 	COMMAND_SNIPE_EMPTY: string;
 	COMMAND_SNIPE_TITLE: string;
 	COMMAND_UPVOTE_MESSAGE: string;

@@ -4,7 +4,7 @@ import { TOKENS } from '../../../../config';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { BrandingColors } from '../../../lib/util/constants';
-import { cutText, fetch, getColor } from '../../../lib/util/util';
+import { cutText, fetch, getColor, roundNumber } from '../../../lib/util/util';
 
 const API_URL = 'https://api-v3.igdb.com/games';
 enum IgdbAgeRating {
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 		for (const game of entries) {
 			console.log(game);
 			const coverImg = /https?:/i.test(game.cover.url) ? game.cover.url : `https:${game.cover.url}`;
-			const userRating = game.rating ? `${this.roundNumber(game.rating, 2)}%` : fieldsData.NO_RATING;
+			const userRating = game.rating ? `${roundNumber(game.rating, 2)}%` : fieldsData.NO_RATING;
 			const ageRating = game.age_ratings.map(ageRating => `${ageRating.category === 1 ? 'ESRB' : 'PEGI'}: ${IgdbAgeRating[ageRating.rating]}`);
 			const genres = game.genres.map(genre => genre.name).join(', ');
 			const developers = game.involved_companies
@@ -104,21 +104,6 @@ export default class extends SkyraCommand {
 		}
 
 		return display;
-	}
-
-	/** Helper function to properly round up or down a number */
-	private roundNumber(num: number, scale = 0) {
-		if (!num.toString().includes('e')) {
-			return Number(`${Math.round(Number(`${num}e+${scale}`))}e-${scale}`);
-		}
-		const arr = `${num}`.split('e');
-		let sig = '';
-
-		if (Number(arr[1]) + scale > 0) {
-			sig = '+';
-		}
-
-		return Number(`${Math.round(Number(`${Number(arr[0])}e${sig}${Number(arr[1]) + scale}`))}e-${scale}`);
 	}
 
 }

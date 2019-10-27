@@ -42,7 +42,7 @@ export class ModerationManagerEntry {
 	}
 
 	public get name() {
-		return TYPE_ASSETS[this.type].title;
+		return this.type in TYPE_ASSETS ? TYPE_ASSETS[this.type].title : 'Unknown';
 	}
 
 	public get appealed() {

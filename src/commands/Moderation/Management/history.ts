@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 			.setFooter(message.language.tget('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans)));
 	}
 
-	public async details(message: KlasaMessage, target: KlasaUser) {
+	public async details(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));

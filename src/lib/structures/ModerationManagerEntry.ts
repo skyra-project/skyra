@@ -260,7 +260,7 @@ export class ModerationManagerEntry {
 		if (!this.temporable) return this;
 
 		if (typeof value === 'string') value = new Duration(value.trim()).offset;
-		if (typeof value === 'number' && value > TIME.YEAR) value = null;
+		if (typeof value === 'number' && (value <= 0 || value > TIME.YEAR)) value = null;
 
 		this.duration = value;
 		this.type = ModerationManagerEntry.getTypeFlagsFromDuration(this.type, this.duration);

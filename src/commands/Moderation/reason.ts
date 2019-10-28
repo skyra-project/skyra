@@ -4,7 +4,6 @@ import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEn
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { ModerationSchemaKeys } from '../../lib/util/constants';
 import { parseRange } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
@@ -48,7 +47,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async _updateReason(channel: TextChannel, messages: Collection<string, KlasaMessage> | null, modlog: ModerationManagerEntry, reason: string | null) {
-		await modlog.edit({ [ModerationSchemaKeys.Reason]: reason });
+		await modlog.edit({ reason });
 
 		if (channel) {
 			const message = messages!.find(mes => mes.author.id === this.client.user!.id

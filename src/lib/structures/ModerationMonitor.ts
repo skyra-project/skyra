@@ -3,7 +3,7 @@ import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModer
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { Adder } from '../util/Adder';
-import { ModerationTypeKeys, MessageLogsEnum } from '../util/constants';
+import { Moderation, MessageLogsEnum } from '../util/constants';
 import { floatPromise, mute, softban } from '../util/util';
 import { Events, PermissionLevels } from '../types/Enums';
 import { MessageEmbed } from 'discord.js';
@@ -80,11 +80,11 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onWarning(message: KlasaMessage) {
-		await this.sendModerationLog(message, ModerationTypeKeys.Warn);
+		await this.sendModerationLog(message, Moderation.TypeCodes.Warn);
 	}
 
 	protected async onKick(message: KlasaMessage) {
-		await this.createActionAndSend(message, ModerationTypeKeys.Kick, () => floatPromise(this, message.member!.kick()));
+		await this.createActionAndSend(message, Moderation.TypeCodes.Kick, () => floatPromise(this, message.member!.kick()));
 	}
 
 	protected async onMute(message: KlasaMessage) {
@@ -97,10 +97,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onBan(message: KlasaMessage) {
-		await this.createActionAndSend(message, ModerationTypeKeys.Ban, () => floatPromise(this, message.member!.ban()));
+		await this.createActionAndSend(message, Moderation.TypeCodes.Ban, () => floatPromise(this, message.member!.ban()));
 	}
 
-	protected sendModerationLog(message: KlasaMessage, type: ModerationTypeKeys) {
+	protected sendModerationLog(message: KlasaMessage, type: Moderation.TypeCodes) {
 		const moderationLog = message.guild!.moderation.create({
 			user_id: message.author.id,
 			moderator_id: this.client.user!.id,
@@ -119,7 +119,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		unlock();
 	}
 
-	protected async createActionAndSend(message: KlasaMessage, type: ModerationTypeKeys, performAction: () => unknown): Promise<void> {
+	protected async createActionAndSend(message: KlasaMessage, type: Moderation.TypeCodes, performAction: () => unknown): Promise<void> {
 		const unlock = message.guild!.moderation.createLock();
 		await performAction();
 		await this.sendModerationLog(message, type);

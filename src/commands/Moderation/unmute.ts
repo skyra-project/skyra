@@ -2,7 +2,7 @@ import { Role, User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { ModerationTypeKeys } from '../../lib/util/constants';
+import { Moderation } from '../../lib/util/constants';
 import { removeMute } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
@@ -11,7 +11,7 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_UNMUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_UNMUTE_EXTENDED'),
-			modType: ModerationTypeKeys.UnMute,
+			modType: Moderation.TypeCodes.UnMute,
 			permissionLevel: 5,
 			requiredMember: true,
 			requiredGuildPermissions: ['MANAGE_ROLES']
@@ -28,7 +28,7 @@ export default class extends ModerationCommand {
 
 	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
 		const modlog = (await message.guild!.moderation.fetch(user.id))
-			.filter(log => log.type === ModerationTypeKeys.Mute || log.type === ModerationTypeKeys.TemporaryMute)
+			.filter(log => !log.invalidated && log.isType(Moderation.TypeCodes.Mute))
 			.last();
 		if (!modlog) throw message.language.tget('GUILD_MUTE_NOT_FOUND');
 		await removeMute(member.guild, member.id);
@@ -47,7 +47,7 @@ export default class extends ModerationCommand {
 
 		// Edit roles
 		await member.edit({ roles: [...roles] });
-		await modlog.appeal();
+		await modlog.invalidate();
 		return this.sendModlog(message, user, reason);
 	}
 
@@ -55,7 +55,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(message: KlasaMessage, target: User, prehandled: unknown) {
 		const modlog = (await message.guild!.moderation.fetch(target.id))
-			.filter(log => log.type === ModerationTypeKeys.Mute || log.type === ModerationTypeKeys.TemporaryMute)
+			.filter(log => !log.invalidated && log.isType(Moderation.TypeCodes.Mute))
 			.last();
 		if (!modlog) throw message.language.tget('GUILD_MUTE_NOT_FOUND');
 		const member = await super.checkModeratable(message, target, prehandled);

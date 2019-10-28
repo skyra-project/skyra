@@ -3,7 +3,7 @@ import { KlasaMessage, Monitor } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { Adder } from '../lib/util/Adder';
-import { MessageLogsEnum, ModerationTypeKeys } from '../lib/util/constants';
+import { MessageLogsEnum, Moderation } from '../lib/util/constants';
 import { mute, softban } from '../lib/util/util';
 const { FLAGS } = Permissions;
 
@@ -23,21 +23,21 @@ export default class extends Monitor {
 			return;
 		} catch {
 			switch (attachmentAction & 0b111) {
-				case 0b000: await this.actionAndSend(message, ModerationTypeKeys.Warn, () => null);
+				case 0b000: await this.actionAndSend(message, Moderation.TypeCodes.Warn, () => null);
 					break;
-				case 0b001: await this.actionAndSend(message, ModerationTypeKeys.Kick, () =>
+				case 0b001: await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 					message.member!.kick()
 						.catch(error => this.client.emit(Events.ApiError, error)));
 					break;
-				case 0b010: await this.actionAndSend(message, ModerationTypeKeys.Mute, () =>
+				case 0b010: await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
 					mute(message.guild!.me!, message.member!, { reason: 'AttachmentFilter: Threshold Reached.' })
 						.catch(error => this.client.emit(Events.ApiError, error)), false);
 					break;
-				case 0b011: await this.actionAndSend(message, ModerationTypeKeys.Softban, () =>
+				case 0b011: await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
 					softban(message.guild!, this.client.user!, message.author, 'AttachmentFilter: Threshold Reached.', 1)
 						.catch(error => this.client.emit(Events.ApiError, error)), false);
 					break;
-				case 0b100: await this.actionAndSend(message, ModerationTypeKeys.Ban, () =>
+				case 0b100: await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
 					message.member!.ban()
 						.catch(error => this.client.emit(Events.ApiError, error)));
 					break;
@@ -58,7 +58,7 @@ export default class extends Monitor {
 	 * @param performAction The action to perform
 	 * @param createModerationLog Whether or not this should create a new moderation log entry
 	 */
-	public async actionAndSend(message: KlasaMessage, type: ModerationTypeKeys, performAction: () => unknown, createModerationLog = true): Promise<void> {
+	public async actionAndSend(message: KlasaMessage, type: Moderation.TypeCodes, performAction: () => unknown, createModerationLog = true): Promise<void> {
 		const lock = message.guild!.moderation.createLock();
 		await performAction();
 		if (createModerationLog) {

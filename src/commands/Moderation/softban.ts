@@ -2,7 +2,7 @@ import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { ModerationTypeKeys } from '../../lib/util/constants';
+import { Moderation } from '../../lib/util/constants';
 import { softban } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
@@ -11,7 +11,7 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_SOFTBAN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SOFTBAN_EXTENDED'),
-			modType: ModerationTypeKeys.Softban,
+			modType: Moderation.TypeCodes.Softban,
 			permissionLevel: 5,
 			requiredMember: false,
 			requiredPermissions: ['BAN_MEMBERS'],

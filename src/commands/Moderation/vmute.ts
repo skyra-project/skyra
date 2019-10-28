@@ -1,7 +1,7 @@
 import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { ModerationTypeKeys } from '../../lib/util/constants';
+import { Moderation } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -9,7 +9,7 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_VMUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_VMUTE_EXTENDED'),
-			modType: ModerationTypeKeys.VoiceMute,
+			modType: Moderation.TypeCodes.VoiceMute,
 			optionalDuration: true,
 			permissionLevel: 5,
 			requiredMember: true,

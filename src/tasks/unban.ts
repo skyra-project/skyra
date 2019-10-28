@@ -1,18 +1,18 @@
 import { Permissions } from 'discord.js';
 import { KlasaGuild, Task } from 'klasa';
-import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
+import { Moderation } from '../lib/util/constants';
 const { FLAGS } = Permissions;
 
 export default class extends Task {
 
 	public async run(doc: UnbanTaskData) {
 		// Get the guild and check for permissions
-		const guild = this.client.guilds.get(doc[ModerationSchemaKeys.Guild]);
+		const guild = this.client.guilds.get(doc.guildID);
 		if (!guild || !guild.me!.permissions.has(FLAGS.BAN_MEMBERS)) return;
 
 		// Fetch the user to unban
-		const userID = doc[ModerationSchemaKeys.User];
-		const reason = `Ban released after ${this.client.languages.default.duration(doc[ModerationSchemaKeys.Duration])}`;
+		const { userID } = doc;
+		const reason = `Ban released after ${this.client.languages.default.duration(doc.duration)}`;
 
 		// Unban the user and send the modlog
 		const banLog = await this._fetchBanLog(guild, userID);
@@ -20,7 +20,7 @@ export default class extends Task {
 		await guild.moderation.create({
 			user_id: userID,
 			moderator_id: this.client.user!.id,
-			type: ModerationTypeKeys.UnBan,
+			type: Moderation.TypeCodes.UnBan,
 			reason: banLog && banLog.reason ? `${reason}\nReason for ban: ${banLog.reason}` : reason
 		}).create();
 	}
@@ -33,7 +33,7 @@ export default class extends Task {
 }
 
 interface UnbanTaskData {
-	[ModerationSchemaKeys.Guild]: string;
-	[ModerationSchemaKeys.User]: string;
-	[ModerationSchemaKeys.Duration]: number;
+	[Moderation.SchemaKeys.Guild]: string;
+	[Moderation.SchemaKeys.User]: string;
+	[Moderation.SchemaKeys.Duration]: number;
 }

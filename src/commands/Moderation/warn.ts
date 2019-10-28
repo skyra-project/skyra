@@ -1,7 +1,7 @@
 import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { ModerationTypeKeys } from '../../lib/util/constants';
+import { Moderation } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -10,7 +10,7 @@ export default class extends ModerationCommand {
 			aliases: ['warning'],
 			description: language => language.tget('COMMAND_WARN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_WARN_EXTENDED'),
-			modType: ModerationTypeKeys.Warn,
+			modType: Moderation.TypeCodes.Warn,
 			permissionLevel: 5,
 			requiredMember: true
 		});

@@ -1,7 +1,7 @@
 import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { ModerationTypeKeys } from '../../lib/util/constants';
+import { Moderation } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -9,7 +9,7 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_KICK_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_KICK_EXTENDED'),
-			modType: ModerationTypeKeys.Kick,
+			modType: Moderation.TypeCodes.Kick,
 			permissionLevel: 5,
 			requiredGuildPermissions: ['KICK_MEMBERS'],
 			requiredMember: true

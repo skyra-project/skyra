@@ -126,7 +126,7 @@ export namespace Moderation {
 		[TypeCodes.RestrictionEmbed, { color: 0xCDDC39, title: 'Embed Restriction' }],
 		[TypeCodes.RestrictionAttachment, { color: 0xCDDC39, title: 'Attachment Restriction' }],
 		[TypeCodes.RestrictionVoice, { color: 0xCDDC39, title: 'Voice Restriction' }],
-		[TypeCodes.UnWarn, { color: 0xE57373, title: 'Reverted Warning' }],
+		[TypeCodes.UnWarn, { color: 0x03A9F4, title: 'Reverted Warning' }],
 		[TypeCodes.UnMute, { color: 0x03A9F4, title: 'Reverted Mute' }],
 		[TypeCodes.UnBan, { color: 0x03A9F4, title: 'Reverted Ban' }],
 		[TypeCodes.UnVoiceMute, { color: 0x03A9F4, title: 'Reverted Voice Mute' }],
@@ -141,6 +141,13 @@ export namespace Moderation {
 		[TypeCodes.TemporaryRestrictionEmbed, { color: 0xDCE775, title: 'Temporary Embed Restriction' }],
 		[TypeCodes.TemporaryRestrictionAttachment, { color: 0xDCE775, title: 'Temporary Attachment Restriction' }],
 		[TypeCodes.TemporaryRestrictionVoice, { color: 0xDCE775, title: 'Temporary Voice Restriction' }],
+		[TypeCodes.FastTemporaryMute, { color: 0xFFD54F, title: 'Temporary Mute' }],
+		[TypeCodes.FastTemporaryBan, { color: 0xE57373, title: 'Temporary Ban' }],
+		[TypeCodes.FastTemporaryVoiceMute, { color: 0xFFD54F, title: 'Temporary Voice Mute' }],
+		[TypeCodes.FastTemporaryRestrictionReaction, { color: 0xDCE775, title: 'Temporary Reaction Restriction' }],
+		[TypeCodes.FastTemporaryRestrictionEmbed, { color: 0xDCE775, title: 'Temporary Embed Restriction' }],
+		[TypeCodes.FastTemporaryRestrictionAttachment, { color: 0xDCE775, title: 'Temporary Attachment Restriction' }],
+		[TypeCodes.FastTemporaryRestrictionVoice, { color: 0xDCE775, title: 'Temporary Voice Restriction' }],
 		[TypeCodes.Prune, { color: 0x000000, title: 'Prune' }]
 	]) as ReadonlyMap<TypeCodes, ModerationTypeAssets>;
 

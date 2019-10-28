@@ -2,7 +2,7 @@ import { Permissions, TextChannel, User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { ModerationTypeKeys } from '../../lib/util/constants';
+import { Moderation } from '../../lib/util/constants';
 import { createMuteRole, mute } from '../../lib/util/util';
 
 const PERMISSIONS = Permissions.resolve([
@@ -16,7 +16,7 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_MUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MUTE_EXTENDED'),
-			modType: ModerationTypeKeys.Mute,
+			modType: Moderation.TypeCodes.Mute,
 			optionalDuration: true,
 			permissionLevel: 5,
 			requiredGuildPermissions: ['MANAGE_ROLES'],

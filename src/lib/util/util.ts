@@ -6,7 +6,7 @@ import { isObject } from 'util';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
-import { ModerationTypeKeys, TIME, BrandingColors } from './constants';
+import { Moderation, TIME, BrandingColors } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
 import { util, RateLimitManager } from 'klasa';
@@ -435,7 +435,7 @@ export async function mute(moderator: GuildMember, target: GuildMember, { reason
 	const modlog = target.guild.moderation.create({
 		user_id: target.id,
 		moderator_id: moderator.id,
-		type: ModerationTypeKeys.Mute,
+		type: Moderation.TypeCodes.Mute,
 		reason,
 		extra_data: roles
 	});
@@ -462,7 +462,7 @@ export async function softban(guild: Guild, moderator: User, target: User, reaso
 	return (await guild.moderation.create({
 		user_id: target.id,
 		moderator_id: moderator.id,
-		type: ModerationTypeKeys.Softban,
+		type: Moderation.TypeCodes.Softban,
 		reason
 	}).create())!;
 }

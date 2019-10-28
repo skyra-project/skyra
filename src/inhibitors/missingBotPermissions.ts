@@ -23,7 +23,7 @@ export default class extends Inhibitor {
 			// permissions, for instance, `MANAGE_ROLES`.
 			if (command instanceof SkyraCommand && command.requiredGuildPermissions.bitfield !== 0) {
 				const guildPermissions = message.guild.me!.permissions;
-				missing.push(...new Set(guildPermissions.missing(command.requiredGuildPermissions)));
+				missing = [...new Set(missing.concat(guildPermissions.missing(command.requiredGuildPermissions)))];
 			}
 		} else {
 			// If it's in a DM, use the implied permissions.

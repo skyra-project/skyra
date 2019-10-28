@@ -5,7 +5,7 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 const imageCoordinates = [
 	[
@@ -26,10 +26,11 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['pants'],
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_HOWTOFLIRT_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_HOWTOFLIRT_EXTENDED'),
+			description: language => language.tget('COMMAND_HOWTOFLIRT_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_HOWTOFLIRT_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -47,11 +48,11 @@ export default class extends SkyraCommand {
 	}
 
 	private async generate(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === message.author!.id) user = this.client.user!;
+		if (user.id === message.author.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const buffers = await Promise.all([
-			fetchAvatar(message.author!, 128),
+			fetchAvatar(message.author, 128),
 			fetchAvatar(user, 128)
 		]);
 		const images = await Promise.all(buffers.map(buffer => new Promise<Image>((resolve, reject) => {

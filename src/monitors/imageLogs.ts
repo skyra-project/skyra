@@ -18,11 +18,14 @@ export default class extends Monitor {
 		if (image === null) return;
 
 		const dimensions = this.getDimensions(image.width, image.height);
+		if (!dimensions.height || !dimensions.width) return;
 		const url = new URL(image.proxyURL);
 		url.searchParams.append('width', dimensions.width.toString());
 		url.searchParams.append('height', dimensions.height.toString());
 
-		const result = await fetch(url, 'result');
+		const result = await fetch(url, 'result').catch(error => {
+			throw new Error(`ImageLogs[${error}] ${url}`);
+		});
 		const contentLength = result.headers.get('content-length');
 		if (contentLength === null) return;
 
@@ -35,8 +38,8 @@ export default class extends Monitor {
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () => new MessageEmbed()
 			.setColor(0xEFAE45)
-			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-			.setDescription(`[${message.language.get('JUMPTO')}](${message.url})`)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+			.setDescription(`[${message.language.tget('JUMPTO')}](${message.url})`)
 			.setFooter(`#${(message.channel as TextChannel).name}`)
 			.attachFiles([new MessageAttachment(buffer, filename)])
 			.setImage(`attachment://${filename}`)
@@ -52,7 +55,7 @@ export default class extends Monitor {
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
 			&& message.guild.settings.get(GuildSettings.Channels.ImageLogs) !== null
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 	private getDimensions(width: number, height: number) {

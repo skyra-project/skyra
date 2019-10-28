@@ -5,11 +5,11 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['choise', 'pick'],
+			aliases: ['choose', 'choise', 'pick'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_CHOICE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_CHOICE_EXTENDED'),
+			description: language => language.tget('COMMAND_CHOICE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_CHOICE_EXTENDED'),
 			usage: '<words:string> [...]',
 			usageDelim: ','
 		});
@@ -19,11 +19,11 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, options: string[]) {
 		const words = this.filterWords(options, message.language);
 		return message.sendLocale('COMMAND_CHOICE_OUTPUT',
-			[message.author!, words[Math.floor(Math.random() * words.length)]]);
+			[message.author, words[Math.floor(Math.random() * words.length)]]);
 	}
 
 	private filterWords(words: string[], i18n: Language) {
-		if (words.length < 2) throw i18n.get('COMMAND_CHOICE_MISSING');
+		if (words.length < 2) throw i18n.tget('COMMAND_CHOICE_MISSING');
 
 		const output = new Set();
 		const filtered = new Set();
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (output.size >= 2) return [...output];
-		throw i18n.get('COMMAND_CHOICE_DUPLICATES', [...filtered].join('\', \''));
+		throw i18n.tget('COMMAND_CHOICE_DUPLICATES', [...filtered].join('\', \''));
 	}
 
 }

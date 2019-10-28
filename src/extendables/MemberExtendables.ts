@@ -8,7 +8,7 @@ export default class extends Extendable {
 	}
 
 	public async fetchRank(this: GuildMember) {
-		const list = await this.client.leaderboard.fetch(this.guild!.id);
+		const list = await this.client.leaderboard.fetch(this.guild.id);
 		const rank = list.get(this.id);
 		if (!rank) return list.size;
 		if (!rank.name) rank.name = this.user.username;

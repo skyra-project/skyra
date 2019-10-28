@@ -1,4 +1,10 @@
 import { KlasaClientOptions } from 'klasa';
+import { join } from 'path';
+import { DEV } from '../../../config';
+
+export const rootFolder = join(__dirname, '..', '..', '..', '..');
+export const assetsFolder = join(rootFolder, 'assets');
+export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
 
 const BAN = 0b0000;
 const KICK = 0b0001;
@@ -23,10 +29,10 @@ export const TIME = Object.freeze({
 });
 
 export const EMOJIS = Object.freeze({
-	GREENTICK: '<:greenTick:405073335907647489>',
+	GREENTICK: '<:greenTick:637706251253317669>',
 	LOADING: '<a:SkyraLoading:497584859045429250>',
-	REDCROSS: '<:redCross:405073349664833537>',
-	SHINY: '<:ShinyYellow:324157128270938113>'
+	REDCROSS: '<:redCross:637706251257511973>',
+	SHINY: '<:shiny:612364146792726539>'
 });
 
 export const CONNECT_FOUR = Object.freeze({
@@ -78,7 +84,7 @@ export const TYPE_ASSETS: Readonly<Record<ModerationTypeKeys, ModerationTypeAsse
 	[ModerationTypeKeys.VoiceKick]: Object.freeze({ color: 0xFFBB2D, title: 'Voice Kick' }),
 	[ModerationTypeKeys.VoiceMute]: Object.freeze({ color: 0xFBC02D, title: 'Voice Mute' }),
 	[ModerationTypeKeys.Warn]: Object.freeze({ color: 0xFFD600, title: 'Warn' }),
-	[ModerationTypeKeys.UnWarn]: Object.freeze({ color: 0x304FFE, title: 'Unban' }),
+	[ModerationTypeKeys.UnBan]: Object.freeze({ color: 0x304FFE, title: 'Unban' }),
 	[ModerationTypeKeys.UnMute]: Object.freeze({ color: 0x448AFF, title: 'Unmute' }),
 	[ModerationTypeKeys.UnVoiceMute]: Object.freeze({ color: 0xBBDEFB, title: 'Voice Unmute' }),
 	[ModerationTypeKeys.UnWarn]: Object.freeze({ color: 0xFFF494, title: 'Unwarn' }),
@@ -121,3 +127,8 @@ export const clientOptions: KlasaClientOptions = {
 		role: 2
 	}
 };
+
+export enum BrandingColors {
+	Primary = 0x5C71BD,
+	Secondary = 0xFF9D01
+}

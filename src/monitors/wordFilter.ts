@@ -4,6 +4,7 @@ import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { cutText, getContent, floatPromise } from '../lib/util/util';
 import { remove } from 'confusables';
 import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationMonitor';
+import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends ModerationMonitor {
 
@@ -29,24 +30,23 @@ export default class extends ModerationMonitor {
 		return this.filter(remove(content), message.guild!.security.regexp!);
 	}
 
-	protected onDelete(message: KlasaMessage, value: FilterResults) {
-		if (message.content.length > 25) {
-			message.author!.send(message.language.get('MONITOR_WORDFILTER_DM',
-				util.codeBlock('md', cutText(value.filtered, 1900)))).catch(() => null);
+	protected async onDelete(message: KlasaMessage, value: FilterResults) {
+		floatPromise(this, message.nuke());
+		if (message.content.length > 25 && (await message.author.settings.sync()).get(UserSettings.ModerationDM)) {
+			floatPromise(this, message.author.sendLocale('MONITOR_WORDFILTER_DM', [util.codeBlock('md', cutText(value.filtered, 1900))]));
 		}
-		message.nuke().catch(() => null);
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_WORDFILTER', message.author)));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_WORDFILTER', message.author.toString())));
 	}
 
 	protected onLogMessage(message: KlasaMessage, results: FilterResults) {
 		return new MessageEmbed()
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(0xEFAE45)
-			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_WORDFILTER')}`)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_WORDFILTER')}`)
 			.setTimestamp();
 	}
 

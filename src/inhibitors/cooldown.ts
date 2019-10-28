@@ -10,7 +10,7 @@ export default class extends Inhibitor {
 	}
 
 	public run(message: KlasaMessage, command: SkyraCommand) {
-		if (this.client.owners.has(message.author!) || command.cooldown <= 0) return;
+		if (this.client.owners.has(message.author) || command.cooldown <= 0) return;
 
 		let existing: Cooldown;
 
@@ -21,7 +21,7 @@ export default class extends Inhibitor {
 			return;
 		}
 
-		if (existing && existing.limited) throw message.language.get('INHIBITOR_COOLDOWN', Math.ceil(existing.remainingTime / 1000), command.cooldownLevel !== 'author');
+		if (existing && existing.limited) throw message.language.tget('INHIBITOR_COOLDOWN', Math.ceil(existing.remainingTime / 1000));
 	}
 
 }

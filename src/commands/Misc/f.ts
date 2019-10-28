@@ -4,7 +4,7 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -15,15 +15,15 @@ export default class extends SkyraCommand {
 			aliases: ['pray'],
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_F_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_F_EXTENDED'),
+			description: language => language.tget('COMMAND_F_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_F_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '[user:username]'
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);
 		const response = await message.channel.send({ files: [{ attachment, name: 'F.png' }] }) as KlasaMessage;
 		if (response.reactable) await response.react('🇫');

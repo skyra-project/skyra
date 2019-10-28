@@ -4,8 +4,8 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
 import { CLIENT_ID } from '../../../config';
+import { assetsFolder } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -15,8 +15,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_CHASE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_CHASE_EXTENDED'),
+			description: language => language.tget('COMMAND_CHASE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_CHASE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -31,10 +31,10 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		let chased: KlasaUser;
 		let chaser: KlasaUser;
-		if (user.id === message.author!.id && this.client.options.owners.includes(message.author!.id)) throw '💥';
-		if (user === message.author) [chased, chaser] = [message.author!, this.client.user!];
-		else if (this.client.options.owners.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author!, user];
-		else [chased, chaser] = [user, message.author!];
+		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
+		if (user === message.author) [chased, chaser] = [message.author, this.client.user!];
+		else if (this.client.options.owners.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];
+		else [chased, chaser] = [user, message.author];
 
 		const [chasedAvatar, chaserAvatar] = await Promise.all([
 			fetchAvatar(chased, 128),

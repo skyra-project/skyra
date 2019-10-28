@@ -6,8 +6,8 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_DM_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_DM_EXTENDED'),
+			description: language => language.tget('COMMAND_DM_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_DM_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '<user:user> <message:...string>',

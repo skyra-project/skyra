@@ -21,12 +21,12 @@ export default class extends Event {
 			return;
 		}
 
-		const id = guild!.settings.get(key) as string;
+		const id = guild.settings.get(key) as string;
 		if (!id) return;
 
-		const channel = guild!.channels.get(id) as TextChannel;
+		const channel = guild.channels.get(id) as TextChannel;
 		if (!channel) {
-			await guild!.settings.reset(key);
+			await guild.settings.reset(key);
 			return;
 		}
 

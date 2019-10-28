@@ -1,7 +1,7 @@
 // Remove `.example` from the file extension to configure Skyra
 
 import { KlasaClientOptions } from 'klasa';
-import { RPoolConnectionOptions } from 'rethinkdb-ts';
+import { PoolConfig } from 'pg';
 import { ServerOptions } from 'http';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';
 import ApiRequest from './src/lib/structures/api/ApiRequest';
@@ -9,7 +9,8 @@ import ApiResponse from './src/lib/structures/api/ApiResponse';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
-export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : DEV;
+export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : !DEV;
+export const DEV_PGSQL = 'DEV_PGSQL' in process.env ? process.env.DEV_PGSQL === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
 
 export const NAME = 'Skyra';
@@ -21,13 +22,13 @@ const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
 	ServerResponse: ApiResponse
 };
 
-export const DATABASE_DEVELOPMENT: RPoolConnectionOptions = { db: 'test' };
-export const DATABASE_PRODUCTION: RPoolConnectionOptions = {
-	db: '',
+export const DATABASE_DEVELOPMENT: PoolConfig = {};
+export const DATABASE_PRODUCTION: PoolConfig = {
+	database: '',
 	password: '',
 	user: ''
 };
-export const VERSION = '5.1.1 Nerom';
+export const VERSION = '5.2.1 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	commandEditing: true,
@@ -97,11 +98,11 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	prefix: DEV ? 'sd!' : 's!',
 	presence: { activity: { name: DEV ? 'sd!help' : 'Skyra, help', type: 'LISTENING' } },
 	providers: {
-		'default': 'rethinkdb',
-		'rethinkdb': DEV ? DATABASE_DEVELOPMENT : DATABASE_PRODUCTION
+		'default': DEV_PGSQL ? 'postgres' : 'json',
+		'postgres': DEV ? DATABASE_DEVELOPMENT : DATABASE_PRODUCTION
 	},
 	readyMessage: client =>
-		`Skyra ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
 	regexPrefix: DEV ? undefined : /^(hey +)?(eva|skyra)[,! ]/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },
@@ -134,15 +135,14 @@ export const WEBHOOK_ERROR: APIWebhookData = DEV
 	};
 
 export const TOKENS = {
-	ANIMELIST: {
-		password: '',
-		user: ''
-	},
 	BLIZZARD: '',
+	KITSU: {
+		ID: 'AWQO5J657S',
+		KEY: 'NzYxODA5NmY0ODRjYTRmMzQ2YjMzNzNmZmFhNjY5ZGRmYjZlMzViN2VkZDIzMGUwYjM5ZjQ5NjAwZGI4ZTc5MHJlc3RyaWN0SW5kaWNlcz1wcm9kdWN0aW9uX21lZGlhJmZpbHRlcnM9Tk9UK2FnZVJhdGluZyUzQVIxOA=='
+	},
 	BOT: {
 		DEV: '',
-		STABLE: '',
-		STALE: ''
+		STABLE: ''
 	},
 	BOTS_FOR_DISCORD: '',
 	BOTS_ON_DISCORD: '',
@@ -156,11 +156,13 @@ export const TOKENS = {
 		CLIENT_ID: '',
 		SECRET: ''
 	},
-	WATCHPOINT_OASIS: {
-		password: '',
-		user: ''
-	},
 	WEATHER_API: '',
 	WEEB_SH: '',
-	WOLFRAM: ''
+	WOLFRAM: '',
+	NINTENDO: {
+		ID: 'U3B6GR4UA3',
+		KEY: '9a20c93440cf63cf1a7008d75f7438bf'
+	},
+	THEMOVIEDATABASE: '',
+	INTERNETGAMEDATABASE: ''
 };

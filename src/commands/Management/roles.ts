@@ -6,14 +6,15 @@ import { Events } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { FuzzySearch } from '../../lib/util/FuzzySearch';
 import { getColor } from '../../lib/util/util';
+import { BrandingColors } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: language => language.get('COMMAND_ROLES_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_ROLES_EXTENDED'),
+			description: language => language.tget('COMMAND_ROLES_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_ROLES_EXTENDED'),
 			requiredPermissions: ['MANAGE_MESSAGES'],
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
@@ -21,7 +22,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('rolenames', async (arg, _, message) => {
-			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public) as GuildSettings.Roles.Public;
+			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
 			if (!rolesPublic.length) return null;
 			if (!arg) return [];
 
@@ -37,12 +38,12 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [roles]: [Role[]]) {
-		const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public) as GuildSettings.Roles.Public;
+		const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
 
-		if (!roles) throw message.language.get('COMMAND_ROLES_LIST_EMPTY');
+		if (!roles) throw message.language.tget('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
-			const prefix = message.guild!.settings.get(GuildSettings.Prefix) as GuildSettings.Prefix;
-			if (message.args.some(v => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', prefix);
+			const prefix = message.guild!.settings.get(GuildSettings.Prefix);
+			if (message.args.some(v => v.length !== 0)) throw message.language.tget('COMMAND_ROLES_ABORT', prefix);
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member!.roles.keys());
@@ -56,7 +57,7 @@ export default class extends SkyraCommand {
 		const removedRoles: string[] = [];
 		const { position } = message.guild!.me!.roles.highest;
 
-		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		for (const role of filterRoles) {
 			if (!role) continue;
@@ -91,8 +92,8 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		const rolesRemoveInitial = message.guild!.settings.get(GuildSettings.Roles.RemoveInitial) as GuildSettings.Roles.RemoveInitial;
-		const rolesInitial = message.guild!.settings.get(GuildSettings.Roles.Initial) as GuildSettings.Roles.Initial;
+		const rolesRemoveInitial = message.guild!.settings.get(GuildSettings.Roles.RemoveInitial);
+		const rolesInitial = message.guild!.settings.get(GuildSettings.Roles.Initial);
 
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
@@ -102,17 +103,17 @@ export default class extends SkyraCommand {
 		}
 
 		// Apply the roles
-		if (removedRoles.length || addedRoles.length) await message.member!.roles.set([...memberRoles], message.language.get('COMMAND_ROLES_AUDITLOG'));
+		if (removedRoles.length || addedRoles.length) await message.member!.roles.set([...memberRoles], message.language.tget('COMMAND_ROLES_AUDITLOG'));
 
-		const output = [];
-		if (unlistedRoles.length) output.push(message.language.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
-		if (unmanageable.length) output.push(message.language.get('COMMAND_ROLES_NOT_MANAGEABLE', unmanageable.join('`, `')));
-		if (removedRoles.length) output.push(message.language.get('COMMAND_ROLES_REMOVED', removedRoles.join('`, `')));
-		if (addedRoles.length) output.push(message.language.get('COMMAND_ROLES_ADDED', addedRoles.join('`, `')));
+		const output: string[] = [];
+		if (unlistedRoles.length) output.push(message.language.tget('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
+		if (unmanageable.length) output.push(message.language.tget('COMMAND_ROLES_NOT_MANAGEABLE', unmanageable.join('`, `')));
+		if (removedRoles.length) output.push(message.language.tget('COMMAND_ROLES_REMOVED', removedRoles.join('`, `')));
+		if (addedRoles.length) output.push(message.language.tget('COMMAND_ROLES_ADDED', addedRoles.join('`, `')));
 		return message.sendMessage(output.join('\n'));
 	}
 
-	public async list(message: KlasaMessage, publicRoles: string[]) {
+	public async list(message: KlasaMessage, publicRoles: readonly string[]) {
 		const remove: string[] = [];
 		const roles: string[] = [];
 		for (const roleID of publicRoles) {
@@ -130,18 +131,18 @@ export default class extends SkyraCommand {
 
 		// There's the possibility all roles could be inexistent, therefore the system
 		// would filter and remove them all, causing this to be empty.
-		if (!roles.length) throw message.language.get('COMMAND_ROLES_LIST_EMPTY');
+		if (!roles.length) throw message.language.tget('COMMAND_ROLES_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL())
-			.setTitle(message.language.get('COMMAND_ROLES_LIST_TITLE')));
+			.setTitle(message.language.tget('COMMAND_ROLES_LIST_TITLE')));
 
 		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPage(template => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
+		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.run(response, message.author!.id);
+		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
+		await display.start(response, message.author.id);
 		return response;
 	}
 

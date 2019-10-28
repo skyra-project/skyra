@@ -9,22 +9,22 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['a', 'av', 'ava'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_AVATAR_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_AVATAR_EXTENDED'),
+			description: language => language.tget('COMMAND_AVATAR_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_AVATAR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
 		});
 
 		this.createCustomResolver('username', (arg, possible, msg) =>
-			arg ? this.client.arguments.get('username').run(arg, possible, msg) : msg.author);
+			arg ? this.client.arguments.get('username')!.run(arg, possible, msg) : msg.author);
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		if (!user.avatar) throw message.language.get('COMMAND_AVATAR_NONE');
+		if (!user.avatar) throw message.language.tget('COMMAND_AVATAR_NONE');
 		return message.sendEmbed(new MessageEmbed()
 			.setAuthor(user.tag, user.avatarURL({ size: 128 })!)
-			.setColor(getColor(message) || 0xFFAB2D)
+			.setColor(getColor(message))
 			.setImage(user.avatarURL({ size: 2048 })!));
 	}
 

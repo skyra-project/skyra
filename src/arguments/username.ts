@@ -1,26 +1,27 @@
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import { FuzzySearch } from '../lib/util/FuzzySearch';
+import { User } from 'discord.js';
 const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 
 	public get user() {
-		return this.store.get('user');
+		return this.store.get('user')!;
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean) {
-		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
+	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<User> {
+		if (!arg) throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(message.guild!.memberUsernames, entry => entry, filter).run(message, arg);
+		const result = await new FuzzySearch(message.guild.memberUsernames, entry => entry, filter).run(message, arg, possible.min || undefined);
 		if (result) {
 			return this.client.users.fetch(result[0])
-				.catch(() => { throw message.language.get('USER_NOT_EXISTENT'); });
+				.catch(() => { throw message.language.tget('USER_NOT_EXISTENT'); });
 		}
-		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
+		throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 
 	public resolveUser(message: KlasaMessage, query: string) {
@@ -32,7 +33,7 @@ export default class extends Argument {
 
 		if (id) {
 			return this.client.users.fetch(id)
-				.catch(() => { throw message.language.get('USER_NOT_EXISTENT'); });
+				.catch(() => { throw message.language.tget('USER_NOT_EXISTENT'); });
 		}
 		return null;
 	}

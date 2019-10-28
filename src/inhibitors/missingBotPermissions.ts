@@ -32,7 +32,7 @@ export default class extends Inhibitor {
 
 		if (missing.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.get('INHIBITOR_MISSING_BOT_PERMS', missing.map(permission => permissions[permission]).join(', '));
+			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', missing.map(permission => permissions[permission]).join(', '));
 		}
 	}
 

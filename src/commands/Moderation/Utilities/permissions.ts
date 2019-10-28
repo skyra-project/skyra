@@ -19,16 +19,16 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
-		if (!user) throw message.language.get('REQUIRE_USER');
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+		if (!user) throw message.language.tget('USER_NOT_EXISTENT');
 		const member = await message.guild!.members.fetch(user.id).catch(() => {
-			throw message.language.get('USER_NOT_IN_GUILD');
+			throw message.language.tget('USER_NOT_IN_GUILD');
 		});
 
 		const { permissions } = member;
 		const list = ['\u200B'];
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-			list.push(message.language.get('COMMAND_PERMISSIONS_ALL'));
+			list.push(message.language.tget('COMMAND_PERMISSIONS_ALL'));
 		} else {
 			for (const flag of PERMISSION_FLAGS) {
 				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${message.language.PERMISSIONS[flag] || flag}`);
@@ -36,8 +36,8 @@ export default class extends SkyraCommand {
 		}
 
 		const embed = new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
-			.setTitle(message.language.get('COMMAND_PERMISSIONS', user.tag, user.id))
+			.setColor(getColor(message))
+			.setTitle(message.language.tget('COMMAND_PERMISSIONS', user.tag, user.id))
 			.setDescription(list.join('\n'));
 
 		return message.sendMessage({ embed });

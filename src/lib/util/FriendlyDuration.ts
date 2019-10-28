@@ -41,8 +41,6 @@ const UNIT_DISTANCES = new Map<TimeTypes, number>([
  * The unit types supported for parsing
  */
 const UNIT_TYPES = Object.freeze([
-	TimeTypes.Year,
-	TimeTypes.Month,
 	TimeTypes.Week,
 	TimeTypes.Day,
 	TimeTypes.Hour,
@@ -60,6 +58,8 @@ export default function(duration: number, assets: DurationFormatAssetsTime) {
 	const output: string[] = [];
 
 	for (const [timeType, amount] of result) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+		// @ts-ignore
 		output.push(_addUnit(amount, assets[timeType]));
 	}
 

@@ -5,7 +5,7 @@ import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { fetch, fetchAvatar, IMAGE_EXTENSION } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 const BADGES_FOLDER = join(assetsFolder, 'images', 'social', 'badges');
 
@@ -18,8 +18,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_PROFILE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_PROFILE_EXTENDED'),
+			description: language => language.tget('COMMAND_PROFILE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_PROFILE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<attachment:attachment>'
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 			}
 			const url = (res => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');
-			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
+			throw msg.language.tget('RESOLVER_INVALID_URL', possible.name);
 		});
 	}
 
@@ -42,17 +42,17 @@ export default class extends SkyraCommand {
 	}
 
 	public inhibit(message: KlasaMessage) {
-		return !message.guild || message.guild!.id !== '256566731684839428';
+		return !message.guild || message.guild.id !== '256566731684839428';
 	}
 
 	public async showProfile(message: KlasaMessage, file: Buffer) {
-		await message.author!.settings.sync();
-		const level = message.author!.profileLevel;
-		const points = message.author!.settings.get(UserSettings.Points) as UserSettings.Points;
-		const badgeSet = message.author!.settings.get(UserSettings.BadgeSet) as UserSettings.BadgeSet;
-		const color = message.author!.settings.get(UserSettings.Color) as UserSettings.Color;
-		const money = message.author!.settings.get(UserSettings.Money) as UserSettings.Money;
-		const reputation = message.author!.settings.get(UserSettings.Reputation) as UserSettings.Reputation;
+		await message.author.settings.sync();
+		const level = message.author.profileLevel;
+		const points = message.author.settings.get(UserSettings.Points);
+		const badgeSet = message.author.settings.get(UserSettings.BadgeSet);
+		const color = message.author.settings.get(UserSettings.Color);
+		const money = message.author.settings.get(UserSettings.Money);
+		const reputation = message.author.settings.get(UserSettings.Reputation);
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 
 		/* Global leaderboard */
 		const rank = '∞';
-		const imgAvatarSRC = await fetchAvatar(message.author!, 256);
+		const imgAvatarSRC = await fetchAvatar(message.author, 256);
 
 		const TITLE = message.language.retrieve('COMMAND_PROFILE') as ProfileTitles;
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
@@ -86,15 +86,15 @@ export default class extends SkyraCommand {
 			.addImage(this.profile!, 0, 0, 640, 391)
 
 			// Progress bar
-			.setColor(`#${color}`)
+			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
 			.addRect(227, 356, progressBar, 5)
 
 			// Name title
 			.setTextFont('35px RobotoRegular')
 			.setColor('rgb(23,23,23')
-			.addResponsiveText(message.author!.username, 227, 73, 306)
+			.addResponsiveText(message.author.username, 227, 73, 306)
 			.setTextFont('25px RobotoLight')
-			.addText(`#${message.author!.discriminator}`, 227, 105)
+			.addText(`#${message.author.discriminator}`, 227, 105)
 
 			// Statistics Titles
 			.addText(TITLE.GLOBAL_RANK, 227, 276)
@@ -153,7 +153,7 @@ export default class extends SkyraCommand {
 
 }
 
-interface ProfileTitles {
+export interface ProfileTitles {
 	GLOBAL_RANK: string;
 	CREDITS: string;
 	REPUTATION: string;

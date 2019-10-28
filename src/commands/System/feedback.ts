@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['suggest'],
 			bucket: 2,
 			cooldown: 20,
-			description: language => language.get('COMMAND_FEEDBACK_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_FEEDBACK_EXTENDED'),
+			description: language => language.tget('COMMAND_FEEDBACK_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_FEEDBACK_EXTENDED'),
 			guarded: true,
 			usage: '<message:string{8,1900}>'
 		});
@@ -21,15 +21,15 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [feedback]: [string]) {
 		const embed = new MessageEmbed()
 			.setColor(0x06D310)
-			.setAuthor(`${message.author!.tag}`, message.author!.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128 }))
 			.setDescription(feedback)
-			.setFooter(`${message.author!.id} | Feedback`)
+			.setFooter(`${message.author.id} | Feedback`)
 			.setTimestamp();
 
 		if (message.deletable) message.nuke().catch(() => null);
 
 		await this.channel!.send({ embed });
-		return message.alert(message.language.get('COMMAND_FEEDBACK'));
+		return message.alert(message.language.tget('COMMAND_FEEDBACK'));
 	}
 
 	public init() {

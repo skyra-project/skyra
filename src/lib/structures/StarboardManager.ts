@@ -1,5 +1,4 @@
 import { Client, Collection, Guild, TextChannel } from 'discord.js';
-import RethinkDB from '../../providers/rethinkdb';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { StarboardMessage } from './StarboardMessage';
 
@@ -20,11 +19,12 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	 */
 	public guild: Guild;
 
-	public syncMap: WeakMap<StarboardMessage, Promise<StarboardMessage>> = new WeakMap();
+	public syncMap = new WeakMap<StarboardMessage, Promise<StarboardMessage>>();
+	public syncMessageMap = new WeakMap<StarboardMessage, Promise<void>>();
 
 	public constructor(guild: Guild) {
 		super();
-		this.client = guild!.client;
+		this.client = guild.client;
 		this.guild = guild;
 	}
 
@@ -36,7 +36,7 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	public set(key: string, value: StarboardMessage) {
 		if (this.size >= 25) {
 			const entry = this.find(sMes => sMes.stars < this.minimum)
-				|| this.reduce((acc, sMes) => acc.lastUpdated > sMes.lastUpdated ? sMes : acc, this.first()) as StarboardMessage;
+				|| this.reduce((acc, sMes) => acc.lastUpdated > sMes.lastUpdated ? sMes : acc, this.first());
 			this.delete(entry.message.id);
 		}
 		return super.set(key, value);
@@ -45,22 +45,22 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	/**
 	 * Get the Starboard channel
 	 */
-	public get starboardChannel(): TextChannel | null {
-		const channelID = this.guild!.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
-		return (channelID && this.guild!.channels.get(channelID) as TextChannel) || null;
+	public get starboardChannel() {
+		const channelID = this.guild.settings.get(GuildSettings.Starboard.Channel);
+		return (channelID && this.guild.channels.get(channelID) as TextChannel) || null;
 	}
 
 	/**
 	 * Get the minimum amount of stars
 	 */
-	public get minimum(): number {
-		return this.guild!.settings.get(GuildSettings.Starboard.Minimum) as GuildSettings.Starboard.Minimum;
+	public get minimum() {
+		return this.guild.settings.get(GuildSettings.Starboard.Minimum);
 	}
 
 	/**
 	 * The provider that manages this starboard
 	 */
-	public get provider(): RethinkDB {
+	public get provider() {
 		return this.client.providers.default;
 	}
 
@@ -70,7 +70,7 @@ export class StarboardManager extends Collection<string, StarboardMessage> {
 	 * @param messageID The message id
 	 * @param userID The user id
 	 */
-	public async fetch(channel: TextChannel, messageID: string, userID: string): Promise<StarboardMessage | null> {
+	public async fetch(channel: TextChannel, messageID: string, userID: string) {
 		const entry = super.get(messageID);
 		if (entry) return entry;
 

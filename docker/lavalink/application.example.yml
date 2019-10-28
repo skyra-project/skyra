@@ -1,0 +1,28 @@
+# Rename `application.example.yml` to `application.yml` for usage
+
+server: # REST and WS server
+  port: 2333
+  address: 0.0.0.0
+spring:
+  main:
+    banner-mode: log
+lavalink:
+  server:
+    password: ""
+    sources:
+      youtube: true
+      bandcamp: true
+      soundcloud: true
+      twitch: true
+      vimeo: true
+      mixer: true
+      http: true
+      local: false
+    bufferDurationMs: 400
+    youtubePlaylistLoadLimit: 25
+    gc-warnings: true
+
+metrics:
+  prometheus:
+    enabled: false
+    endpoint: /metrics

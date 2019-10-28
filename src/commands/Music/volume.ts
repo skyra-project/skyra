@@ -6,7 +6,7 @@ export default class extends MusicCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['vol'],
-			description: language => language.get('COMMAND_VOLUME_DESCRIPTION'),
+			description: language => language.tget('COMMAND_VOLUME_DESCRIPTION'),
 			music: ['SAME_VOICE_CHANNEL', 'VOICE_PLAYING'],
 			usage: '[volume:number]'
 		});

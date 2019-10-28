@@ -15,8 +15,8 @@ export default class extends SkyraCommand {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_LEADERBOARD_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_LEADERBOARD_EXTENDED'),
+			description: language => language.tget('COMMAND_LEADERBOARD_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_LEADERBOARD_EXTENDED'),
 			runIn: ['text'],
 			usage: '[global|local] [index:integer]',
 			usageDelim: ' '
@@ -24,10 +24,10 @@ export default class extends SkyraCommand {
 		this.spam = true;
 	}
 
-	public async run(message: KlasaMessage, [type = 'local', index = 1]: [string, number]) {
+	public async run(message: KlasaMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
 		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild!.id : undefined);
 
-		const { position } = list.get(message.author!.id) || { position: (list.size + 1) as number };
+		const { position } = list.get(message.author.id) || { position: (list.size + 1) };
 		const page = await this.generatePage(message, list, index - 1, position);
 		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
@@ -60,8 +60,8 @@ export default class extends SkyraCommand {
 		}
 
 		page.push('');
-		page.push(message.language.get('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
-		page.push(message.language.get('COMMAND_SCOREBOARD_POSITION', position));
+		page.push(message.language.tget('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
+		page.push(message.language.tget('COMMAND_SCOREBOARD_POSITION', position));
 
 		return page;
 	}

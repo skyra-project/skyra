@@ -1,6 +1,6 @@
 {
   "name": "skyra",
-  "version": "5.1.1",
+  "version": "5.2.1",
   "description": "Multipurpose Discord Bot built on Klasa",
   "main": "dist/src/Skyra.js",
   "scripts": {
@@ -40,31 +40,40 @@
     "url": "https://github.com/kyranet/Skyra/issues"
   },
   "dependencies": {
+    "@klasa/querybuilder": "^0.0.1",
+    "@klasa/utils": "^0.0.1",
     "canvas": "^2.6.0",
     "canvas-constructor": "^3.1.0",
-    "chokidar": "^3.2.1",
+    "chokidar": "^3.2.3",
     "confusables": "^0.3.1",
     "diff": "^4.0.1",
-    "discord.js": "github:discordjs/discord.js",
+    "discord.js": "github:discordjs/discord.js#3393/head",
     "fs-nextra": "^0.4.5",
     "gifencoder": "^2.0.1",
+    "he": "^1.2.0",
     "klasa": "github:dirigeants/klasa#settings",
     "klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
     "klasa-decorators": "^0.0.1",
-    "lavalink": "^2.8.1",
+    "lavalink": "^2.8.2",
     "node-fetch": "^2.6.0",
-    "rethinkdb-ts": "^2.4.0-rc.16",
-    "typescript": "^3.6.4",
+    "paket-queue": "^0.1.0",
+    "pg": "^7.12.1",
     "veza": "^1.1.0",
     "zlib-sync": "^0.1.5"
   },
   "devDependencies": {
     "@discordjs/collection": "^0.1.3",
-    "@types/node": "^12.7.12",
+    "@types/backoff": "^2.5.1",
+    "@types/diff": "^4.0.2",
+    "@types/he": "^1.1.0",
+    "@types/node": "^12.11.7",
     "@types/node-fetch": "^2.5.2",
-    "@typescript-eslint/eslint-plugin": "^2.3.3",
-    "@typescript-eslint/parser": "^2.3.3",
+    "@types/pg": "^7.11.2",
+    "@types/ws": "^6.0.3",
+    "@typescript-eslint/eslint-plugin": "^2.5.0",
+    "@typescript-eslint/parser": "^2.5.0",
     "eslint": "^6.5.1",
-    "eslint-config-bamboo": "^3.0.0"
+    "eslint-config-bamboo": "^3.0.0",
+    "typescript": "^3.7.0-dev.20191021"
   }
 }

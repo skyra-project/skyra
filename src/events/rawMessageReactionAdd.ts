@@ -39,8 +39,8 @@ export default class extends Event {
 		this.client.emit(Events.RoleReactionAdd, parsed);
 
 		if (!parsed.channel.nsfw
-			&& parsed.channel.id !== channel.guild!.settings.get(GuildSettings.Starboard.Channel)
-			&& resolveEmoji(parsed.emoji) === channel.guild!.settings.get(GuildSettings.Starboard.Emoji)) {
+			&& parsed.channel.id !== channel.guild.settings.get(GuildSettings.Starboard.Channel)
+			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get(GuildSettings.Starboard.Emoji)) {
 			try {
 				await this.handleStarboard(parsed);
 			} catch (error) {
@@ -51,13 +51,13 @@ export default class extends Event {
 
 	public async handleStarboard(parsed: LLRCData): Promise<void> {
 		try {
-			const channel = parsed.guild!.settings.get(GuildSettings.Starboard.Channel) as GuildSettings.Starboard.Channel;
-			const ignoreChannels = parsed.guild!.settings.get(GuildSettings.Starboard.IgnoreChannels) as GuildSettings.Starboard.IgnoreChannels;
+			const channel = parsed.guild.settings.get(GuildSettings.Starboard.Channel);
+			const ignoreChannels = parsed.guild.settings.get(GuildSettings.Starboard.IgnoreChannels);
 			if (!channel || ignoreChannels.includes(parsed.channel.id)) return;
 
-			const starboardChannel = parsed.guild!.channels.get(channel) as TextChannel;
+			const starboardChannel = parsed.guild.channels.get(channel) as TextChannel;
 			if (!starboardChannel || !starboardChannel.postable) {
-				await parsed.guild!.settings.reset(GuildSettings.Starboard.Channel);
+				await parsed.guild.settings.reset(GuildSettings.Starboard.Channel);
 				return;
 			}
 

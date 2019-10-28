@@ -4,7 +4,7 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -15,8 +15,8 @@ export default class extends SkyraCommand {
 			aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_GOOFYTIME_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_GOOFYTIME_EXTENDED'),
+			description: language => language.tget('COMMAND_GOOFYTIME_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_GOOFYTIME_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		const [goofied, goofy] = await Promise.all([
 			fetchAvatar(user, 128),
-			fetchAvatar(message.author!, 128)
+			fetchAvatar(message.author, 128)
 		]);
 
 		return new Canvas(356, 435)

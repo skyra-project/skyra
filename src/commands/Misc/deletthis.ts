@@ -5,7 +5,7 @@ import { join } from 'path';
 import { CLIENT_ID } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -17,8 +17,8 @@ export default class extends SkyraCommand {
 			aliases: ['deletethis'],
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_DELETTHIS_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_DELETTHIS_EXTENDED'),
+			description: language => language.tget('COMMAND_DELETTHIS_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_DELETTHIS_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -33,10 +33,10 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		let selectedUser: KlasaUser;
 		let hammerer: KlasaUser;
-		if (user.id === message.author!.id && this.client.options.owners.includes(message.author!.id)) throw '💥';
-		if (user === message.author) [selectedUser, hammerer] = [message.author!, this.client.user!];
-		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, hammerer] = [message.author!, user];
-		else [selectedUser, hammerer] = [user, message.author!];
+		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
+		if (user === message.author) [selectedUser, hammerer] = [message.author, this.client.user!];
+		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, hammerer] = [message.author, user];
+		else [selectedUser, hammerer] = [user, message.author];
 
 		const [Hammered, Hammerer] = await Promise.all([
 			fetchAvatar(selectedUser, 256),

@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['setcolour'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_SETCOLOR_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SETCOLOR_EXTENDED'),
+			description: language => language.tget('COMMAND_SETCOLOR_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SETCOLOR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '<color:string>'
@@ -22,11 +22,13 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const { hex, b10 } = parse(input);
 
-		await message.author!.settings.update(UserSettings.Color, hex.toString().slice(1));
+		await message.author.settings.sync();
+
+		await message.author.settings.update(UserSettings.Color, b10.value);
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)
-			.setAuthor(message.author!.tag, message.author!.displayAvatarURL({ size: 128 }))
-			.setDescription(message.language.get('COMMAND_SETCOLOR', hex)));
+			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128 }))
+			.setDescription(message.language.tget('COMMAND_SETCOLOR', hex.toString())));
 	}
 
 }

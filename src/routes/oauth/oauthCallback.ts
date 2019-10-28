@@ -25,7 +25,7 @@ export default class extends Route {
 		url.searchParams.append('redirect_uri', requestBody.redirect_uri);
 		url.searchParams.append('code', requestBody.code);
 
-		const res = await fetch(url as URL, {
+		const res = await fetch(url, {
 			headers: { Authorization: `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}` },
 			method: 'POST'
 		});

@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 15,
-			description: language => language.get('COMMAND_SUBSCRIBE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SUBSCRIBE_EXTENDED'),
+			description: language => language.tget('COMMAND_SUBSCRIBE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SUBSCRIBE_EXTENDED'),
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text']
 		});
@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const role = announcementCheck(message);
-		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		// Get all the role ids that the member has and remove the guild id so we dont assign the everyone role
 		const memberRolesSet = new Set(message.member!.roles.keys());

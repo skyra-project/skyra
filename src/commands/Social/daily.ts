@@ -13,16 +13,16 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['dailies'],
 			cooldown: 30,
-			description: language => language.get('COMMAND_DAILY_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_DAILY_EXTENDED'),
+			description: language => language.tget('COMMAND_DAILY_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_DAILY_EXTENDED'),
 			spam: true
 		});
 	}
 
 	public async run(message: KlasaMessage) {
 		const now = Date.now();
-		await message.author!.settings.sync();
-		const time = message.author!.settings.get(UserSettings.TimeDaily) as UserSettings.TimeDaily;
+		await message.author.settings.sync();
+		const time = message.author.settings.get(UserSettings.TimeDaily);
 
 		// It's been 12 hours, grant dailies
 		if (time <= now) {
@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		if (remaining > GRACE_PERIOD) return message.sendLocale('COMMAND_DAILY_TIME', [remaining]);
 
 		// It's been 11-12 hours, ask for the user if they want to claim the grace period
-		const accepted = await message.ask(message.language.get('COMMAND_DAILY_GRACE', remaining));
+		const accepted = await message.ask(message.language.tget('COMMAND_DAILY_GRACE', remaining));
 		if (!accepted) return message.sendLocale('COMMAND_DAILY_GRACE_DENIED');
 
 		// The user accepted the grace period
@@ -46,16 +46,17 @@ export default class extends SkyraCommand {
 		]);
 	}
 
-	public async claimDaily(message: KlasaMessage, nextTime: UserSettings.TimeDaily) {
+	private async claimDaily(message: KlasaMessage, nextTime: number) {
+		const money = this.calculateDailies(message);
+		const total = money + message.author.settings.get(UserSettings.Money);
+		await message.author.settings.update([[UserSettings.Money, total], [UserSettings.TimeDaily, nextTime]]);
+		return money;
+	}
+
+	private calculateDailies(message: KlasaMessage) {
 		let money = 200;
-		if (message.guild) {
-			await message.guild!.settings.sync();
-			const boostGuilds = this.client.settings!.get(ClientSettings.Boosts.Guilds) as ClientSettings.Boosts.Guilds;
-			const boostUsers = this.client.settings!.get(ClientSettings.Boosts.Users) as ClientSettings.Boosts.Users;
-			money *= (boostGuilds.includes(message.guild!.id) ? 1.5 : 1) * (boostUsers.includes(message.author!.id) ? 1.5 : 1);
-		}
-		const total = money + (message.author!.settings.get(UserSettings.Money) as UserSettings.Money);
-		await message.author!.settings.update([['money', total], ['timeDaily', nextTime]]);
+		if (this.client.settings!.get(ClientSettings.Boosts.Users).includes(message.author.id)) money *= 1.5;
+		if (message.guild && this.client.settings!.get(ClientSettings.Boosts.Guilds).includes(message.guild.id)) money *= 1.5;
 		return money;
 	}
 

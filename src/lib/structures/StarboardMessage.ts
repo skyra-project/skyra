@@ -1,9 +1,9 @@
 import { DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
-import { Databases } from '../types/constants/Constants';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { cutText, fetchReactionUsers, getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
+import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
 
 export const COLORS = [
 	0xFFE3AF,
@@ -28,7 +28,7 @@ const LASTCOLOR = COLORS[MAXCOLORS];
 export class StarboardMessage {
 
 	public get id() {
-		return `${this.channel.guild!.id}.${this.message.id}`;
+		return `${this.channel.guild.id}.${this.message.id}`;
 	}
 
 	/**
@@ -43,13 +43,6 @@ export class StarboardMessage {
 	 */
 	private get client() {
 		return this.manager.client;
-	}
-
-	/**
-	 * The provider that manages this starboard
-	 */
-	private get provider() {
-		return this.manager.provider;
 	}
 
 	/**
@@ -78,7 +71,7 @@ export class StarboardMessage {
 	 * The formatted masked url
 	 */
 	private get maskedUrl() {
-		return `[${this.message.language.get('JUMPTO')}](${this.message.url})`;
+		return `[${this.message.language.tget('JUMPTO')}](${this.message.url})`;
 	}
 
 	/**
@@ -98,7 +91,7 @@ export class StarboardMessage {
 		}
 		if (!this.message) return null;
 		return new MessageEmbed()
-			.setAuthor(this.message.author!.username, this.message.author!.displayAvatarURL())
+			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL())
 			.setColor(this.color)
 			.setDescription(this.content)
 			.setTimestamp(this.message.createdAt)
@@ -123,7 +116,7 @@ export class StarboardMessage {
 	/**
 	 * Whether this StarboardMessage should operate or not
 	 */
-	public disabled = false;
+	public enabled = true;
 
 	/**
 	 * The users mapped by id that have starred this message
@@ -160,10 +153,9 @@ export class StarboardMessage {
 		if (!force || syncStatus) return syncStatus || Promise.resolve(this);
 
 		// If it's not currently synchronizing, create a new sync status for the sync queue
-		const sync = Promise.all([this._syncDatabase(), this._syncDiscord()]).then(() => {
-			this.manager.syncMap.delete(this);
-			return this;
-		});
+		const sync = Promise.all([this._syncDatabase(), this._syncDiscord()])
+			.then(() => this)
+			.finally(() => this.manager.syncMap.delete(this));
 
 		this.manager.syncMap.set(this, sync);
 		return sync;
@@ -173,8 +165,8 @@ export class StarboardMessage {
 	 * Disable this StarboardMessage, pausing the star retrieval
 	 */
 	public async disable(): Promise<boolean> {
-		if (this.disabled) return false;
-		await this.edit({ disabled: true });
+		if (!this.enabled) return false;
+		await this.edit({ enabled: false });
 		return true;
 	}
 
@@ -182,8 +174,8 @@ export class StarboardMessage {
 	 * Enables this StarboardMessage, resuming the star retrieval
 	 */
 	public async enable(): Promise<boolean> {
-		if (!this.disabled) return false;
-		await this.edit({ disabled: false });
+		if (this.enabled) return false;
+		await this.edit({ enabled: true });
 		await this.sync();
 		return true;
 	}
@@ -193,7 +185,7 @@ export class StarboardMessage {
 	 * @param id The user's ID to add
 	 */
 	public async add(id: string): Promise<void> {
-		if (this.message.author!.id !== id && !this.users.has(id)) {
+		if (this.message.author.id !== id && !this.users.has(id)) {
 			this.users.add(id);
 			await this.edit({ stars: this.stars });
 		}
@@ -204,14 +196,10 @@ export class StarboardMessage {
 	 * @param id The user's ID to remove
 	 */
 	public async remove(id: string): Promise<void> {
-		if (this.message.author!.id !== id && this.users.has(id)) {
+		if (this.message.author.id !== id && this.users.has(id)) {
 			this.users.delete(id);
 			await this.edit({ stars: this.stars });
 		}
-	}
-
-	public get table() {
-		return this.provider.db.table<StarboardMessageData>(Databases.Starboard);
 	}
 
 	/**
@@ -222,15 +210,18 @@ export class StarboardMessage {
 		this.lastUpdated = Date.now();
 		if (this.existenceStatus === null) await this.sync();
 
-		if ('disabled' in options) this.disabled = options.disabled!;
-		if ('starMessageID' in options && options.starMessageID === null) this.starMessage = null;
-		if ('stars' in options && !this.disabled) await this._editMessage();
+		// If a message was in progress to be sent, await it first
+		const previousUpdate = this.manager.syncMessageMap.get(this);
+		if (previousUpdate) await previousUpdate;
+
+		if ('enabled' in options) this.enabled = options.enabled!;
+		if ('star_message_id' in options && options.star_message_id === null) this.starMessage = null;
+		if ('stars' in options && this.enabled) await this._editMessage();
 
 		if (this.existenceStatus) {
-			await this.table.get(this.id).update({ ...this.toJSON(), ...options })
-				.run();
+			await this.client.queries.updateStar({ ...this.toJSON(), ...options });
 		} else {
-			await this.table.insert({ ...this.toJSON(), ...options }).run();
+			await this.client.queries.insertStar({ ...this.toJSON(), ...options });
 			this.existenceStatus = true;
 		}
 
@@ -240,24 +231,23 @@ export class StarboardMessage {
 	/**
 	 * Destroy this instance
 	 */
-	public async destroy(): Promise<void> {
+	public async destroy() {
 		if (this.existenceStatus === null) await this.sync();
 		if (this.existenceStatus) {
-			await this.table.get(this.id).delete().run();
+			await this.client.queries.deleteStar(this.message.guild!.id, this.message.id);
 		}
 		this.manager.delete(this.message.id);
 	}
 
-	public toJSON(): StarboardMessageData {
+	public toJSON(): RawStarboardSettings {
 		return {
-			channelID: this.channel.id,
-			disabled: this.disabled,
-			guildID: this.channel.guild!.id,
-			id: this.id,
-			messageID: this.message.id,
-			starMessageID: (this.starMessage && this.starMessage.id) || null,
+			channel_id: this.channel.id,
+			enabled: this.enabled,
+			guild_id: this.channel.guild.id,
+			message_id: this.message.id,
+			star_message_id: (this.starMessage && this.starMessage.id) || null,
 			stars: this.stars,
-			userID: this.message.author!.id
+			user_id: this.message.author.id
 		};
 	}
 
@@ -271,7 +261,7 @@ export class StarboardMessage {
 	private async _syncDiscord(): Promise<void> {
 		try {
 			this.users = await fetchReactionUsers(this.client, this.channel.id, this.message.id,
-				this.channel.guild!.settings.get(GuildSettings.Starboard.Emoji) as GuildSettings.Starboard.Emoji);
+				this.channel.guild.settings.get(GuildSettings.Starboard.Emoji));
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				// Missing Access
@@ -287,31 +277,27 @@ export class StarboardMessage {
 			return;
 		}
 
-		this.users.delete(this.message.author!.id);
+		this.users.delete(this.message.author.id);
 	}
 
 	/**
 	 * Synchronizes the data with the database
 	 */
 	private async _syncDatabase(): Promise<void> {
-		const data = await this.provider.db
-			.table<StarboardMessageData | null>(Databases.Starboard)
-			.get(this.id)
-			.default(null)
-			.run();
+		const data = await this.client.queries.fetchStar(this.message.guild!.id, this.message.id);
 
 		if (data) {
-			this.disabled = Boolean(data.disabled);
+			this.enabled = Boolean(data.enabled);
 			this.existenceStatus = true;
 
 			const channel = this.manager.starboardChannel!;
-			if (data.starMessageID) {
-				await channel.messages.fetch(data.starMessageID)
+			if (data.star_message_id) {
+				await channel.messages.fetch(data.star_message_id)
 					.then(message => { this.starMessage = message; })
 					.catch(() => undefined);
 			}
 		} else {
-			this.disabled = false;
+			this.enabled = true;
 			this.existenceStatus = false;
 		}
 	}
@@ -331,46 +317,25 @@ export class StarboardMessage {
 				// Missing Access
 				if (error.code === 50001) return;
 				// Unknown Message
-				if (error.code === 10008) await this.edit({ starMessageID: null, disabled: true });
+				if (error.code === 10008) await this.edit({ star_message_id: null, enabled: false });
 			}
 		} else {
-			try {
-				this.starMessage = await this.manager.starboardChannel!.send(content, this.embed!) as Message;
-			} catch (error) {
-				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
+			const promise = this.manager.starboardChannel!.send(content, this.embed!)
+				.then(message => { this.starMessage = message; })
+				.catch(error => {
+					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
-				// Missing Access
-				if (error.code === 50001) return;
-				// Emit to console
-				this.client.emit(Events.Wtf, error);
-			}
+					// Missing Access
+					if (error.code === 50001) return;
+					// Emit to console
+					this.client.emit(Events.Wtf, error);
+				})
+				.finally(() => this.manager.syncMessageMap.delete(this));
+			this.manager.syncMessageMap.set(this, promise);
+			await promise;
 		}
 	}
 
 }
 
-interface StarboardMessageEdit {
-	/**
-	 * The star message id
-	 */
-	starMessageID?: string | null;
-	/**
-	 * The amount of stars
-	 */
-	stars?: number;
-	/**
-	 * Whether it's disabled or not
-	 */
-	disabled?: boolean;
-}
-
-export interface StarboardMessageData {
-	id: string;
-	channelID: string;
-	disabled: boolean;
-	guildID: string;
-	messageID: string;
-	starMessageID: string | null;
-	stars: number;
-	userID: string;
-}
+type StarboardMessageEdit = Partial<Pick<RawStarboardSettings, 'star_message_id' | 'stars' | 'enabled'>>;

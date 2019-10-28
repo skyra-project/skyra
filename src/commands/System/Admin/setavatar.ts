@@ -6,8 +6,8 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_SETAVATAR_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SETAVATAR_EXTENDED'),
+			description: language => language.tget('COMMAND_SETAVATAR_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SETAVATAR_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '(attachment:attachment)'
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 			}
 			const url = (res => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, 'buffer');
-			throw (msg ? msg.language : this.client.languages.default).get('RESOLVER_INVALID_URL', possible.name);
+			throw msg.language.tget('RESOLVER_INVALID_URL', possible.name);
 		});
 	}
 

@@ -10,18 +10,18 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['source', 'msg-source', 'message-source'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_CONTENT_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_CONTENT_EXTENDED'),
+			description: language => language.tget('COMMAND_CONTENT_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_CONTENT_EXTENDED'),
 			runIn: ['text'],
 			usage: '[channel:channel] (message:message)',
 			usageDelim: ' '
 		});
 
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as TextChannel]: TextChannel[]) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('RESOLVER_INVALID_MSG', 'Message');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MSG', 'Message');
 			const target = await channel.messages.fetch(arg).catch(() => null);
 			if (target) return target;
-			throw message.language.get('SYSTEM_MESSAGE_NOT_FOUND');
+			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		});
 	}
 

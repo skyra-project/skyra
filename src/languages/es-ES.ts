@@ -5,6 +5,7 @@ import { EMOJIS } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
+import { LanguageKeys } from '../lib/types/Languages';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const { LOADING, SHINY, GREENTICK, REDCROSS } = EMOJIS;
@@ -99,7 +100,9 @@ export default class extends Language {
 
 	public duration = duration;
 
-	public language: Record<string, any> = {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+	// @ts-ignore:2416
+	public language: LanguageKeys = {
 		/**
 		 * ################################
 		 * #      FRAMEWORK MESSAGES      #
@@ -152,10 +155,9 @@ export default class extends Language {
 		MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error, time, abortOptions) => `${tag} | **${error}** | Tienes **${time}** segundos para responder a este mensaje con un argumento válido. Escribe **${abortOptions.join('**, **')}** para cancelar la solicitud.`,
 		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) => `${tag} | El argumento **${name}** puede aceptar multiples valores | Tienes **${time}** segundos para responder a esta solicitud con valores adicionales. Escribe **${cancelOptions.join('**, **')}** para cancelar la solicitud.`,
 		MONITOR_COMMAND_HANDLER_ABORTED: 'Cancelado.',
-		MONITOR_COMMAND_HANDLER_POSSIBILITIES: ['abortar', 'parar'],
-		MONITOR_COMMAND_HANDLER_REPEATING_POSSIBLITIES: ['cancelar'],
 		INHIBITOR_COOLDOWN: remaining => `Acabas de usar este comando. Puedes usarlo de nuevo en ${duration(remaining)}.`,
-		INHIBITOR_DISABLED: 'Este comando está desactivado',
+		INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild!.',
+		INHIBITOR_DISABLED_GLOBAL: 'This command has been globally disabled by the bot owner.',
 		INHIBITOR_MISSING_BOT_PERMS: missing => `No tengo los permisos suficientes, me faltan: **${missing}**`,
 		INHIBITOR_NSFW: 'Este comando no es apto para este canal, no es un canal marcado como "NSFW"',
 		INHIBITOR_PERMISSIONS: 'No tienes permisos para usar este comando',
@@ -190,7 +192,8 @@ export default class extends Language {
 		COMMAND_HELP_NO_EXTENDED: 'No está documentado completamente.',
 		COMMAND_HELP_DM: '📥 | La lista de comandos ha sido enviada a tus mensajes privados.',
 		COMMAND_HELP_NODM: `${REDCROSS} | Parece que tienes tus mensajes privados desactivados, no pude mandarte el mensaje.`,
-		COMMAND_HELP_ALL_FLAG: `${LOADING} Mostrando una categoría por página. ¿Problemas con el mensaje? Envía \`Skyra, help --all\` para la lista de todos los comandos en tus Mensajes Directos.`,
+		COMMAND_HELP_ALL_FLAG: prefix => `Mostrando una categoría por página. ¿Problemas con el mensaje? Envía \`${prefix}help --all\` para la lista de todos los comandos en tus Mensajes Directos.`,
+		COMMAND_HELP_COMMAND_COUNT: n => `${n} comando${n === 1 ? '' : 's'}`,
 		COMMAND_ENABLE: (type, name) => `+ Activado con éxito la pieza tipo ${type}: ${name}`,
 		COMMAND_ENABLE_DESCRIPTION: 'Re-activa o activa temporalmente una pieza de Klasa. El estado por defecto es restaurado al recargar.',
 		COMMAND_DISABLE: (type, name) => `+ Desactivado con éxito la pieza tipo ${type}: ${name}`,
@@ -257,7 +260,7 @@ export default class extends Language {
 		COMMAND_REPEAT_DESCRIPTION: `Se alterna repitiendo la canción actual.`,
 		COMMAND_REPEAT_SUCCESS: enabled => enabled ? `This is your JAM isn't it? No te preocupes, repetiremos esto una y otra vez!` : `En realidad, también me estaba cansando de esto, pero no quería decir nada.`,
 		COMMAND_QUEUE_DESCRIPTION: `Revisa la lista de cola.`,
-		COMMAND_QUEUE_EMPTY: prefix => `¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando \`${prefix}add\`.`,
+		COMMAND_QUEUE_EMPTY: '¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando `Skyra, add`.',
 		COMMAND_QUEUE_LINE: (title, requester) => `*${title}*, pedida por: **${requester}**`,
 		COMMAND_QUEUE_TRUNCATED: amount => `Mostrando 10 canciones de ${amount}`,
 		COMMAND_REMOVE_DESCRIPTION: `Elimina una canción de la lista de cola.`,
@@ -268,6 +271,8 @@ export default class extends Language {
 			`grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!`
 		].join(' '),
 		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.safeTitle}**, pedida por **${song.requester}**, de la cola.`,
+		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
+		COMMAND_SEEK_SUCCESS: time => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: `Reanuda la canción actual.`,
 		COMMAND_RESUME_SUCCESS: `▶ Reanudado.`,
 		COMMAND_SKIP_DESCRIPTION: `Salta la canción actual.`,
@@ -411,8 +416,7 @@ export default class extends Language {
 
 		COMMAND_ANIME_DESCRIPTION: 'Search your favourite anime by title with this command.',
 		COMMAND_ANIME_EXTENDED: builder.display('anime', {
-			extendedHelp: `This command queries Kitsu.io to show data for the anime you request. In a near future, this command
-				will allow you to navigate between the results so you can read the information of the anime.`,
+			extendedHelp: `This command queries Kitsu.io to show data for the anime you request.`,
 			explainedUsage: [
 				['query', `The anime's name you are looking for.`]
 			],
@@ -420,8 +424,7 @@ export default class extends Language {
 		}),
 		COMMAND_MANGA_DESCRIPTION: 'Search your favourite manga by title with this command.',
 		COMMAND_MANGA_EXTENDED: builder.display('manga', {
-			extendedHelp: `This command queries Kitsu.io to show data for the manga you request. In a near future, this command',
-				'will allow you to navigate between the results so you can read the information of the manga.`,
+			extendedHelp: `This command queries Kitsu.io to show data for the manga you request.`,
 			explainedUsage: [
 				['query', `The manga's name you are looking for.`]
 			],
@@ -599,6 +602,16 @@ export default class extends Language {
 			],
 			examples: ['6h A hug from Skyra.']
 		}),
+		COMMAND_GIVEAWAYREROLL_DESCRIPTION: 'Re-roll the winners from a giveaway.',
+		COMMAND_GIVEAWAYREROLL_EXTENDED: builder.display('greroll', {
+			extendedHelp: `This command is designed to re-roll finished giveaways. Please check \`Skyra, help gstart\` for more information
+					about creating one.`,
+			explainedUsage: [
+				['winners', 'The amount of winners to pick.'],
+				['message', 'The message to target. Defaults to last giveaway message.']
+			],
+			examples: ['', '633939404745998346', '5', '5 633939404745998346']
+		}),
 		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: `Schedule a giveaway to start at a certain time.`,
 		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
 			extendedHelp: `This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.`,
@@ -653,6 +666,27 @@ export default class extends Language {
 				['nick', `The new nickname. If you don't put any, it'll reset it instead.`]
 			],
 			examples: ['SkyNET', 'Assistant', '']
+		}),
+		COMMAND_PERMISSIONNODES_DESCRIPTION: 'Configure the permission nodes for this server.',
+		COMMAND_PERMISSIONNODES_EXTENDED: builder.display('pnodes', {
+			extendedHelp: `Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.
+					For example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved
+					to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command
+					for the staff role now.`,
+			explainedUsage: [
+				['action', 'Either `add`, `remove`, `reset`, or `show`. Defaults to `show`.'],
+				['target', 'Either a role name or a user name, allowing IDs and mentions for either.'],
+				['type', 'Either `allow` or `deny`. This is ignored when `action` is not `add` nor `remove`.'],
+				['command', 'The name of the command to allow or deny. This is ignored when `action` is not `add` nor `remove`.']
+			],
+			examples: [
+				'add staff allow warn',
+				'add moderators deny ban',
+				'remove staff allow warn',
+				'reset staff',
+				'show staff'
+			],
+			reminder: 'The server owner cannot have any actions, nor the `everyone` role can have allowed commands.'
 		}),
 		COMMAND_TRIGGERS_DESCRIPTION: `Set custom triggers for your guild!.`,
 		COMMAND_TRIGGERS_EXTENDED: builder.display('triggers', {
@@ -804,6 +838,13 @@ export default class extends Language {
 			reminder: 'Use this wisely, not everyone expects the starboard to listen to a custom emoji.',
 			examples: ['⭐']
 		}),
+
+		/**
+		 * #################
+		 * GIVEAWAY COMMANDS
+		 */
+
+		COMMAND_GIVEAWAYREROLL_INVALID: 'The message ID does not exist or there is no finished giveaway.',
 
 		/**
 		 * ###########################
@@ -1087,6 +1128,11 @@ export default class extends Language {
 			examples: ['Jake'],
 			reminder: `You try to slap me and I'll slap you instead.`
 		}),
+		COMMAND_SNIPE_DESCRIPTION: 'Retrieve the last deleted message from a channel',
+		COMMAND_SNIPE_EXTENDED: builder.display('snipe', {
+			extendedHelp: `This just sends the last deleted message from this channel, somebody is misbehaving? This will
+				catch them.`
+		}),
 		COMMAND_THESEARCH_DESCRIPTION: 'Are we the only one in the universe, this man on earth probably knows.',
 		COMMAND_THESEARCH_EXTENDED: builder.display('thesearch', {
 			extendedHelp: `One man on Earth probably knows if there is intelligent life, ask and you shall receive an answer.`,
@@ -1129,6 +1175,17 @@ export default class extends Language {
 			extendedHelp: `This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been
 					appealed.`,
 			examples: ['', '@Pete']
+		}),
+		COMMAND_MODERATIONS_DESCRIPTION: 'List all running moderation logs from this guild.',
+		COMMAND_MODERATIONS_EXTENDED: builder.display('moderations', {
+			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a
+					reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}** to execute correctly.`,
+			examples: [
+				'',
+				'@Pete',
+				'mutes @Pete',
+				'warnings'
+			]
 		}),
 		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
 		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
@@ -1248,6 +1305,12 @@ export default class extends Language {
 					that can prune many many messages.`,
 			examples: ['@Pete', '@Pete Spamming all channels', '@Pete 7 All messages sent in 7 are gone now, YEE HAH!']
 		}),
+		COMMAND_TOGGLEMODERATIONDM_DESCRIPTION: 'Toggle moderation DMs.',
+		COMMAND_TOGGLEMODERATIONDM_EXTENDED: builder.display('toggleModerationDM', {
+			extendedHelp: `This command allows you to toggle moderation DMs. By default, they are on, meaning that any moderation
+					action (automatic or manual) will DM you, but you can disable them with this command.`,
+			examples: ['']
+		}),
 		COMMAND_UNBAN_DESCRIPTION: 'Unban somebody from this guild!.',
 		COMMAND_UNBAN_EXTENDED: builder.display('unban', {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
@@ -1327,6 +1390,11 @@ export default class extends Language {
 				['set <bannerID>', 'Set your displayed banner, must be an ID.']
 			],
 			examples: ['list', 'buy 0w1p06', 'set 0w1p06', 'reset']
+		}),
+		COMMAND_TOGGLEDARKMODE_DESCRIPTION: 'Toggle between light and dark templates for your profile and rank cards.',
+		COMMAND_TOGGLEDARKMODE_EXTENDED: builder.display('toggleDarkMode', {
+			extendedHelp: `This command lets you toggle the template used to generate your profile.`,
+			examples: ['']
 		}),
 
 		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild!.',
@@ -1782,40 +1850,41 @@ export default class extends Language {
 			OVA: '📼 Animación de Vídeo Original',
 			SPECIAL: '🎴 Especial'
 		},
-		COMMAND_ANIME_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		COMMAND_ANIME_INVALID_CHOICE: `¡Esa opción no es válida! Selecciona otra opción, por favor.`,
-		COMMAND_ANIME_NO_CHOICE: 'Me dejaste esperando... ¡prueba de nuevo cuando te hayas decidido!',
 		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-			`**Título inglés:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'Ninguno'}`,
-			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
+			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
+			`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
+			`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
 			synopsis
-		],
-		COMMAND_ANIME_OUTPUT_STATUS: entry => [
-			`  ❯  Estado actual: **${entry.attributes.status}**`,
-			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
-		],
+		].join('\n'),
 		COMMAND_ANIME_TITLES: {
 			TYPE: 'Tipo',
 			SCORE: 'Puntuación',
-			STATUS: 'Estado',
-			WATCH_IT: 'Míralo Aquí:',
-			READ_IT: 'Léelo Aquí:'
+			EPISODES: 'Episodio(s)',
+			EPISODE_LENGTH: 'Duración del episodio',
+			AGE_RATING: 'Clasificación de edad',
+			FIRST_AIR_DATE: 'Primera fecha de emisión',
+			WATCH_IT: 'Míralo Aquí:'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
-			`**Título inglés:** ${entry.attributes.titles.en || entry.attributes.titles.en_us || 'Ninguno'}`,
-			`**Título japonés:** ${entry.attributes.titles.ja_jp || 'Ninguno'}`,
+			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
+			`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
+			`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
 			synopsis
-		],
-		COMMAND_MANGA_OUTPUT_STATUS: entry => [
-			`  ❯  Estado actual: **${entry.attributes.status}**`,
-			`    • Empezó: **${entry.attributes.startDate}**\n${entry.attributes.endDate ? `    • Terminó: **${entry.attributes.endDate}**` : ''}`
-		],
-		COMMAND_MANGA_TITLES: {
+		].join('\n'),
+		COMMAND_MANGA_TYPES: {
 			'MANGA': '📘 Manga',
 			'NOVEL': '📕 Novela',
 			'MANHWA': '🇰🇷 Manhwa',
 			'ONE-SHOT': '☄ Cameo',
 			'SPECIAL': '🎴 Especial'
+		},
+		COMMAND_MANGA_TITLES: {
+			TYPE: 'Tipo',
+			SCORE: 'Puntuación',
+			AGE_RATING: 'Clasificación de edad',
+			FIRST_PUBLISH_DATE: 'Primera fecha de publicación',
+			READ_IT: 'Léelo Aquí:'
 		},
 
 		/**
@@ -2004,7 +2073,7 @@ export default class extends Language {
 		GIVEAWAY_LASTCHANCE: time => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
 		GIVEAWAY_LASTCHANCE_TITLE: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
 		GIVEAWAY_ENDED: winners => winners.length === 1 ? `Ganador/a: ${winners[0]}` : `Ganadores: ${winners.join(', ')}`,
-		GIVEWAWY_ENDED_NO_WINNER: 'No winner...',
+		GIVEAWAY_ENDED_NO_WINNER: 'No winner...',
 		GIVEAWAY_ENDED_AT: 'Ended at:',
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (mention, title) => `Congratulations ${mention}! You won the giveaway **${title}**`,
@@ -2017,6 +2086,18 @@ export default class extends Language {
 
 		COMMAND_NICK_SET: nickname => `Changed the nickname to **${nickname}**.`,
 		COMMAND_NICK_CLEARED: 'Nickname cleared.',
+		COMMAND_PERMISSIONNODES_HIGHER: `${REDCROSS} You cannot modify nor preview the permission nodes for this target.`,
+		COMMAND_PERMISSIONNODES_INVALID_TYPE: `${REDCROSS} Invalid type, expected either of \`allow\` or \`deny\`.`,
+		COMMAND_PERMISSIONNODES_ADD: `${GREENTICK} Successfully added the command to the permission node.`,
+		COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS: `${REDCROSS} The selected permission node does not exist.`,
+		COMMAND_PERMISSIONNODES_COMMAND_NOT_EXISTS: `${REDCROSS} The selected command does not exist in the permision node.`,
+		COMMAND_PERMISSIONNODES_REMOVE: `${GREENTICK} Successfully removed the command from the permission node.`,
+		COMMAND_PERMISSIONNODES_RESET: `${GREENTICK} Successfully removed all commands from the permission node.`,
+		COMMAND_PERMISSIONNODES_SHOW: (name, allow, deny) => [
+			`Permissions for: __${name}__`,
+			`**Allow**: ${allow.length ? allow.join(', ') : 'None'}`,
+			`**Deny**: ${deny.length ? deny.join(', ') : 'None'}`
+		].join('\n'),
 		COMMAND_TRIGGERS_NOTYPE: 'You need to insert a trigger type (**alias**|**reaction**)',
 		COMMAND_TRIGGERS_NOOUTPUT: 'You need to insert the trigger output.',
 		COMMAND_TRIGGERS_INVALIDREACTION: 'This reaction does not seem valid for me, either it is not valid unicode or I do not have access to it.',
@@ -2058,7 +2139,7 @@ export default class extends Language {
 			`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`
 		].join('\n'),
 		COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
-		COMMAND_ROLEINFO_PERMISSIONS: permissions => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`) : 'Permissions not granted.',
+		COMMAND_ROLEINFO_PERMISSIONS: permissions => permissions.length > 0 ? permissions.map(key => `+ **${PERMS[key]}**`).join('\n') : 'Permissions not granted.',
 		COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
 		COMMAND_FILTER_FILTERED: filtered => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 		COMMAND_FILTER_ADDED: word => `${GREENTICK} Success! Added the word ${word} to the filter.`,
@@ -2140,11 +2221,14 @@ export default class extends Language {
 		 * MISC COMMANDS
 		 */
 
+		COMMAND_RANDREDDIT_REQUIRED_REDDIT: 'You must give the name of a reddit.',
 		COMMAND_RANDREDDIT_BANNED: 'This reddit is banned and should not be used.',
 		COMMAND_RANDREDDIT_FAIL: 'I failed to retrieve data, are you sure you wrote the reddit correctly?',
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
 		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
 		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
+		COMMAND_SNIPE_EMPTY: 'There are no sniped messages in this channel.',
+		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
 
@@ -2158,10 +2242,10 @@ export default class extends Language {
 			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
 			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
 			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
-		COMMAND_MUTES_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_MUTES_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'mute' : 'mutes'}.`,
-		COMMAND_WARNINGS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_WARNINGS_AMOUNT: amount => `There are ${amount} ${amount === 1 ? 'warning' : 'warnings'}.`,
+		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
+		COMMAND_MODERATIONS_AMOUNT: amount => amount === 1
+			? 'There is 1 entry.'
+			: `There are ${amount} entries.`,
 
 		/**
 		 * #############################
@@ -2191,6 +2275,7 @@ export default class extends Language {
 		COMMAND_SLOWMODE_SET: cooldown => cooldown === 0
 			? `The cooldown for this channel has been reset.`
 			: `The cooldown for this channel has been set to ${cooldown} second${cooldown === 1 ? '' : 's'}.`,
+		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
@@ -2215,8 +2300,11 @@ export default class extends Language {
 			entries.length === 1
 				? `${GREENTICK} Actualizado 1 caso.`
 				: `${GREENTICK} Actualizados ${entries.length} casos.`,
-			` └─ Set the${entries.size === 1 ? '' : 'ir'} reason to ${newReason}`
+			` └─ Set the${entries.length === 1 ? '' : 'ir'} reason to ${newReason}`
 		].join('\n'),
+		COMMAND_TOGGLEMODERATIONDM_TOGGLED: value => value
+			? `${GREENTICK} Successfully enabled moderation DMs.`
+			: `${GREENTICK} Successfully disabled moderation DMs.`,
 		COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
 		COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
 		COMMAND_VMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MUTE_MEMBERS}** permission to be able to voice unmute.`,
@@ -2225,6 +2313,16 @@ export default class extends Language {
 		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
 		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
+		COMMAND_MODERATION_DM: (guild, title, reason, moderator) => [
+			`You got a **${title}** from **${guild}** by ${moderator.username}. Reason:`,
+			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
+			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
+		].join(''),
+		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason) => [
+			`You got a **${title}** from **${guild}**. Reason:`,
+			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
+			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
+		].join(''),
 
 		/**
 		 * ###############
@@ -2232,6 +2330,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_AUTOROLE_POINTS_REQUIRED: 'You must input a valid amount of points.',
+		COMMAND_AUTOROLE_UPDATE_CONFIGURED: 'This role is already configured as an autorole. Use the remove type instead.',
 		COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: 'This role is not configured as an autorole. Use the add type instead.',
 		COMMAND_AUTOROLE_UPDATE: (role, points, before) => `Updated autorole: ${role.name} (${role.id}). Points required: ${points} (before: ${before})`,
 		COMMAND_AUTOROLE_REMOVE: (role, before) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
@@ -2258,6 +2357,9 @@ export default class extends Language {
 		COMMAND_BANNER_PAYMENT_CANCELLED: `${REDCROSS} The payment has been cancelled.`,
 		COMMAND_BANNER_BUY: banner => `${GREENTICK} **Success**. You have bought the banner: __${banner}__`,
 		COMMAND_BANNER_PROMPT: 'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
+		COMMAND_TOGGLEDARKMODE_TOGGLED: enabled => enabled
+			? `${GREENTICK} Successfully enabled the dark mode.`
+			: `${GREENTICK} Successfully disabled the dark mode.`,
 		COMMAND_DAILY_TIME: time => `El siguiente pago está disponible en: ${duration(time)}`,
 		COMMAND_DAILY_TIME_SUCCESS: amount => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
 		COMMAND_DAILY_GRACE: remaining => [
@@ -2276,14 +2378,16 @@ export default class extends Language {
 		COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you will continue with your partner!',
 		COMMAND_DIVORCE_DM: user => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
 		COMMAND_DIVORCE_SUCCESS: user => `Successful divorce 💔... You are no longer married to ${user}!`,
-		COMMAND_MARRY_WITH: user => `Dear, how could you forget it... You are currently married to ${user}!`,
+		COMMAND_MARRY_WITH: users => `Dear, how could you forget it... You are currently married to ${users.join(', ')}!`,
 		COMMAND_MARRY_NOTTAKEN: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?',
 		COMMAND_MARRY_SKYRA: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
 		COMMAND_MARRY_SNEYRA: 'In your dreams. She is my sister, I am not letting somebody harm her!',
 		COMMAND_MARRY_BOTS: 'Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!',
 		COMMAND_MARRY_SELF: 'No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔',
-		COMMAND_MARRY_AUTHOR_TAKEN: 'I am sorry, but you are already married...',
-		COMMAND_MARRY_TAKEN: 'I am very sorry, but this user is taken!',
+		COMMAND_MARRY_AUTHOR_TAKEN: 'You are already married. Is your love big enough for two people?',
+		COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: user => `Cancelling. Your commitment to ${user} is admirable.`,
+		COMMAND_MARRY_TAKEN: spousesCount => `This user is already married to ${spousesCount === 1 ? 'someone' : `${spousesCount} people`}. Would you like to join their harem?`,
+		COMMAND_MARRY_MULTIPLE_CANCEL: `Cancelling. Don't worry, you'll find someone you don't have to share!`,
 		COMMAND_MARRY_PETITION: (author, user) => `Fresh pair of eyes! ${author} is proposing to ${user}! 💞 Reply with **yes** to accept!`,
 		COMMAND_MARRY_NOREPLY: 'The user did not reply on time... Maybe it was a hard decision?',
 		COMMAND_MARRY_DENIED: 'O-oh... The user rejected your proposal! 💔',
@@ -2310,7 +2414,7 @@ export default class extends Language {
 		COMMAND_REMINDME_CREATE: id => `A reminder with ID \`${id}\` has been created.`,
 		COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
 		COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
-		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time - Date.now())}** has been successfully deleted.`,
+		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time.getTime() - Date.now())}** has been successfully deleted.`,
 		COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 		COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 		COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
@@ -2382,7 +2486,7 @@ export default class extends Language {
 			`• CPU Load   :: ${USAGE.CPU_LOAD}`,
 			`• RAM +Node  :: ${USAGE.RAM_TOTAL}`,
 			`• RAM Usage  :: ${USAGE.RAM_USED}`
-		],
+		].join('\n'),
 
 		/**
 		 * #############
@@ -2424,6 +2528,116 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: emoji => `'${emoji}' no es un emoji válido.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
+		COMMAND_ESHOP_DESCRIPTION: 'Solicite información para cualquier tienda digital estadounidense de Nintendo',
+		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {
+			extendedHelp: `Este comando consulta a Nintendo of America para mostrar los datos del juego que solicitas.`,
+			explainedUsage: [
+				['Solicitud', `El nombre del juego que estás buscando..`]
+			],
+			examples: ['Breath of the Wild', 'Pokemon', 'Splatoon']
+		}),
+		COMMAND_ESHOP_NOT_IN_DATABASE: 'Ninguno disponible',
+		COMMAND_ESHOP_TITLES: {
+			PRICE: 'Precio',
+			AVAILABILITY: 'Disponibilidad',
+			RELEASE_DATE: 'Fecha de lanzamiento',
+			NUMBER_OF_PLAYERS: 'Número de jugadores',
+			PLATFORM: 'Plataforma',
+			CATEGORIES: 'Categorías',
+			NSUID: 'NSUID',
+			ESRB: 'ESRB'
+		},
+		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Gratis',
+		COMMAND_IGDB_DESCRIPTION: 'Busca en IGDB (Internet Game Database) tus juegos favoritos',
+		COMMAND_IGDB_EXTENDED: builder.display('igdb', {
+			extendedHelp: 'Este comando consulta la API IGDB para mostrar datos de sus juegos favoritos.',
+			explainedUsage: [
+				['query', 'El nombre del juego']
+			],
+			examples: ['Breath of the Wild', 'Borderlands 3']
+		}),
+		COMMAND_IGDB_TITLES: {
+			USER_SCORE: 'Puntuación del usuario',
+			AGE_RATING: 'Calificación de edad',
+			RELEASE_DATE: 'Fecha de lanzamiento',
+			GENRES: 'Género(s)',
+			DEVELOPERS: 'Desarrollador(es)',
+			PLATFORMS: 'Plataforma(s)'
+		},
+		COMMAND_IGDB_DATA: {
+			NO_DEVELOPERS: 'Desarrollador(es) desconocidos',
+			NO_PLATFORMS: 'Plataforma(s) desconocidas',
+			NO_RELEASE_DATE: 'Fecha de lanzamiento desconocida',
+			NO_RATING: 'Ninguna calificación de usuario'
+		},
+		COMMAND_ITUNES_DESCRIPTION: 'Busca en la API de iTunes pistas de música',
+		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {
+			extendedHelp: 'Este comando consulta la API de iTunes de Apple para mostrar datos sobre la música que solicita.',
+			explainedUsage: [
+				['consulta', 'El nombre de la cancion']
+			],
+			examples: ['Apocalyptica feat. Brent Smith', 'You\'re Gonna Go Far, Kid']
+		}),
+		COMMAND_ITUNES_TITLES: {
+			ARTIST: 'Artista',
+			COLLECTION: 'Colección',
+			COLLECTION_PRICE: 'Precio de colección',
+			TRACK_PRICE: 'Precio de canción',
+			TRACK_RELEASE_DATE: 'Fecha de lanzamiento de la canción',
+			NUMBER_OF_TRACKS_IN_COLLECTION: 'Canciones en coleccion',
+			PRIMARY_GENRE: 'Genero primario',
+			PREVIEW: 'Avance',
+			PREVIEW_LABEL: 'Haga clic aquí'
+		},
+		COMMAND_MOVIES_DESCRIPTION: 'Busca en TheMovieDatabase cualquier película',
+		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
+			extendedHelp: [
+				'Este comando consulta la API de TheMovieDatabase para obtener datos sobre sus películas favoritas',
+				'Consejo: Puede usar el filtro \'y:\' para reducir sus resultados por año. Ejemplo: \'Star Wars y: 1977\'.'
+			],
+			explainedUsage: [
+				['consulta', 'El nombre de la pelicula']
+			],
+			examples: ['Ocean\'s Eleven y:2001', 'Star Wars Revenge of the Sith', 'Spirited Away']
+		}),
+		COMMAND_MOVIES_TITLES: {
+			RUNTIME: 'Tiempo de ejecución',
+			USER_SCORE: 'Puntuación del usuario',
+			STATUS: 'Estado',
+			RELEASE_DATE: 'Fecha de lanzamiento',
+			IMDB_PAGE: 'Página de IMDB',
+			HOME_PAGE: 'Página de inicio',
+			COLLECTION: 'Colección',
+			GENRES: 'Géneros'
+		},
+		COMMAND_MOVIES_DATA: {
+			VARIABLE_RUNTIME: 'Variable',
+			MOVIE_IN_PRODUCTION: 'Película en producción',
+			LINK_CLICK_HERE: 'Haga clic aquí',
+			NONE: 'Ninguno',
+			NOT_PART_OF_COLLECTION: 'No es parte de una colección.',
+			NO_GENRES: 'Ninguno en TheMovieDB'
+		},
+		COMMAND_SHOWS_DESCRIPTION: 'Busca en la base de datos de películas cualquier programa',
+		COMMAND_SHOWS_EXTENDED: builder.display('shows', {
+			extendedHelp: 'Este comando consulta la base de datos de películas para obtener información sobre tus programas favoritos',
+			explainedUsage: [
+				['consulta', 'El nombre del show.']
+			],
+			examples: ['Final Space', 'Gravity Falls', 'Rick and Morty']
+		}),
+		COMMAND_SHOWS_TITLES: {
+			EPISODE_RUNTIME: 'Tiempo de ejecución del episodio',
+			USER_SCORE: 'Puntuación del usuario',
+			STATUS: 'Estado',
+			FIRST_AIR_DATE: 'Primera fecha de emisión',
+			GENRES: 'Géneros'
+		},
+		COMMAND_SHOWS_DATA: {
+			VARIABLE_RUNTIME: 'Variable',
+			UNKNOWN_USER_SCORE: 'Sin puntaje de usuario',
+			NO_GENRES: 'Ninguno en TheMovieDB'
+		},
 		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
 		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
 		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',
@@ -2438,7 +2652,7 @@ export default class extends Language {
 			`Opciones : ${options ? options.join(' | ') : 'Ninguno'}`,
 			`Duración : ${duration(time)}`,
 			`ID       : ${id}`
-		],
+		].join('\n'),
 		COMMAND_POLL_LIST_EMPTY: `${REDCROSS} No pude encontrar una encuesta activa para este servidor.`,
 		COMMAND_POLL_NOTEXISTS: `${REDCROSS} La encuesta que quieres obtener no existe o ha expirado.`,
 		COMMAND_POLL_NOTMANAGEABLE: `${REDCROSS} Esta encuesta está protegida y sólo puede ser modificada por su autor o por un administrador de este servidor.`,
@@ -2465,17 +2679,12 @@ export default class extends Language {
 		COMMAND_URBAN_NOTFOUND: 'Lo siento, la palabra que buscabas no parece estar definida en UrbanDictionary. ¿Prueba con otra palabra?',
 		COMMAND_URBAN_INDEX_NOTFOUND: 'Quizás quieras probar con un número de página más pequeño.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continúa leyendo](${url})`,
-		COMMAND_URBAN_OUTPUT: (index, pages, definition, example, author) => [
-			`→ ${inlineCodeblock('Definición ::')} ${index}/${pages}\n${definition}`,
-			`→ ${inlineCodeblock('Ejemplo    ::')} ${example}`,
-			`→ ${inlineCodeblock('Autor      ::')} ${author}`
-		].join('\n\n'),
 		COMMAND_WHOIS_MEMBER: member => [
 			`→ ${inlineCodeblock('ID             ::')} **${member.id}**`,
 			`→ ${inlineCodeblock('Etiqueta       ::')} **${member.user.tag}**`,
 			`→ ${inlineCodeblock('Apodo          ::')} **${member.nickname || 'Not set'}**`,
 			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(member.user.createdAt)}**`,
-			`→ ${inlineCodeblock('Fecha Ingreso  ::')} **${timestamp.displayUTC(member.joinedAt)}**`
+			`→ ${inlineCodeblock('Fecha Ingreso  ::')} **${member.joinedTimestamp ? timestamp.displayUTC(member.joinedTimestamp) : 'Desconocido'}**`
 		].join('\n'),
 		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
 		COMMAND_WHOIS_USER: user => [
@@ -2530,11 +2739,13 @@ export default class extends Language {
 		CONST_MONITOR_WORDFILTER: 'Palabra Filtrada',
 		CONST_MONITOR_CAPSFILTER: 'Demasiadas Mayúsculas',
 		CONST_MONITOR_ATTACHMENTFILTER: 'Demasiados Documentos',
+		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		MONITOR_NOINVITE: user => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
 		MONITOR_WORDFILTER_DM: filtered => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
 		MONITOR_CAPSFILTER: user => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
+		MONITOR_NEWLINEFILTER: user => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
 		MONITOR_NMS_MESSAGE: user => [
 			`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
 			'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
@@ -2561,6 +2772,7 @@ export default class extends Language {
 		SERIALIZER_PERMISSION_NODE_INVALID_TARGET: 'No data could be found from the ID.',
 		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: command => `The command \`${command}\` does not exist or is invalid.`,
 		SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND: command => `You have set \`${command}\` twice, either allow it, or deny it.`,
+		SERIALIZER_PERMISSION_NODE_SECURITY_OWNER: 'You cannot set permission overrides on the server owner.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS: 'For security, the everyone role cannot have allows.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: command => `For security and for me to work properly, you cannot deny the usage for the command \`${command}\`.`,
 
@@ -2574,8 +2786,8 @@ export default class extends Language {
 		SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS: name => `${REDCROSS} The specified action requires an extra argument to be passed. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_SOFTACTION: name => `${REDCROSS} Value must be any of the following: \`alert\`, \`log\`, or \`delete\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_INVALID_HARDACTION: name => `${REDCROSS} Value must be any of the following: \`none\`, \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
-		SELF_MODERATION_COMMAND_ENABLED: () => `${GREENTICK} Successfully enabled sub-system.`,
-		SELF_MODERATION_COMMAND_DISABLED: () => `${GREENTICK} Successfully disabled sub-system.`,
+		SELF_MODERATION_COMMAND_ENABLED: `${GREENTICK} Successfully enabled sub-system.`,
+		SELF_MODERATION_COMMAND_DISABLED: `${GREENTICK} Successfully disabled sub-system.`,
 		SELF_MODERATION_COMMAND_SOFT_ACTION: value => value
 			? `${GREENTICK} Successfully set actions to: \`${value}\``
 			: `${GREENTICK} Successfully disabled actions.`,
@@ -2619,6 +2831,7 @@ export default class extends Language {
 		SELF_MODERATION_DURATION_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
 
 		RESOLVER_DATE_SUFFIX: ' segundos',
+		RESOLVER_POSITIVE_AMOUNT: 'You must give me a positive number.',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',
 		PREFIX_REMINDER: prefix => `El prefijo de este servidor está configurado a: \`${prefix}\``,
 
@@ -2654,6 +2867,8 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
+		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
+		SYSTEM_NO_RESULTS: 'No pude encontrar ningún resultado para esa consulta',
 
 		JUMPTO: 'Salta al Mensaje ►',
 
@@ -2692,8 +2907,6 @@ export default class extends Language {
 		EVENTS_MESSAGE_UPDATE: 'Mensaje Editado',
 		EVENTS_MESSAGE_DELETE: 'Mensaje Eliminado',
 		EVENTS_COMMAND: command => `Comando Usado: ${command}`,
-		EVENTS_STREAM_START: member => `¡El usuario **${member.user.tag}** está en vivo! **${member.presence.activity.name}**\n${member.presence.activity.url}`,
-		EVENTS_STREAM_STOP: member => `¡El usuario **${member.user.tag}** ha dejado de estar en vivo!`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Restablecido el valor para la clave `channels.default`',
 		SETTINGS_DELETE_ROLES_INITIAL: 'Restablecido el valor para la clave `roles.initial`',

@@ -13,17 +13,17 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild) return;
 
-		guild!.memberSnowflakes.add(data.user.id);
+		guild.memberSnowflakes.add(data.user.id);
 		this.client.usertags.set(data.user.id, `${data.user.username}#${data.user.discriminator}`);
-		const member = await guild!.members.fetch(data.user.id).catch(() => null);
+		const member = await guild.members.fetch(data.user.id).catch(() => null);
 		if (!member) return;
 		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 		// @ts-ignore 2339
-		if (member) member._patch(data);
+		member._patch(data);
 
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
-		const allRoleSets = guild!.settings.get(GuildSettings.Roles.UniqueRoleSets) as GuildSettings.Roles.UniqueRoleSets;
+		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		// First check if the user has multiple roles from a set
 		for (const set of allRoleSets) {

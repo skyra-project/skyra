@@ -4,7 +4,7 @@ export enum Databases {
 	Guilds = 'guilds',
 	Members = 'members',
 	Moderation = 'moderation',
-	Polls = 'polls',
 	Starboard = 'starboard',
-	Users = 'users'
+	Users = 'users',
+	CommandCounter = 'command_counter'
 }

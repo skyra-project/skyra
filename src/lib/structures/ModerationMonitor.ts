@@ -35,7 +35,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 		try {
 			const points = typeof preProcessed === 'number' ? preProcessed : 1;
-			message.guild!.security.adders[$adder]!.add(message.author!.id, points);
+			message.guild!.security.adders[$adder]!.add(message.author.id, points);
 		} catch {
 			await this.processHardPunishment(message);
 		}
@@ -49,7 +49,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			&& message.type === 'DEFAULT'
 			&& message.author.id !== this.client.user!.id
 			&& message.guild.settings.get(this.keyEnabled) as boolean
-			&& !(message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels) as GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}
 
 	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {
@@ -93,7 +93,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onSoftBan(message: KlasaMessage) {
-		await this.createAction(message, () => floatPromise(this, softban(message.guild!, message.guild!.me!.user, message.author!)));
+		await this.createAction(message, () => floatPromise(this, softban(message.guild!, message.guild!.me!.user, message.author)));
 	}
 
 	protected async onBan(message: KlasaMessage) {
@@ -101,11 +101,12 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected sendModerationLog(message: KlasaMessage, type: ModerationTypeKeys) {
-		const moderationLog = message.guild!.moderation.new
-			.setModerator(this.client.user!.id)
-			.setUser(message.author!.id)
-			.setReason('Threshold Reached.')
-			.setType(type);
+		const moderationLog = message.guild!.moderation.create({
+			user_id: message.author.id,
+			moderator_id: this.client.user!.id,
+			type,
+			reason: 'Threshold Reached.'
+		});
 
 		const duration = message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null;
 		if (duration !== null) moderationLog.setDuration(duration);

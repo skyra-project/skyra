@@ -1,12 +1,12 @@
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import * as GIFEncoder from 'gifencoder';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar, streamToBuffer } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import GIFEncoder = require('gifencoder');
+import { assetsFolder } from '../../lib/util/constants';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],
@@ -23,8 +23,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_TRIGGERED_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_TRIGGERED_EXTENDED'),
+			description: language => language.tget('COMMAND_TRIGGERED_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_TRIGGERED_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author!]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);
 		return message.channel.sendFile(attachment, 'triggered.gif');
 	}
@@ -42,12 +42,11 @@ export default class extends SkyraCommand {
 		const canvas = new Canvas(350, 393);
 
 		const buffers = [this.template, await fetchAvatar(user, 512)];
-		const [imgTitle, imgTriggered] = await Promise.all(buffers.map(buffer => new Promise<Image>((resolve, reject) => {
+		const [imgTitle, imgTriggered] = buffers.map(buffer => {
 			const image = new Image(128, 128);
 			image.src = buffer!;
-			image.onload = resolve;
-			image.onerror = reject;
-		})));
+			return image;
+		});
 
 		const stream = encoder.createReadStream();
 		encoder.start();

@@ -4,7 +4,7 @@ import { LoadType, Status, Track } from 'lavalink';
 import { Events } from '../../types/Enums';
 import { enumerable } from '../../util/util';
 import { Song } from './Song';
-import { UserManagerStore } from './UserManagerStore';
+import { GuildSettings } from '../../types/settings/GuildSettings';
 
 export class Queue extends Array<Song> {
 
@@ -15,17 +15,17 @@ export class Queue extends Array<Song> {
 	public guild: Guild;
 
 	@enumerable(false)
-	public deejays: UserManagerStore;
+	public channelID: string | null = null;
 
 	@enumerable(false)
-	public channelID: string | null = null;
+	public systemPaused = false;
 
 	public volume = 100;
 	public replay = false;
 	public song: Song | null = null;
 
 	public get player() {
-		return this.client.lavalink!.players.get(this.guild!.id);
+		return this.client.lavalink!.players.get(this.guild.id);
 	}
 
 	public get status() {
@@ -51,7 +51,7 @@ export class Queue extends Array<Song> {
 	}
 
 	public get voiceChannel() {
-		return this.guild!.me!.voice.channel;
+		return this.guild.me!.voice.channel;
 	}
 
 	public get connection() {
@@ -59,9 +59,17 @@ export class Queue extends Array<Song> {
 		return (voiceChannel && voiceChannel.connection) || null;
 	}
 
-	public get listeners() {
+	public get listeners(): readonly string[] {
 		const { voiceChannel } = this;
-		return voiceChannel ? voiceChannel.members.map(member => member.id) : [];
+		if (voiceChannel) {
+			const members: string[] = [];
+			for (const [id, member] of voiceChannel.members) {
+				if (member.user.bot || member.voice.deaf) continue;
+				members.push(id);
+			}
+			return members;
+		}
+		return [];
 	}
 
 	private readonly _listeners: MusicManagerListeners = {
@@ -78,9 +86,8 @@ export class Queue extends Array<Song> {
 
 	public constructor(guild: Guild) {
 		super();
-		this.client = guild!.client;
+		this.client = guild.client;
 		this.guild = guild;
-		this.deejays = new UserManagerStore(this.client);
 	}
 
 	public add(user: string, song: Track): Song;
@@ -99,8 +106,8 @@ export class Queue extends Array<Song> {
 
 	public async fetch(song: string) {
 		const response = await this.client.lavalink!.load(song);
-		if (response.loadType === LoadType.NO_MATCHES) throw this.guild!.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
-		if (response.loadType === LoadType.LOAD_FAILED) throw this.guild!.language.get('MUSICMANAGER_FETCH_LOAD_FAILED');
+		if (response.loadType === LoadType.NO_MATCHES) throw this.guild.language.tget('MUSICMANAGER_FETCH_NO_MATCHES');
+		if (response.loadType === LoadType.LOAD_FAILED) throw this.guild.language.tget('MUSICMANAGER_FETCH_LOAD_FAILED');
 		return response.tracks;
 	}
 
@@ -110,8 +117,8 @@ export class Queue extends Array<Song> {
 	}
 
 	public async setVolume(volume: number) {
-		if (volume <= 0) throw this.guild!.language.get('MUSICMANAGER_SETVOLUME_SILENT');
-		if (volume > 200) throw this.guild!.language.get('MUSICMANAGER_SETVOLUME_LOUD');
+		if (volume <= 0) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_SILENT');
+		if (volume > 200) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
 		this.volume = volume;
 		await this.player.setVolume(volume);
 		return this;
@@ -131,15 +138,15 @@ export class Queue extends Array<Song> {
 	public async leave() {
 		await this.player.leave();
 		this.channelID = null;
-		this.deejays.clear();
 		this.reset(true);
+		this.systemPaused = false;
 		return this;
 	}
 
 	public play() {
-		if (!this.voiceChannel) return Promise.reject(this.guild!.language.get('MUSICMANAGER_PLAY_NO_VOICECHANNEL'));
-		if (!this.length) return Promise.reject(this.guild!.language.get('MUSICMANAGER_PLAY_NO_SONGS'));
-		if (this.playing) return Promise.reject(this.guild!.language.get('MUSICMANAGER_PLAY_PLAYING'));
+		if (!this.voiceChannel) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_VOICECHANNEL'));
+		if (!this.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
+		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
 		return new Promise<void>((resolve, reject) => {
 			// Setup the events
@@ -161,25 +168,32 @@ export class Queue extends Array<Song> {
 			};
 			this._listeners.disconnect = code => {
 				this._listeners.end!(false);
-				if (code >= 4000) reject(this.guild!.language.get('MUSICMANAGER_PLAY_DISCONNECTION'));
+				if (code >= 4000) reject(this.guild.language.tget('MUSICMANAGER_PLAY_DISCONNECTION'));
 				else resolve();
 			};
 			this.position = 0;
 			this.lastUpdate = 0;
 			this.song = this.shift()!;
+			this.systemPaused = false;
 
 			this.player.play(this.song.track)
 				.catch(reject);
 		});
 	}
 
-	public async pause() {
-		if (!this.paused) await this.player.pause(true);
+	public async pause(systemPaused = false) {
+		if (!this.paused) {
+			await this.player.pause(true);
+			this.systemPaused = systemPaused;
+		}
 		return this;
 	}
 
 	public async resume() {
-		if (!this.playing) await this.player.pause(false);
+		if (!this.playing) {
+			await this.player.pause(false);
+			this.systemPaused = false;
+		}
 		return this;
 	}
 
@@ -213,7 +227,7 @@ export class Queue extends Array<Song> {
 
 		// If there was an exception, handle it accordingly
 		if (isTrackExceptionEvent(payload)) {
-			this.client.emit(Events.Error, `[LL:${this.guild!.id}] Error: ${payload.error}`);
+			this.client.emit(Events.Error, `[LL:${this.guild.id}] Error: ${payload.error}`);
 			if (this._listeners.error) this._listeners.error(payload.error);
 			if (this.channel) {
 				this.channel.sendLocale('MUSICMANAGER_ERROR', [util.codeBlock('', payload.error)])
@@ -225,7 +239,7 @@ export class Queue extends Array<Song> {
 		// If Lavalink gets stuck, alert the users of the downtime
 		if (isTrackStuckEvent(payload)) {
 			if (this.channel && payload.thresholdMs > 1000) {
-				(this.channel.sendLocale('MUSICMANAGER_STUCK', [Math.ceil(payload.thresholdMs / 1000)]) as Promise<KlasaMessage>)
+				(this.channel.sendLocale('MUSICMANAGER_STUCK', [Math.ceil(payload.thresholdMs / 1000)]))
 					.then((message: KlasaMessage) => message.delete({ timeout: payload.thresholdMs }))
 					.catch(error => { this.client.emit(Events.Wtf, error); });
 			}
@@ -235,8 +249,8 @@ export class Queue extends Array<Song> {
 		// If the websocket closes badly (code >= 4000), there's most likely an error
 		if (isWebSocketClosedEvent(payload)) {
 			if (payload.code >= 4000) {
-				this.client.emit(Events.Error, `[LL:${this.guild!.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
-				(this.channel!.sendLocale('MUSICMANAGER_CLOSE') as Promise<KlasaMessage>)
+				this.client.emit(Events.Error, `[LL:${this.guild.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
+				(this.channel!.sendLocale('MUSICMANAGER_CLOSE'))
 					.then((message: KlasaMessage) => message.delete({ timeout: 10000 }))
 					.catch(error => { this.client.emit(Events.Wtf, error); });
 			}
@@ -259,10 +273,12 @@ export class Queue extends Array<Song> {
 	}
 
 	public async manageableFor(message: KlasaMessage) {
+		// Retrieve the DJ role
+		const djRole = message.guild!.settings.get(GuildSettings.Roles.Dj);
 		// The queue is manageable for deejays.
-		if (this.deejays.has(message.author!.id)) return true;
+		if (djRole && message.member!.roles.has(djRole)) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
-		if ((this.song ? this.song.requester === message.author!.id : true) && this.every(song => song.requester === message.author!.id)) return true;
+		if ((this.song ? this.song.requester === message.author.id : true) && this.every(song => song.requester === message.author.id)) return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return message.hasAtLeastPermissionLevel(5);
 	}
@@ -271,6 +287,7 @@ export class Queue extends Array<Song> {
 		this.song = null;
 		this.position = 0;
 		this.lastUpdate = 0;
+		this.systemPaused = false;
 		if (volume) this.volume = 100;
 	}
 

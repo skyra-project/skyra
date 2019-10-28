@@ -4,7 +4,7 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../Skyra';
+import { assetsFolder } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -14,8 +14,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.get('COMMAND_CUDDLE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_CUDDLE_EXTENDED'),
+			description: language => language.tget('COMMAND_CUDDLE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_CUDDLE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -28,11 +28,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async generate(message: KlasaMessage, user: KlasaUser) {
-		if (user.id === message.author!.id) user = this.client.user!;
+		if (user.id === message.author.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */
 		const [man, woman] = await Promise.all([
-			fetchAvatar(message.author!, 256),
+			fetchAvatar(message.author, 256),
 			fetchAvatar(user, 256)
 		]);
 

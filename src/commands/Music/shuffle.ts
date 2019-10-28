@@ -5,7 +5,7 @@ export default class extends MusicCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.get('COMMAND_SHUFFLE_DESCRIPTION'),
+			description: language => language.tget('COMMAND_SHUFFLE_DESCRIPTION'),
 			music: ['QUEUE_NOT_EMPTY', 'DJ_MEMBER']
 		});
 	}

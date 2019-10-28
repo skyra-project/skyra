@@ -7,8 +7,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['talk'],
-			description: language => language.get('COMMAND_ECHO_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_ECHO_EXTENDED'),
+			description: language => language.tget('COMMAND_ECHO_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_ECHO_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
 			usage: '[channel:channel] [message:string] [...]',

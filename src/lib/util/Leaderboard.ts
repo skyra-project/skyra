@@ -1,13 +1,5 @@
 import { Client, Collection } from 'discord.js';
-import { Databases } from '../types/constants/Constants';
-import { MemberSettings } from '../types/settings/MemberSettings';
-import { UserSettings } from '../types/settings/UserSettings';
 import { PreciseTimeout } from './PreciseTimeout';
-
-const LIMITS = {
-	GLOBAL: 25000,
-	MEMBERS: 5000
-};
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
@@ -121,11 +113,7 @@ export class Leaderboard {
 	}
 
 	private async _createMemberSyncHandle(guild: string) {
-		const r = this.client.providers.default.db;
-		// orderBy with index on getAll doesn't work
-		const data = await r.table(Databases.Members).getAll(guild, { index: 'guildID' }).orderBy(r.desc(MemberSettings.Points))
-			.limit(LIMITS.MEMBERS)
-			.run();
+		const data = await this.client.queries.fetchLeaderboardLocal(guild);
 
 		// Clear the leaderboards for said guild
 		if (this.guilds.has(guild)) this.guilds.get(guild)!.clear();
@@ -135,7 +123,7 @@ export class Leaderboard {
 		const store = this.guilds.get(guild)!;
 		let i = 0;
 		for (const entry of data) {
-			store.set(entry.id.split('.')[1], { name: null, points: entry[MemberSettings.Points], position: ++i });
+			store.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
 		}
 
 		this._tempPromises.guilds.delete(guild);
@@ -163,15 +151,13 @@ export class Leaderboard {
 
 	private async _createUserSyncHandle() {
 		// Get the sorted data from the db
-		const r = this.client.providers.default.db;
-		const data = await r.table(Databases.Users).orderBy({ index: r.desc(UserSettings.Points) }).limit(LIMITS.GLOBAL)
-			.run();
+		const data = await this.client.queries.fetchLeaderboardGlobal();
 
 		// Get the store and initialize the position number, then save all entries
 		this.users.clear();
 		let i = 0;
 		for (const entry of data) {
-			this.users.set(entry.id, { name: null, points: entry.points, position: ++i });
+			this.users.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
 		}
 
 		this._tempPromises.users = null;

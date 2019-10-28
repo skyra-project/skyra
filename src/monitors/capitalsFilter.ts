@@ -3,6 +3,7 @@ import { KlasaMessage, util } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { cutText, floatPromise } from '../lib/util/util';
 import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationMonitor';
+import { UserSettings } from '../lib/types/settings/UserSettings';
 const OFFSET = 0b100000;
 /**
  * In ASCII, the 6th bit tells whether a character is lowercase or uppercase:
@@ -33,11 +34,11 @@ export default class extends ModerationMonitor {
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)
 			&& message.content.length > 0
-			&& (message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) as GuildSettings.Selfmod.Capitals.Minimum) < message.content.length;
+			&& message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) < message.content.length;
 	}
 
 	protected preProcess(message: KlasaMessage) {
-		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum) as GuildSettings.Selfmod.Capitals.Maximum;
+		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum);
 		const { length } = message.content;
 		let count = 0;
 		let i = 0;
@@ -47,21 +48,23 @@ export default class extends ModerationMonitor {
 		return (count / length) * 100 > capsthreshold ? count : null;
 	}
 
-	protected onDelete(message: KlasaMessage, value: number) {
-		if (value > 25) floatPromise(this, message.author!.send(message.language.get('MONITOR_CAPSFILTER_DM', util.codeBlock('md', cutText(message.content, 1900)))));
+	protected async onDelete(message: KlasaMessage, value: number) {
 		floatPromise(this, message.nuke());
+		if (value > 25 && (await message.author.settings.sync()).get(UserSettings.ModerationDM)) {
+			floatPromise(this, message.author.sendLocale('MONITOR_CAPSFILTER_DM', [util.codeBlock('md', cutText(message.content, 1900))]));
+		}
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_CAPSFILTER', message.author)));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_CAPSFILTER', message.author.toString())));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.splitFields(message.content)
 			.setColor(0xEFAE45)
-			.setAuthor(`${message.author!.tag} (${message.author!.id})`, message.author!.displayAvatarURL({ size: 128 }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_CAPSFILTER')}`)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_CAPSFILTER')}`)
 			.setTimestamp();
 	}
 

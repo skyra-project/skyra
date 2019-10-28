@@ -2,6 +2,8 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { cutText, fetch, getColor } from '../../../lib/util/util';
+import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
+import { BrandingColors } from '../../../lib/util/constants';
 
 const ZWS = '\u200B';
 
@@ -11,46 +13,54 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ud', 'urbandictionary'],
 			cooldown: 15,
-			description: language => language.get('COMMAND_URBAN_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_URBAN_EXTENDED'),
+			description: language => language.tget('COMMAND_URBAN_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_URBAN_EXTENDED'),
 			nsfw: true,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '<query:string> [page:integer{0,10}]',
-			usageDelim: '#'
+			usage: '<query:string>'
 		});
 	}
 
-	public async run(message: KlasaMessage, [query, ind = 1]: [string, number]) {
-		const index = ind - 1;
-		if (index < 0) {
-			throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
-		}
+	public async run(message: KlasaMessage, [query]: [string]) {
+		const response = await message.sendEmbed(new MessageEmbed()
+			.setDescription(message.language.tget('SYSTEM_LOADING'))
+			.setColor(BrandingColors.Secondary));
 
-		const { list } = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
+		const result = await fetch(`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`, 'json') as UrbanDictionaryResultOk;
+		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
-		const result = list[index];
-		if (typeof result === 'undefined') {
-			throw index === 0
-				? message.language.get('COMMAND_URBAN_NOTFOUND')
-				: message.language.get('COMMAND_URBAN_INDEX_NOTFOUND');
-		}
+		const display = this.buildDisplay(list, message, query);
 
-		const definition = this.content(result.definition, result.permalink, message.language);
-		return message.sendEmbed(new MessageEmbed()
-			.setTitle(`Word: ${util.toTitleCase(query)}`)
-			.setURL(result.permalink)
-			.setColor(getColor(message) || 0xFFAB2D)
-			.setThumbnail('https://i.imgur.com/CcIZZsa.png')
-			.splitFields(message.language.get('COMMAND_URBAN_OUTPUT', ind, list.length, definition, result.example, result.author))
-			.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
-			.addField(ZWS, `\\👎 ${result.thumbs_down}`, true)
-			.setFooter('© Urban Dictionary'));
+		await display.start(response, message.author.id);
+		return response;
 	}
 
 	public content(definition: string, permalink: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
+		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
+	}
+
+	private buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
+		const display = new UserRichDisplay(new MessageEmbed()
+			.setTitle(`Urban Dictionary: ${util.toTitleCase(query)}`)
+			.setColor(getColor(message))
+			.setThumbnail('https://i.imgur.com/CcIZZsa.png')
+			.setFooter('© Urban Dictionary'));
+
+		for (const result of results) {
+			const definition = this.content(result.definition, result.permalink, message.language);
+			const example = result.example ? this.content(result.example, result.permalink, message.language) : 'None';
+			display.addPage((embed: MessageEmbed) => embed
+				.setURL(result.permalink)
+				.setDescription(definition)
+				.addField('Example', example)
+				.addField('Author', result.author)
+				.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
+				.addField(ZWS, `\\👎 ${result.thumbs_down}`, true));
+		}
+
+		return display;
 	}
 
 }

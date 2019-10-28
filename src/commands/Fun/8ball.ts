@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 
-const QUESTION_KEYS = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
+const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
 
 export default class extends SkyraCommand {
 
@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_8BALL_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_8BALL_EXTENDED'),
+			description: language => language.tget('COMMAND_8BALL_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_8BALL_EXTENDED'),
 			spam: true,
 			usage: '<question:string>'
 		});
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		return message.sendLocale('COMMAND_8BALL_OUTPUT',
-			[message.author!, input, util.codeBlock('', this.generator(input.toLowerCase(), message.language))],
+			[message.author, input, util.codeBlock('', this.generator(input.toLowerCase(), message.language))],
 			{ disableEveryone: true });
 	}
 
@@ -27,13 +27,13 @@ export default class extends SkyraCommand {
 			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as unknown as EightBallLanguage;
 
 		if (!this.checkQuestion(prefixes.QUESTION || '?', input)) {
-			throw i18n.get('COMMAND_8BALL_NOT_QUESTION');
+			throw i18n.tget('COMMAND_8BALL_NOT_QUESTION');
 		}
 
 		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}`);
 		}
-		return i18n.get('COMMAND_8BALL_ELSE');
+		return i18n.tget('COMMAND_8BALL_ELSE');
 	}
 
 	private checkQuestion(question: string | RegExp, input: string) {

@@ -1,15 +1,15 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
-import { TOKENS } from '../../../config';
+import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { fetch } from '../../../lib/util/util';
+import { TOKENS } from '../../../../config';
 
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 15,
-			description: language => language.get('COMMAND_PRICE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_PRICE_EXTENDED'),
+			description: language => language.tget('COMMAND_PRICE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_PRICE_EXTENDED'),
 			usage: '<from:string> <to:string> [amount:integer]',
 			usageDelim: ' '
 		});
@@ -27,8 +27,8 @@ export default class extends SkyraCommand {
 			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE}`]]
 		}, 'json') as CryptoCompareResultOk | CryptoCompareResultError;
 
-		if (body.Response === 'Error') throw message.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
-		return message.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * body[to]]);
+		if (body.Response === 'Error') throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');
+		return message.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * (body as CryptoCompareResultOk)[to]]);
 	}
 
 }

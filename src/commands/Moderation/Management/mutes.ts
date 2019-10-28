@@ -1,10 +1,5 @@
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
-import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { ModerationTypeKeys } from '../../../lib/util/constants';
-import { getColor } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -12,8 +7,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.get('COMMAND_MUTES_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_MUTES_EXTENDED'),
+			description: language => language.tget('COMMAND_MUTES_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_MUTES_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			runIn: ['text'],
@@ -21,39 +16,18 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [target]: [KlasaUser?]) {
-		const mutes = (await (target
-			? message.guild!.moderation.fetch(target!.id)
-			: message.guild!.moderation.fetch())).filter(log => log.type === ModerationTypeKeys.Mute || log.type === ModerationTypeKeys.TemporaryMute);
-		if (!mutes.size) throw message.language.get('COMMAND_MUTES_EMPTY');
-
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message) || 0xFFAB2D)
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL())
-			.setTitle(message.language.get('COMMAND_MUTES_AMOUNT', mutes.size)));
-
-		// Fetch usernames
-		const users = new Map() as Map<string, string>;
-		for (const mute of mutes.values()) {
-			const id = typeof mute.moderator === 'string' ? mute.moderator : mute.moderator!.id;
-			if (!users.has(id)) users.set(id, await this.client.fetchUsername(id));
-		}
-
-		// Set up the formatter
-		const format = this.displayMute.bind(this, users, message.language.duration.bind(message.language));
-
-		for (const page of util.chunk([...mutes.values()], 10)) {
-			display.addPage(template => template.setDescription(page.map(format)));
-		}
-
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: getColor(message) || 0xFFAB2D })) as KlasaMessage;
-		await display.run(response, message.author!.id);
-		return response;
+	private get moderations() {
+		return this.store.get('moderations') as unknown as Moderations;
 	}
 
-	public displayMute(users: Map<string, string>, duration: (time: number) => string, mute: ModerationManagerEntry) {
-		const id = typeof mute.moderator === 'string' ? mute.moderator : mute.moderator!.id;
-		return `Case \`${mute.case}\`. Moderator: **${users.get(id)}**.\n${mute.reason || 'None'}${mute.duration ? `\nExpires in: ${duration(mute.duration)}` : ''}`;
+	public run(message: KlasaMessage, [target]: [KlasaUser?]) {
+		const { moderations } = this;
+		if (moderations) return moderations.run(message, ['mutes', target]);
+		throw new Error('Moderations command not loaded yet.');
 	}
 
+}
+
+interface Moderations extends SkyraCommand {
+	run(message: KlasaMessage, args: ['mutes' | 'warnings' | 'all', KlasaUser | undefined]): Promise<KlasaMessage>;
 }

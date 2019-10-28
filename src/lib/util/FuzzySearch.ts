@@ -17,7 +17,7 @@ export class FuzzySearch<K extends string, V> {
 		this.filter = filter;
 	}
 
-	public run(message: Message, query: string) {
+	public run(message: Message, query: string, threshold = 5) {
 		const lowcquery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 
@@ -39,6 +39,9 @@ export class FuzzySearch<K extends string, V> {
 			} else {
 				distance = levenshtein(lowcquery, lowerCaseName);
 			}
+
+			// If the distance is bigger than the threshold, skip
+			if (distance > threshold) continue;
 
 			// Push the results
 			results.push([id, entry, distance]);
@@ -66,12 +69,12 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 
-		const { content: n } = await message.prompt(message.language.get('FUZZYSEARCH_MATCHES', results.length - 1,
+		const { content: n } = await message.prompt(message.language.tget('FUZZYSEARCH_MATCHES', results.length - 1,
 			util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
 		if (n.toLowerCase() === 'abort') return null;
 		const parsed = Number(n);
-		if (!Number.isSafeInteger(parsed)) throw message.language.get('FUZZYSEARCH_INVALID_NUMBER');
-		if (parsed < 0 || parsed >= results.length) throw message.language.get('FUZZYSEARCH_INVALID_INDEX');
+		if (!Number.isSafeInteger(parsed)) throw message.language.tget('FUZZYSEARCH_INVALID_NUMBER');
+		if (parsed < 0 || parsed >= results.length) throw message.language.tget('FUZZYSEARCH_INVALID_INDEX');
 		return results[parsed];
 	}
 

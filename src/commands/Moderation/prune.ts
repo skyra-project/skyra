@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['purge', 'nuke'],
 			cooldown: 5,
-			description: language => language.get('COMMAND_PRUNE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_PRUNE_EXTENDED'),
+			description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
 			permissionLevel: 5,
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
@@ -39,14 +39,14 @@ export default class extends SkyraCommand {
 			case 'invites':
 			case 'invite': return (mes: Message) => /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/\w+/.test(mes.content);
 			case 'bots':
-			case 'bot': return (mes: Message) => mes.author!.bot;
-			case 'you': return (mes: Message) => mes.author!.id === this.client.user!.id;
-			case 'me': return (mes: Message) => mes.author!.id === message.author!.id;
+			case 'bot': return (mes: Message) => mes.author.bot;
+			case 'you': return (mes: Message) => mes.author.id === this.client.user!.id;
+			case 'me': return (mes: Message) => mes.author.id === message.author.id;
 			case 'uploads':
 			case 'upload': return (mes: Message) => mes.attachments.size > 0;
 			case 'humans':
 			case 'human':
-			case 'user': return (mes: Message) => mes.author!.id === user!.id;
+			case 'user': return (mes: Message) => mes.author.id === user!.id;
 			default: return () => true;
 		}
 	}

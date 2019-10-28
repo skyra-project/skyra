@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 			aliases: ['slot', 'slots', 'slotmachines'],
 			bucket: 2,
 			cooldown: 7,
-			description: language => language.get('COMMAND_SLOTMACHINE_DESCRIPTION'),
-			extendedHelp: language => language.get('COMMAND_SLOTMACHINE_EXTENDED'),
+			description: language => language.tget('COMMAND_SLOTMACHINE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SLOTMACHINE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000>'
@@ -19,11 +19,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
-		await message.author!.settings.sync();
+		await message.author.settings.sync();
 		const coins = Number(text);
-		const money = message.author!.settings.get(UserSettings.Money) as UserSettings.Money;
+		const money = message.author.settings.get(UserSettings.Money);
 		if (money < coins) {
-			throw message.language.get('COMMAND_SLOTMACHINES_MONEY', money);
+			throw message.language.tget('COMMAND_SLOTMACHINES_MONEY', money);
 		}
 
 		const attachment = await new Slotmachine(message, coins).run();

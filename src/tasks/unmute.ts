@@ -3,49 +3,48 @@ import { Task } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { ModerationSchemaKeys, ModerationTypeKeys } from '../lib/util/constants';
 import { removeMute } from '../lib/util/util';
-import { SkyraGuildMember } from '../lib/extensions/SkyraGuildMember';
 const { FLAGS } = Permissions;
 
 export default class extends Task {
 
 	public async run(doc: UnmuteTaskData) {
 		// Get the guild
-		const guild = this.client.guilds.get(doc[ModerationSchemaKeys.Guild]);
+		const guild = this.client.guilds.get(doc.guildID);
 
 		if (!guild) return;
-		await removeMute(guild, doc[ModerationSchemaKeys.User]);
+		await removeMute(guild, doc.userID);
 
 		// And check for permissions
-		if (!guild!.me!.permissions.has(FLAGS.MANAGE_ROLES)) return;
+		if (!guild.me!.permissions.has(FLAGS.MANAGE_ROLES)) return;
 
 		// Check if the user is still muted
-		const modlog = await guild!.moderation.fetch(doc[ModerationSchemaKeys.Case] as number);
+		const modlog = await guild.moderation.fetch(doc.caseID);
 		if (!modlog || modlog.appealed) return;
 
 		await modlog.appeal();
 
 		// Fetch the user, then the member
-		const user = await this.client.users.fetch(doc[ModerationSchemaKeys.User]);
-		const member = await guild!.members.fetch(user.id).catch(() => null) as GuildMember | null;
+		const user = await this.client.users.fetch(doc.userID);
+		const member = await guild.members.fetch(user.id).catch(() => null);
 
 		// If the member is found, update the roles
 		if (member) {
-			const { position } = guild!.me!.roles.highest;
-			const rolesMuted = guild!.settings.get(GuildSettings.Roles.Muted) as GuildSettings.Roles.Muted;
+			const { position } = guild.me!.roles.highest;
+			const rolesMuted = guild.settings.get(GuildSettings.Roles.Muted);
 			const roles = this.extractRoles(member, rolesMuted, position, modlog.extraData as readonly string[] | null);
 			await member.edit({ roles }).catch(() => null);
 		}
 
 		// Send the modlog
-		await guild!.moderation.new
-			.setModerator(this.client.user!.id)
-			.setUser(user)
-			.setType(ModerationTypeKeys.UnMute)
-			.setReason(`Mute released after ${this.client.languages.default.duration(doc[ModerationSchemaKeys.Duration])}`)
-			.create();
+		await guild.moderation.create({
+			user_id: user.id,
+			moderator_id: this.client.user!.id,
+			type: ModerationTypeKeys.UnMute,
+			reason: `Mute released after ${this.client.languages.default.duration(doc.duration)}`
+		}).create();
 	}
 
-	private extractRoles(member: SkyraGuildMember, muteRole: string, rolePosition: number, rawRoleIDs: readonly string[] | null) {
+	private extractRoles(member: GuildMember, muteRole: string, rolePosition: number, rawRoleIDs: readonly string[] | null) {
 		if (rawRoleIDs === null) rawRoleIDs = [];
 
 		const rawRoles = rawRoleIDs.map(id => member.guild.roles.get(id)).filter(role => role) as Role[];
@@ -66,4 +65,5 @@ interface UnmuteTaskData {
 	[ModerationSchemaKeys.Guild]: string;
 	[ModerationSchemaKeys.User]: string;
 	[ModerationSchemaKeys.Duration]: number;
+	[ModerationSchemaKeys.Case]: number;
 }

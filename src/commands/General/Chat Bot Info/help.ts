@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('command', (arg, possible, message) => {
 			if (!arg) return undefined;
-			return this.client.arguments.get('command')!.run(arg, possible, message);
+			return this.client.arguments.get('commandname')!.run(arg, possible, message);
 		});
 		this.createCustomResolver('category', async (arg, _, msg) => {
 			if (!arg) return undefined;

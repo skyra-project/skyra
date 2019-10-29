@@ -3,7 +3,7 @@ import { Player, PlayerColor } from './Player';
 import { KlasaUser } from 'klasa';
 import { Cell } from './Board';
 import { LLRCDataEmoji } from '../../LongLivingReactionCollector';
-import { CONNECT_FOUR } from '../../constants';
+import { ConnectFourConstants } from '../../constants';
 import { DiscordAPIError } from 'discord.js';
 import { Events } from '../../../types/Enums';
 import { resolveEmoji } from '../../util';
@@ -23,7 +23,7 @@ export class PlayerHuman extends Player {
 			this.game.llrc!.setTime(60000);
 			this.game.llrc!.setEndListener(() => resolve(''));
 			this.game.llrc!.setListener(data => {
-				if (data.userID === this.player.id && CONNECT_FOUR.REACTIONS.includes(data.emoji.name)) {
+				if (data.userID === this.player.id && ConnectFourConstants.Reactions.includes(data.emoji.name)) {
 					if (this.game.manageMessages) {
 						this.removeEmoji(data.emoji, data.userID)
 							.catch(error => this.game.message.client.emit(Events.ApiError, error));
@@ -37,7 +37,7 @@ export class PlayerHuman extends Player {
 		if (!reaction) {
 			this.game.content = this.game.language.tget('COMMAND_GAMES_TIMEOUT');
 			this.game.stop();
-		} else if (!this.drop(CONNECT_FOUR.REACTIONS.indexOf(reaction))) {
+		} else if (!this.drop(ConnectFourConstants.Reactions.indexOf(reaction))) {
 			return this.start();
 		}
 	}

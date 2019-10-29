@@ -4,7 +4,7 @@ import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
 import { Events } from '../../../types/Enums';
 import { Player } from './Player';
 import { LongLivingReactionCollector } from '../../LongLivingReactionCollector';
-import { CONNECT_FOUR } from '../../constants';
+import { ConnectFourConstants } from '../../constants';
 
 export class Game {
 
@@ -67,7 +67,7 @@ export class Game {
 
 	public async run() {
 		this.message = await this.message.send(this.language.tget('SYSTEM_LOADING'));
-		for (const reaction of CONNECT_FOUR.REACTIONS) await this.message.react(reaction);
+		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
 		this.content = this.language.tget('COMMAND_C4_GAME_NEXT', this.next!.name, this.next!.color);
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 

@@ -7,49 +7,42 @@ export const rootFolder = join(__dirname, '..', '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
 export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
 
-export const TIME = Object.freeze({
-	DAY: 1000 * 60 * 60 * 24,
-	HOUR: 1000 * 60 * 60,
-	MILLISECOND: 1,
-	MINUTE: 1000 * 60,
-	SECOND: 1000,
-	WEEK: 1000 * 60 * 60 * 24 * 7,
-	YEAR: 1000 * 60 * 60 * 24 * 365
-});
+export const enum Time {
+	Millisecond = 1,
+	Second = 1000,
+	Minute = 1000 * 60,
+	Hour = 1000 * 60 * 60,
+	Day = 1000 * 60 * 60 * 24,
+	Year = 1000 * 60 * 60 * 24 * 365
+};
 
-export const EMOJIS = Object.freeze({
-	GREENTICK: '<:greenTick:637706251253317669>',
-	LOADING: '<a:SkyraLoading:497584859045429250>',
-	REDCROSS: '<:redCross:637706251257511973>',
-	SHINY: '<:shiny:612364146792726539>'
-});
+export const enum Emojis {
+	GreenTick = '<:greenTick:637706251253317669>',
+	Loading = '<a:SkyraLoading:497584859045429250>',
+	RedCross = '<:redCross:637706251257511973>',
+	Shiny = '<:shiny:612364146792726539>'
+};
 
-export const CONNECT_FOUR = Object.freeze({
-	EMOJIS: Object.freeze({
-		1: '<:PlayerONE:352403997300359169>',
-		2: '<:PlayerTWO:352404081974968330>',
-		0: '<:Empty:352403997606412289>',
-		WINNER_1: '<:PlayerONEWin:352403997761601547>',
-		WINNER_2: '<:PlayerTWOWin:352403997958602752>'
-	}),
-	REACTIONS: Object.freeze('1⃣ 2⃣ 3⃣ 4⃣ 5⃣ 6⃣ 7⃣'.split(' ')),
-	REACTION_OPTIONS: Object.freeze({
-		max: 1,
-		time: 60000
-	}),
-	RESPONSES: Object.freeze({
-		FULL_GAME: 1,
-		FULL_LINE: 0,
-		TIMEOUT: 2
-	})
-});
+export namespace ConnectFourConstants {
 
-export enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member }
+	export const enum Emojis {
+		Empty = '<:Empty:352403997606412289>',
+		PlayerOne = '<:PlayerONE:352403997300359169>',
+		PlayerTwo = '<:PlayerTWO:352404081974968330>',
+		WinnerOne = '<:PlayerONEWin:352403997761601547>',
+		WinnerTwo = '<:PlayerTWOWin:352403997958602752>'
+	}
+
+	export const Reactions = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'] as readonly string[];
+
+}
+
+export const enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member }
 
 export namespace Moderation {
 
 	/* eslint-disable no-multi-spaces */
-	export enum TypeVariation {
+	export const enum TypeVariation {
 		Ban                  = 0b00000000,
 		Kick                 = 0b00000001,
 		Mute                 = 0b00000010,
@@ -64,19 +57,19 @@ export namespace Moderation {
 		RestrictedVoice      = 0b00001011
 	}
 
-	export enum TypeMetadata {
+	export const enum TypeMetadata {
 		Appeal               = 0b00010000,
 		Temporary            = 0b00100000,
 		Fast                 = 0b01000000,
 		Invalidated          = 0b10000000
 	}
 
-	export enum TypeBits {
+	export const enum TypeBits {
 		Variation            = 0b00001111,
 		Metadata             = 0b11110000
 	}
 
-	export enum TypeCodes {
+	export const enum TypeCodes {
 		Warn                               = TypeVariation.Warning,
 		Mute                               = TypeVariation.Mute,
 		Kick                               = TypeVariation.Kick,
@@ -151,13 +144,7 @@ export namespace Moderation {
 		[TypeCodes.Prune, { color: 0x000000, title: 'Prune' }]
 	]) as ReadonlyMap<TypeCodes, ModerationTypeAssets>;
 
-	export enum CommandErrors {
-		CaseAppealed = 'CASE_APPEALED',
-		CaseNotExists = 'CASE_NOT_EXISTS',
-		CaseTypeNotAppeal = 'CASE_TYPE_NOT_APPEAL'
-	}
-
-	export enum SchemaKeys {
+	export const enum SchemaKeys {
 		Case = 'caseID',
 		CreatedAt = 'createdAt',
 		Duration = 'duration',
@@ -183,7 +170,7 @@ export const clientOptions: KlasaClientOptions = {
 	}
 };
 
-export enum BrandingColors {
+export const enum BrandingColors {
 	Primary = 0x5C71BD,
 	Secondary = 0xFF9D01
 }

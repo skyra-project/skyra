@@ -2,7 +2,7 @@ import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { Moderation, TIME } from '../util/constants';
+import { Moderation, Time } from '../util/constants';
 import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { isNullOrUndefined } from '../util/util';
@@ -22,7 +22,7 @@ export class ModerationManagerEntry {
 	public type: Moderation.TypeCodes;
 	public user: string | User;
 	public createdAt: number | null;
-	private [kTimeout] = Date.now() + (TIME.MINUTE * 15);
+	private [kTimeout] = Date.now() + (Time.Minute * 15);
 
 	public constructor(manager: ModerationManager, data: ModerationManagerInsertData) {
 		this.manager = manager;
@@ -166,7 +166,7 @@ export class ModerationManagerEntry {
 		if (this.moderator) return true;
 
 		const checkSoftban = this.typeVariation === Moderation.TypeVariation.Ban;
-		const before = Date.now() - TIME.MINUTE;
+		const before = Date.now() - Time.Minute;
 		const user = this.flattenedUser;
 		for (const entry of this.manager.values()) {
 			// If it's not the same user target or if it's at least 1 minute old, skip
@@ -191,7 +191,7 @@ export class ModerationManagerEntry {
 
 	public async edit(data: ModerationManagerUpdateData = {}) {
 		const flattened: ModerationManagerUpdateDataWithType = {
-			duration: isNullOrUndefined(data.duration) || !this.temporable || data.duration > TIME.YEAR
+			duration: isNullOrUndefined(data.duration) || !this.temporable || data.duration > Time.Year
 				? this.duration
 				: data.duration || null,
 			moderator_id: typeof data.moderator_id === 'undefined'
@@ -260,7 +260,7 @@ export class ModerationManagerEntry {
 		if (!this.temporable) return this;
 
 		if (typeof value === 'string') value = new Duration(value.trim()).offset;
-		if (typeof value === 'number' && (value <= 0 || value > TIME.YEAR)) value = null;
+		if (typeof value === 'number' && (value <= 0 || value > Time.Year)) value = null;
 
 		this.duration = value;
 		this.type = ModerationManagerEntry.getTypeFlagsFromDuration(this.type, this.duration);
@@ -355,7 +355,7 @@ export class ModerationManagerEntry {
 
 	private static getTypeFlagsFromDuration(type: Moderation.TypeCodes, duration: number | null) {
 		if (duration === null) return type & ~(Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast);
-		if (duration < TIME.MINUTE) return type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast;
+		if (duration < Time.Minute) return type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast;
 		return type | Moderation.TypeMetadata.Temporary;
 	}
 

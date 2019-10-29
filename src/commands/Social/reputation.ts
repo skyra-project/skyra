@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
-import { TIME } from '../../lib/util/constants';
+import { Time } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -40,8 +40,8 @@ export default class extends SkyraCommand {
 		}
 
 		const timeReputation = selfSettings.get(UserSettings.TimeReputation);
-		if (this.busy.has(message.author.id) || timeReputation + TIME.DAY > now) {
-			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + TIME.DAY - now]);
+		if (this.busy.has(message.author.id) || timeReputation + Time.Day > now) {
+			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + Time.Day - now]);
 		}
 
 		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');

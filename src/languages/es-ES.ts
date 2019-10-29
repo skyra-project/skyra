@@ -1,14 +1,14 @@
 // @ts-nocheck
 import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
-import { EMOJIS } from '../lib/util/constants';
+import { Emojis } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
 import { LanguageKeys } from '../lib/types/Languages';
 
 const { toTitleCase, codeBlock } = klasaUtil;
-const { LOADING, SHINY, GREENTICK, REDCROSS } = EMOJIS;
+const { Loading: LOADING, Shiny: SHINY, GreenTick: GREENTICK, RedCross: REDCROSS } = Emojis;
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Uso Explicado***')

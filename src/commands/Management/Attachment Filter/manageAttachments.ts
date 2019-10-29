@@ -2,7 +2,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { Adder } from '../../../lib/util/Adder';
-import { TIME } from '../../../lib/util/constants';
+import { Time } from '../../../lib/util/constants';
 
 const TYPES = {
 	action: {
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 					: (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) & 0b0111;
 			}
 
-			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, TIME.YEAR];
+			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, Time.Year];
 			const duration = Math.round(((await this.client.arguments.get('duration')!.run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
 			if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.tget('RESOLVER_DATE_SUFFIX'));
 			return duration;

@@ -3,7 +3,7 @@ import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
 import { CLIENT_ID } from '../../../config';
 import { Events } from '../types/Enums';
-import { TIME } from '../util/constants';
+import { Time } from '../util/constants';
 import { fetchReactionUsers, resolveEmoji } from '../util/util';
 import { GiveawayManager } from './GiveawayManager';
 import { api } from '../util/Models/Api';
@@ -71,7 +71,7 @@ export class Giveaway {
 	private get state() {
 		const { remaining } = this;
 		if (remaining <= 0) return States.Finished;
-		if (remaining < TIME.SECOND * 20) return States.LastChance;
+		if (remaining < Time.Second * 20) return States.LastChance;
 		return States.Running;
 	}
 
@@ -243,13 +243,13 @@ export class Giveaway {
 
 	private calculateNextRefresh() {
 		const { remaining } = this;
-		if (remaining < TIME.SECOND * 5) return Date.now() + TIME.SECOND;
-		if (remaining < TIME.SECOND * 30) return Date.now() + Math.min(remaining - (TIME.SECOND * 6), TIME.SECOND * 5);
-		if (remaining < TIME.MINUTE * 2) return Date.now() + (TIME.SECOND * 15);
-		if (remaining < TIME.MINUTE * 5) return Date.now() + (TIME.SECOND * 20);
-		if (remaining < TIME.MINUTE * 15) return Date.now() + TIME.MINUTE;
-		if (remaining < TIME.MINUTE * 30) return Date.now() + (TIME.MINUTE * 2);
-		return Date.now() + (TIME.MINUTE * 5);
+		if (remaining < Time.Second * 5) return Date.now() + Time.Second;
+		if (remaining < Time.Second * 30) return Date.now() + Math.min(remaining - (Time.Second * 6), Time.Second * 5);
+		if (remaining < Time.Minute * 2) return Date.now() + (Time.Second * 15);
+		if (remaining < Time.Minute * 5) return Date.now() + (Time.Second * 20);
+		if (remaining < Time.Minute * 15) return Date.now() + Time.Minute;
+		if (remaining < Time.Minute * 30) return Date.now() + (Time.Minute * 2);
+		return Date.now() + (Time.Minute * 5);
 	}
 
 	private async pickWinners() {

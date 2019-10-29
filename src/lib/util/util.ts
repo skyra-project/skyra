@@ -6,7 +6,7 @@ import { isObject } from 'util';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
-import { Moderation, TIME, BrandingColors } from './constants';
+import { Moderation, Time, BrandingColors } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
 import { util, RateLimitManager } from 'klasa';
@@ -65,13 +65,13 @@ export interface ReferredPromise<T> {
 export function noop() { }
 
 export function showSeconds(duration: number) {
-	const seconds = Math.floor(duration / TIME.SECOND) % 60;
-	if (duration < TIME.MINUTE) return seconds === 1 ? 'a second' : `${seconds} seconds`;
+	const seconds = Math.floor(duration / Time.Second) % 60;
+	if (duration < Time.Minute) return seconds === 1 ? 'a second' : `${seconds} seconds`;
 
-	const minutes = Math.floor(duration / TIME.MINUTE) % 60;
+	const minutes = Math.floor(duration / Time.Minute) % 60;
 	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-	if (duration >= TIME.HOUR) {
-		const hours = Math.floor(duration / TIME.HOUR);
+	if (duration >= Time.Hour) {
+		const hours = Math.floor(duration / Time.Hour);
 		output = `${hours.toString().padStart(2, '0')}:${output}`;
 	}
 

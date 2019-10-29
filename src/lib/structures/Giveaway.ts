@@ -243,10 +243,12 @@ export class Giveaway {
 
 	private calculateNextRefresh() {
 		const { remaining } = this;
+		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		if (remaining < Time.Second * 5) return Date.now() + Time.Second;
 		if (remaining < Time.Second * 30) return Date.now() + Math.min(remaining - (Time.Second * 6), Time.Second * 5);
 		if (remaining < Time.Minute * 2) return Date.now() + (Time.Second * 15);
 		if (remaining < Time.Minute * 5) return Date.now() + (Time.Second * 20);
+		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		if (remaining < Time.Minute * 15) return Date.now() + Time.Minute;
 		if (remaining < Time.Minute * 30) return Date.now() + (Time.Minute * 2);
 		return Date.now() + (Time.Minute * 5);

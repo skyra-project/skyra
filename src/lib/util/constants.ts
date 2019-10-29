@@ -14,14 +14,14 @@ export const enum Time {
 	Hour = 1000 * 60 * 60,
 	Day = 1000 * 60 * 60 * 24,
 	Year = 1000 * 60 * 60 * 24 * 365
-};
+}
 
 export const enum Emojis {
 	GreenTick = '<:greenTick:637706251253317669>',
 	Loading = '<a:SkyraLoading:497584859045429250>',
 	RedCross = '<:redCross:637706251257511973>',
 	Shiny = '<:shiny:612364146792726539>'
-};
+}
 
 export namespace ConnectFourConstants {
 

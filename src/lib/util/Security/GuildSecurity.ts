@@ -70,7 +70,7 @@ export class GuildSecurity {
 	public updateRegExp(filterArray: readonly string[]) {
 		const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
 			item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
-		this.regexp = new RegExp(`\\b(?:${filtered})\\b`, 'gi');
+		this.regexp = new RegExp(`(?<=^|\\s)(?:${filtered})(?=$|\\s)`, 'gi');
 		return this;
 	}
 

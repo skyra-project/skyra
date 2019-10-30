@@ -32,13 +32,4 @@ export default class extends ModerationCommand {
 
 	public async posthandle() { /* Do nothing */ }
 
-	public async checkModeratable(message: KlasaMessage, target: User, prehandled: unknown) {
-		const modlog = (await message.guild!.moderation.fetch(target.id))
-			.filter(log => !log.invalidated && log.isType(Moderation.TypeCodes.Mute))
-			.last();
-		if (!modlog) throw message.language.tget('GUILD_MUTE_NOT_FOUND');
-		const member = await super.checkModeratable(message, target, prehandled);
-		return member;
-	}
-
 }

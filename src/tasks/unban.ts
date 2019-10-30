@@ -1,6 +1,8 @@
 import { Permissions } from 'discord.js';
 import { KlasaGuild, Task } from 'klasa';
 import { Moderation } from '../lib/util/constants';
+import { api } from '../lib/util/Models/Api';
+import { APIBanData } from '../lib/types/DiscordAPI';
 const { FLAGS } = Permissions;
 
 export default class extends Task {
@@ -26,8 +28,12 @@ export default class extends Task {
 	}
 
 	public async _fetchBanLog(guild: KlasaGuild, userID: string) {
-		const users = await guild.fetchBans();
-		return users.get(userID) || null;
+		try {
+			return await api(this.client).guilds(guild.id).bans(userID)
+				.get() as APIBanData;
+		} catch {
+			return null;
+		}
 	}
 
 }

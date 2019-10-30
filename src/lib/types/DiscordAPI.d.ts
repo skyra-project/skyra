@@ -63,6 +63,11 @@ export interface APIWebhookData {
 	token: string;
 }
 
+export interface APIBanData {
+	user: APIUserData;
+	reason: string | null;
+}
+
 export interface WSGuildMemberAdd extends APIGuildMemberData {
 	guild_id: string;
 }

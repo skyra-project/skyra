@@ -4,7 +4,7 @@ import { GuildSettings } from '../types/settings/GuildSettings';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { Adder } from '../util/Adder';
 import { Moderation, MessageLogsEnum } from '../util/constants';
-import { floatPromise, mute, softban } from '../util/util';
+import { floatPromise } from '../util/util';
 import { Events, PermissionLevels } from '../types/Enums';
 import { MessageEmbed } from 'discord.js';
 
@@ -84,20 +84,23 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onKick(message: KlasaMessage) {
-		await this.createActionAndSend(message, Moderation.TypeCodes.Kick, () => floatPromise(this, message.member!.kick()));
+		await this.createActionAndSend(message, Moderation.TypeCodes.Kick, () =>
+			floatPromise(this, message.guild!.security.actions.kick(message.author.id, '[Auto-Moderation]')));
 	}
 
 	protected async onMute(message: KlasaMessage) {
-		const duration = message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null;
-		await this.createAction(message, () => floatPromise(this, mute(message.guild!.me!, message.member!, { duration })));
+		await this.createActionAndSend(message, Moderation.TypeCodes.Mute, () =>
+			floatPromise(this, message.guild!.security.actions.mute(message.author.id, '[Auto-Moderation]')));
 	}
 
 	protected async onSoftBan(message: KlasaMessage) {
-		await this.createAction(message, () => floatPromise(this, softban(message.guild!, message.guild!.me!.user, message.author)));
+		await this.createActionAndSend(message, Moderation.TypeCodes.Softban, () =>
+			floatPromise(this, message.guild!.security.actions.softban(message.author.id, 1, '[Auto-Moderation]')));
 	}
 
 	protected async onBan(message: KlasaMessage) {
-		await this.createActionAndSend(message, Moderation.TypeCodes.Ban, () => floatPromise(this, message.member!.ban()));
+		await this.createActionAndSend(message, Moderation.TypeCodes.Ban, () =>
+			floatPromise(this, message.guild!.security.actions.ban(message.author.id, 1, '[Auto-Moderation]')));
 	}
 
 	protected sendModerationLog(message: KlasaMessage, type: Moderation.TypeCodes) {

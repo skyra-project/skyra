@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Role } from 'discord.js';
+import { Guild, GuildMember, Role, RoleData, GuildChannel, CategoryChannel, PermissionOverwriteOption, Permissions } from 'discord.js';
 import { api } from '../Models/Api';
 import { GuildSettings, StickyRole } from '../../types/settings/GuildSettings';
 import { deepClone } from '@klasa/utils';
@@ -6,6 +6,33 @@ import { Mutable } from '../../types/util';
 import { CLIENT_ID } from '../../../../config';
 import { Moderation } from '../constants';
 import { ModerationManagerEntry } from '../../structures/ModerationManagerEntry';
+
+const kMuteRoleDataOptions: RoleData = {
+	color: 0x795548,
+	hoist: false,
+	mentionable: false,
+	name: 'Muted',
+	permissions: []
+};
+
+const kMuteCategoryOverwriteOptions: PermissionOverwriteOption = {
+	SEND_MESSAGES: false,
+	ADD_REACTIONS: false,
+	CONNECT: false
+};
+
+const kVoiceOverwriteOptions: PermissionOverwriteOption = {
+	CONNECT: false
+};
+
+const kVoiceOverwriteBitfield = new Permissions(['CONNECT']);
+
+const kTextOverwriteOptions: PermissionOverwriteOption = {
+	SEND_MESSAGES: false,
+	ADD_REACTIONS: false
+};
+
+const kTextOverwriteBitfield = new Permissions(['SEND_MESSAGES', 'ADD_REACTIONS']);
 
 export class ModerationActions {
 
@@ -29,6 +56,9 @@ export class ModerationActions {
 	public async unmute(id: string, reason: string | null) {
 		await this.removeStickyMute(id);
 		const moderationLog = await this.unmuteInvalidateLog(id);
+
+		// If Skyra does not have permissions to manage permissions, abort.
+		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return null;
 
 		try {
 			const member = await this.guild.members.fetch(id);
@@ -56,6 +86,18 @@ export class ModerationActions {
 		await api(this.guild.client).guilds(this.guild.id).bans(id)
 			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', reason) });
 		return null;
+	}
+
+	public async muteSetup() {
+		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
+		if (roleID && this.guild.roles.has(roleID)) throw this.guild.language.tget('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
+		if (this.guild.roles.size >= 250) throw this.guild.language.tget('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
+
+		const role = await this.guild.roles.create({ data: kMuteRoleDataOptions, reason: '[Setup] Creating Muted Role.' });
+		await this.guild.settings.update(GuildSettings.Roles.Muted, role, { throwOnError: true });
+
+		await this.muteSetupCategoryChannels(role);
+		await this.muteSetupTextOrVoiceChannels(role);
 	}
 
 	public async softban(id: string, days: number, reason: string | null) {
@@ -240,6 +282,58 @@ export class ModerationActions {
 		roles.delete(roleID);
 
 		return [...roles];
+	}
+
+	private async muteSetupCategoryChannels(role: Role) {
+		const promises: Promise<unknown>[] = [];
+		for (const channel of this.guild.channels.values()) {
+			if (channel.type === 'category' && channel.manageable) {
+				promises.push(this.muteSetupCategoryChannel(role, channel as CategoryChannel));
+			}
+		}
+
+		await Promise.all(promises);
+	}
+
+	private async muteSetupCategoryChannel(role: Role, channel: CategoryChannel) {
+		await channel.updateOverwrite(role, kMuteCategoryOverwriteOptions, '[Setup] Updated channel for Muted Role.');
+	}
+
+	private async muteSetupTextOrVoiceChannels(role: Role) {
+		const promises: Promise<unknown>[] = [];
+		for (const channel of this.guild.channels.values()) {
+			if (!channel.manageable) continue;
+			if (channel.type === 'text' || channel.type === 'news' || channel.type === 'store') {
+				promises.push(this.muteSetupTextChannel(role, channel));
+			} else if (channel.type === 'voice') {
+				promises.push(this.muteSetupVoiceChannel(role, channel));
+			}
+		}
+
+		await Promise.all(promises);
+	}
+
+	private muteSetupVoiceChannel(role: Role, channel: GuildChannel) {
+		return this.muteSetupAnyChannel(role, channel, kVoiceOverwriteOptions, kVoiceOverwriteBitfield);
+	}
+
+	private muteSetupTextChannel(role: Role, channel: GuildChannel) {
+		return this.muteSetupAnyChannel(role, channel, kTextOverwriteOptions, kTextOverwriteBitfield);
+	}
+
+	private async muteSetupAnyChannel(role: Role, channel: GuildChannel, overwriteOptions: PermissionOverwriteOption, overwriteBitfield: Permissions) {
+		const current = channel.permissionOverwrites.get(role.id);
+		if (typeof current === 'undefined') {
+			// If no permissions overwrites exists, create a new one.
+			await channel.updateOverwrite(role, overwriteOptions, '[Setup] Updated channel for Muted Role.');
+		} else if (!current.deny.has(overwriteBitfield)) {
+			// If one exists and does not have the deny fields, tweak the existing one to keep all the allowed and
+			// denied, but also add the ones that must be denied for the mute role to work.
+			const allowed = current.allow.toArray().map(permission => [permission, true]);
+			const denied = current.allow.toArray().map(permission => [permission, false]);
+			const mixed = Object.fromEntries(allowed.concat(denied));
+			await channel.updateOverwrite(role, { ...mixed, ...overwriteOptions });
+		}
 	}
 
 }

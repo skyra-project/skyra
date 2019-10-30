@@ -6,7 +6,6 @@ export default class extends Task {
 	public async run(doc: UnmuteTaskData) {
 		// Get the guild
 		const guild = this.client.guilds.get(doc.guildID);
-
 		if (!guild) return;
 
 		await guild.security.actions.unmute(doc.userID, '[Automatic] Temporary Action Released.');

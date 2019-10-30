@@ -117,11 +117,11 @@ export class ModerationManagerEntry {
 	}
 
 	public get appealable() {
-		return !this.appealType && Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appeal);
+		return Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appeal);
 	}
 
 	public get temporable() {
-		return !this.temporaryType && Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Temporary);
+		return Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Temporary);
 	}
 
 	public get cacheExpired() {
@@ -147,7 +147,7 @@ export class ModerationManagerEntry {
 	}
 
 	public get appealTaskName() {
-		if (this.appealable) return null;
+		if (!this.appealable) return null;
 		switch (this.typeVariation) {
 			case Moderation.TypeVariation.Warning: return 'moderationEndWarning';
 			case Moderation.TypeVariation.Mute: return 'moderationEndMute';

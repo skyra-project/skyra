@@ -1,9 +1,8 @@
-import { Role, User, GuildMember } from 'discord.js';
+import { User, GuildMember } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { Moderation } from '../../lib/util/constants';
-import { removeMute } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
 
@@ -26,29 +25,9 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
-		const modlog = (await message.guild!.moderation.fetch(user.id))
-			.filter(log => !log.invalidated && log.isType(Moderation.TypeCodes.Mute))
-			.last();
-		if (!modlog) throw message.language.tget('GUILD_MUTE_NOT_FOUND');
-		await removeMute(member.guild, member.id);
-
-		// Cache and concatenate with the current roles
-		const { position } = message.guild!.me!.roles.highest;
-		const rawRoleIDs = modlog.extraData as string[] || [];
-		const rawRoles = rawRoleIDs.map(id => message.guild!.roles.get(id)).filter(role => role) as Role[];
-		const roles = new Set(member.roles.keys());
-		for (const rawRole of rawRoles) {
-			if (rawRole.position < position) roles.add(rawRole.id);
-		}
-
-		// Remove the muted role
-		roles.delete(message.guild!.settings.get(GuildSettings.Roles.Muted));
-
-		// Edit roles
-		await member.edit({ roles: [...roles] });
-		await modlog.invalidate();
-		return this.sendModlog(message, user, reason);
+	public async handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: undefined, duration: number | null) {
+		const extraData = await message.guild!.security.actions.unmute(target.id, reason);
+		return this.sendModlog(message, target, reason, extraData, duration);
 	}
 
 	public async posthandle() { /* Do nothing */ }

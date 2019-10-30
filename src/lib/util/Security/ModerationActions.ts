@@ -15,52 +15,54 @@ export class ModerationActions {
 		this.guild = guild;
 	}
 
-	public async mute(id: string, reason: string) {
+	public async mute(id: string, reason: string | null) {
 		await this.addStickyMute(id);
 
 		try {
 			const member = await this.guild.members.fetch(id);
-			return this.muteUserInGuild(member, reason);
+			return this.muteUserInGuild(member, this.guild.language.tget('ACTION_MUTE_REASON', reason));
 		} catch {
 			return [] as string[];
 		}
 	}
 
-	public async unmute(id: string, reason: string) {
+	public async unmute(id: string, reason: string | null) {
 		await this.removeStickyMute(id);
 		const moderationLog = await this.unmuteInvalidateLog(id);
 
 		try {
 			const member = await this.guild.members.fetch(id);
 			return moderationLog === null
-				? this.unmuteUserInGuildWithoutData(member, reason)
-				: this.unmuteUserInGuildWithData(member, reason, moderationLog);
+				? this.unmuteUserInGuildWithoutData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', reason))
+				: this.unmuteUserInGuildWithData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', reason), moderationLog);
 		} catch {
 			return null;
 		}
 	}
 
-	public async kick(id: string, reason: string) {
+	public async kick(id: string, reason: string | null) {
 		await api(this.guild.client).guilds(this.guild.id).members(id)
-			.delete({ reason });
+			.delete({ reason: this.guild.language.tget('ACTION_KICK_REASON', reason) });
 		return null;
 	}
 
-	public async ban(id: string, days: number, reason: string) {
+	public async ban(id: string, days: number, reason: string | null) {
 		await api(this.guild.client).guilds(this.guild.id).bans(id)
-			.put({ query: { 'delete-message-days': days }, reason });
+			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_BAN_REASON', reason) });
 		return null;
 	}
 
-	public async unban(id: string, reason: string) {
+	public async unban(id: string, reason: string | null) {
 		await api(this.guild.client).guilds(this.guild.id).bans(id)
-			.delete({ reason });
+			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', reason) });
 		return null;
 	}
 
-	public async softban(id: string, days: number, reason: string) {
-		await this.ban(id, days, reason);
-		await this.unban(id, reason);
+	public async softban(id: string, days: number, reason: string | null) {
+		await api(this.guild.client).guilds(this.guild.id).bans(id)
+			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_SOFTBAN_REASON', reason) });
+		await api(this.guild.client).guilds(this.guild.id).bans(id)
+			.delete({ reason: this.guild.language.tget('ACTION_UNSOFTBAN_REASON', reason) });
 		return null;
 	}
 

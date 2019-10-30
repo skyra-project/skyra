@@ -18,9 +18,9 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
-		await member.kick(reason);
-		return this.sendModlog(message, user, reason);
+	public async handle(message: KlasaMessage, user: User, _member: GuildMember, reason: string | null) {
+		const extraData = await message.guild!.security.actions.kick(user.id, reason);
+		return this.sendModlog(message, user, reason, extraData);
 	}
 
 	public async posthandle() { /* Do nothing */ }

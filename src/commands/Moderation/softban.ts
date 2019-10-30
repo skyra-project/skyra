@@ -3,7 +3,6 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { Moderation } from '../../lib/util/constants';
-import { softban } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
 
@@ -25,8 +24,9 @@ export default class extends ModerationCommand {
 			: null;
 	}
 
-	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
-		return softban(message.guild!, message.author, user, reason, 'days' in message.flagArgs ? Math.min(7, Math.max(0, Number(message.flagArgs.days))) : 1);
+	public async handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: Unlock, duration: number | null) {
+		const extraData = await message.guild!.security.actions.softban(target.id, Number(message.flagArgs.day || message.flagArgs.days) || 0, reason);
+		return this.sendModlog(message, target, reason, extraData, duration);
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {

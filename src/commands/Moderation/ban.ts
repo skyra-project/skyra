@@ -23,10 +23,9 @@ export default class extends ModerationCommand {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
-	public async handle(message: KlasaMessage, target: User, member: GuildMember, reason: string, _prehandled: Unlock, duration: number | null) {
-		await message.guild!.members.ban(target.id, { days: Number(message.flagArgs.day || message.flagArgs.days) || 0, reason });
-
-		return this.sendModlog(message, target, reason, null, duration);
+	public async handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: Unlock, duration: number | null) {
+		const extraData = await message.guild!.security.actions.ban(target.id, Number(message.flagArgs.day || message.flagArgs.days) || 0, reason);
+		return this.sendModlog(message, target, reason, extraData, duration);
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {

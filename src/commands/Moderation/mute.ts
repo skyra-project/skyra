@@ -3,7 +3,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { Moderation } from '../../lib/util/constants';
-import { createMuteRole, mute } from '../../lib/util/util';
+import { createMuteRole } from '../../lib/util/util';
 
 const PERMISSIONS = Permissions.resolve([
 	Permissions.FLAGS.MANAGE_ROLES,
@@ -19,8 +19,7 @@ export default class extends ModerationCommand {
 			modType: Moderation.TypeCodes.Mute,
 			optionalDuration: true,
 			permissionLevel: 5,
-			requiredGuildPermissions: ['MANAGE_ROLES'],
-			requiredMember: true
+			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
 	}
 
@@ -43,8 +42,9 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, _: User, member: GuildMember, reason: string, _prehandled: undefined, duration: number | null) {
-		return mute(message.member!, member, { reason, duration });
+	public async handle(message: KlasaMessage, user: User, _member: GuildMember, reason: string, _prehandled: undefined, duration: number | null) {
+		const extraData = await message.guild!.security.actions.mute(user.id, reason);
+		return this.sendModlog(message, user, reason, extraData, duration);
 	}
 
 	public async posthandle() { /* Do nothing */ }

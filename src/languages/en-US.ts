@@ -3216,6 +3216,46 @@ export default class extends Language {
 		SELF_MODERATION_DURATION_TOO_SHORT: (minimum, value) => `${REDCROSS} The value (${duration(value)}) was too short, expected at least ${duration(minimum)}.`,
 		SELF_MODERATION_DURATION_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
 
+		ACTION_MUTE_REASON: reason => reason === null
+			? '[Action] Applied Mute.'
+			: `[Action] Applied Mute | Reason: ${reason}`,
+		ACTION_UNMUTE_REASON: reason => reason === null
+			? '[Action] Revoked Mute.'
+			: `[Action] Revoked Mute | Reason: ${reason}`,
+		ACTION_KICK_REASON: reason => reason === null
+			? '[Action] Applied Kick.'
+			: `[Action] Applied Kick | Reason: ${reason}`,
+		ACTION_SOFTBAN_REASON: reason => reason === null
+			? '[Action] Applying Softban.'
+			: `[Action] Applying Softban | Reason: ${reason}`,
+		ACTION_UNSOFTBAN_REASON: reason => reason === null
+			? '[Action] Applied Softban.'
+			: `[Action] Applied Softban | Reason: ${reason}`,
+		ACTION_BAN_REASON: reason => reason === null
+			? '[Action] Applied Ban'
+			: `[Action] Applied Ban`,
+		ACTION_UNBAN_REASON: reason => reason === null
+			? '[Action] Applied Unban.'
+			: `[Action] Applied Unban | Reason: ${reason}`,
+		ACTION_VMUTE_REASON: reason => reason === null
+			? '[Action] Applied Voice Mute.'
+			: `[Action] Applied Voice Mute | Reason: ${reason}`,
+		ACTION_VKICK_REASON: reason => reason === null
+			? '[Action] Applied Voice Kick.'
+			: `[Action] Applied Voice Kick | Reason: ${reason}`,
+		ACTION_RESTRICTED_REACT_REASON: reason => reason === null
+			? '[Action] Applied Reaction Restriction.'
+			: `[Action] Applied Reaction Restriction | Reason: ${reason}`,
+		ACTION_RESTRICTED_EMBED_REASON: reason => reason === null
+			? '[Action] Applied Embed Restriction.'
+			: `[Action] Applied Embed Restriction | Reason: ${reason}`,
+		ACTION_RESTRICTED_ATTACHMENT_REASON: reason => reason === null
+			? '[Action] Applied Attachment Restriction.'
+			: `[Action] Applied Attachment Restriction | Reason: ${reason}`,
+		ACTION_RESTRICTED_VOICE_REASON: reason => reason === null
+			? '[Action] Applied Voice Restriction.'
+			: `[Action] Applied Voice Restriction | Reason: ${reason}`,
+
 		RESOLVER_DATE_SUFFIX: ' seconds',
 		RESOLVER_POSITIVE_AMOUNT: 'You must give me a positive number.',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',

@@ -4,6 +4,7 @@ import { GuildSettings } from '../../types/settings/GuildSettings';
 import { Adder } from '../Adder';
 import { PreciseTimeout } from '../PreciseTimeout';
 import { AntiRaid } from './AntiRaid';
+import { ModerationActions } from './ModerationActions';
 
 export interface Adders {
 	attachments: Adder<string> | null;
@@ -34,6 +35,8 @@ export class GuildSecurity {
 		words: null
 	};
 
+	public actions: ModerationActions;
+
 	/**
 	 * The AntiRaid instance managed by this guild, if exists
 	 */
@@ -56,6 +59,7 @@ export class GuildSecurity {
 
 	public constructor(guild: Guild) {
 		this.guild = guild;
+		this.actions = new ModerationActions(this.guild);
 		this.raid = new AntiRaid(this.guild);
 		this.nms = new RateLimitManager(
 			this.guild.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed),

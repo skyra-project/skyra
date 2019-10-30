@@ -10,7 +10,10 @@ import { createPick, inlineCodeblock } from '../lib/util/util';
 import { LanguageKeys } from '../lib/types/Languages';
 
 const { toTitleCase, codeBlock } = klasaUtil;
-const { Loading: LOADING, Shiny: SHINY, GreenTick: GREENTICK, RedCross: REDCROSS } = Emojis;
+const LOADING = Emojis.Loading;
+const SHINY = Emojis.Shiny;
+const GREENTICK = Emojis.GreenTick;
+const REDCROSS = Emojis.RedCross;
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')

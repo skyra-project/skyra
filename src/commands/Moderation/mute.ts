@@ -31,8 +31,7 @@ export default class extends ModerationCommand {
 			if (!await message.hasAtLeastPermissionLevel(6)) throw message.language.tget('COMMAND_MUTE_LOWLEVEL');
 			if (!(message.channel as TextChannel).permissionsFor(message.guild!.me!)!.has(PERMISSIONS)) throw message.language.tget('COMMAND_MUTECREATE_MISSING_PERMISSION');
 			if (message.guild!.roles.size >= 250) throw message.language.tget('COMMAND_MUTE_CONFIGURE_TOOMANY_ROLES');
-			await message.ask(message.language.tget('COMMAND_MUTE_CONFIGURE'))
-				.catch(() => { throw message.language.tget('COMMAND_MUTE_CONFIGURE_CANCELLED'); });
+			if (!await message.ask(message.language.tget('COMMAND_MUTE_CONFIGURE'))) throw message.language.tget('COMMAND_MUTE_CONFIGURE_CANCELLED');
 			await message.sendLocale('SYSTEM_LOADING');
 			await createMuteRole(message);
 		}

@@ -68,7 +68,8 @@ export default class extends Task {
 
 		this.client.fsWatcher = watch(join(process.cwd(), 'dist'), {
 			ignored: [
-				'**/tsconfig.tsbuildinfo'
+				'**/tsconfig.tsbuildinfo',
+				'**/bwd/provider/**'
 			],
 			persistent: true,
 			ignoreInitial: true,

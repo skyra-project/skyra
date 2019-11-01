@@ -32,10 +32,12 @@ export default class extends ModerationCommand {
 		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
 	}
 
-	public async handle(message: KlasaMessage, user: User, _: GuildMember | null, reason: string | null, modlog: ModerationManagerEntry) {
-		// Appeal the modlog and send a log to the moderation log channel
-		await modlog.invalidate();
-		return this.sendModlog(message, user, reason);
+	public async handle(message: KlasaMessage, target: User, _: GuildMember | null, reason: string | null, modlog: ModerationManagerEntry) {
+		return message.guild!.security.actions.unWarning({
+			user_id: target.id,
+			moderator_id: message.author.id,
+			reason
+		}, modlog.case!);
 	}
 
 	public async posthandle() { /* Do nothing */ }

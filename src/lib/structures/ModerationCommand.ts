@@ -121,20 +121,6 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return member;
 	}
 
-	public async sendModlog(message: KlasaMessage, target: User, reason: string | null, extraData?: object | null, duration?: number | null) {
-		if (Array.isArray(reason)) reason = reason.join(' ');
-		const modlog = message.guild!.moderation.create({
-			user_id: target.id,
-			moderator_id: message.author.id,
-			type: this.modType,
-			reason
-		});
-
-		if (extraData) modlog.setExtraData(extraData);
-		if (duration) modlog.setDuration(duration);
-		return (await modlog.create())!;
-	}
-
 	protected async createDM(message: KlasaMessage, target: User, title: string, reason: string | null) {
 		const named = 'no-author' in message.flagArgs
 			? false

@@ -19,9 +19,13 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string, _prehandled: undefined, duration: number | null) {
-		await member.voice.setMute(true, reason);
-		return this.sendModlog(message, user, reason, null, duration);
+	public handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: undefined, duration: number | null) {
+		return message.guild!.security.actions.voiceMute({
+			user_id: target.id,
+			moderator_id: message.author.id,
+			duration,
+			reason
+		});
 	}
 
 	public async posthandle() { /* Do nothing */ }

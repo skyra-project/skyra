@@ -14,26 +14,26 @@ const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
 export class ModerationManagerEntry {
 
 	public manager: ModerationManager;
-	public case: number | null;
-	public duration: number | null;
-	public extraData: object | null;
-	public moderator: string | User | null;
-	public reason: string | null;
-	public type: Moderation.TypeCodes;
-	public user: string | User;
+	public case!: number | null;
+	public duration!: number | null;
+	public extraData!: object | null;
+	public moderator!: string | User | null;
+	public reason!: string | null;
+	public type!: Moderation.TypeCodes;
+	public user!: string | User;
 	public createdAt: number | null;
 	private [kTimeout] = Date.now() + (Time.Minute * 15);
 
 	public constructor(manager: ModerationManager, data: ModerationManagerInsertData) {
 		this.manager = manager;
 
-		this.case = data.case_id || null;
-		this.duration = data.duration || null;
-		this.extraData = data.extra_data || null;
-		this.moderator = data.moderator_id || null;
-		this.reason = data.reason || null;
-		this.type = data.type;
-		this.user = data.user_id;
+		this.setType(data.type)
+			.setCase(data.case_id || null)
+			.setDuration(data.duration || null)
+			.setExtraData(data.extra_data || null)
+			.setUser(data.user_id)
+			.setModerator(data.moderator_id || null)
+			.setReason(data.reason || null);
 		this.createdAt = data.created_at || null;
 	}
 
@@ -250,7 +250,7 @@ export class ModerationManagerEntry {
 			.setTimestamp(this.createdTimestamp);
 	}
 
-	public setCase(value: number) {
+	public setCase(value: number | null) {
 		this.case = value;
 		return this;
 	}
@@ -267,12 +267,12 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setExtraData(value: object) {
+	public setExtraData(value: object | null) {
 		this.extraData = value;
 		return this;
 	}
 
-	public setModerator(value: User | string) {
+	public setModerator(value: User | string | null) {
 		this.moderator = value;
 		return this;
 	}
@@ -281,7 +281,7 @@ export class ModerationManagerEntry {
 		if (!value) return this;
 		value = value.trim();
 
-		if (value && this.temporable) {
+		if (value && this.duration === null && this.temporable) {
 			const match = regexParse.exec(value);
 			if (match) {
 				this.setDuration(match[1]);

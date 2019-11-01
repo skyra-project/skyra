@@ -6,6 +6,7 @@ import { Mutable } from '../../types/util';
 import { CLIENT_ID } from '../../../../config';
 import { Moderation } from '../constants';
 import { ModerationManagerEntry } from '../../structures/ModerationManagerEntry';
+import { ModerationManagerCreateData } from '../../structures/ModerationManager';
 
 const kMuteRoleDataOptions: RoleData = {
 	color: 0x795548,
@@ -42,50 +43,88 @@ export class ModerationActions {
 		this.guild = guild;
 	}
 
-	public async mute(id: string, reason: string | null) {
-		await this.addStickyMute(id);
-
-		try {
-			const member = await this.guild.members.fetch(id);
-			return this.muteUserInGuild(member, this.guild.language.tget('ACTION_MUTE_REASON', reason));
-		} catch {
-			return [] as string[];
-		}
+	public async warning(rawOptions: ModerationActionOptions) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Warn);
+		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async unmute(id: string, reason: string | null) {
-		await this.removeStickyMute(id);
-		const moderationLog = await this.unmuteInvalidateLog(id);
+	public async unWarning(rawOptions: ModerationActionOptions, caseID: number) {
+		const moderationLog = await this.guild.moderation.fetch(caseID);
+		if (moderationLog === null || !moderationLog.isType(Moderation.TypeCodes.Warn)) throw this.guild.language.tget('GUILD_WARN_NOT_FOUND');
+
+		await moderationLog.invalidate();
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnWarn);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async mute(rawOptions: ModerationActionOptions) {
+		await this.addStickyMute(rawOptions.user_id);
+		const extraData = await this.muteUser(rawOptions);
+		const options = this.fillOptions({ ...rawOptions, extra_data: extraData }, Moderation.TypeCodes.Mute);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unMute(rawOptions: ModerationActionOptions) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnMute);
+		await this.removeStickyMute(options.user_id);
+		const moderationLog = await this.unmuteInvalidateLog(options.user_id);
 
 		// If Skyra does not have permissions to manage permissions, abort.
-		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return null;
+		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw 'Cannot manage roles.';
 
-		try {
-			const member = await this.guild.members.fetch(id);
-			return moderationLog === null
-				? this.unmuteUserInGuildWithoutData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', reason))
-				: this.unmuteUserInGuildWithData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', reason), moderationLog);
-		} catch {
-			return null;
-		}
+		await this.unmuteUser(options, moderationLog);
+		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async kick(id: string, reason: string | null) {
-		await api(this.guild.client).guilds(this.guild.id).members(id)
-			.delete({ reason: this.guild.language.tget('ACTION_KICK_REASON', reason) });
-		return null;
+	public async kick(rawOptions: ModerationActionOptions) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Kick);
+		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
+			.delete({ reason: this.guild.language.tget('ACTION_KICK_REASON', options.reason) });
+		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async ban(id: string, days: number, reason: string | null) {
-		await api(this.guild.client).guilds(this.guild.id).bans(id)
-			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_BAN_REASON', reason) });
-		return null;
+	public async softBan(rawOptions: ModerationActionOptions, days: number) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Softban);
+		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
+			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_SOFTBAN_REASON', options.reason) });
+		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
+			.delete({ reason: this.guild.language.tget('ACTION_UNSOFTBAN_REASON', options.reason) });
+		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async unban(id: string, reason: string | null) {
-		await api(this.guild.client).guilds(this.guild.id).bans(id)
-			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', reason) });
-		return null;
+	public async ban(rawOptions: ModerationActionOptions, days: number) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Ban);
+		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
+			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_BAN_REASON', options.reason) });
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unBan(rawOptions: ModerationActionOptions) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnBan);
+		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
+			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', options.reason) });
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async voiceMute(rawOptions: ModerationActionOptions) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.VoiceMute);
+		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
+			.patch({ data: { deaf: true }, reason: 'TODO' });
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unVoiceMute(rawOptions: ModerationActionOptions) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnVoiceMute);
+		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
+			.patch({ data: { deaf: true }, reason: 'TODO' });
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async voiceKick(rawOptions: ModerationActionOptions) {
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.VoiceKick);
+		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
+			.patch({ data: { channel: null }, reason: 'TODO' });
+		return (await this.guild.moderation.create(options).create())!;
 	}
 
 	public async muteSetup() {
@@ -100,12 +139,10 @@ export class ModerationActions {
 		await this.muteSetupTextOrVoiceChannels(role);
 	}
 
-	public async softban(id: string, days: number, reason: string | null) {
-		await api(this.guild.client).guilds(this.guild.id).bans(id)
-			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_SOFTBAN_REASON', reason) });
-		await api(this.guild.client).guilds(this.guild.id).bans(id)
-			.delete({ reason: this.guild.language.tget('ACTION_UNSOFTBAN_REASON', reason) });
-		return null;
+	private fillOptions(rawOptions: ModerationActionOptions, type: Moderation.TypeCodes) {
+		const options = { reason: null, ...rawOptions, type };
+		if (typeof options.reason === 'undefined') options.reason = null;
+		return options;
 	}
 
 	private async fetchMe() {
@@ -158,6 +195,15 @@ export class ModerationActions {
 		return true;
 	}
 
+	private async muteUser(rawOptions: ModerationActionOptions) {
+		try {
+			const member = await this.guild.members.fetch(rawOptions.user_id);
+			return this.muteUserInGuild(member, this.guild.language.tget('ACTION_MUTE_REASON', rawOptions.reason || null));
+		} catch {
+			return [] as string[];
+		}
+	}
+
 	private async muteUserInGuild(member: GuildMember, reason: string) {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
 		if (roleID === null) return null;
@@ -193,6 +239,17 @@ export class ModerationActions {
 		}
 
 		return { keepRoles, removedRoles };
+	}
+
+	private async unmuteUser(options: ModerationManagerCreateData & { reason: string | null }, moderationLog: ModerationManagerEntry | null) {
+		try {
+			const member = await this.guild.members.fetch(options.user_id);
+			return (moderationLog === null
+				? this.unmuteUserInGuildWithoutData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason))
+				: this.unmuteUserInGuildWithData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason), moderationLog));
+		} catch {
+			return null;
+		}
 	}
 
 	/**
@@ -337,3 +394,5 @@ export class ModerationActions {
 	}
 
 }
+
+export type ModerationActionOptions = Omit<ModerationManagerCreateData, 'type'>;

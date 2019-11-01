@@ -25,9 +25,13 @@ export default class extends ModerationCommand {
 		throw message.language.tget('GUILD_BANS_EMPTY');
 	}
 
-	public async handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: Unlock, duration: number | null) {
-		const extraData = await message.guild!.security.actions.unban(target.id, reason);
-		return this.sendModlog(message, target, reason, extraData, duration);
+	public handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: Unlock, duration: number | null) {
+		return message.guild!.security.actions.unBan({
+			user_id: target.id,
+			moderator_id: message.author.id,
+			duration,
+			reason
+		});
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {

@@ -18,8 +18,13 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, _: GuildMember, reason: string) {
-		return this.sendModlog(message, user, reason);
+	public handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: undefined, duration: number | null) {
+		return message.guild!.security.actions.warning({
+			user_id: target.id,
+			moderator_id: message.author.id,
+			duration,
+			reason
+		});
 	}
 
 	public async posthandle() { /* Do nothing */ }

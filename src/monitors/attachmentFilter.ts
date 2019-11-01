@@ -26,16 +26,28 @@ export default class extends Monitor {
 				case 0b000: await this.actionAndSend(message, Moderation.TypeCodes.Warn, () => null);
 					break;
 				case 0b001: await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
-					floatPromise(this, message.guild!.security.actions.kick(message.author.id, '[Auto-Moderation] AttachmentFilter: Threshold Reached.')));
+					floatPromise(this, message.guild!.security.actions.kick({
+						user_id: message.author.id,
+						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+					})));
 					break;
 				case 0b010: await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
-					floatPromise(this, message.guild!.security.actions.mute(message.author.id, '[Auto-Moderation] AttachmentFilter: Threshold Reached.')));
+					floatPromise(this, message.guild!.security.actions.mute({
+						user_id: message.author.id,
+						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+					})));
 					break;
 				case 0b011: await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
-					floatPromise(this, message.guild!.security.actions.softban(message.author.id, 1, '[Auto-Moderation] AttachmentFilter: Threshold Reached.')));
+					floatPromise(this, message.guild!.security.actions.softBan({
+						user_id: message.author.id,
+						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+					}, 1)));
 					break;
 				case 0b100: await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
-					floatPromise(this, message.guild!.security.actions.ban(message.author.id, 0, '[Auto-Moderation] AttachmentFilter: Threshold Reached.')));
+					floatPromise(this, message.guild!.security.actions.ban({
+						user_id: message.author.id,
+						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+					}, 0)));
 					break;
 			}
 			if (attachmentAction & 0b1000) {

@@ -8,13 +8,10 @@ export default class extends Task {
 		const guild = this.client.guilds.get(doc.guildID);
 		if (!guild) return;
 
-		await guild.security.actions.unmute(doc.userID, '[Automatic] Temporary Action Released.');
-		await guild.moderation.create({
+		await guild.security.actions.unMute({
 			user_id: doc.userID,
-			moderator_id: this.client.user!.id,
-			type: Moderation.TypeCodes.UnMute,
 			reason: `Mute released after ${this.client.languages.default.duration(doc.duration)}`
-		}).create();
+		});
 	}
 
 }

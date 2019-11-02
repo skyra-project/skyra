@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Role, RoleData, GuildChannel, CategoryChannel, PermissionOverwriteOption, Permissions } from 'discord.js';
+import { Guild, GuildMember, Role, RoleData, GuildChannel, CategoryChannel, PermissionOverwriteOption, Permissions, User } from 'discord.js';
 import { api } from '../Models/Api';
 import { GuildSettings, StickyRole } from '../../types/settings/GuildSettings';
 import { deepClone } from '@klasa/utils';
@@ -7,6 +7,7 @@ import { CLIENT_ID } from '../../../../config';
 import { Moderation } from '../constants';
 import { ModerationManagerEntry } from '../../structures/ModerationManagerEntry';
 import { ModerationManagerCreateData } from '../../structures/ModerationManager';
+import { Events } from '../../types/Enums';
 
 const kMuteRoleDataOptions: RoleData = {
 	color: 0x795548,
@@ -34,6 +35,7 @@ const kTextOverwriteOptions: PermissionOverwriteOption = {
 };
 
 const kTextOverwriteBitfield = new Permissions(['SEND_MESSAGES', 'ADD_REACTIONS']);
+const kUnknownTypeTitle = { title: 'Unknown' };
 
 export class ModerationActions {
 
@@ -43,28 +45,31 @@ export class ModerationActions {
 		this.guild = guild;
 	}
 
-	public async warning(rawOptions: ModerationActionOptions) {
+	public async warning(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Warn);
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async unWarning(rawOptions: ModerationActionOptions, caseID: number) {
+	public async unWarning(rawOptions: ModerationActionOptions, caseID: number, sendOptions?: ModerationActionsSendOptions) {
 		const moderationLog = await this.guild.moderation.fetch(caseID);
 		if (moderationLog === null || !moderationLog.isType(Moderation.TypeCodes.Warn)) throw this.guild.language.tget('GUILD_WARN_NOT_FOUND');
 
 		await moderationLog.invalidate();
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnWarn);
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async mute(rawOptions: ModerationActionOptions) {
+	public async mute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyMute(rawOptions.user_id);
 		const extraData = await this.muteUser(rawOptions);
 		const options = this.fillOptions({ ...rawOptions, extra_data: extraData }, Moderation.TypeCodes.Mute);
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async unMute(rawOptions: ModerationActionOptions) {
+	public async unMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnMute);
 		await this.removeStickyMute(options.user_id);
 		const moderationLog = await this.unmuteInvalidateLog(options.user_id);
@@ -73,18 +78,21 @@ export class ModerationActions {
 		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw 'Cannot manage roles.';
 
 		await this.unmuteUser(options, moderationLog);
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async kick(rawOptions: ModerationActionOptions) {
+	public async kick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Kick);
+		await this.sendDM(options, sendOptions);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
 			.delete({ reason: this.guild.language.tget('ACTION_KICK_REASON', options.reason) });
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async softBan(rawOptions: ModerationActionOptions, days: number) {
+	public async softBan(rawOptions: ModerationActionOptions, days: number, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Softban);
+		await this.sendDM(options, sendOptions);
 		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
 			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_SOFTBAN_REASON', options.reason) });
 		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
@@ -92,38 +100,43 @@ export class ModerationActions {
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async ban(rawOptions: ModerationActionOptions, days: number) {
+	public async ban(rawOptions: ModerationActionOptions, days: number, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.Ban);
+		await this.sendDM(options, sendOptions);
 		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
 			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_BAN_REASON', options.reason) });
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async unBan(rawOptions: ModerationActionOptions) {
+	public async unBan(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnBan);
 		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
 			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', options.reason) });
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async voiceMute(rawOptions: ModerationActionOptions) {
+	public async voiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.VoiceMute);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
 			.patch({ data: { deaf: true }, reason: 'TODO' });
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async unVoiceMute(rawOptions: ModerationActionOptions) {
+	public async unVoiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnVoiceMute);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: true }, reason: 'TODO' });
+			.patch({ data: { deaf: false }, reason: 'TODO' });
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async voiceKick(rawOptions: ModerationActionOptions) {
+	public async voiceKick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.VoiceKick);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
 			.patch({ data: { channel: null }, reason: 'TODO' });
+		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
@@ -147,6 +160,19 @@ export class ModerationActions {
 
 	private async fetchMe() {
 		return this.guild.me || this.guild.members.fetch(CLIENT_ID);
+	}
+
+	private async sendDM(options: ModerationManagerCreateData & { reason: string | null }, sendOptions: ModerationActionsSendOptions = {}) {
+		if (sendOptions.send) {
+			try {
+				const target = await this.guild.client.users.fetch(options.user_id);
+				const { title } = Moderation.metadata.get(options.type) || kUnknownTypeTitle;
+				if (sendOptions.moderator) await target.sendLocale('COMMAND_MODERATION_DM', [this.guild.name, title, options.reason, sendOptions.moderator]).catch(() => null);
+				else await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [this.guild.name, title, options.reason]).catch(() => null);
+			} catch (error) {
+				this.guild.client.emit(Events.Error, error);
+			}
+		}
 	}
 
 	private async addStickyMute(id: string) {
@@ -395,4 +421,8 @@ export class ModerationActions {
 
 }
 
+export interface ModerationActionsSendOptions {
+	send?: boolean;
+	moderator?: User | null;
+}
 export type ModerationActionOptions = Omit<ModerationManagerCreateData, 'type'>;

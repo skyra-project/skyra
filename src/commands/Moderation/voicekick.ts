@@ -1,7 +1,6 @@
-import { User, GuildMember } from 'discord.js';
+import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { Moderation } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -9,8 +8,6 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_VOICEKICK_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_VOICEKICK_EXTENDED'),
-			modType: Moderation.TypeCodes.VoiceKick,
-			permissionLevel: 5,
 			requiredMember: true,
 			requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS']
 		});
@@ -18,12 +15,12 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null) {
+	public handle(message: KlasaMessage, target: User, reason: string | null) {
 		return message.guild!.security.actions.voiceKick({
 			user_id: target.id,
 			moderator_id: message.author.id,
 			reason
-		});
+		}, this.getTargetDM(message, target));
 	}
 
 	public async posthandle() { /* Do nothing */ }

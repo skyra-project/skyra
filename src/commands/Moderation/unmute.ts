@@ -1,8 +1,7 @@
-import { User, GuildMember } from 'discord.js';
+import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { Moderation } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -10,8 +9,6 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_UNMUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_UNMUTE_EXTENDED'),
-			modType: Moderation.TypeCodes.UnMute,
-			permissionLevel: 5,
 			requiredMember: true,
 			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
@@ -25,13 +22,13 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public handle(message: KlasaMessage, target: User, _member: GuildMember, reason: string | null, _prehandled: undefined, duration: number | null) {
+	public handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null) {
 		return message.guild!.security.actions.unMute({
 			user_id: target.id,
 			moderator_id: message.author.id,
 			duration,
 			reason
-		});
+		}, this.getTargetDM(message, target));
 	}
 
 	public async posthandle() { /* Do nothing */ }

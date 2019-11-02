@@ -1,15 +1,14 @@
-import { GuildMember, User } from 'discord.js';
+import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Events } from '../types/Enums';
-import { Moderation } from '../util/constants';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
 import { mergeDefault } from '@klasa/utils';
+import { ModerationActionsSendOptions } from '../util/Security/ModerationActions';
+import { PermissionLevels } from '../types/Enums';
 
 interface ModerationCommandOptions extends SkyraCommandOptions {
-	modType: Moderation.TypeCodes;
 	requiredMember?: boolean;
 	optionalDuration?: boolean;
 }
@@ -22,11 +21,6 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	public requiredMember: boolean;
 
 	/**
-	 * The type for this command.
-	 */
-	public modType: Moderation.TypeCodes;
-
-	/**
 	 * Whether or not this moderation command can create temporary actions.
 	 */
 	public optionalDuration: boolean;
@@ -35,6 +29,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		super(store, file, directory, mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>({
 			flagSupport: true,
 			optionalDuration: false,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
 			runIn: ['text'],
 			usage: options.optionalDuration
@@ -43,8 +38,6 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			usageDelim: ' '
 		}, options));
 
-		if (typeof options.modType === 'undefined') this.client.emit(Events.Error, `[COMMAND] ${this} does not have a type.`);
-		this.modType = options.modType;
 		this.requiredMember = options.requiredMember!;
 		this.optionalDuration = options.optionalDuration!;
 	}
@@ -55,19 +48,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const prehandled = await this.prehandle(message, targets, reason);
 		const processed = [] as Array<{ log: ModerationManagerEntry; target: User }>;
 		const errored = [] as Array<{ error: Error; target: User }>;
-		const enabledModerationDM = message.guild!.settings.get(GuildSettings.Messages.ModerationDM);
-		const { title } = Moderation.metadata.get(this.modType)!;
 
 		for (const target of new Set(targets)) {
 			try {
-				const member = await this.checkModeratable(message, target, prehandled);
-
-				// If the guild has opt-in ModerationDM, and the user has not opt-out ModerationDM, proceed to send a moderation log in DMs.
-				if (enabledModerationDM && target.settings.get(UserSettings.ModerationDM)) {
-					await this.createDM(message, target, title, reason);
-				}
-
-				const log = await this.handle(message, target, member, reason, prehandled, duration);
+				await this.checkModeratable(message, target, prehandled);
+				const log = await this.handle(message, target, reason, duration, prehandled);
 				processed.push({ log, target });
 			} catch (error) {
 				errored.push({ error, target });
@@ -121,13 +106,15 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return member;
 	}
 
-	protected async createDM(message: KlasaMessage, target: User, title: string, reason: string | null) {
-		const named = 'no-author' in message.flagArgs
-			? false
-			: ('authored' in message.flagArgs) || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay);
-
-		if (named) await target.sendLocale('COMMAND_MODERATION_DM', [message.guild!.name, title, reason, message.author]).catch(() => null);
-		else await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [message.guild!.name, title, reason]).catch(() => null);
+	protected getTargetDM(message: KlasaMessage, target: User): ModerationActionsSendOptions {
+		return {
+			moderator: 'no-author' in message.flagArgs
+				? null
+				: (('authored' in message.flagArgs) || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay))
+					? message.author
+					: null,
+			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && target.settings.get(UserSettings.ModerationDM)
+		};
 	}
 
 	private resolveOverloads(args: [User[], number | null, string | null] | [User[], string | null]): [User[], number | null, string | null] {
@@ -142,7 +129,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	public abstract prehandle(message: KlasaMessage, targets: User[], reason: string | null): Promise<T> | T;
 
-	public abstract handle(message: KlasaMessage, target: User, member: GuildMember | null, reason: string | null, prehandled: T, duration: number | null): Promise<ModerationManagerEntry> | ModerationManagerEntry;
+	public abstract handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null, prehandled: T): Promise<ModerationManagerEntry> | ModerationManagerEntry;
 
 	public abstract posthandle(message: KlasaMessage, targets: User[], reason: string | null, prehandled: T): unknown;
 

@@ -1150,11 +1150,18 @@ export interface LanguageKeys {
 	ACTION_BAN_REASON: (reason: string | null) => string;
 	ACTION_UNBAN_REASON: (reason: string | null) => string;
 	ACTION_VMUTE_REASON: (reason: string | null) => string;
+	ACTION_UNVMUTE_REASON: (reason: string | null) => string;
 	ACTION_VKICK_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_REACT_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_EMBED_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_ATTACHMENT_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_VOICE_REASON: (reason: string | null) => string;
+	ACTION_REQUIRED_MEMBER: string;
+	MUTE_NOT_CONFIGURED: string;
+	MUTE_NOT_IN_MEMBER: string;
+	MUTE_LOW_HIERARCHY: string;
+	MUTE_CANNOT_MANAGE_ROLES: string;
+	MUTE_NOT_EXISTS: string;
 	RESOLVER_DATE_SUFFIX: string;
 	RESOLVER_POSITIVE_AMOUNT: string;
 	POWEREDBY_WEEBSH: string;

@@ -4,7 +4,7 @@ import { GuildSettings, StickyRole } from '../../types/settings/GuildSettings';
 import { deepClone } from '@klasa/utils';
 import { Mutable } from '../../types/util';
 import { CLIENT_ID } from '../../../../config';
-import { Moderation } from '../constants';
+import { Moderation, APIErrors } from '../constants';
 import { ModerationManagerEntry } from '../../structures/ModerationManagerEntry';
 import { ModerationManagerCreateData } from '../../structures/ModerationManager';
 import { Events } from '../../types/Enums';
@@ -75,7 +75,7 @@ export class ModerationActions {
 		const moderationLog = await this.unmuteInvalidateLog(options.user_id);
 
 		// If Skyra does not have permissions to manage permissions, abort.
-		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw 'Cannot manage roles.';
+		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw this.guild.language.tget('MUTE_CANNOT_MANAGE_ROLES');
 
 		await this.unmuteUser(options, moderationLog);
 		await this.sendDM(options, sendOptions);
@@ -119,7 +119,7 @@ export class ModerationActions {
 	public async voiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.VoiceMute);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: true }, reason: 'TODO' });
+			.patch({ data: { deaf: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', options.reason) });
 		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
@@ -127,7 +127,7 @@ export class ModerationActions {
 	public async unVoiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnVoiceMute);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: false }, reason: 'TODO' });
+			.patch({ data: { deaf: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', options.reason) });
 		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
@@ -135,7 +135,7 @@ export class ModerationActions {
 	public async voiceKick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.VoiceKick);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { channel: null }, reason: 'TODO' });
+			.patch({ data: { channel: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', options.reason) });
 		await this.sendDM(options, sendOptions);
 		return (await this.guild.moderation.create(options).create())!;
 	}
@@ -170,6 +170,7 @@ export class ModerationActions {
 				if (sendOptions.moderator) await target.sendLocale('COMMAND_MODERATION_DM', [this.guild.name, title, options.reason, sendOptions.moderator]).catch(() => null);
 				else await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [this.guild.name, title, options.reason]).catch(() => null);
 			} catch (error) {
+				if (error.code === APIErrors.CannotMessageUser) return;
 				this.guild.client.emit(Events.Error, error);
 			}
 		}
@@ -177,7 +178,7 @@ export class ModerationActions {
 
 	private async addStickyMute(id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) throw this.guild.language.tget('COMMAND_MUTE_UNCONFIGURED');
+		if (mutedRole === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 
 		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
 		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
@@ -187,29 +188,28 @@ export class ModerationActions {
 				roles: [mutedRole]
 			};
 			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { throwOnError: true, arrayAction: 'add' });
-			return true;
+			return;
 		}
 
 		const stickyRoles = guildStickyRoles[stickyRolesIndex];
-		if (stickyRoles.roles.includes(mutedRole)) return true;
+		if (stickyRoles.roles.includes(mutedRole)) return;
 
 		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
 		clone.roles.push(mutedRole);
 		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true });
-		return true;
 	}
 
 	private async removeStickyMute(id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) throw this.guild.language.tget('COMMAND_MUTE_UNCONFIGURED');
+		if (mutedRole === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 
 		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
 		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-		if (stickyRolesIndex === -1) return false;
+		if (stickyRolesIndex === -1) return;
 
 		const stickyRoles = guildStickyRoles[stickyRolesIndex];
 		const roleIndex = stickyRoles.roles.indexOf(mutedRole);
-		if (roleIndex === -1) return false;
+		if (roleIndex === -1) return;
 
 		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
 		clone.roles.splice(roleIndex, 1);
@@ -217,27 +217,26 @@ export class ModerationActions {
 		await (clone.roles.length
 			? this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true })
 			: this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true, arrayAction: 'remove' }));
-
-		return true;
 	}
 
 	private async muteUser(rawOptions: ModerationActionOptions) {
 		try {
 			const member = await this.guild.members.fetch(rawOptions.user_id);
 			return this.muteUserInGuild(member, this.guild.language.tget('ACTION_MUTE_REASON', rawOptions.reason || null));
-		} catch {
-			return [] as string[];
+		} catch (error) {
+			if (error.code === APIErrors.UnknownMember) throw this.guild.language.tget('ACTION_REQUIRED_MEMBER');
+			throw error;
 		}
 	}
 
 	private async muteUserInGuild(member: GuildMember, reason: string) {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID === null) return null;
+		if (roleID === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 
 		const role = this.guild.roles.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.settings.reset(GuildSettings.Roles.Muted, { throwOnError: true });
-			return null;
+			throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 		}
 
 		const { position } = (await this.fetchMe()).roles.highest;
@@ -273,8 +272,9 @@ export class ModerationActions {
 			return (moderationLog === null
 				? this.unmuteUserInGuildWithoutData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason))
 				: this.unmuteUserInGuildWithData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason), moderationLog));
-		} catch {
-			return null;
+		} catch (error) {
+			if (error.code === APIErrors.UnknownMember) throw this.guild.language.tget('ACTION_REQUIRED_MEMBER');
+			throw error;
 		}
 	}
 
@@ -295,7 +295,7 @@ export class ModerationActions {
 			await log.invalidate();
 			return log;
 		}
-		return null;
+		throw this.guild.language.tget('MUTE_NOT_EXISTS');
 	}
 
 	/**
@@ -326,26 +326,26 @@ export class ModerationActions {
 	private async unmuteUserInGuildWithoutData(member: GuildMember, reason: string) {
 		// Retrieve the role ID of the mute role, return false if it does not exist.
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID === null) return null;
+		if (roleID === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 
 		// Retrieve the role instance from the role ID, reset and return false if it does not exist.
 		const role = this.guild.roles.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.settings.reset(GuildSettings.Roles.Muted, { throwOnError: true });
-			return null;
+			throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 		}
 
 		// If the user has the role, begin processing the data.
 		if (member.roles.has(roleID)) {
 			// Fetch self and check if the bot has enough role hierarchy to manage the role, return false when not.
 			const { position } = (await this.fetchMe()).roles.highest;
-			if (role.position >= position) return null;
+			if (role.position >= position) throw this.guild.language.tget('MUTE_LOW_HIERARCHY');
 
 			// Remove the role from the member.
 			await member.roles.remove(roleID, reason);
-			return [roleID];
+			return true;
 		}
-		return null;
+		throw this.guild.language.tget('MUTE_NOT_IN_MEMBER');
 	}
 
 	private unmuteExtractRoles(member: GuildMember, roleID: string, selfPosition: number, rawIdentifiers: readonly string[] | null) {

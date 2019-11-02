@@ -3243,6 +3243,9 @@ export default class extends Language {
 		ACTION_VMUTE_REASON: reason => reason === null
 			? '[Action] Applied Voice Mute.'
 			: `[Action] Applied Voice Mute | Reason: ${reason}`,
+		ACTION_UNVMUTE_REASON: reason => reason === null
+			? '[Action] Revoked Voice Mute.'
+			: `[Action] Revoked Voice Mute | Reason: ${reason}`,
 		ACTION_VKICK_REASON: reason => reason === null
 			? '[Action] Applied Voice Kick.'
 			: `[Action] Applied Voice Kick | Reason: ${reason}`,
@@ -3258,6 +3261,12 @@ export default class extends Language {
 		ACTION_RESTRICTED_VOICE_REASON: reason => reason === null
 			? '[Action] Applied Voice Restriction.'
 			: `[Action] Applied Voice Restriction | Reason: ${reason}`,
+		ACTION_REQUIRED_MEMBER: 'The user does not exist or is not in this server.',
+		MUTE_NOT_CONFIGURED: 'The muted role must be configured for this action to happen.',
+		MUTE_NOT_IN_MEMBER: 'The muted role is not set in the member.',
+		MUTE_LOW_HIERARCHY: 'I cannot mute a user which higher role hierarchy than me.',
+		MUTE_CANNOT_MANAGE_ROLES: `I must have **${PERMS.MANAGE_ROLES}** permissions to be able to mute.`,
+		MUTE_NOT_EXISTS: 'The specified user is not muted.',
 
 		RESOLVER_DATE_SUFFIX: ' seconds',
 		RESOLVER_POSITIVE_AMOUNT: 'You must give me a positive number.',

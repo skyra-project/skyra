@@ -144,6 +144,17 @@ export namespace Moderation {
 		[TypeCodes.Prune, { color: 0x000000, title: 'Prune' }]
 	]) as ReadonlyMap<TypeCodes, ModerationTypeAssets>;
 
+	export const enum TypeVariationAppealNames {
+		Warning = 'moderationEndWarning',
+		Mute = 'moderationEndMute',
+		Ban = 'moderationEndBan',
+		VoiceMute = 'moderationEndVoiceMute',
+		RestrictedReaction = 'moderationEndRestrictionReaction',
+		RestrictedEmbed = 'moderationEndRestrictionEmbed',
+		RestrictedAttachment = 'moderationEndRestrictionAttachment',
+		RestrictedVoice = 'moderationEndRestrictionVoice'
+	}
+
 	export const enum SchemaKeys {
 		Case = 'caseID',
 		CreatedAt = 'createdAt',

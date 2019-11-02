@@ -149,14 +149,14 @@ export class ModerationManagerEntry {
 	public get appealTaskName() {
 		if (!this.appealable) return null;
 		switch (this.typeVariation) {
-			case Moderation.TypeVariation.Warning: return 'moderationEndWarning';
-			case Moderation.TypeVariation.Mute: return 'moderationEndMute';
-			case Moderation.TypeVariation.Ban: return 'moderationEndBan';
-			case Moderation.TypeVariation.VoiceMute: return 'moderationEndVoiceMute';
-			case Moderation.TypeVariation.RestrictedReaction: return 'moderationEndRestrictionReaction';
-			case Moderation.TypeVariation.RestrictedEmbed: return 'moderationEndRestrictionEmbed';
-			case Moderation.TypeVariation.RestrictedAttachment: return 'moderationEndRestrictionAttachment';
-			case Moderation.TypeVariation.RestrictedVoice: return 'moderationEndRestrictionVoice';
+			case Moderation.TypeVariation.Warning: return Moderation.TypeVariationAppealNames.Warning;
+			case Moderation.TypeVariation.Mute: return Moderation.TypeVariationAppealNames.Mute;
+			case Moderation.TypeVariation.Ban: return Moderation.TypeVariationAppealNames.Ban;
+			case Moderation.TypeVariation.VoiceMute: return Moderation.TypeVariationAppealNames.VoiceMute;
+			case Moderation.TypeVariation.RestrictedReaction: return Moderation.TypeVariationAppealNames.RestrictedReaction;
+			case Moderation.TypeVariation.RestrictedEmbed: return Moderation.TypeVariationAppealNames.RestrictedEmbed;
+			case Moderation.TypeVariation.RestrictedAttachment: return Moderation.TypeVariationAppealNames.RestrictedAttachment;
+			case Moderation.TypeVariation.RestrictedVoice: return Moderation.TypeVariationAppealNames.RestrictedVoice;
 			default: return null;
 		}
 	}

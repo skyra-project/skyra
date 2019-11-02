@@ -343,7 +343,7 @@ export class ModerationActions {
 
 			// Remove the role from the member.
 			await member.roles.remove(roleID, reason);
-			return true;
+			return;
 		}
 		throw this.guild.language.tget('MUTE_NOT_IN_MEMBER');
 	}

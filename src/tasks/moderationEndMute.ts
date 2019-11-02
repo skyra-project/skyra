@@ -1,24 +1,14 @@
-import { Task } from 'klasa';
-import { Moderation } from '../lib/util/constants';
+import { ModerationTask, ModerationData } from '../lib/structures/ModerationTask';
+import { Guild } from 'discord.js';
 
-export default class extends Task {
+export default class extends ModerationTask {
 
-	public async run(doc: UnmuteTaskData) {
-		// Get the guild
-		const guild = this.client.guilds.get(doc.guildID);
-		if (!guild) return;
-
+	protected async handle(guild: Guild, data: ModerationData) {
 		await guild.security.actions.unMute({
-			user_id: doc.userID,
-			reason: `Mute released after ${this.client.languages.default.duration(doc.duration)}`
-		});
+			user_id: data.userID,
+			reason: `[MODERATION] Mute released after ${this.client.languages.default.duration(data.duration)}`
+		}, this.getTargetDM(guild, await this.client.users.fetch(data.userID)));
+		return null;
 	}
 
-}
-
-interface UnmuteTaskData {
-	[Moderation.SchemaKeys.Guild]: string;
-	[Moderation.SchemaKeys.User]: string;
-	[Moderation.SchemaKeys.Duration]: number;
-	[Moderation.SchemaKeys.Case]: number;
 }

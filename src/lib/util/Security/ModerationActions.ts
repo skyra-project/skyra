@@ -211,12 +211,17 @@ export class ModerationActions {
 		const roleIndex = stickyRoles.roles.indexOf(mutedRole);
 		if (roleIndex === -1) return;
 
-		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
-		clone.roles.splice(roleIndex, 1);
-
-		await (clone.roles.length
-			? this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true })
-			: this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true, arrayAction: 'remove' }));
+		if (stickyRoles.roles.length > 1) {
+			// If there are more than one role, remove the muted one and update the entry keeping the rest.
+			const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
+			clone.roles.splice(roleIndex, 1);
+			await this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true });
+		} else {
+			// Else clone the array, remove the entry, and update with action overwrite.
+			const cloneStickyRoles = guildStickyRoles.slice(0);
+			cloneStickyRoles.splice(stickyRolesIndex, 1);
+			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, { throwOnError: true, arrayAction: 'overwrite' });
+		}
 	}
 
 	private async muteUser(rawOptions: ModerationActionOptions) {

@@ -339,7 +339,7 @@ export default class extends Language {
 
 		SETTINGS_PREFIX: 'A prefix is an affix that is added in front of the word, in this case, the message. It allows bots to distinguish between a regular message and a command.',
 		SETTINGS_LANGUAGE: 'The language I will use for your server. It may not be available in the language you want.',
-		SETTINGS_DISABLENATURALPREFIX: 'Whether or not I should listen for my natural prefix, `Skyra, `',
+		SETTINGS_DISABLENATURALPREFIX: 'Whether or not I should listen for my natural prefix, `Skyra,`',
 		SETTINGS_DISABLEDCOMMANDS: 'The disabled commands, core commands may not be disabled, and moderators will override this. All commands must be in lower case.',
 		SETTINGS_CHANNELS_ANNOUNCEMENTS: 'The channel for announcements, in pair with the key `roles.subscriber`, they are required for the announce command.',
 		SETTINGS_CHANNELS_GREETING: 'The channel I will use to send greetings, you must enable the events and set up the messages, in other categories.',

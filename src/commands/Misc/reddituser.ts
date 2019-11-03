@@ -5,8 +5,6 @@ import { Reddit } from '../../lib/types/definitions/Reddit';
 import { BrandingColors } from '../../lib/util/constants';
 import { cutText, fetch, getColor, roundNumber } from '../../lib/util/util';
 
-const COMPLEXITY_LEVELS = ['very low', 'low', 'medium', 'high', 'very high', 'very high'];
-
 export default class extends SkyraCommand {
 
 	private joinedRedditTimestamp = new Timestamp('MMMM d YYYY');
@@ -43,6 +41,7 @@ export default class extends SkyraCommand {
 		const [bestComment] = comments;
 		const worstComment = comments[comments.length - 1];
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
+		const complexityLevels = message.language.tget('COMMAND_REDDITUSER_COMPLEXITY_LEVELS');
 
 		const embed = new MessageEmbed()
 			.setTitle(fieldsData.OVERVIEW_FOR(about.name))
@@ -56,7 +55,7 @@ export default class extends SkyraCommand {
 			.addField(titles.TOTAL_COMMENTS, comments.length, true)
 			.addField(titles.TOTAL_SUBMISSIONS, posts.length, true)
 			.addField(titles.COMMENT_CONTROVERSIALITY, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
-			.addField(titles.TEXT_COMPLEXITY, `${COMPLEXITY_LEVELS[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
+			.addField(titles.TEXT_COMPLEXITY, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
 			.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_SUBMISSIONS})`, this.calculateTopContribution(posts), true)
 			.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_COMMENTS})`, this.calculateTopContribution(comments), true)
 			.addField(titles.BEST_COMMENT,

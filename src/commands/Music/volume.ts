@@ -21,6 +21,10 @@ export default class extends MusicCommand {
 			return message.sendLocale('COMMAND_VOLUME_SUCCESS', [previousVolume]);
 		}
 
+		if (music.listeners.length >= 4 && !await music.manageableFor(message)) {
+			throw message.language.tget('INHIBITOR_MUSIC_DJ_MEMBER');
+		}
+
 		// Set the volume
 		await music.setVolume(volume);
 		return message.sendLocale('COMMAND_VOLUME_CHANGED', [volume > previousVolume

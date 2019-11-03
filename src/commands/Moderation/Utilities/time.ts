@@ -3,7 +3,7 @@ import { CommandStore, Duration, KlasaMessage, KlasaUser, ScheduledTask } from '
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { ModerationSchemaKeys, ModerationTypeKeys } from '../../../lib/util/constants';
+import { Moderation } from '../../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -21,14 +21,14 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [cancel, caseID, time]: ['cancel', number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
 		if (!modlog) throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
-		if (!cancel && modlog.temporary) throw message.language.tget('COMMAND_TIME_TIMED');
+		if (!cancel && modlog.temporaryType) throw message.language.tget('COMMAND_TIME_TIMED');
 
 		const user = await this.client.users.fetch(typeof modlog.user === 'string' ? modlog.user : modlog.user.id);
 		const type = await this.getActions(message, modlog, user);
-		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[ModerationSchemaKeys.Case] === modlog.case)!;
+		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[Moderation.SchemaKeys.Case] === modlog.case)!;
 
 		if (cancel) return this.cancel(message, modlog, task);
-		if (modlog.appealed) throw message.language.tget('MODERATION_LOG_APPEALED');
+		if (modlog.appealType) throw message.language.tget('MODERATION_LOG_APPEALED');
 		if (task) throw message.language.tget('MODLOG_TIMED', task.data.timestamp - Date.now());
 		if (!time.length) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
 
@@ -36,10 +36,10 @@ export default class extends SkyraCommand {
 		await this.client.schedule.create(type, offset + Date.now(), {
 			catchUp: true,
 			data: {
-				[ModerationSchemaKeys.User]: user.id,
-				[ModerationSchemaKeys.Guild]: message.guild!.id,
-				[ModerationSchemaKeys.Duration]: offset,
-				[ModerationSchemaKeys.Case]: caseID
+				[Moderation.SchemaKeys.User]: user.id,
+				[Moderation.SchemaKeys.Guild]: message.guild!.id,
+				[Moderation.SchemaKeys.Duration]: offset,
+				[Moderation.SchemaKeys.Case]: caseID
 			}
 		});
 
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 		});
 		await this.updateModlog(message, modlog);
 
-		return message.sendLocale('COMMAND_TIME_SCHEDULED', [modlog.name, user, offset]);
+		return message.sendLocale('COMMAND_TIME_SCHEDULED', [modlog.title, user, offset]);
 	}
 
 	private async cancel(message: KlasaMessage, modcase: ModerationManagerEntry, task: ScheduledTask) {
@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 		});
 		await this.updateModlog(message, modcase);
 
-		return message.sendLocale('COMMAND_TIME_ABORTED', [modcase.name]);
+		return message.sendLocale('COMMAND_TIME_ABORTED', [modcase.title]);
 	}
 
 	private async updateModlog(message: KlasaMessage, modcase: ModerationManagerEntry) {
@@ -87,12 +87,15 @@ export default class extends SkyraCommand {
 
 	private getActions(message: KlasaMessage, modlog: ModerationManagerEntry, user: KlasaUser) {
 		switch (modlog.type) {
-			case ModerationTypeKeys.TemporaryBan:
-			case ModerationTypeKeys.Ban: return this.checkBan(message, user);
-			case ModerationTypeKeys.TemporaryMute:
-			case ModerationTypeKeys.Mute: return this.checkMute(message, user);
-			case ModerationTypeKeys.TemporaryVoiceMute:
-			case ModerationTypeKeys.VoiceMute: return this.checkVMute(message, user);
+			case Moderation.TypeCodes.FastTemporaryBan:
+			case Moderation.TypeCodes.TemporaryBan:
+			case Moderation.TypeCodes.Ban: return this.checkBan(message, user);
+			case Moderation.TypeCodes.FastTemporaryMute:
+			case Moderation.TypeCodes.TemporaryMute:
+			case Moderation.TypeCodes.Mute: return this.checkMute(message, user);
+			case Moderation.TypeCodes.FastTemporaryVoiceMute:
+			case Moderation.TypeCodes.TemporaryVoiceMute:
+			case Moderation.TypeCodes.VoiceMute: return this.checkVMute(message, user);
 			default: throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
 		}
 	}

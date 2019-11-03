@@ -1,7 +1,6 @@
-import { User, GuildMember } from 'discord.js';
+import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -9,8 +8,6 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_KICK_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_KICK_EXTENDED'),
-			modType: ModerationTypeKeys.Kick,
-			permissionLevel: 5,
 			requiredGuildPermissions: ['KICK_MEMBERS'],
 			requiredMember: true
 		});
@@ -18,9 +15,12 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
-		await member.kick(reason);
-		return this.sendModlog(message, user, reason);
+	public handle(message: KlasaMessage, target: User, reason: string | null) {
+		return message.guild!.security.actions.kick({
+			user_id: target.id,
+			moderator_id: message.author.id,
+			reason
+		}, this.getTargetDM(message, target));
 	}
 
 	public async posthandle() { /* Do nothing */ }

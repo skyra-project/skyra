@@ -1,9 +1,7 @@
-import { User, GuildMember } from 'discord.js';
+import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { ModerationTypeKeys } from '../../lib/util/constants';
-import { softban } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
 
@@ -11,11 +9,8 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_SOFTBAN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SOFTBAN_EXTENDED'),
-			modType: ModerationTypeKeys.Softban,
-			permissionLevel: 5,
 			requiredMember: false,
-			requiredPermissions: ['BAN_MEMBERS'],
-			flagSupport: true
+			requiredPermissions: ['BAN_MEMBERS']
 		});
 	}
 
@@ -25,8 +20,13 @@ export default class extends ModerationCommand {
 			: null;
 	}
 
-	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string) {
-		return softban(message.guild!, message.author, user, reason, 'days' in message.flagArgs ? Math.min(7, Math.max(0, Number(message.flagArgs.days))) : 1);
+	public handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null) {
+		return message.guild!.security.actions.softBan({
+			user_id: target.id,
+			moderator_id: message.author.id,
+			duration,
+			reason
+		}, Number(message.flagArgs.day || message.flagArgs.days) || 0, this.getTargetDM(message, target));
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {

@@ -2,10 +2,10 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
-import { TIME } from '../../lib/util/constants';
+import { Time } from '../../lib/util/constants';
 
-const GRACE_PERIOD = TIME.HOUR;
-const DAILY_PERIOD = TIME.HOUR * 12;
+const GRACE_PERIOD = Time.Hour;
+const DAILY_PERIOD = Time.Hour * 12;
 
 export default class extends SkyraCommand {
 

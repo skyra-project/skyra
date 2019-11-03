@@ -1,16 +1,15 @@
 import { Image } from 'canvas';
-import { Client, Guild, GuildMember, ImageSize, Message, Role, TextChannel, User, VoiceChannel } from 'discord.js';
+import { Client, Guild, ImageSize, Message, User } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { isObject } from 'util';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
-import { GuildSettings, StickyRole } from '../types/settings/GuildSettings';
+import { GuildSettings } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
-import { ModerationTypeKeys, TIME, BrandingColors } from './constants';
+import { Time, BrandingColors } from './constants';
 import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
 import { LLRCDataEmoji } from './LongLivingReactionCollector';
 import { util, RateLimitManager } from 'klasa';
-import { Mutable } from '../types/util';
 import { api } from './Models/Api';
 import { Events } from '../types/Enums';
 import { createFunctionInhibitor } from 'klasa-decorators';
@@ -22,22 +21,6 @@ import ApiResponse from '../structures/api/ApiResponse';
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
 const REGEX_PARSED_FCUSTOM_EMOJI = /^a?:[^:]+:\d{17,19}$/;
-
-const MUTE_ROLE_PERMISSIONS = Object.freeze({
-	text: { SEND_MESSAGES: false, ADD_REACTIONS: false },
-	voice: { CONNECT: false }
-});
-
-const MUTE_ROLE_OPTIONS = Object.freeze({
-	data: {
-		color: 0x422C0B,
-		hoist: false,
-		mentionable: false,
-		name: 'Muted',
-		permissions: []
-	},
-	reason: '[SETUP] Authorized to create a \'Muted\' role.'
-});
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5B1100 }],
@@ -65,13 +48,13 @@ export interface ReferredPromise<T> {
 export function noop() { }
 
 export function showSeconds(duration: number) {
-	const seconds = Math.floor(duration / TIME.SECOND) % 60;
-	if (duration < TIME.MINUTE) return seconds === 1 ? 'a second' : `${seconds} seconds`;
+	const seconds = Math.floor(duration / Time.Second) % 60;
+	if (duration < Time.Minute) return seconds === 1 ? 'a second' : `${seconds} seconds`;
 
-	const minutes = Math.floor(duration / TIME.MINUTE) % 60;
+	const minutes = Math.floor(duration / Time.Minute) % 60;
 	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-	if (duration >= TIME.HOUR) {
-		const hours = Math.floor(duration / TIME.HOUR);
+	if (duration >= Time.Hour) {
+		const hours = Math.floor(duration / Time.Hour);
 		output = `${hours.toString().padStart(2, '0')}:${output}`;
 	}
 
@@ -116,33 +99,6 @@ export function announcementCheck(message: Message) {
 
 	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.tget('SYSTEM_HIGHEST_ROLE');
 	return role;
-}
-
-/**
- * Remove a muted user from the guild
- * @param guild The guild
- * @param id The id of the user
- */
-export async function removeMute(guild: Guild, id: string) {
-	const { settings } = guild;
-	const guildStickyRoles = settings.get(GuildSettings.StickyRoles);
-
-	const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-	if (stickyRolesIndex === -1) return false;
-
-	const stickyRoles = guildStickyRoles[stickyRolesIndex];
-
-	const index = stickyRoles.roles.indexOf(settings.get(GuildSettings.Roles.Muted));
-	if (index === -1) return false;
-
-	const clone = util.deepClone(stickyRoles) as Mutable<StickyRole>;
-	clone.roles.splice(index, 1);
-	const { errors } = await (stickyRoles.roles.length
-		? settings.update(GuildSettings.StickyRoles, { id, roles: stickyRoles.roles }, { arrayIndex: stickyRolesIndex })
-		: settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayAction: 'remove' }));
-	if (errors.length) throw errors;
-
-	return true;
 }
 
 /**
@@ -396,116 +352,6 @@ export function cleanMentions(guild: Guild, input: string) {
 export function createPick<T>(array: T[]): () => T {
 	const { length } = array;
 	return () => array[Math.floor(Math.random() * length)];
-}
-
-/**
- * Get all the roles for the mute
- * @param member The member to get the roles from
- */
-export function muteGetRoles(member: GuildMember): string[] {
-	const roles = [...member.roles.keys()];
-	roles.splice(roles.indexOf(member.guild.id), 1);
-	return roles;
-}
-
-/**
- * Mute a member
- * @param moderator The member who mutes
- * @param target The member to mute
- * @param reason The reason for the mute
- */
-export async function mute(moderator: GuildMember, target: GuildMember, { reason, duration }: MuteOptions = {}) {
-	const role = target.guild.roles.get(target.guild.settings.get(GuildSettings.Roles.Muted));
-	if (!role) throw target.guild.language.tget('COMMAND_MUTE_UNCONFIGURED');
-
-	const all = target.guild.settings.get(GuildSettings.StickyRoles);
-
-	const stickyRolesIndex = all.findIndex(stickyRole => stickyRole.user === target.id);
-	const stickyRoles: StickyRole = stickyRolesIndex === -1 ? { roles: [], user: target.id } : all[stickyRolesIndex];
-	if (stickyRoles.roles.includes(role.id)) throw target.guild.language.tget('COMMAND_MUTE_MUTED');
-
-	// Parse the roles
-	const roles = muteGetRoles(target);
-
-	await target.edit({ roles: target.roles.filter(r => r.managed).map(r => r.id).concat(role.id) });
-	const entry: StickyRole = { roles: stickyRoles.roles.concat(role.id), user: target.id };
-	const { errors } = await target.guild.settings.update(GuildSettings.StickyRoles, entry, stickyRolesIndex === -1 ? { arrayAction: 'add' } : { arrayIndex: stickyRolesIndex });
-	if (errors.length) throw errors[0];
-
-	const modlog = target.guild.moderation.create({
-		user_id: target.id,
-		moderator_id: moderator.id,
-		type: ModerationTypeKeys.Mute,
-		reason,
-		extra_data: roles
-	});
-
-	if (duration) modlog.setDuration(duration);
-	return (await modlog.create())!;
-}
-
-/**
- * Softban a member
- * @param guild The guild for context
- * @param moderator The member who mutes
- * @param target The member to mute
- * @param reason The reason for the mute
- * @param days The number of days for the prune messages
- */
-export async function softban(guild: Guild, moderator: User, target: User, reason?: string, days = 1) {
-	await guild.members.ban(target.id, {
-		days,
-		reason: `${reason ? `Softban with reason: ${reason}` : null}`
-	});
-	await guild.members.unban(target.id, 'Softban.');
-
-	return (await guild.moderation.create({
-		user_id: target.id,
-		moderator_id: moderator.id,
-		type: ModerationTypeKeys.Softban,
-		reason
-	}).create())!;
-}
-
-/**
- * Push the permissions for the muted role into a channel
- * @param channel The channel to modify
- * @param role The role to update
- * @param array The array to push in case it did fail
- */
-async function _createMuteRolePush(channel: TextChannel | VoiceChannel, role: Role, array: string[]) {
-	if (channel.type === 'category') return;
-	try {
-		await channel.updateOverwrite(role, MUTE_ROLE_PERMISSIONS[channel.type as 'text' | 'voice']);
-	} catch {
-		array.push(String(channel));
-	}
-}
-
-/**
- * Create the mute role
- * @param message The message instance to use as context
- */
-export async function createMuteRole(message: Message) {
-	const id = message.guild!.settings.get(GuildSettings.Roles.Muted);
-	if (id && message.guild!.roles.has(id)) throw message.language.tget('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
-
-	if (message.guild!.roles.size === 250) throw message.language.tget('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
-	const role = await message.guild!.roles.create(MUTE_ROLE_OPTIONS);
-	const { channels } = message.guild!;
-	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLYING', [channels.size, role]);
-	const denied: string[] = [];
-	let accepted = 0;
-
-	for (const channel of channels.values()) {
-		await _createMuteRolePush(channel as TextChannel | VoiceChannel, role, denied);
-		accepted++;
-	}
-
-	const messageEdit2 = message.language.tget('SYSTEM_GUILD_MUTECREATE_EXCEPTIONS', denied);
-	await message.guild!.settings.update(GuildSettings.Roles.Muted, role.id);
-	await message.sendLocale('SYSTEM_GUILD_MUTECREATE_APPLIED', [accepted, messageEdit2, message.author, role]);
-	return role;
 }
 
 export function inlineCodeblock(input: string) {

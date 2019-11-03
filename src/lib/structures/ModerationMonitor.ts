@@ -3,8 +3,7 @@ import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModer
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { Adder } from '../util/Adder';
-import { ModerationTypeKeys, MessageLogsEnum } from '../util/constants';
-import { floatPromise, mute, softban } from '../util/util';
+import { MessageLogsEnum } from '../util/constants';
 import { Events, PermissionLevels } from '../types/Enums';
 import { MessageEmbed } from 'discord.js';
 
@@ -80,49 +79,46 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onWarning(message: KlasaMessage) {
-		await this.sendModerationLog(message, ModerationTypeKeys.Warn);
+		await this.createActionAndSend(message, () => message.guild!.security.actions.warning({
+			user_id: message.author.id,
+			reason: '[Auto-Moderation] Threshold Reached.',
+			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+		}));
 	}
 
 	protected async onKick(message: KlasaMessage) {
-		await this.createActionAndSend(message, ModerationTypeKeys.Kick, () => floatPromise(this, message.member!.kick()));
+		await this.createActionAndSend(message, () => message.guild!.security.actions.kick({
+			user_id: message.author.id,
+			reason: '[Auto-Moderation] Threshold Reached.'
+		}));
 	}
 
 	protected async onMute(message: KlasaMessage) {
-		const duration = message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null;
-		await this.createAction(message, () => floatPromise(this, mute(message.guild!.me!, message.member!, { duration })));
+		await this.createActionAndSend(message, () => message.guild!.security.actions.mute({
+			user_id: message.author.id,
+			reason: '[Auto-Moderation] Threshold Reached.',
+			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+		}));
 	}
 
 	protected async onSoftBan(message: KlasaMessage) {
-		await this.createAction(message, () => floatPromise(this, softban(message.guild!, message.guild!.me!.user, message.author)));
+		await this.createActionAndSend(message, () => message.guild!.security.actions.softBan({
+			user_id: message.author.id,
+			reason: '[Auto-Moderation] Threshold Reached.'
+		}, 1));
 	}
 
 	protected async onBan(message: KlasaMessage) {
-		await this.createActionAndSend(message, ModerationTypeKeys.Ban, () => floatPromise(this, message.member!.ban()));
-	}
-
-	protected sendModerationLog(message: KlasaMessage, type: ModerationTypeKeys) {
-		const moderationLog = message.guild!.moderation.create({
+		await this.createActionAndSend(message, () => message.guild!.security.actions.ban({
 			user_id: message.author.id,
-			moderator_id: this.client.user!.id,
-			type,
-			reason: 'Threshold Reached.'
-		});
-
-		const duration = message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null;
-		if (duration !== null) moderationLog.setDuration(duration);
-		return moderationLog.create();
+			reason: '[Auto-Moderation] Threshold Reached.',
+			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+		}, 0));
 	}
 
-	protected async createAction(message: KlasaMessage, performAction: () => unknown) {
+	protected async createActionAndSend(message: KlasaMessage, performAction: () => unknown): Promise<void> {
 		const unlock = message.guild!.moderation.createLock();
 		await performAction();
-		unlock();
-	}
-
-	protected async createActionAndSend(message: KlasaMessage, type: ModerationTypeKeys, performAction: () => unknown): Promise<void> {
-		const unlock = message.guild!.moderation.createLock();
-		await performAction();
-		await this.sendModerationLog(message, type);
 		unlock();
 	}
 

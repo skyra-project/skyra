@@ -1,5 +1,5 @@
 import { AnyObject } from '../../util';
-import { ModerationTypeKeys } from '../../../util/constants';
+import { Moderation } from '../../../util/constants';
 
 export interface RawModerationSettings {
 	case_id: number;
@@ -10,7 +10,7 @@ export interface RawModerationSettings {
 	moderator_id: string | null;
 	reason: string | null;
 	user_id: string;
-	type: ModerationTypeKeys;
+	type: Moderation.TypeCodes;
 }
 
 export const SQL_TABLE_SCHEMA = /* sql */`

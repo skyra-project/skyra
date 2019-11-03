@@ -37,8 +37,8 @@ export default class extends Event {
 			await channel.send(makeMessage());
 		} catch (error) {
 			this.client.emit(Events.Wtf, error instanceof DiscordAPIError || error instanceof HTTPError
-				? `Failed to send '${MessageLogsEnum[type]}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
-				: `Failed to send '${MessageLogsEnum[type]}' log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`);
+				? `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
+				: `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`);
 		}
 	}
 

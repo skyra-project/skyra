@@ -4,10 +4,10 @@ import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 import { getColor, floatPromise } from '../util/util';
 import { api } from '../util/Models/Api';
-import { TIME } from '../util/constants';
+import { Time } from '../util/constants';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
-const TIMEOUT = TIME.MINUTE * 15;
+const TIMEOUT = Time.Minute * 15;
 
 export class SettingsMenu {
 

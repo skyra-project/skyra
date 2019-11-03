@@ -1,4 +1,4 @@
-export enum Databases {
+export const enum Databases {
 	Banners = 'banners',
 	Giveaway = 'giveaway',
 	Guilds = 'guilds',

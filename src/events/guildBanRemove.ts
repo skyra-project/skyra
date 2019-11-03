@@ -1,7 +1,7 @@
 import { Guild, User } from 'discord.js';
 import { Event } from 'klasa';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { ModerationTypeKeys } from '../lib/util/constants';
+import { Moderation } from '../lib/util/constants';
 
 export default class extends Event {
 
@@ -10,7 +10,7 @@ export default class extends Event {
 		await guild.moderation.waitLock();
 		await guild.moderation.create({
 			user_id: user.id,
-			type: ModerationTypeKeys.UnBan
+			type: Moderation.TypeCodes.UnBan
 		}).create();
 	}
 

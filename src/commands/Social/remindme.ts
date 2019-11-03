@@ -2,7 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, Duration, KlasaMessage, Timestamp, util, ScheduledTask } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { TIME, BrandingColors } from '../../lib/util/constants';
+import { Time, BrandingColors } from '../../lib/util/constants';
 import { cutText, getColor } from '../../lib/util/util';
 
 const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
@@ -86,7 +86,7 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		if (!util.isNumber(parsed.time) || parsed.time < 59500 || parsed.time > (TIME.YEAR * 5)) {
+		if (!util.isNumber(parsed.time) || parsed.time < 59500 || parsed.time > (Time.Year * 5)) {
 			parsed.time = await this.askTime(message, message.language.tget('COMMAND_REMINDME_INPUT_PROMPT'));
 		}
 

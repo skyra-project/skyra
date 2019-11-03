@@ -2,7 +2,7 @@ import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
-import { ModerationActions, ModerationErrors, ModerationSchemaKeys, ModerationTypeKeys, TIME, TYPE_ASSETS, ModerationTypeAssets } from '../util/constants';
+import { Moderation, Time } from '../util/constants';
 import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { isNullOrUndefined } from '../util/util';
@@ -14,55 +14,114 @@ const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
 export class ModerationManagerEntry {
 
 	public manager: ModerationManager;
-	public case: number | null;
-	public duration: number | null;
-	public extraData: object | null;
-	public moderator: string | User | null;
-	public reason: string | null;
-	public type: ModerationTypeKeys;
-	public user: string | User;
+	public case!: number | null;
+	public duration!: number | null;
+	public extraData!: object | null;
+	public moderator!: string | User | null;
+	public reason!: string | null;
+	public type!: Moderation.TypeCodes;
+	public user!: string | User;
 	public createdAt: number | null;
-	private [kTimeout] = Date.now() + (TIME.MINUTE * 15);
+	private [kTimeout] = Date.now() + (Time.Minute * 15);
 
 	public constructor(manager: ModerationManager, data: ModerationManagerInsertData) {
 		this.manager = manager;
 
-		this.case = data.case_id || null;
-		this.duration = data.duration || null;
-		this.extraData = data.extra_data || null;
-		this.moderator = data.moderator_id || null;
-		this.reason = data.reason || null;
-		this.type = data.type;
-		this.user = data.user_id;
+		this.setType(data.type)
+			.setCase(data.case_id || null)
+			.setDuration(data.duration || null)
+			.setExtraData(data.extra_data || null)
+			.setUser(data.user_id)
+			.setModerator(data.moderator_id || null)
+			.setReason(data.reason || null);
 		this.createdAt = data.created_at || null;
 	}
 
+	/**
+	 * The Client that manages this instance.
+	 */
 	public get client() {
 		return this.manager.client;
 	}
 
-	public get name() {
-		return this.type in TYPE_ASSETS ? TYPE_ASSETS[this.type].title : 'Unknown';
+	/**
+	 * Retrieve the metadata (title and color) for this entry.
+	 */
+	public get metadata() {
+		const data = Moderation.metadata.get(this.type);
+		if (typeof data === 'undefined') throw new Error(`Inexistent metadata for '0b${this.type.toString(2).padStart(8, '0')}'.`);
+		return data;
 	}
 
-	public get appealed() {
-		return Boolean(this.type & ModerationActions.Appealed);
+	/**
+	 * Retrieve the title for this entry's embed.
+	 */
+	public get title() {
+		return this.metadata.title;
 	}
 
-	public get temporary() {
-		return Boolean(this.type & ModerationActions.Temporary);
+	/**
+	 * Retrieve the color for this entry's embed.
+	 */
+	public get color() {
+		return this.metadata.color;
+	}
+
+	/**
+	 * Retrieve the creation date for this entry's embed. Returns current date if not set.
+	 */
+	public get createdTimestamp() {
+		return this.createdAt || Date.now();
+	}
+
+	/**
+	 * Get the variation type for this entry.
+	 */
+	public get typeVariation() {
+		/**
+		 * Variation is assigned to the first 4 bits of the entire type, therefore:
+		 * 0b00001111 &
+		 * 0bXXXX0100 =
+		 * 0b00000100
+		 */
+		return (this.type & Moderation.TypeBits.Variation) as Moderation.TypeVariation;
+	}
+
+	/**
+	 * Get the metadata type for this entry.
+	 */
+	public get typeMetadata() {
+		/**
+		 * Metadata is assigned to the last 4 bits of the entire type, therefore:
+		 * 0b11110000 &
+		 * 0b0010XXXX =
+		 * 0b00100000
+		 */
+		return (this.type & Moderation.TypeBits.Metadata) as Moderation.TypeMetadata;
+	}
+
+	public get appealType() {
+		return (this.typeMetadata & Moderation.TypeMetadata.Appeal) === Moderation.TypeMetadata.Appeal;
+	}
+
+	public get temporaryType() {
+		return (this.typeMetadata & Moderation.TypeMetadata.Temporary) === Moderation.TypeMetadata.Temporary;
+	}
+
+	public get temporaryFastType() {
+		return (this.typeMetadata & Moderation.TypeMetadata.Fast) === Moderation.TypeMetadata.Fast;
+	}
+
+	public get invalidated() {
+		return (this.typeMetadata & Moderation.TypeMetadata.Invalidated) === Moderation.TypeMetadata.Invalidated;
 	}
 
 	public get appealable() {
-		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Appealed) in TYPE_ASSETS;
+		return Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appeal);
 	}
 
 	public get temporable() {
-		return ((this.type & ~ModerationActions.Temporary) | ModerationActions.Temporary) in TYPE_ASSETS;
-	}
-
-	public get basicType(): ModerationTypeKeys {
-		return this.type & ~(ModerationActions.Appealed | ModerationActions.Temporary);
+		return Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Temporary);
 	}
 
 	public get cacheExpired() {
@@ -87,30 +146,52 @@ export class ModerationManagerEntry {
 			: this.user.id;
 	}
 
+	public get appealTaskName() {
+		if (!this.appealable) return null;
+		switch (this.typeVariation) {
+			case Moderation.TypeVariation.Warning: return Moderation.TypeVariationAppealNames.Warning;
+			case Moderation.TypeVariation.Mute: return Moderation.TypeVariationAppealNames.Mute;
+			case Moderation.TypeVariation.Ban: return Moderation.TypeVariationAppealNames.Ban;
+			case Moderation.TypeVariation.VoiceMute: return Moderation.TypeVariationAppealNames.VoiceMute;
+			case Moderation.TypeVariation.RestrictedReaction: return Moderation.TypeVariationAppealNames.RestrictedReaction;
+			case Moderation.TypeVariation.RestrictedEmbed: return Moderation.TypeVariationAppealNames.RestrictedEmbed;
+			case Moderation.TypeVariation.RestrictedAttachment: return Moderation.TypeVariationAppealNames.RestrictedAttachment;
+			case Moderation.TypeVariation.RestrictedVoice: return Moderation.TypeVariationAppealNames.RestrictedVoice;
+			default: return null;
+		}
+	}
+
 	public get shouldSend() {
 		// If the moderation log is not anonymous, it should always send
 		if (this.moderator) return true;
 
-		const now = Date.now();
-		const user = typeof this.user === 'string' ? this.user : this.user.id;
-		const entries = this.manager.filter(entry => (typeof entry.user === 'string' ? entry.user : entry.user.id) === user && entry.createdAt! - now < TIME.MINUTE);
+		const checkSoftban = this.typeVariation === Moderation.TypeVariation.Ban;
+		const before = Date.now() - Time.Minute;
+		const user = this.flattenedUser;
+		for (const entry of this.manager.values()) {
+			// If it's not the same user target or if it's at least 1 minute old, skip
+			if (user !== entry.flattenedUser || before > entry.createdTimestamp) continue;
 
-		// If there is no moderation log for this user that has not received a report, it should send
-		if (!entries.size) return true;
+			// If there was a log with the same type in the last minute, do not duplicate
+			if (this.typeVariation === entry.typeVariation) return false;
 
-		// If there was a log with the same type in the last minute, do not duplicate
-		if (entries.some(entry => entry.basicType === this.basicType)) return false;
-
-		// If this log is a ban or an unban, but the user was softbanned recently, abort
-		if ((this.type === ModerationTypeKeys.Ban || this.type === ModerationTypeKeys.UnBan) && entries.some(entry => entry.type === ModerationTypeKeys.Softban)) return false;
+			// If this log is a ban or an unban, but the user was softbanned recently, abort
+			if (checkSoftban && entry.type === Moderation.TypeCodes.Softban) return false;
+		}
 
 		// For all other cases, it should send
 		return true;
 	}
 
+	public isType(type: Moderation.TypeCodes) {
+		return this.type === type
+			|| this.type === (type | Moderation.TypeMetadata.Temporary)
+			|| this.type === (type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast);
+	}
+
 	public async edit(data: ModerationManagerUpdateData = {}) {
 		const flattened: ModerationManagerUpdateDataWithType = {
-			duration: isNullOrUndefined(data.duration) || !this.temporable || data.duration > TIME.YEAR
+			duration: isNullOrUndefined(data.duration) || !this.temporable || data.duration > Time.Year
 				? this.duration
 				: data.duration || null,
 			moderator_id: typeof data.moderator_id === 'undefined'
@@ -125,11 +206,7 @@ export class ModerationManagerEntry {
 			type: this.type
 		};
 
-		if (typeof flattened.duration !== 'undefined') {
-			if (flattened.duration) flattened.type |= ModerationActions.Temporary;
-			else flattened.type &= ~ModerationActions.Temporary;
-		}
-
+		flattened.type = ModerationManagerEntry.getTypeFlagsFromDuration(flattened.type, flattened.duration);
 		await this.client.queries.updateModerationLog({ ...this.toJSON(), ...flattened });
 		this.duration = flattened.duration;
 		this.moderator = flattened.moderator_id;
@@ -140,11 +217,9 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public async appeal() {
-		if (this.appealed) return this;
-		if (!this.appealable) throw ModerationErrors.CaseTypeNotAppeal;
-
-		const type = this.type | ModerationActions.Appealed;
+	public async invalidate() {
+		if (this.invalidated) return this;
+		const type = this.type | Moderation.TypeMetadata.Invalidated;
 		await this.client.queries.updateModerationLog({ ...this.toJSON(), type });
 		this.type = type;
 
@@ -155,56 +230,49 @@ export class ModerationManagerEntry {
 		if (!this.user) throw new Error('A user has not been set.');
 		const userID = typeof this.user === 'string' ? this.user : this.user.id;
 		const [userTag, moderator] = await Promise.all([
-			this.manager.guild.client.fetchUsername(userID),
-			typeof this.moderator === 'string' ? this.manager.guild.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.manager.guild.client.user)
+			this.client.fetchUsername(userID),
+			typeof this.moderator === 'string' ? this.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.client.user!)
 		]);
 
-		const assets: ModerationTypeAssets = TYPE_ASSETS[this.type];
 		const prefix = this.manager.guild.settings.get(GuildSettings.Prefix);
-		const description = (this.duration
-			? [
-				`❯ **Type**: ${assets.title}`,
-				`❯ **User:** ${userTag} (${userID})`,
-				`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}`,
-				`❯ **Expires In**: ${this.manager.guild.client.languages.default.duration(this.duration)}`
-			]
-			: [
-				`❯ **Type**: ${assets.title}`,
-				`❯ **User:** ${userTag} (${userID})`,
-				`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}`
-			]
-		).join('\n');
+		const formattedDuration = this.duration ? `\n❯ **Expires In**: ${this.client.languages.default.duration(this.duration)}` : '';
+		const description = [
+			`❯ **Type**: ${this.title}`,
+			`❯ **User:** ${userTag} (${userID})`,
+			`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}${formattedDuration}`
+		].join('\n');
 
 		return new MessageEmbed()
-			.setColor(assets.color)
-			.setAuthor(moderator!.tag, moderator!.displayAvatarURL({ size: 128 }))
+			.setColor(this.color)
+			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
 			.setDescription(description)
-			.setFooter(`Case ${this.case}`, this.manager.guild.client.user!.displayAvatarURL({ size: 128 }))
-			.setTimestamp(new Date(this.createdAt || Date.now()));
+			.setFooter(`Case ${this.case}`, this.client.user!.displayAvatarURL({ size: 128 }))
+			.setTimestamp(this.createdTimestamp);
 	}
 
-	public setCase(value: number) {
+	public setCase(value: number | null) {
 		this.case = value;
 		return this;
 	}
 
-	public setDuration(value: string | number) {
+	public setDuration(value: string | number | null) {
 		// If this cannot be reversed, skip
 		if (!this.temporable) return this;
 
-		if (typeof value === 'number') this.duration = value;
-		else if (typeof value === 'string') this.duration = new Duration(value.trim()).offset;
-		if (!this.duration || this.duration > TIME.YEAR) this.duration = null;
-		if (this.duration) this.type |= ModerationActions.Temporary;
+		if (typeof value === 'string') value = new Duration(value.trim()).offset;
+		if (typeof value === 'number' && (value <= 0 || value > Time.Year)) value = null;
+
+		this.duration = value;
+		this.type = ModerationManagerEntry.getTypeFlagsFromDuration(this.type, this.duration);
 		return this;
 	}
 
-	public setExtraData(value: object) {
+	public setExtraData(value: object | null) {
 		this.extraData = value;
 		return this;
 	}
 
-	public setModerator(value: User | string) {
+	public setModerator(value: User | string | null) {
 		this.moderator = value;
 		return this;
 	}
@@ -213,7 +281,7 @@ export class ModerationManagerEntry {
 		if (!value) return this;
 		value = value.trim();
 
-		if (value && this.temporable) {
+		if (value && this.duration === null && this.temporable) {
 			const match = regexParse.exec(value);
 			if (match) {
 				this.setDuration(match[1]);
@@ -225,13 +293,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setType(value: keyof typeof ModerationTypeKeys | ModerationTypeKeys) {
-		if (typeof value === 'string' && (value in ModerationTypeKeys)) {
-			value = ModerationTypeKeys[value];
-		} else if (typeof value !== 'number') {
-			throw new TypeError(`${this} | The type ${value} is not valid.`);
-		}
-
+	public setType(value: Moderation.TypeCodes) {
 		this.type = value;
 		return this;
 	}
@@ -257,19 +319,20 @@ export class ModerationManagerEntry {
 		const channel = (channelID && this.manager.guild.channels.get(channelID) as TextChannel) || null;
 		if (channel) {
 			const messageEmbed = await this.prepareEmbed();
-			channel.send(messageEmbed).catch(error => this.manager.guild.client.emit(Events.ApiError, error));
+			channel.send(messageEmbed).catch(error => this.client.emit(Events.ApiError, error));
 		}
 
-		if (this.duration) {
-			this.manager.guild.client.schedule.create(TYPE_ASSETS[this.basicType | ModerationActions.Appealed].title.replace(/ /g, '').toLowerCase(), this.duration + Date.now(), {
+		const taskName = this.duration === null ? null : this.appealTaskName;
+		if (taskName !== null) {
+			this.client.schedule.create(taskName, this.duration! + Date.now(), {
 				catchUp: true,
 				data: {
-					[ModerationSchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
-					[ModerationSchemaKeys.Guild]: this.manager.guild.id,
-					[ModerationSchemaKeys.Duration]: this.duration,
-					[ModerationSchemaKeys.Case]: this.case
+					[Moderation.SchemaKeys.Case]: this.case,
+					[Moderation.SchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
+					[Moderation.SchemaKeys.Guild]: this.manager.guild.id,
+					[Moderation.SchemaKeys.Duration]: this.duration
 				}
-			}).catch(error => this.manager.guild.client.emit(Events.Wtf, error));
+			}).catch(error => this.client.emit(Events.Wtf, error));
 		}
 
 		return this;
@@ -288,6 +351,12 @@ export class ModerationManagerEntry {
 			user_id: this.flattenedUser,
 			created_at: this.createdAt
 		};
+	}
+
+	private static getTypeFlagsFromDuration(type: Moderation.TypeCodes, duration: number | null) {
+		if (duration === null) return type & ~(Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast);
+		if (duration < Time.Minute) return type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast;
+		return type | Moderation.TypeMetadata.Temporary;
 	}
 
 }

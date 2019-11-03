@@ -5,7 +5,7 @@ import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { Databases } from '../../../lib/types/constants/Constants';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { UserSettings } from '../../../lib/types/settings/UserSettings';
-import { EMOJIS, BrandingColors } from '../../../lib/util/constants';
+import { Emojis, BrandingColors } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
 import { RawBannerSettings } from '../../../lib/types/settings/raw/RawBannerSettings';
 
@@ -104,7 +104,7 @@ export default class extends SkyraCommand {
 			display.addPage((template: MessageEmbed) => template
 				.setImage(`${CDN_URL}${banner.id}.png`)
 				.setTitle(banner.title)
-				.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));
+				.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`));
 		}
 
 		this.display = display;
@@ -126,7 +126,7 @@ export default class extends SkyraCommand {
 				display.addPage((template: MessageEmbed) => template
 					.setImage(`${CDN_URL}${banner.id}.png`)
 					.setTitle(banner.title)
-					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${EMOJIS.SHINY}`));
+					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`));
 			}
 		}
 
@@ -144,7 +144,7 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary)
 			.setDescription([
 				`**Title**: ${banner.title} (\`${banner.id}\`)`,
-				`**Price**: ${banner.price}${EMOJIS.SHINY}`
+				`**Price**: ${banner.price}${Emojis.Shiny}`
 			].join('\n'))
 			.setImage(`${CDN_URL}${banner.id}.png`)
 			.setTimestamp();

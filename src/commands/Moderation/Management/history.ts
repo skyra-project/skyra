@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { ModerationTypeKeys, BrandingColors } from '../../../lib/util/constants';
+import { Moderation, BrandingColors } from '../../../lib/util/constants';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { getColor } from '../../../lib/util/util';
 import { chunk } from '@klasa/utils';
@@ -34,15 +34,15 @@ export default class extends SkyraCommand {
 		let kicks = 0;
 		let bans = 0;
 		for (const log of logs.values()) {
-			switch (log.basicType) {
-				case ModerationTypeKeys.Ban:
-				case ModerationTypeKeys.Softban: bans++;
+			switch (log.typeVariation) {
+				case Moderation.TypeVariation.Ban:
+				case Moderation.TypeVariation.Softban: bans++;
 					break;
-				case ModerationTypeKeys.Mute: mutes++;
+				case Moderation.TypeVariation.Mute: mutes++;
 					break;
-				case ModerationTypeKeys.Kick: kicks++;
+				case Moderation.TypeVariation.Kick: kicks++;
 					break;
-				case ModerationTypeKeys.Warn: warnings++;
+				case Moderation.TypeVariation.Warning: warnings++;
 			}
 		}
 
@@ -86,9 +86,9 @@ export default class extends SkyraCommand {
 		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdAt + entry.duration) - Date.now();
 		const formattedModerator = users.get(entry.flattenedModerator);
 		const formattedReason = entry.reason || 'None';
-		const formattedAppeal = entry.appealed ? ' (Appealed)' : '';
-		const formattedTitle = `**${entry.name}${formattedAppeal}**\n`;
-		const formattedDuration = entry.appealed
+		const formattedAppeal = entry.appealType ? ' (Appealed)' : '';
+		const formattedTitle = `**${entry.title}${formattedAppeal}**\n`;
+		const formattedDuration = entry.appealType
 			? ''
 			: remainingTime === null
 				? ''

@@ -1,4 +1,4 @@
-export enum Events {
+export const enum Events {
 	ApiError = 'apiError',
 	CommandError = 'commandError',
 	CommandInhibited = 'commandInhibited',
@@ -36,7 +36,7 @@ export enum Events {
 	Wtf = 'wtf'
 }
 
-export enum PermissionLevels {
+export const enum PermissionLevels {
 	Everyone = 0,
 	Staff = 4,
 	Moderator = 5,

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
-import { EMOJIS } from '../lib/util/constants';
+import { Emojis } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { HungerGamesUsage } from '../lib/util/Games/HungerGamesUsage';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
@@ -10,7 +10,10 @@ import { createPick, inlineCodeblock } from '../lib/util/util';
 import { LanguageKeys } from '../lib/types/Languages';
 
 const { toTitleCase, codeBlock } = klasaUtil;
-const { LOADING, SHINY, GREENTICK, REDCROSS } = EMOJIS;
+const LOADING = Emojis.Loading;
+const SHINY = Emojis.Shiny;
+const GREENTICK = Emojis.GreenTick;
+const REDCROSS = Emojis.RedCross;
 
 const builder = new LanguageHelp()
 	.setExplainedUsage('⚙ | ***Explained usage***')
@@ -3215,6 +3218,55 @@ export default class extends Language {
 		SELF_MODERATION_MAXIMUM_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${value}) was too long, expected maximum ${maximum}.`,
 		SELF_MODERATION_DURATION_TOO_SHORT: (minimum, value) => `${REDCROSS} The value (${duration(value)}) was too short, expected at least ${duration(minimum)}.`,
 		SELF_MODERATION_DURATION_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
+
+		ACTION_MUTE_REASON: reason => reason === null
+			? '[Action] Applied Mute.'
+			: `[Action] Applied Mute | Reason: ${reason}`,
+		ACTION_UNMUTE_REASON: reason => reason === null
+			? '[Action] Revoked Mute.'
+			: `[Action] Revoked Mute | Reason: ${reason}`,
+		ACTION_KICK_REASON: reason => reason === null
+			? '[Action] Applied Kick.'
+			: `[Action] Applied Kick | Reason: ${reason}`,
+		ACTION_SOFTBAN_REASON: reason => reason === null
+			? '[Action] Applying Softban.'
+			: `[Action] Applying Softban | Reason: ${reason}`,
+		ACTION_UNSOFTBAN_REASON: reason => reason === null
+			? '[Action] Applied Softban.'
+			: `[Action] Applied Softban | Reason: ${reason}`,
+		ACTION_BAN_REASON: reason => reason === null
+			? '[Action] Applied Ban'
+			: `[Action] Applied Ban`,
+		ACTION_UNBAN_REASON: reason => reason === null
+			? '[Action] Applied Unban.'
+			: `[Action] Applied Unban | Reason: ${reason}`,
+		ACTION_VMUTE_REASON: reason => reason === null
+			? '[Action] Applied Voice Mute.'
+			: `[Action] Applied Voice Mute | Reason: ${reason}`,
+		ACTION_UNVMUTE_REASON: reason => reason === null
+			? '[Action] Revoked Voice Mute.'
+			: `[Action] Revoked Voice Mute | Reason: ${reason}`,
+		ACTION_VKICK_REASON: reason => reason === null
+			? '[Action] Applied Voice Kick.'
+			: `[Action] Applied Voice Kick | Reason: ${reason}`,
+		ACTION_RESTRICTED_REACT_REASON: reason => reason === null
+			? '[Action] Applied Reaction Restriction.'
+			: `[Action] Applied Reaction Restriction | Reason: ${reason}`,
+		ACTION_RESTRICTED_EMBED_REASON: reason => reason === null
+			? '[Action] Applied Embed Restriction.'
+			: `[Action] Applied Embed Restriction | Reason: ${reason}`,
+		ACTION_RESTRICTED_ATTACHMENT_REASON: reason => reason === null
+			? '[Action] Applied Attachment Restriction.'
+			: `[Action] Applied Attachment Restriction | Reason: ${reason}`,
+		ACTION_RESTRICTED_VOICE_REASON: reason => reason === null
+			? '[Action] Applied Voice Restriction.'
+			: `[Action] Applied Voice Restriction | Reason: ${reason}`,
+		ACTION_REQUIRED_MEMBER: 'The user does not exist or is not in this server.',
+		MUTE_NOT_CONFIGURED: 'The muted role must be configured for this action to happen.',
+		MUTE_NOT_IN_MEMBER: 'The muted role is not set in the member.',
+		MUTE_LOW_HIERARCHY: 'I cannot mute a user which higher role hierarchy than me.',
+		MUTE_CANNOT_MANAGE_ROLES: `I must have **${PERMS.MANAGE_ROLES}** permissions to be able to mute.`,
+		MUTE_NOT_EXISTS: 'The specified user is not muted.',
 
 		RESOLVER_DATE_SUFFIX: ' seconds',
 		RESOLVER_POSITIVE_AMOUNT: 'You must give me a positive number.',

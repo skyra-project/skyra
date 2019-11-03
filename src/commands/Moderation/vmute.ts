@@ -1,7 +1,6 @@
-import { User, GuildMember } from 'discord.js';
+import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { ModerationTypeKeys } from '../../lib/util/constants';
 
 export default class extends ModerationCommand {
 
@@ -9,9 +8,7 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_VMUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_VMUTE_EXTENDED'),
-			modType: ModerationTypeKeys.VoiceMute,
 			optionalDuration: true,
-			permissionLevel: 5,
 			requiredMember: true,
 			requiredGuildPermissions: ['MUTE_MEMBERS']
 		});
@@ -19,9 +16,13 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, user: User, member: GuildMember, reason: string, _prehandled: undefined, duration: number | null) {
-		await member.voice.setMute(true, reason);
-		return this.sendModlog(message, user, reason, null, duration);
+	public handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null) {
+		return message.guild!.security.actions.voiceMute({
+			user_id: target.id,
+			moderator_id: message.author.id,
+			duration,
+			reason
+		}, this.getTargetDM(message, target));
 	}
 
 	public async posthandle() { /* Do nothing */ }

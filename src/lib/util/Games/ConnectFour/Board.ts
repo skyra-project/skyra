@@ -1,3 +1,5 @@
+import { ConnectFourConstants } from '../../constants';
+
 export enum Cell {
 	Empty,
 	PlayerOne,
@@ -173,11 +175,11 @@ export class Board {
 
 	private static renderCell(cell: Cell) {
 		switch (cell) {
-			case Cell.Empty: return '<:Empty:352403997606412289>';
-			case Cell.PlayerOne: return '<:PlayerONE:352403997300359169>';
-			case Cell.PlayerTwo: return '<:PlayerTWO:352404081974968330>';
-			case Cell.WinnerPlayerOne: return '<:PlayerONEWin:352403997761601547>';
-			case Cell.WinnerPlayerTwo: return '<:PlayerTWOWin:352403997958602752>';
+			case Cell.Empty: return ConnectFourConstants.Emojis.Empty;
+			case Cell.PlayerOne: return ConnectFourConstants.Emojis.PlayerOne;
+			case Cell.PlayerTwo: return ConnectFourConstants.Emojis.PlayerTwo;
+			case Cell.WinnerPlayerOne: return ConnectFourConstants.Emojis.WinnerOne;
+			case Cell.WinnerPlayerTwo: return ConnectFourConstants.Emojis.WinnerTwo;
 		}
 	}
 

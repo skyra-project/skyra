@@ -339,6 +339,7 @@ export default class extends Language {
 
 		SETTINGS_PREFIX: 'A prefix is an affix that is added in front of the word, in this case, the message. It allows bots to distinguish between a regular message and a command.',
 		SETTINGS_LANGUAGE: 'The language I will use for your server. It may not be available in the language you want.',
+		SETTINGS_DISABLENATURALPREFIX: 'Whether or not I should listen for my natural prefix, `Skyra,`',
 		SETTINGS_DISABLEDCOMMANDS: 'The disabled commands, core commands may not be disabled, and moderators will override this. All commands must be in lower case.',
 		SETTINGS_CHANNELS_ANNOUNCEMENTS: 'The channel for announcements, in pair with the key `roles.subscriber`, they are required for the announce command.',
 		SETTINGS_CHANNELS_GREETING: 'The channel I will use to send greetings, you must enable the events and set up the messages, in other categories.',
@@ -361,6 +362,9 @@ export default class extends Language {
 		SETTINGS_MESSAGES_GREETING: 'The message I shall send to when a user joins. You must set up `channels.greeting` and `events.memberAdd`',
 		SETTINGS_MESSAGES_JOIN_DM: 'The message I shall send to when a user joins in DMs.',
 		SETTINGS_MESSAGES_WARNINGS: 'Whether or not I should send warnings to the user when they receive one.',
+		SETTINGS_MESSAGES_IGNORECHANNELS: 'The channels configured to not increase the point counter for users.',
+		SETTINGS_MESSAGES_MODERATION_DM: 'Whether or not I should send a direct message to the target user on moderation actions.',
+		SETTINGS_MESSAGES_MODERATOR_NAME_DISPLAY: 'Whether or not I should display the name of the moderator who took the action whne sending the target user a moderation message. Requires `messages.moderation-dm` to be enabled.',
 		SETTINGS_ROLES_ADMIN: `The administrator role, their priviledges in Skyra will be upon moderative, covering management. Defaults to anyone with the ${PERMS.MANAGE_GUILD} permission.`,
 		SETTINGS_ROLES_INITIAL: 'The initial role, if configured, I will give it to users as soon as they join.',
 		SETTINGS_ROLES_MODERATOR: 'The moderator role, their priviledges will cover almost all moderation commands. Defaults to anyone who can ban members.',

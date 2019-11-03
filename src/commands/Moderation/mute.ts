@@ -11,6 +11,7 @@ export default class extends ModerationCommand {
 			description: language => language.tget('COMMAND_MUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MUTE_EXTENDED'),
 			optionalDuration: true,
+			requiredMember: true,
 			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
 	}

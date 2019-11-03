@@ -273,8 +273,7 @@ export class ModerationActions {
 				? this.unmuteUserInGuildWithoutData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason))
 				: this.unmuteUserInGuildWithData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason), moderationLog));
 		} catch (error) {
-			if (error.code === APIErrors.UnknownMember) throw this.guild.language.tget('ACTION_REQUIRED_MEMBER');
-			throw error;
+			if (error.code !== APIErrors.UnknownMember) throw error;
 		}
 	}
 

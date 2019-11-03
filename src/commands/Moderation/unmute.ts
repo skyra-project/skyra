@@ -9,7 +9,6 @@ export default class extends ModerationCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_UNMUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_UNMUTE_EXTENDED'),
-			requiredMember: true,
 			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
 	}

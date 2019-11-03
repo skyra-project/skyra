@@ -281,6 +281,8 @@ export interface LanguageKeys {
 	COMMAND_ANIME_EXTENDED: string;
 	COMMAND_MANGA_DESCRIPTION: string;
 	COMMAND_MANGA_EXTENDED: string;
+	COMMAND_WAIFU_DESCRIPTION: string;
+	COMMAND_WAIFU_EXTENDED: string;
 	COMMAND_ANNOUNCEMENT_DESCRIPTION: string;
 	COMMAND_ANNOUNCEMENT_EXTENDED: string;
 	COMMAND_SUBSCRIBE_DESCRIPTION: string;
@@ -675,6 +677,7 @@ export interface LanguageKeys {
 		'SPECIAL': string;
 		[index: string]: string;
 	};
+	COMMAND_WAIFU_FOOTER: string;
 	COMMAND_SUBSCRIBE_NO_ROLE: string;
 	COMMAND_SUBSCRIBE_SUCCESS: (role: string) => string;
 	COMMAND_UNSUBSCRIBE_SUCCESS: (role: string) => string;

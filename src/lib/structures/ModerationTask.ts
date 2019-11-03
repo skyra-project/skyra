@@ -25,6 +25,7 @@ export abstract class ModerationTask extends Task {
 	protected async reschedule(data: ModerationData, duration: number) {
 		await this.client.schedule.create(this.name, Date.now() + duration, {
 			data: {
+				[Moderation.SchemaKeys.Case]: data.caseID,
 				[Moderation.SchemaKeys.Guild]: data.guildID,
 				[Moderation.SchemaKeys.User]: data.userID,
 				[Moderation.SchemaKeys.Duration]: data.duration,
@@ -46,6 +47,7 @@ export abstract class ModerationTask extends Task {
 }
 
 export interface ModerationData {
+	[Moderation.SchemaKeys.Case]: number;
 	[Moderation.SchemaKeys.Guild]: string;
 	[Moderation.SchemaKeys.User]: string;
 	[Moderation.SchemaKeys.Duration]: number;

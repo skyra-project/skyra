@@ -327,10 +327,10 @@ export class ModerationManagerEntry {
 			this.client.schedule.create(taskName, this.duration! + Date.now(), {
 				catchUp: true,
 				data: {
+					[Moderation.SchemaKeys.Case]: this.case,
 					[Moderation.SchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
 					[Moderation.SchemaKeys.Guild]: this.manager.guild.id,
-					[Moderation.SchemaKeys.Duration]: this.duration,
-					[Moderation.SchemaKeys.Case]: this.case
+					[Moderation.SchemaKeys.Duration]: this.duration
 				}
 			}).catch(error => this.client.emit(Events.Wtf, error));
 		}

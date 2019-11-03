@@ -312,6 +312,21 @@ export function parseRange(input: string): number[] {
 	return Array.from({ length: max - min + 1 }, (_, index) => min + index);
 }
 
+/** Helper function to properly round up or down a number */
+export function roundNumber(num: number, scale = 0) {
+	if (!num.toString().includes('e')) {
+		return Number(`${Math.round(Number(`${num}e+${scale}`))}e-${scale}`);
+	}
+	const arr = `${num}`.split('e');
+	let sig = '';
+
+	if (Number(arr[1]) + scale > 0) {
+		sig = '+';
+	}
+
+	return Number(`${Math.round(Number(`${Number(arr[0])}e${sig}${Number(arr[1]) + scale}`))}e-${scale}`);
+}
+
 /**
  * Clean all mentions from a content
  * @param message The message for context
@@ -421,7 +436,7 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 
 			try {
 				bucket.drip();
-			} catch {}
+			} catch { }
 
 			response.setHeader('X-RateLimit-Limit', xRateLimitLimit);
 			response.setHeader('X-RateLimit-Remaining', bucket.bucket.toString());

@@ -1134,6 +1134,14 @@ export default class extends Language {
 			],
 			examples: ['discordapp']
 		}),
+		COMMAND_REDDITUSER_DESCRIPTION: 'Retrieve statistics for a Reddit user.',
+		COMMAND_REDDITUSER_EXTENDED: builder.display('reddituser', {
+			extendedHelp: `Gets statistics of any given Reddit user`,
+			explainedUsage: [
+				['user', 'The reddit user to look at.']
+			],
+			examples: ['GloriousGe0rge']
+		}),
 		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
 		COMMAND_CHASE_EXTENDED: builder.display('chase', {
 			extendedHelp: `Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!`,
@@ -2270,6 +2278,28 @@ export default class extends Language {
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
 		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
 		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
+		COMMAND_REDDITUSER_COMPLEXITY_LEVELS: ['very low', 'low', 'medium', 'high', 'very high', 'very high'],
+		COMMAND_REDDITUSER_INVALID_USER: user => `\`${user}\` is not a valid Reddit username`,
+		COMMAND_REDDITUSER_QUERY_FAILED: 'Couldn\'t find any data for that reddit user',
+		COMMAND_REDDITUSER_TITLES: {
+			LINK_KARMA: 'Link Karma',
+			COMMENT_KARMA: 'Comment Karma',
+			TOTAL_COMMENTS: 'Total Comments',
+			TOTAL_SUBMISSIONS: 'Total Submissions',
+			COMMENT_CONTROVERSIALITY: 'Comment Controversiality',
+			TEXT_COMPLEXITY: 'Text Complexity',
+			TOP_5_SUBREDDITS: 'Top 5 Subreddits',
+			BY_SUBMISSIONS: 'by submission',
+			BY_COMMENTS: 'by comments',
+			BEST_COMMENT: 'Best Comment',
+			WORST_COMMENT: 'Worst Comment'
+		},
+		COMMAND_REDDITUSER_DATA: {
+			OVERVIEW_FOR: user => `Overview for /u/${user}`,
+			PERMALINK: 'Permalink',
+			DATA_AVAILABLE_FOR: 'Data is available for the past 1000 comments and submissions (Reddit API limitation)',
+			JOINED_REDDIT: timestamp => `Joined Reddit ${timestamp}`
+		},
 		COMMAND_SNIPE_EMPTY: 'There are no sniped messages in this channel.',
 		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',

@@ -48,7 +48,7 @@ export class ModerationManagerEntry {
 	 * Retrieve the metadata (title and color) for this entry.
 	 */
 	public get metadata() {
-		const data = Moderation.metadata.get(this.type);
+		const data = Moderation.metadata.get(this.type & ~Moderation.TypeMetadata.Invalidated);
 		if (typeof data === 'undefined') throw new Error(`Inexistent metadata for '0b${this.type.toString(2).padStart(8, '0')}'.`);
 		return data;
 	}

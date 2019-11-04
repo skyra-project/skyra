@@ -4,7 +4,7 @@ import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 import { getColor, floatPromise } from '../util/util';
 import { api } from '../util/Models/Api';
-import { Time } from '../util/constants';
+import { Time, BrandingColors } from '../util/constants';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -53,7 +53,9 @@ export class SettingsMenu {
 	}
 
 	public async init(): Promise<void> {
-		this.response = await this.message.send(this.message.language.tget('SYSTEM_LOADING'));
+		this.response = await this.message.sendEmbed(new MessageEmbed()
+			.setColor(BrandingColors.Secondary)
+			.setDescription(this.message.language.tget('SYSTEM_LOADING')));
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client)
 			.setListener(this.onReaction.bind(this))

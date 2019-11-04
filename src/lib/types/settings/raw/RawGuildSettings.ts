@@ -40,6 +40,10 @@ export interface RawGuildSettings {
 	'roles.messageReaction': string | null;
 	'roles.moderator': string | null;
 	'roles.muted': string | null;
+	'roles.restricted-reaction': string | null;
+	'roles.restricted-embed': string | null;
+	'roles.restricted-attachment': string | null;
+	'roles.restricted-voice': string | null;
 	'roles.public': string[];
 	'roles.reactions': object[];
 	'roles.removeInitial': boolean;
@@ -141,6 +145,10 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"roles.messageReaction"                VARCHAR(19),
 		"roles.moderator"                      VARCHAR(19),
 		"roles.muted"                          VARCHAR(19),
+		"roles.restricted-reaction"            VARCHAR(19),
+		"roles.restricted-embed"               VARCHAR(19),
+		"roles.restricted-attachment"          VARCHAR(19),
+		"roles.restricted-voice"               VARCHAR(19),
 		"roles.public"                         VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"roles.reactions"                      JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.removeInitial"                  BOOLEAN       DEFAULT FALSE              NOT NULL,

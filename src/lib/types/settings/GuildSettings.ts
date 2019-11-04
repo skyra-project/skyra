@@ -58,6 +58,10 @@ export namespace GuildSettings {
 		export const MessageReaction = T<string>('roles.messageReaction');
 		export const Moderator = T<string>('roles.moderator');
 		export const Muted = T<string>('roles.muted');
+		export const RestrictedReaction = T<string>('roles.restricted-reaction');
+		export const RestrictedEmbed = T<string>('roles.restricted-embed');
+		export const RestrictedAttachment = T<string>('roles.restricted-attachment');
+		export const RestrictedVoice = T<string>('roles.restricted-voice');
 		export const Public = T<readonly string[]>('roles.public');
 		export const Reactions = T<readonly RolesReaction[]>('roles.reactions');
 		export const RemoveInitial = T<boolean>('roles.removeInitial');

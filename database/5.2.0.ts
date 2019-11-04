@@ -619,4 +619,4 @@
  * }
  */
 
-export const DEPRECATED = false;
+export const DEPRECATED = true;

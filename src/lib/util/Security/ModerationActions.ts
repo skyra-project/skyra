@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Role, RoleData, GuildChannel, CategoryChannel, PermissionOverwriteOption, Permissions, User } from 'discord.js';
+import { Guild, GuildMember, Role, RoleData, GuildChannel, PermissionOverwriteOption, Permissions, User } from 'discord.js';
 import { api } from '../Models/Api';
 import { GuildSettings, StickyRole } from '../../types/settings/GuildSettings';
 import { deepClone } from '@klasa/utils';
@@ -8,33 +8,147 @@ import { Moderation, APIErrors } from '../constants';
 import { ModerationManagerEntry } from '../../structures/ModerationManagerEntry';
 import { ModerationManagerCreateData } from '../../structures/ModerationManager';
 import { Events } from '../../types/Enums';
+import { KlasaMessage } from 'klasa';
 
-const kMuteRoleDataOptions: RoleData = {
-	color: 0x795548,
-	hoist: false,
-	mentionable: false,
-	name: 'Muted',
-	permissions: []
-};
+export const enum ModerationSetupRestriction {
+	Reaction = 'roles.restricted-reaction',
+	Embed = 'roles.restricted-embed',
+	Attachment = 'roles.restricted-attachment',
+	Voice = 'roles.restricted-voice'
+}
 
-const kMuteCategoryOverwriteOptions: PermissionOverwriteOption = {
-	SEND_MESSAGES: false,
-	ADD_REACTIONS: false,
-	CONNECT: false
-};
+const enum RoleDataKey {
+	Muted,
+	Reaction,
+	Embed,
+	Attachment,
+	Voice
+}
 
-const kVoiceOverwriteOptions: PermissionOverwriteOption = {
-	CONNECT: false
-};
+const kRoleDataOptions = new Map<RoleDataKey, RoleData>([
+	[RoleDataKey.Muted, {
+		color: 0x795548,
+		hoist: false,
+		mentionable: false,
+		name: 'Muted',
+		permissions: []
+	}],
+	[RoleDataKey.Attachment, {
+		color: 0x795548,
+		hoist: false,
+		mentionable: false,
+		name: 'Restricted Attachment',
+		permissions: []
+	}],
+	[RoleDataKey.Embed, {
+		color: 0x795548,
+		hoist: false,
+		mentionable: false,
+		name: 'Restricted Embed',
+		permissions: []
+	}],
+	[RoleDataKey.Reaction, {
+		color: 0x795548,
+		hoist: false,
+		mentionable: false,
+		name: 'Restricted Reaction',
+		permissions: []
+	}],
+	[RoleDataKey.Voice, {
+		color: 0x795548,
+		hoist: false,
+		mentionable: false,
+		name: 'Restricted Voice',
+		permissions: []
+	}]
+]);
 
-const kVoiceOverwriteBitfield = new Permissions(['CONNECT']);
+const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwriteOption>([
+	[RoleDataKey.Muted, {
+		category: {
+			options: {
+				SEND_MESSAGES: false,
+				ADD_REACTIONS: false,
+				CONNECT: false
+			},
+			permissions: new Permissions(['SEND_MESSAGES', 'ADD_REACTIONS', 'CONNECT'])
+		},
+		text: {
+			options: {
+				SEND_MESSAGES: false,
+				ADD_REACTIONS: false
+			},
+			permissions: new Permissions(['SEND_MESSAGES', 'ADD_REACTIONS'])
+		},
+		voice: {
+			options: {
+				CONNECT: false
+			},
+			permissions: new Permissions(['CONNECT'])
+		}
+	}],
+	[RoleDataKey.Attachment, {
+		category: {
+			options: {
+				ATTACH_FILES: false
+			},
+			permissions: new Permissions(['ATTACH_FILES'])
+		},
+		text: {
+			options: {
+				ATTACH_FILES: false
+			},
+			permissions: new Permissions(['ATTACH_FILES'])
+		},
+		voice: null
+	}],
+	[RoleDataKey.Embed, {
+		category: {
+			options: {
+				EMBED_LINKS: false
+			},
+			permissions: new Permissions(['EMBED_LINKS'])
+		},
+		text: {
+			options: {
+				EMBED_LINKS: false
+			},
+			permissions: new Permissions(['EMBED_LINKS'])
+		},
+		voice: null
+	}],
+	[RoleDataKey.Reaction, {
+		category: {
+			options: {
+				ADD_REACTIONS: false
+			},
+			permissions: new Permissions(['ADD_REACTIONS'])
+		},
+		text: {
+			options: {
+				ADD_REACTIONS: false
+			},
+			permissions: new Permissions(['ADD_REACTIONS'])
+		},
+		voice: null
+	}],
+	[RoleDataKey.Voice, {
+		category: {
+			options: {
+				CONNECT: false
+			},
+			permissions: new Permissions(['CONNECT'])
+		},
+		text: null,
+		voice: {
+			options: {
+				CONNECT: false
+			},
+			permissions: new Permissions(['CONNECT'])
+		}
+	}]
+]);
 
-const kTextOverwriteOptions: PermissionOverwriteOption = {
-	SEND_MESSAGES: false,
-	ADD_REACTIONS: false
-};
-
-const kTextOverwriteBitfield = new Permissions(['SEND_MESSAGES', 'ADD_REACTIONS']);
 const kUnknownTypeTitle = { title: 'Unknown' };
 
 export class ModerationActions {
@@ -140,16 +254,104 @@ export class ModerationActions {
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
+	public async restrictRole(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionReaction);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictRole(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionReaction);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async restrictEmbed(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionEmbed);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictEmbed(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionEmbed);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async restrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionAttachment);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionAttachment);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async restrictVoice(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionVoice);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictVoice(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionVoice);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
 	public async muteSetup() {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID && this.guild.roles.has(roleID)) throw this.guild.language.tget('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
-		if (this.guild.roles.size >= 250) throw this.guild.language.tget('SYSTEM_GUILD_MUTECREATE_TOOMANYROLES');
+		if (roleID && this.guild.roles.has(roleID)) throw this.guild.language.tget('ACTION_SETUP_MUTE_EXISTS');
+		if (this.guild.roles.size >= 250) throw this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES');
 
-		const role = await this.guild.roles.create({ data: kMuteRoleDataOptions, reason: '[Setup] Creating Muted Role.' });
+		const roleDataKey = RoleDataKey.Muted;
+		const roleData = kRoleDataOptions.get(roleDataKey)!;
+		const role = await this.guild.roles.create({ data: roleData, reason: '[Setup] Creating Muted Role.' });
 		await this.guild.settings.update(GuildSettings.Roles.Muted, role, { throwOnError: true });
 
-		await this.muteSetupCategoryChannels(role);
-		await this.muteSetupTextOrVoiceChannels(role);
+		await this.updatePermissionsForCategoryChannels(role, roleDataKey);
+		await this.updatePermissionsForTextOrVoiceChannels(role, roleDataKey);
+	}
+
+	public async restrictionSetup(message: KlasaMessage, key: ModerationSetupRestriction) {
+		const roleID = this.guild.settings.get(key) as string | null;
+		if (roleID !== null && this.guild.roles.has(roleID)) throw this.guild.language.tget('ACTION_SETUP_RESTRICTION_EXISTS');
+		if (this.guild.roles.size >= 250) throw this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES');
+
+		const roleDataKey = this.getRoleDataKeyFromSchemaKey(key);
+		const roleData = kRoleDataOptions.get(roleDataKey)!;
+		const role = await this.guild.roles.create({ data: roleData, reason: '[Setup] Creating Restriction Role.' });
+		await this.guild.settings.update(key, role, { throwOnError: true });
+		await this.updatePermissionsForCategoryChannels(role, roleDataKey);
+		await this.updatePermissionsForTextOrVoiceChannels(role, roleDataKey);
+	}
+
+	private getRoleDataKeyFromSchemaKey(key: ModerationSetupRestriction): RoleDataKey {
+		switch (key) {
+			case ModerationSetupRestriction.Attachment: return RoleDataKey.Attachment;
+			case ModerationSetupRestriction.Embed: return RoleDataKey.Embed;
+			case ModerationSetupRestriction.Reaction: return RoleDataKey.Reaction;
+			case ModerationSetupRestriction.Voice: return RoleDataKey.Voice;
+		}
 	}
 
 	private fillOptions(rawOptions: ModerationActionOptions, type: Moderation.TypeCodes) {
@@ -176,52 +378,16 @@ export class ModerationActions {
 		}
 	}
 
-	private async addStickyMute(id: string) {
+	private addStickyMute(id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
-
-		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
-		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-		if (stickyRolesIndex === -1) {
-			const stickyRoles: StickyRole = {
-				user: id,
-				roles: [mutedRole]
-			};
-			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { throwOnError: true, arrayAction: 'add' });
-			return;
-		}
-
-		const stickyRoles = guildStickyRoles[stickyRolesIndex];
-		if (stickyRoles.roles.includes(mutedRole)) return;
-
-		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
-		clone.roles.push(mutedRole);
-		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true });
+		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
+		return this.addStickyRole(id, mutedRole);
 	}
 
-	private async removeStickyMute(id: string) {
+	private removeStickyMute(id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
-
-		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
-		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-		if (stickyRolesIndex === -1) return;
-
-		const stickyRoles = guildStickyRoles[stickyRolesIndex];
-		const roleIndex = stickyRoles.roles.indexOf(mutedRole);
-		if (roleIndex === -1) return;
-
-		if (stickyRoles.roles.length > 1) {
-			// If there are more than one role, remove the muted one and update the entry keeping the rest.
-			const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
-			clone.roles.splice(roleIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true });
-		} else {
-			// Else clone the array, remove the entry, and update with action overwrite.
-			const cloneStickyRoles = guildStickyRoles.slice(0);
-			cloneStickyRoles.splice(stickyRolesIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, { throwOnError: true, arrayAction: 'overwrite' });
-		}
+		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
+		return this.removeStickyRole(id, mutedRole);
 	}
 
 	private async muteUser(rawOptions: ModerationActionOptions) {
@@ -371,55 +537,121 @@ export class ModerationActions {
 		return [...roles];
 	}
 
-	private async muteSetupCategoryChannels(role: Role) {
+	private async addStickyRole(id: string, roleID: string) {
+		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
+		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
+		if (stickyRolesIndex === -1) {
+			const stickyRoles: StickyRole = {
+				user: id,
+				roles: [roleID]
+			};
+			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { throwOnError: true, arrayAction: 'add' });
+			return;
+		}
+
+		const stickyRoles = guildStickyRoles[stickyRolesIndex];
+		if (stickyRoles.roles.includes(roleID)) return;
+
+		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
+		clone.roles.push(roleID);
+		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true });
+	}
+
+	private async removeStickyRole(id: string, roleID: string) {
+		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
+		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
+		if (stickyRolesIndex === -1) return;
+
+		const stickyRoles = guildStickyRoles[stickyRolesIndex];
+		const roleIndex = stickyRoles.roles.indexOf(roleID);
+		if (roleIndex === -1) return;
+
+		if (stickyRoles.roles.length > 1) {
+			// If there are more than one role, remove the muted one and update the entry keeping the rest.
+			const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
+			clone.roles.splice(roleIndex, 1);
+			await this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true });
+		} else {
+			// Else clone the array, remove the entry, and update with action overwrite.
+			const cloneStickyRoles = guildStickyRoles.slice(0);
+			cloneStickyRoles.splice(stickyRolesIndex, 1);
+			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, { throwOnError: true, arrayAction: 'overwrite' });
+		}
+	}
+
+	private addStickyRestriction(id: string, roleID: string) {
+		const restrictedRole = this.guild.settings.get(roleID) as string | null;
+		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
+		return this.addStickyRole(id, restrictedRole);
+	}
+
+	private async addRestrictionRole(id: string, key: string) {
+		const roleID = this.guild.settings.get(key) as string | null;
+		if (roleID === null) throw this.guild.language.tget('RESTRICTION_NOT_CONFIGURED');
+		await api(this.guild.client).guilds(this.guild.id).members(id)
+			.roles(roleID)
+			.put();
+	}
+
+	private removeStickyRestriction(id: string, roleID: string) {
+		const restrictedRole = this.guild.settings.get(roleID) as string | null;
+		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
+		return this.removeStickyRole(id, restrictedRole);
+	}
+
+	private async removeRestrictionRole(id: string, key: string) {
+		const roleID = this.guild.settings.get(key) as string | null;
+		if (roleID === null) throw this.guild.language.tget('RESTRICTION_NOT_CONFIGURED');
+		try {
+			await api(this.guild.client).guilds(this.guild.id).members(id)
+				.roles(roleID)
+				.delete();
+		} catch (error) {
+			if (error.code !== APIErrors.UnknownMember) throw error;
+		}
+	}
+
+	private async updatePermissionsForCategoryChannels(role: Role, dataKey: RoleDataKey) {
+		const options = kRoleChannelOverwriteOptions.get(dataKey)!;
 		const promises: Promise<unknown>[] = [];
 		for (const channel of this.guild.channels.values()) {
 			if (channel.type === 'category' && channel.manageable) {
-				promises.push(this.muteSetupCategoryChannel(role, channel as CategoryChannel));
+				promises.push(this.updatePermissionsForChannel(role, channel, options.category));
 			}
 		}
 
 		await Promise.all(promises);
 	}
 
-	private async muteSetupCategoryChannel(role: Role, channel: CategoryChannel) {
-		await channel.updateOverwrite(role, kMuteCategoryOverwriteOptions, '[Setup] Updated channel for Muted Role.');
-	}
-
-	private async muteSetupTextOrVoiceChannels(role: Role) {
+	private async updatePermissionsForTextOrVoiceChannels(role: Role, dataKey: RoleDataKey) {
+		const options = kRoleChannelOverwriteOptions.get(dataKey)!;
 		const promises: Promise<unknown>[] = [];
 		for (const channel of this.guild.channels.values()) {
 			if (!channel.manageable) continue;
 			if (channel.type === 'text' || channel.type === 'news' || channel.type === 'store') {
-				promises.push(this.muteSetupTextChannel(role, channel));
+				promises.push(this.updatePermissionsForChannel(role, channel, options.text));
 			} else if (channel.type === 'voice') {
-				promises.push(this.muteSetupVoiceChannel(role, channel));
+				promises.push(this.updatePermissionsForChannel(role, channel, options.voice));
 			}
 		}
 
 		await Promise.all(promises);
 	}
 
-	private muteSetupVoiceChannel(role: Role, channel: GuildChannel) {
-		return this.muteSetupAnyChannel(role, channel, kVoiceOverwriteOptions, kVoiceOverwriteBitfield);
-	}
+	private async updatePermissionsForChannel(role: Role, channel: GuildChannel, rolePermissions: RolePermissionOverwriteOptionField | null) {
+		if (rolePermissions === null) return;
 
-	private muteSetupTextChannel(role: Role, channel: GuildChannel) {
-		return this.muteSetupAnyChannel(role, channel, kTextOverwriteOptions, kTextOverwriteBitfield);
-	}
-
-	private async muteSetupAnyChannel(role: Role, channel: GuildChannel, overwriteOptions: PermissionOverwriteOption, overwriteBitfield: Permissions) {
 		const current = channel.permissionOverwrites.get(role.id);
 		if (typeof current === 'undefined') {
 			// If no permissions overwrites exists, create a new one.
-			await channel.updateOverwrite(role, overwriteOptions, '[Setup] Updated channel for Muted Role.');
-		} else if (!current.deny.has(overwriteBitfield)) {
+			await channel.updateOverwrite(role, rolePermissions.options, '[Setup] Updated channel for Muted Role.');
+		} else if (!current.deny.has(rolePermissions.permissions)) {
 			// If one exists and does not have the deny fields, tweak the existing one to keep all the allowed and
 			// denied, but also add the ones that must be denied for the mute role to work.
 			const allowed = current.allow.toArray().map(permission => [permission, true]);
 			const denied = current.allow.toArray().map(permission => [permission, false]);
 			const mixed = Object.fromEntries(allowed.concat(denied));
-			await channel.updateOverwrite(role, { ...mixed, ...overwriteOptions });
+			await channel.updateOverwrite(role, { ...mixed, ...rolePermissions.options });
 		}
 	}
 
@@ -429,4 +661,16 @@ export interface ModerationActionsSendOptions {
 	send?: boolean;
 	moderator?: User | null;
 }
+
+interface RolePermissionOverwriteOption {
+	category: RolePermissionOverwriteOptionField;
+	text: RolePermissionOverwriteOptionField | null;
+	voice: RolePermissionOverwriteOptionField | null;
+}
+
+interface RolePermissionOverwriteOptionField {
+	options: PermissionOverwriteOption;
+	permissions: Permissions;
+}
+
 export type ModerationActionOptions = Omit<ModerationManagerCreateData, 'type'>;

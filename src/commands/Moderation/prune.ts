@@ -6,7 +6,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['purge', 'nuke'],
+			aliases: ['p', 'purge', 'nuke'],
 			cooldown: 5,
 			description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),

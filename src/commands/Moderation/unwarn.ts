@@ -8,6 +8,7 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['uw', 'unwarning'],
 			description: language => language.tget('COMMAND_UNWARN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_UNWARN_EXTENDED'),
 			usage: '<case:number> [reason:...string]'

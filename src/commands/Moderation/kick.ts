@@ -6,6 +6,7 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['k'],
 			description: language => language.tget('COMMAND_KICK_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_KICK_EXTENDED'),
 			requiredGuildPermissions: ['KICK_MEMBERS'],

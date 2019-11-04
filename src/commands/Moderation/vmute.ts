@@ -6,6 +6,7 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['vm'],
 			description: language => language.tget('COMMAND_VMUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_VMUTE_EXTENDED'),
 			optionalDuration: true,

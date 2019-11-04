@@ -7,6 +7,7 @@ export default class extends ModerationCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['sb'],
 			description: language => language.tget('COMMAND_SOFTBAN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SOFTBAN_EXTENDED'),
 			requiredMember: false,

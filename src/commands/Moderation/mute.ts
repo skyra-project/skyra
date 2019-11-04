@@ -2,9 +2,11 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { PermissionLevels } from '../../lib/types/Enums';
-import { User } from 'discord.js';
+import { User, Role } from 'discord.js';
 
 export default class extends ModerationCommand {
+
+	private rolePrompt = this.definePrompt('<role:rolename>');
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -23,10 +25,15 @@ export default class extends ModerationCommand {
 		const role = (id && message.guild!.roles.get(id)) || null;
 		if (!role) {
 			if (!await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator)) throw message.language.tget('COMMAND_MUTE_LOWLEVEL');
-			if (!await message.ask(message.language.tget('COMMAND_MUTE_CONFIGURE'))) throw message.language.tget('COMMAND_MUTE_CONFIGURE_CANCELLED');
-			await message.sendLocale('SYSTEM_LOADING');
-			await message.guild.security.actions.muteSetup();
-			await message.sendLocale('COMMAND_SUCCESS');
+			if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
+				const [role] = await this.rolePrompt.createPrompt(message, { time: 30000, limit: 1 }).run(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME')) as [Role];
+				await message.guild.settings.update(GuildSettings.Roles.Muted, role, { throwOnError: true });
+			} else if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_NEW'))) {
+				await message.guild.security.actions.muteSetup(message);
+				await message.sendLocale('COMMAND_SUCCESS');
+			} else {
+				await message.sendLocale('MONITOR_COMMAND_HANDLER_ABORTED');
+			}
 		}
 
 		return false;

@@ -1190,6 +1190,10 @@ export interface LanguageKeys {
 	ACTION_SETUP_MUTE_EXISTS: string;
 	ACTION_SETUP_RESTRICTION_EXISTS: string;
 	ACTION_SETUP_TOO_MANY_ROLES: string;
+	ACTION_SHARED_ROLE_SETUP_EXISTING: string;
+	ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: string;
+	ACTION_SHARED_ROLE_SETUP_NEW: string;
+	ACTION_SHARED_ROLE_SETUP: (role: string, channels: number, permissions: string[]) => string;
 	ACTION_REQUIRED_MEMBER: string;
 	MUTE_NOT_CONFIGURED: string;
 	RESTRICTION_NOT_CONFIGURED: string;

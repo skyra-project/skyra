@@ -140,6 +140,70 @@ export class ModerationActions {
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
+	public async restrictRole(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionReaction);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictRole(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionReaction);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async restrictEmbed(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionEmbed);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictEmbed(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedEmbed);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionEmbed);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async restrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionAttachment);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionAttachment);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async restrictVoice(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionVoice);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
+	public async unRestrictVoice(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedVoice);
+		const options = this.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionVoice);
+		await this.sendDM(options, sendOptions);
+		return (await this.guild.moderation.create(options).create())!;
+	}
+
 	public async muteSetup() {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
 		if (roleID && this.guild.roles.has(roleID)) throw this.guild.language.tget('SYSTEM_GUILD_MUTECREATE_MUTEEXISTS');
@@ -176,52 +240,16 @@ export class ModerationActions {
 		}
 	}
 
-	private async addStickyMute(id: string) {
+	private addStickyMute(id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
-
-		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
-		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-		if (stickyRolesIndex === -1) {
-			const stickyRoles: StickyRole = {
-				user: id,
-				roles: [mutedRole]
-			};
-			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { throwOnError: true, arrayAction: 'add' });
-			return;
-		}
-
-		const stickyRoles = guildStickyRoles[stickyRolesIndex];
-		if (stickyRoles.roles.includes(mutedRole)) return;
-
-		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
-		clone.roles.push(mutedRole);
-		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true });
+		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
+		return this.addStickyRole(id, mutedRole);
 	}
 
-	private async removeStickyMute(id: string) {
+	private removeStickyMute(id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
-
-		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
-		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-		if (stickyRolesIndex === -1) return;
-
-		const stickyRoles = guildStickyRoles[stickyRolesIndex];
-		const roleIndex = stickyRoles.roles.indexOf(mutedRole);
-		if (roleIndex === -1) return;
-
-		if (stickyRoles.roles.length > 1) {
-			// If there are more than one role, remove the muted one and update the entry keeping the rest.
-			const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
-			clone.roles.splice(roleIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true });
-		} else {
-			// Else clone the array, remove the entry, and update with action overwrite.
-			const cloneStickyRoles = guildStickyRoles.slice(0);
-			cloneStickyRoles.splice(stickyRolesIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, { throwOnError: true, arrayAction: 'overwrite' });
-		}
+		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
+		return this.removeStickyRole(id, mutedRole);
 	}
 
 	private async muteUser(rawOptions: ModerationActionOptions) {
@@ -420,6 +448,80 @@ export class ModerationActions {
 			const denied = current.allow.toArray().map(permission => [permission, false]);
 			const mixed = Object.fromEntries(allowed.concat(denied));
 			await channel.updateOverwrite(role, { ...mixed, ...overwriteOptions });
+		}
+	}
+
+	private async addStickyRole(id: string, roleID: string) {
+		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
+		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
+		if (stickyRolesIndex === -1) {
+			const stickyRoles: StickyRole = {
+				user: id,
+				roles: [roleID]
+			};
+			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { throwOnError: true, arrayAction: 'add' });
+			return;
+		}
+
+		const stickyRoles = guildStickyRoles[stickyRolesIndex];
+		if (stickyRoles.roles.includes(roleID)) return;
+
+		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
+		clone.roles.push(roleID);
+		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true });
+	}
+
+	private async removeStickyRole(id: string, roleID: string) {
+		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
+		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
+		if (stickyRolesIndex === -1) return;
+
+		const stickyRoles = guildStickyRoles[stickyRolesIndex];
+		const roleIndex = stickyRoles.roles.indexOf(roleID);
+		if (roleIndex === -1) return;
+
+		if (stickyRoles.roles.length > 1) {
+			// If there are more than one role, remove the muted one and update the entry keeping the rest.
+			const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
+			clone.roles.splice(roleIndex, 1);
+			await this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true });
+		} else {
+			// Else clone the array, remove the entry, and update with action overwrite.
+			const cloneStickyRoles = guildStickyRoles.slice(0);
+			cloneStickyRoles.splice(stickyRolesIndex, 1);
+			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, { throwOnError: true, arrayAction: 'overwrite' });
+		}
+	}
+
+	private addStickyRestriction(id: string, roleID: string) {
+		const restrictedRole = this.guild.settings.get(roleID) as string | null;
+		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
+		return this.addStickyRole(id, restrictedRole);
+	}
+
+	private async addRestrictionRole(id: string, key: string) {
+		const roleID = this.guild.settings.get(key) as string | null;
+		if (roleID === null) throw this.guild.language.tget('RESTRICTION_NOT_CONFIGURED');
+		await api(this.guild.client).guilds(this.guild.id).members(id)
+			.roles(roleID)
+			.put();
+	}
+
+	private removeStickyRestriction(id: string, roleID: string) {
+		const restrictedRole = this.guild.settings.get(roleID) as string | null;
+		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
+		return this.removeStickyRole(id, restrictedRole);
+	}
+
+	private async removeRestrictionRole(id: string, key: string) {
+		const roleID = this.guild.settings.get(key) as string | null;
+		if (roleID === null) throw this.guild.language.tget('RESTRICTION_NOT_CONFIGURED');
+		try {
+			await api(this.guild.client).guilds(this.guild.id).members(id)
+				.roles(roleID)
+				.delete();
+		} catch (error) {
+			if (error.code !== APIErrors.UnknownMember) throw error;
 		}
 	}
 

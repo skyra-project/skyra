@@ -1189,6 +1189,7 @@ export interface LanguageKeys {
 	ACTION_RESTRICTED_VOICE_REASON: (reason: string | null) => string;
 	ACTION_REQUIRED_MEMBER: string;
 	MUTE_NOT_CONFIGURED: string;
+	RESTRICTION_NOT_CONFIGURED: string;
 	MUTE_NOT_IN_MEMBER: string;
 	MUTE_LOW_HIERARCHY: string;
 	MUTE_CANNOT_MANAGE_ROLES: string;

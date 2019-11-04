@@ -3302,6 +3302,7 @@ export default class extends Language {
 			: `[Action] Applied Voice Restriction | Reason: ${reason}`,
 		ACTION_REQUIRED_MEMBER: 'The user does not exist or is not in this server.',
 		MUTE_NOT_CONFIGURED: 'The muted role must be configured for this action to happen.',
+		RESTRICTION_NOT_CONFIGURED: 'The restriction role must be configured for this action to happen',
 		MUTE_NOT_IN_MEMBER: 'The muted role is not set in the member.',
 		MUTE_LOW_HIERARCHY: 'I cannot mute a user which higher role hierarchy than me.',
 		MUTE_CANNOT_MANAGE_ROLES: `I must have **${PERMS.MANAGE_ROLES}** permissions to be able to mute.`,

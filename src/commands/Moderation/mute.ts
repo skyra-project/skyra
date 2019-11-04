@@ -17,7 +17,8 @@ export default class extends ModerationCommand {
 	}
 
 	public async inhibit(message: KlasaMessage) {
-		if (message.guild === null) return true;
+		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
+		if (message.command !== this || message.guild === null) return false;
 		const id = message.guild.settings.get(GuildSettings.Roles.Muted);
 		const role = (id && message.guild!.roles.get(id)) || null;
 		if (!role) {

@@ -3304,6 +3304,9 @@ export default class extends Language {
 		ACTION_SETUP_MUTE_EXISTS: '**Aborting mute role creation**: There is already one that exists.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Aborting restriction role creation**: There is already one that exists.',
 		ACTION_SETUP_TOO_MANY_ROLES: '**Aborting role creation**: There are 250 roles in this guild, you need to delete one role.',
+		ACTION_SHARED_ROLE_SETUP: (role, channels, permissions) => `${LOADING} Can I modify ${
+			channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
+			permissions.length === 1 ? 'permission' : 'permissions'}: \`${permissions.join('`, `')}\`?`,
 		MUTE_NOT_CONFIGURED: 'The muted role must be configured for this action to happen.',
 		RESTRICTION_NOT_CONFIGURED: 'The restriction role must be configured for this action to happen',
 		MUTE_NOT_IN_MEMBER: 'The muted role is not set in the member.',

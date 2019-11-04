@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		await message.sendLocale('SYSTEM_LOADING');
-		await message.guild!.security.actions.muteSetup();
+		await message.guild!.security.actions.muteSetup(message);
 		return message.sendLocale('COMMAND_SUCCESS');
 	}
 

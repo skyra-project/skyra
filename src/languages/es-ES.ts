@@ -2918,6 +2918,9 @@ export default class extends Language {
 		ACTION_SETUP_MUTE_EXISTS: '**Cancelando la creación del rol de silenciado**: Ya existe un rol de silenciado.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Cancelando la creación del rol de restricción**: Ya existe un rol de restricción.',
 		ACTION_SETUP_TOO_MANY_ROLES: '**Cancelando la creación del rol**: Hay 250 roles en este servidor, necesitas borrar uno.',
+		ACTION_SHARED_ROLE_SETUP: (role, channels, permissions) => `${LOADING} Can I modify ${
+			channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
+			permissions.length === 1 ? 'permission' : 'permissions'}: \`${permissions.join('`, `')}\`?`,
 		MUTE_NOT_CONFIGURED: 'The muted role must be configured for this action to happen.',
 		RESTRICTION_NOT_CONFIGURED: 'The restriction role must be configured for this action to happen',
 		MUTE_NOT_IN_MEMBER: 'The muted role is not set in the member.',

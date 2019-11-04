@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Role, RoleData, GuildChannel, PermissionOverwriteOption, Permissions, User } from 'discord.js';
+import { Guild, GuildMember, Role, RoleData, GuildChannel, PermissionOverwriteOption, Permissions, User, PermissionString } from 'discord.js';
 import { api } from '../Models/Api';
 import { GuildSettings, StickyRole } from '../../types/settings/GuildSettings';
 import { deepClone } from '@klasa/utils';
@@ -27,35 +27,35 @@ const enum RoleDataKey {
 
 const kRoleDataOptions = new Map<RoleDataKey, RoleData>([
 	[RoleDataKey.Muted, {
-		color: 0x795548,
+		color: 0x000000,
 		hoist: false,
 		mentionable: false,
 		name: 'Muted',
 		permissions: []
 	}],
 	[RoleDataKey.Attachment, {
-		color: 0x795548,
+		color: 0x000000,
 		hoist: false,
 		mentionable: false,
 		name: 'Restricted Attachment',
 		permissions: []
 	}],
 	[RoleDataKey.Embed, {
-		color: 0x795548,
+		color: 0x000000,
 		hoist: false,
 		mentionable: false,
 		name: 'Restricted Embed',
 		permissions: []
 	}],
 	[RoleDataKey.Reaction, {
-		color: 0x795548,
+		color: 0x000000,
 		hoist: false,
 		mentionable: false,
 		name: 'Restricted Reaction',
 		permissions: []
 	}],
 	[RoleDataKey.Voice, {
-		color: 0x795548,
+		color: 0x000000,
 		hoist: false,
 		mentionable: false,
 		name: 'Restricted Voice',
@@ -157,6 +157,10 @@ export class ModerationActions {
 
 	public constructor(guild: Guild) {
 		this.guild = guild;
+	}
+
+	private get manageableChannelCount() {
+		return this.guild.channels.reduce((acc, channel) => channel.manageable ? acc + 1 : acc, 0);
 	}
 
 	public async warning(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
@@ -318,31 +322,43 @@ export class ModerationActions {
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async muteSetup() {
+	public muteSetup(message: KlasaMessage) {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID && this.guild.roles.has(roleID)) throw this.guild.language.tget('ACTION_SETUP_MUTE_EXISTS');
-		if (this.guild.roles.size >= 250) throw this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES');
+		if (roleID && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.tget('ACTION_SETUP_MUTE_EXISTS'));
+		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES'));
 
-		const roleDataKey = RoleDataKey.Muted;
-		const roleData = kRoleDataOptions.get(roleDataKey)!;
-		const role = await this.guild.roles.create({ data: roleData, reason: '[Setup] Creating Muted Role.' });
-		await this.guild.settings.update(GuildSettings.Roles.Muted, role, { throwOnError: true });
-
-		await this.updatePermissionsForCategoryChannels(role, roleDataKey);
-		await this.updatePermissionsForTextOrVoiceChannels(role, roleDataKey);
+		// Set up the shared role setup
+		return this.sharedRoleSetup(message, RoleDataKey.Muted, GuildSettings.Roles.Muted);
 	}
 
-	public async restrictionSetup(message: KlasaMessage, key: ModerationSetupRestriction) {
-		const roleID = this.guild.settings.get(key) as string | null;
-		if (roleID !== null && this.guild.roles.has(roleID)) throw this.guild.language.tget('ACTION_SETUP_RESTRICTION_EXISTS');
-		if (this.guild.roles.size >= 250) throw this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES');
+	public restrictionSetup(message: KlasaMessage, path: ModerationSetupRestriction) {
+		const roleID = this.guild.settings.get(path) as string | null;
+		if (roleID !== null && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.tget('ACTION_SETUP_RESTRICTION_EXISTS'));
+		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES'));
 
-		const roleDataKey = this.getRoleDataKeyFromSchemaKey(key);
-		const roleData = kRoleDataOptions.get(roleDataKey)!;
-		const role = await this.guild.roles.create({ data: roleData, reason: '[Setup] Creating Restriction Role.' });
-		await this.guild.settings.update(key, role, { throwOnError: true });
-		await this.updatePermissionsForCategoryChannels(role, roleDataKey);
-		await this.updatePermissionsForTextOrVoiceChannels(role, roleDataKey);
+		// Set up the shared role setup
+		return this.sharedRoleSetup(message, this.getRoleDataKeyFromSchemaKey(path), path);
+	}
+
+	private async sharedRoleSetup(message: KlasaMessage, key: RoleDataKey, path: string) {
+		const roleData = kRoleDataOptions.get(key)!;
+		const role = await this.guild.roles.create({ data: roleData, reason: `[Role Setup] Authorized by ${message.author.username} (${message.author.id}).` });
+		await this.guild.settings.update(path, role, { throwOnError: true });
+
+		if (await message.ask(this.guild.language.tget('ACTION_SHARED_ROLE_SETUP', role.name, this.manageableChannelCount, this.displayPermissions(key)))) {
+			await this.updatePermissionsForCategoryChannels(role, key);
+			await this.updatePermissionsForTextOrVoiceChannels(role, key);
+		}
+	}
+
+	private displayPermissions(key: RoleDataKey) {
+		const options = kRoleChannelOverwriteOptions.get(key)!;
+		const output: string[] = [];
+		const permissions = this.guild.language.PERMISSIONS;
+		for (const keyOption of Object.keys(options.category.options)) {
+			output.push(permissions[keyOption as PermissionString] || keyOption);
+		}
+		return output;
 	}
 
 	private getRoleDataKeyFromSchemaKey(key: ModerationSetupRestriction): RoleDataKey {

@@ -25,7 +25,7 @@ export default class extends ModerationCommand {
 			if (!await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator)) throw message.language.tget('COMMAND_MUTE_LOWLEVEL');
 			if (!await message.ask(message.language.tget('COMMAND_MUTE_CONFIGURE'))) throw message.language.tget('COMMAND_MUTE_CONFIGURE_CANCELLED');
 			await message.sendLocale('SYSTEM_LOADING');
-			await message.guild.security.actions.muteSetup();
+			await message.guild.security.actions.muteSetup(message);
 			await message.sendLocale('COMMAND_SUCCESS');
 		}
 

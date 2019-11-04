@@ -2915,6 +2915,9 @@ export default class extends Language {
 			? '[Action] Applied Voice Restriction.'
 			: `[Action] Applied Voice Restriction | Reason: ${reason}`,
 		ACTION_REQUIRED_MEMBER: 'The user does not exist or is not in this server.',
+		ACTION_SETUP_MUTE_EXISTS: '**Cancelando la creación del rol de silenciado**: Ya existe un rol de silenciado.',
+		ACTION_SETUP_RESTRICTION_EXISTS: '**Cancelando la creación del rol de restricción**: Ya existe un rol de restricción.',
+		ACTION_SETUP_TOO_MANY_ROLES: '**Cancelando la creación del rol**: Hay 250 roles en este servidor, necesitas borrar uno.',
 		MUTE_NOT_CONFIGURED: 'The muted role must be configured for this action to happen.',
 		RESTRICTION_NOT_CONFIGURED: 'The restriction role must be configured for this action to happen',
 		MUTE_NOT_IN_MEMBER: 'The muted role is not set in the member.',
@@ -2954,8 +2957,6 @@ export default class extends Language {
 			`${LOADING} Jugando a Piedra, Papel, Tijeras...`
 		]),
 		SYSTEM_MESSAGE_NOT_FOUND: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
-		SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: '**Cancelando la creación del rol de mute**: Ya existe un rol de mute.',
-		SYSTEM_GUILD_MUTECREATE_TOOMANYROLES: '**Cancelando la creación del rol de mute**: Hay 250 roles en este servidor, necesitas borrar uno.',
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,

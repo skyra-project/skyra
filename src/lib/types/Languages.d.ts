@@ -1187,6 +1187,9 @@ export interface LanguageKeys {
 	ACTION_RESTRICTED_EMBED_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_ATTACHMENT_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_VOICE_REASON: (reason: string | null) => string;
+	ACTION_SETUP_MUTE_EXISTS: string;
+	ACTION_SETUP_RESTRICTION_EXISTS: string;
+	ACTION_SETUP_TOO_MANY_ROLES: string;
 	ACTION_REQUIRED_MEMBER: string;
 	MUTE_NOT_CONFIGURED: string;
 	RESTRICTION_NOT_CONFIGURED: string;
@@ -1216,8 +1219,6 @@ export interface LanguageKeys {
 	SYSTEM_NO_RESULTS: string;
 	SYSTEM_MESSAGE_NOT_FOUND: string;
 	SYSTEM_NOTENOUGH_PARAMETERS: string;
-	SYSTEM_GUILD_MUTECREATE_MUTEEXISTS: string;
-	SYSTEM_GUILD_MUTECREATE_TOOMANYROLES: string;
 	SYSTEM_GUILD_MUTECREATE_APPLYING: (channels: number, role: string) => string;
 	SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied: readonly string[]) => string;
 	SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted: number, exceptions: string, author: string, role: string) => string;

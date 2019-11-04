@@ -37,6 +37,14 @@ async function processQueries(pgsql: Pool) {
 		ADD COLUMN IF NOT EXISTS "roles.restricted-attachment" VARCHAR(19),
 		ADD COLUMN IF NOT EXISTS "roles.restricted-voice" VARCHAR(19);
 	`);
+
+	await pgsql.query(/* sql */`
+		UPDATE moderation
+		SET
+			"type" = "type" & ${0b1110_1111}
+		WHERE
+			"type" & ${0b0011_0000} = ${0b0011_0000};
+	`);
 }
 
 main().catch(error => console.error(error));

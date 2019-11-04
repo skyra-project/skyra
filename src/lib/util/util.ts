@@ -312,8 +312,13 @@ export function parseRange(input: string): number[] {
 	return Array.from({ length: max - min + 1 }, (_, index) => min + index);
 }
 
-/** Helper function to properly round up or down a number */
-export function roundNumber(num: number, scale = 0) {
+/**
+ * Properly rounds up or down a number.
+ * Also supports strinsgs using an exponent to indicate large or small numbers.
+ * @param num The number to round off
+ * @param scale The amount of decimals to retain
+ */
+export function roundNumber(num: number | string, scale = 0) {
 	if (!num.toString().includes('e')) {
 		return Number(`${Math.round(Number(`${num}e+${scale}`))}e-${scale}`);
 	}

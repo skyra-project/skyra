@@ -10,12 +10,14 @@ export default class extends SkyraCommand {
 			permissionLevel: 5,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '<Case:integer>'
+			usage: '<Case:integer|latest>'
 		});
 	}
 
-	public async run(message: KlasaMessage, [index]: [number]) {
-		const modlog = await message.guild!.moderation.fetch(index);
+	public async run(message: KlasaMessage, [index]: [number | 'latest']) {
+		const modlog = index === 'latest'
+			? (await message.guild!.moderation.fetch()).last()
+			: await message.guild!.moderation.fetch(index);
 		if (modlog) return message.sendEmbed(await modlog.prepareEmbed());
 		throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
 	}

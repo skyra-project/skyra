@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 				.addField(titles.EPISODES, entry.episodeCount ? entry.episodeCount : 'Still airing', true)
 				.addField(titles.EPISODE_LENGTH, message.language.duration(entry.episodeLength * 60 * 1000), true)
 				.addField(titles.AGE_RATING, entry.ageRating, true)
-				.addField(titles.FIRST_AIR_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
+				.addField(titles.FIRST_AIR_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate * 1000), true)
 				.addField(titles.WATCH_IT, `**[${title}](${animeURL})**`));
 		}
 		return display;

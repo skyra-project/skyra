@@ -75,7 +75,6 @@ export default class extends SkyraCommand {
 			.setColor(getColor(message)));
 
 		for (const game of entries) {
-			console.log(game);
 			const coverImg = /https?:/i.test(game.cover.url) ? game.cover.url : `https:${game.cover.url}`;
 			const userRating = game.rating ? `${roundNumber(game.rating, 2)}%` : fieldsData.NO_RATING;
 			const ageRating = game.age_ratings.map(ageRating => `${ageRating.category === 1 ? 'ESRB' : 'PEGI'}: ${IgdbAgeRating[ageRating.rating]}`);

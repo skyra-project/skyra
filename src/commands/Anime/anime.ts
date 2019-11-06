@@ -74,7 +74,8 @@ export default class extends SkyraCommand {
 				.setTitle(title)
 				.setURL(animeURL)
 				.setDescription(message.language.tget('COMMAND_ANIME_OUTPUT_DESCRIPTION', entry, synopsis))
-				.setThumbnail(entry.posterImage.original)
+				// TODO (favna) 06-11-2019 Change to optional chaining when TSC3.7 is fully supported
+				.setThumbnail((entry.posterImage || { original: '' }).original)
 				.addField(titles.TYPE, message.language.tget('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
 				.addField(titles.SCORE, score, true)
 				.addField(titles.EPISODES, entry.episodeCount ? entry.episodeCount : 'Still airing', true)

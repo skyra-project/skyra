@@ -3,6 +3,8 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEntry';
 import { Moderation } from '../../lib/util/constants';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { floatPromise } from '../../lib/util/util';
 
 export default class extends ModerationCommand {
 
@@ -25,7 +27,15 @@ export default class extends ModerationCommand {
 
 		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user;
 		const unwarnLog = await this.handle(message, user, reason, null, modlog);
-		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], unwarnLog.reason]);
+
+		// If the server was configured to automatically delete messages, delete the command and return null.
+		if (message.guild!.settings.get(GuildSettings.Messages.ModerationAutoDelete)) {
+			if (message.deletable) floatPromise(this, message.nuke());
+			return null;
+		}
+
+		const originalReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? unwarnLog.reason : null;
+		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], originalReason]);
 	}
 
 	public async handle(message: KlasaMessage, target: User, reason: string | null, _duration: number | null, modlog: ModerationManagerEntry) {

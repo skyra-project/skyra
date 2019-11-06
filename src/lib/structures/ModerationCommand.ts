@@ -7,6 +7,7 @@ import { UserSettings } from '../types/settings/UserSettings';
 import { mergeDefault } from '@klasa/utils';
 import { ModerationActionsSendOptions } from '../util/Security/ModerationActions';
 import { PermissionLevels } from '../types/Enums';
+import { floatPromise } from '../util/util';
 
 interface ModerationCommandOptions extends SkyraCommandOptions {
 	requiredMember?: boolean;
@@ -59,9 +60,21 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 		}
 
+		try {
+			await this.posthandle(message, targets, reason, prehandled);
+		} catch {
+			// noop
+		}
+
+		// If the server was configured to automatically delete messages, delete the command and return null.
+		if (message.guild!.settings.get(GuildSettings.Messages.ModerationAutoDelete)) {
+			if (message.deletable) floatPromise(this, message.nuke());
+			return null;
+		}
+
 		const output: string[] = [];
 		if (processed.length) {
-			const logReason = processed[0].log.reason;
+			const logReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? processed[0].log.reason : null;
 			const sorted = processed.sort((a, b) => a.log.case! - b.log.case!);
 			const cases = sorted.map(({ log }) => log.case as number);
 			const users = sorted.map(({ target }) => `\`${target.tag}\``);
@@ -74,12 +87,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			output.push(message.language.tget('COMMAND_MODERATION_FAILED', users));
 		}
 
-		try {
-			await this.posthandle(message, targets, reason, prehandled);
-		} catch {
-			// noop
-		}
-
+		// Else send the message as usual.
 		return message.sendMessage(output.join('\n'));
 	}
 

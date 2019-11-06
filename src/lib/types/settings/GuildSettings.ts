@@ -46,6 +46,8 @@ export namespace GuildSettings {
 		export const JoinDM = T<string>('messages.join-dm');
 		export const IgnoreChannels = T<readonly string[]>('messages.ignoreChannels');
 		export const ModerationDM = T<boolean>('messages.moderation-dm');
+		export const ModerationReasonDisplay = T<boolean>('messages.moderation-reason-display');
+		export const ModerationAutoDelete = T<boolean>('messages.moderation-auto-delete');
 		export const ModeratorNameDisplay = T<boolean>('messages.moderator-name-display');
 	}
 

@@ -32,6 +32,8 @@ export interface RawGuildSettings {
 	'messages.join-dm': string | null;
 	'messages.ignoreChannels': string[];
 	'messages.moderation-dm': boolean;
+	'messages.moderation-reason-display': boolean;
+	'messages.moderation-auto-delete': boolean;
 	'messages.moderator-name-display': boolean;
 	'stickyRoles': object[];
 	'roles.admin': string | null;
@@ -137,6 +139,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"messages.join-dm"                     VARCHAR(1500),
 		"messages.ignoreChannels"              VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"messages.moderation-dm"               BOOLEAN       DEFAULT FALSE              NOT NULL,
+		"messages.moderation-reason-display"   BOOLEAN       DEFAULT TRUE               NOT NULL,
+		"messages.moderation-auto-delete"      BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"messages.moderator-name-display"      BOOLEAN       DEFAULT TRUE               NOT NULL,
 		"stickyRoles"                          JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.admin"                          VARCHAR(19),

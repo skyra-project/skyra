@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['banners'],
+			aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
 			bucket: 2,
 			cooldown: 10,
 			description: language => language.tget('COMMAND_BANNER_DESCRIPTION'),

@@ -132,7 +132,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"case_id"  = $2
 			LIMIT 1;
 		`, [guildID, caseNumber]);
-		return ({ ...entry, created_at: Number(entry.created_at) });
+		return entry === null ? null : ({ ...entry, created_at: Number(entry.created_at) });
 	}
 
 	public async fetchModerationLogByCases(guildID: string, caseNumbers: readonly number[]) {

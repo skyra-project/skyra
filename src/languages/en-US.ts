@@ -2091,6 +2091,7 @@ export default class extends Language {
 		COMMAND_LOVE_100: 'Perfect match!',
 		COMMAND_LOVE_ITSELF: 'You are a special creature and you should love yourself more than anyone <3',
 		COMMAND_LOVE_RESULT: 'Result',
+		COMMAND_MARKOV_TIMER: timer => `Processed in ${timer}.`,
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
 		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],

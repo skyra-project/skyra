@@ -33,15 +33,16 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		// Process the chain
+		const markov = await this.retrieveMarkov(message)
 		const time = new Stopwatch();
-		const chain = (await this.retrieveMarkov(message)).process();
+		const chain = markov.process();
 		time.stop();
 
 		// Send the result message
 		return message.sendMessage(new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(getColor(message))
-			.setFooter(`Processed in ${time}`));
+			.setFooter(message.language.tget('COMMAND_MARKOV_TIMER', time.toString())));
 	}
 
 	private async retrieveMarkov(message: KlasaMessage) {

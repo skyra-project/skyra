@@ -2,6 +2,7 @@ import { CommandStore, KlasaMessage, Command } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Role, GuildMember } from 'discord.js';
 import { GuildSettings, PermissionsNode } from '../../lib/types/settings/GuildSettings';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 type Nodes = readonly PermissionsNode[];
 
@@ -12,6 +13,7 @@ export default class extends SkyraCommand {
 			aliases: ['pnodes', 'pnode'],
 			bucket: 2,
 			cooldown: 10,
+			permissionLevel: PermissionLevels.Administrator,
 			description: language => language.tget('COMMAND_PERMISSIONNODES_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_PERMISSIONNODES_EXTENDED'),
 			subcommands: true,

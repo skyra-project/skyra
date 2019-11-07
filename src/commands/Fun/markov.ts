@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
-			cooldown: 30,
+			cooldown: 10,
 			description: language => language.tget('COMMAND_MARKOV_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MARKOV_EXTENDED'),
 			runIn: ['text'],

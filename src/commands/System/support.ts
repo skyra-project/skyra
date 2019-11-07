@@ -18,7 +18,6 @@ export default class extends SkyraCommand {
 
 	public run(message: KlasaMessage) {
 		const embed = new MessageEmbed()
-		// TODO: LANGUAGE SUPPORT YOU IDIOT
 			.setTitle(message.language.tget('COMMAND_SUPPORT_EMBED_TITLE', message.author.username))
 			.setDescription(message.language.tget('COMMAND_SUPPORT_EMBED_DESCRIPTION'))
 			.setColor(BrandingColors.Primary);

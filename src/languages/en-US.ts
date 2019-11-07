@@ -551,6 +551,13 @@ export default class extends Language {
 			],
 			examples: ['Skyra']
 		}),
+		COMMAND_MARKOV_DESCRIPTION: 'Generate a Markov Chain from the text channel.',
+		COMMAND_MARKOV_EXTENDED: builder.display('markov', {
+			extendedHelp: `A Markov chain is a stocha... what? Okay, something something a probability theory made by a
+					Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random
+					message given the content of the messages in the channel.`,
+			examples: ['']
+		}),
 		COMMAND_NORRIS_DESCRIPTION: `Enjoy your day reading Chuck Norris' jokes.`,
 		COMMAND_NORRIS_EXTENDED: builder.display('norris', {
 			extendedHelp: `Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone?

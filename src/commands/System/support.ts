@@ -7,7 +7,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['supportserver', 'server'],
+			aliases: ['support-server', 'server'],
 			description: language => language.tget('COMMAND_SUPPORT_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SUPPORT_EXTENDED'),
 			guarded: true,

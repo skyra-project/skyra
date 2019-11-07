@@ -609,7 +609,7 @@ export default class extends Language {
 
 		COMMAND_SUPPORT_DESCRIPTION: `Show support instructions`,
 		COMMAND_SUPPORT_EXTENDED: builder.display('support', {
-			extendedHelp: `Gives you a link to Skyra's Lounge, your one-stop for all your Skyra problems and ideas`
+			extendedHelp: `Gives you a link to the Skyra support server.`
 		}),
 
 		/**
@@ -1981,7 +1981,7 @@ export default class extends Language {
 		COMMAND_HELP_USAGE: usage => `📝 | ***Command Usage***\n\`${usage}\`\n`,
 		COMMAND_HELP_EXTENDED: extendedHelp => `🔍 | ***Extended Help***\n${extendedHelp}`,
 		COMMAND_SUPPORT_EMBED_TITLE: username => `Looking for help, ${username}?`,
-		COMMAND_SUPPORT_EMBED_DESCRIPTION: `Then you should probably join [Skyra\'s lounge](https://skyra.pw/join)! There, you can receive support by the developers and other members of the community!`,
+		COMMAND_SUPPORT_EMBED_DESCRIPTION: `Then you should probably join [Skyra's lounge](https://skyra.pw/join)! There, you can receive support by the developers and other members of the community!`,
 
 		/**
 		 * ##############

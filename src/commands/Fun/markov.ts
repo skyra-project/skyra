@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 		const markov = new Markov()
 			.parse(contents)
 			.start(this.kBoundUseUpperCase)
-			.end(20);
+			.end(60);
 		this.kInternalCache.set(message.channel as TextChannel, markov);
 		this.client.setTimeout(() => this.kInternalCache.delete(message.channel as TextChannel), this.kInternalCacheTTL);
 		return markov;

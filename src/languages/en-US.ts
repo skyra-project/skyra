@@ -604,6 +604,16 @@ export default class extends Language {
 
 		/**
 		 * ###################
+		 * GENERAL COMMNADS
+		 */
+
+		COMMAND_SUPPORT_DESCRIPTION: `Show support instructions`,
+		COMMAND_SUPPORT_EXTENDED: builder.display('support', {
+			extendedHelp: `Gives you a link to Skyra's Lounge, your one-stop for all your Skyra problems and ideas`
+		}),
+
+		/**
+		 * ###################
 		 * MANAGEMENT COMMANDS
 		 */
 
@@ -1970,12 +1980,8 @@ export default class extends Language {
 		COMMAND_HELP_TITLE: (name, description) => `📃 | ***Help Message*** | __**${name}**__\n${description}\n`,
 		COMMAND_HELP_USAGE: usage => `📝 | ***Command Usage***\n\`${usage}\`\n`,
 		COMMAND_HELP_EXTENDED: extendedHelp => `🔍 | ***Extended Help***\n${extendedHelp}`,
-		COMMAND_SUPPORT_DESCRIPTION: `Show support instructions`,
-		COMMAND_SUPPORT_EXTENDED: builder.display('support', {
-			extendedHelp: `Literally gives you a link to our support server. What did you really expect this to do :thinking:`
-		}),
 		COMMAND_SUPPORT_EMBED_TITLE: username => `Looking for help, ${username}?`,
-		COMMAND_SUPPORT_EMBED_DESCRIPTION: `Then you should probably join [Skyra\'s lounge](https://discord.gg/92mEkYz)! There, you can receive support by the developers and other members of the community!`,
+		COMMAND_SUPPORT_EMBED_DESCRIPTION: `Then you should probably join [Skyra\'s lounge](https://skyra.pw/join)! There, you can receive support by the developers and other members of the community!`,
 
 		/**
 		 * ##############

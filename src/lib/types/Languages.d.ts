@@ -170,7 +170,7 @@ export interface LanguageKeys {
 	COMMAND_SKIP_VOTES_TOTAL: (amount: number, needed: number) => string;
 	COMMAND_SKIP_SUCCESS: (title: string) => string;
 	COMMAND_SUPPORT_DESCRIPTION: string;
-	COMMAND_SUPPORT_EXTENDED_HELP: string;
+	COMMAND_SUPPORT_EXTENDED: string;
 	COMMAND_SUPPORT_EMBED_TITLE: (username: string) => string;
 	COMMAND_SUPPORT_EMBED_DESCRIPTION: string;
 	COMMAND_TIME_DESCRIPTION: string;

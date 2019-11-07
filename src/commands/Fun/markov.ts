@@ -4,6 +4,7 @@ import { Markov, WordBank } from '../../lib/util/External/markov';
 import { cutText, getColor, iteratorAt } from '../../lib/util/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { BrandingColors } from '../../lib/util/constants';
+import { DEV } from '../../../config';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
@@ -14,6 +15,7 @@ export default class extends SkyraCommand {
 	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
 	private readonly kInternalCacheTTL = 60000;
 	private readonly kBoundUseUpperCase = this.useUpperCase.bind(this);
+	private readonly kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -33,16 +35,24 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		// Process the chain
-		const markov = await this.retrieveMarkov(message);
+		return message.sendEmbed(this.kProcess(message, await this.retrieveMarkov(message)));
+	}
+
+	private processRelease(message: KlasaMessage, markov: Markov) {
+		return new MessageEmbed()
+			.setDescription(cutText(markov.process(), 2000))
+			.setColor(getColor(message));
+	}
+
+	private processDevelopment(message: KlasaMessage, markov: Markov) {
 		const time = new Stopwatch();
 		const chain = markov.process();
 		time.stop();
 
-		// Send the result message
-		return message.sendMessage(new MessageEmbed()
+		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(getColor(message))
-			.setFooter(message.language.tget('COMMAND_MARKOV_TIMER', time.toString())));
+			.setFooter(message.language.tget('COMMAND_MARKOV_TIMER', time.toString()));
 	}
 
 	private async retrieveMarkov(message: KlasaMessage) {

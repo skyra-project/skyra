@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		// Process the chain
-		const markov = await this.retrieveMarkov(message)
+		const markov = await this.retrieveMarkov(message);
 		const time = new Stopwatch();
 		const chain = markov.process();
 		time.stop();

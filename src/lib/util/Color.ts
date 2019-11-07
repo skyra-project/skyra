@@ -1,8 +1,4 @@
 import * as Resolver from '../structures/color';
-import { B10 } from '../structures/color/B10';
-import { HEX } from '../structures/color/HEX';
-import { HSL } from '../structures/color/HSL';
-import { RGB } from '../structures/color/RGB';
 
 const REGEXP = {
 	B10: /^\d{1,8}$/,
@@ -10,19 +6,19 @@ const REGEXP = {
 	HEX_EXEC: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i,
 	HSL: /^hsl\(\d{1,3},\s?\d{1,3},\s?\d{1,3}\)$/i,
 	HSL_EXEC: /^hsl\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})\)$/i,
-	RANDOM: /^r|random$/i,
+	RANDOM: /^(?:r|random)$/i,
 	RGB: /^rgba?\(\d{1,3},\s?\d{1,3},\s?\d{1,3}(?:,.+)?\)$/i,
 	RGB_EXEC: /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/i
 };
 
-export function parse(input: string): HEX | B10 | RGB | HSL {
+export function parse(input: string) {
 	if (REGEXP.RANDOM.test(input)) return _generateRandom();
 	const output = _HEX(input)
 		|| _B10(input)
 		|| _RGB(input)
 		|| _HSL(input);
 
-	if (output !== null) return output;
+	if (output !== null && output.valid()) return output;
 	throw `${input} is not a supported type.`;
 }
 

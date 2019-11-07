@@ -1,4 +1,4 @@
-import { DiscordAPIError, Guild, HTTPError, TextChannel } from 'discord.js';
+import { DiscordAPIError, Guild, HTTPError, TextChannel, MessageEmbed } from 'discord.js';
 import { Event } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
@@ -14,7 +14,7 @@ const TYPES: Record<MessageLogsEnum, string> = {
 
 export default class extends Event {
 
-	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => string) {
+	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => MessageEmbed) {
 		const key = TYPES[type];
 		if (!key) {
 			this.client.emit(Events.Warn, `[EVENT] GuildMessageLog: Unknown type '${type}'`);

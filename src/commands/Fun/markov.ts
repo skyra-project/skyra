@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Markov, WordBank } from '../../lib/util/External/markov';
-import { cutText, getColor } from '../../lib/util/util';
+import { cutText, getColor, iteratorAt } from '../../lib/util/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { BrandingColors } from '../../lib/util/constants';
 
@@ -77,7 +77,9 @@ export default class extends SkyraCommand {
 			if (code >= kCodeA && code <= kCodeZ) filtered.push(key);
 		}
 
-		return filtered[Math.floor(Math.random() * filtered.length)];
+		return filtered.length > 0
+			? filtered[Math.floor(Math.random() * filtered.length)]
+			: iteratorAt(wordBank.keys(), Math.floor(Math.random() * wordBank.size))!;
 	}
 
 }

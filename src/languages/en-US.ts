@@ -603,6 +603,16 @@ export default class extends Language {
 		}),
 
 		/**
+		 * ################
+		 * GENERAL COMMANDS
+		 */
+
+		COMMAND_SUPPORT_DESCRIPTION: `Show support instructions`,
+		COMMAND_SUPPORT_EXTENDED: builder.display('support', {
+			extendedHelp: `This command gives you a link to *Skyra's Lounge*, the best place for everything related to me.`
+		}),
+
+		/**
 		 * ###################
 		 * MANAGEMENT COMMANDS
 		 */
@@ -1970,6 +1980,8 @@ export default class extends Language {
 		COMMAND_HELP_TITLE: (name, description) => `📃 | ***Help Message*** | __**${name}**__\n${description}\n`,
 		COMMAND_HELP_USAGE: usage => `📝 | ***Command Usage***\n\`${usage}\`\n`,
 		COMMAND_HELP_EXTENDED: extendedHelp => `🔍 | ***Extended Help***\n${extendedHelp}`,
+		COMMAND_SUPPORT_EMBED_TITLE: username => `Looking for help, ${username}?`,
+		COMMAND_SUPPORT_EMBED_DESCRIPTION: `Then you should probably join [Skyra's Lounge](https://skyra.pw/join)! There, you can receive support by the developers and other members of the community!`,
 
 		/**
 		 * ##############

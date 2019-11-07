@@ -169,6 +169,8 @@ export interface LanguageKeys {
 	COMMAND_SKIP_VOTES_VOTED: string;
 	COMMAND_SKIP_VOTES_TOTAL: (amount: number, needed: number) => string;
 	COMMAND_SKIP_SUCCESS: (title: string) => string;
+	COMMAND_SUPPORT_EMBED_TITLE: (username: string) => string;
+	COMMAND_SUPPORT_EMBED_DESCRIPTION: string;
 	COMMAND_TIME_DESCRIPTION: string;
 	COMMAND_TIME_QUEUE_EMPTY: string;
 	COMMAND_TIME_STREAM: string;
@@ -691,6 +693,8 @@ export interface LanguageKeys {
 	COMMAND_HELP_TITLE: (name: string, description: string) => string;
 	COMMAND_HELP_USAGE: (usage: string) => string;
 	COMMAND_HELP_EXTENDED: (extendedHelp: string) => string;
+	COMMAND_SUPPORT_DESCRIPTION: string;
+	COMMAND_SUPPORT_EXTENDED: string;
 	COMMAND_8BALL_OUTPUT: (author: string, question: string, response: string) => string;
 	COMMAND_8BALL_NOT_QUESTION: string;
 	COMMAND_8BALL_QUESTIONS: Record<string, string | RegExp>;

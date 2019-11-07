@@ -17,7 +17,7 @@ export class Markov {
 		this.sentence = currentWord!;
 
 		let word: WordBankValue | undefined;
-		while ((word = this.wordBank.get(currentWord)) && !this.endFn()) {
+		while (typeof (word = this.wordBank.get(currentWord)) !== 'undefined' && !this.endFn()) {
 			currentWord = pickByWeights(word)!;
 			this.sentence += ` ${currentWord}`;
 		}
@@ -62,7 +62,7 @@ export class Markov {
 		}
 	}
 
-	public end(fnEnd: MarkovEndFunction | string | number | undefined) {
+	public end(fnEnd: MarkovEndFunction | string | number) {
 		switch (typeof fnEnd) {
 			case 'function': {
 				this.endFn = fnEnd;
@@ -76,9 +76,7 @@ export class Markov {
 				};
 				return this;
 			}
-			case 'undefined':
 			case 'number':
-				if (typeof fnEnd === 'undefined') fnEnd = Infinity;
 				this.endFn = () => this.countWords() > (fnEnd as number);
 				return this;
 			default: throw new TypeError('Expected either a function, string, number, or undefined.');

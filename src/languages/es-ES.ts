@@ -2365,6 +2365,7 @@ export default class extends Language {
 			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
 			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
 		].join(''),
+		COMMAND_MODERATION_DAYS: /d[ií]as?/i,
 
 		/**
 		 * ###############

@@ -2,6 +2,7 @@ import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { isNumber } from '@klasa/utils';
 
 export default class extends ModerationCommand {
 
@@ -25,7 +26,7 @@ export default class extends ModerationCommand {
 			moderator_id: message.author.id,
 			duration,
 			reason
-		}, Number(message.flagArgs.day || message.flagArgs.days) || 0, this.getTargetDM(message, target));
+		}, this.getDays(message), this.getTargetDM(message, target));
 	}
 
 	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
@@ -36,6 +37,17 @@ export default class extends ModerationCommand {
 		const member = await super.checkModeratable(message, target, prehandled);
 		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		return member;
+	}
+
+	private getDays(message: KlasaMessage) {
+		const regex = message.language.tget('COMMAND_MODERATION_DAYS');
+		for (const [key, value] of Object.entries(message.flagArgs)) {
+			if (regex.test(key)) {
+				const parsed = Number(value);
+				if (isNumber(parsed) && parsed >= 0 && parsed <= 7) return parsed;
+			}
+		}
+		return 0;
 	}
 
 }

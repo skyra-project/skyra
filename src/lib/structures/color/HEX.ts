@@ -1,4 +1,6 @@
-export class HEX {
+import { ColorHandler } from './index';
+
+export class HEX implements ColorHandler {
 
 	public r: string;
 	public g: string;
@@ -15,14 +17,13 @@ export class HEX {
 		this.g = g.padStart(2, '0');
 		this.b = b.padStart(2, '0');
 
-		this.valid();
+		this.check();
 	}
 
-	public valid() {
+	public check() {
 		if (Number.isNaN(parseInt(this.r, 16))) throw `Invalid Red range. Must be between '00' and 'ff', and it is '${this.r}'`;
 		if (Number.isNaN(parseInt(this.g, 16))) throw `Invalid Green range. Must be between '00' and 'ff', and it is '${this.g}'`;
 		if (Number.isNaN(parseInt(this.b, 16))) throw `Invalid Blue range. Must be between '00' and 'ff', and it is '${this.b}'`;
-		return true;
 	}
 
 	public get hex() {

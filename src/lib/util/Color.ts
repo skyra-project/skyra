@@ -11,15 +11,15 @@ const REGEXP = {
 	RGB_EXEC: /^rgba?\((\d{1,3}),\s?(\d{1,3}),\s?(\d{1,3})(?:,.+)?\)$/i
 };
 
-export function parse(input: string) {
+export function parse(input: string): Resolver.ColorHandler {
 	if (REGEXP.RANDOM.test(input)) return _generateRandom();
 	const output = _HEX(input)
 		|| _B10(input)
 		|| _RGB(input)
 		|| _HSL(input);
 
-	if (output !== null && output.valid()) return output;
-	throw `${input} is not a supported type.`;
+	if (output === null) throw `${input} is not a supported type.`;
+	return output;
 }
 
 function generateBetween(max: number, min: number): number {

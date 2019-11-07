@@ -1,4 +1,6 @@
-export class B10 {
+import { ColorHandler } from './index';
+
+export class B10 implements ColorHandler {
 
 	public value: number;
 
@@ -8,12 +10,11 @@ export class B10 {
 	 */
 	public constructor(value: string | number) {
 		this.value = Number(value);
-		this.valid();
+		this.check();
 	}
 
-	public valid() {
+	public check() {
 		if (this.value < 0 || this.value > 0xFFFFFF) throw 'Color must be within the range 0 - 16777215 (0xFFFFFF).';
-		return true;
 	}
 
 	public get hex() {

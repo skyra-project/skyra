@@ -1,4 +1,6 @@
-export class HSL {
+import { ColorHandler } from './index';
+
+export class HSL implements ColorHandler {
 
 	public h: number;
 	public s: number;
@@ -15,14 +17,13 @@ export class HSL {
 		this.s = Number(s);
 		this.l = Number(l);
 
-		this.valid();
+		this.check();
 	}
 
-	public valid() {
+	public check() {
 		if (this.h < 0 || this.h > 360) throw `Invalid Hue range. Must be between 0 and 360, and it is ${this.h}`;
 		if (this.s < 0 || this.s > 100) throw `Invalid Saturation range. Must be between 0 and 100, and it is ${this.s}`;
 		if (this.l < 0 || this.l > 100) throw `Invalid Lightness range. Must be between 0 and 100, and it is ${this.l}`;
-		return true;
 	}
 
 	public get hex() {

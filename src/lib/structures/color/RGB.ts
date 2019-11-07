@@ -1,4 +1,6 @@
-export class RGB {
+import { ColorHandler } from './index';
+
+export class RGB implements ColorHandler {
 
 	public r: number;
 	public g: number;
@@ -15,14 +17,13 @@ export class RGB {
 		this.g = Number(g);
 		this.b = Number(b);
 
-		this.valid();
+		this.check();
 	}
 
-	public valid() {
+	public check() {
 		if (this.r < 0 || this.r > 255) throw `Invalid Red range. Must be between 0 and 255, and it is ${this.r}`;
 		if (this.g < 0 || this.g > 255) throw `Invalid Green range. Must be between 0 and 255, and it is ${this.g}`;
 		if (this.b < 0 || this.b > 255) throw `Invalid Blue range. Must be between 0 and 255, and it is ${this.b}`;
-		return true;
 	}
 
 	public get hex() {

@@ -590,13 +590,13 @@ export default class extends Language {
 		}),
 
 		/**
-		 * ###################
-		 * GENERAL COMMNADS
+		 * ################
+		 * GENERAL COMMANDS
 		 */
 
 		COMMAND_SUPPORT_DESCRIPTION: `Muestra instrucciones de soporte`,
 		COMMAND_SUPPORT_EXTENDED: builder.display('support', {
-			extendedHelp: `Le brinda un enlace a Skyra's Lounge, su única parada para todos sus problemas e ideas de Skyra`
+			extendedHelp: `Le brinda un enlace a *Skyra's Lounge*, el lugar indicado para todo lo relacionado conmigo.`
 		}),
 
 		/**
@@ -1958,8 +1958,8 @@ export default class extends Language {
 		COMMAND_HELP_TITLE: (name, description) => `📃 | ***Mensaje de Ayuda*** | __**${name}**__\n${description}\n`,
 		COMMAND_HELP_USAGE: usage => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
 		COMMAND_HELP_EXTENDED: extendedHelp => `🔍 | ***Descripción Extendida***\n${extendedHelp}`,
-		COMMAND_SUPPORT_EMBED_TITLE: username => `Nesecita ayuda, ${username}?`,
-		COMMAND_SUPPORT_EMBED_DESCRIPTION: `¡Entonces deberías unirte a [Skyra \ 's lounge] (https://skyra.pw/join)! Allí, puede recibir apoyo de los desarrolladores y otros miembros de la comunidad.`,
+		COMMAND_SUPPORT_EMBED_TITLE: username => `¿Necesita ayuda, ${username}?`,
+		COMMAND_SUPPORT_EMBED_DESCRIPTION: `¡Entonces deberías unirte a [Skyra's lounge](https://skyra.pw/join)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.`,
 
 		/**
 		 * ##############

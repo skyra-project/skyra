@@ -153,6 +153,17 @@ export function cutText(str: string, length: number) {
 	return `${cut.slice(0, length - 3)}...`;
 }
 
+export function iteratorAt<T>(iterator: IterableIterator < T >, position: number) {
+	let result: IteratorResult<T>;
+	while (position-- > 0) {
+		result = iterator.next();
+		if (result.done) return null;
+	}
+
+	result = iterator.next();
+	return result.done ? null : result.value;
+}
+
 export async function fetch(url: URL | string, type: 'json'): Promise<object>;
 export async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<object>;
 export async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;

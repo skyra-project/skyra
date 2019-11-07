@@ -551,6 +551,13 @@ export default class extends Language {
 			],
 			examples: ['Skyra']
 		}),
+		COMMAND_MARKOV_DESCRIPTION: 'Generate a Markov Chain from the text channel.',
+		COMMAND_MARKOV_EXTENDED: builder.display('markov', {
+			extendedHelp: `A Markov chain is a stocha... what? Okay, something something a probability theory made by a
+					Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random
+					message given the content of the messages in the channel.`,
+			examples: ['']
+		}),
 		COMMAND_NORRIS_DESCRIPTION: `Enjoy your day reading Chuck Norris' jokes.`,
 		COMMAND_NORRIS_EXTENDED: builder.display('norris', {
 			extendedHelp: `Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone?
@@ -2084,6 +2091,7 @@ export default class extends Language {
 		COMMAND_LOVE_100: 'Perfect match!',
 		COMMAND_LOVE_ITSELF: 'You are a special creature and you should love yourself more than anyone <3',
 		COMMAND_LOVE_RESULT: 'Result',
+		COMMAND_MARKOV_TIMER: timer => `Processed in ${timer}.`,
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
 		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],

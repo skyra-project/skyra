@@ -1,7 +1,7 @@
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { MessageEmbed } from 'discord.js';
-import { BrandingColors } from '../../lib/util/constants';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -9,7 +9,7 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['supportserver', 'server'],
 			description: language => language.tget('COMMAND_SUPPORT_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SUPPORT_EXTENDED_HELP'),
+			extendedHelp: language => language.tget('COMMAND_SUPPORT_EXTENDED'),
 			guarded: true,
 			permissionLevel: 0
 		});
@@ -17,11 +17,10 @@ export default class extends SkyraCommand {
 	}
 
 	public run(message: KlasaMessage) {
-		const embed = new MessageEmbed()
+		return message.sendEmbed(new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_SUPPORT_EMBED_TITLE', message.author.username))
 			.setDescription(message.language.tget('COMMAND_SUPPORT_EMBED_DESCRIPTION'))
-			.setColor(BrandingColors.Primary);
-		return message.send(embed);
+			.setColor(getColor(message)));
 	}
 
 }

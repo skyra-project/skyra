@@ -2,7 +2,7 @@ import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Markov, WordBank } from '../../lib/util/External/markov';
 import { cutText, getColor } from '../../lib/util/util';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, TextChannel } from 'discord.js';
 import { BrandingColors } from '../../lib/util/constants';
 
 const kCodeA = 'A'.charCodeAt(0);
@@ -10,7 +10,10 @@ const kCodeZ = 'Z'.charCodeAt(0);
 
 export default class extends SkyraCommand {
 
-	private kMessageHundredsLimit = 10;
+	private readonly kMessageHundredsLimit = 10;
+	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
+	private readonly kInternalCacheTTL = 60000;
+	private readonly kBoundUseUpperCase = this.useUpperCase.bind(this);
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -18,6 +21,7 @@ export default class extends SkyraCommand {
 			cooldown: 30,
 			description: language => language.tget('COMMAND_MARKOV_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MARKOV_EXTENDED'),
+			runIn: ['text'],
 			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 		});
 	}
@@ -29,14 +33,8 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		// Process the chain
-		const messageBank = await this.fetchMessages(message);
 		const time = new Stopwatch();
-		const contents = messageBank.map(m => m.content).join(' ');
-		const chain = new Markov()
-			.parse(contents)
-			.start(this.useUpperCase.bind(this))
-			.end(20)
-			.process();
+		const chain = (await this.retrieveMarkov(message)).process();
 		time.stop();
 
 		// Send the result message
@@ -44,6 +42,21 @@ export default class extends SkyraCommand {
 			.setDescription(cutText(chain, 2000))
 			.setColor(getColor(message))
 			.setFooter(`Processed in ${time}`));
+	}
+
+	private async retrieveMarkov(message: KlasaMessage) {
+		const entry = this.kInternalCache.get(message.channel as TextChannel);
+		if (typeof entry !== 'undefined') return entry;
+
+		const messageBank = await this.fetchMessages(message);
+		const contents = messageBank.map(m => m.content).join(' ');
+		const markov = new Markov()
+			.parse(contents)
+			.start(this.kBoundUseUpperCase)
+			.end(20);
+		this.kInternalCache.set(message.channel as TextChannel, markov);
+		this.client.setTimeout(() => this.kInternalCache.delete(message.channel as TextChannel), this.kInternalCacheTTL);
+		return markov;
 	}
 
 	private async fetchMessages(message: KlasaMessage) {

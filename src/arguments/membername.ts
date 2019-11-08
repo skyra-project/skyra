@@ -5,10 +5,6 @@ const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 
-	public get member() {
-		return this.store.get('member')!;
-	}
-
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean) {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
 		const resMember = await this.resolveMember(message, arg);

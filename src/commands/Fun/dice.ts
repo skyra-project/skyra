@@ -1,37 +1,71 @@
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { isNumber } from '@klasa/utils';
 
 export default class extends SkyraCommand {
 
+	/**
+	 * Syntax  : {number}?[ ]d[ ]{number}[ ]{.*?}
+	 * Examples:
+	 *  - 4d6
+	 *  - d20
+	 *  - 2d8+2
+	 */
+	private readonly kDice20RegExp = /^(\d+)?\s*d\s*(\d+)\s*(.*?)$/;
+
+	/**
+	 * Syntax  : {+-}[ ]{number}
+	 * Examples:
+	 *  - +20
+	 *  - -50
+	 *  - + 70
+	 */
+	private readonly kDice20TrailRegExp = /([+-])\s*(\d+)/g;
+
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['roll'],
 			cooldown: 5,
 			description: language => language.tget('COMMAND_DICE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_DICE_EXTENDED'),
-			usage: '(rolls:rolls) (sides:sides)',
-			usageDelim: ' '
+			usage: '[amount:integer|dice:string]',
+			spam: true
 		});
-
-		this.createCustomResolver('rolls', (arg, _, msg) => {
-			if (!arg) return undefined;
-			const n = Number(arg);
-			if (util.isNumber(n) || n < 1 || n > 1024) throw msg.language.tget('COMMAND_DICE_ROLLS_ERROR');
-			return n | 0;
-		}).createCustomResolver('sides', (arg, _, msg) => {
-			if (!arg) return undefined;
-			const n = Number(arg);
-			if (util.isNumber(n) || n < 4 || n > 1024) throw msg.language.tget('COMMAND_DICE_SIDES_ERROR');
-			return n | 0;
-		});
-		this.spam = true;
 	}
 
-	public run(message: KlasaMessage, [rl = 1, sd = 6]: [number?, number?]) {
-		return message.sendLocale('COMMAND_DICE_OUTPUT', [sd, rl, this.roll(rl, sd)]);
+	public run(message: KlasaMessage, [amountOrDice = 1]: [number | string | undefined]) {
+		return message.sendLocale('COMMAND_DICE_OUTPUT', [this.roll(message, amountOrDice)]);
 	}
 
-	private roll(rolls: number, sides: number) {
-		return Math.ceil(Math.random() * sides * rolls);
+	private roll(message: KlasaMessage, pattern: string | number) {
+		let amount: number;
+		let dice: number;
+		let modifier = 0;
+		if (typeof pattern === 'number') {
+			if (!isNumber(pattern)) throw message.language.tget('RESOLVER_INVALID_INT', 'dice');
+			amount = pattern;
+			dice = 6;
+		} else {
+			const results = this.kDice20RegExp.exec(pattern);
+			if (results === null) throw message.language.tget('COMMAND_DICE_ROLLS_ERROR');
+			amount = typeof results[1] === 'undefined' ? 1 : Number(results[1]);
+			dice = Number(results[2]);
+
+			if (results[3].length > 0) {
+				let modifierResults: RegExpExecArray | null;
+				while ((modifierResults = this.kDice20TrailRegExp.exec(results[3]))) {
+					if (modifierResults[1] === '+') {
+						modifier += Number(modifierResults[2]);
+					} else {
+						modifier -= Number(modifierResults[2]);
+					}
+				}
+			}
+		}
+
+		const maximum = amount * dice;
+		const minimum = amount;
+		return Math.floor(Math.random() * (maximum - (minimum + 1)) + minimum) + modifier;
 	}
 
 }

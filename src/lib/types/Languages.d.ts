@@ -712,7 +712,7 @@ export interface LanguageKeys {
 	COMMAND_CHOICE_OUTPUT: (user: string, word: string) => string;
 	COMMAND_CHOICE_MISSING: string;
 	COMMAND_CHOICE_DUPLICATES: (words: string) => string;
-	COMMAND_DICE_OUTPUT: (sides: string, rolls: string, result: string) => string;
+	COMMAND_DICE_OUTPUT: (result: number) => string;
 	COMMAND_DICE_ROLLS_ERROR: string;
 	COMMAND_DICE_SIDES_ERROR: string;
 	COMMAND_ESCAPEROPE_OUTPUT: (user: string) => string;

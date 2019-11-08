@@ -2058,7 +2058,7 @@ export default class extends Language {
 		COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${codeBlock('', word)}`,
 		COMMAND_CHOICE_MISSING: 'Por favor, escribe al menos dos opciones separadas con coma.',
 		COMMAND_CHOICE_DUPLICATES: words => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
-		COMMAND_DICE_OUTPUT: (sides, rolls, result) => `Has lanzado el dado de **${sides}** lados **${rolls}** veces, obtienes: **${result}**`,
+		COMMAND_DICE_OUTPUT: result => `¡Lanzaste el dado! Obteniste: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'La cantidad de lanzamientos debe ser un número entre 1 y 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'La cantidad de lados debe ser un número entre 4 y 1024.',
 		// https://bulbapedia.bulbagarden.net/wiki/Escape_Rope

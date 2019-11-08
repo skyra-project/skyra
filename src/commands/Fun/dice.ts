@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 
 		const maximum = amount * dice;
 		const minimum = amount;
-		return Math.floor(Math.random() * (maximum - (minimum + 1)) + minimum) + modifier;
+		return Math.floor((Math.random() * (maximum - (minimum + 1))) + minimum) + modifier;
 	}
 
 }

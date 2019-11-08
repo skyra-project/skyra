@@ -4,12 +4,12 @@ import { Slotmachine } from '../lib/util/Games/Slotmachine';
 
 export default class extends Event {
 
-	public run() {
+	public async run() {
 		try {
-			Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error));
-			this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error));
-			this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));
-			this.initPostStatsTask().catch(error => this.client.emit(Events.Wtf, error));
+			await Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error));
+			await this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error));
+			await this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));
+			await this.initPostStatsTask().catch(error => this.client.emit(Events.Wtf, error));
 		} catch (error) {
 			this.client.console.wtf(error);
 		}

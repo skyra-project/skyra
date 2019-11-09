@@ -1,6 +1,7 @@
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
 import { Extendable, ExtendableStore, util } from 'klasa';
 import { Events } from '../lib/types/Enums';
+import { APIErrors } from '../lib/util/constants';
 
 export default class extends Extendable {
 
@@ -79,8 +80,7 @@ async function nuke(message: Message) {
 	try {
 		return await message.delete();
 	} catch (error) {
-		// Unknown Message
-		if (error.code === 10008) return message;
+		if (error.code === APIErrors.UnknownMessage) return message;
 		throw error;
 	}
 }

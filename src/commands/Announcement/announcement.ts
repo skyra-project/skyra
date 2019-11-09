@@ -3,6 +3,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { announcementCheck, getColor } from '../../lib/util/util';
+import { APIErrors } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -66,8 +67,7 @@ export default class extends SkyraCommand {
 			try {
 				await previous.edit(content);
 			} catch (error) {
-				if (error instanceof DiscordAPIError && error.code === 10008) {
-					// Unknown Message
+				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 					this.messages.set(message, await channel.send(content) as KlasaMessage);
 				} else {
 					throw error;

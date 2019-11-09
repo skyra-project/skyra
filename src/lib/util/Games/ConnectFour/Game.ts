@@ -4,7 +4,7 @@ import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
 import { Events } from '../../../types/Enums';
 import { Player } from './Player';
 import { LongLivingReactionCollector } from '../../LongLivingReactionCollector';
-import { ConnectFourConstants } from '../../constants';
+import { ConnectFourConstants, APIErrors } from '../../constants';
 
 export class Game {
 
@@ -89,8 +89,8 @@ export class Game {
 			await this.message.edit(`${this.content}\n${this.board.render()}`);
 			this._retries = 3;
 		} catch (error) {
-			if (error instanceof DiscordAPIError && (error.code === 10003 || error.code === 10008)) {
-				await this.message.alert(this.message.language.tget('COMMAND_C4_GAME_DRAW'));
+			if (error instanceof DiscordAPIError && (error.code === APIErrors.UnknownChannel || error.code === APIErrors.UnknownMessage)) {
+				if (error.code !== APIErrors.UnknownChannel) await this.message.alert(this.message.language.tget('COMMAND_C4_GAME_DRAW'));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

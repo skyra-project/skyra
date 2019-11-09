@@ -4,6 +4,7 @@ import { GuildSettings } from '../types/settings/GuildSettings';
 import { cutText, fetchReactionUsers, getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
+import { APIErrors } from '../util/constants';
 
 export const COLORS = [
 	0xFFE3AF,
@@ -264,10 +265,8 @@ export class StarboardMessage {
 				this.channel.guild.settings.get(GuildSettings.Starboard.Emoji));
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// Missing Access
-				if (error.code === 50001) return;
-				// Unknown Message
-				if (error.code === 10008) await this.destroy();
+				if (error.code === APIErrors.MissingAccess) return;
+				if (error.code === APIErrors.UnknownMessage) await this.destroy();
 				return;
 			}
 		}
@@ -314,10 +313,8 @@ export class StarboardMessage {
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
-				// Missing Access
-				if (error.code === 50001) return;
-				// Unknown Message
-				if (error.code === 10008) await this.edit({ star_message_id: null, enabled: false });
+				if (error.code === APIErrors.MissingAccess) return;
+				if (error.code === APIErrors.UnknownMessage) await this.edit({ star_message_id: null, enabled: false });
 			}
 		} else {
 			const promise = this.manager.starboardChannel!.send(content, this.embed!)
@@ -325,8 +322,7 @@ export class StarboardMessage {
 				.catch(error => {
 					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
-					// Missing Access
-					if (error.code === 50001) return;
+					if (error.code === APIErrors.MissingAccess) return;
 					// Emit to console
 					this.client.emit(Events.Wtf, error);
 				})

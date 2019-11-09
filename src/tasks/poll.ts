@@ -1,6 +1,7 @@
 import { DiscordAPIError } from 'discord.js';
 import { constants, Task, util } from 'klasa';
 import { RawPollSettings } from '../commands/Tools/poll';
+import { APIErrors } from '../lib/util/constants';
 const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {
@@ -32,14 +33,12 @@ export default class extends Task {
 	}
 
 	public _catchErrorUser(error: DiscordAPIError): void {
-		// 10013: Unknown user
-		if (error.code === 10013) return;
+		if (error.code === APIErrors.UnknownUser) return;
 		throw error;
 	}
 
 	public _catchErrorMessage(error: DiscordAPIError): void {
-		// 50007: Cannot send messages to this user
-		if (error.code === 50007) return;
+		if (error.code === APIErrors.CannotMessageUser) return;
 		throw error;
 	}
 

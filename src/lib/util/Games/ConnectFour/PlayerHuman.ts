@@ -3,7 +3,7 @@ import { Player, PlayerColor } from './Player';
 import { KlasaUser } from 'klasa';
 import { Cell } from './Board';
 import { LLRCDataEmoji } from '../../LongLivingReactionCollector';
-import { ConnectFourConstants } from '../../constants';
+import { ConnectFourConstants, APIErrors } from '../../constants';
 import { DiscordAPIError } from 'discord.js';
 import { Events } from '../../../types/Enums';
 import { resolveEmoji } from '../../util';
@@ -55,8 +55,7 @@ export class PlayerHuman extends Player {
 				.reactions(resolveEmoji(emoji)!)(userID).delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// Unknown Message | Unknown Emoji
-				if (error.code === 10008 || error.code === 10014) return;
+				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return;
 			}
 
 			this.game.message.client.emit(Events.ApiError, error);

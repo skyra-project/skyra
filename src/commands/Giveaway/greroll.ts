@@ -6,6 +6,7 @@ import { fetchReactionUsers } from '../../lib/util/util';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { FetchError } from 'node-fetch';
 import { Events } from '../../lib/types/Enums';
+import { APIErrors } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
@@ -58,8 +59,7 @@ export default class extends SkyraCommand {
 			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// UNKNOWN_MESSAGE | UNKNOWN_EMOJI
-				if (error.code === 10008 || error.code === 10014) return [];
+				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants(message);
 				this.store.client.emit(Events.ApiError, error);

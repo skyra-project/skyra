@@ -4,7 +4,7 @@ import { Events } from '../types/Enums';
 import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
 import { getColor, floatPromise } from '../util/util';
 import { api } from '../util/Models/Api';
-import { Time, BrandingColors } from '../util/constants';
+import { Time, BrandingColors, APIErrors } from '../util/constants';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -159,15 +159,13 @@ export class SettingsMenu {
 				.delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// Unknown Message
-				if (error.code === 10008) {
+				if (error.code === APIErrors.UnknownMessage) {
 					this.response = null;
 					this.llrc!.end();
 					return this;
 				}
 
-				// Unknown Emoji
-				if (error.code === 10014) {
+				if (error.code === APIErrors.UnknownEmoji) {
 					return this;
 				}
 			}
@@ -182,8 +180,7 @@ export class SettingsMenu {
 		try {
 			await this.response.react(emoji);
 		} catch (error) {
-			// Unknown Message
-			if (error instanceof DiscordAPIError && error.code === 10008) {
+			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 				this.response = null;
 				this.llrc!.end();
 			} else {
@@ -197,8 +194,7 @@ export class SettingsMenu {
 		try {
 			await this.response.edit(this.render());
 		} catch (error) {
-			// Unknown Message
-			if (error instanceof DiscordAPIError && error.code === 10008) {
+			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 				this.response = null;
 				this.llrc!.end();
 			} else {

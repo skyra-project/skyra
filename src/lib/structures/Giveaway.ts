@@ -3,7 +3,7 @@ import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
 import { CLIENT_ID } from '../../../config';
 import { Events } from '../types/Enums';
-import { Time } from '../util/constants';
+import { Time, APIErrors } from '../util/constants';
 import { fetchReactionUsers, resolveEmoji } from '../util/util';
 import { GiveawayManager } from './GiveawayManager';
 import { api } from '../util/Models/Api';
@@ -108,8 +108,7 @@ export class Giveaway {
 				.patch({ data: await this.getData() });
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// Unknown message | Missing Access | Invalid Form Body
-				if (error.code === 10008 || error.code === 50001 || error.code === 50035) {
+				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.MissingAccess || error.code === APIErrors.InvalidFormBody) {
 					await this.destroy();
 				} else {
 					this.store.client.emit(Events.ApiError, error);
@@ -148,8 +147,7 @@ export class Giveaway {
 					.delete();
 			} catch (error) {
 				if (error instanceof DiscordAPIError) {
-					// Unknown Message | Unknown Emoji
-					if (error.code === 10008 || error.code === 10014) return this;
+					if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return this;
 				}
 				this.store.client.emit(Events.ApiError, error);
 			}
@@ -273,8 +271,7 @@ export class Giveaway {
 			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				// UNKNOWN_MESSAGE | UNKNOWN_EMOJI
-				if (error.code === 10008 || error.code === 10014) return [];
+				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants();
 				this.store.client.emit(Events.ApiError, error);

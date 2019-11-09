@@ -13,12 +13,20 @@ export default class extends SkyraCommand {
 			permissionLevel: 5,
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
-			usage: '[limit:integer] [link|invite|bots|you|me|upload|user:user]',
+			usage: '[limit:integer{1,100}] [link|invite|bots|you|me|upload|user:user]',
 			usageDelim: ' '
 		});
 	}
 
 	public async run(message: KlasaMessage, [limit = 50, filter]: [number, string]) {
+		// This can happen for a large variety of situations:
+		// - Invalid limit (less than 1 or more than 100).
+		// - Invalid filter
+		// For example `prune 642748845687570444` (invalid ID) or `prune u` (invalid filter)
+		// are invalid command usages and therefore, for the sake of protection, Skyra should
+		// not execute an erroneous command.
+		if (message.args.length > 2) throw message.language.tget('COMMAND_PRUNE_INVALID');
+
 		let messages = await message.channel.messages.fetch({ limit: 100, before: message.id });
 		if (typeof filter !== 'undefined') {
 			const user = typeof filter === 'string' ? null : filter;
@@ -37,7 +45,7 @@ export default class extends SkyraCommand {
 			case 'links':
 			case 'link': return (mes: Message) => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
 			case 'invites':
-			case 'invite': return (mes: Message) => /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/\w+/.test(mes.content);
+			case 'invite': return (mes: Message) => /(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/\w+/.test(mes.content);
 			case 'bots':
 			case 'bot': return (mes: Message) => mes.author.bot;
 			case 'you': return (mes: Message) => mes.author.id === this.client.user!.id;

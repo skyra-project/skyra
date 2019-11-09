@@ -2384,6 +2384,7 @@ export default class extends Language {
 		COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
 		COMMAND_MUTE_UNCONFIGURED: 'This guild does not have a **Muted** role. Aborting command execution.',
 		COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
+		COMMAND_PRUNE_INVALID: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
 		COMMAND_PRUNE: (amount, total) => amount
 			? `Successfully deleted ${amount} messages from ${total}.`
 			: 'No message has been deleted, either no message match the filter or they are over 14 days old.',

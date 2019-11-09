@@ -17,7 +17,7 @@ export default class extends ModerationMonitor {
 	};
 
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
-	private readonly kMaximumEntries = 50;
+	private readonly kMaximumEntries = 100;
 
 	protected preProcess(message: KlasaMessage) {
 		const threshold = message.guild!.settings.get(GuildSettings.Selfmod.Messages.Maximum);

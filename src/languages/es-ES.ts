@@ -1025,7 +1025,33 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
-		COMMAND_NEWLINEMODE_DESCRIPTION: '',
+		COMMAND_MESSAGEMODE_DESCRIPTION: 'Manage the behaviour for the message filter system.',
+		COMMAND_NEWLINEMODE_EXTENDED: builder.display('messageMode', {
+			extendedHelp: `The messageMode command manages the behaviour of the message filter system.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
+		COMMAND_NEWLINEMODE_DESCRIPTION: 'Manage the behaviour for the new line filter system.',
 		COMMAND_NEWLINEMODE_EXTENDED: builder.display('newLineMode', {
 			extendedHelp: `The newLineMode command manages the behaviour of the new line filter system.
 				The maximum amount of lines allowed can be set with \`Skyra, settings set selfmod.newlines.minimum <number>\``,
@@ -2803,12 +2829,14 @@ export default class extends Language {
 		CONST_MONITOR_WORDFILTER: 'Palabra Filtrada',
 		CONST_MONITOR_CAPSFILTER: 'Demasiadas Mayúsculas',
 		CONST_MONITOR_ATTACHMENTFILTER: 'Demasiados Documentos',
+		CONST_MONITOR_MESSAGEFILTER: 'Too Many Message Duplicates',
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		MONITOR_NOINVITE: user => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
 		MONITOR_WORDFILTER_DM: filtered => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
 		MONITOR_CAPSFILTER: user => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
+		MONITOR_MESSAGEFILTER: user => `${REDCROSS} Woah woah woah, please stop re-posting so much ${user}!`,
 		MONITOR_NEWLINEFILTER: user => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
 		MONITOR_NMS_MESSAGE: user => [
 			`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,

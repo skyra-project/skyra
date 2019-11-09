@@ -92,6 +92,16 @@ export namespace GuildSettings {
 			export const ThresholdDuration = T<number | null>('selfmod.capitals.thresholdDuration');
 		}
 
+		export namespace Messages {
+			export const Enabled = T<boolean>('selfmod.messages.enabled');
+			export const Maximum = T<number>('selfmod.messages.maximum');
+			export const SoftAction = T<number>('selfmod.messages.softAction');
+			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.messages.hardAction');
+			export const HardActionDuration = T<number>('selfmod.messages.hardActionDuration');
+			export const ThresholdMaximum = T<number>('selfmod.messages.thresholdMaximum');
+			export const ThresholdDuration = T<number | null>('selfmod.messages.thresholdDuration');
+		}
+
 		export namespace NewLines {
 			export const Enabled = T<boolean>('selfmod.newlines.enabled');
 			export const Maximum = T<number>('selfmod.newlines.maximum');

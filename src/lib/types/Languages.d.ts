@@ -379,6 +379,8 @@ export interface LanguageKeys {
 	COMMAND_FILTERMODE_EXTENDED: string;
 	COMMAND_INVITEMODE_DESCRIPTION: string;
 	COMMAND_INVITEMODE_EXTENDED: string;
+	COMMAND_MESSAGEMODE_DESCRIPTION: string;
+	COMMAND_MESSAGEMODE_EXTENDED: string;
 	COMMAND_NEWLINEMODE_DESCRIPTION: string;
 	COMMAND_NEWLINEMODE_EXTENDED: string;
 	COMMAND_CUDDLE_DESCRIPTION: string;
@@ -1139,6 +1141,7 @@ export interface LanguageKeys {
 	MONITOR_CAPSFILTER_DM: (message: string) => string;
 	MONITOR_WORDFILTER: (user: string) => string;
 	MONITOR_CAPSFILTER: (user: string) => string;
+	MONITOR_MESSAGEFILTER: (user: string) => string;
 	MONITOR_NEWLINEFILTER: (user: string) => string;
 	MONITOR_NMS_MESSAGE: (user: User) => string;
 	MONITOR_NMS_MODLOG: (threshold: number) => string;
@@ -1275,6 +1278,7 @@ export interface LanguageKeys {
 	EVENTS_ERROR_WTF: string;
 	EVENTS_ERROR_STRING: (mention: string, message: string) => string;
 	CONST_USERS: string;
+	CONST_MONITOR_MESSAGEFILTER: string;
 	CONST_MONITOR_NEWLINEFILTER: string;
 	UNKNOWN_USER: string;
 }

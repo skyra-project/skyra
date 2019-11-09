@@ -67,6 +67,13 @@ export interface RawGuildSettings {
 	'selfmod.capitals.hardActionDuration': null;
 	'selfmod.capitals.thresholdMaximum': number;
 	'selfmod.capitals.thresholdDuration': number;
+	'selfmod.messages.enabled': boolean;
+	'selfmod.messages.maximum': number;
+	'selfmod.messages.softAction': number;
+	'selfmod.messages.hardAction': number;
+	'selfmod.messages.hardActionDuration': null;
+	'selfmod.messages.thresholdMaximum': number;
+	'selfmod.messages.thresholdDuration': number;
 	'selfmod.newlines.enabled': boolean;
 	'selfmod.newlines.maximum': number;
 	'selfmod.newlines.softAction': number;
@@ -175,6 +182,13 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.capitals.hardActionDuration"  INTEGER,
 		"selfmod.capitals.thresholdMaximum"    SMALLINT      DEFAULT 10                 NOT NULL,
 		"selfmod.capitals.thresholdDuration"   INTEGER       DEFAULT 60000              NOT NULL,
+		"selfmod.messages.enabled"             BOOLEAN       DEFAULT FALSE              NOT NULL,
+		"selfmod.messages.maximum"             SMALLINT      DEFAULT 50                 NOT NULL,
+		"selfmod.messages.softAction"          SMALLINT      DEFAULT 0                  NOT NULL,
+		"selfmod.messages.hardAction"          SMALLINT      DEFAULT 0                  NOT NULL,
+		"selfmod.messages.hardActionDuration"  INTEGER,
+		"selfmod.messages.thresholdMaximum"    SMALLINT      DEFAULT 10                 NOT NULL,
+		"selfmod.messages.thresholdDuration"   INTEGER       DEFAULT 60000              NOT NULL,
 		"selfmod.newlines.enabled"             BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"selfmod.newlines.maximum"             SMALLINT      DEFAULT 10                 NOT NULL,
 		"selfmod.newlines.softAction"          SMALLINT      DEFAULT 0                  NOT NULL,

@@ -44,6 +44,10 @@ declare module 'discord.js' {
 		nuke(time?: number): Promise<Message>;
 	}
 
+	interface TextChannel {
+		sniped: Message | null;
+	}
+
 	interface GuildMember {
 		fetchRank(): Promise<number>;
 	}

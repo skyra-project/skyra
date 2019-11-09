@@ -15,19 +15,19 @@ export default class extends SkyraCommand {
 	}
 
 	public run(message: KlasaMessage) {
-		const channel = message.channel as TextChannel;
-		if (channel.sniped === null) throw message.language.tget('COMMAND_SNIPE_EMPTY');
+		const { sniped } = message.channel as TextChannel;
+		if (sniped === null) throw message.language.tget('COMMAND_SNIPE_EMPTY');
 
 		const embed = new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_SNIPE_TITLE'))
-			.setAuthor(channel.sniped.author.username, channel.sniped.author.displayAvatarURL({ size: 64 }))
-			.setTimestamp(channel.sniped.createdTimestamp);
+			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 64 }))
+			.setTimestamp(sniped.createdTimestamp);
 
-		const color = getColor(channel.sniped);
+		const color = getColor(sniped);
 		if (color !== null) embed.setColor(color);
-		const content = getContent(channel.sniped);
+		const content = getContent(sniped);
 		if (content !== null) embed.setDescription(content);
-		const image = getImage(channel.sniped);
+		const image = getImage(sniped);
 		if (image !== null) embed.setImage(image);
 
 		return message.sendEmbed(embed);

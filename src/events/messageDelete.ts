@@ -30,18 +30,7 @@ export default class extends Event {
 	}
 
 	private handleSnipeMessage(message: KlasaMessage) {
-		const channel = message.channel as TextChannel;
-		if (channel instanceof TextChannel) {
-			if (channel.snipedTimeout) this.client.clearTimeout(channel.snipedTimeout);
-
-			channel.sniped = message;
-			channel.snipedTimestamp = Date.now();
-			channel.snipedTimeout = this.client.setTimeout(() => {
-				channel.sniped = null;
-				channel.snipedTimestamp = null;
-				channel.snipedTimeout = null;
-			}, 15000);
-		}
+		if (message.channel instanceof TextChannel) message.channel.sniped = message;
 	}
 
 }

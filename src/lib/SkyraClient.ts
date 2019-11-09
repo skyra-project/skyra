@@ -23,7 +23,6 @@ import { Leaderboard } from './util/Leaderboard';
 import { enumerable } from './util/util';
 
 // Import all extensions and schemas
-import './extensions/SkyraTextChannel';
 import './extensions/SkyraGuild';
 import './schemas/Clients';
 import './schemas/Guilds';

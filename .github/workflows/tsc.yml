@@ -16,6 +16,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12
+    - name: Cache node modules
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          ${{ matrix.os }}-yarn-${{ env.cache-name }}-
+          ${{ matrix.os }}-yarn-
+          ${{ matrix.os }}-
     - name: yarn
       run: yarn --ignore-scripts
     - name: configuration

@@ -35,6 +35,7 @@ export default Client.defaultGuildSchema
 		.add('ignoreChannels', 'TextChannel', { array: true })
 		.add('moderation-dm', 'Boolean', { 'default': false })
 		.add('moderation-reason-display', 'Boolean', { 'default': true })
+		.add('moderation-message-display', 'Boolean', { 'default': true })
 		.add('moderation-auto-delete', 'Boolean', { 'default': false })
 		.add('moderator-name-display', 'Boolean', { 'default': true }))
 	.add('stickyRoles', 'any', { array: true })

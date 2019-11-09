@@ -69,26 +69,29 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (message.guild!.settings.get(GuildSettings.Messages.ModerationAutoDelete)) {
 			if (message.deletable) floatPromise(this, message.nuke());
-			return null;
 		}
 
-		const output: string[] = [];
-		if (processed.length) {
-			const logReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? processed[0].log.reason : null;
-			const sorted = processed.sort((a, b) => a.log.case! - b.log.case!);
-			const cases = sorted.map(({ log }) => log.case as number);
-			const users = sorted.map(({ target }) => `\`${target.tag}\``);
-			const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
-			output.push(message.language.tget('COMMAND_MODERATION_OUTPUT', cases, range, users, logReason));
+		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
+			const output: string[] = [];
+			if (processed.length) {
+				const logReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? processed[0].log.reason : null;
+				const sorted = processed.sort((a, b) => a.log.case! - b.log.case!);
+				const cases = sorted.map(({ log }) => log.case as number);
+				const users = sorted.map(({ target }) => `\`${target.tag}\``);
+				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
+				output.push(message.language.tget('COMMAND_MODERATION_OUTPUT', cases, range, users, logReason));
+			}
+
+			if (errored.length) {
+				const users = errored.map(({ error, target }) => `- ${target.tag} → ${error}`);
+				output.push(message.language.tget('COMMAND_MODERATION_FAILED', users));
+			}
+
+			// Else send the message as usual.
+			return message.sendMessage(output.join('\n'));
 		}
 
-		if (errored.length) {
-			const users = errored.map(({ error, target }) => `- ${target.tag} → ${error}`);
-			output.push(message.language.tget('COMMAND_MODERATION_FAILED', users));
-		}
-
-		// Else send the message as usual.
-		return message.sendMessage(output.join('\n'));
+		return null;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

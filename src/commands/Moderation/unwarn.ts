@@ -31,11 +31,14 @@ export default class extends ModerationCommand {
 		// If the server was configured to automatically delete messages, delete the command and return null.
 		if (message.guild!.settings.get(GuildSettings.Messages.ModerationAutoDelete)) {
 			if (message.deletable) floatPromise(this, message.nuke());
-			return null;
 		}
 
-		const originalReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? unwarnLog.reason : null;
-		return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], originalReason]);
+		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
+			const originalReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? unwarnLog.reason : null;
+			return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], originalReason]);
+		}
+
+		return null;
 	}
 
 	public async handle(message: KlasaMessage, target: User, reason: string | null, _duration: number | null, modlog: ModerationManagerEntry) {

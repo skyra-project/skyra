@@ -20,11 +20,10 @@ export default class extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_SNIPE_TITLE'))
+			.setColor(getColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 64 }))
 			.setTimestamp(sniped.createdTimestamp);
 
-		const color = getColor(sniped);
-		if (color !== null) embed.setColor(color);
 		const content = getContent(sniped);
 		if (content !== null) embed.setDescription(content);
 		const image = getImage(sniped);

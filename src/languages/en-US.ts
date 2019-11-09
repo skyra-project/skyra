@@ -1048,7 +1048,7 @@ export default class extends Language {
 			]
 		}),
 		COMMAND_MESSAGEMODE_DESCRIPTION: 'Manage the behaviour for the message filter system.',
-		COMMAND_NEWLINEMODE_EXTENDED: builder.display('messageMode', {
+		COMMAND_MESSAGEMODE_EXTENDED: builder.display('messageMode', {
 			extendedHelp: `The messageMode command manages the behaviour of the message filter system.`,
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],

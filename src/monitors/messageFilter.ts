@@ -15,6 +15,7 @@ export default class extends ModerationMonitor {
 		adderMaximum: GuildSettings.Selfmod.Messages.ThresholdMaximum,
 		adderDuration: GuildSettings.Selfmod.Messages.ThresholdDuration
 	};
+
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
 	private readonly kMaximumEntries = 50;
 

@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { cleanMentions } from '../../lib/util/util';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
 
@@ -28,7 +29,7 @@ export default class extends SkyraCommand {
 			guild_id: message.guild!.id,
 			minimum: 1,
 			minimum_winners: 1,
-			title
+			title: cleanMentions(message.guild!, title)
 		});
 	}
 

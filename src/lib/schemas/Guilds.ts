@@ -72,6 +72,15 @@ export default Client.defaultGuildSchema
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
 			.add('thresholdMaximum', 'Integer', { 'default': 10, 'min': 0, 'max': 60, 'configurable': false })
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
+		.add('messages', capitals => capitals
+			.add('enabled', 'Boolean', { 'default': false })
+			.add('maximum', 'Integer', { 'default': 5, 'min': 2, 'max': 100 })
+			.add('queue-size', 'Integer', { 'default': 50, 'min': 10, 'max': 100 })
+			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
+			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
+			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
+			.add('thresholdMaximum', 'Integer', { 'default': 10, 'min': 0, 'max': 60, 'configurable': false })
+			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
 		.add('newlines', newline => newline
 			.add('enabled', 'Boolean', { 'default': false })
 			.add('maximum', 'Integer', { 'default': 20, 'min': 10, 'max': 2000 })

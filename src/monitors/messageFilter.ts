@@ -19,15 +19,21 @@ export default class extends ModerationMonitor {
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
 
 	protected preProcess(message: KlasaMessage) {
+		// Retrieve the threshold
 		const threshold = message.guild!.settings.get(GuildSettings.Selfmod.Messages.Maximum);
 		if (threshold === 0) return null;
 
+		// Retrieve the content
 		const content = getContent(message);
 		if (content === null) return null;
 
-		const contents = this.getEntries(message);
-		const count = this.updateEntry(message, contents, content.toLowerCase());
+		// Retrieve the contents, then update them to add the new content to the FILO queue.
+		const contents = this.getContents(message);
+		const count = this.updateContents(message, contents, content.toLowerCase());
 
+		// If count is bigger than threshold
+		// - return `count` (runs the rest of the monitor),
+		// - else return `null` (stops)
 		return count > threshold ? count : null;
 	}
 
@@ -48,7 +54,7 @@ export default class extends ModerationMonitor {
 			.setTimestamp();
 	}
 
-	private getEntries(message: KlasaMessage) {
+	private getContents(message: KlasaMessage) {
 		const previousValue = this.kChannels.get(message.channel as TextChannel);
 		if (typeof previousValue === 'undefined') {
 			const nextValue: string[] = [];
@@ -59,7 +65,7 @@ export default class extends ModerationMonitor {
 		return previousValue;
 	}
 
-	private updateEntry(message: KlasaMessage, contents: string[], content: string) {
+	private updateContents(message: KlasaMessage, contents: string[], content: string) {
 		const queueSize = message.guild!.settings.get(GuildSettings.Selfmod.Messages.QueueSize);
 
 		// Queue FILO behaviour, first-in, last-out.

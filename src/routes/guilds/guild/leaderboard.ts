@@ -20,14 +20,15 @@ export default class extends Route {
 
 			const id = request.query.id as string;
 			const lbData = lb.get(id);
-			if (!lbData) return response.error(400);
+			if (!lbData) return response.error(404);
 
-			lbData.name = lbData.name ? lbData.name : (await this.client.users.fetch(id)).username;
+			if (lbData.name === null) lbData.name = (await this.client.users.fetch(id)).username;
 			return response.status(200).json({ id, ...lbData });
 		} else if ('position' in request.query) {
 
-			const id = lb.findKey(e => e.position === Number(request.query.position));
-			if (!id) return response.error(400);
+			const position = Number(request.query.position);
+			const id = lb.findKey(e => e.position === position);
+			if (typeof id === 'undefined') return response.error(404);
 
 			const lbData = lb.get(id) as LeaderboardUser;
 			lbData.name = lbData.name ? lbData.name : (await this.client.users.fetch(request.query.id as string)).username;

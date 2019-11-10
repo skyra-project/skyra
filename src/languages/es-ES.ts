@@ -373,6 +373,8 @@ export default class extends Language {
 		SETTINGS_SELFMOD_INVITELINKS: 'Whether or not I should delete invite links or not.',
 		SETTINGS_SELFMOD_RAID: 'Whether or not I should kick users when they try to raid the server.',
 		SETTINGS_SELFMOD_RAIDTHRESHOLD: 'The minimum amount of users joined on the last 20 seconds required before starting to kick them and anybody else who joins until a minute cooldown or forced cooldown (using the `raid` command to manage this).',
+		SETTINGS_SELFMOD_MESSAGES_MAXIMUM: 'The amount of duplicated messages required in the queue before taking action The queue size is configurable in `selfmod.messages.queue-size`.',
+		SETTINGS_SELFMOD_MESSAGES_QUEUE_SIZE: 'The amount of messages Skyra will keep track of for the message duplication detection.',
 		SETTINGS_NO_MENTION_SPAM_ENABLED: 'Whether or not I should have the ban hammer ready for mention spammers.',
 		SETTINGS_NO_MENTION_SPAM_MENTIONSALLOWED: 'The minimum amount of "points" a user must accumulate before landing the hammer. A user mention will count as 1 point, a role mention as 2 points, and an everyone/here mention as 5 points.',
 		SETTINGS_NO_MENTION_SPAM_ALERTS: 'Whether or not users should be alerted when they are about to get the ban hammer.',

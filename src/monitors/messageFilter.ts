@@ -17,7 +17,6 @@ export default class extends ModerationMonitor {
 	};
 
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
-	private readonly kMaximumEntries = 100;
 
 	protected preProcess(message: KlasaMessage) {
 		const threshold = message.guild!.settings.get(GuildSettings.Selfmod.Messages.Maximum);
@@ -29,7 +28,7 @@ export default class extends ModerationMonitor {
 		const lowerCasedContent = content.toLowerCase();
 		const contents = this.getEntries(message);
 		const count = this.getCount(contents, lowerCasedContent);
-		this.addEntry(contents, lowerCasedContent);
+		this.addEntry(message, contents, lowerCasedContent);
 
 		return count > threshold ? count : null;
 	}
@@ -72,9 +71,11 @@ export default class extends ModerationMonitor {
 		return counter;
 	}
 
-	private addEntry(contents: string[], content: string) {
+	private addEntry(message: KlasaMessage, contents: string[], content: string) {
+		const queueSize = message.guild!.settings.get(GuildSettings.Selfmod.Messages.QueueSize);
+
 		// Queue FILO behaviour, first-in, last-out.
-		if (contents.length === this.kMaximumEntries) contents.pop();
+		if (contents.length >= queueSize) contents.length = queueSize - 1;
 		contents.unshift(content);
 	}
 

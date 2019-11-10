@@ -69,6 +69,7 @@ export interface RawGuildSettings {
 	'selfmod.capitals.thresholdDuration': number;
 	'selfmod.messages.enabled': boolean;
 	'selfmod.messages.maximum': number;
+	'selfmod.messages.queue-size': number;
 	'selfmod.messages.softAction': number;
 	'selfmod.messages.hardAction': number;
 	'selfmod.messages.hardActionDuration': null;
@@ -183,7 +184,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.capitals.thresholdMaximum"    SMALLINT      DEFAULT 10                 NOT NULL,
 		"selfmod.capitals.thresholdDuration"   INTEGER       DEFAULT 60000              NOT NULL,
 		"selfmod.messages.enabled"             BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.messages.maximum"             SMALLINT      DEFAULT 50                 NOT NULL,
+		"selfmod.messages.maximum"             SMALLINT      DEFAULT 5                  NOT NULL,
+		"selfmod.messages.queue-size"          SMALLINT      DEFAULT 50                 NOT NULL,
 		"selfmod.messages.softAction"          SMALLINT      DEFAULT 0                  NOT NULL,
 		"selfmod.messages.hardAction"          SMALLINT      DEFAULT 0                  NOT NULL,
 		"selfmod.messages.hardActionDuration"  INTEGER,
@@ -235,6 +237,11 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK("selfmod.capitals.hardActionDuration" >= 1000),
 		CHECK("selfmod.capitals.thresholdMaximum" >= 0 AND "selfmod.capitals.thresholdMaximum" <= 120000),
 		CHECK("selfmod.capitals.thresholdDuration" >= 1000),
+		CHECK("selfmod.messages.maximum" >= 2 AND "selfmod.messages.maximum" <= 100),
+		CHECK("selfmod.messages.queue-size" >= 10 AND "selfmod.messages.queue-size" <= 100),
+		CHECK("selfmod.messages.hardActionDuration" >= 1000),
+		CHECK("selfmod.messages.thresholdMaximum" >= 0 AND "selfmod.messages.thresholdMaximum" <= 120000),
+		CHECK("selfmod.messages.thresholdDuration" >= 1000),
 		CHECK("selfmod.newlines.maximum" >= 10 AND "selfmod.newlines.maximum" <= 2000),
 		CHECK("selfmod.newlines.hardActionDuration" >= 1000),
 		CHECK("selfmod.newlines.thresholdMaximum" >= 0 AND "selfmod.newlines.thresholdMaximum" <= 60),

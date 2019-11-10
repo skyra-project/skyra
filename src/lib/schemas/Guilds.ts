@@ -75,6 +75,7 @@ export default Client.defaultGuildSchema
 		.add('messages', capitals => capitals
 			.add('enabled', 'Boolean', { 'default': false })
 			.add('maximum', 'Integer', { 'default': 5, 'min': 2, 'max': 100 })
+			.add('queue-size', 'Integer', { 'default': 50, 'min': 10, 'max': 100 })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })

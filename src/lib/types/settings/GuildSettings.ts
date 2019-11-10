@@ -95,6 +95,7 @@ export namespace GuildSettings {
 		export namespace Messages {
 			export const Enabled = T<boolean>('selfmod.messages.enabled');
 			export const Maximum = T<number>('selfmod.messages.maximum');
+			export const QueueSize = T<number>('selfmod.messages.queue-size');
 			export const SoftAction = T<number>('selfmod.messages.softAction');
 			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.messages.hardAction');
 			export const HardActionDuration = T<number>('selfmod.messages.hardActionDuration');

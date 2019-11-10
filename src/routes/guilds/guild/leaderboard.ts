@@ -16,7 +16,7 @@ export default class extends Route {
 		if (!this.client.guilds.has(guildID)) return response.error(400);
 		const lb = await this.client.leaderboard.fetch(guildID);
 
-		if ((Object.keys(request.query)).includes('id')) {
+		if ('id' in request.query) {
 
 			const id = request.query.id as string;
 			const lbData = lb.get(id);
@@ -24,7 +24,7 @@ export default class extends Route {
 
 			lbData.name = lbData.name ? lbData.name : (await this.client.users.fetch(id)).username;
 			return response.status(200).json({ id, ...lbData });
-		} else if ((Object.keys(request.query)).includes('position')) {
+		} else if ('position' in request.query) {
 
 			const id = lb.findKey(e => e.position === Number(request.query.position));
 			if (!id) return response.error(400);
@@ -35,9 +35,9 @@ export default class extends Route {
 			return response.status(200).json({ id, ...lbData });
 		}
 
-		const limit = (Object.keys(request.query)).includes('limit') ? Number(request.query.limit) : 10;
-		const before = (Object.keys(request.query)).includes('before') ? Number(request.query.before) - 1 : undefined;
-		const after = ((Object.keys(request.query)).includes('after') ? Number(request.query.after) + 1 : 1);
+		const limit = 'limit' in request.query ? Number(request.query.limit) : 10;
+		const before = 'before' in request.query ? Number(request.query.before) - 1 : undefined;
+		const after = 'after'  in request.query ? Number(request.query.after) + 1 : 1;
 
 		if (isNaN(limit) || limit! > 1000) return response.error(400);
 		if ((before && (before! < 0)) || (before && isNaN(before))) return response.error(400);
@@ -49,7 +49,7 @@ export default class extends Route {
 
 	}
 
-	public async getLeaderboardData(guild: string, { limit, before, after: lowerBound }: FunctionOptions) {
+	private async getLeaderboardData(guild: string, { limit, before, after: lowerBound }: FunctionOptions) {
 
 		const leaderboardData = await this.client.leaderboard.fetch(guild);
 		const upperBound = before ? before : limit + lowerBound - 1;

@@ -73,7 +73,7 @@ export class JsonCommonQuery implements CommonQuery {
 		const values = await this.provider.getAll(Databases.Users) as RawUserSettings[];
 		return values
 			.filter(value => value.point_count >= 25)
-			.sort((a, b) => a.point_count < b.point_count ? -1 : 1)
+			.sort((a, b) => a.point_count < b.point_count ? 1 : -1)
 			.slice(0, 25000)
 			.map(value => ({ user_id: value.id, point_count: value.point_count }) as LeaderboardEntry);
 	}
@@ -86,7 +86,7 @@ export class JsonCommonQuery implements CommonQuery {
 		const values = await this.provider.getAll(Databases.Members, filteredKeys) as RawMemberSettings[];
 		return values
 			.filter(value => value.point_count >= 25)
-			.sort((a, b) => a.point_count < b.point_count ? -1 : 1)
+			.sort((a, b) => a.point_count < b.point_count ? 1 : -1)
 			.slice(0, 5000)
 			.map(value => ({ user_id: value.user_id, point_count: value.point_count }) as LeaderboardEntry);
 	}

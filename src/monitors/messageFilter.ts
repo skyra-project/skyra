@@ -25,10 +25,8 @@ export default class extends ModerationMonitor {
 		const content = getContent(message);
 		if (content === null) return null;
 
-		const lowerCasedContent = content.toLowerCase();
 		const contents = this.getEntries(message);
-		const count = this.getCount(contents, lowerCasedContent);
-		this.addEntry(message, contents, lowerCasedContent);
+		const count = this.updateEntry(message, contents, content.toLowerCase());
 
 		return count > threshold ? count : null;
 	}
@@ -61,22 +59,14 @@ export default class extends ModerationMonitor {
 		return previousValue;
 	}
 
-	private getCount(contents: readonly string[], value: string) {
-		let counter = 1;
-
-		for (const content of contents) {
-			if (content === value) ++counter;
-		}
-
-		return counter;
-	}
-
-	private addEntry(message: KlasaMessage, contents: string[], content: string) {
+	private updateEntry(message: KlasaMessage, contents: string[], content: string) {
 		const queueSize = message.guild!.settings.get(GuildSettings.Selfmod.Messages.QueueSize);
 
 		// Queue FILO behaviour, first-in, last-out.
 		if (contents.length >= queueSize) contents.length = queueSize - 1;
 		contents.unshift(content);
+
+		return contents.reduce((accumulator, ct) => ct === content ? accumulator + 1 : accumulator, 1);
 	}
 
 }

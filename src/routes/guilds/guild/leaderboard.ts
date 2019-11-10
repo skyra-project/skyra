@@ -3,6 +3,7 @@ import ApiRequest from '../../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../../lib/structures/api/ApiResponse';
 import { Snowflake } from 'discord.js';
 import { LeaderboardUser } from '../../../lib/util/Leaderboard';
+import { isNumber } from '@klasa/utils';
 
 export default class extends Route {
 
@@ -14,12 +15,12 @@ export default class extends Route {
 
 		const guildID = request.params.guild;
 		if (!this.client.guilds.has(guildID)) return response.error(400);
-		const lb = await this.client.leaderboard.fetch(guildID);
+		const leaderboard = await this.client.leaderboard.fetch(guildID);
 
 		if ('id' in request.query) {
 
 			const id = request.query.id as string;
-			const lbData = lb.get(id);
+			const lbData = leaderboard.get(id);
 			if (!lbData) return response.error(404);
 
 			if (lbData.name === null) lbData.name = (await this.client.users.fetch(id)).username;
@@ -27,22 +28,22 @@ export default class extends Route {
 		} else if ('position' in request.query) {
 
 			const position = Number(request.query.position);
-			const id = lb.findKey(e => e.position === position);
+			const id = leaderboard.findKey(e => e.position === position);
 			if (typeof id === 'undefined') return response.error(404);
 
-			const lbData = lb.get(id) as LeaderboardUser;
-			lbData.name = lbData.name ? lbData.name : (await this.client.users.fetch(request.query.id as string)).username;
+			const lbData = leaderboard.get(id) as LeaderboardUser;
+			if (lbData.name === null) lbData.name = (await this.client.users.fetch(id)).username;
 
 			return response.status(200).json({ id, ...lbData });
 		}
 
 		const limit = 'limit' in request.query ? Number(request.query.limit) : 10;
 		const before = 'before' in request.query ? Number(request.query.before) - 1 : undefined;
-		const after = 'after'  in request.query ? Number(request.query.after) + 1 : 1;
+		const after = 'after' in request.query ? Number(request.query.after) + 1 : 1;
 
-		if (isNaN(limit) || limit! > 1000) return response.error(400);
-		if ((before && (before! < 0)) || (before && isNaN(before))) return response.error(400);
-		if (isNaN(after)) return response.error(400);
+		if (!isNumber(limit) || limit! > 1000) return response.error(400);
+		if (!isNumber(before) || (before && (before! < 0))) return response.error(400);
+		if (!isNumber(after)) return response.error(400);
 
 		const data = await this.getLeaderboardData(guildID, { limit, before, after });
 		return response.status(200).json(data);
@@ -54,16 +55,16 @@ export default class extends Route {
 
 		const leaderboardData = await this.client.leaderboard.fetch(guild);
 		const upperBound = before ? before : limit + lowerBound - 1;
+		const data: KdhLeaderboardUser[] = [];
+		const slicedLeaderboard = Array.from(leaderboardData.entries()).slice(lowerBound - 1, upperBound);
 
-		const data: KdhLeaderboardUser[] = await Promise.all(leaderboardData.map(async (d, userID) => {
-			let { name, points, position } = d;
+		for (const element of slicedLeaderboard) {
+			let [id, { name, points, position }] = element;
+			if (name === null) name = (await this.client.users.fetch(id)).username;
+			data.push({ id, name, points, position });
+		}
 
-			// If name isn't null, use it, else fetch it
-			name = name ? name as string : (await this.client.users.fetch(userID)).username as string;
-			return { id: userID, name, points, position };
-		}));
-
-		return data.slice(lowerBound - 1, upperBound);
+		return data;
 	}
 
 }
@@ -71,6 +72,7 @@ export default class extends Route {
 interface KdhLeaderboardUser {
 	id: Snowflake;
 	name: string;
+	position: number;
 	points: number;
 }
 

@@ -684,10 +684,10 @@ fs-minipass@^1.2.5:
   dependencies:
     minipass "^2.6.0"
 
-fs-nextra@^0.4.5:
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/fs-nextra/-/fs-nextra-0.4.5.tgz#0f44a00dd6c0547adaf59ce875e59941d0c70664"
-  integrity sha512-oY2o6j0izYzJWp2sow21SekkR3qeMZqHV5ZfNFvfKimFU7piw1/AWwiwbcWjuSfwrfCmHyHymWZOyNbKOzew5g==
+fs-nextra@^0.4.5, fs-nextra@^0.4.6:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/fs-nextra/-/fs-nextra-0.4.6.tgz#db83e1c8d451caad804ff1478e399875f7134c94"
+  integrity sha512-Z258Sdpe+FsyJDjU2DT/q+PedjnSOvSeDROCD9CwDerlNt+GMHOLmfGnDLYMPnHXPWPRJNfozfnMjJn8kHmYng==
 
 fs.realpath@^1.0.0:
   version "1.0.0"

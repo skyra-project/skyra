@@ -1,3 +1,14 @@
+# Kyra
 /assets/ @kyranet
 /database/ @kyranet
 /src/ @kyranet
+
+# Favna
+/src/commands/Websearch/eshop.ts @favna
+/src/commands/Websearch/igdb.ts @favna
+/src/commands/Websearch/itunes.ts @favna
+/src/commands/Websearch/movies.ts @favna
+/src/commands/Websearch/shows.ts @favna
+/src/commands/Anime/anime.ts @favna
+/src/commands/Anime/manga.ts @favna
+/src/commands/Misc/reddituser.ts @favna

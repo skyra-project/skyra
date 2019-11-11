@@ -11,6 +11,7 @@ export default class extends ModerationCommand {
 			aliases: ['b'],
 			description: language => language.tget('COMMAND_BAN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_BAN_EXTENDED'),
+			optionalDuration: true,
 			requiredMember: false,
 			requiredGuildPermissions: ['BAN_MEMBERS']
 		});

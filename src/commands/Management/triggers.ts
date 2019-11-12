@@ -39,7 +39,8 @@ export default class extends SkyraCommand {
 				if (!emoji) throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
 
 				try {
-					return await message.react(emoji);
+					await message.react(emoji);
+					return emoji;
 				} catch {
 					throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
 				}

@@ -121,7 +121,7 @@ export class SettingsMenu {
 		this.errorMessage = null;
 		if (this.pointerIsFolder) {
 			const schema = (this.schema as Schema).get(message.content);
-			if (schema && this.isConfigurable(schema)) this.schema = schema;
+			if (schema && SettingsMenu.isConfigurable(schema)) this.schema = schema;
 			else this.errorMessage = this.message.language.tget('COMMAND_CONF_MENU_INVALID_KEY');
 		} else {
 			const [command, ...params] = message.content.split(' ');
@@ -235,7 +235,7 @@ export class SettingsMenu {
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();
 	}
 
-	private isConfigurable(schema: Schema | SchemaEntry) {
+	private static isConfigurable(schema: Schema | SchemaEntry) {
 		return schema.type === 'Folder'
 			? (schema as Schema).configurableKeys.length !== 0
 			: (schema as SchemaEntry).configurable;

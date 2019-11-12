@@ -8,8 +8,6 @@ const kAttempts = 5;
  * Run the prompt
  * @param message The message that runs this prompt
  * @param entries The entries to resolve
- * @param options The options
- * @param resolved Whether the entries are resolved or not
  */
 export async function prompt(message: Message, entries: PromptListResolvable) {
 	const n = await ask(message, [...resolve(entries, 10)]);
@@ -21,7 +19,6 @@ export async function prompt(message: Message, entries: PromptListResolvable) {
  * Retrieve the number via prompts
  * @param message The message that runs this prompt
  * @param list The list to show
- * @param options The options
  * @private
  */
 async function ask(message: Message, list: readonly string[]) {

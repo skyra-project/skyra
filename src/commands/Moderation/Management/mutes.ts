@@ -16,14 +16,10 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private get moderations() {
-		return this.store.get('moderations') as unknown as Moderations;
-	}
-
 	public run(message: KlasaMessage, [target]: [KlasaUser?]) {
-		const { moderations } = this;
-		if (moderations) return moderations.run(message, ['mutes', target]);
-		throw new Error('Moderations command not loaded yet.');
+		const moderations = this.store.get('moderations') as unknown as Moderations | undefined;
+		if (typeof moderations === 'undefined') throw new Error('Moderations command not loaded yet.');
+		return moderations.run(message, ['mutes', target]);
 	}
 
 }

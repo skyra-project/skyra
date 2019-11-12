@@ -2,6 +2,7 @@ import { GuildChannel, MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getContent, getImage, cutText } from '../../lib/util/util';
+
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;
 
@@ -43,27 +44,29 @@ export default class extends SkyraCommand {
 	}
 
 	private async getFromUrl(message: KlasaMessage, url: string) {
+		let parsed: URL;
 		try {
-			const parsed = new URL(url);
-			// Only discordapp.com urls are allowed.
-			if (/^(beta\.|canary\.)?discordapp\.com$/g.test(parsed.hostname)) return null;
-
-			const extract = MESSAGE_LINK_REGEXP.exec(parsed.pathname);
-			if (!extract) return null;
-
-			const [, _guild, _channel, _message] = extract;
-			const guild = this.client.guilds.get(_guild);
-			if (guild !== message.guild!) return null;
-
-			const channel = guild.channels.get(_channel);
-			if (!channel) return null;
-			if (!('messages' in channel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
-			if (!(channel as TextChannel).readable) throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
-
-			return await (channel as TextChannel).messages.fetch(_message);
+			parsed = new URL(url);
 		} catch {
 			return null;
 		}
+
+		// Only discordapp.com urls are allowed.
+		if (/^(beta\.|canary\.)?discordapp\.com$/g.test(parsed.hostname)) return null;
+
+		const extract = MESSAGE_LINK_REGEXP.exec(parsed.pathname);
+		if (!extract) return null;
+
+		const [, _guild, _channel, _message] = extract;
+		const guild = this.client.guilds.get(_guild);
+		if (guild !== message.guild!) return null;
+
+		const channel = guild.channels.get(_channel);
+		if (!channel) return null;
+		if (!(channel instanceof TextChannel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
+		if (!channel.readable) throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
+
+		return channel.messages.fetch(_message);
 	}
 
 }

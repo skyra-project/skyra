@@ -13,14 +13,14 @@ const BLACKLISTED_CODES = [
 
 export default class extends Event {
 
-	public async run(message: KlasaMessage, command: Command, _: string[], error: Error) {
+	public async run(message: KlasaMessage, command: Command, _: string[], error: string | Error) {
 		if (typeof error === 'string') {
 			try {
 				await message.alert(message.language.tget('EVENTS_ERROR_STRING', message.author.toString(), error));
 			} catch (err) {
 				this.client.emit(Events.ApiError, err);
 			}
-		} else if (error instanceof Error) {
+		} else {
 			await this._sendErrorChannel(message, command, error);
 
 			// Extract useful information about the DiscordAPIError

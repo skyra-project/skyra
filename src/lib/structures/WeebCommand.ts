@@ -19,7 +19,7 @@ export abstract class WeebCommand extends SkyraCommand {
 
 	private readonly requiresUser = Boolean(this.usage.parsedUsage.length);
 
-	public constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
 		super(store, file, directory, util.mergeDefault({
 			bucket: 2,
 			cooldown: 30,

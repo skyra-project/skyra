@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 
 		try {
 			await user.send(content, options);
-			return message.alert(`Message successfully sent to ${user}`);
+			return await message.alert(`Message successfully sent to ${user}`);
 		} catch {
 			return message.alert(`I am sorry, I could not send the message to ${user}`);
 		}

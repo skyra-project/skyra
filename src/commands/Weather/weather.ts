@@ -42,18 +42,18 @@ export default class extends SkyraCommand {
 			throw message.language.tget('COMMAND_WEATHER_ERROR_ZERO_RESULTS');
 		}
 
-		const geocodelocation = response.results[0].formatted_address;
+		const geoCodeLocation = response.results[0].formatted_address;
 		const params = `${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}`;
-		let locality: string;
-		let governing: string;
-		let country: string;
-		let continent: string;
+		let locality = '';
+		let governing = '';
+		let country = '';
+		let continent = '';
 
 		for (const component of response.results[0].address_components) {
-			if (!locality! && component.types.includes('locality')) locality = component.long_name;
-			if (!governing! && component.types.includes('administrative_area_level_1')) governing = component.long_name;
-			if (!country! && component.types.includes('country')) country = component.long_name;
-			if (!continent! && component.types.includes('continent')) continent = component.long_name;
+			if (!locality.length && component.types.includes('locality')) locality = component.long_name;
+			if (!governing.length && component.types.includes('administrative_area_level_1')) governing = component.long_name;
+			if (!country.length && component.types.includes('country')) country = component.long_name;
+			if (!continent.length && component.types.includes('continent')) continent = component.long_name;
 		}
 
 		const localityOrCountry = locality! ? country! : '';
@@ -63,14 +63,14 @@ export default class extends SkyraCommand {
 
 		const { icon } = currently;
 		const condition = currently.summary;
-		const chanceofrain = Math.round((currently.precipProbability * 100) / 5) * 5;
+		const chanceOfRain = Math.round((currently.precipProbability * 100) / 5) * 5;
 		const temperature = Math.round(currently.temperature);
 		const humidity = Math.round(currently.humidity * 100);
 
-		return this.draw(message, { geocodelocation, state, condition, icon, chanceofrain, temperature, humidity });
+		return this.draw(message, { geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity });
 	}
 
-	public async draw(message: KlasaMessage, { geocodelocation, state, condition, icon, chanceofrain, temperature, humidity }: WeatherData) {
+	public async draw(message: KlasaMessage, { geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity }: WeatherData) {
 		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
 		const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
 			readFile(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
@@ -90,7 +90,7 @@ export default class extends SkyraCommand {
 			// City Name
 			.setTextFont('20px Roboto')
 			.setColor(fontColor)
-			.addText(geocodelocation, 35, 50)
+			.addText(geoCodeLocation, 35, 50)
 
 			// Prefecture Name
 			.setTextFont('16px Roboto')
@@ -110,7 +110,7 @@ export default class extends SkyraCommand {
 			// Titles
 			.setTextFont("16px 'Roboto Condensed'")
 			.addText(`${humidity}%`, 353, 100)
-			.addText(`${chanceofrain}%`, 353, 121)
+			.addText(`${chanceOfRain}%`, 353, 121)
 
 			// Icons
 			.addImage(conditionBuffer, 325, 31, 48, 48)
@@ -119,7 +119,7 @@ export default class extends SkyraCommand {
 
 			.toBufferAsync();
 
-		return message.channel.send({ files: [{ attachment, name: `${geocodelocation}.png` }] }) as Promise<KlasaMessage | KlasaMessage[]>;
+		return message.channel.sendFile(attachment, `${geoCodeLocation}.png`);
 	}
 
 	public timePicker(icon: string) {
@@ -171,11 +171,11 @@ export default class extends SkyraCommand {
 }
 
 interface WeatherData {
-	geocodelocation: string;
+	geoCodeLocation: string;
 	state: string;
 	condition: string;
 	icon: string;
-	chanceofrain: number;
+	chanceOfRain: number;
 	temperature: number;
 	humidity: number;
 }

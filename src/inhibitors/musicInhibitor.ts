@@ -1,4 +1,4 @@
-import { Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
+import { Command, Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
 import { MusicBitField } from '../lib/structures/MusicBitField';
 import { MusicCommand } from '../lib/structures/MusicCommand';
 
@@ -12,7 +12,7 @@ export default class extends Inhibitor {
 		});
 	}
 
-	public async run(message: KlasaMessage, command: MusicCommand) {
+	public async run(message: KlasaMessage, command: Command | MusicCommand) {
 		if (!(command instanceof MusicCommand) || !command.music.bitfield) return;
 
 		// MusicCommands only run in text channels

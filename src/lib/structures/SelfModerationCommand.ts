@@ -49,7 +49,7 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 
 export abstract class SelfModerationCommand extends Command {
 
-	public constructor(store: CommandStore, file: string[], directory: string, options: CommandOptions = {}) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: CommandOptions = {}) {
 		super(store, file, directory, util.mergeDefault({
 			cooldown: 5,
 			permissionLevel: PermissionLevels.Administrator,
@@ -73,7 +73,7 @@ export abstract class SelfModerationCommand extends Command {
 				const softAction = kSoftActions.get(arg.toLowerCase());
 				if (typeof softAction === 'undefined') throw message.language.tget('SELF_MODERATION_COMMAND_INVALID_SOFTACTION', this.name);
 				const previousSoftAction = message.guild!.settings.get(this.keySoftAction) as number;
-				return this.toggle(previousSoftAction, softAction);
+				return SelfModerationCommand.toggle(previousSoftAction, softAction);
 			}
 
 			if (type === AKeys.HardAction) {
@@ -84,17 +84,17 @@ export abstract class SelfModerationCommand extends Command {
 
 			if (type === AKeys.HardActionDuration) {
 				const key = message.guild!.settings.schema.get(this.keyHardActionDuration) as SchemaEntry;
-				return this.parseDuration(message, key, arg, 'Hard Action Duration');
+				return SelfModerationCommand.parseDuration(message, key, arg, 'Hard Action Duration');
 			}
 
 			if (type === AKeys.ThresholdMaximum) {
 				const key = message.guild!.settings.schema.get(this.keyThresholdMaximum) as SchemaEntry;
-				return this.parseMaximum(message, key, arg, 'Threshold Maximum');
+				return SelfModerationCommand.parseMaximum(message, key, arg, 'Threshold Maximum');
 			}
 
 			if (type === AKeys.ThresholdDuration) {
 				const key = message.guild!.settings.schema.get(this.keyThresholdDuration) as SchemaEntry;
-				return this.parseDuration(message, key, arg, 'Threshold Duration');
+				return SelfModerationCommand.parseDuration(message, key, arg, 'Threshold Duration');
 			}
 
 			throw new Error('Unreachable.');
@@ -113,11 +113,11 @@ export abstract class SelfModerationCommand extends Command {
 				break;
 			}
 			case AKeys.SoftAction: {
-				value = this.displaySoftAction(message, value as number).join('`, `');
+				value = SelfModerationCommand.displaySoftAction(message, value as number).join('`, `');
 				break;
 			}
 			case AKeys.HardAction: {
-				value = message.language.tget(this.displayHardAction(value as SelfModeratorHardActionFlags));
+				value = message.language.tget(SelfModerationCommand.displayHardAction(value as SelfModeratorHardActionFlags));
 				break;
 			}
 			case AKeys.Enable:
@@ -127,7 +127,7 @@ export abstract class SelfModerationCommand extends Command {
 			}
 		}
 
-		return message.sendLocale(this.getLanguageKey(action), [value]);
+		return message.sendLocale(SelfModerationCommand.getLanguageKey(action), [value]);
 	}
 
 	protected show(message: KlasaMessage) {
@@ -142,10 +142,10 @@ export abstract class SelfModerationCommand extends Command {
 		return message.sendCode('prolog', i18n(
 			'SELF_MODERATION_COMMAND_SHOW',
 			enabled ? yes : no,
-			this.has(softAction, ASKeys.Alert) ? yes : no,
-			this.has(softAction, ASKeys.Log) ? yes : no,
-			this.has(softAction, ASKeys.Delete) ? yes : no,
-			i18n(this.displayHardAction(hardAction)),
+			SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
+			SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
+			SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
+			i18n(SelfModerationCommand.displayHardAction(hardAction)),
 			hardActionDuration,
 			thresholdMaximum,
 			thresholdDuration
@@ -172,7 +172,28 @@ export abstract class SelfModerationCommand extends Command {
 		}
 	}
 
-	private getLanguageKey(action: AKeys) {
+	private manageAdder(message: KlasaMessage) {
+		const [maximum, duration] = message.guild!.settings.pluck(this.keyThresholdMaximum, this.keyThresholdDuration);
+		const adder = message.guild!.security.adders[this.$adder];
+		if (!maximum || !duration) {
+			if (adder !== null) message.guild!.security.adders[this.$adder] = null;
+		} else if (adder === null) {
+			message.guild!.security.adders[this.$adder] = new Adder(maximum, duration);
+		} else {
+			adder.maximum = maximum;
+			adder.duration = duration;
+		}
+	}
+
+	private static displaySoftAction(message: KlasaMessage, softAction: number) {
+		const actions: string[] = [];
+		if (SelfModerationCommand.has(softAction, ASKeys.Alert)) actions.push(message.language.tget('SELF_MODERATION_SOFT_ACTION_ALERT'));
+		if (SelfModerationCommand.has(softAction, ASKeys.Log)) actions.push(message.language.tget('SELF_MODERATION_SOFT_ACTION_LOG'));
+		if (SelfModerationCommand.has(softAction, ASKeys.Delete)) actions.push(message.language.tget('SELF_MODERATION_SOFT_ACTION_DELETE'));
+		return actions;
+	}
+
+	private static getLanguageKey(action: AKeys) {
 		switch (action) {
 			case AKeys.Enable:
 				return 'SELF_MODERATION_COMMAND_ENABLED';
@@ -193,15 +214,7 @@ export abstract class SelfModerationCommand extends Command {
 		}
 	}
 
-	private displaySoftAction(message: KlasaMessage, softAction: number) {
-		const actions: string[] = [];
-		if (this.has(softAction, ASKeys.Alert)) actions.push(message.language.tget('SELF_MODERATION_SOFT_ACTION_ALERT'));
-		if (this.has(softAction, ASKeys.Log)) actions.push(message.language.tget('SELF_MODERATION_SOFT_ACTION_LOG'));
-		if (this.has(softAction, ASKeys.Delete)) actions.push(message.language.tget('SELF_MODERATION_SOFT_ACTION_DELETE'));
-		return actions;
-	}
-
-	private displayHardAction(hardAction: SelfModeratorHardActionFlags | null) {
+	private static displayHardAction(hardAction: SelfModeratorHardActionFlags | null) {
 		switch (hardAction) {
 			case SelfModeratorHardActionFlags.Ban: return 'SELF_MODERATION_HARD_ACTION_BAN';
 			case SelfModeratorHardActionFlags.Kick: return 'SELF_MODERATION_HARD_ACTION_KICK';
@@ -212,28 +225,15 @@ export abstract class SelfModerationCommand extends Command {
 		}
 	}
 
-	private has(bitfields: number, bitfield: number) {
+	private static has(bitfields: number, bitfield: number) {
 		return (bitfields & bitfield) === bitfield;
 	}
 
-	private toggle(bitfields: number, bitfield: number) {
-		return this.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
+	private static toggle(bitfields: number, bitfield: number) {
+		return SelfModerationCommand.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
 	}
 
-	private manageAdder(message: KlasaMessage) {
-		const [maximum, duration] = message.guild!.settings.pluck(this.keyThresholdMaximum, this.keyThresholdDuration);
-		const adder = message.guild!.security.adders[this.$adder];
-		if (!maximum || !duration) {
-			if (adder !== null) message.guild!.security.adders[this.$adder] = null;
-		} else if (adder === null) {
-			message.guild!.security.adders[this.$adder] = new Adder(maximum, duration);
-		} else {
-			adder.maximum = maximum;
-			adder.duration = duration;
-		}
-	}
-
-	private parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
+	private static parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = Number(input);
 		if (parsed < 0) throw message.language.tget('RESOLVER_INVALID_INT', name);
 		if (key.min !== null && parsed < key.min) throw message.language.tget('SELF_MODERATION_MAXIMUM_TOO_SHORT', key.min, parsed);
@@ -241,7 +241,7 @@ export abstract class SelfModerationCommand extends Command {
 		return parsed;
 	}
 
-	private parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
+	private static parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = new Duration(input);
 		if (parsed.offset < 0) throw message.language.tget('RESOLVER_INVALID_DURATION', name);
 		if (key.min !== null && parsed.offset < key.min) throw message.language.tget('SELF_MODERATION_DURATION_TOO_SHORT', key.min, parsed.offset);

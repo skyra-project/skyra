@@ -24,13 +24,13 @@ export default class extends SkyraCommand {
 
 	public async unlock(message: KlasaMessage, channel: TextChannel) {
 		const timeout = message.guild!.security.lockdowns.get(channel.id);
-		if (typeof timeout === 'undefined') throw message.sendLocale('COMMAND_LOCKDOWN_UNLOCKED', [channel]);
+		if (typeof timeout === 'undefined') throw message.language.tget('COMMAND_LOCKDOWN_UNLOCKED', channel.toString());
 		return timeout ? timeout.stop() : this._unlock(message, channel);
 	}
 
 	public async lock(message: KlasaMessage, channel: TextChannel, time: Date) {
 		// If there was a lockdown, abort lock
-		if (message.guild!.security.lockdowns.has(channel.id)) throw message.sendLocale('COMMAND_LOCKDOWN_LOCKED', [channel]);
+		if (message.guild!.security.lockdowns.has(channel.id)) throw message.language.tget('COMMAND_LOCKDOWN_LOCKED', channel.toString());
 
 		const response = await message.sendLocale('COMMAND_LOCKDOWN_LOCKING', [channel]);
 		await channel.updateOverwrite(message.guild!.roles.get(message.guild!.id)!, { SEND_MESSAGES: false });

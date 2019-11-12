@@ -38,8 +38,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(message: KlasaMessage, target: User, prehandled: Unlock) {
 		if (!prehandled.bans.includes(target.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
-		const member = await super.checkModeratable(message, target, prehandled);
-		return member;
+		return super.checkModeratable(message, target, prehandled);
 	}
 
 }

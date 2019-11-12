@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 
 		try {
 			const response = await message.author.send(await this.buildHelp(message), { split: { 'char': '\n' } });
-			return message.channel.type === 'dm' ? response : message.sendLocale('COMMAND_HELP_DM');
+			return message.channel.type === 'dm' ? response : await message.sendLocale('COMMAND_HELP_DM');
 		} catch {
 			return message.channel.type === 'dm' ? null : message.sendLocale('COMMAND_HELP_NODM');
 		}

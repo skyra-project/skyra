@@ -2,7 +2,7 @@ import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Markov, WordBank } from '../../lib/util/External/markov';
 import { cutText, getColor, iteratorAt } from '../../lib/util/util';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { BrandingColors } from '../../lib/util/constants';
 import { DEV } from '../../../config';
 
@@ -24,18 +24,19 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_MARKOV_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MARKOV_EXTENDED'),
 			runIn: ['text'],
-			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
+			usage: '[user:user|channel:channel]'
 		});
 	}
 
-	public async run(message: KlasaMessage) {
+	public async run(message: KlasaMessage, [filter]: [User | TextChannel | undefined]) {
 		// Send loading message
 		await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
 		// Process the chain
-		return message.sendEmbed(this.kProcess(message, await this.retrieveMarkov(message)));
+		return message.sendEmbed(this.kProcess(message, await this.retrieveMarkov(message, filter)));
 	}
 
 	private processRelease(message: KlasaMessage, markov: Markov) {
@@ -55,11 +56,11 @@ export default class extends SkyraCommand {
 			.setFooter(message.language.tget('COMMAND_MARKOV_TIMER', time.toString()));
 	}
 
-	private async retrieveMarkov(message: KlasaMessage) {
+	private async retrieveMarkov(message: KlasaMessage, filter: TextChannel | User | undefined) {
 		const entry = this.kInternalCache.get(message.channel as TextChannel);
 		if (typeof entry !== 'undefined') return entry;
 
-		const messageBank = await this.fetchMessages(message);
+		const messageBank = await this.fetchMessages(message, filter);
 		const contents = messageBank.map(m => m.content).join(' ');
 		const markov = new Markov()
 			.parse(contents)
@@ -70,10 +71,15 @@ export default class extends SkyraCommand {
 		return markov;
 	}
 
-	private async fetchMessages(message: KlasaMessage) {
-		let messageBank = await message.channel.messages.fetch({ limit: 100 });
+	private async fetchMessages(message: KlasaMessage, filter: User | TextChannel | undefined) {
+		const channel = filter instanceof TextChannel ? filter : message.channel as TextChannel;
+		let messageBank = await channel.messages.fetch({ limit: 100 });
 		for (let i = 1; i < this.kMessageHundredsLimit; ++i) {
-			messageBank = messageBank.concat(await message.channel.messages.fetch({ limit: 100, before: messageBank.lastKey() }));
+			messageBank = messageBank.concat(await channel.messages.fetch({ limit: 100, before: messageBank.lastKey() }));
+		}
+
+		if (filter instanceof User) {
+			messageBank = messageBank.filter((message) => message.author.id ===filter.id);
 		}
 
 		return messageBank;

@@ -50,6 +50,7 @@ export default class extends Monitor {
 					}, 0)));
 					break;
 			}
+			// noinspection JSBitwiseOperatorUsage
 			if (attachmentAction & 0b1000) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 					.setColor(0xEFAE45)
@@ -64,7 +65,6 @@ export default class extends Monitor {
 	 * @param message The message
 	 * @param type The type
 	 * @param performAction The action to perform
-	 * @param createModerationLog Whether or not this should create a new moderation log entry
 	 */
 	public async actionAndSend(message: KlasaMessage, type: Moderation.TypeCodes, performAction: () => unknown): Promise<void> {
 		const lock = message.guild!.moderation.createLock();

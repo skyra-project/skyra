@@ -2,7 +2,6 @@ import { Image } from 'canvas';
 import { Client, Guild, ImageSize, Message, User } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import { isObject } from 'util';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
@@ -17,6 +16,7 @@ import { Util } from 'klasa-dashboard-hooks';
 import { CLIENT_SECRET } from '../../../config';
 import ApiRequest from '../structures/api/ApiRequest';
 import ApiResponse from '../structures/api/ApiResponse';
+import { isObject } from '@klasa/utils';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -305,6 +305,7 @@ export function createReferPromise<T>() {
 		reject = rej;
 	});
 
+	// noinspection JSUnusedAssignment
 	return { promise, resolve: resolve!, reject: reject! };
 }
 
@@ -345,7 +346,7 @@ export function roundNumber(num: number | string, scale = 0) {
 
 /**
  * Clean all mentions from a content
- * @param message The message for context
+ * @param guild The message for context
  * @param input The input to clean
  */
 export function cleanMentions(guild: Guild, input: string) {
@@ -355,8 +356,8 @@ export function cleanMentions(guild: Guild, input: string) {
 			switch (type) {
 				case '@':
 				case '@!': {
-					const usertag = guild.client.usertags.get(id);
-					return usertag ? `@${usertag.slice(0, usertag.lastIndexOf('#'))}` : match;
+					const tag = guild.client.usertags.get(id);
+					return tag ? `@${tag.slice(0, tag.lastIndexOf('#'))}` : match;
 				}
 				case '@&': {
 					const role = guild.roles.get(id);
@@ -428,8 +429,8 @@ export const authenticated = createFunctionInhibitor(
 	(request: ApiRequest) => {
 		if (!request.headers.authorization) return false;
 		request.auth = Util.decrypt(request.headers.authorization, CLIENT_SECRET);
-		if (!request.auth!.user_id || !request.auth!.token) return false;
-		return true;
+		return !(!request.auth!.user_id || !request.auth!.token);
+
 	},
 	(_request: ApiRequest, response: ApiResponse) => {
 		response.error(403);

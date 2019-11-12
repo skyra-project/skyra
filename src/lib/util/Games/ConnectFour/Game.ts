@@ -5,6 +5,7 @@ import { Events } from '../../../types/Enums';
 import { Player } from './Player';
 import { LongLivingReactionCollector } from '../../LongLivingReactionCollector';
 import { ConnectFourConstants, APIErrors } from '../../constants';
+import { floatPromise } from '../../util';
 
 export class Game {
 
@@ -37,7 +38,7 @@ export class Game {
 	public set content(value: string) {
 		this._content = value;
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		this.updateContent();
+		floatPromise(this.message, this.updateContent());
 	}
 
 	public get content() {

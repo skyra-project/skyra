@@ -143,8 +143,7 @@ export class JsonCommonQuery implements CommonQuery {
 		if (filteredValues.length === 0) return null;
 
 		const index = Math.floor(Math.random() * filteredValues.length);
-		const value = filteredValues[index];
-		return value;
+		return filteredValues[index];
 	}
 
 	public async insertCommandUseCounter(command: string) {

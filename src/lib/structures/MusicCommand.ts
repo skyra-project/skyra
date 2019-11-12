@@ -10,7 +10,7 @@ export abstract class MusicCommand extends SkyraCommand {
 	 */
 	public music: MusicBitField;
 
-	public constructor(store: CommandStore, file: string[], directory: string, options: MusicCommandOptions = {}) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: MusicCommandOptions = {}) {
 		// By nature, music commands only run in VoiceChannels, which are in Guilds.
 		util.mergeDefault({ runIn: ['text'], requireMusic: 0 }, options);
 

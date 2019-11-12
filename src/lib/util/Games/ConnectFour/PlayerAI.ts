@@ -93,8 +93,6 @@ export class PlayerAI extends Player {
 	}
 
 	private evaluate() {
-		let points = 0;
-
 		let verticalPoints = 0;
 		let horizontalPoints = 0;
 		let diagonalPoints1 = 0;
@@ -184,8 +182,7 @@ export class PlayerAI extends Player {
 
 		}
 
-		points = horizontalPoints + verticalPoints + diagonalPoints1 + diagonalPoints2;
-		return points;
+		return horizontalPoints + verticalPoints + diagonalPoints1 + diagonalPoints2;
 	}
 
 	private evaluatePosition(row: number, column: number, deltaY: number, deltaX: number) {

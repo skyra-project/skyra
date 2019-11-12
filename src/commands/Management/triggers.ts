@@ -31,22 +31,22 @@ export default class extends SkyraCommand {
 			if (action === 'show') return undefined;
 			if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
 			return arg.toLowerCase();
-		}).createCustomResolver('output', async (arg, _, msg, [action, type]) => {
+		}).createCustomResolver('output', async (arg, _, message, [action, type]) => {
 			if (action === 'show' || action === 'remove') return undefined;
-			if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
+			if (!arg) throw message.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
 			if (type === 'reaction') {
+				const emoji = resolveEmoji(arg);
+				if (!emoji) throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
+
 				try {
-					const emoji = resolveEmoji(arg);
-					if (!emoji) throw null;
-					await msg.react(emoji);
-					return emoji;
+					return await message.react(emoji);
 				} catch {
-					throw msg.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
+					throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
 				}
 			} else if (type === 'alias') {
 				const command = this.client.commands.get(arg);
 				if (command && command.permissionLevel < 10) return arg;
-				throw msg.language.tget('COMMAND_TRIGGERS_INVALIDALIAS');
+				throw message.language.tget('COMMAND_TRIGGERS_INVALIDALIAS');
 			} else {
 				return null;
 			}

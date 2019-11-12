@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 			duration: offset,
 			moderator_id: message.author.id
 		});
-		await this.updateModlog(message, modlog);
+		await this.updateModerationLog(message, modlog);
 
 		return message.sendLocale('COMMAND_TIME_SCHEDULED', [modlog.title, user, offset]);
 	}
@@ -60,15 +60,15 @@ export default class extends SkyraCommand {
 			duration: null,
 			moderator_id: message.author.id
 		});
-		await this.updateModlog(message, modcase);
+		await this.updateModerationLog(message, modcase);
 
 		return message.sendLocale('COMMAND_TIME_ABORTED', [modcase.title]);
 	}
 
-	private async updateModlog(message: KlasaMessage, modcase: ModerationManagerEntry) {
-		const modlog = message.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
-		if (!modlog) return null;
-		const channel = message.guild!.channels.get(modlog) as TextChannel;
+	private async updateModerationLog(message: KlasaMessage, moderationManagerEntry: ModerationManagerEntry) {
+		const moderationLog = message.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
+		if (!moderationLog) return null;
+		const channel = message.guild!.channels.get(moderationLog) as TextChannel;
 		if (!channel) {
 			const { errors } = await message.guild!.settings.reset(GuildSettings.Channels.ModerationLogs);
 			if (errors.length) throw String(errors[0]);
@@ -80,8 +80,8 @@ export default class extends SkyraCommand {
 		const msg = messages.find(mes => mes.author.id === this.client.user!.id
 			&& mes.embeds.length > 0
 			&& mes.embeds[0].type === 'rich'
-			&& Boolean(mes.embeds[0].footer) && mes.embeds[0].footer!.text === `Case ${modcase.case}`);
-		const embed = await modcase.prepareEmbed();
+			&& Boolean(mes.embeds[0].footer) && mes.embeds[0].footer!.text === `Case ${moderationManagerEntry.case}`);
+		const embed = await moderationManagerEntry.prepareEmbed();
 		return msg ? msg.edit(embed) : channel.send(embed);
 	}
 

@@ -16,8 +16,7 @@ export default class extends Middleware {
 		if (typeof stream === 'undefined') return;
 		for await (const chunk of stream) body += chunk;
 
-		const data = JSON.parse(body);
-		request.body = data;
+		request.body = JSON.parse(body);
 	}
 
 	public contentStream(request: KlasaIncomingMessage) {

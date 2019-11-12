@@ -177,7 +177,7 @@ export class Giveaway {
 		} else {
 			this.refreshAt = this.calculateNextRefresh();
 		}
-		const content = this.getContent(state, language!);
+		const content = Giveaway.getContent(state, language!);
 		const embed = this.getEmbed(state, language!);
 		return { content, embed };
 	}
@@ -195,9 +195,9 @@ export class Giveaway {
 
 	private getEmbed(state: States, language: Language) {
 		const description = this.getDescription(state, language);
-		const footer = this.getFooter(state, language);
+		const footer = Giveaway.getFooter(state, language);
 		return new MessageEmbed()
-			.setColor(this.getColor(state))
+			.setColor(Giveaway.getColor(state))
 			.setTitle(this.title)
 			.setDescription(description)
 			.setFooter(footer)
@@ -205,14 +205,6 @@ export class Giveaway {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 			// @ts-ignore 2341
 			._apiTransform();
-	}
-
-	private getContent(state: States, language: Language) {
-		switch (state) {
-			case States.Finished: return language.tget('GIVEAWAY_ENDED_TITLE');
-			case States.LastChance: return language.tget('GIVEAWAY_LASTCHANCE_TITLE');
-			default: return language.tget('GIVEAWAY_TITLE');
-		}
 	}
 
 	private getDescription(state: States, language: Language) {
@@ -223,20 +215,6 @@ export class Giveaway {
 			case States.LastChance: return language.tget('GIVEAWAY_LASTCHANCE', this.remaining);
 			default: return language.tget('GIVEAWAY_DURATION', this.remaining);
 		}
-	}
-
-	private getColor(state: States) {
-		switch (state) {
-			case States.Finished: return Colors.Red;
-			case States.LastChance: return Colors.Orange;
-			default: return Colors.Blue;
-		}
-	}
-
-	private getFooter(state: States, language: Language) {
-		return state === States.Running
-			? language.tget('GIVEAWAY_ENDS_AT')
-			: language.tget('GIVEAWAY_ENDED_AT');
 	}
 
 	private calculateNextRefresh() {
@@ -281,6 +259,28 @@ export class Giveaway {
 	}
 
 	public static EMOJI = resolveEmoji(GiveawayEmoji)!;
+
+	private static getContent(state: States, language: Language) {
+		switch (state) {
+			case States.Finished: return language.tget('GIVEAWAY_ENDED_TITLE');
+			case States.LastChance: return language.tget('GIVEAWAY_LASTCHANCE_TITLE');
+			default: return language.tget('GIVEAWAY_TITLE');
+		}
+	}
+
+	private static getColor(state: States) {
+		switch (state) {
+			case States.Finished: return Colors.Red;
+			case States.LastChance: return Colors.Orange;
+			default: return Colors.Blue;
+		}
+	}
+
+	private static getFooter(state: States, language: Language) {
+		return state === States.Running
+			? language.tget('GIVEAWAY_ENDS_AT')
+			: language.tget('GIVEAWAY_ENDED_AT');
+	}
 
 }
 

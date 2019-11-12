@@ -14,7 +14,7 @@ export abstract class ModerationTask extends Task {
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 20 seconds later.
-		if (guild.available === false) return this.reschedule(data, 20000);
+		if (!guild.available) return this.reschedule(data, 20000);
 
 		// Run the abstract handle function.
 		try {

@@ -25,8 +25,9 @@ export class Song {
 	public skips = new Set<string>();
 
 	/**
-	 * @param data The retrieved data
-	 * @param requester The user that requested this song
+	 * @param queue The queue that manages this song.
+	 * @param data The retrieved data.
+	 * @param requester The user that requested this song.
 	 */
 	public constructor(queue: Queue, data: Track, requester: string) {
 		this.queue = queue;

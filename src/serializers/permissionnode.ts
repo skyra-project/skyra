@@ -1,4 +1,4 @@
-import { Serializer, SchemaEntry, Language, KlasaGuild, util, Command } from 'klasa';
+import { Command, KlasaGuild, Language, SchemaEntry, Serializer, util } from 'klasa';
 import { PermissionsNode } from '../lib/types/settings/GuildSettings';
 import { GuildMember, Role } from 'discord.js';
 
@@ -19,9 +19,8 @@ export default class extends Serializer {
 			if (!role) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID_TARGET');
 			target = role;
 		} else {
-			const member = await guild.members.fetch(data.id)
+			target = await guild.members.fetch(data.id)
 				.catch(() => { throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID_TARGET'); });
-			target = member;
 		}
 
 		// The @everyone role should not have allows

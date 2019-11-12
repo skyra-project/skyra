@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 
 		try {
 			const winner = await this._game(message, players, board);
-			return message.edit(winner
+			return await message.edit(winner
 				? message.language.tget('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
 				: message.language.tget('COMMAND_TICTACTOE_DRAW', this.render(board)));
 		} catch (error) {

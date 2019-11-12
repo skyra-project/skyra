@@ -5,7 +5,7 @@ export class Markov {
 
 	private readonly wordBank: WordBank = new Map();
 	private readonly normalizeFn: MarkovNormalizer;
-	private readonly parseBy = /(?:\.|\?|\n)/g;
+	private readonly parseBy = /[.?\n]/g;
 	private sentence = '';
 
 	public constructor(normalizeFn: MarkovNormalizer = word => word.replace(/\.$/g, '')) {
@@ -27,7 +27,7 @@ export class Markov {
 
 	public parse(text = '', parseBy = this.parseBy) {
 		for (const line of text.split(parseBy)) {
-			const words = this.retrieveWords(line);
+			const words = Markov.retrieveWords(line);
 
 			for (let i = 0, max = words.length - 1; i < max; ++i) {
 				const currentWord = this.normalizeFn(words[i]);
@@ -92,7 +92,7 @@ export class Markov {
 		return count;
 	}
 
-	private retrieveWords(line: string) {
+	private static retrieveWords(line: string) {
 		const words: string[] = [];
 		for (const word of line.split(' ')) {
 			const trimmed = word.trim();

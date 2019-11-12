@@ -26,11 +26,11 @@ export default class extends SkyraCommand {
 			if (action === 'show' || action === 'reset') return undefined;
 			if (!arg) throw msg.language.tget('COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION');
 
+			const emoji = resolveEmoji(arg);
+			if (emoji === null) throw msg.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
+
 			try {
-				const emoji = resolveEmoji(arg);
-				if (!emoji) throw null;
-				await msg.react(emoji);
-				return emoji;
+				return await msg.react(emoji);
 			} catch {
 				throw msg.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
 			}

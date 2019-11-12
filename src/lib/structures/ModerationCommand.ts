@@ -26,7 +26,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	 */
 	public optionalDuration: boolean;
 
-	public constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
+	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
 		super(store, file, directory, mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>({
 			flagSupport: true,
 			optionalDuration: false,

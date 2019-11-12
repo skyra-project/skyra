@@ -20,7 +20,7 @@ export class ConnectFourManager extends Collection<string, Game | null> {
 
 	/**
 	 * Create a new match for a channel
-	 * @param channel The channel to set the match to
+	 * @param message The message that is managed by this instance
 	 * @param challenger The challenger KlasaUser instance
 	 * @param challengee The challengee KlasaUser instance
 	 */

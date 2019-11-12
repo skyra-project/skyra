@@ -12,9 +12,9 @@ export abstract class Player {
 	public color: PlayerColor;
 	protected game: Game;
 	protected cell: Cell;
-	private winning: Cell;
+	private readonly winning: Cell;
 
-	public constructor(game: Game, cell: Cell, winning: Cell, color: PlayerColor, name: string) {
+	protected constructor(game: Game, cell: Cell, winning: Cell, color: PlayerColor, name: string) {
 		this.name = name;
 		this.color = color;
 		this.game = game;

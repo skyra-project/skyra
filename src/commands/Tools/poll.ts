@@ -3,7 +3,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
 
 const REG_USERS = Serializer.regex.userOrMember;
-const REG_TAG = /[^#]{2,32}#\d{4,4}/;
+const REG_TAG = /[^#]{2,32}#\d{4}/;
 const REG_ROLES = Serializer.regex.role;
 
 export default class extends SkyraCommand {
@@ -33,7 +33,6 @@ export default class extends SkyraCommand {
 
 		let users: string[] = [];
 		let roles: string[] = [];
-		let options: string[] = [];
 
 		if ('users' in message.flagArgs && message.flagArgs.users !== 'users') {
 			users = await this._resolveUsers(message, message.flagArgs.users.split(',').map(user => user.trim()));
@@ -49,7 +48,7 @@ export default class extends SkyraCommand {
 			if (wants) roles = await this.rolePrompt.createPrompt(message).run(message.language.tget('COMMAND_POLL_FIRSTROLE')).catch(() => []);
 		}
 
-		options = 'options' in message.flagArgs && message.flagArgs.options !== 'options'
+		const options = 'options' in message.flagArgs && message.flagArgs.options !== 'options'
 			? message.flagArgs.options.split(',').map(option => option.trim().toLowerCase())
 			: ['yes', 'no'];
 

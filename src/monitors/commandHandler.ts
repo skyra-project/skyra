@@ -27,7 +27,7 @@ export default class extends Monitor {
 			const disabledChannels = message.guild.settings.get(GuildSettings.DisabledChannels);
 			if (disabledChannels.includes(message.channel.id) && !await message.hasAtLeastPermissionLevel(5)) return;
 		}
-		const prefix = message.guild!.settings.get(GuildSettings.Prefix);
+		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 		return message.sendLocale('PREFIX_REMINDER', [prefix.length ? prefix : undefined]);
 	}
 

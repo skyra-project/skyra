@@ -79,7 +79,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (filter instanceof User) {
-			messageBank = messageBank.filter((message) => message.author.id ===filter.id);
+			messageBank = messageBank.filter(message => message.author.id === filter.id);
 		}
 
 		return messageBank;

@@ -77,7 +77,9 @@ export default class extends SkyraCommand {
 			messageBank = messageBank.concat(await channel.messages.fetch({ limit: 100, before: messageBank.lastKey() }));
 		}
 
+
 		return user ? messageBank.filter(message => message.author.id === user.id) : messageBank;
+
 	}
 
 	private useUpperCase(wordBank: WordBank) {

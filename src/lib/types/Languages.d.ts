@@ -1091,7 +1091,7 @@ export interface LanguageKeys {
 	COMMAND_POLL_VOTE: string;
 	COMMAND_POLL_MISSING_ID: string;
 	COMMAND_POLL_EMPTY_VOTES: string;
-	COMMAND_PRICE_CURRENCY: (from: string, to: string, amount: number) => string;
+	COMMAND_PRICE_CURRENCY: (fromCurrency: string, fromAmount: number, toCurrency: string, toAmount: number) => string;
 	COMMAND_PRICE_CURRENCY_NOT_FOUND: string;
 	COMMAND_QUOTE_MESSAGE: string;
 	COMMAND_ROLES_LIST_EMPTY: string;

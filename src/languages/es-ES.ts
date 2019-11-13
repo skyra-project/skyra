@@ -2754,7 +2754,7 @@ export default class extends Language {
 		COMMAND_POLL_VOTE: `${GREENTICK} ¡Votado con éxito! Autodestruyendo mensaje en 10 segundos...`,
 		COMMAND_POLL_MISSING_ID: '¡Necesitas la id de la encuesta!',
 		COMMAND_POLL_EMPTY_VOTES: 'Infortunadamente, nadie ha votado en la encuesta.',
-		COMMAND_PRICE_CURRENCY: (from, to, amount) => `El precio de la cantidad seleccionada de ${from} es de ${amount} ${to}`,
+		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `${fromAmount} ${fromCurrency} vale ${toAmount} ${toCurrency}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: '¡Ha habido un error! Por favor, revise de nuevo la ortografía y que especificaste una moneda válida.',
 		COMMAND_QUOTE_MESSAGE: 'Esto es muy raro, pero dicho mensaje no tiene ni contenido ni imagen.',
 		COMMAND_ROLES_LIST_EMPTY: '¡Este servidor no tiene ningún rol público!',

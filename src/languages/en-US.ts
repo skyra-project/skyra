@@ -2783,7 +2783,7 @@ export default class extends Language {
 		COMMAND_POLL_VOTE: 'Successfully voted! Selfdestructing this message in 10 seconds!',
 		COMMAND_POLL_MISSING_ID: 'You need to provide me the poll\'s ID!',
 		COMMAND_POLL_EMPTY_VOTES: 'Unfortunately, nobody has voted in this poll.',
-		COMMAND_PRICE_CURRENCY: (from, to, amount) => `Current ${from} price is ${amount} ${to}`,
+		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `${fromAmount} ${fromCurrency} is worth ${toAmount} ${toCurrency}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
 		COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
 		COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',

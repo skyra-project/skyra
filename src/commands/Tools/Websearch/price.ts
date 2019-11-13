@@ -15,20 +15,20 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [from, to, amount = 1]: [string, string, number]) {
-		from = from.toUpperCase();
-		to = to.toUpperCase();
+	public async run(message: KlasaMessage, [fromCurrency, toCurrency, amount = 1]: [string, string, number]) {
+		fromCurrency = fromCurrency.toUpperCase();
+		toCurrency = toCurrency.toUpperCase();
 
 		const url = new URL('https://min-api.cryptocompare.com/data/price');
-		url.searchParams.append('fsym', from);
-		url.searchParams.append('tsyms', to);
+		url.searchParams.append('fsym', fromCurrency);
+		url.searchParams.append('tsyms', toCurrency);
 
 		const body = await fetch(url, {
 			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE}`]]
 		}, 'json') as CryptoCompareResultOk | CryptoCompareResultError;
 
 		if (body.Response === 'Error') throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');
-		return message.sendLocale('COMMAND_PRICE_CURRENCY', [from, to, amount * (body as CryptoCompareResultOk)[to]]);
+		return message.sendLocale('COMMAND_PRICE_CURRENCY', [fromCurrency, amount, toCurrency, amount * (body as CryptoCompareResultOk)[toCurrency]]);
 	}
 
 }

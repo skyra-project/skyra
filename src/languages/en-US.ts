@@ -296,6 +296,14 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Manage the volume for current song.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given pokemon',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: 'Queries the Pokemon API on data on a given Pokemon. Uses a fuzzy search to also match against near-matches',
+			explainedUsage: [
+				['pokemon', 'The pokemon for which you want to find data']
+			],
+			examples: ['dragonite', 'pikachu']
+		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `The queue's empty! The session will start as soon as we have some songs queued.`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `The queue's almost empty! Please add some to keep the spirit of this session still up!`,
@@ -1465,6 +1473,28 @@ export default class extends Language {
 					command.`,
 			examples: ['@Pete Attempted to mention everyone.']
 		}),
+
+		/**
+		 * ##################
+		 * POKEMON COMMANDS
+		 */
+		COMMAND_POKEDEX_EMBED_DATA: {
+			types: 'Type(s)',
+			abilities: 'Abilities',
+			genderRatio: 'Gender Ratio',
+			smogonTier: 'Smogon Tier',
+			unknownSmogonTier: 'Unknown / Alt form',
+			height: 'Height',
+			weight: 'Width',
+			eggGroups: 'Egg group(s)',
+			otherFormes: 'Other forme(s)',
+			evolutionaryLine: 'Evolutionary line',
+			baseStats: 'Base stats',
+			flavourText: 'Pokdex entry',
+			externalResources: 'External resources',
+			none: 'None'
+		},
+		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 
 		/**
 		 * ##################

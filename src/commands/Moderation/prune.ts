@@ -1,8 +1,12 @@
-import { User, Message } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { User, Message, MessageAttachment, MessageEmbed, EmbedField, Collection } from 'discord.js';
+import { CommandStore, KlasaMessage, Timestamp, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { APIErrors } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
+
+	private readonly timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
+	private readonly kOptions = ['save', 'back', 'backup'] as const;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -11,6 +15,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
 			permissionLevel: 5,
+			flagSupport: true,
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '[limit:integer{1,100}] [link|invite|bots|you|me|upload|user:user]',
@@ -36,11 +41,19 @@ export default class extends SkyraCommand {
 		const now = Date.now();
 		const filtered = [...messages.filter(m => now - m.createdTimestamp < 1209600000).keys()].slice(0, limit);
 
-		if (filtered.length) await message.channel.bulkDelete(filtered);
-		return message.sendLocale('COMMAND_PRUNE', [filtered.length, limit]);
+		if (filtered.length === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
+
+		const deletedMessages = await message.channel.bulkDelete(filtered).catch(error => {
+			if (error.code === APIErrors.UnknownMessage) return new Collection<string, Message>();
+			throw error;
+		});
+
+		if (deletedMessages.size === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
+		const files = message.channel.attachable && this.shouldCreateBackup(message) ? [this.generateAttachment(message, deletedMessages)] : [];
+		return message.sendLocale('COMMAND_PRUNE', [filtered.length, limit, files.length === 1], { files });
 	}
 
-	public getFilter(message: Message, filter: string, user: User | null) {
+	private getFilter(message: Message, filter: string, user: User | null) {
 		switch (filter) {
 			case 'links':
 			case 'link': return (mes: Message) => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
@@ -57,6 +70,105 @@ export default class extends SkyraCommand {
 			case 'user': return (mes: Message) => mes.author.id === user!.id;
 			default: return () => true;
 		}
+	}
+
+	private shouldCreateBackup(message: KlasaMessage) {
+		return this.kOptions.some(option => option in message.flagArgs);
+	}
+
+	private generateAttachment(message: KlasaMessage, messages: Collection<string, Message>) {
+		const header = message.language.tget('COMMAND_PRUNE_LOG_HEADER');
+		const processed = messages.map(message => this.formatMessage(message)).reverse().join('\n\n');
+		const buffer = Buffer.from(`${header}\n\n${processed}`);
+		return new MessageAttachment(buffer, 'prune.txt');
+	}
+
+	private formatMessage(message: Message) {
+		const header = this.formatHeader(message);
+		const content = this.formatContents(message);
+		return `${header}\n${content}`;
+	}
+
+	private formatHeader(message: Message) {
+		return `${this.formatTimestamp(message.createdTimestamp)} ${message.system ? 'SYSTEM' : this.formatAuthor(message.author)}`;
+	}
+
+	private formatTimestamp(timestamp: number) {
+		return `[${this.timestamp.displayUTC(timestamp)}]`;
+	}
+
+	private formatAuthor(author: KlasaUser) {
+		return `${author.tag}${author.bot ? ' [BOT]' : ''}`;
+	}
+
+	private formatContents(message: Message) {
+		const output: string[] = [];
+		if (message.content.length > 0) output.push(this.formatContent(message.content));
+		if (message.embeds.length > 0) output.push(message.embeds.map(embed => this.formatEmbed(embed)).join('\n'));
+		if (message.attachments.size > 0) output.push(message.attachments.map(attachment => this.formatAttachment(attachment)).join('\n'));
+		return output.join('\n');
+	}
+
+	private formatContent(content: string) {
+		return content.split('\n').map(line => `> ${line}`).join('\n');
+	}
+
+	private formatAttachment(attachment: MessageAttachment) {
+		return `📂 [${attachment.name}: ${attachment.url}]`;
+	}
+
+	private formatEmbed(embed: MessageEmbed) {
+		switch (embed.type) {
+			case 'video': return this.formatEmbedVideo(embed);
+			case 'image': return this.formatEmbedImage(embed);
+			default: return this.formatEmbedRich(embed);
+		}
+	}
+
+	private formatEmbedVideo(embed: MessageEmbed) {
+		return `📹 [${embed.url}]${typeof embed.provider === 'undefined' ? '' : ` From ${embed.provider.name}.`}`;
+	}
+
+	private formatEmbedImage(embed: MessageEmbed) {
+		return `🖼️ [${embed.url}]${typeof embed.provider === 'undefined' ? '' : ` From ${embed.provider.name}.`}`;
+	}
+
+	private formatEmbedRich(embed: MessageEmbed) {
+		if (typeof embed.provider === 'undefined') {
+			const output: string[] = [];
+			if (embed.title) output.push(this.formatEmbedRichTitle(embed.title));
+			if (embed.author) output.push(this.formatEmbedRichAuthor(embed.author));
+			if (embed.url) output.push(this.formatEmbedRichUrl(embed.url));
+			if (embed.description) output.push(this.formatEmbedRichDescription(embed.description));
+			if (embed.fields.length > 0) output.push(embed.fields.map(field => this.formatEmbedRichField(field)).join('\n'));
+			return output.join('\n');
+		}
+
+		return this.formatEmbedRichProvider(embed);
+	}
+
+	private formatEmbedRichTitle(title: string) {
+		return `># ${title}`;
+	}
+
+	private formatEmbedRichUrl(url: string) {
+		return `> 📎 ${url}`
+	}
+
+	private formatEmbedRichAuthor(author: Exclude<MessageEmbed['author'], null>) {
+		return `> 👤 ${author.name || '-'}${author.iconURL ? ` [${author.iconURL}]` : ''}${author.url ? ` <${author.url}>` : ''}`;
+	}
+
+	private formatEmbedRichDescription(description: string) {
+		return description.split('\n').map(line => `> > ${line}`).join('\n');
+	}
+
+	private formatEmbedRichField(field: EmbedField) {
+		return `> #> ${field.name}\n${field.value.split('\n').map(line => `>  > ${line}`).join('\n')}`;
+	}
+
+	private formatEmbedRichProvider(embed: MessageEmbed) {
+		return `🔖 [${embed.url}]${typeof embed.provider === 'undefined' ? '' : ` From ${embed.provider.name}.`}`;
 	}
 
 }

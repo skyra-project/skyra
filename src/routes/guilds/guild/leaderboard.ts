@@ -19,15 +19,11 @@ export default class extends Route {
 		const limit = 'limit' in request.query ? Number(request.query.limit) : 10;
 		if (!Number.isInteger(limit) || limit <= 0 || limit > 100) return response.error(400);
 
-		const before = 'before' in request.query ? Number(request.query.before) : null;
-		if (before !== null && (!Number.isInteger(before) || before <= 0 || before > 2500 - limit)) return response.error(400);
+		const after = 'after' in request.query ? Number(request.query.after) : 0;
+		if (!Number.isInteger(after) || after <= 0 || after > 2500 - limit) return response.error(400);
 
-		const after = 'after' in request.query ? Number(request.query.after) : null;
-		if (after !== null && (!Number.isInteger(after) || after <= 0 || after > 2500)) return response.error(400);
-
-		const start = before === null ? after === null ? 0 : after : before - limit;
 		const leaderboard = await this.client.leaderboard.fetch(guildID);
-		const results = iteratorRange(leaderboard.entries(), start, limit);
+		const results = iteratorRange(leaderboard.entries(), after, limit);
 
 		return response.json(await fetchAllLeaderboardEntries(this.client, results));
 	}

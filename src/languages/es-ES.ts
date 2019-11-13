@@ -2364,7 +2364,7 @@ export default class extends Language {
 
 		COMMAND_SLOWMODE_SET: cooldown => cooldown === 0
 			? `The cooldown for this channel has been reset.`
-			: `The cooldown for this channel has been set to ${cooldown} second${cooldown === 1 ? '' : 's'}.`,
+			: `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',

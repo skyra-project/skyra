@@ -10,14 +10,18 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['sm'],
 			cooldown: 10,
 			description: language => language.tget('COMMAND_SLOWMODE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SLOWMODE_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['MANAGE_CHANNELS'],
 			runIn: ['text'],
-			usage: '<reset|off|cooldown:timespan>'
+			usage: '<reset|off|seconds:integer|cooldown:timespan>'
 		});
+
+		this.createCustomResolver('integer', async (arg, possible, message) =>
+			(await this.client.arguments.get('integer')!.run(arg, possible, message)) * 1000);
 	}
 
 	public async run(message: KlasaMessage, [cooldown]: ['reset' | 'off' | number]) {

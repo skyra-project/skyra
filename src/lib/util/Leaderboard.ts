@@ -45,7 +45,7 @@ export class Leaderboard {
 		this.client = client;
 	}
 
-	public async fetch(guild?: string): Promise<Collection<string, LeaderboardUser>> {
+	public async fetch(guild?: string) {
 		if (guild) {
 			if (this._tempPromises.guilds.has(guild)) await this._tempPromises.guilds.get(guild);
 			else if (!this.guilds.has(guild)) await this._syncMembers(guild);

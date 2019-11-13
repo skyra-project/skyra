@@ -508,20 +508,15 @@ export default class extends Language {
 			],
 			examples: ['Skyra is the best bot in this server']
 		}),
-		COMMAND_DICE_DESCRIPTION: `Roll the dice, 'x' rolls and 'y' sides.`,
+		COMMAND_DICE_DESCRIPTION: `Roll the dice using d20 syntax.`,
 		COMMAND_DICE_EXTENDED: builder.display('dice', {
 			extendedHelp: `The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice
 				can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once.
 				However, you can change the amount of rolls for the dice, and this command will 'roll' (get a random
-					number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave
-					a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will
-					return 10 as output.`,
-			explainedUsage: [
-				['rolls', 'Defaults to 1, amount of times the dice should roll.'],
-				['sides', 'Defaults to 6, amount of sides the dice should have.']
-			],
-			examples: ['370 24', '100 6', '6'],
-			reminder: 'If you write numbers out of the range between 1 and 1024, Skyra will default the number to 1 or 6.'
+				number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave
+				a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will
+				return 10 as output.`,
+			examples: ['370d24', '100d6', '6']
 		}),
 		COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokemon.',
 		COMMAND_ESCAPEROPE_EXTENDED: builder.display('escaperope', {

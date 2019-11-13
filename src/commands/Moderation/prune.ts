@@ -152,7 +152,7 @@ export default class extends SkyraCommand {
 	}
 
 	private formatEmbedRichUrl(url: string) {
-		return `> 📎 ${url}`
+		return `> 📎 ${url}`;
 	}
 
 	private formatEmbedRichAuthor(author: Exclude<MessageEmbed['author'], null>) {

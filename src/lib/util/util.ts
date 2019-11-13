@@ -154,7 +154,7 @@ export function cutText(str: string, length: number) {
 	return `${cut.slice(0, length - 3)}...`;
 }
 
-export function iteratorAt<T>(iterator: IterableIterator < T >, position: number) {
+export function iteratorAt<T>(iterator: IterableIterator<T>, position: number) {
 	let result: IteratorResult<T>;
 	while (position-- > 0) {
 		result = iterator.next();
@@ -163,6 +163,22 @@ export function iteratorAt<T>(iterator: IterableIterator < T >, position: number
 
 	result = iterator.next();
 	return result.done ? null : result.value;
+}
+
+export function iteratorRange<T>(iterator: IterableIterator<T>, position: number, offset: number) {
+	let result: IteratorResult<T>;
+	while (position-- > 0) {
+		result = iterator.next();
+		if (result.done) return [];
+	}
+
+	const results: T[] = [];
+	while (offset-- > 0) {
+		result = iterator.next();
+		if (result.done) return results;
+		results.push(result.value);
+	}
+	return results;
 }
 
 export async function fetch(url: URL | string, type: 'json'): Promise<object>;

@@ -190,7 +190,7 @@ export interface Payload {
 	position: number;
 }
 
-export async function fetchAllEntries(client: Client, results: readonly[string, LeaderboardUser][]) {
+export async function fetchAllLeaderboardEntries(client: Client, results: readonly[string, LeaderboardUser][]) {
 	const promises: Promise<unknown>[] = [];
 	for (const [id, element] of results) {
 		if (element.name === null) {

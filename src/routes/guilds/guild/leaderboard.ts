@@ -1,7 +1,7 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../../lib/structures/api/ApiResponse';
-import { ratelimit, iteratorRange, fetchAllEntries } from '../../../lib/util/util';
+import { ratelimit, iteratorRange, fetchAllLeaderboardEntries } from '../../../lib/util/util';
 
 export default class extends Route {
 
@@ -29,7 +29,7 @@ export default class extends Route {
 		const leaderboard = await this.client.leaderboard.fetch(guildID);
 		const results = iteratorRange(leaderboard.entries(), start, limit);
 
-		return response.json(await fetchAllEntries(this.client, results));
+		return response.json(await fetchAllLeaderboardEntries(this.client, results));
 	}
 
 }

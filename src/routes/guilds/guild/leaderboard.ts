@@ -6,7 +6,7 @@ import { ratelimit, iteratorRange, fetchAllEntries } from '../../../lib/util/uti
 export default class extends Route {
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'localLeaderboard', route: 'guilds/:guild/leaderboard' });
+		super(store, file, directory, { name: 'guildLeaderboard', route: 'guilds/:guild/leaderboard' });
 	}
 
 	@ratelimit(2, 2500)

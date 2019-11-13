@@ -1,8 +1,7 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '../../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../../lib/structures/api/ApiResponse';
-import { ratelimit, iteratorRange } from '../../../lib/util/util';
-import { LeaderboardUser } from '../../../lib/util/Leaderboard';
+import { ratelimit, iteratorRange, fetchAllEntries } from '../../../lib/util/util';
 
 export default class extends Route {
 
@@ -30,40 +29,7 @@ export default class extends Route {
 		const leaderboard = await this.client.leaderboard.fetch(guildID);
 		const results = iteratorRange(leaderboard.entries(), start, limit);
 
-		return response.json(await this.fetchAllEntries(results));
+		return response.json(await fetchAllEntries(this.client, results));
 	}
 
-	private async fetchAllEntries(results: readonly [string, LeaderboardUser][]) {
-		const promises: Promise<unknown>[] = [];
-		for (const [id, element] of results) {
-			if (element.name === null) {
-				promises.push(this.client.userTags.fetchUsername(id).then(username => {
-					element.name = username;
-				}));
-			}
-		}
-		await Promise.all(promises);
-
-		const payload: Payload[] = [];
-		for (const [id, element] of results) {
-			const userTag = this.client.userTags.get(id)!;
-			payload.push({
-				avatar: userTag.avatar,
-				username: userTag.username,
-				discriminator: userTag.discriminator,
-				points: element.points,
-				position: element.position
-			});
-		}
-		return payload;
-	}
-
-}
-
-interface Payload {
-	avatar: string | null;
-	username: string;
-	discriminator: string;
-	points: number;
-	position: number;
 }

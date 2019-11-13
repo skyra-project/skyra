@@ -18,6 +18,7 @@ import ApiRequest from '../structures/api/ApiRequest';
 import ApiResponse from '../structures/api/ApiResponse';
 import { isObject } from '@klasa/utils';
 import { UserTag } from './Cache/UserTags';
+import { LeaderboardUser } from './Leaderboard';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -179,6 +180,39 @@ export function iteratorRange<T>(iterator: IterableIterator<T>, position: number
 		results.push(result.value);
 	}
 	return results;
+}
+
+export interface Payload {
+	avatar: string | null;
+	username: string;
+	discriminator: string;
+	points: number;
+	position: number;
+}
+
+export async function fetchAllEntries(client: Client, results: readonly[string, LeaderboardUser][]) {
+	const promises: Promise<unknown>[] = [];
+	for (const [id, element] of results) {
+		if (element.name === null) {
+			promises.push(client.userTags.fetchUsername(id).then(username => {
+				element.name = username;
+			}));
+		}
+	}
+	await Promise.all(promises);
+
+	const payload: Payload[] = [];
+	for (const [id, element] of results) {
+		const userTag = client.userTags.get(id)!;
+		payload.push({
+			avatar: userTag.avatar,
+			username: userTag.username,
+			discriminator: userTag.discriminator,
+			points: element.points,
+			position: element.position
+		});
+	}
+	return payload;
 }
 
 export async function fetch(url: URL | string, type: 'json'): Promise<object>;

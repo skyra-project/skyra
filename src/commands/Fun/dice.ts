@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 		let dice: number;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern)) throw message.language.tget('RESOLVER_INVALID_INT', 'dice');
+			if (!isNumber(pattern) || pattern <= 0) throw message.language.tget('RESOLVER_INVALID_INT', 'dice');
 			amount = pattern;
 			dice = 6;
 		} else {
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 
 		const maximum = amount * dice;
 		const minimum = amount;
-		return Math.floor((Math.random() * (maximum - (minimum + 1))) + minimum) + modifier;
+		return Math.floor((Math.random() * ((maximum - minimum) + 1)) + minimum + modifier);
 	}
 
 }

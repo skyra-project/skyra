@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 		const users = message.author.settings.get(UserSettings.Marry);
 		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 
-		const usernames = await Promise.all(users.map(user => this.client.fetchUsername(user)));
+		const usernames = await Promise.all(users.map(user => this.client.userTags.fetchUsername(user)));
 		return message.sendLocale('COMMAND_MARRY_WITH', [usernames]);
 	}
 
@@ -71,7 +71,7 @@ export default class extends SkyraCommand {
 		// Check if the author is already monogamous.
 		if (spouses.length === 1) {
 			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_AUTHOR_TAKEN'));
-			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', [await this.client.fetchUsername(spouses[0])]);
+			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', [await this.client.userTags.fetchUsername(spouses[0])]);
 		// Check if the author's first potential spouse is already married.
 		} else if (spouses.length === 0 && targetsSpouses.length > 0) {
 			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_TAKEN', targetsSpouses.length));

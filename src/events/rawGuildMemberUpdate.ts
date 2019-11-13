@@ -13,8 +13,8 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild) return;
 
-		guild.memberSnowflakes.add(data.user.id);
-		this.client.usertags.set(data.user.id, `${data.user.username}#${data.user.discriminator}`);
+		guild.nicknames.set(data.user.id, data.nick);
+		this.client.userTags.create(data.user);
 		const member = await guild.members.fetch(data.user.id).catch(() => null);
 		if (!member) return;
 		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore

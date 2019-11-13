@@ -10,6 +10,7 @@ import { FSWatcher } from 'chokidar';
 import { Node as Lavalink, BaseNodeOptions } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { CommonQuery } from '../queries/common';
+import { UserTags } from '../util/Cache/UserTags';
 
 declare module 'discord.js' {
 
@@ -20,14 +21,12 @@ declare module 'discord.js' {
 		giveaways: GiveawayManager;
 		connectFour: ConnectFourManager;
 		lavalink: Lavalink | null;
-		usertags: Collection<string, string>;
+		userTags: UserTags;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: VezaClient;
 		webhookError: Webhook;
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
-		fetchTag(id: string): Promise<string>;
-		fetchUsername(id: string): Promise<string>;
 	}
 
 	interface MessageExtendablesAskOptions {

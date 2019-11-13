@@ -141,10 +141,10 @@ export default class extends SkyraCommand {
 	public async _resolveUsers(message: KlasaMessage, users: string[]) {
 		const output: string[] = [];
 		for (const user of users) {
-			let resolved: string | undefined;
+			let resolved: string | null | undefined;
 			if (REG_USERS.test(user)) resolved = (await message.guild!.members.fetch(REG_USERS.exec(user)![1])).id;
-			else if (REG_TAG.test(user)) resolved = message.guild!.memberTags.findKey(tag => tag === user);
-			else resolved = message.guild!.memberUsernames.findKey(tag => tag === user);
+			else if (REG_TAG.test(user)) resolved = message.guild!.nicknames.getKeyFromTag(user);
+			else resolved = message.guild!.nicknames.getFirstKeyFromUserName(user);
 
 			if (resolved) output.push(resolved);
 		}

@@ -19,7 +19,7 @@ export default class extends Event {
 
 		// Populate the usernames
 		for (const user of this.client.users.values()) {
-			this.client.usertags.set(user.id, user.tag);
+			this.client.userTags.create(user);
 		}
 
 		// Clear all users
@@ -31,7 +31,7 @@ export default class extends Event {
 
 			// Populate the snowflakes
 			for (const member of guild.members.values()) {
-				guild.memberSnowflakes.add(member.id);
+				guild.nicknames.create(member);
 			}
 
 			// Update counters

@@ -5,7 +5,7 @@ import { GuildSettings } from '../types/settings/GuildSettings';
 import { Moderation, Time } from '../util/constants';
 import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { isNullOrUndefined } from '../util/util';
+import { isNullOrUndefined, getDisplayAvatar } from '../util/util';
 import { CLIENT_ID } from '../../../config';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
@@ -229,9 +229,13 @@ export class ModerationManagerEntry {
 	public async prepareEmbed() {
 		if (!this.user) throw new Error('A user has not been set.');
 		const userID = typeof this.user === 'string' ? this.user : this.user.id;
-		const [userTag, moderator] = await Promise.all([
-			this.client.fetchUsername(userID),
-			typeof this.moderator === 'string' ? this.client.users.fetch(this.moderator) : Promise.resolve(this.moderator || this.client.user!)
+		const [userTag, [moderatorID, moderator]] = await Promise.all([
+			this.client.userTags.fetch(userID),
+			this.client.userTags.fetchEntry(this.moderator === null
+				? this.client.user!.id
+				: typeof this.moderator === 'string'
+					? this.moderator
+					: this.moderator.id)
 		]);
 
 		const prefix = this.manager.guild.settings.get(GuildSettings.Prefix);
@@ -244,7 +248,7 @@ export class ModerationManagerEntry {
 
 		return new MessageEmbed()
 			.setColor(this.color)
-			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${moderator.username}#${moderator.discriminator}`, getDisplayAvatar(moderatorID, moderator))
 			.setDescription(description)
 			.setFooter(`Case ${this.case}`, this.client.user!.displayAvatarURL({ size: 128 }))
 			.setTimestamp(this.createdTimestamp);

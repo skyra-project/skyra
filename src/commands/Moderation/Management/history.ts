@@ -100,7 +100,7 @@ export default class extends SkyraCommand {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
 			const id = entry.flattenedModerator;
-			if (!moderators.has(id)) moderators.set(id, await this.client.fetchUsername(id));
+			if (!moderators.has(id)) moderators.set(id, await this.client.userTags.fetchUsername(id));
 		}
 		return moderators;
 	}

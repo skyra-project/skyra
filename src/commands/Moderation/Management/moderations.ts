@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 		const users = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
 			const id = entry.flattenedUser;
-			if (!users.has(id)) users.set(id, await this.client.fetchUsername(id));
+			if (!users.has(id)) users.set(id, await this.client.userTags.fetchUsername(id));
 		}
 		return users;
 	}
@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
 			const id = entry.flattenedModerator;
-			if (!moderators.has(id)) moderators.set(id, await this.client.fetchUsername(id));
+			if (!moderators.has(id)) moderators.set(id, await this.client.userTags.fetchUsername(id));
 		}
 		return moderators;
 	}

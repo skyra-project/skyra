@@ -1,5 +1,5 @@
 import { Image } from 'canvas';
-import { Client, Guild, ImageSize, Message, User } from 'discord.js';
+import { Client, Guild, ImageSize, Message, User, AvatarOptions } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
@@ -17,6 +17,7 @@ import { CLIENT_SECRET } from '../../../config';
 import ApiRequest from '../structures/api/ApiRequest';
 import ApiResponse from '../structures/api/ApiResponse';
 import { isObject } from '@klasa/utils';
+import { UserTag } from './Cache/UserTags';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -294,6 +295,14 @@ export function getColor(message: Message) {
 	return message.author.settings.get(UserSettings.Color) || (message.member && message.member.displayColor) || BrandingColors.Primary;
 }
 
+const ROOT = 'https://cdn.discordapp.com';
+export function getDisplayAvatar(id: string, user: UserTag | User, options: AvatarOptions = {}) {
+	if (user.avatar === null) return `${ROOT}/embed/avatars/${user.discriminator}.png`;
+	const format = typeof options.format === 'undefined' ? user.avatar.startsWith('a_') ? 'gif' : 'webp' : options.format;
+	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
+	return `${ROOT}/avatars/${id}/${user.avatar}.${format}${size}`;
+}
+
 /**
  * Create a referred promise
  */
@@ -356,8 +365,8 @@ export function cleanMentions(guild: Guild, input: string) {
 			switch (type) {
 				case '@':
 				case '@!': {
-					const tag = guild.client.usertags.get(id);
-					return tag ? `@${tag.slice(0, tag.lastIndexOf('#'))}` : match;
+					const tag = guild.client.userTags.get(id);
+					return tag ? `@${tag.username}` : match;
 				}
 				case '@&': {
 					const role = guild.roles.get(id);

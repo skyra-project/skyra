@@ -117,7 +117,7 @@ export default class extends SkyraCommand {
 		if (!roles.length) return null;
 
 		try {
-			const user = await this.client.fetchUsername(entry.user);
+			const user = await this.client.userTags.fetchUsername(entry.user);
 			if (user) {
 				return {
 					raw: {

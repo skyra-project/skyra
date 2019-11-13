@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			if (positionOffset + 10 < value.position) break;
 			retrievedPage.push(value);
 			if (!value.name) {
-				promises.push(this.client.fetchUsername(id)
+				promises.push(this.client.userTags.fetchUsername(id)
 					.then(username => { value.name = username || `Unknown: ${id}`; }));
 			}
 		}

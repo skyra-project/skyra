@@ -1,6 +1,7 @@
-import { Collection, Message } from 'discord.js';
+import { Message } from 'discord.js';
 import { util } from 'klasa';
 import { levenshtein } from './External/levenshtein';
+import { Collection } from '@discordjs/collection';
 
 type FuzzySearchAccess<V> = (value: V) => string;
 type FuzzySearchFilter<V> = (value: V) => boolean;

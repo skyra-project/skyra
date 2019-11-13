@@ -1,8 +1,8 @@
 // Import all dependencies
 import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util, Colors } from 'klasa';
-import { Collection, Webhook } from 'discord.js';
 import { Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
+import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
 import { DashboardClient } from 'klasa-dashboard-hooks';
 
@@ -20,6 +20,7 @@ import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT, DEV_PGSQL } from '../
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
+import { UserTags } from './util/Cache/UserTags';
 import { enumerable } from './util/util';
 
 // Import all extensions and schemas
@@ -80,7 +81,7 @@ export class SkyraClient extends KlasaClient {
 	public connectFour: ConnectFourManager = new ConnectFourManager(this);
 
 	@enumerable(false)
-	public usertags: Collection<string, string> = new Collection();
+	public userTags: UserTags = new UserTags(this);
 
 	@enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
@@ -121,22 +122,6 @@ export class SkyraClient extends KlasaClient {
 			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
 		}
-	}
-
-	public async fetchTag(id: string) {
-		// Return from cache if exists
-		const cache = this.usertags.get(id);
-		if (cache) return cache;
-
-		// Fetch the user and set to cache
-		const user = await this.users.fetch(id);
-		this.usertags.set(user.id, user.tag);
-		return user.tag;
-	}
-
-	public async fetchUsername(id: string) {
-		const tag = await this.fetchTag(id);
-		return tag.slice(0, tag.indexOf('#'));
 	}
 
 	public static defaultMemberSchema = new Schema()

@@ -27,6 +27,7 @@ export default Client.defaultGuildSchema
 		.add('banRemove', 'Boolean', { 'default': false })
 		.add('memberAdd', 'Boolean', { 'default': false })
 		.add('memberRemove', 'Boolean', { 'default': false })
+		.add('memberNameUpdate', 'Boolean', { 'default': false })
 		.add('messageDelete', 'Boolean', { 'default': false })
 		.add('messageEdit', 'Boolean', { 'default': false }))
 	.add('messages', folder => folder

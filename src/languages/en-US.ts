@@ -3439,6 +3439,12 @@ export default class extends Language {
 				? 's'
 				: ''}: ${added.join(', ')}`
 			: ''}`,
+		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
+		EVENTS_USERNAME_UPDATE: 'Username Edited',
+		EVENTS_NAME_DIFFERENCE: (previous, next) => [
+			`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`,
+			`**Next**: ${next === null ? 'Unset' : `\`${next}\``}`
+		].join('\n'),
 		EVENTS_MESSAGE_UPDATE: 'Message Edited',
 		EVENTS_MESSAGE_DELETE: 'Message Deleted',
 		EVENTS_COMMAND: command => `Command Used: ${command}`,

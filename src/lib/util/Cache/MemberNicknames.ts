@@ -13,7 +13,7 @@ export class MemberNicknames extends Collection<string, string | null> {
 	}
 
 	public create(member: GuildMember) {
-		super.set(member.id, member.nickname);
+		super.set(member.id, member.nickname || null);
 		this.guild.client.userTags.create(member.user);
 		return member.nickname;
 	}

@@ -16,6 +16,7 @@ export interface RawGuildSettings {
 	'channels.moderation-logs': string | null;
 	'channels.nsfw-message-logs': string | null;
 	'channels.image-logs': string | null;
+	'channels.prune-logs': string | null;
 	'channels.roles': string | null;
 	'channels.spam': string | null;
 	'command-autodelete': object[];
@@ -132,6 +133,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"channels.moderation-logs"             VARCHAR(19),
 		"channels.nsfw-message-logs"           VARCHAR(19),
 		"channels.image-logs"                  VARCHAR(19),
+		"channels.prune-logs"                  VARCHAR(19),
 		"channels.roles"                       VARCHAR(19),
 		"channels.spam"                        VARCHAR(19),
 		"command-autodelete"                   JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,

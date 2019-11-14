@@ -932,9 +932,10 @@ export interface LanguageKeys {
 	COMMAND_MUTE_UNCONFIGURED: string;
 	COMMAND_MUTECREATE_MISSING_PERMISSION: string;
 	COMMAND_PRUNE_INVALID: string;
-	COMMAND_PRUNE: (amount: number, total: number, hasAttachment: boolean) => string;
+	COMMAND_PRUNE: (amount: number, total: number) => string;
 	COMMAND_PRUNE_NO_DELETES: string;
 	COMMAND_PRUNE_LOG_HEADER: string;
+	COMMAND_PRUNE_LOG_MESSAGE: (channel: string, author: string, amount: number) => string;
 	COMMAND_REASON_MISSING_CASE: string;
 	COMMAND_REASON_NOT_EXISTS: () => string;
 	COMMAND_REASON_UPDATED: (entries: readonly number[], newReason: string) => string;

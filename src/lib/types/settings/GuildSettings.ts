@@ -23,6 +23,7 @@ export namespace GuildSettings {
 		export const ModerationLogs = T<string>('channels.moderation-logs');
 		export const NSFWMessageLogs = T<string>('channels.nsfw-message-logs');
 		export const ImageLogs = T<string>('channels.image-logs');
+		export const PruneLogs = T<string>('channels.prune-logs');
 		export const Roles = T<string>('channels.roles');
 		export const Spam = T<string>('channels.spam');
 	}

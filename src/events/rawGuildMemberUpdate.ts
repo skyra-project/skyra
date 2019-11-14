@@ -22,21 +22,24 @@ export default class extends Event {
 	}
 
 	private handleNicknameChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
-		// Get the previous nickname
-		const previous = guild.nicknames.get(data.user.id);
-		if (typeof previous === 'undefined') return;
-
 		// Get the current nickname, compare them both, if they are different, it changed
+		const previous = guild.nicknames.get(data.user.id);
 		const next = data.nick;
-		if (previous === next) return;
 
+		// Get the previous nickname
 		guild.nicknames.set(data.user.id, next);
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-			.setColor(0xDCE775)
-			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-			.setDescription(guild.language.tget('EVENTS_NICKNAME_DIFFERENCE', previous, next))
-			.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
-			.setTimestamp());
+
+		// If the previous was unset or it's the same as the next one, skip
+		if (typeof previous === 'undefined' || previous === next) return;
+
+		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
+			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
+				.setColor(0xDCE775)
+				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
+				.setDescription(guild.language.tget('EVENTS_NICKNAME_DIFFERENCE', previous, next))
+				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
+				.setTimestamp());
+		}
 	}
 
 	private async handleRoleSets(guild: KlasaGuild, data: WSGuildMemberUpdate) {

@@ -26,6 +26,7 @@ export interface RawGuildSettings {
 	'events.banRemove': boolean;
 	'events.memberAdd': boolean;
 	'events.memberRemove': boolean;
+	'events.memberNicknameUpdate': boolean;
 	'events.messageDelete': boolean;
 	'events.messageEdit': boolean;
 	'messages.farewell': string | null;
@@ -143,6 +144,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"events.banRemove"                     BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"events.memberAdd"                     BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"events.memberRemove"                  BOOLEAN       DEFAULT FALSE              NOT NULL,
+		"events.memberNicknameUpdate"          BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"events.messageDelete"                 BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"events.messageEdit"                   BOOLEAN       DEFAULT FALSE              NOT NULL,
 		"messages.farewell"                    VARCHAR(2000),

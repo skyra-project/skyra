@@ -236,7 +236,7 @@ export async function fetch(url: URL | string, options: RequestInit | 'result' |
 	}
 
 	const result: Response = await nodeFetch(url, options);
-	if (!result.ok) throw result.status;
+	if (!result.ok) throw new Error(await result.text());
 
 	switch (type) {
 		case 'result': return result;

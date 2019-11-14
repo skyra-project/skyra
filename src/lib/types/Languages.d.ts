@@ -616,6 +616,10 @@ export interface LanguageKeys {
 	COMMAND_URBAN_EXTENDED: string;
 	COMMAND_WHOIS_DESCRIPTION: string;
 	COMMAND_WHOIS_EXTENDED: string;
+	COMMAND_FOLLOWAGE_DESCRIPTION: string;
+	COMMAND_FOLLOWAGE_EXTENDED: string;
+	COMMAND_TWITCH_DESCRIPTION: string;
+	COMMAND_TWITCH_EXTENDED: string;
 	COMMAND_WIKIPEDIA_DESCRIPTION: string;
 	COMMAND_WIKIPEDIA_EXTENDED: string;
 	COMMAND_YOUTUBE_DESCRIPTION: string;
@@ -1113,6 +1117,19 @@ export interface LanguageKeys {
 	COMMAND_WHOIS_MEMBER: (member: GuildMember) => string;
 	COMMAND_WHOIS_MEMBER_ROLES: string;
 	COMMAND_WHOIS_USER: (user: User) => string;
+	COMMAND_FOLLOWAGE: (user: string, channel: string, time: number) => string;
+	COMMAND_FOLLOWAGE_MISSING_ENTRIES: string;
+	COMMAND_FOLLOWAGE_NOT_FOLLOWING: string;
+	COMMAND_TWITCH_NO_ENTRIES: string;
+	COMMAND_TWITCH_TITLES: {
+		FOLLOWERS: string;
+		VIEWS: string;
+		MATURE: string;
+		PARTNER: string;
+	};
+	COMMAND_TWITCH_MATURITY: (mature: boolean) => string;
+	COMMAND_TWITCH_PARTNERSHIP: (partner: boolean) => string;
+	COMMAND_TWITCH_CREATED_AT: string;
 	COMMAND_WIKIPEDIA_NOTFOUND: string;
 	COMMAND_YOUTUBE_NOTFOUND: string;
 	COMMAND_YOUTUBE_INDEX_NOTFOUND: string;

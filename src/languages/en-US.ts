@@ -88,8 +88,8 @@ const PERMS = {
 
 const random = (num: number) => Math.round(Math.random() * num);
 
-function duration(time: number) {
-	return friendlyDuration(time, TIMES);
+function duration(time: number, precision?: number) {
+	return friendlyDuration(time, TIMES, precision);
 }
 
 export default class extends Language {
@@ -1790,6 +1790,16 @@ export default class extends Language {
 		}),
 		COMMAND_WHOIS_DESCRIPTION: 'Who are you?',
 		COMMAND_WHOIS_EXTENDED: builder.display('whois', {}),
+		COMMAND_FOLLOWAGE_DESCRIPTION: 'Check how long a Twitch user has been following a channel.',
+		COMMAND_FOLLOWAGE_EXTENDED: builder.display('followage', {
+			extendedHelp: `Just... that.`,
+			examples: ['dallas cohhcarnage']
+		}),
+		COMMAND_TWITCH_DESCRIPTION: 'Check the information about a Twitch profile.',
+		COMMAND_TWITCH_EXTENDED: builder.display('twitch', {
+			extendedHelp: `Really, just that.`,
+			examples: ['riotgames']
+		}),
 		COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something through Wikipedia.',
 		COMMAND_WIKIPEDIA_EXTENDED: builder.display('wikipedia', {}),
 		COMMAND_YOUTUBE_DESCRIPTION: 'Search something through YouTube.',
@@ -2809,6 +2819,19 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Tag        ::')} **${user.tag}**`,
 			`→ ${inlineCodeblock('Created At ::')} **${timestamp.displayUTC(user.createdAt)}**`
 		].join('\n'),
+		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
+		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
+		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',
+		COMMAND_TWITCH_NO_ENTRIES: 'There are no entries, are you sure you wrote the user name correctly?',
+		COMMAND_TWITCH_TITLES: {
+			FOLLOWERS: 'Followers',
+			VIEWS: 'Views',
+			MATURE: 'Mature',
+			PARTNER: 'Partner'
+		},
+		COMMAND_TWITCH_MATURITY: (mature: boolean) => mature ? 'This is a mature channel.' : 'This channel is safe for everyone.',
+		COMMAND_TWITCH_PARTNERSHIP: (partner: boolean) => partner ? 'This is a partnered channel.' : 'This channel is not partnered yet.',
+		COMMAND_TWITCH_CREATED_AT: 'Created At:',
 		COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',

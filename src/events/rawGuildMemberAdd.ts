@@ -30,7 +30,7 @@ export default class extends Event {
 		if (!guild || !guild.available) return;
 
 		guild.nicknames.set(data.user.id, data.nick || null);
-		guild.client.userTags.set(data.user.id, data.user);
+		guild.client.userTags.create(data.user);
 		const member = guild.members.add(data);
 
 		if (await this.handleRAID(guild, member)) return;

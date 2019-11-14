@@ -13,11 +13,11 @@ export default class extends Event {
 		super(store, file, directory, { name: 'GUILD_MEMBER_UPDATE', emitter: store.client.ws });
 	}
 
-	public async run(data: WSGuildMemberUpdate): Promise<void> {
+	public run(data: WSGuildMemberUpdate) {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (typeof guild === 'undefined') return;
 
-		this.handleNicknameChange(guild, data)
+		this.handleNicknameChange(guild, data);
 		floatPromise(this, this.handleRoleSets(guild, data));
 	}
 
@@ -83,10 +83,8 @@ export default class extends Event {
 			if (set.roles.includes(updatedRoleID)) memberRoles = memberRoles.filter(id => !set.roles.includes(id) || id === updatedRoleID);
 		}
 
-		await api(this.client).guilds(guild.id).members(data.user.id).patch({
-			data: { roles: memberRoles },
-			reason: 'Automatic Role Group Modification'
-		});
+		await api(this.client).guilds(guild.id).members(data.user.id)
+			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
 	}
 
 }

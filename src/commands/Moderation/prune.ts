@@ -133,7 +133,10 @@ export default class extends SkyraCommand {
 	}
 
 	private formatContent(guild: KlasaGuild, content: string) {
-		return cleanMentions(guild, content).split('\n').map(line => `> ${line}`).join('\n');
+		return cleanMentions(guild, content)
+			.split('\n')
+			.map(line => `> ${line}`)
+			.join('\n');
 	}
 
 	private formatAttachment(attachment: MessageAttachment) {
@@ -183,11 +186,17 @@ export default class extends SkyraCommand {
 	}
 
 	private formatEmbedRichDescription(guild: KlasaGuild, description: string) {
-		return cleanMentions(guild, description).split('\n').map(line => `> > ${line}`).join('\n');
+		return cleanMentions(guild, description)
+			.split('\n')
+			.map(line => `> > ${line}`)
+			.join('\n');
 	}
 
 	private formatEmbedRichField(guild: KlasaGuild, field: EmbedField) {
-		return `> #> ${field.name}\n${cleanMentions(guild, field.value).split('\n').map(line => `>  > ${line}`).join('\n')}`;
+		return `> #> ${field.name}\n${cleanMentions(guild, field.value)
+			.split('\n')
+			.map(line => `>  > ${line}`)
+			.join('\n')}`;
 	}
 
 	private formatEmbedRichProvider(embed: MessageEmbed) {

@@ -48,7 +48,7 @@
     "confusables": "^0.3.3",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js#3393/head",
-    "fs-nextra": "^0.4.6",
+    "fs-nextra": "^0.4.7",
     "gifencoder": "^2.0.1",
     "he": "^1.2.0",
     "klasa": "github:dirigeants/klasa#settings",

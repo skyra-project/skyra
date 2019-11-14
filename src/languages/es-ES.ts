@@ -1768,6 +1768,11 @@ export default class extends Language {
 		}),
 		COMMAND_WHOIS_DESCRIPTION: 'Who are you?',
 		COMMAND_WHOIS_EXTENDED: builder.display('whois', {}),
+		COMMAND_TWITCH_DESCRIPTION: 'Check the information about a Twitch profile.',
+		COMMAND_TWITCH_EXTENDED: builder.display('twitch', {
+			extendedHelp: `Just... that.`,
+			examples: ['Riot Games']
+		}),
 		COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something through Wikipedia.',
 		COMMAND_WIKIPEDIA_EXTENDED: builder.display('wikipedia', {}),
 		COMMAND_YOUTUBE_DESCRIPTION: 'Search something through YouTube.',
@@ -2780,6 +2785,16 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Etiqueta       ::')} **${user.tag}**`,
 			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(user.createdAt)}**`
 		].join('\n'),
+		COMMAND_TWITCH_NO_ENTRIES: 'There are no entries, are you sure you wrote the user name correctly?',
+		COMMAND_TWITCH_TITLES: {
+			FOLLOWERS: 'Followers',
+			VIEWS: 'Views',
+			MATURE: 'Mature',
+			PARTNER: 'Partner'
+		},
+		COMMAND_TWITCH_MATURITY: (mature: boolean) => mature ? 'This is a mature channel.' : 'This channel is safe for everyone.',
+		COMMAND_TWITCH_PARTNERSHIP: (partner: boolean) => partner ? 'This is a partnered channel.' : 'This channel is not partnered yet.',
+		COMMAND_TWITCH_CREATED_AT: 'Created At:',
 		COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',

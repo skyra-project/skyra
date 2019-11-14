@@ -1287,6 +1287,7 @@ export interface LanguageKeys {
 	EVENTS_NAME_DIFFERENCE: (previous: string | null, next: string | null) => string;
 	EVENTS_MESSAGE_UPDATE: string;
 	EVENTS_MESSAGE_DELETE: string;
+	EVENTS_REACTION: string;
 	EVENTS_COMMAND: (command: string) => string;
 	SETTINGS_DELETE_CHANNELS_DEFAULT: string;
 	SETTINGS_DELETE_ROLES_INITIAL: string;

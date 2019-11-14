@@ -3082,6 +3082,7 @@ export default class extends Language {
 		].join('\n'),
 		EVENTS_MESSAGE_UPDATE: 'Mensaje Editado',
 		EVENTS_MESSAGE_DELETE: 'Mensaje Eliminado',
+		EVENTS_REACTION: 'Reacción Añadida',
 		EVENTS_COMMAND: command => `Comando Usado: ${command}`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Restablecido el valor para la clave `channels.default`',

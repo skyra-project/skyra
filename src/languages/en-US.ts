@@ -3470,6 +3470,7 @@ export default class extends Language {
 		].join('\n'),
 		EVENTS_MESSAGE_UPDATE: 'Message Edited',
 		EVENTS_MESSAGE_DELETE: 'Message Deleted',
+		EVENTS_REACTION: 'Reaction Added',
 		EVENTS_COMMAND: command => `Command Used: ${command}`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reseated the value for `channels.default`',

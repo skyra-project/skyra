@@ -22,7 +22,8 @@ export default class extends SQLProvider {
 		.add('float', { type: 'DOUBLE PRECISION', serializer: input => this.cNumber(input as number) })
 		.add('any', { type: 'JSON', serializer: input => this.cJson(input as AnyObject), arraySerializer: input => this.cArrayJson(input as AnyObject[]) })
 		.add('json', { 'extends': 'any' })
-		.add('permissionnode', { 'extends': 'any' });
+		.add('permissionnode', { 'extends': 'any' })
+		.add('emoji', { 'type': 'VARCHAR(128)', 'extends': 'string' });
 
 	public pgsql: Pool | null = null;
 

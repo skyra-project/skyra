@@ -9,7 +9,8 @@ const TYPES: Record<MessageLogsEnum, string> = {
 	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
 	[MessageLogsEnum.Image]: GuildSettings.Channels.ImageLogs,
 	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
-	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs
+	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs,
+	[MessageLogsEnum.Reaction]: GuildSettings.Channels.ReactionLogs
 };
 
 export default class extends Event {

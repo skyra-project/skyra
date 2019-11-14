@@ -138,8 +138,8 @@ export namespace GuildSettings {
 		export namespace Reactions {
 			export const Enabled = T<boolean>('selfmod.reactions.enabled');
 			export const Maximum = T<number>('selfmod.reactions.maximum');
-			export const WhiteList = T<number>('selfmod.reactions.whitelist');
-			export const BlackList = T<number>('selfmod.reactions.blacklist');
+			export const WhiteList = T<string[]>('selfmod.reactions.whitelist');
+			export const BlackList = T<string[]>('selfmod.reactions.blacklist');
 			export const SoftAction = T<number>('selfmod.reactions.softAction');
 			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.reactions.hardAction');
 			export const HardActionDuration = T<number>('selfmod.reactions.hardActionDuration');

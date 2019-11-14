@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async retrieveMarkov(message: KlasaMessage, channel: TextChannel = message.channel as TextChannel, user: User | undefined) {
-		const entry = user ? this.kInternalUserCache.get(user.id) : this.kInternalCache.get(channel);
+		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
@@ -67,9 +67,9 @@ export default class extends SkyraCommand {
 			.parse(contents)
 			.start(this.kBoundUseUpperCase)
 			.end(60);
-		if (user) this.kInternalUserCache.set(user.id, markov);
+		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);
 		else this.kInternalCache.set(channel, markov);
-		this.client.setTimeout(() => user ? this.kInternalUserCache.delete(user.id) : this.kInternalCache.delete(channel), this.kInternalCacheTTL);
+		this.client.setTimeout(() => user ? this.kInternalUserCache.delete(`${channel.id}.${user.id}`) : this.kInternalCache.delete(channel), this.kInternalCacheTTL);
 		return markov;
 	}
 

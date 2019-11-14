@@ -4,7 +4,7 @@ import { fetch } from '../../lib/util/util';
 import { TextChannel } from 'discord.js';
 import { Reddit } from '../../lib/types/definitions/Reddit';
 
-const blacklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty/i;
+const blacklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
 const titleBlacklist = /nsfl/i;
 
 export default class extends SkyraCommand {

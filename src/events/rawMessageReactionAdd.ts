@@ -12,7 +12,7 @@ export default class extends Event {
 		super(store, file, directory, { name: 'MESSAGE_REACTION_ADD', emitter: store.client.ws });
 	}
 
-	public async run(data: WSMessageReactionAdd): Promise<void> {
+	public run(data: WSMessageReactionAdd) {
 		const channel = this.client.channels.get(data.channel_id) as TextChannel | undefined;
 		if (!channel || channel.type !== 'text' || !channel.readable) return;
 

@@ -1266,7 +1266,8 @@ export interface LanguageKeys {
 	EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous: string) => string;
 	EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed: readonly string[], added: readonly string[]) => string;
 	EVENTS_NICKNAME_UPDATE: string;
-	EVENTS_NICKNAME_DIFFERENCE: (previous: string | null, next: string | null) => string;
+	EVENTS_USERNAME_UPDATE: string;
+	EVENTS_NAME_DIFFERENCE: (previous: string | null, next: string | null) => string;
 	EVENTS_MESSAGE_UPDATE: string;
 	EVENTS_MESSAGE_DELETE: string;
 	EVENTS_COMMAND: (command: string) => string;

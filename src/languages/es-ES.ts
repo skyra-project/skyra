@@ -3052,7 +3052,8 @@ export default class extends Language {
 				: 'Añadidos los roles'}: ${added.join(', ')}`
 			: ''}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
-		EVENTS_NICKNAME_DIFFERENCE: (previous, next) => [
+		EVENTS_USERNAME_UPDATE: 'Username Edited',
+		EVENTS_NAME_DIFFERENCE: (previous, next) => [
 			`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`,
 			`**Next**: ${next === null ? 'Unset' : `\`${next}\``}`
 		].join('\n'),

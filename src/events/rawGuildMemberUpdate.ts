@@ -36,7 +36,7 @@ export default class extends Event {
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 				.setColor(0xDCE775)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-				.setDescription(guild.language.tget('EVENTS_NICKNAME_DIFFERENCE', previous, next))
+				.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous, next))
 				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
 				.setTimestamp());
 		}

@@ -13,6 +13,7 @@ export default class extends SkyraCommand {
 
 	private readonly kMessageHundredsLimit = 10;
 	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
+	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
 	private readonly kBoundUseUpperCase = this.useUpperCase.bind(this);
 	private readonly kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
@@ -57,7 +58,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async retrieveMarkov(message: KlasaMessage, channel: TextChannel = message.channel as TextChannel, user: User | undefined) {
-		const entry = this.kInternalCache.get(message.channel as TextChannel);
+		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
@@ -66,8 +67,9 @@ export default class extends SkyraCommand {
 			.parse(contents)
 			.start(this.kBoundUseUpperCase)
 			.end(60);
-		this.kInternalCache.set(message.channel as TextChannel, markov);
-		this.client.setTimeout(() => this.kInternalCache.delete(message.channel as TextChannel), this.kInternalCacheTTL);
+		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);
+		else this.kInternalCache.set(channel, markov);
+		this.client.setTimeout(() => user ? this.kInternalUserCache.delete(`${channel.id}.${user.id}`) : this.kInternalCache.delete(channel), this.kInternalCacheTTL);
 		return markov;
 	}
 

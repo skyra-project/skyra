@@ -24,7 +24,7 @@ export default class extends Event {
 	private handleNicknameChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
 		// Get the current nickname, compare them both, if they are different, it changed
 		const previous = guild.nicknames.get(data.user.id);
-		const next = data.nick;
+		const next = data.nick || null;
 
 		// Get the previous nickname
 		guild.nicknames.set(data.user.id, next);

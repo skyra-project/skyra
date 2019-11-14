@@ -16,6 +16,7 @@ export default Client.defaultGuildSchema
 		.add('moderation-logs', 'TextChannel')
 		.add('nsfw-message-logs', 'TextChannel')
 		.add('image-logs', 'TextChannel')
+		.add('prune-logs', 'TextChannel')
 		.add('roles', 'TextChannel')
 		.add('spam', 'TextChannel'))
 	.add('command-autodelete', 'any', { array: true })

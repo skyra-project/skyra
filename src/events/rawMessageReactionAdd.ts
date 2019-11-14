@@ -3,7 +3,7 @@ import { WSMessageReactionAdd } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
-import { resolveEmoji } from '../lib/util/util';
+import { resolveEmoji, floatPromise } from '../lib/util/util';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
@@ -13,7 +13,7 @@ export default class extends Event {
 	}
 
 	public async run(data: WSMessageReactionAdd): Promise<void> {
-		const channel = this.client.channels.get(data.channel_id) as TextChannel;
+		const channel = this.client.channels.get(data.channel_id) as TextChannel | undefined;
 		if (!channel || channel.type !== 'text' || !channel.readable) return;
 
 		const parsed: LLRCData = {
@@ -38,25 +38,21 @@ export default class extends Event {
 
 		this.client.emit(Events.RoleReactionAdd, parsed);
 
-		if (!parsed.channel.nsfw
-			&& parsed.channel.id !== channel.guild.settings.get(GuildSettings.Starboard.Channel)
-			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get(GuildSettings.Starboard.Emoji)) {
-			try {
-				await this.handleStarboard(parsed);
-			} catch (error) {
-				this.client.emit(Events.Wtf, error);
-			}
-		}
+		floatPromise(this, this.handleStarboard(channel, parsed));
 	}
 
-	public async handleStarboard(parsed: LLRCData): Promise<void> {
+	private async handleStarboard(channel: TextChannel, parsed: LLRCData) {
+		if (parsed.channel.nsfw
+			|| parsed.channel.id === channel.guild.settings.get(GuildSettings.Starboard.Channel)
+			|| resolveEmoji(parsed.emoji) !== channel.guild.settings.get(GuildSettings.Starboard.Emoji)) return;
+
 		try {
 			const channel = parsed.guild.settings.get(GuildSettings.Starboard.Channel);
 			const ignoreChannels = parsed.guild.settings.get(GuildSettings.Starboard.IgnoreChannels);
 			if (!channel || ignoreChannels.includes(parsed.channel.id)) return;
 
-			const starboardChannel = parsed.guild.channels.get(channel) as TextChannel;
-			if (!starboardChannel || !starboardChannel.postable) {
+			const starboardChannel = parsed.guild.channels.get(channel) as TextChannel | undefined;
+			if (typeof starboardChannel === 'undefined' || !starboardChannel.postable) {
 				await parsed.guild.settings.reset(GuildSettings.Starboard.Channel);
 				return;
 			}

@@ -24,6 +24,7 @@ export namespace GuildSettings {
 		export const NSFWMessageLogs = T<string>('channels.nsfw-message-logs');
 		export const ImageLogs = T<string>('channels.image-logs');
 		export const PruneLogs = T<string>('channels.prune-logs');
+		export const ReactionLogs = T<string>('channels.reaction-logs');
 		export const Roles = T<string>('channels.roles');
 		export const Spam = T<string>('channels.spam');
 	}
@@ -132,6 +133,18 @@ export namespace GuildSettings {
 			export const HardActionDuration = T<number>('selfmod.filter.hardActionDuration');
 			export const ThresholdMaximum = T<number>('selfmod.filter.thresholdMaximum');
 			export const ThresholdDuration = T<number | null>('selfmod.filter.thresholdDuration');
+		}
+
+		export namespace Reactions {
+			export const Enabled = T<boolean>('selfmod.reactions.enabled');
+			export const Maximum = T<number>('selfmod.reactions.maximum');
+			export const WhiteList = T<number>('selfmod.reactions.whitelist');
+			export const BlackList = T<number>('selfmod.reactions.blacklist');
+			export const SoftAction = T<number>('selfmod.reactions.softAction');
+			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.reactions.hardAction');
+			export const HardActionDuration = T<number>('selfmod.reactions.hardActionDuration');
+			export const ThresholdMaximum = T<number>('selfmod.reactions.thresholdMaximum');
+			export const ThresholdDuration = T<number | null>('selfmod.reactions.thresholdDuration');
 		}
 
 		export const IgnoreChannels = T<readonly string[]>('selfmod.ignoreChannels');

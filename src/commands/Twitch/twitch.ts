@@ -3,6 +3,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { MessageEmbed } from 'discord.js';
 import { fetch } from '../../lib/util/util';
 import { TOKENS } from '../../../config';
+import { TwitchChannelSearchResults, TwitchChannelResult } from '../../lib/types/definitions/Twitch';
 
 const kFetchOptions = {
 	headers: {
@@ -23,7 +24,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [name]: [string]) {
-		const results = await fetch(`https://api.twitch.tv/kraken/users?login=${encodeURIComponent(name).replace(/%20/g, '&20')}`, kFetchOptions, 'json') as TwitchResults;
+		const results = await fetch(`https://api.twitch.tv/kraken/users?login=${encodeURIComponent(name).replace(/%20/g, '&20')}`, kFetchOptions, 'json') as TwitchChannelSearchResults;
 		if (results._total === 0) throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
 
 		const channel = await fetch(`https://api.twitch.tv/kraken/channels/${results.users[0]._id}`, kFetchOptions, 'json') as TwitchChannelResult;
@@ -43,47 +44,4 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(embed);
 	}
 
-}
-
-
-export interface TwitchResults {
-	_total: number;
-	users: TwitchResult[];
-}
-
-export interface TwitchResult {
-	_id: string;
-	bio: null | string;
-	created_at: Date;
-	display_name: string;
-	logo: null | string;
-	name: string;
-	type: string;
-	updated_at: Date;
-}
-
-export interface TwitchChannelResult {
-	mature: boolean;
-	status: string;
-	broadcaster_language: string;
-	broadcaster_software: string;
-	display_name: string;
-	game: string;
-	language: string;
-	_id: string;
-	name: string;
-	created_at: Date;
-	updated_at: Date;
-	partner: boolean;
-	logo: string;
-	video_banner: string;
-	profile_banner: string;
-	profile_banner_background_color: null;
-	url: string;
-	views: number;
-	followers: number;
-	broadcaster_type: string;
-	description: string;
-	private_video: boolean;
-	privacy_options_enabled: boolean;
 }

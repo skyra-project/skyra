@@ -88,7 +88,7 @@ export default class extends SkyraCommand {
 		if (channel.attachable) {
 			await channel.sendMessage('', {
 				embed: new MessageEmbed()
-					.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 64 }))
+					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 64 }))
 					.setDescription(message.language.tget('COMMAND_PRUNE_LOG_MESSAGE', message.channel.toString(), message.author.toString(), messages.size))
 					.setColor(this.kColor)
 					.setTimestamp(),

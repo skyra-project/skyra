@@ -2852,6 +2852,7 @@ export default class extends Language {
 		CONST_MONITOR_ATTACHMENTFILTER: 'Demasiados Documentos',
 		CONST_MONITOR_MESSAGEFILTER: 'Too Many Message Duplicates',
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
+		CONST_MONITOR_REACTIONFILTER: 'Reacción Eliminada',
 		MONITOR_NOINVITE: user => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
 		MONITOR_WORDFILTER_DM: filtered => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,

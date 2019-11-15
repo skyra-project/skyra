@@ -1160,6 +1160,7 @@ export interface LanguageKeys {
 	CONST_MONITOR_WORDFILTER: string;
 	CONST_MONITOR_CAPSFILTER: string;
 	CONST_MONITOR_ATTACHMENTFILTER: string;
+	CONST_MONITOR_REACTIONFILTER: string;
 	MONITOR_NOINVITE: (user: string) => string;
 	MONITOR_WORDFILTER_DM: (filtered: string) => string;
 	MONITOR_CAPSFILTER_DM: (message: string) => string;

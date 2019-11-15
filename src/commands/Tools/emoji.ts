@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 
 		if (!REG_TWEMOJI.test(emoji)) throw message.language.tget('COMMAND_EMOJI_INVALID', emoji);
 		const r = twemoji(emoji);
-		const buffer = await fetch(`https://twemoji.maxcdn.com/2/72x72/${r}.png`, 'buffer')
+		const buffer = await fetch(`https://twemoji.maxcdn.com/v/12.1.4/72x72/${r}.png`, 'buffer')
 			.catch(() => { throw message.language.tget('COMMAND_EMOJI_INVALID', emoji); });
 
 		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.tget('COMMAND_EMOJI_TOO_LARGE', emoji);

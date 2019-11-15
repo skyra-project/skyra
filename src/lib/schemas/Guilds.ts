@@ -30,7 +30,8 @@ export default Client.defaultGuildSchema
 		.add('memberRemove', 'Boolean', { 'default': false })
 		.add('memberNameUpdate', 'Boolean', { 'default': false })
 		.add('messageDelete', 'Boolean', { 'default': false })
-		.add('messageEdit', 'Boolean', { 'default': false }))
+		.add('messageEdit', 'Boolean', { 'default': false })
+		.add('twemoji-reactions', 'Boolean', { 'default': false }))
 	.add('messages', folder => folder
 		.add('farewell', 'String', { max: 2000 })
 		.add('greeting', 'String', { max: 2000 })

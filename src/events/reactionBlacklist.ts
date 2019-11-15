@@ -25,10 +25,11 @@ export default class extends ModerationEvent<ArgumentType> {
 
 	public async run(data: LLRCData, emoji: string) {
 		if (!data.guild.settings.get(this.keyEnabled) as boolean
+			|| data.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).length === 0
 			|| data.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(data.channel.id)) return;
 
 		const member = await data.guild.members.fetch(data.userID);
-		if (this.hasPermissions(member)) return;
+		if (member.user.bot || this.hasPermissions(member)) return;
 
 		const args = [data, emoji] as const;
 		const preProcessed = this.preProcess(args);
@@ -60,7 +61,7 @@ export default class extends ModerationEvent<ArgumentType> {
 	}
 
 	protected preProcess([data, emoji]: Readonly<ArgumentType>) {
-		return data.channel.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).includes(emoji) ? 1 : null;
+		return data.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).includes(emoji) ? 1 : null;
 	}
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
@@ -78,18 +79,18 @@ export default class extends ModerationEvent<ArgumentType> {
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
 		const userTag = await this.client.userTags.fetch(data.userID);
 		return new MessageEmbed()
-			.setColor(0xFFAB40)
+			.setColor(0xEFAE45)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
 			.setThumbnail(data.emoji.id === null
-				? `https://twemoji.maxcdn.com/2/72x72/${twemoji(data.emoji.name)}.png`
-				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}`)
+				? `https://twemoji.maxcdn.com/v/12.1.4/72x72/${twemoji(data.emoji.name)}.png`
+				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`)
 			.setDescription(`[${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`)
-			.setFooter(`${data.channel.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
+			.setFooter(`${data.channel.name} | ${data.guild.language.tget('CONST_MONITOR_REACTIONFILTER')}`)
 			.setTimestamp();
 	}
 
 	protected onLog(args: Readonly<ArgumentType>) {
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, args[0].guild, this.onLogMessage.bind(this, args));
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, args[0].guild, this.onLogMessage.bind(this, args));
 	}
 
 	private hasPermissions(member: GuildMember) {

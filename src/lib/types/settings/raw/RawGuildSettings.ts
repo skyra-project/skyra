@@ -30,6 +30,7 @@ export interface RawGuildSettings {
 	'events.memberNameUpdate': boolean;
 	'events.messageDelete': boolean;
 	'events.messageEdit': boolean;
+	'events.twemoji-reactions': boolean;
 	'messages.farewell': string | null;
 	'messages.greeting': string | null;
 	'messages.join-dm': string | null;
@@ -158,6 +159,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"events.memberNameUpdate"              BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"events.messageDelete"                 BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"events.messageEdit"                   BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.twemoji-reactions"             BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"messages.farewell"                    VARCHAR(2000),
 		"messages.greeting"                    VARCHAR(2000),
 		"messages.join-dm"                     VARCHAR(1500),

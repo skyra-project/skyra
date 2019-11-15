@@ -1,13 +1,19 @@
 import { TextChannel, MessageEmbed } from 'discord.js';
-import { WSMessageReactionAdd } from '../lib/types/DiscordAPI';
+import { WSMessageReactionAdd, APIUserData } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
 import { resolveEmoji, floatPromise, getDisplayAvatar, twemoji } from '../lib/util/util';
 import { Event, EventStore } from 'klasa';
 import { MessageLogsEnum } from '../lib/util/constants';
+import Collection from '@discordjs/collection';
+import { api } from '../lib/util/Models/Api';
 
 export default class extends Event {
+
+	private readonly kCountCache = new Collection<string, InternalCacheEntry>();
+	private readonly kSyncCache = new Collection<string, Promise<InternalCacheEntry>>();
+	private kTimerSweeper: NodeJS.Timer | null = null;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: 'MESSAGE_REACTION_ADD', emitter: store.client.ws });
@@ -50,16 +56,23 @@ export default class extends Event {
 		if (data.channel.guild.settings.get(GuildSettings.Selfmod.Reactions.WhiteList).includes(emoji)) return;
 
 		this.client.emit(Events.ReactionBlacklist, data, emoji);
-		if (!data.channel.guild.settings.get(GuildSettings.Channels.ReactionLogs)) return;
+		if (!data.channel.guild.settings.get(GuildSettings.Channels.ReactionLogs)
+			|| (!data.channel.guild.settings.get(GuildSettings.Events.Twemoji) && data.emoji.id === null)) return;
+
+		if (await this.retrieveCount(data, emoji) > 1) return;
 
 		const userTag = await this.client.userTags.fetch(data.userID);
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.channel.guild, () => new MessageEmbed()
 			.setColor(0xFFAB40)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
 			.setThumbnail(data.emoji.id === null
-				? `https://twemoji.maxcdn.com/2/72x72/${twemoji(data.emoji.name)}.png`
-				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}`)
-			.setDescription(`[${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`)
+				? `https://twemoji.maxcdn.com/v/12.1.4/72x72/${twemoji(data.emoji.name)}.png`
+				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`)
+			.setDescription([
+				`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
+				`**Channel**: ${data.channel}`,
+				`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
+			].join('\n'))
 			.setFooter(`${data.channel.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
 			.setTimestamp());
 	}
@@ -89,4 +102,54 @@ export default class extends Event {
 		}
 	}
 
+	private async retrieveCount(data: LLRCData, emoji: string) {
+		const id = `${data.messageID}.${emoji}`;
+
+		// Pull from sync queue, and if it exists, await
+		const sync = this.kSyncCache.get(id);
+		if (typeof sync !== 'undefined') await sync;
+
+		// Retrieve the reaction count
+		const previousCount = this.kCountCache.get(id);
+		if (typeof previousCount !== 'undefined') {
+			previousCount.count++;
+			previousCount.sweepAt = Date.now() + 120000;
+			return previousCount.count;
+		}
+
+		// Pull the reactions from the API
+		const promise = this.fetchCount(data, emoji, id);
+		this.kSyncCache.set(id, promise);
+		return (await promise).count;
+	}
+
+	private async fetchCount(data: LLRCData, emoji: string, id: string) {
+		const users = await api(this.client)
+			.channels(data.channel.id)
+			.messages(data.messageID)
+			.reactions(emoji)
+			.get() as APIUserData[];
+		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
+		this.kCountCache.set(id, count);
+		this.kSyncCache.delete(id);
+
+		if (this.kTimerSweeper === null) {
+			this.kTimerSweeper = this.client.setInterval(() => {
+				const now = Date.now();
+				this.kCountCache.sweep(entry => entry.sweepAt < now);
+				if (this.kTimerSweeper !== null && this.kCountCache.size === 0) {
+					this.client.clearInterval(this.kTimerSweeper);
+					this.kTimerSweeper = null;
+				}
+			}, 5000);
+		}
+
+		return count;
+	}
+
+}
+
+interface InternalCacheEntry {
+	sweepAt: number;
+	count: number;
 }

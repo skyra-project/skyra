@@ -1097,6 +1097,32 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
+		COMMAND_REACTIONMODE_DESCRIPTION: 'Manage the behaviour for the reaction filter system.',
+		COMMAND_REACTIONMODE_EXTENDED: builder.display('reactionMode', {
+			extendedHelp: `The reactionMode command manages the behaviour of the reaction filter system.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
 
 		/**
 		 * #############

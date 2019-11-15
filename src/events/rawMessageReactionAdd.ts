@@ -5,8 +5,7 @@ import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
 import { resolveEmoji, floatPromise, getDisplayAvatar, twemoji } from '../lib/util/util';
 import { Event, EventStore } from 'klasa';
-import { MessageLogsEnum, APIErrors } from '../lib/util/constants';
-import { api } from '../lib/util/Models/Api';
+import { MessageLogsEnum } from '../lib/util/constants';
 
 export default class extends Event {
 
@@ -50,7 +49,7 @@ export default class extends Event {
 	private async handleReactionLogs(data: LLRCData, emoji: string) {
 		if (data.channel.guild.settings.get(GuildSettings.Selfmod.Reactions.WhiteList).includes(emoji)) return;
 
-		floatPromise(this, this.handleReactionBlacklist(data, emoji));
+		this.client.emit(Events.ReactionBlacklist, data, emoji);
 		if (!data.channel.guild.settings.get(GuildSettings.Channels.ReactionLogs)) return;
 
 		const userTag = await this.client.userTags.fetch(data.userID);
@@ -63,20 +62,6 @@ export default class extends Event {
 			.setDescription(`[${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`)
 			.setFooter(`${data.channel.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
 			.setTimestamp());
-	}
-
-	private async handleReactionBlacklist(data: LLRCData, emoji: string) {
-		if (!data.channel.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).includes(emoji)) return;
-
-		try {
-			await api(this.client).channels(data.channel.id)
-				.messages(data.messageID)
-				.reactions(emoji, data.userID)
-				.delete({ reason: '[MODERATION] Automatic Removal of Blacklisted Emoji.' });
-		} catch (error) {
-			if (error.code === APIErrors.UnknownMessage) return;
-			this.client.emit(Events.Wtf, error);
-		}
 	}
 
 	private async handleStarboard(data: LLRCData, emoji: string) {

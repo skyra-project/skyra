@@ -1165,6 +1165,7 @@ export interface LanguageKeys {
 	MONITOR_CAPSFILTER: (user: string) => string;
 	MONITOR_MESSAGEFILTER: (user: string) => string;
 	MONITOR_NEWLINEFILTER: (user: string) => string;
+	MONITOR_REACTIONSFILTER: (user: string) => string;
 	MONITOR_NMS_MESSAGE: (user: User) => string;
 	MONITOR_NMS_MODLOG: (threshold: number) => string;
 	MONITOR_NMS_ALERT: string;

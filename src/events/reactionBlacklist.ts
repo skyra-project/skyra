@@ -71,7 +71,7 @@ export default class extends ModerationEvent<ArgumentType> {
 	}
 
 	protected onAlert([data]: Readonly<ArgumentType>) {
-		floatPromise(this, data.channel.sendLocale('MONITOR_REACTIONS', [`<@${data.userID}>`])
+		floatPromise(this, data.channel.sendLocale('MONITOR_REACTIONSFILTER', [`<@${data.userID}>`])
 			.then(message => message.nuke(15000)));
 	}
 

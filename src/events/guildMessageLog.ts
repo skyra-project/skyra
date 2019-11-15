@@ -9,12 +9,13 @@ const TYPES: Record<MessageLogsEnum, string> = {
 	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
 	[MessageLogsEnum.Image]: GuildSettings.Channels.ImageLogs,
 	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
-	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs
+	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs,
+	[MessageLogsEnum.Reaction]: GuildSettings.Channels.ReactionLogs
 };
 
 export default class extends Event {
 
-	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => MessageEmbed) {
+	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => Promise<MessageEmbed> | MessageEmbed) {
 		const key = TYPES[type];
 		if (!key) {
 			this.client.emit(Events.Warn, `[EVENT] GuildMessageLog: Unknown type '${type}'`);
@@ -33,8 +34,9 @@ export default class extends Event {
 		// Don't post if it's not possible
 		if (!channel.postable) return;
 
+		const processed = await makeMessage();
 		try {
-			await channel.send(makeMessage());
+			await channel.send(processed);
 		} catch (error) {
 			this.client.emit(Events.Wtf, error instanceof DiscordAPIError || error instanceof HTTPError
 				? `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`

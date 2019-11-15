@@ -13,6 +13,7 @@ export interface Adders {
 	newlines: Adder<string> | null;
 	invites: Adder<string> | null;
 	words: Adder<string> | null;
+	reactions: Adder<string> | null;
 }
 
 /**
@@ -34,7 +35,8 @@ export class GuildSecurity {
 		messages: null,
 		newlines: null,
 		invites: null,
-		words: null
+		words: null,
+		reactions: null
 	};
 
 	public actions: ModerationActions;

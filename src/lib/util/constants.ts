@@ -37,7 +37,7 @@ export namespace ConnectFourConstants {
 
 }
 
-export const enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member }
+export const enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member, Reaction }
 
 export namespace Moderation {
 

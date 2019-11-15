@@ -1,73 +1,155 @@
-import { TextChannel } from 'discord.js';
-import { WSMessageReactionAdd } from '../lib/types/DiscordAPI';
+import { TextChannel, MessageEmbed } from 'discord.js';
+import { WSMessageReactionAdd, APIUserData } from '../lib/types/DiscordAPI';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { LLRCData } from '../lib/util/LongLivingReactionCollector';
-import { resolveEmoji } from '../lib/util/util';
+import { resolveEmoji, floatPromise, getDisplayAvatar, twemoji } from '../lib/util/util';
 import { Event, EventStore } from 'klasa';
+import { MessageLogsEnum } from '../lib/util/constants';
+import Collection from '@discordjs/collection';
+import { api } from '../lib/util/Models/Api';
 
 export default class extends Event {
+
+	private readonly kCountCache = new Collection<string, InternalCacheEntry>();
+	private readonly kSyncCache = new Collection<string, Promise<InternalCacheEntry>>();
+	private kTimerSweeper: NodeJS.Timer | null = null;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: 'MESSAGE_REACTION_ADD', emitter: store.client.ws });
 	}
 
-	public async run(data: WSMessageReactionAdd): Promise<void> {
-		const channel = this.client.channels.get(data.channel_id) as TextChannel;
+	public run(raw: WSMessageReactionAdd) {
+		const channel = this.client.channels.get(raw.channel_id) as TextChannel | undefined;
 		if (!channel || channel.type !== 'text' || !channel.readable) return;
 
-		const parsed: LLRCData = {
+		const data: LLRCData = {
 			channel,
 			emoji: {
-				animated: data.emoji.animated,
-				id: data.emoji.id,
-				managed: 'managed' in data.emoji ? data.emoji.managed! : null,
-				name: data.emoji.name,
-				requireColons: 'require_colons' in data.emoji ? data.emoji.require_colons! : null,
-				roles: data.emoji.roles || null,
-				user: (data.emoji.user && this.client.users.add(data.emoji.user)) || { id: data.user_id }
+				animated: raw.emoji.animated,
+				id: raw.emoji.id,
+				managed: 'managed' in raw.emoji ? raw.emoji.managed! : null,
+				name: raw.emoji.name,
+				requireColons: 'require_colons' in raw.emoji ? raw.emoji.require_colons! : null,
+				roles: raw.emoji.roles || null,
+				user: (raw.emoji.user && this.client.users.add(raw.emoji.user)) || { id: raw.user_id }
 			},
 			guild: channel.guild,
-			messageID: data.message_id,
-			userID: data.user_id
+			messageID: raw.message_id,
+			userID: raw.user_id
 		};
 
 		for (const llrc of this.client.llrCollectors) {
-			llrc.send(parsed);
+			llrc.send(data);
 		}
 
-		this.client.emit(Events.RoleReactionAdd, parsed);
+		this.client.emit(Events.RoleReactionAdd, data);
 
-		if (!parsed.channel.nsfw
-			&& parsed.channel.id !== channel.guild.settings.get(GuildSettings.Starboard.Channel)
-			&& resolveEmoji(parsed.emoji) === channel.guild.settings.get(GuildSettings.Starboard.Emoji)) {
-			try {
-				await this.handleStarboard(parsed);
-			} catch (error) {
-				this.client.emit(Events.Wtf, error);
-			}
-		}
+		const emoji = resolveEmoji(data.emoji);
+		if (emoji === null) return;
+
+		floatPromise(this, this.handleReactionLogs(data, emoji));
+		floatPromise(this, this.handleStarboard(data, emoji));
 	}
 
-	public async handleStarboard(parsed: LLRCData): Promise<void> {
-		try {
-			const channel = parsed.guild.settings.get(GuildSettings.Starboard.Channel);
-			const ignoreChannels = parsed.guild.settings.get(GuildSettings.Starboard.IgnoreChannels);
-			if (!channel || ignoreChannels.includes(parsed.channel.id)) return;
+	private async handleReactionLogs(data: LLRCData, emoji: string) {
+		if (data.channel.guild.settings.get(GuildSettings.Selfmod.Reactions.WhiteList).includes(emoji)) return;
 
-			const starboardChannel = parsed.guild.channels.get(channel) as TextChannel;
-			if (!starboardChannel || !starboardChannel.postable) {
-				await parsed.guild.settings.reset(GuildSettings.Starboard.Channel);
+		this.client.emit(Events.ReactionBlacklist, data, emoji);
+		if (!data.channel.guild.settings.get(GuildSettings.Channels.ReactionLogs)
+			|| (!data.channel.guild.settings.get(GuildSettings.Events.Twemoji) && data.emoji.id === null)) return;
+
+		if (await this.retrieveCount(data, emoji) > 1) return;
+
+		const userTag = await this.client.userTags.fetch(data.userID);
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.channel.guild, () => new MessageEmbed()
+			.setColor(0xFFAB40)
+			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
+			.setThumbnail(data.emoji.id === null
+				? `https://twemoji.maxcdn.com/v/12.1.4/72x72/${twemoji(data.emoji.name)}.png`
+				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`)
+			.setDescription([
+				`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
+				`**Channel**: ${data.channel}`,
+				`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
+			].join('\n'))
+			.setFooter(`${data.channel.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
+			.setTimestamp());
+	}
+
+	private async handleStarboard(data: LLRCData, emoji: string) {
+		if (data.channel.nsfw
+			|| data.channel.id === data.channel.guild.settings.get(GuildSettings.Starboard.Channel)
+			|| emoji !== data.channel.guild.settings.get(GuildSettings.Starboard.Emoji)) return;
+
+		try {
+			const channel = data.guild.settings.get(GuildSettings.Starboard.Channel);
+			const ignoreChannels = data.guild.settings.get(GuildSettings.Starboard.IgnoreChannels);
+			if (!channel || ignoreChannels.includes(data.channel.id)) return;
+
+			const starboardChannel = data.guild.channels.get(channel) as TextChannel | undefined;
+			if (typeof starboardChannel === 'undefined' || !starboardChannel.postable) {
+				await data.guild.settings.reset(GuildSettings.Starboard.Channel);
 				return;
 			}
 
 			// Process the starboard
-			const { starboard } = parsed.guild;
-			const sMessage = await starboard.fetch(parsed.channel, parsed.messageID, parsed.userID);
-			if (sMessage) await sMessage.add(parsed.userID);
+			const { starboard } = data.guild;
+			const sMessage = await starboard.fetch(data.channel, data.messageID, data.userID);
+			if (sMessage) await sMessage.add(data.userID);
 		} catch (error) {
 			this.client.emit(Events.ApiError, error);
 		}
 	}
 
+	private async retrieveCount(data: LLRCData, emoji: string) {
+		const id = `${data.messageID}.${emoji}`;
+
+		// Pull from sync queue, and if it exists, await
+		const sync = this.kSyncCache.get(id);
+		if (typeof sync !== 'undefined') await sync;
+
+		// Retrieve the reaction count
+		const previousCount = this.kCountCache.get(id);
+		if (typeof previousCount !== 'undefined') {
+			previousCount.count++;
+			previousCount.sweepAt = Date.now() + 120000;
+			return previousCount.count;
+		}
+
+		// Pull the reactions from the API
+		const promise = this.fetchCount(data, emoji, id);
+		this.kSyncCache.set(id, promise);
+		return (await promise).count;
+	}
+
+	private async fetchCount(data: LLRCData, emoji: string, id: string) {
+		const users = await api(this.client)
+			.channels(data.channel.id)
+			.messages(data.messageID)
+			.reactions(emoji)
+			.get() as APIUserData[];
+		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
+		this.kCountCache.set(id, count);
+		this.kSyncCache.delete(id);
+
+		if (this.kTimerSweeper === null) {
+			this.kTimerSweeper = this.client.setInterval(() => {
+				const now = Date.now();
+				this.kCountCache.sweep(entry => entry.sweepAt < now);
+				if (this.kTimerSweeper !== null && this.kCountCache.size === 0) {
+					this.client.clearInterval(this.kTimerSweeper);
+					this.kTimerSweeper = null;
+				}
+			}, 5000);
+		}
+
+		return count;
+	}
+
+}
+
+interface InternalCacheEntry {
+	sweepAt: number;
+	count: number;
 }

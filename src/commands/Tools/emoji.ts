@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
+import { fetch, twemoji } from '../../lib/util/util';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;
 const REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
@@ -27,33 +27,13 @@ export default class extends SkyraCommand {
 		}
 
 		if (!REG_TWEMOJI.test(emoji)) throw message.language.tget('COMMAND_EMOJI_INVALID', emoji);
-		const r = this.emoji(emoji);
-		const buffer = await fetch(`https://twemoji.maxcdn.com/2/72x72/${r}.png`, 'buffer')
+		const r = twemoji(emoji);
+		const buffer = await fetch(`https://twemoji.maxcdn.com/v/12.1.4/72x72/${r}.png`, 'buffer')
 			.catch(() => { throw message.language.tget('COMMAND_EMOJI_INVALID', emoji); });
 
 		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.tget('COMMAND_EMOJI_TOO_LARGE', emoji);
 
 		return message.sendLocale('COMMAND_EMOJI_TWEMOJI', [emoji, r], { files: [{ attachment: buffer, name: `${r}.png` }] });
-	}
-
-	public emoji(emoji: string) {
-		const r: string[] = [];
-		let c = 0;
-		let p = 0;
-		let i = 0;
-
-		while (i < emoji.length) {
-			c = emoji.charCodeAt(i++);
-			if (p) {
-				r.push((0x10000 + ((p - 0xD800) << 10) + (c - 0xDC00)).toString(16));
-				p = 0;
-			} else if (c >= 0xD800 && c <= 0xDBFF) {
-				p = c;
-			} else {
-				r.push(c.toString(16));
-			}
-		}
-		return r.join('-');
 	}
 
 }

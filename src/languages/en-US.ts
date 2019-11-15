@@ -1097,6 +1097,32 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
+		COMMAND_REACTIONMODE_DESCRIPTION: 'Manage the behaviour for the reaction filter system.',
+		COMMAND_REACTIONMODE_EXTENDED: builder.display('reactionMode', {
+			extendedHelp: `The reactionMode command manages the behaviour of the reaction filter system.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
 
 		/**
 		 * #############
@@ -2881,6 +2907,7 @@ export default class extends Language {
 		CONST_MONITOR_ATTACHMENTFILTER: 'Too Many Attachments',
 		CONST_MONITOR_MESSAGEFILTER: 'Too Many Message Duplicates',
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
+		CONST_MONITOR_REACTIONFILTER: 'Filtered Reaction',
 		MONITOR_NOINVITE: user => `${REDCROSS} Dear ${user}, invite links aren't allowed here.`,
 		MONITOR_WORDFILTER_DM: filtered => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,
@@ -2888,6 +2915,7 @@ export default class extends Language {
 		MONITOR_CAPSFILTER: user => `${REDCROSS} EEEOOO ${user}! PLEASE DO NOT SHOUT IN THIS PLACE! YOU HAVE HIT THE CAPS LIMIT!`,
 		MONITOR_MESSAGEFILTER: user => `${REDCROSS} Woah woah woah, please stop re-posting so much ${user}!`,
 		MONITOR_NEWLINEFILTER: user => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
+		MONITOR_REACTIONSFILTER: user => `${REDCROSS} Hey ${user}, please do not add that reaction!`,
 		MONITOR_NMS_MESSAGE: user => [
 			`The banhammer has landed and now the user ${user.tag} with id ${user.id} is banned for mention spam.`,
 			"Do not worry! I'm here to help you! 😄"
@@ -3470,6 +3498,7 @@ export default class extends Language {
 		].join('\n'),
 		EVENTS_MESSAGE_UPDATE: 'Message Edited',
 		EVENTS_MESSAGE_DELETE: 'Message Deleted',
+		EVENTS_REACTION: 'Reaction Added',
 		EVENTS_COMMAND: command => `Command Used: ${command}`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Reseated the value for `channels.default`',

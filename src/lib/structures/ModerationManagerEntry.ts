@@ -231,18 +231,14 @@ export class ModerationManagerEntry {
 		const userID = typeof this.user === 'string' ? this.user : this.user.id;
 		const [userTag, [moderatorID, moderator]] = await Promise.all([
 			this.client.userTags.fetch(userID),
-			this.client.userTags.fetchEntry(this.moderator === null
-				? this.client.user!.id
-				: typeof this.moderator === 'string'
-					? this.moderator
-					: this.moderator.id)
+			this.client.userTags.fetchEntry(this.flattenedModerator)
 		]);
 
 		const prefix = this.manager.guild.settings.get(GuildSettings.Prefix);
 		const formattedDuration = this.duration ? `\n❯ **Expires In**: ${this.client.languages.default.duration(this.duration)}` : '';
 		const description = [
 			`❯ **Type**: ${this.title}`,
-			`❯ **User:** ${userTag} (${userID})`,
+			`❯ **User:** ${userTag.username}#${userTag.discriminator} (${userID})`,
 			`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}${formattedDuration}`
 		].join('\n');
 

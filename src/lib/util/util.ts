@@ -273,6 +273,26 @@ export async function fetchReactionUsers(client: Client, channelID: string, mess
 	return users;
 }
 
+export function twemoji(emoji: string) {
+	const r: string[] = [];
+	let c = 0;
+	let p = 0;
+	let i = 0;
+
+	while (i < emoji.length) {
+		c = emoji.charCodeAt(i++);
+		if (p) {
+			r.push((0x10000 + ((p - 0xD800) << 10) + (c - 0xDC00)).toString(16));
+			p = 0;
+		} else if (c >= 0xD800 && c <= 0xDBFF) {
+			p = c;
+		} else {
+			r.push(c.toString(16));
+		}
+	}
+	return r.join('-');
+}
+
 /**
  * Get the content from a message.
  * @param message The Message instance to get the content from

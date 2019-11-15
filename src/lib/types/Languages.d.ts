@@ -385,6 +385,8 @@ export interface LanguageKeys {
 	COMMAND_MESSAGEMODE_EXTENDED: string;
 	COMMAND_NEWLINEMODE_DESCRIPTION: string;
 	COMMAND_NEWLINEMODE_EXTENDED: string;
+	COMMAND_REACTIONMODE_DESCRIPTION: string;
+	COMMAND_REACTIONMODE_EXTENDED: string;
 	COMMAND_CUDDLE_DESCRIPTION: string;
 	COMMAND_CUDDLE_EXTENDED: string;
 	COMMAND_DELETTHIS_DESCRIPTION: string;
@@ -1158,6 +1160,7 @@ export interface LanguageKeys {
 	CONST_MONITOR_WORDFILTER: string;
 	CONST_MONITOR_CAPSFILTER: string;
 	CONST_MONITOR_ATTACHMENTFILTER: string;
+	CONST_MONITOR_REACTIONFILTER: string;
 	MONITOR_NOINVITE: (user: string) => string;
 	MONITOR_WORDFILTER_DM: (filtered: string) => string;
 	MONITOR_CAPSFILTER_DM: (message: string) => string;
@@ -1165,6 +1168,7 @@ export interface LanguageKeys {
 	MONITOR_CAPSFILTER: (user: string) => string;
 	MONITOR_MESSAGEFILTER: (user: string) => string;
 	MONITOR_NEWLINEFILTER: (user: string) => string;
+	MONITOR_REACTIONSFILTER: (user: string) => string;
 	MONITOR_NMS_MESSAGE: (user: User) => string;
 	MONITOR_NMS_MODLOG: (threshold: number) => string;
 	MONITOR_NMS_ALERT: string;
@@ -1287,6 +1291,7 @@ export interface LanguageKeys {
 	EVENTS_NAME_DIFFERENCE: (previous: string | null, next: string | null) => string;
 	EVENTS_MESSAGE_UPDATE: string;
 	EVENTS_MESSAGE_DELETE: string;
+	EVENTS_REACTION: string;
 	EVENTS_COMMAND: (command: string) => string;
 	SETTINGS_DELETE_CHANNELS_DEFAULT: string;
 	SETTINGS_DELETE_ROLES_INITIAL: string;

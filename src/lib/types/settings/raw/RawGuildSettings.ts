@@ -17,6 +17,7 @@ export interface RawGuildSettings {
 	'channels.nsfw-message-logs': string | null;
 	'channels.image-logs': string | null;
 	'channels.prune-logs': string | null;
+	'channels.reaction-logs': string | null;
 	'channels.roles': string | null;
 	'channels.spam': string | null;
 	'command-autodelete': object[];
@@ -29,6 +30,7 @@ export interface RawGuildSettings {
 	'events.memberNameUpdate': boolean;
 	'events.messageDelete': boolean;
 	'events.messageEdit': boolean;
+	'events.twemoji-reactions': boolean;
 	'messages.farewell': string | null;
 	'messages.greeting': string | null;
 	'messages.join-dm': string | null;
@@ -66,7 +68,7 @@ export interface RawGuildSettings {
 	'selfmod.capitals.maximum': number;
 	'selfmod.capitals.softAction': number;
 	'selfmod.capitals.hardAction': number;
-	'selfmod.capitals.hardActionDuration': null;
+	'selfmod.capitals.hardActionDuration': number | null;
 	'selfmod.capitals.thresholdMaximum': number;
 	'selfmod.capitals.thresholdDuration': number;
 	'selfmod.messages.enabled': boolean;
@@ -74,29 +76,38 @@ export interface RawGuildSettings {
 	'selfmod.messages.queue-size': number;
 	'selfmod.messages.softAction': number;
 	'selfmod.messages.hardAction': number;
-	'selfmod.messages.hardActionDuration': null;
+	'selfmod.messages.hardActionDuration': number | null;
 	'selfmod.messages.thresholdMaximum': number;
 	'selfmod.messages.thresholdDuration': number;
 	'selfmod.newlines.enabled': boolean;
 	'selfmod.newlines.maximum': number;
 	'selfmod.newlines.softAction': number;
 	'selfmod.newlines.hardAction': number;
-	'selfmod.newlines.hardActionDuration': null;
+	'selfmod.newlines.hardActionDuration': number | null;
 	'selfmod.newlines.thresholdMaximum': number;
 	'selfmod.newlines.thresholdDuration': number;
 	'selfmod.invites.enabled': boolean;
 	'selfmod.invites.softAction': number;
 	'selfmod.invites.hardAction': number;
-	'selfmod.invites.hardActionDuration': null;
+	'selfmod.invites.hardActionDuration': number | null;
 	'selfmod.invites.thresholdMaximum': number;
 	'selfmod.invites.thresholdDuration': number;
 	'selfmod.filter.enabled': boolean;
 	'selfmod.filter.softAction': number;
 	'selfmod.filter.hardAction': number;
-	'selfmod.filter.hardActionDuration': null;
+	'selfmod.filter.hardActionDuration': number | null;
 	'selfmod.filter.thresholdMaximum': number;
 	'selfmod.filter.thresholdDuration': number;
 	'selfmod.filter.raw': string[];
+	'selfmod.reactions.enabled': boolean;
+	'selfmod.reactions.maximum': number;
+	'selfmod.reactions.whitelist': string[];
+	'selfmod.reactions.blacklist': string[];
+	'selfmod.reactions.softAction': number;
+	'selfmod.reactions.hardAction': number;
+	'selfmod.reactions.hardActionDuration': number | null;
+	'selfmod.reactions.thresholdMaximum': number;
+	'selfmod.reactions.thresholdDuration': number;
 	'selfmod.raid': boolean;
 	'selfmod.raidthreshold': number;
 	'selfmod.ignoreChannels': string[];
@@ -118,14 +129,14 @@ export interface RawGuildSettings {
 export const SQL_TABLE_SCHEMA = /* sql */`
 	CREATE TABLE IF NOT EXISTS guilds (
 		"id"                                   VARCHAR(19)                              NOT NULL,
-		"prefix"                               VARCHAR(10)   DEFAULT 's!'               NOT NULL,
-		"language"                             VARCHAR(5)    DEFAULT 'en-US'            NOT NULL,
-		"disableNaturalPrefix"                 BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"disabledCommands"                     VARCHAR(32)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
-		"commandUses"                          INTEGER       DEFAULT 0                  NOT NULL,
-		"tags"                                 JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
-		"permissions.users"                    JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
-		"permissions.roles"                    JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"prefix"                               VARCHAR(10)    DEFAULT 's!'               NOT NULL,
+		"language"                             VARCHAR(5)     DEFAULT 'en-US'            NOT NULL,
+		"disableNaturalPrefix"                 BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"disabledCommands"                     VARCHAR(32)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"commandUses"                          INTEGER        DEFAULT 0                  NOT NULL,
+		"tags"                                 JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"permissions.users"                    JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"permissions.roles"                    JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"channels.announcements"               VARCHAR(19),
 		"channels.greeting"                    VARCHAR(19),
 		"channels.farewell"                    VARCHAR(19),
@@ -135,30 +146,32 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"channels.nsfw-message-logs"           VARCHAR(19),
 		"channels.image-logs"                  VARCHAR(19),
 		"channels.prune-logs"                  VARCHAR(19),
+		"channels.reaction-logs"               VARCHAR(19),
 		"channels.roles"                       VARCHAR(19),
 		"channels.spam"                        VARCHAR(19),
-		"command-autodelete"                   JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
-		"disabledChannels"                     VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
-		"disabledCommandsChannels"             JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
-		"events.banAdd"                        BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"events.banRemove"                     BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"events.memberAdd"                     BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"events.memberRemove"                  BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"events.memberNameUpdate"              BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"events.messageDelete"                 BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"events.messageEdit"                   BOOLEAN       DEFAULT FALSE              NOT NULL,
+		"command-autodelete"                   JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"disabledChannels"                     VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"disabledCommandsChannels"             JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"events.banAdd"                        BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.banRemove"                     BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.memberAdd"                     BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.memberRemove"                  BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.memberNameUpdate"              BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.messageDelete"                 BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.messageEdit"                   BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"events.twemoji-reactions"             BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"messages.farewell"                    VARCHAR(2000),
 		"messages.greeting"                    VARCHAR(2000),
 		"messages.join-dm"                     VARCHAR(1500),
-		"messages.ignoreChannels"              VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
-		"messages.moderation-dm"               BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"messages.moderation-reason-display"   BOOLEAN       DEFAULT TRUE               NOT NULL,
-		"messages.moderation-message-display"  BOOLEAN       DEFAULT TRUE               NOT NULL,
-		"messages.moderation-auto-delete"      BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"messages.moderator-name-display"      BOOLEAN       DEFAULT TRUE               NOT NULL,
-		"stickyRoles"                          JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"messages.ignoreChannels"              VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"messages.moderation-dm"               BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"messages.moderation-reason-display"   BOOLEAN        DEFAULT TRUE               NOT NULL,
+		"messages.moderation-message-display"  BOOLEAN        DEFAULT TRUE               NOT NULL,
+		"messages.moderation-auto-delete"      BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"messages.moderator-name-display"      BOOLEAN        DEFAULT TRUE               NOT NULL,
+		"stickyRoles"                          JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.admin"                          VARCHAR(19),
-		"roles.auto"                           JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"roles.auto"                           JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.initial"                        VARCHAR(19),
 		"roles.messageReaction"                VARCHAR(19),
 		"roles.moderator"                      VARCHAR(19),
@@ -167,70 +180,79 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"roles.restricted-embed"               VARCHAR(19),
 		"roles.restricted-attachment"          VARCHAR(19),
 		"roles.restricted-voice"               VARCHAR(19),
-		"roles.public"                         VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
-		"roles.reactions"                      JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
-		"roles.removeInitial"                  BOOLEAN       DEFAULT FALSE              NOT NULL,
+		"roles.public"                         VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"roles.reactions"                      JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"roles.removeInitial"                  BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"roles.staff"                          VARCHAR(19),
 		"roles.dj"                             VARCHAR(19),
 		"roles.subscriber"                     VARCHAR(19),
-		"roles.uniqueRoleSets"                 JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
-		"selfmod.attachment"                   BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.attachmentMaximum"            SMALLINT      DEFAULT 20                 NOT NULL,
-		"selfmod.attachmentDuration"           SMALLINT      DEFAULT 20000              NOT NULL,
-		"selfmod.attachmentAction"             SMALLINT      DEFAULT 0                  NOT NULL,
+		"roles.uniqueRoleSets"                 JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"selfmod.attachment"                   BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.attachmentMaximum"            SMALLINT       DEFAULT 20                 NOT NULL,
+		"selfmod.attachmentDuration"           SMALLINT       DEFAULT 20000              NOT NULL,
+		"selfmod.attachmentAction"             SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.attachmentPunishmentDuration" INTEGER,
-		"selfmod.capitals.enabled"             BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.capitals.minimum"             SMALLINT      DEFAULT 15                 NOT NULL,
-		"selfmod.capitals.maximum"             SMALLINT      DEFAULT 50                 NOT NULL,
-		"selfmod.capitals.softAction"          SMALLINT      DEFAULT 0                  NOT NULL,
-		"selfmod.capitals.hardAction"          SMALLINT      DEFAULT 0                  NOT NULL,
+		"selfmod.capitals.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.capitals.minimum"             SMALLINT       DEFAULT 15                 NOT NULL,
+		"selfmod.capitals.maximum"             SMALLINT       DEFAULT 50                 NOT NULL,
+		"selfmod.capitals.softAction"          SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.capitals.hardAction"          SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.capitals.hardActionDuration"  INTEGER,
-		"selfmod.capitals.thresholdMaximum"    SMALLINT      DEFAULT 10                 NOT NULL,
-		"selfmod.capitals.thresholdDuration"   INTEGER       DEFAULT 60000              NOT NULL,
-		"selfmod.messages.enabled"             BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.messages.maximum"             SMALLINT      DEFAULT 5                  NOT NULL,
-		"selfmod.messages.queue-size"          SMALLINT      DEFAULT 50                 NOT NULL,
-		"selfmod.messages.softAction"          SMALLINT      DEFAULT 0                  NOT NULL,
-		"selfmod.messages.hardAction"          SMALLINT      DEFAULT 0                  NOT NULL,
+		"selfmod.capitals.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.capitals.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.messages.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.messages.maximum"             SMALLINT       DEFAULT 5                  NOT NULL,
+		"selfmod.messages.queue-size"          SMALLINT       DEFAULT 50                 NOT NULL,
+		"selfmod.messages.softAction"          SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.messages.hardAction"          SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.messages.hardActionDuration"  INTEGER,
-		"selfmod.messages.thresholdMaximum"    SMALLINT      DEFAULT 10                 NOT NULL,
-		"selfmod.messages.thresholdDuration"   INTEGER       DEFAULT 60000              NOT NULL,
-		"selfmod.newlines.enabled"             BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.newlines.maximum"             SMALLINT      DEFAULT 10                 NOT NULL,
-		"selfmod.newlines.softAction"          SMALLINT      DEFAULT 0                  NOT NULL,
-		"selfmod.newlines.hardAction"          SMALLINT      DEFAULT 0                  NOT NULL,
+		"selfmod.messages.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.messages.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.newlines.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.newlines.maximum"             SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.newlines.softAction"          SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.newlines.hardAction"          SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.newlines.hardActionDuration"  INTEGER,
-		"selfmod.newlines.thresholdMaximum"    SMALLINT      DEFAULT 10                 NOT NULL,
-		"selfmod.newlines.thresholdDuration"   INTEGER       DEFAULT 60000              NOT NULL,
-		"selfmod.invites.enabled"              BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.invites.softAction"           SMALLINT      DEFAULT 0                  NOT NULL,
-		"selfmod.invites.hardAction"           SMALLINT      DEFAULT 0                  NOT NULL,
+		"selfmod.newlines.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.newlines.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.invites.enabled"              BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.invites.softAction"           SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.invites.hardAction"           SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.invites.hardActionDuration"   INTEGER,
-		"selfmod.invites.thresholdMaximum"     SMALLINT      DEFAULT 10                 NOT NULL,
-		"selfmod.invites.thresholdDuration"    INTEGER       DEFAULT 60000              NOT NULL,
-		"selfmod.filter.enabled"               BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.filter.softAction"            SMALLINT      DEFAULT 0                  NOT NULL,
-		"selfmod.filter.hardAction"            SMALLINT      DEFAULT 0                  NOT NULL,
+		"selfmod.invites.thresholdMaximum"     SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.invites.thresholdDuration"    INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.filter.enabled"               BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.filter.softAction"            SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.filter.hardAction"            SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.filter.hardActionDuration"    INTEGER,
-		"selfmod.filter.thresholdMaximum"      SMALLINT      DEFAULT 10                 NOT NULL,
-		"selfmod.filter.thresholdDuration"     INTEGER       DEFAULT 60000              NOT NULL,
-		"selfmod.filter.raw"                   VARCHAR(32)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
-		"selfmod.raid"                         BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"selfmod.raidthreshold"                SMALLINT      DEFAULT 10                 NOT NULL,
-		"selfmod.ignoreChannels"               VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
-		"no-mention-spam.enabled"              BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"no-mention-spam.alerts"               BOOLEAN       DEFAULT FALSE              NOT NULL,
-		"no-mention-spam.mentionsAllowed"      SMALLINT      DEFAULT 20                 NOT NULL,
-		"no-mention-spam.timePeriod"           INTEGER       DEFAULT 8                  NOT NULL,
-		"social.achieve"                       BOOLEAN       DEFAULT FALSE              NOT NULL,
+		"selfmod.filter.thresholdMaximum"      SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.filter.thresholdDuration"     INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.filter.raw"                   VARCHAR(32)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.reactions.enabled"            BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.reactions.maximum"            SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.reactions.whitelist"          VARCHAR(128)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.reactions.blacklist"          VARCHAR(128)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.reactions.softAction"         SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.reactions.hardAction"         SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.reactions.hardActionDuration" INTEGER,
+		"selfmod.reactions.thresholdMaximum"   SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.reactions.thresholdDuration"  INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.raid"                         BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.raidthreshold"                SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.ignoreChannels"               VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"no-mention-spam.enabled"              BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"no-mention-spam.alerts"               BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"no-mention-spam.mentionsAllowed"      SMALLINT       DEFAULT 20                 NOT NULL,
+		"no-mention-spam.timePeriod"           INTEGER        DEFAULT 8                  NOT NULL,
+		"social.achieve"                       BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"social.achieveMessage"                VARCHAR(2000),
-		"social.ignoreChannels"                VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"social.ignoreChannels"                VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"starboard.channel"                    VARCHAR(19),
-		"starboard.emoji"                      VARCHAR(75)   DEFAULT '%E2%AD%90'        NOT NULL,
-		"starboard.ignoreChannels"             VARCHAR(19)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
-		"starboard.minimum"                    SMALLINT      DEFAULT 1                  NOT NULL,
-		"trigger.alias"                        JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
-		"trigger.includes"                     JSON[]        DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"starboard.emoji"                      VARCHAR(75)    DEFAULT '%E2%AD%90'        NOT NULL,
+		"starboard.ignoreChannels"             VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"starboard.minimum"                    SMALLINT       DEFAULT 1                  NOT NULL,
+		"trigger.alias"                        JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"trigger.includes"                     JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		PRIMARY KEY("id"),
 		CHECK("prefix" <> ''),
 		CHECK("selfmod.attachmentMaximum" >= 0 AND "selfmod.attachmentMaximum" <= 60),
@@ -256,6 +278,10 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK("selfmod.filter.hardActionDuration" >= 1000),
 		CHECK("selfmod.filter.thresholdMaximum" >= 0 AND "selfmod.filter.thresholdMaximum" <= 60),
 		CHECK("selfmod.filter.thresholdDuration" >= 0 AND "selfmod.filter.thresholdDuration" <= 120000),
+		CHECK("selfmod.reactions.maximum" >= 1 AND "selfmod.reactions.maximum" <= 100),
+		CHECK("selfmod.reactions.hardActionDuration" >= 1000),
+		CHECK("selfmod.reactions.thresholdMaximum" >= 0 AND "selfmod.reactions.thresholdMaximum" <= 60),
+		CHECK("selfmod.reactions.thresholdDuration" >= 0 AND "selfmod.reactions.thresholdDuration" <= 120000),
 		CHECK("selfmod.raidthreshold" >= 2 AND "selfmod.raidthreshold" <= 50),
 		CHECK("no-mention-spam.mentionsAllowed" >= 0),
 		CHECK("no-mention-spam.timePeriod" >= 0),

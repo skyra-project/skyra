@@ -26,6 +26,7 @@ export const enum Events {
 	MessageUpdate = 'messageUpdate',
 	MonitorError = 'monitorError',
 	Raw = 'raw',
+	ReactionBlacklist = 'reactionBlacklist',
 	Reconnecting = 'reconnecting',
 	RoleReactionAdd = 'roleReactionAdd',
 	RoleReactionRemove = 'roleReactionRemove',

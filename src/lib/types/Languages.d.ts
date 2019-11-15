@@ -743,6 +743,8 @@ export interface LanguageKeys {
 	COMMAND_GAMES_PROMPT_TIMEOUT: string;
 	COMMAND_GAMES_PROMPT_DENY: string;
 	COMMAND_GAMES_TIMEOUT: string;
+	COMMAND_COINFLIP_INVALID_COINNAME: (arg: string) => string;
+	COMMAND_COINFLIP_COINNAMES: string[];
 	COMMAND_COINFLIP_WIN_TITLE: string;
 	COMMAND_COINFLIP_LOSE_TITLE: string;
 	COMMAND_COINFLIP_WIN_DESCRIPTION: (result: string, wager: number) => string;

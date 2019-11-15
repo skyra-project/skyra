@@ -2121,7 +2121,7 @@ export default class extends Language {
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
 		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
 		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
-		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}! You won ${wager} ${SHINY}!`,
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}! You won ${wager} ${SHINY}.`,
 		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You lost ${wager} ${SHINY}.`,
 		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,

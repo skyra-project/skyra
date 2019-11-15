@@ -597,7 +597,7 @@ export default class extends Language {
 		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
 		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
 			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
-			If you don't, you lose your wager. Now get those coins flippin'`,
+				If you don't, you lose your wager. Now get those coins flippin'.`,
 			examples: ['50 heads', '200 tails']
 		}),
 		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
@@ -2146,7 +2146,7 @@ export default class extends Language {
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
 		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
 		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
-		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}! You won ${wager} ${SHINY}!`,
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}! You won ${wager} ${SHINY}.`,
 		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You lost ${wager} ${SHINY}.`,
 		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,

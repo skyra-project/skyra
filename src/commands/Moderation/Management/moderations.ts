@@ -95,21 +95,21 @@ export default class extends SkyraCommand {
 			case 'mutes':
 				return target
 					? (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Mute)
-						&& !entry.invalidated && entry.flattenedUser === target.id
+						&& !entry.invalidated && !entry.appealType && entry.flattenedUser === target.id
 					: (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Mute)
-						&& !entry.invalidated;
+						&& !entry.invalidated && !entry.appealType;
 			case 'warnings':
 				return target
 					? (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Warn)
-						&& !entry.invalidated && entry.flattenedUser === target.id
+						&& !entry.invalidated && !entry.appealType && entry.flattenedUser === target.id
 					: (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Warn)
-						&& !entry.invalidated;
+						&& !entry.invalidated && !entry.appealType;
 			default:
 				return target
 					? (entry: ModerationManagerEntry) => entry.duration !== null
-						&& !entry.invalidated && entry.flattenedUser === target.id
+						&& !entry.invalidated && !entry.appealType && entry.flattenedUser === target.id
 					: (entry: ModerationManagerEntry) => entry.duration !== null
-						&& !entry.invalidated;
+						&& !entry.invalidated && !entry.appealType;
 		}
 	}
 

@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['cf'],
 			bucket: 2,
 			cooldown: 7,
-			description: language => language.tget('COMMAND_SLOTMACHINE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SLOTMACHINE_EXTENDED'),
+			description: language => language.tget('COMMAND_COINFLIP_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000> <heads|tails>',
@@ -34,15 +34,15 @@ export default class extends SkyraCommand {
 		if (result === guess) {
 			await message.author.settings.update(UserSettings.Money, money + wager);
 			resultEmbed
-				.setTitle('You won!')
-				.setDescription(`The coin was flipped, and it showed ${result.charAt(0).toUpperCase() + result.slice(1)}! You won ${wager} shinies!`)
+				.setTitle(message.language.tget('COMMAND_COINFLIP_WIN_TITLE'))
+				.setDescription(message.language.tget('COMMAND_COINFLIP_WIN_DESCRIPTION', result, wager))
 				.setThumbnail(`https://cdn.skyra.pw/img/coins/${result}.png`);
 			return message.sendEmbed(resultEmbed);
 		}
 		await message.author.settings.update(UserSettings.Money, money - wager);
 		resultEmbed
-			.setTitle('You lost!')
-			.setDescription(`The coin was flipped, and it showed ${result.charAt(0).toUpperCase() + result.slice(1)}. You lost ${wager} shinies.`)
+			.setTitle(message.language.tget('COMMAND_COINFLIP_LOSE_TITLE'))
+			.setDescription(message.language.tget('COMMAND_COINFLIP_LOSE_DESCRIPTION', result, wager))
 			.setThumbnail(`https://cdn.skyra.pw/img/coins/${result}.png`);
 		return message.sendEmbed(resultEmbed);
 	}

@@ -318,6 +318,8 @@ export interface LanguageKeys {
 	COMMAND_XKCD_EXTENDED: string;
 	COMMAND_C4_DESCRIPTION: string;
 	COMMAND_C4_EXTENDED: string;
+	COMMAND_COINFLIP_DESCRIPTION: string;
+	COMMAND_COINFLIP_EXTENDED: string;
 	COMMAND_HUNGERGAMES_DESCRIPTION: string;
 	COMMAND_HUNGERGAMES_EXTENDED: string;
 	COMMAND_TICTACTOE_DESCRIPTION: string;
@@ -741,6 +743,10 @@ export interface LanguageKeys {
 	COMMAND_GAMES_PROMPT_TIMEOUT: string;
 	COMMAND_GAMES_PROMPT_DENY: string;
 	COMMAND_GAMES_TIMEOUT: string;
+	COMMAND_COINFLIP_WIN_TITLE: string;
+	COMMAND_COINFLIP_LOSE_TITLE: string;
+	COMMAND_COINFLIP_WIN_DESCRIPTION: (result: string, wager: number) => string;
+	COMMAND_COINFLIP_LOSE_DESCRIPTION: (result: string, wager: number) => string;
 	COMMAND_C4_PROMPT: (challenger: string, challengee: string) => string;
 	COMMAND_C4_START: (player: string) => string;
 	COMMAND_C4_GAME_COLUMN_FULL: string;

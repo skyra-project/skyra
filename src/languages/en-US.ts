@@ -594,6 +594,12 @@ export default class extends Language {
 					game in which the players first choose a color and then take turns dropping colored discs from the top into a
 					seven-column, ~~six~~ five-row vertically suspended grid.`
 		}),
+		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
+			If you don't, you lose your wager. Now get those coins flippin'`,
+			examples: ['50 heads', '200 tails']
+		}),
 		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
 		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
 			extendedHelp: `Enough discussion, let the games begin!`,
@@ -2136,7 +2142,10 @@ export default class extends Language {
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
-		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
+		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
+		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result.charAt(0).toUpperCase() + result.slice(1)}! You won ${wager} shinies!`,
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result.charAt(0).toUpperCase() + result.slice(1)}. You lost ${wager} shinies.`,		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
 		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
 		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,

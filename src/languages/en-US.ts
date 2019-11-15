@@ -2352,11 +2352,16 @@ export default class extends Language {
 		 */
 
 		COMMAND_RANDREDDIT_REQUIRED_REDDIT: 'You must give the name of a reddit.',
+		COMMAND_RANDREDDIT_INVALID_ARGUMENT: `${REDCROSS} The name you gave was not a valid name for a subreddit.`,
 		COMMAND_RANDREDDIT_BANNED: 'This reddit is banned and should not be used.',
 		COMMAND_RANDREDDIT_FAIL: 'I failed to retrieve data, are you sure you wrote the reddit correctly?',
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
 		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
 		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
+		COMMAND_RANDREDDIT_ERROR_PRIVATE: `${REDCROSS} No data could be downloaded as the subreddit is marked as private.`,
+		COMMAND_RANDREDDIT_ERROR_QUARANTINED: `${REDCROSS} No data could be downloaded as the subreddit is marked as quarantined.`,
+		COMMAND_RANDREDDIT_ERROR_NOT_FOUND: `${REDCROSS} No data could be downloaded as the subreddit does not exist.`,
+		COMMAND_RANDREDDIT_ERROR_BANNED: `${REDCROSS} No data could be downloaded as the subreddit is marked as banned.`,
 		COMMAND_REDDITUSER_COMPLEXITY_LEVELS: ['very low', 'low', 'medium', 'high', 'very high', 'very high'],
 		COMMAND_REDDITUSER_INVALID_USER: user => `\`${user}\` is not a valid Reddit username`,
 		COMMAND_REDDITUSER_QUERY_FAILED: 'Couldn\'t find any data for that reddit user',
@@ -3436,6 +3441,7 @@ export default class extends Language {
 			`${LOADING} Fetching Commander Data...`,
 			`${LOADING} Chasing after starships...`
 		]),
+		SYSTEM_PARSE_ERROR: `${REDCROSS} I failed to process the data I was given, sorry~!`,
 		SYSTEM_HIGHEST_ROLE: 'This role\'s hierarchy position is higher or equal than me, I am not able to grant it to anyone.',
 		SYSTEM_CHANNEL_NOT_POSTABLE: 'I am not allowed to send messages to this channel.',
 		SYSTEM_FETCHBANS_FAIL: `Failed to fetch bans. Do I have the **${PERMS.BAN_MEMBERS}** permission?`,

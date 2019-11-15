@@ -2321,11 +2321,16 @@ export default class extends Language {
 		 */
 
 		COMMAND_RANDREDDIT_REQUIRED_REDDIT: 'You must give the name of a reddit.',
+		COMMAND_RANDREDDIT_INVALID_ARGUMENT: `${REDCROSS} The name you gave was not a valid name for a subreddit.`,
 		COMMAND_RANDREDDIT_BANNED: 'This reddit is banned and should not be used.',
 		COMMAND_RANDREDDIT_FAIL: 'I failed to retrieve data, are you sure you wrote the reddit correctly?',
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
 		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
 		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
+		COMMAND_RANDREDDIT_ERROR_PRIVATE: `${REDCROSS} No data could be downloaded as the subreddit is marked as private.`,
+		COMMAND_RANDREDDIT_ERROR_QUARANTINED: `${REDCROSS} No data could be downloaded as the subreddit is marked as quarantined.`,
+		COMMAND_RANDREDDIT_ERROR_NOT_FOUND: `${REDCROSS} No data could be downloaded as the subreddit does not exist.`,
+		COMMAND_RANDREDDIT_ERROR_BANNED: `${REDCROSS} No data could be downloaded as the subreddit is marked as banned.`,
 		COMMAND_REDDITUSER_COMPLEXITY_LEVELS: ['muy bajo', 'bajo', 'medio', 'alto', 'muy alto', 'muy alto'],
 		COMMAND_REDDITUSER_INVALID_USER: user => `\`${user}\` no es un nombre de usuario de Reddit válido`,
 		COMMAND_REDDITUSER_QUERY_FAILED: 'No se pudieron encontrar datos para ese usuario de reddit',
@@ -3050,6 +3055,7 @@ export default class extends Language {
 			`${LOADING} Buscando al Comandante Data...`,
 			`${LOADING} Persiguiendo otras naves estelares...`
 		]),
+		SYSTEM_PARSE_ERROR: `${REDCROSS} I failed to process the data I was given, sorry~!`,
 		SYSTEM_HIGHEST_ROLE: 'La posición del rol es más alta o equivalente al mío, por lo tanto no puedo concederlo a nadie.',
 		SYSTEM_CHANNEL_NOT_POSTABLE: 'No tengo permisos para mandar mensajes a éste canal.',
 		SYSTEM_FETCHBANS_FAIL: `He fallado al buscar la lista de baneos. ¿Tengo el permiso **${PERMS.BAN_MEMBERS}**?`,

@@ -18,7 +18,7 @@ export default class extends ModerationMonitor {
 		adderDuration: GuildSettings.Selfmod.Links.ThresholdDuration
 	};
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
-	private readonly kWhitelist = /(discordapp.com|discord.gg)$/;
+	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg)$/i;
 
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)

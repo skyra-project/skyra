@@ -512,7 +512,7 @@ export const authenticated = createFunctionInhibitor(
 
 	},
 	(_request: ApiRequest, response: ApiResponse) => {
-		response.forbidden();
+		response.error(403);
 	}
 );
 

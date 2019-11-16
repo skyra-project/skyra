@@ -5,6 +5,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { BrandingColors } from '../../lib/util/constants';
 import { Markov, WordBank } from '../../lib/util/External/markov';
 import { cutText, getColor, iteratorAt } from '../../lib/util/util';
+import ChannelNameArgument from '../../arguments/channelname';
 import Collection from '@discordjs/collection';
 
 const kCodeA = 'A'.charCodeAt(0);
@@ -33,7 +34,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('channel', async (arg, possible, msg) => {
-			const resolvedChannel = await this.client.arguments.get('channelname')!.run(arg, possible, msg) as TextChannel;
+			const resolvedChannel = await this.channelNameArgument.run(arg, possible, msg, channel => channel.type === 'text') as TextChannel;
 
 			// Checks if the current user has view channel permissions for the resolved channel
 			if (!resolvedChannel.permissionsFor(msg.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) {
@@ -42,6 +43,10 @@ export default class extends SkyraCommand {
 
 			return resolvedChannel;
 		});
+	}
+
+	private get channelNameArgument() {
+		return this.client.arguments.get('channelname') as ChannelNameArgument;
 	}
 
 	public async run(message: KlasaMessage, args: [TextChannel?, User?]) {

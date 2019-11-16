@@ -747,10 +747,10 @@ export interface LanguageKeys {
 	COMMAND_COINFLIP_COINNAMES: string[];
 	COMMAND_COINFLIP_WIN_TITLE: string;
 	COMMAND_COINFLIP_LOSE_TITLE: string;
-	COMMAND_COINFLIP_CASHLESS_TITLE: string;
-	COMMAND_COINFLIP_WIN_DESCRIPTION: (result: string, wager: number) => string;
-	COMMAND_COINFLIP_LOSE_DESCRIPTION: (result: string, wager: number) => string;
-	COMMAND_COINFLIP_CASHLESS_DESCRIPTION: (result: string) => string;
+	COMMAND_COINFLIP_NOGUESS_TITLE: string;
+	COMMAND_COINFLIP_WIN_DESCRIPTION: (result: string, wager?: number) => string;
+	COMMAND_COINFLIP_LOSE_DESCRIPTION: (result: string, wager?: number) => string;
+	COMMAND_COINFLIP_NOGUESS_DESCRIPTION: (result: string) => string;
 	COMMAND_C4_PROMPT: (challenger: string, challengee: string) => string;
 	COMMAND_C4_START: (player: string) => string;
 	COMMAND_C4_GAME_COLUMN_FULL: string;

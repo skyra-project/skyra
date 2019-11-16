@@ -16,14 +16,12 @@ export default class extends SkyraCommand {
 			cooldown: 7,
 			description: language => language.tget('COMMAND_COINFLIP_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000|cashless:default> (coin:cointype)',
 			usageDelim: ' '
 		});
 
 		this.createCustomResolver('cointype', (arg, possible, message) => {
-			console.log('in arg');
 			if (!arg) return undefined;
 			const lArg = arg.toLowerCase();
 			const face = message.language.tget('COMMAND_COINFLIP_COINNAMES').findIndex(coin => coin.toLowerCase() === lArg);
@@ -33,7 +31,6 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [bet, guess]: [string?, CoinTypes?]) {
-		console.log(bet, guess);
 		if (bet === 'cashless' || !guess) return this.cashless(message);
 
 		await message.author.settings.sync();

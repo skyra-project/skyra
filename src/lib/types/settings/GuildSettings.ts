@@ -97,6 +97,7 @@ export namespace GuildSettings {
 		}
 
 		export namespace Links {
+			export const Whitelist = T<readonly string[]>('selfmod.links.whitelist');
 			export const Enabled = T<boolean>('selfmod.links.enabled');
 			export const SoftAction = T<number>('selfmod.links.softAction');
 			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.links.hardAction');

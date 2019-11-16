@@ -71,6 +71,7 @@ export interface RawGuildSettings {
 	'selfmod.capitals.hardActionDuration': number | null;
 	'selfmod.capitals.thresholdMaximum': number;
 	'selfmod.capitals.thresholdDuration': number;
+	'selfmod.links.whitelist': string[];
 	'selfmod.links.enabled': boolean;
 	'selfmod.links.softAction': number;
 	'selfmod.links.hardAction': number;
@@ -206,12 +207,13 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.capitals.hardActionDuration"  INTEGER,
 		"selfmod.capitals.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.capitals.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
-		"selfmod.links.enabled"              BOOLEAN        DEFAULT FALSE              NOT NULL,
-		"selfmod.links.softAction"           SMALLINT       DEFAULT 0                  NOT NULL,
-		"selfmod.links.hardAction"           SMALLINT       DEFAULT 0                  NOT NULL,
-		"selfmod.links.hardActionDuration"   INTEGER,
-		"selfmod.links.thresholdMaximum"     SMALLINT       DEFAULT 10                 NOT NULL,
-		"selfmod.links.thresholdDuration"    INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.links.whitelist"              VARCHAR(128)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.links.enabled"                BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.links.softAction"             SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.links.hardAction"             SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.links.hardActionDuration"     INTEGER,
+		"selfmod.links.thresholdMaximum"       SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.links.thresholdDuration"      INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.messages.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"selfmod.messages.maximum"             SMALLINT       DEFAULT 5                  NOT NULL,
 		"selfmod.messages.queue-size"          SMALLINT       DEFAULT 50                 NOT NULL,

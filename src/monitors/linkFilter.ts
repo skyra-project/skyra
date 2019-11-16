@@ -5,7 +5,8 @@ import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationM
 import { floatPromise } from '../lib/util/util';
 import { urlRegex } from '../lib/util/Links/UrlRegex';
 
-const kRegExp = urlRegex();
+const kRegExp = urlRegex({ strict: false });
+// const kProtocol = /^(?:(?:[a-z]+:)?\/\/)/;
 
 export default class extends ModerationMonitor {
 
@@ -26,7 +27,13 @@ export default class extends ModerationMonitor {
 
 	protected preProcess(message: KlasaMessage) {
 		const matches = message.content.match(kRegExp);
-		return matches === null ? null : matches.length;
+		if (matches === null) return null;
+
+		// let counter = 0;
+		// for (let match of new Set(matches)) {
+		// 	if (!kProtocol.test(match)) match = `https://${match}`;
+		// }
+		return new Set(matches).size;
 	}
 
 	protected onDelete(message: KlasaMessage) {

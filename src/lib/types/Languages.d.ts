@@ -42,10 +42,10 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_URL: (name: string) => string;
 	RESOLVER_INVALID_USER: (name: string) => string;
 	RESOLVER_STRING_SUFFIX: string;
-	RESOLVER_MINMAX_EXACTLY: (name: string, min: number, suffix: string) => string;
-	RESOLVER_MINMAX_BOTH: (name: string, min: number, max: number, suffix: string) => string;
-	RESOLVER_MINMAX_MIN: (name: string, min: number, suffix: string) => string;
-	RESOLVER_MINMAX_MAX: (name: string, min: number, suffix: string) => string;
+	RESOLVER_MINMAX_EXACTLY: (name: string, min: number) => string;
+	RESOLVER_MINMAX_BOTH: (name: string, min: number, max: number, inclusive: boolean) => string;
+	RESOLVER_MINMAX_MIN: (name: string, min: number, inclusive: boolean) => string;
+	RESOLVER_MINMAX_MAX: (name: string, max: number, inclusive: boolean) => string;
 	REACTIONHANDLER_PROMPT: string;
 	COMMANDMESSAGE_MISSING: string;
 	COMMANDMESSAGE_MISSING_REQUIRED: (name: string) => string;

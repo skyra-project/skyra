@@ -77,6 +77,7 @@ export default Client.defaultGuildSchema
 			.add('thresholdMaximum', 'Integer', { 'default': 10, 'min': 0, 'max': 60, 'configurable': false })
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
 		.add('links', invites => invites
+			.add('whitelist', 'URL', { array: true })
 			.add('enabled', 'Boolean', { 'default': false })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })

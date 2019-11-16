@@ -16,6 +16,7 @@ export default class extends SkyraCommand {
 			cooldown: 7,
 			description: language => language.tget('COMMAND_COINFLIP_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000|cashless:default> (coin:cointype)',
 			usageDelim: ' '
@@ -60,8 +61,8 @@ export default class extends SkyraCommand {
 		const result = Math.random() > 0.5 ? CoinTypes.Heads : CoinTypes.Tails;
 		return message.send(new MessageEmbed()
 			.setColor(getColor(message))
-			.setTitle('You flipped a coin.')
-			.setDescription(`The coin was flipped... and it showed ${message.language.tget('COMMAND_COINFLIP_COINNAMES')[result]}`)
+			.setTitle(message.language.tget('COMMAND_COINFLIP_CASHLESS_TITLE'))
+			.setDescription(message.language.tget('COMMAND_COINFLIP_CASHLESS_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result]))
 			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`));
 	}
 

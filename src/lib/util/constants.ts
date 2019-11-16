@@ -178,6 +178,14 @@ export namespace Moderation {
 
 }
 
+export namespace Mime {
+
+	export const enum Types {
+		TextPlain = 'text/plain'
+	}
+
+}
+
 export const enum APIErrors {
 	UnknownAccount = 10001,
 	UnknownApplication = 10002,

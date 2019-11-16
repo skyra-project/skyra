@@ -1162,12 +1162,14 @@ export interface LanguageKeys {
 	COMMAND_WSTARE: (user: string) => string;
 	COMMAND_WTICKLE: (user: string) => string;
 	CONST_MONITOR_INVITELINK: string;
+	CONST_MONITOR_LINK: string;
 	CONST_MONITOR_NMS: string;
 	CONST_MONITOR_WORDFILTER: string;
 	CONST_MONITOR_CAPSFILTER: string;
 	CONST_MONITOR_ATTACHMENTFILTER: string;
 	CONST_MONITOR_REACTIONFILTER: string;
 	MONITOR_NOINVITE: (user: string) => string;
+	MONITOR_NOLINK: (user: string) => string;
 	MONITOR_WORDFILTER_DM: (filtered: string) => string;
 	MONITOR_CAPSFILTER_DM: (message: string) => string;
 	MONITOR_WORDFILTER: (user: string) => string;

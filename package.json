@@ -17,6 +17,7 @@
     "update": "rm -rf node_modules && yarn",
     "build": "tsc -p .",
     "build-clear": "rm -rf dist && tsc -p .",
+    "build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
     "watch": "tsc -p . -w",
     "dev": "yarn build && yarn start"
   },

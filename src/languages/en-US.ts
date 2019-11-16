@@ -2907,6 +2907,7 @@ export default class extends Language {
 		 */
 
 		CONST_MONITOR_INVITELINK: 'Invite link',
+		CONST_MONITOR_LINK: 'Filtered Link',
 		CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
 		CONST_MONITOR_WORDFILTER: 'Filtered Word',
 		CONST_MONITOR_CAPSFILTER: 'Too Many UpperCases',
@@ -2915,6 +2916,7 @@ export default class extends Language {
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		CONST_MONITOR_REACTIONFILTER: 'Filtered Reaction',
 		MONITOR_NOINVITE: user => `${REDCROSS} Dear ${user}, invite links aren't allowed here.`,
+		MONITOR_NOLINK: user => `${REDCROSS} Hey ${user}, you are not allowed to post links here!`,
 		MONITOR_WORDFILTER_DM: filtered => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Pardon, dear ${user}, you said something that is not allowed in this server.`,

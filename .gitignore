@@ -9,6 +9,9 @@ node_modules/
 dist/
 bwd/
 
+# Ignore JavaScript files
+src/**/*.js
+
 # Ignore the config file (contains sensitive information such as tokens)
 config.ts
 

@@ -76,6 +76,13 @@ export default Client.defaultGuildSchema
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
 			.add('thresholdMaximum', 'Integer', { 'default': 10, 'min': 0, 'max': 60, 'configurable': false })
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
+		.add('links', invites => invites
+			.add('enabled', 'Boolean', { 'default': false })
+			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
+			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
+			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
+			.add('thresholdMaximum', 'Integer', { 'default': 10, 'min': 0, 'max': 60, 'configurable': false })
+			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
 		.add('messages', capitals => capitals
 			.add('enabled', 'Boolean', { 'default': false })
 			.add('maximum', 'Integer', { 'default': 5, 'min': 2, 'max': 100 })

@@ -5,20 +5,20 @@ import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationM
 import { floatPromise } from '../lib/util/util';
 import { urlRegex } from '../lib/util/Links/UrlRegex';
 
-const kRegExp = urlRegex({ strict: false });
-// const kProtocol = /^(?:(?:[a-z]+:)?\/\/)/;
 
 export default class extends ModerationMonitor {
 
-	protected keyEnabled: string = GuildSettings.Selfmod.Links.Enabled;
-	protected softPunishmentPath: string = GuildSettings.Selfmod.Links.SoftAction;
-	protected hardPunishmentPath: HardPunishment = {
+	protected readonly keyEnabled: string = GuildSettings.Selfmod.Links.Enabled;
+	protected readonly softPunishmentPath: string = GuildSettings.Selfmod.Links.SoftAction;
+	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Links.HardAction,
 		actionDuration: GuildSettings.Selfmod.Links.HardActionDuration,
 		adder: 'links',
 		adderMaximum: GuildSettings.Selfmod.Links.ThresholdMaximum,
 		adderDuration: GuildSettings.Selfmod.Links.ThresholdDuration
 	};
+	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
+	private readonly kWhitelist = /(discordapp.com|discord.gg)$/;
 
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)
@@ -26,14 +26,18 @@ export default class extends ModerationMonitor {
 	}
 
 	protected preProcess(message: KlasaMessage) {
-		const matches = message.content.match(kRegExp);
-		if (matches === null) return null;
+		let match: RegExpExecArray | null;
 
-		// let counter = 0;
-		// for (let match of new Set(matches)) {
-		// 	if (!kProtocol.test(match)) match = `https://${match}`;
-		// }
-		return new Set(matches).size;
+		const urls = new Set<string>();
+		const whitelist = message.guild!.settings.get(GuildSettings.Selfmod.Links.Whitelist);
+		while ((match = this.kRegExp.exec(message.content)) !== null) {
+			const { hostname } = match.groups!;
+			if (this.kWhitelist.test(hostname)) continue;
+			if (whitelist.includes(hostname)) continue;
+			urls.add(hostname);
+		}
+
+		return urls.size === 0 ? null : urls.size;
 	}
 
 	protected onDelete(message: KlasaMessage) {

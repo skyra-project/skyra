@@ -24,21 +24,22 @@
 
 import { TLDs } from './TLDs';
 
-export function urlRegex({ strict = true, exact = false }: UrlRegexOptions = {}) {
-	const protocol = `(?:(?:[a-z]+:)?//)${strict ? '' : '?'}`;
+export function urlRegex({ requireProtocol = true, exact = false, tlds = false }: UrlRegexOptions = {}) {
+	const protocol = `(?:(?:[a-z]+:)?//)${requireProtocol ? '' : '?'}`;
 	const auth = '(?:\\S+(?::\\S*)?@)?';
 	const ip = '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}';
 	const host = '(?:(?:[a-z\\u00a1-\\uffff0-9][-_]*)*[a-z\\u00a1-\\uffff0-9]+)';
 	const domain = '(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*';
-	const tld = `(?:\\.${strict ? '(?:[a-z\\u00a1-\\uffff]{2,})' : `(?:${TLDs.sort((a, b) => b.length - a.length).join('|')})`})\\.?`;
+	const tld = `(?:\\.${tlds ? `(?:${TLDs.sort((a, b) => b.length - a.length).join('|')})` : '(?:[a-z\\u00a1-\\uffff]{2,})'})\\.?`;
 	const port = '(?::\\d{2,5})?';
 	const path = '(?:[/?#][^\\s"]*)?';
-	const regex = `(?:${protocol}|www\\.)${auth}(?:localhost|${ip}|${host}${domain}${tld})${port}${path}`;
+	const regex = `(?<protocol>${protocol}|www\\.)${auth}(?<hostname>localhost|${ip}|${host}${domain}${tld})${port}${path}`;
 
 	return exact ? new RegExp(`(?:^${regex}$)`, 'i') : new RegExp(regex, 'ig');
 }
 
 interface UrlRegexOptions {
-	strict?: boolean;
+	requireProtocol?: boolean;
 	exact?: boolean;
+	tlds?: boolean;
 }

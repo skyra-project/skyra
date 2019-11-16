@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '<50|100|200|500|1000|2000|5000|10000|cashless:default> (coin:cointype)',
+			usage: '(coin:cointype) (50|100|200|500|1000|2000|5000|10000|cashless:default)',
 			usageDelim: ' '
 		});
 
@@ -31,8 +31,8 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [bet, guess]: [string?, CoinTypes?]) {
-		if (bet === 'cashless' || !guess) return this.cashless(message);
+	public async run(message: KlasaMessage, [guess, bet]: [CoinTypes?, string?]) {
+		if (bet === 'cashless') return this.cashless(message);
 
 		await message.author.settings.sync();
 		const wager = Number(bet);

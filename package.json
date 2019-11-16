@@ -48,6 +48,7 @@
     "confusables": "^0.3.3",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js#3393/head",
+    "emoji-regex": "^8.0.0",
     "fs-nextra": "^0.4.7",
     "gifencoder": "^2.0.1",
     "he": "^1.2.0",

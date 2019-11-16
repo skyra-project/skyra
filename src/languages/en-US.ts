@@ -298,11 +298,15 @@ export default class extends Language {
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given pokemon',
 		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
-			extendedHelp: 'Queries the Pokemon API on data on a given Pokemon. Uses a fuzzy search to also match against near-matches',
+			extendedHelp: `
+				Queries the Pokemon API on data on a given Pokemon.
+				Uses a fuzzy search to also match against near-matches.
+				You can provide a flag of \`--shiny\` to get the shiny sprite.
+			`,
 			explainedUsage: [
 				['pokemon', 'The pokemon for which you want to find data']
 			],
-			examples: ['dragonite', 'pikachu']
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
 		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `The queue's empty! The session will start as soon as we have some songs queued.`,
@@ -1479,20 +1483,20 @@ export default class extends Language {
 		 * POKEMON COMMANDS
 		 */
 		COMMAND_POKEDEX_EMBED_DATA: {
-			types: 'Type(s)',
-			abilities: 'Abilities',
-			genderRatio: 'Gender Ratio',
-			smogonTier: 'Smogon Tier',
-			unknownSmogonTier: 'Unknown / Alt form',
-			height: 'Height',
-			weight: 'Width',
-			eggGroups: 'Egg group(s)',
-			otherFormes: 'Other forme(s)',
-			evolutionaryLine: 'Evolutionary line',
-			baseStats: 'Base stats',
-			flavourText: 'Pokdex entry',
-			externalResources: 'External resources',
-			none: 'None'
+			TYPES: 'Type(s)',
+			ABILITIES: 'Abilities',
+			GENDER_RATIO: 'Gender Ratio',
+			SMOGON_TIER: 'Smogon Tier',
+			UKNOWN_SMOGON_TIER: 'Unknown / Alt form',
+			HEIGHT: 'Height',
+			WEIGHT: 'Width',
+			EGG_GROUPS: 'Egg group(s)',
+			OTHER_FORMES: 'Other forme(s)',
+			EVOLUTIONARY_LINE: 'Evolutionary line',
+			BASE_STATS: 'Base stats',
+			FLAVOUR_TEXT: 'Pokdex entry',
+			EXTERNAL_RESOURCES: 'External resources',
+			NONE: 'None'
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 

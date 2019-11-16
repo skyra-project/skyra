@@ -292,7 +292,11 @@ export default class extends Language {
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
 		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
-			extendedHelp: 'Consulta la API de Pokémon sobre los datos de un Pokémon determinado. Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
+			extendedHelp: `
+				Consulta la API de Pokémon sobre los datos de un Pokémon determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
 			explainedUsage: [
 				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
 			],
@@ -1457,20 +1461,20 @@ export default class extends Language {
 		 * Pokémon COMMANDS
 		 */
 		COMMAND_POKEDEX_EMBED_DATA: {
-			types: 'Tipo(s)',
-			abilities: 'Habilidades',
-			genderRatio: 'Relación de género',
-			smogonTier: 'Smogon Tier',
-			unknownSmogonTier: 'Forma desconocida / alternativa',
-			height: 'Altura',
-			weight: 'Anchura',
-			eggGroups: 'Grupo (s) de huevo',
-			otherFormes: 'Otras formas',
-			evolutionaryLine: 'Línea evolutiva',
-			baseStats: 'Estadísticas base',
-			flavourText: 'Entrada de Pokédex',
-			externalResources: 'Recursos externos',
-			none: 'Ninguno'
+			TYPES: 'Tipo(s)',
+			ABILITIES: 'Habilidades',
+			GENDER_RATIO: 'Relación de género',
+			SMOGON_TIER: 'Smogon Tier',
+			UKNOWN_SMOGON_TIER: 'Forma desconocida / alternativa',
+			HEIGHT: 'Altura',
+			WEIGHT: 'Anchura',
+			EGG_GROUPS: 'Grupo (s) de huevo',
+			OTHER_FORMES: 'Otras formas',
+			EVOLUTIONARY_LINE: 'Línea evolutiva',
+			BASE_STATS: 'Estadísticas base',
+			FLAVOUR_TEXT: 'Entrada de Pokédex',
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			NONE: 'Ninguno'
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 

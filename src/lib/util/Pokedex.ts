@@ -1,4 +1,5 @@
 import { Query, Pokemon, Abilities, Items, Moves, Types } from '@favware/graphql-pokemon';
+import { DEV_POKEDEX } from '../../../config';
 
 const AbilityFragment = `
 fragment ability on AbilityEntry {
@@ -257,5 +258,5 @@ export interface GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'
 
 export type PokemonGenerations = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-export const POKEMON_GRAPHQL_API_URL = 'https://favware.tech/api';
+export const POKEMON_GRAPHQL_API_URL = DEV_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
 export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';

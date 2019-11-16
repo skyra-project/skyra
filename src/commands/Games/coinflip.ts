@@ -18,11 +18,13 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
-			usage: '<50|100|200|500|1000|2000|5000|10000> <coin:cointype>',
+			usage: '<50|100|200|500|1000|2000|5000|10000|cashless:default> (coin:cointype)',
 			usageDelim: ' '
 		});
 
 		this.createCustomResolver('cointype', (arg, possible, message) => {
+			console.log('in arg');
+			if (!arg) return undefined;
 			const lArg = arg.toLowerCase();
 			const face = message.language.tget('COMMAND_COINFLIP_COINNAMES').findIndex(coin => coin.toLowerCase() === lArg);
 			if (face === -1) throw message.language.tget('COMMAND_COINFLIP_INVALID_COINNAME', cleanMentions(message.guild!, arg));
@@ -30,7 +32,10 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [bet, guess]: [string, CoinTypes]) {
+	public async run(message: KlasaMessage, [bet, guess]: [string?, CoinTypes?]) {
+		console.log(bet, guess);
+		if (bet === 'cashless' || !guess) return this.cashless(message);
+
 		await message.author.settings.sync();
 		const wager = Number(bet);
 		const money = message.author.settings.get(UserSettings.Money);
@@ -52,5 +57,16 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', coinNames[result], wager))
 			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`));
 	}
+
+
+	private cashless(message: KlasaMessage) {
+		const result = Math.random() > 0.5 ? CoinTypes.Heads : CoinTypes.Tails;
+		return message.send(new MessageEmbed()
+			.setColor(getColor(message))
+			.setTitle('You flipped a coin.')
+			.setDescription(`The coin was flipped... and it showed ${message.language.tget('COMMAND_COINFLIP_COINNAMES')[result]}`)
+			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`));
+	}
+
 
 }

@@ -13,9 +13,10 @@ export class Markov {
 	}
 
 	public process() {
-		let currentWord = this.startFn(this.wordBank)!;
-		this.sentence = currentWord!;
+		let currentWord = this.startFn(this.wordBank);
+		if (!currentWord) return '';
 
+		this.sentence = currentWord;
 		let word: WordBankValue | undefined;
 		while (typeof (word = this.wordBank.get(currentWord)) !== 'undefined' && !this.endFn()) {
 			currentWord = pickByWeights(word)!;

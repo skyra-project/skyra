@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('cointype', (arg, possible, message) => {
 			const lArg = arg.toLowerCase();
 			const face = message.language.tget('COMMAND_COINFLIP_COINNAMES').findIndex(coin => coin.toLowerCase() === lArg);
-			if (!face === -1) throw message.language.tget('COMMAND_COINFLIP_INVALID_COINNAME', cleanMentions(message.guild!, arg));
+			if (face === -1) throw message.language.tget('COMMAND_COINFLIP_INVALID_COINNAME', cleanMentions(message.guild!, arg));
 			return face;
 		});
 	}

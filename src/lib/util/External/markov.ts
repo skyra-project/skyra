@@ -14,7 +14,7 @@ export class Markov {
 
 	public process() {
 		let currentWord = this.startFn(this.wordBank);
-		if (currentWord) return '';
+		if (!currentWord) return '';
 
 		this.sentence = currentWord;
 		let word: WordBankValue | undefined;

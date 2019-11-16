@@ -181,6 +181,7 @@ export namespace Moderation {
 export namespace Mime {
 
 	export const enum Types {
+		ApplicationJson = 'application/json',
 		TextPlain = 'text/plain'
 	}
 

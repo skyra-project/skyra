@@ -6,7 +6,7 @@ export interface UserAuthObject {
 	user_id: string;
 }
 
-export default class ApiRequest extends IncomingMessage implements ApiRequest {
+export default class ApiRequest extends IncomingMessage {
 
 	public constructor(socket: Socket) {
 		super(socket);

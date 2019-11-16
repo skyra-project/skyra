@@ -13,7 +13,17 @@ export default class ApiResponse extends ServerResponse {
 
 	public ok(data?: unknown) {
 		this.status(200);
-		return typeof data === 'string' ? this.end(data) : this.json(data);
+		return typeof data === 'string' ? this.text(data) : this.json(data);
+	}
+
+	public badRequest(data?: unknown) {
+		this.status(400);
+		return typeof data === 'string' ? this.text(data) : this.json(data);
+	}
+
+	public forbidden(data?: unknown) {
+		this.status(403);
+		return typeof data === 'string' ? this.text(data) : this.json(data);
 	}
 
 	public status(code: number): this {
@@ -22,7 +32,13 @@ export default class ApiResponse extends ServerResponse {
 	}
 
 	public json(data: any): void {
-		this.end(JSON.stringify(data));
+		this.setContentType(Mime.Types.ApplicationJson)
+			.end(JSON.stringify(data));
+	}
+
+	public text(data: string): void {
+		this.setContentType(Mime.Types.TextPlain)
+			.end(data);
 	}
 
 	public setContentType(contentType: Mime.Types) {

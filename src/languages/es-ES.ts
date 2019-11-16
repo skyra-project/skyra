@@ -581,7 +581,7 @@ export default class extends Language {
 		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
 		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
 			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
-				If you don't, you lose your wager. Now get those coins flippin'`,
+				If you don't, you lose your wager. Now get those coins flippin'.`,
 			examples: ['50 heads', '200 tails']
 		}),
 		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',

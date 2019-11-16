@@ -17,6 +17,7 @@ export default class extends ModerationMonitor {
 		adderMaximum: GuildSettings.Selfmod.Links.ThresholdMaximum,
 		adderDuration: GuildSettings.Selfmod.Links.ThresholdDuration
 	};
+
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
 	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg)$/i;
 

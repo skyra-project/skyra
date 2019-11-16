@@ -25,4 +25,4 @@ async function main() {
 	await writeFile(join(__dirname, '..', 'TLDs.ts'), header + content + footer);
 }
 
-main().catch(console.error);
+main().catch(error => console.error(error));

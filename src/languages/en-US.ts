@@ -1480,7 +1480,7 @@ export default class extends Language {
 
 		/**
 		 * ##################
-		 * POKEMON COMMANDS
+		 * POKÉMON COMMANDS
 		 */
 		COMMAND_POKEDEX_EMBED_DATA: {
 			TYPES: 'Type(s)',

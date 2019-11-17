@@ -1,4 +1,4 @@
-import { DexDetails, GenderEntry } from '@favware/graphql-pokemon';
+import { DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -6,14 +6,14 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getPokemonDetailsByFuzzy, GraphQLPokemonResponse, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, POKEMON_GRAPHQL_API_URL } from '../../lib/util/Pokedex';
 import { fetch } from '../../lib/util/util';
 
-const BaseStats: Record<string, string> = {
-	hp: 'HP',
-	attack: 'ATK',
-	defense: 'DEF',
-	specialattack: 'SPA',
-	specialdefense: 'SPD',
-	speed: 'SPE'
-};
+enum BaseStats {
+	hp = 'HP',
+	attack = 'ATK',
+	defense = 'DEF',
+	specialattack = 'SPA',
+	specialdefense = 'SPD',
+	speed = 'SPE'
+}
 
 export default class extends SkyraCommand {
 
@@ -24,16 +24,14 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_POKEDEX_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_POKEDEX_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<pokemon:pokemon>',
+			usage: '<pokemon:str>',
 			flagSupport: true
 		});
-
-		this.createCustomResolver('pokemon', arg => arg.toLowerCase());
 	}
 
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		try {
-			const { getPokemonDetailsByFuzzy: poke } = (await this.fetchAPI(message, pokemon)).data;
+			const { getPokemonDetailsByFuzzy: poke } = (await this.fetchAPI(message, pokemon.toLowerCase())).data;
 
 			// Parse abilities
 			const abilities: string[] = [];
@@ -45,7 +43,7 @@ export default class extends SkyraCommand {
 			// Parse base stats
 			const baseStats: string[] = [];
 			for (const [stat, value] of Object.entries(poke.baseStats)) {
-				baseStats.push(`${BaseStats[stat]}: **${value}**`);
+				baseStats.push(`${BaseStats[stat as keyof Omit<StatsEntry, '__typename'>]}: **${value}**`);
 			}
 
 			// Set evochain if there are no evolutions

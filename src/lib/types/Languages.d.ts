@@ -42,10 +42,10 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_URL: (name: string) => string;
 	RESOLVER_INVALID_USER: (name: string) => string;
 	RESOLVER_STRING_SUFFIX: string;
-	RESOLVER_MINMAX_EXACTLY: (name: string, min: number, suffix: string) => string;
-	RESOLVER_MINMAX_BOTH: (name: string, min: number, max: number, suffix: string) => string;
-	RESOLVER_MINMAX_MIN: (name: string, min: number, suffix: string) => string;
-	RESOLVER_MINMAX_MAX: (name: string, min: number, suffix: string) => string;
+	RESOLVER_MINMAX_EXACTLY: (name: string, min: number) => string;
+	RESOLVER_MINMAX_BOTH: (name: string, min: number, max: number, inclusive: boolean) => string;
+	RESOLVER_MINMAX_MIN: (name: string, min: number, inclusive: boolean) => string;
+	RESOLVER_MINMAX_MAX: (name: string, max: number, inclusive: boolean) => string;
 	REACTIONHANDLER_PROMPT: string;
 	COMMANDMESSAGE_MISSING: string;
 	COMMANDMESSAGE_MISSING_REQUIRED: (name: string) => string;
@@ -382,6 +382,8 @@ export interface LanguageKeys {
 	COMMAND_FILTERMODE_EXTENDED: string;
 	COMMAND_INVITEMODE_DESCRIPTION: string;
 	COMMAND_INVITEMODE_EXTENDED: string;
+	COMMAND_LINKMODE_DESCRIPTION: string;
+	COMMAND_LINKMODE_EXTENDED: string;
 	COMMAND_MESSAGEMODE_DESCRIPTION: string;
 	COMMAND_MESSAGEMODE_EXTENDED: string;
 	COMMAND_NEWLINEMODE_DESCRIPTION: string;
@@ -1162,12 +1164,14 @@ export interface LanguageKeys {
 	COMMAND_WSTARE: (user: string) => string;
 	COMMAND_WTICKLE: (user: string) => string;
 	CONST_MONITOR_INVITELINK: string;
+	CONST_MONITOR_LINK: string;
 	CONST_MONITOR_NMS: string;
 	CONST_MONITOR_WORDFILTER: string;
 	CONST_MONITOR_CAPSFILTER: string;
 	CONST_MONITOR_ATTACHMENTFILTER: string;
 	CONST_MONITOR_REACTIONFILTER: string;
 	MONITOR_NOINVITE: (user: string) => string;
+	MONITOR_NOLINK: (user: string) => string;
 	MONITOR_WORDFILTER_DM: (filtered: string) => string;
 	MONITOR_CAPSFILTER_DM: (message: string) => string;
 	MONITOR_WORDFILTER: (user: string) => string;

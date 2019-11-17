@@ -146,10 +146,10 @@ export default class extends Language {
 		RESOLVER_INVALID_URL: name => `${name} debe ser un enlace válido.`,
 		RESOLVER_INVALID_USER: name => `${name} debe ser una mención o una id de usuario válida.`,
 		RESOLVER_STRING_SUFFIX: ' carácteres',
-		RESOLVER_MINMAX_EXACTLY: (name, min, suffix) => `${name} debe ser exactamente de ${min}${suffix}.`,
-		RESOLVER_MINMAX_BOTH: (name, min, max, suffix) => `${name} debe ser de exactamente entr ${min} y ${max}${suffix}.`,
-		RESOLVER_MINMAX_MIN: (name, min, suffix) => `${name} debe ser mayor que ${min}${suffix}.`,
-		RESOLVER_MINMAX_MAX: (name, max, suffix) => `${name} debe ser menor que ${max}${suffix}.`,
+		RESOLVER_MINMAX_EXACTLY: (name, min) => `${name} must be exactly ${min}.`,
+		RESOLVER_MINMAX_BOTH: (name, min, max, inclusive) => inclusive ? `${name} must be between ${min} and ${max} inclusively.` : `${name} must be between ${min} and ${max} exclusively.`,
+		RESOLVER_MINMAX_MIN: (name, min, inclusive) => inclusive ? `${name} must be greater than ${min} inclusively.` : `${name} must be greater than ${min} exclusively.`,
+		RESOLVER_MINMAX_MAX: (name, max, inclusive) => inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
 		REACTIONHANDLER_PROMPT: '¿A qué página te gustaría saltar?',
 		COMMANDMESSAGE_MISSING: 'Faltan uno o más argumentos al final de la entrada.',
 		COMMANDMESSAGE_MISSING_REQUIRED: name => `El argumento ${name} es requerido.`,
@@ -999,6 +999,32 @@ export default class extends Language {
 		COMMAND_INVITEMODE_DESCRIPTION: 'Manage the behaviour for the invite link filter.',
 		COMMAND_INVITEMODE_EXTENDED: builder.display('inviteMode', {
 			extendedHelp: `The inviteMode command manages the behaviour of the word filter system.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
+		COMMAND_LINKMODE_DESCRIPTION: 'Manage the behaviour for the link filter.',
+		COMMAND_LINKMODE_EXTENDED: builder.display('linkMode', {
+			extendedHelp: `The linkMode command manages the behaviour of the link system.`,
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -2878,6 +2904,7 @@ export default class extends Language {
 		 */
 
 		CONST_MONITOR_INVITELINK: 'Enlace Invitación',
+		CONST_MONITOR_LINK: 'Link Filtrado',
 		CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
 		CONST_MONITOR_WORDFILTER: 'Palabra Filtrada',
 		CONST_MONITOR_CAPSFILTER: 'Demasiadas Mayúsculas',
@@ -2886,6 +2913,7 @@ export default class extends Language {
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		CONST_MONITOR_REACTIONFILTER: 'Reacción Eliminada',
 		MONITOR_NOINVITE: user => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
+		MONITOR_NOLINK: user => `${REDCROSS} Perdona ${user}, los enlaces no están permitidos en este servidor.`,
 		MONITOR_WORDFILTER_DM: filtered => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,

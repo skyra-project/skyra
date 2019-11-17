@@ -1471,6 +1471,42 @@ export default class extends Language {
 			extendedHelp: `This command allows moderation log case management, it allows moderators to update the reason.`,
 			examples: ['420 Spamming all channels', '419..421 Bad memes', 'latest Woops, I did a mistake!']
 		}),
+		COMMAND_RESTRICTATTACHMENT_DESCRIPTION: 'Restrict a user from sending attachments in all channels.',
+		COMMAND_RESTRICTATTACHMENT_EXTENDED: builder.display('restrictAttachment', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Sending weird images', '@Pete 24h Sending NSFW images']
+		}),
+		COMMAND_RESTRICTEMBED_DESCRIPTION: 'Restrict a user from attaching embeds in all channels.',
+		COMMAND_RESTRICTEMBED_EXTENDED: builder.display('restrictEmbed', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Sending weird links', '@Pete 24h Posted a spam link']
+		}),
+		COMMAND_RESTRICTREACTION_DESCRIPTION: 'Restrict a user from reacting to messages in all channels.',
+		COMMAND_RESTRICTREACTION_EXTENDED: builder.display('restrictReaction', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Spamming reactions', '@Pete 24h Posting weird reactions']
+		}),
+		COMMAND_RESTRICTVOICE_DESCRIPTION: 'Restrict a user from joining any voice channel.',
+		COMMAND_RESTRICTVOICE_EXTENDED: builder.display('restrictVoice', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Earraping in general voice channels', '@Pete 24h Making weird noises']
+		}),
 		COMMAND_SOFTBAN_DESCRIPTION: 'Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.',
 		COMMAND_SOFTBAN_EXTENDED: builder.display('softban', {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
@@ -2547,6 +2583,7 @@ export default class extends Language {
 		COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
 		COMMAND_MUTE_UNCONFIGURED: 'This guild does not have a **Muted** role. Aborting command execution.',
 		COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
+		COMMAND_RESTRICT_LOWLEVEL: `${REDCROSS} I am sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set i up.`,
 		COMMAND_PRUNE_INVALID: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
 		COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
 		COMMAND_PRUNE_NO_DELETES: 'No message has been deleted, either no message match the filter or they are over 14 days old.',

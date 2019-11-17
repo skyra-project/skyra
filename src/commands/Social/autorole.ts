@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		}
 
 		const sorted = [...autoRoles, { id: role.id, points }].sort(SORT);
-		await message.guild!.settings.update(GuildSettings.Roles.Auto, sorted, { arrayAction: 'overwrite', throwOnError: true })
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, sorted, { arrayAction: 'overwrite', throwOnError: true });
 		return message.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
 	}
 

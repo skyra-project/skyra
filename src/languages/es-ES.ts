@@ -577,8 +577,13 @@ export default class extends Language {
 		/**
 		 * ##############
 		 * GAMES COMMANDS
-		 */
-
+			*/
+		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
+				If you don't, you lose your wager. Now get those coins flippin'.`,
+			examples: ['50 heads', '200 tails']
+		}),
 		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
 		COMMAND_C4_EXTENDED: builder.display('c4', {
 			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
@@ -2175,6 +2180,13 @@ export default class extends Language {
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
+		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
+		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
+		COMMAND_COINFLIP_NOGUESS_TITLE: 'You flipped a coin.',
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}.` : ''}.`,
+		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
 		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',

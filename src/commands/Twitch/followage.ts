@@ -3,11 +3,12 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { MessageEmbed } from 'discord.js';
 import { fetch } from '../../lib/util/util';
 import { TOKENS } from '../../../config';
-import { TwitchChannelSearchResults, TwitchUserFollowersChannelResults } from '../../lib/types/definitions/Twitch';
+import { TwitchKrakenUserFollowersChannelResults } from '../../lib/types/definitions/Twitch';
+import { Mime } from '../../lib/util/constants';
 
 const kFetchOptions = {
 	headers: {
-		'Accept': 'application/vnd.twitchtv.v5+json',
+		'Accept': Mime.Types.ApplicationTwitchV5Json,
 		'Client-ID': TOKENS.TWITCH.CLIENT_ID
 	}
 } as const;
@@ -35,9 +36,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async retrieveResults(message: KlasaMessage, user: string, channel: string) {
-		user = encodeURIComponent(user).replace(/%20/g, '&20');
-		channel = encodeURIComponent(channel).replace(/%20/g, '&20');
-		const results = await fetch(`https://api.twitch.tv/kraken/users?login=${user},${channel}`, kFetchOptions, 'json') as TwitchChannelSearchResults;
+		const results = await this.client.twitch.fetchUsersByLogin([user, channel]);
 		if (results._total < 2) throw message.language.tget('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
 
 		return results.users;
@@ -45,7 +44,7 @@ export default class extends SkyraCommand {
 
 	private async retrieveFollowage(message: KlasaMessage, userID: string, channelID: string) {
 		try {
-			return await fetch(`https://api.twitch.tv/kraken/users/${userID}/follows/channels/${channelID}`, kFetchOptions, 'json') as TwitchUserFollowersChannelResults;
+			return await fetch(`https://api.twitch.tv/kraken/users/${userID}/follows/channels/${channelID}`, kFetchOptions, 'json') as TwitchKrakenUserFollowersChannelResults;
 		} catch (error) {
 			const parsed = JSON.parse(error.message) as { error: string; status: number; message: string };
 			if (parsed.status === 404) throw message.language.tget('COMMAND_FOLLOWAGE_NOT_FOLLOWING');

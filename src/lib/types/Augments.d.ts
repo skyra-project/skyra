@@ -11,6 +11,7 @@ import { Node as Lavalink, BaseNodeOptions } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { CommonQuery } from '../queries/common';
 import { UserTags } from '../util/Cache/UserTags';
+import { Twitch } from '../util/Notifications/Twitch';
 
 declare module 'discord.js' {
 
@@ -27,6 +28,7 @@ declare module 'discord.js' {
 		webhookError: Webhook;
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
+		twitch: Twitch;
 	}
 
 	interface MessageExtendablesAskOptions {

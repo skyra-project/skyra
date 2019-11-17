@@ -1,10 +1,9 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import * as crypto from 'crypto';
-import { TOKENS } from '../../../config';
 import { Mime } from '../../lib/util/constants';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { Events } from '../../lib/types/Enums';
+import { checkSignature } from '../../lib/util/Notifications/Twitch';
 
 export default class extends Route {
 
@@ -30,12 +29,7 @@ export default class extends Route {
 		const data = request.body as StreamBody[];
 		const [algo, sig] = request.headers['X-Hub-Signature']?.toString().split('=', 2) as string[];
 
-		const hash = crypto
-			.createHmac(algo, TOKENS.TWITCH.WEBHOOK_SECRET)
-			.update(JSON.stringify(data))
-			.digest('hex');
-
-		if (hash !== sig) return response.forbidden('Invalid Hub signature');
+		if (!checkSignature(algo, sig, data)) return response.forbidden('Invalid Hub signature');
 
 		const id = request.query.id as string;
 

@@ -1,9 +1,9 @@
-export interface TwitchChannelSearchResults {
+export interface TwitchKrakenChannelSearchResults {
 	_total: number;
-	users: TwitchChannelSearchResult[];
+	users: TwitchKrakenChannelSearchResult[];
 }
 
-export interface TwitchChannelSearchResult {
+export interface TwitchKrakenChannelSearchResult {
 	_id: string;
 	bio: null | string;
 	created_at: Date;
@@ -14,7 +14,7 @@ export interface TwitchChannelSearchResult {
 	updated_at: Date;
 }
 
-export interface TwitchChannelResult {
+export interface TwitchKrakenChannelResult {
 	_id: string;
 	broadcaster_language: string;
 	broadcaster_software: string;
@@ -40,13 +40,13 @@ export interface TwitchChannelResult {
 	views: number;
 }
 
-export interface TwitchUserFollowersChannelResults {
+export interface TwitchKrakenUserFollowersChannelResults {
 	created_at: Date;
 	notifications: boolean;
-	channel: TwitchUserFollowersChannelResultsChannel;
+	channel: TwitchKrakenUserFollowersChannelResultsChannel;
 }
 
-export interface TwitchUserFollowersChannelResultsChannel {
+export interface TwitchKrakenUserFollowersChannelResultsChannel {
 	_id: number;
 	broadcaster_language: string;
 	created_at: Date;
@@ -65,4 +65,14 @@ export interface TwitchUserFollowersChannelResultsChannel {
 	url: string;
 	video_banner: string;
 	views: number;
+}
+
+export interface TwitchHelixResponse<T> {
+	data: T[];
+}
+
+export interface TwitchHelixGameSearchResult {
+	id: string;
+	name: string;
+	box_art_url: string;
 }

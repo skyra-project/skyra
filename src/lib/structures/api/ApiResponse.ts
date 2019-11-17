@@ -11,17 +11,17 @@ export default class ApiResponse extends ServerResponse {
 		return this.status(error).json({ error: STATUS_CODES[error] });
 	}
 
-	public ok(data?: unknown) {
+	public ok(data: unknown = STATUS_CODES[200]) {
 		this.status(200);
 		return typeof data === 'string' ? this.text(data) : this.json(data);
 	}
 
-	public badRequest(data?: unknown) {
+	public badRequest(data: unknown = STATUS_CODES[400]) {
 		this.status(400);
 		return typeof data === 'string' ? this.text(data) : this.json(data);
 	}
 
-	public forbidden(data?: unknown) {
+	public forbidden(data: unknown = STATUS_CODES[403]) {
 		this.status(403);
 		return typeof data === 'string' ? this.text(data) : this.json(data);
 	}

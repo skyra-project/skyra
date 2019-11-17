@@ -154,7 +154,8 @@ export const TOKENS = {
 	GOOGLE_MAP_API: '',
 	TWITCH: {
 		CLIENT_ID: '',
-		SECRET: ''
+		SECRET: '',
+		WEBHOOK_SECRET: ''
 	},
 	WEATHER_API: '',
 	WEEB_SH: '',

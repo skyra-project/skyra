@@ -1,8 +1,10 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import * as crypto from 'crypto';
+import { TOKENS } from '../../../config';
 import { Mime } from '../../lib/util/constants';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
+import { Events } from '../../lib/types/Enums';
 
 export default class extends Route {
 
@@ -29,7 +31,7 @@ export default class extends Route {
 		const [algo, sig] = request.headers['X-Hub-Signature']?.toString().split('=', 2) as string[];
 
 		const hash = crypto
-			.createHmac(algo, 'use twitch secret from config')
+			.createHmac(algo, TOKENS.TWITCH.WEBHOOK_SECRET)
 			.update(JSON.stringify(data))
 			.digest('hex');
 
@@ -38,10 +40,10 @@ export default class extends Route {
 		const id = request.query.id as string;
 
 		if (data.length === 0) {
-			this.client.emit('twitchStreamOffline', { id }, response);
+			this.client.emit(Events.TwitchStreamOffline, { id }, response);
 			return response.ok();
 		}
-		this.client.emit('twitchStreamOnline', data, response);
+		this.client.emit(Events.TwitchStreamOnline, data, response);
 		return response.ok();
 	}
 

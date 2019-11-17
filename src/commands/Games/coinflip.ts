@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 	private noGuess(message: KlasaMessage) {
 		const result = this.flipCoin();
 		return message.send(this.buildEmbed(message, result)
-			.setTitle('COMMAND_COINFLIP_NOGUESS_TITLE')
+			.setTitle(message.language.tget('COMMAND_COINFLIP_NOGUESS_TITLE'))
 			.setDescription(message.language.tget('COMMAND_COINFLIP_NOGUESS_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result])));
 	}
 

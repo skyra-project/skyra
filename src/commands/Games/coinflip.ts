@@ -43,38 +43,40 @@ export default class extends SkyraCommand {
 			throw message.language.tget('COMMAND_SLOTMACHINES_MONEY', money);
 		}
 
-		const coinNames = message.language.tget('COMMAND_COINFLIP_COINNAMES');
-
-		const result = Math.random() > 0.5 ? CoinType.Heads : CoinType.Tails;
+		const result = this.flipCoin();
 		const won = result === guess;
 		const updatedBalance = won ? money + wager : money - wager;
 
 		await message.author.settings.update(UserSettings.Money, updatedBalance);
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+		return message.sendEmbed(this.buildEmbed(message, result)
 			.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
-			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', coinNames[result], wager))
-			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`));
+			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result], wager)));
 	}
 
 
 	private cashless(message: KlasaMessage, guess: CoinType) {
-		const result = Math.random() > 0.5 ? CoinType.Heads : CoinType.Tails;
+		const result = this.flipCoin();
 		const won = result === guess;
-		return message.send(new MessageEmbed()
-			.setColor(getColor(message))
+		return message.send(this.buildEmbed(message, result)
 			.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
-			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result]))
-			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`));
+			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result])));
 	}
 
 	private noGuess(message: KlasaMessage) {
-		const result = Math.random() > 0.5 ? CoinType.Heads : CoinType.Tails;
-		return message.send(new MessageEmbed()
-			.setColor(getColor(message))
+		const result = this.flipCoin();
+		return message.send(this.buildEmbed(message, result)
 			.setTitle('COMMAND_COINFLIP_NOGUESS_TITLE')
-			.setDescription(message.language.tget('COMMAND_COINFLIP_NOGUESS_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result]))
-			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`));
+			.setDescription(message.language.tget('COMMAND_COINFLIP_NOGUESS_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result])));
+	}
+
+	private flipCoin() {
+		return Math.random() > 0.5 ? CoinType.Heads : CoinType.Tails;
+	}
+
+	private buildEmbed(message: KlasaMessage, result: CoinType) {
+		return new MessageEmbed()
+			.setColor(getColor(message))
+			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`);
 	}
 
 }

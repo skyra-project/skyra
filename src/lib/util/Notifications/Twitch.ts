@@ -4,6 +4,11 @@ import { fetch, enumerable } from '../util';
 import { Mime } from '../constants';
 import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult } from '../../types/definitions/Twitch';
 
+const enum ApiVersion {
+	Kraken,
+	Helix
+}
+
 export class Twitch {
 
 	@enumerable(false)
@@ -30,7 +35,7 @@ export class Twitch {
 		let search = '';
 		for (const id of ids) search = `${search}&id=${encodeURIComponent(id)}`;
 		for (const name of names) search = `${search}&name=${encodeURIComponent(name)}`;
-		return this._performApiGETRequest(`games?${search}`, 'helix');
+		return this._performApiGETRequest(`games?${search}`, ApiVersion.Helix);
 	}
 
 	private _formatMultiEntries(data: string[], replaceEncode?: boolean) {
@@ -39,8 +44,8 @@ export class Twitch {
 		return out;
 	}
 
-	private async _performApiGETRequest<T>(path: string, api: 'kraken' | 'helix' = 'kraken'): Promise<T> {
-		const result = await fetch(`${api === 'kraken' ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, this.kFetchOptions, 'json') as unknown as T;
+	private async _performApiGETRequest<T>(path: string, api: ApiVersion = ApiVersion.Kraken): Promise<T> {
+		const result = await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, this.kFetchOptions, 'json') as unknown as T;
 		return result;
 	}
 

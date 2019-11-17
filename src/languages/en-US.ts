@@ -296,6 +296,18 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Manage the volume for current song.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given pokemon',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: `
+				Queries the Pokemon API on data on a given Pokemon.
+				Uses a fuzzy search to also match against near-matches.
+				You can provide a flag of \`--shiny\` to get the shiny sprite.
+			`,
+			explainedUsage: [
+				['pokemon', 'The pokemon for which you want to find data']
+			],
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `The queue's empty! The session will start as soon as we have some songs queued.`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `The queue's almost empty! Please add some to keep the spirit of this session still up!`,
@@ -1499,6 +1511,28 @@ export default class extends Language {
 					command.`,
 			examples: ['@Pete Attempted to mention everyone.']
 		}),
+
+		/**
+		 * ##################
+		 * POKÉMON COMMANDS
+		 */
+		COMMAND_POKEDEX_EMBED_DATA: {
+			TYPES: 'Type(s)',
+			ABILITIES: 'Abilities',
+			GENDER_RATIO: 'Gender Ratio',
+			SMOGON_TIER: 'Smogon Tier',
+			UKNOWN_SMOGON_TIER: 'Unknown / Alt form',
+			HEIGHT: 'Height',
+			WEIGHT: 'Width',
+			EGG_GROUPS: 'Egg group(s)',
+			OTHER_FORMES: 'Other forme(s)',
+			EVOLUTIONARY_LINE: 'Evolutionary line',
+			BASE_STATS: 'Base stats',
+			FLAVOUR_TEXT: 'Pokdex entry',
+			EXTERNAL_RESOURCES: 'External resources',
+			NONE: 'None'
+		},
+		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 
 		/**
 		 * ##################

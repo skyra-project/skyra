@@ -290,6 +290,18 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: `
+				Consulta la API de Pokémon sobre los datos de un Pokémon determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
+			],
+			examples: ['dragonite', 'pikachu']
+		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `¡La cola está sin discos! ¡Añade algunas canciones para mantener el alma de la fiesta!`,
@@ -518,7 +530,7 @@ export default class extends Language {
 				return 10 as output.`,
 			examples: ['370d24', '100d6', '6']
 		}),
-		COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokemon.',
+		COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokémon.',
 		COMMAND_ESCAPEROPE_EXTENDED: builder.display('escaperope', {
 			extendedHelp: '**Skyra** used **Escape Rope**.'
 		}),
@@ -1474,6 +1486,28 @@ export default class extends Language {
 					command.`,
 			examples: ['@Pete Attempted to mention everyone.']
 		}),
+
+		/**
+		 * ##################
+		 * POKÉMON COMMANDS
+		 */
+		COMMAND_POKEDEX_EMBED_DATA: {
+			TYPES: 'Tipo(s)',
+			ABILITIES: 'Habilidades',
+			GENDER_RATIO: 'Relación de género',
+			SMOGON_TIER: 'Smogon Tier',
+			UKNOWN_SMOGON_TIER: 'Forma desconocida / alternativa',
+			HEIGHT: 'Altura',
+			WEIGHT: 'Anchura',
+			EGG_GROUPS: 'Grupo (s) de huevo',
+			OTHER_FORMES: 'Otras formas',
+			EVOLUTIONARY_LINE: 'Línea evolutiva',
+			BASE_STATS: 'Estadísticas base',
+			FLAVOUR_TEXT: 'Entrada de Pokédex',
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			NONE: 'Ninguno'
+		},
+		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 
 		/**
 		 * ##################
@@ -2702,7 +2736,7 @@ export default class extends Language {
 			explainedUsage: [
 				['Solicitud', `El nombre del juego que estás buscando..`]
 			],
-			examples: ['Breath of the Wild', 'Pokemon', 'Splatoon']
+			examples: ['Breath of the Wild', 'Pokémon', 'Splatoon']
 		}),
 		COMMAND_ESHOP_NOT_IN_DATABASE: 'Ninguno disponible',
 		COMMAND_ESHOP_TITLES: {

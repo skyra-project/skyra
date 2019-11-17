@@ -178,6 +178,25 @@ export interface LanguageKeys {
 	COMMAND_VOLUME_DESCRIPTION: string;
 	COMMAND_VOLUME_SUCCESS: (volume: number) => string;
 	COMMAND_VOLUME_CHANGED: (emoji: string, volume: number) => string;
+	COMMAND_POKEDEX_DESCRIPTION: string;
+	COMMAND_POKEDEX_EXTENDED: string;
+	COMMAND_POKEDEX_EMBED_DATA: {
+		TYPES: string;
+		ABILITIES: string;
+		GENDER_RATIO: string;
+		SMOGON_TIER: string;
+		UKNOWN_SMOGON_TIER: string;
+		HEIGHT: string;
+		WEIGHT: string;
+		EGG_GROUPS: string;
+		OTHER_FORMES: string;
+		EVOLUTIONARY_LINE: string;
+		BASE_STATS: string;
+		FLAVOUR_TEXT: string;
+		EXTERNAL_RESOURCES: string;
+		NONE: string;
+	};
+	COMMAND_POKEDEX_QUERY_FAIL: (pokemon: string) => string;
 	INHIBITOR_MUSIC_QUEUE_EMPTY: string;
 	INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: string;
 	INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: string;

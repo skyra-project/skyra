@@ -90,6 +90,29 @@ function duration(time: number, precision?: number) {
 	return friendlyDuration(time, TIMES, precision);
 }
 
+/** Parses cardinal numbers to the ordinal counterparts */
+function ordinal(cardinal: number) {
+	const dec = cardinal % 10;
+
+	switch (dec) {
+		case 1:
+			return `${cardinal}ro`;
+		case 2:
+			return `${cardinal}do`;
+		case 3:
+			return `${cardinal}ro`;
+		case 0:
+		case 7:
+			return `${cardinal}mo`;
+		case 8:
+			return `${cardinal}vo`;
+		case 9:
+			return `${cardinal}no`;
+		default:
+			return `${cardinal}to`;
+	}
+}
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -102,6 +125,7 @@ export default class extends Language {
 	};
 
 	public duration = duration;
+	public ordinal = ordinal;
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore:2416

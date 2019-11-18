@@ -19,9 +19,6 @@
 	],
 	"exclude": [
 		"**/node_modules",
-		"**/build",
-		"**/bin",
-		"**/out",
 		"**/dist",
 		"**/coverage"
 	]

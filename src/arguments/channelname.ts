@@ -13,7 +13,7 @@ export default class extends Argument {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_CHANNELNAME', possible.name);
 		if (!message.guild) return this.channel.run(arg, possible, message);
 		const resChannel = this.resolveChannel(arg, message.guild);
-		if (resChannel) return resChannel;
+		if (resChannel && (typeof filter === 'undefined' || filter(resChannel))) return resChannel;
 
 		const result = await new FuzzySearch(message.guild.channels, entry => entry.name, filter).run(message, arg, possible.min || undefined);
 		if (result) return result[1];

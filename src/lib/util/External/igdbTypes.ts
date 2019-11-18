@@ -1176,14 +1176,14 @@ export interface Website extends ApiObject {
 }
 
 
-export enum AchievementCategoryEnum {
+export const enum AchievementCategoryEnum {
 	ACHIEVEMENT_CATEGORY_NULL = 0,
 	PLAYSTATION = 1,
 	XBOX = 2,
 	STEAM = 3
 }
 
-export enum RegionLanguageEnum {
+export const enum RegionLanguageEnum {
 	REGION_LANGUAGE_NULL = 0,
 	EUROPE = 1,
 	NORTH_AMERICA = 2,
@@ -1197,7 +1197,7 @@ export enum RegionLanguageEnum {
 	SOUTH_KOREA = 10
 }
 
-export enum AchievementRankEnum {
+export const enum AchievementRankEnum {
 	ACHIEVEMENT_RANK_NULL = 0,
 	BRONZE = 1,
 	SILVER = 2,
@@ -1205,7 +1205,7 @@ export enum AchievementRankEnum {
 	PLATINUM = 4
 }
 
-export enum AgeRatingCategoryEnum {
+export const enum AgeRatingCategoryEnum {
 	AGERATING_CATEGORY_NULL = 0,
 	ESRB = 1,
 	PEGI = 2
@@ -1227,14 +1227,14 @@ export enum AgeRatingRatingEnum {
 	AO = 12
 }
 
-export enum GenderGenderEnum {
+export const enum GenderGenderEnum {
 	GENDER_GENDER_NULL = 0,
 	MALE = 1,
 	FEMALE = 2,
 	OTHER = 3
 }
 
-export enum CharacterSpeciesEnum {
+export const enum CharacterSpeciesEnum {
 	CHARACTER_SPECIES_NULL = 0,
 	HUMAN = 1,
 	ALIEN = 2,
@@ -1243,7 +1243,7 @@ export enum CharacterSpeciesEnum {
 	UNKNOWN = 5
 }
 
-export enum DateFormatStartDateCategoryEnum {
+export const enum DateFormatStartDateCategoryEnum {
 	YYYYMMMMDD = 0,
 	YYYYMMMM = 1,
 	YYYY = 2,
@@ -1254,7 +1254,7 @@ export enum DateFormatStartDateCategoryEnum {
 	TBD = 7
 }
 
-export enum WebsiteCategoryEnum {
+export const enum WebsiteCategoryEnum {
 	WEBSITE_CATEGORY_NULL = 0,
 	WEBSITE_OFFICIAL = 1,
 	WEBSITE_WIKIA = 2,
@@ -1277,7 +1277,7 @@ export enum WebsiteCategoryEnum {
 	WEBSITE_SOUNDCLOUD = 20
 }
 
-export enum CreditCategoryEnum {
+export const enum CreditCategoryEnum {
 	CREDIT_CATEGORY_NULL = 0,
 	VOICE_ACTOR = 1,
 	LANGUAGE = 2,
@@ -1287,7 +1287,7 @@ export enum CreditCategoryEnum {
 	SUPPORT_COMPANY = 6
 }
 
-export enum ExternalGameCategoryEnum {
+export const enum ExternalGameCategoryEnum {
 	EXTERNALGAME_CATEGORY_NULL = 0,
 	EXTERNALGAME_STEAM = 1,
 	EXTERNALGAME_GOG = 5,
@@ -1298,7 +1298,7 @@ export enum ExternalGameCategoryEnum {
 	EXTERNALGAME_ANDROID = 15
 }
 
-export enum FeedCategoryEnum {
+export const enum FeedCategoryEnum {
 	FEED_CATEGORY_NULL = 0,
 	PULSE_ARTICLE = 1,
 	COMING_SOON = 2,
@@ -1308,7 +1308,7 @@ export enum FeedCategoryEnum {
 	PAGE_CONTRIBUTED_ITEM = 7
 }
 
-export enum GameCategoryEnum {
+export const enum GameCategoryEnum {
 	MAIN_GAME = 0,
 	DLC_ADDON = 1,
 	EXPANSION = 2,
@@ -1316,7 +1316,7 @@ export enum GameCategoryEnum {
 	STANDALONE_EXPANSION = 4
 }
 
-export enum GameStatusEnum {
+export const enum GameStatusEnum {
 	RELEASED = 0,
 	ALPHA = 2,
 	BETA = 3,
@@ -1325,18 +1325,18 @@ export enum GameStatusEnum {
 	CANCELLED = 6
 }
 
-export enum GameVersionFeatureCategoryEnum {
+export const enum GameVersionFeatureCategoryEnum {
 	BOOLEAN = 0,
 	DESCRIPTION = 1
 }
 
-export enum GameVersionFeatureValueIncludedFeatureEnum {
+export const enum GameVersionFeatureValueIncludedFeatureEnum {
 	NOT_INCLUDED = 0,
 	INCLUDED = 1,
 	PRE_ORDER_ONLY = 2
 }
 
-export enum PageCategoryEnum {
+export const enum PageCategoryEnum {
 	PAGE_CATEGORY_NULL = 0,
 	PERSONALITY = 1,
 	MEDIA_ORGANIZATION = 2,
@@ -1344,7 +1344,7 @@ export enum PageCategoryEnum {
 	CLAN_TEAM = 4
 }
 
-export enum ColorColorEnum {
+export const enum ColorColorEnum {
 	GREEN = 0,
 	BLUE = 1,
 	RED = 2,
@@ -1353,7 +1353,7 @@ export enum ColorColorEnum {
 	YELLOW = 5
 }
 
-export enum PageSubCategoryEnum {
+export const enum PageSubCategoryEnum {
 	PAGE_SUB_CATEGORY_NULL = 0,
 	USER = 1,
 	GAME = 2,
@@ -1363,7 +1363,7 @@ export enum PageSubCategoryEnum {
 	E_SPORTS = 6
 }
 
-export enum PlatformCategoryEnum {
+export const enum PlatformCategoryEnum {
 	PLATFORM_CATEGORY_NULL = 0,
 	CONSOLE = 1,
 	ARCADE = 2,
@@ -1373,13 +1373,13 @@ export enum PlatformCategoryEnum {
 	COMPUTER = 6
 }
 
-export enum ReviewCategoryEnum {
+export const enum ReviewCategoryEnum {
 	REVIEW_CATEGORY_NULL = 0,
 	TEXT = 1,
 	VIDEO = 2
 }
 
-export enum SocialMetricCategoryEnum {
+export const enum SocialMetricCategoryEnum {
 	SOCIALMETRIC_CATEGORY_NULL = 0,
 	FOLLOWS = 1,
 	LIKES = 2,
@@ -1390,7 +1390,7 @@ export enum SocialMetricCategoryEnum {
 	FAVORITES = 7
 }
 
-export enum SocialMetricSourceSocialNetworkEnum {
+export const enum SocialMetricSourceSocialNetworkEnum {
 	SOCIALMETRICSOURCE_SOCIAL_NETWORK_NULL = 0,
 	SOCIALMETRICSOURCE_OFFICIAL = 1,
 	SOCIALMETRICSOURCE_WIKIA = 2,
@@ -1407,13 +1407,13 @@ export enum SocialMetricSourceSocialNetworkEnum {
 	SOCIALMETRICSOURCE_REDDIT = 14
 }
 
-export enum TestDummyEnumTestEnum {
+export const enum TestDummyEnumTestEnum {
 	TESTDUMMY_ENUM_TEST_NULL = 0,
 	ENUM1 = 1,
 	ENUM2 = 2
 }
 
-export enum UserRoleEnum {
+export const enum UserRoleEnum {
 	USER_ROLE_NULL = 0,
 	USER_USER = 1,
 	USER_ADVANCED_USER = 2,

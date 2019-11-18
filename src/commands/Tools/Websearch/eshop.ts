@@ -4,7 +4,7 @@ import { stringify } from 'querystring';
 import { TOKENS } from '../../../../config';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { cutText, fetch, getColor } from '../../../lib/util/util';
+import { cutText, fetch, getColor, FetchResultTypes } from '../../../lib/util/util';
 import { decode } from 'he';
 import { BrandingColors } from '../../../lib/util/constants';
 
@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 					]
 				}
 			)
-		}, 'json')
+		}, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<EshopResult>;
 	}
 

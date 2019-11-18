@@ -3,7 +3,7 @@ import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Reddit } from '../../lib/types/definitions/Reddit';
 import { BrandingColors } from '../../lib/util/constants';
-import { cutText, fetch, getColor, roundNumber } from '../../lib/util/util';
+import { cutText, fetch, getColor, roundNumber, FetchResultTypes } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async fetchAbout(user: string, message: KlasaMessage) {
-		const { data } = await fetch(`https://www.reddit.com/user/${user}/about/.json`, 'json')
+		const { data } = await fetch(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON)
 			.catch(() => {
 				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
 			}) as Reddit.Response<'about'>;
@@ -101,7 +101,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
-		const { data } = await fetch(url, 'json')
+		const { data } = await fetch(url, FetchResultTypes.JSON)
 			.catch(() => {
 				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
 			}) as Reddit.Response<'comments'>;
@@ -128,7 +128,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
-		const { data } = await fetch(url, 'json')
+		const { data } = await fetch(url, FetchResultTypes.JSON)
 			.catch(() => {
 				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
 			}) as Reddit.Response<'posts'>;

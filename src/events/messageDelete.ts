@@ -8,7 +8,7 @@ import { cutText, getContent, getImage } from '../lib/util/util';
 export default class extends Event {
 
 	public run(message: KlasaMessage) {
-		if (message.partial || !message.guild || message.author.id === this.client.user!.id) return;
+		if (message.partial || !message.guild || message.author.bot) return;
 
 		this.handleMessageLogs(message);
 		this.handleSnipeMessage(message);

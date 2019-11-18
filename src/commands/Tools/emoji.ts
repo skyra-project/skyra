@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch, twemoji } from '../../lib/util/util';
+import { fetch, twemoji, FetchResultTypes } from '../../lib/util/util';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;
 const REG_TWEMOJI = /^[^a-zA-Z0-9]{1,11}$/;
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 
 		if (!REG_TWEMOJI.test(emoji)) throw message.language.tget('COMMAND_EMOJI_INVALID', emoji);
 		const r = twemoji(emoji);
-		const buffer = await fetch(`https://twemoji.maxcdn.com/v/12.1.4/72x72/${r}.png`, 'buffer')
+		const buffer = await fetch(`https://twemoji.maxcdn.com/v/12.1.4/72x72/${r}.png`, FetchResultTypes.Buffer)
 			.catch(() => { throw message.language.tget('COMMAND_EMOJI_INVALID', emoji); });
 
 		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.tget('COMMAND_EMOJI_TOO_LARGE', emoji);

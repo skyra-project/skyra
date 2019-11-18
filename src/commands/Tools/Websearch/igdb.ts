@@ -4,7 +4,7 @@ import { TOKENS } from '../../../../config';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { BrandingColors } from '../../../lib/util/constants';
-import { cutText, fetch, getColor, roundNumber } from '../../../lib/util/util';
+import { cutText, fetch, getColor, roundNumber, FetchResultTypes } from '../../../lib/util/util';
 
 const API_URL = 'https://api-v3.igdb.com/games';
 enum IgdbAgeRating {
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 				'limit 10;',
 				'offset 0;'
 			].join('')
-		}, 'json')
+		}, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<IgdbGame[]>;
 	}
 

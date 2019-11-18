@@ -17,6 +17,7 @@
     "update": "rm -rf node_modules && yarn",
     "build": "tsc -p .",
     "build-clear": "rm -rf dist && tsc -p .",
+    "build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
     "watch": "tsc -p . -w",
     "dev": "yarn build && yarn start"
   },
@@ -48,6 +49,7 @@
     "confusables": "^0.3.3",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js#3393/head",
+    "emoji-regex": "^8.0.0",
     "fs-nextra": "^0.4.7",
     "gifencoder": "^2.0.1",
     "he": "^1.2.0",
@@ -63,6 +65,7 @@
   },
   "devDependencies": {
     "@discordjs/collection": "^0.1.3",
+    "@favware/graphql-pokemon": "^1.0.1",
     "@types/backoff": "^2.5.1",
     "@types/diff": "^4.0.2",
     "@types/he": "^1.1.0",

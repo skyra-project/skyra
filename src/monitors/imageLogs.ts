@@ -3,7 +3,7 @@ import { KlasaMessage, Monitor, util } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
-import { getAttachment, fetch } from '../lib/util/util';
+import { getAttachment, fetch, FetchResultTypes } from '../lib/util/util';
 import { extname } from 'path';
 
 const MAXIMUM_SIZE = 300;
@@ -23,7 +23,7 @@ export default class extends Monitor {
 		url.searchParams.append('width', dimensions.width.toString());
 		url.searchParams.append('height', dimensions.height.toString());
 
-		const result = await fetch(url, 'result').catch(error => {
+		const result = await fetch(url, FetchResultTypes.Result).catch(error => {
 			throw new Error(`ImageLogs[${error}] ${url}`);
 		});
 		const contentLength = result.headers.get('content-length');

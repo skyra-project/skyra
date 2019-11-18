@@ -9,6 +9,7 @@ import { ModerationActions } from './ModerationActions';
 export interface Adders {
 	attachments: Adder<string> | null;
 	capitals: Adder<string> | null;
+	links: Adder<string> | null;
 	messages: Adder<string> | null;
 	newlines: Adder<string> | null;
 	invites: Adder<string> | null;
@@ -32,6 +33,7 @@ export class GuildSecurity {
 	public adders: Adders = {
 		attachments: null,
 		capitals: null,
+		links: null,
 		messages: null,
 		newlines: null,
 		invites: null,

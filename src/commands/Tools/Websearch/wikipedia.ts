@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { cutText, fetch, getColor } from '../../../lib/util/util';
+import { cutText, fetch, getColor, FetchResultTypes } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('exsectionformat', 'plain');
 		url.searchParams.append('exlimit', '1');
 		url.searchParams.append('titles', this.parseURL(input));
-		const text = await fetch(url, 'json') as WikipediaResultOk;
+		const text = await fetch(url, FetchResultTypes.JSON) as WikipediaResultOk;
 
 		if (text.query.pageids[0] === '-1') {
 			throw message.language.tget('COMMAND_WIKIPEDIA_NOTFOUND');

@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch } from '../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../lib/util/util';
 import { TextChannel } from 'discord.js';
 import { Reddit } from '../../lib/types/definitions/Reddit';
 
@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 
 	private async fetchData(message: KlasaMessage, reddit: string) {
 		try {
-			return await fetch(`https://www.reddit.com/r/${reddit}/.json?limit=30`, 'json') as Reddit.Response<'posts'>;
+			return await fetch(`https://www.reddit.com/r/${reddit}/.json?limit=30`, FetchResultTypes.JSON) as Reddit.Response<'posts'>;
 		} catch (error) {
 			this.handleError(message, error);
 		}

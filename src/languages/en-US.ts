@@ -2825,7 +2825,10 @@ export default class extends Language {
 			NO_DEVELOPERS: 'Developer(s) unknown',
 			NO_PLATFORMS: 'Platform(s) unknown',
 			NO_RELEASE_DATE: 'Release date unknown',
-			NO_RATING: 'No user rating'
+			NO_RATING: 'No user rating',
+			NO_SUMMARY: 'No game summary available',
+			NO_GENRES: 'No known genres',
+			NO_AGE_RATINGS: 'No age ratings available'
 		},
 		COMMAND_ITUNES_DESCRIPTION: 'Searches iTunes API for music tracks',
 		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {

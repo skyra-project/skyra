@@ -1,30 +1,28 @@
+import { AgeRatingRatingEnum, Company, Game } from '../../../lib/util/External/igdbTypes';
+import { isNumber } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import { TOKENS } from '../../../../config';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { BrandingColors } from '../../../lib/util/constants';
-import { cutText, fetch, getColor, roundNumber, FetchResultTypes } from '../../../lib/util/util';
+import { cutText, fetch, FetchResultTypes, getColor, roundNumber } from '../../../lib/util/util';
 
 const API_URL = 'https://api-v3.igdb.com/games';
-enum IgdbAgeRating {
-	Three = 1,
-	Seven = 2,
-	Twelve = 3,
-	Sixteen = 4,
-	Eighteen = 5,
-	RP = 6,
-	EC = 7,
-	E = 8,
-	E10 = 9,
-	T = 10,
-	M = 11,
-	AO = 12
+
+// TODO: -favna 2019-11-18- Use the version from @klasa/utils when it gets added there (my own PR)
+function isArrayOfNumbers(array: unknown[]): array is number[] {
+	return array.every(val => isNumber(val));
+}
+
+function isIgdbCompany(company: unknown): company is Company {
+	return (company as Company).id !== undefined;
 }
 
 export default class extends SkyraCommand {
 
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
+	private urlRegex = /https?:/i;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -65,81 +63,75 @@ export default class extends SkyraCommand {
 				'offset 0;'
 			].join('')
 		}, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<IgdbGame[]>;
+			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Game[]>;
 	}
 
-	private buildDisplay(entries: IgdbGame[], message: KlasaMessage) {
+	private buildDisplay(entries: Game[], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_IGDB_TITLES');
 		const fieldsData = message.language.tget('COMMAND_IGDB_DATA');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message)));
 
 		for (const game of entries) {
-			const coverImg = /https?:/i.test(game.cover.url) ? game.cover.url : `https:${game.cover.url}`;
+			const coverImg = this.resolveCover(game.cover);
 			const userRating = game.rating ? `${roundNumber(game.rating, 2)}%` : fieldsData.NO_RATING;
-			const ageRating = game.age_ratings.map(ageRating => `${ageRating.category === 1 ? 'ESRB' : 'PEGI'}: ${IgdbAgeRating[ageRating.rating]}`);
-			const genres = game.genres.map(genre => genre.name).join(', ');
-			const developers = game.involved_companies
-				? game.involved_companies.map(company => company.developer ? company.company.name : null).filter(Boolean).join(', ')
-				: fieldsData.NO_DEVELOPERS;
-			const platforms = game.platforms
-				? game.platforms.map(platform => platform.name).join(', ')
-				: fieldsData.NO_PLATFORMS;
-			const releaseDate = game.release_dates && game.release_dates.length
-				? this.releaseDateTimestamp.displayUTC(game.release_dates[0].date)
-				: fieldsData.NO_RELEASE_DATE;
 
 			display.addPage((embed: MessageEmbed) => embed
 				.setTitle(game.name)
-				.setURL(game.url)
+				.setURL(game.url || '')
 				.setThumbnail(coverImg)
-				.setDescription(cutText(game.summary, 750))
+				.setDescription(this.resolveSummary(game.summary) || fieldsData.NO_SUMMARY)
 				.addField(titles.USER_SCORE, userRating)
-				.addField(titles.AGE_RATING, ageRating)
-				.addField(titles.RELEASE_DATE, releaseDate)
-				.addField(titles.GENRES, genres)
-				.addField(titles.DEVELOPERS, developers)
-				.addField(titles.PLATFORMS, platforms));
+				.addField(titles.AGE_RATING, this.resolveAgeRating(game.age_ratings, fieldsData.NO_AGE_RATINGS))
+				.addField(titles.RELEASE_DATE, this.resolveReleaseDate(game.release_dates, fieldsData.NO_RELEASE_DATE))
+				.addField(titles.GENRES, this.resolveGenres(game.genres, fieldsData.NO_GENRES))
+				.addField(titles.DEVELOPERS, this.resolveDevelopers(game.involved_companies, fieldsData.NO_DEVELOPERS))
+				.addField(titles.PLATFORMS, this.resolvePlatforms(game.platforms, fieldsData.NO_PLATFORMS)));
 		}
 
 		return display;
 	}
 
-}
+	private resolveCover(cover: Game['cover']) {
+		if (!cover || isNumber(cover) || !cover.url) return '';
 
-interface IgdbGame {
-	id: number;
-	name: string;
-	rating?: number;
-	summary: string;
-	url: string;
-	age_ratings: {
-		id: number;
-		category: number;
-		rating: number;
-	}[];
-	cover: {
-		id: number;
-		url: string;
-	};
-	genres: {
-		id: number;
-		name: string;
-	}[];
-	involved_companies?: {
-		id: number;
-		developer: boolean;
-		company: {
-			id: number;
-			name: string;
-		};
-	}[];
-	platforms?: {
-		id: number;
-		name: string;
-	}[];
-	release_dates?: {
-		id: string;
-		date: number;
-	}[];
+		return this.urlRegex.test(cover.url) ? cover.url : `https:${cover.url}`;
+	}
+
+	private resolveSummary(summary: Game['summary']) {
+		if (summary) return cutText(summary, 750);
+		return '';
+	}
+
+	private resolveAgeRating(ageRatings: Game['age_ratings'], fallback: string) {
+		if (!ageRatings || isArrayOfNumbers(ageRatings)) return fallback;
+		return ageRatings.map(ageRating => `${ageRating.category === 1 ? 'ESRB' : 'PEGI'}: ${AgeRatingRatingEnum[ageRating.rating ?? 0]}`);
+	}
+
+	private resolveGenres(genres: Game['genres'], fallback: string) {
+		if (!genres || isArrayOfNumbers(genres)) return fallback;
+		return genres.map(genre => genre.name).join(', ');
+	}
+
+	private resolveDevelopers(developers: Game['involved_companies'], fallback: string) {
+		if (!developers || isArrayOfNumbers(developers)) return fallback;
+		return developers.map(involvedCompany => {
+			if (isIgdbCompany(involvedCompany.company)) {
+				return involvedCompany.company.name;
+			}
+
+			return null;
+		}).filter(Boolean).join(', ');
+	}
+
+	private resolveReleaseDate(releaseDates: Game['release_dates'], fallback: string) {
+		if (!releaseDates || releaseDates.length === 0 || isArrayOfNumbers(releaseDates) || !releaseDates[0].date) return fallback;
+		return this.releaseDateTimestamp.displayUTC(releaseDates[0].date);
+	}
+
+	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {
+		if (!platforms || isArrayOfNumbers(platforms)) return fallback;
+		return platforms.map(platform => platform.name).join(', ');
+	}
+
 }

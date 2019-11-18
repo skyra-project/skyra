@@ -141,5 +141,4 @@ export default Client.defaultGuildSchema
 	.add('notifications', folder => folder
 		.add('streams', streams => streams
 			.add('twitch', twitch => twitch
-				.add('streamers', 'any', { array: true, configurable: false })
-				.add('subscriptions', 'integer', { configurable: false }))));
+				.add('streamers', 'any', { array: true, configurable: false }))));

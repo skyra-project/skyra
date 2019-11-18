@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 import { TOKENS } from '../../../../config';
-import { fetch, enumerable } from '../util';
+import { fetch, enumerable, FetchResultTypes } from '../util';
 import { Mime } from '../constants';
 import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult } from '../../types/definitions/Twitch';
 
@@ -45,7 +45,7 @@ export class Twitch {
 	}
 
 	private async _performApiGETRequest<T>(path: string, api: ApiVersion = ApiVersion.Kraken): Promise<T> {
-		const result = await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, this.kFetchOptions, 'json') as unknown as T;
+		const result = await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, this.kFetchOptions, FetchResultTypes.JSON) as unknown as T;
 		return result;
 	}
 

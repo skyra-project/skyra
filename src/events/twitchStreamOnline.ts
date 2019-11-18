@@ -9,7 +9,7 @@ const REGEXP = /%TITLE%|%VIEWER_COUNT%|%GAME_NAME%|%LANGUAGE%|%GAME_ID%|%USER_ID
 export default class extends Event {
 
 	public async run(data: StreamBody, response: ApiResponse) {
-		const [game] = await this.client.twitch.fetchGame([data.game_id!]);
+		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id!]);
 	}
 
 	private transformText(str: string, notification: StreamBody, game: TwitchHelixGameSearchResult) {

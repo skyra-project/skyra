@@ -235,7 +235,7 @@ export async function fetch(url: URL | string, options: RequestInit | FetchResul
 	if (typeof options === 'undefined') {
 		options = {};
 		type = FetchResultTypes.JSON;
-	} else if (typeof options === 'string') {
+	} else if (typeof options === 'number') {
 		type = options;
 		options = {};
 	} else if (typeof type === 'undefined') {

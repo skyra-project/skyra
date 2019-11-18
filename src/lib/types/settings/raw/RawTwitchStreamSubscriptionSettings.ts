@@ -1,4 +1,4 @@
-export interface RawSubscriptionSettings {
+export interface RawTwitchStreamSubscriptionSettings {
 	id: string;
 	is_streaming: boolean;
 	created_at: number;
@@ -8,7 +8,7 @@ export interface RawSubscriptionSettings {
 }
 
 export const SQL_TABLE_SCHEMA = /* sql */`
-	CREATE TABLE IF NOT EXISTS subscriptions (
+	CREATE TABLE IF NOT EXISTS twitch_stream_subscriptions (
 		"id"            VARCHAR(16)                               NOT NULL,
 		"is_streaming"  BOOLEAN                                   NOT NULL,
 		"created_at"    BIGINT                                    NOT NULL,

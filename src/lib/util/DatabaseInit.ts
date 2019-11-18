@@ -8,7 +8,7 @@ import { SQL_TABLE_SCHEMA as GuildTableSchema } from '../types/settings/raw/RawG
 import { SQL_TABLE_SCHEMA as MemberTableSchema } from '../types/settings/raw/RawMemberSettings';
 import { SQL_TABLE_SCHEMA as ModerationTableSchema } from '../types/settings/raw/RawModerationSettings';
 import { SQL_TABLE_SCHEMA as StarboardTableSchema } from '../types/settings/raw/RawStarboardSettings';
-import { SQL_TABLE_SCHEMA as SubscrioptionTableSchema } from '../types/settings/raw/RawSubscriptionSettings';
+import { SQL_TABLE_SCHEMA as TwitchStreamSubscrioptionTableSchema } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { SQL_TABLE_SCHEMA as UserTableSchema } from '../types/settings/raw/RawUserSettings';
 
 let initialized = false;
@@ -25,7 +25,7 @@ export async function run(provider: PostgresProvider) {
 		['members', MemberTableSchema],
 		['moderation', ModerationTableSchema],
 		['starboard', StarboardTableSchema],
-		['subscrioptions', SubscrioptionTableSchema],
+		['twitch_stream_subscriptions', TwitchStreamSubscrioptionTableSchema],
 		['users', UserTableSchema]
 	].map(([name, schema]) => provider.run(schema).catch(error => console.error(`Failed to create schema for ${name}:`, error))));
 }

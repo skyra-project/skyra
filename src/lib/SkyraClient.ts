@@ -18,6 +18,7 @@ import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT, DEV_PGSQL } from '../../config';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
+import { Twitch } from './util/Notifications/Twitch';
 import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import { UserTags } from './util/Cache/UserTags';
@@ -97,6 +98,9 @@ export class SkyraClient extends KlasaClient {
 			...this.options.lavalink
 		})
 		: null;
+
+	@enumerable(false)
+	public twitch: Twitch = new Twitch();
 
 	public ipc = new VezaClient('skyra-master')
 		.on('disconnect', client => { this.emit(Events.Warn, `${y} Disconnected: ${client.name}`); })

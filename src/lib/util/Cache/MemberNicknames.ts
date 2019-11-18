@@ -38,19 +38,6 @@ export class MemberNicknames extends Collection<string, string | null> {
 		return null;
 	}
 
-	// public async fetch(id: string) {
-	// 	const existing = super.get(id);
-	// 	if (typeof existing !== 'undefined') return existing;
-	//
-	// 	try {
-	// 		const member = await this.guild.members.fetch(id);
-	// 		return this.create(member);
-	// 	} catch (error) {
-	// 		if (error.code === APIErrors.UnknownMember) return null;
-	// 		throw error;
-	// 	}
-	// }
-
 	public async fetch(id: string): Promise<string | null>;
 	public async fetch(): Promise<this>;
 	public async fetch(id?: string): Promise<string | null | this> {

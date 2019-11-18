@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('integer', async (arg, possible, message) =>
-			(await this.client.arguments.get('integer')!.run(arg, possible, message)) * 1000);
+			await this.client.arguments.get('integer')!.run(arg, possible, message));
 	}
 
 	public async run(message: KlasaMessage, [cooldown]: ['reset' | 'off' | number]) {

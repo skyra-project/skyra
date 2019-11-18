@@ -12,3 +12,5 @@
 /src/commands/Anime/anime.ts @favna
 /src/commands/Anime/manga.ts @favna
 /src/commands/Misc/reddituser.ts @favna
+/src/commands/Pokemon/ @favna
+/src/lib/util/Pokedex.ts @favna

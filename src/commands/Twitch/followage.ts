@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { MessageEmbed } from 'discord.js';
-import { fetch } from '../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../lib/util/util';
 import { TOKENS } from '../../../config';
 import { TwitchKrakenUserFollowersChannelResults } from '../../lib/types/definitions/Twitch';
 import { Mime } from '../../lib/util/constants';
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 
 	private async retrieveFollowage(message: KlasaMessage, userID: string, channelID: string) {
 		try {
-			return await fetch(`https://api.twitch.tv/kraken/users/${userID}/follows/channels/${channelID}`, kFetchOptions, 'json') as TwitchKrakenUserFollowersChannelResults;
+			return await fetch(`https://api.twitch.tv/kraken/users/${userID}/follows/channels/${channelID}`, kFetchOptions, FetchResultTypes.JSON) as TwitchUserFollowersChannelResults;
 		} catch (error) {
 			const parsed = JSON.parse(error.message) as { error: string; status: number; message: string };
 			if (parsed.status === 404) throw message.language.tget('COMMAND_FOLLOWAGE_NOT_FOLLOWING');

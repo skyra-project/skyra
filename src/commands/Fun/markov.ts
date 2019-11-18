@@ -1,10 +1,12 @@
-import { MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
+import { MessageEmbed, Permissions, TextChannel, User, Message } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 import { DEV } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { BrandingColors } from '../../lib/util/constants';
 import { Markov, WordBank } from '../../lib/util/External/markov';
 import { cutText, getColor, iteratorAt } from '../../lib/util/util';
+import ChannelNameArgument from '../../arguments/channelname';
+import Collection from '@discordjs/collection';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
@@ -13,6 +15,8 @@ export default class extends SkyraCommand {
 
 	private readonly kMessageHundredsLimit = 10;
 	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
+	private readonly kInternalMessageCache = new WeakMap<TextChannel, Collection<string, Message>>();
+	private readonly kInternalMessageCacheTTL = 120000;
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
 	private readonly kBoundUseUpperCase = this.useUpperCase.bind(this);
@@ -30,7 +34,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('channel', async (arg, possible, msg) => {
-			const resolvedChannel = await this.client.arguments.get('channelname')!.run(arg, possible, msg) as TextChannel;
+			const resolvedChannel = await this.channelNameArgument.run(arg, possible, msg, channel => channel.type === 'text') as TextChannel;
 
 			// Checks if the current user has view channel permissions for the resolved channel
 			if (!resolvedChannel.permissionsFor(msg.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) {
@@ -39,6 +43,10 @@ export default class extends SkyraCommand {
 
 			return resolvedChannel;
 		});
+	}
+
+	private get channelNameArgument() {
+		return this.client.arguments.get('channelname') as ChannelNameArgument;
 	}
 
 	public async run(message: KlasaMessage, args: [TextChannel?, User?]) {
@@ -73,6 +81,7 @@ export default class extends SkyraCommand {
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
+		if (messageBank.size === 0) throw message.language.tget('COMMAND_MARKOV_NO_MESSAGES');
 		const contents = messageBank.map(m => m.content).join(' ');
 		const markov = new Markov()
 			.parse(contents)
@@ -85,14 +94,22 @@ export default class extends SkyraCommand {
 	}
 
 	private async fetchMessages(channel: TextChannel, user: User | undefined) {
-		let messageBank = await channel.messages.fetch({ limit: 100 });
-		for (let i = 1; i < this.kMessageHundredsLimit; ++i) {
-			messageBank = messageBank.concat(await channel.messages.fetch({ limit: 100, before: messageBank.lastKey() }));
+		let messageBank: Collection<string, Message>;
+
+		// Check the cache first to speed up and reduce API queries
+		const cachedMessageBank = this.kInternalMessageCache.get(channel);
+		if (typeof cachedMessageBank === 'undefined') {
+			messageBank = await channel.messages.fetch({ limit: 100 });
+			for (let i = 1; i < this.kMessageHundredsLimit; ++i) {
+				messageBank = messageBank.concat(await channel.messages.fetch({ limit: 100, before: messageBank.lastKey() }));
+			}
+			this.kInternalMessageCache.set(channel, messageBank);
+			this.client.setTimeout(() => this.kInternalMessageCache.delete(channel), this.kInternalMessageCacheTTL);
+		} else {
+			messageBank = cachedMessageBank;
 		}
 
-
 		return user ? messageBank.filter(message => message.author.id === user.id) : messageBank;
-
 	}
 
 	private useUpperCase(wordBank: WordBank) {

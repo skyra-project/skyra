@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getColor, fetch } from '../../lib/util/util';
+import { getColor, fetch, FetchResultTypes } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 			.setTimestamp();
 
 		try {
-			const randomImageBuffer = await fetch('https://cataas.com/cat', 'buffer');
+			const randomImageBuffer = await fetch('https://cataas.com/cat', FetchResultTypes.Buffer);
 			embed
 				.attachFiles([{ attachment: randomImageBuffer, name: 'randomcat.jpg' }])
 				.setImage('attachment://randomcat.jpg');

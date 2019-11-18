@@ -8,7 +8,7 @@ import { MessageLogsEnum } from '../lib/util/constants';
 export default class extends Event {
 
 	public run(old: KlasaMessage, message: KlasaMessage) {
-		if (!this.client.ready || !message.guild || old.content === message.content || message.author === this.client.user) return;
+		if (!this.client.ready || !message.guild || old.content === message.content || message.author.bot) return;
 
 		const enabled = message.guild.settings.get(GuildSettings.Events.MessageEdit);
 		const ignoreChannels = message.guild.settings.get(GuildSettings.Messages.IgnoreChannels);

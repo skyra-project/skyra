@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 			if (type === 'maximum') {
 				const maximum = await this.client.arguments.get('integer')!.run(arg, possible, message);
 				if (maximum >= 0 && maximum <= 60) return maximum;
-				throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, '');
+				throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, 0, 60, true);
 			}
 
 			if (type === 'action') {
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 
 			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, Time.Year];
 			const duration = Math.round(((await this.client.arguments.get('duration')!.run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
-			if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, message.language.tget('RESOLVER_DATE_SUFFIX'));
+			if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, true);
 			return duration;
 		});
 	}

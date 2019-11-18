@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 			else filtered.delete(obj);
 		}
 
-		if (filtered.size !== autoRoles.length) await message.guild!.settings.update(GuildSettings.Roles.Auto, [...filtered], { arrayAction: 'overwrite' });
+		if (filtered.size !== autoRoles.length) await message.guild!.settings.update(GuildSettings.Roles.Auto, [...filtered], { arrayAction: 'overwrite', throwOnError: true });
 		if (!output.length) throw message.language.tget('COMMAND_AUTOROLE_LIST_EMPTY');
 		return message.sendMessage(output.join('\n'), { code: 'http' });
 	}
@@ -56,7 +56,8 @@ export default class extends SkyraCommand {
 			throw message.language.tget('COMMAND_AUTOROLE_UPDATE_CONFIGURED');
 		}
 
-		await message.guild!.settings.update(GuildSettings.Roles.Auto, [...autoRoles, { id: role.id, points }].sort(SORT), { arrayAction: 'overwrite' });
+		const sorted = [...autoRoles, { id: role.id, points }].sort(SORT);
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, sorted, { arrayAction: 'overwrite', throwOnError: true });
 		return message.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
 	}
 
@@ -70,7 +71,7 @@ export default class extends SkyraCommand {
 		}
 
 		const deleteEntry = autoRoles[index];
-		await message.guild!.settings.update(GuildSettings.Roles.Auto, deleteEntry, { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, deleteEntry, { arrayAction: 'remove', throwOnError: true });
 
 		return message.sendLocale('COMMAND_AUTOROLE_REMOVE', [role, deleteEntry.points]);
 	}
@@ -88,7 +89,7 @@ export default class extends SkyraCommand {
 		const autoRole = autoRoles[index];
 		const clone = util.deepClone(autoRoles) as RolesAuto[];
 		clone[index].points = points;
-		await message.guild!.settings.update(GuildSettings.Roles.Auto, clone.sort(SORT), { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, clone.sort(SORT), { arrayAction: 'overwrite', throwOnError: true });
 		return message.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole]);
 	}
 

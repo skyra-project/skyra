@@ -92,6 +92,27 @@ function duration(time: number, precision?: number) {
 	return friendlyDuration(time, TIMES, precision);
 }
 
+/** Parses cardinal numbers to the ordinal counterparts */
+function ordinal(cardinal: number) {
+	const cent = cardinal % 100;
+	const dec = cardinal % 10;
+
+	if (cent >= 10 && cent <= 20) {
+		return `${cardinal}th`;
+	}
+
+	switch (dec) {
+		case 1:
+			return `${cardinal}st`;
+		case 2:
+			return `${cardinal}nd`;
+		case 3:
+			return `${cardinal}rd`;
+		default:
+			return `${cardinal}th`;
+	}
+}
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -104,6 +125,7 @@ export default class extends Language {
 	};
 
 	public duration = duration;
+	public ordinal = ordinal;
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore:2416
@@ -148,10 +170,10 @@ export default class extends Language {
 		RESOLVER_INVALID_URL: name => `${name} must be a valid url.`,
 		RESOLVER_INVALID_USER: name => `${name} must be a mention or valid user id.`,
 		RESOLVER_STRING_SUFFIX: ' characters',
-		RESOLVER_MINMAX_EXACTLY: (name, min, suffix) => `${name} must be exactly ${min}${suffix}.`,
-		RESOLVER_MINMAX_BOTH: (name, min, max, suffix) => `${name} must be between ${min} and ${max}${suffix}.`,
-		RESOLVER_MINMAX_MIN: (name, min, suffix) => `${name} must be greater than ${min}${suffix}.`,
-		RESOLVER_MINMAX_MAX: (name, max, suffix) => `${name} must be less than ${max}${suffix}.`,
+		RESOLVER_MINMAX_EXACTLY: (name, min) => `${name} must be exactly ${min}.`,
+		RESOLVER_MINMAX_BOTH: (name, min, max, inclusive) => inclusive ? `${name} must be between ${min} and ${max} inclusively.` : `${name} must be between ${min} and ${max} exclusively.`,
+		RESOLVER_MINMAX_MIN: (name, min, inclusive) => inclusive ? `${name} must be greater than ${min} inclusively.` : `${name} must be greater than ${min} exclusively.`,
+		RESOLVER_MINMAX_MAX: (name, max, inclusive) => inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
 		REACTIONHANDLER_PROMPT: 'Which page would you like to jump to?',
 		COMMANDMESSAGE_MISSING: 'Missing one or more required arguments after end of input.',
 		COMMANDMESSAGE_MISSING_REQUIRED: name => `${name} is a required argument.`,
@@ -296,6 +318,18 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Manage the volume for current song.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given pokemon',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: `
+				Queries the Pokemon API on data on a given Pokemon.
+				Uses a fuzzy search to also match against near-matches.
+				You can provide a flag of \`--shiny\` to get the shiny sprite.
+			`,
+			explainedUsage: [
+				['pokemon', 'The pokemon for which you want to find data']
+			],
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `The queue's empty! The session will start as soon as we have some songs queued.`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `The queue's almost empty! Please add some to keep the spirit of this session still up!`,
@@ -593,6 +627,14 @@ export default class extends Language {
 					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
 					game in which the players first choose a color and then take turns dropping colored discs from the top into a
 					seven-column, ~~six~~ five-row vertically suspended grid.`
+		}),
+		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
+				If you don't, you lose your wager.
+				You can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.
+				Now get those coins flippin'.`,
+			examples: ['50 heads', '200 tails']
 		}),
 		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
 		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
@@ -1044,6 +1086,32 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
+		COMMAND_LINKMODE_DESCRIPTION: 'Manage the behaviour for the link filter.',
+		COMMAND_LINKMODE_EXTENDED: builder.display('linkMode', {
+			extendedHelp: `The linkMode command manages the behaviour of the link system.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
 		COMMAND_MESSAGEMODE_DESCRIPTION: 'Manage the behaviour for the message filter system.',
 		COMMAND_MESSAGEMODE_EXTENDED: builder.display('messageMode', {
 			extendedHelp: `The messageMode command manages the behaviour of the message filter system.`,
@@ -1465,6 +1533,28 @@ export default class extends Language {
 					command.`,
 			examples: ['@Pete Attempted to mention everyone.']
 		}),
+
+		/**
+		 * ##################
+		 * POKÉMON COMMANDS
+		 */
+		COMMAND_POKEDEX_EMBED_DATA: {
+			TYPES: 'Type(s)',
+			ABILITIES: 'Abilities',
+			GENDER_RATIO: 'Gender Ratio',
+			SMOGON_TIER: 'Smogon Tier',
+			UKNOWN_SMOGON_TIER: 'Unknown / Alt form',
+			HEIGHT: 'Height',
+			WEIGHT: 'Width',
+			EGG_GROUPS: 'Egg group(s)',
+			OTHER_FORMES: 'Other forme(s)',
+			EVOLUTIONARY_LINE: 'Evolutionary line',
+			BASE_STATS: 'Base stats',
+			FLAVOUR_TEXT: 'Pokdex entry',
+			EXTERNAL_RESOURCES: 'External resources',
+			NONE: 'None'
+		},
+		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 
 		/**
 		 * ##################
@@ -2151,6 +2241,7 @@ export default class extends Language {
 		COMMAND_LOVE_ITSELF: 'You are a special creature and you should love yourself more than anyone <3',
 		COMMAND_LOVE_RESULT: 'Result',
 		COMMAND_MARKOV_TIMER: timer => `Processed in ${timer}.`,
+		COMMAND_MARKOV_NO_MESSAGES: 'The channel or user has no messages.',
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
 		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
@@ -2172,6 +2263,14 @@ export default class extends Language {
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+		COMMAND_COINFLIP_INVALID_COINNAME: arg => `Excuse me, but ${arg} is not a coin face!`,
+		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
+		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
+		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
+		COMMAND_COINFLIP_NOGUESS_TITLE: 'You flipped a coin.',
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}` : ''}.`,
+		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
 		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
@@ -2906,6 +3005,7 @@ export default class extends Language {
 		 */
 
 		CONST_MONITOR_INVITELINK: 'Invite link',
+		CONST_MONITOR_LINK: 'Filtered Link',
 		CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
 		CONST_MONITOR_WORDFILTER: 'Filtered Word',
 		CONST_MONITOR_CAPSFILTER: 'Too Many UpperCases',
@@ -2914,6 +3014,7 @@ export default class extends Language {
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		CONST_MONITOR_REACTIONFILTER: 'Filtered Reaction',
 		MONITOR_NOINVITE: user => `${REDCROSS} Dear ${user}, invite links aren't allowed here.`,
+		MONITOR_NOLINK: user => `${REDCROSS} Hey ${user}, you are not allowed to post links here!`,
 		MONITOR_WORDFILTER_DM: filtered => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Pardon, dear ${user}, you said something that is not allowed in this server.`,

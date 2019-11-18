@@ -71,6 +71,13 @@ export interface RawGuildSettings {
 	'selfmod.capitals.hardActionDuration': number | null;
 	'selfmod.capitals.thresholdMaximum': number;
 	'selfmod.capitals.thresholdDuration': number;
+	'selfmod.links.whitelist': string[];
+	'selfmod.links.enabled': boolean;
+	'selfmod.links.softAction': number;
+	'selfmod.links.hardAction': number;
+	'selfmod.links.hardActionDuration': number | null;
+	'selfmod.links.thresholdMaximum': number;
+	'selfmod.links.thresholdDuration': number;
 	'selfmod.messages.enabled': boolean;
 	'selfmod.messages.maximum': number;
 	'selfmod.messages.queue-size': number;
@@ -200,6 +207,13 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.capitals.hardActionDuration"  INTEGER,
 		"selfmod.capitals.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.capitals.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
+		"selfmod.links.whitelist"              VARCHAR(128)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.links.enabled"                BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.links.softAction"             SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.links.hardAction"             SMALLINT       DEFAULT 0                  NOT NULL,
+		"selfmod.links.hardActionDuration"     INTEGER,
+		"selfmod.links.thresholdMaximum"       SMALLINT       DEFAULT 10                 NOT NULL,
+		"selfmod.links.thresholdDuration"      INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.messages.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"selfmod.messages.maximum"             SMALLINT       DEFAULT 5                  NOT NULL,
 		"selfmod.messages.queue-size"          SMALLINT       DEFAULT 50                 NOT NULL,
@@ -263,6 +277,9 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK("selfmod.capitals.hardActionDuration" >= 1000),
 		CHECK("selfmod.capitals.thresholdMaximum" >= 0 AND "selfmod.capitals.thresholdMaximum" <= 120000),
 		CHECK("selfmod.capitals.thresholdDuration" >= 1000),
+		CHECK("selfmod.links.hardActionDuration" >= 1000),
+		CHECK("selfmod.links.thresholdMaximum" >= 0 AND "selfmod.links.thresholdMaximum" <= 60),
+		CHECK("selfmod.links.thresholdDuration" >= 0 AND "selfmod.links.thresholdDuration" <= 120000),
 		CHECK("selfmod.messages.maximum" >= 2 AND "selfmod.messages.maximum" <= 100),
 		CHECK("selfmod.messages.queue-size" >= 10 AND "selfmod.messages.queue-size" <= 100),
 		CHECK("selfmod.messages.hardActionDuration" >= 1000),

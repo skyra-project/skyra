@@ -90,6 +90,29 @@ function duration(time: number, precision?: number) {
 	return friendlyDuration(time, TIMES, precision);
 }
 
+/** Parses cardinal numbers to the ordinal counterparts */
+function ordinal(cardinal: number) {
+	const dec = cardinal % 10;
+
+	switch (dec) {
+		case 1:
+			return `${cardinal}ro`;
+		case 2:
+			return `${cardinal}do`;
+		case 3:
+			return `${cardinal}ro`;
+		case 0:
+		case 7:
+			return `${cardinal}mo`;
+		case 8:
+			return `${cardinal}vo`;
+		case 9:
+			return `${cardinal}no`;
+		default:
+			return `${cardinal}to`;
+	}
+}
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -102,6 +125,7 @@ export default class extends Language {
 	};
 
 	public duration = duration;
+	public ordinal = ordinal;
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore:2416
@@ -146,10 +170,10 @@ export default class extends Language {
 		RESOLVER_INVALID_URL: name => `${name} debe ser un enlace válido.`,
 		RESOLVER_INVALID_USER: name => `${name} debe ser una mención o una id de usuario válida.`,
 		RESOLVER_STRING_SUFFIX: ' carácteres',
-		RESOLVER_MINMAX_EXACTLY: (name, min, suffix) => `${name} debe ser exactamente de ${min}${suffix}.`,
-		RESOLVER_MINMAX_BOTH: (name, min, max, suffix) => `${name} debe ser de exactamente entr ${min} y ${max}${suffix}.`,
-		RESOLVER_MINMAX_MIN: (name, min, suffix) => `${name} debe ser mayor que ${min}${suffix}.`,
-		RESOLVER_MINMAX_MAX: (name, max, suffix) => `${name} debe ser menor que ${max}${suffix}.`,
+		RESOLVER_MINMAX_EXACTLY: (name, min) => `${name} must be exactly ${min}.`,
+		RESOLVER_MINMAX_BOTH: (name, min, max, inclusive) => inclusive ? `${name} must be between ${min} and ${max} inclusively.` : `${name} must be between ${min} and ${max} exclusively.`,
+		RESOLVER_MINMAX_MIN: (name, min, inclusive) => inclusive ? `${name} must be greater than ${min} inclusively.` : `${name} must be greater than ${min} exclusively.`,
+		RESOLVER_MINMAX_MAX: (name, max, inclusive) => inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
 		REACTIONHANDLER_PROMPT: '¿A qué página te gustaría saltar?',
 		COMMANDMESSAGE_MISSING: 'Faltan uno o más argumentos al final de la entrada.',
 		COMMANDMESSAGE_MISSING_REQUIRED: name => `El argumento ${name} es requerido.`,
@@ -290,6 +314,18 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: `
+				Consulta la API de Pokémon sobre los datos de un Pokémon determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
+			],
+			examples: ['dragonite', 'pikachu']
+		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `¡La cola está sin discos! ¡Añade algunas canciones para mantener el alma de la fiesta!`,
@@ -518,7 +554,7 @@ export default class extends Language {
 				return 10 as output.`,
 			examples: ['370d24', '100d6', '6']
 		}),
-		COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokemon.',
+		COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokémon.',
 		COMMAND_ESCAPEROPE_EXTENDED: builder.display('escaperope', {
 			extendedHelp: '**Skyra** used **Escape Rope**.'
 		}),
@@ -577,8 +613,13 @@ export default class extends Language {
 		/**
 		 * ##############
 		 * GAMES COMMANDS
-		 */
-
+			*/
+		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
+				If you don't, you lose your wager. Now get those coins flippin'.`,
+			examples: ['50 heads', '200 tails']
+		}),
 		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
 		COMMAND_C4_EXTENDED: builder.display('c4', {
 			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
@@ -999,6 +1040,32 @@ export default class extends Language {
 		COMMAND_INVITEMODE_DESCRIPTION: 'Manage the behaviour for the invite link filter.',
 		COMMAND_INVITEMODE_EXTENDED: builder.display('inviteMode', {
 			extendedHelp: `The inviteMode command manages the behaviour of the word filter system.`,
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				['Threshold-Maximum', 'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			]
+		}),
+		COMMAND_LINKMODE_DESCRIPTION: 'Manage the behaviour for the link filter.',
+		COMMAND_LINKMODE_EXTENDED: builder.display('linkMode', {
+			extendedHelp: `The linkMode command manages the behaviour of the link system.`,
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1443,6 +1510,28 @@ export default class extends Language {
 					command.`,
 			examples: ['@Pete Attempted to mention everyone.']
 		}),
+
+		/**
+		 * ##################
+		 * POKÉMON COMMANDS
+		 */
+		COMMAND_POKEDEX_EMBED_DATA: {
+			TYPES: 'Tipo(s)',
+			ABILITIES: 'Habilidades',
+			GENDER_RATIO: 'Relación de género',
+			SMOGON_TIER: 'Smogon Tier',
+			UKNOWN_SMOGON_TIER: 'Forma desconocida / alternativa',
+			HEIGHT: 'Altura',
+			WEIGHT: 'Anchura',
+			EGG_GROUPS: 'Grupo (s) de huevo',
+			OTHER_FORMES: 'Otras formas',
+			EVOLUTIONARY_LINE: 'Línea evolutiva',
+			BASE_STATS: 'Estadísticas base',
+			FLAVOUR_TEXT: 'Entrada de Pokédex',
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			NONE: 'Ninguno'
+		},
+		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 
 		/**
 		 * ##################
@@ -2129,6 +2218,7 @@ export default class extends Language {
 		COMMAND_LOVE_ITSELF: 'Eres una criatura muy especial y deberías amarte a tí mismo más que a los demás <3',
 		COMMAND_LOVE_RESULT: 'Resultado',
 		COMMAND_MARKOV_TIMER: timer => `Processed in ${timer}.`,
+		COMMAND_MARKOV_NO_MESSAGES: 'The channel or user has no messages.',
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
 		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `Uhm... le daría a **${user}** un **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['me quiero a mí misma mucho 😊', 'yo'],
@@ -2148,6 +2238,13 @@ export default class extends Language {
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
+		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
+		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
+		COMMAND_COINFLIP_NOGUESS_TITLE: 'You flipped a coin.',
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}.` : ''}.`,
+		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
 		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
@@ -2663,7 +2760,7 @@ export default class extends Language {
 			explainedUsage: [
 				['Solicitud', `El nombre del juego que estás buscando..`]
 			],
-			examples: ['Breath of the Wild', 'Pokemon', 'Splatoon']
+			examples: ['Breath of the Wild', 'Pokémon', 'Splatoon']
 		}),
 		COMMAND_ESHOP_NOT_IN_DATABASE: 'Ninguno disponible',
 		COMMAND_ESHOP_TITLES: {
@@ -2877,6 +2974,7 @@ export default class extends Language {
 		 */
 
 		CONST_MONITOR_INVITELINK: 'Enlace Invitación',
+		CONST_MONITOR_LINK: 'Link Filtrado',
 		CONST_MONITOR_NMS: '[NOMENTIONSPAM]',
 		CONST_MONITOR_WORDFILTER: 'Palabra Filtrada',
 		CONST_MONITOR_CAPSFILTER: 'Demasiadas Mayúsculas',
@@ -2885,6 +2983,7 @@ export default class extends Language {
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		CONST_MONITOR_REACTIONFILTER: 'Reacción Eliminada',
 		MONITOR_NOINVITE: user => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
+		MONITOR_NOLINK: user => `${REDCROSS} Perdona ${user}, los enlaces no están permitidos en este servidor.`,
 		MONITOR_WORDFILTER_DM: filtered => `¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
 		MONITOR_WORDFILTER: user => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,

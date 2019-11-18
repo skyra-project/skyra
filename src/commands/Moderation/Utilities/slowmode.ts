@@ -11,7 +11,9 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['sm'],
-			cooldown: 10,
+			bucket: 2,
+			cooldown: 5,
+			cooldownLevel: 'channel',
 			description: language => language.tget('COMMAND_SLOWMODE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SLOWMODE_EXTENDED'),
 			permissionLevel: PermissionLevels.Moderator,

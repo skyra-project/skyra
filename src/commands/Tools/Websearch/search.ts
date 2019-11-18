@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { fetch } from '../../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
-		const body = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, 'json') as DuckDuckGoResultOk;
+		const body = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON) as DuckDuckGoResultOk;
 
 		if (body.Heading.length === 0) {
 			throw message.language.tget('COMMAND_DUCKDUCKGO_NOTFOUND');

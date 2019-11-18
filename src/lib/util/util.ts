@@ -1,24 +1,24 @@
+import { isObject } from '@klasa/utils';
 import { Image } from 'canvas';
-import { Client, Guild, ImageSize, Message, User, AvatarOptions } from 'discord.js';
+import { AvatarOptions, Client, Guild, ImageSize, Message, User } from 'discord.js';
 import { readFile } from 'fs-nextra';
-import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { UserSettings } from '../types/settings/UserSettings';
-import { Time, BrandingColors } from './constants';
-import { REGEX_UNICODE_EMOJI, REGEX_UNICODE_BOXNM } from './External/rUnicodeEmoji';
-import { LLRCDataEmoji } from './LongLivingReactionCollector';
-import { util, RateLimitManager } from 'klasa';
-import { api } from './Models/Api';
-import { Events } from '../types/Enums';
-import { createFunctionInhibitor } from 'klasa-decorators';
+import { RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
+import { createFunctionInhibitor } from 'klasa-decorators';
+import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { CLIENT_SECRET } from '../../../config';
 import ApiRequest from '../structures/api/ApiRequest';
 import ApiResponse from '../structures/api/ApiResponse';
-import { isObject } from '@klasa/utils';
+import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
+import { Events } from '../types/Enums';
+import { GuildSettings } from '../types/settings/GuildSettings';
+import { UserSettings } from '../types/settings/UserSettings';
 import { UserTag } from './Cache/UserTags';
+import { BrandingColors, Time } from './constants';
+import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
+import { LLRCDataEmoji } from './LongLivingReactionCollector';
+import { api } from './Models/Api';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -215,34 +215,41 @@ export async function fetchAllLeaderboardEntries(client: Client, results: readon
 	return payload;
 }
 
-export async function fetch(url: URL | string, type: 'json'): Promise<object>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<object>;
-export async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'buffer'): Promise<Buffer>;
-export async function fetch(url: URL | string, type: 'text'): Promise<string>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'text'): Promise<string>;
-export async function fetch(url: URL | string, type: 'result'): Promise<Response>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'result'): Promise<Response>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'result' | 'json' | 'buffer' | 'text'): Promise<Response | Buffer | string | object>;
-export async function fetch(url: URL | string, options: RequestInit | 'result' | 'json' | 'buffer' | 'text', type?: 'result' | 'json' | 'buffer' | 'text') {
+export const enum FetchResultTypes {
+	JSON,
+	Buffer,
+	Text,
+	Result
+}
+
+export async function fetch(url: URL | string, type: FetchResultTypes.JSON): Promise<unknown>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.JSON): Promise<unknown>;
+export async function fetch(url: URL | string, type: FetchResultTypes.Buffer): Promise<Buffer>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Buffer): Promise<Buffer>;
+export async function fetch(url: URL | string, type: FetchResultTypes.Text): Promise<string>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Text): Promise<string>;
+export async function fetch(url: URL | string, type: FetchResultTypes.Result): Promise<Response>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Result): Promise<Response>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes): Promise<Response | Buffer | string | unknown>;
+export async function fetch(url: URL | string, options: RequestInit | FetchResultTypes, type?: FetchResultTypes) {
 	if (typeof options === 'undefined') {
 		options = {};
-		type = 'json';
-	} else if (typeof options === 'string') {
+		type = FetchResultTypes.JSON;
+	} else if (typeof options === 'number') {
 		type = options;
 		options = {};
 	} else if (typeof type === 'undefined') {
-		type = 'json';
+		type = FetchResultTypes.JSON;
 	}
 
-	const result: Response = await nodeFetch(url, options);
+	const result: Response = await nodeFetch(url, options as RequestInit);
 	if (!result.ok) throw new Error(await result.text());
 
 	switch (type) {
-		case 'result': return result;
-		case 'buffer': return result.buffer();
-		case 'json': return result.json();
-		case 'text': return result.text();
+		case FetchResultTypes.Result: return result;
+		case FetchResultTypes.Buffer: return result.buffer();
+		case FetchResultTypes.JSON: return result.json();
+		case FetchResultTypes.Text: return result.text();
 		default: throw new Error(`Unknown type ${type}`);
 	}
 }
@@ -250,7 +257,7 @@ export async function fetch(url: URL | string, options: RequestInit | 'result' |
 export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
-		return await fetch(url, 'buffer');
+		return await fetch(url, FetchResultTypes.Buffer);
 	} catch (error) {
 		throw `Could not download the profile avatar: ${error}`;
 	}

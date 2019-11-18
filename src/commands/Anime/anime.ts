@@ -5,7 +5,7 @@ import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Kitsu } from '../../lib/types/definitions/Kitsu';
-import { cutText, fetch, getColor } from '../../lib/util/util';
+import { cutText, fetch, getColor, FetchResultTypes } from '../../lib/util/util';
 import { BrandingColors } from '../../lib/util/constants';
 
 const API_URL = `https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`;
@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 					})
 				}
 			)
-		}, 'json')
+		}, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Kitsu.KitsuResult>;
 	}
 

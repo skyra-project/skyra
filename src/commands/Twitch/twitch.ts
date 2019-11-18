@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { MessageEmbed } from 'discord.js';
-import { fetch } from '../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../lib/util/util';
 import { TOKENS } from '../../../config';
 import { TwitchChannelSearchResults, TwitchChannelResult } from '../../lib/types/definitions/Twitch';
 
@@ -24,10 +24,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [name]: [string]) {
-		const results = await fetch(`https://api.twitch.tv/kraken/users?login=${encodeURIComponent(name).replace(/%20/g, '&20')}`, kFetchOptions, 'json') as TwitchChannelSearchResults;
+		const results = await fetch(`https://api.twitch.tv/kraken/users?login=${encodeURIComponent(name).replace(/%20/g, '&20')}`, kFetchOptions, FetchResultTypes.JSON) as TwitchChannelSearchResults;
 		if (results._total === 0) throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
 
-		const channel = await fetch(`https://api.twitch.tv/kraken/channels/${results.users[0]._id}`, kFetchOptions, 'json') as TwitchChannelResult;
+		const channel = await fetch(`https://api.twitch.tv/kraken/channels/${results.users[0]._id}`, kFetchOptions, FetchResultTypes.JSON) as TwitchChannelResult;
 		const titles = message.language.tget('COMMAND_TWITCH_TITLES');
 		const embed = new MessageEmbed()
 			.setColor(channel.profile_banner_background_color || 0x6441A6)

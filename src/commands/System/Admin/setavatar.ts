@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { fetch, IMAGE_EXTENSION } from '../../../lib/util/util';
+import { fetch, IMAGE_EXTENSION, FetchResultTypes } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -16,10 +16,10 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('attachment', async (arg, possible, msg) => {
 			if (msg.attachments.size) {
 				const attachment = msg.attachments.find(att => IMAGE_EXTENSION.test(att.url));
-				if (attachment) return fetch(attachment.url, 'buffer');
+				if (attachment) return fetch(attachment.url, FetchResultTypes.Buffer);
 			}
 			const url = (res => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
-			if (url) return fetch(url, 'buffer');
+			if (url) return fetch(url, FetchResultTypes.Buffer);
 			throw msg.language.tget('RESOLVER_INVALID_URL', possible.name);
 		});
 	}

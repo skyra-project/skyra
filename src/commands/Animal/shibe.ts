@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch, getColor } from '../../lib/util/util';
+import { fetch, getColor, FetchResultTypes } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const urls = await fetch('https://shibe.online/api/shibes?count=1', 'json') as [string];
+		const urls = await fetch('https://shibe.online/api/shibes?count=1', FetchResultTypes.JSON) as [string];
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))
 			.setImage(urls[0])

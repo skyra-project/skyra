@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language, Timestamp } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch, getColor } from '../../lib/util/util';
+import { fetch, getColor, FetchResultTypes } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 				: input;
 
 		const comicNumber = await this.getNumber(query, message.language);
-		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, 'json')
+		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('COMMAND_XKCD_NOTFOUND'); }) as XkcdResultOk;
 
 		return message.sendEmbed(new MessageEmbed()
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getNumber(query: string | number | null, i18n: Language) {
-		const xkcdInfo = await fetch('https://xkcd.com/info.0.json', 'json') as XkcdResultOk;
+		const xkcdInfo = await fetch('https://xkcd.com/info.0.json', FetchResultTypes.JSON) as XkcdResultOk;
 
 		if (typeof query === 'number') {
 			if (query <= xkcdInfo.num) return query;
@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (query) {
-			const text = await fetch(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${encodeURIComponent(query)}`, 'text');
+			const text = await fetch(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${encodeURIComponent(query)}`, FetchResultTypes.Text);
 			const comics = text.split(' ').slice(2);
 			const random = Math.floor(Math.random() * (comics.length / 2));
 			return parseInt(comics[random * 2].replace(/\n/g, ''), 10);

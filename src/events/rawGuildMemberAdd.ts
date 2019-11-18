@@ -6,12 +6,14 @@ import { MessageLogsEnum } from '../lib/util/constants';
 import { Event, EventStore } from 'klasa';
 
 const { FLAGS } = Permissions;
-const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
+const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 const MATCHES = {
 	GUILD: '%GUILD%',
 	MEMBER: '%MEMBER%',
 	MEMBERNAME: '%MEMBERNAME%',
-	MEMBERTAG: '%MEMBERTAG%'
+	MEMBERTAG: '%MEMBERTAG%',
+	MEMBERCOUNT: '%MEMBERCOUNT%',
+	POSITION: '%POSITION%'
 };
 
 const COLORS = {
@@ -151,6 +153,8 @@ export default class extends Event {
 				case MATCHES.MEMBERNAME: return user.username;
 				case MATCHES.MEMBERTAG: return user.tag;
 				case MATCHES.GUILD: return guild.name;
+				case MATCHES.MEMBERCOUNT: return guild.language.ordinal(guild.memberCount);
+				case MATCHES.POSITION: return guild.memberCount.toString();
 				default: return match;
 			}
 		});

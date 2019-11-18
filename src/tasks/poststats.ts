@@ -1,7 +1,7 @@
 import { Colors, Task } from 'klasa';
 import { TOKENS } from '../../config';
 import { Events } from '../lib/types/Enums';
-import { fetch } from '../lib/util/util';
+import { fetch, FetchResultTypes } from '../lib/util/util';
 
 const r = new Colors({ text: 'red' });
 const g = new Colors({ text: 'green' });
@@ -47,7 +47,7 @@ export default class extends Task {
 				body,
 				headers: { 'Content-Type': 'application/json', 'Authorization': token },
 				method: 'POST'
-			}, 'result');
+			}, FetchResultTypes.Result);
 			return g.format(list);
 		} catch (error) {
 			const reason = typeof error === 'object' ? error.status || error.code || '' : error;

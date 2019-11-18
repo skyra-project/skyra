@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getColor, fetch } from '../../lib/util/util';
+import { getColor, fetch, FetchResultTypes } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 			.setTimestamp();
 
 		try {
-			const randomDogData = await fetch('https://dog.ceo/api/breeds/image/random', 'json') as DogResultOk;
+			const randomDogData = await fetch('https://dog.ceo/api/breeds/image/random', FetchResultTypes.JSON) as DogResultOk;
 			if (randomDogData && randomDogData.status === 'success') embed.setImage(randomDogData.message);
 		} catch {
 			embed.setImage('https://i.imgur.com/cF0XUF5.jpg');

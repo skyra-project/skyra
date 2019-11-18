@@ -3,7 +3,7 @@ import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { TOKENS } from '../../../../config';
 import { Tmdb } from '../../../lib/types/definitions/Tmdb';
-import { cutText, fetch, getColor } from '../../../lib/util/util';
+import { cutText, fetch, getColor, FetchResultTypes } from '../../../lib/util/util';
 import { BrandingColors } from '../../../lib/util/constants';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 
 		if (year) url.searchParams.append('year', year);
 
-		return fetch(url, 'json')
+		return fetch(url, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbMovieList>;
 	}
 
@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 		const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
 		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE);
 
-		return fetch(url, 'json')
+		return fetch(url, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbMovie>;
 	}
 

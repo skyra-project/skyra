@@ -4,7 +4,7 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { getPokemonDetailsByFuzzy, GraphQLPokemonResponse, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, POKEMON_GRAPHQL_API_URL } from '../../lib/util/Pokedex';
-import { fetch } from '../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../lib/util/util';
 
 enum BaseStats {
 	hp = 'HP',
@@ -116,7 +116,7 @@ export default class extends SkyraCommand {
 				body: JSON.stringify({
 					query: getPokemonDetailsByFuzzy(pokemon)
 				})
-			}, 'json') as Promise<GraphQLPokemonResponse<'getPokemonDetailsByFuzzy'>>;
+			}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<'getPokemonDetailsByFuzzy'>>;
 		} catch (err) {
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
 		}

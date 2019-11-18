@@ -80,7 +80,7 @@ export default class extends SkyraCommand {
 				.setTitle(game.name)
 				.setURL(game.url || '')
 				.setThumbnail(coverImg)
-				.setDescription(this.resolveSummary(game.summary) || fieldsData.NO_SUMMARY)
+				.setDescription(this.resolveSummary(game.summary, fieldsData.NO_SUMMARY))
 				.addField(titles.USER_SCORE, userRating)
 				.addField(titles.AGE_RATING, this.resolveAgeRating(game.age_ratings, fieldsData.NO_AGE_RATINGS))
 				.addField(titles.RELEASE_DATE, this.resolveReleaseDate(game.release_dates, fieldsData.NO_RELEASE_DATE))
@@ -98,9 +98,9 @@ export default class extends SkyraCommand {
 		return this.urlRegex.test(cover.url) ? cover.url : `https:${cover.url}`;
 	}
 
-	private resolveSummary(summary: Game['summary']) {
-		if (summary) return cutText(summary, 750);
-		return '';
+	private resolveSummary(summary: Game['summary'], fallback: string) {
+		if (!summary) return fallback;
+		return cutText(summary, 750);
 	}
 
 	private resolveAgeRating(ageRatings: Game['age_ratings'], fallback: string) {

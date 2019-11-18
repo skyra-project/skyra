@@ -188,6 +188,14 @@ export namespace GuildSettings {
 		export const Includes = T<readonly TriggerIncludes[]>('trigger.includes');
 	}
 
+	export namespace Notifications {
+		export namespace Streams {
+			export namespace Twitch {
+				export const Streamers = T<ReadonlyArray<[string, ReadonlyArray<NotificationsStreamsTwitchStreamer>]>>('notifications.streams.twitch.streamers');
+			}
+		}
+	}
+
 }
 
 export interface PermissionsNode {
@@ -230,4 +238,14 @@ export interface TriggerIncludes {
 export interface UniqueRoleSet {
 	name: string;
 	roles: readonly string[];
+}
+
+export interface NotificationsStreamsTwitchStreamer {
+	channel: string;
+	author: string;
+	notificationOnline: boolean;
+	notificationOffline: boolean;
+	gamesBlacklist: ReadonlyArray<string>;
+	gamesWhitelist: ReadonlyArray<string>;
+	createdAt: string;
 }

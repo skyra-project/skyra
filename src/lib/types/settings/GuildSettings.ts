@@ -243,6 +243,8 @@ export interface UniqueRoleSet {
 export interface NotificationsStreamsTwitchStreamer {
 	channel: string;
 	author: string;
+	message: string;
+	// embed: any;
 	notificationOnline: boolean;
 	notificationOffline: boolean;
 	gamesBlacklist: ReadonlyArray<string>;

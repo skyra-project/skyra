@@ -153,8 +153,8 @@ export default class extends Event {
 				case MATCHES.MEMBERNAME: return user.username;
 				case MATCHES.MEMBERTAG: return user.tag;
 				case MATCHES.GUILD: return guild.name;
-				case MATCHES.MEMBERCOUNT: return guild.language.ordinal(guild.memberCount);
-				case MATCHES.POSITION: return guild.memberCount.toString();
+				case MATCHES.POSITION: return guild.language.ordinal(guild.memberCount);
+				case MATCHES.MEMBERCOUNT: return guild.memberCount.toString();
 				default: return match;
 			}
 		});

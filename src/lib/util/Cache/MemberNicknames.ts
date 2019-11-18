@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { KlasaGuild } from 'klasa';
 import { APIErrors } from '../constants';
 import { GuildMember } from 'discord.js';
@@ -69,4 +69,7 @@ export class MemberNicknames extends Collection<string, string | null> {
 		return output;
 	}
 
+	public static get [Symbol.species](): CollectionConstructor {
+		return Collection as unknown as CollectionConstructor;
+	}
 }

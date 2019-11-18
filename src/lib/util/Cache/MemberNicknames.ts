@@ -38,8 +38,29 @@ export class MemberNicknames extends Collection<string, string | null> {
 		return null;
 	}
 
-	public async fetch(id: string) {
-		const existing = super.get(id);
+	// public async fetch(id: string) {
+	// 	const existing = super.get(id);
+	// 	if (typeof existing !== 'undefined') return existing;
+	//
+	// 	try {
+	// 		const member = await this.guild.members.fetch(id);
+	// 		return this.create(member);
+	// 	} catch (error) {
+	// 		if (error.code === APIErrors.UnknownMember) return null;
+	// 		throw error;
+	// 	}
+	// }
+
+	public async fetch(id: string): Promise<string | null>;
+	public async fetch(): Promise<this>;
+	public async fetch(id?: string): Promise<string | null | this> {
+		if (typeof id === 'undefined') {
+			const members = await this.guild.members.fetch();
+			for (const member of members.values()) this.create(member);
+			return this;
+		}
+
+		const existing = this.get(id);
 		if (typeof existing !== 'undefined') return existing;
 
 		try {

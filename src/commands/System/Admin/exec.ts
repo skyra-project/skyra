@@ -1,7 +1,7 @@
 import { MessageAttachment } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { fetch } from '../../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getHaste(result: string) {
-		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: result }, 'json') as { key: string };
+		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: result }, FetchResultTypes.JSON) as { key: string };
 		return `https://hasteb.in/${key}.js`;
 	}
 

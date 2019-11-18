@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { fetch } from '../../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../../lib/util/util';
 import { TOKENS } from '../../../../config';
 
 export default class extends SkyraCommand {
@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 
 		const body = await fetch(url, {
 			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE}`]]
-		}, 'json') as CryptoCompareResultOk | CryptoCompareResultError;
+		}, FetchResultTypes.JSON) as CryptoCompareResultOk | CryptoCompareResultError;
 
 		if (body.Response === 'Error') throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		return message.sendLocale('COMMAND_PRICE_CURRENCY', [fromCurrency, amount, toCurrency, amount * (body as CryptoCompareResultOk)[toCurrency]]);

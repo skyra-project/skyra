@@ -2,7 +2,7 @@ import { CommandStore, KlasaMessage, Stopwatch, Type, util } from 'klasa';
 import { inspect } from 'util';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { Events } from '../../../lib/types/Enums';
-import { fetch } from '../../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -101,7 +101,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getHaste(evalResult: string, language = 'js') {
-		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult }, 'json') as { key: string };
+		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult }, FetchResultTypes.JSON) as { key: string };
 		return `https://hasteb.in/${key}.${language}`;
 	}
 

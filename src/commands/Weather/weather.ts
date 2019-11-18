@@ -5,7 +5,7 @@ import { join } from 'path';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
-import { fetch } from '../../lib/util/util';
+import { fetch, FetchResultTypes } from '../../lib/util/util';
 import { assetsFolder } from '../../lib/util/constants';
 
 const COLORS = {
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
-		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${TOKENS.GOOGLE_MAP_API}`, 'json') as GoogleMapsResultOk;
+		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${TOKENS.GOOGLE_MAP_API}`, FetchResultTypes.JSON) as GoogleMapsResultOk;
 
 		if (response.status !== 'OK') {
 			throw message.language.tget(this.handleNotOK(response.status));
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		const localityOrCountry = locality! ? country! : '';
 		const state = locality! && governing! ? governing! : localityOrCountry || '';
 
-		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, 'json') as WeatherResultOk;
+		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.WEATHER_API}/${params}?exclude=minutely,hourly,flags&units=si`, FetchResultTypes.JSON) as WeatherResultOk;
 
 		const { icon } = currently;
 		const condition = currently.summary;

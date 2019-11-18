@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { fetch, getColor } from '../../../lib/util/util';
+import { fetch, getColor, FetchResultTypes } from '../../../lib/util/util';
 import { MessageEmbed } from 'discord.js';
 import { BrandingColors } from '../../../lib/util/constants';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('media', 'music');
 		url.searchParams.append('term', song);
 
-		return fetch(url, 'json')
+		return fetch(url, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<ITunesResult>;
 	}
 

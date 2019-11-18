@@ -215,34 +215,41 @@ export async function fetchAllLeaderboardEntries(client: Client, results: readon
 	return payload;
 }
 
-export async function fetch(url: URL | string, type: 'json'): Promise<object>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'json'): Promise<object>;
-export async function fetch(url: URL | string, type: 'buffer'): Promise<Buffer>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'buffer'): Promise<Buffer>;
-export async function fetch(url: URL | string, type: 'text'): Promise<string>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'text'): Promise<string>;
-export async function fetch(url: URL | string, type: 'result'): Promise<Response>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'result'): Promise<Response>;
-export async function fetch(url: URL | string, options: RequestInit, type: 'result' | 'json' | 'buffer' | 'text'): Promise<Response | Buffer | string | object>;
-export async function fetch(url: URL | string, options: RequestInit | 'result' | 'json' | 'buffer' | 'text', type?: 'result' | 'json' | 'buffer' | 'text') {
+export const enum FetchResultTypes {
+	JSON,
+	Buffer,
+	Text,
+	Result
+}
+
+export async function fetch(url: URL | string, type: FetchResultTypes.JSON): Promise<unknown>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.JSON): Promise<unknown>;
+export async function fetch(url: URL | string, type: FetchResultTypes.Buffer): Promise<Buffer>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Buffer): Promise<Buffer>;
+export async function fetch(url: URL | string, type: FetchResultTypes.Text): Promise<string>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Text): Promise<string>;
+export async function fetch(url: URL | string, type: FetchResultTypes.Result): Promise<Response>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Result): Promise<Response>;
+export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes): Promise<Response | Buffer | string | unknown>;
+export async function fetch(url: URL | string, options: RequestInit | FetchResultTypes, type?: FetchResultTypes) {
 	if (typeof options === 'undefined') {
 		options = {};
-		type = 'json';
+		type = FetchResultTypes.JSON;
 	} else if (typeof options === 'string') {
 		type = options;
 		options = {};
 	} else if (typeof type === 'undefined') {
-		type = 'json';
+		type = FetchResultTypes.JSON;
 	}
 
-	const result: Response = await nodeFetch(url, options);
+	const result: Response = await nodeFetch(url, options as RequestInit);
 	if (!result.ok) throw new Error(await result.text());
 
 	switch (type) {
-		case 'result': return result;
-		case 'buffer': return result.buffer();
-		case 'json': return result.json();
-		case 'text': return result.text();
+		case FetchResultTypes.Result: return result;
+		case FetchResultTypes.Buffer: return result.buffer();
+		case FetchResultTypes.JSON: return result.json();
+		case FetchResultTypes.Text: return result.text();
 		default: throw new Error(`Unknown type ${type}`);
 	}
 }
@@ -250,7 +257,7 @@ export async function fetch(url: URL | string, options: RequestInit | 'result' |
 export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
-		return await fetch(url, 'buffer');
+		return await fetch(url, FetchResultTypes.Buffer);
 	} catch (error) {
 		throw `Could not download the profile avatar: ${error}`;
 	}

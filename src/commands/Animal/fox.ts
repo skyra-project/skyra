@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch, getColor } from '../../lib/util/util';
+import { fetch, getColor, FetchResultTypes } from '../../lib/util/util';
 
 const url = new URL('https://randomfox.ca/floof');
 
@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const { image } = await fetch(url, 'json') as FoxResultOk;
+		const { image } = await fetch(url, FetchResultTypes.JSON) as FoxResultOk;
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))
 			.setImage(image)

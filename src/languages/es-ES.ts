@@ -1522,7 +1522,7 @@ export default class extends Language {
 			SMOGON_TIER: 'Smogon Tier',
 			UKNOWN_SMOGON_TIER: 'Forma desconocida / alternativa',
 			HEIGHT: 'Altura',
-			WEIGHT: 'Anchura',
+			WEIGHT: 'Peso',
 			EGG_GROUPS: 'Grupo (s) de huevo',
 			OTHER_FORMES: 'Otras formas',
 			EVOLUTIONARY_LINE: 'Línea evolutiva',

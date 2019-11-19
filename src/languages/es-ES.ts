@@ -2794,7 +2794,10 @@ export default class extends Language {
 			NO_DEVELOPERS: 'Desarrollador(es) desconocidos',
 			NO_PLATFORMS: 'Plataforma(s) desconocidas',
 			NO_RELEASE_DATE: 'Fecha de lanzamiento desconocida',
-			NO_RATING: 'Ninguna calificación de usuario'
+			NO_RATING: 'Ninguna calificación de usuario',
+			NO_SUMMARY: 'No hay resumen del juego disponible.',
+			NO_GENRES: 'No hay géneros conocidos.',
+			NO_AGE_RATINGS: 'No hay clasificaciones de edad disponibles.'
 		},
 		COMMAND_ITUNES_DESCRIPTION: 'Busca en la API de iTunes pistas de música',
 		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {

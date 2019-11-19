@@ -1,8 +1,12 @@
-import { Event } from 'klasa';
+import { Event, EventStore } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { Slotmachine } from '../lib/util/Games/Slotmachine';
 
 export default class extends Event {
+
+	public constructor(store: EventStore, file: string[], directory: string) {
+		super(store, file, directory, { once: true });
+	}
 
 	public async run() {
 		try {

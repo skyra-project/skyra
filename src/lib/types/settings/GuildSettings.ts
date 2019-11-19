@@ -244,7 +244,7 @@ export interface NotificationsStreamsTwitchStreamer {
 	channel: string;
 	author: string;
 	message: string;
-	// embed: any;
+	embed: boolean;
 	notificationOnline: boolean;
 	notificationOffline: boolean;
 	gamesBlacklist: ReadonlyArray<string>;

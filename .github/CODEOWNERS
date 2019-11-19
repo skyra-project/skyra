@@ -14,3 +14,4 @@
 /src/commands/Misc/reddituser.ts @favna
 /src/commands/Pokemon/ @favna
 /src/lib/util/Pokedex.ts @favna
+/src/lib/util/External/igbTypes.ts @favna

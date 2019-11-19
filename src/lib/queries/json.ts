@@ -179,6 +179,15 @@ export class JsonCommonQuery implements CommonQuery {
 		return filteredValues[index];
 	}
 
+	public fetchTwitchStreamSubscription(streamerID: string) {
+		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<RawTwitchStreamSubscriptionSettings>;
+	}
+
+	public async fetchTwitchStreamsByGuild(guildID: string) {
+		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as RawTwitchStreamSubscriptionSettings[];
+		return values.filter(value => value.guild_ids.includes(guildID));
+	}
+
 	public async insertCommandUseCounter(command: string) {
 		const value = await this.provider.get(Databases.CommandCounter, command) as { id: string; uses: number };
 		if (value) await this.provider.update(Databases.CommandCounter, command, { uses: value.uses + 1 });

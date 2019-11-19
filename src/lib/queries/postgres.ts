@@ -81,22 +81,22 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID]);
 	}
 
-	public deleteTwitchStream(streamerID: string) {
+	public deleteTwitchStream() {
 		// TODO(kyranet): Reference: Same method in JsonCommonQuery
 		return new Promise(() => {});
 	}
 
-	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
+	public async deleteTwitchStreamSubscription() {
 		// TODO(kyranet): Reference: Same method in JsonCommonQuery
 		return new Promise(() => {});
 	}
 
-	public async deleteTwitchStreamSubscriptionReturning(streamerID: string, guildID: string): Promise<RawTwitchStreamSubscriptionSettings> {
+	public async deleteTwitchStreamSubscriptionReturning(): Promise<RawTwitchStreamSubscriptionSettings> {
 		// TODO(kyranet): Reference: Same method in JsonCommonQuery
 		return new Promise(() => {});
 	}
 
-	public async purgeTwitchStreamGuildSubscriptionsReturning(guildID: string): Promise<RawTwitchStreamSubscriptionSettings[]> {
+	public async purgeTwitchStreamGuildSubscriptionsReturning(): Promise<RawTwitchStreamSubscriptionSettings[]> {
 		// TODO(kyranet): Reference: Same method in JsonCommonQuery
 		return new Promise(() => {});
 	}
@@ -226,6 +226,16 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, minimum]);
 	}
 
+	public fetchTwitchStreamSubscription(): Promise<RawTwitchStreamSubscriptionSettings> {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
+	}
+
+	public async fetchTwitchStreamsByGuild(): Promise<RawTwitchStreamSubscriptionSettings[]> {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
+	}
+
 	public insertCommandUseCounter(command: string) {
 		return this.provider.run(/* sql */`
 			INSERT
@@ -269,12 +279,12 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [entry.enabled, entry.user_id, entry.message_id, entry.channel_id, entry.guild_id, entry.star_message_id, entry.stars]);
 	}
 
-	public async insertTwitchStreamSubscription(streamerID: string, guildID: string, entry?: RawTwitchStreamSubscriptionSettings) {
+	public async insertTwitchStreamSubscription() {
 		// TODO(kyranet): Reference: Same method in JsonCommonQuery
 		return new Promise(() => {});
 	}
 
-	public createTwitchStream(entry: RawTwitchStreamSubscriptionSettings) {
+	public createTwitchStream() {
 		// TODO(kyranet): Reference: Same method in JsonCommonQuery
 		return new Promise(() => {});
 	}

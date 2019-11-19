@@ -14,3 +14,12 @@
 /src/commands/Misc/reddituser.ts @favna
 /src/commands/Pokemon/ @favna
 /src/lib/util/Pokedex.ts @favna
+
+# Quantum
+/src/routes/twitch/twitchStreamChange.ts @quantumlytangled
+/src/commands/Twitch/ @quantumlytangled
+/src/events/twitchStreamOnline.ts @quantumlytangled
+/src/events/twitchStreamOffline.ts @quantumlytangled
+/src/lib/util/Notifications/ @quantumlytangled
+/src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled
+/src/lib/types/definitions/Twitch.d.ts @quantumlytangled

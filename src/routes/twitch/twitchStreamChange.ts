@@ -44,7 +44,7 @@ export default class extends Route {
 }
 
 export interface StreamBody {
-	id?: string;
+	id: string;
 	user_id?: string;
 	user_name?: string;
 	game_id?: string;

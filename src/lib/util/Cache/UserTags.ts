@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { KlasaClient } from 'klasa';
 import { User } from 'discord.js';
 import { APIUserData } from '../../types/DiscordAPI';
@@ -61,6 +61,10 @@ export class UserTags extends Collection<string, UserTag> {
 
 		const user = await this.client.users.fetch(id);
 		return [id, this.create(user)] as const;
+	}
+
+	public static get [Symbol.species](): CollectionConstructor {
+		return Collection as unknown as CollectionConstructor;
 	}
 
 }

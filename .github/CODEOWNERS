@@ -15,3 +15,8 @@
 /src/commands/Pokemon/ @favna
 /src/lib/util/Pokedex.ts @favna
 /src/lib/util/External/igbTypes.ts @favna
+
+# Magna
+/src/routes/ @gc
+/src/middlewares/ @gc
+/src/lib/structures/api/ @gc

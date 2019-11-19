@@ -16,5 +16,5 @@
 /src/lib/util/Pokedex.ts @favna
 
 # Magna
-/src/routes/
-/src/lib/structures/api/
+/src/routes/ @gc 
+/src/lib/structures/api/ @gc 

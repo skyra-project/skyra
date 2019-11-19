@@ -7,6 +7,7 @@ import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
+import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 
 export class JsonCommonQuery implements CommonQuery {
 
@@ -57,6 +58,38 @@ export class JsonCommonQuery implements CommonQuery {
 		if (values.length === 0) return [];
 
 		await Promise.all(values.map(value => this.provider.delete(Databases.Starboard, `${guildID}.${value.message_id}`)));
+		return values;
+	}
+
+	public deleteTwitchStream(streamerID: string) {
+		return this.provider.delete(Databases.TwitchStreamSubscriptions, streamerID);
+	}
+
+	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
+		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		entry.guild_ids = entry.guild_ids.filter(value => value !== guildID);
+		return this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, entry);
+	}
+
+	public async deleteTwitchStreamSubscriptionReturning(streamerID: string, guildID: string) {
+		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		entry.guild_ids = entry.guild_ids.filter(value => value !== guildID);
+		if (entry) await this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, entry);
+		return entry;
+	}
+
+	public async purgeTwitchStreamGuildSubscriptionsReturning(guildID: string) {
+		const updates: Promise<unknown>[] = [];
+		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as RawTwitchStreamSubscriptionSettings[];
+		if (values.length === 0) return [];
+
+		for (const streamer of values) {
+			if (!streamer.guild_ids.includes(guildID)) continue;
+			streamer.guild_ids = streamer.guild_ids.filter(value => value !== guildID);
+			updates.push(this.provider.update(Databases.TwitchStreamSubscriptions, streamer.id, streamer));
+		}
+
+		await Promise.all(updates);
 		return values;
 	}
 
@@ -162,6 +195,16 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public insertStar(entry: RawStarboardSettings) {
 		return this.provider.create(Databases.Moderation, `${entry.guild_id}.${entry.message_id}`, entry);
+	}
+
+	public async insertTwitchStreamSubscription(streamerID: string, guildID: string, entry?: RawTwitchStreamSubscriptionSettings) {
+		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		if (value) return this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, { ...value, guild_ids: value.guild_ids.push(guildID) });
+		return this.provider.create(Databases.TwitchStreamSubscriptions, streamerID, entry);
+	}
+
+	public createTwitchStream(entry: RawTwitchStreamSubscriptionSettings) {
+		return this.provider.create(Databases.TwitchStreamSubscriptions, entry.id, entry);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

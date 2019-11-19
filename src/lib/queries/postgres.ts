@@ -5,6 +5,7 @@ import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
+import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -78,6 +79,26 @@ export class PostgresCommonQuery implements CommonQuery {
 				"message_id" IN ('${messageIDs.join("', '")}')
 			RETURNING *;
 		`, [guildID]);
+	}
+
+	public deleteTwitchStream(streamerID: string) {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
+	}
+
+	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
+	}
+
+	public async deleteTwitchStreamSubscriptionReturning(streamerID: string, guildID: string): Promise<RawTwitchStreamSubscriptionSettings> {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
+	}
+
+	public async purgeTwitchStreamGuildSubscriptionsReturning(guildID: string): Promise<RawTwitchStreamSubscriptionSettings[]> {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
 	}
 
 	public fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {
@@ -246,6 +267,16 @@ export class PostgresCommonQuery implements CommonQuery {
 			INSERT INTO starboard ("enabled", "user_id", "message_id", "channel_id", "guild_id", "star_message_id", "stars")
 			VALUES ($1, $2, $3, $4, $5, $6, $7)
 		`, [entry.enabled, entry.user_id, entry.message_id, entry.channel_id, entry.guild_id, entry.star_message_id, entry.stars]);
+	}
+
+	public async insertTwitchStreamSubscription(streamerID: string, guildID: string, entry?: RawTwitchStreamSubscriptionSettings) {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
+	}
+
+	public createTwitchStream(entry: RawTwitchStreamSubscriptionSettings) {
+		// TODO(kyranet): Reference: Same method in JsonCommonQuery
+		return new Promise(() => {});
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

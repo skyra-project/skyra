@@ -14,6 +14,7 @@
 /src/commands/Misc/reddituser.ts @favna
 /src/commands/Pokemon/ @favna
 /src/lib/util/Pokedex.ts @favna
+/src/lib/util/External/igbTypes.ts @favna
 
 # Quantum
 /src/routes/twitch/twitchStreamChange.ts @quantumlytangled
@@ -23,3 +24,9 @@
 /src/lib/util/Notifications/ @quantumlytangled
 /src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled
 /src/lib/types/definitions/Twitch.d.ts @quantumlytangled
+
+# Magna
+/src/routes/ @gc
+/src/middlewares/ @gc
+/src/lib/structures/api/ @gc
+

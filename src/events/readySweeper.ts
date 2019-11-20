@@ -6,7 +6,7 @@ const HEADER = `\u001B[39m\u001B[94m[MEMORY CLEANUP]\u001B[39m\u001B[90m`;
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: 'ready' });
+		super(store, file, directory, { event: 'ready', once: true });
 	}
 
 	public run() {

@@ -6,6 +6,7 @@ import { RawModerationSettings } from '../types/settings/raw/RawModerationSettin
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { Databases } from '../types/constants/Constants';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -81,21 +82,38 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID]);
 	}
 
-	public deleteTwitchStream() {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	// TODO(Quantum): We shouldn't have aliases there since CommonQueries are made for provider-specific queries,
+	// however, SG is already abstracted.
+	public deleteTwitchStream(streamerID: string) {
+		return this.provider.delete(Databases.TwitchStreamSubscriptions, streamerID);
 	}
 
-	public async deleteTwitchStreamSubscription() {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	public deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
+		return this.provider.run<RawTwitchStreamSubscriptionSettings>(/* sql */`
+			UPDATE twitch_stream_subscriptions
+			SET
+				"guild_ids" = ARRAY_REMOVE(guild_ids, $2)
+			WHERE
+				"id" = $1
+			LIMIT 1;
+		`, [streamerID, guildID]);
 	}
 
-	public async deleteTwitchStreamSubscriptionReturning(): Promise<RawTwitchStreamSubscriptionSettings> {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	// TODO(Quantum): Do we need a returning method? It's simple, but I prefer to not have unused functions in
+	// CommonQueries.
+	public deleteTwitchStreamSubscriptionReturning(streamerID: string, guildID: string) {
+		return this.provider.runOne<RawTwitchStreamSubscriptionSettings>(/* sql */`
+			UPDATE twitch_stream_subscriptions
+			SET
+				"guild_ids" = ARRAY_REMOVE(guild_ids, $2)
+			WHERE
+				"id" = $1
+			LIMIT 1
+			RETURNING *;
+		`, [streamerID, guildID]);
 	}
 
+	// TODO(Quantum): Does this method *really* require to be returning? It's a very complex one in PGSQL.
 	public async purgeTwitchStreamGuildSubscriptionsReturning(): Promise<RawTwitchStreamSubscriptionSettings[]> {
 		// TODO(kyranet): Reference: Same method in JsonCommonQuery
 		return new Promise(() => {});
@@ -226,14 +244,19 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, minimum]);
 	}
 
-	public fetchTwitchStreamSubscription(): Promise<RawTwitchStreamSubscriptionSettings> {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	// TODO(Quantum): We shouldn't have aliases there since CommonQueries are made for provider-specific queries,
+	// however, SG is already abstracted.
+	public fetchTwitchStreamSubscription(streamerID: string) {
+		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<RawTwitchStreamSubscriptionSettings>;
 	}
 
-	public async fetchTwitchStreamsByGuild(): Promise<RawTwitchStreamSubscriptionSettings[]> {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	public fetchTwitchStreamsByGuild(guildID: string) {
+		return this.provider.runAll<RawTwitchStreamSubscriptionSettings>(/* sql */`
+			SELECT *
+			FROM twitch_stream_subscriptions
+			WHERE
+				$1 = ANY(guild_ids);
+		`, [guildID]);
 	}
 
 	public insertCommandUseCounter(command: string) {
@@ -279,14 +302,24 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [entry.enabled, entry.user_id, entry.message_id, entry.channel_id, entry.guild_id, entry.star_message_id, entry.stars]);
 	}
 
-	public async insertTwitchStreamSubscription() {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	// TODO(Quantum): Rename this to upsert and sort members
+	// TODO(Quantum): The data is too non-deterministic, what am I supposed to insert when entry is missing?
+	public insertTwitchStreamSubscription(streamerID: string, guildID: string, entry?: RawTwitchStreamSubscriptionSettings) {
+		return this.provider.run(/* sql */`
+			INSERT
+			INTO twitch_stream_subscriptions("id", "is_streaming", "created_at", "fetched_at", "expires_at", "guild_ids")
+			VALUES ($1, $2, $3, $4, $5, $6)
+			ON CONFLICT
+			DO
+				UPDATE
+				SET guild_ids = twitch_stream_subscriptions.guild_ids || $6;
+		`, [streamerID, entry?.is_streaming, entry?.created_at, entry?.fetched_at, entry?.expires_at, [guildID]]);
 	}
 
-	public createTwitchStream() {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	// TODO(Quantum): We shouldn't have aliases there since CommonQueries are made for provider-specific queries,
+	// however, SG is already abstracted.
+	public createTwitchStream(entry: RawTwitchStreamSubscriptionSettings) {
+		return this.provider.create(Databases.TwitchStreamSubscriptions, entry.id, entry);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

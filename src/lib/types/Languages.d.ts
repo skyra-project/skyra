@@ -578,6 +578,9 @@ export interface LanguageKeys {
 		NO_PLATFORMS: string;
 		NO_RELEASE_DATE: string;
 		NO_RATING: string;
+		NO_SUMMARY: string;
+		NO_AGE_RATINGS: string;
+		NO_GENRES: string;
 	};
 	COMMAND_ITUNES_DESCRIPTION: string;
 	COMMAND_ITUNES_EXTENDED: string;

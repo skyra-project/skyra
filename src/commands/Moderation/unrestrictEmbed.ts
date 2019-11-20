@@ -5,13 +5,13 @@ import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 
 export default class extends ModerationCommand {
 
-	private readonly kPath = GuildSettings.Roles.Muted;
+	private readonly kPath = GuildSettings.Roles.RestrictedEmbed;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['um'],
-			description: language => language.tget('COMMAND_UNMUTE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_UNMUTE_EXTENDED'),
+			aliases: ['un-restricted-embed', 'ure'],
+			description: language => language.tget('COMMAND_UNRESTRICTEMBED_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_UNRESTRICTEMBED_EXTENDED'),
 			requiredGuildPermissions: ['MANAGE_ROLES']
 		});
 	}
@@ -27,7 +27,7 @@ export default class extends ModerationCommand {
 	public async prehandle() { /* Do nothing */ }
 
 	public handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null) {
-		return message.guild!.security.actions.unMute({
+		return message.guild!.security.actions.unRestrictEmbed({
 			user_id: target.id,
 			moderator_id: message.author.id,
 			duration,

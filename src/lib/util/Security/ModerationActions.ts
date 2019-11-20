@@ -258,7 +258,7 @@ export class ModerationActions {
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async restrictRole(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+	public async restrictReaction(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
 		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionReaction);
@@ -266,7 +266,7 @@ export class ModerationActions {
 		return (await this.guild.moderation.create(options).create())!;
 	}
 
-	public async unRestrictRole(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+	public async unRestrictReaction(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.removeStickyRestriction(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
 		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionReaction);

@@ -19,11 +19,11 @@ export default class extends SkyraCommand {
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['MANAGE_CHANNELS'],
 			runIn: ['text'],
-			usage: '<reset|off|seconds:integer|cooldown:timespan>'
+			usage: '<reset|off|seconds:integer|cooldown:cooldown>'
 		});
 
-		this.createCustomResolver('integer', async (arg, possible, message) =>
-			(await this.client.arguments.get('integer')!.run(arg, possible, message)) * 1000);
+		this.createCustomResolver('cooldown', async (arg, possible, message) =>
+			(await this.client.arguments.get('timespan')!.run(arg, possible, message)) / 1000);
 	}
 
 	public async run(message: KlasaMessage, [cooldown]: ['reset' | 'off' | number]) {

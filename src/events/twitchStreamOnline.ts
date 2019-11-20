@@ -30,14 +30,14 @@ export default class extends Event {
 				if (!sub.gamesWhitelist.includes(game.name) || !sub.gamesWhitelist.includes(game.id)) continue;
 
 				const channel = guild?.channels.get(sub.channel) as TextChannel;
-
 				if (!channel.postable) continue;
-
-				const embed = new MessageEmbed();
 				const message = this.transformText(sub.message, data, game);
 
-				if (sub.embed) await channel.send(message, embed);
-				else await channel.send(message);
+				if (sub.embed) {
+					const embed = new MessageEmbed(JSON.parse(this.transformText(sub.embed, data, game)));
+					return channel.send(message, embed);
+				}
+				return channel.send(message);
 			}
 		}
 	}

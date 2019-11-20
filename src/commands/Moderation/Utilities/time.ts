@@ -96,6 +96,7 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.FastTemporaryVoiceMute:
 			case Moderation.TypeCodes.TemporaryVoiceMute:
 			case Moderation.TypeCodes.VoiceMute: return this.checkVMute(message, user);
+			// TODO: Add the rest of restrictions
 			default: throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
 		}
 	}

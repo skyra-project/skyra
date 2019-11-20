@@ -1511,6 +1511,26 @@ export default class extends Language {
 					and gives the old roles back if the user had them.`,
 			examples: ['@Pete', '@Pete (Insert random joke here).']
 		}),
+		COMMAND_UNRESTRICTATTACHMENT_DESCRIPTION: 'Remove the attachment restriction from one or more users.',
+		COMMAND_UNRESTRICTATTACHMENT_EXTENDED: builder.display('unRestrictAttachment', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTEMBED_DESCRIPTION: 'Remove the embed restriction from one or more users.',
+		COMMAND_UNRESTRICTEMBED_EXTENDED: builder.display('unRestrictEmbed', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTREACTION_DESCRIPTION: 'Remove the reaction restriction from one or more users.',
+		COMMAND_UNRESTRICTREACTION_EXTENDED: builder.display('unRestrictReaction', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTVOICE_DESCRIPTION: 'Remove the voice restriction from one or more users.',
+		COMMAND_UNRESTRICTVOICE_EXTENDED: builder.display('unRestrictVoice', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
 		COMMAND_UNWARN_DESCRIPTION: 'Appeal a warning moderation log case.',
 		COMMAND_UNWARN_EXTENDED: builder.display('unwarn', {
 			extendedHelp: `This command appeals a warning, it requires no permissions, you only give me the moderation log

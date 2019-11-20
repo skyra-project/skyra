@@ -1534,6 +1534,26 @@ export default class extends Language {
 					and gives the old roles back if the user had them.`,
 			examples: ['@Pete', '@Pete (Insert random joke here).']
 		}),
+		COMMAND_UNRESTRICTATTACHMENT_DESCRIPTION: 'Remove the attachment restriction from one or more users.',
+		COMMAND_UNRESTRICTATTACHMENT_EXTENDED: builder.display('unRestrictAttachment', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTEMBED_DESCRIPTION: 'Remove the embed restriction from one or more users.',
+		COMMAND_UNRESTRICTEMBED_EXTENDED: builder.display('unRestrictEmbed', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTREACTION_DESCRIPTION: 'Remove the reaction restriction from one or more users.',
+		COMMAND_UNRESTRICTREACTION_EXTENDED: builder.display('unRestrictReaction', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTVOICE_DESCRIPTION: 'Remove the voice restriction from one or more users.',
+		COMMAND_UNRESTRICTVOICE_EXTENDED: builder.display('unRestrictVoice', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
 		COMMAND_UNWARN_DESCRIPTION: 'Appeal a warning moderation log case.',
 		COMMAND_UNWARN_EXTENDED: builder.display('unwarn', {
 			extendedHelp: `This command appeals a warning, it requires no permissions, you only give me the moderation log
@@ -3549,8 +3569,8 @@ export default class extends Language {
 		ACTION_SETUP_MUTE_EXISTS: '**Aborting mute role creation**: There is already one that exists.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Aborting restriction role creation**: There is already one that exists.',
 		ACTION_SETUP_TOO_MANY_ROLES: '**Aborting role creation**: There are 250 roles in this guild, you need to delete one role.',
-		ACTION_SHARED_ROLE_SETUP_EXISTING: `I could not find a Muted Role. Do you want to configure an existing one as a Muted Role?`,
-		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: `Please give me the name of the existing Muted Role.`,
+		ACTION_SHARED_ROLE_SETUP_EXISTING: `I could not find a configured role. Do you want to configure an existing one?`,
+		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: `Please give me the name of the role you want to use for further actions of this type.`,
 		ACTION_SHARED_ROLE_SETUP_NEW: `Do you want me to create a new role and configure it automatically?`,
 		ACTION_SHARED_ROLE_SETUP: (role, channels, permissions) => `${LOADING} Can I modify ${
 			channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
@@ -3612,7 +3632,7 @@ export default class extends Language {
 		LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
 		GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.moderation-logs #modlogs`.',
-		GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
+		GUILD_SETTINGS_ROLES_RESTRICTED: (prefix, path) => `${REDCROSS} You need to configure a role for this action, use \`${prefix}settings set ${path} <rolename>\` to set it up.`,
 		GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
 		GUILD_BANS_EMPTY: 'There are no bans registered in this server.',
 		GUILD_BANS_NOT_FOUND: 'I tried and failed to find this user from the ban list. Are you certain this user is banned?',

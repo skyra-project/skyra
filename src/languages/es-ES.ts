@@ -3181,8 +3181,8 @@ export default class extends Language {
 		ACTION_SETUP_MUTE_EXISTS: '**Cancelando la creación del rol de silenciado**: Ya existe un rol de silenciado.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Cancelando la creación del rol de restricción**: Ya existe un rol de restricción.',
 		ACTION_SETUP_TOO_MANY_ROLES: '**Cancelando la creación del rol**: Hay 250 roles en este servidor, necesitas borrar uno.',
-		ACTION_SHARED_ROLE_SETUP_EXISTING: `I could not find a Muted Role. Do you want to configure an existing one as a Muted Role?`,
-		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: `Please give me the name of the existing Muted Role.`,
+		ACTION_SHARED_ROLE_SETUP_EXISTING: `I could not find a configured role. Do you want to configure an existing one?`,
+		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: `Please give me the name of the role you want to use for further actions of this type.`,
 		ACTION_SHARED_ROLE_SETUP_NEW: `Do you want me to create a new role and configure it automatically?`,
 		ACTION_SHARED_ROLE_SETUP: (role, channels, permissions) => `${LOADING} Can I modify ${
 			channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
@@ -3242,7 +3242,7 @@ export default class extends Language {
 		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 
 		GUILD_SETTINGS_CHANNELS_MOD: 'Necesitas configurar un canal de moderación. Utiliza `Skyra, settings set channels.modlog <NombreDeCanal>`.',
-		GUILD_SETTINGS_ROLES_MUTED: 'Necesitas configurar un rol de muteo. Utiliza `Skyra, settings set roles.muted <NombreDeRol>`.',
+		GUILD_SETTINGS_ROLES_RESTRICTED: (prefix, path) => `${REDCROSS} You need to configure a role for this action, use \`${prefix}settings set ${path} <rolename>\` to set it up.`,
 		GUILD_MUTE_NOT_FOUND: 'He fallado al buscar un caso de moderación que justifique el mute del usuario. O el usuario nunca ha sido muteado, o todos sus muteos están reclamados.',
 		GUILD_BANS_EMPTY: 'No hay baneos registrados en este servidor.',
 		GUILD_BANS_NOT_FOUND: 'Intenté y fallé al buscar el usuario. ¿Estás seguro de que está expulsado/a?.',

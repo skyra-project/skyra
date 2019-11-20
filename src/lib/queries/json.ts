@@ -208,7 +208,7 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public async insertTwitchStreamSubscription(streamerID: string, guildID: string, entry?: RawTwitchStreamSubscriptionSettings) {
 		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
-		if (value) return this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, { ...value, guild_ids: value.guild_ids.push(guildID) });
+		if (value) return this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, { ...value, guild_ids: value.guild_ids.concat(guildID) });
 		return this.provider.create(Databases.TwitchStreamSubscriptions, streamerID, entry);
 	}
 

@@ -339,4 +339,4 @@ export default class extends SQLProvider {
 
 }
 
-type CreateOrUpdateValue = SettingsFolderUpdateResult[] | [string, unknown][] | Record<string, unknown>;
+type CreateOrUpdateValue = SettingsFolderUpdateResult[] | [string, unknown][] | Record<string, unknown> | {};

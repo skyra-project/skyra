@@ -13,8 +13,7 @@ export interface CommonQuery {
 	deleteStarsReturning(guildID: string, messageIDs: readonly string[]): Promise<RawStarboardSettings[]>;
 	deleteTwitchStream(streamerID: string): Promise<unknown>;
 	deleteTwitchStreamSubscription(streamerID: string, guildID: string): Promise<unknown>;
-	deleteTwitchStreamSubscriptionReturning(streamerID: string, guildID: string): Promise<RawTwitchStreamSubscriptionSettings | null>;
-	purgeTwitchStreamGuildSubscriptionsReturning(guildID: string): Promise<RawTwitchStreamSubscriptionSettings[]>;
+	purgeTwitchStreamGuildSubscriptions(guildID: string): Promise<unknown[]>;
 	fetchGiveawaysFromGuilds(guildIDs: readonly string[]): Promise<RawGiveawaySettings[]>;
 	fetchLeaderboardGlobal(): Promise<LeaderboardEntry[]>;
 	fetchLeaderboardLocal(guildID: string): Promise<LeaderboardEntry[]>;
@@ -32,7 +31,6 @@ export interface CommonQuery {
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	insertStar(entry: RawStarboardSettings): Promise<unknown>;
-	insertTwitchStreamSubscription(streamerID: string, guildID: string): Promise<unknown>;
 	createTwitchStream(entry: RawTwitchStreamSubscriptionSettings): Promise<unknown>;
 	updateModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	updateStar(entry: RawStarboardSettings): Promise<unknown>;
@@ -40,6 +38,7 @@ export interface CommonQuery {
 	upsertIncrementMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettingsDifference(guildID: string, userID: string, points: number): Promise<UpsertMemberSettingsReturningDifference>;
+	upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds?: number): Promise<unknown>;
 }
 
 export interface LeaderboardEntry {

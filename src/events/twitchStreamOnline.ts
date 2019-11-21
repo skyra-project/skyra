@@ -1,19 +1,18 @@
 import { Event } from 'klasa';
 import { StreamBody } from '../routes/twitch/twitchStreamChange';
 import { TwitchHelixGameSearchResult } from '../lib/types/definitions/Twitch';
-import { TWITCH_REPLACEABLES_MATCHES } from '../lib/util/Notifications/Twitch';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '../lib/util/Notifications/Twitch';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 import { TextChannel, MessageEmbed } from 'discord.js';
-
-const REGEXP = /%TITLE%|%VIEWER_COUNT%|%GAME_NAME%|%LANGUAGE%|%GAME_ID%|%USER_ID%|%USER_NAME%/g;
+import ApiResponse from '../lib/structures/api/ApiResponse';
 
 export default class extends Event {
 
-	public async run(data: StreamBody) {
+	public async run(data: StreamBody, response: ApiResponse) {
 		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id!]);
 		const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
 
-		if (!streamer) return;
+		if (!streamer) return response.error('Streamer not found!');
 
 		for (const guildID of streamer.guild_ids) {
 			if (!this.client.guilds.has(guildID)) continue;
@@ -24,14 +23,16 @@ export default class extends Event {
 			const guildSubscriptions = allGuildSubscriptions!.find(value => value[0] === streamer.id);
 
 			for (const sub of guildSubscriptions![1]) {
-
-				if (!sub.notificationOnline) continue;
+				if (this.client.twitch.streamNotificationLimited(sub.$ID)) continue;
+				if (sub.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
 				if (sub.gamesBlacklist.includes(game.name) || sub.gamesBlacklist.includes(game.id)) continue;
 				if (!sub.gamesWhitelist.includes(game.name) || !sub.gamesWhitelist.includes(game.id)) continue;
 
 				const channel = guild?.channels.get(sub.channel) as TextChannel;
 				if (!channel.postable) continue;
 				const message = this.transformText(sub.message, data, game);
+
+				if (this.client.twitch.streamNotificationDrip(sub.$ID)) continue;
 
 				if (sub.embed) {
 					const embed = new MessageEmbed(JSON.parse(this.transformText(sub.embed, data, game)));
@@ -43,7 +44,7 @@ export default class extends Event {
 	}
 
 	private transformText(str: string, notification: StreamBody, game: TwitchHelixGameSearchResult) {
-		return str.replace(REGEXP, match => {
+		return str.replace(TWITCH_REPLACEABLES_REGEX, match => {
 			switch (match) {
 				case TWITCH_REPLACEABLES_MATCHES.TITLE: return notification.title!;
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT: return notification.viewer_count!.toString();

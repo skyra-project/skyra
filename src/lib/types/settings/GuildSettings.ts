@@ -240,13 +240,18 @@ export interface UniqueRoleSet {
 	roles: readonly string[];
 }
 
+export const enum NotificationsStreamsTwitchEventStatus {
+	Online,
+	Offline
+}
+
 export interface NotificationsStreamsTwitchStreamer {
+	$ID: string;
 	channel: string;
 	author: string;
 	message: string;
 	embed: string;
-	notificationOnline: boolean;
-	notificationOffline: boolean;
+	status: NotificationsStreamsTwitchEventStatus;
 	gamesBlacklist: ReadonlyArray<string>;
 	gamesWhitelist: ReadonlyArray<string>;
 	createdAt: string;

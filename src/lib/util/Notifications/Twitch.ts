@@ -3,6 +3,7 @@ import { TOKENS } from '../../../../config';
 import { fetch, enumerable, FetchResultTypes } from '../util';
 import { Mime } from '../constants';
 import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult } from '../../types/definitions/Twitch';
+import { RateLimitManager } from 'klasa';
 
 const enum ApiVersion {
 	Kraken,
@@ -10,6 +11,8 @@ const enum ApiVersion {
 }
 
 export class Twitch {
+
+	public ratelimitsStreams: RateLimitManager = new RateLimitManager(1, Twitch.RATELIMIT_COOLDOWN);
 
 	@enumerable(false)
 	private readonly $clientID: string = TOKENS.TWITCH.CLIENT_ID;
@@ -26,6 +29,18 @@ export class Twitch {
 			'Client-ID': this.$clientID
 		}
 	} as const;
+
+	public streamNotificationLimited(id: string) {
+		const existing = this.ratelimitsStreams.get(id);
+		return existing && existing.limited;
+	}
+
+	public streamNotificationDrip(id: string) {
+		try {
+			this.ratelimitsStreams.acquire(id).drip();
+		} catch { return true; }
+		return false;
+	}
 
 	public async fetchUsersByLogin(logins: string[]): Promise<TwitchKrakenChannelSearchResults> {
 		return this._performApiGETRequest(`users?login=${this._formatMultiEntries(logins, true)}`);
@@ -49,6 +64,8 @@ export class Twitch {
 		return result;
 	}
 
+	public static RATELIMIT_COOLDOWN: number = 10 * 60 * 1000;
+
 }
 
 export function checkSignature(algorithm: string, signature: string, data: any): boolean {
@@ -60,6 +77,8 @@ export function checkSignature(algorithm: string, signature: string, data: any):
 	return hash === signature;
 }
 
+export const TWITCH_REPLACEABLES_REGEX = /%TITLE%|%VIEWER_COUNT%|%GAME_NAME%|%LANGUAGE%|%GAME_ID%|%USER_ID%|%USER_NAME%|%ID%/g;
+
 export const enum TWITCH_REPLACEABLES_MATCHES {
 	TITLE = '%TITLE%',
 	VIEWER_COUNT = '%VIEWER_COUNT%',
@@ -67,5 +86,6 @@ export const enum TWITCH_REPLACEABLES_MATCHES {
 	GAME_ID = '%GAME_ID%',
 	LANGUAGE = '%LANGUAGE%',
 	USER_ID = '%USER_ID%',
-	USER_NAME = '%USER_NAME%'
+	USER_NAME = '%USER_NAME%',
+	ID = '%ID%'
 }

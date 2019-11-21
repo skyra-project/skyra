@@ -1471,6 +1471,42 @@ export default class extends Language {
 			extendedHelp: `This command allows moderation log case management, it allows moderators to update the reason.`,
 			examples: ['420 Spamming all channels', '419..421 Bad memes', 'latest Woops, I did a mistake!']
 		}),
+		COMMAND_RESTRICTATTACHMENT_DESCRIPTION: 'Restrict a user from sending attachments in all channels.',
+		COMMAND_RESTRICTATTACHMENT_EXTENDED: builder.display('restrictAttachment', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Sending weird images', '@Pete 24h Sending NSFW images']
+		}),
+		COMMAND_RESTRICTEMBED_DESCRIPTION: 'Restrict a user from attaching embeds in all channels.',
+		COMMAND_RESTRICTEMBED_EXTENDED: builder.display('restrictEmbed', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Sending weird links', '@Pete 24h Posted a spam link']
+		}),
+		COMMAND_RESTRICTREACTION_DESCRIPTION: 'Restrict a user from reacting to messages in all channels.',
+		COMMAND_RESTRICTREACTION_EXTENDED: builder.display('restrictReaction', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Spamming reactions', '@Pete 24h Posting weird reactions']
+		}),
+		COMMAND_RESTRICTVOICE_DESCRIPTION: 'Restrict a user from joining any voice channel.',
+		COMMAND_RESTRICTVOICE_EXTENDED: builder.display('restrictVoice', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
+					the reverted restriction.
+					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Earraping in general voice channels', '@Pete 24h Making weird noises']
+		}),
 		COMMAND_SOFTBAN_DESCRIPTION: 'Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.',
 		COMMAND_SOFTBAN_EXTENDED: builder.display('softban', {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
@@ -1497,6 +1533,26 @@ export default class extends Language {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the muted people's list,
 					and gives the old roles back if the user had them.`,
 			examples: ['@Pete', '@Pete (Insert random joke here).']
+		}),
+		COMMAND_UNRESTRICTATTACHMENT_DESCRIPTION: 'Remove the attachment restriction from one or more users.',
+		COMMAND_UNRESTRICTATTACHMENT_EXTENDED: builder.display('unRestrictAttachment', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTEMBED_DESCRIPTION: 'Remove the embed restriction from one or more users.',
+		COMMAND_UNRESTRICTEMBED_EXTENDED: builder.display('unRestrictEmbed', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTREACTION_DESCRIPTION: 'Remove the reaction restriction from one or more users.',
+		COMMAND_UNRESTRICTREACTION_EXTENDED: builder.display('unRestrictReaction', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTVOICE_DESCRIPTION: 'Remove the voice restriction from one or more users.',
+		COMMAND_UNRESTRICTVOICE_EXTENDED: builder.display('unRestrictVoice', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
 		}),
 		COMMAND_UNWARN_DESCRIPTION: 'Appeal a warning moderation log case.',
 		COMMAND_UNWARN_EXTENDED: builder.display('unwarn', {
@@ -2547,6 +2603,7 @@ export default class extends Language {
 		COMMAND_MUTE_USER_NOT_MUTED: 'This user is not muted.',
 		COMMAND_MUTE_UNCONFIGURED: 'This guild does not have a **Muted** role. Aborting command execution.',
 		COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
+		COMMAND_RESTRICT_LOWLEVEL: `${REDCROSS} I am sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set i up.`,
 		COMMAND_PRUNE_INVALID: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
 		COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
 		COMMAND_PRUNE_NO_DELETES: 'No message has been deleted, either no message match the filter or they are over 14 days old.',
@@ -3512,8 +3569,8 @@ export default class extends Language {
 		ACTION_SETUP_MUTE_EXISTS: '**Aborting mute role creation**: There is already one that exists.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Aborting restriction role creation**: There is already one that exists.',
 		ACTION_SETUP_TOO_MANY_ROLES: '**Aborting role creation**: There are 250 roles in this guild, you need to delete one role.',
-		ACTION_SHARED_ROLE_SETUP_EXISTING: `I could not find a Muted Role. Do you want to configure an existing one as a Muted Role?`,
-		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: `Please give me the name of the existing Muted Role.`,
+		ACTION_SHARED_ROLE_SETUP_EXISTING: `I could not find a configured role. Do you want to configure an existing one?`,
+		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: `Please give me the name of the role you want to use for further actions of this type.`,
 		ACTION_SHARED_ROLE_SETUP_NEW: `Do you want me to create a new role and configure it automatically?`,
 		ACTION_SHARED_ROLE_SETUP: (role, channels, permissions) => `${LOADING} Can I modify ${
 			channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
@@ -3575,7 +3632,7 @@ export default class extends Language {
 		LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
 		GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.moderation-logs #modlogs`.',
-		GUILD_SETTINGS_ROLES_MUTED: 'You need to configure a muted role. Use `Skyra, conf set roles.muted rolename`.',
+		GUILD_SETTINGS_ROLES_RESTRICTED: (prefix, path) => `${REDCROSS} You need to configure a role for this action, use \`${prefix}settings set ${path} <rolename>\` to set it up.`,
 		GUILD_MUTE_NOT_FOUND: 'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
 		GUILD_BANS_EMPTY: 'There are no bans registered in this server.',
 		GUILD_BANS_NOT_FOUND: 'I tried and failed to find this user from the ban list. Are you certain this user is banned?',

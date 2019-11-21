@@ -212,6 +212,8 @@ export class PostgresCommonQuery implements CommonQuery {
 				"star_message_id" IS NOT NULL AND
 				"enabled"         = TRUE      AND
 				"stars"           >= $2
+			ORDER BY
+				RANDOM()
 			LIMIT 1;
 		`, [guildID, minimum]);
 		return result || null;

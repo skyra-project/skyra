@@ -3,17 +3,17 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 	/**
 	 * The maximum amount of entries in this instance.
 	 */
-	public readonly maximum: number;
+	public maximum: number;
 
 	/**
 	 * The duration for each entry in this instance.
 	 */
-	public readonly duration: number;
+	public duration: number;
 
 	/**
 	 * Whether or not the Adder should auto-remove when it reaches its maximum.
 	 */
-	public readonly autoRemove: boolean;
+	public autoRemove: boolean;
 
 	/**
 	 * Constructs a new Adder instance.

@@ -8,33 +8,39 @@ import ApiResponse from '../lib/structures/api/ApiResponse';
 export default class extends Event {
 
 	public async run(data: StreamBody, response: ApiResponse) {
+		// Fetch the streamer, and if it could not be found, return error.
 		const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
+		if (streamer === null) return response.error('No streamer could be found in the database.');
 
-		if (!streamer) return response.error('Streamer not found!');
-
+		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guild_ids) {
-			if (!this.client.guilds.has(guildID)) continue;
-
+			// Retrieve the guild, if not found, skip to the next loop cycle.
 			const guild = this.client.guilds.get(guildID);
-			await guild?.settings.sync();
-			const allGuildSubscriptions = guild?.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers);
-			const guildSubscriptions = allGuildSubscriptions!.find(value => value[0] === streamer.id);
+			if (typeof guild === 'undefined') continue;
 
-			for (const sub of guildSubscriptions![1]) {
-				if (this.client.twitch.streamNotificationLimited(sub.$ID)) continue;
-				if (sub.status !== NotificationsStreamsTwitchEventStatus.Offline) continue;
+			// Synchronize the settings, then retrieve to all of its subscriptions
+			await guild.settings.sync();
+			const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers)
+				.find(([id]) => id === streamer.id);
+			if (typeof subscriptions === 'undefined') continue;
 
-				const channel = guild?.channels.get(sub.channel) as TextChannel;
-				if (!channel.postable) continue;
-				const message = this.transformText(sub.message, data);
+			// Iterate over each subscription
+			for (const subscription of subscriptions[1]) {
+				if (this.client.twitch.streamNotificationDrip(subscription.$ID)) continue;
+				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Offline) continue;
 
-				if (this.client.twitch.streamNotificationDrip(sub.$ID)) continue;
+				// Retrieve the channel, then check if it exists or if it's postable.
+				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
+				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				if (sub.embed) {
-					const embed = new MessageEmbed(JSON.parse(this.transformText(sub.embed, data)));
-					return channel.send(message, embed);
-				}
-				return channel.send(message);
+				// Retrieve the message and transform it, if no embed, return the basic message.
+				const message = this.transformText(subscription.message, data);
+				if (subscription.embed === null) return channel.send(message);
+
+				// Construct a message embed and send it.
+				const embed = new MessageEmbed(JSON.parse(this.transformText(subscription.embed, data)));
+				return channel.send(message, embed);
+
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 import { TOKENS } from '../../../../config';
 import { fetch, enumerable, FetchResultTypes } from '../util';
-import { Mime } from '../constants';
+import { Mime, Time } from '../constants';
 import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult } from '../../types/definitions/Twitch';
 import { RateLimitManager } from 'klasa';
 
@@ -20,15 +20,16 @@ export class Twitch {
 	@enumerable(false)
 	private readonly $webhookSecret: string = TOKENS.TWITCH.WEBHOOK_SECRET;
 
-	private readonly BASE_URL_HELIX: string = 'https://api.twitch.tv/helix/';
-	private readonly BASE_URL_KRAKEN: string = 'https://api.twitch.tv/kraken/';
-
-	private kFetchOptions = {
+	@enumerable(false)
+	private readonly kFetchOptions = {
 		headers: {
 			'Accept': Mime.Types.ApplicationTwitchV5Json,
 			'Client-ID': this.$clientID
 		}
 	} as const;
+
+	private readonly BASE_URL_HELIX: string = 'https://api.twitch.tv/helix/';
+	private readonly BASE_URL_KRAKEN: string = 'https://api.twitch.tv/kraken/';
 
 	public streamNotificationLimited(id: string) {
 		const existing = this.ratelimitsStreams.get(id);
@@ -38,25 +39,28 @@ export class Twitch {
 	public streamNotificationDrip(id: string) {
 		try {
 			this.ratelimitsStreams.acquire(id).drip();
-		} catch { return true; }
-		return false;
+			return false;
+		} catch {
+			return true;
+		}
 	}
 
-	public async fetchUsersByLogin(logins: string[]): Promise<TwitchKrakenChannelSearchResults> {
-		return this._performApiGETRequest(`users?login=${this._formatMultiEntries(logins, true)}`);
+	public async fetchUsersByLogin(logins: readonly string[]) {
+		return this._performApiGETRequest(`users?login=${this._formatMultiEntries(logins, true)}`) as Promise<TwitchKrakenChannelSearchResults>;
 	}
 
-	public async fetchGame(ids: string[] = [], names: string[] = []): Promise<TwitchHelixResponse<TwitchHelixGameSearchResult>> {
-		let search = '';
-		for (const id of ids) search = `${search}&id=${encodeURIComponent(id)}`;
-		for (const name of names) search = `${search}&name=${encodeURIComponent(name)}`;
-		return this._performApiGETRequest(`games?${search}`, ApiVersion.Helix);
+	public async fetchGame(ids: readonly string[] = [], names: readonly string[] = []) {
+		const search: string[] = [];
+		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
+		for (const name of names) search.push(`name=${encodeURIComponent(name)}`);
+		return this._performApiGETRequest(`games?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixGameSearchResult>>;
 	}
 
-	private _formatMultiEntries(data: string[], replaceEncode?: boolean) {
-		let out = data.map(encodeURIComponent).join(',');
-		replaceEncode ? out = out.replace(/%20/g, '&20') : null;
-		return out;
+	private _formatMultiEntries(data: readonly string[], replaceEncode = false) {
+		const raw = data.map(encodeURIComponent).join(',');
+		return replaceEncode
+			? raw.replace(/%20/g, '&20')
+			: raw;
 	}
 
 	private async _performApiGETRequest<T>(path: string, api: ApiVersion = ApiVersion.Kraken): Promise<T> {
@@ -64,7 +68,7 @@ export class Twitch {
 		return result;
 	}
 
-	public static RATELIMIT_COOLDOWN: number = 10 * 60 * 1000;
+	public static readonly RATELIMIT_COOLDOWN = Time.Minute * 1000;
 
 }
 

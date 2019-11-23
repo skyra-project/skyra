@@ -7,6 +7,7 @@ import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/sta
 import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
 import { ProfileTitles } from '../../commands/Social/profile';
 import { LevelTitles } from '../../commands/Social/level';
+import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
 export interface LanguageKeys {
 	DEFAULT: (key: string) => string;
@@ -665,6 +666,8 @@ export interface LanguageKeys {
 	COMMAND_FOLLOWAGE_EXTENDED: string;
 	COMMAND_TWITCH_DESCRIPTION: string;
 	COMMAND_TWITCH_EXTENDED: string;
+	COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION: string;
+	COMMAND_TWITCHSUBSCRIPTION_EXTENDED: string;
 	COMMAND_WIKIPEDIA_DESCRIPTION: string;
 	COMMAND_WIKIPEDIA_EXTENDED: string;
 	COMMAND_YOUTUBE_DESCRIPTION: string;
@@ -1189,6 +1192,21 @@ export interface LanguageKeys {
 	COMMAND_TWITCH_MATURITY: (mature: boolean) => string;
 	COMMAND_TWITCH_PARTNERSHIP: (partner: boolean) => string;
 	COMMAND_TWITCH_CREATED_AT: string;
+	COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER: string;
+	COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND: string;
+	COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL: string;
+	COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS: string;
+	COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES: [string, string];
+	COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS: string;
+	COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT: string;
+	COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS: (name: string, channel: string, status: NotificationsStreamsTwitchEventStatus) => string;
+	COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED: string;
+	COMMAND_TWITCHSUBSCRIPTION_REMOVE_ENTRY_NOT_EXISTS: string;
+	COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS: (name: string, channel: string, status: NotificationsStreamsTwitchEventStatus) => string;
+	COMMAND_TWITCHSUBSCRIPTION_RESET_EMPTY: string;
+	COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS: (entries: number) => string;
+	COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED: string;
+	COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS: (name: string, entries: number) => string;
 	COMMAND_WIKIPEDIA_NOTFOUND: string;
 	COMMAND_YOUTUBE_NOTFOUND: string;
 	COMMAND_YOUTUBE_INDEX_NOTFOUND: string;

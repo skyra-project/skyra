@@ -27,7 +27,7 @@ export default class extends Event {
 
 			// Iterate over each subscription
 			for (const subscription of subscriptions[1]) {
-				if (this.client.twitch.streamNotificationDrip(subscription.$ID)) continue;
+				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}`)) continue;
 				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Offline) continue;
 
 				// Retrieve the channel, then check if it exists or if it's postable.
@@ -35,7 +35,7 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// Retrieve the message and transform it, if no embed, return the basic message.
-				const message = this.transformText(subscription.message, data);
+				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data);
 				if (subscription.embed === null) {
 					floatPromise(this, channel.send(message));
 					break;

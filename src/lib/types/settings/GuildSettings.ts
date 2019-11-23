@@ -246,11 +246,10 @@ export const enum NotificationsStreamsTwitchEventStatus {
 }
 
 export interface NotificationsStreamsTwitchStreamer {
-	$ID: string;
 	channel: string;
 	author: string;
-	message: string;
-	embed: string;
+	message: string | null;
+	embed: string | null;
 	status: NotificationsStreamsTwitchEventStatus;
 	gamesBlacklist: readonly string[];
 	gamesWhitelist: readonly string[];

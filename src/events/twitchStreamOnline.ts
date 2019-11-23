@@ -32,7 +32,7 @@ export default class extends Event {
 
 			// Iterate over each subscription
 			for (const subscription of subscriptions[1]) {
-				if (this.client.twitch.streamNotificationDrip(subscription.$ID)) continue;
+				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}`)) continue;
 				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
 				if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
 				if (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id)) continue;
@@ -42,7 +42,7 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// Retrieve the message and transform it, if no embed, return the basic message.
-				const message = this.transformText(subscription.message, data, game);
+				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, game);
 				if (subscription.embed === null) {
 					floatPromise(this, channel.send(message));
 					break;

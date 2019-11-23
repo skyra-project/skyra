@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 import { TOKENS } from '../../../../config';
 import { fetch, enumerable, FetchResultTypes } from '../util';
 import { Mime, Time } from '../constants';
-import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult, TwitchHelixBearerToken } from '../../types/definitions/Twitch';
+import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult, TwitchHelixBearerToken, TwitchHelixUsersSearchResult } from '../../types/definitions/Twitch';
 import { RateLimitManager } from 'klasa';
 
 const enum ApiVersion {
@@ -52,6 +52,13 @@ export class Twitch {
 
 	public async fetchUsersByLogin(logins: readonly string[]) {
 		return this._performApiGETRequest(`users?login=${this._formatMultiEntries(logins, true)}`) as Promise<TwitchKrakenChannelSearchResults>;
+	}
+
+	public async fetchUsers(ids: readonly string[] = [], logins: readonly string[] = []) {
+		const search: string[] = [];
+		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
+		for (const login of logins) search.push(`login=${encodeURIComponent(login)}`);
+		return this._performApiGETRequest(`users?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixUsersSearchResult>>;
 	}
 
 	public async fetchGame(ids: readonly string[] = [], names: readonly string[] = []) {

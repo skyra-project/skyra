@@ -3,7 +3,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { PermissionLevels } from '../../lib/types/Enums';
 import { TextChannel } from 'discord.js';
 import { NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, GuildSettings, NotificationsStreamTwitch } from '../../lib/types/settings/GuildSettings';
-import { TwitchKrakenChannelSearchResult } from '../../lib/types/definitions/Twitch';
+import { TwitchHelixUsersSearchResult } from '../../lib/types/definitions/Twitch';
 
 const enum Type {
 	Add = 'add',
@@ -12,7 +12,7 @@ const enum Type {
 	Show = 'show'
 }
 
-type Streamer = TwitchKrakenChannelSearchResult;
+type Streamer = TwitchHelixUsersSearchResult;
 type Channel = TextChannel;
 type Status = NotificationsStreamsTwitchEventStatus;
 type Content = string;
@@ -41,27 +41,30 @@ export default class extends SkyraCommand {
 			}
 
 			try {
-				return await this.client.twitch.fetchUsersByLogin([argument]);
+				const { data } = await this.client.twitch.fetchUsers([argument], [argument]);
+				if (data.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
+				return data;
 			} catch {
 				throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
 			}
-		}).createCustomResolver('channel', async (argument, possible, message, [type]) => {
+		}).createCustomResolver('channel', (argument, possible, message, [type]) => {
 			if (type === Type.Show || type === Type.Clear) return undefined;
 			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL');
 
 			return this.client.arguments.get('textchannel')!.run(argument, possible, message);
-		}).createCustomResolver('status', async (argument, _possible, message, [type]) => {
+		}).createCustomResolver('status', (argument, _possible, message, [type]) => {
 			if (type === Type.Show || type === Type.Clear) return undefined;
 			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS');
 
 			const index = message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES').indexOf(argument.toLowerCase());
 			if (index === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS');
 			return index;
-		}).createCustomResolver('content', async (argument, possible, message, [type]) => {
-			if (type === Type.Show || type === Type.Clear || type === Type.Remove) return undefined;
-			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT');
-			return this.client.arguments.get('...string')!.run(argument, possible, message);
-		});
+		})
+			.createCustomResolver('content', (argument, possible, message, [type]) => {
+				if (type === Type.Show || type === Type.Clear || type === Type.Remove) return undefined;
+				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT');
+				return this.client.arguments.get('...string')!.run(argument, possible, message);
+			});
 	}
 
 	// TODO(kyranet): Disallow entries that have the same channel and the same status
@@ -77,10 +80,10 @@ export default class extends SkyraCommand {
 			status
 		};
 		const subscriptions = message.guild!.settings.get($KEY);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
 
 		if (subscriptionIndex === -1) {
-			const subscription: NotificationsStreamTwitch = [streamer._id, [entry]];
+			const subscription: NotificationsStreamTwitch = [streamer.id, [entry]];
 			await message.guild!.settings.update($KEY, subscription, { arrayAction: 'add', throwOnError: true });
 		} else {
 			const raw = subscriptions[subscriptionIndex];
@@ -93,7 +96,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [streamer, channel, status]: [Streamer, Channel, Status]) {
 		const subscriptions = message.guild!.settings.get($KEY);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED');
 
 		const subscription = subscriptions[subscriptionIndex];
@@ -122,7 +125,7 @@ export default class extends SkyraCommand {
 			return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS', [entries]);
 		}
 
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED');
 		const subscription = subscriptions[subscriptionIndex];
 		const entries = subscription[1].length;
@@ -130,10 +133,11 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS', [streamer.display_name, entries]);
 	}
 
-	// eslint-disable-next-line
+	/* eslint-disable */
 	// @ts-ignore
 	public show(message: KlasaMessage, [streamer]: [Streamer?]) {
 		throw new Error('NOT IMPLEMENTED');
 	}
+	/* eslint-enable */
 
 }

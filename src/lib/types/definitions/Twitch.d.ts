@@ -72,6 +72,19 @@ export interface TwitchHelixBearerToken {
 	EXPIRE: number;
 }
 
+export const enum TwitchHelixUserType {
+	Staff = 'staff',
+	Admin = 'admin',
+	GlobalMod = 'global_mod',
+	Normal = ''
+}
+
+export const enum TwitchHelixBroadcasterType {
+	Partner = 'partner',
+	Affiliate = 'affiliate',
+	Normal = ''
+}
+
 export interface TwitchHelixResponse<T> {
 	data: T[];
 }
@@ -80,4 +93,17 @@ export interface TwitchHelixGameSearchResult {
 	id: string;
 	name: string;
 	box_art_url: string;
+}
+
+export interface TwitchHelixUsersSearchResult {
+	id: string;
+	login: string;
+	display_name: string;
+	type: TwitchHelixUserType;
+	broadcaster_type: TwitchHelixBroadcasterType;
+	description: string;
+	profile_image_url: string;
+	offline_image_url: string;
+	view_count: number;
+	email?: string;
 }

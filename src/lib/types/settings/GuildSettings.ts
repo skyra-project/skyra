@@ -191,7 +191,7 @@ export namespace GuildSettings {
 	export namespace Notifications {
 		export namespace Streams {
 			export namespace Twitch {
-				export const Streamers = T<ReadonlyArray<[string, ReadonlyArray<NotificationsStreamsTwitchStreamer>]>>('notifications.streams.twitch.streamers');
+				export const Streamers = T<readonly NotificationsStreamTwitch[]>('notifications.streams.twitch.streamers');
 			}
 		}
 	}
@@ -252,7 +252,9 @@ export interface NotificationsStreamsTwitchStreamer {
 	message: string;
 	embed: string;
 	status: NotificationsStreamsTwitchEventStatus;
-	gamesBlacklist: ReadonlyArray<string>;
-	gamesWhitelist: ReadonlyArray<string>;
-	createdAt: string;
+	gamesBlacklist: readonly string[];
+	gamesWhitelist: readonly string[];
+	createdAt: number;
 }
+
+export type NotificationsStreamTwitch = [string, readonly NotificationsStreamsTwitchStreamer[]];

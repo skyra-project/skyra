@@ -4,6 +4,7 @@ import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '../lib/u
 import { TextChannel, MessageEmbed } from 'discord.js';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 import ApiResponse from '../lib/structures/api/ApiResponse';
+import { floatPromise } from '../lib/util/util';
 
 export default class extends Event {
 
@@ -35,14 +36,19 @@ export default class extends Event {
 
 				// Retrieve the message and transform it, if no embed, return the basic message.
 				const message = this.transformText(subscription.message, data);
-				if (subscription.embed === null) return channel.send(message);
+				if (subscription.embed === null) {
+					floatPromise(this, channel.send(message));
+					break;
+				}
 
 				// Construct a message embed and send it.
 				const embed = new MessageEmbed(JSON.parse(this.transformText(subscription.embed, data)));
-				return channel.send(message, embed);
-
+				floatPromise(this, channel.send(message, embed));
+				break;
 			}
 		}
+
+		return response.ok();
 	}
 
 	private transformText(str: string, notification: StreamBody) {

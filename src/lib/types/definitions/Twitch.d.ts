@@ -67,6 +67,11 @@ export interface TwitchKrakenUserFollowersChannelResultsChannel {
 	views: number;
 }
 
+export interface TwitchHelixBearerToken {
+	TOKEN: string;
+	EXPIRE: number;
+}
+
 export interface TwitchHelixResponse<T> {
 	data: T[];
 }

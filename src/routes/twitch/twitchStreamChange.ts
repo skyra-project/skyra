@@ -3,7 +3,6 @@ import { Mime } from '../../lib/util/constants';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { Events } from '../../lib/types/Enums';
-import { checkSignature } from '../../lib/util/Notifications/Twitch';
 
 export default class extends Route {
 
@@ -29,7 +28,7 @@ export default class extends Route {
 		const data = request.body as StreamBody[];
 		const [algo, sig] = request.headers['X-Hub-Signature']?.toString().split('=', 2) as string[];
 
-		if (!checkSignature(algo, sig, data)) return response.forbidden('Invalid Hub signature');
+		if (!this.client.twitch.checkSignature(algo, sig, data)) return response.forbidden('Invalid Hub signature');
 
 		const id = request.query.id as string;
 

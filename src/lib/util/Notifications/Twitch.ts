@@ -70,7 +70,7 @@ export class Twitch {
 		return hash === signature;
 	}
 
-	public async fetchBearer() {
+	public fetchBearer() {
 		const { TOKEN, EXPIRE } = this.BEARER;
 		if (!EXPIRE || !TOKEN) return this._generateBearerToken();
 		if (Date.now() > EXPIRE) return this._generateBearerToken();

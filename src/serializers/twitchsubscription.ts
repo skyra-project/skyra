@@ -23,8 +23,7 @@ export default class extends Serializer {
 	}
 
 	private validateStreamer(data: NotificationsStreamsTwitchStreamer) {
-		return typeof data.$ID === 'string'
-			&& typeof data.channel === 'string'
+		return typeof data.channel === 'string'
 			&& typeof data.author === 'string'
 			&& typeof data.message === 'string'
 			&& typeof data.embed === 'string'

@@ -17,7 +17,7 @@ export class Twitch {
 	public readonly BASE_URL_KRAKEN: string = 'https://api.twitch.tv/kraken/';
 
 	@enumerable(false)
-	private BEARER!: TwitchHelixBearerToken; 
+	private BEARER!: TwitchHelixBearerToken;
 
 	@enumerable(false)
 	private readonly $clientID: string = TOKENS.TWITCH.CLIENT_ID;
@@ -70,6 +70,14 @@ export class Twitch {
 		return hash === signature;
 	}
 
+	public async fetchBearer() {
+		const { TOKEN, EXPIRE } = this.BEARER;
+		if (!EXPIRE || !TOKEN) return this._generateBearerToken();
+		if (Date.now() > EXPIRE) return this._generateBearerToken();
+		return TOKEN;
+	}
+
+
 	private _formatMultiEntries(data: readonly string[], replaceEncode = false) {
 		const raw = data.map(encodeURIComponent).join(',');
 		return replaceEncode
@@ -82,12 +90,15 @@ export class Twitch {
 		return result;
 	}
 
-	private async _fetchBearerToken() {
+	private async _generateBearerToken() {
 		const url = new URL('https://id.twitch.tv/oauth2/token');
 		url.searchParams.append('client_secret', this.$clientSecret);
 		url.searchParams.append('client_id', this.$clientID);
 		url.searchParams.append('grant_type', 'client_credentials');
-
+		const respone = await fetch(url.href, { method: 'POST' }, FetchResultTypes.JSON) as OauthResponse;
+		const expires = Date.now() + (respone.expires_in * 1000);
+		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
+		return respone.access_token;
 	}
 
 	public static readonly RATELIMIT_COOLDOWN = Time.Minute * 3 * 1000;

@@ -54,16 +54,20 @@ export default class extends Event {
 	private transformText(source: string, notification: StreamBody, game: TwitchHelixGameSearchResult) {
 		return source.replace(TWITCH_REPLACEABLES_REGEX, match => {
 			switch (match) {
-				case TWITCH_REPLACEABLES_MATCHES.TITLE: return notification.title!.replace(/"/g, '\\"');
+				case TWITCH_REPLACEABLES_MATCHES.TITLE: return this.escapeText(notification.title!);
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT: return notification.viewer_count!.toString();
 				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME: return game.name;
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE: return notification.language!;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID: return notification.game_id!;
 				case TWITCH_REPLACEABLES_MATCHES.USER_ID: return notification.user_id!;
-				case TWITCH_REPLACEABLES_MATCHES.USER_NAME: return notification.user_name!.replace(/"/g, '\\"');
+				case TWITCH_REPLACEABLES_MATCHES.USER_NAME: return this.escapeText(notification.user_name!);
 				default: return match;
 			}
 		});
+	}
+
+	private escapeText(text: string) {
+		return text.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 	}
 
 }

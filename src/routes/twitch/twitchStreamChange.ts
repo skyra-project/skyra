@@ -15,7 +15,7 @@ export default class extends Route {
 		const challenge = request.query['hub.challenge'] as string | undefined;
 
 		switch (request.query['hub.mode']) {
-			case 'denied': return response.setContentType(Mime.Types.TextPlain).ok(challenge ?? 'ok');
+			case 'denied': return response.setContentType(Mime.Types.TextPlain).ok(challenge || 'ok');
 			case 'unsubscribe':
 			case 'subscribe': return response.setContentType(Mime.Types.TextPlain).ok(challenge);
 			default: return response.error("Well... Isn't this a pain in the ass");
@@ -24,9 +24,13 @@ export default class extends Route {
 
 	// Stream Changed
 	public post(request: ApiRequest, response: ApiResponse) {
-		if (!request.body) return response.badRequest('No data recieved');
+		if (!Array.isArray(request.body)) return response.badRequest('Malformed data received');
+
+		const xHubSignature = request.headers['X-Hub-Signature'];
+		if (typeof xHubSignature === 'undefined') return response.badRequest('Missing "X-Hub-Signature" header');
+
 		const data = request.body as StreamBody[];
-		const [algo, sig] = request.headers['X-Hub-Signature']?.toString().split('=', 2) as string[];
+		const [algo, sig] = xHubSignature.toString().split('=', 2);
 
 		if (!this.client.twitch.checkSignature(algo, sig, data)) return response.forbidden('Invalid Hub signature');
 
@@ -34,10 +38,9 @@ export default class extends Route {
 
 		if (data.length === 0) {
 			this.client.emit(Events.TwitchStreamOffline, { id }, response);
-			return response.ok();
+		} else {
+			this.client.emit(Events.TwitchStreamOnline, data, response);
 		}
-		this.client.emit(Events.TwitchStreamOnline, data, response);
-		return response.ok();
 	}
 
 }

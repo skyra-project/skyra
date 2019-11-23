@@ -5,9 +5,21 @@ import { Mime, Time } from '../constants';
 import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult, TwitchHelixBearerToken, TwitchHelixUsersSearchResult } from '../../types/definitions/Twitch';
 import { RateLimitManager } from 'klasa';
 
-const enum ApiVersion {
+export const enum ApiVersion {
 	Kraken,
 	Helix
+}
+
+export const enum TwitchHooksAction {
+	Subscribe = 'subscribe',
+	Unsubscribe = 'unsubscribe'
+}
+
+export interface OauthResponse {
+	access_token: string;
+	refresh_token: string;
+	scope: string;
+	expires_in: number;
 }
 
 export class Twitch {
@@ -84,6 +96,23 @@ export class Twitch {
 		return TOKEN;
 	}
 
+	public async subscriptionsStreamHandle(streamerID: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
+		const response = await fetch('https://api.twitch.tv/helix/webhooks/hub', {
+			body: JSON.stringify({
+				'hub.callback': `REPLACE_ME${streamerID}`,
+				'hub.mode': action,
+				'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
+				'hub.lease_seconds': (9 * Time.Day) / Time.Second
+			}),
+			headers: {
+				'Authorization': `Bearer ${await this.fetchBearer()}`,
+				'Content-Type': Mime.Types.ApplicationJson
+			},
+			method: 'POST'
+		}, FetchResultTypes.Result);
+		if (!response.ok) throw new Error(`[${response.status}] Failed to subscribe to action.`);
+		return response;
+	}
 
 	private _formatMultiEntries(data: readonly string[], replaceEncode = false) {
 		const raw = data.map(encodeURIComponent).join(',');
@@ -124,11 +153,3 @@ export const enum TWITCH_REPLACEABLES_MATCHES {
 	USER_NAME = '%USER_NAME%',
 	ID = '%ID%'
 }
-
-export interface OauthResponse {
-	access_token: string;
-	refresh_token: string;
-	scope: string;
-	expires_in: number;
-}
-

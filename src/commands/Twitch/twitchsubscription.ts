@@ -14,7 +14,7 @@ import { BrandingColors } from '../../lib/util/constants';
 const enum Type {
 	Add = 'add',
 	Remove = 'remove',
-	Clear = 'clear',
+	Reset = 'reset',
 	Show = 'show'
 }
 
@@ -36,14 +36,14 @@ export default class extends SkyraCommand {
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|remove|clear|show:default> (streamer:streamer) (channel:channel) (status:status) (content:content)',
+			usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channel) (status:status) (content:content)',
 			usageDelim: ' '
 		});
 
 		this
 			.createCustomResolver('streamer', async (argument, _possible, message, [type]) => {
 				if (!argument) {
-					if (type === Type.Show || type === Type.Clear) return undefined;
+					if (type === Type.Show || type === Type.Reset) return undefined;
 					throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER');
 				}
 
@@ -56,13 +56,13 @@ export default class extends SkyraCommand {
 				}
 			})
 			.createCustomResolver('channel', (argument, possible, message, [type]) => {
-				if (type === Type.Show || type === Type.Clear) return undefined;
+				if (type === Type.Show || type === Type.Reset) return undefined;
 				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL');
 
 				return this.client.arguments.get('textchannel')!.run(argument, possible, message);
 			})
 			.createCustomResolver('status', (argument, _possible, message, [type]) => {
-				if (type === Type.Show || type === Type.Clear) return undefined;
+				if (type === Type.Show || type === Type.Reset) return undefined;
 				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS');
 
 				const index = message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES').indexOf(argument.toLowerCase());
@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 				return index;
 			})
 			.createCustomResolver('content', (argument, possible, message, [type]) => {
-				if (type === Type.Show || type === Type.Clear || type === Type.Remove) return undefined;
+				if (type === Type.Show || type === Type.Reset || type === Type.Remove) return undefined;
 				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT');
 				return this.client.arguments.get('...string')!.run(argument, possible, message);
 			});
@@ -136,7 +136,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS', [streamer.display_name, channel.name, status]);
 	}
 
-	public async clear(message: KlasaMessage, [streamer]: [Streamer?]) {
+	public async reset(message: KlasaMessage, [streamer]: [Streamer?]) {
 		const subscriptions = message.guild!.settings.get($KEY);
 
 		if (typeof streamer === 'undefined') {

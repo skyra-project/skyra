@@ -96,7 +96,8 @@ export class Twitch {
 				'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
 				'hub.mode': action,
 				'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
-				'hub.lease_seconds': (9 * Time.Day) / Time.Second
+				'hub.lease_seconds': (9 * Time.Day) / Time.Second,
+				'hub.secret': this.$webhookSecret
 			}),
 			headers: {
 				'Authorization': `Bearer ${await this.fetchBearer()}`,

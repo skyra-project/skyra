@@ -145,4 +145,8 @@ export default Client.defaultGuildSchema
 		.add('minimum', 'Integer', { 'default': 1, 'min': 1 }))
 	.add('trigger', folder => folder
 		.add('alias', 'any', { array: true, configurable: false })
-		.add('includes', 'any', { array: true, configurable: false }));
+		.add('includes', 'any', { array: true, configurable: false }))
+	.add('notifications', folder => folder
+		.add('streams', streams => streams
+			.add('twitch', twitch => twitch
+				.add('streamers', 'TwitchSubscription', { array: true, configurable: false }))));

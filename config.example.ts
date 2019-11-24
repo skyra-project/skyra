@@ -17,6 +17,7 @@ export const EVLYN_PORT = 3100;
 export const NAME = 'Skyra';
 export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
 export const CLIENT_SECRET = DEV ? '' : '';
+export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 
 const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
 	IncomingMessage: ApiRequest,
@@ -155,7 +156,8 @@ export const TOKENS = {
 	GOOGLE_MAP_API: '',
 	TWITCH: {
 		CLIENT_ID: '',
-		SECRET: ''
+		SECRET: '',
+		WEBHOOK_SECRET: ''
 	},
 	WEATHER_API: '',
 	WEEB_SH: '',

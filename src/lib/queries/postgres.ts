@@ -1,10 +1,12 @@
-import { CommonQuery, UpsertMemberSettingsReturningDifference } from './common';
+import { CommonQuery, UpsertMemberSettingsReturningDifference, UpdatePurgeTwitchStreamReturning } from './common';
 import PostgresProvider from '../../providers/postgres';
 import { Client } from 'discord.js';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
+import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { Databases } from '../types/constants/Constants';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -77,6 +79,39 @@ export class PostgresCommonQuery implements CommonQuery {
 				"guild_id"   = $1 AND
 				"message_id" IN ('${messageIDs.join("', '")}')
 			RETURNING *;
+		`, [guildID]);
+	}
+
+	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
+		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
+			UPDATE twitch_stream_subscriptions
+			SET
+				"guild_ids" = ARRAY_REMOVE(guild_ids, $2)
+			WHERE
+				"id" = $1
+			LIMIT 1
+			RETURNING guild_ids;
+		`, [streamerID, guildID]);
+		return returned.guild_ids.length === 0;
+	}
+
+	public deleteTwitchStreamSubscriptions(streamers: readonly string[]) {
+		return this.provider.run(/* sql */`
+			DELETE
+			FROM twitch_stream_subscriptions
+			WHERE
+				"id" IN (${streamers.map(streamer => `${this.provider.cString(streamer)}`)});
+		`);
+	}
+
+	public async purgeTwitchStreamGuildSubscriptions(guildID: string) {
+		return this.provider.runAll<UpdatePurgeTwitchStreamReturning>(/* sql */`
+			UPDATE twitch_stream_subscriptions
+			SET
+				"guild_ids" = ARRAY_REMOVE(guild_ids, $1)
+			WHERE
+				$1 = ANY(guild_ids)
+			RETURNING id, guild_ids;
 		`, [guildID]);
 	}
 
@@ -205,6 +240,31 @@ export class PostgresCommonQuery implements CommonQuery {
 				"enabled"         = TRUE      AND
 				"stars"           >= $2;
 		`, [guildID, minimum]);
+	}
+
+	public async fetchTwitchStreamSubscription(streamerID: string) {
+		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		return {
+			id: entry.id,
+			is_streaming: entry.is_streaming,
+			expires_at: Number(entry.expires_at),
+			guild_ids: entry.guild_ids
+		};
+	}
+
+	public async fetchTwitchStreamsByGuild(guildID: string) {
+		const entries = await this.provider.runAll<RawTwitchStreamSubscriptionSettings>(/* sql */`
+			SELECT *
+			FROM twitch_stream_subscriptions
+			WHERE
+				$1 = ANY(guild_ids);
+		`, [guildID]);
+		return entries.map(entry => ({
+			id: entry.id,
+			is_streaming: entry.is_streaming,
+			expires_at: Number(entry.expires_at),
+			guild_ids: entry.guild_ids
+		}));
 	}
 
 	public insertCommandUseCounter(command: string) {
@@ -349,6 +409,22 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, userID, points]);
 	}
 
+
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds: number = 864000) {
+		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
+			INSERT
+			INTO twitch_stream_subscriptions ("id", "is_streaming", "expires_at", "guild_ids")
+			VALUES ($1, $2, $3, $4)
+			ON CONFLICT (id)
+			DO
+				UPDATE
+				SET guild_ids = ARRAY_CAT(twitch_stream_subscriptions.guild_ids, $4)
+			RETURNING guild_ids;
+		`, [streamerID, false, (expireSeconds - 1) * 1000, [guildID]]);
+		return returned.guild_ids.length === 1;
+	}
+
 }
 
 type UpsertMemberSettingsReturning = Pick<RawMemberSettings, 'point_count'>;
+type UpsertTwitchStreamReturning = Pick<RawTwitchStreamSubscriptionSettings, 'guild_ids'>;

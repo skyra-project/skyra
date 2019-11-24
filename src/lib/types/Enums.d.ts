@@ -31,6 +31,8 @@ export const enum Events {
 	RoleReactionAdd = 'roleReactionAdd',
 	RoleReactionRemove = 'roleReactionRemove',
 	TaskError = 'taskError',
+	TwitchStreamOffline = 'twitchStreamOffline',
+	TwitchStreamOnline = 'twitchStreamOnline',
 	UnhandledRejection = 'unhandledRejection',
 	Verbose = 'verbose',
 	Warn = 'warn',

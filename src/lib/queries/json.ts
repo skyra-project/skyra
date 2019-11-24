@@ -1,4 +1,4 @@
-import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference } from './common';
+import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning } from './common';
 import { JsonProvider } from '../types/util';
 import { Databases } from '../types/constants/Constants';
 import { Client } from 'discord.js';
@@ -7,6 +7,7 @@ import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
+import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 
 export class JsonCommonQuery implements CommonQuery {
 
@@ -58,6 +59,32 @@ export class JsonCommonQuery implements CommonQuery {
 
 		await Promise.all(values.map(value => this.provider.delete(Databases.Starboard, `${guildID}.${value.message_id}`)));
 		return values;
+	}
+
+	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
+		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		entry.guild_ids = entry.guild_ids.filter(value => value !== guildID);
+		await this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, entry);
+		return entry.guild_ids.length === 0;
+	}
+
+	public deleteTwitchStreamSubscriptions(streamers: readonly string[]) {
+		return Promise.all(streamers.map(streamer => this.provider.delete(Databases.TwitchStreamSubscriptions, streamer)));
+	}
+
+	public async purgeTwitchStreamGuildSubscriptions(guildID: string) {
+		const updates: Promise<UpdatePurgeTwitchStreamReturning>[] = [];
+		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as RawTwitchStreamSubscriptionSettings[];
+		if (values.length === 0) return [];
+
+		for (const streamer of values) {
+			if (!streamer.guild_ids.includes(guildID)) continue;
+			streamer.guild_ids = streamer.guild_ids.filter(value => value !== guildID);
+			updates.push(this.provider.update(Databases.TwitchStreamSubscriptions, streamer.id, streamer)
+				.then(() => ({ id: streamer.id, guild_ids: streamer.guild_ids })));
+		}
+
+		return Promise.all(updates);
 	}
 
 	public async fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {
@@ -146,6 +173,15 @@ export class JsonCommonQuery implements CommonQuery {
 		return filteredValues[index];
 	}
 
+	public fetchTwitchStreamSubscription(streamerID: string) {
+		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<TwitchStreamSubscriptionSettings>;
+	}
+
+	public async fetchTwitchStreamsByGuild(guildID: string) {
+		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as TwitchStreamSubscriptionSettings[];
+		return values.filter(value => value.guild_ids.includes(guildID));
+	}
+
 	public async insertCommandUseCounter(command: string) {
 		const value = await this.provider.get(Databases.CommandCounter, command) as { id: string; uses: number };
 		if (value) await this.provider.update(Databases.CommandCounter, command, { uses: value.uses + 1 });
@@ -222,6 +258,23 @@ export class JsonCommonQuery implements CommonQuery {
 			old_value: previous ? previous.point_count : null,
 			new_value: patched.point_count
 		};
+	}
+
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds: number = 864000) {
+		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		if (value) {
+			const guild_ids = value.guild_ids.concat(guildID);
+			await this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, { ...value, guild_ids });
+			return guild_ids.length === 1;
+		}
+
+		await this.provider.create(Databases.TwitchStreamSubscriptions, streamerID, {
+			id: streamerID,
+			is_streaming: false,
+			expires_at: (expireSeconds - 1) * 1000,
+			guild_ids: [guildID]
+		});
+		return true;
 	}
 
 }

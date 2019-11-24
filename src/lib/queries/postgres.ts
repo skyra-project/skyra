@@ -1,4 +1,4 @@
-import { CommonQuery, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning } from './common';
+import { CommonQuery, UpsertMemberSettingsReturningDifference, UpdatePurgeTwitchStreamReturning } from './common';
 import PostgresProvider from '../../providers/postgres';
 import { Client } from 'discord.js';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';

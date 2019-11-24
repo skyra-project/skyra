@@ -1,5 +1,5 @@
 import { Event } from 'klasa';
-import { StreamBody } from '../routes/twitch/twitchStreamChange';
+import { PostStreamBodyData } from '../routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '../lib/util/Notifications/Twitch';
 import { TextChannel, MessageEmbed } from 'discord.js';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
@@ -8,7 +8,7 @@ import { floatPromise } from '../lib/util/util';
 
 export default class extends Event {
 
-	public async run(data: StreamBody, response: ApiResponse) {
+	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
 		const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
 		if (streamer === null) return response.error('No streamer could be found in the database.');
@@ -51,10 +51,10 @@ export default class extends Event {
 		return response.ok();
 	}
 
-	private transformText(str: string, notification: StreamBody) {
+	private transformText(str: string, notification: PostStreamBodyData) {
 		return str.replace(TWITCH_REPLACEABLES_REGEX, match => {
 			switch (match) {
-				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id!;
+				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id;
 				default: return match;
 			}
 		});

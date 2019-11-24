@@ -1,5 +1,5 @@
 import { createHmac } from 'crypto';
-import { TOKENS } from '../../../../config';
+import { TOKENS, TWITCH_CALLBACK } from '../../../../config';
 import { fetch, enumerable, FetchResultTypes } from '../util';
 import { Mime, Time } from '../constants';
 import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult, TwitchHelixBearerToken, TwitchHelixUsersSearchResult } from '../../types/definitions/Twitch';
@@ -93,7 +93,7 @@ export class Twitch {
 	public async subscriptionsStreamHandle(streamerID: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
 		const response = await fetch('https://api.twitch.tv/helix/webhooks/hub', {
 			body: JSON.stringify({
-				'hub.callback': `REPLACE_ME${streamerID}`,
+				'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
 				'hub.mode': action,
 				'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
 				'hub.lease_seconds': (9 * Time.Day) / Time.Second

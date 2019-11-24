@@ -1,4 +1,4 @@
-import { CommonQuery, UpsertMemberSettingsReturningDifference } from './common';
+import { CommonQuery, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings } from './common';
 import PostgresProvider from '../../providers/postgres';
 import { Client } from 'discord.js';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
@@ -82,21 +82,17 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID]);
 	}
 
-	// TODO(Quantum): We shouldn't have aliases there since CommonQueries are made for provider-specific queries,
-	// however, SG is already abstracted.
-	public deleteTwitchStream(streamerID: string) {
-		return this.provider.delete(Databases.TwitchStreamSubscriptions, streamerID);
-	}
-
-	public deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
-		return this.provider.run<RawTwitchStreamSubscriptionSettings>(/* sql */`
+	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
+		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
 			UPDATE twitch_stream_subscriptions
 			SET
 				"guild_ids" = ARRAY_REMOVE(guild_ids, $2)
 			WHERE
 				"id" = $1
-			LIMIT 1;
+			LIMIT 1
+			RETURNING guild_ids;
 		`, [streamerID, guildID]);
+		return returned.guild_ids.length === 0;
 	}
 
 	public async purgeTwitchStreamGuildSubscriptions(): Promise<unknown[]> {
@@ -231,19 +227,29 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, minimum]);
 	}
 
-	// TODO(Quantum): We shouldn't have aliases there since CommonQueries are made for provider-specific queries,
-	// however, SG is already abstracted.
-	public fetchTwitchStreamSubscription(streamerID: string) {
-		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<RawTwitchStreamSubscriptionSettings>;
+	public async fetchTwitchStreamSubscription(streamerID: string) {
+		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		return {
+			id: entry.id,
+			is_streaming: entry.is_streaming,
+			expires_at: Number(entry.expires_at),
+			guild_ids: entry.guild_ids
+		};
 	}
 
-	public fetchTwitchStreamsByGuild(guildID: string) {
-		return this.provider.runAll<RawTwitchStreamSubscriptionSettings>(/* sql */`
+	public async fetchTwitchStreamsByGuild(guildID: string) {
+		const entries = await this.provider.runAll<RawTwitchStreamSubscriptionSettings>(/* sql */`
 			SELECT *
 			FROM twitch_stream_subscriptions
 			WHERE
 				$1 = ANY(guild_ids);
 		`, [guildID]);
+		return entries.map(entry => ({
+			id: entry.id,
+			is_streaming: entry.is_streaming,
+			expires_at: Number(entry.expires_at),
+			guild_ids: entry.guild_ids
+		}));
 	}
 
 	public insertCommandUseCounter(command: string) {
@@ -291,7 +297,7 @@ export class PostgresCommonQuery implements CommonQuery {
 
 	// TODO(Quantum): We shouldn't have aliases there since CommonQueries are made for provider-specific queries,
 	// however, SG is already abstracted.
-	public createTwitchStream(entry: RawTwitchStreamSubscriptionSettings) {
+	public createTwitchStream(entry: TwitchStreamSubscriptionSettings) {
 		return this.provider.create(Databases.TwitchStreamSubscriptions, entry.id, entry);
 	}
 
@@ -394,12 +400,22 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, userID, points]);
 	}
 
-	
-	public upsertTwitchStreamSubscription() {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds: number = 864000) {
+		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
+			INSERT
+			INTO twitch_stream_subscriptions ("id", "is_streaming", "expires_at", "guild_ids")
+			VALUES ($1, $2, $3, $4)
+			ON CONFLICT (id)
+			DO
+				UPDATE
+				SET guild_ids = ARRAY_CAT(twitch_stream_subscriptions.guild_ids, $4)
+			RETURNING guild_ids;
+		`, [streamerID, false, (expireSeconds - 1) * 1000, [guildID]]);
+		return returned.guild_ids.length === 1;
 	}
 
 }
 
 type UpsertMemberSettingsReturning = Pick<RawMemberSettings, 'point_count'>;
+type UpsertTwitchStreamReturning = Pick<RawTwitchStreamSubscriptionSettings, 'guild_ids'>;

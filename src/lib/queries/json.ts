@@ -1,4 +1,4 @@
-import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference } from './common';
+import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings } from './common';
 import { JsonProvider } from '../types/util';
 import { Databases } from '../types/constants/Constants';
 import { Client } from 'discord.js';
@@ -61,14 +61,11 @@ export class JsonCommonQuery implements CommonQuery {
 		return values;
 	}
 
-	public deleteTwitchStream(streamerID: string) {
-		return this.provider.delete(Databases.TwitchStreamSubscriptions, streamerID);
-	}
-
 	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
 		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
 		entry.guild_ids = entry.guild_ids.filter(value => value !== guildID);
-		return this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, entry);
+		await this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, entry);
+		return entry.guild_ids.length === 0;
 	}
 
 	public async purgeTwitchStreamGuildSubscriptions(guildID: string) {
@@ -172,11 +169,11 @@ export class JsonCommonQuery implements CommonQuery {
 	}
 
 	public fetchTwitchStreamSubscription(streamerID: string) {
-		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<RawTwitchStreamSubscriptionSettings>;
+		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<TwitchStreamSubscriptionSettings>;
 	}
 
 	public async fetchTwitchStreamsByGuild(guildID: string) {
-		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as RawTwitchStreamSubscriptionSettings[];
+		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as TwitchStreamSubscriptionSettings[];
 		return values.filter(value => value.guild_ids.includes(guildID));
 	}
 
@@ -198,7 +195,7 @@ export class JsonCommonQuery implements CommonQuery {
 		return this.provider.create(Databases.Moderation, `${entry.guild_id}.${entry.message_id}`, entry);
 	}
 
-	public createTwitchStream(entry: RawTwitchStreamSubscriptionSettings) {
+	public createTwitchStream(entry: TwitchStreamSubscriptionSettings) {
 		return this.provider.create(Databases.TwitchStreamSubscriptions, entry.id, entry);
 	}
 
@@ -264,13 +261,19 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds: number = 864000) {
 		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
-		if (value) return this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, { ...value, guild_ids: value.guild_ids.concat(guildID) });
-		return this.provider.create(Databases.TwitchStreamSubscriptions, streamerID, {
+		if (value) {
+			const guild_ids = value.guild_ids.concat(guildID);
+			await this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, { ...value, guild_ids });
+			return guild_ids.length === 1;
+		}
+
+		await this.provider.create(Databases.TwitchStreamSubscriptions, streamerID, {
 			id: streamerID,
 			is_streaming: false,
 			expires_at: (expireSeconds - 1) * 1000,
 			guild_ids: [guildID]
 		});
+		return true;
 	}
 
 }

@@ -4,6 +4,8 @@ import { PermissionLevels } from '../../lib/types/Enums';
 import { TextChannel } from 'discord.js';
 import { NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, GuildSettings, NotificationsStreamTwitch } from '../../lib/types/settings/GuildSettings';
 import { TwitchHelixUsersSearchResult } from '../../lib/types/definitions/Twitch';
+import { TwitchHooksAction } from '../../lib/util/Notifications/Twitch';
+import { Databases } from '../../lib/types/constants/Constants';
 
 const enum Type {
 	Add = 'add',
@@ -91,6 +93,10 @@ export default class extends SkyraCommand {
 			await message.guild!.settings.update($KEY, subscription, { arrayIndex: subscriptionIndex, throwOnError: true });
 		}
 
+		if (await this.client.queries.upsertTwitchStreamSubscription(streamer.id, message.guild!.id)) {
+			await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
+		}
+
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS', [streamer.display_name, channel.name, status]);
 	}
 
@@ -110,6 +116,11 @@ export default class extends SkyraCommand {
 			entries.splice(entryIndex, 1);
 			const updated: NotificationsStreamTwitch = [subscription[0], entries];
 			await message.guild!.settings.update($KEY, updated, { arrayIndex: subscriptionIndex, throwOnError: true });
+		}
+
+		if (await this.client.queries.deleteTwitchStreamSubscription(streamer.id, message.guild!.id)) {
+			await this.client.providers.default.delete(Databases.TwitchStreamSubscriptions, streamer.id);
+			await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
 		}
 
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS', [streamer.display_name, channel.name, status]);

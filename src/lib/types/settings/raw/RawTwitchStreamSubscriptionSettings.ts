@@ -1,7 +1,7 @@
 export interface RawTwitchStreamSubscriptionSettings {
 	id: string;
 	is_streaming: boolean;
-	expires_at: number;
+	expires_at: string;
 	guild_ids: string[];
 }
 

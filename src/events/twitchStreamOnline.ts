@@ -61,6 +61,7 @@ export default class extends Event {
 	private transformText(source: string, notification: StreamBody, game: TwitchHelixGameSearchResult) {
 		return source.replace(TWITCH_REPLACEABLES_REGEX, match => {
 			switch (match) {
+				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id;
 				case TWITCH_REPLACEABLES_MATCHES.TITLE: return this.escapeText(notification.title!);
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT: return notification.viewer_count!.toString();
 				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME: return game.name;

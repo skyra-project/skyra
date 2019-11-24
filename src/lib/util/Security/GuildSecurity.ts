@@ -5,6 +5,7 @@ import { Adder } from '../Adder';
 import { PreciseTimeout } from '../PreciseTimeout';
 import { AntiRaid } from './AntiRaid';
 import { ModerationActions } from './ModerationActions';
+import { create } from './RegexCreator';
 
 export interface Adders {
 	attachments: Adder<string> | null;
@@ -78,9 +79,7 @@ export class GuildSecurity {
 	 * @param filterArray The array to process
 	 */
 	public updateRegExp(filterArray: readonly string[]) {
-		const filtered = filterArray.reduce((acum, item, index) => acum + (index ? '|' : '') +
-			item.replace(/\w(?=(\w)?)/g, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`), '');
-		this.regexp = new RegExp(`(?<=^|\\s)(?:${filtered})(?=$|\\s)`, 'gi');
+		this.regexp = new RegExp(create(filterArray), 'gi');
 		return this;
 	}
 

@@ -1,4 +1,4 @@
-import * as crypto from 'crypto';
+import { createHmac } from 'crypto';
 import { TOKENS } from '../../../../config';
 import { fetch, enumerable, FetchResultTypes } from '../util';
 import { Mime, Time } from '../constants';
@@ -24,21 +24,21 @@ export interface OauthResponse {
 
 export class Twitch {
 
-	public ratelimitsStreams: RateLimitManager = new RateLimitManager(1, Twitch.RATELIMIT_COOLDOWN);
-	public readonly BASE_URL_HELIX: string = 'https://api.twitch.tv/helix/';
-	public readonly BASE_URL_KRAKEN: string = 'https://api.twitch.tv/kraken/';
+	public readonly ratelimitsStreams = new RateLimitManager(1, Twitch.RATELIMIT_COOLDOWN);
+	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
+	public readonly BASE_URL_KRAKEN = 'https://api.twitch.tv/kraken/';
 
 	@enumerable(false)
 	private BEARER!: TwitchHelixBearerToken;
 
 	@enumerable(false)
-	private readonly $clientID: string = TOKENS.TWITCH.CLIENT_ID;
+	private readonly $clientID = TOKENS.TWITCH.CLIENT_ID;
 
 	@enumerable(false)
-	private readonly $clientSecret: string = TOKENS.TWITCH.SECRET;
+	private readonly $clientSecret = TOKENS.TWITCH.SECRET;
 
 	@enumerable(false)
-	private readonly $webhookSecret: string = TOKENS.TWITCH.WEBHOOK_SECRET;
+	private readonly $webhookSecret = TOKENS.TWITCH.WEBHOOK_SECRET;
 
 	@enumerable(false)
 	private readonly kFetchOptions = {
@@ -47,11 +47,6 @@ export class Twitch {
 			'Client-ID': this.$clientID
 		}
 	} as const;
-
-	public streamNotificationLimited(id: string) {
-		const existing = this.ratelimitsStreams.get(id);
-		return existing && existing.limited;
-	}
 
 	public streamNotificationDrip(id: string) {
 		try {
@@ -81,8 +76,7 @@ export class Twitch {
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
-		const hash = crypto
-			.createHmac(algorithm, this.$webhookSecret)
+		const hash = createHmac(algorithm, this.$webhookSecret)
 			.update(JSON.stringify(data))
 			.digest('hex');
 

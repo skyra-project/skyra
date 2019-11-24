@@ -10,7 +10,7 @@ export default class extends Route {
 		super(store, file, directory, { route: 'twitch/stream_change/:id' });
 	}
 
-	// CHALlENGE
+	// Challenge
 	public get(request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;
 

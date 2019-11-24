@@ -48,9 +48,9 @@ export default class extends SkyraCommand {
 				}
 
 				try {
-					const { data } = await this.client.twitch.fetchUsers([argument], [argument]);
-					if (data.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
-					return data;
+					const { users } = await this.client.twitch.fetchUsersByLogin([argument]);
+					if (users.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
+					return users;
 				} catch {
 					throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
 				}

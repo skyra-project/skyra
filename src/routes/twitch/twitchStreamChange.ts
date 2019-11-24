@@ -27,15 +27,14 @@ export default class extends Route {
 	public post(request: ApiRequest, response: ApiResponse) {
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
-		const xHubSignature = request.headers['X-Hub-Signature'];
-		if (typeof xHubSignature === 'undefined') return response.badRequest('Missing "X-Hub-Signature" header');
+		const xHubSignature = request.headers['x-hub-signature'];
+		if (typeof xHubSignature === 'undefined') return response.badRequest('Missing "x-hub-signature" header');
 
-		const { data } = request.body as PostStreamBody;
 		const [algo, sig] = xHubSignature.toString().split('=', 2);
+		if (!this.client.twitch.checkSignature(algo, sig, request.body)) return response.forbidden('Invalid Hub signature');
 
-		if (!this.client.twitch.checkSignature(algo, sig, data)) return response.forbidden('Invalid Hub signature');
-
-		const id = request.query.id as string;
+		const id = request.params.id as string;
+		const { data } = request.body as PostStreamBody;
 		if (data.length === 0) {
 			this.client.emit(Events.TwitchStreamOffline, { id }, response);
 		} else {

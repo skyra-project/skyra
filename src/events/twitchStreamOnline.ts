@@ -17,7 +17,7 @@ export default class extends Event {
 		const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
 		if (streamer === null) return response.error('No streamer could be found in the database.');
 
-		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id!]);
+		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);
 		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guild_ids) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.

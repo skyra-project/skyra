@@ -174,7 +174,7 @@ export class JsonCommonQuery implements CommonQuery {
 	}
 
 	public fetchTwitchStreamSubscription(streamerID: string) {
-		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<TwitchStreamSubscriptionSettings>;
+		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<TwitchStreamSubscriptionSettings | null>;
 	}
 
 	public async fetchTwitchStreamsByGuild(guildID: string) {

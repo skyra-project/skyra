@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 				if (type === Type.Show || type === Type.Reset) return undefined;
 				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL');
 
-				return this.client.arguments.get('textchannel')!.run(argument, possible, message);
+				return this.client.arguments.get('textChannel')!.run(argument, possible, message);
 			})
 			.createCustomResolver('status', (argument, _possible, message, [type]) => {
 				if (type === Type.Show || type === Type.Reset) return undefined;

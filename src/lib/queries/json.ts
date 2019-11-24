@@ -1,4 +1,4 @@
-import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings } from './common';
+import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning } from './common';
 import { JsonProvider } from '../types/util';
 import { Databases } from '../types/constants/Constants';
 import { Client } from 'discord.js';
@@ -68,15 +68,20 @@ export class JsonCommonQuery implements CommonQuery {
 		return entry.guild_ids.length === 0;
 	}
 
+	public deleteTwitchStreamSubscriptions(streamers: readonly string[]) {
+		return Promise.all(streamers.map(streamer => this.provider.delete(Databases.TwitchStreamSubscriptions, streamer)));
+	}
+
 	public async purgeTwitchStreamGuildSubscriptions(guildID: string) {
-		const updates: Promise<unknown>[] = [];
+		const updates: Promise<UpdatePurgeTwitchStreamReturning>[] = [];
 		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as RawTwitchStreamSubscriptionSettings[];
 		if (values.length === 0) return [];
 
 		for (const streamer of values) {
 			if (!streamer.guild_ids.includes(guildID)) continue;
 			streamer.guild_ids = streamer.guild_ids.filter(value => value !== guildID);
-			updates.push(this.provider.update(Databases.TwitchStreamSubscriptions, streamer.id, streamer));
+			updates.push(this.provider.update(Databases.TwitchStreamSubscriptions, streamer.id, streamer)
+				.then(() => ({ id: streamer.id, guild_ids: streamer.guild_ids })));
 		}
 
 		return Promise.all(updates);

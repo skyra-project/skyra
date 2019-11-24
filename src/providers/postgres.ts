@@ -242,7 +242,7 @@ export default class extends SQLProvider {
 		return results.rows[0] || null;
 	}
 
-	private cValue(table: string, key: string, value: unknown) {
+	public cValue(table: string, key: string, value: unknown) {
 		const gateway = this.client.gateways.get(table);
 		if (typeof gateway === 'undefined') return this.cUnknown(value);
 
@@ -257,7 +257,7 @@ export default class extends SQLProvider {
 			: this.cUnknown(value);
 	}
 
-	private cValues(table: string, keys: readonly string[], values: readonly unknown[]) {
+	public cValues(table: string, keys: readonly string[], values: readonly unknown[]) {
 		const gateway = this.client.gateways.get(table);
 		if (typeof gateway === 'undefined') return values.map(value => this.cUnknown(value));
 
@@ -282,42 +282,42 @@ export default class extends SQLProvider {
 		return parsedValues;
 	}
 
-	private cIdentifier(identifier: string) {
+	public cIdentifier(identifier: string) {
 		const escaped = identifier.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 		return `"${escaped}"`;
 	}
 
-	private cString(value: string) {
+	public cString(value: string) {
 		const escaped = value.replace(/'/g, "''");
 		return `'${escaped}'`;
 	}
 
-	private cNumber(value: number | bigint) {
+	public cNumber(value: number | bigint) {
 		return value.toString();
 	}
 
-	private cBoolean(value: boolean) {
+	public cBoolean(value: boolean) {
 		return value ? 'TRUE' : 'FALSE';
 	}
 
-	private cDate(value: Date) {
+	public cDate(value: Date) {
 		return this.cNumber(value.getTime());
 	}
 
-	private cArray(value: readonly unknown[]) {
+	public cArray(value: readonly unknown[]) {
 		return `ARRAY[${value.map(this.cUnknown.bind(this)).join(', ')}]`;
 	}
 
-	private cJson(value: AnyObject) {
+	public cJson(value: AnyObject) {
 		const escaped = this.cString(JSON.stringify(value));
 		return `${escaped}::JSON`;
 	}
 
-	private cArrayJson(value: AnyObject[]) {
+	public cArrayJson(value: AnyObject[]) {
 		return `ARRAY[${value.map(json => this.cString(JSON.stringify(json)))}]::JSON[]`;
 	}
 
-	private cUnknown(value: unknown): string {
+	public cUnknown(value: unknown): string {
 		switch (typeof value) {
 			case 'string':
 				return this.cString(value);

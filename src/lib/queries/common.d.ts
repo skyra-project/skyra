@@ -12,7 +12,8 @@ export interface CommonQuery {
 	deleteStarsFromChannelReturning(guildID: string, channelID: string): Promise<RawStarboardSettings[]>;
 	deleteStarsReturning(guildID: string, messageIDs: readonly string[]): Promise<RawStarboardSettings[]>;
 	deleteTwitchStreamSubscription(streamerID: string, guildID: string): Promise<boolean>;
-	purgeTwitchStreamGuildSubscriptions(guildID: string): Promise<unknown[]>;
+	deleteTwitchStreamSubscriptions(streamers: readonly string[]): Promise<unknown>;
+	purgeTwitchStreamGuildSubscriptions(guildID: string): Promise<UpdatePurgeTwitchStreamReturning[]>;
 	fetchGiveawaysFromGuilds(guildIDs: readonly string[]): Promise<RawGiveawaySettings[]>;
 	fetchLeaderboardGlobal(): Promise<LeaderboardEntry[]>;
 	fetchLeaderboardLocal(guildID: string): Promise<LeaderboardEntry[]>;
@@ -56,3 +57,5 @@ export interface TwitchStreamSubscriptionSettings {
 	expires_at: number;
 	guild_ids: string[];
 }
+
+export type UpdatePurgeTwitchStreamReturning = Pick<RawTwitchStreamSubscriptionSettings, 'id' | 'guild_ids'>;

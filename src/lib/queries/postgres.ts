@@ -1,4 +1,4 @@
-import { CommonQuery, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings } from './common';
+import { CommonQuery, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning } from './common';
 import PostgresProvider from '../../providers/postgres';
 import { Client } from 'discord.js';
 import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
@@ -95,9 +95,24 @@ export class PostgresCommonQuery implements CommonQuery {
 		return returned.guild_ids.length === 0;
 	}
 
-	public async purgeTwitchStreamGuildSubscriptions(): Promise<unknown[]> {
-		// TODO(kyranet): Reference: Same method in JsonCommonQuery
-		return new Promise(() => {});
+	public deleteTwitchStreamSubscriptions(streamers: readonly string[]) {
+		return this.provider.run(/* sql */`
+			DELETE
+			FROM twitch_stream_subscriptions
+			WHERE
+				"id" IN (${streamers.map(streamer => `${this.provider.cString(streamer)}`)});
+		`);
+	}
+
+	public async purgeTwitchStreamGuildSubscriptions(guildID: string) {
+		return this.provider.runAll<UpdatePurgeTwitchStreamReturning>(/* sql */`
+			UPDATE twitch_stream_subscriptions
+			SET
+				"guild_ids" = ARRAY_REMOVE(guild_ids, $1)
+			WHERE
+				$1 = ANY(guild_ids)
+			RETURNING id, guild_ids;
+		`, [guildID]);
 	}
 
 	public fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {

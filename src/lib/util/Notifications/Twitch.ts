@@ -29,7 +29,10 @@ export class Twitch {
 	public readonly BASE_URL_KRAKEN = 'https://api.twitch.tv/kraken/';
 
 	@enumerable(false)
-	private BEARER!: TwitchHelixBearerToken;
+	private BEARER: TwitchHelixBearerToken = {
+		EXPIRE: null,
+		TOKEN: null
+	};
 
 	@enumerable(false)
 	private readonly $clientID = TOKENS.TWITCH.CLIENT_ID;

@@ -3,7 +3,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { PermissionLevels } from '../../lib/types/Enums';
 import { TextChannel, MessageEmbed } from 'discord.js';
 import { NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, GuildSettings, NotificationsStreamTwitch } from '../../lib/types/settings/GuildSettings';
-import { TwitchHelixUsersSearchResult } from '../../lib/types/definitions/Twitch';
+import { TwitchKrakenChannelSearchResult } from '../../lib/types/definitions/Twitch';
 import { TwitchHooksAction } from '../../lib/util/Notifications/Twitch';
 import { Databases } from '../../lib/types/constants/Constants';
 import { chunk } from '@klasa/utils';
@@ -18,7 +18,7 @@ const enum Type {
 	Show = 'show'
 }
 
-type Streamer = TwitchHelixUsersSearchResult;
+type Streamer = TwitchKrakenChannelSearchResult;
 type Channel = TextChannel;
 type Status = NotificationsStreamsTwitchEventStatus;
 type Content = string;
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 				try {
 					const { users } = await this.client.twitch.fetchUsersByLogin([argument]);
 					if (users.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
-					return users;
+					return users[0];
 				} catch {
 					throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
 				}
@@ -91,17 +91,17 @@ export default class extends SkyraCommand {
 		// Retrieve all subscriptions for the guild,
 		// then retrieve the index of the entry if the guild already subscribed to them.
 		const subscriptions = message.guild!.settings.get($KEY);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
 
 		// If the subscription could not be found, we create a new one, otherwise we patch it by creating a new tuple.
 		if (subscriptionIndex === -1) {
-			const subscription: NotificationsStreamTwitch = [streamer.id, [entry]];
-			await message.guild!.settings.update($KEY, subscription, { arrayAction: 'add', throwOnError: true });
+			const subscription: NotificationsStreamTwitch = [streamer._id, [entry]];
+			await message.guild!.settings.update($KEY, [subscription], { arrayAction: 'add', throwOnError: true });
 
 			// Insert the entry to the database performing an upsert, if it created the entry, we tell the Twitch manager
 			// to send Twitch a message saying "hey, I want to be notified, can you pass me some data please?"
-			if (await this.client.queries.upsertTwitchStreamSubscription(streamer.id, message.guild!.id)) {
-				await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
+			if (await this.client.queries.upsertTwitchStreamSubscription(streamer._id, message.guild!.id)) {
+				await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Subscribe);
 			}
 		} else {
 			// Retrieve the subscription.
@@ -114,7 +114,7 @@ export default class extends SkyraCommand {
 
 			// Patch creating a clone of the value.
 			const subscription: NotificationsStreamTwitch = [raw[0], [...raw[1], entry]];
-			await message.guild!.settings.update($KEY, subscription, { arrayIndex: subscriptionIndex, throwOnError: true });
+			await message.guild!.settings.update($KEY, [subscription], { arrayIndex: subscriptionIndex, throwOnError: true });
 		}
 
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS', [streamer.display_name, channel.name, status]);
@@ -124,7 +124,7 @@ export default class extends SkyraCommand {
 		// Retrieve all subscriptions for the guild,
 		// then retrieve the index of the entry if the guild already subscribed to them.
 		const subscriptions = message.guild!.settings.get($KEY);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
 
 		// If the subscription could not be found, throw.
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED');
@@ -138,19 +138,19 @@ export default class extends SkyraCommand {
 
 		// If it was the only entry for said subscription, remove it completely.
 		if (subscription[1].length === 1) {
-			await message.guild!.settings.update($KEY, subscription, { arrayAction: 'remove', arrayIndex: subscriptionIndex, throwOnError: true });
+			await message.guild!.settings.update($KEY, [subscription], { arrayAction: 'remove', arrayIndex: subscriptionIndex, throwOnError: true });
 
 			// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
-			if (await this.client.queries.deleteTwitchStreamSubscription(streamer.id, message.guild!.id)) {
-				await this.client.providers.default.delete(Databases.TwitchStreamSubscriptions, streamer.id);
-				await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
+			if (await this.client.queries.deleteTwitchStreamSubscription(streamer._id, message.guild!.id)) {
+				await this.client.providers.default.delete(Databases.TwitchStreamSubscriptions, streamer._id);
+				await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Unsubscribe);
 			}
 		} else {
 			// Create a clone of the array, remove the one we want to get rid of, create a clone of the subscription, and update.
 			const entries = subscription[1].slice();
 			entries.splice(entryIndex, 1);
 			const updated: NotificationsStreamTwitch = [subscription[0], entries];
-			await message.guild!.settings.update($KEY, updated, { arrayIndex: subscriptionIndex, throwOnError: true });
+			await message.guild!.settings.update($KEY, [updated], { arrayIndex: subscriptionIndex, throwOnError: true });
 		}
 
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS', [streamer.display_name, channel.name, status]);
@@ -176,16 +176,16 @@ export default class extends SkyraCommand {
 			return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS', [entries]);
 		}
 
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED');
 		const subscription = subscriptions[subscriptionIndex];
 		const entries = subscription[1].length;
-		await message.guild!.settings.update($KEY, subscription, { arrayIndex: subscriptionIndex, arrayAction: 'remove' });
+		await message.guild!.settings.update($KEY, [subscription], { arrayIndex: subscriptionIndex, arrayAction: 'remove' });
 
 		// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
-		if (await this.client.queries.deleteTwitchStreamSubscription(streamer.id, message.guild!.id)) {
-			await this.client.providers.default.delete(Databases.TwitchStreamSubscriptions, streamer.id);
-			await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
+		if (await this.client.queries.deleteTwitchStreamSubscription(streamer._id, message.guild!.id)) {
+			await this.client.providers.default.delete(Databases.TwitchStreamSubscriptions, streamer._id);
+			await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Unsubscribe);
 		}
 
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS', [streamer.display_name, entries]);
@@ -217,7 +217,7 @@ export default class extends SkyraCommand {
 	private showSingle(message: KlasaMessage, streamer: Streamer) {
 		// Retrieve all subscriptions for the guild
 		const guildSubscriptions = message.guild!.settings.get($KEY);
-		const subscriptions = guildSubscriptions.find(entry => entry[0] === streamer.id);
+		const subscriptions = guildSubscriptions.find(entry => entry[0] === streamer._id);
 		if (typeof subscriptions === 'undefined') throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED');
 
 		// Print all entries for this guild for this streamer.
@@ -237,9 +237,9 @@ export default class extends SkyraCommand {
 
 		// Fetch all usernames and map them by their id.
 		const ids = guildSubscriptions.map(subscriptions => subscriptions[0]);
-		const profiles = await this.client.twitch.fetchUsers(ids);
+		const profiles = await this.client.twitch.fetchUsersByLogin(ids);
 		const names = new Map<string, string>();
-		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
+		for (const profile of profiles.users) names.set(profile._id, profile.display_name);
 
 		// Print all entries for this guild.
 		const statuses = message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS');

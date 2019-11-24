@@ -310,12 +310,6 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [entry.enabled, entry.user_id, entry.message_id, entry.channel_id, entry.guild_id, entry.star_message_id, entry.stars]);
 	}
 
-	// TODO(Quantum): We shouldn't have aliases there since CommonQueries are made for provider-specific queries,
-	// however, SG is already abstracted.
-	public createTwitchStream(entry: TwitchStreamSubscriptionSettings) {
-		return this.provider.create(Databases.TwitchStreamSubscriptions, entry.id, entry);
-	}
-
 	public updateModerationLog(entry: RawModerationSettings) {
 		return this.provider.run(/* sql */`
 			UPDATE moderation

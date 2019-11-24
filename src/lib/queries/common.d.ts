@@ -31,7 +31,6 @@ export interface CommonQuery {
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	insertStar(entry: RawStarboardSettings): Promise<unknown>;
-	createTwitchStream(entry: TwitchStreamSubscriptionSettings): Promise<unknown>;
 	updateModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	updateStar(entry: RawStarboardSettings): Promise<unknown>;
 	upsertDecrementMemberSettings(guildID: string, userID: string, points: number): Promise<number>;

@@ -200,10 +200,6 @@ export class JsonCommonQuery implements CommonQuery {
 		return this.provider.create(Databases.Moderation, `${entry.guild_id}.${entry.message_id}`, entry);
 	}
 
-	public createTwitchStream(entry: TwitchStreamSubscriptionSettings) {
-		return this.provider.create(Databases.TwitchStreamSubscriptions, entry.id, entry);
-	}
-
 	public updateModerationLog(entry: RawModerationSettings) {
 		return this.provider.update(Databases.Moderation, `${entry.guild_id}.${entry.case_id}`, entry);
 	}

@@ -17,7 +17,7 @@ export const EVLYN_PORT = 3100;
 export const NAME = 'Skyra';
 export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
 export const CLIENT_SECRET = DEV ? '' : '';
-export const TWITCH_CALLBACK = 'localhost/twitch/stream_change/';
+export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 
 const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
 	IncomingMessage: ApiRequest,

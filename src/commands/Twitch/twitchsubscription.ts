@@ -247,7 +247,7 @@ export default class extends SkyraCommand {
 		for (const subscriptions of guildSubscriptions) {
 			const name = names.get(subscriptions[0]) || message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_UNKNOWN_USER');
 			for (const subscription of subscriptions[1]) {
-				lines.push(`${name} - <#${subscription.channel}> → ${statuses[subscription.status]}`)
+				lines.push(`${name} - <#${subscription.channel}> → ${statuses[subscription.status]}`);
 			}
 		}
 

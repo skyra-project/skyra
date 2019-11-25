@@ -72,4 +72,5 @@ export class MemberNicknames extends Collection<string, string | null> {
 	public static get [Symbol.species](): CollectionConstructor {
 		return Collection as unknown as CollectionConstructor;
 	}
+
 }

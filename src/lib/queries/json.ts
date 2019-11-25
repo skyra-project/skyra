@@ -260,7 +260,7 @@ export class JsonCommonQuery implements CommonQuery {
 		};
 	}
 
-	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds: number = 864000) {
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds = 864000) {
 		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
 		if (value) {
 			const guild_ids = value.guild_ids.concat(guildID);

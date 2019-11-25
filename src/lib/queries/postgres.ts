@@ -412,7 +412,7 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 
-	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds: number = 864000) {
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds = 864000) {
 		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
 			INSERT
 			INTO twitch_stream_subscriptions ("id", "is_streaming", "expires_at", "guild_ids")

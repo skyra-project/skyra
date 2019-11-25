@@ -4,6 +4,7 @@ import { ratelimit, authenticated } from '../../lib/util/util';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { Events } from '../../lib/types/Enums';
+import { Time } from '../../lib/util/constants';
 
 export default class extends Route {
 
@@ -22,7 +23,7 @@ export default class extends Route {
 	}
 
 	@authenticated
-	@ratelimit(2, 1000 * 60 * 5, true)
+	@ratelimit(2, Time.Minute * 5, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 		if (!requestBody.action) {

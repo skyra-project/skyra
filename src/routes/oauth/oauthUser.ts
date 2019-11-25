@@ -3,6 +3,7 @@ import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import { ratelimit, authenticated } from '../../lib/util/util';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
+import { Events } from '../../lib/types/Enums';
 
 export default class extends Route {
 
@@ -29,8 +30,16 @@ export default class extends Route {
 		}
 
 		if (requestBody.action === 'SYNC_USER') {
-			const user = await this.api(request.auth!.token);
-			return response.json({ user });
+			const user = await this.api(request.auth!.token)
+				.catch(err => {
+					this.client.emit(Events.Wtf, err);
+				});
+
+			if (user) {
+				 return response.json({ user });
+			}
+
+			return response.error(500);
 		}
 
 		return response.error(400);

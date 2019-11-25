@@ -22,7 +22,7 @@ export default class extends Route {
 	}
 
 	@authenticated
-	@ratelimit(1, 5000, true)
+	@ratelimit(2, 1000 * 60 * 5, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 		if (!requestBody.action) {

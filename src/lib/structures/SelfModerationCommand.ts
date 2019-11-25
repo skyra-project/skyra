@@ -83,6 +83,7 @@ export abstract class SelfModerationCommand extends Command {
 			}
 
 			if (type === AKeys.HardActionDuration) {
+				if (/reset|0\w?/.test(arg)) return null;
 				const key = message.guild!.settings.schema.get(this.keyHardActionDuration) as SchemaEntry;
 				return SelfModerationCommand.parseDuration(message, key, arg, 'Hard Action Duration');
 			}

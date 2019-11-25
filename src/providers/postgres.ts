@@ -276,7 +276,9 @@ export default class extends SQLProvider {
 			parsedValues.push(qbEntry
 				? entry.array
 					? qbEntry.arraySerializer(value as unknown[], entry, qbEntry.serializer)
-					: qbEntry.serializer(value, entry)
+					: value === null
+						? 'NULL'
+						: qbEntry.serializer(value, entry)
 				: this.cUnknown(value));
 		}
 		return parsedValues;

@@ -3543,7 +3543,7 @@ export default class extends Language {
 			` - Delete    : ${kDelete}`,
 			`Punishment`,
 			` - Type      : ${kHardAction}`,
-			` - Duration  : ${hardActionDuration ? 'Permanent' : duration(hardActionDuration)}`,
+			` - Duration  : ${hardActionDuration === null ? 'Permanent' : duration(hardActionDuration)}`,
 			`Threshold`,
 			` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
 			` - Duration  : ${thresholdDuration ? duration(thresholdDuration) : 'Unset'}`

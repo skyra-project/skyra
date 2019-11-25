@@ -10,7 +10,6 @@ import { cutText, fetch, FetchResultTypes, getColor, roundNumber } from '../../.
 
 const API_URL = 'https://api-v3.igdb.com/games';
 
-// TODO: -favna 2019-11-18- Use the version from @klasa/utils when it gets added there (my own PR)
 function isArrayOfNumbers(array: unknown[]): array is number[] {
 	return array.every(val => isNumber(val));
 }
@@ -126,7 +125,7 @@ export default class extends SkyraCommand {
 
 	private resolveReleaseDate(releaseDates: Game['release_dates'], fallback: string) {
 		if (!releaseDates || releaseDates.length === 0 || isArrayOfNumbers(releaseDates) || !releaseDates[0].date) return fallback;
-		return this.releaseDateTimestamp.displayUTC(releaseDates[0].date);
+		return this.releaseDateTimestamp.displayUTC(releaseDates[0].date * 1000);
 	}
 
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {

@@ -35,11 +35,7 @@ export default class extends Route {
 					this.client.emit(Events.Wtf, err);
 				});
 
-			if (user) {
-				 return response.json({ user });
-			}
-
-			return response.error(500);
+			return user ? response.json({ user }) : response.error(500);
 		}
 
 		return response.error(400);

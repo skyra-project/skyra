@@ -11,7 +11,6 @@ export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : !DEV;
 export const DEV_PGSQL = 'DEV_PGSQL' in process.env ? process.env.DEV_PGSQL === 'true' : !DEV;
-export const DEV_POKEDEX = 'DEV_POKEDEX' in process.env ? process.env.DEV_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
 
 export const NAME = 'Skyra';

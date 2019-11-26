@@ -21,7 +21,6 @@ export default class extends Route {
 		return response.json(user.settings.toJSON());
 	}
 
-	// TODO: This must be limited, not all keys are configurable.
 	@authenticated
 	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
@@ -31,7 +30,8 @@ export default class extends Route {
 		if (!user) return response.error(500);
 
 		await user.settings.sync();
-		const { updated, errors } = await user.settings.update(requestBody.data, { action: 'overwrite' });
+
+		const { updated, errors } = await user.settings.update(requestBody.data, { action: 'overwrite', onlyConfigurable: true });
 
 		if (errors.length > 0) {
 			this.client.emit(Events.Error,

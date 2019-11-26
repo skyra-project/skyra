@@ -1,8 +1,10 @@
-import { CommandStore, KlasaMessage, Stopwatch, Type, util } from 'klasa';
+import { CommandStore, KlasaMessage, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { Events } from '../../../lib/types/Enums';
 import { fetch, FetchResultTypes } from '../../../lib/util/util';
+import { clean } from '../../../lib/util/clean';
+import { codeBlock, sleep, isThenable } from '@klasa/utils';
 
 export default class extends SkyraCommand {
 
@@ -30,7 +32,7 @@ export default class extends SkyraCommand {
 			return null;
 		}
 
-		const footer = util.codeBlock('ts', type);
+		const footer = codeBlock('ts', type);
 		const sendAs = message.flagArgs.output || message.flagArgs['output-to'] || (message.flagArgs.log ? 'log' : null);
 		return this.handleMessage(message, { sendAs, hastebinUnavailable: false, url: null }, { success, result, time, footer, language });
 	}
@@ -38,7 +40,7 @@ export default class extends SkyraCommand {
 	private timedEval(message: KlasaMessage, code: string, flagTime: number) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
 		return Promise.race([
-			util.sleep(flagTime).then(() => ({
+			sleep(flagTime).then(() => ({
 				result: message.language.tget('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
 				success: false,
 				time: '⏱ ...',
@@ -67,7 +69,7 @@ export default class extends SkyraCommand {
 			result = eval(code);
 			syncTime = stopwatch.toString();
 			type = new Type(result);
-			if (util.isThenable(result)) {
+			if (isThenable(result)) {
 				thenable = true;
 				stopwatch.restart();
 				result = await result;
@@ -93,7 +95,7 @@ export default class extends SkyraCommand {
 						showHidden: Boolean(message.flagArgs.showHidden)
 					});
 		}
-		return { success, type: type!, time: this.formatTime(syncTime!, asyncTime!), result: util.clean(result as string) };
+		return { success, type: type!, time: this.formatTime(syncTime!, asyncTime!), result: clean(result as string) };
 	}
 
 	private formatTime(syncTime: string, asyncTime: string) {
@@ -134,7 +136,7 @@ export default class extends SkyraCommand {
 					return this.handleMessage(message, options, { success, result, time, footer, language });
 				}
 				return message.sendMessage(message.language.tget(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
-					time, util.codeBlock(language, result), footer));
+					time, codeBlock(language, result), footer));
 			}
 		}
 	}

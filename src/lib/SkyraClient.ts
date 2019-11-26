@@ -16,13 +16,25 @@ import { IPCMonitorStore } from './structures/IPCMonitorStore';
 
 // Import all utils
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT, DEV_PGSQL } from '../../config';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { Twitch } from './util/Notifications/Twitch';
 import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import { UserTags } from './util/Cache/UserTags';
 import { enumerable } from './util/util';
+
+// Import all configuration
+import {
+	CLIENT_SECRET,
+	ENABLE_LAVALINK,
+	ENABLE_POSTGRES,
+	EVLYN_PORT,
+	LAVALINK_PASSWORD,
+	PGSQL_DATABASE_PASSWORD,
+	TOKENS,
+	VERSION,
+	WEBHOOK_ERROR
+} from '../../config';
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
@@ -36,6 +48,7 @@ import './setup/Canvas';
 import { CommonQuery } from './queries/common';
 import { PostgresCommonQuery } from './queries/postgres';
 import { JsonCommonQuery } from './queries/json';
+import { initClean } from './util/clean';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -71,7 +84,7 @@ export class SkyraClient extends KlasaClient {
 	/**
 	 * The common queries for the database
 	 */
-	public queries: CommonQuery = DEV_PGSQL ? new PostgresCommonQuery(this) : new JsonCommonQuery(this);
+	public queries: CommonQuery = ENABLE_POSTGRES ? new PostgresCommonQuery(this) : new JsonCommonQuery(this);
 
 	public fsWatcher: FSWatcher | null = null;
 
@@ -88,7 +101,7 @@ export class SkyraClient extends KlasaClient {
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
-	public lavalink: Lavalink | null = DEV_LAVALINK
+	public lavalink: Lavalink | null = ENABLE_LAVALINK
 		? new Lavalink({
 			send: (guildID: string, packet: object) => {
 				const guild = this.guilds.get(guildID);
@@ -132,5 +145,7 @@ export class SkyraClient extends KlasaClient {
 		.add('points', 'Number', { configurable: false });
 
 }
+
+initClean(Object.values(TOKENS).concat([CLIENT_SECRET, LAVALINK_PASSWORD, PGSQL_DATABASE_PASSWORD, WEBHOOK_ERROR.token]));
 
 SkyraClient.use(DashboardClient);

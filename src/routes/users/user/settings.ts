@@ -4,7 +4,6 @@ import ApiResponse from '../../../lib/structures/api/ApiResponse';
 import { authenticated, ratelimit } from '../../../lib/util/util';
 import { Events } from '../../../lib/types/Enums';
 import { inspect } from 'util';
-import { SchemaEntry } from 'klasa';
 
 export default class extends Route {
 

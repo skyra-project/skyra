@@ -31,8 +31,6 @@ export default class extends Route {
 		const user = await this.client.users.fetch(request.auth!.user_id);
 		if (!user) return response.error(500);
 
-		await user.settings.sync();
-
 		const keys = Object.keys(requestBody.data);
 
 		for (const key of keys) {
@@ -41,6 +39,9 @@ export default class extends Route {
 				return response.error(400);
 			}
 		}
+
+		await user.settings.sync();
+
 
 		const { updated, errors } = await user.settings.update(requestBody.data, { action: 'overwrite' });
 

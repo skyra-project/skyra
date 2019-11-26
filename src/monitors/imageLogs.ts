@@ -1,10 +1,11 @@
 import { MessageEmbed, TextChannel, MessageAttachment } from 'discord.js';
-import { KlasaMessage, Monitor, util } from 'klasa';
+import { KlasaMessage, Monitor } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { GuildSettings } from '../lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '../lib/util/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '../lib/util/util';
 import { extname } from 'path';
+import { isNumber } from '@klasa/utils';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte
@@ -16,32 +17,44 @@ export default class extends Monitor {
 	public async run(message: KlasaMessage) {
 		for (const image of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(image.width, image.height);
-			if (!dimensions.height || !dimensions.width) return;
+
+			// Create a new image url with search params.
 			const url = new URL(image.proxyURL);
 			url.searchParams.append('width', dimensions.width.toString());
 			url.searchParams.append('height', dimensions.height.toString());
 
+			// Fetch the image.
 			const result = await fetch(url, FetchResultTypes.Result).catch(error => {
-				throw new Error(`ImageLogs[${error}] ${url}`);
+				this.client.emit(Events.Error, `ImageLogs[${error}] ${url}`);
+				return null;
 			});
+			if (result === null) continue;
+
+			// Retrieve the content length.
 			const contentLength = result.headers.get('content-length');
-			if (contentLength === null) return;
+			if (contentLength === null) continue;
 
+			// Parse the content length, validate it, and check if it's lower than the threshold.
 			const parsedContentLength = parseInt(contentLength, 10);
-			if (!util.isNumber(parsedContentLength)) return;
-			if (parsedContentLength > MAXIMUM_LENGTH) return;
+			if (!isNumber(parsedContentLength)) continue;
+			if (parsedContentLength > MAXIMUM_LENGTH) continue;
 
-			const buffer = await result.buffer();
-			const filename = `image${extname(url.pathname)}`;
+			try {
+				// Download the image and send it to the image logs.
+				const buffer = await result.buffer();
+				const filename = `image${extname(url.pathname)}`;
 
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () => new MessageEmbed()
-				.setColor(0xEFAE45)
-				.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
-				.setDescription(`[${message.language.tget('JUMPTO')}](${message.url})`)
-				.setFooter(`#${(message.channel as TextChannel).name}`)
-				.attachFiles([new MessageAttachment(buffer, filename)])
-				.setImage(`attachment://${filename}`)
-				.setTimestamp());
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () => new MessageEmbed()
+					.setColor(0xEFAE45)
+					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+					.setDescription(`[${message.language.tget('JUMPTO')}](${message.url})`)
+					.setFooter(`#${(message.channel as TextChannel).name}`)
+					.attachFiles([new MessageAttachment(buffer, filename)])
+					.setImage(`attachment://${filename}`)
+					.setTimestamp());
+			} catch (error) {
+				this.client.emit(Events.Wtf, `ImageLogs[${error}] ${url}`);
+			}
 		}
 	}
 

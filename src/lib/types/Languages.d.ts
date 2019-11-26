@@ -9,6 +9,23 @@ import { ProfileTitles } from '../../commands/Social/profile';
 import { LevelTitles } from '../../commands/Social/level';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
+export const enum Position {
+	Before,
+	After
+}
+
+export const enum Filter {
+	Attachments,
+	Author,
+	Bots,
+	Humans,
+	Invites,
+	Links,
+	None,
+	Skyra,
+	User
+}
+
 export interface LanguageKeys {
 	DEFAULT: (key: string) => string;
 	DEFAULT_LANGUAGE: string;
@@ -1004,6 +1021,8 @@ export interface LanguageKeys {
 	COMMAND_PRUNE_NO_DELETES: string;
 	COMMAND_PRUNE_LOG_HEADER: string;
 	COMMAND_PRUNE_LOG_MESSAGE: (channel: string, author: string, amount: number) => string;
+	COMMAND_PRUNE_POSITIONS: Map<string, Position>;
+	COMMAND_PRUNE_FILTERS: Map<string, Filter>;
 	COMMAND_REASON_MISSING_CASE: string;
 	COMMAND_REASON_NOT_EXISTS: () => string;
 	COMMAND_REASON_UPDATED: (entries: readonly number[], newReason: string) => string;

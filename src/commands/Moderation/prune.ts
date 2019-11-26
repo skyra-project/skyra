@@ -4,42 +4,13 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { APIErrors, Moderation } from '../../lib/util/constants';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { floatPromise, cleanMentions } from '../../lib/util/util';
-
-const enum Position {
-	Before,
-	After
-}
-
-const enum Filter {
-	Attachments,
-	Author,
-	Bots,
-	Humans,
-	Invites,
-	Links,
-	None,
-	Skyra,
-	User
-}
+import { Position, Filter } from '../../lib/types/Languages';
 
 export default class extends SkyraCommand {
 
 	private readonly timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
 	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
-	private readonly kPositions = new Map<string, Position>([
-		['before', Position.Before], ['b', Position.Before],
-		['after', Position.After], ['a', Position.After]
-	]);
-	private readonly kFilters = new Map<string, Filter>([
-		['file', Filter.Attachments], ['files', Filter.Attachments], ['upload', Filter.Attachments], ['uploads', Filter.Attachments],
-		['author', Filter.Author], ['me', Filter.Author],
-		['bot', Filter.Bots], ['bots', Filter.Bots],
-		['human', Filter.Humans], ['humans', Filter.Humans],
-		['invite', Filter.Invites], ['invites', Filter.Invites],
-		['link', Filter.Links], ['links', Filter.Links],
-		['skyra', Filter.Skyra], ['you', Filter.Skyra]
-	]);
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -57,7 +28,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('position', (argument, _possible, message) => {
 			if (!argument) return null;
-			const position = this.kPositions.get(argument.toLowerCase());
+			const position = message.language.tget('COMMAND_PRUNE_POSITIONS').get(argument.toLowerCase());
 			if (typeof position === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_POSITION');
 			return position;
 		}).createCustomResolver('message', async (argument, possible, message, [, position]) => {
@@ -68,7 +39,7 @@ export default class extends SkyraCommand {
 			return fetched;
 		}).createCustomResolver('filter', (argument, _possible, message) => {
 			if (!argument) return undefined;
-			const filter = this.kFilters.get(argument.toLowerCase());
+			const filter = message.language.tget('COMMAND_PRUNE_FILTERS').get(argument.toLowerCase());
 			if (typeof filter === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_FILTER');
 			return filter;
 		});
@@ -86,7 +57,6 @@ export default class extends SkyraCommand {
 		const position = this.resolvePosition(rawPosition);
 		const filter = this.resolveFilter(rawFilter);
 
-		this.client.console.debug(limit, position, targetMessage.id, filter);
 		// Fetch the messages
 		let messages = await message.channel.messages.fetch({ limit: 100, [position]: targetMessage.id });
 		if (filter !== Filter.None) {
@@ -100,7 +70,7 @@ export default class extends SkyraCommand {
 		if (filtered.size === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
 
 		// Perform a bulk delete, throw if it returns unknown message.
-		const filteredKeys = this.resolveKeys([...filtered.keys()], targetMessage.id, position, limit);
+		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
 		await message.channel.bulkDelete(filteredKeys).catch(error => {
 			if (error.code !== APIErrors.UnknownMessage) throw error;
 		});
@@ -110,7 +80,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_PRUNE', [filteredKeys.length, limit]);
 	}
 
-	private resolveKeys(messages: readonly string[], target: string, position: 'before' | 'after', limit: number) {
+	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {
 		return position === 'before'
 			? messages.slice(0, limit)
 			: messages.slice(messages.length - limit, messages.length);
@@ -139,11 +109,7 @@ export default class extends SkyraCommand {
 	}
 
 	private resolvePosition(position: Position | null) {
-		switch (position) {
-			case null: return 'before';
-			case Position.After: return 'after';
-			case Position.Before: return 'before';
-		}
+		return position === Position.After ? 'after' : 'before';
 	}
 
 	private async sendPruneLogs(message: KlasaMessage, messages: Collection<string, Message>, rawMessages: readonly string[]) {

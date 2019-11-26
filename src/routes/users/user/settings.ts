@@ -4,6 +4,7 @@ import ApiResponse from '../../../lib/structures/api/ApiResponse';
 import { authenticated, ratelimit } from '../../../lib/util/util';
 import { Events } from '../../../lib/types/Enums';
 import { inspect } from 'util';
+import { SchemaEntry } from 'klasa';
 
 export default class extends Route {
 
@@ -31,6 +32,16 @@ export default class extends Route {
 		if (!user) return response.error(500);
 
 		await user.settings.sync();
+
+		const keys = Object.keys(requestBody.data);
+
+		for (const key of keys) {
+			const schemaForKey = this.client.gateways.get('users')!.schema.get(key) as SchemaEntry;
+			if (!schemaForKey || !schemaForKey!.configurable) {
+				return response.error(400);
+			}
+		}
+
 		const { updated, errors } = await user.settings.update(requestBody.data, { action: 'overwrite' });
 
 		if (errors.length > 0) {

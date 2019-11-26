@@ -31,12 +31,13 @@ export default class extends Route {
 		}
 
 		if (requestBody.action === 'SYNC_USER') {
-			const user = await this.api(request.auth!.token)
-				.catch(err => {
-					this.client.emit(Events.Wtf, err);
-				});
-
-			return user ? response.json({ user }) : response.error(500);
+			try {
+				const user = await this.api(request.auth!.token);
+				return response.json({ user });
+			} catch (error) {
+				this.client.emit(Events.Wtf, error);
+				return response.error(500);
+			}
 		}
 
 		return response.error(400);

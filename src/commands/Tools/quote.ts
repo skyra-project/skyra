@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 			if (messageUrl) return messageUrl;
 
 			if (channel.type !== 'text') throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MSG', 'Message');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MESSAGE', 'Message');
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;
 			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');

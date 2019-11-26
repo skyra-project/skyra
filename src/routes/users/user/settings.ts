@@ -42,7 +42,6 @@ export default class extends Route {
 
 		await user.settings.sync();
 
-
 		const { updated, errors } = await user.settings.update(requestBody.data, { action: 'overwrite' });
 
 		if (errors.length > 0) {

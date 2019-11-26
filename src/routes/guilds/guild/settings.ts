@@ -5,7 +5,6 @@ import { authenticated, ratelimit } from '../../../lib/util/util';
 import { Permissions } from 'discord.js';
 import { Events } from '../../../lib/types/Enums';
 import { inspect } from 'util';
-import { SchemaEntry } from 'klasa';
 
 const { FLAGS: { MANAGE_GUILD } } = Permissions;
 
@@ -49,15 +48,6 @@ export default class extends Route {
 
 		const canManage = member.permissions.has(MANAGE_GUILD);
 		if (!canManage) return response.error(401);
-
-		const keys = Object.keys(requestBody.data);
-
-		for (const key of keys) {
-			const schemaForKey = this.client.gateways.get('guilds')!.schema.get(key) as SchemaEntry;
-			if (!schemaForKey || !schemaForKey!.configurable) {
-				return response.error(400);
-			}
-		}
 
 		const { errors } = await botGuild.settings.update(requestBody.data, { arrayAction: 'overwrite' });
 

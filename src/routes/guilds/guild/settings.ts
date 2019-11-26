@@ -5,10 +5,16 @@ import { authenticated, ratelimit } from '../../../lib/util/util';
 import { Permissions } from 'discord.js';
 import { Events } from '../../../lib/types/Enums';
 import { inspect } from 'util';
+import { RawGuildSettings } from '../../../lib/types/settings/raw/RawGuildSettings';
+import { objectToTuples } from '@klasa/utils';
 
 const { FLAGS: { MANAGE_GUILD } } = Permissions;
 
+type Keys = keyof RawGuildSettings;
+
 export default class extends Route {
+
+	private readonly kBlacklist: Keys[] = ['commandUses'];
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
 		super(store, file, directory, { name: 'guildSettings', route: 'guilds/:guild/settings' });
@@ -34,7 +40,7 @@ export default class extends Route {
 	@authenticated
 	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
-		const requestBody = request.body as { guild_id: string; data: object };
+		const requestBody = request.body as { guild_id: string; data: Record<Keys, unknown> | [Keys, unknown][] };
 
 		if (!requestBody.guild_id || !requestBody.data || requestBody.guild_id !== request.params.guild) {
 			return response.error(400);
@@ -49,16 +55,20 @@ export default class extends Route {
 		const canManage = member.permissions.has(MANAGE_GUILD);
 		if (!canManage) return response.error(401);
 
-		const { errors } = await botGuild.settings.update(requestBody.data, { arrayAction: 'overwrite' });
+		const entries = Array.isArray(requestBody.data) ? requestBody.data : objectToTuples(requestBody.data) as [Keys, unknown][];
+		if (entries.some(([key]) => this.kBlacklist.includes(key))) return response.error(400);
 
-		if (errors.length > 0) {
+		await botGuild.settings.sync();
+		try {
+			await botGuild.settings.update(entries, { arrayAction: 'overwrite' });
+			return response.json({ newSettings: botGuild.settings.toJSON() });
+		} catch (errors) {
+
 			this.client.emit(Events.Error,
 				`${botGuild.name}[${botGuild.id}] failed guild settings update:\n${inspect(errors)}`);
 
 			return response.error(500);
 		}
-
-		return response.json({ newSettings: botGuild.settings.toJSON() });
 	}
 
 }

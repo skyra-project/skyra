@@ -6,6 +6,7 @@ import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
 import { LanguageKeys } from '../lib/types/Languages';
+import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const LOADING = Emojis.Loading;

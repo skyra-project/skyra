@@ -244,12 +244,14 @@ export class PostgresCommonQuery implements CommonQuery {
 
 	public async fetchTwitchStreamSubscription(streamerID: string) {
 		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
-		return {
-			id: entry.id,
-			is_streaming: entry.is_streaming,
-			expires_at: Number(entry.expires_at),
-			guild_ids: entry.guild_ids
-		};
+		return entry === null
+			? null
+			: {
+				id: entry.id,
+				is_streaming: entry.is_streaming,
+				expires_at: Number(entry.expires_at),
+				guild_ids: entry.guild_ids
+			};
 	}
 
 	public async fetchTwitchStreamsByGuild(guildID: string) {
@@ -410,7 +412,7 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 
-	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds: number = 864000) {
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds = 864000) {
 		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
 			INSERT
 			INTO twitch_stream_subscriptions ("id", "is_streaming", "expires_at", "guild_ids")

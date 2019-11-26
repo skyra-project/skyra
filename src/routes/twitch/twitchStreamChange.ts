@@ -3,6 +3,7 @@ import { Mime } from '../../lib/util/constants';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { Events } from '../../lib/types/Enums';
+import { isObject } from '@klasa/utils';
 
 export default class extends Route {
 
@@ -24,18 +25,16 @@ export default class extends Route {
 
 	// Stream Changed
 	public post(request: ApiRequest, response: ApiResponse) {
-		if (!Array.isArray(request.body)) return response.badRequest('Malformed data received');
+		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
-		const xHubSignature = request.headers['X-Hub-Signature'];
-		if (typeof xHubSignature === 'undefined') return response.badRequest('Missing "X-Hub-Signature" header');
+		const xHubSignature = request.headers['x-hub-signature'];
+		if (typeof xHubSignature === 'undefined') return response.badRequest('Missing "x-hub-signature" header');
 
-		const data = request.body as StreamBody[];
 		const [algo, sig] = xHubSignature.toString().split('=', 2);
+		if (!this.client.twitch.checkSignature(algo, sig, request.body)) return response.forbidden('Invalid Hub signature');
 
-		if (!this.client.twitch.checkSignature(algo, sig, data)) return response.forbidden('Invalid Hub signature');
-
-		const id = request.query.id as string;
-
+		const id = request.params.id as string;
+		const { data } = request.body as PostStreamBody;
 		if (data.length === 0) {
 			this.client.emit(Events.TwitchStreamOffline, { id }, response);
 		} else {
@@ -45,16 +44,20 @@ export default class extends Route {
 
 }
 
-export interface StreamBody {
+export interface PostStreamBody {
+	data: PostStreamBodyData[];
+}
+
+export interface PostStreamBodyData {
+	game_id: string;
 	id: string;
-	user_id?: string;
-	user_name?: string;
-	game_id?: string;
-	community_ids?: string[];
-	type?: 'live' | '';
-	title?: string;
-	viewer_count?: number;
-	started_at?: string;
-	language?: string;
-	thumbnail_url?: string;
+	language: string;
+	started_at: string;
+	tag_ids: string | null;
+	thumbnail_url: string;
+	title: string;
+	type: string;
+	user_id: string;
+	user_name: string;
+	viewer_count: number;
 }

@@ -41,19 +41,16 @@ export default class extends SkyraCommand {
 			messages = messages.filter(this.getFilter(message, type, user));
 		}
 		const now = Date.now();
-		const filtered = [...messages.filter(m => now - m.createdTimestamp < 1209600000).keys()].slice(0, limit);
+		const filtered = messages.filter(m => now - m.createdTimestamp < 1209600000);
+		if (filtered.size === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
 
-		if (filtered.length === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
-
-		const deletedMessages = await message.channel.bulkDelete(filtered).catch(error => {
-			if (error.code === APIErrors.UnknownMessage) return new Collection<string, Message>();
-			throw error;
+		const filteredKeys = [...filtered.keys()].slice(0, limit);
+		await message.channel.bulkDelete(filteredKeys).catch(error => {
+			if (error.code !== APIErrors.UnknownMessage) throw error;
 		});
 
-		if (deletedMessages.size === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
-
-		floatPromise(this, this.sendPruneLogs(message, deletedMessages));
-		return message.sendLocale('COMMAND_PRUNE', [filtered.length, limit]);
+		floatPromise(this, this.sendPruneLogs(message, filtered));
+		return message.sendLocale('COMMAND_PRUNE', [filteredKeys.length, limit]);
 	}
 
 	private getFilter(message: Message, filter: string, user: User | null) {

@@ -15,8 +15,9 @@ export const DEV_POKEDEX = 'DEV_POKEDEX' in process.env ? process.env.DEV_POKEDE
 export const EVLYN_PORT = 3100;
 
 export const NAME = 'Skyra';
-export const CLIENT_ID = DEV ? '365184854914236416' : '266624760782258186';
-export const CLIENT_SECRET = DEV ? '' : '';
+export const PREFIX = 'sd!';
+export const CLIENT_ID = '';
+export const CLIENT_SECRET = '';
 export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 
 const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
@@ -24,13 +25,12 @@ const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
 	ServerResponse: ApiResponse
 };
 
-export const DATABASE_DEVELOPMENT: PoolConfig = {};
-export const DATABASE_PRODUCTION: PoolConfig = {
+export const DATABASE_OPTIONS: PoolConfig = {
 	database: '',
 	password: '',
 	user: ''
 };
-export const VERSION = '5.2.2 Nirom';
+export const VERSION = '5.2.3 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	commandEditing: true,
@@ -97,11 +97,11 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		monitors: { ignoreOthers: false },
 		rawEvents: { enabled: true }
 	},
-	prefix: DEV ? 'sd!' : 's!',
-	presence: { activity: { name: DEV ? 'sd!help' : 'Skyra, help', type: 'LISTENING' } },
+	prefix: PREFIX,
+	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
 		'default': DEV_PGSQL ? 'postgres' : 'json',
-		'postgres': DEV ? DATABASE_DEVELOPMENT : DATABASE_PRODUCTION
+		'postgres': DATABASE_OPTIONS
 	},
 	readyMessage: client =>
 		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
@@ -118,23 +118,14 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	}
 };
 
-export const WEBHOOK_ERROR: APIWebhookData = DEV
-	? {
-		avatar: '7d52ea85e9ffe07ac8b15d4b60cf29d7',
-		channel_id: '432495057552277504',
-		guild_id: '254360814063058944',
-		id: '516616472269946885',
-		name: 'Skyra Development',
-		token: ''
-	}
-	: {
-		avatar: '8555889e893215cac63193dc2ad0b52d',
-		channel_id: '432495057552277504',
-		guild_id: '254360814063058944',
-		id: '516619861397340182',
-		name: 'Skyra Production',
-		token: ''
-	};
+export const WEBHOOK_ERROR: APIWebhookData = {
+	avatar: '33f84e7a6a5596bafb2b56d218ee8c8d',
+	channel_id: '648663012345118741',
+	guild_id: '541738403230777351',
+	id: '648663047615021058',
+	name: 'Skyra Development',
+	token: ''
+};
 
 export const TOKENS = {
 	BLIZZARD: '',

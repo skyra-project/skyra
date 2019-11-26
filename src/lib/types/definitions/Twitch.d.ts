@@ -68,8 +68,8 @@ export interface TwitchKrakenUserFollowersChannelResultsChannel {
 }
 
 export interface TwitchHelixBearerToken {
-	TOKEN: string;
-	EXPIRE: number;
+	TOKEN: string | null;
+	EXPIRE: number | null;
 }
 
 export const enum TwitchHelixUserType {

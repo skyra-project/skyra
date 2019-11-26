@@ -26,7 +26,7 @@ export default class extends Route {
 	@ratelimit(2, Time.Minute * 5, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
-		if (!requestBody.action) {
+		if (typeof requestBody.action !== 'string') {
 			return response.error(400);
 		}
 

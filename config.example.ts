@@ -17,12 +17,16 @@ export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
 export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
+export const LAVALINK_PASSWORD = '';
 export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 
-export const DATABASE_OPTIONS: PoolConfig = {
-	database: '',
-	password: '',
-	user: ''
+export const PGSQL_DATABASE_NAME = '';
+export const PGSQL_DATABASE_PASSWORD = '';
+export const PGSQL_DATABASE_USER = '';
+export const PGSQL_DATABASE_OPTIONS: PoolConfig = {
+	database: PGSQL_DATABASE_NAME,
+	password: PGSQL_DATABASE_PASSWORD,
+	user: PGSQL_DATABASE_USER
 };
 
 export const VERSION = '5.2.3 Nirom';
@@ -80,7 +84,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 			rest: 'http://IP:REST_PORT',
 			ws: 'ws://IP:WS_PORT'
 		},
-		password: 'PASSWORD',
+		password: LAVALINK_PASSWORD,
 		userID: CLIENT_ID
 	},
 	messageCacheLifetime: 900,
@@ -96,7 +100,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
 		'default': ENABLE_POSTGRES ? 'postgres' : 'json',
-		'postgres': DATABASE_OPTIONS
+		'postgres': PGSQL_DATABASE_OPTIONS
 	},
 	readyMessage: client =>
 		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,

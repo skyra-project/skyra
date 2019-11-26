@@ -9,7 +9,7 @@ import { Mime } from '../../lib/util/constants';
 const kFetchOptions = {
 	headers: {
 		'Accept': Mime.Types.ApplicationTwitchV5Json,
-		'Client-ID': TOKENS.TWITCH.CLIENT_ID
+		'Client-ID': TOKENS.TWITCH_CLIENT_ID
 	}
 } as const;
 

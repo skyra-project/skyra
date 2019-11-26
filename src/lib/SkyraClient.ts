@@ -16,7 +16,7 @@ import { IPCMonitorStore } from './structures/IPCMonitorStore';
 
 // Import all utils
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { VERSION, WEBHOOK_ERROR, DEV_LAVALINK, EVLYN_PORT, DEV_PGSQL } from '../../config';
+import { VERSION, WEBHOOK_ERROR, ENABLE_LAVALINK, EVLYN_PORT, ENABLE_POSTGRES } from '../../config';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { Twitch } from './util/Notifications/Twitch';
 import { clientOptions } from './util/constants';
@@ -71,7 +71,7 @@ export class SkyraClient extends KlasaClient {
 	/**
 	 * The common queries for the database
 	 */
-	public queries: CommonQuery = DEV_PGSQL ? new PostgresCommonQuery(this) : new JsonCommonQuery(this);
+	public queries: CommonQuery = ENABLE_POSTGRES ? new PostgresCommonQuery(this) : new JsonCommonQuery(this);
 
 	public fsWatcher: FSWatcher | null = null;
 
@@ -88,7 +88,7 @@ export class SkyraClient extends KlasaClient {
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
-	public lavalink: Lavalink | null = DEV_LAVALINK
+	public lavalink: Lavalink | null = ENABLE_LAVALINK
 		? new Lavalink({
 			send: (guildID: string, packet: object) => {
 				const guild = this.guilds.get(guildID);

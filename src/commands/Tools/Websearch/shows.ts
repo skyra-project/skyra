@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 
 	private fetchAPI(message: KlasaMessage, show: string, year?: string) {
 		const url = new URL('https://api.themoviedb.org/3/search/tv');
-		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE);
+		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 		url.searchParams.append('query', show);
 
 		if (year) url.searchParams.append('first_air_date_year', year);
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 
 	private fetchShowData(message: KlasaMessage, serieId: number) {
 		const url = new URL(`https://api.themoviedb.org/3/tv/${serieId}`);
-		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE);
+		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
 		return fetch(url, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbSerie>;

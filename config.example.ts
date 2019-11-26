@@ -2,16 +2,15 @@
 
 import { KlasaClientOptions } from 'klasa';
 import { PoolConfig } from 'pg';
-import { ServerOptions } from 'http';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';
 import ApiRequest from './src/lib/structures/api/ApiRequest';
 import ApiResponse from './src/lib/structures/api/ApiResponse';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
-export const DEV_LAVALINK = 'DEV_LAVALINK' in process.env ? process.env.DEV_LAVALINK === 'true' : !DEV;
-export const DEV_PGSQL = 'DEV_PGSQL' in process.env ? process.env.DEV_PGSQL === 'true' : !DEV;
-export const DEV_POKEDEX = 'DEV_POKEDEX' in process.env ? process.env.DEV_POKEDEX === 'true' : !DEV;
+export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
+export const ENABLE_POSTGRES = 'ENABLE_POSTGRES' in process.env ? process.env.ENABLE_POSTGRES === 'true' : !DEV;
+export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
 
 export const NAME = 'Skyra';
@@ -20,16 +19,12 @@ export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
 export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 
-const DASHBOARD_SERVER_OPTIONS: ServerOptions = {
-	IncomingMessage: ApiRequest,
-	ServerResponse: ApiResponse
-};
-
 export const DATABASE_OPTIONS: PoolConfig = {
 	database: '',
 	password: '',
 	user: ''
 };
+
 export const VERSION = '5.2.3 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
@@ -69,7 +64,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		useColor: true,
 		utc: true
 	},
-	consoleEvents: { verbose: true },
+	consoleEvents: { verbose: true, debug: true },
 	clientID: CLIENT_ID,
 	clientSecret: CLIENT_SECRET,
 	dev: DEV,
@@ -88,11 +83,11 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		password: 'PASSWORD',
 		userID: CLIENT_ID
 	},
-	messageCacheLifetime: 300,
-	messageCacheMaxSize: 50,
-	messageSweepInterval: 120,
+	messageCacheLifetime: 900,
+	messageCacheMaxSize: 300,
+	messageSweepInterval: 180,
 	pieceDefaults: {
-		commands: { deletable: true, quotedStringSupport: true },
+		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
 		ipcMonitors: { enabled: true },
 		monitors: { ignoreOthers: false },
 		rawEvents: { enabled: true }
@@ -100,7 +95,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
-		'default': DEV_PGSQL ? 'postgres' : 'json',
+		'default': ENABLE_POSTGRES ? 'postgres' : 'json',
 		'postgres': DATABASE_OPTIONS
 	},
 	readyMessage: client =>
@@ -114,7 +109,10 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	dashboardHooks: {
 		apiPrefix: '/',
 		port: 1234,
-		serverOptions: DASHBOARD_SERVER_OPTIONS
+		serverOptions: {
+			IncomingMessage: ApiRequest,
+			ServerResponse: ApiResponse
+		}
 	}
 };
 
@@ -128,35 +126,26 @@ export const WEBHOOK_ERROR: APIWebhookData = {
 };
 
 export const TOKENS = {
-	BLIZZARD: '',
-	KITSU: {
-		ID: 'AWQO5J657S',
-		KEY: 'NzYxODA5NmY0ODRjYTRmMzQ2YjMzNzNmZmFhNjY5ZGRmYjZlMzViN2VkZDIzMGUwYjM5ZjQ5NjAwZGI4ZTc5MHJlc3RyaWN0SW5kaWNlcz1wcm9kdWN0aW9uX21lZGlhJmZpbHRlcnM9Tk9UK2FnZVJhdGluZyUzQVIxOA=='
-	},
-	BOT: {
-		DEV: '',
-		STABLE: ''
-	},
-	BOTS_FOR_DISCORD: '',
-	BOTS_ON_DISCORD: '',
-	CRYPTOCOMPARE: '',
-	DISCORD_BOTS: '',
+	BLIZZARD_KEY: '',
+	BOT_TOKEN: '',
+	BOTS_FOR_DISCORD_KEY: '',
+	BOTS_ON_DISCORD_KEY: '',
+	CRYPTOCOMPARE_KEY: '',
 	DISCORD_BOT_LIST: '',
 	DISCORD_BOT_ORG: '',
-	GOOGLE_API: '',
-	GOOGLE_MAP_API: '',
-	TWITCH: {
-		CLIENT_ID: '',
-		SECRET: '',
-		WEBHOOK_SECRET: ''
-	},
-	WEATHER_API: '',
-	WEEB_SH: '',
-	WOLFRAM: '',
-	NINTENDO: {
-		ID: 'U3B6GR4UA3',
-		KEY: '9a20c93440cf63cf1a7008d75f7438bf'
-	},
-	THEMOVIEDATABASE: '',
-	INTERNETGAMEDATABASE: ''
+	DISCORD_BOTS: '',
+	GOOGLE_API_KEY: '',
+	GOOGLE_MAPS_API_KEY: '',
+	GOOGLE_WEATHER_KEY: '',
+	INTERNETGAMEDATABASE_KEY: '',
+	KITSU_ID: 'AWQO5J657S',
+	KITSU_KEY: 'NzYxODA5NmY0ODRjYTRmMzQ2YjMzNzNmZmFhNjY5ZGRmYjZlMzViN2VkZDIzMGUwYjM5ZjQ5NjAwZGI4ZTc5MHJlc3RyaWN0SW5kaWNlcz1wcm9kdWN0aW9uX21lZGlhJmZpbHRlcnM9Tk9UK2FnZVJhdGluZyUzQVIxOA==',
+	NINTENDO_ID: 'U3B6GR4UA3',
+	NINTENDO_KEY: '9a20c93440cf63cf1a7008d75f7438bf',
+	THEMOVIEDATABASE_KEY: '',
+	TWITCH_CLIENT_ID: '',
+	TWITCH_SECRET: '',
+	TWITCH_WEBHOOK_SECRET: '',
+	WEEB_SH_KEY: '',
+	WOLFRAM_KEY: ''
 };

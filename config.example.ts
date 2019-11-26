@@ -159,6 +159,10 @@ export const TOKENS = {
 		SECRET: '',
 		WEBHOOK_SECRET: ''
 	},
+	// TODO(Quantum): Assign needed credential fields
+	MIXER: {
+		CLIENT_ID: ''
+	},
 	WEATHER_API: '',
 	WEEB_SH: '',
 	WOLFRAM: '',

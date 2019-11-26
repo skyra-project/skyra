@@ -22,7 +22,6 @@ export default class extends Route {
 		return response.json(user.settings.toJSON());
 	}
 
-	// TODO: This must be limited, not all keys are configurable.
 	@authenticated
 	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {

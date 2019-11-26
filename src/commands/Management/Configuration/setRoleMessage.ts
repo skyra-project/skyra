@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('message', async (arg, _, msg) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.tget('RESOLVER_INVALID_MSG', 'Message');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.tget('RESOLVER_INVALID_MESSAGE', 'Message');
 
 			const rolesChannel = msg.guild!.settings.get(GuildSettings.Channels.Roles);
 			if (!rolesChannel) throw msg.language.tget('COMMAND_SETMESSAGEROLE_CHANNELNOTSET');

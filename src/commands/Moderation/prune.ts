@@ -1,14 +1,45 @@
 import { User, Message, MessageAttachment, MessageEmbed, EmbedField, Collection, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp, KlasaUser, KlasaGuild } from 'klasa';
+import { CommandStore, KlasaMessage, Timestamp, KlasaUser, KlasaGuild, constants } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { APIErrors, Moderation } from '../../lib/util/constants';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { floatPromise, cleanMentions } from '../../lib/util/util';
 
+const enum Position {
+	Before,
+	After
+}
+
+const enum Filter {
+	Attachments,
+	Author,
+	Bots,
+	Humans,
+	Invites,
+	Links,
+	None,
+	Skyra,
+	User
+}
+
 export default class extends SkyraCommand {
 
 	private readonly timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
+	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
+	private readonly kPositions = new Map<string, Position>([
+		['before', Position.Before], ['b', Position.Before],
+		['after', Position.After], ['a', Position.After]
+	]);
+	private readonly kFilters = new Map<string, Filter>([
+		['file', Filter.Attachments], ['files', Filter.Attachments], ['upload', Filter.Attachments], ['uploads', Filter.Attachments],
+		['author', Filter.Author], ['me', Filter.Author],
+		['bot', Filter.Bots], ['bots', Filter.Bots],
+		['human', Filter.Humans], ['humans', Filter.Humans],
+		['invite', Filter.Invites], ['invites', Filter.Invites],
+		['link', Filter.Links], ['links', Filter.Links],
+		['skyra', Filter.Skyra], ['you', Filter.Skyra]
+	]);
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -20,59 +51,102 @@ export default class extends SkyraCommand {
 			flagSupport: true,
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
-			usage: '[limit:integer{1,100}] [link|invite|bots|you|me|upload|user:user]',
+			usage: '[limit:integer{1,100}] (position:position) (message:message) [filter:filter|user:user]',
 			usageDelim: ' '
+		});
+
+		this.createCustomResolver('position', (argument, _possible, message) => {
+			if (!argument) return null;
+			const position = this.kPositions.get(argument.toLowerCase());
+			if (typeof position === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_POSITION');
+			return position;
+		}).createCustomResolver('message', async (argument, possible, message, [, position]) => {
+			if (position === null) return message;
+
+			const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
+			if (fetched === null) throw message.language.tget('RESOLVER_INVALID_MESSAGE', possible.name);
+			return fetched;
+		}).createCustomResolver('filter', (argument, _possible, message) => {
+			if (!argument) return undefined;
+			const filter = this.kFilters.get(argument.toLowerCase());
+			if (typeof filter === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_FILTER');
+			return filter;
 		});
 	}
 
-	public async run(message: KlasaMessage, [limit = 50, filter]: [number, string]) {
+	public async run(message: KlasaMessage, [limit = 50, rawPosition, targetMessage, rawFilter]: [number, Position | null, KlasaMessage, Filter | User | undefined]) {
 		// This can happen for a large variety of situations:
 		// - Invalid limit (less than 1 or more than 100).
 		// - Invalid filter
 		// For example `prune 642748845687570444` (invalid ID) or `prune u` (invalid filter)
 		// are invalid command usages and therefore, for the sake of protection, Skyra should
 		// not execute an erroneous command.
-		if (message.args.length > 2) throw message.language.tget('COMMAND_PRUNE_INVALID');
+		if (message.args.length > 4) throw message.language.tget('COMMAND_PRUNE_INVALID');
 
-		let messages = await message.channel.messages.fetch({ limit: 100, before: message.id });
-		if (typeof filter !== 'undefined') {
-			const user = typeof filter === 'string' ? null : filter;
-			const type = typeof filter === 'string' ? filter : 'user';
-			messages = messages.filter(this.getFilter(message, type, user));
+		const position = this.resolvePosition(rawPosition);
+		const filter = this.resolveFilter(rawFilter);
+
+		this.client.console.debug(limit, position, targetMessage.id, filter);
+		// Fetch the messages
+		let messages = await message.channel.messages.fetch({ limit: 100, [position]: targetMessage.id });
+		if (filter !== Filter.None) {
+			const user = filter === Filter.User ? rawFilter as User : null;
+			messages = messages.filter(this.getFilter(message, filter, user));
 		}
+
+		// Filter the messages by their age
 		const now = Date.now();
 		const filtered = messages.filter(m => now - m.createdTimestamp < 1209600000);
 		if (filtered.size === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
 
-		const filteredKeys = [...filtered.keys()].slice(0, limit);
+		// Perform a bulk delete, throw if it returns unknown message.
+		const filteredKeys = this.resolveKeys([...filtered.keys()], targetMessage.id, position, limit);
 		await message.channel.bulkDelete(filteredKeys).catch(error => {
 			if (error.code !== APIErrors.UnknownMessage) throw error;
 		});
 
-		floatPromise(this, this.sendPruneLogs(message, filtered));
+		// Send prune logs and reply to the channel
+		floatPromise(this, this.sendPruneLogs(message, filtered, filteredKeys));
 		return message.sendLocale('COMMAND_PRUNE', [filteredKeys.length, limit]);
 	}
 
-	private getFilter(message: Message, filter: string, user: User | null) {
+	private resolveKeys(messages: readonly string[], target: string, position: 'before' | 'after', limit: number) {
+		return position === 'before'
+			? messages.slice(0, limit)
+			: messages.slice(messages.length - limit, messages.length);
+	}
+
+	private getFilter(message: Message, filter: Filter, user: User | null) {
 		switch (filter) {
-			case 'links':
-			case 'link': return (mes: Message) => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
-			case 'invites':
-			case 'invite': return (mes: Message) => /(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/\w+/.test(mes.content);
-			case 'bots':
-			case 'bot': return (mes: Message) => mes.author.bot;
-			case 'you': return (mes: Message) => mes.author.id === this.client.user!.id;
-			case 'me': return (mes: Message) => mes.author.id === message.author.id;
-			case 'uploads':
-			case 'upload': return (mes: Message) => mes.attachments.size > 0;
-			case 'humans':
-			case 'human':
-			case 'user': return (mes: Message) => mes.author.id === user!.id;
+			case Filter.Attachments: return (mes: Message) => mes.attachments.size > 0;
+			case Filter.Author: return (mes: Message) => mes.author.id === message.author.id;
+			case Filter.Bots: return (mes: Message) => mes.author.bot;
+			case Filter.Humans: return (mes: Message) => mes.author.id === message.author.id;
+			case Filter.Invites: return (mes: Message) => /(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/\w+/.test(mes.content);
+			case Filter.Links: return (mes: Message) => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
+			case Filter.Skyra: return (mes: Message) => mes.author.id === this.client.user!.id;
+			case Filter.User: return (mes: Message) => mes.author.id === user!.id;
 			default: return () => true;
 		}
 	}
 
-	private async sendPruneLogs(message: KlasaMessage, messages: Collection<string, Message>) {
+	private resolveFilter(filter: Filter | User | undefined) {
+		return typeof filter === 'undefined'
+			? Filter.None
+			: filter instanceof User
+				? Filter.User
+				: filter;
+	}
+
+	private resolvePosition(position: Position | null) {
+		switch (position) {
+			case null: return 'before';
+			case Position.After: return 'after';
+			case Position.Before: return 'before';
+		}
+	}
+
+	private async sendPruneLogs(message: KlasaMessage, messages: Collection<string, Message>, rawMessages: readonly string[]) {
 		const channelID = message.guild!.settings.get(GuildSettings.Channels.PruneLogs);
 		if (channelID === null) return;
 
@@ -83,6 +157,10 @@ export default class extends SkyraCommand {
 		}
 
 		if (channel.attachable) {
+			// Filter the messages collection by the deleted messages, so no extras are added.
+			messages = messages.filter((_, key) => rawMessages.includes(key));
+
+			// Send the message to the prune logs channel.
 			await channel.sendMessage('', {
 				embed: new MessageEmbed()
 					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 64 }))

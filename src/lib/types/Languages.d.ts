@@ -34,7 +34,7 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_INT: (name: string) => string;
 	RESOLVER_INVALID_LITERAL: (name: string) => string;
 	RESOLVER_INVALID_MEMBER: (name: string) => string;
-	RESOLVER_INVALID_MSG: (name: string) => string;
+	RESOLVER_INVALID_MESSAGE: (name: string) => string;
 	RESOLVER_INVALID_PIECE: (name: string, piece: string) => string;
 	RESOLVER_INVALID_REGEX_MATCH: (name: string, pattern: string) => string;
 	RESOLVER_INVALID_ROLE: (name: string) => string;
@@ -999,6 +999,8 @@ export interface LanguageKeys {
 	COMMAND_RESTRICT_LOWLEVEL: string;
 	COMMAND_PRUNE_INVALID: string;
 	COMMAND_PRUNE: (amount: number, total: number) => string;
+	COMMAND_PRUNE_INVALID_POSITION: string;
+	COMMAND_PRUNE_INVALID_FILTER: string;
 	COMMAND_PRUNE_NO_DELETES: string;
 	COMMAND_PRUNE_LOG_HEADER: string;
 	COMMAND_PRUNE_LOG_MESSAGE: (channel: string, author: string, amount: number) => string;

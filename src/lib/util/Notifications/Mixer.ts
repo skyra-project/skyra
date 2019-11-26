@@ -1,5 +1,5 @@
 import { TOKENS } from '../../../../config';
-import { fetch, enumerable, FetchResultTypes } from '../util';
+import { fetch, enumerable, FetchResultTypes, ratelimitedClass, ratelimitMethod, LimitedMethodError } from '../util';
 import { RequestInit } from 'node-fetch';
 import { Mime } from '../constants';
 import { mergeDefault } from '@klasa/utils';
@@ -10,6 +10,7 @@ export const enum ApiVersion {
 	v2
 }
 
+@ratelimitedClass()
 export class Mixer {
 
 	public readonly BASE_URL_V1 = 'https://mixer.com/api/v1/';
@@ -25,7 +26,8 @@ export class Mixer {
 		}
 	} as const;
 
-	public async fetchChannelByID(id: string) {
+	@ratelimitMethod('channel-read', 1000, 300)
+	public async fetchChannelByID(id: string): Promise<MixerExpandedChannel | LimitedMethodError> {
 		return this._performApiGETRequest(`channels/${id}`) as Promise<MixerExpandedChannel>;
 	}
 

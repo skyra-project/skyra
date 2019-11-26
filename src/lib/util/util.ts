@@ -1,10 +1,10 @@
 import { isObject } from '@klasa/utils';
 import { Image } from 'canvas';
-import { AvatarOptions, Client, Guild, ImageSize, Message, User } from 'discord.js';
+import { AvatarOptions, Client, Constructor, Collection, Guild, ImageSize, Message, User } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import { RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
-import { createFunctionInhibitor } from 'klasa-decorators';
+import { createFunctionInhibitor, createMethodDecorator } from 'klasa-decorators';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { CLIENT_SECRET } from '../../../config';
 import ApiRequest from '../structures/api/ApiRequest';
@@ -491,6 +491,10 @@ export function getFromPath(object: Record<string, unknown>, path: string | read
 	return value;
 }
 
+export function createClassDecorator(fn: Function) {
+	return fn;
+}
+
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.
  * @param value
@@ -551,6 +555,56 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 			response.error(429);
 		}
 	);
+}
+
+export function ratelimitedClass() {
+	return createClassDecorator((target: Constructor<LimitedClass>) => class extends target {
+
+		public ratelimits: Collection<string, RateLimitManager> = new Collection();
+		public limiter = true;
+
+	});
+}
+
+export function ratelimitMethod(group: string, bucket: number, cooldown: number) {
+	return createMethodDecorator((_target, _propertyKey, descriptor) => {
+		const method = descriptor.value;
+
+		if (!method) throw new Error('Function limiter actions require a [[value]].');
+		if (typeof method !== 'function') throw new Error('Function limiter actions can only be applied to functions.');
+
+		descriptor.value = (function descriptorValue(this: LimitedClass, ...args: any[]) {
+			if (!this.limiter as boolean) throw new Error('Class does not posses a limiter');
+			if (!this.ratelimits.has(group)) this.ratelimits.set(group, new RateLimitManager(bucket - 1, cooldown + 1));
+
+			const manager = this.ratelimits.get(group);
+			const id = Date.now().toString(8);
+			const bucketInstance = manager!.acquire(id);
+
+			if (bucketInstance.limited) {
+				return {
+					error: 'RATELIMIT',
+					remainingTime: bucketInstance.remainingTime.toString()
+				};
+			}
+
+			try {
+				bucketInstance.drip();
+			} catch { }
+
+			return method.call(this, ...args);
+		}) as unknown as undefined;
+	});
+}
+
+export interface LimitedClass {
+	ratelimits: Collection<string, RateLimitManager>;
+	limiter: boolean;
+}
+
+export interface LimitedMethodError {
+	error: 'RATELIMIT';
+	remainingTime: number;
 }
 
 export interface UtilOneToTenEntry {

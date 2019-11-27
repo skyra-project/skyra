@@ -1,6 +1,6 @@
 {
   "name": "skyra",
-  "version": "5.2.2",
+  "version": "5.2.3",
   "description": "Multipurpose Discord Bot built on Klasa",
   "main": "dist/src/Skyra.js",
   "scripts": {
@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@discordjs/collection": "^0.1.3",
-    "@favware/graphql-pokemon": "^1.0.1",
+    "@favware/graphql-pokemon": "^1.1.1",
     "@types/backoff": "^2.5.1",
     "@types/diff": "^4.0.2",
     "@types/he": "^1.1.0",

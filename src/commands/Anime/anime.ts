@@ -8,7 +8,7 @@ import { Kitsu } from '../../lib/types/definitions/Kitsu';
 import { cutText, fetch, getColor, FetchResultTypes } from '../../lib/util/util';
 import { BrandingColors } from '../../lib/util/constants';
 
-const API_URL = `https://${TOKENS.KITSU.ID}-dsn.algolia.net/1/indexes/production_media/query`;
+const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
 export default class extends SkyraCommand {
 
@@ -41,8 +41,8 @@ export default class extends SkyraCommand {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Algolia-API-Key': TOKENS.KITSU.KEY,
-				'X-Algolia-Application-Id': TOKENS.KITSU.ID
+				'X-Algolia-API-Key': TOKENS.KITSU_KEY,
+				'X-Algolia-Application-Id': TOKENS.KITSU_ID
 			},
 			body: JSON.stringify(
 				{

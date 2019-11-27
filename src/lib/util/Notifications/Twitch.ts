@@ -35,13 +35,13 @@ export class Twitch {
 	};
 
 	@enumerable(false)
-	private readonly $clientID = TOKENS.TWITCH.CLIENT_ID;
+	private readonly $clientID = TOKENS.TWITCH_CLIENT_ID;
 
 	@enumerable(false)
-	private readonly $clientSecret = TOKENS.TWITCH.SECRET;
+	private readonly $clientSecret = TOKENS.TWITCH_SECRET;
 
 	@enumerable(false)
-	private readonly $webhookSecret = TOKENS.TWITCH.WEBHOOK_SECRET;
+	private readonly $webhookSecret = TOKENS.TWITCH_WEBHOOK_SECRET;
 
 	@enumerable(false)
 	private readonly kFetchOptions = {

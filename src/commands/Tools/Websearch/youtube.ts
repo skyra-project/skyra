@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('part', 'snippet');
 		url.searchParams.append('safeSearch', 'strict');
 		url.searchParams.append('q', input);
-		url.searchParams.append('key', TOKENS.GOOGLE_API);
+		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);
 		const data = await fetch(url, FetchResultTypes.JSON) as YouTubeResultOk;
 		const result = data.items[index];
 

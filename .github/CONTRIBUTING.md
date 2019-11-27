@@ -18,13 +18,7 @@ To run Skyra locally a few steps should be taken. You can find a more detailed r
 
 1. Copy the `config.example.ts` file and rename it to `config.ts`
 2. Scroll down to `export const TOKENS = {`
-3. At this section enter your own bot's API token. Generally you only need to fill in the DEV token.
-```ts
-BOT: {
-  DEV: '',
-  STABLE: ''
-},
-```
+3. At this section enter your own bot's API token at `BOT_TOKEN`.
 
 ## Skyra Concept Guidelines
 

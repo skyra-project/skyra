@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 		return fetch(API_URL, {
 			method: 'POST',
 			headers: {
-				'user-key': TOKENS.INTERNETGAMEDATABASE
+				'user-key': TOKENS.INTERNETGAMEDATABASE_KEY
 			},
 			body: [
 				`search: "${game}";`,

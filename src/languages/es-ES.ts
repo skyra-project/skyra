@@ -1,11 +1,11 @@
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
 import { Emojis } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
-import { LanguageKeys } from '../lib/types/Languages';
+import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 
 const { toTitleCase, codeBlock } = klasaUtil;
@@ -162,7 +162,7 @@ export default class extends Language {
 		RESOLVER_INVALID_INT: name => `${name} debe ser un número entero válido.`,
 		RESOLVER_INVALID_LITERAL: name => `La opción no coincide con la única posibilidad: ${name}`,
 		RESOLVER_INVALID_MEMBER: name => `${name} debe ser una mención de usuario o una id de usuario válida.`,
-		RESOLVER_INVALID_MSG: name => `${name} debe ser una id de mensaje válida.`,
+		RESOLVER_INVALID_MESSAGE: name => `${name} debe ser una id de mensaje válida.`,
 		RESOLVER_INVALID_PIECE: (name, piece) => `${name} debe ser un nombre de ${piece} válido.`,
 		RESOLVER_INVALID_REGEX_MATCH: (name, pattern) => `${name} debe combinar con el siguiente patrón \`${pattern}\`.`,
 		RESOLVER_INVALID_ROLE: name => `${name} debe ser una mención de rol o una id de rol válida.`,
@@ -315,18 +315,6 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
-		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
-		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
-			extendedHelp: `
-				Consulta la API de Pokémon sobre los datos de un Pokémon determinado.
-				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
-				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
-			`,
-			explainedUsage: [
-				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
-			],
-			examples: ['dragonite', 'pikachu']
-		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `¡La cola está sin discos! ¡Añade algunas canciones para mantener el alma de la fiesta!`,
@@ -1431,17 +1419,18 @@ export default class extends Language {
 			extendedHelp: `This command deletes the given amount of messages given a filter within the last 100 messages sent
 					in the channel the command has been run.`,
 			explainedUsage: [
-				['Messages', 'The amount of messages to prune.'],
-				['Filter', 'The filter to apply.'],
-				['(Filter) Link', 'Filters messages that have links on the content.'],
-				['(Filter) Invite', 'Filters messages that have invite links on the content.'],
-				['(Filter) Bots', 'Filters messages sent by bots.'],
-				['(Filter) You', 'Filters messages sent by Skyra.'],
-				['(Filter) Me', 'Filters your messages.'],
-				['(Filter) Upload', 'Filters messages that have attachments.'],
-				['(Filter) User', 'Filters messages sent by the specified user.']
+				['Messages', 'La cantidad de mensajes a eliminar.'],
+				['Filter', 'El filtro a aplicar.'],
+				['(Filter) Enlaces', 'Filtra mensajes que tienen enlaces web.'],
+				['(Filter) Invitaciones', 'Filtra mensajes que contienen enlaces de invitación.'],
+				['(Filter) Bots', 'Filtra mensajes enviados por robots.'],
+				['(Filter) Humanos', 'Filtra mensajes enviados por usuarios.'],
+				['(Filter) Skyra', 'Filtra mensajes enviados por Skyra.'],
+				['(Filter) Autor', 'Filtra tus mensajes.'],
+				['(Filter) Archivo', 'Filtra mensajes que tienen archivos adjuntos.'],
+				['(Filter) User', 'Filtra messages enviados por un usuario específico.']
 			],
-			examples: ['50 me', '75 @kyra', '20 bots'],
+			examples: ['50 me', '75 @kyra', '20 bots', '60 before 629992398700675082 humans'],
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
 		}),
 		COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',
@@ -1572,6 +1561,91 @@ export default class extends Language {
 		 * ##################
 		 * POKÉMON COMMANDS
 		 */
+		COMMAND_ABILITY_DESCRIPTION: 'Consulta la API de graphql-pokemon para obtener datos sobre cualquier habilidad Pokémon dada',
+		COMMAND_ABILITY_EXTENDED: builder.display('ability', {
+			extendedHelp: `
+				Consulta la API de Pokemon sobre datos en una habilidad dada.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+			`,
+			explainedUsage: [
+				['habilidad', 'La capacidad para la que desea encontrar datos']
+			],
+			examples: ['multiscale', 'pressure']
+		}),
+		COMMAND_ABILITY_EMEBED_DATA: {
+			ABILITY: 'Habilidad',
+			DESCRIPTION: 'Descripción',
+			EXTERNAL_RESOURCES: 'Recursos externos'
+		},
+		COMMAND_ABILITY_QUERY_FAIL: ability => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
+		COMMAND_FLAVORS_DESCRIPTION: 'Consulta la API de graphql-pokemon para los textos de sabor dex de un Pokémon',
+		COMMAND_FLAVORS_EXTENDED: builder.display('flavors', {
+			extendedHelp: `
+				Consulta la API de Pokémon en textos de sabor para un Pokémon determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['pokemon', 'El Pokémon para el que quieres obtener textos de sabor.']
+			],
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+		}),
+		COMMAND_FLAVORS_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
+		COMMAND_ITEM_DESCRIPTION: 'Consulta la API de graphql-pokemon para obtener información sobre cualquier ítem Pokémon',
+		COMMAND_ITEM_EXTENDED: builder.display('item', {
+			extendedHelp: `
+				Consulta la API de Pokemon sobre los datos de un ítem determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+			`,
+			explainedUsage: [
+				['ítem', 'El elemento para el que desea buscar datos']
+			],
+			examples: ['life orb', 'choice specs']
+		}),
+		COMMAND_ITEM_EMEBED_DATA: {
+			ITEM: 'Ítem',
+			DESCRIPTION: 'Descripción',
+			GENERATION_INTRODUCED: 'Generación introducida',
+			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
+			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Sí' : 'No',
+			EXTERNAL_RESOURCES: 'Recursos externos'
+		},
+		COMMAND_ITEM_QUERY_FAIL: item => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${item}\` es realmente un elemento en Pokémon?`,
+		COMMAND_LEARN_DESCRIPTION: 'Consulta la API de graphql-pokemon para enfrentamientos de conjuntos de aprendizaje dados un Pokémon y uno o más movimientos',
+		COMMAND_LEARN_EXTENDED: builder.display('learn', {
+			extendedHelp: `
+				Consulta la API de Pokémon sobre si un Pokémon determinado puede aprender uno o más movimientos dados.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['pokemon', 'El Pokémon cuyo conjunto de aprendizaje quieres comprobar'],
+				['movimiento', 'Los movimientos que desea verificar']
+			],
+			examples: ['dragonite dragondance', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny']
+		}),
+		COMMAND_LEARN_METHOD_TYPES: {
+			BY_LEVEL_UP: level => `por subir de nivel en el nivel ${level}`,
+			THROUGH_EVENT: 'a través de un evento',
+			FROM_TUTOR: 'de un tutor de movimiento',
+			AS_EGGMOVE: 'como un movimiento de huevo',
+			THROUGH_VIRTUALCONSOLE_TRANSFER: 'transfiriendo desde juegos de consola virtual',
+			WITH_TM: 'utilizando un Máquina Técnica',
+			WITH_TR: 'utilizando un Disco Técnico',
+			THROUGH_DREAMWORLD: 'a través de una captura de Pokémon Dream World'
+		},
+		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: `
+				Consulta la API de Pokémon sobre los datos de un Pokémon determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
+			],
+			examples: ['dragonite', 'pikachu']
+		}),
 		COMMAND_POKEDEX_EMBED_DATA: {
 			TYPES: 'Tipo(s)',
 			ABILITIES: 'Habilidades',
@@ -1589,6 +1663,21 @@ export default class extends Language {
 			NONE: 'Ninguno'
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
+		COMMAND_TYPE_DESCRIPTION: 'Da los emparejamientos de tipos para uno o dos tipos de Pokémon.',
+		COMMAND_TYPE_EXTENDED: builder.display('type', {
+			extendedHelp: 'Consulta la API de Pokémon para los emparejamientos de tipos para uno o dos tipos de Pokémon.',
+			explainedUsage: [
+				['tipo', 'El tipo(s) para buscar']
+			],
+			examples: ['dragon', 'fire flying']
+		}),
+		COMMAND_TYPE_NOT_A_TYPE: type => `${type} no es un tipo de Pokémon válido`,
+		COMMAND_TYPE_EMBED_DATA: {
+			OFFENSIVE: 'Ofensivo',
+			DEFENSIVE: 'Defensivo',
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			TYPE_EFFECTIVENESS_FOR: type => `Tipo de efectividad para ${type}`
+		},
 
 		/**
 		 * ##################
@@ -2590,9 +2679,24 @@ export default class extends Language {
 		COMMAND_RESTRICT_LOWLEVEL: `${REDCROSS} I am sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set i up.`,
 		COMMAND_PRUNE_INVALID: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
 		COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
+		COMMAND_PRUNE_INVALID_POSITION: `${REDCROSS} Position must be one of "before" or "after".`,
+		COMMAND_PRUNE_INVALID_FILTER: `${REDCROSS} Filtro debe ser uno de "archivo", "autor", "bot", "humano", "invitación", "enlace" o "skyra".`,
 		COMMAND_PRUNE_NO_DELETES: 'No message has been deleted, either no message match the filter or they are over 14 days old.',
 		COMMAND_PRUNE_LOG_HEADER: 'The following messages have been generated by request of a moderator.\nThe date formatting is of `YYYY/MM/DD hh:mm:ss`.',
 		COMMAND_PRUNE_LOG_MESSAGE: (channel, author, amount) => `${amount} ${amount === 1 ? 'message' : 'messages'} deleted in ${channel} by ${author}.`,
+		COMMAND_PRUNE_POSITIONS: new Map([
+			['before', Position.Before], ['b', Position.Before],
+			['after', Position.After], ['a', Position.After]
+		]),
+		COMMAND_PRUNE_FILTERS: new Map([
+			['archivo', Filter.Attachments], ['archivos', Filter.Attachments], ['subida', Filter.Attachments], ['subidas', Filter.Attachments],
+			['autor', Filter.Author], ['yo', Filter.Author],
+			['bot', Filter.Bots], ['bots', Filter.Bots],
+			['humano', Filter.Humans], ['humanos', Filter.Humans],
+			['invitacion', Filter.Invites], ['invitación', Filter.Invites], ['invitaciones', Filter.Invites],
+			['enlace', Filter.Links], ['enlaces', Filter.Links],
+			['skyra', Filter.Skyra], ['tu', Filter.Skyra], ['tú', Filter.Skyra]
+		]),
 		COMMAND_REASON_MISSING_CASE: 'You need to provide a case or a case range.',
 		COMMAND_REASON_NOT_EXISTS: (range = false) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
 		COMMAND_REASON_UPDATED: (entries, newReason) => [

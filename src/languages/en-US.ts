@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
@@ -7,7 +6,7 @@ import friendlyDuration from '../lib/util/FriendlyDuration';
 import { HungerGamesUsage } from '../lib/util/Games/HungerGamesUsage';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
-import { LanguageKeys } from '../lib/types/Languages';
+import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 
 const { toTitleCase, codeBlock } = klasaUtil;
@@ -162,7 +161,7 @@ export default class extends Language {
 		RESOLVER_INVALID_INT: name => `${name} must be an integer.`,
 		RESOLVER_INVALID_LITERAL: name => `Your option did not match the only possibility: ${name}`,
 		RESOLVER_INVALID_MEMBER: name => `${name} must be a mention or valid user id.`,
-		RESOLVER_INVALID_MSG: name => `${name} must be a valid message id.`,
+		RESOLVER_INVALID_MESSAGE: name => `${name} must be a valid message id.`,
 		RESOLVER_INVALID_PIECE: (name, piece) => `${name} must be a valid ${piece} name.`,
 		RESOLVER_INVALID_REGEX_MATCH: (name, pattern) => `${name} must follow this regex pattern \`${pattern}\`.`,
 		RESOLVER_INVALID_ROLE: name => `${name} must be a role mention or role id.`,
@@ -319,18 +318,6 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Manage the volume for current song.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
-		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given pokemon',
-		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
-			extendedHelp: `
-				Queries the Pokemon API on data on a given Pokemon.
-				Uses a fuzzy search to also match against near-matches.
-				You can provide a flag of \`--shiny\` to get the shiny sprite.
-			`,
-			explainedUsage: [
-				['pokemon', 'The pokemon for which you want to find data']
-			],
-			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
-		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `The queue's empty! The session will start as soon as we have some songs queued.`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `The queue's almost empty! Please add some to keep the spirit of this session still up!`,
@@ -1464,7 +1451,7 @@ export default class extends Language {
 				['(Filter) Upload', 'Filters messages that have attachments.'],
 				['(Filter) User', 'Filters messages sent by the specified user.']
 			],
-			examples: ['50 me', '75 @kyra', '20 bots'],
+			examples: ['50 me', '75 @kyra', '20 bots', '60 before 629992398700675082 humans'],
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
 		}),
 		COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',
@@ -1595,6 +1582,91 @@ export default class extends Language {
 		 * ##################
 		 * POKÉMON COMMANDS
 		 */
+		COMMAND_ABILITY_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon ability',
+		COMMAND_ABILITY_EXTENDED: builder.display('ability', {
+			extendedHelp: `
+				Queries the Pokemon API on data on a given ability.
+				Uses a fuzzy search to also match against near-matches.
+			`,
+			explainedUsage: [
+				['ability', 'The ability for which you want to find data']
+			],
+			examples: ['multiscale', 'pressure']
+		}),
+		COMMAND_ABILITY_EMEBED_DATA: {
+			ABILITY: 'Ability',
+			DESCRIPTION: 'Description',
+			EXTERNAL_RESOURCES: 'External resources'
+		},
+		COMMAND_ABILITY_QUERY_FAIL: ability => `I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
+		COMMAND_FLAVORS_DESCRIPTION: 'Queries the graphql-pokemon API for the dex flavour texts of a Pokémon',
+		COMMAND_FLAVORS_EXTENDED: builder.display('flavors', {
+			extendedHelp: `
+				Queries the Pokémon API on flavour texts for a given Pokemon.
+				Uses a fuzzy search to also match against near-matches.
+				You can provide a flag of \`--shiny\` to get the shiny sprite.
+			`,
+			explainedUsage: [
+				['pokemon', 'The Pokémon for which you want to get flavour texts']
+			],
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+		}),
+		COMMAND_FLAVORS_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
+		COMMAND_ITEM_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon item',
+		COMMAND_ITEM_EXTENDED: builder.display('item', {
+			extendedHelp: `
+				Queries the Pokemon API on data on a given item.
+				Uses a fuzzy search to also match against near-matches.
+			`,
+			explainedUsage: [
+				['item', 'The item for which you want to find data']
+			],
+			examples: ['life orb', 'choice specs']
+		}),
+		COMMAND_ITEM_EMEBED_DATA: {
+			ITEM: 'Item',
+			DESCRIPTION: 'Description',
+			GENERATION_INTRODUCED: 'Generation introduced',
+			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in generation 8',
+			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Yes' : 'No',
+			EXTERNAL_RESOURCES: 'External resources'
+		},
+		COMMAND_ITEM_QUERY_FAIL: item => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
+		COMMAND_LEARN_DESCRIPTION: 'Queries the graphql-pokemon API for learnset matchups given a Pokémon and one or more moves',
+		COMMAND_LEARN_EXTENDED: builder.display('learn', {
+			extendedHelp: `
+				Queries the Pokémon API on whether a given Pokémon can learn one or more given moves.
+				You can provide a flag of \`--shiny\` to get the shiny sprite of the Pokémon.
+			`,
+			explainedUsage: [
+				['pokemon', 'The Pokémon whose learnset you want to check'],
+				['move', 'The move(s) you want to check for']
+			],
+			examples: ['dragonite dragondance', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny']
+		}),
+		COMMAND_LEARN_METHOD_TYPES: {
+			BY_LEVEL_UP: level => `by level up at level ${level}`,
+			THROUGH_EVENT: 'through an event',
+			FROM_TUTOR: 'from a move tutor',
+			AS_EGGMOVE: 'as an eggmove',
+			THROUGH_VIRTUALCONSOLE_TRANSFER: 'by transfering from virtual console games',
+			WITH_TM: 'by using a Technical Machine',
+			WITH_TR: 'by using a Technical Record',
+			THROUGH_DREAMWORLD: 'through a Dream World capture'
+		},
+		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: `
+				Queries the Pokémon API on data on a given Pokemon.
+				Uses a fuzzy search to also match against near-matches.
+				You can provide a flag of \`--shiny\` to get the shiny sprite.
+			`,
+			explainedUsage: [
+				['pokemon', 'The Pokémon for which you want to find data']
+			],
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+		}),
 		COMMAND_POKEDEX_EMBED_DATA: {
 			TYPES: 'Type(s)',
 			ABILITIES: 'Abilities',
@@ -1612,6 +1684,21 @@ export default class extends Language {
 			NONE: 'None'
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
+		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',
+		COMMAND_TYPE_EXTENDED: builder.display('type', {
+			extendedHelp: 'Queries the Pokémon API for the type matchups for one or two Pokémon types.',
+			explainedUsage: [
+				['type', 'The type(s) to look up']
+			],
+			examples: ['dragon', 'fire flying']
+		}),
+		COMMAND_TYPE_NOT_A_TYPE: type => `${type} is not a valid Pokémon type`,
+		COMMAND_TYPE_EMBED_DATA: {
+			OFFENSIVE: 'Offensive',
+			DEFENSIVE: 'Defensive',
+			EXTERNAL_RESOURCES: 'External resources',
+			TYPE_EFFECTIVENESS_FOR: type => `Type effectiveness for ${type}`
+		},
 
 		/**
 		 * ##################
@@ -2623,9 +2710,24 @@ export default class extends Language {
 		COMMAND_RESTRICT_LOWLEVEL: `${REDCROSS} I am sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set i up.`,
 		COMMAND_PRUNE_INVALID: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
 		COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
+		COMMAND_PRUNE_INVALID_POSITION: `${REDCROSS} Position must be one of "before" or "after".`,
+		COMMAND_PRUNE_INVALID_FILTER: `${REDCROSS} Filter must be one of "file", "author", "bot", "human", "invite", "link", or "skyra".`,
 		COMMAND_PRUNE_NO_DELETES: 'No message has been deleted, either no message match the filter or they are over 14 days old.',
 		COMMAND_PRUNE_LOG_HEADER: 'The following messages have been generated by request of a moderator.\nThe date formatting is of `YYYY/MM/DD hh:mm:ss`.',
 		COMMAND_PRUNE_LOG_MESSAGE: (channel, author, amount) => `${amount} ${amount === 1 ? 'message' : 'messages'} deleted in ${channel} by ${author}.`,
+		COMMAND_PRUNE_POSITIONS: new Map([
+			['before', Position.Before], ['b', Position.Before],
+			['after', Position.After], ['a', Position.After]
+		]),
+		COMMAND_PRUNE_FILTERS: new Map([
+			['file', Filter.Attachments], ['files', Filter.Attachments], ['upload', Filter.Attachments], ['uploads', Filter.Attachments],
+			['author', Filter.Author], ['me', Filter.Author],
+			['bot', Filter.Bots], ['bots', Filter.Bots],
+			['human', Filter.Humans], ['humans', Filter.Humans],
+			['invite', Filter.Invites], ['invites', Filter.Invites],
+			['link', Filter.Links], ['links', Filter.Links],
+			['skyra', Filter.Skyra], ['you', Filter.Skyra]
+		]),
 		COMMAND_REASON_MISSING_CASE: 'You need to provide a case or a case range.',
 		COMMAND_REASON_NOT_EXISTS: (range = false) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
 		COMMAND_REASON_UPDATED: (entries, newReason) => [

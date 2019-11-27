@@ -8,6 +8,24 @@ import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
 import { ProfileTitles } from '../../commands/Social/profile';
 import { LevelTitles } from '../../commands/Social/level';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
+import { Types, Pokemon, Moves } from '@favware/graphql-pokemon';
+
+export const enum Position {
+	Before,
+	After
+}
+
+export const enum Filter {
+	Attachments,
+	Author,
+	Bots,
+	Humans,
+	Invites,
+	Links,
+	None,
+	Skyra,
+	User
+}
 
 export interface LanguageKeys {
 	DEFAULT: (key: string) => string;
@@ -34,7 +52,7 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_INT: (name: string) => string;
 	RESOLVER_INVALID_LITERAL: (name: string) => string;
 	RESOLVER_INVALID_MEMBER: (name: string) => string;
-	RESOLVER_INVALID_MSG: (name: string) => string;
+	RESOLVER_INVALID_MESSAGE: (name: string) => string;
 	RESOLVER_INVALID_PIECE: (name: string, piece: string) => string;
 	RESOLVER_INVALID_REGEX_MATCH: (name: string, pattern: string) => string;
 	RESOLVER_INVALID_ROLE: (name: string) => string;
@@ -179,6 +197,41 @@ export interface LanguageKeys {
 	COMMAND_VOLUME_DESCRIPTION: string;
 	COMMAND_VOLUME_SUCCESS: (volume: number) => string;
 	COMMAND_VOLUME_CHANGED: (emoji: string, volume: number) => string;
+	COMMAND_ABILITY_DESCRIPTION: string;
+	COMMAND_ABILITY_EXTENDED: string;
+	COMMAND_ABILITY_EMEBED_DATA: {
+		ABILITY: string;
+		DESCRIPTION: string;
+		EXTERNAL_RESOURCES: string;
+	};
+	COMMAND_ABILITY_QUERY_FAIL: (ability: string) => string;
+	COMMAND_FLAVORS_DESCRIPTION: string;
+	COMMAND_FLAVORS_EXTENDED: string;
+	COMMAND_FLAVORS_QUERY_FAIL: (pokemon: string) => string;
+	COMMAND_ITEM_DESCRIPTION: string;
+	COMMAND_ITEM_EXTENDED: string;
+	COMMAND_ITEM_EMEBED_DATA: {
+		ITEM: string;
+		DESCRIPTION: string;
+		GENERATION_INTRODUCED: string;
+		AVAILABLE_IN_GENERATION_8_TITLE: string;
+		AVAILABLE_IN_GENERATION_8_DATA: (available: boolean) => string;
+		EXTERNAL_RESOURCES: string;
+	};
+	COMMAND_ITEM_QUERY_FAIL: (item: string) => string;
+	COMMAND_LEARN_DESCRIPTION: string;
+	COMMAND_LEARN_EXTENDED: string;
+	COMMAND_LEARN_METHOD_TYPES: {
+		BY_LEVEL_UP: (level: number) => string;
+		THROUGH_EVENT: string;
+		FROM_TUTOR: string;
+		AS_EGGMOVE: string;
+		THROUGH_VIRTUALCONSOLE_TRANSFER: string;
+		WITH_TM: string;
+		WITH_TR: string;
+		THROUGH_DREAMWORLD: string;
+	};
+	COMMAND_LEARN_METHOD: (generation: number, pokemon: Pokemon, move: Moves, method: LanguageKeys['COMMAND_LEARN_METHOD_TYPES']) => string;
 	COMMAND_POKEDEX_DESCRIPTION: string;
 	COMMAND_POKEDEX_EXTENDED: string;
 	COMMAND_POKEDEX_EMBED_DATA: {
@@ -198,6 +251,15 @@ export interface LanguageKeys {
 		NONE: string;
 	};
 	COMMAND_POKEDEX_QUERY_FAIL: (pokemon: string) => string;
+	COMMAND_TYPE_DESCRIPTION: string;
+	COMMAND_TYPE_EXTENDED: string;
+	COMMAND_TYPE_NOT_A_TYPE: (type: Types) => string;
+	COMMAND_TYPE_EMBED_DATA: {
+		OFFENSIVE: string;
+		DEFENSIVE: string;
+		EXTERNAL_RESOURCES: string;
+		TYPE_EFFECTIVENESS_FOR: (type: string) => string;
+	};
 	INHIBITOR_MUSIC_QUEUE_EMPTY: string;
 	INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: string;
 	INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: string;
@@ -999,9 +1061,13 @@ export interface LanguageKeys {
 	COMMAND_RESTRICT_LOWLEVEL: string;
 	COMMAND_PRUNE_INVALID: string;
 	COMMAND_PRUNE: (amount: number, total: number) => string;
+	COMMAND_PRUNE_INVALID_POSITION: string;
+	COMMAND_PRUNE_INVALID_FILTER: string;
 	COMMAND_PRUNE_NO_DELETES: string;
 	COMMAND_PRUNE_LOG_HEADER: string;
 	COMMAND_PRUNE_LOG_MESSAGE: (channel: string, author: string, amount: number) => string;
+	COMMAND_PRUNE_POSITIONS: Map<string, Position>;
+	COMMAND_PRUNE_FILTERS: Map<string, Filter>;
 	COMMAND_REASON_MISSING_CASE: string;
 	COMMAND_REASON_NOT_EXISTS: () => string;
 	COMMAND_REASON_UPDATED: (entries: readonly number[], newReason: string) => string;

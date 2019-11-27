@@ -3,7 +3,7 @@ import { QueryBuilder } from '@klasa/querybuilder';
 import { SQLProvider, SchemaEntry, SchemaFolder, SettingsFolderUpdateResult, Type } from 'klasa';
 import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
 import { mergeDefault } from '@klasa/utils';
-import { DEV_PGSQL } from '../../config';
+import { ENABLE_POSTGRES } from '../../config';
 import { run as databaseInitRun } from '../lib/util/DatabaseInit';
 import { AnyObject } from '../lib/types/util';
 
@@ -30,7 +30,7 @@ export default class extends SQLProvider {
 	public pgsql: Pool | null = null;
 
 	public async init() {
-		if (!DEV_PGSQL) return this.unload();
+		if (!ENABLE_POSTGRES) return this.unload();
 
 		const poolOptions = mergeDefault<PoolConfig, PoolConfig>({
 			host: 'localhost',

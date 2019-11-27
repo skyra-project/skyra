@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 			dice = Number(results[2]);
 
 			if (amount <= 0 || amount >= 1024) throw message.language.tget('COMMAND_DICE_ROLLS_ERROR');
-			if (dice <= 0 || amount >= 1024) throw message.language.tget('COMMAND_DICE_SIDES_ERROR');
+			if (dice <= 0 || dice >= 1024) throw message.language.tget('COMMAND_DICE_SIDES_ERROR');
 
 			if (results[3].length > 0) {
 				let modifierResults: RegExpExecArray | null;

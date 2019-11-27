@@ -37,7 +37,6 @@ export function clean(text: string) {
 	if (typeof sensitivePattern === 'undefined') {
 		throw new Error('initClean must be called before running this.');
 	}
-
 	return text
 		.replace(sensitivePattern, '「ｒｅｄａｃｔｅｄ」')
 		.replace(/`/g, `\`${zws}`)

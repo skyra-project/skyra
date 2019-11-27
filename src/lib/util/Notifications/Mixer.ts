@@ -1,7 +1,7 @@
 import { TOKENS } from '../../../../config';
-import { fetch, enumerable, FetchResultTypes, ratelimitedClass, ratelimitMethod, LimitedMethodError } from '../util';
+import { fetch, enumerable, FetchResultTypes, Limiter } from '../util';
 import { RequestInit } from 'node-fetch';
-import { Mime } from '../constants';
+import { Mime, Time } from '../constants';
 import { mergeDefault } from '@klasa/utils';
 import { MixerExpandedChannel, MixerUserWithChannel } from '../../types/definitions/Mixer';
 
@@ -10,7 +10,7 @@ export const enum ApiVersion {
 	v2
 }
 
-@ratelimitedClass()
+@Limiter.classInitialization()
 export class Mixer {
 
 	public readonly BASE_URL_V1 = 'https://mixer.com/api/v1/';
@@ -20,14 +20,17 @@ export class Mixer {
 	private readonly $clientID = TOKENS.MIXER_CLIENT_ID;
 
 	@enumerable(false)
+	private readonly $clientSecret = TOKENS.MIXER_SECRET;
+
+	@enumerable(false)
 	private readonly kFetchOptions = {
 		headers: {
 			Accept: Mime.Types.ApplicationJson
 		}
 	} as const;
 
-	@ratelimitMethod('channel-read', 1000, 300)
-	public async fetchChannelByID(id: string): Promise<MixerExpandedChannel | LimitedMethodError> {
+	@Limiter.limitMethod('channel-read', 1000, Time.Second * 300)
+	public async fetchChannelByID(id: string): Promise<MixerExpandedChannel | Limiter.MethodLimitError> {
 		return this._performApiGETRequest(`channels/${id}`) as Promise<MixerExpandedChannel>;
 	}
 

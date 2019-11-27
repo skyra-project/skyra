@@ -42,6 +42,14 @@ fragment flavors on FlavorEntry {
   flavor
 }`;
 
+const FlavorTextFragment = `
+${FlavorsFrament}
+fragment flavortexts on DexDetails {
+    flavorTexts {
+        ...flavors
+    }
+}`;
+
 const DexDetailsFragment = `
 ${AbilitiesFragment}
 ${StatsFragment}
@@ -99,12 +107,13 @@ fragment evolutions on DexDetails {
 const ItemsFragment = `
 fragment items on ItemEntry {
     desc
-    shortDesc
     name
-    num
     bulbapediaPage
     serebiiPage
     smogonPage
+    sprite
+    isNonstandard
+    generationIntroduced
 }`;
 
 const LearnsetLevelupMoveFragment = `
@@ -150,7 +159,6 @@ fragment learnset on LearnsetEntry {
 
 const MoveFragment = `
 fragment moves on MoveEntry {
-    num
     name
     shortDesc
     type
@@ -195,6 +203,18 @@ ${EvolutionsFragment}
     getPokemonDetailsByFuzzy(pokemon: \"${pokemon}\" skip: 0 take: 1 reverse: true) {
         ...dexdetails
         ...evolutions
+    }
+}`;
+
+export const getPokemonFlavorTextsByFuzzy = (pokemon: string | Pokemon) => `
+${FlavorTextFragment}
+{
+    getPokemonDetailsByFuzzy(pokemon: \"${pokemon}\" skip: 0 take: 12 reverse: true) {
+        sprite
+        num
+        species
+        color
+        ...flavortexts
     }
 }`;
 
@@ -251,6 +271,34 @@ export const parseBulbapediaURL = (url: string) => url
 	.replace(/[ ]/g, '_')
 	.replace(/\(/g, '%28')
 	.replace(/\)/g, '%29');
+
+/** Parses PokéDex colours to Discord MessageEmbed colours */
+export const resolveColour = (col: string) => {
+	switch (col) {
+		case 'Black':
+			return 0x323232;
+		case 'Blue':
+			return 0x257CFF;
+		case 'Brown':
+			return 0xA3501A;
+		case 'Gray':
+			return 0x969696;
+		case 'Green':
+			return 0x3EFF4E;
+		case 'Pink':
+			return 0xFF65A5;
+		case 'Purple':
+			return 0xA63DE8;
+		case 'Red':
+			return 0xFF3232;
+		case 'White':
+			return 0xE1E1E1;
+		case 'Yellow':
+			return 0xFFF359;
+		default:
+			return 0xFF0000;
+	}
+};
 
 export interface GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'>> {
 	data: Record<K, Omit<Query[K], '__typename'>>;

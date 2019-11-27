@@ -3,7 +3,7 @@ import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getPokemonDetailsByFuzzy, GraphQLPokemonResponse, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, POKEMON_GRAPHQL_API_URL } from '../../lib/util/Pokedex';
+import { getPokemonDetailsByFuzzy, GraphQLPokemonResponse, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, POKEMON_GRAPHQL_API_URL, resolveColour } from '../../lib/util/Pokemon';
 import { fetch, FetchResultTypes } from '../../lib/util/util';
 
 enum BaseStats {
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 
 			const embedTranslations = message.language.tget('COMMAND_POKEDEX_EMBED_DATA');
 			return message.sendEmbed(new MessageEmbed()
-				.setColor(this.resolveColour(poke.color))
+				.setColor(resolveColour(poke.color))
 				.setAuthor(`#${poke.num} - ${toTitleCase(poke.species)}`, POKEMON_EMBED_THUMBNAIL)
 				.setThumbnail(message.flagArgs.shiny ? poke.shinySprite : poke.sprite)
 				.addField(embedTranslations.TYPES, poke.types.join(', '), true)
@@ -119,33 +119,6 @@ export default class extends SkyraCommand {
 			}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<'getPokemonDetailsByFuzzy'>>;
 		} catch (err) {
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
-		}
-	}
-
-	private resolveColour(col: string) {
-		switch (col) {
-			case 'Black':
-				return 0x323232;
-			case 'Blue':
-				return 0x257CFF;
-			case 'Brown':
-				return 0xA3501A;
-			case 'Gray':
-				return 0x969696;
-			case 'Green':
-				return 0x3EFF4E;
-			case 'Pink':
-				return 0xFF65A5;
-			case 'Purple':
-				return 0xA63DE8;
-			case 'Red':
-				return 0xFF3232;
-			case 'White':
-				return 0xE1E1E1;
-			case 'Yellow':
-				return 0xFFF359;
-			default:
-				return 0xFF0000;
 		}
 	}
 

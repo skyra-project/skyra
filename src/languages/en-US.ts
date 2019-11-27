@@ -1712,19 +1712,32 @@ export default class extends Language {
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',
 		COMMAND_TYPE_EXTENDED: builder.display('type', {
-			extendedHelp: 'Queries the Pokémon API for the type matchups for one or two Pokémon types.',
+			extendedHelp: `
+				Queries the Pokémon API for the type matchups for one or two Pokémon types.
+				Types have to be exact matches to pokemon types (upper/lowercase can be ignored)
+			`,
 			explainedUsage: [
 				['type', 'The type(s) to look up']
 			],
 			examples: ['dragon', 'fire flying']
 		}),
-		COMMAND_TYPE_NOT_A_TYPE: type => `${type} is not a valid Pokémon type`,
 		COMMAND_TYPE_EMBED_DATA: {
 			OFFENSIVE: 'Offensive',
 			DEFENSIVE: 'Defensive',
+			SUPER_EFFECTIVE_AGAINST: 'Supereffective against',
+			DEALS_NORMAL_DAMAGE_TO: 'Deals normal damage to',
+			DOES_NOT_AFFECT: 'Doesn\'t affect',
+			NOT_VERY_EFFECTIVE_AGAINST: 'Not very effective against',
+			VULNERABLE_TO: 'Vulnerable to',
+			TAKES_NORMAL_DAMAGE_FROM: 'Takes normal damage from',
+			RESISTS: 'Resists',
+			NOT_AFFECTED_BY: 'Not affected by',
 			EXTERNAL_RESOURCES: 'External resources',
-			TYPE_EFFECTIVENESS_FOR: type => `Type effectiveness for ${type}`
+			TYPE_EFFECTIVENESS_FOR: types => `Type effectiveness for ${types.map(val => `\`${val}\``).join(' and ')}`
 		},
+		COMMAND_TYPE_TOO_MANY_TYPES: 'I am sorry, but you can get the matchup for at most 2 types',
+		COMMAND_TYPE_NOT_A_TYPE: type => `${type} is not a valid Pokémon type`,
+		COMMAND_TYPE_QUERY_FAIL: types => `I am sorry, but that query failed. Are you sure ${types.map(val => `\`${val}\``).join(' and ')} are actually types in Pokémon?`,
 
 		/**
 		 * ##################

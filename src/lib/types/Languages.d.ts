@@ -1,14 +1,14 @@
-import { SchemaEntry, ScheduledTask } from 'klasa';
-import { Song } from '../structures/music/Song';
-import { Kitsu } from './definitions/Kitsu';
+import { Moves, Pokemon } from '@favware/graphql-pokemon';
+import { GuildMember, PermissionString, Role, User } from 'discord.js';
+import { ScheduledTask, SchemaEntry } from 'klasa';
 import { HungerGamesGame } from '../../commands/Games/hungergames';
-import { User, Role, GuildMember, PermissionString } from 'discord.js';
-import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/stats';
-import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
-import { ProfileTitles } from '../../commands/Social/profile';
 import { LevelTitles } from '../../commands/Social/level';
+import { ProfileTitles } from '../../commands/Social/profile';
+import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/stats';
+import { Song } from '../structures/music/Song';
+import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
+import { Kitsu } from './definitions/Kitsu';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
-import { Types, Pokemon, Moves } from '@favware/graphql-pokemon';
 
 export const enum Position {
 	Before,
@@ -270,13 +270,23 @@ export interface LanguageKeys {
 	COMMAND_POKEDEX_QUERY_FAIL: (pokemon: string) => string;
 	COMMAND_TYPE_DESCRIPTION: string;
 	COMMAND_TYPE_EXTENDED: string;
-	COMMAND_TYPE_NOT_A_TYPE: (type: Types) => string;
 	COMMAND_TYPE_EMBED_DATA: {
 		OFFENSIVE: string;
 		DEFENSIVE: string;
+		SUPER_EFFECTIVE_AGAINST: string;
+		DEALS_NORMAL_DAMAGE_TO: string;
+		DOES_NOT_AFFECT: string;
+		NOT_VERY_EFFECTIVE_AGAINST: string;
+		VULNERABLE_TO: string;
+		TAKES_NORMAL_DAMAGE_FROM: string;
+		RESISTS: string;
+		NOT_AFFECTED_BY: string;
 		EXTERNAL_RESOURCES: string;
-		TYPE_EFFECTIVENESS_FOR: (type: string) => string;
+		TYPE_EFFECTIVENESS_FOR: (type: string[]) => string;
 	};
+	COMMAND_TYPE_TOO_MANY_TYPES: string;
+	COMMAND_TYPE_NOT_A_TYPE: (type: string) => string;
+	COMMAND_TYPE_QUERY_FAIL: (types: string[]) => string;
 	INHIBITOR_MUSIC_QUEUE_EMPTY: string;
 	INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: string;
 	INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: string;

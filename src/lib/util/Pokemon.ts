@@ -1,4 +1,4 @@
-import { Query, Pokemon, Abilities, Items, Moves, Types } from '@favware/graphql-pokemon';
+import { Query, Pokemon, Abilities, Items, Moves } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '../../../config';
 
 const AbilityFragment = `
@@ -257,12 +257,12 @@ ${MoveFragment}
     }
 }`;
 
-export const getTypeMatchup = (types: Types[]) => `
+export const getTypeMatchup = (types: string[]) => `
 ${TypeMatchupFragment}
 
 {
-    getMoveDetailsByFuzzy(types: ${types}) {
-        ...typesMatchup
+    getTypeMatchup(types: ${types}) {
+        ...typesMatchups
     }
 }`;
 

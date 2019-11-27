@@ -1691,19 +1691,32 @@ export default class extends Language {
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Da los emparejamientos de tipos para uno o dos tipos de Pokémon.',
 		COMMAND_TYPE_EXTENDED: builder.display('type', {
-			extendedHelp: 'Consulta la API de Pokémon para los emparejamientos de tipos para uno o dos tipos de Pokémon.',
+			extendedHelp: `
+				Consulta la API de Pokémon para los emparejamientos de tipos para uno o dos tipos de Pokémon.
+				Los tipos deben ser coincidencias exactas con los tipos de pokemon (se pueden ignorar mayúsculas / minúsculas)
+			`,
 			explainedUsage: [
 				['tipo', 'El tipo(s) para buscar']
 			],
 			examples: ['dragon', 'fire flying']
 		}),
-		COMMAND_TYPE_NOT_A_TYPE: type => `${type} no es un tipo de Pokémon válido`,
 		COMMAND_TYPE_EMBED_DATA: {
 			OFFENSIVE: 'Ofensivo',
 			DEFENSIVE: 'Defensivo',
+			SUPER_EFFECTIVE_AGAINST: 'Súper efectivo contra',
+			DEALS_NORMAL_DAMAGE_TO: 'Inflige daño normal a',
+			DOES_NOT_AFFECT: 'No afecta',
+			NOT_VERY_EFFECTIVE_AGAINST: 'No muy efectivo contra',
+			VULNERABLE_TO: 'Vulnerable a',
+			TAKES_NORMAL_DAMAGE_FROM: 'Toma daño normal de',
+			RESISTS: 'Resiste',
+			NOT_AFFECTED_BY: 'No afectado por',
 			EXTERNAL_RESOURCES: 'Recursos externos',
-			TYPE_EFFECTIVENESS_FOR: type => `Tipo de efectividad para ${type}`
+			TYPE_EFFECTIVENESS_FOR: types => `Tipo de efectividad para ${types.map(val => `\`${val}\``).join(' and ')}`
 		},
+		COMMAND_TYPE_TOO_MANY_TYPES: 'Lo siento, pero puedes obtener el emparejamiento para 2 tipos como máximo',
+		COMMAND_TYPE_NOT_A_TYPE: type => `${type} no es un tipo de Pokémon válido`,
+		COMMAND_TYPE_QUERY_FAIL: types => `Lo siento, pero esa consulta falló. ¿Estás seguro de que los ${types.map(val => `\`${val}\``).join(' and ')} son realmente tipos en Pokémon?`,
 
 		/**
 		 * ##################

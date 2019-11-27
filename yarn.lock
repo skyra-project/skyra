@@ -23,10 +23,10 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.3.tgz#af9b1c22ccb2ee5c0cad1e1bd2bc3d82a817b05f"
   integrity sha512-4ek19SmNcPI92942RkuBrZrBK8hg7nG+ae/skkNNDeOaUG+XvxTPkv/jPZVgXwVPDkU5EFsewsI+0n4dTwFvgA==
 
-"@favware/graphql-pokemon@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-1.0.1.tgz#f20315f07edb2f3ccc7c3b935b6c0c9de1e0b9da"
-  integrity sha512-rQN1gj3NLnGIs45dkY6iFtE7vxAcjbSCBbGsoEum4kXo5mCUzdMB5Gv3bN+e7uSQiZ8XJmi0eRl9sfUJkDpL7w==
+"@favware/graphql-pokemon@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-1.1.1.tgz#0e1fefdd2ac157742ca2db3a3b87cf072875d3f4"
+  integrity sha512-QGsegUOFf+FZyf1I59k14vY6Cxh5KV31JU5o0BPtrxZXp3qS5EO7EVSYWJihKOds19c7f6wfLBPM5s0SEkv+6w==
   dependencies:
     graphql "^14.5.8"
 
@@ -187,11 +187,11 @@ ajv@^6.10.0, ajv@^6.10.2:
     uri-js "^4.2.2"
 
 ansi-escapes@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-4.2.1.tgz#4dccdb846c3eee10f6d64dea66273eab90c37228"
-  integrity sha512-Cg3ymMAdN10wOk/VYfLV7KCQyv7EDirJ64500sU7n9UlmioEtDuU5Gd+hj73hXSU/ex7tHJSssmyftDdkMLO8Q==
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-4.3.0.tgz#a4ce2b33d6b214b7950d8595c212f12ac9cc569d"
+  integrity sha512-EiYhwo0v255HUL6eDyuLrXEkTi7WwVCLAw+SeOQ7M7qdun1z1pum4DEm/nuqIVbPvi9RPPc9k9LbyBv6H0DwVg==
   dependencies:
-    type-fest "^0.5.2"
+    type-fest "^0.8.1"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -1654,11 +1654,6 @@ type-check@~0.3.2:
   integrity sha1-WITKtRLPHTVeP7eE8wgEsrUg23I=
   dependencies:
     prelude-ls "~1.1.2"
-
-type-fest@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.5.2.tgz#d6ef42a0356c6cd45f49485c3b6281fc148e48a2"
-  integrity sha512-DWkS49EQKVX//Tbupb9TFa19c7+MK1XmzkrZUR8TAktmE/DizXoaoJV6TZ/tSIPXipqNiRI6CyAe7x69Jb6RSw==
 
 type-fest@^0.8.1:
   version "0.8.1"

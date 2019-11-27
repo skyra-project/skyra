@@ -150,6 +150,7 @@ export const TOKENS = {
 	TWITCH_CLIENT_ID: '',
 	TWITCH_SECRET: '',
 	TWITCH_WEBHOOK_SECRET: '',
+	MIXER_CLIENT_ID: '',
 	WEEB_SH_KEY: '',
 	WOLFRAM_KEY: ''
 };

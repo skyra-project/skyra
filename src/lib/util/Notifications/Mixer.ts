@@ -17,7 +17,7 @@ export class Mixer {
 	public readonly BASE_URL_V2 = 'https://mixer.com/api/v2/';
 
 	@enumerable(false)
-	private readonly $clientID = TOKENS.MIXER.CLIENT_ID;
+	private readonly $clientID = TOKENS.MIXER_CLIENT_ID;
 
 	@enumerable(false)
 	private readonly kFetchOptions = {

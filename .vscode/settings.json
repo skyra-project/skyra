@@ -1,5 +1,7 @@
 {
 	"eslint.validate": [
 		{ "language": "typescript", "autoFix": true}
-	]
+	],
+	"editor.tabSize": 4,
+	"files.eol": "\n"
 }

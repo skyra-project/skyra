@@ -30,7 +30,7 @@ export default class extends MusicCommand {
 			return;
 		}
 
-		// If Aelia is not in a voice channel, join
+		// If Skyra is not in a voice channel, join
 		if (!music.voiceChannel) {
 			await this.client.commands.get('join')!.run(message, []);
 		}

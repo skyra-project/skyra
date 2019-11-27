@@ -8,7 +8,7 @@ import { cutText, fetch, getColor, FetchResultTypes } from '../../../lib/util/ut
 import { decode } from 'he';
 import { BrandingColors } from '../../../lib/util/constants';
 
-const API_URL = `https://${TOKENS.NINTENDO.ID}-dsn.algolia.net/1/indexes/*/queries`;
+const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 
 export default class extends SkyraCommand {
 
@@ -42,8 +42,8 @@ export default class extends SkyraCommand {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Algolia-API-Key': TOKENS.NINTENDO.KEY,
-				'X-Algolia-Application-Id': TOKENS.NINTENDO.ID
+				'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,
+				'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
 			},
 			body: JSON.stringify(
 				{

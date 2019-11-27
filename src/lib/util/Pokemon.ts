@@ -6,7 +6,6 @@ fragment ability on AbilityEntry {
     desc
     shortDesc
     name
-    num
     bulbapediaPage
     serebiiPage
     smogonPage
@@ -164,6 +163,7 @@ fragment moves on MoveEntry {
     type
     basePower
     pp
+    category
     accuracy
     priority
     target
@@ -171,7 +171,10 @@ fragment moves on MoveEntry {
     bulbapediaPage
     serebiiPage
     smogonPage
-    category
+    isNonstandard
+    isZ
+    isGMax
+    desc
 }`;
 
 const TypeEntryFragment = `

@@ -2,7 +2,13 @@ import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getItemDetailsByFuzzy, GraphQLPokemonResponse, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, POKEMON_GRAPHQL_API_URL } from '../../lib/util/Pokemon';
+import {
+	getItemDetailsByFuzzy,
+	GraphQLPokemonResponse,
+	parseBulbapediaURL,
+	POKEMON_EMBED_THUMBNAIL,
+	POKEMON_GRAPHQL_API_URL
+} from '../../lib/util/Pokemon';
 import { fetch, FetchResultTypes, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
@@ -18,7 +24,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [item]: [string]) {
+	public async run(message: KlasaMessage, [item]: [ string ]) {
 		try {
 			const { getItemDetailsByFuzzy: itemDetails } = (await this.fetchAPI(message, item.toLowerCase())).data;
 
@@ -26,10 +32,10 @@ export default class extends SkyraCommand {
 			return message.sendEmbed(new MessageEmbed()
 				.setColor(getColor(message))
 				.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, POKEMON_EMBED_THUMBNAIL)
-				.setThumbnail((itemDetails as any).sprite)
-				.addField(embedTranslations.DESCRIPTION, itemDetails.desc)
-				.addField(embedTranslations.GENERATION_INTRODUCED, (itemDetails as any).generationIntroduced, true)
-				.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA((itemDetails as any).isNonstandard !== 'Past'), true)
+				.setThumbnail(itemDetails.sprite)
+				.setDescription(itemDetails.desc)
+				.addField(embedTranslations.GENERATION_INTRODUCED, itemDetails.generationIntroduced, true)
+				.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(itemDetails.isNonstandard !== 'Past'), true)
 				.addField(embedTranslations.EXTERNAL_RESOURCES, [
 					`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
 					`[Serebii](${itemDetails.serebiiPage})`,
@@ -41,19 +47,18 @@ export default class extends SkyraCommand {
 	}
 
 	private async fetchAPI(message: KlasaMessage, item: string) {
-		try {
-			return await fetch(POKEMON_GRAPHQL_API_URL, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					query: getItemDetailsByFuzzy(item)
-				})
-			}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<'getItemDetailsByFuzzy'>>;
-		} catch (err) {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
-		}
+		return fetch(POKEMON_GRAPHQL_API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				query: getItemDetailsByFuzzy(item)
+			})
+		}, FetchResultTypes.JSON)
+			.catch(() => {
+				throw message.language.tget('SYSTEM_QUERY_FAIL');
+			}) as Promise<GraphQLPokemonResponse<'getItemDetailsByFuzzy'>>;
 	}
 
 }

@@ -201,7 +201,6 @@ export interface LanguageKeys {
 	COMMAND_ABILITY_EXTENDED: string;
 	COMMAND_ABILITY_EMEBED_DATA: {
 		ABILITY: string;
-		DESCRIPTION: string;
 		EXTERNAL_RESOURCES: string;
 	};
 	COMMAND_ABILITY_QUERY_FAIL: (ability: string) => string;
@@ -212,7 +211,6 @@ export interface LanguageKeys {
 	COMMAND_ITEM_EXTENDED: string;
 	COMMAND_ITEM_EMEBED_DATA: {
 		ITEM: string;
-		DESCRIPTION: string;
 		GENERATION_INTRODUCED: string;
 		AVAILABLE_IN_GENERATION_8_TITLE: string;
 		AVAILABLE_IN_GENERATION_8_DATA: (available: boolean) => string;
@@ -231,6 +229,26 @@ export interface LanguageKeys {
 		THROUGH_DREAMWORLD: string;
 	};
 	COMMAND_LEARN_METHOD: (generation: number, pokemon: Pokemon, move: Moves, method: LanguageKeys['COMMAND_LEARN_METHOD_TYPES']) => string;
+	COMMAND_MOVE_DESCRIPTION: string;
+	COMMAND_MOVE_EXTENDED: string;
+	COMMAND_MOVE_EMBED_DATA: {
+		MOVE: string;
+		TYPE: string;
+		BASE_POWER: string;
+		PP: string;
+		CATEGORY: string;
+		ACCURACY: string;
+		PRIORITY: string;
+		TARGET: string;
+		CONTEST_CONDITION: string;
+		Z_CRYSTAL: string;
+		GMAX_POKEMON: string;
+		AVAILABLE_IN_GENERATION_8_TITLE: string;
+		AVAILABLE_IN_GENERATION_8_DATA: (available: boolean) => string;
+		EXTERNAL_RESOURCES: string;
+		NONE: string;
+	};
+	COMMAND_MOVE_QUERY_FAIL: (move: string) => string;
 	COMMAND_POKEDEX_DESCRIPTION: string;
 	COMMAND_POKEDEX_EXTENDED: string;
 	COMMAND_POKEDEX_EMBED_DATA: {

@@ -1574,7 +1574,6 @@ export default class extends Language {
 		}),
 		COMMAND_ABILITY_EMEBED_DATA: {
 			ABILITY: 'Habilidad',
-			DESCRIPTION: 'Descripción',
 			EXTERNAL_RESOURCES: 'Recursos externos'
 		},
 		COMMAND_ABILITY_QUERY_FAIL: ability => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
@@ -1604,7 +1603,6 @@ export default class extends Language {
 		}),
 		COMMAND_ITEM_EMEBED_DATA: {
 			ITEM: 'Ítem',
-			DESCRIPTION: 'Descripción',
 			GENERATION_INTRODUCED: 'Generación introducida',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
 			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Sí' : 'No',
@@ -1633,6 +1631,35 @@ export default class extends Language {
 			THROUGH_DREAMWORLD: 'a través de una captura de Pokémon Dream World'
 		},
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
+		COMMAND_MOVE_DESCRIPTION: 'Consulta la API graphql-pokemon para obtener datos sobre cualquier movimiento Pokémon',
+		COMMAND_MOVE_EXTENDED: builder.display('move', {
+			extendedHelp: `
+				Consulta la API de Pokemon sobre los datos de un movimiento determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+			`,
+			explainedUsage: [
+				['movimiento', 'El movimiento para el que desea buscar datos']
+			],
+			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova']
+		}),
+		COMMAND_MOVE_EMBED_DATA: {
+			MOVE: 'Movimiento',
+			TYPE: 'Tipo',
+			BASE_POWER: 'Potencia',
+			PP: 'PP',
+			CATEGORY: 'Categoría',
+			ACCURACY: 'Precisión',
+			PRIORITY: 'Movimiento con prioridad',
+			TARGET: 'Objetivo',
+			CONTEST_CONDITION: 'Cualidad',
+			Z_CRYSTAL: 'Cristal Z',
+			GMAX_POKEMON: 'Gigamax Pokémon',
+			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
+			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Sí' : 'No',
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			NONE: 'Ninguno'
+		},
+		COMMAND_MOVE_QUERY_FAIL: (move: string) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${move}\` es realmente un movimiento en Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
 		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
 			extendedHelp: `

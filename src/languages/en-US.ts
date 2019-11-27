@@ -1595,7 +1595,6 @@ export default class extends Language {
 		}),
 		COMMAND_ABILITY_EMEBED_DATA: {
 			ABILITY: 'Ability',
-			DESCRIPTION: 'Description',
 			EXTERNAL_RESOURCES: 'External resources'
 		},
 		COMMAND_ABILITY_QUERY_FAIL: ability => `I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
@@ -1625,7 +1624,6 @@ export default class extends Language {
 		}),
 		COMMAND_ITEM_EMEBED_DATA: {
 			ITEM: 'Item',
-			DESCRIPTION: 'Description',
 			GENERATION_INTRODUCED: 'Generation introduced',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in generation 8',
 			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Yes' : 'No',
@@ -1654,6 +1652,35 @@ export default class extends Language {
 			THROUGH_DREAMWORLD: 'through a Dream World capture'
 		},
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
+		COMMAND_MOVE_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon move',
+		COMMAND_MOVE_EXTENDED: builder.display('move', {
+			extendedHelp: `
+				Queries the Pokemon API on data on a given move.
+				Uses a fuzzy search to also match against near-matches.
+			`,
+			explainedUsage: [
+				['move', 'The move for which you want to find data']
+			],
+			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova']
+		}),
+		COMMAND_MOVE_EMBED_DATA: {
+			MOVE: 'Move',
+			TYPE: 'Type',
+			BASE_POWER: 'Base Power',
+			PP: 'PP',
+			CATEGORY: 'Category',
+			ACCURACY: 'Accuracy',
+			PRIORITY: 'Priority',
+			TARGET: 'Target',
+			CONTEST_CONDITION: 'Contest Condition',
+			Z_CRYSTAL: 'Z-Crystal',
+			GMAX_POKEMON: 'G-MAX Pokémon',
+			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in Generation 8',
+			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Yes' : 'No',
+			EXTERNAL_RESOURCES: 'External Resources',
+			NONE: 'None'
+		},
+		COMMAND_MOVE_QUERY_FAIL: (move: string) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon',
 		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
 			extendedHelp: `

@@ -149,3 +149,11 @@ export interface User {
 	avatar: string;
 	bot?: boolean;
 }
+
+export interface OauthData {
+	access_token: string;
+	expires_in: number;
+	refresh_token: string;
+	scope: string;
+	token_type: string;
+}

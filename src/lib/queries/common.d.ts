@@ -3,6 +3,7 @@ import { RawModerationSettings } from '../types/settings/raw/RawModerationSettin
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
 
 export interface CommonQuery {
 	deleteGiveaway(guildID: string, messageID: string): Promise<unknown>;
@@ -14,6 +15,7 @@ export interface CommonQuery {
 	deleteTwitchStreamSubscription(streamerID: string, guildID: string): Promise<boolean>;
 	deleteTwitchStreamSubscriptions(streamers: readonly string[]): Promise<unknown>;
 	purgeTwitchStreamGuildSubscriptions(guildID: string): Promise<UpdatePurgeTwitchStreamReturning[]>;
+	fetchDashboardUser(id: string): Promise<DashboardUser | null>;
 	fetchGiveawaysFromGuilds(guildIDs: readonly string[]): Promise<RawGiveawaySettings[]>;
 	fetchLeaderboardGlobal(): Promise<LeaderboardEntry[]>;
 	fetchLeaderboardLocal(guildID: string): Promise<LeaderboardEntry[]>;
@@ -28,6 +30,7 @@ export interface CommonQuery {
 	fetchTwitchStreamSubscription(streamerID: string): Promise<TwitchStreamSubscriptionSettings | null>;
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
 	insertCommandUseCounter(command: string): Promise<unknown>;
+	insertDashboardUser(entry: RawDashboardUserSettings): Promise<unknown>;
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	insertStar(entry: RawStarboardSettings): Promise<unknown>;
@@ -38,6 +41,13 @@ export interface CommonQuery {
 	upsertMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettingsDifference(guildID: string, userID: string, points: number): Promise<UpsertMemberSettingsReturningDifference>;
 	upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds?: number): Promise<boolean>;
+}
+
+export interface DashboardUser {
+	id: string;
+	accessToken: string;
+	refreshToken: string;
+	expiresAt: number;
 }
 
 export interface LeaderboardEntry {

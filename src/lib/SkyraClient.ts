@@ -134,7 +134,9 @@ export class SkyraClient extends KlasaClient {
 			.register(new GatewayStorage(this, Databases.Giveaway))
 			.register(new GatewayStorage(this, Databases.Moderation))
 			.register(new GatewayStorage(this, Databases.Starboard))
-			.register(new GatewayStorage(this, Databases.CommandCounter));
+			.register(new GatewayStorage(this, Databases.CommandCounter))
+			.register(new GatewayStorage(this, Databases.TwitchStreamSubscriptions))
+			.register(new GatewayStorage(this, Databases.DashboardUsers));
 
 		// Register the API handler
 		this.registerStore(this.ipcMonitors);

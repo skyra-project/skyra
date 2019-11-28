@@ -17,6 +17,8 @@ export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
 export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
+export const REDIRECT_URI = 'http://localhost:3000/oauth/callback';
+export const SCOPE = 'identify guilds';
 export const LAVALINK_PASSWORD = '';
 export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 

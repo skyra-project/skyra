@@ -8,6 +8,7 @@ import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
 
 export class JsonCommonQuery implements CommonQuery {
 
@@ -85,6 +86,24 @@ export class JsonCommonQuery implements CommonQuery {
 		}
 
 		return Promise.all(updates);
+	}
+
+	public async fetchDashboardUser(id: string) {
+		const raw = await this.provider.get(Databases.DashboardUsers, id) as RawDashboardUserSettings | null;
+		if (raw === null) return null;
+
+		const expiresAt = Number(raw.expires_at);
+		if (Date.now() > expiresAt) {
+			await this.provider.delete(Databases.DashboardUsers, id);
+			return null;
+		}
+
+		return {
+			id,
+			expiresAt,
+			accessToken: raw.access_token,
+			refreshToken: raw.refresh_token
+		};
 	}
 
 	public async fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {
@@ -186,6 +205,10 @@ export class JsonCommonQuery implements CommonQuery {
 		const value = await this.provider.get(Databases.CommandCounter, command) as { id: string; uses: number };
 		if (value) await this.provider.update(Databases.CommandCounter, command, { uses: value.uses + 1 });
 		else await this.provider.create(Databases.CommandCounter, command, { uses: 1 });
+	}
+
+	public insertDashboardUser(entry: RawDashboardUserSettings) {
+		return this.provider.create(Databases.DashboardUsers, entry.id, entry);
 	}
 
 	public insertGiveaway(entry: RawGiveawaySettings) {

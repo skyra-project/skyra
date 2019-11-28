@@ -7,5 +7,6 @@ export const enum Databases {
 	Starboard = 'starboard',
 	Users = 'users',
 	CommandCounter = 'command_counter',
-	TwitchStreamSubscriptions = 'twitch_stream_subscriptions'
+	TwitchStreamSubscriptions = 'twitch_stream_subscriptions',
+	DashboardUsers = 'dashboard_users'
 }

@@ -24,10 +24,9 @@
 /src/lib/util/Notifications/ @quantumlytangled
 /src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled
 /src/lib/types/definitions/Twitch.d.ts @quantumlytangled
-/docker/ @quantumlytangled
+/docker/influxdb/ @quantumlytangled
 
 # Magna
 /src/routes/ @gc
 /src/middlewares/ @gc
 /src/lib/structures/api/ @gc
-

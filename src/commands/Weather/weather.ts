@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		const localityOrCountry = locality! ? country! : '';
 		const state = locality! && governing! ? governing! : localityOrCountry || '';
 
-		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.GOOGLE_WEATHER_KEY}/${params}?exclude=minutely,hourly,flags&units=si`, FetchResultTypes.JSON) as WeatherResultOk;
+		const { currently } = await fetch(`https://api.darksky.net/forecast/${TOKENS.DARKSKY_WEATHER_KEY}/${params}?exclude=minutely,hourly,flags&units=si`, FetchResultTypes.JSON) as WeatherResultOk;
 
 		const { icon } = currently;
 		const condition = currently.summary;

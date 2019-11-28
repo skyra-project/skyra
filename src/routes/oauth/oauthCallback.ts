@@ -59,8 +59,7 @@ export default class extends Route {
 			access_token: Util.encrypt({
 				user_id: user.id,
 				token: body.access_token
-			},
-			this.client.options.clientSecret),
+			}, this.client.options.clientSecret),
 			user
 		}));
 

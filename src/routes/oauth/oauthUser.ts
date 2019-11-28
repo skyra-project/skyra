@@ -1,4 +1,4 @@
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import { ratelimit, authenticated, fetch, FetchResultTypes } from '../../lib/util/util';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
@@ -45,8 +45,13 @@ export default class extends Route {
 
 			try {
 				const user = await this.api(data.accessToken);
-				// TODO(kyranet): Send token alongside the user
-				return response.json({ user });
+				return response.json({
+					access_token: Util.encrypt({
+						user_id: user.id,
+						token: data.accessToken
+					}, this.client.options.clientSecret),
+					user
+				});
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);
 				return response.error(500);

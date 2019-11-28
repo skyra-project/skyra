@@ -4,10 +4,11 @@ import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { Events } from '../../lib/types/Enums';
 import { Time, Mime } from '../../lib/util/constants';
-import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '../../../config';
+import { REDIRECT_URI, SCOPE } from '../../../config';
 import { OauthData } from '../../lib/types/DiscordAPI';
 import { Databases } from '../../lib/types/constants/Constants';
 import { DashboardUser } from '../../lib/queries/common';
+import { stringify } from 'querystring';
 
 export default class extends Route {
 
@@ -60,9 +61,9 @@ export default class extends Route {
 			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
 			const data = await fetch('https://discordapp.com/api/v6/oauth2/token', {
 				method: 'POST',
-				body: JSON.stringify({
-					client_id: CLIENT_ID,
-					client_secret: CLIENT_SECRET,
+				body: stringify({
+					client_id: this.client.options.clientID,
+					client_secret: this.client.options.clientSecret,
 					grant_type: 'refresh_token',
 					refresh_token: refreshToken,
 					redirect_uri: REDIRECT_URI,

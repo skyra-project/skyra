@@ -6,6 +6,7 @@ import ApiResponse from '../../lib/structures/api/ApiResponse';
 import OauthUser from './oauthUser';
 import { ratelimit } from '../../lib/util/util';
 import { OauthData } from '../../lib/types/DiscordAPI';
+import { Time } from '../../lib/util/constants';
 
 export default class extends Route {
 
@@ -49,7 +50,7 @@ export default class extends Route {
 
 		await this.client.queries.insertDashboardUser({
 			id: user.id,
-			expires_at: (Date.now() + body.expires_in).toString(),
+			expires_at: (Date.now() + (body.expires_in * Time.Second)).toString(),
 			access_token: body.access_token,
 			refresh_token: body.refresh_token
 		});

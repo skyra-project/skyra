@@ -44,7 +44,7 @@ export default class extends Route {
 
 			try {
 				const user = await this.api(data.accessToken);
-				// TODO: Send token alongside the user
+				// TODO(kyranet): Send token alongside the user
 				return response.json({ user });
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);

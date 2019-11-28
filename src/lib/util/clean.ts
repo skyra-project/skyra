@@ -34,8 +34,10 @@ const zws = String.fromCharCode(8203);
  * @param text The text to clean
  */
 export function clean(text: string) {
-	if (typeof sensitivePattern === 'undefined')
+	if (typeof sensitivePattern === 'undefined') {
 		throw new Error('initClean must be called before running this.');
+	}
+
 	return text
 		.replace(sensitivePattern, '「ｒｅｄａｃｔｅｄ」')
 		.replace(/`/g, `\`${zws}`)

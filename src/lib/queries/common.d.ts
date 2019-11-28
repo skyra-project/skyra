@@ -14,6 +14,7 @@ export interface CommonQuery {
 	deleteTwitchStreamSubscription(streamerID: string, guildID: string): Promise<boolean>;
 	deleteTwitchStreamSubscriptions(streamers: readonly string[]): Promise<unknown>;
 	purgeTwitchStreamGuildSubscriptions(guildID: string): Promise<UpdatePurgeTwitchStreamReturning[]>;
+	fetchDashboardUser(id: string): Promise<DashboardUser | null>;
 	fetchGiveawaysFromGuilds(guildIDs: readonly string[]): Promise<RawGiveawaySettings[]>;
 	fetchLeaderboardGlobal(): Promise<LeaderboardEntry[]>;
 	fetchLeaderboardLocal(guildID: string): Promise<LeaderboardEntry[]>;
@@ -38,6 +39,13 @@ export interface CommonQuery {
 	upsertMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettingsDifference(guildID: string, userID: string, points: number): Promise<UpsertMemberSettingsReturningDifference>;
 	upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds?: number): Promise<boolean>;
+}
+
+export interface DashboardUser {
+	id: string;
+	accessToken: string;
+	refreshToken: string;
+	expiresAt: number;
 }
 
 export interface LeaderboardEntry {

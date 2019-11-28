@@ -1,10 +1,13 @@
-import fetch from 'node-fetch';
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import { ratelimit, authenticated } from '../../lib/util/util';
+import { ratelimit, authenticated, fetch, FetchResultTypes } from '../../lib/util/util';
 import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import { Events } from '../../lib/types/Enums';
-import { Time } from '../../lib/util/constants';
+import { Time, Mime } from '../../lib/util/constants';
+import { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE } from '../../../config';
+import { OauthData } from '../../lib/types/DiscordAPI';
+import { Databases } from '../../lib/types/constants/Constants';
+import { DashboardUser } from '../../lib/queries/common';
 
 export default class extends Route {
 
@@ -15,10 +18,8 @@ export default class extends Route {
 
 	public async api(token: string) {
 		token = `Bearer ${token}`;
-		const user = await fetch('https://discordapp.com/api/users/@me', { headers: { Authorization: token } })
-			.then(result => result.json());
-		user.guilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } })
-			.then(result => result.json());
+		const user = await fetch('https://discordapp.com/api/users/@me', { headers: { Authorization: token } }, FetchResultTypes.JSON) as { guilds: unknown };
+		user.guilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON);
 		return this.client.dashboardUsers.add(user);
 	}
 
@@ -31,8 +32,19 @@ export default class extends Route {
 		}
 
 		if (requestBody.action === 'SYNC_USER') {
+			let data = await this.client.queries.fetchDashboardUser(request.auth!.user_id);
+			if (data === null) return response.error(401);
+
+			// If the token expires in a day, refresh
+			// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+			if (Date.now() + Time.Day > data.expiresAt) {
+				const updated = await this.refreshToken(data.id, data.refreshToken);
+				if (updated !== null) data = updated;
+			}
+
 			try {
-				const user = await this.api(request.auth!.token);
+				const user = await this.api(data.accessToken);
+				// TODO: Send token alongside the user
 				return response.json({ user });
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);
@@ -41,6 +53,45 @@ export default class extends Route {
 		}
 
 		return response.error(400);
+	}
+
+	private async refreshToken(id: string, refreshToken: string) {
+		try {
+			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
+			const data = await fetch('https://discordapp.com/api/v6/oauth2/token', {
+				method: 'POST',
+				body: JSON.stringify({
+					client_id: CLIENT_ID,
+					client_secret: CLIENT_SECRET,
+					grant_type: 'refresh_token',
+					refresh_token: refreshToken,
+					redirect_uri: REDIRECT_URI,
+					scope: SCOPE
+				}),
+				headers: {
+					'Content-Type': Mime.Types.ApplicationFormUrlEncoded
+				}
+			}, FetchResultTypes.JSON) as OauthData;
+
+			const expiresAt = Date.now() + data.expires_in;
+			await this.client.providers.default.update(Databases.DashboardUsers, id, {
+				expires_at: expiresAt,
+				access_token: data.access_token,
+				refresh_token: data.refresh_token
+			});
+
+			const updated: DashboardUser = {
+				id,
+				expiresAt,
+				accessToken: data.access_token,
+				refreshToken: data.refresh_token
+			};
+
+			return updated;
+		} catch (error) {
+			this.client.emit(Events.Wtf, error);
+			return null;
+		}
 	}
 
 }

@@ -7,6 +7,7 @@ import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { Databases } from '../types/constants/Constants';
+import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -113,6 +114,24 @@ export class PostgresCommonQuery implements CommonQuery {
 				$1 = ANY(guild_ids)
 			RETURNING id, guild_ids;
 		`, [guildID]);
+	}
+
+	public async fetchDashboardUser(id: string) {
+		const raw = await this.provider.get(Databases.DashboardUsers, id) as RawDashboardUserSettings | null;
+		if (raw === null) return null;
+
+		const expiresAt = Number(raw.expires_at);
+		if (Date.now() > expiresAt) {
+			await this.provider.delete(Databases.DashboardUsers, id);
+			return null;
+		}
+
+		return {
+			id,
+			expiresAt,
+			accessToken: raw.access_token,
+			refreshToken: raw.refresh_token
+		};
 	}
 
 	public fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {

@@ -87,6 +87,23 @@ export class JsonCommonQuery implements CommonQuery {
 		return Promise.all(updates);
 	}
 
+	public async fetchDashboardUser(id: string) {
+		const raw = await this.provider.get(Databases.DashboardUsers, id) as RawDashboardUserSettingsJson | null;
+		if (raw === null) return null;
+
+		if (Date.now() > raw.expires_at) {
+			await this.provider.delete(Databases.DashboardUsers, id);
+			return null;
+		}
+
+		return {
+			id,
+			expiresAt: raw.expires_at,
+			accessToken: raw.access_token,
+			refreshToken: raw.refresh_token
+		};
+	}
+
 	public async fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {
 		const ids = guildIDs.map(guildID => `${guildID}.`);
 		const keys = await this.provider.getKeys(Databases.Giveaway);
@@ -277,4 +294,11 @@ export class JsonCommonQuery implements CommonQuery {
 		return true;
 	}
 
+}
+
+interface RawDashboardUserSettingsJson {
+	id: string;
+	access_token: string;
+	refresh_token: string;
+	expires_at: number;
 }

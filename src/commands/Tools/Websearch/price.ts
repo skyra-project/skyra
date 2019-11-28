@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('tsyms', toCurrency);
 
 		const body = await fetch(url, {
-			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE}`]]
+			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE_KEY}`]]
 		}, FetchResultTypes.JSON) as CryptoCompareResultOk | CryptoCompareResultError;
 
 		if (body.Response === 'Error') throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');

@@ -7,6 +7,7 @@ import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { Databases } from '../types/constants/Constants';
+import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -113,6 +114,30 @@ export class PostgresCommonQuery implements CommonQuery {
 				$1 = ANY(guild_ids)
 			RETURNING id, guild_ids;
 		`, [guildID]);
+	}
+
+	public async fetchDashboardUser(id: string) {
+		const raw = await this.provider.runOne(/* sql */`
+			SELECT *
+			FROM dashboard_users
+			WHERE
+				id = ${this.provider.cString(id)}
+			LIMIT 1;
+		`) as RawDashboardUserSettings | null;
+		if (raw === null) return null;
+
+		const expiresAt = Number(raw.expires_at);
+		if (Date.now() > expiresAt) {
+			await this.provider.delete(Databases.DashboardUsers, id);
+			return null;
+		}
+
+		return {
+			id,
+			expiresAt,
+			accessToken: raw.access_token,
+			refreshToken: raw.refresh_token
+		};
 	}
 
 	public fetchGiveawaysFromGuilds(guildIDs: readonly string[]) {
@@ -279,6 +304,23 @@ export class PostgresCommonQuery implements CommonQuery {
 				UPDATE
 				SET uses = command_counter.uses + 1;
 		`, [command]);
+	}
+
+	public insertDashboardUser(entry: RawDashboardUserSettings) {
+		const id = this.provider.cString(entry.id);
+		const aToken = this.provider.cString(entry.access_token);
+		const rToken = this.provider.cString(entry.refresh_token);
+		const eAt = `'${entry.expires_at}'`;
+		return this.provider.run(/* sql */`
+			INSERT INTO dashboard_users ("id", "access_token", "refresh_token", "expires_at")
+			VALUES (${id}, ${aToken}, ${rToken}, ${eAt})
+			ON CONFLICT ON CONSTRAINT dashboard_users_user_idx
+			DO
+				UPDATE
+				SET access_token = ${aToken},
+					refresh_token = ${rToken},
+					expires_at = ${eAt};
+		`);
 	}
 
 	public insertGiveaway(entry: RawGiveawaySettings) {

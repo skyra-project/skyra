@@ -5,6 +5,8 @@ import ApiRequest from '../../lib/structures/api/ApiRequest';
 import ApiResponse from '../../lib/structures/api/ApiResponse';
 import OauthUser from './oauthUser';
 import { ratelimit } from '../../lib/util/util';
+import { OauthData } from '../../lib/types/DiscordAPI';
+import { Time } from '../../lib/util/constants';
 
 export default class extends Route {
 
@@ -43,15 +45,21 @@ export default class extends Route {
 			return;
 		}
 
-		const body = await res.json();
+		const body = await res.json() as OauthData;
 		const user = await oauthUser.api(body.access_token);
+
+		await this.client.queries.insertDashboardUser({
+			id: user.id,
+			expires_at: (Date.now() + (body.expires_in * Time.Second)).toString(),
+			access_token: body.access_token,
+			refresh_token: body.refresh_token
+		});
 
 		response.json(({
 			access_token: Util.encrypt({
 				user_id: user.id,
 				token: body.access_token
-			},
-			this.client.options.clientSecret),
+			}, this.client.options.clientSecret),
 			user
 		}));
 

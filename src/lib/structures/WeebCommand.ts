@@ -38,7 +38,7 @@ export abstract class WeebCommand extends SkyraCommand {
 
 		const { url } = await fetch(query, {
 			headers: {
-				'Authorization': `Wolke ${TOKENS.WEEB_SH}`,
+				'Authorization': `Wolke ${TOKENS.WEEB_SH_KEY}`,
 				'User-Agent': `Skyra/${VERSION}`
 			}
 		}, FetchResultTypes.JSON) as WeebCommandResult;

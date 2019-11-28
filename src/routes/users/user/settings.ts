@@ -12,7 +12,7 @@ type Keys = keyof RawUserSettings;
 export default class extends Route {
 
 	private readonly kWhitelist: Keys[] = [
-		'dark_theme', 'moderation_dm',
+		'dark_theme', 'moderation_dm'
 		// TODO(kyranet): Handle the following with SettingsGateway's rewrite release.
 		/* 'theme_level', 'theme_profile', 'badge_set', 'badge_list', 'banner_list' */
 	];

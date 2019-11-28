@@ -183,20 +183,8 @@ export namespace Mime {
 	export const enum Types {
 		ApplicationJson = 'application/json',
 		ApplicationTwitchV5Json = 'application/vnd.twitchtv.v5+json',
+		ApplicationFormUrlEncoded = 'application/x-www-form-urlencoded',
 		TextPlain = 'text/plain'
-	}
-
-	export const Data = new Map<Types, TypeData>([
-		[Types.ApplicationJson, { source: 'iana', charset: 'UTF-8', compressible: true, extensions: ['json', 'map'] }],
-		[Types.ApplicationTwitchV5Json, { source: 'twitch', extensions: ['json'] }],
-		[Types.TextPlain, { source: 'iana', compressible: true, extensions: ['txt', 'text', 'conf', 'def', 'list', 'log', 'in', 'ini'] }]
-	]) as ReadonlyMap<Types, TypeData>;
-
-	export interface TypeData {
-		source: string;
-		charset?: string;
-		compressible?: boolean;
-		extensions?: ReadonlyArray<string>;
 	}
 
 }

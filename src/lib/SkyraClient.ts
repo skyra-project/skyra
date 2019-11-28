@@ -18,6 +18,7 @@ import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { Twitch } from './util/Notifications/Twitch';
+import { Mixer } from './util/Notifications/Mixer';
 import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import { UserTags } from './util/Cache/UserTags';
@@ -114,6 +115,9 @@ export class SkyraClient extends KlasaClient {
 
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
+
+	@enumerable(false)
+	public mixer: Mixer = new Mixer();
 
 	public ipc = new VezaClient('skyra-master')
 		.on('disconnect', client => { this.emit(Events.Warn, `${y} Disconnected: ${client.name}`); })

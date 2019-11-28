@@ -12,6 +12,7 @@ import { Client as VezaClient } from 'veza';
 import { CommonQuery } from '../queries/common';
 import { UserTags } from '../util/Cache/UserTags';
 import { Twitch } from '../util/Notifications/Twitch';
+import { Mixer } from '../util/Notifications/Mixer';
 
 declare module 'discord.js' {
 
@@ -29,6 +30,7 @@ declare module 'discord.js' {
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
 		twitch: Twitch;
+		mixer: Mixer;
 	}
 
 	interface MessageExtendablesAskOptions {

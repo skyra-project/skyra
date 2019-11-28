@@ -30,7 +30,7 @@ export class Mixer {
 	} as const;
 
 	@Limiter.limitMethod('channel-read', 1000, Time.Second * 300)
-	public async fetchChannelByID(id: string): Promise<MixerExpandedChannel | Limiter.MethodLimitError> {
+	public async fetchChannelByID(id: number | string): Promise<MixerExpandedChannel | Limiter.MethodLimitError> {
 		return this._performApiGETRequest(`channels/${id}`) as Promise<MixerExpandedChannel>;
 	}
 

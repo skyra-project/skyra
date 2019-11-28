@@ -3,6 +3,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Limiter } from '../../lib/util/util';
 import { Time } from '../../lib/util/constants';
 import { MixerExpandedChannel } from '../../lib/types/definitions/Mixer';
+import { MessageEmbed } from 'discord.js';
 
 export default class extends SkyraCommand {
 
@@ -21,10 +22,25 @@ export default class extends SkyraCommand {
 		const users = await this.client.mixer.findUsersWithChannel(name);
 		// TODO(kyranet): Language key
 		if (users.length === 0) throw 'No user found';
-		const user = await this.client.mixer.fetchChannelByID(users[0].id);
+		let user = await this.client.mixer.fetchChannelByID(users[0].id);
 		// TODO(kyranet): Language key
 		if ((user as Limiter.MethodLimitError).remainingTime) throw `Sorry we have reached our limit, please wait ${(user as Limiter.MethodLimitError).remainingTime / Time.Second} second`;
-		return message.send((user as MixerExpandedChannel).name);
+		user = user as MixerExpandedChannel;
+		const embed = new MessageEmbed()
+			.setColor(0x1FBAED)
+			.setAuthor(user.name, 'https://raw.githubusercontent.com/mixer/branding-kit/master/png/MixerMerge_Light.png')
+			// TODO(kyranet): Language key
+			.addField('Level', user.user.level, true)
+			// TODO(kyranet): Language key
+			.addField('Experience', user.user.experience, true)
+			// TODO(kyranet): Language key
+			.addField('Audience', user.audience)
+			// TODO(kyranet): Language key
+			.addField('Total Viewers', user.viewersTotal)
+			// TODO(kyranet): Language key
+			.addField('Follower Number', user.numFollowers)
+			.setTimestamp(new Date(user.createdAt).getTime());
+		return message.sendEmbed(embed);
 	}
 
 }

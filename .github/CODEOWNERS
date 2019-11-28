@@ -19,6 +19,7 @@
 # Quantum
 /src/routes/twitch/twitchStreamChange.ts @quantumlytangled
 /src/commands/Twitch/ @quantumlytangled
+/src/commands/Mixer/ @quantumlytangled
 /src/events/twitchStreamOnline.ts @quantumlytangled
 /src/events/twitchStreamOffline.ts @quantumlytangled
 /src/lib/util/Notifications/ @quantumlytangled

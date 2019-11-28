@@ -190,6 +190,7 @@ export namespace Mime {
 	export const Data = new Map<Types, TypeData>([
 		[Types.ApplicationJson, { source: 'iana', charset: 'UTF-8', compressible: true, extensions: ['json', 'map'] }],
 		[Types.ApplicationTwitchV5Json, { source: 'twitch', extensions: ['json'] }],
+		[Types.ApplicationFormUrlEncoded, { source: 'iana', compressible: true }],
 		[Types.TextPlain, { source: 'iana', compressible: true, extensions: ['txt', 'text', 'conf', 'def', 'list', 'log', 'in', 'ini'] }]
 	]) as ReadonlyMap<Types, TypeData>;
 

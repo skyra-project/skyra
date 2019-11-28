@@ -291,6 +291,18 @@ export class Queue extends Array<Song> {
 		if (volume) this.volume = 100;
 	}
 
+	public toJSON(): unknown {
+		return {
+			status: this.status,
+			volume: this.volume,
+			channel: this.voiceChannel,
+			playing: this.song,
+			position: this.position,
+			lastUpdate: this.lastUpdate,
+			queue: Array.from(this.guild.music)
+		}
+	}
+
 }
 
 interface MusicManagerListeners {

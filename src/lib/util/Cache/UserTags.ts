@@ -2,6 +2,7 @@ import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { KlasaClient } from 'klasa';
 import { User } from 'discord.js';
 import { APIUserData } from '../../types/DiscordAPI';
+import { api } from '../Models/Api';
 
 export class UserTags extends Collection<string, UserTag> {
 
@@ -42,25 +43,28 @@ export class UserTags extends Collection<string, UserTag> {
 		return tag;
 	}
 
-	public async fetch(id: string) {
+	public fetch(id: string) {
 		const existing = super.get(id);
-		if (typeof existing !== 'undefined') return existing;
+		if (typeof existing !== 'undefined') return Promise.resolve(existing);
 
-		const user = await this.client.users.fetch(id, false);
-		return this.create(user);
+		return (api(this.client)
+			.users(id)
+			.get() as Promise<APIUserData>)
+			.then(this.create.bind(this));
 	}
 
-	public async fetchUsername(id: string) {
-		const userTag = await this.fetch(id);
-		return userTag.username;
+	public fetchUsername(id: string) {
+		return this.fetch(id).then(tag => tag.username);
 	}
 
-	public async fetchEntry(id: string) {
+	public fetchEntry(id: string) {
 		const existing = super.get(id);
-		if (typeof existing !== 'undefined') return [id, existing] as const;
+		if (typeof existing !== 'undefined') return Promise.resolve([id, existing] as const);
 
-		const user = await this.client.users.fetch(id);
-		return [id, this.create(user)] as const;
+		return (api(this.client)
+			.users(id)
+			.get() as Promise<APIUserData>)
+			.then(data => [id, this.create(data)]);
 	}
 
 	public static get [Symbol.species](): CollectionConstructor {

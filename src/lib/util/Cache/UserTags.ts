@@ -59,7 +59,7 @@ export class UserTags extends Collection<string, UserTag> {
 		const existing = super.get(id);
 		if (typeof existing !== 'undefined') return [id, existing] as const;
 
-		const user = await this.client.users.fetch(id);
+		const user = await this.client.users.fetch(id, false);
 		return [id, this.create(user)] as const;
 	}
 

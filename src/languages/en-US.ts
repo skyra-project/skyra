@@ -1648,10 +1648,22 @@ export default class extends Language {
 			FROM_TUTOR: 'from a move tutor',
 			AS_EGGMOVE: 'as an eggmove',
 			THROUGH_VIRTUALCONSOLE_TRANSFER: 'by transfering from virtual console games',
-			WITH_TM: 'ok',
+			WITH_TM: 'by using a technical machine or technical record',
 			THROUGH_DREAMWORLD: 'through a Dream World capture'
 		},
+		COMMAND_LEARN_EMBED_TITLES: {
+			BY_LEVEL_UP: 'By Level Up',
+			THROUGH_EVENT: 'Through an event',
+			FROM_TUTOR: 'From a Move Tutor',
+			AS_EGGMOVE: 'As an eggmove',
+			THROUGH_VIRTUALCONSOLE_TRANSFER: 'By transfering from virtual console games',
+			WITH_TM: 'By using a Technical Machine or Technical Record',
+			THROUGH_DREAMWORLD: 'through a Dream World capture'
+		},
+		COMMAND_LEARN_INVALID_GENERATION: generation => `I am sorry, but ${generation} is not a supported Pokémon Generation`,
+		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `I am sorry, but that query failed. Are you sure you \`${pokemon}\` is actually a Pokémon and ${moves.map(move => `\`${move}\``).join(' and ')} are actually moves?`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
+		COMMAND_LEARN_CANNOT_LEARN: (pokemon, method) => `${pokemon} has no learnset data for the given moves ${method}`,
 		COMMAND_MOVE_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon move',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
 			extendedHelp: `

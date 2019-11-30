@@ -1,9 +1,9 @@
+import { toTitleCase } from '@klasa/utils';
+import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getMoveDetailsByFuzzy, GraphQLPokemonResponse, POKEMON_GRAPHQL_API_URL, POKEMON_EMBED_THUMBNAIL, parseBulbapediaURL } from '../../lib/util/Pokemon';
-import { fetch, FetchResultTypes, getColor } from '../../lib/util/util';
-import { MessageEmbed } from 'discord.js';
-import { toTitleCase } from '@klasa/utils';
+import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '../../lib/util/Pokemon';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -47,19 +47,8 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async fetchAPI(message: KlasaMessage, move: string) {
-		return fetch(POKEMON_GRAPHQL_API_URL, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				query: getMoveDetailsByFuzzy(move)
-			})
-		}, FetchResultTypes.JSON)
-			.catch(() => {
-				throw message.language.tget('SYSTEM_QUERY_FAIL');
-			}) as Promise<GraphQLPokemonResponse<'getMoveDetailsByFuzzy'>>;
+	private fetchAPI(message: KlasaMessage, move: string) {
+		return fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(message, getMoveDetailsByFuzzy(move));
 	}
 
 }

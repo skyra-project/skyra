@@ -2,14 +2,8 @@ import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import {
-	getAbilityDetailsByFuzzy,
-	GraphQLPokemonResponse,
-	parseBulbapediaURL,
-	POKEMON_EMBED_THUMBNAIL,
-	POKEMON_GRAPHQL_API_URL
-} from '../../lib/util/Pokemon';
-import { fetch, FetchResultTypes, getColor } from '../../lib/util/util';
+import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '../../lib/util/Pokemon';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -24,7 +18,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [ability]: [ string ]) {
+	public async run(message: KlasaMessage, [ability]: [string]) {
 		try {
 			const { getAbilityDetailsByFuzzy: abilityDetails } = (await this.fetchAPI(message, ability.toLowerCase())).data;
 
@@ -43,19 +37,8 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async fetchAPI(message: KlasaMessage, item: string) {
-		return fetch(POKEMON_GRAPHQL_API_URL, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				query: getAbilityDetailsByFuzzy(item)
-			})
-		}, FetchResultTypes.JSON)
-			.catch(() => {
-				throw message.language.tget('SYSTEM_QUERY_FAIL');
-			}) as Promise<GraphQLPokemonResponse<'getAbilityDetailsByFuzzy'>>;
+	private fetchAPI(message: KlasaMessage, item: string) {
+		return fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(message, getAbilityDetailsByFuzzy(item));
 	}
 
 }

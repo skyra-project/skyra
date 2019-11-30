@@ -1,15 +1,16 @@
-import { TypeEntry, Types as string } from '@favware/graphql-pokemon';
+import { TypeEntry, Types } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getTypeMatchup, GraphQLPokemonResponse, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, POKEMON_GRAPHQL_API_URL } from '../../lib/util/Pokemon';
-import { fetch, FetchResultTypes, getColor } from '../../lib/util/util';
+import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '../../lib/util/Pokemon';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['matchup', 'weakness', 'advantage'],
 			cooldown: 10,
 			description: language => language.tget('COMMAND_TYPE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_TYPE_EXTENDED'),
@@ -23,7 +24,7 @@ export default class extends SkyraCommand {
 			if (arg.length > 2) throw message.language.tget('COMMAND_TYPE_TOO_MANY_TYPES');
 
 			for (const type of arg) {
-				if (!(toTitleCase(type) in string)) return message.language.tget('COMMAND_TYPE_NOT_A_TYPE', type);
+				if (!(toTitleCase(type) in Types)) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', type);
 			}
 
 			return arg;
@@ -62,25 +63,12 @@ export default class extends SkyraCommand {
 					`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
 				].join(' | ')));
 		} catch (err) {
-			this.client.console.error(err);
 			throw message.language.tget('COMMAND_TYPE_QUERY_FAIL', types);
 		}
 	}
 
 	private async fetchAPI(message: KlasaMessage, types: string[]) {
-		return fetch(POKEMON_GRAPHQL_API_URL, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				query: getTypeMatchup(types)
-			})
-		}, FetchResultTypes.JSON)
-			.catch(err => {
-				this.client.console.error(err);
-				throw message.language.tget('SYSTEM_QUERY_FAIL');
-			}) as Promise<GraphQLPokemonResponse<'getTypeMatchup'>>;
+		return fetchGraphQLPokemon<'getTypeMatchup'>(message, getTypeMatchup(types));
 	}
 
 	private parseEffectiveMatchup(doubleEffectiveTypes: TypeEntry['doubleEffectiveTypes'], effectiveTypes: TypeEntry['effectiveTypes']) {

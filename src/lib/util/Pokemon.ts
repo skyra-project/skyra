@@ -1,5 +1,7 @@
 import { Query, Pokemon, Abilities, Items, Moves } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '../../../config';
+import { KlasaMessage } from 'klasa';
+import { fetch, FetchResultTypes } from './util';
 
 const AbilityFragment = `
 fragment ability on AbilityEntry {
@@ -133,8 +135,13 @@ ${LearnsetLevelupMoveFragment}
 ${LearnsetMoveFragment}
 
 fragment learnset on LearnsetEntry {
+    num
+    species
+    sprite
+    shinySprite
+    color
     levelUpMoves {
-        ...learnsetLevelupMove
+      ...learnsetLevelupMove
     }
     virtualTransferMoves {
         ...learnsetMove
@@ -239,11 +246,11 @@ ${ItemsFragment}
     }
 }`;
 
-export const getPokemonLearnset = (pokemon: Pokemon, moves: Moves[], generation?: PokemonGenerations) => `
+export const getPokemonLearnsetByFuzzy = (pokemon: string, moves: string, generation?: PokemonGenerations) => `
 ${LearnsetFragment}
 
 {
-    getPokemonLearnset(pokemon: ${pokemon} moves: ${moves} generation: ${generation || 7}) {
+    getPokemonLearnsetByFuzzy(pokemon: \"${pokemon}\" moves: ${moves} generation: ${generation || 8}) {
       ...learnset
     }
 }`;
@@ -265,6 +272,24 @@ ${TypeMatchupFragment}
         ...typesMatchups
     }
 }`;
+
+export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
+export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
+
+export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(message: KlasaMessage, query: GraphQLQueryFunctions) {
+	return fetch(POKEMON_GRAPHQL_API_URL, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			query
+		})
+	}, FetchResultTypes.JSON)
+		.catch(() => {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}) as Promise<GraphQLPokemonResponse<R>>;
+}
 
 /**
  * Parses a Bulbapedia-like URL to be properly embeddable on Discord
@@ -307,7 +332,14 @@ export interface GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'
 	data: Record<K, Omit<Query[K], '__typename'>>;
 }
 
-export type PokemonGenerations = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type PokemonGenerations = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type GraphQLQueryReturnTypes = keyof Omit<Query, '__typename'>;
 
-export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
-export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
+type GraphQLQueryFunctions =
+| ReturnType<typeof getTypeMatchup>
+| ReturnType<typeof getMoveDetailsByFuzzy>
+| ReturnType<typeof getPokemonLearnsetByFuzzy>
+| ReturnType<typeof getPokemonFlavorTextsByFuzzy>
+| ReturnType<typeof getPokemonDetailsByFuzzy>
+| ReturnType<typeof getItemDetailsByFuzzy>
+| ReturnType<typeof getAbilityDetailsByFuzzy>;

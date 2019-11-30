@@ -1626,11 +1626,22 @@ export default class extends Language {
 			THROUGH_EVENT: 'a través de un evento',
 			FROM_TUTOR: 'de un tutor de movimiento',
 			AS_EGGMOVE: 'como un movimiento de huevo',
-			THROUGH_VIRTUALCONSOLE_TRANSFER: 'transfiriendo desde juegos de consola virtual',
+			THROUGH_VIRTUALCONSOLE_TRANSFER: 'al transfiriendo desde juegos de consola virtual',
 			WITH_TM: 'utilizando un Máquina Técnico o Disco Técnico',
 			THROUGH_DREAMWORLD: 'a través de una captura de Pokémon Dream World'
 		},
+		COMMAND_LEARN_EMBED_TITLES: {
+			BY_LEVEL_UP: 'Por subir de nivel',
+			THROUGH_EVENT: 'A través de un evento',
+			FROM_TUTOR: 'De un tutor de movimiento',
+			AS_EGGMOVE: 'Como un movimiento de huevo',
+			THROUGH_VIRTUALCONSOLE_TRANSFER: 'Al transferir desde juegos de consola virtual',
+			WITH_TM: 'Mediante el uso de una Máquina Técnica o Disco Técnico',
+			THROUGH_DREAMWORLD: 'A través de una captura de Dream World'
+		},
+		COMMAND_LEARN_INVALID_GENERATION: generation => `Lo siento, pero ${generation} no es una Generación Pokémon admitida`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
+		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon y ${moves.map(move => `\`${move}\``).join('y')} son realmente movimientos?`,
 		COMMAND_MOVE_DESCRIPTION: 'Consulta la API graphql-pokemon para obtener datos sobre cualquier movimiento Pokémon',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
 			extendedHelp: `

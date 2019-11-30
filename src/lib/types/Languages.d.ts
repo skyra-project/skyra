@@ -1,4 +1,3 @@
-import { Moves, Pokemon } from '@favware/graphql-pokemon';
 import { GuildMember, PermissionString, Role, User } from 'discord.js';
 import { ScheduledTask, SchemaEntry } from 'klasa';
 import { HungerGamesGame } from '../../commands/Games/hungergames';
@@ -228,7 +227,19 @@ export interface LanguageKeys {
 		WITH_TM: string;
 		THROUGH_DREAMWORLD: string;
 	};
-	COMMAND_LEARN_METHOD: (generation: number, pokemon: Pokemon, move: Moves, method: LanguageKeys['COMMAND_LEARN_METHOD_TYPES']) => string;
+	COMMAND_LEARN_EMBED_TITLES: {
+		BY_LEVEL_UP: string;
+		THROUGH_EVENT: string;
+		FROM_TUTOR: string;
+		AS_EGGMOVE: string;
+		THROUGH_VIRTUALCONSOLE_TRANSFER: string;
+		WITH_TM: string;
+		THROUGH_DREAMWORLD: string;
+	};
+	COMMAND_LEARN_INVALID_GENERATION: (generation: string) => string;
+	COMMAND_LEARN_METHOD: (generation: number, pokemon: string, move: string, method: string) => string;
+	COMMAND_LEARN_CANNOT_LEARN: (pokemon: string, method: string) => string;
+	COMMAND_LEARN_QUERY_FAILED: (pokemon: string, moves: string[]) => string;
 	COMMAND_MOVE_DESCRIPTION: string;
 	COMMAND_MOVE_EXTENDED: string;
 	COMMAND_MOVE_EMBED_DATA: {

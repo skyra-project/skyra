@@ -31,6 +31,12 @@ export const PGSQL_DATABASE_OPTIONS: PoolConfig = {
 	user: PGSQL_DATABASE_USER
 };
 
+export const INFLUX_ANALYTICS_HOST = '';
+export const INFLUX_ANALYTICS_PORT = 8986;
+export const INFLUX_ANALYTICS_USERNANE = '';
+export const INFLUX_ANALYTICS_PASSWORD = '';
+export const INFLUX_ANALYTICS_DATABASE = '';
+
 export const VERSION = '5.2.3 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {

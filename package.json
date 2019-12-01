@@ -53,6 +53,7 @@
     "fs-nextra": "^0.4.7",
     "gifencoder": "^2.0.1",
     "he": "^1.2.0",
+    "influx": "^5.5.1",
     "klasa": "github:dirigeants/klasa#settings",
     "klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
     "klasa-decorators": "^0.0.1",

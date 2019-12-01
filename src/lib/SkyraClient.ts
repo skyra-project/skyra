@@ -49,6 +49,7 @@ import { CommonQuery } from './queries/common';
 import { PostgresCommonQuery } from './queries/postgres';
 import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
+import { AnalyticsHandler } from './util/AnalyticsHandler';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -114,6 +115,9 @@ export class SkyraClient extends KlasaClient {
 
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
+
+	@enumerable(false)
+	public analytics: AnalyticsHandler = new AnalyticsHandler(this);
 
 	public ipc = new VezaClient('skyra-master')
 		.on('disconnect', client => { this.emit(Events.Warn, `${y} Disconnected: ${client.name}`); })

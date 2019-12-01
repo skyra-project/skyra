@@ -1593,7 +1593,7 @@ export default class extends Language {
 			],
 			examples: ['multiscale', 'pressure']
 		}),
-		COMMAND_ABILITY_EMEBED_DATA: {
+		COMMAND_ABILITY_EMBED_DATA: {
 			ABILITY: 'Ability',
 			EXTERNAL_RESOURCES: 'External resources'
 		},

@@ -198,7 +198,7 @@ export interface LanguageKeys {
 	COMMAND_VOLUME_CHANGED: (emoji: string, volume: number) => string;
 	COMMAND_ABILITY_DESCRIPTION: string;
 	COMMAND_ABILITY_EXTENDED: string;
-	COMMAND_ABILITY_EMEBED_DATA: {
+	COMMAND_ABILITY_EMBED_DATA: {
 		ABILITY: string;
 		EXTERNAL_RESOURCES: string;
 	};

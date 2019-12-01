@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
 		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
 
-		const embedTranslations = message.language.tget('COMMAND_ABILITY_EMEBED_DATA');
+		const embedTranslations = message.language.tget('COMMAND_ABILITY_EMBED_DATA');
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))
 			.setAuthor(`${embedTranslations.ABILITY} - ${toTitleCase(abilityDetails.name)}`, POKEMON_EMBED_THUMBNAIL)

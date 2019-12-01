@@ -315,18 +315,6 @@ export default class extends Language {
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
-		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
-		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
-			extendedHelp: `
-				Consulta la API de Pokémon sobre los datos de un Pokémon determinado.
-				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
-				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
-			`,
-			explainedUsage: [
-				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
-			],
-			examples: ['dragonite', 'pikachu']
-		}),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
 		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `¡La cola está sin discos! ¡Añade algunas canciones para mantener el alma de la fiesta!`,
@@ -1573,6 +1561,128 @@ export default class extends Language {
 		 * ##################
 		 * POKÉMON COMMANDS
 		 */
+		COMMAND_ABILITY_DESCRIPTION: 'Consulta la API de graphql-pokemon para obtener datos sobre cualquier habilidad Pokémon dada',
+		COMMAND_ABILITY_EXTENDED: builder.display('ability', {
+			extendedHelp: `
+				Consulta la API de Pokemon sobre datos en una habilidad dada.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+			`,
+			explainedUsage: [
+				['habilidad', 'La capacidad para la que desea encontrar datos']
+			],
+			examples: ['multiscale', 'pressure']
+		}),
+		COMMAND_ABILITY_EMBED_DATA: {
+			ABILITY: 'Habilidad',
+			EXTERNAL_RESOURCES: 'Recursos externos'
+		},
+		COMMAND_ABILITY_QUERY_FAIL: ability => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
+		COMMAND_FLAVORS_DESCRIPTION: 'Consulta la API de graphql-pokemon para los textos de sabor dex de un Pokémon',
+		COMMAND_FLAVORS_EXTENDED: builder.display('flavors', {
+			extendedHelp: `
+				Consulta la API de Pokémon en textos de sabor para un Pokémon determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['pokemon', 'El Pokémon para el que quieres obtener textos de sabor.']
+			],
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+		}),
+		COMMAND_FLAVORS_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
+		COMMAND_ITEM_DESCRIPTION: 'Consulta la API de graphql-pokemon para obtener información sobre cualquier ítem Pokémon',
+		COMMAND_ITEM_EXTENDED: builder.display('item', {
+			extendedHelp: `
+				Consulta la API de Pokemon sobre los datos de un ítem determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+			`,
+			explainedUsage: [
+				['ítem', 'El elemento para el que desea buscar datos']
+			],
+			examples: ['life orb', 'choice specs']
+		}),
+		COMMAND_ITEM_EMEBED_DATA: {
+			ITEM: 'Ítem',
+			GENERATION_INTRODUCED: 'Generación introducida',
+			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
+			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Sí' : 'No',
+			EXTERNAL_RESOURCES: 'Recursos externos'
+		},
+		COMMAND_ITEM_QUERY_FAIL: item => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${item}\` es realmente un elemento en Pokémon?`,
+		COMMAND_LEARN_DESCRIPTION: 'Consulta la API de graphql-pokemon para enfrentamientos de conjuntos de aprendizaje dados un Pokémon y uno o más movimientos',
+		COMMAND_LEARN_EXTENDED: builder.display('learn', {
+			extendedHelp: `
+				Consulta la API de Pokémon sobre si un Pokémon determinado puede aprender uno o más movimientos dados.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['pokemon', 'El Pokémon cuyo conjunto de aprendizaje quieres comprobar'],
+				['movimiento', 'Los movimientos que desea verificar']
+			],
+			examples: ['dragonite dragondance', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny']
+		}),
+		COMMAND_LEARN_METHOD_TYPES: {
+			BY_LEVEL_UP: level => `por subir de nivel en el nivel ${level}`,
+			THROUGH_EVENT: 'a través de un evento',
+			FROM_TUTOR: 'de un tutor de movimiento',
+			AS_EGGMOVE: 'como un movimiento de huevo',
+			THROUGH_VIRTUALCONSOLE_TRANSFER: 'al transfiriendo desde juegos de consola virtual',
+			WITH_TM: 'utilizando un Máquina Técnico o Disco Técnico',
+			THROUGH_DREAMWORLD: 'a través de una captura de Pokémon Dream World'
+		},
+		COMMAND_LEARN_EMBED_TITLES: {
+			BY_LEVEL_UP: 'Por subir de nivel',
+			THROUGH_EVENT: 'A través de un evento',
+			FROM_TUTOR: 'De un tutor de movimiento',
+			AS_EGGMOVE: 'Como un movimiento de huevo',
+			THROUGH_VIRTUALCONSOLE_TRANSFER: 'Al transferir desde juegos de consola virtual',
+			WITH_TM: 'Mediante el uso de una Máquina Técnica o Disco Técnico',
+			THROUGH_DREAMWORLD: 'A través de una captura de Dream World'
+		},
+		COMMAND_LEARN_INVALID_GENERATION: generation => `Lo siento, pero ${generation} no es una Generación Pokémon admitida`,
+		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
+		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon y ${moves.map(move => `\`${move}\``).join('y')} son realmente movimientos?`,
+		COMMAND_MOVE_DESCRIPTION: 'Consulta la API graphql-pokemon para obtener datos sobre cualquier movimiento Pokémon',
+		COMMAND_MOVE_EXTENDED: builder.display('move', {
+			extendedHelp: `
+				Consulta la API de Pokemon sobre los datos de un movimiento determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+			`,
+			explainedUsage: [
+				['movimiento', 'El movimiento para el que desea buscar datos']
+			],
+			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova']
+		}),
+		COMMAND_MOVE_EMBED_DATA: {
+			MOVE: 'Movimiento',
+			TYPE: 'Tipo',
+			BASE_POWER: 'Potencia',
+			PP: 'PP',
+			CATEGORY: 'Categoría',
+			ACCURACY: 'Precisión',
+			PRIORITY: 'Movimiento con prioridad',
+			TARGET: 'Objetivo',
+			CONTEST_CONDITION: 'Cualidad',
+			Z_CRYSTAL: 'Cristal Z',
+			GMAX_POKEMON: 'Gigamax Pokémon',
+			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
+			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Sí' : 'No',
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			NONE: 'Ninguno'
+		},
+		COMMAND_MOVE_QUERY_FAIL: (move: string) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${move}\` es realmente un movimiento en Pokémon?`,
+		COMMAND_POKEDEX_DESCRIPTION: 'Consulta la API graphql-Pokémon para obtener datos sobre cualquier Pokémon dado.',
+		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+			extendedHelp: `
+				Consulta la API de Pokémon sobre los datos de un Pokémon determinado.
+				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
+			`,
+			explainedUsage: [
+				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
+			],
+			examples: ['dragonite', 'pikachu']
+		}),
 		COMMAND_POKEDEX_EMBED_DATA: {
 			TYPES: 'Tipo(s)',
 			ABILITIES: 'Habilidades',
@@ -1590,6 +1700,34 @@ export default class extends Language {
 			NONE: 'Ninguno'
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
+		COMMAND_TYPE_DESCRIPTION: 'Da los emparejamientos de tipos para uno o dos tipos de Pokémon.',
+		COMMAND_TYPE_EXTENDED: builder.display('type', {
+			extendedHelp: `
+				Consulta la API de Pokémon para los emparejamientos de tipos para uno o dos tipos de Pokémon.
+				Los tipos deben ser coincidencias exactas con los tipos de pokemon (se pueden ignorar mayúsculas / minúsculas)
+			`,
+			explainedUsage: [
+				['tipo', 'El tipo(s) para buscar']
+			],
+			examples: ['dragon', 'fire flying']
+		}),
+		COMMAND_TYPE_EMBED_DATA: {
+			OFFENSIVE: 'Ofensivo',
+			DEFENSIVE: 'Defensivo',
+			SUPER_EFFECTIVE_AGAINST: 'Súper efectivo contra',
+			DEALS_NORMAL_DAMAGE_TO: 'Inflige daño normal a',
+			DOES_NOT_AFFECT: 'No afecta',
+			NOT_VERY_EFFECTIVE_AGAINST: 'No muy efectivo contra',
+			VULNERABLE_TO: 'Vulnerable a',
+			TAKES_NORMAL_DAMAGE_FROM: 'Toma daño normal de',
+			RESISTS: 'Resiste',
+			NOT_AFFECTED_BY: 'No afectado por',
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			TYPE_EFFECTIVENESS_FOR: types => `Tipo de efectividad para ${types.map(val => `\`${val}\``).join(' and ')}`
+		},
+		COMMAND_TYPE_TOO_MANY_TYPES: 'Lo siento, pero puedes obtener el emparejamiento para 2 tipos como máximo',
+		COMMAND_TYPE_NOT_A_TYPE: type => `${type} no es un tipo de Pokémon válido`,
+		COMMAND_TYPE_QUERY_FAIL: types => `Lo siento, pero esa consulta falló. ¿Estás seguro de que los ${types.map(val => `\`${val}\``).join(' and ')} son realmente tipos en Pokémon?`,
 
 		/**
 		 * ##################

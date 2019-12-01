@@ -87,7 +87,7 @@ export class PostgresCommonQuery implements CommonQuery {
 		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
 			UPDATE twitch_stream_subscriptions
 			SET
-				"guild_ids" = ARRAY_REMOVE(guild_ids, $2)
+				"guild_ids" = ARRAY_REMOVE(guild_ids, $2::VARCHAR)
 			WHERE
 				"id" = $1
 			LIMIT 1
@@ -109,7 +109,7 @@ export class PostgresCommonQuery implements CommonQuery {
 		return this.provider.runAll<UpdatePurgeTwitchStreamReturning>(/* sql */`
 			UPDATE twitch_stream_subscriptions
 			SET
-				"guild_ids" = ARRAY_REMOVE(guild_ids, $1)
+				"guild_ids" = ARRAY_REMOVE(guild_ids, $1::VARCHAR)
 			WHERE
 				$1 = ANY(guild_ids)
 			RETURNING id, guild_ids;

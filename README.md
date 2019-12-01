@@ -76,9 +76,14 @@ may still want to donate just to show their appreciation. Thanks you very much i
 
 I accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can use the buttoms below to donate through your method of choice.
 
-| Donate With | QR                                                                                                                                                    | Address                                       |
-| :---------: | :---------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------: |
-| Patreon     | [![Patreon](https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/patreon.png)](https://www.patreon.com/kyranet)                       | [Click Here](https://www.patreon.com/kyranet) |
-| BitCoin     | [![BitCoin](https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/bitcoin.png)](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco)            | 3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco            |
-| Ethereum    | [![Ethereum](https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/ethereum.png)](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c) | 0xcB5EDB76Bc9E389514F905D9680589004C00190c    |
-| Litecoin    | [![Litecoin](https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/litecoin.png)](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM)         | MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM            |
+| Donate With | QR                 | Address                                                                                                                                   |
+| :---------: | :----------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
+| Patreon     | ![PatreonImage][]  | [Click Here](https://www.patreon.com/kyranet)                                                                                             |
+| BitCoin     | ![BitcoinImage][]  | [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot)                  |
+| Ethereum    | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot) |
+| Litecoin    | ![LitecoinImage][] | [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)                 |
+
+[PatreonImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/patreon.png
+[BitcoinImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/bitcoin.png
+[EthereumImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/ethereum.png
+[LitecoinImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/litecoin.png

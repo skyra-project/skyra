@@ -1,12 +1,12 @@
-import { Query, Pokemon, Abilities, Items, Moves, Types } from '@favware/graphql-pokemon';
+import { Abilities, Items, Moves, Pokemon, Query } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '../../../config';
+import { fetch, FetchResultTypes } from './util';
 
 const AbilityFragment = `
 fragment ability on AbilityEntry {
     desc
     shortDesc
     name
-    num
     bulbapediaPage
     serebiiPage
     smogonPage
@@ -40,6 +40,14 @@ const FlavorsFrament = `
 fragment flavors on FlavorEntry {
   game
   flavor
+}`;
+
+const FlavorTextFragment = `
+${FlavorsFrament}
+fragment flavortexts on DexDetails {
+    flavorTexts {
+        ...flavors
+    }
 }`;
 
 const DexDetailsFragment = `
@@ -99,12 +107,13 @@ fragment evolutions on DexDetails {
 const ItemsFragment = `
 fragment items on ItemEntry {
     desc
-    shortDesc
     name
-    num
     bulbapediaPage
     serebiiPage
     smogonPage
+    sprite
+    isNonstandard
+    generationIntroduced
 }`;
 
 const LearnsetLevelupMoveFragment = `
@@ -125,8 +134,13 @@ ${LearnsetLevelupMoveFragment}
 ${LearnsetMoveFragment}
 
 fragment learnset on LearnsetEntry {
+    num
+    species
+    sprite
+    shinySprite
+    color
     levelUpMoves {
-        ...learnsetLevelupMove
+      ...learnsetLevelupMove
     }
     virtualTransferMoves {
         ...learnsetMove
@@ -150,12 +164,12 @@ fragment learnset on LearnsetEntry {
 
 const MoveFragment = `
 fragment moves on MoveEntry {
-    num
     name
     shortDesc
     type
     basePower
     pp
+    category
     accuracy
     priority
     target
@@ -163,7 +177,10 @@ fragment moves on MoveEntry {
     bulbapediaPage
     serebiiPage
     smogonPage
-    category
+    isNonstandard
+    isZ
+    isGMax
+    desc
 }`;
 
 const TypeEntryFragment = `
@@ -198,6 +215,18 @@ ${EvolutionsFragment}
     }
 }`;
 
+export const getPokemonFlavorTextsByFuzzy = (pokemon: string | Pokemon) => `
+${FlavorTextFragment}
+{
+    getPokemonDetailsByFuzzy(pokemon: \"${pokemon}\" skip: 0 take: 12 reverse: true) {
+        sprite
+        num
+        species
+        color
+        ...flavortexts
+    }
+}`;
+
 export const getAbilityDetailsByFuzzy = (ability: string | Abilities) => `
 ${AbilityFragment}
 
@@ -216,11 +245,11 @@ ${ItemsFragment}
     }
 }`;
 
-export const getPokemonLearnset = (pokemon: Pokemon, moves: Moves[], generation?: PokemonGenerations) => `
+export const getPokemonLearnsetByFuzzy = (pokemon: string, moves: string, generation?: number) => `
 ${LearnsetFragment}
 
 {
-    getPokemonLearnset(pokemon: ${pokemon} moves: ${moves} generation: ${generation || 7}) {
+    getPokemonLearnsetByFuzzy(pokemon: \"${pokemon}\" moves: ${moves} generation: ${generation || 8}) {
       ...learnset
     }
 }`;
@@ -234,14 +263,34 @@ ${MoveFragment}
     }
 }`;
 
-export const getTypeMatchup = (types: Types[]) => `
+export const getTypeMatchup = (types: string[]) => `
 ${TypeMatchupFragment}
 
 {
-    getMoveDetailsByFuzzy(types: ${types}) {
-        ...typesMatchup
+    getTypeMatchup(types: ${types}) {
+        ...typesMatchups
     }
 }`;
+
+export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
+export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
+
+export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string) {
+	try {
+		return fetch(POKEMON_GRAPHQL_API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				query
+			})
+		}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<R>>;
+	} catch (error) {
+		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
+		throw 'query_failed';
+	}
+}
 
 /**
  * Parses a Bulbapedia-like URL to be properly embeddable on Discord
@@ -252,11 +301,36 @@ export const parseBulbapediaURL = (url: string) => url
 	.replace(/\(/g, '%28')
 	.replace(/\)/g, '%29');
 
+/** Parses PokéDex colours to Discord MessageEmbed colours */
+export const resolveColour = (col: string) => {
+	switch (col) {
+		case 'Black':
+			return 0x323232;
+		case 'Blue':
+			return 0x257CFF;
+		case 'Brown':
+			return 0xA3501A;
+		case 'Gray':
+			return 0x969696;
+		case 'Green':
+			return 0x3EFF4E;
+		case 'Pink':
+			return 0xFF65A5;
+		case 'Purple':
+			return 0xA63DE8;
+		case 'Red':
+			return 0xFF3232;
+		case 'White':
+			return 0xE1E1E1;
+		case 'Yellow':
+			return 0xFFF359;
+		default:
+			return 0xFF0000;
+	}
+};
+
 export interface GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'>> {
 	data: Record<K, Omit<Query[K], '__typename'>>;
 }
 
-export type PokemonGenerations = 1 | 2 | 3 | 4 | 5 | 6 | 7;
-
-export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
-export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
+export type GraphQLQueryReturnTypes = keyof Omit<Query, '__typename'>;

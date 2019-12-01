@@ -1,12 +1,12 @@
-import { SchemaEntry, ScheduledTask } from 'klasa';
-import { Song } from '../structures/music/Song';
-import { Kitsu } from './definitions/Kitsu';
+import { GuildMember, PermissionString, Role, User } from 'discord.js';
+import { ScheduledTask, SchemaEntry } from 'klasa';
 import { HungerGamesGame } from '../../commands/Games/hungergames';
-import { User, Role, GuildMember, PermissionString } from 'discord.js';
-import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/stats';
-import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
-import { ProfileTitles } from '../../commands/Social/profile';
 import { LevelTitles } from '../../commands/Social/level';
+import { ProfileTitles } from '../../commands/Social/profile';
+import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/stats';
+import { Song } from '../structures/music/Song';
+import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
+import { Kitsu } from './definitions/Kitsu';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
 export const enum Position {
@@ -196,6 +196,70 @@ export interface LanguageKeys {
 	COMMAND_VOLUME_DESCRIPTION: string;
 	COMMAND_VOLUME_SUCCESS: (volume: number) => string;
 	COMMAND_VOLUME_CHANGED: (emoji: string, volume: number) => string;
+	COMMAND_ABILITY_DESCRIPTION: string;
+	COMMAND_ABILITY_EXTENDED: string;
+	COMMAND_ABILITY_EMBED_DATA: {
+		ABILITY: string;
+		EXTERNAL_RESOURCES: string;
+	};
+	COMMAND_ABILITY_QUERY_FAIL: (ability: string) => string;
+	COMMAND_FLAVORS_DESCRIPTION: string;
+	COMMAND_FLAVORS_EXTENDED: string;
+	COMMAND_FLAVORS_QUERY_FAIL: (pokemon: string) => string;
+	COMMAND_ITEM_DESCRIPTION: string;
+	COMMAND_ITEM_EXTENDED: string;
+	COMMAND_ITEM_EMEBED_DATA: {
+		ITEM: string;
+		GENERATION_INTRODUCED: string;
+		AVAILABLE_IN_GENERATION_8_TITLE: string;
+		AVAILABLE_IN_GENERATION_8_DATA: (available: boolean) => string;
+		EXTERNAL_RESOURCES: string;
+	};
+	COMMAND_ITEM_QUERY_FAIL: (item: string) => string;
+	COMMAND_LEARN_DESCRIPTION: string;
+	COMMAND_LEARN_EXTENDED: string;
+	COMMAND_LEARN_METHOD_TYPES: {
+		BY_LEVEL_UP: (level: number) => string;
+		THROUGH_EVENT: string;
+		FROM_TUTOR: string;
+		AS_EGGMOVE: string;
+		THROUGH_VIRTUALCONSOLE_TRANSFER: string;
+		WITH_TM: string;
+		THROUGH_DREAMWORLD: string;
+	};
+	COMMAND_LEARN_EMBED_TITLES: {
+		BY_LEVEL_UP: string;
+		THROUGH_EVENT: string;
+		FROM_TUTOR: string;
+		AS_EGGMOVE: string;
+		THROUGH_VIRTUALCONSOLE_TRANSFER: string;
+		WITH_TM: string;
+		THROUGH_DREAMWORLD: string;
+	};
+	COMMAND_LEARN_INVALID_GENERATION: (generation: string) => string;
+	COMMAND_LEARN_METHOD: (generation: number, pokemon: string, move: string, method: string) => string;
+	COMMAND_LEARN_CANNOT_LEARN: (pokemon: string, method: string) => string;
+	COMMAND_LEARN_QUERY_FAILED: (pokemon: string, moves: string[]) => string;
+	COMMAND_MOVE_DESCRIPTION: string;
+	COMMAND_MOVE_EXTENDED: string;
+	COMMAND_MOVE_EMBED_DATA: {
+		MOVE: string;
+		TYPE: string;
+		BASE_POWER: string;
+		PP: string;
+		CATEGORY: string;
+		ACCURACY: string;
+		PRIORITY: string;
+		TARGET: string;
+		CONTEST_CONDITION: string;
+		Z_CRYSTAL: string;
+		GMAX_POKEMON: string;
+		AVAILABLE_IN_GENERATION_8_TITLE: string;
+		AVAILABLE_IN_GENERATION_8_DATA: (available: boolean) => string;
+		EXTERNAL_RESOURCES: string;
+		NONE: string;
+	};
+	COMMAND_MOVE_QUERY_FAIL: (move: string) => string;
 	COMMAND_POKEDEX_DESCRIPTION: string;
 	COMMAND_POKEDEX_EXTENDED: string;
 	COMMAND_POKEDEX_EMBED_DATA: {
@@ -215,6 +279,25 @@ export interface LanguageKeys {
 		NONE: string;
 	};
 	COMMAND_POKEDEX_QUERY_FAIL: (pokemon: string) => string;
+	COMMAND_TYPE_DESCRIPTION: string;
+	COMMAND_TYPE_EXTENDED: string;
+	COMMAND_TYPE_EMBED_DATA: {
+		OFFENSIVE: string;
+		DEFENSIVE: string;
+		SUPER_EFFECTIVE_AGAINST: string;
+		DEALS_NORMAL_DAMAGE_TO: string;
+		DOES_NOT_AFFECT: string;
+		NOT_VERY_EFFECTIVE_AGAINST: string;
+		VULNERABLE_TO: string;
+		TAKES_NORMAL_DAMAGE_FROM: string;
+		RESISTS: string;
+		NOT_AFFECTED_BY: string;
+		EXTERNAL_RESOURCES: string;
+		TYPE_EFFECTIVENESS_FOR: (type: string[]) => string;
+	};
+	COMMAND_TYPE_TOO_MANY_TYPES: string;
+	COMMAND_TYPE_NOT_A_TYPE: (type: string) => string;
+	COMMAND_TYPE_QUERY_FAIL: (types: string[]) => string;
 	INHIBITOR_MUSIC_QUEUE_EMPTY: string;
 	INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: string;
 	INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: string;

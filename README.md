@@ -11,10 +11,12 @@
 - [`Node.js`]: To run the project.
 - [`PostgreSQL`]: (Dev Optional) To store persistent data.
 - [`Lavalink`]: (Dev Optional) Audio server.
+- [`InfluxDB`]: (Dev Optional) Analytics, Statistics, and Audit storage.
 
 [`Node.js`]: https://nodejs.org/en/download/current/
 [`PostgreSQL`]: https://www.postgresql.org/download/
 [`Lavalink`]: https://github.com/Frederikam/Lavalink
+[`InfluxDB`]: https://portal.influxdata.com/downloads/
 
 ## Set-Up
 

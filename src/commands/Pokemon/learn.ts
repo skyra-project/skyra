@@ -2,7 +2,7 @@ import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, PokemonGenerations, POKEMON_EMBED_THUMBNAIL, resolveColour } from '../../lib/util/Pokemon';
+import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, POKEMON_EMBED_THUMBNAIL, resolveColour } from '../../lib/util/Pokemon';
 
 export default class Learn extends SkyraCommand {
 
@@ -26,7 +26,7 @@ export default class Learn extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [pokemon, moves, generation]: [string, string[], PokemonGenerations]) {
+	public async run(message: KlasaMessage, [pokemon, moves, generation]: [string, string[], number]) {
 		const learnset = await this.fetchAPI(message, pokemon, moves, generation);
 		let levelUpMoves: string[] = [];
 		let vctMoves: string[] = [];
@@ -116,7 +116,7 @@ export default class Learn extends SkyraCommand {
 			));
 	}
 
-	private async fetchAPI(message: KlasaMessage, pokemon: string, moves: string[], generation: PokemonGenerations) {
+	private async fetchAPI(message: KlasaMessage, pokemon: string, moves: string[], generation: number) {
 		try {
 			const apiParsedMoves = `[${moves.map(move => `"${move}"`).join(',')}]`;
 			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy(pokemon, apiParsedMoves, generation));

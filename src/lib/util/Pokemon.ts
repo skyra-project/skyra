@@ -245,7 +245,7 @@ ${ItemsFragment}
     }
 }`;
 
-export const getPokemonLearnsetByFuzzy = (pokemon: string, moves: string, generation?: PokemonGenerations) => `
+export const getPokemonLearnsetByFuzzy = (pokemon: string, moves: string, generation?: number) => `
 ${LearnsetFragment}
 
 {
@@ -275,7 +275,7 @@ ${TypeMatchupFragment}
 export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
 export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
 
-export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: GraphQLQueryFunctions) {
+export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string) {
 	try {
 		return fetch(POKEMON_GRAPHQL_API_URL, {
 			method: 'POST',
@@ -333,14 +333,4 @@ export interface GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'
 	data: Record<K, Omit<Query[K], '__typename'>>;
 }
 
-export type PokemonGenerations = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type GraphQLQueryReturnTypes = keyof Omit<Query, '__typename'>;
-
-type GraphQLQueryFunctions =
-    | ReturnType<typeof getTypeMatchup>
-    | ReturnType<typeof getMoveDetailsByFuzzy>
-    | ReturnType<typeof getPokemonLearnsetByFuzzy>
-    | ReturnType<typeof getPokemonFlavorTextsByFuzzy>
-    | ReturnType<typeof getPokemonDetailsByFuzzy>
-    | ReturnType<typeof getItemDetailsByFuzzy>
-    | ReturnType<typeof getAbilityDetailsByFuzzy>;

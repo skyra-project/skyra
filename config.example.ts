@@ -5,6 +5,7 @@ import { PoolConfig } from 'pg';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';
 import ApiRequest from './src/lib/structures/api/ApiRequest';
 import ApiResponse from './src/lib/structures/api/ApiResponse';
+import { ISingleHostConfig } from 'influx';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
@@ -30,6 +31,18 @@ export const PGSQL_DATABASE_OPTIONS: PoolConfig = {
 	password: PGSQL_DATABASE_PASSWORD,
 	user: PGSQL_DATABASE_USER
 };
+
+export const INFLUX_HOST = '';
+export const INFLUX_PORT = 8086;
+export const INFLUX_USERNAME = '';
+export const INFLUX_PASSWORD = '';
+export const INFLUX_OPTIONS: ISingleHostConfig = {
+	host: INFLUX_HOST,
+	port: INFLUX_PORT,
+	username: INFLUX_USERNAME,
+	password: INFLUX_PASSWORD
+}
+export const INFLUX_AUDIT_DATABASE = '';
 
 export const VERSION = '5.2.3 Nirom';
 

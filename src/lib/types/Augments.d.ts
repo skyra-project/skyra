@@ -29,7 +29,7 @@ declare module 'discord.js' {
 		webhookError: Webhook;
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
-		influx: InfluxDB;
+		influx: InfluxDB | null;
 		twitch: Twitch;
 	}
 

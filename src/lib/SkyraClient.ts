@@ -52,6 +52,7 @@ import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
 import { INFLUX_OPTIONS } from '../../config.example';
 import { SchemaSettingsUpdate } from './schemas/Audit';
+import { ENABLE_INFLUX } from '../../config';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -91,7 +92,9 @@ export class SkyraClient extends KlasaClient {
 
 	public fsWatcher: FSWatcher | null = null;
 
-	public influx: InfluxDB = new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate] });
+	public influx: InfluxDB | null = ENABLE_INFLUX
+		? new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate] })
+		: null;
 
 	/**
 	 * The ConnectFour manager

@@ -28,10 +28,10 @@ export default class extends Event {
 		if (!this.client.guilds.some(g => g.nicknames.has(data.user.id))) this.client.userTags.delete(data.user.id);
 		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
 		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
+		this.handleFarewellMessage(guild, data.user);
 
 		if (guild.settings.get(GuildSettings.Events.MemberRemove)) {
 			this.handleMemberLog(guild, data);
-			this.handleFarewellMessage(guild, data.user);
 		}
 	}
 

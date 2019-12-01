@@ -39,11 +39,11 @@ export default class extends Event {
 		if (this.handleStickyRoles(guild, member)) return;
 		this.handleJoinDM(guild, member);
 		this.handleInitialRole(guild, member);
+		this.handleGreetingMessage(guild, member);
 
 		// If not muted and memberAdd is configured, handle everything
 		if (guild.settings.get(GuildSettings.Events.MemberAdd)) {
 			this.handleMemberLog(guild, member, COLORS.JOIN);
-			this.handleGreetingMessage(guild, member);
 		}
 	}
 

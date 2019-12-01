@@ -69,7 +69,7 @@ Klasa.
 
 - [Klasa's Website](https://klasa.js.org)
 
-## Buy me a :donut:
+## Buy me a donut
 
 Skyra is open source and always will be, even if I don't get donations. That said, I know there are amazing people who
 may still want to donate just to show their appreciation. Thanks you very much in advance!

@@ -20,3 +20,23 @@ export const SchemaSettingsUpdate: ISchemaOptions = {
 		Tags.User
 	]
 };
+
+export const SchemaAnnouncement: ISchemaOptions = {
+	database: INFLUX_AUDIT_DATABASE,
+	measurement: AuditMeasurements.Announcement,
+	fields: {
+		content: FieldType.STRING,
+
+		role_id: FieldType.STRING,
+		role_name: FieldType.STRING,
+
+		message_source_id: FieldType.STRING,
+		message_result_id: FieldType.STRING
+	},
+	tags: [
+		Tags.Shard,
+		Tags.User,
+		Tags.Channel,
+		Tags.Guild
+	]
+};

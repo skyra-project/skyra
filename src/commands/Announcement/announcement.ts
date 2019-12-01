@@ -4,6 +4,8 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { announcementCheck, getColor } from '../../lib/util/util';
 import { APIErrors } from '../../lib/util/constants';
+import { AuditMeasurements } from '../../lib/types/influxSchema/Audit';
+import { ENABLE_INFLUX } from '../../../config';
 
 export default class extends SkyraCommand {
 
@@ -68,16 +70,41 @@ export default class extends SkyraCommand {
 				await previous.edit(content);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
-					this.messages.set(message, await channel.send(content) as KlasaMessage);
+					const resultMessage = await channel.send(content) as KlasaMessage;
+					if (ENABLE_INFLUX) await this.audit(message, resultMessage, channel, role, content);
+					this.messages.set(message, resultMessage);
 				} else {
 					throw error;
 				}
 			}
 		} else {
-			this.messages.set(message, await channel.send(content) as KlasaMessage);
+			const resultMessage = await channel.send(content) as KlasaMessage;
+			if (ENABLE_INFLUX) await this.audit(message, resultMessage, channel, role, content);
+			this.messages.set(message, resultMessage);
 		}
 
 		if (!mentionable) await role.edit({ mentionable: false });
+	}
+
+	private audit(message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string) {
+		return this.client.influx!.writePoints([
+			{
+				measurement: AuditMeasurements.Announcement,
+				fields: {
+					content,
+					role_id: role.id,
+					role_name: role.name,
+					message_source_id: message.id,
+					message_result_id: resultMessage.id
+				},
+				tags: {
+					shard: (this.client.options.shards as number[])[0].toString(),
+					user_id: message.author.id,
+					guild_id: message.guild?.id!,
+					channel_id: channel.id
+				}
+			}
+		]);
 	}
 
 }

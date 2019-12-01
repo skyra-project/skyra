@@ -51,7 +51,7 @@ import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
 import { INFLUX_OPTIONS } from '../../config.example';
-import { SchemaSettingsUpdate } from './schemas/Audit';
+import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
 import { ENABLE_INFLUX } from '../../config';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
@@ -93,7 +93,7 @@ export class SkyraClient extends KlasaClient {
 	public fsWatcher: FSWatcher | null = null;
 
 	public influx: InfluxDB | null = ENABLE_INFLUX
-		? new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate] })
+		? new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate, SchemaAnnouncement] })
 		: null;
 
 	/**

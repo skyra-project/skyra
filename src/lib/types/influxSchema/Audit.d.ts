@@ -1,5 +1,6 @@
 export const enum AuditMeasurements {
-	SettingsUpdate = 'SETTINGS_UPDATE'
+	SettingsUpdate = 'SETTINGS_UPDATE',
+	Announcement = 'ANNOUNCEMENT'
 }
 
 export const enum AuditTags {

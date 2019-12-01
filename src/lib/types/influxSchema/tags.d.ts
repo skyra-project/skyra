@@ -3,5 +3,6 @@ export const enum Tags {
 	Guild = 'guild_id',
 	Client = 'client_id',
 	User = 'user_id',
-	Channel = 'channel_id'
+	Channel = 'channel_id',
+	Message = 'message_id'
 }

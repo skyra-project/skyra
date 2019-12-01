@@ -2,7 +2,7 @@
 import { QueryBuilder } from '@klasa/querybuilder';
 import { SQLProvider, SchemaEntry, SchemaFolder, SettingsFolderUpdateResult, Type } from 'klasa';
 import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
-import { mergeDefault } from '@klasa/utils';
+import { mergeDefault, makeObject } from '@klasa/utils';
 import { ENABLE_POSTGRES } from '../../config';
 import { run as databaseInitRun } from '../lib/util/DatabaseInit';
 import { AnyObject } from '../lib/types/util';
@@ -338,6 +338,22 @@ export default class extends SQLProvider {
 			default:
 				throw new TypeError(`Cannot serialize a ${new Type(value)}`);
 		}
+	}
+
+	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+	// @ts-ignore 2416
+	protected parseEntry(table: string, raw: Record<string, unknown> | null) {
+		if (!raw) return null;
+
+		const gateway = this.client.gateways.get(table);
+		if (typeof gateway === 'undefined') return raw;
+
+		const object = { id: raw.id };
+		for (const entry of gateway.schema.values(true)) {
+			if (typeof raw[entry.path] !== 'undefined') makeObject(entry.path, this.parseValue(raw[entry.path], entry), object);
+		}
+
+		return object;
 	}
 
 }

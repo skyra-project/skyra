@@ -19,26 +19,27 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [ability]: [string]) {
-		try {
-			const { getAbilityDetailsByFuzzy: abilityDetails } = (await this.fetchAPI(message, ability.toLowerCase())).data;
+		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
 
-			const embedTranslations = message.language.tget('COMMAND_ABILITY_EMEBED_DATA');
-			return message.sendEmbed(new MessageEmbed()
-				.setColor(getColor(message))
-				.setAuthor(`${embedTranslations.ABILITY} - ${toTitleCase(abilityDetails.name)}`, POKEMON_EMBED_THUMBNAIL)
-				.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
-					`[Serebii](${abilityDetails.serebiiPage})`,
-					`[Smogon](${abilityDetails.smogonPage})`
-				].join(' | ')));
-		} catch (err) {
-			throw message.language.tget('COMMAND_ABILITY_QUERY_FAIL', ability);
-		}
+		const embedTranslations = message.language.tget('COMMAND_ABILITY_EMEBED_DATA');
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(getColor(message))
+			.setAuthor(`${embedTranslations.ABILITY} - ${toTitleCase(abilityDetails.name)}`, POKEMON_EMBED_THUMBNAIL)
+			.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
+			.addField(embedTranslations.EXTERNAL_RESOURCES, [
+				`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
+				`[Serebii](${abilityDetails.serebiiPage})`,
+				`[Smogon](${abilityDetails.smogonPage})`
+			].join(' | ')));
 	}
 
-	private fetchAPI(message: KlasaMessage, item: string) {
-		return fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(message, getAbilityDetailsByFuzzy(item));
+	private async fetchAPI(message: KlasaMessage, ability: string) {
+		try {
+			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy(ability));
+			return data.getAbilityDetailsByFuzzy;
+		} catch {
+			throw message.language.tget('COMMAND_ABILITY_QUERY_FAIL', ability);
+		}
 	}
 
 }

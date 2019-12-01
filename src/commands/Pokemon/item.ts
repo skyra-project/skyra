@@ -19,33 +19,34 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [item]: [string]) {
-		try {
-			const { getItemDetailsByFuzzy: itemDetails } = (await this.fetchAPI(message, item)).data;
+		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
 
-			const embedTranslations = message.language.tget('COMMAND_ITEM_EMEBED_DATA');
-			return message.sendEmbed(new MessageEmbed()
-				.setColor(getColor(message))
-				.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, POKEMON_EMBED_THUMBNAIL)
-				.setThumbnail(itemDetails.sprite)
-				.setDescription(itemDetails.desc)
-				.addField(embedTranslations.GENERATION_INTRODUCED, itemDetails.generationIntroduced, true)
-				.addField(
-					embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE,
-					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(itemDetails.isNonstandard !== 'Past'),
-					true
-				)
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
-					`[Serebii](${itemDetails.serebiiPage})`,
-					`[Smogon](${itemDetails.smogonPage})`
-				].join(' | ')));
-		} catch (err) {
-			throw message.language.tget('COMMAND_ITEM_QUERY_FAIL', item);
-		}
+		const embedTranslations = message.language.tget('COMMAND_ITEM_EMEBED_DATA');
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(getColor(message))
+			.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, POKEMON_EMBED_THUMBNAIL)
+			.setThumbnail(itemDetails.sprite)
+			.setDescription(itemDetails.desc)
+			.addField(embedTranslations.GENERATION_INTRODUCED, itemDetails.generationIntroduced, true)
+			.addField(
+				embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE,
+				embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(itemDetails.isNonstandard !== 'Past'),
+				true
+			)
+			.addField(embedTranslations.EXTERNAL_RESOURCES, [
+				`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
+				`[Serebii](${itemDetails.serebiiPage})`,
+				`[Smogon](${itemDetails.smogonPage})`
+			].join(' | ')));
 	}
 
-	private fetchAPI(message: KlasaMessage, item: string) {
-		return fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(message, getItemDetailsByFuzzy(item.toLowerCase()));
+	private async fetchAPI(message: KlasaMessage, item: string) {
+		try {
+			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy(item));
+			return data.getItemDetailsByFuzzy;
+		} catch {
+			throw message.language.tget('COMMAND_ITEM_QUERY_FAIL', item);
+		}
 	}
 
 }

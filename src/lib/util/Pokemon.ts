@@ -1,6 +1,5 @@
-import { Query, Pokemon, Abilities, Items, Moves } from '@favware/graphql-pokemon';
+import { Abilities, Items, Moves, Pokemon, Query } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '../../../config';
-import { KlasaMessage } from 'klasa';
 import { fetch, FetchResultTypes } from './util';
 
 const AbilityFragment = `
@@ -276,19 +275,21 @@ ${TypeMatchupFragment}
 export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
 export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
 
-export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(message: KlasaMessage, query: GraphQLQueryFunctions) {
-	return fetch(POKEMON_GRAPHQL_API_URL, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			query
-		})
-	}, FetchResultTypes.JSON)
-		.catch(() => {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
-		}) as Promise<GraphQLPokemonResponse<R>>;
+export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: GraphQLQueryFunctions) {
+	try {
+		return fetch(POKEMON_GRAPHQL_API_URL, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				query
+			})
+		}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<R>>;
+	} catch (error) {
+		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
+		throw 'query_failed';
+	}
 }
 
 /**
@@ -336,10 +337,10 @@ export type PokemonGenerations = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type GraphQLQueryReturnTypes = keyof Omit<Query, '__typename'>;
 
 type GraphQLQueryFunctions =
-| ReturnType<typeof getTypeMatchup>
-| ReturnType<typeof getMoveDetailsByFuzzy>
-| ReturnType<typeof getPokemonLearnsetByFuzzy>
-| ReturnType<typeof getPokemonFlavorTextsByFuzzy>
-| ReturnType<typeof getPokemonDetailsByFuzzy>
-| ReturnType<typeof getItemDetailsByFuzzy>
-| ReturnType<typeof getAbilityDetailsByFuzzy>;
+    | ReturnType<typeof getTypeMatchup>
+    | ReturnType<typeof getMoveDetailsByFuzzy>
+    | ReturnType<typeof getPokemonLearnsetByFuzzy>
+    | ReturnType<typeof getPokemonFlavorTextsByFuzzy>
+    | ReturnType<typeof getPokemonDetailsByFuzzy>
+    | ReturnType<typeof getItemDetailsByFuzzy>
+    | ReturnType<typeof getAbilityDetailsByFuzzy>;

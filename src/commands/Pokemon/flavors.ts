@@ -19,31 +19,32 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
-		try {
-			const { getPokemonDetailsByFuzzy: poke } = (await this.fetchAPI(message, pokemon.toLowerCase())).data;
+		const poke = await this.fetchAPI(message, pokemon.toLowerCase());
 
-			const embed = new MessageEmbed()
-				.setColor(resolveColour(poke.color))
-				.setAuthor(`#${poke.num} - ${toTitleCase(poke.species)}`, POKEMON_EMBED_THUMBNAIL)
-				.setThumbnail(message.flagArgs.shiny ? poke.shinySprite : poke.sprite);
+		const embed = new MessageEmbed()
+			.setColor(resolveColour(poke.color))
+			.setAuthor(`#${poke.num} - ${toTitleCase(poke.species)}`, POKEMON_EMBED_THUMBNAIL)
+			.setThumbnail(message.flagArgs.shiny ? poke.shinySprite : poke.sprite);
 
-			let totalEntriesLength = 0;
+		let totalEntriesLength = 0;
 
-			for (const entry of poke.flavorTexts) {
-				if (totalEntriesLength >= 6000) break;
+		for (const entry of poke.flavorTexts) {
+			if (totalEntriesLength >= 6000) break;
 
-				embed.addField(entry.game, entry.flavor, true);
-				totalEntriesLength += entry.game.length + entry.flavor.length;
-			}
-
-			return message.sendEmbed(embed);
-		} catch (err) {
-			throw message.language.tget('COMMAND_FLAVORS_QUERY_FAIL', pokemon);
+			embed.addField(entry.game, entry.flavor, true);
+			totalEntriesLength += entry.game.length + entry.flavor.length;
 		}
+
+		return message.sendEmbed(embed);
 	}
 
-	private fetchAPI(message: KlasaMessage, pokemon: string) {
-		return fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(message, getPokemonFlavorTextsByFuzzy(pokemon));
+	private async fetchAPI(message: KlasaMessage, pokemon: string) {
+		try {
+			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy(pokemon));
+			return data.getPokemonDetailsByFuzzy;
+		} catch {
+			throw message.language.tget('COMMAND_FLAVORS_QUERY_FAIL', pokemon);
+		}
 	}
 
 }

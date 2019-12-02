@@ -760,9 +760,23 @@ export interface LanguageKeys {
 	COMMAND_SPOLL_EXTENDED: string;
 	COMMAND_TOPINVITES_DESCRIPTION: string;
 	COMMAND_TOPINVITES_EXTENDED: string;
-	COMMAND_TOPINVITES_DATA: {
-		NO_INVITES: string;
-		INVITE_STRING: (username: string, code: string, uses: string) => string;
+	COMMAND_TOPINVITES_NO_INVITES: string;
+	COMMAND_TOPINVITES_EMBED_DATA: {
+		CHANNEL: string;
+		CODE: string;
+		URL: string;
+		CREATED_AT: string;
+		CREATED_AT_UNKNOWN: string;
+		EXPIRES_AT: string;
+		EXPIRES_AT_UNKNOWN: string;
+		MAX_AGE: string;
+		NO_MAX_AGE: string;
+		MAX_USES: string;
+		NO_MAX_USES: string;
+		TEMPORARY: string;
+		IS_TEMPORARY: string;
+		IS_NOT_TEMPORARY: string;
+		USES: string;
 	};
 	COMMAND_URBAN_DESCRIPTION: string;
 	COMMAND_URBAN_EXTENDED: string;

@@ -2092,9 +2092,23 @@ export default class extends Language {
 		}),
 		COMMAND_TOPINVITES_DESCRIPTION: 'Shows the top 10 most used invites for this server',
 		COMMAND_TOPINVITES_EXTENDED: builder.display('topinvites', {}),
-		COMMAND_TOPINVITES_DATA: {
-			NO_INVITES: 'There are no invites, or none of them have been used!',
-			INVITE_STRING: (username, code, uses) => `**${username}**'s invite **${code}** has **${uses}** uses.`
+		COMMAND_TOPINVITES_NO_INVITES: 'There are no invites, or none of them have been used!',
+		COMMAND_TOPINVITES_EMBED_DATA: {
+			CHANNEL: 'Channel',
+			CODE: 'Code',
+			URL: 'url',
+			CREATED_AT: 'Date created',
+			CREATED_AT_UNKNOWN: 'Creation date unknown',
+			EXPIRES_AT: 'Expiry date',
+			EXPIRES_AT_UNKNOWN: 'Expiry date unknown',
+			MAX_AGE: 'Maximum age',
+			NO_MAX_AGE: 'Infinitely useable',
+			MAX_USES: 'Maximum uses',
+			NO_MAX_USES: 'No maximum amount of uses',
+			TEMPORARY: 'Temporary invite',
+			IS_TEMPORARY: 'Yes',
+			IS_NOT_TEMPORARY: 'No',
+			USES: 'Amount of uses'
 		},
 		COMMAND_URBAN_DESCRIPTION: 'Check the definition of a word on UrbanDictionary.',
 		COMMAND_URBAN_EXTENDED: builder.display('urban', {

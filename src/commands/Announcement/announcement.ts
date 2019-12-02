@@ -4,8 +4,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { announcementCheck, getColor } from '../../lib/util/util';
 import { APIErrors } from '../../lib/util/constants';
-import { AuditMeasurements } from '../../lib/types/influxSchema/Audit';
-import { ENABLE_INFLUX } from '../../../config';
+import { Events } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -67,44 +66,27 @@ export default class extends SkyraCommand {
 		const previous = this.messages.get(message);
 		if (previous) {
 			try {
-				await previous.edit(content);
+				const resultMessage = await previous.edit(content) as KlasaMessage;
+				// TODO(Quantum): Implement event
+				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, content);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 					const resultMessage = await channel.send(content) as KlasaMessage;
-					if (ENABLE_INFLUX) await this.audit(message, resultMessage, channel, role, content);
+					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
 					this.messages.set(message, resultMessage);
 				} else {
+					// TODO(Quantum): Implement event
+					this.client.emit(Events.GuildAnnouncementError, message, channel, role, content, error);
 					throw error;
 				}
 			}
 		} else {
 			const resultMessage = await channel.send(content) as KlasaMessage;
-			if (ENABLE_INFLUX) await this.audit(message, resultMessage, channel, role, content);
+			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
 			this.messages.set(message, resultMessage);
 		}
 
 		if (!mentionable) await role.edit({ mentionable: false });
-	}
-
-	private audit(message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string) {
-		return this.client.influx!.writePoints([
-			{
-				measurement: AuditMeasurements.Announcement,
-				fields: {
-					content,
-					role_id: role.id,
-					role_name: role.name,
-					message_source_id: message.id,
-					message_result_id: resultMessage.id
-				},
-				tags: {
-					shard: (this.client.options.shards as number[])[0].toString(),
-					user_id: message.author.id,
-					guild_id: message.guild?.id!,
-					channel_id: channel.id
-				}
-			}
-		]);
 	}
 
 }

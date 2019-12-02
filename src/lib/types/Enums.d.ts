@@ -30,13 +30,17 @@ export const enum Events {
 	Reconnecting = 'reconnecting',
 	RoleReactionAdd = 'roleReactionAdd',
 	RoleReactionRemove = 'roleReactionRemove',
+	SettingsUpdate = 'settingsUpdate',
 	TaskError = 'taskError',
 	TwitchStreamOffline = 'twitchStreamOffline',
 	TwitchStreamOnline = 'twitchStreamOnline',
 	UnhandledRejection = 'unhandledRejection',
 	Verbose = 'verbose',
 	Warn = 'warn',
-	Wtf = 'wtf'
+	Wtf = 'wtf',
+	GuildAnnouncementEdit = 'guildAnnouncementEdit',
+	GuildAnnouncementSend = 'guildAnnouncementSend',
+	GuildAnnouncementError = 'guildAnnouncementError'
 }
 
 export const enum PermissionLevels {

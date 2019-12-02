@@ -12,3 +12,9 @@ export const enum AuditSettingsTarget {
 	User = 'user',
 	Client = 'client'
 }
+
+export const enum AuditAnnouncementAction {
+	Send = 'SEND',
+	Edit = 'EDIT',
+	Error = 'ERROR'
+}

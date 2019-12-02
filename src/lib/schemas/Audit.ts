@@ -31,7 +31,9 @@ export const SchemaAnnouncement: ISchemaOptions = {
 		role_name: FieldType.STRING,
 
 		message_source_id: FieldType.STRING,
-		message_result_id: FieldType.STRING
+		message_result_id: FieldType.STRING,
+
+		action: FieldType.STRING
 	},
 	tags: [
 		Tags.Shard,

@@ -1582,12 +1582,9 @@ export default class extends Language {
 		 * ##################
 		 * POKÉMON COMMANDS
 		 */
-		COMMAND_ABILITY_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon ability',
+		COMMAND_ABILITY_DESCRIPTION: 'Gets data for any given Pokémon ability using my Pokémon dataset.',
 		COMMAND_ABILITY_EXTENDED: builder.display('ability', {
-			extendedHelp: `
-				Queries the Pokemon API on data on a given ability.
-				Uses a fuzzy search to also match against near-matches.
-			`,
+			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
 			explainedUsage: [
 				['ability', 'The ability for which you want to find data']
 			],
@@ -1598,10 +1595,9 @@ export default class extends Language {
 			EXTERNAL_RESOURCES: 'External resources'
 		},
 		COMMAND_ABILITY_QUERY_FAIL: ability => `I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
-		COMMAND_FLAVORS_DESCRIPTION: 'Queries the graphql-pokemon API for the dex flavour texts of a Pokémon',
+		COMMAND_FLAVORS_DESCRIPTION: 'Gets the dex entries across various games for a Pokémon.',
 		COMMAND_FLAVORS_EXTENDED: builder.display('flavors', {
 			extendedHelp: `
-				Queries the Pokémon API on flavour texts for a given Pokemon.
 				Uses a fuzzy search to also match against near-matches.
 				You can provide a flag of \`--shiny\` to get the shiny sprite.
 			`,
@@ -1611,12 +1607,9 @@ export default class extends Language {
 			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
 		}),
 		COMMAND_FLAVORS_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
-		COMMAND_ITEM_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon item',
+		COMMAND_ITEM_DESCRIPTION: 'Gets data for any given Pokémon item using my Pokémon dataset.',
 		COMMAND_ITEM_EXTENDED: builder.display('item', {
-			extendedHelp: `
-				Queries the Pokemon API on data on a given item.
-				Uses a fuzzy search to also match against near-matches.
-			`,
+			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
 			explainedUsage: [
 				['item', 'The item for which you want to find data']
 			],
@@ -1630,17 +1623,17 @@ export default class extends Language {
 			EXTERNAL_RESOURCES: 'External resources'
 		},
 		COMMAND_ITEM_QUERY_FAIL: item => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
-		COMMAND_LEARN_DESCRIPTION: 'Queries the graphql-pokemon API for learnset matchups given a Pokémon and one or more moves',
+		COMMAND_LEARN_DESCRIPTION: 'Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.',
 		COMMAND_LEARN_EXTENDED: builder.display('learn', {
 			extendedHelp: `
-				Queries the Pokémon API on whether a given Pokémon can learn one or more given moves.
-				You can provide a flag of \`--shiny\` to get the shiny sprite of the Pokémon.
+				Uses a fuzzy search to also match against near-matches.
+				You can provide a flag of \`--shiny\` to get the shiny sprite.
 			`,
 			explainedUsage: [
 				['pokemon', 'The Pokémon whose learnset you want to check'],
 				['move', 'The move(s) you want to check for']
 			],
-			examples: ['dragonite dragondance', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny']
+			examples: ['dragonite "dragon dance"', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny', 'pikachu "thunderbolt,thunder"']
 		}),
 		COMMAND_LEARN_METHOD_TYPES: {
 			BY_LEVEL_UP: level => `by level up at level ${level}`,
@@ -1664,12 +1657,9 @@ export default class extends Language {
 		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `I am sorry, but that query failed. Are you sure you \`${pokemon}\` is actually a Pokémon and ${moves.map(move => `\`${move}\``).join(' and ')} are actually moves?`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
 		COMMAND_LEARN_CANNOT_LEARN: (pokemon, method) => `${pokemon} has no learnset data for the given moves ${method}`,
-		COMMAND_MOVE_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon move',
+		COMMAND_MOVE_DESCRIPTION: 'Gets data for any given Pokémon move using my Pokémon dataset',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
-			extendedHelp: `
-				Queries the Pokemon API on data on a given move.
-				Uses a fuzzy search to also match against near-matches.
-			`,
+			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
 			explainedUsage: [
 				['move', 'The move for which you want to find data']
 			],
@@ -1693,10 +1683,9 @@ export default class extends Language {
 			NONE: 'None'
 		},
 		COMMAND_MOVE_QUERY_FAIL: (move: string) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
-		COMMAND_POKEDEX_DESCRIPTION: 'Queries the graphql-pokemon API for data on any given Pokémon',
+		COMMAND_POKEDEX_DESCRIPTION: 'Gets data for any given Pokémon using my Pokémon dataset.',
 		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
 			extendedHelp: `
-				Queries the Pokémon API on data on a given Pokemon.
 				Uses a fuzzy search to also match against near-matches.
 				You can provide a flag of \`--shiny\` to get the shiny sprite.
 			`,
@@ -1724,10 +1713,7 @@ export default class extends Language {
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',
 		COMMAND_TYPE_EXTENDED: builder.display('type', {
-			extendedHelp: `
-				Queries the Pokémon API for the type matchups for one or two Pokémon types.
-				Types have to be exact matches to pokemon types (upper/lowercase can be ignored)
-			`,
+			extendedHelp: 'Types have to be exact matches to pokemon types (upper/lowercase can be ignored)',
 			explainedUsage: [
 				['type', 'The type(s) to look up']
 			],

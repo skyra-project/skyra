@@ -28,9 +28,11 @@ import {
 	CLIENT_SECRET,
 	ENABLE_LAVALINK,
 	ENABLE_POSTGRES,
+	ENABLE_INFLUX,
 	EVLYN_PORT,
 	LAVALINK_PASSWORD,
 	PGSQL_DATABASE_PASSWORD,
+	INFLUX_OPTIONS,
 	TOKENS,
 	VERSION,
 	WEBHOOK_ERROR
@@ -50,9 +52,7 @@ import { PostgresCommonQuery } from './queries/postgres';
 import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
-import { INFLUX_OPTIONS } from '../../config.example';
 import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
-import { ENABLE_INFLUX } from '../../config';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');

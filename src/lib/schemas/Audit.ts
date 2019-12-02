@@ -1,10 +1,10 @@
 import { ISchemaOptions, FieldType } from 'influx';
-import { INFLUX_AUDIT_DATABASE } from '../../../config';
 import { Tags } from '../types/influxSchema/tags';
 import { AuditMeasurements, AuditTags } from '../types/influxSchema/Audit';
+import { Databases } from '../types/influxSchema/database';
 
 export const SchemaSettingsUpdate: ISchemaOptions = {
-	database: INFLUX_AUDIT_DATABASE,
+	database: Databases.Audits,
 	measurement: AuditMeasurements.SettingsUpdate,
 	fields: {
 		key: FieldType.STRING,
@@ -22,7 +22,7 @@ export const SchemaSettingsUpdate: ISchemaOptions = {
 };
 
 export const SchemaAnnouncement: ISchemaOptions = {
-	database: INFLUX_AUDIT_DATABASE,
+	database: Databases.Audits,
 	measurement: AuditMeasurements.Announcement,
 	fields: {
 		content: FieldType.STRING,
@@ -31,7 +31,7 @@ export const SchemaAnnouncement: ISchemaOptions = {
 		role_name: FieldType.STRING,
 
 		message_source_id: FieldType.STRING,
-		message_result_id: FieldType.STRING,
+		message_result_id: FieldType.STRING
 	},
 	tags: [
 		Tags.Shard,

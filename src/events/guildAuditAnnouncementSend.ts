@@ -7,13 +7,14 @@ import { Events } from '../lib/types/Enums';
 export default class extends AuditEvent {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: Events.GuildAnnouncementSend });
+		super(store, file, directory, {
+			event: Events.GuildAnnouncementSend
+		});
 	}
 
 	public async run(message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string) {
-		return this.client.influx!.writePoints([
+		return this.writePoint(AuditMeasurements.Announcement, [
 			{
-				measurement: AuditMeasurements.Announcement,
 				fields: {
 					content,
 					role_id: role.id,

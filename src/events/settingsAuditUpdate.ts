@@ -8,7 +8,11 @@ import { Events } from '../lib/types/Enums';
 export default class extends AuditEvent {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { event: Events.SettingsUpdate });
+		super(store, file, directory, {
+			event: Events.SettingsUpdate,
+			// TODO(Quantum): Enable on full release
+			enabled: false
+		});
 	}
 
 	public async run(settings: Settings) {
@@ -38,9 +42,8 @@ export default class extends AuditEvent {
 		if (user) tags = { target: AuditSettingsTarget.User, user_id: user.id };
 		if (client) tags = { target: AuditSettingsTarget.Client, client_id: client.user?.id };
 		// TODO(Quantum): Add data once SG provides it
-		return this.writePoints([
+		return this.writePoint(AuditMeasurements.Announcement, [
 			{
-				measurement: AuditMeasurements.SettingsUpdate,
 				tags: this.formTags(tags)
 			}
 		]);

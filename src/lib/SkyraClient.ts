@@ -148,6 +148,11 @@ export class SkyraClient extends KlasaClient {
 
 }
 
-initClean(Object.values(TOKENS).concat([CLIENT_SECRET, LAVALINK_PASSWORD, PGSQL_DATABASE_PASSWORD, WEBHOOK_ERROR.token]));
+{
+	const raw = Object.values(TOKENS)
+		.concat([CLIENT_SECRET, LAVALINK_PASSWORD, PGSQL_DATABASE_PASSWORD, WEBHOOK_ERROR.token])
+		.filter(value => typeof value === 'string' && value !== '');
+	initClean([...new Set(raw)]);
+}
 
 SkyraClient.use(DashboardClient);

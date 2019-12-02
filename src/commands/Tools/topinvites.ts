@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Invite } from 'discord.js';
 
 export default class extends SkyraCommand {
 
@@ -15,7 +16,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const invites = await message.guild!.fetchInvites();
 		const topTen = invites
-			.filter(inv => Boolean(inv.uses))
+			.filter(inv => this.filterInvites(inv))
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10);
 
@@ -23,6 +24,11 @@ export default class extends SkyraCommand {
 		if (topTen.length === 0) throw translationData.NO_INVITES;
 
 		return message.send(topTen.map(inv => translationData.INVITE_STRING(inv.inviter!.username, inv.code, inv.uses!.toLocaleString())));
+	}
+
+	private filterInvites(invite: Invite) {
+		if (Boolean(invite.uses) && invite.inviter && invite.inviter.username) return true;
+		return false;
 	}
 
 }

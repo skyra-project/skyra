@@ -267,7 +267,12 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public async fetchTwitchStreamSubscription(streamerID: string) {
-		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		const entry = await this.provider.runOne<RawTwitchStreamSubscriptionSettings>(/* sql */`
+			SELECT *
+			FROM twitch_stream_subscriptions
+			WHERE
+				"id" = ${this.provider.cString(streamerID)}
+			LIMIT 1;`);
 		return entry === null
 			? null
 			: {

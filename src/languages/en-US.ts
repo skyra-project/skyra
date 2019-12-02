@@ -2090,6 +2090,12 @@ export default class extends Language {
 					to your message with three emojis and let the users vote.`,
 			examples: ['Should I implement the #anime channel?']
 		}),
+		COMMAND_TOPINVITES_DESCRIPTION: 'Shows the top 10 most used invites for this server',
+		COMMAND_TOPINVITES_EXTENDED: builder.display('topinvites', {}),
+		COMMAND_TOPINVITES_DATA: {
+			NO_INVITES: 'There are no invites, or none of them have been used!',
+			INVITE_STRING: (username, code, uses) => `**${username}**'s invite **${code}** has **${uses}** uses.`
+		},
 		COMMAND_URBAN_DESCRIPTION: 'Check the definition of a word on UrbanDictionary.',
 		COMMAND_URBAN_EXTENDED: builder.display('urban', {
 			extendedHelp: `What does "spam" mean?`,

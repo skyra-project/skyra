@@ -758,6 +758,12 @@ export interface LanguageKeys {
 	COMMAND_SEARCH_EXTENDED: string;
 	COMMAND_SPOLL_DESCRIPTION: string;
 	COMMAND_SPOLL_EXTENDED: string;
+	COMMAND_TOPINVITES_DESCRIPTION: string;
+	COMMAND_TOPINVITES_EXTENDED: string;
+	COMMAND_TOPINVITES_DATA: {
+		NO_INVITES: string;
+		INVITE_STRING: (username: string, code: string, uses: string) => string;
+	};
 	COMMAND_URBAN_DESCRIPTION: string;
 	COMMAND_URBAN_EXTENDED: string;
 	COMMAND_WHOIS_DESCRIPTION: string;

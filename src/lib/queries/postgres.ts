@@ -90,7 +90,6 @@ export class PostgresCommonQuery implements CommonQuery {
 				"guild_ids" = ARRAY_REMOVE(guild_ids, $2::VARCHAR)
 			WHERE
 				"id" = $1
-			LIMIT 1
 			RETURNING guild_ids;
 		`, [streamerID, guildID]);
 		return returned.guild_ids.length === 0;

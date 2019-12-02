@@ -19,14 +19,14 @@ export default class extends AuditEvent {
 					role_id: role.id,
 					role_name: role.name,
 					message_source_id: message.id,
-					message_result_id: resultMessage.id,
-					action: AuditAnnouncementAction.Send
+					message_result_id: resultMessage.id
 				},
 				tags: {
 					shard: (this.client.options.shards as number[])[0].toString(),
 					user_id: message.author.id,
 					guild_id: message.guild?.id!,
-					channel_id: channel.id
+					channel_id: channel.id,
+					action: AuditAnnouncementAction.Send
 				}
 			}
 		]);

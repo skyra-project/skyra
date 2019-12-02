@@ -32,13 +32,12 @@ export const SchemaAnnouncement: ISchemaOptions = {
 
 		message_source_id: FieldType.STRING,
 		message_result_id: FieldType.STRING,
-
-		action: FieldType.STRING
 	},
 	tags: [
 		Tags.Shard,
 		Tags.User,
 		Tags.Channel,
-		Tags.Guild
+		Tags.Guild,
+		AuditTags.Action
 	]
 };

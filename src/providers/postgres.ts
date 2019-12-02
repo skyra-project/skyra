@@ -358,9 +358,13 @@ export default class extends SQLProvider {
 
 	protected parseValue(value: unknown, schemaEntry: SchemaEntry): unknown {
 		if (value === null || typeof value === 'undefined') return schemaEntry.default;
-		if (Array.isArray(value)) return value.map(element => this.parseValue(element, schemaEntry));
+		return Array.isArray(value)
+			? value.map(element => this.parseValuePrimitive(element, schemaEntry.type))
+			: this.parseValuePrimitive(value, schemaEntry.type);
+	}
 
-		switch (schemaEntry.type) {
+	protected parseValuePrimitive(value: unknown, type: string) {
+		switch (type) {
 			case 'number':
 			case 'float': {
 				const float = typeof value === 'string' ? Number.parseFloat(value) : value;

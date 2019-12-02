@@ -350,7 +350,7 @@ export default class extends SQLProvider {
 
 		const object = { id: raw.id };
 		for (const entry of gateway.schema.values(true)) {
-			if (typeof raw[entry.path] !== 'undefined') makeObject(entry.path, this.parseValue(raw[entry.path], entry), object);
+			makeObject(entry.path, raw[entry.path], object);
 		}
 
 		return object;

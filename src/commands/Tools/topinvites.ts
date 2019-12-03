@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 			display.addPage((embed: MessageEmbed) => embed
 				.setAuthor(invite.inviter.tag, invite.inviter.displayAvatarURL())
 				.setThumbnail(invite.inviter.displayAvatarURL())
-				.addField(embedData.CHANNEL, `<#${invite.channel.id}>`, true)
+				.addField(embedData.CHANNEL, `${invite.channel}`, true)
 				.addField(embedData.CODE, invite.code, true)
 				.addField(embedData.URL, invite.url, true)
 				.addField(embedData.CREATED_AT, invite.createdTimestamp ? this.inviteTimestamp.display(invite.createdTimestamp) : embedData.CREATED_AT_UNKNOWN, true)

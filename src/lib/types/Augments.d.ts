@@ -12,6 +12,7 @@ import { Client as VezaClient } from 'veza';
 import { CommonQuery } from '../queries/common';
 import { UserTags } from '../util/Cache/UserTags';
 import { Twitch } from '../util/Notifications/Twitch';
+import { InfluxDB } from 'influx';
 
 declare module 'discord.js' {
 
@@ -28,6 +29,7 @@ declare module 'discord.js' {
 		webhookError: Webhook;
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
+		influx: InfluxDB | null;
 		twitch: Twitch;
 	}
 

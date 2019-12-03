@@ -4,6 +4,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { announcementCheck, getColor } from '../../lib/util/util';
 import { APIErrors } from '../../lib/util/constants';
+import { Events } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -65,16 +66,24 @@ export default class extends SkyraCommand {
 		const previous = this.messages.get(message);
 		if (previous) {
 			try {
-				await previous.edit(content);
+				const resultMessage = await previous.edit(content) as KlasaMessage;
+				// TODO(Quantum): Implement event
+				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, content);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
-					this.messages.set(message, await channel.send(content) as KlasaMessage);
+					const resultMessage = await channel.send(content) as KlasaMessage;
+					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
+					this.messages.set(message, resultMessage);
 				} else {
+					// TODO(Quantum): Implement event
+					this.client.emit(Events.GuildAnnouncementError, message, channel, role, content, error);
 					throw error;
 				}
 			}
 		} else {
-			this.messages.set(message, await channel.send(content) as KlasaMessage);
+			const resultMessage = await channel.send(content) as KlasaMessage;
+			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
+			this.messages.set(message, resultMessage);
 		}
 
 		if (!mentionable) await role.edit({ mentionable: false });

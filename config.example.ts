@@ -5,11 +5,13 @@ import { PoolConfig } from 'pg';
 import { APIWebhookData } from './src/lib/types/DiscordAPI';
 import ApiRequest from './src/lib/structures/api/ApiRequest';
 import ApiResponse from './src/lib/structures/api/ApiResponse';
+import { ISingleHostConfig } from 'influx';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
 export const ENABLE_POSTGRES = 'ENABLE_POSTGRES' in process.env ? process.env.ENABLE_POSTGRES === 'true' : !DEV;
+export const ENABLE_INFLUX = 'ENABLE_INFLUX' in process.env ? process.env.ENABLE_INFLUX === 'true' : !DEV;
 export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
 
@@ -29,6 +31,17 @@ export const PGSQL_DATABASE_OPTIONS: PoolConfig = {
 	database: PGSQL_DATABASE_NAME,
 	password: PGSQL_DATABASE_PASSWORD,
 	user: PGSQL_DATABASE_USER
+};
+
+export const INFLUX_HOST = 'localhost';
+export const INFLUX_PORT = 8086;
+export const INFLUX_USERNAME = '';
+export const INFLUX_PASSWORD = '';
+export const INFLUX_OPTIONS: ISingleHostConfig = {
+	host: INFLUX_HOST,
+	port: INFLUX_PORT,
+	username: INFLUX_USERNAME,
+	password: INFLUX_PASSWORD
 };
 
 export const VERSION = '5.2.3 Nirom';

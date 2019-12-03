@@ -16,14 +16,18 @@
 /src/lib/util/Pokedex.ts @favna
 /src/lib/util/External/igbTypes.ts @favna
 
-# Quantum
-/src/routes/twitch/twitchStreamChange.ts @quantumlytangled
+# QuantumlyTangled
 /src/commands/Twitch/ @quantumlytangled
+/src/routes/twitch/twitchStreamChange.ts @quantumlytangled
 /src/events/twitchStreamOnline.ts @quantumlytangled
 /src/events/twitchStreamOffline.ts @quantumlytangled
 /src/lib/util/Notifications/ @quantumlytangled
+/src/lib/types/influxSchema/ @quantumlytangled
 /src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled
 /src/lib/types/definitions/Twitch.d.ts @quantumlytangled
+/src/lib/schemas/Audit.ts @quantumlytangled
+# Now while I may not have made all of them (except for Influx) I would like to be notified of them so... this is what the following line is for
+/docker/ @quantumlytangled
 
 # Magna
 /src/routes/ @gc

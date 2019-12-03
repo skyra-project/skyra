@@ -43,10 +43,6 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	private filterInvites(invite: Invite) {
-		return invite.uses! > 0 && invite.inviter !== null;
-	}
-
 	private buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', message.guild!))
@@ -68,6 +64,10 @@ export default class extends SkyraCommand {
 		}
 
 		return display;
+	}
+
+	private filterInvites(invite: Invite) {
+		return invite.uses! > 0 && invite.inviter !== null;
 	}
 
 	private resolveUses(uses: Invite['uses'], maxUses: Invite['maxUses']) {

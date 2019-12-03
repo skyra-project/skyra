@@ -1,10 +1,9 @@
+import { Invite, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Invite, MessageEmbed } from 'discord.js';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { getColor } from '../../lib/util/util';
-import { DeepRequired } from '../../lib/util/External/utility-types';
 import { BrandingColors, Emojis } from '../../lib/util/constants';
+import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -34,7 +33,7 @@ export default class extends SkyraCommand {
 		const topTen = invites
 			.filter(this.filter)
 			.sort((a, b) => b.uses! - a.uses!)
-			.first(10) as DeepRequired<Invite>[];
+			.first(10) as NonNullableInvite[];
 
 		if (topTen.length === 0) throw message.language.tget('COMMAND_TOPINVITES_NO_INVITES');
 
@@ -48,7 +47,7 @@ export default class extends SkyraCommand {
 		return invite.uses! > 0 && invite.inviter !== null;
 	}
 
-	private buildDisplay(message: KlasaMessage, invites: DeepRequired<Invite>[]) {
+	private buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', message.guild!))
 			.setColor(getColor(message)));
@@ -87,3 +86,7 @@ export default class extends SkyraCommand {
 	}
 
 }
+
+type NonNullableInvite = {
+	[P in keyof Invite]: NonNullable<Invite[P]>;
+};

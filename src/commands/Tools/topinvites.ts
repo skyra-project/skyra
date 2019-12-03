@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 	}
 
 	private filterInvites(invite: Invite) {
-		return invite.uses > 0 && invite.inviter !== null;
+		return invite.uses! > 0 && invite.inviter !== null;
 	}
 
 	private buildDisplay(message: KlasaMessage, invites: DeepRequired<Invite[]>) {

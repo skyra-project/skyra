@@ -70,17 +70,17 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-	private resolveUses(uses: number, maxUses: Invite['maxUses']) {
+	private resolveUses(uses: Invite['uses'], maxUses: Invite['maxUses']) {
 		if (maxUses !== null && maxUses > 0) return `${uses}/${maxUses}`;
 		return uses;
 	}
 
-	private resolveExpiryDate(message: KlasaMessage, expiresTimestamp: number | null, fallback: string) {
+	private resolveExpiryDate(message: KlasaMessage, expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
 		if (expiresTimestamp !== null && expiresTimestamp > 0) return message.language.duration((expiresTimestamp - Date.now()), 2);
 		return fallback;
 	}
 
-	private resolveCreationDate(createdTimestamp: number | null, fallback: string) {
+	private resolveCreationDate(createdTimestamp: Invite['createdTimestamp'], fallback: string) {
 		if (createdTimestamp !== null) return this.inviteTimestamp.display(createdTimestamp);
 		return fallback;
 	}

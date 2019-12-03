@@ -40,7 +40,9 @@ export const enum Events {
 	Wtf = 'wtf',
 	GuildAnnouncementEdit = 'guildAnnouncementEdit',
 	GuildAnnouncementSend = 'guildAnnouncementSend',
-	GuildAnnouncementError = 'guildAnnouncementError'
+	GuildAnnouncementError = 'guildAnnouncementError',
+	MoneyTransaction = 'moneyTransaction',
+	MoneyPayment = 'moneyPayment'
 }
 
 export const enum PermissionLevels {

@@ -1,3 +1,4 @@
 export const enum Databases {
-	Audits = 'audits'
+	Audits = 'audits',
+	Economy = 'economy'
 }

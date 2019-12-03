@@ -27,8 +27,8 @@ export default class extends Event {
 
 			// Iterate over each subscription
 			for (const subscription of subscriptions[1]) {
-				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}`)) continue;
 				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Offline) continue;
+				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
 				// Retrieve the channel, then check if it exists or if it's postable.
 				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;

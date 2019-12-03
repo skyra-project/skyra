@@ -2,7 +2,7 @@ import { Settings, EventStore } from 'klasa';
 import { SkyraGuild } from '../lib/extensions/SkyraGuild';
 import { AuditMeasurements, AuditSettingsTarget } from '../lib/types/influxSchema/Audit';
 import { User, Client } from 'discord.js';
-import AuditEvent from '../lib/structures/AuditEvent';
+import AuditEvent from '../lib/structures/analytics/AuditEvent';
 import { Events } from '../lib/types/Enums';
 
 export default class extends AuditEvent {
@@ -42,11 +42,11 @@ export default class extends AuditEvent {
 		if (user) tags = { target: AuditSettingsTarget.User, user_id: user.id };
 		if (client) tags = { target: AuditSettingsTarget.Client, client_id: client.user?.id };
 		// TODO(Quantum): Add data once SG provides it
-		return this.writePoint(AuditMeasurements.Announcement, [
+		return this.writeMeasurement(AuditMeasurements.Announcement,
 			{
 				tags: this.formTags(tags)
 			}
-		]);
+		);
 	}
 
 }

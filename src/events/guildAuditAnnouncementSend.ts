@@ -1,7 +1,7 @@
 import { EventStore, KlasaMessage } from 'klasa';
 import { AuditMeasurements, AuditAnnouncementAction } from '../lib/types/influxSchema/Audit';
 import { Role, TextChannel } from 'discord.js';
-import AuditEvent from '../lib/structures/AuditEvent';
+import AuditEvent from '../lib/structures/analytics/AuditEvent';
 import { Events } from '../lib/types/Enums';
 
 export default class extends AuditEvent {
@@ -13,7 +13,7 @@ export default class extends AuditEvent {
 	}
 
 	public async run(message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string) {
-		return this.writePoint(AuditMeasurements.Announcement, [
+		return this.writeMeasurement(AuditMeasurements.Announcement,
 			{
 				fields: {
 					content,
@@ -30,7 +30,7 @@ export default class extends AuditEvent {
 					action: AuditAnnouncementAction.Send
 				}
 			}
-		]);
+		);
 	}
 
 }

@@ -1,19 +1,20 @@
 import { ISchemaOptions, FieldType } from 'influx';
 import { Tags } from '../types/influxSchema/tags';
 import { Databases } from '../types/influxSchema/database';
-import { EconomyMeasurements } from '../types/influxSchema/Economy';
+import { EconomyMeasurements, EconomyTags } from '../types/influxSchema/Economy';
 
-// TODO(Quantum): Implement proper data
 export const SchemaMoneyTransaction: ISchemaOptions = {
 	database: Databases.Economy,
 	measurement: EconomyMeasurements.Transaction,
 	fields: {
-		key: FieldType.STRING,
-		old_value: FieldType.STRING,
-		new_value: FieldType.STRING
+		change: FieldType.INTEGER,
+		balance: FieldType.INTEGER,
+		old_balance: FieldType.INTEGER
 	},
 	tags: [
-		Tags.Shard
+		Tags.Shard,
+		Tags.User,
+		EconomyTags.Action
 	]
 };
 

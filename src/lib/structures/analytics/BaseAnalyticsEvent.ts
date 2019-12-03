@@ -1,18 +1,17 @@
 import { Event } from 'klasa';
-import { ENABLE_INFLUX } from '../../../config';
+import { ENABLE_INFLUX } from '../../../../config';
 import { mergeDefault } from '@klasa/utils';
 import { IWriteOptions, IPoint } from 'influx';
-import { Databases } from '../types/influxSchema/database';
 
-export default abstract class AuditEvent extends Event {
+export default abstract class BaseAnalyticsEvent extends Event {
 
 	// eslint-disable-next-line @typescript-eslint/require-await
 	public async init() {
 		if (!ENABLE_INFLUX) this.disable();
 	}
 
-	protected writePoint(measurement: string, points: IPoint[], options?: IWriteOptions): Promise<void> {
-		return this.client.influx!.writeMeasurement(measurement, points, this.formOptions(options));
+	protected writeMeasurement(measurement: string, points: IPoint, options?: IWriteOptions): Promise<void> {
+		return this.client.influx!.writeMeasurement(measurement, [points], this.formOptions(options));
 	}
 
 	protected formTags<T extends object>(tags: T) {
@@ -31,8 +30,8 @@ export default abstract class AuditEvent extends Event {
 
 	protected getDefaultOptions(): IWriteOptions {
 		return {
-			database: Databases.Audits
-		}
+			database: ''
+		};
 	}
 
 }

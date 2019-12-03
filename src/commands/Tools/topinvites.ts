@@ -4,13 +4,15 @@ import { Invite, MessageEmbed } from 'discord.js';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { getColor } from '../../lib/util/util';
 import { DeepRequired } from '../../lib/util/External/utility-types';
-import { BrandingColors } from '../../lib/util/constants';
+import { BrandingColors, Emojis } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 
-	private inviteTimestamp = new Timestamp('MMMM d YYYY - HH:mm');
+	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
+	private filter: (invite: Invite) => boolean;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
+
 		super(store, file, directory, {
 			aliases: ['topinvs'],
 			cooldown: 10,
@@ -19,6 +21,8 @@ export default class extends SkyraCommand {
 			requiredGuildPermissions: ['MANAGE_GUILD'],
 			runIn: ['text']
 		});
+
+		this.filter = this.filterInvites.bind(this);
 	}
 
 	public async run(message: KlasaMessage) {
@@ -28,7 +32,7 @@ export default class extends SkyraCommand {
 
 		const invites = await message.guild!.fetchInvites();
 		const topTen = invites
-			.filter(inv => this.filterInvites(inv))
+			.filter(this.filter)
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as DeepRequired<Invite[]>;
 
@@ -46,7 +50,7 @@ export default class extends SkyraCommand {
 
 	private buildDisplay(message: KlasaMessage, invites: DeepRequired<Invite[]>) {
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setTitle(`Top 10 Invites for ${message.guild!.name}`)
+			.setTitle(message.language.tget('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', message.guild!))
 			.setColor(getColor(message)));
 		const embedData = message.language.tget('COMMAND_TOPINVITES_EMBED_DATA');
 
@@ -54,18 +58,32 @@ export default class extends SkyraCommand {
 			display.addPage((embed: MessageEmbed) => embed
 				.setAuthor(invite.inviter.tag, invite.inviter.displayAvatarURL())
 				.setThumbnail(invite.inviter.displayAvatarURL())
-				.addField(embedData.CHANNEL, `${invite.channel}`, true)
-				.addField(embedData.CODE, invite.code, true)
-				.addField(embedData.URL, invite.url, true)
-				.addField(embedData.CREATED_AT, invite.createdTimestamp ? this.inviteTimestamp.display(invite.createdTimestamp) : embedData.CREATED_AT_UNKNOWN, true)
-				.addField(embedData.EXPIRES_AT, invite.expiresTimestamp ? this.inviteTimestamp.display(invite.expiresTimestamp) : embedData.EXPIRES_AT_UNKNOWN, true)
-				.addField(embedData.MAX_AGE, invite.maxAge ? message.language.duration(invite.maxAge * 1000) : embedData.NO_MAX_AGE, true)
-				.addField(embedData.MAX_USES, invite.maxUses ? invite.maxUses : embedData.NO_MAX_USES, true)
-				.addField(embedData.TEMPORARY, invite.temporary ? embedData.IS_TEMPORARY : embedData.IS_NOT_TEMPORARY, true)
-				.addField(embedData.USES, invite.uses, true));
+				.setDescription([
+					`**${embedData.USES}**: ${this.resolveUses(invite.uses, invite.maxUses)}`,
+					`**${embedData.LINK}**: [${invite.code}](${invite.url})`,
+					`**${embedData.CHANNEL}**: ${invite.channel}`,
+					`**${embedData.TEMPORARY}**: ${invite.temporary ? Emojis.GreenTick : Emojis.RedCross}`
+				].join('\n'))
+				.addField(embedData.CREATED_AT, this.resolveCreationDate(invite.createdTimestamp, embedData.CREATED_AT_UNKNOWN), true)
+				.addField(embedData.EXPIRES_IN, this.resolveExpiryDate(message, invite.expiresTimestamp, embedData.NEVER_EXPIRES), true));
 		}
 
 		return display;
+	}
+
+	private resolveUses(uses: number, maxUses: Invite['maxUses']) {
+		if (maxUses !== null && maxUses > 0) return `${uses}/${maxUses}`;
+		return uses;
+	}
+
+	private resolveExpiryDate(message: KlasaMessage, expiresTimestamp: number | null, fallback: string) {
+		if (expiresTimestamp !== null && expiresTimestamp > 0) return message.language.duration((expiresTimestamp - Date.now()), 2);
+		return fallback;
+	}
+
+	private resolveCreationDate(createdTimestamp: number | null, fallback: string) {
+		if (createdTimestamp !== null) return this.inviteTimestamp.display(createdTimestamp);
+		return fallback;
 	}
 
 }

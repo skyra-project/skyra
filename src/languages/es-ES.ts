@@ -2071,22 +2071,16 @@ export default class extends Language {
 		COMMAND_TOPINVITES_DESCRIPTION: 'Muestra las 10 invitaciones más utilizadas para este servidor.',
 		COMMAND_TOPINVITES_EXTENDED: builder.display('topinvites', {}),
 		COMMAND_TOPINVITES_NO_INVITES: '¡No hay invitaciones, o ninguna de ellas ha sido utilizada!',
+		COMMAND_TOPINVITES_TOP_10_INVITES_FOR: guild => `Las 10 mejores invitaciones para ${guild}`,
 		COMMAND_TOPINVITES_EMBED_DATA: {
 			CHANNEL: 'Canal',
-			CODE: 'Código',
-			URL: 'url',
+			LINK: 'Enlace',
 			CREATED_AT: 'Fecha de creacion',
 			CREATED_AT_UNKNOWN: 'Fecha de creación desconocida',
-			EXPIRES_AT: 'Expiry date',
-			EXPIRES_AT_UNKNOWN: 'Fecha de caducidad desconocida',
-			MAX_AGE: 'Edad máxima',
-			NO_MAX_AGE: 'Infinitamente utilizable',
-			MAX_USES: 'Usos máximos',
-			NO_MAX_USES: 'Sin cantidad máxima de usos',
+			EXPIRES_IN: 'Expira en',
+			NEVER_EXPIRES: 'Nunca',
 			TEMPORARY: 'Invitación temporal',
-			IS_TEMPORARY: 'Sí',
-			IS_NOT_TEMPORARY: 'No',
-			USES: 'Cantidad de usos'
+			USES: 'Usos'
 		},
 		COMMAND_URBAN_DESCRIPTION: 'Check the definition of a word on UrbanDictionary.',
 		COMMAND_URBAN_EXTENDED: builder.display('urban', {

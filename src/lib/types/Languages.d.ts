@@ -1,4 +1,4 @@
-import { GuildMember, PermissionString, Role, User } from 'discord.js';
+import { GuildMember, PermissionString, Role, User, Guild } from 'discord.js';
 import { ScheduledTask, SchemaEntry } from 'klasa';
 import { HungerGamesGame } from '../../commands/Games/hungergames';
 import { LevelTitles } from '../../commands/Social/level';
@@ -761,21 +761,15 @@ export interface LanguageKeys {
 	COMMAND_TOPINVITES_DESCRIPTION: string;
 	COMMAND_TOPINVITES_EXTENDED: string;
 	COMMAND_TOPINVITES_NO_INVITES: string;
+	COMMAND_TOPINVITES_TOP_10_INVITES_FOR: (guild: Guild) => string;
 	COMMAND_TOPINVITES_EMBED_DATA: {
 		CHANNEL: string;
-		CODE: string;
-		URL: string;
+		LINK: string;
 		CREATED_AT: string;
 		CREATED_AT_UNKNOWN: string;
-		EXPIRES_AT: string;
-		EXPIRES_AT_UNKNOWN: string;
-		MAX_AGE: string;
-		NO_MAX_AGE: string;
-		MAX_USES: string;
-		NO_MAX_USES: string;
+		EXPIRES_IN: string;
+		NEVER_EXPIRES: string;
 		TEMPORARY: string;
-		IS_TEMPORARY: string;
-		IS_NOT_TEMPORARY: string;
 		USES: string;
 	};
 	COMMAND_URBAN_DESCRIPTION: string;

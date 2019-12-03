@@ -11,7 +11,6 @@ export default class extends SkyraCommand {
 	private filter: (invite: Invite) => boolean;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
-
 		super(store, file, directory, {
 			aliases: ['topinvs'],
 			cooldown: 10,

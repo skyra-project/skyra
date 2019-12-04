@@ -2054,6 +2054,20 @@ export default class extends Language {
 					to your message with three emojis and let the users vote.`,
 			examples: ['Should I implement the #anime channel?']
 		}),
+		COMMAND_TOPINVITES_DESCRIPTION: 'Muestra las 10 invitaciones más utilizadas para este servidor.',
+		COMMAND_TOPINVITES_EXTENDED: builder.display('topinvites', {}),
+		COMMAND_TOPINVITES_NO_INVITES: '¡No hay invitaciones, o ninguna de ellas ha sido utilizada!',
+		COMMAND_TOPINVITES_TOP_10_INVITES_FOR: guild => `Las 10 mejores invitaciones para ${guild}`,
+		COMMAND_TOPINVITES_EMBED_DATA: {
+			CHANNEL: 'Canal',
+			LINK: 'Enlace',
+			CREATED_AT: 'Fecha de creacion',
+			CREATED_AT_UNKNOWN: 'Fecha de creación desconocida',
+			EXPIRES_IN: 'Expira en',
+			NEVER_EXPIRES: 'Nunca',
+			TEMPORARY: 'Invitación temporal',
+			USES: 'Usos'
+		},
 		COMMAND_URBAN_DESCRIPTION: 'Check the definition of a word on UrbanDictionary.',
 		COMMAND_URBAN_EXTENDED: builder.display('urban', {
 			extendedHelp: `What does "spam" mean?`,

@@ -1,7 +1,8 @@
-import { GuildChannel, MessageEmbed, TextChannel } from 'discord.js';
+import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
+import ChannelNameArgument from '../../arguments/channelname';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getContent, getImage, cutText } from '../../lib/util/util';
+import { cutText, getContent, getImage } from '../../lib/util/util';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;
@@ -18,6 +19,17 @@ export default class extends SkyraCommand {
 			usageDelim: ' '
 		});
 
+		this.createCustomResolver('channel', async (arg, possible, message) => {
+			const resolvedChannel = await this.channelNameArgument.run(arg, possible, message, channel => channel.type === 'text') as TextChannel;
+
+			// Checks if the current user has view channel permissions for the resolved channel
+			if (!resolvedChannel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) {
+				throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
+			}
+
+			return resolvedChannel;
+		});
+
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
 			// Try to find from URL, then use channel
 			const messageUrl = await this.getFromUrl(message, arg);
@@ -29,6 +41,10 @@ export default class extends SkyraCommand {
 			if (m) return m;
 			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		});
+	}
+
+	private get channelNameArgument() {
+		return this.client.arguments.get('channelname') as ChannelNameArgument;
 	}
 
 	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage]) {
@@ -65,6 +81,7 @@ export default class extends SkyraCommand {
 		if (!channel) return null;
 		if (!(channel instanceof TextChannel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
 		if (!channel.readable) throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
+		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
 
 		return channel.messages.fetch(_message);
 	}

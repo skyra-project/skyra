@@ -1467,6 +1467,7 @@ export interface LanguageKeys {
 	SYSTEM_GUILD_MUTECREATE_APPLYING: (channels: number, role: string) => string;
 	SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied: readonly string[]) => string;
 	SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted: number, exceptions: string, author: string, role: string) => string;
+	SYSTEM_CANNOT_ACCESS_CHANNEL: string;
 	JUMPTO: string;
 	RESOLVER_INVALID_CHANNELNAME: (name: string) => string;
 	RESOLVER_INVALID_ROLENAME: (name: string) => string;

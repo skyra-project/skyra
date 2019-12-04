@@ -32,7 +32,7 @@ export default abstract class AuditEvent extends Event {
 	protected getDefaultOptions(): IWriteOptions {
 		return {
 			database: Databases.Audits
-		}
+		};
 	}
 
 }

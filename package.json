@@ -79,6 +79,6 @@
     "@typescript-eslint/parser": "^2.10.0",
     "eslint": "^6.7.2",
     "eslint-config-bamboo": "^3.0.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.3"
   }
 }

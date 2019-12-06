@@ -34,7 +34,7 @@ export function limitMethod(group: string, bucket: number, cooldown: number, saf
 		if (!method) throw new Error('Function limiter actions require a [[value]].');
 		if (typeof method !== 'function') throw new Error('Function limiter actions can only be applied to functions.');
 
-		descriptor.value = (function descriptorValue(this: LimitedClass, ...args: any[]) {
+		descriptor.value = (function descriptorValue(this: LimitedClass, ...args: readonly unknown[]) {
 			if (!this.limiter as boolean) throw new Error('Class does not posses a limiter');
 			bucket = safety ? (bucket > 2 ? bucket - 1 : bucket) : bucket;
 			cooldown = safety ? (cooldown + (Time.Second as number)) : cooldown;

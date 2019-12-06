@@ -19,7 +19,7 @@ export interface MethodRatelimitedError {
 }
 
 export function classLimitInitialization() {
-	return createClassDecorator((target: Constructor<LimitedClass>) => class extends target {
+	return createClassDecorator((Target: Constructor<unknown>) => class extends Target implements LimitedClass {
 
 		public ratelimits: Collection<string, RateLimitManager> = new Collection();
 		public limiter = true;

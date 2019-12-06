@@ -1,12 +1,11 @@
-import { MessageEmbed, Permissions, TextChannel, User, Message } from 'discord.js';
+import Collection from '@discordjs/collection';
+import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 import { DEV } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { BrandingColors } from '../../lib/util/constants';
 import { Markov, WordBank } from '../../lib/util/External/markov';
 import { cutText, getColor, iteratorAt } from '../../lib/util/util';
-import ChannelNameArgument from '../../arguments/channelname';
-import Collection from '@discordjs/collection';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
@@ -30,23 +29,8 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_MARKOV_EXTENDED'),
 			runIn: ['text'],
 			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
-			usage: '[channel:channel{2}] [user:username]'
+			usage: '[channel:channelname{2}] [user:username]'
 		});
-
-		this.createCustomResolver('channel', async (arg, possible, message) => {
-			const resolvedChannel = await this.channelNameArgument.run(arg, possible, message, channel => channel.type === 'text') as TextChannel;
-
-			// Checks if the current user has view channel permissions for the resolved channel
-			if (!resolvedChannel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) {
-				throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
-			}
-
-			return resolvedChannel;
-		});
-	}
-
-	private get channelNameArgument() {
-		return this.client.arguments.get('channelname') as ChannelNameArgument;
 	}
 
 	public async run(message: KlasaMessage, args: [TextChannel?, User?]) {

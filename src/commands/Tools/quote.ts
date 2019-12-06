@@ -1,6 +1,5 @@
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
-import ChannelNameArgument from '../../arguments/channelname';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { cutText, getContent, getImage } from '../../lib/util/util';
 
@@ -15,19 +14,8 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_QUOTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_QUOTE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
-			usage: '[channel:channel] (message:message)',
+			usage: '[channel:channelname] (message:message)',
 			usageDelim: ' '
-		});
-
-		this.createCustomResolver('channel', async (arg, possible, message) => {
-			const resolvedChannel = await this.channelNameArgument.run(arg, possible, message, channel => channel.type === 'text') as TextChannel;
-
-			// Checks if the current user has view channel permissions for the resolved channel
-			if (!resolvedChannel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) {
-				throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
-			}
-
-			return resolvedChannel;
 		});
 
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
@@ -41,10 +29,6 @@ export default class extends SkyraCommand {
 			if (m) return m;
 			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		});
-	}
-
-	private get channelNameArgument() {
-		return this.client.arguments.get('channelname') as ChannelNameArgument;
 	}
 
 	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage]) {

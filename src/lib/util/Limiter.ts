@@ -45,16 +45,14 @@ export function limitMethod(group = 'global', bucket: number, cooldown: number) 
 
 			const limit = this.ratelimits.get(group)!;
 
-			if (limit.limited) {
+			try {
+				limit.drip();
+			} catch {
 				return {
 					error: LimitErrors.Ratelimited,
 					remainingTime: limit.remainingTime.toString()
 				};
 			}
-
-			try {
-				limit.drip();
-			} catch { }
 
 			return method.call(this, ...args);
 		}) as unknown as undefined;

@@ -2,7 +2,7 @@ import { createMethodDecorator } from 'klasa-decorators';
 import { Collection, Constructor } from 'discord.js';
 import { RateLimitManager } from 'klasa';
 import { createClassDecorator } from './util';
-import { Time } from './constants';
+import assert from 'assert';
 
 export const enum LimitErrors {
 	Ratelimited = 'RATELIMIT'
@@ -19,15 +19,20 @@ export interface MethodRatelimitedError {
 }
 
 export function classLimitInitialization() {
-	return createClassDecorator((Target: Constructor<unknown>) => class extends Target implements LimitedClass {
+	return createClassDecorator((Target: Constructor<LimitedClass>) => class extends Target {
 
-		public ratelimits: Collection<string, RateLimitManager> = new Collection();
+		public ratelimits = new Collection<string, RateLimitManager>();
 		public limiter = true;
 
 	});
 }
 
-export function limitMethod(group: string, bucket: number, cooldown: number, safety = true) {
+/**
+ * @param group The group for which the ratelimits are set
+ * @param bucket The amount of allowed actions in the designated time
+ * @param cooldown Should be passed in miliseconds
+ */
+export function limitMethod(group = 'global', bucket: number, cooldown: number) {
 	return createMethodDecorator((_target, _propertyKey, descriptor) => {
 		const method = descriptor.value;
 
@@ -35,9 +40,7 @@ export function limitMethod(group: string, bucket: number, cooldown: number, saf
 		if (typeof method !== 'function') throw new Error('Function limiter actions can only be applied to functions.');
 
 		descriptor.value = (function descriptorValue(this: LimitedClass, ...args: readonly unknown[]) {
-			if (!this.limiter as boolean) throw new Error('Class does not posses a limiter');
-			bucket = safety ? (bucket > 2 ? bucket - 1 : bucket) : bucket;
-			cooldown = safety ? (cooldown + (Time.Second as number)) : cooldown;
+			assert(typeof this.limiter === 'boolean');
 			if (!this.ratelimits.has(group)) this.ratelimits.set(group, new RateLimitManager(bucket, cooldown));
 
 			const manager = this.ratelimits.get(group);

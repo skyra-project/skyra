@@ -166,5 +166,6 @@ export const TOKENS = {
 	TWITCH_SECRET: '',
 	TWITCH_WEBHOOK_SECRET: '',
 	WEEB_SH_KEY: '',
-	WOLFRAM_KEY: ''
+	WOLFRAM_KEY: '',
+	XIVAPI_KEY: ''
 };

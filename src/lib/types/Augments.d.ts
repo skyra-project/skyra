@@ -13,6 +13,7 @@ import { CommonQuery } from '../queries/common';
 import { UserTags } from '../util/Cache/UserTags';
 import { Twitch } from '../util/Notifications/Twitch';
 import { InfluxDB } from 'influx';
+import { GameIntegrationsManager } from '../structures/GI/GameIntegrationsManager';
 
 declare module 'discord.js' {
 
@@ -31,6 +32,7 @@ declare module 'discord.js' {
 		queries: CommonQuery;
 		influx: InfluxDB | null;
 		twitch: Twitch;
+		games: GameIntegrationsManager;
 	}
 
 	interface MessageExtendablesAskOptions {

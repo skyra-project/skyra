@@ -53,6 +53,7 @@ import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
 import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
+import { GameIntegrationsManager } from './structures/GI/GameIntegrationsManager';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -95,6 +96,8 @@ export class SkyraClient extends KlasaClient {
 	public influx: InfluxDB | null = ENABLE_INFLUX
 		? new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate, SchemaAnnouncement] })
 		: null;
+
+	public games: GameIntegrationsManager = new GameIntegrationsManager();
 
 	/**
 	 * The ConnectFour manager

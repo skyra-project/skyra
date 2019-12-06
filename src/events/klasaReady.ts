@@ -10,6 +10,7 @@ export default class extends Event {
 
 	public async run() {
 		try {
+			await this.client.games.initClasses().catch(error => this.client.emit(Events.Wtf, error));
 			await Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error));
 			await this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error));
 			await this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));

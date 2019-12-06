@@ -1,0 +1,104 @@
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { CommandStore } from 'klasa';
+import { fetch } from '../../lib/util/util';
+
+export default class extends SkyraCommand {
+
+	private readonly emojis: Map<number, DiscordEmoji> = new Map();
+	private readonly packs: Map<number, DiscordEmojiPack> = new Map();
+
+	public constructor(store: CommandStore, file: string[], directory: string) {
+		super(store, file, directory, {
+			cooldown: 10,
+			description: 'Searches the discordemoji.com database for emotes',
+			extendedHelp: 'i need to fill this at some point oof',
+			requiredPermissions: ['ATTACH_FILES'],
+			usage: '<category|packs|search:default> <searchterm:string>',
+			usageDelim: ' ',
+			subcommands: true
+		});
+	}
+
+	public async init() {
+		const API_URL = 'https://discordemoji.com/api';
+		const [emojis, packs, categories] = await Promise.all([[API_URL, `${API_URL}/packs`, `${API_URL}?request=categories`].map(e => fetch(e, 'json'))]) as unknown as [RawDiscordEmoji[], RawDiscordEmojiPack[], Category];
+		emojis.reverse();
+		packs.reverse();
+
+		for (const emoji of emojis) {
+			const { id, title, image, description, category, faves, submitted_by } = emoji;
+			const nsfw = categories[category] === 'NSFW';
+			this.emojis.set(id, { title, image, description, category, faves, submitted_by, nsfw });
+		}
+
+		for (const pack of packs) {
+			const { id, name, description, image, amount } = pack
+			this.packs.set(id, {name, description, image, amount})
+		}
+	}
+
+}
+
+interface DiscordEmoji {
+	title: string;
+	image: string;
+	description: string;
+	category: number;
+	faves: number;
+	submitted_by: string;
+	nsfw: boolean;
+}
+
+interface DiscordEmojiPack {
+	name: string;
+	description: string;
+	image: string;
+	amount: number;
+}
+
+interface RawDiscordEmojiPack {
+	id: number;
+	name: string;
+	description: string;
+	slug: string;
+	image: string;
+	download: string;
+	amount: number;
+}
+
+interface RawDiscordEmoji {
+	id: number;
+	title: string;
+	slug: string;
+	image: string;
+	description: string;
+	category: number;
+	license: string;
+	source: string;
+	faves: number;
+	submitted_by: string;
+	width: number;
+	height: number;
+	filesize: number;
+}
+
+interface Category extends Record<string, string> {
+	1: 'Original Style';
+	2: 'TV / Movie';
+	3: 'Meme';
+	4: 'Anime';
+	5: 'Celebrity';
+	6: 'Blobs';
+	7: 'Thinking';
+	8: 'Animated';
+	9: 'NSFW';
+	10: 'Gaming';
+	11: 'Letters';
+	12: 'Other';
+	13: 'Pepe';
+	14: 'Logos';
+	15: 'Cute';
+	16: 'Utility';
+	17: 'Animals';
+	18: 'Recolors';
+}

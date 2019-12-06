@@ -1,6 +1,6 @@
 import { createMethodDecorator } from 'klasa-decorators';
 import { Collection, Constructor } from 'discord.js';
-import { RateLimitManager } from 'klasa';
+import { RateLimit } from 'klasa';
 import { createClassDecorator } from './util';
 import assert from 'assert';
 
@@ -9,7 +9,7 @@ export const enum LimitErrors {
 }
 
 export interface LimitedClass {
-	ratelimits: Collection<string, RateLimitManager>;
+	ratelimits: Collection<string, RateLimit>;
 	limiter: boolean;
 }
 
@@ -21,7 +21,7 @@ export interface MethodRatelimitedError {
 export function classLimitInitialization() {
 	return createClassDecorator((Target: Constructor<LimitedClass>) => class extends Target {
 
-		public ratelimits = new Collection<string, RateLimitManager>();
+		public ratelimits = new Collection<string, RateLimit>();
 		public limiter = true;
 
 	});
@@ -41,21 +41,19 @@ export function limitMethod(group = 'global', bucket: number, cooldown: number) 
 
 		descriptor.value = (function descriptorValue(this: LimitedClass, ...args: readonly unknown[]) {
 			assert(typeof this.limiter === 'boolean');
-			if (!this.ratelimits.has(group)) this.ratelimits.set(group, new RateLimitManager(bucket, cooldown));
+			if (!this.ratelimits.has(group)) this.ratelimits.set(group, new RateLimit(bucket, cooldown))
 
-			const manager = this.ratelimits.get(group);
-			const id = Date.now().toString(8);
-			const bucketInstance = manager!.acquire(id);
+			const limit = this.ratelimits.get(group)!;
 
-			if (bucketInstance.limited) {
+			if (limit.limited) {
 				return {
 					error: LimitErrors.Ratelimited,
-					remainingTime: bucketInstance.remainingTime.toString()
+					remainingTime: limit.remainingTime.toString()
 				};
 			}
 
 			try {
-				bucketInstance.drip();
+				limit.drip();
 			} catch { }
 
 			return method.call(this, ...args);

@@ -1,6 +1,7 @@
 import { MessageOptions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -10,7 +11,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_ECHO_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_ECHO_EXTENDED'),
 			guarded: true,
-			permissionLevel: 10,
+			permissionLevel: PermissionLevels.BotOwner,
 			usage: '[channel:channelname{2}] [message:string] [...]',
 			usageDelim: ' '
 		});

@@ -2,6 +2,7 @@ import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings, RolesAuto } from '../../lib/types/settings/GuildSettings';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
@@ -13,7 +14,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_AUTOROLE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_AUTOROLE_EXTENDED'),
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
 			subcommands: true,

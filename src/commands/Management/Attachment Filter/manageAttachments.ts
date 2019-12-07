@@ -3,6 +3,7 @@ import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { Adder } from '../../../lib/util/Adder';
 import { Time } from '../../../lib/util/constants';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 const TYPES = {
 	action: {
@@ -44,7 +45,7 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.tget('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			runIn: ['text'],
 			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
 			usageDelim: ' '

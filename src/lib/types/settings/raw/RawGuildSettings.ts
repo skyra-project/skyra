@@ -54,7 +54,6 @@ export interface RawGuildSettings {
 	'roles.public': string[];
 	'roles.reactions': object[];
 	'roles.removeInitial': boolean;
-	'roles.staff': string | null;
 	'roles.dj': string | null;
 	'roles.subscriber': string | null;
 	'roles.uniqueRoleSets': object[];
@@ -204,7 +203,6 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"roles.public"                         VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"roles.reactions"                      JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.removeInitial"                  BOOLEAN        DEFAULT FALSE              NOT NULL,
-		"roles.staff"                          VARCHAR(19),
 		"roles.dj"                             VARCHAR(19),
 		"roles.subscriber"                     VARCHAR(19),
 		"roles.uniqueRoleSets"                 JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,

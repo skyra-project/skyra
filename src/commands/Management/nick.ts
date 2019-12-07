@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -9,7 +10,7 @@ export default class extends SkyraCommand {
 			cooldown: 30,
 			description: language => language.tget('COMMAND_NICK_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_NICK_EXTENDED'),
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['CHANGE_NICKNAME'],
 			runIn: ['text'],
 			usage: '[nick:string{,32}]'

@@ -2,6 +2,7 @@ import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings, StickyRole } from '../../../lib/types/settings/GuildSettings';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -11,8 +12,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_STICKYROLES_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_STICKYROLES_EXTENDED'),
-			permissionLevel: 6,
-			quotedStringSupport: true,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
 			subcommands: true,

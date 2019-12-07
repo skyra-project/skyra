@@ -14,7 +14,6 @@ export default class extends SkyraCommand {
 			cooldown: 30,
 			description: language => language.tget('COMMAND_REPUTATION_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_REPUTATION_EXTENDED'),
-			quotedStringSupport: true,
 			runIn: ['text'],
 			spam: true,
 			usage: '[check] (user:username)',

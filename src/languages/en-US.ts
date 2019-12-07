@@ -3076,6 +3076,13 @@ export default class extends Language {
 			PREVIEW: 'Preview',
 			PREVIEW_LABEL: 'Click here'
 		},
+		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'The query to google']
+			]
+		}),
+		COMMAND_LMGTFY_CLICK: 'Click me to search',
 		COMMAND_MOVIES_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
 			extendedHelp: [

@@ -13,6 +13,7 @@
 /src/commands/Anime/manga.ts @favna
 /src/commands/Misc/reddituser.ts @favna
 /src/commands/Pokemon/ @favna
+/src/commands/Fun/lmgtfy.ts @favna
 /src/lib/util/Pokedex.ts @favna
 /src/lib/util/External/igbTypes.ts @favna
 

@@ -11,7 +11,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_ECHO_EXTENDED'),
 			guarded: true,
 			permissionLevel: 10,
-			usage: '[channel:channelname] [message:string] [...]',
+			usage: '[channel:channelname{2}] [message:string] [...]',
 			usageDelim: ' '
 		});
 	}

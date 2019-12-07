@@ -13,8 +13,8 @@ export default class extends Route {
 	@authenticated
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
-		const user = await this.client.users.fetch(request.auth!.user_id);
-		if (!user) return response.error(500);
+		const user = await this.client.users.fetch(request.auth!.user_id).catch(() => null);
+		if (user === null) return response.error(500);
 
 		const guilds: FlattenedGuild[] = [];
 		for (const guild of this.client.guilds.values()) {

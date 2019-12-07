@@ -9,19 +9,20 @@ import { OauthData } from '../../lib/types/DiscordAPI';
 import { Databases } from '../../lib/types/constants/Constants';
 import { DashboardUser } from '../../lib/queries/common';
 import { stringify } from 'querystring';
+import { FlattenedGuild, flattenGuild, flattenUser, FlattenedUser } from '../../lib/util/Models/ApiTransform';
+import { GuildFeatures } from 'discord.js';
 
 export default class extends Route {
-
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
 		super(store, file, directory, { route: 'oauth/user' });
 	}
 
 	public async api(token: string) {
-		token = `Bearer ${token}`;
-		const user = await fetch('https://discordapp.com/api/users/@me', { headers: { Authorization: token } }, FetchResultTypes.JSON) as { guilds: unknown };
-		user.guilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON);
-		return this.client.dashboardUsers.add(user);
+		const oauthUser = await fetch('https://discordapp.com/api/users/@me', {
+			headers: { Authorization: `Bearer ${token}` }
+		}, FetchResultTypes.JSON) as RawOauthUser;
+		return this.fetchUser(oauthUser.id, `Bearer ${token}`);
 	}
 
 	@authenticated
@@ -44,7 +45,8 @@ export default class extends Route {
 			}
 
 			try {
-				const user = await this.api(data.accessToken);
+				const user = await this.fetchUser(request.auth!.user_id, `Bearer ${data.accessToken}`);
+				if (user === null) return response.error(500);
 				return response.json({
 					access_token: Util.encrypt({
 						user_id: user.id,
@@ -59,6 +61,55 @@ export default class extends Route {
 		}
 
 		return response.error(400);
+	}
+
+	private async fetchUser(id: string, token: string): Promise<OauthFlattenedUser | null> {
+		const user = await this.client.users.fetch(id).catch(() => null);
+		if (user === null) return null;
+
+		const guilds: OauthFlattenedGuild[] = [];
+		for (const guild of this.client.guilds.values()) {
+			if (guild.nicknames.has(user.id)) guilds.push(flattenGuild(guild));
+		}
+
+		const rawGuilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON) as RawOauthGuild[];
+		const included = guilds.map(guild => guild.id);
+
+		for (const guild of rawGuilds) {
+			if (included.includes(guild.id)) continue;
+			guilds.push({
+				afkChannelID: null,
+				afkTimeout: 0,
+				applicationID: null,
+				available: true,
+				banner: null,
+				channels: [],
+				defaultMessageNotifications: 'MENTIONS',
+				description: null,
+				embedEnabled: false,
+				explicitContentFilter: 0,
+				features: guild.features,
+				icon: guild.icon,
+				id: guild.id,
+				joinedTimestamp: null,
+				mfaLevel: 0,
+				name: guild.name,
+				ownerID: guild.owner ? user.id : null,
+				premiumSubscriptionCount: null,
+				premiumTier: 0,
+				region: null,
+				roles: [],
+				splash: null,
+				systemChannelID: null,
+				vanityURLCode: null,
+				verificationLevel: 0
+			});
+		}
+
+		return {
+			...flattenUser(user),
+			guilds
+		};
 	}
 
 	private async refreshToken(id: string, refreshToken: string) {
@@ -100,4 +151,34 @@ export default class extends Route {
 		}
 	}
 
+}
+
+interface RawOauthUser {
+	id: string;
+	username: string;
+	avatar: string;
+	discriminator: string;
+	locale: string;
+	mfa_enabled: boolean;
+	flags: number;
+	premium_type: number;
+}
+
+interface RawOauthGuild {
+	id: string;
+	name: string;
+	icon: null | string;
+	owner: boolean;
+	permissions: number;
+	features: GuildFeatures[];
+}
+
+interface OauthFlattenedGuild extends Omit<FlattenedGuild, 'joinedTimestamp' | 'ownerID' | 'region'> {
+	joinedTimestamp: FlattenedGuild['joinedTimestamp'] | null;
+	ownerID: FlattenedGuild['ownerID'] | null;
+	region: FlattenedGuild['region'] | null;
+}
+
+interface OauthFlattenedUser extends FlattenedUser {
+	guilds: OauthFlattenedGuild[];
 }

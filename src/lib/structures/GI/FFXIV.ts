@@ -7,12 +7,14 @@ import { classLimitInitialization, limitMethod, MethodRatelimitedError } from '.
 import { Time } from '../../util/constants';
 import { FFXIVResults, FFXIVCharacterSearchResult, FFXIVServerNames, FFXIVItemEntry, FFXIVItems } from '../../types/games/FFXIV';
 import { sleep } from '@klasa/utils';
+import { FuzzyArraySearch } from '../../util/Fuzzy';
 
 @classLimitInitialization()
 export class FFXIV {
 
 	public SERVERS!: FFXIVServerNames;
 	public ITEMS!: FFXIVItems;
+	public fuzzyItems!: FuzzyArraySearch<FFXIVItemEntry>;
 
 	private readonly cache: Collection<string, FFXIVCacheEntry> = new Collection();
 	private readonly gim: GameIntegrationsManager;
@@ -27,15 +29,28 @@ export class FFXIV {
 	public async initIntergration(): Promise<FFXIV> {
 		this.SERVERS = await this._fetchPossibleServers() as FFXIVServerNames;
 		this.ITEMS = await this._fetchAllItems();
+		this.fuzzyItems = new FuzzyArraySearch(this.ITEMS, ['ID', 'Name'], {
+			shouldSort: true,
+			threshold: 0.2,
+			location: 0,
+			distance: 100,
+			maxPatternLength: 64,
+			minMatchCharLength: 1 
+		});
 		return this;
 	}
 
 	public async searchCharacters(name: string, server: string): Promise<FFXIVResults<FFXIVCharacterSearchResult>> {
 		const query = `search(${encodeURIComponent(name)}@${server})`;
-		if (!this.cache.has(query) || (this.cache.get(query)!.expire < Date.now())) return this.cache.get(query)!.data as FFXIVResults<FFXIVCharacterSearchResult>;
+		const entry = this.cache.get(query);
+		if (entry && (entry.expire > Date.now())) return entry.data as FFXIVResults<FFXIVCharacterSearchResult>;
 		const data = await this._searchCharacters(name, server) as FFXIVResults<FFXIVCharacterSearchResult>;
 		this.cache.set(query, { data, expire: Date.now() + (Time.Minute as number) });
 		return data;
+	}
+
+	public searchItemBasic(name: string) {
+		return this.fuzzyItems.runFuzzy(name);
 	}
 
 	@limitMethod('global', FFXIV.RATELIMIT_BUCKET, Time.Second)
@@ -46,7 +61,7 @@ export class FFXIV {
 
 	private async _fetchAllItems(): Promise<FFXIVItems> {
 		let all: FFXIVItems = [];
-		let pages: { next: number, current: number } = { next: 1, current: 1 };
+		let pages: { next: number; current: number } = { next: 1, current: 1 };
 		do {
 			const data = await this._fetchItemsPage(pages.next) as unknown as FFXIVResults<FFXIVItemEntry>;
 			pages = { next: data.Pagination.PageNext as number, current: data.Pagination.Page };

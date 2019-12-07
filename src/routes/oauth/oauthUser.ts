@@ -107,7 +107,8 @@ export default class extends Route {
 			guilds.push({
 				...serialized,
 				permissions: oauthGuild.permissions,
-				manageable: this.getManageable(id, oauthGuild, guild)
+				manageable: this.getManageable(id, oauthGuild, guild),
+				skyraIsIn: typeof guild !== 'undefined'
 			});
 		}
 
@@ -226,6 +227,7 @@ interface PartialOauthFlattenedGuild extends Omit<FlattenedGuild, 'joinedTimesta
 interface OauthFlattenedGuild extends PartialOauthFlattenedGuild {
 	permissions: number;
 	manageable: boolean;
+	skyraIsIn: boolean;
 }
 
 interface OauthFlattenedUser extends FlattenedUser {

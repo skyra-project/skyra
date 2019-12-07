@@ -12,15 +12,16 @@ export default class extends Argument {
 	}
 
 	public resolveChannel(query: string, guild: KlasaGuild) {
-		if (CHANNEL_REGEXP.test(query)) return guild.channels.get(CHANNEL_REGEXP.exec(query)![1]);
-		return null;
+		const channelID = CHANNEL_REGEXP.exec(query);
+		return (channelID !== null && guild.channels.get(channelID[1])) || null;
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_CHANNELNAME', possible.name);
 		if (!message.guild) throw message.language.tget('RESOLVER_CHANNEL_NOT_IN_GUILD');
-		const resChannel = this.resolveChannel(arg, message.guild);
 		filter = this.getFilter(message.author, filter);
+
+		const resChannel = this.resolveChannel(arg, message.guild);
 		if (resChannel && filter(resChannel)) return resChannel;
 
 		const result = await new FuzzySearch(message.guild.channels, entry => entry.name, filter).run(message, arg, possible.min || undefined);

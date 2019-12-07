@@ -1,24 +1,20 @@
-import { Channel, Permissions, TextChannel } from 'discord.js';
+import { Channel, TextChannel } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
+import { validateChannelAccess } from '../lib/util/util';
 
-const CHANNEL_REGEXP = /^(?:<#)?(\d{17,19})>?$/;
-const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
+const CHANNEL_REGEXP = Argument.regex.channel;
 
 export default class extends Argument {
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage) {
-		// Regular Channel support
-		const channel = CHANNEL_REGEXP.test(arg) ? await this.client.channels.fetch(CHANNEL_REGEXP.exec(arg)![1]).catch(() => null) : null;
+	public run(arg: string, possible: Possible, message: KlasaMessage) {
+		const channel = CHANNEL_REGEXP.test(arg) ? message.guild!.channels.get(arg) : null;
 		if (channel) return this.validateAccess(channel, message);
 
-		// DM Channel support
-		const user = USER_REGEXP.test(arg) ? await this.client.users.fetch(USER_REGEXP.exec(arg)![1]).catch(() => null) : null;
-		if (user) return user.createDM();
 		throw message.language.tget('RESOLVER_INVALID_CHANNEL', possible.name);
 	}
 
 	private validateAccess(channel: Channel, message: KlasaMessage) {
-		if (channel instanceof TextChannel && channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) {
+		if (channel instanceof TextChannel && validateChannelAccess(channel, message.author) && validateChannelAccess(channel, this.client.user!)) {
 			return channel;
 		}
 

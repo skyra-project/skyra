@@ -1470,6 +1470,7 @@ export interface LanguageKeys {
 	SYSTEM_CANNOT_ACCESS_CHANNEL: string;
 	JUMPTO: string;
 	RESOLVER_INVALID_CHANNELNAME: (name: string) => string;
+	RESOLVER_CHANNEL_NOT_IN_GUILD: string;
 	RESOLVER_INVALID_ROLENAME: (name: string) => string;
 	RESOLVER_INVALID_USERNAME: (name: string) => string;
 	LISTIFY_PAGE: (page: number, pageCount: number, results: string) => string;

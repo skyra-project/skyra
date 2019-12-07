@@ -10,7 +10,9 @@ import { Databases } from '../../lib/types/constants/Constants';
 import { DashboardUser } from '../../lib/queries/common';
 import { stringify } from 'querystring';
 import { FlattenedGuild, flattenGuild, flattenUser, FlattenedUser } from '../../lib/util/Models/ApiTransform';
-import { GuildFeatures, Permissions } from 'discord.js';
+import { GuildFeatures, Permissions, Guild } from 'discord.js';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { MemberTag } from '../../lib/util/Cache/MemberTags';
 
 export default class extends Route {
 
@@ -68,11 +70,11 @@ export default class extends Route {
 		if (user === null) return null;
 
 		const guilds: OauthFlattenedGuild[] = [];
-		const rawGuilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON) as RawOauthGuild[];
+		const oauthGuilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON) as RawOauthGuild[];
 
-		for (const guild of rawGuilds) {
-			const cache = this.client.guilds.get(guild.id);
-			const serialized: PartialOauthFlattenedGuild = typeof cache === 'undefined'
+		for (const oauthGuild of oauthGuilds) {
+			const guild = this.client.guilds.get(oauthGuild.id);
+			const serialized: PartialOauthFlattenedGuild = typeof guild === 'undefined'
 				? {
 					afkChannelID: null,
 					afkTimeout: 0,
@@ -84,13 +86,13 @@ export default class extends Route {
 					description: null,
 					embedEnabled: false,
 					explicitContentFilter: 0,
-					features: guild.features,
-					icon: guild.icon,
-					id: guild.id,
+					features: oauthGuild.features,
+					icon: oauthGuild.icon,
+					id: oauthGuild.id,
 					joinedTimestamp: null,
 					mfaLevel: 0,
-					name: guild.name,
-					ownerID: guild.owner ? user.id : null,
+					name: oauthGuild.name,
+					ownerID: oauthGuild.owner ? user.id : null,
 					premiumSubscriptionCount: null,
 					premiumTier: 0,
 					region: null,
@@ -100,13 +102,12 @@ export default class extends Route {
 					vanityURLCode: null,
 					verificationLevel: 0
 				}
-				: flattenGuild(cache);
+				: flattenGuild(guild);
 
 			guilds.push({
 				...serialized,
-				permissions: guild.permissions,
-				// TODO(kyranet): Add roles to the member cache.
-				manageable: guild.owner || new Permissions(guild.permissions).has(Permissions.FLAGS.MANAGE_GUILD)
+				permissions: oauthGuild.permissions,
+				manageable: this.getManageable(id, oauthGuild, guild)
 			});
 		}
 
@@ -153,6 +154,45 @@ export default class extends Route {
 			this.client.emit(Events.Wtf, error);
 			return null;
 		}
+	}
+
+	private getManageable(id: string, oauthGuild: RawOauthGuild, guild: Guild | undefined) {
+		if (oauthGuild.owner) return true;
+		if (typeof guild === 'undefined') return new Permissions(oauthGuild.permissions).has(Permissions.FLAGS.MANAGE_GUILD);
+
+		const roleID = guild.settings.get(GuildSettings.Roles.Admin);
+		const memberTag = guild.memberTags.get(id);
+
+		// MemberTag must always exist:
+		return typeof memberTag !== 'undefined'
+			// If Roles.Admin is not configured, check MANAGE_GUILD, else check if the member has the role.
+			&& (roleID === null ? new Permissions(oauthGuild.permissions).has(Permissions.FLAGS.MANAGE_GUILD) : memberTag.roles.includes(roleID))
+			// Check if despite of having permissions, user permission nodes do not deny them.
+			&& this.allowedPermissionsNodeUser(guild, id)
+			// Check if despite of having permissions, role permission nodes do not deny them.
+			&& this.allowedPermissionsNodeRole(guild, memberTag);
+	}
+
+	private allowedPermissionsNodeUser(guild: Guild, userID: string) {
+		const permissionNodeRoles = guild.settings.get(GuildSettings.Permissions.Users);
+		for (const node of permissionNodeRoles) {
+			if (node.id !== userID) continue;
+			if (node.allow.includes('settings')) return true;
+			if (node.deny.includes('settings')) return false;
+		}
+
+		return true;
+	}
+
+	private allowedPermissionsNodeRole(guild: Guild, memberTag: MemberTag) {
+		// Assume sorted data
+		for (const [id, node] of guild.permissionsManager.entries()) {
+			if (!memberTag.roles.includes(id)) continue;
+			if (node.allow.has('settings')) return true;
+			if (node.deny.has('settings')) return false;
+		}
+
+		return true;
 	}
 
 }

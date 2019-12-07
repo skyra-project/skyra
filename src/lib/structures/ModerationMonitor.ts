@@ -147,7 +147,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		if (member === null) return false;
 
 		const ignoredRoles = member.guild.settings.get(this.ignoredRolesPath);
-		return ignoredRoles.length === 0 || member.roles.every(role => !ignoredRoles.includes(role.id));
+		if (ignoredRoles.length === 0) return true;
+
+		const { roles } = member;
+		return !ignoredRoles.some(id => roles.has(id));
 	}
 
 }

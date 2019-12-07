@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 		const wager = Number(text);
 		const balance = await message.author.settings.get(UserSettings.Money);
 		if (wager > balance) throw message.language.tget('COMMAND_SLOTMACHINES_MONEY', balance);
-		// Todo (Quantum): Log transaction
+		// TODO(Quantum): Log transaction
 		await message.author.settings.decrease(UserSettings.Money, wager);
 
 		await this.newRound(this.random(), message, undefined, message.channel.id, message.author.id, wager);
@@ -161,7 +161,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async loss(gameData: HigherLowerGameData, number: number) {
-		// TODO (Quantum): Losing event
+		// TODO(Quantum): Losing event
 		this.games.delete(gameData.user);
 		const message = this.getGameMessage(gameData.gameMessage);
 		await message.edit({
@@ -175,7 +175,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async win(gameData: HigherLowerGameData, number: number) {
-		// TODO (Quantum): Winning event
+		// TODO(Quantum): Winning event
 
 		const message = this.getGameMessage(gameData.gameMessage);
 		await message.edit({

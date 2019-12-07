@@ -214,11 +214,16 @@ export default class extends SkyraCommand {
 
 	private async cashout(gameData: HigherLowerGameData, message: Message) {
 		const { turn, wager, user } = gameData;
+		// Let the user know, and nullify the embed
 		await message.edit('Cashing out. Please hold...', { embed: null });
+
+		// Calculate and deposit winnings for that game
 		const winnings = this.calculateWinnings(wager, turn - 1);
 		const { settings } = (await this.client.users.get(user))!;
 		if (!settings) await message.edit('Unknown issue while paying out! Please contact our admins');
 		await settings.increase(UserSettings.Money, winnings);
+
+		// Let the user know we're done!
 		await message.edit(`Paid out ${winnings}${Emojis.Shiny} to your account. Have fun!`);
 	}
 

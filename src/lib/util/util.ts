@@ -491,6 +491,10 @@ export function getFromPath(object: Record<string, unknown>, path: string | read
 	return value;
 }
 
+export function createClassDecorator(fn: Function) {
+	return fn;
+}
+
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.
  * @param value

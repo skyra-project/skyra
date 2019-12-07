@@ -2,9 +2,10 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { LongLivingReactionCollector, LLRCData } from '../../lib/util/LongLivingReactionCollector';
 import Collection from '@discordjs/collection';
-import { TextChannel, Message } from 'discord.js';
+import { TextChannel, Message, MessageEmbed } from 'discord.js';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { Emojis } from '../../lib/util/constants';
+import { getColor } from '../../lib/util/util';
 
 enum ReactionEmoji {
 	HIGHER = '⬆',
@@ -47,7 +48,7 @@ export default class extends SkyraCommand {
 		// Todo (Quantum): Log transaction
 		await message.author.settings.decrease(UserSettings.Money, wager);
 
-		await this.newRound(this.random(), undefined, message.channel.id, message.author.id, wager);
+		await this.newRound(this.random(), message, undefined, message.channel.id, message.author.id, wager);
 	}
 
 	private reactionHandler(reaction: LLRCData) {
@@ -94,7 +95,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async newRound(previousNumber: number, previousGameData?: HigherLowerGameData, channelID?: string, userID?: string, wagerIn?: number) {
+	private async newRound(previousNumber: number, message: Message, previousGameData?: HigherLowerGameData, channelID?: string, userID?: string, wagerIn?: number) {
 		// Maybe use a function for this?
 		const channel = typeof channelID === 'undefined'
 			? typeof previousGameData === 'undefined'
@@ -126,9 +127,21 @@ export default class extends SkyraCommand {
 			: (e: ReactionEmoji) => e !== ReactionEmoji.OK && e !== ReactionEmoji.CANCEL;
 		const reactArray = Object.values(ReactionEmoji).filter(filterFunc);
 
+		if (typeof previousGameData === 'undefined' && message === undefined) throw new Error('Message wasn\'t provided');
 		const gameMessage = typeof previousGameData === 'undefined'
-			? await channel.send(`Your number is ${previousNumber}. Will the next number be higher or lower?`)
-			: await this.getGameMessage(previousGameData.gameMessage).edit(`Your number was ${previousNumber}. What will your number be now?`);
+			? await channel.send(new MessageEmbed()
+				.setColor(getColor(message as KlasaMessage))
+				.setTitle(`Higher or Lower? | Turn 1`)
+				.setDescription(`Your number is ${previousNumber}. Will the next number be higher or lower?`)
+				.setFooter('The game will expire in 3 minutes, so act fast!'))
+			: await this.getGameMessage(previousGameData.gameMessage).edit({
+				content: '',
+				embed: new MessageEmbed()
+					.setColor(getColor(message as KlasaMessage))
+					.setTitle(`Higher or Lower? | Turn ${previousGameData!.turn}`)
+					.setDescription(`Your number was ${previousNumber}. Will the next number be higher or lower?`)
+					.setFooter('The game will expire in 3 minutes, so act fast!')
+			});
 
 		for (const emoji of reactArray) {
 			await gameMessage.react(emoji);
@@ -137,6 +150,7 @@ export default class extends SkyraCommand {
 		const gameData = Object.seal({
 			llrc: new LongLivingReactionCollector(this.client, r => this.reactionHandler(r)).setTime(180000),
 			gameMessage: `${gameMessage.channel.id}.${gameMessage.id}`,
+			authorMessage: message as KlasaMessage,
 			wager,
 			turn,
 			user,
@@ -150,14 +164,28 @@ export default class extends SkyraCommand {
 		// TODO (Quantum): Losing event
 		this.games.delete(gameData.user);
 		const message = this.getGameMessage(gameData.gameMessage);
-		await message.edit(`You lost. The number was ${number}. Better luck next time!`);
+		await message.edit({
+			content: '',
+			embed: new MessageEmbed()
+				.setColor(getColor(message as KlasaMessage))
+				.setTitle(`Your lost :\(`)
+				.setDescription(`You didn't quite get it. The number was ${number}. You lost ${gameData.wager}${Emojis.Shiny}`)
+				.setFooter('Better luck next time!')
+		});
 	}
 
 	private async win(gameData: HigherLowerGameData, number: number) {
 		// TODO (Quantum): Winning event
 
 		const message = this.getGameMessage(gameData.gameMessage);
-		await message.edit(`You won! The number was ${number}. Want to continue? ${this.calculateWinnings(gameData.wager, gameData.turn)}${Emojis.Shiny} are on the line`);
+		await message.edit({
+			content: '',
+			embed: new MessageEmbed()
+				.setColor(getColor(message as KlasaMessage))
+				.setTitle(`Your won!`)
+				.setDescription(`You did it! The number was ${number}. Want to continue? ${this.calculateWinnings(gameData.wager, gameData.turn)}${Emojis.Shiny} are on the line`)
+				.setFooter('Act fast! You don\'t have much time')
+		});
 		const reactArray = Object.values(ReactionEmoji).filter(e => e !== ReactionEmoji.HIGHER && e !== ReactionEmoji.LOWER && e !== ReactionEmoji.CASHOUT);
 		for (const emoji of reactArray) {
 			await message.react(emoji);
@@ -173,20 +201,20 @@ export default class extends SkyraCommand {
 				: endingAction.STOP;
 		switch (whatToDo) {
 			case endingAction.TIMEOUT:
-				await message.edit('Prompt timed out. Cashing out winnings...');
+				await message.edit('Prompt timed out. Cashing out winnings...', { embed: null });
 			case endingAction.STOP:
 				await this.cashout(gameData, message);
 				break;
 			case endingAction.PLAY:
 				await message.edit('Alright. Starting new round');
-				await this.newRound(number, gameData);
+				await this.newRound(number, gameData.authorMessage, gameData);
 				break;
 		}
 	}
 
 	private async cashout(gameData: HigherLowerGameData, message: Message) {
 		const { turn, wager, user } = gameData;
-		await message.edit('Cashing out. Please hold...');
+		await message.edit('Cashing out. Please hold...', { embed: null });
 		const winnings = this.calculateWinnings(wager, turn - 1);
 		const { settings } = (await this.client.users.get(user))!;
 		if (!settings) await message.edit('Unknown issue while paying out! Please contact our admins');
@@ -217,6 +245,7 @@ interface HigherLowerGameData {
 	wager: number;
 	turn: number;
 	gameMessage: string;
+	authorMessage: KlasaMessage;
 	user: string;
 	previousNumber: number;
 }

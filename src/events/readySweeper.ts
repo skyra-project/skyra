@@ -31,7 +31,7 @@ export default class extends Event {
 
 			// Populate the snowflakes
 			for (const member of guild.members.values()) {
-				guild.nicknames.create(member);
+				guild.memberTags.create(member);
 			}
 
 			// Update counters

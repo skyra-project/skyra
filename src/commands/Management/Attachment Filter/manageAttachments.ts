@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.tget('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
-			permissionLevel: PermissionLevels.Moderator,
+			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
 			usageDelim: ' '

@@ -1430,7 +1430,7 @@ export default class extends Language {
 				['(Filter) Archivo', 'Filtra mensajes que tienen archivos adjuntos.'],
 				['(Filter) User', 'Filtra messages enviados por un usuario específico.']
 			],
-			examples: ['50 me', '75 @kyra', '20 bots', '60 before 629992398700675082 humans'],
+			examples: ['50 yo', '75 @kyra', '20 robots', '60 humanos before 629992398700675082'],
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
 		}),
 		COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',
@@ -2741,7 +2741,7 @@ export default class extends Language {
 		COMMAND_PRUNE_FILTERS: new Map([
 			['archivo', Filter.Attachments], ['archivos', Filter.Attachments], ['subida', Filter.Attachments], ['subidas', Filter.Attachments],
 			['autor', Filter.Author], ['yo', Filter.Author],
-			['bot', Filter.Bots], ['bots', Filter.Bots],
+			['bot', Filter.Bots], ['bots', Filter.Bots], ['robot', Filter.Bots], ['robots', Filter.Bots],
 			['humano', Filter.Humans], ['humanos', Filter.Humans],
 			['invitacion', Filter.Invites], ['invitación', Filter.Invites], ['invitaciones', Filter.Invites],
 			['enlace', Filter.Links], ['enlaces', Filter.Links],

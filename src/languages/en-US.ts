@@ -1451,7 +1451,7 @@ export default class extends Language {
 				['(Filter) Upload', 'Filters messages that have attachments.'],
 				['(Filter) User', 'Filters messages sent by the specified user.']
 			],
-			examples: ['50 me', '75 @kyra', '20 bots', '60 before 629992398700675082 humans'],
+			examples: ['50 me', '75 @kyra', '20 bots', '60 humans before 629992398700675082'],
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
 		}),
 		COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',

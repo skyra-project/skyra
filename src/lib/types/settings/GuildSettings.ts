@@ -87,6 +87,8 @@ export namespace GuildSettings {
 
 		export namespace Capitals {
 			export const Enabled = T<boolean>('selfmod.capitals.enabled');
+			export const IgnoredRoles = T<string[]>('selfmod.capitals.ignoredRoles');
+			export const IgnoredChannels = T<string[]>('selfmod.capitals.ignoredChannels');
 			export const Minimum = T<number>('selfmod.capitals.minimum');
 			export const Maximum = T<number>('selfmod.capitals.maximum');
 			export const SoftAction = T<number>('selfmod.capitals.softAction');
@@ -99,6 +101,8 @@ export namespace GuildSettings {
 		export namespace Links {
 			export const Whitelist = T<readonly string[]>('selfmod.links.whitelist');
 			export const Enabled = T<boolean>('selfmod.links.enabled');
+			export const IgnoredRoles = T<string[]>('selfmod.links.ignoredRoles');
+			export const IgnoredChannels = T<string[]>('selfmod.links.ignoredChannels');
 			export const SoftAction = T<number>('selfmod.links.softAction');
 			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.links.hardAction');
 			export const HardActionDuration = T<number>('selfmod.links.hardActionDuration');
@@ -108,6 +112,8 @@ export namespace GuildSettings {
 
 		export namespace Messages {
 			export const Enabled = T<boolean>('selfmod.messages.enabled');
+			export const IgnoredRoles = T<string[]>('selfmod.messages.ignoredRoles');
+			export const IgnoredChannels = T<string[]>('selfmod.messages.ignoredChannels');
 			export const Maximum = T<number>('selfmod.messages.maximum');
 			export const QueueSize = T<number>('selfmod.messages.queue-size');
 			export const SoftAction = T<number>('selfmod.messages.softAction');
@@ -119,6 +125,8 @@ export namespace GuildSettings {
 
 		export namespace NewLines {
 			export const Enabled = T<boolean>('selfmod.newlines.enabled');
+			export const IgnoredRoles = T<string[]>('selfmod.newlines.ignoredRoles');
+			export const IgnoredChannels = T<string[]>('selfmod.newlines.ignoredChannels');
 			export const Maximum = T<number>('selfmod.newlines.maximum');
 			export const SoftAction = T<number>('selfmod.newlines.softAction');
 			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.newlines.hardAction');
@@ -129,6 +137,8 @@ export namespace GuildSettings {
 
 		export namespace Invites {
 			export const Enabled = T<boolean>('selfmod.invites.enabled');
+			export const IgnoredRoles = T<string[]>('selfmod.invites.ignoredRoles');
+			export const IgnoredChannels = T<string[]>('selfmod.invites.ignoredChannels');
 			export const SoftAction = T<number>('selfmod.invites.softAction');
 			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.invites.hardAction');
 			export const HardActionDuration = T<number>('selfmod.invites.hardActionDuration');
@@ -139,6 +149,8 @@ export namespace GuildSettings {
 		export namespace Filter {
 			export const Raw = T<readonly string[]>('selfmod.filter.raw');
 			export const Enabled = T<boolean>('selfmod.filter.enabled');
+			export const IgnoredRoles = T<string[]>('selfmod.filter.ignoredRoles');
+			export const IgnoredChannels = T<string[]>('selfmod.filter.ignoredChannels');
 			export const SoftAction = T<number>('selfmod.filter.softAction');
 			export const HardAction = T<SelfModeratorHardActionFlags>('selfmod.filter.hardAction');
 			export const HardActionDuration = T<number>('selfmod.filter.hardActionDuration');
@@ -148,6 +160,8 @@ export namespace GuildSettings {
 
 		export namespace Reactions {
 			export const Enabled = T<boolean>('selfmod.reactions.enabled');
+			export const IgnoredRoles = T<string[]>('selfmod.reactions.ignoredRoles');
+			export const IgnoredChannels = T<string[]>('selfmod.reactions.ignoredChannels');
 			export const Maximum = T<number>('selfmod.reactions.maximum');
 			export const WhiteList = T<string[]>('selfmod.reactions.whitelist');
 			export const BlackList = T<string[]>('selfmod.reactions.blacklist');

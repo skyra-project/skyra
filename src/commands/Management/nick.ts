@@ -10,7 +10,7 @@ export default class extends SkyraCommand {
 			cooldown: 30,
 			description: language => language.tget('COMMAND_NICK_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_NICK_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['CHANGE_NICKNAME'],
 			runIn: ['text'],
 			usage: '[nick:string{,32}]'

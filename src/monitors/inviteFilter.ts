@@ -8,10 +8,10 @@ const kRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d]{2,}/
 
 export default class extends ModerationMonitor {
 
-	protected readonly keyEnabled: string = GuildSettings.Selfmod.Invites.Enabled;
-	protected readonly ignoredChannelsPath: string = GuildSettings.Selfmod.Invites.IgnoredChannels;
-	protected readonly ignoredRolesPath: string = GuildSettings.Selfmod.Invites.IgnoredRoles;
-	protected readonly softPunishmentPath: string = GuildSettings.Selfmod.Invites.SoftAction;
+	protected readonly keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
+	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Invites.IgnoredChannels;
+	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Invites.IgnoredRoles;
+	protected readonly softPunishmentPath = GuildSettings.Selfmod.Invites.SoftAction;
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Invites.HardAction,
 		actionDuration: GuildSettings.Selfmod.Invites.HardActionDuration,

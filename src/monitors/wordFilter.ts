@@ -8,10 +8,10 @@ import { UserSettings } from '../lib/types/settings/UserSettings';
 
 export default class extends ModerationMonitor {
 
-	protected readonly keyEnabled: string = GuildSettings.Selfmod.Filter.Enabled;
-	protected readonly ignoredChannelsPath: string = GuildSettings.Selfmod.Filter.IgnoredChannels;
-	protected readonly ignoredRolesPath: string = GuildSettings.Selfmod.Filter.IgnoredRoles;
-	protected readonly softPunishmentPath: string = GuildSettings.Selfmod.Filter.SoftAction;
+	protected readonly keyEnabled = GuildSettings.Selfmod.Filter.Enabled;
+	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Filter.IgnoredChannels;
+	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Filter.IgnoredRoles;
+	protected readonly softPunishmentPath = GuildSettings.Selfmod.Filter.SoftAction;
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Filter.HardAction,
 		actionDuration: GuildSettings.Selfmod.Filter.HardActionDuration,

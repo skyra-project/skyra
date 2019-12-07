@@ -21,10 +21,10 @@ const OFFSET = 0b100000;
 
 export default class extends ModerationMonitor {
 
-	protected readonly keyEnabled: string = GuildSettings.Selfmod.Capitals.Enabled;
-	protected readonly ignoredChannelsPath: string = GuildSettings.Selfmod.Capitals.IgnoredChannels;
-	protected readonly ignoredRolesPath: string = GuildSettings.Selfmod.Capitals.IgnoredRoles;
-	protected readonly softPunishmentPath: string = GuildSettings.Selfmod.Capitals.SoftAction;
+	protected readonly keyEnabled = GuildSettings.Selfmod.Capitals.Enabled;
+	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Capitals.IgnoredChannels;
+	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Capitals.IgnoredRoles;
+	protected readonly softPunishmentPath = GuildSettings.Selfmod.Capitals.SoftAction;
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Capitals.HardAction,
 		actionDuration: GuildSettings.Selfmod.Capitals.HardActionDuration,

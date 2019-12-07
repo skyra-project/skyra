@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 
 		await message.author.settings.sync();
 		const wager = Number(text);
-		const balance = await message.author.settings.get(UserSettings.Money);
+		const balance = message.author.settings.get(UserSettings.Money);
 		if (wager > balance) throw message.language.tget('COMMAND_SLOTMACHINES_MONEY', balance);
 		// TODO(Quantum): Log transaction
 		await message.author.settings.decrease(UserSettings.Money, wager);
@@ -194,9 +194,9 @@ export default class extends SkyraCommand {
 		const reactionMap = await message.awaitReactions((r, u) => reactArray.includes(r.emoji.name) && u.id === gameData.user, { max: 1, time: 10000 });
 		await message.reactions.removeAll();
 
-		const whatToDo = typeof reactionMap.first() === 'undefined'
+		const whatToDo = reactionMap.size === 0
 			? endingAction.TIMEOUT
-			: reactionMap.first()?.emoji.name === ReactionEmoji.OK
+			: reactionMap.first()!.emoji.name === ReactionEmoji.OK
 				? endingAction.PLAY
 				: endingAction.STOP;
 		switch (whatToDo) {

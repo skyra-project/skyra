@@ -388,7 +388,6 @@ export default class extends Language {
 		SETTINGS_ROLES_MUTED: 'The muted role, if configured, I will give new muted users this role. Otherwise I will prompt you the creation of one.',
 		SETTINGS_ROLES_PUBLIC: 'The public roles, they will be given with no cost to any user using the `roles` command.',
 		SETTINGS_ROLES_REMOVEINITIAL: 'Whether the claim of a public role should remove the initial one too.',
-		SETTINGS_ROLES_STAFF: 'The staff role, their priviledges are nearly helpers of moderators and administrators, but they cannot take any actions besides warnings.',
 		SETTINGS_ROLES_SUBSCRIBER: 'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
 		SETTINGS_SELFMOD_ATTACHMENT: 'Whether or not the attachment filter is enabled.',
 		SETTINGS_SELFMOD_ATTACHMENTMAXIMUM: 'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',

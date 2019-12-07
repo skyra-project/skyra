@@ -2,7 +2,7 @@ import { Collection, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationManagerEntry } from '../../lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Events } from '../../lib/types/Enums';
+import { Events, PermissionLevels } from '../../lib/types/Enums';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { parseRange } from '../../lib/util/util';
 
@@ -13,7 +13,7 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.tget('COMMAND_REASON_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_REASON_EXTENDED'),
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(cases:case) <reason:...string>',

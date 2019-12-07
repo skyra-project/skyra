@@ -4,6 +4,7 @@ import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { resolveEmoji } from '../../../lib/util/util';
 import { api } from '../../../lib/util/Models/Api';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -13,8 +14,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_MANAGEROLEREACTION_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MANAGEROLEREACTION_EXTENDED'),
-			permissionLevel: 6,
-			quotedStringSupport: true,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			subcommands: true,

@@ -5,6 +5,7 @@ import { APIErrors, Moderation } from '../../lib/util/constants';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { floatPromise, cleanMentions } from '../../lib/util/util';
 import { Position, Filter } from '../../lib/types/Languages';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -18,7 +19,7 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			flagSupport: true,
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],

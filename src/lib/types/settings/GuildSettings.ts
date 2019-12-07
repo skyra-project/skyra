@@ -72,7 +72,6 @@ export namespace GuildSettings {
 		export const Public = T<readonly string[]>('roles.public');
 		export const Reactions = T<readonly RolesReaction[]>('roles.reactions');
 		export const RemoveInitial = T<boolean>('roles.removeInitial');
-		export const Staff = T<string>('roles.staff');
 		export const Dj = T<string>('roles.dj');
 		export const Subscriber = T<string>('roles.subscriber');
 		export const UniqueRoleSets = T<readonly UniqueRoleSet[]>('roles.uniqueRoleSets');

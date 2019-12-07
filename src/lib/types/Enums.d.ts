@@ -45,7 +45,6 @@ export const enum Events {
 
 export const enum PermissionLevels {
 	Everyone = 0,
-	Staff = 4,
 	Moderator = 5,
 	Administrator = 6,
 	ServerOwner = 7,

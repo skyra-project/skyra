@@ -2,6 +2,7 @@ import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -11,7 +12,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_SETIMAGELOGS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SETIMAGELOGS_EXTENDED'),
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<here|channel:channelname>'
 		});

@@ -10,7 +10,7 @@ export default class extends ModerationCommand {
 			aliases: ['w', 'warning'],
 			description: language => language.tget('COMMAND_WARN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_WARN_EXTENDED'),
-			permissionLevel: PermissionLevels.Staff,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: true,
 			optionalDuration: true
 		});

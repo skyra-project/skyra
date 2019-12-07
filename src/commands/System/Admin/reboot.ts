@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { Events } from '../../../lib/types/Enums';
+import { Events, PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -8,7 +8,7 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_REBOOT_DESCRIPTION'),
 			guarded: true,
-			permissionLevel: 10
+			permissionLevel: PermissionLevels.BotOwner
 		});
 	}
 

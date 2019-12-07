@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { Events } from '../../../lib/types/Enums';
+import { Events, PermissionLevels } from '../../../lib/types/Enums';
 import { fetch, FetchResultTypes } from '../../../lib/util/util';
 import { clean } from '../../../lib/util/clean';
 import { codeBlock, sleep, isThenable } from '@klasa/utils';
@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_EVAL_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_EVAL_EXTENDED'),
 			guarded: true,
-			permissionLevel: 10,
+			permissionLevel: PermissionLevels.BotOwner,
 			usage: '<expression:str>',
 			flagSupport: true
 		});

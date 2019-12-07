@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -8,7 +9,7 @@ export default class extends SkyraCommand {
 			aliases: ['pull'],
 			description: 'Update the bot',
 			guarded: true,
-			permissionLevel: 10,
+			permissionLevel: PermissionLevels.BotOwner,
 			usage: '[branch:string]'
 		});
 	}

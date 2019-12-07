@@ -3816,12 +3816,14 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permissions applied for ${accepted} channels${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
 		SYSTEM_QUERY_FAIL: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
 		SYSTEM_NO_RESULTS: 'I wasn\'t able to find any results for that query',
+		SYSTEM_CANNOT_ACCESS_CHANNEL: 'I am sorry, but you do not have permission to see that channel.',
 
 		JUMPTO: 'Jump to Message ►',
 
 		RESOLVER_INVALID_CHANNELNAME: name => `${name} must be a valid channel name, id, or tag.`,
 		RESOLVER_INVALID_ROLENAME: name => `${name} must be a valid role name, id, or mention.`,
 		RESOLVER_INVALID_USERNAME: name => `${name} must be a valid user name, id, or mention.`,
+		RESOLVER_CHANNEL_NOT_IN_GUILD: 'I am sorry, but that command can only be ran in a server.',
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 

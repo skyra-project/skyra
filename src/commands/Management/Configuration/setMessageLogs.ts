@@ -13,7 +13,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_SETMESSAGELOGS_EXTENDED'),
 			permissionLevel: 6,
 			runIn: ['text'],
-			usage: '<here|channel:channel>'
+			usage: '<here|channel:channelname>'
 		});
 	}
 

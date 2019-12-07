@@ -1,6 +1,6 @@
 import { isObject } from '@klasa/utils';
 import { Image } from 'canvas';
-import { AvatarOptions, Client, Guild, ImageSize, Message, User } from 'discord.js';
+import { AvatarOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import { RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
@@ -555,6 +555,17 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 			response.error(429);
 		}
 	);
+}
+
+/**
+ * Validates that a user has VIEW_CHANNEL permissions to a channel
+ * @param channel The TextChannel to check
+ * @param user The user for which to check permission
+ * @returns Whether the user has access to the channel
+ * @example validateChannelAccess(channel, message.author)
+ */
+export function validateChannelAccess(channel: GuildChannel, user: UserResolvable) {
+	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
 }
 
 export interface UtilOneToTenEntry {

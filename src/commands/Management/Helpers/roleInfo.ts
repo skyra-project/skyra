@@ -11,7 +11,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_ROLEINFO_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_ROLEINFO_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '[role:rolename]'

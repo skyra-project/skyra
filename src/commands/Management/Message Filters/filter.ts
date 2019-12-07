@@ -11,7 +11,7 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.tget('COMMAND_FILTER_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_FILTER_EXTENDED'),
-			permissionLevel: PermissionLevels.Moderator,
+			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<add|remove|reset|show:default> (word:word)',

@@ -10,7 +10,7 @@ import { Databases } from '../../lib/types/constants/Constants';
 import { DashboardUser } from '../../lib/queries/common';
 import { stringify } from 'querystring';
 import { FlattenedGuild, flattenGuild, flattenUser, FlattenedUser } from '../../lib/util/Models/ApiTransform';
-import { GuildFeatures } from 'discord.js';
+import { GuildFeatures, Permissions } from 'discord.js';
 
 export default class extends Route {
 
@@ -68,41 +68,45 @@ export default class extends Route {
 		if (user === null) return null;
 
 		const guilds: OauthFlattenedGuild[] = [];
-		for (const guild of this.client.guilds.values()) {
-			if (guild.nicknames.has(user.id)) guilds.push(flattenGuild(guild));
-		}
-
 		const rawGuilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON) as RawOauthGuild[];
-		const included = guilds.map(guild => guild.id);
 
 		for (const guild of rawGuilds) {
-			if (included.includes(guild.id)) continue;
+			const cache = this.client.guilds.get(guild.id);
+			const serialized: PartialOauthFlattenedGuild = typeof cache === 'undefined'
+				? {
+					afkChannelID: null,
+					afkTimeout: 0,
+					applicationID: null,
+					available: true,
+					banner: null,
+					channels: [],
+					defaultMessageNotifications: 'MENTIONS',
+					description: null,
+					embedEnabled: false,
+					explicitContentFilter: 0,
+					features: guild.features,
+					icon: guild.icon,
+					id: guild.id,
+					joinedTimestamp: null,
+					mfaLevel: 0,
+					name: guild.name,
+					ownerID: guild.owner ? user.id : null,
+					premiumSubscriptionCount: null,
+					premiumTier: 0,
+					region: null,
+					roles: [],
+					splash: null,
+					systemChannelID: null,
+					vanityURLCode: null,
+					verificationLevel: 0
+				}
+				: flattenGuild(cache);
+
 			guilds.push({
-				afkChannelID: null,
-				afkTimeout: 0,
-				applicationID: null,
-				available: true,
-				banner: null,
-				channels: [],
-				defaultMessageNotifications: 'MENTIONS',
-				description: null,
-				embedEnabled: false,
-				explicitContentFilter: 0,
-				features: guild.features,
-				icon: guild.icon,
-				id: guild.id,
-				joinedTimestamp: null,
-				mfaLevel: 0,
-				name: guild.name,
-				ownerID: guild.owner ? user.id : null,
-				premiumSubscriptionCount: null,
-				premiumTier: 0,
-				region: null,
-				roles: [],
-				splash: null,
-				systemChannelID: null,
-				vanityURLCode: null,
-				verificationLevel: 0
+				...serialized,
+				permissions: guild.permissions,
+				// TODO(kyranet): Add roles to the member cache.
+				manageable: guild.owner || new Permissions(guild.permissions).has(Permissions.FLAGS.MANAGE_GUILD)
 			});
 		}
 
@@ -173,10 +177,15 @@ interface RawOauthGuild {
 	features: GuildFeatures[];
 }
 
-interface OauthFlattenedGuild extends Omit<FlattenedGuild, 'joinedTimestamp' | 'ownerID' | 'region'> {
+interface PartialOauthFlattenedGuild extends Omit<FlattenedGuild, 'joinedTimestamp' | 'ownerID' | 'region'> {
 	joinedTimestamp: FlattenedGuild['joinedTimestamp'] | null;
 	ownerID: FlattenedGuild['ownerID'] | null;
 	region: FlattenedGuild['region'] | null;
+}
+
+interface OauthFlattenedGuild extends PartialOauthFlattenedGuild {
+	permissions: number;
+	manageable: boolean;
 }
 
 interface OauthFlattenedUser extends FlattenedUser {

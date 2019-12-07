@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channel) (status:status) (content:content)',
+			usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channelname) (status:status) (content:content)',
 			usageDelim: ' '
 		});
 

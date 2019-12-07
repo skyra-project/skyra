@@ -54,7 +54,6 @@ export interface RawGuildSettings {
 	'roles.public': string[];
 	'roles.reactions': object[];
 	'roles.removeInitial': boolean;
-	'roles.staff': string | null;
 	'roles.dj': string | null;
 	'roles.subscriber': string | null;
 	'roles.uniqueRoleSets': object[];
@@ -64,6 +63,8 @@ export interface RawGuildSettings {
 	'selfmod.attachmentAction': number;
 	'selfmod.attachmentPunishmentDuration': number | null;
 	'selfmod.capitals.enabled': boolean;
+	'selfmod.capitals.ignoredRoles': string[];
+	'selfmod.capitals.ignoredChannels': string[];
 	'selfmod.capitals.minimum': number;
 	'selfmod.capitals.maximum': number;
 	'selfmod.capitals.softAction': number;
@@ -73,12 +74,16 @@ export interface RawGuildSettings {
 	'selfmod.capitals.thresholdDuration': number;
 	'selfmod.links.whitelist': string[];
 	'selfmod.links.enabled': boolean;
+	'selfmod.links.ignoredRoles': string[];
+	'selfmod.links.ignoredChannels': string[];
 	'selfmod.links.softAction': number;
 	'selfmod.links.hardAction': number;
 	'selfmod.links.hardActionDuration': number | null;
 	'selfmod.links.thresholdMaximum': number;
 	'selfmod.links.thresholdDuration': number;
 	'selfmod.messages.enabled': boolean;
+	'selfmod.messages.ignoredRoles': string[];
+	'selfmod.messages.ignoredChannels': string[];
 	'selfmod.messages.maximum': number;
 	'selfmod.messages.queue-size': number;
 	'selfmod.messages.softAction': number;
@@ -87,6 +92,8 @@ export interface RawGuildSettings {
 	'selfmod.messages.thresholdMaximum': number;
 	'selfmod.messages.thresholdDuration': number;
 	'selfmod.newlines.enabled': boolean;
+	'selfmod.newlines.ignoredRoles': string[];
+	'selfmod.newlines.ignoredChannels': string[];
 	'selfmod.newlines.maximum': number;
 	'selfmod.newlines.softAction': number;
 	'selfmod.newlines.hardAction': number;
@@ -94,12 +101,16 @@ export interface RawGuildSettings {
 	'selfmod.newlines.thresholdMaximum': number;
 	'selfmod.newlines.thresholdDuration': number;
 	'selfmod.invites.enabled': boolean;
+	'selfmod.invites.ignoredRoles': string[];
+	'selfmod.invites.ignoredChannels': string[];
 	'selfmod.invites.softAction': number;
 	'selfmod.invites.hardAction': number;
 	'selfmod.invites.hardActionDuration': number | null;
 	'selfmod.invites.thresholdMaximum': number;
 	'selfmod.invites.thresholdDuration': number;
 	'selfmod.filter.enabled': boolean;
+	'selfmod.filter.ignoredRoles': string[];
+	'selfmod.filter.ignoredChannels': string[];
 	'selfmod.filter.softAction': number;
 	'selfmod.filter.hardAction': number;
 	'selfmod.filter.hardActionDuration': number | null;
@@ -107,6 +118,8 @@ export interface RawGuildSettings {
 	'selfmod.filter.thresholdDuration': number;
 	'selfmod.filter.raw': string[];
 	'selfmod.reactions.enabled': boolean;
+	'selfmod.reactions.ignoredRoles': string[];
+	'selfmod.reactions.ignoredChannels': string[];
 	'selfmod.reactions.maximum': number;
 	'selfmod.reactions.whitelist': string[];
 	'selfmod.reactions.blacklist': string[];
@@ -190,7 +203,6 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"roles.public"                         VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"roles.reactions"                      JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"roles.removeInitial"                  BOOLEAN        DEFAULT FALSE              NOT NULL,
-		"roles.staff"                          VARCHAR(19),
 		"roles.dj"                             VARCHAR(19),
 		"roles.subscriber"                     VARCHAR(19),
 		"roles.uniqueRoleSets"                 JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
@@ -200,6 +212,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.attachmentAction"             SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.attachmentPunishmentDuration" INTEGER,
 		"selfmod.capitals.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.capitals.ignoredRoles"        VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.capitals.ignoredChannels"     VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.capitals.minimum"             SMALLINT       DEFAULT 15                 NOT NULL,
 		"selfmod.capitals.maximum"             SMALLINT       DEFAULT 50                 NOT NULL,
 		"selfmod.capitals.softAction"          SMALLINT       DEFAULT 0                  NOT NULL,
@@ -209,12 +223,16 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.capitals.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.links.whitelist"              VARCHAR(128)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.links.enabled"                BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.links.ignoredRoles"           VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.links.ignoredChannels"        VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.links.softAction"             SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.links.hardAction"             SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.links.hardActionDuration"     INTEGER,
 		"selfmod.links.thresholdMaximum"       SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.links.thresholdDuration"      INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.messages.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.messages.ignoredRoles"        VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.messages.ignoredChannels"     VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.messages.maximum"             SMALLINT       DEFAULT 5                  NOT NULL,
 		"selfmod.messages.queue-size"          SMALLINT       DEFAULT 50                 NOT NULL,
 		"selfmod.messages.softAction"          SMALLINT       DEFAULT 0                  NOT NULL,
@@ -223,6 +241,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.messages.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.messages.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.newlines.enabled"             BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.newlines.ignoredRoles"        VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.newlines.ignoredChannels"     VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.newlines.maximum"             SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.newlines.softAction"          SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.newlines.hardAction"          SMALLINT       DEFAULT 0                  NOT NULL,
@@ -230,12 +250,16 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.newlines.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.newlines.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.invites.enabled"              BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.invites.ignoredRoles"         VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.invites.ignoredChannels"      VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.invites.softAction"           SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.invites.hardAction"           SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.invites.hardActionDuration"   INTEGER,
 		"selfmod.invites.thresholdMaximum"     SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.invites.thresholdDuration"    INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.filter.enabled"               BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.filter.ignoredRoles"          VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.filter.ignoredChannels"       VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.filter.softAction"            SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.filter.hardAction"            SMALLINT       DEFAULT 0                  NOT NULL,
 		"selfmod.filter.hardActionDuration"    INTEGER,
@@ -243,6 +267,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.filter.thresholdDuration"     INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.filter.raw"                   VARCHAR(32)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.reactions.enabled"            BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.reactions.ignoredRoles"       VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.reactions.ignoredChannels"    VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.reactions.maximum"            SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.reactions.whitelist"          VARCHAR(128)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.reactions.blacklist"          VARCHAR(128)[] DEFAULT ARRAY[]::VARCHAR[] NOT NULL,

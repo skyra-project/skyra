@@ -4,6 +4,8 @@ import { mergeDefault } from '@klasa/utils';
 import { IWriteOptions, IPoint } from 'influx';
 import { Databases } from '../types/influxSchema/database';
 
+export type WriteOptions = IWriteOptions & Record<PropertyKey, unknown>;
+
 export default abstract class AuditEvent extends Event {
 
 	// eslint-disable-next-line @typescript-eslint/require-await
@@ -29,10 +31,10 @@ export default abstract class AuditEvent extends Event {
 		};
 	}
 
-	protected getDefaultOptions(): IWriteOptions {
+	protected getDefaultOptions(): WriteOptions {
 		return {
 			database: Databases.Audits
-		}
+		};
 	}
 
 }

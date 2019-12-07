@@ -1,7 +1,8 @@
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import { FuzzySearch } from '../lib/util/FuzzySearch';
 import { User } from 'discord.js';
-const USER_REGEXP = /^(?:<@!?)?(\d{17,19})>?$/;
+
+const USER_REGEXP = Argument.regex.userOrMember;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {

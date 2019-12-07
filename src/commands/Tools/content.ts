@@ -13,7 +13,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_CONTENT_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_CONTENT_EXTENDED'),
 			runIn: ['text'],
-			usage: '[channel:channel] (message:message)',
+			usage: '[channel:channelname] (message:message)',
 			usageDelim: ' '
 		});
 

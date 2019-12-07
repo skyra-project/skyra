@@ -17,7 +17,6 @@ export default class extends SkyraCommand {
 			cooldown: 15,
 			description: language => language.tget('COMMAND_POLL_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_POLL_EXTENDED'),
-			quotedStringSupport: true,
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<create|list|remove|vote|result> [parameters:string] [...]',

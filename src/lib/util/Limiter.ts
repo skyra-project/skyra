@@ -41,7 +41,7 @@ export function limitMethod(group = 'global', bucket: number, cooldown: number) 
 
 		descriptor.value = (function descriptorValue(this: LimitedClass, ...args: readonly unknown[]) {
 			assert(typeof this.limiter === 'boolean');
-			if (!this.ratelimits.has(group)) this.ratelimits.set(group, new RateLimit(bucket, cooldown))
+			if (!this.ratelimits.has(group)) this.ratelimits.set(group, new RateLimit(bucket, cooldown));
 
 			const limit = this.ratelimits.get(group)!;
 

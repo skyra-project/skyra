@@ -2,6 +2,7 @@ import { MessageEmbed, Permissions, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { BrandingColors } from '../../../lib/util/constants';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -10,7 +11,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_ROLEINFO_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_ROLEINFO_EXTENDED'),
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '[role:rolename]'

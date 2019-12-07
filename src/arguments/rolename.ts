@@ -1,7 +1,8 @@
 import { Role } from 'discord.js';
 import { Argument, KlasaGuild, KlasaMessage, Possible } from 'klasa';
 import { FuzzySearch } from '../lib/util/FuzzySearch';
-const ROLE_REGEXP = /^(?:<@&)?(\d{17,19})>?$/;
+
+const ROLE_REGEXP = Argument.regex.role;
 
 export default class extends Argument {
 

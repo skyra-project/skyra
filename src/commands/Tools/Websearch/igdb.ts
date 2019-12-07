@@ -1,4 +1,4 @@
-import { AgeRatingRatingEnum, Company, Game } from '@igdb/types';
+import { AgeRatingRatingEnum, Company, Game } from '../../../lib/util/External/IgdbTypes';
 import { isNumber } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';

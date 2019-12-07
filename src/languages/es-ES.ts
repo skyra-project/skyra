@@ -388,7 +388,6 @@ export default class extends Language {
 		SETTINGS_ROLES_MUTED: 'The muted role, if configured, I will give new muted users this role. Otherwise I will prompt you the creation of one.',
 		SETTINGS_ROLES_PUBLIC: 'The public roles, they will be given with no cost to any user using the `roles` command.',
 		SETTINGS_ROLES_REMOVEINITIAL: 'Whether the claim of a public role should remove the initial one too.',
-		SETTINGS_ROLES_STAFF: 'The staff role, their priviledges are nearly helpers of moderators and administrators, but they cannot take any actions besides warnings.',
 		SETTINGS_ROLES_SUBSCRIBER: 'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
 		SETTINGS_SELFMOD_ATTACHMENT: 'Whether or not the attachment filter is enabled.',
 		SETTINGS_SELFMOD_ATTACHMENTMAXIMUM: 'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
@@ -1430,7 +1429,7 @@ export default class extends Language {
 				['(Filter) Archivo', 'Filtra mensajes que tienen archivos adjuntos.'],
 				['(Filter) User', 'Filtra messages enviados por un usuario específico.']
 			],
-			examples: ['50 me', '75 @kyra', '20 bots', '60 before 629992398700675082 humans'],
+			examples: ['50 yo', '75 @kyra', '20 robots', '60 humanos before 629992398700675082'],
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
 		}),
 		COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',
@@ -2741,7 +2740,7 @@ export default class extends Language {
 		COMMAND_PRUNE_FILTERS: new Map([
 			['archivo', Filter.Attachments], ['archivos', Filter.Attachments], ['subida', Filter.Attachments], ['subidas', Filter.Attachments],
 			['autor', Filter.Author], ['yo', Filter.Author],
-			['bot', Filter.Bots], ['bots', Filter.Bots],
+			['bot', Filter.Bots], ['bots', Filter.Bots], ['robot', Filter.Bots], ['robots', Filter.Bots],
 			['humano', Filter.Humans], ['humanos', Filter.Humans],
 			['invitacion', Filter.Invites], ['invitación', Filter.Invites], ['invitaciones', Filter.Invites],
 			['enlace', Filter.Links], ['enlaces', Filter.Links],
@@ -3046,6 +3045,13 @@ export default class extends Language {
 			PREVIEW: 'Avance',
 			PREVIEW_LABEL: 'Haga clic aquí'
 		},
+		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'La consulta a google']
+			]
+		}),
+		COMMAND_LMGTFY_CLICK: 'Haga clic en mí para buscar',
 		COMMAND_MOVIES_DESCRIPTION: 'Busca en TheMovieDatabase cualquier película',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
 			extendedHelp: [
@@ -3427,12 +3433,14 @@ export default class extends Language {
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		SYSTEM_NO_RESULTS: 'No pude encontrar ningún resultado para esa consulta',
+		SYSTEM_CANNOT_ACCESS_CHANNEL: 'Lo siento, pero no tienes permiso para ver ese canal.',
 
 		JUMPTO: 'Salta al Mensaje ►',
 
 		RESOLVER_INVALID_CHANNELNAME: name => `${name} debe ser una mención, nombre, o id válido de un canal.`,
 		RESOLVER_INVALID_ROLENAME: name => `${name} debe ser una mención, nombre, o id válido de un rol.`,
 		RESOLVER_INVALID_USERNAME: name => `${name} debe ser una mención, nombre, o id válido de un usuario.`,
+		RESOLVER_CHANNEL_NOT_IN_GUILD: 'Lo siento, pero ese comando solo se puede ejecutar en un servidor.',
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 

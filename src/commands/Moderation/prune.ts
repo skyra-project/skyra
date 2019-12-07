@@ -5,6 +5,7 @@ import { APIErrors, Moderation } from '../../lib/util/constants';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { floatPromise, cleanMentions } from '../../lib/util/util';
 import { Position, Filter } from '../../lib/types/Languages';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -18,34 +19,34 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			flagSupport: true,
 			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
-			usage: '[limit:integer{1,100}] (position:position) (message:message) [filter:filter|user:user]',
+			usage: '[limit:integer{1,100}] [filter:filter|user:user] (position:position) (message:message)',
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('position', (argument, _possible, message) => {
+		this.createCustomResolver('filter', (argument, _possible, message) => {
+			if (!argument) return undefined;
+			const filter = message.language.tget('COMMAND_PRUNE_FILTERS').get(argument.toLowerCase());
+			if (typeof filter === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_FILTER');
+			return filter;
+		}).createCustomResolver('position', (argument, _possible, message) => {
 			if (!argument) return null;
 			const position = message.language.tget('COMMAND_PRUNE_POSITIONS').get(argument.toLowerCase());
 			if (typeof position === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_POSITION');
 			return position;
-		}).createCustomResolver('message', async (argument, possible, message, [, position]) => {
+		}).createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
 			if (position === null) return message;
 
 			const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
 			if (fetched === null) throw message.language.tget('RESOLVER_INVALID_MESSAGE', possible.name);
 			return fetched;
-		}).createCustomResolver('filter', (argument, _possible, message) => {
-			if (!argument) return undefined;
-			const filter = message.language.tget('COMMAND_PRUNE_FILTERS').get(argument.toLowerCase());
-			if (typeof filter === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_FILTER');
-			return filter;
 		});
 	}
 
-	public async run(message: KlasaMessage, [limit = 50, rawPosition, targetMessage, rawFilter]: [number, Position | null, KlasaMessage, Filter | User | undefined]) {
+	public async run(message: KlasaMessage, [limit = 50, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, KlasaMessage]) {
 		// This can happen for a large variety of situations:
 		// - Invalid limit (less than 1 or more than 100).
 		// - Invalid filter

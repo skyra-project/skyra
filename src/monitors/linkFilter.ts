@@ -8,8 +8,10 @@ import { urlRegex } from '../lib/util/Links/UrlRegex';
 
 export default class extends ModerationMonitor {
 
-	protected readonly keyEnabled: string = GuildSettings.Selfmod.Links.Enabled;
-	protected readonly softPunishmentPath: string = GuildSettings.Selfmod.Links.SoftAction;
+	protected readonly keyEnabled = GuildSettings.Selfmod.Links.Enabled;
+	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Links.IgnoredChannels;
+	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Links.IgnoredRoles;
+	protected readonly softPunishmentPath = GuildSettings.Selfmod.Links.SoftAction;
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Links.HardAction,
 		actionDuration: GuildSettings.Selfmod.Links.HardActionDuration,

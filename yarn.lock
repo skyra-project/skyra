@@ -30,11 +30,6 @@
   dependencies:
     graphql "^14.5.8"
 
-"@igdb/types@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@igdb/types/-/types-0.0.11.tgz#1d481ea4c7366e0b73ccc86cd446dbd44a8e2265"
-  integrity sha512-zIpQn5xqGEcfMSeNeZBEDPYSeyQxnOlQ3WOCzJnnoAc2AJa3X0HF3W/ThKI2SvXR3sz9rriEWsXKDrIpVVaAmA==
-
 "@klasa/querybuilder@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@klasa/querybuilder/-/querybuilder-0.0.1.tgz#66d2b99cb919933ec0fdc43f697590d9b57d0c82"
@@ -52,10 +47,10 @@
   resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.1.tgz#af20aa4ea24fdd83c41e9afb07f829194dea6363"
   integrity sha512-UOGHPXnbitN/fHIGODZYv8IVlpojVmMMyRYLlanN41QP+IC9oZfqihT41cBbaFtMbqF0gcw6/5mr2P6NpCV8Mg==
 
-"@klasa/utils@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.2.tgz#5f74b2d4982ddac791b8bc3c019ba6be27d3de41"
-  integrity sha512-cvozoOSmplScsumCERA9jfjRT19HAZjlq/9yuAUnWWUqD0a4trCcqrOZBdnPbrxToOxBb84BAPljN2fist17ug==
+"@klasa/utils@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.4.tgz#4bf010b09d0f93b39245523ed22a09571d56508c"
+  integrity sha512-9gZSGN/As3sxZumZ9ZwyQ+KcNSenzY8tR1orRakv8HKK0WH0gG7QrsP/1O2TD4uHxUyr8dysCjt73RYPfzuDWQ==
 
 "@types/backoff@^2.5.1":
   version "2.5.1"

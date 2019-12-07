@@ -6,6 +6,7 @@ import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
 import { Moderation, BrandingColors } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
 import { Collection } from '@discordjs/collection';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -15,7 +16,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_MODERATIONS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_MODERATIONS_EXTENDED'),
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			runIn: ['text'],
 			usage: '<mutes|warnings|all:default> [user:username]'

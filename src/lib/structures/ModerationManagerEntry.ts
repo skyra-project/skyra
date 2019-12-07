@@ -117,11 +117,11 @@ export class ModerationManagerEntry {
 	}
 
 	public get appealable() {
-		return Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appeal);
+		return Moderation.metadata.has(this.type | Moderation.TypeMetadata.Appeal);
 	}
 
 	public get temporable() {
-		return Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Temporary);
+		return Moderation.metadata.has(this.type | Moderation.TypeMetadata.Temporary);
 	}
 
 	public get cacheExpired() {
@@ -165,15 +165,16 @@ export class ModerationManagerEntry {
 		// If the moderation log is not anonymous, it should always send
 		if (this.moderator) return true;
 
-		const checkSoftban = this.typeVariation === Moderation.TypeVariation.Ban;
 		const before = Date.now() - Time.Minute;
 		const user = this.flattenedUser;
+		const type = this.typeVariation;
+		const checkSoftban = type === Moderation.TypeVariation.Ban;
 		for (const entry of this.manager.values()) {
 			// If it's not the same user target or if it's at least 1 minute old, skip
 			if (user !== entry.flattenedUser || before > entry.createdTimestamp) continue;
 
 			// If there was a log with the same type in the last minute, do not duplicate
-			if (this.typeVariation === entry.typeVariation) return false;
+			if (type === entry.typeVariation) return false;
 
 			// If this log is a ban or an unban, but the user was softbanned recently, abort
 			if (checkSoftban && entry.type === Moderation.TypeCodes.Softban) return false;

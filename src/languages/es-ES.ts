@@ -3045,6 +3045,13 @@ export default class extends Language {
 			PREVIEW: 'Avance',
 			PREVIEW_LABEL: 'Haga clic aquí'
 		},
+		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'La consulta a google']
+			]
+		}),
+		COMMAND_LMGTFY_CLICK: 'Haga clic en mí para buscar',
 		COMMAND_MOVIES_DESCRIPTION: 'Busca en TheMovieDatabase cualquier película',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
 			extendedHelp: [

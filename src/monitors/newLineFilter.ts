@@ -7,9 +7,11 @@ const NEW_LINE = '\n';
 
 export default class extends ModerationMonitor {
 
-	protected keyEnabled: string = GuildSettings.Selfmod.NewLines.Enabled;
-	protected softPunishmentPath: string = GuildSettings.Selfmod.NewLines.SoftAction;
-	protected hardPunishmentPath: HardPunishment = {
+	protected readonly keyEnabled: string = GuildSettings.Selfmod.NewLines.Enabled;
+	protected readonly ignoredChannelsPath: string = GuildSettings.Selfmod.NewLines.IgnoredChannels;
+	protected readonly ignoredRolesPath: string = GuildSettings.Selfmod.NewLines.IgnoredRoles;
+	protected readonly softPunishmentPath: string = GuildSettings.Selfmod.NewLines.SoftAction;
+	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.NewLines.HardAction,
 		actionDuration: GuildSettings.Selfmod.NewLines.HardActionDuration,
 		adder: 'newlines',

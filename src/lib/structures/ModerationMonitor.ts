@@ -5,7 +5,7 @@ import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { Adder } from '../util/Adder';
 import { MessageLogsEnum } from '../util/constants';
 import { Events, PermissionLevels } from '../types/Enums';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, GuildMember, TextChannel } from 'discord.js';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
@@ -48,7 +48,8 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			&& message.type === 'DEFAULT'
 			&& message.author.id !== this.client.user!.id
 			&& message.guild.settings.get(this.keyEnabled) as boolean
-			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& this.checkMessageChannel(message.channel as TextChannel)
+			&& this.checkMemberRoles(message.member);
 	}
 
 	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {
@@ -127,12 +128,26 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected abstract keyEnabled: string;
+	protected abstract ignoredRolesPath: string;
+	protected abstract ignoredChannelsPath: string;
 	protected abstract softPunishmentPath: string;
 	protected abstract hardPunishmentPath: HardPunishment | null;
 	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: KlasaMessage, value: T): unknown;
 	protected abstract onAlert(message: KlasaMessage, value: T): unknown;
 	protected abstract onLogMessage(message: KlasaMessage, value: T): MessageEmbed;
+
+	private checkMessageChannel(channel: TextChannel) {
+		return !(channel.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(channel.id)
+			|| (channel.guild.settings.get(this.ignoredChannelsPath) as readonly string[]).includes(channel.id));
+	}
+
+	private checkMemberRoles(member: GuildMember | null) {
+		if (member === null) return false;
+
+		const ignoredRoles = member.guild.settings.get(this.ignoredRolesPath) as readonly string[];
+		return ignoredRoles.length === 0 || member.roles.every(role => !ignoredRoles.includes(role.id));
+	}
 
 }
 

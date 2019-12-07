@@ -6,9 +6,11 @@ import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationM
 
 export default class extends ModerationMonitor {
 
-	protected keyEnabled: string = GuildSettings.Selfmod.Messages.Enabled;
-	protected softPunishmentPath: string = GuildSettings.Selfmod.Messages.SoftAction;
-	protected hardPunishmentPath: HardPunishment = {
+	protected readonly keyEnabled: string = GuildSettings.Selfmod.Messages.Enabled;
+	protected readonly ignoredChannelsPath: string = GuildSettings.Selfmod.Messages.IgnoredChannels;
+	protected readonly ignoredRolesPath: string = GuildSettings.Selfmod.Messages.IgnoredRoles;
+	protected readonly softPunishmentPath: string = GuildSettings.Selfmod.Messages.SoftAction;
+	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Messages.HardAction,
 		actionDuration: GuildSettings.Selfmod.Messages.HardActionDuration,
 		adder: 'messages',

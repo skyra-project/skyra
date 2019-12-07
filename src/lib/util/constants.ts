@@ -171,7 +171,7 @@ export namespace Moderation {
 		User = 'userID'
 	}
 
-	interface ModerationTypeAssets {
+	export interface ModerationTypeAssets {
 		color: number;
 		title: string;
 	}

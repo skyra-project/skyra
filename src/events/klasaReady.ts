@@ -1,6 +1,7 @@
 import { Event, EventStore } from 'klasa';
 import { Events } from '../lib/types/Enums';
 import { Slotmachine } from '../lib/util/Games/Slotmachine';
+import { WheelOfFortune } from '../lib/util/Games/WheelOfFortune';
 
 export default class extends Event {
 
@@ -10,7 +11,10 @@ export default class extends Event {
 
 	public async run() {
 		try {
-			await Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error));
+			await Promise.all([
+				Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error)),
+				WheelOfFortune.init().catch(error => this.client.emit(Events.Wtf, error))
+			]);
 			await this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error));
 			await this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));
 			await this.initPostStatsTask().catch(error => this.client.emit(Events.Wtf, error));

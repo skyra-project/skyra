@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 		const money = message.author.settings.get(UserSettings.Money);
 
 		if (money < wager) {
-			throw message.language.tget('COMMAND_SLOTMACHINES_MONEY', money);
+			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', money);
 		}
 
 		const result = this.flipCoin();

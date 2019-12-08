@@ -5,7 +5,8 @@ import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { Adder } from '../util/Adder';
 import { MessageLogsEnum } from '../util/constants';
 import { Events, PermissionLevels } from '../types/Enums';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, GuildMember, TextChannel } from 'discord.js';
+import { CustomGet } from '../types/settings/Shared';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
@@ -15,16 +16,16 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const filter = message.guild!.settings.get(this.softPunishmentPath) as number;
+		const filter = message.guild!.settings.get(this.softPunishmentPath);
 		const bitField = new SelfModeratorBitField(filter);
 		this.processSoftPunishment(message, bitField, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
 
-		const maximum = message.guild!.settings.get(this.hardPunishmentPath.adderMaximum) as number;
+		const maximum = message.guild!.settings.get(this.hardPunishmentPath.adderMaximum);
 		if (!maximum) return this.processHardPunishment(message);
 
-		const duration = message.guild!.settings.get(this.hardPunishmentPath.adderDuration) as number;
+		const duration = message.guild!.settings.get(this.hardPunishmentPath.adderDuration);
 		if (!duration) return this.processHardPunishment(message);
 
 		const $adder = this.hardPunishmentPath.adder;
@@ -47,8 +48,9 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			&& message.webhookID === null
 			&& message.type === 'DEFAULT'
 			&& message.author.id !== this.client.user!.id
-			&& message.guild.settings.get(this.keyEnabled) as boolean
-			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+			&& message.guild.settings.get(this.keyEnabled)
+			&& this.checkMessageChannel(message.channel as TextChannel)
+			&& this.checkMemberRoles(message.member);
 	}
 
 	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {
@@ -58,7 +60,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async processHardPunishment(message: KlasaMessage) {
-		const action = message.guild!.settings.get(this.hardPunishmentPath!.action) as SelfModeratorHardActionFlags;
+		const action = message.guild!.settings.get(this.hardPunishmentPath!.action);
 		switch (action) {
 			case SelfModeratorHardActionFlags.Warning:
 				await this.onWarning(message);
@@ -82,7 +84,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.warning({
 			user_id: message.author.id,
 			reason: '[Auto-Moderation] Threshold Reached.',
-			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}));
 	}
 
@@ -97,7 +99,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.mute({
 			user_id: message.author.id,
 			reason: '[Auto-Moderation] Threshold Reached.',
-			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}));
 	}
 
@@ -112,7 +114,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.ban({
 			user_id: message.author.id,
 			reason: '[Auto-Moderation] Threshold Reached.',
-			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}, 0));
 	}
 
@@ -126,20 +128,37 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, value));
 	}
 
-	protected abstract keyEnabled: string;
-	protected abstract softPunishmentPath: string;
+	protected abstract keyEnabled: CustomGet<string, boolean>;
+	protected abstract ignoredRolesPath: CustomGet<string, readonly string[]>;
+	protected abstract ignoredChannelsPath: CustomGet<string, readonly string[]>;
+	protected abstract softPunishmentPath: CustomGet<string, number>;
 	protected abstract hardPunishmentPath: HardPunishment | null;
 	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: KlasaMessage, value: T): unknown;
 	protected abstract onAlert(message: KlasaMessage, value: T): unknown;
 	protected abstract onLogMessage(message: KlasaMessage, value: T): MessageEmbed;
 
+	private checkMessageChannel(channel: TextChannel) {
+		return !(channel.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(channel.id)
+			|| channel.guild.settings.get(this.ignoredChannelsPath).includes(channel.id));
+	}
+
+	private checkMemberRoles(member: GuildMember | null) {
+		if (member === null) return false;
+
+		const ignoredRoles = member.guild.settings.get(this.ignoredRolesPath);
+		if (ignoredRoles.length === 0) return true;
+
+		const { roles } = member;
+		return !ignoredRoles.some(id => roles.has(id));
+	}
+
 }
 
 export interface HardPunishment {
-	action: string;
-	actionDuration: string;
+	action: CustomGet<string, SelfModeratorHardActionFlags>;
+	actionDuration: CustomGet<string, number | null>;
 	adder: keyof GuildSecurity['adders'];
-	adderMaximum: string;
-	adderDuration: string;
+	adderMaximum: CustomGet<string, number | null>;
+	adderDuration: CustomGet<string, number | null>;
 }

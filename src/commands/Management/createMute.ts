@@ -2,6 +2,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { Role } from 'discord.js';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -12,7 +13,7 @@ export default class extends SkyraCommand {
 			cooldown: 150,
 			description: language => language.tget('COMMAND_CREATEMUTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_CREATEMUTE_EXTENDED'),
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredGuildPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
 			runIn: ['text']
 		});

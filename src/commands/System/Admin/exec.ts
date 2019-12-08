@@ -2,6 +2,7 @@ import { MessageAttachment } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { fetch, FetchResultTypes } from '../../../lib/util/util';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -11,7 +12,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_EXEC_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_EXEC_EXTENDED'),
 			guarded: true,
-			permissionLevel: 10,
+			permissionLevel: PermissionLevels.BotOwner,
 			usage: '<expression:string>',
 			flagSupport: true
 		});

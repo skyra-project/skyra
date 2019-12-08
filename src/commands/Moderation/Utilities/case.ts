@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -7,7 +8,7 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			cooldown: 5,
 			description: 'Get the information from a case by its index.',
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<Case:integer|latest>'

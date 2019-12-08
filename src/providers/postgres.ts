@@ -7,6 +7,8 @@ import { ENABLE_POSTGRES } from '../../config';
 import { run as databaseInitRun } from '../lib/util/DatabaseInit';
 import { AnyObject } from '../lib/types/util';
 
+type PostgresOptions = PoolConfig & Record<PropertyKey, unknown>;
+
 export default class extends SQLProvider {
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -32,7 +34,7 @@ export default class extends SQLProvider {
 	public async init() {
 		if (!ENABLE_POSTGRES) return this.unload();
 
-		const poolOptions = mergeDefault<PoolConfig, PoolConfig>({
+		const poolOptions = mergeDefault<PostgresOptions, PostgresOptions>({
 			host: 'localhost',
 			port: 5432,
 			database: 'klasa',

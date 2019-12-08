@@ -2,6 +2,7 @@ import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { getColor } from '../../../lib/util/util';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
@@ -12,7 +13,7 @@ export default class extends SkyraCommand {
 			bucket: 2,
 			cooldown: 10,
 			description: 'Check the permission for a member, or yours.',
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '[member:username]'

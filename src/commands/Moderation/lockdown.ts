@@ -2,6 +2,7 @@ import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { PreciseTimeout } from '../../lib/util/PreciseTimeout';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 // TODO(kyranet): Add a textchannel argument to this.
 export default class extends SkyraCommand {
@@ -13,7 +14,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_LOCKDOWN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_LOCKDOWN_EXTENDED'),
 			runIn: ['text'],
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 		});
 	}

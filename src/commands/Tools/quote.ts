@@ -1,7 +1,7 @@
-import { GuildChannel, MessageEmbed, TextChannel } from 'discord.js';
+import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { getContent, getImage, cutText } from '../../lib/util/util';
+import { cutText, getContent, getImage } from '../../lib/util/util';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;
@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_QUOTE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_QUOTE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
-			usage: '[channel:channel] (message:message)',
+			usage: '[channel:channelname] (message:message)',
 			usageDelim: ' '
 		});
 
@@ -65,6 +65,7 @@ export default class extends SkyraCommand {
 		if (!channel) return null;
 		if (!(channel instanceof TextChannel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
 		if (!channel.readable) throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
+		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
 
 		return channel.messages.fetch(_message);
 	}

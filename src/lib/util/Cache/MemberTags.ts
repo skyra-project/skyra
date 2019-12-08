@@ -3,7 +3,7 @@ import { KlasaGuild } from 'klasa';
 import { APIErrors } from '../constants';
 import { GuildMember } from 'discord.js';
 
-export class MemberNicknames extends Collection<string, string | null> {
+export class MemberTags extends Collection<string, MemberTag> {
 
 	public readonly guild: KlasaGuild;
 
@@ -13,9 +13,13 @@ export class MemberNicknames extends Collection<string, string | null> {
 	}
 
 	public create(member: GuildMember) {
-		super.set(member.id, member.nickname || null);
+		const tag: MemberTag = {
+			nickname: member.nickname || null,
+			roles: this.getRawRoles(member)
+		};
+		super.set(member.id, tag);
 		this.guild.client.userTags.create(member.user);
-		return member.nickname;
+		return tag;
 	}
 
 	public getFirstKeyFromUserName(username: string) {
@@ -38,9 +42,9 @@ export class MemberNicknames extends Collection<string, string | null> {
 		return null;
 	}
 
-	public async fetch(id: string): Promise<string | null>;
+	public async fetch(id: string): Promise<MemberTag | null>;
 	public async fetch(): Promise<this>;
-	public async fetch(id?: string): Promise<string | null | this> {
+	public async fetch(id?: string): Promise<MemberTag | null | this> {
 		if (typeof id === 'undefined') {
 			const members = await this.guild.members.fetch();
 			for (const member of members.values()) this.create(member);
@@ -73,4 +77,14 @@ export class MemberNicknames extends Collection<string, string | null> {
 		return Collection as unknown as CollectionConstructor;
 	}
 
+	private getRawRoles(member: GuildMember) {
+		const casted = member as unknown as { _roles: string[] } & GuildMember;
+		return casted._roles;
+	}
+
+}
+
+export interface MemberTag {
+	nickname: string | null;
+	roles: readonly string[];
 }

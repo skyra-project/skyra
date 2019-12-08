@@ -142,8 +142,8 @@ export default class extends SkyraCommand {
 		for (const user of users) {
 			let resolved: string | null | undefined;
 			if (REG_USERS.test(user)) resolved = (await message.guild!.members.fetch(REG_USERS.exec(user)![1])).id;
-			else if (REG_TAG.test(user)) resolved = message.guild!.nicknames.getKeyFromTag(user);
-			else resolved = message.guild!.nicknames.getFirstKeyFromUserName(user);
+			else if (REG_TAG.test(user)) resolved = message.guild!.memberTags.getKeyFromTag(user);
+			else resolved = message.guild!.memberTags.getFirstKeyFromUserName(user);
 
 			if (resolved) output.push(resolved);
 		}

@@ -31,7 +31,10 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		guild.nicknames.set(data.user.id, data.nick || null);
+		guild.memberTags.set(data.user.id, {
+			nickname: data.nick || null,
+			roles: data.roles
+		});
 		guild.client.userTags.create(data.user);
 		const member = guild.members.add(data);
 

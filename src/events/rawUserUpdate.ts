@@ -28,7 +28,7 @@ export default class extends Event {
 		if (typeof previous === 'undefined' || previous.username === next.username) return;
 
 		for (const guild of this.client.guilds.values()) {
-			if (!guild.nicknames.has(data.id)) continue;
+			if (!guild.memberTags.has(data.id)) continue;
 			if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 					.setColor(0xDCE775)

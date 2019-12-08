@@ -42,9 +42,9 @@ export interface FlattenedGuild {
 	splash: string | null;
 	region: string;
 	features: GuildFeatures[];
-	applicationID: string;
+	applicationID: string | null;
 	afkTimeout: number;
-	afkChannelID: string;
+	afkChannelID: string | null;
 	systemChannelID: string | null;
 	embedEnabled: boolean;
 	premiumTier: number;

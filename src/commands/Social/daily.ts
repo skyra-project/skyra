@@ -54,7 +54,6 @@ export default class extends SkyraCommand {
 		const total = money + beforeAddition;
 		await message.author.settings.update([[UserSettings.Money, total], [UserSettings.TimeDaily, nextTime]]);
 		this.client.emit(Events.MoneyTransaction, message.author, money, beforeAddition, EconomyTransactionAction.Add);
-		// TODO(Quantum): Implement event above ^
 		return money;
 	}
 

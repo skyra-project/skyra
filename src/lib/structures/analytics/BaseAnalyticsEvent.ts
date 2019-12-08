@@ -2,6 +2,7 @@ import { Event } from 'klasa';
 import { ENABLE_INFLUX } from '../../../../config';
 import { mergeDefault } from '@klasa/utils';
 import { IWriteOptions, IPoint } from 'influx';
+import { Tags } from '../../types/influxSchema/tags';
 
 export default abstract class BaseAnalyticsEvent extends Event {
 
@@ -24,7 +25,7 @@ export default abstract class BaseAnalyticsEvent extends Event {
 
 	protected getDefaultTags() {
 		return {
-			shard: (this.client.options.shards as number[])[0].toString()
+			[Tags.Shard]: (this.client.options.shards as number[])[0].toString()
 		};
 	}
 

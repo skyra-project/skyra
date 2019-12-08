@@ -43,12 +43,10 @@ export default class extends SkyraCommand {
 		const authorBeforeDecrease = await message.author.settings.get(UserSettings.Money);
 		await message.author.settings.decrease(UserSettings.Money, money);
 		this.client.emit(Events.MoneyTransaction, message.author, money, authorBeforeDecrease, EconomyTransactionAction.Remove);
-		// TODO(Quantum): Implement event above ^
 
 		const userBeforeIncrease = await user.settings.get(UserSettings.Money);
 		await user.settings.increase(UserSettings.Money, money);
 		this.client.emit(Events.MoneyTransaction, user, money, userBeforeIncrease, EconomyTransactionAction.Add);
-		// TODO(Quantum): Implement event above ^
 
 		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
 		// TODO(Quantum): Implement event above ^

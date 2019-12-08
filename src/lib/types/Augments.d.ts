@@ -13,6 +13,9 @@ import { CommonQuery } from '../queries/common';
 import { UserTags } from '../util/Cache/UserTags';
 import { Twitch } from '../util/Notifications/Twitch';
 import { InfluxDB } from 'influx';
+import { Events } from './Enums';
+import { EconomyTransactionAction } from './influxSchema/Economy';
+import { KlasaUser, KlasaMessage } from 'klasa';
 
 declare module 'discord.js' {
 
@@ -31,6 +34,13 @@ declare module 'discord.js' {
 		queries: CommonQuery;
 		influx: InfluxDB | null;
 		twitch: Twitch;
+
+		emit(event: Events.GuildAnnouncementSend, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
+		emit(event: Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
+		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
+		emit(event: Events.MoneyTransaction, target: KlasaUser, moneyToAdd: number, moneyBeforeAddition: number, action: EconomyTransactionAction): boolean;
+		emit(event: Events.MoneyPayment, message: KlasaMessage, user: KlasaUser, target: KlasaUser, money: number): boolean;
+		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 
 	interface MessageExtendablesAskOptions {

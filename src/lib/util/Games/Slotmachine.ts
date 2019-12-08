@@ -117,7 +117,6 @@ export class Slotmachine {
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update(UserSettings.Money, amount);
 		this.player.client.emit(Events.MoneyTransaction, this.player, amount, money, action);
-		// TODO(Quantum): Implement event above ^
 		return this.render(rolls);
 	}
 

@@ -1,8 +1,9 @@
 import { EventStore, KlasaMessage } from 'klasa';
-import { AuditMeasurements, AuditAnnouncementAction } from '../lib/types/influxSchema/Audit';
+import { AuditMeasurements, AuditAnnouncementAction, AuditTags } from '../lib/types/influxSchema/Audit';
 import { Role, TextChannel } from 'discord.js';
 import AuditEvent from '../lib/structures/analytics/AuditEvent';
 import { Events } from '../lib/types/Enums';
+import { Tags } from '../lib/types/influxSchema/tags';
 
 export default class extends AuditEvent {
 
@@ -22,15 +23,13 @@ export default class extends AuditEvent {
 					message_source_id: message.id,
 					message_result_id: resultMessage.id
 				},
-				tags: {
-					shard: (this.client.options.shards as number[])[0].toString(),
-					user_id: message.author.id,
-					guild_id: message.guild?.id!,
-					channel_id: channel.id,
-					action: AuditAnnouncementAction.Send
-				}
-			}
-		);
+				tags: this.formTags({
+					[Tags.User]: message.author.id,
+					[Tags.Guild]: message.guild?.id!,
+					[Tags.Channel]: channel.id,
+					[AuditTags.Action]: AuditAnnouncementAction.Send
+				})
+			});
 	}
 
 }

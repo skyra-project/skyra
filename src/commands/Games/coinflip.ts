@@ -52,7 +52,6 @@ export default class extends SkyraCommand {
 
 		await message.author.settings.update(UserSettings.Money, updatedBalance);
 		this.client.emit(Events.MoneyTransaction, message.author, wager, money, action);
-		// TODO(Quantum): Implement event above ^
 		return message.sendEmbed(this.buildEmbed(message, result)
 			.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
 			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result], wager)));

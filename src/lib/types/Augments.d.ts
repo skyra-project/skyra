@@ -35,8 +35,7 @@ declare module 'discord.js' {
 		influx: InfluxDB | null;
 		twitch: Twitch;
 
-		emit(event: Events.GuildAnnouncementSend, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
-		emit(event: Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
+		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(event: Events.MoneyTransaction, target: KlasaUser, moneyToAdd: number, moneyBeforeAddition: number, action: EconomyTransactionAction): boolean;
 		emit(event: Events.MoneyPayment, message: KlasaMessage, user: KlasaUser, target: KlasaUser, money: number): boolean;

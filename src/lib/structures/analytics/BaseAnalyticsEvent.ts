@@ -6,9 +6,12 @@ import { Tags } from '../../types/influxSchema/tags';
 
 export default abstract class BaseAnalyticsEvent extends Event {
 
-	// eslint-disable-next-line @typescript-eslint/require-await
+	public abstract DATABASE: string = '';
+
 	public async init() {
-		if (!ENABLE_INFLUX) this.disable();
+		if (!ENABLE_INFLUX) return this.disable();
+		const DBsPresent = await this.client.influx!.getDatabaseNames();
+		if (!DBsPresent.includes(this.DATABASE)) await this.client.influx!.createDatabase(this.DATABASE);
 	}
 
 	protected writeMeasurement(measurement: string, points: IPoint, options?: IWriteOptions): Promise<void> {
@@ -31,7 +34,7 @@ export default abstract class BaseAnalyticsEvent extends Event {
 
 	protected getDefaultOptions(): IWriteOptions {
 		return {
-			database: ''
+			database: this.DATABASE
 		};
 	}
 

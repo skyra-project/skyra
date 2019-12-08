@@ -6,6 +6,8 @@ import { APIWebhookData } from './src/lib/types/DiscordAPI';
 import ApiRequest from './src/lib/structures/api/ApiRequest';
 import ApiResponse from './src/lib/structures/api/ApiResponse';
 import { ISingleHostConfig } from 'influx';
+import { rootFolder } from './src/lib/util/constants';
+import { resolve } from 'path';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
@@ -115,6 +117,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
 		'default': ENABLE_POSTGRES ? 'postgres' : 'json',
+		'json': { baseDirectory: resolve(rootFolder, 'bwd', 'providers', 'json') },
 		'postgres': PGSQL_DATABASE_OPTIONS
 	},
 	readyMessage: client =>

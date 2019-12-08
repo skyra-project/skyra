@@ -91,7 +91,7 @@ export default class extends Provider {
 	 */
 	public async get(table: string, id: string) {
 		try {
-			return readJSON(this.getFilename(table, id));
+			return await readJSON(this.getFilename(table, id));
 		} catch (e) {
 			return null;
 		}

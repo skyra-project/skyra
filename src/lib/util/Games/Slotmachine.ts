@@ -113,10 +113,11 @@ export class Slotmachine {
 
 		const money = settings.get(UserSettings.Money);
 		const amount = this.winnings === 0 ? money - this.amount : money + (this.winnings * this.boost);
+		const change = this.winnings === 0 ? this.amount : this.winnings * this.boost;
 		const action = this.winnings === 0 ? EconomyTransactionAction.Remove : EconomyTransactionAction.Add;
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update(UserSettings.Money, amount);
-		this.player.client.emit(Events.MoneyTransaction, this.player, amount, money, action, EconomyTransactionReason.Gamble);
+		this.player.client.emit(Events.MoneyTransaction, this.player, change, money, action, EconomyTransactionReason.Gamble);
 		return this.render(rolls);
 	}
 

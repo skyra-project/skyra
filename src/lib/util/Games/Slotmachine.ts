@@ -6,7 +6,7 @@ import { ClientSettings } from '../../types/settings/ClientSettings';
 import { UserSettings } from '../../types/settings/UserSettings';
 import { loadImage } from '../util';
 import { assetsFolder } from '../constants';
-import { EconomyTransactionAction } from '../../types/influxSchema/Economy';
+import { EconomyTransactionAction, EconomyTransactionReason } from '../../types/influxSchema/Economy';
 import { Events } from '../../types/Enums';
 
 enum Icons {
@@ -116,7 +116,7 @@ export class Slotmachine {
 		const action = this.winnings === 0 ? EconomyTransactionAction.Remove : EconomyTransactionAction.Add;
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update(UserSettings.Money, amount);
-		this.player.client.emit(Events.MoneyTransaction, this.player, amount, money, action);
+		this.player.client.emit(Events.MoneyTransaction, this.player, amount, money, action, EconomyTransactionReason.Gamble);
 		return this.render(rolls);
 	}
 

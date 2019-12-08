@@ -4,7 +4,7 @@ import { ClientSettings } from '../../lib/types/settings/ClientSettings';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { Time } from '../../lib/util/constants';
 import { Events } from '../../lib/types/Enums';
-import { EconomyTransactionAction } from '../../lib/types/influxSchema/Economy';
+import { EconomyTransactionAction, EconomyTransactionReason } from '../../lib/types/influxSchema/Economy';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;
@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 		const beforeAddition = await message.author.settings.get(UserSettings.Money);
 		const total = money + beforeAddition;
 		await message.author.settings.update([[UserSettings.Money, total], [UserSettings.TimeDaily, nextTime]]);
-		this.client.emit(Events.MoneyTransaction, message.author, money, beforeAddition, EconomyTransactionAction.Add);
+		this.client.emit(Events.MoneyTransaction, message.author, money, beforeAddition, EconomyTransactionAction.Add, EconomyTransactionReason.Daily);
 		return money;
 	}
 

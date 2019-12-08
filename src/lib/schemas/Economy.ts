@@ -14,8 +14,21 @@ export const SchemaMoneyTransaction: ISchemaOptions = {
 	tags: [
 		Tags.Shard,
 		Tags.User,
-		EconomyTags.Action
+		EconomyTags.Action,
+		EconomyTags.Reason
 	]
 };
 
-// TODO(Quantum): Implement payment data structure
+export const SchemaMoneyPayment: ISchemaOptions = {
+	database: Databases.Economy,
+	measurement: EconomyMeasurements.Payment,
+	fields: {
+		amount: FieldType.INTEGER
+	},
+	tags: [
+		Tags.Shard,
+		Tags.Message,
+		Tags.User,
+		EconomyTags.Target
+	]
+};

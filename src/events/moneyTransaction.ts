@@ -1,7 +1,7 @@
 import EconomyEvent from '../lib/structures/analytics/EconomyEvent';
 import { EventStore, KlasaUser } from 'klasa';
 import { Events } from '../lib/types/Enums';
-import { EconomyTransactionAction, EconomyMeasurements, EconomyTags } from '../lib/types/influxSchema/Economy';
+import { EconomyTransactionAction, EconomyMeasurements, EconomyTags, EconomyTransactionReason } from '../lib/types/influxSchema/Economy';
 import { Tags } from '../lib/types/influxSchema/tags';
 
 export default class extends EconomyEvent {
@@ -12,7 +12,7 @@ export default class extends EconomyEvent {
 		});
 	}
 
-	public run(target: KlasaUser, moneyChange: number, moneyBeforeChange: number, action: EconomyTransactionAction): Promise<void> {
+	public run(target: KlasaUser, moneyChange: number, moneyBeforeChange: number, action: EconomyTransactionAction, reason: EconomyTransactionReason): Promise<void> {
 		const balance = EconomyTransactionAction.Add ? moneyBeforeChange + moneyChange : moneyBeforeChange - moneyChange;
 		return this.writeMeasurement(EconomyMeasurements.Transaction, {
 			fields: {
@@ -20,10 +20,11 @@ export default class extends EconomyEvent {
 				balance,
 				old_balance: moneyBeforeChange
 			},
-			tags: {
+			tags: this.formTags({
 				[Tags.User]: target.id,
-				[EconomyTags.Action]: action
-			}
+				[EconomyTags.Action]: action,
+				[EconomyTags.Reason]: reason
+			})
 		});
 	}
 

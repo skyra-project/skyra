@@ -32,7 +32,7 @@ declare module 'discord.js' {
 		queries: CommonQuery;
 		influx: InfluxDB | null;
 		twitch: Twitch;
-		games: GameIntegrationsManager;
+		giManager: GameIntegrationsManager;
 	}
 
 	interface MessageExtendablesAskOptions {

@@ -35,7 +35,7 @@ export class FFXIV {
 			location: 0,
 			distance: 100,
 			maxPatternLength: 64,
-			minMatchCharLength: 1 
+			minMatchCharLength: 1
 		});
 		return this;
 	}

@@ -97,7 +97,7 @@ export class SkyraClient extends KlasaClient {
 		? new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate, SchemaAnnouncement] })
 		: null;
 
-	public games: GameIntegrationsManager = new GameIntegrationsManager();
+	public giManager: GameIntegrationsManager = new GameIntegrationsManager();
 
 	/**
 	 * The ConnectFour manager

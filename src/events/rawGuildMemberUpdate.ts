@@ -6,6 +6,7 @@ import { MessageEmbed } from 'discord.js';
 import { floatPromise, getDisplayAvatar } from '../lib/util/util';
 import { Events } from '../lib/types/Enums';
 import { MessageLogsEnum } from '../lib/util/constants';
+import { MemberTag } from '../lib/util/Cache/MemberTags';
 
 export default class extends Event {
 
@@ -23,20 +24,24 @@ export default class extends Event {
 
 	private handleNicknameChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
 		// Get the current nickname, compare them both, if they are different, it changed
-		const previous = guild.nicknames.get(data.user.id);
-		const next = data.nick || null;
+		const previous = guild.memberTags.get(data.user.id);
+		const next: MemberTag = {
+			nickname: data.nick || null,
+			roles: data.roles
+		};
 
 		// Get the previous nickname
-		guild.nicknames.set(data.user.id, next);
+		guild.memberTags.set(data.user.id, next);
 
 		// If the previous was unset or it's the same as the next one, skip
 		if (typeof previous === 'undefined' || previous === next) return;
 
+		// TODO(kyranet): Role Change Logs
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 				.setColor(0xDCE775)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-				.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous, next))
+				.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.nickname, next.nickname))
 				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
 				.setTimestamp());
 		}

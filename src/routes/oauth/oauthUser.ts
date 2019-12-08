@@ -9,19 +9,22 @@ import { OauthData } from '../../lib/types/DiscordAPI';
 import { Databases } from '../../lib/types/constants/Constants';
 import { DashboardUser } from '../../lib/queries/common';
 import { stringify } from 'querystring';
+import { FlattenedGuild, flattenGuild, flattenUser, FlattenedUser } from '../../lib/util/Models/ApiTransform';
+import { GuildFeatures, Permissions, Guild } from 'discord.js';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { MemberTag } from '../../lib/util/Cache/MemberTags';
 
 export default class extends Route {
-
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
 		super(store, file, directory, { route: 'oauth/user' });
 	}
 
 	public async api(token: string) {
-		token = `Bearer ${token}`;
-		const user = await fetch('https://discordapp.com/api/users/@me', { headers: { Authorization: token } }, FetchResultTypes.JSON) as { guilds: unknown };
-		user.guilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON);
-		return this.client.dashboardUsers.add(user);
+		const oauthUser = await fetch('https://discordapp.com/api/users/@me', {
+			headers: { Authorization: `Bearer ${token}` }
+		}, FetchResultTypes.JSON) as RawOauthUser;
+		return this.fetchUser(oauthUser.id, `Bearer ${token}`);
 	}
 
 	@authenticated
@@ -44,7 +47,8 @@ export default class extends Route {
 			}
 
 			try {
-				const user = await this.api(data.accessToken);
+				const user = await this.fetchUser(request.auth!.user_id, `Bearer ${data.accessToken}`);
+				if (user === null) return response.error(500);
 				return response.json({
 					access_token: Util.encrypt({
 						user_id: user.id,
@@ -59,6 +63,59 @@ export default class extends Route {
 		}
 
 		return response.error(400);
+	}
+
+	private async fetchUser(id: string, token: string): Promise<OauthFlattenedUser | null> {
+		const user = await this.client.users.fetch(id).catch(() => null);
+		if (user === null) return null;
+
+		const guilds: OauthFlattenedGuild[] = [];
+		const oauthGuilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON) as RawOauthGuild[];
+
+		for (const oauthGuild of oauthGuilds) {
+			const guild = this.client.guilds.get(oauthGuild.id);
+			const serialized: PartialOauthFlattenedGuild = typeof guild === 'undefined'
+				? {
+					afkChannelID: null,
+					afkTimeout: 0,
+					applicationID: null,
+					available: true,
+					banner: null,
+					channels: [],
+					defaultMessageNotifications: 'MENTIONS',
+					description: null,
+					embedEnabled: false,
+					explicitContentFilter: 0,
+					features: oauthGuild.features,
+					icon: oauthGuild.icon,
+					id: oauthGuild.id,
+					joinedTimestamp: null,
+					mfaLevel: 0,
+					name: oauthGuild.name,
+					ownerID: oauthGuild.owner ? user.id : null,
+					premiumSubscriptionCount: null,
+					premiumTier: 0,
+					region: null,
+					roles: [],
+					splash: null,
+					systemChannelID: null,
+					vanityURLCode: null,
+					verificationLevel: 0
+				}
+				: flattenGuild(guild);
+
+			guilds.push({
+				...serialized,
+				permissions: oauthGuild.permissions,
+				manageable: this.getManageable(id, oauthGuild, guild),
+				skyraIsIn: typeof guild !== 'undefined'
+			});
+		}
+
+		return {
+			...flattenUser(user),
+			guilds
+		};
 	}
 
 	private async refreshToken(id: string, refreshToken: string) {
@@ -100,4 +157,79 @@ export default class extends Route {
 		}
 	}
 
+	private getManageable(id: string, oauthGuild: RawOauthGuild, guild: Guild | undefined) {
+		if (oauthGuild.owner) return true;
+		if (typeof guild === 'undefined') return new Permissions(oauthGuild.permissions).has(Permissions.FLAGS.MANAGE_GUILD);
+
+		const roleID = guild.settings.get(GuildSettings.Roles.Admin);
+		const memberTag = guild.memberTags.get(id);
+
+		// MemberTag must always exist:
+		return typeof memberTag !== 'undefined'
+			// If Roles.Admin is not configured, check MANAGE_GUILD, else check if the member has the role.
+			&& (roleID === null ? new Permissions(oauthGuild.permissions).has(Permissions.FLAGS.MANAGE_GUILD) : memberTag.roles.includes(roleID))
+			// Check if despite of having permissions, user permission nodes do not deny them.
+			&& this.allowedPermissionsNodeUser(guild, id)
+			// Check if despite of having permissions, role permission nodes do not deny them.
+			&& this.allowedPermissionsNodeRole(guild, memberTag);
+	}
+
+	private allowedPermissionsNodeUser(guild: Guild, userID: string) {
+		const permissionNodeRoles = guild.settings.get(GuildSettings.Permissions.Users);
+		for (const node of permissionNodeRoles) {
+			if (node.id !== userID) continue;
+			if (node.allow.includes('settings')) return true;
+			if (node.deny.includes('settings')) return false;
+		}
+
+		return true;
+	}
+
+	private allowedPermissionsNodeRole(guild: Guild, memberTag: MemberTag) {
+		// Assume sorted data
+		for (const [id, node] of guild.permissionsManager.entries()) {
+			if (!memberTag.roles.includes(id)) continue;
+			if (node.allow.has('settings')) return true;
+			if (node.deny.has('settings')) return false;
+		}
+
+		return true;
+	}
+
+}
+
+interface RawOauthUser {
+	id: string;
+	username: string;
+	avatar: string;
+	discriminator: string;
+	locale: string;
+	mfa_enabled: boolean;
+	flags: number;
+	premium_type: number;
+}
+
+interface RawOauthGuild {
+	id: string;
+	name: string;
+	icon: null | string;
+	owner: boolean;
+	permissions: number;
+	features: GuildFeatures[];
+}
+
+interface PartialOauthFlattenedGuild extends Omit<FlattenedGuild, 'joinedTimestamp' | 'ownerID' | 'region'> {
+	joinedTimestamp: FlattenedGuild['joinedTimestamp'] | null;
+	ownerID: FlattenedGuild['ownerID'] | null;
+	region: FlattenedGuild['region'] | null;
+}
+
+interface OauthFlattenedGuild extends PartialOauthFlattenedGuild {
+	permissions: number;
+	manageable: boolean;
+	skyraIsIn: boolean;
+}
+
+interface OauthFlattenedUser extends FlattenedUser {
+	guilds: OauthFlattenedGuild[];
 }

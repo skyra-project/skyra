@@ -12,6 +12,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_LMGTFY_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_LMGTFY_EXTENDED'),
 			usage: '<query:string>',
+			requiredPermissions: ['EMBED_LINKS'],
 			flagSupport: true
 		});
 	}

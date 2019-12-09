@@ -634,6 +634,24 @@ export default class extends Language {
 				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
 				their marks in a horizontal, vertical, or diagonal row wins the game.`
 		}),
+		COMMAND_VAULT_DESCRIPTION: `Store your ${SHINY}'s securily in a vault so you cannot accidentally spend them gambling.`,
+		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+			extendedHelp: `This is for the greedy spenders among us that tend to play a bit too much at the slot machine or
+				 spin the wheel of fortune. You need to actively withdraw ${SHINY}'s from your vault before they can be spend gambling.`,
+			explainedUsage: [
+				['action', 'The action to perform: **withdraw** to withdraw from your vault or **deposit** to deposit into your vault.'],
+				['money', `The amount of ${SHINY}'s to withdraw or deposit.`]
+			],
+			examples: ['deposit 10000.', 'withdraw 10000.']
+		}),
+		COMMAND_VAULT_EMBED_DATA: {
+			DEPOSITED_DESCRIPTION: coins => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
+			WITHDREW_DESCRIPTION: coins => `Withdrew ${coins} ${SHINY}\ from your vault.`,
+			ACCOUNT_MONEY: 'Account Money',
+			ACCOUNT_VAULT: 'Account Vault'
+		},
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money}${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `I am sorry, but you do not have enough stored in your vault to make that withdrawel! Your current vault balance is ${vault}${SHINY}`,
 
 		/**
 		 * ################
@@ -2885,7 +2903,7 @@ export default class extends Language {
 		COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 		COMMAND_PROFILE: {
 			GLOBAL_RANK: 'Global Rank',
-			CREDITS: 'Credits',
+			CREDITS: 'Credits | Vault',
 			REPUTATION: 'Reputation',
 			EXPERIENCE: 'Experience',
 			LEVEL: 'Level'

@@ -967,7 +967,7 @@ klasa-decorators@^0.0.1:
 
 "klasa@github:dirigeants/klasa#875/head":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/8d15f1d24a894014f58934062a7cd573703b8cb2"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/8ee8c7cf2749f1af1893e1bb44b36cad9c41c0c4"
   dependencies:
     "@klasa/querybuilder" "^0.0.1"
     "@klasa/settings-gateway" "^0.0.2"

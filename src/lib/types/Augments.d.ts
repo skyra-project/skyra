@@ -14,18 +14,7 @@ import { UserTags } from '../util/Cache/UserTags';
 import { Twitch } from '../util/Notifications/Twitch';
 import { InfluxDB } from 'influx';
 
-import { SerializableValue, SettingsUpdateResults } from '@klasa/settings-gateway';
-
-declare module '@klasa/settings-gateway' {
-
-	interface SettingsFolder {
-		get<K extends string, S>(key: CustomGet<K, S>): S;
-		get(key: string): SerializableValue | SettingsFolder;
-		increase(key: string, value: number): Promise<SettingsUpdateResults>;
-		decrease(key: string, value: number): Promise<SettingsUpdateResults>;
-	}
-
-}
+import { SettingsUpdateResults } from '@klasa/settings-gateway';
 
 declare module 'discord.js' {
 
@@ -95,10 +84,6 @@ declare module 'klasa' {
 		rawEvents?: PieceOptions;
 	}
 
-	interface GatewaysOptions {
-		members?: GatewayOptions;
-	}
-
 	interface Language {
 		PERMISSIONS: Record<PermissionString, string>;
 		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
@@ -111,6 +96,12 @@ declare module 'klasa' {
 		tget<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
 		retrieve<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
 		retrieve<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
+	}
+
+	interface SettingsFolder {
+		get<K extends string, S>(key: CustomGet<K, S>): S;
+		increase(key: string, value: number): Promise<SettingsUpdateResults>;
+		decrease(key: string, value: number): Promise<SettingsUpdateResults>;
 	}
 
 }

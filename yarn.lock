@@ -42,10 +42,10 @@
   resolved "https://registry.yarnpkg.com/@klasa/request-handler/-/request-handler-0.0.3.tgz#ed72de611ece3dd99725cb797fc13e07bb05e618"
   integrity sha512-Z1O+Aa2kW/I4Uos4EZalByveIuQKRfuRx+JCsgsogDBd95N5Ub47AH+LEd5i+uzjnJ6iDHfodpVlaHojJ4Q+ZQ==
 
-"@klasa/settings-gateway@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@klasa/settings-gateway/-/settings-gateway-0.0.2.tgz#eba9624b6df2123dafa4470ad4979a87b5641433"
-  integrity sha512-OEWVkDMvNnRjqfibS0mND2h8w6ZhXTniwzvnaGqWHQcfK5ZHcxxWy4ZMuIthYAFHWAzz8Qie3yGBM4gI9/dUzA==
+"@klasa/settings-gateway@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@klasa/settings-gateway/-/settings-gateway-0.0.3.tgz#062ce61ff2cd6ad90b1f3caab1efe9601bccb8eb"
+  integrity sha512-nNx5BMDMebhOhxaZjgjeqhvDgHA/HLf4gj+qzT0YTy/c/48OFSq9w+cK+iq0hUOJV9K1HSr519meFgFrjaJw/A==
   dependencies:
     "@discordjs/collection" "^0.1.3"
     "@klasa/querybuilder" "^0.0.1"
@@ -967,10 +967,10 @@ klasa-decorators@^0.0.1:
 
 "klasa@github:dirigeants/klasa#875/head":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/8ee8c7cf2749f1af1893e1bb44b36cad9c41c0c4"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/87ca9fa1404f826adfbb2f6b2c40063b8b3d8a26"
   dependencies:
     "@klasa/querybuilder" "^0.0.1"
-    "@klasa/settings-gateway" "^0.0.2"
+    "@klasa/settings-gateway" "^0.0.3"
     fs-nextra "^0.4.5"
 
 lavalink@^2.8.2:

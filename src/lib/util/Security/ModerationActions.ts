@@ -343,7 +343,7 @@ export class ModerationActions {
 	private async sharedRoleSetup(message: KlasaMessage, key: RoleDataKey, path: string) {
 		const roleData = kRoleDataOptions.get(key)!;
 		const role = await this.guild.roles.create({ data: roleData, reason: `[Role Setup] Authorized by ${message.author.username} (${message.author.id}).` });
-		await this.guild.settings.update(path, role, { throwOnError: true });
+		await this.guild.settings.update(path, role);
 
 		if (await message.ask(this.guild.language.tget('ACTION_SHARED_ROLE_SETUP', role.name, this.manageableChannelCount, this.displayPermissions(key)))) {
 			await this.updatePermissionsForCategoryChannels(role, key);
@@ -407,7 +407,7 @@ export class ModerationActions {
 
 		const role = this.guild.roles.get(roleID);
 		if (typeof role === 'undefined') {
-			await this.guild.settings.reset(GuildSettings.Roles.Muted, { throwOnError: true });
+			await this.guild.settings.reset(GuildSettings.Roles.Muted);
 			throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 		}
 
@@ -483,7 +483,7 @@ export class ModerationActions {
 		// Retrieve the role instance from the role ID, reset and return false if it does not exist.
 		const role = this.guild.roles.get(roleID);
 		if (typeof role === 'undefined') {
-			await this.guild.settings.reset(GuildSettings.Roles.Muted, { throwOnError: true });
+			await this.guild.settings.reset(GuildSettings.Roles.Muted);
 			throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
 		}
 
@@ -527,7 +527,7 @@ export class ModerationActions {
 				user: id,
 				roles: [roleID]
 			};
-			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { throwOnError: true, arrayAction: 'add' });
+			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayAction: 'add' });
 			return;
 		}
 
@@ -536,7 +536,7 @@ export class ModerationActions {
 
 		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
 		clone.roles.push(roleID);
-		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex, throwOnError: true });
+		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, { arrayIndex: stickyRolesIndex });
 	}
 
 	private async removeStickyRole(id: string, roleID: string) {
@@ -552,12 +552,12 @@ export class ModerationActions {
 			// If there are more than one role, remove the muted one and update the entry keeping the rest.
 			const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
 			clone.roles.splice(roleIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex, throwOnError: true });
+			await this.guild.settings.update(GuildSettings.StickyRoles, clone, { arrayIndex: stickyRolesIndex });
 		} else {
 			// Else clone the array, remove the entry, and update with action overwrite.
 			const cloneStickyRoles = guildStickyRoles.slice(0);
 			cloneStickyRoles.splice(stickyRolesIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, { throwOnError: true, arrayAction: 'overwrite' });
+			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, { arrayAction: 'overwrite' });
 		}
 	}
 

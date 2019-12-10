@@ -54,7 +54,7 @@ export default class extends Event {
 				channel.send(this.transformMessage(guild, user))
 					.catch(error => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Channels.Farewell, { throwOnError: true })
+				guild.settings.reset(GuildSettings.Channels.Farewell)
 					.catch(error => this.client.emit(Events.Wtf, error));
 			}
 		}

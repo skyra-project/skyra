@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		const banners = await this.client.providers.default.getAll(Databases.Banners) as RawBannerSettings[];
+		const banners = await this.client.providers.default!.getAll(Databases.Banners) as RawBannerSettings[];
 		const display = new UserRichDisplay(new MessageEmbed().setColor(BrandingColors.Primary));
 		for (const banner of banners) {
 			this.banners.set(banner.id, {

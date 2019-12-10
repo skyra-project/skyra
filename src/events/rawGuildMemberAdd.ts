@@ -67,7 +67,7 @@ export default class extends Event {
 				(channel as TextChannel).send(this.transformMessage(messagesGreeting, guild, member.user))
 					.catch(error => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Channels.Greeting, { throwOnError: true })
+				guild.settings.reset(GuildSettings.Channels.Greeting)
 					.catch(error => this.client.emit(Events.Wtf, error));
 			}
 		}
@@ -78,7 +78,7 @@ export default class extends Event {
 		if (initialRole) {
 			const role = guild.roles.get(initialRole);
 			if (!role || role.position >= guild.me!.roles.highest.position) {
-				guild.settings.reset(GuildSettings.Roles.Initial, { throwOnError: true })
+				guild.settings.reset(GuildSettings.Roles.Initial)
 					.catch(error => this.client.emit(Events.Wtf, error));
 			} else {
 				member.roles.add(role)
@@ -140,7 +140,7 @@ export default class extends Event {
 		}
 
 		if (stickyRoles.roles.length !== roles.length) {
-			guild.settings.update(GuildSettings.StickyRoles, { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles), throwOnError: true })
+			guild.settings.update(GuildSettings.StickyRoles, { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles) })
 				.catch(error => this.client.emit(Events.Wtf, error));
 		}
 

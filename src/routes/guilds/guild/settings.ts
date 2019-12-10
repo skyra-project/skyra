@@ -60,7 +60,7 @@ export default class extends Route {
 
 		await botGuild.settings.sync();
 		try {
-			await botGuild.settings.update(entries, { arrayAction: 'overwrite', throwOnError: true });
+			await botGuild.settings.update(entries, { arrayAction: 'overwrite' });
 			return response.json({ newSettings: botGuild.settings.toJSON() });
 		} catch (errors) {
 			this.client.emit(Events.Error,

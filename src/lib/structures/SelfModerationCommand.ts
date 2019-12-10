@@ -106,7 +106,7 @@ export abstract class SelfModerationCommand extends Command {
 		if (action === AKeys.Show) return this.show(message);
 
 		const key = this.getProperty(action)!;
-		await message.guild!.settings.update(key, value, { throwOnError: true });
+		await message.guild!.settings.update(key, value);
 
 		switch (action) {
 			case AKeys.Disable: {

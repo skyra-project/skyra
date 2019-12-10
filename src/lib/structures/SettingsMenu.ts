@@ -204,20 +204,26 @@ export class SettingsMenu {
 	}
 
 	private async tryUpdate(value: unknown, options?: SettingsFolderUpdateOptions) {
-		const { errors, updated } = await (value === null
-			? this.message.guild!.settings.reset(this.schema.path)
-			: this.message.guild!.settings.update(this.schema.path, value, options));
-		if (errors.length) this.errorMessage = String(errors[0]);
-		else if (!updated.length) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+		try {
+			const updated = await (value === null
+				? this.message.guild!.settings.reset(this.schema.path)
+				: this.message.guild!.settings.update(this.schema.path, value, options));
+			if (updated.length === 0) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+		} catch (error) {
+			this.errorMessage = String(error);
+		}
 	}
 
 	private async tryUndo() {
 		if (this.changedCurrentPieceValue) {
 			const previousValue = this.oldSettings.get(this.schema.path);
-			const { errors } = await (previousValue === null
-				? this.message.guild!.settings.reset(this.schema.path)
-				: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
-			if (errors.length) this.errorMessage = String(errors[0]);
+			try {
+				await (previousValue === null
+					? this.message.guild!.settings.reset(this.schema.path)
+					: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
+			} catch (error) {
+				this.errorMessage = String(error);
+			}
 		} else {
 			this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 		}

@@ -8,11 +8,11 @@ export const SchemaSettingsUpdate: ISchemaOptions = {
 	measurement: AuditMeasurements.SettingsUpdate,
 	fields: {
 		key: FieldType.STRING,
-		old_value: FieldType.STRING,
-		new_value: FieldType.STRING
+		value: FieldType.STRING
 	},
 	tags: [
 		Tags.Shard,
+		AuditTags.By,
 		AuditTags.Target,
 
 		Tags.Guild,

@@ -8,7 +8,8 @@
 			"node-fetch",
 			"discord.js",
 			"klasa",
-			"klasa-dashboard-hooks"
+			"klasa-dashboard-hooks",
+			"@klasa/settings-gateway"
 		]
 	},
 	"include": [

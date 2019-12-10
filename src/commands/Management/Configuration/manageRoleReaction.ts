@@ -53,8 +53,7 @@ export default class extends SkyraCommand {
 			else list.delete(entry);
 		}
 		if (oldLength !== list.size) {
-			const { errors } = await message.guild!.settings.update(GuildSettings.Roles.Reactions, [...list], { arrayAction: 'overwrite' });
-			if (errors.length) throw errors[0];
+			await message.guild!.settings.update(GuildSettings.Roles.Reactions, [...list], { arrayAction: 'overwrite' });
 		}
 		if (!lines.length) throw message.language.tget('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		return message.sendMessage(util.codeBlock('asciicode', lines.join('\n')));
@@ -62,8 +61,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [role, reaction]: [Role, string]) {
 		if (this._checkRoleReaction(message, reaction, role.id)) throw message.language.tget('COMMAND_MANAGEROLEREACTION_EXISTS');
-		const { errors } = await message.guild!.settings.update(GuildSettings.Roles.Reactions, { emoji: reaction, role: role.id }, { arrayAction: 'add' });
-		if (errors.length) throw errors[0];
+		await message.guild!.settings.update(GuildSettings.Roles.Reactions, { emoji: reaction, role: role.id }, { arrayAction: 'add' });
 		if (message.guild!.settings.get(GuildSettings.Roles.MessageReaction)) {
 			await this._reactMessage(
 				message.guild!.settings.get(GuildSettings.Channels.Roles),
@@ -79,16 +77,14 @@ export default class extends SkyraCommand {
 		if (!list.length) throw message.language.tget('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
 		const entry = list.find(en => en.emoji === reaction);
 		if (!entry) throw message.language.tget('COMMAND_MANAGEROLEREACTION_REMOVE_NOTEXISTS');
-		const { errors } = await message.guild!.settings.update(GuildSettings.Roles.Reactions, entry, { arrayAction: 'remove' });
-		if (errors.length) throw errors[0];
+		await message.guild!.settings.update(GuildSettings.Roles.Reactions, entry, { arrayAction: 'remove' });
 		return message.sendLocale('COMMAND_MANAGEROLEREACTION_REMOVE');
 	}
 
 	public async reset(message: KlasaMessage) {
 		const list = message.guild!.settings.get(GuildSettings.Roles.Reactions);
 		if (!list.length) throw message.language.tget('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
-		const { errors } = await message.guild!.settings.reset(GuildSettings.Roles.Reactions);
-		if (errors.length) throw errors[0];
+		await message.guild!.settings.reset(GuildSettings.Roles.Reactions);
 		return message.sendLocale('COMMAND_MANAGEROLEREACTION_RESET');
 	}
 

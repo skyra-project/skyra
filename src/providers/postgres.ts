@@ -1,6 +1,6 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
-import { SQLProvider, SchemaEntry, SchemaFolder, SettingsFolderUpdateResult, Type } from 'klasa';
+import { SQLProvider, SchemaEntry, SchemaFolder, Type, SettingsUpdateResults, ReadonlyAnyObject } from 'klasa';
 import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
 import { mergeDefault, makeObject, isNumber } from '@klasa/utils';
 import { ENABLE_POSTGRES } from '../../config';
@@ -20,7 +20,7 @@ export default class extends SQLProvider {
 		formatDatatype: (name, datatype, def = null) => `"${name}" ${datatype}${def === null ? '' : ` NOT NULL DEFAULT ${def}`}`
 	})
 		.add('boolean', { type: 'BOOL', serializer: input => this.cBoolean(input as boolean) })
-		.add('integer', { type: ({ max }) => max !== null && max >= 2 ** 32 ? 'BIGINT' : 'INTEGER', serializer: input => this.cNumber(input as number | bigint) })
+		.add('integer', { type: ({ maximum }) => maximum !== null && maximum >= 2 ** 32 ? 'BIGINT' : 'INTEGER', serializer: input => this.cNumber(input as number | bigint) })
 		.add('float', { type: 'DOUBLE PRECISION', serializer: input => this.cNumber(input as number) })
 		.add('any', { type: 'JSON', serializer: input => this.cJson(input as AnyObject), arraySerializer: input => this.cArrayJson(input as AnyObject[]) })
 		.add('json', { 'extends': 'any' })
@@ -111,7 +111,7 @@ export default class extends SQLProvider {
 		return rows.map(row => row.id);
 	}
 
-	public async get(table: string, key: string, value?: unknown): Promise<unknown> {
+	public async get(table: string, key: string, value?: unknown) {
 		// If a key is given (id), swap it and search by id - value
 		if (typeof value === 'undefined') {
 			value = key;
@@ -138,8 +138,8 @@ export default class extends SQLProvider {
 		return Boolean(result);
 	}
 
-	public create(table: string, id: string, data: CreateOrUpdateValue) {
-		const [keys, values] = this.parseUpdateInput(data, false);
+	public create(table: string, id: string, data: ReadonlyAnyObject | SettingsUpdateResults) {
+		const [keys, values] = this.parseUpdateInput(data);
 
 		// Push the id to the inserts.
 		if (!keys.includes('id')) {
@@ -152,8 +152,8 @@ export default class extends SQLProvider {
 		`);
 	}
 
-	public update(table: string, id: string, data: CreateOrUpdateValue) {
-		const [keys, values] = this.parseUpdateInput(data, false);
+	public update(table: string, id: string, data: ReadonlyAnyObject | SettingsUpdateResults) {
+		const [keys, values] = this.parseUpdateInput(data);
 		const resolvedValues = this.cValues(table, keys, values);
 		return this.pgsql!.query(/* sql */`
 			UPDATE ${this.cIdentifier(table)}
@@ -162,7 +162,7 @@ export default class extends SQLProvider {
 		`);
 	}
 
-	public replace(table: string, id: string, data: CreateOrUpdateValue) {
+	public replace(table: string, id: string, data: ReadonlyAnyObject | SettingsUpdateResults) {
 		return this.update(table, id, data);
 	}
 

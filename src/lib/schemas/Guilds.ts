@@ -2,7 +2,7 @@ import { Client } from 'klasa';
 
 export default Client.defaultGuildSchema
 	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })
-	.add('prefix', 'string', { filter: (_client, value: string) => value.length > 10 })
+	.add('prefix', 'string', { filter: (_client, value) => (value as string).length > 10 })
 	.add('tags', 'any', { array: true, configurable: false })
 	.add('permissions', folder => folder
 		.add('users', 'PermissionNode', { array: true, configurable: false })

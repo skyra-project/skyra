@@ -2032,6 +2032,11 @@ export default class extends Language {
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
+		COMMAND_EMOTES_DESCRIPTION: 'Shows all custom emotes available on this server',
+		COMMAND_EMOTES_EXTENDED: builder.display('emotes', {
+			extendedHelp: 'The list of emotes is split per 50 emotes'
+		}),
+		COMMAND_EMOTES_TITLE: 'Emotes in',
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique

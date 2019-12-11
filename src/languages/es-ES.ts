@@ -2133,7 +2133,7 @@ export default class extends Language {
 		}),
 		COMMAND_CURRENTTIME_DESCRIPTION: '',
 		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
-			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar, 
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
 				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
 				Una vez que este comando obtuvo las coordenadas, consulta TimezoneDB para obtener los datos de tiempo`,
 			explainedUsage: [
@@ -2147,7 +2147,7 @@ export default class extends Language {
 			CURRENT_DATE: 'Fecha actual',
 			COUNTRY: 'País',
 			GMT_OFFSET: 'GMT Offset',
-			DST: dst => `**Horario de verano**: ${dst === '0' ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'}`
+			DST: dst => `**Horario de verano**: ${dst === 0 ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'}`
 		},
 		GOOGLE_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
 		GOOGLE_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',

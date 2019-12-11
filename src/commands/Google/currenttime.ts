@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 				`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,
 				`**${TITLES.COUNTRY}**: ${timeData.countryName}`,
 				`**${TITLES.GMT_OFFSET}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
-				`${TITLES.DST(timeData.dst)}`
+				`${TITLES.DST(Number(timeData.dst))}`
 			].join('\n')));
 	}
 
@@ -51,19 +51,34 @@ export default class extends SkyraCommand {
 
 }
 
+/** API Response from TimezoneDB */
 export interface TimeResult {
+	/** Status of the API query. Either OK or FAILED. */
 	status: 'OK' | 'FAILED';
+	/** Error message. Empty if no error. */
 	message: '' | string;
+	/** Country code of the time zone. */
 	countryCode: string;
+	/** Country name of the time zone. */
 	countryName: string;
+	/** The time zone name. */
 	zoneName: string;
+	/** Abbreviation of the time zone. */
 	abbreviation: string;
+	/** The time offset in seconds based on UTC time. */
 	gmtOffset: number;
+	/** Whether Daylight Saving Time (DST) is used. Either 0 (No) or 1 (Yes). */
 	dst: string;
+	/** The Unix time in UTC when current time zone start. */
 	zoneStart: number;
+	/** The Unix time in UTC when current time zone end. */
 	zoneEnd: number;
+	/** Current local time in Unix time. Minus the value with gmtOffset to get UTC time. */
 	timestamp: number;
+	/** Formatted timestamp in Y-m-d h:i:s format. E.g.: 2019-12-11 21:41:12 */
 	formatted: string;
+	/** The total page of result when exceed 25 records. */
 	totalPage: number;
+	/** Current page when navigating. */
 	currentPage: number;
 }

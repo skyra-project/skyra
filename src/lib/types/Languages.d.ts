@@ -768,7 +768,7 @@ export interface LanguageKeys {
 		CURRENT_DATE: string;
 		COUNTRY: string;
 		GMT_OFFSET: string;
-		DST: (dst: string) => string;
+		DST: (dst: number) => string;
 	};
 	COMMAND_TOPINVITES_DESCRIPTION: string;
 	COMMAND_TOPINVITES_EXTENDED: string;

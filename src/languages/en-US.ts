@@ -2167,7 +2167,7 @@ export default class extends Language {
 			CURRENT_DATE: 'Current Date',
 			COUNTRY: 'Country',
 			GMT_OFFSET: 'GMT Offset',
-			DST: dst => `**DST**: ${dst === '0' ? 'Does not observe DST right now' : 'Observes DST right now'}`
+			DST: dst => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
 		},
 		GOOGLE_ERROR_ZERO_RESULTS: 'Your request returned no results.',
 		GOOGLE_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',

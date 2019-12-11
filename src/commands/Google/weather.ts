@@ -4,9 +4,9 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import { TOKENS } from '../../../config';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Events } from '../../lib/types/Enums';
-import { fetch, FetchResultTypes } from '../../lib/util/util';
 import { assetsFolder } from '../../lib/util/constants';
+import { queryGoogleMapsAPI } from '../../lib/util/Google';
+import { fetch, FetchResultTypes } from '../../lib/util/util';
 
 const COLORS = {
 	cloudy: '#88929F',
@@ -32,24 +32,15 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
-		const locationURI = encodeURIComponent(query.replace(/ /g, '+'));
-		const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${locationURI}&key=${TOKENS.GOOGLE_MAPS_API_KEY}`, FetchResultTypes.JSON) as GoogleMapsResultOk;
+		const [geoCodeLocation, lat, lng, address_components] = await queryGoogleMapsAPI(message, this.client, query);
 
-		if (response.status !== 'OK') {
-			throw message.language.tget(this.handleNotOK(response.status));
-		}
-		if (response.results.length === 0) {
-			throw message.language.tget('COMMAND_WEATHER_ERROR_ZERO_RESULTS');
-		}
-
-		const geoCodeLocation = response.results[0].formatted_address;
-		const params = `${response.results[0].geometry.location.lat},${response.results[0].geometry.location.lng}`;
+		const params = `${lat},${lng}`;
 		let locality = '';
 		let governing = '';
 		let country = '';
 		let continent = '';
 
-		for (const component of response.results[0].address_components) {
+		for (const component of address_components) {
 			if (!locality.length && component.types.includes('locality')) locality = component.long_name;
 			if (!governing.length && component.types.includes('administrative_area_level_1')) governing = component.long_name;
 			if (!country.length && component.types.includes('country')) country = component.long_name;
@@ -152,22 +143,6 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	public handleNotOK(status: string) {
-		switch (status) {
-			case 'ZERO_RESULTS':
-				return 'COMMAND_WEATHER_ERROR_ZERO_RESULTS';
-			case 'REQUEST_DENIED':
-				return 'COMMAND_WEATHER_ERROR_REQUEST_DENIED';
-			case 'INVALID_REQUEST':
-				return 'COMMAND_WEATHER_ERROR_INVALID_REQUEST';
-			case 'OVER_QUERY_LIMIT':
-				return 'COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT';
-			default:
-				this.client.emit(Events.Wtf, `Weather::handleNotOK | Unknown Error: ${status}`);
-				return 'COMMAND_WEATHER_ERROR_UNKNOWN';
-		}
-	}
-
 }
 
 interface WeatherData {
@@ -178,42 +153,6 @@ interface WeatherData {
 	chanceOfRain: number;
 	temperature: number;
 	humidity: number;
-}
-
-export interface GoogleMapsResultOk {
-	results: GoogleMapsResultOkResult[];
-	status: string;
-}
-
-export interface GoogleMapsResultOkResult {
-	address_components: GoogleMapsOkAddressComponent[];
-	formatted_address: string;
-	geometry: GoogleMapsOkGeometry;
-	place_id: string;
-	types: string[];
-}
-
-export interface GoogleMapsOkAddressComponent {
-	long_name: string;
-	short_name: string;
-	types: string[];
-}
-
-export interface GoogleMapsOkGeometry {
-	bounds: GoogleMapsOkBounds;
-	location: GoogleMapsOkLocation;
-	location_type: string;
-	viewport: GoogleMapsOkBounds;
-}
-
-export interface GoogleMapsOkBounds {
-	northeast: GoogleMapsOkLocation;
-	southwest: GoogleMapsOkLocation;
-}
-
-export interface GoogleMapsOkLocation {
-	lat: number;
-	lng: number;
 }
 
 export interface WeatherResultOk {

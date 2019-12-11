@@ -311,10 +311,10 @@ export default class extends Language {
 		COMMAND_SKIP_VOTES_VOTED: `${REDCROSS} You have already voted.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votes: ${amount} of ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Skipped **${title}**.`,
-		COMMAND_TIME_DESCRIPTION: `Check how much time is left for the song to end.`,
-		COMMAND_TIME_QUEUE_EMPTY: `Are you speaking to me? Because my deck is empty...`,
-		COMMAND_TIME_STREAM: `The current song is a stream, it doesn't have any remaining time.`,
-		COMMAND_TIME_REMAINING: time => `🕰 Time remaining: ${time}`,
+		COMMAND_PLAYING_TIME_DESCRIPTION: `Check how much time is left for the song to end.`,
+		COMMAND_PLAYING_TIME_QUEUE_EMPTY: `Are you speaking to me? Because my deck is empty...`,
+		COMMAND_PLAYING_TIME_STREAM: `The current song is a stream, it doesn't have any remaining time.`,
+		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Time remaining: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: `Manage the volume for current song.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
@@ -2133,7 +2133,7 @@ export default class extends Language {
 
 		/**
 		 * ################
-		 * WEATHER COMMANDS
+		 * GOOGLE COMMANDS
 		 */
 
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
@@ -2146,6 +2146,34 @@ export default class extends Language {
 			],
 			examples: ['Antarctica', 'Arizona']
 		}),
+		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'The query to google']
+			]
+		}),
+		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
+				support as it is... Google Search. Once this command got the coordinates, it queries TimezoneDB to get the time data`,
+			explainedUsage: [
+				['city', 'The locality, governing, country or continent to check the time for.']
+			],
+			examples: ['Antarctica', 'Arizona']
+		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Current Time',
+			CURRENT_DATE: 'Current Date',
+			COUNTRY: 'Country',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**DST**: ${dst === '0' ? 'Does not observe DST right now' : 'Observes DST right now'}`
+		},
+		GOOGLE_ERROR_ZERO_RESULTS: 'Your request returned no results.',
+		GOOGLE_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
+		GOOGLE_ERROR_INVALID_REQUEST: 'Invalid request.',
+		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
+		GOOGLE_ERROR_UNKNOWN: 'Unknown error.',
 
 		/**
 		 * #############
@@ -3075,12 +3103,6 @@ export default class extends Language {
 			PREVIEW: 'Preview',
 			PREVIEW_LABEL: 'Click here'
 		},
-		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'The query to google']
-			]
-		}),
 		COMMAND_LMGTFY_CLICK: 'Click me to search',
 		COMMAND_MOVIES_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
@@ -3223,17 +3245,6 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',
-
-		/**
-		 * ################
-		 * WEATHER COMMANDS
-		 */
-
-		COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
-		COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
-		COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
-		COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
-		COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
 
 		/**
 		 * #############

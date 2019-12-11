@@ -308,10 +308,10 @@ export default class extends Language {
 		COMMAND_SKIP_VOTES_VOTED: `Ya has votado para saltar esta canción.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votos: ${amount} de ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Saltada la canción ${title}.`,
-		COMMAND_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
-		COMMAND_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
-		COMMAND_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
-		COMMAND_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
+		COMMAND_PLAYING_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
+		COMMAND_PLAYING_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
+		COMMAND_PLAYING_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
+		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
@@ -2111,19 +2111,49 @@ export default class extends Language {
 
 		/**
 		 * ################
-		 * WEATHER COMMANDS
+		 * GOOGLE COMMANDS
 		 */
 
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
 		COMMAND_WEATHER_EXTENDED: builder.display('weather', {
-			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
-				support as it is... Google Search. Once this command got the coordinates, it queries DarkSky to retrieve
-					information about the weather. Note: temperature is in **Celsius**`,
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
+				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
+				Una vez que este comando obtuvo las coordenadas, consulta a DarkSky para recuperar información sobre el clima.
+				Nota: la temperatura está en ** Celsius **`,
 			explainedUsage: [
-				['city', 'The locality, governing, country or continent to check the weather from.']
+				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
 			],
-			examples: ['Antarctica', 'Arizona']
+			examples: ['Madrid', 'Barcelona']
 		}),
+		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'La consulta a google']
+			]
+		}),
+		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar, 
+				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
+				Una vez que este comando obtuvo las coordenadas, consulta TimezoneDB para obtener los datos de tiempo`,
+			explainedUsage: [
+				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
+			],
+			examples: ['Madrid', 'Barcelona']
+		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'Lo siento, pero no pude encontrar datos de tiempo para esa ubicación.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Tiempo actual',
+			CURRENT_DATE: 'Fecha actual',
+			COUNTRY: 'País',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**Horario de verano**: ${dst === '0' ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'}`
+		},
+		GOOGLE_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
+		GOOGLE_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
+		GOOGLE_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
+		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
+		GOOGLE_ERROR_UNKNOWN: 'Error Desconocido.',
 
 		/**
 		 * #############
@@ -3045,12 +3075,6 @@ export default class extends Language {
 			PREVIEW: 'Avance',
 			PREVIEW_LABEL: 'Haga clic aquí'
 		},
-		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'La consulta a google']
-			]
-		}),
 		COMMAND_LMGTFY_CLICK: 'Haga clic en mí para buscar',
 		COMMAND_MOVIES_DESCRIPTION: 'Busca en TheMovieDatabase cualquier película',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
@@ -3193,17 +3217,6 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',
-
-		/**
-		 * ################
-		 * WEATHER COMMANDS
-		 */
-
-		COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
-		COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
-		COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
-		COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
-		COMMAND_WEATHER_ERROR_UNKNOWN: 'Error Desconocido.',
 
 		/**
 		 * #############

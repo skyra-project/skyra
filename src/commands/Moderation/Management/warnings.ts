@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -9,7 +10,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_WARNINGS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_WARNINGS_EXTENDED'),
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			runIn: ['text'],
 			usage: '[user:username]'

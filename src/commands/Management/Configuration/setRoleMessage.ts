@@ -1,6 +1,7 @@
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { PermissionLevels } from '../../../lib/types/Enums';
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 export default class extends SkyraCommand {
@@ -11,7 +12,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SETROLEMESSAGE_EXTENDED'),
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '(message:message)'

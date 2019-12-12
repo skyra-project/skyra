@@ -2,6 +2,7 @@ import { Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Schema, SchemaEntry, SettingsFolderUpdateResult, util } from 'klasa';
 import { SettingsMenu } from '../../lib/structures/SettingsMenu';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
@@ -12,7 +13,7 @@ export default class extends SkyraCommand {
 			aliases: ['conf', 'config', 'configs', 'configuration'],
 			description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
 			guarded: true,
-			permissionLevel: 6,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
 			runIn: ['text'],
 			subcommands: true,

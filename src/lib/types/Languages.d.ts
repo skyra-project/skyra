@@ -369,7 +369,6 @@ export interface LanguageKeys {
 	SETTINGS_ROLES_MUTED: string;
 	SETTINGS_ROLES_PUBLIC: string;
 	SETTINGS_ROLES_REMOVEINITIAL: string;
-	SETTINGS_ROLES_STAFF: string;
 	SETTINGS_ROLES_SUBSCRIBER: string;
 	SETTINGS_SELFMOD_ATTACHMENT: string;
 	SETTINGS_SELFMOD_ATTACHMENTMAXIMUM: string;
@@ -712,6 +711,9 @@ export interface LanguageKeys {
 		PREVIEW: string;
 		PREVIEW_LABEL: string;
 	};
+	COMMAND_LMGTFY_DESCRIPTION: string;
+	COMMAND_LMGTFY_EXTENDED: string;
+	COMMAND_LMGTFY_CLICK: string;
 	COMMAND_MOVIES_DESCRIPTION: string;
 	COMMAND_MOVIES_EXTENDED: string;
 	COMMAND_MOVIES_TITLES: {
@@ -1467,8 +1469,10 @@ export interface LanguageKeys {
 	SYSTEM_GUILD_MUTECREATE_APPLYING: (channels: number, role: string) => string;
 	SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied: readonly string[]) => string;
 	SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted: number, exceptions: string, author: string, role: string) => string;
+	SYSTEM_CANNOT_ACCESS_CHANNEL: string;
 	JUMPTO: string;
 	RESOLVER_INVALID_CHANNELNAME: (name: string) => string;
+	RESOLVER_CHANNEL_NOT_IN_GUILD: string;
 	RESOLVER_INVALID_ROLENAME: (name: string) => string;
 	RESOLVER_INVALID_USERNAME: (name: string) => string;
 	LISTIFY_PAGE: (page: number, pageCount: number, results: string) => string;

@@ -1,6 +1,7 @@
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -9,7 +10,7 @@ export default class extends SkyraCommand {
 			bucket: 2,
 			cooldown: 15,
 			description: 'Check the messages/minute from a channel.',
-			permissionLevel: 4,
+			permissionLevel: PermissionLevels.Moderator,
 			runIn: ['text'],
 			usage: '[channel:channelname]'
 		});

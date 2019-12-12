@@ -6,7 +6,7 @@ import { Queue } from '../structures/music/Queue';
 import { StarboardManager } from '../structures/StarboardManager';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { PermissionsManager } from '../structures/PermissionsManager';
-import { MemberNicknames } from '../util/Cache/MemberNicknames';
+import { MemberTags } from '../util/Cache/MemberTags';
 
 export class SkyraGuild extends Structures.get('Guild') {
 
@@ -17,7 +17,7 @@ export class SkyraGuild extends Structures.get('Guild') {
 	public readonly music: Queue = new Queue(this);
 
 	@enumerable(false)
-	public readonly nicknames: MemberNicknames = new MemberNicknames(this);
+	public readonly memberTags: MemberTags = new MemberTags(this);
 
 }
 
@@ -28,7 +28,7 @@ declare module 'discord.js' {
 		readonly moderation: ModerationManager;
 		readonly permissionsManager: PermissionsManager;
 		readonly music: Queue;
-		readonly nicknames: MemberNicknames;
+		readonly memberTags: MemberTags;
 	}
 }
 

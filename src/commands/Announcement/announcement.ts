@@ -4,7 +4,7 @@ import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { announcementCheck, getColor } from '../../lib/util/util';
 import { APIErrors } from '../../lib/util/constants';
-import { Events } from '../../lib/types/Enums';
+import { Events, PermissionLevels } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 			cooldown: 30,
 			description: language => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
-			permissionLevel: 4,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
 			usage: '<announcement:string{,1900}>'

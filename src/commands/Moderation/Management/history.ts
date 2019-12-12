@@ -7,6 +7,7 @@ import { getColor } from '../../../lib/util/util';
 import { chunk } from '@klasa/utils';
 import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
 import Collection from '@discordjs/collection';
+import { PermissionLevels } from '../../../lib/types/Enums';
 
 const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
 
@@ -18,7 +19,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_HISTORY_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_HISTORY_EXTENDED'),
-			permissionLevel: 5,
+			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<details|overview:default> [user:username]',

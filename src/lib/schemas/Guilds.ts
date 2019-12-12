@@ -57,7 +57,6 @@ export default Client.defaultGuildSchema
 		.add('public', 'Role', { array: true })
 		.add('reactions', 'any', { array: true })
 		.add('removeInitial', 'Boolean')
-		.add('staff', 'Role')
 		.add('dj', 'Role')
 		.add('subscriber', 'Role')
 		.add('uniqueRoleSets', 'any', { array: true }))
@@ -69,6 +68,8 @@ export default Client.defaultGuildSchema
 		.add('attachmentPunishmentDuration', 'Integer', { configurable: false })
 		.add('capitals', capitals => capitals
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredRoles', 'Role', { array: true })
+			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('minimum', 'Integer', { 'default': 15, 'min': 5, 'max': 2000 })
 			.add('maximum', 'Integer', { 'default': 50, 'min': 10, 'max': 100 })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
@@ -79,6 +80,8 @@ export default Client.defaultGuildSchema
 		.add('links', invites => invites
 			.add('whitelist', 'URL', { array: true })
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredRoles', 'Role', { array: true })
+			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
@@ -86,6 +89,8 @@ export default Client.defaultGuildSchema
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
 		.add('messages', capitals => capitals
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredRoles', 'Role', { array: true })
+			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('maximum', 'Integer', { 'default': 5, 'min': 2, 'max': 100 })
 			.add('queue-size', 'Integer', { 'default': 50, 'min': 10, 'max': 100 })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
@@ -95,6 +100,8 @@ export default Client.defaultGuildSchema
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
 		.add('newlines', newline => newline
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredRoles', 'Role', { array: true })
+			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('maximum', 'Integer', { 'default': 20, 'min': 10, 'max': 2000 })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
@@ -103,6 +110,8 @@ export default Client.defaultGuildSchema
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'min': 0, 'max': 120000, 'configurable': false }))
 		.add('invites', invites => invites
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredRoles', 'Role', { array: true })
+			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
@@ -111,6 +120,8 @@ export default Client.defaultGuildSchema
 		.add('filter', filter => filter
 			.add('raw', 'String', { array: true, configurable: false })
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredRoles', 'Role', { array: true })
+			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })
@@ -121,6 +132,8 @@ export default Client.defaultGuildSchema
 			.add('whitelist', 'Emoji', { array: true })
 			.add('blacklist', 'Emoji', { array: true })
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredRoles', 'Role', { array: true })
+			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardAction', 'Integer', { 'default': 0, 'configurable': false })
 			.add('hardActionDuration', 'Integer', { min: 1000, configurable: false })

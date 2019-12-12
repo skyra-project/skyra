@@ -4,6 +4,7 @@ import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { resolveEmoji, displayEmoji, getColor } from '../../lib/util/util';
 import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { MessageEmbed } from 'discord.js';
+import { PermissionLevels } from '../../lib/types/Enums';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
@@ -14,8 +15,7 @@ export default class extends SkyraCommand {
 			cooldown: 5,
 			description: language => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_TRIGGERS_EXTENDED'),
-			permissionLevel: 6,
-			quotedStringSupport: true,
+			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			subcommands: true,

@@ -7,8 +7,6 @@ import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
-	private kFilter = this.removeNullAndUndefined.bind(this);
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
@@ -26,8 +24,14 @@ export default class extends SkyraCommand {
 
 		await this.populateCache(message);
 
-		const animEmotes = message.guild!.emojis.map(emote => emote.animated ? `<a:${emote.name}:${emote.id}>` : undefined).filter(this.kFilter);
-		const staticEmotes = message.guild!.emojis.map(emote => emote.animated ? undefined : `<:${emote.name}:${emote.id}>`).filter(this.kFilter);
+		const animEmotes: string[] = [];
+		const staticEmotes: string[] = [];
+
+		for (const [id, emote] of [...message.guild!.emojis.entries()]) {
+			if (emote.animated) animEmotes.push(`<a:${emote.name}:${id}>`);
+			else staticEmotes.push(`<:${emote.name}:${id}>`);
+		}
+
 		const chunkedAnimatedEmojis = this.emotesChunker(animEmotes, 50);
 		const chunkedStaticEmojis = this.emotesChunker(staticEmotes, 50);
 
@@ -46,10 +50,6 @@ export default class extends SkyraCommand {
 		chunkedEmotes.shift();
 
 		return chunkedEmotes;
-	}
-
-	private removeNullAndUndefined<TValue>(value: TValue | null | undefined): value is TValue {
-		return value !== null && value !== undefined;
 	}
 
 	private async populateCache(message: KlasaMessage) {

@@ -18,7 +18,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_WAIFU_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_WAIFU_EXTENDED')
+			extendedHelp: language => language.tget('COMMAND_WAIFU_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS']
 		});
 	}
 

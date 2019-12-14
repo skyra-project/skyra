@@ -15,8 +15,9 @@ export interface IncomingWebsocketMessage {
 }
 
 export interface OutgoingWebsocketMessage {
-	action: IncomingWebsocketAction;
-	data: any;
+	action?: IncomingWebsocketAction;
+	data?: any;
+	error?: string;
 }
 
 export interface UserAuthObject {
@@ -36,20 +37,23 @@ export class DashboardWebsocketUser {
 	@enumerable(false)
 	private _connection: WebSocket;
 
+
 	public constructor(client: SkyraClient, wss: Server, connection: WebSocket, IP: string) {
 		this._connection = connection;
 		this.wss = wss;
 		this.IP = IP;
 		this.client = client;
 
-		// ??
-		this._connection.once('close', () => {
-			this._connection.removeListener('message', this.handleIncomingRawMessage.bind(this));
-		});
+		// When the connection for this user receives a Raw Websocket message...
+		this._connection.on('message', this.handleIncomingRawMessage.bind(this));
 	}
 
 	public send(message: OutgoingWebsocketMessage) {
 		this._connection.send(JSON.stringify(message));
+	}
+
+	public error(message: string) {
+		this.send({ error: message });
 	}
 
 	private handleMessage(message: IncomingWebsocketMessage) {
@@ -57,9 +61,12 @@ export class DashboardWebsocketUser {
 
 		switch (message.action) {
 			case IncomingWebsocketAction.Authenticate: {
-				if (!message.data || !message.data.token) {
+				// If they're already authenticated, or didn't send a token, close.
+				if (this.authenticated || !message.data.token) {
 					return this._connection.close(4000);
 				}
+
+				// here we decrypt message.data.token and auth like in KDH
 
 				return this._connection.close(4000);
 			}
@@ -68,8 +75,14 @@ export class DashboardWebsocketUser {
 	}
 
 	private handleIncomingRawMessage(rawMessage: Data) {
-		const parsedMessage: IncomingWebsocketMessage = JSON.parse(rawMessage as string);
-		this.handleMessage(parsedMessage);
+		try {
+			const parsedMessage: IncomingWebsocketMessage = JSON.parse(rawMessage as string);
+			this.handleMessage(parsedMessage);
+		} catch {
+			// They've sent invalid JSON, close the connection.
+			this._connection.close(1002);
+		}
+
 	}
 
 }
@@ -97,13 +110,13 @@ export class WebsocketHandler {
 			if (this.users.has(ip)) return ws.close(1008);
 
 			// We have a new "user", add them to this.users
-			const websocketUser = new DashboardWebsocketUser(client, this.wss, ws, ip);
+			const websocketUser = new DashboardWebsocketUser(this.client, this.wss, ws, ip);
 			this.users.set(ip, websocketUser);
 
 
 			ws.on('close', () => {
+				ws.removeAllListeners('message');
 				this.users.delete(ip);
-				websocketUser._connection.removeAllListeners('message');
 			});
 		});
 	}

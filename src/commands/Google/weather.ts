@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
-		const [geoCodeLocation, lat, lng, address_components] = await queryGoogleMapsAPI(message, this.client, query);
+		const { formattedAddress, lat, lng, addressComponents } = await queryGoogleMapsAPI(message, this.client, query);
 
 		const params = `${lat},${lng}`;
 		let locality = '';
@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 		let country = '';
 		let continent = '';
 
-		for (const component of address_components) {
+		for (const component of addressComponents) {
 			if (!locality.length && component.types.includes('locality')) locality = component.long_name;
 			if (!governing.length && component.types.includes('administrative_area_level_1')) governing = component.long_name;
 			if (!country.length && component.types.includes('country')) country = component.long_name;
@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 		const temperature = Math.round(currently.temperature);
 		const humidity = Math.round(currently.humidity * 100);
 
-		return this.draw(message, { geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity });
+		return this.draw(message, { geoCodeLocation: formattedAddress, state, condition, icon, chanceOfRain, temperature, humidity });
 	}
 
 	public async draw(message: KlasaMessage, { geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity }: WeatherData) {

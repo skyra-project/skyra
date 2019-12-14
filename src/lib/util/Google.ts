@@ -14,12 +14,12 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, client: KlasaCli
 	if (status !== 'OK') throw message.language.tget(handleNotOK(status, client));
 	if (results.length === 0) throw message.language.tget('GOOGLE_ERROR_ZERO_RESULTS');
 
-	return [
-		results[0].formatted_address,
-		results[0].geometry.location.lat,
-		results[0].geometry.location.lng,
-		results[0].address_components
-	] as [string, number, number, GoogleMapsOkAddressComponent[]];
+	return {
+		formattedAddress: results[0].formatted_address,
+		lat: results[0].geometry.location.lat,
+		lng: results[0].geometry.location.lng,
+		addressComponents: results[0].address_components
+	};
 }
 
 export function handleNotOK(status: string, client: KlasaClient) {

@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [location]: [string]) {
-		const [address, lat, lng] = await queryGoogleMapsAPI(message, this.client, location);
+		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, this.client, location);
 		const { status, ...timeData } = await this.fetchAPI(message, lat, lng);
 
 		if (status !== 'OK') throw message.language.tget(handleNotOK(status, this.client));
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		const TITLES = message.language.tget('COMMAND_CURRENTTIME_TITLES');
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))
-			.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${address}`)
+			.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
 			.setDescription([
 				`**${TITLES.CURRENT_TIME}**: ${timeData.formatted.split(' ')[1]}`,
 				`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,

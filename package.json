@@ -62,6 +62,7 @@
     "paket-queue": "^0.1.0",
     "pg": "^7.14.0",
     "veza": "^1.1.0",
+    "ws": "^7.2.1",
     "zlib-sync": "^0.1.6"
   },
   "devDependencies": {

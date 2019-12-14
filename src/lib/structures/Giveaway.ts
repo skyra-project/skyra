@@ -94,7 +94,7 @@ export class Giveaway {
 	}
 
 	public async render() {
-		// TODO: Make a promise queue, if there are 1 or more pending edits
+		// TODO(kyranet): Make a promise queue, if there are 1 or more pending edits
 		// on heavy ratelimits, skip all of them and unshift the last edit
 
 		// Skip early if it's already rendering

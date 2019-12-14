@@ -7,6 +7,7 @@ export interface RawUserSettings {
 	color: number;
 	marry: string[];
 	money: number;
+	vault: number;
 	point_count: number;
 	reputation_count: number;
 	theme_level: string;
@@ -27,6 +28,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"color"            INTEGER       DEFAULT 0                   NOT NULL,
 		"marry"            VARCHAR(19)[] DEFAULT '{}'::VARCHAR(19)[] NOT NULL,
 		"money"            BIGINT        DEFAULT 0                   NOT NULL,
+		"vault"            BIGINT        DEFAULT 0                   NOT NULL,
 		"point_count"      INTEGER       DEFAULT 0                   NOT NULL,
 		"reputation_count" INTEGER       DEFAULT 0                   NOT NULL,
 		"theme_level"      VARCHAR(6)    DEFAULT '1001'              NOT NULL,
@@ -39,6 +41,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK("command_uses" >= 0),
 		CHECK("color" >= 0 AND "color" <= 16777215),
 		CHECK("money" >= 0),
+		CHECK("vault" >= 0),
 		CHECK("point_count" >= 0),
 		CHECK("reputation_count" >= 0),
 		CHECK("next_daily" >= 0),

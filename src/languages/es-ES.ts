@@ -621,6 +621,24 @@ export default class extends Language {
 				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
 				their marks in a horizontal, vertical, or diagonal row wins the game.`
 		}),
+		COMMAND_VAULT_DESCRIPTION: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
+		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.
+				Debes retirar activamente a los ${SHINY} de tu bóveda antes de que puedan gastarse el juego.`,
+			explainedUsage: [
+				['acción', 'La acción a realizar: **retirarse** para retirarse de su bóveda o **depositar** para depositar en su bóveda.'],
+				['dinero', `La cantidad de ${SHINY} para retirar o depositar.`]
+			],
+			examples: ['depositar 10000.', 'retirar 10000.']
+		}),
+		COMMAND_VAULT_EMBED_DATA: {
+			DEPOSITED_DESCRIPTION: coins => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
+			WITHDREW_DESCRIPTION: coins => `Retiró ${coins} ${SHINY} de su bóveda.`,
+			ACCOUNT_MONEY: 'Dinero de la cuenta',
+			ACCOUNT_VAULT: 'Bóveda de cuenta'
+		},
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
 
 		/**
 		 * ################
@@ -1823,12 +1841,12 @@ export default class extends Language {
 				'200 @kyra'
 			]
 		}),
-		COMMAND_PROFILE_DESCRIPTION: 'Check your user profile.',
+		COMMAND_PROFILE_DESCRIPTION: 'Verifica tu perfil de usuario.',
 		COMMAND_PROFILE_EXTENDED: builder.display('profile', {
-			extendedHelp: `This command sends a card image with some of your user profile such as your global rank, experience...
-				Additionally, you are able to customize your colours with the 'setColor' command.`,
+			extendedHelp: `Este comando envía una imagen de tarjeta con parte de su perfil de usuario, como su rango global, experiencia ...
+				Además, puede personalizar sus colores con el comando 'setColor'.`,
 			explainedUsage: [
-				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
+				['user', '(Opcional) El perfil del usuario para mostrar. El valor predeterminado es el autor del mensaje.']
 			]
 		}),
 		COMMAND_REMINDME_DESCRIPTION: 'Manage your reminders.',
@@ -2854,11 +2872,11 @@ export default class extends Language {
 		COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
 		COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 		COMMAND_PROFILE: {
-			GLOBAL_RANK: 'Global Rank',
-			CREDITS: 'Credits',
-			REPUTATION: 'Reputation',
-			EXPERIENCE: 'Experience',
-			LEVEL: 'Level'
+			GLOBAL_RANK: 'Posición Mundial',
+			CREDITS: 'Créditos | Bóveda',
+			REPUTATION: 'Reputación',
+			EXPERIENCE: 'Experiencia',
+			LEVEL: 'Nivel'
 		},
 		COMMAND_REMINDME_INPUT: 'You must tell me what you want me to remind you and when.',
 		COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',

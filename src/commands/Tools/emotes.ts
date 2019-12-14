@@ -1,3 +1,4 @@
+import { chunk } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
@@ -22,8 +23,6 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		await this.populateCache(message);
-
 		const animEmotes: string[] = [];
 		const staticEmotes: string[] = [];
 
@@ -32,30 +31,10 @@ export default class extends SkyraCommand {
 			else staticEmotes.push(`<:${emote.name}:${id}>`);
 		}
 
-		const chunkedAnimatedEmojis = this.emotesChunker(animEmotes, 50);
-		const chunkedStaticEmojis = this.emotesChunker(staticEmotes, 50);
-
-		const display = this.buildDisplay(message, chunkedAnimatedEmojis, chunkedStaticEmojis);
+		const display = this.buildDisplay(message, chunk(animEmotes, 50), chunk(staticEmotes, 50));
 
 		await display.start(response, message.author.id);
 		return response;
-	}
-
-	private emotesChunker(emotes: string[], size: number): string[][] {
-		const chunkedEmotes: string[][] = [[]];
-
-		do {
-			chunkedEmotes.push(emotes.splice(0, size));
-		} while (emotes.length > 0);
-		chunkedEmotes.shift();
-
-		return chunkedEmotes;
-	}
-
-	private async populateCache(message: KlasaMessage) {
-		if (!message.guild!.emojis.size) {
-			await message.guild!.fetch();
-		}
 	}
 
 	private buildDisplay(message: KlasaMessage, animatedEmojis: string[][], staticEmojis: string[][]) {

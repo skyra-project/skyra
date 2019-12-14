@@ -932,6 +932,16 @@ export interface LanguageKeys {
 	COMMAND_TICTACTOE_TURN: (icon: string, player: string, board: string) => string;
 	COMMAND_TICTACTOE_WINNER: (winner: string, board: string) => string;
 	COMMAND_TICTACTOE_DRAW: (board: string) => string;
+	COMMAND_VAULT_DESCRIPTION: string;
+	COMMAND_VAULT_EXTENDED: string;
+	COMMAND_VAULT_EMBED_DATA: {
+		DEPOSITED_DESCRIPTION: (coins: number) => string;
+		WITHDREW_DESCRIPTION: (coins: number) => string;
+		ACCOUNT_MONEY: string;
+		ACCOUNT_VAULT: string;
+	};
+	COMMAND_VAULT_NOT_ENOUGH_MONEY: (money: number) => string;
+	COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: (vault: number) => string;
 	GIVEAWAY_TIME: string;
 	GIVEAWAY_TIME_TOO_LONG: string;
 	GIVEAWAY_ENDS_AT: string;

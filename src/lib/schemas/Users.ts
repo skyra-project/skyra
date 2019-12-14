@@ -9,6 +9,7 @@ export default Client.defaultUserSchema
 	.add(UserSettings.Color, 'Integer', { 'default': 0, 'min': 0, 'max': 0xFFFFFF, 'configurable': false })
 	.add(UserSettings.Marry, 'User', { array: true, configurable: false })
 	.add(UserSettings.Money, 'Integer', { 'default': 0, 'min': 0, 'configurable': false })
+	.add(UserSettings.Vault, 'Integer', { 'default': 0, 'min': 0, 'configurable': false })
 	.add(UserSettings.Points, 'Integer', { 'default': 0, 'min': 0, 'configurable': false })
 	.add(UserSettings.Reputation, 'Integer', { 'default': 0, 'min': 0, 'configurable': false })
 	.add(UserSettings.ThemeLevel, 'String', { 'default': '1001', 'configurable': false })

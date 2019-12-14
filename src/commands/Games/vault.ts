@@ -32,8 +32,7 @@ export default class extends SkyraCommand {
 		const newMoney = money - coins;
 		const newVault = vault + coins;
 
-		await settings.update(UserSettings.Money, newMoney);
-		await settings.update(UserSettings.Vault, newVault);
+		await settings.update([[UserSettings.Money, newMoney], [UserSettings.Vault, newVault]]);
 
 		return message.sendEmbed(this.buildEmbed(message, coins, newMoney, newVault, true));
 	}
@@ -53,8 +52,7 @@ export default class extends SkyraCommand {
 		const newMoney = money + coins;
 		const newVault = vault - coins;
 
-		await settings.update(UserSettings.Money, newMoney);
-		await settings.update(UserSettings.Vault, newVault);
+		await settings.update([[UserSettings.Money, newMoney], [UserSettings.Vault, newVault]]);
 
 		return message.sendEmbed(this.buildEmbed(message, coins, newMoney, newVault, false));
 	}

@@ -2024,10 +2024,15 @@ export default class extends Language {
 			],
 			examples: ['#dfdfdf >25', 'rgb(200, 130, 75)']
 		}),
-		COMMAND_CONTENT_DESCRIPTION: 'Get messages\' raw content.',
+		COMMAND_CONTENT_DESCRIPTION: 'Obtener el contenido sin formato de los mensajes.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
-		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
+		COMMAND_EMOJI_DESCRIPTION: 'Obtén información sobre un emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
+		COMMAND_EMOTES_DESCRIPTION: 'Muestra todos los gestos personalizados disponibles en este servidor.',
+		COMMAND_EMOTES_EXTENDED: builder.display('emotes', {
+			extendedHelp: 'La lista de emotes se divide por 50 emotes..'
+		}),
+		COMMAND_EMOTES_TITLE: 'Emotes en',
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique

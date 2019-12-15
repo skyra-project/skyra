@@ -9,14 +9,22 @@ export const enum IncomingWebsocketAction {
 	MusicQueueUpdate = 'MUSIC_QUEUE_UPDATE'
 }
 
+export const enum CloseCodes {
+	ProtocolError = 1002,
+	PolicyViolation = 1008,
+	InternalError = 1011,
+	AuthorizationFailed = 4301,
+	AuthorizationSuccess = 4320
+}
+
 export interface IncomingWebsocketMessage {
 	action: IncomingWebsocketAction;
-	data: any;
+	data: unknown;
 }
 
 export interface OutgoingWebsocketMessage {
 	action?: IncomingWebsocketAction;
-	data?: any;
+	data?: unknown;
 	error?: string;
 }
 
@@ -36,7 +44,6 @@ export class DashboardWebsocketUser {
 
 	@enumerable(false)
 	private _connection: WebSocket;
-
 
 	public constructor(client: SkyraClient, wss: Server, connection: WebSocket, IP: string) {
 		this._connection = connection;
@@ -62,13 +69,13 @@ export class DashboardWebsocketUser {
 		switch (message.action) {
 			case IncomingWebsocketAction.Authenticate: {
 				// If they're already authenticated, or didn't send a token, close.
-				if (this.authenticated || !message.data.token) {
-					return this._connection.close(4000);
+				if (this.authenticated || !(message.data as UserAuthObject).token) {
+					return this._connection.close(CloseCodes.AuthorizationFailed);
 				}
 
 				// here we decrypt message.data.token and auth like in KDH
 
-				return this._connection.close(4000);
+				return this._connection.close(CloseCodes.AuthorizationSuccess);
 			}
 
 		}
@@ -80,7 +87,7 @@ export class DashboardWebsocketUser {
 			this.handleMessage(parsedMessage);
 		} catch {
 			// They've sent invalid JSON, close the connection.
-			this._connection.close(1002);
+			this._connection.close(CloseCodes.ProtocolError);
 		}
 
 	}
@@ -104,10 +111,10 @@ export class WebsocketHandler {
 			const ip = req.connection.remoteAddress;
 
 			// If they don't have a IP for some reason, close.
-			if (!ip) return ws.close(1011);
+			if (!ip) return ws.close(CloseCodes.InternalError);
 
 			// If they already have a connection with this IP, close.
-			if (this.users.has(ip)) return ws.close(1008);
+			if (this.users.has(ip)) return ws.close(CloseCodes.PolicyViolation);
 
 			// We have a new "user", add them to this.users
 			const websocketUser = new DashboardWebsocketUser(this.client, this.wss, ws, ip);
@@ -120,7 +127,6 @@ export class WebsocketHandler {
 			});
 		});
 	}
-
 
 }
 

@@ -43,7 +43,7 @@
   "dependencies": {
     "@klasa/querybuilder": "^0.0.1",
     "@klasa/utils": "^0.0.4",
-    "canvas": "^2.6.0",
+    "canvas": "^2.6.1",
     "canvas-constructor": "^3.1.0",
     "chokidar": "^3.3.0",
     "confusables": "^0.3.3",

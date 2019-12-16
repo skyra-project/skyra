@@ -311,10 +311,10 @@ export default class extends Language {
 		COMMAND_SKIP_VOTES_VOTED: `${REDCROSS} You have already voted.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votes: ${amount} of ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Skipped **${title}**.`,
-		COMMAND_TIME_DESCRIPTION: `Check how much time is left for the song to end.`,
-		COMMAND_TIME_QUEUE_EMPTY: `Are you speaking to me? Because my deck is empty...`,
-		COMMAND_TIME_STREAM: `The current song is a stream, it doesn't have any remaining time.`,
-		COMMAND_TIME_REMAINING: time => `🕰 Time remaining: ${time}`,
+		COMMAND_PLAYING_TIME_DESCRIPTION: `Check how much time is left for the song to end.`,
+		COMMAND_PLAYING_TIME_QUEUE_EMPTY: `Are you speaking to me? Because my deck is empty...`,
+		COMMAND_PLAYING_TIME_STREAM: `The current song is a stream, it doesn't have any remaining time.`,
+		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Time remaining: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: `Manage the volume for current song.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
@@ -634,6 +634,24 @@ export default class extends Language {
 				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
 				their marks in a horizontal, vertical, or diagonal row wins the game.`
 		}),
+		COMMAND_VAULT_DESCRIPTION: `Store your ${SHINY}'s securily in a vault so you cannot accidentally spend them gambling.`,
+		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+			extendedHelp: `This is for the greedy spenders among us that tend to play a bit too much at the slot machine or
+				 spin the wheel of fortune. You need to actively withdraw ${SHINY}'s from your vault before they can be spend gambling.`,
+			explainedUsage: [
+				['action', 'The action to perform: **withdraw** to withdraw from your vault or **deposit** to deposit into your vault.'],
+				['money', `The amount of ${SHINY}'s to withdraw or deposit.`]
+			],
+			examples: ['deposit 10000.', 'withdraw 10000.']
+		}),
+		COMMAND_VAULT_EMBED_DATA: {
+			DEPOSITED_DESCRIPTION: coins => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
+			WITHDREW_DESCRIPTION: coins => `Withdrew ${coins} ${SHINY}\ from your vault.`,
+			ACCOUNT_MONEY: 'Account Money',
+			ACCOUNT_VAULT: 'Account Vault'
+		},
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money}${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `I am sorry, but you do not have enough stored in your vault to make that withdrawel! Your current vault balance is ${vault}${SHINY}`,
 
 		/**
 		 * ################
@@ -2032,6 +2050,11 @@ export default class extends Language {
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
+		COMMAND_EMOTES_DESCRIPTION: 'Shows all custom emotes available on this server',
+		COMMAND_EMOTES_EXTENDED: builder.display('emotes', {
+			extendedHelp: 'The list of emotes is split per 50 emotes'
+		}),
+		COMMAND_EMOTES_TITLE: 'Emotes in',
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
@@ -2133,7 +2156,7 @@ export default class extends Language {
 
 		/**
 		 * ################
-		 * WEATHER COMMANDS
+		 * GOOGLE COMMANDS
 		 */
 
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
@@ -2146,6 +2169,34 @@ export default class extends Language {
 			],
 			examples: ['Antarctica', 'Arizona']
 		}),
+		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'The query to google']
+			]
+		}),
+		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
+				support as it is... Google Search. Once this command got the coordinates, it queries TimezoneDB to get the time data`,
+			explainedUsage: [
+				['city', 'The locality, governing, country or continent to check the time for.']
+			],
+			examples: ['Antarctica', 'Arizona']
+		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Current Time',
+			CURRENT_DATE: 'Current Date',
+			COUNTRY: 'Country',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
+		},
+		GOOGLE_ERROR_ZERO_RESULTS: 'Your request returned no results.',
+		GOOGLE_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
+		GOOGLE_ERROR_INVALID_REQUEST: 'Invalid request.',
+		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
+		GOOGLE_ERROR_UNKNOWN: 'Unknown error.',
 
 		/**
 		 * #############
@@ -2885,7 +2936,7 @@ export default class extends Language {
 		COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 		COMMAND_PROFILE: {
 			GLOBAL_RANK: 'Global Rank',
-			CREDITS: 'Credits',
+			CREDITS: 'Credits | Vault',
 			REPUTATION: 'Reputation',
 			EXPERIENCE: 'Experience',
 			LEVEL: 'Level'
@@ -3075,12 +3126,6 @@ export default class extends Language {
 			PREVIEW: 'Preview',
 			PREVIEW_LABEL: 'Click here'
 		},
-		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'The query to google']
-			]
-		}),
 		COMMAND_LMGTFY_CLICK: 'Click me to search',
 		COMMAND_MOVIES_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
@@ -3223,17 +3268,6 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',
-
-		/**
-		 * ################
-		 * WEATHER COMMANDS
-		 */
-
-		COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
-		COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
-		COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
-		COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
-		COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
 
 		/**
 		 * #############

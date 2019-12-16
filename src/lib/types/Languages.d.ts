@@ -189,10 +189,10 @@ export interface LanguageKeys {
 	COMMAND_SKIP_SUCCESS: (title: string) => string;
 	COMMAND_SUPPORT_EMBED_TITLE: (username: string) => string;
 	COMMAND_SUPPORT_EMBED_DESCRIPTION: string;
-	COMMAND_TIME_DESCRIPTION: string;
-	COMMAND_TIME_QUEUE_EMPTY: string;
-	COMMAND_TIME_STREAM: string;
-	COMMAND_TIME_REMAINING: (time: string) => string;
+	COMMAND_PLAYING_TIME_DESCRIPTION: string;
+	COMMAND_PLAYING_TIME_QUEUE_EMPTY: string;
+	COMMAND_PLAYING_TIME_STREAM: string;
+	COMMAND_PLAYING_TIME_REMAINING: (time: string) => string;
 	COMMAND_VOLUME_DESCRIPTION: string;
 	COMMAND_VOLUME_SUCCESS: (volume: number) => string;
 	COMMAND_VOLUME_CHANGED: (emoji: string, volume: number) => string;
@@ -760,6 +760,16 @@ export interface LanguageKeys {
 	COMMAND_SEARCH_EXTENDED: string;
 	COMMAND_SPOLL_DESCRIPTION: string;
 	COMMAND_SPOLL_EXTENDED: string;
+	COMMAND_CURRENTTIME_DESCRIPTION: string;
+	COMMAND_CURRENTTIME_EXTENDED: string;
+	COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: string;
+	COMMAND_CURRENTTIME_TITLES: {
+		CURRENT_TIME: string;
+		CURRENT_DATE: string;
+		COUNTRY: string;
+		GMT_OFFSET: string;
+		DST: (dst: number) => string;
+	};
 	COMMAND_TOPINVITES_DESCRIPTION: string;
 	COMMAND_TOPINVITES_EXTENDED: string;
 	COMMAND_TOPINVITES_NO_INVITES: string;
@@ -932,6 +942,16 @@ export interface LanguageKeys {
 	COMMAND_TICTACTOE_TURN: (icon: string, player: string, board: string) => string;
 	COMMAND_TICTACTOE_WINNER: (winner: string, board: string) => string;
 	COMMAND_TICTACTOE_DRAW: (board: string) => string;
+	COMMAND_VAULT_DESCRIPTION: string;
+	COMMAND_VAULT_EXTENDED: string;
+	COMMAND_VAULT_EMBED_DATA: {
+		DEPOSITED_DESCRIPTION: (coins: number) => string;
+		WITHDREW_DESCRIPTION: (coins: number) => string;
+		ACCOUNT_MONEY: string;
+		ACCOUNT_VAULT: string;
+	};
+	COMMAND_VAULT_NOT_ENOUGH_MONEY: (money: number) => string;
+	COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: (vault: number) => string;
 	GIVEAWAY_TIME: string;
 	GIVEAWAY_TIME_TOO_LONG: string;
 	GIVEAWAY_ENDS_AT: string;
@@ -1264,6 +1284,9 @@ export interface LanguageKeys {
 	COMMAND_EMOJI_TWEMOJI: (emoji: string, id: string) => string;
 	COMMAND_EMOJI_INVALID: (emoji: string) => string;
 	COMMAND_EMOJI_TOO_LARGE: (emoji: string) => string;
+	COMMAND_EMOTES_DESCRIPTION: string;
+	COMMAND_EMOTES_EXTENDED: string;
+	COMMAND_EMOTES_TITLE: string;
 	COMMAND_POLL_MISSING_TITLE: string;
 	COMMAND_POLL_TIME: string;
 	COMMAND_POLL_WANT_USERS: string;
@@ -1335,11 +1358,6 @@ export interface LanguageKeys {
 	COMMAND_WIKIPEDIA_NOTFOUND: string;
 	COMMAND_YOUTUBE_NOTFOUND: string;
 	COMMAND_YOUTUBE_INDEX_NOTFOUND: string;
-	COMMAND_WEATHER_ERROR_ZERO_RESULTS: string;
-	COMMAND_WEATHER_ERROR_REQUEST_DENIED: string;
-	COMMAND_WEATHER_ERROR_INVALID_REQUEST: string;
-	COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: string;
-	COMMAND_WEATHER_ERROR_UNKNOWN: string;
 	COMMAND_WBLUSH: string;
 	COMMAND_WCRY: (user: string) => string;
 	COMMAND_WCUDDLE: (user: string) => string;
@@ -1455,6 +1473,11 @@ export interface LanguageKeys {
 	COMMAND_SUCCESS: string;
 	COMMAND_TOSKYRA: string;
 	COMMAND_USERSELF: string;
+	GOOGLE_ERROR_ZERO_RESULTS: string;
+	GOOGLE_ERROR_REQUEST_DENIED: string;
+	GOOGLE_ERROR_INVALID_REQUEST: string;
+	GOOGLE_ERROR_OVER_QUERY_LIMIT: string;
+	GOOGLE_ERROR_UNKNOWN: string;
 	SYSTEM_FETCHING: () => string;
 	SYSTEM_PARSE_ERROR: string;
 	SYSTEM_HIGHEST_ROLE: string;

@@ -13,7 +13,6 @@
             "env": {
                 "NODE_ENV": "development"
             },
-            "preLaunchTask": "yarn: build",
             "console": "internalConsole",
             "outputCapture": "std"
         },
@@ -29,7 +28,6 @@
             "env": {
                 "NODE_ENV": "development"
             },
-            "preLaunchTask": "yarn: build",
             "console": "internalConsole",
             "outputCapture": "std"
         }

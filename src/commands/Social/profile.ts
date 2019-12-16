@@ -36,15 +36,18 @@ export default class extends SkyraCommand {
 	}
 
 	public async showProfile(message: KlasaMessage, user: KlasaUser) {
-		await user.settings.sync();
+		const { settings } = user;
+
+		await settings.sync();
 		const level = user.profileLevel;
-		const points = user.settings.get(UserSettings.Points);
-		const themeProfile = user.settings.get(UserSettings.ThemeProfile);
-		const badgeSet = user.settings.get(UserSettings.BadgeSet);
-		const color = user.settings.get(UserSettings.Color);
-		const money = user.settings.get(UserSettings.Money);
-		const reputation = user.settings.get(UserSettings.Reputation);
-		const darkTheme = user.settings.get(UserSettings.DarkTheme);
+		const points = settings.get(UserSettings.Points);
+		const themeProfile = settings.get(UserSettings.ThemeProfile);
+		const badgeSet = settings.get(UserSettings.BadgeSet);
+		const color = settings.get(UserSettings.Color);
+		const money = settings.get(UserSettings.Money);
+		const vault = settings.get(UserSettings.Vault);
+		const reputation = settings.get(UserSettings.Reputation);
+		const darkTheme = settings.get(UserSettings.DarkTheme);
 
 		/* Calculate information from the user */
 		const previousLevel = Math.floor((level / 0.2) ** 2);
@@ -104,7 +107,7 @@ export default class extends SkyraCommand {
 			.setTextAlign('right')
 			.setTextFont('25px RobotoLight')
 			.addText(rank.toString(), 594, 276)
-			.addText(money.toString(), 594, 229)
+			.addText(`${money} | ${vault}`, 594, 229)
 			.addText(reputation.toString(), 594, 181)
 			.addText(points.toString(), 594, 346)
 

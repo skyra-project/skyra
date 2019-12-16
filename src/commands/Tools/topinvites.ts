@@ -8,7 +8,7 @@ import { getColor } from '../../lib/util/util';
 export default class extends SkyraCommand {
 
 	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
-	private filter: (invite: Invite) => boolean;
+	private kFilterInvites = this.filterInvites.bind(this);
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -19,8 +19,6 @@ export default class extends SkyraCommand {
 			requiredGuildPermissions: ['MANAGE_GUILD'],
 			runIn: ['text']
 		});
-
-		this.filter = this.filterInvites.bind(this);
 	}
 
 	public async run(message: KlasaMessage) {
@@ -30,7 +28,7 @@ export default class extends SkyraCommand {
 
 		const invites = await message.guild!.fetchInvites();
 		const topTen = invites
-			.filter(this.filter)
+			.filter(this.kFilterInvites)
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 

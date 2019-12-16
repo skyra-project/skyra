@@ -308,10 +308,10 @@ export default class extends Language {
 		COMMAND_SKIP_VOTES_VOTED: `Ya has votado para saltar esta canción.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votos: ${amount} de ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Saltada la canción ${title}.`,
-		COMMAND_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
-		COMMAND_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
-		COMMAND_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
-		COMMAND_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
+		COMMAND_PLAYING_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
+		COMMAND_PLAYING_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
+		COMMAND_PLAYING_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
+		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
@@ -621,6 +621,24 @@ export default class extends Language {
 				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
 				their marks in a horizontal, vertical, or diagonal row wins the game.`
 		}),
+		COMMAND_VAULT_DESCRIPTION: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
+		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.
+				Debes retirar activamente a los ${SHINY} de tu bóveda antes de que puedan gastarse el juego.`,
+			explainedUsage: [
+				['acción', 'La acción a realizar: **retirarse** para retirarse de su bóveda o **depositar** para depositar en su bóveda.'],
+				['dinero', `La cantidad de ${SHINY} para retirar o depositar.`]
+			],
+			examples: ['depositar 10000.', 'retirar 10000.']
+		}),
+		COMMAND_VAULT_EMBED_DATA: {
+			DEPOSITED_DESCRIPTION: coins => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
+			WITHDREW_DESCRIPTION: coins => `Retiró ${coins} ${SHINY} de su bóveda.`,
+			ACCOUNT_MONEY: 'Dinero de la cuenta',
+			ACCOUNT_VAULT: 'Bóveda de cuenta'
+		},
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
 
 		/**
 		 * ################
@@ -1823,12 +1841,12 @@ export default class extends Language {
 				'200 @kyra'
 			]
 		}),
-		COMMAND_PROFILE_DESCRIPTION: 'Check your user profile.',
+		COMMAND_PROFILE_DESCRIPTION: 'Verifica tu perfil de usuario.',
 		COMMAND_PROFILE_EXTENDED: builder.display('profile', {
-			extendedHelp: `This command sends a card image with some of your user profile such as your global rank, experience...
-				Additionally, you are able to customize your colours with the 'setColor' command.`,
+			extendedHelp: `Este comando envía una imagen de tarjeta con parte de su perfil de usuario, como su rango global, experiencia ...
+				Además, puede personalizar sus colores con el comando 'setColor'.`,
 			explainedUsage: [
-				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
+				['user', '(Opcional) El perfil del usuario para mostrar. El valor predeterminado es el autor del mensaje.']
 			]
 		}),
 		COMMAND_REMINDME_DESCRIPTION: 'Manage your reminders.',
@@ -2006,10 +2024,15 @@ export default class extends Language {
 			],
 			examples: ['#dfdfdf >25', 'rgb(200, 130, 75)']
 		}),
-		COMMAND_CONTENT_DESCRIPTION: 'Get messages\' raw content.',
+		COMMAND_CONTENT_DESCRIPTION: 'Obtener el contenido sin formato de los mensajes.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
-		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
+		COMMAND_EMOJI_DESCRIPTION: 'Obtén información sobre un emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
+		COMMAND_EMOTES_DESCRIPTION: 'Muestra todos los gestos personalizados disponibles en este servidor.',
+		COMMAND_EMOTES_EXTENDED: builder.display('emotes', {
+			extendedHelp: 'La lista de emotes se divide por 50 emotes..'
+		}),
+		COMMAND_EMOTES_TITLE: 'Emotes en',
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
@@ -2111,19 +2134,49 @@ export default class extends Language {
 
 		/**
 		 * ################
-		 * WEATHER COMMANDS
+		 * GOOGLE COMMANDS
 		 */
 
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
 		COMMAND_WEATHER_EXTENDED: builder.display('weather', {
-			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
-				support as it is... Google Search. Once this command got the coordinates, it queries DarkSky to retrieve
-					information about the weather. Note: temperature is in **Celsius**`,
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
+				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
+				Una vez que este comando obtuvo las coordenadas, consulta a DarkSky para recuperar información sobre el clima.
+				Nota: la temperatura está en ** Celsius **`,
 			explainedUsage: [
-				['city', 'The locality, governing, country or continent to check the weather from.']
+				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
 			],
-			examples: ['Antarctica', 'Arizona']
+			examples: ['Madrid', 'Barcelona']
 		}),
+		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'La consulta a google']
+			]
+		}),
+		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
+				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
+				Una vez que este comando obtuvo las coordenadas, consulta TimezoneDB para obtener los datos de tiempo`,
+			explainedUsage: [
+				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
+			],
+			examples: ['Madrid', 'Barcelona']
+		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'Lo siento, pero no pude encontrar datos de tiempo para esa ubicación.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Tiempo actual',
+			CURRENT_DATE: 'Fecha actual',
+			COUNTRY: 'País',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**Horario de verano**: ${dst === 0 ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'}`
+		},
+		GOOGLE_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
+		GOOGLE_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
+		GOOGLE_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
+		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
+		GOOGLE_ERROR_UNKNOWN: 'Error Desconocido.',
 
 		/**
 		 * #############
@@ -2854,11 +2907,11 @@ export default class extends Language {
 		COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
 		COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 		COMMAND_PROFILE: {
-			GLOBAL_RANK: 'Global Rank',
-			CREDITS: 'Credits',
-			REPUTATION: 'Reputation',
-			EXPERIENCE: 'Experience',
-			LEVEL: 'Level'
+			GLOBAL_RANK: 'Posición Mundial',
+			CREDITS: 'Créditos | Bóveda',
+			REPUTATION: 'Reputación',
+			EXPERIENCE: 'Experiencia',
+			LEVEL: 'Nivel'
 		},
 		COMMAND_REMINDME_INPUT: 'You must tell me what you want me to remind you and when.',
 		COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',
@@ -3045,12 +3098,6 @@ export default class extends Language {
 			PREVIEW: 'Avance',
 			PREVIEW_LABEL: 'Haga clic aquí'
 		},
-		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'La consulta a google']
-			]
-		}),
 		COMMAND_LMGTFY_CLICK: 'Haga clic en mí para buscar',
 		COMMAND_MOVIES_DESCRIPTION: 'Busca en TheMovieDatabase cualquier película',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
@@ -3193,17 +3240,6 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',
-
-		/**
-		 * ################
-		 * WEATHER COMMANDS
-		 */
-
-		COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
-		COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
-		COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
-		COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
-		COMMAND_WEATHER_ERROR_UNKNOWN: 'Error Desconocido.',
 
 		/**
 		 * #############

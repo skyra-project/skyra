@@ -10,6 +10,7 @@ export namespace UserSettings {
 	export const Color = T<number>('color');
 	export const Marry = T<readonly string[]>('marry');
 	export const Money = T<number>('money');
+	export const Vault = T<number>('vault');
 	export const Points = T<number>('point_count');
 	export const Reputation = T<number>('reputation_count');
 	export const ThemeLevel = T<string>('theme_level');

@@ -45,7 +45,7 @@
     "@klasa/utils": "^0.0.4",
     "canvas": "^2.6.1",
     "canvas-constructor": "^3.1.0",
-    "chokidar": "^3.3.0",
+    "chokidar": "^3.3.1",
     "confusables": "^0.3.3",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js#3393/head",

@@ -5,6 +5,7 @@ import { DEV } from '../../../config';
 
 export const rootFolder = join(__dirname, '..', '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
+export const socialFolder = join(assetsFolder, 'images', 'social');
 export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
 
 export const enum Time {

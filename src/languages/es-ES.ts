@@ -599,48 +599,6 @@ export default class extends Language {
 		}),
 
 		/**
-		 * ##############
-		 * GAMES COMMANDS
-			*/
-		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
-		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
-			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
-				If you don't, you lose your wager. Now get those coins flippin'.`,
-			examples: ['50 heads', '200 tails']
-		}),
-		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
-		COMMAND_C4_EXTENDED: builder.display('c4', {
-			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
-					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
-					game in which the players first choose a color and then take turns dropping colored discs from the top into a
-					seven-column, ~~six~~ five-row vertically suspended grid.`
-		}),
-		COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
-		COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
-			extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two
-				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
-				their marks in a horizontal, vertical, or diagonal row wins the game.`
-		}),
-		COMMAND_VAULT_DESCRIPTION: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
-		COMMAND_VAULT_EXTENDED: builder.display('vault', {
-			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.
-				Debes retirar activamente a los ${SHINY} de tu bóveda antes de que puedan gastarse el juego.`,
-			explainedUsage: [
-				['acción', 'La acción a realizar: **retirarse** para retirarse de su bóveda o **depositar** para depositar en su bóveda.'],
-				['dinero', `La cantidad de ${SHINY} para retirar o depositar.`]
-			],
-			examples: ['depositar 10000.', 'retirar 10000.']
-		}),
-		COMMAND_VAULT_EMBED_DATA: {
-			DEPOSITED_DESCRIPTION: coins => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
-			WITHDREW_DESCRIPTION: coins => `Retiró ${coins} ${SHINY} de su bóveda.`,
-			ACCOUNT_MONEY: 'Dinero de la cuenta',
-			ACCOUNT_VAULT: 'Bóveda de cuenta'
-		},
-		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
-		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
-
-		/**
 		 * ################
 		 * GENERAL COMMANDS
 		 */
@@ -1886,17 +1844,6 @@ export default class extends Language {
 				['B10', '14671839']
 			]
 		}),
-		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
-		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
-			extendedHelp: `A slot machine (American English), known variously as a fruit machine (British English), puggy
-					(Scottish English),[1] the slots (Canadian and American English), poker machine/pokies (Australian English and
-					New Zealand English), or simply slot (American English), is a casino gambling machine with three or more
-					reels which spin when a button is pushed.`,
-			explainedUsage: [
-				['Amount', 'Either 50, 100, 200, 500, or even, 1000 shinies to bet.']
-			],
-			reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
-		}),
 
 		/**
 		 * ##################
@@ -2502,6 +2449,25 @@ export default class extends Language {
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
+		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
+		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
+		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
+		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
+		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
+		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
+		COMMAND_C4_EXTENDED: builder.display('c4', {
+			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
+					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
+					game in which the players first choose a color and then take turns dropping colored discs from the top into a
+					seven-column, ~~six~~ five-row vertically suspended grid.`
+		}),
+		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
+				If you don't, you lose your wager. Now get those coins flippin'.`,
+			examples: ['50 heads', '200 tails']
+		}),
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
 		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
 		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
@@ -2509,16 +2475,75 @@ export default class extends Language {
 		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
 		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}.` : ''}.`,
 		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
-		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
-		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
-		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
-		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
-		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
-		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
-		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
-		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
-		COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
-		COMMAND_TICTACTOE_DRAW: board => `This match concluded in a **draw**!\n${board}`,
+		COMMAND_HUNGERGAMES_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
+		COMMAND_HUNGERGAMES_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
+		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',
+		COMMAND_HUNGERGAMES_STOP: 'Game finished by choice! See you later!',
+		COMMAND_HUNGERGAMES_WINNER: winner => `And the winner is... ${winner}!`,
+		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
+		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
+			extendedHelp: `Enough discussion, let the games begin!`,
+			examples: ['Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight']
+		}),
+		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
+		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
+			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico), 
+					puggy (inglés escocés), máquinas tragamonedas (inglés canadiense y americano), máquinas de póquer / pokies
+					(inglés australiano e inglés de Nueva Zelanda), o simplemente tragamonedas (Inglés americano),
+					es una máquina de juego de casino con tres o más carretes que giran cuando se presiona un botón.`,
+			explainedUsage: [
+				['Cantidad', 'Ya sea 50, 100, 200, 500 o incluso, 1000 shinies para apostar.']
+			],
+			reminder: 'Recibirá al menos 5 veces la cantidad (cerezas / tada) al ganar, y hasta 24 veces (siete, diamante sin piel).'
+		}),
+		COMMAND_SLOTMACHINE_CANVAS_TEXT: won => won ? 'Tú ganaste' : 'Tú perdiste',
+		COMMAND_SLOTMACHINE_EMBED_TITLES: {
+			TITLE: 'Girando las ranuras de fruta y el resultado es ...',
+			PREVIOUS: 'Anterior',
+			NEW: 'Nuevo'
+		},
+		COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
+		COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
+			extendedHelp: `Tic-tac-toe (también conocido como ceros y cruces o Xs y Os) es un juego de papel y lápiz para dos jugadores,
+				X y O, que se turnan para marcar los espacios en una cuadrícula de 3 × 3.
+				El jugador que logra colocar tres de sus marcas en una fila horizontal,
+				vertical o diagonal gana el juego.`
+		}),
+		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Querido ${challenger}, ${challengee} te ha desafiado en un partido de tres en raya. Responda con **yes** para aceptar`,
+		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Girar para ${player}!\n${board}`,
+		COMMAND_TICTACTOE_WINNER: (winner, board) => `El ganador es ...${winner}!\n${board}`,
+		COMMAND_TICTACTOE_DRAW: board => `Este partido concluyó en un **empate**!\n${board}`,
+		COMMAND_VAULT_DESCRIPTION: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
+		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.
+				Debes retirar activamente a los ${SHINY} de tu bóveda antes de que puedan gastarse el juego.`,
+			explainedUsage: [
+				['acción', 'La acción a realizar: **retirarse** para retirarse de su bóveda o **depositar** para depositar en su bóveda.'],
+				['dinero', `La cantidad de ${SHINY} para retirar o depositar.`]
+			],
+			examples: ['depositar 10000.', 'retirar 10000.']
+		}),
+		COMMAND_VAULT_EMBED_DATA: {
+			DEPOSITED_DESCRIPTION: coins => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
+			WITHDREW_DESCRIPTION: coins => `Retiró ${coins} ${SHINY} de su bóveda.`,
+			ACCOUNT_MONEY: 'Dinero de la cuenta',
+			ACCOUNT_VAULT: 'Bóveda de cuenta'
+		},
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
+		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Juega con tus shinies haciendo girar una rueda de la fortuna.',
+		COMMAND_WHEELOFFORTUNE_EXTENDED: builder.display('wheeloffortune', {
+			extendedHelp: `Puede perder 0.1, 0.2, 0.3 o 0.5 veces su entrada
+				o ganar 1.2, 1.5, 1.7 o 2.4 veces su entrada.`
+		}),
+		COMMAND_WHEELOFFORTUNE_EMBED_TITLES: {
+			TITLE: 'Girando la rueda de la fortuna y el resultado es ...',
+			PREVIOUS: 'Anterior',
+			NEW: 'Nuevo'
+		},
+		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: won => won ? 'Tú ganaste' : 'Tú perdiste',
+		GAMES_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para pagar tu apuesta! El saldo de su cuenta corriente es ${money}${SHINY}`,
+		GAMES_CANNOT_HAVE_NEGATIVE_MONEY: `No puedes tener una cantidad negativa de ${SHINY}s`,
 
 		/**
 		 * #################
@@ -2938,7 +2963,6 @@ export default class extends Language {
 		COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
 		COMMAND_SCOREBOARD_POSITION: position => `Your placing position is: ${position}`,
 		COMMAND_SETCOLOR: color => `Color changed to ${color}`,
-		COMMAND_SLOTMACHINES_MONEY: money => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
 		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
 		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',

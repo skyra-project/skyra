@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 					gameMessage.nuke().catch(error => this.client.emit(Events.ApiError, error));
 					if (!verification) {
 						game.llrc.end();
-						return message.sendLocale('COMMAND_HG_STOP');
+						return message.sendLocale('COMMAND_HUNGERGAMES_STOP');
 					}
 				}
 				if (game.bloodbath) game.bloodbath = false;
@@ -103,7 +103,7 @@ export default class extends SkyraCommand {
 
 			// The match finished with one remaining player
 			game.llrc.end();
-			return message.sendLocale('COMMAND_HG_WINNER', [game.tributes.values().next().value]);
+			return message.sendLocale('COMMAND_HUNGERGAMES_WINNER', [game.tributes.values().next().value]);
 		} catch (err) {
 			game.llrc.end();
 			throw err;
@@ -140,9 +140,9 @@ export default class extends SkyraCommand {
 	}
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
-		const header = language.tget('COMMAND_HG_RESULT_HEADER', game);
-		const death = deaths.length ? `${language.tget('COMMAND_HG_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
-		const proceed = language.tget('COMMAND_HG_RESULT_PROCEED');
+		const header = language.tget('COMMAND_HUNGERGAMES_RESULT_HEADER', game);
+		const death = deaths.length ? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
+		const proceed = language.tget('COMMAND_HUNGERGAMES_RESULT_PROCEED');
 		const panels = util.chunk(results, 5);
 
 		const texts = panels.map(panel => `__**${header}:**__\n\n${panel.map(text => `- ${text}`).join('\n')}\n\n_${proceed}_`);

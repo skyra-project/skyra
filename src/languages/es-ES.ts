@@ -2475,6 +2475,28 @@ export default class extends Language {
 		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
 		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}.` : ''}.`,
 		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
+		COMMAND_HIGHERLOWER_DESCRIPTION: 'Play a game of Higher/Lower',
+		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
+			extendedHelp: `Higher Lower is a game of luck. I pick 2 numbers, and you have to guess if the 2nd is **higher** or **lower** then the 1st, using the ⬆ or ⬇ emojis.
+			Your winnings increase as you win, and can cashout any time pressing the 💰 reaction.
+			Be warned tho! The further you go, the more chances you have to lose the winnings.`
+		}),
+		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Starting a new game of Higher Lower`,
+		COMMAND_HIGHERLOWER_TIMEOUT: `Prompt timed out. Cashing out winnings...`,
+		COMMAND_HIGHERLOWER_NEWROUND: `Alright. Starting new round`,
+		COMMAND_HIGHERLOWER_EMBED_TITLE: turn => `Higher or Lower? | Turn ${turn}`,
+		COMMAND_HIGHERLOWER_EMBED_DESCRIPTION: number => `Your number is ${number}. Will the next number be higher or lower?`,
+		COMMAND_HIGHERLOWER_EMBED_FOOTER: 'The game will expire in 3 minutes, so act fast!',
+		COMMAND_HIGHERLOWER_LOSE_TITLE: 'You lost!',
+		COMMAND_HIGHERLOWER_LOSE_DESCRIPTION: (number, losses) => `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}`,
+		COMMAND_HIGHERLOWER_LOSE_FOOTER: 'Better luck next time!',
+		COMMAND_HIGHERLOWER_WIN_TITLE: 'You won!',
+		COMMAND_HIGHERLOWER_WIN_DESCRIPTION: (potentials, number) => `You did it! The number was ${number}. Want to continue? ${potentials} ${SHINY} are on the line`,
+		COMMAND_HIGHERLOWER_WIN_FOOTER: 'Act fast! You don\'t have much time',
+		COMMAND_HIGHERLOWER_CASHOUT_INIT: 'Cashing out. Please hold...',
+		COMMAND_HIGHERLOWER_CASHOUT: amount => `Paid out ${amount} ${SHINY} to your account. Have fun!`,
+		COMMAND_HIGHERLOWER_CANCEL_TITLE: 'Game cancelled by choice',
+		COMMAND_HIGHERLOWER_CANCEL_DESCRIPTION: username => `Thanks for playing, ${username}! I'll be here when you want to play again`,
 		COMMAND_HUNGERGAMES_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
 		COMMAND_HUNGERGAMES_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
 		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',

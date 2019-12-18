@@ -183,6 +183,14 @@ export class Slotmachine {
 	/** Light colour in the attachment */
 	public static LIGHT_COLOUR = '#FFFFFF';
 
+	/** Success colour in the attachment */
+
+	public static SUCCESS_COLOUR = '#00C853';
+
+	/** Failure colour in the attachment */
+
+	public static FAIL_COLOUR = '#C62828';
+
 	public static images = Object.seal<SlotmachineAssets>({
 		ICON: null,
 		SHINY: null

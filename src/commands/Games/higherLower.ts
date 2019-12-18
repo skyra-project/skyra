@@ -1,8 +1,7 @@
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { MessageEmbed } from 'discord.js';
 import { LongLivingReactionCollector, LLRCData } from '../../lib/util/LongLivingReactionCollector';
-import Collection from '@discordjs/collection';
-import { TextChannel, Message, MessageEmbed } from 'discord.js';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { Emojis } from '../../lib/util/constants';
 import { getColor } from '../../lib/util/util';
@@ -10,8 +9,8 @@ import { getColor } from '../../lib/util/util';
 enum ReactionEmoji {
 	HIGHER = '⬆',
 	LOWER = '⬇',
-	CANCEL = '❌',
-	OK = '✔️',
+	CANCEL = '❌', // TODO: Replace with <:redCross:637706251257511973>
+	OK = '✔️', // TODO: Replace with <:greenTick:637706251253317669>
 	CASHOUT = '💰'
 }
 
@@ -21,178 +20,116 @@ const enum endingAction {
 	TIMEOUT
 }
 
-export default class extends SkyraCommand {
-
-	private games: Collection<string, HigherLowerGameData> = new Collection();
+export default class HighLowCommand extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['hilo', 'higherlower', 'hl'],
 			bucket: 2,
 			cooldown: 7,
-			description: `yadda yadda fill this out`,
+			description: `Play the Higher Lower game against me`,
 			extendedHelp: `as well as this`,
-			requiredPermissions: ['ATTACH_FILES'],
+			requiredPermissions: ['ADD_REACTIONS'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000>'
 		});
 	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
-		if (this.games.has(message.author.id)) return message.send('you idiot. you have a game already');
-
-		await message.author.settings.sync();
 		const wager = Number(text);
 		const balance = message.author.settings.get(UserSettings.Money);
-		if (wager > balance) throw message.language.tget('COMMAND_SLOTMACHINES_MONEY', balance);
-		// TODO(Quantum): Log transaction
-		await message.author.settings.decrease(UserSettings.Money, wager);
+		if (wager > balance) throw message.language.get('COMMAND_SLOTMACHINES_MONEY', balance);
 
-		await this.newRound(this.random(), message, undefined, message.channel.id, message.author.id, wager);
-	}
+		let EmojiPromiseContext:  = undefined;
 
-	private reactionHandler(reaction: LLRCData) {
-		// If the reaction comes from herself... just dont
-		if (reaction.userID === this.client.user!.id) return;
-		// If the emoji reacted doesnt match our emojiset, just... don't
-		if (!(Object.values(ReactionEmoji) as string[]).includes(reaction.emoji.name)) return;
-		// If the message reacted to didn't correspond to a game's message, abort
-		const gameMessage = this.games.find(g => g.gameMessage.split('.')[0] === reaction.channel.id);
-		if (!gameMessage) return;
-		// If the user that reacted to the message doesn't have a game, abort
-		const gameData = this.games.get(reaction.userID);
-		if (!gameData) return;
-		// If the reaction user isnt the game user, ignore
-		if (reaction.userID !== gameData.user) return;
-		return this.gameHandler(reaction, gameData);
-	}
+		const game: HigherLowerGameData = Object.seal({
+			llrc: new LongLivingReactionCollector(this.client, async reaction => {
+				// Ignore if resolve is not ready
+				if (typeof resolveEmojiPromise !== 'function'
+					// Run the collector inhibitor
+					|| await this.reactionInhibitor(message, game.gameMessage!, reaction)) return;
+				resolveEmojiPromise(reaction.emoji.name as ReactionEmoji);
+			}),
+			gameMessage: await message.send(`${Emojis.Loading} Starting a new game of High an' Low`),
+			running: true,
+			turn: 1,
+			number: this.random(),
+			wager
+		});
 
-	private async gameHandler(reaction: LLRCData, gameData: HigherLowerGameData) {
-		const gameMessage = this.getGameMessage(gameData.gameMessage);
-		await gameMessage.reactions.removeAll();
-		gameData.llrc.end();
-
-		const winningNumber = this.random();
-		switch (reaction.emoji.name) {
-			case ReactionEmoji.HIGHER:
-				if (winningNumber > gameData.previousNumber) return this.win(gameData, winningNumber);
-				return this.loss(gameData, winningNumber);
-
-			case ReactionEmoji.LOWER:
-				if (winningNumber < gameData.previousNumber) return this.win(gameData, winningNumber);
-				return this.loss(gameData, winningNumber);
-
-			case ReactionEmoji.CASHOUT:
-				await this.cashout(gameData, gameMessage);
-				break;
-
-			case ReactionEmoji.CANCEL:
-				this.games.delete(gameData.user);
-				await gameMessage.edit('Game cancelled. See you again next time!');
-				break;
-			default:
-				break;
-		}
-	}
-
-	private async newRound(previousNumber: number, message: Message, previousGameData?: HigherLowerGameData, channelID?: string, userID?: string, wagerIn?: number) {
-		// Maybe use a function for this?
-		const channel = typeof channelID === 'undefined'
-			? typeof previousGameData === 'undefined'
-				? null
-				: this.client.channels.get(previousGameData.gameMessage.split('.')[0]) as TextChannel
-			: this.client.channels.get(channelID) as TextChannel;
-		if (channel === null || channel === undefined) throw new Error('No channel provided');
-
-		const user = typeof userID === 'undefined'
-			? typeof previousGameData === 'undefined'
-				? null
-				: previousGameData.user
-			: userID;
-		if (user === null) throw new Error('No user provided');
-
-		const wager = typeof wagerIn === 'undefined'
-			? typeof previousGameData === 'undefined'
-				? null
-				: previousGameData.wager
-			: wagerIn;
-		if (wager === null) throw new Error('No wager provided');
-
-		const turn = typeof previousGameData === 'undefined'
-			? 1
-			: previousGameData.turn + 1;
-
-		const filterFunc = typeof previousGameData === 'undefined'
-			? (e: ReactionEmoji) => e !== ReactionEmoji.OK && e !== ReactionEmoji.CASHOUT
-			: (e: ReactionEmoji) => e !== ReactionEmoji.OK && e !== ReactionEmoji.CANCEL;
-		const reactArray = Object.values(ReactionEmoji).filter(filterFunc);
-
-		if (typeof previousGameData === 'undefined' && message === undefined) throw new Error('Message wasn\'t provided');
-		const gameMessage = typeof previousGameData === 'undefined'
-			? await channel.send(new MessageEmbed()
-				.setColor(getColor(message as KlasaMessage))
-				.setTitle(`Higher or Lower? | Turn 1`)
-				.setDescription(`Your number is ${previousNumber}. Will the next number be higher or lower?`)
-				.setFooter('The game will expire in 3 minutes, so act fast!'))
-			: await this.getGameMessage(previousGameData.gameMessage).edit({
-				content: '',
+		while (game.running) {
+			await game.gameMessage.reactions.removeAll();
+			// Send the embed
+			await game.gameMessage.edit({
+				content: null,
 				embed: new MessageEmbed()
-					.setColor(getColor(message as KlasaMessage))
-					.setTitle(`Higher or Lower? | Turn ${previousGameData!.turn}`)
-					.setDescription(`Your number was ${previousNumber}. Will the next number be higher or lower?`)
+					.setColor(getColor(message))
+					.setTitle(`Higher or Lower? | Turn ${game.turn}`)
+					.setDescription(`Your number is ${game.number}. Will the next number be higher or lower?`)
 					.setFooter('The game will expire in 3 minutes, so act fast!')
 			});
 
-		for (const emoji of reactArray) {
-			await gameMessage.react(emoji);
+			// Add the options
+			const filterFunction = (e: ReactionEmoji, t: number) => e !== ReactionEmoji.OK && ((t === 1 && e !== ReactionEmoji.CASHOUT) || (t !== 1 && e !== ReactionEmoji.CANCEL));
+			const reactArray = Object.values(ReactionEmoji).filter(e => filterFunction(e, game.turn));
+			for (const emoji of reactArray) {
+				await game.gameMessage.react(emoji);
+			}
+
+			// Grab the user selection
+			const emojiSelected = await new Promise<ReactionEmoji>(res => {
+				// Insert weird promise tomfoolery. I still havent completely understood how this works. Something something weird promise resolves
+				resolveEmojiPromise = res;
+
+				// Timeout logic
+				const timeOut;
+			});
+
+			// Main game logic (at last)
+			const oldNum = game.number;
+			game.number = this.random(game.number);
+
+			switch (emojiSelected) {
+				case ReactionEmoji.HIGHER:
+					game.running = await (oldNum < game.number ? this.win(game, message) : this.loss(game, message));
+					break;
+
+				case ReactionEmoji.LOWER:
+					game.running = await (oldNum > game.number ? this.win(game, message) : this.loss(game, message));
+					break;
+
+				case ReactionEmoji.CASHOUT:
+				case ReactionEmoji.CANCEL:
+					await this.end(game, message, emojiSelected === ReactionEmoji.CASHOUT);
+					game.running = false;
+					break;
+			}
+
+			if (game.running) game.turn++;
 		}
-
-		const gameData = Object.seal({
-			llrc: new LongLivingReactionCollector(this.client, r => this.reactionHandler(r)).setTime(180000),
-			gameMessage: `${gameMessage.channel.id}.${gameMessage.id}`,
-			authorMessage: message as KlasaMessage,
-			wager,
-			turn,
-			user,
-			previousNumber
-		});
-
-		this.games.set(user, gameData);
 	}
 
-	private async loss(gameData: HigherLowerGameData, number: number) {
-		// TODO(Quantum): Losing event
-		this.games.delete(gameData.user);
-		const message = this.getGameMessage(gameData.gameMessage);
-		await message.edit({
-			content: '',
-			embed: new MessageEmbed()
-				.setColor(getColor(message as KlasaMessage))
-				.setTitle(`Your lost :\(`)
-				.setDescription(`You didn't quite get it. The number was ${number}. You lost ${gameData.wager}${Emojis.Shiny}`)
-				.setFooter('Better luck next time!')
-		});
-	}
-
-	private async win(gameData: HigherLowerGameData, number: number) {
+	private async win(game: HigherLowerGameData, message: KlasaMessage) {
+		console.log('in win arg');
+		const { author: user } = message;
+		await game.gameMessage.reactions.removeAll();
 		// TODO(Quantum): Winning event
-
-		const message = this.getGameMessage(gameData.gameMessage);
-		await message.edit({
+		await game.gameMessage.edit({
 			content: '',
 			embed: new MessageEmbed()
 				.setColor(getColor(message as KlasaMessage))
 				.setTitle(`Your won!`)
-				.setDescription(`You did it! The number was ${number}. Want to continue? ${this.calculateWinnings(gameData.wager, gameData.turn)}${Emojis.Shiny} are on the line`)
+				.setDescription(`You did it! The number was ${game.number}. Want to continue? ${this.calculateWinnings(game.wager, game.turn)}${Emojis.Shiny} are on the line`)
 				.setFooter('Act fast! You don\'t have much time')
 		});
+		console.log('filtering emotes');
 		const reactArray = Object.values(ReactionEmoji).filter(e => e !== ReactionEmoji.HIGHER && e !== ReactionEmoji.LOWER && e !== ReactionEmoji.CASHOUT);
 		for (const emoji of reactArray) {
-			await message.react(emoji);
+			await game.gameMessage.react(emoji);
 		}
-
-		const reactionMap = await message.awaitReactions((r, u) => reactArray.includes(r.emoji.name) && u.id === gameData.user, { max: 1, time: 10000 });
-		await message.reactions.removeAll();
+		console.log('GETTING EMOTES');
+		const reactionMap = await game.gameMessage.awaitReactions((r, u) => reactArray.includes(r.emoji.name) && u.id === user.id, { max: 1, time: 10000 });
+		await game.gameMessage.reactions.removeAll();
 
 		const whatToDo = reactionMap.size === 0
 			? endingAction.TIMEOUT
@@ -201,41 +138,90 @@ export default class extends SkyraCommand {
 				: endingAction.STOP;
 		switch (whatToDo) {
 			case endingAction.TIMEOUT:
-				await message.edit('Prompt timed out. Cashing out winnings...', { embed: null });
+				await game.gameMessage.edit('Prompt timed out. Cashing out winnings...', { embed: null });
 			case endingAction.STOP:
-				await this.cashout(gameData, message);
+				await this.end(game, message, true);
 				break;
 			case endingAction.PLAY:
-				await message.edit('Alright. Starting new round');
-				await this.newRound(number, gameData.authorMessage, gameData);
+				await game.gameMessage.edit('Alright. Starting new round', { embed: null });
 				break;
 		}
+		return whatToDo === endingAction.PLAY;
 	}
 
-	private async cashout(gameData: HigherLowerGameData, message: Message) {
-		const { turn, wager, user } = gameData;
-		// Let the user know, and nullify the embed
-		await message.edit('Cashing out. Please hold...', { embed: null });
-
-		// Calculate and deposit winnings for that game
-		const winnings = this.calculateWinnings(wager, turn - 1);
-		const { settings } = (await this.client.users.get(user))!;
-		if (!settings) await message.edit('Unknown issue while paying out! Please contact our admins');
-		await settings.increase(UserSettings.Money, winnings);
-
-		// Let the user know we're done!
-		await message.edit(`Paid out ${winnings}${Emojis.Shiny} to your account. Have fun!`);
+	private async loss(game: HigherLowerGameData, message: KlasaMessage) {
+		// TODO(Quantum): Losing event
+		const { number, wager, turn, gameMessage } = game;
+		await gameMessage.reactions.removeAll();
+		let losings = wager;
+		if ((Math.random()) < 0.001) {
+			losings += this.calculateWinnings(wager, turn - 1);
+			await message.author.settings.decrease(UserSettings.Money, losings);
+		}
+		await gameMessage.edit(new MessageEmbed()
+			.setColor(getColor(message))
+			.setTitle(`You lost :\(`)
+			.setDescription(`You didn't quite get it. The number was ${number}. You lost ${losings}${Emojis.Shiny}`)
+			.setFooter('Better luck next time!'));
+		console.log('mesage should be edited');
+		return false;
 	}
 
-	private getGameMessage(id: string) {
-		const [channelID, messageID] = id.split('.');
-		const message = (this.client.channels.get(channelID) as TextChannel).messages.get(messageID);
-		if (typeof message === 'undefined') throw new Error('No GameMessage found');
-		return message;
+	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout?: boolean) {
+		// Remove all the reactions and end the LLRC
+		await game.gameMessage.reactions.removeAll();
+		game.llrc.end();
+
+		// Should we need to cash out, proceed to doing that
+		if (cashout!) {
+			const { turn, wager } = game;
+			// Let the user know, and nullify the embed
+			await game.gameMessage.edit('Cashing out. Please hold...', { embed: null });
+
+			// Calculate and deposit winnings for that game
+			const winnings = this.calculateWinnings(wager, turn - 1);
+			await message.author.settings.increase(UserSettings.Money, winnings);
+
+			// Let the user know we're done!
+			await game.gameMessage.edit(`Paid out ${winnings}${Emojis.Shiny} to your account. Have fun!`);
+			return;
+		}
+
+		// Say bye!
+		await game.gameMessage.edit(new MessageEmbed()
+			.setColor('#DE0F1C')
+			.setTitle('Game cancelled by choice')
+			.setDescription(`Thanks for playing, ${message.author.username}! I'll be here when you want to play again`));
 	}
 
-	private random() {
-		return (Math.random() * 100) | 0;
+	private reactionInhibitor(message: KlasaMessage, gameMessage: KlasaMessage, reaction: LLRCData) {
+		// If there's no gameMessage, inhibit
+		if (!gameMessage) return true;
+
+		// If the message reacted is not the game's, inhibit
+		if (reaction.messageID !== gameMessage.id) return true;
+
+		// If the emoji reacted is not valid, inhibit
+		if (!Object.values(ReactionEmoji).includes(reaction.emoji.name as ReactionEmoji)) return true;
+
+		// If the user who reacted is the author, don't inhibit
+		if (reaction.userID === message.author.id) return false;
+
+		// Don't listen to herself
+		if (reaction.userID === this.client.user!.id) return true;
+	}
+
+	/**
+	 * @description Generates a random number between 0 and 100
+	 * @param previous The number we shouldn't get (usually the number we're comparing against
+	 */
+	private random(previous?: number) {
+		let number = previous!;
+		while (number === previous) {
+			number = (Math.random() * 100) | 0;
+		}
+		if (number > 100) number = 100;
+		return number;
 	}
 
 	private calculateWinnings(bet: number, attempts: number) {
@@ -247,10 +233,14 @@ export default class extends SkyraCommand {
 
 interface HigherLowerGameData {
 	llrc: LongLivingReactionCollector;
-	wager: number;
+	gameMessage: KlasaMessage;
+	running: boolean;
+	number: number;
 	turn: number;
-	gameMessage: string;
-	authorMessage: KlasaMessage;
-	user: string;
-	previousNumber: number;
+	wager: number;
+}
+
+interface EmojiPromiseContext {
+	resolve: ((value?: ReactionEmoji) => void) | undefined;
+	timeout: NodeJS.Timeout
 }

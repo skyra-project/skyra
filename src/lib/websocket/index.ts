@@ -3,6 +3,12 @@ import * as http from 'http';
 import { SkyraClient } from '../SkyraClient';
 import Collection from '@discordjs/collection';
 import { enumerable } from '../util/util';
+import { Util } from 'klasa-dashboard-hooks';
+import { CLIENT_SECRET } from '../../../config';
+
+
+// TODO - should we timeout connections? disconnect after X period?
+// TODO - after the connection of a DashboardWebsocketUser is closed, is that class instance GC'd? should be
 
 export const enum IncomingWebsocketAction {
 	Authenticate = 'AUTHENTICATE',
@@ -13,19 +19,24 @@ export const enum CloseCodes {
 	ProtocolError = 1002,
 	PolicyViolation = 1008,
 	InternalError = 1011,
-	AuthorizationFailed = 4301,
-	AuthorizationSuccess = 4320
+	Unauthorized = 4301,
+}
+
+interface IncomingDataObject {
+	token?: string;
+	user_id?: string;
 }
 
 export interface IncomingWebsocketMessage {
 	action: IncomingWebsocketAction;
-	data: unknown;
+	data: IncomingDataObject;
 }
 
 export interface OutgoingWebsocketMessage {
 	action?: IncomingWebsocketAction;
 	data?: unknown;
 	error?: string;
+	success?: boolean;
 }
 
 export interface UserAuthObject {
@@ -63,21 +74,35 @@ export class DashboardWebsocketUser {
 		this.send({ error: message });
 	}
 
-	private handleMessage(message: IncomingWebsocketMessage) {
-		// this.client.webSocketEvents.get(message.action).run(message);
+	public handleAuthenticationMessage(message: IncomingWebsocketMessage) {
+		// If they're already authenticated, or didn't send a id/token, close.
+		if (this.authenticated || !message.data || !message.data.token || !message.data.user_id) {
+			return this._connection.close(CloseCodes.Unauthorized);
+		}
 
+		let decryptedAuth;
+		try {
+			decryptedAuth = Util.decrypt(message.data.token, CLIENT_SECRET);
+		} catch {
+			return this._connection.close(CloseCodes.Unauthorized);
+		}
+
+		if (!decryptedAuth.user_id || !decryptedAuth.token || decryptedAuth.user_id !== message.data.user_id) {
+			return this._connection.close(CloseCodes.Unauthorized);
+		}
+
+		this.auth = decryptedAuth;
+		this.authenticated = true;
+
+		this.send({ success: true, action: IncomingWebsocketAction.Authenticate });
+	}
+
+	private handleMessage(message: IncomingWebsocketMessage) {
 		switch (message.action) {
 			case IncomingWebsocketAction.Authenticate: {
-				// If they're already authenticated, or didn't send a token, close.
-				if (this.authenticated || !(message.data as UserAuthObject).token) {
-					return this._connection.close(CloseCodes.AuthorizationFailed);
-				}
-
-				// here we decrypt message.data.token and auth like in KDH
-
-				return this._connection.close(CloseCodes.AuthorizationSuccess);
+				this.handleAuthenticationMessage(message);
+				break;
 			}
-
 		}
 	}
 
@@ -104,7 +129,7 @@ export class WebsocketHandler {
 
 	public constructor(client: SkyraClient) {
 		this.client = client;
-		this.wss = new Server({ port: 443 });
+		this.wss = new Server({ port: 565 });
 
 		this.wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
 			// We've just gotten a new Websocket Connection

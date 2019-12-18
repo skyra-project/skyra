@@ -32,7 +32,7 @@ export default class extends Route {
 
 		const djRole = guild.settings.get('roles.dj') as string;
 		const isDj = djRole ? member.roles.has(djRole) : false;
-		const isStaff = true; // TODO
+		const isStaff = true; // TODO TODO TODO TODO TODO TODO TODO
 
 		// If they're not a staff member or DJ, theyre unauthorized.
 		if (!isDj && !isStaff) return response.error(401);

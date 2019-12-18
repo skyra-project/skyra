@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [text]: [string]) {
 		const wager = Number(text);
 		const balance = message.author.settings.get(UserSettings.Money);
-		if (wager > balance) throw message.language.get('COMMAND_SLOTMACHINES_MONEY', balance);
+		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
 
 		let EmojiPromiseContext:  = undefined;
 

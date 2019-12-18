@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 				if (typeof emojiPromiseContext.resolve !== 'function'
 					// Run the collector inhibitor
 					|| await this.reactionInhibitor(message, game.gameMessage!, reaction)) return;
-				clearTimeout(emojiPromiseContext.timeout!);
+				this.client.clearTimeout(emojiPromiseContext.timeout!);
 				emojiPromiseContext.resolve(reaction.emoji.name as ReactionEmoji);
 			}),
 			gameMessage: await message.send(message.language.tget('COMMAND_HIGHERLOWER_LOADING')),
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 			// Grab the user selection
 			const emojiSelected = await new Promise<ReactionEmoji>(resolve => {
 				// Create the timeout
-				const timeout = setTimeout(async () => {
+				const timeout = this.client.setTimeout(async () => {
 					await this.end(game, message, game.turn > 1);
 				}, 3 * Time.Minute);
 

@@ -127,7 +127,7 @@ export class DashboardWebsocketUser {
 		const member = await guild.members.fetch(this.user.id);
 		if (!member) return false;
 
-		return member.isDj;
+		return member.isDJ;
 	}
 
 	public syncMusic() {

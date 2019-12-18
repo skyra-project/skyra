@@ -30,12 +30,8 @@ export default class extends Route {
 		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!member) return response.error(400);
 
-		const djRole = guild.settings.get('roles.dj') as string;
-		const isDj = djRole ? member.roles.has(djRole) : false;
-		const isStaff = true; // TODO TODO TODO TODO TODO TODO TODO
-
 		// If they're not a staff member or DJ, theyre unauthorized.
-		if (!isDj && !isStaff) return response.error(401);
+		if (!member.isDJ && !member.isStaff) return response.error(401);
 
 		return response.json(guild.music);
 

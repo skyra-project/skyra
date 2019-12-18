@@ -53,7 +53,7 @@ declare module 'discord.js' {
 
 	interface GuildMember {
 		fetchRank(): Promise<number>;
-		isDj: boolean;
+		isDJ: boolean;
 		isStaff: boolean;
 		isMod: boolean;
 		isAdmin: boolean;

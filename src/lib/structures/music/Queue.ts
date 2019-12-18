@@ -288,7 +288,7 @@ export class Queue extends Array<Song> {
 	}
 
 	public async manageableFor(message: KlasaMessage) {
-		if (message.member!.isDj) return true;
+		if (message.member!.isDJ) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
 		if ((this.song ? this.song.requester === message.author.id : true) && this.every(song => song.requester === message.author.id)) return true;
 		// Else if the author is a moderator+, queues are always manageable for them.

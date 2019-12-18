@@ -2478,7 +2478,7 @@ export default class extends Language {
 		COMMAND_HIGHERLOWER_DESCRIPTION: 'Play a game of Higher/Lower',
 		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
 			extendedHelp: `Higher Lower is a game of luck. I pick 2 numbers, and you have to guess if the 2nd is **higher** or **lower** then the 1st, using the ⬆ or ⬇ emojis.
-			Your winnings increase as you win, and can cashout any time pressing the 💰 reaction.
+			Your winnings increase as you progress through the rounds, and can cashout any time pressing the 💰 reaction.
 			Be warned tho! The further you go, the more chances you have to lose the winnings.`
 		}),
 		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Starting a new game of Higher Lower`,

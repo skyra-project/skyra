@@ -959,6 +959,7 @@ klasa-decorators@^0.0.1:
   version "0.5.0-dev"
   resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/aee79a51a6e845b6678e96fdd1a7cc1e27fda435"
   dependencies:
+    "@klasa/request-handler" "^0.0.3"
     fs-nextra "^0.4.5"
 
 lavalink@^2.8.2:

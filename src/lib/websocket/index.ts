@@ -6,6 +6,7 @@ import { enumerable } from '../util/util';
 import { Util } from 'klasa-dashboard-hooks';
 import { CLIENT_SECRET } from '../../../config';
 import { KlasaUser } from 'klasa';
+import { Events } from '../types/Enums';
 
 
 // TODO - should we timeout connections? disconnect after X period?
@@ -130,12 +131,9 @@ export class DashboardWebsocketUser {
 	}
 
 	public syncMusic() {
-		console.log(43, this.subscriptions);
 		for (const musicSubscription of this.subscriptions.filter(sub => sub.type === SubscriptionName.Music) as MusicSubscription[]) {
 			const guild = this.client.guilds.get(musicSubscription.guild_id);
 			if (!guild) continue;
-
-			console.log(23, musicSubscription);
 
 			this.send({ action: OutgoingWebsocketAction.MusicSync, data: guild.music });
 		}
@@ -229,12 +227,12 @@ export class DashboardWebsocketUser {
 
 		switch (message.action) {
 			case IncomingWebsocketAction.Authenticate: {
-				this.handleAuthenticationMessage(message).catch(err => console.error(err));
+				this.handleAuthenticationMessage(message).catch(err => this.client.emit(Events.Wtf, err));
 				break;
 			}
 
 			case IncomingWebsocketAction.MusicQueueUpdate: {
-				this.handleMusicMessage(message).catch(err => console.error(err));
+				this.handleMusicMessage(message).catch(err => this.client.emit(Events.Wtf, err));
 				break;
 			}
 
@@ -248,7 +246,6 @@ export class DashboardWebsocketUser {
 	private handleIncomingRawMessage(rawMessage: Data) {
 		try {
 			const parsedMessage: IncomingWebsocketMessage = JSON.parse(rawMessage as string);
-			console.log(parsedMessage);
 			this.handleMessage(parsedMessage);
 		} catch {
 			// They've sent invalid JSON, close the connection.
@@ -294,18 +291,3 @@ export class WebsocketHandler {
 	}
 
 }
-
-
-/*
-setInterval(requestHostSync, 5000);
-
-function websocketBroadcast(data: any) {
-	for (const id of Object.keys(connections)) {
-		if (!connections[id].isAuthenticated) {
-			console.log(`Not sending message to ${id} because they're not authenticated.`);
-			continue;
-		}
-		connections[id].send(JSON.stringify(data));
-	}
-}
-*/

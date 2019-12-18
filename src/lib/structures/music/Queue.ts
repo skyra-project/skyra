@@ -5,6 +5,7 @@ import { Events } from '../../types/Enums';
 import { enumerable } from '../../util/util';
 import { Song } from './Song';
 import { SkyraClient } from '../../SkyraClient';
+import { SubscriptionName } from '../../websocket';
 
 export class Queue extends Array<Song> {
 
@@ -231,7 +232,8 @@ export class Queue extends Array<Song> {
 	}
 
 	public receiver(payload: LavalinkEvent) {
-		const users = this.client.websocket.users.filter(user => user.subscriptions.some(sub => sub.type === 'MUSIC' && sub.guild_id === this.guild.id));
+		const users = this.client.websocket.users
+			.filter(user => user.subscriptions.some(sub => sub.type === SubscriptionName.Music && sub.guild_id === this.guild.id));
 		for (const user of users.values()) user.syncMusic();
 
 		// If it's the end of the track, handle next song

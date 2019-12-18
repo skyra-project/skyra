@@ -36,7 +36,7 @@ const enum SubscriptionAction {
 	Unsubscribe = 'UNSUBSCRIBE'
 }
 
-const enum SubscriptionName {
+export const enum SubscriptionName {
 	Music = 'MUSIC',
 	Something = 'SOMETHING'
 }

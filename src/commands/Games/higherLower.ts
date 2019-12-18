@@ -14,13 +14,13 @@ enum ReactionEmoji {
 	CASHOUT = '💰'
 }
 
-const enum endingAction {
+const enum EndingAction {
 	PLAY,
 	STOP,
 	TIMEOUT
 }
 
-export default class HighLowCommand extends SkyraCommand {
+export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -29,7 +29,7 @@ export default class HighLowCommand extends SkyraCommand {
 			cooldown: 7,
 			description: `Play the Higher Lower game against me`,
 			extendedHelp: `as well as this`,
-			requiredPermissions: ['ADD_REACTIONS'],
+			requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000>'
 		});

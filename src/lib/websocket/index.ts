@@ -7,7 +7,7 @@ import { enumerable } from '../util/util';
 import WebsocketUser from './WebsocketUser';
 import { CloseCodes } from './types';
 
-// TODO - should we timeout connections? disconnect after X period?
+// TODO (Magnaboy): Should we timeout connections? disconnect after X period?
 // TODO - after the connection of a WebsocketUser is closed, is that class instance GC'd? should be
 
 

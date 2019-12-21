@@ -934,19 +934,27 @@ export interface LanguageKeys {
 	COMMAND_HIGHERLOWER_LOADING: string;
 	COMMAND_HIGHERLOWER_TIMEOUT: string;
 	COMMAND_HIGHERLOWER_NEWROUND: string;
-	COMMAND_HIGHERLOWER_EMBED_TITLE: (turn: number) => string;
-	COMMAND_HIGHERLOWER_EMBED_DESCRIPTION: (number: number) => string;
-	COMMAND_HIGHERLOWER_EMBED_FOOTER: string;
-	COMMAND_HIGHERLOWER_LOSE_TITLE: string;
-	COMMAND_HIGHERLOWER_LOSE_DESCRIPTION: (number: number, losses: number) => string;
-	COMMAND_HIGHERLOWER_LOSE_FOOTER: string;
-	COMMAND_HIGHERLOWER_WIN_TITLE: string;
-	COMMAND_HIGHERLOWER_WIN_DESCRIPTION: (potentials: number, number: number) => string;
-	COMMAND_HIGHERLOWER_WIN_FOOTER: string;
+	COMMAND_HIGHERLOWER_EMBED: {
+		TITLE: (turn: number) => string;
+		DESCRIPTION: (number: number) => string;
+		FOOTER: string;
+	};
+	COMMAND_HIGHERLOWER_LOSE: {
+		TITLE: string;
+		DESCRIPTION: (number: number, losses: number) => string;
+		FOOTER: string;
+	};
+	COMMAND_HIGHERLOWER_WIN: {
+		TITLE: string;
+		DESCRIPTION: (potentials: number, number: number) => string;
+		FOOTER: string;
+	};
+	COMMAND_HIGHERLOWER_CANCEL: {
+		TITLE: string;
+		DESCRIPTION: (username: string) => string;
+	};
 	COMMAND_HIGHERLOWER_CASHOUT_INIT: string;
 	COMMAND_HIGHERLOWER_CASHOUT: (amount: number) => string;
-	COMMAND_HIGHERLOWER_CANCEL_TITLE: string;
-	COMMAND_HIGHERLOWER_CANCEL_DESCRIPTION: (username: string) => string;
 	COMMAND_HUNGERGAMES_DESCRIPTION: string;
 	COMMAND_HUNGERGAMES_EXTENDED: string;
 	COMMAND_HUNGERGAMES_RESULT_HEADER: (game: HungerGamesGame) => string;

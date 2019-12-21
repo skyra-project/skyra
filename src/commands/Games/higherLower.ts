@@ -5,7 +5,7 @@ import { LongLivingReactionCollector, LLRCData } from '../../lib/util/LongLiving
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { Time } from '../../lib/util/constants';
 import { getColor } from '../../lib/util/util';
-import { Slotmachine } from '../../lib/util/Games/Slotmachine';
+import { Events } from '../../lib/types/Enums';
 
 enum ReactionEmoji {
 	HIGHER = '⬆',
@@ -22,6 +22,10 @@ const enum EndingAction {
 }
 
 export default class extends SkyraCommand {
+
+	private kFirstReactionArray = [ReactionEmoji.HIGHER, ReactionEmoji.LOWER, ReactionEmoji.CANCEL];
+	private kReactionArray = [ReactionEmoji.HIGHER, ReactionEmoji.LOWER, ReactionEmoji.CASHOUT];
+	private kWinReactionArray = [ReactionEmoji.OK, ReactionEmoji.CANCEL];
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -44,36 +48,32 @@ export default class extends SkyraCommand {
 		let emojiPromiseContext: EmojiPromiseContext = { resolve: undefined, timeout: undefined };
 
 		const game: HigherLowerGameData = Object.seal({
-			llrc: new LongLivingReactionCollector(this.client, async reaction => {
-				// Ignore if resolve is not ready
-				if (typeof emojiPromiseContext.resolve !== 'function'
-					// Run the collector inhibitor
-					|| await this.reactionInhibitor(message, game.gameMessage!, reaction)) return;
-				this.client.clearTimeout(emojiPromiseContext.timeout!);
-				emojiPromiseContext.resolve(reaction.emoji.name as ReactionEmoji);
-			}),
-			gameMessage: await message.send(message.language.tget('COMMAND_HIGHERLOWER_LOADING')),
+			/** The game's reaction collector */
+			llrc: null,
+			gameMessage: await message.sendLocale('COMMAND_HIGHERLOWER_LOADING'),
 			running: true,
 			turn: 1,
 			number: this.random(),
 			wager
 		});
 
+		game.llrc = new LongLivingReactionCollector(this.client, this.reactionCollector.bind(this, emojiPromiseContext, message, game));
+
 		while (game.running) {
 			await game.gameMessage.reactions.removeAll();
 			// Send the embed
+			const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_EMBED');
 			await game.gameMessage.edit({
 				content: null,
 				embed: new MessageEmbed()
 					.setColor(getColor(message))
-					.setTitle(message.language.tget('COMMAND_HIGHERLOWER_EMBED_TITLE', game.turn))
-					.setDescription(message.language.tget('COMMAND_HIGHERLOWER_EMBED_DESCRIPTION', game.number))
-					.setFooter(message.language.tget('COMMAND_HIGHERLOWER_EMBED_FOOTER'))
+					.setTitle(TITLE(game.turn))
+					.setDescription(DESCRIPTION(game.number))
+					.setFooter(FOOTER)
 			});
 
 			// Add the options
-			const filterFunction = (e: ReactionEmoji, t: number) => e !== ReactionEmoji.OK && ((t === 1 && e !== ReactionEmoji.CASHOUT) || (t !== 1 && e !== ReactionEmoji.CANCEL));
-			const reactArray = Object.values(ReactionEmoji).filter(e => filterFunction(e, game.turn));
+			const reactArray = game.turn > 1 ? this.kReactionArray : this.kFirstReactionArray;
 			for (const emoji of reactArray) {
 				await game.gameMessage.react(emoji);
 			}
@@ -82,7 +82,12 @@ export default class extends SkyraCommand {
 			const emojiSelected = await new Promise<ReactionEmoji>(resolve => {
 				// Create the timeout
 				const timeout = this.client.setTimeout(async () => {
-					await this.end(game, message, game.turn > 1);
+					try {
+						await this.end(game, message, game.turn > 1);
+					} catch (error) {
+						this.client.emit(Events.Wtf, error);
+					}
+
 				}, 3 * Time.Minute);
 
 				// Insert weird promise tomfoolery. I still havent completely understood how this works. Something something weird promise resolves
@@ -119,20 +124,23 @@ export default class extends SkyraCommand {
 	private async win(game: HigherLowerGameData, message: KlasaMessage) {
 		const { author: user, language } = message;
 		await game.gameMessage.reactions.removeAll();
-		// TODO(Quantum): Winning event
+
+		// TODO(Quantum): Implement Winning event for InfluxDB
+		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
 		await game.gameMessage.edit({
-			content: '',
+			content: null,
 			embed: new MessageEmbed()
-				.setColor(Slotmachine.SUCCESS_COLOUR)
-				.setTitle(language.tget('COMMAND_COINFLIP_WIN_TITLE'))
-				.setDescription(language.tget('COMMAND_HIGHERLOWER_WIN_DESCRIPTION', this.calculateWinnings(game.wager, game.turn), game.number))
-				.setFooter('Act fast! You don\'t have much time')
+				.setColor(getColor(message))
+				.setTitle(TITLE)
+				.setDescription(DESCRIPTION(this.calculateWinnings(game.wager, game.turn), game.number))
+				.setFooter(FOOTER)
 		});
-		const reactArray = Object.values(ReactionEmoji).filter(e => e !== ReactionEmoji.HIGHER && e !== ReactionEmoji.LOWER && e !== ReactionEmoji.CASHOUT);
-		for (const emoji of reactArray) {
+
+		// Ask the user whether they want to continue or cashout
+		for (const emoji of this.kWinReactionArray) {
 			await game.gameMessage.react(emoji);
 		}
-		const reactionMap = await game.gameMessage.awaitReactions((r, u) => reactArray.includes(r.emoji.name) && u.id === user.id, { max: 1, time: 10000 });
+		const reactionMap = await game.gameMessage.awaitReactions((r, u) => this.kWinReactionArray.includes(r.emoji.name) && u.id === user.id, { max: 1, time: 1.5 * Time.Minute });
 		await game.gameMessage.reactions.removeAll();
 
 		const whatToDo = reactionMap.size === 0
@@ -140,6 +148,8 @@ export default class extends SkyraCommand {
 			: reactionMap.first()!.emoji.name === ReactionEmoji.OK
 				? EndingAction.PLAY
 				: EndingAction.STOP;
+
+		// Decide whether we timeout, stop, or continue
 		switch (whatToDo) {
 			case EndingAction.TIMEOUT:
 				await game.gameMessage.edit(language.tget('COMMAND_HIGHERLOWER_TIMEOUT'), { embed: null });
@@ -154,7 +164,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async loss(game: HigherLowerGameData, message: KlasaMessage) {
-		// TODO(Quantum): Losing event
+		// TODO (Quantum): Implement losing event to InfluxDB
 		const { number, wager, turn, gameMessage } = game;
 		await gameMessage.reactions.removeAll();
 		let losses = wager;
@@ -165,18 +175,23 @@ export default class extends SkyraCommand {
 			await message.author.settings.decrease(UserSettings.Money, losses);
 		}
 
-		await gameMessage.edit(new MessageEmbed()
-			.setColor(Slotmachine.FAIL_COLOUR)
-			.setTitle(message.language.tget('COMMAND_HIGHERLOWER_LOSE_TITLE'))
-			.setDescription(message.language.tget('COMMAND_HIGHERLOWER_LOSE_DESCRIPTION', number, losses))
-			.setFooter(message.language.tget('COMMAND_HIGHERLOWER_LOSE_FOOTER')));
+
+		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
+		await game.gameMessage.edit({
+			content: null,
+			embed: new MessageEmbed()
+				.setColor(getColor(message))
+				.setTitle(TITLE)
+				.setDescription(DESCRIPTION(number, losses))
+				.setFooter(FOOTER)
+		});
 		return false;
 	}
 
 	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout?: boolean) {
 		// Remove all the reactions and end the LLRC
 		await game.gameMessage.reactions.removeAll();
-		game.llrc.end();
+		game.llrc!.end();
 
 		// Should we need to cash out, proceed to doing that
 		if (cashout!) {
@@ -194,10 +209,23 @@ export default class extends SkyraCommand {
 		}
 
 		// Say bye!
-		await game.gameMessage.edit(new MessageEmbed()
-			.setColor(Slotmachine.FAIL_COLOUR)
-			.setTitle(message.language.tget('COMMAND_HIGHERLOWER_CANCEL_TITLE'))
-			.setDescription(message.language.tget('COMMAND_HIGHERLOWER_CANCEL_DESCRIPTION', message.author.username)));
+		const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
+		await game.gameMessage.edit({
+			content: null,
+			embed: new MessageEmbed()
+				.setColor(getColor(message))
+				.setTitle(TITLE)
+				.setDescription(DESCRIPTION(message.author.username))
+		});
+	}
+
+	private async reactionCollector(ctx: EmojiPromiseContext, message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
+		// Ignore if resolve is not ready
+		if (typeof ctx.resolve !== 'function'
+						// Run the collector inhibitor
+						|| await this.reactionInhibitor(message, game.gameMessage!, reaction)) return;
+		this.client.clearTimeout(ctx.timeout!);
+		ctx.resolve(reaction.emoji.name as ReactionEmoji);
 	}
 
 	private reactionInhibitor(message: KlasaMessage, gameMessage: KlasaMessage, reaction: LLRCData) {
@@ -238,7 +266,7 @@ export default class extends SkyraCommand {
 }
 
 interface HigherLowerGameData {
-	llrc: LongLivingReactionCollector;
+	llrc: LongLivingReactionCollector | null;
 	gameMessage: KlasaMessage;
 	running: boolean;
 	number: number;

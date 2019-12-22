@@ -1,11 +1,12 @@
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { isFunction } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
-import { LongLivingReactionCollector, LLRCData } from '../../lib/util/LongLivingReactionCollector';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { Events } from '../../lib/types/Enums';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { Time } from '../../lib/util/constants';
+import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
 import { getColor } from '../../lib/util/util';
-import { Events } from '../../lib/types/Enums';
 
 enum ReactionEmoji {
 	HIGHER = '⬆',
@@ -221,7 +222,7 @@ export default class extends SkyraCommand {
 
 	private async reactionCollector(ctx: EmojiPromiseContext, message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
 		// Ignore if resolve is not ready
-		if (typeof ctx.resolve !== 'function'
+		if (!isFunction(ctx.resolve)
 						// Run the collector inhibitor
 						|| await this.reactionInhibitor(message, game.gameMessage!, reaction)) return;
 		this.client.clearTimeout(ctx.timeout!);

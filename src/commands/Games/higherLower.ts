@@ -1,4 +1,3 @@
-import { isFunction } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
@@ -6,27 +5,28 @@ import { Events } from '../../lib/types/Enums';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { Time } from '../../lib/util/constants';
 import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
-import { getColor } from '../../lib/util/util';
+import { getColor, resolveEmoji } from '../../lib/util/util';
 
-enum ReactionEmoji {
-	HIGHER = '⬆',
-	LOWER = '⬇',
-	CANCEL = '<:redCross:637706251257511973>',
-	OK = '<:greenTick:637706251253317669>',
-	CASHOUT = '💰'
+const enum HigherLowerReactions {
+	Higher = 'a:sarrow_up:658450971655012363',
+	Lower = 'a:sarrow_down:658452292558913536',
+	Cancel = ':redCross:637706251257511973',
+	Ok = ':greenTick:637706251253317669',
+	Cashout = '%F0%9F%92%B0' // 💰
 }
 
 const enum EndingAction {
-	PLAY,
-	STOP,
-	TIMEOUT
+	Play,
+	Stop,
+	Timeout
 }
 
 export default class extends SkyraCommand {
 
-	private kFirstReactionArray = [ReactionEmoji.HIGHER, ReactionEmoji.LOWER, ReactionEmoji.CANCEL];
-	private kReactionArray = [ReactionEmoji.HIGHER, ReactionEmoji.LOWER, ReactionEmoji.CASHOUT];
-	private kWinReactionArray = [ReactionEmoji.OK, ReactionEmoji.CANCEL];
+	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
+	private readonly kReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cashout] as const;
+	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
+	private readonly kTimer = Time.Minute * 3;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -35,87 +35,87 @@ export default class extends SkyraCommand {
 			cooldown: 7,
 			description: language => language.tget('COMMAND_HIGHERLOWER_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_HIGHERLOWER_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
+			requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'USE_EXTERNAL_EMOJIS'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000>'
 		});
 	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
+		await message.author.settings.sync();
+
 		const wager = Number(text);
 		const balance = message.author.settings.get(UserSettings.Money);
 		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
 
-		let emojiPromiseContext: EmojiPromiseContext = { resolve: undefined, timeout: undefined };
-
-		const game: HigherLowerGameData = Object.seal({
+		const response = await message.sendLocale('COMMAND_HIGHERLOWER_LOADING');
+		const game: HigherLowerGameData = {
 			/** The game's reaction collector */
-			llrc: null,
-			gameMessage: await message.sendLocale('COMMAND_HIGHERLOWER_LOADING'),
+			llrc: new LongLivingReactionCollector(this.client, reaction => {
+				if (game.callback === null) return;
+
+				const emoji = this.resolveCollectedEmoji(message, game, reaction);
+				if (emoji === null) return;
+
+				game.callback(emoji);
+				game.callback = null;
+			}, async () => {
+				if (game.callback !== null) {
+					game.callback(null);
+					game.callback = null;
+				}
+				try {
+					await this.end(game, message, game.turn > 1);
+				} catch (error) {
+					this.client.emit(Events.Wtf, error);
+				}
+			}),
+			response,
 			running: true,
 			turn: 1,
 			number: this.random(),
-			wager
-		});
-
-		game.llrc = new LongLivingReactionCollector(this.client, this.reactionCollector.bind(this, emojiPromiseContext, message, game));
+			wager,
+			emojis: this.kFirstReactionArray,
+			callback: null
+		};
 
 		while (game.running) {
-			await game.gameMessage.reactions.removeAll();
+			await game.response.reactions.removeAll();
 			// Send the embed
 			const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_EMBED');
-			await game.gameMessage.edit({
-				content: null,
-				embed: new MessageEmbed()
-					.setColor(getColor(message))
-					.setTitle(TITLE(game.turn))
-					.setDescription(DESCRIPTION(game.number))
-					.setFooter(FOOTER)
-			});
+			await game.response.edit(null, new MessageEmbed()
+				.setColor(getColor(message))
+				.setTitle(TITLE(game.turn))
+				.setDescription(DESCRIPTION(game.number))
+				.setFooter(FOOTER));
 
 			// Add the options
-			const reactArray = game.turn > 1 ? this.kReactionArray : this.kFirstReactionArray;
-			for (const emoji of reactArray) {
-				await game.gameMessage.react(emoji);
+			if (game.turn > 1) game.emojis = this.kReactionArray;
+			for (const emoji of game.emojis) {
+				await game.response.react(emoji);
 			}
 
-			// Grab the user selection
-			const emojiSelected = await new Promise<ReactionEmoji>(resolve => {
-				// Create the timeout
-				const timeout = this.client.setTimeout(async () => {
-					try {
-						await this.end(game, message, game.turn > 1);
-					} catch (error) {
-						this.client.emit(Events.Wtf, error);
-					}
-
-				}, 3 * Time.Minute);
-
-				// Insert weird promise tomfoolery. I still havent completely understood how this works. Something something weird promise resolves
-				emojiPromiseContext = {
-					resolve,
-					timeout
-				};
-			});
+			const emoji = await this.awaitReactionAction(game);
+			if (emoji === null) break;
 
 			// Main game logic (at last)
 			const oldNum = game.number;
 			game.number = this.random(game.number);
 
-			switch (emojiSelected) {
-				case ReactionEmoji.HIGHER:
-					game.running = await (oldNum < game.number ? this.win(game, message) : this.loss(game, message));
+			switch (emoji) {
+				case HigherLowerReactions.Higher: {
+					game.running = await (game.number > oldNum ? this.win(game, message) : this.loss(game, message));
 					break;
-
-				case ReactionEmoji.LOWER:
-					game.running = await (oldNum > game.number ? this.win(game, message) : this.loss(game, message));
+				}
+				case HigherLowerReactions.Lower: {
+					game.running = await (game.number < oldNum ? this.win(game, message) : this.loss(game, message));
 					break;
-
-				case ReactionEmoji.CASHOUT:
-				case ReactionEmoji.CANCEL:
-					await this.end(game, message, emojiSelected === ReactionEmoji.CASHOUT);
+				}
+				case HigherLowerReactions.Cashout: {
+					await this.end(game, message, true);
 					game.running = false;
 					break;
+				}
 			}
 
 			if (game.running) game.turn++;
@@ -123,51 +123,50 @@ export default class extends SkyraCommand {
 	}
 
 	private async win(game: HigherLowerGameData, message: KlasaMessage) {
-		const { author: user, language } = message;
-		await game.gameMessage.reactions.removeAll();
+		const { language } = message;
+		await game.response.reactions.removeAll();
 
 		// TODO(Quantum): Implement Winning event for InfluxDB
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
-		await game.gameMessage.edit({
-			content: null,
-			embed: new MessageEmbed()
-				.setColor(getColor(message))
-				.setTitle(TITLE)
-				.setDescription(DESCRIPTION(this.calculateWinnings(game.wager, game.turn), game.number))
-				.setFooter(FOOTER)
-		});
+		await game.response.edit(null, new MessageEmbed()
+			.setColor(getColor(message))
+			.setTitle(TITLE)
+			.setDescription(DESCRIPTION(this.calculateWinnings(game.wager, game.turn), game.number))
+			.setFooter(FOOTER));
 
 		// Ask the user whether they want to continue or cashout
-		for (const emoji of this.kWinReactionArray) {
-			await game.gameMessage.react(emoji);
+		game.emojis = this.kWinReactionArray;
+		for (const emoji of game.emojis) {
+			await game.response.react(emoji);
 		}
-		const reactionMap = await game.gameMessage.awaitReactions((r, u) => this.kWinReactionArray.includes(r.emoji.name) && u.id === user.id, { max: 1, time: 1.5 * Time.Minute });
-		await game.gameMessage.reactions.removeAll();
 
-		const whatToDo = reactionMap.size === 0
-			? EndingAction.TIMEOUT
-			: reactionMap.first()!.emoji.name === ReactionEmoji.OK
-				? EndingAction.PLAY
-				: EndingAction.STOP;
+		const reaction = await this.awaitReactionAction(game);
+		await game.response.reactions.removeAll();
+
+		const action = reaction === null
+			? EndingAction.Timeout
+			: reaction === HigherLowerReactions.Ok
+				? EndingAction.Play
+				: EndingAction.Stop;
 
 		// Decide whether we timeout, stop, or continue
-		switch (whatToDo) {
-			case EndingAction.TIMEOUT:
-				await game.gameMessage.edit(language.tget('COMMAND_HIGHERLOWER_TIMEOUT'), { embed: null });
-			case EndingAction.STOP:
+		switch (action) {
+			case EndingAction.Timeout:
+				await game.response.edit(language.tget('COMMAND_HIGHERLOWER_TIMEOUT'), { embed: null });
+			case EndingAction.Stop:
 				await this.end(game, message, true);
 				break;
-			case EndingAction.PLAY:
-				await game.gameMessage.edit(language.tget('COMMAND_HIGHERLOWER_NEWROUND'), { embed: null });
+			case EndingAction.Play:
+				await game.response.edit(language.tget('COMMAND_HIGHERLOWER_NEWROUND'), { embed: null });
 				break;
 		}
-		return whatToDo === EndingAction.PLAY;
+		return action === EndingAction.Play;
 	}
 
 	private async loss(game: HigherLowerGameData, message: KlasaMessage) {
 		// TODO (Quantum): Implement losing event to InfluxDB
-		const { number, wager, turn, gameMessage } = game;
-		await gameMessage.reactions.removeAll();
+		const { number, wager, turn, response } = game;
+		await response.reactions.removeAll();
 		let losses = wager;
 
 		// There's a 0.1% chance that a user would lose now only the wager, but also what they would've won. Muahaha
@@ -176,74 +175,62 @@ export default class extends SkyraCommand {
 			await message.author.settings.decrease(UserSettings.Money, losses);
 		}
 
-
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
-		await game.gameMessage.edit({
-			content: null,
-			embed: new MessageEmbed()
-				.setColor(getColor(message))
-				.setTitle(TITLE)
-				.setDescription(DESCRIPTION(number, losses))
-				.setFooter(FOOTER)
-		});
+		await game.response.edit(null, new MessageEmbed()
+			.setColor(getColor(message))
+			.setTitle(TITLE)
+			.setDescription(DESCRIPTION(number, losses))
+			.setFooter(FOOTER));
 		return false;
 	}
 
-	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout?: boolean) {
+	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout: boolean) {
 		// Remove all the reactions and end the LLRC
-		await game.gameMessage.reactions.removeAll();
-		game.llrc!.end();
+		await game.response.reactions.removeAll();
+		game.llrc.end();
 
 		// Should we need to cash out, proceed to doing that
-		if (cashout!) {
+		if (cashout) {
 			const { turn, wager } = game;
 			// Let the user know, and nullify the embed
-			await game.gameMessage.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT_INIT'), { embed: null });
+			await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT_INIT'), { embed: null });
 
 			// Calculate and deposit winnings for that game
 			const winnings = this.calculateWinnings(wager, turn - 1);
 			await message.author.settings.increase(UserSettings.Money, winnings);
 
 			// Let the user know we're done!
-			await game.gameMessage.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings));
+			await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings));
 			return;
 		}
 
 		// Say bye!
 		const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
-		await game.gameMessage.edit({
-			content: null,
-			embed: new MessageEmbed()
-				.setColor(getColor(message))
-				.setTitle(TITLE)
-				.setDescription(DESCRIPTION(message.author.username))
-		});
+		await game.response.edit(null, new MessageEmbed()
+			.setColor(getColor(message))
+			.setTitle(TITLE)
+			.setDescription(DESCRIPTION(message.author.username)));
 	}
 
-	private async reactionCollector(ctx: EmojiPromiseContext, message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
-		// Ignore if resolve is not ready
-		if (!isFunction(ctx.resolve)
-						// Run the collector inhibitor
-						|| await this.reactionInhibitor(message, game.gameMessage!, reaction)) return;
-		this.client.clearTimeout(ctx.timeout!);
-		ctx.resolve(reaction.emoji.name as ReactionEmoji);
-	}
-
-	private reactionInhibitor(message: KlasaMessage, gameMessage: KlasaMessage, reaction: LLRCData) {
-		// If there's no gameMessage, inhibit
-		if (!gameMessage) return true;
-
+	private resolveCollectedEmoji(message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
 		// If the message reacted is not the game's, inhibit
-		if (reaction.messageID !== gameMessage.id) return true;
+		if (reaction.messageID !== game.response.id) return null;
+
+		// If the user who reacted was not the author, inhibit
+		if (reaction.userID !== message.author.id) return null;
 
 		// If the emoji reacted is not valid, inhibit
-		if (!Object.values(ReactionEmoji).includes(reaction.emoji.name as ReactionEmoji)) return true;
+		const emoji = resolveEmoji(reaction.emoji);
+		return emoji !== null && game.emojis.includes(emoji as HigherLowerReactions)
+			? emoji as HigherLowerReactions
+			: null;
+	}
 
-		// If the user who reacted is the author, don't inhibit
-		if (reaction.userID === message.author.id) return false;
-
-		// Don't listen to herself
-		if (reaction.userID === this.client.user!.id) return true;
+	private awaitReactionAction(game: HigherLowerGameData) {
+		return new Promise<HigherLowerReactions | null>(res => {
+			game.llrc.setTime(this.kTimer);
+			game.callback = res;
+		});
 	}
 
 	/**
@@ -251,12 +238,14 @@ export default class extends SkyraCommand {
 	 * @param previous The number we shouldn't get (usually the number we're comparing against
 	 */
 	private random(previous?: number) {
-		let number = previous!;
-		while (number === previous) {
-			number = (Math.random() * 100) | 0;
+		if (typeof previous === 'undefined') {
+			return Math.ceil(Math.random() * 100);
 		}
-		if (number > 100) number = 100;
-		return number;
+
+		const higher = Math.random() > 0.5;
+		return higher
+			? Math.ceil(Math.random() * previous)
+			: Math.ceil(Math.random() * (100 - previous)) + previous;
 	}
 
 	private calculateWinnings(bet: number, attempts: number) {
@@ -267,15 +256,12 @@ export default class extends SkyraCommand {
 }
 
 interface HigherLowerGameData {
-	llrc: LongLivingReactionCollector | null;
-	gameMessage: KlasaMessage;
+	llrc: LongLivingReactionCollector;
+	response: KlasaMessage;
 	running: boolean;
 	number: number;
 	turn: number;
 	wager: number;
-}
-
-interface EmojiPromiseContext {
-	resolve: ((value?: ReactionEmoji) => void) | undefined;
-	timeout: NodeJS.Timeout | undefined;
+	emojis: readonly HigherLowerReactions[];
+	callback: ((value: HigherLowerReactions | null) => void) | null;
 }

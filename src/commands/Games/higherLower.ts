@@ -73,7 +73,7 @@ export default class extends SkyraCommand {
 			response,
 			running: true,
 			turn: 1,
-			number: this.random(),
+			number: this.random(0),
 			wager,
 			emojis: this.kFirstReactionArray,
 			callback: null
@@ -237,14 +237,14 @@ export default class extends SkyraCommand {
 	 * @description Generates a random number between 0 and 100
 	 * @param previous The number we shouldn't get (usually the number we're comparing against
 	 */
-	private random(previous?: number) {
-		if (typeof previous === 'undefined') {
+	private random(previous: number) {
+		if (previous === 0) {
 			return Math.ceil(Math.random() * 100);
 		}
 
 		const higher = Math.random() > 0.5;
 		return higher
-			? Math.ceil(Math.random() * previous)
+			? Math.ceil(Math.random() * previous) - 1
 			: Math.ceil(Math.random() * (100 - previous)) + previous;
 	}
 

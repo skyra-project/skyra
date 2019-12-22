@@ -2492,6 +2492,36 @@ export default class extends Language {
 				Now get those coins flippin'.`,
 			examples: ['50 heads', '200 tails']
 		}),
+		COMMAND_HIGHERLOWER_DESCRIPTION: 'Play a game of Higher/Lower',
+		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
+			extendedHelp: `Higher/Lower is a game of luck. I will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis
+			Your winnings increase as you progress through the rounds, and you can cashout any time by pressing the 💰 reaction emoji.
+			Be warned tho! The further you go, the more chances you have to lose the winnings.`
+		}),
+		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Starting a new game of Higher/Lower.`,
+		COMMAND_HIGHERLOWER_TIMEOUT: `Prompt timed out. Cashing out winnings...`,
+		COMMAND_HIGHERLOWER_NEWROUND: `Alright. Starting new round.`,
+		COMMAND_HIGHERLOWER_EMBED: {
+			TITLE: turn => `Higher or Lower? | Turn ${turn}`,
+			DESCRIPTION: number => `Your number is ${number}. Will the next number be higher or lower?`,
+			FOOTER: 'The game will expire in 3 minutes, so act fast!'
+		},
+		COMMAND_HIGHERLOWER_LOSE: {
+			TITLE: 'You lost!',
+			DESCRIPTION: (number, losses) => `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}.`,
+			FOOTER: 'Better luck next time!'
+		},
+		COMMAND_HIGHERLOWER_WIN: {
+			TITLE: 'You won!',
+			DESCRIPTION: (potentials, number) => `You did it! The number was ${number}. Want to continue? ${potentials} ${SHINY} are on the line.`,
+			FOOTER: 'Act fast! You don\'t have much time.'
+		},
+		COMMAND_HIGHERLOWER_CANCEL: {
+			TITLE: 'Game cancelled by choice',
+			DESCRIPTION: username => `Thanks for playing, ${username}! I'll be here when you want to play again.`
+		},
+		COMMAND_HIGHERLOWER_CASHOUT_INIT: 'Cashing out. Please hold...',
+		COMMAND_HIGHERLOWER_CASHOUT: amount => `Paid out ${amount} ${SHINY} to your account. Hope you had fun!`,
 		COMMAND_HUNGERGAMES_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
 		COMMAND_HUNGERGAMES_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
 		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',

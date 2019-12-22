@@ -929,6 +929,32 @@ export interface LanguageKeys {
 	COMMAND_COINFLIP_WIN_DESCRIPTION: (result: string, wager?: number) => string;
 	COMMAND_COINFLIP_LOSE_DESCRIPTION: (result: string, wager?: number) => string;
 	COMMAND_COINFLIP_NOGUESS_DESCRIPTION: (result: string) => string;
+	COMMAND_HIGHERLOWER_DESCRIPTION: string;
+	COMMAND_HIGHERLOWER_EXTENDED: string;
+	COMMAND_HIGHERLOWER_LOADING: string;
+	COMMAND_HIGHERLOWER_TIMEOUT: string;
+	COMMAND_HIGHERLOWER_NEWROUND: string;
+	COMMAND_HIGHERLOWER_EMBED: {
+		TITLE: (turn: number) => string;
+		DESCRIPTION: (number: number) => string;
+		FOOTER: string;
+	};
+	COMMAND_HIGHERLOWER_LOSE: {
+		TITLE: string;
+		DESCRIPTION: (number: number, losses: number) => string;
+		FOOTER: string;
+	};
+	COMMAND_HIGHERLOWER_WIN: {
+		TITLE: string;
+		DESCRIPTION: (potentials: number, number: number) => string;
+		FOOTER: string;
+	};
+	COMMAND_HIGHERLOWER_CANCEL: {
+		TITLE: string;
+		DESCRIPTION: (username: string) => string;
+	};
+	COMMAND_HIGHERLOWER_CASHOUT_INIT: string;
+	COMMAND_HIGHERLOWER_CASHOUT: (amount: number) => string;
 	COMMAND_HUNGERGAMES_DESCRIPTION: string;
 	COMMAND_HUNGERGAMES_EXTENDED: string;
 	COMMAND_HUNGERGAMES_RESULT_HEADER: (game: HungerGamesGame) => string;

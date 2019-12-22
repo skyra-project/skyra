@@ -121,7 +121,7 @@ export class Slotmachine {
 			.fill()
 			.restore()
 			.save()
-			.setColor(playerHasWon ? '#00C853' : '#C62828')
+			.setColor(playerHasWon ? Slotmachine.SUCCESS_COLOUR : Slotmachine.FAIL_COLOUR)
 			.setShadowColor(playerHasWon ? 'rgba(64, 224, 15, 0.4)' : 'rgba(237, 29, 2, 0.4)')
 			.setShadowBlur(4)
 			.addRect(54, 54, 2, 38)
@@ -182,6 +182,12 @@ export class Slotmachine {
 
 	/** Light colour in the attachment */
 	public static LIGHT_COLOUR = '#FFFFFF';
+
+	/** Success colour in the attachment */
+	public static SUCCESS_COLOUR = '#00C853';
+
+	/** Failure colour in the attachment */
+	public static FAIL_COLOUR = '#C62828';
 
 	public static images = Object.seal<SlotmachineAssets>({
 		ICON: null,

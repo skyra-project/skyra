@@ -53,6 +53,7 @@ import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
 import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
+import { WebsocketHandler } from './websocket';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -128,6 +129,8 @@ export class SkyraClient extends KlasaClient {
 		.on('ready', client => { this.emit(Events.Verbose, `${g} Ready ${client.name}`); })
 		.on('error', (error, client) => { this.emit(Events.Error, `${r} Error from ${client.name}`, error); })
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
+
+	public websocket = new WebsocketHandler(this);
 
 	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));

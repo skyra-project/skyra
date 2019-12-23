@@ -1,10 +1,11 @@
+import { isFunction } from '@klasa/utils';
 import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { Events } from '../../lib/types/Enums';
+import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
 import { cleanMentions } from '../../lib/util/util';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 
 const EMOJIS = ['🇳', '🇾'];
 
@@ -52,13 +53,13 @@ export default class extends SkyraCommand {
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(this.client, async reaction => {
 				// Ignore if resolve is not ready
-				if (typeof resolve !== 'function'
+				if (!isFunction(resolve)
 				// Run the collector inhibitor
 				|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
 				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
 				resolve = null;
 			}, () => {
-				if (typeof resolve === 'function') resolve(false);
+				if (isFunction(resolve)) resolve(false);
 				this.playing.delete(message.channel.id);
 			}),
 			sun: true,

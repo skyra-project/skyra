@@ -1,3 +1,4 @@
+import { isFunction } from '@klasa/utils';
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '../lib/structures/api/ApiRequest';
 import ApiResponse from '../lib/structures/api/ApiResponse';
@@ -22,7 +23,7 @@ export default class extends Route {
 			bucket: cmd.bucket,
 			category: cmd.category,
 			cooldown: cmd.cooldown,
-			description: typeof cmd.description === 'function' ? cmd.description(language) : cmd.description,
+			description: isFunction(cmd.description) ? cmd.description(language) : cmd.description,
 			guarded: cmd.guarded,
 			guildOnly: !cmd.runIn.includes('dm'),
 			name: cmd.name,

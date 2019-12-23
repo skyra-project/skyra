@@ -2475,6 +2475,34 @@ export default class extends Language {
 		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
 		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}.` : ''}.`,
 		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
+		COMMAND_HIGHERLOWER_DESCRIPTION: 'Comenzar un juego de Mayor/Menor',
+		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
+			extendedHelp: `Mayor/Menor es un juego de suerte. Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis
+			Sus ganancias aumentan a medida que avanza en las rondas, y puede retirar dinero en cualquier momento presionando el 💰 reacción emoji .
+			¡Pero ten cuidado! ¡Cuanto más lejos vayas, más posibilidades tendrás de perderlo todo!`
+		}),
+		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Comenzar un nuevo juego de Mayor/Meno`,
+		COMMAND_HIGHERLOWER_NEWROUND: `Bien. Comenzando una nueva ronda`,
+		COMMAND_HIGHERLOWER_EMBED: {
+			TITLE: turn => `¿Mayor o menor? | Turno ${turn}`,
+			DESCRIPTION: number => `Su número es ${number}. ¿Será el siguiente mayor o menor?`,
+			FOOTER: 'El juego caducará en 3 minutos, ¡así que actúa rápido!'
+		},
+		COMMAND_HIGHERLOWER_LOSE: {
+			TITLE: '¡Perdiste!',
+			DESCRIPTION: (number, losses) => `No lo entendiste del todo. El número era ${number}. Perdiste ${losses} ${SHINY}`,
+			FOOTER: '¡Mejor suerte la próxima vez!'
+		},
+		COMMAND_HIGHERLOWER_WIN: {
+			TITLE: '¡Ganaste!',
+			DESCRIPTION: (potentials, number) => `¡Lo hiciste! El número era ${number}. ¿Quieres continuar? ${potentials} ${SHINY} están en la mesa.`,
+			FOOTER: '¡Actúa rapido! No tienes mucho tiempo.'
+		},
+		COMMAND_HIGHERLOWER_CANCEL: {
+			TITLE: 'Juego cancelado por elección',
+			DESCRIPTION: username => `Gracias por jugar, ¡${username}! Estaré aquí por si quieres continuar.`
+		},
+		COMMAND_HIGHERLOWER_CASHOUT: amount => `${amount} ${SHINY} fueron directo a a su cuenta. ¡Espero que haya sido divertido!`,
 		COMMAND_HUNGERGAMES_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
 		COMMAND_HUNGERGAMES_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
 		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',
@@ -2487,7 +2515,7 @@ export default class extends Language {
 		}),
 		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
 		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
-			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico), 
+			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico),
 					puggy (inglés escocés), máquinas tragamonedas (inglés canadiense y americano), máquinas de póquer / pokies
 					(inglés australiano e inglés de Nueva Zelanda), o simplemente tragamonedas (Inglés americano),
 					es una máquina de juego de casino con tres o más carretes que giran cuando se presiona un botón.`,

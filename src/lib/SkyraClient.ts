@@ -43,7 +43,7 @@ import './extensions/SkyraGuild';
 import './schemas/Clients';
 import './schemas/Guilds';
 import './schemas/Users';
-import Banners from './schemas/Banners';
+import { BannerSchema } from './schemas/Banners';
 
 // Import setup files
 import './setup/PermissionsLevels';
@@ -135,7 +135,7 @@ export class SkyraClient extends KlasaClient {
 
 		this.gateways
 			.register(new GatewayStorage(this, Databases.Members))
-			.register(new GatewayStorage(this, Databases.Banners, { schema: Banners }))
+			.register(new GatewayStorage(this, Databases.Banners, { schema: BannerSchema }))
 			.register(new GatewayStorage(this, Databases.Giveaway))
 			.register(new GatewayStorage(this, Databases.Moderation))
 			.register(new GatewayStorage(this, Databases.Starboard))

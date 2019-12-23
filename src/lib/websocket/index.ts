@@ -6,10 +6,9 @@ import { enumerable } from '../util/util';
 
 import WebsocketUser from './WebsocketUser';
 import { CloseCodes } from './types';
+import { WSS_PORT } from '../../../config';
 
 // TODO (Magnaboy): Should we timeout connections? disconnect after X period?
-// TODO (Magnaboy): After the connection of a WebsocketUser is closed, is that class instance GC'd? should be
-
 
 export class WebsocketHandler {
 
@@ -21,7 +20,7 @@ export class WebsocketHandler {
 
 	public constructor(client: SkyraClient) {
 		this.client = client;
-		this.wss = new Server({ port: 565 });
+		this.wss = new Server({ port: WSS_PORT });
 
 		this.wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
 			// We've just gotten a new Websocket Connection
@@ -37,8 +36,7 @@ export class WebsocketHandler {
 			const websocketUser = new WebsocketUser(this.client, this.wss, ws, ip);
 			this.users.set(ip, websocketUser);
 
-
-			ws.on('close', () => {
+			ws.once('close', () => {
 				ws.removeAllListeners('message');
 				this.users.delete(ip);
 			});

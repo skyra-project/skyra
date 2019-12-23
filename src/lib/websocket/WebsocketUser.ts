@@ -84,15 +84,15 @@ export default class DashboardWebsocketUser {
 
 		switch (message.data.music_action) {
 			case MusicAction.SkipSong: {
-				await guild.music.skip().catch(null);
+				await guild.music.skip().catch(() => null);
 				break;
 			}
 			case MusicAction.PauseSong: {
-				await guild.music.pause().catch(null);
+				await guild.music.pause().catch(() => null);
 				break;
 			}
 			case MusicAction.ResumePlaying: {
-				await guild.music.resume().catch(null);
+				await guild.music.resume().catch(() => null);
 				break;
 			}
 		}

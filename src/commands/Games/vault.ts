@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 	public async show(message: KlasaMessage) {
 		const { money, vault } = await this.getVaultAndMoney(message);
 
-		return message.sendEmbed(this.buildEmbed(message, money, vault, undefined));
+		return message.sendEmbed(this.buildEmbed(message, money, vault));
 	}
 
 	private async getVaultAndMoney(message: KlasaMessage) {
@@ -88,7 +88,7 @@ export default class extends SkyraCommand {
 		} = message.language.tget('COMMAND_VAULT_EMBED_DATA');
 
 		let description = SHOW_DESCRIPTION;
-		if (coins) description = coins ? hasDeposited ? DEPOSITED_DESCRIPTION(coins) : WITHDREW_DESCRIPTION(coins) : SHOW_DESCRIPTION;
+		if (coins) description = hasDeposited ? DEPOSITED_DESCRIPTION(coins) : WITHDREW_DESCRIPTION(coins);
 
 		return new MessageEmbed()
 			.setColor(getColor(message))

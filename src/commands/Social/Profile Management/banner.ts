@@ -2,12 +2,10 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { Databases } from '../../../lib/types/constants/Constants';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { UserSettings } from '../../../lib/types/settings/UserSettings';
 import { Emojis, BrandingColors } from '../../../lib/util/constants';
 import { getColor } from '../../../lib/util/util';
-import { RawBannerSettings } from '../../../lib/types/settings/raw/RawBannerSettings';
 
 const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 
@@ -89,7 +87,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		const banners = await this.client.providers.default.getAll(Databases.Banners) as RawBannerSettings[];
+		const banners = await this.client.queries.fetchBanners();
 		const display = new UserRichDisplay(new MessageEmbed().setColor(BrandingColors.Primary));
 		for (const banner of banners) {
 			this.banners.set(banner.id, {

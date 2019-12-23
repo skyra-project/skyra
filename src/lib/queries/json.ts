@@ -9,6 +9,7 @@ import { RawModerationSettings } from '../types/settings/raw/RawModerationSettin
 import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
+import { RawBannerSettings } from '../types/settings/raw/RawBannerSettings';
 
 export class JsonCommonQuery implements CommonQuery {
 
@@ -86,6 +87,210 @@ export class JsonCommonQuery implements CommonQuery {
 		}
 
 		return Promise.all(updates);
+	}
+
+	public fetchBanners() {
+		// Since banners dont register in the JSON provider, which is used for development, just return a subset of the banners
+		return new Promise<RawBannerSettings[]>(resolve => {
+			resolve([
+				{
+					id: '0w1p01',
+					group: 'wave1',
+					title: 'EVA aesthetic 1',
+					author_id: '209153432265687041',
+					price: 5000
+				  },
+				  {
+					id: '0w1p02',
+					group: 'wave1',
+					title: 'EVA aesthetic 2',
+					author_id: '209153432265687041',
+					price: 5001
+				  },
+				  {
+					id: '0w1p03',
+					group: 'wave1',
+					title: 'Wanderer',
+					author_id: '127558963662159872',
+					price: 4800
+				  },
+				  {
+					id: '0w1p04',
+					group: 'wave1',
+					title: 'EVA aesthetic 3',
+					author_id: '209153432265687041',
+					price: 5000
+				  },
+				  {
+					id: '0w1p05',
+					group: 'wave1',
+					title: 'Mandelbrot',
+					author_id: '155926562930294785',
+					price: 5200
+				  },
+				  {
+					id: '0w1p06',
+					group: 'wave1',
+					title: 'Julia',
+					author_id: '155926562930294785',
+					price: 5200
+				  },
+				  {
+					id: '0w1p07',
+					group: 'wave1',
+					title: 'Cyberspace',
+					author_id: '197436034554920961',
+					price: 5800
+				  },
+				  {
+					id: '0w1p08',
+					group: 'wave1',
+					title: 'Skycoder',
+					author_id: '197436034554920961',
+					price: 5800
+				  },
+				  {
+					id: '0w1p09',
+					group: 'wave1',
+					title: 'Sardior 1',
+					author_id: '211057589801320450',
+					price: 5800
+				  },
+				  {
+					id: '0w1p10',
+					group: 'wave1',
+					title: 'Sardior 2',
+					author_id: '211057589801320450',
+					price: 5800
+				  },
+				  {
+					id: '0w1p11',
+					group: 'wave1',
+					title: 'Bayonetta',
+					author_id: '197436034554920961',
+					price: 5800
+				  },
+				  {
+					id: '0w1p12',
+					group: 'wave1',
+					title: 'Drawn',
+					author_id: '155926562930294785',
+					price: 4800
+				  },
+				  {
+					id: '0w1p13',
+					group: 'wave1',
+					title: '100 Cars',
+					author_id: '155926562930294785',
+					price: 5000
+				  },
+				  {
+					id: '0w1p14',
+					group: 'wave1',
+					title: 'W00',
+					author_id: '210992205853229056',
+					price: 3600
+				  },
+				  {
+					id: '0w1p15',
+					group: 'wave1',
+					title: 'W01',
+					author_id: '210992205853229056',
+					price: 3600
+				  },
+				  {
+					id: '0w1p16',
+					group: 'wave1',
+					title: 'Pixel Fade 1',
+					author_id: '136583501708394496',
+					price: 3600
+				  },
+				  {
+					id: '0w1p17',
+					group: 'wave1',
+					title: 'Kyranese',
+					author_id: '209176350035148800',
+					price: 3600
+				  },
+				  {
+					id: '0w1p18',
+					group: 'wave1',
+					title: 'W02',
+					author_id: '210992205853229056',
+					price: 4000
+				  },
+				  {
+					id: '0w1p19',
+					group: 'wave1',
+					title: 'W03',
+					author_id: '210992205853229056',
+					price: 3600
+				  },
+				  {
+					id: '0w1p20',
+					group: 'wave1',
+					title: 'W04',
+					author_id: '210992205853229056',
+					price: 3800
+				  },
+				  {
+					id: '0w1p21',
+					group: 'wave1',
+					title: 'W05',
+					author_id: '210992205853229056',
+					price: 3800
+				  },
+				  {
+					id: '0w1p22',
+					group: 'wave1',
+					title: 'Hypebeast',
+					author_id: '202181708328468480',
+					price: 3600
+				  },
+				  {
+					id: '0w1p23',
+					group: 'wave1',
+					title: 'Callie',
+					author_id: '209176350035148800',
+					price: 4100
+				  },
+				  {
+					id: '0w1p24',
+					group: 'wave1',
+					title: 'Marie',
+					author_id: '209176350035148800',
+					price: 4100
+				  },
+				  {
+					id: '0w1p25',
+					group: 'wave1',
+					title: 'Space is Rad',
+					author_id: '215446965503262731',
+					price: 3800
+				  },
+				  {
+					id: '0w1p26',
+					group: 'wave1',
+					title: 'Colorful Papers 1',
+					author_id: '195492461148241920',
+					price: 4000
+				  },
+				  {
+					id: '0w1p27',
+					group: 'wave1',
+					title: 'Colorful Papers 2',
+					author_id: '195492461148241920',
+					price: 4000
+				  },
+				  {
+					id: '0w1p28',
+					group: 'wave1',
+					title: 'papa bless',
+					author_id: '155926562930294785',
+					price: 3600
+				  }
+			]);
+		});
 	}
 
 	public async fetchDashboardUser(id: string) {

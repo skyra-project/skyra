@@ -2572,11 +2572,13 @@ export default class extends Language {
 		COMMAND_VAULT_EMBED_DATA: {
 			DEPOSITED_DESCRIPTION: coins => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
 			WITHDREW_DESCRIPTION: coins => `Withdrew ${coins} ${SHINY}\ from your vault.`,
+			SHOW_DESCRIPTION: 'Your current account and vault balance are:',
 			ACCOUNT_MONEY: 'Account Money',
 			ACCOUNT_VAULT: 'Account Vault'
 		},
-		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money}${SHINY}`,
-		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `I am sorry, but you do not have enough stored in your vault to make that withdrawel! Your current vault balance is ${vault}${SHINY}`,
+		COMMAND_VAULT_INVALID_COINS: 'I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!',
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money} ${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is ${vault} ${SHINY}`,
 		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Gamble your shinies by spinning a wheel of fortune',
 		COMMAND_WHEELOFFORTUNE_EXTENDED: builder.display('wheeloffortune', {
 			extendedHelp: `You can lose 0.1, 0.2, 0.3 or 0.5 times your input
@@ -2588,7 +2590,7 @@ export default class extends Language {
 			NEW: 'New'
 		},
 		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: won => won ? 'You won' : 'You lost',
-		GAMES_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
+		GAMES_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money} ${SHINY}`,
 		GAMES_CANNOT_HAVE_NEGATIVE_MONEY: `You cannot have a negative amount of ${SHINY}s`,
 
 		/**

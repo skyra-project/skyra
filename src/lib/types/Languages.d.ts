@@ -989,9 +989,11 @@ export interface LanguageKeys {
 	COMMAND_VAULT_EMBED_DATA: {
 		DEPOSITED_DESCRIPTION: (coins: number) => string;
 		WITHDREW_DESCRIPTION: (coins: number) => string;
+		SHOW_DESCRIPTION: string;
 		ACCOUNT_MONEY: string;
 		ACCOUNT_VAULT: string;
 	};
+	COMMAND_VAULT_INVALID_COINS: string;
 	COMMAND_VAULT_NOT_ENOUGH_MONEY: (money: number) => string;
 	COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: (vault: number) => string;
 	GIVEAWAY_TIME: string;

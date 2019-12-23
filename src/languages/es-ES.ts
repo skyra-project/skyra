@@ -2554,9 +2554,11 @@ export default class extends Language {
 		COMMAND_VAULT_EMBED_DATA: {
 			DEPOSITED_DESCRIPTION: coins => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
 			WITHDREW_DESCRIPTION: coins => `Retiró ${coins} ${SHINY} de su bóveda.`,
+			SHOW_DESCRIPTION: 'Su cuenta corriente y saldo de caja fuerte son:',
 			ACCOUNT_MONEY: 'Dinero de la cuenta',
 			ACCOUNT_VAULT: 'Bóveda de cuenta'
 		},
+		COMMAND_VAULT_INVALID_COINS: 'Lo siento, pero esa es una cantidad inválida de monedas. ¡Asegúrese de que sea un número positivo!',
 		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
 		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
 		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Juega con tus shinies haciendo girar una rueda de la fortuna.',

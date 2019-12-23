@@ -2477,12 +2477,11 @@ export default class extends Language {
 		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_HIGHERLOWER_DESCRIPTION: 'Comenzar un juego de Mayor/Menor',
 		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
-			extendedHelp: `Mayor/Menor es un juego de suerte. Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis 
+			extendedHelp: `Mayor/Menor es un juego de suerte. Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis
 			Sus ganancias aumentan a medida que avanza en las rondas, y puede retirar dinero en cualquier momento presionando el 💰 reacción emoji .
 			¡Pero ten cuidado! ¡Cuanto más lejos vayas, más posibilidades tendrás de perderlo todo!`
 		}),
 		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Comenzar un nuevo juego de Mayor/Meno`,
-		COMMAND_HIGHERLOWER_TIMEOUT: `Tiempo de espera agotado. Cobro de ganancias....`,
 		COMMAND_HIGHERLOWER_NEWROUND: `Bien. Comenzando una nueva ronda`,
 		COMMAND_HIGHERLOWER_EMBED: {
 			TITLE: turn => `¿Mayor o menor? | Turno ${turn}`,
@@ -2503,7 +2502,6 @@ export default class extends Language {
 			TITLE: 'Juego cancelado por elección',
 			DESCRIPTION: username => `Gracias por jugar, ¡${username}! Estaré aquí por si quieres continuar.`
 		},
-		COMMAND_HIGHERLOWER_CASHOUT_INIT: 'Sacando algo de efectivo... Por favor espere.',
 		COMMAND_HIGHERLOWER_CASHOUT: amount => `${amount} ${SHINY} fueron directo a a su cuenta. ¡Espero que haya sido divertido!`,
 		COMMAND_HUNGERGAMES_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
 		COMMAND_HUNGERGAMES_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
@@ -2517,7 +2515,7 @@ export default class extends Language {
 		}),
 		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
 		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
-			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico), 
+			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico),
 					puggy (inglés escocés), máquinas tragamonedas (inglés canadiense y americano), máquinas de póquer / pokies
 					(inglés australiano e inglés de Nueva Zelanda), o simplemente tragamonedas (Inglés americano),
 					es una máquina de juego de casino con tres o más carretes que giran cuando se presiona un botón.`,

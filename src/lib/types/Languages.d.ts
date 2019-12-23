@@ -932,7 +932,6 @@ export interface LanguageKeys {
 	COMMAND_HIGHERLOWER_DESCRIPTION: string;
 	COMMAND_HIGHERLOWER_EXTENDED: string;
 	COMMAND_HIGHERLOWER_LOADING: string;
-	COMMAND_HIGHERLOWER_TIMEOUT: string;
 	COMMAND_HIGHERLOWER_NEWROUND: string;
 	COMMAND_HIGHERLOWER_EMBED: {
 		TITLE: (turn: number) => string;
@@ -953,7 +952,6 @@ export interface LanguageKeys {
 		TITLE: string;
 		DESCRIPTION: (username: string) => string;
 	};
-	COMMAND_HIGHERLOWER_CASHOUT_INIT: string;
 	COMMAND_HIGHERLOWER_CASHOUT: (amount: number) => string;
 	COMMAND_HUNGERGAMES_DESCRIPTION: string;
 	COMMAND_HUNGERGAMES_EXTENDED: string;

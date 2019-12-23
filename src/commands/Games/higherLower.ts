@@ -15,12 +15,6 @@ const enum HigherLowerReactions {
 	Cashout = '%F0%9F%92%B0' // 💰
 }
 
-const enum EndingAction {
-	Play,
-	Stop,
-	Timeout
-}
-
 export default class extends SkyraCommand {
 
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
@@ -35,7 +29,7 @@ export default class extends SkyraCommand {
 			cooldown: 7,
 			description: language => language.tget('COMMAND_HIGHERLOWER_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_HIGHERLOWER_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'USE_EXTERNAL_EMOJIS'],
+			requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000>'
 		});
@@ -76,26 +70,22 @@ export default class extends SkyraCommand {
 			number: this.random(0),
 			wager,
 			emojis: this.kFirstReactionArray,
-			callback: null
+			callback: null,
+			color: getColor(message)
 		};
 
 		while (game.running) {
-			await game.response.reactions.removeAll();
 			// Send the embed
 			const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_EMBED');
 			await game.response.edit(null, new MessageEmbed()
-				.setColor(getColor(message))
+				.setColor(game.color)
 				.setTitle(TITLE(game.turn))
 				.setDescription(DESCRIPTION(game.number))
 				.setFooter(FOOTER));
 
 			// Add the options
-			if (game.turn > 1) game.emojis = this.kReactionArray;
-			for (const emoji of game.emojis) {
-				await game.response.react(emoji);
-			}
-
-			const emoji = await this.awaitReactionAction(game);
+			const emojis = game.turn > 1 ? this.kReactionArray : this.kFirstReactionArray;
+			const emoji = await this.listenForReaction(game, emojis);
 			if (emoji === null) break;
 
 			// Main game logic (at last)
@@ -120,96 +110,105 @@ export default class extends SkyraCommand {
 
 			if (game.running) game.turn++;
 		}
+
+		if (game.response.reactions.size > 0) await game.response.reactions.removeAll();
+		return game.response;
+	}
+
+	private async listenForReaction(game: HigherLowerGameData, emojis: readonly HigherLowerReactions[]) {
+		if (game.response.reactions.size > 0) await game.response.reactions.removeAll();
+
+		game.emojis = emojis;
+		for (const emoji of game.emojis) {
+			await game.response.react(emoji);
+		}
+
+		return new Promise<HigherLowerReactions | null>(res => {
+			game.llrc.setTime(this.kTimer);
+			game.callback = res;
+		});
 	}
 
 	private async win(game: HigherLowerGameData, message: KlasaMessage) {
 		const { language } = message;
-		await game.response.reactions.removeAll();
 
 		// TODO (Quantum): Implement Winning event for InfluxDB
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
 		await game.response.edit(null, new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(game.color)
 			.setTitle(TITLE)
 			.setDescription(DESCRIPTION(this.calculateWinnings(game.wager, game.turn), game.number))
 			.setFooter(FOOTER));
 
 		// Ask the user whether they want to continue or cashout
-		game.emojis = this.kWinReactionArray;
-		for (const emoji of game.emojis) {
-			await game.response.react(emoji);
-		}
-
-		const reaction = await this.awaitReactionAction(game);
-		await game.response.reactions.removeAll();
-
-		const action = reaction === null
-			? EndingAction.Timeout
-			: reaction === HigherLowerReactions.Ok
-				? EndingAction.Play
-				: EndingAction.Stop;
+		const emoji = await this.listenForReaction(game, this.kWinReactionArray);
 
 		// Decide whether we timeout, stop, or continue
-		switch (action) {
-			case EndingAction.Timeout:
-				await game.response.edit(language.tget('COMMAND_HIGHERLOWER_TIMEOUT'), { embed: null });
-			case EndingAction.Stop:
+		switch (emoji) {
+			case null:
+				await this.finish(game);
+				await this.cashout(message, game);
+				break;
+			case HigherLowerReactions.Ok:
 				await this.end(game, message, true);
 				break;
-			case EndingAction.Play:
+			case HigherLowerReactions.Cancel:
 				await game.response.edit(language.tget('COMMAND_HIGHERLOWER_NEWROUND'), { embed: null });
 				break;
+			default:
+				throw new Error('Unreachable.');
 		}
-		return action === EndingAction.Play;
+
+		return emoji === HigherLowerReactions.Ok;
 	}
 
 	private async loss(game: HigherLowerGameData, message: KlasaMessage) {
 		// TODO (Quantum): Implement losing event to InfluxDB
-		const { number, wager, turn, response } = game;
-		await response.reactions.removeAll();
-		let losses = wager;
+		let losses = game.wager;
 
 		// There's a 0.1% chance that a user would lose now only the wager, but also what they would've won. Muahaha
 		if ((Math.random()) < 0.001) {
-			losses += this.calculateWinnings(wager, turn - 1);
+			losses += this.calculateWinnings(game.wager, game.turn - 1);
 			await message.author.settings.decrease(UserSettings.Money, losses);
 		}
 
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
 		await game.response.edit(null, new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(game.color)
 			.setTitle(TITLE)
-			.setDescription(DESCRIPTION(number, losses))
+			.setDescription(DESCRIPTION(game.number, losses))
 			.setFooter(FOOTER));
 		return false;
 	}
 
 	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout: boolean) {
 		// Remove all the reactions and end the LLRC
-		await game.response.reactions.removeAll();
-		game.llrc.end();
+		await this.finish(game);
 
 		// Should we need to cash out, proceed to doing that
-		if (cashout) {
-			const { turn, wager } = game;
-			// Let the user know, and nullify the embed
-			await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT_INIT'), { embed: null });
-
-			// Calculate and deposit winnings for that game
-			const winnings = this.calculateWinnings(wager, turn - 1);
-			await message.author.settings.increase(UserSettings.Money, winnings);
-
-			// Let the user know we're done!
-			await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings));
-			return;
-		}
+		if (cashout) return this.cashout(message, game);
 
 		// Say bye!
 		const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
 		await game.response.edit(null, new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(game.color)
 			.setTitle(TITLE)
 			.setDescription(DESCRIPTION(message.author.username)));
+	}
+
+	private async cashout(message: KlasaMessage, game: HigherLowerGameData) {
+		const { turn, wager } = game;
+
+		// Calculate and deposit winnings for that game
+		const winnings = this.calculateWinnings(wager, turn - 1);
+		await message.author.settings.increase(UserSettings.Money, winnings);
+
+		// Let the user know we're done!
+		await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings), { embed: null });
+	}
+
+	private async finish(game: HigherLowerGameData) {
+		game.llrc.end();
 	}
 
 	private resolveCollectedEmoji(message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
@@ -226,13 +225,6 @@ export default class extends SkyraCommand {
 			: null;
 	}
 
-	private awaitReactionAction(game: HigherLowerGameData) {
-		return new Promise<HigherLowerReactions | null>(res => {
-			game.llrc.setTime(this.kTimer);
-			game.callback = res;
-		});
-	}
-
 	/**
 	 * @description Generates a random number between 0 and 100
 	 * @param previous The number we shouldn't get (usually the number we're comparing against
@@ -242,8 +234,8 @@ export default class extends SkyraCommand {
 			return Math.ceil(Math.random() * 100);
 		}
 
-		const higher = Math.random() > 0.5;
-		return higher
+		const lower = Math.random() > 0.5;
+		return lower
 			? Math.ceil(Math.random() * previous) - 1
 			: Math.ceil(Math.random() * (100 - previous)) + previous;
 	}
@@ -264,4 +256,5 @@ interface HigherLowerGameData {
 	wager: number;
 	emojis: readonly HigherLowerReactions[];
 	callback: ((value: HigherLowerReactions | null) => void) | null;
+	color: number;
 }

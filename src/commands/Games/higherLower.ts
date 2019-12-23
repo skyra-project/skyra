@@ -146,14 +146,14 @@ export default class extends SkyraCommand {
 		// Decide whether we timeout, stop, or continue
 		switch (emoji) {
 			case null:
-				await this.finish(game);
+				game.llrc.end();
 				await this.cashout(message, game);
 				break;
 			case HigherLowerReactions.Ok:
-				await this.end(game, message, true);
+				await game.response.edit(language.tget('COMMAND_HIGHERLOWER_NEWROUND'), { embed: null });
 				break;
 			case HigherLowerReactions.Cancel:
-				await game.response.edit(language.tget('COMMAND_HIGHERLOWER_NEWROUND'), { embed: null });
+				await this.end(game, message, true);
 				break;
 			default:
 				throw new Error('Unreachable.');
@@ -166,8 +166,8 @@ export default class extends SkyraCommand {
 		// TODO (Quantum): Implement losing event to InfluxDB
 		let losses = game.wager;
 
-		// There's a 0.1% chance that a user would lose now only the wager, but also what they would've won. Muahaha
-		if ((Math.random()) < 0.001) {
+		// There's a 0.001% chance that a user would lose now only the wager, but also what they would've won in one round less.
+		if ((Math.random()) < 0.0001) {
 			losses += this.calculateWinnings(game.wager, game.turn - 1);
 			await message.author.settings.decrease(UserSettings.Money, losses);
 		}
@@ -182,8 +182,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout: boolean) {
-		// Remove all the reactions and end the LLRC
-		await this.finish(game);
+		// End the LLRC
+		game.llrc.end();
 
 		// Should we need to cash out, proceed to doing that
 		if (cashout) return this.cashout(message, game);
@@ -200,15 +200,11 @@ export default class extends SkyraCommand {
 		const { turn, wager } = game;
 
 		// Calculate and deposit winnings for that game
-		const winnings = this.calculateWinnings(wager, turn - 1);
+		const winnings = this.calculateWinnings(wager, turn);
 		await message.author.settings.increase(UserSettings.Money, winnings);
 
 		// Let the user know we're done!
 		await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings), { embed: null });
-	}
-
-	private async finish(game: HigherLowerGameData) {
-		game.llrc.end();
 	}
 
 	private resolveCollectedEmoji(message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
@@ -234,7 +230,7 @@ export default class extends SkyraCommand {
 			return Math.ceil(Math.random() * 100);
 		}
 
-		const lower = Math.random() > 0.5;
+		const lower = previous === 100 || Math.random() > 0.5;
 		return lower
 			? Math.ceil(Math.random() * previous) - 1
 			: Math.ceil(Math.random() * (100 - previous)) + previous;

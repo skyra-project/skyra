@@ -87,7 +87,11 @@ export default class extends SkyraCommand {
 			SHOW_DESCRIPTION
 		} = message.language.tget('COMMAND_VAULT_EMBED_DATA');
 
-		const description = coins ? hasDeposited ? DEPOSITED_DESCRIPTION(coins) : WITHDREW_DESCRIPTION(coins) : SHOW_DESCRIPTION;
+		const description = coins
+			? hasDeposited
+				? DEPOSITED_DESCRIPTION(coins)
+				: WITHDREW_DESCRIPTION(coins)
+			: SHOW_DESCRIPTION;
 
 		return new MessageEmbed()
 			.setColor(getColor(message))

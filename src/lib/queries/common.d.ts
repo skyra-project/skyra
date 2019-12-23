@@ -4,7 +4,6 @@ import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
-import { RawBannerSettings } from '../types/settings/raw/RawBannerSettings';
 
 export interface CommonQuery {
 	deleteGiveaway(guildID: string, messageID: string): Promise<unknown>;
@@ -16,7 +15,6 @@ export interface CommonQuery {
 	deleteTwitchStreamSubscription(streamerID: string, guildID: string): Promise<boolean>;
 	deleteTwitchStreamSubscriptions(streamers: readonly string[]): Promise<unknown>;
 	purgeTwitchStreamGuildSubscriptions(guildID: string): Promise<UpdatePurgeTwitchStreamReturning[]>;
-	fetchBanners(): Promise<RawBannerSettings[]>;
 	fetchDashboardUser(id: string): Promise<DashboardUser | null>;
 	fetchGiveawaysFromGuilds(guildIDs: readonly string[]): Promise<RawGiveawaySettings[]>;
 	fetchLeaderboardGlobal(): Promise<LeaderboardEntry[]>;

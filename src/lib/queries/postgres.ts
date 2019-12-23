@@ -8,7 +8,6 @@ import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
 import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { Databases } from '../types/constants/Constants';
 import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
-import { RawBannerSettings } from '../types/settings/raw/RawBannerSettings';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -114,12 +113,6 @@ export class PostgresCommonQuery implements CommonQuery {
 				$1 = ANY(guild_ids)
 			RETURNING id, guild_ids;
 		`, [guildID]);
-	}
-
-	public async fetchBanners() {
-		return this.provider.runAll(/* sql */`
-		SELECT *
-		FROM banners`) as Promise<RawBannerSettings[]>;
 	}
 
 	public async fetchDashboardUser(id: string) {

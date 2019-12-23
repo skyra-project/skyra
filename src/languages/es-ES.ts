@@ -2487,7 +2487,7 @@ export default class extends Language {
 		}),
 		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
 		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
-			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico), 
+			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico),
 					puggy (inglés escocés), máquinas tragamonedas (inglés canadiense y americano), máquinas de póquer / pokies
 					(inglés australiano e inglés de Nueva Zelanda), o simplemente tragamonedas (Inglés americano),
 					es una máquina de juego de casino con tres o más carretes que giran cuando se presiona un botón.`,
@@ -2526,9 +2526,11 @@ export default class extends Language {
 		COMMAND_VAULT_EMBED_DATA: {
 			DEPOSITED_DESCRIPTION: coins => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
 			WITHDREW_DESCRIPTION: coins => `Retiró ${coins} ${SHINY} de su bóveda.`,
+			SHOW_DESCRIPTION: 'Su cuenta corriente y saldo de caja fuerte son:',
 			ACCOUNT_MONEY: 'Dinero de la cuenta',
 			ACCOUNT_VAULT: 'Bóveda de cuenta'
 		},
+		COMMAND_VAULT_INVALID_COINS: 'Lo siento, pero esa es una cantidad inválida de monedas. ¡Asegúrese de que sea un número positivo!',
 		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
 		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
 		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Juega con tus shinies haciendo girar una rueda de la fortuna.',

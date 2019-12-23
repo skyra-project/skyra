@@ -19,7 +19,7 @@ export const enum Time {
 
 export const enum Emojis {
 	GreenTick = '<:greenTick:637706251253317669>',
-	Loading = '<a:SkyraLoading:497584859045429250>',
+	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
 	Shiny = '<:shiny:612364146792726539>'
 }

@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, Settings } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { UserSettings } from '../../lib/types/settings/UserSettings';
 import { getColor } from '../../lib/util/util';
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 		const newMoney = money - coins;
 		const newVault = vault + coins;
 
-		await settings.update([[UserSettings.Money, newMoney], [UserSettings.Vault, newVault]]);
+		await this.updateBalance(newMoney, newVault, settings);
 
 		return message.sendEmbed(this.buildEmbed(message, newMoney, newVault, coins, true));
 	}
@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 		const newMoney = money + coins;
 		const newVault = vault - coins;
 
-		await settings.update([[UserSettings.Money, newMoney], [UserSettings.Vault, newVault]]);
+		await this.updateBalance(newMoney, newVault, settings);
 
 		return message.sendEmbed(this.buildEmbed(message, newMoney, newVault, coins));
 	}
@@ -74,6 +74,10 @@ export default class extends SkyraCommand {
 		const vault = settings.get(UserSettings.Vault);
 
 		return { money, vault, settings };
+	}
+
+	private updateBalance(money: number, vault: number, settings: Settings) {
+		return settings.update([[UserSettings.Money, money], [UserSettings.Vault, vault]]);
 	}
 
 	private buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {

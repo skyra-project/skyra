@@ -126,7 +126,7 @@ export default class extends SkyraCommand {
 		const { language } = message;
 		await game.response.reactions.removeAll();
 
-		// TODO(Quantum): Implement Winning event for InfluxDB
+		// TODO (Quantum): Implement Winning event for InfluxDB
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
 		await game.response.edit(null, new MessageEmbed()
 			.setColor(getColor(message))

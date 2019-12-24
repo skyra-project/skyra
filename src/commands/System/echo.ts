@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 		const options: MessageOptions = {};
 		if (attachment) options.files = [{ attachment }];
 
-		await channel.send(content.length, options);
+		await channel.send(content, options);
 		if (channel !== message.channel) await message.alert(`Message successfully sent to ${channel}`);
 
 		return message;

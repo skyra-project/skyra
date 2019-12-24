@@ -1,15 +1,15 @@
-import { Canvas } from 'canvas-constructor';
 import { Image } from 'canvas';
+import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
 import { ClientSettings } from '../../types/settings/ClientSettings';
 import { UserSettings } from '../../types/settings/UserSettings';
+import { socialFolder } from '../constants';
 import { loadImage } from '../util';
-import { assetsFolder } from '../constants';
 import { EconomyTransactionAction, EconomyTransactionReason } from '../../types/influxSchema/Economy';
 import { Events } from '../../types/Enums';
 
-enum Icons {
+const enum Icons {
 	Cherry,
 	Bar,
 	Lemon,
@@ -72,26 +72,18 @@ const kPositions = [0, 0, 0];
 
 export class Slotmachine {
 
-	/**
-	 * The amount bet
-	 */
+	/** The amount bet */
 	public amount: number;
 
-	/**
-	 * The winnings
-	 */
+	/** The winnings */
 	public winnings = 0;
 
-	/**
-	 * The player
-	 */
+	/** The player */
 	public get player() {
 		return this.message.author;
 	}
 
-	/**
-	 * The message that ran this instance
-	 */
+	/** The message that ran this instance */
 	public message: Message;
 
 	public constructor(message: Message, amount: number) {
@@ -113,32 +105,36 @@ export class Slotmachine {
 
 		const money = settings.get(UserSettings.Money);
 		const amount = this.winnings === 0 ? money - this.amount : money + (this.winnings * this.boost);
-		const change = this.winnings === 0 ? this.amount : this.winnings * this.boost;
-		const action = this.winnings === 0 ? EconomyTransactionAction.Remove : EconomyTransactionAction.Add;
 		if (amount < 0) throw 'You cannot have negative money.';
 		await settings.update(UserSettings.Money, amount);
-		this.player.client.emit(Events.MoneyTransaction, this.player, change, money, action, EconomyTransactionReason.Gamble);
 		return this.render(rolls);
 	}
 
-	public async render(rolls: readonly Icons[]) {
-		const win = this.winnings > 0;
-		const length = win ? 300 : 150;
+	public async render(rolls: readonly Icons[], darkTheme: boolean) {
+		const playerHasWon = this.winnings > 0;
 
-		const canvas = new Canvas(length, 150)
+		const canvas = new Canvas(300, 150)
 			.save()
 			.setShadowColor('rgba(51, 51, 51, 0.38)')
 			.setShadowBlur(5)
-			.setColor('#FFFFFF')
-			.createBeveledClip(4, 4, length - 8, 142, 5)
+			.setColor(darkTheme ? Slotmachine.DARK_COLOUR : Slotmachine.LIGHT_COLOUR)
+			.createBeveledClip(4, 4, 300 - 8, 142, 5)
 			.fill()
 			.restore()
 			.save()
-			.setColor(win ? '#00C853' : '#C62828')
-			.setShadowColor(win ? 'rgba(64, 224, 15, 0.4)' : 'rgba(237, 29, 2, 0.4)')
+			.setColor(playerHasWon ? Slotmachine.SUCCESS_COLOUR : Slotmachine.FAIL_COLOUR)
+			.setShadowColor(playerHasWon ? 'rgba(64, 224, 15, 0.4)' : 'rgba(237, 29, 2, 0.4)')
 			.setShadowBlur(4)
 			.addRect(54, 54, 2, 38)
 			.addRect(96, 54, 2, 38)
+			.restore()
+			.save()
+			.setColor(darkTheme ? Slotmachine.LIGHT_COLOUR : Slotmachine.DARK_COLOUR)
+			.setTextFont('30px RobotoLight')
+			.setTextAlign('right')
+			.addText(this.message.language.tget('COMMAND_SLOTMACHINE_CANVAS_TEXT', playerHasWon), 280, 60)
+			.addText(playerHasWon ? (this.winnings - this.amount).toString() : (this.winnings + this.amount).toString(), 230, 100)
+			.addImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();
 
 		await Promise.all(rolls.map((value, index) => new Promise(resolve => {
@@ -147,15 +143,6 @@ export class Slotmachine {
 			canvas.addImage(Slotmachine.images.ICON!, x, y, kIconSize, kIconSize, coordinate.x, coordinate.y, kIconSize, kIconSize);
 			resolve();
 		})));
-
-		if (win) {
-			canvas
-				.setTextFont('30px RobotoLight')
-				.setTextAlign('right')
-				.addText('You won', 280, 60)
-				.addText(this.winnings.toString(), 250, 100)
-				.addImage(Slotmachine.images.SHINY!, 260, 68, 20, 39);
-		}
 
 		return canvas.toBufferAsync();
 	}
@@ -191,6 +178,18 @@ export class Slotmachine {
 		return position;
 	}
 
+	/** Dark colour in the attachment */
+	public static DARK_COLOUR = '#202225';
+
+	/** Light colour in the attachment */
+	public static LIGHT_COLOUR = '#FFFFFF';
+
+	/** Success colour in the attachment */
+	public static SUCCESS_COLOUR = '#00C853';
+
+	/** Failure colour in the attachment */
+	public static FAIL_COLOUR = '#C62828';
+
 	public static images = Object.seal<SlotmachineAssets>({
 		ICON: null,
 		SHINY: null
@@ -198,8 +197,8 @@ export class Slotmachine {
 
 	public static async init(): Promise<void> {
 		const [icon, shiny] = await Promise.all([
-			loadImage(join(assetsFolder, 'images', 'social', 'sm-icons.png')),
-			loadImage(join(assetsFolder, 'images', 'social', 'shiny-icon.png'))
+			loadImage(join(socialFolder, 'sm-icons.png')),
+			loadImage(join(socialFolder, 'shiny-icon.png'))
 		]);
 		Slotmachine.images.ICON = icon;
 		Slotmachine.images.SHINY = shiny;

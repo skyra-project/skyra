@@ -10,6 +10,7 @@ export default class extends SkyraCommand {
 			aliases: ['sniped'],
 			description: language => language.tget('COMMAND_SNIPE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SNIPE_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
 	}

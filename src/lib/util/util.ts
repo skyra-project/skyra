@@ -9,7 +9,7 @@ import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { CLIENT_SECRET } from '../../../config';
 import ApiRequest from '../structures/api/ApiRequest';
 import ApiResponse from '../structures/api/ApiResponse';
-import { APIEmojiData, APIUserData } from '../types/DiscordAPI';
+import { APIUserData } from '../types/DiscordAPI';
 import { Events } from '../types/Enums';
 import { GuildSettings } from '../types/settings/GuildSettings';
 import { UserSettings } from '../types/settings/UserSettings';
@@ -17,7 +17,6 @@ import { UserTag } from './Cache/UserTags';
 import { BrandingColors, Time } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
-import { LLRCDataEmoji } from './LongLivingReactionCollector';
 import { api } from './Models/Api';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
@@ -107,7 +106,7 @@ export function announcementCheck(message: Message) {
  * Resolve an emoji
  * @param emoji The emoji to resolve
  */
-export function resolveEmoji(emoji: string | APIEmojiData | LLRCDataEmoji) {
+export function resolveEmoji(emoji: string | { animated: boolean; name: string; id: string | null }) {
 	if (typeof emoji === 'string') {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;

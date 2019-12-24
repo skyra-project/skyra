@@ -101,23 +101,23 @@ export class ModerationManagerEntry {
 	}
 
 	public get appealType() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Appeal) === Moderation.TypeMetadata.Appeal;
+		return (this.type & Moderation.TypeMetadata.Appeal) === Moderation.TypeMetadata.Appeal;
 	}
 
 	public get temporaryType() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Temporary) === Moderation.TypeMetadata.Temporary;
+		return (this.type & Moderation.TypeMetadata.Temporary) === Moderation.TypeMetadata.Temporary;
 	}
 
 	public get temporaryFastType() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Fast) === Moderation.TypeMetadata.Fast;
+		return (this.type & Moderation.TypeMetadata.Fast) === Moderation.TypeMetadata.Fast;
 	}
 
 	public get invalidated() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Invalidated) === Moderation.TypeMetadata.Invalidated;
+		return (this.type & Moderation.TypeMetadata.Invalidated) === Moderation.TypeMetadata.Invalidated;
 	}
 
 	public get appealable() {
-		return Moderation.metadata.has(this.type | Moderation.TypeMetadata.Appeal);
+		return !this.appealType && Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appeal);
 	}
 
 	public get temporable() {

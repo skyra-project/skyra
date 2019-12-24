@@ -43,6 +43,7 @@ import './extensions/SkyraGuild';
 import './schemas/Clients';
 import './schemas/Guilds';
 import './schemas/Users';
+import { BannerSchema } from './schemas/Banners';
 
 // Import setup files
 import './setup/PermissionsLevels';
@@ -53,6 +54,7 @@ import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
 import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
+import { WebsocketHandler } from './websocket';
 import { SchemaMoneyTransaction, SchemaMoneyPayment } from './schemas/Economy';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
@@ -130,12 +132,14 @@ export class SkyraClient extends KlasaClient {
 		.on('error', (error, client) => { this.emit(Events.Error, `${r} Error from ${client.name}`, error); })
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
+	public websocket = new WebsocketHandler(this);
+
 	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));
 
 		this.gateways
 			.register(new GatewayStorage(this, Databases.Members))
-			.register(new GatewayStorage(this, Databases.Banners))
+			.register(new GatewayStorage(this, Databases.Banners, { schema: BannerSchema }))
 			.register(new GatewayStorage(this, Databases.Giveaway))
 			.register(new GatewayStorage(this, Databases.Moderation))
 			.register(new GatewayStorage(this, Databases.Starboard))

@@ -16,6 +16,7 @@ export const ENABLE_POSTGRES = 'ENABLE_POSTGRES' in process.env ? process.env.EN
 export const ENABLE_INFLUX = 'ENABLE_INFLUX' in process.env ? process.env.ENABLE_INFLUX === 'true' : !DEV;
 export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
+export const WSS_PORT = 565;
 
 export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
@@ -165,6 +166,7 @@ export const TOKENS = {
 	NINTENDO_ID: 'U3B6GR4UA3',
 	NINTENDO_KEY: '9a20c93440cf63cf1a7008d75f7438bf',
 	THEMOVIEDATABASE_KEY: '',
+	TIMEZONEDB_KEY: '',
 	TWITCH_CLIENT_ID: '',
 	TWITCH_SECRET: '',
 	TWITCH_WEBHOOK_SECRET: '',

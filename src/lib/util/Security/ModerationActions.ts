@@ -370,8 +370,11 @@ export class ModerationActions {
 			try {
 				const target = await this.guild.client.users.fetch(options.user_id);
 				const { title } = Moderation.metadata.get(options.type) || kUnknownTypeTitle;
-				if (sendOptions.moderator) await target.sendLocale('COMMAND_MODERATION_DM', [this.guild.name, title, options.reason, sendOptions.moderator]).catch(() => null);
-				else await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [this.guild.name, title, options.reason]).catch(() => null);
+				if (sendOptions.moderator) {
+					await target.sendLocale('COMMAND_MODERATION_DM', [this.guild.name, title, options.reason, options.duration, sendOptions.moderator]).catch(() => null);
+				} else {
+					await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [this.guild.name, title, options.duration, options.reason]).catch(() => null);
+				}
 			} catch (error) {
 				if (error.code === APIErrors.CannotMessageUser) return;
 				this.guild.client.emit(Events.Error, error);

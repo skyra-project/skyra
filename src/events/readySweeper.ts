@@ -15,7 +15,6 @@ export default class extends Event {
 		const users = this.client.users.size;
 		let presences = 0;
 		let guildMembers = 0;
-		let emojis = 0;
 
 		// Populate the usernames
 		for (const user of this.client.users.values()) {
@@ -37,11 +36,9 @@ export default class extends Event {
 			// Update counters
 			guildMembers += guild.members.size - 1;
 			presences += guild.presences.size;
-			emojis += guild.emojis.size;
 
 			// Clear all members
 			guild.presences.clear();
-			guild.emojis.clear();
 
 			guild.members.clear();
 			if (me) guild.members.set(me.id, me);
@@ -50,8 +47,7 @@ export default class extends Event {
 		this.client.emit(Events.Verbose, `${HEADER} ${
 			this.setColor(presences)} [Presence]s | ${
 			this.setColor(guildMembers)} [GuildMember]s | ${
-			this.setColor(users)} [User]s | ${
-			this.setColor(emojis)} [Emoji]s`);
+			this.setColor(users)} [User]s`);
 	}
 
 	public setColor(n: number) {

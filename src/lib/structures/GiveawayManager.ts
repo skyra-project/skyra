@@ -42,7 +42,7 @@ export class GiveawayManager {
 		await Promise.all(this.running);
 		this.running.length = 0;
 
-		// TODO: Optimize this to not be O(n^2)
+		// TODO(kyranet): Optimize this to not be O(n^2)
 		// Add all elements from the pending queue
 		while (this.pending.length) this.insert(this.pending.shift()!);
 		this.check();

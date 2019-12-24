@@ -1,15 +1,16 @@
-import { Client, Guild, TextChannel, VoiceChannel } from 'discord.js';
+import { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
 import { LoadType, Status, Track } from 'lavalink';
 import { Events } from '../../types/Enums';
 import { enumerable } from '../../util/util';
 import { Song } from './Song';
-import { GuildSettings } from '../../types/settings/GuildSettings';
+import { SkyraClient } from '../../SkyraClient';
+import { SubscriptionName } from '../../websocket/types';
 
 export class Queue extends Array<Song> {
 
 	@enumerable(false)
-	public client: Client;
+	public client: SkyraClient;
 
 	@enumerable(false)
 	public guild: Guild;
@@ -86,7 +87,7 @@ export class Queue extends Array<Song> {
 
 	public constructor(guild: Guild) {
 		super();
-		this.client = guild.client;
+		this.client = guild.client as SkyraClient;
 		this.guild = guild;
 	}
 
@@ -133,6 +134,18 @@ export class Queue extends Array<Song> {
 	public async connect(voiceChannel: VoiceChannel) {
 		await this.player.join(voiceChannel.id, { deaf: true });
 		return this;
+	}
+
+	public toJSON() {
+		return {
+			length: this.length,
+			voiceChannel: this.voiceChannel,
+			playing: this.playing,
+			song: this.song,
+			position: this.position,
+			status: this.status,
+			queue: [...this]
+		};
 	}
 
 	public async leave() {
@@ -219,6 +232,12 @@ export class Queue extends Array<Song> {
 	}
 
 	public receiver(payload: LavalinkEvent) {
+		const users = this.client.websocket.users
+			.filter(user => user.subscriptions
+				.some(sub => sub.type === SubscriptionName.Music && sub.guild_id === this.guild.id));
+
+		for (const user of users.values()) user.syncMusic();
+
 		// If it's the end of the track, handle next song
 		if (isTrackEndEvent(payload)) {
 			if (this._listeners.end) this._listeners.end(true);
@@ -273,10 +292,7 @@ export class Queue extends Array<Song> {
 	}
 
 	public async manageableFor(message: KlasaMessage) {
-		// Retrieve the DJ role
-		const djRole = message.guild!.settings.get(GuildSettings.Roles.Dj);
-		// The queue is manageable for deejays.
-		if (djRole && message.member!.roles.has(djRole)) return true;
+		if (message.member!.isDJ) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
 		if ((this.song ? this.song.requester === message.author.id : true) && this.every(song => song.requester === message.author.id)) return true;
 		// Else if the author is a moderator+, queues are always manageable for them.

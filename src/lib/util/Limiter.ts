@@ -1,8 +1,9 @@
-import { createMethodDecorator } from 'klasa-decorators';
+import { isFunction } from '@klasa/utils';
+import assert from 'assert';
 import { Collection, Constructor } from 'discord.js';
 import { RateLimit } from 'klasa';
+import { createMethodDecorator } from 'klasa-decorators';
 import { createClassDecorator } from './util';
-import assert from 'assert';
 
 export const enum LimitErrors {
 	Ratelimited = 'RATELIMIT'
@@ -37,7 +38,7 @@ export function limitMethod(group = 'global', bucket: number, cooldown: number) 
 		const method = descriptor.value;
 
 		if (!method) throw new Error('Function limiter actions require a [[value]].');
-		if (typeof method !== 'function') throw new Error('Function limiter actions can only be applied to functions.');
+		if (!isFunction(method)) throw new Error('Function limiter actions can only be applied to functions.');
 
 		descriptor.value = (function descriptorValue(this: LimitedClass, ...args: readonly unknown[]) {
 			assert(typeof this.limiter === 'boolean');

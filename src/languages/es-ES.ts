@@ -7,6 +7,7 @@ import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
 import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
+import { MessageEmbed } from 'discord.js';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const LOADING = Emojis.Loading;
@@ -308,10 +309,10 @@ export default class extends Language {
 		COMMAND_SKIP_VOTES_VOTED: `Ya has votado para saltar esta canción.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votos: ${amount} de ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Saltada la canción ${title}.`,
-		COMMAND_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
-		COMMAND_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
-		COMMAND_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
-		COMMAND_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
+		COMMAND_PLAYING_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
+		COMMAND_PLAYING_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
+		COMMAND_PLAYING_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
+		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
@@ -596,30 +597,6 @@ export default class extends Language {
 				['query', 'Either the number of the comic, or a title to search for.']
 			],
 			examples: ['1091', 'Curiosity']
-		}),
-
-		/**
-		 * ##############
-		 * GAMES COMMANDS
-			*/
-		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
-		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
-			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
-				If you don't, you lose your wager. Now get those coins flippin'.`,
-			examples: ['50 heads', '200 tails']
-		}),
-		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
-		COMMAND_C4_EXTENDED: builder.display('c4', {
-			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
-					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
-					game in which the players first choose a color and then take turns dropping colored discs from the top into a
-					seven-column, ~~six~~ five-row vertically suspended grid.`
-		}),
-		COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
-		COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
-			extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two
-				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
-				their marks in a horizontal, vertical, or diagonal row wins the game.`
 		}),
 
 		/**
@@ -1823,12 +1800,12 @@ export default class extends Language {
 				'200 @kyra'
 			]
 		}),
-		COMMAND_PROFILE_DESCRIPTION: 'Check your user profile.',
+		COMMAND_PROFILE_DESCRIPTION: 'Verifica tu perfil de usuario.',
 		COMMAND_PROFILE_EXTENDED: builder.display('profile', {
-			extendedHelp: `This command sends a card image with some of your user profile such as your global rank, experience...
-				Additionally, you are able to customize your colours with the 'setColor' command.`,
+			extendedHelp: `Este comando envía una imagen de tarjeta con parte de su perfil de usuario, como su rango global, experiencia ...
+				Además, puede personalizar sus colores con el comando 'setColor'.`,
 			explainedUsage: [
-				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
+				['user', '(Opcional) El perfil del usuario para mostrar. El valor predeterminado es el autor del mensaje.']
 			]
 		}),
 		COMMAND_REMINDME_DESCRIPTION: 'Manage your reminders.',
@@ -1867,17 +1844,6 @@ export default class extends Language {
 				['HSL', 'hsl(350, 100, 100)'],
 				['B10', '14671839']
 			]
-		}),
-		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
-		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
-			extendedHelp: `A slot machine (American English), known variously as a fruit machine (British English), puggy
-					(Scottish English),[1] the slots (Canadian and American English), poker machine/pokies (Australian English and
-					New Zealand English), or simply slot (American English), is a casino gambling machine with three or more
-					reels which spin when a button is pushed.`,
-			explainedUsage: [
-				['Amount', 'Either 50, 100, 200, 500, or even, 1000 shinies to bet.']
-			],
-			reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
 		}),
 
 		/**
@@ -2006,10 +1972,15 @@ export default class extends Language {
 			],
 			examples: ['#dfdfdf >25', 'rgb(200, 130, 75)']
 		}),
-		COMMAND_CONTENT_DESCRIPTION: 'Get messages\' raw content.',
+		COMMAND_CONTENT_DESCRIPTION: 'Obtener el contenido sin formato de los mensajes.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
-		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
+		COMMAND_EMOJI_DESCRIPTION: 'Obtén información sobre un emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
+		COMMAND_EMOTES_DESCRIPTION: 'Muestra todos los gestos personalizados disponibles en este servidor.',
+		COMMAND_EMOTES_EXTENDED: builder.display('emotes', {
+			extendedHelp: 'La lista de emotes se divide por 50 emotes..'
+		}),
+		COMMAND_EMOTES_TITLE: 'Emotes en',
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
@@ -2111,19 +2082,49 @@ export default class extends Language {
 
 		/**
 		 * ################
-		 * WEATHER COMMANDS
+		 * GOOGLE COMMANDS
 		 */
 
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
 		COMMAND_WEATHER_EXTENDED: builder.display('weather', {
-			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
-				support as it is... Google Search. Once this command got the coordinates, it queries DarkSky to retrieve
-					information about the weather. Note: temperature is in **Celsius**`,
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
+				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
+				Una vez que este comando obtuvo las coordenadas, consulta a DarkSky para recuperar información sobre el clima.
+				Nota: la temperatura está en ** Celsius **`,
 			explainedUsage: [
-				['city', 'The locality, governing, country or continent to check the weather from.']
+				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
 			],
-			examples: ['Antarctica', 'Arizona']
+			examples: ['Madrid', 'Barcelona']
 		}),
+		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'La consulta a google']
+			]
+		}),
+		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
+				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
+				Una vez que este comando obtuvo las coordenadas, consulta TimezoneDB para obtener los datos de tiempo`,
+			explainedUsage: [
+				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
+			],
+			examples: ['Madrid', 'Barcelona']
+		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'Lo siento, pero no pude encontrar datos de tiempo para esa ubicación.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Tiempo actual',
+			CURRENT_DATE: 'Fecha actual',
+			COUNTRY: 'País',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**Horario de verano**: ${dst === 0 ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'}`
+		},
+		GOOGLE_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
+		GOOGLE_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
+		GOOGLE_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
+		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
+		GOOGLE_ERROR_UNKNOWN: 'Error Desconocido.',
 
 		/**
 		 * #############
@@ -2449,6 +2450,25 @@ export default class extends Language {
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
+		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
+		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
+		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
+		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
+		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
+		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
+		COMMAND_C4_EXTENDED: builder.display('c4', {
+			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
+					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
+					game in which the players first choose a color and then take turns dropping colored discs from the top into a
+					seven-column, ~~six~~ five-row vertically suspended grid.`
+		}),
+		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
+				If you don't, you lose your wager. Now get those coins flippin'.`,
+			examples: ['50 heads', '200 tails']
+		}),
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
 		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
 		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
@@ -2456,16 +2476,105 @@ export default class extends Language {
 		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
 		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}.` : ''}.`,
 		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
-		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
-		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
-		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
-		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
-		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
-		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
-		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
-		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
-		COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
-		COMMAND_TICTACTOE_DRAW: board => `This match concluded in a **draw**!\n${board}`,
+		COMMAND_HIGHERLOWER_DESCRIPTION: 'Comenzar un juego de Mayor/Menor',
+		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
+			extendedHelp: `Mayor/Menor es un juego de suerte. Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis
+			Sus ganancias aumentan a medida que avanza en las rondas, y puede retirar dinero en cualquier momento presionando el 💰 reacción emoji .
+			¡Pero ten cuidado! ¡Cuanto más lejos vayas, más posibilidades tendrás de perderlo todo!`
+		}),
+		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Comenzar un nuevo juego de Mayor/Meno`,
+		COMMAND_HIGHERLOWER_NEWROUND: `Bien. Comenzando una nueva ronda`,
+		COMMAND_HIGHERLOWER_EMBED: {
+			TITLE: turn => `¿Mayor o menor? | Turno ${turn}`,
+			DESCRIPTION: number => `Su número es ${number}. ¿Será el siguiente mayor o menor?`,
+			FOOTER: 'El juego caducará en 3 minutos, ¡así que actúa rápido!'
+		},
+		COMMAND_HIGHERLOWER_LOSE: {
+			TITLE: '¡Perdiste!',
+			DESCRIPTION: (number, losses) => `No lo entendiste del todo. El número era ${number}. Perdiste ${losses} ${SHINY}`,
+			FOOTER: '¡Mejor suerte la próxima vez!'
+		},
+		COMMAND_HIGHERLOWER_WIN: {
+			TITLE: '¡Ganaste!',
+			DESCRIPTION: (potentials, number) => `¡Lo hiciste! El número era ${number}. ¿Quieres continuar? ${potentials} ${SHINY} están en la mesa.`,
+			FOOTER: '¡Actúa rapido! No tienes mucho tiempo.'
+		},
+		COMMAND_HIGHERLOWER_CANCEL: {
+			TITLE: 'Juego cancelado por elección',
+			DESCRIPTION: username => `Gracias por jugar, ¡${username}! Estaré aquí por si quieres continuar.`
+		},
+		COMMAND_HIGHERLOWER_CASHOUT: amount => `${amount} ${SHINY} fueron directo a a su cuenta. ¡Espero que haya sido divertido!`,
+		COMMAND_HUNGERGAMES_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
+		COMMAND_HUNGERGAMES_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
+		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',
+		COMMAND_HUNGERGAMES_STOP: 'Game finished by choice! See you later!',
+		COMMAND_HUNGERGAMES_WINNER: winner => `And the winner is... ${winner}!`,
+		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
+		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
+			extendedHelp: `Enough discussion, let the games begin!`,
+			examples: ['Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight']
+		}),
+		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
+		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
+			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico),
+					puggy (inglés escocés), máquinas tragamonedas (inglés canadiense y americano), máquinas de póquer / pokies
+					(inglés australiano e inglés de Nueva Zelanda), o simplemente tragamonedas (Inglés americano),
+					es una máquina de juego de casino con tres o más carretes que giran cuando se presiona un botón.`,
+			explainedUsage: [
+				['Cantidad', 'Ya sea 50, 100, 200, 500 o incluso, 1000 shinies para apostar.']
+			],
+			reminder: 'Recibirá al menos 5 veces la cantidad (cerezas / tada) al ganar, y hasta 24 veces (siete, diamante sin piel).'
+		}),
+		COMMAND_SLOTMACHINE_CANVAS_TEXT: won => won ? 'Tú ganaste' : 'Tú perdiste',
+		COMMAND_SLOTMACHINE_EMBED_TITLES: {
+			TITLE: 'Girando las ranuras de fruta y el resultado es ...',
+			PREVIOUS: 'Anterior',
+			NEW: 'Nuevo'
+		},
+		COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
+		COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
+			extendedHelp: `Tic-tac-toe (también conocido como ceros y cruces o Xs y Os) es un juego de papel y lápiz para dos jugadores,
+				X y O, que se turnan para marcar los espacios en una cuadrícula de 3 × 3.
+				El jugador que logra colocar tres de sus marcas en una fila horizontal,
+				vertical o diagonal gana el juego.`
+		}),
+		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Querido ${challenger}, ${challengee} te ha desafiado en un partido de tres en raya. Responda con **yes** para aceptar`,
+		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Girar para ${player}!\n${board}`,
+		COMMAND_TICTACTOE_WINNER: (winner, board) => `El ganador es ...${winner}!\n${board}`,
+		COMMAND_TICTACTOE_DRAW: board => `Este partido concluyó en un **empate**!\n${board}`,
+		COMMAND_VAULT_DESCRIPTION: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
+		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.
+				Debes retirar activamente a los ${SHINY} de tu bóveda antes de que puedan gastarse el juego.`,
+			explainedUsage: [
+				['acción', 'La acción a realizar: **retirarse** para retirarse de su bóveda o **depositar** para depositar en su bóveda.'],
+				['dinero', `La cantidad de ${SHINY} para retirar o depositar.`]
+			],
+			examples: ['depositar 10000.', 'retirar 10000.']
+		}),
+		COMMAND_VAULT_EMBED_DATA: {
+			DEPOSITED_DESCRIPTION: coins => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
+			WITHDREW_DESCRIPTION: coins => `Retiró ${coins} ${SHINY} de su bóveda.`,
+			SHOW_DESCRIPTION: 'Su cuenta corriente y saldo de caja fuerte son:',
+			ACCOUNT_MONEY: 'Dinero de la cuenta',
+			ACCOUNT_VAULT: 'Bóveda de cuenta'
+		},
+		COMMAND_VAULT_INVALID_COINS: 'Lo siento, pero esa es una cantidad inválida de monedas. ¡Asegúrese de que sea un número positivo!',
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
+		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Juega con tus shinies haciendo girar una rueda de la fortuna.',
+		COMMAND_WHEELOFFORTUNE_EXTENDED: builder.display('wheeloffortune', {
+			extendedHelp: `Puede perder 0.1, 0.2, 0.3 o 0.5 veces su entrada
+				o ganar 1.2, 1.5, 1.7 o 2.4 veces su entrada.`
+		}),
+		COMMAND_WHEELOFFORTUNE_EMBED_TITLES: {
+			TITLE: 'Girando la rueda de la fortuna y el resultado es ...',
+			PREVIOUS: 'Anterior',
+			NEW: 'Nuevo'
+		},
+		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: won => won ? 'Tú ganaste' : 'Tú perdiste',
+		GAMES_NOT_ENOUGH_MONEY: money => `Lo siento, ¡pero no tienes suficiente dinero para pagar tu apuesta! El saldo de su cuenta corriente es ${money}${SHINY}`,
+		GAMES_CANNOT_HAVE_NEGATIVE_MONEY: `No puedes tener una cantidad negativa de ${SHINY}s`,
 
 		/**
 		 * #################
@@ -2765,16 +2874,23 @@ export default class extends Language {
 		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
 		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
-		COMMAND_MODERATION_DM: (guild, title, reason, moderator) => [
-			`You got a **${title}** from **${guild}** by ${moderator.username}. Reason:`,
-			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
-			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
-		].join(''),
-		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason) => [
-			`You got a **${title}** from **${guild}**. Reason:`,
-			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
-			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
-		].join(''),
+		COMMAND_MODERATION_DM: (guild, title, reason, pDuration, moderator) => new MessageEmbed()
+			.setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
+			.setDescription([
+				`**❯ Server**: ${guild}`,
+				`**❯ Type**: ${title}`,
+				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
+				`**❯ Reason**: ${reason || 'None specified'}`
+			].filter(line => line !== null).join('\n'))
+			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
+		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason, pDuration) => new MessageEmbed()
+			.setDescription([
+				`**❯ Server**: ${guild}`,
+				`**❯ Type**: ${title}`,
+				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
+				`**❯ Reason**: ${reason || 'None specified'}`
+			].filter(line => line !== null).join('\n'))
+			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
 		COMMAND_MODERATION_DAYS: /d[ií]as?/i,
 
 		/**
@@ -2854,11 +2970,11 @@ export default class extends Language {
 		COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
 		COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 		COMMAND_PROFILE: {
-			GLOBAL_RANK: 'Global Rank',
-			CREDITS: 'Credits',
-			REPUTATION: 'Reputation',
-			EXPERIENCE: 'Experience',
-			LEVEL: 'Level'
+			GLOBAL_RANK: 'Posición Mundial',
+			CREDITS: 'Créditos | Bóveda',
+			REPUTATION: 'Reputación',
+			EXPERIENCE: 'Experiencia',
+			LEVEL: 'Nivel'
 		},
 		COMMAND_REMINDME_INPUT: 'You must tell me what you want me to remind you and when.',
 		COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',
@@ -2885,7 +3001,6 @@ export default class extends Language {
 		COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
 		COMMAND_SCOREBOARD_POSITION: position => `Your placing position is: ${position}`,
 		COMMAND_SETCOLOR: color => `Color changed to ${color}`,
-		COMMAND_SLOTMACHINES_MONEY: money => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
 		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
 		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
@@ -3045,12 +3160,6 @@ export default class extends Language {
 			PREVIEW: 'Avance',
 			PREVIEW_LABEL: 'Haga clic aquí'
 		},
-		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'La consulta a google']
-			]
-		}),
 		COMMAND_LMGTFY_CLICK: 'Haga clic en mí para buscar',
 		COMMAND_MOVIES_DESCRIPTION: 'Busca en TheMovieDatabase cualquier película',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
@@ -3193,17 +3302,6 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',
-
-		/**
-		 * ################
-		 * WEATHER COMMANDS
-		 */
-
-		COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
-		COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
-		COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
-		COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
-		COMMAND_WEATHER_ERROR_UNKNOWN: 'Error Desconocido.',
 
 		/**
 		 * #############

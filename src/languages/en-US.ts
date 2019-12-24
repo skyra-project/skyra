@@ -8,6 +8,7 @@ import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
 import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
+import { MessageEmbed } from 'discord.js';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const LOADING = Emojis.Loading;
@@ -311,10 +312,10 @@ export default class extends Language {
 		COMMAND_SKIP_VOTES_VOTED: `${REDCROSS} You have already voted.`,
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votes: ${amount} of ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Skipped **${title}**.`,
-		COMMAND_TIME_DESCRIPTION: `Check how much time is left for the song to end.`,
-		COMMAND_TIME_QUEUE_EMPTY: `Are you speaking to me? Because my deck is empty...`,
-		COMMAND_TIME_STREAM: `The current song is a stream, it doesn't have any remaining time.`,
-		COMMAND_TIME_REMAINING: time => `🕰 Time remaining: ${time}`,
+		COMMAND_PLAYING_TIME_DESCRIPTION: `Check how much time is left for the song to end.`,
+		COMMAND_PLAYING_TIME_QUEUE_EMPTY: `Are you speaking to me? Because my deck is empty...`,
+		COMMAND_PLAYING_TIME_STREAM: `The current song is a stream, it doesn't have any remaining time.`,
+		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Time remaining: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: `Manage the volume for current song.`,
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
@@ -601,38 +602,6 @@ export default class extends Language {
 				['query', 'Either the number of the comic, or a title to search for.']
 			],
 			examples: ['1091', 'Curiosity']
-		}),
-
-		/**
-		 * ##############
-		 * GAMES COMMANDS
-		 */
-
-		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
-		COMMAND_C4_EXTENDED: builder.display('c4', {
-			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
-					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
-					game in which the players first choose a color and then take turns dropping colored discs from the top into a
-					seven-column, ~~six~~ five-row vertically suspended grid.`
-		}),
-		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
-		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
-			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
-				If you don't, you lose your wager.
-				You can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.
-				Now get those coins flippin'.`,
-			examples: ['50 heads', '200 tails']
-		}),
-		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
-		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
-			extendedHelp: `Enough discussion, let the games begin!`,
-			examples: ['Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight']
-		}),
-		COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
-		COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
-			extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two
-				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
-				their marks in a horizontal, vertical, or diagonal row wins the game.`
 		}),
 
 		/**
@@ -1890,17 +1859,6 @@ export default class extends Language {
 				['B10', '14671839']
 			]
 		}),
-		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
-		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
-			extendedHelp: `A slot machine (American English), known variously as a fruit machine (British English), puggy
-					(Scottish English),[1] the slots (Canadian and American English), poker machine/pokies (Australian English and
-					New Zealand English), or simply slot (American English), is a casino gambling machine with three or more
-					reels which spin when a button is pushed.`,
-			explainedUsage: [
-				['Amount', 'Either 50, 100, 200, 500, or even, 1000 shinies to bet.']
-			],
-			reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
-		}),
 
 		/**
 		 * ##################
@@ -2032,6 +1990,11 @@ export default class extends Language {
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
+		COMMAND_EMOTES_DESCRIPTION: 'Shows all custom emotes available on this server',
+		COMMAND_EMOTES_EXTENDED: builder.display('emotes', {
+			extendedHelp: 'The list of emotes is split per 50 emotes'
+		}),
+		COMMAND_EMOTES_TITLE: 'Emotes in',
 		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
 		COMMAND_POLL_EXTENDED: builder.display('poll', {
 			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
@@ -2133,7 +2096,7 @@ export default class extends Language {
 
 		/**
 		 * ################
-		 * WEATHER COMMANDS
+		 * GOOGLE COMMANDS
 		 */
 
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
@@ -2146,6 +2109,34 @@ export default class extends Language {
 			],
 			examples: ['Antarctica', 'Arizona']
 		}),
+		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'The query to google']
+			]
+		}),
+		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
+				support as it is... Google Search. Once this command got the coordinates, it queries TimezoneDB to get the time data`,
+			explainedUsage: [
+				['city', 'The locality, governing, country or continent to check the time for.']
+			],
+			examples: ['Antarctica', 'Arizona']
+		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Current Time',
+			CURRENT_DATE: 'Current Date',
+			COUNTRY: 'Country',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
+		},
+		GOOGLE_ERROR_ZERO_RESULTS: 'Your request returned no results.',
+		GOOGLE_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
+		GOOGLE_ERROR_INVALID_REQUEST: 'Invalid request.',
+		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
+		GOOGLE_ERROR_UNKNOWN: 'Unknown error.',
 
 		/**
 		 * #############
@@ -2473,6 +2464,19 @@ export default class extends Language {
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
+		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
+		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
+		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
+		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
+		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
+		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
+		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
+		COMMAND_C4_EXTENDED: builder.display('c4', {
+			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
+					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
+					game in which the players first choose a color and then take turns dropping colored discs from the top into a
+					seven-column, ~~six~~ five-row vertically suspended grid.`
+		}),
 		COMMAND_COINFLIP_INVALID_COINNAME: arg => `Excuse me, but ${arg} is not a coin face!`,
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
 		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
@@ -2481,21 +2485,114 @@ export default class extends Language {
 		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
 		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}` : ''}.`,
 		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
-		COMMAND_C4_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
-		COMMAND_C4_START: player => `Let's play! Turn for: **${player}**.`,
-		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
-		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
-		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
-		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
-		COMMAND_HG_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
-		COMMAND_HG_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
-		COMMAND_HG_RESULT_PROCEED: 'Proceed?',
-		COMMAND_HG_STOP: 'Game finished by choice! See you later!',
-		COMMAND_HG_WINNER: winner => `And the winner is... ${winner}!`,
+		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
+				If you don't, you lose your wager.
+				You can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.
+				Now get those coins flippin'.`,
+			examples: ['50 heads', '200 tails']
+		}),
+		COMMAND_HIGHERLOWER_DESCRIPTION: 'Play a game of Higher/Lower',
+		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
+			extendedHelp: `Higher/Lower is a game of luck. I will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis
+			Your winnings increase as you progress through the rounds, and you can cashout any time by pressing the 💰 reaction emoji.
+			Be warned tho! The further you go, the more chances you have to lose the winnings.`
+		}),
+		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Starting a new game of Higher/Lower.`,
+		COMMAND_HIGHERLOWER_NEWROUND: `Alright. Starting new round.`,
+		COMMAND_HIGHERLOWER_EMBED: {
+			TITLE: turn => `Higher or Lower? | Turn ${turn}`,
+			DESCRIPTION: number => `Your number is ${number}. Will the next number be higher or lower?`,
+			FOOTER: 'The game will expire in 3 minutes, so act fast!'
+		},
+		COMMAND_HIGHERLOWER_LOSE: {
+			TITLE: 'You lost!',
+			DESCRIPTION: (number, losses) => `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}.`,
+			FOOTER: 'Better luck next time!'
+		},
+		COMMAND_HIGHERLOWER_WIN: {
+			TITLE: 'You won!',
+			DESCRIPTION: (potentials, number) => `You did it! The number was ${number}. Want to continue? ${potentials} ${SHINY} are on the line.`,
+			FOOTER: 'Act fast! You don\'t have much time.'
+		},
+		COMMAND_HIGHERLOWER_CANCEL: {
+			TITLE: 'Game cancelled by choice',
+			DESCRIPTION: username => `Thanks for playing, ${username}! I'll be here when you want to play again.`
+		},
+		COMMAND_HIGHERLOWER_CASHOUT: amount => `Paid out ${amount} ${SHINY} to your account. Hope you had fun!`,
+		COMMAND_HUNGERGAMES_RESULT_HEADER: game => game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`,
+		COMMAND_HUNGERGAMES_RESULT_DEATHS: deaths => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
+		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',
+		COMMAND_HUNGERGAMES_STOP: 'Game finished by choice! See you later!',
+		COMMAND_HUNGERGAMES_WINNER: winner => `And the winner is... ${winner}!`,
+		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
+		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
+			extendedHelp: `Enough discussion, let the games begin!`,
+			examples: ['Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight']
+		}),
+		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
+		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
+			extendedHelp: `A slot machine (American English), known variously as a fruit machine (British English), puggy
+					(Scottish English), the slots (Canadian and American English), poker machine/pokies (Australian English and
+					New Zealand English), or simply slot (American English), is a casino gambling machine with three or more
+					reels which spin when a button is pushed.`,
+			explainedUsage: [
+				['Amount', `Either 50, 100, 200, 500, or even, 1000 ${SHINY} to bet.`]
+			],
+			reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
+		}),
+		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
+		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+		COMMAND_SLOTMACHINE_CANVAS_TEXT: won => won ? 'You won' : 'You lost',
+		COMMAND_SLOTMACHINE_EMBED_TITLES: {
+			TITLE: 'Spinning the fruit slots and the result is...',
+			PREVIOUS: 'Previous',
+			NEW: 'New'
+		},
+		COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
+		COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
+			extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two
+				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
+				their marks in a horizontal, vertical, or diagonal row wins the game.`
+		}),
 		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) => `Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
 		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
 		COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
 		COMMAND_TICTACTOE_DRAW: board => `This match concluded in a **draw**!\n${board}`,
+		COMMAND_VAULT_DESCRIPTION: `Store your ${SHINY}'s securily in a vault so you cannot accidentally spend them gambling.`,
+		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+			extendedHelp: `This is for the greedy spenders among us that tend to play a bit too much at the slot machine or
+				 spin the wheel of fortune. You need to actively withdraw ${SHINY}'s from your vault before they can be spend gambling.`,
+			explainedUsage: [
+				['action', 'The action to perform: **withdraw** to withdraw from your vault or **deposit** to deposit into your vault.'],
+				['money', `The amount of ${SHINY}'s to withdraw or deposit.`]
+			],
+			examples: ['deposit 10000.', 'withdraw 10000.']
+		}),
+		COMMAND_VAULT_EMBED_DATA: {
+			DEPOSITED_DESCRIPTION: coins => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
+			WITHDREW_DESCRIPTION: coins => `Withdrew ${coins} ${SHINY}\ from your vault.`,
+			SHOW_DESCRIPTION: 'Your current account and vault balance are:',
+			ACCOUNT_MONEY: 'Account Money',
+			ACCOUNT_VAULT: 'Account Vault'
+		},
+		COMMAND_VAULT_INVALID_COINS: 'I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!',
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money} ${SHINY}`,
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: vault => `I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is ${vault} ${SHINY}`,
+		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Gamble your shinies by spinning a wheel of fortune',
+		COMMAND_WHEELOFFORTUNE_EXTENDED: builder.display('wheeloffortune', {
+			extendedHelp: `You can lose 0.1, 0.2, 0.3 or 0.5 times your input
+				or win 1.2, 1.5, 1.7 or 2.4 times your input`
+		}),
+		COMMAND_WHEELOFFORTUNE_EMBED_TITLES: {
+			TITLE: 'Spinning the wheel of fortune and the result is...',
+			PREVIOUS: 'Previous',
+			NEW: 'New'
+		},
+		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: won => won ? 'You won' : 'You lost',
+		GAMES_NOT_ENOUGH_MONEY: money => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money} ${SHINY}`,
+		GAMES_CANNOT_HAVE_NEGATIVE_MONEY: `You cannot have a negative amount of ${SHINY}s`,
 
 		/**
 		 * #################
@@ -2795,16 +2892,23 @@ export default class extends Language {
 		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
 		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
-		COMMAND_MODERATION_DM: (guild, title, reason, moderator) => [
-			`You got a **${title}** from **${guild}** by ${moderator.username}. Reason:`,
-			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
-			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
-		].join(''),
-		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason) => [
-			`You got a **${title}** from **${guild}**. Reason:`,
-			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
-			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
-		].join(''),
+		COMMAND_MODERATION_DM: (guild, title, reason, pDuration, moderator) => new MessageEmbed()
+			.setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
+			.setDescription([
+				`**❯ Server**: ${guild}`,
+				`**❯ Type**: ${title}`,
+				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
+				`**❯ Reason**: ${reason || 'None specified'}`
+			].filter(line => line !== null).join('\n'))
+			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
+		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason, pDuration) => new MessageEmbed()
+			.setDescription([
+				`**❯ Server**: ${guild}`,
+				`**❯ Type**: ${title}`,
+				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
+				`**❯ Reason**: ${reason || 'None specified'}`
+			].filter(line => line !== null).join('\n'))
+			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
 		COMMAND_MODERATION_DAYS: /days?/i,
 
 		/**
@@ -2885,7 +2989,7 @@ export default class extends Language {
 		COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
 		COMMAND_PROFILE: {
 			GLOBAL_RANK: 'Global Rank',
-			CREDITS: 'Credits',
+			CREDITS: 'Credits | Vault',
 			REPUTATION: 'Reputation',
 			EXPERIENCE: 'Experience',
 			LEVEL: 'Level'
@@ -2915,9 +3019,6 @@ export default class extends Language {
 		COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
 		COMMAND_SCOREBOARD_POSITION: position => `Your placing position is: ${position}`,
 		COMMAND_SETCOLOR: color => `Color changed to ${color}`,
-		COMMAND_SLOTMACHINES_MONEY: money => `I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money}${SHINY}`,
-		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
-		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
 		COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
 		COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `|\`✅\`| **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} ${points === 1 ? 'point' : 'points'}.`,
@@ -3075,12 +3176,6 @@ export default class extends Language {
 			PREVIEW: 'Preview',
 			PREVIEW_LABEL: 'Click here'
 		},
-		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'The query to google']
-			]
-		}),
 		COMMAND_LMGTFY_CLICK: 'Click me to search',
 		COMMAND_MOVIES_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
 		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
@@ -3223,17 +3318,6 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',
-
-		/**
-		 * ################
-		 * WEATHER COMMANDS
-		 */
-
-		COMMAND_WEATHER_ERROR_ZERO_RESULTS: 'Your request returned no results.',
-		COMMAND_WEATHER_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
-		COMMAND_WEATHER_ERROR_INVALID_REQUEST: 'Invalid request.',
-		COMMAND_WEATHER_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
-		COMMAND_WEATHER_ERROR_UNKNOWN: 'Unknown error.',
 
 		/**
 		 * #############

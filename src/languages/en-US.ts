@@ -2851,7 +2851,9 @@ export default class extends Language {
 		COMMAND_DEHOIST_EMBED: {
 			TITLE: users => `Finished dehoisting ${users} members`,
 			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
-			DESCRIPTION: users => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`
+			DESCRIPTION_WITHERRORS: (users, errored) => `${users} member${users === 1 ? '' : 's'} ${users === 1 ? 'was' : 'were'} dehoisted. We also tried to dehoist an additional ${errored} member${users === 1 ? '' : 's'}, but they errored out`,
+			DESCRIPTION: users => `${users} member${users === 1 ? '' : 's'} ${users === 1 ? 'was' : 'were'} dehoisted`,
+			FIELD_ERROR_TITLE: `The users we encountered an error for:`
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,

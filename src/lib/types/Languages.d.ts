@@ -1167,7 +1167,9 @@ export interface LanguageKeys {
 	COMMAND_DEHOIST_EMBED: {
 		TITLE: (users: number) => string;
 		DESCRIPTION_NOONE: string;
+		DESCRIPTION_WITHERRORS: (users: number, errored: number) => string;
 		DESCRIPTION: (users: number) => string;
+		FIELD_ERROR_TITLE: string;
 	};
 	COMMAND_KICK_NOT_KICKABLE: string;
 	COMMAND_LOCKDOWN_LOCK: (channel: string) => string;

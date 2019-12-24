@@ -30,16 +30,16 @@ export class PostgresCommonQuery implements CommonQuery {
 
 			-- Divorce from all users
 			UPDATE users
-			WHERE
-				id IN (SELECT UNNEST(marry) FROM users WHERE id = ${cID})
 			SET
-				marry = ARRAY_REMOVE(marry, ${cID});
+				marry = ARRAY_REMOVE(marry, ${cID})
+			WHERE
+				"id" IN (SELECT UNNEST(marry) FROM users WHERE id = ${cID});
 
 			-- Prune user entry
 			DELETE
 			FROM users
 			WHERE
-				id = ${cID};
+				"id" = ${cID};
 
 			-- Prune all member entries
 			DELETE

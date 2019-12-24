@@ -1,10 +1,10 @@
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { PermissionLevels } from '../../lib/types/Enums';
 import { MessageEmbed } from 'discord.js';
 import { getColor } from '../../lib/util/util';
 import { api } from '../../lib/util/Models/Api';
-
+import { codeBlock } from '@klasa/utils';
 export default class extends SkyraCommand {
 
 	private kLowestCode = 'A'.charCodeAt(0);
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 		if (erroredChanges.length > 0) {
 			description = embedLanguage.DESCRIPTION_WITHERRORS(dehoistedMembers - erroredChanges.length, erroredChanges.length);
 			const erroredNicknames = erroredChanges.map(entry => `${entry.oldNick} => ${entry.newNick}`).join('\n');
-			const codeblock = util.codeBlock('js', erroredNicknames);
+			const codeblock = codeBlock('js', erroredNicknames);
 			embed.addField(embedLanguage.FIELD_ERROR_TITLE, codeblock);
 		}
 		return embed.setDescription(description);

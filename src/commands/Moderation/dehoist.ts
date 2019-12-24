@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		let counter = 0;
 		const promises = [];
 		const members = message.guild!.memberTags;
-		const reposonse = await message.sendLocale('SYSTEM_LOADING');
+		const response = await message.sendLocale('SYSTEM_LOADING');
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
 			if (memberTag.nickname && memberTag.nickname.charCodeAt(0) < this.kLowestCode) {
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 
 		// We're done!
 		const embedLanguage = message.language.tget('COMMAND_DEHOIST_EMBED');
-		return reposonse.edit(new MessageEmbed()
+		return response.edit(new MessageEmbed()
 			.setColor(getColor(message))
 			.setTitle(embedLanguage.TITLE(message.guild!.memberTags.size))
 			.setDescription(counter === 0 ? embedLanguage.DESCRIPTION_NOONE : embedLanguage.DESCRIPTION(counter)));

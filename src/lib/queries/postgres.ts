@@ -20,6 +20,38 @@ export class PostgresCommonQuery implements CommonQuery {
 		this.client = client;
 	}
 
+	public async deleteUserEntries(userID: string) {
+		const { provider } = this;
+		const cID = `${provider.cString(userID)}::VARCHAR`;
+
+		await provider.run(/* sql */`
+			-- Begin transaction
+			BEGIN;
+
+			-- Divorce from all users
+			UPDATE users
+			WHERE
+				id IN (SELECT UNNEST(marry) FROM users WHERE id = ${cID})
+			SET
+				marry = ARRAY_REMOVE(marry, ${cID});
+
+			-- Prune user entry
+			DELETE
+			FROM users
+			WHERE
+				id = ${cID};
+
+			-- Prune all member entries
+			DELETE
+			FROM members
+			WHERE
+				"user_id" = ${cID};
+
+			-- Commit all changes to disk
+			COMMIT;
+		`);
+	}
+
 	public deleteGiveaway(guildID: string, messageID: string) {
 		return this.provider.runOne(/* sql */`
 			DELETE

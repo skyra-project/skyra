@@ -1,4 +1,4 @@
-import { GuildMember, PermissionString, Role, User, Guild } from 'discord.js';
+import { GuildMember, PermissionString, Role, User, Guild, MessageEmbed } from 'discord.js';
 import { ScheduledTask, SchemaEntry } from 'klasa';
 import { HungerGamesGame } from '../../commands/Games/hungergames';
 import { LevelTitles } from '../../commands/Social/level';
@@ -1205,8 +1205,8 @@ export interface LanguageKeys {
 	COMMAND_WARN_MESSAGE: (user: User, log: number) => string;
 	COMMAND_MODERATION_OUTPUT: (cases: readonly number[], range: string | number, users: readonly string[], reason: string | null) => string;
 	COMMAND_MODERATION_FAILED: (users: readonly string[]) => string;
-	COMMAND_MODERATION_DM: (guild: string, title: string, reason: string | null, moderator: User) => string;
-	COMMAND_MODERATION_DM_ANONYMOUS: (guild: string, title: string, reason: string | null) => string;
+	COMMAND_MODERATION_DM: (guild: string, title: string, reason: string | null, duration: number | null, moderator: User) => MessageEmbed;
+	COMMAND_MODERATION_DM_ANONYMOUS: (guild: string, title: string, reason: string | null, duration: number | null) => MessageEmbed;
 	COMMAND_MODERATION_DAYS: RegExp;
 	COMMAND_AUTOROLE_POINTS_REQUIRED: string;
 	COMMAND_AUTOROLE_UPDATE_CONFIGURED: string;

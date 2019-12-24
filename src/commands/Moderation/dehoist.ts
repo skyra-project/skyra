@@ -7,6 +7,8 @@ import { api } from '../../lib/util/Models/Api';
 
 export default class extends SkyraCommand {
 
+	private kLowestCode = 'A'.charCodeAt(0);
+
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['dh'],
@@ -23,12 +25,12 @@ export default class extends SkyraCommand {
 		let counter = 0;
 		const promises = [];
 		const members = message.guild!.memberTags;
-		const msg = await message.sendLocale('COMMAND_HIGHERLOWER_LOADING');
+		const reposonse = await message.sendLocale('SYSTEM_LOADING');
 
-		for (const [memberId, memberTag] of members) {
-			if (memberTag.nickname && memberTag.nickname.charCodeAt(0) < 65 /* That's A */) {
+		for (const [memberId, memberTag] of members.manageableMembers()) {
+			if (memberTag.nickname && memberTag.nickname.charCodeAt(0) < this.kLowestCode) {
 				// Replace the first character of the offending user's with a downwards arrow, bringing'em down, down ,down
-				const newNickname = memberTag.nickname!.replace(String.fromCharCode(memberTag.nickname.charCodeAt(0)), '🠷');
+				const newNickname = `🠷${memberTag.nickname.slice(1)}`;
 				promises.push(api(this.client)
 					.guilds(message.guild!.id)
 					.members(memberId)
@@ -39,11 +41,12 @@ export default class extends SkyraCommand {
 		}
 		await Promise.all(promises);
 
-		const { TITLE: generateTitle, DESCRIPTION_NOONE, DESCRIPTION: generateDescription } = message.language.tget('COMMAND_DEHOIST_EMBED');
-		await msg.edit(new MessageEmbed()
+		// We're done!
+		const embedLanguage = message.language.tget('COMMAND_DEHOIST_EMBED');
+		return reposonse.edit(new MessageEmbed()
 			.setColor(getColor(message))
-			.setTitle(generateTitle(message.guild!.memberTags.size))
-			.setDescription(counter === 0 ? DESCRIPTION_NOONE : generateDescription(counter)));
+			.setTitle(embedLanguage.TITLE(message.guild!.memberTags.size))
+			.setDescription(counter === 0 ? embedLanguage.DESCRIPTION_NOONE : embedLanguage.DESCRIPTION(counter)));
 	}
 
 }

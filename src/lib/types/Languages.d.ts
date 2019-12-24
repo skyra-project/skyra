@@ -1164,7 +1164,6 @@ export interface LanguageKeys {
 	COMMAND_SLOWMODE_SET: (cooldown: number) => string;
 	COMMAND_SLOWMODE_TOO_LONG: string;
 	COMMAND_BAN_NOT_BANNABLE: string;
-	COMMAND_DEHOIST_LOADING: string;
 	COMMAND_DEHOIST_EMBED: {
 		TITLE: (users: number) => string;
 		DESCRIPTION_NOONE: string;

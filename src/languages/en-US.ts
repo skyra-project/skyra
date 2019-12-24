@@ -1383,11 +1383,10 @@ export default class extends Language {
 		}),
 		COMMAND_DEHOIST_DESCRIPTION: 'Shoot everyone with the dehoist-inator 3000',
 		COMMAND_DEHOIST_EXTENDED: builder.display('dehoist', {
-			extendedHelp: `The act of hoisting involves adding a character with a value of 64 and below in front of your nickname
-			in order to appear higher in the members list. This command replace's with a special character that drags them to the bottom
-			of the list. Ha, get a load of this, mr. \`! !\`
-			
-			This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
+			extendedHelp: `The act of hoisting involves adding special characters in front of your nickname
+			in order to appear higher in the members list. This command replaces any member's nickname that includes those special characters
+			with a special character that drags them to the bottom of the list.`,
+			reminder: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
 			can be dehoisted.`
 		}),
 		COMMAND_KICK_DESCRIPTION: 'Hit somebody with the 👢.',
@@ -2848,11 +2847,10 @@ export default class extends Language {
 			: `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
-		COMMAND_DEHOIST_LOADING: `${LOADING} Dehoisting has started. This may take a bit...`,
 		COMMAND_DEHOIST_EMBED: {
 			TITLE: users => `Finished dehoisting ${users}`,
 			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
-			DESCRIPTION: users => `${users} members were dehoisted`
+			DESCRIPTION: users => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,

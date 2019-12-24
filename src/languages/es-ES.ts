@@ -1367,14 +1367,13 @@ export default class extends Language {
 					a temporary ban.`,
 			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.']
 		}),
-		COMMAND_DEHOIST_DESCRIPTION: 'Convierta a todos a no izados',
+		COMMAND_DEHOIST_DESCRIPTION: 'Shoot everyone with the dehoist-inator 3000',
 		COMMAND_DEHOIST_EXTENDED: builder.display('dehoist', {
-			extendedHelp: `El acto de izar implica agregar un personaje con un valor de 64 y menos delante de su apodo para
-				aparecer más arriba en la lista de miembros.
-				Este comando reemplaza con un carácter especial que los arrastra al final de la lista.
-				Ja, obtener un montón de esto, señor \`! !\`
-			
-				Este comando requiere **${PERMS.MANAGE_NICKNAMES}**, y solo los miembros con una posición jerárquica de rol inferior pueden convertirse.`
+			extendedHelp: `The act of hoisting involves adding special characters in front of your nickname
+			in order to appear higher in the members list. This command replaces any member's nickname that includes those special characters
+			with a special character that drags them to the bottom of the list.`,
+			reminder: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
+			can be dehoisted.`
 		}),
 		COMMAND_KICK_DESCRIPTION: 'Hit somebody with the 👢.',
 		COMMAND_KICK_EXTENDED: builder.display('kick', {
@@ -2828,11 +2827,10 @@ export default class extends Language {
 			: `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
-		COMMAND_DEHOIST_LOADING: `${LOADING} La conversion ha comenzado. Esto puede tardar un rato...`,
 		COMMAND_DEHOIST_EMBED: {
-			TITLE: users => `Termine de convertir ${users} miembros a no izados`,
-			DESCRIPTION_NOONE: 'Ningun miembro se convirtio en no izado. Una ronda de aplausos para sus miembros que respetan las reglas!',
-			DESCRIPTION: users => `${users} miembros se volvieron no izados`
+			TITLE: users => `Finished dehoisting ${users}`,
+			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
+			DESCRIPTION: users => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,

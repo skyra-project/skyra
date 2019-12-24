@@ -22,9 +22,9 @@ export class WebsocketHandler {
 		this.client = client;
 		this.wss = new Server({ port: WSS_PORT });
 
-		this.wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
+		this.wss.on('connection', (ws: WebSocket, request: http.IncomingMessage) => {
 			// We've just gotten a new Websocket Connection
-			const ip = req.connection.remoteAddress;
+			const ip = (request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
 
 			// If they don't have a IP for some reason, close.
 			if (!ip) return ws.close(CloseCodes.InternalError);

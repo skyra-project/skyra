@@ -1,7 +1,8 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { KlasaGuild } from 'klasa';
 import { APIErrors } from '../constants';
-import { GuildMember } from 'discord.js';
+import { GuildMember, Role } from 'discord.js';
+import { CLIENT_ID } from '../../../../config';
 
 export class MemberTags extends Collection<string, MemberTag> {
 
@@ -73,6 +74,22 @@ export class MemberTags extends Collection<string, MemberTag> {
 		return output;
 	}
 
+	public *manageableMembers() {
+		const skyraHighestRole = this.getSkyraHighestRole();
+		if (skyraHighestRole === null) throw new Error('Unreachable.');
+
+		const skyraPosition = skyraHighestRole.position;
+		const nonManageableRoles = this.guild.roles.filter(role => role.position >= skyraPosition);
+		if (nonManageableRoles.size === 0) {
+			yield *this.entries();
+		} else {
+			for (const tag of this.entries()) {
+				if (tag[1].roles.some(role => nonManageableRoles.has(role))) continue;
+				yield tag;
+			}
+		}
+	}
+
 	public static get [Symbol.species](): CollectionConstructor {
 		return Collection as unknown as CollectionConstructor;
 	}
@@ -80,6 +97,24 @@ export class MemberTags extends Collection<string, MemberTag> {
 	private getRawRoles(member: GuildMember) {
 		const casted = member as unknown as { _roles: string[] } & GuildMember;
 		return casted._roles;
+	}
+
+	private getSkyraHighestRole() {
+		const guildSelfMember = this.guild.me;
+		if (guildSelfMember !== null) return guildSelfMember.roles.highest;
+
+		const rawGuildSelfMember = this.get(CLIENT_ID);
+		if (typeof rawGuildSelfMember === 'undefined') return null;
+
+		let highest: Role | null = null;
+		for (const roleID of rawGuildSelfMember.roles) {
+			const role = this.guild.roles.get(roleID);
+			if (typeof role === 'undefined') continue;
+
+			if (highest === null || highest.position < role.position) highest = role;
+		}
+
+		return highest;
 	}
 
 }

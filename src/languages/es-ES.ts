@@ -1368,6 +1368,14 @@ export default class extends Language {
 					a temporary ban.`,
 			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.']
 		}),
+		COMMAND_DEHOIST_DESCRIPTION: 'Shoot everyone with the dehoist-inator 3000',
+		COMMAND_DEHOIST_EXTENDED: builder.display('dehoist', {
+			extendedHelp: `The act of hoisting involves adding special characters in front of your nickname
+			in order to appear higher in the members list. This command replaces any member's nickname that includes those special characters
+			with a special character that drags them to the bottom of the list.`,
+			reminder: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
+			can be dehoisted.`
+		}),
 		COMMAND_KICK_DESCRIPTION: 'Hit somebody with the 👢.',
 		COMMAND_KICK_EXTENDED: builder.display('kick', {
 			extendedHelp: `This command requires **${PERMS.KICK_MEMBERS}**, and only members with lower role hierarchy position
@@ -2820,6 +2828,13 @@ export default class extends Language {
 			: `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
+		COMMAND_DEHOIST_EMBED: {
+			TITLE: users => `Finished dehoisting ${users} members`,
+			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
+			DESCRIPTION_WITHERRORS: (users, errored) => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted. We also tried to dehoist an additional ${errored} member${users > 1 ? 's' : ''}, but they errored out`,
+			DESCRIPTION: users => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`,
+			FIELD_ERROR_TITLE: `The users we encountered an error for:`
+		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
 		COMMAND_LOCKDOWN_LOCKED: channel => `The channel ${channel} was already locked.`,

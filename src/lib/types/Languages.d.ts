@@ -553,6 +553,8 @@ export interface LanguageKeys {
 	COMMAND_SLOWMODE_EXTENDED: string;
 	COMMAND_BAN_DESCRIPTION: string;
 	COMMAND_BAN_EXTENDED: string;
+	COMMAND_DEHOIST_DESCRIPTION: string;
+	COMMAND_DEHOIST_EXTENDED: string;
 	COMMAND_KICK_DESCRIPTION: string;
 	COMMAND_KICK_EXTENDED: string;
 	COMMAND_LOCKDOWN_DESCRIPTION: string;
@@ -1162,6 +1164,13 @@ export interface LanguageKeys {
 	COMMAND_SLOWMODE_SET: (cooldown: number) => string;
 	COMMAND_SLOWMODE_TOO_LONG: string;
 	COMMAND_BAN_NOT_BANNABLE: string;
+	COMMAND_DEHOIST_EMBED: {
+		TITLE: (users: number) => string;
+		DESCRIPTION_NOONE: string;
+		DESCRIPTION_WITHERRORS: (users: number, errored: number) => string;
+		DESCRIPTION: (users: number) => string;
+		FIELD_ERROR_TITLE: string;
+	};
 	COMMAND_KICK_NOT_KICKABLE: string;
 	COMMAND_LOCKDOWN_LOCK: (channel: string) => string;
 	COMMAND_LOCKDOWN_LOCKING: (channel: string) => string;

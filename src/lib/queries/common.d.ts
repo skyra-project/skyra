@@ -6,6 +6,7 @@ import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTw
 import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
 
 export interface CommonQuery {
+	deleteUserEntries(userID: string): Promise<unknown>;
 	deleteGiveaway(guildID: string, messageID: string): Promise<unknown>;
 	deleteMemberSettings(guildID: string, userID: string): Promise<unknown>;
 	deleteStar(guildID: string, messageID: string): Promise<unknown>;

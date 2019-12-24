@@ -16,9 +16,16 @@ export default class extends SkyraCommand {
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('coins', (arg, possible, message, [action]) => {
+		this.createCustomResolver('coins', async (arg, possible, message, [action]) => {
+			await message.author.settings.sync();
+
 			if (action === 'show') return undefined;
 
+			if (arg === 'all') {
+				return action === 'deposit'
+					? message.author.settings.get(UserSettings.Money)
+					: message.author.settings.get(UserSettings.Vault);
+			}
 			const coins = Number(arg);
 			if (coins && coins >= 0) return this.integerArgument.run(arg, possible, message);
 			throw message.language.tget('COMMAND_VAULT_INVALID_COINS');

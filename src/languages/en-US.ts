@@ -2848,7 +2848,7 @@ export default class extends Language {
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
 		COMMAND_DEHOIST_EMBED: {
-			TITLE: users => `Finished dehoisting ${users}`,
+			TITLE: users => `Finished dehoisting ${users} members`,
 			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
 			DESCRIPTION: users => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`
 		},

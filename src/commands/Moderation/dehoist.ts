@@ -43,10 +43,13 @@ export default class extends SkyraCommand {
 
 		// We're done!
 		const embedLanguage = message.language.tget('COMMAND_DEHOIST_EMBED');
-		return response.edit(new MessageEmbed()
-			.setColor(getColor(message))
-			.setTitle(embedLanguage.TITLE(message.guild!.memberTags.size))
-			.setDescription(counter === 0 ? embedLanguage.DESCRIPTION_NOONE : embedLanguage.DESCRIPTION(counter)));
+		return response.edit({
+			embed: new MessageEmbed()
+				.setColor(getColor(message))
+				.setTitle(embedLanguage.TITLE(message.guild!.memberTags.size))
+				.setDescription(counter === 0 ? embedLanguage.DESCRIPTION_NOONE : embedLanguage.DESCRIPTION(counter)),
+			content: null
+		});
 	}
 
 }

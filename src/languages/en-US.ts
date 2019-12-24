@@ -8,6 +8,7 @@ import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
 import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
+import { MessageEmbed } from 'discord.js';
 
 const { toTitleCase, codeBlock } = klasaUtil;
 const LOADING = Emojis.Loading;
@@ -2891,16 +2892,23 @@ export default class extends Language {
 		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
 		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
-		COMMAND_MODERATION_DM: (guild, title, reason, moderator) => [
-			`You got a **${title}** from **${guild}** by ${moderator.username}. Reason:`,
-			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
-			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
-		].join(''),
-		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason) => [
-			`You got a **${title}** from **${guild}**. Reason:`,
-			reason ? `\n${reason.split('\n').map(line => `> ${line}`).join('\n')}` : ' None specified',
-			'\n\n*You can run `Skyra, toggleModerationDM` to disable future moderation DMs.*'
-		].join(''),
+		COMMAND_MODERATION_DM: (guild, title, reason, pDuration, moderator) => new MessageEmbed()
+			.setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
+			.setDescription([
+				`**❯ Server**: ${guild}`,
+				`**❯ Type**: ${title}`,
+				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
+				`**❯ Reason**: ${reason || 'None specified'}`
+			].filter(line => line !== null).join('\n'))
+			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
+		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason, pDuration) => new MessageEmbed()
+			.setDescription([
+				`**❯ Server**: ${guild}`,
+				`**❯ Type**: ${title}`,
+				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
+				`**❯ Reason**: ${reason || 'None specified'}`
+			].filter(line => line !== null).join('\n'))
+			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
 		COMMAND_MODERATION_DAYS: /days?/i,
 
 		/**

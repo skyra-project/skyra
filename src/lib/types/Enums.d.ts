@@ -40,7 +40,21 @@ export const enum Events {
 	Wtf = 'wtf',
 	GuildAnnouncementEdit = 'guildAnnouncementEdit',
 	GuildAnnouncementSend = 'guildAnnouncementSend',
-	GuildAnnouncementError = 'guildAnnouncementError'
+	GuildAnnouncementError = 'guildAnnouncementError',
+	MusicAdd = 'musicAdd',
+	MusicConnect = 'musicConnect',
+	MusicLeave = 'musicLeave',
+	MusicPrune = 'musicPrune',
+	MusicReplayUpdate = 'musicReplayUpdate',
+	MusicShuffleQueue = 'musicShuffleQueue',
+	MusicSkip = 'musicSkip',
+	MusicSongFinish = 'musicSongFinish',
+	MusicSongPause = 'musicSongPause',
+	MusicSongPlay = 'musicSongPlay',
+	MusicSongReplay = 'musicSongReplay',
+	MusicSongResume = 'musicSongResume',
+	MusicSongSeekUpdate = 'musicSongSeekUpdate',
+	MusicSongVolumeUpdate = 'musicSongVolumeUpdate'
 }
 
 export const enum PermissionLevels {

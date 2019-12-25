@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { Track } from 'lavalink';
-import { Queue } from '../../lib/structures/music/Queue';
+import { MusicHandler } from '../../lib/structures/music/Queue';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
 import { Events } from '../../lib/types/Enums';
 import { Util } from 'discord.js';
@@ -46,9 +46,9 @@ export default class extends MusicCommand {
 		}
 	}
 
-	public async play(music: Queue): Promise<void> {
-		while (music.length && music.channel) {
-			const [song] = music;
+	public async play(music: MusicHandler): Promise<void> {
+		while (music.queue.length && music.channel) {
+			const [song] = music.queue;
 
 			const requester = await song.fetchRequester();
 			const member = requester ? await music.guild.members.fetch(requester.id).catch(() => null) : null;
@@ -67,7 +67,7 @@ export default class extends MusicCommand {
 			}
 		}
 
-		if (!music.length && music.channelID) {
+		if (!music.queue.length && music.channelID) {
 			await music.channel!.sendLocale('COMMAND_PLAY_END');
 			await music.leave().catch(error => {
 				this.client.emit(Events.Wtf, error);

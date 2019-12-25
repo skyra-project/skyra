@@ -1,5 +1,5 @@
 import { Event, EventStore } from 'klasa';
-import { Events } from '../lib/types/Enums';
+import { Events } from '../../lib/types/Enums';
 
 export default class extends Event {
 

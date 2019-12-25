@@ -7,7 +7,7 @@ import { Song } from './Song';
 import { SkyraClient } from '../../SkyraClient';
 import { SubscriptionName } from '../../websocket/types';
 
-export class Queue extends Array<Song> {
+export class MusicHandler {
 
 	@enumerable(false)
 	public client: SkyraClient;
@@ -21,6 +21,7 @@ export class Queue extends Array<Song> {
 	@enumerable(false)
 	public systemPaused = false;
 
+	public queue: Song[] = [];
 	public volume = 100;
 	public replay = false;
 	public song: Song | null = null;
@@ -34,7 +35,7 @@ export class Queue extends Array<Song> {
 		return player ? player.status : Status.ENDED;
 	}
 
-	public get canPlay() { return Boolean(this.song || this.length); }
+	public get canPlay() { return Boolean(this.song || this.queue.length); }
 	public get playing() { return this.status === Status.PLAYING; }
 	public get paused() { return this.status === Status.PAUSED; }
 	public get ended() { return this.status === Status.ENDED; }
@@ -86,7 +87,6 @@ export class Queue extends Array<Song> {
 	private lastUpdate = 0;
 
 	public constructor(guild: Guild) {
-		super();
 		this.client = guild.client as SkyraClient;
 		this.guild = guild;
 	}
@@ -96,12 +96,14 @@ export class Queue extends Array<Song> {
 	public add(user: string, song: Track | Track[]) {
 		if (Array.isArray(song)) {
 			const parsedSongs = song.map(info => new Song(this, info, user));
-			this.push(...parsedSongs);
+			this.queue.push(...parsedSongs);
+			this.client.emit(Events.MusicAdd, this, parsedSongs);
 			return parsedSongs;
 		}
 
 		const parsedSong = new Song(this, song, user);
-		this.push(parsedSong);
+		this.queue.push(parsedSong);
+		this.client.emit(Events.MusicAdd, this, [parsedSong]);
 		return parsedSong;
 	}
 
@@ -114,42 +116,37 @@ export class Queue extends Array<Song> {
 
 	public setReplay(value: boolean) {
 		this.replay = value;
+		this.client.emit(Events.MusicReplayUpdate, this, value);
 		return this;
 	}
 
 	public async setVolume(volume: number) {
 		if (volume <= 0) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_SILENT');
 		if (volume > 200) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
-		this.volume = volume;
 		await this.player.setVolume(volume);
+		this.client.emit(Events.MusicSongVolumeUpdate, this, volume);
+		this.volume = volume;
 		return this;
 	}
 
 	public async seek(position: number) {
 		const { player } = this;
-		if (player) await player.seek(position);
+		if (player) {
+			await player.seek(position);
+			this.client.emit(Events.MusicSongSeekUpdate, this, position);
+		}
 		return this;
 	}
 
 	public async connect(voiceChannel: VoiceChannel) {
 		await this.player.join(voiceChannel.id, { deaf: true });
+		this.client.emit(Events.MusicConnect, this, voiceChannel);
 		return this;
-	}
-
-	public toJSON() {
-		return {
-			length: this.length,
-			voiceChannel: this.voiceChannel,
-			playing: this.playing,
-			song: this.song,
-			position: this.position,
-			status: this.status,
-			queue: [...this]
-		};
 	}
 
 	public async leave() {
 		await this.player.leave();
+		this.client.emit(Events.MusicLeave, this);
 		this.channelID = null;
 		this.reset(true);
 		this.systemPaused = false;
@@ -158,15 +155,18 @@ export class Queue extends Array<Song> {
 
 	public play() {
 		if (!this.voiceChannel) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_VOICECHANNEL'));
-		if (!this.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
+		if (!this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
 		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
+		this.client.emit(Events.MusicSongPlay, this, this.song);
 		return new Promise<void>((resolve, reject) => {
 			// Setup the events
 			if (this._listeners.end) this._listeners.end(true);
 			this._listeners.end = finish => {
+				this.client.emit(Events.MusicSongFinish);
 				if (this.song && this.replay) {
 					this.player.play(this.song.track).catch(reject);
+					this.client.emit(Events.MusicSongReplay, this, this.song);
 					return;
 				}
 				this.reset();
@@ -186,7 +186,7 @@ export class Queue extends Array<Song> {
 			};
 			this.position = 0;
 			this.lastUpdate = 0;
-			this.song = this.shift()!;
+			this.song = this.queue.shift()!;
 			this.systemPaused = false;
 
 			this.player.play(this.song.track)
@@ -197,6 +197,7 @@ export class Queue extends Array<Song> {
 	public async pause(systemPaused = false) {
 		if (!this.paused) {
 			await this.player.pause(true);
+			this.client.emit(Events.MusicSongPause, this);
 			this.systemPaused = systemPaused;
 		}
 		return this;
@@ -205,6 +206,7 @@ export class Queue extends Array<Song> {
 	public async resume() {
 		if (!this.playing) {
 			await this.player.pause(false);
+			this.client.emit(Events.MusicSongResume, this);
 			this.systemPaused = false;
 		}
 		return this;
@@ -212,23 +214,26 @@ export class Queue extends Array<Song> {
 
 	public async skip() {
 		this.setReplay(false);
-		const song = this.song || (this.length ? this[0] : null);
 		await this.player.stop();
+		const song = this.song || (this.queue.length ? this.queue[0] : null);
+		this.client.emit(Events.MusicSkip, this, song);
 		return song;
 	}
 
 	public prune() {
-		this.length = 0;
+		this.client.emit(Events.MusicPrune, this);
+		this.queue.length = 0;
 		return this;
 	}
 
 	public shuffle() {
-		let m = this.length;
+		let m = this.queue.length;
 		while (m) {
 			const i = Math.floor(Math.random() * m--);
-			[this[m], this[i]] = [this[i], this[m]];
+			[this.queue[m], this.queue[i]] = [this.queue[i], this.queue[m]];
 		}
-		return this;
+		this.client.emit(Events.MusicShuffleQueue, this);
+		return this.queue;
 	}
 
 	public receiver(payload: LavalinkEvent) {
@@ -294,9 +299,21 @@ export class Queue extends Array<Song> {
 	public async manageableFor(message: KlasaMessage) {
 		if (message.member!.isDJ) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
-		if ((this.song ? this.song.requester === message.author.id : true) && this.every(song => song.requester === message.author.id)) return true;
+		if ((this.song ? this.song.requester === message.author.id : true) && this.queue.every(song => song.requester === message.author.id)) return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return message.hasAtLeastPermissionLevel(5);
+	}
+
+	public toJSON() {
+		return {
+			length: this.queue.length,
+			voiceChannel: this.voiceChannel,
+			playing: this.playing,
+			song: this.song,
+			position: this.position,
+			status: this.status,
+			queue: this.queue
+		};
 	}
 
 	private reset(volume = false) {

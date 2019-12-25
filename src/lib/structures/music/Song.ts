@@ -1,6 +1,6 @@
 import { Track } from 'lavalink';
 import { enumerable, showSeconds, cleanMentions } from '../../util/util';
-import { Queue } from './Queue';
+import { MusicHandler } from './Queue';
 import { Util } from 'discord.js';
 
 export class Song {
@@ -12,7 +12,7 @@ export class Song {
 	public requester: string;
 
 	@enumerable(false)
-	public queue: Queue;
+	public queue: MusicHandler;
 
 	public identifier: string;
 	public seekable: boolean;
@@ -29,7 +29,7 @@ export class Song {
 	 * @param data The retrieved data.
 	 * @param requester The user that requested this song.
 	 */
-	public constructor(queue: Queue, data: Track, requester: string) {
+	public constructor(queue: MusicHandler, data: Track, requester: string) {
 		this.queue = queue;
 		this.track = data.track;
 		this.requester = requester;

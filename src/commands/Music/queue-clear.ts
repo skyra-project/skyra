@@ -12,7 +12,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const amount = message.guild!.music.length;
+		const amount = message.guild!.music.queue.length;
 		message.guild!.music.prune();
 		return message.sendLocale('COMMAND_CLEAR_SUCCESS', [amount]);
 	}

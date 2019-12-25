@@ -15,15 +15,15 @@ export default class extends MusicCommand {
 		if (index <= 0) throw message.language.tget('COMMAND_REMOVE_INDEX_INVALID');
 
 		const { music } = message.guild!;
-		if (index > music.length) throw message.language.tget('COMMAND_REMOVE_INDEX_OUT', music.length);
+		if (index > music.queue.length) throw message.language.tget('COMMAND_REMOVE_INDEX_OUT', music.queue.length);
 
 		index--;
-		const song = music[index];
+		const song = music.queue[index];
 		if (song.requester !== message.author.id && !await message.hasAtLeastPermissionLevel(5)) {
 			throw message.language.tget('COMMAND_REMOVE_DENIED');
 		}
 
-		music.splice(index, 1);
+		music.queue.splice(index, 1);
 		return message.sendLocale('COMMAND_REMOVE_SUCCESS', [song]);
 	}
 

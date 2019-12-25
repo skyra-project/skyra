@@ -1,9 +1,6 @@
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { Track } from 'lavalink';
-import { MusicHandler } from '../../lib/structures/music/MusicHandler';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
-import { Events } from '../../lib/types/Enums';
-import { Util } from 'discord.js';
 
 export default class extends MusicCommand {
 
@@ -42,37 +39,9 @@ export default class extends MusicCommand {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music.song]);
 		} else {
 			music.channelID = message.channel.id;
-			this.play(music).catch(error => this.client.emit(Events.Wtf, error));
+			await music.play();
 		}
 	}
 
-	public async play(music: MusicHandler): Promise<void> {
-		while (music.queue.length && music.channel) {
-			const [song] = music.queue;
-
-			const requester = await song.fetchRequester();
-			const member = requester ? await music.guild.members.fetch(requester.id).catch(() => null) : null;
-			const name = member ? member.displayName : requester ? requester.username : music.guild.language.tget(`UNKNOWN_USER`);
-
-			await music.channel.sendLocale('COMMAND_PLAY_NEXT', [song.safeTitle, Util.escapeMarkdown(name)]);
-			await util.sleep(250);
-
-			try {
-				await music.play();
-			} catch (error) {
-				if (typeof error !== 'string') this.client.emit(Events.Error, error);
-				if (music.channel) await music.channel.send(error);
-				await music.leave();
-				break;
-			}
-		}
-
-		if (!music.queue.length && music.channelID) {
-			await music.channel!.sendLocale('COMMAND_PLAY_END');
-			await music.leave().catch(error => {
-				this.client.emit(Events.Wtf, error);
-			});
-		}
-	}
 
 }

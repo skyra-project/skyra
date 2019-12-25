@@ -80,12 +80,6 @@ export class MusicHandler {
 	@enumerable(false)
 	public lastUpdate = 0;
 
-	private readonly _listeners: MusicManagerListeners = {
-		disconnect: null,
-		end: null,
-		error: null
-	};
-
 	public constructor(guild: Guild) {
 		this.client = guild.client as SkyraClient;
 		this.guild = guild;
@@ -124,7 +118,7 @@ export class MusicHandler {
 		if (volume <= 0) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_SILENT');
 		if (volume > 200) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
 		await this.player.setVolume(volume);
-		this.client.emit(Events.MusicSongVolumeUpdate, this, volume);
+		this.client.emit(Events.MusicSongVolumeUpdate, this, this.volume, volume);
 		this.volume = volume;
 		return this;
 	}
@@ -145,60 +139,29 @@ export class MusicHandler {
 	}
 
 	public async leave() {
+		const { voiceChannel } = this;
 		await this.player.leave();
-		this.client.emit(Events.MusicLeave, this);
-		this.channelID = null;
-		this.reset(true);
-		this.systemPaused = false;
+		this.client.emit(Events.MusicLeave, this, voiceChannel);
 		return this;
 	}
 
-	public play() {
+	public async play() {
 		if (!this.voiceChannel) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_VOICECHANNEL'));
 		if (!this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
 		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
-		this.client.emit(Events.MusicSongPlay, this, this.song);
-		return new Promise<void>((resolve, reject) => {
-			// Setup the events
-			if (this._listeners.end) this._listeners.end(true);
-			this._listeners.end = finish => {
-				this.client.emit(Events.MusicSongFinish);
-				if (this.song && this.replay) {
-					this.player.play(this.song.track).catch(reject);
-					this.client.emit(Events.MusicSongReplay, this, this.song);
-					return;
-				}
-				this.reset();
-				this._listeners.end = null;
-				this._listeners.disconnect = null;
-				this._listeners.error = null;
-				if (finish) resolve();
-			};
-			this._listeners.error = error => {
-				this._listeners.end!(false);
-				reject(error);
-			};
-			this._listeners.disconnect = code => {
-				this._listeners.end!(false);
-				if (code >= 4000) reject(this.guild.language.tget('MUSICMANAGER_PLAY_DISCONNECTION'));
-				else resolve();
-			};
-			this.position = 0;
-			this.lastUpdate = 0;
-			this.song = this.queue.shift()!;
-			this.systemPaused = false;
+		this.song = this.queue.shift()!;
+		await this.player.play(this.song.track);
 
-			this.player.play(this.song.track)
-				.catch(reject);
-		});
+		this.client.emit(Events.MusicSongPlay, this, this.song);
+		return this;
 	}
 
 	public async pause(systemPaused = false) {
 		if (!this.paused) {
 			await this.player.pause(true);
-			this.client.emit(Events.MusicSongPause, this);
 			this.systemPaused = systemPaused;
+			this.client.emit(Events.MusicSongPause, this);
 		}
 		return this;
 	}
@@ -214,15 +177,16 @@ export class MusicHandler {
 
 	public async skip() {
 		this.setReplay(false);
-		await this.player.stop();
-		const song = this.song || (this.queue.length ? this.queue[0] : null);
-		this.client.emit(Events.MusicSkip, this, song);
-		return song;
+
+		if (this.song !== null) {
+			await this.player.stop();
+			this.client.emit(Events.MusicSongSkip, this, this.song);
+		}
+		return this;
 	}
 
 	public prune() {
 		this.client.emit(Events.MusicPrune, this);
-		this.queue.length = 0;
 		return this;
 	}
 
@@ -272,10 +236,4 @@ export class MusicHandler {
 		};
 	}
 
-}
-
-interface MusicManagerListeners {
-	end: ((finish?: boolean) => unknown) | null;
-	error: ((error: Error | string) => unknown) | null;
-	disconnect: ((code: number) => unknown) | null;
 }

@@ -27,10 +27,6 @@ export default class extends MusicCommand {
 
 		// Set the volume
 		await music.setVolume(volume);
-		return message.sendLocale('COMMAND_VOLUME_CHANGED', [volume > previousVolume
-			? (volume === 200 ? '📢' : '🔊')
-			: (volume === 0 ? '🔇' : '🔉'),
-		volume]);
 	}
 
 }

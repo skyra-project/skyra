@@ -12,7 +12,6 @@ export default class extends MusicCommand {
 
 	public async run(message: KlasaMessage) {
 		await message.guild!.music.pause();
-		return message.sendLocale('COMMAND_PAUSE_SUCCESS');
 	}
 
 }

@@ -10,9 +10,8 @@ export default class extends MusicCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage) {
-		const amount = message.guild!.music.shuffle().length;
-		return message.sendLocale('COMMAND_SHUFFLE_SUCCESS', [amount]);
+	public run(message: KlasaMessage) {
+		message.guild!.music.shuffle();
 	}
 
 }

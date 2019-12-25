@@ -14,12 +14,6 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		if (!message.member) {
-			await message.guild!.members.fetch(message.author.id).catch(() => {
-				throw message.language.tget('COMMAND_JOIN_NO_MEMBER');
-			});
-		}
-
 		const { channel } = message.member!.voice;
 		if (!channel) throw message.language.tget('COMMAND_JOIN_NO_VOICECHANNEL');
 
@@ -30,8 +24,8 @@ export default class extends MusicCommand {
 		}
 		this.resolvePermissions(message, channel);
 
+		message.guild!.music.channelID = channel.id;
 		await message.guild!.music.connect(channel);
-		return message.sendLocale('COMMAND_JOIN_SUCCESS', [channel]);
 	}
 
 	public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

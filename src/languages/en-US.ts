@@ -341,7 +341,7 @@ export default class extends Language {
 		MUSICMANAGER_PLAY_PLAYING: `Decks' spinning, can't you hear it?`,
 		MUSICMANAGER_PLAY_DISCONNECTION: `I got disconnected forcefully!`,
 		MUSICMANAGER_ERROR: error => `Something happened!\n${error}`,
-		MUSICMANAGER_STUCK: seconds => `Hold on, I got a little problem, I'll be back in ${seconds === 1 ? 'a second' : `${seconds} seconds`}!`,
+		MUSICMANAGER_STUCK: milliseconds => `${LOADING} Hold on, I got a little problem, I'll be back in: ${duration(milliseconds)}!`,
 		MUSICMANAGER_CLOSE: `Whoops, looks like I got a little problem with Discord!`,
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,

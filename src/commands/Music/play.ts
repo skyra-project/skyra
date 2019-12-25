@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { Track } from 'lavalink';
-import { MusicHandler } from '../../lib/structures/music/Queue';
+import { MusicHandler } from '../../lib/structures/music/MusicHandler';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
 import { Events } from '../../lib/types/Enums';
 import { Util } from 'discord.js';

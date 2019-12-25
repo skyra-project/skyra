@@ -1,5 +1,5 @@
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
-import { KlasaMessage, util } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { LoadType, Status, Track } from 'lavalink';
 import { Events } from '../../types/Enums';
 import { enumerable } from '../../util/util';
@@ -74,17 +74,17 @@ export class MusicHandler {
 		return [];
 	}
 
+	@enumerable(false)
+	public position = 0;
+
+	@enumerable(false)
+	public lastUpdate = 0;
+
 	private readonly _listeners: MusicManagerListeners = {
 		disconnect: null,
 		end: null,
 		error: null
 	};
-
-	@enumerable(false)
-	private position = 0;
-
-	@enumerable(false)
-	private lastUpdate = 0;
 
 	public constructor(guild: Guild) {
 		this.client = guild.client as SkyraClient;
@@ -236,64 +236,12 @@ export class MusicHandler {
 		return this.queue;
 	}
 
-	public receiver(payload: LavalinkEvent) {
-		const users = this.client.websocket.users
-			.filter(user => user.subscriptions
-				.some(sub => sub.type === SubscriptionName.Music && sub.guild_id === this.guild.id));
-
-		for (const user of users.values()) user.syncMusic();
-
-		// If it's the end of the track, handle next song
-		if (isTrackEndEvent(payload)) {
-			if (this._listeners.end) this._listeners.end(true);
-			return;
-		}
-
-		// If there was an exception, handle it accordingly
-		if (isTrackExceptionEvent(payload)) {
-			this.client.emit(Events.Error, `[LL:${this.guild.id}] Error: ${payload.error}`);
-			if (this._listeners.error) this._listeners.error(payload.error);
-			if (this.channel) {
-				this.channel.sendLocale('MUSICMANAGER_ERROR', [util.codeBlock('', payload.error)])
-					.catch(error => { this.client.emit(Events.Wtf, error); });
-			}
-			return;
-		}
-
-		// If Lavalink gets stuck, alert the users of the downtime
-		if (isTrackStuckEvent(payload)) {
-			if (this.channel && payload.thresholdMs > 1000) {
-				(this.channel.sendLocale('MUSICMANAGER_STUCK', [Math.ceil(payload.thresholdMs / 1000)]))
-					.then((message: KlasaMessage) => message.delete({ timeout: payload.thresholdMs }))
-					.catch(error => { this.client.emit(Events.Wtf, error); });
-			}
-			return;
-		}
-
-		// If the websocket closes badly (code >= 4000), there's most likely an error
-		if (isWebSocketClosedEvent(payload)) {
-			if (payload.code >= 4000) {
-				this.client.emit(Events.Error, `[LL:${this.guild.id}] Disconnection with code ${payload.code}: ${payload.reason}`);
-				(this.channel!.sendLocale('MUSICMANAGER_CLOSE'))
-					.then((message: KlasaMessage) => message.delete({ timeout: 10000 }))
-					.catch(error => { this.client.emit(Events.Wtf, error); });
-			}
-			if (this._listeners.disconnect) this._listeners.disconnect(payload.code);
-			this.reset(true);
-			return;
-		}
-
-		// If it's a player update, update the position
-		if (isPlayerUpdate(payload)) {
-			this.position = payload.state.position;
-			this.lastUpdate = payload.state.time;
-			return;
-		}
-
-		// If it's a destroy payload, reset this instance
-		if (isDestroy(payload)) {
-			this.reset(true);
-		}
+	public reset(volume = false) {
+		this.song = null;
+		this.position = 0;
+		this.lastUpdate = 0;
+		this.systemPaused = false;
+		if (volume) this.volume = 100;
 	}
 
 	public async manageableFor(message: KlasaMessage) {
@@ -302,6 +250,14 @@ export class MusicHandler {
 		if ((this.song ? this.song.requester === message.author.id : true) && this.queue.every(song => song.requester === message.author.id)) return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return message.hasAtLeastPermissionLevel(5);
+	}
+
+	public *websocketUserIterator() {
+		for (const user of this.client.websocket.users.values()) {
+			if (user.subscriptions.some(subscription => subscription.type === SubscriptionName.Music && subscription.guild_id === this.guild.id)) {
+				yield user;
+			}
+		}
 	}
 
 	public toJSON() {
@@ -316,108 +272,10 @@ export class MusicHandler {
 		};
 	}
 
-	private reset(volume = false) {
-		this.song = null;
-		this.position = 0;
-		this.lastUpdate = 0;
-		this.systemPaused = false;
-		if (volume) this.volume = 100;
-	}
-
 }
 
 interface MusicManagerListeners {
 	end: ((finish?: boolean) => unknown) | null;
 	error: ((error: Error | string) => unknown) | null;
 	disconnect: ((code: number) => unknown) | null;
-}
-
-/**
- * The basic lavalink node
- */
-interface LavalinkEvent {
-	op: string;
-	type?: string;
-	guildId: string;
-}
-
-interface LavalinkEndEvent extends LavalinkEvent {
-	track: string;
-	reason: string;
-}
-
-interface LavalinkExceptionEvent extends LavalinkEvent {
-	track: string;
-	error: string;
-}
-
-interface LavalinkStuckEvent extends LavalinkEvent {
-	track: string;
-	thresholdMs: number;
-}
-
-interface LavalinkWebSocketClosedEvent extends LavalinkEvent {
-	code: number;
-	reason: string;
-	byRemote: boolean;
-}
-
-interface LavalinkPlayerUpdateEvent extends LavalinkEvent {
-	type: never;
-	state: {
-		time: number;
-		position: number;
-	};
-}
-
-interface LavalinkDestroyEvent extends LavalinkEvent {
-	type: never;
-}
-
-/**
- * Check if it's an end event
- * @param x The event to check
- */
-function isTrackEndEvent(x: LavalinkEvent): x is LavalinkEndEvent {
-	return x.type === 'TrackEndEvent';
-}
-
-/**
- * Check if it's an exception event
- * @param x The event to check
- */
-function isTrackExceptionEvent(x: LavalinkEvent): x is LavalinkExceptionEvent {
-	return x.type === 'TrackExceptionEvent';
-}
-
-/**
- * Check if it's a stuck event
- * @param x The event to check
- */
-function isTrackStuckEvent(x: LavalinkEvent): x is LavalinkStuckEvent {
-	return x.type === 'TrackStuckEvent';
-}
-
-/**
- * Check if it's a ws closed event
- * @param x The event to check
- */
-function isWebSocketClosedEvent(x: LavalinkEvent): x is LavalinkWebSocketClosedEvent {
-	return x.type === 'WebSocketClosedEvent';
-}
-
-/**
- * Check if it's a player update event
- * @param x The event to check
- */
-function isPlayerUpdate(x: LavalinkEvent): x is LavalinkPlayerUpdateEvent {
-	return x.op === 'playerUpdate';
-}
-
-/**
- * Check if it's a destroy event
- * @param x The event to check
- */
-function isDestroy(x: LavalinkEvent): x is LavalinkDestroyEvent {
-	return x.op === 'destroy';
 }

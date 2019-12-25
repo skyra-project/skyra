@@ -2,7 +2,7 @@ import { Structures } from 'discord.js';
 import { enumerable } from '../util/util';
 
 import { ModerationManager } from '../structures/ModerationManager';
-import { MusicHandler } from '../structures/music/Queue';
+import { MusicHandler } from '../structures/music/MusicHandler';
 import { StarboardManager } from '../structures/StarboardManager';
 import { GuildSecurity } from '../util/Security/GuildSecurity';
 import { PermissionsManager } from '../structures/PermissionsManager';

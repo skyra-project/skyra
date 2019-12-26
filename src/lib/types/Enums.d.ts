@@ -51,6 +51,7 @@ export const enum Events {
 	MusicConnect = 'musicConnect',
 	MusicLeave = 'musicLeave',
 	MusicPrune = 'musicPrune',
+	MusicRemove = 'musicRemove',
 	MusicReplayUpdate = 'musicReplayUpdate',
 	MusicShuffleQueue = 'musicShuffleQueue',
 	MusicSongFinish = 'musicSongFinish',

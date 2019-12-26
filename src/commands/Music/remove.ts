@@ -1,5 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
+import { Events } from '../../lib/types/Enums';
 
 export default class extends MusicCommand {
 
@@ -11,7 +12,7 @@ export default class extends MusicCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [index]: [number]) {
+	public run(message: KlasaMessage, [index]: [number]) {
 		if (index <= 0) throw message.language.tget('COMMAND_REMOVE_INDEX_INVALID');
 
 		const { music } = message.guild!;
@@ -24,7 +25,7 @@ export default class extends MusicCommand {
 		}
 
 		music.queue.splice(index, 1);
-		return message.sendLocale('COMMAND_REMOVE_SUCCESS', [song]);
+		this.client.emit(Events.MusicRemove, music, song, this.getContext(message));
 	}
 
 }

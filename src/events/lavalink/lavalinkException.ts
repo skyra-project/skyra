@@ -5,7 +5,7 @@ import { Events } from '../../lib/types/Enums';
 
 export default class extends Event {
 
-	private kHeader = new Colors({ text: 'red' }).format('[LAVALINK]');
+	private kHeader = new Colors({ text: 'magenta' }).format('[LAVALINK]');
 
 	public run(manager: MusicHandler, payload: LavalinkExceptionEvent) {
 		this.client.emit(Events.Error, [

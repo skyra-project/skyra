@@ -1,5 +1,6 @@
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import { Track } from 'lavalink';
+import { GuildSettings } from '../lib/types/settings/GuildSettings';
 
 export default class extends Argument {
 
@@ -7,27 +8,30 @@ export default class extends Argument {
 		if (!arg) throw message.language.tget('MUSICMANAGER_FETCH_NO_ARGUMENTS');
 		if (!message.guild) return null;
 
+		const remainingUserEntries = this.getRemainingUserEntries(message);
+		if (remainingUserEntries === 0) throw message.language.tget('MUSICMANAGER_TOO_MANY_SONGS');
+
 		arg = arg.replace(/^<(.+)>$/g, '$1');
 		const parsedURL = this.parseURL(arg);
 		let returnAll: boolean;
 		let tracks: Track[];
 		let soundcloud = true;
 		if (parsedURL) {
-			tracks = await message.guild.music.fetch(arg).catch(() => [] as Track[]);
+			tracks = await this.fetchSongs(message, remainingUserEntries, arg);
 			returnAll = parsedURL.playlist;
 		} else if (('sc' in message.flagArgs) || ('soundcloud' in message.flagArgs)) {
-			tracks = await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]);
+			tracks = await this.fetchSongs(message, remainingUserEntries, `scsearch: ${arg}`);
 			returnAll = false;
 			soundcloud = false;
 		} else {
-			tracks = await message.guild.music.fetch(`ytsearch: ${arg}`).catch(() => [] as Track[]);
+			tracks = await this.fetchSongs(message, remainingUserEntries, `ytsearch: ${arg}`);
 			returnAll = false;
 		}
 		if (!tracks.length) {
-			if (soundcloud) tracks.push(...await message.guild.music.fetch(`scsearch: ${arg}`).catch(() => [] as Track[]));
+			if (soundcloud) tracks.push(...await this.fetchSongs(message, remainingUserEntries, `scsearch: ${arg}`));
 			if (!tracks.length) throw message.language.tget('MUSICMANAGER_FETCH_NO_MATCHES');
 		}
-		return returnAll ? tracks : tracks[0];
+		return returnAll ? tracks : [tracks[0]];
 	}
 
 	public parseURL(url: string): { url: string; playlist: boolean } | null {
@@ -39,6 +43,33 @@ export default class extends Argument {
 		} catch (error) {
 			return null;
 		}
+	}
+
+	private async fetchSongs(message: KlasaMessage, remainingUserEntries: number, search: string) {
+		try {
+			return this.filter(message, remainingUserEntries, await message.guild!.music.fetch(search));
+		} catch {
+			return [];
+		}
+	}
+
+	private getRemainingUserEntries(message: KlasaMessage) {
+		if (message.member!.isDJ) return -1;
+
+		const maximumEntriesPerUser = message.guild!.settings.get(GuildSettings.Music.MaximumEntriesPerUser);
+		const userEntries = message.guild!.music.queue.reduce((acc, song) => song.requester === message.author.id ? acc + 1 : acc, 0);
+		return Math.max(0, maximumEntriesPerUser - userEntries);
+	}
+
+	private filter(message: KlasaMessage, remainingUserEntries: number, tracks: Track[]) {
+		if (remainingUserEntries === -1) return tracks;
+
+		const maximumDuration = message.guild!.settings.get(GuildSettings.Music.MaximumDuration);
+		const allowStreams = message.guild!.settings.get(GuildSettings.Music.AllowStreams);
+
+		return tracks
+			.filter(track => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration)
+			.slice(0, remainingUserEntries);
 	}
 
 }

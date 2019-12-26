@@ -328,8 +328,10 @@ export default class extends Language {
 		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: `Temo que necesito estar en un canal de voz antes de poder usar este comando, ¡por favor muéstreme el camino!`,
 		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: `¡Hey! Parece que no estamos en el mismo canal de voz, ¡por favor únete conmigo!`,
 
+		MUSICMANAGER_FETCH_NO_ARGUMENTS: `I need you to give me the name of a song!`,
 		MUSICMANAGER_FETCH_NO_MATCHES: `Lo siento, ¡pero no he sido capaz de encontrar la canción que querías`,
 		MUSICMANAGER_FETCH_LOAD_FAILED: `Lo siento, ¡pero no he podido cargar esta canción! Por si acaso, ¡intenta con otra canción!`,
+		MUSICMANAGER_TOO_MANY_SONGS: `${REDCROSS} Woah there, you are adding more songs than allowed!`,
 		MUSICMANAGER_SETVOLUME_SILENT: `Woah, ¡podrías simplemente salir del canal de voz si quieres silencio!`,
 		MUSICMANAGER_SETVOLUME_LOUD: `Seré honesta, ¡las turbinas de un avión serían menos ruidosos que esto!`,
 		MUSICMANAGER_PLAY_NO_VOICECHANNEL: `¿Dónde se suponía que tenía que reproducir la música? ¡No estoy conectada a ningún canal de voz!`,

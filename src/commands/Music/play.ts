@@ -15,7 +15,7 @@ export default class extends MusicCommand {
 		this.createCustomResolver('song', (arg, possible, message) => arg ? this.client.arguments.get('song')!.run(arg, possible, message) : null);
 	}
 
-	public async run(message: KlasaMessage, [songs]: [Track | Track[]]) {
+	public async run(message: KlasaMessage, [songs]: [Track[]]) {
 		const { music } = message.guild!;
 
 		if (songs) {

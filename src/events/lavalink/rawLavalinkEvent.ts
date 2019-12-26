@@ -4,7 +4,7 @@ import { isTrackEndEvent, isTrackExceptionEvent, LavalinkEvent, isTrackStuckEven
 
 export default class extends Event {
 
-	private kHeader = new Colors({ text: 'yellow' }).format('[LAVALINK]');
+	private kHeader = new Colors({ text: 'magenta' }).format('[LAVALINK]');
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, {

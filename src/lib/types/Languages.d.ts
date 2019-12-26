@@ -163,8 +163,12 @@ export interface LanguageKeys {
 	COMMAND_QUEUE_DESCRIPTION: string;
 	COMMAND_QUEUE_EMPTY: string;
 	COMMAND_QUEUE_LAST: string;
-	COMMAND_QUEUE_LINE: (title: string, requester: string) => string;
-	COMMAND_QUEUE_TRUNCATED: (amount: number) => string;
+	COMMAND_QUEUE_TITLE: (guildname: string) => string;
+	COMMAND_QUEUE_LINE: (position: number, title: string, url: string, duration: string, requester: string) => string;
+	COMMAND_QUEUE_NOWPLAYING: (title: string, url: string, duration: string, requester: string) => string;
+	COMMAND_QUEUE_NOWPLAYING_TITLE: string;
+	COMMAND_QUEUE_TOTAL_TITLE: string;
+	COMMAND_QUEUE_TOTAL: (songs: number, remainingTime: string) => string;
 	COMMAND_REMOVE_DESCRIPTION: string;
 	COMMAND_REMOVE_INDEX_INVALID: string;
 	COMMAND_REMOVE_INDEX_OUT: (amount: number) => string;

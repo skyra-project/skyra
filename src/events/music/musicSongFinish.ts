@@ -17,7 +17,7 @@ export default class extends Event {
 		}
 
 		if (manager.queue.length === 0) {
-			await manager.leave();
+			await manager.player.leave();
 			if (channel) floatPromise(this, channel.sendLocale('COMMAND_PLAY_END'));
 		} else {
 			manager.reset();

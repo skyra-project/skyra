@@ -54,15 +54,14 @@ export default class extends Argument {
 	}
 
 	private getRemainingUserEntries(message: KlasaMessage) {
-		if (message.member!.isDJ) return -1;
-
 		const maximumEntriesPerUser = message.guild!.settings.get(GuildSettings.Music.MaximumEntriesPerUser);
-		const userEntries = message.guild!.music.queue.reduce((acc, song) => song.requester === message.author.id ? acc + 1 : acc, 0);
+		const userEntries = message.guild!.music.queue.reduce((acc, song) => song.requester === message.author.id ? acc + 1 : acc, 0) +
+			(message.guild!.music.song?.requester === message.author.id ? 1 : 0);
 		return Math.max(0, maximumEntriesPerUser - userEntries);
 	}
 
 	private filter(message: KlasaMessage, remainingUserEntries: number, tracks: Track[]) {
-		if (remainingUserEntries === -1) return tracks;
+		if (message.member!.isDJ) return tracks.slice(0, remainingUserEntries);
 
 		const maximumDuration = message.guild!.settings.get(GuildSettings.Music.MaximumDuration);
 		const allowStreams = message.guild!.settings.get(GuildSettings.Music.AllowStreams);

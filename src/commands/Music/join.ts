@@ -24,7 +24,7 @@ export default class extends MusicCommand {
 		}
 		this.resolvePermissions(message, channel);
 
-		message.guild!.music.channelID = channel.id;
+		message.guild!.music.channelID = message.channel.id;
 		await message.guild!.music.connect(channel);
 	}
 

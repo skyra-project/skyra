@@ -109,8 +109,10 @@ export class MusicHandler {
 	}
 
 	public setReplay(value: boolean) {
-		this.replay = value;
-		this.client.emit(Events.MusicReplayUpdate, this, value);
+		if (this.replay !== value) {
+			this.replay = value;
+			this.client.emit(Events.MusicReplayUpdate, this, value);
+		}
 		return this;
 	}
 
@@ -146,7 +148,6 @@ export class MusicHandler {
 	}
 
 	public async play() {
-		if (!this.voiceChannel) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_VOICECHANNEL'));
 		if (!this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
 		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
@@ -176,8 +177,6 @@ export class MusicHandler {
 	}
 
 	public async skip() {
-		this.setReplay(false);
-
 		if (this.song !== null) {
 			await this.player.stop();
 			this.client.emit(Events.MusicSongSkip, this, this.song);
@@ -205,6 +204,7 @@ export class MusicHandler {
 		this.position = 0;
 		this.lastUpdate = 0;
 		this.systemPaused = false;
+		this.replay = false;
 		if (volume) this.volume = 100;
 	}
 

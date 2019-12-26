@@ -10,14 +10,25 @@ export default class extends Event {
 
 		if (manager.replay && manager.song !== null) {
 			await manager.player.play(manager.song.track);
+			manager.position = 0;
+			manager.lastUpdate = 0;
 			this.client.emit(Events.MusicSongReplay, this, manager.song);
 			return;
 		}
 
-		manager.reset();
-		if (manager.queue.length === 0 && channel) {
+		if (manager.queue.length === 0) {
 			await manager.leave();
-			floatPromise(this, channel.sendLocale('COMMAND_PLAY_END'));
+			if (channel) floatPromise(this, channel.sendLocale('COMMAND_PLAY_END'));
+		} else {
+			manager.reset();
+			try {
+				manager.song = manager.queue.shift()!;
+				await manager.player.play(manager.song.track);
+
+				this.client.emit(Events.MusicSongPlay, manager, manager.song);
+			} catch (error) {
+				this.client.emit(Events.Wtf, error);
+			}
 		}
 
 		// TODO (Favna | Magna): Add WS handler

@@ -12,6 +12,8 @@ export default class extends Event {
 			floatPromise(this, channel.sendLocale('COMMAND_SKIP_SUCCESS', [song.safeTitle]));
 		}
 
+		manager.reset();
+
 		// TODO (Favna | Magna): Add WS handler
 	}
 

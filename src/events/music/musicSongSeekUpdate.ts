@@ -13,7 +13,7 @@ export default class extends Event {
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongSeekUpdate, data: position });
+			subscription.send({ action: OutgoingWebsocketAction.MusicSongSeekUpdate, data: { position } });
 		}
 	}
 

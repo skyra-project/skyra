@@ -35,7 +35,7 @@ export default class extends Event {
 
 		if (song !== null) {
 			for (const subscription of manager.websocketUserIterator()) {
-				subscription.send({ action: OutgoingWebsocketAction.MusicSongFinish, data: song.id });
+				subscription.send({ action: OutgoingWebsocketAction.MusicSongFinish, data: { id: song.id } });
 			}
 		}
 	}

@@ -16,7 +16,7 @@ export default class extends Event {
 		manager.reset();
 
 		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongSkip, data: song.id });
+			subscription.send({ action: OutgoingWebsocketAction.MusicSongSkip, data: { id: song.id } });
 		}
 	}
 

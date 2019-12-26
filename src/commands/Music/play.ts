@@ -34,7 +34,7 @@ export default class extends MusicCommand {
 
 		if (music.playing) {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PLAYING');
-		} else if (music.paused) {
+		} else if (music.song) {
 			await music.resume(this.getContext(message));
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music.song]);
 		} else {

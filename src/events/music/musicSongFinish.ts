@@ -18,11 +18,11 @@ export default class extends Event {
 			return;
 		}
 
+		manager.reset();
 		if (manager.queue.length === 0) {
 			await manager.player.leave();
 			if (channel) floatPromise(this, channel.sendLocale('COMMAND_PLAY_END'));
 		} else {
-			manager.reset();
 			try {
 				manager.song = manager.queue.shift()!;
 				await manager.player.play(manager.song.track);

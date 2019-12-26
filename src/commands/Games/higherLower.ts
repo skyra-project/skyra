@@ -41,6 +41,8 @@ export default class extends SkyraCommand {
 		const wager = Number(text);
 		const balance = message.author.settings.get(UserSettings.Money);
 		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
+		// TODO (quantum): Log tx
+		await message.author.settings.decrease(wager, UserSettings.Money)
 
 		const response = await message.sendLocale('COMMAND_HIGHERLOWER_LOADING');
 		const game: HigherLowerGameData = {

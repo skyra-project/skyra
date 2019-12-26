@@ -1,6 +1,8 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, RichDisplay } from 'klasa';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
-import { Util } from 'discord.js';
+import { Util, MessageEmbed } from 'discord.js';
+import { getColor } from '../../lib/util/util';
+import { Time } from '../../lib/util/constants';
 
 export default class extends MusicCommand {
 
@@ -13,22 +15,49 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const manager = message.guild!.music;
-		if (!manager.queue.length) throw message.language.tget(manager.song ? 'COMMAND_QUEUE_LAST' : 'COMMAND_QUEUE_EMPTY');
+		const { queue } = message.guild!.music;
+		if (!queue.length) throw message.language.tget(message.guild!.music.song ? 'COMMAND_QUEUE_LAST' : 'COMMAND_QUEUE_EMPTY');
 
-		const output: string[] = [];
-		for (let i = 0; i < Math.min(manager.queue.length, 10); i++) {
-			const song = manager.queue[i];
-			output[i] = [
-				`[__\`${String(i + 1).padStart(2, '0')}\`__] ${message.language.tget(
-					'COMMAND_QUEUE_LINE', song.safeTitle, Util.escapeMarkdown((await song.fetchRequester())!.tag)
-				)}`,
-				`   └── <${song.url}> (${song.friendlyDuration})`
-			].join('\n');
+		// Send the loading message
+		const response = await message.send(new MessageEmbed()
+			.setColor(getColor(message))
+			.setDescription(message.language.tget('SYSTEM_LOADING')));
+
+		// Format the song entries
+		const songFields = await Promise.all(queue.map(async (song, position) => [`[${position + 1}] ${Util.escapeMarkdown(song.title)} | ${song.friendlyDuration}`, `As requested by **${Util.escapeMarkdown((await song.fetchRequester())!.tag)}**. [Audio Source](${song.url})`]));
+
+		// Generate the pages with 10 songs each
+		const pages = this.chunkify(songFields, 10);
+		const queueDisplay = new RichDisplay(new MessageEmbed()
+			.setColor(getColor(message))
+			.setTitle(`Music queue for ${message.guild!.name}`)
+			.setDescription(`Total tracks left: ${queue.length}\n`));
+
+		for (const page of pages) {
+			queueDisplay.addPage((template: MessageEmbed) => {
+				for (const [title, value] of page) {
+					template.addField(title, value);
+				}
+				return template;
+			});
 		}
-		if (manager.queue.length > 10) output.push('', message.language.tget('COMMAND_QUEUE_TRUNCATED', manager.queue.length));
 
-		return message.sendMessage(output.join('\n'));
+		// Run the display
+		return queueDisplay.run(response, { time: 3 * Time.Minute, filter: (_reaction, user) => user.id === message.author.id });
+	}
+
+	/**
+	 * Splits an array into smaller pieces
+	 * @param array The array to convert into chunks
+	 * @param amount How many elements each chunk has
+	 */
+	private chunkify(array: string[][], amount: number) {
+		if (array.length <= amount) return [array];
+		const chunks = [];
+		while (array.length > amount) {
+			chunks.push(array.splice(0, amount));
+		}
+		return chunks;
 	}
 
 }

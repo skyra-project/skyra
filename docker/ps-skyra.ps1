@@ -55,8 +55,6 @@ function Step-Run {
 
 	Process {
 		switch ( $command ) {
-			h { Show-Help }
-			help { Show-Help }
 			build { docker-compose -p skyra -f .\docker-compose.yml build $service }
 			start { docker-compose -p skyra -f .\docker-compose.yml up -d $service }
 			logs { docker-compose -p skyra -f .\docker-compose.yml logs $service }

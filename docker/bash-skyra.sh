@@ -3,27 +3,15 @@
 RED='\033[0;31m'
 LIGHTRED='\033[1;31m'
 GREEN='\033[0;32m'
-ORANGE='\033[0;33m'
 BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
-DARKGRAY='\033[1;30m'
 YELLOW='\033[1;33m'
-LIGHTBLUE='\033[1;34m'
-LIGHTPURPLE='\033[1;35m'
 NC='\033[0m' # No Color
-
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-
-DEFCOLUMNS=$(stty size 2>/dev/null | awk '{print $2}') || true
-
-if ! expr "$DEFCOLUMNS" : "[[:digit:]]\+$" >/dev/null 2>&1; then
-    DEFCOLUMNS=80
-fi
 
 # Display a message, wrapping lines at the terminal width.
 message() {
-    printf "$1 \n" | fmt -t -w ${COLUMNS:-$DEFCOLUMNS}
+    printf "$1 \n"
 }
 
 function removeAllContainers() {
@@ -65,45 +53,17 @@ help() {
 		tail		Tails the logs of a Docker container
 
 	Report bugs and issues to:
-		Favna#0001, on Skyra Development or Skyra Lounge Discord servers
-
-	The answer is always 42"
+		Skyra's GitHub, assigning favna and kyranet. https://github.com/kyranet/Skyra/issues/new"
 }
 
 case $1 in
--h)
-    help
-    ;;
---help)
-    help
-    ;;
-build)
-	docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml build ${@:2:99}
-	;;
-start)
-	docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml up -d ${@:2:99}
-	;;
-stop)
-	docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml stop ${@:2:99}
-	;;
-logs)
-	docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml logs ${@:2:99}
-	;;
-tail)
-	docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml logs -f ${@:2:99}
-	;;
-push)
-	docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml push ${@:2:99}
-	;;
-remove)
-    docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml rm -fv ${@:2:99}
-    ;;
-removeall)
-	removeAllContainers;;
-42)
-    fancylog "${RED}Woaw ${LIGHTRED}you ${ORANGE}found ${YELLOW}the ${CYAN}hidden ${LIGHTBLUE}command! ${BLUE}Well ${LIGHTPURPLE}done! ${PURPLE}Have ${DARKGRAY}a 🍪 !"
-    ;;
-*)
-    help
-    ;;
+	build) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml build ${@:2:99} ;;
+	start) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml up -d ${@:2:99} ;;
+	stop) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml stop ${@:2:99} ;;
+	logs) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml logs ${@:2:99} ;;
+	tail) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml logs -f ${@:2:99} ;;
+	push) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml push ${@:2:99} ;;
+	remove) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml rm -fv ${@:2:99};;
+	removeall) removeAllContainers;;
+	*) help ;;
 esac

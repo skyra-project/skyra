@@ -213,8 +213,9 @@ export class MusicHandler {
 
 	public *websocketUserIterator() {
 		for (const user of this.client.websocket.users.values()) {
-			const subscription = user.subscriptions.find(sub => sub.type === SubscriptionName.Music && sub.guild_id === this.guild.id);
-			if (typeof subscription !== 'undefined') yield subscription;
+			if (user.subscriptions.some(sub => sub.type === SubscriptionName.Music && sub.guild_id === this.guild.id)) {
+				yield user;
+			}
 		}
 	}
 

@@ -5,7 +5,7 @@ import { Events } from '../../lib/types/Enums';
 export default class extends Event {
 
 	public run(manager: MusicHandler) {
-		this.client.emit(Events.MusicSongFinish, manager);
+		this.client.emit(Events.MusicSongFinish, manager, manager.song);
 	}
 
 }

@@ -2,10 +2,12 @@ import { Event } from 'klasa';
 import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/music/MusicHandler';
 import { Events } from '../../lib/types/Enums';
 import { floatPromise } from '../../lib/util/util';
+import { OutgoingWebsocketAction } from '../../lib/websocket/types';
+import { Song } from '../../lib/structures/music/Song';
 
 export default class extends Event {
 
-	public async run(manager: MusicHandler, context: MusicHandlerRequestContext | null) {
+	public async run(manager: MusicHandler, song: Song | null, context: MusicHandlerRequestContext | null) {
 		const channel = context ? context.channel : manager.channel;
 
 		if (manager.replay && manager.song !== null) {
@@ -31,7 +33,11 @@ export default class extends Event {
 			}
 		}
 
-		// TODO (Favna | Magna): Add WS handler
+		if (song !== null) {
+			for (const subscription of manager.websocketUserIterator()) {
+				subscription.send({ action: OutgoingWebsocketAction.MusicSongFinish, data: { id: song.id } });
+			}
+		}
 	}
 
 }

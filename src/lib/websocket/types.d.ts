@@ -6,6 +6,23 @@ export const enum IncomingWebsocketAction {
 
 export const enum OutgoingWebsocketAction {
 	Authenticate = 'AUTHENTICATE',
+	MusicAdd = 'MUSIC_ADD',
+	MusicConnect = 'MUSIC_CONNECT',
+	MusicLeave = 'MUSIC_LLEAVE',
+	MusicPrune = 'MUSIC_PRUNE',
+	MusicRemove = 'MUSIC_REMOVE',
+	MusicReplayUpdate = 'MUSIC_REPLAY_UPDATE',
+	MusicShuffleQueue = 'MUSIC_SHUFFLE_QUEUE',
+	MusicSongFinish = 'MUSIC_SONG_FINISH',
+	MusicSongPause = 'MUSIC_SONG_PAUSE',
+	MusicSongPlay = 'MUSIC_SONG_PLAY',
+	MusicSongReplay = 'MUSIC_SONG_REPLAY',
+	MusicSongResume = 'MUSIC_SONG_RESUME',
+	MusicSongSeekUpdate = 'MUSIC_SONG_SEEK_UPDATE',
+	MusicSongSkip = 'MUSIC_SONG_SKIP',
+	MusicSongVolumeUpdate = 'MUSIC_SONG_VOLUME_UPDATE',
+	MusicVoiceChannelJoin = 'MUSIC_VOICE_CHANNEL_JOIN',
+	MusicVoiceChannelLeave = 'MUSIC_VOICE_CHANNEL_LEAVE',
 	MusicSync = 'MUSIC_SYNC'
 }
 

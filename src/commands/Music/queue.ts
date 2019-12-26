@@ -1,8 +1,10 @@
-import { CommandStore, KlasaMessage, RichDisplay } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { MusicCommand } from '../../lib/structures/MusicCommand';
 import { Util, MessageEmbed } from 'discord.js';
-import { getColor } from '../../lib/util/util';
-import { Time } from '../../lib/util/constants';
+import { getColor, showSeconds } from '../../lib/util/util';
+import { isNumber } from '@klasa/utils';
+import { Song } from '../../lib/structures/music/Song';
+import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 
 export default class extends MusicCommand {
 
@@ -24,26 +26,23 @@ export default class extends MusicCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING')));
 
 		// Format the song entries
-		const songFields = await Promise.all(queue.map(async (song, position) => [`[${position + 1}] ${Util.escapeMarkdown(song.title)} | ${song.friendlyDuration}`, `As requested by **${Util.escapeMarkdown((await song.fetchRequester())!.tag)}**. [Audio Source](${song.url})`]));
+		const songFields = await Promise.all(queue.map((song, pos) => this.formatSong(song, pos + 1)));
 
 		// Generate the pages with 10 songs each
-		const pages = this.chunkify(songFields, 10);
-		const queueDisplay = new RichDisplay(new MessageEmbed()
+		const pages = this.chunkify(songFields, 5);
+		const queueDisplay = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
 			.setTitle(`Music queue for ${message.guild!.name}`)
-			.setDescription(`Total tracks left: ${queue.length}\n`));
+			.addField('Now Playing:', await this.formatSong(message.guild!.music.song!))
+			.addField('Total songs:', `${queue.length} songs remaining. (${showSeconds(queue.map(song => song.duration).reduce((a, b) => a + b))} remaining)`));
 
 		for (const page of pages) {
-			queueDisplay.addPage((template: MessageEmbed) => {
-				for (const [title, value] of page) {
-					template.addField(title, value);
-				}
-				return template;
-			});
+			queueDisplay.addPage((template: MessageEmbed) => template.setDescription(page.join('\n\n')));
 		}
 
 		// Run the display
-		return queueDisplay.run(response, { time: 3 * Time.Minute, filter: (_reaction, user) => user.id === message.author.id });
+		await queueDisplay.start(response, message.author.id);
+		return response;
 	}
 
 	/**
@@ -51,13 +50,17 @@ export default class extends MusicCommand {
 	 * @param array The array to convert into chunks
 	 * @param amount How many elements each chunk has
 	 */
-	private chunkify(array: string[][], amount: number) {
+	private chunkify(array: string[], amount: number) {
 		if (array.length <= amount) return [array];
 		const chunks = [];
 		while (array.length > amount) {
 			chunks.push(array.splice(0, amount));
 		}
 		return chunks;
+	}
+
+	private async formatSong(song: Song, position?: number) {
+		return `${isNumber(position) ? `[${position}]` : ''} [${Util.escapeMarkdown(song.title)}](${song.url}) | (${song.friendlyDuration}) | Requested by **${Util.escapeMarkdown((await song.fetchRequester())!.username)}**.`;
 	}
 
 }

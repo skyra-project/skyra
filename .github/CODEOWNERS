@@ -13,9 +13,16 @@
 /src/commands/Anime/manga.ts @favna
 /src/commands/Misc/reddituser.ts @favna
 /src/commands/Pokemon/ @favna
-/src/commands/Fun/lmgtfy.ts @favna
+/src/commands/Google/ @favna
 /src/lib/util/Pokedex.ts @favna
 /src/lib/util/External/igbTypes.ts @favna
+/docker/ @favna
+/src/commands/GameIntegration/ @favna
+/src/lib/types/definitions/ClashOfClans.d.ts @favna
+/src/lib/types/definitions/Kitsu.d.ts @favna
+/src/lib/types/definitions/Reddit.d.ts @favna
+/src/lib/types/definitions/Tmdb.d.ts @favna
+/src/lib/util/Google.ts @favna
 
 # QuantumlyTangled
 /src/commands/Twitch/ @quantumlytangled

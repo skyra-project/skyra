@@ -1,17 +1,18 @@
-import { KlasaClient, KlasaMessage } from 'klasa';
+import { Client } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 import { TOKENS } from '../../../config';
 import { Events } from '../types/Enums';
 import { fetch, FetchResultTypes } from './util';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 
-export async function queryGoogleMapsAPI(message: KlasaMessage, client: KlasaClient, location: string) {
+export async function queryGoogleMapsAPI(message: KlasaMessage, location: string) {
 	const url = new URL(GOOGLE_MAPS_API_URL);
 	url.searchParams.append('address', location);
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
 	const { results, status } = await fetch(url, FetchResultTypes.JSON) as GoogleMapsResultOk;
 
-	if (status !== 'OK') throw message.language.tget(handleNotOK(status, client));
+	if (status !== 'OK') throw message.language.tget(handleNotOK(status, message.client));
 	if (results.length === 0) throw message.language.tget('GOOGLE_ERROR_ZERO_RESULTS');
 
 	return {
@@ -22,7 +23,7 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, client: KlasaCli
 	};
 }
 
-export function handleNotOK(status: string, client: KlasaClient) {
+export function handleNotOK(status: string, client: Client) {
 	switch (status) {
 		case 'ZERO_RESULTS':
 			return 'GOOGLE_ERROR_ZERO_RESULTS';

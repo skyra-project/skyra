@@ -318,7 +318,7 @@ export interface LanguageKeys {
 	MUSICMANAGER_PLAY_PLAYING: string;
 	MUSICMANAGER_PLAY_DISCONNECTION: string;
 	MUSICMANAGER_ERROR: (error: string) => string;
-	MUSICMANAGER_STUCK: (seconds: number) => string;
+	MUSICMANAGER_STUCK: (milliseconds: number) => string;
 	MUSICMANAGER_CLOSE: string;
 	COMMAND_CONF_MENU_NOPERMISSIONS: string;
 	COMMAND_CONF_MENU_RENDER_AT_FOLDER: (path: string) => string;

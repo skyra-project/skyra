@@ -1,7 +1,9 @@
-import { BitFieldResolvable } from 'discord.js';
-import { CommandOptions, CommandStore, util } from 'klasa';
+import { BitFieldResolvable, TextChannel } from 'discord.js';
+import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { MusicBitField, MusicBitFieldString } from './MusicBitField';
 import { SkyraCommand } from './SkyraCommand';
+import { MusicHandlerRequestContext } from './music/MusicHandler';
+import { mergeDefault } from '@klasa/utils';
 
 export abstract class MusicCommand extends SkyraCommand {
 
@@ -12,7 +14,7 @@ export abstract class MusicCommand extends SkyraCommand {
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: MusicCommandOptions = {}) {
 		// By nature, music commands only run in VoiceChannels, which are in Guilds.
-		util.mergeDefault({ runIn: ['text'], requireMusic: 0 }, options);
+		mergeDefault({ runIn: ['text'], requireMusic: 0 }, options);
 
 		super(store, file, directory, options);
 		this.music = new MusicBitField(options.music);
@@ -21,6 +23,10 @@ export abstract class MusicCommand extends SkyraCommand {
 	public init() {
 		if (!this.client.lavalink) this.disable();
 		return Promise.resolve();
+	}
+
+	protected getContext(message: KlasaMessage): MusicHandlerRequestContext {
+		return { channel: message.channel as TextChannel, userID: message.author.id };
 	}
 
 }

@@ -44,7 +44,7 @@ export default class DashboardWebsocketUser {
 		this._connection.on('message', this.handleIncomingRawMessage.bind(this));
 	}
 
-	public send(message: OutgoingWebsocketMessage | unknown) {
+	public send(message: OutgoingWebsocketMessage) {
 		this._connection.send(JSON.stringify(message));
 	}
 

@@ -1,9 +1,12 @@
 import { Track } from 'lavalink';
 import { enumerable, showSeconds, cleanMentions } from '../../util/util';
-import { Queue } from './Queue';
+import { MusicHandler } from './MusicHandler';
 import { Util } from 'discord.js';
 
 export class Song {
+
+	@enumerable(false)
+	public id: string;
 
 	@enumerable(false)
 	public track: string;
@@ -12,7 +15,7 @@ export class Song {
 	public requester: string;
 
 	@enumerable(false)
-	public queue: Queue;
+	public queue: MusicHandler;
 
 	public identifier: string;
 	public seekable: boolean;
@@ -29,7 +32,8 @@ export class Song {
 	 * @param data The retrieved data.
 	 * @param requester The user that requested this song.
 	 */
-	public constructor(queue: Queue, data: Track, requester: string) {
+	public constructor(queue: MusicHandler, data: Track, requester: string) {
+		this.id = Song.generateID(requester);
 		this.queue = queue;
 		this.track = data.track;
 		this.requester = requester;
@@ -64,6 +68,13 @@ export class Song {
 
 	public toString(): string {
 		return `<${this.url}>`;
+	}
+
+	private static counter = 0;
+
+	private static generateID(author: string) {
+		if (++Song.counter === 0xFFFFFF) Song.counter = 0;
+		return Buffer.from(`${author}.${Song.counter}.${Date.now()}`).toString('base64');
 	}
 
 }

@@ -7,7 +7,7 @@ export default class extends Argument {
 		if (!arg) throw message.language.tget('MUSICMANAGER_FETCH_NO_ARGUMENTS');
 		if (!message.guild) return null;
 
-		arg = arg.replace(/<(.+)>/g, '$1');
+		arg = arg.replace(/^<(.+)>$/g, '$1');
 		const parsedURL = this.parseURL(arg);
 		let returnAll: boolean;
 		let tracks: Track[];

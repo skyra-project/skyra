@@ -337,7 +337,7 @@ export default class extends Language {
 		MUSICMANAGER_PLAY_PLAYING: `Los discos están girando, ¿no los escuchas?`,
 		MUSICMANAGER_PLAY_DISCONNECTION: `¡Fuí desconectada a la fuerza por Discord!`,
 		MUSICMANAGER_ERROR: error => `¡Algo pasó!\n${error}`,
-		MUSICMANAGER_STUCK: seconds => `Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en ${seconds === 1 ? 'un segundo' : `${seconds} segundos`}!`,
+		MUSICMANAGER_STUCK: milliseconds => `${LOADING} Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en: ${duration(milliseconds)}!`,
 		MUSICMANAGER_CLOSE: `¡Oops, parece que he tenido un pequeño problemita con Discord!`,
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,

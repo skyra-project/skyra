@@ -1,20 +1,28 @@
 import { Event } from 'klasa';
 import { VoiceState } from 'discord.js';
+import { CLIENT_ID } from '../../config';
+import { Events } from '../lib/types/Enums';
 
 export default class extends Event {
 
-	public async run(_oldState: VoiceState, newState: VoiceState) {
+	public async run(oldState: VoiceState, newState: VoiceState) {
 		const { music } = newState.guild;
-		const { voiceChannel } = music;
 
-		// If there was no voice channel, ignore the update.
-		if (!voiceChannel) return;
+		if (newState.id === CLIENT_ID) {
+			// If both channels were the same, skip
+			if (oldState.channelID === newState.channelID) return;
 
-		// If the new state is not in the music voice channel
-		if (music.playing) {
-			if (music.listeners.length === 0) await music.pause(true);
-		} else if (music.paused && music.systemPaused) {
-			if (music.listeners.length !== 0) await music.resume();
+			if (newState.channel === null) {
+				this.client.emit(Events.MusicVoiceChannelLeave, music, oldState.channel);
+			} else {
+				this.client.emit(Events.MusicVoiceChannelJoin, music, newState.channel);
+			}
+		} else if (music.voiceChannel !== null) {
+			if (music.playing) {
+				if (music.listeners.length === 0) await music.pause(true);
+			} else if (music.paused && music.systemPaused) {
+				if (music.listeners.length !== 0) await music.resume();
+			}
 		}
 	}
 

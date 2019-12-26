@@ -61,7 +61,9 @@ export const enum Events {
 	MusicSongResume = 'musicSongResume',
 	MusicSongSeekUpdate = 'musicSongSeekUpdate',
 	MusicSongSkip = 'musicSongSkip',
-	MusicSongVolumeUpdate = 'musicSongVolumeUpdate'
+	MusicSongVolumeUpdate = 'musicSongVolumeUpdate',
+	MusicVoiceChannelJoin = 'musicVoiceChannelJoin',
+	MusicVoiceChannelLeave = 'musicVoiceChannelLeave'
 }
 
 export const enum PermissionLevels {

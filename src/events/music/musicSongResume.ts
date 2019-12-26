@@ -6,13 +6,13 @@ export default class extends Event {
 
 	public run(manager: MusicHandler, context: MusicHandlerRequestContext | null) {
 		if (manager.systemPaused) {
+			manager.systemPaused = false;
+		} else {
 			const channel = context ? context.channel : manager.channel;
 
 			if (channel) {
 				floatPromise(this, channel.sendLocale('COMMAND_RESUME_SUCCESS'));
 			}
-
-			manager.systemPaused = false;
 		}
 
 		// TODO (Favna | Magna): Add WS handler

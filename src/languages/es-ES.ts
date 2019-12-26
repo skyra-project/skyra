@@ -603,6 +603,61 @@ export default class extends Language {
 
 		/**
 		 * ################
+		 * GAME INTEGRATION COMMANDS
+		 */
+
+		COMMAND_CLASHOFCLANS_DESCRIPTION: 'Obtenga datos sobre un jugador o clan en el popular juego móvil Choque de clanes',
+		COMMAND_CLASHOFCLANS_EXTENDED: builder.display('clashofclans', {
+			extendedHelp: 'La solicitud de clanes intentará devolver múltiples respuestas posibles.',
+			explainedUsage: [
+				['categoría', 'La categoría de datos para obtener: ** clan ** para obtener datos de un clan o ** jugador ** para obtener datos de un jugador.'],
+				['consulta', 'Ya sea un nombre de clan o una etiqueta de jugador según la categoría que elijas.']
+			],
+			examples: ['player #8GQPJG2CL', 'clan Hog Raiders Swe']
+		}),
+		COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES: {
+			XP_LEVEL: 'Nivel de XP',
+			BUILDER_HALL_LEVEL: 'Nivel de sala de constructores',
+			TOWNHALL_LEVEL: 'Nivel del ayuntamiento',
+			TOWNHALL_WEAPON_LEVEL: 'Nivel de arma del ayuntamiento',
+
+			TROPHIES: 'Trofeos actuales',
+			BEST_TROPHIES: 'Mejores trofeos',
+			WAR_STARS: 'Estrellas de guerra',
+
+			ATTACK_WINS: 'Gana atacando',
+			DEFENSE_WINS: 'Gana defendiendo',
+			AMOUNT_OF_ACHIEVEMENTS: 'Cantidad de logros',
+
+			VERSUS_TROPHIES: 'Actual contra trofeos',
+			BEST_VERSUS_TROPHIES: 'Mejor contra trofeos',
+			VERSUS_BATTLE_WINS: 'Versus batalla gana',
+
+			CLAN_ROLE: 'Papel del clan',
+			CLAN_NAME: 'Nombre del clan',
+			LEAGUE_NAME: 'Nombre de la liga'
+		},
+		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
+			CLAN_LEVEL: 'Nivel de clan',
+			CLAN_POINTS: 'Puntos del clan',
+			CLAN_VERSUS_POINTS: 'Clan versus puntos',
+			AMOUNT_OF_MEMBERS: 'Cantidad de miembros',
+			DESCRIPTION: 'Descripción',
+			LOCATION_NAME: 'Nombre del lugar',
+			WAR_FREQUENCY: 'Frecuencia de guerra',
+			WAR_WIN_STREAK: 'Racha de victorias de guerra',
+			WAR_WINS: 'La guerra total gana',
+			WAR_TIES: 'Lazos de guerra total',
+			WAR_LOSSES: 'Pérdidas de guerra totales',
+			WAR_LOG_PUBLIC: '¿El registro de guerra es público?',
+			WAR_LOG_PUBLIC_DESCR: isWarLogPublic => isWarLogPublic ? 'Si' : 'No'
+		},
+		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: playertag => `Lo siento, \`${playertag}\` no es una etiqueta de jugador de Choque de clanes válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,
+		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: clan => `Lo siento, pero no pude obtener datos sobre el clan \`${clan}\`.`,
+		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: playertag => `Lo siento, pero no pude obtener datos sobre el jugador con la etiqueta de jugador \`${playertag}\`.`,
+
+		/**
+		 * ################
 		 * GENERAL COMMANDS
 		 */
 

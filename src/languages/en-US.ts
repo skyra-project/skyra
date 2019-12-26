@@ -607,6 +607,61 @@ export default class extends Language {
 
 		/**
 		 * ################
+		 * GAME INTEGRATION COMMANDS
+		 */
+
+		COMMAND_CLASHOFCLANS_DESCRIPTION: 'Get data on a player or clan in the popular mobile game Clash of Clans',
+		COMMAND_CLASHOFCLANS_EXTENDED: builder.display('clashofclans', {
+			extendedHelp: 'The request for clans will try to return multiple possible responses.',
+			explainedUsage: [
+				['category', 'The category of data to get: **clan** to get data on a clan or **player** to get data on a player.'],
+				['query', 'Either a clan name or player tag depending on the category you chose.']
+			],
+			examples: ['player #8GQPJG2CL', 'clan Hog Raiders Swe']
+		}),
+		COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES: {
+			XP_LEVEL: 'XP level',
+			BUILDER_HALL_LEVEL: 'Builder Hall level',
+			TOWNHALL_LEVEL: 'Townhall level',
+			TOWNHALL_WEAPON_LEVEL: 'Townhall weapon level',
+
+			TROPHIES: 'Current trophies',
+			BEST_TROPHIES: 'Best trophies',
+			WAR_STARS: 'War stars',
+
+			ATTACK_WINS: 'Wins attacking',
+			DEFENSE_WINS: 'Wins defending',
+			AMOUNT_OF_ACHIEVEMENTS: 'Amount of achievements',
+
+			VERSUS_TROPHIES: 'Current versus trophies',
+			BEST_VERSUS_TROPHIES: 'Best versus trophies',
+			VERSUS_BATTLE_WINS: 'Versus battle wins',
+
+			CLAN_ROLE: 'Clan role',
+			CLAN_NAME: 'Clan name',
+			LEAGUE_NAME: 'League name'
+		},
+		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
+			CLAN_LEVEL: 'Clan level',
+			CLAN_POINTS: 'Clan points',
+			CLAN_VERSUS_POINTS: 'Clan versus points',
+			AMOUNT_OF_MEMBERS: 'Amount of members',
+			DESCRIPTION: 'Description',
+			LOCATION_NAME: 'Location name',
+			WAR_FREQUENCY: 'War frequency',
+			WAR_WIN_STREAK: 'War win streak',
+			WAR_WINS: 'Total war wins',
+			WAR_TIES: 'Total war ties',
+			WAR_LOSSES: 'Total war losses',
+			WAR_LOG_PUBLIC: 'War log is public?',
+			WAR_LOG_PUBLIC_DESCR: isWarLogPublic => isWarLogPublic ? 'Yes' : 'No'
+		},
+		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: playertag => `I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,
+		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: clan => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,
+		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: playertag => `I am sorry, but I was unable to get data on the player with player tag \`${playertag}\`.`,
+
+		/**
+		 * ################
 		 * GENERAL COMMANDS
 		 */
 

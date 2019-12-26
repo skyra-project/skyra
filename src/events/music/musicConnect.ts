@@ -2,6 +2,7 @@ import { Event } from 'klasa';
 import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/music/MusicHandler';
 import { VoiceChannel } from 'discord.js';
 import { floatPromise } from '../../lib/util/util';
+import { OutgoingWebsocketAction } from '../../lib/websocket/types';
 
 export default class extends Event {
 
@@ -12,7 +13,9 @@ export default class extends Event {
 			floatPromise(this, channel.sendLocale('COMMAND_JOIN_SUCCESS', [voiceChannel]));
 		}
 
-		// TODO (Favna | Magna): Add WS handler
+		for (const subscription of manager.websocketUserIterator()) {
+			subscription.send({ action: OutgoingWebsocketAction.MusicConnect, data: voiceChannel.id });
+		}
 	}
 
 }

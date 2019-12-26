@@ -6,6 +6,9 @@ import { Util } from 'discord.js';
 export class Song {
 
 	@enumerable(false)
+	public id: string;
+
+	@enumerable(false)
 	public track: string;
 
 	@enumerable(false)
@@ -30,6 +33,7 @@ export class Song {
 	 * @param requester The user that requested this song.
 	 */
 	public constructor(queue: MusicHandler, data: Track, requester: string) {
+		this.id = Song.generateID(requester);
 		this.queue = queue;
 		this.track = data.track;
 		this.requester = requester;
@@ -64,6 +68,13 @@ export class Song {
 
 	public toString(): string {
 		return `<${this.url}>`;
+	}
+
+	private static counter = 0;
+
+	private static generateID(author: string) {
+		if (++Song.counter === 0xFFFFFF) Song.counter = 0;
+		return Buffer.from(`${author}.${Song.counter}.${Date.now()}`).toString('base64');
 	}
 
 }

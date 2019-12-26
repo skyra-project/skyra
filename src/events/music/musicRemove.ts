@@ -2,6 +2,7 @@ import { Event } from 'klasa';
 import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/music/MusicHandler';
 import { floatPromise } from '../../lib/util/util';
 import { Song } from '../../lib/structures/music/Song';
+import { OutgoingWebsocketAction } from '../../lib/websocket/types';
 
 export default class extends Event {
 
@@ -12,7 +13,9 @@ export default class extends Event {
 			floatPromise(this, channel.sendLocale('COMMAND_REMOVE_SUCCESS', [song]));
 		}
 
-		// TODO (Favna | Magna): Add WS handler
+		for (const subscription of manager.websocketUserIterator()) {
+			subscription.send({ action: OutgoingWebsocketAction.MusicRemove, data: song.id });
+		}
 	}
 
 }

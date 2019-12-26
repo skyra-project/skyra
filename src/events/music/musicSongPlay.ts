@@ -3,6 +3,7 @@ import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/m
 import { Song } from '../../lib/structures/music/Song';
 import { Util } from 'discord.js';
 import { floatPromise } from '../../lib/util/util';
+import { OutgoingWebsocketAction } from '../../lib/websocket/types';
 
 export default class extends Event {
 
@@ -19,7 +20,9 @@ export default class extends Event {
 			floatPromise(this, channel.sendLocale('COMMAND_PLAY_NEXT', [song.safeTitle, name]));
 		}
 
-		// TODO (Favna | Magna): Add WS handler
+		for (const subscription of manager.websocketUserIterator()) {
+			subscription.send({ action: OutgoingWebsocketAction.MusicSongPlay, data: song.id });
+		}
 	}
 
 	private async fetchDisplayName(manager: MusicHandler, requester: string) {

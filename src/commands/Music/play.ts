@@ -35,13 +35,12 @@ export default class extends MusicCommand {
 		if (music.playing) {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PLAYING');
 		} else if (music.paused) {
-			await music.resume();
+			await music.resume(this.getContext(message));
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music.song]);
 		} else {
 			music.channelID = message.channel.id;
-			await music.play();
+			await music.play(this.getContext(message));
 		}
 	}
-
 
 }

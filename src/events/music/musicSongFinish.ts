@@ -1,12 +1,12 @@
 import { Event } from 'klasa';
-import { MusicHandler } from '../../lib/structures/music/MusicHandler';
+import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/music/MusicHandler';
 import { Events } from '../../lib/types/Enums';
 import { floatPromise } from '../../lib/util/util';
 
 export default class extends Event {
 
-	public async run(manager: MusicHandler) {
-		const { channel } = manager;
+	public async run(manager: MusicHandler, context: MusicHandlerRequestContext | null) {
+		const channel = context ? context.channel : manager.channel;
 
 		if (manager.replay && manager.song !== null) {
 			await manager.player.play(manager.song.track);

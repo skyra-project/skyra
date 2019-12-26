@@ -26,7 +26,7 @@ export default class extends MusicCommand {
 		}
 
 		// Set the volume
-		await music.setVolume(volume);
+		await music.setVolume(volume, this.getContext(message));
 	}
 
 }

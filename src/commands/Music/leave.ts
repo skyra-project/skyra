@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		await message.guild!.music.leave();
+		await message.guild!.music.leave(this.getContext(message));
 	}
 
 }

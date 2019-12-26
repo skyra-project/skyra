@@ -14,8 +14,7 @@ export default class extends MusicCommand {
 
 	public run(message: KlasaMessage, [songs]: [Track | Track[]]) {
 		if (!songs) throw message.language.tget('MUSICMANAGER_FETCH_NO_ARGUMENTS');
-		if (message.guild!.music.channelID === null) message.guild!.music.channelID = message.channel.id;
-		message.guild!.music.add(message.author.id, songs as Track[]);
+		message.guild!.music.add(message.author.id, songs as Track[], this.getContext(message));
 	}
 
 }

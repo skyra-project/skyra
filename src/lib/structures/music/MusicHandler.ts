@@ -30,15 +30,10 @@ export class MusicHandler {
 		return this.client.lavalink!.players.get(this.guild.id);
 	}
 
-	public get status() {
-		const { player } = this;
-		return player ? player.status : Status.ENDED;
-	}
-
 	public get canPlay() { return Boolean(this.song || this.queue.length); }
-	public get playing() { return this.status === Status.PLAYING; }
-	public get paused() { return this.status === Status.PAUSED; }
-	public get ended() { return this.status === Status.ENDED; }
+	public get playing() { return this.player.status === Status.PLAYING; }
+	public get paused() { return this.player.status === Status.PAUSED; }
+	public get ended() { return this.player.status === Status.ENDED; }
 
 	public get channel() {
 		return (this.channelID && this.client.channels.get(this.channelID) as TextChannel) || null;
@@ -85,19 +80,19 @@ export class MusicHandler {
 		this.guild = guild;
 	}
 
-	public add(user: string, song: Track): Song;
-	public add(user: string, song: Track[]): Song[];
-	public add(user: string, song: Track | Track[]) {
+	public add(user: string, song: Track, context?: MusicHandlerRequestContext | null): Song;
+	public add(user: string, song: Track[], context?: MusicHandlerRequestContext | null): Song[];
+	public add(user: string, song: Track | Track[], context: MusicHandlerRequestContext | null = null) {
 		if (Array.isArray(song)) {
 			const parsedSongs = song.map(info => new Song(this, info, user));
 			this.queue.push(...parsedSongs);
-			this.client.emit(Events.MusicAdd, this, parsedSongs);
+			this.client.emit(Events.MusicAdd, this, parsedSongs, context);
 			return parsedSongs;
 		}
 
 		const parsedSong = new Song(this, song, user);
 		this.queue.push(parsedSong);
-		this.client.emit(Events.MusicAdd, this, [parsedSong]);
+		this.client.emit(Events.MusicAdd, this, [parsedSong], context);
 		return parsedSong;
 	}
 
@@ -108,94 +103,94 @@ export class MusicHandler {
 		return response.tracks;
 	}
 
-	public setReplay(value: boolean) {
+	public setReplay(value: boolean, context: MusicHandlerRequestContext | null = null) {
 		if (this.replay !== value) {
 			this.replay = value;
-			this.client.emit(Events.MusicReplayUpdate, this, value);
+			this.client.emit(Events.MusicReplayUpdate, this, value, context);
 		}
 		return this;
 	}
 
-	public async setVolume(volume: number) {
+	public async setVolume(volume: number, context: MusicHandlerRequestContext | null = null) {
 		if (volume <= 0) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_SILENT');
 		if (volume > 200) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
 		await this.player.setVolume(volume);
-		this.client.emit(Events.MusicSongVolumeUpdate, this, this.volume, volume);
+		this.client.emit(Events.MusicSongVolumeUpdate, this, this.volume, volume, context);
 		this.volume = volume;
 		return this;
 	}
 
-	public async seek(position: number) {
+	public async seek(position: number, context: MusicHandlerRequestContext | null = null) {
 		const { player } = this;
 		if (player) {
 			await player.seek(position);
-			this.client.emit(Events.MusicSongSeekUpdate, this, position);
+			this.client.emit(Events.MusicSongSeekUpdate, this, position, context);
 		}
 		return this;
 	}
 
-	public async connect(voiceChannel: VoiceChannel) {
+	public async connect(voiceChannel: VoiceChannel, context: MusicHandlerRequestContext | null = null) {
 		await this.player.join(voiceChannel.id, { deaf: true });
-		this.client.emit(Events.MusicConnect, this, voiceChannel);
+		this.client.emit(Events.MusicConnect, this, voiceChannel, context);
 		return this;
 	}
 
-	public async leave() {
+	public async leave(context: MusicHandlerRequestContext | null = null) {
 		const { voiceChannel } = this;
+		if (this.playing) await this.player.pause(true);
 		await this.player.leave();
-		this.client.emit(Events.MusicLeave, this, voiceChannel);
+		this.client.emit(Events.MusicLeave, this, voiceChannel, context);
 		return this;
 	}
 
-	public async play() {
+	public async play(context: MusicHandlerRequestContext | null = null) {
 		if (!this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
 		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
 		this.song = this.queue.shift()!;
 		await this.player.play(this.song.track);
 
-		this.client.emit(Events.MusicSongPlay, this, this.song);
+		this.client.emit(Events.MusicSongPlay, this, this.song, context);
 		return this;
 	}
 
-	public async pause(systemPaused = false) {
+	public async pause(systemPaused = false, context: MusicHandlerRequestContext | null = null) {
 		if (!this.paused) {
 			await this.player.pause(true);
 			this.systemPaused = systemPaused;
-			this.client.emit(Events.MusicSongPause, this);
+			this.client.emit(Events.MusicSongPause, this, context);
 		}
 		return this;
 	}
 
-	public async resume() {
+	public async resume(context: MusicHandlerRequestContext | null = null) {
 		if (!this.playing) {
 			await this.player.pause(false);
-			this.client.emit(Events.MusicSongResume, this);
-			this.systemPaused = false;
+			this.client.emit(Events.MusicSongResume, this, context);
 		}
 		return this;
 	}
 
-	public async skip() {
+	public async skip(context: MusicHandlerRequestContext | null = null) {
 		if (this.song !== null) {
 			await this.player.stop();
-			this.client.emit(Events.MusicSongSkip, this, this.song);
+			this.client.emit(Events.MusicSongSkip, this, this.song, context);
 		}
 		return this;
 	}
 
-	public prune() {
-		this.client.emit(Events.MusicPrune, this);
+	public prune(context: MusicHandlerRequestContext | null = null) {
+		this.client.emit(Events.MusicPrune, this, context);
 		return this;
 	}
 
-	public shuffle() {
+	public shuffle(context: MusicHandlerRequestContext | null = null) {
 		let m = this.queue.length;
 		while (m) {
 			const i = Math.floor(Math.random() * m--);
 			[this.queue[m], this.queue[i]] = [this.queue[i], this.queue[m]];
 		}
-		this.client.emit(Events.MusicShuffleQueue, this);
+		this.client.emit(Events.MusicShuffleQueue, this, context);
 		return this.queue;
 	}
 
@@ -231,9 +226,14 @@ export class MusicHandler {
 			playing: this.playing,
 			song: this.song,
 			position: this.position,
-			status: this.status,
+			status: this.player.status,
 			queue: this.queue
 		};
 	}
 
+}
+
+export interface MusicHandlerRequestContext {
+	channel?: TextChannel;
+	userID: string;
 }

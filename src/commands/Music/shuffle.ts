@@ -11,7 +11,7 @@ export default class extends MusicCommand {
 	}
 
 	public run(message: KlasaMessage) {
-		message.guild!.music.shuffle();
+		message.guild!.music.shuffle(this.getContext(message));
 	}
 
 }

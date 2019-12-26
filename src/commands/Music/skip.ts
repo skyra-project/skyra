@@ -25,7 +25,7 @@ export default class extends MusicCommand {
 			}
 		}
 
-		await music.skip();
+		await music.skip(this.getContext(message));
 	}
 
 	public handleSkips(musicManager: MusicHandler, user: Snowflake): string | false {

@@ -25,7 +25,7 @@ export default class extends MusicCommand {
 		this.resolvePermissions(message, channel);
 
 		message.guild!.music.channelID = message.channel.id;
-		await message.guild!.music.connect(channel);
+		await message.guild!.music.connect(channel, this.getContext(message));
 	}
 
 	public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

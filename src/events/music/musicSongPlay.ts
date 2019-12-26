@@ -1,13 +1,13 @@
 import { Event } from 'klasa';
-import { MusicHandler } from '../../lib/structures/music/MusicHandler';
+import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/music/MusicHandler';
 import { Song } from '../../lib/structures/music/Song';
 import { Util } from 'discord.js';
 import { floatPromise } from '../../lib/util/util';
 
 export default class extends Event {
 
-	public async run(manager: MusicHandler, song: Song) {
-		const { channel } = manager;
+	public async run(manager: MusicHandler, song: Song, context: MusicHandlerRequestContext | null) {
+		const channel = context ? context.channel : manager.channel;
 
 		manager.position = 0;
 		manager.lastUpdate = 0;

@@ -12,7 +12,7 @@ export default class extends MusicCommand {
 
 	public run(message: KlasaMessage) {
 		// Toggle the repeat option with its opposite value
-		message.guild!.music.setReplay(!message.guild!.music.replay);
+		message.guild!.music.setReplay(!message.guild!.music.replay, this.getContext(message));
 	}
 
 }

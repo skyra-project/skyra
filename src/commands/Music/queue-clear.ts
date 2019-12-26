@@ -12,7 +12,7 @@ export default class extends MusicCommand {
 	}
 
 	public run(message: KlasaMessage) {
-		message.guild!.music.prune();
+		message.guild!.music.prune(this.getContext(message));
 	}
 
 }

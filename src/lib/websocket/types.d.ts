@@ -8,7 +8,7 @@ export const enum OutgoingWebsocketAction {
 	Authenticate = 'AUTHENTICATE',
 	MusicAdd = 'MUSIC_ADD',
 	MusicConnect = 'MUSIC_CONNECT',
-	MusicLeave = 'MUSIC_LLEAVE',
+	MusicLeave = 'MUSIC_LEAVE',
 	MusicPrune = 'MUSIC_PRUNE',
 	MusicRemove = 'MUSIC_REMOVE',
 	MusicReplayUpdate = 'MUSIC_REPLAY_UPDATE',

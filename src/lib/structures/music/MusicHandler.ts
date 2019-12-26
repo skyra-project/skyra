@@ -220,10 +220,9 @@ export class MusicHandler {
 	}
 
 	public toJSON() {
+		const { voiceChannel } = this;
 		return {
-			length: this.queue.length,
-			voiceChannel: this.voiceChannel,
-			playing: this.playing,
+			voiceChannel: voiceChannel === null ? null : voiceChannel.id,
 			song: this.song,
 			position: this.position,
 			status: this.player.status,

@@ -6,6 +6,7 @@ import { enumerable } from '../../util/util';
 import { Song } from './Song';
 import { SkyraClient } from '../../SkyraClient';
 import { SubscriptionName } from '../../websocket/types';
+import { GuildSettings } from '../../types/settings/GuildSettings';
 
 export class MusicHandler {
 
@@ -80,20 +81,11 @@ export class MusicHandler {
 		this.guild = guild;
 	}
 
-	public add(user: string, song: Track, context?: MusicHandlerRequestContext | null): Song;
-	public add(user: string, song: Track[], context?: MusicHandlerRequestContext | null): Song[];
-	public add(user: string, song: Track | Track[], context: MusicHandlerRequestContext | null = null) {
-		if (Array.isArray(song)) {
-			const parsedSongs = song.map(info => new Song(this, info, user));
-			this.queue.push(...parsedSongs);
-			this.client.emit(Events.MusicAdd, this, parsedSongs, context);
-			return parsedSongs;
-		}
-
-		const parsedSong = new Song(this, song, user);
-		this.queue.push(parsedSong);
-		this.client.emit(Events.MusicAdd, this, [parsedSong], context);
-		return parsedSong;
+	public add(user: string, song: Track[], context: MusicHandlerRequestContext | null = null) {
+		const parsedSongs = song.map(info => new Song(this, info, user));
+		this.queue.push(...parsedSongs);
+		this.client.emit(Events.MusicAdd, this, parsedSongs, context);
+		return parsedSongs;
 	}
 
 	public async fetch(song: string) {
@@ -200,7 +192,7 @@ export class MusicHandler {
 		this.lastUpdate = 0;
 		this.systemPaused = false;
 		this.replay = false;
-		if (volume) this.volume = 100;
+		if (volume) this.volume = this.guild.settings.get(GuildSettings.Music.DefaultVolume);
 	}
 
 	public async manageableFor(message: KlasaMessage) {

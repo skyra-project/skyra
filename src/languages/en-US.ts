@@ -334,6 +334,7 @@ export default class extends Language {
 		MUSICMANAGER_FETCH_NO_ARGUMENTS: `I need you to give me the name of a song!`,
 		MUSICMANAGER_FETCH_NO_MATCHES: `I'm sorry but I wasn't able to find the track!`,
 		MUSICMANAGER_FETCH_LOAD_FAILED: `I'm sorry but I couldn't load this song! Maybe try other song!`,
+		MUSICMANAGER_TOO_MANY_SONGS: `${REDCROSS} Woah there, you are adding more songs than allowed!`,
 		MUSICMANAGER_SETVOLUME_SILENT: `Woah, you can just leave the voice channel if you want silence!`,
 		MUSICMANAGER_SETVOLUME_LOUD: `I'll be honest, an airplane's nacelle would be less noisy than this!`,
 		MUSICMANAGER_PLAY_NO_VOICECHANNEL: `Where am I supposed to play the music? I am not in a voice channel!`,

@@ -1,4 +1,5 @@
 import { Client } from 'klasa';
+import { Time } from '../util/constants';
 
 export default Client.defaultGuildSchema
 	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })
@@ -159,6 +160,11 @@ export default Client.defaultGuildSchema
 	.add('trigger', folder => folder
 		.add('alias', 'any', { array: true, configurable: false })
 		.add('includes', 'any', { array: true, configurable: false }))
+	.add('music', folder => folder
+		.add('default-volume', 'Number', { 'min': 0, 'max': 200, 'default': 100 })
+		.add('maximum-duration', 'Number', { 'min': 0, 'max': Time.Hour * 12, 'default': Time.Hour * 2 })
+		.add('maximum-entries-per-user', 'Number', { 'min': 1, 'max': 250, 'default': 100 })
+		.add('allow-streams', 'Boolean', { 'default': true }))
 	.add('notifications', folder => folder
 		.add('streams', streams => streams
 			.add('twitch', twitch => twitch

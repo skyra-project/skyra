@@ -55,12 +55,12 @@ function Step-Run {
 
 	Process {
 		switch ( $command ) {
-			build { docker-compose -p skyra -f .\docker-compose.yml build $service }
-			start { docker-compose -p skyra -f .\docker-compose.yml up -d $service }
-			logs { docker-compose -p skyra -f .\docker-compose.yml logs $service }
-			tail { docker-compose -p skyra -f .\docker-compose.yml logs -f $service }
-			push { docker-compose -p skyra -f .\docker-compose.yml push $service }
-			remove { docker-compose -p skyra -f .\docker-compose.yml rm -fv $service }
+			build { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" build $service }
+			start { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" up -d $service }
+			logs { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs $service }
+			tail { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs -f $service }
+			push { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" push $service }
+			remove { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" rm -fv $service }
 			removeall { Remove-All-Containers }
 			default { Show-Help }
 		}

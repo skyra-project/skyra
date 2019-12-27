@@ -149,8 +149,6 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 	}]
 ]);
 
-const kUnknownTypeTitle = { title: 'Unknown' };
-
 export class ModerationActions {
 
 	public guild: Guild;

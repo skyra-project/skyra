@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
+import { codeBlock, toTitleCase } from '@klasa/utils';
+import { MessageEmbed } from 'discord.js';
+import { Language, Timestamp, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
+import { Filter, LanguageKeys, Position } from '../lib/types/Languages';
+import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 import { Emojis } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
-import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
-import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
-import { MessageEmbed } from 'discord.js';
 
-const { toTitleCase, codeBlock } = klasaUtil;
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
 const GREENTICK = Emojis.GreenTick;
@@ -3133,17 +3133,23 @@ export default class extends Language {
 		 * TAGS COMMANDS
 		 */
 
-		COMMAND_TAG_PERMISSIONLEVEL: 'You must be a staff member, moderator, or admin, to be able to manage tags.',
-		COMMAND_TAG_NAME_NOTALLOWED: 'A tag name may not have a grave accent nor invisible characters.',
-		COMMAND_TAG_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
-		COMMAND_TAG_EXISTS: tag => `The tag '${tag}' already exists.`,
-		COMMAND_TAG_CONTENT_REQUIRED: 'You must provide a content for this tag.',
-		COMMAND_TAG_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
-		COMMAND_TAG_REMOVED: name => `Successfully removed the tag **${name}**.`,
-		COMMAND_TAG_NOTEXISTS: tag => `The tag '${tag}' does not exist.`,
-		COMMAND_TAG_EDITED: (name, content) => `Successfully edited the tag **${name}** with a content of **${content}**.`,
-		COMMAND_TAG_LIST_EMPTY: 'The tag list for this server is empty.',
-		COMMAND_TAG_LIST: tags => `${(tags.length === 1 ? 'There is 1 tag: ' : `There are ${tags.length} tags: `)}${tags.join(', ')}`,
+		COMMAND_TAG_PERMISSIONLEVEL: 'Debe ser miembro del personal, moderador o administrador para poder administrar las etiquetas.',
+		COMMAND_TAG_NAME_NOTALLOWED: 'Un nombre de etiqueta puede no tener un acento grave ni caracteres invisibles.',
+		COMMAND_TAG_NAME_TOOLONG: 'El nombre de una etiqueta debe tener 50 caracteres o menos.',
+		COMMAND_TAG_EXISTS: tag => `La etiqueta \`${tag}\` ya existe.`,
+		COMMAND_TAG_CONTENT_REQUIRED: 'Debe proporcionar un contenido para esta etiqueta.',
+		COMMAND_TAG_ADDED: (name, content) => [
+			`Se agregó con éxito una nueva etiqueta: **${name}** con un contenido de:`,
+			`**${content.endsWith('...') ? `${content} (truncado para la longitud del mensaje de Discord, se ha guardado la etiqueta completa)` : content}**`
+		].join('\n'),
+		COMMAND_TAG_REMOVED: name => `Se eliminó con éxito la etiqueta **${name}**.`,
+		COMMAND_TAG_NOTEXISTS: tag => `La etiqueta \`${tag}\` no existe.`,
+		COMMAND_TAG_EDITED: (name, content) => [
+			`Se editó correctamente la etiqueta **${name}** con un contenido de:`,
+			`**${content.endsWith('...') ? `${content} (truncado para la longitud del mensaje de Discord, se ha guardado la etiqueta completa)` : content}**`
+		].join('\n'),
+		COMMAND_TAG_LIST_EMPTY: 'La lista de etiquetas para este servidor está vacía.',
+		COMMAND_TAG_LIST: tags => `${(tags.length === 1 ? 'Hay 1 etiqueta:' : `Hay ${tags.length} etiquetas: `)}${tags.join(', ')}`,
 
 		/**
 		 * ##############

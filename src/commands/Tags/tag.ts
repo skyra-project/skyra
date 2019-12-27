@@ -28,6 +28,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { cutText } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -37,11 +38,11 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_TAG_EXTENDED'),
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|remove|edit|source|list|show:default> (tag:string) [content:...string]',
+			usage: '<add|remove|edit|source|list|show:default> (tag:tagname) [content:...string]',
 			usageDelim: ' '
 		});
 
-		this.createCustomResolver('string', (arg, possible, message, [action]) => {
+		this.createCustomResolver('tagname', (arg, possible, message, [action]) => {
 			if (action === 'list') return undefined;
 			if (!arg) throw message.language.tget('RESOLVER_INVALID_STRING', possible.name);
 			if (arg.includes('`') || arg.includes('\u200B')) throw message.language.tget('COMMAND_TAG_NAME_NOTALLOWED');
@@ -60,7 +61,7 @@ export default class extends SkyraCommand {
 		if (tags.some(([name]) => name === tagName)) throw message.language.tget('COMMAND_TAG_EXISTS', tagName);
 		await message.guild!.settings.update(GuildSettings.Tags, [...tags, [tagName, content]], { arrayAction: 'overwrite' });
 
-		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, content]);
+		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, cutText(content, 1850)]);
 	}
 
 	public async remove(message: KlasaMessage, [tagName]: [string]) {
@@ -85,7 +86,7 @@ export default class extends SkyraCommand {
 		if (index === -1) throw message.language.tget('COMMAND_TAG_NOTEXISTS', tagName);
 		await message.guild!.settings.update(GuildSettings.Tags, [[tagName, content]], { arrayIndex: index });
 
-		return message.sendLocale('COMMAND_TAG_EDITED', [tagName, content]);
+		return message.sendLocale('COMMAND_TAG_EDITED', [tagName, cutText(content, 1850)]);
 	}
 
 	public async list(message: KlasaMessage) {

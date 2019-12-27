@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
+import { codeBlock, toTitleCase } from '@klasa/utils';
+import { MessageEmbed } from 'discord.js';
+import { Language, Timestamp, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
+import { Filter, LanguageKeys, Position } from '../lib/types/Languages';
+import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 import { Emojis } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { HungerGamesUsage } from '../lib/util/Games/HungerGamesUsage';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
-import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
-import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
-import { MessageEmbed } from 'discord.js';
 
-const { toTitleCase, codeBlock } = klasaUtil;
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
 const GREENTICK = Emojis.GreenTick;
@@ -3153,10 +3153,16 @@ export default class extends Language {
 		COMMAND_TAG_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
 		COMMAND_TAG_EXISTS: tag => `The tag '${tag}' already exists.`,
 		COMMAND_TAG_CONTENT_REQUIRED: 'You must provide a content for this tag.',
-		COMMAND_TAG_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
+		COMMAND_TAG_ADDED: (name, content) => [
+			`Successfully added a new tag: **${name}** with a content of:`,
+			`**${content.endsWith('...') ? `${content} (truncated for Discord message length, full tag has been saved)` : content}**`
+		].join('\n'),
 		COMMAND_TAG_REMOVED: name => `Successfully removed the tag **${name}**.`,
 		COMMAND_TAG_NOTEXISTS: tag => `The tag '${tag}' does not exist.`,
-		COMMAND_TAG_EDITED: (name, content) => `Successfully edited the tag **${name}** with a content of **${content}**.`,
+		COMMAND_TAG_EDITED: (name, content) => [
+			`Successfully edited the tag **${name}** with a content of`,
+			`**${content.endsWith('...') ? `${content} (truncated for Discord message length, full tag has been saved)` : content}**`
+		].join('\n'),
 		COMMAND_TAG_LIST_EMPTY: 'The tag list for this server is empty.',
 		COMMAND_TAG_LIST: tags => `${(tags.length === 1 ? 'There is 1 tag: ' : `There are ${tags.length} tags: `)}${tags.join(', ')}`,
 

@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [location]: [string]) {
-		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, this.client, location);
+		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
 		const { status, ...timeData } = await this.fetchAPI(message, lat, lng);
 
 		if (status !== 'OK') throw message.language.tget(handleNotOK(status, this.client));

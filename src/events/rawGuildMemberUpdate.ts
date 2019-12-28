@@ -34,7 +34,7 @@ export default class extends Event {
 		guild.memberTags.set(data.user.id, next);
 
 		// If the previous was unset or it's the same as the next one, skip
-		if (typeof previous === 'undefined' || previous === next) return;
+		if (typeof previous === 'undefined' || previous.nickname === next.nickname) return;
 
 		// TODO(kyranet): Role Change Logs
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {

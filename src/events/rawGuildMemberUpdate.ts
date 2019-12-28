@@ -38,6 +38,7 @@ export default class extends Event {
 
 		// TODO(kyranet): Role Change Logs
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
+			if ((next.nickname === null) && (previous.nickname === null)) return;
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 				.setColor(0xDCE775)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))

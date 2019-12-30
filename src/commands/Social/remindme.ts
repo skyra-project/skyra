@@ -5,7 +5,7 @@ import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
 import { Time, BrandingColors } from '../../lib/util/constants';
 import { cutText, getColor } from '../../lib/util/util';
 
-const timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
+const timestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 const REMINDER_TYPE = 'reminder';
 
 export default class extends SkyraCommand {

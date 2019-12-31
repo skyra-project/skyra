@@ -74,7 +74,7 @@
     "@types/backoff": "^2.5.1",
     "@types/diff": "^4.0.2",
     "@types/he": "^1.1.0",
-    "@types/node": "^13.1.1",
+    "@types/node": "^13.1.2",
     "@types/node-fetch": "^2.5.4",
     "@types/pg": "^7.14.0",
     "@types/ws": "^6.0.4",

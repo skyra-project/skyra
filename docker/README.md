@@ -20,3 +20,7 @@ Skyra currently has the following microservices that can be dockerized:
 - InfluxDB
   - Service name in docker-compose: `influxdb`
   - Image used: `skyrabot/influxdb`
+
+# Configure the `postgres` image
+
+You must set a username and password for the `postgres` image. You can do so by copying the `.env.example` file as `.env` and filling out the options there

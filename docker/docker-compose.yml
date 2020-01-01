@@ -16,6 +16,8 @@ services:
         image: favware/graphql-pokemon:latest
         ports:
         - '4000:8080'
+        env_file:
+            - ./postgres/.env
     influxdb:
         build: ./influxdb
         container_name: influxdb

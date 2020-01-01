@@ -19,6 +19,11 @@ function Show-Help {
 	Write-Host "
 1. In the influxdb folder, duplicate the 'config.sample.toml' file and rename it to 'config.toml'"
 	Write-Host ""
+	Write-Host "Postgres Setup" -ForegroundColor green
+	Write-Host "
+1. In the postgres folder, duplicate the '.env.example' file and rename it to '.env'
+2. Fill out any desired values or keep the defaults"
+	Write-Host ""
 	Write-Host "Usage" -ForegroundColor yellow
 	Write-Host "
 ./docker/docker.sh [COMMAND] [ARGS...]

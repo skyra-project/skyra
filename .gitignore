@@ -21,5 +21,3 @@ config.ts
 
 # Ignore package locks
 package-lock.json
-
-docker/.env

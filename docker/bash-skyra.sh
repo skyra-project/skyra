@@ -38,6 +38,10 @@ help() {
 	${GREEN}Influxdb setup:${NC}\n
 		1. In the influxdb folder, duplicate the 'config.sample.toml' file and rename it to 'config.toml'
 
+	${GREEN}Postgres setup:${NC}\n
+		1. In the postgres folder, duplicate the '.env.example' file and rename it to '.env'
+		2. Fill out any desired values or keep the defaults
+
 	${YELLOW}Usage:${NC}\n
 		./docker/docker.sh [COMMAND] [ARGS...]
 		./docker/docker.sh -h | --help

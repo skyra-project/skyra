@@ -12,7 +12,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['conf', 'config', 'configs', 'configuration'],
+			aliases: ['settings', 'config', 'configs', 'configuration'],
 			description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
 			guarded: true,
 			permissionLevel: PermissionLevels.Administrator,

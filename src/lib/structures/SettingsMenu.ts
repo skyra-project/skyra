@@ -70,7 +70,10 @@ export class SettingsMenu {
 			const keys: string[] = [];
 			const folders: string[] = [];
 			for (const [key, value] of this.schema.entries()) {
-				if (configurableSchemaKeys.has(value.path)) keys.push(key);
+				const entry = configurableSchemaKeys.get(value.path);
+				if (typeof entry === 'undefined') continue;
+				if (isSchemaFolder(entry)) folders.push(key);
+				else keys.push(key);
 			}
 
 			if (!folders.length && !keys.length) description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_NOKEYS'));

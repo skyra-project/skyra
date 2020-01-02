@@ -168,4 +168,13 @@ export default Client.defaultGuildSchema
 	.add('notifications', folder => folder
 		.add('streams', streams => streams
 			.add('twitch', twitch => twitch
-				.add('streamers', 'TwitchSubscription', { array: true, configurable: false }))));
+				.add('streamers', 'TwitchSubscription', { array: true, configurable: false }))))
+	.add('suggestions', folder => folder
+		.add('channel', 'TextChannel')
+		.add('emojis', folder => folder
+			.add('upvote', 'Emoji', { 'default': '%E2%8F%AB' })
+			.add('downvote', 'Emoji', { 'default': '%E2%8F%AC' }))
+		.add('on-action', folder => folder
+			.add('dm', 'Boolean', { 'default': false })
+			.add('repost', 'Boolean', { 'default': true })
+			.add('hide-author', 'Boolean', { 'default': false })));

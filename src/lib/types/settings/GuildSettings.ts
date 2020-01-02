@@ -1,5 +1,6 @@
 import { SelfModeratorHardActionFlags } from '../../structures/SelfModeratorBitField';
 import { T } from './Shared';
+import { TextChannel } from 'discord.js';
 
 /* eslint-disable @typescript-eslint/no-namespace */
 
@@ -214,6 +215,19 @@ export namespace GuildSettings {
 		export const MaximumDuration = T<number>('music.maximum-duration');
 		export const MaximumEntriesPerUser = T<number>('music.maximum-entries-per-user');
 		export const AllowStreams = T<boolean>('music.allow-streams');
+	}
+
+	export namespace Suggestions {
+		export const SuggestionsChannel = T<TextChannel | null>('suggestions.channel');
+		export namespace VotingEmojis {
+			export const UpvoteEmoji = T<string>('suggestions.emoji.upvote');
+			export const DownvoteEmoji = T<string>('suggestions.emoji.downvote');
+		}
+		export namespace OnAction {
+			export const DM = T<boolean>('suggestions.on-action.dm');
+			export const RepostMessage = T<boolean>('suggestions.on-action.repost');
+			export const HideAuthor = T<boolean>('suggestions.on-action.hide-author');
+		}
 	}
 
 }

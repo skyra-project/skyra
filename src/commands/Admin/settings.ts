@@ -1,8 +1,10 @@
 import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, Schema, SchemaEntry, SettingsFolderUpdateResult, util } from 'klasa';
+import { CommandStore, KlasaMessage, SettingsFolder } from 'klasa';
 import { SettingsMenu } from '../../lib/structures/SettingsMenu';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
 import { PermissionLevels } from '../../lib/types/Enums';
+import { toTitleCase, codeBlock } from '@klasa/utils';
+import { configurableSchemaKeys, isSchemaEntry, displayEntry, displayFolder, initConfigurableSchema } from '../../lib/util/SettingsUtils';
 
 const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
@@ -22,12 +24,13 @@ export default class extends SkyraCommand {
 		});
 
 		this
-			.createCustomResolver('key', (arg, _, message, [action]: string[]) => {
-				if (['show', 'menu'].includes(action) || arg) return arg;
+			.createCustomResolver('key', (arg, _possible, message, [action]: string[]) => {
+				if (['show', 'menu'].includes(action) || arg) return arg || '';
 				throw message.language.tget('COMMAND_CONF_NOKEY');
 			})
-			.createCustomResolver('value', (arg, _, message, [action]: string[]) => {
-				if (!['set', 'remove'].includes(action) || arg) return arg;
+			.createCustomResolver('value', (arg, possible, message, [action]: string[]) => {
+				if (!['set', 'remove'].includes(action)) return null;
+				if (arg) return this.client.arguments.get('...string')!.run(arg, possible, message);
 				throw message.language.tget('COMMAND_CONF_NOVALUE');
 			});
 	}
@@ -40,49 +43,51 @@ export default class extends SkyraCommand {
 	}
 
 	public show(message: KlasaMessage, [key]: [string]) {
-		const piece = this.getPath(key);
-		if (!piece || (piece.type === 'Folder'
-			? !(piece as Schema).configurableKeys.length
-			: !(piece as SchemaEntry).configurable)) return message.sendLocale('COMMAND_CONF_GET_NOEXT', [key]);
-		if (piece.type === 'Folder') {
-			return message.sendLocale('COMMAND_CONF_SERVER', [
-				// eslint-disable-next-line @typescript-eslint/unbound-method
-				key ? `: ${key.split('.').map(util.toTitleCase).join('/')}` : '',
-				util.codeBlock('asciidoc', message.guild!.settings.display(message, piece))
-			]);
+		const schemaOrEntry = configurableSchemaKeys.get(key);
+		if (typeof schemaOrEntry === 'undefined') throw message.language.tget('COMMAND_CONF_GET_NOEXT', key);
+
+		const value = key ? message.guild!.settings.get(key) : message.guild!.settings;
+		if (isSchemaEntry(schemaOrEntry)) {
+			return message.sendLocale('COMMAND_CONF_GET', [key, displayEntry(schemaOrEntry, message.guild!.settings.get(key), message.guild!)]);
 		}
-		return message.sendLocale('COMMAND_CONF_GET', [piece.path, message.guild!.settings.display(message, piece)]);
+
+		return message.sendLocale('COMMAND_CONF_SERVER', [
+			// eslint-disable-next-line @typescript-eslint/unbound-method
+			key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '',
+			codeBlock('asciidoc', displayFolder(value as SettingsFolder))
+		]);
 	}
 
-	public async set(message: KlasaMessage, [key, ...valueToSet]: string[]) {
-		const status = await message.guild!.settings.update(key, valueToSet.join(' '), { onlyConfigurable: true, arrayAction: 'add' });
-		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_UPDATED', [key, message.guild!.settings.display(message, status.updated[0].entry)]);
+	public async set(message: KlasaMessage, [key, valueToSet]: string[]) {
+		try {
+			const [update] = await message.guild!.settings.update(key, valueToSet, { onlyConfigurable: true, arrayAction: 'add' });
+			return message.sendLocale('COMMAND_CONF_UPDATED', [key, displayEntry(update.entry, update.next, message.guild!)]);
+		} catch (error) {
+			throw String(error);
+		}
 	}
 
-	public async remove(message: KlasaMessage, [key, ...valueToRemove]: string[]) {
-		const status = await message.guild!.settings.update(key, valueToRemove.join(' '), { onlyConfigurable: true, arrayAction: 'remove' });
-		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_UPDATED', [key, message.guild!.settings.display(message, status.updated[0].entry)]);
+	public async remove(message: KlasaMessage, [key, valueToRemove]: string[]) {
+		try {
+			const [update] = await message.guild!.settings.update(key, valueToRemove, { onlyConfigurable: true, arrayAction: 'remove' });
+			return message.sendLocale('COMMAND_CONF_UPDATED', [key, displayEntry(update.entry, update.next, message.guild!)]);
+		} catch (error) {
+			throw String(error);
+		}
 	}
 
 	public async reset(message: KlasaMessage, [key]: string[]) {
-		const status = await message.guild!.settings.reset(key);
-		return this.check(message, key, status) || message.sendLocale('COMMAND_CONF_RESET', [key, message.guild!.settings.display(message, status.updated[0].entry)]);
-	}
-
-	private getPath(key: string) {
-		const { schema } = this.client.gateways.get('guilds')!;
-		if (!key) return schema;
 		try {
-			return schema.get(key);
-		} catch {
-			return undefined;
+			const [update] = await message.guild!.settings.reset(key);
+			return message.sendLocale('COMMAND_CONF_RESET', [key, displayEntry(update.entry, update.next, message.guild!)]);
+		} catch (error) {
+			throw String(error);
 		}
 	}
 
-	private check(message: KlasaMessage, key: string, { errors, updated }: SettingsFolderUpdateResult) {
-		if (errors.length) return message.sendMessage(errors[0]);
-		if (!updated.length) return message.sendLocale('COMMAND_CONF_NOCHANGE', [key]);
-		return null;
+	public init() {
+		initConfigurableSchema(this.client.gateways.get('guilds')!.schema);
+		return Promise.resolve();
 	}
 
 }

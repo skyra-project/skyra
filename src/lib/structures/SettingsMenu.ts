@@ -5,6 +5,7 @@ import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactio
 import { getColor, floatPromise } from '../util/util';
 import { api } from '../util/Models/Api';
 import { Time, BrandingColors, APIErrors } from '../util/constants';
+import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '../util/SettingsUtils';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -29,14 +30,9 @@ export class SettingsMenu {
 			.setColor(getColor(this.message));
 	}
 
-	private get pointerIsFolder(): boolean {
-		return this.schema.type === 'Folder';
-	}
-
 	private get changedCurrentPieceValue(): boolean {
-		if (this.pointerIsFolder) return false;
-		const schema = this.schema as SchemaEntry;
-		if (schema.array) {
+		if (isSchemaFolder(this.schema)) return false;
+		if (this.schema.array) {
 			const current = this.message.guild!.settings.get(this.schema.path) as unknown[];
 			const old = this.oldSettings.get(this.schema.path) as unknown[];
 			return current.length !== old.length || current.some((value, i) => value !== old[i]);
@@ -46,10 +42,9 @@ export class SettingsMenu {
 	}
 
 	private get changedPieceValue(): boolean {
-		if (this.schema.type === 'Folder') return false;
-		const schema = this.schema as SchemaEntry;
+		if (isSchemaFolder(this.schema)) return false;
 		// eslint-disable-next-line eqeqeq
-		return this.message.guild!.settings.get(this.schema.path) != schema.default;
+		return this.message.guild!.settings.get(this.schema.path) != this.schema.default;
 	}
 
 	public async init(): Promise<void> {
@@ -69,17 +64,13 @@ export class SettingsMenu {
 	private render(): MessageEmbed {
 		const i18n = this.message.language;
 		const description: string[] = [];
-		if (this.pointerIsFolder) {
+		if (isSchemaFolder(this.schema)) {
 			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
-			for (const [key, value] of (this.schema as Schema).entries()) {
-				if (value.type === 'Folder') {
-					if ((value as Schema).configurableKeys.length) folders.push(key);
-				} else if ((value as SchemaEntry).configurable) {
-					keys.push(key);
-				}
+			for (const [key, value] of this.schema.entries()) {
+				if (configurableSchemaKeys.has(value.path)) keys.push(key);
 			}
 
 			if (!folders.length && !keys.length) description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_NOKEYS'));
@@ -87,17 +78,17 @@ export class SettingsMenu {
 		} else {
 			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
-			if ((this.schema as SchemaEntry).configurable) {
+			if (this.schema.configurable) {
 				description.push(
 					i18n.get(`SETTINGS_${this.schema.path.replace(/[.-]/g, '_').toUpperCase()}`),
 					'',
 					i18n.tget('COMMAND_CONF_MENU_RENDER_TCTITLE'),
 					i18n.tget('COMMAND_CONF_MENU_RENDER_UPDATE'),
-					(this.schema as SchemaEntry).array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length ? i18n.tget('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
+					this.schema.array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length ? i18n.tget('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
 					this.changedPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_RESET') : '',
 					this.changedCurrentPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_UNDO') : '',
 					'',
-					i18n.tget('COMMAND_CONF_MENU_RENDER_CVALUE', this.message.guild!.settings.display(this.message, this.schema).replace(/``+/g, '`\u200B`'))
+					i18n.tget('COMMAND_CONF_MENU_RENDER_CVALUE', displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(/``+/g, '`\u200B`'))
 				);
 			}
 		}
@@ -119,9 +110,9 @@ export class SettingsMenu {
 
 		this.llrc!.setTime(TIMEOUT);
 		this.errorMessage = null;
-		if (this.pointerIsFolder) {
-			const schema = (this.schema as Schema).get(message.content);
-			if (schema && SettingsMenu.isConfigurable(schema)) this.schema = schema;
+		if (isSchemaFolder(this.schema)) {
+			const schema = this.schema.get(message.content);
+			if (schema && configurableSchemaKeys.has(schema.path)) this.schema = schema;
 			else this.errorMessage = this.message.language.tget('COMMAND_CONF_MENU_INVALID_KEY');
 		} else {
 			const [command, ...params] = message.content.split(' ');
@@ -204,20 +195,26 @@ export class SettingsMenu {
 	}
 
 	private async tryUpdate(value: unknown, options?: SettingsFolderUpdateOptions) {
-		const { errors, updated } = await (value === null
-			? this.message.guild!.settings.reset(this.schema.path)
-			: this.message.guild!.settings.update(this.schema.path, value, options));
-		if (errors.length) this.errorMessage = String(errors[0]);
-		else if (!updated.length) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+		try {
+			const updated = await (value === null
+				? this.message.guild!.settings.reset(this.schema.path)
+				: this.message.guild!.settings.update(this.schema.path, value, options));
+			if (updated.length === 0) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+		} catch (error) {
+			this.errorMessage = String(error);
+		}
 	}
 
 	private async tryUndo() {
 		if (this.changedCurrentPieceValue) {
 			const previousValue = this.oldSettings.get(this.schema.path);
-			const { errors } = await (previousValue === null
-				? this.message.guild!.settings.reset(this.schema.path)
-				: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
-			if (errors.length) this.errorMessage = String(errors[0]);
+			try {
+				await (previousValue === null
+					? this.message.guild!.settings.reset(this.schema.path)
+					: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
+			} catch (error) {
+				this.errorMessage = String(error);
+			}
 		} else {
 			this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 		}
@@ -233,12 +230,6 @@ export class SettingsMenu {
 				.catch(error => this.message.client.emit(Events.ApiError, error));
 		}
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();
-	}
-
-	private static isConfigurable(schema: Schema | SchemaEntry) {
-		return schema.type === 'Folder'
-			? (schema as Schema).configurableKeys.length !== 0
-			: (schema as SchemaEntry).configurable;
 	}
 
 }

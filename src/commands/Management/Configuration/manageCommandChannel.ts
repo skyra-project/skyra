@@ -1,5 +1,5 @@
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, SettingsFolderUpdateResult } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
 import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
 import { PermissionLevels } from '../../../lib/types/Enums';
@@ -72,19 +72,17 @@ export default class extends SkyraCommand {
 			const entry = disabledCommandsChannels[index];
 			const commandIndex = entry.commands.indexOf(command.name);
 			if (commandIndex !== -1) {
-				let results: SettingsFolderUpdateResult;
 				if (entry.commands.length > 1) {
 					const clone = entry.commands.slice();
 					clone.splice(commandIndex, 1);
-					results = await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, {
+					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, {
 						channel: entry.channel,
 						commands: clone
 					});
 				} else {
-					results = await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, { arrayAction: 'remove' });
+					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, { arrayAction: 'remove' });
 				}
 
-				if (results.errors.length) throw String(results.errors[0]);
 				return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel, command.name]);
 			}
 		}

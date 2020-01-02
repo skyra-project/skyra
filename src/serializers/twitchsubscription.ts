@@ -1,9 +1,9 @@
-import { Language, SchemaEntry, Serializer } from 'klasa';
+import { Serializer, SerializerUpdateContext } from 'klasa';
 import { NotificationsStreamTwitch, NotificationsStreamsTwitchStreamer } from '../lib/types/settings/GuildSettings';
 
 export default class extends Serializer {
 
-	public deserialize(data: NotificationsStreamTwitch, _: SchemaEntry, language: Language) {
+	public validate(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
 		// Validate that data is a tuple [string, x[]].
 		if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string' || !Array.isArray(data[1])) {
 			return Promise.reject(language.tget('SERIALIZER_TWITCH_SUBSCRIPTION_INVALID'));

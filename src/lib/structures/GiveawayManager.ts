@@ -19,7 +19,7 @@ export class GiveawayManager {
 	public async init() {
 		const entries = await (this.client.shard
 			? this.client.queries.fetchGiveawaysFromGuilds([...this.client.guilds.keys()])
-			: this.client.providers.default.getAll(Databases.Giveaway)) as RawGiveawaySettings[];
+			: this.client.providers.default!.getAll(Databases.Giveaway)) as RawGiveawaySettings[];
 
 		for (const entry of entries) this.add(entry);
 		this.check();

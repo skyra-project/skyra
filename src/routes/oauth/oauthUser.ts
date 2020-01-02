@@ -137,7 +137,7 @@ export default class extends Route {
 			}, FetchResultTypes.JSON) as OauthData;
 
 			const expiresAt = Date.now() + data.expires_in;
-			await this.client.providers.default.update(Databases.DashboardUsers, id, {
+			await this.client.providers.default!.update(Databases.DashboardUsers, id, {
 				expires_at: expiresAt,
 				access_token: data.access_token,
 				refresh_token: data.refresh_token

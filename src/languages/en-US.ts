@@ -2954,7 +2954,7 @@ export default class extends Language {
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
-		COMMAND_LOCKDOWN_LOCKING: channel => `Locking the channel ${channel}...`,
+		COMMAND_LOCKDOWN_LOCKING: channel => `${LOADING} Locking the channel ${channel}... I might not be able to reply after this.`,
 		COMMAND_LOCKDOWN_LOCKED: channel => `The channel ${channel} was already locked.`,
 		COMMAND_LOCKDOWN_UNLOCKED: channel => `The channel ${channel} was not locked.`,
 		COMMAND_LOCKDOWN_OPEN: channel => `The lockdown for the channel ${channel} has been released.`,

@@ -36,9 +36,7 @@ export default class extends SkyraCommand {
 		const roleset = allRolesets.find(set => set.name === name);
 		// If it does not exist we need to create a brand new set
 		if (!roleset) {
-			const { errors } = await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, { name, roles: roles.map(role => role.id) });
-			if (errors.length) this.client.emit('error', errors.join('\n'));
-
+			await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, { name, roles: roles.map(role => role.id) });
 			return message.sendLocale(`COMMAND_ROLESET_CREATED`, [name, roles.map(role => role.name).join(', ')]);
 		}
 
@@ -53,9 +51,7 @@ export default class extends SkyraCommand {
 			return { name, roles: finalRoleIDs };
 		});
 
-		const { errors } = await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
-		if (errors.length) this.client.emit('error', errors.join('\n'));
-
+		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
 		return message.sendLocale('COMMAND_ROLESET_ADDED', [name, roles.map(role => role.name).join(', ')]);
 	}
 
@@ -67,9 +63,7 @@ export default class extends SkyraCommand {
 		// Create a new array that we can use to overwrite the existing one in settings
 		const newsets = allRolesets.map(set => set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find(role => role.id === id)) } : set);
 
-		const { errors } = await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
-		if (errors.length) this.client.emit('error', errors.join('\n'));
-
+		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
 		return message.sendLocale('COMMAND_ROLESET_REMOVED', [name, roles.map(role => role.name).join(', ')]);
 	}
 
@@ -94,9 +88,7 @@ export default class extends SkyraCommand {
 			return { name, roles: newroles };
 		});
 
-		const { errors } = await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
-		if (errors.length) this.client.emit('error', errors.join('\n'));
-
+		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, { arrayAction: 'overwrite' });
 		return message.sendLocale(`COMMAND_ROLESET_UPDATED`, [name]);
 	}
 

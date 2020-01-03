@@ -19,9 +19,9 @@
     "build-clear": "rm -rf dist && tsc -p .",
     "build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
     "watch": "tsc -p . -w",
-	"dev": "yarn build && yarn start",
-	"dockerps": "powershell .\\docker\\ps-skyra.ps1",
-	"dockerbash": "bash ./docker/bash-skyra.sh"
+    "dev": "yarn build && yarn start",
+    "dockerps": "powershell .\\docker\\ps-skyra.ps1",
+    "dockerbash": "bash ./docker/bash-skyra.sh"
   },
   "repository": {
     "type": "git",
@@ -57,7 +57,7 @@
     "gifencoder": "^2.0.1",
     "he": "^1.2.0",
     "influx": "^5.5.1",
-    "klasa": "github:dirigeants/klasa#settings",
+    "klasa": "github:dirigeants/klasa#875/head",
     "klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
     "klasa-decorators": "^0.0.1",
     "lavalink": "^2.8.2",

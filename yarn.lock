@@ -42,6 +42,16 @@
   resolved "https://registry.yarnpkg.com/@klasa/request-handler/-/request-handler-0.0.3.tgz#ed72de611ece3dd99725cb797fc13e07bb05e618"
   integrity sha512-Z1O+Aa2kW/I4Uos4EZalByveIuQKRfuRx+JCsgsogDBd95N5Ub47AH+LEd5i+uzjnJ6iDHfodpVlaHojJ4Q+ZQ==
 
+"@klasa/settings-gateway@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@klasa/settings-gateway/-/settings-gateway-0.0.9.tgz#c56b97594e32eaa42a6adbab263f6b604430280e"
+  integrity sha512-HnXHPpuOBpwDFDCHBJc9wOKIMcXQqYNA60bwpW7VcyggqPBbP903ctFxUkzKLuaCg+le7XKw/KDS12Nt1gaFRA==
+  dependencies:
+    "@discordjs/collection" "^0.1.3"
+    "@klasa/querybuilder" "^0.0.1"
+    "@klasa/request-handler" "^0.0.3"
+    "@klasa/utils" "^0.0.4"
+
 "@klasa/utils@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.1.tgz#af20aa4ea24fdd83c41e9afb07f829194dea6363"
@@ -917,9 +927,9 @@ isexe@^2.0.0:
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
 iterall@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
-  integrity sha512-yynBb1g+RFUPY64fTrFv7nsjRrENBQJaX2UL+2Szc9REFrSNm1rpSXHGzhmAy7a9uv3vlvgBlXnf9RqmPH1/DA==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.3.0.tgz#afcb08492e2915cbd8a0884eb93a8c94d0d72fea"
+  integrity sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==
 
 js-tokens@^4.0.0:
   version "4.0.0"
@@ -955,11 +965,12 @@ klasa-decorators@^0.0.1:
   resolved "https://registry.yarnpkg.com/klasa-decorators/-/klasa-decorators-0.0.1.tgz#c4bcc7dd2b78814b4f625e611f82790ec6061d52"
   integrity sha512-uCoMz750Lnp0dM8VC787hnRrF9wqWfUrjT7dp+8ihqp6xmtX8ZSXoeK08WJgAhEdEdIDsUG+VMXi9gcG54EZMA==
 
-"klasa@github:dirigeants/klasa#settings":
+"klasa@github:dirigeants/klasa#875/head":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/aee79a51a6e845b6678e96fdd1a7cc1e27fda435"
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/de71f01513c44699a577e056631917b8c08a16eb"
   dependencies:
-    "@klasa/request-handler" "^0.0.3"
+    "@klasa/querybuilder" "^0.0.1"
+    "@klasa/settings-gateway" "^0.0.9"
     fs-nextra "^0.4.5"
 
 lavalink@^2.8.2:
@@ -1412,9 +1423,9 @@ run-async@^2.2.0:
     is-promise "^2.1.0"
 
 rxjs@^6.5.3:
-  version "6.5.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
-  integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
+  version "6.5.4"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.4.tgz#e0777fe0d184cec7872df147f303572d414e211c"
+  integrity sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
   dependencies:
     tslib "^1.9.0"
 

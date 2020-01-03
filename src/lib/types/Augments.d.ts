@@ -14,6 +14,8 @@ import { UserTags } from '../util/Cache/UserTags';
 import { Twitch } from '../util/Notifications/Twitch';
 import { InfluxDB } from 'influx';
 
+import { SettingsUpdateResults } from '@klasa/settings-gateway';
+
 declare module 'discord.js' {
 
 	interface Client {
@@ -86,10 +88,6 @@ declare module 'klasa' {
 		rawEvents?: PieceOptions;
 	}
 
-	interface GatewaysOptions {
-		members?: GatewayOptions;
-	}
-
 	interface Language {
 		PERMISSIONS: Record<PermissionString, string>;
 		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
@@ -106,9 +104,8 @@ declare module 'klasa' {
 
 	interface SettingsFolder {
 		get<K extends string, S>(key: CustomGet<K, S>): S;
-		get(key: string): SettingsFolder | SettingsValue | readonly SettingsValue[];
-		increase(key: string, value: number): Promise<SettingsFolderUpdateResult>;
-		decrease(key: string, value: number): Promise<SettingsFolderUpdateResult>;
+		increase(key: string, value: number): Promise<SettingsUpdateResults>;
+		decrease(key: string, value: number): Promise<SettingsUpdateResults>;
 	}
 
 }

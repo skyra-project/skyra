@@ -92,6 +92,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	dev: DEV,
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
+		'GUILD_CREATE',
 		'GUILD_MEMBER_UPDATE',
 		'PRESENCE_UPDATE',
 		'TYPING_START',

@@ -29,15 +29,12 @@ export const enum Filter {
 export interface LanguageKeys {
 	DEFAULT: (key: string) => string;
 	DEFAULT_LANGUAGE: string;
-	SETTING_GATEWAY_EXPECTS_GUILD: string;
-	SETTING_GATEWAY_VALUE_FOR_KEY_NOEXT: (data: unknown, key: string) => string;
-	SETTING_GATEWAY_VALUE_FOR_KEY_ALREXT: (data: unknown, key: string) => string;
-	SETTING_GATEWAY_SPECIFY_VALUE: string;
-	SETTING_GATEWAY_KEY_NOT_ARRAY: (key: string) => string;
+	SETTING_GATEWAY_KEY_NOEXT: (key: string) => string;
 	SETTING_GATEWAY_CHOOSE_KEY: (keys: string[]) => string;
 	SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: string;
-	SETTING_GATEWAY_KEY_NOEXT: (key: string) => string;
-	SETTING_GATEWAY_INVALID_TYPE: string;
+	SETTING_GATEWAY_UNCONFIGURABLE_KEY: (key: string) => string;
+	SETTING_GATEWAY_MISSING_VALUE: (entry: SchemaEntry, value: string) => string;
+	SETTING_GATEWAY_DUPLICATE_VALUE: (entry: SchemaEntry, value: string) => string;
 	SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry: SchemaEntry, value: unknown) => string;
 	RESOLVER_MULTI_TOO_FEW: (name: string, min?: number) => string;
 	RESOLVER_INVALID_BOOL: (name: string) => string;

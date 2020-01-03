@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 		// If they can send, begin locking
 		const response = await message.sendLocale('COMMAND_LOCKDOWN_LOCKING', [channel]);
 		await channel.updateOverwrite(role, { SEND_MESSAGES: false });
-		if (message.channel.postable) await response.sendLocale('COMMAND_LOCKDOWN_LOCK', [channel]);
+		if (message.channel.postable) await response.edit(message.language.tget('COMMAND_LOCKDOWN_LOCK', channel.toString())).catch(() => null);
 
 		// Create the timeout
 		const timeout = duration ? new PreciseTimeout(duration) : null;

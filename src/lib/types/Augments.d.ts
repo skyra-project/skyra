@@ -108,6 +108,12 @@ declare module 'klasa' {
 		decrease(key: string, value: number): Promise<SettingsUpdateResults>;
 	}
 
+	interface Argument {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+		// @ts-ignore 1070
+		abstract run<T>(arg: string | undefined, possible: Possible, message: KlasaMessage, filter?: (entry: T) => boolean): any;
+	}
+
 }
 
 declare module 'klasa-dashboard-hooks' {

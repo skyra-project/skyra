@@ -12,7 +12,7 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-			"@root/*": ["./*"],
+			"@root/*": ["*"],
 			"@tasks/*": ["src/tasks/*"],
 			"@routes/*": ["src/routes/*"],
 			"@commands/*": ["src/commands/*"],

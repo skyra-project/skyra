@@ -18,6 +18,10 @@ export interface Adders {
 	reactions: Adder<string> | null;
 }
 
+export interface LockdownEntry {
+	timeout: PreciseTimeout | null;
+}
+
 /**
  * @version 3.0.0
  */
@@ -57,7 +61,7 @@ export class GuildSecurity {
 	/**
 	 * The lockdowns map
 	 */
-	public lockdowns: Map<string, PreciseTimeout | null> = new Map();
+	public lockdowns: Map<string, LockdownEntry> = new Map();
 
 	/**
 	 * The RegExp

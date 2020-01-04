@@ -154,6 +154,10 @@ export class SkyraClient extends KlasaClient {
 			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
 		}
+
+		if (this.lavalink !== null) {
+			this.lavalink.once('open', () => this.console.verbose(`${new Colors({ text: 'magenta' }).format('[LAVALINK]')} Connected.`));
+		}
 	}
 
 	public static defaultMemberSchema = new Schema()

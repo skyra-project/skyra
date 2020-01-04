@@ -209,6 +209,13 @@ export namespace GuildSettings {
 		}
 	}
 
+	export namespace Music {
+		export const DefaultVolume = T<number>('music.default-volume');
+		export const MaximumDuration = T<number>('music.maximum-duration');
+		export const MaximumEntriesPerUser = T<number>('music.maximum-entries-per-user');
+		export const AllowStreams = T<boolean>('music.allow-streams');
+	}
+
 }
 
 export interface PermissionsNode {

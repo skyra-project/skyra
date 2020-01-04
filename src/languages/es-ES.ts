@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Language, Timestamp, util as klasaUtil, version as klasaVersion } from 'klasa';
+import { codeBlock, toTitleCase } from '@klasa/utils';
+import { MessageEmbed } from 'discord.js';
+import { Language, Timestamp, version as klasaVersion } from 'klasa';
 import { VERSION } from '../../config';
+import { Filter, LanguageKeys, Position } from '../lib/types/Languages';
+import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
 import { Emojis } from '../lib/util/constants';
 import friendlyDuration from '../lib/util/FriendlyDuration';
 import { LanguageHelp } from '../lib/util/LanguageHelp';
 import { createPick, inlineCodeblock } from '../lib/util/util';
-import { LanguageKeys, Position, Filter } from '../lib/types/Languages';
-import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
-import { MessageEmbed } from 'discord.js';
 
-const { toTitleCase, codeBlock } = klasaUtil;
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
 const GREENTICK = Emojis.GreenTick;
@@ -141,16 +141,13 @@ export default class extends Language {
 
 		DEFAULT: key => `La clave ${key} aún no ha sido traducida a es-ES.`,
 		DEFAULT_LANGUAGE: 'Lenguaje Predeterminado',
-		SETTING_GATEWAY_EXPECTS_GUILD: 'El parámetro <Guild> requiere o una ID o una instancia de guild!.',
-		SETTING_GATEWAY_VALUE_FOR_KEY_NOEXT: (data, key) => `El valor ${data} para la clave ${key} no existe.`,
-		SETTING_GATEWAY_VALUE_FOR_KEY_ALREXT: (data, key) => `El valor ${data} para la clave ${key} ya existe.`,
-		SETTING_GATEWAY_SPECIFY_VALUE: 'Debes especificar el valor para añadir o eliminar.',
-		SETTING_GATEWAY_KEY_NOT_ARRAY: key => `La clave ${key} no acepta múltiples valores.`,
-		SETTING_GATEWAY_CHOOSE_KEY: keys => `Por favor, elija alguno de las siguientes claves: '${keys}'`,
-		SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: 'Este grupo no es configurable.',
-		SETTING_GATEWAY_KEY_NOEXT: key => `La clave ${key} no existe en el esquema de datos.`,
-		SETTING_GATEWAY_INVALID_TYPE: `El tipo de parámetro debe ser o 'add' para añadir, o 'remove' para eliminar.`,
-		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `${entry.key} no acepta el valor: ${value}`,
+		SETTING_GATEWAY_KEY_NOEXT: key => `The key "${key}" does not exist in the data schema.`,
+		SETTING_GATEWAY_CHOOSE_KEY: keys => `You cannot edit a settings group, pick any of the following: "${keys.join('", "')}"`,
+		SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: 'This settings group does not have any configurable sub-key.',
+		SETTING_GATEWAY_UNCONFIGURABLE_KEY: key => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
+		SETTING_GATEWAY_MISSING_VALUE: (entry, value) => `The value "${value}" cannot be removed from the key "${entry.path}" because it does not exist.`,
+		SETTING_GATEWAY_DUPLICATE_VALUE: (entry, value) => `The value "${value}" cannot be added to the key "${entry.path}" because it was already set.`,
+		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `The settings key "${entry.path}" does not accept the value "${value}".`,
 		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `No pude resolver suficientes ${name}s. Al menos ${min} ${min === 1 ? 'es' : 'son'} requeridos.`,
 		RESOLVER_INVALID_BOOL: name => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,
 		RESOLVER_INVALID_CHANNEL: name => `${name} debe ser una mención de canal o una id de canal válida.`,
@@ -288,10 +285,15 @@ export default class extends Language {
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: `Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.`,
 		COMMAND_REPEAT_DESCRIPTION: `Se alterna repitiendo la canción actual.`,
 		COMMAND_REPEAT_SUCCESS: enabled => enabled ? `This is your JAM isn't it? No te preocupes, repetiremos esto una y otra vez!` : `En realidad, también me estaba cansando de esto, pero no quería decir nada.`,
-		COMMAND_QUEUE_DESCRIPTION: `Revisa la lista de cola.`,
-		COMMAND_QUEUE_EMPTY: '¡La cola está vacía! Pero puedes añadir algunas canciones usando el comando `Skyra, add`.',
-		COMMAND_QUEUE_LINE: (title, requester) => `*${title}*, pedida por: **${requester}**`,
-		COMMAND_QUEUE_TRUNCATED: amount => `Mostrando 10 canciones de ${amount}`,
+		COMMAND_QUEUE_DESCRIPTION: `Check the queue list.`,
+		COMMAND_QUEUE_EMPTY: `The session is over, add some songs to the queue, you can for example do \`Skyra, add Imperial March\`, and... *dumbrolls*!`,
+		COMMAND_QUEUE_LAST: `There are no more songs! After the one playing is over, the session will end!`,
+		COMMAND_QUEUE_TITLE: guildname => `Music queue for ${guildname}`,
+		COMMAND_QUEUE_LINE: (position, title, url, duration, requester) => `[${position}] [${title}](${url}) | (${duration}) | Requested by **${requester}**.`,
+		COMMAND_QUEUE_NOWPLAYING: (title, url, duration, requester) => `[${title}](${url}) | (${duration}) | Requested by **${requester}**.`,
+		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
+		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
+		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
 		COMMAND_REMOVE_DESCRIPTION: `Elimina una canción de la lista de cola.`,
 		COMMAND_REMOVE_INDEX_INVALID: `Mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...`,
 		COMMAND_REMOVE_INDEX_OUT: amount => `He intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
@@ -328,8 +330,10 @@ export default class extends Language {
 		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: `Temo que necesito estar en un canal de voz antes de poder usar este comando, ¡por favor muéstreme el camino!`,
 		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: `¡Hey! Parece que no estamos en el mismo canal de voz, ¡por favor únete conmigo!`,
 
+		MUSICMANAGER_FETCH_NO_ARGUMENTS: '¡Necesito que me des el nombre de una canción!',
 		MUSICMANAGER_FETCH_NO_MATCHES: `Lo siento, ¡pero no he sido capaz de encontrar la canción que querías`,
 		MUSICMANAGER_FETCH_LOAD_FAILED: `Lo siento, ¡pero no he podido cargar esta canción! Por si acaso, ¡intenta con otra canción!`,
+		MUSICMANAGER_TOO_MANY_SONGS: `${REDCROSS} ¡Ah, estás agregando más canciones de las permitidas!`,
 		MUSICMANAGER_SETVOLUME_SILENT: `Woah, ¡podrías simplemente salir del canal de voz si quieres silencio!`,
 		MUSICMANAGER_SETVOLUME_LOUD: `Seré honesta, ¡las turbinas de un avión serían menos ruidosos que esto!`,
 		MUSICMANAGER_PLAY_NO_VOICECHANNEL: `¿Dónde se suponía que tenía que reproducir la música? ¡No estoy conectada a ningún canal de voz!`,
@@ -337,7 +341,7 @@ export default class extends Language {
 		MUSICMANAGER_PLAY_PLAYING: `Los discos están girando, ¿no los escuchas?`,
 		MUSICMANAGER_PLAY_DISCONNECTION: `¡Fuí desconectada a la fuerza por Discord!`,
 		MUSICMANAGER_ERROR: error => `¡Algo pasó!\n${error}`,
-		MUSICMANAGER_STUCK: seconds => `Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en ${seconds === 1 ? 'un segundo' : `${seconds} segundos`}!`,
+		MUSICMANAGER_STUCK: milliseconds => `${LOADING} Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en: ${duration(milliseconds)}!`,
 		MUSICMANAGER_CLOSE: `¡Oops, parece que he tenido un pequeño problemita con Discord!`,
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
@@ -361,49 +365,90 @@ export default class extends Language {
 		SETTINGS_DISABLENATURALPREFIX: 'Whether or not I should listen for my natural prefix, `Skyra,`',
 		SETTINGS_DISABLEDCOMMANDS: 'The disabled commands, core commands may not be disabled, and moderators will override this. All commands must be in lower case.',
 		SETTINGS_CHANNELS_ANNOUNCEMENTS: 'The channel for announcements, in pair with the key `roles.subscriber`, they are required for the announce command.',
-		SETTINGS_CHANNELS_GREETING: 'The channel I will use to send greetings, you must enable the events and set up the messages, in other categories.',
 		SETTINGS_CHANNELS_FAREWELL: 'The channel I will use to send farewells, you must enable the events and set up the messages, in other categories.',
+		SETTINGS_CHANNELS_GREETING: 'The channel I will use to send greetings, you must enable the events and set up the messages, in other categories.',
+		SETTINGS_CHANNELS_IMAGE_LOGS: 'The channel I will use to re-upload all images I see.',
 		SETTINGS_CHANNELS_MEMBER_LOGS: 'The channel for member logs, you must enable the events (`events.memberAdd` for new members, `events.memberRemove` for members who left).',
 		SETTINGS_CHANNELS_MESSAGE_LOGS: 'The channel for (non-NSFW) message logs, you must enable the events (`events.messageDelete` for deleted messages, `events.messageEdit` for edited messages).',
 		SETTINGS_CHANNELS_MODERATION_LOGS: 'The channel for moderation logs, once enabled, I will post all my moderation cases there. If `events.banRemove` and/or `events.banRemove` are enabled, I will automatically post anonymous logs.',
 		SETTINGS_CHANNELS_NSFW_MESSAGE_LOGS: 'The channel for NSFW message logs, same requirement as normal message logs, but will only send NSFW messages.',
+		SETTINGS_CHANNELS_PRUNE_LOGS: 'The channel for prune logs, same requirement as normal mesasge logs, but will only send prune messages.',
+		SETTINGS_CHANNELS_REACTION_LOGS: 'The channel for the reaction logs, same requirement as normal message logs, but will only send message reactions. If you don\'t want twemojis to be logged you can toggle `events.twemoji-reactions`.',
 		SETTINGS_CHANNELS_ROLES: 'The channel for the reaction roles.',
 		SETTINGS_CHANNELS_SPAM: 'The channel for me to redirect users to when they use commands I consider spammy.',
 		SETTINGS_DISABLEDCHANNELS: 'A list of channels for disabled commands, for example, setting up a channel called general will forbid all users from using my commands there. Moderators+ override this purposedly to allow them to moderate without switching channels.',
 		SETTINGS_EVENTS_BANADD: 'This event posts anonymous moderation logs when a user gets banned. You must set up `channels.moderation-logs`.',
 		SETTINGS_EVENTS_BANREMOVE: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.moderation-logs`.',
 		SETTINGS_EVENTS_MEMBERADD: 'This event posts member logs when a user joins. They will be posted in `channels.member-logs`.',
+		SETTINGS_EVENTS_MEMBERNAMEUPDATE: 'Whether member nickname updates should be logged or not.',
 		SETTINGS_EVENTS_MEMBERREMOVE: 'This event posts member logs when a user leaves. They will be posted in `channels.member-logs`.',
 		SETTINGS_EVENTS_MESSAGEDELETE: 'This event posts message logs when a message is deleted. They will be posted in `channels.message-logs` (or `channel.nsfw-message-logs` in case of NSFW channels).',
 		SETTINGS_EVENTS_MESSAGEEDIT: 'This event posts message logs when a message is edited. They will be posted in `channels.message-logs` (or `channel.nsfw-message-logs` in case of NSFW channels).',
+		SETTINGS_EVENTS_TWEMOJI_REACTIONS: 'Whether or not twemoji reactions are posted in the reaction logs channel.',
 		SETTINGS_MESSAGES_FAREWELL: 'The message I shall send to when a user leaves. You must set up `channels.farewell` and `events.memberRemove`',
 		SETTINGS_MESSAGES_GREETING: 'The message I shall send to when a user joins. You must set up `channels.greeting` and `events.memberAdd`',
-		SETTINGS_MESSAGES_JOIN_DM: 'The message I shall send to when a user joins in DMs.',
-		SETTINGS_MESSAGES_WARNINGS: 'Whether or not I should send warnings to the user when they receive one.',
 		SETTINGS_MESSAGES_IGNORECHANNELS: 'The channels configured to not increase the point counter for users.',
+		SETTINGS_MESSAGES_JOIN_DM: 'The message I shall send to when a user joins in DMs.',
+		SETTINGS_MESSAGES_MODERATION_AUTO_DELETE: 'Whether or not moderation commands should be auto-deleted or not.',
 		SETTINGS_MESSAGES_MODERATION_DM: 'Whether or not I should send a direct message to the target user on moderation actions.',
+		SETTINGS_MESSAGES_MODERATION_MESSAGE_DISPLAY: 'Whether or not a response should be sent for moderation commands.',
+		SETTINGS_MESSAGES_MODERATION_REASON_DISPLAY: 'Whether the reason will be displayed in moderation commands.',
 		SETTINGS_MESSAGES_MODERATOR_NAME_DISPLAY: 'Whether or not I should display the name of the moderator who took the action whne sending the target user a moderation message. Requires `messages.moderation-dm` to be enabled.',
+		SETTINGS_MESSAGES_WARNINGS: 'Whether or not I should send warnings to the user when they receive one.',
+		SETTINGS_MUSIC_ALLOW_STREAMS: 'Whether livestreams should be allowed to be played.',
+		SETTINGS_MUSIC_DEFAULT_VOLUME: 'The default music volume to start playing at for this server.',
+		SETTINGS_MUSIC_MAXIMUM_DURATION: 'The maximum length any playable single track can have.',
+		SETTINGS_MUSIC_MAXIMUM_ENTRIES_PER_USER: 'The maximum amount of entries one user can have in the queue.',
+		SETTINGS_NO_MENTION_SPAM_ALERTS: 'Whether or not users should be alerted when they are about to get the ban hammer.',
+		SETTINGS_NO_MENTION_SPAM_ENABLED: 'Whether or not I should have the ban hammer ready for mention spammers.',
+		SETTINGS_NO_MENTION_SPAM_MENTIONSALLOWED: 'The minimum amount of "points" a user must accumulate before landing the hammer. A user mention will count as 1 point, a role mention as 2 points, and an everyone/here mention as 5 points.',
+		SETTINGS_NO_MENTION_SPAM_TIMEPERIOD: 'The amount of time in seconds in which the mention bucket should refresh. For example, if this is set to `8` and you mentioned two users 7 seconds apart, the bucket would run from start with the accumulated amount of points.',
 		SETTINGS_ROLES_ADMIN: `The administrator role, their priviledges in Skyra will be upon moderative, covering management. Defaults to anyone with the ${PERMS.MANAGE_GUILD} permission.`,
+		SETTINGS_ROLES_DJ: 'The DJ role for this server. DJs have more advanced control over Skyra\'s music commands.',
 		SETTINGS_ROLES_INITIAL: 'The initial role, if configured, I will give it to users as soon as they join.',
 		SETTINGS_ROLES_MODERATOR: 'The moderator role, their priviledges will cover almost all moderation commands. Defaults to anyone who can ban members.',
 		SETTINGS_ROLES_MUTED: 'The muted role, if configured, I will give new muted users this role. Otherwise I will prompt you the creation of one.',
 		SETTINGS_ROLES_PUBLIC: 'The public roles, they will be given with no cost to any user using the `roles` command.',
 		SETTINGS_ROLES_REMOVEINITIAL: 'Whether the claim of a public role should remove the initial one too.',
+		SETTINGS_ROLES_RESTRICTED_ATTACHMENT: 'The role that is used for the restrictAttachment moderation command',
+		SETTINGS_ROLES_RESTRICTED_EMBED: 'The role that is used for the restrictEmbed moderation command',
+		SETTINGS_ROLES_RESTRICTED_REACTION: 'The role that is used for the restrictReaction moderation command.',
+		SETTINGS_ROLES_RESTRICTED_VOICE: 'The role that is used for the restrictVoice moderation command',
 		SETTINGS_ROLES_SUBSCRIBER: 'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
 		SETTINGS_SELFMOD_ATTACHMENT: 'Whether or not the attachment filter is enabled.',
 		SETTINGS_SELFMOD_ATTACHMENTMAXIMUM: 'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
-		SETTINGS_SELFMOD_CAPSMINIMUM: 'The minimum amount of characters the message must have before trying to delete it. You must enable it with the `capsMode` command.',
-		SETTINGS_SELFMOD_CAPSTHRESHOLD: 'The minimum percentage of caps allowed before taking action. You must enable it with the `capsMode` command.',
+		SETTINGS_SELFMOD_CAPITALS_ENABLED: 'Whether the capitals filter selfmod sub-system is enabled or not.',
+		SETTINGS_SELFMOD_CAPITALS_IGNOREDCHANNELS: 'The channels that will be ignored by the capitals filter sub-system',
+		SETTINGS_SELFMOD_CAPITALS_IGNOREDROLES: 'The roles that will be ignored by the capitals afilters sub-system',
+		SETTINGS_SELFMOD_CAPITALS_MAXIMUM: 'The maximum amount of characters the messages must have before trying to delete it. You must enable it with the `capitalsMode` command.',
+		SETTINGS_SELFMOD_CAPITALS_MINIMUM: 'The minimum amount of characters the message must have before trying to delete it. You must enable it with the `capitalsMode` command.',
+		SETTINGS_SELFMOD_FILTER_ENABLED: 'Whether the word filter selfmod sub-system is enabled or not.',
+		SETTINGS_SELFMOD_FILTER_IGNOREDCHANNELS: 'The channels that will be ignored by the filters sub-system',
+		SETTINGS_SELFMOD_FILTER_IGNOREDROLES: 'The roles that will be ignored by the filters sub-system',
 		SETTINGS_SELFMOD_IGNORECHANNELS: 'The channels I will ignore, be careful any channel configured will have all auto-moderation systems (CapsFilter, InviteLinks, and NoMentionSpam) deactivated.',
-		SETTINGS_SELFMOD_INVITELINKS: 'Whether or not I should delete invite links or not.',
-		SETTINGS_SELFMOD_RAID: 'Whether or not I should kick users when they try to raid the server.',
-		SETTINGS_SELFMOD_RAIDTHRESHOLD: 'The minimum amount of users joined on the last 20 seconds required before starting to kick them and anybody else who joins until a minute cooldown or forced cooldown (using the `raid` command to manage this).',
+		SETTINGS_SELFMOD_INVITES_ENABLED: 'Whether the invites filter selfmod sub-system is enabled or not.',
+		SETTINGS_SELFMOD_INVITES_IGNOREDCHANNELS: 'The channels that will be ignored by the invites sub-system',
+		SETTINGS_SELFMOD_INVITES_IGNOREDROLES: 'The roles that will be ignored by the invites sub-system',
+		SETTINGS_SELFMOD_LINKS_ENABLED: 'Whether the links filter selfmod sub-system is enabled or not.',
+		SETTINGS_SELFMOD_LINKS_IGNOREDCHANNELS: 'The channels that will be ignored by the links filter sub-system',
+		SETTINGS_SELFMOD_LINKS_IGNOREDROLES: 'The roles that will be ignored by the links filters sub-system',
+		SETTINGS_SELFMOD_LINKS_WHITELIST: 'The whitelisted links that are allowed',
+		SETTINGS_SELFMOD_MESSAGES_ENABLED: 'Whether Skyra should attempt to remove duplicated messages or not.',
+		SETTINGS_SELFMOD_MESSAGES_IGNOREDCHANNELS: 'The channels that will be ignored by the duplicate messages sub-system',
+		SETTINGS_SELFMOD_MESSAGES_IGNOREDROLES: 'The roles that will be ignored by the duplicate messages sub-system',
 		SETTINGS_SELFMOD_MESSAGES_MAXIMUM: 'The amount of duplicated messages required in the queue before taking action The queue size is configurable in `selfmod.messages.queue-size`.',
 		SETTINGS_SELFMOD_MESSAGES_QUEUE_SIZE: 'The amount of messages Skyra will keep track of for the message duplication detection.',
-		SETTINGS_NO_MENTION_SPAM_ENABLED: 'Whether or not I should have the ban hammer ready for mention spammers.',
-		SETTINGS_NO_MENTION_SPAM_MENTIONSALLOWED: 'The minimum amount of "points" a user must accumulate before landing the hammer. A user mention will count as 1 point, a role mention as 2 points, and an everyone/here mention as 5 points.',
-		SETTINGS_NO_MENTION_SPAM_ALERTS: 'Whether or not users should be alerted when they are about to get the ban hammer.',
-		SETTINGS_NO_MENTION_SPAM_TIMEPERIOD: 'The amount of time in seconds in which the mention bucket should refresh. For example, if this is set to `8` and you mentioned two users 7 seconds apart, the bucket would run from start with the accumulated amount of points.',
+		SETTINGS_SELFMOD_NEWLINES_ENABLED: 'Whether the new lines filter selfmod sub-system is enabled or not.',
+		SETTINGS_SELFMOD_NEWLINES_IGNOREDCHANNELS: 'The channels that will be ignored by the new lines sub-system',
+		SETTINGS_SELFMOD_NEWLINES_IGNOREDROLES: 'The roles that will be ignored by the new lines sub-system',
+		SETTINGS_SELFMOD_NEWLINES_MAXIMUM: 'The maximum amount of new lines before Skyra will start applying penalties',
+		SETTINGS_SELFMOD_RAID: 'Whether or not I should kick users when they try to raid the server.',
+		SETTINGS_SELFMOD_RAIDTHRESHOLD: 'The minimum amount of users joined on the last 20 seconds required before starting to kick them and anybody else who joins until a minute cooldown or forced cooldown (using the `raid` command to manage this).',
+		SETTINGS_SELFMOD_REACTIONS_BLACKLIST: 'The reactions that are blacklisted',
+		SETTINGS_SELFMOD_REACTIONS_ENABLED: 'Whether the reactions filter selfmod sub-system is enabled or not.',
+		SETTINGS_SELFMOD_REACTIONS_IGNOREDCHANNELS: 'The channels that will be ignored by the reactions sub-system',
+		SETTINGS_SELFMOD_REACTIONS_IGNOREDROLES: 'The roles that will be ignored by the reactons sub-system',
+		SETTINGS_SELFMOD_REACTIONS_WHITELIST: 'The reactions that are whitelisted',
 		SETTINGS_SOCIAL_ACHIEVE: 'Whether or not I should congratulate people who get a new leveled role.',
 		SETTINGS_SOCIAL_ACHIEVEMESSAGE: 'The congratulation message for people when they get a new leveled role. Requires `social.achieve` to be enabled.',
 		SETTINGS_SOCIAL_IGNORECHANNELS: 'The channels I should ignore when adding points.',
@@ -598,6 +643,61 @@ export default class extends Language {
 			],
 			examples: ['1091', 'Curiosity']
 		}),
+
+		/**
+		 * ################
+		 * GAME INTEGRATION COMMANDS
+		 */
+
+		COMMAND_CLASHOFCLANS_DESCRIPTION: 'Obtenga datos sobre un jugador o clan en el popular juego móvil Choque de clanes',
+		COMMAND_CLASHOFCLANS_EXTENDED: builder.display('clashofclans', {
+			extendedHelp: 'La solicitud de clanes intentará devolver múltiples respuestas posibles.',
+			explainedUsage: [
+				['categoría', 'La categoría de datos para obtener: ** clan ** para obtener datos de un clan o ** jugador ** para obtener datos de un jugador.'],
+				['consulta', 'Ya sea un nombre de clan o una etiqueta de jugador según la categoría que elijas.']
+			],
+			examples: ['player #8GQPJG2CL', 'clan Hog Raiders Swe']
+		}),
+		COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES: {
+			XP_LEVEL: 'Nivel de XP',
+			BUILDER_HALL_LEVEL: 'Nivel de sala de constructores',
+			TOWNHALL_LEVEL: 'Nivel del ayuntamiento',
+			TOWNHALL_WEAPON_LEVEL: 'Nivel de arma del ayuntamiento',
+
+			TROPHIES: 'Trofeos actuales',
+			BEST_TROPHIES: 'Mejores trofeos',
+			WAR_STARS: 'Estrellas de guerra',
+
+			ATTACK_WINS: 'Gana atacando',
+			DEFENSE_WINS: 'Gana defendiendo',
+			AMOUNT_OF_ACHIEVEMENTS: 'Cantidad de logros',
+
+			VERSUS_TROPHIES: 'Actual contra trofeos',
+			BEST_VERSUS_TROPHIES: 'Mejor contra trofeos',
+			VERSUS_BATTLE_WINS: 'Versus batalla gana',
+
+			CLAN_ROLE: 'Papel del clan',
+			CLAN_NAME: 'Nombre del clan',
+			LEAGUE_NAME: 'Nombre de la liga'
+		},
+		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
+			CLAN_LEVEL: 'Nivel de clan',
+			CLAN_POINTS: 'Puntos del clan',
+			CLAN_VERSUS_POINTS: 'Clan versus puntos',
+			AMOUNT_OF_MEMBERS: 'Cantidad de miembros',
+			DESCRIPTION: 'Descripción',
+			LOCATION_NAME: 'Nombre del lugar',
+			WAR_FREQUENCY: 'Frecuencia de guerra',
+			WAR_WIN_STREAK: 'Racha de victorias de guerra',
+			WAR_WINS: 'La guerra total gana',
+			WAR_TIES: 'Lazos de guerra total',
+			WAR_LOSSES: 'Pérdidas de guerra totales',
+			WAR_LOG_PUBLIC: '¿El registro de guerra es público?',
+			WAR_LOG_PUBLIC_DESCR: isWarLogPublic => isWarLogPublic ? 'Si' : 'No'
+		},
+		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: playertag => `Lo siento, \`${playertag}\` no es una etiqueta de jugador de Choque de clanes válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,
+		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: clan => `Lo siento, pero no pude obtener datos sobre el clan \`${clan}\`.`,
+		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: playertag => `Lo siento, pero no pude obtener datos sobre el jugador con la etiqueta de jugador \`${playertag}\`.`,
 
 		/**
 		 * ################
@@ -1367,6 +1467,14 @@ export default class extends Language {
 					can be banned by me. No, the guild's owner cannot be banned. This action can be optionally timed to create
 					a temporary ban.`,
 			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.']
+		}),
+		COMMAND_DEHOIST_DESCRIPTION: 'Shoot everyone with the dehoist-inator 3000',
+		COMMAND_DEHOIST_EXTENDED: builder.display('dehoist', {
+			extendedHelp: `The act of hoisting involves adding special characters in front of your nickname
+			in order to appear higher in the members list. This command replaces any member's nickname that includes those special characters
+			with a special character that drags them to the bottom of the list.`,
+			reminder: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
+			can be dehoisted.`
 		}),
 		COMMAND_KICK_DESCRIPTION: 'Hit somebody with the 👢.',
 		COMMAND_KICK_EXTENDED: builder.display('kick', {
@@ -2820,6 +2928,13 @@ export default class extends Language {
 			: `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
+		COMMAND_DEHOIST_EMBED: {
+			TITLE: users => `Finished dehoisting ${users} members`,
+			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
+			DESCRIPTION_WITHERRORS: (users, errored) => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted. We also tried to dehoist an additional ${errored} member${users > 1 ? 's' : ''}, but they errored out`,
+			DESCRIPTION: users => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`,
+			FIELD_ERROR_TITLE: `The users we encountered an error for:`
+		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
 		COMMAND_LOCKDOWN_LOCKED: channel => `The channel ${channel} was already locked.`,
@@ -3061,17 +3176,23 @@ export default class extends Language {
 		 * TAGS COMMANDS
 		 */
 
-		COMMAND_TAG_PERMISSIONLEVEL: 'You must be a staff member, moderator, or admin, to be able to manage tags.',
-		COMMAND_TAG_NAME_NOTALLOWED: 'A tag name may not have a grave accent nor invisible characters.',
-		COMMAND_TAG_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
-		COMMAND_TAG_EXISTS: tag => `The tag '${tag}' already exists.`,
-		COMMAND_TAG_CONTENT_REQUIRED: 'You must provide a content for this tag.',
-		COMMAND_TAG_ADDED: (name, content) => `Successfully added a new tag: **${name}** with a content of **${content}**.`,
-		COMMAND_TAG_REMOVED: name => `Successfully removed the tag **${name}**.`,
-		COMMAND_TAG_NOTEXISTS: tag => `The tag '${tag}' does not exist.`,
-		COMMAND_TAG_EDITED: (name, content) => `Successfully edited the tag **${name}** with a content of **${content}**.`,
-		COMMAND_TAG_LIST_EMPTY: 'The tag list for this server is empty.',
-		COMMAND_TAG_LIST: tags => `${(tags.length === 1 ? 'There is 1 tag: ' : `There are ${tags.length} tags: `)}${tags.join(', ')}`,
+		COMMAND_TAG_PERMISSIONLEVEL: 'Debe ser miembro del personal, moderador o administrador para poder administrar las etiquetas.',
+		COMMAND_TAG_NAME_NOTALLOWED: 'Un nombre de etiqueta puede no tener un acento grave ni caracteres invisibles.',
+		COMMAND_TAG_NAME_TOOLONG: 'El nombre de una etiqueta debe tener 50 caracteres o menos.',
+		COMMAND_TAG_EXISTS: tag => `La etiqueta \`${tag}\` ya existe.`,
+		COMMAND_TAG_CONTENT_REQUIRED: 'Debe proporcionar un contenido para esta etiqueta.',
+		COMMAND_TAG_ADDED: (name, content) => [
+			`Se agregó con éxito una nueva etiqueta: **${name}** con un contenido de:`,
+			`**${content.endsWith('...') ? `${content} (truncado para la longitud del mensaje de Discord, se ha guardado la etiqueta completa)` : content}**`
+		].join('\n'),
+		COMMAND_TAG_REMOVED: name => `Se eliminó con éxito la etiqueta **${name}**.`,
+		COMMAND_TAG_NOTEXISTS: tag => `La etiqueta \`${tag}\` no existe.`,
+		COMMAND_TAG_EDITED: (name, content) => [
+			`Se editó correctamente la etiqueta **${name}** con un contenido de:`,
+			`**${content.endsWith('...') ? `${content} (truncado para la longitud del mensaje de Discord, se ha guardado la etiqueta completa)` : content}**`
+		].join('\n'),
+		COMMAND_TAG_LIST_EMPTY: 'La lista de etiquetas para este servidor está vacía.',
+		COMMAND_TAG_LIST: tags => `${(tags.length === 1 ? 'Hay 1 etiqueta:' : `Hay ${tags.length} etiquetas: `)}${tags.join(', ')}`,
 
 		/**
 		 * ##############

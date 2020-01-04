@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
 			const [role] = await this.rolePrompt.createPrompt(message, { time: 30000, limit: 1 }).run(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME')) as [Role];
-			await message.guild!.settings.update(GuildSettings.Roles.Muted, role, { throwOnError: true });
+			await message.guild!.settings.update(GuildSettings.Roles.Muted, role);
 		} else if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_NEW'))) {
 			await message.guild!.security.actions.muteSetup(message);
 			await message.sendLocale('COMMAND_SUCCESS');

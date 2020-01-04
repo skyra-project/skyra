@@ -21,6 +21,26 @@ export class JsonCommonQuery implements CommonQuery {
 		this.client = client;
 	}
 
+	public async deleteUserEntries(userID: string) {
+		const { provider } = this;
+
+		const userData = await provider.get(Databases.Users, userID) as RawUserSettings | null;
+		if (userData !== null) {
+			for (const marry of userData.marry) {
+				const temp = await provider.get(Databases.Users, marry) as RawUserSettings | null;
+				if (temp !== null) await provider.update(Databases.Users, marry, { marry: temp.marry.filter(m => m !== userID) });
+			}
+
+			// Prune user entry
+			await provider.delete(Databases.Users, userID);
+		}
+
+		// Prune all member entries
+		for (const key of await provider.getKeys(Databases.Members)) {
+			if (key.endsWith(`.${userID}`)) await provider.delete(Databases.Members, key);
+		}
+	}
+
 	public async deleteGiveaway(guildID: string, messageID: string) {
 		await this.provider.delete(Databases.Giveaway, `${guildID}.${messageID}`);
 	}

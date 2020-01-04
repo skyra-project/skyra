@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
-		const { formattedAddress, lat, lng, addressComponents } = await queryGoogleMapsAPI(message, this.client, query);
+		const { formattedAddress, lat, lng, addressComponents } = await queryGoogleMapsAPI(message, query);
 
 		const params = `${lat},${lng}`;
 		let locality = '';
@@ -69,44 +69,44 @@ export default class extends SkyraCommand {
 			readFile(join(assetsFolder, 'images', 'weather', theme, 'precip.png'))
 		]);
 
-		const attachment = await new Canvas(400, 180)
+		const attachment = await new Canvas(400, 230)
 			.save()
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)
 			.setColor(COLORS[this.timePicker(icon)])
-			.createBeveledPath(10, 10, 380, 160, 5)
+			.createBeveledPath(10, 10, 380, 220, 5)
 			.fill()
 			.restore()
 
 			// City Name
 			.setTextFont('20px Roboto')
 			.setColor(fontColor)
-			.addText(geoCodeLocation, 35, 50)
+			.addWrappedText(geoCodeLocation, 30, 60, 300)
 
 			// Prefecture Name
 			.setTextFont('16px Roboto')
 			.setColor(theme === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)')
-			.addText(state || '', 35, 72.5)
+			.addText(state || '', 30, 30)
 
 			// Temperature
 			.setTextFont("48px 'Roboto Mono'")
 			.setColor(fontColor)
-			.addText(`${temperature}°C`, 35, 140)
+			.addText(`${temperature}°C`, 30, 190)
 
 			// Condition
 			.setTextFont('16px Roboto')
 			.setTextAlign('right')
-			.addText(condition, 370, 142)
+			.addText(condition, 370, 192)
 
 			// Titles
 			.setTextFont("16px 'Roboto Condensed'")
-			.addText(`${humidity}%`, 353, 100)
-			.addText(`${chanceOfRain}%`, 353, 121)
+			.addText(`${humidity}%`, 353, 150)
+			.addText(`${chanceOfRain}%`, 353, 171)
 
 			// Icons
 			.addImage(conditionBuffer, 325, 31, 48, 48)
-			.addImage(humidityBuffer, 358, 88, 13, 13)
-			.addImage(precipicityBuffer, 358, 108, 13, 13)
+			.addImage(humidityBuffer, 358, 138, 13, 13)
+			.addImage(precipicityBuffer, 358, 158, 13, 13)
 
 			.toBufferAsync();
 

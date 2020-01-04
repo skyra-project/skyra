@@ -12,8 +12,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage, [timespan]: [number]) {
-		await message.guild!.music.seek(timespan);
-		return message.sendLocale('COMMAND_SEEK_SUCCESS', [timespan]);
+		await message.guild!.music.seek(timespan, this.getContext(message));
 	}
 
 }

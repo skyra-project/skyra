@@ -5,6 +5,8 @@ services:
         image: postgres
         ports:
         - '5432:5432'
+        env_file:
+            - ./postgres/.env
     lavalink:
         build: ./lavalink
         container_name: lavalink
@@ -16,8 +18,6 @@ services:
         image: favware/graphql-pokemon:latest
         ports:
         - '4000:8080'
-        env_file:
-            - ./postgres/.env
     influxdb:
         build: ./influxdb
         container_name: influxdb

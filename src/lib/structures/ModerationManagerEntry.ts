@@ -7,6 +7,7 @@ import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsert
 import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
 import { isNullOrUndefined, getDisplayAvatar } from '../util/util';
 import { CLIENT_ID } from '../../../config';
+import { isNumber } from '@klasa/utils';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
@@ -257,13 +258,15 @@ export class ModerationManagerEntry {
 	}
 
 	public setDuration(value: string | number | null) {
-		// If this cannot be reversed, skip
-		if (!this.temporable) return this;
+		if (this.temporable) {
+			if (typeof value === 'string') value = new Duration(value.trim()).offset;
+			if (typeof value === 'number' && (value <= 0 || value > Time.Year)) value = null;
 
-		if (typeof value === 'string') value = new Duration(value.trim()).offset;
-		if (typeof value === 'number' && (value <= 0 || value > Time.Year)) value = null;
+			this.duration = isNumber(value) ? value : null;
+		} else {
+			this.duration = null;
+		}
 
-		this.duration = value;
 		this.type = ModerationManagerEntry.getTypeFlagsFromDuration(this.type, this.duration);
 		return this;
 	}

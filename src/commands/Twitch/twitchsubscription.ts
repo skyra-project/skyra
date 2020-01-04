@@ -96,7 +96,7 @@ export default class extends SkyraCommand {
 		// If the subscription could not be found, we create a new one, otherwise we patch it by creating a new tuple.
 		if (subscriptionIndex === -1) {
 			const subscription: NotificationsStreamTwitch = [streamer._id, [entry]];
-			await message.guild!.settings.update($KEY, [subscription], { arrayAction: 'add', throwOnError: true });
+			await message.guild!.settings.update($KEY, [subscription], { arrayAction: 'add' });
 
 			// Insert the entry to the database performing an upsert, if it created the entry, we tell the Twitch manager
 			// to send Twitch a message saying "hey, I want to be notified, can you pass me some data please?"
@@ -114,7 +114,7 @@ export default class extends SkyraCommand {
 
 			// Patch creating a clone of the value.
 			const subscription: NotificationsStreamTwitch = [raw[0], [...raw[1], entry]];
-			await message.guild!.settings.update($KEY, [subscription], { arrayIndex: subscriptionIndex, throwOnError: true });
+			await message.guild!.settings.update($KEY, [subscription], { arrayIndex: subscriptionIndex });
 		}
 
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS', [streamer.display_name, channel.name, status]);
@@ -138,11 +138,11 @@ export default class extends SkyraCommand {
 
 		// If it was the only entry for said subscription, remove it completely.
 		if (subscription[1].length === 1) {
-			await message.guild!.settings.update($KEY, [subscription], { arrayAction: 'remove', arrayIndex: subscriptionIndex, throwOnError: true });
+			await message.guild!.settings.update($KEY, [subscription], { arrayAction: 'remove', arrayIndex: subscriptionIndex });
 
 			// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
 			if (await this.client.queries.deleteTwitchStreamSubscription(streamer._id, message.guild!.id)) {
-				await this.client.providers.default.delete(Databases.TwitchStreamSubscriptions, streamer._id);
+				await this.client.providers.default!.delete(Databases.TwitchStreamSubscriptions, streamer._id);
 				await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Unsubscribe);
 			}
 		} else {
@@ -150,7 +150,7 @@ export default class extends SkyraCommand {
 			const entries = subscription[1].slice();
 			entries.splice(entryIndex, 1);
 			const updated: NotificationsStreamTwitch = [subscription[0], entries];
-			await message.guild!.settings.update($KEY, [updated], { arrayIndex: subscriptionIndex, throwOnError: true });
+			await message.guild!.settings.update($KEY, [updated], { arrayIndex: subscriptionIndex });
 		}
 
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS', [streamer.display_name, channel.name, status]);
@@ -184,7 +184,7 @@ export default class extends SkyraCommand {
 
 		// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
 		if (await this.client.queries.deleteTwitchStreamSubscription(streamer._id, message.guild!.id)) {
-			await this.client.providers.default.delete(Databases.TwitchStreamSubscriptions, streamer._id);
+			await this.client.providers.default!.delete(Databases.TwitchStreamSubscriptions, streamer._id);
 			await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Unsubscribe);
 		}
 

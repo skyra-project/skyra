@@ -19,9 +19,9 @@
     "build-clear": "rm -rf dist && tsc -p .",
     "build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
     "watch": "tsc -p . -w",
-	"dev": "yarn build && yarn start",
-	"dockerps": "powershell .\\docker\\ps-skyra.ps1",
-	"dockerbash": "bash ./docker/bash-skyra.sh"
+    "dev": "yarn build && yarn start",
+    "dockerps": "powershell .\\docker\\ps-skyra.ps1",
+    "dockerbash": "bash ./docker/bash-skyra.sh"
   },
   "repository": {
     "type": "git",
@@ -57,7 +57,7 @@
     "gifencoder": "^2.0.1",
     "he": "^1.2.0",
     "influx": "^5.5.1",
-    "klasa": "github:dirigeants/klasa#settings",
+    "klasa": "github:dirigeants/klasa#875/head",
     "klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
     "klasa-decorators": "^0.0.1",
     "lavalink": "^2.8.2",
@@ -70,13 +70,13 @@
   },
   "devDependencies": {
     "@discordjs/collection": "^0.1.3",
-    "@favware/graphql-pokemon": "^1.3.0",
+    "@favware/graphql-pokemon": "^1.6.0",
     "@types/backoff": "^2.5.1",
     "@types/diff": "^4.0.2",
     "@types/he": "^1.1.0",
     "@types/node": "^13.1.2",
     "@types/node-fetch": "^2.5.4",
-    "@types/pg": "^7.14.0",
+    "@types/pg": "^7.14.1",
     "@types/ws": "^6.0.4",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",

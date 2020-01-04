@@ -36,11 +36,10 @@ export default class extends Monitor {
 			if (error.code === APIErrors.ReactionBlocked) return;
 			// The emoji has been deleted or the bot is not in the whitelist
 			if (error.code === APIErrors.UnknownEmoji) {
-				const { errors } = await message.guild!.settings.update(GuildSettings.Trigger.Includes, trigger, { arrayAction: 'remove' });
-				if (errors.length) this.client.emit(Events.Wtf, errors);
-				return;
+				await message.guild!.settings.update(GuildSettings.Trigger.Includes, trigger, { arrayAction: 'remove' });
+			} else {
+				this.client.emit(Events.ApiError, error);
 			}
-			this.client.emit(Events.ApiError, error);
 		}
 	}
 

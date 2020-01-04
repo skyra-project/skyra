@@ -1,10 +1,10 @@
-import { CommandStore, KlasaMessage, Stopwatch, Type } from 'klasa';
-import { inspect } from 'util';
+import { codeBlock, isThenable, sleep } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { fetch, FetchResultTypes } from '@util/util';
-import { clean } from '@util/clean';
-import { codeBlock, sleep, isThenable } from '@klasa/utils';
+import { clean } from '@utils/clean';
+import { fetch, FetchResultTypes } from '@utils/util';
+import { CommandStore, KlasaMessage, Stopwatch, Type } from 'klasa';
+import { inspect } from 'util';
 
 export default class extends SkyraCommand {
 

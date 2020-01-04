@@ -1,12 +1,12 @@
 import { Structures } from 'discord.js';
-import { enumerable } from '@util/util';
+import { enumerable } from '@utils/util';
 
 import { ModerationManager } from '@lib/structures/ModerationManager';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
-import { StarboardManager } from '@lib/structures/StarboardManager';
-import { GuildSecurity } from '@util/Security/GuildSecurity';
 import { PermissionsManager } from '@lib/structures/PermissionsManager';
-import { MemberTags } from '@util/Cache/MemberTags';
+import { StarboardManager } from '@lib/structures/StarboardManager';
+import { MemberTags } from '@utils/Cache/MemberTags';
+import { GuildSecurity } from '@utils/Security/GuildSecurity';
 
 export class SkyraGuild extends Structures.get('Guild') {
 

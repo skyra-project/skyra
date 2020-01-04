@@ -1,7 +1,7 @@
+import { FuzzySearch } from '@utils/FuzzySearch';
+import { validateChannelAccess } from '@utils/util';
 import { GuildChannel } from 'discord.js';
 import { Argument, KlasaGuild, KlasaMessage, KlasaUser, Possible } from 'klasa';
-import { FuzzySearch } from '@util/FuzzySearch';
-import { validateChannelAccess } from '@util/util';
 
 const CHANNEL_REGEXP = Argument.regex.channel;
 

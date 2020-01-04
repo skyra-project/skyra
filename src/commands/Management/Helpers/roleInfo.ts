@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { BrandingColors } from '@utils/constants';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { BrandingColors } from '@util/constants';
-import { PermissionLevels } from '@lib/types/Enums';
 
 export default class extends SkyraCommand {
 

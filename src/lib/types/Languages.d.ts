@@ -1,11 +1,11 @@
-import { GuildMember, PermissionString, Role, User, Guild, MessageEmbed } from 'discord.js';
-import { ScheduledTask, SchemaEntry } from 'klasa';
 import { HungerGamesGame } from '@commands/Games/hungergames';
 import { LevelTitles } from '@commands/Social/level';
 import { ProfileTitles } from '@commands/Social/profile';
 import { StatsGeneral, StatsUptime, StatsUsage } from '@commands/System/stats';
 import { Song } from '@lib/structures/music/Song';
-import { HungerGamesUsage } from '@util/Games/HungerGamesUsage';
+import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { Guild, GuildMember, MessageEmbed, PermissionString, Role, User } from 'discord.js';
+import { ScheduledTask, SchemaEntry } from 'klasa';
 import { Kitsu } from './definitions/Kitsu';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 

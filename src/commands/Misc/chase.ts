@@ -1,11 +1,11 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { CLIENT_ID } from '@root/config';
+import { assetsFolder } from '@utils/constants';
+import { fetchAvatar } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { fetchAvatar } from '@util/util';
-import { CLIENT_ID } from '@root/config';
-import { assetsFolder } from '@util/constants';
 
 export default class extends SkyraCommand {
 

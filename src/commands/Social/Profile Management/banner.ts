@@ -1,13 +1,13 @@
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Databases } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
-import { Emojis, BrandingColors } from '@util/constants';
-import { getColor } from '@util/util';
 import { RawBannerSettings } from '@lib/types/settings/raw/RawBannerSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { BrandingColors, Emojis } from '@utils/constants';
+import { getColor } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 

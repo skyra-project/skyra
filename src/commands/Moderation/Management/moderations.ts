@@ -1,12 +1,12 @@
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
+import { Collection } from '@discordjs/collection';
 import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { Moderation, BrandingColors } from '@util/constants';
-import { getColor } from '@util/util';
-import { Collection } from '@discordjs/collection';
 import { PermissionLevels } from '@lib/types/Enums';
+import { BrandingColors, Moderation } from '@utils/constants';
+import { getColor } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
 
 export default class extends SkyraCommand {
 

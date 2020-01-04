@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { Guild } from 'discord.js';
-import { createReferPromise, ReferredPromise, floatPromise } from '@util/util';
-import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
+import { Guild } from 'discord.js';
+import { ModerationManagerEntry } from './ModerationManagerEntry';
 
 enum CacheActions {
 	None,

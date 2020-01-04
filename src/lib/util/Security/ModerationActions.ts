@@ -1,13 +1,13 @@
-import { Guild, GuildMember, Role, RoleData, GuildChannel, PermissionOverwriteOption, Permissions, User, PermissionString } from 'discord.js';
-import { api } from '@util/Models/Api';
-import { GuildSettings, StickyRole } from '@lib/types/settings/GuildSettings';
 import { deepClone } from '@klasa/utils';
+import { ModerationManagerCreateData } from '@lib/structures/ModerationManager';
+import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings, StickyRole } from '@lib/types/settings/GuildSettings';
 import { Mutable } from '@lib/types/util';
 import { CLIENT_ID } from '@root/config';
-import { Moderation, APIErrors } from '@util/constants';
-import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
-import { ModerationManagerCreateData } from '@lib/structures/ModerationManager';
-import { Events } from '@lib/types/Enums';
+import { APIErrors, Moderation } from '@utils/constants';
+import { api } from '@utils/Models/Api';
+import { Guild, GuildChannel, GuildMember, PermissionOverwriteOption, Permissions, PermissionString, Role, RoleData, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export const enum ModerationSetupRestriction {

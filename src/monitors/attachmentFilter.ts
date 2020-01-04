@@ -1,10 +1,11 @@
-import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { Adder } from '@util/Adder';
-import { MessageLogsEnum, Moderation } from '@util/constants';
-import { floatPromise } from '@util/util';
+import { Adder } from '@utils/Adder';
+import { MessageLogsEnum, Moderation } from '@utils/constants';
+import { floatPromise } from '@utils/util';
+import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
+import { KlasaMessage, Monitor } from 'klasa';
+
 const { FLAGS } = Permissions;
 
 export default class extends Monitor {

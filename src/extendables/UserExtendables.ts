@@ -1,6 +1,6 @@
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { User } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 
 export default class extends Extendable {
 

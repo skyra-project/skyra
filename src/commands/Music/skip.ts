@@ -1,7 +1,7 @@
-import { Snowflake } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { MusicCommand } from '@lib/structures/MusicCommand';
+import { Snowflake } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends MusicCommand {
 

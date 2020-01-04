@@ -1,6 +1,6 @@
-import { CommandStore, KlasaMessage, util } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 
 export default class extends SkyraCommand {
 

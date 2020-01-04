@@ -1,9 +1,9 @@
 import { WSMessageDeleteBulk } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { EventStore, Event } from 'klasa';
+import { api } from '@utils/Models/Api';
 import { DiscordAPIError } from 'discord.js';
-import { api } from '@util/Models/Api';
+import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 

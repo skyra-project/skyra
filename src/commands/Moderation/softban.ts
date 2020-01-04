@@ -1,8 +1,8 @@
-import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { isNumber } from '@klasa/utils';
 import { ModerationCommand } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { isNumber } from '@klasa/utils';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends ModerationCommand {
 

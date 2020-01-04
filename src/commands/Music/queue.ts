@@ -1,9 +1,9 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { Util, MessageEmbed } from 'discord.js';
-import { getColor, showSeconds } from '@util/util';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { chunk } from '@klasa/utils';
+import { MusicCommand } from '@lib/structures/MusicCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { getColor, showSeconds } from '@utils/util';
+import { MessageEmbed, Util } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends MusicCommand {
 

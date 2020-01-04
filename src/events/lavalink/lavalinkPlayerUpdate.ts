@@ -1,6 +1,6 @@
-import { Event } from 'klasa';
-import { LavalinkPlayerUpdateEvent } from '@util/LavalinkUtils';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { LavalinkPlayerUpdateEvent } from '@utils/LavalinkUtils';
+import { Event } from 'klasa';
 
 export default class extends Event {
 

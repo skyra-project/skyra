@@ -1,7 +1,7 @@
-import { Event } from 'klasa';
-import { LavalinkStuckEvent } from '@util/LavalinkUtils';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { Events } from '@lib/types/Enums';
+import { LavalinkStuckEvent } from '@utils/LavalinkUtils';
+import { Event } from 'klasa';
 
 export default class extends Event {
 

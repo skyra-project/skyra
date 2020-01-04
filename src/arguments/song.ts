@@ -1,6 +1,6 @@
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import { Track } from 'lavalink';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 export default class extends Argument {
 

@@ -1,9 +1,9 @@
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { queryGoogleMapsAPI, handleNotOK } from '@util/Google';
-import { fetch, FetchResultTypes, getColor } from '@util/util';
 import { TOKENS } from '@root/config';
+import { handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
+import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 

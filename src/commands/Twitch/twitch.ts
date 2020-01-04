@@ -1,10 +1,10 @@
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { MessageEmbed } from 'discord.js';
-import { fetch, FetchResultTypes } from '@util/util';
-import { TOKENS } from '@root/config';
 import { TwitchKrakenChannelResult } from '@lib/types/definitions/Twitch';
-import { Mime } from '@util/constants';
+import { TOKENS } from '@root/config';
+import { Mime } from '@utils/constants';
+import { fetch, FetchResultTypes } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const kFetchOptions = {
 	headers: {

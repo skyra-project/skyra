@@ -1,8 +1,8 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { KlasaGuild } from 'klasa';
-import { APIErrors } from '@util/constants';
-import { GuildMember, Role } from 'discord.js';
 import { CLIENT_ID } from '@root/config';
+import { APIErrors } from '@utils/constants';
+import { GuildMember, Role } from 'discord.js';
+import { KlasaGuild } from 'klasa';
 
 export class MemberTags extends Collection<string, MemberTag> {
 

@@ -1,10 +1,10 @@
-import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '@util/constants';
+import { MessageLogsEnum } from '@utils/constants';
+import { rest } from '@utils/Models/Rest';
+import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
-import { rest } from '@util/Models/Rest';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {

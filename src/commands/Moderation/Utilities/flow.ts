@@ -1,7 +1,7 @@
-import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { TextChannel } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 

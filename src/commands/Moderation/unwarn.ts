@@ -1,10 +1,10 @@
-import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationCommand } from '@lib/structures/ModerationCommand';
 import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
-import { Moderation } from '@util/constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { floatPromise } from '@util/util';
+import { Moderation } from '@utils/constants';
+import { floatPromise } from '@utils/util';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends ModerationCommand {
 

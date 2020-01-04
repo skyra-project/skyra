@@ -1,11 +1,11 @@
+import { Events } from '@lib/types/Enums';
+import { APIErrors, BrandingColors, Time } from '@utils/constants';
+import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { api } from '@utils/Models/Api';
+import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
+import { floatPromise, getColor } from '@utils/util';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
-import { Events } from '@lib/types/Enums';
-import { LLRCData, LongLivingReactionCollector } from '@util/LongLivingReactionCollector';
-import { getColor, floatPromise } from '@util/util';
-import { api } from '@util/Models/Api';
-import { Time, BrandingColors, APIErrors } from '@util/constants';
-import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@util/SettingsUtils';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;

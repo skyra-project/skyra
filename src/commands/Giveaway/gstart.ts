@@ -1,6 +1,6 @@
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { cleanMentions } from '@util/util';
+import { cleanMentions } from '@utils/util';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
 

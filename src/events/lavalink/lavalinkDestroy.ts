@@ -1,5 +1,5 @@
-import { Event } from 'klasa';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { Event } from 'klasa';
 
 export default class extends Event {
 

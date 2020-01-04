@@ -1,6 +1,6 @@
-import { Event } from 'klasa';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
+import { Event } from 'klasa';
 
 export default class extends Event {
 

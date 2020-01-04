@@ -1,6 +1,6 @@
-import { Middleware, MiddlewareStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
+import { Middleware, MiddlewareStore } from 'klasa-dashboard-hooks';
 
 export default class extends Middleware {
 

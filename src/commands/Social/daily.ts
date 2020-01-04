@@ -1,8 +1,8 @@
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { ClientSettings } from '@lib/types/settings/ClientSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
-import { Time } from '@util/constants';
+import { Time } from '@utils/constants';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;

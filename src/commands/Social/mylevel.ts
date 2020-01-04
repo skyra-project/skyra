@@ -1,6 +1,6 @@
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
 

@@ -1,7 +1,7 @@
-import { ISchemaOptions, FieldType } from 'influx';
-import { Tags } from '@lib/types/influxSchema/tags';
 import { AuditMeasurements, AuditTags } from '@lib/types/influxSchema/Audit';
 import { Databases } from '@lib/types/influxSchema/database';
+import { Tags } from '@lib/types/influxSchema/tags';
+import { FieldType, ISchemaOptions } from 'influx';
 
 export const SchemaSettingsUpdate: ISchemaOptions = {
 	database: Databases.Audits,

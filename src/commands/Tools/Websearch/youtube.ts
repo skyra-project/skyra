@@ -1,8 +1,8 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { TOKENS } from '@root/config';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
-import { fetch, FetchResultTypes } from '@util/util';
+import { TOKENS } from '@root/config';
+import { fetch, FetchResultTypes } from '@utils/util';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 

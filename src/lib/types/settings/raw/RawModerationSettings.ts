@@ -1,5 +1,5 @@
 import { AnyObject } from '@lib/types/util';
-import { Moderation } from '@util/constants';
+import { Moderation } from '@utils/constants';
 
 export interface RawModerationSettings {
 	case_id: number;

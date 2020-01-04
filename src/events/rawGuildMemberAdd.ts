@@ -1,8 +1,8 @@
-import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { WSGuildMemberAdd } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '@util/constants';
+import { MessageLogsEnum } from '@utils/constants';
+import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 const { FLAGS } = Permissions;

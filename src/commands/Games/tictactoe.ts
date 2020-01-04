@@ -1,7 +1,7 @@
-import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
-import { floatPromise } from '@util/util';
+import { floatPromise } from '@utils/util';
+import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];

@@ -1,7 +1,7 @@
-import { MessageOptions } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { MessageOptions } from 'discord.js';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
 

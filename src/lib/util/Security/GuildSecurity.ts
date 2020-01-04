@@ -1,8 +1,8 @@
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Adder } from '@utils/Adder';
+import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Guild } from 'discord.js';
 import { RateLimitManager } from 'klasa';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { Adder } from '@util/Adder';
-import { PreciseTimeout } from '@util/PreciseTimeout';
 import { AntiRaid } from './AntiRaid';
 import { ModerationActions } from './ModerationActions';
 import { create } from './RegexCreator';

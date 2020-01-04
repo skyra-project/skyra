@@ -1,7 +1,7 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
-import { KlasaMessage, Monitor } from 'klasa';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { KlasaMessage, Monitor } from 'klasa';
 
 export default class extends Monitor {
 

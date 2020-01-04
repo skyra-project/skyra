@@ -1,5 +1,5 @@
-import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
 

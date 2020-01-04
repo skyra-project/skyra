@@ -1,7 +1,7 @@
-import { Player, PlayerColor } from './Player';
-import { Game } from './Game';
-import { Cell, kColumns, kRows } from './Board';
 import { util } from 'klasa';
+import { Cell, kColumns, kRows } from './Board';
+import { Game } from './Game';
+import { Player, PlayerColor } from './Player';
 
 const kPoints = 100000;
 

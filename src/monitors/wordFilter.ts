@@ -1,10 +1,10 @@
+import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { cutText, floatPromise, getContent } from '@utils/util';
+import { remove } from 'confusables';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { cutText, getContent, floatPromise } from '@util/util';
-import { remove } from 'confusables';
-import { ModerationMonitor, HardPunishment } from '@lib/structures/ModerationMonitor';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 
 export default class extends ModerationMonitor {
 

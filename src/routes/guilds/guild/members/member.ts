@@ -1,9 +1,9 @@
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
-import { authenticated, ratelimit } from '@util/util';
+import { flattenMember } from '@utils/Models/ApiTransform';
+import { authenticated, ratelimit } from '@utils/util';
 import { Permissions } from 'discord.js';
-import { flattenMember } from '@util/Models/ApiTransform';
+import { Route, RouteStore } from 'klasa-dashboard-hooks';
 
 const { FLAGS: { MANAGE_GUILD } } = Permissions;
 

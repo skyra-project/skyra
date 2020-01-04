@@ -1,9 +1,9 @@
-import { Command, Event, KlasaMessage, Stopwatch, CommandPrompt } from 'klasa';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { CommandHandler } from '@lib/types/definitions/Internals';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { CommandHandler } from '@lib/types/definitions/Internals';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { floatPromise } from '@util/util';
+import { floatPromise } from '@utils/util';
+import { Command, CommandPrompt, Event, KlasaMessage, Stopwatch } from 'klasa';
 
 export default class extends Event {
 

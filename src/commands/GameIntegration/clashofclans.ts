@@ -1,12 +1,12 @@
 import { toTitleCase } from '@klasa/utils';
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { TOKENS } from '@root/config';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ClashOfClans } from '@lib/types/definitions/ClashOfClans';
-import { fetch, FetchResultTypes, getColor } from '@util/util';
-import { BrandingColors } from '@util/constants';
+import { TOKENS } from '@root/config';
+import { BrandingColors } from '@utils/constants';
+import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const enum ClashOfClansFetchCategories {
 	PLAYERS = 'players',

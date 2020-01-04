@@ -1,9 +1,9 @@
+import { mergeDefault } from '@klasa/utils';
 import { BitFieldResolvable, TextChannel } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
+import { MusicHandlerRequestContext } from './music/MusicHandler';
 import { MusicBitField, MusicBitFieldString } from './MusicBitField';
 import { SkyraCommand } from './SkyraCommand';
-import { MusicHandlerRequestContext } from './music/MusicHandler';
-import { mergeDefault } from '@klasa/utils';
 
 export abstract class MusicCommand extends SkyraCommand {
 

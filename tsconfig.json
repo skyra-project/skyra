@@ -17,7 +17,7 @@
 			"@routes/*": ["src/routes/*"],
 			"@commands/*": ["src/commands/*"],
 			"@lib/*": ["src/lib/*"],
-			"@util/*": ["src/lib/util/*"]
+			"@utils/*": ["src/lib/util/*"]
 		}
 	},
 	"include": [

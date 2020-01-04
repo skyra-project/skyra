@@ -1,7 +1,7 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { cutText, fetch, getColor, FetchResultTypes } from '@util/util';
 
 export default class extends SkyraCommand {
 
@@ -81,7 +81,7 @@ export interface WikipediaResultOkNormalized {
 	to: string;
 }
 
-export interface WikipediaResultOkPages extends Record<string, WikipediaResultOkPage> {}
+export interface WikipediaResultOkPages extends Record<string, WikipediaResultOkPage> { }
 
 export interface WikipediaResultOkPage {
 	pageid: number;

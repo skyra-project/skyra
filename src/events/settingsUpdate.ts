@@ -1,7 +1,7 @@
-import { Event, Settings } from 'klasa';
-import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
-import { getFromPath } from '@util/util';
+import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
+import { getFromPath } from '@utils/util';
+import { Event, Settings } from 'klasa';
 
 export default class extends Event {
 

@@ -1,6 +1,6 @@
-import { Event, Settings } from 'klasa';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Event, Settings } from 'klasa';
 
 export default class extends Event {
 

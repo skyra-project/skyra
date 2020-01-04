@@ -1,8 +1,8 @@
+import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { ModerationMonitor, HardPunishment } from '@lib/structures/ModerationMonitor';
-import { floatPromise } from '@util/util';
 
 const kRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d]{2,}/i;
 

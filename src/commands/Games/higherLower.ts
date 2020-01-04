@@ -1,11 +1,11 @@
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { UserSettings } from '@lib/types/settings/UserSettings';
-import { Time } from '@util/constants';
-import { LLRCData, LongLivingReactionCollector } from '@util/LongLivingReactionCollector';
-import { getColor, resolveEmoji } from '@util/util';
+import { Time } from '@utils/constants';
+import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { getColor, resolveEmoji } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',

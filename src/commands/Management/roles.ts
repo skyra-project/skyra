@@ -1,12 +1,12 @@
-import { MessageEmbed, Role } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { FuzzySearch } from '@util/FuzzySearch';
-import { getColor } from '@util/util';
-import { BrandingColors } from '@util/constants';
+import { BrandingColors } from '@utils/constants';
+import { FuzzySearch } from '@utils/FuzzySearch';
+import { getColor } from '@utils/util';
+import { MessageEmbed, Role } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 

@@ -1,10 +1,10 @@
-import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, SettingsFolder } from 'klasa';
+import { codeBlock, toTitleCase } from '@klasa/utils';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { toTitleCase, codeBlock } from '@klasa/utils';
-import { configurableSchemaKeys, isSchemaEntry, displayEntry, displayFolder, initConfigurableSchema } from '@util/SettingsUtils';
+import { configurableSchemaKeys, displayEntry, displayFolder, initConfigurableSchema, isSchemaEntry } from '@utils/SettingsUtils';
+import { Permissions, TextChannel } from 'discord.js';
+import { CommandStore, KlasaMessage, SettingsFolder } from 'klasa';
 
 const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 

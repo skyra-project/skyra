@@ -1,11 +1,11 @@
 import { isFunction } from '@klasa/utils';
-import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { HungerGamesUsage } from '@util/Games/HungerGamesUsage';
-import { LLRCData, LongLivingReactionCollector } from '@util/LongLivingReactionCollector';
-import { cleanMentions } from '@util/util';
+import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { cleanMentions } from '@utils/util';
+import { CommandStore, KlasaMessage, Language, util } from 'klasa';
 
 const EMOJIS = ['🇳', '🇾'];
 
@@ -54,8 +54,8 @@ export default class extends SkyraCommand {
 			llrc: new LongLivingReactionCollector(this.client, async reaction => {
 				// Ignore if resolve is not ready
 				if (!isFunction(resolve)
-				// Run the collector inhibitor
-				|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
+					// Run the collector inhibitor
+					|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
 				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
 				resolve = null;
 			}, () => {

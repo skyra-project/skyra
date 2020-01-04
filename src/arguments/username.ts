@@ -1,6 +1,6 @@
-import { Argument, KlasaMessage, Possible } from 'klasa';
-import { FuzzySearch } from '@util/FuzzySearch';
+import { FuzzySearch } from '@utils/FuzzySearch';
 import { User } from 'discord.js';
+import { Argument, KlasaMessage, Possible } from 'klasa';
 
 const USER_REGEXP = Argument.regex.userOrMember;
 const USER_TAG = /^\w{1,32}#\d{4}$/;

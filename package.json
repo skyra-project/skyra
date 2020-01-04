@@ -91,6 +91,6 @@
 	  "@routes": "dist/src/routes",
 	  "@commands": "dist/src/commands",
 	  "@lib": "dist/src/lib",
-	  "@util": "dist/src/lib/util"
+	  "@utils": "dist/src/lib/util"
   }
 }

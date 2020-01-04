@@ -1,5 +1,5 @@
-import { Client, Collection, Guild, TextChannel } from 'discord.js';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Client, Collection, Guild, TextChannel } from 'discord.js';
 import { StarboardMessage } from './StarboardMessage';
 
 /**

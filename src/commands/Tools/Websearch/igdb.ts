@@ -1,12 +1,12 @@
-import { AgeRatingRatingEnum, Company, Game } from '@util/External/IgdbTypes';
 import { isNumber } from '@klasa/utils';
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
-import { TOKENS } from '@root/config';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { BrandingColors } from '@util/constants';
-import { cutText, fetch, FetchResultTypes, getColor, roundNumber } from '@util/util';
+import { TOKENS } from '@root/config';
+import { BrandingColors } from '@utils/constants';
+import { AgeRatingRatingEnum, Company, Game } from '@utils/External/IgdbTypes';
+import { cutText, fetch, FetchResultTypes, getColor, roundNumber } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 
 const API_URL = 'https://api-v3.igdb.com/games';
 

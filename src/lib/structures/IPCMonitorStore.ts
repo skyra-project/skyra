@@ -1,4 +1,4 @@
-import { Store, KlasaClient } from 'klasa';
+import { KlasaClient, Store } from 'klasa';
 import { NodeMessage } from 'veza';
 import { IPCMonitor } from './IPCMonitor';
 

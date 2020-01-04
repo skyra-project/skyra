@@ -1,7 +1,7 @@
 import { writeFile } from 'fs-nextra';
 import fetch from 'node-fetch';
-import { toUnicode } from 'punycode';
 import { join } from 'path';
+import { toUnicode } from 'punycode';
 
 async function main() {
 	// Download entry from IANA, process the data as a string, and split it by new line

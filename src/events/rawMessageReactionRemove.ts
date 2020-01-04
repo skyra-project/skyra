@@ -1,6 +1,6 @@
-import { TextChannel } from 'discord.js';
 import { WSMessageReactionRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {

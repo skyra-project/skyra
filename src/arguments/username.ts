@@ -1,5 +1,5 @@
 import { Argument, KlasaMessage, Possible } from 'klasa';
-import { FuzzySearch } from '../lib/util/FuzzySearch';
+import { FuzzySearch } from '@util/FuzzySearch';
 import { User } from 'discord.js';
 
 const USER_REGEXP = Argument.regex.userOrMember;

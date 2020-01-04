@@ -26,7 +26,7 @@
 
 import { Util, TextChannel, Channel } from 'discord.js';
 import { Task } from 'klasa';
-import { Events } from '../lib/types/Enums';
+import { Events } from '@lib/types/Enums';
 
 // THRESHOLD equals to 30 minutes in milliseconds:
 //     - 1000 milliseconds = 1 second

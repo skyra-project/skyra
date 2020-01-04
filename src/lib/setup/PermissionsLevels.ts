@@ -1,7 +1,7 @@
 import { KlasaClient } from 'klasa';
 import { Permissions } from 'discord.js';
-import { PermissionLevels } from '../types/Enums';
-import { GuildSettings } from '../types/settings/GuildSettings';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 export default KlasaClient.defaultPermissionLevels
 	.add(PermissionLevels.Moderator, message => message.member

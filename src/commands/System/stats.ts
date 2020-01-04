@@ -1,7 +1,7 @@
 import { version } from 'discord.js';
 import { CommandStore, Duration, KlasaMessage } from 'klasa';
 import { loadavg, uptime } from 'os';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
 
 export default class extends SkyraCommand {
 

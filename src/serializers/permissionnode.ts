@@ -1,5 +1,5 @@
 import { Command, Serializer, util, SerializerUpdateContext } from 'klasa';
-import { PermissionsNode } from '../lib/types/settings/GuildSettings';
+import { PermissionsNode } from '@lib/types/settings/GuildSettings';
 import { GuildMember, Role } from 'discord.js';
 
 export default class extends Serializer {

@@ -2,8 +2,8 @@ import { DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, resolveColour } from '../../lib/util/Pokemon';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@util/Pokemon';
 
 enum BaseStats {
 	hp = 'HP',

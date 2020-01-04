@@ -1,8 +1,8 @@
 import { MessageAttachment } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { fetch, FetchResultTypes } from '../../../lib/util/util';
-import { PermissionLevels } from '../../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { fetch, FetchResultTypes } from '@util/util';
+import { PermissionLevels } from '@lib/types/Enums';
 
 export default class extends SkyraCommand {
 

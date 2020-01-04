@@ -1,9 +1,9 @@
 import { MessageEmbed, TextChannel, MessageAttachment } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '../lib/util/util';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@util/constants';
+import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@util/util';
 import { extname } from 'path';
 import { isNumber } from '@klasa/utils';
 

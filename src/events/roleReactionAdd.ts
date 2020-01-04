@@ -1,8 +1,8 @@
 import { Event } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { Events } from '../lib/types/Enums';
-import { resolveEmoji } from '../lib/util/util';
-import { LLRCData } from '../lib/util/LongLivingReactionCollector';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Events } from '@lib/types/Enums';
+import { resolveEmoji } from '@util/util';
+import { LLRCData } from '@util/LongLivingReactionCollector';
 
 export default class extends Event {
 

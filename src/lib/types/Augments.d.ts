@@ -1,17 +1,17 @@
 import { CustomGet } from './settings/Shared';
 import { PermissionString } from 'discord.js';
 import { LanguageKeys } from './Languages';
-import { Leaderboard } from '../util/Leaderboard';
-import { IPCMonitorStore } from '../structures/IPCMonitorStore';
-import { GiveawayManager } from '../structures/GiveawayManager';
-import { ConnectFourManager } from '../util/Games/ConnectFourManager';
-import { LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
+import { Leaderboard } from '@util/Leaderboard';
+import { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
+import { GiveawayManager } from '@lib/structures/GiveawayManager';
+import { ConnectFourManager } from '@util/Games/ConnectFourManager';
+import { LongLivingReactionCollector } from '@util/LongLivingReactionCollector';
 import { FSWatcher } from 'chokidar';
 import { Node as Lavalink, BaseNodeOptions } from 'lavalink';
 import { Client as VezaClient } from 'veza';
-import { CommonQuery } from '../queries/common';
-import { UserTags } from '../util/Cache/UserTags';
-import { Twitch } from '../util/Notifications/Twitch';
+import { CommonQuery } from '@lib/queries/common';
+import { UserTags } from '@util/Cache/UserTags';
+import { Twitch } from '@util/Notifications/Twitch';
 import { InfluxDB } from 'influx';
 
 import { SettingsUpdateResults } from '@klasa/settings-gateway';

@@ -1,5 +1,5 @@
 import { Serializer, SerializerUpdateContext } from 'klasa';
-import { resolveEmoji } from '../lib/util/util';
+import { resolveEmoji } from '@util/util';
 
 export default class extends Serializer {
 

@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { PermissionLevels } from '@lib/types/Enums';
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
 export default class extends SkyraCommand {

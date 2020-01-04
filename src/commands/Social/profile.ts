@@ -2,10 +2,10 @@ import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
-import { fetchAvatar } from '../../lib/util/util';
-import { cdnFolder } from '../../lib/util/constants';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { fetchAvatar } from '@util/util';
+import { cdnFolder } from '@util/constants';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join(cdnFolder, 'img', 'banners');

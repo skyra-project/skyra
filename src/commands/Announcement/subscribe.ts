@@ -1,7 +1,7 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { announcementCheck } from '../../lib/util/util';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { announcementCheck } from '@util/util';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 export default class extends SkyraCommand {
 

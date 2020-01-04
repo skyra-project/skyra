@@ -1,6 +1,6 @@
 import { Event } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
-import { GuildSecurity } from '../util/Security/GuildSecurity';
+import { GuildSecurity } from '@util/Security/GuildSecurity';
 import { MessageEmbed, Guild } from 'discord.js';
 
 export abstract class ModerationEvent<V extends unknown[], T = unknown> extends Event {

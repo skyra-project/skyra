@@ -1,9 +1,9 @@
 import { Collection, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Reddit } from '../../lib/types/definitions/Reddit';
-import { BrandingColors } from '../../lib/util/constants';
-import { cutText, fetch, getColor, roundNumber, FetchResultTypes } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Reddit } from '@lib/types/definitions/Reddit';
+import { BrandingColors } from '@util/constants';
+import { cutText, fetch, getColor, roundNumber, FetchResultTypes } from '@util/util';
 
 export default class extends SkyraCommand {
 

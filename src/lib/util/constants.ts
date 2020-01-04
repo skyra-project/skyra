@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
-import { DEV } from '../../../config';
+import { DEV } from '@root/config';
 
 export const rootFolder = join(__dirname, '..', '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');

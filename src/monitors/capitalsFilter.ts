@@ -1,9 +1,9 @@
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { cutText, floatPromise } from '../lib/util/util';
-import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationMonitor';
-import { UserSettings } from '../lib/types/settings/UserSettings';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { cutText, floatPromise } from '@util/util';
+import { ModerationMonitor, HardPunishment } from '@lib/structures/ModerationMonitor';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 const OFFSET = 0b100000;
 /**
  * In ASCII, the 6th bit tells whether a character is lowercase or uppercase:

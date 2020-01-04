@@ -1,13 +1,13 @@
 import fetch from 'node-fetch';
 import { URL } from 'url';
 import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
-import ApiRequest from '../../lib/structures/api/ApiRequest';
-import ApiResponse from '../../lib/structures/api/ApiResponse';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
 import OauthUser from './oauthUser';
-import { ratelimit } from '../../lib/util/util';
-import { OauthData } from '../../lib/types/DiscordAPI';
-import { Time } from '../../lib/util/constants';
-import { Events } from '../../lib/types/Enums';
+import { ratelimit } from '@util/util';
+import { OauthData } from '@lib/types/DiscordAPI';
+import { Time } from '@util/constants';
+import { Events } from '@lib/types/Enums';
 
 export default class extends Route {
 

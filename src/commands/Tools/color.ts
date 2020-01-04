@@ -1,8 +1,8 @@
 import { Canvas } from 'canvas-constructor';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { RGB } from '../../lib/structures/color';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { parse, luminance, hexConcat } from '../../lib/util/Color';
+import { RGB } from '@lib/structures/color';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { parse, luminance, hexConcat } from '@util/Color';
 
 /* Color limiter */
 const cL = (color: number) => Math.max(Math.min(color, 255), 0);

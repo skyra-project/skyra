@@ -1,9 +1,9 @@
-import { APIUserData } from '../lib/types/DiscordAPI';
+import { APIUserData } from '@lib/types/DiscordAPI';
 import { Event, EventStore } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { Events } from '../lib/types/Enums';
-import { getDisplayAvatar } from '../lib/util/util';
-import { MessageLogsEnum } from '../lib/util/constants';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Events } from '@lib/types/Enums';
+import { getDisplayAvatar } from '@util/util';
+import { MessageLogsEnum } from '@util/constants';
 import { MessageEmbed } from 'discord.js';
 
 export default class extends Event {

@@ -1,8 +1,8 @@
 import { CommandStore, KlasaMessage, Command } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Role, GuildMember } from 'discord.js';
-import { GuildSettings, PermissionsNode } from '../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../lib/types/Enums';
+import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
+import { PermissionLevels } from '@lib/types/Enums';
 
 type Nodes = readonly PermissionsNode[];
 

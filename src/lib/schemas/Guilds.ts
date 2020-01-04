@@ -1,5 +1,5 @@
 import { Client } from 'klasa';
-import { Time } from '../util/constants';
+import { Time } from '@util/constants';
 
 export default Client.defaultGuildSchema
 	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })

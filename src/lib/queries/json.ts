@@ -1,14 +1,14 @@
 import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning } from './common';
-import { JsonProvider } from '../types/util';
-import { Databases } from '../types/constants/Constants';
+import { JsonProvider } from '@lib/types/util';
+import { Databases } from '@lib/types/constants/Constants';
 import { Client } from 'discord.js';
-import { RawUserSettings } from '../types/settings/raw/RawUserSettings';
-import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
-import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
-import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
+import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
+import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
 
 export class JsonCommonQuery implements CommonQuery {
 

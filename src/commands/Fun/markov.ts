@@ -1,11 +1,11 @@
 import Collection from '@discordjs/collection';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
-import { DEV } from '../../../config';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { BrandingColors } from '../../lib/util/constants';
-import { Markov, WordBank } from '../../lib/util/External/markov';
-import { cutText, getColor, iteratorAt } from '../../lib/util/util';
+import { DEV } from '@root/config';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { BrandingColors } from '@util/constants';
+import { Markov, WordBank } from '@util/External/markov';
+import { cutText, getColor, iteratorAt } from '@util/util';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);

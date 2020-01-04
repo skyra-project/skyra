@@ -1,9 +1,9 @@
 import { Settings, EventStore, KeyedObject, SettingsUpdateContext } from 'klasa';
-import { SkyraGuild } from '../lib/extensions/SkyraGuild';
-import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '../lib/types/influxSchema/Audit';
+import { SkyraGuild } from '@lib/extensions/SkyraGuild';
+import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '@lib/types/influxSchema/Audit';
 import { User, Client } from 'discord.js';
-import AuditEvent from '../lib/structures/AuditEvent';
-import { Events } from '../lib/types/Enums';
+import AuditEvent from '@lib/structures/AuditEvent';
+import { Events } from '@lib/types/Enums';
 import { IPoint } from 'influx';
 
 export default class extends AuditEvent {

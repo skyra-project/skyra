@@ -25,8 +25,8 @@
 
 import { writeHeapSnapshot } from 'v8';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { PermissionLevels } from '../../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 
 export default class extends SkyraCommand {
 

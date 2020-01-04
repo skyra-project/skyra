@@ -2,12 +2,12 @@ import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { UserSettings } from '../types/settings/UserSettings';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { mergeDefault } from '@klasa/utils';
-import { ModerationActionsSendOptions } from '../util/Security/ModerationActions';
-import { PermissionLevels } from '../types/Enums';
-import { floatPromise } from '../util/util';
+import { ModerationActionsSendOptions } from '@util/Security/ModerationActions';
+import { PermissionLevels } from '@lib/types/Enums';
+import { floatPromise } from '@util/util';
 
 interface ModerationCommandOptions extends SkyraCommandOptions {
 	requiredMember?: boolean;

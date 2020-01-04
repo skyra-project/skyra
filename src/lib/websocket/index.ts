@@ -1,12 +1,12 @@
 import WebSocket, { Server } from 'ws';
 import http from 'http';
-import { SkyraClient } from '../SkyraClient';
+import { SkyraClient } from '@lib/SkyraClient';
 import Collection from '@discordjs/collection';
-import { enumerable } from '../util/util';
+import { enumerable } from '@util/util';
 
 import WebsocketUser from './WebsocketUser';
 import { CloseCodes } from './types';
-import { WSS_PORT } from '../../../config';
+import { WSS_PORT } from '@root/config';
 
 // TODO (Magnaboy): Should we timeout connections? disconnect after X period?
 

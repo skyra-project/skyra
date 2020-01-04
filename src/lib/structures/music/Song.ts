@@ -1,5 +1,5 @@
 import { Track } from 'lavalink';
-import { enumerable, showSeconds, cleanMentions } from '../../util/util';
+import { enumerable, showSeconds, cleanMentions } from '@util/util';
 import { MusicHandler } from './MusicHandler';
 import { Util } from 'discord.js';
 

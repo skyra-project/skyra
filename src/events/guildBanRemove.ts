@@ -1,7 +1,7 @@
 import { Guild, User } from 'discord.js';
 import { Event } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { Moderation } from '../lib/util/constants';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Moderation } from '@util/constants';
 
 export default class extends Event {
 

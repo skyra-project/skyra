@@ -1,8 +1,8 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Role } from 'discord.js';
-import { PermissionLevels } from '../../lib/types/Enums';
+import { PermissionLevels } from '@lib/types/Enums';
 
 export default class extends SkyraCommand {
 

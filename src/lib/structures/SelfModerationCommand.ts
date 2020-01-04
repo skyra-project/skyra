@@ -1,8 +1,8 @@
 import { Command, CommandStore, CommandOptions, util, SchemaEntry, KlasaMessage, Duration } from 'klasa';
-import { PermissionLevels } from '../types/Enums';
+import { PermissionLevels } from '@lib/types/Enums';
 import { SelfModeratorHardActionFlags, SelfModeratorBitField } from './SelfModeratorBitField';
-import { GuildSecurity } from '../util/Security/GuildSecurity';
-import { Adder } from '../util/Adder';
+import { GuildSecurity } from '@util/Security/GuildSecurity';
+import { Adder } from '@util/Adder';
 
 export enum AKeys {
 	Enable,

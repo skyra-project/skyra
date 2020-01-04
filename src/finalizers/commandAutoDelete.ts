@@ -1,5 +1,5 @@
 import { Finalizer, KlasaMessage } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 export default class extends Finalizer {
 

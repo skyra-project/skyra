@@ -1,11 +1,11 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { TOKENS } from '../../../../config';
-import { Tmdb } from '../../../lib/types/definitions/Tmdb';
-import { cutText, fetch, getColor, FetchResultTypes } from '../../../lib/util/util';
-import { BrandingColors } from '../../../lib/util/constants';
-import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { TOKENS } from '@root/config';
+import { Tmdb } from '@lib/types/definitions/Tmdb';
+import { cutText, fetch, getColor, FetchResultTypes } from '@util/util';
+import { BrandingColors } from '@util/constants';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 
 export default class extends SkyraCommand {
 

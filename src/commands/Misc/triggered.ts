@@ -3,10 +3,10 @@ import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchAvatar, streamToBuffer } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { fetchAvatar, streamToBuffer } from '@util/util';
 import GIFEncoder = require('gifencoder');
-import { assetsFolder } from '../../lib/util/constants';
+import { assetsFolder } from '@util/constants';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],

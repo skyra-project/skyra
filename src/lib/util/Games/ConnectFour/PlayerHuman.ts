@@ -2,12 +2,12 @@ import { Game } from './Game';
 import { Player, PlayerColor } from './Player';
 import { KlasaUser } from 'klasa';
 import { Cell } from './Board';
-import { LLRCDataEmoji } from '../../LongLivingReactionCollector';
-import { ConnectFourConstants, APIErrors } from '../../constants';
+import { LLRCDataEmoji } from '@util/LongLivingReactionCollector';
+import { ConnectFourConstants, APIErrors } from '@util/constants';
 import { DiscordAPIError } from 'discord.js';
-import { Events } from '../../../types/Enums';
-import { resolveEmoji } from '../../util';
-import { api } from '../../Models/Api';
+import { Events } from '@lib/types/Enums';
+import { resolveEmoji } from '@util/util';
+import { api } from '@util/Models/Api';
 
 export class PlayerHuman extends Player {
 

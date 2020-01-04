@@ -1,7 +1,7 @@
 import { Event, KlasaGuild, EventStore } from 'klasa';
 import { GuildMember } from 'discord.js';
-import { WSGuildCreate } from '../lib/types/DiscordAPI';
-import { Events } from '../lib/types/Enums';
+import { WSGuildCreate } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
 
 export default class extends Event {
 

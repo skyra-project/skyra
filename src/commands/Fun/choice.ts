@@ -1,5 +1,5 @@
 import { CommandStore, KlasaMessage, Language } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
 
 export default class extends SkyraCommand {
 

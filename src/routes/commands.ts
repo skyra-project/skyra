@@ -1,8 +1,8 @@
 import { isFunction } from '@klasa/utils';
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import ApiRequest from '../lib/structures/api/ApiRequest';
-import ApiResponse from '../lib/structures/api/ApiResponse';
-import { ratelimit } from '../lib/util/util';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ratelimit } from '@util/util';
 
 export default class extends Route {
 

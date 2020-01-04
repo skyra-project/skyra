@@ -1,9 +1,9 @@
-import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
-import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
+import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
 
 export interface CommonQuery {
 	deleteUserEntries(userID: string): Promise<unknown>;

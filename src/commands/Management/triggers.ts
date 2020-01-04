@@ -1,10 +1,10 @@
 import { CommandStore, KlasaMessage, util } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { resolveEmoji, displayEmoji, getColor } from '../../lib/util/util';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { resolveEmoji, displayEmoji, getColor } from '@util/util';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { MessageEmbed } from 'discord.js';
-import { PermissionLevels } from '../../lib/types/Enums';
+import { PermissionLevels } from '@lib/types/Enums';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 

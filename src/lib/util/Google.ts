@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { TOKENS } from '../../../config';
-import { Events } from '../types/Enums';
+import { TOKENS } from '@root/config';
+import { Events } from '@lib/types/Enums';
 import { fetch, FetchResultTypes } from './util';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';

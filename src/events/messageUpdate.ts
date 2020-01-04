@@ -1,9 +1,9 @@
 import { diffWordsWithSpace } from 'diff';
 import { MessageEmbed, TextChannel, Util } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@util/constants';
 
 export default class extends Event {
 

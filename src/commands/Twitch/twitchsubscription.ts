@@ -1,15 +1,15 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { PermissionLevels } from '../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 import { TextChannel, MessageEmbed } from 'discord.js';
-import { NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, GuildSettings, NotificationsStreamTwitch } from '../../lib/types/settings/GuildSettings';
-import { TwitchKrakenChannelSearchResult } from '../../lib/types/definitions/Twitch';
-import { TwitchHooksAction } from '../../lib/util/Notifications/Twitch';
-import { Databases } from '../../lib/types/constants/Constants';
+import { NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, GuildSettings, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
+import { TwitchKrakenChannelSearchResult } from '@lib/types/definitions/Twitch';
+import { TwitchHooksAction } from '@util/Notifications/Twitch';
+import { Databases } from '@lib/types/constants/Constants';
 import { chunk } from '@klasa/utils';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { getColor } from '../../lib/util/util';
-import { BrandingColors } from '../../lib/util/constants';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { getColor } from '@util/util';
+import { BrandingColors } from '@util/constants';
 
 const enum Type {
 	Add = 'add',

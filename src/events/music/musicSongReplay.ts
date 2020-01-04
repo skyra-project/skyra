@@ -1,7 +1,7 @@
 import { Event } from 'klasa';
-import { OutgoingWebsocketAction } from '../../lib/websocket/types';
-import { MusicHandler } from '../../lib/structures/music/MusicHandler';
-import { Song } from '../../lib/structures/music/Song';
+import { OutgoingWebsocketAction } from '@lib/websocket/types';
+import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { Song } from '@lib/structures/music/Song';
 
 export default class extends Event {
 

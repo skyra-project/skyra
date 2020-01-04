@@ -1,8 +1,8 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import ApiRequest from '../../lib/structures/api/ApiRequest';
-import ApiResponse from '../../lib/structures/api/ApiResponse';
-import { authenticated, ratelimit } from '../../lib/util/util';
-import { flattenUser, flattenGuild, FlattenedGuild } from '../../lib/util/Models/ApiTransform';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { authenticated, ratelimit } from '@util/util';
+import { flattenUser, flattenGuild, FlattenedGuild } from '@util/Models/ApiTransform';
 
 export default class extends Route {
 

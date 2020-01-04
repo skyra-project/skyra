@@ -1,6 +1,6 @@
 import { Permissions, Guild } from 'discord.js';
-import { ModerationTask, ModerationData } from '../lib/structures/ModerationTask';
-import { CLIENT_ID } from '../../config';
+import { ModerationTask, ModerationData } from '@lib/structures/ModerationTask';
+import { CLIENT_ID } from '@root/config';
 
 export default class extends ModerationTask {
 

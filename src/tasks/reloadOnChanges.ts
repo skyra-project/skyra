@@ -2,10 +2,10 @@
 import { watch } from 'chokidar';
 import { KlasaMessage, Piece, Stopwatch, Task } from 'klasa';
 import { basename, extname, join, sep } from 'path';
-import { WATCH_FILES } from '../../config';
-import { SkyraCommand } from '../lib/structures/SkyraCommand';
-import { Events } from '../lib/types/Enums';
-import { floatPromise } from '../lib/util/util';
+import { WATCH_FILES } from '@root/config';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Events } from '@lib/types/Enums';
+import { floatPromise } from '@util/util';
 
 const nodeModules = `${sep}node_modules${sep}`;
 

@@ -1,7 +1,7 @@
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { PermissionLevels } from '../../lib/types/Enums';
+import { ModerationCommand } from '@lib/structures/ModerationCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 
 export default class extends ModerationCommand {
 

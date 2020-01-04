@@ -1,8 +1,8 @@
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage, util } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { inlineCodeblock } from '../lib/util/util';
-import { rootFolder } from '../lib/util/constants';
+import { Events } from '@lib/types/Enums';
+import { inlineCodeblock } from '@util/util';
+import { rootFolder } from '@util/constants';
 
 const BLACKLISTED_CODES = [
 	// Unknown Channel

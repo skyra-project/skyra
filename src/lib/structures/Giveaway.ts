@@ -1,13 +1,13 @@
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
-import { CLIENT_ID } from '../../../config';
-import { Events } from '../types/Enums';
-import { Time, APIErrors } from '../util/constants';
-import { fetchReactionUsers, resolveEmoji } from '../util/util';
+import { CLIENT_ID } from '@root/config';
+import { Events } from '@lib/types/Enums';
+import { Time, APIErrors } from '@util/constants';
+import { fetchReactionUsers, resolveEmoji } from '@util/util';
 import { GiveawayManager } from './GiveawayManager';
-import { api } from '../util/Models/Api';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
+import { api } from '@util/Models/Api';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
 
 enum States {
 	Running,

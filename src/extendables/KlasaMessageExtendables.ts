@@ -1,7 +1,7 @@
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
 import { Extendable, ExtendableStore, util } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { APIErrors } from '../lib/util/constants';
+import { Events } from '@lib/types/Enums';
+import { APIErrors } from '@util/constants';
 
 export default class extends Extendable {
 

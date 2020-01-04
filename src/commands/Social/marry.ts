@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { TextChannel, DMChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';

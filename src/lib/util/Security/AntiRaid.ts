@@ -1,6 +1,6 @@
 import { Collection, Guild, GuildMember } from 'discord.js';
-import { GuildSettings } from '../../types/settings/GuildSettings';
-import { noop } from '../util';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { noop } from '@util/util';
 
 /**
  * The AntiRaid class that manages the raiding protection for guilds

@@ -1,7 +1,7 @@
 import { Event, Colors } from 'klasa';
-import { LavalinkExceptionEvent } from '../../lib/util/LavalinkUtils';
-import { MusicHandler } from '../../lib/structures/music/MusicHandler';
-import { Events } from '../../lib/types/Enums';
+import { LavalinkExceptionEvent } from '@util/LavalinkUtils';
+import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { Events } from '@lib/types/Enums';
 
 export default class extends Event {
 

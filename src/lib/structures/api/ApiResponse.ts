@@ -1,5 +1,5 @@
 import { ServerResponse, STATUS_CODES } from 'http';
-import { Mime } from '../../util/constants';
+import { Mime } from '@util/constants';
 
 export default class ApiResponse extends ServerResponse {
 

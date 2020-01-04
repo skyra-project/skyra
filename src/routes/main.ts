@@ -1,7 +1,7 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import { authenticated } from '../lib/util/util';
-import ApiRequest from '../lib/structures/api/ApiRequest';
-import ApiResponse from '../lib/structures/api/ApiResponse';
+import { authenticated } from '@util/util';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
 
 export default class extends Route {
 

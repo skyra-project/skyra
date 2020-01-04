@@ -1,6 +1,6 @@
 import { GuildMember, Permissions } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 export default class extends Extendable {
 

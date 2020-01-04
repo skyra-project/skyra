@@ -1,10 +1,10 @@
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { announcementCheck, getColor } from '../../lib/util/util';
-import { APIErrors } from '../../lib/util/constants';
-import { Events, PermissionLevels } from '../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { announcementCheck, getColor } from '@util/util';
+import { APIErrors } from '@util/constants';
+import { Events, PermissionLevels } from '@lib/types/Enums';
 
 export default class extends SkyraCommand {
 

@@ -1,8 +1,8 @@
 import { EventStore, KlasaMessage } from 'klasa';
-import { AuditMeasurements, AuditAnnouncementAction } from '../lib/types/influxSchema/Audit';
+import { AuditMeasurements, AuditAnnouncementAction } from '@lib/types/influxSchema/Audit';
 import { Role, TextChannel } from 'discord.js';
-import AuditEvent from '../lib/structures/AuditEvent';
-import { Events } from '../lib/types/Enums';
+import AuditEvent from '@lib/structures/AuditEvent';
+import { Events } from '@lib/types/Enums';
 
 export default class extends AuditEvent {
 

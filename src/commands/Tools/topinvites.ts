@@ -1,9 +1,9 @@
 import { Invite, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { BrandingColors, Emojis } from '../../lib/util/constants';
-import { getColor } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { BrandingColors, Emojis } from '@util/constants';
+import { getColor } from '@util/util';
 
 export default class extends SkyraCommand {
 

@@ -1,4 +1,4 @@
-import { ConnectFourConstants } from '../../constants';
+import { ConnectFourConstants } from '@util/constants';
 
 export enum Cell {
 	Empty,

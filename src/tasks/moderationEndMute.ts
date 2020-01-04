@@ -1,4 +1,4 @@
-import { ModerationTask, ModerationData } from '../lib/structures/ModerationTask';
+import { ModerationTask, ModerationData } from '@lib/structures/ModerationTask';
 import { Guild } from 'discord.js';
 
 export default class extends ModerationTask {

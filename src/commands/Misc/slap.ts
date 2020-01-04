@@ -2,10 +2,10 @@ import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { CLIENT_ID } from '../../../config';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../lib/util/constants';
+import { CLIENT_ID } from '@root/config';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { fetchAvatar } from '@util/util';
+import { assetsFolder } from '@util/constants';
 
 export default class extends SkyraCommand {
 

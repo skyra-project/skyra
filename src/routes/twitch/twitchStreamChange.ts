@@ -1,8 +1,8 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import { Mime } from '../../lib/util/constants';
-import ApiRequest from '../../lib/structures/api/ApiRequest';
-import ApiResponse from '../../lib/structures/api/ApiResponse';
-import { Events } from '../../lib/types/Enums';
+import { Mime } from '@util/constants';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { Events } from '@lib/types/Enums';
 import { isObject } from '@klasa/utils';
 
 export default class extends Route {

@@ -26,9 +26,9 @@
  */
 
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { cutText } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { cutText } from '@util/util';
 
 export default class extends SkyraCommand {
 

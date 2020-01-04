@@ -1,6 +1,6 @@
 import { Inhibitor, KlasaMessage, Command } from 'klasa';
 import { Permissions, TextChannel, PermissionString } from 'discord.js';
-import { SkyraCommand } from '../lib/structures/SkyraCommand';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
 
 export default class extends Inhibitor {
 

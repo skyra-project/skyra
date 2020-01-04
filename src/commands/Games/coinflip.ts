@@ -1,8 +1,8 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { MessageEmbed } from 'discord.js';
-import { getColor, cleanMentions } from '../../lib/util/util';
+import { getColor, cleanMentions } from '@util/util';
 
 const enum CoinType { Heads, Tails }
 export default class extends SkyraCommand {

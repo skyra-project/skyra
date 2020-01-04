@@ -1,10 +1,10 @@
 import { MessageEmbed, Permissions, TextChannel, Collection } from 'discord.js';
 import { CommandStore, KlasaMessage, util, Command } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { getColor, noop } from '../../../lib/util/util';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { BrandingColors } from '../../../lib/util/constants';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { getColor, noop } from '@util/util';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { BrandingColors } from '@util/constants';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 

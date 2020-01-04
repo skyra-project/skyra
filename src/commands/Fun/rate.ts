@@ -1,7 +1,7 @@
 import { Util } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { oneToTen } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { oneToTen } from '@util/util';
 
 export default class extends SkyraCommand {
 

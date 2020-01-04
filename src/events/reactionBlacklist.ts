@@ -1,13 +1,13 @@
-import { ModerationEvent, HardPunishment } from '../lib/structures/ModerationEvent';
-import { LLRCData } from '../lib/util/LongLivingReactionCollector';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { ModerationEvent, HardPunishment } from '@lib/structures/ModerationEvent';
+import { LLRCData } from '@util/LongLivingReactionCollector';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { GuildMember, Permissions, MessageEmbed } from 'discord.js';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '../lib/structures/SelfModeratorBitField';
-import { Adder } from '../lib/util/Adder';
-import { floatPromise, getDisplayAvatar, twemoji } from '../lib/util/util';
-import { api } from '../lib/util/Models/Api';
-import { Events } from '../lib/types/Enums';
-import { MessageLogsEnum } from '../lib/util/constants';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '@lib/structures/SelfModeratorBitField';
+import { Adder } from '@util/Adder';
+import { floatPromise, getDisplayAvatar, twemoji } from '@util/util';
+import { api } from '@util/Models/Api';
+import { Events } from '@lib/types/Enums';
+import { MessageLogsEnum } from '@util/constants';
 
 type ArgumentType = [LLRCData, string];
 

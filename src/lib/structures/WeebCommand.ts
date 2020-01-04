@@ -1,10 +1,10 @@
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
-import { TOKENS, VERSION } from '../../../config';
-import { fetch, getColor, FetchResultTypes } from '../util/util';
+import { TOKENS, VERSION } from '@root/config';
+import { fetch, getColor, FetchResultTypes } from '@util/util';
 import { SkyraCommand } from './SkyraCommand';
-import { LanguageKeys } from '../types/Languages';
-import { LanguageKeysComplex, LanguageKeysSimple } from '../types/Augments';
+import { LanguageKeys } from '@lib/types/Languages';
+import { LanguageKeysComplex, LanguageKeysSimple } from '@lib/types/Augments';
 
 export abstract class WeebCommand extends SkyraCommand {
 

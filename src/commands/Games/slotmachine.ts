@@ -1,10 +1,10 @@
 import { MessageAttachment, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
-import { Emojis } from '../../lib/util/constants';
-import { Slotmachine } from '../../lib/util/Games/Slotmachine';
-import { getColor } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { Emojis } from '@util/constants';
+import { Slotmachine } from '@util/Games/Slotmachine';
+import { getColor } from '@util/util';
 
 export default class extends SkyraCommand {
 

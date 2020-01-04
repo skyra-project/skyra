@@ -1,11 +1,11 @@
 import { Event } from 'klasa';
-import { PostStreamBodyData } from '../routes/twitch/twitchStreamChange';
-import { TwitchHelixGameSearchResult } from '../lib/types/definitions/Twitch';
-import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '../lib/util/Notifications/Twitch';
-import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
+import { PostStreamBodyData } from '@routes/twitch/twitchStreamChange';
+import { TwitchHelixGameSearchResult } from '@lib/types/definitions/Twitch';
+import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@util/Notifications/Twitch';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import { TextChannel, MessageEmbed } from 'discord.js';
-import ApiResponse from '../lib/structures/api/ApiResponse';
-import { floatPromise } from '../lib/util/util';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { floatPromise } from '@util/util';
 
 export default class extends Event {
 

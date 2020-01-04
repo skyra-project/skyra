@@ -1,6 +1,6 @@
 import { Extendable, ExtendableStore, Language, LanguageStore } from 'klasa';
-import { LanguageKeysSimple, LanguageKeysComplex } from '../lib/types/Augments';
-import { LanguageKeys } from '../lib/types/Languages';
+import { LanguageKeysSimple, LanguageKeysComplex } from '@lib/types/Augments';
+import { LanguageKeys } from '@lib/types/Languages';
 
 export default class extends Extendable {
 

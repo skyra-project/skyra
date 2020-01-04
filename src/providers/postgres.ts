@@ -3,9 +3,9 @@ import { QueryBuilder } from '@klasa/querybuilder';
 import { SQLProvider, SchemaEntry, SchemaFolder, Type, SettingsUpdateResults } from 'klasa';
 import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
 import { mergeDefault, makeObject, isNumber } from '@klasa/utils';
-import { ENABLE_POSTGRES } from '../../config';
-import { run as databaseInitRun } from '../lib/util/DatabaseInit';
-import { AnyObject } from '../lib/types/util';
+import { ENABLE_POSTGRES } from '@root/config';
+import { run as databaseInitRun } from '@util/DatabaseInit';
+import { AnyObject } from '@lib/types/util';
 
 type PostgresOptions = PoolConfig & Record<PropertyKey, unknown>;
 

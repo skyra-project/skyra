@@ -1,12 +1,12 @@
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
-import { Events } from '../types/Enums';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { Moderation, Time } from '../util/constants';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Moderation, Time } from '@util/constants';
 import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { isNullOrUndefined, getDisplayAvatar } from '../util/util';
-import { CLIENT_ID } from '../../../config';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { isNullOrUndefined, getDisplayAvatar } from '@util/util';
+import { CLIENT_ID } from '@root/config';
 import { isNumber } from '@klasa/utils';
 
 const kTimeout = Symbol('ModerationManagerTimeout');

@@ -1,6 +1,6 @@
 import { Permissions, VoiceChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 const { FLAGS } = Permissions;
 
 export default class extends MusicCommand {

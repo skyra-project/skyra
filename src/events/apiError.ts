@@ -1,6 +1,6 @@
 import { DiscordAPIError, HTTPError } from 'discord.js';
 import { Event } from 'klasa';
-import { Events } from '../lib/types/Enums';
+import { Events } from '@lib/types/Enums';
 
 const NEWLINE = '\n';
 

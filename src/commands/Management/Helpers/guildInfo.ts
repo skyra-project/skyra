@@ -1,7 +1,7 @@
 import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { getColor } from '../../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { getColor } from '@util/util';
 
 const SORT = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 

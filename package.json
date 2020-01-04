@@ -48,7 +48,6 @@
     "@klasa/utils": "^0.0.4",
     "canvas": "^2.6.1",
     "canvas-constructor": "^3.1.0",
-    "chokidar": "^3.3.1",
     "confusables": "^0.3.3",
     "diff": "^4.0.1",
     "discord.js": "github:discordjs/discord.js#3393/head",
@@ -61,8 +60,8 @@
     "klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
     "klasa-decorators": "^0.0.1",
     "lavalink": "^2.8.2",
+    "module-alias": "^2.2.2",
     "node-fetch": "^2.6.0",
-    "paket-queue": "^0.1.0",
     "pg": "^7.17.0",
     "veza": "^1.1.0",
     "ws": "^7.2.1",
@@ -74,14 +73,24 @@
     "@types/backoff": "^2.5.1",
     "@types/diff": "^4.0.2",
     "@types/he": "^1.1.0",
-    "@types/node": "^13.1.2",
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^13.1.4",
     "@types/node-fetch": "^2.5.4",
     "@types/pg": "^7.14.1",
     "@types/ws": "^6.0.4",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
+    "chokidar": "^3.3.1",
     "eslint": "^6.8.0",
     "eslint-config-bamboo": "^3.0.0",
     "typescript": "^3.7.4"
+  },
+  "_moduleAliases": {
+	  "@root": "dist",
+	  "@tasks": "dist/src/tasks",
+	  "@routes": "dist/src/routes",
+	  "@commands": "dist/src/commands",
+	  "@lib": "dist/src/lib",
+	  "@util": "dist/src/lib/util"
   }
 }

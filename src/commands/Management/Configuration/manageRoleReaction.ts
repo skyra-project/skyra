@@ -1,10 +1,10 @@
 import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { resolveEmoji } from '../../../lib/util/util';
-import { api } from '../../../lib/util/Models/Api';
-import { PermissionLevels } from '../../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { resolveEmoji } from '@util/util';
+import { api } from '@util/Models/Api';
+import { PermissionLevels } from '@lib/types/Enums';
 
 export default class extends SkyraCommand {
 

@@ -1,11 +1,11 @@
 import { Board } from './Board';
 import { KlasaMessage } from 'klasa';
 import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
-import { Events } from '../../../types/Enums';
+import { Events } from '@lib/types/Enums';
 import { Player } from './Player';
-import { LongLivingReactionCollector } from '../../LongLivingReactionCollector';
-import { ConnectFourConstants, APIErrors } from '../../constants';
-import { floatPromise } from '../../util';
+import { LongLivingReactionCollector } from '@util/LongLivingReactionCollector';
+import { ConnectFourConstants, APIErrors } from '@util/constants';
+import { floatPromise } from '@util/util';
 
 export class Game {
 

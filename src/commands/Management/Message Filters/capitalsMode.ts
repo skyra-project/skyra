@@ -1,7 +1,7 @@
 import { CommandStore } from 'klasa';
-import { SelfModerationCommand } from '../../../lib/structures/SelfModerationCommand';
-import { GuildSecurity } from '../../../lib/util/Security/GuildSecurity';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
+import { SelfModerationCommand } from '@lib/structures/SelfModerationCommand';
+import { GuildSecurity } from '@util/Security/GuildSecurity';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 export default class extends SelfModerationCommand {
 

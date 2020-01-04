@@ -1,5 +1,5 @@
 import { Argument, Possible, KlasaMessage, Command } from 'klasa';
-import { FuzzySearch } from '../lib/util/FuzzySearch';
+import { FuzzySearch } from '@util/FuzzySearch';
 
 export default class extends Argument {
 

@@ -1,10 +1,10 @@
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import ApiRequest from '../../../lib/structures/api/ApiRequest';
-import ApiResponse from '../../../lib/structures/api/ApiResponse';
-import { authenticated, ratelimit } from '../../../lib/util/util';
-import { Events } from '../../../lib/types/Enums';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { authenticated, ratelimit } from '@util/util';
+import { Events } from '@lib/types/Enums';
 import { inspect } from 'util';
-import { RawUserSettings } from '../../../lib/types/settings/raw/RawUserSettings';
+import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
 import { objectToTuples } from '@klasa/utils';
 
 type Keys = keyof RawUserSettings;

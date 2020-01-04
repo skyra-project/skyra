@@ -1,5 +1,5 @@
 import { Inhibitor, KlasaMessage, Command } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 export default class extends Inhibitor {
 

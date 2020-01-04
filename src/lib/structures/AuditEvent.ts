@@ -1,8 +1,8 @@
 import { Event } from 'klasa';
-import { ENABLE_INFLUX } from '../../../config';
+import { ENABLE_INFLUX } from '@root/config';
 import { mergeDefault } from '@klasa/utils';
 import { IWriteOptions, IPoint } from 'influx';
-import { Databases } from '../types/influxSchema/database';
+import { Databases } from '@lib/types/influxSchema/database';
 
 export type WriteOptions = IWriteOptions & Record<PropertyKey, unknown>;
 

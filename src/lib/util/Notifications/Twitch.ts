@@ -1,9 +1,9 @@
+import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUsersSearchResult, TwitchKrakenChannelSearchResults } from '@lib/types/definitions/Twitch';
+import { TOKENS, TWITCH_CALLBACK } from '@root/config';
 import { createHmac } from 'crypto';
-import { TOKENS, TWITCH_CALLBACK } from '../../../../config';
-import { fetch, enumerable, FetchResultTypes } from '../util';
-import { Mime, Time } from '../constants';
-import { TwitchKrakenChannelSearchResults, TwitchHelixResponse, TwitchHelixGameSearchResult, TwitchHelixBearerToken, TwitchHelixUsersSearchResult } from '../../types/definitions/Twitch';
 import { RateLimitManager } from 'klasa';
+import { Mime, Time } from '@util/constants';
+import { enumerable, fetch, FetchResultTypes } from '@util/util';
 
 export const enum ApiVersion {
 	Kraken,

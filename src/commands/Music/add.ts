@@ -1,6 +1,6 @@
 import { CommandStore, KlasaMessage } from 'klasa';
 import { Track } from 'lavalink';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 

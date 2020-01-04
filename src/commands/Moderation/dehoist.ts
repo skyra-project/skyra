@@ -1,9 +1,9 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { PermissionLevels } from '../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 import { MessageEmbed } from 'discord.js';
-import { getColor } from '../../lib/util/util';
-import { api } from '../../lib/util/Models/Api';
+import { getColor } from '@util/util';
+import { api } from '@util/Models/Api';
 import { codeBlock } from '@klasa/utils';
 export default class extends SkyraCommand {
 

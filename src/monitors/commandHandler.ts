@@ -1,6 +1,6 @@
 import { Monitor, Stopwatch, MonitorStore, KlasaMessage } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { floatPromise } from '../lib/util/util';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { floatPromise } from '@util/util';
 
 export default class extends Monitor {
 

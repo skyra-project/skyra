@@ -1,12 +1,12 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { CLIENT_ID } from '../../../config';
-import { Colors, GiveawayEmoji, Giveaway } from '../../lib/structures/Giveaway';
-import { fetchReactionUsers } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { CLIENT_ID } from '@root/config';
+import { Colors, GiveawayEmoji, Giveaway } from '@lib/structures/Giveaway';
+import { fetchReactionUsers } from '@util/util';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { FetchError } from 'node-fetch';
-import { Events } from '../../lib/types/Enums';
-import { APIErrors } from '../../lib/util/constants';
+import { Events } from '@lib/types/Enums';
+import { APIErrors } from '@util/constants';
 
 export default class extends SkyraCommand {
 

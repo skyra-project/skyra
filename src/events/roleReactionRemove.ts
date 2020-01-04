@@ -1,9 +1,9 @@
 import { Event } from 'klasa';
 import { TextChannel } from 'discord.js';
-import { WSMessageReactionRemove } from '../lib/types/DiscordAPI';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { Events } from '../lib/types/Enums';
-import { resolveEmoji } from '../lib/util/util';
+import { WSMessageReactionRemove } from '@lib/types/DiscordAPI';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Events } from '@lib/types/Enums';
+import { resolveEmoji } from '@util/util';
 
 export default class extends Event {
 

@@ -1,13 +1,13 @@
 import { TextChannel, MessageEmbed } from 'discord.js';
-import { WSMessageReactionAdd, APIUserData } from '../lib/types/DiscordAPI';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { LLRCData } from '../lib/util/LongLivingReactionCollector';
-import { resolveEmoji, floatPromise, getDisplayAvatar, twemoji } from '../lib/util/util';
+import { WSMessageReactionAdd, APIUserData } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { LLRCData } from '@util/LongLivingReactionCollector';
+import { resolveEmoji, floatPromise, getDisplayAvatar, twemoji } from '@util/util';
 import { Event, EventStore } from 'klasa';
-import { MessageLogsEnum } from '../lib/util/constants';
+import { MessageLogsEnum } from '@util/constants';
 import Collection from '@discordjs/collection';
-import { api } from '../lib/util/Models/Api';
+import { api } from '@util/Models/Api';
 
 export default class extends Event {
 

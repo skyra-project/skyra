@@ -1,11 +1,11 @@
 import { isFunction } from '@klasa/utils';
 import { CommandStore, KlasaMessage, Language, util } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Events } from '../../lib/types/Enums';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
-import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
-import { cleanMentions } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { HungerGamesUsage } from '@util/Games/HungerGamesUsage';
+import { LLRCData, LongLivingReactionCollector } from '@util/LongLivingReactionCollector';
+import { cleanMentions } from '@util/util';
 
 const EMOJIS = ['🇳', '🇾'];
 

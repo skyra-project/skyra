@@ -1,12 +1,12 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp, util } from 'klasa';
 import { stringify } from 'querystring';
-import { TOKENS } from '../../../../config';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { cutText, fetch, getColor, FetchResultTypes } from '../../../lib/util/util';
+import { TOKENS } from '@root/config';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { cutText, fetch, getColor, FetchResultTypes } from '@util/util';
 import { decode } from 'he';
-import { BrandingColors } from '../../../lib/util/constants';
+import { BrandingColors } from '@util/constants';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 

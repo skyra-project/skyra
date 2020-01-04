@@ -1,13 +1,13 @@
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { Moderation, BrandingColors } from '../../../lib/util/constants';
-import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { getColor } from '../../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Moderation, BrandingColors } from '@util/constants';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { getColor } from '@util/util';
 import { chunk } from '@klasa/utils';
-import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
+import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import Collection from '@discordjs/collection';
-import { PermissionLevels } from '../../../lib/types/Enums';
+import { PermissionLevels } from '@lib/types/Enums';
 
 const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
 

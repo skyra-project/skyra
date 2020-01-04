@@ -1,11 +1,11 @@
 import { Settings, EventStore, KeyedObject, SettingsUpdateContext } from 'klasa';
-import { SkyraGuild } from '../lib/extensions/SkyraGuild';
-import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '../lib/types/influxSchema/Audit';
+import { SkyraGuild } from '../../lib/extensions/SkyraGuild';
+import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '../../lib/types/influxSchema/Audit';
 import { User, Client } from 'discord.js';
-import AuditEvent from '../lib/structures/analytics/AuditEvent';
-import { Events } from '../lib/types/Enums';
+import AuditEvent from '../../lib/structures/analytics/AuditEvent';
+import { Events } from '../../lib/types/Enums';
 import { IPoint } from 'influx';
-import { Tags } from '../lib/types/influxSchema/tags';
+import { Tags } from '../../lib/types/influxSchema/tags';
 
 export default class extends AuditEvent {
 
@@ -40,9 +40,9 @@ export default class extends AuditEvent {
 		// TODO(kyranet): Fill in proper type
 		const tags: [string, string][] = [[AuditTags.By, (context.extraContext as any)?.author ? `USER.${(context.extraContext as any).author}` : `CLIENT.${this.client.user!.id}`]];
 		const toWrite: IPoint[] = [];
-		if (guild) tags.push(['target', AuditSettingsTarget.Guild], ['guild_id', guild.id]);
-		if (user) tags.push(['target', AuditSettingsTarget.User], ['user_id', user.id]);
-		if (client) tags.push(['target', AuditSettingsTarget.Client], ['client_id', client.user!.id]);
+		if (guild) tags.push(['target', AuditSettingsTarget.Guild], [Tags.Guild, guild.id]);
+		if (user) tags.push(['target', AuditSettingsTarget.User], [Tags.User, user.id]);
+		if (client) tags.push(['target', AuditSettingsTarget.Client], [Tags.Client, client.user!.id]);
 		for (const entry of context.changes) {
 			toWrite.push({
 				fields: {
@@ -52,7 +52,7 @@ export default class extends AuditEvent {
 				tags: this.formTags(Object.fromEntries(tags))
 			});
 		}
-		return this.writePoint(AuditMeasurements.SettingsUpdate, toWrite);
+		return this.writeMeasurements(AuditMeasurements.SettingsUpdate, toWrite);
 	}
 
 }

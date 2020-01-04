@@ -29,6 +29,8 @@
 /src/routes/twitch/twitchStreamChange.ts @quantumlytangled
 /src/events/twitchStreamOnline.ts @quantumlytangled
 /src/events/twitchStreamOffline.ts @quantumlytangled
+/src/events/audit/ @quantumlytangled
+/src/events/analytics/ @quantumlytangled
 /src/lib/util/Notifications/ @quantumlytangled
 /src/lib/types/influxSchema/ @quantumlytangled
 /src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled

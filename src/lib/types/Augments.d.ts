@@ -127,6 +127,12 @@ declare module 'klasa-dashboard-hooks' {
 
 }
 
+declare module 'influx' {
+	interface IWriteOptions {
+		[K: string]: unknown;
+	}
+}
+
 interface Fn {
 	(...args: readonly any[]): unknown;
 }

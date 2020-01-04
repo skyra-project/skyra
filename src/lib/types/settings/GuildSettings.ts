@@ -1,6 +1,5 @@
 import { SelfModeratorHardActionFlags } from '../../structures/SelfModeratorBitField';
 import { T } from './Shared';
-import { TextChannel } from 'discord.js';
 
 /* eslint-disable @typescript-eslint/no-namespace */
 
@@ -218,10 +217,11 @@ export namespace GuildSettings {
 	}
 
 	export namespace Suggestions {
-		export const SuggestionsChannel = T<TextChannel | null>('suggestions.channel');
+		export const AscendingID = T<number>('suggestions.id');
+		export const SuggestionsChannel = T<string | null>('suggestions.channel');
 		export namespace VotingEmojis {
-			export const UpvoteEmoji = T<string>('suggestions.emoji.upvote');
-			export const DownvoteEmoji = T<string>('suggestions.emoji.downvote');
+			export const UpvoteEmoji = T<string>('suggestions.emojis.upvote');
+			export const DownvoteEmoji = T<string>('suggestions.emojis.downvote');
 		}
 		export namespace OnAction {
 			export const DM = T<boolean>('suggestions.on-action.dm');

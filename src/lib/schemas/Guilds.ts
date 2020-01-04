@@ -171,6 +171,7 @@ export default Client.defaultGuildSchema
 				.add('streamers', 'TwitchSubscription', { array: true, configurable: false }))))
 	.add('suggestions', folder => folder
 		.add('channel', 'TextChannel')
+		.add('id', 'integer', { 'minimum': 1, 'default': 1, 'configurable': false })
 		.add('emojis', folder => folder
 			.add('upvote', 'Emoji', { 'default': '%E2%8F%AB' })
 			.add('downvote', 'Emoji', { 'default': '%E2%8F%AC' }))

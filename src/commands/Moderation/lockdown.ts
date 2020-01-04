@@ -1,8 +1,8 @@
-import { TextChannel, Permissions, GuildChannel } from 'discord.js';
+import { Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { PreciseTimeout } from '../../lib/util/PreciseTimeout';
 import { PermissionLevels } from '../../lib/types/Enums';
+import { PreciseTimeout } from '../../lib/util/PreciseTimeout';
 
 export default class extends SkyraCommand {
 
@@ -14,15 +14,11 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_LOCKDOWN_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_LOCKDOWN_EXTENDED'),
 			runIn: ['text'],
-			usage: '<lock|unlock|auto:default> [target:textchannel] [duration:timespan]',
+			usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
 			usageDelim: ' ',
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 		});
-
-		this.createCustomResolver('textchannel', (arg, possible, message) => this.client.arguments
-			.get('channel')!
-			.run(arg, possible, message, (entry: GuildChannel) => entry.type === 'text'));
 	}
 
 	public auto(message: KlasaMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {

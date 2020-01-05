@@ -6,6 +6,7 @@ import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
+import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
 
 const enum Icons {
 	Cherry,
@@ -71,7 +72,7 @@ const kPositions = [0, 0, 0];
 export class Slotmachine {
 
 	/** The amount bet */
-	public amount: number;
+	public bet: number;
 
 	/** The winnings */
 	public winnings = 0;
@@ -86,7 +87,7 @@ export class Slotmachine {
 
 	public constructor(message: Message, amount: number) {
 		this.message = message;
-		this.amount = amount;
+		this.bet = amount;
 	}
 
 	public get boost() {
@@ -102,12 +103,19 @@ export class Slotmachine {
 		this.calculate(rolls);
 
 		const money = settings.get(UserSettings.Money);
+		const won = this.winnings === 0;
+		const winnings = (this.winnings * this.boost) - this.bet;
 		const darkTheme = settings.get(UserSettings.DarkTheme);
-		const amount = this.winnings === 0 ? money - this.amount : money - this.amount + (this.winnings * this.boost);
+		const amount = won
+			? money - this.bet
+			: money + winnings;
+		const update = won
+			? this.player.decreaseBalance(this.bet, EconomyTransactionReason.Gamble)
+			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble);
+
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
-		await settings.update(UserSettings.Money, amount, {
-			extraContext: { author: this.message.author.id }
-		});
+
+		await update;
 		return [await this.render(rolls, darkTheme), amount] as [Buffer, number];
 	}
 
@@ -134,7 +142,7 @@ export class Slotmachine {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.addText(this.message.language.tget('COMMAND_SLOTMACHINE_CANVAS_TEXT', playerHasWon), 280, 60)
-			.addText(playerHasWon ? (this.winnings - this.amount).toString() : (this.winnings + this.amount).toString(), 230, 100)
+			.addText(playerHasWon ? (this.winnings - this.bet).toString() : (this.winnings + this.bet).toString(), 230, 100)
 			.addImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();
 
@@ -151,7 +159,7 @@ export class Slotmachine {
 	public calculate(roll: readonly Icons[]) {
 		for (const [COMB1, COMB2, COMB3] of kCombinations) {
 			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3]) {
-				this.winnings += this.amount * kValues.get(roll[COMB1])!;
+				this.winnings += this.bet * kValues.get(roll[COMB1])!;
 			}
 		}
 	}

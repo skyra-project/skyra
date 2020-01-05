@@ -1,6 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { Events } from '@lib/types/Enums';
+import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
 
 export default class extends SkyraCommand {
 
@@ -37,8 +39,11 @@ export default class extends SkyraCommand {
 
 	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number) {
 		await user.settings.sync();
-		await message.author.settings.decrease(UserSettings.Money, money);
-		await user.settings.increase(UserSettings.Money, money);
+
+		await message.author.decreaseBalance(money, EconomyTransactionReason.Payment);
+		await user.increaseBalance(money, EconomyTransactionReason.Payment);
+
+		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
 		return message.alert(message.language.tget('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}
 

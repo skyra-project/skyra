@@ -1,33 +1,35 @@
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
-import AuditEvent from '@lib/structures/AuditEvent';
+import AuditEvent from '@lib/structures/analytics/AuditEvent';
 import { Events } from '@lib/types/Enums';
+import { Tags } from '@lib/types/influxSchema/tags';
 import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '@lib/types/influxSchema/Audit';
 import { Client, User } from 'discord.js';
-import { IPoint } from 'influx';
-import { EventStore, KeyedObject, Settings, SettingsUpdateContext } from 'klasa';
+import { EventStore, Settings } from 'klasa';
 
 export default class extends AuditEvent {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			event: Events.SettingsUpdate
+			event: Events.SettingsUpdate,
+			// TODO(Quantum): Enable on full release
+			enabled: false
 		});
 	}
 
-	public async run(settings: Settings, _: KeyedObject, context: SettingsUpdateContext) {
+	public async run(settings: Settings) {
 		switch (settings.gateway.name) {
 			case 'clientStorage': {
-				await this.updateAuditLog(context, undefined, undefined, this.client);
+				await this.updateAuditLog(undefined, undefined, this.client);
 				break;
 			}
 			case 'users': {
 				const user = settings.target as User;
-				await this.updateAuditLog(context, undefined, user);
+				await this.updateAuditLog(undefined, user);
 				break;
 			}
 			case 'guilds': {
 				const guild = settings.target as SkyraGuild;
-				await this.updateAuditLog(context, guild);
+				await this.updateAuditLog(guild);
 				break;
 			}
 			default:
@@ -35,23 +37,16 @@ export default class extends AuditEvent {
 		}
 	}
 
-	private updateAuditLog(context: SettingsUpdateContext, guild?: SkyraGuild, user?: User, client?: Client) {
-		// TODO(kyranet): Fill in proper type
-		const tags: [string, string][] = [[AuditTags.By, (context.extraContext as any)?.author ? `USER.${(context.extraContext as any).author}` : `CLIENT.${this.client.user!.id}`]];
-		const toWrite: IPoint[] = [];
-		if (guild) tags.push(['target', AuditSettingsTarget.Guild], ['guild_id', guild.id]);
-		if (user) tags.push(['target', AuditSettingsTarget.User], ['user_id', user.id]);
-		if (client) tags.push(['target', AuditSettingsTarget.Client], ['client_id', client.user!.id]);
-		for (const entry of context.changes) {
-			toWrite.push({
-				fields: {
-					key: entry.entry.path,
-					value: JSON.stringify(entry.next)
-				},
-				tags: this.formTags(Object.fromEntries(tags))
+	private updateAuditLog(guild?: SkyraGuild, user?: User, client?: Client) {
+		let tags = {};
+		if (guild) tags = { [AuditTags.Target]: AuditSettingsTarget.Guild, [Tags.Guild]: guild.id };
+		if (user) tags = { [AuditTags.Target]: AuditSettingsTarget.User, [Tags.User]: user.id };
+		if (client) tags = { [AuditTags.Target]: AuditSettingsTarget.Client, [Tags.Client]: client.user?.id };
+		// TODO(Quantum): Add data once SG provides it
+		return this.writeMeasurement(AuditMeasurements.Announcement,
+			{
+				tags: this.formTags(tags)
 			});
-		}
-		return this.writePoint(AuditMeasurements.SettingsUpdate, toWrite);
 	}
 
 }

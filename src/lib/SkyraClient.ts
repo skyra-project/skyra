@@ -54,7 +54,7 @@ import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
 import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
-import { WebsocketHandler } from './websocket';
+import { WebsocketHandler } from './websocket/WebsocketHandler';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');

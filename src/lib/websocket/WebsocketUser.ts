@@ -22,7 +22,6 @@ import {
 
 export default class DashboardWebsocketUser {
 
-	public IP: string;
 	public authenticated = false;
 	public auth?: UserAuthObject;
 	public wss: Server;
@@ -33,10 +32,9 @@ export default class DashboardWebsocketUser {
 	@enumerable(false)
 	private _connection: WebSocket;
 
-	public constructor(client: SkyraClient, wss: Server, connection: WebSocket, IP: string) {
+	public constructor(client: SkyraClient, wss: Server, connection: WebSocket) {
 		this._connection = connection;
 		this.wss = wss;
-		this.IP = IP;
 		this.client = client;
 		this.user = null;
 

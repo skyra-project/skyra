@@ -26,7 +26,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [emoji]: [string]) {
 		if (message.guild!.settings.get(GuildSettings.Starboard.Emoji) === emoji) throw message.language.tget('CONFIGURATION_EQUALS');
-		await message.guild!.settings.update(GuildSettings.Starboard.Emoji, emoji);
+		await message.guild!.settings.update(GuildSettings.Starboard.Emoji, emoji, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_SETSTARBOARDEMOJI_SET', [emoji.includes(':') ? `<${emoji}>` : emoji]);
 	}
 

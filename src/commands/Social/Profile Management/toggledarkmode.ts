@@ -16,7 +16,9 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, []: []) {
 		await message.author.settings.sync();
 		const current = message.author.settings.get(UserSettings.DarkTheme);
-		await message.author.settings.update(UserSettings.DarkTheme, !current);
+		await message.author.settings.update(UserSettings.DarkTheme, !current, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_TOGGLEDARKMODE_TOGGLED', [!current]);
 	}
 

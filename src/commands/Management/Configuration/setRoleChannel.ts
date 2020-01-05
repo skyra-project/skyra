@@ -22,7 +22,9 @@ export default class extends SkyraCommand {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (channel.type !== 'text') throw message.language.tget('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 		if (message.guild!.settings.get(GuildSettings.Channels.Roles) === channel.id) throw message.language.tget('CONFIGURATION_EQUALS');
-		await message.guild!.settings.update([[GuildSettings.Channels.Roles, channel], [GuildSettings.Roles.MessageReaction, null]]);
+		await message.guild!.settings.update([[GuildSettings.Channels.Roles, channel], [GuildSettings.Roles.MessageReaction, null]], {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_SETROLECHANNEL_SET', [channel]);
 	}
 

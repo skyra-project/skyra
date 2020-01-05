@@ -49,7 +49,9 @@ export default class extends SkyraCommand {
 	private async claimDaily(message: KlasaMessage, nextTime: number) {
 		const money = this.calculateDailies(message);
 		const total = money + message.author.settings.get(UserSettings.Money);
-		await message.author.settings.update([[UserSettings.Money, total], [UserSettings.TimeDaily, nextTime]]);
+		await message.author.settings.update([[UserSettings.Money, total], [UserSettings.TimeDaily, nextTime]], {
+			extraContext: { author: message.author.id }
+		});
 		return money;
 	}
 

@@ -99,7 +99,9 @@ export class WheelOfFortune {
 
 		const amount = this.winnings === 0 ? money - this.amount : money - this.amount + (this.winnings * this.boost);
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
-		await settings.update(UserSettings.Money, amount);
+		await settings.update(UserSettings.Money, amount, {
+			extraContext: { author: this.message.author.id }
+		});
 
 		return [await this.render(money, spin, amount, darkTheme), amount] as [Buffer, number];
 	}

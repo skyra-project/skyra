@@ -20,7 +20,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [prefix]: [string]) {
 		if (message.guild!.settings.get(GuildSettings.Prefix) === prefix) throw message.language.tget('CONFIGURATION_EQUALS');
-		await message.guild!.settings.update(GuildSettings.Prefix, prefix);
+		await message.guild!.settings.update(GuildSettings.Prefix, prefix, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_SETPREFIX_SET', [prefix]);
 	}
 

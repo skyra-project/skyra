@@ -60,7 +60,11 @@ export default class extends SkyraCommand {
 
 	public async set(message: KlasaMessage, [key, valueToSet]: string[]) {
 		try {
-			const [update] = await message.guild!.settings.update(key, valueToSet, { onlyConfigurable: true, arrayAction: 'add' });
+			const [update] = await message.guild!.settings.update(key, valueToSet, {
+				arrayAction: 'add',
+				onlyConfigurable: true,
+				extraContext: { author: message.author.id }
+			});
 			return message.sendLocale('COMMAND_CONF_UPDATED', [key, displayEntry(update.entry, update.next, message.guild!)]);
 		} catch (error) {
 			throw String(error);
@@ -69,7 +73,11 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [key, valueToRemove]: string[]) {
 		try {
-			const [update] = await message.guild!.settings.update(key, valueToRemove, { onlyConfigurable: true, arrayAction: 'remove' });
+			const [update] = await message.guild!.settings.update(key, valueToRemove, {
+				arrayAction: 'remove',
+				onlyConfigurable: true,
+				extraContext: { author: message.author.id }
+			});
 			return message.sendLocale('COMMAND_CONF_UPDATED', [key, displayEntry(update.entry, update.next, message.guild!)]);
 		} catch (error) {
 			throw String(error);
@@ -78,7 +86,7 @@ export default class extends SkyraCommand {
 
 	public async reset(message: KlasaMessage, [key]: string[]) {
 		try {
-			const [update] = await message.guild!.settings.reset(key);
+			const [update] = await message.guild!.settings.reset(key, { extraContext: message.author.id });
 			return message.sendLocale('COMMAND_CONF_RESET', [key, displayEntry(update.entry, update.next, message.guild!)]);
 		} catch (error) {
 			throw String(error);

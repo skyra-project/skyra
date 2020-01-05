@@ -16,7 +16,9 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		await message.author.settings.sync();
 		const current = message.author.settings.get(UserSettings.ModerationDM);
-		await message.author.settings.update(UserSettings.ModerationDM, !current);
+		await message.author.settings.update(UserSettings.ModerationDM, !current, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_TOGGLEMODERATIONDM_TOGGLED', [!current]);
 	}
 

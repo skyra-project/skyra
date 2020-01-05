@@ -35,7 +35,10 @@ export default class extends SkyraCommand {
 		const entry = all.find(stickyRole => stickyRole.user === user.id);
 		if (!entry) throw message.language.tget('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 
-		await message.guild!.settings.update(GuildSettings.StickyRoles, entry, { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.StickyRoles, entry, {
+			arrayAction: 'remove',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_STICKYROLES_RESET', [user.username]);
 	}
 
@@ -46,7 +49,10 @@ export default class extends SkyraCommand {
 
 		const cleaned = await this._clean(message, entry);
 		if (!cleaned) {
-			await message.guild!.settings.update(GuildSettings.StickyRoles, entry, { arrayAction: 'remove' });
+			await message.guild!.settings.update(GuildSettings.StickyRoles, entry, {
+				arrayAction: 'remove',
+				extraContext: { author: message.author.id }
+			});
 			throw message.language.tget('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 		}
 
@@ -56,7 +62,10 @@ export default class extends SkyraCommand {
 				const indexRole = cleaned.raw.roles.indexOf(role.id);
 				cleaned.raw.roles.splice(indexRole, 1);
 			}
-			await message.guild!.settings.update(GuildSettings.StickyRoles, { user: entry.user, roles: cleaned.raw.roles }, { arrayIndex: index });
+			await message.guild!.settings.update(GuildSettings.StickyRoles, { user: entry.user, roles: cleaned.raw.roles }, {
+				arrayIndex: index,
+				extraContext: { author: message.author.id }
+			});
 		}
 
 		return message.sendLocale(index === -1 ? 'COMMAND_STICKYROLES_NOTEXISTS' : 'COMMAND_STICKYROLES_REMOVE', [user.username]);
@@ -69,16 +78,24 @@ export default class extends SkyraCommand {
 		if (entry) {
 			const cleaned = await this._clean(message, entry);
 			if (!cleaned) {
-				await message.guild!.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] }, { arrayIndex: all.indexOf(entry) });
+				await message.guild!.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] }, {
+					arrayIndex: all.indexOf(entry),
+					extraContext: { author: message.author.id }
+				});
 				return message.sendLocale('COMMAND_STICKROLES_ADD', [user.username]);
 			} else if (cleaned.raw.roles.includes(role.id)) {
 				throw message.language.tget('COMMAND_STICKYROLES_ADD_EXISTS', user.username);
 			} else {
 				cleaned.raw.roles.push(role.id);
 			}
-			await message.guild!.settings.update(GuildSettings.StickyRoles, cleaned.raw, { arrayIndex: all.indexOf(entry) });
+			await message.guild!.settings.update(GuildSettings.StickyRoles, cleaned.raw, {
+				arrayIndex: all.indexOf(entry),
+				extraContext: { author: message.author.id }
+			});
 		} else {
-			await message.guild!.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] });
+			await message.guild!.settings.update(GuildSettings.StickyRoles, { user: user.id, roles: [role.id] }, {
+				extraContext: { author: message.author.id }
+			});
 		}
 
 		return message.sendLocale('COMMAND_STICKYROLES_ADD', [user.username]);
@@ -91,13 +108,19 @@ export default class extends SkyraCommand {
 
 		const cleaned = await this._clean(message, entry);
 		if (!cleaned) {
-			await message.guild!.settings.update(GuildSettings.StickyRoles, entry, { arrayAction: 'remove' });
+			await message.guild!.settings.update(GuildSettings.StickyRoles, entry, {
+				arrayAction: 'remove',
+				extraContext: { author: message.author.id }
+			});
 			throw message.language.tget('COMMAND_STICKYROLES_SHOW_EMPTY');
 		}
 
 		if (cleaned.raw.roles.length !== entry.roles.length) {
 			const index = all.indexOf(entry);
-			await message.guild!.settings.update(GuildSettings.StickyRoles, entry, { arrayIndex: index });
+			await message.guild!.settings.update(GuildSettings.StickyRoles, entry, {
+				arrayIndex: index,
+				extraContext: { author: message.author.id }
+			});
 		}
 
 		return message.sendLocale('COMMAND_STICKYROLES_SHOW_SINGLE', [cleaned.resolved.user, cleaned.resolved.roles]);

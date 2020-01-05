@@ -12,12 +12,9 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-			"@root/*": ["*"],
-			"@tasks/*": ["src/tasks/*"],
-			"@routes/*": ["src/routes/*"],
-			"@commands/*": ["src/commands/*"],
+			"@utils/*": ["src/lib/util/*"],
 			"@lib/*": ["src/lib/*"],
-			"@utils/*": ["src/lib/util/*"]
+			"@root/*": ["*"]
 		}
 	},
 	"include": [

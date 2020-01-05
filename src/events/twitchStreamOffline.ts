@@ -1,6 +1,6 @@
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
-import { PostStreamBodyData } from '@routes/twitch/twitchStreamChange';
+import { PostStreamBodyData } from '@root/src/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';

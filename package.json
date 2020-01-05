@@ -86,11 +86,8 @@
     "typescript": "^3.7.4"
   },
   "_moduleAliases": {
-	  "@root": "dist",
-	  "@tasks": "dist/src/tasks",
-	  "@routes": "dist/src/routes",
-	  "@commands": "dist/src/commands",
+	  "@utils": "dist/src/lib/util",
 	  "@lib": "dist/src/lib",
-	  "@utils": "dist/src/lib/util"
+	  "@root": "dist"
   }
 }

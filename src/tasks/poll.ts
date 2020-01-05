@@ -1,4 +1,4 @@
-import { RawPollSettings } from '@commands/Tools/poll';
+import { RawPollSettings } from '@root/src/commands/Tools/poll';
 import { APIErrors } from '@utils/constants';
 import { DiscordAPIError } from 'discord.js';
 import { constants, Task, util } from 'klasa';

@@ -207,7 +207,7 @@ export class ModerationActions {
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.delete({ reason: this.guild.language.tget('ACTION_KICK_REASON', options.reason) });
+			.delete({ reason: this.guild.language.tget('ACTION_KICK_REASON', moderationLog.reason) });
 		return (await moderationLog.create())!;
 	}
 
@@ -216,9 +216,9 @@ export class ModerationActions {
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
-			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_SOFTBAN_REASON', options.reason) });
+			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_SOFTBAN_REASON', moderationLog.reason) });
 		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
-			.delete({ reason: this.guild.language.tget('ACTION_UNSOFTBAN_REASON', options.reason) });
+			.delete({ reason: this.guild.language.tget('ACTION_UNSOFTBAN_REASON', moderationLog.reason) });
 		return (await moderationLog.create())!;
 	}
 
@@ -227,42 +227,42 @@ export class ModerationActions {
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
-			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_BAN_REASON', options.reason) });
+			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_BAN_REASON', moderationLog.reason) });
 		return (await moderationLog.create())!;
 	}
 
 	public async unBan(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnBan);
-		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
-			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', options.reason) });
 		const moderationLog = this.guild.moderation.create(options);
+		await api(this.guild.client).guilds(this.guild.id).bans(options.user_id)
+			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
 
 	public async voiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceMute);
-		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', options.reason) });
 		const moderationLog = this.guild.moderation.create(options);
+		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
+			.patch({ data: { deaf: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
 
 	public async unVoiceMute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnVoiceMute);
-		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', options.reason) });
 		const moderationLog = this.guild.moderation.create(options);
+		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
+			.patch({ data: { deaf: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
 
 	public async voiceKick(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceKick);
-		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { channel: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', options.reason) });
 		const moderationLog = this.guild.moderation.create(options);
+		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
+			.patch({ data: { channel: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}

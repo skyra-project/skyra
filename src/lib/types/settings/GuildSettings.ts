@@ -184,8 +184,10 @@ export namespace GuildSettings {
 	}
 
 	export namespace Social {
+		export const Enabled = T<boolean>('social.enabled');
 		export const Achieve = T<boolean>('social.achieve');
 		export const AchieveMessage = T<string>('social.achieveMessage');
+		export const Multiplier = T<number>('social.multiplier');
 		export const IgnoreChannels = T<readonly string[]>('social.ignoreChannels');
 	}
 

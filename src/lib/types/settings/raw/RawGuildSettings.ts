@@ -135,8 +135,10 @@ export interface RawGuildSettings {
 	'no-mention-spam.alerts': boolean;
 	'no-mention-spam.mentionsAllowed': number;
 	'no-mention-spam.timePeriod': number;
+	'social.enabled': boolean;
 	'social.achieve': boolean;
 	'social.achieveMessage': string | null;
+	'social.multiplier': number;
 	'social.ignoreChannels': string[];
 	'starboard.channel': string | null;
 	'starboard.emoji': string;
@@ -288,8 +290,10 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"no-mention-spam.alerts"               BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"no-mention-spam.mentionsAllowed"      SMALLINT       DEFAULT 20                 NOT NULL,
 		"no-mention-spam.timePeriod"           INTEGER        DEFAULT 8                  NOT NULL,
+		"social.enabled"                       BOOLEAN        DEFAULT TRUE               NOT NULL,
 		"social.achieve"                       BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"social.achieveMessage"                VARCHAR(2000),
+		"social.multiplier"                    FLOAT          DEFAULT 1                  NOT NULL,
 		"social.ignoreChannels"                VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"starboard.channel"                    VARCHAR(19),
 		"starboard.emoji"                      VARCHAR(75)    DEFAULT '%E2%AD%90'        NOT NULL,
@@ -336,6 +340,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK("selfmod.raidthreshold" >= 2 AND "selfmod.raidthreshold" <= 50),
 		CHECK("no-mention-spam.mentionsAllowed" >= 0),
 		CHECK("no-mention-spam.timePeriod" >= 0),
+		CHECK("social.multiplier" >= 0 AND "social.multiplier" <= 5),
 		CHECK("starboard.minimum" >= 1),
 		CHECK("music.default-volume" >= 0 AND "music.default-volume" <= 200),
 		CHECK("music.maximum-duration" >= 0 AND "music.maximum-duration" <= 43200000),

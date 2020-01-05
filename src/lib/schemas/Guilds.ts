@@ -149,8 +149,10 @@ export default Client.defaultGuildSchema
 		.add('mentionsAllowed', 'Integer', { 'default': 20, 'minimum': 0 })
 		.add('timePeriod', 'Integer', { 'default': 8, 'minimum': 0 }))
 	.add('social', folder => folder
+		.add('enabled', 'Boolean', { 'default': true })
 		.add('achieve', 'Boolean', { 'default': false })
 		.add('achieveMessage', 'String')
+		.add('multiplier', 'Number', { 'default': 1, 'minimum': 0, 'maximum': 5 })
 		.add('ignoreChannels', 'TextChannel', { array: true }))
 	.add('starboard', folder => folder
 		.add('channel', 'TextChannel')

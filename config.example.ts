@@ -7,7 +7,7 @@ import { PoolConfig } from 'pg';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIWebhookData } from '@lib/types/DiscordAPI';
-import { rootFolder } from '@lib/util/constants';
+import { rootFolder } from '@utils/constants';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);

@@ -1,6 +1,6 @@
+import 'module-alias/register';
 import { SkyraClient } from '@lib/SkyraClient';
 import { CLIENT_OPTIONS, TOKENS } from '@root/config';
-import 'module-alias/register';
 import { inspect } from 'util';
 inspect.defaultOptions.depth = 1;
 

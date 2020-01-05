@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 			requiredSettings: [],
 			runIn: ['text'],
 			subcommands: true,
-			usage: '(top|random:default) (duration:timespan)',
+			usage: '(top|random:default) [user:username{2}] (duration:timespan)',
 			usageDelim: ' '
 		});
 
@@ -27,9 +27,11 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async random(message: KlasaMessage): Promise<KlasaMessage | KlasaMessage[]> {
+	public async random(message: KlasaMessage, [user]: [KlasaUser?]): Promise<KlasaMessage | KlasaMessage[]> {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
-		const starboardData = await this.client.queries.fetchStarRandom(message.guild!.id, min);
+		const starboardData = await (user
+			? this.client.queries.fetchStarRandomFromUser(message.guild!.id, user.id, min)
+			: this.client.queries.fetchStarRandom(message.guild!.id, min));
 
 		// If there is no starboard message, return no stars
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
@@ -51,7 +53,7 @@ export default class extends SkyraCommand {
 		const starredMessageChannel = message.guild!.channels.get(starboardData.channel_id) as TextChannel;
 		if (!starredMessageChannel) {
 			await this.client.queries.deleteStar(message.guild!.id, starboardData.message_id);
-			return this.random(message);
+			return this.random(message, [user]);
 		}
 
 		// If the starred message does not longer exist in the starboard channel, assume it was deleted by a
@@ -59,15 +61,17 @@ export default class extends SkyraCommand {
 		const starredMessage = await starboardChannel.messages.fetch(starboardData.star_message_id!).catch(() => null);
 		if (!starredMessage) {
 			await this.client.queries.deleteStar(message.guild!.id, starboardData.message_id);
-			return this.random(message);
+			return this.random(message, [user]);
 		}
 
 		return message.sendMessage(starredMessage.content, starredMessage.embeds[0]);
 	}
 
-	public async top(message: KlasaMessage, [timespan]: [number?]) {
+	public async top(message: KlasaMessage, [user, timespan]: [KlasaUser?, number?]) {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
-		const starboardMessages = await this.client.queries.fetchStars(message.guild!.id, min);
+		const starboardMessages = await (user
+			? this.client.queries.fetchStarsFromUser(message.guild!.id, user.id, min)
+			: this.client.queries.fetchStars(message.guild!.id, min));
 		if (starboardMessages.length === 0) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
 		let totalStars = 0;

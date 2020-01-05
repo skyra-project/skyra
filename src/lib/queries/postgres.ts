@@ -271,31 +271,65 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public async fetchStarRandom(guildID: string, minimum: number) {
+		const { provider } = this;
 		const result = await this.provider.runOne(/* sql */`
 			SELECT *
 			FROM starboard
 			WHERE
-				"guild_id"        = $1        AND
-				"star_message_id" IS NOT NULL AND
-				"enabled"         = TRUE      AND
-				"stars"           >= $2
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"stars"           >= ${provider.cNumber(minimum)}
 			ORDER BY
 				RANDOM()
 			LIMIT 1;
-		`, [guildID, minimum]);
+		`);
+		return result || null;
+	}
+
+	public async fetchStarRandomFromUser(guildID: string, userID: string, minimum: number) {
+		const { provider } = this;
+		const result = await this.provider.runOne(/* sql */`
+			SELECT *
+			FROM starboard
+			WHERE
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"user_id"         = ${provider.cString(userID)}   AND
+				"stars"           >= ${provider.cNumber(minimum)}
+			ORDER BY
+				RANDOM()
+			LIMIT 1;
+		`);
 		return result || null;
 	}
 
 	public fetchStars(guildID: string, minimum: number) {
+		const { provider } = this;
 		return this.provider.runAll(/* sql */`
 			SELECT *
 			FROM starboard
 			WHERE
-				"guild_id"        = $1        AND
-				"star_message_id" IS NOT NULL AND
-				"enabled"         = TRUE      AND
-				"stars"           >= $2;
-		`, [guildID, minimum]);
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"stars"           >= ${provider.cNumber(minimum)};
+		`);
+	}
+
+	public fetchStarsFromUser(guildID: string, userID: string, minimum: number) {
+		const { provider } = this;
+		return this.provider.runAll(/* sql */`
+			SELECT *
+			FROM starboard
+			WHERE
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"user_id"         = ${provider.cString(userID)}   AND
+				"stars"           >= ${provider.cNumber(minimum)};
+		`);
 	}
 
 	public async fetchTwitchStreamSubscription(streamerID: string) {

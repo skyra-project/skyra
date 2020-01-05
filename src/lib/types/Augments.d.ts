@@ -10,6 +10,7 @@ import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
 import { InfluxDB } from 'influx';
+import { SettingsFolderUpdateOptions } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { LanguageKeys } from './Languages';
@@ -104,8 +105,8 @@ declare module 'klasa' {
 
 	interface SettingsFolder {
 		get<K extends string, S>(key: CustomGet<K, S>): S;
-		increase(key: string, value: number): Promise<SettingsUpdateResults>;
-		decrease(key: string, value: number): Promise<SettingsUpdateResults>;
+		increase(key: string, value: number, options?: SettingsFolderUpdateOptions): Promise<SettingsUpdateResults>;
+		decrease(key: string, value: number, options?: SettingsFolderUpdateOptions): Promise<SettingsUpdateResults>;
 	}
 
 	interface Argument {

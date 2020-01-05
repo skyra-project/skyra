@@ -87,8 +87,8 @@ export default class extends SkyraCommand {
 		}
 
 		await Promise.all([
-			author.settings.update(UserSettings.Marry, user, { arrayAction: 'add' }),
-			user.settings.update(UserSettings.Marry, author, { arrayAction: 'add' })
+			author.settings.update(UserSettings.Marry, user, { arrayAction: 'add', extraContext: { author: message.author.id } }),
+			user.settings.update(UserSettings.Marry, author, { arrayAction: 'add', extraContext: { author: message.author.id } })
 		]);
 
 		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [author, user]);

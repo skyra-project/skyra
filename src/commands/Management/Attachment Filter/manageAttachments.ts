@@ -85,7 +85,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [type, value]: ['action' | 'enable' | 'disable' | 'maximum' | 'duration' | 'logs' | 'expire', number]) {
 		const { key, language } = TYPES[type];
-		await message.guild!.settings.update(key, value);
+		await message.guild!.settings.update(key, value, {
+			extraContext: { author: message.author.id }
+		});
 
 		// Update the adder
 		switch (type) {

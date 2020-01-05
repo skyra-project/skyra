@@ -24,7 +24,9 @@ export default class extends SkyraCommand {
 
 		const current = message.guild!.settings.get(GuildSettings.Channels.MessageLogs);
 		if (current === channel.id) throw message.language.tget('CONFIGURATION_EQUALS');
-		await message.guild!.settings.update(GuildSettings.Channels.MessageLogs, channel);
+		await message.guild!.settings.update(GuildSettings.Channels.MessageLogs, channel, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_SETMESSAGELOGS_SET', [channel]);
 	}
 

@@ -43,7 +43,9 @@ export default class extends SkyraCommand {
 				allow: action === 'allow' ? [command.name] : [],
 				deny: action === 'deny' ? [command.name] : []
 			};
-			await message.guild!.settings.update(key, node);
+			await message.guild!.settings.update(key, node, {
+				extraContext: { author: message.author.id }
+			});
 		} else {
 			const previous = nodes[nodeIndex];
 			const node: Nodes[number] = {
@@ -51,7 +53,10 @@ export default class extends SkyraCommand {
 				allow: previous.allow.concat(action === 'allow' ? [command.name] : []),
 				deny: previous.deny.concat(action === 'deny' ? [command.name] : [])
 			};
-			await message.guild!.settings.update(key, node, { arrayIndex: nodeIndex });
+			await message.guild!.settings.update(key, node, {
+				arrayIndex: nodeIndex,
+				extraContext: { author: message.author.id }
+			});
 		}
 
 		return message.sendLocale('COMMAND_PERMISSIONNODES_ADD');
@@ -76,7 +81,10 @@ export default class extends SkyraCommand {
 		};
 		node[action].splice(commandIndex, 1);
 
-		await message.guild!.settings.update(key, node, { arrayIndex: nodeIndex });
+		await message.guild!.settings.update(key, node, {
+			arrayIndex: nodeIndex,
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_PERMISSIONNODES_REMOVE');
 	}
 
@@ -90,7 +98,10 @@ export default class extends SkyraCommand {
 
 		const clone = nodes.slice();
 		clone.splice(nodeIndex, 1);
-		await message.guild!.settings.update(key, clone, { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(key, clone, {
+			arrayAction: 'overwrite',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_PERMISSIONNODES_RESET');
 	}
 

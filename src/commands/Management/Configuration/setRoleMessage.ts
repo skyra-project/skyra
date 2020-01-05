@@ -38,7 +38,9 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [reactionMessage]: [KlasaMessage]) {
-		await message.guild!.settings.update(GuildSettings.Roles.MessageReaction, reactionMessage.id);
+		await message.guild!.settings.update(GuildSettings.Roles.MessageReaction, reactionMessage.id, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_SETMESSAGEROLE_SET');
 	}
 

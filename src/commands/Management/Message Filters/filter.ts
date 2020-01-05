@@ -32,7 +32,10 @@ export default class extends SkyraCommand {
 		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.tget('COMMAND_FILTER_FILTERED', true);
 
 		// Perform update
-		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, { arrayAction: 'add' });
+		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, {
+			arrayAction: 'add',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_FILTER_ADDED', [word]);
 	}
 
@@ -43,7 +46,10 @@ export default class extends SkyraCommand {
 
 		// Perform update
 		if (raw.length === 1) return this.reset(message);
-		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, {
+			arrayAction: 'remove',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_FILTER_REMOVED', [word]);
 	}
 

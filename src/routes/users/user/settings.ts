@@ -44,7 +44,7 @@ export default class extends Route {
 
 		await user.settings.sync();
 		try {
-			await user.settings.update(entries, { arrayAction: 'overwrite' });
+			await user.settings.update(entries, { arrayAction: 'overwrite', extraContext: { author: user.id } });
 			return response.json({ newSettings: user.settings.toJSON() });
 		} catch (errors) {
 			this.client.emit(Events.Error,

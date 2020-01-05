@@ -27,7 +27,9 @@ export interface CommonQuery {
 	fetchModerationLogByUser(guildID: string, user: string): Promise<RawModerationSettings[]>;
 	fetchStar(guildID: string, messageID: string): Promise<RawStarboardSettings | null>;
 	fetchStarRandom(guildID: string, minimum: number): Promise<RawStarboardSettings | null>;
+	fetchStarRandomFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings | null>;
 	fetchStars(guildID: string, minimum: number): Promise<RawStarboardSettings[]>;
+	fetchStarsFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings[]>;
 	fetchTwitchStreamSubscription(streamerID: string): Promise<TwitchStreamSubscriptionSettings | null>;
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
 	insertCommandUseCounter(command: string): Promise<unknown>;

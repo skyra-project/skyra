@@ -199,17 +199,29 @@ export class JsonCommonQuery implements CommonQuery {
 		return values.filter(value => value.star_message_id !== null && value.enabled && value.stars >= minimum);
 	}
 
-	public async fetchStarRandom(guildID: string, minimum: number) {
+	public async fetchStarsFromUser(guildID: string, userID: string, minimum: number) {
 		const keys = await this.provider.getKeys(Databases.Starboard);
 		const filteredKeys = keys.filter(key => key.startsWith(`${guildID}.`));
-		if (filteredKeys.length === 0) return null;
+		if (filteredKeys.length === 0) return [];
 
 		const values = await this.provider.getAll(Databases.Starboard, filteredKeys) as RawStarboardSettings[];
-		const filteredValues = values.filter(value => value.star_message_id !== null && value.enabled && value.stars >= minimum);
-		if (filteredValues.length === 0) return null;
+		return values.filter(value => value.star_message_id !== null && value.enabled && value.user_id === userID && value.stars >= minimum);
+	}
 
-		const index = Math.floor(Math.random() * filteredValues.length);
-		return filteredValues[index];
+	public async fetchStarRandom(guildID: string, minimum: number) {
+		const values = await this.fetchStars(guildID, minimum);
+		if (values.length === 0) return null;
+
+		const index = Math.floor(Math.random() * values.length);
+		return values[index];
+	}
+
+	public async fetchStarRandomFromUser(guildID: string, userID: string, minimum: number) {
+		const values = await this.fetchStarsFromUser(guildID, userID, minimum);
+		if (values.length === 0) return null;
+
+		const index = Math.floor(Math.random() * values.length);
+		return values[index];
 	}
 
 	public fetchTwitchStreamSubscription(streamerID: string) {

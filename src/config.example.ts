@@ -104,7 +104,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
-		'default': ENABLE_POSTGRES ? 'postgres' : 'json',
+		'default': ENABLE_POSTGRES ? 'postgres' : 'cache',
 		'json': { baseDirectory: resolve(__dirname, '..', 'bwd', 'providers', 'json') },
 		'postgres': PGSQL_DATABASE_OPTIONS
 	},

@@ -7,7 +7,17 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
 import { Image } from 'canvas';
-import { AvatarOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable } from 'discord.js';
+import {
+	AvatarOptions,
+	Client,
+	Guild,
+	GuildChannel,
+	ImageSize,
+	Message,
+	Permissions,
+	User,
+	UserResolvable
+} from 'discord.js';
 import { readFile } from 'fs-nextra';
 import { RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';

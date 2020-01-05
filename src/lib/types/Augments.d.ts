@@ -6,6 +6,7 @@ import { UserTags } from '@utils/Cache/UserTags';
 import { ConnectFourManager } from '@utils/Games/ConnectFourManager';
 import { Leaderboard } from '@utils/Leaderboard';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { Mixer } from '@utils/Notifications/Mixer';
 import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
@@ -15,7 +16,6 @@ import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
-
 
 declare module 'discord.js' {
 
@@ -34,6 +34,7 @@ declare module 'discord.js' {
 		queries: CommonQuery;
 		influx: InfluxDB | null;
 		twitch: Twitch;
+		mixer: Mixer;
 	}
 
 	interface MessageExtendablesAskOptions {
@@ -123,6 +124,10 @@ declare module 'klasa-dashboard-hooks' {
 		user_id: string;
 	}
 
+}
+
+declare module 'node-fetch' {
+	interface RequestInit extends Record<string, unknown> { }
 }
 
 interface Fn {

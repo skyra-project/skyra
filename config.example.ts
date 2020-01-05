@@ -4,10 +4,10 @@ import { ISingleHostConfig } from 'influx';
 import { KlasaClientOptions } from 'klasa';
 import { resolve } from 'path';
 import { PoolConfig } from 'pg';
-import ApiRequest from './src/lib/structures/api/ApiRequest';
-import ApiResponse from './src/lib/structures/api/ApiResponse';
-import { APIWebhookData } from './src/lib/types/DiscordAPI';
-import { rootFolder } from './src/lib/util/constants';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { APIWebhookData } from '@lib/types/DiscordAPI';
+import { rootFolder } from '@lib/util/constants';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);

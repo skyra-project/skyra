@@ -1,4 +1,4 @@
-import { isObject } from '@klasa/utils';
+import { isObject, isNumber } from '@klasa/utils';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
@@ -49,9 +49,8 @@ export interface ReferredPromise<T> {
 export function noop() { }
 
 export function showSeconds(duration: number) {
+	if (!isNumber(duration)) return '00:00';
 	const seconds = Math.floor(duration / Time.Second) % 60;
-	if (duration < Time.Minute) return seconds === 1 ? 'a second' : `${seconds} seconds`;
-
 	const minutes = Math.floor(duration / Time.Minute) % 60;
 	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 	if (duration >= Time.Hour) {

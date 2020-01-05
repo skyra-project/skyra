@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 			requiredSettings: [],
 			runIn: ['text'],
 			subcommands: true,
-			usage: '(top|random:default) [user:username{2}] (duration:timespan)',
+			usage: '(top|random:default) [user:membername{2}] (duration:timespan)',
 			usageDelim: ' '
 		});
 

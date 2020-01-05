@@ -1,8 +1,8 @@
 import { EventStore, KlasaMessage, KlasaUser } from 'klasa';
-import EconomyEvent from '../lib/structures/analytics/EconomyEvent';
-import { Events } from '../lib/types/Enums';
-import { EconomyMeasurements, EconomyTags } from '../lib/types/influxSchema/Economy';
-import { Tags } from '../lib/types/influxSchema/tags';
+import EconomyEvent from '@lib/structures/analytics/EconomyEvent';
+import { Events } from '@lib/types/Enums';
+import { EconomyMeasurements, EconomyTags } from '@lib/types/influxSchema/Economy';
+import { Tags } from '@lib/types/influxSchema/tags';
 
 export default class extends EconomyEvent {
 

@@ -1,8 +1,8 @@
 import { Event } from 'klasa';
-import { ENABLE_INFLUX } from '../../../../config';
+import { ENABLE_INFLUX } from '@root/config';
 import { mergeDefault } from '@klasa/utils';
 import { IWriteOptions, IPoint, InfluxDB } from 'influx';
-import { Tags } from '../../types/influxSchema/tags';
+import { Tags } from '@lib/types/influxSchema/tags';
 
 export default abstract class BaseAnalyticsEvent extends Event {
 

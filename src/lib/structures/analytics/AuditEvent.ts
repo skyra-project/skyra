@@ -1,6 +1,6 @@
 import { EventOptions, EventStore } from 'klasa';
-import { Events } from '../../types/Enums';
-import { Databases } from '../../types/influxSchema/database';
+import { Events } from '@lib/types/Enums';
+import { Databases } from '@lib/types/influxSchema/database';
 import BaseAnalyticsEvent from './BaseAnalyticsEvent';
 
 export type PossibleEvents =

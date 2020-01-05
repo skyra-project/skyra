@@ -1,11 +1,12 @@
 import { Settings, EventStore, KeyedObject, SettingsUpdateContext } from 'klasa';
-import { SkyraGuild } from '../../lib/extensions/SkyraGuild';
-import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '../../lib/types/influxSchema/Audit';
+import { SkyraGuild } from '@lib/extensions/SkyraGuild';
+import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '@lib/types/influxSchema/Audit';
 import { User, Client } from 'discord.js';
-import AuditEvent from '../../lib/structures/analytics/AuditEvent';
-import { Events } from '../../lib/types/Enums';
+import AuditEvent from '@lib/structures/analytics/AuditEvent';
+import { Events } from '@lib/types/Enums';
 import { IPoint } from 'influx';
-import { Tags } from '../../lib/types/influxSchema/tags';
+import { Tags } from '@lib/types/influxSchema/tags';
+import { SettingsAuditContext } from '../../lib/types/settings/Shared';
 
 export default class extends AuditEvent {
 
@@ -37,9 +38,9 @@ export default class extends AuditEvent {
 	}
 
 	private updateAuditLog(context: SettingsUpdateContext, guild?: SkyraGuild, user?: User, client?: Client) {
-		// TODO(kyranet): Fill in proper type
-		if ((context.extraContext as any)?.auditIgnore) return;
-		const tags: [string, string][] = [[AuditTags.By, (context.extraContext as any)?.author ? `USER.${(context.extraContext as any).author}` : `CLIENT.${this.client.user!.id}`]];
+		const extraContext: SettingsAuditContext = context.extraContext as SettingsAuditContext;
+		if (extraContext.auditIgnore) return;
+		const tags: [string, string][] = [[AuditTags.By, extraContext.author ? `USER.${extraContext.author}` : `CLIENT.${this.client.user!.id}`]];
 		const toWrite: IPoint[] = [];
 		if (guild) tags.push(['target', AuditSettingsTarget.Guild], [Tags.Guild, guild.id]);
 		if (user) tags.push(['target', AuditSettingsTarget.User], [Tags.User, user.id]);

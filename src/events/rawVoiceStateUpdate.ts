@@ -1,6 +1,6 @@
-import { VoiceStateUpdate } from 'lavalink';
-import { Events } from '../lib/types/Enums';
+import { Events } from '@lib/types/Enums';
 import { Event, EventStore } from 'klasa';
+import { VoiceStateUpdate } from 'lavalink';
 
 export default class extends Event {
 

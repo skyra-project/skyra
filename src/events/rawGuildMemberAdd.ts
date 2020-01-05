@@ -1,8 +1,8 @@
+import { WSGuildMemberAdd } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@utils/constants';
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
-import { WSGuildMemberAdd } from '../lib/types/DiscordAPI';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
 import { Event, EventStore } from 'klasa';
 
 const { FLAGS } = Permissions;
@@ -31,7 +31,10 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		guild.nicknames.set(data.user.id, data.nick || null);
+		guild.memberTags.set(data.user.id, {
+			nickname: data.nick || null,
+			roles: data.roles
+		});
 		guild.client.userTags.create(data.user);
 		const member = guild.members.add(data);
 
@@ -64,7 +67,7 @@ export default class extends Event {
 				(channel as TextChannel).send(this.transformMessage(messagesGreeting, guild, member.user))
 					.catch(error => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Channels.Greeting, { throwOnError: true })
+				guild.settings.reset(GuildSettings.Channels.Greeting)
 					.catch(error => this.client.emit(Events.Wtf, error));
 			}
 		}
@@ -75,7 +78,7 @@ export default class extends Event {
 		if (initialRole) {
 			const role = guild.roles.get(initialRole);
 			if (!role || role.position >= guild.me!.roles.highest.position) {
-				guild.settings.reset(GuildSettings.Roles.Initial, { throwOnError: true })
+				guild.settings.reset(GuildSettings.Roles.Initial)
 					.catch(error => this.client.emit(Events.Wtf, error));
 			} else {
 				member.roles.add(role)
@@ -137,7 +140,7 @@ export default class extends Event {
 		}
 
 		if (stickyRoles.roles.length !== roles.length) {
-			guild.settings.update(GuildSettings.StickyRoles, { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles), throwOnError: true })
+			guild.settings.update(GuildSettings.StickyRoles, { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles) })
 				.catch(error => this.client.emit(Events.Wtf, error));
 		}
 

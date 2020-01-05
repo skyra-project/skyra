@@ -1,6 +1,6 @@
+import { ModerationCommand } from '@lib/structures/ModerationCommand';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { ModerationCommand } from '../../lib/structures/ModerationCommand';
 
 export default class extends ModerationCommand {
 

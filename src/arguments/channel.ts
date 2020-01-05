@@ -1,6 +1,6 @@
+import { validateChannelAccess } from '@utils/util';
 import { GuildChannel } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
-import { validateChannelAccess } from '../lib/util/util';
 
 const CHANNEL_REGEXP = Argument.regex.channel;
 

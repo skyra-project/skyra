@@ -1,4 +1,4 @@
-import { Finalizer, KlasaMessage, Command } from 'klasa';
+import { Command, Finalizer, KlasaMessage } from 'klasa';
 
 export default class extends Finalizer {
 

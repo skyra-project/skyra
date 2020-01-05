@@ -1,5 +1,5 @@
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 
@@ -11,9 +11,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const { voiceChannel } = message.guild!.music;
-		await message.guild!.music.leave();
-		return message.sendLocale('COMMAND_LEAVE_SUCCESS', [voiceChannel]);
+		await message.guild!.music.leave(this.getContext(message));
 	}
 
 }

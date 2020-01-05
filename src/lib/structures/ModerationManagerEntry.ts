@@ -1,12 +1,13 @@
+import { isNumber } from '@klasa/utils';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { CLIENT_ID } from '@root/config';
+import { Moderation, Time } from '@utils/constants';
+import { getDisplayAvatar, isNullOrUndefined } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
-import { Events } from '../types/Enums';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { Moderation, Time } from '../util/constants';
-import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { isNullOrUndefined, getDisplayAvatar } from '../util/util';
-import { CLIENT_ID } from '../../../config';
+import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
@@ -101,23 +102,23 @@ export class ModerationManagerEntry {
 	}
 
 	public get appealType() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Appeal) === Moderation.TypeMetadata.Appeal;
+		return (this.type & Moderation.TypeMetadata.Appeal) === Moderation.TypeMetadata.Appeal;
 	}
 
 	public get temporaryType() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Temporary) === Moderation.TypeMetadata.Temporary;
+		return (this.type & Moderation.TypeMetadata.Temporary) === Moderation.TypeMetadata.Temporary;
 	}
 
 	public get temporaryFastType() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Fast) === Moderation.TypeMetadata.Fast;
+		return (this.type & Moderation.TypeMetadata.Fast) === Moderation.TypeMetadata.Fast;
 	}
 
 	public get invalidated() {
-		return (this.typeMetadata & Moderation.TypeMetadata.Invalidated) === Moderation.TypeMetadata.Invalidated;
+		return (this.type & Moderation.TypeMetadata.Invalidated) === Moderation.TypeMetadata.Invalidated;
 	}
 
 	public get appealable() {
-		return Moderation.metadata.has(this.type | Moderation.TypeMetadata.Appeal);
+		return !this.appealType && Moderation.metadata.has(this.typeVariation | Moderation.TypeMetadata.Appeal);
 	}
 
 	public get temporable() {
@@ -257,13 +258,15 @@ export class ModerationManagerEntry {
 	}
 
 	public setDuration(value: string | number | null) {
-		// If this cannot be reversed, skip
-		if (!this.temporable) return this;
+		if (this.temporable) {
+			if (typeof value === 'string') value = new Duration(value.trim()).offset;
+			if (typeof value === 'number' && (value <= 0 || value > Time.Year)) value = null;
 
-		if (typeof value === 'string') value = new Duration(value.trim()).offset;
-		if (typeof value === 'number' && (value <= 0 || value > Time.Year)) value = null;
+			this.duration = isNumber(value) ? value : null;
+		} else {
+			this.duration = null;
+		}
 
-		this.duration = value;
 		this.type = ModerationManagerEntry.getTypeFlagsFromDuration(this.type, this.duration);
 		return this;
 	}

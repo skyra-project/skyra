@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -22,7 +22,9 @@ export default class extends SkyraCommand {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (channel.type !== 'text') throw message.language.tget('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 		const oldLength = message.guild!.settings.get(GuildSettings.DisabledChannels).length;
-		await message.guild!.settings.update(GuildSettings.DisabledChannels, channel);
+		await message.guild!.settings.update(GuildSettings.DisabledChannels, channel, {
+			extraContext: { author: message.author.id }
+		});
 		const newLength = message.guild!.settings.get(GuildSettings.DisabledChannels).length;
 		return message.sendLocale(oldLength < newLength
 			? 'COMMAND_SETIGNORECHANNELS_SET'

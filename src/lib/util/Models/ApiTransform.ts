@@ -1,4 +1,4 @@
-import { Guild, Role, Channel, NewsChannel, TextChannel, VoiceChannel, DMChannel, PermissionOverwrites, GuildFeatures, User, GuildMember, GuildChannel } from 'discord.js';
+import { Channel, DMChannel, Guild, GuildChannel, GuildFeatures, GuildMember, NewsChannel, PermissionOverwrites, Role, TextChannel, User, VoiceChannel } from 'discord.js';
 
 // #region Guild
 
@@ -42,9 +42,9 @@ export interface FlattenedGuild {
 	splash: string | null;
 	region: string;
 	features: GuildFeatures[];
-	applicationID: string;
+	applicationID: string | null;
 	afkTimeout: number;
-	afkChannelID: string;
+	afkChannelID: string | null;
 	systemChannelID: string | null;
 	embedEnabled: boolean;
 	premiumTier: number;

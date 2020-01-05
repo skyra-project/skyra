@@ -1,8 +1,8 @@
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Adder } from '@utils/Adder';
+import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Guild } from 'discord.js';
 import { RateLimitManager } from 'klasa';
-import { GuildSettings } from '../../types/settings/GuildSettings';
-import { Adder } from '../Adder';
-import { PreciseTimeout } from '../PreciseTimeout';
 import { AntiRaid } from './AntiRaid';
 import { ModerationActions } from './ModerationActions';
 import { create } from './RegexCreator';
@@ -16,6 +16,10 @@ export interface Adders {
 	invites: Adder<string> | null;
 	words: Adder<string> | null;
 	reactions: Adder<string> | null;
+}
+
+export interface LockdownEntry {
+	timeout: PreciseTimeout | null;
 }
 
 /**
@@ -57,7 +61,7 @@ export class GuildSecurity {
 	/**
 	 * The lockdowns map
 	 */
-	public lockdowns: Map<string, PreciseTimeout | null> = new Map();
+	public lockdowns: Map<string, LockdownEntry> = new Map();
 
 	/**
 	 * The RegExp

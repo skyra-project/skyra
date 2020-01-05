@@ -1,11 +1,12 @@
-import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
-import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
+import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 
 export interface CommonQuery {
+	deleteUserEntries(userID: string): Promise<unknown>;
 	deleteGiveaway(guildID: string, messageID: string): Promise<unknown>;
 	deleteMemberSettings(guildID: string, userID: string): Promise<unknown>;
 	deleteStar(guildID: string, messageID: string): Promise<unknown>;
@@ -26,7 +27,9 @@ export interface CommonQuery {
 	fetchModerationLogByUser(guildID: string, user: string): Promise<RawModerationSettings[]>;
 	fetchStar(guildID: string, messageID: string): Promise<RawStarboardSettings | null>;
 	fetchStarRandom(guildID: string, minimum: number): Promise<RawStarboardSettings | null>;
+	fetchStarRandomFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings | null>;
 	fetchStars(guildID: string, minimum: number): Promise<RawStarboardSettings[]>;
+	fetchStarsFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings[]>;
 	fetchTwitchStreamSubscription(streamerID: string): Promise<TwitchStreamSubscriptionSettings | null>;
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
 	insertCommandUseCounter(command: string): Promise<unknown>;

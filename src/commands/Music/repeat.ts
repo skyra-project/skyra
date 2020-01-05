@@ -1,5 +1,5 @@
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 
@@ -10,12 +10,9 @@ export default class extends MusicCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage) {
-		const isAlreadyRepeating = message.guild!.music.replay;
+	public run(message: KlasaMessage) {
 		// Toggle the repeat option with its opposite value
-		message.guild!.music.setReplay(!isAlreadyRepeating);
-		// Alert the user whether the replay option was enabled or disabled
-		return message.sendLocale('COMMAND_REPEAT_SUCCESS', [!isAlreadyRepeating]);
+		message.guild!.music.setReplay(!message.guild!.music.replay, this.getContext(message));
 	}
 
 }

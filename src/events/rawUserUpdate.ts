@@ -1,10 +1,10 @@
-import { APIUserData } from '../lib/types/DiscordAPI';
-import { Event, EventStore } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { Events } from '../lib/types/Enums';
-import { getDisplayAvatar } from '../lib/util/util';
-import { MessageLogsEnum } from '../lib/util/constants';
+import { APIUserData } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@utils/constants';
+import { getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
+import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 
@@ -28,7 +28,7 @@ export default class extends Event {
 		if (typeof previous === 'undefined' || previous.username === next.username) return;
 
 		for (const guild of this.client.guilds.values()) {
-			if (!guild.nicknames.has(data.id)) continue;
+			if (!guild.memberTags.has(data.id)) continue;
 			if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 					.setColor(0xDCE775)

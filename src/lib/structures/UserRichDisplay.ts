@@ -1,5 +1,5 @@
-import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions, util, KlasaUser } from 'klasa';
 import { MessageReaction } from 'discord.js';
+import { KlasaMessage, KlasaUser, ReactionHandler, RichDisplay, RichDisplayRunOptions, util } from 'klasa';
 const FIVE_MINUTES = 60000 * 5;
 
 export class UserRichDisplay extends RichDisplay {

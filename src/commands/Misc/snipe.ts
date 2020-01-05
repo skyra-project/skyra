@@ -1,7 +1,7 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { getColor, getContent, getImage } from '@utils/util';
+import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { TextChannel, MessageEmbed } from 'discord.js';
-import { getContent, getImage, getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -10,6 +10,7 @@ export default class extends SkyraCommand {
 			aliases: ['sniped'],
 			description: language => language.tget('COMMAND_SNIPE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SNIPE_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
 	}

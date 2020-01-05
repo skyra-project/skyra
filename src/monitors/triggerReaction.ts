@@ -1,7 +1,7 @@
+import { Events } from '@lib/types/Enums';
+import { GuildSettings, TriggerIncludes } from '@lib/types/settings/GuildSettings';
+import { APIErrors } from '@utils/constants';
 import { KlasaMessage, Monitor } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings, TriggerIncludes } from '../lib/types/settings/GuildSettings';
-import { APIErrors } from '../lib/util/constants';
 
 export default class extends Monitor {
 
@@ -36,11 +36,10 @@ export default class extends Monitor {
 			if (error.code === APIErrors.ReactionBlocked) return;
 			// The emoji has been deleted or the bot is not in the whitelist
 			if (error.code === APIErrors.UnknownEmoji) {
-				const { errors } = await message.guild!.settings.update(GuildSettings.Trigger.Includes, trigger, { arrayAction: 'remove' });
-				if (errors.length) this.client.emit(Events.Wtf, errors);
-				return;
+				await message.guild!.settings.update(GuildSettings.Trigger.Includes, trigger, { arrayAction: 'remove' });
+			} else {
+				this.client.emit(Events.ApiError, error);
 			}
-			this.client.emit(Events.ApiError, error);
 		}
 	}
 

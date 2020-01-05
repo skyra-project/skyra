@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { getColor } from '@utils/util';
 import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { getColor } from '../../../lib/util/util';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 

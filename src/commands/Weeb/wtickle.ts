@@ -1,5 +1,5 @@
+import { WeebCommand } from '@lib/structures/WeebCommand';
 import { CommandStore } from 'klasa';
-import { WeebCommand } from '../../lib/structures/WeebCommand';
 
 export default class extends WeebCommand {
 

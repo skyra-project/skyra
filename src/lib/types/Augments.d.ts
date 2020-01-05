@@ -1,19 +1,21 @@
-import { CustomGet } from './settings/Shared';
-import { PermissionString } from 'discord.js';
-import { LanguageKeys } from './Languages';
-import { Leaderboard } from '../util/Leaderboard';
-import { IPCMonitorStore } from '../structures/IPCMonitorStore';
-import { GiveawayManager } from '../structures/GiveawayManager';
-import { ConnectFourManager } from '../util/Games/ConnectFourManager';
-import { LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
+import { SettingsUpdateResults } from '@klasa/settings-gateway';
+import { CommonQuery } from '@lib/queries/common';
+import { GiveawayManager } from '@lib/structures/GiveawayManager';
+import { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
+import { UserTags } from '@utils/Cache/UserTags';
+import { ConnectFourManager } from '@utils/Games/ConnectFourManager';
+import { Leaderboard } from '@utils/Leaderboard';
+import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
-import { Node as Lavalink, BaseNodeOptions } from 'lavalink';
-import { Client as VezaClient } from 'veza';
-import { CommonQuery } from '../queries/common';
-import { UserTags } from '../util/Cache/UserTags';
-import { Twitch } from '../util/Notifications/Twitch';
+import { PermissionString } from 'discord.js';
 import { InfluxDB } from 'influx';
-import { GameIntegrationsManager } from '../structures/GI/GameIntegrationsManager';
+import { SettingsFolderUpdateOptions } from 'klasa';
+import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
+import { Client as VezaClient } from 'veza';
+import { LanguageKeys } from './Languages';
+import { CustomGet } from './settings/Shared';
+import { GameIntegrationsManager } from '@lib/structures/GI/GameIntegrationsManager';
 
 declare module 'discord.js' {
 
@@ -55,6 +57,10 @@ declare module 'discord.js' {
 
 	interface GuildMember {
 		fetchRank(): Promise<number>;
+		isDJ: boolean;
+		isStaff: boolean;
+		isMod: boolean;
+		isAdmin: boolean;
 	}
 
 	interface User {
@@ -84,10 +90,6 @@ declare module 'klasa' {
 		rawEvents?: PieceOptions;
 	}
 
-	interface GatewaysOptions {
-		members?: GatewayOptions;
-	}
-
 	interface Language {
 		PERMISSIONS: Record<PermissionString, string>;
 		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
@@ -104,9 +106,14 @@ declare module 'klasa' {
 
 	interface SettingsFolder {
 		get<K extends string, S>(key: CustomGet<K, S>): S;
-		get(key: string): SettingsFolder | SettingsValue | readonly SettingsValue[];
-		increase(key: string, value: number): Promise<SettingsFolderUpdateResult>;
-		decrease(key: string, value: number): Promise<SettingsFolderUpdateResult>;
+		increase(key: string, value: number, options?: SettingsFolderUpdateOptions): Promise<SettingsUpdateResults>;
+		decrease(key: string, value: number, options?: SettingsFolderUpdateOptions): Promise<SettingsUpdateResults>;
+	}
+
+	interface Argument {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+		// @ts-ignore 1070
+		abstract run<T>(arg: string | undefined, possible: Possible, message: KlasaMessage, filter?: (entry: T) => boolean): any;
 	}
 
 }

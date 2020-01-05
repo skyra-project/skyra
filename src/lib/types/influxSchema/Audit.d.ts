@@ -5,7 +5,8 @@ export const enum AuditMeasurements {
 
 export const enum AuditTags {
 	Target = 'target',
-	Action = 'action'
+	Action = 'action',
+	By = 'BY'
 }
 
 export const enum AuditSettingsTarget {

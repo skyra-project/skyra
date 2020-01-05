@@ -1,8 +1,8 @@
+import { Databases } from '@lib/types/constants/Constants';
+import { Events } from '@lib/types/Enums';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
 import { KlasaClient } from 'klasa';
-import { Databases } from '../types/constants/Constants';
-import { Events } from '../types/Enums';
 import { Giveaway, GiveawayCreateData, PartialRawGiveawaySettings } from './Giveaway';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 
 export class GiveawayManager {
 
@@ -19,7 +19,7 @@ export class GiveawayManager {
 	public async init() {
 		const entries = await (this.client.shard
 			? this.client.queries.fetchGiveawaysFromGuilds([...this.client.guilds.keys()])
-			: this.client.providers.default.getAll(Databases.Giveaway)) as RawGiveawaySettings[];
+			: this.client.providers.default!.getAll(Databases.Giveaway)) as RawGiveawaySettings[];
 
 		for (const entry of entries) this.add(entry);
 		this.check();
@@ -42,7 +42,7 @@ export class GiveawayManager {
 		await Promise.all(this.running);
 		this.running.length = 0;
 
-		// TODO: Optimize this to not be O(n^2)
+		// TODO(kyranet): Optimize this to not be O(n^2)
 		// Add all elements from the pending queue
 		while (this.pending.length) this.insert(this.pending.shift()!);
 		this.check();

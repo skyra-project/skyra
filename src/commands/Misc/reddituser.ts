@@ -1,9 +1,9 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Reddit } from '@lib/types/definitions/Reddit';
+import { BrandingColors } from '@utils/constants';
+import { cutText, fetch, FetchResultTypes, getColor, roundNumber } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Reddit } from '../../lib/types/definitions/Reddit';
-import { BrandingColors } from '../../lib/util/constants';
-import { cutText, fetch, getColor, roundNumber, FetchResultTypes } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -222,8 +222,7 @@ export default class extends SkyraCommand {
 		const subreddits = new Collection<string, { name: string; count: number }>();
 
 		for (const contribution of contributions) {
-			// TODO (favna) 03-11-2019 Change to optional chaining when TSC3.7 is fully supported
-			const count = (subreddits.get(contribution.subreddit) || { count: 0 }).count + 1;
+			const count = (subreddits.get(contribution.subreddit)?.count || 0) + 1;
 			subreddits.set(contribution.subreddit, { name: contribution.subreddit, count });
 		}
 

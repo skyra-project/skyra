@@ -1,6 +1,6 @@
-import { Argument, KlasaMessage, Possible } from 'klasa';
-import { FuzzySearch } from '../lib/util/FuzzySearch';
+import { FuzzySearch } from '@utils/FuzzySearch';
 import { User } from 'discord.js';
+import { Argument, KlasaMessage, Possible } from 'klasa';
 
 const USER_REGEXP = Argument.regex.userOrMember;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
@@ -17,7 +17,7 @@ export default class extends Argument {
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(message.guild!.nicknames.mapUsernames(), entry => entry, filter).run(message, arg, possible.min || undefined);
+		const result = await new FuzzySearch(message.guild!.memberTags.mapUsernames(), entry => entry, filter).run(message, arg, possible.min || undefined);
 		if (result) {
 			return this.client.users.fetch(result[0])
 				.catch(() => { throw message.language.tget('USER_NOT_EXISTENT'); });

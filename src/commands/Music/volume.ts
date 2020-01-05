@@ -1,5 +1,5 @@
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 
@@ -26,11 +26,7 @@ export default class extends MusicCommand {
 		}
 
 		// Set the volume
-		await music.setVolume(volume);
-		return message.sendLocale('COMMAND_VOLUME_CHANGED', [volume > previousVolume
-			? (volume === 200 ? '📢' : '🔊')
-			: (volume === 0 ? '🔇' : '🔉'),
-		volume]);
+		await music.setVolume(volume, this.getContext(message));
 	}
 
 }

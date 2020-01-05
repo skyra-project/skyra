@@ -1,6 +1,6 @@
+import { MusicBitField } from '@lib/structures/MusicBitField';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { Command, Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
-import { MusicBitField } from '../lib/structures/MusicBitField';
-import { MusicCommand } from '../lib/structures/MusicCommand';
 
 const { FLAGS } = MusicBitField;
 

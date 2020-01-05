@@ -1,6 +1,6 @@
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { Permissions, VoiceChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
 const { FLAGS } = Permissions;
 
 export default class extends MusicCommand {
@@ -14,12 +14,6 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		if (!message.member) {
-			await message.guild!.members.fetch(message.author.id).catch(() => {
-				throw message.language.tget('COMMAND_JOIN_NO_MEMBER');
-			});
-		}
-
 		const { channel } = message.member!.voice;
 		if (!channel) throw message.language.tget('COMMAND_JOIN_NO_VOICECHANNEL');
 
@@ -30,8 +24,8 @@ export default class extends MusicCommand {
 		}
 		this.resolvePermissions(message, channel);
 
-		await message.guild!.music.connect(channel);
-		return message.sendLocale('COMMAND_JOIN_SUCCESS', [channel]);
+		message.guild!.music.channelID = message.channel.id;
+		await message.guild!.music.connect(channel, this.getContext(message));
 	}
 
 	public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

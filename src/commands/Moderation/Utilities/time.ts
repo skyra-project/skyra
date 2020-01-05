@@ -1,10 +1,10 @@
+import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Moderation } from '@utils/constants';
 import { Permissions, TextChannel } from 'discord.js';
 import { CommandStore, Duration, KlasaMessage, KlasaUser, ScheduledTask } from 'klasa';
-import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { Moderation } from '../../../lib/util/constants';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -71,8 +71,7 @@ export default class extends SkyraCommand {
 		if (!moderationLog) return null;
 		const channel = message.guild!.channels.get(moderationLog) as TextChannel;
 		if (!channel) {
-			const { errors } = await message.guild!.settings.reset(GuildSettings.Channels.ModerationLogs);
-			if (errors.length) throw String(errors[0]);
+			await message.guild!.settings.reset(GuildSettings.Channels.ModerationLogs);
 			return null;
 		}
 
@@ -97,7 +96,7 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.FastTemporaryVoiceMute:
 			case Moderation.TypeCodes.TemporaryVoiceMute:
 			case Moderation.TypeCodes.VoiceMute: return this.checkVMute(message, user);
-			// TODO: Add the rest of restrictions
+			// TODO(kyranet): Add the rest of restrictions
 			default: throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
 		}
 	}

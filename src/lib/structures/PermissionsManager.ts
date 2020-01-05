@@ -1,5 +1,5 @@
+import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
 import { Guild, Role } from 'discord.js';
-import { GuildSettings, PermissionsNode } from '../types/settings/GuildSettings';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
@@ -36,7 +36,7 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 
 		// Delete redundant entries
 		if (pendingToRemove.length) {
-			await this.guild.settings.update(GuildSettings.Permissions.Roles, pendingToRemove, { arrayAction: 'remove', throwOnError: true });
+			await this.guild.settings.update(GuildSettings.Permissions.Roles, pendingToRemove, { arrayAction: 'remove' });
 		}
 
 		return this;

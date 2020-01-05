@@ -1,4 +1,4 @@
-import { SelfModeratorHardActionFlags } from '../../structures/SelfModeratorBitField';
+import { SelfModeratorHardActionFlags } from '@lib/structures/SelfModeratorBitField';
 import { T } from './Shared';
 
 /* eslint-disable @typescript-eslint/no-namespace */
@@ -184,8 +184,10 @@ export namespace GuildSettings {
 	}
 
 	export namespace Social {
+		export const Enabled = T<boolean>('social.enabled');
 		export const Achieve = T<boolean>('social.achieve');
 		export const AchieveMessage = T<string>('social.achieveMessage');
+		export const Multiplier = T<number>('social.multiplier');
 		export const IgnoreChannels = T<readonly string[]>('social.ignoreChannels');
 	}
 
@@ -207,6 +209,13 @@ export namespace GuildSettings {
 				export const Streamers = T<readonly NotificationsStreamTwitch[]>('notifications.streams.twitch.streamers');
 			}
 		}
+	}
+
+	export namespace Music {
+		export const DefaultVolume = T<number>('music.default-volume');
+		export const MaximumDuration = T<number>('music.maximum-duration');
+		export const MaximumEntriesPerUser = T<number>('music.maximum-entries-per-user');
+		export const AllowStreams = T<boolean>('music.allow-streams');
 	}
 
 }

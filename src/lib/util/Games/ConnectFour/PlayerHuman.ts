@@ -1,13 +1,13 @@
-import { Game } from './Game';
-import { Player, PlayerColor } from './Player';
+import { Events } from '@lib/types/Enums';
+import { APIErrors, ConnectFourConstants } from '@utils/constants';
+import { LLRCDataEmoji } from '@utils/LongLivingReactionCollector';
+import { api } from '@utils/Models/Api';
+import { resolveEmoji } from '@utils/util';
+import { DiscordAPIError } from 'discord.js';
 import { KlasaUser } from 'klasa';
 import { Cell } from './Board';
-import { LLRCDataEmoji } from '../../LongLivingReactionCollector';
-import { ConnectFourConstants, APIErrors } from '../../constants';
-import { DiscordAPIError } from 'discord.js';
-import { Events } from '../../../types/Enums';
-import { resolveEmoji } from '../../util';
-import { api } from '../../Models/Api';
+import { Game } from './Game';
+import { Player, PlayerColor } from './Player';
 
 export class PlayerHuman extends Player {
 

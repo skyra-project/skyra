@@ -1,6 +1,6 @@
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 
@@ -14,7 +14,7 @@ export default class extends MusicCommand {
 
 	public async run(message: KlasaMessage) {
 		const queue = message.guild!.music;
-		const song = queue.song || (queue.length ? queue[0] : null);
+		const song = queue.song || (queue.queue.length ? queue.queue[0] : null);
 		if (!song) throw message.language.tget('COMMAND_PLAYING_QUEUE_EMPTY');
 		if (!queue.playing) throw message.language.tget('COMMAND_PLAYING_QUEUE_NOT_PLAYING');
 

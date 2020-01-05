@@ -1,8 +1,8 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch, FetchResultTypes } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Reddit } from '@lib/types/definitions/Reddit';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { TextChannel } from 'discord.js';
-import { Reddit } from '../../lib/types/definitions/Reddit';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 
 export default class extends SkyraCommand {

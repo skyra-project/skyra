@@ -1,11 +1,11 @@
-import { MessageEmbed, TextChannel, MessageAttachment } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '../lib/util/util';
-import { extname } from 'path';
 import { isNumber } from '@klasa/utils';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@utils/constants';
+import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
+import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
+import { KlasaMessage, Monitor } from 'klasa';
+import { extname } from 'path';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte

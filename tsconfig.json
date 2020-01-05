@@ -9,7 +9,13 @@
 			"discord.js",
 			"klasa",
 			"klasa-dashboard-hooks"
-		]
+		],
+		"baseUrl": ".",
+		"paths": {
+			"@utils/*": ["src/lib/util/*"],
+			"@lib/*": ["src/lib/*"],
+			"@root/*": ["*"]
+		}
 	},
 	"include": [
 		"./src/**/*",

@@ -1,8 +1,8 @@
-import { Command, CommandStore, CommandOptions, util, SchemaEntry, KlasaMessage, Duration } from 'klasa';
-import { PermissionLevels } from '../types/Enums';
-import { SelfModeratorHardActionFlags, SelfModeratorBitField } from './SelfModeratorBitField';
-import { GuildSecurity } from '../util/Security/GuildSecurity';
-import { Adder } from '../util/Adder';
+import { PermissionLevels } from '@lib/types/Enums';
+import { Adder } from '@utils/Adder';
+import { GuildSecurity } from '@utils/Security/GuildSecurity';
+import { Command, CommandOptions, CommandStore, Duration, KlasaMessage, SchemaEntry, util } from 'klasa';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export enum AKeys {
 	Enable,
@@ -106,7 +106,9 @@ export abstract class SelfModerationCommand extends Command {
 		if (action === AKeys.Show) return this.show(message);
 
 		const key = this.getProperty(action)!;
-		await message.guild!.settings.update(key, value, { throwOnError: true });
+		await message.guild!.settings.update(key, value, {
+			extraContext: { author: message.author.id }
+		});
 
 		switch (action) {
 			case AKeys.Disable: {
@@ -136,7 +138,7 @@ export abstract class SelfModerationCommand extends Command {
 		const [enabled, softAction, hardAction, hardActionDuration, thresholdMaximum, thresholdDuration] = settings.pluck(
 			this.keyEnabled, this.keySoftAction, this.keyHardAction, this.keyHardActionDuration, this.keyThresholdMaximum,
 			this.keyThresholdDuration
-		);
+		) as [boolean, number, number, number, number, number];
 
 		const i18n = message.language.tget.bind(message.language);
 		const [yes, no] = [i18n('SELF_MODERATION_ENABLED'), i18n('SELF_MODERATION_DISABLED')];
@@ -174,7 +176,7 @@ export abstract class SelfModerationCommand extends Command {
 	}
 
 	private manageAdder(message: KlasaMessage) {
-		const [maximum, duration] = message.guild!.settings.pluck(this.keyThresholdMaximum, this.keyThresholdDuration);
+		const [maximum, duration] = message.guild!.settings.pluck(this.keyThresholdMaximum, this.keyThresholdDuration) as (number | null)[];
 		const adder = message.guild!.security.adders[this.$adder];
 		if (!maximum || !duration) {
 			if (adder !== null) message.guild!.security.adders[this.$adder] = null;
@@ -237,16 +239,16 @@ export abstract class SelfModerationCommand extends Command {
 	private static parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = Number(input);
 		if (parsed < 0) throw message.language.tget('RESOLVER_INVALID_INT', name);
-		if (key.min !== null && parsed < key.min) throw message.language.tget('SELF_MODERATION_MAXIMUM_TOO_SHORT', key.min, parsed);
-		if (key.max !== null && parsed > key.max) throw message.language.tget('SELF_MODERATION_MAXIMUM_TOO_LONG', key.max, parsed);
+		if (key.minimum !== null && parsed < key.minimum) throw message.language.tget('SELF_MODERATION_MAXIMUM_TOO_SHORT', key.minimum, parsed);
+		if (key.maximum !== null && parsed > key.maximum) throw message.language.tget('SELF_MODERATION_MAXIMUM_TOO_LONG', key.maximum, parsed);
 		return parsed;
 	}
 
 	private static parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = new Duration(input);
 		if (parsed.offset < 0) throw message.language.tget('RESOLVER_INVALID_DURATION', name);
-		if (key.min !== null && parsed.offset < key.min) throw message.language.tget('SELF_MODERATION_DURATION_TOO_SHORT', key.min, parsed.offset);
-		if (key.max !== null && parsed.offset > key.max) throw message.language.tget('SELF_MODERATION_DURATION_TOO_LONG', key.max, parsed.offset);
+		if (key.minimum !== null && parsed.offset < key.minimum) throw message.language.tget('SELF_MODERATION_DURATION_TOO_SHORT', key.minimum, parsed.offset);
+		if (key.maximum !== null && parsed.offset > key.maximum) throw message.language.tget('SELF_MODERATION_DURATION_TOO_LONG', key.maximum, parsed.offset);
 		return parsed.offset;
 	}
 

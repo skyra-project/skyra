@@ -1,10 +1,11 @@
+import { isFunction } from '@klasa/utils';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { cleanMentions } from '@utils/util';
 import { CommandStore, KlasaMessage, Language, util } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Events } from '../../lib/types/Enums';
-import { HungerGamesUsage } from '../../lib/util/Games/HungerGamesUsage';
-import { LLRCData, LongLivingReactionCollector } from '../../lib/util/LongLivingReactionCollector';
-import { cleanMentions } from '../../lib/util/util';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
 
 const EMOJIS = ['🇳', '🇾'];
 
@@ -52,13 +53,13 @@ export default class extends SkyraCommand {
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(this.client, async reaction => {
 				// Ignore if resolve is not ready
-				if (typeof resolve !== 'function'
-				// Run the collector inhibitor
-				|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
+				if (!isFunction(resolve)
+					// Run the collector inhibitor
+					|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
 				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
 				resolve = null;
 			}, () => {
-				if (typeof resolve === 'function') resolve(false);
+				if (isFunction(resolve)) resolve(false);
 				this.playing.delete(message.channel.id);
 			}),
 			sun: true,
@@ -94,7 +95,7 @@ export default class extends SkyraCommand {
 					gameMessage.nuke().catch(error => this.client.emit(Events.ApiError, error));
 					if (!verification) {
 						game.llrc.end();
-						return message.sendLocale('COMMAND_HG_STOP');
+						return message.sendLocale('COMMAND_HUNGERGAMES_STOP');
 					}
 				}
 				if (game.bloodbath) game.bloodbath = false;
@@ -103,7 +104,7 @@ export default class extends SkyraCommand {
 
 			// The match finished with one remaining player
 			game.llrc.end();
-			return message.sendLocale('COMMAND_HG_WINNER', [game.tributes.values().next().value]);
+			return message.sendLocale('COMMAND_HUNGERGAMES_WINNER', [game.tributes.values().next().value]);
 		} catch (err) {
 			game.llrc.end();
 			throw err;
@@ -140,9 +141,9 @@ export default class extends SkyraCommand {
 	}
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
-		const header = language.tget('COMMAND_HG_RESULT_HEADER', game);
-		const death = deaths.length ? `${language.tget('COMMAND_HG_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
-		const proceed = language.tget('COMMAND_HG_RESULT_PROCEED');
+		const header = language.tget('COMMAND_HUNGERGAMES_RESULT_HEADER', game);
+		const death = deaths.length ? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
+		const proceed = language.tget('COMMAND_HUNGERGAMES_RESULT_PROCEED');
 		const panels = util.chunk(results, 5);
 
 		const texts = panels.map(panel => `__**${header}:**__\n\n${panel.map(text => `- ${text}`).join('\n')}\n\n_${proceed}_`);

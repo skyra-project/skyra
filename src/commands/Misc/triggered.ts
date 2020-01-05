@@ -1,12 +1,12 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { assetsFolder } from '@utils/constants';
+import { fetchAvatar, streamToBuffer } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchAvatar, streamToBuffer } from '../../lib/util/util';
 import GIFEncoder = require('gifencoder');
-import { assetsFolder } from '../../lib/util/constants';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],

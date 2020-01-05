@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -24,7 +24,9 @@ export default class extends SkyraCommand {
 
 		const current = message.guild!.settings.get(GuildSettings.Channels.MessageLogs);
 		if (current === channel.id) throw message.language.tget('CONFIGURATION_EQUALS');
-		await message.guild!.settings.update(GuildSettings.Channels.MessageLogs, channel);
+		await message.guild!.settings.update(GuildSettings.Channels.MessageLogs, channel, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_SETMESSAGELOGS_SET', [channel]);
 	}
 

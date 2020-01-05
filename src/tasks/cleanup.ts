@@ -24,9 +24,9 @@
  * SOFTWARE.
  */
 
-import { Util, TextChannel, Channel } from 'discord.js';
+import { Events } from '@lib/types/Enums';
+import { Channel, TextChannel, Util } from 'discord.js';
 import { Task } from 'klasa';
-import { Events } from '../lib/types/Enums';
 
 // THRESHOLD equals to 30 minutes in milliseconds:
 //     - 1000 milliseconds = 1 second
@@ -48,7 +48,6 @@ export default class extends Task {
 		const OLD_SNOWFLAKE = Util.binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
 		let presences = 0;
 		let guildMembers = 0;
-		let emojis = 0;
 		let lastMessages = 0;
 		let users = 0;
 
@@ -67,10 +66,6 @@ export default class extends Task {
 				guild.members.delete(id);
 				guildMembers++;
 			}
-
-			// Clear emojis
-			emojis += guild.emojis.size;
-			guild.emojis.clear();
 		}
 
 		// Per-Channel sweeper
@@ -94,7 +89,6 @@ export default class extends Task {
 				this.setColor(presences)} [Presence]s | ${
 				this.setColor(guildMembers)} [GuildMember]s | ${
 				this.setColor(users)} [User]s | ${
-				this.setColor(emojis)} [Emoji]s | ${
 				this.setColor(lastMessages)} [Last Message]s.`);
 	}
 

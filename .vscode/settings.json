@@ -1,7 +1,11 @@
 {
 	"eslint.validate": [
-		{ "language": "typescript", "autoFix": true}
+		"typescript"
 	],
 	"editor.tabSize": 4,
-	"files.eol": "\n"
+	"editor.useTabStops": true,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"files.eol": "\n",
+	"deepscan.enable": true
 }

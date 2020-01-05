@@ -1,12 +1,12 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { Kitsu } from '@lib/types/definitions/Kitsu';
+import { TOKENS } from '@root/config';
+import { BrandingColors } from '@utils/constants';
+import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
-import { TOKENS } from '../../../config';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { Kitsu } from '../../lib/types/definitions/Kitsu';
-import { cutText, fetch, getColor, FetchResultTypes } from '../../lib/util/util';
-import { BrandingColors } from '../../lib/util/constants';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
@@ -74,8 +74,7 @@ export default class extends SkyraCommand {
 				.setTitle(title)
 				.setURL(animeURL)
 				.setDescription(message.language.tget('COMMAND_ANIME_OUTPUT_DESCRIPTION', entry, synopsis))
-				// TODO (favna) 06-11-2019 Change to optional chaining when TSC3.7 is fully supported
-				.setThumbnail((entry.posterImage || { original: '' }).original)
+				.setThumbnail(entry.posterImage?.original || '')
 				.addField(titles.TYPE, message.language.tget('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
 				.addField(titles.SCORE, score, true)
 				.addField(titles.EPISODES, entry.episodeCount ? entry.episodeCount : 'Still airing', true)

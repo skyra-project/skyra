@@ -1,7 +1,7 @@
+import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { Snowflake } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Queue } from '../../lib/structures/music/Queue';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 
@@ -25,19 +25,18 @@ export default class extends MusicCommand {
 			}
 		}
 
-		const song = (await music.skip())!;
-		return message.sendLocale('COMMAND_SKIP_SUCCESS', [song.safeTitle]);
+		await music.skip(this.getContext(message));
 	}
 
-	public handleSkips(musicManager: Queue, user: Snowflake): string | false {
-		const song = musicManager.song! || musicManager[0];
+	public handleSkips(musicManager: MusicHandler, user: Snowflake): string | false {
+		const song = musicManager.song || musicManager.queue[0];
 		if (song.skips.has(user)) return musicManager.guild.language.tget('COMMAND_SKIP_VOTES_VOTED');
 		song.skips.add(user);
 		const members = musicManager.listeners.length;
 		return this.shouldInhibit(musicManager, members, song.skips.size);
 	}
 
-	public shouldInhibit(musicManager: Queue, total: number, size: number): false | string {
+	public shouldInhibit(musicManager: MusicHandler, total: number, size: number): false | string {
 		if (total <= 3) return false;
 
 		const needed = Math.ceil(total * 0.4);

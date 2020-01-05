@@ -1,14 +1,14 @@
-import { CommonQuery, LeaderboardEntry, UpsertMemberSettingsReturningDifference, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning } from './common';
-import { JsonProvider } from '../types/util';
-import { Databases } from '../types/constants/Constants';
+import { Databases } from '@lib/types/constants/Constants';
+import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
+import { JsonProvider } from '@lib/types/util';
 import { Client } from 'discord.js';
-import { RawUserSettings } from '../types/settings/raw/RawUserSettings';
-import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
-import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
-import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
+import { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
 export class JsonCommonQuery implements CommonQuery {
 
@@ -19,6 +19,26 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public constructor(client: Client) {
 		this.client = client;
+	}
+
+	public async deleteUserEntries(userID: string) {
+		const { provider } = this;
+
+		const userData = await provider.get(Databases.Users, userID) as RawUserSettings | null;
+		if (userData !== null) {
+			for (const marry of userData.marry) {
+				const temp = await provider.get(Databases.Users, marry) as RawUserSettings | null;
+				if (temp !== null) await provider.update(Databases.Users, marry, { marry: temp.marry.filter(m => m !== userID) });
+			}
+
+			// Prune user entry
+			await provider.delete(Databases.Users, userID);
+		}
+
+		// Prune all member entries
+		for (const key of await provider.getKeys(Databases.Members)) {
+			if (key.endsWith(`.${userID}`)) await provider.delete(Databases.Members, key);
+		}
 	}
 
 	public async deleteGiveaway(guildID: string, messageID: string) {
@@ -179,17 +199,29 @@ export class JsonCommonQuery implements CommonQuery {
 		return values.filter(value => value.star_message_id !== null && value.enabled && value.stars >= minimum);
 	}
 
-	public async fetchStarRandom(guildID: string, minimum: number) {
+	public async fetchStarsFromUser(guildID: string, userID: string, minimum: number) {
 		const keys = await this.provider.getKeys(Databases.Starboard);
 		const filteredKeys = keys.filter(key => key.startsWith(`${guildID}.`));
-		if (filteredKeys.length === 0) return null;
+		if (filteredKeys.length === 0) return [];
 
 		const values = await this.provider.getAll(Databases.Starboard, filteredKeys) as RawStarboardSettings[];
-		const filteredValues = values.filter(value => value.star_message_id !== null && value.enabled && value.stars >= minimum);
-		if (filteredValues.length === 0) return null;
+		return values.filter(value => value.star_message_id !== null && value.enabled && value.user_id === userID && value.stars >= minimum);
+	}
 
-		const index = Math.floor(Math.random() * filteredValues.length);
-		return filteredValues[index];
+	public async fetchStarRandom(guildID: string, minimum: number) {
+		const values = await this.fetchStars(guildID, minimum);
+		if (values.length === 0) return null;
+
+		const index = Math.floor(Math.random() * values.length);
+		return values[index];
+	}
+
+	public async fetchStarRandomFromUser(guildID: string, userID: string, minimum: number) {
+		const values = await this.fetchStarsFromUser(guildID, userID, minimum);
+		if (values.length === 0) return null;
+
+		const index = Math.floor(Math.random() * values.length);
+		return values[index];
 	}
 
 	public fetchTwitchStreamSubscription(streamerID: string) {

@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
-import { SQLProvider, SchemaEntry, SchemaFolder, SettingsFolderUpdateResult, Type } from 'klasa';
-import { Pool, Submittable, QueryResultRow, QueryArrayConfig, QueryConfig, QueryArrayResult, QueryResult, PoolConfig } from 'pg';
-import { mergeDefault, makeObject, isNumber } from '@klasa/utils';
-import { ENABLE_POSTGRES } from '../../config';
-import { run as databaseInitRun } from '../lib/util/DatabaseInit';
-import { AnyObject } from '../lib/types/util';
+import { isNumber, makeObject, mergeDefault } from '@klasa/utils';
+import { AnyObject } from '@lib/types/util';
+import { ENABLE_POSTGRES } from '@root/config';
+import { run as databaseInitRun } from '@utils/DatabaseInit';
+import { SchemaEntry, SchemaFolder, SettingsUpdateResults, SQLProvider, Type } from 'klasa';
+import { Pool, PoolConfig, QueryArrayConfig, QueryArrayResult, QueryConfig, QueryResult, QueryResultRow, Submittable } from 'pg';
 
 type PostgresOptions = PoolConfig & Record<PropertyKey, unknown>;
 
@@ -20,7 +20,7 @@ export default class extends SQLProvider {
 		formatDatatype: (name, datatype, def = null) => `"${name}" ${datatype}${def === null ? '' : ` NOT NULL DEFAULT ${def}`}`
 	})
 		.add('boolean', { type: 'BOOL', serializer: input => this.cBoolean(input as boolean) })
-		.add('integer', { type: ({ max }) => max !== null && max >= 2 ** 32 ? 'BIGINT' : 'INTEGER', serializer: input => this.cNumber(input as number | bigint) })
+		.add('integer', { type: ({ maximum }) => maximum !== null && maximum >= 2 ** 32 ? 'BIGINT' : 'INTEGER', serializer: input => this.cNumber(input as number | bigint) })
 		.add('float', { type: 'DOUBLE PRECISION', serializer: input => this.cNumber(input as number) })
 		.add('any', { type: 'JSON', serializer: input => this.cJson(input as AnyObject), arraySerializer: input => this.cArrayJson(input as AnyObject[]) })
 		.add('json', { 'extends': 'any' })
@@ -58,7 +58,7 @@ export default class extends SQLProvider {
 		try {
 			const result = await this.runAll(`SELECT true FROM pg_tables WHERE tablename = '${table}';`);
 			return result.length !== 0 && result[0].bool === true;
-		} catch (e) {
+		} catch {
 			return false;
 		}
 	}
@@ -94,13 +94,13 @@ export default class extends SQLProvider {
 
 	/* Row methods */
 
-	public async getAll(table: string, entries: readonly string[] = []): Promise<unknown[]> {
+	public async getAll(table: string, entries: readonly string[] = []): Promise<object[]> {
 		const filter = entries.length ? ` WHERE id IN ('${entries.join("', '")}')` : '';
 		const results = await this.runAll(/* sql */`
 			SELECT *
 			FROM ${this.cIdentifier(table)}${filter};
 		`);
-		return results.map(output => this.parseEntry(table, output));
+		return results.map(output => this.parseEntry(table, output) as object);
 	}
 
 	public async getKeys(table: string): Promise<string[]> {
@@ -111,7 +111,7 @@ export default class extends SQLProvider {
 		return rows.map(row => row.id);
 	}
 
-	public async get(table: string, key: string, value?: unknown): Promise<unknown> {
+	public async get(table: string, key: string, value?: unknown) {
 		// If a key is given (id), swap it and search by id - value
 		if (typeof value === 'undefined') {
 			value = key;
@@ -138,8 +138,8 @@ export default class extends SQLProvider {
 		return Boolean(result);
 	}
 
-	public create(table: string, id: string, data: CreateOrUpdateValue) {
-		const [keys, values] = this.parseUpdateInput(data, false);
+	public create(table: string, id: string, data: object | SettingsUpdateResults) {
+		const { keys, values } = this.parseTupleUpdateInput(data);
 
 		// Push the id to the inserts.
 		if (!keys.includes('id')) {
@@ -152,8 +152,8 @@ export default class extends SQLProvider {
 		`);
 	}
 
-	public update(table: string, id: string, data: CreateOrUpdateValue) {
-		const [keys, values] = this.parseUpdateInput(data, false);
+	public update(table: string, id: string, data: object | SettingsUpdateResults) {
+		const { keys, values } = this.parseTupleUpdateInput(data);
 		const resolvedValues = this.cValues(table, keys, values);
 		return this.pgsql!.query(/* sql */`
 			UPDATE ${this.cIdentifier(table)}
@@ -162,7 +162,7 @@ export default class extends SQLProvider {
 		`);
 	}
 
-	public replace(table: string, id: string, data: CreateOrUpdateValue) {
+	public replace(table: string, id: string, data: object | SettingsUpdateResults) {
 		return this.update(table, id, data);
 	}
 
@@ -182,7 +182,7 @@ export default class extends SQLProvider {
 		`);
 	}
 
-	public removeColumn(table: string, columns: string | string[]) {
+	public removeColumn(table: string, columns: string | readonly string[]) {
 		const escapedTable = this.cIdentifier(table);
 		const escapedColumns = typeof columns === 'string' ? this.cIdentifier(columns) : columns.map(this.cIdentifier.bind(this)).join(', ');
 		return this.run(/* sql */`
@@ -385,5 +385,3 @@ export default class extends SQLProvider {
 	}
 
 }
-
-type CreateOrUpdateValue = SettingsFolderUpdateResult[] | [string, unknown][] | Record<string, unknown> | {};

@@ -1,11 +1,11 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { assetsFolder } from '@utils/constants';
+import { fetchAvatar } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchAvatar } from '../../lib/util/util';
-import { assetsFolder } from '../../lib/util/constants';
 
 const imageCoordinates = [
 	[

@@ -1,7 +1,7 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { getColor } from '../../lib/util/util';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 
@@ -12,6 +12,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_LMGTFY_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_LMGTFY_EXTENDED'),
 			usage: '<query:string>',
+			requiredPermissions: ['EMBED_LINKS'],
 			flagSupport: true
 		});
 	}

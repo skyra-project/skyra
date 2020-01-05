@@ -1,12 +1,13 @@
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { OauthData } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { Time } from '@utils/constants';
+import { ratelimit } from '@utils/util';
+import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
-import ApiRequest from '../../lib/structures/api/ApiRequest';
-import ApiResponse from '../../lib/structures/api/ApiResponse';
 import OauthUser from './oauthUser';
-import { ratelimit } from '../../lib/util/util';
-import { OauthData } from '../../lib/types/DiscordAPI';
-import { Time } from '../../lib/util/constants';
 
 export default class extends Route {
 
@@ -33,7 +34,7 @@ export default class extends Route {
 		});
 
 		if (!res.ok) {
-			console.log(await res.text());
+			this.client.emit(Events.Error, `[KDH] Failed to fetch token: ${await res.text()}`);
 			response.error('There was an error fetching the token.');
 			return;
 		}
@@ -47,6 +48,7 @@ export default class extends Route {
 
 		const body = await res.json() as OauthData;
 		const user = await oauthUser.api(body.access_token);
+		if (user === null) return response.error(500);
 
 		await this.client.queries.insertDashboardUser({
 			id: user.id,

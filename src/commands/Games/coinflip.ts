@@ -1,8 +1,8 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { cleanMentions, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { getColor, cleanMentions } from '../../lib/util/util';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const enum CoinType { Heads, Tails }
 export default class extends SkyraCommand {
@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 		const money = message.author.settings.get(UserSettings.Money);
 
 		if (money < wager) {
-			throw message.language.tget('COMMAND_SLOTMACHINES_MONEY', money);
+			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', money);
 		}
 
 		const result = this.flipCoin();

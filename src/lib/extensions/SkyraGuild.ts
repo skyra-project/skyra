@@ -1,12 +1,12 @@
 import { Structures } from 'discord.js';
-import { enumerable } from '../util/util';
+import { enumerable } from '@utils/util';
 
-import { ModerationManager } from '../structures/ModerationManager';
-import { Queue } from '../structures/music/Queue';
-import { StarboardManager } from '../structures/StarboardManager';
-import { GuildSecurity } from '../util/Security/GuildSecurity';
-import { PermissionsManager } from '../structures/PermissionsManager';
-import { MemberNicknames } from '../util/Cache/MemberNicknames';
+import { ModerationManager } from '@lib/structures/ModerationManager';
+import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { PermissionsManager } from '@lib/structures/PermissionsManager';
+import { StarboardManager } from '@lib/structures/StarboardManager';
+import { MemberTags } from '@utils/Cache/MemberTags';
+import { GuildSecurity } from '@utils/Security/GuildSecurity';
 
 export class SkyraGuild extends Structures.get('Guild') {
 
@@ -14,10 +14,10 @@ export class SkyraGuild extends Structures.get('Guild') {
 	public readonly starboard: StarboardManager = new StarboardManager(this);
 	public readonly moderation: ModerationManager = new ModerationManager(this);
 	public readonly permissionsManager: PermissionsManager = new PermissionsManager(this);
-	public readonly music: Queue = new Queue(this);
+	public readonly music: MusicHandler = new MusicHandler(this);
 
 	@enumerable(false)
-	public readonly nicknames: MemberNicknames = new MemberNicknames(this);
+	public readonly memberTags: MemberTags = new MemberTags(this);
 
 }
 
@@ -27,8 +27,8 @@ declare module 'discord.js' {
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
 		readonly permissionsManager: PermissionsManager;
-		readonly music: Queue;
-		readonly nicknames: MemberNicknames;
+		readonly music: MusicHandler;
+		readonly memberTags: MemberTags;
 	}
 }
 

@@ -1,10 +1,10 @@
+import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@utils/constants';
+import { rest } from '@utils/Models/Rest';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
-import { APIUserData, WSGuildMemberRemove } from '../lib/types/DiscordAPI';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
 import { Event, EventStore } from 'klasa';
-import { rest } from '../lib/util/Models/Rest';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
@@ -24,8 +24,8 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		guild.nicknames.delete(data.user.id);
-		if (!this.client.guilds.some(g => g.nicknames.has(data.user.id))) this.client.userTags.delete(data.user.id);
+		guild.memberTags.delete(data.user.id);
+		if (!this.client.guilds.some(g => g.memberTags.has(data.user.id))) this.client.userTags.delete(data.user.id);
 		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
 		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
 		this.handleFarewellMessage(guild, data.user);
@@ -54,7 +54,7 @@ export default class extends Event {
 				channel.send(this.transformMessage(guild, user))
 					.catch(error => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Channels.Farewell, { throwOnError: true })
+				guild.settings.reset(GuildSettings.Channels.Farewell)
 					.catch(error => this.client.emit(Events.Wtf, error));
 			}
 		}

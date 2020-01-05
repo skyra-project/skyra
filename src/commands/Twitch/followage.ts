@@ -1,10 +1,10 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { TwitchKrakenUserFollowersChannelResults } from '@lib/types/definitions/Twitch';
+import { TOKENS } from '@root/config';
+import { Mime } from '@utils/constants';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { fetch, FetchResultTypes } from '../../lib/util/util';
-import { TOKENS } from '../../../config';
-import { TwitchKrakenUserFollowersChannelResults } from '../../lib/types/definitions/Twitch';
-import { Mime } from '../../lib/util/constants';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const kFetchOptions = {
 	headers: {
@@ -36,10 +36,14 @@ export default class extends SkyraCommand {
 	}
 
 	private async retrieveResults(message: KlasaMessage, user: string, channel: string) {
-		const results = await this.client.twitch.fetchUsersByLogin([user, channel]);
-		if (results._total < 2) throw message.language.tget('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
+		try {
+			const results = await this.client.twitch.fetchUsersByLogin([user, channel]);
+			if (!results || results._total < 2) throw message.language.tget('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
 
-		return results.users;
+			return results.users;
+		} catch (err) {
+			throw message.language.tget('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
+		}
 	}
 
 	private async retrieveFollowage(message: KlasaMessage, userID: string, channelID: string) {

@@ -36,13 +36,14 @@ import {
 	TOKENS,
 	VERSION,
 	WEBHOOK_ERROR
-} from '../../config';
+} from '@root/config';
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
 import './schemas/Clients';
 import './schemas/Guilds';
 import './schemas/Users';
+import { BannerSchema } from './schemas/Banners';
 
 // Import setup files
 import './setup/PermissionsLevels';
@@ -54,6 +55,7 @@ import { initClean } from './util/clean';
 import { InfluxDB } from 'influx';
 import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
 import { GameIntegrationsManager } from './structures/GI/GameIntegrationsManager';
+import { WebsocketHandler } from './websocket';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -132,12 +134,14 @@ export class SkyraClient extends KlasaClient {
 		.on('error', (error, client) => { this.emit(Events.Error, `${r} Error from ${client.name}`, error); })
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
+	public websocket = new WebsocketHandler(this);
+
 	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));
 
 		this.gateways
 			.register(new GatewayStorage(this, Databases.Members))
-			.register(new GatewayStorage(this, Databases.Banners))
+			.register(new GatewayStorage(this, Databases.Banners, { schema: BannerSchema }))
 			.register(new GatewayStorage(this, Databases.Giveaway))
 			.register(new GatewayStorage(this, Databases.Moderation))
 			.register(new GatewayStorage(this, Databases.Starboard))
@@ -151,6 +155,10 @@ export class SkyraClient extends KlasaClient {
 		if (!this.options.dev) {
 			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
+		}
+
+		if (this.lavalink !== null) {
+			this.lavalink.once('open', () => this.console.verbose(`${new Colors({ text: 'magenta' }).format('[LAVALINK]')} Connected.`));
 		}
 	}
 

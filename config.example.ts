@@ -1,11 +1,13 @@
 // Remove `.example` from the file extension to configure Skyra
 
-import { KlasaClientOptions } from 'klasa';
-import { PoolConfig } from 'pg';
-import { APIWebhookData } from './src/lib/types/DiscordAPI';
-import ApiRequest from './src/lib/structures/api/ApiRequest';
-import ApiResponse from './src/lib/structures/api/ApiResponse';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { APIWebhookData } from '@lib/types/DiscordAPI';
+import { rootFolder } from '@utils/constants';
 import { ISingleHostConfig } from 'influx';
+import { KlasaClientOptions } from 'klasa';
+import { resolve } from 'path';
+import { PoolConfig } from 'pg';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
@@ -14,6 +16,7 @@ export const ENABLE_POSTGRES = 'ENABLE_POSTGRES' in process.env ? process.env.EN
 export const ENABLE_INFLUX = 'ENABLE_INFLUX' in process.env ? process.env.ENABLE_INFLUX === 'true' : !DEV;
 export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
+export const WSS_PORT = 565;
 
 export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
@@ -89,6 +92,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	dev: DEV,
 	disabledEvents: [
 		'CHANNEL_PINS_UPDATE',
+		'GUILD_CREATE',
 		'GUILD_MEMBER_UPDATE',
 		'PRESENCE_UPDATE',
 		'TYPING_START',
@@ -115,6 +119,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
 		'default': ENABLE_POSTGRES ? 'postgres' : 'json',
+		'json': { baseDirectory: resolve(rootFolder, 'bwd', 'providers', 'json') },
 		'postgres': PGSQL_DATABASE_OPTIONS
 	},
 	readyMessage: client =>
@@ -162,10 +167,12 @@ export const TOKENS = {
 	NINTENDO_ID: 'U3B6GR4UA3',
 	NINTENDO_KEY: '9a20c93440cf63cf1a7008d75f7438bf',
 	THEMOVIEDATABASE_KEY: '',
+	TIMEZONEDB_KEY: '',
 	TWITCH_CLIENT_ID: '',
 	TWITCH_SECRET: '',
 	TWITCH_WEBHOOK_SECRET: '',
 	WEEB_SH_KEY: '',
 	WOLFRAM_KEY: '',
-	XIVAPI_KEY: ''
+	XIVAPI_KEY: '',
+	CLASH_OF_CLANS_KEY: ''
 };

@@ -1,5 +1,5 @@
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
 
 export default class extends MusicCommand {
 
@@ -11,10 +11,8 @@ export default class extends MusicCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage) {
-		const amount = message.guild!.music.length;
-		message.guild!.music.prune();
-		return message.sendLocale('COMMAND_CLEAR_SUCCESS', [amount]);
+	public run(message: KlasaMessage) {
+		message.guild!.music.prune(this.getContext(message));
 	}
 
 }

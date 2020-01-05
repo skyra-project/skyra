@@ -1,18 +1,18 @@
-import { ISchemaOptions, FieldType } from 'influx';
-import { Tags } from '../types/influxSchema/tags';
-import { AuditMeasurements, AuditTags } from '../types/influxSchema/Audit';
-import { Databases } from '../types/influxSchema/database';
+import { AuditMeasurements, AuditTags } from '@lib/types/influxSchema/Audit';
+import { Databases } from '@lib/types/influxSchema/database';
+import { Tags } from '@lib/types/influxSchema/tags';
+import { FieldType, ISchemaOptions } from 'influx';
 
 export const SchemaSettingsUpdate: ISchemaOptions = {
 	database: Databases.Audits,
 	measurement: AuditMeasurements.SettingsUpdate,
 	fields: {
 		key: FieldType.STRING,
-		old_value: FieldType.STRING,
-		new_value: FieldType.STRING
+		value: FieldType.STRING
 	},
 	tags: [
 		Tags.Shard,
+		AuditTags.By,
 		AuditTags.Target,
 
 		Tags.Guild,

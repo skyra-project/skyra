@@ -1,5 +1,5 @@
-import { IPCMonitor } from '../lib/structures/IPCMonitor';
-import { UserSettings } from '../lib/types/settings/UserSettings';
+import { IPCMonitor } from '@lib/structures/IPCMonitor';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 
 export default class extends IPCMonitor {
 
@@ -9,8 +9,7 @@ export default class extends IPCMonitor {
 		const settings = await user.settings.sync();
 
 		const payment = data.votes && (data.votes.totalVotes % 5 === 0) ? 2000 : 500;
-		const { errors } = await settings.increase(UserSettings.Money, payment);
-		if (errors.length) throw String(errors[0]);
+		await settings.increase(UserSettings.Money, payment);
 		return 'OK';
 	}
 

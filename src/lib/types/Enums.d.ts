@@ -40,7 +40,30 @@ export const enum Events {
 	Wtf = 'wtf',
 	GuildAnnouncementEdit = 'guildAnnouncementEdit',
 	GuildAnnouncementSend = 'guildAnnouncementSend',
-	GuildAnnouncementError = 'guildAnnouncementError'
+	GuildAnnouncementError = 'guildAnnouncementError',
+	LavalinkDestroy = 'lavalinkDestroy',
+	LavalinkEnd = 'lavalinkEnd',
+	LavalinkException = 'lavalinkException',
+	LavalinkPlayerUpdate = 'lavalinkPlayerUpdate',
+	LavalinkStuck = 'lavalinkStuck',
+	LavalinkWebsocketClosed = 'lavalinkWebsocketClosed',
+	MusicAdd = 'musicAdd',
+	MusicConnect = 'musicConnect',
+	MusicLeave = 'musicLeave',
+	MusicPrune = 'musicPrune',
+	MusicRemove = 'musicRemove',
+	MusicReplayUpdate = 'musicReplayUpdate',
+	MusicShuffleQueue = 'musicShuffleQueue',
+	MusicSongFinish = 'musicSongFinish',
+	MusicSongPause = 'musicSongPause',
+	MusicSongPlay = 'musicSongPlay',
+	MusicSongReplay = 'musicSongReplay',
+	MusicSongResume = 'musicSongResume',
+	MusicSongSeekUpdate = 'musicSongSeekUpdate',
+	MusicSongSkip = 'musicSongSkip',
+	MusicSongVolumeUpdate = 'musicSongVolumeUpdate',
+	MusicVoiceChannelJoin = 'musicVoiceChannelJoin',
+	MusicVoiceChannelLeave = 'musicVoiceChannelLeave'
 }
 
 export const enum PermissionLevels {

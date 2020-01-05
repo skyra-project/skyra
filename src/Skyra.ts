@@ -1,6 +1,7 @@
+import 'module-alias/register';
+import { SkyraClient } from '@lib/SkyraClient';
+import { CLIENT_OPTIONS, TOKENS } from '@root/config';
 import { inspect } from 'util';
-import { CLIENT_OPTIONS, TOKENS } from '../config';
-import { SkyraClient } from './lib/SkyraClient';
 inspect.defaultOptions.depth = 1;
 
 const client = new SkyraClient(CLIENT_OPTIONS);

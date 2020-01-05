@@ -1,9 +1,9 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { Adder } from '../../../lib/util/Adder';
-import { Time } from '../../../lib/util/constants';
-import { PermissionLevels } from '../../../lib/types/Enums';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Adder } from '@utils/Adder';
+import { Time } from '@utils/constants';
+import { PermissionLevels } from '@lib/types/Enums';
 
 const TYPES = {
 	action: {

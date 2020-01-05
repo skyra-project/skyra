@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2019 dirigeants. All rights reserved. MIT license.
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Events } from '@lib/types/Enums';
+import { WATCH_FILES } from '@root/config';
+import { floatPromise } from '@utils/util';
 import { watch } from 'chokidar';
 import { KlasaMessage, Piece, Stopwatch, Task } from 'klasa';
 import { basename, extname, join, sep } from 'path';
-import { WATCH_FILES } from '../../config';
-import { SkyraCommand } from '../lib/structures/SkyraCommand';
-import { Events } from '../lib/types/Enums';
-import { floatPromise } from '../lib/util/util';
 
 const nodeModules = `${sep}node_modules${sep}`;
 

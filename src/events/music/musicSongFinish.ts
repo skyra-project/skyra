@@ -1,9 +1,9 @@
+import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
+import { Song } from '@lib/structures/music/Song';
+import { Events } from '@lib/types/Enums';
+import { OutgoingWebsocketAction } from '@lib/websocket/types';
+import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
-import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/music/MusicHandler';
-import { Events } from '../../lib/types/Enums';
-import { floatPromise } from '../../lib/util/util';
-import { OutgoingWebsocketAction } from '../../lib/websocket/types';
-import { Song } from '../../lib/structures/music/Song';
 
 export default class extends Event {
 

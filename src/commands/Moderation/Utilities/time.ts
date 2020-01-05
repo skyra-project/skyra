@@ -1,10 +1,10 @@
+import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Moderation } from '@utils/constants';
 import { Permissions, TextChannel } from 'discord.js';
 import { CommandStore, Duration, KlasaMessage, KlasaUser, ScheduledTask } from 'klasa';
-import { ModerationManagerEntry } from '../../../lib/structures/ModerationManagerEntry';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { Moderation } from '../../../lib/util/constants';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 

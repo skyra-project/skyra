@@ -1,6 +1,6 @@
+import { MusicCommand } from '@lib/structures/MusicCommand';
+import { Events } from '@lib/types/Enums';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicCommand } from '../../lib/structures/MusicCommand';
-import { Events } from '../../lib/types/Enums';
 
 export default class extends MusicCommand {
 

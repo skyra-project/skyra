@@ -1,7 +1,7 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetch, getColor, FetchResultTypes } from '../../lib/util/util';
 
 const url = new URL('https://randomfox.ca/floof');
 

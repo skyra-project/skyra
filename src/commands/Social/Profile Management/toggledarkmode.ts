@@ -1,6 +1,6 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../../lib/types/settings/UserSettings';
 
 export default class extends SkyraCommand {
 

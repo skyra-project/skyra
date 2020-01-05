@@ -36,7 +36,7 @@ import {
 	TOKENS,
 	VERSION,
 	WEBHOOK_ERROR
-} from '../../config';
+} from '@root/config';
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';

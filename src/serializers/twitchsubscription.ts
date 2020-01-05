@@ -1,5 +1,5 @@
+import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
 import { Serializer, SerializerUpdateContext } from 'klasa';
-import { NotificationsStreamTwitch, NotificationsStreamsTwitchStreamer } from '../lib/types/settings/GuildSettings';
 
 export default class extends Serializer {
 

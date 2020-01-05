@@ -1,6 +1,6 @@
 /*
  * import { mergeDefault } from '@klasa/utils';
- * import { CLIENT_OPTIONS } from '../config';
+ * import { CLIENT_OPTIONS } from '@root/config';
  * import { Pool } from 'pg';
  *
  * async function main() {

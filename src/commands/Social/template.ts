@@ -1,11 +1,11 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { socialFolder } from '@utils/constants';
+import { fetch, fetchAvatar, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
-import { socialFolder } from '../../lib/util/constants';
-import { fetch, fetchAvatar, FetchResultTypes, IMAGE_EXTENSION } from '../../lib/util/util';
 
 const BADGES_FOLDER = join(socialFolder, 'badges');
 

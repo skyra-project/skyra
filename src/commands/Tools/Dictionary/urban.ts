@@ -1,9 +1,9 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { BrandingColors } from '@utils/constants';
+import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language, util } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { cutText, fetch, getColor, FetchResultTypes } from '../../../lib/util/util';
-import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { BrandingColors } from '../../../lib/util/constants';
 
 const ZWS = '\u200B';
 

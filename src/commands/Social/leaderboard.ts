@@ -1,7 +1,7 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LeaderboardUser } from '@utils/Leaderboard';
 import { Collection } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { LeaderboardUser } from '../../lib/util/Leaderboard';
 
 const titles = {
 	global: '🌐 Global Score Scoreboard',

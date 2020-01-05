@@ -1,12 +1,12 @@
-import { Monitor, KlasaMessage } from 'klasa';
+import { Events, PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { CustomGet } from '@lib/types/settings/Shared';
+import { Adder } from '@utils/Adder';
+import { MessageLogsEnum } from '@utils/constants';
+import { GuildSecurity } from '@utils/Security/GuildSecurity';
+import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
+import { KlasaMessage, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { GuildSecurity } from '../util/Security/GuildSecurity';
-import { Adder } from '../util/Adder';
-import { MessageLogsEnum } from '../util/constants';
-import { Events, PermissionLevels } from '../types/Enums';
-import { MessageEmbed, GuildMember, TextChannel } from 'discord.js';
-import { CustomGet } from '../types/settings/Shared';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 

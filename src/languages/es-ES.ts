@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { codeBlock, toTitleCase } from '@klasa/utils';
+import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
+import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
+import { VERSION } from '@root/config';
+import { Emojis } from '@utils/constants';
+import friendlyDuration from '@utils/FriendlyDuration';
+import { LanguageHelp } from '@utils/LanguageHelp';
+import { createPick, inlineCodeblock } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
-import { VERSION } from '../../config';
-import { Filter, LanguageKeys, Position } from '../lib/types/Languages';
-import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
-import { Emojis } from '../lib/util/constants';
-import friendlyDuration from '../lib/util/FriendlyDuration';
-import { LanguageHelp } from '../lib/util/LanguageHelp';
-import { createPick, inlineCodeblock } from '../lib/util/util';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;

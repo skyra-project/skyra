@@ -1,7 +1,7 @@
-import { Track } from 'lavalink';
-import { enumerable, showSeconds, cleanMentions } from '../../util/util';
-import { MusicHandler } from './MusicHandler';
+import { cleanMentions, enumerable, showSeconds } from '@utils/util';
 import { Util } from 'discord.js';
+import { Track } from 'lavalink';
+import { MusicHandler } from './MusicHandler';
 
 export class Song {
 

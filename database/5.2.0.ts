@@ -1,19 +1,19 @@
 /**
  * import { Pool } from 'pg';
  * import { mergeDefault } from '@klasa/utils';
- * import { CLIENT_OPTIONS } from '../config';
+ * import { CLIENT_OPTIONS } from '@root/config';
  * import { join } from 'path';
  * import { readJSON, outputJSON } from 'fs-nextra';
- * import { RawBannerSettings } from '../src/lib/types/settings/raw/RawBannerSettings';
- * import { RawGiveawaySettings } from '../src/lib/types/settings/raw/RawGiveawaySettings';
- * import { RawGuildSettings } from '../src/lib/types/settings/raw/RawGuildSettings';
- * import { RawMemberSettings } from '../src/lib/types/settings/raw/RawMemberSettings';
- * import { RawModerationSettings } from '../src/lib/types/settings/raw/RawModerationSettings';
- * import { RawStarboardSettings } from '../src/lib/types/settings/raw/RawStarboardSettings';
- * import { RawUserSettings } from '../src/lib/types/settings/raw/RawUserSettings';
- * import { RawCommandCounterSettings } from '../src/lib/types/settings/raw/RawCommandCounterSettings';
- * import { AnyObject } from '../src/lib/types/util';
- * import { RawClientSettings } from '../src/lib/types/settings/raw/RawClientSettings';
+ * import { RawBannerSettings } from '@lib/types/settings/raw/RawBannerSettings';
+ * import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+ * import { RawGuildSettings } from '@lib/types/settings/raw/RawGuildSettings';
+ * import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+ * import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+ * import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+ * import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
+ * import { RawCommandCounterSettings } from '@lib/types/settings/raw/RawCommandCounterSettings';
+ * import { AnyObject } from '@lib/types/util';
+ * import { RawClientSettings } from '@lib/types/settings/raw/RawClientSettings';
  *
  * async function main() {
  * 	await migrateAll();

@@ -1,7 +1,7 @@
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { getColor } from '../../lib/util/util';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 

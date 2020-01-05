@@ -1,9 +1,9 @@
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@utils/constants';
+import { cutText, getContent, getImage } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
-import { cutText, getContent, getImage } from '../lib/util/util';
 
 export default class extends Event {
 

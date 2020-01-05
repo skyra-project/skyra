@@ -1,5 +1,5 @@
-import { Extendable, ExtendableStore } from 'klasa';
 import { Message, TextChannel } from 'discord.js';
+import { Extendable, ExtendableStore } from 'klasa';
 
 const snipes = new WeakMap<TextChannel, SnipedMessage>();
 

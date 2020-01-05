@@ -1,7 +1,7 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { KlasaClient } from 'klasa';
+import { APIUserData } from '@lib/types/DiscordAPI';
 import { User } from 'discord.js';
-import { APIUserData } from '../../types/DiscordAPI';
+import { KlasaClient } from 'klasa';
 
 export class UserTags extends Collection<string, UserTag> {
 

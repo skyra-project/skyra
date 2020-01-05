@@ -1,6 +1,6 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Events } from '@lib/types/Enums';
 import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Events } from '../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 

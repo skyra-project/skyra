@@ -1,10 +1,10 @@
 import { chunk } from '@klasa/utils';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { BrandingColors } from '@utils/constants';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { BrandingColors } from '../../lib/util/constants';
-import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 

@@ -1,9 +1,10 @@
+import { Events } from '@lib/types/Enums';
+import { ClientSettings } from '@lib/types/settings/ClientSettings';
+import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { ClientSettings } from '../lib/types/settings/ClientSettings';
-import { GuildSettings, RolesAuto } from '../lib/types/settings/GuildSettings';
-import { UserSettings } from '../lib/types/settings/UserSettings';
+
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const { FLAGS: { MANAGE_ROLES } } = Permissions;
 

@@ -1,13 +1,13 @@
-import { GuildMember, PermissionString, Role, User, Guild, MessageEmbed } from 'discord.js';
+import { LevelTitles } from '@root/src/commands/Social/level';
+import { ProfileTitles } from '@root/src/commands/Social/profile';
+import { StatsGeneral, StatsUptime, StatsUsage } from '@root/src/commands/System/stats';
+import { Song } from '@lib/structures/music/Song';
+import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { Guild, GuildMember, MessageEmbed, PermissionString, Role, User } from 'discord.js';
 import { ScheduledTask, SchemaEntry } from 'klasa';
-import { HungerGamesGame } from '../../commands/Games/hungergames';
-import { LevelTitles } from '../../commands/Social/level';
-import { ProfileTitles } from '../../commands/Social/profile';
-import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/stats';
-import { Song } from '../structures/music/Song';
-import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
 import { Kitsu } from './definitions/Kitsu';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
+import { HungerGamesGame } from '@root/src/commands/Games/hungergames';
 
 export const enum Position {
 	Before,

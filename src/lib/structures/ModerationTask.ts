@@ -1,9 +1,9 @@
-import { Task } from 'klasa';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { Moderation } from '@utils/constants';
+import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { Guild, User } from 'discord.js';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { ModerationActionsSendOptions } from '../util/Security/ModerationActions';
-import { UserSettings } from '../types/settings/UserSettings';
-import { Moderation } from '../util/constants';
+import { Task } from 'klasa';
 
 export abstract class ModerationTask extends Task {
 

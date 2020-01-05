@@ -1,4 +1,4 @@
-import { IPCMonitor } from '../lib/structures/IPCMonitor';
+import { IPCMonitor } from '@lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 

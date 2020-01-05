@@ -1,13 +1,13 @@
 // Remove `.example` from the file extension to configure Skyra
 
-import { KlasaClientOptions } from 'klasa';
-import { PoolConfig } from 'pg';
-import { APIWebhookData } from './src/lib/types/DiscordAPI';
-import ApiRequest from './src/lib/structures/api/ApiRequest';
-import ApiResponse from './src/lib/structures/api/ApiResponse';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { APIWebhookData } from '@lib/types/DiscordAPI';
+import { rootFolder } from '@utils/constants';
 import { ISingleHostConfig } from 'influx';
-import { rootFolder } from './src/lib/util/constants';
+import { KlasaClientOptions } from 'klasa';
 import { resolve } from 'path';
+import { PoolConfig } from 'pg';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);

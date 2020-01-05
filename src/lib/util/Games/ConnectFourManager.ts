@@ -1,10 +1,10 @@
 import { Client, Collection, User } from 'discord.js';
-import { Game } from './ConnectFour/Game';
-import { PlayerAI } from './ConnectFour/PlayerAI';
-import { Cell } from './ConnectFour/Board';
-import { PlayerColor } from './ConnectFour/Player';
-import { PlayerHuman } from './ConnectFour/PlayerHuman';
 import { KlasaMessage } from 'klasa';
+import { Cell } from './ConnectFour/Board';
+import { Game } from './ConnectFour/Game';
+import { PlayerColor } from './ConnectFour/Player';
+import { PlayerAI } from './ConnectFour/PlayerAI';
+import { PlayerHuman } from './ConnectFour/PlayerHuman';
 
 export class ConnectFourManager extends Collection<string, Game | null> {
 

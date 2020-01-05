@@ -1,12 +1,12 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { TOKENS } from '@root/config';
+import { assetsFolder } from '@utils/constants';
+import { queryGoogleMapsAPI } from '@utils/Google';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { TOKENS } from '../../../config';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { assetsFolder } from '../../lib/util/constants';
-import { queryGoogleMapsAPI } from '../../lib/util/Google';
-import { fetch, FetchResultTypes } from '../../lib/util/util';
 
 const COLORS = {
 	cloudy: '#88929F',

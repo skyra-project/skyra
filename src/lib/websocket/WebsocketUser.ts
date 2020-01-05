@@ -1,12 +1,11 @@
-import { UserAuthObject } from '../structures/api/ApiRequest';
-import { SkyraClient } from '../SkyraClient';
+import { SkyraClient } from '@lib/SkyraClient';
+import { UserAuthObject } from '@lib/structures/api/ApiRequest';
+import { Events } from '@lib/types/Enums';
+import { CLIENT_SECRET } from '@root/config';
+import { enumerable } from '@utils/util';
 import { KlasaUser } from 'klasa';
-import { enumerable } from '../util/util';
-import { CLIENT_SECRET } from '../../../config';
-
-import WebSocket, { Data, Server } from 'ws';
-import { Events } from '../types/Enums';
 import { Util } from 'klasa-dashboard-hooks';
+import WebSocket, { Data, Server } from 'ws';
 import {
 	Subscription,
 	OutgoingWebsocketMessage,
@@ -19,6 +18,7 @@ import {
 	SubscriptionAction,
 	IncomingWebsocketAction
 } from './types';
+
 
 export default class DashboardWebsocketUser {
 

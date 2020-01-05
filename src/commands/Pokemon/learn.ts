@@ -1,8 +1,8 @@
 import { toTitleCase } from '@klasa/utils';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, POKEMON_EMBED_THUMBNAIL, resolveColour } from '../../lib/util/Pokemon';
 
 export default class Learn extends SkyraCommand {
 

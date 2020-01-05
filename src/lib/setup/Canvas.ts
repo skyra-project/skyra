@@ -1,6 +1,6 @@
+import { assetsFolder } from '@utils/constants';
 import { Canvas } from 'canvas-constructor';
 import { join } from 'path';
-import { assetsFolder } from '../util/constants';
 
 export default Canvas
 	.registerFont(join(assetsFolder, 'fonts', 'Roboto-Regular.ttf'), 'RobotoRegular')

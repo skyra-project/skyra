@@ -1,12 +1,12 @@
 import Collection from '@discordjs/collection';
+import { ClientSettings } from '@lib/types/settings/ClientSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { socialFolder } from '@utils/constants';
+import { loadImage } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
-import { ClientSettings } from '../../types/settings/ClientSettings';
-import { UserSettings } from '../../types/settings/UserSettings';
-import { socialFolder } from '../constants';
-import { loadImage } from '../util';
 import { Slotmachine } from './Slotmachine';
 
 const enum Icons {

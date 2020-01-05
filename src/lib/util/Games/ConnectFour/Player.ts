@@ -1,5 +1,5 @@
-import { Game } from './Game';
 import { Cell } from './Board';
+import { Game } from './Game';
 
 export enum PlayerColor {
 	Blue,

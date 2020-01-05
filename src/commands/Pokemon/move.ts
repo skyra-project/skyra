@@ -1,9 +1,9 @@
 import { toTitleCase } from '@klasa/utils';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '../../lib/util/Pokemon';
-import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 

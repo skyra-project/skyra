@@ -1,18 +1,18 @@
+import { DashboardUser } from '@lib/queries/common';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { Databases } from '@lib/types/constants/Constants';
+import { OauthData } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { REDIRECT_URI, SCOPE } from '@root/config';
+import { MemberTag } from '@utils/Cache/MemberTags';
+import { Mime, Time } from '@utils/constants';
+import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '@utils/Models/ApiTransform';
+import { authenticated, fetch, FetchResultTypes, ratelimit } from '@utils/util';
+import { Guild, GuildFeatures, Permissions } from 'discord.js';
 import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
-import { ratelimit, authenticated, fetch, FetchResultTypes } from '../../lib/util/util';
-import ApiRequest from '../../lib/structures/api/ApiRequest';
-import ApiResponse from '../../lib/structures/api/ApiResponse';
-import { Events } from '../../lib/types/Enums';
-import { Time, Mime } from '../../lib/util/constants';
-import { REDIRECT_URI, SCOPE } from '../../../config';
-import { OauthData } from '../../lib/types/DiscordAPI';
-import { Databases } from '../../lib/types/constants/Constants';
-import { DashboardUser } from '../../lib/queries/common';
 import { stringify } from 'querystring';
-import { FlattenedGuild, flattenGuild, flattenUser, FlattenedUser } from '../../lib/util/Models/ApiTransform';
-import { GuildFeatures, Permissions, Guild } from 'discord.js';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { MemberTag } from '../../lib/util/Cache/MemberTags';
 
 export default class extends Route {
 

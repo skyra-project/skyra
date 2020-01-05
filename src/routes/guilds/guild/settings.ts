@@ -1,12 +1,12 @@
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
-import ApiRequest from '../../../lib/structures/api/ApiRequest';
-import ApiResponse from '../../../lib/structures/api/ApiResponse';
-import { authenticated, ratelimit } from '../../../lib/util/util';
-import { Permissions } from 'discord.js';
-import { Events } from '../../../lib/types/Enums';
-import { inspect } from 'util';
-import { RawGuildSettings } from '../../../lib/types/settings/raw/RawGuildSettings';
 import { objectToTuples } from '@klasa/utils';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { Events } from '@lib/types/Enums';
+import { RawGuildSettings } from '@lib/types/settings/raw/RawGuildSettings';
+import { authenticated, ratelimit } from '@utils/util';
+import { Permissions } from 'discord.js';
+import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { inspect } from 'util';
 
 const { FLAGS: { MANAGE_GUILD } } = Permissions;
 

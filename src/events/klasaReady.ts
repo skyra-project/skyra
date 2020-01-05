@@ -1,7 +1,7 @@
+import { Events } from '@lib/types/Enums';
+import { Slotmachine } from '@utils/Games/Slotmachine';
+import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
 import { Event, EventStore } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { Slotmachine } from '../lib/util/Games/Slotmachine';
-import { WheelOfFortune } from '../lib/util/Games/WheelOfFortune';
 
 export default class extends Event {
 

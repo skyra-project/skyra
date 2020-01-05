@@ -1,10 +1,10 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { TwitchKrakenUserFollowersChannelResults } from '@lib/types/definitions/Twitch';
+import { TOKENS } from '@root/config';
+import { Mime } from '@utils/constants';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { TOKENS } from '../../../config';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { TwitchKrakenUserFollowersChannelResults } from '../../lib/types/definitions/Twitch';
-import { Mime } from '../../lib/util/constants';
-import { fetch, FetchResultTypes } from '../../lib/util/util';
 
 const kFetchOptions = {
 	headers: {

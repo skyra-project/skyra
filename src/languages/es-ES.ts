@@ -3572,7 +3572,7 @@ export default class extends Language {
 			: `[Action] Applied Softban | Reason: ${reason}`,
 		ACTION_BAN_REASON: reason => reason === null
 			? '[Action] Applied Ban'
-			: `[Action] Applied Ban`,
+			: `[Action] Applied Ban | Reason: ${reason}`,
 		ACTION_UNBAN_REASON: reason => reason === null
 			? '[Action] Applied Unban.'
 			: `[Action] Applied Unban | Reason: ${reason}`,

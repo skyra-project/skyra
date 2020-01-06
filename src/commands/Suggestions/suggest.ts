@@ -1,10 +1,10 @@
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../lib/types/Enums';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { BrandingColors } from '../../lib/util/constants';
-import { displayEmoji } from '../../lib/util/util';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { BrandingColors } from '@utils/constants';
+import { displayEmoji } from '@utils/util';
+import { PermissionLevels } from '@lib/types/Enums';
 
 export default class extends SkyraCommand {
 

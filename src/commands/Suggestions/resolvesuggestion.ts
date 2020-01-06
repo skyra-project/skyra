@@ -1,8 +1,8 @@
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../lib/types/Enums';
 import { MessageEmbed, TextChannel } from 'discord.js';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 const IdRegex = /\d{16,18}/;
 

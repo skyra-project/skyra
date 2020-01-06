@@ -51,10 +51,12 @@ export default class extends SkyraCommand {
 	private async claimDaily(message: KlasaMessage, nextTime: number) {
 		const money = this.calculateDailies(message);
 		const currentMoney = await message.author.settings.get(UserSettings.Money);
-		this.client.emit(Events.MoneyTransaction, message.author, money, currentMoney, EconomyTransactionAction.Add, EconomyTransactionReason.Daily);
+
 		await message.author.settings.update([[UserSettings.TimeDaily, nextTime], [UserSettings.Money, currentMoney + money]], {
 			extraContext: { author: message.author.id }
 		});
+		this.client.emit(Events.MoneyTransaction, message.author, money, currentMoney, EconomyTransactionAction.Add, EconomyTransactionReason.Daily);
+
 		return money;
 	}
 

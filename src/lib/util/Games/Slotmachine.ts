@@ -103,16 +103,16 @@ export class Slotmachine {
 		this.calculate(rolls);
 
 		const money = settings.get(UserSettings.Money);
-		const won = this.winnings === 0;
+		const lost = this.winnings === 0;
 		const winnings = (this.winnings * this.boost) - this.bet;
 		const darkTheme = settings.get(UserSettings.DarkTheme);
-		const amount = won
+		const amount = lost
 			? money - this.bet
 			: money + winnings;
 
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 
-		await (won
+		await (lost
 			? this.player.decreaseBalance(this.bet, EconomyTransactionReason.Gamble)
 			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble));
 

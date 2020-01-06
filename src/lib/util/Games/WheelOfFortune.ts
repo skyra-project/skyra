@@ -97,15 +97,15 @@ export class WheelOfFortune {
 		const darkTheme = settings.get(UserSettings.DarkTheme);
 		const spin = Math.floor(Math.random() * this.MULTIPLIERS.length);
 		this.calculate(spin);
-		const won = this.winnings === 0;
+		const lost = this.winnings === 0;
 		const winnings = (this.winnings * this.boost) - this.amount;
 
-		const amount = won
+		const amount = lost
 			? money - this.amount
 			: money + winnings;
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 
-		await (won
+		await (lost
 			? this.player.decreaseBalance(this.amount, EconomyTransactionReason.Gamble)
 			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble));
 

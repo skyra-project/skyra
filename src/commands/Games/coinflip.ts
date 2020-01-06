@@ -46,11 +46,10 @@ export default class extends SkyraCommand {
 
 		const result = this.flipCoin();
 		const won = result === guess;
-		const updateBalance = won
+		await (won
 			? message.author.increaseBalance(wager, EconomyTransactionReason.Gamble)
-			: message.author.decreaseBalance(wager, EconomyTransactionReason.Gamble);
+			: message.author.decreaseBalance(wager, EconomyTransactionReason.Gamble));
 
-		await updateBalance;
 		return message.sendEmbed(this.buildEmbed(message, result)
 			.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
 			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result], wager)));

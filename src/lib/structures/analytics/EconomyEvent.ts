@@ -4,8 +4,8 @@ import { Databases } from '@lib/types/influxSchema/database';
 import BaseAnalyticsEvent from './BaseAnalyticsEvent';
 
 export type PossibleEvents =
-	Events.MoneyTransaction |
-	Events.MoneyPayment;
+	Events.MoneyTransaction
+	| Events.MoneyPayment;
 
 export interface EconomyEventOptions extends EventOptions {
 	event: PossibleEvents;

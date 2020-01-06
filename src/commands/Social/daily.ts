@@ -2,7 +2,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { ClientSettings } from '@lib/types/settings/ClientSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { Time } from '@utils/constants';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { EconomyTransactionReason, EconomyTransactionAction } from '@lib/types/influxSchema/Economy';
 import { Events } from '@lib/types/Enums';
 
@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 	private async claimDaily(message: KlasaMessage, nextTime: number) {
 		const money = this.calculateDailies(message);
 		const currentMoney = await message.author.settings.get(UserSettings.Money);
-		this.client.emit(Events.MoneyTransaction, message.author as KlasaUser, money, currentMoney, EconomyTransactionAction.Add, EconomyTransactionReason.Daily);
+		this.client.emit(Events.MoneyTransaction, message.author, money, currentMoney, EconomyTransactionAction.Add, EconomyTransactionReason.Daily);
 		await message.author.settings.update([[UserSettings.TimeDaily, nextTime], [UserSettings.Money, currentMoney + money]], {
 			extraContext: { author: message.author.id }
 		});

@@ -23,7 +23,7 @@ export default abstract class BaseAnalyticsEvent extends Event {
 		return this.influx.writeMeasurement(measurement, points, this.formOptions(options));
 	}
 
-	protected formTags<T extends object>(tags: T) {
+	protected formTags(tags: object) {
 		return mergeDefault(this.getDefaultTags(), tags);
 	}
 

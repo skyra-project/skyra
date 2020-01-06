@@ -104,11 +104,11 @@ export class WheelOfFortune {
 			? money - this.amount
 			: money + winnings;
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
-		const update = won
-			? this.player.decreaseBalance(this.amount, EconomyTransactionReason.Gamble)
-			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble);
 
-		await update;
+		await (won
+			? this.player.decreaseBalance(this.amount, EconomyTransactionReason.Gamble)
+			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble));
+
 		return [await this.render(money, spin, amount, darkTheme), amount] as [Buffer, number];
 	}
 

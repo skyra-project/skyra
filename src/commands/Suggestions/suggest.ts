@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: 'hehehe',
-			extendedHelp: 'despacito',
+			description: language => language.tget('COMMAND_SUGGEST_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_SUGGEST_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<suggestion:string{3,2000}>'
@@ -37,8 +37,8 @@ export default class extends SkyraCommand {
 		// Post the suggestion
 		const suggestionsMessage = await suggestionsChannel!.send(new MessageEmbed()
 			.setColor(BrandingColors.Primary)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.avatarURL()!)
-			.setTitle(`Suggestion #${suggestionID}`)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 })!)
+			.setTitle(message.language.tget('COMMAND_SUGGEST_TITLE', suggestionID))
 			.setDescription(suggestion));
 
 		// Add the upvote/downvote reactions
@@ -50,33 +50,35 @@ export default class extends SkyraCommand {
 
 		// Increase the next id
 		await message.guild!.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
+
+		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [suggestionsChannel]);
 	}
 
 	private async setChannel(message: KlasaMessage) {
-		const resMessage = await message.send(`I'm sorry ${message.author.username}, but a suggestons channel hasn't been setup.`);
+		const resMessage = await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
 
 		// If the user doesn't have the rights to change guild configuration, do not proceed
 		const manageable = await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator);
 		if (!manageable) return;
 
 		// Ask the user if they want to setup a channel
-		const setup = await message.ask({ content: `I'm sorry ${message.author.username}, but a suggestons channel hasn't been setup. Would you like to set-up a channel now?` });
+		const setup = await message.ask({ content: message.language.tget('COMMAND_SUGGEST_NOSETUP_ASK', message.author.username) });
 		if (!setup) {
-			await resMessage.edit('Alright then. Aborted creating a new suggestion.');
+			await resMessage.edit(message.language.tget('COMMAND_SUGGEST_NOSETUP_ABORT'));
 			return;
 		}
 
 		// Get the channel
-		const channel = (await message.prompt('Please mention the channel you want to set as the suggestions channel. You have 30 seconds')).mentions.channels.first() || null;
+		const channel = (await message.prompt(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'))).mentions.channels.first() || null;
 		if (!channel || channel.guild.id !== message.guild!.id) {
-			await resMessage.edit('Didn\'t receive a valid channel mention. Aborting...');
+			await resMessage.edit(message.language.tget('COMMAND_SUGGEST_CHANNEL_INVALID'));
 			return;
 		}
 
 		// Update settings
 		await message.guild!.settings.update(GuildSettings.Suggestions.SuggestionsChannel, channel);
 		await resMessage.nuke();
-		await message.send('Saved your selection.');
+		await message.sendLocale('COMMAND_CONF_MENU_SAVED');
 
 		return channel.id;
 	}

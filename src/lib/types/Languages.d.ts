@@ -1,4 +1,4 @@
-import { GuildMember, PermissionString, Role, User, Guild, MessageEmbed } from 'discord.js';
+import { GuildMember, PermissionString, Role, User, Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { ScheduledTask, SchemaEntry } from 'klasa';
 import { HungerGamesGame } from '../../commands/Games/hungergames';
 import { LevelTitles } from '../../commands/Social/level';
@@ -433,6 +433,12 @@ export interface LanguageKeys {
 	SETTINGS_STARBOARD_CHANNEL: string;
 	SETTINGS_STARBOARD_IGNORECHANNELS: string;
 	SETTINGS_STARBOARD_MINIMUM: string;
+	SETTINGS_SUGGESTIONS_CHANNEL: string;
+	SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: string;
+	SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: string;
+	SETTINGS_SUGGESTIONS_ON_ACTION_DM: string;
+	SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: string;
+	SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: string;
 	COMMAND_CATFACT_DESCRIPTION: string;
 	COMMAND_CATFACT_EXTENDED: string;
 	COMMAND_DOG_DESCRIPTION: string;
@@ -714,6 +720,10 @@ export interface LanguageKeys {
 	COMMAND_SETCOLOR_EXTENDED: string;
 	COMMAND_STAR_DESCRIPTION: string;
 	COMMAND_STAR_EXTENDED: string;
+	COMMAND_SUGGEST_DESCRIPTION: string;
+	COMMAND_SUGGEST_EXTENDED: string;
+	COMMAND_RESOLVESUGGESTION_DESCRIPTION: string;
+	COMMAND_RESOLVESUGGESTION_EXTENDED: string;
 	COMMAND_DM_DESCRIPTION: string;
 	COMMAND_DM_EXTENDED: string;
 	COMMAND_EVAL_DESCRIPTION: string;
@@ -1383,6 +1393,30 @@ export interface LanguageKeys {
 	COMMAND_SOCIAL_PROFILE_DELETE: (user: string, points: number) => string;
 	COMMAND_SOCIAL_POINTS: string;
 	COMMAND_SOCIAL_UPDATE: (action: string, amount: number, user: string, before: number, now: number) => string;
+	COMMAND_SUGGEST_NOSETUP: (username: string) => string;
+	COMMAND_SUGGEST_NOSETUP_ASK: (username: string) => string;
+	COMMAND_SUGGEST_NOSETUP_ABORT: string;
+	COMMAND_SUGGEST_CHANNEL_PROMPT: string;
+	COMMAND_SUGGEST_CHANNEL_INVALID: string;
+	COMMAND_SUGGEST_TITLE: (id: number) => string;
+	COMMAND_SUGGEST_SUCCESS: (channel: TextChannel) => string;
+
+	COMMAND_RESOLVESUGGESTION_INVALID: string;
+	COMMAND_RESOLVESUGGESTION_DEFAULTCOMMENT: string;
+	COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: string;
+	COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: string;
+	COMMAND_RESOLVESUGGESTION_ACTIONS: {
+		ACCEPT: (author: string) => string;
+		CONSIDER: (author: string) => string;
+		DENY: (author: string) => string;
+	};
+	COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
+		ACCEPT: (author: string, guild: string) => string;
+		CONSIDER: (author: string, guild: string) => string;
+		DENY: (author: string, guild: string) => string;
+	};
+	COMMAND_RESOLVESUGGESTION_DM_FAIL: string;
+	COMMAND_RESOLVESUGGESTION_SUCCESS: (id: string) => string;
 	COMMAND_STAR_NOSTARS: string;
 	COMMAND_STAR_STATS: string;
 	COMMAND_STAR_STATS_DESCRIPTION: (messages: number, stars: number) => string;

@@ -19,7 +19,7 @@ export default abstract class BaseAnalyticsEvent extends Event {
 		return this.influx.writeMeasurement(measurement, [point], this.formOptions(options));
 	}
 
-	protected writeMeasurements(measurement: string, points: IPoint[], options?: IWriteOptions): Promise<void> {
+	protected writeMeasurements(measurement: string, points: IPoint[], options?: IWriteOptions) {
 		return this.influx.writeMeasurement(measurement, points, this.formOptions(options));
 	}
 

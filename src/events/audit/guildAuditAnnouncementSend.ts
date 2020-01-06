@@ -26,7 +26,7 @@ export default class extends AuditEvent {
 				tags: this.formTags({
 					[Tags.Shard]: (this.client.options.shards as number[])[0].toString(),
 					[Tags.User]: message.author.id,
-					[Tags.Guild]: message.guild?.id!,
+					[Tags.Guild]: message.guild!.id,
 					[Tags.Channel]: channel.id,
 					[AuditTags.Action]: AuditAnnouncementAction.Send
 				})

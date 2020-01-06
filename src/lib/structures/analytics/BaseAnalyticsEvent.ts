@@ -15,7 +15,7 @@ export default abstract class BaseAnalyticsEvent extends Event {
 		if (!DBsPresent.includes(this.DATABASE)) await this.influx.createDatabase(this.DATABASE);
 	}
 
-	protected writeMeasurement(measurement: string, point: IPoint, options?: IWriteOptions): Promise<void> {
+	protected writeMeasurement(measurement: string, point: IPoint, options?: IWriteOptions) {
 		return this.influx.writeMeasurement(measurement, [point], this.formOptions(options));
 	}
 

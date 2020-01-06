@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -50,9 +50,15 @@ export default class extends SkyraCommand {
 		const value: readonly [string, number] = [channel.id, duration];
 
 		if (index === -1) {
-			await message.guild!.settings.update(GuildSettings.CommandAutodelete, [value], { arrayAction: 'add' });
+			await message.guild!.settings.update(GuildSettings.CommandAutodelete, [value], {
+				arrayAction: 'add',
+				extraContext: { author: message.author.id }
+			});
 		} else {
-			await message.guild!.settings.update(GuildSettings.CommandAutodelete, value, { arrayIndex: index });
+			await message.guild!.settings.update(GuildSettings.CommandAutodelete, value, {
+				arrayIndex: index,
+				extraContext: { author: message.author.id }
+			});
 		}
 		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_ADD', [channel, duration]);
 	}
@@ -62,7 +68,10 @@ export default class extends SkyraCommand {
 		const index = commandAutodelete.findIndex(([id]) => id === channel.id);
 
 		if (index !== -1) {
-			await message.guild!.settings.update(GuildSettings.CommandAutodelete, commandAutodelete[index], { arrayIndex: index });
+			await message.guild!.settings.update(GuildSettings.CommandAutodelete, commandAutodelete[index], {
+				arrayIndex: index,
+				extraContext: { author: message.author.id }
+			});
 			return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE', [channel]);
 		}
 		throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET', channel.toString());

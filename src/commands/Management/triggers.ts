@@ -1,10 +1,10 @@
-import { CommandStore, KlasaMessage, util } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { resolveEmoji, displayEmoji, getColor } from '../../lib/util/util';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { displayEmoji, getColor, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { PermissionLevels } from '../../lib/types/Enums';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
@@ -63,7 +63,10 @@ export default class extends SkyraCommand {
 		const clone = [...list];
 		clone.splice(index, 1);
 
-		await message.guild!.settings.update(this._getListName(type), clone, { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(this._getListName(type), clone, {
+			arrayAction: 'overwrite',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_TRIGGERS_REMOVE');
 	}
 
@@ -71,7 +74,10 @@ export default class extends SkyraCommand {
 		const list = this._getList(message, type);
 		if (list.some(entry => entry.input === input)) throw message.language.tget('COMMAND_TRIGGERS_ADD_TAKEN');
 
-		await message.guild!.settings.update(this._getListName(type), [...list, this._format(type, input, output)], { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(this._getListName(type), [...list, this._format(type, input, output)], {
+			arrayAction: 'overwrite',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_TRIGGERS_ADD');
 	}
 

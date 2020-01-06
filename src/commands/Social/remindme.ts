@@ -1,9 +1,9 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { BrandingColors, Time } from '@utils/constants';
+import { cutText, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, Duration, KlasaMessage, Timestamp, util, ScheduledTask } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../lib/structures/UserRichDisplay';
-import { Time, BrandingColors } from '../../lib/util/constants';
-import { cutText, getColor } from '../../lib/util/util';
+import { CommandStore, Duration, KlasaMessage, ScheduledTask, Timestamp, util } from 'klasa';
 
 const timestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 const REMINDER_TYPE = 'reminder';

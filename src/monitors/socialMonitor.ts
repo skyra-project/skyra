@@ -1,9 +1,10 @@
+import { Events } from '@lib/types/Enums';
+import { ClientSettings } from '@lib/types/settings/ClientSettings';
+import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { ClientSettings } from '../lib/types/settings/ClientSettings';
-import { GuildSettings, RolesAuto } from '../lib/types/settings/GuildSettings';
-import { UserSettings } from '../lib/types/settings/UserSettings';
+
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const { FLAGS: { MANAGE_ROLES } } = Permissions;
 
@@ -25,10 +26,11 @@ export default class extends Monitor {
 			// If boosted guild, increase rewards
 			const boosts = this.client.settings!.get(ClientSettings.Boosts.Guilds);
 			const add = Math.round(((Math.random() * 4) + 4) * (boosts.includes(message.guild!.id) ? 1.5 : 1));
+			const multiplier = message.guild!.settings.get(GuildSettings.Social.Multiplier);
 
 			const [, points] = await Promise.all([
 				message.author.settings.increase(UserSettings.Points, add),
-				this.client.queries.upsertIncrementMemberSettings(message.guild!.id, message.author.id, add)
+				this.client.queries.upsertIncrementMemberSettings(message.guild!.id, message.author.id, add * multiplier)
 			]);
 			await this.handleRoles(message, points);
 		} catch (err) {
@@ -94,6 +96,7 @@ export default class extends Monitor {
 			&& message.content.length > 0
 			&& !message.system
 			&& message.author.id !== this.client.user!.id
+			&& message.guild.settings.get(GuildSettings.Social.Enabled)
 			&& !message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id);
 	}
 

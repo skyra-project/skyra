@@ -1,8 +1,8 @@
+import { Databases } from '@lib/types/constants/Constants';
+import { Events } from '@lib/types/Enums';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
 import { KlasaClient } from 'klasa';
-import { Databases } from '../types/constants/Constants';
-import { Events } from '../types/Enums';
 import { Giveaway, GiveawayCreateData, PartialRawGiveawaySettings } from './Giveaway';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
 
 export class GiveawayManager {
 

@@ -1,6 +1,6 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Events } from '@lib/types/Enums';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { Events } from '../../lib/types/Enums';
 
 const REG_USERS = Serializer.regex.userOrMember;
 const REG_TAG = /[^#]{2,32}#\d{4}/;

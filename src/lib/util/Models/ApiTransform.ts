@@ -1,4 +1,4 @@
-import { Guild, Role, Channel, NewsChannel, TextChannel, VoiceChannel, DMChannel, PermissionOverwrites, GuildFeatures, User, GuildMember, GuildChannel } from 'discord.js';
+import { Channel, DMChannel, Guild, GuildChannel, GuildFeatures, GuildMember, NewsChannel, PermissionOverwrites, Role, TextChannel, User, VoiceChannel } from 'discord.js';
 
 // #region Guild
 

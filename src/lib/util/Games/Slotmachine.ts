@@ -1,11 +1,11 @@
+import { ClientSettings } from '@lib/types/settings/ClientSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { socialFolder } from '@utils/constants';
+import { loadImage } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
-import { ClientSettings } from '../../types/settings/ClientSettings';
-import { UserSettings } from '../../types/settings/UserSettings';
-import { socialFolder } from '../constants';
-import { loadImage } from '../util';
 
 const enum Icons {
 	Cherry,
@@ -105,7 +105,9 @@ export class Slotmachine {
 		const darkTheme = settings.get(UserSettings.DarkTheme);
 		const amount = this.winnings === 0 ? money - this.amount : money - this.amount + (this.winnings * this.boost);
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
-		await settings.update(UserSettings.Money, amount);
+		await settings.update(UserSettings.Money, amount, {
+			extraContext: { author: this.message.author.id }
+		});
 		return [await this.render(rolls, darkTheme), amount] as [Buffer, number];
 	}
 

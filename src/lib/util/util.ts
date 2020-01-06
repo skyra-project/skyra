@@ -1,4 +1,11 @@
-import { isObject } from '@klasa/utils';
+import { isObject, isNumber } from '@klasa/utils';
+import ApiRequest from '@lib/structures/api/ApiRequest';
+import ApiResponse from '@lib/structures/api/ApiResponse';
+import { APIUserData } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { CLIENT_SECRET } from '@root/config';
 import { Image } from 'canvas';
 import { AvatarOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable } from 'discord.js';
 import { readFile } from 'fs-nextra';
@@ -6,13 +13,6 @@ import { RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import { createFunctionInhibitor } from 'klasa-decorators';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import { CLIENT_SECRET } from '../../../config';
-import ApiRequest from '../structures/api/ApiRequest';
-import ApiResponse from '../structures/api/ApiResponse';
-import { APIUserData } from '../types/DiscordAPI';
-import { Events } from '../types/Enums';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { UserSettings } from '../types/settings/UserSettings';
 import { UserTag } from './Cache/UserTags';
 import { BrandingColors, Time } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
@@ -49,9 +49,8 @@ export interface ReferredPromise<T> {
 export function noop() { }
 
 export function showSeconds(duration: number) {
+	if (!isNumber(duration)) return '00:00';
 	const seconds = Math.floor(duration / Time.Second) % 60;
-	if (duration < Time.Minute) return seconds === 1 ? 'a second' : `${seconds} seconds`;
-
 	const minutes = Math.floor(duration / Time.Minute) % 60;
 	let output = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 	if (duration >= Time.Hour) {
@@ -189,7 +188,7 @@ export interface Payload {
 	position: number;
 }
 
-export async function fetchAllLeaderboardEntries(client: Client, results: readonly[string, LeaderboardUser][]) {
+export async function fetchAllLeaderboardEntries(client: Client, results: readonly [string, LeaderboardUser][]) {
 	const promises: Promise<unknown>[] = [];
 	for (const [id, element] of results) {
 		if (element.name === null) {

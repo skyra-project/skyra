@@ -1,7 +1,7 @@
+import { RawPollSettings } from '@root/src/commands/Tools/poll';
+import { APIErrors } from '@utils/constants';
 import { DiscordAPIError } from 'discord.js';
 import { constants, Task, util } from 'klasa';
-import { RawPollSettings } from '../commands/Tools/poll';
-import { APIErrors } from '../lib/util/constants';
 const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {

@@ -1,8 +1,8 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { Time } from '@utils/constants';
 import { TextChannel } from 'discord.js';
-import { PermissionLevels } from '../../../lib/types/Enums';
-import { Time } from '../../../lib/util/constants';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const MAXIMUM_TIME = Time.Hour * 6;
 

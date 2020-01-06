@@ -1,11 +1,11 @@
+import { Events } from '@lib/types/Enums';
+import { APIErrors, BrandingColors, Time } from '@utils/constants';
+import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { api } from '@utils/Models/Api';
+import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
+import { floatPromise, getColor } from '@utils/util';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
-import { Events } from '../types/Enums';
-import { LLRCData, LongLivingReactionCollector } from '../util/LongLivingReactionCollector';
-import { getColor, floatPromise } from '../util/util';
-import { api } from '../util/Models/Api';
-import { Time, BrandingColors, APIErrors } from '../util/constants';
-import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '../util/SettingsUtils';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -197,11 +197,11 @@ export class SettingsMenu {
 		}
 	}
 
-	private async tryUpdate(value: unknown, options?: SettingsFolderUpdateOptions) {
+	private async tryUpdate(value: unknown, options: SettingsFolderUpdateOptions = {}) {
 		try {
 			const updated = await (value === null
-				? this.message.guild!.settings.reset(this.schema.path)
-				: this.message.guild!.settings.update(this.schema.path, value, options));
+				? this.message.guild!.settings.reset(this.schema.path, { ...options, extraContext: { author: this.message.author.id } })
+				: this.message.guild!.settings.update(this.schema.path, value, { ...options, extraContext: { author: this.message.author.id } }));
 			if (updated.length === 0) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 		} catch (error) {
 			this.errorMessage = String(error);
@@ -213,8 +213,8 @@ export class SettingsMenu {
 			const previousValue = this.oldSettings.get(this.schema.path);
 			try {
 				await (previousValue === null
-					? this.message.guild!.settings.reset(this.schema.path)
-					: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite' }));
+					? this.message.guild!.settings.reset(this.schema.path, { extraContext: { author: this.message.author.id } })
+					: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite', extraContext: { author: this.message.author.id } }));
 			} catch (error) {
 				this.errorMessage = String(error);
 			}

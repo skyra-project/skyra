@@ -1,12 +1,12 @@
-import { WSGuildMemberUpdate, AuditLogResult } from '../lib/types/DiscordAPI';
-import { Event, EventStore, KlasaGuild } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { api } from '../lib/util/Models/Api';
+import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MemberTag } from '@utils/Cache/MemberTags';
+import { MessageLogsEnum } from '@utils/constants';
+import { api } from '@utils/Models/Api';
+import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { floatPromise, getDisplayAvatar } from '../lib/util/util';
-import { Events } from '../lib/types/Enums';
-import { MessageLogsEnum } from '../lib/util/constants';
-import { MemberTag } from '../lib/util/Cache/MemberTags';
+import { Event, EventStore, KlasaGuild } from 'klasa';
 
 export default class extends Event {
 

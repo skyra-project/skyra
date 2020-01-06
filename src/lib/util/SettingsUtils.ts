@@ -1,6 +1,6 @@
-import { Schema, SchemaEntry, SettingsFolder } from 'klasa';
 import { toTitleCase } from '@klasa/utils';
 import { Guild } from 'discord.js';
+import { Schema, SchemaEntry, SettingsFolder } from 'klasa';
 
 export const configurableSchemaKeys = new Map<string, Schema | SchemaEntry>();
 

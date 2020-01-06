@@ -1,13 +1,13 @@
-import { GuildMember, PermissionString, Role, User, Guild, MessageEmbed, TextChannel } from 'discord.js';
+import { LevelTitles } from '@root/src/commands/Social/level';
+import { ProfileTitles } from '@root/src/commands/Social/profile';
+import { StatsGeneral, StatsUptime, StatsUsage } from '@root/src/commands/System/stats';
+import { Song } from '@lib/structures/music/Song';
+import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { Guild, GuildMember, MessageEmbed, PermissionString, Role, User, TextChannel } from 'discord.js';
 import { ScheduledTask, SchemaEntry } from 'klasa';
-import { HungerGamesGame } from '../../commands/Games/hungergames';
-import { LevelTitles } from '../../commands/Social/level';
-import { ProfileTitles } from '../../commands/Social/profile';
-import { StatsGeneral, StatsUptime, StatsUsage } from '../../commands/System/stats';
-import { Song } from '../structures/music/Song';
-import { HungerGamesUsage } from '../util/Games/HungerGamesUsage';
 import { Kitsu } from './definitions/Kitsu';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
+import { HungerGamesGame } from '@root/src/commands/Games/hungergames';
 
 export const enum Position {
 	Before,
@@ -161,8 +161,8 @@ export interface LanguageKeys {
 	COMMAND_QUEUE_EMPTY: string;
 	COMMAND_QUEUE_LAST: string;
 	COMMAND_QUEUE_TITLE: (guildname: string) => string;
-	COMMAND_QUEUE_LINE: (position: number, title: string, url: string, duration: string, requester: string) => string;
-	COMMAND_QUEUE_NOWPLAYING: (title: string, url: string, duration: string, requester: string) => string;
+	COMMAND_QUEUE_LINE: (position: number, duration: string, title: string, url: string, requester: string) => string;
+	COMMAND_QUEUE_NOWPLAYING: (duration: string, title: string, url: string, requester: string) => string;
 	COMMAND_QUEUE_NOWPLAYING_TITLE: string;
 	COMMAND_QUEUE_TOTAL_TITLE: string;
 	COMMAND_QUEUE_TOTAL: (songs: number, remainingTime: string) => string;

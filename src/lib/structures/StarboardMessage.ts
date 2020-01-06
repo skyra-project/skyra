@@ -1,10 +1,10 @@
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import { APIErrors } from '@utils/constants';
+import { cutText, fetchReactionUsers, getImage } from '@utils/util';
 import { DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
-import { Events } from '../types/Enums';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { cutText, fetchReactionUsers, getImage } from '../util/util';
 import { StarboardManager } from './StarboardManager';
-import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
-import { APIErrors } from '../util/constants';
 
 export const COLORS = [
 	0xFFE3AF,

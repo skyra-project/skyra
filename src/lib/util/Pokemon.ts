@@ -1,5 +1,5 @@
 import { Abilities, Items, Moves, Pokemon, Query } from '@favware/graphql-pokemon';
-import { ENABLE_LOCAL_POKEDEX } from '../../../config';
+import { ENABLE_LOCAL_POKEDEX } from '@root/config';
 import { fetch, FetchResultTypes } from './util';
 
 const AbilityFragment = `

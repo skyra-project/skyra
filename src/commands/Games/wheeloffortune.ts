@@ -1,10 +1,10 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { Emojis } from '@utils/constants';
+import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
+import { getColor } from '@utils/util';
 import { MessageAttachment, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
-import { Emojis } from '../../lib/util/constants';
-import { WheelOfFortune } from '../../lib/util/Games/WheelOfFortune';
-import { getColor } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 

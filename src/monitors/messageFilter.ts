@@ -1,8 +1,8 @@
+import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { floatPromise, getContent } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { floatPromise, getContent } from '../lib/util/util';
-import { ModerationMonitor, HardPunishment } from '../lib/structures/ModerationMonitor';
 
 export default class extends ModerationMonitor {
 

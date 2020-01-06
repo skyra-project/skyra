@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { codeBlock, toTitleCase } from '@klasa/utils';
+import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
+import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
+import { VERSION } from '@root/config';
+import { Emojis } from '@utils/constants';
+import friendlyDuration from '@utils/FriendlyDuration';
+import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { LanguageHelp } from '@utils/LanguageHelp';
+import { createPick, inlineCodeblock } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
-import { VERSION } from '../../config';
-import { Filter, LanguageKeys, Position } from '../lib/types/Languages';
-import { NotificationsStreamsTwitchEventStatus } from '../lib/types/settings/GuildSettings';
-import { Emojis } from '../lib/util/constants';
-import friendlyDuration from '../lib/util/FriendlyDuration';
-import { HungerGamesUsage } from '../lib/util/Games/HungerGamesUsage';
-import { LanguageHelp } from '../lib/util/LanguageHelp';
-import { createPick, inlineCodeblock } from '../lib/util/util';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
@@ -286,8 +286,8 @@ export default class extends Language {
 		COMMAND_QUEUE_EMPTY: `The session is over, add some songs to the queue, you can for example do \`Skyra, add Imperial March\`, and... *dumbrolls*!`,
 		COMMAND_QUEUE_LAST: `There are no more songs! After the one playing is over, the session will end!`,
 		COMMAND_QUEUE_TITLE: guildname => `Music queue for ${guildname}`,
-		COMMAND_QUEUE_LINE: (position, title, url, duration, requester) => `[${position}] [${title}](${url}) | (${duration}) | Requested by **${requester}**.`,
-		COMMAND_QUEUE_NOWPLAYING: (title, url, duration, requester) => `[${title}](${url}) | (${duration}) | Requested by **${requester}**.`,
+		COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
+		COMMAND_QUEUE_NOWPLAYING: (duration, title, url, requester) => `\`${duration}\` | [${title}](${url}) │ Requester: **${requester}**.`,
 		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
@@ -2992,7 +2992,7 @@ export default class extends Language {
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
-		COMMAND_LOCKDOWN_LOCKING: channel => `Locking the channel ${channel}...`,
+		COMMAND_LOCKDOWN_LOCKING: channel => `${LOADING} Locking the channel ${channel}... I might not be able to reply after this.`,
 		COMMAND_LOCKDOWN_LOCKED: channel => `The channel ${channel} was already locked.`,
 		COMMAND_LOCKDOWN_UNLOCKED: channel => `The channel ${channel} was not locked.`,
 		COMMAND_LOCKDOWN_OPEN: channel => `The lockdown for the channel ${channel} has been released.`,
@@ -4009,7 +4009,7 @@ export default class extends Language {
 			: `[Action] Applied Softban | Reason: ${reason}`,
 		ACTION_BAN_REASON: reason => reason === null
 			? '[Action] Applied Ban'
-			: `[Action] Applied Ban`,
+			: `[Action] Applied Ban | Reason: ${reason}`,
 		ACTION_UNBAN_REASON: reason => reason === null
 			? '[Action] Applied Unban.'
 			: `[Action] Applied Unban | Reason: ${reason}`,

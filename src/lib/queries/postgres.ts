@@ -1,13 +1,13 @@
-import { CommonQuery, UpsertMemberSettingsReturningDifference, UpdatePurgeTwitchStreamReturning } from './common';
-import PostgresProvider from '../../providers/postgres';
+import { Databases } from '@lib/types/constants/Constants';
+import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { Client } from 'discord.js';
-import { RawStarboardSettings } from '../types/settings/raw/RawStarboardSettings';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { RawGiveawaySettings } from '../types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '../types/settings/raw/RawMemberSettings';
-import { RawTwitchStreamSubscriptionSettings } from '../types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { Databases } from '../types/constants/Constants';
-import { RawDashboardUserSettings } from '../types/settings/raw/RawDashboardUserSettings';
+import PostgresProvider from 'src/providers/postgres';
+import { CommonQuery, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -271,31 +271,65 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public async fetchStarRandom(guildID: string, minimum: number) {
+		const { provider } = this;
 		const result = await this.provider.runOne(/* sql */`
 			SELECT *
 			FROM starboard
 			WHERE
-				"guild_id"        = $1        AND
-				"star_message_id" IS NOT NULL AND
-				"enabled"         = TRUE      AND
-				"stars"           >= $2
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"stars"           >= ${provider.cNumber(minimum)}
 			ORDER BY
 				RANDOM()
 			LIMIT 1;
-		`, [guildID, minimum]);
+		`);
+		return result || null;
+	}
+
+	public async fetchStarRandomFromUser(guildID: string, userID: string, minimum: number) {
+		const { provider } = this;
+		const result = await this.provider.runOne(/* sql */`
+			SELECT *
+			FROM starboard
+			WHERE
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"user_id"         = ${provider.cString(userID)}   AND
+				"stars"           >= ${provider.cNumber(minimum)}
+			ORDER BY
+				RANDOM()
+			LIMIT 1;
+		`);
 		return result || null;
 	}
 
 	public fetchStars(guildID: string, minimum: number) {
+		const { provider } = this;
 		return this.provider.runAll(/* sql */`
 			SELECT *
 			FROM starboard
 			WHERE
-				"guild_id"        = $1        AND
-				"star_message_id" IS NOT NULL AND
-				"enabled"         = TRUE      AND
-				"stars"           >= $2;
-		`, [guildID, minimum]);
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"stars"           >= ${provider.cNumber(minimum)};
+		`);
+	}
+
+	public fetchStarsFromUser(guildID: string, userID: string, minimum: number) {
+		const { provider } = this;
+		return this.provider.runAll(/* sql */`
+			SELECT *
+			FROM starboard
+			WHERE
+				"guild_id"        = ${provider.cString(guildID)}  AND
+				"star_message_id" IS NOT NULL                     AND
+				"enabled"         = TRUE                          AND
+				"user_id"         = ${provider.cString(userID)}   AND
+				"stars"           >= ${provider.cNumber(minimum)};
+		`);
 	}
 
 	public async fetchTwitchStreamSubscription(streamerID: string) {

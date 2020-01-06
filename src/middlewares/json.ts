@@ -1,5 +1,5 @@
-import { createGunzip, createInflate } from 'zlib';
 import { KlasaIncomingMessage, Middleware, MiddlewareStore } from 'klasa-dashboard-hooks';
+import { createGunzip, createInflate } from 'zlib';
 
 export default class extends Middleware {
 

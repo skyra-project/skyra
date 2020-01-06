@@ -1,8 +1,8 @@
-import { Command, CommandStore, CommandOptions, util, SchemaEntry, KlasaMessage, Duration } from 'klasa';
-import { PermissionLevels } from '../types/Enums';
-import { SelfModeratorHardActionFlags, SelfModeratorBitField } from './SelfModeratorBitField';
-import { GuildSecurity } from '../util/Security/GuildSecurity';
-import { Adder } from '../util/Adder';
+import { PermissionLevels } from '@lib/types/Enums';
+import { Adder } from '@utils/Adder';
+import { GuildSecurity } from '@utils/Security/GuildSecurity';
+import { Command, CommandOptions, CommandStore, Duration, KlasaMessage, SchemaEntry, util } from 'klasa';
+import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export enum AKeys {
 	Enable,
@@ -106,7 +106,9 @@ export abstract class SelfModerationCommand extends Command {
 		if (action === AKeys.Show) return this.show(message);
 
 		const key = this.getProperty(action)!;
-		await message.guild!.settings.update(key, value);
+		await message.guild!.settings.update(key, value, {
+			extraContext: { author: message.author.id }
+		});
 
 		switch (action) {
 			case AKeys.Disable: {

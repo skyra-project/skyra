@@ -1,7 +1,7 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { cutText, getContent, getImage } from '@utils/util';
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { cutText, getContent, getImage } from '../../lib/util/util';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;

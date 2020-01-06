@@ -25,10 +25,10 @@
  * SOFTWARE.
  */
 
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { cutText } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { cutText } from '../../lib/util/util';
 
 export default class extends SkyraCommand {
 
@@ -59,7 +59,10 @@ export default class extends SkyraCommand {
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.Tags);
 		if (tags.some(([name]) => name === tagName)) throw message.language.tget('COMMAND_TAG_EXISTS', tagName);
-		await message.guild!.settings.update(GuildSettings.Tags, [...tags, [tagName, content]], { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(GuildSettings.Tags, [...tags, [tagName, content]], {
+			arrayAction: 'overwrite',
+			extraContext: { author: message.author.id }
+		});
 
 		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, cutText(content, 1850)]);
 	}
@@ -71,7 +74,10 @@ export default class extends SkyraCommand {
 
 		const tag = tags.find(([name]) => name === tagName);
 		if (!tag) throw message.language.tget('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild!.settings.update(GuildSettings.Tags, [tag], { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.Tags, [tag], {
+			arrayAction: 'remove',
+			extraContext: { author: message.author.id }
+		});
 
 		return message.sendLocale('COMMAND_TAG_REMOVED', [tagName]);
 	}
@@ -84,7 +90,10 @@ export default class extends SkyraCommand {
 		const tags = message.guild!.settings.get(GuildSettings.Tags);
 		const index = tags.findIndex(([name]) => name === tagName);
 		if (index === -1) throw message.language.tget('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild!.settings.update(GuildSettings.Tags, [[tagName, content]], { arrayIndex: index });
+		await message.guild!.settings.update(GuildSettings.Tags, [[tagName, content]], {
+			arrayIndex: index,
+			extraContext: { author: message.author.id }
+		});
 
 		return message.sendLocale('COMMAND_TAG_EDITED', [tagName, cutText(content, 1850)]);
 	}

@@ -1,9 +1,9 @@
+import { ModerationCommand } from '@lib/structures/ModerationCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ModerationSetupRestriction } from '@utils/Security/ModerationActions';
+import { Role, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { ModerationCommand } from '../../lib/structures/ModerationCommand';
-import { GuildSettings } from '../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../lib/types/Enums';
-import { User, Role } from 'discord.js';
-import { ModerationSetupRestriction } from '../../lib/util/Security/ModerationActions';
 
 export default class extends ModerationCommand {
 
@@ -29,7 +29,9 @@ export default class extends ModerationCommand {
 			if (!await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator)) throw message.language.tget('COMMAND_RESTRICT_LOWLEVEL');
 			if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
 				const [role] = await this.rolePrompt.createPrompt(message, { time: 30000, limit: 1 }).run(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME')) as [Role];
-				await message.guild.settings.update(GuildSettings.Roles.RestrictedVoice, role);
+				await message.guild.settings.update(GuildSettings.Roles.RestrictedVoice, role, {
+					extraContext: { author: message.author.id }
+				});
 			} else if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_NEW'))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Voice);
 				await message.sendLocale('COMMAND_SUCCESS');

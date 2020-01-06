@@ -1,9 +1,9 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { assetsFolder } from '@utils/constants';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { assetsFolder } from '../../lib/util/constants';
 
 export default class extends SkyraCommand {
 

@@ -1,7 +1,7 @@
-import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { UserSettings } from '../../lib/types/settings/UserSettings';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 
@@ -25,8 +25,8 @@ export default class extends SkyraCommand {
 
 		// Reset the values for both entries
 		await Promise.all([
-			message.author.settings.update(UserSettings.Marry, user, { arrayAction: 'remove' }),
-			user.settings.update(UserSettings.Marry, message.author, { arrayAction: 'remove' })
+			message.author.settings.update(UserSettings.Marry, user, { arrayAction: 'remove', extraContext: { author: message.author.id } }),
+			user.settings.update(UserSettings.Marry, message.author, { arrayAction: 'remove', extraContext: { author: message.author.id } })
 		]);
 
 		// Tell the user about the divorce

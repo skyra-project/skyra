@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -48,18 +48,18 @@ export default class extends SkyraCommand {
 		const index = disabledCommandsChannels.findIndex(e => e.channel === channel.id);
 
 		if (index === -1) {
-			await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, {
-				channel: channel.id,
-				commands: [command.name]
-			}, { arrayAction: 'add' });
+			await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, { channel: channel.id, commands: [command.name] }, {
+				arrayAction: 'add',
+				extraContext: { author: message.author.id }
+			});
 		} else {
 			const entry = disabledCommandsChannels[index];
 			if (entry.commands.includes(command.name)) throw message.language.tget('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
 
-			await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, {
-				channel: entry.channel,
-				commands: entry.commands.concat(command.name)
-			}, { arrayIndex: index });
+			await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, { channel: entry.channel, commands: entry.commands.concat(command.name) }, {
+				arrayIndex: index,
+				extraContext: { author: message.author.id }
+			});
 		}
 		return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [channel, command.name]);
 	}
@@ -75,12 +75,14 @@ export default class extends SkyraCommand {
 				if (entry.commands.length > 1) {
 					const clone = entry.commands.slice();
 					clone.splice(commandIndex, 1);
-					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, {
-						channel: entry.channel,
-						commands: clone
+					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, { channel: entry.channel, commands: clone }, {
+						extraContext: { author: message.author.id }
 					});
 				} else {
-					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, { arrayAction: 'remove' });
+					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, {
+						arrayAction: 'remove',
+						extraContext: { author: message.author.id }
+					});
 				}
 
 				return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel, command.name]);
@@ -94,7 +96,10 @@ export default class extends SkyraCommand {
 		const entry = disabledCommandsChannels.find(e => e.channel === channel.id);
 
 		if (entry) {
-			await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, { arrayAction: 'remove' });
+			await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, {
+				arrayAction: 'remove',
+				extraContext: { author: message.author.id }
+			});
 			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_RESET', [channel]);
 		}
 		throw message.language.tget('COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY');

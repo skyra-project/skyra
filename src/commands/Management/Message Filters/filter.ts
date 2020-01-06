@@ -1,7 +1,7 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -32,7 +32,10 @@ export default class extends SkyraCommand {
 		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.tget('COMMAND_FILTER_FILTERED', true);
 
 		// Perform update
-		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, { arrayAction: 'add' });
+		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, {
+			arrayAction: 'add',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_FILTER_ADDED', [word]);
 	}
 
@@ -43,7 +46,10 @@ export default class extends SkyraCommand {
 
 		// Perform update
 		if (raw.length === 1) return this.reset(message);
-		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, {
+			arrayAction: 'remove',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_FILTER_REMOVED', [word]);
 	}
 

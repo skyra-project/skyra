@@ -1,12 +1,12 @@
+import { SkyraClient } from '@lib/SkyraClient';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { SubscriptionName } from '@lib/websocket/types';
+import { enumerable } from '@utils/util';
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { LoadType, Status, Track } from 'lavalink';
-import { Events } from '../../types/Enums';
-import { enumerable } from '../../util/util';
 import { Song } from './Song';
-import { SkyraClient } from '../../SkyraClient';
-import { SubscriptionName } from '../../websocket/types';
-import { GuildSettings } from '../../types/settings/GuildSettings';
 
 export class MusicHandler {
 

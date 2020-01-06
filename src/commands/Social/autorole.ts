@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
 import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { GuildSettings, RolesAuto } from '../../lib/types/settings/GuildSettings';
-import { PermissionLevels } from '../../lib/types/Enums';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
@@ -58,7 +58,10 @@ export default class extends SkyraCommand {
 		}
 
 		const sorted = [...autoRoles, { id: role.id, points }].sort(SORT);
-		await message.guild!.settings.update(GuildSettings.Roles.Auto, sorted, { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, sorted, {
+			arrayAction: 'overwrite',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
 	}
 
@@ -72,7 +75,10 @@ export default class extends SkyraCommand {
 		}
 
 		const deleteEntry = autoRoles[index];
-		await message.guild!.settings.update(GuildSettings.Roles.Auto, deleteEntry, { arrayAction: 'remove' });
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, deleteEntry, {
+			arrayAction: 'remove',
+			extraContext: { author: message.author.id }
+		});
 
 		return message.sendLocale('COMMAND_AUTOROLE_REMOVE', [role, deleteEntry.points]);
 	}
@@ -90,7 +96,10 @@ export default class extends SkyraCommand {
 		const autoRole = autoRoles[index];
 		const clone = util.deepClone(autoRoles) as RolesAuto[];
 		clone[index].points = points;
-		await message.guild!.settings.update(GuildSettings.Roles.Auto, clone.sort(SORT), { arrayAction: 'overwrite' });
+		await message.guild!.settings.update(GuildSettings.Roles.Auto, clone.sort(SORT), {
+			arrayAction: 'overwrite',
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole]);
 	}
 

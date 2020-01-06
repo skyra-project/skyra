@@ -1,8 +1,8 @@
-import { DiscordAPIError, Guild, HTTPError, TextChannel, MessageEmbed } from 'discord.js';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MessageLogsEnum } from '@utils/constants';
+import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
-import { Events } from '../lib/types/Enums';
-import { GuildSettings } from '../lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '../lib/util/constants';
 
 const TYPES: Record<MessageLogsEnum, string> = {
 	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,

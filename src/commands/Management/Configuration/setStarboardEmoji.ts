@@ -1,8 +1,8 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { resolveEmoji } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { resolveEmoji } from '../../../lib/util/util';
-import { PermissionLevels } from '../../../lib/types/Enums';
 
 export default class extends SkyraCommand {
 
@@ -26,7 +26,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [emoji]: [string]) {
 		if (message.guild!.settings.get(GuildSettings.Starboard.Emoji) === emoji) throw message.language.tget('CONFIGURATION_EQUALS');
-		await message.guild!.settings.update(GuildSettings.Starboard.Emoji, emoji);
+		await message.guild!.settings.update(GuildSettings.Starboard.Emoji, emoji, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_SETSTARBOARDEMOJI_SET', [emoji.includes(':') ? `<${emoji}>` : emoji]);
 	}
 

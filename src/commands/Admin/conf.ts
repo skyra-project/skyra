@@ -1,10 +1,10 @@
+import { codeBlock, toTitleCase } from '@klasa/utils';
+import { SettingsMenu } from '@lib/structures/SettingsMenu';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
+import { configurableSchemaKeys, displayEntry, displayFolder, initConfigurableSchema, isSchemaEntry } from '@utils/SettingsUtils';
 import { Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, SettingsFolder } from 'klasa';
-import { SettingsMenu } from '../../lib/structures/SettingsMenu';
-import { SkyraCommand } from '../../lib/structures/SkyraCommand';
-import { PermissionLevels } from '../../lib/types/Enums';
-import { toTitleCase, codeBlock } from '@klasa/utils';
-import { configurableSchemaKeys, isSchemaEntry, displayEntry, displayFolder, initConfigurableSchema } from '../../lib/util/SettingsUtils';
 
 const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
@@ -60,7 +60,11 @@ export default class extends SkyraCommand {
 
 	public async set(message: KlasaMessage, [key, valueToSet]: string[]) {
 		try {
-			const [update] = await message.guild!.settings.update(key, valueToSet, { onlyConfigurable: true, arrayAction: 'add' });
+			const [update] = await message.guild!.settings.update(key, valueToSet, {
+				arrayAction: 'add',
+				onlyConfigurable: true,
+				extraContext: { author: message.author.id }
+			});
 			return message.sendLocale('COMMAND_CONF_UPDATED', [key, displayEntry(update.entry, update.next, message.guild!)]);
 		} catch (error) {
 			throw String(error);
@@ -69,7 +73,11 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [key, valueToRemove]: string[]) {
 		try {
-			const [update] = await message.guild!.settings.update(key, valueToRemove, { onlyConfigurable: true, arrayAction: 'remove' });
+			const [update] = await message.guild!.settings.update(key, valueToRemove, {
+				arrayAction: 'remove',
+				onlyConfigurable: true,
+				extraContext: { author: message.author.id }
+			});
 			return message.sendLocale('COMMAND_CONF_UPDATED', [key, displayEntry(update.entry, update.next, message.guild!)]);
 		} catch (error) {
 			throw String(error);
@@ -78,7 +86,7 @@ export default class extends SkyraCommand {
 
 	public async reset(message: KlasaMessage, [key]: string[]) {
 		try {
-			const [update] = await message.guild!.settings.reset(key);
+			const [update] = await message.guild!.settings.reset(key, { extraContext: message.author.id });
 			return message.sendLocale('COMMAND_CONF_RESET', [key, displayEntry(update.entry, update.next, message.guild!)]);
 		} catch (error) {
 			throw String(error);

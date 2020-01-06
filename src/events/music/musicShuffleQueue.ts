@@ -1,7 +1,7 @@
+import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
+import { OutgoingWebsocketAction } from '@lib/websocket/types';
+import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
-import { MusicHandler, MusicHandlerRequestContext } from '../../lib/structures/music/MusicHandler';
-import { floatPromise } from '../../lib/util/util';
-import { OutgoingWebsocketAction } from '../../lib/websocket/types';
 
 export default class extends Event {
 

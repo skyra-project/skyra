@@ -1,13 +1,13 @@
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { Databases } from '@lib/types/constants/Constants';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { RawBannerSettings } from '@lib/types/settings/raw/RawBannerSettings';
+import { UserSettings } from '@lib/types/settings/UserSettings';
+import { BrandingColors, Emojis } from '@utils/constants';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { SkyraCommand } from '../../../lib/structures/SkyraCommand';
-import { UserRichDisplay } from '../../../lib/structures/UserRichDisplay';
-import { Databases } from '../../../lib/types/constants/Constants';
-import { GuildSettings } from '../../../lib/types/settings/GuildSettings';
-import { UserSettings } from '../../../lib/types/settings/UserSettings';
-import { Emojis, BrandingColors } from '../../../lib/util/constants';
-import { getColor } from '../../../lib/util/util';
-import { RawBannerSettings } from '../../../lib/types/settings/raw/RawBannerSettings';
 
 const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 
@@ -58,8 +58,13 @@ export default class extends SkyraCommand {
 		await user.settings.sync();
 
 		await Promise.all([
-			message.author.settings.update([[UserSettings.Money, money - banner.price], [UserSettings.BannerList, [...banners]]], { arrayAction: 'overwrite' }),
-			user.settings.increase(UserSettings.Money, banner.price * 0.1)
+			message.author.settings.update([[UserSettings.Money, money - banner.price], [UserSettings.BannerList, [...banners]]], {
+				arrayAction: 'overwrite',
+				extraContext: { author: message.author.id }
+			}),
+			user.settings.increase(UserSettings.Money, banner.price * 0.1, {
+				extraContext: { author: message.author.id }
+			})
 		]);
 
 		return message.sendLocale('COMMAND_BANNER_BUY', [banner.title]);
@@ -70,7 +75,9 @@ export default class extends SkyraCommand {
 		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
 		if (message.author.settings.get(UserSettings.ThemeProfile) === '0001') throw message.language.tget('COMMAND_BANNER_RESET_DEFAULT');
 
-		await message.author.settings.update(UserSettings.ThemeProfile, '0001');
+		await message.author.settings.update(UserSettings.ThemeProfile, '0001', {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_BANNER_RESET');
 	}
 
@@ -79,7 +86,9 @@ export default class extends SkyraCommand {
 		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
 		if (!banners.includes(banner.id)) throw message.language.tget('COMMAND_BANNER_SET_NOT_BOUGHT');
 
-		await message.author.settings.update(UserSettings.ThemeProfile, banner.id);
+		await message.author.settings.update(UserSettings.ThemeProfile, banner.id, {
+			extraContext: { author: message.author.id }
+		});
 		return message.sendLocale('COMMAND_BANNER_SET', [banner.title]);
 	}
 

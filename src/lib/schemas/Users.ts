@@ -1,5 +1,5 @@
+import { UserSettings } from '@lib/types/settings/UserSettings';
 import { Client } from 'klasa';
-import { UserSettings } from '../types/settings/UserSettings';
 
 export default Client.defaultUserSchema
 	.add(UserSettings.CommandUses, 'Integer', { 'default': 0, 'configurable': false })

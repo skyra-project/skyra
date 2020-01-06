@@ -1,5 +1,5 @@
+import { PermissionResolvable, Permissions } from 'discord.js';
 import { Command, CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
-import { Permissions, PermissionResolvable } from 'discord.js';
 
 export abstract class SkyraCommand extends Command {
 

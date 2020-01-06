@@ -1,13 +1,13 @@
+import { isNumber } from '@klasa/utils';
+import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { CLIENT_ID } from '@root/config';
+import { Moderation, Time } from '@utils/constants';
+import { getDisplayAvatar, isNullOrUndefined } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { Duration } from 'klasa';
-import { Events } from '../types/Enums';
-import { GuildSettings } from '../types/settings/GuildSettings';
-import { Moderation, Time } from '../util/constants';
-import { ModerationManager, ModerationManagerUpdateData, ModerationManagerInsertData } from './ModerationManager';
-import { RawModerationSettings } from '../types/settings/raw/RawModerationSettings';
-import { isNullOrUndefined, getDisplayAvatar } from '../util/util';
-import { CLIENT_ID } from '../../../config';
-import { isNumber } from '@klasa/utils';
+import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;

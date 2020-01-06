@@ -24,13 +24,13 @@ export default class extends Extendable {
 	}
 
 	public async increaseBalance(this: User, amount: number, reason: EconomyTransactionReason = EconomyTransactionReason.NotDefined) {
-		const current = await this.settings.get(UserSettings.Money);
+		const current = this.settings.get(UserSettings.Money);
 		await this.settings.update(UserSettings.Money, current + amount);
 		this.client.emit(Events.MoneyTransaction, this, amount, current, EconomyTransactionAction.Add, reason);
 	}
 
 	public async decreaseBalance(this: User, amount: number, reason: EconomyTransactionReason = EconomyTransactionReason.NotDefined) {
-		const current = await this.settings.get(UserSettings.Money);
+		const current = this.settings.get(UserSettings.Money);
 		await this.settings.update(UserSettings.Money, current - amount);
 		this.client.emit(Events.MoneyTransaction, this, amount, current, EconomyTransactionAction.Remove, reason);
 	}

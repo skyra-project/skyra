@@ -39,7 +39,7 @@ declare module 'discord.js' {
 
 		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
-		emit(event: Events.MoneyTransaction, target: KlasaUser, moneyToAdd: number, moneyBeforeAddition: number, action: EconomyTransactionAction, reason: EconomyTransactionReason): boolean;
+		emit(event: Events.MoneyTransaction, target: User, moneyToAdd: number, moneyBeforeAddition: number, action: EconomyTransactionAction, reason: EconomyTransactionReason): boolean;
 		emit(event: Events.MoneyPayment, message: KlasaMessage, user: KlasaUser, target: KlasaUser, money: number): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}

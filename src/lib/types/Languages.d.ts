@@ -1398,7 +1398,7 @@ export interface LanguageKeys {
 	COMMAND_EVAL_OUTPUT_FILE: (time: string, type: string) => string;
 	COMMAND_EVAL_OUTPUT_HASTEBIN: (time: string, url: string, type: string) => string;
 	COMMAND_FEEDBACK: string;
-	COMMAND_STATS: (STATS: StatsGeneral, UPTIME: StatsUptime, USAGE: StatsUsage) => string;
+	COMMAND_STATS: (color: number, stats: StatsGeneral, uptime: StatsUptime, usage: StatsUsage) => MessageEmbed;
 	COMMAND_TAG_PERMISSIONLEVEL: string;
 	COMMAND_TAG_NAME_NOTALLOWED: string;
 	COMMAND_TAG_NAME_TOOLONG: string;

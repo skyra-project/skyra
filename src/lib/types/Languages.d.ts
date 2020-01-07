@@ -161,8 +161,8 @@ export interface LanguageKeys {
 	COMMAND_QUEUE_EMPTY: string;
 	COMMAND_QUEUE_LAST: string;
 	COMMAND_QUEUE_TITLE: (guildname: string) => string;
-	COMMAND_QUEUE_LINE: (position: number, title: string, url: string, duration: string, requester: string) => string;
-	COMMAND_QUEUE_NOWPLAYING: (title: string, url: string, duration: string, requester: string) => string;
+	COMMAND_QUEUE_LINE: (position: number, duration: string, title: string, url: string, requester: string) => string;
+	COMMAND_QUEUE_NOWPLAYING: (duration: string, title: string, url: string, requester: string) => string;
 	COMMAND_QUEUE_NOWPLAYING_TITLE: string;
 	COMMAND_QUEUE_TOTAL_TITLE: string;
 	COMMAND_QUEUE_TOTAL: (songs: number, remainingTime: string) => string;
@@ -750,6 +750,7 @@ export interface LanguageKeys {
 		NUMBER_OF_PLAYERS: string;
 		PLATFORM: string;
 		CATEGORIES: string;
+		NO_CATEGORIES: string;
 		NSUID: 'NSUID';
 		ESRB: 'ESRB';
 	};

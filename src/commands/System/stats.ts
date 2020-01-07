@@ -1,7 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { version } from 'discord.js';
-import { CommandStore, Duration, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { loadavg, uptime } from 'os';
+import { getColor } from '@utils/util';
 
 export default class extends SkyraCommand {
 
@@ -16,10 +17,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		return message.sendLocale('COMMAND_STATS', [this.STATS, this.UPTIME, this.USAGE], { code: 'asciidoc' });
+		return message.sendLocale('COMMAND_STATS', [getColor(message), this.generalStatistics, this.uptimeStatistics, this.usageStatistics]);
 	}
 
-	public get STATS(): StatsGeneral {
+	private get generalStatistics(): StatsGeneral {
 		return {
 			CHANNELS: this.client.channels.size.toLocaleString(),
 			GUILDS: this.client.guilds.size.toLocaleString(),
@@ -29,20 +30,20 @@ export default class extends SkyraCommand {
 		};
 	}
 
-	public get UPTIME(): StatsUptime {
-		const now = Date.now();
+	private get uptimeStatistics(): StatsUptime {
 		return {
-			CLIENT: Duration.toNow(now - this.client.uptime!, false),
-			HOST: Duration.toNow(now - (uptime() * 1000), false),
-			TOTAL: Duration.toNow(now - (process.uptime() * 1000), false)
+			CLIENT: this.client.uptime!,
+			HOST: uptime() * 1000,
+			TOTAL: process.uptime() * 1000
 		};
 	}
 
-	public get USAGE(): StatsUsage {
+	private get usageStatistics(): StatsUsage {
+		const usage = process.memoryUsage();
 		return {
-			CPU_LOAD: `${Math.round(loadavg()[0] * 100) / 100}%`,
-			RAM_TOTAL: `${Math.round(100 * (process.memoryUsage().heapTotal / 1048576)) / 100}MB`,
-			RAM_USED: `${Math.round(100 * (process.memoryUsage().heapUsed / 1048576)) / 100}MB`
+			CPU_LOAD: loadavg() as [number, number, number],
+			RAM_TOTAL: `${Math.round(100 * (usage.heapTotal / 1048576)) / 100}MB`,
+			RAM_USED: `${Math.round(100 * (usage.heapUsed / 1048576)) / 100}MB`
 		};
 	}
 
@@ -57,13 +58,13 @@ export interface StatsGeneral {
 }
 
 export interface StatsUptime {
-	CLIENT: string;
-	HOST: string;
-	TOTAL: string;
+	CLIENT: number;
+	HOST: number;
+	TOTAL: number;
 }
 
 export interface StatsUsage {
-	CPU_LOAD: string;
+	CPU_LOAD: [number, number, number];
 	RAM_TOTAL: string;
 	RAM_USED: string;
 }

@@ -3151,25 +3151,25 @@ export default class extends Language {
 
 		COMMAND_FEEDBACK: 'Thanks you for your feedback ❤! I will make sure the developer team read this, you may get a response in DMs!',
 
-		COMMAND_STATS: (STATS, UPTIME, USAGE) => [
-			'= STATISTICS =',
-			`• Users      :: ${STATS.USERS}`,
-			`• Guilds     :: ${STATS.GUILDS}`,
-			`• Channels   :: ${STATS.CHANNELS}`,
-			`• Discord.js :: ${STATS.VERSION}`,
-			`• Node.js    :: ${STATS.NODE_JS}`,
-			`• Klasa      :: ${klasaVersion}`,
-			'',
-			'= UPTIME =',
-			`• Host       :: ${UPTIME.HOST}`,
-			`• Total      :: ${UPTIME.TOTAL}`,
-			`• Client     :: ${UPTIME.CLIENT}`,
-			'',
-			'= HOST USAGE =',
-			`• CPU Load   :: ${USAGE.CPU_LOAD}`,
-			`• RAM +Node  :: ${USAGE.RAM_TOTAL}`,
-			`• RAM Usage  :: ${USAGE.RAM_USED}`
-		].join('\n'),
+		COMMAND_STATS: (color, stats, uptime, usage) => new MessageEmbed()
+			.setColor(color)
+			.addField('Statistics', [
+				`• **Users**: ${stats.USERS}`,
+				`• **Guilds**: ${stats.GUILDS}`,
+				`• **Channels**: ${stats.CHANNELS}`,
+				`• **Discord.js**: ${stats.VERSION}`,
+				`• **Node.js**: ${stats.NODE_JS}`,
+				`• **Klasa**: ${klasaVersion}`
+			].join('\n'))
+			.addField('Uptime', [
+				`• **Host**: ${duration(uptime.HOST, 2)}`,
+				`• **Total**: ${duration(uptime.TOTAL, 2)}`,
+				`• **Client**: ${duration(uptime.CLIENT, 2)}`
+			].join('\n'))
+			.addField('Server Usage', [
+				`• **CPU Load**: ${usage.CPU_LOAD.join(' | ')}`,
+				`• **Heap**: ${usage.RAM_USED} (Total: ${usage.RAM_TOTAL})`
+			].join('\n')),
 
 		/**
 		 * #############

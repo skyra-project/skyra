@@ -3233,6 +3233,7 @@ export default class extends Language {
 			NUMBER_OF_PLAYERS: 'Número de jugadores',
 			PLATFORM: 'Plataforma',
 			CATEGORIES: 'Categorías',
+			NO_CATEGORIES: 'Este juego no se ha ordenado en ninguna categoría.',
 			NSUID: 'NSUID',
 			ESRB: 'ESRB'
 		},

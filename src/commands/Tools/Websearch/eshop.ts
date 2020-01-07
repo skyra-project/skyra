@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 				.addField(titles.PLATFORM, game.platform, true)
 				.addField(titles.NSUID, game.nsuid || 'TBD', true)
 				.addField(titles.ESRB, esrbText)
-				.addField(titles.CATEGORIES, game.categories.join(', ')));
+				.addField(titles.CATEGORIES, game.categories.join(', ') || titles.NO_CATEGORIES));
 		}
 		return display;
 	}

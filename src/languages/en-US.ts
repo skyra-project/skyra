@@ -3246,6 +3246,7 @@ export default class extends Language {
 			NUMBER_OF_PLAYERS: 'Number of Players',
 			PLATFORM: 'Platform',
 			CATEGORIES: 'Categories',
+			NO_CATEGORIES: 'This game has not been sorted into any categories',
 			NSUID: 'NSUID',
 			ESRB: 'ESRB'
 		},

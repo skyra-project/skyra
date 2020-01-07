@@ -750,6 +750,7 @@ export interface LanguageKeys {
 		NUMBER_OF_PLAYERS: string;
 		PLATFORM: string;
 		CATEGORIES: string;
+		NO_CATEGORIES: string;
 		NSUID: 'NSUID';
 		ESRB: 'ESRB';
 	};

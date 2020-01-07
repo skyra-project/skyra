@@ -103,8 +103,9 @@ export default class extends SkyraCommand {
 					game.running = await (game.number < oldNum ? this.win(game, message) : this.loss(game, message));
 					break;
 				}
+				case HigherLowerReactions.Cancel:
 				case HigherLowerReactions.Cashout: {
-					await this.end(game, message, true);
+					await this.end(game, message, emoji === HigherLowerReactions.Cashout);
 					game.running = false;
 					break;
 				}

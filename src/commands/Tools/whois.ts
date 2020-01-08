@@ -1,11 +1,26 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { BrandingColors } from '@utils/constants';
-import { GuildMember, MessageEmbed, Role, User } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser, Language } from 'klasa';
+import { GuildMember, Role, User, MessageEmbed, Permissions, PermissionString } from 'discord.js';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
+const { FLAGS } = Permissions;
 
 export default class extends SkyraCommand {
+
+	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
+	private readonly kKeyPermissions: [PermissionString, number][] = [
+		['BAN_MEMBERS', FLAGS.BAN_MEMBERS],
+		['KICK_MEMBERS', FLAGS.KICK_MEMBERS],
+		['MANAGE_CHANNELS', FLAGS.MANAGE_CHANNELS],
+		['MANAGE_EMOJIS', FLAGS.MANAGE_EMOJIS],
+		['MANAGE_GUILD', FLAGS.MANAGE_GUILD],
+		['MANAGE_MESSAGES', FLAGS.MANAGE_MESSAGES],
+		['MANAGE_NICKNAMES', FLAGS.MANAGE_NICKNAMES],
+		['MANAGE_ROLES', FLAGS.MANAGE_ROLES],
+		['MANAGE_WEBHOOKS', FLAGS.MANAGE_WEBHOOKS],
+		['MENTION_EVERYONE', FLAGS.MENTION_EVERYONE]
+	];
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -25,41 +40,55 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 
-		const embed = new MessageEmbed();
-		if (member) this.member(member, embed, message.language);
-		else this.user(user, embed, message.language);
-
-		return message.sendMessage({ embed });
+		return message.sendMessage(member
+			? this.member(message, member)
+			: this.user(message, user));
 	}
 
-	public member(member: GuildMember, embed: MessageEmbed, i18n: Language) {
-		embed
+	private user(message: KlasaMessage, user: KlasaUser) {
+		return message.language.tget('COMMAND_WHOIS_USER', user)
+			.setColor(BrandingColors.Secondary)
+			.setAuthor(user.tag, user.displayAvatarURL({ size: 128 }))
+			.setDescription(user.toString())
+			.setThumbnail(user.displayAvatarURL({ size: 256 }))
+			.setTimestamp();
+	}
+
+	private member(message: KlasaMessage, member: GuildMember) {
+		const embed = message.language.tget('COMMAND_WHOIS_MEMBER', member)
 			.setColor(member.displayColor || BrandingColors.Secondary)
-			.setTitle(`${member.user.bot ? '🤖 ' : ''}${member.user.tag}`)
-			.setURL(member.user.displayAvatarURL({ size: 1024 }))
-			.setDescription(i18n.tget('COMMAND_WHOIS_MEMBER', member))
+			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128 }))
+			.setDescription(member.toString())
 			.setThumbnail(member.user.displayAvatarURL({ size: 256 }))
-			.setFooter(`${this.client.user!.username} ${this.client.version} | ${member.user.id}`, this.client.user!.displayAvatarURL({ size: 128 }))
 			.setTimestamp();
 
-		if (member.roles.size > 1) {
-			const roles = member.roles.sorted(sortRanks);
-			roles.delete(member.guild.id);
-			embed.addField(i18n.tget('COMMAND_WHOIS_MEMBER_ROLES'), [...roles.values()].map(role => role.name).join(', '));
-		}
-
+		this.applyMemberRoles(message, member, embed);
+		this.applyMemberKeyPermissions(message, member, embed);
 		return embed;
 	}
 
-	public user(user: KlasaUser, embed: MessageEmbed, i18n: Language) {
-		return embed
-			.setColor(0xDFDFDF)
-			.setTitle(`${user.bot ? '🤖 ' : ''}${user.tag}`)
-			.setURL(user.displayAvatarURL({ size: 1024 }))
-			.setDescription(i18n.tget('COMMAND_WHOIS_USER', user))
-			.setThumbnail(user.displayAvatarURL({ size: 256 }))
-			.setFooter(`${this.client.user!.username} ${this.client.version} | ES | ${user.id}`, this.client.user!.displayAvatarURL({ size: 128 }))
-			.setTimestamp();
+	private applyMemberRoles(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
+		if (member.roles.size <= 1) return;
+
+		const roles = member.roles.sorted(sortRanks);
+		roles.delete(member.guild.id);
+		embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_ROLES', roles.size), [...roles.values()].join(' '));
+	}
+
+	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
+		if (member.permissions.has(this.kAdministratorPermission)) {
+			embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS'), message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL'));
+			return;
+		}
+
+		const permissions: string[] = [];
+		for (const [name, bit] of this.kKeyPermissions) {
+			if (member.permissions.has(bit)) permissions.push(message.language.PERMISSIONS[name]);
+		}
+
+		if (permissions.length > 0) {
+			embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS'), permissions.join(', '));
+		}
 	}
 
 }

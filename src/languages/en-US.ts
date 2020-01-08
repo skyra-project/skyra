@@ -3386,19 +3386,18 @@ export default class extends Language {
 		COMMAND_URBAN_NOTFOUND: 'I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?',
 		COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continue reading](${url})`,
-		COMMAND_WHOIS_MEMBER: member => [
-			`→ ${inlineCodeblock('ID         ::')} **${member.id}**`,
-			`→ ${inlineCodeblock('Tag        ::')} **${member.user.tag}**`,
-			`→ ${inlineCodeblock('Nickname   ::')} **${member.nickname || 'Not set'}**`,
-			`→ ${inlineCodeblock('Created At ::')} **${timestamp.displayUTC(member.user.createdAt)}**`,
-			`→ ${inlineCodeblock('Joined     ::')} **${member.joinedTimestamp ? timestamp.displayUTC(member.joinedTimestamp) : 'Unknown'}**`
-		].join('\n'),
-		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
-		COMMAND_WHOIS_USER: user => [
-			`→ ${inlineCodeblock('ID         ::')} **${user.id}**`,
-			`→ ${inlineCodeblock('Tag        ::')} **${user.tag}**`,
-			`→ ${inlineCodeblock('Created At ::')} **${timestamp.displayUTC(user.createdAt)}**`
-		].join('\n'),
+		COMMAND_WHOIS_MEMBER: member => new MessageEmbed()
+			.addField('Joined', member.joinedTimestamp
+				? `${timestamp.displayUTC(member.joinedTimestamp)}\n${duration(Date.now() - member.joinedTimestamp, 2)} ago`
+				: 'Unknown', true)
+			.addField('Created At', `${timestamp.displayUTC(member.user.createdAt)}\n${duration(Date.now() - member.user.createdTimestamp, 2)} ago`, true)
+			.setFooter(`ID: ${member.id}`, this.client.user!.displayAvatarURL()),
+		COMMAND_WHOIS_MEMBER_ROLES: amount => amount === 1 ? 'Role [1]' : `Roles [${amount}]`,
+		COMMAND_WHOIS_MEMBER_PERMISSIONS: 'Key Permissions',
+		COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL: 'All Permissions',
+		COMMAND_WHOIS_USER: user => new MessageEmbed()
+			.addField('Created At', `${timestamp.displayUTC(user.createdAt)}\n${duration(Date.now() - user.createdTimestamp, 2)} ago`)
+			.setFooter(`ID: ${user.id}`, this.client.user!.displayAvatarURL()),
 		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
 		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
 		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',

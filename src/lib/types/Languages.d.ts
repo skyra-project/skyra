@@ -1451,9 +1451,11 @@ export interface LanguageKeys {
 	COMMAND_URBAN_NOTFOUND: string;
 	COMMAND_URBAN_INDEX_NOTFOUND: string;
 	SYSTEM_TEXT_TRUNCATED: (definition: string, url: string) => string;
-	COMMAND_WHOIS_MEMBER: (member: GuildMember) => string;
-	COMMAND_WHOIS_MEMBER_ROLES: string;
-	COMMAND_WHOIS_USER: (user: User) => string;
+	COMMAND_WHOIS_MEMBER: (member: GuildMember) => MessageEmbed;
+	COMMAND_WHOIS_MEMBER_ROLES: (amount: number) => string;
+	COMMAND_WHOIS_MEMBER_PERMISSIONS: string;
+	COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL: string;
+	COMMAND_WHOIS_USER: (user: User) => MessageEmbed;
 	COMMAND_FOLLOWAGE: (user: string, channel: string, time: number) => string;
 	COMMAND_FOLLOWAGE_MISSING_ENTRIES: string;
 	COMMAND_FOLLOWAGE_NOT_FOLLOWING: string;

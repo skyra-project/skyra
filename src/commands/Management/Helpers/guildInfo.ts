@@ -36,9 +36,7 @@ export default class extends SkyraCommand {
 			.setColor(getColor(message))
 			.setThumbnail(message.guild!.iconURL()!)
 			.setTitle(`${message.guild!.name} [${message.guild!.id}]`)
-			.splitFields(message.language.tget('COMMAND_SERVERINFO_ROLES', roles.length
-				? roles.map(role => role.name).join(', ')
-				: message.language.tget('COMMAND_SERVERINFO_NOROLES')))
+			.splitFields(message.language.tget('COMMAND_WHOIS_MEMBER_ROLES', roles.length), roles.join(' '))
 			.addField(serverInfoTitles.CHANNELS, message.language.tget('COMMAND_SERVERINFO_CHANNELS',
 				tChannels, vChannels, cChannels, message.guild!.afkChannelID, message.guild!.afkTimeout), true)
 			.addField(serverInfoTitles.MEMBERS, message.language.tget('COMMAND_SERVERINFO_MEMBERS',

@@ -73,7 +73,7 @@ export default class extends SkyraCommand {
 
 		const roles = member.roles.sorted(sortRanks);
 		roles.delete(member.guild.id);
-		embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_ROLES', roles.size), [...roles.values()].join(' '));
+		embed.splitFields(message.language.tget('COMMAND_WHOIS_MEMBER_ROLES', roles.size), [...roles.values()].join(' '));
 	}
 
 	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {

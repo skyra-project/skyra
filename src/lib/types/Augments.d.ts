@@ -68,6 +68,7 @@ declare module 'discord.js' {
 	}
 
 	interface MessageEmbed {
+		splitFields(title: string, content: string | string[]): this;
 		splitFields(content: string | string[]): this;
 	}
 

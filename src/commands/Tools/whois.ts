@@ -1,7 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { BrandingColors } from '@utils/constants';
-import { GuildMember, Role, User, MessageEmbed, Permissions, PermissionString } from 'discord.js';
+import { GuildMember, Role, MessageEmbed, Permissions, PermissionString } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { getDisplayAvatar } from '@utils/util';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
@@ -24,42 +25,42 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['userinfo'],
+			aliases: ['userinfo', 'uinfo'],
 			cooldown: 15,
 			description: language => language.tget('COMMAND_WHOIS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '(user:username)'
+			usage: '(user:member)'
 		});
 
-		this.createCustomResolver('username', (arg, possible, message) =>
-			arg ? this.client.arguments.get('username')!.run(arg, possible, message) : message.author);
+		this.createCustomResolver('member', (arg, possible, message) =>
+			arg ? this.client.arguments.get('membername')!.run(arg, possible, message) : message.author);
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		const member = await message.guild!.members.fetch(user.id).catch(() => null);
+	public async run(message: KlasaMessage, [kMember = message.member!]: [GuildMember]) {
+		const member = await message.guild!.members.fetch(kMember.id).catch(() => null);
 
 		return message.sendMessage(member
 			? this.member(message, member)
-			: this.user(message, user));
+			: this.user(message, kMember.user));
 	}
 
 	private user(message: KlasaMessage, user: KlasaUser) {
 		return message.language.tget('COMMAND_WHOIS_USER', user)
 			.setColor(BrandingColors.Secondary)
-			.setAuthor(user.tag, user.displayAvatarURL({ size: 128 }))
+			.setAuthor(user.tag, getDisplayAvatar(user.id, user, { size: 128 }))
 			.setDescription(user.toString())
-			.setThumbnail(user.displayAvatarURL({ size: 256 }))
+			.setThumbnail(getDisplayAvatar(user.id, user, { size: 256 }))
 			.setTimestamp();
 	}
 
 	private member(message: KlasaMessage, member: GuildMember) {
 		const embed = message.language.tget('COMMAND_WHOIS_MEMBER', member)
 			.setColor(member.displayColor || BrandingColors.Secondary)
-			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128 }))
+			.setAuthor(member.user.tag, getDisplayAvatar(member.id, member.user, { size: 128 }))
 			.setDescription(member.toString())
-			.setThumbnail(member.user.displayAvatarURL({ size: 256 }))
+			.setThumbnail(getDisplayAvatar(member.id, member.user, { size: 256 }))
 			.setTimestamp();
 
 		this.applyMemberRoles(message, member, embed);

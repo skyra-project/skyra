@@ -1,4 +1,4 @@
-import { isObject, isNumber } from '@klasa/utils';
+import { isNumber, isObject } from '@klasa/utils';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
@@ -373,7 +373,7 @@ export function getColor(message: Message) {
 const ROOT = 'https://cdn.discordapp.com';
 export function getDisplayAvatar(id: string, user: UserTag | User, options: AvatarOptions = {}) {
 	if (user.avatar === null) return `${ROOT}/embed/avatars/${Number(user.discriminator) % 5}.png`;
-	const format = typeof options.format === 'undefined' ? user.avatar.startsWith('a_') ? 'gif' : 'webp' : options.format;
+	const format = typeof options.format === 'undefined' ? user.avatar.startsWith('a_') ? 'gif' : 'png' : options.format;
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
 	return `${ROOT}/avatars/${id}/${user.avatar}.${format}${size}`;
 }

@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor } from '@utils/util';
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { getColor, getDisplayAvatar } from '@utils/util';
+import { MessageEmbed, GuildMember } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 
@@ -13,21 +13,20 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_AVATAR_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '(user:username)'
+			usage: '(user:member)'
 		});
 
-		this.createCustomResolver('username', (arg, possible, msg) =>
-			arg ? this.client.arguments.get('username')!.run(arg, possible, msg) : msg.author);
+		this.createCustomResolver('member', (arg, possible, msg) =>
+			arg ? this.client.arguments.get('membername')!.run(arg, possible, msg) : msg.author);
 	}
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		if (!user.avatar) throw message.language.tget('COMMAND_AVATAR_NONE');
+	public async run(message: KlasaMessage, [member]: [GuildMember]) {
+		if (!member.user.avatar) throw message.language.tget('COMMAND_AVATAR_NONE');
 
-		const format = user.avatar.startsWith('a_') ? 'gif' : 'png';
 		return message.sendEmbed(new MessageEmbed()
-			.setAuthor(user.tag, user.avatarURL({ format, size: 128 })!)
+			.setAuthor(member.user.tag, getDisplayAvatar(member.id, member.user, { size: 128 }))
 			.setColor(getColor(message))
-			.setImage(user.avatarURL({ format, size: 2048 })!));
+			.setImage(getDisplayAvatar(member.id, member.user, { size: 2048 })));
 	}
 
 }

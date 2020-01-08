@@ -3373,19 +3373,18 @@ export default class extends Language {
 		COMMAND_URBAN_NOTFOUND: 'Lo siento, la palabra que buscabas no parece estar definida en UrbanDictionary. ¿Prueba con otra palabra?',
 		COMMAND_URBAN_INDEX_NOTFOUND: 'Quizás quieras probar con un número de página más pequeño.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continúa leyendo](${url})`,
-		COMMAND_WHOIS_MEMBER: member => [
-			`→ ${inlineCodeblock('ID             ::')} **${member.id}**`,
-			`→ ${inlineCodeblock('Etiqueta       ::')} **${member.user.tag}**`,
-			`→ ${inlineCodeblock('Apodo          ::')} **${member.nickname || 'Not set'}**`,
-			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(member.user.createdAt)}**`,
-			`→ ${inlineCodeblock('Fecha Ingreso  ::')} **${member.joinedTimestamp ? timestamp.displayUTC(member.joinedTimestamp) : 'Desconocido'}**`
-		].join('\n'),
-		COMMAND_WHOIS_MEMBER_ROLES: '→ `Roles`',
-		COMMAND_WHOIS_USER: user => [
-			`→ ${inlineCodeblock('ID             ::')} **${user.id}**`,
-			`→ ${inlineCodeblock('Etiqueta       ::')} **${user.tag}**`,
-			`→ ${inlineCodeblock('Fecha Creación ::')} **${timestamp.displayUTC(user.createdAt)}**`
-		].join('\n'),
+		COMMAND_WHOIS_MEMBER: member => new MessageEmbed()
+			.addField('Fecha Ingreso', member.joinedTimestamp
+				? `Hace ${timestamp.displayUTC(member.joinedTimestamp)}\n${duration(Date.now() - member.joinedTimestamp, 2)}`
+				: 'Desconocido', true)
+			.addField('Fecha Creación', `${timestamp.displayUTC(member.user.createdAt)}\nHace ${duration(Date.now() - member.user.createdTimestamp, 2)}`, true)
+			.setFooter(`ID: ${member.id}`, this.client.user!.displayAvatarURL()),
+		COMMAND_WHOIS_MEMBER_ROLES: amount => amount === 1 ? 'Rol [1]' : `Roles [${amount}]`,
+		COMMAND_WHOIS_MEMBER_PERMISSIONS: 'Permisos Clave',
+		COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL: 'Todos los Permisos',
+		COMMAND_WHOIS_USER: user => new MessageEmbed()
+			.addField('Fecha Creación', `${timestamp.displayUTC(user.createdAt)}\nHace ${duration(Date.now() - user.createdTimestamp, 2)}`)
+			.setFooter(`ID: ${user.id}`, this.client.user!.displayAvatarURL()),
 		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
 		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
 		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',

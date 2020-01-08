@@ -31,19 +31,19 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '(user:member)'
+			usage: '(user:username)'
 		});
 
-		this.createCustomResolver('member', (arg, possible, message) =>
-			arg ? this.client.arguments.get('membername')!.run(arg, possible, message) : message.author);
+		this.createCustomResolver('username', (arg, possible, message) =>
+			arg ? this.client.arguments.get('username')!.run(arg, possible, message) : message.author);
 	}
 
-	public async run(message: KlasaMessage, [kMember = message.member!]: [GuildMember]) {
-		const member = await message.guild!.members.fetch(kMember.id).catch(() => null);
+	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 
 		return message.sendMessage(member
 			? this.member(message, member)
-			: this.user(message, kMember.user));
+			: this.user(message, user));
 	}
 
 	private user(message: KlasaMessage, user: KlasaUser) {

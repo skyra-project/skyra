@@ -29,9 +29,9 @@ export default class extends SkyraCommand {
 		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[Moderation.SchemaKeys.Case] === modlog.case)!;
 
 		if (cancel) return this.cancel(message, modlog, task);
-		if (modlog.appealType) throw message.language.tget('MODERATION_LOG_APPEALED');
+		if (modlog.appealType || modlog.invalidated) throw message.language.tget('MODERATION_LOG_APPEALED');
 		if (task) throw message.language.tget('MODLOG_TIMED', task.data.timestamp - Date.now());
-		if (!time.length) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
+		if (!time) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
 
 		const { offset } = new Duration(time);
 		await this.client.schedule.create(type, offset + Date.now(), {
@@ -109,14 +109,14 @@ export default class extends SkyraCommand {
 		if (!users.size) throw message.language.tget('GUILD_BANS_EMPTY');
 		const member = users.get(user.id);
 		if (!member) throw message.language.tget('GUILD_BANS_NOT_FOUND');
-		return 'unban';
+		return Moderation.TypeVariationAppealNames.Ban;
 	}
 
 	private checkMute(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.tget('COMMAND_UNMUTE_MISSING_PERMISSION');
 		const stickyRoles = message.guild!.settings.get(GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
 		if (!stickyRoles || !stickyRoles.roles.includes(message.guild!.settings.get(GuildSettings.Roles.Muted))) throw message.language.tget('COMMAND_MUTE_USER_NOT_MUTED');
-		return 'unmute';
+		return Moderation.TypeVariationAppealNames.Mute;
 	}
 
 	private async checkVMute(message: KlasaMessage, user: KlasaUser) {
@@ -125,7 +125,7 @@ export default class extends SkyraCommand {
 			throw message.language.tget('USER_NOT_IN_GUILD');
 		});
 		if (!member.voice.serverMute) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
-		return 'unvmute';
+		return Moderation.TypeVariationAppealNames.VoiceMute;
 	}
 
 }

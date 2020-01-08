@@ -2204,6 +2204,48 @@ export default class extends Language {
 		 * GOOGLE COMMANDS
 		 */
 
+		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
+				support as it is... Google Search. Once this command got the coordinates, it queries TimezoneDB to get the time data`,
+			explainedUsage: [
+				['city', 'The locality, governing, country or continent to check the time for.']
+			],
+			examples: ['Antarctica', 'Arizona']
+		}),
+		COMMAND_GSEARCH_DESCRIPTION: 'Find your favourite things on Google',
+		COMMAND_GSEARCH_EXTENDED: builder.display('gsearch', {
+			extendedHelp: `This command queries the powerful Google Search engine to find websites for your query.
+				For images please use the \`gimage\` command.`,
+			explainedUsage: [
+				['query', 'The thing you want to find on Google']
+			],
+			examples: ['Discord', 'Skyra']
+		}),
+		COMMAND_GIMAGE_DESCRIPTION: 'Find your favourite images on Google',
+		COMMAND_GIMAGE_EXTENDED: builder.display('gimage', {
+			extendedHelp: `This command queries the powerful Google Search engine to find images for your query.
+				For regular web results please use the \`gsearch\` command.
+				This command has been marked as NSFW because it is unavoidable that when you query explicit content, you will get explicit results.`,
+			explainedUsage: [
+				['query', 'The image you want to find on Google']
+			],
+			examples: ['Discord', 'Skyra']
+		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Current Time',
+			CURRENT_DATE: 'Current Date',
+			COUNTRY: 'Country',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
+		},
+		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'The query to google']
+			]
+		}),
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
 		COMMAND_WEATHER_EXTENDED: builder.display('weather', {
 			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
@@ -2214,34 +2256,11 @@ export default class extends Language {
 			],
 			examples: ['Antarctica', 'Arizona']
 		}),
-		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'The query to google']
-			]
-		}),
-		COMMAND_CURRENTTIME_DESCRIPTION: '',
-		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
-			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
-				support as it is... Google Search. Once this command got the coordinates, it queries TimezoneDB to get the time data`,
-			explainedUsage: [
-				['city', 'The locality, governing, country or continent to check the time for.']
-			],
-			examples: ['Antarctica', 'Arizona']
-		}),
-		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
-		COMMAND_CURRENTTIME_TITLES: {
-			CURRENT_TIME: 'Current Time',
-			CURRENT_DATE: 'Current Date',
-			COUNTRY: 'Country',
-			GMT_OFFSET: 'GMT Offset',
-			DST: dst => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
-		},
 		GOOGLE_ERROR_ZERO_RESULTS: 'Your request returned no results.',
 		GOOGLE_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
 		GOOGLE_ERROR_INVALID_REQUEST: 'Invalid request.',
 		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Query Limit exceeded. Try again tomorrow.',
-		GOOGLE_ERROR_UNKNOWN: 'Unknown error.',
+		GOOGLE_ERROR_UNKNOWN: 'I am sorry, but I failed to get a result from Google.',
 
 		/**
 		 * #############

@@ -2193,23 +2193,6 @@ export default class extends Language {
 		 * GOOGLE COMMANDS
 		 */
 
-		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
-		COMMAND_WEATHER_EXTENDED: builder.display('weather', {
-			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
-				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
-				Una vez que este comando obtuvo las coordenadas, consulta a DarkSky para recuperar información sobre el clima.
-				Nota: la temperatura está en ** Celsius **`,
-			explainedUsage: [
-				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
-			],
-			examples: ['Madrid', 'Barcelona']
-		}),
-		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
-			explainedUsage: [
-				['query', 'La consulta a google']
-			]
-		}),
 		COMMAND_CURRENTTIME_DESCRIPTION: '',
 		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
 			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
@@ -2228,11 +2211,37 @@ export default class extends Language {
 			GMT_OFFSET: 'GMT Offset',
 			DST: dst => `**Horario de verano**: ${dst === 0 ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'}`
 		},
+		COMMAND_GSEARCH_DESCRIPTION: 'Encuentra tus cosas favoritas en Google',
+		COMMAND_GSEARCH_EXTENDED: builder.display('gsearch', {
+			extendedHelp: `Este comando consulta el poderoso motor de búsqueda de Google para encontrar sitios web para su consulta.
+			Para imágenes, utilice el comando \`gimage\`.`,
+			explainedUsage: [
+				['consulta', 'Lo que quieres encontrar en Google']
+			],
+			examples: ['Discord', 'Skyra']
+		}),
+		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
+		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+			explainedUsage: [
+				['query', 'La consulta a google']
+			]
+		}),
+		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
+		COMMAND_WEATHER_EXTENDED: builder.display('weather', {
+			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
+				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
+				Una vez que este comando obtuvo las coordenadas, consulta a DarkSky para recuperar información sobre el clima.
+				Nota: la temperatura está en ** Celsius **`,
+			explainedUsage: [
+				['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']
+			],
+			examples: ['Madrid', 'Barcelona']
+		}),
 		GOOGLE_ERROR_ZERO_RESULTS: 'La aplicación no devolvió resultados.',
 		GOOGLE_ERROR_REQUEST_DENIED: 'La aplicación GeoCode ha rechazado su solicitud.',
 		GOOGLE_ERROR_INVALID_REQUEST: 'Solicitud incorrecta.',
 		GOOGLE_ERROR_OVER_QUERY_LIMIT: 'Límite de solicitudes excedida, prueba de nuevo mañana.',
-		GOOGLE_ERROR_UNKNOWN: 'Error Desconocido.',
+		GOOGLE_ERROR_UNKNOWN: 'Lo siento, pero no pude obtener un resultado de Google.',
 
 		/**
 		 * #############

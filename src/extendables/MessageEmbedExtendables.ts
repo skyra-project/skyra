@@ -29,16 +29,19 @@ export default class extends Extendable {
 		}
 
 		let x: number;
+		let slice: string;
 		while (content.length) {
 			if (content.length < 1024) {
 				this.fields.push({ name: title, value: content, inline: false });
 				return this;
 			}
 
-			x = content.slice(0, 1024).lastIndexOf('\n');
+			slice = content.slice(0, 1024);
+			x = slice.lastIndexOf('\n');
+			if (x === -1) x = slice.lastIndexOf(' ');
 			if (x === -1) x = 1024;
 
-			this.fields.push({ name: title, value: content.slice(0, x), inline: false });
+			this.fields.push({ name: title, value: content.trim().slice(0, x), inline: false });
 			content = content.slice(x + 1);
 			title = ZWS;
 		}

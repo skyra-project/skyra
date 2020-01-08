@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { TOKENS } from '@root/config';
-import { GOOGLE_RESPONSE_CODES, handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
+import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
 import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
 		const { status, ...timeData } = await this.fetchAPI(message, lat, lng);
 
-		if (status !== GOOGLE_RESPONSE_CODES.OK) throw message.language.tget(handleNotOK(status, this.client));
+		if (status !== GoogleResponseCodes.Ok) throw message.language.tget(handleNotOK(status, this.client));
 
 		const TITLES = message.language.tget('COMMAND_CURRENTTIME_TITLES');
 		return message.sendEmbed(new MessageEmbed()
@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 /** API Response from TimezoneDB */
 export interface TimeResult {
 	/** Status of the API query. Either OK or FAILED. */
-	status: GOOGLE_RESPONSE_CODES;
+	status: GoogleResponseCodes;
 	/** Error message. Empty if no error. */
 	message: '' | string;
 	/** Country code of the time zone. */

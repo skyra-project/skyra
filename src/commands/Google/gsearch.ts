@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { BrandingColors } from '@utils/constants';
-import { CUSTOM_SEARCH_TYPE, GooleCSEItem, queryGoogleCustomSearchAPI } from '@utils/Google';
+import { CustomSearchType, GooleCSEItem, queryGoogleCustomSearchAPI, handleNotOK, GoogleResponseCodes } from '@utils/Google';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -32,8 +32,10 @@ export default class extends SkyraCommand {
 			message.sendEmbed(new MessageEmbed()
 				.setDescription(message.language.tget('SYSTEM_LOADING'))
 				.setColor(BrandingColors.Secondary)),
-			queryGoogleCustomSearchAPI<CUSTOM_SEARCH_TYPE.SEARCH>(message, CUSTOM_SEARCH_TYPE.SEARCH, query)
+			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
+
+		if (!items || !items.length) throw message.language.tget(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = this.buildDisplay(message, items);
 

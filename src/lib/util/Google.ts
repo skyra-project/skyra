@@ -7,18 +7,18 @@ import { fetch, FetchResultTypes } from './util';
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 const GOOGLE_CUSTOM_SEARCH_API_URL = 'https://www.googleapis.com/customsearch/v1';
 
-export const enum CUSTOM_SEARCH_TYPE {
-	IMAGE, SEARCH
+export const enum CustomSearchType {
+	Image, Search
 }
 
-export const enum GOOGLE_RESPONSE_CODES {
-	ZERO_RESULTS = 'ZERO_RESULTS',
-	REQUEST_DENIED = 'REQUEST_DENIED',
-	INVALID_REQUEST = 'INVALID_REQUEST',
-	OVER_QUERY_LIMIT= 'OVER_QUERY_LIMIT',
-	UNKNOWN_ERROR = 'UNKNOWN_ERROR',
-	OK = 'OK',
-	FAILED = 'FAILED'
+export const enum GoogleResponseCodes {
+	ZeroResults = 'ZERO_RESULTS',
+	RequestDenied = 'REQUEST_DENIED',
+	InvalidRequest = 'INVALID_REQUEST',
+	OverQueryLimit= 'OVER_QUERY_LIMIT',
+	UnknownError = 'UNKNOWN_ERROR',
+	Ok = 'OK',
+	Failed = 'FAILED'
 }
 
 export async function queryGoogleMapsAPI(message: KlasaMessage, location: string) {
@@ -27,7 +27,7 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
 	const { results, status } = await fetch(url, FetchResultTypes.JSON) as GoogleMapsResultOk;
 
-	if (status !== GOOGLE_RESPONSE_CODES.OK) throw message.language.tget(handleNotOK(status, message.client));
+	if (status !== GoogleResponseCodes.Ok) throw message.language.tget(handleNotOK(status, message.client));
 	if (results.length === 0) throw message.language.tget('GOOGLE_ERROR_ZERO_RESULTS');
 
 	return {
@@ -38,31 +38,31 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 	};
 }
 
-export async function queryGoogleCustomSearchAPI<T extends CUSTOM_SEARCH_TYPE>(message: KlasaMessage, type: T, query: string) {
+export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(message: KlasaMessage, type: T, query: string) {
 	try {
 		const nsfwAllowed = message.channel.type === 'text' ? (message.channel as TextChannel).nsfw : true;
 		const url = new URL(GOOGLE_CUSTOM_SEARCH_API_URL);
-		url.searchParams.append('cx', type === CUSTOM_SEARCH_TYPE.SEARCH ? TOKENS.GOOGLE_CUSTOM_SEARCH_WEB_KEY : TOKENS.GOOGLE_CUSTOM_SEARCH_IMAGE_KEY);
+		url.searchParams.append('cx', type === CustomSearchType.Search ? TOKENS.GOOGLE_CUSTOM_SEARCH_WEB_KEY : TOKENS.GOOGLE_CUSTOM_SEARCH_IMAGE_KEY);
 		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);
 		url.searchParams.append('q', query);
 		url.searchParams.append('safe', nsfwAllowed ? 'off' : 'active');
-		if (type === CUSTOM_SEARCH_TYPE.IMAGE) url.searchParams.append('searchType', 'image');
+		if (type === CustomSearchType.Image) url.searchParams.append('searchType', 'image');
 
 		return await fetch(url, FetchResultTypes.JSON) as GoogleSearchResult<T>;
 	} catch {
-		throw message.language.tget(handleNotOK(GOOGLE_RESPONSE_CODES.UNKNOWN_ERROR, message.client));
+		throw message.language.tget(handleNotOK(GoogleResponseCodes.UnknownError, message.client));
 	}
 }
 
-export function handleNotOK(status: GOOGLE_RESPONSE_CODES, client: Client) {
+export function handleNotOK(status: GoogleResponseCodes, client: Client) {
 	switch (status) {
-		case GOOGLE_RESPONSE_CODES.ZERO_RESULTS:
+		case GoogleResponseCodes.ZeroResults:
 			return 'GOOGLE_ERROR_ZERO_RESULTS';
-		case GOOGLE_RESPONSE_CODES.REQUEST_DENIED:
+		case GoogleResponseCodes.RequestDenied:
 			return 'GOOGLE_ERROR_REQUEST_DENIED';
-		case GOOGLE_RESPONSE_CODES.INVALID_REQUEST:
+		case GoogleResponseCodes.InvalidRequest:
 			return 'GOOGLE_ERROR_INVALID_REQUEST';
-		case GOOGLE_RESPONSE_CODES.OVER_QUERY_LIMIT:
+		case GoogleResponseCodes.OverQueryLimit:
 			return 'GOOGLE_ERROR_OVER_QUERY_LIMIT';
 		default:
 			client.emit(Events.Wtf, `Google::handleNotOK | Unknown Error: ${status}`);
@@ -72,7 +72,7 @@ export function handleNotOK(status: GOOGLE_RESPONSE_CODES, client: Client) {
 
 export interface GoogleMapsResultOk {
 	results: GoogleMapsResultOkResult[];
-	status: GOOGLE_RESPONSE_CODES;
+	status: GoogleResponseCodes;
 }
 
 export interface GoogleMapsResultOkResult {
@@ -107,10 +107,10 @@ export interface GoogleMapsOkLocation {
 }
 
 
-export interface GoogleSearchResult<T extends CUSTOM_SEARCH_TYPE> {
+export interface GoogleSearchResult<T extends CustomSearchType> {
 	kind: string;
 	context: { title: string };
-	items: T extends CUSTOM_SEARCH_TYPE.IMAGE ? GoogleCSEImageData[] : GooleCSEItem[];
+	items?: T extends CustomSearchType.Image ? GoogleCSEImageData[] : GooleCSEItem[];
 }
 
 export interface GoogleCSEImageData {

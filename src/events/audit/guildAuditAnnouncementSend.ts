@@ -1,8 +1,9 @@
-import AuditEvent from '@lib/structures/AuditEvent';
 import { Events } from '@lib/types/Enums';
-import { AuditAnnouncementAction, AuditMeasurements } from '@lib/types/influxSchema/Audit';
+import { AuditAnnouncementAction, AuditMeasurements, AuditTags } from '@lib/types/influxSchema/Audit';
 import { Role, TextChannel } from 'discord.js';
 import { EventStore, KlasaMessage } from 'klasa';
+import { Tags } from '@lib/types/influxSchema/tags';
+import AuditEvent from '@lib/structures/analytics/AuditEvent';
 
 export default class extends AuditEvent {
 
@@ -13,7 +14,7 @@ export default class extends AuditEvent {
 	}
 
 	public async run(message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string) {
-		return this.writePoint(AuditMeasurements.Announcement, [
+		return this.writeMeasurement(AuditMeasurements.Announcement,
 			{
 				fields: {
 					content,
@@ -22,15 +23,14 @@ export default class extends AuditEvent {
 					message_source_id: message.id,
 					message_result_id: resultMessage.id
 				},
-				tags: {
-					shard: (this.client.options.shards as number[])[0].toString(),
-					user_id: message.author.id,
-					guild_id: message.guild?.id!,
-					channel_id: channel.id,
-					action: AuditAnnouncementAction.Send
-				}
-			}
-		]);
+				tags: this.formTags({
+					[Tags.Shard]: (this.client.options.shards as number[])[0].toString(),
+					[Tags.User]: message.author.id,
+					[Tags.Guild]: message.guild!.id,
+					[Tags.Channel]: channel.id,
+					[AuditTags.Action]: AuditAnnouncementAction.Send
+				})
+			});
 	}
 
 }

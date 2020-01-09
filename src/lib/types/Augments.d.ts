@@ -10,11 +10,13 @@ import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
 import { InfluxDB } from 'influx';
-import { SettingsFolderUpdateOptions } from 'klasa';
+import { SettingsFolderUpdateOptions, KlasaUser, KlasaMessage } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
+import { Events } from './Enums';
+import { EconomyTransactionAction, EconomyTransactionReason } from './influxSchema/Economy';
 
 
 declare module 'discord.js' {
@@ -34,6 +36,12 @@ declare module 'discord.js' {
 		queries: CommonQuery;
 		influx: InfluxDB | null;
 		twitch: Twitch;
+
+		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
+		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
+		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number, action: EconomyTransactionAction, reason: EconomyTransactionReason): boolean;
+		emit(event: Events.MoneyPayment, message: KlasaMessage, user: KlasaUser, target: KlasaUser, money: number): boolean;
+		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 
 	interface MessageExtendablesAskOptions {
@@ -65,6 +73,8 @@ declare module 'discord.js' {
 	interface User {
 		profileLevel: number;
 		fetchRank(): Promise<number>;
+		increaseBalance(amount: number, reason?: EconomyTransactionReason): Promise<void>;
+		decreaseBalance(amount: number, reason?: EconomyTransactionReason): Promise<void>;
 	}
 
 	interface MessageEmbed {
@@ -124,6 +134,12 @@ declare module 'klasa-dashboard-hooks' {
 		user_id: string;
 	}
 
+}
+
+declare module 'influx' {
+	interface IWriteOptions {
+		[K: string]: unknown;
+	}
 }
 
 interface Fn {

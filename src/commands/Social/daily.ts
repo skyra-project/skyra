@@ -3,6 +3,8 @@ import { ClientSettings } from '@lib/types/settings/ClientSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { Time } from '@utils/constants';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { EconomyTransactionReason, EconomyTransactionAction } from '@lib/types/influxSchema/Economy';
+import { Events } from '@lib/types/Enums';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;
@@ -48,10 +50,13 @@ export default class extends SkyraCommand {
 
 	private async claimDaily(message: KlasaMessage, nextTime: number) {
 		const money = this.calculateDailies(message);
-		const total = money + message.author.settings.get(UserSettings.Money);
-		await message.author.settings.update([[UserSettings.Money, total], [UserSettings.TimeDaily, nextTime]], {
+		const currentMoney = await message.author.settings.get(UserSettings.Money);
+
+		await message.author.settings.update([[UserSettings.TimeDaily, nextTime], [UserSettings.Money, currentMoney + money]], {
 			extraContext: { author: message.author.id }
 		});
+		this.client.emit(Events.MoneyTransaction, message.author, money, currentMoney, EconomyTransactionAction.Add, EconomyTransactionReason.Daily);
+
 		return money;
 	}
 

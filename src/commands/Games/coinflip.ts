@@ -3,6 +3,7 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { cleanMentions, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
 
 const enum CoinType { Heads, Tails }
 export default class extends SkyraCommand {
@@ -45,9 +46,10 @@ export default class extends SkyraCommand {
 
 		const result = this.flipCoin();
 		const won = result === guess;
-		const updatedBalance = won ? money + wager : money - wager;
+		await (won
+			? message.author.increaseBalance(wager, EconomyTransactionReason.Gamble)
+			: message.author.decreaseBalance(wager, EconomyTransactionReason.Gamble));
 
-		await message.author.settings.update(UserSettings.Money, updatedBalance);
 		return message.sendEmbed(this.buildEmbed(message, result)
 			.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
 			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result], wager)));

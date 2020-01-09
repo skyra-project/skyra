@@ -6,4 +6,5 @@ export function T<TCustom>(k: string): CustomGet<string, TCustom> {
 
 export interface SettingsAuditContext {
 	author?: string;
+	auditIgnore?: boolean;
 }

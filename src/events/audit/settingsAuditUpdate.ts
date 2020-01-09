@@ -1,10 +1,12 @@
+import { Settings, EventStore, KeyedObject, SettingsUpdateContext } from 'klasa';
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
-import AuditEvent from '@lib/structures/AuditEvent';
-import { Events } from '@lib/types/Enums';
 import { AuditMeasurements, AuditSettingsTarget, AuditTags } from '@lib/types/influxSchema/Audit';
-import { Client, User } from 'discord.js';
+import { User, Client } from 'discord.js';
+import AuditEvent from '@lib/structures/analytics/AuditEvent';
+import { Events } from '@lib/types/Enums';
 import { IPoint } from 'influx';
-import { EventStore, KeyedObject, Settings, SettingsUpdateContext } from 'klasa';
+import { Tags } from '@lib/types/influxSchema/tags';
+import { SettingsAuditContext } from '../../lib/types/settings/Shared';
 
 export default class extends AuditEvent {
 
@@ -36,12 +38,13 @@ export default class extends AuditEvent {
 	}
 
 	private updateAuditLog(context: SettingsUpdateContext, guild?: SkyraGuild, user?: User, client?: Client) {
-		// TODO(kyranet): Fill in proper type
-		const tags: [string, string][] = [[AuditTags.By, (context.extraContext as any)?.author ? `USER.${(context.extraContext as any).author}` : `CLIENT.${this.client.user!.id}`]];
+		const extraContext: SettingsAuditContext = context.extraContext as SettingsAuditContext;
+		if (extraContext.auditIgnore) return;
+		const tags: [string, string][] = [[AuditTags.By, extraContext.author ? `USER.${extraContext.author}` : `CLIENT.${this.client.user!.id}`]];
 		const toWrite: IPoint[] = [];
-		if (guild) tags.push(['target', AuditSettingsTarget.Guild], ['guild_id', guild.id]);
-		if (user) tags.push(['target', AuditSettingsTarget.User], ['user_id', user.id]);
-		if (client) tags.push(['target', AuditSettingsTarget.Client], ['client_id', client.user!.id]);
+		if (guild) tags.push(['target', AuditSettingsTarget.Guild], [Tags.Guild, guild.id]);
+		if (user) tags.push(['target', AuditSettingsTarget.User], [Tags.User, user.id]);
+		if (client) tags.push(['target', AuditSettingsTarget.Client], [Tags.Client, client.user!.id]);
 		for (const entry of context.changes) {
 			toWrite.push({
 				fields: {
@@ -51,7 +54,7 @@ export default class extends AuditEvent {
 				tags: this.formTags(Object.fromEntries(tags))
 			});
 		}
-		return this.writePoint(AuditMeasurements.SettingsUpdate, toWrite);
+		return this.writeMeasurements(AuditMeasurements.SettingsUpdate, toWrite);
 	}
 
 }

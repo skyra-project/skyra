@@ -8,6 +8,7 @@ import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
 import { Slotmachine } from './Slotmachine';
+import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
 
 const enum Icons {
 	LOSS_0_1,
@@ -96,12 +97,17 @@ export class WheelOfFortune {
 		const darkTheme = settings.get(UserSettings.DarkTheme);
 		const spin = Math.floor(Math.random() * this.MULTIPLIERS.length);
 		this.calculate(spin);
+		const lost = this.winnings === 0;
+		const winnings = (this.winnings * this.boost) - this.amount;
 
-		const amount = this.winnings === 0 ? money - this.amount : money - this.amount + (this.winnings * this.boost);
+		const amount = lost
+			? money - this.amount
+			: money + winnings;
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
-		await settings.update(UserSettings.Money, amount, {
-			extraContext: { author: this.message.author.id }
-		});
+
+		await (lost
+			? this.player.decreaseBalance(this.amount, EconomyTransactionReason.Gamble)
+			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble));
 
 		return [await this.render(money, spin, amount, darkTheme), amount] as [Buffer, number];
 	}

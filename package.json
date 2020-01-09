@@ -1,93 +1,93 @@
 {
-  "name": "skyra",
-  "version": "5.2.3",
-  "description": "Multipurpose Discord Bot built on Klasa",
-  "main": "dist/src/Skyra.js",
-  "scripts": {
-    "pm2:delete": "pm2 delete Skyra",
-    "pm2:logs": "pm2 logs Skyra --lines=200",
-    "pm2:restart": "pm2 restart Skyra",
-    "pm2:start-harmony": "pm2 start dist/src/Skyra.js --node-args=\"--harmony\" --name=\"Skyra\"",
-    "pm2:start": "pm2 start dist/src/Skyra.js --name=\"Skyra\"",
-    "pm2:stop": "pm2 stop Skyra",
-    "start": "node dist/src/Skyra.js",
-    "lint": "eslint --ext ts src --fix",
-    "test": "eslint --ext ts src",
-    "test:lint": "eslint --ext ts src",
-    "update": "rm -rf node_modules && yarn",
-    "build": "tsc -p .",
-    "build-clear": "rm -rf dist && tsc -p .",
-    "build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
-    "watch": "tsc -p . -w",
-    "dev": "yarn build && yarn start",
-    "dockerps": "powershell .\\docker\\ps-skyra.ps1",
-    "dockerbash": "bash ./docker/bash-skyra.sh"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kyranet/Skyra.git"
-  },
-  "keywords": [
-    "discord.js",
-    "klasa",
-    "bot",
-    "standalone"
-  ],
-  "contributors": [
-    "kyranet <kyradiscord@gmail.com>"
-  ],
-  "private": true,
-  "author": "kyranet <kyradiscord@gmail.com>",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/kyranet/Skyra/issues"
-  },
-  "dependencies": {
-    "@klasa/querybuilder": "^0.0.1",
-    "@klasa/request-handler": "^0.0.3",
-    "@klasa/utils": "^0.0.4",
-    "canvas": "^2.6.1",
-    "canvas-constructor": "^3.1.0",
-    "confusables": "^0.3.3",
-    "diff": "^4.0.1",
-    "discord.js": "github:discordjs/discord.js#3393/head",
-    "emoji-regex": "^8.0.0",
-    "fs-nextra": "^0.4.7",
-    "gifencoder": "^2.0.1",
-    "he": "^1.2.0",
-    "influx": "^5.5.1",
-    "klasa": "github:dirigeants/klasa#875/head",
-    "klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
-    "klasa-decorators": "^0.0.1",
-    "lavalink": "^2.8.2",
-    "module-alias": "^2.2.2",
-    "node-fetch": "^2.6.0",
-    "pg": "^7.17.0",
-    "veza": "^1.1.0",
-    "ws": "^7.2.1",
-    "zlib-sync": "^0.1.6"
-  },
-  "devDependencies": {
-    "@discordjs/collection": "^0.1.3",
-    "@favware/graphql-pokemon": "^1.7.0",
-    "@types/backoff": "^2.5.1",
-    "@types/diff": "^4.0.2",
-    "@types/he": "^1.1.0",
-    "@types/module-alias": "^2.0.0",
-    "@types/node": "^13.1.6",
-    "@types/node-fetch": "^2.5.4",
-    "@types/pg": "^7.14.1",
-    "@types/ws": "^6.0.4",
-    "@typescript-eslint/eslint-plugin": "^2.15.0",
-    "@typescript-eslint/parser": "^2.15.0",
-    "chokidar": "^3.3.1",
-    "eslint": "^6.8.0",
-    "eslint-config-bamboo": "^3.0.0",
-    "typescript": "^3.7.4"
-  },
-  "_moduleAliases": {
-    "@utils": "dist/src/lib/util",
-    "@lib": "dist/src/lib",
-    "@root": "dist"
-  }
+	"name": "skyra",
+	"version": "5.2.3",
+	"description": "Multipurpose Discord Bot built on Klasa",
+	"main": "dist/src/Skyra.js",
+	"scripts": {
+		"pm2:delete": "pm2 delete Skyra",
+		"pm2:logs": "pm2 logs Skyra --lines=200",
+		"pm2:restart": "pm2 restart Skyra",
+		"pm2:start-harmony": "pm2 start dist/src/Skyra.js --node-args=\"--harmony\" --name=\"Skyra\"",
+		"pm2:start": "pm2 start dist/src/Skyra.js --name=\"Skyra\"",
+		"pm2:stop": "pm2 stop Skyra",
+		"start": "node dist/src/Skyra.js",
+		"lint": "eslint --ext ts src --fix",
+		"test": "eslint --ext ts src",
+		"test:lint": "eslint --ext ts src",
+		"update": "rm -rf node_modules && yarn",
+		"build": "tsc -p .",
+		"build-clear": "rm -rf dist && tsc -p .",
+		"build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
+		"watch": "tsc -p . -w",
+		"dev": "yarn build && yarn start",
+		"dockerps": "powershell .\\docker\\ps-skyra.ps1",
+		"dockerbash": "bash ./docker/bash-skyra.sh"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kyranet/Skyra.git"
+	},
+	"keywords": [
+		"discord.js",
+		"klasa",
+		"bot",
+		"standalone"
+	],
+	"contributors": [
+		"kyranet <kyradiscord@gmail.com>"
+	],
+	"private": true,
+	"author": "kyranet <kyradiscord@gmail.com>",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/kyranet/Skyra/issues"
+	},
+	"dependencies": {
+		"@klasa/querybuilder": "^0.0.1",
+		"@klasa/request-handler": "^0.0.3",
+		"@klasa/utils": "^0.0.4",
+		"canvas": "^2.6.1",
+		"canvas-constructor": "^3.1.0",
+		"confusables": "^0.3.3",
+		"diff": "^4.0.1",
+		"discord.js": "github:discordjs/discord.js#3393/head",
+		"emoji-regex": "^8.0.0",
+		"fs-nextra": "^0.4.7",
+		"gifencoder": "^2.0.1",
+		"he": "^1.2.0",
+		"influx": "^5.5.1",
+		"klasa": "github:dirigeants/klasa#875/head",
+		"klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
+		"klasa-decorators": "^0.0.1",
+		"lavalink": "^2.8.2",
+		"module-alias": "^2.2.2",
+		"node-fetch": "^2.6.0",
+		"pg": "^7.17.0",
+		"veza": "^1.1.0",
+		"ws": "^7.2.1",
+		"zlib-sync": "^0.1.6"
+	},
+	"devDependencies": {
+		"@discordjs/collection": "^0.1.3",
+		"@favware/graphql-pokemon": "^1.7.0",
+		"@types/backoff": "^2.5.1",
+		"@types/diff": "^4.0.2",
+		"@types/he": "^1.1.0",
+		"@types/module-alias": "^2.0.0",
+		"@types/node": "^13.1.6",
+		"@types/node-fetch": "^2.5.4",
+		"@types/pg": "^7.14.1",
+		"@types/ws": "^6.0.4",
+		"@typescript-eslint/eslint-plugin": "^2.15.0",
+		"@typescript-eslint/parser": "^2.15.0",
+		"chokidar": "^3.3.1",
+		"eslint": "^6.8.0",
+		"eslint-config-bamboo": "^3.0.0",
+		"typescript": "^3.7.4"
+	},
+	"_moduleAliases": {
+		"@utils": "dist/src/lib/util",
+		"@lib": "dist/src/lib",
+		"@root": "dist"
+	}
 }

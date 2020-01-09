@@ -68,7 +68,8 @@ fragment dexdetails on DexDetails {
     }
     gender {
         ...genders
-    }
+	}
+	baseStatsTotal
     color
     eggGroups
     evolutionLevel

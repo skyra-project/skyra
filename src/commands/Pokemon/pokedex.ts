@@ -89,10 +89,10 @@ export default class extends SkyraCommand {
 			.addField(embedTranslations.HEIGHT, `${pokeDetails.height}m`, true)
 			.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
 			.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true)
-			.addBlankField(true)
 			.addField(embedTranslations.OTHER_FORMES, pokeDetails.otherFormes?.join(', ') || embedTranslations.NONE, true)
+			.addBlankField(true)
 			.addField(embedTranslations.EVOLUTIONARY_LINE, evoChain)
-			.addField(embedTranslations.BASE_STATS, baseStats.join(', '))
+			.addField(embedTranslations.BASE_STATS, `${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`)
 			.addField(embedTranslations.FLAVOUR_TEXT, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
 			.addField(embedTranslations.EXTERNAL_RESOURCES, [
 				`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,

@@ -1779,6 +1779,7 @@ export default class extends Language {
 			OTHER_FORMES: 'Other forme(s)',
 			EVOLUTIONARY_LINE: 'Evolutionary line',
 			BASE_STATS: 'Base stats',
+			BASE_STATS_TOTAL: 'BST',
 			FLAVOUR_TEXT: 'Pokdex entry',
 			EXTERNAL_RESOURCES: 'External resources',
 			NONE: 'None'

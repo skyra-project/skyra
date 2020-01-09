@@ -23,7 +23,9 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('case', async (arg, _, message) => {
 			if (!arg) throw message.language.tget('COMMAND_REASON_MISSING_CASE');
 			if (arg.toLowerCase() === 'latest') return [await message.guild!.moderation.count()];
-			return parseRange(arg);
+			const range = parseRange(arg);
+			if (range.length === 0) throw message.language.tget('COMMAND_REASON_MISSING_CASE');
+			return range;
 		});
 	}
 

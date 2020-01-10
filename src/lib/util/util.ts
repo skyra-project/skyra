@@ -61,10 +61,6 @@ export function showSeconds(duration: number) {
 	return output;
 }
 
-export function isNullOrUndefined(value: unknown): value is null | undefined {
-	return value === null || value === undefined;
-}
-
 /**
  * Load an image by its path
  * @param path The path to the image to load

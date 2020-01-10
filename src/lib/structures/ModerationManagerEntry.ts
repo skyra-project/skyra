@@ -4,7 +4,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { CLIENT_ID } from '@root/config';
 import { Moderation, Time } from '@utils/constants';
-import { getDisplayAvatar, isNullOrUndefined } from '@utils/util';
+import { getDisplayAvatar } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
@@ -207,9 +207,11 @@ export class ModerationManagerEntry {
 
 	public async edit(data: ModerationManagerUpdateData = {}) {
 		const flattened: ModerationManagerUpdateDataWithType = {
-			duration: isNullOrUndefined(data.duration) || !this.temporable || data.duration > Time.Year
-				? this.duration
-				: data.duration || null,
+			duration: data.duration === null
+				? null
+				: typeof data.duration === 'undefined' || !this.temporable || data.duration > Time.Year
+					? this.duration
+					: data.duration || null,
 			moderator_id: typeof data.moderator_id === 'undefined'
 				? this.flattenedModerator
 				: data.moderator_id,

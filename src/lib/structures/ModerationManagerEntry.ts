@@ -5,7 +5,7 @@ import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSett
 import { CLIENT_ID } from '@root/config';
 import { Moderation, Time } from '@utils/constants';
 import { getDisplayAvatar, isNullOrUndefined } from '@utils/util';
-import { MessageEmbed, User, TextChannel } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
@@ -56,9 +56,7 @@ export class ModerationManagerEntry {
 	 * The channel where messages have to be sent.
 	 */
 	public get channel() {
-		const { guild } = this;
-		const channelID = guild.settings.get(GuildSettings.Channels.ModerationLogs);
-		return (channelID && guild.channels.get(channelID) as TextChannel) || null;
+		return this.manager.channel;
 	}
 
 	/**

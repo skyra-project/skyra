@@ -3,7 +3,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { Moderation } from '@utils/constants';
 import { Permissions } from 'discord.js';
-import { CommandStore, Duration, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
 
@@ -13,12 +13,20 @@ export default class extends SkyraCommand {
 			description: 'Sets a timer.',
 			permissionLevel: PermissionLevels.Moderator,
 			runIn: ['text'],
-			usage: '[cancel] <Case:integer> [timer:...string]',
+			usage: '[cancel] <case:integer> (timer:timer)',
 			usageDelim: ' '
+		});
+
+		this.createCustomResolver('timer', async (arg, possible, message, [cancel]) => {
+			if (cancel === 'cancel') return null;
+			if (!arg) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
+
+			const restString = await this.client.arguments.get('...string')!.run(arg, possible, message) as string;
+			return this.client.arguments.get('timespan')!.run(restString, possible, message);
 		});
 	}
 
-	public async run(message: KlasaMessage, [cancel, caseID, time]: ['cancel', number, string]) {
+	public async run(message: KlasaMessage, [cancel, caseID, duration]: ['cancel', number, number | null]) {
 		const entry = await message.guild!.moderation.fetch(caseID);
 		if (!entry) throw message.language.tget('MODERATION_CASE_NOT_EXISTS');
 		if (!cancel && entry.temporaryType) throw message.language.tget('COMMAND_TIME_TIMED');
@@ -31,6 +39,8 @@ export default class extends SkyraCommand {
 
 		if (cancel) {
 			if (!task) throw message.language.tget('COMMAND_TIME_NOT_SCHEDULED');
+
+			await message.guild!.moderation.fetchChannelMessages();
 			await entry.edit({
 				duration: null,
 				moderator_id: message.author.id
@@ -41,14 +51,13 @@ export default class extends SkyraCommand {
 
 		if (entry.appealType || entry.invalidated) throw message.language.tget('MODERATION_LOG_APPEALED');
 		if (task) throw message.language.tget('MODLOG_TIMED', task.data.timestamp - Date.now());
-		if (!time) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
 
-		const { offset } = new Duration(time);
+		await message.guild!.moderation.fetchChannelMessages();
 		await entry.edit({
-			duration: offset,
+			duration,
 			moderator_id: message.author.id
 		});
-		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, offset]);
+		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, duration]);
 	}
 
 	private validateAction(message: KlasaMessage, modlog: ModerationManagerEntry, user: KlasaUser) {

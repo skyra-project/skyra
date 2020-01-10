@@ -27,6 +27,7 @@ export default class extends SkyraCommand {
 		if (!entries.size) throw message.language.tget(cases.length === 1 ? 'MODERATION_CASE_NOT_EXISTS' : 'MODERATION_CASES_NOT_EXIST');
 
 		await this.client.queries.updateModerationLogReasonBulk(message.guild!.id, entries.map(ml => ml.case!), reason);
+		await message.guild!.moderation.fetchChannelMessages();
 		for (const entry of entries.values()) {
 			entry.setReason(reason);
 			this.client.emit(Events.ModerationEntryEdit, entry);

@@ -15,7 +15,6 @@ import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
-import { GameIntegrationsManager } from '@lib/structures/GI/GameIntegrationsManager';
 
 declare module 'discord.js' {
 
@@ -34,7 +33,6 @@ declare module 'discord.js' {
 		queries: CommonQuery;
 		influx: InfluxDB | null;
 		twitch: Twitch;
-		giManager: GameIntegrationsManager;
 	}
 
 	interface MessageExtendablesAskOptions {

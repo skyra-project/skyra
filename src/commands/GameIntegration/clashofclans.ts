@@ -1,9 +1,9 @@
 import { toTitleCase } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { ClashOfClans } from '@lib/types/definitions/ClashOfClans';
 import { TOKENS } from '@root/config';
 import { BrandingColors } from '@utils/constants';
+import { ClashOfClans } from '@utils/GameIntegration/ClashOfClans';
 import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';

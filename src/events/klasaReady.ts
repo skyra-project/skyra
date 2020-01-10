@@ -14,7 +14,6 @@ export default class extends Event {
 			await Promise.all([
 				Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error)),
 				WheelOfFortune.init().catch(error => this.client.emit(Events.Wtf, error)),
-				this.client.giManager.initClasses().catch(error => this.client.emit(Events.Wtf, error)),
 				this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error))
 			]);
 			await this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));

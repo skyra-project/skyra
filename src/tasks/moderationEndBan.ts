@@ -7,6 +7,7 @@ export default class extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData) {
 		const me = guild.me === null ? await guild.members.fetch(CLIENT_ID) : guild.me;
 		if (!me.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return null;
+		await guild.moderation.fetchChannelMessages();
 		await guild.security.actions.unBan({
 			user_id: data.userID,
 			reason: `[MODERATION] Ban released after ${this.client.languages.default.duration(data.duration)}`

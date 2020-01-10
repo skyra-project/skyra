@@ -7,6 +7,7 @@ export default class extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData) {
 		const me = guild.me === null ? await guild.members.fetch(CLIENT_ID) : guild.me;
 		if (!me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return null;
+		await guild.moderation.fetchChannelMessages();
 		await guild.security.actions.unRestrictAttachment({
 			user_id: data.userID,
 			reason: `[MODERATION] Attachment Restricted released after ${this.client.languages.default.duration(data.duration)}`

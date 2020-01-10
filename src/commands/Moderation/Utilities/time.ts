@@ -26,7 +26,9 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [cancel, caseID, duration]: ['cancel', number, number | null]) {
+	public async run(message: KlasaMessage, [cancel, caseID, duration]: ['cancel', number | 'latest', number | null]) {
+		if (caseID === 'latest') caseID = await message.guild!.moderation.count();
+
 		const entry = await message.guild!.moderation.fetch(caseID);
 		if (!entry) throw message.language.tget('MODERATION_CASE_NOT_EXISTS');
 		if (!cancel && entry.temporaryType) throw message.language.tget('COMMAND_TIME_TIMED');

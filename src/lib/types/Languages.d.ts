@@ -971,8 +971,8 @@ export interface LanguageKeys {
 	COMMAND_8BALL_QUESTIONS: Record<string, string | RegExp>;
 	COMMAND_8BALL_WHEN: () => string;
 	COMMAND_8BALL_WHAT: () => string;
-	COMMAND_8BALL_HOWMUCH: () => string;
-	COMMAND_8BALL_HOWMANY: () => string;
+	COMMAND_8BALL_HOW_MUCH: () => string;
+	COMMAND_8BALL_HOW_MANY: () => string;
 	COMMAND_8BALL_WHY: () => string;
 	COMMAND_8BALL_WHO: () => string;
 	COMMAND_8BALL_ELSE: () => string;

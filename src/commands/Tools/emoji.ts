@@ -10,6 +10,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['emote'],
 			cooldown: 10,
 			description: language => language.tget('COMMAND_EMOJI_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_EMOJI_EXTENDED'),

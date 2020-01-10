@@ -215,46 +215,53 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public async fetchModerationLogByCase(guildID: string, caseNumber: number) {
+		const { provider } = this;
 		const entry = await this.provider.runOne(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
-				"guild_id" = $1 AND
-				"case_id"  = $2
+				"guild_id" = ${provider.cString(guildID)} AND
+				"case_id"  = ${provider.cNumber(caseNumber)}
 			LIMIT 1;
-		`, [guildID, caseNumber]);
+		`);
 		return entry === null ? null : ({ ...entry, created_at: Number(entry.created_at) });
 	}
 
-	public async fetchModerationLogByCases(guildID: string, caseNumbers: readonly number[]) {
+	public async fetchModerationLogsByCases(guildID: string, caseNumbers: readonly number[]) {
+		const { provider } = this;
 		const entries = await this.provider.runAll(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
-				"guild_id" = $1 AND
-				"case_id" IN (${caseNumbers.join(', ')});
-		`, [guildID]);
+				"guild_id" = ${provider.cString(guildID)} AND
+				"case_id" IN (${caseNumbers.map(v => provider.cNumber(v)).join(', ')})
+			ORDER BY case_id ASC;
+		`);
 		return entries.map(entry => ({ ...entry, created_at: Number(entry.created_at) }));
 	}
 
-	public async fetchModerationLogByGuild(guildID: string) {
+	public async fetchModerationLogsByGuild(guildID: string) {
+		const { provider } = this;
 		const entries = await this.provider.runAll(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
-				"guild_id" = $1;
-		`, [guildID]);
+				"guild_id" = ${provider.cString(guildID)}
+			ORDER BY case_id ASC;
+		`);
 		return entries.map(entry => ({ ...entry, created_at: Number(entry.created_at) }));
 	}
 
-	public async fetchModerationLogByUser(guildID: string, user: string) {
+	public async fetchModerationLogsByUser(guildID: string, user: string) {
+		const { provider } = this;
 		const entries = await this.provider.runAll(/* sql */ `
 			SELECT *
 			FROM moderation
 			WHERE
-				"guild_id" = $1 AND
-				"user_id"  = $2;
-		`, [guildID, user]);
+				"guild_id" = ${provider.cString(guildID)} AND
+				"user_id"  = ${provider.cString(user)}
+			ORDER BY case_id ASC;
+		`);
 		return entries.map(entry => ({ ...entry, created_at: Number(entry.created_at) }));
 	}
 
@@ -445,6 +452,18 @@ export class PostgresCommonQuery implements CommonQuery {
 			entry.guild_id,
 			entry.case_id
 		]);
+	}
+
+	public updateModerationLogReasonBulk(guildID: string, cases: readonly number[], reason: string | null) {
+		const { provider } = this;
+		return this.provider.run(/* sql */`
+			UPDATE moderation
+			SET
+				"reason" = ${reason ? provider.cString(reason) : 'NULL'}
+			WHERE
+				"guild_id" = ${provider.cString(guildID)} AND
+				"case_id" IN (${cases.map(v => provider.cNumber(v)).join(', ')});
+		`);
 	}
 
 	public updateStar(entry: RawStarboardSettings) {

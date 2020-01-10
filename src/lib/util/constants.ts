@@ -206,6 +206,7 @@ export const enum APIErrors {
 	UnknownUser = 10013,
 	UnknownEmoji = 10014,
 	UnknownWebhook = 10015,
+	UnknownBan = 10026,
 	BotProhibitedEndpoint = 20001,
 	BotOnlyEndpoint = 20002,
 	MaximumGuilds = 30001,

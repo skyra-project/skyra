@@ -7,7 +7,7 @@ import { Mutable } from '@lib/types/util';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors, Moderation } from '@utils/constants';
 import { api } from '@utils/Models/Api';
-import { Guild, GuildChannel, GuildMember, PermissionOverwriteOption, Permissions, PermissionString, Role, RoleData, User } from 'discord.js';
+import { Guild, GuildChannel, GuildMember, PermissionOverwriteOption, Permissions, PermissionString, Role, RoleData, User, DiscordAPIError } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export const enum ModerationSetupRestriction {
@@ -357,6 +357,41 @@ export class ModerationActions {
 		return this.sharedRoleSetup(message, ModerationActions.getRoleDataKeyFromSchemaKey(path), path);
 	}
 
+	public async userIsBanned(user: User) {
+		try {
+			await api(this.guild.client)
+				.guilds(this.guild.id)
+				.bans(user.id)
+				.get();
+			return true;
+		} catch (error) {
+			if (!(error instanceof DiscordAPIError)) throw this.guild.language.tget('SYSTEM_FETCHBANS_FAIL');
+			if (error.code === APIErrors.UnknownBan) return false;
+			throw error;
+		}
+	}
+
+	public userIsMuted(user: User) {
+		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
+		if (roleID === null) return false;
+
+		const stickyRoles = this.guild.settings.get(GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
+		return typeof stickyRoles !== 'undefined' && stickyRoles.roles.includes(roleID);
+	}
+
+	public async userIsVoiceMuted(user: User) {
+		try {
+			const member = await this.guild.members.fetch(user.id);
+			return member.voice.serverMute;
+		} catch (error) {
+			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownUser) {
+				return false;
+			}
+
+			throw error;
+		}
+	}
+
 	private async sharedRoleSetup(message: KlasaMessage, key: RoleDataKey, path: string) {
 		const roleData = kRoleDataOptions.get(key)!;
 		const role = await this.guild.roles.create({ data: roleData, reason: `[Role Setup] Authorized by ${message.author.username} (${message.author.id}).` });
@@ -454,11 +489,11 @@ export class ModerationActions {
 	/**
 	 * Invalidate the last valid moderation log with type of mute.
 	 * @since 5.3.0
-	 * @param id The member id to invalidate the moderation log from
+	 * @param userID The member id to invalidate the moderation log from
 	 */
-	private async unmuteInvalidateLog(id: string) {
+	private async unmuteInvalidateLog(userID: string) {
 		// Retrieve all moderation logs regarding a user.
-		const logs = await this.guild.moderation.fetch(id);
+		const logs = await this.guild.moderation.fetch(userID);
 
 		// Filter all logs by valid and by type of mute (isType will include TemporaryMute and FastTemporaryMute).
 		const log = logs.filter(log => !log.invalidated && log.isType(Moderation.TypeCodes.Mute)).last();

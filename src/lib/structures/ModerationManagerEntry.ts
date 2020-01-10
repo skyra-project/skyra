@@ -4,8 +4,8 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { CLIENT_ID } from '@root/config';
 import { Moderation, Time } from '@utils/constants';
-import { getDisplayAvatar, isNullOrUndefined } from '@utils/util';
-import { MessageEmbed, TextChannel, User } from 'discord.js';
+import { getDisplayAvatar } from '@utils/util';
+import { MessageEmbed, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 
@@ -43,6 +43,20 @@ export class ModerationManagerEntry {
 	 */
 	public get client() {
 		return this.manager.client;
+	}
+
+	/**
+	 * The Guild that manages this instance's manager.
+	 */
+	public get guild() {
+		return this.manager.guild;
+	}
+
+	/**
+	 * The channel where messages have to be sent.
+	 */
+	public get channel() {
+		return this.manager.channel;
 	}
 
 	/**
@@ -193,9 +207,11 @@ export class ModerationManagerEntry {
 
 	public async edit(data: ModerationManagerUpdateData = {}) {
 		const flattened: ModerationManagerUpdateDataWithType = {
-			duration: isNullOrUndefined(data.duration) || !this.temporable || data.duration > Time.Year
-				? this.duration
-				: data.duration || null,
+			duration: data.duration === null
+				? null
+				: typeof data.duration === 'undefined' || !this.temporable || data.duration > Time.Year
+					? this.duration
+					: data.duration || null,
 			moderator_id: typeof data.moderator_id === 'undefined'
 				? this.flattenedModerator
 				: data.moderator_id,
@@ -215,6 +231,7 @@ export class ModerationManagerEntry {
 		this.reason = flattened.reason;
 		this.extraData = flattened.extra_data;
 		this.type = flattened.type;
+		this.client.emit(Events.ModerationEntryEdit, this);
 
 		return this;
 	}
@@ -224,13 +241,14 @@ export class ModerationManagerEntry {
 		const type = this.type | Moderation.TypeMetadata.Invalidated;
 		await this.client.queries.updateModerationLog({ ...this.toJSON(), type });
 		this.type = type;
+		this.client.emit(Events.ModerationEntryEdit, this);
 
 		return this;
 	}
 
 	public async prepareEmbed() {
 		if (!this.user) throw new Error('A user has not been set.');
-		const userID = typeof this.user === 'string' ? this.user : this.user.id;
+		const userID = this.flattenedUser;
 		const [userTag, [moderatorID, moderator]] = await Promise.all([
 			this.client.userTags.fetch(userID),
 			this.client.userTags.fetchEntry(this.flattenedModerator)
@@ -319,26 +337,7 @@ export class ModerationManagerEntry {
 		await this.client.queries.insertModerationLog(this.toJSON());
 		this.manager.insert(this);
 
-		const channelID = this.manager.guild.settings.get(GuildSettings.Channels.ModerationLogs);
-		const channel = (channelID && this.manager.guild.channels.get(channelID) as TextChannel) || null;
-		if (channel) {
-			const messageEmbed = await this.prepareEmbed();
-			channel.send(messageEmbed).catch(error => this.client.emit(Events.ApiError, error));
-		}
-
-		const taskName = this.duration === null ? null : this.appealTaskName;
-		if (taskName !== null) {
-			this.client.schedule.create(taskName, this.duration! + Date.now(), {
-				catchUp: true,
-				data: {
-					[Moderation.SchemaKeys.Case]: this.case,
-					[Moderation.SchemaKeys.User]: typeof this.user === 'string' ? this.user : this.user.id,
-					[Moderation.SchemaKeys.Guild]: this.manager.guild.id,
-					[Moderation.SchemaKeys.Duration]: this.duration
-				}
-			}).catch(error => this.client.emit(Events.Wtf, error));
-		}
-
+		this.client.emit(Events.ModerationEntryAdd, this);
 		return this;
 	}
 

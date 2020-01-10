@@ -250,6 +250,9 @@ export default class extends Language {
 		 * ################################
 		 */
 
+		ARGUMENT_RANGE_INVALID: (name: string) => `${name} must be a number or a range of numbers.`,
+		ARGUMENT_RANGE_MAX: (name: string, maximum: number) => `${name} accepts a range of maximum ${maximum} ${maximum === 1 ? 'number' : 'numbers'}`,
+
 		COMMAND_ADD_DESCRIPTION: `Adds a song the the queue.`,
 		COMMAND_ADD_PLAYLIST: amount => `${GREENTICK} Added **${amount}** ${amount === 1 ? 'song' : 'songs'} to the queue 🎶`,
 		COMMAND_ADD_SONG: title => `${GREENTICK} Added **${title}** to the queue 🎶`,
@@ -4054,6 +4057,10 @@ export default class extends Language {
 		RESOLVER_CHANNEL_NOT_IN_GUILD: 'I am sorry, but that command can only be ran in a server.',
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
+
+		MODERATION_LOG_APPEALED: `${REDCROSS} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.`,
+		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} I am sorry, but the selected moderation log case does not exist.`,
+		MODERATION_CASES_NOT_EXIST: `${REDCROSS} I am sorry, but none of the selected moderation log cases exist.`,
 
 		GUILD_SETTINGS_CHANNELS_MOD: 'You need to configure a modlog channel. Use `Skyra, conf set channels.moderation-logs #modlogs`.',
 		GUILD_SETTINGS_ROLES_RESTRICTED: (prefix, path) => `${REDCROSS} You need to configure a role for this action, use \`${prefix}settings set ${path} <rolename>\` to set it up.`,

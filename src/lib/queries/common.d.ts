@@ -22,9 +22,9 @@ export interface CommonQuery {
 	fetchLeaderboardLocal(guildID: string): Promise<LeaderboardEntry[]>;
 	fetchMemberSettings(guildID: string, userID: string): Promise<RawMemberSettings | null>;
 	fetchModerationLogByCase(guildID: string, caseNumber: number): Promise<RawModerationSettings | null>;
-	fetchModerationLogByCases(guildID: string, caseNumbers: readonly number[]): Promise<RawModerationSettings[]>;
-	fetchModerationLogByGuild(guildID: string): Promise<RawModerationSettings[]>;
-	fetchModerationLogByUser(guildID: string, user: string): Promise<RawModerationSettings[]>;
+	fetchModerationLogsByCases(guildID: string, caseNumbers: readonly number[]): Promise<RawModerationSettings[]>;
+	fetchModerationLogsByGuild(guildID: string): Promise<RawModerationSettings[]>;
+	fetchModerationLogsByUser(guildID: string, user: string): Promise<RawModerationSettings[]>;
 	fetchStar(guildID: string, messageID: string): Promise<RawStarboardSettings | null>;
 	fetchStarRandom(guildID: string, minimum: number): Promise<RawStarboardSettings | null>;
 	fetchStarRandomFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings | null>;
@@ -38,6 +38,7 @@ export interface CommonQuery {
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	insertStar(entry: RawStarboardSettings): Promise<unknown>;
 	updateModerationLog(entry: RawModerationSettings): Promise<unknown>;
+	updateModerationLogReasonBulk(guildID: string, cases: readonly number[], reason: string | null): Promise<unknown>;
 	updateStar(entry: RawStarboardSettings): Promise<unknown>;
 	upsertDecrementMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertIncrementMemberSettings(guildID: string, userID: string, points: number): Promise<number>;

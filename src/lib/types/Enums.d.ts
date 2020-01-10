@@ -36,6 +36,8 @@ export const enum Events {
 	MoneyPayment = 'moneyPayment',
 	MoneyTransaction = 'moneyTransaction',
 	MonitorError = 'monitorError',
+	ModerationEntryAdd = 'moderationEntryAdd',
+	ModerationEntryEdit = 'moderationEntryEdit',
 	MusicAdd = 'musicAdd',
 	MusicConnect = 'musicConnect',
 	MusicLeave = 'musicLeave',

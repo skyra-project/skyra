@@ -1,10 +1,9 @@
 import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Moderation } from '@utils/constants';
-import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, Duration, KlasaMessage, KlasaUser, ScheduledTask } from 'klasa';
+import { Permissions } from 'discord.js';
+import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
 
@@ -14,78 +13,56 @@ export default class extends SkyraCommand {
 			description: 'Sets a timer.',
 			permissionLevel: PermissionLevels.Moderator,
 			runIn: ['text'],
-			usage: '[cancel] <Case:integer> [timer:...string]',
+			usage: '[cancel] <case:integer> (timer:timer)',
 			usageDelim: ' '
 		});
+
+		this.createCustomResolver('timer', async (arg, possible, message, [cancel]) => {
+			if (cancel === 'cancel') return null;
+			if (!arg) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
+
+			const restString = await this.client.arguments.get('...string')!.run(arg, possible, message) as string;
+			return this.client.arguments.get('timespan')!.run(restString, possible, message);
+		});
 	}
 
-	public async run(message: KlasaMessage, [cancel, caseID, time]: ['cancel', number, string]) {
-		const modlog = await message.guild!.moderation.fetch(caseID);
-		if (!modlog) throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
-		if (!cancel && modlog.temporaryType) throw message.language.tget('COMMAND_TIME_TIMED');
+	public async run(message: KlasaMessage, [cancel, caseID, duration]: ['cancel', number | 'latest', number | null]) {
+		if (caseID === 'latest') caseID = await message.guild!.moderation.count();
 
-		const user = await this.client.users.fetch(typeof modlog.user === 'string' ? modlog.user : modlog.user.id);
-		const type = await this.getActions(message, modlog, user);
-		const task = this.client.schedule.tasks.find(_task => _task.data && _task.data[Moderation.SchemaKeys.Case] === modlog.case)!;
+		const entry = await message.guild!.moderation.fetch(caseID);
+		if (!entry) throw message.language.tget('MODERATION_CASE_NOT_EXISTS');
+		if (!cancel && entry.temporaryType) throw message.language.tget('COMMAND_TIME_TIMED');
 
-		if (cancel) return this.cancel(message, modlog, task);
-		if (modlog.appealType || modlog.invalidated) throw message.language.tget('MODERATION_LOG_APPEALED');
-		if (task) throw message.language.tget('MODLOG_TIMED', task.data.timestamp - Date.now());
-		if (!time) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
+		const user = await this.client.users.fetch(entry.flattenedUser);
+		await this.validateAction(message, entry, user);
+		const task = this.client.schedule.tasks.find(tk => tk.data
+			&& tk.data[Moderation.SchemaKeys.Case] === entry.case
+			&& tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id)!;
 
-		const { offset } = new Duration(time);
-		await this.client.schedule.create(type, offset + Date.now(), {
-			catchUp: true,
-			data: {
-				[Moderation.SchemaKeys.User]: user.id,
-				[Moderation.SchemaKeys.Guild]: message.guild!.id,
-				[Moderation.SchemaKeys.Duration]: offset,
-				[Moderation.SchemaKeys.Case]: caseID
-			}
-		});
+		if (cancel) {
+			if (!task) throw message.language.tget('COMMAND_TIME_NOT_SCHEDULED');
 
-		await modlog.edit({
-			duration: offset,
-			moderator_id: message.author.id
-		});
-		await this.updateModerationLog(message, modlog);
+			await message.guild!.moderation.fetchChannelMessages();
+			await entry.edit({
+				duration: null,
+				moderator_id: message.author.id
+			});
 
-		return message.sendLocale('COMMAND_TIME_SCHEDULED', [modlog.title, user, offset]);
-	}
-
-	private async cancel(message: KlasaMessage, modcase: ModerationManagerEntry, task: ScheduledTask) {
-		if (!task) throw message.language.tget('COMMAND_TIME_NOT_SCHEDULED');
-		await task.delete();
-
-		await modcase.edit({
-			duration: null,
-			moderator_id: message.author.id
-		});
-		await this.updateModerationLog(message, modcase);
-
-		return message.sendLocale('COMMAND_TIME_ABORTED', [modcase.title]);
-	}
-
-	private async updateModerationLog(message: KlasaMessage, moderationManagerEntry: ModerationManagerEntry) {
-		const moderationLog = message.guild!.settings.get(GuildSettings.Channels.ModerationLogs);
-		if (!moderationLog) return null;
-		const channel = message.guild!.channels.get(moderationLog) as TextChannel;
-		if (!channel) {
-			await message.guild!.settings.reset(GuildSettings.Channels.ModerationLogs);
-			return null;
+			return message.sendLocale('COMMAND_TIME_ABORTED', [entry.title]);
 		}
 
-		// Fetch the message to edit it
-		const messages = await channel.messages.fetch({ limit: 100 });
-		const msg = messages.find(mes => mes.author.id === this.client.user!.id
-			&& mes.embeds.length > 0
-			&& mes.embeds[0].type === 'rich'
-			&& Boolean(mes.embeds[0].footer) && mes.embeds[0].footer!.text === `Case ${moderationManagerEntry.case}`);
-		const embed = await moderationManagerEntry.prepareEmbed();
-		return msg ? msg.edit(embed) : channel.send(embed);
+		if (entry.appealType || entry.invalidated) throw message.language.tget('MODERATION_LOG_APPEALED');
+		if (task) throw message.language.tget('MODLOG_TIMED', task.data.timestamp - Date.now());
+
+		await message.guild!.moderation.fetchChannelMessages();
+		await entry.edit({
+			duration,
+			moderator_id: message.author.id
+		});
+		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, duration]);
 	}
 
-	private getActions(message: KlasaMessage, modlog: ModerationManagerEntry, user: KlasaUser) {
+	private validateAction(message: KlasaMessage, modlog: ModerationManagerEntry, user: KlasaUser) {
 		switch (modlog.type) {
 			case Moderation.TypeCodes.FastTemporaryBan:
 			case Moderation.TypeCodes.TemporaryBan:
@@ -103,29 +80,17 @@ export default class extends SkyraCommand {
 
 	private async checkBan(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) throw message.language.tget('COMMAND_UNBAN_MISSING_PERMISSION');
-		const users = await message.guild!.fetchBans().catch(() => {
-			throw message.language.tget('SYSTEM_FETCHBANS_FAIL');
-		});
-		if (!users.size) throw message.language.tget('GUILD_BANS_EMPTY');
-		const member = users.get(user.id);
-		if (!member) throw message.language.tget('GUILD_BANS_NOT_FOUND');
-		return Moderation.TypeVariationAppealNames.Ban;
+		if (!await message.guild!.security.actions.userIsBanned(user)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 	}
 
 	private checkMute(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.tget('COMMAND_UNMUTE_MISSING_PERMISSION');
-		const stickyRoles = message.guild!.settings.get(GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
-		if (!stickyRoles || !stickyRoles.roles.includes(message.guild!.settings.get(GuildSettings.Roles.Muted))) throw message.language.tget('COMMAND_MUTE_USER_NOT_MUTED');
-		return Moderation.TypeVariationAppealNames.Mute;
+		if (!message.guild!.security.actions.userIsMuted(user)) throw message.language.tget('COMMAND_MUTE_USER_NOT_MUTED');
 	}
 
 	private async checkVMute(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) throw message.language.tget('COMMAND_VMUTE_MISSING_PERMISSION');
-		const member = await message.guild!.members.fetch(user).catch(() => {
-			throw message.language.tget('USER_NOT_IN_GUILD');
-		});
-		if (!member.voice.serverMute) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
-		return Moderation.TypeVariationAppealNames.VoiceMute;
+		if (!await message.guild!.security.actions.userIsVoiceMuted(user)) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
 	}
 
 }

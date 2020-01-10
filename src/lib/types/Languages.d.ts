@@ -127,6 +127,8 @@ export interface LanguageKeys {
 	COMMAND_LOAD_FAIL: string;
 	COMMAND_LOAD_ERROR: (type: string, name: string, error: string) => string;
 	COMMAND_LOAD_DESCRIPTION: string;
+	ARGUMENT_RANGE_INVALID: (name: string) => string;
+	ARGUMENT_RANGE_MAX: (name: string, maximum: number) => string;
 	COMMAND_ADD_DESCRIPTION: string;
 	COMMAND_ADD_PLAYLIST: (amount: number) => string;
 	COMMAND_ADD_SONG: (title: string) => string;
@@ -1639,6 +1641,8 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_USERNAME: (name: string) => string;
 	LISTIFY_PAGE: (page: number, pageCount: number, results: string) => string;
 	MODERATION_LOG_APPEALED: string;
+	MODERATION_CASE_NOT_EXISTS: string;
+	MODERATION_CASES_NOT_EXIST: string;
 	GUILD_SETTINGS_CHANNELS_MOD: string;
 	GUILD_SETTINGS_ROLES_RESTRICTED: (prefix: string, path: string) => string;
 	GUILD_MUTE_NOT_FOUND: string;

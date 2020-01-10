@@ -165,11 +165,11 @@ export class JsonCommonQuery implements CommonQuery {
 		return this.provider.get(Databases.Moderation, `${guildID}.${caseNumber}`) as Promise<RawModerationSettings>;
 	}
 
-	public fetchModerationLogByCases(guildID: string, caseNumbers: readonly number[]) {
+	public fetchModerationLogsByCases(guildID: string, caseNumbers: readonly number[]) {
 		return this.provider.getAll(Databases.Moderation, caseNumbers.map(caseNumber => `${guildID}.${caseNumber}`)) as Promise<RawModerationSettings[]>;
 	}
 
-	public async fetchModerationLogByGuild(guildID: string) {
+	public async fetchModerationLogsByGuild(guildID: string) {
 		const keys = await this.provider.getKeys(Databases.Moderation);
 		const filteredKeys = keys.filter(key => key.startsWith(`${guildID}.`));
 		if (filteredKeys.length === 0) return [] as RawModerationSettings[];
@@ -177,7 +177,7 @@ export class JsonCommonQuery implements CommonQuery {
 		return this.provider.getAll(Databases.Moderation, filteredKeys) as Promise<RawModerationSettings[]>;
 	}
 
-	public async fetchModerationLogByUser(guildID: string, user: string) {
+	public async fetchModerationLogsByUser(guildID: string, user: string) {
 		const keys = await this.provider.getKeys(Databases.Moderation);
 		const filteredKeys = keys.filter(key => key.startsWith(`${guildID}.`));
 		if (filteredKeys.length === 0) return [] as RawModerationSettings[];
@@ -257,6 +257,10 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public updateModerationLog(entry: RawModerationSettings) {
 		return this.provider.update(Databases.Moderation, `${entry.guild_id}.${entry.case_id}`, entry);
+	}
+
+	public updateModerationLogReasonBulk(guildID: string, cases: readonly number[], reason: string | null) {
+		return Promise.all(cases.map(cs => this.provider.update(Databases.Moderation, `${guildID}.${cs}`, { reason })));
 	}
 
 	public updateStar(entry: RawStarboardSettings) {

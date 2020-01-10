@@ -2,8 +2,9 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
-import { Guild } from 'discord.js';
+import { Guild, TextChannel, DiscordAPIError } from 'discord.js';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 
 enum CacheActions {
 	None,
@@ -42,6 +43,28 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		this.guild = guild;
 	}
 
+	/**
+	 * The channel where messages have to be sent.
+	 */
+	public get channel() {
+		const channelID = this.guild.settings.get(GuildSettings.Channels.ModerationLogs);
+		return (channelID && this.guild.channels.get(channelID) as TextChannel) || null;
+	}
+
+	/**
+	 * Fetch 100 messages from the modlogs channel
+	 */
+	public async fetchChannelMessages(remainingRetries = 5): Promise<void> {
+		const { channel } = this;
+		if (channel === null) return;
+		try {
+			await channel.messages.fetch({ limit: 100 });
+		} catch (error) {
+			if (error instanceof DiscordAPIError) throw error;
+			return this.fetchChannelMessages(--remainingRetries);
+		}
+	}
+
 	public create(data: ModerationManagerCreateData) {
 		return new ModerationManagerEntry(this, { guild_id: this.guild.id, ...data });
 	}
@@ -59,17 +82,17 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		if (typeof id === 'string') {
 			return this._count === super.size
 				? super.filter(entry => entry.user === id)
-				: this._cache(await this.guild.client.queries.fetchModerationLogByUser(this.guild.id, id), CacheActions.None);
+				: this._cache(await this.guild.client.queries.fetchModerationLogsByUser(this.guild.id, id), CacheActions.None);
 		}
 
 		if (Array.isArray(id) && id.length) {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 			// @ts-ignore 2345
-			return this._cache(await this.guild.client.queries.fetchModerationLogByCases(this.guild.id, id), CacheActions.None);
+			return this._cache(await this.guild.client.queries.fetchModerationLogsByCases(this.guild.id, id), CacheActions.None);
 		}
 
 		if (super.size !== this._count) {
-			this._cache(await this.guild.client.queries.fetchModerationLogByGuild(this.guild.id), CacheActions.Fetch);
+			this._cache(await this.guild.client.queries.fetchModerationLogsByGuild(this.guild.id), CacheActions.Fetch);
 		}
 		return this;
 	}

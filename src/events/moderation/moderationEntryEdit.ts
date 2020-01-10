@@ -103,7 +103,8 @@ export default class extends Event {
 	}
 
 	private retrievePreviousSchedule(entry: ModerationManagerEntry) {
-		return this.client.schedule.tasks.find(task => task.data[Moderation.SchemaKeys.Case] === entry.case
+		return this.client.schedule.tasks.find(task => typeof task.data === 'object' && task.data !== null
+			&& task.data[Moderation.SchemaKeys.Case] === entry.case
 			&& task.data[Moderation.SchemaKeys.Guild] === entry.guild.id) || null;
 	}
 

@@ -4058,7 +4058,7 @@ export default class extends Language {
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 
-		MODERATION_LOG_APPEALED: `${REDCROSS} I am sorry, but the selected moderation log has expired or cannot be temporized.`,
+		MODERATION_LOG_APPEALED: `${REDCROSS} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.`,
 		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} I am sorry, but the selected moderation log case does not exist.`,
 		MODERATION_CASES_NOT_EXIST: `${REDCROSS} I am sorry, but none of the selected moderation log cases exist.`,
 

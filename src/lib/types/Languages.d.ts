@@ -275,6 +275,7 @@ export interface LanguageKeys {
 		OTHER_FORMES: string;
 		EVOLUTIONARY_LINE: string;
 		BASE_STATS: string;
+		BASE_STATS_TOTAL: string;
 		FLAVOUR_TEXT: string;
 		EXTERNAL_RESOURCES: string;
 		NONE: string;

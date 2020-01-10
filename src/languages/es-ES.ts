@@ -1767,7 +1767,8 @@ export default class extends Language {
 			EGG_GROUPS: 'Grupo (s) de huevo',
 			OTHER_FORMES: 'Otras formas',
 			EVOLUTIONARY_LINE: 'Línea evolutiva',
-			BASE_STATS: 'Estadísticas base',
+			BASE_STATS: 'Puntos de base',
+			BASE_STATS_TOTAL: 'TDPB',
 			FLAVOUR_TEXT: 'Entrada de Pokédex',
 			EXTERNAL_RESOURCES: 'Recursos externos',
 			NONE: 'Ninguno'

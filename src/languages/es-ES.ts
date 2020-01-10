@@ -251,8 +251,8 @@ export default class extends Language {
 		 * ################################
 		 */
 
-		ARGUMENT_RANGE_INVALID: (name: string) => `${name} must be a number or a range of numbers.`,
-		ARGUMENT_RANGE_MAX: (name: string, maximum: number) => `${name} accepts a range of maximum ${maximum} ${maximum === 1 ? 'number' : 'numbers'}`,
+		ARGUMENT_RANGE_INVALID: (name: string) => `${name} debe ser un número o un rango de números.`,
+		ARGUMENT_RANGE_MAX: (name: string, maximum: number) => `El argumento ${name} acepta un rango de máximo ${maximum} ${maximum === 1 ? 'número' : 'números'}`,
 
 		COMMAND_ADD_DESCRIPTION: `Añade una canción a la cola.`,
 		COMMAND_ADD_PLAYLIST: amount => amount === 1
@@ -3676,9 +3676,9 @@ export default class extends Language {
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 
-		MODERATION_LOG_APPEALED: `${REDCROSS} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.`,
-		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} I am sorry, but the selected moderation log case does not exist.`,
-		MODERATION_CASES_NOT_EXIST: `${REDCROSS} I am sorry, but none of the selected moderation log cases exist.`,
+		MODERATION_LOG_APPEALED: `${REDCROSS} Lo siento, pero el caso de moderación ha expirado o no se puede temporizar.`,
+		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} Lo siento, pero el caso de moderación seleccionado no existe.`,
+		MODERATION_CASES_NOT_EXIST: `${REDCROSS} Lo siento, pero los casos de moderación seleccionados no existen.`,
 
 		GUILD_SETTINGS_CHANNELS_MOD: 'Necesitas configurar un canal de moderación. Utiliza `Skyra, settings set channels.modlog <NombreDeCanal>`.',
 		GUILD_SETTINGS_ROLES_RESTRICTED: (prefix, path) => `${REDCROSS} You need to configure a role for this action, use \`${prefix}settings set ${path} <rolename>\` to set it up.`,

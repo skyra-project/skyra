@@ -6,8 +6,8 @@ export default class extends Argument {
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
 		if (!arg) throw message.language.get('ARGUMENT_RANGE_INVALID', possible.name);
 
-		const number = Number.parseInt(arg, 10);
-		if (!Number.isNaN(number)) return [number];
+		const number = Number(arg);
+		if (Number.isSafeInteger(number)) return [number];
 
 		const range = parseRange(arg);
 		if (range.length === 0) throw message.language.tget('ARGUMENT_RANGE_INVALID', possible.name);

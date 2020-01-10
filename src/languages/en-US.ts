@@ -2496,7 +2496,7 @@ export default class extends Language {
 			'A ring.',
 			'I do not know, maybe something.'
 		]),
-		COMMAND_8BALL_HOWMUCH: createPick([
+		COMMAND_8BALL_HOW_MUCH: createPick([
 			'A lot.',
 			'A bit.',
 			'A few.',
@@ -2509,7 +2509,7 @@ export default class extends Language {
 			'Infinity.',
 			'1010 liters.'
 		]),
-		COMMAND_8BALL_HOWMANY: createPick([
+		COMMAND_8BALL_HOW_MANY: createPick([
 			'A lot.',
 			'A bit.',
 			'A few.',

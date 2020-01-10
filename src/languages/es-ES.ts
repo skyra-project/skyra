@@ -2477,7 +2477,7 @@ export default class extends Language {
 			'Un anillo.',
 			'No lo sé, quizá sea algo.'
 		]),
-		COMMAND_8BALL_HOWMUCH: createPick([
+		COMMAND_8BALL_HOW_MUCH: createPick([
 			'Un montón.',
 			'Un poco.',
 			'Un poquillo.',
@@ -2490,7 +2490,7 @@ export default class extends Language {
 			'¡Infinito!',
 			'1010 litros.'
 		]),
-		COMMAND_8BALL_HOWMANY: createPick([
+		COMMAND_8BALL_HOW_MANY: createPick([
 			'Un montón.',
 			'Un poco.',
 			'Un poquillo.',

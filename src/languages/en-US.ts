@@ -1994,7 +1994,7 @@ export default class extends Language {
 				['suggestion', 'Your well... suggestion']
 			],
 			examples: [
-				'let\'s ban @Barrinson#0951'
+				'let\'s ban @enkiel#8897'
 			],
 			reminder: 'You need to have setup a suggestions channel for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command'
 		}),

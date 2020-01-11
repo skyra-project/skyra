@@ -67,7 +67,7 @@ export default class extends Event {
 	}
 
 	private validateModerationLogMessageEmbedDescription(description: MessageEmbed['description']) {
-		return description.split('\n').length >= 3;
+		return typeof description === 'string' && description.split('\n').length >= 3;
 	}
 
 	private validateModerationLogMessageEmbedColor(color: MessageEmbed['color']) {

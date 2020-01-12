@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 				.setTitle(item.title)
 				.setURL(item.link)
 				.setDescription(item.snippet)
-				.setImage(item.pagemap.cse_image?.[0].src || ''));
+				.setImage(item.pagemap?.cse_image?.[0].src || ''));
 		}
 
 		return display;

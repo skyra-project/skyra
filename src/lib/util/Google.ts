@@ -136,9 +136,9 @@ export interface GooleCSEItem {
 	link: string;
 	snippet: string;
 	title: string;
-	pagemap: {
+	pagemap?: {
 		cse_image?: GoogleCSEImage[];
-		cse_thumbnail: GoogleCSEImage[];
+		cse_thumbnail?: GoogleCSEImage[];
 	};
 }
 

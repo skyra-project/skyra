@@ -3,10 +3,16 @@ import { CLIENT_ID } from '@root/config';
 import { APIErrors } from '@utils/constants';
 import { GuildMember, Role } from 'discord.js';
 import { KlasaGuild } from 'klasa';
+import { RequestHandler } from '@klasa/request-handler';
 
 export class MemberTags extends Collection<string, MemberTag> {
 
 	public readonly guild: KlasaGuild;
+	private kFetchAllPromise: Promise<void> | null = null;
+	private readonly kRequestHandler = new RequestHandler<string, GuildMember>(
+		this.requestHandlerGet.bind(this),
+		this.requestHandlerGetAll.bind(this)
+	);
 
 	public constructor(guild: KlasaGuild) {
 		super();
@@ -48,8 +54,14 @@ export class MemberTags extends Collection<string, MemberTag> {
 	public async fetch(): Promise<this>;
 	public async fetch(id?: string): Promise<MemberTag | null | this> {
 		if (typeof id === 'undefined') {
-			const members = await this.guild.members.fetch();
-			for (const member of members.values()) this.create(member);
+			if (this.kFetchAllPromise === null) {
+				this.kFetchAllPromise = this.guild.members.fetch().then(members => {
+					for (const member of members.values()) this.create(member);
+					this.kFetchAllPromise = null;
+				});
+			}
+
+			await this.kFetchAllPromise;
 			return this;
 		}
 
@@ -57,7 +69,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 		if (typeof existing !== 'undefined') return existing;
 
 		try {
-			const member = await this.guild.members.fetch(id);
+			const member = await this.kRequestHandler.push(id);
 			return this.create(member);
 		} catch (error) {
 			if (error.code === APIErrors.UnknownMember) return null;
@@ -116,6 +128,14 @@ export class MemberTags extends Collection<string, MemberTag> {
 		}
 
 		return highest;
+	}
+
+	private requestHandlerGet(id: string) {
+		return this.guild.members.fetch(id);
+	}
+
+	private requestHandlerGetAll(ids: readonly string[]) {
+		return Promise.all(ids.map(id => this.guild.members.fetch(id)));
 	}
 
 }

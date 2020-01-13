@@ -5,6 +5,7 @@ import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 const kFetchOptions = {
 	headers: {
@@ -31,7 +32,7 @@ export default class extends SkyraCommand {
 		const followingSince = new Date(followerData.created_at).getTime();
 		const followingFor = Date.now() - followingSince;
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(Number(followerData.channel.profile_banner_background_color) || 0x6441A6)
+			.setColor(Number(followerData.channel.profile_banner_background_color) || Colors.DeepPurple)
 			.setAuthor(message.language.tget('COMMAND_FOLLOWAGE', user.display_name, channel.display_name, followingFor), followerData.channel.logo));
 	}
 

@@ -2,6 +2,8 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { floatPromise, resolveOnErrorCodes } from '@utils/util';
+import { APIErrors } from '@utils/constants';
 
 export default class extends SkyraCommand {
 
@@ -30,7 +32,10 @@ export default class extends SkyraCommand {
 		]);
 
 		// Tell the user about the divorce
-		user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author.username)).catch(() => null);
+		floatPromise(this, resolveOnErrorCodes(
+			user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author.username)),
+			APIErrors.CannotMessageUser
+		));
 		return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
 	}
 

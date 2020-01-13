@@ -1,7 +1,7 @@
 import { RawPollSettings } from '@root/src/commands/Tools/poll';
 import { APIErrors } from '@utils/constants';
-import { DiscordAPIError } from 'discord.js';
 import { constants, Task, util } from 'klasa';
+import { resolveOnErrorCodes } from '@utils/util';
 const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {
@@ -10,7 +10,7 @@ export default class extends Task {
 		const guild = this.client.guilds.get(poll.guild_id);
 		if (!guild) return;
 
-		const user = await this.client.users.fetch(poll.author_id).catch(error => this._catchErrorUser(error));
+		const user = await resolveOnErrorCodes(this.client.users.fetch(poll.author_id), APIErrors.UnknownUser);
 		if (!user) return;
 
 		let content: string;
@@ -28,18 +28,8 @@ export default class extends Task {
 			content = `Hey! Your poll __${title}__ with ID \`${poll.id}\` just finished, but nobody voted :(`;
 		}
 
-		await user.send(content).catch(error => this._catchErrorMessage(error));
+		await resolveOnErrorCodes(user.send(content), APIErrors.CannotMessageUser);
 		await this.client.schedule.create('pollEnd', Date.now() + TASK_EOL, { catchUp: true, data: poll });
-	}
-
-	public _catchErrorUser(error: DiscordAPIError): void {
-		if (error.code === APIErrors.UnknownUser) return;
-		throw error;
-	}
-
-	public _catchErrorMessage(error: DiscordAPIError): void {
-		if (error.code === APIErrors.CannotMessageUser) return;
-		throw error;
 	}
 
 }

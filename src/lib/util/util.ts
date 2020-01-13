@@ -7,14 +7,14 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
 import { Image } from 'canvas';
-import { AvatarOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable } from 'discord.js';
+import { AvatarOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable, DiscordAPIError } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import { RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import { createFunctionInhibitor } from 'klasa-decorators';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { UserTag } from './Cache/UserTags';
-import { BrandingColors, Time } from './constants';
+import { BrandingColors, Time, APIErrors } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
@@ -483,6 +483,15 @@ export function getFromPath(object: Record<string, unknown>, path: string | read
 		if (value === null || value === undefined) return value;
 	}
 	return value;
+}
+
+export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly APIErrors[]) {
+	try {
+		return await promise;
+	} catch (error) {
+		if (error instanceof DiscordAPIError && codes.includes(error.code)) return null;
+		throw error;
+	}
 }
 
 export function createClassDecorator(fn: Function) {

@@ -2,21 +2,22 @@ import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
-import { rest } from '@utils/Models/Rest';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
 import { MemberTag } from '@utils/Cache/MemberTags';
+import { getDisplayAvatar } from '@utils/util';
 
-const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
-const MATCHES = {
-	GUILD: '%GUILD%',
-	MEMBER: '%MEMBER%',
-	MEMBERNAME: '%MEMBERNAME%',
-	MEMBERTAG: '%MEMBERTAG%'
-};
+const enum Matches {
+	Guild = '%GUILD%',
+	Member = '%MEMBER%',
+	MemberName = '%MEMBERNAME%',
+	MemberTag = '%MEMBERTAG%'
+}
 
 export default class extends Event {
+
+	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: 'GUILD_MEMBER_REMOVE', emitter: store.client.ws });
@@ -42,11 +43,9 @@ export default class extends Event {
 		const memberTag = guild.memberTags.get(data.user.id);
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(Colors.Red)
-			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
-				? rest(this.client).cdn.Avatar(data.user.id, data.user.avatar)
-				: rest(this.client).cdn.DefaultAvatar(Number(data.user.discriminator) % 5))
+			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag)))
-			.setFooter('Member left')
+			.setFooter(guild.language.tget('EVENTS_GUILDMEMBERREMOVE'))
 			.setTimestamp());
 	}
 
@@ -72,12 +71,12 @@ export default class extends Event {
 	}
 
 	private transformMessage(guild: Guild, user: APIUserData) {
-		return guild.settings.get(GuildSettings.Messages.Farewell).replace(REGEXP, match => {
+		return guild.settings.get(GuildSettings.Messages.Farewell).replace(this.kTransformMessageRegExp, match => {
 			switch (match) {
-				case MATCHES.MEMBER: return `<@${user.id}>`;
-				case MATCHES.MEMBERNAME: return user.username;
-				case MATCHES.MEMBERTAG: return `${user.username}#${user.discriminator}`;
-				case MATCHES.GUILD: return guild.name;
+				case Matches.Member: return `<@${user.id}>`;
+				case Matches.MemberName: return user.username;
+				case Matches.MemberTag: return `${user.username}#${user.discriminator}`;
+				case Matches.Guild: return guild.name;
 				default: return match;
 			}
 		});

@@ -1654,7 +1654,9 @@ export interface LanguageKeys {
 	EVENTS_GUILDMEMBERADD: string;
 	EVENTS_GUILDMEMBERADD_MUTE: string;
 	EVENTS_GUILDMEMBERADD_RAID: string;
+	EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention: string, time: number) => string;
 	EVENTS_GUILDMEMBERREMOVE: string;
+	EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention: string, time: number) => string;
 	EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous: string, current: string) => string;
 	EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous: string, current: string) => string;
 	EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous: string) => string;

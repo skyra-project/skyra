@@ -16,6 +16,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 	public create(member: GuildMember) {
 		const tag: MemberTag = {
 			nickname: member.nickname || null,
+			joinedAt: member.joinedTimestamp,
 			roles: this.getRawRoles(member)
 		};
 		super.set(member.id, tag);
@@ -121,5 +122,6 @@ export class MemberTags extends Collection<string, MemberTag> {
 
 export interface MemberTag {
 	nickname: string | null;
+	joinedAt: number | null;
 	roles: readonly string[];
 }

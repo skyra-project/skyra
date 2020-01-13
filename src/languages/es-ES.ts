@@ -3693,7 +3693,11 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERADD: 'Nuevo Usuario',
 		EVENTS_GUILDMEMBERADD_MUTE: 'Nuevo Usuario Muteado',
 		EVENTS_GUILDMEMBERADD_RAID: 'RAID Detectado',
-		EVENTS_GUILDMEMBERREMOVE: 'Usuario Menos',
+		EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention, time) => `${mention} | **Se Unió a Discord**: Hace ${duration(time, 2)}.`,
+		EVENTS_GUILDMEMBERREMOVE: 'Usuario Salió',
+		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention, time) => `${mention} | **Se Unió al Servidor**: ${time === -1
+			? 'Desconocido'
+			: `Hace ${duration(time, 2)}`}.`,
 		EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Actualizado el apodo de **${previous}** a **${current}**`,
 		EVENTS_GUILDMEMBER_ADDED_NICKNAME: (_, current) => `Añadido un nuevo apodo **${current}**`,
 		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: previous => `Eliminado el apodo **${previous}**`,

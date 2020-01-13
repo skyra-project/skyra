@@ -6,6 +6,7 @@ import { rest } from '@utils/Models/Rest';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
+import { MemberTag } from '@utils/Cache/MemberTags';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
@@ -25,7 +26,6 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		guild.memberTags.delete(data.user.id);
 		if (!this.client.guilds.some(g => g.memberTags.has(data.user.id))) this.client.userTags.delete(data.user.id);
 		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
 		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
@@ -34,19 +34,29 @@ export default class extends Event {
 		if (guild.settings.get(GuildSettings.Events.MemberRemove)) {
 			this.handleMemberLog(guild, data);
 		}
+
+		guild.memberTags.delete(data.user.id);
 	}
 
-	public handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
+	private handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
+		const memberTag = guild.memberTags.get(data.user.id);
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
 				? rest(this.client).cdn.Avatar(data.user.id, data.user.avatar)
 				: rest(this.client).cdn.DefaultAvatar(Number(data.user.discriminator) % 5))
+			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag)))
 			.setFooter('Member left')
 			.setTimestamp());
 	}
 
-	public handleFarewellMessage(guild: Guild, user: APIUserData) {
+	private processJoinedTimestamp(memberTag: MemberTag | undefined) {
+		if (typeof memberTag === 'undefined') return -1;
+		if (memberTag.joinedAt === null) return -1;
+		return Date.now() - memberTag.joinedAt;
+	}
+
+	private handleFarewellMessage(guild: Guild, user: APIUserData) {
 		const channelsFarewell = guild.settings.get(GuildSettings.Channels.Farewell);
 		const messagesFarewell = guild.settings.get(GuildSettings.Messages.Farewell);
 		if (channelsFarewell && messagesFarewell) {
@@ -61,7 +71,7 @@ export default class extends Event {
 		}
 	}
 
-	public transformMessage(guild: Guild, user: APIUserData) {
+	private transformMessage(guild: Guild, user: APIUserData) {
 		return guild.settings.get(GuildSettings.Messages.Farewell).replace(REGEXP, match => {
 			switch (match) {
 				case MATCHES.MEMBER: return `<@${user.id}>`;

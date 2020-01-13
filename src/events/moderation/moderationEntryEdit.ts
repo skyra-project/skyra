@@ -8,14 +8,20 @@ import { CLIENT_ID } from '@root/config';
 
 export default class extends Event {
 
-	public run(entry: ModerationManagerEntry) {
+	public run(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
 		return Promise.all([
-			this.sendMessage(entry),
-			this.scheduleDuration(entry)
+			this.sendMessage(old, entry),
+			this.scheduleDuration(old, entry)
 		]);
 	}
 
-	private async sendMessage(entry: ModerationManagerEntry) {
+	private async sendMessage(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
+		// Handle invalidation
+		if (!old.invalidated && entry.invalidated) return;
+
+		// If both logs are equals, skip
+		if (entry.equals(old)) return;
+
 		const { channel } = entry;
 		if (channel === null || !channel.postable || !channel.embedable) return;
 
@@ -84,7 +90,9 @@ export default class extends Event {
 		return typeof timestamp === 'number';
 	}
 
-	private async scheduleDuration(entry: ModerationManagerEntry) {
+	private async scheduleDuration(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
+		if (old.duration === entry.duration) return;
+
 		const previous = this.retrievePreviousSchedule(entry);
 		if (previous !== null) await previous.delete();
 

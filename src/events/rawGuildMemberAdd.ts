@@ -4,6 +4,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { Event, EventStore } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 const { FLAGS } = Permissions;
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
@@ -17,8 +18,8 @@ const MATCHES = {
 };
 
 const COLORS = {
-	JOIN: { color: 0x76FF03, title: 'Member Join' },
-	MUTE: { color: 0xFDD835, title: 'Muted Member Join' }
+	JOIN: { color: Colors.Green, title: 'Member Join' },
+	MUTE: { color: Colors.Amber, title: 'Muted Member Join' }
 };
 
 export default class extends Event {

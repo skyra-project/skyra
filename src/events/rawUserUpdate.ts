@@ -5,6 +5,7 @@ import { MessageLogsEnum } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends Event {
 
@@ -31,7 +32,7 @@ export default class extends Event {
 			if (!guild.memberTags.has(data.id)) continue;
 			if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-					.setColor(0xDCE775)
+					.setColor(Colors.Yellow)
 					.setAuthor(`${next.username}#${next.discriminator} (${data.id})`, getDisplayAvatar(data.id, next))
 					.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.username, next.username))
 					.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))

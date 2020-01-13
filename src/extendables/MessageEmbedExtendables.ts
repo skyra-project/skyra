@@ -23,7 +23,7 @@ export default class extends Extendable {
 		}
 
 		if (Array.isArray(content)) content = content.join('\n');
-		if (!title && !this.description && content.length < 2048) {
+		if (title === ZWS && !this.description && content.length < 2048) {
 			this.description = content;
 			return this;
 		}

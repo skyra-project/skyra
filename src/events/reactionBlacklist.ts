@@ -8,6 +8,7 @@ import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar, twemoji } from '@utils/util';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
+import { Colors } from '@lib/types/constants/Constants';
 
 type ArgumentType = [LLRCData, string];
 
@@ -79,7 +80,7 @@ export default class extends ModerationEvent<ArgumentType> {
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
 		const userTag = await this.client.userTags.fetch(data.userID);
 		return new MessageEmbed()
-			.setColor(0xEFAE45)
+			.setColor(Colors.Red)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
 			.setThumbnail(data.emoji.id === null
 				? `https://twemoji.maxcdn.com/v/12.1.4/72x72/${twemoji(data.emoji.name)}.png`

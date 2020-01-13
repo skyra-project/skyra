@@ -5,6 +5,7 @@ import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 const kFetchOptions = {
 	headers: {
@@ -31,7 +32,7 @@ export default class extends SkyraCommand {
 		const channel = await fetch(`https://api.twitch.tv/kraken/channels/${results.users[0]._id}`, kFetchOptions, FetchResultTypes.JSON) as TwitchKrakenChannelResult;
 		const titles = message.language.tget('COMMAND_TWITCH_TITLES');
 		const embed = new MessageEmbed()
-			.setColor(channel.profile_banner_background_color || 0x6441A6)
+			.setColor(channel.profile_banner_background_color || Colors.DeepPurple)
 			.setAuthor(channel.display_name, 'https://i.imgur.com/OQwQ8z0.jpg', channel.url)
 			.setThumbnail(channel.logo)
 			.addField(titles.FOLLOWERS, channel.followers.toLocaleString(), true)

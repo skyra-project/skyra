@@ -5,6 +5,7 @@ import { MessageLogsEnum } from '@utils/constants';
 import { rest } from '@utils/Models/Rest';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 const MATCHES = {
@@ -37,7 +38,7 @@ export default class extends Event {
 
 	public handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-			.setColor(0xF9A825)
+			.setColor(Colors.Red)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, data.user.avatar
 				? rest(this.client).cdn.Avatar(data.user.id, data.user.avatar)
 				: rest(this.client).cdn.DefaultAvatar(Number(data.user.discriminator) % 5))

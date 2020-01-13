@@ -7,6 +7,7 @@ import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore, KlasaGuild } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends Event {
 
@@ -44,7 +45,7 @@ export default class extends Event {
 		// TODO(kyranet): Role Change Logs
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-				.setColor(0xDCE775)
+				.setColor(Colors.Yellow)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.nickname, next.nickname))
 				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))

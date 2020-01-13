@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends SkyraCommand {
 
@@ -20,7 +21,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [feedback]: [string]) {
 		const embed = new MessageEmbed()
-			.setColor(0x06D310)
+			.setColor(Colors.Green)
 			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128 }))
 			.setDescription(feedback)
 			.setFooter(`${message.author.id} | Feedback`)

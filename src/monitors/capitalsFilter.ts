@@ -4,6 +4,7 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { cutText, floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 const OFFSET = 0b100000;
 /**
@@ -65,7 +66,7 @@ export default class extends ModerationMonitor {
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.splitFields(message.content)
-			.setColor(0xEFAE45)
+			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_CAPSFILTER')}`)
 			.setTimestamp();

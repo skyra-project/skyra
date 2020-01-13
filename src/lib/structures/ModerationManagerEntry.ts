@@ -38,6 +38,19 @@ export class ModerationManagerEntry {
 		this.createdAt = data.created_at || null;
 	}
 
+	public clone() {
+		return new ModerationManagerEntry(this.manager, this.toJSON());
+	}
+
+	public equals(other: ModerationManagerEntry) {
+		return this.type === other.type
+			&& this.duration === other.duration
+			&& this.extraData === other.extraData
+			&& this.reason === other.reason
+			&& this.flattenedUser === other.flattenedUser
+			&& this.flattenedModerator === other.flattenedModerator;
+	}
+
 	/**
 	 * The Client that manages this instance.
 	 */
@@ -226,12 +239,13 @@ export class ModerationManagerEntry {
 
 		flattened.type = ModerationManagerEntry.getTypeFlagsFromDuration(flattened.type, flattened.duration);
 		await this.client.queries.updateModerationLog({ ...this.toJSON(), ...flattened });
+		const clone = this.clone();
 		this.duration = flattened.duration;
 		this.moderator = flattened.moderator_id;
 		this.reason = flattened.reason;
 		this.extraData = flattened.extra_data;
 		this.type = flattened.type;
-		this.client.emit(Events.ModerationEntryEdit, this);
+		this.client.emit(Events.ModerationEntryEdit, clone, this);
 
 		return this;
 	}
@@ -240,8 +254,9 @@ export class ModerationManagerEntry {
 		if (this.invalidated) return this;
 		const type = this.type | Moderation.TypeMetadata.Invalidated;
 		await this.client.queries.updateModerationLog({ ...this.toJSON(), type });
+		const clone = this.clone();
 		this.type = type;
-		this.client.emit(Events.ModerationEntryEdit, this);
+		this.client.emit(Events.ModerationEntryEdit, clone, this);
 
 		return this;
 	}

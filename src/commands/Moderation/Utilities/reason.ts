@@ -29,8 +29,9 @@ export default class extends SkyraCommand {
 		await this.client.queries.updateModerationLogReasonBulk(message.guild!.id, entries.map(ml => ml.case!), reason);
 		await message.guild!.moderation.fetchChannelMessages();
 		for (const entry of entries.values()) {
+			const clone = entry.clone();
 			entry.setReason(reason);
-			this.client.emit(Events.ModerationEntryEdit, entry);
+			this.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 
 		return message.alert(message.language.tget('COMMAND_REASON_UPDATED', cases, reason));

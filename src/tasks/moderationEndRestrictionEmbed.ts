@@ -8,6 +8,7 @@ export default class extends ModerationTask {
 		const me = guild.me === null ? await guild.members.fetch(CLIENT_ID) : guild.me;
 		if (!me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return null;
 		await guild.security.actions.unRestrictEmbed({
+			moderator_id: CLIENT_ID,
 			user_id: data.userID,
 			reason: `[MODERATION] Embed Restricted released after ${this.client.languages.default.duration(data.duration)}`
 		}, this.getTargetDM(guild, await this.client.users.fetch(data.userID)));

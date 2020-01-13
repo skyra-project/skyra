@@ -978,10 +978,10 @@ klasa-decorators@^0.0.1:
     "@klasa/settings-gateway" "^0.0.9"
     fs-nextra "^0.4.5"
 
-lavalink@^2.8.2:
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.8.2.tgz#bd6c50dbadd09759044c746895706903796afcf0"
-  integrity sha512-rmeNNOhjVGM8VeOwMcdDC4mL68Kqu7B2oNtlLLGBRBwKfwJYPv+ikrdvCLEu3zwFn90Xb0+K73Jgxm5FTSNW3w==
+lavalink@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.9.0.tgz#2166f93e6550293344a3aaae1d4ccf341c3169d8"
+  integrity sha512-L+GvRgy4KN1HoMYqTTO8IpGlxA0ZxU6jFVqL8MhKv4wwY89v90MUtlSmTGV1Ue3pkkPDXQjTBuie8P2Pgr3TDA==
   dependencies:
     backoff "^2.5.0"
     ws "^6.0.0"

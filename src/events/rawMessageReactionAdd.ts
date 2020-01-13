@@ -8,6 +8,7 @@ import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar, resolveEmoji, twemoji } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends Event {
 
@@ -63,7 +64,7 @@ export default class extends Event {
 
 		const userTag = await this.client.userTags.fetch(data.userID);
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.channel.guild, () => new MessageEmbed()
-			.setColor(0xFFAB40)
+			.setColor(Colors.Green)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
 			.setThumbnail(data.emoji.id === null
 				? `https://twemoji.maxcdn.com/v/12.1.4/72x72/${twemoji(data.emoji.name)}.png`

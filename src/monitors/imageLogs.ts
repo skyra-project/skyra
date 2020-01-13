@@ -6,6 +6,7 @@ import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
 import { extname } from 'path';
+import { Colors } from '@lib/types/constants/Constants';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte
@@ -45,7 +46,7 @@ export default class extends Monitor {
 				const filename = `image${extname(url.pathname)}`;
 
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () => new MessageEmbed()
-					.setColor(0xEFAE45)
+					.setColor(Colors.Yellow)
 					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 					.setDescription(`[${message.language.tget('JUMPTO')}](${message.url})`)
 					.setFooter(`#${(message.channel as TextChannel).name}`)

@@ -8,17 +8,12 @@ import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
 import { GiveawayManager } from './GiveawayManager';
+import { Colors } from '@lib/types/constants/Constants';
 
 enum States {
 	Running,
 	LastChance,
 	Finished
-}
-
-export enum Colors {
-	Blue = 0x47C7F7,
-	Orange = 0xFFA721,
-	Red = 0xE80F2B
 }
 
 export const GiveawayEmoji = '🎉';

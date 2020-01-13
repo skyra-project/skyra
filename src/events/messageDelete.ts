@@ -4,6 +4,7 @@ import { MessageLogsEnum } from '@utils/constants';
 import { cutText, getContent, getImage } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends Event {
 
@@ -21,7 +22,7 @@ export default class extends Event {
 
 		const channel = message.channel as TextChannel;
 		this.client.emit(Events.GuildMessageLog, channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
-			.setColor(0xFFAB40)
+			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL())
 			.setDescription(cutText(getContent(message) || '', 1900))
 			.setFooter(`${message.language.tget('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)

@@ -3,6 +3,7 @@ import { KlasaMessage } from 'klasa';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { floatPromise, getContent } from '@utils/util';
 import { ModerationMonitor, HardPunishment } from '@lib/structures/ModerationMonitor';
+import { Colors } from '@lib/types/constants/Constants';
 
 const NEW_LINE = '\n';
 
@@ -44,7 +45,7 @@ export default class extends ModerationMonitor {
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.splitFields(message.content)
-			.setColor(0xEFAE45)
+			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_NEWLINEFILTER')}`)
 			.setTimestamp();

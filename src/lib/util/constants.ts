@@ -2,6 +2,7 @@
 import { DEV } from '@root/config';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
+import { Colors } from '@lib/types/constants/Constants';
 
 export const rootFolder = join(__dirname, '..', '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
@@ -111,42 +112,42 @@ export namespace Moderation {
 	/* eslint-enable no-multi-spaces */
 
 	export const metadata = new Map<TypeCodes, ModerationTypeAssets>([
-		[TypeCodes.Warn, { color: 0xFFEB3B, title: 'Warning' }],
-		[TypeCodes.Mute, { color: 0xFFC107, title: 'Mute' }],
-		[TypeCodes.Kick, { color: 0xFF9800, title: 'Kick' }],
-		[TypeCodes.Softban, { color: 0xFF5722, title: 'Softban' }],
-		[TypeCodes.Ban, { color: 0xF44336, title: 'Ban' }],
-		[TypeCodes.VoiceMute, { color: 0xFFC107, title: 'Voice Mute' }],
-		[TypeCodes.VoiceKick, { color: 0xFF9800, title: 'Voice Kick' }],
-		[TypeCodes.RestrictionReaction, { color: 0xCDDC39, title: 'Reaction Restriction' }],
-		[TypeCodes.RestrictionEmbed, { color: 0xCDDC39, title: 'Embed Restriction' }],
-		[TypeCodes.RestrictionAttachment, { color: 0xCDDC39, title: 'Attachment Restriction' }],
-		[TypeCodes.RestrictionVoice, { color: 0xCDDC39, title: 'Voice Restriction' }],
-		[TypeCodes.UnWarn, { color: 0x03A9F4, title: 'Reverted Warning' }],
-		[TypeCodes.UnMute, { color: 0x03A9F4, title: 'Reverted Mute' }],
-		[TypeCodes.UnBan, { color: 0x03A9F4, title: 'Reverted Ban' }],
-		[TypeCodes.UnVoiceMute, { color: 0x03A9F4, title: 'Reverted Voice Mute' }],
-		[TypeCodes.UnRestrictionReaction, { color: 0x03A9F4, title: 'Reverted Reaction Restriction' }],
-		[TypeCodes.UnRestrictionEmbed, { color: 0x03A9F4, title: 'Reverted Embed Restriction' }],
-		[TypeCodes.UnRestrictionAttachment, { color: 0x03A9F4, title: 'Reverted Attachment Restriction' }],
-		[TypeCodes.UnRestrictionVoice, { color: 0x03A9F4, title: 'Reverted Voice Restriction' }],
-		[TypeCodes.TemporaryWarning, { color: 0xFFF176, title: 'Temporary Warning' }],
-		[TypeCodes.TemporaryMute, { color: 0xFFD54F, title: 'Temporary Mute' }],
-		[TypeCodes.TemporaryBan, { color: 0xE57373, title: 'Temporary Ban' }],
-		[TypeCodes.TemporaryVoiceMute, { color: 0xFFD54F, title: 'Temporary Voice Mute' }],
-		[TypeCodes.TemporaryRestrictionReaction, { color: 0xDCE775, title: 'Temporary Reaction Restriction' }],
-		[TypeCodes.TemporaryRestrictionEmbed, { color: 0xDCE775, title: 'Temporary Embed Restriction' }],
-		[TypeCodes.TemporaryRestrictionAttachment, { color: 0xDCE775, title: 'Temporary Attachment Restriction' }],
-		[TypeCodes.TemporaryRestrictionVoice, { color: 0xDCE775, title: 'Temporary Voice Restriction' }],
-		[TypeCodes.FastTemporaryWarning, { color: 0xFFF176, title: 'Temporary Warning' }],
-		[TypeCodes.FastTemporaryMute, { color: 0xFFD54F, title: 'Temporary Mute' }],
-		[TypeCodes.FastTemporaryBan, { color: 0xE57373, title: 'Temporary Ban' }],
-		[TypeCodes.FastTemporaryVoiceMute, { color: 0xFFD54F, title: 'Temporary Voice Mute' }],
-		[TypeCodes.FastTemporaryRestrictionReaction, { color: 0xDCE775, title: 'Temporary Reaction Restriction' }],
-		[TypeCodes.FastTemporaryRestrictionEmbed, { color: 0xDCE775, title: 'Temporary Embed Restriction' }],
-		[TypeCodes.FastTemporaryRestrictionAttachment, { color: 0xDCE775, title: 'Temporary Attachment Restriction' }],
-		[TypeCodes.FastTemporaryRestrictionVoice, { color: 0xDCE775, title: 'Temporary Voice Restriction' }],
-		[TypeCodes.Prune, { color: 0x000000, title: 'Prune' }]
+		[TypeCodes.Warn, { color: Colors.Yellow, title: 'Warning' }],
+		[TypeCodes.Mute, { color: Colors.Amber, title: 'Mute' }],
+		[TypeCodes.Kick, { color: Colors.Orange, title: 'Kick' }],
+		[TypeCodes.Softban, { color: Colors.DeepOrange, title: 'Softban' }],
+		[TypeCodes.Ban, { color: Colors.Red, title: 'Ban' }],
+		[TypeCodes.VoiceMute, { color: Colors.Amber, title: 'Voice Mute' }],
+		[TypeCodes.VoiceKick, { color: Colors.Orange, title: 'Voice Kick' }],
+		[TypeCodes.RestrictionReaction, { color: Colors.Lime, title: 'Reaction Restriction' }],
+		[TypeCodes.RestrictionEmbed, { color: Colors.Lime, title: 'Embed Restriction' }],
+		[TypeCodes.RestrictionAttachment, { color: Colors.Lime, title: 'Attachment Restriction' }],
+		[TypeCodes.RestrictionVoice, { color: Colors.Lime, title: 'Voice Restriction' }],
+		[TypeCodes.UnWarn, { color: Colors.LightBlue, title: 'Reverted Warning' }],
+		[TypeCodes.UnMute, { color: Colors.LightBlue, title: 'Reverted Mute' }],
+		[TypeCodes.UnBan, { color: Colors.LightBlue, title: 'Reverted Ban' }],
+		[TypeCodes.UnVoiceMute, { color: Colors.LightBlue, title: 'Reverted Voice Mute' }],
+		[TypeCodes.UnRestrictionReaction, { color: Colors.LightBlue, title: 'Reverted Reaction Restriction' }],
+		[TypeCodes.UnRestrictionEmbed, { color: Colors.LightBlue, title: 'Reverted Embed Restriction' }],
+		[TypeCodes.UnRestrictionAttachment, { color: Colors.LightBlue, title: 'Reverted Attachment Restriction' }],
+		[TypeCodes.UnRestrictionVoice, { color: Colors.LightBlue, title: 'Reverted Voice Restriction' }],
+		[TypeCodes.TemporaryWarning, { color: Colors.Yellow300, title: 'Temporary Warning' }],
+		[TypeCodes.TemporaryMute, { color: Colors.Amber300, title: 'Temporary Mute' }],
+		[TypeCodes.TemporaryBan, { color: Colors.Red300, title: 'Temporary Ban' }],
+		[TypeCodes.TemporaryVoiceMute, { color: Colors.Amber300, title: 'Temporary Voice Mute' }],
+		[TypeCodes.TemporaryRestrictionReaction, { color: Colors.Lime300, title: 'Temporary Reaction Restriction' }],
+		[TypeCodes.TemporaryRestrictionEmbed, { color: Colors.Lime300, title: 'Temporary Embed Restriction' }],
+		[TypeCodes.TemporaryRestrictionAttachment, { color: Colors.Lime300, title: 'Temporary Attachment Restriction' }],
+		[TypeCodes.TemporaryRestrictionVoice, { color: Colors.Lime300, title: 'Temporary Voice Restriction' }],
+		[TypeCodes.FastTemporaryWarning, { color: Colors.Yellow300, title: 'Temporary Warning' }],
+		[TypeCodes.FastTemporaryMute, { color: Colors.Amber300, title: 'Temporary Mute' }],
+		[TypeCodes.FastTemporaryBan, { color: Colors.Red300, title: 'Temporary Ban' }],
+		[TypeCodes.FastTemporaryVoiceMute, { color: Colors.Amber300, title: 'Temporary Voice Mute' }],
+		[TypeCodes.FastTemporaryRestrictionReaction, { color: Colors.Lime300, title: 'Temporary Reaction Restriction' }],
+		[TypeCodes.FastTemporaryRestrictionEmbed, { color: Colors.Lime300, title: 'Temporary Embed Restriction' }],
+		[TypeCodes.FastTemporaryRestrictionAttachment, { color: Colors.Lime300, title: 'Temporary Attachment Restriction' }],
+		[TypeCodes.FastTemporaryRestrictionVoice, { color: Colors.Lime300, title: 'Temporary Voice Restriction' }],
+		[TypeCodes.Prune, { color: Colors.Brown, title: 'Prune' }]
 	]) as ReadonlyMap<TypeCodes, ModerationTypeAssets>;
 
 	export const enum TypeVariationAppealNames {

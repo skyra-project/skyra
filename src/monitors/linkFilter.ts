@@ -4,6 +4,7 @@ import { urlRegex } from '@utils/Links/UrlRegex';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 
 export default class extends ModerationMonitor {
@@ -53,7 +54,7 @@ export default class extends ModerationMonitor {
 
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
-			.setColor(0xEFAE45)
+			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_LINK')}`)
 			.setTimestamp();

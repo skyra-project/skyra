@@ -3,6 +3,7 @@ import { rootFolder } from '@utils/constants';
 import { inlineCodeblock } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage, util } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 const BLACKLISTED_CODES = [
 	// Unknown Channel
@@ -64,7 +65,7 @@ export default class extends Event {
 		try {
 			await this.client.webhookError.send(new MessageEmbed()
 				.setDescription(output)
-				.setColor(0xFC1020)
+				.setColor(Colors.Red)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 64 }), message.url)
 				.setTimestamp());
 		} catch (err) {

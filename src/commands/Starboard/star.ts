@@ -2,6 +2,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { Colors } from '@lib/types/constants/Constants';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
@@ -99,7 +100,7 @@ export default class extends SkyraCommand {
 
 		const i18n = message.language.tget.bind(message.language);
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(0xFFD000)
+			.setColor(Colors.Amber)
 			.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', totalMessages, totalStars))
 			.addField(i18n('COMMAND_STAR_TOPSTARRED'), topThreeMessages.map(([mID, stars], index) => i18n('COMMAND_STAR_TOPSTARRED_DESCRIPTION', MEDALS[index], mID, stars)))
 			.addField(i18n('COMMAND_STAR_TOPRECEIVERS'), topThreeReceivers.map(([uID, stars], index) => i18n('COMMAND_STAR_TOPRECEIVERS_DESCRIPTION', MEDALS[index], uID, stars)))

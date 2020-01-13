@@ -19,7 +19,7 @@ const MATCHES = {
 
 const COLORS = {
 	JOIN: { color: Colors.Green, title: 'Member Join' },
-	MUTE: { color: Colors.DeepOrange, title: 'Muted Member Join' }
+	MUTE: { color: Colors.Amber, title: 'Muted Member Join' }
 };
 
 export default class extends Event {

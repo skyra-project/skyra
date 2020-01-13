@@ -4075,7 +4075,11 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERADD: 'User Joined',
 		EVENTS_GUILDMEMBERADD_MUTE: 'Muted User joined',
 		EVENTS_GUILDMEMBERADD_RAID: 'Raid Detected',
+		EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention, time) => `${mention} | **Joined Discord**: ${duration(time, 2)} ago.`,
 		EVENTS_GUILDMEMBERREMOVE: 'User left',
+		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention, time) => `${mention} | **Joined Server**: ${time === -1
+			? 'Unknown'
+			: `${duration(time, 2)} ago`}.`,
 		EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Updated the nickname from **${previous}** to **${current}**`,
 		EVENTS_GUILDMEMBER_ADDED_NICKNAME: (_, current) => `Added a new nickname **${current}**`,
 		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: previous => `Removed the nickname **${previous}**`,

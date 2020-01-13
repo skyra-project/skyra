@@ -33,6 +33,7 @@ export default class extends Event {
 		const previous = guild.memberTags.get(data.user.id);
 		const next: MemberTag = {
 			nickname: data.nick || null,
+			joinedAt: typeof previous === 'undefined' ? null : previous.joinedAt,
 			roles: data.roles
 		};
 

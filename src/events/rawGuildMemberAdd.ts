@@ -34,6 +34,7 @@ export default class extends Event {
 
 		guild.memberTags.set(data.user.id, {
 			nickname: data.nick || null,
+			joinedAt: new Date(data.joined_at).getTime(),
 			roles: data.roles
 		});
 		guild.client.userTags.create(data.user);
@@ -55,6 +56,7 @@ export default class extends Event {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(asset.color)
 			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
+			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERADD_DESCRIPTION', member.toString(), Date.now() - member.user.createdTimestamp))
 			.setFooter(asset.title)
 			.setTimestamp());
 	}

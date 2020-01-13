@@ -18,6 +18,12 @@ export default class extends Event {
 			return;
 		}
 
+		if (song !== null) {
+			for (const subscription of manager.websocketUserIterator()) {
+				subscription.send({ action: OutgoingWebsocketAction.MusicSongFinish, data: { id: song.id } });
+			}
+		}
+
 		manager.reset();
 		if (manager.queue.length === 0) {
 			await manager.player.leave();
@@ -30,12 +36,6 @@ export default class extends Event {
 				this.client.emit(Events.MusicSongPlay, manager, manager.song);
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);
-			}
-		}
-
-		if (song !== null) {
-			for (const subscription of manager.websocketUserIterator()) {
-				subscription.send({ action: OutgoingWebsocketAction.MusicSongFinish, data: { id: song.id } });
 			}
 		}
 	}

@@ -1,10 +1,11 @@
 import { WSGuildMemberAdd } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { MessageLogsEnum } from '@utils/constants';
+import { MessageLogsEnum, APIErrors } from '@utils/constants';
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
+import { floatPromise, resolveOnErrorCodes } from '@utils/util';
 
 const { FLAGS } = Permissions;
 const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
@@ -91,7 +92,10 @@ export default class extends Event {
 	private handleJoinDM(guild: Guild, member: GuildMember) {
 		const messagesJoinDM = guild.settings.get(GuildSettings.Messages.JoinDM);
 		if (messagesJoinDM) {
-			member.user.send(this.transformMessage(messagesJoinDM, guild, member.user)).catch(() => null);
+			floatPromise(this, resolveOnErrorCodes(
+				member.user.send(this.transformMessage(messagesJoinDM, guild, member.user)),
+				APIErrors.CannotMessageUser
+			));
 		}
 	}
 

@@ -5,10 +5,10 @@ import { cutText, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, Duration, KlasaMessage, ScheduledTask, Timestamp, util } from 'klasa';
 
-const timestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
-const REMINDER_TYPE = 'reminder';
-
 export default class extends SkyraCommand {
+
+	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
+	private readonly kReminderTaskName = 'reminder';
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		if (action === 'delete') return this.delete(message, data);
 
 		const { time, title } = await this.parseInput(message, data);
-		const task = await this.client.schedule.create(REMINDER_TYPE, Date.now() + time!, {
+		const task = await this.client.schedule.create(this.kReminderTaskName, Date.now() + time!, {
 			catchUp: true,
 			data: {
 				content: title,
@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			.setColor(getColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL()));
 
-		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${timestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
+		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${this.kTimestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		let selectedTask: ScheduledTask | null = null;
 		for (const task of this.client.schedule.tasks) {
 			if (task.id !== id) continue;
-			if (task.taskName !== REMINDER_TYPE || !task.data || task.data.user !== message.author.id) break;
+			if (task.taskName !== this.kReminderTaskName || !task.data || task.data.user !== message.author.id) break;
 			selectedTask = task;
 		}
 		if (!selectedTask) throw message.language.tget('COMMAND_REMINDME_NOTFOUND');

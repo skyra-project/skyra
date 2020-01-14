@@ -11,9 +11,9 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_CHOICE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_CHOICE_EXTENDED'),
 			usage: '<words:string> [...]',
-			usageDelim: ','
+			usageDelim: ',',
+			spam: true
 		});
-		this.spam = true;
 	}
 
 	public async run(message: KlasaMessage, options: string[]) {

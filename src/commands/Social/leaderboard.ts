@@ -19,9 +19,9 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_LEADERBOARD_EXTENDED'),
 			runIn: ['text'],
 			usage: '[global|local] [index:integer]',
-			usageDelim: ' '
+			usageDelim: ' ',
+			spam: true
 		});
-		this.spam = true;
 	}
 
 	public async run(message: KlasaMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {

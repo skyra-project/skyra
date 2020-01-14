@@ -13,9 +13,9 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_FOX_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_FOX_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS']
+			requiredPermissions: ['EMBED_LINKS'],
+			spam: true
 		});
-		this.spam = true;
 	}
 
 	public async run(message: KlasaMessage) {

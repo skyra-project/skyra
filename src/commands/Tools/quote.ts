@@ -1,5 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { cutText, getContent, getImage } from '@utils/util';
+import { cutText, getContent, getImage, getColor } from '@utils/util';
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 
@@ -34,6 +34,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage]) {
 		const embed = new MessageEmbed()
 			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128 }))
+			.setColor(getColor(message))
 			.setImage(getImage(remoteMessage)!)
 			.setTimestamp(remoteMessage.createdAt);
 

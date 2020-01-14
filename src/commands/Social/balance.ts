@@ -11,9 +11,9 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_BALANCE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_BALANCE_EXTENDED'),
-			usage: '[user:username]'
+			usage: '[user:username]',
+			spam: true
 		});
-		this.spam = true;
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {

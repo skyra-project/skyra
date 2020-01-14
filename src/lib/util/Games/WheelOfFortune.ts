@@ -1,4 +1,3 @@
-import Collection from '@discordjs/collection';
 import { ClientSettings } from '@lib/types/settings/ClientSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { socialFolder } from '@utils/constants';
@@ -7,29 +6,18 @@ import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
-import { Slotmachine } from './Slotmachine';
 import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
-
-const enum Icons {
-	LOSS_0_1,
-	LOSS_0_2,
-	LOSS_0_3,
-	LOSS_0_5,
-	WIN_1_2,
-	WIN_1_5,
-	WIN_1_7,
-	WIN_2_4,
-}
+import { CanvasColors } from '@lib/types/constants/Constants';
 
 const enum Arrows {
-	UP_DIAGONAL_LEFT,
-	UP,
-	UP_DIAGONAL_RIGHT,
-	RIGHT,
-	LEFT,
-	DOWN_DIAGONAL_LEFT,
-	DOWN,
-	DOWN_DIAGONAL_RIGHT
+	UpDiagonalLeft = 0.2,
+	Up = 0.1,
+	UpDiagonalRight = 2.4,
+	Left = 0.3,
+	Right = 1.7,
+	DownDiagonalLeft = 0.5,
+	Down = 1.2,
+	DownDiagonalRight = 1.5
 }
 
 interface Coordinate {
@@ -38,26 +26,27 @@ interface Coordinate {
 }
 
 const kIconSize = 38;
+const kAssets: Coordinate[] = [
+	{ x: kIconSize * 2, y: kIconSize * 2 },
+	{ x: kIconSize, y: kIconSize * 2 },
+	{ x: 0, y: kIconSize * 2 },
+	{ x: kIconSize * 2, y: kIconSize },
+	{ x: 0, y: kIconSize },
+	{ x: kIconSize * 2, y: 0 },
+	{ x: kIconSize, y: 0 },
+	{ x: 0, y: 0 }
+];
+
 const kArrowSize = 36;
-const kAssets = new Collection<Icons, Coordinate>([
-	[Icons.WIN_1_5, { x: kIconSize * 2, y: kIconSize * 2 }],
-	[Icons.WIN_1_2, { x: kIconSize, y: kIconSize * 2 }],
-	[Icons.LOSS_0_5, { x: 0, y: kIconSize * 2 }],
-	[Icons.WIN_1_7, { x: kIconSize * 2, y: kIconSize }],
-	[Icons.LOSS_0_3, { x: 0, y: kIconSize }],
-	[Icons.WIN_2_4, { x: kIconSize * 2, y: 0 }],
-	[Icons.LOSS_0_1, { x: kIconSize, y: 0 }],
-	[Icons.LOSS_0_2, { x: 0, y: 0 }]
-]);
 const kArrows = new Map<Arrows, Coordinate>([
-	[Arrows.DOWN_DIAGONAL_RIGHT, { x: kArrowSize * 2, y: kArrowSize * 2 }],
-	[Arrows.DOWN, { x: kArrowSize, y: kArrowSize * 2 }],
-	[Arrows.DOWN_DIAGONAL_LEFT, { x: 0, y: kArrowSize * 2 }],
-	[Arrows.RIGHT, { x: kArrowSize * 2, y: kArrowSize }],
-	[Arrows.LEFT, { x: 0, y: kArrowSize }],
-	[Arrows.UP_DIAGONAL_RIGHT, { x: kArrowSize * 2, y: 0 }],
-	[Arrows.UP, { x: kArrowSize, y: 0 }],
-	[Arrows.UP_DIAGONAL_LEFT, { x: 0, y: 0 }]
+	[Arrows.UpDiagonalLeft, { x: 0, y: 0 }],
+	[Arrows.Up, { x: kArrowSize, y: 0 }],
+	[Arrows.UpDiagonalRight, { x: kArrowSize * 2, y: 0 }],
+	[Arrows.Left, { x: 0, y: kArrowSize }],
+	[Arrows.Right, { x: kArrowSize * 2, y: kArrowSize }],
+	[Arrows.DownDiagonalLeft, { x: 0, y: kArrowSize * 2 }],
+	[Arrows.Down, { x: kArrowSize, y: kArrowSize * 2 }],
+	[Arrows.DownDiagonalRight, { x: kArrowSize * 2, y: kArrowSize * 2 }]
 ]);
 
 export class WheelOfFortune {
@@ -65,14 +54,14 @@ export class WheelOfFortune {
 	/** The amount bet */
 	public amount: number;
 
+	/** The spin result */
+	public spin = -1;
+
 	/** The winnings */
 	public winnings = 0;
 
 	/** The message that ran this instance */
 	public message: Message;
-
-	/** The Wheel of Fortune multipliers */
-	private MULTIPLIERS = [1.5, 1.2, 0.5, 1.7, 0.3, 2.4, 0.1, 0.2];
 
 	/** The player */
 	public get player() {
@@ -92,88 +81,81 @@ export class WheelOfFortune {
 	}
 
 	public async run() {
-		const { settings } = this.player;
-		const money = settings.get(UserSettings.Money);
-		const darkTheme = settings.get(UserSettings.DarkTheme);
-		const spin = Math.floor(Math.random() * this.MULTIPLIERS.length);
-		this.calculate(spin);
-		const lost = this.winnings === 0;
-		const winnings = (this.winnings * this.boost) - this.amount;
+		this.calculate();
 
-		const amount = lost
-			? money - this.amount
-			: money + winnings;
-		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
+		const lost = this.winnings < 0;
+		const money = this.player.settings.get(UserSettings.Money);
+		const final = money + this.winnings;
+		if (lost && final < 0) {
+			throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
+		}
 
 		await (lost
-			? this.player.decreaseBalance(this.amount, EconomyTransactionReason.Gamble)
-			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble));
+			? this.player.decreaseBalance(-this.winnings, EconomyTransactionReason.Gamble)
+			: this.player.increaseBalance(this.winnings, EconomyTransactionReason.Gamble));
 
-		return [await this.render(money, spin, amount, darkTheme), amount] as [Buffer, number];
+		return [await this.render(this.player.settings.get(UserSettings.DarkTheme)), final] as const;
 	}
 
-	private calculate(spin: number) {
+	private calculate() {
+		this.spin = Math.floor(Math.random() * WheelOfFortune.kMultipliers.length);
+
 		// The multiplier to apply
-		const multiplier = this.MULTIPLIERS[spin];
+		const multiplier = WheelOfFortune.kMultipliers[this.spin];
 
 		// The winnings
-		this.winnings += this.amount * multiplier;
+		this.winnings = multiplier >= 1
+			? (this.amount * multiplier * this.boost) - this.amount
+			: (this.amount * multiplier) - this.amount;
 	}
 
-	private async render(money: number, spin: number, amount: number, darkTheme: boolean): Promise<Buffer> {
-		const playerHasWon = amount > money;
+	private async render(darkTheme: boolean): Promise<Buffer> {
+		const playerHasWon = this.winnings > 0;
 
-		const { x: arrowX, y: arrowY } = this.getArrow(kArrows.values(), spin)!;
+		const { x: arrowX, y: arrowY } = kArrows.get(WheelOfFortune.kMultipliers[this.spin])!;
 
 		const canvas = new Canvas(300, 132)
+			.setColor(darkTheme ? CanvasColors.BackgroundDark : CanvasColors.BackgroundLight)
+			.addBeveledRect(5, 5, 295, 127, 10)
 			.save()
-			.setShadowColor('rgba(51, 51, 51, 0.38)')
-			.setShadowBlur(5)
-			.setColor(darkTheme ? Slotmachine.DARK_COLOUR : Slotmachine.LIGHT_COLOUR)
-			.createBeveledClip(4, 4, 300 - 8, 142, 5)
-			.fill()
-			.restore()
-			.save()
-			.setColor(darkTheme ? Slotmachine.LIGHT_COLOUR : Slotmachine.DARK_COLOUR)
+			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.addText(this.message.language.tget('COMMAND_WHEELOFFORTUNE_CANVAS_TEXT', playerHasWon), 280, 60)
-			.addText(playerHasWon ? (this.winnings - this.amount).toString() : (this.winnings + this.amount).toString(), 230, 100)
+			.addText((playerHasWon ? this.winnings : -this.winnings).toString(), 230, 100)
 			.addImage(WheelOfFortune.images.SHINY!, 240, 68, 38, 39)
 			.addImage(WheelOfFortune.images.ARROWS!, arrowX, arrowY, kArrowSize, kArrowSize, kIconSize + 12, kIconSize + 12, kIconSize, kIconSize)
 			.restore();
 
-		await Promise.all(kAssets.map(value => new Promise(resolve => {
-			const { x, y } = value;
-			canvas.addImage(
-				playerHasWon ? WheelOfFortune.images.WIN_ICONS! : WheelOfFortune.images.LOSE_ICONS!,
-				x, y, kIconSize, kIconSize, x + 12, y + 12, kIconSize, kIconSize
-			);
+		const image = playerHasWon ? WheelOfFortune.images.WIN_ICONS! : WheelOfFortune.images.LOSE_ICONS!;
+		await Promise.all(kAssets.map(({ x, y }) => new Promise(resolve => {
+			canvas.addImage(image, x, y, kIconSize, kIconSize, x + 12, y + 12, kIconSize, kIconSize);
 			resolve();
 		})));
 
 		return canvas.toBufferAsync();
 	}
 
-	private getArrow(iterable: IterableIterator<Coordinate>, n: number) {
-		let index = 0;
-		for (const arrow of iterable) {
-			if (index === n) {
-				return arrow;
-			}
-			index++;
-		}
-		return null;
-	}
+	/** The Wheel of Fortune multipliers */
+	private static kMultipliers = [
+		Arrows.UpDiagonalLeft,
+		Arrows.Up,
+		Arrows.UpDiagonalRight,
+		Arrows.Right,
+		Arrows.Left,
+		Arrows.DownDiagonalLeft,
+		Arrows.Down,
+		Arrows.DownDiagonalRight
+	];
 
-	public static images = Object.seal<WheelOfFortuneAssets>({
+	private static images: WheelOfFortuneAssets = {
 		LOSE_ICONS: null,
 		WIN_ICONS: null,
 		ARROWS: null,
 		SHINY: null
-	});
+	};
 
-	public static async init(): Promise<void> {
+	public static async init() {
 		const [winIcons, loseIcons, arrows, shiny] = await Promise.all([
 			loadImage(join(socialFolder, 'wof-win-icons.png')),
 			loadImage(join(socialFolder, 'wof-lose-icons.png')),

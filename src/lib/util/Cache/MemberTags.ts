@@ -135,6 +135,9 @@ export class MemberTags extends Collection<string, MemberTag> {
 	}
 
 	private requestHandlerGetAll(ids: readonly string[]) {
+		// TODO(kyranet): Modify this line to the following:
+		// return this.guild.members.fetch({ user: ids });
+		// Once https://github.com/discordjs/discord.js/pull/3562 lands
 		return Promise.all(ids.map(id => this.guild.members.fetch(id)));
 	}
 

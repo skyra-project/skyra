@@ -7,6 +7,7 @@ import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
 import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
+import { CanvasColors } from '@lib/types/constants/Constants';
 
 const enum Icons {
 	Cherry,
@@ -56,15 +57,15 @@ const kAssets = new Map<Icons, Coordinate>([
 	[Icons.Seven, { x: 0, y: 0 }]
 ]);
 const kCoordinates: readonly Coordinate[] = [
-	{ x: 14, y: 12 },
-	{ x: 14, y: 54 },
-	{ x: 14, y: 96 },
-	{ x: 56, y: 12 },
-	{ x: 56, y: 54 },
-	{ x: 56, y: 96 },
-	{ x: 98, y: 12 },
-	{ x: 98, y: 54 },
-	{ x: 98, y: 96 }
+	{ x: 14, y: 14 },
+	{ x: 14, y: 58 },
+	{ x: 14, y: 102 },
+	{ x: 58, y: 14 },
+	{ x: 58, y: 58 },
+	{ x: 58, y: 102 },
+	{ x: 102, y: 14 },
+	{ x: 102, y: 58 },
+	{ x: 102, y: 102 }
 ];
 
 const kPositions = [0, 0, 0];
@@ -72,29 +73,30 @@ const kPositions = [0, 0, 0];
 export class Slotmachine {
 
 	/** The amount bet */
-	public bet: number;
+	private bet: number;
 
 	/** The winnings */
-	public winnings = 0;
-
-	/** The player */
-	public get player() {
-		return this.message.author;
-	}
+	private winnings = 0;
 
 	/** The message that ran this instance */
-	public message: Message;
+	private message: Message;
 
 	public constructor(message: Message, amount: number) {
 		this.message = message;
 		this.bet = amount;
 	}
 
-	public get boost() {
+	/** The boost */
+	private get boost() {
 		const userBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Users);
 		const guildBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Guilds);
 		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
 			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
+	}
+
+	/** The player */
+	private get player() {
+		return this.message.author;
 	}
 
 	public async run() {
@@ -119,26 +121,21 @@ export class Slotmachine {
 		return [await this.render(rolls, darkTheme), amount] as [Buffer, number];
 	}
 
-	public async render(rolls: readonly Icons[], darkTheme: boolean) {
+	private async render(rolls: readonly Icons[], darkTheme: boolean) {
 		const playerHasWon = this.winnings > 0;
 
 		const canvas = new Canvas(300, 150)
+			.setColor(darkTheme ? CanvasColors.BackgroundDark : CanvasColors.BackgroundLight)
+			.addBeveledRect(5, 5, 295, 145, 10)
 			.save()
-			.setShadowColor('rgba(51, 51, 51, 0.38)')
-			.setShadowBlur(5)
-			.setColor(darkTheme ? Slotmachine.DARK_COLOUR : Slotmachine.LIGHT_COLOUR)
-			.createBeveledClip(4, 4, 300 - 8, 142, 5)
-			.fill()
-			.restore()
-			.save()
-			.setColor(playerHasWon ? Slotmachine.SUCCESS_COLOUR : Slotmachine.FAIL_COLOUR)
+			.setColor(playerHasWon ? CanvasColors.IndicatorGreen : CanvasColors.IndicatorRed)
 			.setShadowColor(playerHasWon ? 'rgba(64, 224, 15, 0.4)' : 'rgba(237, 29, 2, 0.4)')
 			.setShadowBlur(4)
-			.addRect(54, 54, 2, 38)
-			.addRect(96, 54, 2, 38)
+			.addRect(53, 56, 2, 42)
+			.addRect(99, 56, 2, 42)
 			.restore()
 			.save()
-			.setColor(darkTheme ? Slotmachine.LIGHT_COLOUR : Slotmachine.DARK_COLOUR)
+			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.addText(this.message.language.tget('COMMAND_SLOTMACHINE_CANVAS_TEXT', playerHasWon), 280, 60)
@@ -156,7 +153,7 @@ export class Slotmachine {
 		return canvas.toBufferAsync();
 	}
 
-	public calculate(roll: readonly Icons[]) {
+	private calculate(roll: readonly Icons[]) {
 		for (const [COMB1, COMB2, COMB3] of kCombinations) {
 			if (roll[COMB1] === roll[COMB2] && roll[COMB2] === roll[COMB3]) {
 				this.winnings += this.bet * kValues.get(roll[COMB1])!;
@@ -164,7 +161,7 @@ export class Slotmachine {
 		}
 	}
 
-	public roll() {
+	private roll() {
 		const roll: Icons[] = [];
 		for (let i = 0; i < 3; i++) {
 			const reel = kReels[i];
@@ -180,29 +177,17 @@ export class Slotmachine {
 		return roll as readonly Icons[];
 	}
 
-	public _spinReel(reel: number) {
+	private _spinReel(reel: number) {
 		const kReelLength = kReels[reel].length;
 		const position = (kPositions[reel] + Math.round((Math.random() * kReelLength) + 3)) % kReelLength;
 		kPositions[reel] = position;
 		return position;
 	}
 
-	/** Dark colour in the attachment */
-	public static DARK_COLOUR = '#202225';
-
-	/** Light colour in the attachment */
-	public static LIGHT_COLOUR = '#FFFFFF';
-
-	/** Success colour in the attachment */
-	public static SUCCESS_COLOUR = '#00C853';
-
-	/** Failure colour in the attachment */
-	public static FAIL_COLOUR = '#C62828';
-
-	public static images = Object.seal<SlotmachineAssets>({
+	private static images: SlotmachineAssets = {
 		ICON: null,
 		SHINY: null
-	});
+	};
 
 	public static async init(): Promise<void> {
 		const [icon, shiny] = await Promise.all([

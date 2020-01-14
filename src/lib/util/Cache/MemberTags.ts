@@ -4,6 +4,7 @@ import { APIErrors } from '@utils/constants';
 import { GuildMember, Role } from 'discord.js';
 import { KlasaGuild } from 'klasa';
 import { RequestHandler } from '@klasa/request-handler';
+import { resolveOnErrorCodes } from '@utils/util';
 
 export class MemberTags extends Collection<string, MemberTag> {
 
@@ -65,13 +66,8 @@ export class MemberTags extends Collection<string, MemberTag> {
 		const existing = this.get(id);
 		if (typeof existing !== 'undefined') return existing;
 
-		try {
-			const member = await this.kRequestHandler.push(id);
-			return this.create(member);
-		} catch (error) {
-			if (error.code === APIErrors.UnknownMember) return null;
-			throw error;
-		}
+		const member = await resolveOnErrorCodes(this.kRequestHandler.push(id), APIErrors.UnknownMember);
+		return member ? this.create(member) : null;
 	}
 
 	public mapUsernames() {

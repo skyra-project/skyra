@@ -6,24 +6,25 @@ import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from
 import { Event, EventStore } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
 import { floatPromise, resolveOnErrorCodes } from '@utils/util';
+import { LanguageKeysSimple } from '@lib/types/Augments';
 
 const { FLAGS } = Permissions;
-const REGEXP = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
-const MATCHES = {
-	GUILD: '%GUILD%',
-	MEMBER: '%MEMBER%',
-	MEMBERNAME: '%MEMBERNAME%',
-	MEMBERTAG: '%MEMBERTAG%',
-	MEMBERCOUNT: '%MEMBERCOUNT%',
-	POSITION: '%POSITION%'
-};
-
-const COLORS = {
-	JOIN: { color: Colors.Green, title: 'Member Join' },
-	MUTE: { color: Colors.Amber, title: 'Muted Member Join' }
-};
+const enum Matches {
+	Guild = '%GUILD%',
+	Member = '%MEMBER%',
+	MemberName = '%MEMBERNAME%',
+	MemberTag = '%MEMBERTAG%',
+	MemberCount = '%MEMBERCOUNT%',
+	Position = '%POSITION%'
+}
 
 export default class extends Event {
+
+	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
+	private readonly kMessageLogMetaData = {
+		Join: { color: Colors.Green, title: 'EVENTS_GUILDMEMBERADD' },
+		Mute: { color: Colors.Amber, title: 'EVENTS_GUILDMEMBERADD_MUTE' }
+	} as const;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: 'GUILD_MEMBER_ADD', emitter: store.client.ws });
@@ -49,16 +50,16 @@ export default class extends Event {
 
 		// If not muted and memberAdd is configured, handle everything
 		if (guild.settings.get(GuildSettings.Events.MemberAdd)) {
-			this.handleMemberLog(guild, member, COLORS.JOIN);
+			this.handleMemberLog(guild, member, this.kMessageLogMetaData.Join);
 		}
 	}
 
-	private handleMemberLog(guild: Guild, member: GuildMember, asset: { color: number; title: string }) {
+	private handleMemberLog(guild: Guild, member: GuildMember, asset: MessageLogMetaData) {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(asset.color)
 			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
 			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERADD_DESCRIPTION', member.toString(), Date.now() - member.user.createdTimestamp))
-			.setFooter(asset.title)
+			.setFooter(guild.language.tget(asset.title))
 			.setTimestamp());
 	}
 
@@ -66,9 +67,9 @@ export default class extends Event {
 		const channelsGreeting = guild.settings.get(GuildSettings.Channels.Greeting);
 		const messagesGreeting = guild.settings.get(GuildSettings.Messages.Greeting);
 		if (channelsGreeting && messagesGreeting) {
-			const channel = guild.channels.get(channelsGreeting);
-			if (channel && (channel as TextChannel).postable) {
-				(channel as TextChannel).send(this.transformMessage(messagesGreeting, guild, member.user))
+			const channel = guild.channels.get(channelsGreeting) as TextChannel;
+			if (channel && channel.postable) {
+				channel.send(this.transformMessage(messagesGreeting, guild, member.user))
 					.catch(error => this.client.emit(Events.ApiError, error));
 			} else {
 				guild.settings.reset(GuildSettings.Channels.Greeting)
@@ -136,7 +137,7 @@ export default class extends Event {
 			}
 
 			// Handle log
-			this.handleMemberLog(guild, member, COLORS.MUTE);
+			this.handleMemberLog(guild, member, this.kMessageLogMetaData.Mute);
 			return true;
 		}
 
@@ -157,17 +158,22 @@ export default class extends Event {
 	}
 
 	private transformMessage(str: string, guild: Guild, user: User) {
-		return str.replace(REGEXP, match => {
+		return str.replace(this.kTransformMessageRegExp, match => {
 			switch (match) {
-				case MATCHES.MEMBER: return `<@${user.id}>`;
-				case MATCHES.MEMBERNAME: return user.username;
-				case MATCHES.MEMBERTAG: return user.tag;
-				case MATCHES.GUILD: return guild.name;
-				case MATCHES.POSITION: return guild.language.ordinal(guild.memberCount);
-				case MATCHES.MEMBERCOUNT: return guild.memberCount.toString();
+				case Matches.Member: return `<@${user.id}>`;
+				case Matches.MemberName: return user.username;
+				case Matches.MemberTag: return user.tag;
+				case Matches.Guild: return guild.name;
+				case Matches.Position: return guild.language.ordinal(guild.memberCount);
+				case Matches.MemberCount: return guild.memberCount.toString();
 				default: return match;
 			}
 		});
 	}
 
+}
+
+interface MessageLogMetaData {
+	color: number;
+	title: LanguageKeysSimple;
 }

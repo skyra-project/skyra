@@ -4055,6 +4055,7 @@ export default class extends Language {
 		RESOLVER_INVALID_ROLENAME: name => `${name} must be a valid role name, id, or mention.`,
 		RESOLVER_INVALID_USERNAME: name => `${name} must be a valid user name, id, or mention.`,
 		RESOLVER_CHANNEL_NOT_IN_GUILD: 'I am sorry, but that command can only be ran in a server.',
+		RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT: 'User left during prompt',
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Page ${page} / ${pageCount} | ${results} Total`,
 

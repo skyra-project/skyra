@@ -3,7 +3,6 @@
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIWebhookData } from '@lib/types/DiscordAPI';
-import { rootFolder } from '@utils/constants';
 import { ISingleHostConfig } from 'influx';
 import { KlasaClientOptions } from 'klasa';
 import { resolve } from 'path';
@@ -119,7 +118,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
 		'default': ENABLE_POSTGRES ? 'postgres' : 'json',
-		'json': { baseDirectory: resolve(rootFolder, 'bwd', 'providers', 'json') },
+		'json': { baseDirectory: resolve(__dirname, '..', 'bwd', 'providers', 'json') },
 		'postgres': PGSQL_DATABASE_OPTIONS
 	},
 	readyMessage: client =>

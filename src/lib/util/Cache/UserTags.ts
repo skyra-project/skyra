@@ -74,7 +74,7 @@ export class UserTags extends Collection<string, UserTag> {
 	}
 
 	private requestHandlerGetAll(ids: readonly string[]) {
-		return Promise.all(ids.map(id => this.client.users.fetch(id)));
+		return Promise.all(ids.map(id => this.requestHandlerGet(id)));
 	}
 
 }

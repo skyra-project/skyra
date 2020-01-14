@@ -55,10 +55,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 	public async fetch(id?: string): Promise<MemberTag | null | this> {
 		if (typeof id === 'undefined') {
 			if (this.kFetchAllPromise === null) {
-				this.kFetchAllPromise = this.guild.members.fetch().then(members => {
-					for (const member of members.values()) this.create(member);
-					this.kFetchAllPromise = null;
-				});
+				this.kFetchAllPromise = this.fetchAll();
 			}
 
 			await this.kFetchAllPromise;
@@ -105,6 +102,15 @@ export class MemberTags extends Collection<string, MemberTag> {
 
 	public static get [Symbol.species](): CollectionConstructor {
 		return Collection as unknown as CollectionConstructor;
+	}
+
+	private async fetchAll() {
+		try {
+			const members = await this.guild.members.fetch();
+			for (const member of members.values()) this.create(member);
+		} finally {
+			this.kFetchAllPromise = null;
+		}
 	}
 
 	private getRawRoles(member: GuildMember) {

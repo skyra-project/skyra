@@ -7,7 +7,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
 import { Image } from 'canvas';
-import { AvatarOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable, DiscordAPIError } from 'discord.js';
+import { ImageURLOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable, DiscordAPIError } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import { RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
@@ -367,7 +367,7 @@ export function getColor(message: Message) {
 }
 
 const ROOT = 'https://cdn.discordapp.com';
-export function getDisplayAvatar(id: string, user: UserTag | User, options: AvatarOptions = {}) {
+export function getDisplayAvatar(id: string, user: UserTag | User, options: ImageURLOptions = {}) {
 	if (user.avatar === null) return `${ROOT}/embed/avatars/${Number(user.discriminator) % 5}.png`;
 	const format = typeof options.format === 'undefined' ? user.avatar.startsWith('a_') ? 'gif' : 'png' : options.format;
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;

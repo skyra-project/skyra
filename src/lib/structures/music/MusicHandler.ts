@@ -52,11 +52,6 @@ export class MusicHandler {
 		return this.guild.me!.voice.channel;
 	}
 
-	public get connection() {
-		const { voiceChannel } = this;
-		return (voiceChannel && voiceChannel.connection) || null;
-	}
-
 	public get listeners(): readonly string[] {
 		const { voiceChannel } = this;
 		if (voiceChannel) {

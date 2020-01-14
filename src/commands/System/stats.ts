@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 	private get usageStatistics(): StatsUsage {
 		const usage = process.memoryUsage();
 		return {
-			CPU_LOAD: loadavg() as [number, number, number],
+			CPU_LOAD: loadavg().map(load => Math.round(load * 10000) / 100) as [number, number, number],
 			RAM_TOTAL: `${Math.round(100 * (usage.heapTotal / 1048576)) / 100}MB`,
 			RAM_USED: `${Math.round(100 * (usage.heapUsed / 1048576)) / 100}MB`
 		};

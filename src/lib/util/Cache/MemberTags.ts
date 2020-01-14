@@ -3,10 +3,17 @@ import { CLIENT_ID } from '@root/config';
 import { APIErrors } from '@utils/constants';
 import { GuildMember, Role } from 'discord.js';
 import { KlasaGuild } from 'klasa';
+import { RequestHandler } from '@klasa/request-handler';
+import { resolveOnErrorCodes } from '@utils/util';
 
 export class MemberTags extends Collection<string, MemberTag> {
 
 	public readonly guild: KlasaGuild;
+	private kFetchAllPromise: Promise<void> | null = null;
+	private readonly kRequestHandler = new RequestHandler<string, GuildMember>(
+		this.requestHandlerGet.bind(this),
+		this.requestHandlerGetAll.bind(this)
+	);
 
 	public constructor(guild: KlasaGuild) {
 		super();
@@ -48,21 +55,19 @@ export class MemberTags extends Collection<string, MemberTag> {
 	public async fetch(): Promise<this>;
 	public async fetch(id?: string): Promise<MemberTag | null | this> {
 		if (typeof id === 'undefined') {
-			const members = await this.guild.members.fetch();
-			for (const member of members.values()) this.create(member);
+			if (this.kFetchAllPromise === null) {
+				this.kFetchAllPromise = this.fetchAll();
+			}
+
+			await this.kFetchAllPromise;
 			return this;
 		}
 
 		const existing = this.get(id);
 		if (typeof existing !== 'undefined') return existing;
 
-		try {
-			const member = await this.guild.members.fetch(id);
-			return this.create(member);
-		} catch (error) {
-			if (error.code === APIErrors.UnknownMember) return null;
-			throw error;
-		}
+		const member = await resolveOnErrorCodes(this.kRequestHandler.push(id), APIErrors.UnknownMember);
+		return member ? this.create(member) : null;
 	}
 
 	public mapUsernames() {
@@ -95,6 +100,15 @@ export class MemberTags extends Collection<string, MemberTag> {
 		return Collection as unknown as CollectionConstructor;
 	}
 
+	private async fetchAll() {
+		try {
+			const members = await this.guild.members.fetch();
+			for (const member of members.values()) this.create(member);
+		} finally {
+			this.kFetchAllPromise = null;
+		}
+	}
+
 	private getRawRoles(member: GuildMember) {
 		const casted = member as unknown as { _roles: string[] } & GuildMember;
 		return casted._roles;
@@ -116,6 +130,17 @@ export class MemberTags extends Collection<string, MemberTag> {
 		}
 
 		return highest;
+	}
+
+	private requestHandlerGet(id: string) {
+		return this.guild.members.fetch(id);
+	}
+
+	private requestHandlerGetAll(ids: readonly string[]) {
+		// TODO(kyranet): Modify this line to the following:
+		// return this.guild.members.fetch({ user: ids });
+		// Once https://github.com/discordjs/discord.js/pull/3562 lands
+		return Promise.all(ids.map(id => this.guild.members.fetch(id)));
 	}
 
 }

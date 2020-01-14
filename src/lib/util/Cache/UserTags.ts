@@ -2,10 +2,15 @@ import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { User } from 'discord.js';
 import { KlasaClient } from 'klasa';
+import { RequestHandler } from '@klasa/request-handler';
 
 export class UserTags extends Collection<string, UserTag> {
 
 	public readonly client: KlasaClient;
+	private readonly kRequestHandler = new RequestHandler<string, APIUserData>(
+		this.requestHandlerGet.bind(this),
+		this.requestHandlerGetAll.bind(this)
+	);
 
 	public constructor(client: KlasaClient) {
 		super();
@@ -46,7 +51,7 @@ export class UserTags extends Collection<string, UserTag> {
 		const existing = super.get(id);
 		if (typeof existing !== 'undefined') return existing;
 
-		const user = await this.client.users.fetch(id, false);
+		const user = await this.kRequestHandler.push(id);
 		return this.create(user);
 	}
 
@@ -56,15 +61,20 @@ export class UserTags extends Collection<string, UserTag> {
 	}
 
 	public async fetchEntry(id: string) {
-		const existing = super.get(id);
-		if (typeof existing !== 'undefined') return [id, existing] as const;
-
-		const user = await this.client.users.fetch(id);
-		return [id, this.create(user)] as const;
+		const userTag = await this.fetch(id);
+		return [id, userTag] as const;
 	}
 
 	public static get [Symbol.species](): CollectionConstructor {
 		return Collection as unknown as CollectionConstructor;
+	}
+
+	private requestHandlerGet(id: string) {
+		return this.client.users.fetch(id);
+	}
+
+	private requestHandlerGetAll(ids: readonly string[]) {
+		return Promise.all(ids.map(id => this.requestHandlerGet(id)));
 	}
 
 }

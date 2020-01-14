@@ -24,7 +24,7 @@ export default class extends Event {
 	private readonly kMessageLogMetaData = {
 		Join: { color: Colors.Green, title: 'EVENTS_GUILDMEMBERADD' },
 		Mute: { color: Colors.Amber, title: 'EVENTS_GUILDMEMBERADD_MUTE' }
-	} as Record<string, MessageLogMetaData>;
+	} as const;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: 'GUILD_MEMBER_ADD', emitter: store.client.ws });

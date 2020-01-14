@@ -13,7 +13,7 @@ export default class extends Argument {
 
 		const result = await new FuzzySearch(message.guild!.memberTags.mapUsernames(), entry => entry, filter).run(message, arg, possible.min || undefined);
 		if (result) {
-			return message.guild!.members.fetch(result[0])
+			return message.guild!.memberTags.fetch(result[0])
 				.catch(() => { throw message.language.tget('USER_NOT_EXISTENT'); });
 		}
 		throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
@@ -27,7 +27,7 @@ export default class extends Argument {
 				: null;
 
 		if (id) {
-			return message.guild!.members.fetch(id)
+			return message.guild!.memberTags.fetch(id)
 				.catch(() => { throw message.language.tget('USER_NOT_EXISTENT'); });
 		}
 		return null;

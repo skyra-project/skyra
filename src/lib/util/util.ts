@@ -576,7 +576,7 @@ export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
 	let position = 0;
 	for (const roleID of roles) {
 		const role = guild.roles.get(roleID);
-	  if (typeof role === 'undefined') continue;
+		if (typeof role === 'undefined') continue;
 	  if (role.position > position) {
 			highest = role;
 			position = role.position;

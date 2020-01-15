@@ -580,7 +580,7 @@ export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
 	  if (role.position > position) {
 			highest = role;
 			position = role.position;
-	  }
+		}
 	}
 
 	return highest;

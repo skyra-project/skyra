@@ -13,11 +13,6 @@
 - [`Lavalink`]: (Dev Optional) Audio server.
 - [`InfluxDB`]: (Dev Optional) Analytics, Statistics, and Audit storage.
 
-[`Node.js`]: https://nodejs.org/en/download/current/
-[`PostgreSQL`]: https://www.postgresql.org/download/
-[`Lavalink`]: https://github.com/Frederikam/Lavalink
-[`InfluxDB`]: https://portal.influxdata.com/downloads/
-
 ## Set-Up
 
 Copy and paste the [`config.example.ts`] file and rename it to `config.ts`, then fill it with the precise variables.
@@ -37,8 +32,6 @@ $ yarn pm2:start
 
 > **Note**: Before pushing to the repository, please run `yarn lint` so formatting stays consistent and there are no
 linter warnings.
-
-[`config.example.ts`]: /config.example.ts
 
 ## Story
 
@@ -62,14 +55,14 @@ Klasa.
 
 **Skyra links**
 
-- [Skyra Invite Link](https://skyra.pw/invite)
-- [Support Server](https://skyra.pw/join)
-- [Patreon](https://www.patreon.com/kyranet)
-- [Translation](https://skyra.pw/translate)
+- [Skyra Invite Link]
+- [Support Server]
+- [Patreon]
+- [Translation]
 
 **Framework links**
 
-- [Klasa's Website](https://klasa.js.org)
+- [Klasa's Website]
 
 ## Buy me a donut
 
@@ -85,7 +78,23 @@ I accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can use
 | Ethereum    | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot) |
 | Litecoin    | ![LitecoinImage][] | [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)                 |
 
-[PatreonImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/patreon.png
-[BitcoinImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/bitcoin.png
-[EthereumImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/ethereum.png
-[LitecoinImage]: https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/litecoin.png
+
+<!----------------- LINKS --------------->
+[`Node.js`]:            https://nodejs.org/en/download/current/
+[`PostgreSQL`]:         https://www.postgresql.org/download/
+[`Lavalink`]:           https://github.com/Frederikam/Lavalink
+[`InfluxDB`]:           https://portal.influxdata.com/downloads/
+
+[`config.example.ts`]:  /config.example.ts
+
+[Skyra Invite Link]:    https://skyra.pw/invite
+[Support Server]:       https://skyra.pw/join
+[Patreon]:              https://www.patreon.com/kyranet
+[Translation]:          https://skyra.pw/translate
+
+[Klasa's Website]:      https://klasa.js.org
+
+[PatreonImage]:         https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/patreon.png
+[BitcoinImage]:         https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/bitcoin.png
+[EthereumImage]:        https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/ethereum.png
+[LitecoinImage]:        https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/litecoin.png

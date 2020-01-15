@@ -42,7 +42,7 @@ tail		Tails the logs of a Docker container"
 
 	Write-Host ""
 	Write-Host "Report bugs and issues to:" -ForegroundColor yellow
-	Write-Host "Skyra's GitHub, assigning favna and kyranet. https://github.com/kyranet/Skyra/issues/new
+	Write-Host "Skyra's GitHub, assigning favna and kyranet. https://github.com/skyra-project/skyra/issues/new
 	"
 }
 

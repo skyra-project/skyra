@@ -10,11 +10,11 @@ in your text editor or IDE of your choice to ensure builds from GitHub Actions d
 2. Create a new branch in your fork.
 3. Make your changes.
 4. Commit your changes, and push them.
-5. Submit a Pull Request [here](https://github.com/kyranet/Skyra/pulls)!
+5. Submit a Pull Request [here](https://github.com/skyra-project/skyra/pulls)!
 
 ## Running Skyra locally
 
-To run Skyra locally a few steps should be taken. You can find a more detailed reference in [the README of this repository](https://github.com/kyranet/Skyra#skyra-) but to list the steps shortly:
+To run Skyra locally a few steps should be taken. You can find a more detailed reference in [the README of this repository](https://github.com/skyra-project/skyra) but to list the steps shortly:
 
 1. Copy the `config.example.ts` file and rename it to `config.ts`
 2. Scroll down to `export const TOKENS = {`

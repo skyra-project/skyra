@@ -25,7 +25,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kyranet/Skyra.git"
+		"url": "git+https://github.com/skyra-project/skyra.git"
 	},
 	"keywords": [
 		"discord.js",
@@ -40,7 +40,7 @@
 	"author": "kyranet <kyradiscord@gmail.com>",
 	"license": "Apache-2.0",
 	"bugs": {
-		"url": "https://github.com/kyranet/Skyra/issues"
+		"url": "https://github.com/skyra-project/skyra/issues"
 	},
 	"dependencies": {
 		"@klasa/querybuilder": "^0.0.1",

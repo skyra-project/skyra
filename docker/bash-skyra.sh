@@ -57,7 +57,7 @@ help() {
 		tail		Tails the logs of a Docker container
 
 	Report bugs and issues to:
-		Skyra's GitHub, assigning favna and kyranet. https://github.com/kyranet/Skyra/issues/new"
+		Skyra's GitHub, assigning favna and kyranet. https://github.com/skyra-project/skyra/issues/new"
 }
 
 case $1 in

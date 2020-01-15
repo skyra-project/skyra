@@ -2647,8 +2647,7 @@ export default class extends Language {
 			reminder: 'Recibirá al menos 5 veces la cantidad (cerezas / tada) al ganar, y hasta 24 veces (siete, diamante sin piel).'
 		}),
 		COMMAND_SLOTMACHINE_CANVAS_TEXT: won => won ? 'Tú ganaste' : 'Tú perdiste',
-		COMMAND_SLOTMACHINE_EMBED_TITLES: {
-			TITLE: 'Girando las ranuras de fruta y el resultado es ...',
+		COMMAND_SLOTMACHINE_TITLES: {
 			PREVIOUS: 'Anterior',
 			NEW: 'Nuevo'
 		},
@@ -2688,8 +2687,7 @@ export default class extends Language {
 			extendedHelp: `Puede perder 0.1, 0.2, 0.3 o 0.5 veces su entrada
 				o ganar 1.2, 1.5, 1.7 o 2.4 veces su entrada.`
 		}),
-		COMMAND_WHEELOFFORTUNE_EMBED_TITLES: {
-			TITLE: 'Girando la rueda de la fortuna y el resultado es ...',
+		COMMAND_WHEELOFFORTUNE_TITLES: {
 			PREVIOUS: 'Anterior',
 			NEW: 'Nuevo'
 		},

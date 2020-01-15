@@ -1060,8 +1060,7 @@ export interface LanguageKeys {
 	COMMAND_SLOTMACHINE_EXTENDED: string;
 	COMMAND_SLOTMACHINES_WIN: (roll: string, winnings: number) => string;
 	COMMAND_SLOTMACHINES_LOSS: (roll: string) => string;
-	COMMAND_SLOTMACHINE_EMBED_TITLES: {
-		TITLE: string;
+	COMMAND_SLOTMACHINE_TITLES: {
 		PREVIOUS: string;
 		NEW: string;
 	};
@@ -1071,8 +1070,7 @@ export interface LanguageKeys {
 	COMMAND_WHEELOFFORTUNE_DESCRIPTION: string;
 	COMMAND_WHEELOFFORTUNE_EXTENDED: string;
 	COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: (won: boolean) => string;
-	COMMAND_WHEELOFFORTUNE_EMBED_TITLES: {
-		TITLE: string;
+	COMMAND_WHEELOFFORTUNE_TITLES: {
 		PREVIOUS: string;
 		NEW: string;
 	};

@@ -2673,8 +2673,7 @@ export default class extends Language {
 		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
 		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SLOTMACHINE_CANVAS_TEXT: won => won ? 'You won' : 'You lost',
-		COMMAND_SLOTMACHINE_EMBED_TITLES: {
-			TITLE: 'Spinning the fruit slots and the result is...',
+		COMMAND_SLOTMACHINE_TITLES: {
 			PREVIOUS: 'Previous',
 			NEW: 'New'
 		},
@@ -2713,8 +2712,7 @@ export default class extends Language {
 			extendedHelp: `You can lose 0.1, 0.2, 0.3 or 0.5 times your input
 				or win 1.2, 1.5, 1.7 or 2.4 times your input`
 		}),
-		COMMAND_WHEELOFFORTUNE_EMBED_TITLES: {
-			TITLE: 'Spinning the wheel of fortune and the result is...',
+		COMMAND_WHEELOFFORTUNE_TITLES: {
 			PREVIOUS: 'Previous',
 			NEW: 'New'
 		},

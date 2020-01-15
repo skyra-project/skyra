@@ -2,8 +2,6 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { Emojis } from '@utils/constants';
 import { Slotmachine } from '@utils/Games/Slotmachine';
-import { getColor } from '@utils/util';
-import { MessageAttachment, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -29,22 +27,13 @@ export default class extends SkyraCommand {
 			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', money);
 		}
 
-		const [image, amount] = await new Slotmachine(message, coins).run();
+		const [attachment, amount] = await new Slotmachine(message, coins).run();
+		const TITLES = message.language.tget('COMMAND_SLOTMACHINE_TITLES');
 
-		return message.sendEmbed(this.buildEmbed(message, image, money, amount));
-	}
-
-	private buildEmbed(message: KlasaMessage, image: Buffer, money: number, amount: number) {
-		const attachment = new MessageAttachment(image, 'slots.png');
-		const TITLES = message.language.tget('COMMAND_SLOTMACHINE_EMBED_TITLES');
-
-		return new MessageEmbed()
-			.setColor(getColor(message))
-			.attachFiles([attachment])
-			.setTitle(TITLES.TITLE)
-			.setImage('attachment://slots.png')
-			.addField(`${TITLES.PREVIOUS} ${Emojis.Shiny}`, money, true)
-			.addField(`${TITLES.NEW} ${Emojis.Shiny}`, amount, true);
+		return message.sendMessage([
+			`**${TITLES.PREVIOUS}:** ${money} ${Emojis.Shiny}`,
+			`**${TITLES.NEW}:** ${amount} ${Emojis.Shiny}`
+		].join('\n'), { files: [{ attachment, name: 'slots.png' }] });
 	}
 
 }

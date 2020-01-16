@@ -30,10 +30,9 @@ export default class extends Argument {
 				: null;
 
 		if (id) {
-			const memberTag = await message.guild!.memberTags.fetch(id)
-				.catch(() => { throw message.language.tget('USER_NOT_EXISTENT'); });
+			const memberTag = await message.guild!.memberTags.fetch(id);
 			if (memberTag) return { ...memberTag, id };
-			throw message.language.tget('RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT');
+			throw message.language.tget('USER_NOT_EXISTENT');
 		}
 		return null;
 	}

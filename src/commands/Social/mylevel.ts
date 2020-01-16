@@ -18,10 +18,6 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
-		await message.guild!.memberTags.fetch(user.id).catch(() => {
-			throw message.language.tget('USER_NOT_IN_GUILD');
-		});
-
 		const memberSettings = await this.client.queries.fetchMemberSettings(message.guild!.id, user.id);
 		const memberPoints = memberSettings ? memberSettings.point_count : 0;
 		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));

@@ -3671,6 +3671,7 @@ export default class extends Language {
 		RESOLVER_INVALID_ROLENAME: name => `${name} debe ser una mención, nombre, o id válido de un rol.`,
 		RESOLVER_INVALID_USERNAME: name => `${name} debe ser una mención, nombre, o id válido de un usuario.`,
 		RESOLVER_CHANNEL_NOT_IN_GUILD: 'Lo siento, pero ese comando solo se puede ejecutar en un servidor.',
+		RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT: 'El usuario salió durante la selección de usuarios.',
 
 		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 

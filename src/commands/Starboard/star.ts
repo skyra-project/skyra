@@ -1,8 +1,9 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
+import { KeyedMemberTag } from '@root/src/arguments/membername';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
@@ -28,7 +29,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async random(message: KlasaMessage, [user]: [KlasaUser?]): Promise<KlasaMessage | KlasaMessage[]> {
+	public async random(message: KlasaMessage, [user]: [KeyedMemberTag?]): Promise<KlasaMessage | KlasaMessage[]> {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const starboardData = await (user
 			? this.client.queries.fetchStarRandomFromUser(message.guild!.id, user.id, min)
@@ -68,7 +69,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage(starredMessage.content, starredMessage.embeds[0]);
 	}
 
-	public async top(message: KlasaMessage, [user, timespan]: [KlasaUser?, number?]) {
+	public async top(message: KlasaMessage, [user, timespan]: [KeyedMemberTag?, number?]) {
 		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const starboardMessages = await (user
 			? this.client.queries.fetchStarsFromUser(message.guild!.id, user.id, min)

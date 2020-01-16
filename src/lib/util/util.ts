@@ -7,9 +7,9 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
 import { Image } from 'canvas';
-import { ImageURLOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable, DiscordAPIError } from 'discord.js';
+import { ImageURLOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable, DiscordAPIError, Role } from 'discord.js';
 import { readFile } from 'fs-nextra';
-import { RateLimitManager, util } from 'klasa';
+import { RateLimitManager, util, KlasaGuild } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import { createFunctionInhibitor } from 'klasa-decorators';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
@@ -569,6 +569,21 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
  */
 export function validateChannelAccess(channel: GuildChannel, user: UserResolvable) {
 	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
+}
+
+export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
+	let highest: Role | null = null;
+	let position = 0;
+	for (const roleID of roles) {
+		const role = guild.roles.get(roleID);
+		if (typeof role === 'undefined') continue;
+		if (role.position > position) {
+			highest = role;
+			position = role.position;
+		}
+	}
+
+	return highest;
 }
 
 export interface UtilOneToTenEntry {

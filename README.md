@@ -64,19 +64,19 @@ Klasa.
 
 - [Klasa's Website]
 
-## Buy me a donut
+## Buy us some donuts
 
-Skyra is open source and always will be, even if I don't get donations. That said, I know there are amazing people who
+Skyra Project is open source and always will be, even if we don't get donations. That said, we know there are amazing people who
 may still want to donate just to show their appreciation. Thanks you very much in advance!
 
-I accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can use the buttoms below to donate through your method of choice.
+We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can use the buttoms below to donate through your method of choice.
 
-| Donate With | QR                 | Address                                                                                                                                   |
+| Donate With |         QR         |                                                                  Address                                                                  |
 | :---------: | :----------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-| Patreon     | ![PatreonImage][]  | [Click Here](https://www.patreon.com/kyranet)                                                                                             |
-| BitCoin     | ![BitcoinImage][]  | [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot)                  |
-| Ethereum    | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot) |
-| Litecoin    | ![LitecoinImage][] | [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)                 |
+|   Patreon   | ![PatreonImage][]  | [Click Here](https://www.patreon.com/kyranet)                                                                                             |
+|   BitCoin   | ![BitcoinImage][]  | [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot)                  |
+|  Ethereum   | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot) |
+|  Litecoin   | ![LitecoinImage][] | [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)                 |
 
 
 <!----------------- LINKS --------------->
@@ -94,7 +94,7 @@ I accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can use
 
 [Klasa's Website]:      https://klasa.js.org
 
-[PatreonImage]:         https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/patreon.png
-[BitcoinImage]:         https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/bitcoin.png
-[EthereumImage]:        https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/ethereum.png
-[LitecoinImage]:        https://raw.githubusercontent.com/kyranet/Skyra/master/assets/github/litecoin.png
+[PatreonImage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
+[BitcoinImage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
+[EthereumImage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
+[LitecoinImage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png

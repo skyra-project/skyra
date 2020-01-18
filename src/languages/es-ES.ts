@@ -2617,7 +2617,7 @@ export default class extends Language {
 		},
 		COMMAND_HIGHERLOWER_WIN: {
 			TITLE: '¡Ganaste!',
-			DESCRIPTION: (potentials, number) => `¡Lo hiciste! El número era ${number}. ¿Quieres continuar? ${potentials} ${SHINY} están en la mesa.`,
+			DESCRIPTION: (potentials, number) => `El número era ${number}. ¿Quieres continuar? Con otro intento, puedes ganar ${potentials} ${SHINY}`,
 			FOOTER: '¡Actúa rapido! No tienes mucho tiempo.'
 		},
 		COMMAND_HIGHERLOWER_CANCEL: {

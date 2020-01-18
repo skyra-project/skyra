@@ -2641,7 +2641,7 @@ export default class extends Language {
 		},
 		COMMAND_HIGHERLOWER_WIN: {
 			TITLE: 'You won!',
-			DESCRIPTION: (potentials, number) => `You did it! The number was ${number}. Want to continue? ${potentials} ${SHINY} are on the line.`,
+			DESCRIPTION: (potentials, number) => `The number was ${number}. Want to continue? With another attempt, you can win ${potentials} ${SHINY}!`,
 			FOOTER: 'Act fast! You don\'t have much time.'
 		},
 		COMMAND_HIGHERLOWER_CANCEL: {

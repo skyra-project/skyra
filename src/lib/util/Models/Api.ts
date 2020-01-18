@@ -169,6 +169,13 @@ interface ApiChannelsChannelMessagesMessageReactionsEmoji {
 	 */
 	get: ApiMethods['get'];
 
+	/**
+	 * Deletes all the reactions for a given emoji on a message. This endpoint requires the `MANAGE_MESSAGES` permission
+	 * to be present on the current user.
+	 * @url https://discordapp.com/developers/docs/resources/channel#delete-all-reactions-for-emoji
+	 */
+	delete: ApiMethods['delete'];
+
 	(userID: '@me'): ApiChannelsChannelMessagesMessageReactionsEmojiMe;
 	<T extends R<ApiChannelsChannelMessagesMessageReactionsEmojiMe>>(userID: '@me', key: T): ApiChannelsChannelMessagesMessageReactionsEmojiMe[T];
 

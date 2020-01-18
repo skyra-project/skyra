@@ -566,6 +566,12 @@ export default class extends Language {
 		SETTINGS_STARBOARD_CHANNEL: 'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
 		SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
 		SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
+		SETTINGS_SUGGESTIONS_CHANNEL: 'The channel where suggestions will be sent',
+		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'The upvote emoji Skyra reacts with on every suggestion',
+		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'The downvote emoji Skyra reacts with on every suggestion',
+		SETTINGS_SUGGESTIONS_ON_ACTION_DM: 'If this setting is enabled, Skyra will DM the suggestion\'s author every time it is updated',
+		SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: 'If this setting is enabled, Skyra will repost the suggestion\'s message every time it is updated. If it is disabled, it will edit the original message',
+		SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: 'This setting allows you to update suggestions anonymously. It will substitute the updater\'s name with either `An administrator` or `A moderator`, according to their permission level',
 
 		/**
 		 * ################
@@ -2261,6 +2267,37 @@ export default class extends Language {
 		}),
 
 		/**
+		 * ##################
+		 * SUGGESTIONS COMMANDS
+		 */
+
+		COMMAND_SUGGEST_DESCRIPTION: 'Hey admins! Please do this and that...',
+		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
+			extendedHelp: 'Posts a suggestion to the server\'s suggestion channel',
+			explainedUsage: [
+				['suggestion', 'Your suggestion']
+			],
+			examples: [
+				'let\'s make a music channel'
+			],
+			reminder: 'You need to have setup a suggestions channel for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command'
+		}),
+		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Mark a suggestion as accepted, considered, or even denied',
+		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
+			extendedHelp: `This command marks a suggestion as accepted, considered, or denied.
+			It also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
+			Also, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`,
+			examples: [
+				'1 accept Thank you for your suggestion!',
+				'1 a Thank you for your suggestion!',
+				'1 consider Hmm... we may do this, but it\'s really low priority',
+				'1 c Hmm... we may do this, but it\'s really low priority',
+				'1 deny There is no way this is going to happen.',
+				'1 d There is no way this is going to happen.'
+			]
+		}),
+
+		/**
 		 * ###############
 		 * SYSTEM COMMANDS
 		 */
@@ -3496,6 +3533,39 @@ export default class extends Language {
 		COMMAND_STAR_TOPSTARRED_DESCRIPTION: (medal, id, stars) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 		COMMAND_STAR_TOPRECEIVERS: 'Top Star Receivers',
 		COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal, id, stars) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
+
+		/**
+		 * ##################
+		 * SUGGESTIONS COMMANDS
+		 */
+		COMMAND_SUGGEST_NOSETUP: username => `I'm sorry ${username}, but a suggestions channel hasn't been setup.`,
+		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been setup. Would you like to set-up a channel now?`,
+		COMMAND_SUGGEST_NOSETUP_ABORT: 'Alright then. Aborted creating a new suggestion.',
+		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel. You have 30 seconds.',
+		COMMAND_SUGGEST_CHANNEL_INVALID: 'Didn\'t receive a valid channel mention. Aborting...',
+		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
+		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted to the ${channel} channel`,
+
+
+		COMMAND_RESOLVESUGGESTION_INVALIDID: 'That\'s not a valid suggestion ID!',
+		COMMAND_RESOLVESUGGESTION_MESSAGENOTFOUND: 'Couldn\'t find the suggestion\'s message. To prevent clutter, I have removed it from the database.',
+		COMMAND_RESOLVESUGGESTION_IDNOTFOUND: 'Couldn\'t find a suggestion with that ID',
+
+		COMMAND_RESOLVESUGGESTION_DEFAULTCOMMENT: 'No comment was provided.',
+		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'An administrator',
+		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'A moderator',
+		COMMAND_RESOLVESUGGESTION_ACTIONS: {
+			ACCEPT: author => `${author} accepted this suggestion:`,
+			CONSIDER: author => `${author} cosnsidered this suggestion:`,
+			DENY: author => `${author} denied this suggestion:`
+		},
+		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
+			ACCEPT: (author, guild) => `${author} accepted this suggestion in ${guild}:`,
+			CONSIDER: (author, guild) => `${author} cosnsidered this suggestion in ${guild}:`,
+			DENY: (author, guild) => `${author} denied this suggestion in ${guild}:`
+		},
+		COMMAND_RESOLVESUGGESTION_DM_FAIL: 'I couldn\'t DM the user. Are his DMs closed',
+		COMMAND_RESOLVESUGGESTION_SUCCESS: id => `Successfully resolved suggestion \`${id}\`!`,
 
 		/**
 		 * ###############

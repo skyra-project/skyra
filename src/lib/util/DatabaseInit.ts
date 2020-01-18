@@ -10,6 +10,7 @@ import { SQL_TABLE_SCHEMA as GuildTableSchema } from '@lib/types/settings/raw/Ra
 import { SQL_TABLE_SCHEMA as MemberTableSchema } from '@lib/types/settings/raw/RawMemberSettings';
 import { SQL_TABLE_SCHEMA as ModerationTableSchema } from '@lib/types/settings/raw/RawModerationSettings';
 import { SQL_TABLE_SCHEMA as StarboardTableSchema } from '@lib/types/settings/raw/RawStarboardSettings';
+import { SQL_TABLE_SCHEMA as SuggestionsTableSchema } from '@lib/types/settings/raw/RawSuggestionsSettings';
 import { SQL_TABLE_SCHEMA as TwitchStreamSubscrioptionTableSchema } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { SQL_TABLE_SCHEMA as UserTableSchema } from '@lib/types/settings/raw/RawUserSettings';
 
@@ -30,6 +31,7 @@ export async function run(provider: PostgresProvider) {
 		['twitch_stream_subscriptions', TwitchStreamSubscrioptionTableSchema],
 		['users', UserTableSchema],
 		['dashboard_user', DashboardUserTableSchema],
+		['suggestions', SuggestionsTableSchema],
 		['rpg_game', GameTableSchema]
 	] as const;
 

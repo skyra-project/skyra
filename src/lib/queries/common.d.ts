@@ -5,6 +5,7 @@ import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
 
 export interface CommonQuery {
 	deleteUserEntries(userID: string): Promise<unknown>;
@@ -14,6 +15,7 @@ export interface CommonQuery {
 	deleteStarReturning(guildID: string, messageID: string): Promise<RawStarboardSettings | null>;
 	deleteStarsFromChannelReturning(guildID: string, channelID: string): Promise<RawStarboardSettings[]>;
 	deleteStarsReturning(guildID: string, messageIDs: readonly string[]): Promise<RawStarboardSettings[]>;
+	deleteSuggestion(guildID: string, id: number): Promise<unknown>;
 	deleteTwitchStreamSubscription(streamerID: string, guildID: string): Promise<boolean>;
 	deleteTwitchStreamSubscriptions(streamers: readonly string[]): Promise<unknown>;
 	purgeTwitchStreamGuildSubscriptions(guildID: string): Promise<UpdatePurgeTwitchStreamReturning[]>;
@@ -32,6 +34,7 @@ export interface CommonQuery {
 	fetchStarRandomFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings | null>;
 	fetchStars(guildID: string, minimum: number): Promise<RawStarboardSettings[]>;
 	fetchStarsFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings[]>;
+	fetchSuggestion(guildID: string, suggestionID: number): Promise<RawSuggestionSettings | null>;
 	fetchTwitchStreamSubscription(streamerID: string): Promise<TwitchStreamSubscriptionSettings | null>;
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
 	fetchAllTwitchStreams(): Promise<TwitchStreamSubscriptionSettings[]>;
@@ -41,6 +44,7 @@ export interface CommonQuery {
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	insertStar(entry: RawStarboardSettings): Promise<unknown>;
+	insertSuggestion(entry: RawSuggestionSettings): Promise<unknown>;
 	insertRpgGuild(leaderID: string, name: string): Promise<unknown>;
 	updateModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	updateModerationLogReasonBulk(guildID: string, cases: readonly number[], reason: string | null): Promise<unknown>;

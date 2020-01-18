@@ -5,6 +5,7 @@ import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings
 import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import PostgresProvider from '@root/providers/postgres';
 import { Time } from '@utils/constants';
@@ -115,6 +116,17 @@ export class PostgresCommonQuery implements CommonQuery {
 				"message_id" IN ('${messageIDs.join("', '")}')
 			RETURNING *;
 		`, [guildID]);
+	}
+
+	public deleteSuggestion(guildID: string, suggestionID: number) {
+		const { provider } = this;
+		return this.provider.run(/* sql */`
+			DELETE
+			FROM suggestions
+			WHERE
+				"guild_id" = ${provider.cString(guildID)} AND
+				"id"       = ${provider.cNumber(suggestionID)};
+		`);
 	}
 
 	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
@@ -354,6 +366,27 @@ export class PostgresCommonQuery implements CommonQuery {
 		`);
 	}
 
+	public fetchSuggestions(guildID: string) {
+		const { provider } = this;
+		return this.provider.runAll<RawSuggestionSettings>(/* sql */`
+			SELECT *
+			FROM suggestions
+			WHERE
+				"guild_id" = ${provider.cString(guildID)};
+		`);
+	}
+
+	public fetchSuggestion(guildID: string, suggestionID: number) {
+		const { provider } = this;
+		return this.provider.runOne<RawSuggestionSettings>(/* sql */`
+			SELECT *
+			FROM suggestions
+			WHERE
+				"guild_id" = ${provider.cString(guildID)} AND
+				"id"       = ${provider.cNumber(suggestionID)};
+		`);
+	}
+
 	public async fetchTwitchStreamSubscription(streamerID: string) {
 		const entry = await this.provider.runOne<RawTwitchStreamSubscriptionSettings>(/* sql */`
 			SELECT *
@@ -504,6 +537,23 @@ export class PostgresCommonQuery implements CommonQuery {
 				SET guild_id = (SELECT id FROM g)
 				WHERE id = ${cLeader};
 		`);
+	}
+
+	public insertSuggestion(entry: RawSuggestionSettings) {
+		const { provider } = this;
+		return this.provider.run(/* sql */`
+			INSERT INTO suggestions (
+				"id",
+				"message_id",
+				"guild_id",
+				"author_id"
+			) VALUES (
+				${provider.cNumber(entry.id)},
+				${provider.cString(entry.message_id)},
+				${provider.cString(entry.guild_id)},
+				${provider.cString(entry.author_id)}
+			);
+	`);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

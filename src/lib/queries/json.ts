@@ -11,6 +11,7 @@ import { JsonProvider } from '@lib/types/util';
 import { Time } from '@utils/constants';
 import { Client } from 'discord.js';
 import { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
+import { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
 
 export class JsonCommonQuery implements CommonQuery {
 
@@ -82,6 +83,10 @@ export class JsonCommonQuery implements CommonQuery {
 
 		await Promise.all(values.map(value => this.provider.delete(Databases.Starboard, `${guildID}.${value.message_id}`)));
 		return values;
+	}
+
+	public deleteSuggestion(guildID: string, suggestionID: number) {
+		return this.provider.delete(Databases.Suggestions, `${guildID}.${suggestionID}`);
 	}
 
 	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
@@ -227,6 +232,10 @@ export class JsonCommonQuery implements CommonQuery {
 		return values[index];
 	}
 
+	public async fetchSuggestion(guildID: string, suggestionID: number) {
+		return this.provider.get(Databases.Suggestions, `${guildID}.${suggestionID}`) as Promise<RawSuggestionSettings | null>;
+	}
+
 	public fetchTwitchStreamSubscription(streamerID: string) {
 		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<TwitchStreamSubscriptionSettings | null>;
 	}
@@ -323,6 +332,10 @@ export class JsonCommonQuery implements CommonQuery {
 			}),
 			this.provider.update(Databases.RpgUsers, leaderID, { guild_id: id })
 		]);
+	}
+
+	public insertSuggestion(entry: RawSuggestionSettings) {
+		return this.provider.create(Databases.Suggestions, `${entry.guild_id}.${entry.id}`, entry);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

@@ -10,6 +10,7 @@ import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
 import { InfluxDB } from 'influx';
+import { Client as ElasticClient } from '@elastic/elasticsearch';
 import { SettingsFolderUpdateOptions, KlasaUser, KlasaMessage } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
@@ -35,6 +36,7 @@ declare module 'discord.js' {
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
 		influx: InfluxDB | null;
+		elastic: ElasticClient | null;
 		twitch: Twitch;
 
 		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;

@@ -179,6 +179,8 @@ export default class extends SkyraCommand {
 			.setTitle(TITLE)
 			.setDescription(DESCRIPTION(game.number, losses))
 			.setFooter(FOOTER));
+
+		game.llrc.end();
 		return false;
 	}
 

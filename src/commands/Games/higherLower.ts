@@ -179,6 +179,8 @@ export default class extends SkyraCommand {
 			.setTitle(TITLE)
 			.setDescription(DESCRIPTION(game.number, losses))
 			.setFooter(FOOTER));
+
+		game.llrc.end();
 		return false;
 	}
 
@@ -201,7 +203,7 @@ export default class extends SkyraCommand {
 		const { turn, wager } = game;
 
 		// Calculate and deposit winnings for that game
-		const winnings = this.calculateWinnings(wager, turn);
+		const winnings = this.calculateWinnings(wager, turn - 1);
 		await message.author.increaseBalance(winnings, EconomyTransactionReason.Gamble);
 
 		// Let the user know we're done!

@@ -1,0 +1,14 @@
+apps:
+  script: './dist/src/Skyra.js'
+  name: 'Skyra'
+  vizion: false
+  env:
+    ENABLE_LAVALINK: true
+    ENABLE_POSTGRES: true
+    ENABLE_INFLUX: false
+  env_development:
+    DEV: true
+    ENABLE_LAVALINK: false
+    ENABLE_POSTGRES: false
+    ENABLE_INFLUX: false
+    ENABLE_LOCAL_POKEDEX: true

@@ -31,7 +31,7 @@
 /src/events/twitchStreamOffline.ts @quantumlytangled
 /src/events/audit/ @quantumlytangled
 /src/events/analytics/ @quantumlytangled
-/src/lib/structures/anogs/ @quantumlytangled
+/src/lib/Analytics/ @quantumlytangled
 /src/lib/util/Notifications/ @quantumlytangled
 /src/lib/types/influxSchema/ @quantumlytangled
 /src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled

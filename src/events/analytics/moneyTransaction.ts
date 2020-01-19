@@ -1,4 +1,4 @@
-import EconomyEvent from '@lib/structures/anogs/EconomyEvent';
+import EconomyEvent from '@lib/Analytics/Logs/EconomyEvent';
 import { EventStore, KlasaUser } from 'klasa';
 import { Events } from '@lib/types/Enums';
 import { EconomyTransactionAction, EconomyMeasurements, EconomyTags, EconomyTransactionReason } from '@lib/types/influxSchema/Economy';

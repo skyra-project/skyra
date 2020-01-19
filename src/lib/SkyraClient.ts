@@ -29,14 +29,14 @@ import { enumerable } from './util/util';
 import {
 	CLIENT_SECRET,
 	ENABLE_LAVALINK,
-	ENABLE_ELASTIC,
+	ENABLE_ELASTICSEARCH,
 	ENABLE_POSTGRES,
 	ENABLE_INFLUX,
 	EVLYN_PORT,
 	LAVALINK_PASSWORD,
 	PGSQL_DATABASE_PASSWORD,
 	INFLUX_OPTIONS,
-	ELASTIC_OPTIONS,
+	ELASTICSEARCH_OPTIONS,
 	TOKENS,
 	VERSION,
 	WEBHOOK_ERROR
@@ -104,8 +104,8 @@ export class SkyraClient extends KlasaClient {
 		? new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate, SchemaAnnouncement, SchemaMoneyTransaction, SchemaMoneyPayment] })
 		: null;
 
-	public elastic: ElasticClient | null = ENABLE_ELASTIC
-		? new ElasticClient(ELASTIC_OPTIONS)
+	public elastic: ElasticClient | null = ENABLE_ELASTICSEARCH
+		? new ElasticClient(ELASTICSEARCH_OPTIONS)
 		: null;
 
 	/**

@@ -49,9 +49,9 @@ export interface RawRpgUser {
 	id: string;
 	name: string;
 	win_count: string;
-	guild: number;
-	guild_rank: number;
-	class: number;
+	guild_id: number;
+	guild_rank_id: number;
+	class_id: number;
 	items: string[];
 	death_count: string;
 	crate_common_count: number;
@@ -75,7 +75,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"id"     VARCHAR(50),
 		"rarity" NUMERIC     NOT NULL,
 		PRIMARY KEY ("id"),
-		CHECK ("name"   <> ''),
+		CHECK ("id"   <> ''),
 		CHECK ("rarity" >= 0)
 	);
 
@@ -143,7 +143,6 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"upgrade"      SMALLINT     DEFAULT 0     NOT NULL,
 		UNIQUE ("leader"),
 		PRIMARY KEY ("id"),
-		FOREIGN KEY ("leader") REFERENCES rpg_users ("id") ON DELETE CASCADE,
 		CHECK ("member_limit" >= 5),
 		CHECK ("win_count"    >= 0),
 		CHECK ("lose_count"   >= 0),
@@ -156,9 +155,9 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"id"                    VARCHAR(19)                           NOT NULL,
 		"name"                  VARCHAR(32)                           NOT NULL,
 		"win_count"             BIGINT      DEFAULT 0                 NOT NULL,
-		"guild"                 INTEGER,
-		"guild_rank"            INTEGER,
-		"class"                 INTEGER,
+		"guild_id"              INTEGER,
+		"guild_rank_id"         INTEGER,
+		"class_id"              INTEGER,
 		"items"                 BIGINT[]    DEFAULT ARRAY[]::BIGINT[] NOT NULL,
 		"death_count"           BIGINT      DEFAULT 0                 NOT NULL,
 		"crate_common_count"    INTEGER     DEFAULT 0                 NOT NULL,
@@ -167,10 +166,10 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"crate_legendary_count" INTEGER     DEFAULT 0                 NOT NULL,
 		"luck"                  NUMERIC     DEFAULT 1.0               NOT NULL,
 		UNIQUE ("id"),
-		FOREIGN KEY ("id")         REFERENCES users          ("id") ON DELETE CASCADE,
-		FOREIGN KEY ("guild")      REFERENCES rpg_guilds     ("id") ON DELETE SET NULL,
-		FOREIGN KEY ("guild_rank") REFERENCES rpg_guild_rank ("id") ON DELETE SET NULL,
-		FOREIGN KEY ("class")      REFERENCES rpg_class      ("id") ON DELETE SET NULL,
+		FOREIGN KEY ("id")            REFERENCES users          ("id") ON DELETE CASCADE,
+		FOREIGN KEY ("guild_id")      REFERENCES rpg_guilds     ("id") ON DELETE SET NULL,
+		FOREIGN KEY ("guild_rank_id") REFERENCES rpg_guild_rank ("id") ON DELETE SET NULL,
+		FOREIGN KEY ("class_id")      REFERENCES rpg_class      ("id") ON DELETE SET NULL,
 		CHECK ("win_count"             >= 0),
 		CHECK ("death_count"           >= 0),
 		CHECK ("crate_common_count"    >= 0),
@@ -179,6 +178,9 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK ("crate_legendary_count" >= 0),
 		CHECK ("luck"                  >= 0)
 	);
+
+	ALTER TABLE rpg_guilds
+		ADD CONSTRAINT rpg_guilds_leaderx FOREIGN KEY ("leader") REFERENCES rpg_users ("id") ON DELETE CASCADE;
 
 	CREATE TABLE IF NOT EXISTS rpg_user_items (
 		"id"         BIGSERIAL,

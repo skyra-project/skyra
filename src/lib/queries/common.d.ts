@@ -33,6 +33,7 @@ export interface CommonQuery {
 	fetchStarsFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings[]>;
 	fetchTwitchStreamSubscription(streamerID: string): Promise<TwitchStreamSubscriptionSettings | null>;
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
+	retrieveRandomItem(luck: number): Promise<RawRpgItem>;
 	insertCommandUseCounter(command: string): Promise<unknown>;
 	insertDashboardUser(entry: RawDashboardUserSettings): Promise<unknown>;
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;

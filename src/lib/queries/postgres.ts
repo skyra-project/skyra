@@ -8,6 +8,7 @@ import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/Raw
 import { Client } from 'discord.js';
 import PostgresProvider from 'src/providers/postgres';
 import { CommonQuery, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
+import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -369,6 +370,24 @@ export class PostgresCommonQuery implements CommonQuery {
 			expires_at: Number(entry.expires_at),
 			guild_ids: entry.guild_ids
 		}));
+	}
+
+	public retrieveRandomItem(luck: number) {
+		const { provider } = this;
+		const percentage = luck === 0 ? '' : ` * (1.0 / ${provider.cNumber(luck)})`;
+		return provider.runOne<RawRpgItem>(/* sql */`
+			WITH CTE AS (
+				SELECT RANDOM()${percentage} * (SELECT SUM(rarity) FROM rpg_item) R
+			)
+			SELECT "id", "name", "rarity"
+			FROM (
+				SELECT rpg_item.*, SUM(rarity) OVER (ORDER BY id) S, R
+				FROM rpg_item CROSS JOIN CTE
+			) Q
+			WHERE S >= R
+			ORDER BY id
+			LIMIT 1;
+		`);
 	}
 
 	public insertCommandUseCounter(command: string) {

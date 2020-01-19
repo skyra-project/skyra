@@ -6,6 +6,7 @@ import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSett
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
+import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 import { JsonProvider } from '@lib/types/util';
 import { Client } from 'discord.js';
 import { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
@@ -231,6 +232,23 @@ export class JsonCommonQuery implements CommonQuery {
 	public async fetchTwitchStreamsByGuild(guildID: string) {
 		const values = await this.provider.getAll(Databases.TwitchStreamSubscriptions) as TwitchStreamSubscriptionSettings[];
 		return values.filter(value => value.guild_ids.includes(guildID));
+	}
+
+	public async retrieveRandomItem(luck: number) {
+		const entries = (await this.provider.getAll(Databases.RpgItem) as RawRpgItem[])
+			.sort((a, b) => a.id - b.id);
+
+		const count = entries.reduce((acc, entry) => acc + Number(entry.rarity), 0);
+		const percentage = luck === 0 ? 1 : 1 / luck;
+		const maximum = Math.random() * count * percentage;
+
+		let counter = 0;
+		for (const entry of entries) {
+			counter += Number(entry.rarity);
+			if (counter >= maximum) return entry;
+		}
+
+		return entries[entries.length - 1];
 	}
 
 	public async insertCommandUseCounter(command: string) {

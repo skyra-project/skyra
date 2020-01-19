@@ -371,68 +371,6 @@ export class PostgresCommonQuery implements CommonQuery {
 		}));
 	}
 
-	public async fetchRpgUser(id: string) {
-		const { provider } = this;
-		const cID = provider.cString(id);
-		return provider.runOne(/* sql */`
-			SELECT
-				"id",
-				"name",
-				"win_count",
-				(SELECT ROW_TO_JSON(x)
-					FROM (
-						SELECT *
-						FROM rpg_guilds
-						WHERE rpg_guilds.id = rpg_users.guild_id
-					) x
-				) as "guild",
-				(SELECT ROW_TO_JSON(x)
-					FROM (
-						SELECT *
-						FROM rpg_guild_rank
-						WHERE rpg_guild_rank.id = rpg_users.guild_rank_id
-					) x
-				) as "guild_rank",
-				(SELECT ROW_TO_JSON(x)
-					FROM (
-						SELECT *
-						FROM rpg_class
-						WHERE rpg_class.id = rpg_users.class_id
-					) x
-				) as "class",
-				COALESCE((SELECT ARRAY_TO_JSON(ARRAY_AGG(ROW_TO_JSON(x)))
-					FROM (
-						SELECT
-							rpg_user_items.id
-							"name",
-							"durability",
-							"maximum_durability",
-							"attack",
-							"defense",
-							"health",
-							"attack_percentage",
-							"defense_percentage",
-							"health_percentage",
-							"energy_usage",
-							"range",
-							"rank"
-						FROM rpg_user_items
-							INNER JOIN rpg_item ri on rpg_user_items.item_id = ri.id
-						WHERE rpg_user_items.user_id = rpg_users.id
-					) x
-				), '[]') as "items",
-				"death_count",
-				"crate_common_count",
-				"crate_uncommon_count",
-				"crate_rare_count",
-				"crate_legendary_count",
-				"luck"
-			FROM rpg_users
-			WHERE
-				id = ${cID};
-		`);
-	}
-
 	public insertCommandUseCounter(command: string) {
 		return this.provider.run(/* sql */`
 			INSERT
@@ -491,6 +429,22 @@ export class PostgresCommonQuery implements CommonQuery {
 			INSERT INTO starboard ("enabled", "user_id", "message_id", "channel_id", "guild_id", "star_message_id", "stars")
 			VALUES ($1, $2, $3, $4, $5, $6, $7)
 		`, [entry.enabled, entry.user_id, entry.message_id, entry.channel_id, entry.guild_id, entry.star_message_id, entry.stars]);
+	}
+
+	public insertRpgGuild(leaderID: string, name: string) {
+		const { provider } = this;
+		const cLeader = provider.cString(leaderID);
+		const cName = provider.cString(name);
+		return provider.run(/* sql */`
+			WITH g AS (
+				INSERT INTO rpg_guilds ("name", "leader")
+				VALUES (${cName}, ${cLeader})
+				RETURNING id
+			)
+			UPDATE rpg_users
+				SET guild_id = (SELECT id FROM g)
+				WHERE id = ${cLeader};
+		`);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

@@ -38,6 +38,7 @@ export interface CommonQuery {
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	insertStar(entry: RawStarboardSettings): Promise<unknown>;
+	insertRpgGuild(leaderID: string, name: string): Promise<unknown>;
 	updateModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	updateModerationLogReasonBulk(guildID: string, cases: readonly number[], reason: string | null): Promise<unknown>;
 	updateStar(entry: RawStarboardSettings): Promise<unknown>;

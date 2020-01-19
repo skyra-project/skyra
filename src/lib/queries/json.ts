@@ -255,6 +255,35 @@ export class JsonCommonQuery implements CommonQuery {
 		return this.provider.create(Databases.Moderation, `${entry.guild_id}.${entry.message_id}`, entry);
 	}
 
+	public async insertRpgGuild(leaderID: string, name: string) {
+		// Retrieve counter
+		let id: number;
+		const meta = await this.provider.get(Databases.RpgGuilds, 'meta') as { id: string } | null;
+		if (meta === null) {
+			await this.provider.create(Databases.RpgGuilds, 'meta', {});
+			id = 1;
+		} else {
+			id = Number(meta);
+		}
+
+		// Create the guild data and update information
+		await Promise.all([
+			this.provider.create(Databases.RpgGuilds, `${id}`, {
+				id,
+				name,
+				description: null,
+				leader: leaderID,
+				member_limit: 5,
+				win_count: 0,
+				lose_count: 0,
+				money_count: 0,
+				bank_limit: 50000,
+				upgrade: 0
+			}),
+			this.provider.update(Databases.RpgUsers, leaderID, { guild_id: id })
+		]);
+	}
+
 	public updateModerationLog(entry: RawModerationSettings) {
 		return this.provider.update(Databases.Moderation, `${entry.guild_id}.${entry.case_id}`, entry);
 	}

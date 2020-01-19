@@ -3,7 +3,7 @@ import { AuditAnnouncementAction, AuditMeasurements, AuditTags } from '@lib/type
 import { Role, TextChannel } from 'discord.js';
 import { EventStore, KlasaMessage } from 'klasa';
 import { Tags } from '@lib/types/influxSchema/tags';
-import AuditEvent from '@lib/structures/analytics/AuditEvent';
+import AuditEvent from '@lib/structures/anogs/AuditEvent';
 
 export default class extends AuditEvent {
 

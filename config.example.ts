@@ -3,6 +3,7 @@
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIWebhookData } from '@lib/types/DiscordAPI';
+import { ClientOptions } from '@elastic/elasticsearch';
 import { ISingleHostConfig } from 'influx';
 import { KlasaClientOptions } from 'klasa';
 import { resolve } from 'path';
@@ -13,6 +14,7 @@ export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HO
 export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
 export const ENABLE_POSTGRES = 'ENABLE_POSTGRES' in process.env ? process.env.ENABLE_POSTGRES === 'true' : !DEV;
 export const ENABLE_INFLUX = 'ENABLE_INFLUX' in process.env ? process.env.ENABLE_INFLUX === 'true' : !DEV;
+export const ENABLE_ELASTICSEARCH = 'ENABLE_ELASTIC' in process.env ? process.env.ENABLE_ELASTIC === 'true' : !DEV;
 export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
 export const WSS_PORT = 565;
@@ -44,6 +46,19 @@ export const INFLUX_OPTIONS: ISingleHostConfig = {
 	port: INFLUX_PORT,
 	username: INFLUX_USERNAME,
 	password: INFLUX_PASSWORD
+};
+
+export const ELASTICSEARCH_NAME = 'Skyra';
+export const ELASTICSEARCH_NODE = 'http://localhost:9200';
+export const ELASTICSEARCH_API_KEY = '';
+export const ELASTICSEARCH_USERNAME = '';
+export const ELASTICSEARCH_PASSWORD = '';
+export const ELASTICSEARCH_OPTIONS: ClientOptions = {
+	name: ELASTICSEARCH_NAME,
+	node: ELASTICSEARCH_NODE,
+	auth: ELASTICSEARCH_API_KEY
+		? { apiKey: ELASTICSEARCH_API_KEY }
+		: { username: ELASTICSEARCH_USERNAME, password: ELASTICSEARCH_PASSWORD }
 };
 
 export const VERSION = '5.2.3 Nirom';

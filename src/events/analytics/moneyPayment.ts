@@ -1,5 +1,5 @@
 import { EventStore, KlasaMessage, KlasaUser } from 'klasa';
-import EconomyEvent from '@lib/structures/analytics/EconomyEvent';
+import EconomyEvent from '@lib/Analytics/Logs/EconomyEvent';
 import { Events } from '@lib/types/Enums';
 import { EconomyMeasurements, EconomyTags } from '@lib/types/influxSchema/Economy';
 import { Tags } from '@lib/types/influxSchema/tags';

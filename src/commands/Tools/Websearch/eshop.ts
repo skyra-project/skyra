@@ -2,7 +2,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { BrandingColors } from '@utils/constants';
-import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
+import { cutText, fetch, FetchMethods, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import { CommandStore, KlasaMessage, Timestamp, util } from 'klasa';
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 
 	private fetchAPI(message: KlasaMessage, gameName: string) {
 		return fetch(API_URL, {
-			method: 'POST',
+			method: FetchMethods.Post,
 			headers: {
 				'Content-Type': 'application/json',
 				'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,

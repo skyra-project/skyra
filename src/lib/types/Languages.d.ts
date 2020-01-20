@@ -520,6 +520,37 @@ export interface LanguageKeys {
 	COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: (playertag: string) => string;
 	COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: (clan: string) => string;
 	COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: (playertag: string) => string;
+	COMMAND_FFXIV_DESCRIPTION: string;
+	COMMAND_FFXIV_EXTENDED: string;
+	COMMAND_FFXIV_CHARACTER_FIELDS: {
+		SERVER_AND_DC: string;
+		TRIBE: string;
+		CHARACTER_GENDER: string;
+		NAMEDAY: string;
+		GUARDIAN: string;
+		CITY_STATE: string;
+		GRAND_COMPANY: string;
+		RANK: string;
+		NONE: string;
+		MALE: string;
+		FEMALE: string;
+		DOW_DOM_CLASSES: string;
+		TANK: string;
+		HEALER: string;
+		MELEEDPS: string;
+		PHYSICALRANGEDDPS: string;
+		MAGICALRANGEDDPS: string;
+		DOH_CLASSES: string;
+		DOL_CLASSES: string;
+	};
+	COMMAND_FFXIV_ITEM_FIELDS: {
+		KIND: string;
+		CATEGORY: string;
+		LEVEL_EQUIP: string;
+		NONE: string;
+	};
+	COMMAND_FFXIV_NO_CHARACTER_FOUND: string;
+	COMMAND_FFXIV_NO_ITEM_FOUND: string;
 	GAMES_NOT_ENOUGH_MONEY: (money: number) => string;
 	GAMES_CANNOT_HAVE_NEGATIVE_MONEY: string;
 	COMMAND_CREATEMUTE_DESCRIPTION: string;

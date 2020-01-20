@@ -701,6 +701,46 @@ export default class extends Language {
 		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: playertag => `Lo siento, \`${playertag}\` no es una etiqueta de jugador de Choque de clanes válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,
 		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: clan => `Lo siento, pero no pude obtener datos sobre el clan \`${clan}\`.`,
 		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: playertag => `Lo siento, pero no pude obtener datos sobre el jugador con la etiqueta de jugador \`${playertag}\`.`,
+		COMMAND_FFXIV_DESCRIPTION: 'Consulta la API de Final Fantasy 14 para obtener datos del juego',
+		COMMAND_FFXIV_EXTENDED: builder.display('ffxiv', {
+			extendedHelp: `Este comando le permite datos de caracteres y elementos para FFXIV.
+				Para el elemento, se realiza una búsqueda con comodines, por lo que si su término está en el medio del nombre, aún puede coincidir.`,
+			explainedUsage: [
+				['Tipo de búsqueda', '(opcional, el valor predeterminado es `character`)` character` o `item`'],
+				['consulta', 'El jugador o cosa a buscar.']
+			],
+			examples: ['character Laytlan Ardevon', 'Laytlan Ardevon', 'item potion']
+		}),
+		COMMAND_FFXIV_CHARACTER_FIELDS: {
+			SERVER_AND_DC: 'Servidor - Centro de datos',
+			TRIBE: 'Tribu',
+			CHARACTER_GENDER: 'Género del personaje',
+			NAMEDAY: 'Día del nombre',
+			GUARDIAN: 'Guardián',
+			CITY_STATE: 'Estado de la Ciudad',
+			GRAND_COMPANY: 'Gran empresa',
+			RANK: 'Rango',
+			NONE: 'Ninguno',
+			MALE: 'Masculino',
+			FEMALE: 'Hembra',
+			DOW_DOM_CLASSES: '***__Discípulo de clases de guerra y magia__***:',
+			TANK: 'Tanque',
+			HEALER: 'Curador',
+			MELEEDPS: 'Cuerpo a cuerpo DPS',
+			PHYSICALRANGEDDPS: 'DPS a distancia física',
+			MAGICALRANGEDDPS: 'DPS a distancia mágica',
+			DOH_CLASSES: '***__Trabajos de discípulo de la mano__***:',
+			DOL_CLASSES: '***__Trabajos de discípulo de la tierra__***:'
+		},
+		COMMAND_FFXIV_ITEM_FIELDS: {
+			KIND: 'Tipo',
+			CATEGORY: 'Categoría',
+			LEVEL_EQUIP: 'Nivel equipable',
+			NONE: 'Ninguno'
+		},
+		COMMAND_FFXIV_NO_CHARACTER_FOUND: 'Lo siento, pero no pude encontrar un personaje con ese nombre.',
+		COMMAND_FFXIV_NO_ITEM_FOUND: 'Lo siento, pero no pude encontrar un elemento con esa consulta.',
+
 
 		/**
 		 * ################

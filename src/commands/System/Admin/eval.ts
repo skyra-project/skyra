@@ -2,7 +2,7 @@ import { codeBlock, isThenable, sleep } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { clean } from '@utils/clean';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { CommandStore, KlasaMessage, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 
@@ -103,7 +103,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getHaste(evalResult: string, language = 'js') {
-		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: evalResult }, FetchResultTypes.JSON) as { key: string };
+		const { key } = await fetch('https://hasteb.in/documents', { method: FetchMethods.Post, body: evalResult }, FetchResultTypes.JSON) as { key: string };
 		return `https://hasteb.in/${key}.${language}`;
 	}
 

@@ -703,6 +703,45 @@ export default class extends Language {
 		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: playertag => `I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,
 		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: clan => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,
 		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: playertag => `I am sorry, but I was unable to get data on the player with player tag \`${playertag}\`.`,
+		COMMAND_FFXIV_DESCRIPTION: 'Queries the Final Fantasy 14 API for game data',
+		COMMAND_FFXIV_EXTENDED: builder.display('ffxiv', {
+			extendedHelp: `This command allows you to character and item data for FFXIV.
+				For item a wildcard search is performed so if your term is in the middle of the name it can still match.`,
+			explainedUsage: [
+				['search type', '(optional, defaults to `character`) `character` or `item`'],
+				['query', 'The player or thing to search.']
+			],
+			examples: ['character Laytlan Ardevon', 'Laytlan Ardevon', 'item potion']
+		}),
+		COMMAND_FFXIV_CHARACTER_FIELDS: {
+			SERVER_AND_DC: 'Server - Datacenter',
+			TRIBE: 'Tribe',
+			CHARACTER_GENDER: 'Character gender',
+			NAMEDAY: 'Nameday',
+			GUARDIAN: 'Guardian',
+			CITY_STATE: 'City-State',
+			GRAND_COMPANY: 'Grand Company',
+			RANK: 'Rank',
+			NONE: 'None',
+			MALE: 'Male',
+			FEMALE: 'Female',
+			DOW_DOM_CLASSES: '***__Disciple of War and Magic classes__***:',
+			TANK: 'Tank',
+			HEALER: 'Healer',
+			MELEEDPS: 'Melee DPS',
+			PHYSICALRANGEDDPS: 'Physical Ranged DPS',
+			MAGICALRANGEDDPS: 'Magical Ranged DPS',
+			DOH_CLASSES: '***__Disciple of the Hand jobs__***:',
+			DOL_CLASSES: '***__Disciple of the Land jobs__***:'
+		},
+		COMMAND_FFXIV_ITEM_FIELDS: {
+			KIND: 'Kind',
+			CATEGORY: 'Category',
+			LEVEL_EQUIP: 'Level equippable',
+			NONE: 'None'
+		},
+		COMMAND_FFXIV_NO_CHARACTER_FOUND: 'I am sorry, but I was unable to find a character with that name.',
+		COMMAND_FFXIV_NO_ITEM_FOUND: 'I am sorry, but I was unable to find an item with that query.',
 
 		/**
 		 * ################

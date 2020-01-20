@@ -1,7 +1,7 @@
 import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUsersSearchResult, TwitchKrakenChannelSearchResults } from '@lib/types/definitions/Twitch';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
 import { Mime, Time } from '@utils/constants';
-import { enumerable, fetch, FetchResultTypes } from '@utils/util';
+import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
 
@@ -106,7 +106,7 @@ export class Twitch {
 				'Authorization': `Bearer ${await this.fetchBearer()}`,
 				'Content-Type': Mime.Types.ApplicationJson
 			},
-			method: 'POST'
+			method: FetchMethods.Post
 		}, FetchResultTypes.Result);
 		if (!response.ok) throw new Error(`[${response.status}] Failed to subscribe to action.`);
 		return response;
@@ -129,7 +129,7 @@ export class Twitch {
 		url.searchParams.append('client_secret', this.$clientSecret);
 		url.searchParams.append('client_id', this.$clientID);
 		url.searchParams.append('grant_type', 'client_credentials');
-		const respone = await fetch(url.href, { method: 'POST' }, FetchResultTypes.JSON) as OauthResponse;
+		const respone = await fetch(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON) as OauthResponse;
 		const expires = Date.now() + (respone.expires_in * 1000);
 		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
 		return respone.access_token;

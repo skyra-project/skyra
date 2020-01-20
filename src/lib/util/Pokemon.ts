@@ -1,6 +1,6 @@
 import { Abilities, Items, Moves, Pokemon, Query } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '@root/config';
-import { fetch, FetchResultTypes } from './util';
+import { fetch, FetchMethods, FetchResultTypes } from './util';
 
 const AbilityFragment = `
 fragment ability on AbilityEntry {
@@ -279,7 +279,7 @@ export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png
 export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string) {
 	try {
 		return fetch(POKEMON_GRAPHQL_API_URL, {
-			method: 'POST',
+			method: FetchMethods.Post,
 			headers: {
 				'Content-Type': 'application/json'
 			},

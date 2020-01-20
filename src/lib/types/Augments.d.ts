@@ -1,3 +1,4 @@
+import { Client as ElasticClient } from '@elastic/elasticsearch';
 import { SettingsUpdateResults } from '@klasa/settings-gateway';
 import { CommonQuery } from '@lib/queries/common';
 import { GiveawayManager } from '@lib/structures/GiveawayManager';
@@ -10,15 +11,13 @@ import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
 import { InfluxDB } from 'influx';
-import { Client as ElasticClient } from '@elastic/elasticsearch';
-import { SettingsFolderUpdateOptions, KlasaUser, KlasaMessage } from 'klasa';
+import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
-import { LanguageKeys } from './Languages';
-import { CustomGet } from './settings/Shared';
 import { Events } from './Enums';
 import { EconomyTransactionAction, EconomyTransactionReason } from './influxSchema/Economy';
-
+import { LanguageKeys } from './Languages';
+import { CustomGet } from './settings/Shared';
 
 declare module 'discord.js' {
 

@@ -7,14 +7,14 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
 import { Image } from 'canvas';
-import { ImageURLOptions, Client, Guild, GuildChannel, ImageSize, Message, Permissions, User, UserResolvable, DiscordAPIError, Role } from 'discord.js';
+import { Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable } from 'discord.js';
 import { readFile } from 'fs-nextra';
-import { RateLimitManager, util, KlasaGuild } from 'klasa';
+import { KlasaGuild, RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import { createFunctionInhibitor } from 'klasa-decorators';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { UserTag } from './Cache/UserTags';
-import { BrandingColors, Time, APIErrors } from './constants';
+import { APIErrors, BrandingColors, Time } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
@@ -214,6 +214,13 @@ export const enum FetchResultTypes {
 	Buffer,
 	Text,
 	Result
+}
+
+export const enum FetchMethods {
+	Post = 'POST',
+	Get = 'GET',
+	Put = 'PUT',
+	Delete = 'DELETE'
 }
 
 export async function fetch(url: URL | string, type: FetchResultTypes.JSON): Promise<unknown>;

@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageAttachment } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getHaste(result: string) {
-		const { key } = await fetch('https://hasteb.in/documents', { method: 'POST', body: result }, FetchResultTypes.JSON) as { key: string };
+		const { key } = await fetch('https://hasteb.in/documents', { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON) as { key: string };
 		return `https://hasteb.in/${key}.js`;
 	}
 

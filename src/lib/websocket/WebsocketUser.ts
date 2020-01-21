@@ -77,7 +77,7 @@ export default class DashboardWebsocketUser {
 		if (!message.data.music_action
 			|| !message.data.guild_id
 			|| !this.user
-			|| !this.canManageMusic(message.data.guild_id)) return;
+			|| !(await this.canManageMusic(message.data.guild_id))) return;
 
 		const guild = this.client.guilds.get(message.data.guild_id);
 		if (!guild) return;

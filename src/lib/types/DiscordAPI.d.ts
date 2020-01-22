@@ -225,6 +225,13 @@ export interface WSMessageReactionRemove {
 	guild_id: string;
 }
 
+export interface WSMessageReactionRemoveEmoji {
+	message_id: string;
+	channel_id: string;
+	guild_id: string;
+	emoji: { id: string | null; name: string };
+}
+
 export interface WSMessageReactionRemoveAll {
 	message_id: string;
 	channel_id: string;

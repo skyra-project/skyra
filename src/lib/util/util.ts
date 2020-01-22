@@ -1,4 +1,4 @@
-import { isNumber, isObject } from '@klasa/utils';
+import { isNumber } from '@klasa/utils';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
@@ -22,6 +22,7 @@ import { api } from './Models/Api';
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
 const REGEX_PARSED_FCUSTOM_EMOJI = /^a?:[^:]+:\d{17,19}$/;
+const REGEX_CUSTOM_EMOJI_PARTS = /^(a?):([^:]+):(\d{17,19})$/;
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
 	[0, { emoji: '😪', color: 0x5B1100 }],
@@ -97,25 +98,53 @@ export function announcementCheck(message: Message) {
 	return role;
 }
 
+interface EmojiObject extends EmojiObjectPartial {
+	animated: boolean;
+}
+
+interface EmojiObjectPartial {
+	name: string;
+	id: string | null;
+}
+
 /**
  * Resolve an emoji
  * @param emoji The emoji to resolve
  */
-export function resolveEmoji(emoji: string | { animated: boolean; name: string; id: string | null }) {
+export function resolveEmoji(emoji: string | EmojiObject) {
 	if (typeof emoji === 'string') {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
 		if (REGEX_UNICODE_BOXNM.test(emoji)) return encodeURIComponent(emoji);
 		if (REGEX_UNICODE_EMOJI.test(emoji)) return encodeURIComponent(emoji);
-	} else if (isObject(emoji)) {
-		// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974
-		return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name);
+		return null;
 	}
-	return null;
+
+	// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974
+	return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name);
 }
 
 export function displayEmoji(emoji: string) {
 	return REGEX_PARSED_FCUSTOM_EMOJI.test(emoji) ? `<${emoji}>` : decodeURIComponent(emoji);
+}
+
+export function compareEmoji(emoji: string, matching: string | EmojiObjectPartial) {
+	const emojiExecResult = REGEX_CUSTOM_EMOJI_PARTS.exec(emoji);
+	// emojiExecResult is only `null` when it's not a custom emoji, thus we'll compare with resolveEmoji
+	if (emojiExecResult === null) return emoji === resolveEmoji(typeof matching === 'string' ? matching : { animated: false, ...matching });
+
+	// Compare custom emoji
+	if (typeof matching === 'string') {
+		const matchingExecResult = REGEX_CUSTOM_EMOJI_PARTS.exec(matching);
+		// matchingExecResult is only `null` when it's not a custom emoji, and we're comparing against one, thus return false
+		if (matchingExecResult === null) return false;
+
+		return emojiExecResult[2] === matchingExecResult[2].replace(/~\d+/, '') // name
+			&& emojiExecResult[3] === matchingExecResult[3]; // id
+	}
+
+	return emojiExecResult[2] === matching.name.replace(/~\d+/, '') // name
+			&& emojiExecResult[3] === matching.id; // id
 }
 
 export function oneToTen(level: number) {

@@ -22,7 +22,6 @@ export default class extends Event {
 		try {
 			const results = await this.client.queries.deleteStarReturning(data.guild_id, data.message_id);
 
-
 			if (results && results.star_message_id) {
 				// Get channel
 				const channel = guild.settings.get(GuildSettings.Starboard.Channel);

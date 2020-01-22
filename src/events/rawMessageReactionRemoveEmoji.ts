@@ -2,9 +2,9 @@ import { WSMessageReactionRemoveEmoji } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
+import { compareEmoji } from '@utils/util';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
-import { compareEmoji } from '@utils/util';
 
 export default class extends Event {
 
@@ -22,11 +22,12 @@ export default class extends Event {
 		try {
 			const results = await this.client.queries.deleteStarReturning(data.guild_id, data.message_id);
 
-			// Get channel
-			const channel = guild.settings.get(GuildSettings.Starboard.Channel);
-			if (!channel) return;
 
 			if (results && results.star_message_id) {
+				// Get channel
+				const channel = guild.settings.get(GuildSettings.Starboard.Channel);
+				if (!channel) return;
+
 				await api(this.client).channels(channel).messages(results.star_message_id)
 					.delete({ reason: 'Starboard Management: Reactions Cleared' })
 					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));

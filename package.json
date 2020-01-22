@@ -49,7 +49,7 @@
 		"@klasa/utils": "^0.0.4",
 		"canvas": "^2.6.1",
 		"canvas-constructor": "^3.1.0",
-		"confusables": "^0.3.3",
+		"confusables": "^1.0.0",
 		"diff": "^4.0.2",
 		"discord.js": "github:discordjs/discord.js#master",
 		"emoji-regex": "^8.0.0",

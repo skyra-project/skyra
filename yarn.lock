@@ -426,10 +426,10 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
-confusables@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/confusables/-/confusables-0.3.3.tgz#12445d1acf183b5a11cbf1b4e2a737232334403e"
-  integrity sha512-stv0hBAhxGluBoU+hAUj7dN4srMd7QYtAlSEntr7D53zh6DEoZOXq8xNZloVCsUxjA/vsT5EOMDkRaIjNDJfsQ==
+confusables@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/confusables/-/confusables-1.0.0.tgz#b962cad8a6b49bd22c31423a581f2f6a68ad4ac6"
+  integrity sha512-HdrRONFehJdy173Heqosrsy5JLwUjH5A2/Q1xHHmDTp089YWgkSmU7aiRCprqHSz/Le5fThaOnU9WSj70BUvAw==
 
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
@@ -505,7 +505,6 @@ diff@^4.0.2:
 
 "discord.js@github:discordjs/discord.js#master":
   version "12.0.0-dev"
-  uid "877577badcaa17b0221b75d79c55b6de3eff4e3a"
   resolved "https://codeload.github.com/discordjs/discord.js/tar.gz/877577badcaa17b0221b75d79c55b6de3eff4e3a"
   dependencies:
     "@discordjs/collection" "^0.1.1"

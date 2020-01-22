@@ -2,7 +2,7 @@ import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMon
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { cutText, floatPromise, getContent } from '@utils/util';
-import { remove } from 'confusables';
+import { remove as removeConfusables } from 'confusables';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
@@ -30,7 +30,7 @@ export default class extends ModerationMonitor {
 		const content = getContent(message);
 		if (content === null) return null;
 
-		return this.filter(remove(content), message.guild!.security.regexp!);
+		return this.filter(removeConfusables(content), message.guild!.security.regexp!);
 	}
 
 	protected async onDelete(message: KlasaMessage, value: FilterResults) {

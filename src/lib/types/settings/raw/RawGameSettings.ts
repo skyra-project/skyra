@@ -48,11 +48,13 @@ export interface RawRpgUser {
 	guild_id: number;
 	guild_rank_id: number;
 	class_id: number;
+	equipped_item: string;
 	crate_common_count: number;
 	crate_uncommon_count: number;
 	crate_rare_count: number;
 	crate_legendary_count: number;
 	attack: number;
+	health: number;
 	agility: number;
 	energy: number;
 	luck: number;
@@ -72,27 +74,38 @@ export interface RawRpgBattle {
 	challenger_cooldown: number;
 	challenger_health: number;
 	challenger_energy: number;
+	challenger_weapon: string;
 	challenger_effects: Record<string, number>;
 	challenged: string;
 	challenged_cooldown: number;
 	challenged_health: number;
 	challenged_energy: number;
+	challenged_weapon: string;
 	challenged_effects: Record<string, number>;
 }
 
 export const SQL_TABLE_SCHEMA = /* sql */`
+	DO $$
+	BEGIN
+		IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'rpg_item_type') THEN
+			CREATE TYPE rpg_item_type AS ENUM ('Weapon', 'Shield', 'Disposable', 'Special');
+		END IF;
+	END
+	$$;
+
 	CREATE TABLE IF NOT EXISTS rpg_items (
 		"id"                 SERIAL,
-		"name"               VARCHAR(50)                     NOT NULL,
-		"maximum_durability" INTEGER                         NOT NULL,
-		"maximum_cooldown"   SMALLINT    DEFAULT 0           NOT NULL,
-		"attack"             FLOAT       DEFAULT 0.0         NOT NULL,
-		"defense"            FLOAT       DEFAULT 0.0         NOT NULL,
-		"health"             FLOAT       DEFAULT 0.0         NOT NULL,
-		"required_energy"    FLOAT       DEFAULT 0.0         NOT NULL,
-		"rarity"             INTEGER                         NOT NULL,
-		"accuracy"           SMALLINT    DEFAULT 100         NOT NULL,
-		"effects"            JSONB       DEFAULT '{}'::JSONB NOT NULL,
+		"type"               RPG_ITEM_TYPE DEFAULT 'Weapon'    NOT NULL,
+		"name"               VARCHAR(50)                       NOT NULL,
+		"maximum_durability" INTEGER                           NOT NULL,
+		"maximum_cooldown"   SMALLINT      DEFAULT 0           NOT NULL,
+		"attack"             FLOAT         DEFAULT 0.0         NOT NULL,
+		"defense"            FLOAT         DEFAULT 0.0         NOT NULL,
+		"health"             FLOAT         DEFAULT 0.0         NOT NULL,
+		"required_energy"    FLOAT         DEFAULT 0.0         NOT NULL,
+		"rarity"             INTEGER                           NOT NULL,
+		"accuracy"           SMALLINT      DEFAULT 100         NOT NULL,
+		"effects"            JSONB         DEFAULT '{}'::JSONB NOT NULL,
 		UNIQUE ("name", "rarity"),
 		PRIMARY KEY ("id"),
 		CHECK ("name"               <> ''),
@@ -162,14 +175,16 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"guild_id"              INTEGER,
 		"guild_rank_id"         INTEGER,
 		"class_id"              INTEGER,
+		"equipped_item"         BIGINT,
 		"crate_common_count"    INTEGER     DEFAULT 0 NOT NULL,
 		"crate_uncommon_count"  INTEGER     DEFAULT 0 NOT NULL,
 		"crate_rare_count"      INTEGER     DEFAULT 0 NOT NULL,
 		"crate_legendary_count" INTEGER     DEFAULT 0 NOT NULL,
-		"attack"                INTEGER     DEFAULT 0 NOT NULL,
-		"agility"               INTEGER     DEFAULT 0 NOT NULL,
-		"energy"                INTEGER     DEFAULT 0 NOT NULL,
-		"luck"                  INTEGER     DEFAULT 1 NOT NULL,
+		"attack"                INTEGER               NOT NULL,
+		"health"                INTEGER               NOT NULL,
+		"agility"               INTEGER               NOT NULL,
+		"energy"                INTEGER               NOT NULL,
+		"luck"                  INTEGER               NOT NULL,
 		UNIQUE ("id"),
 		FOREIGN KEY ("id")            REFERENCES users          ("id") ON DELETE CASCADE,
 		FOREIGN KEY ("guild_id")      REFERENCES rpg_guilds     ("id") ON DELETE SET NULL,
@@ -201,32 +216,44 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK ("durability" >= 0)
 	);
 
-	CREATE RULE rpg_user_items_durability_update_rule AS ON UPDATE
-		TO rpg_user_items
-		WHERE NEW.durability = 0
-		DO INSTEAD
-			DELETE FROM rpg_user_items
-			WHERE id = OLD.id;
+	ALTER TABLE rpg_users
+		ADD FOREIGN KEY ("equipped_item") REFERENCES rpg_user_items ("id") ON DELETE SET NULL;
 
-	CREATE TABLE IF NOT EXISTS rpg_battles
-	(
+	DO $$
+	BEGIN
+		IF NOT EXISTS (SELECT 1 FROM pg_rules WHERE rulename = 'rpg_user_items_durability_update_rule') THEN
+			CREATE RULE rpg_user_items_durability_update_rule AS ON UPDATE
+				TO rpg_user_items
+				WHERE NEW.durability = 0
+				DO INSTEAD
+					DELETE FROM rpg_user_items
+					WHERE id = OLD.id;
+		END IF;
+	END
+	$$;
+
+	CREATE TABLE IF NOT EXISTS rpg_battles (
 		"id"                  BIGSERIAL,
 		"challenger_turn"     BOOLEAN                         NOT NULL,
 		"challenger"          VARCHAR(19)                     NOT NULL,
 		"challenger_cooldown" SMALLINT    DEFAULT 0           NOT NULL,
 		"challenger_health"   INTEGER                         NOT NULL,
 		"challenger_energy"   INTEGER                         NOT NULL,
+		"challenger_weapon"   BIGINT,
 		"challenger_effects"  JSONB       DEFAULT '{}'::JSONB NOT NULL,
 		"challenged"          VARCHAR(19)                     NOT NULL,
 		"challenged_cooldown" SMALLINT    DEFAULT 0           NOT NULL,
 		"challenged_health"   INTEGER                         NOT NULL,
 		"challenged_energy"   INTEGER                         NOT NULL,
+		"challenged_weapon"   BIGINT,
 		"challenged_effects"  JSONB       DEFAULT '{}'::JSONB NOT NULL,
 		UNIQUE ("challenger"),
 		UNIQUE ("challenged"),
 		PRIMARY KEY ("id"),
-		FOREIGN KEY ("challenger") REFERENCES rpg_users ("id"),
-		FOREIGN KEY ("challenged") REFERENCES rpg_users ("id"),
+		FOREIGN KEY ("challenger")        REFERENCES rpg_users      ("id"),
+		FOREIGN KEY ("challenged")        REFERENCES rpg_users      ("id"),
+		FOREIGN KEY ("challenger_weapon") REFERENCES rpg_user_items ("id") ON DELETE SET NULL,
+		FOREIGN KEY ("challenged_weapon") REFERENCES rpg_user_items ("id") ON DELETE SET NULL,
 		CHECK ("challenger_cooldown" >= 0),
 		CHECK ("challenged_cooldown" >= 0),
 		CHECK ("challenger_health"   >= 0),
@@ -235,10 +262,16 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK ("challenged_energy"   >= 0)
 	);
 
-	CREATE RULE rpg_battles_health_update_rule AS ON UPDATE
-		TO rpg_battles
-		WHERE NEW.challenger_health = 0 OR NEW.challenged_health = 0
-		DO INSTEAD
-			DELETE FROM rpg_battles
-			WHERE id = OLD.id;
+	DO $$
+	BEGIN
+		IF NOT EXISTS (SELECT 1 FROM pg_rules WHERE rulename = 'rpg_battles_health_update_rule') THEN
+			CREATE RULE rpg_battles_health_update_rule AS ON UPDATE
+				TO rpg_battles
+				WHERE NEW.challenger_health = 0 OR NEW.challenged_health = 0
+				DO INSTEAD
+					DELETE FROM rpg_battles
+					WHERE id = OLD.id;
+		END IF;
+	END
+	$$;
 `;

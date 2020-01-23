@@ -377,12 +377,12 @@ export class PostgresCommonQuery implements CommonQuery {
 		const percentage = luck === 0 ? '' : ` * (1.0 / ${provider.cNumber(luck)})`;
 		return provider.runOne<RawRpgItem>(/* sql */`
 			WITH CTE AS (
-				SELECT RANDOM()${percentage} * (SELECT SUM(rarity) FROM rpg_item) R
+				SELECT RANDOM()${percentage} * (SELECT SUM(rarity) FROM rpg_items) R
 			)
 			SELECT "id", "name", "rarity"
 			FROM (
-				SELECT rpg_item.*, SUM(rarity) OVER (ORDER BY id) S, R
-				FROM rpg_item CROSS JOIN CTE
+				SELECT rpg_items.*, SUM(rarity) OVER (ORDER BY id) S, R
+				FROM rpg_items CROSS JOIN CTE
 			) Q
 			WHERE S >= R
 			ORDER BY id

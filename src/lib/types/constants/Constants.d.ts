@@ -9,7 +9,7 @@ export const enum Databases {
 	RpgClass = 'rpg_class',
 	RpgGuildRank = 'rpg_guild_rank',
 	RpgGuilds = 'rpg_guilds',
-	RpgItem = 'rpg_item',
+	RpgItems = 'rpg_items',
 	RpgItemRanks = 'rpg_item_ranks',
 	RpgUserItems = 'rpg_user_items',
 	RpgUsers = 'rpg_users',

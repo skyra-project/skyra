@@ -235,7 +235,7 @@ export class JsonCommonQuery implements CommonQuery {
 	}
 
 	public async retrieveRandomItem(luck: number) {
-		const entries = (await this.provider.getAll(Databases.RpgItem) as RawRpgItem[])
+		const entries = (await this.provider.getAll(Databases.RpgItems) as RawRpgItem[])
 			.sort((a, b) => a.id - b.id);
 
 		const count = entries.reduce((acc, entry) => acc + Number(entry.rarity), 0);

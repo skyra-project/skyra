@@ -8,6 +8,7 @@ export interface RawRpgItem {
 	required_energy: number;
 	maximum_cooldown: number;
 	rarity: string;
+	accuracy: number;
 	effects: string[];
 }
 
@@ -46,7 +47,6 @@ export interface RawRpgUser {
 	guild_id: number;
 	guild_rank_id: number;
 	class_id: number;
-	items: string[];
 	crate_common_count: number;
 	crate_uncommon_count: number;
 	crate_rare_count: number;
@@ -60,13 +60,27 @@ export interface RawRpgUserItem {
 	user_id: string;
 	item_id: number;
 	durability: string;
-	cooldown: number;
+}
+
+export interface RawRpgBattle {
+	id: string;
+	challenger_turn: boolean;
+	challenger: string;
+	challenger_cooldown: number;
+	challenger_health: number;
+	challenger_energy: number;
+	challenger_effects: string[];
+	challenged: string;
+	challenged_cooldown: number;
+	challenged_health: number;
+	challenged_energy: number;
+	challenged_effects: string[];
 }
 
 export const SQL_TABLE_SCHEMA = /* sql */`
 	BEGIN;
 
-	CREATE TABLE IF NOT EXISTS rpg_item (
+	CREATE TABLE IF NOT EXISTS rpg_items (
 		"id"                 SERIAL,
 		"name"               VARCHAR(50)                            NOT NULL,
 		"maximum_durability" BIGINT                                 NOT NULL,
@@ -76,6 +90,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"required_energy"    FLOAT       DEFAULT 0.0                NOT NULL,
 		"maximum_cooldown"   SMALLINT    DEFAULT 0                  NOT NULL,
 		"rarity"             BIGINT                                 NOT NULL,
+		"accuracy"           SMALLINT    DEFAULT 100                NOT NULL,
 		"effects"            VARCHAR(50) DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		UNIQUE ("name", "rarity"),
 		PRIMARY KEY ("id"),
@@ -85,7 +100,10 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		CHECK ("defense"            >= 0),
 		CHECK ("health"             >= 0),
 		CHECK ("required_energy"    >= 0),
-		CHECK ("maximum_cooldown"   >= 0)
+		CHECK ("maximum_cooldown"   >= 0),
+		CHECK ("rarity"             >= 1),
+		CHECK ("accuracy"           >= 0),
+		CHECK ("accuracy"           <= 100)
 	);
 
 	CREATE TABLE IF NOT EXISTS rpg_class (
@@ -105,8 +123,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 	);
 
 	CREATE TABLE IF NOT EXISTS rpg_guild_rank (
-		"id"               SERIAL      NOT NULL,
-		"name"             VARCHAR(50) NOT NULL,
+		"id"   SERIAL      NOT NULL,
+		"name" VARCHAR(50) NOT NULL,
 		UNIQUE ("name"),
 		PRIMARY KEY ("id"),
 		CHECK ("name" <> '')
@@ -134,20 +152,19 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 	);
 
 	CREATE TABLE IF NOT EXISTS rpg_users (
-		"id"                    VARCHAR(19)                           NOT NULL,
-		"name"                  VARCHAR(32)                           NOT NULL,
-		"win_count"             BIGINT      DEFAULT 0                 NOT NULL,
-		"death_count"           BIGINT      DEFAULT 0                 NOT NULL,
+		"id"                    VARCHAR(19)             NOT NULL,
+		"name"                  VARCHAR(32)             NOT NULL,
+		"win_count"             BIGINT      DEFAULT 0   NOT NULL,
+		"death_count"           BIGINT      DEFAULT 0   NOT NULL,
 		"guild_id"              INTEGER,
 		"guild_rank_id"         INTEGER,
 		"class_id"              INTEGER,
-		"items"                 BIGINT[]    DEFAULT ARRAY[]::BIGINT[] NOT NULL,
-		"crate_common_count"    INTEGER     DEFAULT 0                 NOT NULL,
-		"crate_uncommon_count"  INTEGER     DEFAULT 0                 NOT NULL,
-		"crate_rare_count"      INTEGER     DEFAULT 0                 NOT NULL,
-		"crate_legendary_count" INTEGER     DEFAULT 0                 NOT NULL,
-		"energy"                BIGINT      DEFAULT 0                 NOT NULL,
-		"luck"                  NUMERIC     DEFAULT 1.0               NOT NULL,
+		"crate_common_count"    INTEGER     DEFAULT 0   NOT NULL,
+		"crate_uncommon_count"  INTEGER     DEFAULT 0   NOT NULL,
+		"crate_rare_count"      INTEGER     DEFAULT 0   NOT NULL,
+		"crate_legendary_count" INTEGER     DEFAULT 0   NOT NULL,
+		"energy"                BIGINT      DEFAULT 0   NOT NULL,
+		"luck"                  NUMERIC     DEFAULT 1.0 NOT NULL,
 		UNIQUE ("id"),
 		FOREIGN KEY ("id")            REFERENCES users          ("id") ON DELETE CASCADE,
 		FOREIGN KEY ("guild_id")      REFERENCES rpg_guilds     ("id") ON DELETE SET NULL,
@@ -171,12 +188,52 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"user_id"    VARCHAR(19) NOT NULL,
 		"item_id"    INTEGER     NOT NULL,
 		"durability" BIGINT      NOT NULL,
-		"cooldown"   SMALLINT    NOT NULL,
 		PRIMARY KEY ("id"),
 		FOREIGN KEY ("user_id") REFERENCES rpg_users ("id") ON DELETE CASCADE,
-		FOREIGN KEY ("item_id") REFERENCES rpg_item  ("id") ON DELETE CASCADE,
+		FOREIGN KEY ("item_id") REFERENCES rpg_items ("id") ON DELETE CASCADE,
 		CHECK ("durability" >= 0)
 	);
+
+	CREATE RULE rpg_user_items_durability_update_rule AS ON UPDATE
+		TO rpg_user_items
+		WHERE NEW.durability = 0
+		DO INSTEAD
+			DELETE FROM rpg_user_items
+			WHERE id = OLD.id;
+
+	CREATE TABLE IF NOT EXISTS rpg_battles
+	(
+		"id"                  BIGSERIAL,
+		"challenger_turn"     BOOLEAN                                NOT NULL,
+		"challenger"          VARCHAR(19)                            NOT NULL,
+		"challenger_cooldown" SMALLINT    DEFAULT 0                  NOT NULL,
+		"challenger_health"   INTEGER                                NOT NULL,
+		"challenger_energy"   INTEGER                                NOT NULL,
+		"challenger_effects"  VARCHAR(50) DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"challenged"          VARCHAR(19)                            NOT NULL,
+		"challenged_cooldown" SMALLINT    DEFAULT 0                  NOT NULL,
+		"challenged_health"   INTEGER                                NOT NULL,
+		"challenged_energy"   INTEGER                                NOT NULL,
+		"challenged_effects"  VARCHAR(50) DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		UNIQUE ("challenger"),
+		UNIQUE ("challenged"),
+		PRIMARY KEY ("id"),
+		FOREIGN KEY ("challenger") REFERENCES rpg_users ("id"),
+		FOREIGN KEY ("challenged") REFERENCES rpg_users ("id"),
+		CHECK ("challenger_cooldown" >= 0),
+		CHECK ("challenged_cooldown" >= 0),
+		CHECK ("challenger_health"   >= 0),
+		CHECK ("challenged_health"   >= 0),
+		CHECK ("challenger_energy"   >= 0),
+		CHECK ("challenged_energy"   >= 0)
+	);
+
+	CREATE RULE rpg_battles_health_update_rule AS ON UPDATE
+		TO rpg_battles
+		WHERE NEW.challenger_health = 0 OR NEW.challenged_health = 0
+		DO INSTEAD
+			DELETE FROM rpg_battles
+			WHERE id = OLD.id;
 
 	COMMIT;
 `;

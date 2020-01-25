@@ -1331,6 +1331,19 @@ export default class extends Language {
 			],
 			examples: ['GloriousGe0rge']
 		}),
+		COMMAND_SHIP_DESCRIPTION: 'Envía 2 miembros',
+		COMMAND_SHIP_EXTENDED: builder.display('ship', {
+			extendedHelp: 'Este comando genera un nombre de barco entre dos usuarios y crea más amor en el mundo.',
+			explainedUsage: [
+				['usuario', 'El primer usuario en enviar'],
+				['usuario', 'El segundo usuario en enviar']
+			],
+			examples: ['romeo juliet']
+		}),
+		COMMAND_SHIP_DATA: {
+			TITLE: (romeoUsername, julietUsername) => `**Envios \`${romeoUsername}\` y \`${julietUsername}\`**`,
+			DESCRIPTION: shipName => `Yo lo llamo... ${shipName}`
+		},
 		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
 		COMMAND_CHASE_EXTENDED: builder.display('chase', {
 			extendedHelp: `Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!`,

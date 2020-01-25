@@ -1262,6 +1262,12 @@ export interface LanguageKeys {
 		DATA_AVAILABLE_FOR: string;
 		JOINED_REDDIT: (timestamp: string) => string;
 	};
+	COMMAND_SHIP_DESCRIPTION: string;
+	COMMAND_SHIP_EXTENDED: string;
+	COMMAND_SHIP_DATA: {
+		TITLE: (romeoUsername: string, julietUsername: string) => string;
+		DESCRIPTION: (shipName: string) => string;
+	};
 	COMMAND_SNIPE_EMPTY: string;
 	COMMAND_SNIPE_TITLE: string;
 	COMMAND_UPVOTE_MESSAGE: string;

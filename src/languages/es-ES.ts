@@ -796,36 +796,6 @@ export default class extends Language {
 			],
 			examples: ['30m 6h A hug from Skyra.']
 		}),
-		COMMAND_LIST_DESCRIPTION: 'Check the list of channels, roles, members or warnings for this guild!.',
-		COMMAND_LIST_EXTENDED: builder.display('list', {
-			extendedHelp: `This command is designed to list (sorted) information for this guild with possible filters. For example,
-					you can read all the channels with their ids or all the roles from the guild, sorted by their position and hierarchy
-					position, respectively. However, this command also allows to display the members of a role or check the warnings given.`,
-			explainedUsage: [
-				['channels', 'Show a list of all channels for this guild!.'],
-				['roles', 'Show a list of all roles for this guild!.'],
-				['members', 'Show a list of all members for a role. If not provided, defaults to the author\'s highest role.'],
-				['warnings', 'Show a list of all warnings for this guild, or all warnings given to a user.'],
-				['input', 'If you take the members parameter, this parameter will select a role. In warnings this will select a member of the guild, otherwise it is ignored.']
-			],
-			examples: ['channels', 'warnings Skyra', 'members Moderators']
-		}),
-		COMMAND_MANAGEALIAS_DESCRIPTION: 'Manage aliases for commands for this server.',
-		COMMAND_MANAGEALIAS_EXTENDED: builder.display('managealias', {
-			extendedHelp: `Command aliases are custom aliases you can use to define a command with its parameters, for example, let's say
-					the usage of a command is quite complicated or its parameters are very used. For example, let's say you want Skyra to
-					recognize 'Skyra, ps4' as 'Skyra, roles claim ps4'. This is one of the things this system can do. However, you
-					are also able to 'translate' them, i.e. you have a Spanish community and you want 'Skyra, suscribirse' as an alias of
-					'Skyra, subscribe'.`,
-			explainedUsage: [
-				['add', 'Add an alias.'],
-				['remove', 'Remove an alias.'],
-				['list', 'List all aliases for this guild!.'],
-				['command', 'The command to define the alias to. (i.e. `ping`).'],
-				['alias', 'The alias to apply for the aforementioned command.']
-			],
-			examples: ['add subscribe suscribirse', 'add "roles claim ps4" ps4']
-		}),
 
 		/**
 		 * ###################
@@ -2483,9 +2453,12 @@ export default class extends Language {
 			'• Weeb commands (+10)!',
 			'And more!'
 		].join('\n'),
-		COMMAND_HELP_TITLE: (name, description) => `📃 | ***Mensaje de Ayuda*** | __**${name}**__\n${description}\n`,
-		COMMAND_HELP_USAGE: usage => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
-		COMMAND_HELP_EXTENDED: extendedHelp => `🔍 | ***Descripción Extendida***\n${extendedHelp}`,
+		COMMAND_HELP_DATA: {
+			TITLE: description => `${description}`,
+			USAGE: usage => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
+			EXTENDED: extendedHelp => `🔍 | ***Descripción Extendida***\n${extendedHelp}`,
+			FOOTER: name => `Ayuda de comando para ${name}`
+		},
 		COMMAND_SUPPORT_EMBED_TITLE: username => `¿Necesita ayuda, ${username}?`,
 		COMMAND_SUPPORT_EMBED_DESCRIPTION: `¡Entonces deberías unirte a [Skyra's lounge](https://skyra.pw/join)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.`,
 

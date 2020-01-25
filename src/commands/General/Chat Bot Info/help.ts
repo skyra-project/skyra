@@ -1,10 +1,11 @@
+import { isFunction, isNumber } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { BrandingColors } from '@utils/constants';
-import { getColor, noop } from '@utils/util';
+import { getColor, getDisplayAvatar, noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { Command, CommandStore, KlasaMessage, util } from 'klasa';
+import { Command, CommandStore, KlasaMessage } from 'klasa';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
@@ -15,6 +16,7 @@ export default class extends SkyraCommand {
 			aliases: ['commands', 'cmd', 'cmds'],
 			description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
 			guarded: true,
+			requiredPermissions: ['EMBED_LINKS'],
 			usage: '(Command:command|page:integer|category:category)',
 			flagSupport: true
 		});
@@ -50,13 +52,7 @@ export default class extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
-		if (command) {
-			return message.sendMessage([
-				message.language.tget('COMMAND_HELP_TITLE', command.name, util.isFunction(command.description) ? command.description(message.language) : command.description),
-				message.language.tget('COMMAND_HELP_USAGE', command.usage.fullUsage(message)),
-				message.language.tget('COMMAND_HELP_EXTENDED', util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
-			].join('\n'));
-		}
+		if (command) return message.sendEmbed(this.buildCommandHelp(message, command));
 
 		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
 			const response = await message.sendMessage(
@@ -66,7 +62,7 @@ export default class extends SkyraCommand {
 			const display = await this.buildDisplay(message);
 
 			// Extract start page and sanitize it
-			const page = util.isNumber(commandOrPage) ? commandOrPage - 1 : null;
+			const page = isNumber(commandOrPage) ? commandOrPage - 1 : null;
 			const startPage = page === null || page < 0 || page >= display.pages.length
 				? null
 				: page;
@@ -109,8 +105,23 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
+	private buildCommandHelp(message: KlasaMessage, command: Command) {
+		const DATA = message.language.tget('COMMAND_HELP_DATA');
+
+		return new MessageEmbed()
+			.setColor(getColor(message))
+			.setAuthor(this.client.user?.username, getDisplayAvatar(this.client.user?.id!, this.client.user!))
+			.setTimestamp()
+			.setFooter(DATA.FOOTER(command.name))
+			.setTitle(DATA.TITLE(isFunction(command.description) ? command.description(message.language) : command.description))
+			.setDescription([
+				DATA.USAGE(command.usage.fullUsage(message)),
+				DATA.EXTENDED(isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
+			].join('\n'));
+	}
+
 	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {
-		const description = util.isFunction(command.description) ? command.description(message.language) : command.description;
+		const description = isFunction(command.description) ? command.description(message.language) : command.description;
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 

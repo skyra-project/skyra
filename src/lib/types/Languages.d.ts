@@ -585,10 +585,6 @@ export interface LanguageKeys {
 	GOOGLE_ERROR_INVALID_REQUEST: string;
 	GOOGLE_ERROR_OVER_QUERY_LIMIT: string;
 	GOOGLE_ERROR_UNKNOWN: string;
-	COMMAND_LIST_DESCRIPTION: string;
-	COMMAND_LIST_EXTENDED: string;
-	COMMAND_MANAGEALIAS_DESCRIPTION: string;
-	COMMAND_MANAGEALIAS_EXTENDED: string;
 	COMMAND_NICK_DESCRIPTION: string;
 	COMMAND_NICK_EXTENDED: string;
 	COMMAND_PERMISSIONNODES_DESCRIPTION: string;
@@ -994,9 +990,12 @@ export interface LanguageKeys {
 	COMMAND_ANNOUNCEMENT_PROMPT: string;
 	COMMAND_INVITE: () => string;
 	COMMAND_INFO: string;
-	COMMAND_HELP_TITLE: (name: string, description: string) => string;
-	COMMAND_HELP_USAGE: (usage: string) => string;
-	COMMAND_HELP_EXTENDED: (extendedHelp: string) => string;
+	COMMAND_HELP_DATA: {
+		TITLE: (description: string) => string;
+		USAGE: (usage: string) => string;
+		EXTENDED: (extendedHelp: string) => string;
+		FOOTER: (name: string) => string;
+	};
 	COMMAND_SUPPORT_DESCRIPTION: string;
 	COMMAND_SUPPORT_EXTENDED: string;
 	COMMAND_8BALL_OUTPUT: (author: string, question: string, response: string) => string;

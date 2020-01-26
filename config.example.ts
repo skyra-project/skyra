@@ -191,5 +191,6 @@ export const TOKENS = {
 	WEEB_SH_KEY: '',
 	WOLFRAM_KEY: '',
 	CLASH_OF_CLANS_KEY: '',
-	XIVAPI_KEY: ''
+	XIVAPI_KEY: '',
+	FORTNITE_KEY: ''
 };

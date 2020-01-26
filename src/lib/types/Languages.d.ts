@@ -551,6 +551,27 @@ export interface LanguageKeys {
 	};
 	COMMAND_FFXIV_NO_CHARACTER_FOUND: string;
 	COMMAND_FFXIV_NO_ITEM_FOUND: string;
+	COMMAND_FORTNITE_DESCRIPTION: string;
+	COMMAND_FORTNITE_EXTENDED: string;
+	COMMAND_FORTNITE_NO_USER: string;
+	COMMAND_FORTNITE_TITLES: {
+		TITLE: (epicUserHandle: string) => string;
+		LIFETIME_STATS: string;
+		SOLOS: string;
+		DUOS: string;
+		SQUADS: string;
+		WINS: (count: string) => string;
+		KILLS: (count: string) => string;
+		KDR: (count: string) => string;
+		MATCHES_PLAYED: (count: string) => string;
+		TOP_1S: (count: string) => string;
+		TOP_3S: (count: string) => string;
+		TOP_5S: (count: string) => string;
+		TOP_6S: (count: string) => string;
+		TOP_10S: (count: string) => string;
+		TOP_12S: (count: string) => string;
+		TOP_25S: (count: string) => string;
+	};
 	GAMES_NOT_ENOUGH_MONEY: (money: number) => string;
 	GAMES_CANNOT_HAVE_NEGATIVE_MONEY: string;
 	COMMAND_CREATEMUTE_DESCRIPTION: string;
